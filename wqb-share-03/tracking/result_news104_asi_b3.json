@@ -1,0 +1,32 @@
+{
+  "batch": "b3",
+  "dataset": "news104",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "neut": "SUBINDUSTRY",
+  "decay": 20,
+  "truncation": 0.15,
+  "max_trade": "ON",
+  "multisim_id": "3Ofrh4jy4TUaqHLfZnZ2DS",
+  "alphas": [
+    {"id": "88ewWKgo", "expr": "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 10), subindustry)", "sh": 0.21, "fit": 0.05, "tvr": 0.1911, "2Y": 0.71, "margin_bp": 1.16, "subU": 0.08, "rn_sh": -0.09, "ra_failed": 5, "ops": 3, "verdict": "ts_mean10 weaker than 20"},
+    {"id": "YPge3WXW", "expr": "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 40), subindustry)", "sh": 0.17, "fit": 0.04, "tvr": 0.0653, "2Y": 0.75, "margin_bp": 2.51, "subU": -0.02, "rn_sh": -0.32, "ra_failed": 6, "ops": 3, "verdict": "ts_mean40 weaker, tvr6.5%"},
+    {"id": "j2r7kdNj", "expr": "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 60), subindustry)", "sh": 0.16, "fit": 0.04, "tvr": 0.0437, "2Y": 0.73, "margin_bp": 3.4, "subU": 0.02, "rn_sh": -0.31, "ra_failed": 6, "ops": 3, "verdict": "ts_mean60 weakest, tvr4.4%(<5% fail)"},
+    {"id": "E5ednroL", "expr": "ts_decay_linear(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 20)", "sh": 0.26, "fit": 0.09, "tvr": 0.1033, "2Y": 0.91, "margin_bp": 2.59, "subU": 0.2, "rn_sh": -0.0, "ra_failed": 4, "ops": 4, "verdict": "double-smooth decent"},
+    {"id": "vRvQ7Jnw", "expr": "signed_power(subtract(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 0.5), 5)", "sh": 0.34, "fit": 0.13, "tvr": 0.1192, "2Y": 1.19, "margin_bp": 2.93, "subU": 0.29, "rn_sh": 0.15, "ra_failed": 5, "ops": 5, "verdict": "convex5 best_2Y_1.19 but low sh"},
+    {"id": "xAdZ7mwg", "expr": "subtract(0, group_rank(ts_mean(vec_avg(nws104_sentiment), 20), subindustry))", "sh": -0.5, "fit": -0.19, "tvr": 0.1208, "2Y": -0.31, "ra_failed": 4, "ops": 4, "verdict": "sentiment_ts_mean_reversal_WRONG"},
+    {"id": "QP98R5rr", "expr": "subtract(0, group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry))", "sh": -0.31, "fit": -0.11, "tvr": 0.1104, "2Y": -0.94, "ra_failed": 6, "ops": 4, "verdict": "marketimpactscore_reversal_WRONG (momentum confirmed)"},
+    {"id": "ZYKJVWwx", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 60)", "sh": 1.01, "fit": 0.46, "tvr": 0.1572, "2Y": 0.98, "margin_bp": 4.09, "subU": 0.59, "rn_sh": 0.95, "asi_jpn": -0.27, "ra_failed": 5, "ops": 4, "verdict": "BREAKTHROUGH_ts_zscore_wrapper sh1.01 rn_sh0.95 near threshold"}
+  ],
+  "key_findings": [
+    "BREAKTHROUGH: ts_zscore(group_rank(ts_mean(vec_avg(marketimpactscore),20),subindustry),60) = sh1.01/2Y0.98/rn_sh0.95/tvr15.7%/margin4.09bp/subU0.59 — ts_zscore wrapper is the KEY amplifier (sh 0.31->1.01, rn_sh 0.14->0.95)",
+    "ts_mean window: 20 is optimal (10->sh0.21, 40->0.17, 60->0.16); longer windows reduce turnover but kill signal (60 gives tvr4.4% <5% fail)",
+    "marketimpactscore is MOMENTUM (reversal always wrong, alpha7 -0.31)",
+    "sentiment reversal via ts_mean is WRONG (alpha6 -0.5) — sentiment needs different treatment",
+    "convex5 on ts_mean20 gives best 2Y=1.19 but low sh0.34 — convexity boosts recent perf",
+    "ts_zscore winner ZYKJVWwx: LOW_SHARPE/LOW_FITNESS/LOW_2Y are WARNINGS not fails; only true fails are ASI_JPN_SHARPE(-0.27), ROBUST_UNIVERSE_SHARPE.WITH_RATIO(0.84vs0.91), ROBUST_UNIVERSE_RETURNS(0.0273vs0.0289)",
+    "rn_sh0.95 is 0.05 from goal>1 — very close; need slight boost"
+  ],
+  "next_b4": "ts_zscore window sweep (40/90/120) + ts_mean(10/40) variants + convex5-on-ts_zscore + ts_decay-on-ts_zscore + sentiment-ts_zscore to push sh 1.01->1.58 and rn_sh 0.95->1",
+  "best_alpha_so_far": "ZYKJVWwx sh1.01/2Y0.98/rn_sh0.95/tvr15.7%/margin4.09bp — approach but not yet passing"
+}

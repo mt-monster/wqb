@@ -1,0 +1,22 @@
+{
+  "batch": "b96",
+  "multisimulation_id": "b96_completed",
+  "dataset": "analyst7 - QP98oPgr prod_corr optimization (SLOW_AND_FAST)",
+  "settings": {"universe": "TOP3000", "delay": 1, "decay": 6, "neutralization": "SLOW_AND_FAST", "truncation": 0.08, "max_trade": "ON", "nan_handling": "ON"},
+  "original_alpha": {"id": "QP98oPgr", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 10)", "neutralization": "SUBINDUSTRY", "prod_corr": 0.8111, "sharpe": 1.58, "fitness": 1.13, "subU": 0.83},
+  "results_summary": [
+    {"alpha_id": "58kPejoX", "expr": "subindustry P5 D10 @SLOW_AND_FAST", "sharpe": 1.18, "fitness": 0.57, "2Y": 1.81, "tvr_pct": 9.15, "subU": 0.50, "ra_failed": true, "ra_checks": 3, "status": "FAIL_BEST_BUT_WEAK"},
+    {"alpha_id": "le3o9MXO", "expr": "ts_rank w60 P5 D10", "sharpe": 0.57, "fitness": 0.16, "2Y": 0.19, "tvr_pct": 15.51, "subU": -0.08, "ra_failed": true, "ra_checks": 4, "status": "FAIL_WORST"},
+    {"alpha_id": "GreZxgJ0", "expr": "sector P5 D10", "sharpe": 1.13, "fitness": 0.55, "2Y": 1.73, "tvr_pct": 8.78, "subU": 0.40, "ra_failed": true, "ra_checks": 3, "status": "FAIL"},
+    {"alpha_id": "akE5wVvW", "expr": "industry P5 D10", "sharpe": 1.16, "fitness": 0.57, "2Y": 1.53, "tvr_pct": 8.90, "subU": 0.49, "ra_failed": true, "ra_checks": 4, "status": "FAIL"},
+    {"alpha_id": "omgxroOl", "expr": "subindustry P5 D20", "sharpe": 1.13, "fitness": 0.53, "2Y": 1.77, "tvr_pct": 8.32, "subU": 0.45, "ra_failed": true, "ra_checks": 3, "status": "FAIL"},
+    {"alpha_id": "LLd0r5J9", "expr": "subindustry P3 D10", "sharpe": 1.15, "fitness": 0.52, "2Y": 1.84, "tvr_pct": 9.04, "subU": 0.46, "ra_failed": true, "ra_checks": 3, "status": "FAIL"},
+    {"alpha_id": "9q7NmE0x", "expr": "composite ner-sal P5 D10", "sharpe": -0.27, "fitness": -0.06, "2Y": 0.51, "tvr_pct": 10.50, "subU": -0.24, "ra_failed": true, "ra_checks": 4, "status": "FAIL_NEGATIVE"},
+    {"alpha_id": "omgxroOJ", "expr": "plain rank P5 D10", "sharpe": 0.79, "fitness": 0.30, "2Y": 0.02, "tvr_pct": 10.29, "subU": 0.47, "ra_failed": true, "ra_checks": 3, "status": "FAIL"}
+  ],
+  "analysis": {
+    "conclusion": "SLOW_AND_FAST neutralization DESTROYS the analyst7 signal. Best alpha (58kPejoX) only achieves sh1.18/fit0.57/subU0.50 vs original sh1.58/fit1.13/subU0.83 at SUBINDUSTRY. The net earnings revision momentum signal is too weak to survive SLOW_AND_FAST's aggressive risk factor removal. analyst7/QP98oPgr is a DEAD END for prod_corr optimization.",
+    "key_insight": "ts_rank kills the signal entirely (sh0.57). Composite ner-sal differential is negative (sh-0.27). Plain rank also weak (sh0.79). Only group_rank variants produce any signal, but all far below thresholds.",
+    "next_action": "Abandon analyst7 path. Focus entirely on option40 path (b97 with 1080d tenor)."
+  }
+}

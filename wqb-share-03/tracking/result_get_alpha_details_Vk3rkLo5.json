@@ -1,0 +1,136 @@
+﻿{
+  "id": "Vk3rkLo5",
+  "code": "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 11), 3)",
+  "status": "UNSUBMITTED",
+  "stage": "IS",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "decay": 6,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "metrics": {
+    "sharpe": 1.13,
+    "fitness": 0.32,
+    "turnover": 0.3768,
+    "returns": 0.0301,
+    "drawdown": 0.0383,
+    "margin": 0.00016,
+    "longCount": 1589,
+    "shortCount": 1542,
+    "pnl": 2387705,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.8,
+    "two_year_sharpe": 1.68
+  },
+  "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+      "LOW_SHARPE",
+      "LOW_FITNESS"
+    ],
+    "pyramid_short": "news"
+  },
+  "checks": {
+    "fail": [],
+    "warning": [
+      {
+        "name": "LOW_SHARPE",
+        "value": 1.13,
+        "limit": 1.58
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "value": 0.6,
+        "limit": 1.58
+      },
+      {
+        "name": "LOW_FITNESS",
+        "value": 0.32,
+        "limit": 1.0
+      },
+      {
+        "name": "HT_PNL_REALIZATION_HORIZON",
+        "value": 21,
+        "limit": 20
+      },
+      {
+        "name": "HT_LIQUID_TOP200_SHARPE",
+        "value": 0.3,
+        "limit": 1
+      },
+      {
+        "name": "HT_AFTER_COST_SHARPE",
+        "value": -0.25,
+        "limit": 1.0
+      },
+      {
+        "name": "HT_INVESTABLE_MAX_TRADE_SHARPE",
+        "value": 1.13,
+        "limit": 2.0
+      },
+      {
+        "name": "HT_INVESTABLE_MAX_POSITION_SHARPE",
+        "value": 1.22,
+        "limit": 2.0
+      },
+      {
+        "name": "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+        "value": "Statistical",
+        "limit": "RAM"
+      },
+      {
+        "name": "MATCHES_THEMES"
+      },
+      {
+        "name": "OSMOSIS_ALLOCATION"
+      }
+    ],
+    "pass": [
+      "LOW_TURNOVER",
+      "HIGH_TURNOVER",
+      "CONCENTRATED_WEIGHT",
+      "LOW_SUB_UNIVERSE_SHARPE",
+      "HT_TURNOVER",
+      "HT_HIGH_TURNOVER_RETURNS_RATIO",
+      "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+      "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+      "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+      "LOW_2Y_SHARPE",
+      "MATCHES_CLASSIFICATION",
+      "MATCHES_PYRAMID"
+    ],
+    "pending": [
+      "SELF_CORRELATION",
+      "DATA_DIVERSITY",
+      "PROD_CORRELATION",
+      "REGULAR_SUBMISSION",
+      "POWER_POOL_CORRELATION"
+    ]
+  },
+  "pyramids": {
+    "effective": 1,
+    "list": [
+      {
+        "name": "USA/D1/NEWS",
+        "multiplier": 1.2
+      }
+    ]
+  }
+}

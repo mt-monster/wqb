@@ -1,0 +1,99 @@
+﻿{
+  "id": "6XeWqEE7",
+  "code": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall150, opt40_ivput150)), 0.5), 15), 60)",
+  "status": "UNSUBMITTED",
+  "stage": "IS",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "decay": 6,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.04,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "metrics": {
+    "sharpe": 2.28,
+    "fitness": 2.1,
+    "turnover": 0.0831,
+    "returns": 0.1057,
+    "drawdown": 0.0441,
+    "margin": 0.002543,
+    "longCount": 1623,
+    "shortCount": 1506,
+    "pnl": 10549802,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.99,
+    "two_year_sharpe": 3.37
+  },
+  "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "option"
+  },
+  "checks": {
+    "fail": [],
+    "warning": [
+      {
+        "name": "HT_TURNOVER",
+        "value": 0.0831,
+        "limit": 0.2
+      },
+      {
+        "name": "HT_HIGH_TURNOVER_RETURNS_RATIO",
+        "value": 0.3018,
+        "limit": 0.75
+      },
+      {
+        "name": "HT_PNL_REALIZATION_HORIZON",
+        "value": 57,
+        "limit": 20
+      },
+      {
+        "name": "MATCHES_THEMES"
+      },
+      {
+        "name": "OSMOSIS_ALLOCATION"
+      }
+    ],
+    "pass": [
+      "LOW_SHARPE",
+      "CLUSTER_TEST",
+      "LOW_FITNESS",
+      "LOW_TURNOVER",
+      "HIGH_TURNOVER",
+      "CONCENTRATED_WEIGHT",
+      "LOW_SUB_UNIVERSE_SHARPE",
+      "LOW_2Y_SHARPE",
+      "MATCHES_PYRAMID"
+    ],
+    "pending": [
+      "SELF_CORRELATION",
+      "DATA_DIVERSITY",
+      "PROD_CORRELATION",
+      "REGULAR_SUBMISSION",
+      "POWER_POOL_CORRELATION"
+    ]
+  },
+  "pyramids": {
+    "effective": 1,
+    "list": [
+      {
+        "name": "USA/D1/OPTION",
+        "multiplier": 1.3
+      }
+    ]
+  }
+}

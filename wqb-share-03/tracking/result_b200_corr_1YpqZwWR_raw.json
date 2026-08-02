@@ -1,0 +1,4 @@
+﻿event: message
+data: {"jsonrpc":"2.0","id":2000,"result":{"content":[{"type":"text","text":"{\n  \"alpha_id\": \"1YpqZwWR\",\n  \"threshold\": 0.7,\n  \"correlation_type\": \"both\",\n  \"checks\": {\n    \"production\": {\n      \"max_correlation\": null,\n      \"passes_check\": null\n    }\n  },\n  \"all_passed\": null\n}"}],"structuredContent":{"result":{"alpha_id":"1YpqZwWR","threshold":0.7,"correlation_type":"both","checks":{"production":{"max_correlation":null,"passes_check":null}},"all_passed":null}},"isError":false}}
+
+

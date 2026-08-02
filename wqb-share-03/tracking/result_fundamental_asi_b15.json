@@ -1,0 +1,62 @@
+{
+  "batch": "b15",
+  "category": "model (fundamental/earnings)",
+  "dataset": "model30 (EPS Estimate Model)",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 20,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.15,
+  "max_trade": "ON",
+  "language": "FASTEXPR",
+  "multisim_id": "2xA3SI6Y75gwbB914evm7s0q",
+  "objective": "Test EXACT forum field star_eps_surprise_prediction_fy1 from model30 (post 37473718017175 sh3.28). b10/b11 used analyst10 approximation, capped 0.66. Now using real field.",
+  "alphas": [
+    {"id": "xAdJzppJ", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1,20),country),40)", "design": "expr1 baseline country z40", "ops": 3, "field": "star_eps_surprise_prediction_fy1", "sh": 0.17, "fit": 0.03, "tvr": 0.0784, "returns": 0.004, "margin_bp": 1.02, "subU": 0.35, "2Y": 0.73, "rn_sh": 0.20, "asi_jpn": -0.41, "ra_failed": true, "checks_failed": ["LOW_SHARPE","LOW_FITNESS","LOW_ASI_JPN_SHARPE","LOW_2Y_SHARPE"], "verdict": "baseline weak - country alone insufficient, cap-decile needed"},
+    {"id": "58kP6dK6", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),40)", "design": "expr2 cap-decile z40", "ops": 6, "field": "star_eps_surprise_prediction_fy1", "sh": 0.55, "fit": 0.16, "tvr": 0.085, "returns": 0.0103, "margin_bp": 2.43, "subU": 0.55, "2Y": 0.96, "rn_sh": 0.41, "asi_jpn": -0.03, "ra_failed": true, "checks_failed": ["LOW_SHARPE","LOW_FITNESS","LOW_ASI_JPN_SHARPE","IS_LADDER_SHARPE"], "ppa_failed": false, "verdict": "cap-decile z40 decent. PPA PASSED. Proven template+cap-decile."},
+    {"id": "j2rqwKke", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),30)", "design": "expr3 cap-decile z30", "ops": 6, "field": "star_eps_surprise_prediction_fy1", "sh": 0.46, "fit": 0.12, "tvr": 0.0935, "returns": 0.0087, "margin_bp": 1.86, "subU": 0.48, "2Y": 0.84, "rn_sh": 0.33, "asi_jpn": -0.05, "ra_failed": true, "verdict": "z30 worse than z40 (sh 0.46 vs 0.55). z40>z30 for this field."},
+    {"id": "A17oa8XE", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),60)", "design": "expr4 cap-decile z60", "ops": 6, "field": "star_eps_surprise_prediction_fy1", "sh": 0.66, "fit": 0.21, "tvr": 0.0738, "returns": 0.0125, "margin_bp": 3.38, "subU": 0.52, "2Y": 1.31, "rn_sh": 0.40, "asi_jpn": -0.16, "ra_failed": true, "verdict": "z60 BEST of proven template variants (sh0.66/2Y1.31). z60>z40>z30. Matches b11 pattern (z60 best rn_sh)."},
+    {"id": "58kP6dK6_dup", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1_d1,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),40)", "design": "expr5 _d1 cap-decile z40", "ops": 6, "field": "star_eps_surprise_prediction_fy1_d1", "sh": 0.55, "fit": 0.16, "tvr": 0.085, "returns": 0.0103, "margin_bp": 2.43, "2Y": 0.96, "rn_sh": 0.41, "verdict": "DUPLICATE of expr2 (same alpha_id 58kP6dK6). _d1 field IDENTICAL to non-d1 for delay=1. _d1 = non-d1."},
+    {"id": "E5e9aPjJ", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_12m,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),40)", "design": "expr6 12m cap-decile z40", "ops": 6, "field": "star_eps_surprise_prediction_12m", "sh": -0.05, "fit": -0.0, "tvr": 0.0843, "returns": -0.0009, "margin_bp": -0.21, "2Y": 0.67, "rn_sh": 0.01, "ra_failed": true, "verdict": "12m variant DEAD. Forward 12-month horizon doesn't work. FY1 is correct horizon."},
+    {"id": "gJ9nPVlM", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr7 forum-adapted NO ts_decay_linear + cap-decile", "ops": 7, "field": "star_eps_surprise_prediction_fy1", "sh": 1.49, "fit": 0.67, "tvr": 0.0811, "returns": 0.0255, "margin_bp": 6.3, "subU": 0.71, "2Y": 2.13, "rn_sh": 1.46, "asi_jpn": -0.15, "2Y_ladder_window": 3, "ra_failed": true, "ra_failed_count": 3, "ppa_failed": false, "checks_failed": ["LOW_ASI_JPN_SHARPE"], "checks_warning": ["LOW_SHARPE(1.49<1.58)","CLUSTER_TEST(1.36)","LOW_FITNESS(0.67<1.0)"], "checks_pass": ["LOW_TURNOVER","HIGH_TURNOVER","CONCENTRATED_WEIGHT","LOW_SUB_UNIVERSE_SHARPE","LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO","LOW_ROBUST_UNIVERSE_RETURNS","IS_LADDER_SHARPE","MATCHES_PYRAMID"], "verdict": "BREAKTHROUGH! forum-adapted template with EXACT forum field. sh1.49 (just 0.09 below 1.58), 2Y2.13 (excellent), rn_sh1.46 (excellent), margin6.3bp, PPA PASSED. Only fail: LOW_ASI_JPN_SHARPE (-0.15 vs limit 1.0). +126% sh vs proven template (0.66->1.49)."},
+    {"id": "A17oa8XE_dup", "expr": "ts_zscore(group_rank(ts_mean(star_eps_surprise_prediction_fy1_d1,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),60)", "design": "expr8 _d1 cap-decile z60", "ops": 6, "field": "star_eps_surprise_prediction_fy1_d1", "sh": 0.66, "fit": 0.21, "tvr": 0.0738, "returns": 0.0125, "margin_bp": 3.38, "2Y": 1.31, "rn_sh": 0.40, "verdict": "DUPLICATE of expr4 (same alpha_id A17oa8XE). Confirms _d1 = non-d1 for delay=1."}
+  ],
+  "key_findings": {
+    "BREAKTHROUGH": "expr7 (forum-adapted) achieved sh1.49/2Y2.13/rn_sh1.46 - FIRST alpha to approach 1.58 threshold! Forum-adapted template (ts_rank+ts_backfill+winsorize+cap-decile) with EXACT forum field star_eps_surprise_prediction_fy1 is the winning combination.",
+    "field_match_critical": "Using EXACT forum field star_eps_surprise_prediction_fy1 (model30) vs analyst10 approximation anl10_smartest_net_fy1_pred_surps_v1 was the key. Same template (cap-decile z40) improved from sh0.66 (b11) to sh0.55 (b15 expr2) - WAIT, that's LOWER. But forum-adapted template boosted to sh1.49. The field+template combination matters.",
+    "forum_adapted_template_wins": "ts_rank(ts_backfill(winsorize(field,std=5),60),30) + cap-decile = sh1.49. vs ts_mean(field,20) + cap-decile = sh0.66. +126% improvement! ts_rank+backfill+winsorize transformation is FAR superior to ts_mean for this field.",
+    "ts_decay_linear_confirmed_bad": "b10 showed ts_decay_linear kills 2Y. b15 expr7 WITHOUT ts_decay_linear achieves 2Y2.13 (excellent). Confirms: NEVER use ts_decay_linear for this signal.",
+    "d1_redundant": "star_eps_surprise_prediction_fy1 and star_eps_surprise_prediction_fy1_d1 give IDENTICAL results for delay=1 (same alpha_ids). _d1 is redundant.",
+    "12m_dead": "star_eps_surprise_prediction_12m sh-0.05. Forward 12-month horizon doesn't work. FY1 is correct.",
+    "z_window_pattern": "z60>z40>z30 for proven template (sh: 0.66>0.55>0.46, 2Y: 1.31>0.96>0.84). z60 best.",
+    "asi_jpn_structural_issue": "All variants have asi_jpn<0 (best -0.03 at expr2, worst -0.41 at expr1). Japan signal weak/reversed. Forum warning: 'forcing japan to compare within small env loses meaning if all japan declines'. This is the ONLY blocking fail for expr7.",
+    "ppa_passed": "expr7 PPA passed (ppa_failed:false). Only RA fail is LOW_ASI_JPN_SHARPE. LOW_SHARPE and LOW_FITNESS are warnings, not fails."
+  },
+  "best_alpha": "gJ9nPVlM (expr7): sh1.49/fit0.67/2Y2.13/rn_sh1.46/margin6.3bp/tvr8.11%/ops7. PPA passed. Only fail: LOW_ASI_JPN_SHARPE (-0.15 vs limit 1.0). CLOSEST to passing 1.58 threshold ever.",
+  "gap_to_threshold": {
+    "sharpe": "1.49 -> need >1.58 (gap +0.09, +6%)",
+    "fitness": "0.67 -> need >1.0 (gap +0.33, +49%)",
+    "2Y": "2.13 -> need >1.6 (PASS, +33% margin)",
+    "margin_bp": "6.3 -> need >5 (PASS)",
+    "tvr": "8.11% -> need 5-30% (PASS)",
+    "ops": "7 -> need <8 (PASS)",
+    "ra_failed": "1 (LOW_ASI_JPN_SHARPE) -> need 0 (gap: asi_jpn -0.15 -> >1.0, +750% relative - STRUCTURAL)"
+  },
+  "next_steps_b16": {
+    "objective": "Optimize expr7 to pass all thresholds: sh>1.58, fit>1, asi_jpn>1.0",
+    "approach": "Parameter sweep around forum-adapted template: winsorize std (3,4,7), ts_rank window (20,40,60), ts_backfill window (90,120), field variants (star_new_eps_surprise_prediction_fy1, mdl30_psprise_pct_fy1_eps)",
+    "expressions_planned": [
+      "winsorize std=4: group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=4),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "winsorize std=3: same with std=3",
+      "ts_rank w=20: group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),60),20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "ts_rank w=40: same with 40",
+      "ts_backfill w=90: group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),90),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "ts_backfill w=120: same with 120",
+      "star_new variant: group_rank(ts_rank(ts_backfill(winsorize(star_new_eps_surprise_prediction_fy1,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "mdl30 variant: group_rank(ts_rank(ts_backfill(winsorize(mdl30_psprise_pct_fy1_eps,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"
+    ],
+    "asi_jpn_concern": "Japan weakness is structural. If parameter sweep doesn't fix asi_jpn, may need to accept this limitation or explore alternative groupings. Forum used multiply liquidity filter (forbidden) which may have helped Japan."
+  },
+  "status": "0/3 alphas. b15 done (120 total sims: b1-b15). BREAKTHROUGH: expr7 sh1.49/2Y2.13 close to threshold. b16 optimization planned."
+}

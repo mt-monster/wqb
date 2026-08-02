@@ -1,0 +1,29 @@
+{
+  "batch": "b3",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.15,
+  "decay": 20,
+  "max_trade": "ON",
+  "pasteurization": "ON",
+  "nan_handling": "OFF",
+  "unit_handling": "VERIFY",
+  "language": "FASTEXPR",
+  "test_period": "P0Y0M",
+  "dataset": "news104",
+  "pyramid_target": "ASI/D1/news x1.3",
+  "changes_from_b2": "focus ts_mean(marketimpactscore) skeleton (the tvr11% winner), sweep window 10/20/40/60, add double-smoothing/convex/reversal/zscore variants to boost sharpe",
+  "expressions": [
+    "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 10), subindustry)",
+    "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 40), subindustry)",
+    "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 60), subindustry)",
+    "ts_decay_linear(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 20)",
+    "signed_power(subtract(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 0.5), 5)",
+    "subtract(0, group_rank(ts_mean(vec_avg(nws104_sentiment), 20), subindustry))",
+    "subtract(0, group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry))",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 60)"
+  ]
+}

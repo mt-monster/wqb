@@ -1,0 +1,55 @@
+{
+  "batch": "b13",
+  "category": "sentiment",
+  "dataset": "sentiment21 + sentiment23 (news sentiment, mult 1.5)",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 20,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.15,
+  "max_trade": "ON",
+  "language": "FASTEXPR",
+  "test_period": "P0Y0M",
+  "pasteurization": "ON",
+  "nan_handling": "OFF",
+  "unit_handling": "VERIFY",
+  "instrument_type": "EQUITY",
+  "objective": "Optimize snt23_2neg_conf_low (b12 best sentiment sh0.53/sub_univ0.77). Test cap-decile/z30/z60/ts_rank variants + other neg level fields (mean/max). FLIP snt21_2pos_std (b12 sh-0.74, expect sh0.74). Retest dts_gen (b12 platform bug with wrong field name).",
+  "design": {
+    "expr1_conf_low_capdecile": "snt23_2neg_conf_low + cap-decile z40. Cap-decile was neutral for sentiment std in b12 but conf_low is a level signal (different from std). Re-test on level signal.",
+    "expr2_conf_low_z30": "snt23_2neg_conf_low + z30. z30 was best for asi_jpn in b10/b11.",
+    "expr3_conf_low_z60": "snt23_2neg_conf_low + z60. z60 was best for main sh in prior batches.",
+    "expr4_neg_mean_z40": "snt23_2neg_mean (17 users, 23 alphas) + proven z40. Different level measure (average vs confidence lower bound).",
+    "expr5_neg_max_z40": "snt23_2neg_max (13 users) + proven z40. Max negative sentiment (extreme signal).",
+    "expr6_FLIP_pos_std": "FLIP snt21_2pos_std. b12 sh-0.74 (reversed). Unary minus flips signal. Expected sh~0.74 > analyst best 0.66. Tests if unary minus allowed in FASTEXPR.",
+    "expr7_dts_gen_212": "snt23_2dts_gen_212 (12 users, 30 alphas, General sentiment score) + proven z40. b12 used wrong field name snt23_2dts_gen_20 (does not exist in field list - caused platform duplicate bug). Correct field name verified from sentiment23_fields.json line 4.",
+    "expr8_conf_low_ts_rank": "snt23_2neg_conf_low + ts_rank(30) variant. Replaces ts_mean smoothing with ts_rank momentum. Captures sentiment level momentum vs absolute level."
+  },
+  "alpha_expressions": [
+    "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),40)",
+    "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),country),30)",
+    "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),country),60)",
+    "ts_zscore(group_rank(ts_mean(snt23_2neg_mean,20),country),40)",
+    "ts_zscore(group_rank(ts_mean(snt23_2neg_max,20),country),40)",
+    "ts_zscore(group_rank(ts_mean(-snt21_2pos_std,20),country),40)",
+    "ts_zscore(group_rank(ts_mean(snt23_2dts_gen_20,20),country),40)",
+    "ts_zscore(group_rank(ts_rank(snt23_2neg_conf_low,30),country),40)"
+  ],
+  "ops_count": {"1": 6, "2": 3, "3": 3, "4": 3, "5": 3, "6": 3, "7": 3, "8": 3},
+  "constraints_check": {"all_ops_under_8": true, "no_multiply": true, "no_add": true, "no_trade_when": true},
+  "b12_reference": "Best sentiment b12 = snt23_2neg_conf_low sh0.53/sub_univ0.77 (expr6 d5RNezEg). snt21_2pos_std sh-0.74 (reversed, flip->sh0.74 potential). Cap-decile neutral for sentiment std fields.",
+  "field_verification": {
+    "snt23_2neg_conf_low": "MATRIX, coverage 1.0, 18 users, 24 alphas (sentiment23_fields.json line 20)",
+    "snt23_2neg_mean": "MATRIX, coverage 1.0, 17 users, 23 alphas (line 68)",
+    "snt23_2neg_max": "MATRIX, coverage 1.0, 13 users, 13 alphas (line 52)",
+    "snt21_2pos_std": "Confirmed valid in b12 (returned sh-0.74, id GreZEz3Z)",
+    "snt23_2dts_gen_212": "MATRIX, coverage 1.0, 12 users, 30 alphas (line 4). NOTE: b12 used wrong name snt23_2dts_gen_20 which does not exist in field list - caused platform duplicate bug."
+  },
+  "expectations": {
+    "expr6_flip": "If unary minus works, expect sh~0.74 (best overall, > analyst 0.66). If unary minus fails, will get error or sh~0.",
+    "expr1_capdecile": "Cap-decile was neutral for std fields. For level field conf_low, may help (level signals concentrate differently).",
+    "expr2_z30": "z30 was best for asi_jpn. May boost Japan weakness.",
+    "expr4_5_mean_max": "Different level measures. If conf_low works because of reversal, mean/max may also work (different aggregation)."
+  }
+}

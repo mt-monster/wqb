@@ -1,0 +1,47 @@
+﻿{
+  "alpha_ids": [
+    "6XeWqEE7",
+    "xAdL5vmN",
+    "QP98PoQW"
+  ],
+  "threshold": 0.4,
+  "years": 4,
+  "num_points": 986,
+  "matrix": {
+    "6XeWqEE7": {
+      "6XeWqEE7": 1.0,
+      "xAdL5vmN": 0.1124,
+      "QP98PoQW": 0.5641
+    },
+    "xAdL5vmN": {
+      "6XeWqEE7": 0.1124,
+      "xAdL5vmN": 1.0,
+      "QP98PoQW": 0.1955
+    },
+    "QP98PoQW": {
+      "6XeWqEE7": 0.5641,
+      "xAdL5vmN": 0.1955,
+      "QP98PoQW": 1.0
+    }
+  },
+  "max_pair": {
+    "a": "6XeWqEE7",
+    "b": "QP98PoQW",
+    "correlation": 0.5641
+  },
+  "pairs_over_threshold": [
+    {
+      "a": "6XeWqEE7",
+      "b": "QP98PoQW",
+      "correlation": 0.5641
+    }
+  ],
+  "all_below_threshold": false,
+  "max_mutually_below_subset": [
+    "xAdL5vmN",
+    "6XeWqEE7"
+  ],
+  "max_mutually_below_subset_size": 2,
+  "missing_pnl": [],
+  "local_calculation": true
+}

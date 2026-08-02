@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 61), 30)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 61), 90)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 40), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 30), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 20), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_bar))), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(shrt3_utilizationpercent_units))), 61), 60)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

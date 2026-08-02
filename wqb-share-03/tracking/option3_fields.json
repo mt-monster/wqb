@@ -1,0 +1,135 @@
+﻿{
+    "results":  [
+                    {
+                        "id":  "opt3_openintecallatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9439,
+                        "userCount":  14,
+                        "alphaCount":  15,
+                        "description":  "Daily aggregated open interest for at-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_openintecallitm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9298,
+                        "userCount":  9,
+                        "alphaCount":  14,
+                        "description":  "Daily aggregated open interest for in-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_openintecallotm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9487,
+                        "userCount":  10,
+                        "alphaCount":  11,
+                        "description":  "Daily aggregated open interest for out-of-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_openinteputatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.7257,
+                        "userCount":  8,
+                        "alphaCount":  9,
+                        "description":  "Daily aggregated open interest for at-the-money put options for the stock"
+                    },
+                    {
+                        "id":  "opt3_openinteputotm",
+                        "type":  "MATRIX",
+                        "coverage":  0.7269,
+                        "userCount":  4,
+                        "alphaCount":  4,
+                        "description":  "Daily aggregated open interest for out-of-the-money put options for the stock"
+                    },
+                    {
+                        "id":  "opt3_volcallatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  64,
+                        "alphaCount":  79,
+                        "description":  "Implied volatility of at-the-money call options"
+                    },
+                    {
+                        "id":  "opt3_volcallitm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  24,
+                        "alphaCount":  25,
+                        "description":  "Implied volatility of in-the-money call options"
+                    },
+                    {
+                        "id":  "opt3_volcallotma",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  36,
+                        "alphaCount":  49,
+                        "description":  "Implied volatility of out-of-the-money call options (ask)"
+                    },
+                    {
+                        "id":  "opt3_volcallotmb",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  31,
+                        "alphaCount":  43,
+                        "description":  "Implied volatility of out-of-the-money call options (bid)"
+                    },
+                    {
+                        "id":  "opt3_volputatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  26,
+                        "alphaCount":  38,
+                        "description":  "Implied volatility of at-the-money put options"
+                    },
+                    {
+                        "id":  "opt3_volputitm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  19,
+                        "alphaCount":  27,
+                        "description":  "Implied volatility of in-the-money put options"
+                    },
+                    {
+                        "id":  "opt3_volputotma",
+                        "type":  "MATRIX",
+                        "coverage":  0.9493,
+                        "userCount":  32,
+                        "alphaCount":  41,
+                        "description":  "Implied volatility of out-of-the-money put options (ask)"
+                    },
+                    {
+                        "id":  "opt3_volumecallatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9439,
+                        "userCount":  21,
+                        "alphaCount":  23,
+                        "description":  "Daily aggregated traded volume for at-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_volumecallitm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9298,
+                        "userCount":  15,
+                        "alphaCount":  19,
+                        "description":  "Daily aggregated traded volume for in-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_volumecallotm",
+                        "type":  "MATRIX",
+                        "coverage":  0.9487,
+                        "userCount":  9,
+                        "alphaCount":  10,
+                        "description":  "Daily aggregated traded volume for out-of-the-money call options for the stock"
+                    },
+                    {
+                        "id":  "opt3_volumeputatm",
+                        "type":  "MATRIX",
+                        "coverage":  0.7257,
+                        "userCount":  5,
+                        "alphaCount":  5,
+                        "description":  "Daily aggregated traded volume for at-the-money put options for the stock"
+                    }
+                ],
+    "count":  16,
+    "sharpe_filter_applied":  true,
+    "sharpe_filter_removed":  4
+}

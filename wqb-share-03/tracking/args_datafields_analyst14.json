@@ -1,0 +1,7 @@
+{
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "dataset_id": "analyst14",
+  "filter_sharpe": true
+}

@@ -1,0 +1,29 @@
+{
+  "batch": "b89",
+  "dataset": "news46 (Relevant News Analytics / RavenPack)",
+  "hypothesis": "News sentiment/impact scores are event-driven and structurally orthogonal to slow/fast risk factors (similar to alpha2 earnings surprise). RavenPack mean_ssc/nip/ess are most popular (24-40 users, 53-58 alphas) suggesting signal exists. Coverage 0.99-1.0 MATRIX fields. Pyramid: USA/D1/MODEL x1.4 (news46 is model pyramid).",
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_ssc, 10), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_ssc, 10), sector), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_nip, 5), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_ess, 5), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_relevance, 10), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_sum_ssc, 10), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_sum_story_count, 20), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(ts_mean(mws46_ravenpack_mean_nip, 10), sector), 3), 90)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

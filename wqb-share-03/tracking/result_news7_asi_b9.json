@@ -1,0 +1,37 @@
+{
+  "batch": "b9",
+  "dataset": "news7",
+  "multisim_id": "pAION8ql4TKbEe7H5FURGB",
+  "total_sims": 8,
+  "alphas": [
+    {"idx": 1, "alpha_id": "A17oKk3W", "field": "headline_overall_tone_score_2", "variant": "base z40 (momentum)", "sh": -0.32, "rn_sh": -0.50, "asi_jpn": -0.38, "2Y": -0.57, "tvr": 0.1455, "sub_u": -0.34, "longCount": 820, "ra_failed": true},
+    {"idx": 2, "alpha_id": "LLd0JkRe", "field": "headline_overall_tone_score_2", "variant": "FLIPPED z40 (reversal) - BEST", "sh": 0.33, "rn_sh": 0.51, "asi_jpn": 0.36, "2Y": 0.57, "tvr": 0.1455, "sub_u": 0.32, "longCount": 796, "ra_failed": true},
+    {"idx": 3, "alpha_id": "1YzrEJgm", "field": "headline_overall_tone_score_2", "variant": "convex5-inside z40", "sh": -0.20, "rn_sh": -0.37, "asi_jpn": -0.20, "2Y": -0.31, "tvr": 0.1494, "sub_u": -0.21, "longCount": 851, "ra_failed": true},
+    {"idx": 4, "alpha_id": "RR1GWdr1", "field": "headline_overall_tone_score_2", "variant": "outer z30", "sh": -0.17, "rn_sh": -0.27, "asi_jpn": -0.32, "2Y": -0.28, "tvr": 0.1566, "sub_u": -0.23, "longCount": 793, "ra_failed": true},
+    {"idx": 5, "alpha_id": "1YzrEJgX", "field": "headline_overall_tone_score_2", "variant": "outer z60 (best sh per handoff - DID NOT generalize)", "sh": -0.24, "rn_sh": -0.39, "asi_jpn": -0.23, "2Y": -0.43, "tvr": 0.1356, "sub_u": -0.28, "longCount": 879, "ra_failed": true},
+    {"idx": 6, "alpha_id": "3qe8LzA0", "field": "headline_overall_tone_score_2", "variant": "group_zscore z40 (WORST - opposite of news29)", "sh": -0.57, "rn_sh": -0.54, "asi_jpn": -0.45, "2Y": -0.15, "tvr": 0.1531, "sub_u": -0.24, "longCount": 684, "ra_failed": true},
+    {"idx": 7, "alpha_id": "6Xe5OzEJ", "field": "headline_positive_tone_score_2", "variant": "base z40", "sh": -0.53, "rn_sh": -0.58, "asi_jpn": -0.32, "2Y": -0.01, "tvr": 0.1468, "sub_u": -0.60, "longCount": 528, "ra_failed": true},
+    {"idx": 8, "alpha_id": "0mM1vz82", "field": "headline_mention_count_2", "variant": "base z40 (attention)", "sh": -0.15, "rn_sh": 0.17, "asi_jpn": 0.18, "2Y": -0.13, "tvr": 0.1522, "sub_u": -0.21, "longCount": 1008, "ra_failed": true}
+  ],
+  "best_alpha_summary": {
+    "alpha_id": "LLd0JkRe",
+    "expr": "ts_zscore(subtract(1, group_rank(ts_mean(headline_overall_tone_score_2, 20), subindustry)), 40)",
+    "sh": 0.33, "rn_sh": 0.51, "asi_jpn": 0.36, "2Y": 0.57, "tvr": 0.1455,
+    "verdict": "FAIL - far below sh>1.58. But clean direction signal (reversal)."
+  },
+  "key_findings": [
+    "DIRECTION IS CRITICAL: tone_score is a REVERSAL signal. FLIPPED (high rank=LOW sentiment=buy) sh0.33/rn_sh0.51/2Y0.57 vs base (high rank=high sentiment=buy) sh-0.32/rn_sh-0.50/2Y-0.57. Near-perfect mirror. ASI news sentiment = overreaction->reversal.",
+    "Magnitude weak: best sh0.33. Compare news104 best 1.01 (marketimpactscore), news29 best 0.21. news7 WORSE than news104 despite continuous tone score field.",
+    "z60 (handoff's best-sh window) did NOT generalize: z60 sh-0.24 < z40 sh-0.32 (base). z-window optima are FIELD-SPECIFIC not universal.",
+    "group_zscore WORST here (-0.57) vs best in news29 (+0.21). group_zscore vs group_rank performance is field-dependent - NOT a reliable improvement.",
+    "positive_tone_score (positive words only) WORST (-0.53). Balanced tone (pos-neg)/(pos+neg) > positive-only. Mention_count (attention) weak (-0.15) - confirms attention counts weak on ASI (consistent with news104).",
+    "ALL 3 GREEN NEWS DATASETS EXHAUSTED: news104 cap~1.01, news7 cap~0.33, news29 cap~0.21. Best news alpha 1.01 is 36% below 1.58 threshold. News category cannot reach 1.58 on ASI/MINVOL1M/D1 with proven template."
+  ],
+  "decision": {
+    "rule": "3 green news all cap ~1.0 (actually 1.01/0.33/0.21) -> trigger handoff step 4: forum search + category pivot",
+    "news_exhausted": true,
+    "next_b10": "1) search_forum_posts for ASI patterns/templates. 2) Pivot to analyst (x1.5 highest multiplier, fundamental earnings signals - structurally stronger than news) or sentiment21/22/23 (x1.4). Analyst revision/estimate signals are classic strong alpha sources that commonly exceed 1.58 on USA; untested on ASI.",
+    "key_question": "Is sh>1.58 achievable on ASI/MINVOL1M/D1 at all? Forum may reveal. If not, may need to reconsider feasibility. Template is optimized (ts_mean w20 sharp optimum per handoff) - issue is FIELD/CATEGORY not template.",
+    "best_news_alpha_overall": {"alpha_id": "O0x3LkZ1", "dataset": "news104", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(marketimpactscore), 20), subindustry), 40)", "sh": 0.96, "rn_sh": 1.18, "asi_jpn": -0.02, "2Y": 1.07, "note": "b4 baseline, best news alpha but still below 1.58"}
+  }
+}

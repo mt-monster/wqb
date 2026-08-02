@@ -1,0 +1,27 @@
+{
+  "batch": "b91",
+  "multisimulation_id": "p06gW7tT4qm8CU14p2Q6jhv",
+  "dataset": "analyst7 (Broker Estimates)",
+  "settings": {"universe": "TOP3000", "delay": 1, "decay": 6, "neutralization": "SUBINDUSTRY", "truncation": 0.08, "max_trade": "ON", "nan_handling": "ON"},
+  "thresholds": {"sharpe": 1.58, "fitness": 1.0, "2Y_sharpe": 1.6, "margin_bp": 5, "turnover_pct": "5-30", "ra_failed": false},
+  "results_summary": [
+    {"alpha_id": "WjV50r1x", "expr": "ts_decay_linear(group_rank(est_q_sal_raised_1wk, subindustry), 60)", "sharpe": 1.36, "fitness": 0.85, "2Y": 1.62, "margin_bp": 27.25, "tvr_pct": 3.59, "subU": 0.54, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "bldwn0Xp", "expr": "ts_decay_linear(group_rank(est_q_sal_raised_1wk, subindustry), 90)", "sharpe": 1.43, "fitness": 0.94, "2Y": 1.74, "margin_bp": 36.7, "tvr_pct": 2.96, "subU": 0.60, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "vRvQ678d", "expr": "ts_decay_linear(rank(est_q_sal_raised_1wk), 60)", "sharpe": 0.99, "fitness": 0.53, "2Y": 0.55, "margin_bp": 17.67, "tvr_pct": 4.03, "subU": 0.27, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE","LOW_2Y_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "rKPxVaYd", "expr": "ts_decay_linear(group_rank(ptg_median, subindustry), 60)", "sharpe": 0.46, "fitness": 0.24, "2Y": 1.17, "margin_bp": 69.63, "tvr_pct": 0.95, "subU": 0.29, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_TURNOVER","LOW_2Y_SHARPE"], "status": "FAIL_low_tvr"},
+    {"alpha_id": "0mMJ6Zq2", "expr": "ts_decay_linear(subtract(1, group_rank(rec_mean, subindustry)), 60)", "sharpe": -0.42, "fitness": -0.15, "2Y": -1.13, "margin_bp": -24.57, "tvr_pct": 1.23, "subU": -0.47, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE","LOW_2Y_SHARPE"], "status": "FAIL_negative"},
+    {"alpha_id": "np8EQGJM", "expr": "ts_decay_linear(ts_delta(group_rank(est_12m_eps_mean, subindustry), 60), 60)", "sharpe": 0.31, "fitness": 0.10, "2Y": 0.53, "margin_bp": 6.64, "tvr_pct": 3.94, "subU": 0.05, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE","LOW_2Y_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "d5RGoJXx", "expr": "ts_decay_linear(group_rank(est_q_ner_raised_1wk, subindustry), 60)", "sharpe": 1.55, "fitness": 0.98, "2Y": 2.28, "margin_bp": 30.51, "tvr_pct": 3.30, "subU": 0.89, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS"], "status": "CLOSEST_NEEDS_TUNING", "pyramid": "USA/D1/ANALYST x1.3"},
+    {"alpha_id": "E5edLn7m", "expr": "ts_decay_linear(group_rank(est_12m_eps_num_28d, subindustry), 60)", "sharpe": 1.13, "fitness": 0.70, "2Y": 1.89, "margin_bp": 27.86, "tvr_pct": 3.42, "subU": 0.66, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS"], "status": "FAIL"}
+  ],
+  "analysis": {
+    "best_alpha": "d5RGoJXx (est_q_ner_raised_1wk) - sharpe 1.55 just below 1.58 threshold, fitness 0.98 just below 1.0",
+    "key_insight": "Net profit revision momentum (est_q_ner_raised_1wk) is the strongest signal in analyst7. Sales revision (est_q_sal_raised_1wk) is second. EPS coverage (est_12m_eps_num_28d) and EPS mean revision also have decent 2Y.",
+    "issues": [
+      "sharpe 1.55 below 1.58 threshold by 0.03",
+      "fitness 0.98 below 1.0 by 0.02",
+      "turnover 3.3% below 5% minimum - need to boost turnover"
+    ],
+    "next_action": "b92: tune d5RGoJXx with shorter decay windows (more turnover), INDUSTRY/SECTOR neutralization (less aggressive), combined signals, convexity variants"
+  }
+}

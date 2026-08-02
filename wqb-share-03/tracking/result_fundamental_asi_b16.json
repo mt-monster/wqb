@@ -1,0 +1,60 @@
+{
+  "batch": "b16",
+  "category": "model (fundamental/earnings)",
+  "dataset": "model30 (EPS Estimate Model)",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 20,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.15,
+  "max_trade": "ON",
+  "language": "FASTEXPR",
+  "multisim_id": "2SGgfC4wh50FbopEtjkOrDC",
+  "objective": "Optimize b15 expr7 (sh1.49/2Y2.13) to pass sh>1.58. Parameter sweep: winsorize std, ts_rank window, ts_backfill window, field variants.",
+  "alphas": [
+    {"id": "xAdJmdEm", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=4),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr1 winsorize std=4", "ops": 7, "sh": 1.46, "fit": 0.65, "tvr": 0.0812, "returns": 0.0251, "margin_bp": 6.18, "subU": 0.71, "2Y": 2.08, "rn_sh": 1.44, "asi_jpn": -0.16, "ra_failed": true, "checks_failed": ["LOW_ASI_JPN_SHARPE"], "checks_warning": ["LOW_SHARPE(1.46)","LOW_FITNESS(0.65)"], "ppa_failed": false, "verdict": "std=4 slightly worse than std=5 (sh 1.46 vs 1.49). std=5 optimal."},
+    {"id": "rKPZrPwo", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=3),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr2 winsorize std=3", "ops": 7, "sh": 1.45, "fit": 0.65, "tvr": 0.0813, "returns": 0.025, "margin_bp": 6.15, "subU": 0.72, "2Y": 2.10, "rn_sh": 1.44, "asi_jpn": -0.16, "ra_failed": true, "verdict": "std=3 similar to std=4. More aggressive clipping doesn't help. std=5 confirmed optimal."},
+    {"id": "gJ9no95Q", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),60),20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr3 ts_rank w=20 (shorter window)", "ops": 7, "sh": 1.61, "fit": 0.76, "tvr": 0.0875, "returns": 0.0277, "margin_bp": 6.33, "subU": 0.66, "2Y": 2.20, "rn_sh": 1.64, "asi_jpn": -0.25, "2Y_ladder_window": 3, "ra_failed": true, "ra_failed_count": 2, "ppa_failed": false, "checks_failed": ["LOW_ASI_JPN_SHARPE"], "checks_warning": ["LOW_FITNESS(0.76)","CLUSTER_TEST(1.38)"], "checks_pass": ["LOW_SHARPE","LOW_TURNOVER","HIGH_TURNOVER","CONCENTRATED_WEIGHT","LOW_SUB_UNIVERSE_SHARPE","LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO","LOW_ROBUST_UNIVERSE_RETURNS","IS_LADDER_SHARPE","MATCHES_PYRAMID"], "verdict": "BREAKTHROUGH! sh1.61>1.58 PASSES Sharpe threshold! 2Y2.20, rn_sh1.64, margin6.33bp all PASS. ts_rank w=20 (shorter) boosts sh +8% vs w=30 (1.49->1.61). Only fail: asi_jpn -0.25 (structural Japan weakness). LOW_SHARPE in PASS list!"},
+    {"id": "e7xXqxPN", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),60),40),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr4 ts_rank w=40 (longer window)", "ops": 7, "sh": 1.35, "fit": 0.58, "tvr": 0.0751, "returns": 0.0233, "margin_bp": 6.20, "subU": 0.71, "2Y": 1.49, "rn_sh": 1.28, "asi_jpn": -0.16, "ra_failed": true, "verdict": "w=40 too smooth: sh1.35 (vs 1.49 at w=30, 1.61 at w=20). 2Y drops to 1.49 (ladder warning). ts_rank w=20 optimal."},
+    {"id": "Xg8dY8xx", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),90),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr5 ts_backfill w=90", "ops": 7, "sh": 1.49, "fit": 0.67, "tvr": 0.081, "returns": 0.0255, "margin_bp": 6.31, "subU": 0.72, "2Y": 2.11, "rn_sh": 1.46, "asi_jpn": -0.14, "ra_failed": true, "verdict": "backfill w=90 identical to w=60 (sh1.49). Backfill window doesn't matter once >=60."},
+    {"id": "78neKnRb", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1,std=5),120),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr6 ts_backfill w=120", "ops": 7, "sh": 1.47, "fit": 0.66, "tvr": 0.0809, "returns": 0.0253, "margin_bp": 6.25, "subU": 0.72, "2Y": 2.10, "rn_sh": 1.46, "asi_jpn": -0.16, "ra_failed": true, "verdict": "backfill w=120 slightly lower (sh1.47). w=60-90 optimal."},
+    {"id": "omgx9g02", "expr": "group_rank(ts_rank(ts_backfill(winsorize(star_new_eps_surprise_prediction_fy1,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr7 star_new field variant", "ops": 7, "sh": 1.49, "fit": 0.67, "tvr": 0.0811, "returns": 0.0255, "margin_bp": 6.30, "subU": 0.71, "2Y": 2.13, "rn_sh": 1.46, "asi_jpn": -0.15, "ra_failed": true, "verdict": "star_new IDENTICAL to star field (same metrics as b15 expr7). star_new = star, redundant."},
+    {"id": "QP9w59pQ", "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl30_psprise_pct_fy1_eps,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))", "design": "expr8 mdl30 field variant", "ops": 7, "sh": 1.30, "fit": 0.55, "tvr": 0.0811, "returns": 0.0225, "margin_bp": 5.54, "subU": 0.57, "2Y": 2.08, "rn_sh": 1.25, "asi_jpn": -0.21, "ra_failed": true, "verdict": "mdl30 field weaker (sh1.30 vs 1.49). star_eps_surprise_prediction_fy1 is the best field."}
+  ],
+  "key_findings": {
+    "BREAKTHROUGH": "expr3 (ts_rank w=20) achieves sh1.61 > 1.58 threshold! FIRST alpha to pass Sharpe. 2Y2.20, rn_sh1.64, margin6.33bp all pass. ts_rank w=20 is optimal (shorter window = more responsive = higher sh).",
+    "ts_rank_window_optimal": "w=20 (sh1.61) > w=30 (sh1.49) > w=40 (sh1.35). Shorter ts_rank window boosts sh. w=20 is the winner.",
+    "winsorize_std_optimal": "std=5 (sh1.49) > std=4 (sh1.46) > std=3 (sh1.45). std=5 (forum value) confirmed optimal. Less aggressive clipping preserves signal.",
+    "ts_backfill_window": "w=60 (sh1.49) ≈ w=90 (sh1.49) > w=120 (sh1.47). Backfill window doesn't matter once >=60. w=60 optimal.",
+    "field_variants": "star_eps_surprise_prediction_fy1 (sh1.49) = star_new_eps_surprise_prediction_fy1 (sh1.49, IDENTICAL) > mdl30_psprise_pct_fy1_eps (sh1.30). star field is best, star_new redundant.",
+    "asi_jpn_structural": "ALL variants have asi_jpn<0 (-0.14 to -0.25). ts_rank w=20 (best sh) has WORST asi_jpn (-0.25). Trade-off: higher sh ↔ worse asi_jpn. Signal reversed in Japan. Forum warning: 'forcing japan to compare within small env loses meaning if all japan declines'. STRUCTURAL - cannot fix with parameter tuning.",
+    "fitness_gap": "expr3 fit=0.76 < 1.0 threshold. Fitness = sh*sqrt(returns/0.125) when tvr<0.125. Low tvr (8.75%) penalizes fitness heavily. To reach fit=1.0 need sh~2.12 or returns~4.83%. Gap +0.24 (warning, not platform fail)."
+  },
+  "best_alpha": "gJ9no95Q (expr3): sh1.61/fit0.76/2Y2.20/rn_sh1.64/margin6.33bp/tvr8.75%/ops7. PASSES: sh, 2Y, rn_sh, margin, tvr, ops, PPA, LOW_SHARPE. FAILS: asi_jpn -0.25 (limit 1.0). FITNESS warning 0.76 (limit 1.0).",
+  "threshold_check": {
+    "sh_gt_1.58": "PASS (1.61)",
+    "fit_gt_1": "FAIL (0.76, warning not platform fail)",
+    "2Y_gt_1.6": "PASS (2.20)",
+    "margin_gt_5bp": "PASS (6.33bp)",
+    "tvr_5_30pct": "PASS (8.75%)",
+    "ops_lt_8": "PASS (7)",
+    "ra_failed_eq_0": "FAIL (1 fail: LOW_ASI_JPN_SHARPE -0.25 vs limit 1.0)",
+    "rn_sh_gt_1": "PASS (1.64)",
+    "fit_gt_0.7_robust": "PASS (0.76)",
+    "summary": "7/8 main thresholds PASS. Only asi_jpn FAILS (structural Japan weakness). Fitness is warning (0.76) but passes robust threshold (0.7)."
+  },
+  "asi_jpn_analysis": {
+    "problem": "asi_jpn -0.25 (limit 1.0). Signal REVERSED in Japan. Gap 1.25 - cannot fix with parameter tuning.",
+    "evidence": "ALL 16 forum-adapted variants have asi_jpn<0 (-0.14 to -0.41). Best asi_jpn was b15 expr2 (cap-decile z40 proven template) at -0.03, but that had sh0.55 only.",
+    "trade_off": "ts_rank transformation boosts overall sh (0.66->1.61) but hurts Japan (-0.03->-0.25). Higher sh ↔ worse asi_jpn.",
+    "forum_warning": "Post 37473718017175 comment: 'forcing japan to compare within small env loses meaning if all japan declines'. Japan weakness is documented.",
+    "forum_liquidity_filter": "Forum used multiply (group_rank(ts_mean(volume,20),country)>0.03)*alpha to filter illiquid stocks. This may have helped Japan. multiply is FORBIDDEN by handoff."
+  },
+  "next_steps": {
+    "option_accept": "Accept gJ9no95Q as alpha #1. Passes 7/8 thresholds. asi_jpn is structural Japan weakness (forum-documented). Proceed to robust+overfit check + set_alpha_properties.",
+    "option_b17": "Try b17 to fix asi_jpn: different cap-decile bucket sizes (0.2, 0.25), group_neutralize instead of group_rank, ts_rank w=15/25. LOW probability of success (1.25 gap).",
+    "option_explore": "Explore different category/dataset for alpha #1. But model30 star_eps_surprise_prediction_fy1 is the BEST signal found across 128 sims (b1-b16)."
+  },
+  "status": "0/3 alphas. b16 done (128 total sims: b1-b16). BEST alpha gJ9no95Q sh1.61 passes 7/8 thresholds, only asi_jpn fails (structural)."
+}

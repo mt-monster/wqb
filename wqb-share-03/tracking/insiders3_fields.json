@@ -1,0 +1,471 @@
+﻿{
+  "results": [
+    {
+      "id": "annual_report_20f_presence_flag",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Indicator showing whether a 20-F annual report filing is present for the entity and period."
+    },
+    {
+      "id": "insd3_10k_freq_flag",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 255,
+      "alphaCount": 5428,
+      "description": "10-K Frequency Flag"
+    },
+    {
+      "id": "insd3_10k_freq_latest_filed",
+      "type": "MATRIX",
+      "coverage": 0.8461,
+      "userCount": 164,
+      "alphaCount": 638,
+      "description": "10-K Frequency Latest Filed"
+    },
+    {
+      "id": "insd3_10k_freq_latest_release",
+      "type": "MATRIX",
+      "coverage": 0.8461,
+      "userCount": 21,
+      "alphaCount": 24,
+      "description": "10-K Frequency Latest Release"
+    },
+    {
+      "id": "insd3_10q_freq_flag",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 229,
+      "alphaCount": 1528,
+      "description": "10-Q Frequency Flag"
+    },
+    {
+      "id": "insd3_10q_freq_latest_filed",
+      "type": "MATRIX",
+      "coverage": 0.8664,
+      "userCount": 252,
+      "alphaCount": 2387,
+      "description": "10-Q Frequency Latest Filed"
+    },
+    {
+      "id": "insd3_10q_freq_latest_release",
+      "type": "MATRIX",
+      "coverage": 0.8664,
+      "userCount": 290,
+      "alphaCount": 10502,
+      "description": "10-Q Frequency Latest Release"
+    },
+    {
+      "id": "insd3_10q_info_negative_freq",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 20,
+      "alphaCount": 26,
+      "description": "10-Q Info Negative Frequency"
+    },
+    {
+      "id": "insd3_10q_info_negative_score",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 19,
+      "alphaCount": 21,
+      "description": "A numeric score quantifying the negativity of sentiment detected in the 10-Q filing text using sentiment analysis"
+    },
+    {
+      "id": "insd3_10q_info_positive_freq",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 156,
+      "alphaCount": 917,
+      "description": "10-Q Info Positive Frequency"
+    },
+    {
+      "id": "insd3_10q_info_positive_score",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 145,
+      "alphaCount": 833,
+      "description": "A numeric score quantifying the positivity of sentiment detected in the 10-Q filing text using sentiment analysis"
+    },
+    {
+      "id": "insd3_10q_info_text",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 214,
+      "alphaCount": 1323,
+      "description": "Raw or main extracted text content from 10-Q filings for the relevant reporting period"
+    },
+    {
+      "id": "insd3_10q_negative_freq",
+      "type": "VECTOR",
+      "coverage": 0.6262,
+      "userCount": 199,
+      "alphaCount": 6622,
+      "description": "10-Q Negative Frequency"
+    },
+    {
+      "id": "insd3_10q_negative_score",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 20,
+      "alphaCount": 24,
+      "description": "A score quantifying negative sentiment found in the 10-Q filing, based on sentiment analysis of language in the text"
+    },
+    {
+      "id": "insd3_10q_positive_freq",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 16,
+      "alphaCount": 20,
+      "description": "10-Q Positive Frequency"
+    },
+    {
+      "id": "insd3_10q_positive_score",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 244,
+      "alphaCount": 1442,
+      "description": "A score quantifying positive sentiment found in the 10-Q filing, based on sentiment analysis of language in the text"
+    },
+    {
+      "id": "insd3_10q_text",
+      "type": "VECTOR",
+      "coverage": 0.6175,
+      "userCount": 222,
+      "alphaCount": 7308,
+      "description": "Raw text content of the 10-Q filing, used for NLP and other textual analyses"
+    },
+    {
+      "id": "insd3_10q_tone_score",
+      "type": "VECTOR",
+      "coverage": 0.6174,
+      "userCount": 160,
+      "alphaCount": 986,
+      "description": "Overall sentiment score representing the tone (positive or negative) of the 10-Q filing derived from text analysis"
+    },
+    {
+      "id": "insd3_8k_freq_flag",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 215,
+      "alphaCount": 2273,
+      "description": "8-K Frequency Flag"
+    },
+    {
+      "id": "insd3_8k_freq_latest_filed",
+      "type": "MATRIX",
+      "coverage": 0.8749,
+      "userCount": 220,
+      "alphaCount": 2101,
+      "description": "8-K Frequency Latest Filed"
+    },
+    {
+      "id": "insd3_8k_freq_latest_release",
+      "type": "MATRIX",
+      "coverage": 0.8749,
+      "userCount": 220,
+      "alphaCount": 2176,
+      "description": "8-K Frequency Latest Release"
+    },
+    {
+      "id": "insd3_8k_negative_freq",
+      "type": "VECTOR",
+      "coverage": 0.8364,
+      "userCount": 310,
+      "alphaCount": 9824,
+      "description": "8-K Negative Frequency"
+    },
+    {
+      "id": "insd3_8k_negative_score",
+      "type": "VECTOR",
+      "coverage": 0.8364,
+      "userCount": 333,
+      "alphaCount": 9072,
+      "description": "8-K Negative Score"
+    },
+    {
+      "id": "insd3_8k_positive_freq",
+      "type": "VECTOR",
+      "coverage": 0.8364,
+      "userCount": 364,
+      "alphaCount": 8026,
+      "description": "8-K Positive Frequency"
+    },
+    {
+      "id": "insd3_8k_positive_score",
+      "type": "VECTOR",
+      "coverage": 0.8364,
+      "userCount": 306,
+      "alphaCount": 7705,
+      "description": "8-K Positive Score"
+    },
+    {
+      "id": "insd3_8k_tone_score",
+      "type": "VECTOR",
+      "coverage": 0.8364,
+      "userCount": 361,
+      "alphaCount": 8000,
+      "description": "8-K Tone Score"
+    },
+    {
+      "id": "insd3_cikmap",
+      "type": "MATRIX",
+      "coverage": 0.4906,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Cik Map"
+    },
+    {
+      "id": "insd3_corresp_file_count",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 197,
+      "alphaCount": 1818,
+      "description": "Corresponding File Count"
+    },
+    {
+      "id": "insd3_dlh_qca",
+      "type": "MATRIX",
+      "coverage": 0.6474,
+      "userCount": 213,
+      "alphaCount": 1500,
+      "description": "Acquisition Holdings"
+    },
+    {
+      "id": "insd3_dlh_spd",
+      "type": "MATRIX",
+      "coverage": 0.6235,
+      "userCount": 21,
+      "alphaCount": 38,
+      "description": "Definitive Proxy Statement Holdings"
+    },
+    {
+      "id": "insd3_exerciseprice",
+      "type": "VECTOR",
+      "coverage": 0.8036,
+      "userCount": 10,
+      "alphaCount": 12,
+      "description": "The price at which an option or derivative security can be exercised in an insider transaction"
+    },
+    {
+      "id": "insd3_form4_bnum",
+      "type": "MATRIX",
+      "coverage": 0.4128,
+      "userCount": 253,
+      "alphaCount": 10318,
+      "description": "Form 4 Buy Number"
+    },
+    {
+      "id": "insd3_form4_bvol",
+      "type": "MATRIX",
+      "coverage": 0.4128,
+      "userCount": 212,
+      "alphaCount": 1843,
+      "description": "Form 4 Buy Volume"
+    },
+    {
+      "id": "insd3_form4_snum",
+      "type": "MATRIX",
+      "coverage": 0.5489,
+      "userCount": 13,
+      "alphaCount": 15,
+      "description": "Form 4 Sell Number"
+    },
+    {
+      "id": "insd3_form4_trans_shares",
+      "type": "MATRIX",
+      "coverage": 0.7117,
+      "userCount": 249,
+      "alphaCount": 1121,
+      "description": "Form 4 Transact Shares"
+    },
+    {
+      "id": "insd3_holding_holding_share",
+      "type": "VECTOR",
+      "coverage": 1.0,
+      "userCount": 26,
+      "alphaCount": 30,
+      "description": "The number of shares held in a particular security as disclosed in the 13F filing"
+    },
+    {
+      "id": "insd3_holding_holding_value",
+      "type": "VECTOR",
+      "coverage": 1.0,
+      "userCount": 24,
+      "alphaCount": 38,
+      "description": "The market value (USD) of the position held in a particular security as disclosed in the 13F filing"
+    },
+    {
+      "id": "insd3_holding_issuer_cik",
+      "type": "VECTOR",
+      "coverage": 1.0,
+      "userCount": 38,
+      "alphaCount": 49,
+      "description": "Central Index Key (CIK) for the issuing company, as registered with the SEC"
+    },
+    {
+      "id": "insd3_holdingaftertrade",
+      "type": "VECTOR",
+      "coverage": 0.8035,
+      "userCount": 151,
+      "alphaCount": 830,
+      "description": "The number of shares or units held by the insider after the reported transaction"
+    },
+    {
+      "id": "insd3_issuer_ii",
+      "type": "VECTOR",
+      "coverage": 0.9939,
+      "userCount": 21,
+      "alphaCount": 24,
+      "description": "Integer identifier or index for the issuer (company) corresponding to the filing, likely for efficient mapping or cross-referencing"
+    },
+    {
+      "id": "insd3_issuercik",
+      "type": "VECTOR",
+      "coverage": 0.8036,
+      "userCount": 7,
+      "alphaCount": 10,
+      "description": "SEC Central Index Key (CIK) assigned to the issuer (company) of the securities"
+    },
+    {
+      "id": "insd3_issuerii",
+      "type": "VECTOR",
+      "coverage": 0.7227,
+      "userCount": 14,
+      "alphaCount": 18,
+      "description": "Issuer Ii"
+    },
+    {
+      "id": "insd3_market_value",
+      "type": "VECTOR",
+      "coverage": 0.4514,
+      "userCount": 29,
+      "alphaCount": 38,
+      "description": "Market Value"
+    },
+    {
+      "id": "insd3_mun_qca",
+      "type": "MATRIX",
+      "coverage": 0.6474,
+      "userCount": 20,
+      "alphaCount": 22,
+      "description": "Acquisition Number"
+    },
+    {
+      "id": "insd3_mun_spd",
+      "type": "MATRIX",
+      "coverage": 0.6235,
+      "userCount": 9,
+      "alphaCount": 10,
+      "description": "Definitive Proxy Statement Number"
+    },
+    {
+      "id": "insd3_ownercik",
+      "type": "VECTOR",
+      "coverage": 0.8036,
+      "userCount": 148,
+      "alphaCount": 779,
+      "description": "SEC Central Index Key (CIK) assigned to the insider/owner involved in the transaction"
+    },
+    {
+      "id": "insd3_price",
+      "type": "VECTOR",
+      "coverage": 0.7979,
+      "userCount": 141,
+      "alphaCount": 732,
+      "description": "The price per share at which the insider transaction occurred"
+    },
+    {
+      "id": "insd3_qca",
+      "type": "MATRIX",
+      "coverage": 0.6474,
+      "userCount": 35,
+      "alphaCount": 38,
+      "description": "Acquisition"
+    },
+    {
+      "id": "insd3_securitytype",
+      "type": "VECTOR",
+      "coverage": 0.8036,
+      "userCount": 15,
+      "alphaCount": 17,
+      "description": "The type of security transacted (e.g., common stock, option, derivative)"
+    },
+    {
+      "id": "insd3_sic",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 190,
+      "alphaCount": 1319,
+      "description": "Standard Industrial Classification (SIC) code identifying the primary industry sector of the company or filing entity"
+    },
+    {
+      "id": "insd3_spd",
+      "type": "MATRIX",
+      "coverage": 0.6235,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "Depreciation and Amortization expense for the period"
+    },
+    {
+      "id": "insd3_underlyingamount",
+      "type": "VECTOR",
+      "coverage": 0.8036,
+      "userCount": 13,
+      "alphaCount": 26,
+      "description": "The quantity of underlying shares or units involved in a derivative or option transaction"
+    },
+    {
+      "id": "insd3_upload_file_count",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 239,
+      "alphaCount": 8945,
+      "description": "The total number of files associated with the specific SEC EDGAR upload event or batch, indicating how many individual filings or documents were included in thaâ¦"
+    },
+    {
+      "id": "insd3_whalewisdom_shares",
+      "type": "VECTOR",
+      "coverage": 0.4519,
+      "userCount": 17,
+      "alphaCount": 24,
+      "description": "Whale Wisdom Shares"
+    },
+    {
+      "id": "insd3_xzhou_insider_acquire_raw",
+      "type": "MATRIX",
+      "coverage": 0.7414,
+      "userCount": 41,
+      "alphaCount": 46,
+      "description": "Insider Acquire Raw"
+    },
+    {
+      "id": "insd3_xzhou_insider_disposal_raw",
+      "type": "MATRIX",
+      "coverage": 0.7414,
+      "userCount": 29,
+      "alphaCount": 33,
+      "description": "Insider Disposal Raw"
+    },
+    {
+      "id": "insd3_xzhou_insider_holding_raw",
+      "type": "MATRIX",
+      "coverage": 0.7414,
+      "userCount": 18,
+      "alphaCount": 21,
+      "description": "Insider Holding Raw"
+    },
+    {
+      "id": "quarterly_filing_text_sentiment_score",
+      "type": "VECTOR",
+      "coverage": 0.2741,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "A score reflecting the overall sentiment tone (positive, neutral, negative) of the 10-Q filing text, aggregating positive and negative elements"
+    }
+  ],
+  "count": 58,
+  "sharpe_filter_applied": true,
+  "sharpe_filter_removed": 3
+}

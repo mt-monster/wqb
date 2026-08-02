@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "rank(ts_mean(mdl238_global_change_rank, 20))",
+    "ts_zscore(ts_mean(mdl238_global_change_rank, 40), 120)",
+    "ts_rank(ts_mean(mdl238_global_change_rank, 60), 120)",
+    "ts_decay_linear(mdl238_global_change_rank, 60)",
+    "rank(ts_mean(mdl238_region_change_rank, 40))",
+    "rank(subtract(ts_mean(mdl238_global_change_rank, 20), ts_mean(mdl238_region_owner_rank, 20)))",
+    "ts_zscore(subtract(ts_mean(mdl238_global_change_rank, 40), ts_mean(mdl238_region_owner_rank, 40)), 120)",
+    "ts_rank(subtract(ts_mean(mdl238_region_change_rank, 20), ts_mean(mdl238_region_owner_rank, 20)), 120)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

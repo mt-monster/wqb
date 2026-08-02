@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(insd3_8k_tone_score), 10))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(insd3_8k_positive_score), 10))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(ts_mean(vec_avg(insd3_8k_negative_score), 10)), 0.5), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(ts_mean(vec_avg(insd3_8k_negative_freq), 10)), 0.5), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(insd3_form4_bnum, 10))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(insd3_form4_bvol, 10))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(vec_avg(insd3_8k_tone_score))), 61), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(insd3_8k_positive_score), 5))), 61), 60)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

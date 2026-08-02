@@ -1,0 +1,37 @@
+{
+  "batch": "b97",
+  "multisimulation_id": "b97_completed",
+  "dataset": "option40 - 1080d IV tenor + IV term structure + composite",
+  "settings": {"universe": "TOP3000", "delay": 1, "decay": 6, "neutralization": "SLOW_AND_FAST", "truncation": 0.04, "max_trade": "ON", "nan_handling": "ON"},
+  "hypothesis": "1080d IV skew (19/18 users - least popular) should have lower prod_corr than 360d (25/20 users, prod_corr=0.7529). IV term structure (long-short IV) is a completely different signal that might have much lower prod_corr.",
+  "results_summary": [
+    {"alpha_id": "3qe8JY0Z", "expr": "1080d IV skew P15 D60", "sharpe": 1.93, "fitness": 1.65, "2Y": 2.02, "margin_bp": 18.44, "tvr_pct": 10.48, "subU": 0.85, "ra_failed": false, "ra_checks": [], "status": "PASS_RA", "prod_corr": 0.7621},
+    {"alpha_id": "pwK93Jaj", "expr": "1080d IV skew P10 D60", "sharpe": 1.86, "fitness": 1.49, "2Y": 1.95, "tvr_pct": 9.76, "subU": 0.75, "ra_failed": true, "ra_checks": ["LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "2rN3eq55", "expr": "1080d IV skew P15 D30", "sharpe": 1.86, "fitness": 1.56, "2Y": 1.78, "tvr_pct": 11.06, "subU": 0.73, "ra_failed": true, "ra_checks": ["LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "RR1GPZeg", "expr": "IV term structure 1080d-30d call", "sharpe": 0.76, "fitness": 0.44, "2Y": 1.29, "tvr_pct": 11.19, "subU": 0.18, "ra_failed": true, "ra_checks": 4, "status": "FAIL_TERM_STRUCTURE_DEAD"},
+    {"alpha_id": "RR1GPZ50", "expr": "IV term structure 360d-30d call", "sharpe": 1.02, "fitness": 0.69, "2Y": 1.69, "tvr_pct": 11.36, "subU": 0.40, "ra_failed": true, "ra_checks": 3, "status": "FAIL_TERM_STRUCTURE_WEAK"},
+    {"alpha_id": "gJ9nLqrM", "expr": "IV term structure 720d-30d put", "sharpe": 0.47, "fitness": 0.21, "2Y": 1.58, "tvr_pct": 11.08, "subU": 0.30, "ra_failed": true, "ra_checks": 3, "status": "FAIL_TERM_STRUCTURE_DEAD"},
+    {"alpha_id": "Xg8dMwNz", "expr": "Composite 360d+1080d skew P15 D60", "sharpe": 1.98, "fitness": 1.73, "2Y": 2.15, "margin_bp": 18.44, "tvr_pct": 10.65, "subU": 0.87, "ra_failed": false, "ra_checks": [], "status": "PASS_RA", "prod_corr": 0.7626},
+    {"alpha_id": "A17oEJeW", "expr": "1080d reversed (put-call) P15 D60", "sharpe": -1.93, "fitness": -1.65, "2Y": -2.02, "tvr_pct": 10.48, "subU": -0.85, "ra_failed": true, "ra_checks": 4, "status": "FAIL_MIRROR_IMAGE"}
+  ],
+  "analysis": {
+    "key_findings": [
+      "1080d IV skew (3qe8JY0Z) passes RA: sh1.93/fit1.65/subU0.85/2Y2.02 - decent but weaker than 360d (sh2.03)",
+      "Composite 360d+1080d (Xg8dMwNz) passes RA: sh1.98/fit1.73/subU0.87/2Y2.15 - between 360d and 720d individually",
+      "IV term structure completely FAILED: sh0.47-1.02 - IV curve slope is not a predictive signal for returns",
+      "Reversed skew is exact mirror (sh-1.93) confirming signal symmetry",
+      "1080d prod_corr=0.7621 is NOT lower than 360d (0.7529) despite fewer users - signal type matters more than field popularity"
+    ],
+    "prod_corr_trend_complete": {
+      "150d_STATISTICAL": 0.7755,
+      "180d_SLOW_AND_FAST": 0.7825,
+      "270d_SLOW_AND_FAST": 0.7718,
+      "360d_SLOW_AND_FAST": 0.7529,
+      "720d_SLOW_AND_FAST": 0.7632,
+      "1080d_SLOW_AND_FAST": 0.7621,
+      "360d+1080d_composite_SLOW_AND_FAST": 0.7626
+    },
+    "conclusion": "360d @ SLOW_AND_FAST (0.7529) remains the BEST prod_corr. Changing tenor alone cannot push below 0.7. The IV skew signal is fundamentally correlated with production alphas regardless of tenor. Need a different signal type (IV mean) or different approach.",
+    "next_action": "b98: IV mean signal test (completely different signal type, much less popular fields)"
+  }
+}

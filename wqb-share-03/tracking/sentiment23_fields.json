@@ -1,0 +1,1463 @@
+﻿{
+  "results": [
+    {
+      "id": "snt23_2dts_gen_212",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 12,
+      "alphaCount": 30,
+      "description": "General sentiment score."
+    },
+    {
+      "id": "snt23_2dts_tuen_214",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_2neg_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 18,
+      "alphaCount": 24,
+      "description": "Lower bound of the 95% confidence interval for the mean negative sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2neg_conf_low_223",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 20,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_2neg_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Upper bound of the 95% confidence interval for the mean negative sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2neg_conf_up_231",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_2neg_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 13,
+      "alphaCount": 13,
+      "description": "Maximum negative sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neg_max_227",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Maximum negative sentiment value."
+    },
+    {
+      "id": "snt23_2neg_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 17,
+      "alphaCount": 23,
+      "description": "Average negative sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neg_mean_218",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 8,
+      "alphaCount": 21,
+      "description": "Average negative sentiment value."
+    },
+    {
+      "id": "snt23_2neg_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 11,
+      "alphaCount": 13,
+      "description": "Median negative sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neg_median_220",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 18,
+      "description": "Median negative sentiment value."
+    },
+    {
+      "id": "snt23_2neg_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 21,
+      "alphaCount": 32,
+      "description": "Minimum negative sentiment score across all Inferess-linked news stories for the stock on that date (same-day aggregation); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neg_min_229",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 20,
+      "description": "Minimum negative sentiment value."
+    },
+    {
+      "id": "snt23_2neg_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 18,
+      "alphaCount": 22,
+      "description": "Standard deviation of negative sentiment scores across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neut_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 8,
+      "description": "Lower bound of the 95% confidence interval for the mean neutral sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2neut_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 11,
+      "alphaCount": 13,
+      "description": "Upper bound of the 95% confidence interval for the mean neutral sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2neut_conf_up_224",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 29,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_2neut_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 11,
+      "alphaCount": 12,
+      "description": "Maximum neutral sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neut_max_226",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 21,
+      "description": "Maximum neutral sentiment value."
+    },
+    {
+      "id": "snt23_2neut_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Average neutral sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neut_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Median neutral sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neut_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 10,
+      "alphaCount": 13,
+      "description": "Minimum neutral sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2neut_min_221",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 27,
+      "description": "Minimum neutral sentiment value."
+    },
+    {
+      "id": "snt23_2neut_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Standard deviation of neutral sentiment scores across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2pos_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 12,
+      "alphaCount": 15,
+      "description": "Lower bound of the 95% confidence interval for the mean positive sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2pos_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Upper bound of the 95% confidence interval for the mean positive sentiment score for the stock on that date; may fall outside 0â1"
+    },
+    {
+      "id": "snt23_2pos_conf_up_211",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_2pos_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Maximum positive sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2pos_max_222",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum positive sentiment value."
+    },
+    {
+      "id": "snt23_2pos_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 34,
+      "alphaCount": 45,
+      "description": "Average positive sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2pos_mean_225",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 9,
+      "alphaCount": 28,
+      "description": "Average positive sentiment value."
+    },
+    {
+      "id": "snt23_2pos_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 12,
+      "alphaCount": 28,
+      "description": "Median positive sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2pos_median_215",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 21,
+      "description": "Median positive sentiment value."
+    },
+    {
+      "id": "snt23_2pos_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Minimum positive sentiment score across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_2pos_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 8,
+      "description": "Standard deviation of positive sentiment scores across all stories for the stock on that date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_3dts_gen_283",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "General sentiment score."
+    },
+    {
+      "id": "snt23_3dts_sop_287",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_3dts_tuen_285",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_3neg_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 10,
+      "description": "Lower bound of the 95% confidence interval for the mean negative sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may slâ¦"
+    },
+    {
+      "id": "snt23_3neg_conf_low_291",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_3neg_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper bound of the 95% confidence interval for the mean negative sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may slâ¦"
+    },
+    {
+      "id": "snt23_3neg_conf_up_274",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_3neg_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 9,
+      "description": "Maximum negative sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3neg_max_284",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 15,
+      "description": "Maximum negative sentiment value."
+    },
+    {
+      "id": "snt23_3neg_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 4,
+      "description": "Average negative sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: proâ¦"
+    },
+    {
+      "id": "snt23_3neg_mean_292",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 8,
+      "description": "Average negative sentiment value."
+    },
+    {
+      "id": "snt23_3neg_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Median negative sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3neg_median_277",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median negative sentiment value."
+    },
+    {
+      "id": "snt23_3neg_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Minimum negative sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3neg_min_280",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Minimum negative sentiment value."
+    },
+    {
+      "id": "snt23_3neg_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of negative sentiment scores across all stories for the stock on the day (USA, variant 3, next-day aggregation); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_3neut_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower bound of the 95% confidence interval for the mean neutral sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may sliâ¦"
+    },
+    {
+      "id": "snt23_3neut_conf_low_275",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_3neut_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper bound of the 95% confidence interval for the mean neutral sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may sliâ¦"
+    },
+    {
+      "id": "snt23_3neut_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 3,
+      "description": "Maximum neutral sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propoâ¦"
+    },
+    {
+      "id": "snt23_3neut_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average neutral sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3neut_mean_276",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average neutral sentiment value."
+    },
+    {
+      "id": "snt23_3neut_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Median neutral sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propoâ¦"
+    },
+    {
+      "id": "snt23_3neut_median_278",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median neutral sentiment value."
+    },
+    {
+      "id": "snt23_3neut_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Minimum neutral sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propoâ¦"
+    },
+    {
+      "id": "snt23_3neut_min_286",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Minimum neutral sentiment value."
+    },
+    {
+      "id": "snt23_3neut_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Standard deviation of neutral sentiment scores across all stories for the stock on the day (USA, variant 3, next-day aggregation); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_3pos_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower bound of the 95% confidence interval for the mean positive sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may slâ¦"
+    },
+    {
+      "id": "snt23_3pos_conf_low_293",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_3pos_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Upper bound of the 95% confidence interval for the mean positive sentiment score across stories for the stock-day (USA, variant 3, next-day aggregation); may slâ¦"
+    },
+    {
+      "id": "snt23_3pos_conf_up_288",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_3pos_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Maximum positive sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3pos_max_294",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum positive sentiment value."
+    },
+    {
+      "id": "snt23_3pos_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Average positive sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: proâ¦"
+    },
+    {
+      "id": "snt23_3pos_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median positive sentiment score across all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3pos_median_290",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median positive sentiment value."
+    },
+    {
+      "id": "snt23_3pos_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Minimum positive sentiment score among all Inferess news stories linked to the stock on the given trading day (USA, variant 3, next-day aggregation); unit: propâ¦"
+    },
+    {
+      "id": "snt23_3pos_min_289",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Minimum positive sentiment value."
+    },
+    {
+      "id": "snt23_3pos_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Standard deviation of positive sentiment scores across all stories for the stock on the day (USA, variant 3, next-day aggregation); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4dts_sop_126",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_4dts_tuen_110",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_4neg_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Lower bound of the 95% confidence interval for the mean negative sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neg_conf_low_115",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_4neg_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper bound of the 95% confidence interval for the mean negative sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neg_conf_up_120",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_4neg_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum negative sentiment score among stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neg_max_112",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Maximum negative sentiment value."
+    },
+    {
+      "id": "snt23_4neg_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Average negative sentiment score across all stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neg_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Median negative sentiment score across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neg_median_108",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median negative sentiment value."
+    },
+    {
+      "id": "snt23_4neg_min_124",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 33,
+      "description": "Minimum negative sentiment value."
+    },
+    {
+      "id": "snt23_4neg_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Standard deviation of negative sentiment scores across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Lower bound of the 95% confidence interval for the mean neutral sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_conf_low_122",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_4neut_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Upper bound of the 95% confidence interval for the mean neutral sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 36,
+      "description": "Maximum neutral sentiment score among stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_max_107",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum neutral sentiment value."
+    },
+    {
+      "id": "snt23_4neut_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Average neutral sentiment score across stories for the stock on the date; unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_mean_109",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average neutral sentiment value."
+    },
+    {
+      "id": "snt23_4neut_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Median neutral sentiment score across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Minimum neutral sentiment score among stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4neut_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Standard deviation of neutral sentiment scores across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Lower bound of the 95% confidence interval for the mean positive sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 6,
+      "description": "Upper bound of the 95% confidence interval for the mean positive sentiment score for the stock-date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_conf_up_123",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 19,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_4pos_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Maximum positive sentiment score among stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_max_119",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum positive sentiment value."
+    },
+    {
+      "id": "snt23_4pos_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average positive sentiment score across all stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_mean_113",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average positive sentiment value."
+    },
+    {
+      "id": "snt23_4pos_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Median positive sentiment score across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Minimum positive sentiment score among stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_4pos_min_121",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Minimum positive sentiment value."
+    },
+    {
+      "id": "snt23_4pos_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of positive sentiment scores across stories for the stock on the date (AMR, variant 4, D0); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_5dts_gen_176",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "General sentiment score."
+    },
+    {
+      "id": "snt23_5dts_sop_183",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_5dts_tuen_177",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23_5neg_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Lower bound of the 95% confidence interval for the mean negative sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsidâ¦"
+    },
+    {
+      "id": "snt23_5neg_conf_low_179",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5neg_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Upper bound of the 95% confidence interval for the mean negative sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsidâ¦"
+    },
+    {
+      "id": "snt23_5neg_conf_up_170",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5neg_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 12,
+      "alphaCount": 14,
+      "description": "Maximum negative sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neg_max_180",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 25,
+      "description": "Maximum negative sentiment value."
+    },
+    {
+      "id": "snt23_5neg_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Average negative sentiment score across all stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neg_mean_175",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average negative sentiment value."
+    },
+    {
+      "id": "snt23_5neg_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 9,
+      "alphaCount": 17,
+      "description": "Median negative sentiment score across stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neg_median_189",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median negative sentiment value."
+    },
+    {
+      "id": "snt23_5neg_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Minimum negative sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neg_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Standard deviation of negative sentiment scores across stories for the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neut_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower bound of the 95% confidence interval for the mean neutral sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsideâ¦"
+    },
+    {
+      "id": "snt23_5neut_conf_low_178",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5neut_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Upper bound of the 95% confidence interval for the mean neutral sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsideâ¦"
+    },
+    {
+      "id": "snt23_5neut_conf_up_181",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5neut_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum neutral sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neut_max_186",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Maximum neutral sentiment value."
+    },
+    {
+      "id": "snt23_5neut_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Average neutral sentiment score across all stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neut_mean_172",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average neutral sentiment value."
+    },
+    {
+      "id": "snt23_5neut_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median neutral sentiment score across stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neut_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Minimum neutral sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5neut_min_173",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 29,
+      "description": "Minimum neutral sentiment value."
+    },
+    {
+      "id": "snt23_5neut_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of neutral sentiment scores across stories for the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5pos_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 10,
+      "description": "Lower bound of the 95% confidence interval for the mean positive sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsidâ¦"
+    },
+    {
+      "id": "snt23_5pos_conf_low_174",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 25,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5pos_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Upper bound of the 95% confidence interval for the mean positive sentiment score for the stock on that trading day (AMR, variant 5, D0; may slightly fall outsidâ¦"
+    },
+    {
+      "id": "snt23_5pos_conf_up_171",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23_5pos_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Maximum positive sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5pos_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Average positive sentiment score across news stories linked to the stock on the day (USA, D0, variant 5); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_5pos_mean_184",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Average positive sentiment value."
+    },
+    {
+      "id": "snt23_5pos_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Median positive sentiment score across stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5pos_median_182",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Median positive sentiment value."
+    },
+    {
+      "id": "snt23_5pos_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Minimum positive sentiment score among stories linked to the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_5pos_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of positive sentiment scores across stories for the stock on that trading day (AMR, variant 5, D0; unit: proportion 0â1)"
+    },
+    {
+      "id": "snt23_neg_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Lower bound of the 95% confidence interval for the negative sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_neg_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 22,
+      "alphaCount": 24,
+      "description": "Upper bound of the 95% confidence interval for the negative sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_neg_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 46,
+      "alphaCount": 74,
+      "description": "Maximum negative sentiment score across all news stories for the stock on the day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neg_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 9,
+      "alphaCount": 10,
+      "description": "Average negative sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neg_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Median negative sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neg_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 15,
+      "alphaCount": 23,
+      "description": "Minimum negative sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neg_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Standard deviation of negative sentiment scores across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neut_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Lower bound of the 95% confidence interval for the neutral sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_neut_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Upper bound of the 95% confidence interval for the neutral sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_neut_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Maximum neutral sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neut_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Median neutral sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neut_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Minimum neutral sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_neut_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Standard deviation of neutral sentiment scores across all stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_pos_conf_low",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Lower bound of the 95% confidence interval for the positive sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_pos_conf_up",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Upper bound of the 95% confidence interval for the positive sentiment mean for the stock-day (USA, D1); may extend beyond [0,1]"
+    },
+    {
+      "id": "snt23_pos_max",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Maximum positive sentiment score across all stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_pos_mean",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 9,
+      "alphaCount": 9,
+      "description": "Average positive sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_pos_median",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Median positive sentiment score across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_pos_min",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Minimum positive sentiment score across all stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23_pos_std",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Standard deviation of positive sentiment scores across stories for the stock-day (USA, D1); unit: proportion 0â1"
+    },
+    {
+      "id": "snt23dts_gen_147",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "General sentiment score."
+    },
+    {
+      "id": "snt23dts_sop_136",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sentiment daily time series value."
+    },
+    {
+      "id": "snt23neg_conf_up_129",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23neg_max_137",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 19,
+      "alphaCount": 49,
+      "description": "Maximum negative sentiment value."
+    },
+    {
+      "id": "snt23neg_mean_146",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Average negative sentiment value."
+    },
+    {
+      "id": "snt23neg_median_128",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Median negative sentiment value."
+    },
+    {
+      "id": "snt23neg_min_133",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 6,
+      "alphaCount": 40,
+      "description": "Minimum negative sentiment value."
+    },
+    {
+      "id": "snt23neut_conf_low_127",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23neut_conf_up_141",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23neut_mean_144",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Average neutral sentiment value."
+    },
+    {
+      "id": "snt23pos_conf_low_139",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23pos_conf_up_140",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Confidence level of sentiment."
+    },
+    {
+      "id": "snt23pos_max_142",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Maximum positive sentiment value."
+    },
+    {
+      "id": "snt23pos_median_131",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Median positive sentiment value."
+    },
+    {
+      "id": "snt23pos_min_143",
+      "type": "MATRIX",
+      "coverage": 1.0,
+      "userCount": 3,
+      "alphaCount": 4,
+      "description": "Minimum positive sentiment value."
+    }
+  ],
+  "count": 182,
+  "sharpe_filter_applied": true,
+  "sharpe_filter_removed": 28
+}

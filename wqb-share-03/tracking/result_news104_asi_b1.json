@@ -1,0 +1,30 @@
+{
+  "batch": "b1",
+  "dataset": "news104",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "neut": "SUBINDUSTRY",
+  "decay": 6,
+  "truncation": 0.08,
+  "max_trade": "ON",
+  "multisim_id": "1ifvgt9WQ4QlaXD3tPDaLse",
+  "alphas": [
+    {"id": "N1RZlqAq", "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 0.5), 5), 60)", "sh": 0.41, "fit": 0.13, "tvr": 0.3977, "2Y": 0.15, "margin_bp": 2.05, "subU": 0.01, "rn_sh": 0.29, "ra_failed": 7, "ops": 5, "verdict": "weak_momentum"},
+    {"id": "akEp9Mo1", "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 0.5), 7), 60)", "sh": 0.43, "fit": 0.14, "tvr": 0.394, "2Y": 0.18, "margin_bp": 2.18, "subU": 0.03, "rn_sh": 0.30, "ra_failed": 7, "ops": 5, "verdict": "weak_momentum"},
+    {"id": "vRvQXxdA", "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_sentiment), subindustry), 0.5), 7), 60)", "sh": -0.47, "fit": -0.18, "tvr": 0.3825, "2Y": -0.65, "margin_bp": -2.8, "subU": -0.05, "rn_sh": -0.35, "ra_failed": 6, "ops": 5, "verdict": "sentiment_momentum_WRONG"},
+    {"id": "9q7nObJ2", "expr": "ts_decay_linear(subtract(0, signed_power(subtract(group_rank(vec_avg(nws104_sentiment), subindustry), 0.5), 7)), 60)", "sh": 0.47, "fit": 0.18, "tvr": 0.3825, "2Y": 0.65, "margin_bp": 2.8, "subU": 0.05, "rn_sh": 0.35, "ra_failed": 6, "ops": 6, "verdict": "sentiment_REVERSAL_best"},
+    {"id": "P0OVmq1W", "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_prob_pos), subindustry), 0.5), 9), 60)", "sh": -0.14, "fit": -0.03, "tvr": 0.394, "2Y": -0.49, "margin_bp": -0.81, "subU": -0.05, "rn_sh": -0.35, "ra_failed": 6, "ops": 5, "verdict": "prob_pos_momentum_WRONG"},
+    {"id": "np8E5YW3", "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_confidence), subindustry), 0.5), 5), 60)", "sh": 0.33, "fit": 0.10, "tvr": 0.4003, "2Y": 0.36, "margin_bp": 1.78, "subU": -0.22, "rn_sh": 0.47, "ra_failed": 7, "ops": 5, "verdict": "weak"},
+    {"id": "zqRVnQW8", "expr": "ts_zscore(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 20)", "sh": 0.16, "fit": 0.03, "tvr": 0.4354, "2Y": 0.52, "margin_bp": 0.81, "subU": 0.03, "rn_sh": -0.12, "ra_failed": 6, "ops": 3, "verdict": "weak_zscore"},
+    {"id": "omgd0AYb", "expr": "ts_decay_linear(signed_power(subtract(group_rank(subtract(vec_avg(nws104_sentiment), vec_avg(nws104_prob_ntr)), subindustry), 0.5), 7), 60)", "sh": -0.48, "fit": -0.17, "tvr": 0.3998, "2Y": -0.24, "margin_bp": -2.43, "subU": 0.03, "rn_sh": -0.30, "ra_failed": 5, "ops": 7, "verdict": "2field_momentum_WRONG"}
+  ],
+  "key_findings": [
+    "sentiment REVERSAL is correct direction (alpha4 +0.47 vs alpha3 -0.47 mirror)",
+    "marketimpactscore momentum weakly positive (sh0.41-0.43)",
+    "ALL turnover 38-44% >> 30% limit: decay=6 too low for noisy news",
+    "ALL CONCENTRATED_WEIGHT fail (0.21-0.23 vs 0.1): trunc0.08 insufficient, subindustry groups small in ASI",
+    "ceiling ~0.47, need 3x boost to reach 1.58",
+    "prob_pos/sentiment momentum WRONG (negative), reversal needed"
+  ],
+  "next_b2": "decay=20 + truncation=0.15, focus reversal+marketimpactscore, add ts_rank/ts_mean/ts_zscore smooth skeletons"
+}

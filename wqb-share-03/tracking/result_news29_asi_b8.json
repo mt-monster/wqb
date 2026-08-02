@@ -1,0 +1,38 @@
+{
+  "batch": "b8",
+  "dataset": "news29",
+  "multisim_id": "28h1IKdb95fn9ogNImd4YRl",
+  "total_sims": 8,
+  "alphas": [
+    {"idx": 1, "alpha_id": "1YzrQWZX", "field": "nws29_full_frontpage", "variant": "base w20/z40 subindustry", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws29_full_frontpage), 20), subindustry), 40)", "sh": -0.50, "fit": -0.31, "rn_sh": -0.36, "asi_jpn": -0.20, "2Y": -0.00, "tvr": 0.1448, "margin_bp": -0.0745, "sub_u": -0.17, "longCount": 85, "conc_weight": 0.1246, "ra_failed": true},
+    {"idx": 2, "alpha_id": "wpE0Mo9x", "field": "nws29_significance", "variant": "base w20/z40 subindustry (high rank=LOW importance)", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws29_significance), 20), subindustry), 40)", "sh": -0.07, "fit": -0.01, "rn_sh": -0.43, "asi_jpn": -0.13, "2Y": -0.02, "tvr": 0.1635, "margin_bp": -0.0036, "sub_u": -0.27, "longCount": 338, "conc_weight": null, "ra_failed": true},
+    {"idx": 3, "alpha_id": "d5RNAaKx", "field": "nws29_significance", "variant": "FLIPPED w20/z40 (high rank=HIGH importance)", "expr": "ts_zscore(subtract(1, group_rank(ts_mean(vec_avg(nws29_significance), 20), subindustry)), 40)", "sh": 0.08, "fit": 0.01, "rn_sh": 0.44, "asi_jpn": 0.10, "2Y": 0.03, "tvr": 0.1635, "margin_bp": 0.0043, "sub_u": 0.30, "longCount": 346, "conc_weight": null, "ra_failed": true},
+    {"idx": 4, "alpha_id": "88eMdNvV", "field": "nws29_full_frontpage", "variant": "convex5-inside w20/z40", "expr": "ts_zscore(signed_power(subtract(group_rank(ts_mean(vec_avg(nws29_full_frontpage), 20), subindustry), 0.5), 5), 40)", "sh": -0.38, "fit": -0.20, "rn_sh": -0.31, "asi_jpn": -0.12, "2Y": 0.57, "tvr": 0.1483, "margin_bp": -0.0532, "sub_u": -0.27, "longCount": 125, "conc_weight": 0.1195, "ra_failed": true},
+    {"idx": 5, "alpha_id": "wpE0MoQx", "field": "nws29_full_frontpage", "variant": "outer z30 w20 subindustry", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws29_full_frontpage), 20), subindustry), 30)", "sh": -0.45, "fit": -0.26, "rn_sh": -0.30, "asi_jpn": -0.30, "2Y": 0.05, "tvr": 0.1502, "margin_bp": -0.0692, "sub_u": -0.01, "longCount": 77, "conc_weight": 0.1849, "ra_failed": true},
+    {"idx": 6, "alpha_id": "omgxMaEn", "field": "nws29_full_frontpage", "variant": "group_zscore w20/z40 subindustry (BEST)", "expr": "ts_zscore(group_zscore(ts_mean(vec_avg(nws29_full_frontpage), 20), subindustry), 40)", "sh": 0.21, "fit": 0.10, "rn_sh": 0.20, "asi_jpn": 0.44, "2Y": -0.11, "tvr": 0.1514, "margin_bp": 0.0481, "sub_u": 0.18, "longCount": 55, "conc_weight": 0.4762, "ra_failed": true},
+    {"idx": 7, "alpha_id": "omgxMaEE", "field": "nws29_significance", "variant": "industry-group inside w20/z40", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws29_significance), 20), industry), 40)", "sh": -0.20, "fit": -0.04, "rn_sh": -0.58, "asi_jpn": -0.28, "2Y": -0.13, "tvr": 0.1673, "margin_bp": -0.0098, "sub_u": -0.31, "longCount": 389, "conc_weight": null, "ra_failed": true},
+    {"idx": 8, "alpha_id": "Vk3AgNxA", "field": "nws29_frontpage", "variant": "low-cov frontpage base w20/z40", "expr": "ts_zscore(group_rank(ts_mean(vec_avg(nws29_frontpage), 20), subindustry), 40)", "sh": -0.50, "fit": -0.30, "rn_sh": -0.13, "asi_jpn": -0.26, "2Y": -0.10, "tvr": 0.1472, "margin_bp": -0.0735, "sub_u": -0.52, "longCount": 83, "conc_weight": 0.1501, "ra_failed": true}
+  ],
+  "best_alpha_summary": {
+    "alpha_id": "omgxMaEn",
+    "expr": "ts_zscore(group_zscore(ts_mean(vec_avg(nws29_full_frontpage), 20), subindustry), 40)",
+    "sh": 0.21, "rn_sh": 0.20, "asi_jpn": 0.44, "2Y": -0.11, "tvr": 0.1514, "margin_bp": 0.0481,
+    "verdict": "FAIL - far below sh>1.58 threshold. group_zscore > group_rank for full_frontpage. Concentrated weight 0.48 (too high)."
+  },
+  "key_findings": [
+    "news29 = event METADATA only (binary frontpage flags + ordered significance codes + categorical topic codes + text). NO continuous score fields. Structurally incompatible with proven ts_mean template which needs continuous signals.",
+    "All 8 alphas FAIL. Best sh=0.21 (group_zscore full_frontpage). Compare: news104 best sh=1.01, model144 best sh=0.71. news29 is WORST dataset tested on ASI.",
+    "full_frontpage (binary attention): mostly negative. group_zscore variant marginally positive (0.21) but concentrated weight 0.48 + negative 2Y. base/convex5/z30 all negative.",
+    "significance (ordered 1/2/3): DIRECTION MATTERS - flipped (high=important) sh0.08/rn_sh0.44 > base (high=low-imp) sh-0.07/rn_sh-0.43. But magnitude tiny. industry-group worse than subindustry.",
+    "convex5 full_frontpage had best 2Y=0.57 but overall sh negative - convex5 amplifies recent regime only.",
+    "frontpage low-cov (0.3966) ~= full_frontpage base - both -0.50, coverage not the differentiator.",
+    "CONCLUSION: news29 exhausted. Signal type (attention/importance metadata) too weak for ASI/MINVOL1M/D1. Proven template needs continuous score fields."
+  ],
+  "decision": {
+    "rule": "sh<1.0 -> switch per handoff step 3",
+    "news_status": "2 of 3 green news tested: news104 cap~1.0, news29 cap~0.21. news7 (2746 fields, dataset sh0.556) is 3rd/last green news candidate.",
+    "next_b9": "Pull news7 MATRIX fields (continuous score candidates), construct 8 expressions with proven template. news7 has 2746 fields = largest field pool, best chance of strong continuous field. Completes 3-green-news exhaustion test.",
+    "parallel": "Read search_forum_posts schema + query ASI news patterns to inform b10 pivot if news7 also caps.",
+    "fallback_b10": "If news7 caps ~1.0: forum search + pivot to sentiment21/22/23 (x1.4 continuous scores) or analyst (x1.5). NOTE: multiplier affects pyramid POINTS not the 1.58 sharpe threshold - primary blocker is finding a field that hits 1.58."
+  }
+}

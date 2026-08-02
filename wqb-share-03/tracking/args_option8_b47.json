@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_60, parkinson_volatility_60)), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_90, parkinson_volatility_90)), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_150, parkinson_volatility_150)), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_180, parkinson_volatility_180)), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_mean_120, parkinson_volatility_120)), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_120, parkinson_volatility_120)), 0.5), 31), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_120, parkinson_volatility_120)), 0.5), 15), 30)",
+    "ts_decay_linear(signed_power(subtract(rank(divide(implied_volatility_call_120, parkinson_volatility_120)), 0.5), 61), 1)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.04,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "get_datafields",
+  "args": {
+    "region": "ASI",
+    "dataset_id": "model144",
+    "universe": "MINVOL1M",
+    "delay": 1,
+    "filter_sharpe": true
+  },
+  "purpose": "explore model144 fields for ASI/D1/MINVOL1M alpha mining after news104 exhaustion"
+}

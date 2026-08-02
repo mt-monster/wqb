@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_mean_eps_fp1, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_mean_eps_fp1, 60), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_mean_eps_fp2, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_buy, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_mean_ebit_fp2, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_high_revenue_fp2, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(anl14_buy, subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_delta(anl14_actvalue_eps_fp0, 20), subindustry), 0.5), 5), 90)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

@@ -1,0 +1,29 @@
+# ===== Secrets / Credentials =====
+.env
+**/.env
+
+# ===== Python =====
+.venv/
+**/__pycache__/
+*.pyc
+**/*.pyc
+
+# ===== Large data / binaries (not source code) =====
+*.zip
+*.bin
+**/WebData*.zip
+**/webdata_*.json
+
+# ===== Tool / IDE internal state =====
+.workbuddy/
+.trae-html-share-packages/
+.claude/
+.cursor/
+.trae/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Nested git dirs (flattened into this repo) =====
+**/.git/

@@ -1,0 +1,18 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  103,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"error\": \"At least 2 alpha expressions are required\"\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "error":  "At least 2 alpha expressions are required"
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

@@ -1,0 +1,20 @@
+[Unit]
+Description=WorldQuant BRAIN MCP Streamable HTTP (containerized)
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Run as root because docker CLI usually requires root or docker group membership
+User=root
+WorkingDirectory=/opt/project/world-quant-brain-mcp
+EnvironmentFile=/opt/project/world-quant-brain-mcp/.env
+ExecStart=/usr/bin/docker compose -f /opt/project/world-quant-brain-mcp/docker-compose.yml up --build --detach
+ExecStop=/usr/bin/docker compose -f /opt/project/world-quant-brain-mcp/docker-compose.yml down
+TimeoutStartSec=300
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

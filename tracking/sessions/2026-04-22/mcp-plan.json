@@ -1,0 +1,238 @@
+{
+  "date": "2026-04-22",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "budget": 300,
+  "neutralization_sweep": [
+    "STATISTICAL",
+    "SUBINDUSTRY",
+    "INDUSTRY",
+    "FAST",
+    "SLOW",
+    "CROWDING",
+    "NONE",
+    "MARKET",
+    "SECTOR",
+    "REVERSION_AND_MOMENTUM",
+    "SLOW_AND_FAST"
+  ],
+  "arms": [
+    {
+      "category": "fundamental",
+      "dataset": "fundamental6",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "fundamental",
+      "dataset": "fundamental2",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "sentiment",
+      "dataset": "sentiment22",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "sentiment",
+      "dataset": "sentiment23",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "option",
+      "dataset": "option3",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "option",
+      "dataset": "option6",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 37
+    },
+    {
+      "category": "analyst",
+      "dataset": "analyst4",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 26
+    },
+    {
+      "category": "analyst",
+      "dataset": "analyst11",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 26
+    },
+    {
+      "category": "analyst",
+      "dataset": "analyst14",
+      "universe": "TOP3000",
+      "paradigms": [
+        "P1_SPREAD",
+        "P2_RATIO",
+        "P3_MOMENTUM",
+        "P4_MEAN_REVERSION",
+        "P5_GROUP_NEUTRAL",
+        "P6_PAIR_TRADE",
+        "P7_VOLATILITY",
+        "P8_CARRY",
+        "P9_INFORMATION",
+        "P10_NORM_REG",
+        "P11_RESIDUAL_STRIP",
+        "P12_DISTRIBUTIONAL",
+        "P13_BUCKET_NEUT"
+      ],
+      "budget_allocation": 26
+    }
+  ],
+  "submission_policy": "manual_review",
+  "hard_rules": [
+    "Enforce single-dataset purity unless strategy explicitly requires otherwise.",
+    "Do not reuse an identical simulation payload without consulting the hash cache.",
+    "Before create_multi_simulation, pass expressions through wqb.expression.validator.check_batch.",
+    "Before check_correlation or set_alpha_properties, compute WebDataScope failed counts.",
+    "REGULAR candidates require Failed RA == 0; PPA candidates require Failed PPA == 0.",
+    "Run wqb operator-audit at session start to catch ghost operators.",
+    "Update batch-log after every create_multi_simulation batch.",
+    "For USA REGULAR mining, keep primary universe at TOP3000.",
+    "Traverse the full region-supported neutralization order."
+  ],
+  "tool_order": [
+    "authenticate",
+    "get_operators",
+    "get_datafields",
+    "create_multi_simulation",
+    "get_simulation_result",
+    "check_correlation",
+    "get_alpha_details",
+    "get_alpha_yearly_stats",
+    "get_alpha_pnl",
+    "performance_comparison",
+    "set_alpha_properties",
+    "submit_alpha"
+  ],
+  "generated_at": "2026-08-01T18:21:02.814874+00:00"
+}

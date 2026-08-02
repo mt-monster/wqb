@@ -1,0 +1,47 @@
+services:
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APT_MIRROR: mirrors.tuna.tsinghua.edu.cn
+        PIP_INDEX_URL: https://pypi.tuna.tsinghua.edu.cn/simple
+    container_name: mcp
+    restart: unless-stopped
+    shm_size: '4gb'
+    volumes:
+      - ./:/app:rw
+      - mcp_config:/app/config:rw
+    ports:
+      - "8876:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MCP_CONFIG_FILE=/app/config/user_config.json
+    dns:
+      - 10.255.255.254
+      - 223.5.5.5
+      - 119.29.29.29
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+  redis:
+    image: redis:6-alpine
+    container_name: mcp-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --appendfsync everysec
+    volumes:
+      - redis_data:/data
+    ports:
+      - 6479:6379
+
+volumes:
+  redis_data:
+  mcp_config:

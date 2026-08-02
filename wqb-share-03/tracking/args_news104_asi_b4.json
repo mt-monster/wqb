@@ -1,0 +1,29 @@
+{
+  "batch": "b4",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.15,
+  "decay": 20,
+  "max_trade": "ON",
+  "pasteurization": "ON",
+  "nan_handling": "OFF",
+  "unit_handling": "VERIFY",
+  "language": "FASTEXPR",
+  "test_period": "P0Y0M",
+  "dataset": "news104",
+  "pyramid_target": "ASI/D1/news x1.3",
+  "changes_from_b3": "push ZYKJVWwx sh1.01/rn_sh0.95 over threshold: sweep ts_zscore outer window 40/90/120; sweep inner ts_mean 10/40; convex5-on-ts_zscore; ts_decay-on-ts_zscore; sentiment momentum with ts_zscore wrapper",
+  "expressions": [
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 40)",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 90)",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 120)",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 10), subindustry), 60)",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 40), subindustry), 60)",
+    "signed_power(ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 60), 5)",
+    "ts_decay_linear(ts_zscore(group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry), 60), 20)",
+    "ts_zscore(group_rank(ts_mean(vec_avg(nws104_sentiment), 20), subindustry), 60)"
+  ]
+}
