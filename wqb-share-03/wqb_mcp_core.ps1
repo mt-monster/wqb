@@ -9,8 +9,8 @@
 $script:WQB_MCP_URL = "http://127.0.0.1:8876/mcp"
 $script:WQB_SESSION_FILE = "d:\coding\traeCN_project\wqb\wqb-share-03\tracking\.mcp_session"
 $script:WQB_TRACKING_DIR = "d:\coding\traeCN_project\wqb\wqb-share-03\tracking"
-$script:WQB_MAX_CONCURRENT = 7          # 平台最大并发8，留1给查询/提交
-$script:WQB_BATCH_SIZE = 7              # 每批提交的表达式数量
+$script:WQB_MAX_CONCURRENT = 8          # 平台最大并发8，全部用于模拟
+$script:WQB_BATCH_SIZE = 8              # 每批提交的表达式数量(平台最大)
 $script:WQB_TIMEOUT_SEC = 600           # 单批次超时(秒)
 $script:WQB_RETRY_MAX = 3               # 最大重试次数
 $script:WQB_SESSION_RETRY_MAX = 2       # 会话过期重试次数

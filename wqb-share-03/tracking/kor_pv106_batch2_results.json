@@ -1,0 +1,26 @@
+{
+  "dataset": "pv106 (KOR 流动性/滑点/交易成本, MATRIX)",
+  "batch": 2,
+  "multisim": "4tiW3nclh5fQbrD1fvA060vd",
+  "settings": {"neutralization": "SECTOR", "decay": 8, "truncation": 0.08, "maxTrade": "ON"},
+  "date": "2026-08-03",
+  "strategy": "反转第1批发现的强负向信号(价差/滑点/成本) → KOR 低流动性溢价",
+  "key_finding": "pv106 强负向数据集: 高价差/高滑点/高成本 → 未来收益负 (-1.5~-1.6)。反转后 = 低流动性溢价因子",
+  "results": [
+    {"expr": "ts_rank(slippage_at_spread_20, 22)", "alpha": "leWdvdnN", "sharpe": 1.24, "fitness": 0.74, "two_year_sharpe": 1.3, "risk_neutralized_sharpe": 1.3, "turnover": 0.2341, "margin": 0.000714, "fail": [], "concentrated": "PASS", "note": "达标距离: sharpe差0.34 fitness差0.26 2y差0.28"},
+    {"expr": "ts_rank(transaction_cost_maximum, 22)", "alpha": "blQXbXwl", "sharpe": 1.24, "fitness": 0.74, "two_year_sharpe": 1.31, "risk_neutralized_sharpe": 1.31, "turnover": 0.2341, "margin": 0.000716, "fail": [], "concentrated": "PASS"},
+    {"expr": "ts_rank(pv106_wli_lastspread, 44)", "alpha": "omN7L7d2", "sharpe": 1.39, "fitness": 0.78, "two_year_sharpe": 0.83, "risk_neutralized_sharpe": 1.38, "turnover": 0.3029, "margin": 0.000634, "fail": [], "concentrated": 0.19, "note": "2y弱"},
+    {"expr": "ts_rank(pv106_wli_spread, 66)", "alpha": "xANq3qZm", "sharpe": 1.4, "fitness": 0.93, "two_year_sharpe": 1.28, "risk_neutralized_sharpe": 1.56, "turnover": 0.2418, "margin": 0.000882, "fail": [], "concentrated": 0.32, "note": "最接近: fitness差0.07 sharpe差0.18"},
+    {"expr": "ts_rank(transaction_cost_median, 22)", "alpha": "3qpwXwNe", "sharpe": 1.24, "fitness": 0.74, "two_year_sharpe": 1.3, "risk_neutralized_sharpe": 1.3, "turnover": 0.2341, "margin": 0.000714, "fail": [], "concentrated": "PASS"},
+    {"expr": "ts_rank(transaction_cost_percentile_10, 22)", "alpha": "58pxzxXJ", "sharpe": 1.24, "fitness": 0.74, "two_year_sharpe": 1.3, "risk_neutralized_sharpe": 1.3, "turnover": 0.2341, "margin": 0.000714, "fail": [], "concentrated": "PASS"},
+    {"expr": "ts_rank(slippage_at_spread_20, 44)", "alpha": "XgoGbG0x", "sharpe": 1.23, "fitness": 0.82, "two_year_sharpe": 1.48, "risk_neutralized_sharpe": 1.53, "turnover": 0.1992, "margin": 0.000896, "fail": [], "concentrated": "PASS", "note": "2y最近(1.48) CLUSTER 0.99 接近1"},
+    {"expr": "ts_rank(pv106_wli_spreadbp, 44)", "alpha": "qMN8x8Q1", "sharpe": 0.71, "fitness": 0.37, "two_year_sharpe": 0.32, "risk_neutralized_sharpe": 0.97, "turnover": 0.2081, "margin": 0.000539, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_2Y_SHARPE"]}
+  ],
+  "takeaways": [
+    "低流动性溢价确认: slippage/spread/transaction_cost 正向 = 流动性补偿",
+    "xANq3qZm(1.40/0.93) 与 XgoGbG0x(2y1.48) 为最佳两条轨道",
+    "第3批: 窗口扩大(33/44/66/88/110) 提升 fitness 与 2y",
+    "CONCENTRATED_WEIGHT 全部 PASS (310+/300+ 持仓) — 与 insiders5 完全不同",
+    "pyramid: KOR/D1/PV 乘数 1.5 (最高)"
+  ]
+}

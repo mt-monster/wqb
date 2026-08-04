@@ -216,6 +216,93 @@ def field_combine_hints(field_shapes):
     return hints
 
 
+def safe_float(v, default=0.0):
+    """Handle NaN / None values from msgpack."""
+    import math
+    if v is None:
+        return default
+    try:
+        f = float(v)
+        return default if math.isnan(f) else f
+    except (TypeError, ValueError):
+        return default
+
+
+def safe_int(v, default=0):
+    """Handle NaN / None values from msgpack for integer fields."""
+    import math
+    if v is None:
+        return default
+    try:
+        f = float(v)
+        return default if math.isnan(f) else int(f)
+    except (TypeError, ValueError):
+        return default
+
+
+def neut_ranking(neut, top_n=15):
+    """区域级中性化排名 — 每个区域的最优中性化差异巨大 (KOR: SECTOR最优 vs USA: STATISTICAL最优)。"""
+    nm = neut.get('mean', {})
+    rows = []
+    for nk, nv in nm.items():
+        shp = safe_float(nv.get('sharpe_ratio'))
+        cnt = safe_int(nv.get('count', 0))
+        osis_c = safe_int(nv.get('osis_count', 0))
+        fit = safe_float(nv.get('fitness_ratio'))
+        rows.append({'neut': nk, 'sharpe': shp, 'count': cnt, 'osis': osis_c, 'fitness': fit})
+    rows.sort(key=lambda x: -x['sharpe'])
+    return rows[:top_n]
+
+
+def mining_recommendations(isos, neut, osis, key, mean_sharpe, top_n=15):
+    """整合甜点区+中性化+OS质量 → 直接可用的挖掘推荐排序。
+    避免用户在低质量数据集上浪费时间。
+    """
+    recs = []
+    os_ds = osis[key]['dataset'] if (osis and key in osis) else {}
+    for ds, s in isos['dataset'].items():
+        cnt = s.get('count', 0)
+        shp = safe_float(s.get('sharpe_ratio'))
+        # 跳过极低质量 (社区大量尝试仍失败)
+        if cnt > 30 and shp < mean_sharpe * 0.5:
+            continue
+        # 跳过未验证 (< 50 提交)
+        if cnt < 50:
+            continue
+        os_shp = safe_float(os_ds.get(ds, {}).get('sharpe_ratio'))
+        os_cnt = os_ds.get(ds, {}).get('count', 0)
+        # OS 退化: IS+OS 高但 OS 低 → 降分
+        os_penalty = 1.0
+        if os_shp > 0 and shp > 0 and (shp - os_shp) > 0.15:
+            os_penalty = 0.5  # 退化数据集半折
+        # 可靠中性化
+        nds = neut['dataset'].get(ds, {})
+        reliable = [(nk, nv) for nk, nv in nds.items()
+                    if safe_int(nv.get('count', 0)) >= 20 and safe_int(nv.get('osis_count', 0)) >= 20]
+        reliable.sort(key=lambda x: -safe_float(x[1].get('sharpe_ratio')))
+        best_neut = reliable[0][0] if reliable else '--'
+        best_neut_shp = safe_float(reliable[0][1].get('sharpe_ratio')) if reliable else 0
+        # 甜点区加分 (100-3000 = 未饱和)
+        sweet_bonus = 1.0
+        if 100 <= cnt <= 3000:
+            sweet_bonus = 1.3
+        elif cnt > 30000:
+            sweet_bonus = 0.5  # 饱和，ProdCorr 风险高
+        # 综合得分
+        score = shp * sweet_bonus * os_penalty
+        if best_neut != '--':
+            score *= 1.1  # 有可靠中性化推荐的数据集加分
+        recs.append({
+            'dataset': ds, 'count': cnt, 'sharpe': shp,
+            'os_sharpe': os_shp, 'os_count': os_cnt,
+            'best_neut': best_neut, 'best_neut_shp': best_neut_shp,
+            'sweet': 100 <= cnt <= 3000, 'degraded': (shp - os_shp) > 0.15 if os_shp > 0 else False,
+            'score': score,
+        })
+    recs.sort(key=lambda x: -x['score'])
+    return recs[:top_n]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--zip', required=True)
@@ -226,6 +313,10 @@ def main():
     ap.add_argument('--json-out', default=None)
     ap.add_argument('--cross-region', action='store_true',
                     help='输出同数据集在多 region 的 sharpe 对比 (识别 region-specific 机会)')
+    ap.add_argument('--recommend', action='store_true',
+                    help='输出挖掘推荐表 (整合甜点区+中性化+OS质量的优先级排序)')
+    ap.add_argument('--field-top', type=int, default=0,
+                    help='输出字段 Top N 榜 (按 alphaCount) 到 stdout, 0=不输出')
     args = ap.parse_args()
 
     key = f"{args.region}_{args.delay}"
@@ -258,6 +349,16 @@ def main():
             print(f'  注: OS 高于 IS+OS 是选择性偏差 (只有通过筛选的 alpha 进 OS), 非退化信号')
         print()
 
+    # ============ 0a. 区域级中性化排名 ============
+    print(f'## 中性化排名 (区域级, {key})\n')
+    nr = neut_ranking(neut, top_n=15)
+    print('| 中性化 | sharpe | fitness | count | osis_count | 可信度 |\n|---|---|---|---|---|---|')
+    for r in nr:
+        conf = '高' if r['osis'] >= 100 else ('中' if r['osis'] >= 20 else '低')
+        print(f"| {r['neut']} | {r['sharpe']:.3f} | {r['fitness']:.3f} | {r['count']} | {r['osis']} | {conf} |")
+    top_neut = nr[0]['neut'] if nr else 'SUBINDUSTRY'
+    print(f'\n提示: {key} 最优中性化 = **{top_neut}** (逐区域差异大, 切勿照搬其他区域的顺序)\n')
+
     # ============ 0. Universe 体检覆盖矩阵 ============
     print(f'## Universe 体检覆盖 (dataSetList.json, 共 {len(dsl)} 组合)\n')
     ucov = universe_coverage(dsl)
@@ -289,9 +390,10 @@ def main():
 
     # ============ 1. 数据集质量排名 ============
     def best_neuts(nstats, min_n):
-        rows = [(k, v['sharpe_ratio'], v['count'], v.get('osis_count', 0))
+        rows = [(k, safe_float(v.get('sharpe_ratio')), safe_int(v.get('count', 0)),
+                 safe_int(v.get('osis_count', 0)))
                 for k, v in nstats.items()
-                if v.get('count', 0) >= min_n and v.get('osis_count', 0) >= 5]
+                if safe_int(v.get('count', 0)) >= min_n and safe_int(v.get('osis_count', 0)) >= 5]
         return sorted(rows, key=lambda x: -x[1])[:3]
 
     ds_rows = []
@@ -390,6 +492,35 @@ def main():
                 print(f'\n**字段组合建议** (基于分布形状互补):')
                 for h in hints:
                     print(f'- {h}')
+
+    # ============ 4b. 挖掘推荐表 (--recommend) ============
+    if args.recommend:
+        print(f'\n## 挖掘推荐 (综合 sharpe × 甜点区 × OS质量 × 中性化可靠度)\n')
+        recs = mining_recommendations(isos, neut, osis, key, mean_sharpe, top_n=args.top)
+        print('| 数据集 | count | sharpe | OS sharpe | OS count | 最优中性化 | neut sharpe | 甜点区 | 退化 | score |\n|---|---|---|---|---|---|---|---|---|---|')
+        for r in recs:
+            sw = '✓' if r['sweet'] else ''
+            dg = '⚠' if r['degraded'] else ''
+            bn_shp = f"{r['best_neut_shp']:.3f}" if r['best_neut'] != '--' else '--'
+            print(f"| {r['dataset']} | {r['count']} | {r['sharpe']:.3f} | {r['os_sharpe']:.3f} | {r['os_count']} | "
+                  f"{r['best_neut']} | {bn_shp} | {sw} | {dg} | {r['score']:.3f} |")
+        print(f'\n提示: 按此表从上到下挖 — score 已综合社区验证(甜点区)、OS质量(退化惩罚)、中性化可靠度')
+
+    # ============ 4c. 字段级 Top 榜 (--field-top) ============
+    if args.field_top > 0:
+        print(f'\n## 字段级 Top{args.field_top} (按社区提交 alphaCount, 兼顾 sharpe)\n')
+        # 排序: alphaCount 为主, sharpe 为辅
+        f_sorted = sorted(isos['datafield'].items(),
+                         key=lambda x: (-x[1].get('count', 0), -safe_float(x[1].get('sharpe_ratio'))))
+        print('| 字段 | alphaCount | sharpe | fitness | 最优中性化 |\n|---|---|---|---|---|')
+        for fn, fs in f_sorted[:args.field_top]:
+            cnt = fs.get('count', 0)
+            shp = safe_float(fs.get('sharpe_ratio'))
+            fit = safe_float(fs.get('fitness_ratio'))
+            bn = best_neuts(neut['datafield'].get(fn, {}), 5)
+            bn_txt = ', '.join(f"{n}({sh:.2f})" for n, sh, c, oc in bn[:2]) if bn else '--'
+            print(f"| {fn} | {cnt} | {shp:.3f} | {fit:.3f} | {bn_txt} |")
+        print(f'\n提示: 高 alphaCount 字段 = 社区反复验证可提交, 质量先验最高; 低 alphaCount 字段质量风险高')
 
     # ============ 5. JSON 导出 ============
     if args.json_out:

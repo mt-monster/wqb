@@ -48,7 +48,7 @@ _OP_ARITY: Dict[str, Union[int, List[int]]] = {
     "last_diff_value": 1,
     "days_from_last_change": 1,
     "nan_mask": 1,
-    "hump": 1,
+    "hump": 1,            # hump(x, hump=0.01) — 2nd arg is NAMED only (positional fails on platform, verified 2026-08-03)
     "bucket": 1,
     "densify": 1,
     "jump_decay": 1,

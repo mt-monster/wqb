@@ -1,0 +1,24 @@
+{
+  "dataset": "insiders5",
+  "batch": 6,
+  "multisim": "29vleQdSG4le9RB1brLrk5ay",
+  "settings": {"neutralization": "SECTOR", "decay": 4, "truncation": 0.08, "maxTrade": "ON"},
+  "date": "2026-08-03",
+  "strategy": "vec_stddev分歧/vec_max极值/trd_amt金额/unt_val单价/vec_min/days_from_last_change新鲜度/ts_delay滞后",
+  "results": [
+    {"expr": "-ts_rank(vec_stddev(insd5_ghc_tr), 22)", "alpha": "zqNZNY9G", "sharpe": -0.05, "fitness": -0.01, "two_year_sharpe": 0.94, "risk_neutralized_sharpe": 0.07, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_SUB_UNIVERSE_SHARPE", "LOW_2Y_SHARPE"]},
+    {"expr": "-ts_rank(vec_max(insd5_ghc_tr), 44)", "alpha": "WjAMAPGd", "sharpe": 0.3, "fitness": 0.17, "two_year_sharpe": 0.61, "risk_neutralized_sharpe": 0.29, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_2Y_SHARPE"]},
+    {"expr": "-ts_rank(vec_avg(insd5_trd_amt), 44)", "alpha": "kqPdPV0P", "sharpe": 0.27, "fitness": 0.14, "two_year_sharpe": 0.82, "risk_neutralized_sharpe": 0.09, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_2Y_SHARPE"]},
+    {"expr": "-ts_rank(ts_delay(vec_avg(insd5_source_real_data), 5), 66)", "alpha": "A1G9G0PE", "sharpe": 0.88, "fitness": 0.51, "two_year_sharpe": 0.71, "risk_neutralized_sharpe": 0.75, "margin": 0.000699, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT(0.85@2014-10-10)", "LOW_2Y_SHARPE"], "note": "最佳! 持仓305/314分散, 延迟5天持股反转轨道"},
+    {"expr": "-rank(days_from_last_change(vec_avg(insd5_ghc_tr)))", "alpha": "9qpYpV7q", "sharpe": -0.18, "fitness": -0.05, "two_year_sharpe": -0.42, "risk_neutralized_sharpe": -0.54, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_SUB_UNIVERSE_SHARPE", "LOW_2Y_SHARPE"], "note": "CONCENTRATED PASS! 持仓326/309, 但信号负"},
+    {"expr": "-ts_rank(vec_avg(insd5_unt_val), 44)", "alpha": "1Ypepxzm", "sharpe": -0.06, "fitness": -0.01, "two_year_sharpe": -0.05, "risk_neutralized_sharpe": -0.29, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_SUB_UNIVERSE_SHARPE", "LOW_2Y_SHARPE"]},
+    {"expr": "-ts_rank(vec_min(insd5_ghc_tr), 22)", "alpha": "P0GNGZO7", "sharpe": -0.26, "fitness": -0.14, "two_year_sharpe": 0.41, "risk_neutralized_sharpe": -0.37, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_SUB_UNIVERSE_SHARPE", "LOW_2Y_SHARPE"]},
+    {"expr": "ts_rank(vec_avg(insd5_source_real_data), 66) - ts_rank(vec_avg(insd5_ghc_tr), 22)", "alpha": "pwNmNPK3", "sharpe": 0.01, "fitness": 0.0, "two_year_sharpe": -0.12, "risk_neutralized_sharpe": -0.17, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CONCENTRATED_WEIGHT", "LOW_SUB_UNIVERSE_SHARPE", "LOW_2Y_SHARPE"]}
+  ],
+  "takeaways": [
+    "A1G9G0PE (ts_delay 5天持股反转) = insiders5 最佳轨道: 0.88/0.51/risk-neut0.75/持仓分散",
+    "days_from_last_change 通过 CONCENTRATED 但信号负 → 新鲜事件不是正信号",
+    "第7批: delay 3/5/10 变体 + 其他高覆盖字段(data/source_ratio/real_data/ratio/source_real_ratio)",
+    "pv106 第1批同时提交 (价差/滑点反转)"
+  ]
+}

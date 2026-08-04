@@ -26,8 +26,8 @@ param(
     # 回测设置 (JSON 文件路径或内联 hashtable)
     [string]$SettingsFile,
 
-    # 每批大小 (默认 7, 平台最大 8 留 1 给查询)
-    [int]$BatchSize = 7,
+    # 每批大小 (平台最大 8, 全部用于模拟)
+    [int]$BatchSize = 8,
 
     # 是否自动提交 RA 通过的 alpha (触发 ProdCorr)
     [switch]$AutoSubmit,
@@ -41,8 +41,8 @@ param(
     # 是否使用后台作业并行提交多批 (流水线模式)
     [switch]$Pipeline,
 
-    # 流水线深度 (同时运行的最大批次数, 默认 1 = 串行)
-    [int]$PipelineDepth = 1
+    # 流水线深度 (同时运行的最大批次数, 默认 7 = 7批并行)
+    [int]$PipelineDepth = 7
 )
 
 $ErrorActionPreference = "Stop"
@@ -113,7 +113,7 @@ Write-Host "  WQB Batch Runner" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Total expressions: $($allExpressions.Count)" -ForegroundColor White
 Write-Host "  Batch size: $BatchSize (platform max: 8, using: $BatchSize)" -ForegroundColor White
-Write-Host "  Pipeline depth: $PipelineDepth" -ForegroundColor White
+Write-Host "  Pipeline depth: $PipelineDepth (batches in parallel)" -ForegroundColor White
 Write-Host "  Auto-submit RA pass: $AutoSubmit" -ForegroundColor White
 Write-Host "  Auto-check ProdCorr: $AutoCheckCorr" -ForegroundColor White
 Write-Host "  Settings: $($defaultSettings.region)/$($defaultSettings.universe)/D$($defaultSettings.delay) | neut=$($defaultSettings.neutralization) | decay=$($defaultSettings.decay) | trunc=$($defaultSettings.truncation)" -ForegroundColor White

@@ -1,0 +1,15 @@
+{
+  "batch": "other323 esor 探索+blend (30WRK9cA4 + 3hfDHv7kd4)",
+  "date": "2026-08-03",
+  "conclusion": "esor(执行卖出比率)反向=买入压力信号 0.87/2y1.19。58pbRbxX = add(-ts_rank(vec_avg(esor),22), group_rank(ts_rank(slippage,44),sector)): 1.52/1.20/2y2.30/risk1.69/margin12.5bp/cw PASS, 仅差 sharpe 0.06。",
+  "results": [
+    {"id": "58pbRbxX", "expr": "esor22+slippage44行业", "sharpe": 1.52, "fitness": 1.2, "two_year": 2.3, "risk_neut": 1.69, "margin": 0.001246, "cw": "PASS", "fail": ["LOW_SHARPE"], "note": "★ 近达标: sharpe 差 0.06"},
+    {"id": "A1GW6Wjw", "expr": "esor22+ttm66", "sharpe": 1.24, "two_year": 1.12, "cw": "PASS"},
+    {"id": "gJ8AvAk0", "expr": "esor22+spvbq66", "sharpe": 1.15, "two_year": 1.26, "cw": "PASS"},
+    {"id": "npNJ0J9w", "expr": "-esor10", "sharpe": 0.78, "two_year": 1.63},
+    {"id": "d5ZXqXpj", "expr": "-esor44", "sharpe": 0.65, "two_year": 0.85},
+    {"id": "6Xp8OW1J", "expr": "+esor22", "sharpe": -0.99, "note": "方向验证: 反向正确"},
+    {"id": "xAN6gLzW", "expr": "-sum(esor)22", "sharpe": 0.87, "two_year": 1.23, "margin": 0.002429}
+  ],
+  "next": "sharpe 冲刺: esor 窗口 10/22/44 x slippage 窗口/伙伴字段微调"
+}

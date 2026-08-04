@@ -159,8 +159,21 @@ _NEUTRALIZATION_ORDER_DEFAULT: List[str] = [
 ]
 
 # Per-region override of the recommended sweep order.
+# KOR: WebDataScope 数据包实测 (2026-02, KOR_1, 规则 19):
+# SECTOR(0.562) > MARKET(0.473) > SUBINDUSTRY(0.308) > INDUSTRY(0.257) > NONE(0.192)
+# 与 USA 的 STATISTICAL 最优完全不同, 勿照搬默认顺序
+_NEUTRALIZATION_ORDER_KOR: List[str] = [
+    "SECTOR",
+    "MARKET",
+    "SUBINDUSTRY",
+    "INDUSTRY",
+    "NONE",
+]
+
+# Per-region override of the recommended sweep order.
 _NEUTRALIZATION_ORDER_OVERRIDES: Dict[str, List[str]] = {
     "USA": _NEUTRALIZATION_ORDER_USA,
+    "KOR": _NEUTRALIZATION_ORDER_KOR,
 }
 
 

@@ -1,0 +1,24 @@
+{
+  "batch": "pv106 group_rank(ts_rank(F,D), densify(group)) 家族 (1n3HOsIg4MhcE9xpxZ1CNv)",
+  "date": "2026-08-03",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 8, "neutralization": "SECTOR", "truncation": 0.04, "maxTrade": "ON"},
+  "results": [
+    {"id": "vRN8670d", "expr": "group_rank(ts_rank(pv106_wli_spread, 44), densify(sector))", "sharpe": 1.62, "fitness": 1.09, "turnover": 0.263, "margin": 0.000902, "two_year": 1.22, "risk_neut": 1.7, "cw": 0.231, "note": "最均衡候选: sharpe 达标, 2y/cw 差"},
+    {"id": "58pxYlGM", "expr": "group_rank(ts_rank(pv106_wli_spread, 22), densify(sector))", "sharpe": 1.68, "fitness": 1.04, "turnover": 0.3, "margin": 0.000762, "two_year": 0.65, "risk_neut": 1.58, "cw": 0.356, "note": "sharpe 最高但 2y 0.65 差, turnover 30% 危险"},
+    {"id": "9qpYkXG1", "expr": "group_rank(ts_rank(pv106_wli_spread, 66), densify(sector))", "sharpe": 1.43, "fitness": 0.95, "turnover": 0.245, "margin": 0.000876, "two_year": 1.28, "risk_neut": 1.58, "cw": 0.316},
+    {"id": "kqPd9jv6", "expr": "group_rank(ts_rank(pv106_wli_spread, 44), densify(industry))", "sharpe": 1.43, "fitness": 0.85, "turnover": 0.267, "margin": 0.000701, "two_year": 0.9, "risk_neut": 1.53, "cw": 0.231},
+    {"id": "6Xp7NlZK", "expr": "group_rank(ts_rank(pv106_wli_spread, 44), densify(subindustry))", "sharpe": 1.23, "fitness": 0.66, "turnover": 0.261, "margin": 0.00058, "two_year": 0.76, "risk_neut": 1.29, "cw": 0.258},
+    {"id": "j26vOjVo", "expr": "group_rank(ts_rank(pv106_wli_lastspread, 44), densify(sector))", "sharpe": 1.38, "fitness": 0.77, "turnover": 0.305, "margin": 0.000622, "two_year": 0.73, "risk_neut": 1.38, "cw": 0.192},
+    {"id": "RRmMP79j", "expr": "group_rank(ts_rank(slippage_at_spread_20, 44), densify(sector))", "sharpe": 1.27, "fitness": 0.86, "turnover": 0.2, "margin": 0.000909, "two_year": 1.51, "risk_neut": 1.5, "cw": "PASS", "note": "2y 接近达标 + cw PASS"},
+    {"id": "E5G1xlN0", "expr": "group_rank(ts_rank(transaction_cost_maximum, 44), densify(sector))", "sharpe": 1.28, "fitness": 0.86, "turnover": 0.2, "margin": 0.000911, "two_year": 1.52, "risk_neut": 1.5, "cw": "PASS", "note": "2y 接近达标 + cw PASS"},
+    {"id": "LLGW37m6", "expr": "group_rank(ts_rank(pv106_wli_spreadbp, 44), densify(sector))", "sharpe": 0.72, "fitness": 0.37, "two_year": 0.14, "risk_neut": 1.0, "cw": 0.207}
+  ],
+  "takeaways": [
+    "spread 系 sharpe 达标(1.62-1.68) 但 2y 1.22 不达标 + cw 0.23 不达标",
+    "slippage/tcm 系 2y 1.51-1.52 接近达标 + cw PASS, 但 sharpe 1.27 差",
+    "两族时间结构不同(2y 差 0.3) -> blend(subtract) 是补短板正道",
+    "group 粒度: sector(1.62) > industry(1.43) > subindustry(1.23), 与 KOR 数据包一致",
+    "58pxYlGM turnover 30% 逼近上限, 弃"
+  ],
+  "next": "blend 批次: subtract(group_rank(ts_rank(F1,44),densify(sector)), group_rank(ts_rank(F2,44),densify(sector)))"
+}

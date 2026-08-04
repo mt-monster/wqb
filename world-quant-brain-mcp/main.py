@@ -5427,16 +5427,18 @@ async def create_multi_simulation(
     lookback: Optional[int] = None,
     visualization: bool = False,
     pasteurization: str = "ON",
-    max_trade: str = "OFF"
+    max_trade: str = "OFF",
+    wait_for_completion: bool = False
 ) -> Dict[str, Any]:
     """
     🚀 Create multiple regular alpha simulations on BRAIN platform in a single request.
     
-    This tool creates a multisimulation with multiple regular alpha expressions,
-    waits for all simulations to complete, and returns detailed results for each alpha.
+    This tool creates a multisimulation with multiple regular alpha expressions.
+    By default (wait_for_completion=False) it submits and immediately returns the
+    simulation locations so the caller can poll with lookINTO_SimError_message.
+    If wait_for_completion=True it blocks until all simulations complete (can take 8+ minutes,
+    which may exceed the MCP client request timeout — prefer the default async mode).
     
-    ⏰ NOTE: Multisimulations can take 8+ minutes to complete. This tool will wait
-    for the entire process and return comprehensive results.
     Call get_platform_setting_options to get the valid options for the simulation.
     Args:
         alpha_expressions: List of alpha expressions/code strings (2-10 expressions required)
@@ -5455,9 +5457,13 @@ async def create_multi_simulation(
         visualization: Enable visualization (default: False)
         pasteurization: Pasteurization setting (default: "ON")
         max_trade: Max trade setting (default: "OFF")
+        wait_for_completion: If False (default), submit and immediately return simulation
+            locations for polling. If True, block until all simulations finish (may timeout
+            at the MCP client level for 8+ minute simulations).
     
     Returns:
-        Dictionary containing multisimulation results and individual alpha details
+        Dictionary containing multisimulation location and (if wait_for_completion)
+        detailed results for each alpha.
     """
     try:
         # Validate input
@@ -5514,14 +5520,62 @@ async def create_multi_simulation(
         if not location:
             return {"error": "No location header in multisimulation response"}
         
+        # Async mode (default): submit and immediately return locations for polling.
+        if not wait_for_completion:
+            print(f"Multisimulation submitted (async mode): {location}", file=sys.stderr)
+            return {
+                'success': True,
+                'message': f'Multisimulation submitted successfully with {len(alpha_expressions)} alpha expressions',
+                'async': True,
+                'multisimulation_id': location.split('/')[-1],
+                'multisimulation_location': location,
+                'multisimulation_url': brain_client._to_absolute_url(location),
+                'submitted_expressions': alpha_expressions,
+                'polling_tool': 'lookINTO_SimError_message',
+                'note': 'Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available.'
+            }
+        
         # Wait for children to appear and get results
         return _slim_multisim(await _wait_for_multisimulation_completion(location, len(alpha_expressions)))
         
     except Exception as e:
         return {"error": f"Error creating multisimulation: {str(e)}"}
 
+@mcp.tool()
+async def get_multisimulation_children(multisimulation_location: str) -> Dict[str, Any]:
+    """Get the child simulation locations/status of a submitted multisimulation.
+
+    Use this after create_multi_simulation (async mode) to discover the individual
+    simulation URLs, then poll each child with lookINTO_SimError_message until done.
+
+    Args:
+        multisimulation_location: The multisimulation location returned by
+            create_multi_simulation (e.g. "/simulations/{id}" or full URL).
+    Returns:
+        Dict with children list, count, and per-child status/alpha when available.
+    """
+    try:
+        await brain_client.ensure_authenticated()
+        resp = await brain_client._request('GET', multisimulation_location)
+        if resp.status_code != 200:
+            return {"error": f"HTTP {resp.status_code}", "raw": brain_client._response_payload(resp)}
+        data = resp.json() if resp.text else {}
+        children = data.get('children', [])
+        out_children = []
+        for c in children:
+            child_url = c if c.startswith('http') else f"{brain_client.base_url}/simulations/{c}"
+            out_children.append({"location": c, "location_url": child_url})
+        return {
+            "success": True,
+            "multisimulation_id": multisimulation_location.split('/')[-1],
+            "child_count": len(out_children),
+            "children": out_children,
+            "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
+        }
+    except Exception as e:
+        return {"error": f"Error getting multisimulation children: {str(e)}"}
+
 async def _wait_for_multisimulation_completion(location: str, expected_children: int) -> Dict[str, Any]:
-    """Wait for multisimulation to complete and return results"""
     try:
         # Simple progress indicator for users
         print(f"Waiting for multisimulation to complete... (this may take several minutes)", file=sys.stderr)

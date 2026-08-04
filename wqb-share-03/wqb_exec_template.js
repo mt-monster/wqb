@@ -1,6 +1,6 @@
 // ===========================================================================
-// WQB MCP Exec Integration (v3)
-// 修复: UTF-16LE 编码 + CLIXML 输出清理 + batch_size=7 强制
+// WQB MCP Exec Integration (v4)
+// 修复: UTF-16LE 编码 + CLIXML 输出清理 + batch_size=8 + pipeline=7
 // ===========================================================================
 // 用法: 将此文件内容粘贴到 integrated_code_mode Exec 工具的 code 参数
 // ===========================================================================
@@ -11,7 +11,7 @@
 const PS = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
 const CORE = 'd:\\coding\\traeCN_project\\wqb\\wqb-share-03\\wqb_mcp_core.ps1';
 const TRACKING = 'd:\\coding\\traeCN_project\\wqb\\wqb-share-03\\tracking';
-const BATCH_SIZE = 7;
+const BATCH_SIZE = 8;
 
 // ---- Base64 编码 (UTF-16LE, PowerShell -EncodedCommand 要求) ----
 function base64EncodeUtf16LE(str) {
@@ -286,8 +286,9 @@ const DEFAULTS = {
 // ===========================================================================
 // 自检
 // ===========================================================================
-text('=== WQB MCP Exec Integration v3 ===');
-text(`Batch size: ${BATCH_SIZE} (max 8, reserved 1)`);
+text('=== WQB MCP Exec Integration v4 ===');
+text(`Batch size: ${BATCH_SIZE} (platform max: 8, all slots used)`);
+text(`Pipeline: 7 batches in parallel`);
 
 text('\n1. MCP connectivity...');
 const ping = await pingMcp();

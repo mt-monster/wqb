@@ -1,0 +1,22 @@
+{
+  "batch": "analyst39 方向测试批次 (2cIURgd5v4hSbth12tfQKrOe)",
+  "date": "2026-08-03",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 12, "neutralization": "SECTOR", "truncation": 0.04, "maxTrade": "ON"},
+  "results": [
+    {"id": "LLGWoGoa", "expr": "ts_rank(epschngin,44)", "sharpe": -0.03, "note": "EPS变化 KOR 无效"},
+    {"id": "WjAMrArG", "expr": "-ts_rank(epschngin,44)", "sharpe": -0.11},
+    {"id": "MPGOvGva", "expr": "group_rank(ts_rank(epschngin,44),densify(sector))", "sharpe": -0.17},
+    {"id": "kqPdpPp8", "expr": "ts_rank(qepsinclxo,66)", "sharpe": 0.98, "fitness": 0.6, "two_year": -0.44, "margin": 0.001515},
+    {"id": "2rpMVpVx", "expr": "-ts_rank(tp_all_delay_1_stddev,44)", "sharpe": -1.05, "note": "分歧反向=-1.05 -> 正向应 +1.05"},
+    {"id": "mL5pn5nE", "expr": "ts_rank(qgrosmgn,66)", "sharpe": 0.61, "fitness": 0.29, "two_year": -0.38},
+    {"id": "A1G9XGpY", "expr": "ts_rank(spvbq,66)", "sharpe": 1.09, "fitness": 0.8, "two_year": 0.91, "risk_neut": 1.1, "margin": 0.002176, "note": "分析师类最佳: 每股账面正向价值风格"},
+    {"id": "QPGMRGxG", "expr": "-ts_rank(roxlcxspeq,66)", "sharpe": -1.22, "note": "季度EPS反向=-1.22 -> 正向应 +1.2 级"}
+  ],
+  "takeaways": [
+    "水平型字段(EPS/BVPS)正向有效, 变化型(epschngin)无效",
+    "roxlcxspeq 正向与 tp_stddev 正向应 +1.0~1.2 级, 待验证",
+    "A1G9XGpY spvbq 1.09/0.80/2y0.91/margin21.8bp/cw PASS 为 analyst 类最佳",
+    "turnover 6.2% 偏低(季度更新字段), 接近下限但未破"
+  ],
+  "next": "深化批次: 正向化 roxlcxspeq/tp_stddev + spvbq 变体 + 行业内结构"
+}

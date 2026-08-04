@@ -20,6 +20,7 @@
 .claude/
 .cursor/
 .trae/
+.zcode/
 
 # ===== OS =====
 .DS_Store
@@ -27,3 +28,6 @@ Thumbs.db
 
 # ===== Nested git dirs (flattened into this repo) =====
 **/.git/
+
+# ===== Runtime logs =====
+*.log

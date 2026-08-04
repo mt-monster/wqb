@@ -1,0 +1,20 @@
+{
+  "batch": "pv106 设置扫描 (1CGGikd decay12/SECTOR + 3Cs60ca decay8/MARKET)",
+  "date": "2026-08-03",
+  "conclusion": "decay=12 全面优于 decay=8: fitness 1.09->1.14, 2y 1.22->1.29, margin 9.0->10.0bp, turnover 26.3->23.7%; MARKET 与 SECTOR 中性化无差异(表达式内已 sector 分组)。pv106 模板空间穷尽: 2y 1.29 与 cw 0.24 为固有属性, 家族内不可突破。",
+  "best": {"id": "mL5pN5Vp", "expr": "group_rank(ts_rank(pv106_wli_spread, 44), densify(sector))", "settings": "decay=12/SECTOR/trunc0.04", "sharpe": 1.61, "fitness": 1.14, "turnover": 0.237, "margin": 0.001002, "sub_universe": 1.58, "two_year": 1.29, "risk_neut": 1.7, "cw": 0.239, "ra_failed": ["CONCENTRATED_WEIGHT", "LOW_2Y_SHARPE"]},
+  "decay12_sector": [
+    {"id": "mL5pN5Vp", "expr": "spread44", "sharpe": 1.61, "fitness": 1.14, "two_year": 1.29, "cw": 0.239},
+    {"id": "O0GOjGxq", "expr": "spread66", "sharpe": null, "fitness": null},
+    {"id": "1YpeRpzX", "expr": "spread22", "sharpe": null, "fitness": null},
+    {"id": "6Xp7QpeJ", "expr": "lastspread44", "sharpe": null},
+    {"id": "JjGqkGvA", "expr": "slippage44", "sharpe": 1.23, "fitness": 0.89, "two_year": 1.5, "cw": "PASS"},
+    {"id": "j26vJ66Q", "expr": "tcm44", "sharpe": 1.24, "fitness": 0.9, "two_year": 1.51, "cw": "PASS"}
+  ],
+  "decay8_market": [
+    {"id": "9qpY3Q21", "expr": "spread44", "sharpe": 1.63, "fitness": 1.1, "two_year": 1.22, "cw": 0.23},
+    {"id": "58px1V1M", "expr": "slippage44", "sharpe": 1.27, "fitness": 0.86, "two_year": 1.51, "cw": "PASS"},
+    {"id": "XgoGxExb", "expr": "tcm44", "sharpe": 1.27, "fitness": 0.86, "two_year": 1.52, "cw": "PASS"}
+  ],
+  "next": "换数据集(武器1): fundamental44 探索批次"
+}
