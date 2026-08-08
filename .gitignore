@@ -15,6 +15,8 @@
 **/webdata_*.json
 
 # ===== Tool / IDE internal state =====
+.cache/
+.reasonix/
 .workbuddy/
 .trae-html-share-packages/
 .claude/
@@ -31,3 +33,6 @@ Thumbs.db
 
 # ===== Runtime logs =====
 *.log
+
+# ===== Session state =====
+**/.mcp_session

@@ -1,8 +1,0 @@
-﻿: ping - 2026-08-02 06:54:49.099121+00:00
-
-: ping - 2026-08-02 06:55:04.373278+00:00
-
-event: message
-data: {"jsonrpc":"2.0","id":3000,"result":{"content":[{"type":"text","text":"{\n  \"error\": \"An unexpected error occurred: Failed to connect to https://api.worldquantbrain.com/alphas/3qePVw3Z\"\n}"}],"structuredContent":{"result":{"error":"An unexpected error occurred: Failed to connect to https://api.worldquantbrain.com/alphas/3qePVw3Z"}},"isError":false}}
-
-

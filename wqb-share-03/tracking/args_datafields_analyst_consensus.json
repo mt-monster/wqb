@@ -1,7 +1,0 @@
-{
-    "dataset_id": "analyst_consensus",
-    "region": "USA",
-    "delay": 1,
-    "universe": "TOP3000",
-    "instrument_type": "EQUITY"
-}

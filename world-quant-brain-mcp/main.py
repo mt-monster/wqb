@@ -5805,10 +5805,13 @@ if __name__ == "__main__":
     else:
         print("[WARNING] Redis connection failed - caching disabled", file=sys.stderr)
     
-    # Run using Streamable HTTP transport in container environment so the server remains
-    # running and accessible over HTTP (not stdio which exits in non-interactive containers).
-    try:
-        mcp.run(transport='streamable-http')
-    except TypeError:
-        # Fallback if signature differs
-        mcp.run('streamable-http')
+# Run using configured transport:
+#   MCP_TRANSPORT=stdio       -> stdio (auto-started by ZCode/client)
+#   MCP_TRANSPORT=streamable-http -> HTTP server (Docker/manual start)
+#   Default: streamable-http (backward compatible with Docker)
+transport = os.environ.get("MCP_TRANSPORT", "streamable-http")
+try:
+    mcp.run(transport=transport)
+except TypeError:
+    # Fallback if signature differs
+    mcp.run(transport)
