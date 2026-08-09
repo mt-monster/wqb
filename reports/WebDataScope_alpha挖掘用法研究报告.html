@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebDataScope 多维用法研究报告 — Alpha 挖掘效率提升</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --surface:#ffffff; --border:#e6e8eb; --text:#1f2329; --muted:#6b7280;
+    --brand:#6d28d9; --brand-soft:#ede9fe; --green:#2e7d32; --green-soft:#e8f5e9;
+    --red:#c62828; --red-soft:#fdecea; --amber:#b26a00; --amber-soft:#fff7e6;
+    --series1:#6d28d9; --series2:#2563eb; --series3:#0d9488; --series4:#d97706;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
+  header.hero{background:linear-gradient(135deg,#4c1d95,#6d28d9 55%,#7c3aed);color:#fff;border-radius:16px;padding:36px 40px;margin-bottom:28px}
+  header.hero h1{font-size:26px;font-weight:700;margin-bottom:10px}
+  header.hero p{opacity:.9;font-size:14px;max-width:820px}
+  .badges{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:999px;font-size:12px}
+  h2{font-size:20px;margin:40px 0 16px;padding-left:12px;border-left:4px solid var(--brand);line-height:1.3}
+  h3{font-size:16px;margin:24px 0 10px;color:var(--brand)}
+  p{margin:10px 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:14px 0}
+  .card.tone{background:var(--brand-soft);border-color:#c4b5fd}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:14px 0}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .stat .num{font-size:26px;font-weight:800;color:var(--brand);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+  .stat .lbl{font-size:13px;color:var(--muted);margin-top:4px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:13.5px}
+  th{background:#f1f2f4;text-align:left;padding:10px 12px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:1px 8px;border-radius:6px;font-size:12px;font-weight:600;margin:1px 2px}
+  .t-green{background:var(--green-soft);color:var(--green)}
+  .t-red{background:var(--red-soft);color:var(--red)}
+  .t-amber{background:var(--amber-soft);color:var(--amber)}
+  .t-brand{background:var(--brand-soft);color:var(--brand)}
+  .t-neutral{background:#eef0f2;color:var(--muted)}
+  code{background:#f1f2f4;padding:1px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:#4c1d95}
+  pre{background:#1e1e2e;color:#e6e6e6;padding:16px 18px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:12px 0}
+  pre code{background:none;color:inherit;padding:0}
+  .flow{display:flex;align-items:stretch;gap:0;margin:18px 0}
+  .flow-step{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 14px;position:relative}
+  .flow-step .step-num{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:22px;margin-bottom:8px}
+  .flow-arrow{display:flex;align-items:center;color:var(--brand);font-size:20px;padding:0 6px;font-weight:700}
+  .num-tag{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+  .callout{display:flex;gap:12px;background:var(--brand-soft);border:1px solid #c4b5fd;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px}
+  .callout .ic{font-size:20px;flex-shrink:0}
+  ul,ol{margin:8px 0 8px 22px}
+  li{margin:5px 0}
+  .note{font-size:12.5px;color:var(--muted)}
+  hr{border:none;border-top:1px solid var(--border);margin:30px 0}
+  .seq{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+  .seq span{background:var(--surface);border:1px solid var(--border);padding:3px 10px;border-radius:6px;font-size:12.5px}
+  .seq .arr{color:var(--brand);font-weight:700;border:none;background:none;padding:0}
+  @media(max-width:720px){.flow{flex-direction:column}.flow-arrow{transform:rotate(90deg);justify-content:center;padding:2px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>WebDataScope 多维用法研究报告</h1>
+  <p>基于 <code style="color:#eee">WebDataScope-1.0.6</code> 插件源码 + 离线数据包 <code style="color:#eee">WebData_20260219_V0.10.9.zip</code>，系统梳理其对 Alpha 挖掘的全部价值：从已知的数据集/字段/中性化选择，到新发掘的算子画像、个人多样性管理、ProdMemo 相关性库、回测稳定性等，并给出可落地的字段筛选逻辑。</p>
+  <div class="badges">
+    <span class="badge">数据包驱动 · 零模拟额预筛</span>
+    <span class="badge">社区验证先验</span>
+    <span class="badge">字段级体检</span>
+    <span class="badge">ProdCorr 风险预判</span>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="stat"><div class="num">160</div><div class="lbl">dataSetList.json 有逐字段体检的 数据集×region×universe×delay 组合</div></div>
+  <div class="stat"><div class="num">39,910</div><div class="lbl">info_data.bin 记录的有社区提交记录的字段数（USA_1）</div></div>
+  <div class="stat"><div class="num">350</div><div class="lbl">USA_1 有提交记录的数据集数（IS+OS 快照）</div></div>
+  <div class="stat"><div class="num">10 年</div><div class="lbl">每字段逐字段体检的年度时序（2012–2021）</div></div>
+</div>
+
+<h2>一、项目是什么</h2>
+<p>WebDataScope 是一个 WorldQuant BRAIN 平台浏览器扩展（Chrome/Edge）。它由两部分构成：<strong>① 离线数据包</strong>（zlib+msgpack 编码，导入 IndexedDB，供零成本预筛）和 <strong>② 浏览器增强脚本</strong>（在平台页面注入，提供实时标记、分析、稳定性增强）。<strong>对 Alpha 挖掘最有价值的是离线数据包</strong>——它把"社区用数千/数十万次提交踩出来的教训"沉淀成可离线查询的质量先验。</p>
+
+<div class="card">
+  <h3>数据包四类文件（核心挖掘资产）</h3>
+  <table>
+    <tr><th>文件</th><th>内容</th><th>挖掘用途</th></tr>
+    <tr><td><code>data/oth/info_data.bin</code></td><td><strong>IS+OS 完整快照</strong>，每 <code>REGION_DELAY</code>：<code>isos</code>（均值/数据集/字段/类别）+ <code>neutralization</code>（均值/数据集/字段/类别）</td><td class="num-tag">数据集质量、字段先验、中性化选择、类别方向</td></tr>
+    <tr><td><code>data/oth/osis_data.bin</code></td><td><strong>OS-only 快照</strong>，仅含已积累样本外数据的 alpha（无字段/中性化）</td><td class="num-tag">OS 退化检测、防 IS 过拟合</td></tr>
+    <tr><td><code>data/&lt;ds&gt;_&lt;REGION&gt;_&lt;UNIVERSE&gt;_Delay&lt;N&gt;.bin</code></td><td>该数据集<strong>每字段 10 年体检</strong>：覆盖/正负比/整数态/偏度/峰度/频率/分布直方图</td><td class="num-tag">字段级预处理决策、时间窗口、换手预测</td></tr>
+    <tr><td><code>data/dataSetList.json</code></td><td>160 个有体检数据的组合清单</td><td class="num-tag">覆盖矩阵、Universe 竞争度</td></tr>
+  </table>
+</div>
+
+<h2>二、核心：字段筛选逻辑（三层漏斗）</h2>
+<p>这是你问的重点。字段筛选不是靠"字段名好不好听"，而是三层漏斗：<strong>先用社区验证先验过滤「有没有人挖出过好结果」，再用数据体检判断「这个字段适不适合做信号」，最后用中性化匹配确定「在哪个中性化下最优」</strong>。数据包的字段体检数据只在部分组合有（160 个），因此第一层是全局可用的一层。</p>
+
+<div class="flow">
+  <div class="flow-step"><span class="step-num">1</span><b>社区验证先验</b><br><span class="note">isos.datafield<br>count + sharpe</span><br>🔍 有没有人挖出过好结果</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="step-num">2</span><b>数据体检</b><br><span class="note">字段 .bin<br>覆盖/分布/单边/频率</span><br>🔍 适不适合当信号</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="step-num">3</span><b>中性化匹配</b><br><span class="note">neutralization.datafield<br>osis_count 可信度</span><br>🔍 哪个中性化最优</div>
+</div>
+
+<h3>第 1 层：社区验证先验（isos.datafield）</h3>
+<p>数据包的 <code>isos.datafield[&lt;field&gt;]</code> 给出每个字段的社区提交 <code>count</code>/<code>sharpe</code>/<code>fitness</code>。这是"极少有人提交的字段=低质量"的量化版。核心逻辑：</p>
+<table>
+  <tr><th>字段 count</th><th>sharpe</th><th>判定</th><th>动作</th></tr>
+  <tr><td class="num-tag">100–3000</td><td class="num-tag">≥ 1.1×区域均值</td><td><span class="tag t-green">甜点区</span>已验证可提交、未饱和</td><td>优先入围（ProdCorr 死区风险低）</td></tr>
+  <tr><td class="num-tag">&gt; 30000</td><td>任意</td><td><span class="tag t-red">饱和</span>模板空间被社区挖穿</td><td>需高度非对称结构才能过 ProdCorr&lt;0.7，冷启动避开</td></tr>
+  <tr><td class="num-tag">&gt; 30000</td><td>低（&lt; 均值）</td><td><span class="tag t-red">踩坑</span>社区大量尝试仍失败</td><td>避免作主信号（如 <code>sharesout</code> 40243 次 / sharpe 0.219）</td></tr>
+  <tr><td class="num-tag">&lt; 50</td><td>任意</td><td><span class="tag t-amber">未验证</span>质量风险高</td><td>默认跳过；仅作刻意去相关的探索</td></tr>
+</table>
+<div class="callout"><span class="ic">💡</span><div><b>字段级最优中性化同样来自这里：</b><code>neutralization.datafield[&lt;field&gt;]</code>，取 <code>count≥20</code> 且 <code>osis_count≥20</code> 中 sharpe 最高的前 2–3 个，排进模拟计划前列。</div></div>
+
+<h3>第 2 层：数据体检（字段 .bin，决定预处理算子）</h3>
+<p>有体检数据的字段，进一步用 10 年统计决定"怎么用"。这是字段筛选里最容易忽略、却最能提升挖掘命中率的一层：</p>
+<table>
+  <tr><th>观测指标</th><th>判定</th><th>结论 / 动作</th></tr>
+  <tr><td>CoverageRatio 均值</td><td>&lt; 0.4</td><td><span class="tag t-red">必须 backfill</span>否则 CONCENTRATED_WEIGHT；回测注意早年失真</td></tr>
+  <tr><td>Coverage 厂字形（早低近高）</td><td>近年 &gt; 早年×1.3</td><td>数据商中途扩容，稳健性判定用近 3 年</td></tr>
+  <tr><td>IndicativePositive/NegRatio</td><td>≈ 1（单边）</td><td>勿用原始水平做多空，先变化率/排名/与基准差</td></tr>
+  <tr><td>yearly_distribution 形状</td><td><code>spread</code></td><td><span class="tag t-green">最佳</span>可直接用或轻度预处理</td></tr>
+  <tr><td>同上</td><td><code>zero_inflated</code>（[0,0.1)&gt;50%）</td><td>事件/稀疏字段，配 <code>ts_backfill</code> 或事件门控（<code>trade_when</code>）</td></tr>
+  <tr><td>同上</td><td><code>ceiling</code>（[0.9,1]&gt;50%）</td><td>值截尾，<code>winsorize</code>/<code>rank</code> 抑制</td></tr>
+  <tr><td>同上</td><td><code>point_mass</code>/<code>concentrated</code></td><td>有效信息少，慎作主信号；作辅助/门控</td></tr>
+  <tr><td>skenewss 均值</td><td>&gt; 2</td><td>外层 <code>rank</code>/<code>signed_power(x,&lt;1)</code>/<code>winsorize</code> 抑制极值</td></tr>
+  <tr><td>kurtosis 均值</td><td>&gt; 8（厚尾）</td><td>外层 <code>rank</code>/<code>signed_power(x,0.5)</code>，避免直接 <code>ts_mean</code></td></tr>
+  <tr><td>IntegerStatus</td><td>= 1（离散）</td><td>优先 <code>rank</code>/<code>bucket</code>/<code>group_rank</code>，慎用平滑算子和 <code>ts_delta</code></td></tr>
+  <tr><td>frequency</td><td>monthly / quarterly</td><td>时序窗口 ≥ 更新周期（月度≥21d，季度≥63d），短窗只采样噪声</td></tr>
+  <tr><td>LongCount/ShortCount</td><td>严重失衡</td><td>必须对称化（<code>signed_power</code>/双序 rank/减均值），否则单边持仓</td></tr>
+</table>
+<div class="callout"><span class="ic">🛠</span><div><b>字段组合建议（分布形状配对）：</b><code>point_mass/zero_inflated</code>（稀疏事件）作门控 + <code>spread</code>（连续）作主信号 → <code>trade_when(gating_cond, signal_expr, -1)</code>；两个 <code>spread</code> 双 rank 去相关 → <code>rank(a)-rank(b)</code>；<code>ceiling</code>+<code>zero_inflated</code> 互补 → 降低结构相关性。</div></div>
+
+<h3>第 3 层：中性化匹配（osis_count 可信度门槛）</h3>
+<p>每个字段/数据集在每种中性化下都有 <code>{count, sharpe, osis_count, fitness}</code>。<code>osis_count</code> 是 OS 子集样本量，比纯 IS count 更可信——这是"中性化推荐可信度"的关键。三级门槛：</p>
+<table>
+  <tr><th>门槛</th><th>判定</th><th>用法</th></tr>
+  <tr><td><span class="tag t-green">高可信</span></td><td><code>count≥20</code> 且 <code>osis_count≥20</code></td><td>直接作为该字段/数据集的推荐中性化</td></tr>
+  <tr><td><span class="tag t-amber">中可信</span></td><td><code>count≥5</code>（osis 未验证）</td><td>字段级中性化推荐，用 sharpe 排序但标注 osis 覆盖</td></tr>
+  <tr><td><span class="tag t-red">低可信</span></td><td>osis_count 远小于 count</td><td>大部分提交尚无 OS 数据，推荐打折；优先参考类别级</td></tr>
+</table>
+<div class="callout"><span class="ic">⚠️</span><div><b>反例：</b><code>neutralization.dataset[analyst10]</code> 中 <code>NONE(2次)</code> 的 sharpe=1.069 但 osis_count=1 → 不可信；<code>INDUSTRY(322次, osis 307)</code> 才是可靠推荐。切勿被低样本高 sharpe 误导。</div></div>
+
+<h2>三、除已知用法外，新发掘的 6 大用法</h2>
+<p>你已知数据质量、字段选择、中性化选择。以下是从浏览器增强脚本中挖掘出的、尚未沉淀进现有工具链的用法：</p>
+
+<h3>1. 算子使用画像 → 差异化 / 拥挤度预判（genius.js: opsAna）</h3>
+<p>genius.js 的算子分析统计<strong>你自己提交的 REGULAR alpha 中每个算子的使用频率</strong>（按天取前 4 个，避免单日刷量扭曲）。用途不限于自我回顾：</p>
+<ul>
+  <li><strong>冷门算子机会</strong>：表格中 <code>count=0</code> 的算子（nonZeroCount 之外的）是社区几乎没用的算子 → 用它做差异化结构，可显著降低 ProdCorr（与大家用同一批算子=结构同质化）。</li>
+  <li><strong>拥挤算子预警</strong>：自己提交集中用的算子，往往是社区通用算子（如 <code>rank</code>/<code>ts_mean</code>），高用量提示结构同质 → 换更冷门的等价算子。</li>
+  <li><strong>算子级多样性追踪</strong>：可与项目记忆的"每 10 次回测做多样性评估"联动，补充算子维度的探索率。</li>
+</ul>
+
+<h3>2. 个人技术分布热力图 → 空白领域挖掘（distribution.js）</h3>
+<p>distribution.js 调用 <code>/users/self/activities/diversity?grouping=region,delay,dataCategory</code>，把你自己在 <strong>region × 数据类别</strong> 的 alpha 数量画成散点热力图，并标注每个格子的 <code>dataDiversity.check</code>（是否通过多样性要求）。用途：</p>
+<ul>
+  <li><strong>个人空白领域</strong>：散点上没有点或点很小的 region×类别 = 你完全没碰过的领域 → 多样性机会（也往往竞争压力更小）。</li>
+  <li><strong>多样性合规</strong>：<code>check</code> 非 PASS 的格子说明该领域已过度集中，需主动分散到其他 region/类别。</li>
+  <li><strong>投入产出再平衡</strong>：把算力从"已饱和的自家强项"（点很大）挪到"空白高潜力"格子。</li>
+</ul>
+
+<h3>3. ProdMemo 本地相关性库 → 历史 ProdCorr 复用 & 拥挤度反推（prodmemo.js）</h3>
+<p>prodmemo.js 自动把每个查看过的 alpha 的 <strong>PC（ProdCorr）/ PPC（PoolProdCorr）/ SC（SelfCorr）最大值缓存到本地</strong>（<code>WQP_ProdMemo_*</code>，可导出 JSON）。用途：</p>
+<ul>
+  <li><strong>避免重复回测已知高相关的组合</strong>：新候选在模拟前，先查同数据集/同字段的历史 alpha 的 PC——若已有一堆 PC&gt;0.7，说明该方向拥挤，直接换。</li>
+  <li><strong>拥挤度反推</strong>：如果自己某数据集/字段的多个候选 PC 都高，反推该区域被社区挖穿的概率高。</li>
+  <li><strong>ProdCorr 演化追踪</strong>：配合 <code>updated</code> 时间戳，看同一 alpha 的 PC 是否随时间上升（市场饱和信号）。</li>
+</ul>
+
+<h3>4. 回测稳定性增强 → 长跑不中断（noMoreDifficulties.js + simulate.js）</h3>
+<p>这两个脚本解决"回测被平台网络/配额打断"的痛点，直接提升长批量挖掘效率：</p>
+<table>
+  <tr><th>脚本</th><th>机制</th><th>折算的挖掘价值</th></tr>
+  <tr><td>noMoreDifficulties.js</td><td>对 <code>GET api.worldquantbrain.com/*</code> 自动重试（429/500/502/503/504，最多 10 次，线性退避 <code>retry×500ms</code>），网络错误 "Failed to fetch" 也重试</td><td>批量回测 / 查询不再被 "experiencing some difficulties" 中断，无人值守跑批</td></tr>
+  <tr><td>simulate.js</td><td>显示 Rate Limit 配额（进度条），读 <code>x-ratelimit-limit/remaining</code>；提供"刷新配额"按钮（主动删一次模拟换配额，10 分钟≤5 次）</td><td>实时掌握剩余并发配额，避免 429 打满；与你的 BatchSize=8 / PipelineDepth=7 联动调度</td></tr>
+</table>
+
+<h3>5. 提交门槛实时看板 → 避免无效矿（background.js: getAlphaCheckStates）</h3>
+<p>注入的 fetch 拦截器给 alphas 列表自动补 <code>failedNumRA</code>/<code>failedNumPPA</code>/<code>maxProdCorr</code>/<code>maxPoolProdCorr</code>/<code>maxSelfCorr</code>/<code>WQPPYS</code>（命中的 pyramid）。用途：</p>
+<ul>
+  <li><strong>RA/PPA 硬门槛</strong>：候选 <code>failedNumRA&gt;0</code> 直接不合格，不因 Sharpe/Fitness 好看而误判（与 brain-alpha-orchestrator 的 failed-gates 规则一致）。</li>
+  <li><strong>WQPPYS（pyramid 匹配）</strong>：提交前确认是否命中 <code>MATCHES_PYRAMID</code>——不匹配就是提交死路；命中信息可指导该数据集的字段组合习惯。</li>
+</ul>
+
+<h3>6. 社区方法论 AI 辅助阅读（communityAssistant.js + llmService.js）</h3>
+<p>扩展支持在社区帖子页注入 AI 助手（可自由配置 OpenAI 兼容 LLM），做帖子总结、生成草稿、圈出方法论。对挖掘的价值：<strong>快速把社区实战帖（如你记忆中的 ASI_MINVOL1M 方法论帖）转成可执行的字段/参数配方</strong>，节省逐帖精读时间。</p>
+
+<h2>四、已沉淀的 18 条规则（可复用资产）</h2>
+<p>此前已把数据包用法沉淀为 <code>webdatascope-data-quality.md</code> 的 18 条规则，并封装成 <code>tools/webdata_quality.py</code>。关键命令：</p>
+<pre><code># 数据集排名 + 甜点区 + OS 退化 + 类别统计 + Universe 覆盖
+python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1
+
+# 跨区域数据集对比（识别 region-specific 机会）
+python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region ASI --delay 1 --cross-region
+
+# 字段级体检（分布形状解析 + 预处理算子建议 + 字段组合建议）
+python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --fields fundamental6,insiders3
+
+# 挖掘推荐表（综合 sharpe×甜点区×OS质量×中性化可靠度）
+python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --recommend</code></pre>
+
+<h2>五、用法 × 挖掘环节 映射</h2>
+<table>
+  <tr><th>挖矿环节</th><th>WebDataScope 用法</th><th>省下的成本 / 提升</th></tr>
+  <tr><td><b>选方向（数据集/类别）</b></td><td>isos.dataset/category 甜点区 + OS 退化 + 跨区域对比</td><td>不浪费模拟额在低质量/饱和数据集</td></tr>
+  <tr><td><b>选字段</b></td><td>三层漏斗（社区先验 → 数据体检 → 中性化匹配）</td><td>命中率提升，避免踩坑字段</td></tr>
+  <tr><td><b>选中性化</b></td><td>osis_count 三级门槛 + 类别级回退</td><td>替代盲目遍历 13 种中性化</td></tr>
+  <tr><td><b>预处理/表达式结构</b></td><td>字段分布形状 → 算子/门控/组合建议</td><td>直接得到表达式骨架</td></tr>
+  <tr><td><b>时间窗口/参数</b></td><td>frequency、覆盖厂字形、skew/kurt → decay/truncation</td><td>参数起点更准，减少调试轮次</td></tr>
+  <tr><td><b>多样性/拥挤度</b></td><td>算子画像 + 个人热力图 + ProdMemo 相关性库</td><td>差异化结构，压 ProdCorr &lt; 0.7</td></tr>
+  <tr><td><b>回测执行</b></td><td>GET 自动重试 + 配额看板</td><td>长批量无人值守不中断</td></tr>
+  <tr><td><b>提交门槛</b></td><td>failedNumRA/PPA/WQPPYS 实时看板</td><td>避免无效矿，提交即过</td></tr>
+</table>
+
+<hr>
+<p class="note">报告基于对 WebDataScope-1.0.6 全部源码（background/content/shared/ui 模块）与数据包结构的逐文件研读。数据包先验窗口以各 region_delay 的 <code>sub_beg_time→sub_end_time</code> 为准（如 USA_1 为 2022-02-05 → 2026-02-17），数据包更新后需重跑 <code>webdata_quality.py</code> 刷新。</p>
+
+</div>
+</body>
+</html>

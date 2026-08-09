@@ -1,0 +1,12 @@
+总 PC fields: 150
+一阶候选(写入文件): 150
+
+开始模拟一阶: 150 候选
+[glb_first] task 1/38 done succ=4 err=0 (00:17:31)
+[glb_first] task 2/38 done succ=4 err=0 (00:33:41)
+[glb_first] task 3/38 done succ=4 err=0 (00:49:50)
+[glb_first] task 4/38 done succ=4 err=0 (00:59:48)
+  task 5/38 poll err: ProxyError
+[glb_first] task 5/38 done succ=4 err=0 (01:12:27)
+  task 6/38 poll err: ProxyError
+[glb_first] task 6/38 done succ=4 err=0 (01:25:19)

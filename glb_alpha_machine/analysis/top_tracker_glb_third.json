@@ -1,0 +1,79 @@
+{
+  "field_counts": {
+    "anl15_s_cal_fy2_6m_chg": 9
+  },
+  "op_counts": {
+    "trade_when+ts_arg_max+neutralize+winsorize+abs": 7,
+    "trade_when+neutralize+winsorize+abs": 9,
+    "trade_when+ts_std_dev+neutralize+winsorize": 1,
+    "trade_when+ts_arg_min+neutralize+winsorize+abs": 4,
+    "trade_when+ts_mean+neutralize+winsorize+abs": 3,
+    "trade_when+ts_arg_min+neutralize+winsorize": 1,
+    "trade_when+ts_std_dev+neutralize+winsorize+abs": 1,
+    "trade_when+ts_arg_max+neutralize+winsorize": 1,
+    "trade_when+ts_mean+neutralize+winsorize": 1,
+    "trade_when+neutralize+winsorize": 1,
+    "trade_when+group_zscore+winsorize+abs": 1
+  },
+  "report_count": 9,
+  "combo_counts": {
+    "trade_when+neutralize+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 9,
+    "trade_when+ts_arg_max+neutralize+winsorize(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+ts_arg_max+neutralize+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 7,
+    "trade_when+ts_mean+neutralize+winsorize(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+ts_std_dev+neutralize+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+ts_arg_min+neutralize+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 4,
+    "trade_when+ts_std_dev+neutralize+winsorize(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+ts_mean+neutralize+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 3,
+    "trade_when+ts_arg_min+neutralize+winsorize(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+neutralize+winsorize(anl15_s_cal_fy2_6m_chg)": 1,
+    "trade_when+group_zscore+winsorize+abs(anl15_s_cal_fy2_6m_chg)": 1
+  },
+  "top1_history": [
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.53,
+      "report": 1
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 2
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 3
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 4
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 5
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 6
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 7
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.59,
+      "report": 8
+    },
+    {
+      "field": "anl15_s_cal_fy2_6m_chg",
+      "sharpe": 0.62,
+      "report": 9
+    }
+  ]
+}

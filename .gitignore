@@ -36,3 +36,25 @@ Thumbs.db
 
 # ===== Session state =====
 **/.mcp_session
+
+# ===== Runtime / scraped data (not source code) =====
+# WebDataScope extension source (third-party tool, not project code)
+extensions/
+
+# WebDataScope scraped data dumps (37 MB, 265 files)
+research-data/
+
+# Runtime simulation results, field dumps, checkpoints (24 MB, 810 files)
+tracking/
+
+# Runtime SQLite DB and state
+data/
+
+# One-off cleanup script
+cleanup_tmp.py
+
+# Empty placeholder dir
+wqb-share-03/
+
+# pytest cache
+.pytest_cache/

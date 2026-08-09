@@ -1,0 +1,12 @@
+# 已知必死字段: 在 GLB/TOP3000 模拟中稳定触发平台
+# "Your simulation probably took too much resource." (task6, fo idx40-47)
+# 这些裸字段(零算子 winsorize/ts_backfill)无法被平台计算, 必须从所有阶段剔除。
+# 注意: 仅精确匹配以下表达式, 不要按 anl15_ 前缀通配 —— 其他 anl15_* 字段可正常模拟。
+winsorize(ts_backfill(anl15_gr_fy1_cos_up, 120), std=4)
+winsorize(ts_backfill(anl15_gr_12_m_total, 120), std=4)
+winsorize(ts_backfill(anl15_gr_fy2_cos_up, 120), std=4)
+winsorize(ts_backfill(anl15_s_cal_fy2_ests, 120), std=4)
+winsorize(ts_backfill(anl15_gr_18_m_mktcap, 120), std=4)
+winsorize(ts_backfill(anl15_gr_fy2_cos_dn, 120), std=4)
+winsorize(ts_backfill(anl15_s_hist_eps_gro, 120), std=4)
+winsorize(ts_backfill(anl15_s_ltg_ests_up, 120), std=4)
