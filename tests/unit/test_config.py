@@ -16,6 +16,7 @@ import pytest
 from wqb.config import (
     BATCH_SIZE,
     GHOST_OPERATORS,
+    neutralization_best,
     OP_FAMILIES,
     PARADIGMS,
     PRODCORR_CEILING,
@@ -38,7 +39,8 @@ from wqb.config import (
 # REGIONS completeness
 # ---------------------------------------------------------------------------
 
-EXPECTED_REGIONS = {"USA", "EUR", "CHN", "ASI", "GLB", "JPN", "KOR", "AMR", "TWN"}
+EXPECTED_REGIONS = {"USA", "EUR", "CHN", "ASI", "GLB", "JPN", "KOR", "AMR", "TWN",
+                    "GBR", "DEU", "IND", "MEA", "HKG"}  # 2026-08-13 新增已开采区域
 
 
 def test_regions_set_is_complete():
@@ -267,3 +269,54 @@ def test_paradigms_count():
 def test_region_priority_usa_highest():
     assert REGION_PRIORITY["USA"] == 3
     assert REGION_PRIORITY["USA"] >= REGION_PRIORITY["KOR"]
+
+# ---------------------------------------------------------------------------
+# 2026-08-13: catalog 对齐 + 新区域
+# ---------------------------------------------------------------------------
+
+def test_gbr_region_present_with_top700():
+    assert REGIONS["GBR"]["default_universe"] == "TOP700"
+    assert 0 in REGIONS["GBR"]["delays"]  # GBR D0 门槛 2.69 实测
+
+
+def test_new_regions_universes():
+    assert REGIONS["DEU"]["default_universe"] == "TOP500"
+    assert REGIONS["IND"]["default_universe"] == "TOP500"
+    assert "TOP400" in REGIONS["MEA"]["universes"]
+    assert "TOP800" in REGIONS["HKG"]["universes"]
+
+
+def test_eur_universes_aligned_with_platform():
+    assert "TOP2500" in REGIONS["EUR"]["universes"]
+    assert "TOPCS1600" in REGIONS["EUR"]["universes"]
+
+
+def test_glb_universes_aligned_with_platform():
+    assert "MINVOL10M" in REGIONS["GLB"]["universes"]
+    assert "TOPDIV3000" in REGIONS["GLB"]["universes"]
+
+
+def test_neutralization_best_returns_campaign_conclusions():
+    assert neutralization_best("EUR") == "REVERSION_AND_MOMENTUM"
+    assert neutralization_best("GBR") == "INDUSTRY"
+    assert neutralization_best("IND") == "STATISTICAL"
+    assert neutralization_best("USA") is None  # 无实测结论
+
+
+def test_ghost_operators_contains_neutralize():
+    assert "neutralize" in GHOST_OPERATORS  # 平台无此表达式算子 (catalog 权威)
+
+
+def test_verified_safe_has_102_catalog_ops():
+    assert len(VERIFIED_SAFE_OPERATORS) == 102
+
+
+def test_verified_and_ghost_disjoint():
+    assert not (set(VERIFIED_SAFE_OPERATORS) & GHOST_OPERATORS)
+
+
+def test_operator_family_multiply_and_reduce():
+    assert get_operator_family("multiply") == "MATH"
+    assert get_operator_family("reduce_ir") == "REDUCE"
+    assert get_operator_family("ts_backfill") == "TS_FILL"
+    assert get_operator_family("neutralize") == "NONE"  # 已移出家族表

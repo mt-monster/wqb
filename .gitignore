@@ -1,6 +1,7 @@
 # ===== Secrets / Credentials =====
 .env
 **/.env
+**/config.json
 
 # ===== Python =====
 .venv/
@@ -53,8 +54,6 @@ data/
 # One-off cleanup script
 cleanup_tmp.py
 
-# Empty placeholder dir
-wqb-share-03/
 
 # pytest cache
 .pytest_cache/

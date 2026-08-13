@@ -15,9 +15,9 @@ for line in env_path.read_text().splitlines():
     k, v = line.split('=', 1)
     os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
-TRACKING_DIR = Path(__file__).parent.parent / "wqb-share-03" / "tracking"
+TRACKING_DIR = Path(__file__).parent.parent / "tracking"
 
-from main import BrainApiClient
+from brain_api import BrainApiClient
 
 MULTISIMS = {
     "opt_b1": ("1l2Sc85Ky5es9upJg8VHeoZ", [

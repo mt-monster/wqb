@@ -50,12 +50,12 @@ except Exception:  # pragma: no cover - fallback if import order differs
 def _brain_client():
     """Import the shared authenticated BRAIN client lazily (avoids circular import)."""
     try:
-        from main import brain_client
+        from brain_api import brain_client
     except ImportError:
         current_dir = Path(__file__).parent
         if str(current_dir) not in sys.path:
             sys.path.insert(0, str(current_dir))
-        from main import brain_client
+        from brain_api import brain_client
     return brain_client
 
 

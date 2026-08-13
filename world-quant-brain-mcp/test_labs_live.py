@@ -12,7 +12,8 @@ import sys
 import time
 
 from labs_functions import labs_client
-from main import load_config, brain_client
+from main import load_config
+from brain_api import brain_client
 
 
 async def stability(n: int):

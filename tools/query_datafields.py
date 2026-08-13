@@ -14,8 +14,8 @@ for line in env_path.read_text().splitlines():
     k, v = line.split('=', 1)
     os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
-TRACKING_DIR = Path(__file__).parent.parent / "wqb-share-03" / "tracking"
-from main import BrainApiClient
+TRACKING_DIR = Path(__file__).parent.parent / "tracking"
+from brain_api import BrainApiClient
 
 DATASETS = [
     ("model110", "MDL110 ML composite"),

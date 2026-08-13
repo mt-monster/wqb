@@ -237,13 +237,13 @@ class ForumClient:
     async def _ensure_support_session(self, email: str, password: str, locale: str = "zh-cn", timeout_seconds: int = 30):
         """Establish a Zendesk support session using the authenticated BRAIN session."""
         try:
-            from main import brain_client
+            from brain_api import brain_client
         except ImportError:
             import sys
             from pathlib import Path
             current_dir = Path(__file__).parent
             sys.path.insert(0, str(current_dir))
-            from main import brain_client
+            from brain_api import brain_client
 
         try:
             await asyncio.wait_for(brain_client.ensure_authenticated(), timeout=timeout_seconds)
@@ -302,14 +302,14 @@ class ForumClient:
         """Authenticate and return a browser context with the session."""
         # Import brain_client here to avoid circular dependency
         try:
-            from main import brain_client
+            from brain_api import brain_client
         except ImportError:
             # 尝试从当前目录导入
             import sys
             from pathlib import Path
             current_dir = Path(__file__).parent
             sys.path.insert(0, str(current_dir))
-            from main import brain_client
+            from brain_api import brain_client
         
         # Avoid re-authenticating on every forum call: authenticate clears cookies and can
         # disrupt other concurrent tools using the same session.

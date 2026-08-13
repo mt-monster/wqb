@@ -14,7 +14,7 @@ for line in env_path.read_text().splitlines():
     k, v = line.split('=', 1)
     os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
-from main import BrainApiClient
+from brain_api import BrainApiClient
 
 async def main():
     bc = BrainApiClient()
