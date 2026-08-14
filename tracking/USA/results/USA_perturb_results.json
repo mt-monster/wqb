@@ -1,0 +1,42 @@
+{
+  "k1_pow3": {
+    "alpha_id": "1YpWEzW6",
+    "S": 4.4,
+    "F": 4.97
+  },
+  "k2_pow2": {
+    "alpha_id": "O0GWaxWp",
+    "S": 4.36,
+    "F": 4.87
+  },
+  "k3_d180": {
+    "alpha_id": "ZYEaGKa0",
+    "S": 4.55,
+    "F": 5.33
+  },
+  "k4_d120": {
+    "alpha_id": "88pN1eNv",
+    "S": 4.49,
+    "F": 5.18
+  },
+  "k5_industry": {
+    "alpha_id": "JjG8Kv82",
+    "S": 4.39,
+    "F": 5.16
+  },
+  "k6_sector": {
+    "alpha_id": "npNaV86x",
+    "S": 4.46,
+    "F": 5.33
+  },
+  "k7_global_rank": {
+    "alpha_id": "A1GxK7LY",
+    "S": -1.35,
+    "F": -0.8
+  },
+  "k8_market": {
+    "alpha_id": "O0GWax6p",
+    "S": 4.39,
+    "F": 5.23
+  }
+}

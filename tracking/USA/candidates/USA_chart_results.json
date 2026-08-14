@@ -1,0 +1,37 @@
+{
+  "h1_momentum": {
+    "alpha_id": "9qpl017x",
+    "S": -0.13,
+    "F": -0.02,
+    "T": 0.1103,
+    "fails": []
+  },
+  "h2_acceleration": {
+    "alpha_id": "VkGNJj35",
+    "S": -0.01,
+    "F": -0.0,
+    "T": 0.1046,
+    "fails": []
+  },
+  "h3_shift": {
+    "alpha_id": "Xgoa6Qo5",
+    "S": 0.22,
+    "F": 0.05,
+    "T": 0.0973,
+    "fails": []
+  },
+  "h4_price_change": {
+    "alpha_id": "A1GxKZGw",
+    "S": 0.21,
+    "F": 0.05,
+    "T": 0.1438,
+    "fails": []
+  },
+  "h5_cnn": {
+    "alpha_id": "O0GWaPGJ",
+    "S": 0.69,
+    "F": 0.29,
+    "T": 0.1001,
+    "fails": []
+  }
+}

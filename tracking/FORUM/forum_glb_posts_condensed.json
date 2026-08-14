@@ -1,0 +1,768 @@
+[
+  {
+    "i": 0,
+    "id": "30927669645207",
+    "title": "如何拯救高turnover因子？一文助你理解并降低因子turnover",
+    "votes": 176,
+    "cc": 24,
+    "body": "顾名思义，在回测中常常能遇到高turn高sharpe高fit但低margin的因子。这类因子会直接影响我们的combined performance score，降低被PM采纳获得weight的机会，下面给大家分享如何降低换手率的常见方法\n如何理解turn，margin和return的关系？\n粗线条地说，return=turnover*margin，所以在给定收益的情况下，换手率越高，margin越低。margin跟手续费相关联，所以为了较高的margin，需要压低turnover。形象来说，我今天交易10次股票，挣了100块，那么我单笔交易平均收益10元，扣除5元手续费还有净利润。倘若我用1000次交易挣得100元，那么单笔交易收益降低至0.1元，远远不够手续费。\n降低turn的方式有哪些？\n常见的降turn方式有：增加decay，使用tradewhen，使用降turn运算符。\n增加decay的方式可以提升信号的“一致性”，让信号不是那么频繁的变化（后文我们也会看到，一些降turn的op采取的也是类似的思想）\n使用tradewhen：\ntradewhen相当于增加开平仓条件，减少信号频繁变化的次数。直观的理解：市场并非天天大涨大跌，针对市场整体涨跌幅波动率小于1%（仅为举例）的时间窗口，不进行交易，这样可以减少一段时间内的整体换手率（但是会以表现为代价）\n推荐阅读：\n我可以使用 Trade_when 来降低流水率吗？– WorldQuant 大脑\n使用降turn运算符\n降低turn运算符的核心思路在于限制变化幅度，从而减少仓位变化。可以指定turnover具体数值（实际结果会略微高于这个数值），但注意：较低的数值可能会完全破坏信号逻辑，使得因子无效。\n实操方式：\n本帖给出相关代码，使得可以按照turn区间筛选因子并利用降turn运算符进行处理回测。此外，本帖也提供了一个可以抓取并统计字段（向量类型数据按照vec运算符计算）的方法（来自本人另一篇文章：\n如何统计得到的字段数？如何抓取多地区因子一起检验？ – WorldQuant BRAIN\n）\n抓取因子：\ndef get_alphas(start_date, end_date, sharpe_th, fitness_th,turnover_th_up,turnover_th_down, region, alpha_num, usage):\ns = login()\noutput = []\n# 3E large 3C less\ncount = 0\nfor i in range(0, alpha_num, 100):\nprint(i)\nurl_e = \"\nhttps://api.worldquantbrain.com/users/self/alphas?limit=100&offset=%d\"%(i)\n\\\n+ \"&status=UNSUBMITTED%1FIS_FAIL&dateCreated%3E=\" + start_date  \\\n+ \"T00:00:00-04:00&dateCreated%3C\" + end_date \\\n+ \"T00:00:00-04:00&is.fitness%3E\" + str(fitness_th) + \"&is.sharpe%3E\" \\\n+ str(sharpe_th) + \"&settings.region=\" + region + \"&order=-is.sharpe&hidden=false&type!=SUPER\"\nurl_c = \"\nhttps://api.worldquantbrain.com/users/self/alphas?limit=100&offset=%d\"%(i)\n\\\n+ \"&status=UNSUBMITTED%1FIS_FAIL&dateCreated%3E=\" + start_date  \\\n+ \"T00:00:00-04:00&dateCreated%3C\" + end_date \\\n+ \"T00:00:00-04:00&is.fitness%3C-\" + str(fitness_th) + \"&is.sharpe%3C-\" \\\n+ str(sharpe_th) + \"&settings.region=\" + region + \"&order=is.sharpe&hidden=false&type!=SUPER\"\nurls = [url_e]\nif usage != \"submit\":\nurls.append(url_c)\nfor url in urls:\nresponse = s.get(url)\n#print(response.json())\ntry:\nalpha_list = response.json()[\"results\"]\n#print(response.json())\nfor j in range(len(alpha_list)):\nalpha_id = alpha_list[j][\"id\"]\nname = alpha_list[j][\"name\"]\ndateCreated = alpha_list[j][\"dateCreated\"]\nsharpe = alpha_list[j][\"is\"][\"sharpe\"]\nfitness = alpha_list[j][\"is\"][\"fitness\"]\nturnover = alpha_list[j][\"is\"][\"turnover\"]\nmargin = alpha_list[j][\"is\"][\"margin\"]\nlongCount = alpha_list[j][\"is\"][\"longCount\"]\nshortCount = alpha_list[j][\"is\"][\"shortCount\"]\ndecay = alpha_list[j][\"settings\"][\"decay\"]\nexp = alpha_list[j]['regular']['code']\ncount += 1\n#if (sharpe > 1.2 and sharpe < 1.6) or (sharpe < -1.2 and sharpe > -1.6):\nif (long ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢楼主的详细分享！我最近在GLB地区使用fundamental6数据集研究alpha，也遇到了类似的高turnover问题。\n我的经验：\n- 使用的运算符组合：ts_zscore + winsorize + ts_backfill\n- 初始turnover范围：0.2-0.4\n- 遇到的问题：LOW_SHARPE和HIGH_TURNOVER同时FAIL\n我的疑问：\n帖子中提到的ts_target_tvr_decay运算符，在GLB地区使用时是否需要特别注意decay参数的设置？因为我发现GLB地区的alpha回测速度较慢，想了解一下是否有优化建议。\n我的计划：\n打算尝试帖子中提到的\"将降turn操作作为新2阶使用\"的思路，同时保留原始的group二阶运算符进行对比测试。\n期待更多关于GLB地区降turnover的经验分享！"
+      },
+      {
+        "a": "Unknown",
+        "b": "这篇降低turnover的干货满满！decay_linear和ts_mean确实能平滑信号，但要注意别把信号逻辑也平滑没了。我之前降到0.1后因子完全失效，教训深刻。按turn区间筛选再用降turn运算符处理这个思路值得借鉴。"
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================\n学习了，但是看的一知半解\n标记一下，回头再来看\n===================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "ts_target_tvr_hump，\nhump_decay，\nts_target_tvr_delta_limit 这几个没权限，先跑下试试，感谢大佬分享"
+      },
+      {
+        "a": "Unknown",
+        "b": "get_alphas修改decay后把setting值保留会不会更方便些\n毕竟只是修改decay和alpha  其他都保持不变 这样获取的时候就不用关心地区和中性化等数据"
+      },
+      {
+        "a": "Unknown",
+        "b": "很详细的降低turnover的经验，确实拓宽了很多思路，很多高turnovers的因子也有回测调优的思路了\n==================================================\n感谢大佬的分享，祝大佬vf保持0.9+\n=================================================="
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/30927669645207-%E5%A6%82%E4%BD%95%E6%8B%AF%E6%95%91%E9%AB%98turnover%E5%9B%A0%E5%AD%90-%E4%B8%80%E6%96%87%E5%8A%A9%E4%BD%A0%E7%90%86%E8%A7%A3%E5%B9%B6%E9%99%8D%E4%BD%8E%E5%9B%A0%E5%AD%90turnover"
+  },
+  {
+    "i": 1,
+    "id": "32034293019671",
+    "title": "组sa时如何选取高质量因子？",
+    "votes": 121,
+    "cc": 24,
+    "body": "如题，在顾问群中发现很多刚开始组sa的顾问，不清楚select的具体选择方式。本帖给出对应规则以及一些例子。\n对于expert及以上顾问来说，筛选因子的第一步是用自己的因子，还是组别人的。这个可以通过own和not(own）进行筛选。\n第二步，降低选到的因子是过拟合的，或者混信号的概率，可以通过operator_count限制op数量，dataset_count限制数据集数量。\n（第二点五步，如果想要选取特定category，特定color或者特定tag的因子，也可以进行筛选。研究小组中有大佬提出过利用color和tag对于因子进行分组，从而按组select的方式）\n第三步，选低相关因子：从分散化角度来说,我们自然希望选出的因子相关性较低,这个可以从prod_correlation参数进行控制（selfcor也可以，但是这个是小于等于prod的，不够准确）\n第四步，选老顾问/组合表现较好顾问的因子：平台提供了许多因子owner的相关数据参数，可以根据参数进行筛选，主要包括成为顾问的时长，顾问地区，该顾问的sharpe，fit等等\n第五步，按照表现选因子。出于防止过拟合和刻意筛选的角度，我们不能够直接选高sharpe，高fit的好（not for sure）因子，平台提供了几个字段帮助我们筛选因子，包括turnover，truncation，long和short count等等，按照每个字段的范围进行分组选因子可以大幅降低重复筛选的概率，从而降低相关性。\n前边几步是筛选的过程，对于筛选的权重我们也可以进行调整。\n例如：我们可以按照turnover的大小进行赋权，对于turnover较高的因子赋予更小的 权重（在select表达式后加上/turnover即可），此步需要根据个人需求进行修改。\n总结：\n以上几步是我在筛选中的思考流程，更为详细具体的可以参考\nSelection Expression | WorldQuant BRAIN\n，针对因子选择的流程需要发挥主观能动性，多想多试，才能选出最适合的因子。以下几个案例是我在研究小组发过的select表达式总结，可以基于这三类，对于参数与权重进行调整，从而实现更好的组合。在自动化跑sa的时候，也可以按照不同的“模块”进行组装（但要注意条件不能太苛刻，至少得选出10个因子才能开始跑。）\n(own&& ( (turnover>0.03&&turnover<0.05)||(turnover<0.13&&turnover>0.1)||(turnover<0.17&&turnover>0.15) || ((turnover>0.17&&turnover<0.20)))&&(operator_count<18)&&prod_correlation<0.7)/(sigmoid(turnover)*sigmoid(prod_correlation)*log(long_count))\n(\nnot(own)&&\n((turnover<0.12&&turnover>0.09)||(turnover<0.15&&turnover>0.13)||(turnover<0.19&&turnover>0.16))\n&&(operator_count<8)\n&&(prod_correlation<0.4&&prod_correlation>0.0)\n&&(dataset_count<=2)\n)\n/(turnover*tanh(turnover)*sigmoid(self_correlation)*sigmoid(prod_correlation)*abs(long_count-short_count))\n(own&&(turnover<0.07||(turnover<0.25&&turnover>0.2)))/(sigmoid(turnover)*sigmoid(prod_correlation))",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "组SA选因子的三步法很清晰：指标筛选、颜色分组、低相关选择。prod_correlation控制相关性这块确实是关键，我之前组SA时忽略了这个，结果几个高相关因子一起回撤。按颜色和标签分组这个技巧也很实用。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢楼主游戏王的分享，这可谓是刚升级expert的一份大礼。"
+      },
+      {
+        "a": "Unknown",
+        "b": "终于有了not own权限和资源，这几天赶紧把游戏王大佬的帖子回来看看，开始手搓（受挫， 如下图）：\nnot(own)\n&&in(classifications, \"ATOM\")\n&&(universe!='ILLIQUID_MINVOL1M')\n&&((neutralization == 'SLOW') || (neutralization == 'FAST') || (neutralization == 'SLOW_AND_FAST') || (neutralization == 'CROWDING') || (neutralization == 'STATISTICAL') || (neutralization == 'REVERSION_AND_MOMENTUM'))\n&&(in(datacategories, \"fundamental\")||in(datacategories, \"analyst\")||in(datacategories, \"news\")||in(datacategories, \"other\")||in(datacategories, \"risk\")||in("
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，刚刚组了一个SA，pc0.55  sc0.44，效果看着还不错，希望能多分享"
+      },
+      {
+        "a": "Unknown",
+        "b": "学习到了，感谢游戏王分享。"
+      },
+      {
+        "a": "Unknown",
+        "b": "我之前 VF 一直不搞，对 SuperAlpha 提不起太大兴趣。最近 VF 更新，小有起色，因此开始研究如何组 SA。\n群里对游戏王的帖子推崇备至，今日一看，果然名不虚传，牛！\n感谢游戏王大佬的分享，祝大佬 VF 一直 0.9+\n============================ 积跬步，至千里 ==========================="
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32034293019671-%E7%BB%84sa%E6%97%B6%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E9%AB%98%E8%B4%A8%E9%87%8F%E5%9B%A0%E5%AD%90"
+  },
+  {
+    "i": 2,
+    "id": "36116437735447",
+    "title": "连续12天手搓出pc<0.3的SA是一种什么样的体验！！！",
+    "votes": 112,
+    "cc": 33,
+    "body": "体验就一个字：爽！！！\n自从上次更新vf以来，已经连续12天做出pord_corr<0.3 的SA了，收入也是有了显著提升，基本都在50+以上，如下图所示：\n这12个SA中ASI有5个、GLB有7个，在中性化选择中基本都是risk neutralize，其中8个是statistical，2个fast,2个slow_and_fast。下面是一些selection语句：\n(1-prod_correlation)*((neutralization == 'SLOW') || (neutralization == 'FAST') || (neutralization == 'SLOW_AND_FAST') || (neutralization == 'CROWDING') || (neutralization == 'STATISTICAL') || (neutralization == 'REVERSION_AND_MOMENTUM'))*(prod_correlation<0.4)*(datafield_count<2)*(prod_correlation>0.27)*(turnover<0.35)\n(prod_correlation<0.25)*prod_correlation*(universe==\"MINVOL1M\")*(turnover<0.3)\n(prod_correlation<0.32)*(1+prod_correlation)*(1- in(datacategories,\"pv\"))*(1- in(datacategories,\"model\"))*(1- in(datacategories,\"fundamental\"))*(1- in(datacategories,\"analyst\"))\nprod_correlation*((turnover>0.05 && turnover<0.08)||(turnover>0.1 && turnover<0.13)||(turnover>0.16&&turnover<0.20))*(decay<11)*(1-prod_correlation)*(prod_correlation<0.45)\n基本上以数据集、turnover、neut做分层，希望对大家有所帮助，都能做出pc<0.3的SA.\nps：目前vf 是0.86",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢分享。在vf上了0.9之后，第一次体会到了superalpha的重要性（主要是在回报方面），以前都是代码跑出来合格的，相关性低于0.7就谢天谢地了。。因为自己的因子质量也比较一般，所以也没期待sa能多优秀。直到有一次读了论坛大概游戏王的一篇帖子，开始自己手动调整优化已有的sa，第一次拿到双5，20多刀也是第一次见到啊。。但技术有限，并不能经常搓出好的sa，今天这个帖子又学到了一点，马上开始实践，希望不浪费自己的vf。"
+      },
+      {
+        "a": "Unknown",
+        "b": "六维指标不统计SA的字段数和操作符数，因此，表达式可以做成很复杂。"
+      },
+      {
+        "a": "Unknown",
+        "b": "太猛了，这种一般select出来多大的池子？\n另外，combine就简单用equal weight烹调就可以吗？\n====================================================================\n\"Pain + Reflection = Progress\"\n===================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "看到您的分享，我真心为您感到高兴！连续12天做出prod_corr<0.3的Super Alpha，这确实是一个令人瞩目的成就，特别是VF达到0.86的稳定表现，充分证明了您筛选策略的有效性。\n关于您分享的Selection语句分析： 您提供的几个表达式非常有启发性，特别是第一个表达式中的 (1-prod_correlation) 权重设计。这种设计让相关性越低的因子获得越高的权重，非常巧妙地利用了相关性指标本身来优化选择。同时，您对中性化方式的选择（8个statistical、2个fast、2个slow_and_fast）也体现了对风险控制的重视。\n区域分布策略的智慧： 您提到的\"ASI有5个、GLB有7个\"的区域分布策略很值得学习。这种多市场布局不仅有助于分散风险，还能捕捉不同市场的独特机会。特别是在当前市场环境下，全球化的Alpha策略往往比单一市场策略更加稳定。\n关于turnover分层的创新： 您使用的 ((turnover>0.05 && turnover<0.08)||(turnover>0.1 && turnover<0.13)||(turnover>0.16&&tur"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享构建高质量sa的思路，有权限以来我还没有跑出过0.5以下的sa，现在有了大佬的思路豁然开朗！\n============================= Just do it ！============================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，新人狠狠学习了，关键还得自己的让ra数量比较多，pc足够低才行。\n===============================================================================\n守正心，戒浮躁，恒复盘，危中机。“复利是世界第八大奇迹，关键在于找到可长期重复的正确策略，日复一日、不疾不徐地执行。”—— 爱因斯坦 / 查理・芒格\nAlpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\nsys.setrecursionlimit(α∞)\nPnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值# 有志者事竟成，苦心人天不负。千淘万漉虽辛苦，吹尽狂沙始到金。\n================================================================================="
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/36116437735447-%E8%BF%9E%E7%BB%AD12%E5%A4%A9%E6%89%8B%E6%90%93%E5%87%BApc-0-3%E7%9A%84SA%E6%98%AF%E4%B8%80%E7%A7%8D%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BD%93%E9%AA%8C"
+  },
+  {
+    "i": 3,
+    "id": "37669317975959",
+    "title": "【alpha模板】行业中性化残差信号IND模板",
+    "votes": 90,
+    "cc": 41,
+    "body": "新人报道，11月份中旬成为顾问，刚开始基本断粮，找不到比较好的alpha，交了一些很差的ppac因子，后面觉得不太行，于是开始琢磨论坛大佬的帖子。\n本人因为代码小白，所以阅读大量的帖子后决定用ai，学习了mcp的布置，心流iflow的使用，把工作流搭建起来，把数据集描述复制到知识库里面，基本按【Community Leader -因子筛选与组合⭐】2025 AIAC冠军比赛心得以及当前使用iflow cli的心得（附提示词）这个帖子\nCR35762\n大佬说的步骤来消化，慢慢用起来就有了自己的经验，再把哥布林大佬的IND经验融进自己的工作流里面，在用的过程中按自己的想法不断调提示词，慢慢稳定出货了。\n在IND地区活动中，发现了一个出货量很高的模板ts_zscore（A， 63） - ts_zscore（group_neutralize（A， sector）， 63）。\n这个模板因为找到的alpha比较多，所以我丢给ai给我解释了下：\n这个模板的核心价值是\n，是量化投资中优化因子、构建稳健策略的核心操作，具体拆解为 3 层核心内涵：\n1. 本质：提取指标 A 的「行业中性化残差信号」（核心定位）\n它不是简单对指标 A 做标准化，而是通过「原始值 - 行业中性化值」的差值，实现了「双重剥离」：\n第一层（\nts_zscore\n）：剥离指标的时间趋势和量纲，让信号具备可比性；\n第二层（\ngroup_neutralize\n）：剥离行业层面的共同波动（比如整个新能源行业因政策利好集体推高指标 A、整个房地产行业因周期下行集体拉低指标 A）。\n最终留下的，是「同一行业内，某家公司相对于其他同行的指标 A 相对差异」，以及「该公司指标 A 变化中，无法被行业整体表现解释的特异部分」—— 这部分信号是量化策略获取超额收益的核心来源。\n2. 核心目的 1：规避行业系统性风险，提升策略稳健性\n这是该模板最核心的实战价值，背后的逻辑源于量化投资对「风险可控」的追求：\n行业层面的波动往往由\n等系统性因素驱动（比如加息周期下银行业整体承压、光伏行业受补贴政策影响集体上涨），这类波动具有「不可分散性」，且难以通过个股选择获得稳定超额收益，反而容易带来大幅回撤（比如重仓某一行业时，行业下行会导致整个组合亏损）。\n模板通过剥离行业共性信号，让最终的投资信号「行业中性」—— 即策略不会过度暴露于某一或某几个行业，避免承担不必要的行业系统性风险，实现「无论哪个行业涨跌，都能通过行业内个股选择获取收益」，大幅提升组合的抗风险能力和长期稳健性。\n3. 核心目的 2：提纯个体 Alpha 收益，优化传统因子信号\n在金融领域，收益分为两类：\nBeta 收益：来源于市场 / 行业的系统性波动（随大流的收益，风险高、可复制性差）;\nAlpha收益\n该模板的核心价值就是「剔除 Beta 收益干扰，提纯 Alpha 收益」：\n传统因子（如市值因子、价值因子、成长因子）直接使用原始指标，包含大量行业 Beta 噪音，信号纯度低（比如传统小市值因子可能只是过度暴露于小市值行业的 Beta 收益，而非真正的个股 Alpha 收益）;\n该模板通过行业中性化处理，让指标 A 在「同一行业内具备可比性」（比如仅比较消费行业内的公司指标 A 差异，而非消费行业与金融行业的跨行业差异），剔除了行业间的异质性干扰，使得因子信号更纯净、更有效。\n补充实战场景说明\n这个模板是量化投资中的「通用因子处理模板」，不仅适用于市值指标，还适用于 PE/PB（价值因子）、营收增速（成长因子）、ROE（质量因子）等各类基本面 / 量价指标，主要用于：\n构建\n：筛选同一行业内，指标 A 的个体特异信号具备优势（如持续正向偏离、趋势向上）的标的，构建投资组合；\n作为\n：将处理后的纯净信号纳入多因子模型，提升模型的超额收益能力和稳健性;\n用于\n：同一行业内，某公司指标 A 的个体特异信号持续大幅负向偏离，可能反映其个体基本面恶化（与行业无关），需规避该标的。\n总结\n模板核心：通过「时序标准化 + 行业中性化 + 残差提取」，剥离指标的时间趋势和行业共性噪音，提纯公司个体的行业特异信号；\n核心价值：规避行业系统性风险（提升策略稳健性），提纯个体 Alpha 超额收益（提升策略有效性），优化传统因子的信号纯度;\n底层逻辑：量化投资中「行业中性化」是平衡「收益」与「风险」的经典手段，适用于各类因子的精细化处理，是构建稳健量化策略的基础。\n上面是我通过这个模板加ai进行深度优化挖出来的，都是IND地区的。可以看出这个模板有很强的泛用性，不仅能做单字段atom，也能做多字段ra，涉及的数据集有risk，pv，model，institutions，其他数据集我还没挖出来，不过我觉得应该还有，这个模板还能出很多的变体，可探索的空间很大，其他region应该也能挖出来。\n新的一年，希望能够步步高升，成为master，也祝大家vf早日1.0！！！",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "这个 IND 残差模板很实用——把行业中性化后的残差单独拎出来当信号，确实能剥掉已知行业结构、保留增量信息。补一个和楼上「中性化顺序」帖呼应的点：\n残差到底保留了什么，取决于你中性化时「先剔了谁」\n。\n如果你是先\nindustry\n再在这个残差上做\ngroup\n/\nsubindustry\n，那残差里已经不含行业信息、只含细分群结构；反过来顺序不同，残差捕捉的维度就变了。所以套模板前最好先确认：这个 IND 残差，是要它\"只剩细分群偏离\"还是\"连行业偏离也要留\"——两种诉求对应不同的中性化顺序，别直接套完就当通用信号用。\n另外提个排查习惯：模板量产时容易对同一个维度（比如 industry）中性化两次，第二次是冗余的，既白费算子又可能把有效残差抹掉。提交前用相关性检查确认目标维度确实被压下去了，比堆算子更稳。"
+      },
+      {
+        "a": "Unknown",
+        "b": "ts_zscore(A, 63) 这个模板在 IND 确实出货量高。我最近在 IND/D1/TOP500 上用 group_neutralize + signed_power + group_cartesian_product(pv13_4l_scibr, sta1_allxjp_513_c10) 做了一批 analyst alpha，最好的那条（单字段 recommendation_change_component_medium，signed_power(rank(ts_backfill(field, 22)), 0.5)）IS Sharpe 1.41、Fitness 0.97、turnover 0.10。我注意到用 ts_backfill(field, 22) 而非 ts_zscore(field, 63) 时，turnover 更低（0.10 vs 通常 ts_zscore 的 0.15+），但 Sharpe 也在 1.4 附近，说明在 analyst 这类低频更新字段上，短窗口 backfill 可能比长窗口 zscore 更适合控制 turnover。"
+      },
+      {
+        "a": "Unknown",
+        "b": "这个模板很经典，ts_zscore 差分提取残差这个思路确实好用。从 AI 工作流的角度补充几点：\n1. 模板里的 63 天窗口（约一个季度）很合理，但可以试试 126 天（半年）或 252 天（一年）的版本 — 不同数据集的信号周期不同，长窗口对低频基本面数据可能更合适\n2. 你用 AI 搭工作流这个方法很聪明，把数据集描述放进知识库让 AI 自动选字段，效率比手动翻高很多。建议把模板本身也存进知识库，以后直接让 AI 套模板生成 alpha\n3. 模板在 IND 出货多，说明 IND 的行业结构确实适合这类因子。可以试试把同样的模板应用到 EUR 或 GLB — 这些地区的行业分类更细，残差信号可能更有区分度\n4. 多字段 RA 用这个模板效果也不错，说明它对输入字段的鲁棒性很强。建议在模板外面再套一层 ts_rank 或 ts_decay_linear，控制一下 turnover"
+      },
+      {
+        "a": "FF65210",
+        "b": "ts_zscore(A,63) - ts_zscore(group_neutralize(A,sector),63)这个模板确实干净！残差信号的想法很巧妙，去掉行业共性后留下的就是个股特质信息。我之前在IND也用过类似思路，但用的是group_rank的差，效果不如你这个zscore版本。有个问题：63天的周期怎么选的？我试过20天和120天，感觉63正好平衡了稳定性和时效性。这个周期有没有理论依据？还是经验值？另外你模板在IND跑得好，其他市场试过吗？USA市场行业集中度高，sector中性化后可能信号减弱。EUR市场行业分化大，可能更适合这个模板。还有一个疑问：zscore的std计算，要不要winsorize先处理outlier？有些数据波动很大，直接zscore可能被极端值影响。你模板有没有加winsorize或者其他保护措施？"
+      },
+      {
+        "a": "Unknown",
+        "b": "第一个 mdl26_stm_prc_rt_f12m_rvn     复现不出来，试了很多都卡在2year了。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享！日积月累，日进一步......................终至山顶。"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/37669317975959--alpha%E6%A8%A1%E6%9D%BF-%E8%A1%8C%E4%B8%9A%E4%B8%AD%E6%80%A7%E5%8C%96%E6%AE%8B%E5%B7%AE%E4%BF%A1%E5%8F%B7IND%E6%A8%A1%E6%9D%BF"
+  },
+  {
+    "i": 4,
+    "id": "39224484288663",
+    "title": "[经验分享]一觉醒来全球combine缩水，只有我保持不变❓（总池combine全球第一）",
+    "votes": 99,
+    "cc": 22,
+    "body": "大家好，标题整蛊一下O(∩_∩)O，我是练习量化4个月的新人顾问Ricardo。2月上旬平台更新了combine和vf，当时我的combine从-1.2一举跃升至3.18，提升超4，前后只隔一个月悬殊却如此之大，属实是个值得研究的典型样本。因此我发布了自己去年11，12月的提交数据，希望能够带给大家一些启发，感兴趣的可以看看，能够更好地衔接本文👉：\nhttps://support.worldquantbrain.com/hc/zh-cn/community/posts/38680670654999\n再到后来，1月os期更新导致所有存货全部失效，加上那段时间比较忙，所以提交量相比12月是减少的。我本以为这次更新combine下滑在所难免，结果没想到总池combine再创新高，飙升至3.58，位居全球第一！同时ppa池combine也升至1.85，属实是意外之喜。这样看来，我的提交策略确实是有可取之处的，那就书接上回，继续展开讲讲吧！\n先看下1月的提交数据（建议ctrl+放大观看）：\n1月我只做了USA和IND两个区,数量不多，不过sharpe、fitness、margin，等关键指标都还不错，无论是中位数还是平均值都远高于提交底线。\n再看上次combine出分时的总池数据与本次的对照：\n可以发现变化不大，说明之前的策略确实是可行的，1月时我我又对策略进行了更多细化，得出了以下的结论和猜想：\n重视近几年表现。\n因子的预测能力都是有时限的，有些因子指标很漂亮但2year sharpe不达标，这很可能说明此因子的快要丧失预测能力了，os表现搞不好会一泻千里。即使2year sharpe合格，也要看是否是其中一年的优秀表现掩盖了另一年乏力的情况。这条规则也可以反过来利用，如果一个因子近几年表现很好但前中期略有起伏，那也是可以容忍的。\n注意开启maxtrade后的表现。\n有些因子在开启maxtrade之前表现一路长虹，开启之后却基本是一条水平线，这种最好不要提交。我的理解是开启maxtrade可能更接近实盘表现，如果开启后仍能保持sharpe>1,fitness>0.5的话，就算不错了。\n注意return的隐藏底线。\n如果说margin的高低决定了策略赚钱的效率，而return的高低则决定了这个策略究竟有没有投产价值，说白了，你的return如果连这个地区的银行年化利率都比不过，那在风险更高的市场里还有什么意义呢？\n关于最大回撤的一点看法。\n我之前一直是秉持着最大回撤不能超过return这个观点的，但架不住有些策略就是高风险高收益的。于是我把条件放宽为最大回撤不能出现在近3年，并且除最大回撤以外，每年的小回撤也不能太高，否则仍然说明此策略的稳健性不够。\n精选PPA池。\nPPA池combine是可以通过手动增删标签来控制的，比总池combine相对容易掌控，那自然要优中选优。首先，按RA的标准来筛自然不必多说，一月更新的os期表现也是重要依据，再就是把前4条综合起来应用，核心要义是保留有上升趋势的因子。\n换手率对Osmosis影响的猜想。\n每日os和os combine还是有很大区别的，我了解到有很多顾问的每日os不算差，但os combine却相差甚远，反之亦然。这一方面跟每日os是rank的有关，有时可能单纯的是在比谁亏的少；另一方面，我觉得这跟换手率多少有些关系，低换手率的因子可能会因为单日没有触发交易条件而只守着老本，而os combine的时间窗口相对较长，更能体现出因子真实的表现来。所以，如果想要每日和combine两开花，还是尽量避免给换手过低的因子赋高分吧。\n最后是我做了4个月顾问之后的一点感想，做量化不能陷入“科学迷信”。所谓“科学迷信”最开始是指19世纪物理学家们认为只要知道所有粒子的初始状态，并用牛顿力学算一遍，就能精确算出未来的一切，但后来大家也都知道了，一个名为蝴蝶效应的现象打破了这个幻想。做量化时，我们也要清楚，能长期准确预测市场走向的策略是不存在的，或者说以现在的算力是做不到的，但我们至少可以避免提交即将失效的因子，让自己策略的当打之年延长一些。\n祝大家在即将结算的这赛季猛猛上分，季度奖和base拿到手软！点个赞吧，感谢！！",
+    "comments": [
+      {
+        "a": "LZ63377",
+        "b": "MY82844\n多样性的问题吧，筛选后的ppa基本全是大数据集的了，多样性会差一些"
+      },
+      {
+        "a": "LZ63377",
+        "b": "LK39823\n我一般把4%return当底线，IND地区还会高一点，不过我觉得return对vf的影响大，也可能会影响因子被选中的概率，但对 combine应该没什么影响。"
+      },
+      {
+        "a": "Unknown",
+        "b": "新人大佬好厉害，今天是我成为顾问的46天，但其中大佬说的一点，我就没满足，交PPA按RA的标准来交，真的好难，好几天都不出一个符合RA标准的PPA，所以只能按照sharpe大于1，fitness大于0.5的标准来过滤。\nmargin的话，我之前还交过5以下的，想来第一次更新VF会很低。\nturnover是自己没有注意到的一个点，之后会注意，争取大于5%，margin大于10，向新人大佬学习！"
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢佬分享，COMBINED真的是很让我头疼的课题。接下来需要重点改善COMBINED PPA和COMBINED OSMOSIS. 希望有个好的结果\n======================================\nFIGHTING LABUBU!\n======================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================\n昨天第一次出combined，来学习一下\n1.重视近2年表现\n2.开启max trade后Sharpe>1,fitness>0.5\n3.returns高过地区银行利率\n4.最大回撤不出现在近3年\n5.以RA标准精选PPA\n===================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，收获颇丰！！！\n=============================================================================\nStudy hard — quality over quantity, no room for mediocrity. Cherish every learning opportunity, stay focused, and learn from the experts. Keep pushing!\n============================================================================="
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39224484288663--%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E4%B8%80%E8%A7%89%E9%86%92%E6%9D%A5%E5%85%A8%E7%90%83combine%E7%BC%A9%E6%B0%B4-%E5%8F%AA%E6%9C%89%E6%88%91%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98-%E6%80%BB%E6%B1%A0combine%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80"
+  },
+  {
+    "i": 5,
+    "id": "40960476615319",
+    "title": "【新人向-如何快速查到本次PPA所有数据集及其字段】USA/D1 Fast Datasets Power Pool June`26 theme！",
+    "votes": 108,
+    "cc": 10,
+    "body": "一、引言\nPPA持续时间：2026年6月1日 - 2026年6月14日\n要求： USA  D1 指定数据集   不限股票池 不限中性化\n注意： PV1不在其中，除了豁免字段，使用其他PV1会导致你不是PPA！\n例子： USA D1 TOP3000  共96个数据集\n不同等级不同人，可能略有差异，不过总共在USA D1 TOP3000条件下96个数据集\ndataset.id\n计数\n占比\noption22\n5011\n19.4%\noption23\n2591\n10.0%\nanalyst4\n1324\n5.1%\nanalyst7\n1317\n5.1%\noption4\n1298\n5.0%\nfundamental6\n886\n3.4%\nnews12\n875\n3.4%\nanalyst14\n868\n3.4%\nmodel26\n839\n3.3%\nanalyst44\n797\n3.1%\nanalyst69\n646\n2.5%\nfundamental94\n571\n2.2%\nother466\n565\n2.2%\noption24\n564\n2.2%\nmodel109\n544\n2.1%\nmodel25\n430\n1.7%\nmodel54\n398\n1.5%\nearnings4\n375\n1.5%\npv98\n352\n1.4%\noption13\n305\n1.2%\nmodel135\n273\n1.1%\nnews21\n260\n1.0%\nsentiment33\n255\n1.0%\noption18\n243\n0.9%\nother429\n232\n0.9%\nsentiment23\n210\n0.8%\nmodel38\n200\n0.8%\noption10\n200\n0.8%\nanalyst45\n181\n0.7%\npv13\n165\n0.6%\nanalyst16\n162\n0.6%\nnews7\n162\n0.6%\nother693\n162\n0.6%\nnews5\n145\n0.6%\noption6\n133\n0.5%\nother143\n126\n0.5%\nnews18\n121\n0.5%\nnews79\n116\n0.4%\nnews46\n91\n0.4%\nanalyst9\n85\n0.3%\nnews50\n83\n0.3%\npv103\n79\n0.3%\nmodel246\n77\n0.3%\nother131\n77\n0.3%\nnews59\n71\n0.3%\noption8\n64\n0.2%\nnews38\n63\n0.2%\nsocialmedia15\n63\n0.2%\nnews31\n60\n0.2%\noption7\n58\n0.2%\nmacro38\n56\n0.2%\nnews94\n54\n0.2%\npv81\n52\n0.2%\nmacro27\n48\n0.2%\nnews92\n48\n0.2%\nnews20\n46\n0.2%\npv104\n46\n0.2%\ninsiders1\n45\n0.2%\nnews17\n45\n0.2%\nearnings7\n40\n0.2%\nother492\n39\n0.2%\nearnings11\n35\n0.1%\nnews104\n32\n0.1%\nshortinterest3\n31\n0.1%\nmodel239\n30\n0.1%\nnews77\n30\n0.1%\nnews36\n29\n0.1%\nsentiment18\n29\n0.1%\nnews48\n22\n<0.1%\nmodel250\n20\n<0.1%\nother176\n20\n<0.1%\nnews3\n19\n<0.1%\nearnings14\n18\n<0.1%\nsocialmedia12\n18\n<0.1%\nother78\n17\n<0.1%\nanalyst21\n16\n<0.1%\npv63\n16\n<0.1%\nrisk59\n16\n<0.1%\nshortinterest7\n16\n<0.1%\nsocialmedia5\n13\n<0.1%\nsearch_interest\n11\n<0.1%\nother7\n10\n<0.1%\nnews42\n9\n<0.1%\nother84\n9\n<0.1%\nnews76\n6\n<0.1%\nother16\n6\n<0.1%\npv141\n6\n<0.1%\nearnings5\n5\n<0.1%\nmodel12\n5\n<0.1%\npv53\n5\n<0.1%\nrisk60\n5\n<0.1%\nsocialmedia8\n4\n<0.1%\nsocialmedia9\n4\n<0.1%\nsocialmedia24\n3\n<0.1%\nsocialmedia17\n2\n<0.1%\nmacro10\n1\n<0.1%\n二、本次PPA数据集获取代码\n1.创建一个.yaml文件和一个.py文件\n2.config.yaml\nusername: \"\"\npassword: \"\"\napi_base_url: \"https://api.worldquantbrain.com\"\nplatform_url: \"https://platform.worldquantbrain.com\"\n3. 代码\n配置在102~104行\nimport os\nimport re\nimport yaml\nimport requests\nimport pandas as pd\nfrom tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type\nBASE_DIR = os.path.dirname(os.path.abspath(__file__))\nos.chdir(BASE_DIR)\nwith open(os.path.join(BASE_DIR, 'config.yaml'), 'r') as f:\nconfig = yaml.safe_load(f)\ndef login():\ns = requests.Session()\ns.auth = (config['username'], config['password'])\nresponse = s.post(f\"{config['api_base_url']}/authentication\")\nprint(\"登录状态:\", response.status_code)\nreturn s\n@retry(\nstop=stop_af ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "学习了"
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================  感谢大佬的关于怎么获取PPA的所有数据集和数据字段分享！！！这样就可以不用每次都一个一个查                     ================================自信人生两百年，会当水击三千里=========================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，具有理论又有实操的代码。已拜读系列文章，\n期待您的好更多分享。\n────────────────────────────────────────\nEqual Li · EL94401 ✨\n祝 VF 高高 📈，base 长红 💰，\nPC 过关 ✅，点塔顺利 🗼，\n新赛季 Genius 再上一档 🚀\n────────────────────────────────────────"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢整理的数据集查询方法！刚好近期官方最新的“GLB/D1 Dataset Power Pool June`26”主题上线，这个脚本工具非常及时。我之前在做 USA D1 区域的探索时，经常因为找不全支持 PPA 的数据集而头疼，这下可以更高效地针对性挖掘了。"
+      },
+      {
+        "a": "Unknown",
+        "b": "正被这个问题困扰呢，就来论坛里面搜索，没想到就有人给了方案，感谢分享🙏"
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢老师分享的代码"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/40960476615319--%E6%96%B0%E4%BA%BA%E5%90%91-%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%9F%A5%E5%88%B0%E6%9C%AC%E6%AC%A1PPA%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E9%9B%86%E5%8F%8A%E5%85%B6%E5%AD%97%E6%AE%B5-USA-D1-Fast-Datasets-Power-Pool-June-26-theme"
+  },
+  {
+    "i": 6,
+    "id": "36772838378647",
+    "title": "利用mcp 和优化alpha工作流 成功优化GLB alpha的记录",
+    "votes": 93,
+    "cc": 24,
+    "body": "这是我第一次成功用mcp优化了alpha，非常高兴。这里要感谢小伙伴们论坛分享的工作流，还有研究小组同学的热心推荐；\n这是我参考的工作流来源，在研究小组的顾问的提示下，自己修改成了优化alpha的工作流\nhttps://support.worldquantbrain.com/hc/en-us/community/posts/34670122621207--MCP-Workflow-%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%BEalpha%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%88%86%E4%BA%AB\n使用的是cursor 自带的gemini 3 Pro 模型，购买一个月20美金的会员可以使用，使用前，需要先设置非中国的代理地址，然后打开cursor，才能选到这个模型\n工作流如下：\n工作流程如下：\n# Alpha 优化工作流（D1 版）\n## 🎯 目标与范围（顾问标准）\n- 目标：在 D1 设置下，根据提供的alpha和要求，使用mcp工具worldquant-brain-platform 优化alpha的表现。\n- 成功标准（顾问提交门槛）：\n- Sharpe > 1.58；Fitness > 1.0。\n- Turnover 在 1%–70%；单票最大权重 <10%。\n- 需通过 Sub-Universe、自相关（Self-corr）与全平台相关（Prod-corr）测试；IS-Ladder（D1）阈值：Fail=1.59；2–5年≥2.38；6年≥2.22；7年≥2.06；8年≥1.90；9年≥1.74；10年≥1.59。\n- 表达式使用的操作符，尽可能简洁，不要超过5个\n## 📦 标准参数获取（MCP）\n- 使用 `get_platform_setting_options` 查询可用组合（instrument_type/region/delay/universe/neutralization），据此设置回测参数。\n- USA：以 D1 为默认；选择液体类 universe（如 TOP 系列）。\n- ASI：仅支持 D1；`universe=MINVOL1M/ILLIQUID_MINVOL1M`；`max_trade=ON` 必须开启。\n- 通用：`language=FASTEXPR`、`pasteurization=ON`；其余按平台建议。\n## ✅ Step 0 预检清单 (mcp)\n- 认证：完成平台登录（401 需重新认证）。\n- 数据：确认目标数据集可访问；统计字段 coverage、userCount、类型（MATRIX/VECTOR/GROUP）。\n- 参数：使用 `get_platform_setting_options` 自检参数组合合法性，避免 400。\n- 确认当前提供的alpha_id 的指标情况，通过 get_alpha_details 获取alpha的指标，明确需要提升的方向\n## 🔍 Phase 1 知识库\n- Sharpe夏普比率\n该比率衡量Alpha策略的超额回报（或风险溢价）与其波动性之间的比率。它将PnL的平均值除以PnL的标准差。Sharpe Ratio或信息比率（IR）越高，Alpha策略潜在的回报越稳定，而稳定性是一个理想的特征。BRAIN平台的Sharpe Ratio通过要求为大于1.25来判断是否通过.\n夏普比率 = √252 × [平均盈亏（PnL） ÷ 盈亏标准差（PnL）]\n1. 分析alpha所用的字段含义，，查询可用的操作符，尝试更换操作符；2.平滑pnl ,3, 根据公式思考优化方向\n- fitness : Alpha策略的Fitness是收益、Turnover和Sharpe的函数。Fitness定义为:\nfitness = sharpe × sqrt( abs(returns) ÷ max(turnover,0.125) )\n- Returns年化收益率： Returns是Alpha策略在一个定义的时间段内获得或损失的金额，以百分比表示。BRAIN将Returns定义为:\n年化回报率 = annulizePNL ÷ (0.5 × booksize)\n- Drawdown回撤: Alpha策略的Drawdown是在给定时间段内模拟PnL最大的降低幅度，以百分比表示。计算方法如下:\n最大回撤金额 = 盈亏曲线中峰值到谷底的最大美元差额\n- Margin单位利润率 :Margin是Alpha策略模拟计算出的每一美元交易额的利润；计算公式为:\nmargin=pnl/totaltradedollars\n- Turnover换手率 :Alpha策略的Turnover是衡量模拟每日交易活动的指标，即Alpha策略交易的频率。可以将其定义为交易价值与账面规模的比率。Turnover越高，交易发生的次数就越多。由于交易会产生交易成本，降低Turnover通常是一个理想的特征。BRAIN平台的Turnover通过要求为1%到70%来判断是否通过.\n- 可用的操作符：/Users/zego/Downloads/App_wqbv2/AI_try/operators.json\n## 🚀 Phase 2 优化过程（8个/批）\n- 每次根据提供的alpha_id 生成优化的变种alpha, 8个为1批次进行 create_multiSim 回测\n- 等待回测完成；使用mcp get_alpha_details 获取alpha 的回测结果指标;判断优化效果\n- 如优化效果没有达到目标，重复此过程，直到完成优化目标\n## 🔧 Phase 3 优化经验总结沉淀（MCP）\n- 将本次优化过程中的思考过程，和优化成功的关键步骤，经验总结记录到本地文档，文件名以本地优化的原始alpha_id和日期命名\n## 🧮 Phase 5 去重、多样性与稳健性\n- 相关性：对内/外部 Alpha 做相关性筛选（|ρ| < 0.3）。\n- 多样性：优化方向尽量多样化，某个方向优秀失败，立即尝试从其他方向优化\n- 区域特异：ASI 需 Robust Universe Test（返回与 Shar ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢分享这个GLB alpha优化工作流，非常实用。\n补充一点关于GLB D1 fundamental alpha的turnover特性——最近在GLB D1上批量跑了大量fundamental单数据集alpha（decay=6, SUBINDUSTRY neutralization），发现一个有趣规律：\n- ts_zscore(field, 240) → turnover约0.07（低于HTVR 0.2门槛）\n- ts_zscore(field, 22) → turnover约0.22（通过HTVR门槛）\n- ts_mean(field, 240) → turnover约0.016-0.018（极低）\n也就是说窗口大小对GLB D1 fundamental alpha的turnover影响非常大——短窗口zscore可以同时拿到HTVR 2x乘数和Power Pool 1x乘数（如果数据集在PPA列表里）。建议在multi-sim时把窗口参数作为一个关键变体维度（22/66/120/240），这样一趟回测就能覆盖HTVR和非HTVR两种场景。\n另外注意到平台6月18日刚推出了Stat"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，又学到一招"
+      },
+      {
+        "a": "Unknown",
+        "b": "是不是很耗token呀，还没用AI优化过因子"
+      },
+      {
+        "a": "Unknown",
+        "b": "我有些问题，关于ppa因子是不是ai工具前5轮左右就应该达标如果没有就放弃，如果ra也许才尝试10到20轮优化？可是按照最近课堂老师对于brain打工人回测的讲解，找os达标数据，然后找灵感，然后增强模板，这个时候老师说他那次就有一个差不多能交的ppa因子了。再之后如果认为因子有潜能，就可以尝试稳定性检验，如果ok就尝试缘分一道桥，如果还不行就选择claude+mcp来继续优化。可是我考虑的一点是这样成本会不会太高，而且按照我目前花了7块多的token一个能提交的因子都还没跑出来，所以有点懵了，基本每个步骤我也都尝试了一下，我2月底刚成为顾问，最近一直在学习工具的使用。我没能跑出因子的错误是什么呢？感觉有些挫败。"
+      },
+      {
+        "a": "Unknown",
+        "b": "优化alpha的思路对新手来说很友好,本来还想着不知道怎么用ai优化呢,一下子就明白了,感谢"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢橘子姐分享，很简单直接高效的工作流，收获很多"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/36772838378647-%E5%88%A9%E7%94%A8mcp-%E5%92%8C%E4%BC%98%E5%8C%96alpha%E5%B7%A5%E4%BD%9C%E6%B5%81-%E6%88%90%E5%8A%9F%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%AE%B0%E5%BD%95"
+  },
+  {
+    "i": 7,
+    "id": "32628541177879",
+    "title": "【新人入门】Super Alpha 从入门到入门！",
+    "votes": 73,
+    "cc": 35,
+    "body": "SuperAlpha 理论与实操指南：从单因子走向系统组合\n一、什么是 SuperAlpha？\n在 BRAIN 平台上，每个 Regular Alpha 是一个策略信号，而 SuperAlpha 则是通过系统性逻辑表达，把多个 Alpha 策略按一定权重组合，构成一个更稳定、更强大的复合策略。\n构建 SuperAlpha 有助于：\n提高整体稳定性\n：降低单一 Alpha 波动风险；\n改善评分表现\n：提升 VF、Combined Score 等关键指标；\n增强盈利能力\n：获得额外 $1–$60 的基础奖励；\n扩大参与边界\n：通过组合构建方式，进入更复杂市场结构；\n升级顾问等级\n：构建 SuperAlpha 是通往高级顾问权限的核心门槛。\nSuperAlpha 是策略研究从“因子开发”走向“系统构建”的关键一步。\n二、SuperAlpha 的构建结构\nSuperAlpha 包含两个核心表达式：\nSelection Expression\n：选择哪些 Alphas 进入组合；\nCombo Expression\n：决定这些 Alphas 如何每天按比例加权组合。\n逻辑流程如下：\n使用 Selection Expression 为每个 Alpha 计算一个分数；\n系统按分数高低排序，选出前 N 个 Alphas（由 Selection Limit 决定）；\n使用 Combo Expression 为这些 Alphas 每天分配组合权重；\n输出结果构成最终 SuperAlpha。\n三、Selection Expression 原理详解\n核心机制：排序与筛选结合\nSelection Expression 的本质不只是筛选器，而是一个\n筛选+打分函数\n。系统对每个符合条件的 Alpha 计算表达式数值，称为\nselection weight\n，然后按照该值从高到低排序，选出前 N 个 Alphas，N 由\n回测设置中的\nSelection Limit\n控制。\n这一机制意味着：\n表达式结果可以是布尔值（1/0），也可以是连续评分；\n排名靠前的 Alpha 才会被选入组合；\nSelection Limit\n是一个“名额阈值”，控制最终入选 Alpha 的数量。\n示例表达式对比：\n类型\n表达式\n说明\n布尔型\nturnover < 0.2\n所有符合条件的 Alpha 得分为 1，其余为 0，系统在所有 1 中取前 N 个\n连续评分\n1 - self_correlation\nAlpha 越不相关，得分越高，更容易入选\n组合表达\n(fitness > 2) * (1 - prod_correlation)\nfitness\n是门槛，\nprod_correlation\n决定排序优先级\n多因子加权\n0.5 * (1 - turnover) + 0.5 * (1 - self_correlation)\n自定义加权评分，综合多个维度\nSelection Handling Setting里的部分参数：\nPositive\n（默认）：只保留 > 0 的得分；\nNon-Zero\n：保留所有非零值；\nNon-NaN\n：只剔除 NaN，适用于复杂逻辑表达式。\n四、Combo Expression：构建权重逻辑\nCombo Expression 用于为选中的 Alpha 分配每日权重。\n系统会将选中的 Alphas 表达式输出按\n(A x D x I)\n维度组织成矩阵，Combo Expression 的结果是一个\n(D x A)\n的权重矩阵。最终组合输出是加权后的 Alpha 信号总和。\n常见表达式示例：\n用法\n表达式\n说明\n等权组合\n1\n每个 Alpha 权重相等\nIR 加权\nts_ir(generate_stats(alpha).returns, 250)\n最近一年表现好的 Alpha 权重更高\n稳健性加权\n1 - reduce_max(self_corr(generate_stats(alpha).returns, 500))\n高相关 Alpha 权重降低\n低换手惩罚\nts_ir(stats.returns, 250) * (1 - stats.turnover)\n结合表现与换手率优化组合结构\n五、回测与组合设置建议\n参数\n建议配置\nSelection Limit\n30–100，建议从 30 起测，不建议超过500\nDecay\n0–3，用于平滑组合变动\nTruncation\n通常为 0.08，避免过拟合\nNeutralization\nCOUNTRY（全球）\nPasteurization\nON，用于控制非样本内数据干扰\nMax Trade\n强烈建议在 MINVOL1M 时开启，验证组合可投资性\n六、Global SuperAlpha 构建要点\n构建 Global SuperAlpha 时需特别注意区域间中性化与数据质量问题：\nneutralization = COUNTRY\n是推荐的；\n推荐在\nTOP3000\n上先调试，再迁移至\nMINVOL1M\n回测提交；\n精选 Neutralization 设置为 COUNTRY 且 OS 数据完整的 Alpha：\nneutralization == \"COUNTRY\" && os_start_date <= \"2022-01-01\"\ncombo_a\n运算符适用于组合差异化高的 Alpha；\n开启\nmax_trade\n，确保策略在流动性约束下具备实际可投资性。\n七、平台权限与提交机制\n顾问等级\n可访问池\n非自有 SuperAlpha 配额机制\nGold\n自有池\n无权限构建非自有 SuperAlpha\nExpert\n自有 + university 池\n每提交 1 个自有组合，解锁 1 个非自有组合配额\nMaster\n自有 + 国家池\n同上\nGrandmaster\n自有 + 全平台池\n同上\n表达式中使用：\nown\n：限制只使用自有 Alpha；\nnot(own)\n：排除自有，只用外部池（需有配额）；\n平台在模拟阶段会检查配额是否满足条件。\n在有比赛期间，可能限时开放更多的权限，并放宽not own的配额限制\n八、实用设计建议\n使用标签系统（tags）管理 Alpha 分类，提升表达式可读性与管理效率；\n为每个 Com ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "读完感觉 SA 的关键不是把指标最高的 alpha 堆进去，而是先用 selection 定义“可用池”，再用 combo 控制相关性和近期衰减。等权基线也很重要，能防止过度设计。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢这份入门指南！作为刚接触SuperAlpha的新手，我补充几个实操中踩过的坑：1）Selection表达式不要只看fitness，建议加上turnover < 0.3的约束，否则选出来的alpha虽然fitness高但tvr也高，组合后很难通过相关性测试；2）Combo表达式新手建议先用等权（1）开始，等熟悉了再尝试combo_a，因为combo_a对alpha池的质量要求更高，如果池子里有噪声alpha反而会拉低整体表现；3）关于Own和Not Own的选择，新手建议先从Own开始——用自己提交过的alpha组SA，因为对这些alpha的表现特征更了解，更容易构建出稳定的组合。等Own做熟练了再尝试Not Own，利用平台的alpha池来增加多样性。"
+      },
+      {
+        "a": "Unknown",
+        "b": "ts_ri没这个函数"
+      },
+      {
+        "a": "Unknown",
+        "b": "这篇文章对super alpha做了详细的介绍和总结，对理解super alpha很有帮助，谢谢分享。"
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢大佬分享！学习了！"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32628541177879--%E6%96%B0%E4%BA%BA%E5%85%A5%E9%97%A8-Super-Alpha-%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%97%A8"
+  },
+  {
+    "i": 8,
+    "id": "34752699977111",
+    "title": "[BRAIN LAB实战]记录一次借助Labs优化GLB alpha的过程",
+    "votes": 89,
+    "cc": 14,
+    "body": "首先这个alpha的来源，是参考了老虎哥的这个帖子 ： ➡️\n使用MCP来帮助自己手搓Alpha\n感谢老虎哥的分享！\n想点下earnings数据集，先看了下数据集的字段，发现直接用machine_lib套一二阶，可能不太行，群里咨询了下小伙伴，有热心的小伙伴提示可以参考下这篇帖子。万分感谢！\n看了这篇帖子后，我直接原表达式在GLB ，ASI ,EUR回测了下，发现，ASI地区指标ok，但是robust指标 FAIL了，而且robust指标距离pass 的值还是挺大的，就先放弃了。EUR基本没有信号，而GLB地区的，信号还是挺强的，如下：\n接下来是尝试优化指标\n# 1. 修改了下neu 为country后，达到ppa的指标（prod 相关性0.9+），如下，但是三条pnl线中，EMEA 线偏离比较大，sharpe -0.35\n# 2. 初步尝试了下修改settings参数和 操作符参数，没有改善。考虑到这条线明显和其他pnl线偏离比较多，怀疑是不是异常值导致的，于是我去lab看了下数据的一些可视化指标，发现，关于最高覆盖率 top5的股票，有一个明显和其他值差距过大的，如下：\n# 3.  于是想着，是不是排除掉一些明显偏离其他值过大的股票看看\n通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值后，再进行其他操作符处理；\n经过测试，发现当过滤掉大于-150时，is指标比较好,如下：\n优化前后的指标对比：\n# 4. 优化后，turnover比较低了，考虑到之前老师说过，turnover过低的alpha，并不好，且lab中显示，该字段的turnover基本有10%左右，于是想着看看能不能提升下turnover\n参考了下面的这篇帖子的思路，\n感谢QX52484 小伙伴的分享！\n如何利用tvr操作符与alpha起舞\n利用ts_target_tvr_decay(x, lambda_min=0, lambda_max=1, target_tvr=0.1) 操作符将\nturnover从 1.17% 提高到了4.66%\n（参数设置为lambda_min=0, lambda_max=1, target_tvr=0.1）\n以及8.14%\n（参数设置为lambda_min=0, lambda_max=5, target_tvr=0.1），同时\nsharpe指标和fitness，returns都得到了显著的提升\n，而且\nprod corr从0.9009下降到了0.7655\n！真是令人惊喜的意外啊（感谢小伙伴在论坛分享的各种帖子！）\n参数设置为\nlambda_min=0, lambda_max=1, target_tvr=0.1\n的 alpha指标如下：\n参数设置为\nlambda_min=0, lambda_max=5, target_tvr=0.1 的alpha图如下：\n到此，alpha优化结束。\n（可能你会问，我咋提交了turnover较低的那个alpha，只能说：指标过于相似导致我复制错alpha_id了！我发现的时候，程序还在提交，赶紧去页面把description 去掉了，想让服务器提交失败，结果晚了，10几秒就交上去了...... 😭😭😭 ）",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢橘子姐的分享，我想开GLB区的alpha了，正开始摸索中，您的经验给我很大的帮助，tur这个操作符我确实用的很少，学习了。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，Brain Labs真的非常有用！ 我最近已经离不开它了。"
+      },
+      {
+        "a": "Unknown",
+        "b": "“通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值后，再进行其他操作符处理”\n我想问问这里的小于的这些值是从哪里得到的？我看了下图两眼一抹黑 不知道这些值从哪里来的？"
+      },
+      {
+        "a": "Unknown",
+        "b": "想要降低操作符，搜到了这里。要学的还很多。。感谢分享。"
+      },
+      {
+        "a": "Unknown",
+        "b": "\"通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值\"\n真的学到了，原来可以这样处理极端值， ts_target_tvr_decay我也一直在用，自从看到起舞那篇帖子后。\n===================================================================================\n===================Talk is cheap,show me the alpha================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢橘子姐的分享，橘子姐写论文真可爱哈哈哈\nts_target_tvr_decay 这几个降低tvr的op 我感觉效果都不是很好\n可能是我使用的方法还存在问题，感谢楼上的分享 我去实操试试\n==========================================================\n=========================================================="
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/34752699977111--BRAIN-LAB%E5%AE%9E%E6%88%98-%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%80%9F%E5%8A%A9Labs%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%BF%87%E7%A8%8B"
+  },
+  {
+    "i": 9,
+    "id": "33294035948311",
+    "title": "【大角羊】《2025SAC比赛ATOM第三分享》请国区G2的兄弟们看过来，希望我在ATOM中获得高分的经验给你们一些启发！",
+    "votes": 90,
+    "cc": 10,
+    "body": "相信很多人和我一样，虽然可以组出来加分的走势良好的super alpha，但是并不完全了解这样select和combo的作用，以及它的os表现会如何。所以大部分情况下，许多人要么是为了交sa而组sa，要么是为了调低prod来获取更高的base，只有少数人会去研究如何让自己组的sa在is表现良好的同时也可能在os表现依然出色。\n在SAC比赛之前我并没有组过sa，所有组sa的经验都是这二十几天的经验，这期间我没有使用代码回测，每天都是手搓，也是收获了一些帮助优化sa的技巧。在此，要感谢weijie老师的帖子-\n【有奖】SuperAlpha征文：分享你独到的selection和combination方法！\n并且特别感谢游戏王\nZS59763\n的经验分享：\n(\nnot(own)&&\n#选择不是自己的因子\n((turnover<0.07&&turnover>0.05)||\n(turnover<0.15&&turnover>0.13)||\n(turnover<0.12&&turnover>0.09))\n#按照turnover进行分层，每次选取不同的范围以保证每次选到的因子不同，提升多样性\n&&(operator_count<8)  &&(dataset_count<=2)\n#限制op和pyramid个数，降低过拟合的概率\n&&(prod_correlation<0.5&&prod_correlation>0.1)\n#按照prodcor筛选，0.5可以保证充分的分散化，0.1则是保证不选到奇奇怪怪的东西（一些厂或者极端的pnl）\n#以上为组合部分，以下为权重分配\n)\n/(turnover*s_log_1p(turnover)\n#按照turnover进行加权\n*sigmoid(self_correlation)\n*sigmoid(prod_correlation)\n#按照prodcor进行加权，为了防止权重变化过大，比如0.5和0.1权重差五倍，容易集中到一个因子上去\n*abs(long_count-short_count))\n#按照多空进行加权，对于多空平衡的因子赋予更高权重，可以避免选到偏多或者偏空因子\n我组的sa的selection就是受这段表达式的启发的，游戏王大佬也是解释的很详细了。这种组sa的思路就是“\n择优而优\n”，因为选择的regular alpha比较优质，所以组的super alpha自然而然就会比较优质。\n我就是用这个alpha加以调整在每个主题的多个region上提交了，并且分数都还可以，总分一直保持在百名左右，足以看到这个selection的强大之处！\n至于combo，我一般常用的就三种：\n等权combo：1\n单combo_a表达式：combo_a(alpha,nlength=252,mode='algo1')（实测换成160效果也不错）\n多combo_a表达式：\nw1=combo_a(alpha,nlength=40,mode='algo1');\nw2=combo_a(alpha,nlength=160,mode='algo1');\nw3=combo_a(alpha,nlength=252,mode='algo1');\nsigned_power(scale(w1)+scale(w2)+scale(w3),2)\n这三种combo的作用机制区别很大，还有其他的combo的表达式的写法我试过但是is表现一般，就暂时没用了，但是建议大家多去尝试，找到最合适的。\n最后一周了，祝愿大家可以在这一周做出好的alpha，成功逆袭，加油！VF1.0！！！",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "这个sa的combo表达式很好的帮助了降低sa的相关性，太感谢了，多亏了这些表达式，之前跑的pc太高了，现在的pc都很低"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，使用下来效果很好，补充几点自己的心得：\n1、主贴的筛选条件比较严格，筛选出来的alpha数量可能比较少，这时可以通过修改筛选条件来扩大筛选范围，比如 把 prod_correlation<0.5修改成 prod_correlation<0.6，或者对turnover的数字进行修改。\n2、如果当前Region是EUR，可以加上筛选条件\n&& universe != \"ILLIQUID_MINVOL1M\"\n3、w1=combo_a(alpha,nlength=40,mode='algo1');\nmode对应的赋值algo1可以尝试修改成algo2、algo3，降低prod相关性"
+      },
+      {
+        "a": "Unknown",
+        "b": "大角羊的攻略简洁而有力。总结:\n1.not(own)\n2. turnover分层\n3.限制op和pyramid个数，降低过拟合的概率\n4.按照prodcorr筛选，0.5可以保证充分的分散化，0.1则是保证不选到奇奇怪怪的东西（一些厂或者极端的pnl）\n5.加权（by turnover / self corr / prod corr / abs(long_count-short_count))\n5.combo_a或组合combo_a\n简明清晰，真的受益匪浅\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，"
+      },
+      {
+        "a": "Unknown",
+        "b": "非常好的经验。感谢分享啊。俺正非常需要"
+      },
+      {
+        "a": "Unknown",
+        "b": "哥，你简直是我的神啊！！！！我萌新小白，真的一点都不懂SA，看完你这篇帖子，真的茅塞顿开！马上去回测了一下，结果非常精细！SC0.3，prod0.7，虽然prod有点高，但是没关系！我已经通过你的例子知道怎么去修改这个select了！十分感谢你！\n=================我坚信，在Genius排行榜上，终会有我的Grandmaster席位！！！============="
+      },
+      {
+        "a": "AL13375",
+        "b": "29090704445463\n应该是解锁了super alpha 权限的，你再提交一个regular alpha，明天12点之后看看行不行。（记得加上own，因为现在你应该是只能组自己的）"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/33294035948311--%E5%A4%A7%E8%A7%92%E7%BE%8A-2025SAC%E6%AF%94%E8%B5%9BATOM%E7%AC%AC%E4%B8%89%E5%88%86%E4%BA%AB-%E8%AF%B7%E5%9B%BD%E5%8C%BAG2%E7%9A%84%E5%85%84%E5%BC%9F%E4%BB%AC%E7%9C%8B%E8%BF%87%E6%9D%A5-%E5%B8%8C%E6%9C%9B%E6%88%91%E5%9C%A8ATOM%E4%B8%AD%E8%8E%B7%E5%BE%97%E9%AB%98%E5%88%86%E7%9A%84%E7%BB%8F%E9%AA%8C%E7%BB%99%E4%BD%A0%E4%BB%AC%E4%B8%80%E4%BA%9B%E5%90%AF%E5%8F%91"
+  },
+  {
+    "i": 10,
+    "id": "28050210195863",
+    "title": "我用来获得 MAPC 全球第一的 GLOBAL 数据处理方法。",
+    "votes": 91,
+    "cc": 8,
+    "body": "首先，MAPC 比赛只集中在 GLB，所以我的算法在 GLB 区域的表现会优于其他地区：\n由于 MAPC 的评分标准包括 datafield score\n，为了尽量减少使用过多的数据，我每次只使用一个数据与每个 alpha 结合，并通过嵌套函数的方式对这些 alpha 进行连续操作，同时配合对同一数据进行加减乘除的运算。\n我总是选择在低流动性数据集上运行 alpha\n，以优化 alpha 的运行时间。运行完成后，我会选择表现最好的 alpha（优先选择 IS 得分高且不过拟合的 alpha）。接着，我会重新运行这些 alpha，并切换到可视化模式。\n与其他区域不同的是，在 GLB 上运行可视化模式时，可以查看 \"average size by country\"（按国家的平均规模）。这一功能对我的算法方向非常有帮助。\n比如，在 MAPC 比赛中，根据我的主观判断，我将 alpha 重点指向了英国、澳大利亚、日本以及一些北欧国家。这一策略效果显著，因为比赛结束两个月后，我的 value factor 已经达到了 1.0。\n由于合并后的 alpha（merged alpha）至关重要\n，我在提交前会对所有的 alpha 进行可视化检查。这确保了我的 merged alpha 可以按照预设的算法正确运行。\n感谢大家阅读我的文章！如果你感兴趣并想进一步了解，我会再写一篇关于如何构建 super alpha 的文章，这也是我在 SAC 比赛中取得前三名的秘诀。",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "MAPC 全球第一作者的 GLB 数据处理方法，读完后对 ASI 迁移有几点感想：\n\"每次只使用一个数据字段 + 嵌套函数连续操作\"\n其实是 ATOM 哲学的极致版——这在 2026 KOR/CHN 数据集相对稀缺时尤其有效；但 ASI 里 virgin 数据集预测 starmine 字段族其实\nsuite 内多字段 atom\n相比单字段有 Sharpe 溢价。\n\"把 alpha 重点指向英国、澳大利亚、日本等\"\n是 GLB 独有的优势——V-on 可视化可看 avg size by country，但 ASI 没有这个视角。替代方案：对 ASI 跑 V-on 后读 by-country pnl 表，手动挑 JP/HK/AU 单个国家的子 alpha。\n\"merged alpha 可视化必查\"\n对 ASI MINVOL1M 是 double-edged sword——合并到 pool 后由于 dressage 规模小，单条 alpha 对 pool Sharpe 影响大，必须做\"提交后 pool 冲击\"模拟。\nValue Factor 1.0\n是 MAPC 特定规则红利——普通路径 V"
+      },
+      {
+        "a": "Unknown",
+        "b": "将 alpha 重点指向了英国、澳大利亚、日本以及一些北欧国家。这个策略倒还是第一次听到，可以尝试一下"
+      },
+      {
+        "a": "Unknown",
+        "b": "Thanks for the insight."
+      },
+      {
+        "a": "Unknown",
+        "b": "========================感谢大佬分享==============================\n这篇文章分享的策略非常实用，感谢大佬分享。我有几个问题，能否请您有时间回答一下：\n1.如何判断一个数据集的流动性高低呢？\n2.每次只选择一个data field的意思是，在已经挖掘好alpha的基础上，然后来加减data field吗？\n3.merged alpha具体指的是什么呢？\n========================感谢大佬分享=============================="
+      },
+      {
+        "a": "Unknown",
+        "b": "这篇文章分享的策略非常实用，尤其是在 MAPC 比赛中集中在 GLB 区域的表现，利用低流动性数据集来优化 alpha 的运行时间，真的能帮助提高效率。你通过不断调整 alpha 并关注 IS 得分以及过拟合问题的做法非常科学，显示出对算法的深刻理解。特别是你提到的可视化模式和“average size by country”功能，非常有助于根据不同国家的特点来调整策略。这种基于数据分析和主观判断相结合的策略非常值得借鉴，也能在实际应用中带来显著的效果。期待你后续关于如何构建 super alpha 的文章！"
+      },
+      {
+        "a": "Unknown",
+        "b": "催更催更！！"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/28050210195863-%E6%88%91%E7%94%A8%E6%9D%A5%E8%8E%B7%E5%BE%97-MAPC-%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80%E7%9A%84-GLOBAL-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95"
+  },
+  {
+    "i": 11,
+    "id": "32223192365207",
+    "title": "【PPAC 提交经验分享】注意！Prod Correlation 报错，实际卡点可能是 Power Pool 相关性",
+    "votes": 91,
+    "cc": 5,
+    "body": "各位还在肝 PPAC 的朋友们，大家好！\n最近在提交 Power Pool Alpha 的时候，遇到了一个有点迷惑的报错情况，研究了一下，想把经验分享给大家，希望能帮到可能遇到同样问题的人。\n情况是这样的：\n大家知道，PPAC 的规则里明确写着 Power Pool Alpha\n豁免检查 Prod Correlation\n。同时，对于 “Self-Correlation” 中的\n“与已标记为Power Pool的Alphas的相关系数 ≤0.5”\n这一条，如果超过了，系统也是不会允许检查通过的。\n但诡异的地方来了：\n当我这个 Power Pool 相关系数（比如 0.6104）确实超过 0.5 时，我收到的\n并不是\n预期的明确 Power Pool 相关性超标的因此无法提交的 FAIL，而是直接收到另一个\nFAIL\n，提示信息是\n“Prod correlation 0.9311 is above cutoff of 0.7 and Sharpe not better by 10.0% or more.”\n我的分析和结论是：\n尽管 PPAC 规则中 Prod Correlation 是豁免项，但当你的\n“Power Pool的Alphas的相关系数” 实际上已经大于 0.5 时，系统似乎会转而通过 Prod Correlation (>0.7) 这个条件来卡住你的提交，并给出 FAIL。\n也就是说，虽然错误信息显示的是 Prod Correlation 问题，但\n根本原因很可能是你的 Alpha 与现有 Power Pool Alpha 的相关性超过了 0.5 的阈值\n。它没有直接报 Power Pool 相关性超标导致 FAIL，而是“借用”了 Prod Correlation 的名义。\n给大家的提醒：\n所以，如果你在提交 Power Pool Alpha 时，明明知道 Prod Correlation 是豁免的，但最后却收到了因为 Prod Correlation 过高（比如 >0.7）而导致的 FAIL，那么请\n务必回头检查你的 Alpha 与现有 Power Pool Alphas 的相关系数是否已经超过了 0.5\n。这很可能才是真正的症结所在！\n虽然规则说放低了条件，不查 Prod-Correlation，但还是需要我们注意，避免提交IS表现很差的Alpha，从而影响我们的 Value Factor。\n希望这个小发现能帮到大家，祝各位提交顺利！",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "楼主这个「报的是 Prod Correlation，真凶是 Power Pool Correlation」的发现非常重要，二楼补的「PP 检测不过就降级按 regular alpha 再判一次」也把机理说清楚了。我这两天在 GLB High Turnover 主题上做同基因批量探针，正好从\nGET /alphas/{id}/check\n的原始返回\n里，把这件事往前推了一步：\n其实不用等到提交报错，在 IS 阶段就能提前判定自己够不够 Power Pool 资格\n。下面是可复现的判别实验和两个容易踩的口径坑。\n一、关键观察：\nPOWER_POOL_*\n这两条 check 条目是「有条件出现」的\n大家平时看 /check，多数是看每条 record 的\nresult\n是 PASS 还是 FAIL。但 Power Pool 这两条（\nPOWER_POOL_CORRELATION\n/\nPOWER_POOL_DESCRIPTION_LENGTH\n）有个特殊之处：\n它们不是恒定出现的\n——同一个数据集、同一根基因、只差一个连续参数的 5 条 alpha 里，有的 /check 返回里带这两条，有的"
+      },
+      {
+        "a": "Unknown",
+        "b": "这个发现非常关键，PPAC提交时Prod Correlation报错但真正原因是Power Pool相关性超标，这个间接报错机制确实容易误导。我想进一步补充的是，当你确认是Power Pool相关性超标后，除了换alpha之外还有一个实操技巧：检查你的alpha与现有PP pool中alpha的operator组合相似度。很多时候相关性高不是因为用了相同的数据字段，而是因为用了相同的operator序列结构——比如都用了ts_regression加group_zscore的组合。在这种情况下，替换掉其中一个operator就能显著降低相关性而不损失alpha质量。一个具体的做法是把group_zscore换成group_neutralize再加signed_power压缩，或者把ts_regression换成ts_rank配合ts_delta。另外，建议在提交PPAC alpha之前先用已有的regular alpha做一个简单的横截面相关性扫描，找出和自己alpha最接近的那几个，针对性地做operator级别的差异化改造，这样比盲目提交然后被报错再重试效率高得多。"
+      },
+      {
+        "a": "Unknown",
+        "b": "是说如果报错：\nPure Power Pool submission does not match any Power Pool Theme.      没关系，只要符合Regular alpha的标准还可以继续提交吗？"
+      },
+      {
+        "a": "Unknown",
+        "b": "确实会有这种情况，感谢楼主提醒"
+      },
+      {
+        "a": "Unknown",
+        "b": "这个逻辑其实是power pool alpha的优先级高于regular alpha，当power pool alpha检测不通过后，系统会将其作为regular alpha处理，看是否满足regular alpha的条件，如果满足则作为regular alpha提交，如果不满足就会返回regular alpha的检测失败信息。"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32223192365207--PPAC-%E6%8F%90%E4%BA%A4%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%B3%A8%E6%84%8F-Prod-Correlation-%E6%8A%A5%E9%94%99-%E5%AE%9E%E9%99%85%E5%8D%A1%E7%82%B9%E5%8F%AF%E8%83%BD%E6%98%AF-Power-Pool-%E7%9B%B8%E5%85%B3%E6%80%A7"
+  },
+  {
+    "i": 12,
+    "id": "38186960329367",
+    "title": "26年2月全球会议重点内容整理",
+    "votes": 78,
+    "cc": 13,
+    "body": "一、Osmosis Score机制（Genius评估新模块）\n核心目标\n：通过“信心分数”影响奖金分配，赋予顾问对alpha组合的自主权。\n操作流程\n：\n分配10万点数至不同范围；\n标签alpha（每范围至少10个alpha，覆盖3+区域+延迟）；\n基于组合表现赚取乘数。\n评分规则\n：每日Osmosis分数 = 所有区域/延迟下组合平均回报的排名；分数直接影响每日奖金（作为乘数），并纳入季度Genius等级评估（与CAP、CSAP等组合表现并列）。\n关键细节\n：\n每周日午夜（美东时间）采样点数分配，周三起展示分数；\n超级alpha可参与，点数无周内过期，可灵活调整；\n与“质量因子”功能类似，不替代其他奖金影响因素。\n二、Thematic Power Pool更新\n核心变化\n：\n竞赛更短、更聚焦（ centrally 识别价值方向）；\n风险处理非强制；\neligibility降低至“至少5个alpha”（原为10个）；\n仅主题内alpha可参与，默认乘数1x（无主题乘数）。\n不变项\n：标签方法论、每日/每月配额、Genius中合并Power Pool分数。\n2月-3月竞赛安排\n：\n2月：GLB TOPDIV3000（1 - 15 Feb）、AMR/TWN/HKG/JPN/KOR Delay 1（16 Feb - 28 Feb）；\n3月：Fast Risk Factor（1 - 15 Mar）、GLB all Risk factors（16 Mar - 29 Mar）。\n一次性奖金\n：1st $600、2nd $500、3rd $400，4 - 8th $300/人，9 - 10th $250/人，11 - 15th $200/人，16 - 20th $150/人，21 - 30th $125/人，31 - 40th $100/人。\n三、二月主题（February Themes）\n1. Country Specific ATOM\n范围\n：AMR、TWN、HKG、JPN、KOR；\n规则\n：\n单数据集alpha（纯数据，非价格类）；\n亚洲地区需通过新maxtrade测试（维持原性能70%）；\n数据集更丰富，支持更多探索。\n主题细节\n：Delay 1模拟，持续3周（1月25日 - 2月15日），ATOM获2倍乘数。\n2. EUR TOPCS1600\n范围\n：新宇宙（排除GBR、ZAF等热门国家，聚焦德/法/瑞士）；\n规则\n：\n需维持Sharp≥0.7（特定国家），目标Sharp>0.8、Margin>5%；\n需通过rank test验证鲁棒性。\n主题细节\n：提交EUR TOPCS1600，持续4周（2月16日 - 3月26日），2倍乘数适用于普通alpha和ATOM。\n四、数据创建挑战（Data Creation Challenge）\n首次平台级创新\n：顾问可在BRAIN平台创建数据集，通过API获取原始文本数据（含情感、工具映射等标注），处理后上传结构化csv并模拟Alphas。\n参与限制\n：前3000名注册（2月20日开放，先到先得）。\n评分与奖励\n：\n评分：25% IS + 75% OS（ tagged simulation）、主观评估（Python脚本）、前10名现场展示；\n奖励：3万美元一次性奖金池（50个名额）。\n五、其他重要信息\nQuant Seps教育资源\n：短内容视频系列（30 - 90秒），覆盖核心概念，已上线YouTube，后续将同步至LinkedIn/Instagram及BRAIN平台。\nPower Pool获奖者宣布\n：强调alpha描述的重要性（避免因描述缺失/错误被 disqualified），两个Power Pool（印度迪雷湾、全球数据集）各40名获胜者，总奖金$15,000（每池$7,500）。\n以上内容整合了会议中关于平台机制更新、竞赛安排、创新挑战及资源发布的核心信息，覆盖Osmosis Score、Thematic Power Pool、二月主题、数据创建挑战等关键板块。",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢分享，之前不明白Osmosis更新机制，看了大佬的总结，明白了些，原来是周日采样，周三才更新，但是为何每日的分数还是在变化，每日都重新分配的话，是否不会影响当周每日的osmosis分数，直到下周才产生影响？"
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢佬的分享！ 平台不定时的举办不同主题，有时都记不过来，有这样一份会议纪要真的很实用！\n=========================================\nFIGHITNG LABUBU!\n========================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，会议总结的很好，清晰具体。\n---------------------------------------------------------------------------\nα≠运气 |α=Edge E [PnL]=∑(E [r_i]×w_i) σ↓→Sharpe↑\nFactor=Signal-Noise Backtest→Live→Repeat βNeutral|αMax\nWin>Loss|Risk<Reward InSample→OutOfSample\n---------------------------------------------------------------------------"
+      },
+      {
+        "a": "Unknown",
+        "b": "不错不错，会议纪要！！！\n以后可以把每次会议内容总结下来分享给未参会的同学一起学习~"
+      },
+      {
+        "a": "Unknown",
+        "b": "四，数据创建挑战，不知道自己是不是前3000名注册，好像不是哎！要错过了。。"
+      },
+      {
+        "a": "Unknown",
+        "b": "这份整理非常有价值，这样大家就可以提前了解到powerpoolalpha的theme，尤其是GLB的allrisk theme是非常吸引人的。想想1月GLB theme中CN顾问的良好表现，我也在期待CN顾问在3月的GLB Theme的表现"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38186960329367-26%E5%B9%B42%E6%9C%88%E5%85%A8%E7%90%83%E4%BC%9A%E8%AE%AE%E9%87%8D%E7%82%B9%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86"
+  },
+  {
+    "i": 13,
+    "id": "38846510482967",
+    "title": "关于Combined Power Pool Alpha Performance持续稳定的猜想（2.12-2.42-1.97-2.62-2.67）",
+    "votes": 71,
+    "cc": 19,
+    "body": "我是去年7月1日IQC结束成为的条件顾问，8月还是9月成为的正式研究顾问。第一次更新combine三个条都是负的，多少不记得了，但在10月出狱后，除了selected其它两个combine都得到了大幅提升，尤其是Combined Power Pool Alpha Performance，直接从零点几突破到2.12，摸清大致方向后一路稳扎稳打，中间由于12月after cost从50%加到了60% cppap跌出了2，但是后来还是稳定了下来，上一次更新（2月）是2.67。\n我认为在ppa 的combined performance这一块做得好的原因有以下几点：\n1.确定提交标准，我一般最初筛选sharpe和fitness都大于1的ppa，如果没有满足条件的alpha，适当降低以下标准比如fitness>0.8，最低不能低于0.6。其次margin我会尽可能控制在15‱，最低不能低于10‱，总之不能亏钱。最近为了拉低turnover交了一些死鱼，大家不要学。\n2.尽可能交不低头或者尾年数据不差的，个人认为前者比较重要，通常只要曲线向上哪怕是平缓向上但尾年不佳的我也会考虑。\n3.多样性提交，在保持提交标准的前提下去尝试更多区域，一个月专注做两个区域最好，最近地两次提升可能是引入了ASI，IND这些区域提升了alpha pool的多样性；同时，每个区域我会尽力在月底之前把塔点完，我认为这样能最大程度地提升或维持稳定性。\n4.tag management，有时在一些难做的地区我为了点塔不得不交一些难看的alpha。为了减小它对power pool的危害，我会删除PowerPoolSelected标签，比如这类：\n在更新了os后，我挑选了一些os/is ratio很低的删掉了ppa tag。当然，目前能看到的只是最新到23年的数据，还有24、25年的数据看不到，不能保证这些23年表现不好的alpha后面两年就一定是差的。因此这样最多只能保护Combined Power Pool Alpha Performance，对Combined Alpha Performance于事无补，关于Combined Selected Alpha Performance我就不清楚了，这一块我也急需帮助。提醒一句：tag管理只是权宜之计，多交高质量的alpha达到三个combined performance都高才是正道。\n最后祝大家VF1+GM！",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "最近combine低的不行，回来补课，感谢大佬的真诚分享！看来我也得对我的tag进行一次质量管理了\n──────────────────────────────────────────────\n每天登录，不为热闹，只为比昨天多明白一点。\n“If you come to the forum to study hard every day, you will get a GM.”\nstudy.today() | review.mistakes() | compound.patience()\nProgress: ███████░░░ 70% | Mode: Quiet Study / Deep Review\n#来论坛认真学习 #少说多练 #每日复盘 #慢慢变强\n慢就是稳，稳就是快。\n──────────────────────────────────────────────"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，突然感觉打了鸡血,继续点塔！"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，为了点塔，PPA太拉跨了"
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================                     感谢大佬的这个关于怎么提高的combined分享,这个想法很超前                                                            ================================自信人生两百年，会当水击三千里=========================="
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢佬的分享，TAG MANAGEMENT也是接下来可以优化的方向。确实有一些alpha当初是为了点塔硬着头皮交的..\n=========================================\nFIGHTING LABUBU!\n========================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "很有启发，感谢大佬分享\n====================================================================================\n==================纸上得来终觉浅，绝知此事要躬行======================================"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38846510482967-%E5%85%B3%E4%BA%8ECombined-Power-Pool-Alpha-Performance%E6%8C%81%E7%BB%AD%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%8C%9C%E6%83%B3-2-12-2-42-1-97-2-62-2-67"
+  },
+  {
+    "i": 14,
+    "id": "38121310515223",
+    "title": "PPA活动主题限制下，提交ra点塔的一点心得。",
+    "votes": 70,
+    "cc": 17,
+    "body": "新季度没多久就开始实行ppa主题活动了，只能在活动区域提交ppa。1月份我做了两个地区的alpha，usa d1和ind，usa在活动之前点了几个塔，活动开始之后又坚持了几天交ra觉得有点累就去了ind活动，活动前期没有在意atom，等我意识到这个问题之后已经交了30个pv塔，所以在活动结束之后我坚持补了20个atom-ra，然后又回usa点亮了剩下的塔，没有去参加GLB活动。\n两个区应该是一共点了24个塔，100个alpha左右。参加活动的ppa也都满足ra标准，只是有些豁免了pc提交。这里面应该有超过一半的alpha是经过我手动优化的。脚本或者ai想直接跑出各项属性都让人满意的alpha还是很少的，更别说全要满足ra标准了。\n主要优化的思路是修正fail和wraing，比如流动性不足用group_neutralize、切换股票池。权重问题调整回填日期，增加交易条件，或者也可以切换股票池，sharpe、fitness值不足使用signed_power操作符。\ntvr和margin不合格时调整decay，或者使用ts_target_tvr_decay 、ts_decay_linear尝试调整。\nPC大于0.7时候可以尝试开启max-trade切换股票池，调整decay，调整ts的时间窗口，分组中性等多种方法，调整结果需要一点运气，一般来说alpha足够好有降低性能的空间而pc值没有特别高的时候都能降低到0.7以下。",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "GLB难出是正常的，从楼主贴出来的分布图看，GLB在Price Volume和Risk类别的alpha数量明显偏多，同质化竞争可能比较严重。你说的“用AI优化”具体是指用自动搜索还是拿现成的因子模板做参数拟合？如果是后者，建议先确认一下optimize后的sharpe和fitness的分布是否比原版跑得更宽，否则容易过拟合到特定时间段。下一步可以先统计一下你手头alpha在GLB上按楼主提到的几个修正维度（流动性、权重、tvr/margin、PC）各自有多少比例不合格，集中修正最突出的那一项，看看修正后提交ra的通过率变化，这样比直接堆优化更容易判断问题出在哪。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，已严肃学习！\n----------------------------------------------------------------------------------------------------------------------------------\n“因子如矿，日掘一锹，终见真金；回测若镜，百炼千调，方得纯粹。夏普非终点，稳健是归途。”\n----------------------------------------------------------------------------------------------------------------------------------"
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================                        感谢大佬的经验分享 ,点塔速度太快了                                                                                      ================================自信人生两百年，会当水击三千里=========================="
+      },
+      {
+        "a": "Unknown",
+        "b": "大佬，厉害！！"
+      },
+      {
+        "a": "Unknown",
+        "b": "太牛了，隐藏的大佬\n===================================================================================\n===================Talk is cheap,show me the alpha================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "大佬太牛了！用了什么工具啊。"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38121310515223-PPA%E6%B4%BB%E5%8A%A8%E4%B8%BB%E9%A2%98%E9%99%90%E5%88%B6%E4%B8%8B-%E6%8F%90%E4%BA%A4ra%E7%82%B9%E5%A1%94%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97"
+  },
+  {
+    "i": 15,
+    "id": "30413891877655",
+    "title": "豆包推荐用户数据集1",
+    "votes": 63,
+    "cc": 20,
+    "body": "doubao_fields_1 = [\n\"ebit /assets\", # 资产息税前利润率，衡量企业运用全部资产获取利润的能力\n\"income /equity\", # 净资产收益率，反映股东权益的收益水平\n\"cashflow_op /liabilities\", # 经营活动现金流量对负债的保障程度\n\"ebitda /interest_expense\", # 利息保障倍数，衡量企业支付负债利息的能力\n\"sales /inventory\", # 存货周转率，反映存货的周转速度\n\"operating_income /revenue\", # 营业利润率，体现企业经营活动的盈利能力\n\"net_income /assets\", # 资产净利率，反映资产利用的综合效果\n\"receivable /sales\", # 应收账款周转率，反映应收账款周转速度\n\"working_capital /current_liabilities\", # 营运资本对流动负债的保障程度\n\"capex /assets\", # 资本支出占资产的比例，反映企业的投资力度\n\"debt /equity\", # 资产负债率，衡量企业长期偿债能力\n\"income_tax /pretax_income\", # 税负率，反映企业所承担的税收负担\n\"rd_expense /revenue\", # 研发投入占营收的比例，体现企业对研发的重视程度\n\"sga_expense /sales\", # 销售及管理费用占销售额的比例，反映企业运营成本控制情况\n\"inventory_turnover * 365 /inventory\", # 存货周转天数，衡量存货的变现速度\n\"return_assets * assets /equity\", # 从资产回报率推导权益回报率的一种变形\n\"return_equity * equity /assets\", # 从权益回报率推导资产回报率的一种变形\n\"operating_expense /revenue\", # 营业成本率，衡量企业经营成本在营收中的占比\n\"liabilities_curr /assets_curr\", # 流动比率，衡量企业短期偿债能力\n\"pretax_income /invested_capital\", # 投资回报率，反映投入资本的获利能力\n\"goodwill /assets\", # 商誉占资产的比例，反映企业商誉在总资产中的权重\n\"sales_growth /sales\", # 销售增长率，衡量企业销售的增长情况\n\"sales_ps * fnd6_csho /sales\", # 从每股销售额和总股数推导总销售额的一种变形\n\"ppent /assets\", # 固定资产净值占资产的比例，反映企业固定资产的规模\n\"interest_expense /debt\", # 债务的利息率，反映企业债务融资的成本\n\"retained_earnings /equity\", # 留存收益率，反映企业利润留存的比例\n\"income_beforeextra /assets\", # 剔除特殊项目前的资产收益率，衡量企业正常经营的盈利能力\n\"cash /liabilities\", # 现金对负债的覆盖程度，反映企业即时偿债能力\n\"capex /sales\", # 资本支出占销售额的比例，反映企业对未来发展的投资力度\n\"inventory /current_assets\", # 存货占流动资产的比例，反映企业流动资产的结构\n\"net_income /invested_capital\", # 投资净利率，衡量投入资本获取净收益的能力\n\"return_assets /return_equity\", # 资产回报率与权益回报率的比值，反映权益乘数对回报率的影响\n\"operating_income /operating_expense\", # 营业利润与营业成本的比值，衡量企业经营效益\n\"liabilities /assets\", # 资产负债率的另一种表达，衡量企业的负债水平\n\"ebit /interest_expense\", # 息税前利润对利息的保障倍数，衡量企业支付利息的能力\n\"income /revenue\", # 销售净利率，反映企业销售收入的收益水平\n\"receivable /current_assets\", # 应收账款占流动资产的比例，反映流动资产的质量\n\"working_capital /assets\", # 营运资本占资产的比例，反映企业资产的流动性和偿债能力\n\"capex /operating_cashflow\", # 资本支出与经营活动现金流量的比例，反映企业现金流量对投资的支持能力\n\"debt /assets\", # 资产负债率的另一种表达，衡量企业的负债程度\n\"income_tax /income\", # 净利润的税负率，反映企业净利润所承担的税收负担\n\"rd_expense /operating_income\", # 研发投入对营业利润的占比，反映企业在盈利基础上的研发投入情况\n\"sga_expense /operating_income\", # 销售及管理费用对营业利润的占比，反映运营成本对利润的影响\n\"inventory_turnover /liabilities_curr\", # 存货周转率与流动负债的关系，从存货周转角度看对流动负债的影响\n\"return_equity /return_assets\", # 权益回报率与资产回报率的比值，反映权益杠杆的作用\n\"operating_expense /operating_income\", # 营业成本对营业利润的覆盖倍数，衡量企业盈利空间\n\"liabilities_curr /current_ratio\", # 流动负债与流动比率的关系，从比率角度看流动负债情况\n\"pretax_income /assets\", # 税前资产收益率，衡量企业在税前的资产获利能力\n\"goodwill /equity\", # 商誉占股东权益的比例，反映商誉对股东权益的影响\n\"sales_growth /invested_capital\", # 销售增长率与投入资本的关系，反映投入资本 ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "感谢分享！日积月累，日进一步......................终至山顶。"
+      },
+      {
+        "a": "Unknown",
+        "b": "保存点赞这系列操作得有\n希望我能理解以上的经典分享"
+      },
+      {
+        "a": "Unknown",
+        "b": "这个合集真是省了我一大堆功夫，专门跑回用户社区帖子就为了找这个内容 最近有在尝试突破自己写alpha的习惯 有现成的这些内容，算是拿到了第一笔宝贵的学习资料 不用再自己去下载数据生成了\n感谢楼主的分享\n祝你早日gm，vf1.0！！！！！！！"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，让我打开了思路，找到了新方向，让我能走得更远，感谢感谢！\n====================================================================================================================================================================================================================================================================================================================================================================================================================================\n我一定好好组合，让它继续发光发热"
+      },
+      {
+        "a": "Unknown",
+        "b": "===========================================================================\n感谢大佬分享，祝大佬蒸蒸日上！加油！\n==========================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/30413891877655-%E8%B1%86%E5%8C%85%E6%8E%A8%E8%8D%90%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E9%9B%861"
+  },
+  {
+    "i": 16,
+    "id": "34949059814679",
+    "title": "【MCP Workflow】turnover优化，论坛精华版",
+    "votes": 69,
+    "cc": 12,
+    "body": "自从开始使用MCP工具，整体效率提升了很多，但是之前的MCP成功率一般，比如前面分享的\n自动化找alpha的workflow\n，整体成功率大约40%，但其对token的消耗是很大的，由于我的AI用的是包月套餐，整体感受没那么厉害，但是如果是按量计费的话，极端情况下，base甚至覆盖不到token的消耗。\n基于上次双周会IQC中国区冠军分享的coze工作流，我发现其实我可以把目光放在更细分的领域，让AI完成一个特定的任务，而非从0开始去找alpha，让其作为一个辅助工具，可能成功率会显著提升，经过我的测试也的确如此，现在将其中一个工作流，Alpha Turnover降低工作流分享给大家，供大家参考，如果大家感兴趣，我也可以持续分享一些自己在用的，效果较好的其他专题工作流。\n首先，该工作流主要是对以下文章内容的提炼，让AI跟随这些经验，去做提升工作，感谢这些作者，文章列表如下：\n如何拯救高turnover因子？一文助你理解并降低因子turnover\n- 109票权威指南\n浅谈用hump操作符解决Sub-universe Sharpe\n- hump操作符专题\nVF 0.9+顾问分享：新人常见误区之Under Fitting\n- 顾问级经验\nAlpha 模版：ts_delta_limit应用举例\n- 高级控制技巧\n# Alpha Turnover降低工作流\n## 🎯 概述\n基于BRAIN论坛经验总结，return = turnover × margin，高换手率降低margin，影响fitness score和被PM采纳的概率。本工作流通过ts_decay_linear等论坛验证的操作符，系统化降低alpha的turnover，实战中可实现**30-50%的turnover降幅**。\n## 📊 论坛实证依据\n### 核心理论基础\n- **[如何拯救高turnover因子？一文助你理解并降低因子turnover](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30927669645207)** (109票, 12评论)\n- **[浅谈用hump操作符解决Sub-universe Sharpe](https://support.worldquantbrain.com/hc/zh-cn/community/posts/31365517513495)** (18票, 9评论)\n- **[VF 0.9+顾问分享：新人常见误区之Under Fitting](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30192357731607)** (25票, 11评论)\n### 关键洞察\n1. **基本关系**: `return = turnover × margin`\n2. **核心操作符**: `ts_decay_linear`, `hump`, `ts_target_tvr_delta_limit`\n3. **平台建议**: 含TVR关键词的operator优先\n## 🔍 第一步：MCP工具诊断当前状态\n### 使用MCP工具获取基线数据\n使用 `mcp__worldquant_brain_platform__get_alpha_details()` 获取当前alpha的基线指标\n### 关键指标分析\n1. **当前turnover水平** (目标: 0.1~0.3)\n2. **Sharpe vs Turnover权衡点**\n3. **时间序列稳定性分析**\n## 🔧 第二步：基于论坛实证的降turnover策略\n### 策略A: ts_decay_linear平滑（论坛首推）\n**理论依据**: 平台官方建议的信号平稳性优化方法\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `ts_decay_linear(原表达式, 5)` - 1个交易周\n- `ts_decay_linear(原表达式, 22)` - 1个交易月\n- `ts_decay_linear(原表达式, 44)` - 2个交易月\n- `ts_decay_linear(原表达式, 63)` - 1个季度\n**预期效果**: Turnover降低30-50%，Sharpe轻微下降可接受\n**经济学原理**:\n- **5天** = 1个标准交易周，适合短期信号平滑\n- **22天** = 1个交易月，适合月度趋势捕捉\n- **44天** = 2个交易月，适合中期信号稳定\n- **63天** = 1个季度，与财报周期同步，适合基本面信号\n### 策略B: hump操作符优化（Sub-universe专用）\n**理论依据**: 论坛实证表明hump在控制波动性、降低换手率方面表现出色\n**适用场景**: Sub-universe Sharpe表现不佳时优先考虑\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `hump(原表达式, hump=0.1)` - 轻度截断\n- `hump(原表达式, hump=0.2)` - 中度截断\n- `hump(原表达式, hump=0.3)` - 较强截断\n- `hump(ts_decay_linear(原表达式, 5), hump=0.2)` - 周衰减+截断组合\n### 策略C: 新一代TVR控制操作符\n**理论依据**: 顾问分享提到平台最新推出的含TVR关键词操作符\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `ts_target_tvr_delta_limit(原表达式, volume, target_tvr=0.1)` - 目标10%换手率\n- `ts_target_tvr_delta_limit(原表达式, volume, target_tvr ...[truncated]",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "这篇精华总结太实用了！关于\\\"优先使用操作符层面平滑而非decay参数\\\"这个观点，我想补充一个具体的操作方法：使用ts_target_tvr_decay操作符。这个操作符可以直接将换手率固定在目标值，比手动调decay更精准。我的做法是先跑一次默认设置看原始tvr，然后根据目标tvr（通常15%-25%之间）设置ts_target_tvr_decay的参数。另外，关于过度优化的问题，我有一个简单的检验方法：在优化前后分别看IS和OS的Sharpe差值，如果优化后IS Sharpe提升很大但OS Sharpe反而下降，说明已经过拟合了。这时候应该回退到更简单的设置。最后，分享一个小技巧：对于turnover偏高的alpha，在combo中加入ts_decay_exp_window(signal, 10, factor=0.5)往往比单纯提高decay更有效，因为它保留了信号的短期响应能力。"
+      },
+      {
+        "a": "Unknown",
+        "b": "很好用，一直困扰turnover，赞！\n========================================================================================================================================================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "很nice的flow，对于hump操作符的讲解很好，赞！\n========================================================================================================================================================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "读完此文，感到豁然开朗。作者将论坛精华凝练为一套即拿即用的降换手率工作流，以真实案例展示如何通过MCP工具实现高达47%的turnover降幅。这不仅解决了量化工作中的实际痛点，更颠覆了人们对MCP“高消耗低成功率”的认知——将其用于细分任务竟如此高效。步骤清晰可靠，让人跃跃欲试，并对其后续分享充满期待。"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，学到了，特别针对pv数据常常有高换手率的现象。\nhump操作符在Sub-universe Sharpe优化方面更直接有效\n又学到一招！对于ASI以及新开的IND区域适用"
+      },
+      {
+        "a": "Unknown",
+        "b": "此贴写得很好，看了后深受感触，学到了很多，感谢大神的无私分享，让我学习到到了很多，最近刚好遇到高换手率的问题，还有低换手率，高margin也会经常遇到，期待楼主也能分享低换手率提高的帖子"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/34949059814679--MCP-Workflow-turnover%E4%BC%98%E5%8C%96-%E8%AE%BA%E5%9D%9B%E7%B2%BE%E5%8D%8E%E7%89%88"
+  },
+  {
+    "i": 17,
+    "id": "35239747718679",
+    "title": "【MCP workflow】根据GLB的alpha，自动挖掘其他地区alpha的工作流",
+    "votes": 70,
+    "cc": 10,
+    "body": "基于weijie老师的分享，我选择了「根据GLB的alpha，来挖掘其他地区的alpha」这个部分的内容，进行了MCP的workflow探索，简单尝试了几个alpha，发现效果还不错，跟大家分享一下工作流，希望有所帮助。\n先贴一下效果，我选取的alpha在亚洲表现不错，所以工作流探索了ASI地区\n可以看到，在ASI区域，该字段映射效果还不错，但由于max_trade的开启与鲁棒性检测，存在部分不通过的情况，需要进行微调。\n工作流内容如下：\n# 跨区域相似因子挖掘工作流\n## 阶段一：基线诊断\n- 输入 `alpha_id`，调用 `wqb_mcp__get_alpha_details` 获取原因子的区域、参数配置以及各地区表现。\n- 整理 Sharpe、收益率、警报等指标，为后续的区域选择和策略调整提供依据。\n## 阶段二：信号拆解\n- 解析 Alpha 代码，定位核心数据字段及其操作符结构。\n- 使用 `wqb_mcp__get_datafields`（参数沿用原始区域、universe、delay 等设置）获取field的描述信息，并进行理解。\n## 阶段三：目标区域映射与字段检索\n- 根据已知区域映射确定迁移区域：`APAC → ASI`、`EMEA → EUR`、`AMER → USA`。\n- 对于每个目标区域，优先使用与原因子相同的 `dataset_id` 调用 `wqb_mcp__get_datafields`；若该数据集在目标区域不可用，则改用相同 `category` 并通过字段关键字搜索。\n- 在确保 `instrument_type`、`delay`、`universe` 等参数匹配的同时，筛选出描述、覆盖率和使用度最接近的字段，建立候选字段池，候选字段池建议为3-8个，一次回测可完成。\n## 阶段四：候选因子构建\n- 以原公式为模板，将核心字段替换为候选字段，并视需要添加 winsorize、截断、混合周期等调节操作。\n- 保持中性化方式、衰减、延迟等关键参数一致，以保证结果可比性。\n## 阶段五：批量回测与评估\n- 使用 `wqb_mcp__create_multiSim`（或多次 `wqb_mcp__create_simulation`）在目标区域批量回测候选因子，在 ASI 区域必须开启 `max_trade` 为 `ON`，其他区域使用和选择数据相同的universe即可，其他参数不用调整。\n- 记录 Sharpe、Fitness、鲁棒性检查、风险中性结果等核心指标，并保存 Simulation ID 以便复现与归档。\n## 阶段六：验证与推广\n- 对表现较好的候选，进行两轮有经济学含义的operator增加和删减，找出表现最好的alpha。\n- 将优胜策略迁移到其他映射区域或回到全域回测，并形成标准化报告，包含字段来源、回测指标及后续优化建议。\n大家可以尝试更多的alpha，同时这个策略是从GLB映射到其他地区，其实也可以从其他地区映射到GLB，对工作流进行少量修改即可，如有帮助，请点赞。\n更多MCP workflow，可参考我往期帖子，自动挖掘，降turnover，手机使用mcp等",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "这篇跨区域工作流（GLB→EUR/ASI/USA映射）非常实用，APAC→ASI / EMEA→EUR / AMER→USA的映射规则简洁清晰。\n基于自己实操中遇到的问题，补充几个EUR侧的具体注意事项：\n1. 字段映射的\"同dataset不一定同字段\"问题：从GLB映射到EUR时，GLB常用的数据集（如model177、risk/shortinterest系列）在EUR可能根本没有对应版本或覆盖率极低。建议映射时优先看category（fundamental/analyst/alternative）再做语义搜索（比如用match_datafields工具的query=\"institutional ownership flow\"找EUR区对应的fund_holdings_panel字段）。\n2. EUR的多国家中性化陷阱：从GLB迁移alpha到EUR时，原alpha如果只做了INDUSTRY中性化，到EUR后一定会暴漏country bias。建议映射时显式加入country分组（group_neutralize(signal, industry) + group_rank by c"
+      },
+      {
+        "a": "Unknown",
+        "b": "思路很清晰：从GLB里挑一个表现好的alpha，用MCP把核心字段映射到其他地区（这次重点做了ASI），小规模试了几个alpha，效果不错，但受max_trade与鲁棒性检查影响，有些不过，需要微调。\n区域映射规则：APAC→ASI，EMEA→EUR，AMER→USA。优先同数据集(dataset)找字段，不行就用同类别(category)+关键词，确保instrument_type、delay、universe一致。\n实操流程（6步）：基线诊断→信号拆解→目标区域字段检索→候选因子构建→批量回测评估→验证与推广。\n候选字段池建议3-8个；按原公式替换核心字段，必要时加winsor/截断/混合周期；中性化/衰减/延迟保持一致。\n回测用multiSim，ASI区必须开max_trade=ON；记录Sharpe、Fitness、鲁棒性、风险中性结果与Sim ID。\n表现好后做两轮有经济学含义的算子增删，选最优再推广到其他区或全域，并产出标准化报告。\n反向也可做：从其他地区映射回GLB，只需小改流程。\n总体评价：流程标准、可复现、落地性强，适合快速在新区域挖相似因子；细节在于字段匹配与鲁棒性"
+      },
+      {
+        "a": "Unknown",
+        "b": "下面具体说说工作流：\n阶段一基线诊断\n：输入 alpha_id，用 wqb_mcp__get_alpha_details 拿到原 alpha 的区域、参数配置和各地区表现，整理 Sharpe、收益率这些指标，为后面选区域和调策略做准备。\n阶段二信号拆解\n：解析 Alpha 代码，找到核心数据字段和操作符结构，再用 wqb_mcp__get_datafields 获取 field 的描述信息并理解。\n阶段三目标区域映射与字段检索\n：按 APAC 到 ASI 、EMEA 到 EUR 、AMER 到 USA 这样的区域映射来确定迁移区域。对每个目标区域，先用和原 alpha 一样的 dataset_id 去调 wqb_mcp__get_datafields 找字段；要是数据集在目标区域不能用，就换相同 category ，通过字段关键字搜。保证 instrument_type 、delay 、universe 这些参数匹配，选出描述、覆盖率和使用度最接近的字段，建个 3 - 8 个字段的候选字段池，一次回测就能搞定。\n阶段四候选因子构建\n：照着原公式模板，把核心字段换成候选字段，根据情况加点"
+      },
+      {
+        "a": "Unknown",
+        "b": "谢谢大佬的分享，这里又学到了一个思路，之前使用wqb的时候局限于老师提到的模板了，而且有些模板也还没怎么看懂去使用，利用mcp的帮助再进行wqb的回测，这样的思路也很棒，我用mcp用来进行了一些数据处理，感觉效果还行，但是泛化性比较差，后续根据大佬的思路来进行优化！"
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬分享，大佬提出了一个策略是从GLB映射到其他地区，也可以从其他地区映射到GLB，根据GLB的alpha，来挖掘其他地区的alpha。那问题是在GLB上回测后，再到对应的地区再用相同的字段回测吗？这个字段在其他地区一定存在吗？这个思路对我的启发很大，我要好好研究下，从不同的region进行扩展，感觉是一个很有效的方法。\n===================================================================================\n========================== 一分耕耘，一分收获。=======================================\n==================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "很有帮助，自己之前一直也是有这样的想法，但更多的局限于手动回测，从某个地区的单个alpha在本数据集内进行扩展，weijie老师讲这个思路扩展的更大，从不同的region进行扩展，从我的实践来看，真的是一个很有效的方法。\n大佬结合weijie老师的分享整理出一个MCP workflow很强，比自己手动利用mcp寻找数据字段再回测强，后续大佬有更加完善MCP workflow也可以积极分享。"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/35239747718679--MCP-workflow-%E6%A0%B9%E6%8D%AEGLB%E7%9A%84alpha-%E8%87%AA%E5%8A%A8%E6%8C%96%E6%8E%98%E5%85%B6%E4%BB%96%E5%9C%B0%E5%8C%BAalpha%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81"
+  },
+  {
+    "i": 18,
+    "id": "32171731874711",
+    "title": "PPAC全球第11,我提交的因子是什么样的？",
+    "votes": 69,
+    "cc": 11,
+    "body": "首先进行一下自我介绍，我是2月底成为有条件顾问，三月成为正式顾问，目前一共提交了240个alpha，期中user阶段提交了50+个。目前genius为GOLD, VALUE FACTOR 为0.5，Combine OS 为0.8。\n前几天更新的PPAC比赛结果出炉，有幸获得了全球第11的成绩，与第十名的分数近乎一样（差一点可以多拿500刀）。看了很多朋友的排名不太理想，这个比赛运气是一方面的原因，因子的选取应该也是一个值得关注的地方。\n我一共提交了56个比赛因子，选取了其中的14个打了TAG，14个因子中，覆盖了7个金字塔，可以看出因子还是较为多类的这也是genius计划推荐我们做的。\n下面是的我USA的因子分布，可以看出，分布较为均匀，没有爆红的pyr。\n回到ppac，我计算了我提交的因子的各个指标的均值，\nSharpe: 1.93\nReturns: 10.33%\nTurnover: 4.96%\nMargin: 54.42%\nFitness: 1.70\n这几项指标中，Magin是我认为较为出色的一个指标，可能也是因为这个才能取得较好排名。\n下面放一些，提交因子的pnl，可以看出，我的pnl图不是非常平缓，仍然有些起伏。",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "好文，对于后来者有很好的提示作用，感谢分享。==========================================================================================================================================================================================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢大佬的数据分享，很有借鉴意义。相比之下，我的数据集目前还是过于集中了，多样化还是之后努力的方向。大佬的RETURNS也是蛮高的，这个也是我要努力提升的指标~\n============================================================\n每天睡醒就搓搓因子，总有一个是好的~ FIGHITNG LABUBU!\n============================================================"
+      },
+      {
+        "a": "MS51256",
+        "b": "PNL只有六年其实不算少了，我自己交了一些pnl只有4年的。六年只要走势正常，我是会交的。\n==========================================================================================================================================================================================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "请问博主交的alpha相关性范围是多少"
+      },
+      {
+        "a": "Unknown",
+        "b": "请问PNL覆盖率只有6年的因子敢交吗？\n======================================================================================================================================================================================================================================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "原来我交的一些好的alpha都被稀释了，我交的alpha好多都是50-60的，开始还以为比较低，现在看来如果是闻见的20-30都是好的，都是没有经验惹的祸"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32171731874711-PPAC%E5%85%A8%E7%90%83%E7%AC%AC11-%E6%88%91%E6%8F%90%E4%BA%A4%E7%9A%84%E5%9B%A0%E5%AD%90%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84"
+  },
+  {
+    "i": 19,
+    "id": "25728030832407",
+    "title": "数据推荐合集",
+    "votes": 44,
+    "cc": 28,
+    "body": "本贴收录一些数据字段加工后的新比例、新意义等（用户可以尝试的如非特殊说明则为USA region D1)\n作为版权的回报，请求所有使用的顾问，在评论区留下你的使用感受和经验，\n例如“XXX很好用,我使用了XX模板获得XX结果“。抑或者，\"\"XXX有点难用，用了XXX模板什么也找不到“。你的留言将有力地帮助其他BRAIN社区发展得更好。\nAS of 11/11\n推荐使用的数据 USA D1 TOP3000 MODEL126 （vector data)\nAS of 11/06\n推荐使用的数据GLB D1 TOP3000 ANL14_part2\nAS of 11/01\n推荐使用的数据GLB D1 TOP3000 ANL14_part1\nAS of 10/31\n推荐使用的数据 GLB D1 TOP3000 ANL11\nAS of 10/30\n推荐使用的数据 USA D1 TOP3000 INST15\nAS of 10/29\n推荐使用的数据 GLB D1 TOP3000 ANL15\nAS of 10/22（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part8（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part7（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part6（未检查数据类型）\nAS of 10/19（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part5（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12__part4（未检查数据类型）\nAS of 10/18（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part3（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part2（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part1（未检查数据类型）\nAS of 10/16\n用户可以尝试的数据字段CHN TOP2000U Ratio3\nAS of 9/12\n可以尝试的数据字段CHN TOP2000U Ratio 2\nAS of 9/09\n可以尝试的数据字段CHN TOP2000U Ratio 1\nAS of 9/06\n用户可以尝试的数据字段8\n用户可以尝试的数据字段7\n用户可以尝试的数据字段6\nAS of 8/30\n可以尝试的数据 JPN FND1\n可以尝试的数据字段JPN FND2\n可以尝试的数据字段JPN FND4\n可以尝试的数据字段JPN Fnd5\n可以尝试的数据字段JPN Fnd6\n可以尝试的数据字段JPN Fnd7\n用户可以尝试的数据字段4\n用户可以尝试的数据字段5\nAS of 8/29\n用户可以尝试的数据字段2\n用户可以尝试的数据字段3\nAS of 8/28\n用户可以尝试的数据字段1\n可以尝试的数据FND ASI6\n可以尝试的数据FND ASI 7\n可以尝试的数据FND ASI8\n可以尝试的数据字段FND ASI9\n可以尝试的数据字段FND ASI10\n可以尝试的数据字段FND ASI11\n可以尝试的数据字段ASI FND12\n可以尝试的数据字段FND ASI13\nAS of 8/22\n可以尝试的数据字段 fnd glb2\n可以尝试的数据字段FND ASI 2\n可以尝试的数据字段fnd ASI 3\n可以尝试的数据ASI FND4\n可以尝试的数据fnd ASI 5\nAS of 8/18\n数据推荐：可尝试的数据字段fnd ASI\n可以尝试的数据字段-fnd glb\n数据推荐：可以尝试的数据字段fnd比例，USA",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "数据推荐合集太赞了！新手最头疼的就是不知道从哪个数据集开始，这份清单省了大量踩坑时间。建议后续按数据类型分类整理，比如价量类、基本面类、另类数据类，这样查找更方便。感谢分享！"
+      },
+      {
+        "a": "Unknown",
+        "b": "哇，这个数据更新记录整理得好全啊！作为经常在社区里找灵感的用户，真心感谢版主的分享和持续维护。最近我用了“USA D1 TOP3000 MODEL126（vector data）”这个推荐，配合基础的价格动量模板回测，发现筛选出的股票组合在近期震荡市里超额收益还挺明显的，尤其是结合波动率过滤后，回撤控制得比之前好不少。"
+      },
+      {
+        "a": "Unknown",
+        "b": "目前就跑了第一个推荐数据 很好用"
+      },
+      {
+        "a": "Unknown",
+        "b": "第一条应该是mdl216 而不是mdl126吧？"
+      },
+      {
+        "a": "Unknown",
+        "b": "发现我需要的，非常感谢，感谢大佬分享"
+      },
+      {
+        "a": "Unknown",
+        "b": "ASI FND4利用三阶模板进行回测,一阶回测表现很好,可以明显感觉出来该数据集数据质量还算不错,但是二三阶模板回测表现一般般,二阶模板主要体现ts_scale()和gp_neutralize()这两个op,我个人觉得可能是基本面数据的原因,类似财报周期短时间内变化不是很大,个人看法仅供参考,希望有大佬帮我指出问题所在"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/25728030832407-%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E5%90%88%E9%9B%86"
+  },
+  {
+    "i": 20,
+    "id": "39870662977687",
+    "title": "经验分享：最近做 Regular 点塔时反复踩到的几个坑",
+    "votes": 63,
+    "cc": 8,
+    "body": "大家好，最近连续做了一段时间的 Regular 前台筛选和点塔，踩了不少坑。趁记忆还热，整理几条我最近感受最深的经验，分享给同样在做 low-op、追 full funnel 的朋友。\n这篇不讲某一条具体 alpha 怎么调出来，主要讲几个很容易反复踩到、但又特别浪费时间的坑。\n第一，self/prod 过了，不代表已经可以进库。\n我最近遇到过一条候选，Sharpe、Fitness、self、prod 都不错，看起来已经很接近终点了，但最后还是卡在 margin。后面继续用 decay、truncation、neutralization 去补 margin，确实能把 margin 顶上去，可新的问题马上又出来，比如 LOW_ROBUST_UNIVERSE_SHARPE，或者 IS_LADDER_SHARPE。\n后来我的体感越来越明确：相关性只是漏斗中的一层，不是最后一层。很多时候最容易让人误判的，就是“相关性已经过了，所以应该快成了”。实际上，只要 margin、robust、ladder 里还有一项不稳，就还远远不能算 finished。\n第二，如果一个 family 的 prod 长时间卡在同一个窄区间，最好尽早停手。\n我最近有一组表达式，主指标一直很顺，self 也能压住，但 prod 基本长期卡在 0.73x 一带。刚开始我还觉得这种情况属于“差一点点”，就一直改窗口、改 setting、改细节。后来回头看，基本都是无效劳动。\n这种情况很像 family 本身已经进入 crowded neighborhood，不是参数没有拧到位。只要 prod 一直稳定地卡在同一段区间，继续微调往往只是围着同一个拥挤壳子打转。与其在原 family 里反复抛光，不如更早做真正的结构位移。\n第三，纯 settings 修法，经常是修掉一个 fail，又长出另一个 fail。\n这个坑我最近反复遇到。比如你想修 margin，就会自然去调 decay、truncation、neutralization；结果 margin 是好了，但 robust 掉了。或者 robust 回来一点，ladder 又冒出来。\n如果一个分支连续几轮都呈现这种“按下葫芦浮起瓢”的状态，我现在基本不再把它看成 settings 问题，而会优先怀疑 shell 本身就不够对。继续在原框架里细磨，时间成本通常很高，收益反而很低。\n第四，很多真正有效的修复，不是继续拧 setting，而是做结构等价但统计性质不同的换壳。\n我最近有一次比较深的体会：原来一条 low-op 两字段分支，self/prod 都过了，但 margin 不够。后面不是靠继续推 settings 解决的，而是把原来的 group_rank 壳，改成了 group_zscore 后再做一层 final rank。字段没变，整体思路没变，复杂度也没有明显上升，但最后整个漏斗明显顺了很多。\n所以如果一条分支已经证明“信号方向对了，只是过不了最后几道门”，我现在会优先考虑换一个更合适的结构壳，而不是默认继续磨参数。\n第五，一个 winner 一旦提交，周围一圈相似 family 很快就会变成 self wall。\n这个是我最近体感最强的坑之一。之前会下意识觉得，某条 alpha 提交成功后，附近 family 也许还能继续再挖几条。结果最近碰到的情况是：winner 一提交，周围看起来质量很高的几个相邻 family，马上就在 self corr 上被堵死。\n也就是说，winner 的意义不只是“多提交了一条”，同时也等于把它附近一片相似 neighborhood 一起封掉了。这个时候如果还继续改 window、改壳层、改小参数，很多时候都逃不出 submitted 之后形成的 self wall。\n所以我的经验是，一旦 winner 落地，后续 continuation 最重要的不是继续做近邻修补，而是尽快做更远一点的 field-level move。\n第六，不要把 warning 当成“小问题”。\n最近我越来越觉得，很多 nearline 之所以一直只是 nearline，就是因为我们潜意识里把 warning 看得太轻了。尤其是 LOW_ROBUST_UNIVERSE_SHARPE、IS_LADDER_SHARPE 这类 warning，看起来不像直接 FAIL，但实际上在真实筛选里经常就是过不去。\n如果一个 family 总是以同一种 warning 的形式卡住，那它往往不是“快好了”，而是已经稳定暴露出自己的结构短板了。这个时候继续投入时间，通常不划算。\n第七，submitted 状态有时候会有短暂滞后，最好不要只信一个状态源。\n最近我遇到过本地 tracking 已经确认 submitted，但 submitted-id 那边短时间还没完全同步的情况。如果只盯一个来源，很容易误判这条 alpha 还“可用”。\n我现在的处理方式是，只要本地 tracking 和手动确认已经说明它 submitted 了，就先把它当 blocker 看，不等外部状态完全刷新。这样更稳，也能避免后面做很多其实已经没有意义的相似筛选。\n最后总结一句我最近最深的感受：\n很多 nearline，不是“差一点参数”，而是已经进入 crowded family、wrong shell，或者 submitted 邻域封锁的阶段了。这个时候真正省时间的做法，不是继续磨，而是学会停手，尽快换结构、换壳，或者直接换到更远的字段方向。\n如果这篇能帮大家少浪费几轮 multisim，我觉得就值了。也欢迎大家交流自己最近遇到的典型坑。",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "总的来说，就是换操作符和字段而不是修改老三样参数呗，一圈看下来，英文词槽太多了。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "学会了，感谢大佬分享\n==================================================================--\n保持前进\n=================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "感谢分享，分析得十分透彻，感谢🙏！！！😄🍉🍌🍎🍇🍓🍈🥝🍍🍑🌰🍒\n============================================================================\nStudy hard — quality over quantity, no room for mediocrity. Cherish every learning opportunity, stay focused, and learn from the experts. Keep pushing!\n============================================================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "=========================一个幸福的生活，不只靠心情，也要靠量化==========================\n感同身受天天在干的事莫过于此，太戳人了！做nearline优化总困在“调参数”死胡同，看完大佬帖子才惊觉自己早陷入无效循环。及时停手换方向，远比硬磨参数高效，这经验能帮少走好多弯路，必须收藏！\n------停手停手停手！学会停手太难了，换结构、换壳，换到更远的方向或许是更近的路~\n===============================点赞的大佬高OS高VF高CB================================"
+      },
+      {
+        "a": "Unknown",
+        "b": "学会了，感谢大佬分享\n==================================================================、\n保持饥饿\n=================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "大佬厉害啊，非常感谢大佬的分享，确实是很多的细节，都是经验之谈啊，其实我也有这些感觉，只是没有大佬这么清晰。\n-------------------------------------------------------------------------\n--------------想要成为GM------------------------------------------\n------------------------------------------------------------------------"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39870662977687-%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%9C%80%E8%BF%91%E5%81%9A-Regular-%E7%82%B9%E5%A1%94%E6%97%B6%E5%8F%8D%E5%A4%8D%E8%B8%A9%E5%88%B0%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9D%91"
+  },
+  {
+    "i": 21,
+    "id": "39822852669079",
+    "title": "多图解析USA最新3x High Turnover Theme国区提交现况",
+    "votes": 62,
+    "cc": 6,
+    "body": "如果你还不知道目前USA地区3x theme的标准是什么，这里就先带你回顾一下：\n基础标准（必须符合）：\n换手率 > 20%\nHigh Turnover returns ratio > 0.75 OR Pnl realization < 20 (这两个都是针对3x theme的新检测，其中前者多重回测就能看见是否符合，后者需要单独回测才能看见结果)\n此外，还有四个\n子主题\n，每两周轮换一次(每个人顺序不同，具体参考小铃铛中通知的顺序)，在\n符合基础标准\n的前提下，需要在对应的时间内\n符合下述一个子主题\n的标准即可：\nRAM中性化高换手(Orthogonal HTVR Theme)：使用RAM作为中性化即可\n可投资性高换手(Investable HTVR Theme)：(Max Trade Sharpe > 2.0 且 Max Trade turnover > 20%)  或者  (Max Position Sharpe > 2.0 且 Max Position turnover > 20%)\n费后sharpe高换手(After Cost HTVR Theme) ：After cost Sharpe > 1.0 (新检测会自动计算)\n高流动性高换手(Liquid HTVR Theme) ：必须通过 Liquid High Turnover tests:\n(TOP200 Sharpe > 1) 以及 (TOP500 and TOP200 Sharpe ratio > 0.7)\n目前这个高换手主题已经进入了第三周，我在SA中进行了以下筛选\n(\nin(classifications,\"HIGH_TURNOVER:AFTER_COST\") ||\nin(classifications,\"HIGH_TURNOVER:INVESTABLE\") ||\nin(classifications,\"HIGH_TURNOVER:ORTHOGONAL\") ||\nin(classifications,\"HIGH_TURNOVER:LIQUID\")\n)\n&& in(classifications,\"REGULAR\")\n对目前\n国区已经提交的Theme RA\n进行了简单的分析，这里分享给大家。\n首先是难度，根据提交情况来看，截止0417，国区 D1一共提交了96个theme RA，其中：\nLiquid High Turnover (14)\nInvestable High Turnover (22)\nOrthogonal High Turnover (40)\nAfter Cost High Turnover (65)\n注：同一个RA可能同时符合多个theme\n而在D0，theme RA的数量则更少，只有8个，其中：\nLiquid High Turnover (3)\nAfter Cost High Turnover (6)\nInvestable High Turnover (7)\n上述提交数量大致反映了各个子主题的难度。因此，当轮到较难的主题时，可以适当考虑跳过，毕竟难度还是有的。\n而在使用的数据大类方面，D1 theme RA的主要构成是：\nPrice Volume (38)\nFundamental (25)\nAnalyst (17)\nRisk (13)\nModel (11)\nSocial Media (6)\nSentiment (5)\nEarnings (4)\nMacro (4)\nOption (4)\nOther (4)\nImbalance (2)\nInsiders (2)\nInstitutions (2)\nShort Interest (2)\nNews (1)\n注：同一个RA可能同时属于多个category/dataset\n数据集方面，D1 theme RA使用数量排名靠前的主要是以下数据集：\npv1 (33)\nanalyst69 (11)\nfundamental6 (11)\nsocialmedia12 (6)\nfundamental17 (5)\nanalyst10 (4)\nmodel77 (4)\nrisk70 (4)\nanalyst16 (3)\nanalyst4 (3)\nearnings27 (3)\nother551 (3)\nanalyst15 (2)\nanalyst82 (2)\nanalyst9 (2)\nfundamental23 (2)\nfundamental94 (2)\nimbalance5 (2)\ninsiders3 (2)\nmodel109 (2)\nmodel165 (2)\nmodel230 (2)\noption23 (2)\npv103 (2)\npv47 (2)\npv87 (2)\nrisk60 (2)\nrisk71 (2)\nrisk72 (2)\nsentiment26 (2)\nsentiment27 (2)\nshort_interest_pred (2)\n...\n针对那些使用较多的数据集，大家可以多探索探索。至于其余数据集，基本是大家八仙过海，各显神通。\n这些D1 theme RA的is 数据分布如下图：\n之前weijie老师也提到过，可以把个人换手率分成10组，来评估换手的提升是否稳定带来了return的提升，斜率高的话，最总体表现增益更好。这里我们借用类似的概念，来看一下国区theme RA的收益率随着换手提升的变化情况。\n总的来说，可以看到线性趋势，但斜率不是很高。因此，吃theme 的base固然爽，但也不要忘记注意return/margin的情况。\n后面再贴一下d0 RA 的相关数据供大家参考",
+    "comments": [
+      {
+        "a": "Unknown",
+        "b": "楼主给出的 USA 3x High Turnover Theme 基础门槛是 Turnover > 20%，并且（High Turnover returns ratio > 0.75 或 PnL realization < 20）。我刚查到的一条个人 USA/TOP3000/D1/SUPER 样本中，普通 HIGH_TURNOVER 为 PASS；HT_TURNOVER 的 warning value 为 0.0826，限值为 0.20；HT_HIGH_TURNOVER_RETURNS_RATIO 的 warning value 为 0.3067，限值为 0.75。\n我从相关讨论里整理到三类线索：一条讨论强调，高换手应来自快速变化的经济效应，并匹配字段更新频率与覆盖范围；一条未经验证的用户帖子提到低 decay、较短窗口、新闻、社交媒体和情绪字段；另一条讨论提到 rank、分桶、短窗口平滑、均值/中位数和 delay 可用于减少噪声或无效换手。楼主的汇总观察还显示换手率—收益率斜率总体为正但不高。目前这些论坛证据只能提供候选方向，没有证明上述做法能让 HT_TURNOVER 或 ret"
+      },
+      {
+        "a": "Unknown",
+        "b": "在pv20, pv87跑出一些可以过test的，但是after cost sharpe很多是负数，怎么破?\n==============================================================================\nReflection + Pain = Progress\n=============================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "====================================================================================\n这个筛选方式真是学到了，以前还在想Theme应该怎么去筛选，原来是在Classification里筛选。官方文档好像确实没有针对性的说明，在大佬这里学到了。\n===================================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "大佬做结合SA的功能做主题，太强了，思路打开\nin(classifications,\"HIGH_TURNOVER:AFTER_COST\") ||\nin(classifications,\"HIGH_TURNOVER:INVESTABLE\") ||\nin(classifications,\"HIGH_TURNOVER:ORTHOGONAL\") ||\nin(classifications,\"HIGH_TURNOVER:LIQUID\")\n==============================================================================\nReflection + Pain = Progress\n=============================================================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "使用SA来倒推哪个数据集容易出theme ra. 学到了~~\n==========================================\nFIGHTING LABUBU!\n=========================================="
+      },
+      {
+        "a": "Unknown",
+        "b": "太可怕了这个主题，可以看得出比较高质量的数据集都是pv1\nanalyst69\nfundamental6 ，这几个。楼主做的可视化展示确实不错，能直观的看到总体情况"
+      }
+    ],
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39822852669079-%E5%A4%9A%E5%9B%BE%E8%A7%A3%E6%9E%90USA%E6%9C%80%E6%96%B03x-High-Turnover-Theme%E5%9B%BD%E5%8C%BA%E6%8F%90%E4%BA%A4%E7%8E%B0%E5%86%B5"
+  }
+]

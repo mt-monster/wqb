@@ -1,0 +1,2984 @@
+[
+  {
+    "title": "如何拯救高turnover因子？一文助你理解并降低因子turnover",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXT8PoIBw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAf9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzA5Mjc2Njk2NDUyMDctJUU1JUE2JTgyJUU0JUJEJTk1JUU2JThCJUFGJUU2JTk1JTkxJUU5JUFCJTk4dHVybm92ZXIlRTUlOUIlQTAlRTUlQUQlOTAtJUU0JUI4JTgwJUU2JTk2JTg3JUU1JThBJUE5JUU0JUJEJUEwJUU3JTkwJTg2JUU4JUE3JUEzJUU1JUI5JUI2JUU5JTk5JThEJUU0JUJEJThFJUU1JTlCJUEwJUU1JUFEJTkwdHVybm92ZXIGOwhUOg5zZWFyY2hfaWRJIillMmQxYWVlMy0yOTAzLTRlNmYtYmIwYy1mZDdkMzYwNzM3NTUGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--f43a3ed0f283838f1c91358ea5ef661f2fc00a83",
+    "snippet": "(longCount + shortCount) > 100 and ( turnover > turnover _th_up) and ( turnover < turnover _th_down):",
+    "votes": 176,
+    "comments": 24,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ZS59763",
+    "date": "2025-03-26T01:38:29Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "30927669645207",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/30927669645207-%E5%A6%82%E4%BD%95%E6%8B%AF%E6%95%91%E9%AB%98turnover%E5%9B%A0%E5%AD%90-%E4%B8%80%E6%96%87%E5%8A%A9%E4%BD%A0%E7%90%86%E8%A7%A3%E5%B9%B6%E9%99%8D%E4%BD%8E%E5%9B%A0%E5%AD%90turnover",
+    "is_community": true
+  },
+  {
+    "title": "组sa时如何选取高质量因子？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX9KeQIh06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzIwMzQyOTMwMTk2NzEtJUU3JUJCJTg0c2ElRTYlOTclQjYlRTUlQTYlODIlRTQlQkQlOTUlRTklODAlODklRTUlOEYlOTYlRTklQUIlOTglRTglQjQlQTglRTklODclOEYlRTUlOUIlQTAlRTUlQUQlOTAGOwhUOg5zZWFyY2hfaWRJIilhOTU5NjFlMS1kMDZiLTQyYTYtOTFmNy0yNDg4NjA1NzliM2UGOwhGOglyYW5raQ46C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--cb564a5b41ab12fb4b2a32a4cfee0b7e325862f5",
+    "snippet": "& ( ( turnover >0.03 & & turnover <0.05)||( turnover <0.13 & & turnover >0.1)||( turnover <0.17",
+    "votes": 121,
+    "comments": 24,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ZS59763",
+    "date": "2025-05-12T07:12:50Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "32034293019671",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32034293019671-%E7%BB%84sa%E6%97%B6%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E9%AB%98%E8%B4%A8%E9%87%8F%E5%9B%A0%E5%AD%90",
+    "is_community": true
+  },
+  {
+    "title": "连续12天手搓出pc<0.3的SA是一种什么样的体验！！！",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXGHED2SA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzYxMTY0Mzc3MzU0NDctJUU4JUJGJTlFJUU3JUJCJUFEMTIlRTUlQTQlQTklRTYlODklOEIlRTYlOTAlOTMlRTUlODclQkFwYy0wLTMlRTclOUElODRTQSVFNiU5OCVBRiVFNCVCOCU4MCVFNyVBNyU4RCVFNCVCQiU4MCVFNCVCOSU4OCVFNiVBMCVCNyVFNyU5QSU4NCVFNCVCRCU5MyVFOSVBQSU4QwY7CFQ6DnNlYXJjaF9pZEkiKWE5NTk2MWUxLWQwNmItNDJhNi05MWY3LTI0ODg2MDU3OWIzZQY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--7889d3c7a300da51b823023866a2b1481205011f",
+    "snippet": "prod_correlation*(( turnover >0.05 & & turnover <0.08)||( turnover >0.1 & & turnover <0.13)||( turnover >0.16",
+    "votes": 112,
+    "comments": 33,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "SJ65808",
+    "date": "2025-11-05T08:03:57Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "36116437735447",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36116437735447-%E8%BF%9E%E7%BB%AD12%E5%A4%A9%E6%89%8B%E6%90%93%E5%87%BApc-0-3%E7%9A%84SA%E6%98%AF%E4%B8%80%E7%A7%8D%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BD%93%E9%AA%8C",
+    "is_community": true
+  },
+  {
+    "title": "【alpha模板】行业中性化残差信号IND模板",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXH1GSQiI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiActodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc2NjkzMTc5NzU5NTktLWFscGhhJUU2JUE4JUExJUU2JTlEJUJGLSVFOCVBMSU4QyVFNCVCOCU5QSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNiVBRSU4QiVFNSVCNyVBRSVFNCVCRiVBMSVFNSU4RiVCN0lORCVFNiVBOCVBMSVFNiU5RCVCRgY7CFQ6DnNlYXJjaF9pZEkiKThmOTdiNzZkLTNjMjUtNDkwYS1iNjZmLThiOGMxMjhmNzY5NgY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--dca7b3f5e6c1342b98e383e0a9add3a81562d7fb",
+    "snippet": "具体拆解为 3 层核心内涵： 1. 本质：提取指标 A 的「行业 中性化 残差信号」（核心定位） 它不是简单对指标 A 做标准化，而是通过「原始值 - 行业 中性化 值」的差值，实现了「双重剥离」： 第一层（ ts_zscore",
+    "votes": 90,
+    "comments": 41,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF65210",
+    "date": "2026-01-14T15:18:38Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ],
+    "id": "37669317975959",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37669317975959--alpha%E6%A8%A1%E6%9D%BF-%E8%A1%8C%E4%B8%9A%E4%B8%AD%E6%80%A7%E5%8C%96%E6%AE%8B%E5%B7%AE%E4%BF%A1%E5%8F%B7IND%E6%A8%A1%E6%9D%BF",
+    "is_community": true
+  },
+  {
+    "title": "[经验分享]一觉醒来全球combine缩水，只有我保持不变❓（总池combine全球第一）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX2HOprCM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAj8BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzM5MjI0NDg0Mjg4NjYzLS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItJUU0JUI4JTgwJUU4JUE3JTg5JUU5JTg2JTkyJUU2JTlEJUE1JUU1JTg1JUE4JUU3JTkwJTgzY29tYmluZSVFNyVCQyVBOSVFNiVCMCVCNC0lRTUlOEYlQUElRTYlOUMlODklRTYlODglOTElRTQlQkYlOUQlRTYlOEMlODElRTQlQjglOEQlRTUlOEYlOTgtJUU2JTgwJUJCJUU2JUIxJUEwY29tYmluZSVFNSU4NSVBOCVFNyU5MCU4MyVFNyVBQyVBQyVFNCVCOCU4MAY7CFQ6DnNlYXJjaF9pZEkiKWFmNzQ3ODIxLTJjMmEtNDQwZS1hNTFlLTZkM2MzYzJmM2QzYwY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--f7342a1e65e66e78b329aa573149e20843034c3e",
+    "snippet": "略进行了更多细化，得出了以下的结论和猜想： 重视近几年表现。 因子 的预测能力都是有时限的，有些 因子 指标很漂亮但2year sharpe不达标，这很可能说明此 因子 的快要丧失预测能力了，os表现搞不好会一泻千里。即使2year shar",
+    "votes": 99,
+    "comments": 22,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LZ63377",
+    "date": "2026-03-23T07:57:42Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ],
+    "id": "39224484288663",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/39224484288663--%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E4%B8%80%E8%A7%89%E9%86%92%E6%9D%A5%E5%85%A8%E7%90%83combine%E7%BC%A9%E6%B0%B4-%E5%8F%AA%E6%9C%89%E6%88%91%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98-%E6%80%BB%E6%B1%A0combine%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80",
+    "is_community": true
+  },
+  {
+    "title": "【新人向-如何快速查到本次PPA所有数据集及其字段】USA/D1 Fast Datasets Power Pool June`26 theme！",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXkqjaQCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAjMBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwOTYwNDc2NjE1MzE5LS0lRTYlOTYlQjAlRTQlQkElQkElRTUlOTAlOTEtJUU1JUE2JTgyJUU0JUJEJTk1JUU1JUJGJUFCJUU5JTgwJTlGJUU2JTlGJUE1JUU1JTg4JUIwJUU2JTlDJUFDJUU2JUFDJUExUFBBJUU2JTg5JTgwJUU2JTlDJTg5JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU1JThGJThBJUU1JTg1JUI2JUU1JUFEJTk3JUU2JUFFJUI1LVVTQS1EMS1GYXN0LURhdGFzZXRzLVBvd2VyLVBvb2wtSnVuZS0yNi10aGVtZQY7CFQ6DnNlYXJjaF9pZEkiKWE2YTIxMmE2LWJjZjEtNDY5Yy1iNTIzLWFjNDEzZWQxMDRlYwY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--961eb0e0df2332fa34e82c2db35418072fca9739",
+    "snippet": "感谢整理的数据集查询方法！刚好近期官方最新的“GLB/D1 Dataset Power Pool June`26”主题上线，这个脚本工具非常及时。我之前在做 USA D1 区域的探索时，经常因为找不全支持 PPA 的数据集而头疼，这下可以更高效地针对性挖掘了。",
+    "votes": 108,
+    "comments": 10,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LX57490",
+    "date": "2026-06-04T03:48:48Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ],
+    "id": "40960476615319",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/40960476615319--%E6%96%B0%E4%BA%BA%E5%90%91-%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%9F%A5%E5%88%B0%E6%9C%AC%E6%AC%A1PPA%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E9%9B%86%E5%8F%8A%E5%85%B6%E5%AD%97%E6%AE%B5-USA-D1-Fast-Datasets-Power-Pool-June-26-theme",
+    "is_community": true
+  },
+  {
+    "title": "利用mcp 和优化alpha工作流 成功优化GLB alpha的记录",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXDPjXcSE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY3NzI4MzgzNzg2NDctJUU1JTg4JUE5JUU3JTk0JUE4bWNwLSVFNSU5MiU4QyVFNCVCQyU5OCVFNSU4QyU5NmFscGhhJUU1JUI3JUE1JUU0JUJEJTlDJUU2JUI1JTgxLSVFNiU4OCU5MCVFNSU4QSU5RiVFNCVCQyU5OCVFNSU4QyU5NkdMQi1hbHBoYSVFNyU5QSU4NCVFOCVBRSVCMCVFNSVCRCU5NQY7CFQ6DnNlYXJjaF9pZEkiKWE1MjI5NzQ1LWViYjUtNDJlZC04MjI0LTQxYjBhZmY1NWZhMgY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiCEdMQgY7CFQ6EnJlc3VsdHNfY291bnRpAtsB--37aaa0dbf0a8c6cb4f6af10136dcbd35cd98e444",
+    "snippet": "感谢分享这个 GLB alpha优化工作流，非常实用。 补充一点关于 GLB D1 fundamental alpha的turnover特性——最近在 GLB D1上批量跑了大量fundamental单数据集alpha（decay=6, SUBINDUSTRY",
+    "votes": 93,
+    "comments": 24,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "SZ83096",
+    "date": "2025-12-04T09:54:07Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ],
+    "id": "36772838378647",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36772838378647-%E5%88%A9%E7%94%A8mcp-%E5%92%8C%E4%BC%98%E5%8C%96alpha%E5%B7%A5%E4%BD%9C%E6%B5%81-%E6%88%90%E5%8A%9F%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%AE%B0%E5%BD%95",
+    "is_community": true
+  },
+  {
+    "title": "【新人入门】Super Alpha 从入门到入门！",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXQJvsrB06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzI2Mjg1NDExNzc4NzktLSVFNiU5NiVCMCVFNCVCQSVCQSVFNSU4NSVBNSVFOSU5NyVBOC1TdXBlci1BbHBoYS0lRTQlQkIlOEUlRTUlODUlQTUlRTklOTclQTglRTUlODglQjAlRTUlODUlQTUlRTklOTclQTgGOwhUOg5zZWFyY2hfaWRJIilkYWFmNGM0MC0wNGU2LTQ0OWEtYTI2Yy1hYzc2OWIwYTY1NjIGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTliIbljLrln5%2FmnYPph40GOwhUOhJyZXN1bHRzX2NvdW50aQI0Aw%3D%3D--dc09bd067ea3c699d29ebba355d386803c6cc36f",
+    "snippet": "的结果是一个 (D x A) 的 权 重 矩阵。最终组合输出是加权后的 Alpha 信号总和。 常见表达式示例： 用法 表达式 说明 等 权 组合 1 每个 Alpha 权 重 相等 IR",
+    "votes": 73,
+    "comments": 35,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "MH33574",
+    "date": "2025-06-06T03:24:13Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ],
+    "id": "32628541177879",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32628541177879--%E6%96%B0%E4%BA%BA%E5%85%A5%E9%97%A8-Super-Alpha-%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%97%A8",
+    "is_community": true
+  },
+  {
+    "title": "[BRAIN LAB实战]记录一次借助Labs优化GLB alpha的过程",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXTVZ%2Bmx86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdlodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ3NTI2OTk5NzcxMTEtLUJSQUlOLUxBQiVFNSVBRSU5RSVFNiU4OCU5OC0lRTglQUUlQjAlRTUlQkQlOTUlRTQlQjglODAlRTYlQUMlQTElRTUlODAlOUYlRTUlOEElQTlMYWJzJUU0JUJDJTk4JUU1JThDJTk2R0xCLWFscGhhJUU3JTlBJTg0JUU4JUJGJTg3JUU3JUE4JThCBjsIVDoOc2VhcmNoX2lkSSIpZGQ5MDI1MjEtMGVkOC00NzZmLWE2YTAtNjY4YTM2Nzk5ZDcwBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--1df7275bbe0f169c5730b8d8733290fb4fe218e3",
+    "snippet": "看了这篇帖子后，我直接原表达式在 GLB ，ASI ,EUR回测了下，发现，ASI地区指标ok，但是robust指标 FAIL了，而且robust指标距离pass 的值还是挺大的，就先放弃了。EUR基本没有信号，而 GLB 地区的，信号还是挺强的，如下：",
+    "votes": 89,
+    "comments": 14,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "SZ83096",
+    "date": "2025-09-06T18:02:10Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ],
+    "id": "34752699977111",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/34752699977111--BRAIN-LAB%E5%AE%9E%E6%88%98-%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%80%9F%E5%8A%A9Labs%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%BF%87%E7%A8%8B",
+    "is_community": true
+  },
+  {
+    "title": "【大角羊】《2025SAC比赛ATOM第三分享》请国区G2的兄弟们看过来，希望我在ATOM中获得高分的经验给你们一些启发！",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXky%2FfRx46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiArcBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMzMjk0MDM1OTQ4MzExLS0lRTUlQTQlQTclRTglQTclOTIlRTclQkUlOEEtMjAyNVNBQyVFNiVBRiU5NCVFOCVCNSU5QkFUT00lRTclQUMlQUMlRTQlQjglODklRTUlODglODYlRTQlQkElQUItJUU4JUFGJUI3JUU1JTlCJUJEJUU1JThDJUJBRzIlRTclOUElODQlRTUlODUlODQlRTUlQkMlOUYlRTQlQkIlQUMlRTclOUMlOEIlRTglQkYlODclRTYlOUQlQTUtJUU1JUI4JThDJUU2JTlDJTlCJUU2JTg4JTkxJUU1JTlDJUE4QVRPTSVFNCVCOCVBRCVFOCU4RSVCNyVFNSVCRSU5NyVFOSVBQiU5OCVFNSU4OCU4NiVFNyU5QSU4NCVFNyVCQiU4RiVFOSVBQSU4QyVFNyVCQiU5OSVFNCVCRCVBMCVFNCVCQiVBQyVFNCVCOCU4MCVFNCVCQSU5QiVFNSU5MCVBRiVFNSU4RiU5MQY7CFQ6DnNlYXJjaF9pZEkiKWRhYWY0YzQwLTA0ZTYtNDQ5YS1hMjZjLWFjNzY5YjBhNjU2MgY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--3ed7b90e832bad51240c50c3eb73a3b4584611f6",
+    "snippet": "#按照prodcor进行加 权 ，为了防止 权 重 变化过大，比如0.5和0.1 权 重 差五倍，容易集中到一个因子上去 *abs(long_count-short_count)) #按照多空进行加 权 ，对于多空平衡的因子赋予更高 权 重 ，可以避免选到偏多或者偏空因子",
+    "votes": 90,
+    "comments": 10,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "AL13375",
+    "date": "2025-07-07T13:34:13Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ],
+    "id": "33294035948311",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33294035948311--%E5%A4%A7%E8%A7%92%E7%BE%8A-2025SAC%E6%AF%94%E8%B5%9BATOM%E7%AC%AC%E4%B8%89%E5%88%86%E4%BA%AB-%E8%AF%B7%E5%9B%BD%E5%8C%BAG2%E7%9A%84%E5%85%84%E5%BC%9F%E4%BB%AC%E7%9C%8B%E8%BF%87%E6%9D%A5-%E5%B8%8C%E6%9C%9B%E6%88%91%E5%9C%A8ATOM%E4%B8%AD%E8%8E%B7%E5%BE%97%E9%AB%98%E5%88%86%E7%9A%84%E7%BB%8F%E9%AA%8C%E7%BB%99%E4%BD%A0%E4%BB%AC%E4%B8%80%E4%BA%9B%E5%90%AF%E5%8F%91",
+    "is_community": true
+  },
+  {
+    "title": "我用来获得 MAPC 全球第一的 GLOBAL 数据处理方法。",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXidDyghk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAepodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjgwNTAyMTAxOTU4NjMtJUU2JTg4JTkxJUU3JTk0JUE4JUU2JTlEJUE1JUU4JThFJUI3JUU1JUJFJTk3LU1BUEMtJUU1JTg1JUE4JUU3JTkwJTgzJUU3JUFDJUFDJUU0JUI4JTgwJUU3JTlBJTg0LUdMT0JBTC0lRTYlOTUlQjAlRTYlOEQlQUUlRTUlQTQlODQlRTclOTAlODYlRTYlOTYlQjklRTYlQjMlOTUGOwhUOg5zZWFyY2hfaWRJIilhZjc0NzgyMS0yYzJhLTQ0MGUtYTUxZS02ZDNjM2MyZjNkM2MGOwhGOglyYW5raQs6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--cddbcb2991bac9d16d9768fa1b77b294cf5c5731",
+    "snippet": "MAPC 全球 第一作者的 GLB 数据处理方法，读完后对 ASI 迁移有几点感想： \"每次只使用一个数据字段 + 嵌套函数连续操作\" 其实是 ATOM 哲学的极致版——这在 2026 KOR/CHN 数据集相对稀缺时尤其有效；但 ASI",
+    "votes": 91,
+    "comments": 8,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "NM98411",
+    "date": "2024-11-25T15:38:05Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ],
+    "id": "28050210195863",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/28050210195863-%E6%88%91%E7%94%A8%E6%9D%A5%E8%8E%B7%E5%BE%97-MAPC-%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80%E7%9A%84-GLOBAL-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95",
+    "is_community": true
+  },
+  {
+    "title": "【PPAC 提交经验分享】注意！Prod Correlation 报错，实际卡点可能是 Power Pool 相关性",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXOO%2BLTh06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiYBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMyMjIzMTkyMzY1MjA3LS1QUEFDLSVFNiU4RiU5MCVFNCVCQSVBNCVFNyVCQiU4RiVFOSVBQSU4QyVFNSU4OCU4NiVFNCVCQSVBQi0lRTYlQjMlQTglRTYlODQlOEYtUHJvZC1Db3JyZWxhdGlvbi0lRTYlOEElQTUlRTklOTQlOTktJUU1JUFFJTlFJUU5JTk5JTg1JUU1JThEJUExJUU3JTgyJUI5JUU1JThGJUFGJUU4JTgzJUJEJUU2JTk4JUFGLVBvd2VyLVBvb2wtJUU3JTlCJUI4JUU1JTg1JUIzJUU2JTgwJUE3BjsIVDoOc2VhcmNoX2lkSSIpYTZhMjEyYTYtYmNmMS00NjljLWI1MjMtYWM0MTNlZDEwNGVjBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--5e761cd30d7cd0d346233eee4b7b1d9fd8ae2768",
+    "snippet": "最近在提交 Power Pool Alpha 的时候，遇到了一个有点迷惑的报错情况，研究了一下，想把经验分享给大家，希望能帮到可能遇到同样问题的人。 情况是这样的： 大家知道，PPAC 的规则里明确写着 Power Pool Alpha",
+    "votes": 91,
+    "comments": 5,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JR23144",
+    "date": "2025-05-20T01:10:14Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ],
+    "id": "32223192365207",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32223192365207--PPAC-%E6%8F%90%E4%BA%A4%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%B3%A8%E6%84%8F-Prod-Correlation-%E6%8A%A5%E9%94%99-%E5%AE%9E%E9%99%85%E5%8D%A1%E7%82%B9%E5%8F%AF%E8%83%BD%E6%98%AF-Power-Pool-%E7%9B%B8%E5%85%B3%E6%80%A7",
+    "is_community": true
+  },
+  {
+    "title": "26年2月全球会议重点内容整理",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXmjQYuyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzgxODY5NjAzMjkzNjctMjYlRTUlQjklQjQyJUU2JTlDJTg4JUU1JTg1JUE4JUU3JTkwJTgzJUU0JUJDJTlBJUU4JUFFJUFFJUU5JTg3JThEJUU3JTgyJUI5JUU1JTg2JTg1JUU1JUFFJUI5JUU2JTk1JUI0JUU3JTkwJTg2BjsIVDoOc2VhcmNoX2lkSSIpYTZhMjEyYTYtYmNmMS00NjljLWI1MjMtYWM0MTNlZDEwNGVjBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--1a5855ae8527e72ac179d5282f93fad9067a7087",
+    "snippet": "In/Instagram及BRAIN平台。 Power Pool 获奖者宣布 ：强调alpha描述的重要性（避免因描述缺失/错误被 disqualified），两个 Power Pool （印度迪雷湾、全球数据集）各40名获胜者，总奖金$15",
+    "votes": 78,
+    "comments": 13,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "PP26750",
+    "date": "2026-02-05T14:06:05Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ],
+    "id": "38186960329367",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/38186960329367-26%E5%B9%B42%E6%9C%88%E5%85%A8%E7%90%83%E4%BC%9A%E8%AE%AE%E9%87%8D%E7%82%B9%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86",
+    "is_community": true
+  },
+  {
+    "title": "关于Combined Power Pool Alpha Performance持续稳定的猜想（2.12-2.42-1.97-2.62-2.67）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXRnWoVCM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzg4NDY1MTA0ODI5NjctJUU1JTg1JUIzJUU0JUJBJThFQ29tYmluZWQtUG93ZXItUG9vbC1BbHBoYS1QZXJmb3JtYW5jZSVFNiU4QyU4MSVFNyVCQiVBRCVFNyVBOCVCMyVFNSVBRSU5QSVFNyU5QSU4NCVFNyU4QyU5QyVFNiU4MyVCMy0yLTEyLTItNDItMS05Ny0yLTYyLTItNjcGOwhUOg5zZWFyY2hfaWRJIilhNmEyMTJhNi1iY2YxLTQ2OWMtYjUyMy1hYzQxM2VkMTA0ZWMGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--80d78b1ce55fc470e2425ca71760e62e8078d26b",
+    "snippet": "记得了，但在10月出狱后，除了selected其它两个combine都得到了大幅提升，尤其是Combined Power Pool Alpha Performance，直接从零点几突破到2.12，摸清大致方向后一路稳扎稳打，中间由于12月after",
+    "votes": 71,
+    "comments": 19,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "MZ45384",
+    "date": "2026-03-06T05:36:31Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ],
+    "id": "38846510482967",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/38846510482967-%E5%85%B3%E4%BA%8ECombined-Power-Pool-Alpha-Performance%E6%8C%81%E7%BB%AD%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%8C%9C%E6%83%B3-2-12-2-42-1-97-2-62-2-67",
+    "is_community": true
+  },
+  {
+    "title": "PPA活动主题限制下，提交ra点塔的一点心得。",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX8CvPqyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzgxMjEzMTA1MTUyMjMtUFBBJUU2JUI0JUJCJUU1JThBJUE4JUU0JUI4JUJCJUU5JUEyJTk4JUU5JTk5JTkwJUU1JTg4JUI2JUU0JUI4JThCLSVFNiU4RiU5MCVFNCVCQSVBNHJhJUU3JTgyJUI5JUU1JUExJTk0JUU3JTlBJTg0JUU0JUI4JTgwJUU3JTgyJUI5JUU1JUJGJTgzJUU1JUJFJTk3BjsIVDoOc2VhcmNoX2lkSSIpOTg4YTQyM2YtMDgyMy00NTBkLWJkOWQtYTQzYThkZDZhM2QzBjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--9fc61f9b6e5c173b6980f0ff04005e75af14a6bb",
+    "snippet": "d1和ind，usa在活动之前 点 了几个 塔 ，活动开始之后又坚持了几天交ra觉得有点累就去了ind活动，活动前期没有在意atom，等我意识到这个问题之后已经交了30个pv 塔 ，所以在活动结束之后我坚持补了20个atom-ra，然后又回usa 点 亮了剩下的 塔 ，没有去参加GLB活动。",
+    "votes": 70,
+    "comments": 17,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LD22811",
+    "date": "2026-02-03T04:33:20Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ],
+    "id": "38121310515223",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/38121310515223-PPA%E6%B4%BB%E5%8A%A8%E4%B8%BB%E9%A2%98%E9%99%90%E5%88%B6%E4%B8%8B-%E6%8F%90%E4%BA%A4ra%E7%82%B9%E5%A1%94%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97",
+    "is_community": true
+  },
+  {
+    "title": "豆包推荐用户数据集1",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXuzhJqRs6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZ5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzA0MTM4OTE4Nzc2NTUtJUU4JUIxJTg2JUU1JThDJTg1JUU2JThFJUE4JUU4JThEJTkwJUU3JTk0JUE4JUU2JTg4JUI3JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2MQY7CFQ6DnNlYXJjaF9pZEkiKTAzMzMwMjBlLWZlMGQtNDk0OS1hMGE5LTEzMTIwYzg4NGMxMQY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--85e6df6ec275ea3e761af60698cead2c55043d34",
+    "snippet": "从流动比率和流动资产推导现金的一种变形 \"capex /net_cashflow\", # 资本支出对净现金流量（假设存在相关计算或 数据 ）的比例，反映净现金流量对资本支出的支持能力 \"inventory /operating_income\", # 存货对",
+    "votes": 63,
+    "comments": 20,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "XX42289",
+    "date": "2025-03-05T05:55:30Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ],
+    "id": "30413891877655",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/30413891877655-%E8%B1%86%E5%8C%85%E6%8E%A8%E8%8D%90%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E9%9B%861",
+    "is_community": true
+  },
+  {
+    "title": "【MCP Workflow】turnover优化，论坛精华版",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXpUs2yR86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ5NDkwNTk4MTQ2NzktLU1DUC1Xb3JrZmxvdy10dXJub3ZlciVFNCVCQyU5OCVFNSU4QyU5Ni0lRTglQUUlQkElRTUlOUQlOUIlRTclQjIlQkUlRTUlOEQlOEUlRTclODklODgGOwhUOg5zZWFyY2hfaWRJIillMmQxYWVlMy0yOTAzLTRlNmYtYmIwYy1mZDdkMzYwNzM3NTUGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--f2c0cadff3945cc5134dfa6c7d40870f69b8ad7c",
+    "snippet": "降低alpha的 turnover ，实战中可实现**30-50%的 turnover 降幅**。 ## 📊 论坛实证依据 ### 核心理论基础\n- **[如何拯救高 turnover 因子？一文助你理解并降低因子 turnover ](https://support",
+    "votes": 69,
+    "comments": 12,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF56620",
+    "date": "2025-09-15T15:30:05Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "34949059814679",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/34949059814679--MCP-Workflow-turnover%E4%BC%98%E5%8C%96-%E8%AE%BA%E5%9D%9B%E7%B2%BE%E5%8D%8E%E7%89%88",
+    "is_community": true
+  },
+  {
+    "title": "【MCP workflow】根据GLB的alpha，自动挖掘其他地区alpha的工作流",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXDqXkDCA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyMzk3NDc3MTg2NzktLU1DUC13b3JrZmxvdy0lRTYlQTAlQjklRTYlOEQlQUVHTEIlRTclOUElODRhbHBoYS0lRTglODclQUElRTUlOEElQTglRTYlOEMlOTYlRTYlOEUlOTglRTUlODUlQjYlRTQlQkIlOTYlRTUlOUMlQjAlRTUlOEMlQkFhbHBoYSVFNyU5QSU4NCVFNSVCNyVBNSVFNCVCRCU5QyVFNiVCNSU4MQY7CFQ6DnNlYXJjaF9pZEkiKWE1MjI5NzQ1LWViYjUtNDJlZC04MjI0LTQxYjBhZmY1NWZhMgY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiCEdMQgY7CFQ6EnJlc3VsdHNfY291bnRpAtsB--b261e5b93f6f40dcc0987b35f3fb0da86ecf8625",
+    "snippet": "含字段来源、回测指标及后续优化建议。 大家可以尝试更多的alpha，同时这个策略是从 GLB 映射到其他地区，其实也可以从其他地区映射到 GLB ，对工作流进行少量修改即可，如有帮助，请点赞。 更多MCP workflow，可参",
+    "votes": 70,
+    "comments": 10,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF56620",
+    "date": "2025-09-27T11:29:50Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ],
+    "id": "35239747718679",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/35239747718679--MCP-workflow-%E6%A0%B9%E6%8D%AEGLB%E7%9A%84alpha-%E8%87%AA%E5%8A%A8%E6%8C%96%E6%8E%98%E5%85%B6%E4%BB%96%E5%9C%B0%E5%8C%BAalpha%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81",
+    "is_community": true
+  },
+  {
+    "title": "PPAC全球第11,我提交的因子是什么样的？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXc6aQQh06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzIxNzE3MzE4NzQ3MTEtUFBBQyVFNSU4NSVBOCVFNyU5MCU4MyVFNyVBQyVBQzExLSVFNiU4OCU5MSVFNiU4RiU5MCVFNCVCQSVBNCVFNyU5QSU4NCVFNSU5QiVBMCVFNSVBRCU5MCVFNiU5OCVBRiVFNCVCQiU4MCVFNCVCOSU4OCVFNiVBMCVCNyVFNyU5QSU4NAY7CFQ6DnNlYXJjaF9pZEkiKTgwZjdiNzU5LTJhOTctNGExYi1iYmJhLWI5Y2IyNmE2ODdiMAY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--33e842412a57dcfaf90837a7d5d7486c7811eb61",
+    "snippet": "4个打了TAG，14个 因子 中，覆盖了7个金字塔，可以看出 因子 还是较为多类的这也是genius计划推荐我们做的。 下面是的我USA的 因子 分布，可以看出，分布较为均匀，没有爆红的pyr。 回到ppac，我计算了我提交的 因子 的各个指标的均值， Sharpe:",
+    "votes": 69,
+    "comments": 11,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "MS51256",
+    "date": "2025-05-17T04:34:01Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ],
+    "id": "32171731874711",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32171731874711-PPAC%E5%85%A8%E7%90%83%E7%AC%AC11-%E6%88%91%E6%8F%90%E4%BA%A4%E7%9A%84%E5%9B%A0%E5%AD%90%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84",
+    "is_community": true
+  },
+  {
+    "title": "数据推荐合集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXdyNGZhc6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjU3MjgwMzA4MzI0MDctJUU2JTk1JUIwJUU2JThEJUFFJUU2JThFJUE4JUU4JThEJTkwJUU1JTkwJTg4JUU5JTlCJTg2BjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--1f7d49b836de6b286c546f874fbbe6241f4fec94",
+    "snippet": "并未检查 数据 类型） 推荐使用的 数据 USA D1 TOP3000 NEWS12_part3（未检查 数据 类型） 推荐使用的 数据 USA D1 TOP3000 NEWS12_part2（未检查 数据 类型） 推荐使用的 数据 USA D1",
+    "votes": 44,
+    "comments": 28,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "WL13229",
+    "date": "2024-08-18T07:48:19Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ],
+    "id": "25728030832407",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/25728030832407-%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E5%90%88%E9%9B%86",
+    "is_community": true
+  },
+  {
+    "title": "经验分享：最近做 Regular 点塔时反复踩到的几个坑",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXKLQcQyQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzk4NzA2NjI5Nzc2ODctJUU3JUJCJThGJUU5JUFBJThDJUU1JTg4JTg2JUU0JUJBJUFCLSVFNiU5QyU4MCVFOCVCRiU5MSVFNSU4MSU5QS1SZWd1bGFyLSVFNyU4MiVCOSVFNSVBMSU5NCVFNiU5NyVCNiVFNSU4RiU4RCVFNSVBNCU4RCVFOCVCOCVBOSVFNSU4OCVCMCVFNyU5QSU4NCVFNSU4NyVBMCVFNCVCOCVBQSVFNSU5RCU5MQY7CFQ6DnNlYXJjaF9pZEkiKTk4OGE0MjNmLTA4MjMtNDUwZC1iZDlkLWE0M2E4ZGQ2YTNkMwY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiC%2BeCueWhlAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--d2dd973d7d92716bfddc90d8797cee393cd4c519",
+    "snippet": "大家好，最近连续做了一段时间的 Regular 前台筛选和 点塔 ，踩了不少坑。趁记忆还热，整理几条我最近感受最深的经验，分享给同样在做 low-op、追 full funnel 的朋友。 这篇不讲某一条具体 alpha 怎么调出来，主要讲几个很容易反复踩到、但又特别浪费时间的坑。",
+    "votes": 63,
+    "comments": 8,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JW52291",
+    "date": "2026-04-20T09:19:58Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ],
+    "id": "39870662977687",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/39870662977687-%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%9C%80%E8%BF%91%E5%81%9A-Regular-%E7%82%B9%E5%A1%94%E6%97%B6%E5%8F%8D%E5%A4%8D%E8%B8%A9%E5%88%B0%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9D%91",
+    "is_community": true
+  },
+  {
+    "title": "多图解析USA最新3x High Turnover Theme国区提交现况",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvvz6NyQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzk4MjI4NTI2NjkwNzktJUU1JUE0JTlBJUU1JTlCJUJFJUU4JUE3JUEzJUU2JTlFJTkwVVNBJUU2JTlDJTgwJUU2JTk2JUIwM3gtSGlnaC1UdXJub3Zlci1UaGVtZSVFNSU5QiVCRCVFNSU4QyVCQSVFNiU4RiU5MCVFNCVCQSVBNCVFNyU4RSVCMCVFNSU4NiVCNQY7CFQ6DnNlYXJjaF9pZEkiKWE5NTk2MWUxLWQwNmItNDJhNi05MWY3LTI0ODg2MDU3OWIzZQY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--51a3b7422700ce8ec2960d8d1f8f6ab7948bf746",
+    "snippet": "Liquid High Turnover (14) Investable High Turnover (22) Orthogonal High Turnover (40) After Cost High Turnover (65)",
+    "votes": 62,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "RM49262",
+    "date": "2026-04-17T14:36:50Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "39822852669079",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/39822852669079-%E5%A4%9A%E5%9B%BE%E8%A7%A3%E6%9E%90USA%E6%9C%80%E6%96%B03x-High-Turnover-Theme%E5%9B%BD%E5%8C%BA%E6%8F%90%E4%BA%A4%E7%8E%B0%E5%86%B5",
+    "is_community": true
+  },
+  {
+    "title": "[代码分享] 获取没有提交过的数据集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXD%2FVhbB46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzM0NTA4NDg3NTE1MTEtLSVFNCVCQiVBMyVFNyVBMCU4MSVFNSU4OCU4NiVFNCVCQSVBQi0lRTglOEUlQjclRTUlOEYlOTYlRTYlQjIlQTElRTYlOUMlODklRTYlOEYlOTAlRTQlQkElQTQlRTglQkYlODclRTclOUElODQlRTYlOTUlQjAlRTYlOEQlQUUlRTklOUIlODYGOwhUOg5zZWFyY2hfaWRJIikwMzMzMDIwZS1mZTBkLTQ5NDktYTBhOS0xMzEyMGM4ODRjMTEGOwhGOglyYW5raQs6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--7e1b1bf6c4e1be5948e966043937fc9991e75f6c",
+    "snippet": "背景 随着定级的变化，很多伙伴的 数据 集 权限也随之发生了变化。那么我们可能很想知道自己提交过哪些 数据 集 ，还有哪些 数据 集 还没有涉猎，那么可以在新的赛季以更高的优先级去跑。如果去尝试获取所有提交过的alpha并分析表达式的话，对于不熟悉ast",
+    "votes": 64,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FD69320",
+    "date": "2025-07-14T13:05:16Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ],
+    "id": "33450848751511",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33450848751511--%E4%BB%A3%E7%A0%81%E5%88%86%E4%BA%AB-%E8%8E%B7%E5%8F%96%E6%B2%A1%E6%9C%89%E6%8F%90%E4%BA%A4%E8%BF%87%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86",
+    "is_community": true
+  },
+  {
+    "title": "【经验总结】Osmosis / OSM：根本原理、Alpha 池筛选与点数分配方法",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXoebNsSQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgMBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwMzQ2MDgyMjU1MjU1LS0lRTclQkIlOEYlRTklQUElOEMlRTYlODAlQkIlRTclQkIlOTMtT3Ntb3Npcy1PU00tJUU2JUEwJUI5JUU2JTlDJUFDJUU1JThFJTlGJUU3JTkwJTg2LUFscGhhLSVFNiVCMSVBMCVFNyVBRCU5QiVFOSU4MCU4OSVFNCVCOCU4RSVFNyU4MiVCOSVFNiU5NSVCMCVFNSU4OCU4NiVFOSU4NSU4RCVFNiU5NiVCOSVFNiVCMyU5NQY7CFQ6DnNlYXJjaF9pZEkiKWRhYWY0YzQwLTA0ZTYtNDQ5YS1hMjZjLWFjNzY5YjBhNjU2MgY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--b807771ab3348dd0a8535b7ee6ffaa147b440083",
+    "snippet": "基于真实更新结果迭代质量 分 和 权 重 参数。 11. 关键认知 Osmosis 的本质是 Alpha 组合配置，不是简单点数技巧。 点数是 权 重 ， 权 重 只改变暴露，不能创造信号质量。",
+    "votes": 57,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JX84394",
+    "date": "2026-05-09T03:28:51Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ],
+    "id": "40346082255255",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/40346082255255--%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93-Osmosis-OSM-%E6%A0%B9%E6%9C%AC%E5%8E%9F%E7%90%86-Alpha-%E6%B1%A0%E7%AD%9B%E9%80%89%E4%B8%8E%E7%82%B9%E6%95%B0%E5%88%86%E9%85%8D%E6%96%B9%E6%B3%95",
+    "is_community": true
+  },
+  {
+    "title": "使用ChatGPT更新Power Pool Alpha描述",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXDDi3Tx06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZlodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzIyMjgyMTM1MjU2NTUtJUU0JUJEJUJGJUU3JTk0JUE4Q2hhdEdQVCVFNiU5QiVCNCVFNiU5NiVCMFBvd2VyLVBvb2wtQWxwaGElRTYlOEYlOEYlRTglQkYlQjAGOwhUOg5zZWFyY2hfaWRJIilhMDRmMDNlZC1hYTllLTRhZGItOTRlNy04ODc5NmM4YTZiNjYGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--5521302a5a09d9e2ac2400be45a6bce0b6a45954",
+    "snippet": "背景 提交 Power Pool Alpha需要提供具体的描述，包括想法，数据字段，操作符的使用。准确具体简洁的描述会给提交者更多增益。在实践中发现，数据字段的描述，操作符的描述，表达式以及标准化的提示词是输入的关键，可以帮助ChatGPT更好地返回符合要求的答案",
+    "votes": 61,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FD69320",
+    "date": "2025-05-20T10:48:51Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ],
+    "id": "32228213525655",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32228213525655-%E4%BD%BF%E7%94%A8ChatGPT%E6%9B%B4%E6%96%B0Power-Pool-Alpha%E6%8F%8F%E8%BF%B0",
+    "is_community": true
+  },
+  {
+    "title": "【代码分享】分享一套分析工具，集成中性化/最大团等功能",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXM%2BzF%2BiE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAh8BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzM3MzYwOTQ2MTMxODYzLS0lRTQlQkIlQTMlRTclQTAlODElRTUlODglODYlRTQlQkElQUItJUU1JTg4JTg2JUU0JUJBJUFCJUU0JUI4JTgwJUU1JUE1JTk3JUU1JTg4JTg2JUU2JTlFJTkwJUU1JUI3JUE1JUU1JTg1JUI3LSVFOSU5QiU4NiVFNiU4OCU5MCVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5Ni0lRTYlOUMlODAlRTUlQTQlQTclRTUlOUIlQTIlRTclQUQlODklRTUlOEElOUYlRTglODMlQkQGOwhUOg5zZWFyY2hfaWRJIik0NGY5MTYyNS1jNDcyLTQ5NzUtYmE1ZC1lNjQ0NDAzNTlhNzIGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg7kuK3mgKfljJYGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--0b1d3a7b5d02860e8fbc154c9f3adf29393a89a8",
+    "snippet": "载等功能。 在后续接触到了 中性化 工具，发现 中性化 的脚本的操作难度还是有些高，于是我花了很多功夫对 中性化 脚本进行了一系列的可视 化 处理，经过多次迭代，形成了现在的 中性化 测试工具，此工具包含了对alpha自动解析/ 中性化 配置预设/结果排序/变体生成等多项功能。",
+    "votes": 40,
+    "comments": 15,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JA92987",
+    "date": "2025-12-31T10:45:06Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ],
+    "id": "37360946131863",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37360946131863--%E4%BB%A3%E7%A0%81%E5%88%86%E4%BA%AB-%E5%88%86%E4%BA%AB%E4%B8%80%E5%A5%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7-%E9%9B%86%E6%88%90%E4%B8%AD%E6%80%A7%E5%8C%96-%E6%9C%80%E5%A4%A7%E5%9B%A2%E7%AD%89%E5%8A%9F%E8%83%BD",
+    "is_community": true
+  },
+  {
+    "title": "借助MCP手搓IND地区short_interest点塔",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX%2BW%2B5cSE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAahodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY3NzIzMjYxNDQyNzktJUU1JTgwJTlGJUU1JThBJUE5TUNQJUU2JTg5JThCJUU2JTkwJTkzSU5EJUU1JTlDJUIwJUU1JThDJUJBc2hvcnQtaW50ZXJlc3QlRTclODIlQjklRTUlQTElOTQGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQs6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--8d1e89fcc0fad7513bc2e8a8f3f36d7554e6eb2c",
+    "snippet": "IND地区作为最近炙手可热的研究地区，作为新手的我当然不想错过这个机会，于是寻找数据字段进行 点塔 ，看到了short interest模块只有三个字段，想去借助MCP工具尝试一波。 先去了解数据字段的含义： MCP给出了三个dat",
+    "votes": 27,
+    "comments": 20,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "CY96125",
+    "date": "2025-12-04T08:50:06Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ],
+    "id": "36772326144279",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36772326144279-%E5%80%9F%E5%8A%A9MCP%E6%89%8B%E6%90%93IND%E5%9C%B0%E5%8C%BAshort-interest%E7%82%B9%E5%A1%94",
+    "is_community": true
+  },
+  {
+    "title": "【PPAC】关于优化Turnover的一些经验分享",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXFXdGMhw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAb1odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzEwMDIyNTYxNTE4MzEtLVBQQUMtJUU1JTg1JUIzJUU0JUJBJThFJUU0JUJDJTk4JUU1JThDJTk2VHVybm92ZXIlRTclOUElODQlRTQlQjglODAlRTQlQkElOUIlRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUIGOwhUOg5zZWFyY2hfaWRJIillMmQxYWVlMy0yOTAzLTRlNmYtYmIwYy1mZDdkMzYwNzM3NTUGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--04307b201772f61decef21914fe5c0d5a2f62af0",
+    "snippet": "，重拾了USA。 今天找到一个alpha的因子，初始时 Turnover 达到了62%，看了看Performance Comparison，虽然可以加2000+分，但是对于 Turnover 指标的影响实在太大，遂进行优化。 本文谈不上是宝贵的经验，只是有一些想法想和大家分享。",
+    "votes": 34,
+    "comments": 11,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "OB53521",
+    "date": "2025-03-28T18:16:41Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "31002256151831",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/31002256151831--PPAC-%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96Turnover%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB",
+    "is_community": true
+  },
+  {
+    "title": "【Community Leader -因子构造 💎】TRAE+MCP 自动挖掘因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXQIvDwSE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzcxMTYwOTMwODc4OTUtLUNvbW11bml0eS1MZWFkZXItJUU1JTlCJUEwJUU1JUFEJTkwJUU2JTlFJTg0JUU5JTgwJUEwLVRSQUUtTUNQLSVFOCU4NyVBQSVFNSU4QSVBOCVFNiU4QyU5NiVFNiU4RSU5OCVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWFmNzQ3ODIxLTJjMmEtNDQwZS1hNTFlLTZkM2MzYzJmM2QzYwY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--e3367109c15db16b79bf69b4592bfb11b3b65cd0",
+    "snippet": "结果给了我极大的鼓舞，也让我更有动力继续探索。 截至今天投稿，我在IND区域累计回测2800多次，提交 因子 16个，还有4个 因子 待提交。日常的工作节奏大概是这样的：每天回测次数基本在1300左右，工作模式以看盘为主，每小时左右关注一次测",
+    "votes": 30,
+    "comments": 14,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "GX42576",
+    "date": "2025-12-18T13:00:09Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ],
+    "id": "37116093087895",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37116093087895--Community-Leader-%E5%9B%A0%E5%AD%90%E6%9E%84%E9%80%A0-TRAE-MCP-%E8%87%AA%E5%8A%A8%E6%8C%96%E6%8E%98%E5%9B%A0%E5%AD%90",
+    "is_community": true
+  },
+  {
+    "title": "【Alpha灵感】Alpha构建中的分域方法梳理",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXj9SBJho6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjg3NTI2ODkyNzA1NTEtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLUFscGhhJUU2JTlFJTg0JUU1JUJCJUJBJUU0JUI4JUFEJUU3JTlBJTg0JUU1JTg4JTg2JUU1JTlGJTlGJUU2JTk2JUI5JUU2JUIzJTk1JUU2JUEyJUIzJUU3JTkwJTg2BjsIVDoOc2VhcmNoX2lkSSIpZGFhZjRjNDAtMDRlNi00NDlhLWEyNmMtYWM3NjliMGE2NTYyBjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--e9e749bb423a1755932ae327516d4f0c1480849f",
+    "snippet": "其次是时序 分 域，时序 分 域是指对个股自身的数据序列进行一定的筛选再计算 。在时序 分 域中，常见的是离散型 分 域的方法，也有连续型 分 域的方法，连续型 分 域的方法可以参考Alpha灵感中凸显因子的计算方式，本质上也是重新对时间序列数据进行重新加 权 ，如 https://support",
+    "votes": 32,
+    "comments": 12,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YW93864",
+    "date": "2024-12-24T03:24:03Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ],
+    "id": "28752689270551",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/28752689270551--Alpha%E7%81%B5%E6%84%9F-Alpha%E6%9E%84%E5%BB%BA%E4%B8%AD%E7%9A%84%E5%88%86%E5%9F%9F%E6%96%B9%E6%B3%95%E6%A2%B3%E7%90%86",
+    "is_community": true
+  },
+  {
+    "title": "好用的因子模板分享",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXBxZhJho6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZ1odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjg3NTIxMzk5MTMxMTEtJUU1JUE1JUJEJUU3JTk0JUE4JUU3JTlBJTg0JUU1JTlCJUEwJUU1JUFEJTkwJUU2JUE4JUExJUU2JTlEJUJGJUU1JTg4JTg2JUU0JUJBJUFCBjsIVDoOc2VhcmNoX2lkSSIpYWY3NDc4MjEtMmMyYS00NDBlLWE1MWUtNmQzYzNjMmYzZDNjBjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--6fbf8f693e50a4f8f8749432db606957a0244304",
+    "snippet": "对其进行排名；然后计算两个字段在过去10个交易日最小差异和另一个字段在过去15个交易日的最大值之间的相关性。此 因子 结合了短期 因子 动量和中期相对强弱。\", \"适用数据集\": { \"field1\": {",
+    "votes": 34,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "XL31477",
+    "date": "2024-12-24T02:26:04Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ],
+    "id": "28752139913111",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/28752139913111-%E5%A5%BD%E7%94%A8%E7%9A%84%E5%9B%A0%E5%AD%90%E6%A8%A1%E6%9D%BF%E5%88%86%E4%BA%AB",
+    "is_community": true
+  },
+  {
+    "title": "[Alpha优化] 提高Robust Universie Sharp，提高Sub Universe Sharp，降低Turnover的常见方式",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXokKQVyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc3NTk0Nzc3ODUyMzktLUFscGhhJUU0JUJDJTk4JUU1JThDJTk2LSVFNiU4RiU5MCVFOSVBQiU5OFJvYnVzdC1Vbml2ZXJzaWUtU2hhcnAtJUU2JThGJTkwJUU5JUFCJTk4U3ViLVVuaXZlcnNlLVNoYXJwLSVFOSU5OSU4RCVFNCVCRCU4RVR1cm5vdmVyJUU3JTlBJTg0JUU1JUI4JUI4JUU4JUE3JTgxJUU2JTk2JUI5JUU1JUJDJThGBjsIVDoOc2VhcmNoX2lkSSIpZTJkMWFlZTMtMjkwMy00ZTZmLWJiMGMtZmQ3ZDM2MDczNzU1BjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--d480414c0292cf9bed8d96f2ca3a1fd1ab961cb9",
+    "snippet": "3 Turnover Turnover 指的是换手率，较低的 Turnover 往往会导致比较低的Margin，反之亦然。比较高的 Turnover 坏处在于会带来比较高的Margin，从而导致比较高的费率。因此控 Turnover 好处在于提高alpha质量。",
+    "votes": 27,
+    "comments": 11,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ZZ75777",
+    "date": "2026-01-18T09:47:10Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "37759477785239",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37759477785239--Alpha%E4%BC%98%E5%8C%96-%E6%8F%90%E9%AB%98Robust-Universie-Sharp-%E6%8F%90%E9%AB%98Sub-Universe-Sharp-%E9%99%8D%E4%BD%8ETurnover%E7%9A%84%E5%B8%B8%E8%A7%81%E6%96%B9%E5%BC%8F",
+    "is_community": true
+  },
+  {
+    "title": "豆包推荐用户数据集3",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX00RJqRs6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZ5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzA0MTM4OTI2NzAyMzEtJUU4JUIxJTg2JUU1JThDJTg1JUU2JThFJUE4JUU4JThEJTkwJUU3JTk0JUE4JUU2JTg4JUI3JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2MwY7CFQ6DnNlYXJjaF9pZEkiKTAzMzMwMjBlLWZlMGQtNDk0OS1hMGE5LTEzMTIwYzg4NGMxMQY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--f68c035f3489fbb7ed42deafd5e260b0ec779632",
+    "snippet": "doubao_fields_3 = [ \"fn_profit_loss_a /fn_assets_fair_val_a\", # 反映资产盈利能力，净利润与资产公允价值的比率 \"fn_income_from_equity_investments_a",
+    "votes": 35,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "XX42289",
+    "date": "2025-03-05T05:56:22Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ],
+    "id": "30413892670231",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/30413892670231-%E8%B1%86%E5%8C%85%E6%8E%A8%E8%8D%90%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E9%9B%863",
+    "is_community": true
+  },
+  {
+    "title": "super alpha的学习成果",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXk8LKPh46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzMyNTUwMzg1NTUwMzEtc3VwZXItYWxwaGElRTclOUElODQlRTUlQUQlQTYlRTQlQjklQTAlRTYlODglOTAlRTYlOUUlOUMGOwhUOg5zZWFyY2hfaWRJIilhOTU5NjFlMS1kMDZiLTQyYTYtOTFmNy0yNDg4NjA1NzliM2UGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--876cc9a1f12b412e6b02bdd374aa0dc19cfb6349",
+    "snippet": "Expression是if_else( turnover >= 0.15 & & turnover <= 0.20, 1.5, 1) * if_else( turnover >= 0.30 & & turnover <=",
+    "votes": 31,
+    "comments": 4,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YL21428",
+    "date": "2025-07-04T16:12:37Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ],
+    "id": "33255038555031",
+    "url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33255038555031-super-alpha%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%88%90%E6%9E%9C",
+    "is_community": true
+  },
+  {
+    "title": "关于六维最终排名的计算方式",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX2JowACA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUxODUxODc1NDMxOTEtJUU1JTg1JUIzJUU0JUJBJThFJUU1JTg1JUFEJUU3JUJCJUI0JUU2JTlDJTgwJUU3JUJCJTg4JUU2JThFJTkyJUU1JTkwJThEJUU3JTlBJTg0JUU4JUFFJUExJUU3JUFFJTk3JUU2JTk2JUI5JUU1JUJDJThGBjsIVDoOc2VhcmNoX2lkSSIpZGFhZjRjNDAtMDRlNi00NDlhLWEyNmMtYWM3NjliMGE2NTYyBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--36e6cb54b60e7da2db4ab7ed02244f8f2e1b6b1c",
+    "snippet": "根据哪个指标来定义的 六维哪个维度的 权 值最高 是等 权 吗 是不是op count 和field count 权 值会高一些， 如果最大回测占比最大，那对新人确实不友好， 此外社区 分 为什么波动的如此频繁 ===========",
+    "votes": 32,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "MS51256",
+    "date": "2025-09-25T05:25:30Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "关于直接查看各地区适用中性化的一点想法",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX2eEMKBw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfdodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzA5NTgzNDAzOTczMzUtJUU1JTg1JUIzJUU0JUJBJThFJUU3JTlCJUI0JUU2JThFJUE1JUU2JTlGJUE1JUU3JTlDJThCJUU1JTkwJTg0JUU1JTlDJUIwJUU1JThDJUJBJUU5JTgwJTgyJUU3JTk0JUE4JUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU3JTlBJTg0JUU0JUI4JTgwJUU3JTgyJUI5JUU2JTgzJUIzJUU2JUIzJTk1BjsIVDoOc2VhcmNoX2lkSSIpOGY5N2I3NmQtM2MyNS00OTBhLWI2NmYtOGI4YzEyOGY3Njk2BjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--e817200c0ccdba5ebce5151fabb98ce547006f2f",
+    "snippet": "记得以前有一篇帖子，里面记录了各个地区适用的 中性化 ，但是那篇帖子现在找不到了。 偶然有一天，我在浏览data explorer时，发现subindustry、industry、country等，也属于PV数据集里面的group字段，如图：",
+    "votes": 26,
+    "comments": 8,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "HQ17963",
+    "date": "2025-03-27T02:47:57Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "关于降Prod Correlation的实践（一）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXhfIBlCM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkxMTg1OTQ4MDMwOTUtJUU1JTg1JUIzJUU0JUJBJThFJUU5JTk5JThEUHJvZC1Db3JyZWxhdGlvbiVFNyU5QSU4NCVFNSVBRSU5RSVFOCVCNyVCNS0lRTQlQjglODAGOwhUOg5zZWFyY2hfaWRJIilhNmEyMTJhNi1iY2YxLTQ2OWMtYjUyMy1hYzQxM2VkMTA0ZWMGOwhGOglyYW5raQ86C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--9de8f4feb1fca3dc4adc65b52b8ad3769dd04c5f",
+    "snippet": "原始表达式：group_zscore(vec_avg(mdl109_cfroe), subindustry) 回测结果 Power Pool Correlation 结果 Prod Correlation 结果 分析：Prod Correlation",
+    "votes": 15,
+    "comments": 18,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JC78366",
+    "date": "2026-03-18T03:29:30Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "【新人第一关】如何度过找不到Alpha的困难期",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXgM5eTBo6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjg5MTUzMTA0MjgzMTEtLSVFNiU5NiVCMCVFNCVCQSVCQSVFNyVBQyVBQyVFNCVCOCU4MCVFNSU4NSVCMy0lRTUlQTYlODIlRTQlQkQlOTUlRTUlQkElQTYlRTglQkYlODclRTYlODklQkUlRTQlQjglOEQlRTUlODglQjBBbHBoYSVFNyU5QSU4NCVFNSU5QiVCMCVFOSU5QSVCRSVFNiU5QyU5RgY7CFQ6DnNlYXJjaF9pZEkiKTAwY2Q0NDliLTY5NTctNDJmYi1hYjNkLTZiM2IyNDdmOWNjMwY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--571e92ec1a601e82f1fc8b57890fe881a7d31889",
+    "snippet": "好在有一天觉得闲着也是闲着，干脆跑一个 冷门数据集 来看看到底有没有用。这下可好，跑出来一堆可提交的Alpha，再也没有交不出来的感受，这才顺利度过了第一关。我把经验具体成下面几点 1.按照老师的走，将代码、云电脑都布置好 0基础不跟着",
+    "votes": 17,
+    "comments": 16,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "FY30802",
+    "date": "2025-01-02T07:44:42Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "该如何高效点塔呢",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX5igiCB86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQxMTk3OTMzMDUyMzktJUU4JUFGJUE1JUU1JUE2JTgyJUU0JUJEJTk1JUU5JUFCJTk4JUU2JTk1JTg4JUU3JTgyJUI5JUU1JUExJTk0JUU1JTkxJUEyBjsIVDoOc2VhcmNoX2lkSSIpYTdhZmMxODYtZDJmOS00ODE2LWE2M2EtZTk4NmUxZTllYjQ0BjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--2debcd6e68a8546aed56d477d2e42d655819eac6",
+    "snippet": "这个赛季要 点 60个金字塔才能到，感觉好难啊，要如何才能高效 点塔 呢。=======================================================================================",
+    "votes": 32,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "AY17279",
+    "date": "2025-08-12T11:53:11Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "super alpha点塔？是否也可以刷field count？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXGkL3eB86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAatodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQ2MDQ0MDQ4NDExMTEtc3VwZXItYWxwaGElRTclODIlQjklRTUlQTElOTQtJUU2JTk4JUFGJUU1JTkwJUE2JUU0JUI5JTlGJUU1JThGJUFGJUU0JUJCJUE1JUU1JTg4JUI3ZmllbGQtY291bnQGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--c54f8f6f2ec23052e26aec21cfde9af78fc2552e",
+    "snippet": "前几天看到群友发现了super alpha也可以 点塔 ，颇为震惊，既然如此，不知道super alpha是否也可以用来刷field count，我发现外区有很多顾问的field count奇高，不会他们就是用super alpha刷的吧。",
+    "votes": 32,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2025-09-01T12:48:51Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "优雅解决获取数据集失败问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXeVItVyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc3NTc4MTc4Nzg4MDctJUU0JUJDJTk4JUU5JTlCJTg1JUU4JUE3JUEzJUU1JTg2JUIzJUU4JThFJUI3JUU1JThGJTk2JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU1JUE0JUIxJUU4JUI0JUE1JUU5JTk3JUFFJUU5JUEyJTk4BjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--fe8d63837ac0ecab874a94c6e1007713dec7203c",
+    "snippet": "获取 数据 集 返回失败比如'reslut' 'count'等是因为获取 数据 集 限流，且数据字段越多的越难以获得成功，于是采取分页获取，每次获取50个完美解决获取失败问题。 def get_datafields( s",
+    "votes": 31,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HP65370",
+    "date": "2026-01-18T04:38:05Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "EUR的model216数据集重复严重",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWxBADCA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZ9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyMzY5ODY1MTAxMDMtRVVSJUU3JTlBJTg0bW9kZWwyMTYlRTYlOTUlQjAlRTYlOEQlQUUlRTklOUIlODYlRTklODclOEQlRTUlQTQlOEQlRTQlQjglQTUlRTklODclOEQGOwhUOg5zZWFyY2hfaWRJIikwMzMzMDIwZS1mZTBkLTQ5NDktYTBhOS0xMzEyMGM4ODRjMTEGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--6b64cf51e3a6fe8f8752bbfacdea0ea617b08c7f",
+    "snippet": "今天跑了一下EUR的model216 数据 集 ，跑出来一筛，1000个Sharpe>1.58的，欣喜若狂啊。结果一剪枝，剪完就剩24个，最后提交，提交0个。666 ==============================",
+    "votes": 32,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2025-09-27T03:28:54Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "【Theme分析】GLB High Turnover Datasets Theme",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXhwyRVCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEwNDUxNDA5OTc5MTEtLVRoZW1lJUU1JTg4JTg2JUU2JTlFJTkwLUdMQi1IaWdoLVR1cm5vdmVyLURhdGFzZXRzLVRoZW1lBjsIVDoOc2VhcmNoX2lkSSIpYTUyMjk3NDUtZWJiNS00MmVkLTgyMjQtNDFiMGFmZjU1ZmEyBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--392db242e19c60dbfcc43608a2963b1ac49d00f6",
+    "snippet": "heme是 GLB High Turnover Datasets Theme，所以对这个主题进行一下分析。首先我觉得这个主题的难度是比较大的，因为 GLB 地区本身就要考虑多个地区的表现，并不是很容易能得到符合标准的ra；第二，在 GLB 地区的High",
+    "votes": 28,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2026-06-08T01:32:12Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "【Theme分析】GLB High Turnover Datasets Theme",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXhwyRVCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEwNDUxNDA5OTc5MTEtLVRoZW1lJUU1JTg4JTg2JUU2JTlFJTkwLUdMQi1IaWdoLVR1cm5vdmVyLURhdGFzZXRzLVRoZW1lBjsIVDoOc2VhcmNoX2lkSSIpZTJkMWFlZTMtMjkwMy00ZTZmLWJiMGMtZmQ3ZDM2MDczNzU1BjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--567eb60a5e5788098ce3065f207ba6a5536d46d5",
+    "snippet": "最近感觉特定主题的Theme少了一些，最新的Theme是GLB High Turnover Datasets Theme，所以对这个主题进行一下分析。首先我觉得这个主题的难度是比较大的，因为GLB地区本身就要考虑多个地区的表现，并不是很容易",
+    "votes": 28,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2026-06-08T01:32:12Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "【Quant101】AI因子挖掘实战：零成本用AI挖掘一个 High Turnover PPA",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXrO9CRSY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAetodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDIwNzg5MTc2MDI0NTUtLVF1YW50MTAxLUFJJUU1JTlCJUEwJUU1JUFEJTkwJUU2JThDJTk2JUU2JThFJTk4JUU1JUFFJTlFJUU2JTg4JTk4LSVFOSU5QiVCNiVFNiU4OCU5MCVFNiU5QyVBQyVFNyU5NCVBOEFJJUU2JThDJTk2JUU2JThFJTk4JUU0JUI4JTgwJUU0JUI4JUFBLUhpZ2gtVHVybm92ZXItUFBBBjsIVDoOc2VhcmNoX2lkSSIpYTk1OTYxZTEtZDA2Yi00MmE2LTkxZjctMjQ4ODYwNTc5YjNlBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--5f02fb767be707d86d850a8ed19b2a59d88e8a51",
+    "snippet": "Getting Started with High Turnover Alphas ，核心要求只有两点： Turnover > 20% High Turnover returns ratio test ： high-tvr-returns",
+    "votes": 18,
+    "comments": 13,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ZH87224",
+    "date": "2026-07-20T10:08:29Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "全球市场因子权重揭秘：哪个因子能让你效果倍增",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX6u1IWBk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgoBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzI3ODY2OTcxMzY4MDg3LSVFNSU4NSVBOCVFNyU5MCU4MyVFNSVCOCU4MiVFNSU5QyVCQSVFNSU5QiVBMCVFNSVBRCU5MCVFNiU5RCU4MyVFOSU4NyU4RCVFNiU4RiVBRCVFNyVBNyU5OC0lRTUlOTMlQUElRTQlQjglQUElRTUlOUIlQTAlRTUlQUQlOTAlRTglODMlQkQlRTglQUUlQTklRTQlQkQlQTAlRTYlOTUlODglRTYlOUUlOUMlRTUlODAlOEQlRTUlQTIlOUUGOwhUOg5zZWFyY2hfaWRJIik4MGY3Yjc1OS0yYTk3LTRhMWItYmJiYS1iOWNiMjZhNjg3YjAGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--83feb10cfb66d71acbbb1ece0278e9a71858e65c",
+    "snippet": "基本面和盈利 因子 的依赖。 在模型开发中，需区分 因子 的 全球 适用性与区域独特性，分别构建跨市场策略与本地化策略。 建议进一步测试这些 因子 的历史表现，结合 因子 组合优化和动态权重调整以提高策略稳健性。",
+    "votes": 27,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LO56106",
+    "date": "2024-11-17T23:06:59Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "全球市场因子权重揭秘：哪个因子能让你效果倍增",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX6u1IWBk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgoBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzI3ODY2OTcxMzY4MDg3LSVFNSU4NSVBOCVFNyU5MCU4MyVFNSVCOCU4MiVFNSU5QyVCQSVFNSU5QiVBMCVFNSVBRCU5MCVFNiU5RCU4MyVFOSU4NyU4RCVFNiU4RiVBRCVFNyVBNyU5OC0lRTUlOTMlQUElRTQlQjglQUElRTUlOUIlQTAlRTUlQUQlOTAlRTglODMlQkQlRTglQUUlQTklRTQlQkQlQTAlRTYlOTUlODglRTYlOUUlOUMlRTUlODAlOEQlRTUlQTIlOUUGOwhUOg5zZWFyY2hfaWRJIikzYTFkYmYxMS04YWY1LTQ3MDAtODQ2OS0xYjQ3NGU3NzM0ZjMGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTliIbljLrln5%2FmnYPph40GOwhUOhJyZXN1bHRzX2NvdW50aQI0Aw%3D%3D--4130c327c31173c5872331636002e54102575b6c",
+    "snippet": "Analyst, News, Option 等）的 权 重 都接近 1.8-1.9，说明 USA 市场的多因子驱动显著，适合构建多因子模型。 • CHN 市场 ：Sentiment、Model、Macro 权 重 较高，说明在中国市场，情绪因子和宏观相关的因子更重要；而",
+    "votes": 27,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LO56106",
+    "date": "2024-11-17T23:06:59Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "我的小地区点塔顺序AMR-JPN-TWN",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXMBeKfSE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAahodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY4MjMwNzE0MDQxODMtJUU2JTg4JTkxJUU3JTlBJTg0JUU1JUIwJThGJUU1JTlDJUIwJUU1JThDJUJBJUU3JTgyJUI5JUU1JUExJTk0JUU5JUExJUJBJUU1JUJBJThGQU1SLUpQTi1UV04GOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--bc6ac46f86e08e4a9a15db9fe9c18356a2c077ac",
+    "snippet": "在USA、GLB、EUR、ASI四大地区把能 点 的 塔 点 完了之后，我也开始做小地区的alpha了，我从上个赛季的小地区 点塔 顺序就是先AMR，再JPN，然后这个季度又多了一些地区，所以我选择TWN作为第三个 点塔 的地区。 为什么选择这三个，首先是",
+    "votes": 30,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2025-12-06T01:25:07Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "MEA  Fundamental  出新数据集，可以点塔了",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXUD5vCyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbdodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA3MzEwNDEyMjI2NzktTUVBLUZ1bmRhbWVudGFsLSVFNSU4NyVCQSVFNiU5NiVCMCVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4Ni0lRTUlOEYlQUYlRTQlQkIlQTUlRTclODIlQjklRTUlQTElOTQlRTQlQkElODYGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--cd9ff5939badaf351874797f17ad9e146dc6d561",
+    "snippet": "原来就只有4个数据字段的，数据集 ，并且这四个数据字段都是缺失年份的，跑出来都是 厂 alpha ，现在出了新数据集，大家快来跑，MEA 点塔 是很轻松的 ===================================================",
+    "votes": 29,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "JR23144",
+    "date": "2026-05-26T01:04:48Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "MEA 啥时候能出新数据集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXyiuHCyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA3MzE0NDI2NjE5MTEtTUVBLSVFNSU5NSVBNSVFNiU5NyVCNiVFNSU4MCU5OSVFOCU4MyVCRCVFNSU4NyVCQSVFNiU5NiVCMCVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4NgY7CFQ6DnNlYXJjaF9pZEkiKTAzMzMwMjBlLWZlMGQtNDk0OS1hMGE5LTEzMTIwYzg4NGMxMQY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--1f27b61182b6d72e2b55b2493eb6716f4b793c78",
+    "snippet": "MEA 啥时候能出新 数据 集 ，新区还是比较好做的，已经点完仅有的5个 数据 集 了，官方能出新的 数据 集 来，让我好点塔吗。谢谢官方 ===================================================",
+    "votes": 29,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "JR23144",
+    "date": "2026-05-26T01:37:16Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "GLB区域使用ppa点塔",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXmCoQcyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc4Nzc1ODc4MTAzMjctR0xCJUU1JThDJUJBJUU1JTlGJTlGJUU0JUJEJUJGJUU3JTk0JUE4cHBhJUU3JTgyJUI5JUU1JUExJTk0BjsIVDoOc2VhcmNoX2lkSSIpZGQ5MDI1MjEtMGVkOC00NzZmLWE2YTAtNjY4YTM2Nzk5ZDcwBjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--1df6983430651c986f294827504fd2bacc557866",
+    "snippet": "jump_decay(ts_delta(x, 5), 3, sensitivity = 0.3, force = 0.05) 这个表达式通常用于 策略信号的预处理 或 技术指标的平滑优化 ，举两个具体例子： 股票趋势跟踪策略：先计算收盘价的",
+    "votes": 15,
+    "comments": 14,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YB44630",
+    "date": "2026-01-23T06:23:31Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "【细节控】Alpha 提交前的最后一公里：中性化到底该选哪个？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXng4gGSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhIBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwNzg5ODQyMjM5MTI3LS0lRTclQkIlODYlRTglOEElODIlRTYlOEUlQTctQWxwaGEtJUU2JThGJTkwJUU0JUJBJUE0JUU1JTg5JThEJUU3JTlBJTg0JUU2JTlDJTgwJUU1JTkwJThFJUU0JUI4JTgwJUU1JTg1JUFDJUU5JTg3JThDLSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNSU4OCVCMCVFNSVCQSU5NSVFOCVBRiVBNSVFOSU4MCU4OSVFNSU5MyVBQSVFNCVCOCVBQQY7CFQ6DnNlYXJjaF9pZEkiKTQ0ZjkxNjI1LWM0NzItNDk3NS1iYTVkLWU2NDQ0MDM1OWE3MgY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--0cf96a6741eff5490b0a08abee8e7635ae868c47",
+    "snippet": "Universe 里，用 Subindustry 往往能杀掉很多不必要的风格暴露。 3. 别怕麻烦： 提交前多试几个 中性化 方案，有时候 Sharpe 的提升就在这细微的差别里。 细节决定成败，大家在提交 Check 前一定要多思考这“最后一公里”哈！",
+    "votes": 28,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-05-28T07:13:53Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "这样点塔怎么样",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXXPRzFCI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc0NzEyNDAwODQ1MDMtJUU4JUJGJTk5JUU2JUEwJUI3JUU3JTgyJUI5JUU1JUExJTk0JUU2JTgwJThFJUU0JUI5JTg4JUU2JUEwJUI3BjsIVDoOc2VhcmNoX2lkSSIpYTdhZmMxODYtZDJmOS00ODE2LWE2M2EtZTk4NmUxZTllYjQ0BjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--061cdf93068c6239359ebab7cd08dd290dcd4ec6",
+    "snippet": "有交上sa,上个赛季倒是把小数据集挖了个遍，可是这个赛季呢，有点难受了，外加上小地区更难了，难上加难了，这个赛季能 点 到60个 塔 吗。 我秉持着一个月专心做2到3个地区的原则，每一个月分配的alpha都比较均匀，在追求稳定的同时注重reg",
+    "votes": 29,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HP65370",
+    "date": "2026-01-06T12:38:24Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "GLB区域使用ppa点塔",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXmCoQcyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc4Nzc1ODc4MTAzMjctR0xCJUU1JThDJUJBJUU1JTlGJTlGJUU0JUJEJUJGJUU3JTk0JUE4cHBhJUU3JTgyJUI5JUU1JUExJTk0BjsIVDoOc2VhcmNoX2lkSSIpYTdhZmMxODYtZDJmOS00ODE2LWE2M2EtZTk4NmUxZTllYjQ0BjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--356eb8e98bf14709c2536befd0028a4f837e8ee4",
+    "snippet": "jump_decay(ts_delta(x, 5), 3, sensitivity = 0.3, force = 0.05) 这个表达式通常用于 策略信号的预处理 或 技术指标的平滑优化 ，举两个具体例子： 股票趋势跟踪策略：先计算收盘价的",
+    "votes": 15,
+    "comments": 14,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YB44630",
+    "date": "2026-01-23T06:23:31Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "高效点塔思路（点小数据集版）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXqOUhgiE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAblodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY4NDI3OTgxNjM5OTEtJUU5JUFCJTk4JUU2JTk1JTg4JUU3JTgyJUI5JUU1JUExJTk0JUU2JTgwJTlEJUU4JUI3JUFGLSVFNyU4MiVCOSVFNSVCMCU4RiVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4NiVFNyU4OSU4OAY7CFQ6DnNlYXJjaF9pZEkiKWE3YWZjMTg2LWQyZjktNDgxNi1hNjNhLWU5ODZlMWU5ZWI0NAY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiC%2BeCueWhlAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--72605813706e80880414f6b23a94fc8306bee6de",
+    "snippet": "截至目前，我这个赛季除去aiac一共提交了227个ra/ppa，一共 点 了55个 塔 ，涉及usa d0, usa d1,eur d1, asi , amr ,jpn 。 我 点塔 顺序是先 点 比较好 点 的，对于我来说很好 点 的就是analyst,model,fundamental",
+    "votes": 28,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HP65370",
+    "date": "2025-12-07T15:30:42Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "USA  other 数据集 运行感想",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXAmfw3CQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA1MzEzNDQ2ODc3NjctVVNBLW90aGVyLSVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4Ni0lRTglQkYlOTAlRTglQTElOEMlRTYlODQlOUYlRTYlODMlQjMGOwhUOg5zZWFyY2hfaWRJIikwMGNkNDQ5Yi02OTU3LTQyZmItYWIzZC02YjNiMjQ3ZjljYzMGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--9cafdcad3acc0932b5314941486d734d4572d7e1",
+    "snippet": "USA other 跑 other143 跑了4300回测出一 跑 earningscall_sentiment 3000 回测出一 跑出来的时候 有时候组合表现 sharpe fitness margin 三个全掉，这样的没有交的想法呀。",
+    "votes": 28,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "JR23144",
+    "date": "2026-05-17T03:46:55Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "Fast D1 数据集的一些问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXVmQOxyE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzcxMzg4MjM2NjUzMDMtRmFzdC1EMS0lRTYlOTUlQjAlRTYlOEQlQUUlRTklOUIlODYlRTclOUElODQlRTQlQjglODAlRTQlQkElOUIlRTklOTclQUUlRTklQTIlOTgGOwhUOg5zZWFyY2hfaWRJIikwMzMzMDIwZS1mZTBkLTQ5NDktYTBhOS0xMzEyMGM4ODRjMTEGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--9d71f8ad3380f63cbcd2eced07f2ffe673a927e4",
+    "snippet": "============================HW93328============================ Fast D1 数据 集 以及上线了一段时间了，之前就关注到了，但是最近一段时间很少有关于它的讨论，所以我也不敢轻举妄动，所以我也想在论坛里询问一下有没有大佬做过或者研究过Fast",
+    "votes": 29,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2025-12-19T08:25:58Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "关于ATOM分组内的GLB super alpha的讨论",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX%2B47LIB46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzMxMjYyMDI5MzIxMTktJUU1JTg1JUIzJUU0JUJBJThFQVRPTSVFNSU4OCU4NiVFNyVCQiU4NCVFNSU4NiU4NSVFNyU5QSU4NEdMQi1zdXBlci1hbHBoYSVFNyU5QSU4NCVFOCVBRSVBOCVFOCVBRSVCQQY7CFQ6DnNlYXJjaF9pZEkiKWRkOTAyNTIxLTBlZDgtNDc2Zi1hNmEwLTY2OGEzNjc5OWQ3MAY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiCEdMQgY7CFQ6EnJlc3VsdHNfY291bnRpAtsB--6070278143f604bd6439c2ccd748b1f408d0315a",
+    "snippet": "alpha回测的比较多了，所以想尝试以下 GLB 地区，但在做 GLB 地区的super alpha时我发现一些特点：1. GLB 地区的回测特别慢，基本要把limit放到300个alpha以下才能回测成功。 2. GLB 的alpha池中单个因子的表现似乎没",
+    "votes": 27,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2025-06-29T00:06:37Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "power pool现在真是有点滥用了",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXtQDBgyE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAadodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY4NDk3NjI0ODE1NTktcG93ZXItcG9vbCVFNyU4RSVCMCVFNSU5QyVBOCVFNyU5QyU5RiVFNiU5OCVBRiVFNiU5QyU4OSVFNyU4MiVCOSVFNiVCQiVBNSVFNyU5NCVBOCVFNCVCQSU4NgY7CFQ6DnNlYXJjaF9pZEkiKWEwNGYwM2VkLWFhOWUtNGFkYi05NGU3LTg4Nzk2YzhhNmI2NgY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--5f244c9fad88a109b11074aeabaafd9631755a60",
+    "snippet": "power pool 现在真是有点滥用了 某个筛选条件筛出来1000个 加上not in power pool 后只剩下30多个。。 -------------------------------------------------",
+    "votes": 27,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "QQ68782",
+    "date": "2025-12-08T02:08:55Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "power pool leaderboard的入口，查看自己各地区的排名",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXnMPBEh46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzMwNjU5MDkwNjY5MDMtcG93ZXItcG9vbC1sZWFkZXJib2FyZCVFNyU5QSU4NCVFNSU4NSVBNSVFNSU4RiVBMy0lRTYlOUYlQTUlRTclOUMlOEIlRTglODclQUElRTUlQjclQjElRTUlOTAlODQlRTUlOUMlQjAlRTUlOEMlQkElRTclOUElODQlRTYlOEUlOTIlRTUlOTAlOEQGOwhUOg5zZWFyY2hfaWRJIilhMDRmMDNlZC1hYTllLTRhZGItOTRlNy04ODc5NmM4YTZiNjYGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--146b43d5b186cebb9cdf911d8f09f2bdde746924",
+    "snippet": "今天在量化学习小组中看到有同学在问如何查看自己的 power pool 排名，在brain平台上这个排行榜和consultant界面放在一起了，可以按照如下步骤进入 power pool leaderboard查看自己各地区的排名以及各项数据。",
+    "votes": 27,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HW93328",
+    "date": "2025-06-26T09:51:28Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "分享一个自用的AI点塔工作流",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXcE4mWiM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzg4NzAwOTY3MDM2MzktJUU1JTg4JTg2JUU0JUJBJUFCJUU0JUI4JTgwJUU0JUI4JUFBJUU4JTg3JUFBJUU3JTk0JUE4JUU3JTlBJTg0QUklRTclODIlQjklRTUlQTElOTQlRTUlQjclQTUlRTQlQkQlOUMlRTYlQjUlODEGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--a980c8d3aa7c72194c7bf2123a2bf46ff88aff77",
+    "snippet": "# AI 点塔 工作流： 这部分主要向AI介绍固定的 点塔 工作流。 1. 确定要 点 的 塔 1. 明确当前工作的股票池：region/delay/universe 2. 选择要 点 的 塔 ，依据：简单性优先和未 点 优先",
+    "votes": 11,
+    "comments": 17,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "MC42701",
+    "date": "2026-03-07T01:34:56Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "如何管理已经跑过的数据集？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXtlDo%2Fx06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzI5ODQ5NTE0Njk3MTktJUU1JUE2JTgyJUU0JUJEJTk1JUU3JUFFJUExJUU3JTkwJTg2JUU1JUI3JUIyJUU3JUJCJThGJUU4JUI3JTkxJUU4JUJGJTg3JUU3JTlBJTg0JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2BjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--7212a4a0ab222c98430858750e2bc014cc08c257",
+    "snippet": "就换一个地方，有些能出alpha的地区没跑完就弃掉了，后续再想跑这个地区时不知道从何跑起。 不知道大家对 数据 集 的使用情况是如何进行管理的？ -----------------------------------------",
+    "votes": 28,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2025-06-23T10:15:51Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "KOR地区推荐数据集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXUziNUiE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAY5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY2Mzg0NDAzMTM3NTEtS09SJUU1JTlDJUIwJUU1JThDJUJBJUU2JThFJUE4JUU4JThEJTkwJUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2BjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--e61823c36d12c3ea8a62194cbec30524d2cf4503",
+    "snippet": "KOR地区不太好出，但有个例外，就是insiders 数据 集 。这个 数据 集 除了在USA好出，其他也不好出，但KOR竟然也能出，而且能出很多。 =============================================",
+    "votes": 27,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2025-11-28T13:03:01Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "感觉GLB的theme还是有点难做",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXosVzWyA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU1NzcxNTY0NDQ4MjMtJUU2JTg0JTlGJUU4JUE3JTg5R0xCJUU3JTlBJTg0dGhlbWUlRTglQkYlOTglRTYlOTglQUYlRTYlOUMlODklRTclODIlQjklRTklOUElQkUlRTUlODElOUEGOwhUOg5zZWFyY2hfaWRJIilkZDkwMjUyMS0wZWQ4LTQ3NmYtYTZhMC02NjhhMzY3OTlkNzAGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--bd6d630f6a0cd345404c41deea1205395536710b",
+    "snippet": "GLB 有theme，但是这次的theme并没有做出很多满意的alpha，还是得继续努力。============================================================================",
+    "votes": 27,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "AY17279",
+    "date": "2025-10-12T06:49:29Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "点够塔之后还要继续点塔吗",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXr4EbgiE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbhodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzY4NDI2OTA5NDkwMTUtJUU3JTgyJUI5JUU1JUE0JTlGJUU1JUExJTk0JUU0JUI5JThCJUU1JTkwJThFJUU4JUJGJTk4JUU4JUE2JTgxJUU3JUJCJUE3JUU3JUJCJUFEJUU3JTgyJUI5JUU1JUExJTk0JUU1JTkwJTk3BjsIVDoOc2VhcmNoX2lkSSIpYTdhZmMxODYtZDJmOS00ODE2LWE2M2EtZTk4NmUxZTllYjQ0BjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--b995e70812482fc7b55a11240f0f8b2283bc8f82",
+    "snippet": "在这里想问一下大家，大家 点 完自己想冲的genuis等级对应的 塔 的最低数量之后还会继续 点 新 塔 吗？ 我在上个赛季的还有最后一个月 点 完了30个 塔 之后就停止 点塔 了，就开始为下一个赛季囤alpha了，导致交的alpha数量显著下降，vf和combine都跌了。",
+    "votes": 27,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HP65370",
+    "date": "2025-12-07T15:15:07Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "因子挖掘的多维度技巧与优化方法（哈工大罗勇老师）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXAr9ZWBk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhMBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzI3ODY3MjUzNTA2NTgzLSVFNSU5QiVBMCVFNSVBRCU5MCVFNiU4QyU5NiVFNiU4RSU5OCVFNyU5QSU4NCVFNSVBNCU5QSVFNyVCQiVCNCVFNSVCQSVBNiVFNiU4QSU4MCVFNSVCNyVBNyVFNCVCOCU4RSVFNCVCQyU5OCVFNSU4QyU5NiVFNiU5NiVCOSVFNiVCMyU5NS0lRTUlOTMlODglRTUlQjclQTUlRTUlQTQlQTclRTclQkQlOTclRTUlOEIlODclRTglODAlODElRTUlQjglODgGOwhUOg5zZWFyY2hfaWRJIik4MGY3Yjc1OS0yYTk3LTRhMWItYmJiYS1iOWNiMjZhNjg3YjAGOwhGOglyYW5raQw6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--bb2fb58344c9455af1275200e6982936fad1e43d",
+    "snippet": "《 因子 挖掘的多维度技巧与优化方法》---哈工大罗勇老师 这张 全球因子 全景图，给大家提供了更好的视角。 图表解读与背景介绍 从海量的 因子 测试中可以看出， 因子 类别与市场地域分布展示了不同行为金融 因子 的相关性评分。每个方块代表某",
+    "votes": 25,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "LO56106",
+    "date": "2024-11-17T23:37:54Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【干货警告】还在为高 Turnover 苦恼？这几个“降频”常识你必须知道！",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXLwa67CQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwNTk5MTUxODQ5MzY3LS0lRTUlQjklQjIlRTglQjQlQTclRTglQUQlQTYlRTUlOTElOEEtJUU4JUJGJTk4JUU1JTlDJUE4JUU0JUI4JUJBJUU5JUFCJTk4LVR1cm5vdmVyLSVFOCU4QiVBNiVFNiU4MSVCQy0lRTglQkYlOTklRTUlODclQTAlRTQlQjglQUEtJUU5JTk5JThEJUU5JUEyJTkxLSVFNSVCOCVCOCVFOCVBRiU4NiVFNCVCRCVBMCVFNSVCRiU4NSVFOSVBMSVCQiVFNyU5RiVBNSVFOSU4MSU5MwY7CFQ6DnNlYXJjaF9pZEkiKWUyZDFhZWUzLTI5MDMtNGU2Zi1iYjBjLWZkN2QzNjA3Mzc1NQY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--0b576a31f0f4bef521aad42df0a4f0b5fdb3e860",
+    "snippet": "【干货警告】还在为高 Turnover 苦恼？这几个“降频”常识你必须知道！ 最近在论坛里看到很多朋友在哀嚎：“因子 Sharpe 很高，但 Turnover 动辄 80%，Margin 惨不忍睹，到底怎么救？” 高换手不仅吃掉",
+    "votes": 26,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "WL27618",
+    "date": "2026-05-20T00:06:30Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "SAC 2025 从IS第171名逆袭到最终成绩第46名——跑赢等权组合的心得体会",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXZJRNxx46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiwBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMzODQxMzQ4ODk1NzY3LVNBQy0yMDI1LSVFNCVCQiU4RUlTJUU3JUFDJUFDMTcxJUU1JTkwJThEJUU5JTgwJTg2JUU4JUEyJUFEJUU1JTg4JUIwJUU2JTlDJTgwJUU3JUJCJTg4JUU2JTg4JTkwJUU3JUJCJUE5JUU3JUFDJUFDNDYlRTUlOTAlOEQtJUU4JUI3JTkxJUU4JUI1JUEyJUU3JUFEJTg5JUU2JTlEJTgzJUU3JUJCJTg0JUU1JTkwJTg4JUU3JTlBJTg0JUU1JUJGJTgzJUU1JUJFJTk3JUU0JUJEJTkzJUU0JUJDJTlBBjsIVDoOc2VhcmNoX2lkSSIpZGFhZjRjNDAtMDRlNi00NDlhLWEyNmMtYWM3NjliMGE2NTYyBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--b31b38bd794e339a305c1a6195fe8d8b7be1db0a",
+    "snippet": "终成绩有所提升。 此外，就是一直没有掌握IS该如何才能加 分 ，到比赛的中后期，都是扣 分 的，或者加 分 /扣 分 交替反复，最终IS都没能过80000 分 ，一直在78000 分 上下浮动。只能在以后的比赛中再进行探索了。",
+    "votes": 23,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "MY56787",
+    "date": "2025-07-31T07:57:32Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "USA/D1 Fast Datasets Power Pool June 数据集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXXkLjKyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA4NzA0MjY1OTg5MzUtVVNBLUQxLUZhc3QtRGF0YXNldHMtUG93ZXItUG9vbC1KdW5lLSVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4NgY7CFQ6DnNlYXJjaF9pZEkiKWE2YTIxMmE2LWJjZjEtNDY5Yy1iNTIzLWFjNDEzZWQxMDRlYwY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--2d80b027075ed7c732cfcee2a4296753f88dc8b5",
+    "snippet": "尝试了下，在url上添加一个theme=true部分就可以theme严选的数据集 === 暂时得到的数据集(82个)，发现每个等级得到的数据多少还不一样 id name analyst14",
+    "votes": 24,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "MY82844",
+    "date": "2026-06-01T04:22:50Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "实测不同中性化策略的性能及信号数量：以动量模版为例",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXAPhIBCE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiUBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzM2MzAyMjg3Nzk4Mjk1LSVFNSVBRSU5RSVFNiVCNSU4QiVFNCVCOCU4RCVFNSU5MCU4QyVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNyVBRCU5NiVFNyU5NSVBNSVFNyU5QSU4NCVFNiU4MCVBNyVFOCU4MyVCRCVFNSU4RiU4QSVFNCVCRiVBMSVFNSU4RiVCNyVFNiU5NSVCMCVFOSU4NyU4Ri0lRTQlQkIlQTUlRTUlOEElQTglRTklODclOEYlRTYlQTglQTElRTclODklODglRTQlQjglQkElRTQlQkUlOEIGOwhUOg5zZWFyY2hfaWRJIik0NGY5MTYyNS1jNDcyLTQ5NzUtYmE1ZC1lNjQ0NDAzNTlhNzIGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg7kuK3mgKfljJYGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--52e4de51180be6bf99ca65a949f5fe7e3cdb81e6",
+    "snippet": "对于新人来说，我在跑模板的时候，常常不知道怎么选择 中性化 ，跑一阶段任务的时候，不同的 中性化 策略会影响测试速度，挖掘的信号数量，因此找到一个合适的 中性化 策略尤其重要。 在近期的研究中，我尝试对比了不同 中性化 策略在相同模板下的执行性能与信号数量。测试",
+    "votes": 15,
+    "comments": 10,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "HQ20665",
+    "date": "2025-11-13T03:22:44Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "[会议总结]GLB因子的回测技法及抛砖引玉",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXoSd9CSA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyMjUxMjY1NDM3NjctLSVFNCVCQyU5QSVFOCVBRSVBRSVFNiU4MCVCQiVFNyVCQiU5My1HTEIlRTUlOUIlQTAlRTUlQUQlOTAlRTclOUElODQlRTUlOUIlOUUlRTYlQjUlOEIlRTYlOEElODAlRTYlQjMlOTUlRTUlOEYlOEElRTYlOEElOUIlRTclQTAlOTYlRTUlQkMlOTUlRTclOEUlODkGOwhUOg5zZWFyY2hfaWRJIilhNTIyOTc0NS1lYmI1LTQyZWQtODIyNC00MWIwYWZmNTVmYTIGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--f804d6aec4d62620bdc749d41ef4450863b104cf",
+    "snippet": "是非线性叠加。 思路互换 ：提交 GLB 后可将相同数据字段拿到 ASI、Eur 等region再回测，提高多样性。 GLB 做 Ra 问题解答 ： 地区表现不均处理 ：若 GLB 上阿尔法在三个地区中两个表现好一",
+    "votes": 17,
+    "comments": 7,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "SY86571",
+    "date": "2025-09-26T17:45:22Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "[新手向]关于我上赛季冲刺点塔踩的坑",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXqiUziSM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAd5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkwNzIxNzU1OTgxMDMtLSVFNiU5NiVCMCVFNiU4OSU4QiVFNSU5MCU5MS0lRTUlODUlQjMlRTQlQkElOEUlRTYlODglOTElRTQlQjglOEElRTglQjUlOUIlRTUlQUQlQTMlRTUlODYlQjIlRTUlODglQkElRTclODIlQjklRTUlQTElOTQlRTglQjglQTklRTclOUElODQlRTUlOUQlOTEGOwhUOg5zZWFyY2hfaWRJIilhN2FmYzE4Ni1kMmY5LTQ4MTYtYTYzYS1lOTg2ZTFlOWViNDQGOwhGOglyYW5raQ86C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--e64988466908033d8b360439462f81429a62d35a",
+    "snippet": "总结失败原因，有如下几 点 ： 1、新手时期还不懂 点塔 重要性，一开始逮着一只羊薅羊毛（可以看到我的EUR45交了个），后期才突击 点塔 ，很多细节都不考虑，只是为了 点 而 点 。 2、用混信号 点塔 ，在跑一二三阶时，三阶很喜欢用混信号",
+    "votes": 18,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LB34773",
+    "date": "2026-03-16T15:25:23Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "glb太慢, 建议把GLB恢复8个槽",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXeptShSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEyNTQ1NDY3OTkyNTUtZ2xiJUU1JUE0JUFBJUU2JTg1JUEyLSVFNSVCQiVCQSVFOCVBRSVBRSVFNiU4QSU4QUdMQiVFNiU4MSVBMiVFNSVBNCU4RDglRTQlQjglQUElRTYlQTclQkQGOwhUOg5zZWFyY2hfaWRJIilkZDkwMjUyMS0wZWQ4LTQ3NmYtYTZhMC02NjhhMzY3OTlkNzAGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--86f67a6ce0332f7a42e131a33505a508d8d4f102",
+    "snippet": "glb 太慢, 建议把 GLB 恢复8个槽 建议把5000回测限制去掉，反正也用不到了[狗头] =========================================================================",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "QQ68782",
+    "date": "2026-06-16T03:47:12Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "glb太慢了, GLB还能做吗，跑了快一天了还不到1500",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXysJRhSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAehodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEyNTQ1MzI1OTgyOTUtZ2xiJUU1JUE0JUFBJUU2JTg1JUEyJUU0JUJBJTg2LUdMQiVFOCVCRiU5OCVFOCU4MyVCRCVFNSU4MSU5QSVFNSU5MCU5Ny0lRTglQjclOTElRTQlQkElODYlRTUlQkYlQUIlRTQlQjglODAlRTUlQTQlQTklRTQlQkElODYlRTglQkYlOTglRTQlQjglOEQlRTUlODglQjAxNTAwBjsIVDoOc2VhcmNoX2lkSSIpZGQ5MDI1MjEtMGVkOC00NzZmLWE2YTAtNjY4YTM2Nzk5ZDcwBjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--fee2e15cf359d583d1d70660a7cafbebe6586ccf",
+    "snippet": "glb 太慢了, GLB 还能做吗，跑了快一天了还不到1500 能不能把资源给主题调配一下",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "QQ68782",
+    "date": "2026-06-16T03:48:04Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "glb太慢, 来support吧",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXZH1OhSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAXtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEyNTQ0Nzc3MTg2NzktZ2xiJUU1JUE0JUFBJUU2JTg1JUEyLSVFNiU5RCVBNXN1cHBvcnQlRTUlOTAlQTcGOwhUOg5zZWFyY2hfaWRJIilkZDkwMjUyMS0wZWQ4LTQ3NmYtYTZhMC02NjhhMzY3OTlkNzAGOwhGOglyYW5raQs6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--a944f5dbcf8254f6bb3f23dec6548082847eb3ae",
+    "snippet": "这里点进去你就说你觉得 GLB 回测太慢了，具体有多慢你跟着实际情况写，再交一个你的 GLB 回测的数量的截图，来证明确实很慢。希望能优化提速吧 ==============================",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "QQ68782",
+    "date": "2026-06-16T03:45:48Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "【经验分享】从区域Sharpe差异看全球因子的分区域权重调整",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXPmToqyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhoBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNDIwMjY4NTE4OTM1LS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItJUU0JUJCJThFJUU1JThDJUJBJUU1JTlGJTlGU2hhcnBlJUU1JUI3JUFFJUU1JUJDJTgyJUU3JTlDJThCJUU1JTg1JUE4JUU3JTkwJTgzJUU1JTlCJUEwJUU1JUFEJTkwJUU3JTlBJTg0JUU1JTg4JTg2JUU1JThDJUJBJUU1JTlGJTlGJUU2JTlEJTgzJUU5JTg3JThEJUU4JUIwJTgzJUU2JTk1JUI0BjsIVDoOc2VhcmNoX2lkSSIpODBmN2I3NTktMmE5Ny00YTFiLWJiYmEtYjljYjI2YTY4N2IwBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--a62e0676b190eb8e3ebe9742f5bb1910d45472ef",
+    "snippet": "在开发 全球 （GLB） 因子 时，一个常见挑战是不同地区的Sharpe差异悬殊。以我近期提交的某类 因子 为例，美洲区域Sharpe表现良好，但亚太和欧非中东区域明显偏弱。直接使用 全球 统一参数往往牺牲掉美洲的优势来迁就表现较差的区域。为此，我尝试为不",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-23T06:58:20Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【Alpha灵感】全球第一个MEA因子（零PC alpha），我是怎么做出来的？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXUHN7gCQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgIBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwMTM0MjQ1NTY4NjYzLS1BbHBoYSVFNyU4MSVCNSVFNiU4NCU5Ri0lRTUlODUlQTglRTclOTAlODMlRTclQUMlQUMlRTQlQjglODAlRTQlQjglQUFNRUElRTUlOUIlQTAlRTUlQUQlOTAtJUU5JTlCJUI2UEMtYWxwaGEtJUU2JTg4JTkxJUU2JTk4JUFGJUU2JTgwJThFJUU0JUI5JTg4JUU1JTgxJTlBJUU1JTg3JUJBJUU2JTlEJUE1JUU3JTlBJTg0BjsIVDoOc2VhcmNoX2lkSSIpODBmN2I3NTktMmE5Ny00YTFiLWJiYmEtYjljYjI2YTY4N2IwBjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--6c6ede4473049e33d0c5f5d5f577e22a4a179fc1",
+    "snippet": "半夜做 因子 的时候发现新开了一个MEA地区，考虑到低PC高奖赏原则于是开始了 因子 设计。 （先上镇楼 PC0.00 图） PART1：了解现有情况计划对策 MEA开始的时候，我发现在data集合里面搜索为空，应该是接口也未开没办法直接用程序批量回测。",
+    "votes": 11,
+    "comments": 11,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JL76306",
+    "date": "2026-04-30T16:58:44Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【alpha灵感】华泰单因子测试之波动率因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXY%2BnDZhE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkxMzMwNzExODg3NTktLWFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNSU4RCU4RSVFNiVCMyVCMCVFNSU4RCU5NSVFNSU5QiVBMCVFNSVBRCU5MCVFNiVCNSU4QiVFOCVBRiU5NSVFNCVCOSU4QiVFNiVCMyVBMiVFNSU4QSVBOCVFNyU4RSU4NyVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWFmNzQ3ODIxLTJjMmEtNDQwZS1hNTFlLTZkM2MzYzJmM2QzYwY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--b9a0423ab5fe400ae3bc060b74c3bdfe8b47543f",
+    "snippet": "标题：华泰单 因子 测试之波动率 因子 作者：林晓明 概述：该篇论文作者构建了近N个月每日收益率序列标准差，对于中证全指日收益率进行一元线性回归的残差标准差，对于中证全指日收益率，规模 因子 日收益率，BP 因子 日收益率序列进行多元线性回归的残",
+    "votes": 21,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "OB66269",
+    "date": "2023-11-17T01:07:17Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【经验分享】从区域Sharpe差异看全球因子的分区域权重调整",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXPmToqyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhoBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNDIwMjY4NTE4OTM1LS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItJUU0JUJCJThFJUU1JThDJUJBJUU1JTlGJTlGU2hhcnBlJUU1JUI3JUFFJUU1JUJDJTgyJUU3JTlDJThCJUU1JTg1JUE4JUU3JTkwJTgzJUU1JTlCJUEwJUU1JUFEJTkwJUU3JTlBJTg0JUU1JTg4JTg2JUU1JThDJUJBJUU1JTlGJTlGJUU2JTlEJTgzJUU5JTg3JThEJUU4JUIwJTgzJUU2JTk1JUI0BjsIVDoOc2VhcmNoX2lkSSIpM2ExZGJmMTEtOGFmNS00NzAwLTg0NjktMWI0NzRlNzczNGYzBjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--9629cafef6d8b01782d25cb2c6b7f48c0ce70459",
+    "snippet": "同地区的Sharpe差异悬殊。以我近期提交的某类因子为例，美洲 区域 Sharpe表现良好，但亚太和欧非中东 区域 明显偏弱。直接使用全球统一参数往往牺牲掉美洲的优势来迁就表现较差的 区域 。为此，我尝试为不同地区设计差异化的时序窗口与中性化逻辑，但因",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-23T06:58:20Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "【研究进展】FAST中性化在低流动性宇宙中的效果观察",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX0c7nqyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgYBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNDIwMjU4NzI2Mjk1LS0lRTclQTAlOTQlRTclQTklQjYlRTglQkYlOUIlRTUlQjElOTUtRkFTVCVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNSU5QyVBOCVFNCVCRCU4RSVFNiVCNSU4MSVFNSU4QSVBOCVFNiU4MCVBNyVFNSVBRSU4NyVFNSVBRSU5OSVFNCVCOCVBRCVFNyU5QSU4NCVFNiU5NSU4OCVFNiU5RSU5QyVFOCVBNyU4MiVFNSVBRiU5RgY7CFQ6DnNlYXJjaF9pZEkiKTQ0ZjkxNjI1LWM0NzItNDk3NS1iYTVkLWU2NDQ0MDM1OWE3MgY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--6f4e786673b5f6b82aeeebd3622ffabd8d34be23",
+    "snippet": "在近期的研究中，我重点测试了在美国低流动性市场宇宙（Illiquid Minvol）中，使用FAST 中性化 相比于传统行业 中性化 的差异。初步结论是：FAST 中性化 在该宇宙下能有效削减短期系统性风险暴露，令因子的IS Sharpe和Fitness均有明显",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-23T06:57:46Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【经验分享】在复合中性化模式下开发因子的避坑指南",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXFuNgpSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhQBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxMzkyMjI1MzI2NzQzLS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItJUU1JTlDJUE4JUU1JUE0JThEJUU1JTkwJTg4JUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU2JUE4JUExJUU1JUJDJThGJUU0JUI4JThCJUU1JUJDJTgwJUU1JThGJTkxJUU1JTlCJUEwJUU1JUFEJTkwJUU3JTlBJTg0JUU5JTgxJUJGJUU1JTlEJTkxJUU2JThDJTg3JUU1JThEJTk3BjsIVDoOc2VhcmNoX2lkSSIpNDRmOTE2MjUtYzQ3Mi00OTc1LWJhNWQtZTY0NDQwMzU5YTcyBjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--7ac8dda8448ed761fa979759620ed97f2d74947f",
+    "snippet": "在开发因子时，很多顾问习惯使用单一的行业 中性化 。但我最近在使用结合了反转与动量因子的复合 中性化 模式时，发现了一些需要注意的细节。 这种复合 中性化 虽然能有效剔除市场常见的动量和反转风格暴露，使得因子表现更加纯粹，但也极易导致信号被过度过",
+    "votes": 22,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-22T07:20:52Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【Alpha灵感】估值因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXafa8IBQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYlodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjIxMzA4NDE3NzQzNTktLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNCVCQyVCMCVFNSU4MCVCQyVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKWFmNzQ3ODIxLTJjMmEtNDQwZS1hNTFlLTZkM2MzYzJmM2QzYwY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--71c7d9ce12b213c3856659d8e8f9f00a0615c5f8",
+    "snippet": "ts_rank group_neutralize 因子 setting如下： 对于BP与SP因子，我使用了ts_rank对于BP与SP基于时间进行排序，并将其结合基本面 因子 得到了 可以看出此时alpha未达到提交水平",
+    "votes": 19,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "YZ31807",
+    "date": "2024-03-17T04:18:29Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "大家有使用NONE作为中性化设置吗？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXt0mseSM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkwMDU0ODg1MjcyNTUtJUU1JUE0JUE3JUU1JUFFJUI2JUU2JTlDJTg5JUU0JUJEJUJGJUU3JTk0JUE4Tk9ORSVFNCVCRCU5QyVFNCVCOCVCQSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFOCVBRSVCRSVFNyVCRCVBRSVFNSU5MCU5NwY7CFQ6DnNlYXJjaF9pZEkiKThmOTdiNzZkLTNjMjUtNDkwYS1iNjZmLThiOGMxMjhmNzY5NgY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--d0e4f17b8126ab5e184267167bcf41596b750181",
+    "snippet": "一般遍历 中性化 的时候 我都默认不选择NONE 但是偶尔会发现 使用ts_corr(x,y)操作符的时候，使用NONE作为 中性化 表现会比其他 中性化 的指标要好. 看看大家是否使用过NONE 中性化 来跑因子",
+    "votes": 20,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XX88140",
+    "date": "2026-03-13T03:15:22Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【新人经验分享】风险中性化因子提速小技巧",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXEo1t0iA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzYwODgxNTMxODI3NDMtLSVFNiU5NiVCMCVFNCVCQSVCQSVFNyVCQiU4RiVFOSVBQSU4QyVFNSU4OCU4NiVFNCVCQSVBQi0lRTklQTMlOEUlRTklOTklQTklRTQlQjglQUQlRTYlODAlQTclRTUlOEMlOTYlRTUlOUIlQTAlRTUlQUQlOTAlRTYlOEYlOTAlRTklODAlOUYlRTUlQjAlOEYlRTYlOEElODAlRTUlQjclQTcGOwhUOg5zZWFyY2hfaWRJIik4Zjk3Yjc2ZC0zYzI1LTQ5MGEtYjY2Zi04YjhjMTI4Zjc2OTYGOwhGOglyYW5raQ86C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg7kuK3mgKfljJYGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--d2ed2c07cc5f6449044dc8b3178f91b576b4ea24",
+    "snippet": "11月出的公告PowerPool只接受风险 中性化 因子，作为新人，一开始有点慌。之前尝试了风险 中性化 回测，感觉比基础中心 化 或无 中性化 慢好多。批量跑因子的时候要等好久才有，总担心当天交不上。后来自己在浏览论坛不断验证，最后慢慢摸索了一套小技巧，",
+    "votes": 14,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "WW78189",
+    "date": "2025-11-04T08:23:48Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【研究进展】全球多地区因子回测中EMEA区域表现欠佳的思考",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXZ8WgkiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxMzExNjkyNzQ0NTk5LS0lRTclQTAlOTQlRTclQTklQjYlRTglQkYlOUIlRTUlQjElOTUtJUU1JTg1JUE4JUU3JTkwJTgzJUU1JUE0JTlBJUU1JTlDJUIwJUU1JThDJUJBJUU1JTlCJUEwJUU1JUFEJTkwJUU1JTlCJTlFJUU2JUI1JThCJUU0JUI4JUFERU1FQSVFNSU4QyVCQSVFNSU5RiU5RiVFOCVBMSVBOCVFNyU4RSVCMCVFNiVBQyVBMCVFNCVCRCVCMyVFNyU5QSU4NCVFNiU4MCU5RCVFOCU4MCU4MwY7CFQ6DnNlYXJjaF9pZEkiKTgwZjdiNzU5LTJhOTctNGExYi1iYmJhLWI5Y2IyNmE2ODdiMAY7CEY6CXJhbmtpCDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--e4f81989500340a0b66816b5a8db8245fc0d25dd",
+    "snippet": "在进行 全球 多地区（GLB） 因子 研究时，我发现近期提交的一些分析师预测类 因子 在Amer区域表现良好，但Emea区域的Sharpe比率普遍偏低（部分甚至低于0.2），拉低了整体的Global组合表现。这可能与欧洲市场不同子行业的覆盖率和基本面特",
+    "votes": 19,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-18T02:33:37Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【研究进展】全球多地区因子回测中EMEA区域表现欠佳的思考",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXZ8WgkiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxMzExNjkyNzQ0NTk5LS0lRTclQTAlOTQlRTclQTklQjYlRTglQkYlOUIlRTUlQjElOTUtJUU1JTg1JUE4JUU3JTkwJTgzJUU1JUE0JTlBJUU1JTlDJUIwJUU1JThDJUJBJUU1JTlCJUEwJUU1JUFEJTkwJUU1JTlCJTlFJUU2JUI1JThCJUU0JUI4JUFERU1FQSVFNSU4QyVCQSVFNSU5RiU5RiVFOCVBMSVBOCVFNyU4RSVCMCVFNiVBQyVBMCVFNCVCRCVCMyVFNyU5QSU4NCVFNiU4MCU5RCVFOCU4MCU4MwY7CFQ6DnNlYXJjaF9pZEkiKTNhMWRiZjExLThhZjUtNDcwMC04NDY5LTFiNDc0ZTc3MzRmMwY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--ac14ac570aa55dc9b7f528ada35094596a4e49a9",
+    "snippet": "在进行全球多地区（GLB）因子研究时，我发现近期提交的一些分析师预测类因子在Amer 区域 表现良好，但Emea 区域 的Sharpe比率普遍偏低（部分甚至低于0.2），拉低了整体的Global组合表现。这可能与欧洲市场不同子行业的覆盖率和基本面特",
+    "votes": 19,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-06-18T02:33:37Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "现在做MEA真的不ok，特别是从点塔的角度来讲",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXVsHANCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAetodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA5MDg1MDI0MjMwNjMtJUU3JThFJUIwJUU1JTlDJUE4JUU1JTgxJTlBTUVBJUU3JTlDJTlGJUU3JTlBJTg0JUU0JUI4JThEb2stJUU3JTg5JUI5JUU1JTg4JUFCJUU2JTk4JUFGJUU0JUJCJThFJUU3JTgyJUI5JUU1JUExJTk0JUU3JTlBJTg0JUU4JUE3JTkyJUU1JUJBJUE2JUU2JTlEJUE1JUU4JUFFJUIyBjsIVDoOc2VhcmNoX2lkSSIpOTg4YTQyM2YtMDgyMy00NTBkLWJkOWQtYTQzYThkZDZhM2QzBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--9d94316779fa923a3c332d0068203408f17e1d51",
+    "snippet": "为了让region的os效果稳定，至少应该提交30个单region的alpha，但是只有5个 塔 ，没有办法兼顾高效 点塔 +达到30个alpha，希望早日可以有更多的数据集吧！ ──────────────────────────────",
+    "votes": 19,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "YX50005",
+    "date": "2026-06-02T13:32:11Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "【如何做出低pc<0.3 SuperAlpha】 在Selection 与 Combo 上的一些实践重点",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXVutKuSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfdodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE0Nzc3NTYxMTQ1ODMtLSVFNSVBNiU4MiVFNCVCRCU5NSVFNSU4MSU5QSVFNSU4NyVCQSVFNCVCRCU4RXBjLTAtMy1TdXBlckFscGhhLSVFNSU5QyVBOFNlbGVjdGlvbi0lRTQlQjglOEUtQ29tYm8tJUU0JUI4JThBJUU3JTlBJTg0JUU0JUI4JTgwJUU0JUJBJTlCJUU1JUFFJTlFJUU4JUI3JUI1JUU5JTg3JThEJUU3JTgyJUI5BjsIVDoOc2VhcmNoX2lkSSIpZGFhZjRjNDAtMDRlNi00NDlhLWEyNmMtYWM3NjliMGE2NTYyBjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--f0497300ce2bb348b17bc6166b9326080e9dac31",
+    "snippet": "returns、turnover、波动、相关性等信息做动态 权 重 。例如偏向近期 IR 更好的 Alpha，或者降低内部相关性高的 Alpha 权 重 。 我觉得 Combo 不宜一开始就太复杂。可以先从三类开始试：等 权 、低相关 权 重 、IR/波动调整 权 重 。比如 combo_a(alpha)",
+    "votes": 17,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XG43628",
+    "date": "2026-06-25T10:49:33Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "用好中性化，大幅度降低ind地区的相关性",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX4twDqSE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzcwMDk3OTc5OTcyMDctJUU3JTk0JUE4JUU1JUE1JUJEJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2LSVFNSVBNCVBNyVFNSVCOSU4NSVFNSVCQSVBNiVFOSU5OSU4RCVFNCVCRCU4RWluZCVFNSU5QyVCMCVFNSU4QyVCQSVFNyU5QSU4NCVFNyU5QiVCOCVFNSU4NSVCMyVFNiU4MCVBNwY7CFQ6DnNlYXJjaF9pZEkiKThmOTdiNzZkLTNjMjUtNDkwYS1iNjZmLThiOGMxMjhmNzY5NgY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--f9a29cc472cf998ea6bf5f922d3526da74241ed3",
+    "snippet": "27pc的alpha，让我比较震惊 最近1,2个星期都在挖ind的，个人感觉下来，ram的 中性化 挺不错，我0.27pc的 中性化 就是用的ram，然后fast，slow，fast+slow都很不错，能大幅降低alpha的pc。还是非常推荐大家使用这几个risk",
+    "votes": 17,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2025-12-14T10:20:50Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "[Token王] 2026Q2 全球六维数据分析",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXZDI1QiY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAatodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDIwNjU4MDIxOTIwMjMtLVRva2VuJUU3JThFJThCLTIwMjZRMi0lRTUlODUlQTglRTclOTAlODMlRTUlODUlQUQlRTclQkIlQjQlRTYlOTUlQjAlRTYlOEQlQUUlRTUlODglODYlRTYlOUUlOTAGOwhUOg5zZWFyY2hfaWRJIilhZjc0NzgyMS0yYzJhLTQ0MGUtYTUxZS02ZDNjM2MyZjNkM2MGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--1d4c8354410fc60fcf990c2fc14389f0028ba809",
+    "snippet": "这篇 全球 六维数据汇总非常有价值！GM、Master、Expert 三个层级的差距确实一目了然。我特别注意到一个趋势：**Expert 的综合 Alpha 表现从 0.93 → 0.81 → 0.66，连续三个赛季下滑**，而 GM 的 PowerPool",
+    "votes": 11,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "SC77987",
+    "date": "2026-07-19T12:27:25Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "Turnover",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXNzyQjCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiWWh0dHBzOi8vc3VwcG9ydC53b3JsZHF1YW50YnJhaW4uY29tL2hjL3poLWNuL2NvbW11bml0eS9wb3N0cy80MTI4NTY0NTUxNDUxOS1UdXJub3ZlcgY7CFQ6DnNlYXJjaF9pZEkiKWUyZDFhZWUzLTI5MDMtNGU2Zi1iYjBjLWZkN2QzNjA3Mzc1NQY7CEY6CXJhbmtpBjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--1b0749d0e3d0559690947f8e6fd6d32e3a3f1876",
+    "snippet": "Turnover （换手率）衡量 alpha 组合持仓更换的频率和幅度。 换手率越高，意味着组合调仓越频繁，交易成本越大。较低的换手率有利于控制实际交易中的滑点和冲击成本，但可能牺牲信号的时效 性。 BRAIN 平台通过",
+    "votes": 16,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-17T06:31:47Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "【换手治理】低换手≠稳健：turnover 的三个隐形侵蚀点，和 trade_when 别用反了（USA/TOP3000/D1）",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX0AMVQiY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAjsBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQyMDY1MjYyMjY4NTY3LS0lRTYlOEQlQTIlRTYlODklOEIlRTYlQjIlQkIlRTclOTAlODYtJUU0JUJEJThFJUU2JThEJUEyJUU2JTg5JThCLSVFNyVBOCVCMyVFNSU4MSVBNS10dXJub3Zlci0lRTclOUElODQlRTQlQjglODklRTQlQjglQUElRTklOUElOTAlRTUlQkQlQTIlRTQlQkUlQjUlRTglOUElODAlRTclODIlQjktJUU1JTkyJThDLXRyYWRlLXdoZW4tJUU1JTg4JUFCJUU3JTk0JUE4JUU1JThGJThEJUU0JUJBJTg2LVVTQS1UT1AzMDAwLUQxBjsIVDoOc2VhcmNoX2lkSSIpYTk1OTYxZTEtZDA2Yi00MmE2LTkxZjctMjQ4ODYwNTc5YjNlBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--2d283641c7aaf05e53b56be9c22411895d904f55",
+    "snippet": "的窗口从 5 加到 20， turnover 从 0.55 降到 0.30，数字很漂亮，但 sharpe 也从 1.3 掉到 0.9——decay 拉太长把 alpha 本身的 edge 一起平滑没了。所以 turnover 和 sharpe 得一起看，只盯",
+    "votes": 15,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF45555",
+    "date": "2026-07-19T11:29:39Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "glb主题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXUutrgyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiZmh0dHBzOi8vc3VwcG9ydC53b3JsZHF1YW50YnJhaW4uY29tL2hjL3poLWNuL2NvbW11bml0eS9wb3N0cy80MTI0NjM4MTUyNzU3NS1nbGIlRTQlQjglQkIlRTklQTIlOTgGOwhUOg5zZWFyY2hfaWRJIilkZDkwMjUyMS0wZWQ4LTQ3NmYtYTZhMC02NjhhMzY3OTlkNzAGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--8a1d3edb5d9c1418d8a2661c02ca80a7fb33a1ed",
+    "snippet": "glb 的主题还不错，满足最基本的要求就有2倍了，再满足更具体一点的要求就有3倍，还是挺不错的，就是不知道为什么没有费后sharp这个细分了，之前usa的theme是有的。================================",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-15T20:21:52Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "🌍 从美股到全球：跨市场 Alpha 转移的挑战与机遇",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXG%2ByhsiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE0NDkxNTEwMTE2MDctLSVFNCVCQiU4RSVFNyVCRSU4RSVFOCU4MiVBMSVFNSU4OCVCMCVFNSU4NSVBOCVFNyU5MCU4My0lRTglQjclQTglRTUlQjglODIlRTUlOUMlQkEtQWxwaGEtJUU4JUJEJUFDJUU3JUE3JUJCJUU3JTlBJTg0JUU2JThDJTkxJUU2JTg4JTk4JUU0JUI4JThFJUU2JTlDJUJBJUU5JTgxJTg3BjsIVDoOc2VhcmNoX2lkSSIpODBmN2I3NTktMmE5Ny00YTFiLWJiYmEtYjljYjI2YTY4N2IwBjsIRjoJcmFua2kNOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--85bc9cef06204166ea7997aa8555efe565c7227a",
+    "snippet": "信号捕捉的是人类行为偏差或某种普遍的经济逻辑（而非特定于美国的制度结构），它在日本、欧洲、新兴市场等地区也应有预测力。 例如动量 因子 在 全球 大多数市场中都有统计显著的溢价，这支持了行为偏差（反应不足和过度反应）是动量背后驱动力的理论。 反例如某些基于美国特定税收制度的",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-24T08:31:08Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "🧬 因子正交化：为什么你的多因子 Alpha 可能没有想象中那么多因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXsi%2BIuiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAjYBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNDgzMDc4OTcxOTI3LS0lRTUlOUIlQTAlRTUlQUQlOTAlRTYlQUQlQTMlRTQlQkElQTQlRTUlOEMlOTYtJUU0JUI4JUJBJUU0JUJCJTgwJUU0JUI5JTg4JUU0JUJEJUEwJUU3JTlBJTg0JUU1JUE0JTlBJUU1JTlCJUEwJUU1JUFEJTkwLUFscGhhLSVFNSU4RiVBRiVFOCU4MyVCRCVFNiVCMiVBMSVFNiU5QyU4OSVFNiU4MyVCMyVFOCVCMSVBMSVFNCVCOCVBRCVFOSU4MiVBMyVFNCVCOSU4OCVFNSVBNCU5QSVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKTgwZjdiNzU5LTJhOTctNGExYi1iYmJhLWI5Y2IyNmE2ODdiMAY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--860401e78b0dd85b2a66ccc273ee0e982138039c",
+    "snippet": "在组合层面做正交化更省力也更稳健。 好啦关于 因子 正交化就分享这么多 🧬 下次组合多 因子 的时候，别只看数量，也看看它们之间有几分是真正的\"独立\"～评论区聊聊你是怎么处理 因子 相关性的！💬✨",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-25T14:35:41Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "🧩 因子动物园：主流 Alpha 因子家族的分类与谱系",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXLhjbqyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE0MjAwNDU0MzA0MjMtLSVFNSU5QiVBMCVFNSVBRCU5MCVFNSU4QSVBOCVFNyU4OSVBOSVFNSU5QiVBRC0lRTQlQjglQkIlRTYlQjUlODEtQWxwaGEtJUU1JTlCJUEwJUU1JUFEJTkwJUU1JUFFJUI2JUU2JTk3JThGJUU3JTlBJTg0JUU1JTg4JTg2JUU3JUIxJUJCJUU0JUI4JThFJUU4JUIwJUIxJUU3JUIzJUJCBjsIVDoOc2VhcmNoX2lkSSIpYWY3NDc4MjEtMmMyYS00NDBlLWE1MWUtNmQzYzNjMmYzZDNjBjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--332217352a9fba84a9f08ef66952c18e42a0aee3",
+    "snippet": "混合策略与 因子 配置 🎛️ 单一类别的 因子 会有周期性的表现波动。动量在趋势市中强势，价值在低估值修复中爆发，质量在下跌市中防守。许多实践者选择对多 个 因子 类别做组合配置，用多元化的方式平滑单个 因子 的周期性波动。",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-23T06:24:33Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "⚙️ 因子组合权重的协方差收缩估计",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXGum%2BpSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiActodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzOTM4MDI3NzkyODctLSVFNSU5QiVBMCVFNSVBRCU5MCVFNyVCQiU4NCVFNSU5MCU4OCVFNiU5RCU4MyVFOSU4NyU4RCVFNyU5QSU4NCVFNSU4RCU4RiVFNiU5NiVCOSVFNSVCNyVBRSVFNiU5NCVCNiVFNyVCQyVBOSVFNCVCQyVCMCVFOCVBRSVBMQY7CFQ6DnNlYXJjaF9pZEkiKTNhMWRiZjExLThhZjUtNDcwMC04NDY5LTFiNDc0ZTc3MzRmMwY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--19fcb0ef69ca4fb418758a89cef34000b0b374fc",
+    "snippet": "平台上的多因子组合，协方差收缩估计可以直接用于子信号 权 重 的计算。步骤如下：对每个交易日计算各子信号在截面的 取值向量，用滚动窗口的取值计算样本协方差矩阵，施加收缩估计得到缓和的协方差矩阵，基于缓和协方差做 权 重 优化。 权 重 可以固定 写入表达式，或定期在外部更新后重新部署。",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-22T10:17:08Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "我的Alpha提交算法进化史：从团划分剪枝到最大权重独立集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXU%2BQTQCQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzM5ODU3NjMwMjM3NTkxLSVFNiU4OCU5MSVFNyU5QSU4NEFscGhhJUU2JThGJTkwJUU0JUJBJUE0JUU3JUFFJTk3JUU2JUIzJTk1JUU4JUJGJTlCJUU1JThDJTk2JUU1JThGJUIyLSVFNCVCQiU4RSVFNSU5QiVBMiVFNSU4OCU5MiVFNSU4OCU4NiVFNSU4OSVBQSVFNiU5RSU5RCVFNSU4OCVCMCVFNiU5QyU4MCVFNSVBNCVBNyVFNiU5RCU4MyVFOSU4NyU4RCVFNyU4QiVBQyVFNyVBQiU4QiVFOSU5QiU4NgY7CFQ6DnNlYXJjaF9pZEkiKTNhMWRiZjExLThhZjUtNDcwMC04NDY5LTFiNDc0ZTc3MzRmMwY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--0db43adbd809c9324f7c6cc168ad65b4d5605ad2",
+    "snippet": "解呢？ 第五阶段：最大 权 重 独立集（MWIS）—— 最终方案 为了解决第四阶段的问题 权 重 贪心不保证全局最优。但我的数据量只有几十个因子，完全可以 精确求解 。 最大 权 重 独立集 的定义： 在满足冲突约束（独立集）的前提下",
+    "votes": 12,
+    "comments": 4,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YW66058",
+    "date": "2026-04-19T10:23:42Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "协方差矩阵在组合构建中的角色",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXHpOIoiU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcpodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzODAwMDYyNzI1MzUtJUU1JThEJThGJUU2JTk2JUI5JUU1JUI3JUFFJUU3JTlGJUE5JUU5JTk4JUI1JUU1JTlDJUE4JUU3JUJCJTg0JUU1JTkwJTg4JUU2JTlFJTg0JUU1JUJCJUJBJUU0JUI4JUFEJUU3JTlBJTg0JUU4JUE3JTkyJUU4JTg5JUIyBjsIVDoOc2VhcmNoX2lkSSIpZGFhZjRjNDAtMDRlNi00NDlhLWEyNmMtYWM3NjliMGE2NTYyBjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--7b94ac5ebc13f55a4e5123fa8d44b6ba17e4f083",
+    "snippet": "由多个子信号组合而成时，子信号之间的协方差结构影响组合的稳定性。忽略协方差直接用等 权 或经验 权 重 组合，可能隐藏风险。 如果两个子信号高度正相关，它们的组合 权 重 大致等价于在同一个信号上集中，组合的多样性没有实际提高。如果两个子信号负相关，",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-21T10:03:31Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "🧮 正则化在 Alpha 表达式优化中的引入：Ridge 与 Lasso 的对比",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXkXy%2BpSU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAftodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzOTM3OTU2NjYxOTktLSVFNiVBRCVBMyVFNSU4OCU5OSVFNSU4QyU5NiVFNSU5QyVBOC1BbHBoYS0lRTglQTElQTglRTglQkUlQkUlRTUlQkMlOEYlRTQlQkMlOTglRTUlOEMlOTYlRTQlQjglQUQlRTclOUElODQlRTUlQkMlOTUlRTUlODUlQTUtUmlkZ2UtJUU0JUI4JThFLUxhc3NvLSVFNyU5QSU4NCVFNSVBRiVCOSVFNiVBRiU5NAY7CFQ6DnNlYXJjaF9pZEkiKWRhYWY0YzQwLTA0ZTYtNDQ5YS1hMjZjLWFjNzY5YjBhNjU2MgY7CEY6CXJhbmtpDzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--088d1e5ae4237ae8dc8a11fb9ce270abc298330a",
+    "snippet": "由于正则化 权 重 的优化在平台表达式内不可实现（需要截面回归能力在外部进行），通常在外部工具中完成 权 重 估计后，将训练好的 权 重 系数固定写入表达式。在滚动窗口上定期重新估计 权 重 （如每季度一次），以适应信号表现随时间的变化。但需注意，每次 权 重 更新",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-22T10:16:04Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "关于PV字段因子Turnover高的原因分析及解决方案",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXjFtFlCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzMTg3NDkwMTUxOTEtJUU1JTg1JUIzJUU0JUJBJThFUFYlRTUlQUQlOTclRTYlQUUlQjUlRTUlOUIlQTAlRTUlQUQlOTBUdXJub3ZlciVFOSVBQiU5OCVFNyU5QSU4NCVFNSU4RSU5RiVFNSU5QiVBMCVFNSU4OCU4NiVFNiU5RSU5MCVFNSU4RiU4QSVFOCVBNyVBMyVFNSU4NiVCMyVFNiU5NiVCOSVFNiVBMSU4OAY7CFQ6DnNlYXJjaF9pZEkiKWUyZDFhZWUzLTI5MDMtNGU2Zi1iYjBjLWZkN2QzNjA3Mzc1NQY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--e0db122dafe861ad5d05281fd53d38c5603ef4b2",
+    "snippet": "# 关于PV字段因子 Turnover 高的原因分析及解决方案 ## 一、问题现象 基于PV字段的因子往往 Turnover 较高。例如 `rank(close/open)` 不加处理时 Turnover 常超50%。 最近研究 **IND市场intraday_pv_feats**",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DQ66419",
+    "date": "2026-06-18T13:03:07Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "点塔",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX9JuAgyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiY2h0dHBzOi8vc3VwcG9ydC53b3JsZHF1YW50YnJhaW4uY29tL2hjL3poLWNuL2NvbW11bml0eS9wb3N0cy80MTI0NjcyODY0NzgzMS0lRTclODIlQjklRTUlQTElOTQGOwhUOg5zZWFyY2hfaWRJIilhN2FmYzE4Ni1kMmY5LTQ4MTYtYTYzYS1lOTg2ZTFlOWViNDQGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--8809d0fcc8abd9535622f69ddb1eeffca9f79641",
+    "snippet": "目前还差12个 塔 就完成任务了，接下来一天一个应该问题不大，继续加油====================================================================================",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-15T20:32:37Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "EUR 区域中snt应该怎么点塔？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXvmEewh46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzM4MTkwODIyMTA4MzktRVVSLSVFNSU4QyVCQSVFNSU5RiU5RiVFNCVCOCVBRHNudCVFNSVCQSU5NCVFOCVBRiVBNSVFNiU4MCU4RSVFNCVCOSU4OCVFNyU4MiVCOSVFNSVBMSU5NAY7CFQ6DnNlYXJjaF9pZEkiKWE3YWZjMTg2LWQyZjktNDgxNi1hNjNhLWU5ODZlMWU5ZWI0NAY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiC%2BeCueWhlAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--7bdd7c4ab0c7c5b8e8e60452e91b116ea76262ba",
+    "snippet": "EUR 区域中snt应该怎么 点塔 ？只有sentiment27数据集，跑出来的数据都是只有几年的，从论坛各位大佬的经验来看，这种年限短的提交上去风险很大。请教各位大佬，还有什么其他 点塔 的方式吗",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "SJ65808",
+    "date": "2025-07-30T13:42:04Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "【sentiment模板】帮助点sentiment塔",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXzrG3siU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE0NDk1MTYyODk2ODctLXNlbnRpbWVudCVFNiVBOCVBMSVFNiU5RCVCRi0lRTUlQjglQUUlRTUlOEElQTklRTclODIlQjlzZW50aW1lbnQlRTUlQTElOTQGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--8f783fb5beb94e3adf832d621c7d89a469c721a2",
+    "snippet": "模板： group_neutralize(reverse(ts_max(【snt21_pos】 - 【snt21_neg】, 【days】)), 【group】) 以下是AI 解释： ### 核心内容摘要： 1",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XX88140",
+    "date": "2026-06-24T09:04:51Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "跨数据集字段的搭配原则",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXrUI9kyU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAa9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzMTQzMTgyMDAyMTUtJUU4JUI3JUE4JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU1JUFEJTk3JUU2JUFFJUI1JUU3JTlBJTg0JUU2JTkwJUFEJUU5JTg1JThEJUU1JThFJTlGJUU1JTg4JTk5BjsIVDoOc2VhcmNoX2lkSSIpMDMzMzAyMGUtZmUwZC00OTQ5LWEwYTktMTMxMjBjODg0YzExBjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--24fd68e47a479e5d85d434c3c1e8e4632d247f6e",
+    "snippet": "不同 数据 集 之间可能存在隐含的相关性，理解这些关系有助于避免冗余和发现新的组合机会。 同一主题下不同 数据 集 通常有天然的关系。例如 model_raw 下的价格和成交量 数据 属于同一类市场 数据 ，对同一只股票它们反映的是 不同维度",
+    "votes": 16,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DA98440",
+    "date": "2026-06-18T07:14:11Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "如何选择数据集的一些经验【备战Pyramid】",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXNqLW4xk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjg0NjYzNDkyMjU2MjMtJUU1JUE2JTgyJUU0JUJEJTk1JUU5JTgwJTg5JUU2JThCJUE5JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU3JTlBJTg0JUU0JUI4JTgwJUU0JUJBJTlCJUU3JUJCJThGJUU5JUFBJThDLSVFNSVBNCU4NyVFNiU4OCU5OFB5cmFtaWQGOwhUOg5zZWFyY2hfaWRJIik4MGY3Yjc1OS0yYTk3LTRhMWItYmJiYS1iOWNiMjZhNjg3YjAGOwhGOglyYW5raQs6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--a42357f1ad971fe35805365ffebf25ab1b106e5a",
+    "snippet": "在选择数据集时，可以先参考下这篇文章 全球 市场 因子 权重揭秘：哪个 因子 能让你效果倍增 – WorldQuant BRAIN 可以通过 因子 的区域性差异、特定市场、多 因子 整合的表现以及模型和数据驱动的启示等，去选择数据集，会更容易产出alpha。",
+    "votes": 14,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YF69755",
+    "date": "2024-12-12T03:28:17Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【免费API】使用大模型自动生成Power Pool Alpha描述",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX1oki2x86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUwMjYwMzc3NTc0NjMtLSVFNSU4NSU4RCVFOCVCNCVCOUFQSS0lRTQlQkQlQkYlRTclOTQlQTglRTUlQTQlQTclRTYlQTglQTElRTUlOUUlOEIlRTglODclQUElRTUlOEElQTglRTclOTQlOUYlRTYlODglOTBQb3dlci1Qb29sLUFscGhhJUU2JThGJThGJUU4JUJGJUIwBjsIVDoOc2VhcmNoX2lkSSIpYTZhMjEyYTYtYmNmMS00NjljLWI1MjMtYWM0MTNlZDEwNGVjBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--332ef39e2b267766e114e6418ec39663d256263a",
+    "snippet": "一个好用的函数提供给大家，调用这个函数可以自动生成alpha的描述，模型调用的硅基流动的，免费 def get_description_ai(regular): \"\"\" Generate AI-based",
+    "votes": 6,
+    "comments": 9,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "BZ93061",
+    "date": "2025-09-18T08:05:02Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "废因子的二次利用：用低 Sharpe 稳定信号做自定义中性化",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXLARl9SU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAhIBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNzM1ODkxOTg3NDc5LSVFNSVCQSU5RiVFNSU5QiVBMCVFNSVBRCU5MCVFNyU5QSU4NCVFNCVCQSU4QyVFNiVBQyVBMSVFNSU4OCVBOSVFNyU5NCVBOC0lRTclOTQlQTglRTQlQkQlOEUtU2hhcnBlLSVFNyVBOCVCMyVFNSVBRSU5QSVFNCVCRiVBMSVFNSU4RiVCNyVFNSU4MSU5QSVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NgY7CFQ6DnNlYXJjaF9pZEkiKTQ0ZjkxNjI1LWM0NzItNDk3NS1iYTVkLWU2NDQ0MDM1OWE3MgY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--44a291204cab3b508524cecf03b8fc1612ff0630",
+    "snippet": "momentum，那废因子最好是 value 或 quality 类的——不同方向的信号做 中性化 才有\"隔离\"效果。 覆盖度够高 ：作为 中性化 基准，覆盖度至少要 >85%，否则被 中性化 的股票数量不够。 怎么用 核心操作只有一步： group_neutralize(main_alpha",
+    "votes": 14,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF45555",
+    "date": "2026-07-06T09:42:06Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【细节坑】中性化顺序不是随便排的：先 industry 还是先 group，结果差很多",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX5bBGFyY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAi8BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxODgxNDEyMTAxMzk5LS0lRTclQkIlODYlRTglOEElODIlRTUlOUQlOTEtJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU5JUExJUJBJUU1JUJBJThGJUU0JUI4JThEJUU2JTk4JUFGJUU5JTlBJThGJUU0JUJFJUJGJUU2JThFJTkyJUU3JTlBJTg0LSVFNSU4NSU4OC1pbmR1c3RyeS0lRTglQkYlOTglRTYlOTglQUYlRTUlODUlODgtZ3JvdXAtJUU3JUJCJTkzJUU2JTlFJTlDJUU1JUI3JUFFJUU1JUJFJTg4JUU1JUE0JTlBBjsIVDoOc2VhcmNoX2lkSSIpNDRmOTE2MjUtYzQ3Mi00OTc1LWJhNWQtZTY0NDQwMzU5YTcyBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--faec67b9d0e181a39caf3aa52dd163c58589f071",
+    "snippet": "很多人写 alpha 把 中性化 当\"保险\"—— group_neutralize / industry 一股脑往上堆，以为越多越干净。其实顺序和重复会悄悄改变信号，而且常常在你看不见的地方。 坑一：同一维度被 中性化 两次 比如先 group_neutralize(x",
+    "votes": 14,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF45555",
+    "date": "2026-07-11T11:29:02Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "如何选择数据集的一些经验【备战Pyramid】",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXNqLW4xk6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjg0NjYzNDkyMjU2MjMtJUU1JUE2JTgyJUU0JUJEJTk1JUU5JTgwJTg5JUU2JThCJUE5JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU3JTlBJTg0JUU0JUI4JTgwJUU0JUJBJTlCJUU3JUJCJThGJUU5JUFBJThDLSVFNSVBNCU4NyVFNiU4OCU5OFB5cmFtaWQGOwhUOg5zZWFyY2hfaWRJIikwMzMzMDIwZS1mZTBkLTQ5NDktYTBhOS0xMzEyMGM4ODRjMTEGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--8d28aeb7a4670ec7c9099208cc2fbce41738ff6a",
+    "snippet": "量生产 数据 预处理，备战Pyramid – WorldQuant BRAIN 批量预处理 数据 ，生成 数据 大表。 coverage一般选择在50%以上，coverage低的话需要多做一些 数据 准备和预处理的工作。如何选择质量好的 数据 集 可以参考这篇文章",
+    "votes": 14,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "YF69755",
+    "date": "2024-12-12T03:28:17Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "【Alpha灵感】在GLB Universe实现基于草木皆兵逻辑构建alpha",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXOdY9SBI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAetodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjAxMDE0ODQzOTQ5MDMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNSU5QyVBOEdMQi1Vbml2ZXJzZSVFNSVBRSU5RSVFNyU4RSVCMCVFNSU5RiVCQSVFNCVCQSU4RSVFOCU4RCU4OSVFNiU5QyVBOCVFNyU5QSU4NiVFNSU4NSVCNSVFOSU4MCVCQiVFOCVCRSU5MSVFNiU5RSU4NCVFNSVCQiVCQWFscGhhBjsIVDoOc2VhcmNoX2lkSSIpYTUyMjk3NDUtZWJiNS00MmVkLTgyMjQtNDFiMGFmZjU1ZmEyBjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--c16f74c19c2f9f7229c466322288e5f0bebe896e",
+    "snippet": "亏损）会再次出现，因此纷纷卖出这些股票并远离它们。 数据集：使用return简单构建 universe：使用 GLB netrulization：默认subindustry mmr = group_mean(returns ,",
+    "votes": 14,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "JL23162",
+    "date": "2023-12-25T11:22:24Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "【alpha灵感】单因子测试之财务质量因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXAuZxaBE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkxNDAyODUxNzAxOTktLWFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLSVFNSU4RCU5NSVFNSU5QiVBMCVFNSVBRCU5MCVFNiVCNSU4QiVFOCVBRiU5NSVFNCVCOSU4QiVFOCVCNCVBMiVFNSU4QSVBMSVFOCVCNCVBOCVFOSU4NyU4RiVFNSU5QiVBMCVFNSVBRCU5MAY7CFQ6DnNlYXJjaF9pZEkiKTgwZjdiNzU5LTJhOTctNGExYi1iYmJhLWI5Y2IyNmE2ODdiMAY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiEeWFqOeQg%2BWboOWtkAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--e281203f1aaeef65948492466b39392b5e5377f0",
+    "snippet": "但可以看出来每年三四月年报刚发出时 因子 效果比较显著，而在年报发出较长时间后效果一般。事实上，财务质量 因子 由于与财报发布日期有关，导致其Rank IC 和回归 因子 收益率水平都比较一般，与其它类别 因子 相比没有明显优势，大部分财务质量 因子 随时间推移效果不够稳定",
+    "votes": 14,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ZF99680",
+    "date": "2023-11-17T12:27:54Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "【Alpha灵感】JACKPOT因子",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWxcxNRM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAX5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjExMTkxNzc4MDg2NjMtLUFscGhhJUU3JTgxJUI1JUU2JTg0JTlGLUpBQ0tQT1QlRTUlOUIlQTAlRTUlQUQlOTAGOwhUOg5zZWFyY2hfaWRJIilhZjc0NzgyMS0yYzJhLTQ0MGUtYTUxZS02ZDNjM2MyZjNkM2MGOwhGOglyYW5raQ46C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhHlhajnkIPlm6DlrZAGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--9f1620d69ddf0f7306b75a18f2ea5fb2947a1939",
+    "snippet": "论文标题：Death and jackpot: Why do individual investors hold overpriced stocks?, 引用出处： Conrad, Jennifer, Nishad Kapadia,",
+    "votes": 13,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "ZF71008",
+    "date": "2024-02-05T05:36:33Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "数据集子分类分析与中性化策略匹配方法",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXczcy8iA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzYyMjQ1OTY2NjkzMzUtJUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU1JUFEJTkwJUU1JTg4JTg2JUU3JUIxJUJCJUU1JTg4JTg2JUU2JTlFJTkwJUU0JUI4JThFJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU3JUFEJTk2JUU3JTk1JUE1JUU1JThDJUI5JUU5JTg1JThEJUU2JTk2JUI5JUU2JUIzJTk1BjsIVDoOc2VhcmNoX2lkSSIpOGY5N2I3NmQtM2MyNS00OTBhLWI2NmYtOGI4YzEyOGY3Njk2BjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--564839a5732b2b1a6cbc87e77ef51b1a81c44191",
+    "snippet": "17.Social Media:INDUSTRY 这些是官网推荐的 中性化 策略，理论上只要跟着官网对不同分类的数据进行相应的 中性化 设置即可。 但是，官网写的分类不全，还有一些分类未列出来。我这里就做了个表格，补充完整。",
+    "votes": 12,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "CW99271",
+    "date": "2025-11-10T13:10:17Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【2个月提交220个RA经验分享】ASI 从论坛知识到实战验证：SLOW 中性化是王道",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXCzolbyY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAj8BaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQyMjU4ODA3Nzg2MzkxLS0yJUU0JUI4JUFBJUU2JTlDJTg4JUU2JThGJTkwJUU0JUJBJUE0MjIwJUU0JUI4JUFBUkElRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItQVNJLSVFNCVCQiU4RSVFOCVBRSVCQSVFNSU5RCU5QiVFNyU5RiVBNSVFOCVBRiU4NiVFNSU4OCVCMCVFNSVBRSU5RSVFNiU4OCU5OCVFOSVBQSU4QyVFOCVBRiU4MS1TTE9XLSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNiU5OCVBRiVFNyU4RSU4QiVFOSU4MSU5MwY7CFQ6DnNlYXJjaF9pZEkiKTQ0ZjkxNjI1LWM0NzItNDk3NS1iYTVkLWU2NDQ0MDM1OWE3MgY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--0278558890be7e8ef114896908c5ec689581d33c",
+    "snippet": "从论坛知识到实战验证：SLOW 中性化 是王道 2个月提交220个ra+60个sa，以下经验均为实战优化过程中提取。 核心结论 ASI（亚洲除日本）没有 STATISTICAL 中性化 （注：2026年7月后平台更新，STATISTICAL",
+    "votes": 7,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LC97552",
+    "date": "2026-07-27T17:43:50Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "冷门数据集分享【earnings】",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX4SmjXiY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDIxODc5MDYyMTIyNDctJUU1JTg2JUI3JUU5JTk3JUE4JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU1JTg4JTg2JUU0JUJBJUFCLWVhcm5pbmdzBjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--709c5972e50d24d74613e1762d544c474c34f1fb",
+    "snippet": "earnings这个 数据 集 还是比较小众的，但我最近回测的时候发现了一个比较容易出货的 数据 集 分享给大家： 【earnings_sent_matrix】 字段不多都是比较新的，出货率和质量都还可以，切换不同的universe可以明显降低相关性而不损失信号！",
+    "votes": 7,
+    "comments": 6,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JC31003",
+    "date": "2026-07-24T08:28:52Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "用本地化计算 PnL 相关性来验证 Self Correlation 和 Power Pool Correlation 的关系",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXmMHqWR06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAgsBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMyMjcyMDI3ODUwNzc1LSVFNyU5NCVBOCVFNiU5QyVBQyVFNSU5QyVCMCVFNSU4QyU5NiVFOCVBRSVBMSVFNyVBRSU5Ny1QbkwtJUU3JTlCJUI4JUU1JTg1JUIzJUU2JTgwJUE3JUU2JTlEJUE1JUU5JUFBJThDJUU4JUFGJTgxLVNlbGYtQ29ycmVsYXRpb24tJUU1JTkyJThDLVBvd2VyLVBvb2wtQ29ycmVsYXRpb24tJUU3JTlBJTg0JUU1JTg1JUIzJUU3JUIzJUJCBjsIVDoOc2VhcmNoX2lkSSIpYTA0ZjAzZWQtYWE5ZS00YWRiLTk0ZTctODg3OTZjOGE2YjY2BjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--6a87788ff4022d3605d167c0233ab24eda90a21e",
+    "snippet": "get_os_alphas_and_ power _ pool _ids 获取了所有已提交OS Alpha 的详情（称之为 all_os_alpha_ids_from_api ），并从中识别出了 Power Pool （ power _ pool _alpha_ids_from_api）",
+    "votes": 6,
+    "comments": 5,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LL87164",
+    "date": "2025-05-21T18:41:52Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "【GLB】冷门数据集分享",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX5WFgQSY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDIwNjIyMzE3NTgxMDMtLUdMQi0lRTUlODYlQjclRTklOTclQTglRTYlOTUlQjAlRTYlOEQlQUUlRTklOUIlODYlRTUlODglODYlRTQlQkElQUIGOwhUOg5zZWFyY2hfaWRJIilkZDkwMjUyMS0wZWQ4LTQ3NmYtYTZhMC02NjhhMzY3OTlkNzAGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--9bc6a236277870d285f0b74ba1cbd748c5d67505",
+    "snippet": "昨天发现了 GLB 一个冷门数据集，出货质量不错，分享给大家 【shortinterest7】，它其实是披着shortinterest外衣的model数据集，使用模板映射的时候注意不要映射到shortinterest去了，出货质量不错，相关性也不算太高，大家赶快来挖：",
+    "votes": 6,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JC31003",
+    "date": "2026-07-19T03:51:11Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "新GLB政策下，调优3个子区域的工具和方法探索",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXoDSBFB86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAfNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzQxNzI5Mjc1MTY2OTUtJUU2JTk2JUIwR0xCJUU2JTk0JUJGJUU3JUFEJTk2JUU0JUI4JThCLSVFOCVCMCU4MyVFNCVCQyU5ODMlRTQlQjglQUElRTUlQUQlOTAlRTUlOEMlQkElRTUlOUYlOUYlRTclOUElODQlRTUlQjclQTUlRTUlODUlQjclRTUlOTIlOEMlRTYlOTYlQjklRTYlQjMlOTUlRTYlOEUlQTIlRTclQjQlQTIGOwhUOg5zZWFyY2hfaWRJIilhNTIyOTc0NS1lYmI1LTQyZWQtODIyNC00MWIwYWZmNTVmYTIGOwhGOglyYW5raQ86C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--1f4581ef0ff7e6b588ee145594bb08c6ba7018e0",
+    "snippet": "alpha_list[j]['regular']['code'] if region == ' GLB ': # GLB has specific additional 3 region sharpe output",
+    "votes": 6,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "ER48854",
+    "date": "2025-08-14T08:23:17Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "【GLB】冷门数据集分享",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX5WFgQSY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDIwNjIyMzE3NTgxMDMtLUdMQi0lRTUlODYlQjclRTklOTclQTglRTYlOTUlQjAlRTYlOEQlQUUlRTklOUIlODYlRTUlODglODYlRTQlQkElQUIGOwhUOg5zZWFyY2hfaWRJIikwMGNkNDQ5Yi02OTU3LTQyZmItYWIzZC02YjNiMjQ3ZjljYzMGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--58fe699bc16928086cc178c2e53ecdd28da44eac",
+    "snippet": "昨天发现了GLB一个 冷门数据集 ，出货质量不错，分享给大家 【shortinterest7】，它其实是披着shortinterest外衣的model 数据 集 ，使用模板映射的时候注意不要映射到shortinterest去了，出货质量不错，相关性也不算太高，大家赶快来挖：",
+    "votes": 6,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JC31003",
+    "date": "2026-07-19T03:51:11Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "本季度因子情况整理",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXHY%2FiEiA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZ1odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzUyNjU0ODI1MzAwNzEtJUU2JTlDJUFDJUU1JUFEJUEzJUU1JUJBJUE2JUU1JTlCJUEwJUU1JUFEJTkwJUU2JTgzJTg1JUU1JTg2JUI1JUU2JTk1JUI0JUU3JTkwJTg2BjsIVDoOc2VhcmNoX2lkSSIpYWY3NDc4MjEtMmMyYS00NDBlLWE1MWUtNmQzYzNjMmYzZDNjBjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIR5YWo55CD5Zug5a2QBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--cbaf256bb80a81d4bd30f143cebad74858d32943",
+    "snippet": "点关注的指标，太高可能意味着 因子 冗余。GLB交的少确实需要下季度侧重，毕竟 因子 多样性对组合稳定性很重要。JPN和AMR质量不太好，预期2个月后vf会迎来惩罚，这个风险预警很关键，在做 因子 筛选时需要特别注意区域 因子 的稳定性。",
+    "votes": 5,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DQ66419",
+    "date": "2025-09-29T10:49:12Z",
+    "query": "全球因子",
+    "queries": [
+      "全球因子"
+    ]
+  },
+  {
+    "title": "“中性化”（neutralization）的底层的机制是什么？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX6DP%2F9ws6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAclodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTMxNTk3NjY0MTk0NzktLSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5Ni1uZXV0cmFsaXphdGlvbi0lRTclOUElODQlRTUlQkElOTUlRTUlQjElODIlRTclOUElODQlRTYlOUMlQkElRTUlODglQjYlRTYlOTglQUYlRTQlQkIlODAlRTQlQjklODgGOwhUOg5zZWFyY2hfaWRJIik4Zjk3Yjc2ZC0zYzI1LTQ5MGEtYjY2Zi04YjhjMTI4Zjc2OTYGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg7kuK3mgKfljJYGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--9e1a6de921745657823dd0df3190c509833977ac",
+    "snippet": "同样，👉 这篇文章 里也有跟“ 中性 化 ”相关的资料可以参考。",
+    "votes": 5,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "Permanently deleted user",
+    "date": "2023-03-17T09:02:49Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "IND区域earnings3点塔心得",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX35PrOSI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAY5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc2MzIxNjA4MTcwNDctSU5EJUU1JThDJUJBJUU1JTlGJTlGZWFybmluZ3MzJUU3JTgyJUI5JUU1JUExJTk0JUU1JUJGJTgzJUU1JUJFJTk3BjsIVDoOc2VhcmNoX2lkSSIpYTdhZmMxODYtZDJmOS00ODE2LWE2M2EtZTk4NmUxZTllYjQ0BjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIL54K55aGUBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--83b5d1b02c9895ccc2b0e2aea98131a44c36c6af",
+    "snippet": "件，随后让AI生成了一些具有经济学意义的择时条件。 最后利用这些择时条件，成功的配合其他数据集的主信号， 点 亮了earnings 塔 不过仍旧存在几个问题：1、如何寻找合适的主信号。2、是否存在混信号嫌疑。 抛砖引玉",
+    "votes": 6,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "YH55729",
+    "date": "2026-01-13T03:58:25Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "数据集类问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXvhP7GQw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYJodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTMzMDU3MjYwOTA5MDMtJUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2JUU3JUIxJUJCJUU5JTk3JUFFJUU5JUEyJTk4BjsIVDoOc2VhcmNoX2lkSSIpMDBjZDQ0OWItNjk1Ny00MmZiLWFiM2QtNmIzYjI0N2Y5Y2MzBjsIRjoJcmFua2kKOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5Ya36Zeo5pWw5o2u6ZuGBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--053c7d0501d576762b419ac135a3a74189a7ea76",
+    "snippet": "我需要流通股数目(number of shares of common stock),但check 数据 集 时发现只有equity，还有中国区暂时没有的book value per share，是我遗漏了什么吗？",
+    "votes": 3,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "JH76978",
+    "date": "2023-03-23T07:01:19Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "推荐使用的数据 GLB D1 TOP3000 ANL11",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXJ%2BQN%2BRg6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjc0NTc5NTg5NzkzNTEtJUU2JThFJUE4JUU4JThEJTkwJUU0JUJEJUJGJUU3JTk0JUE4JUU3JTlBJTg0JUU2JTk1JUIwJUU2JThEJUFFLUdMQi1EMS1UT1AzMDAwLUFOTDExBjsIVDoOc2VhcmNoX2lkSSIpYTUyMjk3NDUtZWJiNS00MmVkLTgyMjQtNDFiMGFmZjU1ZmEyBjsIRjoJcmFua2kOOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--90d1438367fe33c568437bed58cc1af5fdf6ea0a",
+    "snippet": "anl11_knrtcesger1pme / anl11_knrtcesger2pme anl11_knrtcesger1pme / anl11_knrtcesger3pme",
+    "votes": 3,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "WL13229",
+    "date": "2024-10-31T10:27:27Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "当alpha最后的表达式的计算结果是bool类型时，会如何分配权重",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXTVec1w06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiUBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzE1MjE5NjkyMDk2OTE5LSVFNSVCRCU5M2FscGhhJUU2JTlDJTgwJUU1JTkwJThFJUU3JTlBJTg0JUU4JUExJUE4JUU4JUJFJUJFJUU1JUJDJThGJUU3JTlBJTg0JUU4JUFFJUExJUU3JUFFJTk3JUU3JUJCJTkzJUU2JTlFJTlDJUU2JTk4JUFGYm9vbCVFNyVCMSVCQiVFNSU5RSU4QiVFNiU5NyVCNi0lRTQlQkMlOUElRTUlQTYlODIlRTQlQkQlOTUlRTUlODglODYlRTklODUlOEQlRTYlOUQlODMlRTklODclOEQGOwhUOg5zZWFyY2hfaWRJIikzYTFkYmYxMS04YWY1LTQ3MDAtODQ2OS0xYjQ3NGU3NzM0ZjMGOwhGOglyYW5raQ46C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTliIbljLrln5%2FmnYPph40GOwhUOhJyZXN1bHRzX2NvdW50aQI0Aw%3D%3D--55c3f75eefc84f99c5fad10581ecc2268ade6235",
+    "snippet": "正如how the BRAIN platform中所说，平台会根据计算的值来分配权 重 从而计算买和卖的金额。倘若我想实现对满足某一条件的股票进行等量金额的购买，是否意味着我只需返回将该条件作为最终返回表达式",
+    "votes": 1,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "YZ61104",
+    "date": "2023-06-11T04:42:50Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "多图解析GLB最新3x High Turnover Theme国区提交现况",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXLAmBAyY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE3OTY0OTE2MTkzNTEtJUU1JUE0JTlBJUU1JTlCJUJFJUU4JUE3JUEzJUU2JTlFJTkwR0xCJUU2JTlDJTgwJUU2JTk2JUIwM3gtSGlnaC1UdXJub3Zlci1UaGVtZSVFNSU5QiVCRCVFNSU4QyVCQSVFNiU4RiU5MCVFNCVCQSVBNCVFNyU4RSVCMCVFNSU4NiVCNQY7CFQ6DnNlYXJjaF9pZEkiKWE5NTk2MWUxLWQwNmItNDJhNi05MWY3LTI0ODg2MDU3OWIzZQY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--708ef40bad140098f0a2f7876d4d01116f766ed7",
+    "snippet": "\"HIGH_ TURNOVER :INVESTABLE\") || in(classifications,\"HIGH_ TURNOVER :ORTHOGONAL\") || in(classifications,\"HIGH_ TURNOVER :LIQUID\")",
+    "votes": 2,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "RM49262",
+    "date": "2026-07-08T10:32:54Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "如何降低turnover?",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXRvzExBQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkifWh0dHBzOi8vc3VwcG9ydC53b3JsZHF1YW50YnJhaW4uY29tL2hjL3poLWNuL2NvbW11bml0eS9wb3N0cy8yMjgzNTM1MTAxMjg4Ny0lRTUlQTYlODIlRTQlQkQlOTUlRTklOTklOEQlRTQlQkQlOEV0dXJub3ZlcgY7CFQ6DnNlYXJjaF9pZEkiKWE5NTk2MWUxLWQwNmItNDJhNi05MWY3LTI0ODg2MDU3OWIzZQY7CEY6CXJhbmtpCzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--ab0f320add63f671e6d8b976dc8dbaef13b9f417",
+    "snippet": "trade_when(triggerTradeexp,alphaexp,triggerExitexp) turnover 在30%左右，希望降低 turnover 来提高fitness",
+    "votes": 2,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "LL27141",
+    "date": "2024-04-16T09:51:37Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "权重过于集中的问题从哪几方面分析？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgX3vmdNhI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMjAwMjU3ODc5MzIxODMtJUU2JTlEJTgzJUU5JTg3JThEJUU4JUJGJTg3JUU0JUJBJThFJUU5JTlCJTg2JUU0JUI4JUFEJUU3JTlBJTg0JUU5JTk3JUFFJUU5JUEyJTk4JUU0JUJCJThFJUU1JTkzJUFBJUU1JTg3JUEwJUU2JTk2JUI5JUU5JTlEJUEyJUU1JTg4JTg2JUU2JTlFJTkwBjsIVDoOc2VhcmNoX2lkSSIpM2ExZGJmMTEtOGFmNS00NzAwLTg0NjktMWI0NzRlNzczNGYzBjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--d21635becb85e31e4a7fbaeda3cf8408fd83a499",
+    "snippet": "然后Ts_backfill 做了填充，alpha还是会提醒 权 重 过于集中。 请问要从哪方面去改进？ Truncation = 0.01 更新：对我的alpha，在表达式里面加了这个就不再抱错 权 重 的问题了。所以，setting 里面的Truncation设置没生效么？",
+    "votes": 1,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "QH29412",
+    "date": "2023-12-21T12:38:53Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "【经验分享】SUPER Alpha 组合表达式（Combination）的多时间尺度融合 — combo_a 与风险调整权重",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXmX1UFiY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAkgBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxODc3MzQ4NjUzMzM1LS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItU1VQRVItQWxwaGEtJUU3JUJCJTg0JUU1JTkwJTg4JUU4JUExJUE4JUU4JUJFJUJFJUU1JUJDJThGLUNvbWJpbmF0aW9uLSVFNyU5QSU4NCVFNSVBNCU5QSVFNiU5NyVCNiVFOSU5NyVCNCVFNSVCMCVCQSVFNSVCQSVBNiVFOCU5RSU4RCVFNSU5MCU4OC1jb21iby1hLSVFNCVCOCU4RSVFOSVBMyU4RSVFOSU5OSVBOSVFOCVCMCU4MyVFNiU5NSVCNCVFNiU5RCU4MyVFOSU4NyU4RAY7CFQ6DnNlYXJjaF9pZEkiKTNhMWRiZjExLThhZjUtNDcwMC04NDY5LTFiNDc0ZTc3MzRmMwY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWIhuWMuuWfn%2Badg%2BmHjQY7CFQ6EnJlc3VsdHNfY291bnRpAjQD--4579698ca07cb75677a30aec6f68512330ee8204",
+    "snippet": "决定了\"选谁\"，那 Combination 就是决定了\"如何合作\"。 一、组合的核心思路 我的组合表达式包含四个 权 重 分量，最终通过 scale() 归一化后求和： w1 = combo_a(alpha, nlength=20,",
+    "votes": 2,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "LK39823",
+    "date": "2026-07-11T02:49:35Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "什么是：Pure Power Pool submission does not match any Power Pool Theme.",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXVOJ5FCI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc0NzEzMzk1NjYyMzEtJUU0JUJCJTgwJUU0JUI5JTg4JUU2JTk4JUFGLVB1cmUtUG93ZXItUG9vbC1zdWJtaXNzaW9uLWRvZXMtbm90LW1hdGNoLWFueS1Qb3dlci1Qb29sLVRoZW1lBjsIVDoOc2VhcmNoX2lkSSIpYTA0ZjAzZWQtYWE5ZS00YWRiLTk0ZTctODg3OTZjOGE2YjY2BjsIRjoJcmFua2kJOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--322d6d1a5839e76bd97c3c1cc61dc2fa58625750",
+    "snippet": "我12月刚成为有条件的顾问。这两天在提交Alpha的时候，一直出现： Power Pool submission does not match any Power Pool Theme. 无法提交。 涉及到USA、EUR和ASI的不同Al",
+    "votes": 0,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "JY35270",
+    "date": "2026-01-06T12:43:30Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "中性化相关的问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXQ1ZIFA06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTQzODA3NjQxMTk5NTktJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU3JTlCJUI4JUU1JTg1JUIzJUU3JTlBJTg0JUU5JTk3JUFFJUU5JUEyJTk4BjsIVDoOc2VhcmNoX2lkSSIpOGY5N2I3NmQtM2MyNS00OTBhLWI2NmYtOGI4YzEyOGY3Njk2BjsIRjoJcmFua2kGOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--4ed18335cd57efc395b3a42ef8c0ed2eff1cf4b8",
+    "snippet": "alization为None的设置说明了您认为您的策略不需要我们系统帮您进行 中性 化 。这可能的原因包括您可能在其他组别上做了 中性 化 ，或者您认为自己的策略不需要 中性 化 。这是您对策略的思考及选择，并非这样的设置会使得该Alpha完全失去价值。尽管如此，我们依然希望您通过检查long",
+    "votes": 2,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "XY86998",
+    "date": "2023-05-05T02:38:34Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "如果没有进行中性化，交易还是市场中性吗？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX0kE57w06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAe9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTUzMjExMDg5NTk4OTUtJUU1JUE2JTgyJUU2JTlFJTlDJUU2JUIyJUExJUU2JTlDJTg5JUU4JUJGJTlCJUU4JUExJThDJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2LSVFNCVCQSVBNCVFNiU5OCU5MyVFOCVCRiU5OCVFNiU5OCVBRiVFNSVCOCU4MiVFNSU5QyVCQSVFNCVCOCVBRCVFNiU4MCVBNyVFNSU5MCU5NwY7CFQ6DnNlYXJjaF9pZEkiKThmOTdiNzZkLTNjMjUtNDkwYS1iNjZmLThiOGMxMjhmNzY5NgY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--5d1b7d9b9ff645c942f700ab9dba4f4680572a00",
+    "snippet": "股票，因子值分别为 1,2,3 做Market 中性化 ，得到 -1,0,1; # 全仓做空，不操作，全仓做多 这一份投资组合是市场 中性 的。 如果不做 中性化 ，得到 1/6, 2/6, 3/6; # 0.16仓位做多",
+    "votes": 2,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "WM44289",
+    "date": "2023-06-15T02:58:34Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "降低【turnover】的几种方法对比分析",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXIO3xDyY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAblodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE4NDk5MjUyMTQyMzEtJUU5JTk5JThEJUU0JUJEJThFLXR1cm5vdmVyLSVFNyU5QSU4NCVFNSU4NyVBMCVFNyVBNyU4RCVFNiU5NiVCOSVFNiVCMyU5NSVFNSVBRiVCOSVFNiVBRiU5NCVFNSU4OCU4NiVFNiU5RSU5MAY7CFQ6DnNlYXJjaF9pZEkiKWUyZDFhZWUzLTI5MDMtNGU2Zi1iYjBjLWZkN2QzNjA3Mzc1NQY7CEY6CXJhbmtpCjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDXR1cm5vdmVyBjsIVDoScmVzdWx0c19jb3VudGkCLQM%3D--337c97c33693543f3aee626d96defa0be2bbfb7f",
+    "snippet": "B%A0%E5%AD%90 turnover 我也把几种常见的降低换手率的方法做了一些分析和对比，希望可以和大家一起探讨找到更好的方法。 1.ts_mean(x, d) 效果：降 turnover 最明显，但是也最容易破坏信号",
+    "votes": 3,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "JC31003",
+    "date": "2026-07-10T02:03:06Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "rank(-inventory_turnover)和-inventory结果不一样，为什么？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXbvoR4g46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTYzNjQxMjcwMjI3NDMtcmFuay1pbnZlbnRvcnktdHVybm92ZXItJUU1JTkyJThDLWludmVudG9yeSVFNyVCQiU5MyVFNiU5RSU5QyVFNCVCOCU4RCVFNCVCOCU4MCVFNiVBMCVCNy0lRTQlQjglQkElRTQlQkIlODAlRTQlQjklODgGOwhUOg5zZWFyY2hfaWRJIillMmQxYWVlMy0yOTAzLTRlNmYtYmIwYy1mZDdkMzYwNzM3NTUGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg10dXJub3ZlcgY7CFQ6EnJlc3VsdHNfY291bnRpAi0D--add31194b98e52edd2883307e58f8c1066f1df4d",
+    "snippet": "如题",
+    "votes": 1,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "ZY44667",
+    "date": "2023-07-28T13:48:52Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "关于 CHN Day0 数据集似乎没有高频数据",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXCT5lnQ86D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiActodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTcxNjg2ODI4NDY0ODctJUU1JTg1JUIzJUU0JUJBJThFLUNITi1EYXkwLSVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4NiVFNCVCQyVCQyVFNCVCOSU4RSVFNiVCMiVBMSVFNiU5QyU4OSVFOSVBQiU5OCVFOSVBMiU5MSVFNiU5NSVCMCVFNiU4RCVBRQY7CFQ6DnNlYXJjaF9pZEkiKTAzMzMwMjBlLWZlMGQtNDk0OS1hMGE5LTEzMTIwYzg4NGMxMQY7CEY6CXJhbmtpDDoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--7c631327b1b8130618a95f5c4a868e231e44e792",
+    "snippet": "查看了CHN Day0 好像没有分钟级k线、交易量，集合竞价之类的高频 数据 。 请问这些 数据 有吗？",
+    "votes": 0,
+    "comments": 3,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "XZ80968",
+    "date": "2023-08-31T06:34:54Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "GLB遇到一个名字很有误导性的数据集",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXLvj4lCU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDEzMjE3NjI0MDE4MTUtR0xCJUU5JTgxJTg3JUU1JTg4JUIwJUU0JUI4JTgwJUU0JUI4JUFBJUU1JTkwJThEJUU1JUFEJTk3JUU1JUJFJTg4JUU2JTlDJTg5JUU4JUFGJUFGJUU1JUFGJUJDJUU2JTgwJUE3JUU3JTlBJTg0JUU2JTk1JUIwJUU2JThEJUFFJUU5JTlCJTg2BjsIVDoOc2VhcmNoX2lkSSIpYTUyMjk3NDUtZWJiNS00MmVkLTgyMjQtNDFiMGFmZjU1ZmEyBjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--c111c79ef5e425fc1775b795c4cf3f4dc731815e",
+    "snippet": "Forecasts 类型： MATRIX 覆盖： GLB （另外也有 USA / EUR 等区域版本） Pyrmaid： 1.4x（MODEL分类），在 GLB /D1 Dataset Power Pool June'26 主题池内",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "MY82844",
+    "date": "2026-06-18T14:47:47Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "回测GLB该用的什么Universe和Neutralization呀",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX3e5yXiA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU1OTAwMjcyNzE1NzUtJUU1JTlCJTlFJUU2JUI1JThCR0xCJUU4JUFGJUE1JUU3JTk0JUE4JUU3JTlBJTg0JUU0JUJCJTgwJUU0JUI5JTg4VW5pdmVyc2UlRTUlOTIlOENOZXV0cmFsaXphdGlvbiVFNSU5MSU4MAY7CFQ6DnNlYXJjaF9pZEkiKWE1MjI5NzQ1LWViYjUtNDJlZC04MjI0LTQxYjBhZmY1NWZhMgY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiCEdMQgY7CFQ6EnJlc3VsdHNfY291bnRpAtsB--c5c8b03444a22bc480542f2c7ac6931665d9947b",
+    "snippet": "把其他region的模板搬过来做 GLB 了，但是感觉出货率低好多，而且质量都一般，是设置的问题吗？",
+    "votes": 1,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "SZ88863",
+    "date": "2025-10-13T09:02:56Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "统一权重",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXcyVWxRA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkidWh0dHBzOi8vc3VwcG9ydC53b3JsZHF1YW50YnJhaW4uY29tL2hjL3poLWNuL2NvbW11bml0eS9wb3N0cy8xODQzOTczOTg5NjcyNy0lRTclQkIlOUYlRTQlQjglODAlRTYlOUQlODMlRTklODclOEQGOwhUOg5zZWFyY2hfaWRJIikzYTFkYmYxMS04YWY1LTQ3MDAtODQ2OS0xYjQ3NGU3NzM0ZjMGOwhGOglyYW5raQc6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTliIbljLrln5%2FmnYPph40GOwhUOhJyZXN1bHRzX2NvdW50aQI0Aw%3D%3D--e72a50f958f66f92e9fdf9023a879ea476c75f28",
+    "snippet": "请问如果我在不同行业算出了一个行业的值，我想把这个值赋给行业内所有公司，使得该行业中的所有公司 权 重 相同，然后再按行业排序，怎么操作呢？ 比如A行业3个公司算出来一个行业值为2，B行业4个公司算出来一个行业值为3，然后我想让A行业3个公",
+    "votes": 0,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "HW97336",
+    "date": "2023-10-20T17:16:32Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "【求助交流】基于权重融合的复合信号与单纯因子筛选的优劣对比",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXegki9SU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAkEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNzM0NzY4MjYxNjU1LS0lRTYlQjElODIlRTUlOEElQTklRTQlQkElQTQlRTYlQjUlODEtJUU1JTlGJUJBJUU0JUJBJThFJUU2JTlEJTgzJUU5JTg3JThEJUU4JTlFJThEJUU1JTkwJTg4JUU3JTlBJTg0JUU1JUE0JThEJUU1JTkwJTg4JUU0JUJGJUExJUU1JThGJUI3JUU0JUI4JThFJUU1JThEJTk1JUU3JUJBJUFGJUU1JTlCJUEwJUU1JUFEJTkwJUU3JUFEJTlCJUU5JTgwJTg5JUU3JTlBJTg0JUU0JUJDJTk4JUU1JThBJUEzJUU1JUFGJUI5JUU2JUFGJTk0BjsIVDoOc2VhcmNoX2lkSSIpM2ExZGJmMTEtOGFmNS00NzAwLTg0NjktMWI0NzRlNzczNGYzBjsIRjoJcmFua2kNOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIU5YiG5Yy65Z%2Bf5p2D6YeNBjsIVDoScmVzdWx0c19jb3VudGkCNAM%3D--f64605c4e36f062f9728246fb326c6ade8c59334",
+    "snippet": "在构建多信号因子时，目前平台提供了 权 重 融合组合与规则初筛两种主要方式。 我最近尝试将两者结合，即先通过低相关性和非特定颜色规则进行初筛，再对通过的因子进行多信号 权 重 融合。虽然逻辑上很美，但实际操作中两步过滤的累计信号损失极大。请问大家在开发SUPER",
+    "votes": 0,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "XH93773",
+    "date": "2026-07-06T07:32:55Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "感觉论坛分50是个坎",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXkdp52CM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAZZodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzk0MTI2NjQyNzUyMjMtJUU2JTg0JTlGJUU4JUE3JTg5JUU4JUFFJUJBJUU1JTlEJTlCJUU1JTg4JTg2NTAlRTYlOTglQUYlRTQlQjglQUElRTUlOUQlOEUGOwhUOg5zZWFyY2hfaWRJIilkYWFmNGM0MC0wNGU2LTQ0OWEtYTI2Yy1hYzc2OWIwYTY1NjIGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTliIbljLrln5%2FmnYPph40GOwhUOhJyZXN1bHRzX2NvdW50aQI0Aw%3D%3D--39ca188aa852c6851b707ed9a4dff81201f66053",
+    "snippet": "本季度马上结束了，看了下快定格的六维，感觉论坛 分 50是个坎，五十分上下，名次可以差出一二十名... 分析了下分数计算的 权 重 构成，每次的会议 分 还是很重要的，不能漏了 ==============================",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "MY82844",
+    "date": "2026-03-31T11:11:28Z",
+    "query": "分区域权重",
+    "queries": [
+      "分区域权重"
+    ]
+  },
+  {
+    "title": "Power Pool Competition拿奖就像开盲盒？USA D1 Fast Dataset Power Pool拿到第二名的分析与思考",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXD8aINCY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiMBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQyMDA3MDc0ODM2MjQ3LVBvd2VyLVBvb2wtQ29tcGV0aXRpb24lRTYlOEIlQkYlRTUlQTUlOTYlRTUlQjAlQjElRTUlODMlOEYlRTUlQkMlODAlRTclOUIlQjIlRTclOUIlOTItVVNBLUQxLUZhc3QtRGF0YXNldC1Qb3dlci1Qb29sJUU2JThCJUJGJUU1JTg4JUIwJUU3JUFDJUFDJUU0JUJBJThDJUU1JTkwJThEJUU3JTlBJTg0JUU1JTg4JTg2JUU2JTlFJTkwJUU0JUI4JThFJUU2JTgwJTlEJUU4JTgwJTgzBjsIVDoOc2VhcmNoX2lkSSIpYTA0ZjAzZWQtYWE5ZS00YWRiLTk0ZTctODg3OTZjOGE2YjY2BjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--2cc9ba6506b4e0b890e75956724b9f12190ab0a1",
+    "snippet": "选取最近结束的两期 Power Pool 主题： - GLB 主题 （数据来自API https://api.worldquantbrain.com/competitions/consultant/boards/ power - pool ?limit=30",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "XW90844",
+    "date": "2026-07-16T17:36:24Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "Power Pool Competition拿奖就像开盲盒？USA D1 Fast Dataset Power Pool拿到第二名的分析与思考",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXSC1ZDiY6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAiMBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxODQzMDY3NTM3NDMxLVBvd2VyLVBvb2wtQ29tcGV0aXRpb24lRTYlOEIlQkYlRTUlQTUlOTYlRTUlQjAlQjElRTUlODMlOEYlRTUlQkMlODAlRTclOUIlQjIlRTclOUIlOTItVVNBLUQxLUZhc3QtRGF0YXNldC1Qb3dlci1Qb29sJUU2JThCJUJGJUU1JTg4JUIwJUU3JUFDJUFDJUU0JUJBJThDJUU1JTkwJThEJUU3JTlBJTg0JUU1JTg4JTg2JUU2JTlFJTkwJUU0JUI4JThFJUU2JTgwJTlEJUU4JTgwJTgzBjsIVDoOc2VhcmNoX2lkSSIpYTA0ZjAzZWQtYWE5ZS00YWRiLTk0ZTctODg3OTZjOGE2YjY2BjsIRjoJcmFua2kMOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIPUG93ZXIgUG9vbAY7CFQ6EnJlc3VsdHNfY291bnRpAjQC--66a773f8bc74a300880c9f6923f0ba8e838a7a98",
+    "snippet": "选取最近结束的两期 Power Pool 主题： - GLB 主题 （数据来自API https://api.worldquantbrain.com/competitions/consultant/boards/ power - pool ?limit=30",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "XW90844",
+    "date": "2026-07-09T20:57:11Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "快速查询Self、Prod、Power Pool Correlations，并把结果保存数据库。",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXInun%2FB06D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAeNodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzI5NzA5Nzg4Mjg5NTEtJUU1JUJGJUFCJUU5JTgwJTlGJUU2JTlGJUE1JUU4JUFGJUEyU2VsZi1Qcm9kLVBvd2VyLVBvb2wtQ29ycmVsYXRpb25zLSVFNSVCOSVCNiVFNiU4QSU4QSVFNyVCQiU5MyVFNiU5RSU5QyVFNCVCRiU5RCVFNSVBRCU5OCVFNiU5NSVCMCVFNiU4RCVBRSVFNSVCQSU5MwY7CFQ6DnNlYXJjaF9pZEkiKWEwNGYwM2VkLWFhOWUtNGFkYi05NGU3LTg4Nzk2YzhhNmI2NgY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--5dfe8ced5798d326c731699a225b278153e3287f",
+    "snippet": "# 获取 power pool 相关性数据 print(f\"[{processed}/{total_alphas}] 正在获取 Alpha {alpha_id} 的 power pool 相关性数据...\")",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HF99527",
+    "date": "2025-06-22T04:16:14Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "Power Pool Alphas Competition 2025 - Mid OS Score Improvements (中文会议纪要整理)",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXxrVaqBw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAdFodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzE1MDk0MDE5NDU3NTEtUG93ZXItUG9vbC1BbHBoYXMtQ29tcGV0aXRpb24tMjAyNS1NaWQtT1MtU2NvcmUtSW1wcm92ZW1lbnRzLSVFNCVCOCVBRCVFNiU5NiU4NyVFNCVCQyU5QSVFOCVBRSVBRSVFNyVCQSVBQSVFOCVBNiU4MSVFNiU5NSVCNCVFNyU5MCU4NgY7CFQ6DnNlYXJjaF9pZEkiKWE2YTIxMmE2LWJjZjEtNDY5Yy1iNTIzLWFjNDEzZWQxMDRlYwY7CEY6CXJhbmtpBzoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--bbe0e968f9c7663a211912044abd21f841d8a6ae",
+    "snippet": "min(adj\\_meta_{ir_{ac}})} \\right)\\\\ adj\\_meta_{ir_{bc}} & = 所有标记为 Power Pool 的阿尔法的智能组合的成本前IR - 阿尔法数量惩罚 [min(0.01 * ln(1 + alpha\\_count)",
+    "votes": 1,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "TL42173",
+    "date": "2025-04-18T14:29:36Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "求助帖：关于 Power Pool Theme的alpha检测问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXobUrrCI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAb1odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzgxMjI4NjMwNDI5NjctJUU2JUIxJTgyJUU1JThBJUE5JUU1JUI4JTk2LSVFNSU4NSVCMyVFNCVCQSU4RS1Qb3dlci1Qb29sLVRoZW1lJUU3JTlBJTg0YWxwaGElRTYlQTMlODAlRTYlQjUlOEIlRTklOTclQUUlRTklQTIlOTgGOwhUOg5zZWFyY2hfaWRJIilhNmEyMTJhNi1iY2YxLTQ2OWMtYjUyMy1hYzQxM2VkMTA0ZWMGOwhGOglyYW5raQk6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--dc5c5ce802119292098048dc7afecf8e92c0fdd0",
+    "snippet": "有没有大神知道这个问题怎么解决，我使用的是USA/TOP3000的数据字段，应该符合最后一个主题啊，为啥会报错？还是因为我的sharp没达标才提交不了的？",
+    "votes": 0,
+    "comments": 2,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HN61241",
+    "date": "2026-02-03T07:45:07Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "回测的一些思路-增加中性化方法",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXxa3zXSA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiActodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU1ODc4OTIyOTkxNTktJUU1JTlCJTlFJUU2JUI1JThCJUU3JTlBJTg0JUU0JUI4JTgwJUU0JUJBJTlCJUU2JTgwJTlEJUU4JUI3JUFGLSVFNSVBMiU5RSVFNSU4QSVBMCVFNCVCOCVBRCVFNiU4MCVBNyVFNSU4QyU5NiVFNiU5NiVCOSVFNiVCMyU5NQY7CFQ6DnNlYXJjaF9pZEkiKThmOTdiNzZkLTNjMjUtNDkwYS1iNjZmLThiOGMxMjhmNzY5NgY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiDuS4reaAp%2BWMlgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--30422152cc95d916faee31e600f1fe564d4c4156",
+    "snippet": "二阶，先用subindustry跑一遍，挑出评分比较高的，再用其他 中性化 因子跑一遍，综合评估。 以下是部分核心代码: \"\"\"添加其他 中性化 \"\"\" alphas_so_groups_add",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "YS42224",
+    "date": "2025-10-13T03:20:52Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "如何拯救高turnover因子？有一点点经验，分享给大家，希望对大家有所帮助",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXR6k9LB46D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAkoBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzMzMTc1MzYxODk4MjYzLSVFNSVBNiU4MiVFNCVCRCU5NSVFNiU4QiVBRiVFNiU5NSU5MSVFOSVBQiU5OHR1cm5vdmVyJUU1JTlCJUEwJUU1JUFEJTkwLSVFNiU5QyU4OSVFNCVCOCU4MCVFNyU4MiVCOSVFNyU4MiVCOSVFNyVCQiU4RiVFOSVBQSU4Qy0lRTUlODglODYlRTQlQkElQUIlRTclQkIlOTklRTUlQTQlQTclRTUlQUUlQjYtJUU1JUI4JThDJUU2JTlDJTlCJUU1JUFGJUI5JUU1JUE0JUE3JUU1JUFFJUI2JUU2JTlDJTg5JUU2JTg5JTgwJUU1JUI4JUFFJUU1JThBJUE5BjsIVDoOc2VhcmNoX2lkSSIpYTk1OTYxZTEtZDA2Yi00MmE2LTkxZjctMjQ4ODYwNTc5YjNlBjsIRjoJcmFua2kIOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--9b6bc4bed371ac54d0e7b5a6c306648db1e3f264",
+    "snippet": "对于如何降低因子的 turnover ，相信大家在论坛中，会看到许多帖子， 如何拯救高 turnover 因子？一文助你理解并降低因子 turnover https://support.worldquantbrain.com/hc/zh-cn/com",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "CM48632",
+    "date": "2025-07-01T14:41:56Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "【经验分享】ASI区域Alpha从信号到出货的进阶之路 — 突破Prod Corr与Robust Sharpe双瓶颈",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXzWkWzCQ6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAjwBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQwNDU4OTY3OTYwOTgzLS0lRTclQkIlOEYlRTklQUElOEMlRTUlODglODYlRTQlQkElQUItQVNJJUU1JThDJUJBJUU1JTlGJTlGQWxwaGElRTQlQkIlOEUlRTQlQkYlQTElRTUlOEYlQjclRTUlODglQjAlRTUlODclQkElRTglQjQlQTclRTclOUElODQlRTglQkYlOUIlRTklOTglQjYlRTQlQjklOEIlRTglQjclQUYtJUU3JUFBJTgxJUU3JUEwJUI0UHJvZC1Db3JyJUU0JUI4JThFUm9idXN0LVNoYXJwZSVFNSU4RiU4QyVFNyU5MyVCNiVFOSVBMiU4OAY7CFQ6DnNlYXJjaF9pZEkiKTAwY2Q0NDliLTY5NTctNDJmYi1hYjNkLTZiM2IyNDdmOWNjMwY7CEY6CXJhbmtpCToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiFOWGt%2BmXqOaVsOaNrumbhgY7CFQ6EnJlc3VsdHNfY291bnRpAugD--c4cf266be93c9369b327e1cc4d9243cb256a2c50",
+    "snippet": "场情绪好但价格还没跟上的股票有上涨空间。 #### 策略二： 冷门数据集 ——从\"红海\"到\"蓝海\" **MCP辅助 冷门数据集 发现**： ```text Step 1: get_datasets(region=\"ASI\"",
+    "votes": 2,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "QW94165",
+    "date": "2026-05-14T02:48:30Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "关于\"GLB HighTurnover Datasets Theme\"",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXAmr7ESU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAX5odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDA3NTkxNjI3MDA0MzktJUU1JTg1JUIzJUU0JUJBJThFLUdMQi1IaWdoVHVybm92ZXItRGF0YXNldHMtVGhlbWUGOwhUOg5zZWFyY2hfaWRJIilhNTIyOTc0NS1lYmI1LTQyZWQtODIyNC00MWIwYWZmNTVmYTIGOwhGOglyYW5raQg6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIghHTEIGOwhUOhJyZXN1bHRzX2NvdW50aQLbAQ%3D%3D--c29cccf25daa94273f871cbd305c9fcb4acec6f5",
+    "snippet": "我是新手顾问，想请教问题，我提交了符合 GLB HighTurnover Datasets Theme的alpha，但回测还是显示不符合任何主题，之前DO主题，提交到满30个上限就不让提交了，不知道应该怎么办，现在处于断粮状态了",
+    "votes": 0,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "HZ39336",
+    "date": "2026-05-27T00:53:06Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "关于Power pool 问题",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXZ5gGriM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAXtodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzkyMzAzNDE5MzI5NTEtJUU1JTg1JUIzJUU0JUJBJThFUG93ZXItcG9vbC0lRTklOTclQUUlRTklQTIlOTgGOwhUOg5zZWFyY2hfaWRJIilhMDRmMDNlZC1hYTllLTRhZGItOTRlNy04ODc5NmM4YTZiNjYGOwhGOglyYW5raQY6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--19ff5bee93ca141ef997fa2a90585a5336dda6a1",
+    "snippet": "最近提交alpha，总是提示关于 power pool 问题，有时又被系统消息通知 power pool 发生变更； 所以，很好奇哪里可以看到 power pool 时间变化表?",
+    "votes": 0,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "MY22315",
+    "date": "2026-03-23T14:14:59Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "请教一下fitness指标下，为什么turnover越高，fitness会越低？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXbq%2B%2FghE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAetodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMTkyNTMyNTkzNjYwMzktJUU4JUFGJUI3JUU2JTk1JTk5JUU0JUI4JTgwJUU0JUI4JThCZml0bmVzcyVFNiU4QyU4NyVFNiVBMCU4NyVFNCVCOCU4Qi0lRTQlQjglQkElRTQlQkIlODAlRTQlQjklODh0dXJub3ZlciVFOCVCNiU4QSVFOSVBQiU5OC1maXRuZXNzJUU0JUJDJTlBJUU4JUI2JThBJUU0JUJEJThFBjsIVDoOc2VhcmNoX2lkSSIpYTk1OTYxZTEtZDA2Yi00MmE2LTkxZjctMjQ4ODYwNTc5YjNlBjsIRjoJcmFua2kHOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSINdHVybm92ZXIGOwhUOhJyZXN1bHRzX2NvdW50aQItAw%3D%3D--51d74ad4e60215896bde101705cdbf637733299d",
+    "snippet": "fitness的公式如下所示： Fitness = Sharpe * Sqrt( Abs( Returns ) / Max( Turnover , 0.125 ) ) 2. turnovert的含义和公式如下所示： 换手率 = (买入总额 + 卖出总额)",
+    "votes": 0,
+    "comments": 1,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "中文论坛"
+    ],
+    "author": "JH60700",
+    "date": "2023-11-22T14:28:26Z",
+    "query": "turnover",
+    "queries": [
+      "turnover"
+    ]
+  },
+  {
+    "title": "从3-13的点塔之路，欢迎大家踊跃拍砖",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWtAGuyE6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAc9odHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzcwODcxNTY5MTg4MDctJUU0JUJCJThFMy0xMyVFNyU5QSU4NCVFNyU4MiVCOSVFNSVBMSU5NCVFNCVCOSU4QiVFOCVCNyVBRi0lRTYlQUMlQTIlRTglQkYlOEUlRTUlQTQlQTclRTUlQUUlQjYlRTglQjglOEElRTglQjclODMlRTYlOEIlOEQlRTclQTAlOTYGOwhUOg5zZWFyY2hfaWRJIik5ODhhNDIzZi0wODIzLTQ1MGQtYmQ5ZC1hNDNhOGRkNmEzZDMGOwhGOglyYW5raQ86C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIgvngrnloZQGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--b1c207bcaaa39a48d00325331e438ae537b3f6c1",
+    "snippet": "足够经济来源，一切都是空谈。在引导老师耐心沟通下，以坚持长期主义的思想引领下，开始探索 点塔 之路。迄今为止一共 点 亮13个数据集，希望这个季度能 点 到30个 塔 ！！！！！！ 路只要方向是对的，就不怕走弯路！",
+    "votes": 1,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "YL20304",
+    "date": "2025-12-17T12:47:58Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  },
+  {
+    "title": "【数据集壁垒贴】永久更新",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXM2P2piA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAahodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzU5MDE0NzAzNTYzNzUtLSVFNiU5NSVCMCVFNiU4RCVBRSVFOSU5QiU4NiVFNSVBMyU4MSVFNSU5RSU5MiVFOCVCNCVCNC0lRTYlQjAlQjglRTQlQjklODUlRTYlOUIlQjQlRTYlOTYlQjAGOwhUOg5zZWFyY2hfaWRJIikwMzMzMDIwZS1mZTBkLTQ5NDktYTBhOS0xMzEyMGM4ODRjMTEGOwhGOglyYW5raQ06C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIhTlhrfpl6jmlbDmja7pm4YGOwhUOhJyZXN1bHRzX2NvdW50aQLoAw%3D%3D--4e691a5c65fc7ab5d0c9b2171ce9ded8884bd08f",
+    "snippet": "亲身经历跑了一圈，产出非常不理想的 数据 集 other72 risk70 fundamental6",
+    "votes": 1,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "DC54828",
+    "date": "2025-10-27T06:57:08Z",
+    "query": "冷门数据集",
+    "queries": [
+      "冷门数据集"
+    ]
+  },
+  {
+    "title": "GLB中的小发现",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXTcimNRw6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAXxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzEwMTY3NTY5ODkyMDctR0xCJUU0JUI4JUFEJUU3JTlBJTg0JUU1JUIwJThGJUU1JThGJTkxJUU3JThFJUIwBjsIVDoOc2VhcmNoX2lkSSIpZGQ5MDI1MjEtMGVkOC00NzZmLWE2YTAtNjY4YTM2Nzk5ZDcwBjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIIR0xCBjsIVDoScmVzdWx0c19jb3VudGkC2wE%3D--7c80abb5be8314e1d1a6b5fa850c72bb553f1636",
+    "snippet": "在 GLB 中cash变量无法使用会报错",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "BY28155",
+    "date": "2025-03-29T09:11:38Z",
+    "query": "GLB",
+    "queries": [
+      "GLB"
+    ]
+  },
+  {
+    "title": "power pool alpha无法提交",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXtoDSCCM6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAYBodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzg1MjA3OTgzNjEyMzktcG93ZXItcG9vbC1hbHBoYSVFNiU5NyVBMCVFNiVCMyU5NSVFNiU4RiU5MCVFNCVCQSVBNAY7CFQ6DnNlYXJjaF9pZEkiKWEwNGYwM2VkLWFhOWUtNGFkYi05NGU3LTg4Nzk2YzhhNmI2NgY7CEY6CXJhbmtpDToLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiD1Bvd2VyIFBvb2wGOwhUOhJyZXN1bHRzX2NvdW50aQI0Ag%3D%3D--be631ccc3fa7b6d4437b33853c9b6295adc4aeda",
+    "snippet": "我选择的是EUR TOPCS1600, 请问以上warning必须解决才能提交pure power pool alpha吗? 另外，想问下daily osmosis rank如何生成以及最后指的themes not match如何理解?",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "SL49683",
+    "date": "2026-02-20T09:13:24Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "USA/D1 Power Pool July'26 — PPA六种中性化方式实测对比",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiXdpb09CU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAcxodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvNDE3MzQwMDU3NDkzOTktVVNBLUQxLVBvd2VyLVBvb2wtSnVseS0yNi1QUEElRTUlODUlQUQlRTclQTclOEQlRTQlQjglQUQlRTYlODAlQTclRTUlOEMlOTYlRTYlOTYlQjklRTUlQkMlOEYlRTUlQUUlOUUlRTYlQjUlOEIlRTUlQUYlQjklRTYlQUYlOTQGOwhUOg5zZWFyY2hfaWRJIilhNmEyMTJhNi1iY2YxLTQ2OWMtYjUyMy1hYzQxM2VkMTA0ZWMGOwhGOglyYW5raQo6C2xvY2FsZUkiCnpoLWNuBjsIVDoKcXVlcnlJIg9Qb3dlciBQb29sBjsIVDoScmVzdWx0c19jb3VudGkCNAI%3D--edd487fd362b94a036f0349adb2ef4da7b29e746",
+    "snippet": "前言 最近在做 **USA/D1 Power Pool July'26**（2026.6.29-7.12）的 PPA 任务，其中对中性化方式有限定要求：只能使用 **Slow / Fast / Slow+Fast / Crowding",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "顾问专属中文论坛"
+    ],
+    "author": "FF24581",
+    "date": "2026-07-06T06:03:18Z",
+    "query": "Power Pool",
+    "queries": [
+      "Power Pool"
+    ]
+  },
+  {
+    "title": "分享我IND地区的ppa中性化设置",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwiX0Z7qMyI6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAbVodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzc2MDYzNzQ5NTMzNjctJUU1JTg4JTg2JUU0JUJBJUFCJUU2JTg4JTkxSU5EJUU1JTlDJUIwJUU1JThDJUJBJUU3JTlBJTg0cHBhJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU4JUFFJUJFJUU3JUJEJUFFBjsIVDoOc2VhcmNoX2lkSSIpNDRmOTE2MjUtYzQ3Mi00OTc1LWJhNWQtZTY0NDQwMzU5YTcyBjsIRjoJcmFua2kLOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--db1564ea50ca1df06ea379f1b0932fab211c9553",
+    "snippet": "Crowding Factors ：印度量化拥挤度低， 中性化 会不必要地稀释因子信号； RAM ：多风险维度（如市值、波动率）的 中性化 在印度市场易过拟合，且数据支撑不足； None ：完全不 中性化 会导致策略暴露于行业 / 风格风险（如印度",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "YB44630",
+    "date": "2026-01-12T08:58:46Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "【求助交流】行业中性化处理在高密度板块因子构建中的效果对比",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXWEoe%2ByU6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAkEBaHR0cHM6Ly9zdXBwb3J0LndvcmxkcXVhbnRicmFpbi5jb20vaGMvemgtY24vY29tbXVuaXR5L3Bvc3RzLzQxNzYwNDc1MjA3NzAzLS0lRTYlQjElODIlRTUlOEElQTklRTQlQkElQTQlRTYlQjUlODEtJUU4JUExJThDJUU0JUI4JTlBJUU0JUI4JUFEJUU2JTgwJUE3JUU1JThDJTk2JUU1JUE0JTg0JUU3JTkwJTg2JUU1JTlDJUE4JUU5JUFCJTk4JUU1JUFGJTg2JUU1JUJBJUE2JUU2JTlEJUJGJUU1JTlEJTk3JUU1JTlCJUEwJUU1JUFEJTkwJUU2JTlFJTg0JUU1JUJCJUJBJUU0JUI4JUFEJUU3JTlBJTg0JUU2JTk1JTg4JUU2JTlFJTlDJUU1JUFGJUI5JUU2JUFGJTk0BjsIVDoOc2VhcmNoX2lkSSIpNDRmOTE2MjUtYzQ3Mi00OTc1LWJhNWQtZTY0NDQwMzU5YTcyBjsIRjoJcmFua2kPOgtsb2NhbGVJIgp6aC1jbgY7CFQ6CnF1ZXJ5SSIO5Lit5oCn5YyWBjsIVDoScmVzdWx0c19jb3VudGkC6AM%3D--5f91600d9bfaae47a6fef228bbe754eb3d9dcf97",
+    "snippet": "【求助交流】行业 中性化 处理在高密度板块因子构建中的效果对比 在构建板块密集型因子时，我对比了全市场 中性化 和行业 中性化 两种方式。行业 中性化 虽然能降低同板块暴露，但也牺牲了一部分alpha信号强度。各位在SUPER Alpha中更倾向于哪",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "JR23144",
+    "date": "2026-07-07T00:30:42Z",
+    "query": "中性化",
+    "queries": [
+      "中性化"
+    ]
+  },
+  {
+    "title": "什么是Genius，什么叫做点塔？",
+    "click_href": "https://support.worldquantbrain.com/hc/zh-cn/search/click?data=BAh7DjoHaWRsKwgXIQqW8SA6D2FjY291bnRfaWRpA9GrqjoJdHlwZUkiE2NvbW11bml0eV9wb3N0BjoGRVQ6CHVybEkiAaRodHRwczovL3N1cHBvcnQud29ybGRxdWFudGJyYWluLmNvbS9oYy96aC1jbi9jb21tdW5pdHkvcG9zdHMvMzYyMjE5NzY0NTMzOTktJUU0JUJCJTgwJUU0JUI5JTg4JUU2JTk4JUFGR2VuaXVzLSVFNCVCQiU4MCVFNCVCOSU4OCVFNSU4RiVBQiVFNSU4MSU5QSVFNyU4MiVCOSVFNSVBMSU5NAY7CFQ6DnNlYXJjaF9pZEkiKWE3YWZjMTg2LWQyZjktNDgxNi1hNjNhLWU5ODZlMWU5ZWI0NAY7CEY6CXJhbmtpDjoLbG9jYWxlSSIKemgtY24GOwhUOgpxdWVyeUkiC%2BeCueWhlAY7CFQ6EnJlc3VsdHNfY291bnRpAugD--fa358b27f2fa5b3aa75f485fab3b14ef4bae7638",
+    "snippet": "而在上面有两个进度条我个人比较关注：提交alpha的数量以及 点塔 的数量。 什么是金字塔：个人理解的话，每个region有多种data，那么这6个region与data交错组成了很多很多的交叉点，这些数量在一起就是金字塔 什么是 点塔 ： 点塔 就要求我们在不同region下提交不同的data",
+    "votes": 0,
+    "comments": 0,
+    "breadcrumbs": [
+      "WorldQuant BRAIN-CN",
+      "社区",
+      "Advisory Program Discussion Forum - Kunqi"
+    ],
+    "author": "ZW87347",
+    "date": "2025-11-10T10:02:41Z",
+    "query": "点塔",
+    "queries": [
+      "点塔"
+    ]
+  }
+]

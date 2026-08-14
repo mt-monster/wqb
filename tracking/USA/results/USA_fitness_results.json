@@ -1,0 +1,42 @@
+{
+  "f1_decay5": {
+    "alpha_id": "RRmejzPe",
+    "S": 1.45,
+    "F": 0.82,
+    "T": 0.1879,
+    "2Y": null,
+    "fails": []
+  },
+  "f2_decay10": {
+    "alpha_id": "O0GWQz21",
+    "S": 1.23,
+    "F": 0.77,
+    "T": 0.1196,
+    "2Y": null,
+    "fails": []
+  },
+  "f3_06_04": {
+    "alpha_id": "3qp0QP2Z",
+    "S": 1.6,
+    "F": 0.76,
+    "T": 0.2913,
+    "2Y": null,
+    "fails": []
+  },
+  "f4_07_03": {
+    "alpha_id": "58pJn526",
+    "S": 1.38,
+    "F": 0.69,
+    "T": 0.2106,
+    "2Y": null,
+    "fails": []
+  },
+  "f5_rev63_decay10": {
+    "alpha_id": "leWapGNl",
+    "S": 1.31,
+    "F": 0.86,
+    "T": 0.1183,
+    "2Y": null,
+    "fails": []
+  }
+}

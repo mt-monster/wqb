@@ -1,0 +1,44 @@
+[
+  {
+    "id": "n1",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.45)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "1YzLbZzQ 精确复刻"
+  },
+  {
+    "id": "n2",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 纯因子腿"
+  },
+  {
+    "id": "n3",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.3)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 + 反转0.3"
+  },
+  {
+    "id": "n4",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(pv70_bbgnews_score_float), std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "pv70 新闻情感"
+  },
+  {
+    "id": "n5",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(pv70_ibeseps1_score_float), std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "pv70 盈利预测"
+  },
+  {
+    "id": "n6",
+    "expr": "ts_rank(ts_backfill(winsorize(returns, std=4), 22), 44)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "returns 基准对照"
+  }
+]

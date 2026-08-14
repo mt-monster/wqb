@@ -1,0 +1,42 @@
+[
+  {
+    "id": "y1",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 252))), 0.7), multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.3)), 10)",
+    "note": "rev252+因子 70/30"
+  },
+  {
+    "id": "y2",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 252))), 0.8), multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.2)), 10)",
+    "note": "rev252+因子 80/20"
+  },
+  {
+    "id": "y3",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 252))), 0.7), multiply(rank(ts_zscore(ts_mean(ts_backfill(change_3y_compound_sales_growth, 66), 22), 189)), 0.3)), 10)",
+    "note": "rev252+sales3y 70/30"
+  },
+  {
+    "id": "y4",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 252))), 0.7), multiply(rank(ts_zscore(ts_mean(ts_backfill(change_1y_cashflow_to_price, 66), 22), 189)), 0.3)), 10)",
+    "note": "rev252+cashflow 70/30"
+  },
+  {
+    "id": "y5",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 504))), 10)",
+    "note": "rev504 (2年窗)"
+  },
+  {
+    "id": "y6",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 252))), 20)",
+    "note": "rev252 decay20"
+  },
+  {
+    "id": "y7",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 126))), 0.5), multiply(reverse(rank(ts_zscore(returns, 252))), 0.5)), 10)",
+    "note": "rev126+252 双窗"
+  },
+  {
+    "id": "y8",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 252))), 30)",
+    "note": "rev252 decay30"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "y1",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.2)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 反转腿 0.2"
+  },
+  {
+    "id": "y2",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 63)))) * 0.3)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 反转窗63"
+  },
+  {
+    "id": "y3",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 纯因子 (无反转)"
+  },
+  {
+    "id": "y4",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 42)))) * 0.25)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "anl39 反转0.25 w42"
+  },
+  {
+    "id": "y5",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.3)",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "anl39 结构 × SECTOR"
+  },
+  {
+    "id": "y6",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.3)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "anl39 结构 decay4"
+  }
+]

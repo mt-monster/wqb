@@ -1,0 +1,44 @@
+[
+  {
+    "id": "n1",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "m4 + decay5"
+  },
+  {
+    "id": "n2",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "m4 + decay10"
+  },
+  {
+    "id": "n3",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 15)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "m4 + decay15"
+  },
+  {
+    "id": "n4",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.55), multiply(reverse(rank(ts_zscore(returns, 21))), 0.45)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "m4 055/045 + decay10"
+  },
+  {
+    "id": "n5",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.6), multiply(reverse(rank(ts_zscore(returns, 21))), 0.4)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "m4 060/040 + decay10"
+  },
+  {
+    "id": "n6",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.6), multiply(reverse(rank(ts_zscore(returns, 21))), 0.4))",
+    "neut": "SUBINDUSTRY",
+    "decay": 6,
+    "note": "m4 060/040 + 平台decay6"
+  }
+]

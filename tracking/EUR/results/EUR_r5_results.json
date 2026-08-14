@@ -1,0 +1,72 @@
+{
+  "m5a_rev42": {
+    "alpha_id": "78zokezL",
+    "status": "COMPLETE",
+    "sharpe": 1.07,
+    "fitness": 0.27,
+    "turnover": 0.9894,
+    "margin": 0.000127,
+    "returns": 0.0628,
+    "two_year_sharpe": null
+  },
+  "m5b_rev21": {
+    "alpha_id": "omNo1xqm",
+    "status": "COMPLETE",
+    "sharpe": 1.06,
+    "fitness": 0.26,
+    "turnover": 0.9916,
+    "margin": 0.000122,
+    "returns": 0.0605,
+    "two_year_sharpe": null
+  },
+  "m5c_rev63": {
+    "alpha_id": "88pvmMla",
+    "status": "COMPLETE",
+    "sharpe": 1.09,
+    "fitness": 0.28,
+    "turnover": 0.986,
+    "margin": 0.000131,
+    "returns": 0.0646,
+    "two_year_sharpe": null
+  },
+  "m5d_ret060": {
+    "alpha_id": "XgoRjd7a",
+    "status": "COMPLETE",
+    "sharpe": 0.96,
+    "fitness": 0.26,
+    "turnover": 0.5734,
+    "margin": 0.000141,
+    "returns": 0.0405,
+    "two_year_sharpe": null
+  },
+  "m5e_ret070": {
+    "alpha_id": "A1GQRo0R",
+    "status": "COMPLETE",
+    "sharpe": 1.03,
+    "fitness": 0.27,
+    "turnover": 0.7279,
+    "margin": 0.000134,
+    "returns": 0.0489,
+    "two_year_sharpe": null
+  },
+  "m5f_dual_rev": {
+    "alpha_id": "KPGmKWOk",
+    "status": "COMPLETE",
+    "sharpe": 1.11,
+    "fitness": 0.28,
+    "turnover": 1.005,
+    "margin": 0.000129,
+    "returns": 0.0649,
+    "two_year_sharpe": null
+  },
+  "m5g_rev_decay10": {
+    "alpha_id": "j26e5q3O",
+    "status": "COMPLETE",
+    "sharpe": 0.48,
+    "fitness": 0.11,
+    "turnover": 0.542,
+    "margin": 0.000105,
+    "returns": 0.0286,
+    "two_year_sharpe": null
+  }
+}

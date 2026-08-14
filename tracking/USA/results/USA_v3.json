@@ -1,0 +1,44 @@
+[
+  {
+    "id": "x1",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.6), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_score, std=4), 66), 250)), 0.4))",
+    "neut": "SUBINDUSTRY",
+    "decay": 6,
+    "note": "w7 结构 decay6"
+  },
+  {
+    "id": "x2",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.6), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_score, std=4), 66), 250)), 0.4))",
+    "neut": "SECTOR",
+    "decay": 4,
+    "note": "w7 结构 × SECTOR"
+  },
+  {
+    "id": "x3",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_score, std=4), 66), 250)), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "50/50 等权"
+  },
+  {
+    "id": "x4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(vec_avg(analyst_earnings_revision_intensity), std=4), 22), subindustry), 0.5), 5), 20)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "修正强度 vec_avg"
+  },
+  {
+    "id": "x5",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_score, std=4), 66), 250)), 0.3), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.2))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "三腿 修正+惊喜+趋势"
+  },
+  {
+    "id": "x6",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正+反转 50/50"
+  }
+]

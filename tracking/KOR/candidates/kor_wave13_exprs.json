@@ -1,0 +1,16 @@
+{
+  "campaign": "KOR_D1",
+  "created": "2026-08-14",
+  "setting": "SECTOR d6 t0.06",
+  "note": "wave12互补腿发现: B1 q5_bucket4_50d sh1.48(最高)但2y1.38; A2置信加权 sh1.43/2y1.23; A6三源集成 sh1.33/2y1.63(最高); B5牛熊利差 sh1.44. 本波做互补融合(分散化提sharpe+互补期限补2y), 目标sh>1.58且2y>1.6",
+  "wave13a_fusion_SECTOR_d6": [
+    "add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(img60d_return_quantile5_confscore3),0.5))",
+    "add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.5))",
+    "add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.4),add(multiply(rank(img60d_return_quantile5_confscore3),0.3),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.3)))",
+    "add(multiply(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_confidence_score3_q5_50d_equity2b2)),0.5),multiply(rank(img60d_return_quantile5_confscore3),0.5))",
+    "add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),0.4))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q2_bucket0_60d_equity2b2)),0.5),multiply(rank(img60d_return_quantile5_confscore3),0.5))",
+    "add(multiply(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_confidence_score3_q5_50d_equity2b2)),0.5),multiply(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),0.5))",
+    "add(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.4),multiply(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),0.3)),multiply(rank(img200d_return_quintile2_prob_leap1),0.3))"
+  ]
+}

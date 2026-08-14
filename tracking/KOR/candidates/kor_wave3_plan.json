@@ -1,0 +1,42 @@
+{
+  "campaign": "KOR_D1_TOP600 wave3",
+  "dataset": "ml_factor_proj",
+  "category": "ML projected factors (change_* analyst/fundamental deltas + global latent features)",
+  "fields_confirmed": ["change_six_month_eps_revision", "change_6m_rating_revision", "change_analyst_consensus_rating", "change_six_month_long_term_growth_estimate", "change_forward_2y_eps_growth", "change_real_earnings_surprise", "change_street_revision_confidence", "change_stddev_fy2_eps_to_price", "change_fy1_eps_estimate_dispersion", "change_six_month_average_trading_volume", "change_six_month_alpha_36m", "mean_global_feature_10", "mean_global_feature_19", "mean_global_feature_16", "log_variance_global_feature_10"],
+  "rationale": "MATRIX cov=1.0 alphaCount=0 零竞争; 白名单valueScore7.0/mult1.7; 论坛HS65681 STATISTICAL+rank-diff KOR 1.76模板",
+  "batches": [
+    {"name": "stat_b1", "neutralization": "STATISTICAL", "decay": 8, "truncation": 0.06, "style": "A_revision_momentum+D_rank_diff"},
+    {"name": "stat_b2", "neutralization": "STATISTICAL", "decay": 8, "truncation": 0.06, "style": "B_surprise+C_uncertainty_contrarian+E_ml_latent"},
+    {"name": "sector_b3", "neutralization": "SECTOR", "decay": 4, "truncation": 0.08, "style": "F_acceleration+G_volume_contrarian+H_blend"}
+  ],
+  "batch1_exprs": [
+    "rank(change_six_month_eps_revision)",
+    "rank(change_6m_rating_revision)",
+    "rank(change_analyst_consensus_rating)",
+    "rank(change_six_month_long_term_growth_estimate)",
+    "rank(change_forward_2y_eps_growth)",
+    "subtract(rank(change_six_month_eps_revision), rank(change_fy1_eps_estimate_dispersion))",
+    "subtract(rank(change_6m_rating_revision), rank(change_stddev_fy2_eps_to_price))",
+    "add(multiply(rank(change_six_month_eps_revision),0.5), multiply(rank(change_6m_rating_revision),0.5))"
+  ],
+  "batch2_exprs": [
+    "rank(change_real_earnings_surprise)",
+    "ts_zscore(change_real_earnings_surprise,126)",
+    "rank(change_street_revision_confidence)",
+    "multiply(rank(change_stddev_fy2_eps_to_price),-1)",
+    "multiply(rank(change_fy1_eps_estimate_dispersion),-1)",
+    "subtract(rank(change_real_earnings_surprise), rank(change_stddev_fy2_eps_to_price))",
+    "subtract(rank(mean_global_feature_10), rank(log_variance_global_feature_10))",
+    "rank(mean_global_feature_19)"
+  ],
+  "batch3_exprs": [
+    "ts_delta(rank(change_six_month_eps_revision),22)",
+    "ts_av_diff(change_6m_rating_revision,63)",
+    "subtract(ts_av_diff(change_six_month_eps_revision,22), ts_av_diff(change_six_month_eps_revision,63))",
+    "multiply(rank(change_six_month_average_trading_volume),-1)",
+    "add(multiply(rank(change_real_earnings_surprise),0.5), multiply(rank(change_analyst_consensus_rating),0.5))",
+    "rank(ts_delta(change_six_month_long_term_growth_estimate,22))",
+    "subtract(rank(change_street_revision_confidence), rank(change_fy1_eps_estimate_dispersion))",
+    "add(multiply(rank(mean_global_feature_16),0.5), multiply(rank(change_six_month_eps_revision),0.5))"
+  ]
+}

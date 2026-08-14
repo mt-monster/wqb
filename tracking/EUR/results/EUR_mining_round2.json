@@ -1,0 +1,52 @@
+[
+  {
+    "id": "m2a",
+    "expr": "ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 60)",
+    "note": "mlf1 长窗60"
+  },
+  {
+    "id": "m2b",
+    "expr": "ts_rank(ts_backfill(winsorize(change_3m_revision_fy2_eps, std=5), 66), 60)",
+    "note": "mlf2 长窗60"
+  },
+  {
+    "id": "m2c",
+    "expr": "ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 120)",
+    "note": "mlf1 长窗120"
+  },
+  {
+    "id": "m2d",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "note": "mlf3 原样"
+  },
+  {
+    "id": "m2e",
+    "expr": "reverse(ts_rank(ts_backfill(winsorize(change_3y_compound_sales_growth, std=5), 66), 44))",
+    "note": "mlf5 取反"
+  },
+  {
+    "id": "n2a",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(headline_sentiment_vader_score), std=5), 22), 60)",
+    "note": "nws1 长窗60"
+  },
+  {
+    "id": "n2b",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(headline_sentiment_vader_score), std=5), 22), 20)",
+    "note": "nws1 短窗20"
+  },
+  {
+    "id": "n2c",
+    "expr": "reverse(ts_rank(ts_backfill(winsorize(vec_avg(headline_textblob_sentiment_score), std=5), 22), 44))",
+    "note": "nws2 取反"
+  },
+  {
+    "id": "a2a",
+    "expr": "ts_rank(ts_backfill(winsorize(liquidity_money_flow_alignment, std=5), 22), 60)",
+    "note": "aif2 长窗60"
+  },
+  {
+    "id": "a2b",
+    "expr": "reverse(ts_rank(ts_backfill(winsorize(momentum_williams_r_adjusted, std=5), 22), 44))",
+    "note": "aif1 取反"
+  }
+]

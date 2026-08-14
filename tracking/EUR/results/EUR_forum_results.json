@@ -1,0 +1,83 @@
+{
+  "f1_eps_growth": {
+    "alpha_id": "VkGdX6J0",
+    "S": 0.41,
+    "F": 0.06,
+    "T": 0.2596,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f2_revision": {
+    "alpha_id": "kqPJnVlz",
+    "S": -0.19,
+    "F": -0.02,
+    "T": 0.2327,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f3_eps_est_dual": {
+    "alpha_id": "d5ZKnOwE",
+    "S": 0.35,
+    "F": 0.05,
+    "T": 0.2858,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f4_sentiment": {
+    "alpha_id": "1Ypjox5K",
+    "S": 0.19,
+    "F": 0.02,
+    "T": 0.3678,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f5_liquidity": {
+    "alpha_id": "N1benQMo",
+    "S": 1.27,
+    "F": 0.39,
+    "T": 0.2323,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f6_factor08_rev02": {
+    "alpha_id": "vRNO5k0r",
+    "S": 0.03,
+    "F": 0.0,
+    "T": 0.0679,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f7_eps08_rev02": {
+    "alpha_id": "WjALNPKj",
+    "S": 0.22,
+    "F": 0.04,
+    "T": 0.0693,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f8_sent07_rev03": {
+    "alpha_id": "mL5Yqge5",
+    "S": 0.25,
+    "F": 0.02,
+    "T": 1.0845,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "f9_eps_smooth": {
+    "alpha_id": "O0GJnrw1",
+    "S": 0.28,
+    "F": 0.05,
+    "T": 0.1526,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  }
+}

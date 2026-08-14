@@ -1,0 +1,92 @@
+{
+  "s4_decay_linear5": {
+    "alpha_id": "A1GQqJrW",
+    "status": "COMPLETE",
+    "sharpe": 2.42,
+    "fitness": 0.9,
+    "turnover": 0.4747,
+    "margin": 0.000278,
+    "returns": 0.0661,
+    "two_year_sharpe": null
+  },
+  "s5_decay_linear10": {
+    "alpha_id": "ZYEmkwdQ",
+    "status": "COMPLETE",
+    "sharpe": 2.23,
+    "fitness": 0.94,
+    "turnover": 0.3438,
+    "margin": 0.000355,
+    "returns": 0.0609,
+    "two_year_sharpe": null
+  },
+  "s6_mean5": {
+    "alpha_id": "GrGgE0zJ",
+    "status": "COMPLETE",
+    "sharpe": 2.13,
+    "fitness": 0.79,
+    "turnover": 0.4137,
+    "margin": 0.000274,
+    "returns": 0.0567,
+    "two_year_sharpe": null
+  },
+  "s7_mean10": {
+    "alpha_id": "QPGYmrzK",
+    "status": "COMPLETE",
+    "sharpe": 1.87,
+    "fitness": 0.77,
+    "turnover": 0.2917,
+    "margin": 0.00034,
+    "returns": 0.0495,
+    "two_year_sharpe": null
+  },
+  "s8_hump": {
+    "alpha_id": "pwNvQJZX",
+    "status": "COMPLETE",
+    "sharpe": 0.56,
+    "fitness": 0.16,
+    "turnover": 0.0587,
+    "margin": 0.000364,
+    "returns": 0.0107,
+    "two_year_sharpe": null
+  },
+  "s9_rev126": {
+    "alpha_id": "RRmA0ZK1",
+    "status": "COMPLETE",
+    "sharpe": 2.76,
+    "fitness": 0.82,
+    "turnover": 0.8785,
+    "margin": 0.000178,
+    "returns": 0.0784,
+    "two_year_sharpe": null
+  },
+  "s10_rev252": {
+    "alpha_id": "9qpEgPm2",
+    "status": "COMPLETE",
+    "sharpe": 2.86,
+    "fitness": 0.87,
+    "turnover": 0.8823,
+    "margin": 0.000187,
+    "returns": 0.0824,
+    "two_year_sharpe": null
+  },
+  "INDUSTRY_rev63": {
+    "alpha_id": "e736ewLd",
+    "status": "COMPLETE",
+    "sharpe": 1.73,
+    "fitness": 0.57,
+    "turnover": 0.8808,
+    "margin": 0.000217,
+    "returns": 0.0956,
+    "two_year_sharpe": null
+  },
+  "INDUSTRY_dual": {
+    "alpha_id": "mL5YeRZ1",
+    "status": "COMPLETE",
+    "sharpe": 1.67,
+    "fitness": 0.53,
+    "turnover": 0.8941,
+    "margin": 0.0002,
+    "returns": 0.0893,
+    "two_year_sharpe": null
+  }
+}

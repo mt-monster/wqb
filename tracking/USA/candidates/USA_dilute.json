@@ -1,0 +1,37 @@
+[
+  {
+    "id": "p1",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.7), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.3))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surprise0.7+vader0.3"
+  },
+  {
+    "id": "p2",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.6), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_textblob_sentiment_score), subindustry), 0.5), 5), 90), 0.4))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surprise0.6+textblob0.4"
+  },
+  {
+    "id": "p3",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.7), multiply(ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(momentum_strength_index, std=4), 66), subindustry), 0.5), 5), 90), 0.3))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surprise0.7+动量0.3"
+  },
+  {
+    "id": "p4",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.8), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.2))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surprise0.8+vader0.2"
+  },
+  {
+    "id": "p5",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surprise0.5+vader0.5"
+  }
+]

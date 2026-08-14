@@ -1,0 +1,30 @@
+{
+  "z1_copy_1YzLbZzQ": {
+    "alpha_id": "9qpxO87r",
+    "S": 1.81,
+    "F": 1.24,
+    "robust": null,
+    "fails": []
+  },
+  "z2_rev63_w03": {
+    "alpha_id": "YPv1o8go",
+    "S": 1.76,
+    "F": 1.4,
+    "robust": null,
+    "fails": []
+  },
+  "z3_rev42_w025": {
+    "alpha_id": "qMNLJONZ",
+    "S": 1.64,
+    "F": 1.3,
+    "robust": null,
+    "fails": []
+  },
+  "z4_rev21_w03": {
+    "alpha_id": "d5ZWrYZE",
+    "S": 1.64,
+    "F": 1.26,
+    "robust": null,
+    "fails": []
+  }
+}

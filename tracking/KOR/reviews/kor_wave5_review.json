@@ -1,0 +1,594 @@
+{
+ "all": [
+  {
+   "id": "RRmzYmag",
+   "code": "rank(ts_decay_linear(change_6m_rating_revision,22))",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.85,
+   "fitness": 0.56,
+   "two_year_sharpe": 1.96,
+   "margin": 0.003518,
+   "turnover": 0.0309,
+   "risk_neutralized_sharpe": 0.52,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "1YpKLpmk",
+   "code": "rank(change_6m_rating_revision)",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.85,
+   "fitness": 0.56,
+   "two_year_sharpe": 2.01,
+   "margin": 0.00296,
+   "turnover": 0.0362,
+   "risk_neutralized_sharpe": 0.49,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "GrGz6G8O",
+   "code": "signed_power(rank(change_6m_rating_revision),0.5)",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.83,
+   "fitness": 0.55,
+   "two_year_sharpe": 2.12,
+   "margin": 0.00302,
+   "turnover": 0.0361,
+   "risk_neutralized_sharpe": 0.42,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "JjGzmG5n",
+   "code": "add(multiply(rank(change_stddev_fy2_eps_to_price),0.5), multiply(rank(change_6m_rating_revision),0.5))",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.81,
+   "fitness": 0.56,
+   "two_year_sharpe": 1.82,
+   "margin": 0.003443,
+   "turnover": 0.0352,
+   "risk_neutralized_sharpe": 0.59,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "WjAzdANP",
+   "code": "add(multiply(rank(change_6m_rating_revision),0.6), multiply(rank(change_six_month_eps_revision),0.4))",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.74,
+   "fitness": 0.45,
+   "two_year_sharpe": 1.59,
+   "margin": 0.002226,
+   "turnover": 0.0419,
+   "risk_neutralized_sharpe": 0.32,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "O0GzmwnY",
+   "code": "add(multiply(rank(change_six_month_long_term_growth_estimate),0.5), multiply(rank(change_6m_rating_revision),0.5))",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.72,
+   "fitness": 0.45,
+   "two_year_sharpe": 2.13,
+   "margin": 0.002753,
+   "turnover": 0.0358,
+   "risk_neutralized_sharpe": 0.32,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "MPGz8l5L",
+   "code": "rank(change_6m_rating_revision)",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.69,
+   "fitness": 0.4,
+   "two_year_sharpe": 2.16,
+   "margin": 0.002064,
+   "turnover": 0.0402,
+   "risk_neutralized_sharpe": 0.23,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "A1GzaJOX",
+   "code": "add(multiply(rank(change_stddev_fy2_eps_to_price),0.5), multiply(rank(change_6m_rating_revision),0.5))",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.68,
+   "fitness": 0.42,
+   "two_year_sharpe": 1.92,
+   "margin": 0.002446,
+   "turnover": 0.0392,
+   "risk_neutralized_sharpe": 0.28,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "JjGzX0gO",
+   "code": "rank(ts_decay_linear(change_6m_rating_revision,22))",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.67,
+   "fitness": 0.38,
+   "two_year_sharpe": 2.1,
+   "margin": 0.002471,
+   "turnover": 0.0331,
+   "risk_neutralized_sharpe": 0.22,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "QPGzlr2X",
+   "code": "signed_power(rank(change_6m_rating_revision),0.5)",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.66,
+   "fitness": 0.38,
+   "two_year_sharpe": 2.15,
+   "margin": 0.00208,
+   "turnover": 0.0402,
+   "risk_neutralized_sharpe": 0.17,
+   "ra_failed": true,
+   "failed_ra_count": 2,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "xANGQNmJ",
+   "code": "add(multiply(rank(change_6m_rating_revision),0.5), multiply(rank(mean_global_feature_10),0.5))",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.66,
+   "fitness": 0.39,
+   "two_year_sharpe": 1.33,
+   "margin": 0.002359,
+   "turnover": 0.0379,
+   "risk_neutralized_sharpe": 0.56,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "j26Gwldo",
+   "code": "rank(change_stddev_fy2_eps_to_price)",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.59,
+   "fitness": 0.33,
+   "two_year_sharpe": 1.51,
+   "margin": 0.002085,
+   "turnover": 0.0383,
+   "risk_neutralized_sharpe": 0.26,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "P0Gz6MLx",
+   "code": "rank(volume_trend_money_flow_interaction)",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": 0.56,
+   "fitness": 0.19,
+   "two_year_sharpe": 0.62,
+   "margin": 0.000235,
+   "turnover": 0.2247,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "gJ8GKgvK",
+   "code": "add(multiply(multiply(rank(short_term_price_change),-1),0.5), multiply(rank(volume_trend_money_flow_interaction),0.5))",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": 0.55,
+   "fitness": 0.24,
+   "two_year_sharpe": 0.09,
+   "margin": 0.000391,
+   "turnover": 0.1871,
+   "risk_neutralized_sharpe": 0.27,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "j26Gwl9o",
+   "code": "rank(change_six_month_long_term_growth_estimate)",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.51,
+   "fitness": 0.26,
+   "two_year_sharpe": 1.47,
+   "margin": 0.002077,
+   "turnover": 0.0309,
+   "risk_neutralized_sharpe": 0.2,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "vRNG9pVQ",
+   "code": "ts_zscore(momentum_williams_r_adjusted,126)",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": 0.48,
+   "fitness": 0.18,
+   "two_year_sharpe": 0.36,
+   "margin": 0.000267,
+   "turnover": 0.3133,
+   "risk_neutralized_sharpe": 0.08,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGzXeAL",
+   "code": "subtract(rank(volume_anomaly_price_positioning), rank(short_term_price_change))",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": 0.43,
+   "fitness": 0.17,
+   "two_year_sharpe": 0.19,
+   "margin": 0.000302,
+   "turnover": 0.1818,
+   "risk_neutralized_sharpe": 0.09,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "VkGzlwXG",
+   "code": "ts_av_diff(rank(change_6m_rating_revision),63)",
+   "neutralization": "SUBINDUSTRY",
+   "decay": 6,
+   "sharpe": 0.38,
+   "fitness": 0.15,
+   "two_year_sharpe": 0.98,
+   "margin": 0.000472,
+   "turnover": 0.0859,
+   "risk_neutralized_sharpe": 0.28,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "qMNGdYqj",
+   "code": "multiply(rank(short_term_price_change),-1)",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": 0.28,
+   "fitness": 0.11,
+   "two_year_sharpe": -0.09,
+   "margin": 0.000399,
+   "turnover": 0.0968,
+   "risk_neutralized_sharpe": -0.03,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "blQzMQom",
+   "code": "subtract(rank(change_6m_rating_revision), rank(change_analyst_consensus_rating))",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.18,
+   "fitness": 0.05,
+   "two_year_sharpe": 1.51,
+   "margin": 0.000399,
+   "turnover": 0.0404,
+   "risk_neutralized_sharpe": 0.22,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "VkGzEdrb",
+   "code": "add(multiply(rank(volume_trend_money_flow_interaction),0.5), multiply(rank(liquidity_money_flow_alignment_2),0.5))",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": 0.09,
+   "fitness": 0.02,
+   "two_year_sharpe": 0.39,
+   "margin": 5.7e-05,
+   "turnover": 0.1676,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "pwNGEvbq",
+   "code": "rank(money_flow_strength_typical_price_2)",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": 0.07,
+   "fitness": 0.01,
+   "two_year_sharpe": -0.06,
+   "margin": 6.8e-05,
+   "turnover": 0.0924,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "rK2GL2JJ",
+   "code": "ts_zscore(change_6m_rating_revision,252)",
+   "neutralization": "INDUSTRY",
+   "decay": 8,
+   "sharpe": 0.01,
+   "fitness": 0.0,
+   "two_year_sharpe": 0.21,
+   "margin": 2e-05,
+   "turnover": 0.0599,
+   "risk_neutralized_sharpe": -0.26,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "3qpPxkWg",
+   "code": "rank(ts_delta(liquidity_weighted_returns_ma,22))",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": -0.02,
+   "fitness": -0.0,
+   "two_year_sharpe": -0.1,
+   "margin": -1.6e-05,
+   "turnover": 0.197,
+   "risk_neutralized_sharpe": 0.06,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "j26GXepE",
+   "code": "rank(volume_anomaly_price_positioning_2)",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": -0.07,
+   "fitness": -0.01,
+   "two_year_sharpe": 0.7,
+   "margin": -3.5e-05,
+   "turnover": 0.148,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "vRNG9pgQ",
+   "code": "multiply(rank(balanced_price_oscillator),-1)",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": -0.09,
+   "fitness": -0.01,
+   "two_year_sharpe": 0.09,
+   "margin": -4.7e-05,
+   "turnover": 0.2803,
+   "risk_neutralized_sharpe": 0.34,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGz65on",
+   "code": "rank(volume_anomaly_price_positioning)",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": -0.13,
+   "fitness": -0.02,
+   "two_year_sharpe": 0.13,
+   "margin": -5.9e-05,
+   "turnover": 0.1764,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "VkGzEdb0",
+   "code": "rank(liquidity_weighted_returns_ma)",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": -0.32,
+   "fitness": -0.1,
+   "two_year_sharpe": -1.02,
+   "margin": -0.000209,
+   "turnover": 0.1719,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "A1GzbQpl",
+   "code": "subtract(rank(liquidity_weighted_returns_ma), rank(typical_price_bollinger_band_position))",
+   "neutralization": "STATISTICAL",
+   "decay": 8,
+   "sharpe": -0.43,
+   "fitness": -0.15,
+   "two_year_sharpe": -0.9,
+   "margin": -0.000229,
+   "turnover": 0.21,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "58p59ARM",
+   "code": "rank(ts_av_diff(balanced_price_oscillator_2,63))",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": -0.56,
+   "fitness": -0.21,
+   "two_year_sharpe": -0.97,
+   "margin": -0.000292,
+   "turnover": 0.2461,
+   "risk_neutralized_sharpe": -0.85,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "pwNGEMgv",
+   "code": "multiply(rank(typical_price_bollinger_band_position),-1)",
+   "neutralization": "SECTOR",
+   "decay": 4,
+   "sharpe": -0.93,
+   "fitness": -0.43,
+   "two_year_sharpe": -1.41,
+   "margin": -0.000421,
+   "turnover": 0.2983,
+   "risk_neutralized_sharpe": -0.36,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

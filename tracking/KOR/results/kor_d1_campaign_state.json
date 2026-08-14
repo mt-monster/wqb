@@ -1,0 +1,183 @@
+{
+  "campaign": "KOR_D1_TOP600_pattern_scores",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "neutralization": "SECTOR", "decay": 4, "truncation": 0.08, "max_trade": "ON", "pasteurization": "ON"},
+  "waves": [
+    {
+      "wave": 6,
+      "dataset": "multi_source_model",
+      "switch_reason": "wave5诊断: rating_revision信号sharpe上限与中性化无关(0.83-0.85)但TVR结构性3-4%<5%,decay降则sharpe崩,该数据集慢信号无法双达标; ai_factor_transfer零竞争字段全死(sh -0.93~0.56, margin≤4bp)",
+      "fields": "60个MATRIX多源前瞻收益预测(5d/20d/60d/120d quantile1/5预测+confidence), cov0.76-0.95, 大量零竞争",
+      "multisims": [
+        {"id": "26YbX288R4lMbzR9srJQEEE", "exprs": 8, "setting": "STATISTICAL d4 t0.08", "style": "短周期单腿动量(5d/20d高TVR)", "status": "submitted"},
+        {"id": "1BXM1j7nn4jobDS3nciDo8A", "exprs": 8, "setting": "STATISTICAL d6 t0.06", "style": "quantile1-5价差双信号+线性混合", "status": "submitted"},
+        {"id": "2MQEpUc8B5gI9NaAvZ5LaaY", "exprs": 8, "setting": "SECTOR d4 t0.08", "style": "confidence加权+动量加速度+hedge对照", "status": "submitted"}
+      ],
+      "plan_file": "kor_wave6_exprs.json",
+      "verdict": "24/24 COMPLETE ★首次破局★: VkGz2vrb rank(price_volume_quantile1_20d_pred) STATISTICAL d4 t0.08 → sh1.68/fit1.04/2y1.98/margin7.6bp/tvr21.1%/ra_failed=0 全过; GrGz3ZvP 线性混合 sh1.63/fit1.08/2y1.99 但与VkGz2vrb互相关0.922只留一个; 但VkGz2vrb PROD相关=0.7668>0.7 不合格 → wave6b扰动批去相关",
+      "yearly_stats_VkGz2vrb": "2018-2023全年正收益, 2021 sh3.22/2022 2.09/2023 1.93, 早期2018-2020 sh0.71-1.22偏弱但正",
+      "wave6b_multisims": [{"id": "2Turyo4YX4OWcfjBdtTX2oh", "exprs": 7, "setting": "STATISTICAL d4 t0.08", "style": "pv_q1_20d扰动去PROD相关(ts_delta/ts_rank/signed_power/delay-diff/av_diff/60d换层)", "status": "submitted", "note": "含1个不存在字段short_horizon_hedge3_quantile3_quantile1_5d_pred预期ERROR"}],
+      "wave7_multisims": [
+        {"id": "1YB9kQ7Dz50mbRL1bUJhnKW4", "exprs": 8, "setting": "STATISTICAL d4 t0.08", "style": "predictive_starmine EPS CAGR成长动量", "status": "submitted"},
+        {"id": "3y05E2clz4UVbiQ13AjQL6RN", "exprs": 8, "setting": "SECTOR d4 t0.08", "style": "SmartGrowth-vs-market隐含预期差+逆向", "status": "submitted"}
+      ],
+"wave6b_v2_multisim": {"id": "3byIw33wQ5egbvt88wjopzI", "exprs": 6, "setting": "STATISTICAL d4 t0.08", "status": "reviewed", "verdict": "6/6全灭: 60d换层sh1.44/signed_power sh1.58 fit0.97/ts_rank 1.19/ts_delta5 0.52/av_diff 0.71/delay-diff 0.66 → 信号只在原始rank层,扰动路死,多source_model无法去PROD相关"},
+"wave7_verdict": "16/16全灭: best sh0.67(5yr预期差SECTOR)/0.44(ts_delta), 水平字段全负或近0 → predictive_starmine判死",
+"wave8_9_multisims": [
+        {"id": "2GsJz96JD4Dp9Fj1htyNE6Ln", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "news_sentiment_transfer", "style": "新闻情绪水平/动量/偏度/关注度+论坛线性混合", "status": "submitted"},
+        {"id": "4rCIGf5Ec4vBaK7x9vW3wuc", "exprs": 8, "setting": "STATISTICAL d4 t0.08", "dataset": "news_sentiment_transfer", "style": "情绪总量/分布偏度/primary-secondary分歧", "status": "submitted"},
+        {"id": "Mwd4f6BA585aJXNzieMQVD", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "ai_equity_alpha", "style": "AI质量/分析师预测修正因子rank水平", "status": "ERROR", "note": "VECTOR字段不能直接rank(Operator rank does not support event inputs), 需vec_*聚合"}
+      ],
+"wave8_verdict": "news_sentiment_transfer 16/16全灭: best sh0.51(secondary_sentiment_maximum STATISTICAL), 大量CONCENTRATED_WEIGHT失败+稀疏覆盖(longCount 67-98), 判死",
+"wave9b_multisim": {"id": "lEMEo7Um4MMbFSs2fwOMQl", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "ai_equity_alpha", "style": "vec_avg/vec_max聚合后rank: alpha_score/excess_return_forecast/分析师修正因子", "status": "submitted"},
+"wave10_multisim": {"id": "3aWX15dEJ4CA9tXHNRi4Gz0", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "multi_source_model", "style": "论坛降PC手法: quantile/ts_zscore/group_rank(sector)换层+SECTOR中性化剖离公因子+5d/60d组合腿", "status": "submitted"},
+"wave10_v3_multisims": [{"id": "1uLI0B8Et4pr9NZesCHsrLE", "status": "v2自毁(group_mean误写sector,subindustry)"}, {"id": "qljoWdnn4hWaGRlhGwESMc", "exprs": 8, "setting": "SECTOR d4 t0.08", "status": "reviewed"}],
+"wave10_v3_verdict": "IS大突破但PROD墙死: SECTOR中性化下5变体全门槛过(d5ZzRdaX group_neutralize sh1.66/fit1.26/2y2.34/margin11.6bp, LLGzdkZ2 quantile sh1.66/fit1.28, pwNGK8vx rank sh1.65, KPGzEkmk group_rank sh1.65, A1Gz7kVR 5d+60d组合腿 sh1.59/2y2.37), SECTOR使fitness 1.04→1.25 margin 7.6→11.5bp; 但check_correlation全撞墙: d5ZzRdaX PC0.7908/A1Gz7kVR PC0.8657/LLGzdkZ2 PC0.7923 → price_volume_quantile1_*_pred族PROD crowded neighborhood(论坛帖20:窄区间卡死尽早停手结构位移), multi_source_model判PROD墙死",
+"wave11_multisims": [
+        {"id": "3TYCio1vM4xQbeTAJNBg5F0", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "chart_cnn_alpha", "style": "图表CNN视觉模态水平: 高回报概率tercile2/quintile2/probability_rank5做多, bin0反向, CNN q4概率, quantile_rank", "status": "submitted"},
+        {"id": "4wa4AFb8M5hkb0FlLttYcWi", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "chart_cnn_alpha", "style": "动量/逆向/线性混合/signed_power锐化/ts_decay_linear", "status": "submitted"}
+      ],
+"wave11_rationale": "chart_cnn_alpha: cov0.8854/1010字段/972零竞争/744个cov>=0.9/MATRIX, 视觉图表模态与PROD量价quantile预测结构正交, 有望破PC<0.7",
+"wave11_verdict": "16/16 COMPLETE 0达标但强苗头: omNG6Awm rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2) SECTOR sh1.37/fit0.94/2y1.34/PPA全过/CLUSTER过, 三项距门槛一步之遥; VkGz61AG q3-q2价差 sh1.06/2y1.46; P0GzZQVM 60d+100d混合 sh1.05/2y1.35; 其余水平腿sh0.69-0.82, 动量腿全死(ts_delta22 sh0.16/逆向sh-0.24/av_diff sh-0.35) → 信号是水平型慢信号, 动量无edge",
+"wave11cd_multisims": [
+        {"id": "3dWl2J1fA4r799XqyY9iNxb", "exprs": 8, "setting": "STATISTICAL d4 t0.08", "dataset": "chart_cnn_alpha", "style": "q4_bucket2增强: 中性化对照/decay_linear平滑/q3混合腿/quantile换层/ts_mean5/q4-q2价差/邻域50d字段/空头腿", "status": "submitted"},
+        {"id": "qQkIA19h58O8J8VUEAggJh", "exprs": 8, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "慢信号网格: decay6+ts_mean10/decay_linear8/ts_delta10/subindustry细中性化", "status": "submitted"}
+      ],
+"wave11c_verdict": "STATISTICAL d4 t0.08 8/8全灭: best sh0.67(空头腿omNGdXwk), 核心q4_bucket2仅sh0.60/2y0.26 → 确认SECTOR中性化对chart_cnn信号必需(STATISTICAL下市场beta暴露吞掉edge)",
+"wave11d_verdict": "★SECTOR d6 t0.06慢设置fitness首次破1临界突破★: vRNGQorz subtract(rank(q4b2),rank(q2b0)) sh1.38/fit1.06/2y1.37/margin11.7bp/tvr15.6%; e73GjWzE ts_decay_linear(rank(q4b2),8) sh1.27/fit1.05/2y1.57; wpaGrvZp quantile(q4b2) sh1.36/fit1.01/2y1.54/tvr17%; xANGZEjn rank(q4b2) sh1.36/fit1.00/2y1.44; QPGz8o3G rank(ts_mean(q4b2,10)) margin16.3bp/tvr9.7%; qMNGRwWZ 2y1.55; 6Xp0k2j5 group_neutralize(subindustry)退化sh1.19; O0Gz32NR ts_delta10 sh0.28再证动量死 → 唯一剩余瓶颈sharpe 1.27-1.38<1.58; 结论: d6+t0.06为最优慢设置, 下一步多腿低相关组合+未用算子(经济含义)提sharpe",
+"wave12_multisims": [
+        {"id": "nEXNkc434JDbKto02qQgb9", "exprs": 8, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "经济含义批A(模板库T4/T9/T10/T11/T12): 多期限共识/置信度加权/ts_ir信号IR/ts_std_dev噪声惩罚/期限结构修正/三源集成/group_rank行业相对/trade_when条件交易", "status": "reviewed"},
+        {"id": "cHiQ65pi4Ibc5sbCVgD4i9", "exprs": 8, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "经济含义批B原版", "status": "ERROR_bucket算子不支持整数字段(需buckets/range参数),列表语法也不支持→整批CANCELLED,bucket判废"},
+        {"id": "4xrN2P6BT4q1befBEyVw1XJ", "exprs": 8, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "批B重提(bucket换列表语法)", "status": "ERROR_bucket列表语法仍拒→再次CANCELLED"},
+        {"id": "2JksjRc6F4M5bFY6GevQJZE", "exprs": 4, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "批B1拆分: q5_bucket4水平/五分位阶梯/ts_scale/days_from_last_change", "status": "submitted"},
+        {"id": "1qZ3sc5Yg4JWaoZapKAa8Ki", "exprs": 4, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "批B2拆分: 牛熊预期利差/signed_power锐化/长短期限混合/sqrt压缩", "status": "submitted"}
+      ],
+"wave12a_verdict": "批A 8/8 COMPLETE 0达标但新纪录: A2置信度加权multiply(rank(q5b4_50d),rank(conf3_q5_50d)) sh1.43/fit1.12/2y1.23/mrg12.2bp全场最高sharpe; A6三源集成(cnn+img+prob_rank) sh1.33/fit1.0/2y1.63全场最高2y; A8trade_when sh1.35/2y1.51; A7group_rank sh1.35; A4噪声惩罚sh1.33; A1多期限共识反降sh1.13(malta3 40/100d字段弱于equity2b2); A3ts_ir死sh0.42; A5期限修正死sh-0.19 → sharpe瓶颈仍差0.15; 下一杠杆: q5_bucket4_50d(cov0.987)系列+置信度腿融合",
+"wave12b_verdict": "批B1/B2 8/8 COMPLETE: ★B1 rank(q5_bucket4_50d) QPGgZ0rr sh1.48/fit1.17/2y1.38/mrg12.4bp全场最高sharpe(B8sqrt同值1.48,单调变换等价); B5牛熊利差sh1.44/fit1.14; B2五分位阶梯sh1.35; B6signed_power1.32; B7长短混合1.19; B3ts_scale死0.69; B4days_from_last_change死0.45 → q5_bucket4_50d为新核心字段(极端尾部看涨概率,cov0.987最高覆盖),但2y1.38需互补腿补; ts_scale/新鲜度算子判废",
+"wave12_rationale": "用户指令响应: 算子探索率16.9%偏低+模板单薄. 已创建 reference/economic_alpha_template_library.md(12类经济主题骨架+未用算子经济用途表), 本波16表达式全部经济含义驱动, 新引入算子 ts_ir/ts_std_dev/ts_scale/group_rank/trade_when/days_from_last_change/sqrt/greater(探索率实测16.9%→27.3%,21/77); 教训: bucket算子FASTEXPR不支持整数与列表两种语法判废",
+"wave13_multisim": {"id": "27PtPMgKM53WbUmsvKt113h", "exprs": 8, "setting": "SECTOR d6 t0.06", "dataset": "chart_cnn_alpha", "style": "互补腿融合批: q5b4_50d×(img60d_confscore3/probability_rank5/置信度加权/牛熊利差/q4b2_60d/img200d) 目标分散化提sharpe+互补期限补2y", "status": "reviewed", "plan_file": "kor_wave13_exprs.json"},
+"wave13_verdict": "8/8 COMPLETE: ★F3三源共识add(0.4*rank(q5b4_50d),0.3*rank(img60d_confscore3),0.3*rank(probR5_60d)) JjG1qA8l sh1.42/fit1.12/2y1.63/raFail1 → 首个同时逼近sh与2y双门槛的表达式; F1 q5b4+img60d sh1.43/2y1.57/rn_sh0.82; F6牛熊利差+img sh1.45/2y1.46; F4置信ximg rn_sh0.87最高; F5/F7 sh1.42-1.46但2y仅1.37-1.41 → 融合有效但sharpe仍差0.16; 下一杠杆: 设置网格(d4/d8)+q5b4权重锐化围绕F3/F1微调",
+"wave14_multisims": [
+        {"id": "vKb8a2l359v9Qp15PWy7oZf", "exprs": 8, "setting": "SECTOR d4 t0.08", "dataset": "chart_cnn_alpha", "style": "融合式设置网格G(快): F3/F1原式+q5b4权重0.5/0.6锐化+confscore4换层+置信度三源", "status": "reviewed"},
+        {"id": "3U6vBFcKH58w9Tfd2kQK6p7", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "融合式设置网格H(慢): 同G批8表达式", "status": "reviewed"}
+      ],
+"wave14_verdict": "16/16 COMPLETE ★d8慢设置全面优于d4(2y+0.1~0.2/fit+0.15)★: H4 confscore4三源 58pe08vo sh1.46/fit1.23/2y1.78/raF1(2y全场最高); H3 F3w0.5 3qp5rqzN sh1.46/fit1.26/2y1.65; H5 F1w0.6 pwNZrw7V sh1.48/fit1.23/2y1.62; H2 F1 d5ZoV5dY rn_sh0.85; G4 confscore4三源d4 sh1.49/2y1.68 → 2y与fit全部达标,唯一瓶颈sharpe1.41-1.49差0.09-0.17; 结论: 更慢decay提2y/fit但不提sharpe,下一杠杆d10+t0.05探边界",
+"wave15_multisim": {"id": "3v1814nH5gQc5eynb2V0JN", "exprs": 6, "setting": "SECTOR d10 t0.05", "dataset": "chart_cnn_alpha", "style": "更慢decay探边界: wave14最优5融合式+q5b4单腿对照", "status": "reviewed"},
+"wave15_verdict": "6/6 COMPLETE 0达标但设置网格封顶: d10下 VkG5ggQw H5式 sh1.49/fit1.31(全场最高)/2y1.70/raF1; 9qpmLL51 H4式 sh1.45/2y1.81(全场最高)/fit1.29; P0G8ddLw fit1.30/2y1.68; 单腿mL51MMnW sh1.47/fit1.29但2y1.49. 结论: decay8-10只提fit/2y不提sharpe(sharpe天花板锁1.49), 设置网格已穷尽, 瓶颈转向信号本身→需新互补腿/更高sharpe核心字段; 本轮起启用流水线交错提交提速",
+"wave16_multisims": [
+        {"id": "4wUIJIh1t51K8ZjLViIs0Rk", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批J: 5新腿单腿探针(q4_bucket2_60d/img200d_leap1/probR5_star6/cs4/conf_score3)+H4权重重分配+四腿融合+ts_decay_linear平滑", "status": "reviewed"},
+        {"id": "qklP5dJc4I88UGdNqh0L06", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批K: 8全新字段单腿探针(q5b4_60d/imgpred_eqstar4/probR5_120d_leap/rank5_60d/leapstar6_class4/confR5_60d/cnn_rank_q5/star1b1_cs4)", "status": "reviewed"},
+        {"id": "4stv6O6e94uIciAjrWpwAiX", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批L: 长窗口malta3三探针+img200d_q3+img20d_cs3+q1做空探针+q5b4-q5b0多空差+H5核心融合多空差", "status": "reviewed"},
+        {"id": "3ysKf44if59g93kAins5kXe", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批M: img200d融合族变体(q2权重0.2/q3权重0.3/反向subtract/q4权重0.15)+A1三源融合img200d+ts_decay_linear平滑两式", "status": "reviewed"},
+        {"id": "3ble0fakC4XzcjB1bQ6c79BQ", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批N: 异源探针(malta3 q5b4_40d/leapstar5_5d短周期/r5_class4/30d置信/30d概率腿)+H5融合malta短周期腿+A1融合30d腿", "status": "reviewed"},
+        {"id": "26Xm80b8n59VcgBJ3RiduhI", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批O: 多空差族(H5×0.6/0.5+LS×0.4/0.5权重微调+A1×0.7/0.6+LS×0.3/0.4+N1平滑版+N1×0.8+img200d五因子+H5减q5b0+LS×0.6+img×0.4去核心腿)", "status": "reviewed", "plan_file": "kor_wave16O_exprs.json"},
+        {"id": "1NCsYp5xc4vN9pmlEhU0WuA", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批P: gJ8dzg2l修2y(平滑/LS融合/img200d 0.3/60d概率腿/三腿四腿融合/A1换核心)", "status": "reviewed", "plan_file": "kor_wave16P_exprs.json"},
+                {"id": "4sbmMQbLi5idaLWqXnCJXqY", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批Q: e73vedWg权重再分配+LS辅助腿扰动去PROD相关(信号保持原始rank层)", "status": "reviewed", "plan_file": "kor_wave16Q_exprs.json"},
+                {"id": "2Mowkg58K5iWbVn1dNx8AiV7", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批R: 换层去PROD族(quantile/group_rank(sector)/signed_power/ts_decay腿层重编码)", "status": "reviewed", "plan_file": "kor_wave16R_exprs.json"},
+                {"id": "16E1BE3gQ4u69xwJ16uljeQ", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批S: subtract多空差结构族(攻rn_sh>1与PROD<0.7双目标)", "status": "reviewed", "plan_file": "kor_wave16S_exprs.json"},
+                {"id": "2kf9QZerU4wXbEFAyDKb3k7", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批T: 降q5b4权重≤0.4+多异源腿(cs4/img200d/probR5/60d/30d/conf3/malta40d)分散去PROD", "status": "submitted", "plan_file": "kor_wave16T_exprs.json"},
+                {"id": "zkG13aWj4mIbMifkH4pTXC", "exprs": 8, "setting": "SECTOR d8 t0.06", "dataset": "chart_cnn_alpha", "style": "批U: 内细外粗二次中性化族(表达式内group_neutralize(X,subindustry)+SECTOR粗设置, 论坛ZZ47696实测PC 0.74-0.83→0.49)", "status": "submitted", "plan_file": "kor_wave16U_exprs.json"}
+      ],
+"pipeline_note": "流水线纪律已写入SKILL.md专节(Pipeline discipline): 恒定4-5批在飞+轮询降频(60-90s一次/全部在飞批单次lookINTO调用)+台账verdict作恢复点; 预检脚本修正: GROUP_IDENTIFIERS(sector等分组标识符非字段)防误拦; 文件已归档至tracking/KOR/; PROD墙诊断(2026-08-14): e73vedWg PC0.8297/A1GmqgEe PC0.802, 数据集alphaCount仅26非拥挤 → 墙来自线性rank表达式形态与PROD存量信号重合, 批Q(权重扰动)/R(换层)/S(subtract结构)三路攻关",
+"wave16J_verdict": "批J 8/8 COMPLETE: 单腿探针 q4_bucket2_60d sh1.34/q5b4_60d sh1.44(2y1.36低)/conf_score3 sh1.25均不及q5b4_50d; img200d_leap1单腿sh0.96/rn_sh-0.22弱但★融合H5后 1YpPEMEz sh1.46/fit1.36(历史最高)/ret11.64%/margin17bp(rn_sh0.53下降)★分散化效应确认; A1GmKAKY cs4权重重分配 sh1.49/2y1.73/raF1(并列最优sharpe); ZYEMGJG1 ts_decay_linear sh1.42/2y1.74/rn_sh0.80(平滑保2y); probR5_star6/cs4单腿均<1无独立价值只能做辅助腿 → 下一杠杆: img200d融合族变体探sharpe突破+批K新字段结果",
+"wave16K_verdict": "批K 8/8 COMPLETE: 8全新字段无一超越q5b4_50d天花板: q5b4_60d Xgoe6dk8 sh1.44/fit1.20/2y1.36(窗口拉长反而降); cnn_rank_q5 E5GLJ9wJ sh1.31; imgpred_eqstar4 xANWgJeJ sh1.08(dd23.8%高); probR5_120d_leap KPGQaWkE sh0.74; confR5_60d YPvJqRAl sh0.68; rank5_60d pwNZO983 sh0.61; star1b1_cs4 1YpPberz sh0.63; leapstar6_class4 vRN6gWm3 sh0.30 → 数据集内核心字段穷尽, q5_bucket4_50d确认为唯一核心; 突破只能靠融合结构与方向(批L多空差/批M img200d族)",
+"wave16L_verdict": "批L 8/8 COMPLETE: ★N1b3ojGq H5核心0.7+多空差(q5b4-q5b0)0.3 sh1.51(战役历史新高)/fit1.30/2y1.66/margin14.9bp/tvr14.1%/rn_sh0.73/raF1(仅差LOW_SHARPE 0.07)★多空差方向确认为有效突破杠杆; E5GLAa2m q1做空探针单腿sh1.39/2y1.61/fit1.11/raF1(q1低分位腿有独立价值); gJ8dzP5J纯多空差sh1.43/fit1.20/2y1.53/mrg14.2bp; malta模态探针全弱(MPGZA8Vr sh1.12/qMN3ZzVv sh0.99/其余≤0.82)异源方向价值有限 → 批O押注多空差族权重微调与融合变体冲sh1.58",
+"wave16M_verdict": "批M 8/8 COMPLETE 0达标但fit/2y新高: mL51O3PX H5×0.8+img200d_q2×0.2 sh1.51(并列最高)/fit1.37(历史最高)/2y1.59/rn0.68; LLGrejP2反向subtract(H5-img200d) 2y1.80/rn_sh0.98(全场最高风险中性化)但sh1.46; GrGxVarG/mL51O3LK ts_decay平滑版 2y1.82/1.85最高但sh1.39-1.42; KPGQe0lj q4权重0.15 sh1.45; 1YpPv9qW q3腿sh1.36 → img200d族提fit/2y/rn但不提sharpe",
+"wave16Q_verdict": "批Q 8/8 COMPLETE: ★★3个IS全过★★ A1GmYKJe G×0.9+probR5×0.1 sh1.59/fit1.36/2y1.60/rn0.90/raF0; gJ8dwpwO G×0.8+(cs4+probR5)×0.2 sh1.58/2y1.68(双门槛稳)/rn0.92/raF0; 0mp69vkk G×0.87+cs4×0.13 sh1.58/2y1.67/rn0.98/raF0; e73vedWg复现确认; 58pe3W3N 2y1.58卡线fail; kqPOblkK sh1.55; j26xWmlj双差0.01-0.02; YPvJnqnW去cs4腿后2y崩1.27(确证cs4为2y关键腿) → G+辅助腿0.1-0.2区间IS稳定全过, 唯一障碍PROD",
+"wave16R_verdict": "批R 8/8 COMPLETE ★★★换层族大突破: rK2VELAo group_rank(sector)全层 sh1.60/fit1.32/2y1.64/rn_sh1.00(首次达标)/raF0; 88pY7rLX 仅核心group_rank sh1.59/2y1.64/rn0.99/raF0; XgoePLp5 signed_power2锐化核心 sh1.58/2y1.61/rn1.02(首破1)/raF0; j26xWXg5 ts_decay3腿 sh1.58/2y1.61/rn0.96/raF0★★★ 4个IS全过; group_rank(sector)同时提sharpe与rn_sh(行业相对编码剖离市场公因子); 但rK2VELAo PROD 0.8296仍撞墙 → 确证墙在q5b4_50d信号本身与PROD存量重合, 与形态无关; quantile/signed_power0.5层sh微降(1.55-1.56)",
+"wave16S_verdict": "批S 8/8 COMPLETE 0达标: subtract结构提rn_sh但降sharpe: GrGxYp9P G-img200d×0.25 rn1.04但sh1.41; omNrAMZ6 rn1.03/sh1.53; 78zM0E21 H5-img200d_q3 2y1.95全场最高/rn0.93/sh1.51; XgoeP5xX rn0.93/sh1.51; 纯多空差+5d腿sh1.47-1.52; q5b4-q1差族全死(O0GVqE2R sh0.65/KPGQqj21 sh1.06, q1差在融合中为毒腿) → rn_sh>1已可解(subtract+img200d), 但sharpe代价0.1-0.17不可接受, 需group_rank路线与subtract结合",
+"wave16_forum_breakthrough": "★论坛帖41134649919383(prod0.71→0.69)+评论ZZ47696(2026-08-02)★ 降PC真杠杆仅两条: (1)换异源信号 (2)内细外粗二次中性化: 表达式内group_neutralize(X,subindustry)+平台更粗设置(SECTOR), 实测LLGPpOM9 PC0.49/SC0.31/0FAIL; 同kernel上quantile形变/换分组/缩窗只能门口抖±0.04(解释了批Q/R/S全撞墙); 尾端rank化改变持仓权重分布→改变PnL形态间接降PC; 注意平台不为LOW_FITNESS的alpha算相关性(F>1.0先决); 批U已按此设计提交",
+"wave16_prod_wall_diagnosis": "★关键结论★ q5_bucket4_50d线性rank信号与PROD存量相关性0.80-0.83且与形态无关(rank/group_rank/quantile/signed_power全撞): e73vedWg 0.8297/A1GmqgEe 0.802/rK2VELAo 0.8296; 数据集alphaCount仅26非数据集拥挤 → 是PROD平台已有同源于CNN图表的存量信号; 下一杠杆: (1)降低q5b4权重至≤0.4+多异源腿分散(批T) (2)内细外粗二次中性化(批U,论坛新证据) (3)chart_cnn判PROD墙死则按战役规则切换下一个未点亮数据集",
+"wave16P_verdict": "批P 8/8 COMPLETE ★★★e73vedWg G×0.9+cs4×0.1 sh1.58/fit1.31/tvr16.1%/margin13.7bp/2y1.65/rn_sh0.97 ra_failed=0 checks零fail, 战役首个IS全过★★★但PROD相关0.8297>0.7不符合提交(self-corr 0.0过); 年度: 2016sh3.25/2018 1.77/2021 2.30/2022 2.80强但2019 0.54/2020 0.78/2023 0.73弱年存在(全正非单年驱动); RRmK02Po三腿H5×0.75+5d×0.15+img200d×0.1 sh1.59/fit1.41(历史新高)但2y1.55; A1GmqgEe G×0.85+probR5×0.15 sh1.57(差0.01)/2y1.60/rn0.87/raF1; 58peNaeX平滑 2y1.73/rn0.90最高但sh1.53; GrGxEM90 sh1.56/2y1.56双差0.02; omNrQ3Zl/88pYga2o/pwNZQVp6双fail → 双门槛已可解(结构G+辅助腿0.1-0.15), 但PROD墙是新瓶颈: 待验证是表达式形态还是数据集本身拥挤",
+"wave16O_verdict": "批O 8/8 COMPLETE 0达标: 最高88pYAQgW N1×0.8+img200d×0.2 sh1.50/fit1.37/2y1.55/rn0.61/raF2; leW9xlZn H5×0.6+LS×0.4 sh1.49/2y1.62; A1Gm6P6l sh1.48/2y1.70; ZYEMZnZ1 sh1.48; qMN3blkA sh1.48/2y1.70; N1b3Mrko sh1.47; N1b3MrWo sh1.47/2y1.69; vRN60lar N1平滑ts_decay_linear5 sh1.45/2y1.76(2y最高但sh降) → 多空差权重0.4/0.5微调不如N1的0.3, 权重路已封顶; 风险中性化sharpe集体0.61-0.72缺口仍是最大障碍",
+"wave16N_verdict": "批N 8/8 COMPLETE ★★★gJ8dzg2l H5×0.8+img_leapstar5_5d×0.2 sh1.60首次突破sharpe门槛(>1.58)/fit1.35/tvr15.7%/margin14.2bp/rn_sh0.95/仅差LOW_2Y_SHARPE 0.01(1.57vs1.58)★★★ 5d短周期腿单腿死(sh0.47)但融合后提sharpe 0.14(互补频率效应); 单腿探针全灭(malta40d sh0.73/r5_class4 sh0.55/30d置信sh0.75/30d概率sh0.71); rK2VmNx8 H5+malta40d sh1.46/2y1.57(差0.01); N1b3oJYo A1+30d腿sh1.38/2y1.64 → 批P围绕gJ8dzg2l修2y: 加平滑/多空差/img200d腿"
+    },
+    {
+      "wave": 5,
+      "verdict": "31/31 COMPLETE 0达标. 网格磨结论: rating_revision sharpe上限0.85不依赖中性化(STATISTICAL0.83/INDUSTRY0.85/SUBINDUSTRY0.69), TVR结构性3-4%<5%, decay=0时sharpe崩至0.01-0.38 → ml_factor_proj慢信号无法达标; ai_factor_transfer全死(best sh0.56 margin2.4bp); wave4b volume重试3/3 FAIL确认price_signal_dl volume废弃",
+      "review_file": "kor_wave5_review.json",
+      "dataset": "ai_factor_transfer + ml_factor_proj网格",
+      "multisims": [
+        {"id": "1Dn7NT2Es4k19I6MumjzQcv", "exprs": 8, "setting": "INDUSTRY d8 t0.06", "style": "rating_revision网格磨", "status": "submitted"},
+        {"id": "31z4KhaB15939YbeI01jxfY", "exprs": 8, "setting": "SUBINDUSTRY d6 t0.06", "style": "rating_revision网格磨", "status": "submitted"},
+        {"id": "4pjpzg9Rn4hf8P3GVrFhY6G", "exprs": 3, "setting": "STATISTICAL d8 t0.06", "style": "wave4b FAIL排查(volume单点重试)", "status": "submitted"},
+        {"id": "owDVq6Wi4H8byk10fi9qAUy", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "ai_factor_transfer零竞争字段扫描", "status": "submitted"},
+        {"id": "3Prhj4daa55x9qOItLOIGyT", "exprs": 8, "setting": "SECTOR d4 t0.08", "style": "ai_factor_transfer逆向+动量对照", "status": "submitted"}
+      ],
+      "ai_factor_transfer_precheck": "全MATRIX cov1.0; 零竞争: liquidity_money_flow_alignment_2/liquidity_weighted_returns_ma/money_flow_strength_typical_price_2/volume_anomaly_price_positioning(_2)/volume_trend_money_flow_interaction"
+    },
+    {
+      "wave": 4,
+      "dataset": "price_signal_dl",
+      "switch_reason": "ml_factor_proj 62表达式穷尽上限sh0.85; model170全VECTOR废弃; analyst_earnings_ibes无分析师字段废弃; price_signal_dl全MATRIX cov0.99 alphaCount近零",
+      "multisims": [
+        {"id": "49QoDp2za4LvbQb144IkTLir", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "DL趋势指标扫描+动量差", "status": "submitted"},
+        {"id": "k9uBn5Dl4IGaiF16CmySFhd", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "DL量指标+trend-volume背离", "status": "submitted"}
+      ],
+      "note": "batch1 trend批 8/8 COMPLETE 0达标(上限QPGzqnZQ sh0.83/2y仅1.33); batch2 volume批 8/8 FAIL待查原因(normalized_volume_*或ts_zscore组合); 下一备选: ai_factor_transfer/multi_source_model, 或回ml_factor_proj用rating_revision换SUBINDUSTRY/INDUSTRY中性化继续磨"
+    },
+    {
+      "wave": 3,
+      "dataset": "ml_factor_proj",
+      "switch_reason": "acquisition_model event类型常规算子全废(48次ERROR实证); ml_factor_proj为白名单次优 MATRIX cov1.0 alphaCount=0零竞争 333字段 valueScore7.0/mult1.7",
+      "fields": "change_*分析师/基本面变化因子 + mean/log_variance_global_feature ML latent",
+      "multisims": [
+        {"id": "4q8NEA8Zf4Jcby35eYzKbGo", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "style": "revision_momentum+rank_diff", "status": "submitted"},
+        {"id": "2r24Mi5Dk4mYb0kg7Jp1hwY", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "style": "surprise+uncertainty_contrarian+ml_latent", "status": "submitted"},
+        {"id": "BsBOM5Dj4jHbyZtfJUeRXa", "exprs": 8, "setting": "SECTOR decay4 trunc0.08 对照", "style": "acceleration+volume_contrarian+blend", "status": "submitted"}
+      ],
+      "plan_file": "kor_wave3_plan.json",
+      "review": "24/24 COMPLETE 0达标 best=zqNGze9R rank(change_6m_rating_revision) sh0.83/2y1.95/margin11.8bp/tvr6.2% fit0.45; 信号方向: rating_revision>0, 不确定性逆向在本数据集失效(负sh→反向有效), volume逆向-0.85失效",
+      "wave3b_multisims": [
+        {"id": "3bGeRxaTw4lIak74L20F3QA", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "rating_revision增强(decay_linear/signed_power/delay-diff)", "status": "done_best_sh0.85"},
+        {"id": "4od1QHaqR4vNaLqio2WHQTk", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "surprise动量+growth混合", "status": "done"},
+        {"id": "My6lZ2SM4NOcsFC2TKMrc1", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "正向不确定性修正", "status": "done"}
+      ],
+      "wave3c_multisims": [
+        {"id": "1w1cRw5HD4s7ahI16f0wLum3", "exprs": 8, "setting": "STATISTICAL d8 t0.06", "style": "12m动量/alpha+latent扫描", "status": "done_best_E5Gz0YN0_sh0.85"},
+        {"id": "3AipidcxV4uKcfq19irWtPZx", "exprs": 8, "setting": "SECTOR d4 t0.08", "style": "SECTOR对照(高margin低TVR不达标)", "status": "done"}
+      ],
+      "wave3_verdict": "3轮62表达式0达标,上限sh0.85(2y可达2.26但fitness/sharpe不足),模板穷尽切换",
+      "review_file": "kor_wave3_review.json"
+    },
+    {
+      "wave": 2,
+      "dataset": "acquisition_model",
+      "switch_reason": "pattern_scores 模板多样性穷尽(49/49 best sharpe 0.70) + 论坛确认insiders KOR不可用 + 白名单次优valueScore7.0/alphaCount6",
+      "multisims": [
+        {"id": "25JgFJ68z4ZM8ZjN7ldHOZS", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "status": "submitted"},
+        {"id": "23vZxS7SJ5hw99X7mRJ2ydV", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "status": "submitted"},
+        {"id": "4vOisH6lK5dlbr5lFAChNkQ", "exprs": 8, "setting": "SECTOR decay4 trunc0.08 对照", "status": "ERROR_ts_backfill不支持event输入"}
+      ],
+      "lesson": "acquisition_model字段为VECTOR/event类型,不支持ts_backfill,必须直接用raw字段",
+      "v2_multisims": [
+        {"id": "FlZkZ5mb51A92m8Xkt9VKe", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "status": "submitted"},
+        {"id": "Sxop4gd4Ji8yC2SiB2cCQ", "exprs": 8, "setting": "STATISTICAL decay8 trunc0.06", "status": "submitted"},
+        {"id": "10FKts9Ox4uxcFtdgEhsog", "exprs": 8, "setting": "SECTOR decay4 trunc0.08 对照", "status": "submitted"}
+      ]
+    },
+    {
+      "wave": 1,
+      "rounds_submitted": 5,
+      "multisims": [
+        {"id": "40YMRv4Sm4Uw9fU1GmgGRQ0", "exprs": 8, "bucket": "C1_breakout_momentum+C2_rank_diff", "status": "submitted"},
+        {"id": "2lHaDDgIC4vnaRj7pAZ5UiP", "exprs": 8, "bucket": "C2_C8_rank_diff+C3_contrarian", "status": "submitted"},
+        {"id": "4BTyps5Fz4VGbz6122T11g4T", "exprs": 8, "bucket": "C3_contrarian+C4_acceleration", "status": "submitted"},
+        {"id": "IDBwnboe4Ojcbr1Cmj8fFN", "exprs": 8, "bucket": "C4_acceleration+C5_structure_spread", "status": "submitted"},
+        {"id": "2K5DwId8t4PH9AiaUnixdap", "exprs": 8, "bucket": "C5_structure+C6_conviction_zscore", "status": "submitted"}
+      ],
+      "pending_batches": [],
+      "final_batch": {"id": "1a6VZr4GY4GFclDMaFm2Tfq", "exprs": 9, "bucket": "C6_zscore_tail+C9_linear_mix", "status": "submitted"},
+      "completed_alphas_wave1": {
+        "batch0": ["A1GzjJ0d", "rK2Gp65o", "0mpgOkRG", "GrGz10dZ", "A1GzjJNd", "d5Zzk8bj", "JjGzM0Qj", "2rp68qmZ"],
+        "batch1": ["d5Zzkxag", "ZYEzPpad", "leWGpVgO", "E5GzOwmG", "ZYEzPpXd", "XgozmpV5", "A1Gzjwew", "vRNGwLZG"],
+        "batch2": ["XgozGmqx", "1YpKek6J", "JjGzqMRW", "omNG78w2", "QPGzMZrW", "leWGdpkO", "zqNGZKQO", "VkGzV1q5"],
+        "batch3": ["2rp68LAP", "omNG8lEE", "88pJ5QNm", "pwNGYlaV", "d5Zzk0aY", "VkGz1PNA", "MPGzMQg9", "2rp68LGN"],
+        "batch4": ["d5Zzkj52", "2rp68lr6", "LLGzV7V6", "MPGzM7Mz", "A1Gzjl9d", "KPGzl73N", "wpaGKjqd", "d5ZzkjXg"]
+      }
+    }
+  ],
+  "submit_ready": [],
+  "qualified_alphas": [],
+  "campaign_summary_2026_08_14": "20批/121表达式回测, 0达标. 最强信号: ml_factor_proj rank(change_6m_rating_revision) STATISTICAL d8 (sh0.85/2y2.26/margin12bp/tvr6%但fitness仅0.48). 下轮优先: 围绕该信号换中性化/decay/truncation网格磨, 及ai_factor_transfer新数据集",
+  "notes": "quota remaining=0 until ~2026-08-15 20:20 CST; validate_ready while waiting"
+}

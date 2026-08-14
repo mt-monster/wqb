@@ -1,0 +1,30 @@
+[
+  {
+    "id": "z1",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) + scale(-rank(ts_zscore(returns, 21))) * 0.45",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "1YzLbZzQ 精确复刻 (-rank 语法)"
+  },
+  {
+    "id": "z2",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) + scale(-rank(ts_zscore(returns, 63))) * 0.3",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "1YzLbZzQ 语法 + 反转窗63"
+  },
+  {
+    "id": "z3",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) + scale(-rank(ts_zscore(returns, 42))) * 0.25",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "1YzLbZzQ 语法 + 反转0.25"
+  },
+  {
+    "id": "z4",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) + scale(-rank(ts_zscore(returns, 21))) * 0.3",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "1YzLbZzQ 语法 + 反转0.3"
+  }
+]

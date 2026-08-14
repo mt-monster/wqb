@@ -1,0 +1,58 @@
+[
+  {
+    "id": "k1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 3), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "signed_power 3"
+  },
+  {
+    "id": "k2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 2), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "signed_power 2"
+  },
+  {
+    "id": "k3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 180)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "decay 180"
+  },
+  {
+    "id": "k4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 120)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "decay 120"
+  },
+  {
+    "id": "k5",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), industry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "industry 分组"
+  },
+  {
+    "id": "k6",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), sector), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "sector 分组"
+  },
+  {
+    "id": "k7",
+    "expr": "ts_decay_linear(signed_power(subtract(rank(vec_avg(historic_earnings_surprise_score_7)), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "全局 rank 替代 group_rank"
+  },
+  {
+    "id": "k8",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), market), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "market 分组"
+  }
+]

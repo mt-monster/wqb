@@ -1,0 +1,47 @@
+[
+  {
+    "id": "eur_d1_batch01",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch01.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch02",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch02.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch03",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch03.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch04",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch04.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch05",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch05.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch06",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch06.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch07",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch07.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch08",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch08.json",
+    "count": 10
+  },
+  {
+    "id": "eur_d1_batch09",
+    "file": "tracking\\ppa_mining\\sims\\eur_d1_batch09.json",
+    "count": 10
+  }
+]

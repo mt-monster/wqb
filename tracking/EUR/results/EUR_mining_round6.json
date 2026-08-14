@@ -1,0 +1,62 @@
+[
+  {
+    "id": "m6a",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5)), 5)",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "双反转+decay5"
+  },
+  {
+    "id": "m6b",
+    "expr": "ts_mean(add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5)), 5)",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "双反转+mean5"
+  },
+  {
+    "id": "m6c",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "note": "双反转 × SUBINDUSTRY"
+  },
+  {
+    "id": "m6d",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5))",
+    "neut": "MARKET",
+    "note": "双反转 × MARKET"
+  },
+  {
+    "id": "m6e",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5))",
+    "neut": "STATISTICAL",
+    "note": "双反转 × STATISTICAL"
+  },
+  {
+    "id": "m6f",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.34), multiply(reverse(rank(ts_zscore(returns, 42))), 0.33), multiply(reverse(rank(ts_zscore(returns, 63))), 0.33))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "三反转窗"
+  },
+  {
+    "id": "m6g",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 63))), 0.5), multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.5))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "反转+因子 50/50"
+  },
+  {
+    "id": "m6h",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 63))), 0.7), multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.3))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "反转+因子 70/30"
+  },
+  {
+    "id": "m6i",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "SUBINDUSTRY",
+    "note": "单反转63 × SUBINDUSTRY"
+  },
+  {
+    "id": "m6j",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "MARKET",
+    "note": "单反转63 × MARKET"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "m5a",
+    "expr": "reverse(rank(ts_zscore(returns, 42)))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "纯 returns 反转42"
+  },
+  {
+    "id": "m5b",
+    "expr": "reverse(rank(ts_zscore(returns, 21)))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "纯 returns 反转21"
+  },
+  {
+    "id": "m5c",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "纯 returns 反转63"
+  },
+  {
+    "id": "m5d",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.4), multiply(reverse(rank(ts_zscore(returns, 63))), 0.6))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "反转腿 0.6"
+  },
+  {
+    "id": "m5e",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.3), multiply(reverse(rank(ts_zscore(returns, 63))), 0.7))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "反转腿 0.7"
+  },
+  {
+    "id": "m5f",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "双反转窗 21+63"
+  },
+  {
+    "id": "m5g",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 42))), 10)",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "反转+decay_linear10"
+  }
+]

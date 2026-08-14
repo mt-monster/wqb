@@ -1,0 +1,16 @@
+{
+  "batch": "R",
+  "setting": "SECTOR d8 t0.06",
+  "dataset": "chart_cnn_alpha",
+  "rationale": "换层去PROD族: 线性rank层与PROD拥挤信号重合(0.80-0.83), 换quantile/group_rank(sector)/signed_power/ts_decay腿层重编码截面, 保留原始字段信号(wave10 v3曾证换层IS仍强)",
+  "expressions": [
+    "add(multiply(add(multiply(add(multiply(quantile(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(quantile(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(quantile(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(quantile(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(add(multiply(group_rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2,sector),0.6),multiply(group_rank(img60d_return_quantile5_confscore4,sector),0.4)),0.8),multiply(group_rank(img_leapstar5_5d_qtile5_prob4,sector),0.2)),0.9),multiply(group_rank(img60d_return_quantile5_confscore4,sector),0.1))",
+    "add(multiply(add(multiply(add(multiply(signed_power(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),0.6),multiply(signed_power(rank(img60d_return_quantile5_confscore4),0.5),0.4)),0.8),multiply(signed_power(rank(img_leapstar5_5d_qtile5_prob4),0.5),0.2)),0.9),multiply(signed_power(rank(img60d_return_quantile5_confscore4),0.5),0.1))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(ts_decay_linear(img_leapstar5_5d_qtile5_prob4,3)),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(add(multiply(quantile(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(quantile(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.85),multiply(ts_decay_linear(rank(img60d_return_quantile5_confscore4),5),0.15))",
+    "add(multiply(add(multiply(add(multiply(group_rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2,sector),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(add(multiply(signed_power(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))"
+  ]
+}

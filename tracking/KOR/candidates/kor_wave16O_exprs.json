@@ -1,0 +1,23 @@
+{
+  "batch": "O",
+  "setting": "SECTOR d8 t0.06",
+  "dataset": "chart_cnn_alpha",
+  "rationale": "批L多空差突破(N1b3ojGq sh1.51新高): 多空差权重微调/A1三源融合多空差/ts_decay_linear平滑/五因子img200d融合/去核心腿多空差+img",
+  "fields_verified": [
+    "cnn_predicted_prob_q5_bucket4_50d_equity2b2",
+    "cnn_predicted_prob_q5_bucket0_50d_equity2b2",
+    "img60d_return_quantile5_confscore4",
+    "probability_rank5_next60d_return_p4_equity_star6",
+    "img200d_return_quintile2_prob_leap1"
+  ],
+  "expressions": [
+    "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.6),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.4))",
+    "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.5),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.5))",
+    "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),add(multiply(rank(img60d_return_quantile5_confscore4),0.25),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.25))),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))",
+    "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),add(multiply(rank(img60d_return_quantile5_confscore4),0.25),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.25))),0.6),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.4))",
+    "ts_decay_linear(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3)),5)",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3)),0.8),multiply(rank(img200d_return_quintile2_prob_leap1),0.2))",
+    "subtract(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4))"
+  ]
+}

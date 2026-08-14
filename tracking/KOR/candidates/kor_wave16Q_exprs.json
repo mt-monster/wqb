@@ -1,0 +1,17 @@
+{
+  "batch": "Q",
+  "setting": "SECTOR d8 t0.06",
+  "dataset": "chart_cnn_alpha",
+  "rationale": "e73vedWg(G×0.9+cs4×0.1, sh1.58/2y1.65/raF0)首个IS全过但PROD 0.8297撞墙: 权重再分配+LS多空差辅助腿扰动去PROD相关, 信号保持原始rank层(wave6b教训:核心层扰动必死)",
+  "base": "e73vedWg=add(multiply(G,0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1)); G=add(multiply(H5,0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2))",
+  "expressions": [
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.87),multiply(rank(img60d_return_quantile5_confscore4),0.13))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.85),multiply(rank(img60d_return_quantile5_confscore3),0.15))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.85),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.15))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.1))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.8),multiply(add(multiply(rank(img60d_return_quantile5_confscore4),0.5),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.5)),0.2))",
+    "add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.75),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.25)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))",
+    "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.7),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.3)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1))"
+  ]
+}

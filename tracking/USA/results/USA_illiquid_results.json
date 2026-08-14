@@ -1,0 +1,50 @@
+{
+  "c1_hist2": {
+    "alpha_id": "vRNAqdLb",
+    "S": 3.42,
+    "F": 2.99,
+    "T": 0.0629,
+    "2Y": null,
+    "fails": []
+  },
+  "c2_hist7": {
+    "alpha_id": "9qplvJrq",
+    "S": 4.43,
+    "F": 5.05,
+    "T": 0.0909,
+    "2Y": null,
+    "fails": []
+  },
+  "c3_freq2": {
+    "alpha_id": "LLGKjk1e",
+    "S": 3.97,
+    "F": 3.88,
+    "T": 0.0692,
+    "2Y": null,
+    "fails": []
+  },
+  "c6_hist3": {
+    "alpha_id": "88pNonQz",
+    "S": 3.53,
+    "F": 3.07,
+    "T": 0.0619,
+    "2Y": null,
+    "fails": []
+  },
+  "c4_hist2_j2": {
+    "alpha_id": "MPG6Wbma",
+    "S": 0.42,
+    "F": 0.12,
+    "T": 0.159,
+    "2Y": null,
+    "fails": []
+  },
+  "c5_freq2_j2": {
+    "alpha_id": "LLGKjnxa",
+    "S": -0.29,
+    "F": -0.08,
+    "T": 0.1001,
+    "2Y": null,
+    "fails": []
+  }
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "v1",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), 44), ts_rank(ts_backfill(winsorize(negative_score_average_value, std=4), 22), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正-负差 (重提)"
+  },
+  {
+    "id": "v2",
+    "expr": "ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正向情感 (重提)"
+  },
+  {
+    "id": "v3",
+    "expr": "ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 66), 250)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正向情感 长窗250"
+  },
+  {
+    "id": "v4",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), 44)), 0.6), multiply(rank(ts_rank(ts_backfill(winsorize(negative_score_average_value, std=4), 22), 44)), -0.4))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正0.6-负0.4 加权"
+  },
+  {
+    "id": "v5",
+    "expr": "ts_rank(ts_backfill(winsorize(normalized_trend_indicator_0, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "趋势指标 (重提)"
+  },
+  {
+    "id": "v6",
+    "expr": "ts_rank(ts_backfill(winsorize(normalized_volume_indicator_0, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "量指标 (重提)"
+  },
+  {
+    "id": "v7",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 66), 250), ts_rank(ts_backfill(winsorize(negative_score_average_value, std=4), 66), 250))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正-负差 长窗250"
+  },
+  {
+    "id": "v8",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(subtract(positive_score_average_value, negative_score_average_value), std=4), 66), 250)), 0.7), multiply(reverse(rank(ts_rank(returns, 250))), 0.3))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "情感净差0.7+反转0.3"
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "y1_rev02": {
+    "alpha_id": "ak1K89ZR",
+    "S": 1.53,
+    "F": 1.17,
+    "robust": null,
+    "fails": []
+  },
+  "y2_rev63": {
+    "alpha_id": "RRmEowQg",
+    "S": 1.76,
+    "F": 1.4,
+    "robust": null,
+    "fails": []
+  },
+  "y3_pure": {
+    "alpha_id": "QPGvoX2w",
+    "S": 1.27,
+    "F": 0.89,
+    "robust": null,
+    "fails": []
+  },
+  "y4_rev025_w42": {
+    "alpha_id": "88pRZxdq",
+    "S": 1.64,
+    "F": 1.3,
+    "robust": null,
+    "fails": []
+  }
+}

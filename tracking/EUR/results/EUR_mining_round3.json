@@ -1,0 +1,62 @@
+[
+  {
+    "id": "m3a",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "neut": "SUBINDUSTRY",
+    "note": "mlf3 × SUBINDUSTRY"
+  },
+  {
+    "id": "m3b",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "neut": "STATISTICAL",
+    "note": "mlf3 × STATISTICAL"
+  },
+  {
+    "id": "m3c",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "neut": "MARKET",
+    "note": "mlf3 × MARKET"
+  },
+  {
+    "id": "m3d",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "mlf3 + returns 反转组合"
+  },
+  {
+    "id": "m3e",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "note": "mlf3+returns × SUBINDUSTRY"
+  },
+  {
+    "id": "m3f",
+    "expr": "add(multiply(rank(ts_zscore(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "eps_growth + returns 反转"
+  },
+  {
+    "id": "m3g",
+    "expr": "add(multiply(rank(ts_zscore(vec_avg(headline_sentiment_vader_score), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "vader + returns 反转"
+  },
+  {
+    "id": "m3h",
+    "expr": "add(multiply(rank(ts_zscore(ts_mean(ts_backfill(change_1y_cashflow_to_price, 66), 22), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "cashflow + returns 反转"
+  },
+  {
+    "id": "m3i",
+    "expr": "add(multiply(rank(ts_zscore(ts_mean(ts_backfill(change_3y_compound_sales_growth, 66), 22), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "REVERSION_AND_MOMENTUM",
+    "note": "sales_growth_rev + returns 反转"
+  },
+  {
+    "id": "m3j",
+    "expr": "ts_rank(ts_backfill(winsorize(change_3y_compound_sales_growth, std=5), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "note": "sales_growth_rev × SUBINDUSTRY"
+  }
+]

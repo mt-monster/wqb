@@ -1,0 +1,72 @@
+[
+  {
+    "id": "m1",
+    "expr": "ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "QSG 综合分 长窗"
+  },
+  {
+    "id": "m2",
+    "expr": "ts_rank(ts_backfill(winsorize(corporate_governance_score, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "公司治理分"
+  },
+  {
+    "id": "m3",
+    "expr": "ts_rank(ts_backfill(winsorize(distress_metric_asia, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "财务困境指标"
+  },
+  {
+    "id": "m4",
+    "expr": "ts_rank(ts_backfill(winsorize(earnings_torpedo_metric, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "盈利鱼雷指标"
+  },
+  {
+    "id": "m5",
+    "expr": "ts_rank(ts_backfill(winsorize(forward_cash_flow_to_price_2, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "远期现金流/价格"
+  },
+  {
+    "id": "m6",
+    "expr": "ts_rank(ts_backfill(winsorize(forward_ebitda_to_enterprise_value_3, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "远期 EBITDA/EV"
+  },
+  {
+    "id": "m7",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=4), 66), 250), ts_rank(ts_backfill(winsorize(distress_metric_asia, std=4), 66), 250))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "质量-困境差"
+  },
+  {
+    "id": "m8",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=4), 66), 250)), 0.6), multiply(rank(ts_rank(ts_backfill(winsorize(forward_cash_flow_to_price_2, std=4), 66), 250)), 0.4))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "质量+估值 60/40"
+  },
+  {
+    "id": "m9",
+    "expr": "ts_rank(ts_backfill(winsorize(five_year_eps_stability_2, std=4), 66), 250)",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "5年EPS稳定性"
+  },
+  {
+    "id": "m10",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=4), 66), 250)), 0.4), multiply(rank(ts_rank(ts_backfill(winsorize(five_year_eps_stability_2, std=4), 66), 250)), 0.3), multiply(rank(ts_rank(ts_backfill(winsorize(forward_cash_flow_to_price_2, std=4), 66), 250)), 0.3))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "质量+稳定+估值三腿"
+  }
+]

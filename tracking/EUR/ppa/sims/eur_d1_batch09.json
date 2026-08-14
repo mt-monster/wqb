@@ -1,0 +1,27 @@
+{
+  "alpha_expressions": [
+    "ts_rank(vec_headline_sentiment_vader_score,44)",
+    "ts_rank(vec_headline_textblob_sentiment_score,44)",
+    "ts_rank(vec_headline_sentiwordnet_positive_polarity,44)",
+    "ts_rank(vec_headline_sentiwordnet_negative_polarity,44)",
+    "ts_rank(vec_headline_subjectivity_score,44)",
+    "ts_rank(vec_headline_vader_positive_polarity,44)",
+    "ts_rank(vec_headline_vader_negative_polarity,44)",
+    "ts_rank(vec_headline_gunning_fog_index,44)",
+    "ts_rank(vec_headline_flesch_readability_score,44)",
+    "ts_rank(vec_headline_word_count_total,44)"
+  ],
+  "decay": 5,
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "language": "FASTEXPR",
+  "max_trade": "OFF",
+  "nan_handling": "OFF",
+  "neutralization": "INDUSTRY",
+  "pasteurization": "ON",
+  "region": "EUR",
+  "test_period": "P0Y0M",
+  "truncation": 0.08,
+  "unit_handling": "VERIFY",
+  "universe": "TOP1200"
+}

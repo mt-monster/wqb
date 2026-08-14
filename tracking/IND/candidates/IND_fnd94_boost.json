@@ -1,0 +1,44 @@
+[
+  {
+    "id": "x1",
+    "expr": "ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 120)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "cheq 长窗120"
+  },
+  {
+    "id": "x2",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 44), ts_rank(ts_backfill(winsorize(fnd94_q_actq_q, std=4), 66), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "现金-资产差"
+  },
+  {
+    "id": "x3",
+    "expr": "add(ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 44), ts_rank(ts_backfill(winsorize(fnd94_q_cshoq_q, std=4), 66), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "现金+流通股"
+  },
+  {
+    "id": "x4",
+    "expr": "ts_rank(ts_backfill(winsorize(fnd94_q_ppegtq_q, std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "固定资产变化"
+  },
+  {
+    "id": "x5",
+    "expr": "ts_decay_linear(ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 44), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "cheq + 平滑"
+  },
+  {
+    "id": "x6",
+    "expr": "ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 250)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "cheq ts_rank250"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "alpha_expressions": [
+    "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,20),sector)",
+    "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,20),industry)",
+    "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,20),sector)",
+    "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,20),industry)",
+    "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,20),sector)",
+    "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,20),industry)",
+    "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,20),sector)",
+    "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,20),industry)",
+    "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,20),sector)",
+    "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,20),industry)"
+  ],
+  "decay": 5,
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "language": "FASTEXPR",
+  "max_trade": "OFF",
+  "nan_handling": "OFF",
+  "neutralization": "INDUSTRY",
+  "pasteurization": "ON",
+  "region": "EUR",
+  "test_period": "P0Y0M",
+  "truncation": 0.08,
+  "unit_handling": "VERIFY",
+  "universe": "TOP1200"
+}

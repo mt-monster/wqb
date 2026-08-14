@@ -1,0 +1,65 @@
+{
+  "z1_rev252_d40": {
+    "alpha_id": "LLG5ljk6",
+    "S": 2.23,
+    "F": 1.16,
+    "T": 0.2261,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z2_rev252_d60": {
+    "alpha_id": "JjGP5wbW",
+    "S": 1.96,
+    "F": 0.98,
+    "T": 0.2152,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z3_rev504_d20": {
+    "alpha_id": "mL5Yx3X9",
+    "S": 2.62,
+    "F": 1.35,
+    "T": 0.2619,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z4_rev504_d40": {
+    "alpha_id": "MPG05Wxz",
+    "S": 2.32,
+    "F": 1.25,
+    "T": 0.2179,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z5_rev126_d30": {
+    "alpha_id": "d5ZKlXxg",
+    "S": 2.25,
+    "F": 1.1,
+    "T": 0.2373,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z6_252_504_d20": {
+    "alpha_id": "P0GMXWpL",
+    "S": 2.62,
+    "F": 1.34,
+    "T": 0.2671,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  },
+  "z7_rev252_d30": {
+    "alpha_id": "YPvxkAOR",
+    "S": 2.36,
+    "F": 1.22,
+    "T": 0.2401,
+    "2Y": null,
+    "subU": null,
+    "fails": []
+  }
+}

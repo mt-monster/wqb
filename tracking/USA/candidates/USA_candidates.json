@@ -1,0 +1,72 @@
+[
+  {
+    "id": "u1",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), 44), ts_rank(ts_backfill(winsorize(negative_score_average_value, std=4), 22), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正-负情感差"
+  },
+  {
+    "id": "u2",
+    "expr": "ts_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正向情感"
+  },
+  {
+    "id": "u3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), subindustry), 0.5), 5), 20)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "USA 成功范式 (xAdL5vmN 同款) × 正向情感"
+  },
+  {
+    "id": "u4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(positive_score_average_value, std=4), 22), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "USA 成功范式 × 正向情感 90"
+  },
+  {
+    "id": "u5",
+    "expr": "ts_rank(ts_backfill(winsorize(normalized_trend_indicator_0, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "归一化趋势指标"
+  },
+  {
+    "id": "u6",
+    "expr": "ts_rank(ts_backfill(winsorize(normalized_volume_indicator_0, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "归一化量指标"
+  },
+  {
+    "id": "u7",
+    "expr": "ts_rank(ts_backfill(winsorize(returns, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "returns 基准 (chart 替代)"
+  },
+  {
+    "id": "u8",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(subtract(positive_score_average_value, negative_score_average_value), std=4), 22), subindustry), 0.5), 3), 20)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "成功范式 × 情感净差"
+  },
+  {
+    "id": "u9",
+    "expr": "ts_rank(ts_backfill(winsorize(positive_score_average_value_3, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "正向情感 v3"
+  },
+  {
+    "id": "u10",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(positive_sentiment_dispersion_2, std=4), 22), 44), ts_rank(ts_backfill(winsorize(negative_sentiment_dispersion_2, std=4), 22), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "情感离散差"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "q1",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentence_sentiment_average), subindustry), 0.5), 5), 90), 0.5))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp05+句级情感05"
+  },
+  {
+    "id": "q2",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.45), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.55))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp045+vader055"
+  },
+  {
+    "id": "q3",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.4), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.6))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp04+vader06"
+  },
+  {
+    "id": "q4",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiwordnet_positive_polarity), subindustry), 0.5), 5), 90), 0.5))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp05+sentiwordnet05"
+  },
+  {
+    "id": "q5",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_2), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp2_05+vader05"
+  },
+  {
+    "id": "q6",
+    "expr": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_3), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "surp3_05+vader05"
+  }
+]

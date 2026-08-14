@@ -1,0 +1,11 @@
+{
+  "round": 2,
+  "datasets": [
+    "dl_riskfree_returns(_2)",
+    "ml_factor_proj",
+    "eur_ohlc_ma"
+  ],
+  "batch_count": 3,
+  "batches": [],
+  "results": {}
+}

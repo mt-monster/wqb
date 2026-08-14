@@ -1,0 +1,17 @@
+{
+  "date": "2026-08-12",
+  "region": "EUR", "delay": 1, "neutralization": "STATISTICAL", "truncation": 0.08,
+  "goal": "3 RA candidates via systematic universe-partition rescan",
+  "batches": {
+    "TOP1200": {"multi": "2WeAIR41Y4AYcsmfLbhQSp3", "best": {"id": "9qpE8Rw1", "expr": "rev252 d10", "S": 1.69, "F": 0.64, "2Y": -0.24}, "worst_2y": -0.51},
+    "TOP800": {"multi": "DDEYzbo94GicB03gFO3OQ4", "best": {"id": "GrGgXdo3", "expr": "rev252 d10", "S": 1.21, "F": 0.41, "2Y": 0.14}},
+    "TOP400": {"multi": "72iVP2x54mN9oLjEmDhvKB", "best": {"id": "JjGPoxEO", "expr": "rev252 d10", "S": 1.19, "F": 0.39, "2Y": 0.52}},
+    "ILLIQUID_MINVOL1M": {"multi": "1HrujH7V51QaOqw96oMVkr", "best": {"id": "WjAL370o", "expr": "rev252 d10", "S": 1.88, "F": 0.79, "2Y": 0.0}}
+  },
+  "top3_candidates": [
+    {"id": "mL5Yx3X9", "universe": "TOP2500", "expr": "rev504 d20", "S": 2.62, "F": 1.35, "2Y": 1.08, "prod_corr": 0.9512, "note": "历史已提交被拒: PROD_CORR 0.95 + LOW_2Y 1.08"},
+    {"id": "P0GMXWpL", "universe": "TOP2500", "expr": "dual252+504 d20", "S": 2.62, "F": 1.34, "2Y": 1.1, "note": "历史 404 异步被拒, 同型"},
+    {"id": "WjAL370o", "universe": "ILLIQUID_MINVOL1M", "expr": "rev252 d10", "S": 1.88, "F": 0.79, "2Y": 0.0, "note": "本轮新测, ILLIQUID 池 S 最高但 2Y 仍 0"}
+  ],
+  "conclusion": "2Y 结构性墙: 全 universe 2Y 天花板 ~1.08 (TOP2500) < 1.58 硬门槛; universe 分区无法解锁 (TOP1200/800/400/ILLIQUID 2Y 全部 ≤0.52); 反转族 prod_corr 0.95 撞墙 (TOP2500); 因子族 S 不足。EUR D1 当前无可提交 RA。"
+}

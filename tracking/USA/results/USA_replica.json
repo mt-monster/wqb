@@ -1,0 +1,58 @@
+[
+  {
+    "id": "a1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_2), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "xAdL5vmN 变体 _2"
+  },
+  {
+    "id": "a2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_3), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "xAdL5vmN 变体 _3"
+  },
+  {
+    "id": "a3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_4), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "xAdL5vmN 变体 _4"
+  },
+  {
+    "id": "a4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_5), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "xAdL5vmN 变体 _5"
+  },
+  {
+    "id": "a5",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "xAdL5vmN 变体 _7"
+  },
+  {
+    "id": "a6",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(earnings_surprise_frequency_score), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "惊喜频率分"
+  },
+  {
+    "id": "a7",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(earnings_surprise_magnitude_score1), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "惊喜幅度分"
+  },
+  {
+    "id": "a8",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(earnings_surprise_frequency_score_2), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "惊喜频率分2"
+  }
+]

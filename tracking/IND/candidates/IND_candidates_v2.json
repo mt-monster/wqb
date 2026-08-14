@@ -1,0 +1,58 @@
+[
+  {
+    "id": "i8",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(pv70_bbgnews_score_float), std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "pv70 新闻 vec_avg"
+  },
+  {
+    "id": "i9",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(pv70_ibeseps1_score_float), std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "pv70 盈利 vec_avg"
+  },
+  {
+    "id": "i11",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.4), multiply(rank(ts_rank(ts_backfill(mdl177_fc_numrevy1, 66), 250)), -0.3))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "三腿权重轮换"
+  },
+  {
+    "id": "i12",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.5), multiply(rank(ts_rank(ts_backfill(mdl177_fc_numrevy1, 66), 250)), -0.5))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "fwdroe+numrevy 双腿"
+  },
+  {
+    "id": "i13",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.6), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.4))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "indrel+ff10 双腿"
+  },
+  {
+    "id": "i14",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.4), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.2), multiply(rank(ts_rank(ts_backfill(mdl177_fc_numrevy1, 66), 250)), -0.1))",
+    "neut": "SECTOR",
+    "decay": 8,
+    "note": "四腿全字段"
+  },
+  {
+    "id": "i15",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.4), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.3))",
+    "neut": "SECTOR",
+    "decay": 6,
+    "note": "i1 结构 decay6"
+  },
+  {
+    "id": "i16",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.4), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.3))",
+    "neut": "SECTOR",
+    "decay": 12,
+    "note": "i1 结构 decay12"
+  }
+]

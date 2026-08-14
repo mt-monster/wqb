@@ -1,0 +1,154 @@
+{
+ "all": [
+  {
+   "id": "QPGzqnZQ",
+   "code": "rank(normalized_trend_indicator_6)",
+   "neutralization": "STATISTICAL",
+   "sharpe": 0.83,
+   "fitness": 0.45,
+   "two_year_sharpe": 0.46,
+   "margin": 0.000693,
+   "turnover": 0.1044,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "XgozPkG5",
+   "code": "add(multiply(rank(normalized_trend_indicator_0),0.5), multiply(rank(normalized_trend_indicator_2),0.5))",
+   "neutralization": "STATISTICAL",
+   "sharpe": 0.78,
+   "fitness": 0.43,
+   "two_year_sharpe": 1.33,
+   "margin": 0.000631,
+   "turnover": 0.1183,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "pwNGoV9v",
+   "code": "rank(normalized_trend_indicator_0)",
+   "neutralization": "STATISTICAL",
+   "sharpe": 0.67,
+   "fitness": 0.31,
+   "two_year_sharpe": 1.23,
+   "margin": 0.000426,
+   "turnover": 0.1384,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "JjGzYnVW",
+   "code": "rank(normalized_trend_indicator_2)",
+   "neutralization": "STATISTICAL",
+   "sharpe": 0.56,
+   "fitness": 0.26,
+   "two_year_sharpe": 0.92,
+   "margin": 0.000533,
+   "turnover": 0.1046,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 3,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmzqNRa",
+   "code": "rank(normalized_trend_indicator_3)",
+   "neutralization": "STATISTICAL",
+   "sharpe": -0.27,
+   "fitness": -0.09,
+   "two_year_sharpe": -0.36,
+   "margin": -0.000215,
+   "turnover": 0.1507,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "d5Zzgn2g",
+   "code": "rank(normalized_trend_indicator_1)",
+   "neutralization": "STATISTICAL",
+   "sharpe": -0.32,
+   "fitness": -0.12,
+   "two_year_sharpe": -0.11,
+   "margin": -0.000318,
+   "turnover": 0.109,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmzqNMb",
+   "code": "subtract(rank(normalized_trend_indicator_1), ts_delay(rank(normalized_trend_indicator_1),22))",
+   "neutralization": "STATISTICAL",
+   "sharpe": -0.45,
+   "fitness": -0.17,
+   "two_year_sharpe": -0.75,
+   "margin": -0.000293,
+   "turnover": 0.1563,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "N1bzqn18",
+   "code": "rank(normalized_trend_indicator_5)",
+   "neutralization": "STATISTICAL",
+   "sharpe": -0.52,
+   "fitness": -0.19,
+   "two_year_sharpe": -0.25,
+   "margin": -0.000281,
+   "turnover": 0.2309,
+   "risk_neutralized_sharpe": null,
+   "ra_failed": true,
+   "failed_ra_count": 4,
+   "ra_failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

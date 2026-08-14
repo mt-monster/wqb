@@ -1,0 +1,50 @@
+{
+  "d1_ivhv": {
+    "alpha_id": "QPG0kkkM",
+    "S": 0.13,
+    "F": 0.02,
+    "T": 0.3431,
+    "2Y": null,
+    "fails": []
+  },
+  "d2_ivetf": {
+    "alpha_id": "58pJ0006",
+    "S": 0.25,
+    "F": 0.05,
+    "T": 0.392,
+    "2Y": null,
+    "fails": []
+  },
+  "d5_20div": {
+    "alpha_id": "pwNarrrj",
+    "S": 0.26,
+    "F": 0.05,
+    "T": 0.3753,
+    "2Y": null,
+    "fails": []
+  },
+  "d6_ivhv_minus_ivetf": {
+    "alpha_id": "78zYbbbv",
+    "S": -0.15,
+    "F": -0.03,
+    "T": 0.2616,
+    "2Y": null,
+    "fails": []
+  },
+  "d3_ivhv_signed": {
+    "alpha_id": "QPG0kk6p",
+    "S": 0.07,
+    "F": 0.01,
+    "T": 0.1035,
+    "2Y": null,
+    "fails": []
+  },
+  "d4_ivetf_signed": {
+    "alpha_id": "6XpMVV27",
+    "S": -0.05,
+    "F": -0.01,
+    "T": 0.0979,
+    "2Y": null,
+    "fails": []
+  }
+}

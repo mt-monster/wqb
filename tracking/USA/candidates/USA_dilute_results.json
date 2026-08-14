@@ -1,0 +1,37 @@
+{
+  "p1_surp07_vader03": {
+    "alpha_id": "E5GQAzgr",
+    "S": 4.58,
+    "F": 5.03,
+    "T": 0.0864,
+    "fails": []
+  },
+  "p2_surp06_text04": {
+    "alpha_id": "O0GWvzbp",
+    "S": 4.53,
+    "F": 4.8,
+    "T": 0.0839,
+    "fails": []
+  },
+  "p3_surp07_mom03": {
+    "alpha_id": "rK27mGJj",
+    "S": 3.74,
+    "F": 3.78,
+    "T": 0.0906,
+    "fails": []
+  },
+  "p4_surp08_vader02": {
+    "alpha_id": "gJ8azGRe",
+    "S": 4.55,
+    "F": 5.11,
+    "T": 0.0887,
+    "fails": []
+  },
+  "p5_surp05_vader05": {
+    "alpha_id": "6XpMb0aG",
+    "S": 4.32,
+    "F": 4.32,
+    "T": 0.0811,
+    "fails": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "alpha_expressions": [
+    "group_rank(vec_headline_sentiment_vader_score,sector)",
+    "group_rank(vec_headline_sentiment_vader_score,industry)",
+    "group_rank(vec_headline_textblob_sentiment_score,sector)",
+    "group_rank(vec_headline_textblob_sentiment_score,industry)",
+    "group_rank(vec_headline_sentiwordnet_positive_polarity,sector)",
+    "group_rank(vec_headline_sentiwordnet_positive_polarity,industry)",
+    "group_rank(vec_headline_sentiwordnet_negative_polarity,sector)",
+    "group_rank(vec_headline_sentiwordnet_negative_polarity,industry)",
+    "group_rank(vec_headline_subjectivity_score,sector)",
+    "group_rank(vec_headline_subjectivity_score,industry)"
+  ],
+  "decay": 5,
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "language": "FASTEXPR",
+  "max_trade": "OFF",
+  "nan_handling": "OFF",
+  "neutralization": "INDUSTRY",
+  "pasteurization": "ON",
+  "region": "EUR",
+  "test_period": "P0Y0M",
+  "truncation": 0.08,
+  "unit_handling": "VERIFY",
+  "universe": "TOP1200"
+}

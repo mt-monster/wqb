@@ -1,0 +1,26 @@
+{
+  "campaign": "KOR_D1",
+  "created": "2026-08-14",
+  "setting": "SECTOR d6 t0.06 (wave11d最优慢设置)",
+  "note": "用户指令: 算子探索率16.9%太低+模板单薄, 学习101 Formulaic Alphas+《寻找Alpha》. 本波16个表达式全部经济含义驱动+引入未用算子(ts_ir/ts_std_dev/ts_scale/group_mean/trade_when/bucket/days_from_last_change/sqrt). 目标突破sharpe1.58(wave11d瓶颈1.27-1.38): 多期限共识/置信度加权/信号IR/噪声惩罚/预期修正/多源集成/行业相对/条件交易",
+  "wave12a_economic_SECTOR_d6": [
+    "add(add(multiply(rank(cnn_predicted_prob_q4_bucket2_40d_malta3),0.33),multiply(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),0.34)),multiply(rank(cnn_predicted_prob_q4_bucket2_100d_malta3),0.33))",
+    "multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_confidence_score3_q5_50d_equity2b2))",
+    "rank(ts_ir(cnn_predicted_prob_q4_bucket2_60d_equity2b2,44))",
+    "divide(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),add(ts_std_dev(cnn_predicted_prob_q4_bucket2_60d_equity2b2,22),0.1))",
+    "subtract(rank(cnn_predicted_prob_q4_bucket2_40d_malta3),rank(cnn_predicted_prob_q4_bucket2_100d_malta3))",
+    "add(multiply(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),0.4),add(multiply(rank(img60d_return_quantile5_confscore3),0.3),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.3)))",
+    "group_rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2,sector)",
+    "trade_when(rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2),greater(rank(cnn_confidence_score3_q4_60d_equity2b2),0.7),0)"
+  ],
+  "wave12b_economic_SECTOR_d6": [
+    "rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2)",
+    "add(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(cnn_predicted_prob_q4_bucket2_50d_equity2b2),0.3)),multiply(rank(cnn_predicted_prob_q3_bucket1_50d_equity2b2),0.2))",
+    "rank(ts_scale(cnn_predicted_prob_q4_bucket2_60d_equity2b2,60))",
+    "multiply(rank(days_from_last_change(cnn_predicted_prob_q4_bucket2_60d_equity2b2)),-1)",
+    "subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q2_bucket0_60d_equity2b2))",
+    "bucket(cnn_predicted_prob_q4_bucket2_60d_equity2b2,[0,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,1])",
+    "add(multiply(rank(img200d_return_quintile2_prob_leap1),0.5),multiply(rank(cnn_predicted_prob_q4_bucket2_50d_equity2b2),0.5))",
+    "rank(sqrt(cnn_predicted_prob_q5_bucket4_50d_equity2b2))"
+  ]
+}

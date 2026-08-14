@@ -1,0 +1,66 @@
+{
+  "a1_hist_2": {
+    "alpha_id": "9qplY86q",
+    "S": 3.24,
+    "F": 2.47,
+    "T": 0.0612,
+    "2Y": null,
+    "fails": []
+  },
+  "a2_hist_3": {
+    "alpha_id": "6XpM7ZqP",
+    "S": 3.43,
+    "F": 2.64,
+    "T": 0.0593,
+    "2Y": null,
+    "fails": []
+  },
+  "a3_hist_4": {
+    "alpha_id": "YPva68kA",
+    "S": 0.92,
+    "F": 0.39,
+    "T": 0.0842,
+    "2Y": null,
+    "fails": []
+  },
+  "a4_hist_5": {
+    "alpha_id": "GrGmPX8O",
+    "S": 2.78,
+    "F": 1.95,
+    "T": 0.0632,
+    "2Y": null,
+    "fails": []
+  },
+  "a5_hist_7": {
+    "alpha_id": "zqNdZgoG",
+    "S": 3.58,
+    "F": 3.4,
+    "T": 0.0961,
+    "2Y": null,
+    "fails": []
+  },
+  "a6_freq": {
+    "alpha_id": "xANvqVzJ",
+    "S": 2.85,
+    "F": 1.96,
+    "T": 0.0628,
+    "2Y": null,
+    "fails": []
+  },
+  "a7_magnitude": {
+    "alpha_id": "3qp0w1nZ",
+    "S": 3.23,
+    "F": 2.37,
+    "T": 0.0617,
+    "2Y": null,
+    "fails": []
+  },
+  "a8_freq2": {
+    "alpha_id": "JjG8qo5n",
+    "S": 3.83,
+    "F": 3.24,
+    "T": 0.066,
+    "2Y": null,
+    "fails": []
+  }
+}

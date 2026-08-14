@@ -1,0 +1,68 @@
+[
+  {
+    "id": "mlf1",
+    "expr": "ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44)",
+    "ds": "ml_factor_proj",
+    "idea": "盈利增长变化率趋势"
+  },
+  {
+    "id": "mlf2",
+    "expr": "ts_rank(ts_backfill(winsorize(change_3m_revision_fy2_eps, std=5), 66), 44)",
+    "ds": "ml_factor_proj",
+    "idea": "FY2 盈利预测修正趋势"
+  },
+  {
+    "id": "mlf3",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "ds": "ml_factor_proj",
+    "idea": "盈利增长-估值双腿"
+  },
+  {
+    "id": "mlf4",
+    "expr": "ts_rank(ts_backfill(winsorize(change_1y_cashflow_to_price, std=5), 66), 44)",
+    "ds": "ml_factor_proj",
+    "idea": "现金流-价格变化趋势"
+  },
+  {
+    "id": "mlf5",
+    "expr": "ts_rank(ts_backfill(winsorize(change_3y_compound_sales_growth, std=5), 66), 44)",
+    "ds": "ml_factor_proj",
+    "idea": "营收复合增速变化"
+  },
+  {
+    "id": "nws1",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(headline_sentiment_vader_score), std=5), 22), 44)",
+    "ds": "news_sentiment_nlp",
+    "idea": "新闻情感 VADER 趋势"
+  },
+  {
+    "id": "nws2",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(headline_textblob_sentiment_score), std=5), 22), 44)",
+    "ds": "news_sentiment_nlp",
+    "idea": "新闻情感 TextBlob 趋势"
+  },
+  {
+    "id": "nws3",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(vec_avg(headline_sentiment_vader_score), std=5), 22), 44), ts_rank(ts_backfill(winsorize(vec_avg(headline_sentence_sentiment_variance), std=5), 22), 44))",
+    "ds": "news_sentiment_nlp",
+    "idea": "情感水平-分歧度"
+  },
+  {
+    "id": "aif1",
+    "expr": "ts_rank(ts_backfill(winsorize(momentum_williams_r_adjusted, std=5), 22), 44)",
+    "ds": "ai_factor_transfer",
+    "idea": "Williams %R 动量"
+  },
+  {
+    "id": "aif2",
+    "expr": "ts_rank(ts_backfill(winsorize(liquidity_money_flow_alignment, std=5), 22), 44)",
+    "ds": "ai_factor_transfer",
+    "idea": "流动性-资金流对齐"
+  },
+  {
+    "id": "aif3",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(momentum_williams_r_adjusted, std=5), 22), 44), ts_rank(ts_backfill(winsorize(volume_anomaly_price_positioning, std=5), 22), 44))",
+    "ds": "ai_factor_transfer",
+    "idea": "动量-量价异常双腿"
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "w1_doc_sent": {
+    "alpha_id": "xANrEG6g",
+    "S": 0.01,
+    "F": 0.0,
+    "T": 0.6202,
+    "2Y": null,
+    "fails": []
+  },
+  "w2_composite": {
+    "alpha_id": "P0GoAzWp",
+    "S": 0.03,
+    "F": 0.0,
+    "T": 0.6519,
+    "2Y": null,
+    "fails": []
+  },
+  "w3_earn_tone": {
+    "alpha_id": "pwNdpGXx",
+    "S": 0.04,
+    "F": 0.0,
+    "T": 0.7082,
+    "2Y": null,
+    "fails": []
+  },
+  "w4_sent_rating_diff": {
+    "alpha_id": "zqN3LGMV",
+    "S": -0.03,
+    "F": -0.0,
+    "T": 0.621,
+    "2Y": null,
+    "fails": []
+  },
+  "w5_fnd94_actq": {
+    "alpha_id": "1YpN2Kb6",
+    "S": 0.43,
+    "F": 0.18,
+    "T": 0.1359,
+    "2Y": null,
+    "fails": []
+  },
+  "w6_fnd94_cheq": {
+    "alpha_id": "e735WGwz",
+    "S": 0.82,
+    "F": 0.44,
+    "T": 0.1364,
+    "2Y": null,
+    "fails": []
+  }
+}

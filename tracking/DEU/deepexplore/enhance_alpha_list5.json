@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.55 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.45 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.8"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.5 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.50 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.8"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.55 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 66), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 66), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 66), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 66), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.45 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 66), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 66), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 66), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 66), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.75"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.55 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.45 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_ebitda_ntm_r1m_l3, 126), ts_backfill(mdl264_es_ebitda_ntm_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_ebitda_ntm_r1m_l3, 126), ts_backfill(mdl264_es_ebitda_ntm_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.8"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.6 * (0.75 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.2 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.40 * (0.75 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.2 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.8"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.5 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.50 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.7"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.55 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.45 * (0.7 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.3 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.85"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "DEU",
+      "universe": "TOP500",
+      "delay": 1,
+      "decay": 8,
+      "neutralization": "INDUSTRY",
+      "truncation": 0.0,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "testPeriod": "P0Y0M0D"
+    },
+    "regular": "0.55 * (0.8 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.2 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_es_roe_fy1_r1m_l3, 126), ts_backfill(mdl264_es_roe_fy1_r1m_l1, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + 0.45 * (0.8 * group_rank(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.2 * scale(ts_decay_linear(subtract(ts_backfill(mdl264_2l_m1r_1yf_spe_se, 126), ts_backfill(mdl264_2l_m1r_1yf_spfc_se, 126), filter=true), 9)) * scale(ts_zscore(volume, 63))) + scale(-rank(ts_zscore(returns, 42))) * 0.8"
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "h1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(momentum_strength_index, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "动量强度 xAdL5vmN"
+  },
+  {
+    "id": "h2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(price_acceleration_score, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "价格加速分 xAdL5vmN"
+  },
+  {
+    "id": "h3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(momentum_shift_indicator, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "动量转移 xAdL5vmN"
+  },
+  {
+    "id": "h4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(price_change_score, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "价格变化分 xAdL5vmN"
+  },
+  {
+    "id": "h5",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(img30d_return_bisection, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "CNN 30日收益 xAdL5vmN"
+  },
+  {
+    "id": "h6",
+    "expr": "rank(ts_rank(ts_backfill(winsorize(img30d_return_bisection, std=4), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "CNN 30日收益 j2 结构"
+  },
+  {
+    "id": "h7",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(momentum_strength_index, std=4), 66), 250)), 0.6), multiply(rank(ts_rank(ts_backfill(winsorize(price_acceleration_score, std=4), 66), 250)), 0.4))",
+    "neut": "SECTOR",
+    "decay": 4,
+    "note": "动量+加速 组合"
+  },
+  {
+    "id": "h8",
+    "expr": "ts_rank(ts_backfill(winsorize(momentum_strength_index, std=4), 66), 250)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "动量强度 ts_rank250"
+  }
+]

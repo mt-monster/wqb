@@ -1,0 +1,92 @@
+{
+  "m6a_dual_decay5": {
+    "alpha_id": "gJ8WJrPO",
+    "status": "COMPLETE",
+    "sharpe": 0.68,
+    "fitness": 0.16,
+    "turnover": 0.7391,
+    "margin": 0.000113,
+    "returns": 0.0419,
+    "two_year_sharpe": null
+  },
+  "m6b_dual_mean5": {
+    "alpha_id": "wpa9pNzl",
+    "status": "COMPLETE",
+    "sharpe": 0.46,
+    "fitness": 0.09,
+    "turnover": 0.6926,
+    "margin": 8.2e-05,
+    "returns": 0.0282,
+    "two_year_sharpe": null
+  },
+  "m6f_triple_rev": {
+    "alpha_id": "E5GV5maL",
+    "status": "COMPLETE",
+    "sharpe": 1.11,
+    "fitness": 0.28,
+    "turnover": 1.0052,
+    "margin": 0.000129,
+    "returns": 0.065,
+    "two_year_sharpe": null
+  },
+  "m6g_rev_factor_50": {
+    "alpha_id": "P0GM0PXE",
+    "status": "COMPLETE",
+    "sharpe": 0.86,
+    "fitness": 0.24,
+    "turnover": 0.4254,
+    "margin": 0.000151,
+    "returns": 0.0321,
+    "two_year_sharpe": null
+  },
+  "m6h_rev_factor_70": {
+    "alpha_id": "j26e2Vdj",
+    "status": "COMPLETE",
+    "sharpe": 1.03,
+    "fitness": 0.27,
+    "turnover": 0.7279,
+    "margin": 0.000134,
+    "returns": 0.0489,
+    "two_year_sharpe": null
+  },
+  "m6c_dual_subind": {
+    "alpha_id": "QPGYPWmQ",
+    "status": "COMPLETE",
+    "sharpe": 1.59,
+    "fitness": 0.47,
+    "turnover": 0.8709,
+    "margin": 0.000178,
+    "returns": 0.0773,
+    "two_year_sharpe": null
+  },
+  "m6i_rev63_subind": {
+    "alpha_id": "0mpjmGnG",
+    "status": "COMPLETE",
+    "sharpe": 1.6,
+    "fitness": 0.49,
+    "turnover": 0.8576,
+    "margin": 0.000186,
+    "returns": 0.0799,
+    "two_year_sharpe": null
+  },
+  "m6d_dual_market": {
+    "alpha_id": "MPG0Pbr6",
+    "status": "COMPLETE",
+    "sharpe": 1.09,
+    "fitness": 0.34,
+    "turnover": 0.8723,
+    "margin": 0.000199,
+    "returns": 0.0868,
+    "two_year_sharpe": null
+  },
+  "m6j_rev63_market": {
+    "alpha_id": "QPGYPnw5",
+    "status": "COMPLETE",
+    "sharpe": 1.14,
+    "fitness": 0.37,
+    "turnover": 0.8587,
+    "margin": 0.000216,
+    "returns": 0.0926,
+    "two_year_sharpe": null
+  }
+}

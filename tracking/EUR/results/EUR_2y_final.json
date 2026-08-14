@@ -1,0 +1,37 @@
+[
+  {
+    "id": "z1",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 252))), 40)",
+    "note": "rev252 decay40"
+  },
+  {
+    "id": "z2",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 252))), 60)",
+    "note": "rev252 decay60"
+  },
+  {
+    "id": "z3",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 504))), 20)",
+    "note": "rev504 decay20"
+  },
+  {
+    "id": "z4",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 504))), 40)",
+    "note": "rev504 decay40"
+  },
+  {
+    "id": "z5",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 126))), 30)",
+    "note": "rev126 decay30"
+  },
+  {
+    "id": "z6",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 252))), 0.5), multiply(reverse(rank(ts_zscore(returns, 504))), 0.5)), 20)",
+    "note": "rev252+504 双窗 decay20"
+  },
+  {
+    "id": "z7",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 252))), 30)",
+    "note": "rev252 decay30 (复核)"
+  }
+]

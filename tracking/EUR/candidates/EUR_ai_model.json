@@ -1,0 +1,52 @@
+[
+  {
+    "id": "a1",
+    "expr": "ts_rank(ts_backfill(winsorize(accounting_forensics_factor, std=4), 66), 44)",
+    "note": "会计取证 ts_rank"
+  },
+  {
+    "id": "a2",
+    "expr": "ts_rank(ts_backfill(winsorize(accruals_analysis_factor, std=4), 66), 44)",
+    "note": "应计因子 ts_rank"
+  },
+  {
+    "id": "a3",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(accounting_forensics_factor, std=4), 66), 44), ts_rank(ts_backfill(winsorize(accruals_analysis_factor, std=4), 66), 44))",
+    "note": "取证-应计差"
+  },
+  {
+    "id": "a4",
+    "expr": "group_zscore(ts_rank(ts_backfill(winsorize(accounting_forensics_factor, std=4), 66), 44), industry)",
+    "note": "取证 行业中性"
+  },
+  {
+    "id": "a5",
+    "expr": "ts_rank(ts_backfill(winsorize(mdl354_group_pt1bookp, std=4), 66), 44)",
+    "note": "bookp 估值 ts_rank"
+  },
+  {
+    "id": "a6",
+    "expr": "ts_rank(ts_backfill(winsorize(mdl354_group_pt11yf_ep, std=4), 66), 44)",
+    "note": "EP 估值 ts_rank"
+  },
+  {
+    "id": "a7",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(mdl354_group_pt11yf_ep, std=4), 66), 44), ts_rank(ts_backfill(winsorize(mdl354_group_pt1bookp, std=4), 66), 44))",
+    "note": "EP-bookp 差"
+  },
+  {
+    "id": "a8",
+    "expr": "ts_rank(ts_backfill(winsorize(ascending_channel_similarity_recent, std=4), 22), 44)",
+    "note": "上行通道相似度"
+  },
+  {
+    "id": "a9",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(ascending_channel_similarity_recent, std=4), 22), 44), ts_rank(ts_backfill(winsorize(ascending_channel_similarity_stdev_h40w, std=4), 22), 44))",
+    "note": "通道-离散差"
+  },
+  {
+    "id": "a10",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(accounting_forensics_factor, std=4), 66), 250)), -0.6), multiply(rank(ts_rank(ts_backfill(winsorize(accruals_analysis_factor, std=4), 66), 250)), -0.4))",
+    "note": "IND 结构 × 会计因子"
+  }
+]

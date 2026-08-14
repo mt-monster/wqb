@@ -1,0 +1,52 @@
+[
+  {
+    "id": "p1",
+    "expr": "add(multiply(reverse(rank(avg_similarity_upward_breakaway_gap)), 0.4), multiply(rank(avg_similarity_continuation_rising_wedge_120), 0.3), multiply(rank(v_shape_continuation_top_mean_similarity), 0.3))",
+    "note": "GBR 三形态"
+  },
+  {
+    "id": "p2",
+    "expr": "add(multiply(reverse(rank(avg_similarity_upward_breakaway_gap)), 0.5), multiply(rank(avg_similarity_continuation_rising_wedge_120), 0.5))",
+    "note": "breakaway+wedge"
+  },
+  {
+    "id": "p3",
+    "expr": "ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44)",
+    "note": "breakaway ts_rank"
+  },
+  {
+    "id": "p4",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44), ts_rank(ts_backfill(winsorize(avg_similarity_continuation_rising_wedge_120, std=4), 22), 44))",
+    "note": "breakaway-wedge 差"
+  },
+  {
+    "id": "p5",
+    "expr": "group_zscore(ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44), industry)",
+    "note": "行业中性化"
+  },
+  {
+    "id": "p6",
+    "expr": "signed_power(subtract(ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44), 0.5), 3)",
+    "note": "signed_power3"
+  },
+  {
+    "id": "p7",
+    "expr": "ts_delta(ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44), 5)",
+    "note": "变化率"
+  },
+  {
+    "id": "p8",
+    "expr": "rank(tail(ts_rank(ts_backfill(winsorize(avg_similarity_upward_breakaway_gap, std=4), 22), 44), lower=0.1, upper=0.9, newval=0))",
+    "note": "tail 区间截断 (newval 修复)"
+  },
+  {
+    "id": "p9",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(avg_similarity_upward_breakaway_gap)), 0.4), multiply(rank(avg_similarity_continuation_rising_wedge_120), 0.3), multiply(rank(v_shape_continuation_top_mean_similarity), 0.3)), 10)",
+    "note": "GBR+decay10"
+  },
+  {
+    "id": "p10",
+    "expr": "ts_rank(ts_backfill(winsorize(probability_label0_2quantile_20day_ohlcv, std=4), 22), 44)",
+    "note": "dl 概率"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "batch": "S",
+  "setting": "SECTOR d8 t0.06",
+  "dataset": "chart_cnn_alpha",
+  "rationale": "subtract多空差结构族(风险中性化攻关+风格差异化): LLGrejP2 subtract rn_sh0.98全场最高; 多空差与PROD纯多头rank信号相关性结构不同, 有望同时攻rn_sh>1与PROD<0.7",
+  "expressions": [
+    "subtract(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),multiply(rank(img200d_return_quintile2_prob_leap1),0.25))",
+    "subtract(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),multiply(rank(img200d_return_quintile2_prob_leap1),0.15))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.5),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.25))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.4),multiply(add(multiply(rank(img60d_return_quantile5_confscore4),0.5),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.5)),0.3))",
+    "subtract(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),multiply(rank(img200d_return_quintile3_prob_leap1),0.25))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_rank_q1_50d_equity2b2)),0.5),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2))",
+    "add(multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_rank_q1_50d_equity2b2)),0.4),multiply(add(multiply(rank(img60d_return_quantile5_confscore4),0.5),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.5)),0.3))",
+    "subtract(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.2))"
+  ]
+}

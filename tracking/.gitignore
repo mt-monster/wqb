@@ -1,0 +1,18 @@
+# tracking/.gitignore — version the curated structure, exclude bulk/volatile data
+
+# Shared data lake: external tool tools/fetch_all_universes.py writes here (806 files, ~21 MB)
+mining/
+
+# Compressed cold backups (originals retained in tree)
+archive/
+*.zip
+
+# Runtime output dir (labs_data_analysis_agent.py)
+runs/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Reorg audit trail (uncomment to stop tracking)
+# _move_map.json

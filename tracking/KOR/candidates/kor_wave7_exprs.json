@@ -1,0 +1,18 @@
+[
+ "rank(forward_10yr_eps_cagr_projection)",
+ "rank(forward_5yr_eps_cagr_projection)",
+ "rank(market_implied_5yr_eps_cagr_dlr1)",
+ "ts_delta(forward_5yr_eps_cagr_projection,63)",
+ "ts_delta(market_implied_5yr_eps_cagr_dlr1,63)",
+ "rank(projected_earnings_fy8_3)",
+ "rank(projected_earnings_fy13_3)",
+ "rank(projected_earnings_fy14_dlr1)",
+ "subtract(rank(forward_10yr_eps_cagr_projection), rank(market_implied_5yr_eps_cagr_dlr1))",
+ "subtract(rank(forward_5yr_eps_cagr_projection), rank(market_implied_5yr_eps_cagr_dlr1))",
+ "subtract(rank(iv_forward_10yr_eps_cagr_3), rank(iv_market_implied_10yr_eps_cagr_3))",
+ "subtract(rank(iv_forward_5yr_eps_cagr_3), rank(iv_market_implied_5yr_eps_cagr_3))",
+ "rank(ts_backfill(projected_earnings_fy8_3,126))",
+ "multiply(rank(projected_earnings_fy13_3),-1)",
+ "ts_delta(forward_10yr_eps_cagr_projection,63)",
+ "ts_delta(forward_5yr_eps_cagr_projection,22)"
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "s1",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "decay": 6,
+    "note": "STAT decay6"
+  },
+  {
+    "id": "s2",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "decay": 8,
+    "note": "STAT decay8"
+  },
+  {
+    "id": "s3",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "decay": 12,
+    "note": "STAT decay12"
+  },
+  {
+    "id": "s4",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 63))), 5)",
+    "decay": 4,
+    "note": "STAT decay_linear5"
+  },
+  {
+    "id": "s5",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 63))), 10)",
+    "decay": 4,
+    "note": "STAT decay_linear10"
+  },
+  {
+    "id": "s6",
+    "expr": "ts_mean(reverse(rank(ts_zscore(returns, 63))), 5)",
+    "decay": 4,
+    "note": "STAT mean5"
+  },
+  {
+    "id": "s7",
+    "expr": "ts_mean(reverse(rank(ts_zscore(returns, 63))), 10)",
+    "decay": 4,
+    "note": "STAT mean10"
+  },
+  {
+    "id": "s8",
+    "expr": "hump(reverse(rank(ts_zscore(returns, 63))), hump=0.01)",
+    "decay": 4,
+    "note": "STAT hump"
+  },
+  {
+    "id": "s9",
+    "expr": "reverse(rank(ts_zscore(returns, 126)))",
+    "decay": 4,
+    "note": "STAT rev126 长窗"
+  },
+  {
+    "id": "s10",
+    "expr": "reverse(rank(ts_zscore(returns, 252)))",
+    "decay": 4,
+    "note": "STAT rev252 超长窗"
+  }
+]

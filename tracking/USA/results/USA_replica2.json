@@ -1,0 +1,44 @@
+[
+  {
+    "id": "b1",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(analyst_earnings_revision_score, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 修正分"
+  },
+  {
+    "id": "b2",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(analyst_earnings_surprise_score, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 惊喜分"
+  },
+  {
+    "id": "b3",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(earnings_surprise_magnitude, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 惊喜幅度"
+  },
+  {
+    "id": "b4",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(earnings_surprise_trend, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 惊喜趋势"
+  },
+  {
+    "id": "b5",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(earnings_surprise_consistency_2, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 惊喜一致性"
+  },
+  {
+    "id": "b6",
+    "expr": "rank(group_zscore(ts_zscore(ts_backfill(analyst_earnings_surprise_prediction, 66), 189), industry))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "YPgAa3WR 结构 × 惊喜预测"
+  }
+]

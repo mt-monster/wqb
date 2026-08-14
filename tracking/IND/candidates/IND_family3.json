@@ -1,0 +1,44 @@
+[
+  {
+    "id": "w1",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(nws79_document_sentiment), std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "news79 文档情感"
+  },
+  {
+    "id": "w2",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(nws79_composite_sentiment_score), std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "news79 综合情感"
+  },
+  {
+    "id": "w3",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(nws79_earnings_tone_sentiment), std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "news79 盈利语调"
+  },
+  {
+    "id": "w4",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(vec_avg(nws79_document_sentiment), std=4), 22), 44), ts_rank(ts_backfill(winsorize(vec_avg(nws79_analyst_ratings_sentiment), std=4), 22), 44))",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "情感-评级差"
+  },
+  {
+    "id": "w5",
+    "expr": "ts_rank(ts_backfill(winsorize(fnd94_q_actq_q, std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "fnd94 总资产变化"
+  },
+  {
+    "id": "w6",
+    "expr": "ts_rank(ts_backfill(winsorize(fnd94_q_cheq_q, std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "decay": 3,
+    "note": "fnd94 现金变化"
+  }
+]

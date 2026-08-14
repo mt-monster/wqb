@@ -1,0 +1,66 @@
+{
+  "m1_magnitude": {
+    "alpha_id": "blQa3Y3R",
+    "S": 1.75,
+    "F": 0.76,
+    "T": 0.3788,
+    "R": 0.0709,
+    "fails": []
+  },
+  "m2_direction": {
+    "alpha_id": "zqNdzvzd",
+    "S": 0.98,
+    "F": 0.29,
+    "T": 0.359,
+    "R": 0.0323,
+    "fails": []
+  },
+  "m3_prediction": {
+    "alpha_id": "LLGKxPx2",
+    "S": 1.62,
+    "F": 0.67,
+    "T": 0.3705,
+    "R": 0.0631,
+    "fails": []
+  },
+  "m4_trend": {
+    "alpha_id": "9qplQzQe",
+    "S": 1.83,
+    "F": 0.87,
+    "T": 0.3856,
+    "R": 0.0875,
+    "fails": []
+  },
+  "m5_rev10": {
+    "alpha_id": "ZYEaLRZY",
+    "S": 1.71,
+    "F": 0.73,
+    "T": 0.4026,
+    "R": 0.0735,
+    "fails": []
+  },
+  "m6_055_045": {
+    "alpha_id": "VkGNovnV",
+    "S": 1.7,
+    "F": 0.78,
+    "T": 0.3412,
+    "R": 0.0719,
+    "fails": []
+  },
+  "m7_3leg": {
+    "alpha_id": "6XpMbnxO",
+    "S": 1.52,
+    "F": 0.72,
+    "T": 0.2578,
+    "R": 0.0585,
+    "fails": []
+  },
+  "m8_surprise_trend": {
+    "alpha_id": "WjAlmEkk",
+    "S": 0.92,
+    "F": 0.37,
+    "T": 0.3924,
+    "R": 0.0624,
+    "fails": []
+  }
+}

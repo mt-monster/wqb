@@ -1,0 +1,83 @@
+{
+  "t1_tsrank250_rev": {
+    "alpha_id": "kqPJgevz",
+    "S": 2.48,
+    "F": 0.65,
+    "T": 0.8783,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t2_tsrank500_rev": {
+    "alpha_id": "qMNE0eYZ",
+    "S": 2.6,
+    "F": 0.71,
+    "T": 0.8758,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t3_ind_struct_eur": {
+    "alpha_id": "A1GQvqrl",
+    "S": 0.11,
+    "F": 0.01,
+    "T": 0.1836,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t4_ind_dual_eur": {
+    "alpha_id": "3qpjVgkO",
+    "S": -0.04,
+    "F": -0.0,
+    "T": 0.18,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t5_gbr_struct_eps": {
+    "alpha_id": "npNAPwqz",
+    "S": 0.51,
+    "F": 0.09,
+    "T": 0.224,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t6_gbr_struct_rev": {
+    "alpha_id": "omNoWQG6",
+    "S": -0.21,
+    "F": -0.03,
+    "T": 0.1959,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t7_sent_tsrank": {
+    "alpha_id": "6XpAKg05",
+    "S": -0.53,
+    "F": -0.05,
+    "T": 1.1806,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t8_dual_tsrank_rev": {
+    "alpha_id": "GrGgOEx3",
+    "S": 2.44,
+    "F": 0.63,
+    "T": 0.88,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  },
+  "t9_ret_eps_mix": {
+    "alpha_id": "d5ZK1eoK",
+    "S": 1.64,
+    "F": 0.41,
+    "T": 0.4236,
+    "2Y": null,
+    "subU": null,
+    "prod": null
+  }
+}

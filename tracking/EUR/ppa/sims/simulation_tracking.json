@@ -1,0 +1,82 @@
+{
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "neutralization": "INDUSTRY",
+  "decay": 5,
+  "truncation": 0.08,
+  "submitted_at": "2026-08-11",
+  "total_expressions": 90,
+  "submitted": 80,
+  "pending": 10,
+  "multisimulations": [
+    {
+      "id": "45N3wA2SR5fKcA5ayZiILqn",
+      "batch": 1,
+      "exprs": 10,
+      "dataset": "ml_factor_proj"
+    },
+    {
+      "id": "34GBPd1924j1bvzluIuOkdN",
+      "batch": 2,
+      "exprs": 10,
+      "dataset": "ml_factor_proj"
+    },
+    {
+      "id": "1Z2fr57LB53QaOOBZOn3JWm",
+      "batch": 3,
+      "exprs": 10,
+      "dataset": "ml_factor_proj"
+    },
+    {
+      "id": "lSkug1oD4TQbuRuN64szVh",
+      "batch": 4,
+      "exprs": 10,
+      "dataset": "dl_riskfree_returns"
+    },
+    {
+      "id": "1ejISubjl5iK8Wj17RrvsN2u",
+      "batch": 5,
+      "exprs": 10,
+      "dataset": "dl_riskfree_returns"
+    },
+    {
+      "id": "JgI67dqT4i99nbKTqgN4Va",
+      "batch": 6,
+      "exprs": 10,
+      "dataset": "dl_riskfree_returns"
+    },
+    {
+      "id": "2NixBMbzi50KaPp15ZPCUB7",
+      "batch": 7,
+      "exprs": 10,
+      "dataset": "news_sentiment_nlp"
+    },
+    {
+      "id": "2q1Nss8H34zLbEjMZy7dQgu",
+      "batch": 8,
+      "exprs": 10,
+      "dataset": "news_sentiment_nlp"
+    }
+  ],
+  "pending_batch": {
+    "batch": 9,
+    "exprs": 10,
+    "dataset": "news_sentiment_nlp",
+    "note": "CONCURRENT_SIMULATION_LIMIT_EXCEEDED, will retry"
+  },
+  "round2_batches": [
+    {
+      "id": "2xm2uK1uc5cJcGO8oobHVpa",
+      "location": "https://api.worldquantbrain.com/simulations/2xm2uK1uc5cJcGO8oobHVpa"
+    },
+    {
+      "id": "39IuJG61O52v8IHe7bkzZ2w",
+      "location": "https://api.worldquantbrain.com/simulations/39IuJG61O52v8IHe7bkzZ2w"
+    },
+    {
+      "id": "nxBKw4774H2cDkjLQCayhF",
+      "location": "https://api.worldquantbrain.com/simulations/nxBKw4774H2cDkjLQCayhF"
+    }
+  ]
+}

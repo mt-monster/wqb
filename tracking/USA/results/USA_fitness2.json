@@ -1,0 +1,58 @@
+[
+  {
+    "id": "m1",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(earnings_surprise_magnitude, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "惊喜幅度+反转"
+  },
+  {
+    "id": "m2",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(earnings_surprise_direction, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "惊喜方向+反转"
+  },
+  {
+    "id": "m3",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_prediction, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "惊喜预测+反转"
+  },
+  {
+    "id": "m4",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正趋势+反转"
+  },
+  {
+    "id": "m5",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 10))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正+反转窗10"
+  },
+  {
+    "id": "m6",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.55), multiply(reverse(rank(ts_zscore(returns, 21))), 0.45))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正0.55+反转0.45"
+  },
+  {
+    "id": "m7",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.4), multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_score, std=4), 66), 250)), 0.3), multiply(reverse(rank(ts_zscore(returns, 21))), 0.3))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "三腿 修正+惊喜+反转"
+  },
+  {
+    "id": "m8",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(earnings_surprise_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "惊喜趋势+反转"
+  }
+]

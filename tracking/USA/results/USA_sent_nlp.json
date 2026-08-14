@@ -1,0 +1,44 @@
+[
+  {
+    "id": "e1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "vader 情感 xAdL5vmN 结构"
+  },
+  {
+    "id": "e2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_textblob_sentiment_score), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "textblob 情感 xAdL5vmN 结构"
+  },
+  {
+    "id": "e3",
+    "expr": "rank(ts_rank(ts_backfill(vec_avg(headline_sentiment_vader_score), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "vader j2rrpVzO 结构"
+  },
+  {
+    "id": "e4",
+    "expr": "rank(ts_rank(ts_backfill(vec_avg(headline_sentence_sentiment_average), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "句级情感 j2rrpVzO 结构"
+  },
+  {
+    "id": "e5",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiwordnet_positive_polarity), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "SentiWordNet 正向 xAdL5vmN"
+  },
+  {
+    "id": "e6",
+    "expr": "subtract(rank(ts_rank(ts_backfill(vec_avg(headline_sentiment_vader_score), 66), 126)), rank(ts_rank(ts_backfill(vec_avg(headline_sentence_sentiment_variance), 66), 126)))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "vader-方差差"
+  }
+]

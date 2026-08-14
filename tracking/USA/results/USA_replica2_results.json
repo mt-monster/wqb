@@ -1,0 +1,50 @@
+{
+  "b1_revision_gz": {
+    "alpha_id": "e73amxJM",
+    "S": 0.59,
+    "F": 0.25,
+    "T": 0.0866,
+    "2Y": null,
+    "fails": []
+  },
+  "b2_surprise_gz": {
+    "alpha_id": "j26avrLQ",
+    "S": 0.25,
+    "F": 0.07,
+    "T": 0.0935,
+    "2Y": null,
+    "fails": []
+  },
+  "b3_magnitude_gz": {
+    "alpha_id": "zqNdZRao",
+    "S": 0.4,
+    "F": 0.14,
+    "T": 0.057,
+    "2Y": null,
+    "fails": []
+  },
+  "b4_trend_gz": {
+    "alpha_id": "9qplY7oV",
+    "S": 0.24,
+    "F": 0.09,
+    "T": 0.0924,
+    "2Y": null,
+    "fails": []
+  },
+  "b5_consistency_gz": {
+    "alpha_id": "WjAlMVkx",
+    "S": 0.2,
+    "F": 0.05,
+    "T": 0.0685,
+    "2Y": null,
+    "fails": []
+  },
+  "b6_prediction_gz": {
+    "alpha_id": "pwNamKQX",
+    "S": 0.45,
+    "F": 0.16,
+    "T": 0.0635,
+    "2Y": null,
+    "fails": []
+  }
+}

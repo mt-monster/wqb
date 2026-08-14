@@ -1,0 +1,44 @@
+[
+  {
+    "id": "c1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_2), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "ILLIQUID × hist_2"
+  },
+  {
+    "id": "c2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "ILLIQUID × hist_7"
+  },
+  {
+    "id": "c3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(earnings_surprise_frequency_score_2), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "ILLIQUID × freq2"
+  },
+  {
+    "id": "c4",
+    "expr": "rank(ts_rank(ts_backfill(vec_avg(historic_earnings_surprise_score_2), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "ILLIQUID j2rrpVzO 结构 × hist_2"
+  },
+  {
+    "id": "c5",
+    "expr": "rank(ts_rank(ts_backfill(vec_avg(earnings_surprise_frequency_score_2), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "ILLIQUID j2rrpVzO 结构 × freq2"
+  },
+  {
+    "id": "c6",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_3), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "ILLIQUID × hist_3"
+  }
+]

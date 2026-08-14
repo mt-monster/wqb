@@ -1,0 +1,37 @@
+[
+  {
+    "id": "g1",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90)",
+    "neut": "SECTOR",
+    "decay": 6,
+    "note": "hist_7 × SECTOR"
+  },
+  {
+    "id": "g2",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90)",
+    "neut": "INDUSTRY",
+    "decay": 6,
+    "note": "hist_7 × INDUSTRY"
+  },
+  {
+    "id": "g3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90)",
+    "neut": "MARKET",
+    "decay": 6,
+    "note": "hist_7 × MARKET"
+  },
+  {
+    "id": "g4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_2), subindustry), 0.5), 5), 90)",
+    "neut": "SECTOR",
+    "decay": 6,
+    "note": "hist_2 × SECTOR"
+  },
+  {
+    "id": "g5",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_3), subindustry), 0.5), 5), 90)",
+    "neut": "SECTOR",
+    "decay": 6,
+    "note": "hist_3 × SECTOR"
+  }
+]

@@ -1,0 +1,3154 @@
+[
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_eps_growth,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_eps_growth,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_eps_growth,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_eps_growth,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_eps_growth,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_1y_eps_growth,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_1y_eps_growth,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_1y_eps_growth,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_1y_eps_growth,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_1y_cashflow_to_price,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_cashflow_to_price,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_cashflow_to_price,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_cashflow_to_price,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_1y_cashflow_to_price,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_1y_cashflow_to_price,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_1y_cashflow_to_price,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_1y_cashflow_to_price,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_1y_cashflow_to_price,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_50_200d_price_ratio,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_50_200d_price_ratio,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_50_200d_price_ratio,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_50_200d_price_ratio,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_50_200d_price_ratio,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_50_200d_price_ratio,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_50_200d_price_ratio,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_50_200d_price_ratio,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_50_200d_price_ratio,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_log_closing_price,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_log_closing_price,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_log_closing_price,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_log_closing_price,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_log_closing_price,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_log_closing_price,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_log_closing_price,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_log_closing_price,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_log_closing_price,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_operating_cashflow_growth_rate,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_operating_cashflow_growth_rate,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_operating_cashflow_growth_rate,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_operating_cashflow_growth_rate,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_operating_cashflow_growth_rate,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_operating_cashflow_growth_rate,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_operating_cashflow_growth_rate,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_operating_cashflow_growth_rate,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_operating_cashflow_growth_rate,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_net_profit_margin_ratio,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_net_profit_margin_ratio,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_net_profit_margin_ratio,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_net_profit_margin_ratio,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_net_profit_margin_ratio,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_net_profit_margin_ratio,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_net_profit_margin_ratio,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_net_profit_margin_ratio,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_net_profit_margin_ratio,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_industry_relative_ebitda_to_price,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_industry_relative_ebitda_to_price,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_industry_relative_ebitda_to_price,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_industry_relative_ebitda_to_price,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_industry_relative_ebitda_to_price,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_industry_relative_ebitda_to_price,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_industry_relative_ebitda_to_price,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_industry_relative_ebitda_to_price,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_industry_relative_ebitda_to_price,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_fama_french_momentum,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_fama_french_momentum,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_fama_french_momentum,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_fama_french_momentum,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_fama_french_momentum,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_fama_french_momentum,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_fama_french_momentum,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_fama_french_momentum,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_fama_french_momentum,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_asset_turnover_growth,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_asset_turnover_growth,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_asset_turnover_growth,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_asset_turnover_growth,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_asset_turnover_growth,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_asset_turnover_growth,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_asset_turnover_growth,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_asset_turnover_growth,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_asset_turnover_growth,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_debt_to_cashflow_ratio,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_debt_to_cashflow_ratio,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_debt_to_cashflow_ratio,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_debt_to_cashflow_ratio,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_debt_to_cashflow_ratio,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_debt_to_cashflow_ratio,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_debt_to_cashflow_ratio,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_debt_to_cashflow_ratio,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_debt_to_cashflow_ratio,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_dividend_yield_2,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_dividend_yield_2,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_dividend_yield_2,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_dividend_yield_2,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_dividend_yield_2,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_dividend_yield_2,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_dividend_yield_2,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_dividend_yield_2,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_dividend_yield_2,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_eps_growth_rate,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_eps_growth_rate,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_eps_growth_rate,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_eps_growth_rate,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_eps_growth_rate,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_eps_growth_rate,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_eps_growth_rate,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_eps_growth_rate,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_eps_growth_rate,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_return_on_equity,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_return_on_equity,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_return_on_equity,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_return_on_equity,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_return_on_equity,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_return_on_equity,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_return_on_equity,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_return_on_equity,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_return_on_equity,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_book_to_market_ratio_2,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_book_to_market_ratio_2,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_book_to_market_ratio_2,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_book_to_market_ratio_2,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_book_to_market_ratio_2,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_book_to_market_ratio_2,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_book_to_market_ratio_2,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_book_to_market_ratio_2,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_book_to_market_ratio_2,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,20),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,20),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,44),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,44),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 44,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 60,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,100),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(change_sales_growth_rate,100),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_rank",
+    "window": 100,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_sales_growth_rate,20),sector),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_sales_growth_rate,20),industry),10)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 20,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_sales_growth_rate,44),sector),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "ts_backfill(group_neutralize(ts_sum(change_sales_growth_rate,44),industry),22)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "ts_backfill_layered_neut",
+    "window": 44,
+    "operators": 3
+  },
+  {
+    "expr": "-ts_rank(change_sales_growth_rate,20)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "-ts_rank(change_sales_growth_rate,60)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "simple_ts_rank_neg",
+    "window": 60,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_sales_growth_rate,5),60),sector)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "group_rank(ts_rank(ts_delta(change_sales_growth_rate,5),60),industry)",
+    "decay": 5,
+    "label": "ml_factor_proj",
+    "template": "group_rank_ts_delta",
+    "window": 60,
+    "operators": 3
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_5day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_5day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(quantile_label_2bucket_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(quantile_label_2bucket_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_5day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_5day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(probability_label1_2quantile_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(probability_label1_2quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_5day_ohlcv,5) - ts_rank(probability_label1_2quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "momentum_diff",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_3bucket_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_3bucket_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_3bucket_5day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_3bucket_5day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(quantile_label_3bucket_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(quantile_label_3bucket_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_3quantile_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_3quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_3quantile_5day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_3quantile_5day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(probability_label1_3quantile_5day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(probability_label1_3quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_3quantile_5day_ohlcv,5) - ts_rank(probability_label1_3quantile_5day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "momentum_diff",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_5bucket_20day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_5bucket_20day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_5bucket_20day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_5bucket_20day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(quantile_label_5bucket_20day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(quantile_label_5bucket_20day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_5quantile_20day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_5quantile_20day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_5quantile_20day_ohlcv,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_5quantile_20day_ohlcv,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_5quantile_20day_ohlcv,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_5quantile_20day_ohlcv,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_5quantile_20day_ohlcv,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(probability_label1_5quantile_20day_ohlcv,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(probability_label1_5quantile_20day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_5quantile_20day_ohlcv,5) - ts_rank(probability_label1_5quantile_20day_ohlcv,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "momentum_diff",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_5day_return_estimate_eur_ohlc_ma,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(single_bucket_5day_return_estimate_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(single_bucket_5day_return_estimate_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(single_bucket_20day_return_estimate_eur_ohlc_ma,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(single_bucket_20day_return_estimate_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(single_bucket_20day_return_estimate_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(quantile_label_2bucket_50day_eur_ohlc_ma,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(quantile_label_2bucket_50day_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(quantile_label_2bucket_50day_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,44)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "simple_ts_rank",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,5),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,5),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 5,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,20),sector)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "group_rank(ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,20),industry)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "group_rank_ts_rank",
+    "window": 20,
+    "operators": 2
+  },
+  {
+    "expr": "ts_backfill(probability_label1_2quantile_50day_eur_ohlc_ma,5)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_backfill(probability_label1_2quantile_50day_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "ts_backfill",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,5) - ts_rank(probability_label1_2quantile_50day_eur_ohlc_ma,20)",
+    "decay": 5,
+    "label": "dl_riskfree_returns",
+    "template": "momentum_diff",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiment_vader_score,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiment_vader_score,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiment_vader_score,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiment_vader_score,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiment_vader_score,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_sentiment_vader_score)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_textblob_sentiment_score,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_textblob_sentiment_score,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_textblob_sentiment_score,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_textblob_sentiment_score,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_textblob_sentiment_score,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_textblob_sentiment_score)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiwordnet_positive_polarity,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiwordnet_positive_polarity,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_positive_polarity,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_positive_polarity,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_positive_polarity,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_sentiwordnet_positive_polarity)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiwordnet_negative_polarity,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_sentiwordnet_negative_polarity,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_negative_polarity,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_negative_polarity,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_sentiwordnet_negative_polarity,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_sentiwordnet_negative_polarity)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_subjectivity_score,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_subjectivity_score,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_subjectivity_score,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_subjectivity_score,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_subjectivity_score,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_subjectivity_score)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_vader_positive_polarity,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_vader_positive_polarity,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_positive_polarity,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_positive_polarity,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_positive_polarity,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_vader_positive_polarity)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_vader_negative_polarity,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_vader_negative_polarity,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_negative_polarity,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_negative_polarity,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_vader_negative_polarity,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_vader_negative_polarity)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_gunning_fog_index,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_gunning_fog_index,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_gunning_fog_index,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_gunning_fog_index,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_gunning_fog_index,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_gunning_fog_index)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_flesch_readability_score,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_flesch_readability_score,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_flesch_readability_score,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_flesch_readability_score,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_flesch_readability_score,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_flesch_readability_score)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_word_count_total,sector)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "group_rank(vec_headline_word_count_total,industry)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "group_rank_vec",
+    "window": 0,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_word_count_total,5)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 5,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_word_count_total,20)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 20,
+    "operators": 1
+  },
+  {
+    "expr": "ts_rank(vec_headline_word_count_total,44)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "ts_rank_vec",
+    "window": 44,
+    "operators": 1
+  },
+  {
+    "expr": "sign(vec_headline_word_count_total)",
+    "decay": 5,
+    "label": "news_sentiment_nlp",
+    "template": "sign_vec",
+    "window": 0,
+    "operators": 1
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "e1_vader_signed": {
+    "alpha_id": "O0GWPGep",
+    "S": 0.38,
+    "F": 0.11,
+    "T": 0.0774,
+    "2Y": null,
+    "fails": []
+  },
+  "e2_textblob_signed": {
+    "alpha_id": "P0G5aGex",
+    "S": 0.43,
+    "F": 0.13,
+    "T": 0.0774,
+    "2Y": null,
+    "fails": []
+  },
+  "e5_sentiwordnet_signed": {
+    "alpha_id": "YPvaKvZo",
+    "S": 0.37,
+    "F": 0.1,
+    "T": 0.0786,
+    "2Y": null,
+    "fails": []
+  },
+  "e3_vader_j2": {
+    "alpha_id": "6XpMVAgO",
+    "S": 0.21,
+    "F": 0.03,
+    "T": 0.3298,
+    "2Y": null,
+    "fails": []
+  },
+  "e4_sentence_j2": {
+    "alpha_id": "JjG8EPRm",
+    "S": 0.15,
+    "F": 0.02,
+    "T": 0.33,
+    "2Y": null,
+    "fails": []
+  },
+  "e6_vader_variance": {
+    "alpha_id": "wpaox9Xl",
+    "S": -0.37,
+    "F": -0.07,
+    "T": 0.2691,
+    "2Y": null,
+    "fails": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-08-12",
+  "region": "EUR", "delay": 1, "universe": "TOP2500", "neutralization": "STATISTICAL", "truncation": 0.08, "decay": 4,
+  "method": "论文驱动算子组合 (WebSearch: Blitz2013残差反转/Nguyen2020欧洲/Avramov2021换手交互/Novy-Marx波动交互/Chen2024 52周高点)",
+  "ra_passed_candidates": [
+    {"id": "qMNEG2Z2", "expr": "rev252*0.5 + rev252*vol_rank*0.5", "S": 2.30, "F": 1.27, "subU": 1.51, "2Y": 2.36, "note": "核心突破: 纯反转腿补subU + 波动腿补2Y"},
+    {"id": "pwNvZWKo", "expr": "rev252 0.6/0.4 vol", "S": 2.50, "F": 1.37, "subU": 1.59, "2Y": 2.21},
+    {"id": "xAN1WlNl", "expr": "rev252 0.5/0.5 vol d15", "S": 2.52, "F": 1.36, "subU": 1.67, "2Y": 2.32},
+    {"id": "6XpAJGe5", "expr": "rev504 0.5/0.5 vol", "S": 2.33, "F": 1.30, "subU": 1.61, "2Y": 2.35},
+    {"id": "RRmAK51e", "expr": "rev126 0.5/0.5 vol", "S": 2.19, "F": 1.17, "subU": 1.47, "2Y": 2.30},
+    {"id": "3qpj5GlZ", "expr": "rev252 0.5/0.5 vol d25", "S": 2.14, "F": 1.20, "subU": 1.38, "2Y": 2.46},
+    {"id": "gJ8WdrMl", "expr": "rev252 0.4/0.6 vol", "S": 2.09, "F": 1.17, "subU": 1.40, "2Y": 2.46},
+    {"id": "ak1VwR1O", "expr": "rev252 0.5/0.5 vol126", "S": 2.08, "F": 1.10, "subU": 1.37, "2Y": 2.20},
+    {"id": "d5ZKo9jJ", "expr": "ts_rank rev 0.5/0.5 vol", "S": 2.08, "F": 1.10, "subU": 1.44, "2Y": 2.38},
+    {"id": "A1GQEn7R", "expr": "rev252 0.5/0.5 highlow", "S": 2.42, "F": 1.25, "subU": 1.50, "2Y": 2.26},
+    {"id": "kqPJ9nP8", "expr": "rev252 0.5 + ts_rank_rev*vol 0.5", "S": 2.24, "F": 1.22, "subU": 1.48, "2Y": 2.41}
+  ],
+  "mutual_corr": "同族互相关 0.85-0.99 (>0.7) → 波动混合族仅 1 名额; 需非反转信号源凑 3 个",
+  "non_reversion_batch": "4ojhH13Cv4viabliRZczIpM (高换手动量/52周高点/残差动量/量能) 轮询中"
+}

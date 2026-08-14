@@ -1,0 +1,57 @@
+{
+  "m2a_eps_growth_w60": {
+    "alpha_id": "1YpZ8mVz",
+    "status": "COMPLETE",
+    "sharpe": 0.33,
+    "fitness": 0.06,
+    "turnover": 0.2194,
+    "margin": 6.8e-05,
+    "returns": 0.0074,
+    "long_count": 675,
+    "short_count": 678
+  },
+  "m2b_revision_fy2_w60": {
+    "alpha_id": "58pgm675",
+    "status": "COMPLETE",
+    "sharpe": 0.12,
+    "fitness": 0.02,
+    "turnover": 0.1886,
+    "margin": 3.9e-05,
+    "returns": 0.0037,
+    "long_count": 679,
+    "short_count": 674
+  },
+  "m2c_eps_growth_w120": {
+    "alpha_id": "GrGO28YP",
+    "status": "COMPLETE",
+    "sharpe": 0.28,
+    "fitness": 0.05,
+    "turnover": 0.1745,
+    "margin": 7.2e-05,
+    "returns": 0.0063,
+    "long_count": 676,
+    "short_count": 677
+  },
+  "m2d_eps_growth_minus_eps_price": {
+    "alpha_id": "78z6PlaZ",
+    "status": "COMPLETE",
+    "sharpe": 0.47,
+    "fitness": 0.11,
+    "turnover": 0.279,
+    "margin": 0.000102,
+    "returns": 0.0143,
+    "long_count": 678,
+    "short_count": 675
+  },
+  "m2e_sales_growth_rev": {
+    "alpha_id": "9qpWe6br",
+    "status": "COMPLETE",
+    "sharpe": 0.5,
+    "fitness": 0.11,
+    "turnover": 0.2392,
+    "margin": 9.2e-05,
+    "returns": 0.011,
+    "long_count": 677,
+    "short_count": 676
+  }
+}

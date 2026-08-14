@@ -1,0 +1,2324 @@
+[
+  {
+    "id": "30927669645207",
+    "title": "如何拯救高turnover因子？一文助你理解并降低因子turnover",
+    "author": "ZS59763",
+    "body": "顾名思义，在回测中常常能遇到高turn高sharpe高fit但低margin的因子。这类因子会直接影响我们的combined performance score，降低被PM采纳获得weight的机会，下面给大家分享如何降低换手率的常见方法\n如何理解turn，margin和return的关系？\n粗线条地说，return=turnover*margin，所以在给定收益的情况下，换手率越高，margin越低。margin跟手续费相关联，所以为了较高的margin，需要压低turnover。形象来说，我今天交易10次股票，挣了100块，那么我单笔交易平均收益10元，扣除5元手续费还有净利润。倘若我用1000次交易挣得100元，那么单笔交易收益降低至0.1元，远远不够手续费。\n降低turn的方式有哪些？\n常见的降turn方式有：增加decay，使用tradewhen，使用降turn运算符。\n增加decay的方式可以提升信号的“一致性”，让信号不是那么频繁的变化（后文我们也会看到，一些降turn的op采取的也是类似的思想）\n使用tradewhen：\ntradewhen相当于增加开平仓条件，减少信号频繁变化的次数。直观的理解：市场并非天天大涨大跌，针对市场整体涨跌幅波动率小于1%（仅为举例）的时间窗口，不进行交易，这样可以减少一段时间内的整体换手率（但是会以表现为代价）\n推荐阅读：\n我可以使用 Trade_when 来降低流水率吗？– WorldQuant 大脑\n使用降turn运算符\n降低turn运算符的核心思路在于限制变化幅度，从而减少仓位变化。可以指定turnover具体数值（实际结果会略微高于这个数值），但注意：较低的数值可能会完全破坏信号逻辑，使得因子无效。\n实操方式：\n本帖给出相关代码，使得可以按照turn区间筛选因子并利用降turn运算符进行处理回测。此外，本帖也提供了一个可以抓取并统计字段（向量类型数据按照vec运算符计算）的方法（来自本人另一篇文章：\n如何统计得到的字段数？如何抓取多地区因子一起检验？ – WorldQuant BRAIN\n）\n抓取因子：\ndef get_alphas(start_date, end_date, sharpe_th, fitness_th,turnover_th_up,turnover_th_down, region, alpha_num, usage):\ns = login()\noutput = []\n# 3E large 3C less\ncount = 0\nfor i in range(0, alpha_num, 100):\nprint(i)\nurl_e = \"\nhttps://api.worldquantbrain.com/users/self/alphas?limit=100&offset=%d\"%(i)\n\\\n+ \"&status=UNSUBMITTED%1FIS_FAIL&dateCreated%3E=\" + start_date  \\\n+ \"T00:00:00-04:00&dateCreated%3C\" + end_date \\\n+ \"T00:00:00-04:00&is.fitness%3E\" + str(fitness_th) + \"&is.sharpe%3E\" \\\n+ str(sharpe_th) + \"&settings.region=\" + region + \"&order=-is.sharpe&hidden=false&type!=SUPER\"\nurl_c = \"\nhttps://api.worldquantbrain.com/users/self/alphas?limit=100&offset=%d\"%(i)\n\\\n+ \"&status=UNSUBMITTED%1FIS_FAIL&dateCreated%3E=\" + start_date  \\\n+ \"T00:00:00-04:00&dateCreated%3C\" + end_date \\\n+ \"T00:00:00-04:00&is.fitness%3C-\" + str(fitness_th) + \"&is.sharpe%3C-\" \\\n+ str(sharpe_th) + \"&settings.region=\" + region + \"&order=is.sharpe&hidden=false&type!=SUPER\"\nurls = [url_e]\nif usage != \"submit\":\nurls.append(url_c)\nfor url in urls:\nresponse = s.get(url)\n#print(response.json())\ntry:\nalpha_list = response.json()[\"results\"]\n#print(response.json())\nfor j in range(len(alpha_list)):\nalpha_id = alpha_list[j][\"id\"]\nname = alpha_list[j][\"name\"]\ndateCreated = alpha_list[j][\"dateCreated\"]\nsharpe = alpha_list[j][\"is\"][\"sharpe\"]\nfitness = alpha_list[j][\"is\"][\"fitness\"]\nturnover = alpha_list[j][\"is\"][\"turnover\"]\nmargin = alpha_list[j][\"is\"][\"margin\"]\nlongCount = alpha_list[j][\"is\"][\"longCount\"]\nshortCount = alpha_list[j][\"is\"][\"shortCount\"]\ndecay = alpha_list[j][\"settings\"][\"decay\"]\nexp = alpha_list[j]['regular']['code']\ncount += 1\n#if (sharpe > 1.2 and sharpe < 1.6) or (sharpe < -1.2 and sharpe > -1.6):\nif (longCount + shortCount) > 100 and (turnover>turnover_th_up) and (turnover<turnover_th_down):\nif sharpe < -sharpe_th:\nexp = \"-%s\"%exp\nrec = [alpha_id, exp, sharpe, turnover, fitness, margin, dateCreated, decay]\nprint(rec)\nif turnover > 0.7:\nrec.append(decay*4)\nelif turnover > 0.6:\nrec.append(decay*3+3)\nelif turnover > 0.5:\nrec.append(decay*3)\nelif turnover > 0.4:\nrec.append(decay*2)\nelif turnover > 0.35:\nrec.append(decay+4)\nelif turnover > 0.3:\nrec.append(decay+2)\noutput.append(rec)\nexcept:\nprint(\"%d finished re-login\"%i)\ns = login()\nprint(\"count: %d\"%count)\nreturn output\ndef transform(next_alpha_recs, region):\noutput = []\nfor rec in next_alpha_recs:\ndecay = rec[-1]\nexp = rec[1]\noutput.append([exp,decay])\noutput_dict = {region : output}\nreturn output_dict\ndef prune(next_alpha_recs, prefix, keep_num):\n# prefix is the datafield prefix, fnd6, mdl175 ...\n# keep_num is the num of top sharpe same-datafield alpha\noutput = []\nnum_dict = defaultdict(int)\nfor rec in next_alpha_recs:\nexp = rec[1]\nfield = exp.split(prefix)[-1].split(\",\")[0]\nsharpe = rec[2]\nif sharpe < 0:\nfield = \"-%s\"%field\nif num_dict[field] < keep_num:\nnum_dict[field] += 1\ndecay = rec[-1]\nexp = rec[1]\noutput.append([exp,decay])\nreturn output\n## get promising alphas to improve in the next order\nfo_tracker = get_alphas(\"2025-03-01\", \"2025-03-24\", 1.6,1,0.3,0.7, \"ASI\", 9000, \"track\")\nprint(len(fo_tracker))\nget_alphas函数参数：开始日期，结束日期，最低sharpe，最低fit，turn下限，turn上限，地区，数量，抓取类型 。\n减枝函数：\ndef prune_modified(next_alpha_recs,prefix,keep_num):\noutput = []\nnum_dict = defaultdict(int)\nfor rec in next_alpha_recs:\nexp = rec[1]\nsharpe = rec[2]\nfield = exp.split(prefix)[-1].split(\",\")[0]\nif sharpe < 0:\nfield = \"-%s\"%field\nif num_dict[field] < keep_num:\nnum_dict[field] += 1\noutput.append(rec)\nreturn output\ndef extract_fields(next_alpha_recs):\nfield_counts = defaultdict(int)\nfor rec in next_alpha_recs:\n# 提取完整字段名\nfull_field = rec[1]\n# 找到 winsorize 或 ts_backfill 的位置\n#winsorize_index = full_field.find('winsorize(')\nbackfill_index = full_field.find('ts_backfill(')\nend_index=full_field.find(', 120')\n# 选择最先出现的位置\nif backfill_index != -1 and backfill_index != -1:\ncut_index = min(backfill_index, end_index)\nelif backfill_index != -1:\ncut_index = backfill_index\nelif end_index != -1:\ncut_index = end_index\nelse:\n# 如果没有找到这两个关键词，跳过此记录\ncontinue\n# 提取字段名（cut_index之前的部分）\nfield_name = full_field[cut_index+12:end_index].strip()\nfield_counts[field_name] += 1\nreturn dict(field_counts)\ndef prune_second_order(inputdata,all_dict):\nth_tracker1=inputdata.copy()\noutpur=th_tracker1\nfor i in all_dict.keys():\nif all_dict[i]>100:\noutpur=prune_modified(outpur,i,2)\nif all_dict[i]<=100 and all_dict[i]>20:\noutpur=prune_modified(outpur,i,3)\nif all_dict[i]>10 and all_dict[i]<=50:\noutpur=prune_modified(outpur,i,4)\nif all_dict[i]>3 and all_dict[i]<=10:\noutpur=prune_modified(outpur,i,5)\nreturn outpur\nfo_tracker_new=[]\nfor i in fo_tracker:\nif ';' not in i[1]:\nfo_tracker_new.append(i)\nprint(len(fo_tracker_new))\nall_dict=extract_fields(fo_tracker_new)\nprint(all_dict)\nfo_tracker_tailed=prune_second_order(fo_tracker_new,all_dict)\nfo_tracker_new=[]\nfor i in range(len(fo_tracker_tailed)):\nindex=0\nfor j in [';']:\nif j in fo_tracker_tailed[i][1]:\nindex=1\nif index==0:\nfo_tracker_new.append(fo_tracker_tailed[i][1])\nprint(len(fo_tracker_tailed))\n#all_dict=extract_fields(fo_tracker_new)\nprint(len(fo_tracker_new))\nprint(fo_tracker_new[0:3])\n加入运算符：\nso_alpha_list = []\nfor expr in fo_tracker_new:\nso_alpha_list.append('ts_target_tvr_decay('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.05)')\nso_alpha_list.append('ts_target_tvr_decay('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.1)')\nso_alpha_list.append('ts_target_tvr_decay('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.2)')\nso_alpha_list.append('ts_target_tvr_decay('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.25)')\nso_alpha_list.append('ts_target_tvr_decay('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.3)')\nso_alpha_list.append('ts_target_tvr_hump('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.05)')\nso_alpha_list.append('ts_target_tvr_hump('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.1)')\nso_alpha_list.append('ts_target_tvr_hump('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.2)')\nso_alpha_list.append('ts_target_tvr_hump('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.25)')\nso_alpha_list.append('ts_target_tvr_hump('+expr+', lambda_min=0, lambda_max=1, target_tvr=0.3)')\nso_alpha_list.append('hump_decay('+expr+', p=0)')\nso_alpha_list.append('hump_decay('+expr+', p=0.01)')\nso_alpha_list.append('hump_decay('+expr+', p=0.1)')\nso_alpha_list.append('hump_decay('+expr+', p=1)')\nso_alpha_list.append('ts_decay_exp_window('+expr+', 240, factor =0.5)')\nso_alpha_list.append('ts_decay_exp_window('+expr+', 120, factor =0.5)')\nso_alpha_list.append('ts_decay_exp_window('+expr+', 20, factor =0.5)')\nso_alpha_list.append('ts_decay_exp_window('+expr+', 60, factor =0.5)')\nso_alpha_list.append('ts_decay_exp_window('+expr+', 40, factor =0.5)')\nso_alpha_list.append('ts_decay_linear('+expr+', 240, dense = false)')\nso_alpha_list.append('ts_decay_linear('+expr+', 120, dense = false)')\nso_alpha_list.append('ts_decay_linear('+expr+', 60, dense = false)')\nso_alpha_list.append('ts_decay_linear('+expr+', 40, dense = false)')\nso_alpha_list.append('ts_decay_linear('+expr+', 20, dense = false)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.05)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.1)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.15)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.2)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.25)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+', 1, lambda_min=0, lambda_max=1,target_tvr=0.3)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.05)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.1)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.15)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.2)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.25)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',close, lambda_min=0, lambda_max=1,target_tvr=0.3)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.05)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.1)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.15)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.2)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.25)')\nso_alpha_list.append('ts_target_tvr_delta_limit('+expr+',adv20, lambda_min=0, lambda_max=1,target_tvr=0.3)')\nprint(len(so_alpha_list))\nprint(so_alpha_list[:3])\n后续操作与一二三阶段模版相同，划分pool并进行回测即可。\n注意：剪枝函数只能针对123阶因子进行减枝，如果使用模版可能需要进一步处理\n推荐：将降turn操作作为“新2阶”使用，即：同时跑使用group的二阶与本文提到的操作，亦可作为“新3阶”使用，经近4个月的验证，有可实现性。\n祝好运。",
+    "votes": 176,
+    "created_at": "2025-03-26T01:38:29Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/30927669645207-%E5%A6%82%E4%BD%95%E6%8B%AF%E6%95%91%E9%AB%98turnover%E5%9B%A0%E5%AD%90-%E4%B8%80%E6%96%87%E5%8A%A9%E4%BD%A0%E7%90%86%E8%A7%A3%E5%B9%B6%E9%99%8D%E4%BD%8E%E5%9B%A0%E5%AD%90turnover",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢楼主的详细分享！我最近在GLB地区使用fundamental6数据集研究alpha，也遇到了类似的高turnover问题。\n我的经验：\n- 使用的运算符组合：ts_zscore + winsorize + ts_backfill\n- 初始turnover范围：0.2-0.4\n- 遇到的问题：LOW_SHARPE和HIGH_TURNOVER同时FAIL\n我的疑问：\n帖子中提到的ts_target_tvr_decay运算符，在GLB地区使用时是否需要特别注意decay参数的设置？因为我发现GLB地区的alpha回测速度较慢，想了解一下是否有优化建议。\n我的计划：\n打算尝试帖子中提到的\"将降turn操作作为新2阶使用\"的思路，同时保留原始的group二阶运算符进行对比测试。\n期待更多关于GLB地区降turnover的经验分享！",
+        "date": "2026-06-18T10:20:37Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇降低turnover的干货满满！decay_linear和ts_mean确实能平滑信号，但要注意别把信号逻辑也平滑没了。我之前降到0.1后因子完全失效，教训深刻。按turn区间筛选再用降turn运算符处理这个思路值得借鉴。",
+        "date": "2026-06-09T04:02:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================\n学习了，但是看的一知半解\n标记一下，回头再来看\n====================================================================================",
+        "date": "2026-03-26T08:56:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ts_target_tvr_hump，\nhump_decay，\nts_target_tvr_delta_limit 这几个没权限，先跑下试试，感谢大佬分享",
+        "date": "2026-03-10T06:50:00Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "get_alphas修改decay后把setting值保留会不会更方便些\n毕竟只是修改decay和alpha  其他都保持不变 这样获取的时候就不用关心地区和中性化等数据",
+        "date": "2025-12-27T05:20:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很详细的降低turnover的经验，确实拓宽了很多思路，很多高turnovers的因子也有回测调优的思路了\n==================================================\n感谢大佬的分享，祝大佬vf保持0.9+\n==================================================",
+        "date": "2025-12-25T06:56:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "后期尝试试用一下。",
+        "date": "2025-12-13T12:56:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享,已经使用上了。让我有了新的回测思路",
+        "date": "2025-12-09T03:52:32Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享,正好学习ts_target_tvr_delta_limit怎么使用.",
+        "date": "2025-11-29T14:46:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，之前一直苦恼于高换手率的问题，通过文章中的降turnover方法，成功将一批原本无法提交的因子优化到了可接受范围。特别是ts_target_tvr_decay和ts_target_tvr_hump运算符实测好用，效果显著。已经将这套方法应用到日常因子挖掘流程中，效率提升明显。再次感谢大佬的无私分享！",
+        "date": "2025-11-29T12:07:47Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，让我有了新思路",
+        "date": "2025-11-02T12:47:08Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢分享",
+        "date": "2025-10-26T16:41:05Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢王大哥的分享！好不容易出来的alpha都是高turnover的，margin实在是太低了，点塔都点不愉快",
+        "date": "2025-08-16T02:39:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬太强了，这回具体理解了returns, turnover和margin的关系",
+        "date": "2025-08-12T04:47:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王大佬的分享, 好多alpha其他指标都不错，就是tvr太高，margin太低，赶快用这个代码都再优化一遍淘淘金。",
+        "date": "2025-08-09T05:44:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大哥， 一二三阶的alpha   照着这个又调了调 ，  成功提交顾问的第一个regular alpha",
+        "date": "2025-08-07T02:15:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王大佬的分享，本文提到的操作跑完是跑二阶还是三阶呢？\n=============================================================================\nThe best time to plant a tree is 20 years ago. The second-best time is now.\n=============================================================================",
+        "date": "2025-07-04T14:08:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王大佬的分享！！！\n在其他指标都过线的情况下，低margin这类alpha属于是有预测能力但不够强的alpha，而高margin的alpha是属于有预测能力且预测强的alpha。通过文章中提到的方法降低turnover，实际上也是在提升预测能力，将过去几日的alpha复合起来",
+        "date": "2025-07-03T02:49:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王大佬的分享，用了这个代码，果真把我的换手率降低了，把margin 和 return 都提高了，谢谢大佬的代码，手动点赞\n================================VF 1.0===========================================",
+        "date": "2025-07-02T07:28:55Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王的分享 非常不错的代码 可以直接使用的，没想到使用这个代码筛选的函数，这就很好了，之前都是手动筛选，感觉现在用这个api好多了",
+        "date": "2025-05-28T08:55:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢楼主分享，之前自己遇到了相关问题自己手动测试修改了，没想到已经有大神分享了解决方法，手动点赞",
+        "date": "2025-05-07T08:27:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，回头尝试一下",
+        "date": "2025-04-08T05:34:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢楼主的分享，我前几天就遇到了这种情况，回头试试",
+        "date": "2025-04-02T04:37:00Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享,已经使用上了",
+        "date": "2025-04-01T17:15:05Z"
+      }
+    ],
+    "comment_count": 24,
+    "query_hits": [
+      "turnover"
+    ],
+    "snippet": "(longCount + shortCount) > 100 and ( turnover > turnover _th_up) and ( turnover < turnover _th_down):"
+  },
+  {
+    "id": "32034293019671",
+    "title": "组sa时如何选取高质量因子？",
+    "author": "ZS59763",
+    "body": "如题，在顾问群中发现很多刚开始组sa的顾问，不清楚select的具体选择方式。本帖给出对应规则以及一些例子。\n对于expert及以上顾问来说，筛选因子的第一步是用自己的因子，还是组别人的。这个可以通过own和not(own）进行筛选。\n第二步，降低选到的因子是过拟合的，或者混信号的概率，可以通过operator_count限制op数量，dataset_count限制数据集数量。\n（第二点五步，如果想要选取特定category，特定color或者特定tag的因子，也可以进行筛选。研究小组中有大佬提出过利用color和tag对于因子进行分组，从而按组select的方式）\n第三步，选低相关因子：从分散化角度来说,我们自然希望选出的因子相关性较低,这个可以从prod_correlation参数进行控制（selfcor也可以，但是这个是小于等于prod的，不够准确）\n第四步，选老顾问/组合表现较好顾问的因子：平台提供了许多因子owner的相关数据参数，可以根据参数进行筛选，主要包括成为顾问的时长，顾问地区，该顾问的sharpe，fit等等\n第五步，按照表现选因子。出于防止过拟合和刻意筛选的角度，我们不能够直接选高sharpe，高fit的好（not for sure）因子，平台提供了几个字段帮助我们筛选因子，包括turnover，truncation，long和short count等等，按照每个字段的范围进行分组选因子可以大幅降低重复筛选的概率，从而降低相关性。\n前边几步是筛选的过程，对于筛选的权重我们也可以进行调整。\n例如：我们可以按照turnover的大小进行赋权，对于turnover较高的因子赋予更小的 权重（在select表达式后加上/turnover即可），此步需要根据个人需求进行修改。\n总结：\n以上几步是我在筛选中的思考流程，更为详细具体的可以参考\nSelection Expression | WorldQuant BRAIN\n，针对因子选择的流程需要发挥主观能动性，多想多试，才能选出最适合的因子。以下几个案例是我在研究小组发过的select表达式总结，可以基于这三类，对于参数与权重进行调整，从而实现更好的组合。在自动化跑sa的时候，也可以按照不同的“模块”进行组装（但要注意条件不能太苛刻，至少得选出10个因子才能开始跑。）\n(own&& ( (turnover>0.03&&turnover<0.05)||(turnover<0.13&&turnover>0.1)||(turnover<0.17&&turnover>0.15) || ((turnover>0.17&&turnover<0.20)))&&(operator_count<18)&&prod_correlation<0.7)/(sigmoid(turnover)*sigmoid(prod_correlation)*log(long_count))\n(\nnot(own)&&\n((turnover<0.12&&turnover>0.09)||(turnover<0.15&&turnover>0.13)||(turnover<0.19&&turnover>0.16))\n&&(operator_count<8)\n&&(prod_correlation<0.4&&prod_correlation>0.0)\n&&(dataset_count<=2)\n)\n/(turnover*tanh(turnover)*sigmoid(self_correlation)*sigmoid(prod_correlation)*abs(long_count-short_count))\n(own&&(turnover<0.07||(turnover<0.25&&turnover>0.2)))/(sigmoid(turnover)*sigmoid(prod_correlation))",
+    "votes": 121,
+    "created_at": "2025-05-12T07:12:50Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32034293019671-%E7%BB%84sa%E6%97%B6%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E9%AB%98%E8%B4%A8%E9%87%8F%E5%9B%A0%E5%AD%90",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "组SA选因子的三步法很清晰：指标筛选、颜色分组、低相关选择。prod_correlation控制相关性这块确实是关键，我之前组SA时忽略了这个，结果几个高相关因子一起回撤。按颜色和标签分组这个技巧也很实用。",
+        "date": "2026-06-09T04:02:37Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢楼主游戏王的分享，这可谓是刚升级expert的一份大礼。",
+        "date": "2026-01-26T13:33:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "终于有了not own权限和资源，这几天赶紧把游戏王大佬的帖子回来看看，开始手搓（受挫， 如下图）：\nnot(own)\n&&in(classifications, \"ATOM\")\n&&(universe!='ILLIQUID_MINVOL1M')\n&&((neutralization == 'SLOW') || (neutralization == 'FAST') || (neutralization == 'SLOW_AND_FAST') || (neutralization == 'CROWDING') || (neutralization == 'STATISTICAL') || (neutralization == 'REVERSION_AND_MOMENTUM'))\n&&(in(datacategories, \"fundamental\")||in(datacategories, \"analyst\")||in(datacategories, \"news\")||in(datacategories, \"other\")||in(datacategories, \"risk\")||in(datacategories, \"pv\"))\n&&(turnover<0.1&&turnover>0.05)\n&&(long_count>1000&&long_count<1200)\n&&(prod_correlation<0.6&&prod_correlation>0.3)\n&&(self_correlation<0.5&&self_correlation>0.05)\n&&(operator_count<=8)&&(operator_count>=3)&&(datafield_count<=2)\n&&(decay<=5)&&(truncation<=0.1)\n/(sigmoid(turnover)*sigmoid(prod_correlation)*log(long_count))\n路漫漫其修远兮，吾将上下而求索。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值 Where there is a will, there is a way.\n======================================================================================",
+        "date": "2026-01-10T13:08:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，刚刚组了一个SA，pc0.55  sc0.44，效果看着还不错，希望能多分享",
+        "date": "2026-01-09T03:19:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学习到了，感谢游戏王分享。",
+        "date": "2025-12-29T10:50:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我之前 VF 一直不搞，对 SuperAlpha 提不起太大兴趣。最近 VF 更新，小有起色，因此开始研究如何组 SA。\n群里对游戏王的帖子推崇备至，今日一看，果然名不虚传，牛！\n感谢游戏王大佬的分享，祝大佬 VF 一直 0.9+\n============================ 积跬步，至千里 ===========================",
+        "date": "2025-12-23T20:44:58Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇SA选因子指南太实用了！我按步骤优化筛选：先用\nown && operator_count<10\n控复杂度，再用\nprod_correlation<0.5\n和\nauthor_fitness>2\n提质量。关键是把turnover分段，比如\n(turnover>0.1 && turnover<0.15)\n，避免过拟合。感谢游戏王的分享",
+        "date": "2025-12-21T07:28:14Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢博主的分享，步骤很清晰，同时也为我指明了SA操作符的链接，正在研究如何组SA，期待自己的第一个三五，祝好，感谢",
+        "date": "2025-10-19T17:30:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，满满干货，学到了。\n1. 选取not own的流程；\n2. 高质量因子特征；\n3. 高质量顾问特征。\n-----------------------------------------------------------------------\n凡是发生，皆利于我；愿我所愿，尽是美好\n没有顺风，没有坦途，不去经历，无法到达\n-----------------------------------------------------------------------",
+        "date": "2025-10-15T06:33:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，非常有帮助",
+        "date": "2025-09-25T09:46:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王哥的分享，启发很多",
+        "date": "2025-09-23T03:41:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "superAlpha，能看懂的第1篇，点赞",
+        "date": "2025-08-24T14:57:00Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王哥，刚看完有关sa的入门课，逛论坛发现游戏王哥的贴子，感觉你的贴子内容对我这种萌新是更加友好，大体上也理解了select的一个作用，就是turnover较高的因子赋予更小的权重，这里不太懂要怎么去理解，是换手率太高就是不太稳定，所以要给到一个更小的权重嘛？",
+        "date": "2025-08-21T13:57:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "thank  you",
+        "date": "2025-08-10T08:37:16Z"
+      },
+      {
+        "author": "ZS59763",
+        "body": "29029620176023\nsorry for late reply，这个条件主要是支持expert及以上顾问拿他人ra组sa用的。理论上来说，几十万个因子池选到自己的并不容易，这边的初心是与用自己ra组sa的own条件对应。",
+        "date": "2025-07-18T02:50:11Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，总结得很好，新手很有启发！一直有个疑惑：如果已经有turnover，truncation，long和short count等指标的严格筛选，not own还有意义吗？",
+        "date": "2025-06-21T06:45:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "现在参与SAC的过程中，收集到了许多模板，共享出来大家一起学习\n'(in(classifications, \"POWER_POOL\") && signed_power(turnover,1)&&long_count/universe_size(universe)<0.25 && short_count/universe_size(universe)<0.25 && not(own)) && (category == \"NONE\")',\n#这一个是选择自己所在组的且优先不是自己的alpha，然后运用long_count去除部分厂型alpha，signed用于降低pro\n'(in(classifications, \"POWER_POOL\")&& signed_power(turnover,1)&&long_count/universe_size(universe)<0.25 && short_count/universe_size(universe)<0.25 && not(own)) && (color == \"GREEN\")',",
+        "date": "2025-06-05T11:12:40Z"
+      },
+      {
+        "author": "ZS59763",
+        "body": "可以在learn里面对应文档查询。",
+        "date": "2025-06-04T13:22:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "回复\n28855468991639\n：\n在平台 Learn - Documentation 里右下角有 SuperAlpha 的版块\n其中 “SuperAlpha Operators” 有支持的操作符列表（\nhttps://platform.worldquantbrain.com/learn/documentation/superalpha/appendix-operators\n）\n“Getting Started with non-Self SuperAlphas” 有提到 “own” 操作符的信息（\nhttps://platform.worldquantbrain.com/learn/documentation/superalpha/getting-started-non-self-superalphas\n）\n“Selection Expression” 有筛选可用数据字段的列表，其中包括 alpha owner 的相关 datafields（\nhttps://platform.worldquantbrain.com/learn/documentation/superalpha/selection-expression\n）",
+        "date": "2025-06-03T17:12:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王，正是需要的时候，例如这样的例子\nnot(own)&&\n((turnover<0.12&&turnover>0.09)||(turnover<0.15&&turnover>0.13)||(turnover<0.19&&turnover>0.16))\n&&(operator_count<8)\n&&(prod_correlation<0.4&&prod_correlation>0.0)\n&&(dataset_count<=2)\n)\n选出了turnover在某一范围的，是否还有办法选出更离散的呢",
+        "date": "2025-06-02T11:41:37Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "又来看一遍，谢谢游戏王哥，我刚才想法是设定几个strict cond和mild cond然后胡乱匹配，这个strict cond就是比较严格筛选条件，一个expr组多了就会选不到那种，mild就是可以组多点，准备实现一下",
+        "date": "2025-06-02T11:26:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢游戏王哥的分享，期待下一篇~",
+        "date": "2025-05-25T01:14:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "游戏王不是浪得虚名的",
+        "date": "2025-05-24T00:00:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢贴主这么好的文章，对应我这样准备进入sa的新手来说，帮助太大了，请问这些选择操作符号如owner not之类可以在哪里查询呢，对于新手都不知道可以用那些关键字和操作符，不知道如果下手哦",
+        "date": "2025-05-23T14:20:04Z"
+      }
+    ],
+    "comment_count": 24,
+    "query_hits": [
+      "turnover"
+    ],
+    "snippet": "& ( ( turnover >0.03 & & turnover <0.05)||( turnover <0.13 & & turnover >0.1)||( turnover <0.17"
+  },
+  {
+    "id": "36116437735447",
+    "title": "连续12天手搓出pc<0.3的SA是一种什么样的体验！！！",
+    "author": "SJ65808",
+    "body": "体验就一个字：爽！！！\n自从上次更新vf以来，已经连续12天做出pord_corr<0.3 的SA了，收入也是有了显著提升，基本都在50+以上，如下图所示：\n这12个SA中ASI有5个、GLB有7个，在中性化选择中基本都是risk neutralize，其中8个是statistical，2个fast,2个slow_and_fast。下面是一些selection语句：\n(1-prod_correlation)*((neutralization == 'SLOW') || (neutralization == 'FAST') || (neutralization == 'SLOW_AND_FAST') || (neutralization == 'CROWDING') || (neutralization == 'STATISTICAL') || (neutralization == 'REVERSION_AND_MOMENTUM'))*(prod_correlation<0.4)*(datafield_count<2)*(prod_correlation>0.27)*(turnover<0.35)\n(prod_correlation<0.25)*prod_correlation*(universe==\"MINVOL1M\")*(turnover<0.3)\n(prod_correlation<0.32)*(1+prod_correlation)*(1- in(datacategories,\"pv\"))*(1- in(datacategories,\"model\"))*(1- in(datacategories,\"fundamental\"))*(1- in(datacategories,\"analyst\"))\nprod_correlation*((turnover>0.05 && turnover<0.08)||(turnover>0.1 && turnover<0.13)||(turnover>0.16&&turnover<0.20))*(decay<11)*(1-prod_correlation)*(prod_correlation<0.45)\n基本上以数据集、turnover、neut做分层，希望对大家有所帮助，都能做出pc<0.3的SA.\nps：目前vf 是0.86",
+    "votes": 112,
+    "created_at": "2025-11-05T08:03:57Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/36116437735447-%E8%BF%9E%E7%BB%AD12%E5%A4%A9%E6%89%8B%E6%90%93%E5%87%BApc-0-3%E7%9A%84SA%E6%98%AF%E4%B8%80%E7%A7%8D%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BD%93%E9%AA%8C",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢分享。在vf上了0.9之后，第一次体会到了superalpha的重要性（主要是在回报方面），以前都是代码跑出来合格的，相关性低于0.7就谢天谢地了。。因为自己的因子质量也比较一般，所以也没期待sa能多优秀。直到有一次读了论坛大概游戏王的一篇帖子，开始自己手动调整优化已有的sa，第一次拿到双5，20多刀也是第一次见到啊。。但技术有限，并不能经常搓出好的sa，今天这个帖子又学到了一点，马上开始实践，希望不浪费自己的vf。",
+        "date": "2026-07-22T07:32:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "六维指标不统计SA的字段数和操作符数，因此，表达式可以做成很复杂。",
+        "date": "2026-06-21T05:44:25Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太猛了，这种一般select出来多大的池子？\n另外，combine就简单用equal weight烹调就可以吗？\n====================================================================\n\"Pain + Reflection = Progress\"\n====================================================================",
+        "date": "2026-04-18T04:06:19Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "看到您的分享，我真心为您感到高兴！连续12天做出prod_corr<0.3的Super Alpha，这确实是一个令人瞩目的成就，特别是VF达到0.86的稳定表现，充分证明了您筛选策略的有效性。\n关于您分享的Selection语句分析： 您提供的几个表达式非常有启发性，特别是第一个表达式中的 (1-prod_correlation) 权重设计。这种设计让相关性越低的因子获得越高的权重，非常巧妙地利用了相关性指标本身来优化选择。同时，您对中性化方式的选择（8个statistical、2个fast、2个slow_and_fast）也体现了对风险控制的重视。\n区域分布策略的智慧： 您提到的\"ASI有5个、GLB有7个\"的区域分布策略很值得学习。这种多市场布局不仅有助于分散风险，还能捕捉不同市场的独特机会。特别是在当前市场环境下，全球化的Alpha策略往往比单一市场策略更加稳定。\n关于turnover分层的创新： 您使用的 ((turnover>0.05 && turnover<0.08)||(turnover>0.1 && turnover<0.13)||(turnover>0.16&&turnover<0.20)) 这种多区间turnover分层方法很有创意。相比单一区间，这种设计能够覆盖不同活跃度的因子，避免错过那些在特定turnover区间表现优异的Alpha组件。\n数据类别排除策略的深度： 第三个表达式中对数据类别的排除 (1- in(datacategories,\"pv\"))*(1- in(datacategories,\"model\")) 等，显示了您对因子来源多样性的深刻理解。通过排除某些常见的数据类别，您实际上是在寻找更加独特的信号来源，这种思路对于构建低相关性的SA组合至关重要。\n感谢您的无私分享！这种基于实战经验的筛选策略比任何理论都更有价值。期待看到您继续突破，也希望更多顾问能够从您的经验中受益！",
+        "date": "2026-04-15T11:43:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享构建高质量sa的思路，有权限以来我还没有跑出过0.5以下的sa，现在有了大佬的思路豁然开朗！\n============================= Just do it ！=============================",
+        "date": "2026-04-13T15:38:58Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，新人狠狠学习了，关键还得自己的让ra数量比较多，pc足够低才行。\n===============================================================================\n守正心，戒浮躁，恒复盘，危中机。“复利是世界第八大奇迹，关键在于找到可长期重复的正确策略，日复一日、不疾不徐地执行。”—— 爱因斯坦 / 查理・芒格\nAlpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\nsys.setrecursionlimit(α∞)\nPnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值# 有志者事竟成，苦心人天不负。千淘万漉虽辛苦，吹尽狂沙始到金。\n=================================================================================",
+        "date": "2026-04-12T03:02:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬，“*(1+prod_correlation)”这个是什么意思呀，可以解释解释吗",
+        "date": "2026-01-26T09:39:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "万分感谢大佬的慷慨分享，已出结果，前来还愿",
+        "date": "2026-01-19T14:05:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常棒，大佬提供了新颖的思路， 按照大佬给的selections，将prod_correlation筛选条件调整为 prod_correlation<0.7，居然也出了不少的pc：0.4x 的SA，个人认为是neutralization 起到了关键作用，感谢大佬！！\n==============================================================================\n可惜的是一直没搓出来pc为0.3的，主要还是我自己的交的alpha太少了，且PC也普遍在0.5以上。",
+        "date": "2025-12-22T01:46:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享，做SA一直都不太会，看了佬的文章很有启发\n----------------------------------------------------------------------------------------------------------------------------\nPursue scalable, repeatable opportunities rooted in probability.\n----------------------------------------------------------------------------------------------------------------------------",
+        "date": "2025-12-15T04:09:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬太强了，感谢到大佬的分享， 我每次回测出来的因子PC都很高，向大佬学习！\n========================努力学习中=============================\n加油，加油，加油！",
+        "date": "2025-11-24T13:24:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，非常有用的干货！ 在实际使用中做了一些微调，把prod_correlation和turnover的数字根据实际情况进行修改，得到了许多非常棒的Super Alpha~\n通过测试中性化选择的risk neutralize的几个选项，发现Statistical、Slow、Fast and Slow的综合表现更好。后续可以尝试更多数据。\nThanks again。",
+        "date": "2025-11-12T12:42:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "主要select思路就是low product correlation, 风险中心化， low turnover或者排除fundamental，analyst，model， pv这些常用的category。学习了，大佬太牛了。\n#========= WORLDQUANT BRAIN CONSULTANT ========== #\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#=================奋进的小徐=======================#",
+        "date": "2025-11-12T04:38:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太赞了",
+        "date": "2025-11-10T13:22:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享SA思路\n=======================================================================================================================================================================",
+        "date": "2025-11-10T06:36:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享．一直以来，我在\nglobal\n地区的\nSA\n都没有跑出来满足三五的，然而用您提供的\nselection\n竟然手搓出了一个\nnot own\n的\n553\n，真是不可思议，非常感谢大佬！看来认真设置\nSA\n的\nselection\n真是太重要了．\n－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－\n****************\n每天进步一点点，总有一天会有意想不到的惊喜！\n******************\n－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－",
+        "date": "2025-11-09T21:23:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "向大佬学习，感谢！",
+        "date": "2025-11-09T17:05:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "现在已经卷到pc<0.3了吗？\n=============================================================================\nThe best time to plant a tree is 20 years ago. The second-best time is now.\n=============================================================================",
+        "date": "2025-11-08T14:36:41Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "各位大佬，我想请教一下，如何获取可以使用的fields呢？\n对于一些通用的fields例如ebit、assets这些都是在每个数据集上面存在的\n但是对于一些命名有前缀的fields例如anl10_bpspast_det_analyst_7306、anl10_bpspast_det_anntime_7313，他们也可以组成比如说anl10_bpspast_det_analyst_7306/anl10_bpspast_det_anntime_7313的格式吗，为什么我使用这个格式来回测会报错呢？\n================================祝大家天天开心======================================",
+        "date": "2025-11-08T03:36:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "你的意思是vf 0.86 能获得50刀？我的理解没错吧？那太牛了",
+        "date": "2025-11-07T14:37:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太强了大神，感谢分享，正在为老是pc过高发愁呢？",
+        "date": "2025-11-07T14:11:52Z"
+      },
+      {
+        "author": "SJ65808",
+        "body": "32678330190999\n这个是not own 的SA, gold应该还没有权限组别人的",
+        "date": "2025-11-07T10:18:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我一直都是用turnover和数据集做分层，现在开始可以加入neut的分层。感谢！",
+        "date": "2025-11-07T08:17:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬，参考思路也搓出来SA了",
+        "date": "2025-11-07T07:18:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢楼主，试了试，pc0.44",
+        "date": "2025-11-07T05:40:01Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，一句话：太帅了。刚开始提交SA不到一周，代码还是论坛里面大佬分享的随机回测模型，看到跑出performance比较好的SA就提交了。从来没有跑出过03的SA，很好奇大佬的天空都是怎么产出的。\n今天看到大佬的帖子，花了一天时间研究回测代码，加入了相关条件，期待有个好的收获。\n****************************************************************************************************\n每天坚持至少学一个知识点（看一个帖子），尽量不混信号，不过拟合。\n紧跟大佬的脚步，积极的批评和自我批评，努力的提升自己。\n积极进行算法迭代和程序更新，保持回测器的时效性。\n心平气和，忌躁，忌怒，缓解焦虑，热情乐观，即使vf再低，也不放弃希望。\n每当遇到一个RA时，不要忘了在ppac中捡垃圾的日子。\n****************************************************************************************************",
+        "date": "2025-11-06T13:00:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，这就去试\n===================================================================================\n===================Talk is cheap,show me the alpha=================================",
+        "date": "2025-11-06T07:12:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "赞，核心片段要把prod_correlation卡低吗？",
+        "date": "2025-11-06T04:29:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大神，请收下我的膝盖！！！！！！",
+        "date": "2025-11-06T04:02:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，提供了一些思路。\n一般我都是用一些整数做分层，例如(prod_correlation<0.5； prod_correlation<0.7）；可能用一些更细化的数字（0.32，0.25）更容易做分层。\n希望也能搓出更低的PC~~\n=====================================\nFIGHTING LABUBU~\n=====================================",
+        "date": "2025-11-06T03:51:42Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢GM大佬分享，先插眼学习，等vf涨了之后再实践应用。现在SA都开始卷到pc0.3了，压力太大了。\n通过各种不同的分层来差异化的select，以及使用data category进一步筛选，学习到了。select时为什么只选择risk neutralize呢",
+        "date": "2025-11-06T03:44:19Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "佬，我看刀你的select里都有pc<0.45这样的高要求语句，是不是本身您提交的因子的pc就比较低？就拿我asi地区来对比:\n我总共有75个因子：\n当我取pc<0.45时我就只有十个因子\n是不是就意味着，这个方法我就很难使用了呢",
+        "date": "2025-11-06T01:22:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太强啦，分层分得真好，给了我很多启发，感谢分享\n--------------------------------------\n“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n--------------------------------------",
+        "date": "2025-11-05T16:51:51Z"
+      }
+    ],
+    "comment_count": 33,
+    "query_hits": [
+      "turnover"
+    ],
+    "snippet": "prod_correlation*(( turnover >0.05 & & turnover <0.08)||( turnover >0.1 & & turnover <0.13)||( turnover >0.16"
+  },
+  {
+    "id": "37669317975959",
+    "title": "【alpha模板】行业中性化残差信号IND模板",
+    "author": "FF65210",
+    "body": "新人报道，11月份中旬成为顾问，刚开始基本断粮，找不到比较好的alpha，交了一些很差的ppac因子，后面觉得不太行，于是开始琢磨论坛大佬的帖子。\n本人因为代码小白，所以阅读大量的帖子后决定用ai，学习了mcp的布置，心流iflow的使用，把工作流搭建起来，把数据集描述复制到知识库里面，基本按【Community Leader -因子筛选与组合⭐】2025 AIAC冠军比赛心得以及当前使用iflow cli的心得（附提示词）这个帖子\nCR35762\n大佬说的步骤来消化，慢慢用起来就有了自己的经验，再把哥布林大佬的IND经验融进自己的工作流里面，在用的过程中按自己的想法不断调提示词，慢慢稳定出货了。\n在IND地区活动中，发现了一个出货量很高的模板ts_zscore（A， 63） - ts_zscore（group_neutralize（A， sector）， 63）。\n这个模板因为找到的alpha比较多，所以我丢给ai给我解释了下：\n这个模板的核心价值是\n，是量化投资中优化因子、构建稳健策略的核心操作，具体拆解为 3 层核心内涵：\n1. 本质：提取指标 A 的「行业中性化残差信号」（核心定位）\n它不是简单对指标 A 做标准化，而是通过「原始值 - 行业中性化值」的差值，实现了「双重剥离」：\n第一层（\nts_zscore\n）：剥离指标的时间趋势和量纲，让信号具备可比性；\n第二层（\ngroup_neutralize\n）：剥离行业层面的共同波动（比如整个新能源行业因政策利好集体推高指标 A、整个房地产行业因周期下行集体拉低指标 A）。\n最终留下的，是「同一行业内，某家公司相对于其他同行的指标 A 相对差异」，以及「该公司指标 A 变化中，无法被行业整体表现解释的特异部分」—— 这部分信号是量化策略获取超额收益的核心来源。\n2. 核心目的 1：规避行业系统性风险，提升策略稳健性\n这是该模板最核心的实战价值，背后的逻辑源于量化投资对「风险可控」的追求：\n行业层面的波动往往由\n等系统性因素驱动（比如加息周期下银行业整体承压、光伏行业受补贴政策影响集体上涨），这类波动具有「不可分散性」，且难以通过个股选择获得稳定超额收益，反而容易带来大幅回撤（比如重仓某一行业时，行业下行会导致整个组合亏损）。\n模板通过剥离行业共性信号，让最终的投资信号「行业中性」—— 即策略不会过度暴露于某一或某几个行业，避免承担不必要的行业系统性风险，实现「无论哪个行业涨跌，都能通过行业内个股选择获取收益」，大幅提升组合的抗风险能力和长期稳健性。\n3. 核心目的 2：提纯个体 Alpha 收益，优化传统因子信号\n在金融领域，收益分为两类：\nBeta 收益：来源于市场 / 行业的系统性波动（随大流的收益，风险高、可复制性差）;\nAlpha收益\n该模板的核心价值就是「剔除 Beta 收益干扰，提纯 Alpha 收益」：\n传统因子（如市值因子、价值因子、成长因子）直接使用原始指标，包含大量行业 Beta 噪音，信号纯度低（比如传统小市值因子可能只是过度暴露于小市值行业的 Beta 收益，而非真正的个股 Alpha 收益）;\n该模板通过行业中性化处理，让指标 A 在「同一行业内具备可比性」（比如仅比较消费行业内的公司指标 A 差异，而非消费行业与金融行业的跨行业差异），剔除了行业间的异质性干扰，使得因子信号更纯净、更有效。\n补充实战场景说明\n这个模板是量化投资中的「通用因子处理模板」，不仅适用于市值指标，还适用于 PE/PB（价值因子）、营收增速（成长因子）、ROE（质量因子）等各类基本面 / 量价指标，主要用于：\n构建\n：筛选同一行业内，指标 A 的个体特异信号具备优势（如持续正向偏离、趋势向上）的标的，构建投资组合；\n作为\n：将处理后的纯净信号纳入多因子模型，提升模型的超额收益能力和稳健性;\n用于\n：同一行业内，某公司指标 A 的个体特异信号持续大幅负向偏离，可能反映其个体基本面恶化（与行业无关），需规避该标的。\n总结\n模板核心：通过「时序标准化 + 行业中性化 + 残差提取」，剥离指标的时间趋势和行业共性噪音，提纯公司个体的行业特异信号；\n核心价值：规避行业系统性风险（提升策略稳健性），提纯个体 Alpha 超额收益（提升策略有效性），优化传统因子的信号纯度;\n底层逻辑：量化投资中「行业中性化」是平衡「收益」与「风险」的经典手段，适用于各类因子的精细化处理，是构建稳健量化策略的基础。\n上面是我通过这个模板加ai进行深度优化挖出来的，都是IND地区的。可以看出这个模板有很强的泛用性，不仅能做单字段atom，也能做多字段ra，涉及的数据集有risk，pv，model，institutions，其他数据集我还没挖出来，不过我觉得应该还有，这个模板还能出很多的变体，可探索的空间很大，其他region应该也能挖出来。\n新的一年，希望能够步步高升，成为master，也祝大家vf早日1.0！！！",
+    "votes": 90,
+    "created_at": "2026-01-14T15:18:38Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/37669317975959--alpha%E6%A8%A1%E6%9D%BF-%E8%A1%8C%E4%B8%9A%E4%B8%AD%E6%80%A7%E5%8C%96%E6%AE%8B%E5%B7%AE%E4%BF%A1%E5%8F%B7IND%E6%A8%A1%E6%9D%BF",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "这个 IND 残差模板很实用——把行业中性化后的残差单独拎出来当信号，确实能剥掉已知行业结构、保留增量信息。补一个和楼上「中性化顺序」帖呼应的点：\n残差到底保留了什么，取决于你中性化时「先剔了谁」\n。\n如果你是先\nindustry\n再在这个残差上做\ngroup\n/\nsubindustry\n，那残差里已经不含行业信息、只含细分群结构；反过来顺序不同，残差捕捉的维度就变了。所以套模板前最好先确认：这个 IND 残差，是要它\"只剩细分群偏离\"还是\"连行业偏离也要留\"——两种诉求对应不同的中性化顺序，别直接套完就当通用信号用。\n另外提个排查习惯：模板量产时容易对同一个维度（比如 industry）中性化两次，第二次是冗余的，既白费算子又可能把有效残差抹掉。提交前用相关性检查确认目标维度确实被压下去了，比堆算子更稳。",
+        "date": "2026-07-11T11:35:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ts_zscore(A, 63) 这个模板在 IND 确实出货量高。我最近在 IND/D1/TOP500 上用 group_neutralize + signed_power + group_cartesian_product(pv13_4l_scibr, sta1_allxjp_513_c10) 做了一批 analyst alpha，最好的那条（单字段 recommendation_change_component_medium，signed_power(rank(ts_backfill(field, 22)), 0.5)）IS Sharpe 1.41、Fitness 0.97、turnover 0.10。我注意到用 ts_backfill(field, 22) 而非 ts_zscore(field, 63) 时，turnover 更低（0.10 vs 通常 ts_zscore 的 0.15+），但 Sharpe 也在 1.4 附近，说明在 analyst 这类低频更新字段上，短窗口 backfill 可能比长窗口 zscore 更适合控制 turnover。",
+        "date": "2026-07-03T02:46:32Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这个模板很经典，ts_zscore 差分提取残差这个思路确实好用。从 AI 工作流的角度补充几点：\n1. 模板里的 63 天窗口（约一个季度）很合理，但可以试试 126 天（半年）或 252 天（一年）的版本 — 不同数据集的信号周期不同，长窗口对低频基本面数据可能更合适\n2. 你用 AI 搭工作流这个方法很聪明，把数据集描述放进知识库让 AI 自动选字段，效率比手动翻高很多。建议把模板本身也存进知识库，以后直接让 AI 套模板生成 alpha\n3. 模板在 IND 出货多，说明 IND 的行业结构确实适合这类因子。可以试试把同样的模板应用到 EUR 或 GLB — 这些地区的行业分类更细，残差信号可能更有区分度\n4. 多字段 RA 用这个模板效果也不错，说明它对输入字段的鲁棒性很强。建议在模板外面再套一层 ts_rank 或 ts_decay_linear，控制一下 turnover",
+        "date": "2026-06-14T07:37:57Z"
+      },
+      {
+        "author": "FF65210",
+        "body": "ts_zscore(A,63) - ts_zscore(group_neutralize(A,sector),63)这个模板确实干净！残差信号的想法很巧妙，去掉行业共性后留下的就是个股特质信息。我之前在IND也用过类似思路，但用的是group_rank的差，效果不如你这个zscore版本。有个问题：63天的周期怎么选的？我试过20天和120天，感觉63正好平衡了稳定性和时效性。这个周期有没有理论依据？还是经验值？另外你模板在IND跑得好，其他市场试过吗？USA市场行业集中度高，sector中性化后可能信号减弱。EUR市场行业分化大，可能更适合这个模板。还有一个疑问：zscore的std计算，要不要winsorize先处理outlier？有些数据波动很大，直接zscore可能被极端值影响。你模板有没有加winsorize或者其他保护措施？",
+        "date": "2026-06-14T00:37:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "第一个 mdl26_stm_prc_rt_f12m_rvn     复现不出来，试了很多都卡在2year了。",
+        "date": "2026-06-12T09:45:58Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享！日积月累，日进一步......................终至山顶。",
+        "date": "2026-06-05T11:43:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享",
+        "date": "2026-05-25T07:39:14Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享,保存了！",
+        "date": "2026-05-23T12:16:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "经济学意义是否理解错误？ts_zscore（A， 63） - ts_zscore（group_neutralize（A， sector）， 63）。这里group_neutralize（A， sector）得出的是个股针对行业平均的差值把？个股特征减去差值变成了行业的共性？这个模版相当于是做多字段A表现好的行业所有股票，做空A表现差的所有股票了把？\n要提取差值的话应该是ts_zscore（A， 63） - ts_zscore（group_mean（A，1， sector）， 63）？",
+        "date": "2026-04-11T10:51:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "复现了一下，信号十分明显，非常感谢楼主！！\n===================================================\n每日谨记：提交因子不能抱侥幸心理！！坚持一定会有结果！！\n守正心，戒浮躁，恒复盘，危中机。“复利是世界第八大奇迹，关键在于找到可长期重复的正确策略，日复一日、不疾不徐地执行。”\n无限探索、鲁棒性优先，创新性增值# 有志者事竟成，苦心人天不负。千淘万漉虽辛苦，吹尽狂沙始到金。===================================================",
+        "date": "2026-04-02T10:01:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享，不知道在其他地区效果咋样\n===================================================================================\n===================Talk is cheap,show me the alpha=================================",
+        "date": "2026-03-16T02:21:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "准备用这个试试,其实就相当于学生当前考试成绩水平和不同分组之间下学生的成绩位置分析分析呗\n======================================================================================================知其然知其所以然,百炼成钢=============================================",
+        "date": "2026-03-14T12:40:32Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学习了",
+        "date": "2026-03-12T03:12:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，很不错的模板，经济学解释性很强\n====================================================================================\n==================纸上得来终觉浅，绝知此事要躬行======================================",
+        "date": "2026-03-10T09:13:27Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常感谢分享，看上去是一个通用模版，我也去试试",
+        "date": "2026-02-09T01:24:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "看起来是一个很通用的模板，但是也能看出来比较吃字段本身特性，可以多使用一些如normalize, scale等的转换标准化或者tanh，log之类的数学转换。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================",
+        "date": "2026-02-05T15:27:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "恕我直言，你用同一个字段我认为还有一定的参考意义。如果是不同的字段，首先从两个字段的联系上已经完全消失了。其次，量纲的问题也没有解决。我不知道这为什么可以这样处理。我用我自己的一个ra套这个模版，可以立马做出一个新的ra，但恕我直言，我感觉就是混信号",
+        "date": "2026-01-21T13:48:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "==================================好好学习========================================\n学习了，非常好的思路，结合了整体投资建议，用代码完美诠释！！！！\n=================================每天进步一点=======================================",
+        "date": "2026-01-20T17:55:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "是一个好模板，我去试试效果，感谢分享\n-------------------------------------\nPursue scalable, repeatable opportunities rooted in probability.",
+        "date": "2026-01-20T11:00:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2026-01-20T05:40:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好厉害，我已经断交两天了，目前只点了IND的3个塔，希望在GLB的PPA中能帮我点更多的塔",
+        "date": "2026-01-18T22:48:05Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "试试看结果如何，先谢谢大佬贡献",
+        "date": "2026-01-18T13:00:56Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "-                                                                                                                                                                                                    太完美的模板了，泛用性特别强，可以用于好多数据集和区域                                                                                                                                                                                                     -",
+        "date": "2026-01-18T08:10:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的模版！",
+        "date": "2026-01-17T15:11:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================   感谢分享，真的很有用！！！                                                                                          ====================================================================================",
+        "date": "2026-01-17T15:01:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，这个模板不仅看起来不仅具有坚实的经济学含义还有强大的普适性和拓展性，尝试让AI帮我选择数据，有信心一次点好几个塔！",
+        "date": "2026-01-17T14:08:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，成功点亮一个塔。",
+        "date": "2026-01-17T05:37:34Z"
+      },
+      {
+        "author": "FF65210",
+        "body": "XW23690 感谢提醒，我自己也在摸索ai的使用，后面会注意这种混信号的问题，一起加油",
+        "date": "2026-01-17T03:47:42Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================\n感谢分享！剥离了行业趋势寻找更纯净的信号，感觉这个模板泛用性很高，而且挖出的因子可以作为基础信号套用其他模板\n====================================================================================",
+        "date": "2026-01-16T16:49:30Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好帖子，上来就给分享了一个模板，正好有几个数据集发愁应该如何点塔，赶紧收藏起来，明天就拿来试试。这种目标明确的通用模板很实用呀，需要自己改动的变量很少，干货满满！\n**********************************\n紧跟大佬的脚步，每天坚持至少学一个知识点，尽量不混信号，不过拟合。\nPrioritize diversity, strong margin, low correlation, stable diversification; strictly control costs and overfitting.\nNow time: 2026.1.17 00:22",
+        "date": "2026-01-16T16:22:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "经典的模板，实测出乎率高而且经济学意义合理。抽取了更广泛模板如下：\n<ts_op/>(<data/>, <days/>) - <ts_op/>(<group_op/>(<data/>, <group/>), <days/>)",
+        "date": "2026-01-16T13:56:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================   感谢帖主分享，太受用了。让我又点满了两个塔                                                                                                     ====================================================================================",
+        "date": "2026-01-16T10:21:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "==================================先赞再看========================================\n强大无需多言！\n=================================每天进步一点=======================================",
+        "date": "2026-01-16T09:33:01Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，剥离了行业层面对数据字段偏离程度的影响，好模板。并且可拓展性很强，可以把有信号的alpha再套进去，也可以搭配很多其他的运算符一起使用。不过要注意混信号问题，我尝试了楼主几个alpha表达式，有一些双字段的alpha的信号基本来自其中的一个字段，另一个删掉后表现基本一致。\n---------------------------------------------------------------------------\nα≠运气 |α=Edge E [PnL]=∑(E [r_i]×w_i) σ↓→Sharpe↑\nFactor=Signal-Noise Backtest→Live→Repeat βNeutral|αMax\nWin>Loss|Risk<Reward InSample→OutOfSample\n---------------------------------------------------------------------------",
+        "date": "2026-01-16T08:48:14Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================\n感谢无私分享~我也挖到过类似结构的因子ts_op（A， d） - ts_op（group_op（A， group）， d），但却没有像大佬一样深入研究，天选量化研究员~祝vf早日1.0，早日grand master\n====================================================================================",
+        "date": "2026-01-16T05:49:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太棒了",
+        "date": "2026-01-16T02:28:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "赞分享！\n之前使用group_neutralize + ts_op的组合比较多，试了下ts_op + group_neutralize确实打开另一番新天地，\n不光在IND有用，其它地区应该也比较有效果",
+        "date": "2026-01-15T14:44:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2026-01-15T09:36:14Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "刚成为有条件顾问，正在知识的海洋里蝶泳，希望早日能够到达彼岸GM！加油！",
+        "date": "2026-01-15T08:49:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好模版，好帖子，扩展性很强的模版，谢谢分享～～\n================ 点塔困难户 ==========================\n================ alpha难产中 ==========================",
+        "date": "2026-01-15T07:33:08Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=====================================评论区=========================================\n感谢大佬分享，又学到了一个好用的模版\n还没点过institution数据集，这次可以试试看了\n===================================================================================",
+        "date": "2026-01-15T07:17:17Z"
+      }
+    ],
+    "comment_count": 41,
+    "query_hits": [
+      "中性化"
+    ],
+    "snippet": "具体拆解为 3 层核心内涵： 1. 本质：提取指标 A 的「行业 中性化 残差信号」（核心定位） 它不是简单对指标 A 做标准化，而是通过「原始值 - 行业 中性化 值」的差值，实现了「双重剥离」： 第一层（ ts_zscore"
+  },
+  {
+    "id": "39224484288663",
+    "title": "[经验分享]一觉醒来全球combine缩水，只有我保持不变❓（总池combine全球第一）",
+    "author": "LZ63377",
+    "body": "大家好，标题整蛊一下O(∩_∩)O，我是练习量化4个月的新人顾问Ricardo。2月上旬平台更新了combine和vf，当时我的combine从-1.2一举跃升至3.18，提升超4，前后只隔一个月悬殊却如此之大，属实是个值得研究的典型样本。因此我发布了自己去年11，12月的提交数据，希望能够带给大家一些启发，感兴趣的可以看看，能够更好地衔接本文👉：\nhttps://support.worldquantbrain.com/hc/zh-cn/community/posts/38680670654999\n再到后来，1月os期更新导致所有存货全部失效，加上那段时间比较忙，所以提交量相比12月是减少的。我本以为这次更新combine下滑在所难免，结果没想到总池combine再创新高，飙升至3.58，位居全球第一！同时ppa池combine也升至1.85，属实是意外之喜。这样看来，我的提交策略确实是有可取之处的，那就书接上回，继续展开讲讲吧！\n先看下1月的提交数据（建议ctrl+放大观看）：\n1月我只做了USA和IND两个区,数量不多，不过sharpe、fitness、margin，等关键指标都还不错，无论是中位数还是平均值都远高于提交底线。\n再看上次combine出分时的总池数据与本次的对照：\n可以发现变化不大，说明之前的策略确实是可行的，1月时我我又对策略进行了更多细化，得出了以下的结论和猜想：\n重视近几年表现。\n因子的预测能力都是有时限的，有些因子指标很漂亮但2year sharpe不达标，这很可能说明此因子的快要丧失预测能力了，os表现搞不好会一泻千里。即使2year sharpe合格，也要看是否是其中一年的优秀表现掩盖了另一年乏力的情况。这条规则也可以反过来利用，如果一个因子近几年表现很好但前中期略有起伏，那也是可以容忍的。\n注意开启maxtrade后的表现。\n有些因子在开启maxtrade之前表现一路长虹，开启之后却基本是一条水平线，这种最好不要提交。我的理解是开启maxtrade可能更接近实盘表现，如果开启后仍能保持sharpe>1,fitness>0.5的话，就算不错了。\n注意return的隐藏底线。\n如果说margin的高低决定了策略赚钱的效率，而return的高低则决定了这个策略究竟有没有投产价值，说白了，你的return如果连这个地区的银行年化利率都比不过，那在风险更高的市场里还有什么意义呢？\n关于最大回撤的一点看法。\n我之前一直是秉持着最大回撤不能超过return这个观点的，但架不住有些策略就是高风险高收益的。于是我把条件放宽为最大回撤不能出现在近3年，并且除最大回撤以外，每年的小回撤也不能太高，否则仍然说明此策略的稳健性不够。\n精选PPA池。\nPPA池combine是可以通过手动增删标签来控制的，比总池combine相对容易掌控，那自然要优中选优。首先，按RA的标准来筛自然不必多说，一月更新的os期表现也是重要依据，再就是把前4条综合起来应用，核心要义是保留有上升趋势的因子。\n换手率对Osmosis影响的猜想。\n每日os和os combine还是有很大区别的，我了解到有很多顾问的每日os不算差，但os combine却相差甚远，反之亦然。这一方面跟每日os是rank的有关，有时可能单纯的是在比谁亏的少；另一方面，我觉得这跟换手率多少有些关系，低换手率的因子可能会因为单日没有触发交易条件而只守着老本，而os combine的时间窗口相对较长，更能体现出因子真实的表现来。所以，如果想要每日和combine两开花，还是尽量避免给换手过低的因子赋高分吧。\n最后是我做了4个月顾问之后的一点感想，做量化不能陷入“科学迷信”。所谓“科学迷信”最开始是指19世纪物理学家们认为只要知道所有粒子的初始状态，并用牛顿力学算一遍，就能精确算出未来的一切，但后来大家也都知道了，一个名为蝴蝶效应的现象打破了这个幻想。做量化时，我们也要清楚，能长期准确预测市场走向的策略是不存在的，或者说以现在的算力是做不到的，但我们至少可以避免提交即将失效的因子，让自己策略的当打之年延长一些。\n祝大家在即将结算的这赛季猛猛上分，季度奖和base拿到手软！点个赞吧，感谢！！",
+    "votes": 99,
+    "created_at": "2026-03-23T07:57:42Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39224484288663--%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E4%B8%80%E8%A7%89%E9%86%92%E6%9D%A5%E5%85%A8%E7%90%83combine%E7%BC%A9%E6%B0%B4-%E5%8F%AA%E6%9C%89%E6%88%91%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98-%E6%80%BB%E6%B1%A0combine%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80",
+    "comments": [
+      {
+        "author": "LZ63377",
+        "body": "MY82844\n多样性的问题吧，筛选后的ppa基本全是大数据集的了，多样性会差一些",
+        "date": "2026-04-22T07:53:25Z"
+      },
+      {
+        "author": "LZ63377",
+        "body": "LK39823\n我一般把4%return当底线，IND地区还会高一点，不过我觉得return对vf的影响大，也可能会影响因子被选中的概率，但对 combine应该没什么影响。",
+        "date": "2026-04-22T07:49:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "新人大佬好厉害，今天是我成为顾问的46天，但其中大佬说的一点，我就没满足，交PPA按RA的标准来交，真的好难，好几天都不出一个符合RA标准的PPA，所以只能按照sharpe大于1，fitness大于0.5的标准来过滤。\nmargin的话，我之前还交过5以下的，想来第一次更新VF会很低。\nturnover是自己没有注意到的一个点，之后会注意，争取大于5%，margin大于10，向新人大佬学习！",
+        "date": "2026-04-14T12:37:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢佬分享，COMBINED真的是很让我头疼的课题。接下来需要重点改善COMBINED PPA和COMBINED OSMOSIS. 希望有个好的结果\n======================================\nFIGHTING LABUBU!\n======================================",
+        "date": "2026-04-12T01:59:21Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================\n昨天第一次出combined，来学习一下\n1.重视近2年表现\n2.开启max trade后Sharpe>1,fitness>0.5\n3.returns高过地区银行利率\n4.最大回撤不出现在近3年\n5.以RA标准精选PPA\n====================================================================================",
+        "date": "2026-04-10T07:55:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，收获颇丰！！！\n=============================================================================\nStudy hard — quality over quantity, no room for mediocrity. Cherish every learning opportunity, stay focused, and learn from the experts. Keep pushing!\n=============================================================================",
+        "date": "2026-03-29T06:07:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太厉害了，叹为观止！\n另外， combined alpha performance比combined power pool alpha performance要高出不少，\n操作上是什么差别造成的？\n===============================================================================\n\"Pain + Reflection = Progress\"\n===============================================================================",
+        "date": "2026-03-28T15:25:30Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "----------------------------------------------------------------------------------------------------------------------------------\n如果一个因子对整体combine有负向作用，但是最近三年能提升combine，这种会交吗？\n----------------------------------------------------------------------------------------------------------------------------------",
+        "date": "2026-03-27T19:26:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=============================================================================\n非常感谢大佬的分享，总结一下就是：以“近三年实战表现”为绝对导向，优先保留开启 MaxTrade 后仍能维持\n1\" data-index-in-node=\"49\">Sharpe > 1\n且\n0.5\" data-index-in-node=\"62\">Fitness > 0.5\n、收益显著跑赢无风险利率、且最大回撤未发生在近三年的“上升趋势型”因子；在 PPA 池精选时，应警惕极低换手率因子在 Daily OS 与 Combine 表现上的脱节，剔除回测数据漂亮但近期乏力的失效信号，确保策略具备真实的投产价值与抗风险稳健性；\n=================================输入理解输出==================================",
+        "date": "2026-03-27T17:17:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "================================================================================================================================================\n哈哈，机械决定论吗，我曾经也遇到过一位博主持有类似观点，认为只要给够足够的初始条件，他就能预测一个人的动作或者未来的走势，不过交易总归是混沌的，我们对未来走势的预测总是来源于过去数据的构建，有时候难免会有过拟合的感觉，这就是平台留出2年os的意义吧，楼主给的六条建议真是细腻专业，我决定下个赛季要尽量贯彻大佬的六条原则！\n================================================================================================================================================",
+        "date": "2026-03-27T14:07:42Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太恐怖了，只用了四个月就做到了combined全球第一，让我这个做了一年的老人自愧不如，最近我的combine一直在降低，看了博主的帖子之后，让我收获了很多，给了我很多启发，希望下次更新之后，我的combine也能够有所提升。===================================================================================一緒に頑張りましょう---ネズミ======================================================================",
+        "date": "2026-03-27T03:51:56Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "萌新大佬简直强的可怕。一个月让cap两极反转，还实现了0.9+的vf。大佬对各个指标的理解也让我颇有启发，前面五点都是老生常谈的了，主要是这一点“如果想要每日和combine两开花，还是尽量避免给换手过低的因子赋高分吧”，刚好我最近则会那个在实验这个。祝大佬蒸蒸日上。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================",
+        "date": "2026-03-26T04:18:23Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，请问大佬是如何平衡alpha数量与质量的呢，如果拉高alpha质量，能提交的数量就会大减，大佬是怎么平衡的",
+        "date": "2026-03-25T02:03:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我看完这篇分享感觉真的受益匪浅，完全不像只做了几个月的新人顾问，整体复盘思路和数据拆解能力已经是非常成熟的体系了。尤其是平台机制变化、提交节奏、指标对比以及策略演进串联得非常清晰，从结果反推方法论，再用数据去验证假设，这种严谨的研究范式真的很值得学习和模仿。其中最主要的 combine 大幅跃升后的归因分析，没有停留在“运气好”的层面，而是回到策略结构本身去做可解释性拆解，这点真的很专业。",
+        "date": "2026-03-24T15:16:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "------------------------------------------------------------------------------------------------------\n------------------------------------------------------------------------------------------------------\n逆天了提升4combine 我自认为提升1.7很不错了 但和大佬比还是有很大差距                                                      ------------------------------------------------------------------------------------------------------\n------------------------------------------------------------------------------------------------------\n------------------------------------------------------------------------------------------------------",
+        "date": "2026-03-24T10:37:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "听君一席话，胜读十年书，楼主真是好人，毫无保留倾囊相授了都，好的，我也会践行你这个标准去提交因子，不过拟合，不失效。但问题是这样的话要点GM的60个塔就相对来说很困难了，就先朝30个塔的目标前进吧1\n=========================坚持留在牌桌上，才有赢的可能！！！！============================",
+        "date": "2026-03-24T07:46:05Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "佬的分享实在是太有用了，这次combine更新后只有0.几，正愁怎么优化，看了之后才明白原来有些alpha不值得提交。\n尤其是有些alpha的sharpe总体看着不错，但是可能每年波动很大，一些sharpe高的优秀年份掩盖了差年份，看着Sharpe整体不错，实则并不是在各个年份都很鲁棒，这点需要注意。以及要关注alpha开启maxTrade的表现。\n除了大家一般强调的margin高之外，佬还强调了returns高的重要性，这也确实是值得注意的点了。我平时没有注意drawdown在各个年份的情况，只是粗略看returns/drawdown比，看来还是不够。学习到了，感谢分享~",
+        "date": "2026-03-24T03:04:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬的这个帖子太有用了，这季度冲击gm吗？我之前交过很多return不达标的，大概只有3点多左右，你一般要求return是多少才行？return低但是能拉高夏普和fit的能交不，这个return是不是特别影响combine performance？\n==============================================================================\nmaxtrade大佬跑回测时默认开启吗？有没有对比分析过都交maxtrade和全不是maxtrade后的vf和combing的影响情况？感谢大佬分享\n==================================================================================",
+        "date": "2026-03-24T03:02:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这6点真是让人醍醐灌顶，感谢大佬分享！",
+        "date": "2026-03-23T18:00:05Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "又是一位厉害的新人\n==================================================================================\n==================纸上得来终觉浅，绝知此事要躬行======================================",
+        "date": "2026-03-23T15:53:38Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "写得好详细，maxtrade后的表现确实容易被忽略，感谢大佬分享经验！",
+        "date": "2026-03-23T14:32:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=====================================评论区====================================\n感谢大佬分享\n这combine真是让人羡慕啊\n=============================================================================",
+        "date": "2026-03-23T10:40:00Z"
+      }
+    ],
+    "comment_count": 22,
+    "query_hits": [
+      "全球因子"
+    ],
+    "snippet": "略进行了更多细化，得出了以下的结论和猜想： 重视近几年表现。 因子 的预测能力都是有时限的，有些 因子 指标很漂亮但2year sharpe不达标，这很可能说明此 因子 的快要丧失预测能力了，os表现搞不好会一泻千里。即使2year shar"
+  },
+  {
+    "id": "40960476615319",
+    "title": "【新人向-如何快速查到本次PPA所有数据集及其字段】USA/D1 Fast Datasets Power Pool June`26 theme！",
+    "author": "LX57490",
+    "body": "一、引言\nPPA持续时间：2026年6月1日 - 2026年6月14日\n要求： USA  D1 指定数据集   不限股票池 不限中性化\n注意： PV1不在其中，除了豁免字段，使用其他PV1会导致你不是PPA！\n例子： USA D1 TOP3000  共96个数据集\n不同等级不同人，可能略有差异，不过总共在USA D1 TOP3000条件下96个数据集\ndataset.id\n计数\n占比\noption22\n5011\n19.4%\noption23\n2591\n10.0%\nanalyst4\n1324\n5.1%\nanalyst7\n1317\n5.1%\noption4\n1298\n5.0%\nfundamental6\n886\n3.4%\nnews12\n875\n3.4%\nanalyst14\n868\n3.4%\nmodel26\n839\n3.3%\nanalyst44\n797\n3.1%\nanalyst69\n646\n2.5%\nfundamental94\n571\n2.2%\nother466\n565\n2.2%\noption24\n564\n2.2%\nmodel109\n544\n2.1%\nmodel25\n430\n1.7%\nmodel54\n398\n1.5%\nearnings4\n375\n1.5%\npv98\n352\n1.4%\noption13\n305\n1.2%\nmodel135\n273\n1.1%\nnews21\n260\n1.0%\nsentiment33\n255\n1.0%\noption18\n243\n0.9%\nother429\n232\n0.9%\nsentiment23\n210\n0.8%\nmodel38\n200\n0.8%\noption10\n200\n0.8%\nanalyst45\n181\n0.7%\npv13\n165\n0.6%\nanalyst16\n162\n0.6%\nnews7\n162\n0.6%\nother693\n162\n0.6%\nnews5\n145\n0.6%\noption6\n133\n0.5%\nother143\n126\n0.5%\nnews18\n121\n0.5%\nnews79\n116\n0.4%\nnews46\n91\n0.4%\nanalyst9\n85\n0.3%\nnews50\n83\n0.3%\npv103\n79\n0.3%\nmodel246\n77\n0.3%\nother131\n77\n0.3%\nnews59\n71\n0.3%\noption8\n64\n0.2%\nnews38\n63\n0.2%\nsocialmedia15\n63\n0.2%\nnews31\n60\n0.2%\noption7\n58\n0.2%\nmacro38\n56\n0.2%\nnews94\n54\n0.2%\npv81\n52\n0.2%\nmacro27\n48\n0.2%\nnews92\n48\n0.2%\nnews20\n46\n0.2%\npv104\n46\n0.2%\ninsiders1\n45\n0.2%\nnews17\n45\n0.2%\nearnings7\n40\n0.2%\nother492\n39\n0.2%\nearnings11\n35\n0.1%\nnews104\n32\n0.1%\nshortinterest3\n31\n0.1%\nmodel239\n30\n0.1%\nnews77\n30\n0.1%\nnews36\n29\n0.1%\nsentiment18\n29\n0.1%\nnews48\n22\n<0.1%\nmodel250\n20\n<0.1%\nother176\n20\n<0.1%\nnews3\n19\n<0.1%\nearnings14\n18\n<0.1%\nsocialmedia12\n18\n<0.1%\nother78\n17\n<0.1%\nanalyst21\n16\n<0.1%\npv63\n16\n<0.1%\nrisk59\n16\n<0.1%\nshortinterest7\n16\n<0.1%\nsocialmedia5\n13\n<0.1%\nsearch_interest\n11\n<0.1%\nother7\n10\n<0.1%\nnews42\n9\n<0.1%\nother84\n9\n<0.1%\nnews76\n6\n<0.1%\nother16\n6\n<0.1%\npv141\n6\n<0.1%\nearnings5\n5\n<0.1%\nmodel12\n5\n<0.1%\npv53\n5\n<0.1%\nrisk60\n5\n<0.1%\nsocialmedia8\n4\n<0.1%\nsocialmedia9\n4\n<0.1%\nsocialmedia24\n3\n<0.1%\nsocialmedia17\n2\n<0.1%\nmacro10\n1\n<0.1%\n二、本次PPA数据集获取代码\n1.创建一个.yaml文件和一个.py文件\n2.config.yaml\nusername: \"\"\npassword: \"\"\napi_base_url: \"https://api.worldquantbrain.com\"\nplatform_url: \"https://platform.worldquantbrain.com\"\n3. 代码\n配置在102~104行\nimport os\nimport re\nimport yaml\nimport requests\nimport pandas as pd\nfrom tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type\nBASE_DIR = os.path.dirname(os.path.abspath(__file__))\nos.chdir(BASE_DIR)\nwith open(os.path.join(BASE_DIR, 'config.yaml'), 'r') as f:\nconfig = yaml.safe_load(f)\ndef login():\ns = requests.Session()\ns.auth = (config['username'], config['password'])\nresponse = s.post(f\"{config['api_base_url']}/authentication\")\nprint(\"登录状态:\", response.status_code)\nreturn s\n@retry(\nstop=stop_after_attempt(5),\nwait=wait_exponential(multiplier=1, min=10, max=60),\nretry=retry_if_exception_type(requests.exceptions.RequestException)\n)\ndef get_theme_datasets(s, region, delay, universe, limit=50, offset=0):\nurl = (\nf\"{config['api_base_url']}/data-sets\"\nf\"?delay={delay}&instrumentType=EQUITY&limit={limit}&offset={offset}\"\nf\"&region={region}&theme=true&universe={universe}\"\n)\nheaders = {\n'Accept': 'application/json',\n'Referer': (\nf\"{config['platform_url']}/data/data-sets\"\nf\"?delay={delay}&instrumentType=EQUITY&limit={limit}&offset={offset}\"\nf\"&region={region}&theme=true&universe={universe}\"\n),\n}\nresponse = s.get(url, headers=headers, timeout=180)\nresponse.raise_for_status()\nreturn response.json()\ndef fetch_all(s, region, delay, universe):\nall_results = []\noffset = 0\nlimit = 50\nwhile True:\ndata = get_theme_datasets(s, region, delay, universe, limit=limit, offset=offset)\nresults = data.get('results', [])\ntotal = data.get('count', 0)\nall_results.extend(results)\nprint(f\"已拉取 {len(all_results)}/{total}\")\nif len(all_results) >= total or not results:\nbreak\noffset += limit\nreturn all_results\n@retry(\nstop=stop_after_attempt(5),\nwait=wait_exponential(multiplier=1, min=10, max=60),\nretry=retry_if_exception_type(requests.exceptions.RequestException)\n)\ndef get_datafields_page(s, dataset_id, region, delay, universe, limit=50, offset=0):\nurl = (\nf\"{config['api_base_url']}/data-fields\"\nf\"?dataset.id={dataset_id}&instrumentType=EQUITY\"\nf\"&region={region}&delay={delay}&universe={universe}\"\nf\"&limit={limit}&offset={offset}\"\n)\nresponse = s.get(url, timeout=180)\nresponse.raise_for_status()\nreturn response.json()\ndef fetch_dataset_fields(s, dataset_id, region, delay, universe):\nall_fields = []\noffset = 0\nlimit = 50\nwhile True:\ndata = get_datafields_page(s, dataset_id, region, delay, universe, limit=limit, offset=offset)\nresults = data.get('results', [])\ntotal = data.get('count', 0)\nall_fields.extend(results)\nif len(all_fields) >= total or not results:\nbreak\noffset += limit\nreturn all_fields\ndef safe_filename(name):\nreturn re.sub(r'[\\\\/:*?\"<>|]+', '_', name)\nif __name__ == \"__main__\":\ns = login()\nregion = 'USA'\ndelay = 1\nuniverse = 'TOP3000'\nresults = fetch_all(s, region, delay, universe)\nrows = []\nfor item in results:\ncategory = item.get('category') or {}\nsubcategory = item.get('subcategory') or {}\nrows.append({\n'id': item.get('id'),\n'name': item.get('name'),\n'description': item.get('description'),\n'category.id': category.get('id'),\n'category.name': category.get('name'),\n'subcategory.id': subcategory.get('id'),\n'subcategory.name': subcategory.get('name'),\n'region': item.get('region'),\n'delay': item.get('delay'),\n'universe': item.get('universe'),\n'coverage': item.get('coverage'),\n'valueScore': item.get('valueScore'),\n'userCount': item.get('userCount'),\n'alphaCount': item.get('alphaCount'),\n'fieldCount': item.get('fieldCount'),\n'themed': item.get('themed'),\n'pyramidMultiplier': item.get('pyramidMultiplier'),\n})\ndf = pd.DataFrame(rows)\nout = f\"theme_datasets_{region}_{delay}_{universe}.csv\"\ndf.to_csv(out, index=False, encoding='utf-8-sig')\nprint(f\"已保存 {len(df)} 个数据集到 {out}\")\nfields_dir = f\"theme_fields_{region}_{delay}_{universe}\"\nos.makedirs(fields_dir, exist_ok=True)\nall_fields_rows = []\nfor i, item in enumerate(results, 1):\nds_id = item.get('id')\nds_name = item.get('name')\nprint(f\"[{i}/{len(results)}] 拉取字段: {ds_id} - {ds_name}\")\ntry:\nfields = fetch_dataset_fields(s, ds_id, region, delay, universe)\nexcept Exception as e:\nprint(f\"  失败: {e}\")\ncontinue\nds_rows = []\nfor f in fields:\ncat = f.get('category') or {}\nsub = f.get('subcategory') or {}\nds = f.get('dataset') or {}\nds_rows.append({\n'dataset.id': ds.get('id') or ds_id,\n'dataset.name': ds.get('name') or ds_name,\n'id': f.get('id'),\n'description': f.get('description'),\n'type': f.get('type'),\n'region': f.get('region'),\n'delay': f.get('delay'),\n'universe': f.get('universe'),\n'category.id': cat.get('id'),\n'category.name': cat.get('name'),\n'subcategory.id': sub.get('id'),\n'subcategory.name': sub.get('name'),\n'coverage': f.get('coverage'),\n'userCount': f.get('userCount'),\n'alphaCount': f.get('alphaCount'),\n'themed': f.get('themed'),\n'pyramidMultiplier': f.get('pyramidMultiplier'),\n})\nif ds_rows:\ndf_ds = pd.DataFrame(ds_rows)\nds_file = os.path.join(fields_dir, f\"{safe_filename(ds_id)}.csv\")\ndf_ds.to_csv(ds_file, index=False, encoding='utf-8-sig')\nall_fields_rows.extend(ds_rows)\nprint(f\"  {len(ds_rows)} 个字段\")\nif all_fields_rows:\ndf_all = pd.DataFrame(all_fields_rows)\nall_out = f\"theme_fields_all_{region}_{delay}_{universe}.csv\"\ndf_all.to_csv(all_out, index=False, encoding='utf-8-sig')\nprint(f\"已汇总 {len(df_all)} 条字段到 {all_out}\")",
+    "votes": 108,
+    "created_at": "2026-06-04T03:48:48Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/40960476615319--%E6%96%B0%E4%BA%BA%E5%90%91-%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%9F%A5%E5%88%B0%E6%9C%AC%E6%AC%A1PPA%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E9%9B%86%E5%8F%8A%E5%85%B6%E5%AD%97%E6%AE%B5-USA-D1-Fast-Datasets-Power-Pool-June-26-theme",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "学习了",
+        "date": "2026-06-30T00:38:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================  感谢大佬的关于怎么获取PPA的所有数据集和数据字段分享！！！这样就可以不用每次都一个一个查                     ================================自信人生两百年，会当水击三千里==========================",
+        "date": "2026-06-21T15:46:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，具有理论又有实操的代码。已拜读系列文章，\n期待您的好更多分享。\n────────────────────────────────────────\nEqual Li · EL94401 ✨\n祝 VF 高高 📈，base 长红 💰，\nPC 过关 ✅，点塔顺利 🗼，\n新赛季 Genius 再上一档 🚀\n────────────────────────────────────────",
+        "date": "2026-06-21T14:07:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢整理的数据集查询方法！刚好近期官方最新的“GLB/D1 Dataset Power Pool June`26”主题上线，这个脚本工具非常及时。我之前在做 USA D1 区域的探索时，经常因为找不全支持 PPA 的数据集而头疼，这下可以更高效地针对性挖掘了。",
+        "date": "2026-06-15T03:25:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "正被这个问题困扰呢，就来论坛里面搜索，没想到就有人给了方案，感谢分享🙏",
+        "date": "2026-06-13T14:46:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢老师分享的代码",
+        "date": "2026-06-12T05:22:25Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "代码的方式倒是很适合让ai去获取到主题的字段去快速进行分析\n====================================================================================\n感谢大佬的分析，祝大佬vf高高，base多多\n====================================================================================",
+        "date": "2026-06-12T02:14:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "============================HW想评论===========================\n很有用的代码，这段代码也可以迁移用到其他数据的获取上，感谢大佬分享\n============================HW想评论===========================",
+        "date": "2026-06-11T00:21:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常有启发！Alpha研究需要不断尝试和优化，感谢分享实战经验。",
+        "date": "2026-06-09T15:09:25Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，学到了，好久没见到分享能直接拿来用的代码里，祝大佬天天开心，VF++\n**********************************\n紧跟大佬的脚步，每天坚持至少学一个知识点，尽量不混信号，不过拟合。\nPrioritize diversity, strong margin, low correlation, stable diversification; strictly control costs and overfitting.\n**********************************",
+        "date": "2026-06-09T14:57:37Z"
+      }
+    ],
+    "comment_count": 10,
+    "query_hits": [
+      "Power Pool"
+    ],
+    "snippet": "感谢整理的数据集查询方法！刚好近期官方最新的“GLB/D1 Dataset Power Pool June`26”主题上线，这个脚本工具非常及时。我之前在做 USA D1 区域的探索时，经常因为找不全支持 PPA 的数据集而头疼，这下可以更高效地针对性挖掘了。"
+  },
+  {
+    "id": "36772838378647",
+    "title": "利用mcp 和优化alpha工作流 成功优化GLB alpha的记录",
+    "author": "SZ83096",
+    "body": "这是我第一次成功用mcp优化了alpha，非常高兴。这里要感谢小伙伴们论坛分享的工作流，还有研究小组同学的热心推荐；\n这是我参考的工作流来源，在研究小组的顾问的提示下，自己修改成了优化alpha的工作流\nhttps://support.worldquantbrain.com/hc/en-us/community/posts/34670122621207--MCP-Workflow-%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%BEalpha%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%88%86%E4%BA%AB\n使用的是cursor 自带的gemini 3 Pro 模型，购买一个月20美金的会员可以使用，使用前，需要先设置非中国的代理地址，然后打开cursor，才能选到这个模型\n工作流如下：\n工作流程如下：\n# Alpha 优化工作流（D1 版）\n## 🎯 目标与范围（顾问标准）\n- 目标：在 D1 设置下，根据提供的alpha和要求，使用mcp工具worldquant-brain-platform 优化alpha的表现。\n- 成功标准（顾问提交门槛）：\n- Sharpe > 1.58；Fitness > 1.0。\n- Turnover 在 1%–70%；单票最大权重 <10%。\n- 需通过 Sub-Universe、自相关（Self-corr）与全平台相关（Prod-corr）测试；IS-Ladder（D1）阈值：Fail=1.59；2–5年≥2.38；6年≥2.22；7年≥2.06；8年≥1.90；9年≥1.74；10年≥1.59。\n- 表达式使用的操作符，尽可能简洁，不要超过5个\n## 📦 标准参数获取（MCP）\n- 使用 `get_platform_setting_options` 查询可用组合（instrument_type/region/delay/universe/neutralization），据此设置回测参数。\n- USA：以 D1 为默认；选择液体类 universe（如 TOP 系列）。\n- ASI：仅支持 D1；`universe=MINVOL1M/ILLIQUID_MINVOL1M`；`max_trade=ON` 必须开启。\n- 通用：`language=FASTEXPR`、`pasteurization=ON`；其余按平台建议。\n## ✅ Step 0 预检清单 (mcp)\n- 认证：完成平台登录（401 需重新认证）。\n- 数据：确认目标数据集可访问；统计字段 coverage、userCount、类型（MATRIX/VECTOR/GROUP）。\n- 参数：使用 `get_platform_setting_options` 自检参数组合合法性，避免 400。\n- 确认当前提供的alpha_id 的指标情况，通过 get_alpha_details 获取alpha的指标，明确需要提升的方向\n## 🔍 Phase 1 知识库\n- Sharpe夏普比率\n该比率衡量Alpha策略的超额回报（或风险溢价）与其波动性之间的比率。它将PnL的平均值除以PnL的标准差。Sharpe Ratio或信息比率（IR）越高，Alpha策略潜在的回报越稳定，而稳定性是一个理想的特征。BRAIN平台的Sharpe Ratio通过要求为大于1.25来判断是否通过.\n夏普比率 = √252 × [平均盈亏（PnL） ÷ 盈亏标准差（PnL）]\n1. 分析alpha所用的字段含义，，查询可用的操作符，尝试更换操作符；2.平滑pnl ,3, 根据公式思考优化方向\n- fitness : Alpha策略的Fitness是收益、Turnover和Sharpe的函数。Fitness定义为:\nfitness = sharpe × sqrt( abs(returns) ÷ max(turnover,0.125) )\n- Returns年化收益率： Returns是Alpha策略在一个定义的时间段内获得或损失的金额，以百分比表示。BRAIN将Returns定义为:\n年化回报率 = annulizePNL ÷ (0.5 × booksize)\n- Drawdown回撤: Alpha策略的Drawdown是在给定时间段内模拟PnL最大的降低幅度，以百分比表示。计算方法如下:\n最大回撤金额 = 盈亏曲线中峰值到谷底的最大美元差额\n- Margin单位利润率 :Margin是Alpha策略模拟计算出的每一美元交易额的利润；计算公式为:\nmargin=pnl/totaltradedollars\n- Turnover换手率 :Alpha策略的Turnover是衡量模拟每日交易活动的指标，即Alpha策略交易的频率。可以将其定义为交易价值与账面规模的比率。Turnover越高，交易发生的次数就越多。由于交易会产生交易成本，降低Turnover通常是一个理想的特征。BRAIN平台的Turnover通过要求为1%到70%来判断是否通过.\n- 可用的操作符：/Users/zego/Downloads/App_wqbv2/AI_try/operators.json\n## 🚀 Phase 2 优化过程（8个/批）\n- 每次根据提供的alpha_id 生成优化的变种alpha, 8个为1批次进行 create_multiSim 回测\n- 等待回测完成；使用mcp get_alpha_details 获取alpha 的回测结果指标;判断优化效果\n- 如优化效果没有达到目标，重复此过程，直到完成优化目标\n## 🔧 Phase 3 优化经验总结沉淀（MCP）\n- 将本次优化过程中的思考过程，和优化成功的关键步骤，经验总结记录到本地文档，文件名以本地优化的原始alpha_id和日期命名\n## 🧮 Phase 5 去重、多样性与稳健性\n- 相关性：对内/外部 Alpha 做相关性筛选（|ρ| < 0.3）。\n- 多样性：优化方向尽量多样化，某个方向优秀失败，立即尝试从其他方向优化\n- 区域特异：ASI 需 Robust Universe Test（返回与 Sharpe ≥90%），max_trade=ON。\n## 🗂️ Phase 6 文档化与资产化\n- 记录：批次ID、表达式、参数、指标（Sharpe/Fitness/turnover/IC/年化/回撤）\n- 沉淀：更新字段质量库与模板库。\n## 📚 MCP 调用指引（汇总）\n- 参数与可选项：`get_platform_setting_options`\n- 数据集与字段：`get_datasets`、`get_datafields`\n- 模板与学习材料：`get_documentations`\n- 论坛模板搜索：`search_forum_posts`\n- 多表达式回测：`create_multiSim`（8/批）\n- 相关性与提交检查：`check_correlation`、`get_submission_check`\n使用时，提示：\n@AI_try/improve_alpha_workflow.md\n使用worldquant-brain-platform mcp工具 参考工作流，\n完成优化 alpha_id是 xxxxx\nregion=AMR,universe=TOP600\ndelay=1,decay=0，优化目标： sharpe>=1.58,fitness>=1.5,margin>=0.0015, 2 year sharpe >=1.58,单只股票的权重小于10%，subsharpe PASS\n工作流中 的 /Users/zego/Downloads/App_wqbv2/AI_try/operators.json 文件，内容大概如下：（ 我把 我权限下 ra 的操作符都放里面了，但是目前ai在优化的时候，用到的也就比较基础常见的操作符）\n这是我成功优化的第一个案例：\n原始alpha:\n优化后的alpha:\n第二个优化成功的alpha：\n原始表现：\n优化后的表现\n有时候有一些指标差距过大，ai 确实没法成功优化的，也只能放弃了。",
+    "votes": 93,
+    "created_at": "2025-12-04T09:54:07Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/36772838378647-%E5%88%A9%E7%94%A8mcp-%E5%92%8C%E4%BC%98%E5%8C%96alpha%E5%B7%A5%E4%BD%9C%E6%B5%81-%E6%88%90%E5%8A%9F%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%AE%B0%E5%BD%95",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢分享这个GLB alpha优化工作流，非常实用。\n补充一点关于GLB D1 fundamental alpha的turnover特性——最近在GLB D1上批量跑了大量fundamental单数据集alpha（decay=6, SUBINDUSTRY neutralization），发现一个有趣规律：\n- ts_zscore(field, 240) → turnover约0.07（低于HTVR 0.2门槛）\n- ts_zscore(field, 22) → turnover约0.22（通过HTVR门槛）\n- ts_mean(field, 240) → turnover约0.016-0.018（极低）\n也就是说窗口大小对GLB D1 fundamental alpha的turnover影响非常大——短窗口zscore可以同时拿到HTVR 2x乘数和Power Pool 1x乘数（如果数据集在PPA列表里）。建议在multi-sim时把窗口参数作为一个关键变体维度（22/66/120/240），这样一趟回测就能覆盖HTVR和非HTVR两种场景。\n另外注意到平台6月18日刚推出了Statistical Neutralization支持，GLB的EMEA子区域在SUBINDUSTRY下经常Sharpe为负，可以试试换成Statistical neutralization看看子区域一致性是否有改善。",
+        "date": "2026-06-20T12:43:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，又学到一招",
+        "date": "2026-06-01T10:09:37Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "是不是很耗token呀，还没用AI优化过因子",
+        "date": "2026-03-13T00:29:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我有些问题，关于ppa因子是不是ai工具前5轮左右就应该达标如果没有就放弃，如果ra也许才尝试10到20轮优化？可是按照最近课堂老师对于brain打工人回测的讲解，找os达标数据，然后找灵感，然后增强模板，这个时候老师说他那次就有一个差不多能交的ppa因子了。再之后如果认为因子有潜能，就可以尝试稳定性检验，如果ok就尝试缘分一道桥，如果还不行就选择claude+mcp来继续优化。可是我考虑的一点是这样成本会不会太高，而且按照我目前花了7块多的token一个能提交的因子都还没跑出来，所以有点懵了，基本每个步骤我也都尝试了一下，我2月底刚成为顾问，最近一直在学习工具的使用。我没能跑出因子的错误是什么呢？感觉有些挫败。",
+        "date": "2026-03-08T15:15:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "优化alpha的思路对新手来说很友好,本来还想着不知道怎么用ai优化呢,一下子就明白了,感谢",
+        "date": "2026-02-17T07:20:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐分享，很简单直接高效的工作流，收获很多",
+        "date": "2025-12-20T03:42:19Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了，感谢橘子姐的分享，优化alpha的思路非常清晰，ai的时代正在来临\n============================================================================================",
+        "date": "2025-12-19T03:26:21Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐分享，还是要跟上ai的脚步",
+        "date": "2025-12-12T14:28:47Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐分享，大幅提升了仍然没有找到门路的我的信心。\n=========================================================\n不混信号，不过拟合。\n=========================================================",
+        "date": "2025-12-12T11:08:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐的分享，真的学习到了",
+        "date": "2025-12-09T08:52:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "不愧是橘子姐，workflow很具体，很有启发性，想问一下用的是什么LLM.\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n======================================================================================",
+        "date": "2025-12-09T08:44:42Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "橘子姐太强了，感谢分享\n=============================================================================\nThe best time to plant a tree is 20 years ago. The second-best time is now.\n=============================================================================",
+        "date": "2025-12-08T12:44:30Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "------------------------------------------------------------------------------------------------------------------------------\n这个工作流里用到的操作符集（operators.json）目前是自己整理的基础版。想确认一下：在实际优化中，AI 是不是更偏向于使用 rank、delta、ts_decay 这种“结构稳定”的操作符？请问如果是不常见的操作符（比如矩阵类或 cross-sectional 的特殊算子）是否会明显降低优化成功率？\n-------------------------------------------------------------------------------------------------------------------------------",
+        "date": "2025-12-07T17:15:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐分享！这两天在找思路优化一下优化alpha工作流的内容，IND sharpe 1.8 fit 1.3的因子 robust test fail 0.8依旧优化失败，想着来论坛找找，就看到了glb 的优化流程。 get！\n================================================================\n一年一个台阶，一步一个脚印\n================================================================",
+        "date": "2025-12-07T04:11:21Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "橘子姐很强！\n拜读大神ALPHA优化工作流！感谢分享！\n-------------------------------------------------------------------------------------------------------\n每一步，都在靠近想要的明天。\n-------------------------------------------------------------------------------------------------------",
+        "date": "2025-12-06T16:22:10Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐的分享！~  昨天试了一下72变 可能是模型不够好 还是会报错\n这个prompt我试一下~~\n=======================================================\nFIGHITNG LABUBU!~\n=======================================================",
+        "date": "2025-12-06T08:02:00Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "想问一下，cursor pro到达额度之后的思考能力，auto能维持和gemini 3一样的效果吗",
+        "date": "2025-12-06T07:39:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享！工作流好用，充分利用了AI的能力，完美提升因子挖掘效率。",
+        "date": "2025-12-06T05:19:34Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬把AI训练得这么好了！我的AI是神一天鬼一天，有时候会越调越差。看来我还要继续努力。",
+        "date": "2025-12-05T15:34:23Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好的，我使用   gemini cli   测试的，好像比较慢，免费的，可能也是要训练它才行",
+        "date": "2025-12-05T01:55:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "橘子姐太强啦，荣幸之前写的帖子能作为橘子姐的参考，期待分享更多，一起探讨AI方向\n--------------------------------------------\nPursue scalable, repeatable opportunities rooted in probability.",
+        "date": "2025-12-05T01:41:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "卧槽！！！橘子姐太强了！！！\n这个工作流简直就是我的梦中情流，所有的要求都很清晰明了，而且从结果上来看，确实效果很好！\n马上用起来嘿嘿~\n=*=*=*=*=*=*=*=*=*=大角羊=*=*=*=*=*=*=*=*=*=",
+        "date": "2025-12-05T01:17:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐分享！\n立马学习实践，效果非常棒！\n我一开始用的 qcoder，模型不晓得是啥，mcp 跑 mult-simulate 的时候老是超时。后面换用 Gemini Cli ,模型是 Gemini-3-pro，5分钟出货！\n看来好的模型真的挺关键的。\n祝大佬 vf 一直 0.95+ ！！",
+        "date": "2025-12-05T00:50:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学习了   感谢分享~~~~   求互赞",
+        "date": "2025-12-04T19:04:28Z"
+      }
+    ],
+    "comment_count": 24,
+    "query_hits": [
+      "GLB"
+    ],
+    "snippet": "感谢分享这个 GLB alpha优化工作流，非常实用。 补充一点关于 GLB D1 fundamental alpha的turnover特性——最近在 GLB D1上批量跑了大量fundamental单数据集alpha（decay=6, SUBINDUSTRY"
+  },
+  {
+    "id": "32628541177879",
+    "title": "【新人入门】Super Alpha 从入门到入门！",
+    "author": "MH33574",
+    "body": "SuperAlpha 理论与实操指南：从单因子走向系统组合\n一、什么是 SuperAlpha？\n在 BRAIN 平台上，每个 Regular Alpha 是一个策略信号，而 SuperAlpha 则是通过系统性逻辑表达，把多个 Alpha 策略按一定权重组合，构成一个更稳定、更强大的复合策略。\n构建 SuperAlpha 有助于：\n提高整体稳定性\n：降低单一 Alpha 波动风险；\n改善评分表现\n：提升 VF、Combined Score 等关键指标；\n增强盈利能力\n：获得额外 $1–$60 的基础奖励；\n扩大参与边界\n：通过组合构建方式，进入更复杂市场结构；\n升级顾问等级\n：构建 SuperAlpha 是通往高级顾问权限的核心门槛。\nSuperAlpha 是策略研究从“因子开发”走向“系统构建”的关键一步。\n二、SuperAlpha 的构建结构\nSuperAlpha 包含两个核心表达式：\nSelection Expression\n：选择哪些 Alphas 进入组合；\nCombo Expression\n：决定这些 Alphas 如何每天按比例加权组合。\n逻辑流程如下：\n使用 Selection Expression 为每个 Alpha 计算一个分数；\n系统按分数高低排序，选出前 N 个 Alphas（由 Selection Limit 决定）；\n使用 Combo Expression 为这些 Alphas 每天分配组合权重；\n输出结果构成最终 SuperAlpha。\n三、Selection Expression 原理详解\n核心机制：排序与筛选结合\nSelection Expression 的本质不只是筛选器，而是一个\n筛选+打分函数\n。系统对每个符合条件的 Alpha 计算表达式数值，称为\nselection weight\n，然后按照该值从高到低排序，选出前 N 个 Alphas，N 由\n回测设置中的\nSelection Limit\n控制。\n这一机制意味着：\n表达式结果可以是布尔值（1/0），也可以是连续评分；\n排名靠前的 Alpha 才会被选入组合；\nSelection Limit\n是一个“名额阈值”，控制最终入选 Alpha 的数量。\n示例表达式对比：\n类型\n表达式\n说明\n布尔型\nturnover < 0.2\n所有符合条件的 Alpha 得分为 1，其余为 0，系统在所有 1 中取前 N 个\n连续评分\n1 - self_correlation\nAlpha 越不相关，得分越高，更容易入选\n组合表达\n(fitness > 2) * (1 - prod_correlation)\nfitness\n是门槛，\nprod_correlation\n决定排序优先级\n多因子加权\n0.5 * (1 - turnover) + 0.5 * (1 - self_correlation)\n自定义加权评分，综合多个维度\nSelection Handling Setting里的部分参数：\nPositive\n（默认）：只保留 > 0 的得分；\nNon-Zero\n：保留所有非零值；\nNon-NaN\n：只剔除 NaN，适用于复杂逻辑表达式。\n四、Combo Expression：构建权重逻辑\nCombo Expression 用于为选中的 Alpha 分配每日权重。\n系统会将选中的 Alphas 表达式输出按\n(A x D x I)\n维度组织成矩阵，Combo Expression 的结果是一个\n(D x A)\n的权重矩阵。最终组合输出是加权后的 Alpha 信号总和。\n常见表达式示例：\n用法\n表达式\n说明\n等权组合\n1\n每个 Alpha 权重相等\nIR 加权\nts_ir(generate_stats(alpha).returns, 250)\n最近一年表现好的 Alpha 权重更高\n稳健性加权\n1 - reduce_max(self_corr(generate_stats(alpha).returns, 500))\n高相关 Alpha 权重降低\n低换手惩罚\nts_ir(stats.returns, 250) * (1 - stats.turnover)\n结合表现与换手率优化组合结构\n五、回测与组合设置建议\n参数\n建议配置\nSelection Limit\n30–100，建议从 30 起测，不建议超过500\nDecay\n0–3，用于平滑组合变动\nTruncation\n通常为 0.08，避免过拟合\nNeutralization\nCOUNTRY（全球）\nPasteurization\nON，用于控制非样本内数据干扰\nMax Trade\n强烈建议在 MINVOL1M 时开启，验证组合可投资性\n六、Global SuperAlpha 构建要点\n构建 Global SuperAlpha 时需特别注意区域间中性化与数据质量问题：\nneutralization = COUNTRY\n是推荐的；\n推荐在\nTOP3000\n上先调试，再迁移至\nMINVOL1M\n回测提交；\n精选 Neutralization 设置为 COUNTRY 且 OS 数据完整的 Alpha：\nneutralization == \"COUNTRY\" && os_start_date <= \"2022-01-01\"\ncombo_a\n运算符适用于组合差异化高的 Alpha；\n开启\nmax_trade\n，确保策略在流动性约束下具备实际可投资性。\n七、平台权限与提交机制\n顾问等级\n可访问池\n非自有 SuperAlpha 配额机制\nGold\n自有池\n无权限构建非自有 SuperAlpha\nExpert\n自有 + university 池\n每提交 1 个自有组合，解锁 1 个非自有组合配额\nMaster\n自有 + 国家池\n同上\nGrandmaster\n自有 + 全平台池\n同上\n表达式中使用：\nown\n：限制只使用自有 Alpha；\nnot(own)\n：排除自有，只用外部池（需有配额）；\n平台在模拟阶段会检查配额是否满足条件。\n在有比赛期间，可能限时开放更多的权限，并放宽not own的配额限制\n八、实用设计建议\n使用标签系统（tags）管理 Alpha 分类，提升表达式可读性与管理效率；\n为每个 Combo 测试等权组合作为基线，验证组合表达式是否提升有效性；\n多使用\ngenerate_stats()\n和\nself_corr()\n构建与表现、稳定性相关的动态加权；\n通过 Run Selection 功能快速验证表达式逻辑是否有效；\n在 Selection 中结合布尔门槛与连续排序因子，提高选中 Alphas 的质量；\n针对不同市场区域、风格因子、数据深度构建多个 SuperAlpha，提升组合多样性。\n九、结语\nSuperAlpha 是平台对策略构建能力的深度检验。它不仅关乎“因子表现”，更反映了研究者在组合稳定性、风险控制、多因子整合方面的综合能力。\n真正优秀的 SuperAlpha 不仅能在 IS 和 OS 表现良好，也具备跨周期、跨行业、跨区域的适应性。建议所有中高级顾问系统性地投入 SuperAlpha 构建，以策略组合的方式提升整体研究价值，解锁更多平台权限与收益可能。\n构建SA的时候尤其要注意信号的衰减，如果sharpe在近两年有较大的衰减，则可能是信号失效的显著表现。\n下一篇我们将给大家使用代码如何实现回测",
+    "votes": 73,
+    "created_at": "2025-06-06T03:24:13Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32628541177879--%E6%96%B0%E4%BA%BA%E5%85%A5%E9%97%A8-Super-Alpha-%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%97%A8",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "读完感觉 SA 的关键不是把指标最高的 alpha 堆进去，而是先用 selection 定义“可用池”，再用 combo 控制相关性和近期衰减。等权基线也很重要，能防止过度设计。",
+        "date": "2026-07-11T00:59:16Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢这份入门指南！作为刚接触SuperAlpha的新手，我补充几个实操中踩过的坑：1）Selection表达式不要只看fitness，建议加上turnover < 0.3的约束，否则选出来的alpha虽然fitness高但tvr也高，组合后很难通过相关性测试；2）Combo表达式新手建议先用等权（1）开始，等熟悉了再尝试combo_a，因为combo_a对alpha池的质量要求更高，如果池子里有噪声alpha反而会拉低整体表现；3）关于Own和Not Own的选择，新手建议先从Own开始——用自己提交过的alpha组SA，因为对这些alpha的表现特征更了解，更容易构建出稳定的组合。等Own做熟练了再尝试Not Own，利用平台的alpha池来增加多样性。",
+        "date": "2026-06-26T15:40:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ts_ri没这个函数",
+        "date": "2026-06-04T05:23:52Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇文章对super alpha做了详细的介绍和总结，对理解super alpha很有帮助，谢谢分享。",
+        "date": "2026-04-16T03:53:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢大佬分享！学习了！",
+        "date": "2026-04-09T23:59:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬",
+        "date": "2026-02-14T16:04:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇SuperAlpha入门指南太实用了！我按建议从等权组合和\nCOUNTRY\n中性化入手，用\nturnover < 0.2\n这类简单筛选起步，发现组合稳定性确实比单因子好。但要注意避免用历史夏普直接加权，容易过拟合。建议新手先用\ncombo_a\n和30个Alpha限额测试，确保OS数据完整再提交。",
+        "date": "2025-12-21T07:04:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "(fitness > 2) * (1 - prod_correlation)，fitness不能直接使用。",
+        "date": "2025-12-15T12:12:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很棒的帖子",
+        "date": "2025-12-07T12:06:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-11-23T03:33:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "赞，看了这篇终于是能跑出来SA了，虽然PC不符合要求，但这也是迈出了一大步，后面将有无限的可能。感谢大佬分享。",
+        "date": "2025-10-31T15:03:11Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "最近开始搞sa，发现一个很奇怪的，用own还是会筛选到其他人的因子，不知道咋回事",
+        "date": "2025-10-29T16:01:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很有用的指导，我一直不大清楚 selection中的 &和*是什么区别，谢谢\n====================================================================================\n====================================================================================\nWorldQuant is anyone's legand",
+        "date": "2025-10-22T05:24:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了，感谢大佬讲解",
+        "date": "2025-10-14T14:51:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "========================================================================================================================================================================感谢分享，又积累三个combo           ----------------------------------------------------------------------------------------------------",
+        "date": "2025-10-14T09:35:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-10-12T08:19:53Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了，感谢大佬",
+        "date": "2025-10-10T09:21:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "有所启发",
+        "date": "2025-08-31T02:01:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬传授经验，真的学到了很多，很实用，非常感谢",
+        "date": "2025-08-19T14:02:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享 收获满满",
+        "date": "2025-08-12T06:17:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "讲解的内容清晰明了，容易看懂，对组建SA的新入门顾问很有用。感谢分享！",
+        "date": "2025-07-20T02:52:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哇，可以说是十分全面了！一直以来不知道如何下手，根据up的这篇文档和weijie老师的SA讲解系列视频，貌似懂了一点点，感恩感恩！\n=================我坚信，在Genius排行榜上，终会有我的Grandmaster席位！！！=============",
+        "date": "2025-06-29T17:05:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "讲解全面且清晰，解答了之前仅看了视频学习一些不懂的问题。同时学习了很多理论知识和思路，感谢分享！",
+        "date": "2025-06-26T01:01:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很好的帖子，感谢分享。希望以后平台对SA可以推出更多的操作符以便选择和排序。",
+        "date": "2025-06-20T15:58:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "博主的这篇文章详细介绍了SuperAlpha的构建方法与策略，从理论到实操，内容丰富且逻辑清晰。它不仅讲解了SuperAlpha的定义、优势和构建结构，还深入剖析了Selection和Combo表达式的原理与应用，。对新人而言，是一篇极具指导性的入门指南，帮助萌新快速掌握SuperAlpha的核心要点，为后续深入研究奠定坚实基础。感谢博主的无私分享",
+        "date": "2025-06-18T23:49:34Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很有用的理论指导",
+        "date": "2025-06-18T11:01:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬！这篇文章从super alpha的概念开始讲起，涉及到了提交super alpha各种好处、super alpha的构建结构、selection和combo expression的原理，以及如何构建这两个表达式。之后还有各种对构建super alpha的实用建议，非常充实详细，很适合新手入门super alpha，很受启发！期待大佬后续进一步的分享！\n============================================================",
+        "date": "2025-06-11T08:05:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了，感谢大佬的科普，vf低仍然有提交的意义可以改善组合从而提高vf\n不改善的话一直都是低的\n------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+        "date": "2025-06-11T01:52:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "VF太低的话交SA是不是没有意义？\n===========================================================================================================================================================================================================================================================",
+        "date": "2025-06-08T13:36:28Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "SuperAlpha不仅是因子表现的检验，更是组合稳定性与风险控制能力的综合体现。优秀策略需具备跨周期、跨行业适应性，建议中高级顾问通过系统性构建，提升研究价值并解锁更高权限。值得注意的是，若Sharpe在近两年显著衰减，可能预示信号失效，需及时调整策略逻辑。",
+        "date": "2025-06-08T07:30:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学习了！感谢大佬分享！\n实际尝试时发现，\nts_ir(generate_stats(alpha).returns, 250)需要改为\nstats =generate_stats(alpha);ts_ir(stats.returns, 250)",
+        "date": "2025-06-07T15:30:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，学到了！",
+        "date": "2025-06-07T12:24:16Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了，感谢分享",
+        "date": "2025-06-07T04:04:36Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢大佬分享！",
+        "date": "2025-06-06T06:57:34Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很到位，学习了",
+        "date": "2025-06-06T04:38:47Z"
+      }
+    ],
+    "comment_count": 35,
+    "query_hits": [
+      "分区域权重"
+    ],
+    "snippet": "的结果是一个 (D x A) 的 权 重 矩阵。最终组合输出是加权后的 Alpha 信号总和。 常见表达式示例： 用法 表达式 说明 等 权 组合 1 每个 Alpha 权 重 相等 IR"
+  },
+  {
+    "id": "34752699977111",
+    "title": "[BRAIN LAB实战]记录一次借助Labs优化GLB alpha的过程",
+    "author": "SZ83096",
+    "body": "首先这个alpha的来源，是参考了老虎哥的这个帖子 ： ➡️\n使用MCP来帮助自己手搓Alpha\n感谢老虎哥的分享！\n想点下earnings数据集，先看了下数据集的字段，发现直接用machine_lib套一二阶，可能不太行，群里咨询了下小伙伴，有热心的小伙伴提示可以参考下这篇帖子。万分感谢！\n看了这篇帖子后，我直接原表达式在GLB ，ASI ,EUR回测了下，发现，ASI地区指标ok，但是robust指标 FAIL了，而且robust指标距离pass 的值还是挺大的，就先放弃了。EUR基本没有信号，而GLB地区的，信号还是挺强的，如下：\n接下来是尝试优化指标\n# 1. 修改了下neu 为country后，达到ppa的指标（prod 相关性0.9+），如下，但是三条pnl线中，EMEA 线偏离比较大，sharpe -0.35\n# 2. 初步尝试了下修改settings参数和 操作符参数，没有改善。考虑到这条线明显和其他pnl线偏离比较多，怀疑是不是异常值导致的，于是我去lab看了下数据的一些可视化指标，发现，关于最高覆盖率 top5的股票，有一个明显和其他值差距过大的，如下：\n# 3.  于是想着，是不是排除掉一些明显偏离其他值过大的股票看看\n通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值后，再进行其他操作符处理；\n经过测试，发现当过滤掉大于-150时，is指标比较好,如下：\n优化前后的指标对比：\n# 4. 优化后，turnover比较低了，考虑到之前老师说过，turnover过低的alpha，并不好，且lab中显示，该字段的turnover基本有10%左右，于是想着看看能不能提升下turnover\n参考了下面的这篇帖子的思路，\n感谢QX52484 小伙伴的分享！\n如何利用tvr操作符与alpha起舞\n利用ts_target_tvr_decay(x, lambda_min=0, lambda_max=1, target_tvr=0.1) 操作符将\nturnover从 1.17% 提高到了4.66%\n（参数设置为lambda_min=0, lambda_max=1, target_tvr=0.1）\n以及8.14%\n（参数设置为lambda_min=0, lambda_max=5, target_tvr=0.1），同时\nsharpe指标和fitness，returns都得到了显著的提升\n，而且\nprod corr从0.9009下降到了0.7655\n！真是令人惊喜的意外啊（感谢小伙伴在论坛分享的各种帖子！）\n参数设置为\nlambda_min=0, lambda_max=1, target_tvr=0.1\n的 alpha指标如下：\n参数设置为\nlambda_min=0, lambda_max=5, target_tvr=0.1 的alpha图如下：\n到此，alpha优化结束。\n（可能你会问，我咋提交了turnover较低的那个alpha，只能说：指标过于相似导致我复制错alpha_id了！我发现的时候，程序还在提交，赶紧去页面把description 去掉了，想让服务器提交失败，结果晚了，10几秒就交上去了...... 😭😭😭 ）",
+    "votes": 89,
+    "created_at": "2025-09-06T18:02:10Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/34752699977111--BRAIN-LAB%E5%AE%9E%E6%88%98-%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%80%9F%E5%8A%A9Labs%E4%BC%98%E5%8C%96GLB-alpha%E7%9A%84%E8%BF%87%E7%A8%8B",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐的分享，我想开GLB区的alpha了，正开始摸索中，您的经验给我很大的帮助，tur这个操作符我确实用的很少，学习了。",
+        "date": "2026-01-18T13:05:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，Brain Labs真的非常有用！ 我最近已经离不开它了。",
+        "date": "2026-01-07T09:27:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "“通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值后，再进行其他操作符处理”\n我想问问这里的小于的这些值是从哪里得到的？我看了下图两眼一抹黑 不知道这些值从哪里来的？",
+        "date": "2025-11-27T02:42:01Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "想要降低操作符，搜到了这里。要学的还很多。。感谢分享。",
+        "date": "2025-11-02T14:24:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "\"通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值\"\n真的学到了，原来可以这样处理极端值， ts_target_tvr_decay我也一直在用，自从看到起舞那篇帖子后。\n===================================================================================\n===================Talk is cheap,show me the alpha=================================",
+        "date": "2025-10-11T09:14:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐的分享，橘子姐写论文真可爱哈哈哈\nts_target_tvr_decay 这几个降低tvr的op 我感觉效果都不是很好\n可能是我使用的方法还存在问题，感谢楼上的分享 我去实操试试\n==========================================================\n==========================================================",
+        "date": "2025-09-27T06:50:32Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，ts_target_tvr_decay居然还能这么用，真的很有启发\n===================================================================================\n===================Talk is cheap,show me the alpha=================================",
+        "date": "2025-09-27T01:31:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan，过滤掉这些值后，再进行其他操作符处理。能否说一下这里具体是怎么过滤的呢。lambda_min=0, lambda_max=5, target_tvr=0.1 ，另外lambda_max的含义是什么呢？设置成5有什么特别的原因吗，和1相比有很大变化吗？\n=============================================================================",
+        "date": "2025-09-26T18:19:28Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常有用，我也是通过ts_target_tvr_decay来提升turnover的方法来救活了死鱼，然后提交了，感谢大佬分享！！！",
+        "date": "2025-09-26T07:30:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢，正在学习lab。",
+        "date": "2025-09-26T02:18:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢橘子姐的分享，之前以为ts_target_tvr_decay这个是降低turnover的，没想道还能升turnover,真是学到了。\n但是这步通过if_else 判断小于-512，-252，-120 ...  时，设置值为nan这个会不会是在做拟合的行为。\n=============================================================================\nThe best time to plant a tree is 20 years ago. The second-best time is now.\n=============================================================================",
+        "date": "2025-09-21T16:16:55Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "来自深圳的盛赞\n女神橘子姐，青春永驻，GM高挂\n我一直以为ts_target_tvr_decay(x, lambda_min=0, lambda_max=1, target_tvr=0.1)是用来降低turnover的，\n过程中用过几次，效果很一般，碰到turnover过大的，用了之后指标一泻千里，就弃置不用了，感觉上很复杂，可能是我生平喜欢简洁，看到这么复杂的一时难以接受，至今也没用过这个。\n没想到还可以用来提升turnover，真真是见识了，后面我再碰到turnover过低的，尤其在1%附近的，一定要试验一下。\n之前碰到类似的问题，都是调decay，或者是上power增强，今天又发现一个新的途径\n------------------------------------------------------------------------------------------------------------------\n凡事发生，皆利于我；愿我所愿，尽是美好\n------------------------------------------------------------------------------------------------------------------",
+        "date": "2025-09-18T02:52:41Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哈哈，最后一段太逗了^_^",
+        "date": "2025-09-12T15:05:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "膜橘子姐🍊🍊🍊！很有启发性的worldquantLab实战分享，作为一个还在摸索中的小gold，虽然有些操作细节看不太懂，但您的整个优化思路让我学到了一些东西\n了解alpha数据\n：看到Robust指标fail没有直接放弃，而是通过数据可视化精准定位到异常值问题，这个思路真的值得学习；\n操作符优化alpha\n：用if_else过滤极端值操作，看到优化前后对比图的时候我有些惊讶，效果也非常不错；\n小gold思考\n：考虑到turnover过低的问题，用ts_target_tvr_decay操作符来调节，最终各项指标全面提升，看来这个操作符值得小gold好好学习一下！\n最后提交错版本太真实了😂 ，小gold也时有发生这种情况。",
+        "date": "2025-09-12T06:07:43Z"
+      }
+    ],
+    "comment_count": 14,
+    "query_hits": [
+      "GLB"
+    ],
+    "snippet": "看了这篇帖子后，我直接原表达式在 GLB ，ASI ,EUR回测了下，发现，ASI地区指标ok，但是robust指标 FAIL了，而且robust指标距离pass 的值还是挺大的，就先放弃了。EUR基本没有信号，而 GLB 地区的，信号还是挺强的，如下："
+  },
+  {
+    "id": "33294035948311",
+    "title": "【大角羊】《2025SAC比赛ATOM第三分享》请国区G2的兄弟们看过来，希望我在ATOM中获得高分的经验给你们一些启发！",
+    "author": "AL13375",
+    "body": "相信很多人和我一样，虽然可以组出来加分的走势良好的super alpha，但是并不完全了解这样select和combo的作用，以及它的os表现会如何。所以大部分情况下，许多人要么是为了交sa而组sa，要么是为了调低prod来获取更高的base，只有少数人会去研究如何让自己组的sa在is表现良好的同时也可能在os表现依然出色。\n在SAC比赛之前我并没有组过sa，所有组sa的经验都是这二十几天的经验，这期间我没有使用代码回测，每天都是手搓，也是收获了一些帮助优化sa的技巧。在此，要感谢weijie老师的帖子-\n【有奖】SuperAlpha征文：分享你独到的selection和combination方法！\n并且特别感谢游戏王\nZS59763\n的经验分享：\n(\nnot(own)&&\n#选择不是自己的因子\n((turnover<0.07&&turnover>0.05)||\n(turnover<0.15&&turnover>0.13)||\n(turnover<0.12&&turnover>0.09))\n#按照turnover进行分层，每次选取不同的范围以保证每次选到的因子不同，提升多样性\n&&(operator_count<8)  &&(dataset_count<=2)\n#限制op和pyramid个数，降低过拟合的概率\n&&(prod_correlation<0.5&&prod_correlation>0.1)\n#按照prodcor筛选，0.5可以保证充分的分散化，0.1则是保证不选到奇奇怪怪的东西（一些厂或者极端的pnl）\n#以上为组合部分，以下为权重分配\n)\n/(turnover*s_log_1p(turnover)\n#按照turnover进行加权\n*sigmoid(self_correlation)\n*sigmoid(prod_correlation)\n#按照prodcor进行加权，为了防止权重变化过大，比如0.5和0.1权重差五倍，容易集中到一个因子上去\n*abs(long_count-short_count))\n#按照多空进行加权，对于多空平衡的因子赋予更高权重，可以避免选到偏多或者偏空因子\n我组的sa的selection就是受这段表达式的启发的，游戏王大佬也是解释的很详细了。这种组sa的思路就是“\n择优而优\n”，因为选择的regular alpha比较优质，所以组的super alpha自然而然就会比较优质。\n我就是用这个alpha加以调整在每个主题的多个region上提交了，并且分数都还可以，总分一直保持在百名左右，足以看到这个selection的强大之处！\n至于combo，我一般常用的就三种：\n等权combo：1\n单combo_a表达式：combo_a(alpha,nlength=252,mode='algo1')（实测换成160效果也不错）\n多combo_a表达式：\nw1=combo_a(alpha,nlength=40,mode='algo1');\nw2=combo_a(alpha,nlength=160,mode='algo1');\nw3=combo_a(alpha,nlength=252,mode='algo1');\nsigned_power(scale(w1)+scale(w2)+scale(w3),2)\n这三种combo的作用机制区别很大，还有其他的combo的表达式的写法我试过但是is表现一般，就暂时没用了，但是建议大家多去尝试，找到最合适的。\n最后一周了，祝愿大家可以在这一周做出好的alpha，成功逆袭，加油！VF1.0！！！",
+    "votes": 90,
+    "created_at": "2025-07-07T13:34:13Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/33294035948311--%E5%A4%A7%E8%A7%92%E7%BE%8A-2025SAC%E6%AF%94%E8%B5%9BATOM%E7%AC%AC%E4%B8%89%E5%88%86%E4%BA%AB-%E8%AF%B7%E5%9B%BD%E5%8C%BAG2%E7%9A%84%E5%85%84%E5%BC%9F%E4%BB%AC%E7%9C%8B%E8%BF%87%E6%9D%A5-%E5%B8%8C%E6%9C%9B%E6%88%91%E5%9C%A8ATOM%E4%B8%AD%E8%8E%B7%E5%BE%97%E9%AB%98%E5%88%86%E7%9A%84%E7%BB%8F%E9%AA%8C%E7%BB%99%E4%BD%A0%E4%BB%AC%E4%B8%80%E4%BA%9B%E5%90%AF%E5%8F%91",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "这个sa的combo表达式很好的帮助了降低sa的相关性，太感谢了，多亏了这些表达式，之前跑的pc太高了，现在的pc都很低",
+        "date": "2025-12-23T13:18:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，使用下来效果很好，补充几点自己的心得：\n1、主贴的筛选条件比较严格，筛选出来的alpha数量可能比较少，这时可以通过修改筛选条件来扩大筛选范围，比如 把 prod_correlation<0.5修改成 prod_correlation<0.6，或者对turnover的数字进行修改。\n2、如果当前Region是EUR，可以加上筛选条件\n&& universe != \"ILLIQUID_MINVOL1M\"\n3、w1=combo_a(alpha,nlength=40,mode='algo1');\nmode对应的赋值algo1可以尝试修改成algo2、algo3，降低prod相关性",
+        "date": "2025-11-25T04:05:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大角羊的攻略简洁而有力。总结:\n1.not(own)\n2. turnover分层\n3.限制op和pyramid个数，降低过拟合的概率\n4.按照prodcorr筛选，0.5可以保证充分的分散化，0.1则是保证不选到奇奇怪怪的东西（一些厂或者极端的pnl）\n5.加权（by turnover / self corr / prod corr / abs(long_count-short_count))\n5.combo_a或组合combo_a\n简明清晰，真的受益匪浅\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n======================================================================================",
+        "date": "2025-11-24T04:44:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常好的经验。感谢分享啊。俺正非常需要",
+        "date": "2025-11-24T00:36:47Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哥，你简直是我的神啊！！！！我萌新小白，真的一点都不懂SA，看完你这篇帖子，真的茅塞顿开！马上去回测了一下，结果非常精细！SC0.3，prod0.7，虽然prod有点高，但是没关系！我已经通过你的例子知道怎么去修改这个select了！十分感谢你！\n=================我坚信，在Genius排行榜上，终会有我的Grandmaster席位！！！=============",
+        "date": "2025-07-18T03:54:33Z"
+      },
+      {
+        "author": "AL13375",
+        "body": "29090704445463\n应该是解锁了super alpha 权限的，你再提交一个regular alpha，明天12点之后看看行不行。（记得加上own，因为现在你应该是只能组自己的）",
+        "date": "2025-07-15T15:49:56Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哥，我是刚升到顾问的。  alpha的数量也已经100+了， 但是无法提交super alpha， 是因为我前段时间参加了PPAC吗",
+        "date": "2025-07-15T08:41:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "======================================================================================非常感谢你的分享，对我接下来的atom比赛给与了很大的帮助，祝你可以拿到更多的周奖==============================================================================================================================================================================================================================================================",
+        "date": "2025-07-09T13:00:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哥，你简直是我的神啊！！！！我萌新小白，真的一点都不懂SA，看完你这篇帖子，真的茅塞顿开！马上去回测了一下，结果非常精细！SC0.3，prod0.7，虽然prod有点高，但是没关系！我已经通过你的例子知道怎么去修改这个select了！十分感谢你！\n=================我坚信，在Genius排行榜上，终会有我的Grandmaster席位！！！=============",
+        "date": "2025-07-08T10:37:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "nice，向al大佬学习！\n生活就像海洋，只有意志坚强的人才能到达彼岸\nthis is an apple, i like apples,  apples are  good for my health",
+        "date": "2025-07-08T09:23:19Z"
+      }
+    ],
+    "comment_count": 10,
+    "query_hits": [
+      "分区域权重"
+    ],
+    "snippet": "#按照prodcor进行加 权 ，为了防止 权 重 变化过大，比如0.5和0.1 权 重 差五倍，容易集中到一个因子上去 *abs(long_count-short_count)) #按照多空进行加 权 ，对于多空平衡的因子赋予更高 权 重 ，可以避免选到偏多或者偏空因子"
+  },
+  {
+    "id": "28050210195863",
+    "title": "我用来获得 MAPC 全球第一的 GLOBAL 数据处理方法。",
+    "author": "NM98411",
+    "body": "首先，MAPC 比赛只集中在 GLB，所以我的算法在 GLB 区域的表现会优于其他地区：\n由于 MAPC 的评分标准包括 datafield score\n，为了尽量减少使用过多的数据，我每次只使用一个数据与每个 alpha 结合，并通过嵌套函数的方式对这些 alpha 进行连续操作，同时配合对同一数据进行加减乘除的运算。\n我总是选择在低流动性数据集上运行 alpha\n，以优化 alpha 的运行时间。运行完成后，我会选择表现最好的 alpha（优先选择 IS 得分高且不过拟合的 alpha）。接着，我会重新运行这些 alpha，并切换到可视化模式。\n与其他区域不同的是，在 GLB 上运行可视化模式时，可以查看 \"average size by country\"（按国家的平均规模）。这一功能对我的算法方向非常有帮助。\n比如，在 MAPC 比赛中，根据我的主观判断，我将 alpha 重点指向了英国、澳大利亚、日本以及一些北欧国家。这一策略效果显著，因为比赛结束两个月后，我的 value factor 已经达到了 1.0。\n由于合并后的 alpha（merged alpha）至关重要\n，我在提交前会对所有的 alpha 进行可视化检查。这确保了我的 merged alpha 可以按照预设的算法正确运行。\n感谢大家阅读我的文章！如果你感兴趣并想进一步了解，我会再写一篇关于如何构建 super alpha 的文章，这也是我在 SAC 比赛中取得前三名的秘诀。",
+    "votes": 91,
+    "created_at": "2024-11-25T15:38:05Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/28050210195863-%E6%88%91%E7%94%A8%E6%9D%A5%E8%8E%B7%E5%BE%97-MAPC-%E5%85%A8%E7%90%83%E7%AC%AC%E4%B8%80%E7%9A%84-GLOBAL-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "MAPC 全球第一作者的 GLB 数据处理方法，读完后对 ASI 迁移有几点感想：\n\"每次只使用一个数据字段 + 嵌套函数连续操作\"\n其实是 ATOM 哲学的极致版——这在 2026 KOR/CHN 数据集相对稀缺时尤其有效；但 ASI 里 virgin 数据集预测 starmine 字段族其实\nsuite 内多字段 atom\n相比单字段有 Sharpe 溢价。\n\"把 alpha 重点指向英国、澳大利亚、日本等\"\n是 GLB 独有的优势——V-on 可视化可看 avg size by country，但 ASI 没有这个视角。替代方案：对 ASI 跑 V-on 后读 by-country pnl 表，手动挑 JP/HK/AU 单个国家的子 alpha。\n\"merged alpha 可视化必查\"\n对 ASI MINVOL1M 是 double-edged sword——合并到 pool 后由于 dressage 规模小，单条 alpha 对 pool Sharpe 影响大，必须做\"提交后 pool 冲击\"模拟。\nValue Factor 1.0\n是 MAPC 特定规则红利——普通路径 VF 0.8+ 已是健康，别拿比赛路径当常态。\nGLB 方法论 ASI 复用 80%，缺 V-on country 视角那 20% 要用 V-on 重测补齐。",
+        "date": "2026-07-03T23:54:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "将 alpha 重点指向了英国、澳大利亚、日本以及一些北欧国家。这个策略倒还是第一次听到，可以尝试一下",
+        "date": "2025-09-25T16:03:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "Thanks for the insight.",
+        "date": "2025-09-12T03:41:11Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "========================感谢大佬分享==============================\n这篇文章分享的策略非常实用，感谢大佬分享。我有几个问题，能否请您有时间回答一下：\n1.如何判断一个数据集的流动性高低呢？\n2.每次只选择一个data field的意思是，在已经挖掘好alpha的基础上，然后来加减data field吗？\n3.merged alpha具体指的是什么呢？\n========================感谢大佬分享==============================",
+        "date": "2025-09-06T05:45:01Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇文章分享的策略非常实用，尤其是在 MAPC 比赛中集中在 GLB 区域的表现，利用低流动性数据集来优化 alpha 的运行时间，真的能帮助提高效率。你通过不断调整 alpha 并关注 IS 得分以及过拟合问题的做法非常科学，显示出对算法的深刻理解。特别是你提到的可视化模式和“average size by country”功能，非常有助于根据不同国家的特点来调整策略。这种基于数据分析和主观判断相结合的策略非常值得借鉴，也能在实际应用中带来显著的效果。期待你后续关于如何构建 super alpha 的文章！",
+        "date": "2025-06-12T13:49:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "催更催更！！",
+        "date": "2025-01-10T15:45:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这篇文章非常有用，谢谢你的分享！",
+        "date": "2024-11-28T05:10:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常好的经验，期待进一步的分享，以及好奇您最近的value factor是多少",
+        "date": "2024-11-27T16:25:14Z"
+      }
+    ],
+    "comment_count": 8,
+    "query_hits": [
+      "全球因子"
+    ],
+    "snippet": "MAPC 全球 第一作者的 GLB 数据处理方法，读完后对 ASI 迁移有几点感想： \"每次只使用一个数据字段 + 嵌套函数连续操作\" 其实是 ATOM 哲学的极致版——这在 2026 KOR/CHN 数据集相对稀缺时尤其有效；但 ASI"
+  },
+  {
+    "id": "32223192365207",
+    "title": "【PPAC 提交经验分享】注意！Prod Correlation 报错，实际卡点可能是 Power Pool 相关性",
+    "author": "JR23144",
+    "body": "各位还在肝 PPAC 的朋友们，大家好！\n最近在提交 Power Pool Alpha 的时候，遇到了一个有点迷惑的报错情况，研究了一下，想把经验分享给大家，希望能帮到可能遇到同样问题的人。\n情况是这样的：\n大家知道，PPAC 的规则里明确写着 Power Pool Alpha\n豁免检查 Prod Correlation\n。同时，对于 “Self-Correlation” 中的\n“与已标记为Power Pool的Alphas的相关系数 ≤0.5”\n这一条，如果超过了，系统也是不会允许检查通过的。\n但诡异的地方来了：\n当我这个 Power Pool 相关系数（比如 0.6104）确实超过 0.5 时，我收到的\n并不是\n预期的明确 Power Pool 相关性超标的因此无法提交的 FAIL，而是直接收到另一个\nFAIL\n，提示信息是\n“Prod correlation 0.9311 is above cutoff of 0.7 and Sharpe not better by 10.0% or more.”\n我的分析和结论是：\n尽管 PPAC 规则中 Prod Correlation 是豁免项，但当你的\n“Power Pool的Alphas的相关系数” 实际上已经大于 0.5 时，系统似乎会转而通过 Prod Correlation (>0.7) 这个条件来卡住你的提交，并给出 FAIL。\n也就是说，虽然错误信息显示的是 Prod Correlation 问题，但\n根本原因很可能是你的 Alpha 与现有 Power Pool Alpha 的相关性超过了 0.5 的阈值\n。它没有直接报 Power Pool 相关性超标导致 FAIL，而是“借用”了 Prod Correlation 的名义。\n给大家的提醒：\n所以，如果你在提交 Power Pool Alpha 时，明明知道 Prod Correlation 是豁免的，但最后却收到了因为 Prod Correlation 过高（比如 >0.7）而导致的 FAIL，那么请\n务必回头检查你的 Alpha 与现有 Power Pool Alphas 的相关系数是否已经超过了 0.5\n。这很可能才是真正的症结所在！\n虽然规则说放低了条件，不查 Prod-Correlation，但还是需要我们注意，避免提交IS表现很差的Alpha，从而影响我们的 Value Factor。\n希望这个小发现能帮到大家，祝各位提交顺利！",
+    "votes": 91,
+    "created_at": "2025-05-20T01:10:14Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32223192365207--PPAC-%E6%8F%90%E4%BA%A4%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%B3%A8%E6%84%8F-Prod-Correlation-%E6%8A%A5%E9%94%99-%E5%AE%9E%E9%99%85%E5%8D%A1%E7%82%B9%E5%8F%AF%E8%83%BD%E6%98%AF-Power-Pool-%E7%9B%B8%E5%85%B3%E6%80%A7",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "楼主这个「报的是 Prod Correlation，真凶是 Power Pool Correlation」的发现非常重要，二楼补的「PP 检测不过就降级按 regular alpha 再判一次」也把机理说清楚了。我这两天在 GLB High Turnover 主题上做同基因批量探针，正好从\nGET /alphas/{id}/check\n的原始返回\n里，把这件事往前推了一步：\n其实不用等到提交报错，在 IS 阶段就能提前判定自己够不够 Power Pool 资格\n。下面是可复现的判别实验和两个容易踩的口径坑。\n一、关键观察：\nPOWER_POOL_*\n这两条 check 条目是「有条件出现」的\n大家平时看 /check，多数是看每条 record 的\nresult\n是 PASS 还是 FAIL。但 Power Pool 这两条（\nPOWER_POOL_CORRELATION\n/\nPOWER_POOL_DESCRIPTION_LENGTH\n）有个特殊之处：\n它们不是恒定出现的\n——同一个数据集、同一根基因、只差一个连续参数的 5 条 alpha 里，有的 /check 返回里带这两条，有的干脆没有这两条。一开始我以为是平台抽风，做了个单变量对照才发现是有规则的。\n二、判别实验：同基因 5 条，只动一个连续旋钮，PP 条目 5/5 完美分离\n基因完全相同（双腿 rank 融合 + 表达式内层分组中性化 + settings 层 RAM 中性化，GLB / TOPDIV3000 / delay1 / decay2 / truncation 0.01），只改内层中性化的强度系数 λ 或算子类型，得到一组 Sharpe / 相关性连续变化的兄弟 alpha：\n变体\nSharpe\nPROD_CORR\nSELF_CORR\n/check 里有没有 POWER_POOL_* 条目\nλ=0.55\n3.05\n0.5224\n0.5057\n没有\nλ=0.70\n3.02\n0.5172\n0.4978\n（已 <0.5）\n没有\nλ=0.85\n3.00\n0.5108\n0.4888\n（已 <0.5）\n没有\nλ=1.00\n2.96\n0.5032\n0.4787\n没有\n（PC 差 0.0032）\ngroup_zscore 版\n2.97\n0.4958\n0.4722\n有\ngroup_rank 版\n2.94\n0.4978\n0.4778\n有\n中间两行是决定性反例：\nSELF_CORR 已经低于 0.5 了，但 PP 条目照样不出现\n；而只要\nPROD_CORR\n跨过 0.5，条目立刻出现。所以：\n准入闸（决定 PP 条目出不出现）＝ PROD_CORRELATION < 0.5\n通过闸（条目出现后判 PASS/FAIL）＝ POWER_POOL_CORRELATION < 0.5\n三、第二个口径坑：\nPOWER_POOL_CORRELATION\n显示的数值，就是 SELF_CORR 本身\n把上面 group_zscore 那条的 /check 原始 JSON 摊开对比，\nPOWER_POOL_CORRELATION\n的\nvalue\n字段与同一份返回里\nSELF_CORRELATION\n的\nvalue\n逐位相同\n（0.4722 对 0.4722），group_rank 那条同样（0.4778 对 0.4778）。也就是说这一项在 IS 阶段并没有单独去算「与已打标 PP alpha 的相关性」，而是\n直接把自相关的读数搬过来占位\n。\n这解释了为什么楼主提交时看到的 PP 相关性是 0.6104 而不是自相关值——\n提交那一刻平台才真正去算「与已打标 PP 池的相关性」，IS 阶段看到的只是占位读数\n。所以我的实操结论是：\nIS 阶段的\nPOWER_POOL_CORRELATION\n只能当\"资格预筛\"，不能当\"提交必过\"的保证\n。它 PASS 只说明你自相关够低、有资格进池，不代表你和池里现存 alpha 不撞。\n楼主遇到的「豁免项却被 Prod Correlation 卡死」，本质是\n提交时算出的真 PP 相关性 > 0.5 → 降级 regular → 用 regular 的 PC 0.7 闸重判\n。二楼的解释是对的，我这边补的是：\n这个降级在 IS 的 /check 里是看不到预警的\n，因为 IS 阶段那一项用的是自相关占位。\n四、给还在肝 PPAC 的同学两个可以立刻用的检查项\n先把 PROD_CORR 压到 0.5 以下，而不是 0.7 以下。\n很多人按 regular 的 0.7 去卡，结果 PP 条目根本不出现，等于连排队资格都没有。0.7 是 regular 的闸，0.5 才是 PP 的门票。\ndescription 一定要 ≥100 字符，而且要在提交前 PATCH 上去。\n同一份 /check 里\nPOWER_POOL_DESCRIPTION_LENGTH\n的 limit 就是 100，写不够只出 WARNING 不出 FAIL，非常容易被忽略，但它会影响 PP 的评审。\n五、回三楼那位提到「换 operator 降相关」的同学：这招真实有效，但量级要有预期\n你说的「相关性高往往不是因为字段相同，而是 operator 序列结构相同」，我做了严格的单变量验证——同一根表达式，\n只把内层中性化算子在 group_neutralize / group_zscore / group_rank 之间换\n，其余一个字符不动：\n内层算子\nSharpe\nFitness\nPROD_CORR\nSELF_CORR\ngroup_neutralize\n2.96\n1.00\n0.5032\n0.4787\ngroup_zscore\n2.97\n1.01\n0.4958\n0.4722\ngroup_rank\n2.94\n0.99\n0.4978\n0.4778\n两个结论：\n(a) group_zscore 在这组里是免费午餐\n——Fitness 更高的同时 PROD/SELF 双双更低，而且只有它把 PROD_CORR 推过了 0.5 的 PP 门票线；\n(b) 但换算子的量级只有 0.007 左右\n，属于\"临门一脚\"级别的微调。真正数量级的相关性搬运还是得靠\nsettings 层换中性化模型\n：我这边同基因把 settings 从行业类中性化换成 RAM，SELF_CORR 直接从 0.99 掉到 0.58，再叠内层分组中性化到 0.47，这是 0.5 个量级的位移。\n所以顺序建议是：\n先用 settings 层中性化把相关性搬到 0.5 附近，再用内层算子微调这最后 0.01\n。反过来先抠算子，怎么抠都够不着。\n六、一个副作用提醒：这条降相关的路是有代价的，代价记在 margin 上\n同基因四方对照（其余全同，只换 settings 中性化）：行业类中性化 margin 3.83bp / Fitness 1.21，换 RAM 后 margin 2.50bp / Fitness 0.84 ——\nmargin 掉 34.7%\n。而且 turnover 是\n下降\n的（0.6693→0.6356），说明掉的是 returns 不是换手涨了，也就是 RAM 剥掉的那部分风险因子暴露收益本来就是 margin 的物质基础。后面再叠内层分组中性化能把 Sharpe 和 Fitness 拉回来（2.37→3.06、0.84→1.06），margin 却只回来一点点。\n换句话说，\n「降相关」和「厚 margin」在中性化这一根轴上是直接对立的\n，PPAC 想两头都要，只能去找这根轴之外的手段。我下一批正在扫 settings 中性化的全部档位，想找一个「相关性够进 PP、margin 又没被剥干净」的折衷点，跑完回来贴全表。",
+        "date": "2026-08-02T10:01:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这个发现非常关键，PPAC提交时Prod Correlation报错但真正原因是Power Pool相关性超标，这个间接报错机制确实容易误导。我想进一步补充的是，当你确认是Power Pool相关性超标后，除了换alpha之外还有一个实操技巧：检查你的alpha与现有PP pool中alpha的operator组合相似度。很多时候相关性高不是因为用了相同的数据字段，而是因为用了相同的operator序列结构——比如都用了ts_regression加group_zscore的组合。在这种情况下，替换掉其中一个operator就能显著降低相关性而不损失alpha质量。一个具体的做法是把group_zscore换成group_neutralize再加signed_power压缩，或者把ts_regression换成ts_rank配合ts_delta。另外，建议在提交PPAC alpha之前先用已有的regular alpha做一个简单的横截面相关性扫描，找出和自己alpha最接近的那几个，针对性地做operator级别的差异化改造，这样比盲目提交然后被报错再重试效率高得多。",
+        "date": "2026-07-10T14:35:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "是说如果报错：\nPure Power Pool submission does not match any Power Pool Theme.      没关系，只要符合Regular alpha的标准还可以继续提交吗？",
+        "date": "2026-01-11T03:44:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "确实会有这种情况，感谢楼主提醒",
+        "date": "2025-06-18T11:29:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这个逻辑其实是power pool alpha的优先级高于regular alpha，当power pool alpha检测不通过后，系统会将其作为regular alpha处理，看是否满足regular alpha的条件，如果满足则作为regular alpha提交，如果不满足就会返回regular alpha的检测失败信息。",
+        "date": "2025-05-21T14:56:56Z"
+      }
+    ],
+    "comment_count": 5,
+    "query_hits": [
+      "Power Pool"
+    ],
+    "snippet": "最近在提交 Power Pool Alpha 的时候，遇到了一个有点迷惑的报错情况，研究了一下，想把经验分享给大家，希望能帮到可能遇到同样问题的人。 情况是这样的： 大家知道，PPAC 的规则里明确写着 Power Pool Alpha"
+  },
+  {
+    "id": "38186960329367",
+    "title": "26年2月全球会议重点内容整理",
+    "author": "PP26750",
+    "body": "一、Osmosis Score机制（Genius评估新模块）\n核心目标\n：通过“信心分数”影响奖金分配，赋予顾问对alpha组合的自主权。\n操作流程\n：\n分配10万点数至不同范围；\n标签alpha（每范围至少10个alpha，覆盖3+区域+延迟）；\n基于组合表现赚取乘数。\n评分规则\n：每日Osmosis分数 = 所有区域/延迟下组合平均回报的排名；分数直接影响每日奖金（作为乘数），并纳入季度Genius等级评估（与CAP、CSAP等组合表现并列）。\n关键细节\n：\n每周日午夜（美东时间）采样点数分配，周三起展示分数；\n超级alpha可参与，点数无周内过期，可灵活调整；\n与“质量因子”功能类似，不替代其他奖金影响因素。\n二、Thematic Power Pool更新\n核心变化\n：\n竞赛更短、更聚焦（ centrally 识别价值方向）；\n风险处理非强制；\neligibility降低至“至少5个alpha”（原为10个）；\n仅主题内alpha可参与，默认乘数1x（无主题乘数）。\n不变项\n：标签方法论、每日/每月配额、Genius中合并Power Pool分数。\n2月-3月竞赛安排\n：\n2月：GLB TOPDIV3000（1 - 15 Feb）、AMR/TWN/HKG/JPN/KOR Delay 1（16 Feb - 28 Feb）；\n3月：Fast Risk Factor（1 - 15 Mar）、GLB all Risk factors（16 Mar - 29 Mar）。\n一次性奖金\n：1st $600、2nd $500、3rd $400，4 - 8th $300/人，9 - 10th $250/人，11 - 15th $200/人，16 - 20th $150/人，21 - 30th $125/人，31 - 40th $100/人。\n三、二月主题（February Themes）\n1. Country Specific ATOM\n范围\n：AMR、TWN、HKG、JPN、KOR；\n规则\n：\n单数据集alpha（纯数据，非价格类）；\n亚洲地区需通过新maxtrade测试（维持原性能70%）；\n数据集更丰富，支持更多探索。\n主题细节\n：Delay 1模拟，持续3周（1月25日 - 2月15日），ATOM获2倍乘数。\n2. EUR TOPCS1600\n范围\n：新宇宙（排除GBR、ZAF等热门国家，聚焦德/法/瑞士）；\n规则\n：\n需维持Sharp≥0.7（特定国家），目标Sharp>0.8、Margin>5%；\n需通过rank test验证鲁棒性。\n主题细节\n：提交EUR TOPCS1600，持续4周（2月16日 - 3月26日），2倍乘数适用于普通alpha和ATOM。\n四、数据创建挑战（Data Creation Challenge）\n首次平台级创新\n：顾问可在BRAIN平台创建数据集，通过API获取原始文本数据（含情感、工具映射等标注），处理后上传结构化csv并模拟Alphas。\n参与限制\n：前3000名注册（2月20日开放，先到先得）。\n评分与奖励\n：\n评分：25% IS + 75% OS（ tagged simulation）、主观评估（Python脚本）、前10名现场展示；\n奖励：3万美元一次性奖金池（50个名额）。\n五、其他重要信息\nQuant Seps教育资源\n：短内容视频系列（30 - 90秒），覆盖核心概念，已上线YouTube，后续将同步至LinkedIn/Instagram及BRAIN平台。\nPower Pool获奖者宣布\n：强调alpha描述的重要性（避免因描述缺失/错误被 disqualified），两个Power Pool（印度迪雷湾、全球数据集）各40名获胜者，总奖金$15,000（每池$7,500）。\n以上内容整合了会议中关于平台机制更新、竞赛安排、创新挑战及资源发布的核心信息，覆盖Osmosis Score、Thematic Power Pool、二月主题、数据创建挑战等关键板块。",
+    "votes": 78,
+    "created_at": "2026-02-05T14:06:05Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38186960329367-26%E5%B9%B42%E6%9C%88%E5%85%A8%E7%90%83%E4%BC%9A%E8%AE%AE%E9%87%8D%E7%82%B9%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢分享，之前不明白Osmosis更新机制，看了大佬的总结，明白了些，原来是周日采样，周三才更新，但是为何每日的分数还是在变化，每日都重新分配的话，是否不会影响当周每日的osmosis分数，直到下周才产生影响？",
+        "date": "2026-02-24T15:44:15Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢佬的分享！ 平台不定时的举办不同主题，有时都记不过来，有这样一份会议纪要真的很实用！\n=========================================\nFIGHITNG LABUBU!\n=========================================",
+        "date": "2026-02-15T04:52:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，会议总结的很好，清晰具体。\n---------------------------------------------------------------------------\nα≠运气 |α=Edge E [PnL]=∑(E [r_i]×w_i) σ↓→Sharpe↑\nFactor=Signal-Noise Backtest→Live→Repeat βNeutral|αMax\nWin>Loss|Risk<Reward InSample→OutOfSample\n---------------------------------------------------------------------------",
+        "date": "2026-02-12T11:17:47Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "不错不错，会议纪要！！！\n以后可以把每次会议内容总结下来分享给未参会的同学一起学习~",
+        "date": "2026-02-09T03:14:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "四，数据创建挑战，不知道自己是不是前3000名注册，好像不是哎！要错过了。。",
+        "date": "2026-02-08T08:29:53Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这份整理非常有价值，这样大家就可以提前了解到powerpoolalpha的theme，尤其是GLB的allrisk theme是非常吸引人的。想想1月GLB theme中CN顾问的良好表现，我也在期待CN顾问在3月的GLB Theme的表现",
+        "date": "2026-02-07T07:06:10Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬，很节省时间，很清晰也很具体，Osmosis Score机制该如何实操呢？",
+        "date": "2026-02-06T13:11:38Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，总结的非常到位。\n这个帖子先收藏起来，每隔15天回来温故一下内容。",
+        "date": "2026-02-06T11:06:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太实用了。",
+        "date": "2026-02-06T06:32:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "brain平台内容和奖金更丰富了，机会多多，一定要参与！！！",
+        "date": "2026-02-06T05:58:44Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的热心且及时的总结与分享，总结的很清晰，而且大佬的文档功底很强，这是一篇十分专业的markdown文档，先给个大大的赞！！！\n另外想请教一下每日Osmosis分数 纳入季度Genius等级评估（与CAP、CSAP等组合表现并列），Osmosis分数与CAP、CSAP等组合表现在Genius评级中是什么关系呢？and的关系，还是or的关系? 比如：\n- Osmosis\nand\n（CAP\nor\nCSAP ）： 参与对应Genius等级的6维rank\n- Osmosis\nor\n（CAP\nor\nCSAP）： 参与对应Genius等级的6维rank",
+        "date": "2026-02-06T04:39:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "1. SuperAlpha 可以加 osmosis point 吗，我刚刚试了一下不行\n2. 自创数据集这个有点意思，目前是所有数据集都可访问吗，还是只有文本类",
+        "date": "2026-02-06T02:09:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "提示：Cannot update Osmosis points for Super Alpha.\nsa到底可以赋值吗？",
+        "date": "2026-02-05T16:31:35Z"
+      }
+    ],
+    "comment_count": 13,
+    "query_hits": [
+      "Power Pool"
+    ],
+    "snippet": "In/Instagram及BRAIN平台。 Power Pool 获奖者宣布 ：强调alpha描述的重要性（避免因描述缺失/错误被 disqualified），两个 Power Pool （印度迪雷湾、全球数据集）各40名获胜者，总奖金$15"
+  },
+  {
+    "id": "38846510482967",
+    "title": "关于Combined Power Pool Alpha Performance持续稳定的猜想（2.12-2.42-1.97-2.62-2.67）",
+    "author": "MZ45384",
+    "body": "我是去年7月1日IQC结束成为的条件顾问，8月还是9月成为的正式研究顾问。第一次更新combine三个条都是负的，多少不记得了，但在10月出狱后，除了selected其它两个combine都得到了大幅提升，尤其是Combined Power Pool Alpha Performance，直接从零点几突破到2.12，摸清大致方向后一路稳扎稳打，中间由于12月after cost从50%加到了60% cppap跌出了2，但是后来还是稳定了下来，上一次更新（2月）是2.67。\n我认为在ppa 的combined performance这一块做得好的原因有以下几点：\n1.确定提交标准，我一般最初筛选sharpe和fitness都大于1的ppa，如果没有满足条件的alpha，适当降低以下标准比如fitness>0.8，最低不能低于0.6。其次margin我会尽可能控制在15‱，最低不能低于10‱，总之不能亏钱。最近为了拉低turnover交了一些死鱼，大家不要学。\n2.尽可能交不低头或者尾年数据不差的，个人认为前者比较重要，通常只要曲线向上哪怕是平缓向上但尾年不佳的我也会考虑。\n3.多样性提交，在保持提交标准的前提下去尝试更多区域，一个月专注做两个区域最好，最近地两次提升可能是引入了ASI，IND这些区域提升了alpha pool的多样性；同时，每个区域我会尽力在月底之前把塔点完，我认为这样能最大程度地提升或维持稳定性。\n4.tag management，有时在一些难做的地区我为了点塔不得不交一些难看的alpha。为了减小它对power pool的危害，我会删除PowerPoolSelected标签，比如这类：\n在更新了os后，我挑选了一些os/is ratio很低的删掉了ppa tag。当然，目前能看到的只是最新到23年的数据，还有24、25年的数据看不到，不能保证这些23年表现不好的alpha后面两年就一定是差的。因此这样最多只能保护Combined Power Pool Alpha Performance，对Combined Alpha Performance于事无补，关于Combined Selected Alpha Performance我就不清楚了，这一块我也急需帮助。提醒一句：tag管理只是权宜之计，多交高质量的alpha达到三个combined performance都高才是正道。\n最后祝大家VF1+GM！",
+    "votes": 71,
+    "created_at": "2026-03-06T05:36:31Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38846510482967-%E5%85%B3%E4%BA%8ECombined-Power-Pool-Alpha-Performance%E6%8C%81%E7%BB%AD%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%8C%9C%E6%83%B3-2-12-2-42-1-97-2-62-2-67",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "最近combine低的不行，回来补课，感谢大佬的真诚分享！看来我也得对我的tag进行一次质量管理了\n──────────────────────────────────────────────\n每天登录，不为热闹，只为比昨天多明白一点。\n“If you come to the forum to study hard every day, you will get a GM.”\nstudy.today() | review.mistakes() | compound.patience()\nProgress: ███████░░░ 70% | Mode: Quiet Study / Deep Review\n#来论坛认真学习 #少说多练 #每日复盘 #慢慢变强\n慢就是稳，稳就是快。\n──────────────────────────────────────────────",
+        "date": "2026-06-14T09:11:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，突然感觉打了鸡血,继续点塔！",
+        "date": "2026-05-22T09:34:59Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，为了点塔，PPA太拉跨了",
+        "date": "2026-05-21T08:22:05Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================                     感谢大佬的这个关于怎么提高的combined分享,这个想法很超前                                                            ================================自信人生两百年，会当水击三千里==========================",
+        "date": "2026-03-25T15:45:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢佬的分享，TAG MANAGEMENT也是接下来可以优化的方向。确实有一些alpha当初是为了点塔硬着头皮交的..\n=========================================\nFIGHTING LABUBU!\n=========================================",
+        "date": "2026-03-18T01:27:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很有启发，感谢大佬分享\n====================================================================================\n==================纸上得来终觉浅，绝知此事要躬行======================================",
+        "date": "2026-03-17T08:59:49Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=====================================================================================\n感觉近几年的fitness和sharpe确实要更重要一些，就算前期稍微小于0都问题不大，但后几年表现不好很有可能就说明这个因子失去预测能力了\n=====================================================================================",
+        "date": "2026-03-13T07:57:27Z"
+      },
+      {
+        "author": "MZ45384",
+        "body": "@\nBW14163\n关于imbalance，我就是交一些高pc的imbalance5配合一些没用过的操作符来做，没办法，这个category数据集只有一两个（无奈），insiders我是尝试了很多模板和各种预处理方法才产出了两三个。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================",
+        "date": "2026-03-13T00:06:01Z"
+      },
+      {
+        "author": "MZ45384",
+        "body": "@\nMY82844\n我猜测是combined计算之前都可以修改，最好combine更新的前一个月底之前修改吧，\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================",
+        "date": "2026-03-13T00:00:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了还有删标签这种操作，我以为交了之后这个标签删了也没有作用，应对评级考察的是可以尝试一下，有些alpha确实是只是为了点塔硬着头皮交了\n#========= BRAIN OVERCLOCKING MODE ========== # #\n[System]: Research Lab Notebook v2.0.2.6.0312 #\n[Status]: Searching for signals in white noise... #\n[Error]: Overfitting detected. Retrying... [✓] #\n[Log]: Coffee_Level < 5%, Alpha_Count > 0\n# 拒绝回测幻觉，死磕真实收益；逻辑驱动，数据为刃。\n#================ KEEP CALM & BACKTEST ============#",
+        "date": "2026-03-12T15:40:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，Power Pool的combine太强了，\n关于tag管理这部分，根据以往的经验，一般要在当月更新之前多久进行操作？\n===================================================================\n\"Pain + Reflection = Progress\"\n===================================================================",
+        "date": "2026-03-12T07:11:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，真的太干货、太真实了！\n============================================================================\n=============================== 无限进步 ====================================\n===========================================================================",
+        "date": "2026-03-12T02:30:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很棒的点塔图，每个地区几乎都有一定数量的alpha。ppa tag确实需要管理，有时候为了点一些难点的塔会牺牲一些性能，可以把tag删除。\n---------------------------------------------------------------------------\nα≠运气 |α=Edge E [PnL]=∑(E [r_i]×w_i) σ↓→Sharpe↑\nFactor=Signal-Noise Backtest→Live→Repeat βNeutral|αMax\nWin>Loss|Risk<Reward InSample→OutOfSample\n---------------------------------------------------------------------------",
+        "date": "2026-03-11T10:33:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "严控提交标准（Sharpe和Fitness>1，Margin>=10‱）；优选形态向上或尾年尚可的Alpha；注重多样性（每月主攻两区域，及时点塔）；善用Tag管理（删低OS/IS比及PP标签减负面影响）。以上关键的几点，感谢分享，为了点PY确实会交一些质量不好的。",
+        "date": "2026-03-11T07:58:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学到了大佬的精髓，以高提交标准要求自己，筛选sharpe和fitness都大于1的ppa，最低不能低于0.6。其次margin尽可能控制在15‱，最低不能低于10‱\n守住质量就是守住高combine！！，感谢分享，祝大佬combine持续稳定，base多多，早日 VF1.0+GM！",
+        "date": "2026-03-11T02:04:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "专注做一个区域真的很重要!\n可我AMR点不动啊.\n########################################################################\n摸摸后缀\n########################################################################",
+        "date": "2026-03-10T21:07:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "看到截图中的alpha，感到非常惊艳，我也尝试了Inibalance和Insiders，每个做了一天，感觉没有跑出可以提交的alpha，在ai的帮助下，结果也是不尽如人意，可以分享下思路吗^_^",
+        "date": "2026-03-10T15:58:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，很漂亮的点塔图，按照这个塔图和你的margin关注度看，你的VF应该也很不错吧，\n“一个月专注做两个区域最好”这个说法听过好几次了，好多其它大佬也是这个策略，下赛季我也尝试尝试，塔点的干净，保持一定数量以后再换别的区域，应该是版本答案。",
+        "date": "2026-03-09T14:30:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬这篇\nCPPAP 稳定逆袭经验\n真的太干货、太真实了！\n从最开始全负，一路做到\n2.12→2.42→1.97→2.62→2.67\n，完全是靠\n标准清晰、执行稳定、策略到位\n。\n你总结的这几点简直是教科书级：\n严格卡 PPA 提交门槛：Sharpe、Fitness、Margin 三管齐下\n只收\n不低头、尾年不差\n的因子，从源头控制组合质量\n区域多样性 + 每月点满塔，提升鲁棒性\nTag 管理思路超清晰：删 PowerPoolSelected 来保护 CPPAP，还特别提醒这只是权宜之计\n逻辑完整、可复制、不玄学，新人照着做都能少走半年弯路。\n感谢这么真诚的分享，祝大佬继续稳住，早日 VF1.0+GM！",
+        "date": "2026-03-09T09:09:51Z"
+      }
+    ],
+    "comment_count": 19,
+    "query_hits": [
+      "Power Pool"
+    ],
+    "snippet": "记得了，但在10月出狱后，除了selected其它两个combine都得到了大幅提升，尤其是Combined Power Pool Alpha Performance，直接从零点几突破到2.12，摸清大致方向后一路稳扎稳打，中间由于12月after"
+  },
+  {
+    "id": "38121310515223",
+    "title": "PPA活动主题限制下，提交ra点塔的一点心得。",
+    "author": "LD22811",
+    "body": "新季度没多久就开始实行ppa主题活动了，只能在活动区域提交ppa。1月份我做了两个地区的alpha，usa d1和ind，usa在活动之前点了几个塔，活动开始之后又坚持了几天交ra觉得有点累就去了ind活动，活动前期没有在意atom，等我意识到这个问题之后已经交了30个pv塔，所以在活动结束之后我坚持补了20个atom-ra，然后又回usa点亮了剩下的塔，没有去参加GLB活动。\n两个区应该是一共点了24个塔，100个alpha左右。参加活动的ppa也都满足ra标准，只是有些豁免了pc提交。这里面应该有超过一半的alpha是经过我手动优化的。脚本或者ai想直接跑出各项属性都让人满意的alpha还是很少的，更别说全要满足ra标准了。\n主要优化的思路是修正fail和wraing，比如流动性不足用group_neutralize、切换股票池。权重问题调整回填日期，增加交易条件，或者也可以切换股票池，sharpe、fitness值不足使用signed_power操作符。\ntvr和margin不合格时调整decay，或者使用ts_target_tvr_decay 、ts_decay_linear尝试调整。\nPC大于0.7时候可以尝试开启max-trade切换股票池，调整decay，调整ts的时间窗口，分组中性等多种方法，调整结果需要一点运气，一般来说alpha足够好有降低性能的空间而pc值没有特别高的时候都能降低到0.7以下。",
+    "votes": 70,
+    "created_at": "2026-02-03T04:33:20Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/38121310515223-PPA%E6%B4%BB%E5%8A%A8%E4%B8%BB%E9%A2%98%E9%99%90%E5%88%B6%E4%B8%8B-%E6%8F%90%E4%BA%A4ra%E7%82%B9%E5%A1%94%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "GLB难出是正常的，从楼主贴出来的分布图看，GLB在Price Volume和Risk类别的alpha数量明显偏多，同质化竞争可能比较严重。你说的“用AI优化”具体是指用自动搜索还是拿现成的因子模板做参数拟合？如果是后者，建议先确认一下optimize后的sharpe和fitness的分布是否比原版跑得更宽，否则容易过拟合到特定时间段。下一步可以先统计一下你手头alpha在GLB上按楼主提到的几个修正维度（流动性、权重、tvr/margin、PC）各自有多少比例不合格，集中修正最突出的那一项，看看修正后提交ra的通过率变化，这样比直接堆优化更容易判断问题出在哪。",
+        "date": "2026-07-22T09:55:59Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，已严肃学习！\n----------------------------------------------------------------------------------------------------------------------------------\n“因子如矿，日掘一锹，终见真金；回测若镜，百炼千调，方得纯粹。夏普非终点，稳健是归途。”\n----------------------------------------------------------------------------------------------------------------------------------",
+        "date": "2026-07-04T15:51:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================                        感谢大佬的经验分享 ,点塔速度太快了                                                                                      ================================自信人生两百年，会当水击三千里==========================",
+        "date": "2026-03-28T14:51:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬，厉害！！",
+        "date": "2026-03-20T05:46:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太牛了，隐藏的大佬\n===================================================================================\n===================Talk is cheap,show me the alpha=================================",
+        "date": "2026-03-17T15:41:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬太牛了！用了什么工具啊。",
+        "date": "2026-03-10T13:33:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "新人也太强了吧，学习到了，想请教下新人大佬\n比如说\nWeight concentration\n37.74%\nis above cutoff of\n10%\non\n1/7/2015\n.\n这种警告怎么解决呢，有这些对于因子是否能实盘是很有影响的，不知道大佬有什么好的解决方案”\n==========================VF 1.0=====================================\n==========================贺六浑=====================================",
+        "date": "2026-03-09T17:00:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=====================================评论区=========================================\n这点塔图看起来真的是赏心悦目\n和大佬比我差的还是很多\n===================================================================================",
+        "date": "2026-03-09T08:37:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享，ra确实是需要手动搓一搓的\n=============================================================================\nThe only thing permanent is change. What we need to do is to constantly improve ourselves.\n=============================================================================",
+        "date": "2026-03-08T03:30:30Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "USA区域能点这么多塔，厉害！能请教一下USA区域点塔思路吗？我尝试了一下发现要么PC很高，要么表现不是很好。特别是PC，因为USA是最老的区域，大家提交的数量是最多的，只要指标和曲线看着好看一点，PC就在0.7左右了。\n---------------------------------------------------------------------------\nα≠运气 |α=Edge E [PnL]=∑(E [r_i]×w_i) σ↓→Sharpe↑\nFactor=Signal-Noise Backtest→Live→Repeat βNeutral|αMax\nWin>Loss|Risk<Reward InSample→OutOfSample\n---------------------------------------------------------------------------",
+        "date": "2026-02-09T06:34:00Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "最开始提交了脚本直接跑出来的，后面了解了六维的概念，发现脚本跑出来的一般操作符太多了，反而容易过拟合，还是需要自己优化",
+        "date": "2026-02-07T14:38:41Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "牛的佬，手搓太牛了",
+        "date": "2026-02-06T12:32:03Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "优化Alpha的经验太棒了，学习到了！",
+        "date": "2026-02-06T01:12:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享♪(･ω･)ﾉ，非常喜欢这样简单易懂的经验干货。祝大佬base多多，vf高高！",
+        "date": "2026-02-05T13:59:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "思路很不错，值得借鉴一下！",
+        "date": "2026-02-05T08:20:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "GLB活动是真难出啊，我也在摸索使用AI优化差不多的因子，用楼主的方法试一下",
+        "date": "2026-02-05T07:30:36Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哇，你是新顾问吧？提交那么多！最强新人！",
+        "date": "2026-02-04T17:16:56Z"
+      }
+    ],
+    "comment_count": 17,
+    "query_hits": [
+      "点塔"
+    ],
+    "snippet": "d1和ind，usa在活动之前 点 了几个 塔 ，活动开始之后又坚持了几天交ra觉得有点累就去了ind活动，活动前期没有在意atom，等我意识到这个问题之后已经交了30个pv 塔 ，所以在活动结束之后我坚持补了20个atom-ra，然后又回usa 点 亮了剩下的 塔 ，没有去参加GLB活动。"
+  },
+  {
+    "id": "30413891877655",
+    "title": "豆包推荐用户数据集1",
+    "author": "XX42289",
+    "body": "doubao_fields_1 = [\n\"ebit /assets\", # 资产息税前利润率，衡量企业运用全部资产获取利润的能力\n\"income /equity\", # 净资产收益率，反映股东权益的收益水平\n\"cashflow_op /liabilities\", # 经营活动现金流量对负债的保障程度\n\"ebitda /interest_expense\", # 利息保障倍数，衡量企业支付负债利息的能力\n\"sales /inventory\", # 存货周转率，反映存货的周转速度\n\"operating_income /revenue\", # 营业利润率，体现企业经营活动的盈利能力\n\"net_income /assets\", # 资产净利率，反映资产利用的综合效果\n\"receivable /sales\", # 应收账款周转率，反映应收账款周转速度\n\"working_capital /current_liabilities\", # 营运资本对流动负债的保障程度\n\"capex /assets\", # 资本支出占资产的比例，反映企业的投资力度\n\"debt /equity\", # 资产负债率，衡量企业长期偿债能力\n\"income_tax /pretax_income\", # 税负率，反映企业所承担的税收负担\n\"rd_expense /revenue\", # 研发投入占营收的比例，体现企业对研发的重视程度\n\"sga_expense /sales\", # 销售及管理费用占销售额的比例，反映企业运营成本控制情况\n\"inventory_turnover * 365 /inventory\", # 存货周转天数，衡量存货的变现速度\n\"return_assets * assets /equity\", # 从资产回报率推导权益回报率的一种变形\n\"return_equity * equity /assets\", # 从权益回报率推导资产回报率的一种变形\n\"operating_expense /revenue\", # 营业成本率，衡量企业经营成本在营收中的占比\n\"liabilities_curr /assets_curr\", # 流动比率，衡量企业短期偿债能力\n\"pretax_income /invested_capital\", # 投资回报率，反映投入资本的获利能力\n\"goodwill /assets\", # 商誉占资产的比例，反映企业商誉在总资产中的权重\n\"sales_growth /sales\", # 销售增长率，衡量企业销售的增长情况\n\"sales_ps * fnd6_csho /sales\", # 从每股销售额和总股数推导总销售额的一种变形\n\"ppent /assets\", # 固定资产净值占资产的比例，反映企业固定资产的规模\n\"interest_expense /debt\", # 债务的利息率，反映企业债务融资的成本\n\"retained_earnings /equity\", # 留存收益率，反映企业利润留存的比例\n\"income_beforeextra /assets\", # 剔除特殊项目前的资产收益率，衡量企业正常经营的盈利能力\n\"cash /liabilities\", # 现金对负债的覆盖程度，反映企业即时偿债能力\n\"capex /sales\", # 资本支出占销售额的比例，反映企业对未来发展的投资力度\n\"inventory /current_assets\", # 存货占流动资产的比例，反映企业流动资产的结构\n\"net_income /invested_capital\", # 投资净利率，衡量投入资本获取净收益的能力\n\"return_assets /return_equity\", # 资产回报率与权益回报率的比值，反映权益乘数对回报率的影响\n\"operating_income /operating_expense\", # 营业利润与营业成本的比值，衡量企业经营效益\n\"liabilities /assets\", # 资产负债率的另一种表达，衡量企业的负债水平\n\"ebit /interest_expense\", # 息税前利润对利息的保障倍数，衡量企业支付利息的能力\n\"income /revenue\", # 销售净利率，反映企业销售收入的收益水平\n\"receivable /current_assets\", # 应收账款占流动资产的比例，反映流动资产的质量\n\"working_capital /assets\", # 营运资本占资产的比例，反映企业资产的流动性和偿债能力\n\"capex /operating_cashflow\", # 资本支出与经营活动现金流量的比例，反映企业现金流量对投资的支持能力\n\"debt /assets\", # 资产负债率的另一种表达，衡量企业的负债程度\n\"income_tax /income\", # 净利润的税负率，反映企业净利润所承担的税收负担\n\"rd_expense /operating_income\", # 研发投入对营业利润的占比，反映企业在盈利基础上的研发投入情况\n\"sga_expense /operating_income\", # 销售及管理费用对营业利润的占比，反映运营成本对利润的影响\n\"inventory_turnover /liabilities_curr\", # 存货周转率与流动负债的关系，从存货周转角度看对流动负债的影响\n\"return_equity /return_assets\", # 权益回报率与资产回报率的比值，反映权益杠杆的作用\n\"operating_expense /operating_income\", # 营业成本对营业利润的覆盖倍数，衡量企业盈利空间\n\"liabilities_curr /current_ratio\", # 流动负债与流动比率的关系，从比率角度看流动负债情况\n\"pretax_income /assets\", # 税前资产收益率，衡量企业在税前的资产获利能力\n\"goodwill /equity\", # 商誉占股东权益的比例，反映商誉对股东权益的影响\n\"sales_growth /invested_capital\", # 销售增长率与投入资本的关系，反映投入资本对销售增长的推动作用\n\"sales_ps /earnings_per_share\", # 每股销售额与每股收益的关系，反映企业每股的经营和盈利情况\n\"ppent /liabilities\", # 固定资产净值对负债的比例，反映固定资产对负债的保障程度\n\"interest_expense /operating_income\", # 利息费用对营业利润的占比，反映利息负担对企业盈利的影响\n\"retained_earnings /assets\", # 留存收益占资产的比例，反映企业资产中留存收益的构成\n\"income_beforeextra /equity\", # 剔除特殊项目前的净资产收益率，衡量企业正常经营的股东权益收益水平\n\"cash /current_liabilities\", # 现金对流动负债的保障程度，反映企业短期偿债的即时能力\n\"capex /net_income\", # 资本支出与净利润的比例，反映企业用净利润进行投资的能力\n\"inventory /liabilities\", # 存货对负债的比例，反映存货作为偿债资源的能力\n\"net_income /operating_income\", # 净利润与营业利润的比值，反映企业的盈利质量\n\"return_assets * equity /assets\", # 从资产回报率推导权益相关指标的一种变形\n\"operating_income /liabilities\", # 营业利润对负债的比例，反映企业营业利润对负债的覆盖能力\n\"liabilities /equity\", # 负债权益比，衡量企业财务杠杆的大小\n\"ebit /assets_curr\", # 流动资产的息税前利润率，衡量流动资产的获利能力\n\"income /assets_curr\", # 流动资产收益率，反映流动资产的收益水平\n\"cashflow_op /assets\", # 经营活动现金流量对资产的比例，反映资产产生现金流量的能力\n\"ebitda /assets\", # 资产息税折旧摊销前利润率，衡量企业资产在未扣除折旧摊销前的盈利能力\n\"sales /receivable\", # 应收账款回收期的倒数，反映应收账款回收速度\n\"working_capital /revenue\", # 营运资本对营收的比例，反映营运资本对业务的支持程度\n\"capex /liabilities_curr\", # 资本支出对流动负债的比例，反映流动负债对资本支出的支持能力\n\"debt /assets_curr\", # 流动资产的资产负债率，衡量流动资产的负债水平\n\"income_tax /operating_income\", # 营业利润的税负率，反映营业利润所承担的税收负担\n\"rd_expense /pretax_income\", # 研发投入对税前利润的占比，反映企业在税前利润基础上的研发投入情况\n\"sga_expense /pretax_income\", # 销售及管理费用对税前利润的占比，反映运营成本对税前利润的影响\n\"inventory_turnover * 365 /sales\", # 存货周转天数的另一种计算方式，衡量存货变现速度\n\"return_equity * assets /equity\", # 从权益回报率推导资产相关指标的一种变形\n\"operating_expense /liabilities\", # 营业成本对负债的比例，反映企业营业成本与负债的关系\n\"liabilities_curr /liabilities\", # 流动负债占总负债的比例，反映企业负债的结构\n\"pretax_income /equity\", # 税前净资产收益率，衡量企业在税前的股东权益收益水平\n\"goodwill /liabilities\", # 商誉对负债的比例，反映商誉在企业负债背景下的相对规模\n\"sales_growth /assets\", # 销售增长率对资产的比例，反映资产对销售增长的支持能力\n\"sales_ps * fnd6_csho /invested_capital\", # 从每股销售额和总股数与投入资本的关系，反映投入资本的产出情况\n\"ppent /equity\", # 固定资产净值对股东权益的比例，反映固定资产对股东权益的贡献\n\"interest_expense /pretax_income\", # 利息费用对税前利润的占比，反映利息负担对税前利润的影响\n\"retained_earnings /liabilities\", # 留存收益对负债的比例，反映留存收益对负债的偿还能力\n\"income_beforeextra /assets_curr\", # 剔除特殊项目前的流动资产收益率，衡量企业正常经营的流动资产获利能力\n\"cash /assets\", # 现金占资产的比例，反映企业资产的流动性\n\"capex /income\", # 资本支出对净利润的比例，反映企业用盈利进行投资的情况\n\"inventory /working_capital\", # 存货对营运资本的比例，反映存货在营运资本中的占比\n\"net_income /liabilities\", # 净利润对负债的比例，反映企业净利润对负债的偿还能力\n\"return_assets * liabilities /assets\", # 从资产回报率推导负债相关指标的一种变形\n\"operating_income /assets_curr\", # 流动资产的营业利润率，衡量流动资产的经营效益\n\"liabilities /assets_curr\", # 流动资产的负债比率，衡量流动资产的负债程度\n\"ebit /liabilities_curr\", # 流动负债的息税前利润率，衡量流动负债的获利能力\n\"income /liabilities_curr\", # 流动负债的收益率，反映流动负债的收益水平\n\"cashflow_op /assets_curr\", # 经营活动现金流量对流动资产的比例，反映流动资产产生现金流量的能力\n\"ebitda /liabilities_curr\", # 流动负债的息税折旧摊销前利润率，衡量流动负债在未扣除折旧摊销前的盈利能力\n\"sales /working_capital\", # 营运资本周转率，反映营运资本的利用效率\n\"capex /operating_income\", # 资本支出对营业利润的比例，反映营业利润对资本支出的支持能力\n\"debt /liabilities_curr\", # 流动负债中债务的比例，反映流动负债的构成\n\"income_tax /net_income\", # 净利润的实际税负率，反映企业净利润的税收负担\n\"rd_expense /sales_growth\", # 研发投入对销售增长的比例，反映研发投入对销售增长的推动作用\n\"sga_expense /sales_growth\", # 销售及管理费用对销售增长的比例，反映运营成本对销售增长的影响\n\"inventory_turnover * 365 /liabilities\", # 存货周转天数与负债的关系，从存货周转角度看对负债的影响\n\"return_equity * liabilities /equity\", # 从权益回报率推导负债相关指标的一种变形\n\"operating_expense /assets_curr\", # 流动资产的营业成本率，衡量流动资产的成本水平\n\"liabilities_curr /working_capital\", # 流动负债对营运资本的比例，反映流动负债与营运资本的关系\n\"pretax_income /assets_curr\", # 税前流动资产收益率，衡量企业在税前的流动资产获利能力\n\"goodwill /assets_curr\", # 商誉对流动资产的比例，反映商誉在流动资产中的占比\n\"sales_growth /liabilities_curr\", # 销售增长率对流动负债的比例，反映流动负债对销售增长的支持能力\n\"sales_ps * fnd6_csho /liabilities\", # 从每股销售额和总股数与负债的关系，反映负债的产出情况\n\"ppent /liabilities_curr\", # 固定资产净值对流动负债的比例，反映固定资产对流动负债的保障程度\n\"interest_expense /net_income\", # 利息费用对净利润的占比，反映利息负担对净利润的影响\n\"retained_earnings /assets_curr\", # 留存收益对流动资产的比例，反映留存收益在流动资产中的构成\n\"income_beforeextra /liabilities_curr\", # 剔除特殊项目前的流动负债收益率，衡量企业正常经营的流动负债获利能力\n\"cash /working_capital\", # 现金对营运资本的比例，反映现金在营运资本中的占比\n\"capex /cashflow_op\", # 资本支出对经营活动现金流量的比例，反映经营活动现金流量对资本支出的支持能力\n\"inventory /current_ratio\", # 存货与流动比率的关系，从存货角度看流动比率情况\n\"net_income /assets_curr\", # 流动资产净利率，反映流动资产的综合收益能力\n\"return_assets * working_capital /assets\", # 从资产回报率推导营运资本相关指标的一种变形\n\"operating_income /working_capital\", # 营运资本的营业利润率，衡量营运资本的经营效益\n\"liabilities /working_capital\", # 营运资本的负债比率，衡量营运资本的负债程度\n\"ebit /working_capital\", # 营运资本的息税前利润率，衡量营运资本的获利能力\n\"income /working_capital\", # 营运资本的收益率，反映营运资本的收益水平\n\"cashflow_op /working_capital\", # 经营活动现金流量对营运资本的比例，反映营运资本产生现金流量的能力\n\"ebitda /working_capital\", # 营运资本的息税折旧摊销前利润率，衡量营运资本在未扣除折旧摊销前的盈利能力\n\"sales /current_ratio\", # 销售额与流动比率的关系，从销售角度看流动比率情况\n\"capex /income_tax\", # 资本支出对所得税的比例，反映所得税对资本支出的影响\n\"debt /working_capital\", # 营运资本中债务的比例，反映营运资本的构成\n\"income_tax /cashflow_op\", # 经营活动现金流量的税负率，反映经营活动现金流量所承担的税收负担\n\"rd_expense /operating_expense\", # 研发投入对营业成本的占比，反映营业成本中研发投入的情况\n\"sga_expense /operating_expense\", # 销售及管理费用对营业成本的占比，反映营业成本中运营成本的情况\n\"inventory_turnover * 365 /working_capital\", # 存货周转天数与营运资本的关系，从存货周转角度看对营运资本的影响\n\"return_equity * working_capital /equity\", # 从权益回报率推导营运资本相关指标的一种变形\n\"operating_expense /working_capital\", # 营运资本的营业成本率，衡量营运资本的成本水平\n\"liabilities_curr /current_ratio * current_assets\", # 从流动比率和流动资产推导流动负债的一种变形\n\"pretax_income /working_capital\", # 税前营运资本收益率，衡量企业在税前的营运资本获利能力\n\"goodwill /working_capital\", # 商誉对营运资本的比例，反映商誉在营运资本中的占比\n\"sales_growth /working_capital\", # 销售增长率对营运资本的比例，反映营运资本对销售增长的支持能力\n\"sales_ps * fnd6_csho /working_capital\", # 从每股销售额和总股数与营运资本的关系，反映营运资本的产出情况\n\"ppent /working_capital\", # 固定资产净值对营运资本的比例，反映固定资产对营运资本的贡献\n\"interest_expense /cashflow_op\", # 利息费用对经营活动现金流量的占比，反映利息负担对经营活动现金流量的影响\n\"retained_earnings /working_capital\", # 留存收益对营运资本的比例，反映留存收益在营运资本中的构成\n\"income_beforeextra /working_capital\", # 剔除特殊项目前的营运资本收益率，衡量企业正常经营的营运资本获利能力\n\"cash /current_ratio * current_assets\", # 从流动比率和流动资产推导现金的一种变形\n\"capex /net_cashflow\", # 资本支出对净现金流量（假设存在相关计算或数据）的比例，反映净现金流量对资本支出的支持能力\n\"inventory /operating_income\", # 存货对营业利润的比例，反映存货对营业利润的影响\n\"net_income /working_capital\", # 营运资本的净利润率，反映营运资本的盈利水平\n\"return_assets * current_assets /assets\", # 从资产回报率推导流动资产相关指标的一种变形\n\"operating_income /current_assets\", # 流动资产的营业利润率，衡量流动资产的经营效益\n\"liabilities /current_assets\", # 流动资产的负债比率，衡量流动资产的负债程度\n]",
+    "votes": 63,
+    "created_at": "2025-03-05T05:55:30Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/30413891877655-%E8%B1%86%E5%8C%85%E6%8E%A8%E8%8D%90%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E9%9B%861",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "感谢分享！日积月累，日进一步......................终至山顶。",
+        "date": "2026-05-24T14:03:19Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "保存点赞这系列操作得有\n希望我能理解以上的经典分享",
+        "date": "2026-04-20T07:27:41Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "这个合集真是省了我一大堆功夫，专门跑回用户社区帖子就为了找这个内容 最近有在尝试突破自己写alpha的习惯 有现成的这些内容，算是拿到了第一笔宝贵的学习资料 不用再自己去下载数据生成了\n感谢楼主的分享\n祝你早日gm，vf1.0！！！！！！！",
+        "date": "2025-10-25T16:11:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，让我打开了思路，找到了新方向，让我能走得更远，感谢感谢！\n====================================================================================================================================================================================================================================================================================================================================================================================================================================\n我一定好好组合，让它继续发光发热",
+        "date": "2025-10-24T00:32:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "===========================================================================\n感谢大佬分享，祝大佬蒸蒸日上！加油！\n===========================================================================",
+        "date": "2025-10-22T14:16:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-09-30T15:53:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "i love u\nthank u very much",
+        "date": "2025-06-14T12:16:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "Its pretty good. Thank you for sharing!",
+        "date": "2025-06-08T20:45:38Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "666",
+        "date": "2025-05-11T07:21:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢",
+        "date": "2025-05-08T07:08:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-04-01T06:25:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-03-30T14:07:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好的，把这个复制下来组装成JSON文件，遍历请求，找到有价值的表达式，理解并扩展这些表达式，可以使用一段时间。",
+        "date": "2025-03-24T17:26:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-03-20T08:15:23Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "为大家打开了一扇窗",
+        "date": "2025-03-17T06:10:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享",
+        "date": "2025-03-16T06:41:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "新人顾问报道！这两天尝试一下！！",
+        "date": "2025-03-12T04:29:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "赞，把这个copy下来组装成JSON文件，遍历请求一遍，找到有价值的表达式，理解扩展这些表达式，可以用一段时间",
+        "date": "2025-03-11T02:06:04Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "思路已打开，感谢分享",
+        "date": "2025-03-05T13:47:34Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "课代表太棒了\n!!\n-----------------------------------------------------------------------------\n-----------------------------------------------------------------------------\n--------------------------热爱生活的老毛------------------------------\n-----------------------------------------------------------------------------\n-----------------------------------------------------------------------------",
+        "date": "2025-03-05T09:21:14Z"
+      }
+    ],
+    "comment_count": 20,
+    "query_hits": [
+      "冷门数据集"
+    ],
+    "snippet": "从流动比率和流动资产推导现金的一种变形 \"capex /net_cashflow\", # 资本支出对净现金流量（假设存在相关计算或 数据 ）的比例，反映净现金流量对资本支出的支持能力 \"inventory /operating_income\", # 存货对"
+  },
+  {
+    "id": "34949059814679",
+    "title": "【MCP Workflow】turnover优化，论坛精华版",
+    "author": "FF56620",
+    "body": "自从开始使用MCP工具，整体效率提升了很多，但是之前的MCP成功率一般，比如前面分享的\n自动化找alpha的workflow\n，整体成功率大约40%，但其对token的消耗是很大的，由于我的AI用的是包月套餐，整体感受没那么厉害，但是如果是按量计费的话，极端情况下，base甚至覆盖不到token的消耗。\n基于上次双周会IQC中国区冠军分享的coze工作流，我发现其实我可以把目光放在更细分的领域，让AI完成一个特定的任务，而非从0开始去找alpha，让其作为一个辅助工具，可能成功率会显著提升，经过我的测试也的确如此，现在将其中一个工作流，Alpha Turnover降低工作流分享给大家，供大家参考，如果大家感兴趣，我也可以持续分享一些自己在用的，效果较好的其他专题工作流。\n首先，该工作流主要是对以下文章内容的提炼，让AI跟随这些经验，去做提升工作，感谢这些作者，文章列表如下：\n如何拯救高turnover因子？一文助你理解并降低因子turnover\n- 109票权威指南\n浅谈用hump操作符解决Sub-universe Sharpe\n- hump操作符专题\nVF 0.9+顾问分享：新人常见误区之Under Fitting\n- 顾问级经验\nAlpha 模版：ts_delta_limit应用举例\n- 高级控制技巧\n# Alpha Turnover降低工作流\n## 🎯 概述\n基于BRAIN论坛经验总结，return = turnover × margin，高换手率降低margin，影响fitness score和被PM采纳的概率。本工作流通过ts_decay_linear等论坛验证的操作符，系统化降低alpha的turnover，实战中可实现**30-50%的turnover降幅**。\n## 📊 论坛实证依据\n### 核心理论基础\n- **[如何拯救高turnover因子？一文助你理解并降低因子turnover](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30927669645207)** (109票, 12评论)\n- **[浅谈用hump操作符解决Sub-universe Sharpe](https://support.worldquantbrain.com/hc/zh-cn/community/posts/31365517513495)** (18票, 9评论)\n- **[VF 0.9+顾问分享：新人常见误区之Under Fitting](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30192357731607)** (25票, 11评论)\n### 关键洞察\n1. **基本关系**: `return = turnover × margin`\n2. **核心操作符**: `ts_decay_linear`, `hump`, `ts_target_tvr_delta_limit`\n3. **平台建议**: 含TVR关键词的operator优先\n## 🔍 第一步：MCP工具诊断当前状态\n### 使用MCP工具获取基线数据\n使用 `mcp__worldquant_brain_platform__get_alpha_details()` 获取当前alpha的基线指标\n### 关键指标分析\n1. **当前turnover水平** (目标: 0.1~0.3)\n2. **Sharpe vs Turnover权衡点**\n3. **时间序列稳定性分析**\n## 🔧 第二步：基于论坛实证的降turnover策略\n### 策略A: ts_decay_linear平滑（论坛首推）\n**理论依据**: 平台官方建议的信号平稳性优化方法\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `ts_decay_linear(原表达式, 5)` - 1个交易周\n- `ts_decay_linear(原表达式, 22)` - 1个交易月\n- `ts_decay_linear(原表达式, 44)` - 2个交易月\n- `ts_decay_linear(原表达式, 63)` - 1个季度\n**预期效果**: Turnover降低30-50%，Sharpe轻微下降可接受\n**经济学原理**:\n- **5天** = 1个标准交易周，适合短期信号平滑\n- **22天** = 1个交易月，适合月度趋势捕捉\n- **44天** = 2个交易月，适合中期信号稳定\n- **63天** = 1个季度，与财报周期同步，适合基本面信号\n### 策略B: hump操作符优化（Sub-universe专用）\n**理论依据**: 论坛实证表明hump在控制波动性、降低换手率方面表现出色\n**适用场景**: Sub-universe Sharpe表现不佳时优先考虑\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `hump(原表达式, hump=0.1)` - 轻度截断\n- `hump(原表达式, hump=0.2)` - 中度截断\n- `hump(原表达式, hump=0.3)` - 较强截断\n- `hump(ts_decay_linear(原表达式, 5), hump=0.2)` - 周衰减+截断组合\n### 策略C: 新一代TVR控制操作符\n**理论依据**: 顾问分享提到平台最新推出的含TVR关键词操作符\n**MCP工具实施**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `ts_target_tvr_delta_limit(原表达式, volume, target_tvr=0.1)` - 目标10%换手率\n- `ts_target_tvr_delta_limit(原表达式, volume, target_tvr=0.15)` - 目标15%换手率\n- `ts_target_tvr_delta_limit(原表达式, volume, target_tvr=0.2)` - 目标20%换手率\n### 策略D: 组合平滑技术\n**基于论坛实践的组合方法**:\n使用 `mcp__worldquant_brain_platform__create_multiSim` 批量测试以下表达式：\n- `ts_decay_linear(ts_mean(原表达式, 5), 22)` - 周均值+月度衰减\n- `hump(ts_decay_linear(原表达式, 5), hump=0.2)` - 周衰减+截断\n- `rank(ts_decay_linear(原表达式, 22))` - 月衰减+排名\n## 📈 第三步：MCP工具验证与选择\n### 综合评估流程\n使用以下MCP工具评估所有候选方案：\n1. `mcp__worldquant_brain_platform__get_alpha_details()` - 获取详细指标\n2. 对比原始alpha的turnover、sharpe、fitness指标\n### 选择标准（基于论坛经验）\n1. **优先级**: Turnover降低 > 30%\n2. **可接受**: Sharpe损失 < 15%\n3. **理想状态**: Fitness score提升\n## 🏆 第四步：最终优化与提交准备\n### 最终候选确认\n使用以下MCP工具对最优候选进行最终检查：\n1. `mcp__worldquant_brain_platform__get_submission_check()` - 提交检查\n2. `mcp__worldquant_brain_platform__check_correlation()` - 相关性检查\n3. `mcp__worldquant_brain_platform__set_alpha_properties()` - 设置属性标记\n## ✅ 成功标准（基于论坛经验）\n- **Turnover < 0.3** (理想 < 0.2)\n- **Sharpe损失 < 15%** (可接受范围)\n- **Fitness score提升** (margin改善)\n- **相关性保持 < 0.7**\n## 🚨 常见陷阱（论坛经验总结）\n### 陷阱1: 盲目提高decay参数\n**论坛洞察**: \"低decay是为了刨除那些为了过相关性测试盲目提高decay的劣质因子\"\n**解决方案**: 优先使用操作符层面的平滑，而非decay参数\n### 陷阱2: 过度优化导致信号失真\n**解决方案**: 保持原始信号的经济逻辑，渐进式优化\n### 陷阱3: 忽视Sub-universe表现\n**解决方案**: hump操作符在Sub-universe Sharpe优化方面更直接有效\n## 📚 论坛文章参考\n### 必读文章\n1. **[如何拯救高turnover因子？一文助你理解并降低因子turnover](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30927669645207)** - 109票权威指南\n2. **[浅谈用hump操作符解决Sub-universe Sharpe](https://support.worldquantbrain.com/hc/zh-cn/community/posts/31365517513495)** - hump操作符专题\n3. **[VF 0.9+顾问分享：新人常见误区之Under Fitting](https://support.worldquantbrain.com/hc/zh-cn/community/posts/30192357731607)** - 顾问级经验\n4. **[Alpha 模版：ts_delta_limit应用举例](https://support.worldquantbrain.com/hc/zh-cn/community/posts/34588105621783)** - 高级控制技巧\n### 核心操作符文档\n- `ts_decay_linear(x, d)` - 平台官方推荐\n- `hump(x, hump=)` - Sub-universe优化专用\n- `ts_target_tvr_delta_limit` - 新一代TVR控制\n## 🛠️ MCP工具使用总结\n核心MCP工具：\n1. `mcp__worldquant_brain_platform__get_alpha_details()` - 获取基线指标\n2. `mcp__worldquant_brain_platform__create_multiSim()` - 批量测试优化方案\n3. `mcp__worldquant_brain_platform__get_submission_check()` - 提交前检查\n4. `mcp__worldquant_brain_platform__check_correlation()` - 相关性验证\n5. `mcp__worldquant_brain_platform__set_alpha_properties()` - 设置属性标记\n### 与手动调试对比\n✅ **MCP批量测试**: 一次性测试多个ts_decay_linear参数组合\n✅ **自动化评估**: 自动获取所有候选的turnover、sharpe、fitness指标\n✅ **系统性对比**: 快速识别最优参数，避免网页端逐个手动测试\n✅ **完整验证链**: 自动完成submission和correlation检查流程\n## 🎯 实战效果展示\n### Alpha 9nz6GQq 优化案例\n**原始指标**:\n- Turnover: 0.5083 (过高)\n- Sharpe: 1.86\n- Fitness: < 1.0\n**使用ts_decay_linear(d=5)优化后**:\n- Turnover: 0.2693 (**降低47%** ✅)\n- Sharpe: 1.71 (轻微下降9% ✅)\n- Fitness: 显著提升\n**验证结果**:\n- ✅ Turnover成功降至目标范围内\n- ✅ Sharpe损失在可接受范围内\n- ✅ 整体fitness得到改善\n- ✅ 证明工作流高度有效\n## 📄 第五步：生成优化报告\n### 创建完整的优化记录\n使用 `mcp__worldquant_brain_platform__set_alpha_properties()` 为优化后的alpha设置：\n- **Name**: `TurnoverOpt_[原始AlphaID]`\n- **Tags**: `[\"turnover_optimized\", \"ts_decay_linear\", \"forum_validated\"]`\n- **Description**: 记录优化前后的具体指标变化和使用的参数\n### 优化报告模板\n```\nAlpha Turnover优化报告\n=====================\n原始Alpha: [AlphaID]\n优化方法: ts_decay_linear(d=[参数])\n优化结果:\n- Turnover: [原值] → [新值] (改善[百分比])\n- Sharpe: [原值] → [新值] (变化[百分比])\n- Fitness: [原值] → [新值]\n- 经济学意义: [时间参数的经济学解释]\n```\n通过MCP工具，实现论坛验证的turnover优化策略，确保结果的可靠性和一致性。\n同时由于大家操作符权限不同，且AI可能理解错误operator的参数，可以让AI下载一下操作符文件，保存下来，再同时作为语料提供给AI，从而减少AI出错的概率，也可参考我之前分享的关于operator的文章。\n来自MCP的operator指北，终于看懂了大多数的平台operator\n也可参考之前分享的工作流\n【MCP Workflow】一个自动化找alpha的工作流分享\n如大家感兴趣，多多点赞评论，后续更新更多关于MCP的探索工作流，下次再见",
+    "votes": 69,
+    "created_at": "2025-09-15T15:30:05Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/34949059814679--MCP-Workflow-turnover%E4%BC%98%E5%8C%96-%E8%AE%BA%E5%9D%9B%E7%B2%BE%E5%8D%8E%E7%89%88",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "这篇精华总结太实用了！关于\\\"优先使用操作符层面平滑而非decay参数\\\"这个观点，我想补充一个具体的操作方法：使用ts_target_tvr_decay操作符。这个操作符可以直接将换手率固定在目标值，比手动调decay更精准。我的做法是先跑一次默认设置看原始tvr，然后根据目标tvr（通常15%-25%之间）设置ts_target_tvr_decay的参数。另外，关于过度优化的问题，我有一个简单的检验方法：在优化前后分别看IS和OS的Sharpe差值，如果优化后IS Sharpe提升很大但OS Sharpe反而下降，说明已经过拟合了。这时候应该回退到更简单的设置。最后，分享一个小技巧：对于turnover偏高的alpha，在combo中加入ts_decay_exp_window(signal, 10, factor=0.5)往往比单纯提高decay更有效，因为它保留了信号的短期响应能力。",
+        "date": "2026-06-26T15:40:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很好用，一直困扰turnover，赞！\n========================================================================================================================================================================",
+        "date": "2026-01-11T16:03:48Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很nice的flow，对于hump操作符的讲解很好，赞！\n========================================================================================================================================================================",
+        "date": "2025-12-19T03:41:08Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "读完此文，感到豁然开朗。作者将论坛精华凝练为一套即拿即用的降换手率工作流，以真实案例展示如何通过MCP工具实现高达47%的turnover降幅。这不仅解决了量化工作中的实际痛点，更颠覆了人们对MCP“高消耗低成功率”的认知——将其用于细分任务竟如此高效。步骤清晰可靠，让人跃跃欲试，并对其后续分享充满期待。",
+        "date": "2025-12-01T02:29:54Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，学到了，特别针对pv数据常常有高换手率的现象。\nhump操作符在Sub-universe Sharpe优化方面更直接有效\n又学到一招！对于ASI以及新开的IND区域适用",
+        "date": "2025-11-10T16:14:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "此贴写得很好，看了后深受感触，学到了很多，感谢大神的无私分享，让我学习到到了很多，最近刚好遇到高换手率的问题，还有低换手率，高margin也会经常遇到，期待楼主也能分享低换手率提高的帖子",
+        "date": "2025-09-27T02:19:09Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ts_target_tvr_delta_limit多次尝试感觉效果有限，没有调整decay的效果明显。另外如果把target_tvr设置为0.01是否有必要呢？\n---------------------------------------------------明天更好---------------------------------------------\n------------------------------------------------------------------------------------------------------------",
+        "date": "2025-09-26T18:07:27Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，学到了。\n**使用ts_decay_linear(d=5)优化后**:\n- Turnover: 0.2693 (**降低47%** ✅)\n- Sharpe: 1.71 (轻微下降9% ✅)\n- Fitness: 显著提升\n有推广意义，非常不错的帖子\n---------------------------------------------------------------------------------------\n凡是发生，皆利于我；愿我所愿，尽是美好\n---------------------------------------------------------------------------------------",
+        "date": "2025-09-26T08:31:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，有这方面的需求需要学习。我一般也是用\nts_target_tvr_delta_limit来控制turnover\n==============================================\nFIGHTING LABUBU!~\n==============================================",
+        "date": "2025-09-25T13:54:12Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，正好有类似alpha需要优化~~\n===================================================================================\n===================Talk is cheap,show me the alpha=======================================",
+        "date": "2025-09-24T01:39:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢作者的无私分享，很不错的工作流，学习了~",
+        "date": "2025-09-21T13:10:02Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "turnover：\n1. ts_decay_linear\n2. hump\n3. ts_target_tvr_delta_limit\n不过印象里，hump给的系数没那么大，比如hump(-ts_delta(close, 5), hump = 0.01)，没试过给那么大过",
+        "date": "2025-09-18T23:58:35Z"
+      }
+    ],
+    "comment_count": 12,
+    "query_hits": [
+      "turnover"
+    ],
+    "snippet": "降低alpha的 turnover ，实战中可实现**30-50%的 turnover 降幅**。 ## 📊 论坛实证依据 ### 核心理论基础\n- **[如何拯救高 turnover 因子？一文助你理解并降低因子 turnover ](https://support"
+  },
+  {
+    "id": "35239747718679",
+    "title": "【MCP workflow】根据GLB的alpha，自动挖掘其他地区alpha的工作流",
+    "author": "FF56620",
+    "body": "基于weijie老师的分享，我选择了「根据GLB的alpha，来挖掘其他地区的alpha」这个部分的内容，进行了MCP的workflow探索，简单尝试了几个alpha，发现效果还不错，跟大家分享一下工作流，希望有所帮助。\n先贴一下效果，我选取的alpha在亚洲表现不错，所以工作流探索了ASI地区\n可以看到，在ASI区域，该字段映射效果还不错，但由于max_trade的开启与鲁棒性检测，存在部分不通过的情况，需要进行微调。\n工作流内容如下：\n# 跨区域相似因子挖掘工作流\n## 阶段一：基线诊断\n- 输入 `alpha_id`，调用 `wqb_mcp__get_alpha_details` 获取原因子的区域、参数配置以及各地区表现。\n- 整理 Sharpe、收益率、警报等指标，为后续的区域选择和策略调整提供依据。\n## 阶段二：信号拆解\n- 解析 Alpha 代码，定位核心数据字段及其操作符结构。\n- 使用 `wqb_mcp__get_datafields`（参数沿用原始区域、universe、delay 等设置）获取field的描述信息，并进行理解。\n## 阶段三：目标区域映射与字段检索\n- 根据已知区域映射确定迁移区域：`APAC → ASI`、`EMEA → EUR`、`AMER → USA`。\n- 对于每个目标区域，优先使用与原因子相同的 `dataset_id` 调用 `wqb_mcp__get_datafields`；若该数据集在目标区域不可用，则改用相同 `category` 并通过字段关键字搜索。\n- 在确保 `instrument_type`、`delay`、`universe` 等参数匹配的同时，筛选出描述、覆盖率和使用度最接近的字段，建立候选字段池，候选字段池建议为3-8个，一次回测可完成。\n## 阶段四：候选因子构建\n- 以原公式为模板，将核心字段替换为候选字段，并视需要添加 winsorize、截断、混合周期等调节操作。\n- 保持中性化方式、衰减、延迟等关键参数一致，以保证结果可比性。\n## 阶段五：批量回测与评估\n- 使用 `wqb_mcp__create_multiSim`（或多次 `wqb_mcp__create_simulation`）在目标区域批量回测候选因子，在 ASI 区域必须开启 `max_trade` 为 `ON`，其他区域使用和选择数据相同的universe即可，其他参数不用调整。\n- 记录 Sharpe、Fitness、鲁棒性检查、风险中性结果等核心指标，并保存 Simulation ID 以便复现与归档。\n## 阶段六：验证与推广\n- 对表现较好的候选，进行两轮有经济学含义的operator增加和删减，找出表现最好的alpha。\n- 将优胜策略迁移到其他映射区域或回到全域回测，并形成标准化报告，包含字段来源、回测指标及后续优化建议。\n大家可以尝试更多的alpha，同时这个策略是从GLB映射到其他地区，其实也可以从其他地区映射到GLB，对工作流进行少量修改即可，如有帮助，请点赞。\n更多MCP workflow，可参考我往期帖子，自动挖掘，降turnover，手机使用mcp等",
+    "votes": 70,
+    "created_at": "2025-09-27T11:29:50Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/35239747718679--MCP-workflow-%E6%A0%B9%E6%8D%AEGLB%E7%9A%84alpha-%E8%87%AA%E5%8A%A8%E6%8C%96%E6%8E%98%E5%85%B6%E4%BB%96%E5%9C%B0%E5%8C%BAalpha%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "这篇跨区域工作流（GLB→EUR/ASI/USA映射）非常实用，APAC→ASI / EMEA→EUR / AMER→USA的映射规则简洁清晰。\n基于自己实操中遇到的问题，补充几个EUR侧的具体注意事项：\n1. 字段映射的\"同dataset不一定同字段\"问题：从GLB映射到EUR时，GLB常用的数据集（如model177、risk/shortinterest系列）在EUR可能根本没有对应版本或覆盖率极低。建议映射时优先看category（fundamental/analyst/alternative）再做语义搜索（比如用match_datafields工具的query=\"institutional ownership flow\"找EUR区对应的fund_holdings_panel字段）。\n2. EUR的多国家中性化陷阱：从GLB迁移alpha到EUR时，原alpha如果只做了INDUSTRY中性化，到EUR后一定会暴漏country bias。建议映射时显式加入country分组（group_neutralize(signal, industry) + group_rank by country 或直接用双重分组）。\n3. fund_holdings_panel作为目标数据集的优势：如果你能从GLB里找到\"institutional flow / smart money\"逻辑的alpha，迁移到EUR/fund_holdings_panel极其顺畅——因为这个数据集就是纯粹的机构持仓向量数据，逻辑完全native。\n非常有落地价值的工作流，谢谢分享！",
+        "date": "2026-07-03T20:24:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "思路很清晰：从GLB里挑一个表现好的alpha，用MCP把核心字段映射到其他地区（这次重点做了ASI），小规模试了几个alpha，效果不错，但受max_trade与鲁棒性检查影响，有些不过，需要微调。\n区域映射规则：APAC→ASI，EMEA→EUR，AMER→USA。优先同数据集(dataset)找字段，不行就用同类别(category)+关键词，确保instrument_type、delay、universe一致。\n实操流程（6步）：基线诊断→信号拆解→目标区域字段检索→候选因子构建→批量回测评估→验证与推广。\n候选字段池建议3-8个；按原公式替换核心字段，必要时加winsor/截断/混合周期；中性化/衰减/延迟保持一致。\n回测用multiSim，ASI区必须开max_trade=ON；记录Sharpe、Fitness、鲁棒性、风险中性结果与Sim ID。\n表现好后做两轮有经济学含义的算子增删，选最优再推广到其他区或全域，并产出标准化报告。\n反向也可做：从其他地区映射回GLB，只需小改流程。\n总体评价：流程标准、可复现、落地性强，适合快速在新区域挖相似因子；细节在于字段匹配与鲁棒性微调。",
+        "date": "2025-10-11T02:59:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "下面具体说说工作流：\n阶段一基线诊断\n：输入 alpha_id，用 wqb_mcp__get_alpha_details 拿到原 alpha 的区域、参数配置和各地区表现，整理 Sharpe、收益率这些指标，为后面选区域和调策略做准备。\n阶段二信号拆解\n：解析 Alpha 代码，找到核心数据字段和操作符结构，再用 wqb_mcp__get_datafields 获取 field 的描述信息并理解。\n阶段三目标区域映射与字段检索\n：按 APAC 到 ASI 、EMEA 到 EUR 、AMER 到 USA 这样的区域映射来确定迁移区域。对每个目标区域，先用和原 alpha 一样的 dataset_id 去调 wqb_mcp__get_datafields 找字段；要是数据集在目标区域不能用，就换相同 category ，通过字段关键字搜。保证 instrument_type 、delay 、universe 这些参数匹配，选出描述、覆盖率和使用度最接近的字段，建个 3 - 8 个字段的候选字段池，一次回测就能搞定。\n阶段四候选因子构建\n：照着原公式模板，把核心字段换成候选字段，根据情况加点 winsorize 、截断、混合周期这些调节操作，关键参数像中性化方式、衰减、延迟啥的保持一致，方便对比结果。\n阶段五批量回测与评估\n：在目标区域用 wqb_mcp__create_multiSim 或者多次 wqb_mcp__create_simulation 批量回测候选因子，ASI 区域要把 max_trade 开成 ON ，其他区域选和数据一样的 universe ，别的参数不用动。记录 Sharpe 、Fitness 、鲁棒性检查、风险中性结果这些核心指标，保存 Simulation ID 方便复现和归档。\n阶段六验证与推广\n：对表现好的候选因子，做两轮添加和删减有经济学含义的 operator ，找出最好的 alpha 。把优胜策略用到其他映射区域或者回全域回测，出个标准化报告，写上字段来源、回测指标和后续优化建议。\n大家可以多试试不同的 alpha ，这个策略既能从 GLB 映射到其他地区，也能从其他地区映射到 GLB ，改改工作流就行。要是觉得有用，记得点赞。想了解更多 MCP workflow ，可以看看我往期帖子，像自动挖掘、降 turnover 、手机使用 mcp 这些都有。",
+        "date": "2025-10-06T07:31:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢大佬的分享，这里又学到了一个思路，之前使用wqb的时候局限于老师提到的模板了，而且有些模板也还没怎么看懂去使用，利用mcp的帮助再进行wqb的回测，这样的思路也很棒，我用mcp用来进行了一些数据处理，感觉效果还行，但是泛化性比较差，后续根据大佬的思路来进行优化！",
+        "date": "2025-10-02T12:38:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬分享，大佬提出了一个策略是从GLB映射到其他地区，也可以从其他地区映射到GLB，根据GLB的alpha，来挖掘其他地区的alpha。那问题是在GLB上回测后，再到对应的地区再用相同的字段回测吗？这个字段在其他地区一定存在吗？这个思路对我的启发很大，我要好好研究下，从不同的region进行扩展，感觉是一个很有效的方法。\n===================================================================================\n========================== 一分耕耘，一分收获。=======================================\n===================================================================================",
+        "date": "2025-09-30T14:15:38Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很有帮助，自己之前一直也是有这样的想法，但更多的局限于手动回测，从某个地区的单个alpha在本数据集内进行扩展，weijie老师讲这个思路扩展的更大，从不同的region进行扩展，从我的实践来看，真的是一个很有效的方法。\n大佬结合weijie老师的分享整理出一个MCP workflow很强，比自己手动利用mcp寻找数据字段再回测强，后续大佬有更加完善MCP workflow也可以积极分享。",
+        "date": "2025-09-28T11:14:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的分享，执行力杠杠的\n===================================================================================\n===================Talk is cheap,show me the alpha=======================================",
+        "date": "2025-09-28T08:22:46Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，非常不错的帖子，学到了。我有些疑问，能否帮忙解答：\n阶段一：基线诊断\n阶段二：信号拆解\n阶段三：目标区域映射与字段检索\n阶段四：候选因子构建\n阶段五：批量回测与评估\n阶段六：验证与推广\n请问：\n1. 代码在哪里？\n2. 用哪个大模型？\n3. 自动回测的话，占用几个槽位？\n期待回复，再次感谢！\n----------------------------------------------------------------------------\n凡是发生，皆利于我；愿我所愿，尽是美好\n----------------------------------------------------------------------------",
+        "date": "2025-09-28T06:08:45Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "-                                                                                                                                                                                          已使用，明天看看效果                                                                                                                                                                                                                                                                                                                  -",
+        "date": "2025-09-28T05:59:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "非常好的使用场景，基于分享，自己也想到了两个idea，等国庆期间发帖分享给大家，共同进步，早日gm.\n#========= WORLDQUANT BRAIN CONSULTANT ========== #\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#=================奋进的小徐=======================#",
+        "date": "2025-09-28T05:48:00Z"
+      }
+    ],
+    "comment_count": 10,
+    "query_hits": [
+      "GLB"
+    ],
+    "snippet": "含字段来源、回测指标及后续优化建议。 大家可以尝试更多的alpha，同时这个策略是从 GLB 映射到其他地区，其实也可以从其他地区映射到 GLB ，对工作流进行少量修改即可，如有帮助，请点赞。 更多MCP workflow，可参"
+  },
+  {
+    "id": "32171731874711",
+    "title": "PPAC全球第11,我提交的因子是什么样的？",
+    "author": "MS51256",
+    "body": "首先进行一下自我介绍，我是2月底成为有条件顾问，三月成为正式顾问，目前一共提交了240个alpha，期中user阶段提交了50+个。目前genius为GOLD, VALUE FACTOR 为0.5，Combine OS 为0.8。\n前几天更新的PPAC比赛结果出炉，有幸获得了全球第11的成绩，与第十名的分数近乎一样（差一点可以多拿500刀）。看了很多朋友的排名不太理想，这个比赛运气是一方面的原因，因子的选取应该也是一个值得关注的地方。\n我一共提交了56个比赛因子，选取了其中的14个打了TAG，14个因子中，覆盖了7个金字塔，可以看出因子还是较为多类的这也是genius计划推荐我们做的。\n下面是的我USA的因子分布，可以看出，分布较为均匀，没有爆红的pyr。\n回到ppac，我计算了我提交的因子的各个指标的均值，\nSharpe: 1.93\nReturns: 10.33%\nTurnover: 4.96%\nMargin: 54.42%\nFitness: 1.70\n这几项指标中，Magin是我认为较为出色的一个指标，可能也是因为这个才能取得较好排名。\n下面放一些，提交因子的pnl，可以看出，我的pnl图不是非常平缓，仍然有些起伏。",
+    "votes": 69,
+    "created_at": "2025-05-17T04:34:01Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/32171731874711-PPAC%E5%85%A8%E7%90%83%E7%AC%AC11-%E6%88%91%E6%8F%90%E4%BA%A4%E7%9A%84%E5%9B%A0%E5%AD%90%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "好文，对于后来者有很好的提示作用，感谢分享。===========================================================================================================================================================================================================================================================",
+        "date": "2025-11-17T11:36:13Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢大佬的数据分享，很有借鉴意义。相比之下，我的数据集目前还是过于集中了，多样化还是之后努力的方向。大佬的RETURNS也是蛮高的，这个也是我要努力提升的指标~\n============================================================\n每天睡醒就搓搓因子，总有一个是好的~ FIGHITNG LABUBU!\n============================================================",
+        "date": "2025-06-18T06:33:47Z"
+      },
+      {
+        "author": "MS51256",
+        "body": "PNL只有六年其实不算少了，我自己交了一些pnl只有4年的。六年只要走势正常，我是会交的。\n===========================================================================================================================================================================================================================================================",
+        "date": "2025-06-11T02:07:29Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "请问博主交的alpha相关性范围是多少",
+        "date": "2025-06-09T02:26:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "请问PNL覆盖率只有6年的因子敢交吗？\n======================================================================================================================================================================================================================================================",
+        "date": "2025-06-07T06:58:17Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "原来我交的一些好的alpha都被稀释了，我交的alpha好多都是50-60的，开始还以为比较低，现在看来如果是闻见的20-30都是好的，都是没有经验惹的祸",
+        "date": "2025-05-22T12:31:49Z"
+      },
+      {
+        "author": "MS51256",
+        "body": "我认为margin比sharpe fitness都重要，利润才能决定赚不赚钱，其他指标只是意味着能不能稳健赚钱，所以我更倾向于高margin，当然这都是建立在sharpe与fitness合格的情况下。\n===========================================================================================================================================================================================================================================================",
+        "date": "2025-05-19T01:57:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "好文，感谢分享。",
+        "date": "2025-05-19T01:52:30Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "现在回头看，我交了40多个PPAC，当时组合没有啥经验，不知道怎么组合，最后直接放弃组合原样 保留了。最终结果出来，Rank暴跌100多，吃了个大亏。",
+        "date": "2025-05-19T00:21:36Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "谢谢楼主，让我知道了原来不那么平滑的alpha也是好alpha",
+        "date": "2025-05-18T02:06:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "很好的分享！有借鉴意义。\n除了分散，当时的其他选取策略是什么，各个指标怎么取舍（如对sharp有贡献时margin会降）？",
+        "date": "2025-05-17T17:37:55Z"
+      }
+    ],
+    "comment_count": 11,
+    "query_hits": [
+      "全球因子"
+    ],
+    "snippet": "4个打了TAG，14个 因子 中，覆盖了7个金字塔，可以看出 因子 还是较为多类的这也是genius计划推荐我们做的。 下面是的我USA的 因子 分布，可以看出，分布较为均匀，没有爆红的pyr。 回到ppac，我计算了我提交的 因子 的各个指标的均值， Sharpe:"
+  },
+  {
+    "id": "25728030832407",
+    "title": "数据推荐合集",
+    "author": "WL13229",
+    "body": "本贴收录一些数据字段加工后的新比例、新意义等（用户可以尝试的如非特殊说明则为USA region D1)\n作为版权的回报，请求所有使用的顾问，在评论区留下你的使用感受和经验，\n例如“XXX很好用,我使用了XX模板获得XX结果“。抑或者，\"\"XXX有点难用，用了XXX模板什么也找不到“。你的留言将有力地帮助其他BRAIN社区发展得更好。\nAS of 11/11\n推荐使用的数据 USA D1 TOP3000 MODEL126 （vector data)\nAS of 11/06\n推荐使用的数据GLB D1 TOP3000 ANL14_part2\nAS of 11/01\n推荐使用的数据GLB D1 TOP3000 ANL14_part1\nAS of 10/31\n推荐使用的数据 GLB D1 TOP3000 ANL11\nAS of 10/30\n推荐使用的数据 USA D1 TOP3000 INST15\nAS of 10/29\n推荐使用的数据 GLB D1 TOP3000 ANL15\nAS of 10/22（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part8（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part7（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part6（未检查数据类型）\nAS of 10/19（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12___part5（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12__part4（未检查数据类型）\nAS of 10/18（该数据字段可能是MATRIX和VECTOR混用，并未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part3（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part2（未检查数据类型）\n推荐使用的数据 USA D1 TOP3000 NEWS12_part1（未检查数据类型）\nAS of 10/16\n用户可以尝试的数据字段CHN TOP2000U Ratio3\nAS of 9/12\n可以尝试的数据字段CHN TOP2000U Ratio 2\nAS of 9/09\n可以尝试的数据字段CHN TOP2000U Ratio 1\nAS of 9/06\n用户可以尝试的数据字段8\n用户可以尝试的数据字段7\n用户可以尝试的数据字段6\nAS of 8/30\n可以尝试的数据 JPN FND1\n可以尝试的数据字段JPN FND2\n可以尝试的数据字段JPN FND4\n可以尝试的数据字段JPN Fnd5\n可以尝试的数据字段JPN Fnd6\n可以尝试的数据字段JPN Fnd7\n用户可以尝试的数据字段4\n用户可以尝试的数据字段5\nAS of 8/29\n用户可以尝试的数据字段2\n用户可以尝试的数据字段3\nAS of 8/28\n用户可以尝试的数据字段1\n可以尝试的数据FND ASI6\n可以尝试的数据FND ASI 7\n可以尝试的数据FND ASI8\n可以尝试的数据字段FND ASI9\n可以尝试的数据字段FND ASI10\n可以尝试的数据字段FND ASI11\n可以尝试的数据字段ASI FND12\n可以尝试的数据字段FND ASI13\nAS of 8/22\n可以尝试的数据字段 fnd glb2\n可以尝试的数据字段FND ASI 2\n可以尝试的数据字段fnd ASI 3\n可以尝试的数据ASI FND4\n可以尝试的数据fnd ASI 5\nAS of 8/18\n数据推荐：可尝试的数据字段fnd ASI\n可以尝试的数据字段-fnd glb\n数据推荐：可以尝试的数据字段fnd比例，USA",
+    "votes": 44,
+    "created_at": "2024-08-18T07:48:19Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/25728030832407-%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E5%90%88%E9%9B%86",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "数据推荐合集太赞了！新手最头疼的就是不知道从哪个数据集开始，这份清单省了大量踩坑时间。建议后续按数据类型分类整理，比如价量类、基本面类、另类数据类，这样查找更方便。感谢分享！",
+        "date": "2026-06-09T04:02:33Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哇，这个数据更新记录整理得好全啊！作为经常在社区里找灵感的用户，真心感谢版主的分享和持续维护。最近我用了“USA D1 TOP3000 MODEL126（vector data）”这个推荐，配合基础的价格动量模板回测，发现筛选出的股票组合在近期震荡市里超额收益还挺明显的，尤其是结合波动率过滤后，回撤控制得比之前好不少。",
+        "date": "2025-12-21T06:39:25Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "目前就跑了第一个推荐数据 很好用",
+        "date": "2025-11-20T03:17:07Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "第一条应该是mdl216 而不是mdl126吧？",
+        "date": "2025-11-18T04:41:31Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "发现我需要的，非常感谢，感谢大佬分享",
+        "date": "2025-08-11T07:05:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ASI FND4利用三阶模板进行回测,一阶回测表现很好,可以明显感觉出来该数据集数据质量还算不错,但是二三阶模板回测表现一般般,二阶模板主要体现ts_scale()和gp_neutralize()这两个op,我个人觉得可能是基本面数据的原因,类似财报周期短时间内变化不是很大,个人看法仅供参考,希望有大佬帮我指出问题所在",
+        "date": "2025-08-01T04:05:06Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我现在把原来教学模板里面的一阶的公式作了一些修改，加了一些含有两个因子的表达式，同时也在尝试用其他的neutralization，目前出货多的有ASI的other主题(neutralization选择了industry)和USA的sentiment主题(neutralization选择了sector)(为了能进ppac池子我基本只挖了一阶)，这两个主题在d1下都有10个以上的alpha出货。(sentiment的数据很多比较新，介意的最好还是不要尝试)",
+        "date": "2025-06-09T14:54:59Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "使用三阶模板, 用户可以尝试的数据字段1-3, 6-8, 可以找出不少用户可以用于提交的alpha.\n4,5因为全是fundamental的数据所以还没有测试.",
+        "date": "2025-06-09T08:29:18Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我用课上的教学模板选了fundamental6跑的EUR TOP2500，Neutralization选的Industry，信号虽然有但是强度明显不如USA区，跑了一阶二阶，好出的基本有人交了，或者是过于偏向某个板块(例如volume)，目前为止只弄出了2个能交的。",
+        "date": "2025-05-02T02:53:56Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "fnd glb 在TOP3000中一阶用ts_product有较强信号，但没有达到提交的要求，其他一阶OP都不太行\n后来试了一下MINVOL1M，按一阶二阶模板，设置随机种子，跑了三分之一，PNL都比较怪异",
+        "date": "2025-04-22T13:47:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "文章中提到的model126我在brain平台上并没有搜索到，是需要其他方式获取吗？",
+        "date": "2025-04-20T04:45:26Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "用USA TOP3000 mdl126找到了3个能交的alpha，和上面的老哥有差距，可能是pc的原因？",
+        "date": "2025-03-26T07:14:58Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "GLB D1 TOP3000 ANL14_part1使用较为困难，使用初始一二三阶，无信号",
+        "date": "2025-03-17T04:16:55Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "我使用的数据字段 fnd ASI 3，一二三阶跑的过程中发现其中一个在一阶就表现出较强的信号，于是手写套用至一个模版，check_submission发现prod_corr低于0.75，继续替换group_field后，可提交。\n个人建议：靠1阶或直接0阶去挑出信号强的，然后套用模版。",
+        "date": "2025-03-09T20:56:34Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "FND ASI 7依旧好用，交了三四个",
+        "date": "2025-03-04T12:34:41Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "数据推荐：可以尝试的数据字段fnd比例，USA\n，没跑出来",
+        "date": "2025-02-26T03:39:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "FND ASI 7跑出来不少",
+        "date": "2025-02-12T15:09:43Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "推荐使用的数据 USA D1 TOP3000 MODEL126 （vector data)\n这个用三阶跑出来不少能交的，还出了一个fitness 3的，感谢分享！",
+        "date": "2024-12-26T09:22:35Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "WP88606\n请阅读顾问论坛理解顾问收入相关帖子哈  再value factor0.5的时候数量并不会有太大的加成",
+        "date": "2024-12-23T07:55:27Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "ASI的太多了，轻松交够30个，就是base payment好低，一天交三个都不到2美元",
+        "date": "2024-12-20T06:56:16Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "CHN 2000U 比例集，一个没找到",
+        "date": "2024-12-16T12:12:59Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "CHN 2000U 三个帖子，simulate了2万多次，只找到一个",
+        "date": "2024-12-14T02:51:47Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "数据字段 fnd glb2有点不好用，这个数据字段的跑出来的换手率很高，设置了decay 5-20，使用1阶2阶模版跑了两天，没有出alpha，可能得其他模版试下",
+        "date": "2024-12-14T02:23:42Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "SH97251\n请使用data explore搜索即可找到",
+        "date": "2024-11-19T10:01:37Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "请问每一篇推荐使用的字段是否有对应的dataset_id？",
+        "date": "2024-11-19T07:01:24Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "FND ASI 7\n很好用。只跑了两百多条，用顾问课程的工厂代码跑出了5个Alpha。准备继续挖掘这个数据。",
+        "date": "2024-11-16T07:15:39Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "推荐使用的数据 USA D1 TOP3000 MODEL126 （vector data)\n很好用，我使用这个数据提交了8个Alpha。",
+        "date": "2024-11-14T12:45:23Z"
+      },
+      {
+        "author": "WL13229",
+        "body": "请留下你的使用感受和经验，例如“XXX很好用,我使用了XX模板获得XX结果“。\n抑或者，\"\"XXX有点难用，用了XXX模板什么也找不到“",
+        "date": "2024-11-06T15:14:09Z"
+      }
+    ],
+    "comment_count": 28,
+    "query_hits": [
+      "冷门数据集"
+    ],
+    "snippet": "并未检查 数据 类型） 推荐使用的 数据 USA D1 TOP3000 NEWS12_part3（未检查 数据 类型） 推荐使用的 数据 USA D1 TOP3000 NEWS12_part2（未检查 数据 类型） 推荐使用的 数据 USA D1"
+  },
+  {
+    "id": "39870662977687",
+    "title": "经验分享：最近做 Regular 点塔时反复踩到的几个坑",
+    "author": "JW52291",
+    "body": "大家好，最近连续做了一段时间的 Regular 前台筛选和点塔，踩了不少坑。趁记忆还热，整理几条我最近感受最深的经验，分享给同样在做 low-op、追 full funnel 的朋友。\n这篇不讲某一条具体 alpha 怎么调出来，主要讲几个很容易反复踩到、但又特别浪费时间的坑。\n第一，self/prod 过了，不代表已经可以进库。\n我最近遇到过一条候选，Sharpe、Fitness、self、prod 都不错，看起来已经很接近终点了，但最后还是卡在 margin。后面继续用 decay、truncation、neutralization 去补 margin，确实能把 margin 顶上去，可新的问题马上又出来，比如 LOW_ROBUST_UNIVERSE_SHARPE，或者 IS_LADDER_SHARPE。\n后来我的体感越来越明确：相关性只是漏斗中的一层，不是最后一层。很多时候最容易让人误判的，就是“相关性已经过了，所以应该快成了”。实际上，只要 margin、robust、ladder 里还有一项不稳，就还远远不能算 finished。\n第二，如果一个 family 的 prod 长时间卡在同一个窄区间，最好尽早停手。\n我最近有一组表达式，主指标一直很顺，self 也能压住，但 prod 基本长期卡在 0.73x 一带。刚开始我还觉得这种情况属于“差一点点”，就一直改窗口、改 setting、改细节。后来回头看，基本都是无效劳动。\n这种情况很像 family 本身已经进入 crowded neighborhood，不是参数没有拧到位。只要 prod 一直稳定地卡在同一段区间，继续微调往往只是围着同一个拥挤壳子打转。与其在原 family 里反复抛光，不如更早做真正的结构位移。\n第三，纯 settings 修法，经常是修掉一个 fail，又长出另一个 fail。\n这个坑我最近反复遇到。比如你想修 margin，就会自然去调 decay、truncation、neutralization；结果 margin 是好了，但 robust 掉了。或者 robust 回来一点，ladder 又冒出来。\n如果一个分支连续几轮都呈现这种“按下葫芦浮起瓢”的状态，我现在基本不再把它看成 settings 问题，而会优先怀疑 shell 本身就不够对。继续在原框架里细磨，时间成本通常很高，收益反而很低。\n第四，很多真正有效的修复，不是继续拧 setting，而是做结构等价但统计性质不同的换壳。\n我最近有一次比较深的体会：原来一条 low-op 两字段分支，self/prod 都过了，但 margin 不够。后面不是靠继续推 settings 解决的，而是把原来的 group_rank 壳，改成了 group_zscore 后再做一层 final rank。字段没变，整体思路没变，复杂度也没有明显上升，但最后整个漏斗明显顺了很多。\n所以如果一条分支已经证明“信号方向对了，只是过不了最后几道门”，我现在会优先考虑换一个更合适的结构壳，而不是默认继续磨参数。\n第五，一个 winner 一旦提交，周围一圈相似 family 很快就会变成 self wall。\n这个是我最近体感最强的坑之一。之前会下意识觉得，某条 alpha 提交成功后，附近 family 也许还能继续再挖几条。结果最近碰到的情况是：winner 一提交，周围看起来质量很高的几个相邻 family，马上就在 self corr 上被堵死。\n也就是说，winner 的意义不只是“多提交了一条”，同时也等于把它附近一片相似 neighborhood 一起封掉了。这个时候如果还继续改 window、改壳层、改小参数，很多时候都逃不出 submitted 之后形成的 self wall。\n所以我的经验是，一旦 winner 落地，后续 continuation 最重要的不是继续做近邻修补，而是尽快做更远一点的 field-level move。\n第六，不要把 warning 当成“小问题”。\n最近我越来越觉得，很多 nearline 之所以一直只是 nearline，就是因为我们潜意识里把 warning 看得太轻了。尤其是 LOW_ROBUST_UNIVERSE_SHARPE、IS_LADDER_SHARPE 这类 warning，看起来不像直接 FAIL，但实际上在真实筛选里经常就是过不去。\n如果一个 family 总是以同一种 warning 的形式卡住，那它往往不是“快好了”，而是已经稳定暴露出自己的结构短板了。这个时候继续投入时间，通常不划算。\n第七，submitted 状态有时候会有短暂滞后，最好不要只信一个状态源。\n最近我遇到过本地 tracking 已经确认 submitted，但 submitted-id 那边短时间还没完全同步的情况。如果只盯一个来源，很容易误判这条 alpha 还“可用”。\n我现在的处理方式是，只要本地 tracking 和手动确认已经说明它 submitted 了，就先把它当 blocker 看，不等外部状态完全刷新。这样更稳，也能避免后面做很多其实已经没有意义的相似筛选。\n最后总结一句我最近最深的感受：\n很多 nearline，不是“差一点参数”，而是已经进入 crowded family、wrong shell，或者 submitted 邻域封锁的阶段了。这个时候真正省时间的做法，不是继续磨，而是学会停手，尽快换结构、换壳，或者直接换到更远的字段方向。\n如果这篇能帮大家少浪费几轮 multisim，我觉得就值了。也欢迎大家交流自己最近遇到的典型坑。",
+    "votes": 63,
+    "created_at": "2026-04-20T09:19:58Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39870662977687-%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-%E6%9C%80%E8%BF%91%E5%81%9A-Regular-%E7%82%B9%E5%A1%94%E6%97%B6%E5%8F%8D%E5%A4%8D%E8%B8%A9%E5%88%B0%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9D%91",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "总的来说，就是换操作符和字段而不是修改老三样参数呗，一圈看下来，英文词槽太多了。\n======================================================================================\n知难上，戒骄狂，常自省，穷途明。“寻找可以重复数千次的东西。”——吉姆·西蒙斯（量化投资之王、文艺复兴科技创始人）\n# Alpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\n# sys.setrecursionlimit(α∞)\n# PnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值\n#Where there is a will, there is a way. 路漫漫其修远兮，吾将上下而求索。\n======================================================================================",
+        "date": "2026-06-07T03:15:28Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学会了，感谢大佬分享\n==================================================================--\n保持前进\n==================================================================",
+        "date": "2026-05-08T07:17:55Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "感谢分享，分析得十分透彻，感谢🙏！！！😄🍉🍌🍎🍇🍓🍈🥝🍍🍑🌰🍒\n============================================================================\nStudy hard — quality over quantity, no room for mediocrity. Cherish every learning opportunity, stay focused, and learn from the experts. Keep pushing!\n============================================================================",
+        "date": "2026-05-05T17:41:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "=========================一个幸福的生活，不只靠心情，也要靠量化==========================\n感同身受天天在干的事莫过于此，太戳人了！做nearline优化总困在“调参数”死胡同，看完大佬帖子才惊觉自己早陷入无效循环。及时停手换方向，远比硬磨参数高效，这经验能帮少走好多弯路，必须收藏！\n------停手停手停手！学会停手太难了，换结构、换壳，换到更远的方向或许是更近的路~\n===============================点赞的大佬高OS高VF高CB================================",
+        "date": "2026-05-04T02:49:40Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "学会了，感谢大佬分享\n==================================================================、\n保持饥饿\n==================================================================",
+        "date": "2026-04-29T08:35:59Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬厉害啊，非常感谢大佬的分享，确实是很多的细节，都是经验之谈啊，其实我也有这些感觉，只是没有大佬这么清晰。\n-------------------------------------------------------------------------\n--------------想要成为GM------------------------------------------\n------------------------------------------------------------------------",
+        "date": "2026-04-28T09:03:20Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "哇，大佬把这么多干货倾囊相授了？很有启发，尤其你说的结构位移那一点。加油，共勉！",
+        "date": "2026-04-27T23:49:57Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "小白同样也有类似的困扰，感谢佬分析的这么到位，新人涨知识了。\n===============================================================================\n守正心，戒浮躁，恒复盘，危中机。“复利是世界第八大奇迹，关键在于找到可长期重复的正确策略，日复一日、不疾不徐地执行。”—— 爱因斯坦 / 查理・芒格\nAlpha∞ Engine Status: ONLINE [♦♦♦♦♦♦♦♦♦♦] 100%\nsys.setrecursionlimit(α∞)\nPnL = ∑(Robustness * Creativity)\n#无限探索、鲁棒性优先，创新性增值# 有志者事竟成，苦心人天不负。千淘万漉虽辛苦，吹尽狂沙始到金。\n=================================================================================",
+        "date": "2026-04-27T15:40:05Z"
+      }
+    ],
+    "comment_count": 8,
+    "query_hits": [
+      "点塔"
+    ],
+    "snippet": "大家好，最近连续做了一段时间的 Regular 前台筛选和 点塔 ，踩了不少坑。趁记忆还热，整理几条我最近感受最深的经验，分享给同样在做 low-op、追 full funnel 的朋友。 这篇不讲某一条具体 alpha 怎么调出来，主要讲几个很容易反复踩到、但又特别浪费时间的坑。"
+  },
+  {
+    "id": "39822852669079",
+    "title": "多图解析USA最新3x High Turnover Theme国区提交现况",
+    "author": "RM49262",
+    "body": "如果你还不知道目前USA地区3x theme的标准是什么，这里就先带你回顾一下：\n基础标准（必须符合）：\n换手率 > 20%\nHigh Turnover returns ratio > 0.75 OR Pnl realization < 20 (这两个都是针对3x theme的新检测，其中前者多重回测就能看见是否符合，后者需要单独回测才能看见结果)\n此外，还有四个\n子主题\n，每两周轮换一次(每个人顺序不同，具体参考小铃铛中通知的顺序)，在\n符合基础标准\n的前提下，需要在对应的时间内\n符合下述一个子主题\n的标准即可：\nRAM中性化高换手(Orthogonal HTVR Theme)：使用RAM作为中性化即可\n可投资性高换手(Investable HTVR Theme)：(Max Trade Sharpe > 2.0 且 Max Trade turnover > 20%)  或者  (Max Position Sharpe > 2.0 且 Max Position turnover > 20%)\n费后sharpe高换手(After Cost HTVR Theme) ：After cost Sharpe > 1.0 (新检测会自动计算)\n高流动性高换手(Liquid HTVR Theme) ：必须通过 Liquid High Turnover tests:\n(TOP200 Sharpe > 1) 以及 (TOP500 and TOP200 Sharpe ratio > 0.7)\n目前这个高换手主题已经进入了第三周，我在SA中进行了以下筛选\n(\nin(classifications,\"HIGH_TURNOVER:AFTER_COST\") ||\nin(classifications,\"HIGH_TURNOVER:INVESTABLE\") ||\nin(classifications,\"HIGH_TURNOVER:ORTHOGONAL\") ||\nin(classifications,\"HIGH_TURNOVER:LIQUID\")\n)\n&& in(classifications,\"REGULAR\")\n对目前\n国区已经提交的Theme RA\n进行了简单的分析，这里分享给大家。\n首先是难度，根据提交情况来看，截止0417，国区 D1一共提交了96个theme RA，其中：\nLiquid High Turnover (14)\nInvestable High Turnover (22)\nOrthogonal High Turnover (40)\nAfter Cost High Turnover (65)\n注：同一个RA可能同时符合多个theme\n而在D0，theme RA的数量则更少，只有8个，其中：\nLiquid High Turnover (3)\nAfter Cost High Turnover (6)\nInvestable High Turnover (7)\n上述提交数量大致反映了各个子主题的难度。因此，当轮到较难的主题时，可以适当考虑跳过，毕竟难度还是有的。\n而在使用的数据大类方面，D1 theme RA的主要构成是：\nPrice Volume (38)\nFundamental (25)\nAnalyst (17)\nRisk (13)\nModel (11)\nSocial Media (6)\nSentiment (5)\nEarnings (4)\nMacro (4)\nOption (4)\nOther (4)\nImbalance (2)\nInsiders (2)\nInstitutions (2)\nShort Interest (2)\nNews (1)\n注：同一个RA可能同时属于多个category/dataset\n数据集方面，D1 theme RA使用数量排名靠前的主要是以下数据集：\npv1 (33)\nanalyst69 (11)\nfundamental6 (11)\nsocialmedia12 (6)\nfundamental17 (5)\nanalyst10 (4)\nmodel77 (4)\nrisk70 (4)\nanalyst16 (3)\nanalyst4 (3)\nearnings27 (3)\nother551 (3)\nanalyst15 (2)\nanalyst82 (2)\nanalyst9 (2)\nfundamental23 (2)\nfundamental94 (2)\nimbalance5 (2)\ninsiders3 (2)\nmodel109 (2)\nmodel165 (2)\nmodel230 (2)\noption23 (2)\npv103 (2)\npv47 (2)\npv87 (2)\nrisk60 (2)\nrisk71 (2)\nrisk72 (2)\nsentiment26 (2)\nsentiment27 (2)\nshort_interest_pred (2)\n...\n针对那些使用较多的数据集，大家可以多探索探索。至于其余数据集，基本是大家八仙过海，各显神通。\n这些D1 theme RA的is 数据分布如下图：\n之前weijie老师也提到过，可以把个人换手率分成10组，来评估换手的提升是否稳定带来了return的提升，斜率高的话，最总体表现增益更好。这里我们借用类似的概念，来看一下国区theme RA的收益率随着换手提升的变化情况。\n总的来说，可以看到线性趋势，但斜率不是很高。因此，吃theme 的base固然爽，但也不要忘记注意return/margin的情况。\n后面再贴一下d0 RA 的相关数据供大家参考",
+    "votes": 62,
+    "created_at": "2026-04-17T14:36:50Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/39822852669079-%E5%A4%9A%E5%9B%BE%E8%A7%A3%E6%9E%90USA%E6%9C%80%E6%96%B03x-High-Turnover-Theme%E5%9B%BD%E5%8C%BA%E6%8F%90%E4%BA%A4%E7%8E%B0%E5%86%B5",
+    "comments": [
+      {
+        "author": "Unknown",
+        "body": "楼主给出的 USA 3x High Turnover Theme 基础门槛是 Turnover > 20%，并且（High Turnover returns ratio > 0.75 或 PnL realization < 20）。我刚查到的一条个人 USA/TOP3000/D1/SUPER 样本中，普通 HIGH_TURNOVER 为 PASS；HT_TURNOVER 的 warning value 为 0.0826，限值为 0.20；HT_HIGH_TURNOVER_RETURNS_RATIO 的 warning value 为 0.3067，限值为 0.75。\n我从相关讨论里整理到三类线索：一条讨论强调，高换手应来自快速变化的经济效应，并匹配字段更新频率与覆盖范围；一条未经验证的用户帖子提到低 decay、较短窗口、新闻、社交媒体和情绪字段；另一条讨论提到 rank、分桶、短窗口平滑、均值/中位数和 delay 可用于减少噪声或无效换手。楼主的汇总观察还显示换手率—收益率斜率总体为正但不高。目前这些论坛证据只能提供候选方向，没有证明上述做法能让 HT_TURNOVER 或 returns ratio 稳定达到相应门槛。",
+        "date": "2026-07-13T10:49:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "在pv20, pv87跑出一些可以过test的，但是after cost sharpe很多是负数，怎么破?\n==============================================================================\nReflection + Pain = Progress\n==============================================================================",
+        "date": "2026-05-10T03:40:51Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "====================================================================================\n这个筛选方式真是学到了，以前还在想Theme应该怎么去筛选，原来是在Classification里筛选。官方文档好像确实没有针对性的说明，在大佬这里学到了。\n====================================================================================",
+        "date": "2026-04-25T12:58:22Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "大佬做结合SA的功能做主题，太强了，思路打开\nin(classifications,\"HIGH_TURNOVER:AFTER_COST\") ||\nin(classifications,\"HIGH_TURNOVER:INVESTABLE\") ||\nin(classifications,\"HIGH_TURNOVER:ORTHOGONAL\") ||\nin(classifications,\"HIGH_TURNOVER:LIQUID\")\n==============================================================================\nReflection + Pain = Progress\n==============================================================================",
+        "date": "2026-04-25T09:31:01Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "使用SA来倒推哪个数据集容易出theme ra. 学到了~~\n==========================================\nFIGHTING LABUBU!\n==========================================",
+        "date": "2026-04-21T07:57:50Z"
+      },
+      {
+        "author": "Unknown",
+        "body": "太可怕了这个主题，可以看得出比较高质量的数据集都是pv1\nanalyst69\nfundamental6 ，这几个。楼主做的可视化展示确实不错，能直观的看到总体情况",
+        "date": "2026-04-20T17:03:02Z"
+      }
+    ],
+    "comment_count": 6,
+    "query_hits": [
+      "turnover"
+    ],
+    "snippet": "Liquid High Turnover (14) Investable High Turnover (22) Orthogonal High Turnover (40) After Cost High Turnover (65)"
+  }
+]

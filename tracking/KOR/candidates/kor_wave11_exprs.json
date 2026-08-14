@@ -1,0 +1,25 @@
+{
+  "campaign": "KOR_D1",
+  "created": "2026-08-14",
+  "note": "multi_source_model PROD墙确认(3变体0.79/0.87/0.79, price_volume_quantile1_*_pred族crowded neighborhood, 论坛帖20:尽早停手结构位移)后切换chart_cnn_alpha: cov0.8854/1010字段/972零竞争/744个cov>=0.9/MATRIX/视觉图表模态与PROD量价预测结构正交. 方向: 高回报概率字段做多(rank tercile2/quintile高/probability_rank5), 低回报概率做多反向(bin0 -1), CNN q4高bucket概率, quantile_rank动量, 短期相对回报正反双向测试",
+  "wave11a_chart_cnn_SECTOR": [
+    "rank(img100d_return_tercile2_prob_leap1)",
+    "subtract(rank(img200d_return_quintile2_prob_leap1),rank(img200d_return_bin0_prob_leap1))",
+    "rank(probability_rank5_next60d_return_p4_equity_star6)",
+    "subtract(rank(probability_rank5_next120d_return_p4_leap_star1),rank(rank1_next120d_return_leap_star1))",
+    "rank(cnn_predicted_prob_q4_bucket2_60d_equity2b2)",
+    "multiply(rank(img200d_return_bin0_prob_leap1),-1)",
+    "rank(quantile_rank_30d_5bucket_img_maltastar4)",
+    "rank(img60d_return_quantile5_confscore3)"
+  ],
+  "wave11b_chart_cnn_SECTOR": [
+    "rank(ts_delta(ts_backfill(probability_rank5_next60d_return_p4_equity_star6,66),22))",
+    "multiply(rank(ts_delta(ts_backfill(quantile_rank_30d_5bucket_img_maltastar4,66),21)),-1)",
+    "add(multiply(rank(img60d_return_quantile5_prob3),0.5),multiply(rank(img100d_return_tercile2_prob_leap1),0.5))",
+    "rank(ts_av_diff(img200d_return_quintile2_prob_leap1,10))",
+    "subtract(rank(cnn_predicted_prob_q3_bucket1_60d_equity2b2),rank(cnn_predicted_prob_q2_bucket0_60d_equity2b2))",
+    "signed_power(rank(img100d_return_tercile2_prob_leap1),2)",
+    "ts_decay_linear(rank(relative_return_rank_20d_5bucket_equitystar5),5)",
+    "rank(ts_zscore(img100d_return_tercile2_prob_leap1,22))"
+  ]
+}

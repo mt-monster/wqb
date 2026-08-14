@@ -1,0 +1,137 @@
+{
+  "TOP2500_rev63_d5": {
+    "alpha_id": "xAN1QnMb",
+    "S": 2.37,
+    "F": 0.81,
+    "T": 0.4727,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP2500_rev126_d10": {
+    "alpha_id": "rK2dLWQ1",
+    "S": 2.66,
+    "F": 1.15,
+    "T": 0.3473,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP2500_rev252_d10": {
+    "alpha_id": "XgoRLKX1",
+    "S": 2.78,
+    "F": 1.25,
+    "T": 0.3505,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP1200_rev63_d5": {
+    "alpha_id": "kqPJXKVd",
+    "S": 1.48,
+    "F": 0.43,
+    "T": 0.473,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP1200_rev126_d10": {
+    "alpha_id": "d5ZKmQOx",
+    "S": 1.58,
+    "F": 0.57,
+    "T": 0.3538,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP1200_rev252_d10": {
+    "alpha_id": "LLG56R9m",
+    "S": 1.69,
+    "F": 0.64,
+    "T": 0.3572,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP800_rev63_d5": {
+    "alpha_id": "qMNEdkz2",
+    "S": 1.14,
+    "F": 0.31,
+    "T": 0.4738,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP800_rev126_d10": {
+    "alpha_id": "KPGm6Ywk",
+    "S": 1.15,
+    "F": 0.38,
+    "T": 0.356,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP800_rev252_d10": {
+    "alpha_id": "wpa91wJ2",
+    "S": 1.21,
+    "F": 0.41,
+    "T": 0.3596,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP400_rev63_d5": {
+    "alpha_id": "MPG0XQgk",
+    "S": 1.01,
+    "F": 0.26,
+    "T": 0.4804,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP400_rev126_d10": {
+    "alpha_id": "A1GQbPLE",
+    "S": 1.23,
+    "F": 0.41,
+    "T": 0.3676,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "TOP400_rev252_d10": {
+    "alpha_id": "gJ8WKMXv",
+    "S": 1.19,
+    "F": 0.39,
+    "T": 0.3711,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "ILLIQ_rev63_d5": {
+    "alpha_id": "QPGYjQG5",
+    "S": 1.72,
+    "F": 0.56,
+    "T": 0.4667,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "ILLIQ_rev126_d10": {
+    "alpha_id": "gJ8WK38g",
+    "S": 1.82,
+    "F": 0.74,
+    "T": 0.3413,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  },
+  "ILLIQ_rev252_d10": {
+    "alpha_id": "JjGPmdGA",
+    "S": 1.88,
+    "F": 0.79,
+    "T": 0.3443,
+    "2Y": null,
+    "subU": null,
+    "robust": null
+  }
+}

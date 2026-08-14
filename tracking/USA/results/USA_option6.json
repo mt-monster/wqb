@@ -1,0 +1,44 @@
+[
+  {
+    "id": "d1",
+    "expr": "rank(ts_rank(ts_backfill(winsorize(opt6_ivhvxernratio, std=4), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "IV-HV 比率 ts_rank126"
+  },
+  {
+    "id": "d2",
+    "expr": "rank(ts_rank(ts_backfill(winsorize(opt6_ivetfratio, std=4), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "IV-ETF 比率 ts_rank126"
+  },
+  {
+    "id": "d3",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(opt6_ivhvxernratio, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "IV-HV xAdL5vmN 结构"
+  },
+  {
+    "id": "d4",
+    "expr": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(opt6_ivetfratio, std=4), 66), subindustry), 0.5), 5), 90)",
+    "neut": "SLOW_AND_FAST",
+    "decay": 6,
+    "note": "IV-ETF xAdL5vmN 结构"
+  },
+  {
+    "id": "d5",
+    "expr": "rank(ts_rank(ts_backfill(winsorize(opt6_20div, std=4), 66), 126))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "20日已实现波动 ts_rank126"
+  },
+  {
+    "id": "d6",
+    "expr": "subtract(rank(ts_rank(ts_backfill(winsorize(opt6_ivhvxernratio, std=4), 66), 126)), rank(ts_rank(ts_backfill(winsorize(opt6_ivetfratio, std=4), 66), 126)))",
+    "neut": "SECTOR",
+    "decay": 3,
+    "note": "IV-HV 减 IV-ETF"
+  }
+]

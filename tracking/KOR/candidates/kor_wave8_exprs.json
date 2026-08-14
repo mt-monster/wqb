@@ -1,0 +1,35 @@
+{
+  "campaign": "KOR_D1",
+  "created": "2026-08-14",
+  "note": "wave6b-v2扰动6/6全灭+wave7判死后, 按prod-corr wall规则切换白名单数据集; 候选#2/#3方向: sentiment类(news_sentiment_transfer, SENTIMENT金字塔mult1.6, 10字段alphaCount=0) + AI质量/分析师预测因子(ai_equity_alpha, cov1.0/582 VECTOR字段几乎零竞争)",
+  "wave8a_news_sentiment_SECTOR": [
+    "rank(sentiment_score_average)",
+    "rank(ts_delta(ts_backfill(sentiment_score_average,66),22))",
+    "subtract(rank(primary_sentiment_average),rank(sentiment_score_average))",
+    "rank(normalized_news_article_count)",
+    "multiply(rank(ts_delta(ts_backfill(normalized_news_article_count,66),21)),-1)",
+    "rank(primary_sentiment_skewness_2)",
+    "subtract(rank(primary_sentiment_maximum),rank(primary_sentiment_minimum))",
+    "add(multiply(rank(ts_delta(ts_backfill(sentiment_score_average,66),66)),0.5),multiply(rank(ts_delta(ts_backfill(sentiment_score_average,66),22)),0.5))"
+  ],
+  "wave8b_news_sentiment_STATISTICAL": [
+    "rank(total_sentiment_score)",
+    "ts_delta(rank(ts_backfill(total_sentiment_score,66)),63)",
+    "multiply(rank(sentiment_distribution_skewness_2),-1)",
+    "rank(primary_sentiment_middle_value)",
+    "subtract(rank(secondary_sentiment_average),rank(sentiment_score_median))",
+    "rank(ts_av_diff(ts_backfill(primary_sentiment_average,66),10))",
+    "rank(secondary_sentiment_maximum)",
+    "subtract(rank(primary_sentiment_total_2),rank(secondary_sentiment_total_2))"
+  ],
+  "wave9a_ai_equity_alpha_SECTOR": [
+    "rank(alpha_score)",
+    "rank(alpha_excess_return_forecast)",
+    "rank(analyst_sentiment_shift_score)",
+    "rank(analyst_forecast_revision_factor)",
+    "rank(analyst_target_price_deviation)",
+    "rank(analyst_earnings_revision_score_3)",
+    "rank(accruals_analysis_factor)",
+    "rank(accounting_forensics_factor)"
+  ]
+}

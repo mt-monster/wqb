@@ -1,0 +1,15 @@
+{
+  "campaign": "KOR_D1_TOP600 wave2",
+  "dataset": "acquisition_model",
+  "category": "other",
+  "fields_total": 15,
+  "fields_zero_alpha": 11,
+  "rationale": "白名单valueScore 7.0/multiplier 1.7/alphaCount=6; 论坛确认insiders在KOR不可用(insiders12 available=false); pattern_scores模板多样性穷尽(best sharpe 0.70)",
+  "forum_evidence": "HS65681: KOR STATISTICAL中性化 rank-diff模板 Sharpe 1.76; decay=8/trunc=0.06 参考",
+  "styles": ["A_momentum_ts_delta", "B_rank_diff_dual", "C_contrarian_neg_rank", "D_CW_safe_blend", "E_acceleration_zscore"],
+  "batches": [
+    {"name": "stat_b1", "neutralization": "STATISTICAL", "decay": 8, "truncation": 0.06},
+    {"name": "stat_b2", "neutralization": "STATISTICAL", "decay": 8, "truncation": 0.06},
+    {"name": "sector_b3", "neutralization": "SECTOR", "decay": 4, "truncation": 0.08}
+  ]
+}

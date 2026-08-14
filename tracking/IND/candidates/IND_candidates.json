@@ -1,0 +1,62 @@
+[
+  {
+    "id": "i1",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.4), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.3))",
+    "neut": "SECTOR",
+    "note": "mdl177 三腿新组合"
+  },
+  {
+    "id": "i2",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.5), multiply(rank(ts_rank(ts_backfill(mdl177_indrelrtn5d_, 66), 250)), -0.5))",
+    "neut": "STATISTICAL",
+    "note": "mdl177 fwdroe+indrel"
+  },
+  {
+    "id": "i3",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 126)), -0.6), multiply(rank(ts_rank(ts_backfill(mdl177_fc_numrevy1, 66), 126)), -0.4))",
+    "neut": "SECTOR",
+    "note": "126窗变体"
+  },
+  {
+    "id": "i4",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.7), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3))",
+    "neut": "STATISTICAL",
+    "note": "权重 70/30"
+  },
+  {
+    "id": "i5",
+    "expr": "reverse(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)))",
+    "neut": "SECTOR",
+    "note": "ff10mrtn 单腿"
+  },
+  {
+    "id": "i6",
+    "expr": "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry)))",
+    "neut": "SUBINDUSTRY",
+    "note": "anl39 因子腿"
+  },
+  {
+    "id": "i7",
+    "expr": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(reverse(rank(ts_zscore(returns, 21)))) * 0.3)",
+    "neut": "SUBINDUSTRY",
+    "note": "anl39+反转 低权重"
+  },
+  {
+    "id": "i8",
+    "expr": "ts_rank(ts_backfill(winsorize(pv70_bbgnews_score_float, std=4), 22), 44)",
+    "neut": "SUBINDUSTRY",
+    "note": "pv70 新闻关系分数"
+  },
+  {
+    "id": "i9",
+    "expr": "ts_rank(ts_backfill(winsorize(pv70_ibeseps1_score_float, std=4), 66), 44)",
+    "neut": "SUBINDUSTRY",
+    "note": "pv70 盈利预测分数"
+  },
+  {
+    "id": "i10",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(mdl177_fc_fwdroe, 66), 250)), -0.5), multiply(rank(ts_rank(ts_backfill(mdl177_ff10mrtn, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(mdl177_fc_numrevy1, 66), 250)), -0.2))",
+    "neut": "SECTOR",
+    "note": "A1GN2mWX 精确复刻"
+  }
+]

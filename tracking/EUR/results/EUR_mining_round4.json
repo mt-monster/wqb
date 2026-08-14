@@ -1,0 +1,65 @@
+[
+  {
+    "id": "m4a",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.7), multiply(reverse(rank(ts_zscore(returns, 42))), 0.3))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "w=0.7/0.3"
+  },
+  {
+    "id": "m4b",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.8), multiply(reverse(rank(ts_zscore(returns, 42))), 0.2))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "w=0.8/0.2"
+  },
+  {
+    "id": "m4c",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 125), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 125), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "backfill 125"
+  },
+  {
+    "id": "m4d",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 22))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "returns w22"
+  },
+  {
+    "id": "m4e",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 63))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "returns w63"
+  },
+  {
+    "id": "m4f",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "decay": 8,
+    "note": "decay8"
+  },
+  {
+    "id": "m4g",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35))",
+    "neut": "SUBINDUSTRY",
+    "decay": 12,
+    "note": "decay12"
+  },
+  {
+    "id": "m4h",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.65), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35)), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "decay_linear5"
+  },
+  {
+    "id": "m4i",
+    "expr": "add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.5), multiply(reverse(rank(ts_zscore(returns, 42))), 0.35), multiply(rank(ts_zscore(vec_avg(headline_sentiment_vader_score), 189)), 0.15))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "三腿含情感"
+  }
+]

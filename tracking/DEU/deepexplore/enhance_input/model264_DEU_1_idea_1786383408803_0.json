@@ -1,0 +1,9 @@
+{
+  "template": "0.6 * group_rank(ts_decay_linear(subtract(ts_backfill({spe_se}, 66), ts_backfill({spfc_se}, 66), filter=true), 9), industry) * scale(ts_decay_linear(ts_zscore(volume, 63), 5)) + 0.4 * scale(ts_decay_linear(subtract(ts_backfill({spe_se}, 66), ts_backfill({spfc_se}, 66), filter=true), 9)) * scale(ts_zscore(volume, 63)) + scale(-rank(ts_zscore(returns, 42))) * 0.5",
+  "idea": "EPS修订概率 vs CFPS扩散概率的跨域差异 × vol 增强",
+  "dataset": "model264",
+  "region": "DEU",
+  "delay": 1,
+  "universe": "TOP500",
+  "expression_list": []
+}

@@ -1,0 +1,86 @@
+{
+  "m4a_w0703": {
+    "alpha_id": "GrGgqVJJ",
+    "status": "COMPLETE",
+    "sharpe": 0.62,
+    "fitness": 0.19,
+    "turnover": 0.1794,
+    "margin": 0.000191,
+    "returns": 0.0171,
+    "two_year_sharpe": null,
+    "long_count": 496,
+    "short_count": 499
+  },
+  "m4b_w0802": {
+    "alpha_id": "rK2d1kXd",
+    "status": "COMPLETE",
+    "sharpe": 0.41,
+    "fitness": 0.12,
+    "turnover": 0.1153,
+    "margin": 0.000189,
+    "returns": 0.0109,
+    "two_year_sharpe": null,
+    "long_count": 496,
+    "short_count": 499
+  },
+  "m4c_backfill125": {
+    "alpha_id": "pwNvq0gX",
+    "status": "COMPLETE",
+    "sharpe": 0.73,
+    "fitness": 0.23,
+    "turnover": 0.2188,
+    "margin": 0.00019,
+    "returns": 0.0208,
+    "two_year_sharpe": null,
+    "long_count": 496,
+    "short_count": 499
+  },
+  "m4d_ret_w22": {
+    "alpha_id": "QPGY1edK",
+    "status": "COMPLETE",
+    "sharpe": 0.71,
+    "fitness": 0.21,
+    "turnover": 0.2192,
+    "margin": 0.000181,
+    "returns": 0.0199,
+    "two_year_sharpe": null,
+    "long_count": 496,
+    "short_count": 499
+  },
+  "m4e_ret_w63": {
+    "alpha_id": "6XpAnxx7",
+    "status": "COMPLETE",
+    "sharpe": 0.77,
+    "fitness": 0.24,
+    "turnover": 0.2188,
+    "margin": 0.000201,
+    "returns": 0.022,
+    "two_year_sharpe": null,
+    "long_count": 495,
+    "short_count": 500
+  },
+  "m4h_decay_linear5": {
+    "alpha_id": "RRm6GPNo",
+    "status": "COMPLETE",
+    "sharpe": 0.45,
+    "fitness": 0.14,
+    "turnover": 0.1023,
+    "margin": 0.000245,
+    "returns": 0.0126,
+    "two_year_sharpe": null,
+    "long_count": 496,
+    "short_count": 500
+  },
+  "m4i_3legs_sentiment": {
+    "alpha_id": "9qpWNkJo",
+    "status": "COMPLETE",
+    "sharpe": 0.5,
+    "fitness": 0.07,
+    "turnover": 1.1062,
+    "margin": 4.4e-05,
+    "returns": 0.0242,
+    "two_year_sharpe": null,
+    "long_count": 129,
+    "short_count": 130
+  }
+}

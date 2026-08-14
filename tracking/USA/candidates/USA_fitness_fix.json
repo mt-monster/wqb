@@ -1,0 +1,44 @@
+[
+  {
+    "id": "f1",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "x6 + decay_linear5"
+  },
+  {
+    "id": "f2",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "x6 + decay_linear10"
+  },
+  {
+    "id": "f3",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.6), multiply(reverse(rank(ts_zscore(returns, 21))), 0.4))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正0.6+反转0.4"
+  },
+  {
+    "id": "f4",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.7), multiply(reverse(rank(ts_zscore(returns, 21))), 0.3))",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "修正0.7+反转0.3"
+  },
+  {
+    "id": "f5",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "x6 反转窗63 + decay10"
+  },
+  {
+    "id": "f6",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 8,
+    "note": "x6 decay_linear10 + 平台decay8"
+  }
+]

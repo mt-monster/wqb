@@ -1,0 +1,42 @@
+{
+  "n1_anl39_rev45": {
+    "alpha_id": "ak1KgvAx",
+    "S": 1.81,
+    "F": 1.24,
+    "T": 0.1865,
+    "2Y": null,
+    "fails": []
+  },
+  "n2_anl39_pure": {
+    "alpha_id": "QPGvoX2w",
+    "S": 1.27,
+    "F": 0.89,
+    "T": 0.0504,
+    "2Y": null,
+    "fails": []
+  },
+  "n3_anl39_rev30": {
+    "alpha_id": "rK2RnXbE",
+    "S": 1.64,
+    "F": 1.26,
+    "T": 0.1349,
+    "2Y": null,
+    "fails": []
+  },
+  "n4_pv70_news": {
+    "alpha_id": "N1bN29ne",
+    "S": 0.0,
+    "F": null,
+    "T": 0.0,
+    "2Y": null,
+    "fails": []
+  },
+  "n5_pv70_ibes": {
+    "alpha_id": "2rpA2dvx",
+    "S": 0.0,
+    "F": null,
+    "T": 0.0,
+    "2Y": null,
+    "fails": []
+  }
+}

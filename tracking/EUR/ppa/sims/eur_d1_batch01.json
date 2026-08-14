@@ -1,0 +1,27 @@
+{
+  "alpha_expressions": [
+    "group_rank(ts_rank(change_1y_eps_growth,44),sector)",
+    "group_rank(ts_rank(change_1y_eps_growth,44),industry)",
+    "group_rank(ts_rank(change_1y_cashflow_to_price,44),sector)",
+    "group_rank(ts_rank(change_1y_cashflow_to_price,44),industry)",
+    "group_rank(ts_rank(change_50_200d_price_ratio,44),sector)",
+    "group_rank(ts_rank(change_50_200d_price_ratio,44),industry)",
+    "group_rank(ts_rank(change_log_closing_price,44),sector)",
+    "group_rank(ts_rank(change_log_closing_price,44),industry)",
+    "group_rank(ts_rank(change_operating_cashflow_growth_rate,44),sector)",
+    "group_rank(ts_rank(change_operating_cashflow_growth_rate,44),industry)"
+  ],
+  "decay": 5,
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "language": "FASTEXPR",
+  "max_trade": "OFF",
+  "nan_handling": "OFF",
+  "neutralization": "INDUSTRY",
+  "pasteurization": "ON",
+  "region": "EUR",
+  "test_period": "P0Y0M",
+  "truncation": 0.08,
+  "unit_handling": "VERIFY",
+  "universe": "TOP1200"
+}

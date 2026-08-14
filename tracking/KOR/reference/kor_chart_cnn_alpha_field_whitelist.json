@@ -1,0 +1,50 @@
+{
+  "dataset": "chart_cnn_alpha",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "data_type": "MATRIX",
+  "updated": "2026-08-14",
+  "description": "仅收录在平台回测状态为 COMPLETE 的字段(权威验证)。新字段必须先单独小批验证后手动追加。",
+  "verified_fields": {
+    "cnn_predicted_prob_q5_bucket4_50d_equity2b2": {"batch": "wave11+", "best_alpha": "N1b3ojGq", "note": "核心字段, 单腿sh1.48, 唯一核心"},
+    "cnn_predicted_prob_q5_bucket4_60d_equity2b2": {"batch": "批K", "best_alpha": "Xgoe6dk8", "note": "sh1.44/2y1.36"},
+    "cnn_predicted_prob_q5_bucket0_50d_equity2b2": {"batch": "批L", "best_alpha": "N1b3ojGq", "note": "多空差空头腿"},
+    "cnn_predicted_prob_q4_bucket2_60d_equity2b2": {"batch": "wave11", "best_alpha": "omNG6Awm", "note": "sh1.37"},
+    "cnn_predicted_rank_q1_50d_equity2b2": {"batch": "批L", "best_alpha": "E5GLAa2m", "note": "q1做空腿 sh1.39/2y1.61"},
+    "cnn_predicted_rank_q5_50d_equity2b2": {"batch": "批K", "best_alpha": "E5GLJ9wJ", "note": "sh1.31"},
+    "cnn_predicted_rank_q5_100d_malta3": {"batch": "批L", "best_alpha": "qMN3ZzVv", "note": "sh0.99 弱"},
+    "cnn_predicted_prob_q5_bucket4_40d_malta3": {"batch": "批N", "best_alpha": "N1b3oJdE", "note": "malta短周期腿"},
+    "cnn_confidence_score3_q5_50d_equity2b2": {"batch": "批J", "best_alpha": "1YpPberz", "note": "置信度加权腿"},
+    "img60d_return_quantile5_confscore4": {"batch": "wave13", "best_alpha": "A1GmKAKY", "note": "H5/A1融合腿"},
+    "img60d_return_quantile5_confscore3": {"batch": "wave13", "best_alpha": "JjG1qA8l", "note": "F3三源腿"},
+    "img200d_return_quintile2_prob_leap1": {"batch": "批J/M", "best_alpha": "1YpPEMEz", "note": "融合后fit1.36历史最高"},
+    "img200d_return_quintile3_prob_leap1": {"batch": "批L/M", "best_alpha": "1YpPv9qW", "note": ""},
+    "img200d_return_quintile4_prob_leap1": {"batch": "批M", "best_alpha": "KPGQe0lj", "note": ""},
+    "img20d_return_quantile5_confscore3": {"batch": "批L", "best_alpha": "d5Zow7Px", "note": "sh0.82 弱"},
+    "imgpred_eqstar4_60dret_q5_confscore4": {"batch": "批K", "best_alpha": "xANWgJeJ", "note": "sh1.08/dd高"},
+    "img_leapstar5_5d_qtile5_prob4": {"batch": "批N", "best_alpha": "blQn3rwZ", "note": "5d短周期"},
+    "img_leapstar6_r5_q5_prob_class4": {"batch": "批N", "best_alpha": "vRN6VpQz", "note": ""},
+    "img_leapstar6_r30_q5_prob_class4": {"batch": "批K", "best_alpha": "vRN6gWm3", "note": "sh0.30 死"},
+    "probability_rank5_next60d_return_p4_equity_star6": {"batch": "wave13", "best_alpha": "A1GmKAKY", "note": "A1三源腿"},
+    "probability_rank5_next30d_return_p3_equity_star6": {"batch": "批N", "best_alpha": "N1b3oJYo", "note": "30d互补期限"},
+    "probability_rank5_next100d_return_p2_malta_star2": {"batch": "批L", "best_alpha": "MPGZA8Vr", "note": "sh1.12 弱"},
+    "probability_rank5_next120d_return_p4_leap_star1": {"batch": "批K", "best_alpha": "KPGQaWkE", "note": "sh0.74 弱"},
+    "confidence_score_rank5_next60d_return_3_equity_star6": {"batch": "批K", "best_alpha": "YPvJqRAl", "note": "sh0.68 弱"},
+    "confidence_score_rank5_next30d_return_4_equity_star6": {"batch": "批N", "best_alpha": "1YpP5lMz", "note": ""},
+    "rank5_next60d_return_equity_star6": {"batch": "批K", "best_alpha": "pwNZO983", "note": "sh0.61 弱"}
+  },
+  "type_rules": {
+    "chart_cnn_alpha": "MATRIX: 直接 rank/ts_* 可用; 禁止 vec_* 聚合(仅VECTOR用)",
+    "vector_datasets_examples": ["acquisition_model", "ai_equity_alpha", "news_sentiment_transfer"],
+    "vector_rule": "VECTOR/event 字段禁止直接 rank/ts_backfill/ts_mean, 必须 vec_avg/vec_max/vec_sum 聚合"
+  },
+  "banned_patterns": [
+    {"pattern": "ts_backfill\\(", "scope": "vector_dataset", "reason": "VECTOR/event输入不支持ts_backfill(wave2实证整批ERROR)"},
+    {"pattern": "\\bbucket\\(", "scope": "all", "reason": "FASTEXPR bucket算子整数与列表语法均不支持(wave12实证2次整批CANCELLED)"},
+    {"pattern": "ts_entropy\\(", "scope": "all", "reason": "fatal operator会级联CANCEL整批"},
+    {"pattern": "ts_median\\(", "scope": "all", "reason": "幽灵算子, 用ts_mean(x,252)替代"},
+    {"pattern": "ts_regression\\([^)]*\\)\\.residual", "scope": "all", "reason": ".residual取值语法无效"},
+    {"pattern": "group_mean\\([^,)]+,[^,)]+\\)", "scope": "all", "reason": "group_mean需3参(x,weight,group), wave10 v2因此自毁"}
+  ]
+}

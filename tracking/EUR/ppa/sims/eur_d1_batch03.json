@@ -1,0 +1,27 @@
+{
+  "alpha_expressions": [
+    "group_rank(ts_rank(change_dividend_yield_2,44),sector)",
+    "group_rank(ts_rank(change_dividend_yield_2,44),industry)",
+    "group_rank(ts_rank(change_eps_growth_rate,44),sector)",
+    "group_rank(ts_rank(change_eps_growth_rate,44),industry)",
+    "group_rank(ts_rank(change_return_on_equity,44),sector)",
+    "group_rank(ts_rank(change_return_on_equity,44),industry)",
+    "group_rank(ts_rank(change_book_to_market_ratio_2,44),sector)",
+    "group_rank(ts_rank(change_book_to_market_ratio_2,44),industry)",
+    "group_rank(ts_rank(change_sales_growth_rate,44),sector)",
+    "group_rank(ts_rank(change_sales_growth_rate,44),industry)"
+  ],
+  "decay": 5,
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "language": "FASTEXPR",
+  "max_trade": "OFF",
+  "nan_handling": "OFF",
+  "neutralization": "INDUSTRY",
+  "pasteurization": "ON",
+  "region": "EUR",
+  "test_period": "P0Y0M",
+  "truncation": 0.08,
+  "unit_handling": "VERIFY",
+  "universe": "TOP1200"
+}

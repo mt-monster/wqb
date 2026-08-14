@@ -1,0 +1,47 @@
+[
+  {
+    "id": "f1",
+    "expr": "ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44)",
+    "note": "纯 eps_growth × STAT"
+  },
+  {
+    "id": "f2",
+    "expr": "ts_rank(ts_backfill(winsorize(change_3m_revision_fy2_eps, std=5), 66), 44)",
+    "note": "纯 revision × STAT"
+  },
+  {
+    "id": "f3",
+    "expr": "subtract(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), ts_rank(ts_backfill(winsorize(change_1y_eps_to_price, std=5), 66), 44))",
+    "note": "eps-估值双腿 × STAT"
+  },
+  {
+    "id": "f4",
+    "expr": "ts_rank(ts_backfill(winsorize(vec_avg(headline_sentiment_vader_score), std=5), 22), 44)",
+    "note": "纯情感 × STAT"
+  },
+  {
+    "id": "f5",
+    "expr": "ts_rank(ts_backfill(winsorize(liquidity_money_flow_alignment, std=5), 22), 44)",
+    "note": "纯流动性对齐 × STAT"
+  },
+  {
+    "id": "f6",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), ts_mean(ts_backfill(change_1y_eps_to_price, 66), 22), filter=true), 189)), 0.8), multiply(reverse(rank(ts_zscore(returns, 252))), 0.2)), 20)",
+    "note": "因子0.8+反转0.2"
+  },
+  {
+    "id": "f7",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_zscore(ts_mean(ts_backfill(change_1y_eps_growth, 66), 22), 189)), 0.8), multiply(reverse(rank(ts_zscore(returns, 252))), 0.2)), 20)",
+    "note": "eps因子0.8+反转0.2"
+  },
+  {
+    "id": "f8",
+    "expr": "ts_decay_linear(add(multiply(rank(ts_zscore(vec_avg(headline_sentiment_vader_score), 189)), 0.7), multiply(reverse(rank(ts_zscore(returns, 252))), 0.3)), 20)",
+    "note": "情感0.7+反转0.3"
+  },
+  {
+    "id": "f9",
+    "expr": "ts_decay_linear(ts_rank(ts_backfill(winsorize(change_1y_eps_growth, std=5), 66), 44), 10)",
+    "note": "eps+平滑 无反转"
+  }
+]

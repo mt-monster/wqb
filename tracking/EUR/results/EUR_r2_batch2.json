@@ -1,0 +1,57 @@
+{
+  "n2a_vader_w60": {
+    "alpha_id": "58pgXZWJ",
+    "status": "COMPLETE",
+    "sharpe": 0.33,
+    "fitness": 0.05,
+    "turnover": 0.358,
+    "margin": 4.7e-05,
+    "returns": 0.0083,
+    "long_count": 641,
+    "short_count": 713
+  },
+  "n2b_vader_w20": {
+    "alpha_id": "xANbZKab",
+    "status": "COMPLETE",
+    "sharpe": 0.32,
+    "fitness": 0.05,
+    "turnover": 0.4228,
+    "margin": 4e-05,
+    "returns": 0.0085,
+    "long_count": 655,
+    "short_count": 698
+  },
+  "n2c_textblob_rev": {
+    "alpha_id": "P0GgVJEL",
+    "status": "COMPLETE",
+    "sharpe": 0.16,
+    "fitness": 0.02,
+    "turnover": 0.3815,
+    "margin": 2.3e-05,
+    "returns": 0.0044,
+    "long_count": 735,
+    "short_count": 618
+  },
+  "a2a_liquidity_mf_w60": {
+    "alpha_id": "wpabr866",
+    "status": "COMPLETE",
+    "sharpe": 0.31,
+    "fitness": 0.07,
+    "turnover": 0.2039,
+    "margin": 0.000105,
+    "returns": 0.0107,
+    "long_count": 677,
+    "short_count": 676
+  },
+  "a2b_williams_rev": {
+    "alpha_id": "E5GRdZ3G",
+    "status": "COMPLETE",
+    "sharpe": 0.02,
+    "fitness": 0.0,
+    "turnover": 0.62,
+    "margin": 2e-06,
+    "returns": 0.0007,
+    "long_count": 677,
+    "short_count": 676
+  }
+}

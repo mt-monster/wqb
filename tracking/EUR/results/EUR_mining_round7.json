@@ -1,0 +1,65 @@
+[
+  {
+    "id": "m7a",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 6,
+    "note": "rev63 decay6"
+  },
+  {
+    "id": "m7b",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 8,
+    "note": "rev63 decay8"
+  },
+  {
+    "id": "m7c",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 10,
+    "note": "rev63 decay10"
+  },
+  {
+    "id": "m7d",
+    "expr": "reverse(rank(ts_zscore(returns, 63)))",
+    "neut": "SUBINDUSTRY",
+    "decay": 12,
+    "note": "rev63 decay12"
+  },
+  {
+    "id": "m7e",
+    "expr": "ts_decay_linear(reverse(rank(ts_zscore(returns, 63))), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "rev63+decay_linear5"
+  },
+  {
+    "id": "m7f",
+    "expr": "ts_mean(reverse(rank(ts_zscore(returns, 63))), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "rev63+mean5"
+  },
+  {
+    "id": "m7g",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5)), 5)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "双反转+decay5 × SUBIND"
+  },
+  {
+    "id": "m7h",
+    "expr": "ts_decay_linear(add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5)), 10)",
+    "neut": "SUBINDUSTRY",
+    "decay": 4,
+    "note": "双反转+decay10 × SUBIND"
+  },
+  {
+    "id": "m7i",
+    "expr": "add(multiply(reverse(rank(ts_zscore(returns, 21))), 0.5), multiply(reverse(rank(ts_zscore(returns, 63))), 0.5))",
+    "neut": "SUBINDUSTRY",
+    "decay": 8,
+    "note": "双反转 × SUBIND decay8"
+  }
+]

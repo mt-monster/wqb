@@ -1,0 +1,16 @@
+{
+  "batch": "U",
+  "setting": "SECTOR d8 t0.06",
+  "dataset": "chart_cnn_alpha",
+  "rationale": "论坛帖41134649919383评论ZZ47696(2026-08-02)实测: 降PC真杠杆仅两条路-换异源信号(批T在飞)或内细外粗二次中性化(表达式内group_neutralize(X,subindustry)+平台设置更粗SECTOR), 实测PC从0.74-0.83砸到0.49; 批R的group_rank(x,sector)+SECTOR设置属同粒度恒等变换所以仍撞墙; 尾端rank化改变PnL形态辅助降PC",
+  "expressions": [
+    "group_neutralize(add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1)),subindustry)",
+    "rank(group_neutralize(add(multiply(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1)),subindustry))",
+    "rank(group_neutralize(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),subindustry))",
+    "group_neutralize(add(multiply(add(multiply(add(multiply(group_rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2,sector),0.6),multiply(group_rank(img60d_return_quantile5_confscore4,sector),0.4)),0.8),multiply(group_rank(img_leapstar5_5d_qtile5_prob4,sector),0.2)),0.9),multiply(group_rank(img60d_return_quantile5_confscore4,sector),0.1)),subindustry)",
+    "rank(group_neutralize(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(ts_decay_linear(img_leapstar5_5d_qtile5_prob4,3)),0.2)),subindustry))",
+    "rank(group_neutralize(add(multiply(add(multiply(add(multiply(signed_power(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),0.9),multiply(rank(img60d_return_quantile5_confscore4),0.1)),subindustry))",
+    "rank(group_neutralize(subtract(add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(rank(img_leapstar5_5d_qtile5_prob4),0.2)),multiply(rank(img200d_return_quintile2_prob_leap1),0.25)),subindustry))",
+    "group_neutralize(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(img60d_return_quantile5_confscore4),0.5)),subindustry)"
+  ]
+}

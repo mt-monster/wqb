@@ -1,0 +1,47 @@
+[
+  {
+    "id": "t1",
+    "expr": "reverse(rank(ts_rank(returns, 250)))",
+    "note": "ts_rank 250 反转"
+  },
+  {
+    "id": "t2",
+    "expr": "reverse(rank(ts_rank(returns, 500)))",
+    "note": "ts_rank 500 反转"
+  },
+  {
+    "id": "t3",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(change_1y_eps_growth, 66), 250)), -0.5), multiply(rank(ts_rank(ts_backfill(change_3m_revision_fy2_eps, 66), 250)), -0.3), multiply(rank(ts_rank(ts_backfill(change_1y_cashflow_to_price, 66), 250)), -0.2))",
+    "note": "IND 成功结构 × EUR 因子"
+  },
+  {
+    "id": "t4",
+    "expr": "add(multiply(rank(ts_rank(ts_backfill(change_1y_eps_growth, 66), 250)), -0.6), multiply(rank(ts_rank(ts_backfill(change_1y_eps_to_price, 66), 250)), -0.4))",
+    "note": "IND 双腿 × EUR 因子"
+  },
+  {
+    "id": "t5",
+    "expr": "add(multiply(rank(ts_delta(ts_backfill(change_1y_eps_growth, 66), 66)), 0.5), multiply(rank(ts_delta(ts_backfill(change_1y_eps_growth, 66), 22)), 0.5))",
+    "note": "GBR 结构 × eps_growth"
+  },
+  {
+    "id": "t6",
+    "expr": "add(multiply(rank(ts_delta(ts_backfill(change_3m_revision_fy2_eps, 66), 66)), 0.5), multiply(rank(ts_delta(ts_backfill(change_3m_revision_fy2_eps, 66), 22)), 0.5))",
+    "note": "GBR 结构 × revision"
+  },
+  {
+    "id": "t7",
+    "expr": "reverse(rank(ts_rank(vec_avg(headline_sentiment_vader_score), 250)))",
+    "note": "情感 ts_rank250 反转"
+  },
+  {
+    "id": "t8",
+    "expr": "add(multiply(reverse(rank(ts_rank(returns, 126))), 0.5), multiply(reverse(rank(ts_rank(returns, 250))), 0.5))",
+    "note": "双长窗 ts_rank 反转"
+  },
+  {
+    "id": "t9",
+    "expr": "add(multiply(reverse(rank(ts_rank(returns, 250))), 0.5), multiply(rank(ts_rank(ts_backfill(change_1y_eps_growth, 66), 250)), 0.5))",
+    "note": "returns反转 + eps因子 50/50"
+  }
+]
