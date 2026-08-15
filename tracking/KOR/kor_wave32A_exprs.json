@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model109",
+ "data_type": "MATRIX",
+ "probe_note": "wave32A快扫: 宽数据集539字段零竞争族; 技术指标水平/变化+价值yield+分析师数+低流动性反向; 三灯评审",
+ "expressions": [
+  "rank(chaikin_oscillator_value)",
+  "rank(ts_av_diff(detrended_price_oscillator,20))",
+  "rank(force_index_technical_indicator)",
+  "rank(ts_av_diff(close_location_value_indicator,10))",
+  "rank(basic_earnings_yield_ltm)",
+  "rank(ts_av_diff(analyst_recommendation_count,40))",
+  "multiply(rank(float_turnover_ratio),-1)",
+  "rank(ts_delta(free_cash_flow_yield,60))"
+ ]
+}

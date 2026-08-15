@@ -1,0 +1,31 @@
+{
+  "dataset": "ai_factor_transfer",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "data_type": "MATRIX",
+  "updated": "2026-08-14",
+  "description": "wave18正式数据集白名单(AI迁移经典技术指标因子, 20字段全MATRIX cov1.0 alphaCount9/pm1.7)。字段描述映射经典指标: RSI/CCI/Williams%R/CMF/布林带/PVO/DPO/ADL/13周涨幅等。回测验证状态: probe=已COMPLETE探针验证, api=仅API存在性验证。",
+  "verified_fields": {
+    "cumulative_money_flow_volume_adjusted": {"batch": "api", "note": "RSI; alphaCount=3"},
+    "cumulative_money_flow_volume_adjusted_2": {"batch": "api", "note": "对数价格变换; alphaCount=3"},
+    "liquidity_money_flow_alignment": {"batch": "api", "note": "相对换手率RTN63D; alphaCount=8"},
+    "liquidity_money_flow_alignment_2": {"batch": "api", "note": "流动性与资金流同向性; alphaCount=0"},
+    "liquidity_weighted_returns_ma": {"batch": "api", "note": "13周价格变化; alphaCount=0"},
+    "liquidity_weighted_returns_ma_2": {"batch": "api", "note": "CCI; alphaCount=1"},
+    "momentum_williams_r_adjusted": {"batch": "api", "note": "收益动量; alphaCount=2"},
+    "momentum_williams_r_adjusted_2": {"batch": "api", "note": "价格动量ABN_VOLM; alphaCount=1"},
+    "money_flow_strength_typical_price": {"batch": "api", "note": "典型价格调整资金流强度; alphaCount=1"},
+    "money_flow_strength_typical_price_2": {"batch": "api", "note": "ADL趋势分量; alphaCount=0"},
+    "short_term_price_change": {"batch": "api", "note": "Williams %R; alphaCount=1"},
+    "short_term_price_change_2": {"batch": "api", "note": "Chaikin Money Flow CMF; alphaCount=1"},
+    "typical_price_bollinger_band_position": {"batch": "api", "note": "典型价格在布林带中的位置; alphaCount=1"},
+    "typical_price_bollinger_band_position_2": {"batch": "api", "note": "PVO价格成交量振荡器; alphaCount=1"},
+    "volume_anomaly_price_positioning": {"batch": "api", "note": "异常成交量与价格位置关系; alphaCount=0"},
+    "volume_anomaly_price_positioning_2": {"batch": "api", "note": "DPO去趋势价格振荡器; alphaCount=0"},
+    "volume_trend_money_flow_interaction": {"batch": "api", "note": "成交量趋势×资金流交互; alphaCount=0"},
+    "volume_trend_money_flow_interaction_2": {"batch": "api", "note": "布林带BB; alphaCount=1"},
+    "balanced_price_oscillator": {"batch": "api", "note": "价量比; alphaCount=1"},
+    "balanced_price_oscillator_2": {"batch": "api", "note": "短长期价格趋势平衡; alphaCount=1"}
+  }
+}

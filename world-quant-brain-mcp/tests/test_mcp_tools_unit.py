@@ -4,7 +4,7 @@
 - 单例 identity 跨 main/mcp_core/tools_* 一致
 - 响应瘦身助手 (_truncate/_unwrap_result/_is_error/_ra_bad/_slim_alpha)
 - _extract_field_candidates 算子关键字过滤
-- validate_expressions 离线验证 (monkeypatch brain_client.get_datafields)
+- validate_expressions / create_multi_simulation 字段预检 (monkeypatch get_datafields)
 """
 import asyncio
 
@@ -12,6 +12,7 @@ import pytest
 
 import mcp_core
 import tools_data
+import tools_sim
 from mcp_core import (
     _is_error,
     _ra_bad,
@@ -143,9 +144,49 @@ def test_extract_fields_group_dimensions_excluded():
 class _StubClient:
     def __init__(self, known):
         self._known = known
+        self.calls = []
 
     async def get_datafields(self, **kwargs):
+        self.calls.append(kwargs)
         return {"results": [{"id": f} for f in self._known]}
+
+
+class _TruncatedDumpClient:
+    """Unscoped dump is first-page-only; targeted search can still hit dataset ids."""
+    DUMP = {"close", "returns", "volume"}
+    SEARCHABLE = DUMP | {
+        "probability_label1_2quantile_20day_eur_ohlcma",
+        "probability_label1_2quantile_5day_ohlcv",
+    }
+
+    def __init__(self):
+        self.calls = []
+        self.posted = False
+        self.base_url = "https://api.worldquantbrain.com"
+
+    async def ensure_authenticated(self):
+        return None
+
+    async def get_datafields(self, **kwargs):
+        self.calls.append(kwargs)
+        search = (kwargs.get("search") or "").strip()
+        if search:
+            hits = [f for f in self.SEARCHABLE if search in f]
+            return {"results": [{"id": f} for f in hits], "count": len(hits)}
+        return {"results": [{"id": f} for f in self.DUMP], "count": len(self.DUMP)}
+
+    async def _request(self, method, url, **kwargs):
+        self.posted = True
+
+        class _Resp:
+            status_code = 201
+            headers = {"Location": "/simulations/abc123"}
+            text = ""
+
+        return _Resp()
+
+    def _to_absolute_url(self, loc):
+        return self.base_url + loc
 
 
 def test_validate_expressions_known_and_unknown(monkeypatch):
@@ -157,6 +198,7 @@ def test_validate_expressions_known_and_unknown(monkeypatch):
     assert v["valid"] is False
     assert v["unknown_fields"] == ["nonexistent_field_xyz"]
     assert "close" in v["fields_checked"]
+    assert any(c.get("search") for c in stub.calls)
 
 
 def test_validate_expressions_all_known(monkeypatch):
@@ -164,3 +206,70 @@ def test_validate_expressions_all_known(monkeypatch):
     monkeypatch.setattr(tools_data, "brain_client", stub)
     v = asyncio.run(tools_data.validate_expressions(["close / returns"]))
     assert v["valid"] is True and v["unknown_fields"] == []
+
+
+def test_validate_expressions_dataset_field_missing_from_truncated_dump(monkeypatch):
+    """False-positive regression: dataset-specific ids exist via search, not in page-1 dump."""
+    stub = _TruncatedDumpClient()
+    monkeypatch.setattr(tools_data, "brain_client", stub)
+    field = "probability_label1_2quantile_20day_eur_ohlcma"
+    v = asyncio.run(tools_data.validate_expressions(
+        [f"rank({field})", "rank(close)"],
+        region="EUR", universe="TOP1200", delay=1))
+    assert v["valid"] is True
+    assert v["unknown_fields"] == []
+    assert field in v["fields_checked"]
+    assert any(c.get("search") == field for c in stub.calls)
+
+
+def test_validate_expressions_lookup_error_fails_open(monkeypatch):
+    class _Boom:
+        async def get_datafields(self, **kwargs):
+            raise TimeoutError("simulated lookup timeout")
+
+    monkeypatch.setattr(tools_data, "brain_client", _Boom())
+    v = asyncio.run(tools_data.validate_expressions(["rank(close)"]))
+    assert v["valid"] is True
+    assert v["unknown_fields"] == []
+    assert "warning" in v
+
+
+def test_create_multi_simulation_accepts_dataset_fields_absent_from_dump(monkeypatch):
+    stub = _TruncatedDumpClient()
+    monkeypatch.setattr(tools_sim, "brain_client", stub)
+    out = asyncio.run(tools_sim.create_multi_simulation(
+        [
+            "rank(probability_label1_2quantile_20day_eur_ohlcma)",
+            "rank(probability_label1_2quantile_5day_ohlcv)",
+        ],
+        region="EUR", universe="TOP1200", delay=1,
+        validate_fields=True, wait_for_completion=False,
+    ))
+    assert "unknown_fields" not in out
+    assert out.get("success") is True
+    assert stub.posted is True
+    assert any(c.get("search") for c in stub.calls)
+
+
+def test_create_multi_simulation_still_blocks_genuine_unknown(monkeypatch):
+    stub = _TruncatedDumpClient()
+    monkeypatch.setattr(tools_sim, "brain_client", stub)
+    out = asyncio.run(tools_sim.create_multi_simulation(
+        ["rank(close)", "rank(nonexistent_field_xyz)"],
+        region="EUR", universe="TOP1200", delay=1, validate_fields=True,
+    ))
+    assert "unknown_fields" in out
+    assert out["unknown_fields"] == ["nonexistent_field_xyz"]
+    assert stub.posted is False
+
+
+def test_create_multi_simulation_validate_fields_false_skips_lookup(monkeypatch):
+    stub = _TruncatedDumpClient()
+    monkeypatch.setattr(tools_sim, "brain_client", stub)
+    out = asyncio.run(tools_sim.create_multi_simulation(
+        ["rank(nonexistent_field_xyz)", "rank(also_fake_abc)"],
+        validate_fields=False, wait_for_completion=False,
+    ))
+    assert stub.calls == []
+    assert stub.posted is True
+    assert out.get("success") is True

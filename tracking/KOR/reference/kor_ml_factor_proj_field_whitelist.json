@@ -1,0 +1,31 @@
+{
+  "dataset": "ml_factor_proj",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "data_type": "MATRIX",
+  "updated": "2026-08-14",
+  "description": "wave19-v2正式数据集白名单(ML投影因子333字段全MATRIX cov1.0 alphaCount13/pm1.7)。历史: wave3/5判死rating_revision慢信号族(TVR结构性3-4%<5%), 本轮主攻短窗动量/换手/流动性/latent族。回测验证状态: probe=已COMPLETE探针验证, api=仅API存在性验证。",
+  "verified_fields": {
+    "change_52w_high_price_ratio": {"batch": "api", "note": "52周高点价格比变化; 短窗动量"},
+    "change_price_above_260d_low": {"batch": "api", "note": "260日低点价格比变化; 短窗动量"},
+    "change_log_closing_price": {"batch": "api", "note": "对数收盘价变化"},
+    "change_industry_relative_five_day_return": {"batch": "api", "note": "行业相对5日收益变化; 高频"},
+    "change_industry_relative_four_week_return": {"batch": "api", "note": "行业相对4周收益变化"},
+    "change_20d_volume_to_price_volatility": {"batch": "api", "note": "20日量价波动率比变化"},
+    "change_trading_turnover_ratio": {"batch": "api", "note": "换手率变化; 提TVR候选"},
+    "change_visibility_ratio": {"batch": "api", "note": "近期量/50日均量比变化; 提TVR候选"},
+    "change_stock_illiquidity": {"batch": "api", "note": "非流动性变化"},
+    "change_six_month_average_trading_volume": {"batch": "api", "note": "6月均量变化"},
+    "change_log_trading_volume_to_market_cap": {"batch": "api", "note": "量市值比对数变化"},
+    "change_fifteen_thirtysix_week_price_ratio": {"batch": "api", "note": "15/36周均线比变化"},
+    "change_three_month_revision_fy1_eps": {"batch": "api", "note": "3个月FY1 EPS修正; 短窗revision(wave3仅测6m窗)"},
+    "change_net_number_fy1_eps_revisions": {"batch": "api", "note": "FY1修正净次数变化"},
+    "change_real_earnings_surprise": {"batch": "api", "note": "实际盈余意外变化"},
+    "mean_global_feature_0": {"batch": "api", "note": "latent均值特征0"},
+    "mean_global_feature_5": {"batch": "api", "note": "latent均值特征5"},
+    "mean_global_feature_13": {"batch": "api", "note": "latent均值特征13"},
+    "mean_global_feature_27": {"batch": "api", "note": "latent均值特征27"},
+    "log_variance_global_feature_3": {"batch": "api", "note": "latent方差特征3"}
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "batch": 1,
+  "region": "GLB",
+  "delay": 1,
+  "universe": "TOP3000",
+  "neutralization": "COUNTRY",
+  "timestamp": "2026-08-13T19:42:27",
+  "results": [
+    {
+      "label": "nws73_neg_20",
+      "expression": "ts_rank(nws73_globalsent_negativescore, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws73_findown_60",
+      "expression": "ts_rank(nws73_globalsent_findownscore, 60)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws73_certainty_20",
+      "expression": "ts_rank(nws73_globalsent_certaintyscore, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws48_nip_20",
+      "expression": "ts_rank(nws48_nip, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws48_ens_60",
+      "expression": "ts_rank(nws48_ens, 60)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws48_relevance_20",
+      "expression": "ts_rank(nws48_relevance, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws48_gens_20",
+      "expression": "ts_rank(nws48_g_ens, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "nws73_neg_rankchg_20",
+      "expression": "ts_delta(rank(nws73_globalsent_negativescore), 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "fnd44_mscore_20",
+      "expression": "ts_rank(fnd44_mscore, 20)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    },
+    {
+      "label": "fnd44_yoon_60",
+      "expression": "ts_rank(fnd44_yoon_wc_accruals, 60)",
+      "sim_id": "",
+      "alpha_id": "",
+      "status": "SUBMITTED",
+      "error": null
+    }
+  ]
+}

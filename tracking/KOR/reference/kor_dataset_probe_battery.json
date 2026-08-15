@@ -1,0 +1,34 @@
+{
+  "protocol": "KOR战役数据集潜力快扫探针组 v1",
+  "purpose": "用固定廉价探针组在2-3批模拟内给新数据集打出潜力分, 决定是否值得深度挖掘, 避免盲目遍历烧配额",
+  "created_at": "2026-08-15",
+  "probe_battery": [
+    {"probe": "P1_水平正", "expr": "rank(F)", "tests": "字段水平方向信号上限"},
+    {"probe": "P2_水平镜像", "expr": "multiply(rank(F),-1)", "tests": "负sharpe镜像机会(wave17实证: 强负=镜像腿金矿)"},
+    {"probe": "P3_差分", "expr": "rank(ts_delta(F,5))", "tests": "变化型信号"},
+    {"probe": "P4_均值差分", "expr": "rank(ts_av_diff(F,10))", "tests": "慢变量激活(model219实证: numrevy1靠此从0.3到1.08)"},
+    {"probe": "P5_衰减水平", "expr": "ts_decay_linear(rank(F),5)", "tests": "事件型字段持久性"},
+    {"probe": "P6_时序自归一", "expr": "rank(ts_zscore(F,60))", "tests": "相对自身历史的稀缺性"},
+    {"probe": "P7_动量", "expr": "rank(ts_delta(F,22))", "tests": "中期动量结构"},
+    {"probe": "P8_稀疏修复", "expr": "rank(ts_backfill(F,66))", "tests": "低覆盖字段可用性"}
+  ],
+  "execution": {
+    "step1": "字段分3族各选代表(变化族/水平族/质量族)每族1-2字段, 最多6字段x8探针=48式=6批",
+    "step2": "setting固定: 该region经验最优中性化 + d4 + t0.06, 只跑一组setting不扩展",
+    "step3": "完成后用kor_fetch_metrics.py --multisim拉指标, 按潜力公式打分"
+  },
+  "scoring": {
+    "formula": "potential = max|sharpe|*2 + 镜像机会(负sh<-0.5加0.5) + margin达标(>5bp加0.3) + tvr在5-30%加0.2",
+    "decision": {
+      "potential >= 2.0": "绿灯: 深度挖掘(骨架融合/FE假设族/参数精磨)",
+      "potential 1.0-2.0": "黄灯: 只做镜像腿与两两融合尝试, 限2批",
+      "potential < 1.0": "红灯: 判死入台账, 不回头"
+    }
+  },
+  "verified_cases": [
+    "model219 wave20: P4探针numrevy1 av_diff→sh1.08(INDUSTRY)/1.20(SECTOR四腿), P2镜像divyield成核心腿, 快扫思路事后验证成立",
+    "ai_factor_transfer wave18: RSI×布林模板迁移sh0.99, 证明骨架可跨数据集迁移",
+    "analyst_earnings_ibes wave17: sh封顶0.88判死, 快扫1批即可定生死"
+  ],
+  "rule": "新数据集入场必须先过快扫, 禁止直接上遍历式字段网格; FE假设族(V-Z五族)可在绿灯数据集间迁移复用"
+}

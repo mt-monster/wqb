@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "news79",
+ "data_type": "VECTOR",
+ "probe_note": "wave29A-v2快扫: 批A全ERROR因ts_backfill不支持event输入, 改用vec_avg聚合成日频序列; sentiment动量+风险反向+事件计数+混合腿避CW+镜像; SECTOR d4 t0.08",
+ "expressions": [
+  "rank(ts_av_diff(vec_avg(nws79_composite_sentiment_score),5))",
+  "rank(ts_av_diff(vec_avg(nws79_analyst_ratings_sentiment),5))",
+  "rank(ts_av_diff(vec_avg(nws79_earnings_tone_sentiment),5))",
+  "multiply(rank(ts_av_diff(vec_avg(nws79_credit_sentiment),10)),-1)",
+  "rank(ts_delta(vec_avg(nws79_sentiment_impact_projection),5))",
+  "add(multiply(rank(ts_av_diff(vec_avg(nws79_composite_sentiment_score),5)),0.5),multiply(rank(ts_av_diff(vec_avg(nws79_earnings_tone_sentiment),5)),0.5))",
+  "multiply(rank(ts_av_diff(vec_avg(nws79_composite_sentiment_score),5)),-1)",
+  "rank(vec_count(nws79_composite_sentiment_score))"
+ ]
+}

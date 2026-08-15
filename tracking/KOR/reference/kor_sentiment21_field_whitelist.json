@@ -1,0 +1,93 @@
+{
+ "dataset": "sentiment21",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "fields": [
+  {
+   "id": "snt21pos_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neg_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neut_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21pos_median",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neg_median",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21pos_std",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neg_std",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21pos_conf_up",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neg_conf_up",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21dts_gen",
+   "cov": 0.475,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21dts_sop",
+   "cov": 0.475,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21_4pos_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21_4neg_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21_5pos_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21_5neg_mean",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21neut_median",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  },
+  {
+   "id": "snt21_5pos_median",
+   "cov": 0.3518,
+   "type": "MATRIX"
+  }
+ ]
+}

@@ -55,15 +55,18 @@ async def submit_alpha(alpha_id: str, force: bool = False) -> Dict[str, Any]:
                 }
 
             # Passed check — proceed to submit
-            success = await brain_client.submit_alpha(alpha_id)
+            submit_result = await brain_client.submit_alpha(alpha_id)
+            success = submit_result.get("success", False) if isinstance(submit_result, dict) else bool(submit_result)
             return {
                 "success": success,
                 "blocked": False,
                 "check_result": check_result,
+                "submit_detail": submit_result,
             }
         else:
-            success = await brain_client.submit_alpha(alpha_id)
-            return {"success": success, "forced": True}
+            submit_result = await brain_client.submit_alpha(alpha_id)
+            success = submit_result.get("success", False) if isinstance(submit_result, dict) else bool(submit_result)
+            return {"success": success, "forced": True, "submit_detail": submit_result}
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 

@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model230",
+ "data_type": "MATRIX",
+ "probe_note": "wave33B镜像深挖: 批A alpha60m -0.70/actrtn6m20 -0.65镜像强; 低波动sh0.42/2y1.05骨架健康; 镜像反转+低波动腿",
+ "expressions": [
+  "multiply(rank(mdl230_allcap_sedol_alpha60m),-1)",
+  "multiply(rank(ts_av_diff(mdl230_allcap_sedol_actrtn6m,20)),-1)",
+  "multiply(rank(ts_av_diff(mdl230_allcap_sedol_actrtn6m,40)),-1)",
+  "multiply(rank(mdl230_allcap_sedol_altmanz),-1)",
+  "multiply(rank(ts_av_diff(mdl230_allcap_sedol_alpha60m,20)),-1)",
+  "multiply(rank(mdl230_allcap_sedol_apg),-1)",
+  "ts_decay_linear(multiply(rank(mdl230_allcap_sedol_60dsigma),-1),10)",
+  "add(multiply(multiply(rank(mdl230_allcap_sedol_60dsigma),-1),0.5),multiply(multiply(rank(mdl230_allcap_sedol_alpha60m),-1),0.5))"
+ ]
+}

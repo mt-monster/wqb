@@ -1,0 +1,23 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "sentiment21",
+ "data_type": "MATRIX",
+ "probe_note": "wave23A快扫: 净情绪/情绪动量/分歧/惊奇4族; 低覆盖0.35→ts_backfill(60)必须; SECTOR d4 t0.06",
+ "expressions": [
+  "rank(ts_av_diff(ts_backfill(subtract(snt21pos_mean,snt21neg_mean),60),5))",
+  "rank(ts_delta(ts_backfill(snt21pos_mean,60),5))",
+  "rank(ts_backfill(snt21neg_mean,60))",
+  "rank(ts_backfill(add(snt21pos_std,snt21neg_std),60))",
+  "rank(ts_zscore(ts_backfill(subtract(snt21pos_mean,snt21neg_mean),60),20))",
+  "rank(ts_backfill(subtract(snt21_4pos_mean,snt21_4neg_mean),60))",
+  "multiply(rank(ts_av_diff(ts_backfill(subtract(snt21pos_mean,snt21neg_mean),60),10)),-1)"
+ ]
+}

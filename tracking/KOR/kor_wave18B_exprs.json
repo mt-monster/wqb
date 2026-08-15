@@ -1,0 +1,17 @@
+{
+  "batch": "wave18B",
+  "wave": 18,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "acquisition_model",
+  "rationale": "与批A互补的风格扫描: 估值+基本面价值异象/规模异象(小盘标的)/基本面动量/sector与country概率水平/信用反向/标的概率×估值组合/文本因子平滑版",
+  "expressions": [
+    "add(multiply(rank(global_valuation_percentile_rank),0.5),multiply(rank(global_fundamental_factor_percentile_rank),0.5))",
+    "multiply(rank(region_company_size_percentile_rank),-1)",
+    "rank(ts_av_diff(region_fundamental_factor_percentile_rank,22))",
+    "rank(sector_percentile_acquisition_likelihood)",
+    "ts_decay_linear(rank(country_percentile_acquisition_likelihood),5)",
+    "multiply(rank(region_credit_quality_percentile_rank),-1)",
+    "add(multiply(rank(region_percentile_acquisition_likelihood),0.5),multiply(rank(region_valuation_percentile_rank),0.5))",
+    "ts_decay_linear(rank(global_text_factor_percentile_rank),5)"
+  ]
+}

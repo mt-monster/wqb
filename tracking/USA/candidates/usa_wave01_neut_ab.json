@@ -1,0 +1,3 @@
+[
+  "ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score), 22), 44)"
+]

@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "institutions6",
+ "data_type": "MATRIX",
+ "probe_note": "wave24B深挖: 批A最强族=ts_delta(机构持仓占比) sh-0.8负方向; 窗口5/10/40+镜像+signed_power0.5+占比水平增强+买家卖家归一化",
+ "expressions": [
+  "multiply(rank(ts_delta(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),20)),-1)",
+  "rank(ts_delta(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),10))",
+  "rank(ts_delta(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),40))",
+  "multiply(rank(ts_delta(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),40)),-1)",
+  "multiply(rank(ts_av_diff(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),10)),-1)",
+  "signed_power(rank(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners)),0.5)",
+  "multiply(signed_power(rank(ts_delta(divide(aggregate_share_count_institutions,aggregate_share_count_all_owners),20)),0.5),-1)",
+  "rank(divide(subtract(count_institutional_buyers_security,count_institutional_sellers_security),add(count_institutional_holders_security,1)))"
+ ]
+}

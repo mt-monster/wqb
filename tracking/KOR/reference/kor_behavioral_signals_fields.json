@@ -1,0 +1,70 @@
+{
+ "dataset": "behavioral_signals",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 7
+ },
+ "field_count": 7,
+ "fetched_at": "2026-08-15T15:48:40",
+ "fields": [
+  {
+   "id": "chronological_return_sequence_correlation",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Chronological Return Ordering; correlation of daily return magnitude with their sequence, capturing recency bias in retu"
+  },
+  {
+   "id": "consecutive_return_streak_length",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Streak in Returns; length and direction (+/-) of most recent consecutive up or down daily returns, reflecting momentum/r"
+  },
+  {
+   "id": "extreme_daily_return_indicator",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Degree of Return Extremeness; measures how extreme the most extreme daily positive and negative returns are, normalized "
+  },
+  {
+   "id": "price_path_curvature_measure",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-Path Convexity; measures the curvature (convexity/concavity) of recent price path, indicating price path shapes th"
+  },
+  {
+   "id": "salience_weighted_return_score",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Salience Theory Value; measures the impact of standout past daily returns by comparing salience-weighted returns to equa"
+  },
+  {
+   "id": "total_equity_market_value_usd",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market capitalization of the company in US dollars on the factor computation date"
+  },
+  {
+   "id": "visual_price_path_shape_score",
+   "type": "VECTOR",
+   "coverage": 0.8682,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Visual Shape Score; measures the fraction of the price path above or below the straight line between start and end price"
+  }
+ ]
+}

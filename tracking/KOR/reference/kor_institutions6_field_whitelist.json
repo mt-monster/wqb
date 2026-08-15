@@ -1,0 +1,64 @@
+{
+ "dataset": "institutions6",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "机构持仓/资金流数据集, 11字段全MATRIX, coverage≈1.0, 零金字塔, recommend_datasets评分90.98最高; os_is_sharpe平台历史仅0.0002需快扫实证",
+ "fields": [
+  {
+   "id": "aggregate_equity_value_all_owners",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "aggregate_equity_value_institutions",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "aggregate_share_count_all_owners",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "aggregate_share_count_institutions",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "count_institutional_buyers_security",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "count_institutional_holders_security",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "count_institutional_sellers_security",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "market_value_institutional_shares_acquired",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "market_value_institutional_shares_disposed",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "quantity_institutional_shares_acquired",
+   "cov": 1.0,
+   "type": "MATRIX"
+  },
+  {
+   "id": "quantity_institutional_shares_disposed",
+   "cov": 1.0,
+   "type": "MATRIX"
+  }
+ ]
+}

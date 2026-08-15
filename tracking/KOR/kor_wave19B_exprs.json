@@ -1,0 +1,17 @@
+{
+  "batch": "wave19B",
+  "wave": 19,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "price_signal_dl",
+  "rationale": "批B=组合族+raw探针: 双trend组合/trend×volume跨族组合/decay5平滑/raw_trend0与raw_volume0探针/long-short差/5d反转镜像。借鉴ai_factor_transfer经验: rank水平信号+双腿同向组合有协同",
+  "expressions": [
+    "add(multiply(rank(normalized_trend_indicator_0),0.5),multiply(rank(normalized_trend_indicator_1),0.5))",
+    "add(multiply(rank(normalized_trend_indicator_0),0.6),multiply(rank(normalized_volume_indicator_0),0.4))",
+    "ts_decay_linear(rank(normalized_trend_indicator_0),5)",
+    "rank(raw_trend_indicator_0)",
+    "rank(raw_volume_indicator_0)",
+    "subtract(rank(normalized_trend_indicator_0),rank(normalized_trend_indicator_6))",
+    "add(multiply(rank(normalized_trend_indicator_3),0.5),multiply(rank(normalized_trend_indicator_5),0.5))",
+    "multiply(rank(ts_delta(normalized_trend_indicator_0,5)),-1)"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave27A快扫: 会计质量族(低应计做多经典逻辑)+操纵评分+restatement概率+变化动量; cov0.90无需backfill; SECTOR d4 t0.08",
+ "expressions": [
+  "multiply(rank(fnd44_cashflow_accruals),-1)",
+  "multiply(rank(fnd44_modified_jones_cf_accruals),-1)",
+  "multiply(rank(fnd44_perc_accruals),-1)",
+  "rank(fnd44_score)",
+  "multiply(rank(fnd44_mscore),-1)",
+  "multiply(rank(fnd44_probability_restatement_global),-1)",
+  "multiply(rank(ts_av_diff(fnd44_cashflow_accruals,20)),-1)",
+  "add(multiply(multiply(rank(fnd44_cashflow_accruals),-1),0.5),multiply(rank(fnd44_score),0.5))"
+ ]
+}

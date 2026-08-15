@@ -1,0 +1,17 @@
+{
+  "batch": "wave18E",
+  "wave": 18,
+  "setting": "SECTOR d8 t0.08",
+  "dataset": "ai_factor_transfer",
+  "rationale": "批C强负sharpe镜像族(批V经验: 强负sh镜像可挖): RSI raw sh-1.12/tvr24.3%镜像后理论+1.12为本战役新数据集最强候选; 布林带sh-0.93镜像+0.93; 13周动量sh-0.31镜像; RSI镜像decay10/组合/ts_decay平滑版。settings用d8 t0.08(降turnover+提2y, wave17Za验证的2y杠杆)",
+  "expressions": [
+    "rank(cumulative_money_flow_volume_adjusted)",
+    "ts_decay_linear(rank(cumulative_money_flow_volume_adjusted),5)",
+    "ts_decay_linear(rank(cumulative_money_flow_volume_adjusted),10)",
+    "rank(typical_price_bollinger_band_position)",
+    "rank(balanced_price_oscillator_2)",
+    "add(multiply(rank(cumulative_money_flow_volume_adjusted),0.6),multiply(rank(typical_price_bollinger_band_position),0.4))",
+    "multiply(rank(typical_price_bollinger_band_position_2),-1)",
+    "multiply(rank(volume_anomaly_price_positioning_2),-1)"
+  ]
+}

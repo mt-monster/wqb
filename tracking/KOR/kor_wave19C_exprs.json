@@ -1,0 +1,17 @@
+{
+  "batch": "wave19C",
+  "wave": 19,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "ml_factor_proj",
+  "rationale": "wave19-v2批C=短窗动量/换手探针族(wave3/5仅判死rating_revision慢信号, 短窗族未探): 52周高点比/260日低点比/行业相对5d反转与4w动量/量价波动率/换手率/可见度比+15-36周均线比加速度",
+  "expressions": [
+    "rank(change_52w_high_price_ratio)",
+    "multiply(rank(change_industry_relative_five_day_return),-1)",
+    "rank(change_industry_relative_four_week_return)",
+    "rank(change_price_above_260d_low)",
+    "multiply(rank(change_20d_volume_to_price_volatility),-1)",
+    "rank(change_trading_turnover_ratio)",
+    "rank(change_visibility_ratio)",
+    "rank(ts_av_diff(change_fifteen_thirtysix_week_price_ratio,22))"
+  ]
+}

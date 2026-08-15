@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 8,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "pv106",
+ "data_type": "MATRIX",
+ "probe_note": "wave34F三点攻坚: 批E最佳混合腿sh1.00/2y1.27/rn1.43/fc[]; SUBINDUSTRY中性化对照+窗口微调+decay10攻2y; 目标sh>1.2且2y>1.2",
+ "expressions": [
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.5))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,30)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.5))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),70)),0.5))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),90)),0.5))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.6),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.4))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.4),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.6))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,8),80)),0.5))",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(signed_power(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.5),0.5))"
+ ]
+}

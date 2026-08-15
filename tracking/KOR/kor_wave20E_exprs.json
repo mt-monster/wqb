@@ -1,0 +1,17 @@
+{
+  "batch": "wave20E",
+  "wave": 20,
+  "setting": "INDUSTRY d4 t0.06",
+  "dataset": "model219",
+  "rationale": "批E=镜像主攻+INDUSTRY对照: 对批B三个强负信号取镜像(blQnOROM sh-0.61/kqPOgVgl -0.47/88pYP3PX -0.36)+ocfmargin与roa变化镜像+surp族INDUSTRY中性化对照(wave3实证STATISTICAL/INDUSTRY不毁信号)+divyield价值对照",
+  "expressions": [
+    "multiply(add(multiply(rank(mdl219_q_dlr_1_pctchgqtrsales),0.5),multiply(rank(mdl219_q_dlr_1_yoychgroa),0.5)),-1)",
+    "subtract(rank(ts_delay(mdl219_q_dlr_1_fc_epsrm,22)),rank(mdl219_q_dlr_1_fc_epsrm))",
+    "multiply(ts_av_diff(rank(mdl219_q_dlr_1_fc_epsrm),66),-1)",
+    "ts_decay_linear(rank(mdl219_q_dlr_1_surp),5)",
+    "add(multiply(rank(mdl219_q_dlr_1_surp),0.5),multiply(rank(mdl219_q_dlr_1_fc_numrevy1),0.5))",
+    "multiply(rank(mdl219_q_dlr_1_ocfmargin),-1)",
+    "multiply(rank(mdl219_q_dlr_1_yoychgroa),-1)",
+    "rank(mdl219_q_dlr_1_divyield)"
+  ]
+}

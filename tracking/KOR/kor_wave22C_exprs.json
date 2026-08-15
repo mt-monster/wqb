@@ -1,0 +1,23 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "model170",
+ "data_type": "VECTOR",
+ "probe_note": "vec_avg快扫P1/P2/P4/P5/P6 x7代表字段(wave22, VECTOR复审复活)",
+ "expressions": [
+  "rank(ts_zscore(vec_avg(dividend_quality_composite_score),60))",
+  "rank(vec_avg(recent_earnings_momentum_score))",
+  "multiply(rank(vec_avg(recent_earnings_momentum_score)),-1)",
+  "rank(ts_av_diff(vec_avg(recent_earnings_momentum_score),10))",
+  "ts_decay_linear(rank(vec_avg(recent_earnings_momentum_score)),5)",
+  "rank(ts_zscore(vec_avg(recent_earnings_momentum_score),60))",
+  "rank(vec_avg(recent_dividend_yield_pct))"
+ ]
+}

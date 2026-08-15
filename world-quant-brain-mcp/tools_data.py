@@ -281,6 +281,73 @@ def _extract_field_candidates(alpha_expressions) -> List[str]:
         candidates.update(_FIELD_RE.findall(expr or ""))
     return sorted(candidates - _OPERATOR_KEYWORDS)
 
+
+def _ids_from_datafields_payload(payload) -> set:
+    if not isinstance(payload, dict):
+        return set()
+    return {f.get("id") for f in (payload.get("results") or []) if isinstance(f, dict) and f.get("id")}
+
+
+async def _verify_fields_exist(
+    candidates: Sequence[str],
+    *,
+    instrument_type: str = "EQUITY",
+    region: str = "USA",
+    universe: str = "TOP3000",
+    delay: int = 1,
+    client=None,
+) -> Dict[str, Any]:
+    """Confirm candidate field ids via targeted platform search.
+
+    Never treats "missing from an unscoped/paginated dump" as unknown.
+    A field is unknown only when a targeted lookup succeeds and the exact
+    id is absent. Lookup errors / incomplete payloads fail open (skip).
+    """
+    client = client or brain_client
+    ordered = list(dict.fromkeys(candidates))
+    known: List[str] = []
+    unknown: List[str] = []
+    lookup_errors: List[str] = []
+
+    if not ordered:
+        return {
+            "known": known,
+            "unknown": unknown,
+            "skipped": False,
+            "warning": None,
+            "lookup_errors": lookup_errors,
+        }
+
+    for field_id in ordered:
+        try:
+            payload = await client.get_datafields(
+                instrument_type=instrument_type, region=region, delay=delay,
+                universe=universe, filter_sharpe=False, data_type="",
+                search=field_id,
+            )
+            if not isinstance(payload, dict) or "error" in payload or "results" not in payload:
+                lookup_errors.append(f"{field_id}: incomplete lookup payload")
+                continue
+            if field_id in _ids_from_datafields_payload(payload):
+                known.append(field_id)
+            else:
+                unknown.append(field_id)
+        except Exception as exc:
+            lookup_errors.append(f"{field_id}: {exc}")
+
+    skipped = bool(lookup_errors) and not unknown
+    warning = None
+    if lookup_errors:
+        warning = "Field pre-check skipped or incomplete: " + "; ".join(lookup_errors)
+        logger.warning(warning)
+    return {
+        "known": known,
+        "unknown": unknown,
+        "skipped": skipped,
+        "warning": warning,
+        "lookup_errors": lookup_errors,
+    }
+
 @mcp.tool()
 
 async def validate_expressions(
@@ -293,8 +360,8 @@ async def validate_expressions(
     Validate field identifiers in alpha expressions before batch submission.
 
     Extracts field names from each expression, filters out operator keywords,
-    and checks them against the platform's datafields for the given
-    region/delay/universe. Catches the classic "unknown variable destroys the
+    and confirms each candidate via targeted datafield search (not an unscoped
+    first-page dump). Catches the classic "unknown variable destroys the
     whole multisim batch" failure BEFORE submission (e.g. adv10/adv40 don't
     exist; ep_yield_pct_smest_fy1_3 is D1-only and not available at D0).
 
@@ -316,12 +383,10 @@ async def validate_expressions(
                 "unknown_fields": [],
                 "note": "No field identifiers found (pure operator expressions).",
             }
-        payload = await brain_client.get_datafields(
-            instrument_type="EQUITY", region=region, delay=delay, universe=universe,
-            filter_sharpe=False, data_type="")
-        known = {f.get("id") for f in payload.get("results", []) if f.get("id")}
-        unknown = [f for f in candidates if f not in known]
-        return {
+        verified = await _verify_fields_exist(
+            candidates, region=region, universe=universe, delay=delay)
+        unknown = verified["unknown"]
+        out = {
             "valid": not unknown,
             "region": region,
             "delay": delay,
@@ -329,7 +394,13 @@ async def validate_expressions(
             "expressions": len(alpha_expressions),
             "fields_checked": candidates,
             "unknown_fields": unknown,
-            "platform_field_count": len(known),
+            "platform_field_count": len(verified["known"]),
         }
+        if verified.get("warning"):
+            out["warning"] = verified["warning"]
+            if verified.get("skipped"):
+                out["valid"] = True
+                out["note"] = "Field lookup incomplete; not treating candidates as unknown."
+        return out
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}

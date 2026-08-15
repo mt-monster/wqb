@@ -1,0 +1,17 @@
+{
+  "batch": "wave20T",
+  "wave": 20,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "model219",
+  "rationale": "批T=SECTOR av22骨架四腿(批F最优窗av22+批I ratrev6m第四腿): 与批Q(av10骨架)构成窗口×四腿对照矩阵, SECTOR下av22三腿sh0.91/2y1.36优于av10前的0.89, 四腿av22可能2y更高",
+  "expressions": [
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.32),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.28)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.2),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.2)))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.34),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.3)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.21),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.15)))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.3),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.25)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.2),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.25)))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.32),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.28)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.2),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_ratrev6m),5),0.2)))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.36),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.32)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.22),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.1)))",
+    "add(add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.45),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25)),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.3))",
+    "add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.5),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.5))"
+  ]
+}

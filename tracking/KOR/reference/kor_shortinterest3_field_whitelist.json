@@ -1,0 +1,20 @@
+{
+ "dataset": "shortinterest3",
+ "data_type": "VECTOR",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Securities Lending Files(证券借贷), 56 VECTOR字段大部分alphaCount=0零竞争; cov0.86-1.0; os_is_sharpe0.52/1047样本; mult1.4; 高借贷需求/高费率=看空逻辑",
+ "fields": [
+  {"id": "borrow_activity_score", "cov": 1.0, "type": "VECTOR"},
+  {"id": "mean_loan_rate_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "max_loan_rate_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "min_loan_rate_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "loan_utilization_ratio_d1", "cov": 0.8626, "type": "VECTOR"},
+  {"id": "loaned_share_count_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "new_loaned_share_count_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "loan_rate_volatility_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "average_loan_duration_days_p5_d1", "cov": 1.0, "type": "VECTOR"},
+  {"id": "transaction_count_p5_d1", "cov": 1.0, "type": "VECTOR"}
+ ]
+}

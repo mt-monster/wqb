@@ -1,0 +1,228 @@
+{
+ "dataset": "behavioral_signals",
+ "data_type": "VECTOR",
+ "created_at": "2026-08-15T16:03:11",
+ "settings": {
+  "_doc": "KOR 战役固定仿真设置（与台账 settings 键一致）。pipeline/build_wave/probe 统一引用。",
+  "instrumentType": "EQUITY",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "decay": 4,
+  "truncation": 0.08,
+  "maxTrade": "ON",
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "_alt_neutralization": "STATISTICAL 对照轨（论坛证据上限更高，双轨对照制）",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）"
+ },
+ "fields": [
+  "consecutive_return_streak_length",
+  "chronological_return_sequence_correlation",
+  "extreme_daily_return_indicator",
+  "price_path_curvature_measure",
+  "salience_weighted_return_score",
+  "total_equity_market_value_usd"
+ ],
+ "stageA": {
+  "probes": [
+   "P1_水平正",
+   "P2_水平镜像",
+   "P4_均值差分",
+   "P5_衰减水平"
+  ],
+  "batches": [
+   [
+    "rank(vec_avg(consecutive_return_streak_length))",
+    "multiply(rank(vec_avg(consecutive_return_streak_length)),-1)",
+    "rank(ts_av_diff(vec_avg(consecutive_return_streak_length),10))",
+    "ts_decay_linear(rank(vec_avg(consecutive_return_streak_length)),5)",
+    "rank(vec_avg(chronological_return_sequence_correlation))",
+    "multiply(rank(vec_avg(chronological_return_sequence_correlation)),-1)",
+    "rank(ts_av_diff(vec_avg(chronological_return_sequence_correlation),10))",
+    "ts_decay_linear(rank(vec_avg(chronological_return_sequence_correlation)),5)"
+   ],
+   [
+    "rank(vec_avg(extreme_daily_return_indicator))",
+    "multiply(rank(vec_avg(extreme_daily_return_indicator)),-1)",
+    "rank(ts_av_diff(vec_avg(extreme_daily_return_indicator),10))",
+    "ts_decay_linear(rank(vec_avg(extreme_daily_return_indicator)),5)",
+    "rank(vec_avg(price_path_curvature_measure))",
+    "multiply(rank(vec_avg(price_path_curvature_measure)),-1)",
+    "rank(ts_av_diff(vec_avg(price_path_curvature_measure),10))",
+    "ts_decay_linear(rank(vec_avg(price_path_curvature_measure)),5)"
+   ],
+   [
+    "rank(vec_avg(salience_weighted_return_score))",
+    "multiply(rank(vec_avg(salience_weighted_return_score)),-1)",
+    "rank(ts_av_diff(vec_avg(salience_weighted_return_score),10))",
+    "ts_decay_linear(rank(vec_avg(salience_weighted_return_score)),5)",
+    "rank(vec_avg(total_equity_market_value_usd))",
+    "multiply(rank(vec_avg(total_equity_market_value_usd)),-1)",
+    "rank(ts_av_diff(vec_avg(total_equity_market_value_usd),10))",
+    "ts_decay_linear(rank(vec_avg(total_equity_market_value_usd)),5)"
+   ]
+  ],
+  "early_stop_rule": "Stage A 完成即 --probe-score --stage A 评分：max|sh|<0.3 且无镜像 -> EARLY RED，不跑 Stage B（省 3 批）"
+ },
+ "stageB": {
+  "probes": [
+   "P3_差分",
+   "P6_时序自归一",
+   "P7_动量",
+   "P8_稀疏修复"
+  ],
+  "batches": [
+   [
+    "rank(ts_delta(vec_avg(consecutive_return_streak_length),5))",
+    "rank(ts_zscore(vec_avg(consecutive_return_streak_length),60))",
+    "rank(ts_delta(vec_avg(consecutive_return_streak_length),22))",
+    "rank(ts_backfill(vec_avg(consecutive_return_streak_length),66))",
+    "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),5))",
+    "rank(ts_zscore(vec_avg(chronological_return_sequence_correlation),60))",
+    "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),22))",
+    "rank(ts_backfill(vec_avg(chronological_return_sequence_correlation),66))"
+   ],
+   [
+    "rank(ts_delta(vec_avg(extreme_daily_return_indicator),5))",
+    "rank(ts_zscore(vec_avg(extreme_daily_return_indicator),60))",
+    "rank(ts_delta(vec_avg(extreme_daily_return_indicator),22))",
+    "rank(ts_backfill(vec_avg(extreme_daily_return_indicator),66))",
+    "rank(ts_delta(vec_avg(price_path_curvature_measure),5))",
+    "rank(ts_zscore(vec_avg(price_path_curvature_measure),60))",
+    "rank(ts_delta(vec_avg(price_path_curvature_measure),22))",
+    "rank(ts_backfill(vec_avg(price_path_curvature_measure),66))"
+   ],
+   [
+    "rank(ts_delta(vec_avg(salience_weighted_return_score),5))",
+    "rank(ts_zscore(vec_avg(salience_weighted_return_score),60))",
+    "rank(ts_delta(vec_avg(salience_weighted_return_score),22))",
+    "rank(ts_backfill(vec_avg(salience_weighted_return_score),66))",
+    "rank(ts_delta(vec_avg(total_equity_market_value_usd),5))",
+    "rank(ts_zscore(vec_avg(total_equity_market_value_usd),60))",
+    "rank(ts_delta(vec_avg(total_equity_market_value_usd),22))",
+    "rank(ts_backfill(vec_avg(total_equity_market_value_usd),66))"
+   ]
+  ]
+ },
+ "expressions": [
+  "rank(vec_avg(consecutive_return_streak_length))",
+  "multiply(rank(vec_avg(consecutive_return_streak_length)),-1)",
+  "rank(ts_av_diff(vec_avg(consecutive_return_streak_length),10))",
+  "ts_decay_linear(rank(vec_avg(consecutive_return_streak_length)),5)",
+  "rank(vec_avg(chronological_return_sequence_correlation))",
+  "multiply(rank(vec_avg(chronological_return_sequence_correlation)),-1)",
+  "rank(ts_av_diff(vec_avg(chronological_return_sequence_correlation),10))",
+  "ts_decay_linear(rank(vec_avg(chronological_return_sequence_correlation)),5)",
+  "rank(vec_avg(extreme_daily_return_indicator))",
+  "multiply(rank(vec_avg(extreme_daily_return_indicator)),-1)",
+  "rank(ts_av_diff(vec_avg(extreme_daily_return_indicator),10))",
+  "ts_decay_linear(rank(vec_avg(extreme_daily_return_indicator)),5)",
+  "rank(vec_avg(price_path_curvature_measure))",
+  "multiply(rank(vec_avg(price_path_curvature_measure)),-1)",
+  "rank(ts_av_diff(vec_avg(price_path_curvature_measure),10))",
+  "ts_decay_linear(rank(vec_avg(price_path_curvature_measure)),5)",
+  "rank(vec_avg(salience_weighted_return_score))",
+  "multiply(rank(vec_avg(salience_weighted_return_score)),-1)",
+  "rank(ts_av_diff(vec_avg(salience_weighted_return_score),10))",
+  "ts_decay_linear(rank(vec_avg(salience_weighted_return_score)),5)",
+  "rank(vec_avg(total_equity_market_value_usd))",
+  "multiply(rank(vec_avg(total_equity_market_value_usd)),-1)",
+  "rank(ts_av_diff(vec_avg(total_equity_market_value_usd),10))",
+  "ts_decay_linear(rank(vec_avg(total_equity_market_value_usd)),5)",
+  "rank(ts_delta(vec_avg(consecutive_return_streak_length),5))",
+  "rank(ts_zscore(vec_avg(consecutive_return_streak_length),60))",
+  "rank(ts_delta(vec_avg(consecutive_return_streak_length),22))",
+  "rank(ts_backfill(vec_avg(consecutive_return_streak_length),66))",
+  "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),5))",
+  "rank(ts_zscore(vec_avg(chronological_return_sequence_correlation),60))",
+  "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),22))",
+  "rank(ts_backfill(vec_avg(chronological_return_sequence_correlation),66))",
+  "rank(ts_delta(vec_avg(extreme_daily_return_indicator),5))",
+  "rank(ts_zscore(vec_avg(extreme_daily_return_indicator),60))",
+  "rank(ts_delta(vec_avg(extreme_daily_return_indicator),22))",
+  "rank(ts_backfill(vec_avg(extreme_daily_return_indicator),66))",
+  "rank(ts_delta(vec_avg(price_path_curvature_measure),5))",
+  "rank(ts_zscore(vec_avg(price_path_curvature_measure),60))",
+  "rank(ts_delta(vec_avg(price_path_curvature_measure),22))",
+  "rank(ts_backfill(vec_avg(price_path_curvature_measure),66))",
+  "rank(ts_delta(vec_avg(salience_weighted_return_score),5))",
+  "rank(ts_zscore(vec_avg(salience_weighted_return_score),60))",
+  "rank(ts_delta(vec_avg(salience_weighted_return_score),22))",
+  "rank(ts_backfill(vec_avg(salience_weighted_return_score),66))",
+  "rank(ts_delta(vec_avg(total_equity_market_value_usd),5))",
+  "rank(ts_zscore(vec_avg(total_equity_market_value_usd),60))",
+  "rank(ts_delta(vec_avg(total_equity_market_value_usd),22))",
+  "rank(ts_backfill(vec_avg(total_equity_market_value_usd),66))"
+ ],
+ "batches": [
+  [
+   "rank(vec_avg(consecutive_return_streak_length))",
+   "multiply(rank(vec_avg(consecutive_return_streak_length)),-1)",
+   "rank(ts_av_diff(vec_avg(consecutive_return_streak_length),10))",
+   "ts_decay_linear(rank(vec_avg(consecutive_return_streak_length)),5)",
+   "rank(vec_avg(chronological_return_sequence_correlation))",
+   "multiply(rank(vec_avg(chronological_return_sequence_correlation)),-1)",
+   "rank(ts_av_diff(vec_avg(chronological_return_sequence_correlation),10))",
+   "ts_decay_linear(rank(vec_avg(chronological_return_sequence_correlation)),5)"
+  ],
+  [
+   "rank(vec_avg(extreme_daily_return_indicator))",
+   "multiply(rank(vec_avg(extreme_daily_return_indicator)),-1)",
+   "rank(ts_av_diff(vec_avg(extreme_daily_return_indicator),10))",
+   "ts_decay_linear(rank(vec_avg(extreme_daily_return_indicator)),5)",
+   "rank(vec_avg(price_path_curvature_measure))",
+   "multiply(rank(vec_avg(price_path_curvature_measure)),-1)",
+   "rank(ts_av_diff(vec_avg(price_path_curvature_measure),10))",
+   "ts_decay_linear(rank(vec_avg(price_path_curvature_measure)),5)"
+  ],
+  [
+   "rank(vec_avg(salience_weighted_return_score))",
+   "multiply(rank(vec_avg(salience_weighted_return_score)),-1)",
+   "rank(ts_av_diff(vec_avg(salience_weighted_return_score),10))",
+   "ts_decay_linear(rank(vec_avg(salience_weighted_return_score)),5)",
+   "rank(vec_avg(total_equity_market_value_usd))",
+   "multiply(rank(vec_avg(total_equity_market_value_usd)),-1)",
+   "rank(ts_av_diff(vec_avg(total_equity_market_value_usd),10))",
+   "ts_decay_linear(rank(vec_avg(total_equity_market_value_usd)),5)"
+  ],
+  [
+   "rank(ts_delta(vec_avg(consecutive_return_streak_length),5))",
+   "rank(ts_zscore(vec_avg(consecutive_return_streak_length),60))",
+   "rank(ts_delta(vec_avg(consecutive_return_streak_length),22))",
+   "rank(ts_backfill(vec_avg(consecutive_return_streak_length),66))",
+   "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),5))",
+   "rank(ts_zscore(vec_avg(chronological_return_sequence_correlation),60))",
+   "rank(ts_delta(vec_avg(chronological_return_sequence_correlation),22))",
+   "rank(ts_backfill(vec_avg(chronological_return_sequence_correlation),66))"
+  ],
+  [
+   "rank(ts_delta(vec_avg(extreme_daily_return_indicator),5))",
+   "rank(ts_zscore(vec_avg(extreme_daily_return_indicator),60))",
+   "rank(ts_delta(vec_avg(extreme_daily_return_indicator),22))",
+   "rank(ts_backfill(vec_avg(extreme_daily_return_indicator),66))",
+   "rank(ts_delta(vec_avg(price_path_curvature_measure),5))",
+   "rank(ts_zscore(vec_avg(price_path_curvature_measure),60))",
+   "rank(ts_delta(vec_avg(price_path_curvature_measure),22))",
+   "rank(ts_backfill(vec_avg(price_path_curvature_measure),66))"
+  ],
+  [
+   "rank(ts_delta(vec_avg(salience_weighted_return_score),5))",
+   "rank(ts_zscore(vec_avg(salience_weighted_return_score),60))",
+   "rank(ts_delta(vec_avg(salience_weighted_return_score),22))",
+   "rank(ts_backfill(vec_avg(salience_weighted_return_score),66))",
+   "rank(ts_delta(vec_avg(total_equity_market_value_usd),5))",
+   "rank(ts_zscore(vec_avg(total_equity_market_value_usd),60))",
+   "rank(ts_delta(vec_avg(total_equity_market_value_usd),22))",
+   "rank(ts_backfill(vec_avg(total_equity_market_value_usd),66))"
+  ]
+ ],
+ "note": "两段式探针：先提 Stage A 批，评分非 EARLY RED 再提 Stage B；multisim id 交给 --probe-score"
+}

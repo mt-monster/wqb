@@ -129,3 +129,62 @@ def test_quota_estimate_exhausted():
     c = _mk_quota_client([sub(1, "a1"), sub(2, "a2"), sub(3, "a3"), sub(4, "a4")])
     q = asyncio.run(c.get_submission_quota())
     assert q["remaining"] == 0
+
+
+# ---------------------------------------------------------------------------
+# get_datafields targeted search (must hit platform, not unscoped dump cache)
+# ---------------------------------------------------------------------------
+
+def test_get_datafields_passes_search_to_api():
+    c = make_shell()
+    c.redis_client = None
+    c._isos_data = None
+    c.base_url = "https://api.worldquantbrain.com"
+    captured = {}
+
+    async def fake_auth():
+        return None
+
+    async def fake_req(method, url, *, op_name, **kwargs):
+        captured["params"] = kwargs.get("params")
+        fid = "probability_label1_2quantile_20day_eur_ohlcma"
+        return {"results": [{"id": fid, "name": fid}], "count": 1}
+
+    c.ensure_authenticated = fake_auth
+    c._request_json_with_retries = fake_req
+    c.log = lambda *a, **k: None
+    c._generate_cache_key = lambda *a, **k: "k"
+    c._get_cached_data = lambda k: (_ for _ in ()).throw(AssertionError("search must not read unscoped cache"))
+    c._set_cached_data = lambda *a, **k: (_ for _ in ()).throw(AssertionError("search must not write unscoped cache"))
+
+    fid = "probability_label1_2quantile_20day_eur_ohlcma"
+    payload = asyncio.run(c.get_datafields(
+        region="EUR", universe="TOP1200", delay=1, search=fid, filter_sharpe=False))
+    assert captured["params"]["search"] == fid
+    assert "dataset.id" not in captured["params"]
+    assert payload["results"][0]["id"] == fid
+
+
+def test_get_datafields_unscoped_omits_search_param():
+    c = make_shell()
+    c.redis_client = None
+    c._isos_data = None
+    c.base_url = "https://api.worldquantbrain.com"
+    captured = {}
+
+    async def fake_auth():
+        return None
+
+    async def fake_req(method, url, *, op_name, **kwargs):
+        captured["params"] = kwargs.get("params")
+        return {"results": [{"id": "close", "name": "close"}], "count": 1}
+
+    c.ensure_authenticated = fake_auth
+    c._request_json_with_retries = fake_req
+    c.log = lambda *a, **k: None
+    c._generate_cache_key = lambda *a, **k: "k"
+    c._get_cached_data = lambda k: None
+    c._set_cached_data = lambda *a, **k: None
+
+    asyncio.run(c.get_datafields(region="EUR", universe="TOP1200", delay=1, filter_sharpe=False))
+    assert "search" not in captured["params"]

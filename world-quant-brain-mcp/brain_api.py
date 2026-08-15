@@ -1093,6 +1093,12 @@ class BrainApiClient:
         - search="stock volume" -> matches fields containing both "stock" AND "volume"
         """
         await self.ensure_authenticated()
+
+        # Targeted search must hit the platform (dataset-specific ids are often
+        # absent from an unscoped/paginated dump or its cache). Skip the
+        # full-dump Redis lock and unscoped cache for these lookups.
+        targeted_search = bool(search and str(search).strip())
+        search_term = str(search).strip() if targeted_search else None
         
         # Redis-based distributed lock for concurrency control (limit to 1)
         lock_key = "lock:get_datafields"
@@ -1101,7 +1107,7 @@ class BrainApiClient:
         max_wait_time = 600  # Maximum wait time for acquiring lock (10 minutes)
         wait_interval = 2  # Check every 2 seconds
         
-        if self.redis_client:
+        if self.redis_client and not targeted_search:
             start_wait = time.time()
             while time.time() - start_wait < max_wait_time:
                 try:
@@ -1206,14 +1212,11 @@ class BrainApiClient:
                     filtered.append(item)
                 return filtered, len(items) - len(filtered), True
 
-            # Try to get from cache
-            cached_data = self._get_cached_data(cache_key)
+            # Try to get from cache (never for targeted search — dump may be truncated)
+            cached_data = None if targeted_search else self._get_cached_data(cache_key)
             if cached_data:
                 result = {**cached_data, 'from_cache': True}
                 results = result.get('results', [])
-                # Apply fuzzy search filter if needed
-                if search:
-                    results = [item for item in results if fuzzy_search_filter(item, search)]
                 # Apply OS/IS Sharpe filtering
                 if filter_sharpe:
                     results, removed, applied = sharpe_filter(results, region, delay)
@@ -1244,6 +1247,9 @@ class BrainApiClient:
                 
                 if dataset_id:
                     params['dataset.id'] = dataset_id
+
+                if targeted_search:
+                    params['search'] = search_term
                 
                 data = await self._request_json_with_retries(
                     'GET',
@@ -1253,8 +1259,6 @@ class BrainApiClient:
                 )
                 
                 results = data.get('results', [])
-                # 等待2秒
-                await asyncio.sleep(2)
                 all_results.extend(results)
                 
                 if total_count is None:
@@ -1265,6 +1269,7 @@ class BrainApiClient:
                     break
                 
                 offset += limit
+                await asyncio.sleep(2)
             
             # Prepare complete response
             complete_data = {
@@ -1274,14 +1279,15 @@ class BrainApiClient:
                 'from_cache': False
             }
             
-            # Cache the complete data (1 day TTL)
-            self._set_cached_data(cache_key, complete_data, ttl=604800)
+            # Cache the complete unscoped dump only (never poison it with search pages)
+            if not targeted_search:
+                self._set_cached_data(cache_key, complete_data, ttl=604800)
             
-            # Apply fuzzy search filter if needed
-            if search:
+            # Extra client-side narrowing for targeted search (id/name/description)
+            if targeted_search:
                 filtered_results = [
                     item for item in all_results
-                    if fuzzy_search_filter(item, search)
+                    if fuzzy_search_filter(item, search_term)
                 ]
                 complete_data['results'] = filtered_results
                 complete_data['count'] = len(filtered_results)
@@ -1650,14 +1656,18 @@ class BrainApiClient:
             ],
         }
 
-    async def submit_alpha(self, alpha_id: str) -> bool:
-        """Submit an alpha for production.
-        
-        Implements the correct submit flow from submit.py:
-        1. POST to /alphas/{alpha_id}/submit
-        2. If response has Retry-After header, switch to GET polling until no more retry-after
-        3. Non-200/403 responses retry after 2 minutes
-        4. Parses response JSON to check IS checks for ALREADY_SUBMITTED and FAILs
+    async def submit_alpha(self, alpha_id: str) -> Dict[str, Any]:
+        """Submit an alpha for production and return a detailed verdict dict.
+
+        Handles the tri-state async submit flow correctly:
+          - POST /alphas/{id}/submit -> 201/202 : accepted asynchronously; brief GET
+            poll, then return accepted (IS checks resolve via get_alpha_details).
+          - POST /alphas/{id}/submit -> 200 : IS checks already computed in body.
+          - POST /alphas/{id}/submit -> 403 : forbidden.
+          - Retry-After header on any response : rate-limited; GET-poll until clear.
+
+        Returns: {"success": bool, "reason": str, "status_code": int,
+                  "checks": [{"name","result","value","limit"}, ...]}
         """
         await self.ensure_authenticated()
         
@@ -1675,6 +1685,16 @@ class BrainApiClient:
                 raise
 
             self.log(f"Alpha submit, alpha_id={alpha_id}, status_code={response.status_code}", "INFO")
+
+            # 201/202 = accepted asynchronously -> brief poll, then return accepted.
+            if response.status_code in (201, 202):
+                self.log(f"Submission accepted async (HTTP {response.status_code}); brief poll", "INFO")
+                final = await self._poll_submit_until_resolved(submit_url)
+                if final is not None and final.status_code == 200:
+                    return self._interpret_submit_response(final, alpha_id)
+                return {"success": True,
+                        "reason": "Accepted (async); IS checks still computing - poll get_alpha_details",
+                        "status_code": response.status_code, "checks": []}
 
             # Handle Retry-After header: switch to GET polling
             while 'retry-after' in {k.lower() for k in response.headers}:
@@ -1720,16 +1740,83 @@ class BrainApiClient:
                             return False
 
                 self.log(f"Alpha {alpha_id} submission successful!", "INFO")
-                return True
+                return self._interpret_submit_response(response, alpha_id)
 
             elif response.status_code == 403:
                 self.log(f"Submit forbidden (403) for alpha {alpha_id}", "ERROR")
-                return False
+                detail = {}
+                try:
+                    detail = response.json()
+                except Exception:
+                    pass
+                failing = []
+                checks = []
+                if 'is' in detail and 'checks' in detail['is']:
+                    for item in detail['is']['checks']:
+                        checks.append({"name": item.get('name'), "result": item.get('result'), "value": item.get('value'), "limit": item.get('limit')})
+                        if item.get('result') == 'FAIL':
+                            failing.append(f"{item.get('name')}(value={item.get('value')}, limit={item.get('limit')})")
+                if failing:
+                    reason = "HTTP 403 - failing IS checks: " + ", ".join(failing)
+                else:
+                    reason = "HTTP 403 Forbidden (no failing IS check shown - likely account/quota block)"
+                return {"success": False, "reason": reason, "status_code": 403, "checks": checks, "raw": (response.text or '')[:800]}
 
             else:
                 self.log(f"Submit failed status={response.status_code} for {alpha_id}, waiting 2 minutes before retry...", "WARNING")
                 await asyncio.sleep(120)
     
+    async def _poll_submit_until_resolved(self, submit_url: str, max_polls: int = 6, sleep_s: int = 10) -> Any:
+        """Briefly GET-poll the submit endpoint; returns the latest response or None."""
+        last = None
+        for _ in range(max_polls):
+            await asyncio.sleep(sleep_s)
+            try:
+                resp = await self._request('GET', submit_url)
+            except Exception as e:
+                self.log(f"Submit poll GET failed: {e}", "ERROR")
+                return last
+            last = resp
+            if 'retry-after' in {k.lower() for k in resp.headers}:
+                continue
+            if resp.status_code == 200:
+                return resp
+        self.log("Submit poll reached max_polls; returning last response", "WARNING")
+        return last
+
+    def _interpret_submit_response(self, response, alpha_id: str) -> Dict[str, Any]:
+        """Parse a submit GET/POST response into a verdict dict."""
+        try:
+            res_json = response.json()
+        except (json.JSONDecodeError, ValueError):
+            self.log(f"Submit response for {alpha_id} is not valid JSON: {(response.text or '')[:300]}", "ERROR")
+            return {"success": False, "reason": "Non-JSON submit response", "status_code": response.status_code, "checks": [], "raw": (response.text or '')[:500]}
+        if not res_json:
+            return {"success": False, "reason": "Empty submit response", "status_code": response.status_code, "checks": []}
+        if 'detail' in res_json and res_json['detail'] == 'Not found.':
+            self.log(f"Submit failed: alpha {alpha_id} not found", "ERROR")
+            return {"success": False, "reason": "Alpha not found", "status_code": response.status_code, "checks": []}
+
+        checks = []
+        if 'is' in res_json and 'checks' in res_json['is']:
+            for item in res_json['is']['checks']:
+                checks.append({
+                    "name": item.get('name'),
+                    "result": item.get('result'),
+                    "value": item.get('value'),
+                    "limit": item.get('limit'),
+                })
+            for item in res_json['is']['checks']:
+                if item.get('name') == 'ALREADY_SUBMITTED':
+                    self.log(f"Alpha {alpha_id} already submitted (idempotent success)", "WARNING")
+                    return {"success": True, "reason": "ALREADY_SUBMITTED (idempotent success)", "status_code": response.status_code, "checks": checks}
+                if item.get('result') == 'FAIL':
+                    self.log(f"Alpha {alpha_id} IS check FAILED: {item.get('name')} limit={item.get('limit')} value={item.get('value')}", "ERROR")
+                    return {"success": False, "reason": f"IS check FAIL: {item.get('name')}", "status_code": response.status_code, "checks": checks}
+
+        self.log(f"Alpha {alpha_id} submission successful!", "INFO")
+        return {"success": True, "reason": "IS checks passed", "status_code": response.status_code, "checks": checks}
+
     async def get_submission_quota(self, window_hours: int = 48, limit: int = 4) -> Dict[str, Any]:
         """Estimate REGULAR_SUBMISSION quota usage (rolling 48h, limit 4).
 

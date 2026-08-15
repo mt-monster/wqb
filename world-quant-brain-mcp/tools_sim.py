@@ -1,5 +1,5 @@
 """仿真工具 (单发/批量/子查询/错误诊断) — MCP 工具层 (2026-08-13 自 main.py 按域拆分)。"""
-import json, os, re, asyncio, time, logging
+import json, os, re, sys, asyncio, time, logging
 from typing import Dict, List, Optional, Any, Union, Sequence, Tuple
 from datetime import datetime, timedelta
 from time import sleep
@@ -8,7 +8,9 @@ from pathlib import Path
 from mcp_core import (mcp, brain_client, logger, save_config, _slim_checks, _slim_alpha,
     _slim_alpha_response, _slim_alpha_list, _slim_multisim, _slim_datafields, _slim_datasets,
     _records_to_dicts, _slim_yearly, _slim_pnl, _slim_correlation_block, _slim_check_correlation,
-    _slim_pyramids, _slim_text_lookup, _ra_bad, _truncate, _unwrap_result, _rewrap, _is_error)
+    _slim_pyramids, _slim_text_lookup,     _ra_bad, _truncate, _unwrap_result, _rewrap, _is_error)
+
+from brain_api import SimulationSettings, SimulationData
 
 @mcp.tool()
 
@@ -165,6 +167,8 @@ async def create_multi_simulation(
         wait_for_completion: If False (default), submit and immediately return simulation
             locations for polling. If True, block until all simulations finish (may timeout
             at the MCP client level for 8+ minute simulations).
+        validate_fields: If True (default), confirm extracted field ids via targeted
+            datafield search before submit. Set False to skip the pre-check.
     
     Returns:
         Dictionary containing multisimulation location and (if wait_for_completion)
@@ -180,29 +184,34 @@ async def create_multi_simulation(
         await brain_client.ensure_authenticated()
 
         # Field whitelist pre-check (2026-08-13): one unknown variable cancels
-        # the ENTIRE multisim batch. Verify field identifiers exist before
-        # submitting. If the platform lookup fails, warn and continue rather
-        # than blocking submission.
+        # the ENTIRE multisim batch. Confirm each candidate via targeted
+        # datafield search (not an unscoped/paginated dump). Lookup errors
+        # warn and continue rather than blocking submission.
         if validate_fields and language.upper() != "PYTHON":
+            from tools_data import _extract_field_candidates, _verify_fields_exist
             candidates = _extract_field_candidates(alpha_expressions)
             if candidates:
                 try:
-                    field_payload = await brain_client.get_datafields(
-                        instrument_type=instrument_type, region=region,
-                        delay=delay, universe=universe,
-                        filter_sharpe=False, data_type="")
-                    known = {f.get("id") for f in field_payload.get("results", []) if f.get("id")}
-                    unknown = [f for f in candidates if f not in known]
-                    if unknown:
+                    verified = await _verify_fields_exist(
+                        candidates,
+                        instrument_type=instrument_type,
+                        region=region,
+                        universe=universe,
+                        delay=delay,
+                        client=brain_client,
+                    )
+                    if verified.get("warning"):
+                        logger.warning(verified["warning"])
+                    if verified.get("unknown") and not verified.get("skipped"):
                         return {
                             "error": "Field validation failed — unknown variable(s) detected. "
                                      "One unknown field cancels the whole multisim batch.",
-                            "unknown_fields": unknown,
+                            "unknown_fields": verified["unknown"],
                             "fields_checked": candidates,
                             "hint": "Re-check field ids via get_datafields, or re-run with validate_fields=False.",
                         }
                 except Exception as exc:
-                    self_log = f"Field pre-check skipped: {exc}"
+                    logger.warning(f"Field pre-check skipped: {exc}")
 
         normalized_language = language.upper()
         

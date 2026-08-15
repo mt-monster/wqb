@@ -1,0 +1,21 @@
+{
+ "dataset": "fundamental44",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Accounting Quality Models(Wolfe CSI框架), 12字段全MATRIX cov0.8984过0.85硬门, multiplier1.6; 应计/操纵评分族",
+ "fields": [
+  {"id": "fnd44_cashflow_accruals", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_factor_benford", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_fscore", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_jones_cf_accruals", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_modified_jones_cf_accruals", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_mscore", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_perc_accruals", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_probability_restatement", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_probability_restatement_global", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_score", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_working_capital_accruals", "cov": 0.8984, "type": "MATRIX"},
+  {"id": "fnd44_yoon_wc_accruals", "cov": 0.8984, "type": "MATRIX"}
+ ]
+}

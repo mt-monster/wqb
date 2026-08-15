@@ -1,0 +1,17 @@
+{
+  "batch": "wave18F",
+  "wave": 18,
+  "setting": "SECTOR d8 t0.08",
+  "dataset": "ai_factor_transfer",
+  "rationale": "批C+D交叉结论: 信号集中在镜像方向(RSI sh-1.12/布林带sh-0.93/CMF组合sh-0.17)。批F=镜像增强族: RSI×布林带双强负镜像组合(比例扫描0.6/0.4与0.5/0.5)+RSI镜像×换手反向融合+RSI av_diff镜像+CMF镜像方向探针+RSI镜像decay线性。d8 t0.08降tvr提2y",
+  "expressions": [
+    "add(multiply(rank(cumulative_money_flow_volume_adjusted),0.6),multiply(rank(typical_price_bollinger_band_position),0.4))",
+    "add(multiply(rank(cumulative_money_flow_volume_adjusted),0.5),multiply(rank(typical_price_bollinger_band_position),0.5))",
+    "add(multiply(rank(cumulative_money_flow_volume_adjusted),0.5),multiply(multiply(rank(liquidity_money_flow_alignment),-1),0.5))",
+    "multiply(rank(ts_av_diff(cumulative_money_flow_volume_adjusted,22)),-1)",
+    "rank(short_term_price_change_2)",
+    "ts_decay_linear(add(multiply(rank(cumulative_money_flow_volume_adjusted),0.6),multiply(rank(typical_price_bollinger_band_position),0.4)),5)",
+    "rank(cumulative_money_flow_volume_adjusted_2)",
+    "multiply(rank(money_flow_strength_typical_price_2),-1)"
+  ]
+}

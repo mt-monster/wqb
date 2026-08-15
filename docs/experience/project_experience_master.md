@@ -1,7 +1,7 @@
 # WQB 项目经验总纲
 
 > 本文档整合 2026-08-01 至 2026-08-08 期间项目全部经验记录，按主题结构化归档。
-> 来源：`.workbuddy/memory/` 每日日志、`reports/` 报告、`reference/` 经验文档。
+> 来源：`.workbuddy/memory/` 每日日志、`reports/` 报告、`docs/reference/` 经验文档。
 > 维护规则：新增经验追加到对应章节，不另开散文件。
 
 ---
@@ -103,6 +103,45 @@
 - **MATRIX 字段**：`winsorize(ts_backfill(FIELD, 120), std=4)`
 - **VECTOR 字段**：`winsorize(ts_backfill(vec_avg(FIELD), 120), std=4)`
 - 有界字段（如搜索热度）**不需 winsorize**（有害）。
+
+## 算子标准模式速查（提交前必查，避免回测试错）
+
+> 背景：create_multi_simulation 批内一个表达式 ERROR 会导致整批兄弟 CANCELLED，浪费并发配额；签名错误必须在提交前拦截。
+
+### 规则 1：VECTOR(event) 字段必须先 vec_* 聚合
+- 错误：`rank(vec_field)` / `ts_delta(vec_field, n)` → 报 "Operator xxx does not support event inputs"
+- 正确：`rank(vec_avg(F))`、`rank(vec_max(F))`、`ts_delta(vec_avg(F), n)` 后再套 cross-section 算子
+- 降 PROD 相关技巧：同一字段 `vec_avg → vec_max` 实测可降 PC（论坛 macro27 案例 0.7288→0.6967）
+
+### 规则 2：Group 算子签名陷阱
+- `group_mean(x, weight, group)` 是 **3 参**！如 `group_mean(x, 1, sector)`；只要加权均值就用 `group_neutralize(x, group)`（2 参）代替
+- `group_rank(x, group)` / `group_zscore(x, group)` / `group_neutralize(x, group)` 是 2 参
+- `group_backfill(x, group, d, std=4.0)` 是 4 参
+- group 取值：sector / industry / subindustry / country
+
+### 规则 3：高频踩坑签名清单
+| 算子 | 标准签名 | 注意 |
+|---|---|---|
+| ts_backfill | `ts_backfill(x, d)` | k=1 默认 |
+| ts_rank | `ts_rank(x, d)` | constant 默认 0 |
+| ts_zscore | `ts_zscore(x, d)` | 窗口 d |
+| ts_regression | `ts_regression(y, x, d, lag=0, rettype=0)` | rettype 取 0/1，`.residual` 写法无效 |
+| quantile | `quantile(x, driver=gaussian)` | driver 可选 gaussian/uniform/cauchy；cauchy 弱 |
+| bucket | `bucket(rank(x), range="0,1,0.1")` | 输入必须先 rank |
+| trade_when | `trade_when(x, y, z)` | 3 参 |
+| subtract | `subtract(x, y, filter=true)` | 可用 filter；divide 无 filter |
+| signed_power | `signed_power(x, a)` | a 常用 0.5 |
+| winsorize | `winsorize(x, std=4)` | 有界字段禁用 |
+
+### 规则 4：禁用/幽灵算子
+- 平台不存在：ts_entropy / ts_percentage / ts_skewness / ts_median 等 17 个（详见 docs/README.md 幽灵算子清单）
+- 不要用 `hump`；不要用 `ts_regression(...).residual`
+
+### 规则 5：提交流程防御
+1. 先用本地 `alpha-expression-verifier` 过语法（快）
+2. 对照本速查表核对每个算子签名与字段类型（MATRIX/VECTOR）
+3. 不确定的新算子：单独放一批（2 表达式起）试跑，不要与主力批混编
+4. MCP `validate_expressions` 可能挂起，不依赖；但 `create_multi_simulation` 的 `validate_fields=true` 会拖慢提交甚至超时，字段已用 get_datafields 核实过时用 `validate_fields=false`
 
 ### 3.2 三阶算子流水线
 
@@ -318,7 +357,7 @@
 | 算子笔记 | `docs/operators_notes.md` | 算子速查 |
 | 项目结构 | `docs/project_structure_analysis.md` | 目录结构分析 |
 | 机器库经验 | `reference/machine_lib_experience.md` | 三阶算子流水线 + 区域事件库 |
-| USA D0 经验 | `reference/usa_d0_mining_experience.md` | 数据集信号档案 |
+| USA D0 经验 | `docs/reference/usa_d0_mining_experience.md` | 数据集信号档案 |
 | PPA 提交教训 | `reports/ppa_submission_lessons_2026-08-05.md` | PPA 提交规则 |
 | 论坛经验 | `reports/ppa_forum_experience_2026-08-07.md` | 论坛挖掘经验系统总结 |
 | EUR 体检 | `reports/eur_field_coverage_2026-08-05.md` | EUR 数据集体检 |

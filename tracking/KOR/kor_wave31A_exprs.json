@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model32",
+ "data_type": "MATRIX",
+ "probe_note": "wave31A快扫: 价格动量百分位族, 短期反转vs中长期动量方向测试+ts_av_diff变化+混合腿避CW+镜像; cov≥0.96无需backfill; SECTOR d4 t0.08",
+ "expressions": [
+  "multiply(rank(backfill_short_term_momentum_score_float),-1)",
+  "rank(backfill_mid_term_momentum_score_float)",
+  "rank(backfill_long_term_momentum_score_float)",
+  "multiply(rank(ts_av_diff(backfill_mid_term_momentum_score_float,20)),-1)",
+  "add(multiply(multiply(rank(backfill_short_term_momentum_score_float),-1),0.5),multiply(rank(backfill_long_term_momentum_score_float),0.5))",
+  "rank(ts_av_diff(backfill_industry_momentum_score_float,10))",
+  "rank(backfill_short_term_momentum_score_float)",
+  "multiply(rank(backfill_global_momentum_rank_float),-1)"
+ ]
+}

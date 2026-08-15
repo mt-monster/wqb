@@ -1,0 +1,18 @@
+{
+ "dataset": "news79",
+ "data_type": "VECTOR",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Global Corporate News Analytics(RavenPack), VECTOR事件型 cov0.87-0.92需ts_backfill; 选sentiment评分族(os_is_sharpe0.40/mult1.5)",
+ "fields": [
+  {"id": "nws79_composite_sentiment_score", "cov": 0.869, "type": "VECTOR"},
+  {"id": "nws79_analyst_ratings_sentiment", "cov": 0.869, "type": "VECTOR"},
+  {"id": "nws79_earnings_tone_sentiment", "cov": 0.869, "type": "VECTOR"},
+  {"id": "nws79_credit_sentiment", "cov": 0.7293, "type": "VECTOR"},
+  {"id": "nws79_document_sentiment", "cov": 0.869, "type": "VECTOR"},
+  {"id": "nws79_entity_relevance", "cov": 0.869, "type": "VECTOR"},
+  {"id": "nws79_event_risk", "cov": 0.7293, "type": "VECTOR"},
+  {"id": "nws79_sentiment_impact_projection", "cov": 0.869, "type": "VECTOR"}
+ ]
+}

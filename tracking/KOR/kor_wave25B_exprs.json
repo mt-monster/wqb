@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model192",
+ "data_type": "MATRIX",
+ "probe_note": "wave25B深挖+CW修复: 批A全CW FAIL→线性混合族(0.5/0.5权重避rank(add)); 违约概率变化族2y1.51火花+镜像; truncation提到0.08",
+ "expressions": [
+  "multiply(rank(mdl192_id_y1dpghcm1_sdc),-1)",
+  "rank(mdl192_id_y1dpghcm1_sdc)",
+  "add(multiply(multiply(rank(mdl192_id_y1dpghcm1_sdc),-1),0.5),multiply(multiply(rank(mdl192_cds_ps_rank1m_di),-1),0.5))",
+  "add(multiply(rank(mdl192_fc_fqsurstd_di),0.5),multiply(multiply(rank(mdl192_ratrev6m_di),-1),0.5))",
+  "rank(ts_av_diff(mdl192_id_y5dpghcm1_sdc,5))",
+  "multiply(rank(mdl192_cds_pd1y_di),-1)",
+  "rank(mdl192_indrelcroe_di)",
+  "rank(mdl192_stockrating_di)"
+ ]
+}

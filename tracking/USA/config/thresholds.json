@@ -1,0 +1,54 @@
+{
+  "_doc": "USA D1 战役集中阈值配置。闸门统一引用本文件，禁止散落硬编码。D1 门槛取自 how-to-pass-AlphaTest（D1 Sharpe>1.25 / Fitness>1.0）。",
+  "review": {
+    "sharpe_min": 1.25,
+    "fitness_min": 1.0,
+    "two_year_sharpe_min": 1.6,
+    "margin_min": 0.0005,
+    "turnover_min": 0.05,
+    "turnover_max": 0.30,
+    "ra_failed_count_max": 0
+  },
+  "near": {
+    "sharpe_min": 1.0,
+    "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析"
+  },
+  "quick_scan": {
+    "red_2y_max": 0.6,
+    "red_sh_abs_min": 0.8,
+    "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖"
+  },
+  "probe_scoring_v2": {
+    "_doc": "三灯 v2：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
+    "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
+    "green_min": 2.2,
+    "yellow_min": 1.2,
+    "w_sharpe": 1.2,
+    "w_fitness": 0.8,
+    "w_mirror": 0.5,
+    "w_margin": 0.3,
+    "w_tvr": 0.2,
+    "w_rn": 0.2,
+    "w_breadth": 0.2,
+    "c_w_penalty": 0.4,
+    "breadth_bar": 0.5,
+    "rn_bar": 1.0,
+    "early_red_sh": 0.3,
+    "tvr_low": 5,
+    "tvr_high": 30,
+    "red_2y_sh_abs_min": 0.8,
+    "red_2y_max": 0.6
+  },
+  "hard_gates": {
+    "prod_correlation_max": 0.7,
+    "self_correlation_max": 0.7,
+    "_note": "平台提交期硬闸，异步计算须以重检为准"
+  },
+  "dataset_health": {
+    "coverage_min": 0.85,
+    "alpha_count_max": 50,
+    "field_count_min": 10,
+    "coverage_hard_min": 0.7,
+    "alpha_count_hard_max": 1000
+  }
+}

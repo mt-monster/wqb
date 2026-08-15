@@ -12,7 +12,7 @@ import shutil
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "2_reference")
 TARGETS = [
-    os.path.join(ROOT, "reference"),
+    os.path.join(ROOT, "docs", "reference"),
     os.path.join(ROOT, ".workbuddy", "reference"),
 ]
 

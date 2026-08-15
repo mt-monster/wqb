@@ -4,7 +4,7 @@
 用法:
     python3 tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1
     python3 tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 \
-        --fields analyst11 --json-out tracking/quality_analyst11.json
+        --fields analyst11 --json-out tracking/reference/quality_analyst11.json
 
 功能:
     1. 数据集质量排名 (count/sharpe/fitness) + 甜点区 (100≤count≤3000 且 sharpe≥1.1×均值)
@@ -445,7 +445,7 @@ def field_combine_hints(field_shapes):
                      f'两个连续字段双 rank 去相关')
     # 多个 concentrated：慎作主信号
     if len(buckets['concentrated']) >= 2:
-        hints.append(f'⚠ 多个 concentrated 字段 ({", ".join(buckets["concentrated"][:3])}) 有效信息少，'
+        hints.append(f'多个 concentrated 字段 ({", ".join(buckets["concentrated"][:3])}) 有效信息少，'
                      f'优先作辅助/门控而非主信号')
     return hints
 
@@ -674,12 +674,12 @@ def main():
             if r['os_sharpe'] is None:
                 continue
             diff = r['sharpe'] - r['os_sharpe']
-            verdict = '⚠ 退化' if diff > 0.15 else ('🟢 稳健' if abs(diff) <= 0.15 else '✓ OS更优')
+            verdict = '退化' if diff > 0.15 else ('稳健' if abs(diff) <= 0.15 else 'OS更优')
             if diff > 0.15:
                 degraded.append(r['dataset'])
             print(f"| {r['dataset']} | {r['count']} | {r['sharpe']} | {r['os_sharpe']} | {diff:.3f} | {verdict} |")
         if degraded:
-            print(f'\n⚠ 退化数据集: {", ".join(degraded)} → 降低优先级或要求更强鲁棒性证据')
+            print(f'\n退化数据集: {", ".join(degraded)} → 降低优先级或要求更强鲁棒性证据')
 
     # ============ 3. 类别级统计 ============
     print(f'\n## 类别级统计 (isos.category + osis.category)\n')
@@ -737,8 +737,8 @@ def main():
         recs = mining_recommendations(isos, neut, osis, key, mean_sharpe, top_n=args.top)
         print('| 数据集 | count | sharpe | OS sharpe | OS count | 最优中性化 | neut sharpe | 甜点区 | 退化 | score |\n|---|---|---|---|---|---|---|---|---|---|')
         for r in recs:
-            sw = '✓' if r['sweet'] else ''
-            dg = '⚠' if r['degraded'] else ''
+            sw = 'Y' if r['sweet'] else ''
+            dg = 'Y' if r['degraded'] else ''
             bn_shp = f"{r['best_neut_shp']:.3f}" if r['best_neut'] != '--' else '--'
             print(f"| {r['dataset']} | {r['count']} | {r['sharpe']:.3f} | {r['os_sharpe']:.3f} | {r['os_count']} | "
                   f"{r['best_neut']} | {bn_shp} | {sw} | {dg} | {r['score']:.3f} |")

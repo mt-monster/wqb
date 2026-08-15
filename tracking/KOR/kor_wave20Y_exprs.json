@@ -1,0 +1,18 @@
+{
+  "batch": "wave20Y",
+  "wave": 20,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "model219",
+  "fe_type": "累积记忆×背离一致性(假设驱动)",
+  "rationale": "假设: 修正的累积记忆(ts_sum/decay10)比差分更稳; 幅度与广度背离含独立信息; 惊喜波动率低=稳定超预期。Y1=累积广度, Y2=decay10平滑广度, Y3=rev6×numrevy1幅度广度积, Y4=幅度-广度背离, Y5=低surp波动交互, Y6=ocfmargin质量门控, Y7=广度×评级共识积, Y8=3年EPS动量探针",
+  "expressions": [
+    "add(add(multiply(rank(ts_sum(mdl219_q_dlr_1_fc_numrevy1,20)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_decay_linear(mdl219_q_dlr_1_fc_numrevy1,10)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(multiply(mdl219_q_dlr_1_fc_rev6,mdl219_q_dlr_1_fc_numrevy1)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(subtract(mdl219_q_dlr_1_fc_rev6,multiply(mdl219_q_dlr_1_fc_numrevy1,0.1))),0.35),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.3)),add(multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.15),multiply(rank(mdl219_q_dlr_1_ratrev6m),0.2)))",
+    "add(add(multiply(rank(multiply(mdl219_q_dlr_1_surp,rank(multiply(ts_std_dev(mdl219_q_dlr_1_surp,60),-1)))),0.35),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,10)),0.3)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.35))",
+    "add(add(multiply(rank(multiply(mdl219_q_dlr_1_surp,mdl219_q_dlr_1_ocfmargin)),0.35),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,10)),0.3)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.35))",
+    "add(add(multiply(multiply(rank(mdl219_q_dlr_1_fc_numrevy1),rank(mdl219_q_dlr_1_ratrev6m)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(multiply(rank(mdl219_q_dlr_1_chg3yepsp),0.5),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.5))"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "_doc": "USA 战役固定仿真设置。所有值由平台回测实证派生（见 _evidence），非拍脑袋。pipeline/build_wave/probe 统一引用。",
+  "instrumentType": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "neutralization": "MARKET",
+  "decay": 5,
+  "truncation": 0.08,
+  "maxTrade": "OFF",
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2013-01-01",
+  "endDate": "2023-12-31",
+  "_alt_neutralization": "SUBINDUSTRY",
+  "_alt_neutralization_note": "A/B 对照轨：TOP3000/SUBINDUSTRY(n=4, medSharpe=2.245) 高于 MARKET(medSharpe=1.49) 但 medTVR=0.121 偏高；wave 01 做中性化 A/B，由真实回测决定后续是否切换默认值。",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）",
+  "_evidence": {
+    "source": "wq-brain-stdio get_user_alphas(stage=OS) 平台真实回测数据，region=USA 抽取",
+    "total_usa_d1": 86,
+    "universe_distribution": {"TOP3000": 85, "ILLIQUID_MINVOL1M": 1},
+    "neutralization_decision": {
+      "TOP3000/MARKET": {"n": 75, "ACTIVE": 75, "active_rate": 1.0, "medSharpe": 1.49, "medFitness": 1.33, "medTVR": 0.038},
+      "TOP3000/SUBINDUSTRY": {"n": 4, "ACTIVE": 4, "active_rate": 1.0, "medSharpe": 2.245, "medFitness": 1.45, "medTVR": 0.121},
+      "verdict": "baseline=MARKET（n=75 全 ACTIVE 且 medTVR 最低，最稳健）；SUBINDUSTRY 样本少、TVR 高，作对照轨 A/B"
+    },
+    "non_contested_fields": {
+      "decay": {"value": 5, "support": "75/75 MARKET ACTIVE 队列一致"},
+      "truncation": {"value": 0.08, "support": "75/75 一致"},
+      "maxTrade": {"value": "OFF", "support": "75/75 一致（美国与 KOR 的 ON 不同，以实证为准）"},
+      "pasteurization": {"value": "ON", "support": "75/75 一致"},
+      "unitHandling": {"value": "VERIFY", "support": "75/75 一致"},
+      "nanHandling": {"value": "ON", "support": "74/75 ON，1/75 OFF"},
+      "language": {"value": "FASTEXPR", "support": "75/75 一致"},
+      "startDate": {"value": "2013-01-01", "support": "队列起步 2013-01-20..2018-01-20 取下限"},
+      "endDate": {"value": "2023-12-31", "support": "队列终点至 2023-12-31"}
+    }
+  }
+}

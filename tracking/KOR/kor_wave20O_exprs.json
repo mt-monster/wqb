@@ -1,0 +1,17 @@
+{
+  "batch": "wave20O",
+  "wave": 20,
+  "setting": "SECTOR d4 t0.08",
+  "dataset": "model219",
+  "rationale": "批O=truncation0.08参数变体(wave17经验t0.08推2y): 复用批F三腿融合8式, 表达式不变仅truncation0.06→0.08; 与批N(d6)构成参数矩阵对照, 探测88pYRnkl结构在更宽松截断下2y能否破1.58",
+  "expressions": [
+    "add(add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.5),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.3)),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.2))",
+    "add(add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.6),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.2)),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.2))",
+    "add(add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.4),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.4)),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.2))",
+    "add(add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.5),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.3)),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,22)),0.2))",
+    "subtract(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),rank(mdl219_q_dlr_1_divyield))",
+    "add(multiply(rank(mdl219_q_dlr_1_surp),0.5),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.5))",
+    "add(add(multiply(rank(mdl219_q_dlr_1_pctchgeps),0.4),multiply(rank(mdl219_q_dlr_1_surp),0.4)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.2))",
+    "add(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.7),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.3))"
+  ]
+}

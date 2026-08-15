@@ -1,0 +1,25 @@
+{
+ "dataset": "model30",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "EPS Estimate Model, 64字段MATRIX, multiplier1.7 analyst类仅1 alpha点亮; 预测surprise族零竞争; cov0.66-0.79需ts_backfill辅助",
+ "fields": [
+  {"id": "mdl30_psprise_pct_f12m_eps", "cov": 0.7035, "type": "MATRIX"},
+  {"id": "mdl30_psprise_pct_fy1_eps", "cov": 0.7189, "type": "MATRIX"},
+  {"id": "mdl30_psprise_pct_fy2_eps", "cov": 0.7048, "type": "MATRIX"},
+  {"id": "mdl30_smartestimate_f12m_eps", "cov": 0.7035, "type": "MATRIX"},
+  {"id": "mdl30_smartestimate_fy1_eps", "cov": 0.7189, "type": "MATRIX"},
+  {"id": "mdl30_numnly_fy1_eps", "cov": 0.7633, "type": "MATRIX"},
+  {"id": "star_eps_surprise_prediction_12m_d1", "cov": 0.7036, "type": "MATRIX"},
+  {"id": "star_eps_surprise_prediction_fy1_d1", "cov": 0.7189, "type": "MATRIX"},
+  {"id": "star_eps_surprise_prediction_fy2_d1", "cov": 0.705, "type": "MATRIX"},
+  {"id": "star_eps_smart_estimate_12m_d1", "cov": 0.7036, "type": "MATRIX"},
+  {"id": "star_eps_smart_estimate_fy1_d1", "cov": 0.7189, "type": "MATRIX"},
+  {"id": "star_eps_analyst_number_fy1_d1", "cov": 0.7633, "type": "MATRIX"},
+  {"id": "star_new_eps_surprise_prediction_12m", "cov": 0.6579, "type": "MATRIX"},
+  {"id": "star_new_eps_surprise_prediction_fy1", "cov": 0.6693, "type": "MATRIX"},
+  {"id": "star_new_eps_smart_estimate_12m", "cov": 0.6579, "type": "MATRIX"},
+  {"id": "star_new_eps_analyst_number_fy1", "cov": 0.705, "type": "MATRIX"}
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "pv106",
+ "data_type": "MATRIX",
+ "probe_note": "wave34A快扫: 微观结构spread/slippage/cost族; 流动性溢价(宽spread正)+收窄动量(变化负)+双向方向测试; 三灯评审",
+ "expressions": [
+  "rank(pv106_spreadbp)",
+  "multiply(rank(pv106_spreadbp),-1)",
+  "multiply(rank(ts_av_diff(pv106_spreadbp,20)),-1)",
+  "multiply(rank(korean_market_slippage),-1)",
+  "multiply(rank(ts_av_diff(bid_ask_price_gap,10)),-1)",
+  "rank(transaction_cost_estimate)",
+  "multiply(rank(ts_av_diff(slippage_at_spread_20,20)),-1)",
+  "multiply(rank(ts_av_diff(asia_trade_rate_sell,10)),-1)"
+ ]
+}

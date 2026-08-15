@@ -1,0 +1,17 @@
+{
+  "batch": "wave20R",
+  "wave": 20,
+  "setting": "INDUSTRY d6 t0.06",
+  "dataset": "model219",
+  "rationale": "批R=decay6参数变体(基于批M sh0.98 av10纪录结构): 复用批M INDUSTRY 8式仅decay4→6, wave17经验d6推2y稳定性, 探测av10三腿在d6下2y能否从1.28破1.58",
+  "expressions": [
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.35),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.4)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.45),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.3)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,10)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),3),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),7),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.25))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.4),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(ts_decay_linear(rank(mdl219_q_dlr_1_divyield),5),-1),0.25))",
+    "subtract(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),add(multiply(rank(mdl219_q_dlr_1_divyield),0.4),multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.2)))",
+    "add(add(multiply(rank(ts_av_diff(mdl219_q_dlr_1_fc_numrevy1,5)),0.35),multiply(ts_decay_linear(rank(mdl219_q_dlr_1_surp),5),0.35)),multiply(multiply(rank(mdl219_q_dlr_1_divyield),-1),0.3))"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "model170",
+ "data_type": "VECTOR",
+ "probe_note": "vec_avg快扫P1/P2/P4/P5/P6 x7代表字段(wave22, VECTOR复审复活)",
+ "expressions": [
+  "ts_decay_linear(rank(vec_avg(latest_implied_valuation_price)),5)",
+  "rank(ts_zscore(vec_avg(latest_implied_valuation_price),60))",
+  "rank(vec_avg(annual_price_peak))",
+  "multiply(rank(vec_avg(annual_price_peak)),-1)",
+  "rank(ts_av_diff(vec_avg(annual_price_peak),10))",
+  "ts_decay_linear(rank(vec_avg(annual_price_peak)),5)",
+  "rank(ts_zscore(vec_avg(annual_price_peak),60))"
+ ]
+}

@@ -1,0 +1,49 @@
+{
+  "dataset": "analyst_earnings_ibes",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "data_type": "MATRIX",
+  "updated": "2026-08-14-v2",
+  "description": "wave17新数据集白名单。字段存在性来自get_datafields权威返回(KOR/D1/TOP600, 28字段全MATRIX cov1.0); 回测验证状态: probe=已COMPLETE探针验证, api=仅API存在性验证。",
+  "verified_fields": {
+    "five_day_total_return_dlr1": {"batch": "wave17探针+批V", "best_alpha": "ak1wAYd6", "note": "COMPLETE, rank动量sh0.40/反转raw sh-0.64→KOR短周期镜像方向可挖"},
+    "twenty_day_total_return_dlr2": {"batch": "wave17探针", "best_alpha": "xANWzEEq", "note": "probe COMPLETE, rank动量sh-0.39→动量方向负"},
+    "one_day_total_return_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "one_day_total_return_dlr2": {"batch": "批V", "best_alpha": "3qp5ab7e", "note": "COMPLETE, 反转腿×0.4混合sh-0.17弱"},
+    "five_day_total_return_dlr2": {"batch": "批V", "best_alpha": "npNQZJgE", "note": "COMPLETE, ts_decay(反转,5) sh0.36/2y0.37正向最稳"},
+    "twenty_day_total_return_dlr1": {"batch": "批V", "best_alpha": "N1b3gwp8", "note": "COMPLETE, 混合腿sh-0.59"},
+    "sixty_day_total_return_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "sixty_day_total_return_dlr2": {"batch": "批V", "best_alpha": "N1b3gwp8", "note": "COMPLETE, 混合腿sh-0.59"},
+    "one_twenty_day_total_return_dlr1": {"batch": "批V", "best_alpha": "P0G8wWpM", "note": "COMPLETE, rank动量sh0.15/tvr6.7%慢信号"},
+    "one_twenty_day_total_return_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "two_fifty_day_total_return_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "two_fifty_day_total_return_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "closing_price_dlr1": {"batch": "批V", "best_alpha": "O0GVbYZb", "note": "COMPLETE, close-vwap差sh-0.73(镜像+0.73数据集最强单腿)"},
+    "closing_price_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "opening_price_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "opening_price_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "highest_price_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "highest_price_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "lowest_price_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "lowest_price_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "volume_weighted_avg_price_dlr1": {"batch": "批V", "best_alpha": "O0GVbYZb", "note": "COMPLETE, close-vwap差sh-0.73(镜像+0.73)"},
+    "volume_weighted_avg_price_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "trading_volume_dlr1": {"batch": "批V", "best_alpha": "zqN0PMm1", "note": "COMPLETE, ts_delta5 sh-0.03无独立价值"},
+    "trading_volume_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "market_capitalization_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "market_capitalization_dlr2": {"batch": "api", "note": "get_datafields存在性验证"},
+    "shares_outstanding_dlr1": {"batch": "api", "note": "get_datafields存在性验证"},
+    "shares_outstanding_dlr2": {"batch": "api", "note": "get_datafields存在性验证"}
+  },
+  "type_rules": {
+    "analyst_earnings_ibes": "MATRIX: 直接 rank/ts_* 可用; 禁止 vec_* 聚合(仅VECTOR用)"
+  },
+  "banned_patterns": [
+    {"pattern": "\\bbucket\\(", "scope": "all", "reason": "FASTEXPR bucket算子整数与列表语法均不支持(wave12实证2次整批CANCELLED)"},
+    {"pattern": "ts_entropy\\(", "scope": "all", "reason": "fatal operator会级联CANCEL整批"},
+    {"pattern": "ts_median\\(", "scope": "all", "reason": "幽灵算子, 用ts_mean(x,252)替代"},
+    {"pattern": "ts_regression\\([^)]*\\)\\.residual", "scope": "all", "reason": ".residual取值语法无效"},
+    {"pattern": "group_mean\\([^,)]+,[^,)]+\\)", "scope": "all", "reason": "group_mean需3参(x,weight,group), wave10 v2因此自毁"}
+  ]
+}

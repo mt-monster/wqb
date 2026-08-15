@@ -1,0 +1,65 @@
+[
+  {
+    "tag": "A1_SI_single_nat",
+    "family": "shortinterest",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(shrt7_combo_utilisation), 252), subindustry), 0.5), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "A2_SI_single_flip",
+    "family": "shortinterest",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(0.5, group_rank(ts_backfill(vec_avg(shrt7_combo_utilisation), 252), subindustry)), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "A3_SI_combo_nat",
+    "family": "shortinterest",
+    "alpha_id": null,
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(shrt7_combo_utilisation), 252), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "B1_FND_single_nat",
+    "family": "fundamental",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(fnd17_ebitda2ev), 252), subindustry), 0.5), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "B2_FND_single_flip",
+    "family": "fundamental",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(0.5, group_rank(ts_backfill(vec_avg(fnd17_ebitda2ev), 252), subindustry)), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "B3_FND_combo_nat",
+    "family": "fundamental",
+    "alpha_id": null,
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(fnd17_ebitda2ev), 252), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "C1_RSK_single_nat",
+    "family": "risk",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(rsk62_risk_backfill_volatility), 252), subindustry), 0.5), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "C2_RSK_single_flip",
+    "family": "risk",
+    "alpha_id": null,
+    "code": "ts_decay_linear(signed_power(subtract(0.5, group_rank(ts_backfill(vec_avg(rsk62_risk_backfill_volatility), 252), subindustry)), 5), 90)",
+    "error": "simulation_failed"
+  },
+  {
+    "tag": "C3_RSK_combo_nat",
+    "family": "risk",
+    "alpha_id": null,
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(vec_avg(rsk62_risk_backfill_volatility), 252), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "error": "simulation_failed"
+  }
+]

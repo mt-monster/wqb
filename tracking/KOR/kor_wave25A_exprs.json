@@ -1,0 +1,23 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "model192",
+ "data_type": "MATRIX",
+ "probe_note": "wave25A快扫: CDS信用风险7族(违约概率变化/动量背离/行业相对收益/盈利惊奇/分析师修订强度/破产风险/低波动); cov1.0无需backfill; SECTOR d4 t0.06",
+ "expressions": [
+  "multiply(rank(mdl192_id_y1dpghcm1_sdc),-1)",
+  "multiply(rank(mdl192_cds_ps_rank1m_di),-1)",
+  "rank(mdl192_indrelrtn4w_di)",
+  "rank(mdl192_fc_fqsurstd_di)",
+  "rank(ts_av_diff(mdl192_ratrev6m_di,10))",
+  "rank(mdl192_altmanz_di)",
+  "multiply(rank(mdl192_id_dtsm1_rd),-1)"
+ ]
+}

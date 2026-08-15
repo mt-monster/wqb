@@ -1,0 +1,17 @@
+{
+  "batch": "X",
+  "wave": 17,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "analyst_earnings_ibes",
+  "rationale": "与批W并行(恒定在飞纪律): 批V最强3负信号异源组合族(close-vwap差/5d反转/20d60d混合两两组合)+ts_rank/ts_zscore归一化换算+52周价格分位+market_cap小盘代理; v2: ts_min/ts_max平台不可访问(批X首提整批CANCELLED实证), 52周极值改用ts_rank替代",
+  "expressions": [
+    "add(multiply(subtract(rank(volume_weighted_avg_price_dlr1),rank(closing_price_dlr1)),0.6),multiply(rank(five_day_total_return_dlr1),0.4))",
+    "add(multiply(subtract(rank(volume_weighted_avg_price_dlr1),rank(closing_price_dlr1)),0.5),multiply(add(multiply(rank(twenty_day_total_return_dlr1),0.5),multiply(multiply(rank(sixty_day_total_return_dlr2),-1),0.5)),0.5))",
+    "add(multiply(rank(five_day_total_return_dlr1),0.5),multiply(add(multiply(rank(twenty_day_total_return_dlr1),0.5),multiply(multiply(rank(sixty_day_total_return_dlr2),-1),0.5)),0.5))",
+    "ts_rank(five_day_total_return_dlr1,22)",
+    "multiply(ts_zscore(twenty_day_total_return_dlr2,66),-1)",
+    "ts_rank(closing_price_dlr1,252)",
+    "multiply(rank(market_capitalization_dlr1),-1)",
+    "ts_decay_linear(subtract(rank(volume_weighted_avg_price_dlr2),rank(closing_price_dlr2)),5)"
+  ]
+}

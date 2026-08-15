@@ -24,7 +24,7 @@ KNOWN_OPS = {
     "rank", "add", "subtract", "multiply", "divide", "signed_power", "sqrt",
     "greater", "less", "if_else", "trade_when", "delay", "delta",
     "ts_delay", "ts_delta", "ts_mean", "ts_sum", "ts_std_dev", "ts_rank",
-    "ts_decay_linear", "ts_min", "ts_max", "ts_ir", "ts_av_diff", "ts_scale",
+    "ts_decay_linear", "ts_ir", "ts_av_diff", "ts_scale",
     "ts_zscore", "ts_backfill", "ts_arg_max", "ts_arg_min", "ts_product",
     "group_rank", "group_neutralize", "group_mean", "group_sum", "group_zscore",
     "quantile", "pasteurize", "normalize", "vec_avg", "vec_max", "vec_min",
@@ -33,6 +33,10 @@ KNOWN_OPS = {
 }
 # MATRIX 数据集禁用的 VECTOR 聚合算子
 VECTOR_ONLY_OPS = {"vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm"}
+# VECTOR(事件型)数据集中允许直接包裹事件字段的聚合算子
+VEC_WRAP_OPS = ("vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm")
+# 平台不可访问算子(语法合法但回测ERROR并级联CANCEL整批, 批X实证2026-08-14)
+INACCESSIBLE_OPS = {"ts_min", "ts_max"}
 # 分组标识符(group_rank/group_neutralize等的合法分组参数, 非数据字段)
 GROUP_IDENTIFIERS = {"sector", "subindustry", "industry", "market", "country", "exchange"}
 
@@ -63,7 +67,11 @@ def main():
         ap.error("need --file or --expr")
 
     wl = json.load(open(args.whitelist, encoding="utf-8"))
-    verified = set(wl["verified_fields"].keys())
+    # 兼容两种白名单格式: verified_fields dict (chart_cnn) / fields 列表 (model219等)
+    if "verified_fields" in wl:
+        verified = set(wl["verified_fields"].keys())
+    else:
+        verified = set(f["id"] for f in wl.get("fields", []))
     data_type = wl.get("data_type", "MATRIX")
     banned = wl.get("banned_patterns", [])
 
@@ -88,7 +96,44 @@ def main():
             bad_ops = ops_used & VECTOR_ONLY_OPS
             if bad_ops:
                 item["issues"].append(f"[TYPE] MATRIX数据集禁用vec_*聚合: {sorted(bad_ops)}")
-        # 闸3b: 禁用模式
+        # 闸3e: VECTOR(事件型)数据集字段必须经vec_*聚合(wave18批A/B实证:
+        # rank/ts_*直接作用于事件字段报"does not support event inputs"整批ERROR)
+        if data_type == "VECTOR" and fields:
+            stripped = e
+            for op in VEC_WRAP_OPS:
+                for m in list(re.finditer(op + r"\(", stripped)):
+                    depth, j = 0, m.end() - 1
+                    while j < len(stripped):
+                        if stripped[j] == "(":
+                            depth += 1
+                        elif stripped[j] == ")":
+                            depth -= 1
+                            if depth == 0:
+                                break
+                        j += 1
+                    stripped = stripped[:m.start()] + " " * (j - m.start() + 1) + stripped[j + 1:]
+            naked = sorted({f for f in fields if re.search(r"\b" + re.escape(f) + r"\b", stripped)})
+            if naked:
+                item["issues"].append(f"[EVENT] 事件型字段必须经vec_*聚合后才能用rank/ts_*: {naked}")
+        # 闸3b: 平台不可访问算子
+        inac = ops_used & INACCESSIBLE_OPS
+        if inac:
+            item["issues"].append(f"[INACCESSIBLE] 平台不可访问算子(整批CANCELLED元凶): {sorted(inac)}")
+        # 闸3c: quantile仅1参(批Z实证: 2参报Invalid number of inputs并级联CANCEL)
+        for qm in re.finditer(r"quantile\(", e):
+            depth, args, i = 0, 1, qm.end()
+            while i < len(e) and depth >= 0:
+                c = e[i]
+                if c == "(":
+                    depth += 1
+                elif c == ")":
+                    depth -= 1
+                elif c == "," and depth == 0:
+                    args += 1
+                i += 1
+            if args != 1:
+                item["issues"].append(f"[ARITY] quantile仅接受1参(x), 当前{args}参")
+        # 闸3d: 禁用模式
         for bp in banned:
             scope = bp.get("scope", "all")
             if scope == "vector_dataset" and data_type == "MATRIX":

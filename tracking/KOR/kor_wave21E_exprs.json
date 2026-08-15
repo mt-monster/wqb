@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "max_trade": "ON"
+ },
+ "dataset": "acquisition_model",
+ "data_type": "VECTOR",
+ "probe_note": "vec_avg聚合+5探针快扫(P1水平正/P2镜像/P4均值差分/P5衰减/P6时序自归一)",
+ "expressions": [
+  "rank(ts_av_diff(vec_avg(region_company_size_percentile_rank),10))",
+  "ts_decay_linear(rank(vec_avg(region_company_size_percentile_rank)),5)",
+  "rank(ts_zscore(vec_avg(region_company_size_percentile_rank),60))",
+  "rank(vec_avg(sector_percentile_acquisition_likelihood))",
+  "multiply(rank(vec_avg(sector_percentile_acquisition_likelihood)),-1)",
+  "rank(ts_av_diff(vec_avg(sector_percentile_acquisition_likelihood),10))",
+  "ts_decay_linear(rank(vec_avg(sector_percentile_acquisition_likelihood)),5)",
+  "rank(ts_zscore(vec_avg(sector_percentile_acquisition_likelihood),60))"
+ ]
+}

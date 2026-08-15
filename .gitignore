@@ -45,8 +45,8 @@ extensions/
 # WebDataScope scraped data dumps (37 MB, 265 files)
 research-data/
 
-# Runtime simulation results, field dumps, checkpoints (24 MB, 810 files)
-tracking/
+# tracking/ curated structure is versioned; bulk data lake + archives excluded via tracking/.gitignore
+# tracking/
 
 # Runtime SQLite DB and state
 data/
@@ -57,3 +57,6 @@ cleanup_tmp.py
 
 # pytest cache
 .pytest_cache/
+# agent/IDE state
+.qoder/
+.vscode/

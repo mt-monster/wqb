@@ -1,0 +1,22 @@
+{
+ "dataset": "model32",
+ "data_type": "MATRIX",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Price Momentum Model, 36 MATRIX字段cov0.96-1.0; 选float百分位族(backfill_/d1_/horizon)零竞争; mult1.7; 短/中/长期动量分层",
+ "fields": [
+  {"id": "backfill_short_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "backfill_mid_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "backfill_long_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "backfill_global_momentum_rank_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "backfill_regional_momentum_rank_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "backfill_industry_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "d1_short_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "d1_mid_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "d1_long_term_momentum_score_float", "cov": 1.0, "type": "MATRIX"},
+  {"id": "short_horizon_momentum_score_float", "cov": 0.99, "type": "MATRIX"},
+  {"id": "mid_horizon_momentum_score_float", "cov": 0.9893, "type": "MATRIX"},
+  {"id": "long_horizon_momentum_score_float", "cov": 0.9595, "type": "MATRIX"}
+ ]
+}

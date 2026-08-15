@@ -1,0 +1,17 @@
+{
+  "batch": "wave20C",
+  "wave": 20,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "model219",
+  "rationale": "批C=双模块对照+长窗族: q_dlr_2模块镜像字段(第二模型独立信号源)+3y长窗+divyield价值+revper+breadth av_diff短窗+epsrm×rev6双revision共振",
+  "expressions": [
+    "rank(mdl219_q_dlr_2_fc_epsrm)",
+    "ts_av_diff(rank(mdl219_q_dlr_2_fc_numrevy1),22)",
+    "subtract(rank(mdl219_q_dlr_2_surp),rank(mdl219_q_dlr_2_actrtn3m))",
+    "rank(mdl219_q_dlr_1_chg3yepsp)",
+    "rank(mdl219_q_dlr_1_divyield)",
+    "ts_av_diff(rank(mdl219_q_dlr_1_fc_numrevy1),5)",
+    "add(multiply(rank(mdl219_q_dlr_1_fc_epsrm),0.5),multiply(rank(mdl219_q_dlr_1_fc_rev6),0.5))",
+    "rank(mdl219_q_dlr_1_revper)"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+ "dataset": "model170",
+ "data_type": "VECTOR",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "verified_at": "2026-08-15",
+ "source": "dataset_health_check --dataset-fields model170",
+ "fields": [
+  {
+   "id": "annual_price_peak",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "annual_price_trough",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "composite_fundamental_score",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "dividend_quality_composite_score",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "implied_price_range_maximum",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "implied_price_range_minimum",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "latest_implied_valuation_price",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "price_position_within_annual_range",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "prior_close_price",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "recent_dividend_yield_pct",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  },
+  {
+   "id": "recent_earnings_momentum_score",
+   "cov": 0.9537,
+   "type": "VECTOR"
+  }
+ ],
+ "vector_rule": "VECTOR/event字段禁止直接rank/ts_*, 必须vec_avg/vec_max聚合(wave21A实证)"
+}

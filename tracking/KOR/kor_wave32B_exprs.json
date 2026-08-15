@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 6,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model109",
+ "data_type": "MATRIX",
+ "probe_note": "wave32B镜像深挖: 批A技术族镜像一致为负(clv10 -0.81/chaikin -0.19/dpo20 -0.08); 镜像反转+慢化窗口攻tvr44.9; decay4→6",
+ "expressions": [
+  "multiply(rank(ts_av_diff(close_location_value_indicator,10)),-1)",
+  "multiply(rank(ts_av_diff(close_location_value_indicator,20)),-1)",
+  "multiply(rank(ts_av_diff(ts_mean(close_location_value_indicator,5),10)),-1)",
+  "multiply(rank(chaikin_oscillator_value),-1)",
+  "multiply(rank(ts_av_diff(detrended_price_oscillator,20)),-1)",
+  "multiply(rank(ts_av_diff(force_index_technical_indicator,10)),-1)",
+  "multiply(rank(ts_av_diff(close_location_value_indicator,5)),-1)",
+  "multiply(rank(ease_of_movement_indicator),-1)"
+ ]
+}

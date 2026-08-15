@@ -1,0 +1,22 @@
+{
+ "dataset": "model109",
+ "data_type": "MATRIX",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "宽数据集539字段; 选cov≥0.85且alphaCount≤2零竞争族12个: 技术指标/收益率/分析师/增长四类; mult1.7",
+ "fields": [
+  {"id": "chaikin_oscillator_value", "cov": 0.906, "type": "MATRIX"},
+  {"id": "detrended_price_oscillator", "cov": 0.907, "type": "MATRIX"},
+  {"id": "force_index_technical_indicator", "cov": 0.877, "type": "MATRIX"},
+  {"id": "close_location_value_indicator", "cov": 0.907, "type": "MATRIX"},
+  {"id": "ease_of_movement_indicator", "cov": 0.905, "type": "MATRIX"},
+  {"id": "basic_earnings_yield_ltm", "cov": 0.9, "type": "MATRIX"},
+  {"id": "free_cash_flow_yield", "cov": 0.887, "type": "MATRIX"},
+  {"id": "expected_dividend_yield", "cov": 0.907, "type": "MATRIX"},
+  {"id": "analyst_recommendation_count", "cov": 0.907, "type": "MATRIX"},
+  {"id": "float_turnover_ratio", "cov": 0.907, "type": "MATRIX"},
+  {"id": "accruals_percentage_earnings", "cov": 0.893, "type": "MATRIX"},
+  {"id": "interim_eps_growth_yoy", "cov": 0.886, "type": "MATRIX"}
+ ]
+}

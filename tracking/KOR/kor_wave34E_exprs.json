@@ -1,0 +1,25 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 8,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "pv106",
+ "data_type": "MATRIX",
+ "multisim_id": "CIFZeemG5dgbJCYVCB1iQx",
+ "probe_note": "wave34E深挖: 批D窗口40(sh1.01/2y1.01)与80(sh0.75/2y1.42)之间sh<->2y权衡; 中间窗口50/65/70找平衡点; signed_power0.5攻fitness/sharpe; 快慢混合腿兼顾; decay8攻2y",
+ "expressions": [
+  "rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),50))",
+  "rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),70))",
+  "rank(ts_av_diff(ts_mean(bid_ask_price_gap,8),60))",
+  "signed_power(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),60)),0.5)",
+  "add(multiply(rank(ts_av_diff(bid_ask_price_gap,40)),0.5),multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.5))",
+  "rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),65))",
+  "add(multiply(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),50)),0.5),multiply(rank(ts_av_diff(ts_mean(slippage_at_spread_20,10),60)),0.5))",
+  "signed_power(rank(ts_av_diff(ts_mean(bid_ask_price_gap,5),80)),0.5)"
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "dataset": "model192",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "CDS因子/信用风险数据集, 101字段全MATRIX cov1.0, multiplier1.7零金字塔; 选20核心字段入白名单(违约概率/动量背离/相对收益/分析师/基本面)",
+ "fields": [
+  {"id": "mdl192_cds_pd1y_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_cds_pd5y_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_y1dpghcm1_sdc", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_y5dpghcm1_sdc", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_y5dpghcd5_sdc", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_cds_ps_rank1m_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_cds_ps_rank5d_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_cds_1mvol_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_indrelrtn4w_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_indrelrtn5d_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_indrelcroe_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_fc_fqsurstd_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_fc_numrevy1_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_ratrev6m_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_mrspe_cf", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_altmanz_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_ohlsonscore_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_dtsm1_rd", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_stockrating_di", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl192_id_spe1yfvc_cf", "cov": 1.0, "type": "MATRIX"}
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "dataset": "pv106",
+ "data_type": "MATRIX",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Microstructure Spread, 29字段全MATRIX cov≈1.0; 低竞争spread/slippage/transaction_cost族12个; mult1.4; 流动性/交易成本类新风格",
+ "fields": [
+  {"id": "pv106_spreadbp", "cov": 0.9999, "type": "MATRIX"},
+  {"id": "pv106_lastspreadbp", "cov": 0.9997, "type": "MATRIX"},
+  {"id": "pv106_spread", "cov": 0.9999, "type": "MATRIX"},
+  {"id": "bid_ask_price_gap", "cov": 1.0, "type": "MATRIX"},
+  {"id": "korean_market_slippage", "cov": 1.0, "type": "MATRIX"},
+  {"id": "asian_market_slippage", "cov": 1.0, "type": "MATRIX"},
+  {"id": "average_spread_slippage", "cov": 1.0, "type": "MATRIX"},
+  {"id": "aggregated_slippage_metric", "cov": 1.0, "type": "MATRIX"},
+  {"id": "transaction_cost_estimate", "cov": 1.0, "type": "MATRIX"},
+  {"id": "transaction_cost_median", "cov": 1.0, "type": "MATRIX"},
+  {"id": "slippage_at_spread_20", "cov": 1.0, "type": "MATRIX"},
+  {"id": "asia_trade_rate_buy", "cov": 1.0, "type": "MATRIX"},
+  {"id": "asia_trade_rate_sell", "cov": 1.0, "type": "MATRIX"}
+ ]
+}

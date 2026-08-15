@@ -1,0 +1,17 @@
+[
+  {
+    "name": "C1_earn7+vader_TOP3k",
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "alpha_id": "A1Ge7kAw"
+  },
+  {
+    "name": "C2_earn+vader_ILLIQ",
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), subindustry), 0.5), 5), 90), 0.5))",
+    "alpha_id": "YPv8gzdv"
+  },
+  {
+    "name": "C3_earn7+vaderInd_ILLIQ",
+    "code": "add(multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score_7), subindustry), 0.5), 5), 90), 0.5), multiply(ts_decay_linear(signed_power(subtract(group_rank(vec_avg(headline_sentiment_vader_score), industry), 0.5), 5), 90), 0.5))",
+    "alpha_id": "P0GxGQxM"
+  }
+]

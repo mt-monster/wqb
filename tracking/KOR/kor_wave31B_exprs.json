@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "model32",
+ "data_type": "MATRIX",
+ "probe_note": "wave31B镜像深挖: 批A正向全弱但镜像一致为负(industry变化-0.67/mid水平-0.46 rn-1.51/short反转-0.41); 镜像反转+窗口扫描+双镜像混合腿",
+ "expressions": [
+  "multiply(rank(ts_av_diff(backfill_industry_momentum_score_float,10)),-1)",
+  "multiply(rank(ts_av_diff(backfill_industry_momentum_score_float,20)),-1)",
+  "multiply(rank(backfill_mid_term_momentum_score_float),-1)",
+  "multiply(rank(ts_av_diff(backfill_regional_momentum_rank_float,10)),-1)",
+  "multiply(rank(ts_av_diff(backfill_global_momentum_rank_float,10)),-1)",
+  "add(multiply(multiply(rank(ts_av_diff(backfill_industry_momentum_score_float,10)),-1),0.5),multiply(multiply(rank(backfill_mid_term_momentum_score_float),-1),0.5))",
+  "rank(ts_av_diff(backfill_short_term_momentum_score_float,5))",
+  "multiply(rank(d1_mid_term_momentum_score_float),-1)"
+ ]
+}

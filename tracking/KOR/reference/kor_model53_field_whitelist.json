@@ -1,0 +1,20 @@
+{
+ "dataset": "model53",
+ "region": "KOR",
+ "delay": 1,
+ "universe": "TOP600",
+ "note": "Creditworthiness Risk(Kamakura违约概率), 选零竞争JC7/JM5族 cov1.0; 短期pd_1_month JC7有user3/alpha27仍保留; multiplier1.7",
+ "fields": [
+  {"id": "annualized_pd_1_month_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "annualized_pd_3_month_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "annualized_pd_1_year_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "annualized_pd_2_year_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "annualized_pd_5_year_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "annualized_pd_10_year_jc7", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl53_jm5_1month", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl53_jm5_1year", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl53_jm5_2year", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl53_jm5_5year", "cov": 1.0, "type": "MATRIX"},
+  {"id": "mdl53_implied_spreads", "cov": 1.0, "type": "MATRIX"}
+ ]
+}

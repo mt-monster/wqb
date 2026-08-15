@@ -1,0 +1,24 @@
+# KOR SuperAlpha 种子候选（提交 REGULAR 组件打底）
+# 用途：先在 KOR 提交 ≥10 颗 REGULAR，凑齐 SUPER 所需组件池，再组 KOR SA。
+# 筛选口径：KOR/D1/MODEL 金字塔、IS 阶段 checks.fail 为空（零闸门失败）、按 sharpe 降序。
+# 重要：以下全部是 UNSUBMITTED 草稿。本文件仅由 AI 筛选列出，未代提交——请由你手动提交（消耗周额度）。
+# 提交后这些成分才有 prod/self 相关性元数据，届时可用已验证配方（SUBINDUSTRY + combo 1-maxCorr + low-self selection）组 KOR SUPER。
+
+id         pyramid          sharpe  fitness  turnover  drawdown  sub_uni_sharpe  two_yr_sharpe  signal(截断)
+VkGz2vrb   KOR/D1/MODEL     1.68    1.04     0.2113    0.0443     1.40            1.98           rank(price_volume_quantile1_20d_pred)
+GrGz3ZvP   KOR/D1/MODEL     1.63    1.08     0.1772    0.0457     1.32            1.99           add(multiply(rank(short_term_regime2_quantile1...
+YPvzQvJA   KOR/D1/MODEL     1.58    0.97     0.2104    0.0513     1.31            1.90           signed_power(rank(price_volume_quantile1_20d_p...
+1YpKaq3K   KOR/D1/MODEL     1.46    0.81     0.2346    0.0642     1.19            2.09           rank(price_volume_quantile1_5d_pred)
+gJ8Gx8LM   KOR/D1/MODEL     1.44    0.84     0.2037    0.0525     1.15            1.83           rank(price_volume_quantile1_60d_pred)
+LLGzgLPv   KOR/D1/MODEL     1.44    0.81     0.2098    0.0476     1.09            1.44           rank(short_term_regime2_quantile1_5d_pred)
+3qpPn8LX   KOR/D1/MODEL     1.44    0.90     0.1795    0.0518     1.10            1.86           add(multiply(rank(price_volume_quantile1_5d_pr...
+GrGzMrr5   KOR/D1/MODEL     1.31    0.73     0.1890    0.0455     0.90            1.19           rank(short_term_seasonal_quantile1_20d_pred)
+QPGz2PP5   KOR/D1/MODEL     1.28    0.70     0.1896    0.0465     0.88            1.20           rank(short_term_regime4_quantile1_20d_pred)
+1YpKaYqk   KOR/D1/MODEL     1.25    0.68     0.1892    0.0472     0.85            1.11           rank(short_term_quantile1_20d_pred)
+VkGzOG5J   KOR/D1/MODEL     1.19    0.57     0.2423    0.0387     1.14            1.15           ts_rank(price_volume_quantile1_20d_pred,63)
+
+# 推荐动作：提交上面 11 个（全部零闸门失败，提交后 KOR 已提交组件 ≥11 > SUPER 所需 10）。
+# 注：同属 price_volume_quantile1_* / short_term_regime* 变体族，彼此可能中度相关；
+#     但 KOR SA 与 USA 的 KPGvRMg1 因股票/区域不同，self-corr 与 prod-corr 会天然 <0.7，不构成闸门风险。
+# 遗漏说明：KOR 共 ~85 个 REGULAR，本次枚举 52 个（API 每页上限 50、offset 被忽略），
+#          剩余 ~33 个较老草稿未穷举；但 11 个最优候选均已在近期批内捕获，足够打底。

@@ -1,0 +1,578 @@
+{
+  "mdl177_2_5yearrelativevaluefactor_rel5ycfp": {
+    "type": "MATRIX",
+    "coverage": 0.8041,
+    "alphaCount": 106,
+    "userCount": 82
+  },
+  "mdl177_2_5yearrelativevaluefactor_rel5ydivp": {
+    "type": "MATRIX",
+    "coverage": 0.4966,
+    "alphaCount": 29,
+    "userCount": 26
+  },
+  "mdl177_2_deepvaluefactor_acqmul": {
+    "type": "MATRIX",
+    "coverage": 0.8055,
+    "alphaCount": 40,
+    "userCount": 29
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn2m": {
+    "type": "MATRIX",
+    "coverage": 0.5983,
+    "alphaCount": 9,
+    "userCount": 9
+  },
+  "mdl177_2_globaldevnorthamerica_v502_perg": {
+    "type": "MATRIX",
+    "coverage": 0.4861,
+    "alphaCount": 2,
+    "userCount": 2
+  },
+  "mdl177_2_deepvaluefactor_estep": {
+    "type": "MATRIX",
+    "coverage": 0.9722,
+    "alphaCount": 1069,
+    "userCount": 528
+  },
+  "mdl177_2_deepvaluefactor_indidivy": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 243,
+    "userCount": 122
+  },
+  "mdl177_2_earningsqualityfactor_uar": {
+    "type": "MATRIX",
+    "coverage": 0.8631,
+    "alphaCount": 171,
+    "userCount": 90
+  },
+  "mdl177_2_garpanalystmodel_qgp_roefcf": {
+    "type": "MATRIX",
+    "coverage": 0.9059,
+    "alphaCount": 423,
+    "userCount": 229
+  },
+  "mdl177_2_globaldevnorthamerica_v502_fc_cvfy2eps": {
+    "type": "MATRIX",
+    "coverage": 0.5672,
+    "alphaCount": 73,
+    "userCount": 64
+  },
+  "mdl177_2_globaldevnorthamerica_v502_fc_f12mepssev": {
+    "type": "MATRIX",
+    "coverage": 0.5937,
+    "alphaCount": 18,
+    "userCount": 14
+  },
+  "mdl177_2_globaldevnorthamerica_v502_fc_fcfp": {
+    "type": "MATRIX",
+    "coverage": 0.5852,
+    "alphaCount": 47,
+    "userCount": 38
+  },
+  "mdl177_2_deepvaluemodel_indidivy": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 189,
+    "userCount": 61
+  },
+  "mdl177_2_5yearrelativevaluefactor_rel5yep": {
+    "type": "MATRIX",
+    "coverage": 0.7823,
+    "alphaCount": 145,
+    "userCount": 63
+  },
+  "mdl177_2_earningmomentumfactor400_numrevq1": {
+    "type": "MATRIX",
+    "coverage": 0.9711,
+    "alphaCount": 268,
+    "userCount": 106
+  },
+  "mdl177_2_earningsqualityfactor_dpcapex": {
+    "type": "MATRIX",
+    "coverage": 0.9268,
+    "alphaCount": 305,
+    "userCount": 87
+  },
+  "mdl177_2_earningsqualityfactor_indrelrecd_": {
+    "type": "MATRIX",
+    "coverage": 0.5459,
+    "alphaCount": 28,
+    "userCount": 24
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn60m": {
+    "type": "MATRIX",
+    "coverage": 0.4952,
+    "alphaCount": 2,
+    "userCount": 2
+  },
+  "mdl177_2_deepvaluefactor_curep": {
+    "type": "MATRIX",
+    "coverage": 0.9442,
+    "alphaCount": 2219,
+    "userCount": 733
+  },
+  "mdl177_2_deepvaluemodel2_dv_currroe": {
+    "type": "MATRIX",
+    "coverage": 0.9948,
+    "alphaCount": 213,
+    "userCount": 96
+  },
+  "mdl177_2_earningmomentumfactor400_perg": {
+    "type": "MATRIX",
+    "coverage": 0.7188,
+    "alphaCount": 192,
+    "userCount": 82
+  },
+  "mdl177_2_globaldevnorthamerica_v502_flowratio": {
+    "type": "MATRIX",
+    "coverage": 0.483,
+    "alphaCount": 15,
+    "userCount": 10
+  },
+  "mdl177_2_deepvaluefactor_f12mepssev": {
+    "type": "MATRIX",
+    "coverage": 0.9626,
+    "alphaCount": 777,
+    "userCount": 331
+  },
+  "mdl177_2_earningmomentumfactor400_rev1q1": {
+    "type": "MATRIX",
+    "coverage": 0.9717,
+    "alphaCount": 242,
+    "userCount": 148
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgollev": {
+    "type": "MATRIX",
+    "coverage": 0.5774,
+    "alphaCount": 8,
+    "userCount": 7
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgopm": {
+    "type": "MATRIX",
+    "coverage": 0.5743,
+    "alphaCount": 6,
+    "userCount": 5
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgsgasale": {
+    "type": "MATRIX",
+    "coverage": 0.5372,
+    "alphaCount": 3,
+    "userCount": 3
+  },
+  "mdl177_2_sensitivityfactor400_chginvavgast": {
+    "type": "MATRIX",
+    "coverage": 0.9051,
+    "alphaCount": 617,
+    "userCount": 173
+  },
+  "mdl177_2_deepvaluefactor_pdy": {
+    "type": "MATRIX",
+    "coverage": 0.6913,
+    "alphaCount": 889,
+    "userCount": 536
+  },
+  "mdl177_2_garpmodel_gpm_composite": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 336,
+    "userCount": 125
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgvolpre4y": {
+    "type": "MATRIX",
+    "coverage": 0.5002,
+    "alphaCount": 16,
+    "userCount": 12
+  },
+  "mdl177_2_5yearrelativevaluefactor_rel5ycoreepsp": {
+    "type": "MATRIX",
+    "coverage": 0.791,
+    "alphaCount": 164,
+    "userCount": 70
+  },
+  "mdl177_2_5yearrelativevaluefactor_rel5yfwdep": {
+    "type": "MATRIX",
+    "coverage": 0.8515,
+    "alphaCount": 5624,
+    "userCount": 1651
+  },
+  "mdl177_2_5yearrelativevaluefactor_rel5yocfp": {
+    "type": "MATRIX",
+    "coverage": 0.7927,
+    "alphaCount": 214,
+    "userCount": 158
+  },
+  "mdl177_2_garpanalystmodel_qgp_relpegy": {
+    "type": "MATRIX",
+    "coverage": 0.6697,
+    "alphaCount": 109,
+    "userCount": 60
+  },
+  "mdl177_2_globaldevnorthamerica_v502_aqi": {
+    "type": "MATRIX",
+    "coverage": 0.4798,
+    "alphaCount": 29,
+    "userCount": 16
+  },
+  "mdl177_2_earningmomentumfactor400_fy1epsskew": {
+    "type": "MATRIX",
+    "coverage": 0.925,
+    "alphaCount": 63,
+    "userCount": 41
+  },
+  "mdl177_2_earningsqualityfactor_uaccl": {
+    "type": "MATRIX",
+    "coverage": 0.6053,
+    "alphaCount": 50,
+    "userCount": 39
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn18m": {
+    "type": "MATRIX",
+    "coverage": 0.5631,
+    "alphaCount": 28,
+    "userCount": 26
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgalpha12m": {
+    "type": "MATRIX",
+    "coverage": 0.5649,
+    "alphaCount": 6,
+    "userCount": 6
+  },
+  "mdl177_2_globaldevnorthamerica_v502_curindebitdap_": {
+    "type": "MATRIX",
+    "coverage": 0.5829,
+    "alphaCount": 11,
+    "userCount": 4
+  },
+  "mdl177_2_earningmomentumfactor400_qepsferr": {
+    "type": "MATRIX",
+    "coverage": 0.9074,
+    "alphaCount": 510,
+    "userCount": 252
+  },
+  "mdl177_2_earningsqualityfactor_uinv": {
+    "type": "MATRIX",
+    "coverage": 0.7656,
+    "alphaCount": 96,
+    "userCount": 36
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn1m": {
+    "type": "MATRIX",
+    "coverage": 0.5987,
+    "alphaCount": 5,
+    "userCount": 5
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn3m": {
+    "type": "MATRIX",
+    "coverage": 0.5969,
+    "alphaCount": 25,
+    "userCount": 22
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgis": {
+    "type": "MATRIX",
+    "coverage": 0.5279,
+    "alphaCount": 2,
+    "userCount": 2
+  },
+  "mdl177_2_globaldevnorthamerica_v502_chgnpm": {
+    "type": "MATRIX",
+    "coverage": 0.5865,
+    "alphaCount": 27,
+    "userCount": 11
+  },
+  "mdl177_2_globaldevnorthamerica_v502_fc_y2aepsg": {
+    "type": "MATRIX",
+    "coverage": 0.5964,
+    "alphaCount": 7,
+    "userCount": 3
+  },
+  "mdl177_2_globaldevnorthamerica_v502_fc_cvfy1eps": {
+    "type": "MATRIX",
+    "coverage": 0.5662,
+    "alphaCount": 36,
+    "userCount": 30
+  },
+  "mdl177_2_globaldevnorthamerica_v502_mktcappera": {
+    "type": "MATRIX",
+    "coverage": 0.5941,
+    "alphaCount": 41,
+    "userCount": 36
+  },
+  "mdl177_2_earningmomentumfactor400_lagegp": {
+    "type": "MATRIX",
+    "coverage": 0.797,
+    "alphaCount": 59,
+    "userCount": 30
+  },
+  "mdl177_2_globaldevnorthamerica_v502_ollev": {
+    "type": "MATRIX",
+    "coverage": 0.5781,
+    "alphaCount": 87,
+    "userCount": 38
+  },
+  "mdl177_2_globaldevnorthamerica_v502_rel5ybp": {
+    "type": "MATRIX",
+    "coverage": 0.56,
+    "alphaCount": 14,
+    "userCount": 8
+  },
+  "mdl177_2_earningsqualityfactor_chgsgasale": {
+    "type": "MATRIX",
+    "coverage": 0.8628,
+    "alphaCount": 67,
+    "userCount": 40
+  },
+  "mdl177_2_earningsqualityfactor_uap": {
+    "type": "MATRIX",
+    "coverage": 0.7347,
+    "alphaCount": 2142,
+    "userCount": 407
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn12m": {
+    "type": "MATRIX",
+    "coverage": 0.5738,
+    "alphaCount": 9,
+    "userCount": 6
+  },
+  "mdl177_2_globaldevnorthamerica_v502_divcov": {
+    "type": "MATRIX",
+    "coverage": 0.3509,
+    "alphaCount": 4,
+    "userCount": 4
+  },
+  "mdl177_2_globaldevnorthamerica_v502_actrtn24m": {
+    "type": "MATRIX",
+    "coverage": 0.5531,
+    "alphaCount": 12,
+    "userCount": 10
+  },
+  "top1000": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 10,
+    "userCount": 8
+  },
+  "top200": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 10,
+    "userCount": 4
+  },
+  "top2000": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 2,
+    "userCount": 1
+  },
+  "top3000": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 56,
+    "userCount": 19
+  },
+  "top500": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 39,
+    "userCount": 13
+  },
+  "topsp500": {
+    "type": "UNIVERSE",
+    "coverage": 1.0,
+    "alphaCount": 4,
+    "userCount": 4
+  },
+  "rsk62_factor_1_100_val58": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 25,
+    "userCount": 13
+  },
+  "rsk62_industry_5_100_val70": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 56,
+    "userCount": 15
+  },
+  "mdl10_isr": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 673,
+    "userCount": 129
+  },
+  "rsk62_factor_1_100_val66": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 11,
+    "userCount": 7
+  },
+  "rsk62_factor_1_100_val85": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 18,
+    "userCount": 8
+  },
+  "rsk62_industry_5_100_val85": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 115,
+    "userCount": 13
+  },
+  "rsk62_factor_1_100_val28": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 28,
+    "userCount": 15
+  },
+  "rsk62_factor_1_100_val46": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 23,
+    "userCount": 13
+  },
+  "rsk62_retseries_factor_1_100_val16": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 13,
+    "userCount": 9
+  },
+  "rsk62_factor_1_100_val56": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 13,
+    "userCount": 11
+  },
+  "rsk62_retseries_factor_1_100_val18": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 20,
+    "userCount": 15
+  },
+  "rsk62_retseries_factor_1_100_val21": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 42,
+    "userCount": 15
+  },
+  "rsk62_industry_5_100_val74": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 15,
+    "userCount": 8
+  },
+  "rsk62_factor_1_100_val44": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 11,
+    "userCount": 9
+  },
+  "rsk62_factor_1_100_val71": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 30,
+    "userCount": 19
+  },
+  "rsk62_industry_5_100_val71": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 30,
+    "userCount": 9
+  },
+  "rsk62_factor_1_100_val36": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 20,
+    "userCount": 12
+  },
+  "rsk62_factor_1_100_val49": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 31,
+    "userCount": 14
+  },
+  "rsk62_factor_1_100_val30": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 41,
+    "userCount": 24
+  },
+  "rsk62_factor_1_100_val90": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 5,
+    "userCount": 4
+  },
+  "rsk62_factor_1_100_val25": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 55,
+    "userCount": 28
+  },
+  "rsk62_factor_1_100_val31": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 29,
+    "userCount": 19
+  },
+  "rsk62_factor_1_100_val80": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 9,
+    "userCount": 8
+  },
+  "rsk62_factor_1_100_val53": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 67,
+    "userCount": 16
+  },
+  "rsk62_factor_1_100_val78": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 117,
+    "userCount": 15
+  },
+  "rsk62_factor_1_100_val100": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 167,
+    "userCount": 101
+  },
+  "rsk62_factor_1_100_val95": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 26,
+    "userCount": 12
+  },
+  "rsk62_industry_5_100_val79": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 106,
+    "userCount": 14
+  },
+  "rsk62_factor_1_100_val42": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 229,
+    "userCount": 13
+  },
+  "rsk62_factor_1_100_val34": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 40,
+    "userCount": 29
+  },
+  "rsk62_industry_5_100_val34": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 10,
+    "userCount": 7
+  },
+  "rsk62_factor_1_100_val40": {
+    "type": "MATRIX",
+    "coverage": 1.0,
+    "alphaCount": 195,
+    "userCount": 17
+  }
+}

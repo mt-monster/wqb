@@ -1,0 +1,17 @@
+{
+  "batch": "Y",
+  "wave": 17,
+  "setting": "SECTOR d4 t0.06",
+  "dataset": "analyst_earnings_ibes",
+  "rationale": "围绕批W最强苗头QPGg2okg ts_av_diff(120d动量,22) sh0.81/2y0.76/dd8.9%放大: 窗口扫描66/44/ts_decay平滑/ts_ir信噪比族/250d慢动量同算子/vwap2价格趋势/异源组合av_diff×0.6+close-vwap差×0.4/dlr2复证",
+  "expressions": [
+    "rank(ts_av_diff(one_twenty_day_total_return_dlr1,66))",
+    "rank(ts_av_diff(one_twenty_day_total_return_dlr1,44))",
+    "ts_decay_linear(rank(ts_av_diff(one_twenty_day_total_return_dlr1,22)),5)",
+    "rank(ts_ir(one_twenty_day_total_return_dlr1,22))",
+    "rank(ts_av_diff(two_fifty_day_total_return_dlr1,22))",
+    "add(multiply(rank(ts_av_diff(one_twenty_day_total_return_dlr1,22)),0.6),multiply(subtract(rank(volume_weighted_avg_price_dlr1),rank(closing_price_dlr1)),0.4))",
+    "rank(ts_av_diff(volume_weighted_avg_price_dlr2,22))",
+    "rank(ts_av_diff(one_twenty_day_total_return_dlr2,22))"
+  ]
+}

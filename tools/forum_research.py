@@ -185,8 +185,8 @@ def main():
     ap.add_argument("--max-pages", type=int, default=2)
     ap.add_argument("--resolve-top", type=int, default=34)
     ap.add_argument("--read-top", type=int, default=22)
-    ap.add_argument("--out", default="tracking/forum_glb_search.json")
-    ap.add_argument("--posts-out", default="tracking/forum_glb_posts.json")
+    ap.add_argument("--out", default="tracking/FORUM/forum_glb_search.json")
+    ap.add_argument("--posts-out", default="tracking/FORUM/forum_glb_posts.json")
     args = ap.parse_args()
 
     env_path = args.env or str(Path(__file__).resolve().parent.parent / "world-quant-brain-mcp" / ".env")

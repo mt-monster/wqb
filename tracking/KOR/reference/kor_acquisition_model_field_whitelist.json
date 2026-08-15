@@ -1,0 +1,89 @@
+{
+  "dataset": "acquisition_model",
+  "dataset_name": "Acquisition Likelihood Model (percentile ranks)",
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "data_type": "VECTOR",
+  "pyramid": "KOR/D1/OTHER (pm1.7)",
+  "created_at": "2026-08-15",
+  "source": "wave21_dataset_switch: model219 fitness墙判死后health_check复扫, cov0.9937/15字段/alphas<=4零竞争, 事件型并购概率+因子分位数",
+  "risk_note": "分位数字段bounded 0-100慢更新: tvR风险, decay4压tvr; VECTOR型须防MATRIX假设",
+  "fields": [
+    {
+      "id": "country_percentile_acquisition_likelihood",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_company_size_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_credit_quality_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_fundamental_factor_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_percentile_acquisition_likelihood",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_text_factor_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "global_valuation_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "industry_percentile_acquisition_likelihood",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_company_size_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_credit_quality_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_fundamental_factor_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_percentile_acquisition_likelihood",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_text_factor_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "region_valuation_percentile_rank",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    },
+    {
+      "id": "sector_percentile_acquisition_likelihood",
+      "coverage": 0.9937,
+      "family": "percentile_rank"
+    }
+  ]
+}
