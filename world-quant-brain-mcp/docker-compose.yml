@@ -16,6 +16,7 @@ services:
       - "8876:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - MCP_TRANSPORT=streamable-http
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - MCP_CONFIG_FILE=/app/config/user_config.json

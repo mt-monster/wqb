@@ -232,14 +232,16 @@ def field_inspect_to_expr(field_name, fdata, neutralization='subindustry', decay
     expressions = []
 
     # --- 优先级 1: 低覆盖 → ts_backfill 必须包 ---
+    # 注意: ts_backfill 第三参 k 必须为正整数(默认1), k=0 会报
+    # "invalid value 0 for attribute lookback" 且连坐整批 CANCELLED (2026-08-16 实证)
     if cr_mean < 0.4:
         expressions.append({
-            'expr': f'ts_backfill({F}, {min_w}, 0)',
+            'expr': f'ts_backfill({F}, {min_w})',
             'rationale': f'覆盖率{cr_mean:.2f}<0.4，必须 ts_backfill 否则 CONCENTRATED_WEIGHT',
             'layers': ['ts_backfill', 'field'],
             'priority': 1,
         })
-        F_inner = f'ts_backfill({F}, {min_w}, 0)'
+        F_inner = f'ts_backfill({F}, {min_w})'
     else:
         F_inner = F
 

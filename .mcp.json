@@ -1,16 +1,3 @@
 {
-  "mcpServers": {
-    "wqb-mcp": {
-      "type": "stdio",
-      "command": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe",
-      "args": [
-        "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
-      ],
-      "cwd": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp",
-      "env": {
-        "MCP_TRANSPORT": "stdio"
-      },
-      "timeoutMs": 120000
-    }
-  }
+  "mcpServers": {}
 }

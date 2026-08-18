@@ -296,12 +296,20 @@ async def _verify_fields_exist(
     universe: str = "TOP3000",
     delay: int = 1,
     client=None,
+    max_concurrency: int = 6,
+    total_timeout: float = 120.0,
+    cache_ttl: int = 86400,
 ) -> Dict[str, Any]:
     """Confirm candidate field ids via targeted platform search.
 
     Never treats "missing from an unscoped/paginated dump" as unknown.
     A field is unknown only when a targeted lookup succeeds and the exact
     id is absent. Lookup errors / incomplete payloads fail open (skip).
+
+    2026-08-16 修复: 并发执行字段验证 + 总超时控制，避免串行调用导致
+    validate_expressions 超时（每个 API 调用默认 30s，字段多时累计超时）。
+    2026-08-16 优化: Redis 缓存字段验证结果（TTL 24h），避免重复查询
+    同一字段（region/universe/delay 组合下字段存在性基本不变）。
     """
     client = client or brain_client
     ordered = list(dict.fromkeys(candidates))
@@ -318,22 +326,90 @@ async def _verify_fields_exist(
             "lookup_errors": lookup_errors,
         }
 
-    for field_id in ordered:
-        try:
-            payload = await client.get_datafields(
-                instrument_type=instrument_type, region=region, delay=delay,
-                universe=universe, filter_sharpe=False, data_type="",
-                search=field_id,
-            )
-            if not isinstance(payload, dict) or "error" in payload or "results" not in payload:
-                lookup_errors.append(f"{field_id}: incomplete lookup payload")
-                continue
-            if field_id in _ids_from_datafields_payload(payload):
-                known.append(field_id)
-            else:
-                unknown.append(field_id)
-        except Exception as exc:
-            lookup_errors.append(f"{field_id}: {exc}")
+    # --- Redis cache: check which fields are already verified ---
+    cache_prefix = f"field_exists:{instrument_type}:{region}:{universe}:{delay}"
+    uncached: List[str] = []
+    redis_cli = getattr(client, 'redis_client', None)
+    if redis_cli:
+        for fid in ordered:
+            try:
+                cached_val = redis_cli.get(f"{cache_prefix}:{fid}")
+                if cached_val is not None:
+                    val = cached_val.decode() if isinstance(cached_val, bytes) else str(cached_val)
+                    if val == "1":
+                        known.append(fid)
+                    elif val == "0":
+                        unknown.append(fid)
+                    else:
+                        uncached.append(fid)
+                else:
+                    uncached.append(fid)
+            except Exception:
+                uncached.append(fid)
+    else:
+        uncached = list(ordered)
+
+    if not uncached:
+        return {
+            "known": known,
+            "unknown": unknown,
+            "skipped": False,
+            "warning": None,
+            "lookup_errors": lookup_errors,
+            "cache_hits": len(ordered) - len(uncached),
+        }
+
+    semaphore = asyncio.Semaphore(max_concurrency)
+    start_time = time.time()
+
+    async def _check_one(field_id: str) -> Tuple[str, Optional[str], Optional[str]]:
+        """返回 (field_id, status, error_msg)。status: 'known'/'unknown'/'error'"""
+        async with semaphore:
+            # 检查总超时
+            if time.time() - start_time > total_timeout:
+                return (field_id, "error", f"total timeout {total_timeout}s exceeded")
+            try:
+                payload = await client.get_datafields(
+                    instrument_type=instrument_type, region=region, delay=delay,
+                    universe=universe, filter_sharpe=False, data_type="",
+                    search=field_id,
+                )
+                if not isinstance(payload, dict) or "error" in payload or "results" not in payload:
+                    return (field_id, "error", "incomplete lookup payload")
+                if field_id in _ids_from_datafields_payload(payload):
+                    # Cache the positive result
+                    if redis_cli:
+                        try:
+                            redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "1")
+                        except Exception:
+                            pass
+                    return (field_id, "known", None)
+                else:
+                    # Cache the negative result
+                    if redis_cli:
+                        try:
+                            redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "0")
+                        except Exception:
+                            pass
+                    return (field_id, "unknown", None)
+            except Exception as exc:
+                return (field_id, "error", str(exc))
+
+    # 并发执行所有未缓存字段验证
+    tasks = [_check_one(fid) for fid in uncached]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    for result in results:
+        if isinstance(result, Exception):
+            lookup_errors.append(f"gather error: {result}")
+            continue
+        field_id, status, error_msg = result
+        if status == "known":
+            known.append(field_id)
+        elif status == "unknown":
+            unknown.append(field_id)
+        else:
+            lookup_errors.append(f"{field_id}: {error_msg}")
 
     skipped = bool(lookup_errors) and not unknown
     warning = None
@@ -346,6 +422,7 @@ async def _verify_fields_exist(
         "skipped": skipped,
         "warning": warning,
         "lookup_errors": lookup_errors,
+        "cache_hits": len(ordered) - len(uncached),
     }
 
 @mcp.tool()

@@ -169,9 +169,10 @@
         }
       },
       "best_params": {
-        "neutralization": "SUBINDUSTRY",
+        "neutralization": "SECTOR",
         "decay": 5,
-        "truncation": 0.08
+        "truncation": 0.08,
+        "_neut_note": "KOR 单 alpha 用 SECTOR（WebDataScope 徽章实测 0.562）。SUBINDUSTRY 对 KOR 单 alpha 无效（kqPO2N0O 实证：prod-corr 0.7668→0.7654 不变、sharpe 1.68→1.45 跌破闸门）；仅 SA 组合层有效。"
       }
     },
     "ASI/MINVOL1M/D1": {
@@ -415,7 +416,7 @@
       "MEA": { "neutralization": "SUBINDUSTRY", "decay": 5, "truncation": 0.08 },
       "GBR": { "neutralization": "SUBINDUSTRY", "decay": 4, "truncation": 0.08 },
       "GLB": { "neutralization": "COUNTRY", "decay": 5, "truncation": 0.08 },
-      "KOR": { "neutralization": "SUBINDUSTRY", "decay": 5, "truncation": 0.08 },
+      "KOR": { "neutralization": "SECTOR", "decay": 5, "truncation": 0.08 },
       "ASI": { "neutralization": "MARKET", "decay": 5, "truncation": 0.08 }
     },
     "by_universe": {

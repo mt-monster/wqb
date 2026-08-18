@@ -4,6 +4,7 @@
 工具模块 (tools_*.py) 统一 `from mcp_core import mcp, brain_client, ...`。
 """
 import json, re, os, sys, logging
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any, Union
 
 from mcp.server.fastmcp import FastMCP, Context
@@ -55,7 +56,7 @@ async def health_check(context: Context):
     return JSONResponse({
         "status": "healthy",
         "service": "brain-platform-mcp",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "redis_connected": brain_client.redis_client is not None
     })
 

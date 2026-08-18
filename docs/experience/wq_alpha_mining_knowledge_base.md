@@ -35,7 +35,7 @@
 
 ### 1.1 流程纪律
 
-1. **体检先行**：开战役前必跑 `tools/eur_field_coverage.py` 或 `dataset_health_check.py`，三条硬门槛一票否决。
+1. **体检先行**：开战役前必跑 `get_datasets`（MCP，直接读 coverage/fieldCount/alphaCount，比逐字段快约 2 个数量级）或 skill 内 `dataset_health_check.py`（`tools/eur_field_coverage.py` 已不存在，勿依赖）。
 2. **整轮验证**：每轮超过 10 种不同结构后才考虑转向，不可 1-2 个字段就下结论。
 3. **断点续跑**：所有回测脚本必须支持 checkpoint/resume，`V<NN>_FRESH=1` 强制全新。
 4. **小批探测**：不确定算子隔离到独立小批次（避免级联 CANCEL）。
@@ -256,10 +256,12 @@ alpha 通过 IS 闸门?
    Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
    Select CommandLine, ThreadCount, WorkingSetSize, UserModeTime, CreationDate
    ```
-2. 按命令行关键词分类：SCAN / MCP-SVC / WATCHDOG / EDITOR / OTHER。
+2. **按行为签名（CPU / 端口 / 连接）分类，而非文件名**：SVC-HOST（监听端口、CPU≈0、零日志＝服务端回测宿主，非僵尸）、SCAN/MINING（活跃出站 API 连接）、DATA-FETCH/WHITELIST（低 CPU + 出站连接 + `MAX_RUNTIME` 自退＝数据拉取辅助进程，非回测）、EDITOR、OTHER。
 3. **关键陷阱**：
-   - 只用 `scan_v*` 过滤会漏掉非标准命名任务（如 `tabbit_option9.py`、`glb_pipeline.py`）。
+   - 只用 `scan_v*` 过滤会漏掉非标准命名任务（如 `tabbit_option9.py`）。
    - `*_progress_*.log` 只是 scan_script 本地产物，**绝不能作为任务发现入口**。
+   - **日志-less 战役**（如 KOR 0 个 `.log`）进度在 state JSON / metrics cache / gate cache / ledger，读结构化产物而非日志。
+   - 多 IDE（WorkBuddy / QoderCN）各拉独立 MCP 实例属正常冗余，非僵尸。
    - MCP-SVC 是服务端回测宿主，其服务端任务须到 WQ BRAIN 控制台查看。
 4. 对真正挖掘任务报：PID、启动时间、线程数、内存、累计 CPU 时间。
 
@@ -316,14 +318,14 @@ BRAIN Basic-Auth(POST /authentication) → JWT cookie
 
 | 工具 | 路径 | 用途 | 运行环境 |
 |---|---|---|---|
-| eur_field_coverage.py | `tools/` | 数据集体检（MCP+直连双通道） | MCP .venv |
+| eur_field_coverage.py | `tools/` | ⚠️ **已不存在**（未随项目迁移）；体检改走 `get_datasets`(MCP) 或 skill 内 `dataset_health_check.py` | — |
 | dataset_health_check.py | skill 内 | 数据集体检（随 skill 分发） | MCP .venv |
 | forum_research.py | `tools/` | 论坛直连研究 | MCP .venv |
 | fetch_all_universes.py | `tools/` | 全区域合法universe拉取固化 | MCP .venv |
 | mcp_py | `tools/` | MCP 调用封装(urllib版) | MCP .venv |
-| glb_batch_submit.py | `deliverables/tools/` | 批量提交+闸门判定 | MCP .venv |
-| glb_pipeline.py | `glb_alpha_machine/` | GLB 多阶段挖掘流水线 | MCP .venv |
-| mine_eur_mlfactor.py | `tools/` | EUR ml_factor_proj 批量仿真 | MCP .venv |
+| glb_batch_submit.py | `deliverables/tools/` | ⚠️ **已不存在**（deliverables/ 目录缺失）；提交探测改走 MCP `create_multi_simulation`(validate_fields=false)+`submit_alpha` | — |
+| glb_pipeline.py | `glb_alpha_machine/` | ⚠️ **未实现**（目录不存在）；heuristic_engine 未注入实际挖掘脚本 | — |
+| mine_eur_mlfactor.py | `tools/` | ⚠️ **已不存在**；EUR ml_factor_proj 仿真由 `world-quant-brain-mcp` 工具或 `mine_core.py` 承接 | — |
 | webdata_quality.py | `tools/` | WebData 离线包质量分析 | MCP .venv(含 msgpack) |
 
 > MCP .venv 路径：`D:\coding\traeCN_project\wqb\world-quant-brain-mcp\.venv\Scripts\python.exe`（Python 3.13.8，42 包）

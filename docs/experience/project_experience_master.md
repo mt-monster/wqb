@@ -134,7 +134,7 @@
 | winsorize | `winsorize(x, std=4)` | 有界字段禁用 |
 
 ### 规则 4：禁用/幽灵算子
-- 平台不存在：ts_entropy / ts_percentage / ts_skewness / ts_median 等 17 个（详见 docs/README.md 幽灵算子清单）
+- 平台不存在：ts_entropy / ts_percentage / ts_skewness / ts_median 等 17 个（详见 docs/README.md 幽灵算子清单 / docs/reference/operators_notes.md）；**毒模式 / 幽灵算子以 `platform_constraints.json` 为单一事实源**，定期用 `get_operators` 刷新。
 - 不要用 `hump`；不要用 `ts_regression(...).residual`
 
 ### 规则 5：提交流程防御
@@ -201,6 +201,40 @@
 | ts_scale/ts_product/ts_kurtosis/ts_returns/ts_corr/ts_arg_max | ✗ 无效 | 均 <1.0 |
 | normalize/group_zscore/group_std_dev/log/bucket | ✗ 弱 | — |
 
+### 3.7 跨数据集混合放大策略（2026-08-16 固化）
+
+**定位**：不是独立挖掘路线，而是主回测流程中 Evidence Review → Enhance 阶段的一个**证据门控分支**。当单数据集信号进入逼近区（sharpe 0.8–1.5）且同数据集变体已穷尽时，自动尝试与互补数据集成分混合放大。
+
+**触发条件**（三条件同时满足）：
+1. 单数据集信号 sharpe 0.8–1.5，且至少一个维度通过（tv ✅ 或 2y ✅ 或 fit ✅）
+2. 信号有清晰经济学意义，可被另一数据集的维度确认/过滤
+3. 同数据集变体已穷尽（≥3 次结构性尝试：decay/窗口/骨架/中性化）
+
+**混合构造方法**：
+- **加法（rank-sum，首选）**：`add(rank(signal_A), rank(signal_B))` — 更稳健，sharpe 随成分数单调提升
+- **乘法（rank-product）**：`multiply(rank(signal_A), rank(signal_B))` — 更锐利但 margin 脆弱
+- 外包装：`group_zscore(..., industry)` 或 `group_zscore(..., subindustry)`
+- lint 门禁：`expr_lint.py --max-datasets N`（默认 2，用户授权可至 5）
+
+**互补数据集选择矩阵**：
+| 基础信号类型 | 互补维度 | 示例 |
+|---|---|---|
+| 情绪/动量 | 基本面（EPS 修正/估值）或微结构（dark/lit、impact-spread） | si3 + analyst44 |
+| 技术评级 | 做空兴趣、机构持仓、分析师修正 | macro38 + si3 + inst6 |
+| 微结构 | 情绪、基本面 | obim + macro38 |
+
+**实证结论**（USA 战役 2026-08-16，72 条混合回测）：
+- 加法混合 sharpe 单调提升：2ds 1.13 → 4ds 1.21 → 5ds 1.27（每加一个成分 +0.06~0.08）
+- 乘法混合更锐但 margin 结构性天花板（0.0–0.7bp，与数据集数量无关）
+- **margin 是数据集属性，不是混合属性**——混合不能修复 margin
+- 最优混合数 3–5 个数据集（超过 5 个边际 sharpe 增益 < 复杂度成本）
+- 混合表达式 tv 通常达标（18–21%），因多成分分散了换手
+
+**混合不是**：
+- 强单数据集信号的替代品（垃圾 + 垃圾 = 垃圾）
+- margin 修复手段（margin 是数据集固有属性）
+- 首选策略（先穷尽单数据集变体）
+
 ---
 
 ## 四、提交实战经验
@@ -222,7 +256,7 @@
 ### 4.3 提交探测策略
 
 - 提交探测是零成本（硬闸失败不消耗周额度），但浪费时间。
-- 用 `glb_batch_submit.py` 先小批量探针（5个多样化样本）确认 prodCorr 再决定是否全量。
+- 提交探测用 MCP `create_multi_simulation`（`validate_fields=false`）+ `submit_alpha`：先小批量（5 个多样化样本：不同前缀 × universe × neutralization）探针确认 prodCorr 再决定是否全量。`glb_batch_submit.py` 未随项目迁移，勿依赖该路径。
 - 探针选择：不同前缀 × 不同 universe × 不同 neutralization，覆盖信号族多样性。
 
 ---
@@ -275,8 +309,8 @@
 
 - **第一视角必须是"机器级全量 Python 进程枚举"**，日志只作明细补充。
 - 用 PowerShell `Get-CimInstance Win32_Process -Filter "Name='python.exe'"` 拉全部进程。
-- 分类：SCAN（scan_v*）、MCP-SVC（platform_functions.py 等，是服务端回测宿主）、WATCHDOG/TRACKER、EDITOR、OTHER（非标准命名如 tabbit_option9.py）。
-- **关键陷阱**：只用 `scan_v*` 过滤会漏掉非标准命名的挖掘任务；`*_progress_*.log` 绝不能作为任务发现入口。
+- **分类按行为签名（CPU / 端口 / 连接），而非文件名**：SVC-HOST（监听端口、CPU≈0、零日志＝服务端回测宿主，非僵尸）、SCAN/MINING（活跃出站 API 连接）、DATA-FETCH/WHITELIST（低 CPU + 出站连接 + `MAX_RUNTIME` 自退＝数据拉取辅助进程，非回测）、EDITOR、OTHER。
+- **关键陷阱**：① 只用 `scan_v*` 过滤会漏非标准命名任务（如 `tabbit_option9.py`）；② `*_progress_*.log` 绝不能作为任务发现入口；③ **日志-less 战役**（如 KOR 0 个 `.log`）进度在 state JSON / metrics cache / gate cache / ledger，读结构化产物而非日志；④ 多 IDE（WorkBuddy / QoderCN）各拉独立 MCP 实例属正常冗余，非僵尸；⑤ MCP-SVC 承载的服务端仿真本机不可见，须到 WQ BRAIN 控制台查看。
 
 ---
 
@@ -353,6 +387,7 @@
 | 类别 | 路径 | 说明 |
 |---|---|---|
 | 经验文档 | `docs/project_experience_master.md` | 本文档 |
+| 风格多样性评估 | `docs/experience/style_diversity_evaluation_framework.md` | 五维多样性评估模型与流程 |
 | 知识沉淀 | `docs/wq_alpha_mining_knowledge_base.md` | 可复用挖掘方法知识库 |
 | 算子笔记 | `docs/operators_notes.md` | 算子速查 |
 | 项目结构 | `docs/project_structure_analysis.md` | 目录结构分析 |
@@ -364,3 +399,49 @@
 | 模板库 | `reports/alpha_templates_forum_2026-08-05.md` | 14个论坛模板 |
 | Skills 审计 | `reports/skills_audit_2026-08-05.md` | 13个 skill 盘点 |
 | 归档区 | `archive/2026-08-08/` | 清理出的重复/废弃文件 |
+
+---
+
+## 十一、并行回测填槽模式（2026-08-16 固化，每次挖掘必须执行）
+
+**实证结论**：平台并行回测槽位至少 5 个（5 个 multisim 同时提交全部被接受且约 90 秒内同步 COMPLETE）。
+
+**标准作业流程（SOP）**：
+0. **台账同步门（执行层硬门）**：提交新波前先跑 `python tools/check_ledger_sync.py --region <区域>`——比对 `runs/` 最新批次字母 vs `WAVE_LEDGER.md` 已登记批次，台账滞后则 exit 1 阻断提交（文字 SOP 拦不住散件惯性，此为执行层拦截，2026-08-16 首跑即拦获第三次断档批 RR）。时序规则：创建批次文件时同步登记台账批次表（标在飞，multisim id 提交后回填），回收后补结论。
+1. **提交前门禁**：每批表达式先过 `python tools/expr_lint.py --file <文件> --scope <区域/池/延迟>` 四重门禁（算子签名/字段白名单+coverage/单位语义），杜绝批内 ERROR 连坐。
+2. **N 批同提**：每轮用 `create_multi_simulation`（`validate_fields=false`、异步模式）同时提交 5 批 × 8 条，禁止串行"提交→等完→再提"。
+3. **统一轮询**：`lookINTO_SimError_message` 批量查 multisim 状态，完成后取 children → alpha id → `get_user_alphas` 一次性拉指标。
+4. **写波结论（台账，强制阻断）**：每波回收后追加一节到 `tracking/<REGION>/WAVE_LEDGER.md`（批次表/闸门结论/结构性发现/判死证据/多样性快照），同步更新 `ledger.json`；台账唯一写入入口是这两个文件，禁止用 `runs/` 散件 txt 替代（USA 波3-6 曾因此断档，已回填）；未写台账不得提交下一波。每 10 波做一次全量多样性评估独立成章。
+5. **即收即补**：任一批 COMPLETE 立即闸门筛选，空出的槽位当轮补新批，保持 5 槽常满。
+6. **台账驱动选波（强制输入）**：下一波设计前先读 `WAVE_LEDGER.md`「下一波决策」节与 `ledger.json` 判死/饱和骨架清单，禁止凭对话记忆选波或重发已判死数据集。
+7. **批间差异化**：同波 5 批覆盖不同数据集/字段族/decay/中性化配置，以台账多样性快照的补盲项为准，避免重复验证同一假设。
+
+**台账闭环**：`tracking/USA/WAVE_LEDGER.md`（人读结论层，2026-08-16 建立，已回填波1/波2）+ `tracking/USA/ledger.json`（机器伴生：判死清单/骨架登记/最佳候选/wave directives）。价值：回测结论不再只存于对话上下文，可供用户阶段查阅，也是下一波的强制输入。
+
+**效果基线**：串行模式槽位利用率约 20%（1/5 槽）；填槽模式单轮吞吐 ×5。USA 战役波 1（5 批 40 条）约 2 分钟完成全部回收。
+
+**注意**：提交配额（48h/4）与回测并行槽位是两个独立机制；平台无槽位查询 API，如需复核上限用"多批同提观察同步完成"实证。
+
+
+---
+
+## 附录C: option8 波动率族 PROD 结构性墙实证 (2026-08-16, USA战役波3-4)
+
+**结论**: put/call IV 比率信号族 (divide(implied_volatility_put_N, implied_volatility_call_N)) 在 USA/TOP3000 为结构性拥挤, PROD 相关性 0.83-0.91, 与 delay/中性化/骨架/decay 无关, 不可提交。
+
+**优化器覆盖证据 (判死前已穷尽)**:
+| 维度 | 变体 | PROD |
+|---|---|---|
+| 骨架 group_zscore D1 | 6XpL2qjP (2.19) | 0.8299 |
+| 骨架 signed_power D1 | 3qpv26VZ (2.16) | ~0.85 |
+| 骨架 group_rank D0 | MPGNNO56 (2.17) | 0.8688 |
+| 骨架 ts_decay_linear D0 | ZYEvv6ex (2.02) | 0.8554 |
+| 复合 pc20+pc30/pc180 D1 | gJ8VVAPe (2.17) / RRmww3ad (1.86) | 0.8329 / 0.8611 |
+| D0 低竞争区 (userCount 11-744, D1的1/50) | 2rpooMZ5 (2.19 D0冠军) | 0.8648 |
+| tenor 错位 pc20/pc360 等 | 全灭 sharpe<1.4 | - |
+| ts_zscore/ts_rank 时序变形 | 全灭 sharpe<0.9 | - |
+| shortinterest3 max_loan_rate | 3qpvJwVN (1.31) | 0.957 |
+
+**同族实证无效方向**: 低波异象方向反转、IV-RV spread (implied minus historical)、skew 字段族、hump(0.01) 包裹。
+
+**可复用教训**: 数值闸门 (sharpe/fitness/2y/margin/RN) 全过的信号族若 PROD 普遍 >0.8, 先跑三层优化器 (参数/字段族/骨架+delay低竞争区), 全部超标即可判结构性墙, 立即转向未点亮金字塔的新风格数据集, 不要继续耗回测额度。情绪/事件类风格与波动率相对价值风格天然低相关, 是标准转向目标。

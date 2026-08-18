@@ -2,6 +2,8 @@
 .env
 **/.env
 **/config.json
+# reasonix.toml 历史上记录了含凭据的 Bash 命令，禁止追踪
+reasonix.toml
 
 # ===== Python =====
 .venv/

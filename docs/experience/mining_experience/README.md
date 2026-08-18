@@ -16,9 +16,11 @@ mining_experience/
 └── README.md               本文档
 
 glb_alpha_machine/
-├── gbr_pipeline.py         Stage1/2/3 经验注入
-└── glb_pipeline.py         Stage2/3 经验注入
+├── gbr_pipeline.py         Stage1/2/3 经验注入（⚠️ 未实现：glb_alpha_machine/ 目录不存在）
+└── glb_pipeline.py         Stage2/3 经验注入（⚠️ 未实现）
 ```
+
+> **状态说明**：`glb_alpha_machine/` 两条流水线当前均未随项目落地，heuristic_engine 实际未注入任何挖掘脚本；rules.json 的提取规则仅作**离线表达式评分 / 候选生成参考**，不直接驱动线上回测。
 
 ## 核心文件
 
@@ -128,7 +130,9 @@ python gen_heuristic_expressions.py --sa-recipe
 | MEA | SUBINDUSTRY | 5 | 0.08 |
 | GBR | SUBINDUSTRY | 4 | 0.08 |
 | GLB | COUNTRY | 5 | 0.08 |
-| KOR | SUBINDUSTRY | 5 | 0.08 |
+| KOR | SECTOR | 5 | 0.08 |
+
+> **注意**：KOR 单 alpha 用 **SECTOR**（WebDataScope 徽章实测 0.562）。SUBINDUSTRY 对 KOR 单 alpha 无效（kqPO2N0O 实证：prod-corr 0.7668→0.7654 不变、sharpe 1.68→1.45 跌破闸门）；仅 SuperAlpha 组合层有效。rules.json 曾误写 KOR=SUBINDUSTRY，已修正。
 | ASI | MARKET | 5 | 0.08 |
 
 ### 数据源符号方向

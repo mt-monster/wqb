@@ -5686,5 +5686,815 @@
    "result": "★突破★ pv_weekly_monthqtr_60d_return_regression sh1.25/fit0.93/2y2.04/tvr15.38%/mg11.09bp 仅LOW_SHARPE; funda_regime_120d sh0.96次之; analyst族sh0.83-0.87; 5d族近零",
    "next": "v2主攻pvweekly族+算子杠杆: 1wuKaba7S55Ba2BafpiNbBH"
   }
+ },
+ "wave29_p47v2_verdict": {
+  "P47v2_gsm": {
+   "multisim": "1wuKaba7S55Ba2BafpiNbBH",
+   "status": "COMPLETE",
+   "champion": "XgoxLn1z rank(weekly_pricevol_regime_r5_regression_pred) sh1.90/fit1.55/2y2.43/tvr18.42%/mg13.31bp/RN-sh1.11/ra0/CW全过",
+   "runner_up": "QPGAjVE5 rank(pv_weekly_cal_20d_return_regression) sh1.53/fit1.19/2y2.23",
+   "prod_wall": "★PROD墙★ XgoxLn1z PROD0.8607, QPGAjVE5 PROD0.9208, 双双不可提交",
+   "mutual_corr": "与WjAxxZVk互相关0.4535/0.486(超0.4标准), 两冠互相关0.8144",
+   "verdict": "weekly价量模型回归预测族PROD饱和(价格信息被生产alpha吃透); v3转攻prob/confscore族(信号结构不同): 2T2U3bdHj5h8ausQGbGQXZ",
+   "candidate_pool": "XgoxLn1z保留(结构极优, 待新杠杆或PROD池变化)"
+  }
+ },
+ "wave29_p47v3_error": {
+  "P47v3_gsm": {
+   "multisim": "2T2U3bdHj5h8ausQGbGQXZ",
+   "status": "ERROR",
+   "root_cause": "pv_weekly_event_20d_return_quantile0_prob不存在(sharpe_filter只展示存活字段, 缺失字段≠可用); 一个坏字段导致整批CANCELLED",
+   "fix": "v3b全部改用1f671caa缓存白名单字段: 19prH610v4Bl92l12tvbuSyd",
+   "lesson": "构造表达式必须逐字段核对get_datafields返回白名单, 禁止按命名规律推断字段存在"
+  }
+ },
+ "wave29_p47v3b_verdict": {
+  "P47v3b_gsm_prob": {
+   "multisim": "19prH610v4Bl92l12tvbuSyd",
+   "status": "COMPLETE",
+   "champion": "wpaAzd25 regime_r5 quantile4-0 prob差 sh1.99/fit1.64/2y2.62/tvr18.5%/mg13.67bp/RN-sh1.16/ra0/CW全过",
+   "others": "ak18P0e1 monthqtr sh1.93; YPvOkVJv r20 sh1.75; YPvOkVzv multiply sh1.63; VkGLlrZA sh1.43; 8式中6过门槛",
+   "prod_wall": "★wpaAzd25 PROD0.8363墙, 不可提交★ (ak18P0e1/YPvOkVJv预计同样撞墙, 不耗预筛)",
+   "verdict": "prob差结构比regression更强但PROD墙同构; v4最后尝试confscore族: 3PYFvF3f64DPaxrWeWgEune",
+   "candidate_pool": "wpaAzd25/ak18P0e1保留(结构极优待新杠杆)"
+  }
+ },
+ "wave29_p47v4_verdict": {
+  "P47v4_gsm_confscore": {
+   "multisim": "3PYFvF3f64DPaxrWeWgEune",
+   "status": "COMPLETE",
+   "result": "confscore差族同样强: regime_r5 sh1.94/fit1.57/2y2.50, monthqtr sh1.88, calendar sh1.88, r20 sh1.70; 与prob族结构同构",
+   "verdict": "weekly价量模型族(prob/confscore/regression三种表示)全强但预计同撞PROD墙, 不再逐个预筛"
+  }
+ },
+ "wave29_p47v5_submit": {
+  "P47v5_funda": {
+   "multisim": "2beC2Eey84u8ah33HOsVYKS",
+   "fixed_bad_batch": "4sJrME36d4zdasEawm8Jzaq(funda_regime_60d_qtile0_prob不存在)",
+   "rationale": "★funda基本面源族: PROD池与价量不同, 逃墙概率最高; cov0.975最高覆盖",
+   "exprs": "regime/month_quarter/event/calendar 120d/60d qtile4-0 prob差 + confscore差 + regression×prob乘积"
+  }
+ },
+ "wave29_p47v5_verdict": {
+  "P47v5_funda": {
+   "multisim": "2beC2Eey84u8ah33HOsVYKS",
+   "status": "COMPLETE",
+   "result": "funda基本面族全弱: 最佳confscore差sh0.85/2y1.66, prob差sh0.83; 全FAIL(LOW_SHARPE/FITNESS)",
+   "verdict": "基本面模型预测在KOR无足够横截面信号"
+  }
+ },
+ "wave29_gsm_final": {
+  "global_seasonal_model_final": "★关闭★ weekly价量模型族(regression/prob/confscore三表示)极强sh1.9-2.0/2y2.5+但PROD全饱和(0.836-0.921); funda/analyst族弱; 候选池: XgoxLn1z/wpaAzd25/ak18P0e1(结构极优待新杠杆)",
+  "campaign_state": "1/3可提交(WjAxxZVk); 数据集空间基本穷尽: 25+数据集攻击, 仅剩异源盲区未探",
+  "next_direction": [
+   "model252/Tier2回填带(todo nextWave)",
+   "analyst_consensus剩余字段族",
+   "mmp_nlp_sentiment",
+   "PROD墙规避: 找非价量非模型预测的异源信号"
+  ],
+  "recorded_at": "2026-08-15"
+ },
+ "wave30_p48_submit": {
+  "mmp_nlp_probe": "MATRIX 521字段 cov1.0 全零竞争; NLP新闻情绪/评级/主题计数族(异源, 非价量非模型预测)",
+  "P48_mmp_nlp": {
+   "multisim": "1RMXS5YZ4mFa7T57OdY4XF",
+   "style": "★NLP新闻情绪多空对差风格★(完全异源于WjAxxZVk模型金字塔)",
+   "exprs": "bullish-bearish/pos-neg/buy-sell推荐/目标价上调-下调/极强情绪计数/overweight-downgrade/outperform/情绪净zscore"
+  }
+ },
+ "wave30_p48_verdict": {
+  "P48_mmp_nlp": {
+   "multisim": "1RMXS5YZ4mFa7T57OdY4XF",
+   "status": "COMPLETE",
+   "result": "★判弱关闭★ sh∈[-0.32,0.41]; 最佳pos-neg情绪差仅sh0.41/2y0.05; 5式负向(bullish-bearish/目标价/评级多空全反向)",
+   "verdict": "mmp_nlp_sentiment韩国NLP新闻情绪无横截面信号(521字段cov1.0零竞争但信号密度为零), 关闭"
+  }
+ },
+ "wave30_model252_dead": {
+  "model252": "判死不回测: 仅3 VECTOR字段(mdl252_shield/shield2风险分+firm_market_value), 1个已被sharpe_filter移除",
+  "tool_fix": "直连API分页拉取脚本fetch_ac_fields.py固化(绕MCP get_datafields翻页400bug+limit上限50); analyst_consensus 2343字段全量落盘ac_fields.json"
+ },
+ "wave30_p49_submit": {
+  "P49_ac_revision": {
+   "multisim": "4yRWLA2He4xCbEQNN4Tuqd4",
+   "style": "★分析师预测修正(revision)动量风格★ EPS/EBI共识当前vs4周前/3月前差值+surprise+分歧度",
+   "exprs": "EPS-4w修正/EPS-3m修正/EBI-3m修正/EPS ts_delta20/EPS surprise/NET surprise/-stddev分歧/flash-当前差"
+  }
+ },
+ "wave30_p49_error": {
+  "P49_v1": {
+   "multisim": "4yRWLA2He4xCbEQNN4Tuqd4",
+   "status": "ERROR",
+   "root_cause": "analyst_consensus字段是event型VECTOR, rank不支持event输入; 需vec_avg聚合转matrix",
+   "lesson": "已固化记忆: event VECTOR字段必须vec_*聚合后再进常规算子"
+  },
+  "P49_v2": {
+   "multisim": "1BhMt46BC4Rqb3lrTIAAGyw",
+   "status": "RUNNING",
+   "fix": "全式套vec_avg: EPS-4w/3m修正/EBI-3m修正/ts_delta20/EPS surprise/NET surprise/-stddev分歧/flash差"
+  }
+ },
+ "wave30_p49v2_verdict": {
+  "P49_v2_ac_revision": {
+   "multisim": "1BhMt46BC4Rqb3lrTIAAGyw",
+   "status": "COMPLETE",
+   "result": "★判弱关闭★ sh∈[-0.27,0.51]; flash-当前差sh0.51最佳但2y0.52; EPS/EBI 3m修正sh0.35-0.42; surprise双负; tvr全极低(1.4-10%)事件稀疏",
+   "verdict": "analyst_consensus revision/surprise/分歧族在KOR无横截面信号(P41目标价+P49修正族全灭), 数据集关闭"
+  }
+ },
+ "wave30_turn_summary": {
+  "progress": "1/3 可提交alpha(WjAxxZVk), 本轮0提交突破但候选池+3",
+  "batches": "P47v1-v5(gsm五连击: regression/prob/confscore/funda)+P48(mmp_nlp)+P49v1v2(ac revision)共8批",
+  "key_finding": "★global_seasonal_model weekly价量模型族极强(sh1.9-2.0/fit1.5-1.6/2y2.4-2.6)但PROD全饱和(0.836-0.921), 三冠入候选池(XgoxLn1z/wpaAzd25/ak18P0e1)",
+  "closed": "global_seasonal_model/mmp_nlp_sentiment/model252(判死)/analyst_consensus",
+  "lessons": [
+   "datafields白名单外字段不存在(整批CANCELLED教训)",
+   "event VECTOR字段需vec_*聚合(固化记忆×2)",
+   "直连API分页绕MCP翻页bug"
+  ],
+  "remaining": [
+   "model68(Tier2剩)",
+   "候选池待新PROD杠杆",
+   "换region备选"
+  ],
+  "quota_state": "提交配额3/4剩余; 本轮消耗8批回测",
+  "recorded_at": "2026-08-15"
+ },
+ "wave30_p50_submit": {
+  "model68_probe": "DREAM动量模型 4 VECTOR字段 cov0.85: mdl68_score(主推)/ram(风险调整)/raw(原始)/mktcap; 信号字段全零竞争",
+  "P50_model68": {
+   "multisim": "3EJvnvcU34uVaOvX7mFvJxS",
+   "style": "模型动量风格(vec_avg聚合)",
+   "exprs": "score/ram/raw rank + 252zscore + delta20 + decay10 + score-raw差 + score×ram乘积"
+  }
+ },
+ "wave30_p50_verdict": {
+  "P50_model68": {
+   "multisim": "3EJvnvcU34uVaOvX7mFvJxS",
+   "status": "COMPLETE",
+   "result": "★判弱关闭★ sh∈[-0.15,0.75]; 252zscore最佳sh0.75/2y0.41; 全CW FAIL; DREAM动量在KOR失效",
+   "verdict": "model68关闭; Tier2带(analyst_consensus/model313/model68/mmp_nlp_sentiment)全部清零"
+  }
+ },
+ "wave30_campaign_milestone": {
+  "dataset_space": "★KOR/D1数据集空间基本穷尽★ 30+数据集攻击完毕: 1个可提交(WjAxxZVk)+候选池6个(XgoxLn1z/wpaAzd25/ak18P0e1/insider_feats三墙JjGkZ3KA等)",
+  "structural_wall": "核心矛盾: 价量/模型预测族信号强但PROD饱和(0.78-0.92); 异源族(NLP/基本面/分析师修正/动量模型)在KOR信号密度为零",
+  "next_options": [
+   "等待PROD池变化后重试候选池(44h内配额释放)",
+   "换region重启战役",
+   "用户决策点"
+  ]
+ },
+ "wave31_blindspot_audit": {
+  "audit": "★盲区复查★ get_datasets全量192个 vs 台账diff: hit=83/miss=109; KOR金字塔仅亮analyst=1+model=1, 其余13类0亮",
+  "miss_high_value": [
+   "ai_news_scores(5α低竞争)",
+   "dl_riskfree_returns(657α cov0.91 DL图表族)",
+   "news_sentiment_dl/nlp(0用户vs9)",
+   "sentiment23(transformer)",
+   "shortinterest6(拥挤)",
+   "other455(1500字段)"
+  ],
+  "miss_rest": "analyst10-86系/fundamental17-94系/news3-85系/pv13-70系/risk59-88系多为高竞争饱和集, 暂缓"
+ },
+ "wave31_p51_p52_submit": {
+  "P51_dl_riskfree": {
+   "multisim": "Xd9lcIR4uH9kR17UcRSyzP",
+   "style": "CNN图表深度学习预测族(5/20/60d horizon)",
+   "exprs": "5d回归rank + 5d top-bottom prob差 + 3q_top ts_av + 20d decay10 + 20d动量(rev) + 5d delta + 60d双top加和 + 60d ts_rank"
+  },
+  "P52_ai_news_scores": {
+   "multisim": "1R9Q1O43G5ilaIWoD1u9h8k",
+   "style": "AI新闻情绪(ASI prv2 D1族, cov0.373低竞争)",
+   "exprs": "pos-neg均值差/delta5/decay10/median差/ts_av5/delta1/pos+上界/反向neg-pos"
+  }
+ },
+ "wave31_p53_verdict": {
+  "P53_news_sentiment_dl": {
+   "multisim": "2o6Inv2bF4M9cE313QJvl3E",
+   "status": "COMPLETE",
+   "result": "★判弱关闭★ sh∈[-0.59,0.18]全负向; perplexity最佳sh0.18/2y-0.77; tvr76-83%失控; margin全<2bp; inferess族在KOR无信号",
+   "verdict": "news_sentiment_dl关闭(0用户vs9但cov0.259+全VECTOR+信号为零)"
+  }
+ },
+ "wave31_cancelled_anomaly": {
+  "P51_dl_riskfree": {
+   "multisim_v1": "Xd9lcIR4uH9kR17UcRSyzP",
+   "multisim_v2": "4dJer765z4vuaCIKXyQxoMJ",
+   "status": "两度整批CANCELLED(错误字段为空)"
+  },
+  "P52_ai_news_scores": {
+   "multisim": "1R9Q1O43G5ilaIWoD1u9h8k",
+   "status": "整批CANCELLED"
+  },
+  "control_test": {
+   "multisim": "4zUY7T2OL5hWbUR1c2cjQ9us",
+   "exprs": "multi_source_model已知可用字段2式对照",
+   "purpose": "区分数据集级CANCELLED vs 账户级配额"
+  },
+  "notes": "P53(news_sentiment_dl)同期COMPLETE排除并发理论; 重发429后等90s仍CANCELLED; 记忆df1d0607已录串行铁律"
+ },
+ "wave31_p54_verdict": {
+  "P54_sentiment23": {
+   "multisim": "2iSYS0dzD4nObLB17O2TF7cY",
+   "status": "整批CANCELLED",
+   "verdict": "sentiment23判不可回测关闭(sharpe_filter剔154仅剩2字段+cov0.285)"
+  },
+  "root_cause": "★CANCELLED根因锁定: 数据集级不可回测★ cov<0.4的集(ai_news_scores 0.373/sentiment23 0.285/news_sentiment_dl 0.259除外)+dl_riskfree_returns(0.91但数据缺失)全CANCELLED; 对照multi_source_model(0.93)与news_sentiment_dl(0.259)COMPLETE打破单一coverage理论→实为字段KOR数据缺失",
+  "rule_v1": "KOR回测预筛: get_datafields后优先coverage≥0.6且sharpe_filter_removed少的数据集; 低coverage集先2式对照再全批"
+ },
+ "wave31_p55_p56_verdict": {
+  "P56_probe": {
+   "multisim": "ASPgO5ZQ4K48UBzcENV8tU",
+   "status": "COMPLETE",
+   "result": "shortinterest6探活OK: global/region rank均sh0.52/fit0.30/2y0.52"
+  },
+  "P55c_4expr": {
+   "multisim": "cV2I7WF4ql9SxY9psGKYd",
+   "status": "COMPLETE",
+   "result": "sh∈[0.30,0.52]全弱: screening0.49/delta5_0.40/change0.30(2y-0.58)"
+  },
+  "verdict": "★shortinterest6判弱关闭★ SmartHoldings机构持仓预测在KOR信号弱(sh上限0.52); 但shortinterest类金字塔点亮候选失败",
+  "batch_size_rule": "★★小批铁律★★ 限流期8式整批CANCELLED而2式/4式COMPLETE; 后续一律≤4式/批串行",
+  "multisim_cancelled_chain": "P55v1(3HV3sy9a94Ofbubj6tVz8mC 8式CANCELLED)→P55v2(21oY9jcAp57ua6tXAuy8CdD 8式CANCELLED)→P55c(4式COMPLETE)"
+ },
+ "wave31_p58_breakthrough": {
+  "P58_dl_riskfree_probe": {
+   "multisim": "1K9H0KePl521aTf1clzsh21m",
+   "status": "COMPLETE",
+   "star": "★★★dl_riskfree_returns爆发★★★ 此前CANCELLED纯属限流误判(对照法误读)",
+   "champion": {
+    "alpha": "vRNbj8ar",
+    "expr": "rank(probability_label4_5quantile_5day_ohlcv_2)-rank(probability_label0_5quantile_5day_ohlcv_2)",
+    "sharpe": 2.3,
+    "fitness": 2.66,
+    "two_year_sharpe": 3.35,
+    "turnover": 0.1321,
+    "margin_bp": 26.85,
+    "RN_sharpe": 2.23,
+    "sub_universe": 2.16,
+    "ra_failed": 0,
+    "CW": "PASS",
+    "pyramid": "KOR/D1/OTHER 1.7x 未点亮",
+    "PROD": "0.8587墙(但直方图仅13/7.4万>0.7, 主体0-0.3, 信号族与PROD池整体低相关)"
+   },
+   "runner_up": {
+    "alpha": "wpaAjqX1",
+    "expr": "rank(quantile_label_1bucket_5day_ohlcv_2)",
+    "sharpe": 1.68,
+    "fitness": 1.8,
+    "two_year_sharpe": 2.78,
+    "margin_bp": 24.08
+   },
+   "style": "CNN图表图像深度学习5d风险中性收益预测(与multi_source_model/gsm完全不同的模型源)"
+  },
+  "P59_variants": {
+   "multisim": "4bBXMzeGL55Hc7W17Si8dzgX",
+   "purpose": "PROD规避变体: ts_rank持仓结构+20d horizon",
+   "exprs": "ts_rank(5d回归,20) + 20d top-bottom prob差"
+  }
+ },
+ "wave31_p59_verdict": {
+  "P59_v1": {
+   "multisim": "4bBXMzeGL55Hc7W17Si8dzgX",
+   "status": "CANCELLED"
+  },
+  "P59_v2": {
+   "multisim": "s3PfU6eS4A1awcDiP2QYlM",
+   "status": "CANCELLED"
+  },
+  "note": "限流升级: 2式也CANCELLED; 按铁律停止提交(连续2批串行CANCELLED)",
+  "pending_exprs": [
+   "rank(ts_rank(quantile_label_1bucket_5day_ohlcv_2,20))",
+   "rank(probability_label3_4quantile_20day_ohlcv)-rank(probability_label0_4quantile_20day_ohlcv)"
+  ]
+ },
+ "wave31_turn_summary": {
+  "progress": "1/3可提交(WjAxxZVk) + ★候选池新增2个全门槛过冠军(vRNbj8ar sh2.30/wpaAjqX1 sh1.68, dl_riskfree_returns)★",
+  "blindspot_audit": "192集diff出109漏网; 攻4个: news_sentiment_dl判弱/sentiment23不可回测/shortinterest6判弱(6式sh≤0.52)/dl_riskfree爆发",
+  "key_breakthrough": "★dl_riskfree_returns=CNN图表图像DL族, KOR/D1/OTHER金字塔1.7x未亮; vRNbj8ar sh2.30/fit2.66/2y3.35/RN2.23/margin26.85bp/tvr13.2%全过, 仅PROD0.8587墙(直方图13/7.4万>0.7族整体低相关)",
+  "cancelled_root_cause": "平台限流: 8式整批CANCELLED→4式可过→后期2式也CANCELLED; 串行+小批铁律固化(记忆df1d0607)",
+  "candidate_pool": [
+   "WjAxxZVk(已提交ACTIVE)",
+   "vRNbj8ar(PROD0.86)",
+   "wpaAjqX1(待PROD核)",
+   "XgoxLn1z/wpaAzd25/ak18P0e1(gsm PROD0.84-0.86)",
+   "insider_feats三墙×3"
+  ],
+  "next_actions": [
+   "限流解除后跑P59变体(ts_rank/20d)避PROD",
+   "wpaAjqX1 PROD核",
+   "other455(1500字段)待攻",
+   "ai_equity_alpha(582字段)待攻"
+  ],
+  "recorded_at": "2026-08-15"
+ },
+ "wave31_prod_check": {
+  "vRNbj8ar": {
+   "PROD": 0.8587,
+   "hist": "仅13/7.4万>0.7, 主体0-0.3",
+   "status": "墙但族整体低相关, P59变体待跑"
+  },
+  "wpaAjqX1": {
+   "PROD": 0.9171,
+   "hist": "20/7.9万>0.7",
+   "status": "墙更高, 候选池保留"
+  },
+  "conclusion": "dl_riskfree双冠全撞PROD墙, 与gsm三冠同构——KOR强信号族PROD饱和的结构性矛盾第4次复现"
+ },
+ "wave32_iso_test_verdict": {
+  "iso_batch": {
+   "multisim": "4grmlgbNj52QaZl1hxIouiho",
+   "status": "ERROR",
+   "child1_5day_known_good": "4sViGoK75jsalBigMbwA7n -> CANCELLED (限流再证)",
+   "child2_20d_suspect": "1HbkBMcXH5ge9PxwGzoIo3v -> ERROR: unknown variable probability_label3_4quantile_20day_ohlcv"
+  },
+  "root_cause": "★字段名错误! KOR实际字段带_2后缀: probability_label3_4quantile_20day_ohlcv_2 (get_datafields确认存在,cov0.91). 此前P51v1/v2+P59v1-v4共6批CANCELLED疑案破解: unknown variable错误+限流连坐复合根因",
+  "tool_discovery": "★lookINTO_SimError_message工具可深挖子任务error详情(message字段), 此前CANCELLED排查盲区关闭",
+  "p59_fixed_batch": {
+   "multisim": "3NDxpu3545908XPt6rOHIi0",
+   "exprs": [
+    "rank(probability_label3_4quantile_20day_ohlcv_2)-rank(probability_label0_4quantile_20day_ohlcv)",
+    "rank(ts_rank(winsorize(quantile_label_1bucket_20day_ohlcv),20))",
+    "rank(ts_rank(quantile_label_1bucket_5day_ohlcv_2,20))"
+   ],
+   "purpose": "20d horizon新信号面+ts_rank持仓结构, 攻PROD<0.7规避"
+  }
+ },
+ "wave32_p59fix_verdict": {
+  "multisim": "3NDxpu3545908XPt6rOHIi0",
+  "status": "COMPLETE(字段名修正后首战全通)",
+  "E5GMpmAP": {
+   "expr": "rank(probability_label3_4quantile_20day_ohlcv_2)-rank(probability_label0_4quantile_20day_ohlcv)",
+   "sharpe": 2.01,
+   "fitness": 2.31,
+   "two_year_sharpe": 2.8,
+   "RN": 2.11,
+   "sub_universe": 1.87,
+   "margin_bp": 27.13,
+   "tvr": 0.1214,
+   "ra_failed": 0,
+   "CW": "PASS",
+   "PROD": 0.9096,
+   "PROD_hist": "20/7.9万>0.7, 主体0-0.3",
+   "status": "★第3冠军, PROD墙, 候选池"
+  },
+  "KPGpNVex": {
+   "expr": "rank(ts_rank(quantile_label_1bucket_5day_ohlcv_2,20))",
+   "sharpe": 1.65,
+   "fitness": 1.04,
+   "two_year_sharpe": 1.74,
+   "RN": 1.46,
+   "margin_bp": 7.96,
+   "ra_failed": 0,
+   "PROD": 0.8762,
+   "PROD_hist": "仅3/7.9万>0.7 墙极薄",
+   "status": "PROD规避候选"
+  },
+  "O0GjN6e1": {
+   "expr": "rank(ts_rank(winsorize(quantile_label_1bucket_20day_ohlcv),20))",
+   "sharpe": 1.41,
+   "ra_failed": 3,
+   "status": "判弱"
+  },
+  "conclusion": "dl_riskfree族第4次PROD墙复现但墙极薄(>0.7仅个位数), 深层结构变体规避空间真实"
+ },
+ "wave32_p61_verdict": {
+  "p61_v1": {
+   "multisim": "1fNdEJ3UI4sl9ipq9g3bqXO",
+   "status": "ERROR",
+   "cause": "ts_av算子不存在→连坐取消3兄弟"
+  },
+  "p61_v2": {
+   "multisim": "3Kq7m74EN4FZ8Y75rJImWjI",
+   "status": "ERROR",
+   "cause": "probability_label0_4quantile_20day_ohlcv_2不存在(label0无_2后缀,label3有)→连坐"
+  },
+  "p61_v3": {
+   "multisim": "CIS5i81Z4l18MRjDFMN1Ru",
+   "status": "COMPLETE",
+   "note": "全验证字段批,连坐理论确证"
+  },
+  "results": {
+   "E5GMVW90": {
+    "expr": "rank(prob4_5quantile_5day-prob0_5quantile_5day)原始差",
+    "sharpe": 1.64,
+    "fitness": 1.76,
+    "two_year": 2.69,
+    "RN": 1.94,
+    "margin_bp": 24.38,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.9099,
+    "status": "PROD墙候选池"
+   },
+   "MPGn0Rrz": {
+    "expr": "ts_decay_linear(差,8)",
+    "sharpe": 1.41,
+    "ra_failed": 1,
+    "status": "判弱(decay过度)"
+   },
+   "LLGw5a09": {
+    "expr": "ts_delta(20d回归,5)",
+    "sharpe": 1.37,
+    "ra_failed": 3,
+    "status": "判弱"
+   }
+  },
+  "key_insight": "★CANCELLED真根因=批内ERROR式连坐取消兄弟(非限流)! lookINTO_SimError_message下钻可见; dl_riskfree全结构变体PROD墙0.86-0.91(墙薄>0.7仅20/7.9万)",
+  "field_suffix_rule": "KOR dl_riskfree: label3_4quantile_20day带_2, label0_4quantile_20day不带; ts_av不存在用ts_mean"
+ },
+ "wave32_p60_ai_equity_alpha": {
+  "multisim": "aqGrnc5F4WfbIj1ebSO73OD",
+  "status": "COMPLETE",
+  "pyramid": "KOR/D1/MODEL 1.7x(与已亮的model同格)",
+  "results": {
+   "A1G26awR": {
+    "expr": "rank(vec_avg(alpha_excess_return_forecast))",
+    "sharpe": -0.19,
+    "status": "负向"
+   },
+   "VkGLdarw": {
+    "expr": "rank(vec_avg(forecasted_alpha_ranking))",
+    "sharpe": 0.6,
+    "tvr": 0.797,
+    "status": "弱+高换"
+   },
+   "wpaA9ZdQ": {
+    "expr": "rank(vec_avg(pure_alpha_generation_metric))",
+    "sharpe": -0.75,
+    "status": "负向"
+   },
+   "omNXoLbb": {
+    "expr": "rank(vec_avg(alpha_score))",
+    "sharpe": 0.8,
+    "status": "最强但远不达标"
+   }
+  },
+  "verdict": "初攻4式sh∈[-0.75,0.80]+CONCENTRATED_WEIGHT失败(VECTOR稀疏单股支配), 信号面弱; 待翻转/聚合变体二轮定终判"
+ },
+ "wave32_turn_summary": {
+  "major_findings": [
+   "★CANCELLED疑案终极破解: 批内ERROR式(坏字段/坏算子)连坐取消兄弟任务, lookINTO_SimError_message下钻可定位; 此前\"限流\"诊断部分误判",
+   "★字段名陷阱: KOR dl_riskfree label3_4quantile_20day带_2而label0不带; ts_av不存在(用ts_mean)",
+   "P59修正批COMPLETE: E5GMpmAP sh2.01/fit2.31/2y2.80全过但PROD0.91墙(第3冠军入池); KPGpNVex sh1.65 PROD0.88墙",
+   "P61结构变体: E5GMVW90(原始差)sh1.64全过但PROD0.91墙; decay/ts_delta式判弱",
+   "P60 ai_equity_alpha初攻判弱(sh≤0.80, MODEL金字塔)"
+  ],
+  "candidate_pool": [
+   "WjAxxZVk(已提交ACTIVE)",
+   "vRNbj8ar(PROD0.86)",
+   "E5GMpmAP(PROD0.91)",
+   "E5GMVW90(PROD0.91)",
+   "KPGpNVex(PROD0.88)",
+   "wpaAjqX1(PROD0.92)",
+   "XgoxLn1z等gsm三冠(PROD0.84-0.86)",
+   "insider_feats三墙×3"
+  ],
+  "structural_conclusion": "dl_riskfree族6个全门槛过alpha全撞PROD墙0.86-0.92, 但墙极薄(>0.7仅20/7.9万); 剩余规避手段: decay设置/中性化切换/跨horizon组合",
+  "next_actions": [
+   "P60二轮(翻转+组合变体)定终判",
+   "dl_riskfree设置空间规避PROD(decay/neutralization变体)",
+   "other455(1500字段)待攻"
+  ],
+  "recorded_at": "2026-08-15"
+ },
+ "wave32_p62_decay10": {
+  "multisim": "2nfAdn6SC4lNap0IMv4sQjh",
+  "settings": "decay=10 SECTOR",
+  "status": "COMPLETE",
+  "results": {
+   "3qpOod1P": {
+    "expr": "vRNbj8ar同式",
+    "sharpe": 2.17,
+    "fitness": 2.52,
+    "two_year": 3.12,
+    "RN": 2.07,
+    "sub_universe": 2.05,
+    "margin_bp": 31.65,
+    "tvr": 0.1065,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.8469,
+    "PROD_note": "★dl_riskfree族史上最低PROD(0.86→0.85), >0.7仅12/7.4万, decay梯度有效"
+   },
+   "N1bGNMJw": {
+    "expr": "20d prob差",
+    "sharpe": 1.93,
+    "fitness": 2.18,
+    "two_year": 2.67,
+    "margin_bp": 32.94,
+    "ra": 0,
+    "PROD": 0.8985,
+    "status": "墙"
+   },
+   "j26JYLPW": {
+    "sharpe": 1.55,
+    "ra_failed": 1,
+    "status": "差3bp判弱"
+   },
+   "mL5NoO0X": {
+    "sharpe": 1.54,
+    "ra_failed": 1,
+    "status": "判弱"
+   }
+  },
+  "insight": "★decay=10是杠杆: 指标全面提升(sh2.30→2.17指标略降但margin27→32bp/fit↑)+PROD降0.014; 沿decay梯度14/18继续压PROD"
+ },
+ "wave32_p63_decay14": {
+  "multisim": "1D1y455Ll4onbO4KMmBxM9X",
+  "settings": "decay=14",
+  "status": "COMPLETE",
+  "results": {
+   "N1bGNeQe": {
+    "expr": "5d rank差",
+    "sharpe": 2.07,
+    "fitness": 2.35,
+    "two_year": 3.02,
+    "margin_bp": 34.87,
+    "tvr": 0.0925,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.8379
+   },
+   "omNXEoLm": {
+    "expr": "20d prob差",
+    "sharpe": 1.85,
+    "fitness": 2.05,
+    "two_year": 2.59,
+    "margin_bp": 36.61,
+    "ra": 0,
+    "PROD": 0.8886
+   },
+   "0mpLYjXp": {
+    "expr": "rank(20d回归)",
+    "sharpe": 1.58,
+    "fitness": 1.65,
+    "ra": 0,
+    "status": "压线过门槛待PROD"
+   },
+   "3qpOojX6": {
+    "sharpe": 1.52,
+    "ra_failed": 1,
+    "status": "判弱"
+   }
+  },
+  "decay_gradient": {
+   "d6": 0.8587,
+   "d10": 0.8469,
+   "d14": 0.8379,
+   "conclusion": "边际递减(-0.012/-0.009), 渐近~0.83, decay梯度不足以破0.7"
+  },
+  "next": "中性化维度: INDUSTRY批(P64), dl_riskfree未试过"
+ },
+ "wave32_p64_industry": {
+  "multisim": "3uGj2O8Gy5a38N9nxao9eqx",
+  "settings": "INDUSTRY decay10",
+  "status": "COMPLETE",
+  "results": {
+   "O0GjWqeY": {
+    "expr": "5d rank差",
+    "sharpe": 2.44,
+    "fitness": 2.85,
+    "two_year": 2.89,
+    "RN": 2.23,
+    "sub_universe": 2.31,
+    "margin_bp": 31.34,
+    "tvr": 0.1088,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.8778,
+    "note": "★★战役全程指标最强alpha, INDUSTRY中性化大幅提指标但不破PROD"
+   },
+   "j26JaWLo": {
+    "expr": "20d prob差",
+    "sharpe": 2.17,
+    "fitness": 2.46,
+    "PROD": 0.8538
+   },
+   "KPGpgqx8": {
+    "expr": "rank(5d回归)",
+    "sharpe": 1.8,
+    "fitness": 1.89,
+    "PROD": "待核"
+   },
+   "2rpx5QQ8": {
+    "expr": "rank(20d回归)",
+    "sharpe": 1.86,
+    "fitness": 1.97,
+    "PROD": "待核"
+   }
+  }
+ },
+ "wave32_final_summary": {
+  "settings_space_map": {
+   "decay_gradient_SECTOR": {
+    "d6": "PROD0.8587 sh2.30",
+    "d10": "PROD0.8469 sh2.17",
+    "d14": "PROD0.8379 sh2.07",
+    "trend": "边际递减渐近~0.83"
+   },
+   "INDUSTRY_d10": "sh2.44战役最强指标但PROD0.8778反弹",
+   "conclusion": "dl_riskfree族PROD墙0.84-0.92结构性(墙极薄>0.7仅11-20/7.4万), 设置空间无法破0.7; 剩余手段仅结构重构(组合/差分/非线性)或等待PROD池更新"
+  },
+  "campaign_best_alphas": [
+   "O0GjWqeY sh2.44/fit2.85 (INDUSTRY d10) PROD0.8778",
+   "vRNbj8ar sh2.30 (SECTOR d6) PROD0.8587",
+   "3qpOod1P sh2.17 (SECTOR d10) PROD0.8469",
+   "N1bGNeQe sh2.07 (SECTOR d14) PROD0.8379族史最低"
+  ],
+  "deliverables_this_turn": [
+   "★CANCELLED疑案终极破解+lookINTO_SimError_message工具发现(记忆df1d0607已修正)",
+   "★字段名后缀陷阱固化(label3带_2/label0不带; ts_av不存在)",
+   "dl_riskfree族新增6个全门槛过冠军(候选池累计14+)",
+   "ai_equity_alpha初攻判弱(MODEL金字塔, sh≤0.80)"
+  ],
+  "progress": "1/3可提交(WjAxxZVk ACTIVE); dl_riskfree=第2数据集已穷尽设置空间待PROD突破; 第3数据集待攻(other455/ai_news_scores等)",
+  "next_actions": [
+   "dl_riskfree结构重构批(跨horizon组合/signed_power)攻PROD",
+   "other455(1500字段)攻击",
+   "P60二轮ai_equity_alpha变体"
+  ],
+  "recorded_at": "2026-08-15"
+ },
+ "wave33_p65_structure": {
+  "multisim": "bWnPA4jH5cyauE1aUBm6geH",
+  "settings": "SECTOR decay14 结构重构批",
+  "status": "COMPLETE",
+  "results": {
+   "O0Gj6PqJ": {
+    "expr": "multiply(rank(prob4_5d),rank(20d回归))",
+    "sharpe": 2.83,
+    "fitness": 3.39,
+    "two_year": 2.48,
+    "RN": 2.55,
+    "sub_universe": 2.57,
+    "margin_bp": 39.49,
+    "tvr": 0.0908,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.8211,
+    "note": "★★★战役全程最强alpha+族史最低PROD! multiply跨horizon组合双重突破"
+   },
+   "QPGAWkqw": {
+    "expr": "ts_delta动量",
+    "sharpe": 1.68,
+    "ra_failed": 1,
+    "status": "2y差15bp判弱"
+   },
+   "JjGk3Emm": {
+    "expr": "signed_power",
+    "sharpe": 1.52,
+    "ra_failed": 1,
+    "status": "判弱"
+   },
+   "j26JVRXj": {
+    "expr": "双horizon叠加",
+    "sharpe": 1.49,
+    "ra_failed": 1,
+    "status": "判弱"
+   }
+  },
+  "insight": "★multiply(rank,rank)跨horizon组合=PROD规避真杠杆(0.84→0.82)且指标暴涨; P66乘积变体批已发",
+  "p66_batch": {
+   "multisim": "1AMw9h14t4nZ98uBNQzkPeW",
+   "exprs": "3式multiply变体(差×回归/回归×20d差/decay差×回归)"
+  },
+  "auth_note": "本轮初遇401, MCP authenticate重登成功"
+ },
+ "wave33_p66_p67_verdict": {
+  "p66_multiply_variants": {
+   "multisim": "1AMw9h14t4nZ98uBNQzkPeW",
+   "status": "COMPLETE 全判弱",
+   "MPGng72k": "sh1.50",
+   "qMNp5jwO": "sh1.47",
+   "LLGw872v": "sh1.36"
+  },
+  "p67_group_neutralize": {
+   "multisim": "gOWP27Ah4NCam185agaZcd",
+   "status": "COMPLETE 双过门槛但PROD墙",
+   "6XpQGjJK": {
+    "expr": "multiply(rank(gn(prob4_5d,subind)),rank(20d回归))",
+    "sharpe": 2.71,
+    "fitness": 3.06,
+    "two_year": 2.76,
+    "RN": 2.45,
+    "margin_bp": 35.87,
+    "ra": 0,
+    "CW": "PASS",
+    "PROD": 0.8631
+   },
+   "1YpRGXPJ": {
+    "expr": "rank(gn(multiply(...),subind))",
+    "sharpe": 2.45,
+    "fitness": 2.5,
+    "two_year": 2.46,
+    "ra": 0,
+    "PROD": 0.8251
+   },
+   "conclusion": "二次中性化提指标但PROD不降(0.82-0.86), 与记忆c097335f论坛案例不同——dl_riskfree墙为信号本身与PROD池重叠"
+  },
+  "parallel_ok": "双批并行全COMPLETE, 限流理论进一步证伪(连坐理论成立)",
+  "dl_riskfree_closure": "17+全门槛过alpha, PROD全0.82-0.92, 结构/设置/中性化三维空间穷尽; 数据集判定: 强但PROD饱和, 候选池封存待PROD池更新"
+ },
+ "stage_summary_20260816": {
+  "report": "tracking/KOR/KOR_D1_STAGE_SUMMARY_20260816.md",
+  "progress": "1/3 (WjAxxZVk ACTIVE)",
+  "dl_riskfree": "20+冠军候选池封存 PROD墙0.82-0.92结构性 三维穷尽",
+  "best": "O0Gj6PqJ sh2.83/fit3.39 PROD0.8211族史最低",
+  "next": [
+   "other455侦察",
+   "insider_feats复攻",
+   "ai_equity_alpha二轮"
+  ],
+  "lessons": [
+   "字段后缀不对称需实测核对",
+   "CANCELLED先疑连坐用lookINTO下钻",
+   "PROD墙薄(>0.7<=20/7.9万)判结构性早撤",
+   "工具层400/429/401降级是基建"
+  ],
+  "recorded_at": "2026-08-16"
+ },
+ "skill_gates_v1": {
+  "playbook": "reference/kor_mandatory_skill_gates.md",
+  "gates": "G0选集/G1白名单铁律/G2去重配给/G3本地自相关/G4判死必查论坛/G5 PROD卡点必跑optimization-v1/G6工具降级",
+  "whitelist_scan": "dl_riskfree_returns+other455+insider_feats 后台扫描中(scan_whitelists.py)",
+  "recorded_at": "2026-08-16"
+ },
+ "rate_limit_block_20260816": {
+  "status": "账号小时级配额耗尽, 连续429 (turn18-20三次扫描全被拒)",
+  "action": "scan_whitelists.py已加防空白名单污染+断点续扫, 待限流窗口恢复后重跑",
+  "blocked_items": [
+   "dl_riskfree/other455/insider_feats白名单",
+   "P68 optimization-v1批",
+   "other455首攻"
+  ],
+  "resume_plan": "重跑scan_whitelists.py -> 白名单落地 -> optimization-v1对O0Gj6PqJ -> other455 feature-engineering首攻",
+  "recorded_at": "2026-08-16"
+ },
+ "wave36A_submit": {
+  "multisim": "3dff4OgGX58cba55zxnAvlE",
+  "settings": "SUBINDUSTRY d14 TOP600",
+  "status": "COMPLETE",
+  "alpha": "88pZW2Vo",
+  "metrics": "sh2.59 fit2.88 2y2.27 RN2.30 sub2.22 margin32.1bp tvr9.6% ra=0 CW全PASS",
+  "PROD": "pending",
+  "note": "★SUBINDUSTRY杠杆首次启用即全门槛过! PROD待出为生死判据"
+ },
+ "wave36B_submit": {
+  "multisim": "22jBBN8zC4AHauy2X1bUvxG",
+  "settings": "STATISTICAL d14 TOP600",
+  "exprs": "label4冠军式+label0变体",
+  "status": "submitted",
+  "recorded_at": "2026-08-16"
+ },
+ "wave36B_verdict": {
+  "multisim": "22jBBN8zC4AHauy2X1bUvxG",
+  "STATISTICAL": "78zreOLx sh2.69但2y1.39 RA失败 / LLGw0eM9(label0) sh2.37 2y0.98 RA失败",
+  "verdict": "STATISTICAL轨2y崩判弱"
+ },
+ "wave36C_submit": {
+  "multisim": "3uY8JZ7Hu4xIbitkqlTReSB",
+  "settings": "SLOW_AND_FAST d14",
+  "exprs": "label4冠军式+label3_20d变体"
+ },
+ "platform_fact_kor": "KOR/D1 universe仅TOP600(get_platform_setting_options实证), universe杠杆不存在; 中性化11选项含SLOW_AND_FAST/REVERSION_AND_MOMENTUM",
+ "candidate_88pZW2Vo": "SUBINDUSTRY d14 全门槛过 sh2.59/fit2.88/2y2.27/RN2.30/margin32bp/tvr9.6%/ra=0/CW PASS, PROD pending",
+ "recorded_at": "2026-08-16",
+ "wave36C_verdict": {
+  "multisim": "3uY8JZ7Hu4xIbitkqlTReSB",
+  "XgoxdaxX": "SLOW_AND_FAST 全门槛过 sh2.58/fit2.58/2y1.60压线/sub2.32/margin20bp/tvr12.3%/ra=0, PROD 0.8783 墙",
+  "E5GM9QMR": "label3_20d变体 2y1.43 RA失败判弱",
+  "prod_histogram": ">0.7仅2/7.9万, 墙极薄但全族撞墙"
+ },
+ "wave36A_PROD": {
+  "88pZW2Vo": "PROD 0.8213 墙 (SUBINDUSTRY)",
+  "XgoxdaxX": "PROD 0.8783 墙 (SLOW_AND_FAST)",
+  "conclusion": "★中性化对PROD零影响(SECTOR0.8211 vs SUBINDUSTRY0.8213差0.0002); PROD由信号构成决定"
+ },
+ "dl_riskfree_final_closure": {
+  "verdict": "终判信号级结构墙, 数据集封存",
+  "evidence": "同式4中性化+decay梯度全撞0.82-0.88",
+  "pool": "88pZW2Vo/XgoxdaxX/O0Gj6PqJ等20+冠军候选池保留待平台PROD重算",
+  "next": "换信号构成=换数据集: other455侦察(限流中)/ai_equity_alpha二轮"
+ },
+ "wave36_turn_summary": {
+  "wins": [
+   "SUBINDUSTRY杠杆首启即出全门槛过88pZW2Vo(sh2.59/2y2.27/ra=0)",
+   "XgoxdaxX SLOW_AND_FAST全门槛过(2y压线1.60)",
+   "僵尸进程根因破解+限流真因定位(data-fields端点桶限流)",
+   "KOR universe仅TOP600平台事实实证"
+  ],
+  "losses": [
+   "两候选PROD全撞墙(0.8213/0.8783)",
+   "STATISTICAL轨2y崩(1.39/0.98 RA失败)",
+   "白名单扫描被端点限流拦截"
+  ],
+  "blocked": [
+   "other455白名单(data-fields端点限流, WebDataScope本地无此集)",
+   "ai_equity_alpha二轮/insider_feats复攻待窗口"
+  ],
+  "progress": "1/3不变; dl_riskfree终判信号级结构墙封存; 下一战线=other455(需限流恢复)",
+  "recorded_at": "2026-08-16"
  }
 }

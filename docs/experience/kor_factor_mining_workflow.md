@@ -4,6 +4,8 @@
 > 说明：在本项目中，"KOR" 是 WQ BRAIN 的一个 **equity 区域**（region）而非独立框架；其挖掘流程与 USA / GLB / EUR / IND 等区域完全一致，仅部分 `universe / delay / neutralization` 配置与信号族略有差异。因此本文以"通用流程 + KOR 特例"的方式组织，结论对所有区域可复用。
 > 资料来源：`docs/experience/*`、`docs/reference/*`、`mining/scripts/*`、`world-quant-brain-mcp/*` 及 `.workbuddy/memory/` 长期日志（2026-08-01 至 2026-08-14 实证）。
 
+> **单一事实源治理（2026-08-16 固化）**：区域中性化 / 合法 universe / delay 等**易漂移配置以本文件 §2.4、§4.3 为准**；提交硬闸门以 `project_experience_master.md` §1.1 为准；可复用算子技巧以 `wq_alpha_mining_knowledge_base.md` 为准。三处不得各自抄录同一张表——历史因此产生 KOR 中性化 SECTOR/SUBINDUSTRY 矛盾（已修正）。幽灵算子 / 毒模式以 `platform_constraints.json` 为唯一权威，定期用 `get_operators` 刷新。
+
 ---
 
 ## 一、总体流程全景
@@ -53,7 +55,7 @@ Step 6  组合（SuperAlpha）与落地
 
 - 排序优先级：`pyramidMultiplier↓ → alphaCount↑ → coverage↓`。
 - **数据集级体检走 `get_datasets`** 直接读取 `coverage/fieldCount/userCount/alphaCount/valueScore/pyramidMultiplier`，比逐字段聚合快约 2 个数量级。
-- 工具：`tools/eur_field_coverage.py`（MCP+直连双通道）、skill 内 `dataset_health_check.py`。
+- 工具：⚠️ `tools/eur_field_coverage.py` 已不存在；数据集体检走 `get_datasets`（MCP，直接读 coverage/fieldCount/alphaCount）或 skill 内 `dataset_health_check.py`。
 
 ### 2.2 区域优先级（实测）
 | 区域 | 数据集数 | cov 均值 | 倍率档 | 结论 |
@@ -101,7 +103,7 @@ Step 6  组合（SuperAlpha）与落地
 2. **信号类型诊断**（决定用何种算子，见 §四.6）
    - 偏离信号（搜索兴趣）→ `ts_av_diff` 远强于 `ts_zscore/ts_mean/ts_delta`
    - 水平信号（借贷利用率）→ `ts_mean`，套 `ts_av_diff` 会洗掉信号
-3. **启发式表达式引擎**：`mining/scripts/mining_experience/heuristic_engine.py` + `rules.json` 以规则驱动批量生成候选表达式，替代 21 个复制粘贴的 `mine_v*` 版本；`mine_core.py` 进一步把"版本差异"收敛为 **数据**（候选列表 + 设置），统一 checkpoint/resume。
+3. **启发式表达式引擎**：`docs/experience/mining_experience/heuristic_engine.py` + `rules.json` 以规则驱动批量生成候选表达式，替代 21 个复制粘贴的 `mine_v*` 版本；`mine_core.py` 进一步把"版本差异"收敛为 **数据**（候选列表 + 设置），统一 checkpoint/resume。
 4. **字段收割**：`harvest_fields.py / harvest_fields_v2.py / harvest_usa.py` 按数据集拉取字段清单并打标，配合 `enum_mdl177.py` 枚举 mdl177 因子模型子字段。
 
 ---
@@ -123,8 +125,10 @@ Step 6  组合（SuperAlpha）与落地
 |---|---|---|
 | USA/D0 | STATISTICAL | search_interest: 2.47 > SLOW_AND_FAST 2.39 |
 | EUR/D1 | INDUSTRY | STATISTICAL 2Y 仅 0.40 |
-| **KOR** | **SECTOR** | 实测 0.562 |
+| **KOR** | **SECTOR** | 实测 0.562（WebDataScope 徽章，见 §2.3） |
 | GLB | FAST | 9qpQ0VQ2 验证；CROWDING 不可用 |
+
+> **SUBINDUSTRY 对 KOR 单 alpha 无效（2026-08-14 实证）**：`kqPO2N0O` 改 SUBINDUSTRY 后 prod-corr 0.7668→0.7654（几乎不变），sharpe 1.68→1.45 反而跌破 LOW_SHARPE/LOW_FITNESS 闸。**SUBINDUSTRY 仅在 SuperAlpha 组合层（≥10 去中心化组件，见 §6.2）才把 prod-corr 压到 0.7 下；单 alpha 不要选 SUBINDUSTRY。** 区域中性化读取徽章，勿硬编码（rules.json / README 曾误写 KOR=SUBINDUSTRY，已修正为 SECTOR）。
 
 ### 4.4 已验证的 14 个论坛模板（高赞）
 基础范式 `group_rank(ts_rank(eps,252),industry)`、Delta 反转 `-ts_delta(A,3)`、小而稳 `-A*ts_std_dev(A,30)`、杜邦/PEG/戈登 GGM、信念熵 `signed_power(ts_entropy(field,144),0.618)`（部分账户 `ts_entropy` 不可用，需 `ts_std_dev` 近似）、动量 `(close-open)/((high-low)+0.001)` 等。
@@ -141,7 +145,8 @@ Step 6  组合（SuperAlpha）与落地
 ### 4.6 算子签名陷阱（提交前必查，避免回测试错）
 - **VECTOR 字段必须 `vec_*` 聚合**：`rank(vec_field)` 报 "Operator does not support event inputs"；正确 `rank(vec_avg(F))`。
 - **`group_mean(x, weight, group)` 是 3 参**；加权均值用 `group_neutralize(x, group)`（2 参）。
-- **幽灵算子**（平台不存在，会级联 CANCEL）：`ts_entropy / ts_percentage / ts_skewness / ts_median` 等 17 个；不要用 `hump`；`ts_regression(...).residual` 写法无效。
+- **幽灵算子**（平台不存在，会级联 CANCEL）：`ts_entropy / ts_percentage / ts_skewness / ts_median` 等 17 个（详见 `docs/README.md` 幽灵算子清单 / `docs/reference/operators_notes.md`）；不要用 `hump`；`ts_regression(...).residual` 写法无效。
+- **毒模式（以 `platform_constraints.json` 为单一事实源，定期 `get_operators` 刷新）**：`nested_three_leg_add`——`add(multiply(rank(x),a),add(multiply(rank(y),b),multiply(rank(z),c)))` 嵌套三腿 add 高度疑似整批 CANCELLED（KOR record_poison bisect 实证）；三腿混合须改写为 `add(add(a,b),c)` 左结合。提交前静态预检（算子可用 / 元数 / 毒模式 / 字段向量矩阵规则）是最高杠杆闸，跳过则整批 CANCELLED 白费配额。
 - 降相关技巧：同一字段 `vec_avg → vec_max` 实测可降 PC（论坛案例 0.7288→0.6967）。
 - 提交流程防御：本地 `alpha-expression-verifier` 过语法 → 对照签名速查表 → 不确定算子单独小批试跑。
 
@@ -222,7 +227,7 @@ Step 6  组合（SuperAlpha）与落地
 - PPAC 隐蔽卡点：PP 相关性>0.5 时系统借 PROD_CORRELATION 名义报 FAIL。
 
 ### 7.3 监控与效率
-- **进程监控第一视角 = 机器级全量 Python 进程枚举**（`Get-CimInstance Win32_Process -Filter "Name='python.exe'"`），按命令行分类 SCAN / MCP-SVC / WATCHDOG / EDITOR / OTHER。陷阱：只用 `scan_v*` 过滤会漏非标准命名任务（如 `tabbit_option9.py`、`glb_pipeline.py`）；`*_progress_*.log` 绝不能作为任务发现入口；MCP-SVC 是服务端回测宿主，其任务须到 WQ BRAIN 控制台查看。
+- **进程监控第一视角 = 机器级全量 Python 进程枚举**（`Get-CimInstance Win32_Process -Filter "Name='python.exe'"`），**按行为签名（CPU / 端口 / 连接）分类，而非文件名**。分类：SVC-HOST（监听端口、CPU≈0、零日志——是服务端回测宿主，非僵尸）、SCAN/MINING（活跃出站 API 连接）、DATA-FETCH/WHITELIST（低 CPU + 出站连接 + `MAX_RUNTIME` 自退，是数据拉取辅助进程非回测）、EDITOR、OTHER。**关键陷阱**：① 只用 `scan_v*` 过滤会漏非标准命名任务（如 `tabbit_option9.py`）；② `*_progress_*.log` 绝不能作为任务发现入口；③ **日志-less 战役**（如 KOR 有 0 个 `.log`）进度在 state JSON / metrics cache / gate cache / ledger，须读结构化产物而非日志；④ 多 IDE（WorkBuddy / QoderCN）各拉独立 MCP 实例属正常冗余，非僵尸；⑤ MCP-SVC 是服务端回测宿主，其任务须到 WQ BRAIN 控制台查看。
 - **并发模型**：`SIMS_PER_BATCH=8` 一次 POST 提交 8 条 multi-sim，服务端 8 路并行；batch 间客户端串行（已匹配账号并发上限，吞吐瓶颈在 simulation 时长本身）。基准：multi(8)=86.1 α/hr vs single=54.3 α/hr（1.59×）。
 - **故障处理**：8 子模拟全 ERROR → 先重发 1 次（多为瞬态）；CROWDING 中性化连续 2 次重发仍失败 → 跳过；fatal operator 级联 CANCEL → 隔离独立小批；瞬态 "try again" → 拆 5 条/批。
 - **断点续跑**：checkpoint `results/<task>_checkpoint.json`，原子写 `os.replace(tmp, path)`；只把拿到 pid 的算"已完成"；`V<NN>_FRESH=1` 强制全新；离线用 fake `WqApiSimple` 桩三遍验证 fresh/resume/partial。
@@ -239,6 +244,7 @@ Step 6  组合（SuperAlpha）与落地
 5. **跨区域误推荐**：fundamental86 在 EUR "0 字段" 实际是区域不提供 → 换区域查一遍（它在 KOR 可用）。
 6. **MCP submit_alpha 非 PPA 感知**：合法 PPA 被常规闸门拦 → PPA 走 web UI。
 7. **PPA 区域主题轮动**：非活跃区域报 "does not match" → 先看铃铛确认当期主题。
+8. **嵌套三腿 add 毒模式整批 CANCELLED**：`add(multiply(rank(x),a),add(multiply(rank(y),b),multiply(rank(z),c)))` 高度疑似被平台判毒整批取消（KOR record_poison bisect 实证）。三腿混合须改写 `add(add(a,b),c)` 左结合。幽灵算子 / 毒模式以 `platform_constraints.json` 为唯一权威。
 
 ### 8.2 效率陷阱
 - 只用 `scan_v*` 过滤进程 → 漏非标准命名任务。
@@ -264,6 +270,18 @@ Step 6  组合（SuperAlpha）与落地
 
 ---
 
+### 8.5 KOR 提交实测（2026-08-14 实证，重要）
+
+对 11 个 KOR 种子（price_volume_quantile1_* / short_term_regime* 变体族，value/quality 风格）试提交，结论：
+
+1. **PROD_CORRELATION 全败（平台 403 拒，零成本）**：`VkGz2vrb` 0.7668、`GrGz3ZvP` 0.7824、`YPvzQvJA` 0.759、`kqPO2N0O`(SUBIND) 0.7654——全部 >0.7。**区域隔离不解码风格因子**：KOR 的 value/quality 信号与 USA 主导 book 高度相关。
+2. **SUBINDUSTRY 单 alpha 无效**（见 §4.3 注记）：改中性化不降 prod-corr，反而跌破 IS 闸门。
+3. **KOR SuperAlpha 不可构造**：组件池高度同质（value/quality 因子，任意子集 ~0.9 相关），不满足 SA 硬性 ≥10 合格组件；与已 ACTIVE 的 USA SA 近克隆，Self-Correlation 闸必拒。
+4. **KOR 85 个 UNSUBMITTED 草稿全 value/quality 风格，无解**——既凑不齐 ≥10 合格 REGULAR 组件，KOR SA 也不可构造。
+5. **结论**：KOR 现有信号族两条路全封死。唯一解锁＝挖 **novel 非 value/quality 风格信号族**（跨 region 且 prod-corr<0.7、IS 过闸）凑组件池；单 alpha 须先过 PROD 探针（先 5 个多样化样本探测），不可盲提交整族。
+
+---
+
 ## 九、可复用优化思路
 
 1. **turnover 自适应 decay**（按 tvr 反推 decay）：`tvr>0.7→decay*4; >0.6→decay*3+3; >0.5→decay*3; >0.4→decay*2; >0.35→+4; >0.3→+2`。验证：decay 10→15 提升 margin 4.57→5.04bp；decay=4 比 20 提升 sharpe +13–17%。
@@ -282,16 +300,16 @@ Step 6  组合（SuperAlpha）与落地
 
 | 工具 | 路径 | 用途 |
 |---|---|---|
-| eur_field_coverage.py | `tools/` | 数据集体检（MCP+直连双通道） |
+| eur_field_coverage.py | `tools/` | ⚠️ **已不存在**（未随项目迁移）；数据集体检改走 `get_datasets`（MCP）或 skill 内 `dataset_health_check.py` |
 | dataset_health_check.py | skill 内 | 数据集体检（随 skill 分发） |
 | webdata_quality.py | `tools/` | WebData 离线包质量分析（msgpack） |
 | fetch_all_universes.py | `tools/` | 全区域合法 universe 拉取固化 |
 | mine_core.py | `mining/scripts/` | 参数化 Alpha 挖掘模板（checkpoint/resume） |
 | mine_corr.py | `mining/scripts/` | 日频 PnL 两两相关性验证 |
-| heuristic_engine.py + rules.json | `mining/scripts/mining_experience/` | 规则驱动批量表达式生成 |
+| heuristic_engine.py + rules.json | `docs/experience/mining_experience/` | 规则驱动批量表达式生成（导入名 `mining_experience`，需把 `docs/experience` 加入 PYTHONPATH） |
 | harvest_fields.py / harvest_usa.py | `mining/scripts/` | 字段收割与打标 |
-| glb_pipeline.py | `glb_alpha_machine/` | GLB 多阶段挖掘流水线 |
-| glb_batch_submit.py | `deliverables/tools/` | 批量提交 + 闸门判定 |
+| glb_pipeline.py / gbr_pipeline.py | `glb_alpha_machine/` | ⚠️ **未实现**（目录不存在）；heuristic_engine 当前未注入实际挖掘流水线，规则仅作离线参考 |
+| glb_batch_submit.py | `deliverables/tools/` | ⚠️ **已不存在**（deliverables/ 目录缺失）；提交探测改走 MCP `create_multi_simulation`(validate_fields=false) + `submit_alpha` |
 | create_super_alpha.py / super_alpha_tool.py | `world-quant-brain-mcp/` | SuperAlpha selection+combo |
 | forum_research.py | `tools/` | 论坛直连研究（Zendesk 通路） |
 

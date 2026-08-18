@@ -114,6 +114,8 @@
 
 **关键经验**: KOR 使用 `anl44` 分析师数据 + `pretaxprofit_estimates_down` 做正向/反向组合。
 
+> **2026-08-14 补充（重要）**：KOR 其余 value/quality 种子（price_volume_quantile1_* / short_term_regime* 变体族）PROD_CORRELATION **全败**（0.7668/0.7824/0.759/0.7654，均 >0.7，区域隔离不解码风格因子）；SUBINDUSTRY 单 alpha 无效；KOR SuperAlpha 不可构造（组件池 ~0.9 相关）。现有信号族两条路全封死，解锁须挖 **novel 非 value/quality 风格信号族**（prod-corr<0.7 且 IS 过闸）。详见 `kor_factor_mining_workflow.md` §8.5。
+
 ### 2.7 ASI/MINVOL1M/D1（1 个）
 
 `qMNMbeGj`: `rank(ts_rank(ts_delta(ts_backfill(vec_avg(oth36_short_pos_in_shares), 200), 66), 250))`
@@ -257,7 +259,7 @@ add(multiply(rank(ts_rank(ts_backfill(FIELD_A, 66), 250)), W1), multiply(rank(ts
 | 中性化方式 | 数量 | 适用场景 |
 |-----------|------|---------|
 | MARKET | 112 (78%) | 默认，通用 |
-| SUBINDUSTRY | 14 (10%) | IND 等需要行业精度的区域 |
+| SUBINDUSTRY | 14 (10%) | MEA/GBR 等需行业精度（IND 实际用 STATISTICAL，见 rules.json） |
 | SECTOR | 5 (3%) | 基本面数据 |
 | INDUSTRY | 4 (3%) | 行业因子 |
 | COUNTRY | 3 (2%) | GLB 必须 |
@@ -402,9 +404,9 @@ maxTrade = OFF
 ```
 
 ```python
-# IND/TOP500 默认
-neutralization = SUBINDUSTRY
-decay = 3
+# IND/TOP500 默认（以 rules.json 结构化提取为准）
+neutralization = STATISTICAL
+decay = 8
 truncation = 0.08
 ```
 
@@ -426,6 +428,6 @@ truncation = 0.08
 
 1. **补强 OS 表现** — 现有 127 个 USA alpha 中大量 OS 衰减，需复盘 mdl177 因子选择
 2. **扩展数据源** — 非主流数据源（earnings_surprise, 会计比率）有更高潜力
-3. **GLB/KOR/ASI** — 当前覆盖不足，可探索新因子
+3. **GLB/KOR/ASI** — 当前覆盖不足。**KOR 须先挖 novel 非 value/quality 风格信号族**（现有种子 PROD_CORRELATION 全败、SA 不可构造，见 `kor_factor_mining_workflow.md` §8.5）才能解锁；单 alpha 提交前先过 PROD 探针。
 4. **SA 多样化** — 尝试 `(prod_correlation > 0) and (sharpe > X)` 等更精细筛选
 5. **margin 优化** — 当前 margin 中位数仅 3.56bp，需寻找高 margin 模式

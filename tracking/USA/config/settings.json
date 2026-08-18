@@ -4,7 +4,7 @@
   "region": "USA",
   "universe": "TOP3000",
   "delay": 1,
-  "neutralization": "MARKET",
+  "neutralization": "SUBINDUSTRY",
   "decay": 5,
   "truncation": 0.08,
   "maxTrade": "OFF",
@@ -15,18 +15,29 @@
   "visualization": false,
   "startDate": "2013-01-01",
   "endDate": "2023-12-31",
-  "_alt_neutralization": "SUBINDUSTRY",
-  "_alt_neutralization_note": "A/B 对照轨：TOP3000/SUBINDUSTRY(n=4, medSharpe=2.245) 高于 MARKET(medSharpe=1.49) 但 medTVR=0.121 偏高；wave 01 做中性化 A/B，由真实回测决定后续是否切换默认值。",
+  "_alt_neutralization": "SECTOR",
+  "_alt_neutralization_note": "A/B 次优轨：wave01 A/B 实测 SECTOR(sharpe=0.39, fitness=0.14 最高, TVR=0.1545) 优于 MARKET、略逊 SUBINDUSTRY；作对照轨。MARKET 已降为 fallback（A/B 中 sharpe=0.29 最低）。",
   "_multi_sim_batch_size": 8,
   "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）",
   "_evidence": {
-    "source": "wq-brain-stdio get_user_alphas(stage=OS) 平台真实回测数据，region=USA 抽取",
+    "source": "wq-brain-http get_user_alphas(stage=OS) 平台真实回测数据，region=USA 抽取",
     "total_usa_d1": 86,
     "universe_distribution": {"TOP3000": 85, "ILLIQUID_MINVOL1M": 1},
     "neutralization_decision": {
       "TOP3000/MARKET": {"n": 75, "ACTIVE": 75, "active_rate": 1.0, "medSharpe": 1.49, "medFitness": 1.33, "medTVR": 0.038},
       "TOP3000/SUBINDUSTRY": {"n": 4, "ACTIVE": 4, "active_rate": 1.0, "medSharpe": 2.245, "medFitness": 1.45, "medTVR": 0.121},
       "verdict": "baseline=MARKET（n=75 全 ACTIVE 且 medTVR 最低，最稳健）；SUBINDUSTRY 样本少、TVR 高，作对照轨 A/B"
+    },
+    "neut_ab_2026_08_15": {
+      "method": "受控 A/B：同一基准式 ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score), 22), 44)，仅 neutralization 不同，3 波各 1 条回测（wave 01A/01B/01C）",
+      "dataset": "ai_equity_alpha",
+      "results": {
+        "MARKET": {"alpha": "KPGp6nzj", "sharpe": 0.29, "fitness": 0.10, "turnover": 0.1526, "returns": 0.0178},
+        "SUBINDUSTRY": {"alpha": "58p19Yz5", "sharpe": 0.42, "fitness": 0.12, "turnover": 0.1653, "returns": 0.0145},
+        "SECTOR": {"alpha": "1YpRmL6m", "sharpe": 0.39, "fitness": 0.14, "turnover": 0.1545, "returns": 0.019}
+      },
+      "finding": "对同信号 SUBINDUSTRY(sharpe 最高)>SECTOR(fitness/returns 最高)>MARKET(sharpe 最低)；与人口证据(75/86 用 MARKET)相反，但与 USA 候选普遍用 SUBINDUSTRY/SECTOR 一致。三式均未过 D1 门槛，中性化对弱信号增益有限。",
+      "decision": "默认 neutralization 由 MARKET 切 SUBINDUSTRY（A/B sharpe 最高 + 候选惯例 + 满足预设提升准则）；_alt_neutralization=SECTOR；MARKET 降 fallback。n=1，强信号复测后再固化。"
     },
     "non_contested_fields": {
       "decay": {"value": 5, "support": "75/75 MARKET ACTIVE 队列一致"},

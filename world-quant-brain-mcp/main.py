@@ -40,9 +40,9 @@ if __name__ == "__main__":
         print("[WARNING] Redis connection failed - caching disabled", file=sys.stderr)
 
     # Run using configured transport:
-    #   MCP_TRANSPORT=stdio       -> stdio (auto-started by ZCode/client)
-    #   MCP_TRANSPORT=streamable-http -> HTTP server (Docker/manual start)
-    #   Default: streamable-http (backward compatible with Docker)
+    #   MCP_TRANSPORT=streamable-http -> HTTP server (DEFAULT now)
+    #   MCP_TRANSPORT=stdio           -> stdio (legacy / IDE auto-start)
+    #   Default: streamable-http (HTTP server on MCP_HOST:MCP_PORT = 0.0.0.0:8000)
     # 2026-08-13 fix: mcp.run() MUST stay inside this guard — forum_functions.py
     # does `from brain_api import brain_client` from within a running event loop,
     # and a module-level mcp.run() re-enters anyio.run → "Already running

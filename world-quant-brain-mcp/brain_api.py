@@ -131,7 +131,9 @@ class BrainApiClient:
         self.auth_credentials = None
         self.is_authenticating = False
         self._request_semaphore = asyncio.Semaphore(int(os.environ.get("BRAIN_MAX_CONCURRENCY", "8")))
-        self._session_lock = asyncio.Lock()
+        # _session_lock removed: requests.Session is thread-safe (urllib3 connection pool + cookiejar),
+        # and the lock was serializing ALL requests through asyncio.to_thread, defeating parallelism.
+        # Auth mutations (cookies.clear, auth=None) are protected by _auth_lock instead.
         self._auth_lock = asyncio.Lock()
         self._auth_validated_until = 0.0
         try:
@@ -424,41 +426,40 @@ class BrainApiClient:
         asyncio_timeout = timeout + 10
         
         async with self._request_semaphore:
-            async with self._session_lock:
-                try:
-                    # Wrap asyncio.to_thread with wait_for to prevent infinite hangs
-                    return await asyncio.wait_for(
-                        asyncio.to_thread(
-                            self.session.request,
-                            method,
-                            absolute_url,
-                            timeout=timeout,
-                            **kwargs,
-                        ),
-                        timeout=asyncio_timeout
-                    )
-                except asyncio.TimeoutError:
-                    self.log(f"Request asyncio timeout for {method} {absolute_url} after {asyncio_timeout}s", "ERROR")
-                    raise TimeoutError(f"Request timed out after {asyncio_timeout}s")
-                except asyncio.CancelledError:
-                    self.log(f"Request cancelled for {method} {absolute_url}", "WARNING")
-                    raise
-                except requests.Timeout as e:
-                    self.log(f"Request timeout for {method} {absolute_url}: {str(e)}", "ERROR")
-                    raise TimeoutError(f"Request timed out after {timeout}s") from e
-                except requests.ConnectionError as e:
-                    self.log(f"Connection error for {method} {absolute_url}: {str(e)}", "ERROR")
-                    raise ConnectionError(f"Failed to connect to {absolute_url}") from e
-                except requests.HTTPError as e:
-                    self.log(f"HTTP error for {method} {absolute_url}: {str(e)}", "ERROR")
-                    raise
-                except Exception as e:
-                    # Catch other unexpected errors (e.g., RemoteDisconnected wrapped in other exceptions)
-                    error_str = str(e)
-                    if "RemoteDisconnected" in error_str or "Connection aborted" in error_str:
-                        self.log(f"Remote disconnected for {method} {absolute_url}: {error_str}", "ERROR")
-                        raise ConnectionError(f"Remote server disconnected: {absolute_url}") from e
-                    raise
+            try:
+                # Wrap asyncio.to_thread with wait_for to prevent infinite hangs
+                return await asyncio.wait_for(
+                    asyncio.to_thread(
+                        self.session.request,
+                        method,
+                        absolute_url,
+                        timeout=timeout,
+                        **kwargs,
+                    ),
+                    timeout=asyncio_timeout
+                )
+            except asyncio.TimeoutError:
+                self.log(f"Request asyncio timeout for {method} {absolute_url} after {asyncio_timeout}s", "ERROR")
+                raise TimeoutError(f"Request timed out after {asyncio_timeout}s")
+            except asyncio.CancelledError:
+                self.log(f"Request cancelled for {method} {absolute_url}", "WARNING")
+                raise
+            except requests.Timeout as e:
+                self.log(f"Request timeout for {method} {absolute_url}: {str(e)}", "ERROR")
+                raise TimeoutError(f"Request timed out after {timeout}s") from e
+            except requests.ConnectionError as e:
+                self.log(f"Connection error for {method} {absolute_url}: {str(e)}", "ERROR")
+                raise ConnectionError(f"Failed to connect to {absolute_url}") from e
+            except requests.HTTPError as e:
+                self.log(f"HTTP error for {method} {absolute_url}: {str(e)}", "ERROR")
+                raise
+            except Exception as e:
+                # Catch other unexpected errors (e.g., RemoteDisconnected wrapped in other exceptions)
+                error_str = str(e)
+                if "RemoteDisconnected" in error_str or "Connection aborted" in error_str:
+                    self.log(f"Remote disconnected for {method} {absolute_url}: {error_str}", "ERROR")
+                    raise ConnectionError(f"Remote server disconnected: {absolute_url}") from e
+                raise
 
     def _retry_wait_seconds(self, response: Optional[requests.Response], attempt: int, base_delay: float = 2.0, max_delay: float = 60.0) -> float:
         if response is not None:
@@ -1229,8 +1230,22 @@ class BrainApiClient:
             # Fetch all data from API (pagination loop)
             all_results = []
             offset = 0
+            # The platform's /data-fields endpoint caps page size at limit=50
+            # for ALL queries (verified 2026-08-17: limit=100 returns HTTP 400
+            # "Invalid query: pagination limit too high", regardless of offset
+            # or search). A larger page size is NOT permitted, so use limit=50
+            # uniformly and stop gracefully on client errors, returning
+            # whatever pages were already fetched instead of failing the
+            # whole call.
             limit = 50
+            # Cap unscoped dumps: a full listing (1500+ fields) is useless as
+            # a catalog to the model and blows up the MCP response size/time.
+            # Stop early and tell the caller to narrow with search /
+            # dataset_id / data_type instead.
+            max_fields = 300
             total_count = None
+            truncated = False
+            capped = False
             
             while True:
                 params = {
@@ -1251,12 +1266,26 @@ class BrainApiClient:
                 if targeted_search:
                     params['search'] = search_term
                 
-                data = await self._request_json_with_retries(
-                    'GET',
-                    f"{self.base_url}/data-fields",
-                    params=params,
-                    op_name=f"get_datafields(offset={offset})",
-                )
+                try:
+                    data = await self._request_json_with_retries(
+                        'GET',
+                        f"{self.base_url}/data-fields",
+                        params=params,
+                        op_name=f"get_datafields(offset={offset})",
+                    )
+                except requests.HTTPError as e:
+                    status = getattr(getattr(e, 'response', None), 'status_code', None)
+                    if status is not None and 400 <= status < 500 and all_results:
+                        # Server rejected a deeper page (e.g. search + deep offset).
+                        # Keep the pages already fetched instead of failing the whole call.
+                        self.log(
+                            f"get_datafields: pagination stopped at offset={offset} "
+                            f"(HTTP {status}), returning {len(all_results)} partial results",
+                            "WARNING",
+                        )
+                        truncated = True
+                        break
+                    raise
                 
                 results = data.get('results', [])
                 all_results.extend(results)
@@ -1264,12 +1293,19 @@ class BrainApiClient:
                 if total_count is None:
                     total_count = data.get('count', 0)
                 
+                # Stop early once the unscoped size cap is reached
+                if not targeted_search and len(all_results) >= max_fields:
+                    capped = True
+                    break
+                
                 # Break if we've fetched all data
                 if len(results) < limit or len(all_results) >= total_count:
                     break
                 
                 offset += limit
-                await asyncio.sleep(2)
+                # Brief pause between pages; rate-limit backoff is already
+                # handled by _request_json_with_retries (429/5xx retries).
+                await asyncio.sleep(0.5)
             
             # Prepare complete response
             complete_data = {
@@ -1278,6 +1314,15 @@ class BrainApiClient:
                 'extraNote': "if your returned result is 0, you may want to check your parameter by using get_platform_setting_options tool to got correct parameter. Search supports fuzzy matching with multiple keywords (space-separated, AND logic).",
                 'from_cache': False
             }
+            if truncated or capped:
+                complete_data['pagination_truncated'] = True
+                if capped:
+                    complete_data['extraNote'] += (f" NOTE: unscoped listing capped at {max_fields} fields; "
+                                                   "use search / dataset_id / data_type to narrow.")
+                else:
+                    complete_data['extraNote'] += (" NOTE: server rejected a deeper page (HTTP 4xx), "
+                                                   "results may be partial; narrow the search term or "
+                                                   "dataset filter to see more.")
             
             # Cache the complete unscoped dump only (never poison it with search pages)
             if not targeted_search:

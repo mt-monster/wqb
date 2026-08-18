@@ -44,17 +44,12 @@ def get_validator():
     raise RuntimeError("未找到 alpha-expression-verifier（设 WQ_VALIDATOR_DIR 指定）")
 
 
-KNOWN_OPS = {
-    "rank", "add", "subtract", "multiply", "divide", "signed_power", "sqrt",
-    "greater", "less", "if_else", "trade_when", "delay", "delta",
-    "ts_delay", "ts_delta", "ts_mean", "ts_sum", "ts_std_dev", "ts_rank",
-    "ts_decay_linear", "ts_ir", "ts_av_diff", "ts_scale",
-    "ts_zscore", "ts_backfill", "ts_arg_max", "ts_arg_min", "ts_product",
-    "group_rank", "group_neutralize", "group_mean", "group_sum", "group_zscore",
-    "quantile", "pasteurize", "normalize", "vec_avg", "vec_max", "vec_min",
-    "vec_sum", "vec_count", "vec_norm", "bucket", "range", "winsorize",
-    "abs", "log", "sign", "exp", "power", "densify",
-}
+# 从 src/wqb/config.py 导入平台权威算子列表，避免多处维护不同步
+_REPO_ROOT = os.path.dirname(os.path.dirname(ROOT))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from src.wqb.config import OP_FAMILIES
+KNOWN_OPS = {op for ops in OP_FAMILIES.values() for op in ops}
 VECTOR_ONLY_OPS = {"vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm"}
 VEC_WRAP_OPS = ("vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm")
 INACCESSIBLE_OPS = {"ts_min", "ts_max"}  # 语法合法但回测 ERROR 级联 CANCEL（批X实证）

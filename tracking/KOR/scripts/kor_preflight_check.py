@@ -19,18 +19,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_WHITELIST = os.path.join(HERE, "..", "reference", "kor_chart_cnn_alpha_field_whitelist.json")
 VERIFY_SCRIPT = r"C:\Users\MENGTAO\.qoder-cn\skills\alpha-expression-verifier\scripts\verify_expr.py"
 
-# FASTEXPR 已知算子/函数(非字段)。新增算子前先确认平台支持再补录。
-KNOWN_OPS = {
-    "rank", "add", "subtract", "multiply", "divide", "signed_power", "sqrt",
-    "greater", "less", "if_else", "trade_when", "delay", "delta",
-    "ts_delay", "ts_delta", "ts_mean", "ts_sum", "ts_std_dev", "ts_rank",
-    "ts_decay_linear", "ts_ir", "ts_av_diff", "ts_scale",
-    "ts_zscore", "ts_backfill", "ts_arg_max", "ts_arg_min", "ts_product",
-    "group_rank", "group_neutralize", "group_mean", "group_sum", "group_zscore",
-    "quantile", "pasteurize", "normalize", "vec_avg", "vec_max", "vec_min",
-    "vec_sum", "vec_count", "vec_norm", "bucket", "range", "winsorize",
-    "abs", "log", "sign", "exp", "power",
-}
+# FASTEXPR 已知算子/函数(非字段)。从 src/wqb/config.py 导入平台权威算子列表。
+_REPO_ROOT = os.path.dirname(os.path.dirname(HERE))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from src.wqb.config import OP_FAMILIES
+KNOWN_OPS = {op for ops in OP_FAMILIES.values() for op in ops}
 # MATRIX 数据集禁用的 VECTOR 聚合算子
 VECTOR_ONLY_OPS = {"vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm"}
 # VECTOR(事件型)数据集中允许直接包裹事件字段的聚合算子
