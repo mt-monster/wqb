@@ -1,0 +1,18 @@
+[
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 10)))",
+ "rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5))",
+ "subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 10)))",
+ "subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 20)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentence_sentiment_average), 5)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentence_sentiment_average), 10)))",
+ "subtract(0, rank(ts_rank(vec_avg(headline_sentence_sentiment_average), 20)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_subjectivity_score), 5)))",
+ "subtract(0, rank(ts_rank(vec_avg(headline_subjectivity_score), 10)))",
+ "subtract(0, rank(vec_norm(headline_sentiment_vader_score)))",
+ "subtract(0, rank(vec_sum(headline_sentiment_vader_score)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))",
+ "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))",
+ "add(0.5*subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5))), 0.5*subtract(0, rank(ts_delta(vec_avg(headline_textblob_sentiment_score), 5))))",
+ "add(0.5*subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 20))), 0.5*subtract(0, rank(ts_rank(vec_avg(headline_sentence_sentiment_average), 20))))"
+]

@@ -1,5 +1,6 @@
 import json, sys, time
-sys.path.insert(0, r"C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+import os
+sys.path.insert(0, os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 from _lib.common import CampaignContext, atomic_write, load_credentials
 from _lib.api import Api, api_call
 from _lib.poller import TERMINAL

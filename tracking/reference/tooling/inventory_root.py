@@ -24,8 +24,8 @@ def dir_size(path):
             # skip nested heavy dirs
             for f in fn:
                 try: tot += os.path.getsize(os.path.join(dp, f))
-                except: pass
-    except: pass
+                except OSError: pass
+    except OSError: pass
     return tot
 
 rows = []
@@ -46,12 +46,12 @@ for name in sorted(os.listdir(ROOT)):
                 for f in fn:
                     cnt += 1
                     try: sz += os.path.getsize(os.path.join(dp, f))
-                    except: pass
+                    except OSError: pass
             rows.append((name, f"DIR({cnt} files)", cnt, sz, ""))
     else:
         ext = os.path.splitext(name)[1].lower()
         try: sz = os.path.getsize(p)
-        except: sz = 0
+        except OSError: sz = 0
         rows.append((name, f"FILE({ext})", 1, sz, ""))
 
 print("="*100)
@@ -77,7 +77,7 @@ for name in os.listdir(ROOT):
     if os.path.isdir(p): continue
     ext = os.path.splitext(name)[1].lower() or "(noext)"
     try: sz = os.path.getsize(p)
-    except: sz = 0
+    except OSError: sz = 0
     ext_c[ext] += 1
     ext_sz[ext] += sz
 for ext, c in sorted(ext_c.items(), key=lambda x: -ext_sz[x[0]]):

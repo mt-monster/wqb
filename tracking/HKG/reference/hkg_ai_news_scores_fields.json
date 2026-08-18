@@ -1,0 +1,790 @@
+{
+ "dataset": "ai_news_scores",
+ "region": "HKG",
+ "universe": "TOP800",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 97
+ },
+ "field_count": 97,
+ "fetched_at": "2026-08-18T19:33:30",
+ "fields": [
+  {
+   "id": "negative_score_average_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean negative sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "negative_score_average_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "negative_score_average_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily mean negative sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D0);"
+  },
+  {
+   "id": "negative_score_average_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean negative sentiment score for ASI, series variant prv22, D0; average of per-event negative scores for the stock-day "
+  },
+  {
+   "id": "negative_score_average_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean negative sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "negative_score_confidence_lower_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean negative sentiment score for a stock-day in USA (variant prv24, D0), scores in 0"
+  },
+  {
+   "id": "negative_score_confidence_lower_bound_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in ["
+  },
+  {
+   "id": "negative_score_confidence_lower_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily 95% confidence lower bound for negative sentiment mean from RavenPack press releases for EUR, model vari"
+  },
+  {
+   "id": "negative_score_confidence_lower_bound_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean negative sentiment score for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "negative_score_confidence_upper_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean negative sentiment score for a stock-day in USA (variant prv24, D0), scores in 0"
+  },
+  {
+   "id": "negative_score_confidence_upper_bound_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in ["
+  },
+  {
+   "id": "negative_score_confidence_upper_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Per-stock daily 95% confidence upper bound for negative sentiment mean from RavenPack press releases for EUR, model vari"
+  },
+  {
+   "id": "negative_score_confidence_upper_bound_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean negative sentiment score for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "negative_score_maximum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum negative sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "negative_score_maximum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "negative_score_maximum_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily maximum negative sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D"
+  },
+  {
+   "id": "negative_score_maximum_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum negative sentiment score observed for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "negative_score_median_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median negative sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "negative_score_median_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "negative_score_median_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily median of negative sentiment scores from RavenPack press releases for EUR, model variant prv23, same-day"
+  },
+  {
+   "id": "negative_score_median_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median negative sentiment score for ASI, series variant prv22, D0; median of per-event negative scores for the stock-day"
+  },
+  {
+   "id": "negative_score_median_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median negative sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "negative_score_minimum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum negative sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "negative_score_minimum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum negative sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "negative_score_minimum_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum negative sentiment score observed for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "negative_score_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of negative sentiment scores across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "negative_score_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of negative sentiment scores for ASI, variant prv2, D1 (per-stock daily)"
+  },
+  {
+   "id": "negative_score_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily standard deviation of negative sentiment scores from RavenPack press releases for EUR, model variant prv"
+  },
+  {
+   "id": "negative_score_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of negative sentiment scores for ASI, variant prv22, D0; dispersion of per-event negative scores for "
+  },
+  {
+   "id": "negative_sentiment_dispersion_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of negative sentiment scores for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "negative_sentiment_lowest_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum negative sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "negative_sentiment_peak_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum negative sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "negative_sentiment_upper_estimate_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the negative sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "neutral_score_average_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean neutral sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "neutral_score_average_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean neutral sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "neutral_score_average_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily mean neutral sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D0); "
+  },
+  {
+   "id": "neutral_score_average_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean neutral sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "neutral_score_confidence_lower_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean neutral sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–"
+  },
+  {
+   "id": "neutral_score_confidence_lower_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily 95% confidence lower bound for neutral sentiment mean from RavenPack press releases for EUR, model varia"
+  },
+  {
+   "id": "neutral_score_confidence_upper_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Upper 95% confidence bound for the mean neutral sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–"
+  },
+  {
+   "id": "neutral_score_confidence_upper_bound_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean neutral sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0"
+  },
+  {
+   "id": "neutral_score_confidence_upper_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily 95% confidence upper bound for neutral sentiment mean from RavenPack press releases for EUR, model varia"
+  },
+  {
+   "id": "neutral_score_confidence_upper_bound_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean neutral sentiment score for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "neutral_score_confidence_upper_bound_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the neutral sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "neutral_score_maximum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum neutral sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "neutral_score_maximum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum neutral sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "neutral_score_maximum_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily maximum neutral sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D0"
+  },
+  {
+   "id": "neutral_score_maximum_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum neutral sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "neutral_score_median_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median neutral sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "neutral_score_median_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median neutral sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "neutral_score_median_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily median of neutral sentiment scores from RavenPack press releases for EUR, model variant prv23, same-day "
+  },
+  {
+   "id": "neutral_score_median_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median neutral sentiment score for ASI, series variant prv22, D0 (same-day); median of per-event neutral scores for the "
+  },
+  {
+   "id": "neutral_score_median_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median neutral sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "neutral_score_minimum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum neutral sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "neutral_score_minimum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum neutral sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "neutral_score_minimum_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily minimum neutral sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D0"
+  },
+  {
+   "id": "neutral_score_minimum_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum neutral sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "neutral_score_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "neutral_score_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores for ASI, variant prv2, D1 (per-stock daily)"
+  },
+  {
+   "id": "neutral_score_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily standard deviation of neutral sentiment scores from RavenPack press releases for EUR, model variant prv2"
+  },
+  {
+   "id": "neutral_score_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores for ASI, variant prv22, D0; dispersion of per-event neutral scores for th"
+  },
+  {
+   "id": "neutral_sentiment_dispersion_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of neutral sentiment scores for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "positive_score_average_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean positive sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "positive_score_average_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "positive_score_average_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily mean positive sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D0);"
+  },
+  {
+   "id": "positive_score_average_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean positive sentiment score for ASI, series variant prv22, D0; average of per-event positive scores for the stock-day "
+  },
+  {
+   "id": "positive_score_average_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean positive sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "positive_score_confidence_lower_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean positive sentiment score for a stock-day in USA (variant prv24, D0), scores in 0"
+  },
+  {
+   "id": "positive_score_confidence_lower_bound_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in ["
+  },
+  {
+   "id": "positive_score_confidence_lower_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily 95% confidence lower bound for positive sentiment mean from RavenPack press releases for EUR, model vari"
+  },
+  {
+   "id": "positive_score_confidence_lower_bound_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the mean positive sentiment score for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "positive_score_confidence_lower_bound_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lower 95% confidence bound for the positive sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "positive_score_confidence_upper_bound",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean positive sentiment score for a stock-day in USA (variant prv24, D0), scores in 0"
+  },
+  {
+   "id": "positive_score_confidence_upper_bound_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in ["
+  },
+  {
+   "id": "positive_score_confidence_upper_bound_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily 95% confidence upper bound for positive sentiment mean from RavenPack press releases for EUR, model vari"
+  },
+  {
+   "id": "positive_score_confidence_upper_bound_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the mean positive sentiment score for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "positive_score_confidence_upper_bound_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Upper 95% confidence bound for the positive sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "positive_score_maximum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum positive sentiment score for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "positive_score_maximum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "positive_score_maximum_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily maximum positive sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D"
+  },
+  {
+   "id": "positive_score_maximum_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum positive sentiment score observed for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "positive_score_maximum_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum positive sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "positive_score_median_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median positive sentiment score across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "positive_score_median_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "positive_score_median_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily median of positive sentiment scores from RavenPack press releases for EUR, model variant prv23, same-day"
+  },
+  {
+   "id": "positive_score_median_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median positive sentiment score for ASI, series variant prv22, D0; median of per-event positive scores for the stock-day"
+  },
+  {
+   "id": "positive_score_median_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median positive sentiment score for USA, series variant prv25, D0 (same-day) offset"
+  },
+  {
+   "id": "positive_score_minimum_value",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum positive sentiment score for a stock on a given day in USA (variant prv24, same-day D0), from RavenPack PR event"
+  },
+  {
+   "id": "positive_score_minimum_value_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum positive sentiment score for ASI, variant prv2, D1 (per-stock daily; scores in [0,1])"
+  },
+  {
+   "id": "positive_score_minimum_value_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily minimum positive sentiment score from RavenPack press releases for EUR, model variant prv23, same-day (D"
+  },
+  {
+   "id": "positive_score_minimum_value_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum positive sentiment score observed for ASI, variant prv22, D0 on the stock-day"
+  },
+  {
+   "id": "positive_score_minimum_value_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum positive sentiment score for USA, series variant prv25, D0 offset"
+  },
+  {
+   "id": "positive_score_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores across events for a stock-day in USA (variant prv24, D0), scores in 0–1"
+  },
+  {
+   "id": "positive_score_standard_deviation_2",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores for ASI, variant prv2, D1 (per-stock daily)"
+  },
+  {
+   "id": "positive_score_standard_deviation_3",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Per-stock daily standard deviation of positive sentiment scores from RavenPack press releases for EUR, model variant prv"
+  },
+  {
+   "id": "positive_score_standard_deviation_4",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores for ASI, variant prv22, D0; dispersion of per-event positive scores for "
+  },
+  {
+   "id": "positive_score_standard_deviation_5",
+   "type": "MATRIX",
+   "coverage": 0.749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of positive sentiment scores for USA, series variant prv25, D0 offset"
+  }
+ ]
+}

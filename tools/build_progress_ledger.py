@@ -9,8 +9,10 @@ from collections import Counter
 BASE = r"D:\coding\traeCN_project\wqb\tracking"
 
 def load(p):
-    try: return json.load(open(p, encoding="utf-8"))
-    except: return None
+    try:
+        return json.load(open(p, encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
 
 # ---- platform OS set (已全量拉取, 快照存于 _os_ids.json) ----
 os_ids = {}

@@ -1,70 +1,70 @@
 {
-  "_doc": "USA D1 战役集中阈值配置。闸门统一引用本文件，禁止散落硬编码。D1 门槛取自 how-to-pass-AlphaTest（D1 Sharpe>1.25 / Fitness>1.0）。",
-  "review": {
-    "sharpe_min": 1.25,
-    "fitness_min": 1.0,
-    "two_year_sharpe_min": 1.6,
-    "margin_min": 0.0005,
-    "turnover_min": 0.05,
-    "turnover_max": 0.30,
-    "ra_failed_count_max": 0
-  },
-  "near": {
-    "sharpe_min": 1.0,
-    "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析"
-  },
-  "quick_scan": {
-    "red_2y_max": 0.6,
-    "red_sh_abs_min": 0.8,
-    "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖"
-  },
-  "probe_scoring_v2": {
-    "_doc": "三灯 v2：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
-    "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
-    "green_min": 2.2,
-    "yellow_min": 1.2,
-    "w_sharpe": 1.2,
-    "w_fitness": 0.8,
-    "w_mirror": 0.5,
-    "w_margin": 0.3,
-    "w_tvr": 0.2,
-    "w_rn": 0.2,
-    "w_breadth": 0.2,
-    "c_w_penalty": 0.4,
-    "breadth_bar": 0.5,
-    "rn_bar": 1.0,
-    "early_red_sh": 0.3,
-    "tvr_low": 5,
-    "tvr_high": 30,
-    "red_2y_sh_abs_min": 0.8,
-    "red_2y_max": 0.6
-  },
-  "hard_gates": {
-    "prod_correlation_max": 0.7,
-    "self_correlation_max": 0.7,
-    "_note": "平台提交期硬闸，异步计算须以重检为准"
-  },
-  "dataset_health": {
-    "_doc": "S0 数据集预筛（v3.1，2026-08-16 全链路走查修订）。mode=general：alphaCount 只进 score 软罚（P5 分段罚：<=50→0.30，500→0.15，>=5000→0.02），不进硬闸；mode=ppa：alphaCount<=alpha_count_max 硬闸（tier1 超标降 tier2）。tier_method=quantile：非硬排除者按 score 分位分带（区域内自适应，消固定阈值悬崖）；tier1_score_pct=0.8 → tier1≈top20%（v3.0 的 0.6 使 tier1 恒 40% 且被超拥挤集占据，analyst15 ac=102072 实证，白名单失去稀缺性）；threshold=固定阈值回退。硬地板（excluded 绝对底线，与模式无关）：coverage<coverage_hard_min(0.65，配合回填带下调，v3.0 为 0.7) 或 usableFields<field_count_hard_min。usable 字段精修（P3）：已建 typed catalog 的数据集按目录内 coverage>=0.85 字段数计。保底带（O2/O4，防结构性漏攻）：backfill_band=中覆盖低竞争高价值（0.65<=cov<0.85 & ac<=50 & vs>=6）保底 tier2，生成侧必须 ts_backfill(66/120) 包裹字段；probe_exception=微型集例外（cov>=0.9 & ac=0 & vs>=6 & 字段<硬地板）保底 tier2 仅限 Stage A 探针早停。tier_note 字段溯源。",
-    "mode": "general",
-    "tier_method": "quantile",
-    "tier1_score_pct": 0.8,
-    "tier2_score_pct": 0.55,
-    "coverage_hard_min": 0.65,
-    "field_count_hard_min": 5,
-    "coverage_min": 0.85,
-    "field_count_min": 10,
-    "alpha_count_max": 50,
-    "tier2_coverage_min": 0.85,
-    "tier2_field_count_min": 5,
-    "tier2_alpha_count_max": 200,
-    "backfill_band_enable": true,
-    "backfill_band_cov_min": 0.65,
-    "backfill_band_cov_max": 0.85,
-    "backfill_band_alpha_count_max": 50,
-    "backfill_band_value_score_min": 6,
-    "probe_exception_enable": true,
-    "probe_exception_cov_min": 0.9,
-    "probe_exception_value_score_min": 6
-  }
+ "_doc": "USA D1 战役集中阈值配置。闸门统一引用本文件，禁止散落硬编码。D1 门槛取自 how-to-pass-AlphaTest（D1 Sharpe>1.25 / Fitness>1.0）。",
+ "review": {
+  "sharpe_min": 1.25,
+  "fitness_min": 1.0,
+  "two_year_sharpe_min": 1.6,
+  "margin_min": 0.0005,
+  "turnover_min": 0.05,
+  "turnover_max": 0.3,
+  "ra_failed_count_max": 0
+ },
+ "near": {
+  "sharpe_min": 1.0,
+  "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析"
+ },
+ "quick_scan": {
+  "red_2y_max": 0.6,
+  "red_sh_abs_min": 0.8,
+  "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖"
+ },
+ "probe_scoring_v2": {
+  "_doc": "三灯 v2：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
+  "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
+  "green_min": 2.2,
+  "yellow_min": 1.2,
+  "w_sharpe": 1.2,
+  "w_fitness": 0.8,
+  "w_mirror": 0.5,
+  "w_margin": 0.3,
+  "w_tvr": 0.2,
+  "w_rn": 0.2,
+  "w_breadth": 0.2,
+  "c_w_penalty": 0.4,
+  "breadth_bar": 0.5,
+  "rn_bar": 1.0,
+  "early_red_sh": 0.3,
+  "tvr_low": 5,
+  "tvr_high": 30,
+  "red_2y_sh_abs_min": 0.8,
+  "red_2y_max": 0.6
+ },
+ "hard_gates": {
+  "prod_correlation_max": 0.7,
+  "self_correlation_max": 0.7,
+  "_note": "平台提交期硬闸，异步计算须以重检为准"
+ },
+ "dataset_health": {
+  "_doc": "S0 数据集预筛（v3.1，2026-08-16 全链路走查修订）。mode=general：alphaCount 只进 score 软罚（P5 分段罚：<=50→0.30，500→0.15，>=5000→0.02），不进硬闸；mode=ppa：alphaCount<=alpha_count_max 硬闸（tier1 超标降 tier2）。tier_method=quantile：非硬排除者按 score 分位分带（区域内自适应，消固定阈值悬崖）；tier1_score_pct=0.8 → tier1≈top20%（v3.0 的 0.6 使 tier1 恒 40% 且被超拥挤集占据，analyst15 ac=102072 实证，白名单失去稀缺性）；threshold=固定阈值回退。硬地板（excluded 绝对底线，与模式无关）：coverage<coverage_hard_min(0.65，配合回填带下调，v3.0 为 0.7) 或 usableFields<field_count_hard_min。usable 字段精修（P3）：已建 typed catalog 的数据集按目录内 coverage>=0.85 字段数计。保底带（O2/O4，防结构性漏攻）：backfill_band=中覆盖低竞争高价值（0.65<=cov<0.85 & ac<=50 & vs>=6）保底 tier2，生成侧必须 ts_backfill(66/120) 包裹字段；probe_exception=微型集例外（cov>=0.9 & ac=0 & vs>=6 & 字段<硬地板）保底 tier2 仅限 Stage A 探针早停。tier_note 字段溯源。",
+  "mode": "general",
+  "tier_method": "quantile",
+  "tier1_score_pct": 0.8,
+  "tier2_score_pct": 0.55,
+  "coverage_hard_min": 0.65,
+  "field_count_hard_min": 5,
+  "coverage_min": 0.85,
+  "field_count_min": 10,
+  "alpha_count_max": 50,
+  "tier2_coverage_min": 0.85,
+  "tier2_field_count_min": 5,
+  "tier2_alpha_count_max": 200,
+  "backfill_band_enable": true,
+  "backfill_band_cov_min": 0.65,
+  "backfill_band_cov_max": 0.85,
+  "backfill_band_alpha_count_max": 50,
+  "backfill_band_value_score_min": 6,
+  "probe_exception_enable": true,
+  "probe_exception_cov_min": 0.9,
+  "probe_exception_value_score_min": 6
+ }
 }

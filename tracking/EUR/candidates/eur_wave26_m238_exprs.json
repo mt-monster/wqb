@@ -1,0 +1,18 @@
+[
+ "rank(mdl238_global_rank)",
+ "subtract(0, rank(mdl238_global_rank))",
+ "rank(mdl238_region_rank)",
+ "subtract(0, rank(mdl238_region_rank))",
+ "rank(mdl238_global_change_rank)",
+ "subtract(0, rank(mdl238_global_change_rank))",
+ "rank(mdl238_global_owner_rank)",
+ "subtract(0, rank(mdl238_global_owner_rank))",
+ "rank(mdl238_global_screening_rank)",
+ "subtract(0, rank(mdl238_global_screening_rank))",
+ "rank(global_institutional_preference_rank)",
+ "subtract(0, rank(global_institutional_preference_rank))",
+ "add(0.5*rank(mdl238_global_rank), 0.5*rank(mdl238_global_change_rank))",
+ "add(0.5*subtract(0, rank(mdl238_global_rank)), 0.5*subtract(0, rank(mdl238_global_change_rank)))",
+ "add(0.4*rank(mdl238_global_rank), add(0.3*rank(mdl238_global_screening_rank), 0.3*subtract(0, rank(mdl238_global_owner_rank))))",
+ "add(0.4*subtract(0, rank(mdl238_global_rank)), add(0.3*subtract(0, rank(mdl238_global_screening_rank)), 0.3*rank(mdl238_global_owner_rank)))"
+]

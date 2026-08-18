@@ -719,5 +719,183 @@
   },
   "note": "1929 字段（1911 VECTOR + 18 MATRIX 分析师共识目标价/EPS）16 探针全灭：top sh=0.62（TP upside 原始）fit=0.23、2y=0.14、tvr=1.9%；xAjObzXm sh=0.02 但 rnsh=1.12/rnf=0.40（RN 强 IS 崩，近期有效历史太弱）。分析师共识在 EUR/TOP2500 IS 极弱",
   "recorded_at": "2026-08-18"
+ },
+ "wave24_ipv_verdict": {
+  "dataset": "intraday_pv_feats",
+  "wave": "wave24_ipv",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 0.86,
+  "top_fitness": 0.31,
+  "best": {
+   "id": "Wj71LnmQ",
+   "code": "rank(momentum_bid_price_daily)",
+   "sharpe": 0.86,
+   "fitness": 0.31,
+   "two_year_sharpe": 1.07,
+   "margin_bp": 2.64,
+   "turnover_pct": 22.1,
+   "rn_sharpe": 0.74,
+   "rn_fitness": 0.23,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_MARGIN",
+    "HIGH_TURNOVER"
+   ]
+  },
+  "note": "585 MATRIX 字段（日内 bid/ask momentum、vol-price corr、VWAP、intraday return）16 探针全灭：top sh=0.86（bid momentum daily 原始）fit=0.31、mg=2.64bp<5bp；tvr 20-24% 过高（日内信号换手天然高）、margin 全 <5bp 结构墙。日内价格量特征在 EUR/TOP2500/D1 延迟下 IS 弱",
+  "recorded_at": "2026-08-18"
+ },
+ "wave25_fhp_verdict": {
+  "dataset": "fund_holdings_panel",
+  "wave": "wave25_fhp",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 0.65,
+  "top_fitness": 0.19,
+  "best": {
+   "id": "E5lO65OJ",
+   "code": "rank(vec_avg(herfindahl_index_holdings))",
+   "sharpe": 0.65,
+   "fitness": 0.19,
+   "two_year_sharpe": 1.34,
+   "margin_bp": 1.7,
+   "turnover_pct": 24.1,
+   "rn_sharpe": 0.42,
+   "rn_fitness": 0.08,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_MARGIN",
+    "HIGH_TURNOVER"
+   ]
+  },
+  "note": "30 VECTOR 字段（基金持仓 HHI/holder count/boundary txn/conviction/crowding）16 探针全灭：top sh=0.65（HHI holdings 原始）fit=0.19、mg=1.70bp<5bp、tvr=24.1%。基金持仓行为信号在 EUR/TOP2500 IS 极弱",
+  "recorded_at": "2026-08-18"
+ },
+ "wave20_m36low_verdict": {
+  "dataset": "model36",
+  "wave": "wave20_m36low",
+  "verdict": "LOW_PRIORITY_PROBE",
+  "probe": 16,
+  "status": "pending",
+  "priority": "low",
+  "rationale": "信用风险在 EUR 三次实证弱（wave1 news_sentiment_dl RED、wave6 news_sentiment_nlp RED、wave8 model193 RED），但结构重构（滞后/中性化/交互）未验证。降级为低优先级探针，测试 ts_delay 5/10 日、group_neut country、multiply 20日动量交互。若仍全崩，判死并记录：信用风险在 EUR 经结构重构验证仍弱。",
+  "structural_variants": [
+   "ts_delay(credit_risk_coverage_score_d1, 5)",
+   "ts_delay(credit_risk_leverage_score_d1, 5)",
+   "ts_delay(star_sr_country_rank_d1, 10)",
+   "group_neut(credit_risk_coverage_score_d1, country)",
+   "group_neut(credit_risk_leverage_score_d1, country)",
+   "group_neut(star_sr_sector_rank_d1, country)",
+   "multiply(credit_risk_coverage_score_d1, ts_delta(close, 20))",
+   "multiply(credit_risk_leverage_score_d1, ts_delta(close, 20))"
+  ],
+  "recorded_at": "2026-08-18"
+ },
+ "wave26_m238_verdict": {
+  "dataset": "model238",
+  "wave": "wave26_m238",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 1.32,
+  "top_fitness": 0.87,
+  "best": {
+   "id": "kqjEan8k",
+   "code": "rank(mdl238_global_rank)",
+   "sharpe": 1.32,
+   "fitness": 0.87,
+   "two_year_sharpe": 1.38,
+   "margin_bp": 27.09,
+   "turnover_pct": 4.0,
+   "rn_sharpe": 0.27,
+   "rn_fitness": 0.05,
+   "failed_checks": [
+    "LOW_FITNESS",
+    "LOW_TURNOVER"
+   ]
+  },
+  "note": "44 MATRIX 字段（Smart Holdings 机构持仓偏好/拥挤度/风格匹配）16 探针全灭：top sh=1.32（SH global 原始）fit=0.87<1、mg=27.09bp>5bp、tvr=4.0%<5%、rnf=0.05；多条 sh 1.22-1.32、2y 1.22-1.41、mg 18-27bp IS 中等但 rnf 全崩 0.01-0.05。Smart Holdings 与 FCF 路线同构（IS 强 RN 弱）",
+  "recorded_at": "2026-08-18"
+ },
+ "wave27_acq_verdict": {
+  "dataset": "acquisition_model",
+  "wave": "wave27_acq",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 0.76,
+  "top_fitness": 0.34,
+  "best": {
+   "id": "np7x6xO3",
+   "code": "rank(vec_avg(global_percentile_acquisition_likelihood))",
+   "sharpe": 0.76,
+   "fitness": 0.34,
+   "two_year_sharpe": 0.69,
+   "margin_bp": 18.1,
+   "turnover_pct": 2.7,
+   "rn_sharpe": 0.52,
+   "rn_fitness": 0.14,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_TURNOVER"
+   ]
+  },
+  "note": "15 VECTOR 字段（M&A 目标可能性 global/region/valuation/fundamental/text/size）16 探针全灭：top sh=0.76（M&A likelihood global 原始）fit=0.34、tvr=2.7%<5%；margin 18-32bp 不错但 tvr 全 <5% 下限、fit 全 <1。M&A 模型在 EUR/TOP2500 IS 弱",
+  "recorded_at": "2026-08-18"
+ },
+ "wave28_inst6_verdict": {
+  "dataset": "institutions6",
+  "wave": "wave28_inst6",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 0.54,
+  "top_fitness": 0.19,
+  "best": {
+   "id": "mLjwKmvK",
+   "code": "rank(count_institutional_buyers_security)",
+   "sharpe": 0.54,
+   "fitness": 0.19,
+   "two_year_sharpe": 0.63,
+   "margin_bp": 9.14,
+   "turnover_pct": 3.2,
+   "rn_sharpe": 0.37,
+   "rn_fitness": 0.08,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_TURNOVER",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  "note": "11 MATRIX 字段（机构买卖行为 buyers/sellers/net/acquired/holders）16 探针全灭：top sh=0.54（inst buyers 原始）fit=0.19。机构买卖行为信号在 EUR/TOP2500 IS 极弱",
+  "recorded_at": "2026-08-18"
+ },
+ "wave29_m354_verdict": {
+  "dataset": "model354",
+  "wave": "wave29_m354",
+  "verdict": "RED",
+  "probe": 16,
+  "top_sharpe": 0.21,
+  "top_fitness": 0.05,
+  "best": {
+   "id": "qMj9GrYE",
+   "code": "rank(vec_avg(mdl354_group_pt1divyld_exp))",
+   "sharpe": 0.21,
+   "fitness": 0.05,
+   "two_year_sharpe": 0.46,
+   "margin_bp": 4.34,
+   "turnover_pct": 3.68,
+   "rn_sharpe": -0.06,
+   "rn_fitness": -0.01,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  "note": "236 VECTOR 字段（估值模型 PE/PDividend/PSale/EBIT_EV/EBITDA_EV/BookP，cov=1.0）16 探针全灭：top sh=0.21（divyld_exp 原始）fit=0.05、mg=4.34bp<5bp、rnf 全崩 -0.02~0.02。model354 估值因子在 EUR/TOP2500 IS 极弱，与 FCF 路线同族但信号强度差 10 倍",
+  "recorded_at": "2026-08-18"
  }
 }

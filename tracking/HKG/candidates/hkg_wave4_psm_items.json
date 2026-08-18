@@ -1,0 +1,18 @@
+[
+  {"code": "subtract(0, rank(price_to_intrinsic_value_ratio_3))", "note": "price/IV 比率 镜像（低估做多）"},
+  {"code": "rank(price_to_intrinsic_value_ratio_3)", "note": "price/IV 比率 原始"},
+  {"code": "rank(arm_score_5pt_scale_2)", "note": "ARM 评分 原始"},
+  {"code": "subtract(0, rank(arm_score_5pt_scale_2))", "note": "ARM 评分 镜像"},
+  {"code": "rank(arm_global_rank_score)", "note": "ARM 全球排名 原始"},
+  {"code": "subtract(0, rank(arm_global_rank_score))", "note": "ARM 全球排名 镜像"},
+  {"code": "rank(analyst_revisions_score_2)", "note": "分析师修订评分 原始"},
+  {"code": "subtract(0, rank(analyst_revisions_score_2))", "note": "分析师修订评分 镜像"},
+  {"code": "rank(mean_estimate_change_pct_fy1_earnings_7d_4)", "note": "FY1 盈利预测变化 7d 原始"},
+  {"code": "subtract(0, rank(mean_estimate_change_pct_fy1_earnings_7d_4))", "note": "FY1 盈利预测变化 7d 镜像"},
+  {"code": "rank(recommendation_mean_change_7d_2)", "note": "推荐均值变化 7d 原始"},
+  {"code": "subtract(0, rank(recommendation_mean_change_7d_2))", "note": "推荐均值变化 7d 镜像"},
+  {"code": "rank(warranted_forward_pe_ratio)", "note": "合理远期 PE 原始"},
+  {"code": "subtract(0, rank(warranted_forward_pe_ratio))", "note": "合理远期 PE 镜像"},
+  {"code": "add(0.5*rank(arm_score_5pt_scale_2), 0.5*rank(analyst_revisions_score_2))", "note": "ARM+修订 复合"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(arm_score_5pt_scale_2))", "note": "价值镜像+ARM 复合"}
+]

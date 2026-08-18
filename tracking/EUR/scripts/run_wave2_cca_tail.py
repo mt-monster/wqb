@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """
 wave2 chart_cnn_alpha tail collector.
 主 runner 因 PermissionError 崩溃后，收割最后一批在飞 multisim 的结果，
@@ -11,7 +12,7 @@ import sys
 import time
 from pathlib import Path
 
-TOOLKIT = Path("C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+TOOLKIT = Path(os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 sys.path.insert(0, str(TOOLKIT))
 
 from _lib.common import CampaignContext, atomic_write, load_credentials

@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(herfindahl_index_holdings))",
+ "subtract(0, rank(vec_avg(herfindahl_index_holdings)))",
+ "rank(vec_avg(holder_account_total))",
+ "subtract(0, rank(vec_avg(holder_account_total)))",
+ "rank(vec_avg(boundary_transaction_total))",
+ "subtract(0, rank(vec_avg(boundary_transaction_total)))",
+ "rank(vec_avg(top_weighted_account_number))",
+ "subtract(0, rank(vec_avg(top_weighted_account_number)))",
+ "rank(vec_avg(holding_value_distribution_score))",
+ "subtract(0, rank(vec_avg(holding_value_distribution_score)))",
+ "rank(vec_avg(stable_boundary_trade_count_21d))",
+ "subtract(0, rank(vec_avg(stable_boundary_trade_count_21d)))",
+ "add(0.5*rank(vec_avg(herfindahl_index_holdings)), 0.5*rank(vec_avg(top_weighted_account_number)))",
+ "add(0.5*subtract(0, rank(vec_avg(herfindahl_index_holdings))), 0.5*subtract(0, rank(vec_avg(top_weighted_account_number))))",
+ "add(0.4*rank(vec_avg(holding_value_distribution_score)), add(0.3*rank(vec_avg(boundary_transaction_total)), 0.3*rank(vec_avg(stable_boundary_trade_count_21d))))",
+ "add(0.4*subtract(0, rank(vec_avg(holding_value_distribution_score))), add(0.3*subtract(0, rank(vec_avg(boundary_transaction_total))), 0.3*subtract(0, rank(vec_avg(stable_boundary_trade_count_21d)))))"
+]

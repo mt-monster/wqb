@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(headline_sentiment_vader_score))",
+ "subtract(0, rank(vec_avg(headline_sentiment_vader_score)))",
+ "rank(vec_avg(headline_textblob_sentiment_score))",
+ "subtract(0, rank(vec_avg(headline_textblob_sentiment_score)))",
+ "rank(vec_avg(headline_sentence_sentiment_average))",
+ "subtract(0, rank(vec_avg(headline_sentence_sentiment_average)))",
+ "rank(vec_avg(headline_vader_positive_polarity))",
+ "subtract(0, rank(vec_avg(headline_vader_positive_polarity)))",
+ "rank(vec_avg(headline_vader_negative_polarity))",
+ "subtract(0, rank(vec_avg(headline_vader_negative_polarity)))",
+ "rank(vec_avg(headline_subjectivity_score))",
+ "subtract(0, rank(vec_avg(headline_subjectivity_score)))",
+ "rank(vec_avg(headline_gunning_fog_index))",
+ "subtract(0, rank(vec_avg(headline_gunning_fog_index)))",
+ "add(0.5*rank(vec_avg(headline_sentiment_vader_score)), 0.5*rank(vec_avg(headline_textblob_sentiment_score)))",
+ "add(0.5*subtract(0, rank(vec_avg(headline_sentiment_vader_score))), 0.5*subtract(0, rank(vec_avg(headline_textblob_sentiment_score))))"
+]

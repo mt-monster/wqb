@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """
 wave20 sentiment27 浜旀Ы鍥炴祴 runner銆?
 杈撳叆 gbr_wave20_exprs.json锛坢eta+expressions锛夛紝鍗曟暟鎹泦 3 鎵?x 8 琛ㄨ揪寮忥紝
@@ -11,7 +12,7 @@ import sys
 import time
 from pathlib import Path
 
-TOOLKIT = Path("C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+TOOLKIT = Path(os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 sys.path.insert(0, str(TOOLKIT))
 
 from _lib.common import CampaignContext, atomic_write, load_credentials

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """wave18 predictive_starmine 增强波五槽回测 runner（2 批 x 8）。"""
 import csv
 import json
@@ -7,7 +8,7 @@ import sys
 import time
 from pathlib import Path
 
-TOOLKIT = Path("C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+TOOLKIT = Path(os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 sys.path.insert(0, str(TOOLKIT))
 
 from _lib.common import CampaignContext, atomic_write, load_credentials

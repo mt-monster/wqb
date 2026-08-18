@@ -1,0 +1,66 @@
+[
+ {
+  "code": "rank(subtract(positive_score_average_value_2, negative_score_average_value_2))",
+  "note": "ASI D1 diff avg raw"
+ },
+ {
+  "code": "subtract(0, rank(subtract(positive_score_average_value_2, negative_score_average_value_2)))",
+  "note": "ASI D1 diff avg mirror"
+ },
+ {
+  "code": "rank(subtract(positive_score_average_value_4, negative_score_average_value_4))",
+  "note": "ASI D0 diff avg raw"
+ },
+ {
+  "code": "subtract(0, rank(subtract(positive_score_average_value_4, negative_score_average_value_4)))",
+  "note": "ASI D0 diff avg mirror"
+ },
+ {
+  "code": "rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2))",
+  "note": "ASI D1 diff max raw"
+ },
+ {
+  "code": "subtract(0, rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2)))",
+  "note": "ASI D1 diff max mirror"
+ },
+ {
+  "code": "rank(negative_score_average_value_2)",
+  "note": "ASI D1 neg avg raw"
+ },
+ {
+  "code": "subtract(0, rank(negative_score_average_value_2))",
+  "note": "ASI D1 neg avg mirror"
+ },
+ {
+  "code": "rank(positive_score_average_value_2)",
+  "note": "ASI D1 pos avg raw"
+ },
+ {
+  "code": "subtract(0, rank(positive_score_average_value_2))",
+  "note": "ASI D1 pos avg mirror"
+ },
+ {
+  "code": "rank(negative_score_standard_deviation_2)",
+  "note": "ASI D1 neg std raw"
+ },
+ {
+  "code": "subtract(0, rank(negative_score_standard_deviation_2))",
+  "note": "ASI D1 neg std mirror"
+ },
+ {
+  "code": "rank(divide(subtract(positive_score_average_value_2, negative_score_average_value_2), add(positive_score_average_value_2, negative_score_average_value_2)))",
+  "note": "ASI D1 diff norm raw"
+ },
+ {
+  "code": "subtract(0, rank(divide(subtract(positive_score_average_value_2, negative_score_average_value_2), add(positive_score_average_value_2, negative_score_average_value_2))))",
+  "note": "ASI D1 diff norm mirror"
+ },
+ {
+  "code": "add(0.5*rank(subtract(positive_score_average_value_2, negative_score_average_value_2)), 0.5*rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2)))",
+  "note": "ASI D1 avg+max diff comp"
+ },
+ {
+  "code": "add(0.5*subtract(0, rank(subtract(positive_score_average_value_2, negative_score_average_value_2))), 0.5*subtract(0, rank(negative_score_average_value_2)))",
+  "note": "ASI D1 diff+neg double mirror comp"
+ }
+]

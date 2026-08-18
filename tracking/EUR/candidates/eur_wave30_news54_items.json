@@ -1,0 +1,18 @@
+[
+ {"code": "rank(vec_avg(mws54_factor))", "note": "N1 mws54_factor 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_factor)))", "note": "N2 mws54_factor 镜像"},
+ {"code": "rank(vec_avg(mws54_eventcallbasicinfo_cancelledflag))", "note": "N3 call_cancelled 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_eventcallbasicinfo_cancelledflag)))", "note": "N4 call_cancelled 镜像"},
+ {"code": "rank(vec_avg(mws54_eventerinfo_fiscalyear))", "note": "N5 er_fiscalyear 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_eventerinfo_fiscalyear)))", "note": "N6 er_fiscalyear 镜像"},
+ {"code": "rank(vec_avg(mws54_eventerinfo_calendaryear))", "note": "N7 er_calendaryear 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_eventerinfo_calendaryear)))", "note": "N8 er_calendaryear 镜像"},
+ {"code": "rank(vec_avg(mws54_keydevelopments_headline))", "note": "N9 keydev_headline 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_keydevelopments_headline)))", "note": "N10 keydev_headline 镜像"},
+ {"code": "rank(vec_avg(mws54_futureeventmkt_situation))", "note": "N11 futureevent_situation 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_futureeventmkt_situation)))", "note": "N12 futureevent_situation 镜像"},
+ {"code": "rank(vec_avg(mws54_eventsdaily_headline))", "note": "N13 eventsdaily_headline 原始"},
+ {"code": "subtract(0, rank(vec_avg(mws54_eventsdaily_headline)))", "note": "N14 eventsdaily_headline 镜像"},
+ {"code": "rank(add(vec_avg(mws54_factor), vec_avg(mws54_keydevelopments_headline)))", "note": "N15 factor+keydev 复合 原始"},
+ {"code": "subtract(0, rank(add(vec_avg(mws54_factor), vec_avg(mws54_keydevelopments_headline))))", "note": "N16 factor+keydev 复合 镜像"}
+]

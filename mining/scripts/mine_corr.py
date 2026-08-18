@@ -6,7 +6,7 @@ import os
 import sys, json
 import pandas as pd
 import numpy as np
-SKILL_DIR = os.environ.get("WQ_ACE_LIB", r"C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts")
+SKILL_DIR = os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts"))
 sys.path.insert(0, SKILL_DIR)
 import ace_lib
 

@@ -1,0 +1,18 @@
+[
+ "subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 20)))",
+ "subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 60)))",
+ "subtract(0, rank(ts_rank(price_to_intrinsic_value_ratio_3, 60)))",
+ "subtract(0, rank(ts_rank(price_to_intrinsic_value_ratio_3, 120)))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(iv_warranted_f12m_pe_3)))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(intrinsic_value_projection_currency_3)))",
+ "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*subtract(0, rank(arm_score_5pt_scale_2)))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(arm_score_5pt_scale_2)))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(returns))",
+ "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*rank(returns))",
+ "add(0.5*subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 20))), 0.5*rank(returns))",
+ "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*rank(returns))",
+ "subtract(0, rank(iv_discount_rate_3))",
+ "rank(iv_discount_rate_3)",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(iv_discount_rate_3)))",
+ "subtract(0, rank(divide(close, intrinsic_value_projection_currency_3)))"
+]

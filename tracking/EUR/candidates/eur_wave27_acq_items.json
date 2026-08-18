@@ -1,0 +1,18 @@
+[
+  {"code": "rank(vec_avg(global_percentile_acquisition_likelihood))", "note": "M&A likelihood global 原始"},
+  {"code": "subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood)))", "note": "M&A likelihood global 镜像"},
+  {"code": "rank(vec_avg(region_percentile_acquisition_likelihood))", "note": "M&A likelihood region 原始"},
+  {"code": "subtract(0, rank(vec_avg(region_percentile_acquisition_likelihood)))", "note": "M&A likelihood region 镜像"},
+  {"code": "rank(vec_avg(global_valuation_percentile_rank))", "note": "M&A valuation 原始"},
+  {"code": "subtract(0, rank(vec_avg(global_valuation_percentile_rank)))", "note": "M&A valuation 镜像"},
+  {"code": "rank(vec_avg(global_fundamental_factor_percentile_rank))", "note": "M&A fundamental 原始"},
+  {"code": "subtract(0, rank(vec_avg(global_fundamental_factor_percentile_rank)))", "note": "M&A fundamental 镜像"},
+  {"code": "rank(vec_avg(global_text_factor_percentile_rank))", "note": "M&A text 原始"},
+  {"code": "subtract(0, rank(vec_avg(global_text_factor_percentile_rank)))", "note": "M&A text 镜像"},
+  {"code": "rank(vec_avg(global_company_size_percentile_rank))", "note": "M&A size 原始"},
+  {"code": "subtract(0, rank(vec_avg(global_company_size_percentile_rank)))", "note": "M&A size 镜像"},
+  {"code": "add(0.5*rank(vec_avg(global_percentile_acquisition_likelihood)), 0.5*rank(vec_avg(global_valuation_percentile_rank)))", "note": "M&A+valuation 复合"},
+  {"code": "add(0.5*subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood))), 0.5*subtract(0, rank(vec_avg(global_valuation_percentile_rank))))", "note": "M&A+valuation 双镜像"},
+  {"code": "add(0.4*rank(vec_avg(global_percentile_acquisition_likelihood)), add(0.3*rank(vec_avg(global_fundamental_factor_percentile_rank)), 0.3*rank(vec_avg(global_text_factor_percentile_rank))))", "note": "M&A+fundamental+text 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood))), add(0.3*subtract(0, rank(vec_avg(global_fundamental_factor_percentile_rank))), 0.3*subtract(0, rank(vec_avg(global_text_factor_percentile_rank)))))", "note": "M&A+fundamental+text 三路镜像"}
+]

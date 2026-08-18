@@ -1,0 +1,18 @@
+[
+  {"code": "subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 20)))", "note": "price/IV ts_delta20 镜像"},
+  {"code": "subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 60)))", "note": "price/IV ts_delta60 镜像"},
+  {"code": "subtract(0, rank(ts_rank(price_to_intrinsic_value_ratio_3, 60)))", "note": "price/IV ts_rank60 镜像"},
+  {"code": "subtract(0, rank(ts_rank(price_to_intrinsic_value_ratio_3, 120)))", "note": "price/IV ts_rank120 镜像"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(iv_warranted_f12m_pe_3)))", "note": "price/IV + warranted PE 双镜像"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(intrinsic_value_projection_currency_3)))", "note": "price/IV + IV 投影 双镜像"},
+  {"code": "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "price/IV 0.6 + ARM 0.4 镜像复合"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "price/IV + ARM 等权镜像"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(returns))", "note": "price/IV 镜像 + returns 短期反转（提 tvr）"},
+  {"code": "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*rank(returns))", "note": "price/IV 0.6 镜像 + returns 0.4"},
+  {"code": "add(0.5*subtract(0, rank(ts_delta(price_to_intrinsic_value_ratio_3, 20))), 0.5*rank(returns))", "note": "price/IV ts_delta20 镜像 + returns"},
+  {"code": "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*rank(returns))", "note": "IV+ARM+returns 三路"},
+  {"code": "subtract(0, rank(iv_discount_rate_3))", "note": "IV 贴现率 镜像"},
+  {"code": "rank(iv_discount_rate_3)", "note": "IV 贴现率 原始"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(iv_discount_rate_3)))", "note": "price/IV + 贴现率 双镜像"},
+  {"code": "subtract(0, rank(divide(close, intrinsic_value_projection_currency_3)))", "note": "close/IV 投影 镜像"}
+]

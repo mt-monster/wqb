@@ -1,0 +1,18 @@
+[
+  {"code": "rank(count_institutional_buyers_security)", "note": "inst buyers 原始"},
+  {"code": "subtract(0, rank(count_institutional_buyers_security))", "note": "inst buyers 镜像"},
+  {"code": "rank(count_institutional_sellers_security)", "note": "inst sellers 原始"},
+  {"code": "subtract(0, rank(count_institutional_sellers_security))", "note": "inst sellers 镜像"},
+  {"code": "rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))", "note": "inst net buyers 原始"},
+  {"code": "subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)))", "note": "inst net buyers 镜像"},
+  {"code": "rank(market_value_institutional_shares_acquired)", "note": "inst acquired value 原始"},
+  {"code": "subtract(0, rank(market_value_institutional_shares_acquired))", "note": "inst acquired value 镜像"},
+  {"code": "rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))", "note": "inst acquired ratio 原始"},
+  {"code": "subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))", "note": "inst acquired ratio 镜像"},
+  {"code": "rank(count_institutional_holders_security)", "note": "inst holders 原始"},
+  {"code": "subtract(0, rank(count_institutional_holders_security))", "note": "inst holders 镜像"},
+  {"code": "add(0.5*rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)), 0.5*rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))", "note": "net buyers+acquired ratio 复合"},
+  {"code": "add(0.5*subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))), 0.5*subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))))", "note": "net buyers+acquired ratio 双镜像"},
+  {"code": "add(0.4*rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)), add(0.3*rank(count_institutional_holders_security), 0.3*rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))))", "note": "net+holders+ratio 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))), add(0.3*subtract(0, rank(count_institutional_holders_security)), 0.3*subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))))", "note": "net+holders+ratio 三路镜像"}
+]

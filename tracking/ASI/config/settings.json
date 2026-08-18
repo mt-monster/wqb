@@ -1,0 +1,20 @@
+{
+  "_doc": "ASI 战役固定设置（与平台 settings 一致），pipeline/build_wave/probe 统一引用",
+  "instrumentType": "EQUITY",
+  "region": "ASI",
+  "universe": "TOP500",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "decay": 4,
+  "truncation": 0.08,
+  "maxTrade": "ON",
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批"
+}

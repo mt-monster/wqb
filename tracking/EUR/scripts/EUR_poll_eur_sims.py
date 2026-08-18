@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """Poll EUR multisimulation results until complete (max 15 min)."""
 import sys, time, json, os
-sys.path.insert(0, r'C:\Users\MENGTAO\.zcode\skills\shared_libs')
+sys.path.insert(0, os.path.join(os.path.expanduser("~"), ".zcode", "skills", "shared_libs"))
 import ace_lib
 ace_lib.get_credentials = lambda: ('mthyzx@126.com', 'asdqwe123!')
 from ace_lib import start_session

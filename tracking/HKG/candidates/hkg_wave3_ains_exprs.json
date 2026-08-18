@@ -1,0 +1,18 @@
+[
+ "rank(subtract(positive_score_average_value_2, negative_score_average_value_2))",
+ "subtract(0, rank(subtract(positive_score_average_value_2, negative_score_average_value_2)))",
+ "rank(subtract(positive_score_average_value_4, negative_score_average_value_4))",
+ "subtract(0, rank(subtract(positive_score_average_value_4, negative_score_average_value_4)))",
+ "rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2))",
+ "subtract(0, rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2)))",
+ "rank(negative_score_average_value_2)",
+ "subtract(0, rank(negative_score_average_value_2))",
+ "rank(positive_score_average_value_2)",
+ "subtract(0, rank(positive_score_average_value_2))",
+ "rank(negative_score_standard_deviation_2)",
+ "subtract(0, rank(negative_score_standard_deviation_2))",
+ "rank(divide(subtract(positive_score_average_value_2, negative_score_average_value_2), add(positive_score_average_value_2, negative_score_average_value_2)))",
+ "subtract(0, rank(divide(subtract(positive_score_average_value_2, negative_score_average_value_2), add(positive_score_average_value_2, negative_score_average_value_2))))",
+ "add(0.5*rank(subtract(positive_score_average_value_2, negative_score_average_value_2)), 0.5*rank(subtract(positive_score_maximum_value_2, negative_score_maximum_value_2)))",
+ "add(0.5*subtract(0, rank(subtract(positive_score_average_value_2, negative_score_average_value_2))), 0.5*subtract(0, rank(negative_score_average_value_2)))"
+]

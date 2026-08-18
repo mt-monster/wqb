@@ -21,7 +21,8 @@ import os, sys, json, time
 # ---- ace_lib 可配置导入（优化建议⑧）----
 SKILL_DIR = os.environ.get(
     "WQ_ACE_LIB",
-    r"C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts",
+    os.path.join(os.path.expanduser("~"), ".workbuddy", "skills",
+                 "brain-simAlphasinBatch-and-track", "scripts"),
 )
 sys.path.insert(0, SKILL_DIR)
 import ace_lib  # noqa: E402

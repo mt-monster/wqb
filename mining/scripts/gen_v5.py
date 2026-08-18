@@ -1,4 +1,5 @@
 import json
+import os
 
 # xAdL5vmN 精确复刻：单字段 earnings surprise，sharpe 4.51, ra_failed:false
 # 模板: ts_decay_linear(signed_power(subtract(group_rank(vec_avg(F), subindustry), 0.5), 5), 90)
@@ -32,7 +33,7 @@ for h in [1, 2, 3, 4, 5, 6]:
         "settings": dict(SETTINGS),
     })
 
-out = "C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/data/alpha_list_usa_d1_sentiment_v5.json"
+out = os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "data", "alpha_list_usa_d1_sentiment_v5.json"
 with open(out, "w") as fh:
     json.dump(alphas, fh, indent=2)
 print(f"wrote {len(alphas)} candidates to {out}")

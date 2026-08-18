@@ -1,7 +1,7 @@
 import os
 """Full picture: details + self-corr of the 4 OS alphas, plus re-confirm vRvg7NzA/MPQVZRnk."""
 import sys, json
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", r"C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts"))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
 from ace_lib import start_session, get_simulation_result_json, get_self_corr
 
 s = start_session()

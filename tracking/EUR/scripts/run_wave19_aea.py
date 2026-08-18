@@ -1,10 +1,11 @@
-#!/usr/bin/env python3
+import os
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-wave19 EUR ai_equity_alpha VECTOR-field probe runner.
+wave19 EUR ai_equity_alpha VECTOR-factor probe runner.
 Input: eur_wave19_aea_items.json [{code, note}],
 5 multisim concurrent fill (batch_size=8), poll to TERMINAL, fetch IS metrics,
-write JSON/CSV. 复用 wave5 五槽填槽模式（wqb-concurrency §8）。
+write JSON/CSV. 澶嶇敤 wave5 浜旀Ы濉Ы妯″紡锛坵qb-concurrency 搂8锛夈€?
 """
 import csv
 import json
@@ -12,7 +13,7 @@ import sys
 import time
 from pathlib import Path
 
-TOOLKIT = Path("C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+TOOLKIT = Path(os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 sys.path.insert(0, str(TOOLKIT))
 
 from _lib.common import CampaignContext, atomic_write, load_credentials
@@ -26,8 +27,8 @@ SLOTS = 5
 BATCH_SIZE = 8
 POLL_INTERVAL = 15
 STALL_MINUTES = 8
-# 局部覆盖：用户要求参考 TOP700（EUR 合法档位最接近 TOP800）；
-# 不修改共享 settings.json（外部会话 wave6c 使用 TOP2500，避免再次配置冲突）
+# 灞€閮ㄨ鐩栵細鐢ㄦ埛瑕佹眰鍙傝€?TOP700锛圗UR 鍚堟硶妗ｄ綅鏈€鎺ヨ繎 TOP800锛夛紱
+# 涓嶄慨鏀瑰叡浜?settings.json锛堝閮ㄤ細璇?wave6c 浣跨敤 TOP2500锛岄伩鍏嶅啀娆￠厤缃啿绐侊級
 UNIVERSE_OVERRIDE = "TOP2500"
 
 
@@ -240,3 +241,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

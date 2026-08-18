@@ -1,0 +1,334 @@
+{
+ "dataset": "news54",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 40
+ },
+ "field_count": 40,
+ "fetched_at": "2026-08-18T19:11:53",
+ "fields": [
+  {
+   "id": "daily_event_announcement_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Time of the announcement in the announcedDateTimeZoneId time zone"
+  },
+  {
+   "id": "daily_event_announcement_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Time the event was announced (UTC)"
+  },
+  {
+   "id": "daily_event_earnings_release_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of the earnings release"
+  },
+  {
+   "id": "daily_event_entry_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "The time when the event was entered in the dataset."
+  },
+  {
+   "id": "daily_event_entry_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time the record was first entered into the system (UTC)"
+  },
+  {
+   "id": "daily_event_last_update_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time the event record was last modified"
+  },
+  {
+   "id": "daily_event_last_update_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time the record was last modified (UTC)"
+  },
+  {
+   "id": "daily_event_record_end_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The time when the current record for the daily event ceased to be active."
+  },
+  {
+   "id": "daily_event_record_start_time",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The time when the current record for the daily event became active."
+  },
+  {
+   "id": "daily_event_relevant_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time in UTC of the event’s key moment (often the event time; otherwise announcement time)"
+  },
+  {
+   "id": "event_announcement_time",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The UTC time at which the event was announced"
+  },
+  {
+   "id": "event_entry_time",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The time when the event record was entered into the system"
+  },
+  {
+   "id": "event_last_update_time",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The time when the event record was last modified"
+  },
+  {
+   "id": "event_relevant_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "UTC time of the key moment for the event (usually the announced time; for scheduled events, the event time)"
+  },
+  {
+   "id": "future_event_announcement_time",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Time the announcement is scheduled to be made, in UTC"
+  },
+  {
+   "id": "future_event_announcement_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time the announcement is scheduled/made in UTC"
+  },
+  {
+   "id": "future_event_entry_time",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time when this Future Event was entered"
+  },
+  {
+   "id": "future_event_entry_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Time the Future Event was entered, in UTC"
+  },
+  {
+   "id": "future_event_last_update_time",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of the last modification to the Future Event"
+  },
+  {
+   "id": "future_event_last_update_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time of the last modification in UTC"
+  },
+  {
+   "id": "future_event_record_end_time",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "End time of the S&P effective window during which this record is valid"
+  },
+  {
+   "id": "future_event_record_start_time",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Start time of the S&P effective window for this record"
+  },
+  {
+   "id": "future_event_relevant_time_utc",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time the event occurs in UTC time zone"
+  },
+  {
+   "id": "mws54_eventcallbasicinfo_cancelledflag",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Flag indicating whether the event call was cancelled, 0=no, 1=yes"
+  },
+  {
+   "id": "mws54_eventcallbasicinfo_fiscalquarter",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Fiscal quarter associated with the event"
+  },
+  {
+   "id": "mws54_eventcallbasicinfo_fiscalyear",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Fiscal year pertaining to the event call"
+  },
+  {
+   "id": "mws54_eventcallbasicinfo_postponedflag",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator whether the event call was postponed; 0=no, 1=yes"
+  },
+  {
+   "id": "mws54_eventerinfo_calendarmonth",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Calendar month of the earnings release"
+  },
+  {
+   "id": "mws54_eventerinfo_calendaryear",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Calendar year of the earnings release"
+  },
+  {
+   "id": "mws54_eventerinfo_cancelledflag",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Indicator that the earnings event was canceled"
+  },
+  {
+   "id": "mws54_eventerinfo_fiscalquarter",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Fiscal quarter associated with the earnings release"
+  },
+  {
+   "id": "mws54_eventerinfo_fiscalyear",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Fiscal year of the earnings release"
+  },
+  {
+   "id": "mws54_eventerinfo_fullyearflag",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Flag indicating the earnings release covers a full fiscal year, 0=no, 1=yes"
+  },
+  {
+   "id": "mws54_eventsdaily_headline",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Headline text for the event"
+  },
+  {
+   "id": "mws54_eventsdaily_situation",
+   "type": "VECTOR",
+   "coverage": 0.8706,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Additional descriptive text for the event"
+  },
+  {
+   "id": "mws54_factor",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 13,
+   "alphaCount": 27,
+   "description": "Numeric amount/factor associated with the event, e.g., dividend amount or stock split ratio"
+  },
+  {
+   "id": "mws54_futureeventmkt_headline",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Headline for the event"
+  },
+  {
+   "id": "mws54_futureeventmkt_situation",
+   "type": "VECTOR",
+   "coverage": 0.9131,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Additional descriptive text/details for the event"
+  },
+  {
+   "id": "mws54_keydevelopments_headline",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Headline text describing the event"
+  },
+  {
+   "id": "mws54_keydevelopments_situation",
+   "type": "VECTOR",
+   "coverage": 0.9827,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Additional descriptive narrative text about the event"
+  }
+ ]
+}

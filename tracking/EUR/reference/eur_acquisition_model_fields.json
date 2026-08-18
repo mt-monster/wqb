@@ -1,0 +1,134 @@
+{
+ "dataset": "acquisition_model",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 15
+ },
+ "field_count": 15,
+ "fetched_at": "2026-08-18T18:35:44",
+ "fields": [
+  {
+   "id": "country_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Percentile score of M&A target likelihood within the company’s headquarters country (100 = highest, 1 = lowest)"
+  },
+  {
+   "id": "global_company_size_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Percentile rank of the size component versus all companies globally; 100 = most favorable on size dimension"
+  },
+  {
+   "id": "global_credit_quality_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Percentile rank of the model’s credit-based component versus all companies globally; 100 = strongest, 1 = weakest"
+  },
+  {
+   "id": "global_fundamental_factor_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Percentile rank of the fundamentals component versus all companies globally; 100 = strongest, 1 = weakest"
+  },
+  {
+   "id": "global_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile score from the M&A Target Model versus all companies globally; 100 = highest target likelihood, 1 = lowest"
+  },
+  {
+   "id": "global_text_factor_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Global percentile rank based on text/news-driven factors in the M&A Target model (100 = highest, 1 = lowest)"
+  },
+  {
+   "id": "global_valuation_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 25,
+   "alphaCount": 34,
+   "description": "Percentile rank of the valuation component versus all companies globally; 100 = most favorable, 1 = least"
+  },
+  {
+   "id": "industry_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile score from the M&A Target Model comparing the company to peers in the same Region+Industry; 100 = highest tar"
+  },
+  {
+   "id": "region_company_size_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank for the Size component within the M&A Target region set (100 = highest/largest, 1 = lowest)"
+  },
+  {
+   "id": "region_credit_quality_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Percentile rank (1–100) of credit-based factors within the region peer set; higher values indicate stronger credit profi"
+  },
+  {
+   "id": "region_fundamental_factor_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of the fundamentals component versus companies in the same M&A region; 100 = strongest, 1 = weakest"
+  },
+  {
+   "id": "region_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Percentile score from the M&A Target Model versus companies in the same M&A region set; 100 = highest target likelihood,"
+  },
+  {
+   "id": "region_text_factor_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Percentile rank (1–100) of the model’s text/news factors for the company relative to peers in the same M&A Target region"
+  },
+  {
+   "id": "region_valuation_percentile_rank",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 32,
+   "alphaCount": 44,
+   "description": "Percentile rank of the valuation component versus companies in the same M&A region; 100 = most favorable, 1 = least"
+  },
+  {
+   "id": "sector_percentile_acquisition_likelihood",
+   "type": "VECTOR",
+   "coverage": 0.7484,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile score of M&A target likelihood within the Region+Sector peer group (100 = highest, 1 = lowest)"
+  }
+ ]
+}

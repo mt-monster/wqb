@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+low_priority_probe.py - 通用低优先级探针生成器
+
+当某数据集/主题在区域战役中多次实证弱（≥2次 RED），但结构重构未验证时，
+自动生成本批低优先级探针（滞后/中性化/交互三轨）。
+
+用法:
+  python low_priority_probe.py --campaign-dir tracking/EUR --dataset model36 \
+      --theme credit_risk --prior-reds wave1,wave6,wave8
+
+输出:
+  candidates/<region>_wave<N>_<tag>_items.json  (16条探针)
+  scripts/run_wave<N>_<tag>.py                (五槽填槽 runner)
+  台账自动追加 LOW_PRIORITY_PROBE verdict
+"""
+import argparse
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+# 结构重构三轨模板
+STRUCTURAL_VARIANTS = {
+    "lag_5d": {
+        "template": "ts_delay({field}, 5)",
+        "note": "滞后5日",
+        "description": "测试信息传导延迟（EUR 机构定价效率高但反应链条长）"
+    },
+    "lag_10d": {
+        "template": "ts_delay({field}, 10)",
+        "note": "滞后10日", 
+        "description": "更长延迟，捕捉慢速基本面信号"
+    },
+    "country_neut": {
+        "template": "group_neut({field}, country)",
+        "note": "国家中性化",
+        "description": "剥离主权/国家风险（EUR 各国信用利差差异大）"
+    },
+    "industry_neut": {
+        "template": "group_neut({field}, industry)",
+        "note": "行业中性化",
+        "description": "剥离行业风险（信用风险行业聚集效应）"
+    },
+    "momentum_20d": {
+        "template": "multiply({field}, ts_delta(close, 20))",
+        "note": "×20日动量",
+        "description": "信用/基本面与价格动量交互（条件信号）"
+    },
+    "momentum_60d": {
+        "template": "multiply({field}, ts_delta(close, 60))",
+        "note": "×60日动量",
+        "description": "中长期动量交互"
+    },
+    "volatility_adj": {
+        "template": "divide({field}, ts_std_dev(returns, 20))",
+        "note": "÷20日波动率",
+        "description": "波动率调整（低波动异象交互）"
+    },
+    "volume_confirm": {
+        "template": "multiply({field}, ts_rank(volume, 20))",
+        "note": "×20日量能排名",
+        "description": "量能确认（信号需成交量配合）"
+    }
+}
+
+# 默认每轨选 2 个变体（原始+镜像），共 16 条
+DEFAULT_TRACKS = ["lag_5d", "country_neut", "momentum_20d", "volatility_adj"]
+
+
+def load_fields(campaign_dir: str, dataset: str) -> list:
+    """加载数据集字段 catalog"""
+    region = os.path.basename(campaign_dir.rstrip('/\\')).lower()
+    catalog_path = os.path.join(campaign_dir, "reference", f"{region}_{dataset}_fields.json")
+    if not os.path.exists(catalog_path):
+        raise FileNotFoundError(f"无字段 catalog: {catalog_path}，先跑 scan_fields.py")
+    
+    with open(catalog_path, encoding="utf-8") as f:
+        data = json.load(f)
+    
+    return data.get("fields", [])
+
+
+def select_probe_fields(fields: list, max_fields: int = 4) -> list:
+    """选择探针字段：优先 userCount 高、coverage 好的"""
+    sorted_fields = sorted(
+        fields,
+        key=lambda f: (-(f.get("userCount") or 0), -(f.get("coverage") or 0))
+    )
+    return sorted_fields[:max_fields]
+
+
+def generate_probe_items(fields: list, tracks: list = None) -> list:
+    """生成 16 条探针表达式"""
+    if tracks is None:
+        tracks = DEFAULT_TRACKS
+    
+    items = []
+    field_idx = 0
+    
+    for track_key in tracks:
+        track = STRUCTURAL_VARIANTS[track_key]
+        # 每轨选 2 个字段
+        for i in range(2):
+            if field_idx >= len(fields):
+                break
+            field = fields[field_idx]["id"]
+            field_idx += 1
+            
+            # 原始方向
+            code = track["template"].format(field=field)
+            items.append({
+                "code": f"rank({code})",
+                "note": f"{track['note']} {field[:20]}",
+                "track": track_key,
+                "field": field,
+                "direction": "raw"
+            })
+            # 镜像方向
+            items.append({
+                "code": f"subtract(0, rank({code}))",
+                "note": f"{track['note']} {field[:20]} 镜像",
+                "track": track_key,
+                "field": field,
+                "direction": "mirror"
+            })
+    
+    return items[:16]  # 确保 16 条
+
+
+def create_runner_script(campaign_dir: str, dataset: str, wave_tag: str, items_file: str) -> str:
+    """从模板创建 runner 脚本"""
+    region = os.path.basename(campaign_dir.rstrip('/\\')).lower()
+    
+    # 找最新 runner 作为模板
+    scripts_dir = os.path.join(campaign_dir, "scripts")
+    runners = sorted([f for f in os.listdir(scripts_dir) if f.startswith("run_wave") and f.endswith(".py")])
+    if not runners:
+        raise FileNotFoundError(f"无 runner 模板: {scripts_dir}")
+    
+    template_path = os.path.join(scripts_dir, runners[-1])
+    with open(template_path, encoding="utf-8") as f:
+        content = f.read()
+    
+    # 替换关键配置
+    new_content = content.replace(
+        'DATASET = "ai_equity_alpha"', f'DATASET = "{dataset}"'
+    ).replace(
+        'INPUT = "tracking/EUR/candidates/eur_wave19_aea_items.json"',
+        f'INPUT = "tracking/{region.upper()}/candidates/{items_file}"'
+    ).replace(
+        'wave19_aea_results.json', f'{wave_tag}_results.json'
+    ).replace(
+        'wave19_aea_results.csv', f'{wave_tag}_results.csv'
+    )
+    
+    # 添加低优先级探针注释
+    header = f'''"""
+{wave_tag} {region.upper()} {dataset} LOW-PRIORITY probe runner.
+Auto-generated by low_priority_probe.py
+结构重构三轨验证：滞后/中性化/交互
+"""
+'''
+    # 替换原有 docstring
+    lines = new_content.split('\n')
+    if lines[0].startswith('#!') or lines[0].startswith('# -*-'):
+        # 保留 shebang 和 encoding
+        new_lines = lines[:2] + [header] + lines[2:]
+    else:
+        new_lines = [header] + lines
+    new_content = '\n'.join(new_lines)
+    
+    output_path = os.path.join(scripts_dir, f"run_{wave_tag}.py")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+    
+    return output_path
+
+
+def update_ledger(campaign_dir: str, dataset: str, wave_tag: str, 
+                  theme: str, prior_reds: list, probe_count: int,
+                  structural_variants: list) -> None:
+    """更新战役台账"""
+    ledger_path = os.path.join(campaign_dir, f"{os.path.basename(campaign_dir.rstrip('/\\')).lower()}_d1_campaign_state.json")
+    
+    with open(ledger_path, encoding="utf-8") as f:
+        ledger = json.load(f)
+    
+    # 添加 wave 记录
+    wave_entry = {
+        "wave": wave_tag,
+        "dataset": dataset,
+        "note": f"{theme} 降级低优先级探针：{len(prior_reds)} 次实证弱后结构重构验证",
+        "added_at": datetime.now().strftime("%Y-%m-%d")
+    }
+    ledger["waves"].append(wave_entry)
+    
+    # 添加 verdict 记录
+    verdict_key = f"{wave_tag}_verdict"
+    ledger[verdict_key] = {
+        "dataset": dataset,
+        "wave": wave_tag,
+        "verdict": "LOW_PRIORITY_PROBE",
+        "probe": probe_count,
+        "status": "pending",
+        "priority": "low",
+        "theme": theme,
+        "prior_reds": prior_reds,
+        "rationale": f"{theme} 在 {len(prior_reds)} 次实证弱（{', '.join(prior_reds)}），但结构重构（滞后/中性化/交互）未验证。降级为低优先级探针，若仍全崩则判死。",
+        "structural_variants": structural_variants,
+        "kill_condition": "16 探针 top sharpe < 1.0 且 rn_fitness < 0.3",
+        "recorded_at": datetime.now().strftime("%Y-%m-%d")
+    }
+    
+    with open(ledger_path, "w", encoding="utf-8") as f:
+        json.dump(ledger, f, ensure_ascii=False, indent=1)
+    
+    print(f"台账更新: {ledger_path}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--campaign-dir", required=True, help="战役目录，如 tracking/EUR")
+    ap.add_argument("--dataset", required=True, help="数据集 ID")
+    ap.add_argument("--theme", required=True, help="主题名，如 credit_risk")
+    ap.add_argument("--prior-reds", required=True, help="之前判死的 wave 列表，逗号分隔")
+    ap.add_argument("--tracks", help="结构重构轨道，逗号分隔，默认 lag_5d,country_neut,momentum_20d,volatility_adj")
+    ap.add_argument("--max-fields", type=int, default=4, help="最多选几个字段")
+    args = ap.parse_args()
+    
+    region = os.path.basename(args.campaign_dir.rstrip('/\\')).lower()
+    prior_reds = [w.strip() for w in args.prior_reds.split(",")]
+    tracks = [t.strip() for t in args.tracks.split(",")] if args.tracks else None
+    
+    # 加载字段
+    fields = load_fields(args.campaign_dir, args.dataset)
+    print(f"加载 {len(fields)} 个字段")
+    
+    # 选择探针字段
+    probe_fields = select_probe_fields(fields, args.max_fields)
+    print(f"选中字段: {[f['id'] for f in probe_fields]}")
+    
+    # 生成探针
+    items = generate_probe_items(probe_fields, tracks)
+    print(f"生成 {len(items)} 条探针")
+    
+    # 确定 wave 编号
+    waves_file = os.path.join(args.campaign_dir, f"{region}_d1_campaign_state.json")
+    with open(waves_file, encoding="utf-8") as f:
+        ledger = json.load(f)
+    existing_waves = [w["wave"] for w in ledger.get("waves", [])]
+    wave_nums = [int(w.replace("wave", "").split("_")[0]) for w in existing_waves if w.startswith("wave") and w.replace("wave", "").split("_")[0].isdigit()]
+    next_wave = max(wave_nums) + 1 if wave_nums else 1
+    wave_tag = f"wave{next_wave}_{args.theme[:6]}low"
+    
+    # 保存 candidates
+    items_file = f"{region}_{wave_tag}_items.json"
+    items_path = os.path.join(args.campaign_dir, "candidates", items_file)
+    with open(items_path, "w", encoding="utf-8") as f:
+        json.dump(items, f, ensure_ascii=False, indent=1)
+    print(f"探针保存: {items_path}")
+    
+    # 创建 runner
+    runner_path = create_runner_script(args.campaign_dir, args.dataset, wave_tag, items_file)
+    print(f"Runner 创建: {runner_path}")
+    
+    # 更新台账
+    structural_variants = [STRUCTURAL_VARIANTS[t]["template"] for t in (tracks or DEFAULT_TRACKS)]
+    update_ledger(args.campaign_dir, args.dataset, wave_tag, args.theme, 
+                  prior_reds, len(items), structural_variants)
+    
+    print(f"\n=== 低优先级探针生成完成 ===")
+    print(f"Wave: {wave_tag}")
+    print(f"主题: {args.theme}")
+    print(f"探针: {len(items)} 条")
+    print(f"轨道: {tracks or DEFAULT_TRACKS}")
+    print(f"运行: python {runner_path}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,4 @@
+import os
 """Submit EUR RA candidate qMNEG2Z2 with tri-state verification.
 
 Flow: POST /submit (201 accepted) -> GET /submit (200 final) -> wait async
@@ -10,7 +11,7 @@ import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path("C:/Users/MENGTAO/.zcode/skills/brain-alpha-judge/scripts/vendor")))
+sys.path.insert(0, str(Path(os.environ.get("WQ_JUDGE_SKILL", os.path.join(os.path.expanduser("~"), ".zcode", "skills", "brain-alpha-judge"))) / "scripts" / "vendor"))
 from load_credentials import load_credentials
 from ace_client import AceClient
 
@@ -18,7 +19,7 @@ ALPHA = "qMNEG2Z2"
 
 
 def main():
-    creds = load_credentials(skill_dir=Path("C:/Users/MENGTAO/.zcode/skills/brain-alpha-judge"))
+    creds = load_credentials(skill_dir=Path(os.environ.get("WQ_JUDGE_SKILL", os.path.join(os.path.expanduser("~"), ".zcode", "skills", "brain-alpha-judge"))))
     client = AceClient(username=creds.username, password=creds.password)
 
     print(f"\n=== {ALPHA} ===")

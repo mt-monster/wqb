@@ -26,7 +26,7 @@ for dp, dn, fn in os.walk(ROOT):
             try:
                 if os.path.getsize(p) <= 1_000_000:
                     scan.append(p)
-            except: pass
+            except OSError: pass
 
 print(f"scanning {len(scan)} source files (<=1MB)\n")
 hits = {}
@@ -42,7 +42,7 @@ for kw in RISK:
                     if pat.search(line):
                         found.append((os.path.relpath(sf, ROOT), i, line.strip()[:110]))
                         break
-        except: pass
+        except OSError: pass
     if found:
         hits[kw] = found
 

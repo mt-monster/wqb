@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """
 fetch_all_universes.py
 ======================
@@ -12,7 +13,7 @@ from dotenv import load_dotenv
 import requests
 
 # --- load .env ---
-ENV_PATH = r"C:\Users\MENGTAO\Desktop\E3\quant\worldquant_alpha\.env"
+ENV_PATH = os.environ.get("WQ_ENV_PATH", os.path.join(os.path.expanduser("~"), "Desktop", "E3", "quant", "worldquant_alpha", ".env"))
 load_dotenv(ENV_PATH)
 USERNAME = os.getenv("WQ_USERNAME", "")
 PASSWORD = os.getenv("WQ_PASSWORD", "")

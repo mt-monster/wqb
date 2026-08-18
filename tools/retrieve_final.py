@@ -45,8 +45,10 @@ def extract_alpha_metrics(alpha_data):
         name = c.get("name","")
         val = c.get("value")
         if val is None: continue
-        try: val_f = float(val)
-        except: continue
+        try:
+            val_f = float(val)
+        except (ValueError, TypeError):
+            continue
         if "IS_LADDER" in name or "LADDER" in name:
             two_yr = val_f
         elif ("2Y" in name or "2_YEAR" in name) and two_yr is None:

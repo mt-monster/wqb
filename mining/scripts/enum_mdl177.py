@@ -1,8 +1,9 @@
 import json, sys, os, time
+import os
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.environ.get('WQ_ACE_LIB', r'C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts'))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
 import ace_lib
-cfg = json.load(open(os.path.join(os.path.dirname(os.environ.get('WQ_ACE_LIB', r'C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts')), 'configs', 'config.json')))
+cfg = json.load(open(os.path.join(os.path.dirname(os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts"))), 'configs', 'config.json')))
 for k, v in cfg.items():
     os.environ[str(k).upper()] = str(v); os.environ[str(k)] = str(v)
 s = ace_lib.start_session()

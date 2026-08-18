@@ -1,0 +1,18 @@
+[
+ "rank(count_institutional_buyers_security)",
+ "subtract(0, rank(count_institutional_buyers_security))",
+ "rank(count_institutional_sellers_security)",
+ "subtract(0, rank(count_institutional_sellers_security))",
+ "rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))",
+ "subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)))",
+ "rank(market_value_institutional_shares_acquired)",
+ "subtract(0, rank(market_value_institutional_shares_acquired))",
+ "rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))",
+ "subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))",
+ "rank(count_institutional_holders_security)",
+ "subtract(0, rank(count_institutional_holders_security))",
+ "add(0.5*rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)), 0.5*rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))",
+ "add(0.5*subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))), 0.5*subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))))",
+ "add(0.4*rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security)), add(0.3*rank(count_institutional_holders_security), 0.3*rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions))))",
+ "add(0.4*subtract(0, rank(subtract(count_institutional_buyers_security, count_institutional_sellers_security))), add(0.3*subtract(0, rank(count_institutional_holders_security)), 0.3*subtract(0, rank(divide(market_value_institutional_shares_acquired, aggregate_equity_value_institutions)))))"
+]

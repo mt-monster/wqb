@@ -1,7 +1,7 @@
 import os
 """List account's alphas and inspect 6XpMb0aG to understand the full submission picture."""
 import sys, json
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", r"C:/Users/MENGTAO/.workbuddy/skills/brain-simAlphasinBatch-and-track/scripts"))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
 from ace_lib import start_session
 
 s = start_session()

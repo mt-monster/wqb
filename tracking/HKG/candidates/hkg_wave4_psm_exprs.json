@@ -1,0 +1,18 @@
+[
+ "subtract(0, rank(price_to_intrinsic_value_ratio_3))",
+ "rank(price_to_intrinsic_value_ratio_3)",
+ "rank(arm_score_5pt_scale_2)",
+ "subtract(0, rank(arm_score_5pt_scale_2))",
+ "rank(arm_global_rank_score)",
+ "subtract(0, rank(arm_global_rank_score))",
+ "rank(analyst_revisions_score_2)",
+ "subtract(0, rank(analyst_revisions_score_2))",
+ "rank(mean_estimate_change_pct_fy1_earnings_7d_4)",
+ "subtract(0, rank(mean_estimate_change_pct_fy1_earnings_7d_4))",
+ "rank(recommendation_mean_change_7d_2)",
+ "subtract(0, rank(recommendation_mean_change_7d_2))",
+ "rank(warranted_forward_pe_ratio)",
+ "subtract(0, rank(warranted_forward_pe_ratio))",
+ "add(0.5*rank(arm_score_5pt_scale_2), 0.5*rank(analyst_revisions_score_2))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(arm_score_5pt_scale_2))"
+]

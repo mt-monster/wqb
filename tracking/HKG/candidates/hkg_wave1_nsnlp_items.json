@@ -1,0 +1,18 @@
+[
+  {"code": "rank(vec_avg(headline_sentiment_vader_score))", "note": "vader 情感 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_sentiment_vader_score)))", "note": "vader 情感 镜像"},
+  {"code": "rank(vec_avg(headline_textblob_sentiment_score))", "note": "textblob 情感 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_textblob_sentiment_score)))", "note": "textblob 情感 镜像"},
+  {"code": "rank(vec_avg(headline_sentence_sentiment_average))", "note": "句子情感均值 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_sentence_sentiment_average)))", "note": "句子情感均值 镜像"},
+  {"code": "rank(vec_avg(headline_vader_positive_polarity))", "note": "vader 正极性 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_vader_positive_polarity)))", "note": "vader 正极性 镜像"},
+  {"code": "rank(vec_avg(headline_vader_negative_polarity))", "note": "vader 负极性 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_vader_negative_polarity)))", "note": "vader 负极性 镜像"},
+  {"code": "rank(vec_avg(headline_subjectivity_score))", "note": "主客观 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_subjectivity_score)))", "note": "主客观 镜像"},
+  {"code": "rank(vec_avg(headline_gunning_fog_index))", "note": "fog 可读性 原始"},
+  {"code": "subtract(0, rank(vec_avg(headline_gunning_fog_index)))", "note": "fog 可读性 镜像"},
+  {"code": "add(0.5*rank(vec_avg(headline_sentiment_vader_score)), 0.5*rank(vec_avg(headline_textblob_sentiment_score)))", "note": "vader+textblob 双情感 复合"},
+  {"code": "add(0.5*subtract(0, rank(vec_avg(headline_sentiment_vader_score))), 0.5*subtract(0, rank(vec_avg(headline_textblob_sentiment_score))))", "note": "vader+textblob 双情感 镜像复合"}
+]

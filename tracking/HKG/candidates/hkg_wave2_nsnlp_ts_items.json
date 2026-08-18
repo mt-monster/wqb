@@ -1,0 +1,18 @@
+[
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))", "note": "vader ts_delta5 镜像"},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 10)))", "note": "vader ts_delta10 镜像"},
+  {"code": "rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5))", "note": "vader ts_delta5 原始"},
+  {"code": "subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 10)))", "note": "vader ts_rank10 镜像"},
+  {"code": "subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 20)))", "note": "vader ts_rank20 镜像"},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentence_sentiment_average), 5)))", "note": "句子情感 ts_delta5 镜像"},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentence_sentiment_average), 10)))", "note": "句子情感 ts_delta10 镜像"},
+  {"code": "subtract(0, rank(ts_rank(vec_avg(headline_sentence_sentiment_average), 20)))", "note": "句子情感 ts_rank20 镜像"},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_subjectivity_score), 5)))", "note": "主客观 ts_delta5 镜像"},
+  {"code": "subtract(0, rank(ts_rank(vec_avg(headline_subjectivity_score), 10)))", "note": "主客观 ts_rank10 镜像"},
+  {"code": "subtract(0, rank(vec_norm(headline_sentiment_vader_score)))", "note": "vader vec_norm 镜像"},
+  {"code": "subtract(0, rank(vec_sum(headline_sentiment_vader_score)))", "note": "vader vec_sum 镜像"},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))", "note": "vader ts_delta5 镜像 decay2", "decay": 2},
+  {"code": "subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5)))", "note": "vader ts_delta5 镜像 decay6", "decay": 6},
+  {"code": "add(0.5*subtract(0, rank(ts_delta(vec_avg(headline_sentiment_vader_score), 5))), 0.5*subtract(0, rank(ts_delta(vec_avg(headline_textblob_sentiment_score), 5))))", "note": "双情感 ts_delta5 镜像复合"},
+  {"code": "add(0.5*subtract(0, rank(ts_rank(vec_avg(headline_sentiment_vader_score), 20))), 0.5*subtract(0, rank(ts_rank(vec_avg(headline_sentence_sentiment_average), 20))))", "note": "双情感 ts_rank20 镜像复合"}
+]

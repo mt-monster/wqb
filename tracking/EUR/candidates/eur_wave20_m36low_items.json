@@ -1,0 +1,18 @@
+[
+ {"code": "rank(ts_delay(credit_risk_coverage_score_d1, 5))", "note": "M1 coverage 滞后5日"},
+ {"code": "subtract(0, rank(ts_delay(credit_risk_coverage_score_d1, 5)))", "note": "M2 coverage 滞后5日 镜像"},
+ {"code": "rank(ts_delay(credit_risk_leverage_score_d1, 5))", "note": "M3 leverage 滞后5日"},
+ {"code": "subtract(0, rank(ts_delay(credit_risk_leverage_score_d1, 5)))", "note": "M4 leverage 滞后5日 镜像"},
+ {"code": "rank(ts_delay(star_sr_country_rank_d1, 10))", "note": "M5 country_rank 滞后10日"},
+ {"code": "subtract(0, rank(ts_delay(star_sr_country_rank_d1, 10)))", "note": "M6 country_rank 滞后10日 镜像"},
+ {"code": "rank(group_neut(credit_risk_coverage_score_d1, country))", "note": "M7 coverage 国家中性化"},
+ {"code": "subtract(0, rank(group_neut(credit_risk_coverage_score_d1, country)))", "note": "M8 coverage 国家中性化 镜像"},
+ {"code": "rank(group_neut(credit_risk_leverage_score_d1, country))", "note": "M9 leverage 国家中性化"},
+ {"code": "subtract(0, rank(group_neut(credit_risk_leverage_score_d1, country)))", "note": "M10 leverage 国家中性化 镜像"},
+ {"code": "rank(group_neut(star_sr_sector_rank_d1, country))", "note": "M11 sector_rank 国家中性化"},
+ {"code": "subtract(0, rank(group_neut(star_sr_sector_rank_d1, country)))", "note": "M12 sector_rank 国家中性化 镜像"},
+ {"code": "rank(multiply(credit_risk_coverage_score_d1, ts_delta(close, 20)))", "note": "M13 coverage × 20日动量"},
+ {"code": "subtract(0, rank(multiply(credit_risk_coverage_score_d1, ts_delta(close, 20))))", "note": "M14 coverage × 20日动量 镜像"},
+ {"code": "rank(multiply(credit_risk_leverage_score_d1, ts_delta(close, 20)))", "note": "M15 leverage × 20日动量"},
+ {"code": "subtract(0, rank(multiply(credit_risk_leverage_score_d1, ts_delta(close, 20))))", "note": "M16 leverage × 20日动量 镜像"}
+]

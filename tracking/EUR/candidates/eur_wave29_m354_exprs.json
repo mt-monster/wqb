@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(mdl354_group_pt11yf_dlyspe))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt11yf_dlyspe)))",
+ "rank(vec_avg(mdl354_group_pt1divyld_exp))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt1divyld_exp)))",
+ "rank(vec_avg(mdl354_group_pt1spe_2yf_rg))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt1spe_2yf_rg)))",
+ "rank(vec_avg(mdl354_group_pt12yf_ep))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt12yf_ep)))",
+ "rank(vec_avg(mdl354_group_pt11yf_ep))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt11yf_ep)))",
+ "rank(vec_avg(mdl354_group_pt1es_sale_fy1_d3m))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt1es_sale_fy1_d3m)))",
+ "rank(vec_avg(mdl354_group_pt1ebit_ev))",
+ "subtract(0, rank(vec_avg(mdl354_group_pt1ebit_ev)))",
+ "rank(add(vec_avg(mdl354_group_pt11yf_dlyspe), vec_avg(mdl354_group_pt1divyld_exp)))",
+ "subtract(0, rank(add(vec_avg(mdl354_group_pt11yf_dlyspe), vec_avg(mdl354_group_pt1divyld_exp))))"
+]

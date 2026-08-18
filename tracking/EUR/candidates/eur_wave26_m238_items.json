@@ -1,0 +1,18 @@
+[
+  {"code": "rank(mdl238_global_rank)", "note": "Smart Holdings global 原始"},
+  {"code": "subtract(0, rank(mdl238_global_rank))", "note": "Smart Holdings global 镜像"},
+  {"code": "rank(mdl238_region_rank)", "note": "Smart Holdings region 原始"},
+  {"code": "subtract(0, rank(mdl238_region_rank))", "note": "Smart Holdings region 镜像"},
+  {"code": "rank(mdl238_global_change_rank)", "note": "SH change momentum 原始"},
+  {"code": "subtract(0, rank(mdl238_global_change_rank))", "note": "SH change momentum 镜像"},
+  {"code": "rank(mdl238_global_owner_rank)", "note": "SH peer crowding 原始"},
+  {"code": "subtract(0, rank(mdl238_global_owner_rank))", "note": "SH peer crowding 镜像"},
+  {"code": "rank(mdl238_global_screening_rank)", "note": "SH screening 原始"},
+  {"code": "subtract(0, rank(mdl238_global_screening_rank))", "note": "SH screening 镜像"},
+  {"code": "rank(global_institutional_preference_rank)", "note": "inst preference 原始"},
+  {"code": "subtract(0, rank(global_institutional_preference_rank))", "note": "inst preference 镜像"},
+  {"code": "add(0.5*rank(mdl238_global_rank), 0.5*rank(mdl238_global_change_rank))", "note": "SH global+change 复合"},
+  {"code": "add(0.5*subtract(0, rank(mdl238_global_rank)), 0.5*subtract(0, rank(mdl238_global_change_rank)))", "note": "SH global+change 双镜像"},
+  {"code": "add(0.4*rank(mdl238_global_rank), add(0.3*rank(mdl238_global_screening_rank), 0.3*subtract(0, rank(mdl238_global_owner_rank))))", "note": "SH global+screening+crowding 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(mdl238_global_rank)), add(0.3*subtract(0, rank(mdl238_global_screening_rank)), 0.3*rank(mdl238_global_owner_rank)))", "note": "SH global+screening+crowding 三路镜像"}
+]

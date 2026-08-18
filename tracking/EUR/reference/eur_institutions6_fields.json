@@ -1,0 +1,102 @@
+{
+ "dataset": "institutions6",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 11
+ },
+ "field_count": 11,
+ "fetched_at": "2026-08-18T18:41:18",
+ "fields": [
+  {
+   "id": "aggregate_equity_value_all_owners",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 37,
+   "alphaCount": 48,
+   "description": "Aggregate dollar value of shares of the security held by all owners, with duplication between child and parent owners re"
+  },
+  {
+   "id": "aggregate_equity_value_institutions",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 25,
+   "alphaCount": 28,
+   "description": "Aggregate dollar value of shares of the security currently held by all institutional investors at the reporting date"
+  },
+  {
+   "id": "aggregate_share_count_all_owners",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 56,
+   "alphaCount": 93,
+   "description": "Aggregate number of shares of the security held by all owners, with duplication between child and parent owners removed"
+  },
+  {
+   "id": "aggregate_share_count_institutions",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 22,
+   "alphaCount": 29,
+   "description": "Total number of shares of the security currently held by all institutional investors at the reporting date"
+  },
+  {
+   "id": "count_institutional_buyers_security",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 53,
+   "alphaCount": 78,
+   "description": "Number of institutional investors who purchased shares of the security during the reporting period"
+  },
+  {
+   "id": "count_institutional_holders_security",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 26,
+   "alphaCount": 37,
+   "description": "Number of institutional investors currently holding shares (with holdings greater than zero) for the security at the rep"
+  },
+  {
+   "id": "count_institutional_sellers_security",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 60,
+   "alphaCount": 93,
+   "description": "Number of institutional investors who sold shares of the security during the reporting period"
+  },
+  {
+   "id": "market_value_institutional_shares_acquired",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 33,
+   "alphaCount": 45,
+   "description": "Aggregate dollar value of shares of the security purchased by institutional investors during the reporting period"
+  },
+  {
+   "id": "market_value_institutional_shares_disposed",
+   "type": "MATRIX",
+   "coverage": 0.9307,
+   "userCount": 22,
+   "alphaCount": 32,
+   "description": "Aggregate dollar value of shares of the security sold by institutional investors during the reporting period"
+  },
+  {
+   "id": "quantity_institutional_shares_acquired",
+   "type": "MATRIX",
+   "coverage": 0.9976,
+   "userCount": 27,
+   "alphaCount": 32,
+   "description": "Total number of shares of the security purchased by institutional investors during the reporting period"
+  },
+  {
+   "id": "quantity_institutional_shares_disposed",
+   "type": "MATRIX",
+   "coverage": 0.997,
+   "userCount": 21,
+   "alphaCount": 27,
+   "description": "Total number of shares of the security sold by institutional investors during the reporting period"
+  }
+ ]
+}

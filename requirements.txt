@@ -1,5 +1,9 @@
-requests>=2.31.0
-beautifulsoup4>=4.12.0
-python-dotenv>=1.0.0
-msgpack>=1.0.0
-pandas>=2.0.0
+# ===== wqb 依赖 =====
+# 单一事实源：world-quant-brain-mcp/requirements.txt（MCP 服务端 + 工具链共用的运行时依赖）。
+# 根目录直接引用，避免两套声明漂移（历史教训：根文件曾缺 mcp/pydantic/redis 导致裸环境 pytest 收集失败）。
+# 安装：pip install -r requirements.txt
+# 测试：用 world-quant-brain-mcp/.venv（含全部依赖 + pytest）
+-r world-quant-brain-mcp/requirements.txt
+
+# 开发/测试依赖
+pytest>=8.0.0

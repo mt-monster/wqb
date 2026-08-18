@@ -1,0 +1,126 @@
+{
+ "dataset": "model27",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 14
+ },
+ "field_count": 14,
+ "fetched_at": "2026-08-18T18:27:52",
+ "fields": [
+  {
+   "id": "annual_default_probability_percent",
+   "type": "MATRIX",
+   "coverage": 0.7845,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "1-year probability of default from CCR expressed as a percentage (0–100)"
+  },
+  {
+   "id": "country_relative_default_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7845,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Country-level 1–100 percentile rank of the 1-year default probability; higher is safer"
+  },
+  {
+   "id": "global_relative_default_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7845,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile rank (1–100) of the 1-year PD; higher means safer or lower PD"
+  },
+  {
+   "id": "industry_relative_default_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7789,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-level 1–100 percentile rank of the 1-year default probability; higher is safer"
+  },
+  {
+   "id": "mdl27_index_rating",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Credit risk rating"
+  },
+  {
+   "id": "region_relative_default_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7845,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regional percentile rank (1–100) of the 1-year PD; higher means safer or lower PD"
+  },
+  {
+   "id": "sector_relative_default_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-level 1–100 percentile rank of the 1-year default probability; higher is safer"
+  },
+  {
+   "id": "star_ccr_combined_pd",
+   "type": "MATRIX",
+   "coverage": 0.9687,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "Estimated 1-year probability of default (0–1) from the StarMine Combined Credit Risk model"
+  },
+  {
+   "id": "star_ccr_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.9687,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Country-level percentile rank (1–100) of the 1-year default probability; higher = safer/lower PD"
+  },
+  {
+   "id": "star_ccr_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.9687,
+   "userCount": 22,
+   "alphaCount": 63,
+   "description": "Global percentile rank (1–100) of the 1-year default probability; higher = safer/lower PD"
+  },
+  {
+   "id": "star_ccr_implied_rating",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Agency-equivalent credit rating implied by the estimated forward 1-year default probability"
+  },
+  {
+   "id": "star_ccr_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Industry-level percentile rank (1–100) of the 1-year default probability; higher = safer/lower PD"
+  },
+  {
+   "id": "star_ccr_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9687,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Regional percentile rank (1–100) of the 1-year default probability; higher = safer/lower PD"
+  },
+  {
+   "id": "star_ccr_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9666,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Sector-level percentile rank (1–100) of the 1-year default probability; higher = safer/lower PD"
+  }
+ ]
+}

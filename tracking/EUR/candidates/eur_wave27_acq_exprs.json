@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(global_percentile_acquisition_likelihood))",
+ "subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood)))",
+ "rank(vec_avg(region_percentile_acquisition_likelihood))",
+ "subtract(0, rank(vec_avg(region_percentile_acquisition_likelihood)))",
+ "rank(vec_avg(global_valuation_percentile_rank))",
+ "subtract(0, rank(vec_avg(global_valuation_percentile_rank)))",
+ "rank(vec_avg(global_fundamental_factor_percentile_rank))",
+ "subtract(0, rank(vec_avg(global_fundamental_factor_percentile_rank)))",
+ "rank(vec_avg(global_text_factor_percentile_rank))",
+ "subtract(0, rank(vec_avg(global_text_factor_percentile_rank)))",
+ "rank(vec_avg(global_company_size_percentile_rank))",
+ "subtract(0, rank(vec_avg(global_company_size_percentile_rank)))",
+ "add(0.5*rank(vec_avg(global_percentile_acquisition_likelihood)), 0.5*rank(vec_avg(global_valuation_percentile_rank)))",
+ "add(0.5*subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood))), 0.5*subtract(0, rank(vec_avg(global_valuation_percentile_rank))))",
+ "add(0.4*rank(vec_avg(global_percentile_acquisition_likelihood)), add(0.3*rank(vec_avg(global_fundamental_factor_percentile_rank)), 0.3*rank(vec_avg(global_text_factor_percentile_rank))))",
+ "add(0.4*subtract(0, rank(vec_avg(global_percentile_acquisition_likelihood))), add(0.3*subtract(0, rank(vec_avg(global_fundamental_factor_percentile_rank))), 0.3*subtract(0, rank(vec_avg(global_text_factor_percentile_rank)))))"
+]

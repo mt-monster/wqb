@@ -36,6 +36,9 @@ Thumbs.db
 
 # ===== Runtime logs =====
 *.log
+# Runtime log directories (local-only, never commit)
+logs/
+world-quant-brain-mcp/logs/
 
 # ===== Session state =====
 **/.mcp_session

@@ -1,0 +1,18 @@
+[
+  {"code": "rank(vec_avg(herfindahl_index_holdings))", "note": "HHI holdings 原始"},
+  {"code": "subtract(0, rank(vec_avg(herfindahl_index_holdings)))", "note": "HHI holdings 镜像"},
+  {"code": "rank(vec_avg(holder_account_total))", "note": "holder count 原始"},
+  {"code": "subtract(0, rank(vec_avg(holder_account_total)))", "note": "holder count 镜像"},
+  {"code": "rank(vec_avg(boundary_transaction_total))", "note": "boundary txn 原始"},
+  {"code": "subtract(0, rank(vec_avg(boundary_transaction_total)))", "note": "boundary txn 镜像"},
+  {"code": "rank(vec_avg(top_weighted_account_number))", "note": "conviction holders 原始"},
+  {"code": "subtract(0, rank(vec_avg(top_weighted_account_number)))", "note": "conviction holders 镜像"},
+  {"code": "rank(vec_avg(holding_value_distribution_score))", "note": "holding crowding 原始"},
+  {"code": "subtract(0, rank(vec_avg(holding_value_distribution_score)))", "note": "holding crowding 镜像"},
+  {"code": "rank(vec_avg(stable_boundary_trade_count_21d))", "note": "stable boundary 21d 原始"},
+  {"code": "subtract(0, rank(vec_avg(stable_boundary_trade_count_21d)))", "note": "stable boundary 21d 镜像"},
+  {"code": "add(0.5*rank(vec_avg(herfindahl_index_holdings)), 0.5*rank(vec_avg(top_weighted_account_number)))", "note": "HHI+conviction 复合"},
+  {"code": "add(0.5*subtract(0, rank(vec_avg(herfindahl_index_holdings))), 0.5*subtract(0, rank(vec_avg(top_weighted_account_number))))", "note": "HHI+conviction 双镜像"},
+  {"code": "add(0.4*rank(vec_avg(holding_value_distribution_score)), add(0.3*rank(vec_avg(boundary_transaction_total)), 0.3*rank(vec_avg(stable_boundary_trade_count_21d))))", "note": "crowding+boundary+stable 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(vec_avg(holding_value_distribution_score))), add(0.3*subtract(0, rank(vec_avg(boundary_transaction_total))), 0.3*subtract(0, rank(vec_avg(stable_boundary_trade_count_21d)))))", "note": "crowding+boundary+stable 三路镜像"}
+]

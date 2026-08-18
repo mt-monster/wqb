@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(mws54_factor))",
+ "subtract(0, rank(vec_avg(mws54_factor)))",
+ "rank(vec_avg(mws54_eventcallbasicinfo_cancelledflag))",
+ "subtract(0, rank(vec_avg(mws54_eventcallbasicinfo_cancelledflag)))",
+ "rank(vec_avg(mws54_eventerinfo_fiscalyear))",
+ "subtract(0, rank(vec_avg(mws54_eventerinfo_fiscalyear)))",
+ "rank(vec_avg(mws54_eventerinfo_calendaryear))",
+ "subtract(0, rank(vec_avg(mws54_eventerinfo_calendaryear)))",
+ "rank(vec_avg(mws54_keydevelopments_headline))",
+ "subtract(0, rank(vec_avg(mws54_keydevelopments_headline)))",
+ "rank(vec_avg(mws54_futureeventmkt_situation))",
+ "subtract(0, rank(vec_avg(mws54_futureeventmkt_situation)))",
+ "rank(vec_avg(mws54_eventsdaily_headline))",
+ "subtract(0, rank(vec_avg(mws54_eventsdaily_headline)))",
+ "rank(add(vec_avg(mws54_factor), vec_avg(mws54_keydevelopments_headline)))",
+ "subtract(0, rank(add(vec_avg(mws54_factor), vec_avg(mws54_keydevelopments_headline))))"
+]

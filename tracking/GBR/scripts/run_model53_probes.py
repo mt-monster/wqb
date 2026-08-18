@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 """
 5-slot concurrent multisim runner for GBR model53 Stage-A probes.
 Reads stageA expression files, keeps up to 5 multisim in flight (8 exprs each),
@@ -14,7 +15,7 @@ from pathlib import Path
 # dataset 由命令行参数指定，默认 model53
 DATASET = sys.argv[1] if len(sys.argv) > 1 else "model53"
 
-TOOLKIT = Path("C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts")
+TOOLKIT = Path(os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 sys.path.insert(0, str(TOOLKIT))
 
 from _lib.common import CampaignContext, atomic_write, load_credentials

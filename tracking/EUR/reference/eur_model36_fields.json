@@ -1,0 +1,358 @@
+{
+ "dataset": "model36",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 43
+ },
+ "field_count": 43,
+ "fetched_at": "2026-08-18T18:28:26",
+ "fields": [
+  {
+   "id": "credit_risk_coverage_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.9373,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Numeric score for coverage factors (e.g., ability to cover interest/debt); higher indicates better coverage"
+  },
+  {
+   "id": "credit_risk_coverage_score_main",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Float percentile score (0–100) for the coverage component; higher indicates better coverage and lower credit risk"
+  },
+  {
+   "id": "credit_risk_growth_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.9379,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Numeric score for growth-related factors affecting credit health; higher indicates stronger growth profile"
+  },
+  {
+   "id": "credit_risk_growth_score_main",
+   "type": "MATRIX",
+   "coverage": 0.7609,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Float percentile score (0–100) for the growth and stability component; higher indicates better growth/stability and lowe"
+  },
+  {
+   "id": "credit_risk_leverage_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile score reflecting leverage factors in credit risk assessment (daily version)."
+  },
+  {
+   "id": "credit_risk_leverage_score_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Float percentile score (0–100) for the leverage component; higher indicates better leverage profile and lower credit ris"
+  },
+  {
+   "id": "credit_risk_liquidity_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.9385,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "Numeric score for liquidity-related factors; higher indicates stronger liquidity"
+  },
+  {
+   "id": "credit_risk_liquidity_score_main",
+   "type": "MATRIX",
+   "coverage": 0.7625,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Float percentile score (0–100) for the liquidity component; higher indicates stronger liquidity and lower credit risk"
+  },
+  {
+   "id": "credit_risk_profitability_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Numeric score for profitability-related factors; higher indicates better profitability"
+  },
+  {
+   "id": "credit_risk_profitability_score_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Float percentile score (0–100) for the profitability component; higher indicates stronger profitability and lower credit"
+  },
+  {
+   "id": "creditworthiness_letter_rating_numeric_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Continuous implied rating score aligned to the letter-grade scale (not a PD%); higher indicates stronger credit quality"
+  },
+  {
+   "id": "creditworthiness_letter_rating_numeric_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous numeric implied rating score aligned to the letter-grade scale (not a PD%); higher is safer"
+  },
+  {
+   "id": "default_risk_country_percentile_d1_2",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Float percentile rank (0–100) of the company’s financial health within its country peer group; higher indicates better c"
+  },
+  {
+   "id": "default_risk_country_percentile_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Float 0–100 percentile rank of the company’s 1-year default probability within its country; higher values indicate lower"
+  },
+  {
+   "id": "default_risk_global_percentile_d1_2",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Float percentile rank (0–100) of financial health globally; higher indicates better credit quality"
+  },
+  {
+   "id": "default_risk_global_percentile_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Float 0–100 global percentile rank of the company’s 1-year default probability; higher values indicate lower default ris"
+  },
+  {
+   "id": "default_risk_industry_percentile_d1_2",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Float percentile rank (0–100) within the company’s industry; higher indicates better credit quality"
+  },
+  {
+   "id": "default_risk_industry_percentile_main",
+   "type": "MATRIX",
+   "coverage": 0.7589,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Float 0–100 percentile rank of the company’s 1-year default probability within its region and industry; higher values in"
+  },
+  {
+   "id": "default_risk_region_percentile_d1_2",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Float percentile rank (0–100) of financial health within the region; higher indicates better credit quality"
+  },
+  {
+   "id": "default_risk_region_percentile_main",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Float 0–100 regional percentile rank of the company’s 1-year default probability; higher values indicate lower default r"
+  },
+  {
+   "id": "default_risk_sector_percentile_d1_2",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Float percentile rank (0–100) within the company’s sector; higher indicates better credit quality"
+  },
+  {
+   "id": "default_risk_sector_percentile_main",
+   "type": "MATRIX",
+   "coverage": 0.7632,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Float percentile rank (0–100) within the same region and sector by 1-year default probability; higher means safer"
+  },
+  {
+   "id": "mdl36_index_rating",
+   "type": "MATRIX",
+   "coverage": 0.8364,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "Financial health rating"
+  },
+  {
+   "id": "star_sr_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Current 1–100 percentile rank by country of the company’s 1-year default probability; higher values indicate lower defau"
+  },
+  {
+   "id": "star_sr_country_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "Percentile rank (1–100) within the company’s country of its 1‑year default probability; higher means lower default risk"
+  },
+  {
+   "id": "star_sr_coverage",
+   "type": "MATRIX",
+   "coverage": 0.7612,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Percentile rank reflecting only the coverage factors of the model; 100 best, 1 worst"
+  },
+  {
+   "id": "star_sr_coverage_d1",
+   "type": "MATRIX",
+   "coverage": 0.9373,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Percentile rank (1–100) reflecting only the coverage factors; higher indicates better credit quality"
+  },
+  {
+   "id": "star_sr_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Current global 1–100 percentile rank of the company’s 1-year default probability based on SmartRatios; higher values ind"
+  },
+  {
+   "id": "star_sr_global_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Global percentile rank (1–100) of the company’s 1‑year default probability from SmartRatios; higher means lower default "
+  },
+  {
+   "id": "star_sr_growth",
+   "type": "MATRIX",
+   "coverage": 0.7609,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank reflecting only the growth and stability factors of the model; 100 best, 1 worst"
+  },
+  {
+   "id": "star_sr_growth_d1",
+   "type": "MATRIX",
+   "coverage": 0.9379,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentile rank (1–100) reflecting only the growth and stability factors; higher indicates better credit quality"
+  },
+  {
+   "id": "star_sr_industr_rank",
+   "type": "MATRIX",
+   "coverage": 0.7589,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Current 1–100 percentile rank of the company’s 1-year default probability among firms in the same region and industry; h"
+  },
+  {
+   "id": "star_sr_industr_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9345,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentile rank (1–100) within the same region and industry of the company’s 1‑year default probability; higher means lo"
+  },
+  {
+   "id": "star_sr_leverage",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank reflecting only the leverage factors of the model; 100 best, 1 worst"
+  },
+  {
+   "id": "star_sr_leverage_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Percentile rank (1–100) reflecting only the leverage factors; higher indicates better credit quality"
+  },
+  {
+   "id": "star_sr_liquidity",
+   "type": "MATRIX",
+   "coverage": 0.7625,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Percentile rank reflecting only the liquidity factors of the model; 100 best, 1 worst"
+  },
+  {
+   "id": "star_sr_liquidity_d1",
+   "type": "MATRIX",
+   "coverage": 0.9385,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Percentile rank (1–100) reflecting only the liquidity factors; higher indicates better credit quality"
+  },
+  {
+   "id": "star_sr_profitability",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Percentile rank reflecting only the profitability factors of the model; 100 best, 1 worst"
+  },
+  {
+   "id": "star_sr_profitability_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Percentile rank (1–100) reflecting only the profitability factors in the SmartRatios Credit Risk Model; higher indicates"
+  },
+  {
+   "id": "star_sr_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current regional 1–100 percentile rank of the company’s 1-year default probability; higher values indicate lower default"
+  },
+  {
+   "id": "star_sr_region_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9412,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Regional percentile rank (1–100) of the company’s 1‑year default probability; higher means lower default risk"
+  },
+  {
+   "id": "star_sr_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.7632,
+   "userCount": 2,
+   "alphaCount": 7,
+   "description": "Current 1–100 percentile rank of the company’s 1-year default probability among firms in the same region and sector; hig"
+  },
+  {
+   "id": "star_sr_sector_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9393,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Percentile rank (1–100) within the same region and sector of the company’s 1‑year default probability; higher means lowe"
+  }
+ ]
+}

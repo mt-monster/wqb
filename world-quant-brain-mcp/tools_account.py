@@ -218,7 +218,8 @@ async def get_daily_and_quarterly_payment(email: str = "", password: str = "") -
             base_response = await brain_client._request('GET', f"{brain_client.base_url}/users/self/activities/base-payment")
             base_response.raise_for_status()
             base_payments = base_response.json()
-        except:
+        except Exception as e:
+            brain_client.log(f"base-payment 获取失败: {e}", "DEBUG")
             base_payments = "no data"
             
         try:
@@ -226,8 +227,9 @@ async def get_daily_and_quarterly_payment(email: str = "", password: str = "") -
             other_response = await brain_client._request('GET', f"{brain_client.base_url}/users/self/activities/other-payment")
             other_response.raise_for_status()
             other_payments = other_response.json()
-        except:
-            other_payments = "no data"    
+        except Exception as e:
+            brain_client.log(f"other-payment 获取失败: {e}", "DEBUG")
+            other_payments = "no data"
         return {
             "base_payments": base_payments,
             "other_payments": other_payments

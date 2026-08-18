@@ -1,0 +1,18 @@
+[
+  {"code": "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "IV0.6+ARM0.4 decay0", "decay": 0},
+  {"code": "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "IV0.6+ARM0.4 decay2", "decay": 2},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "IV0.5+ARM0.5 decay0", "decay": 0},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "IV0.5+ARM0.5 decay2", "decay": 2},
+  {"code": "add(add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3)))", "note": "IV+ARM+PB 三路"},
+  {"code": "add(add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_ev_ebitda_component_score_3)))", "note": "IV+ARM+EV/EBITDA 三路"},
+  {"code": "add(add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*rank(ep_yield_pct_smest_f12m))", "note": "IV+ARM+EP收益率 三路"},
+  {"code": "add(add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_global_rank_score_3)))", "note": "IV+ARM+全球估值 三路"},
+  {"code": "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*subtract(0, rank(rel_val_p_book_component_score_3)))", "note": "IV0.4+ARM0.3+PB0.3 decay2", "decay": 2},
+  {"code": "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*rank(ep_yield_pct_smest_f12m))", "note": "IV0.4+ARM0.3+EP0.3 decay2", "decay": 2},
+  {"code": "add(0.7*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2)))", "note": "IV0.7+ARM0.3"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*subtract(0, rank(rel_val_p_book_component_score_3)))", "note": "IV+PB 双价值"},
+  {"code": "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(ep_yield_pct_smest_f12m))", "note": "IV+EP 双价值"},
+  {"code": "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.2*subtract(0, rank(arm_score_5pt_scale_2))), add(0.2*subtract(0, rank(rel_val_p_book_component_score_3)), 0.2*rank(ep_yield_pct_smest_f12m)))", "note": "IV+ARM+PB+EP 四路"},
+  {"code": "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*subtract(0, rank(rel_val_global_rank_score_3)))", "note": "IV+全球估值 双价值 decay2", "decay": 2},
+  {"code": "add(add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_dividend_yield_component_score_3)))", "note": "IV+ARM+股息率 三路"}
+]

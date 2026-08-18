@@ -8,7 +8,9 @@ brain_api — BRAIN API 客户端层 (2026-08-13 自 main.py 拆分, P2 单体�
 MCP 工具层在 main.py; forum/labs 集成层各自 import 本模块 — 不再反向依赖 main.py,
 消除 main ↔ forum_functions 循环耦合 (8-13 asyncio 重入 bug 的根源)。
 
-只依赖: requests/pandas/pydantic/python-dotenv 等基础库, 不含 FastMCP/redis/bs4。
+依赖: requests/pandas/pydantic/python-dotenv/redis/bs4/FastMCP 等（顶部实际 import 了
+FastMCP/redis/bs4，早期 docstring 的"不含"声明已更正）。纯数据模型已抽到
+brain_api_models.py（本模块重新导出，保持 from brain_api import SimulationSettings 兼容）。
 """
 
 import json
@@ -47,54 +49,13 @@ logger = logging.getLogger(__name__)
 # forum_functions 对 brain_api.brain_client 的引用全部是函数内惰性 import, 无模块级循环。
 from forum_functions import forum_client
 
-# Pydantic models for type safety
-class AuthCredentials(BaseModel):
-    email: EmailStr
-    password: str
-
-class SimulationSettings(BaseModel):
-    instrumentType: str = "EQUITY"
-    region: str = "USA"
-    universe: str = "TOP3000"
-    delay: int = 1
-    decay: float = 0.0
-    neutralization: str = "NONE"
-    truncation: float = 0.0
-    pasteurization: str = "ON"
-    unitHandling: Optional[str] = "VERIFY"
-    nanHandling: Optional[str] = "OFF"
-    language: str = "FASTEXPR"
-    lookback: Optional[int] = None
-    visualization: bool = True
-    testPeriod: str = "P0Y0M"
-    selectionHandling: str = "POSITIVE"
-    selectionLimit: int = 1000
-    maxTrade: str = "OFF"
-    componentActivation: str = "IS"
-
-class SimulationData(BaseModel):
-    type: str = "REGULAR"  # "REGULAR" or "SUPER"
-    settings: SimulationSettings
-    regular: Optional[str] = None
-    combo: Optional[str] = None
-    selection: Optional[str] = None
-
-    @model_validator(mode="after")
-    def validate_super_selection_rules(self) -> "SimulationData":
-        if self.type.upper() != "SUPER":
-            return self
-
-        region = self.settings.region.upper()
-        if region != "USA":
-            return self
-
-        if not self.selection:
-            raise ValueError('USA SUPER simulations require selection to include (prod_correlation > 0)')
-
-        if not re.search(r"\(\s*prod_correlation\s*>\s*0(?:\.0+)?\s*\)", self.selection):
-            raise ValueError('USA SUPER simulations require selection to include (prod_correlation > 0)')
-
-        return self
+# 纯数据模型已从 brain_api.py 抽出到 brain_api_models.py（P3 二次拆分第一步）。
+# 此处重新导出，保持 ``from brain_api import SimulationSettings`` 等旧导入路径兼容。
+from brain_api_models import (  # noqa: F401
+    AuthCredentials,
+    SimulationData,
+    SimulationSettings,
+)
 
 class BrainApiClient:
     """WorldQuant BRAIN API client with comprehensive functionality."""
@@ -668,8 +629,8 @@ class BrainApiClient:
                     sys.path.insert(0, str(current_dir))
                     from browser_setup import ensure_browser_available
                     browser_path = ensure_browser_available()
-                except:
-                    pass
+                except Exception as e:
+                    self.log(f"浏览器路径探测失败，回退默认: {e}", "DEBUG")
             
             async with async_playwright() as p:
                 # 设置浏览器启动参数

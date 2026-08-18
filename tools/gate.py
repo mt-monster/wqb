@@ -21,9 +21,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib
 # ---- verifier：import 直调，路径搜索 .workbuddy 优先 ----
 _VALIDATOR_DIRS = [
     os.environ.get("WQ_VALIDATOR_DIR"),
-    r"C:\Users\MENGTAO\.workbuddy\skills\alpha-expression-verifier\scripts",
+    os.environ.get("WQ_VALIDATOR_DIR", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "alpha-expression-verifier", "scripts")),
     r"D:\coding\traeCN_project\wqb\.cursor\skills\alpha-expression-verifier\scripts",
-    r"C:\Users\MENGTAO\.qoder-cn\skills\alpha-expression-verifier\scripts",
+    os.environ.get("WQ_VALIDATOR_DIR", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "alpha-expression-verifier", "scripts")),
 ]
 _VALIDATOR = None
 

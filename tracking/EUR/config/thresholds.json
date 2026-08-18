@@ -91,6 +91,19 @@
   "crowd_band_cov_min": 0.7,
   "crowd_band_value_score_min": 4,
   "crowd_band_field_count_min": 10,
-  "_note": "EUR 已知：returns 反转拥挤（prod 0.95 墙），优先 alphaCount=0 零竞争数据集；ml_factor_proj 等 0-alpha 集若有新字段优先探。"
+  "_note": "EUR 已知：returns 反转拥挤（prod 0.95 墙），优先 alphaCount=0 零竞争数据集；ml_factor_proj 等 0-alpha 集若有新字段优先探。",
+  "category_weight_enable": true,
+  "category_weights": {
+   "model": 1.3,
+   "other": 1.0,
+   "analyst": 0.7,
+   "pv": 0.7,
+   "institutions": 0.7
+  },
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 91,
+  "sweet_spot_ac_max": 318,
+  "_calibrated_at": "2026-08-18T19:03:00",
+  "_calibrated_from": "results/ 20 datasets 实测"
  }
 }
