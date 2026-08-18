@@ -1,0 +1,18 @@
+[
+ {"code": "rank(momentum_williams_r_adjusted)", "note": "A1 williams_r 原始"},
+ {"code": "subtract(0, rank(momentum_williams_r_adjusted))", "note": "A2 williams_r 镜像"},
+ {"code": "rank(short_term_price_change)", "note": "A3 short_term_price_change 原始"},
+ {"code": "subtract(0, rank(short_term_price_change))", "note": "A4 short_term_price_change 镜像"},
+ {"code": "rank(cumulative_money_flow_volume_adjusted)", "note": "A5 RSI 原始"},
+ {"code": "subtract(0, rank(cumulative_money_flow_volume_adjusted))", "note": "A6 RSI 镜像"},
+ {"code": "rank(volume_trend_money_flow_interaction)", "note": "A7 volume_trend 原始"},
+ {"code": "subtract(0, rank(volume_trend_money_flow_interaction))", "note": "A8 volume_trend 镜像"},
+ {"code": "rank(liquidity_money_flow_alignment)", "note": "A9 RTN63D 原始"},
+ {"code": "subtract(0, rank(liquidity_money_flow_alignment))", "note": "A10 RTN63D 镜像"},
+ {"code": "rank(money_flow_strength_typical_price)", "note": "A11 money_flow_strength 原始"},
+ {"code": "subtract(0, rank(money_flow_strength_typical_price))", "note": "A12 money_flow_strength 镜像"},
+ {"code": "rank(balanced_price_oscillator)", "note": "A13 price_volume_ratio 原始"},
+ {"code": "subtract(0, rank(balanced_price_oscillator))", "note": "A14 price_volume_ratio 镜像"},
+ {"code": "rank(typical_price_bollinger_band_position)", "note": "A15 BB_position 原始"},
+ {"code": "subtract(0, rank(typical_price_bollinger_band_position))", "note": "A16 BB_position 镜像"}
+]

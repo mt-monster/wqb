@@ -1,0 +1,86 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1fr6fU6AI4DtcKA8uRpuCdK",
+ "ts": 1785863282.6032846,
+ "alphas": [
+  {
+   "id": "E5GJrk1R",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=6), 60), 52), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=6), 60), 88))",
+   "sh": 1.39,
+   "fit": 0.66,
+   "tvr": 0.0907,
+   "ret": 0.0278,
+   "2y": 1.63,
+   "rn": 1.22,
+   "subU": 0.96,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "QPGX5EMg",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 100))",
+   "sh": 1.4,
+   "fit": 0.66,
+   "tvr": 0.0937,
+   "ret": 0.028,
+   "2y": 1.65,
+   "rn": 1.24,
+   "subU": 0.95,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "P0G9XvWJ",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 120), 52), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 120), 88))",
+   "sh": 1.36,
+   "fit": 0.63,
+   "tvr": 0.0904,
+   "ret": 0.027,
+   "2y": 1.63,
+   "rn": 1.19,
+   "subU": 0.96,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGm5kWo",
+   "code": "zscore(add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88)))",
+   "sh": 1.38,
+   "fit": 0.65,
+   "tvr": 0.0907,
+   "ret": 0.0276,
+   "2y": 1.63,
+   "rn": 1.21,
+   "subU": 0.96,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "GrGJ3ka3",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 60), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88))",
+   "sh": 1.39,
+   "fit": 0.66,
+   "tvr": 0.088,
+   "ret": 0.0279,
+   "2y": 1.64,
+   "rn": 1.19,
+   "subU": 0.97,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  }
+ ]
+}

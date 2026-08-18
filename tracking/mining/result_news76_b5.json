@@ -1,0 +1,1129 @@
+﻿{
+    "success":  true,
+    "message":  "Successfully created 8 regular alpha simulations",
+    "total_requested":  8,
+    "total_created":  8,
+    "multisimulation_id":  "3fse6ebr84S6aXFU3o7Vy2K",
+    "alpha_results":  [
+                          {
+                              "alpha_id":  "Vk3rkLo5",
+                              "location":  "https://api.worldquantbrain.com/simulations/4qNllsdV85f9b2gUNnRyjhI",
+                              "id":  "Vk3rkLo5",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 11), 3)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.13,
+                                              "fitness":  0.32,
+                                              "turnover":  0.3768,
+                                              "returns":  0.0301,
+                                              "drawdown":  0.0383,
+                                              "margin":  0.00016,
+                                              "longCount":  1589,
+                                              "shortCount":  1542,
+                                              "pnl":  2387705,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.8,
+                                              "two_year_sharpe":  1.68
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  2,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.13,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.6,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.32,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_PNL_REALIZATION_HORIZON",
+                                                                 "value":  21,
+                                                                 "limit":  20
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.3,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.25,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  1.13,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  1.22,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "LOW_2Y_SHARPE",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "58km81VX",
+                              "location":  "https://api.worldquantbrain.com/simulations/hbGdd8c4PKaC7FvZ0rXYa",
+                              "id":  "58km81VX",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 9), 1)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.09,
+                                              "fitness":  0.28,
+                                              "turnover":  0.4305,
+                                              "returns":  0.0294,
+                                              "drawdown":  0.0442,
+                                              "margin":  0.000137,
+                                              "longCount":  1555,
+                                              "shortCount":  1577,
+                                              "pnl":  2332530,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.78,
+                                              "two_year_sharpe":  1.52
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.09,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.68,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.28,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_PNL_REALIZATION_HORIZON",
+                                                                 "value":  24,
+                                                                 "limit":  20
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.4,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.39,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  1.09,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  1.24,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_2Y_SHARPE",
+                                                                 "value":  1.52,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "wpEdpA66",
+                              "location":  "https://api.worldquantbrain.com/simulations/zYJQh3bP4h0bRp2JhcDb3h",
+                              "id":  "wpEdpA66",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 7), 1)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.11,
+                                              "fitness":  0.28,
+                                              "turnover":  0.4415,
+                                              "returns":  0.0289,
+                                              "drawdown":  0.0498,
+                                              "margin":  0.000131,
+                                              "longCount":  1542,
+                                              "shortCount":  1589,
+                                              "pnl":  2288435,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.79,
+                                              "two_year_sharpe":  1.57
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.11,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.69,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.28,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.5,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.45,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  1.11,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  1.23,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_2Y_SHARPE",
+                                                                 "value":  1.57,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_PNL_REALIZATION_HORIZON",
+                                                          "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "2rNgrxEZ",
+                              "location":  "https://api.worldquantbrain.com/simulations/2msPNZ7lr4Lta5319dMLFTK3",
+                              "id":  "2rNgrxEZ",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(ts_rank(vec_avg(mws76_score), 22)), 0.5), 7), 3)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.08,
+                                              "fitness":  0.25,
+                                              "turnover":  0.4543,
+                                              "returns":  0.0245,
+                                              "drawdown":  0.0403,
+                                              "margin":  0.000108,
+                                              "longCount":  1512,
+                                              "shortCount":  1619,
+                                              "pnl":  1944106,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.98,
+                                              "two_year_sharpe":  1.34
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.08,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.4,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.25,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.94,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.74,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  1.08,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  1.1,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_2Y_SHARPE",
+                                                                 "value":  1.34,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_PNL_REALIZATION_HORIZON",
+                                                          "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "zqRxqEaO",
+                              "location":  "https://api.worldquantbrain.com/simulations/1yY2eCdiB5jYcuD7hkWifRu",
+                              "id":  "zqRxqEaO",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(ts_rank(vec_avg(mws76_score), 22)), 0.5), 9), 3)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.13,
+                                              "fitness":  0.27,
+                                              "turnover":  0.4482,
+                                              "returns":  0.0263,
+                                              "drawdown":  0.0404,
+                                              "margin":  0.000117,
+                                              "longCount":  1518,
+                                              "shortCount":  1613,
+                                              "pnl":  2085560,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.99,
+                                              "two_year_sharpe":  1.42
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.13,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.4,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.27,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.94,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.63,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  1.13,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  1.14,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_2Y_SHARPE",
+                                                                 "value":  1.42,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_PNL_REALIZATION_HORIZON",
+                                                          "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "E5ej5M3G",
+                              "location":  "https://api.worldquantbrain.com/simulations/2iJiQ7fQ94V18PIBC2W26o9",
+                              "id":  "E5ej5M3G",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(ts_rank(vec_avg(mws76_score), 10)), 0.5), 7), 3)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  0.9,
+                                              "fitness":  0.18,
+                                              "turnover":  0.4967,
+                                              "returns":  0.0209,
+                                              "drawdown":  0.0443,
+                                              "margin":  0.000084,
+                                              "longCount":  1478,
+                                              "shortCount":  1653,
+                                              "pnl":  1656462,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.9,
+                                              "two_year_sharpe":  1.2
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  1,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  true,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "ppa_failed_checks":  [
+                                                                   "LOW_SHARPE"
+                                                               ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+                                                          {
+                                                              "name":  "LOW_SHARPE",
+                                                              "value":  0.9,
+                                                              "limit":  1.58
+                                                          },
+                                                          {
+                                                              "name":  "LOW_FITNESS",
+                                                              "value":  0.18,
+                                                              "limit":  1.0
+                                                          },
+                                                          {
+                                                              "name":  "LOW_2Y_SHARPE",
+                                                              "value":  1.2,
+                                                              "limit":  1.58
+                                                          }
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.17,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                                 "value":  0.65,
+                                                                 "limit":  0.7
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.69,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -1.03,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  0.9,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  0.84,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_PNL_REALIZATION_HORIZON",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "9q7eq3ox",
+                              "location":  "https://api.worldquantbrain.com/simulations/16k4jj2rD4zXchXgSIDTceQ",
+                              "id":  "9q7eq3ox",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 11), 1)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  1.06,
+                                              "fitness":  0.28,
+                                              "turnover":  0.4204,
+                                              "returns":  0.0298,
+                                              "drawdown":  0.0392,
+                                              "margin":  0.000142,
+                                              "longCount":  1569,
+                                              "shortCount":  1562,
+                                              "pnl":  2364577,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.77,
+                                              "two_year_sharpe":  1.46
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  0,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  false,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "LOW_SHARPE",
+                                                                 "value":  1.06,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.64,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_FITNESS",
+                                                                 "value":  0.28,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                                 "value":  0.7349,
+                                                                 "limit":  0.75
+                                                             },
+                                                             {
+                                                                 "name":  "HT_PNL_REALIZATION_HORIZON",
+                                                                 "value":  30,
+                                                                 "limit":  20
+                                                             },
+                                                             {
+                                                                 "name":  "LOW_2Y_SHARPE",
+                                                                 "value":  1.46,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION",
+                                                             "POWER_POOL_CORRELATION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          },
+                          {
+                              "alpha_id":  "A17p156e",
+                              "location":  "https://api.worldquantbrain.com/simulations/ZD9dqfhV5bOaINDf7G7Qos",
+                              "id":  "A17p156e",
+                              "code":  "ts_decay_linear(signed_power(subtract(reverse(ts_rank(vec_avg(mws76_score), 10)), 0.5), 9), 3)",
+                              "status":  "UNSUBMITTED",
+                              "stage":  "IS",
+                              "settings":  {
+                                               "instrumentType":  "EQUITY",
+                                               "region":  "USA",
+                                               "universe":  "TOP3000",
+                                               "delay":  1,
+                                               "decay":  6,
+                                               "neutralization":  "STATISTICAL",
+                                               "truncation":  0.08,
+                                               "pasteurization":  "ON",
+                                               "unitHandling":  "VERIFY",
+                                               "nanHandling":  "ON",
+                                               "maxTrade":  "ON",
+                                               "maxPosition":  "OFF",
+                                               "language":  "FASTEXPR",
+                                               "visualization":  false,
+                                               "startDate":  "2014-01-01",
+                                               "endDate":  "2023-12-31"
+                                           },
+                              "metrics":  {
+                                              "sharpe":  0.91,
+                                              "fitness":  0.19,
+                                              "turnover":  0.4865,
+                                              "returns":  0.0217,
+                                              "drawdown":  0.0467,
+                                              "margin":  0.000089,
+                                              "longCount":  1482,
+                                              "shortCount":  1649,
+                                              "pnl":  1715029,
+                                              "bookSize":  20000000,
+                                              "startDate":  "2014-01-01",
+                                              "sub_universe_sharpe":  0.88,
+                                              "two_year_sharpe":  1.28
+                                          },
+                              "ra":  {
+                                         "failed_ra_count":  3,
+                                         "failed_ppa_count":  1,
+                                         "ra_failed":  true,
+                                         "ppa_failed":  true,
+                                         "ra_failed_checks":  [
+                                                                  "LOW_SHARPE",
+                                                                  "LOW_FITNESS",
+                                                                  "LOW_2Y_SHARPE"
+                                                              ],
+                                         "ppa_failed_checks":  [
+                                                                   "LOW_SHARPE"
+                                                               ],
+                                         "pyramid_short":  "news"
+                                     },
+                              "checks":  {
+                                             "fail":  [
+                                                          {
+                                                              "name":  "LOW_SHARPE",
+                                                              "value":  0.91,
+                                                              "limit":  1.58
+                                                          },
+                                                          {
+                                                              "name":  "LOW_FITNESS",
+                                                              "value":  0.19,
+                                                              "limit":  1.0
+                                                          },
+                                                          {
+                                                              "name":  "LOW_2Y_SHARPE",
+                                                              "value":  1.28,
+                                                              "limit":  1.58
+                                                          }
+                                                      ],
+                                             "warning":  [
+                                                             {
+                                                                 "name":  "CLUSTER_TEST",
+                                                                 "value":  0.16,
+                                                                 "limit":  1.58
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP500_TOP200_SHARPE_RATIO",
+                                                                 "value":  0.66,
+                                                                 "limit":  0.7
+                                                             },
+                                                             {
+                                                                 "name":  "HT_LIQUID_TOP200_SHARPE",
+                                                                 "value":  0.68,
+                                                                 "limit":  1
+                                                             },
+                                                             {
+                                                                 "name":  "HT_AFTER_COST_SHARPE",
+                                                                 "value":  -0.94,
+                                                                 "limit":  1.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_TRADE_SHARPE",
+                                                                 "value":  0.91,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_INVESTABLE_MAX_POSITION_SHARPE",
+                                                                 "value":  0.82,
+                                                                 "limit":  2.0
+                                                             },
+                                                             {
+                                                                 "name":  "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+                                                                 "value":  "Statistical",
+                                                                 "limit":  "RAM"
+                                                             },
+                                                             {
+                                                                 "name":  "MATCHES_THEMES"
+                                                             },
+                                                             {
+                                                                 "name":  "OSMOSIS_ALLOCATION"
+                                                             }
+                                                         ],
+                                             "pass":  [
+                                                          "LOW_TURNOVER",
+                                                          "HIGH_TURNOVER",
+                                                          "CONCENTRATED_WEIGHT",
+                                                          "LOW_SUB_UNIVERSE_SHARPE",
+                                                          "HT_TURNOVER",
+                                                          "HT_HIGH_TURNOVER_RETURNS_RATIO",
+                                                          "HT_PNL_REALIZATION_HORIZON",
+                                                          "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+                                                          "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+                                                          "MATCHES_CLASSIFICATION",
+                                                          "MATCHES_PYRAMID"
+                                                      ],
+                                             "pending":  [
+                                                             "SELF_CORRELATION",
+                                                             "DATA_DIVERSITY",
+                                                             "PROD_CORRELATION",
+                                                             "REGULAR_SUBMISSION"
+                                                         ]
+                                         },
+                              "pyramids":  {
+                                               "effective":  1,
+                                               "list":  [
+                                                            {
+                                                                "name":  "USA/D1/NEWS",
+                                                                "multiplier":  1.2
+                                                            }
+                                                        ]
+                                           }
+                          }
+                      ]
+}

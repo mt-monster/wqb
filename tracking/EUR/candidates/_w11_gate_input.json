@@ -1,0 +1,18 @@
+[
+ "rank(star_hold_global_rank)",
+ "rank(star_hold_global_rank)",
+ "rank(star_hold_global_rank)",
+ "rank(star_hold_global_screening_rank)",
+ "rank(star_hold_global_screening_rank)",
+ "rank(star_hold_global_screening_rank)",
+ "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))",
+ "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))",
+ "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))",
+ "rank(star_hold_sector_rank)",
+ "rank(star_hold_sector_rank)",
+ "rank(star_hold_sector_rank)",
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))",
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))",
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))",
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_region_change_rank))"
+]

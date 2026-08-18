@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_change_rank, std=5), lookback=60), 44))",
+  "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44)",
+  "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33)",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_industry_rank, std=5), lookback=60), 44))",
+  "-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), industry)"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "kuQa5eK5709jlTjpLi5hp",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/kuQa5eK5709jlTjpLi5hp",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/kuQa5eK5709jlTjpLi5hp",
+  "submitted_expressions": [
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_change_rank, std=5), lookback=60), 44))",
+   "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44)",
+   "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33)",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_industry_rank, std=5), lookback=60), 44))",
+   "-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), industry)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

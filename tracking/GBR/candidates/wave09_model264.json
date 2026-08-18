@@ -1,0 +1,59 @@
+{
+  "wave": "09",
+  "dataset": "model264",
+  "expressions": [
+    {
+      "id": "gbr_w09_model264_01",
+      "dataset": "model264",
+      "style": "ml_probability_trend",
+      "skeleton": "rank(ts_mean(FIELD,10))",
+      "expression": "rank(ts_mean(mdl264_3l_bb,10))",
+      "operators": [
+        "rank",
+        "ts_mean"
+      ],
+      "field": "mdl264_3l_bb",
+      "logic": "ML上涨概率趋势：布林带3层模型预测概率的短期平滑"
+    },
+    {
+      "id": "gbr_w09_model264_02",
+      "dataset": "model264",
+      "style": "ml_probability_reversal",
+      "skeleton": "subtract(rank(FIELD),rank(ts_mean(FIELD,20)))",
+      "expression": "subtract(rank(mdl264_1l_atr),rank(ts_mean(mdl264_1l_atr,20)))",
+      "operators": [
+        "subtract",
+        "rank",
+        "ts_mean"
+      ],
+      "field": "mdl264_1l_atr",
+      "logic": "ML下跌概率反转：ATR指标1层模型预测概率的均值回归"
+    },
+    {
+      "id": "gbr_w09_model264_03",
+      "dataset": "model264",
+      "style": "ml_probability_spread",
+      "skeleton": "rank(subtract(FIELD1,FIELD2))",
+      "expression": "rank(subtract(mdl264_3l_cci,mdl264_1l_cci))",
+      "operators": [
+        "rank",
+        "subtract"
+      ],
+      "field": "mdl264_3l_cci+mdl264_1l_cci",
+      "logic": "ML多空概率差：CCI指标3层与1层模型预测的方向性净信号"
+    },
+    {
+      "id": "gbr_w09_model264_04",
+      "dataset": "model264",
+      "style": "ml_probability_acceleration",
+      "skeleton": "rank(ts_delta(ts_delta(FIELD,5),5))",
+      "expression": "rank(ts_delta(ts_delta(mdl264_2l_macd,5),5))",
+      "operators": [
+        "rank",
+        "ts_delta"
+      ],
+      "field": "mdl264_2l_macd",
+      "logic": "ML中性概率加速度：MACD指标2层模型预测不确定性的二阶变化"
+    }
+  ]
+}

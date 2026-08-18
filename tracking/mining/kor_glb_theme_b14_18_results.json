@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3yGmXP9JO4y59DJ1asZbT3wK",
+ "ts": 1785904384.448312,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3tQsna1hz4mLaPcmAsXvWha",
+   "location_url": "https://api.worldquantbrain.com/simulations/3tQsna1hz4mLaPcmAsXvWha",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "3qpWx9ZX",
+   "raw": {
+    "id": "3tQsna1hz4mLaPcmAsXvWha",
+    "parent": "3yGmXP9JO4y59DJ1asZbT3wK",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 18,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)",
+    "status": "COMPLETE",
+    "alpha": "3qpWx9ZX"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4Dl33c1pc4Ge9Br1fCFkGs43",
+   "location_url": "https://api.worldquantbrain.com/simulations/4Dl33c1pc4Ge9Br1fCFkGs43",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "58pV9Qo5",
+   "raw": {
+    "id": "4Dl33c1pc4Ge9Br1fCFkGs43",
+    "parent": "3yGmXP9JO4y59DJ1asZbT3wK",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 18,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 250), country)",
+    "status": "COMPLETE",
+    "alpha": "58pV9Qo5"
+   },
+   "extra_info": ""
+  }
+ ]
+}

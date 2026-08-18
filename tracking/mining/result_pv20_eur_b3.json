@@ -1,0 +1,136 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/2sGTrz6um4EzapBxPncBawp",
+ "ts": 1785869511.117468,
+ "alphas": [
+  {
+   "id": "j26m6oGZ",
+   "code": "ts_rank(ts_backfill(winsorize(pv20_score_870, std=5), 60), 44)",
+   "sh": -0.11,
+   "fit": -0.01,
+   "tvr": 0.1093,
+   "ret": -0.0023,
+   "2y": -1.29,
+   "rn": -0.14,
+   "subU": -0.01,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "E5GJGNzm",
+   "code": "-ts_rank(ts_backfill(winsorize(pv20_score_870, std=5), 60), 44)",
+   "sh": 0.11,
+   "fit": 0.01,
+   "tvr": 0.1093,
+   "ret": 0.0023,
+   "2y": 1.29,
+   "rn": 0.14,
+   "subU": 0.01,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "vRNgNZGQ",
+   "code": "ts_rank(ts_backfill(winsorize(pv20_252_mom_413, std=5), 60), 44)",
+   "sh": -0.01,
+   "fit": -0.0,
+   "tvr": 0.0997,
+   "ret": -0.0004,
+   "2y": 0.08,
+   "rn": 0.19,
+   "subU": 0.03,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "xANgNVWq",
+   "code": "-ts_rank(ts_backfill(winsorize(pv20_252_mom_413, std=5), 60), 44)",
+   "sh": 0.01,
+   "fit": 0.0,
+   "tvr": 0.0997,
+   "ret": 0.0004,
+   "2y": -0.08,
+   "rn": -0.19,
+   "subU": -0.03,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "ZYEGEgMZ",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(pv20_score_870, std=5), 60), 44), country)",
+   "sh": -0.06,
+   "fit": -0.01,
+   "tvr": 0.1116,
+   "ret": -0.0012,
+   "2y": -1.19,
+   "rn": -0.12,
+   "subU": 0.01,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "P0G9Gx8w",
+   "code": "add(ts_rank(ts_backfill(winsorize(pv20_score_870, std=5), 60), 44), ts_rank(ts_backfill(winsorize(pv20_252_mom_413, std=5), 60), 44))",
+   "sh": 0.05,
+   "fit": 0.01,
+   "tvr": 0.1055,
+   "ret": 0.0022,
+   "2y": -0.29,
+   "rn": 0.11,
+   "subU": 0.12,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGmGdZL",
+   "code": "ts_rank(ts_backfill(winsorize(pv20_score_870, std=5), 60), 88)",
+   "sh": 0.15,
+   "fit": 0.02,
+   "tvr": 0.0923,
+   "ret": 0.0033,
+   "2y": -0.93,
+   "rn": -0.01,
+   "subU": 0.32,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "j26m6oxo",
+   "code": "ts_rank(vec_avg(pv20_best_eps_gaap_lo), 44)",
+   "sh": 0.36,
+   "fit": 0.12,
+   "tvr": 0.0769,
+   "ret": 0.0147,
+   "2y": -0.23,
+   "rn": 0.14,
+   "subU": 0.33,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

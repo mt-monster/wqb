@@ -1,0 +1,10 @@
+# USA PROD墙翻案批 NN (论坛模板补采: ts_target_tvr_decay / 残差差分 / vec_max) | D1 TOP3000
+# 背景: option8+si3 17条数值七闸门全过但 PROD 0.83-0.91 判死, 论坛降PC三武器从未实测, 判死证据不足 → 翻案验证
+reverse(quantile(ts_target_tvr_decay(divide(implied_volatility_put_30, implied_volatility_call_30), lambda_min=0, lambda_max=1, target_tvr=0.05)))
+reverse(quantile(ts_target_tvr_decay(divide(implied_volatility_put_30, implied_volatility_call_30), lambda_min=0, lambda_max=1, target_tvr=0.08)))
+subtract(ts_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), 63), ts_zscore(group_neutralize(divide(implied_volatility_put_30, implied_volatility_call_30), sector), 63))
+subtract(ts_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), 126), ts_zscore(group_neutralize(divide(implied_volatility_put_30, implied_volatility_call_30), sector), 126))
+reverse(quantile(ts_target_tvr_decay(vec_avg(max_loan_rate), lambda_min=0, lambda_max=1, target_tvr=0.08)))
+reverse(quantile(ts_target_tvr_decay(vec_max(max_loan_rate), lambda_min=0, lambda_max=1, target_tvr=0.08)))
+subtract(ts_zscore(vec_avg(loan_utilization_ratio), 63), ts_zscore(group_neutralize(vec_avg(loan_utilization_ratio), sector), 63))
+reverse(quantile(subtract(ts_zscore(vec_max(loan_utilization_ratio), 63), ts_zscore(group_neutralize(vec_max(loan_utilization_ratio), sector), 63))))

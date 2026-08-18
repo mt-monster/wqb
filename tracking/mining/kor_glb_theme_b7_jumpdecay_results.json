@@ -1,0 +1,43 @@
+{
+ "batch": "glb_b7",
+ "source_post": "37877587810327",
+ "exprs": [
+  "jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05)",
+  "ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44)",
+  "jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05)",
+  "ts_rank(jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05), 44)",
+  "-ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44)",
+  "ts_rank(jump_decay(ts_delta(close, 5), 8, sensitivity=0.5, force=0.1), 44)",
+  "add(ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44), ts_rank(jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05), 44))",
+  "ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 88)"
+ ],
+ "settings": {
+  "region": "GLB",
+  "universe": "TOPDIV3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "FAST",
+  "truncation": 0.04
+ },
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "4vZR2q3df5cbaGCimLiBJp6",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/4vZR2q3df5cbaGCimLiBJp6",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/4vZR2q3df5cbaGCimLiBJp6",
+  "submitted_expressions": [
+   "jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05)",
+   "ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44)",
+   "jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05)",
+   "ts_rank(jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05), 44)",
+   "-ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44)",
+   "ts_rank(jump_decay(ts_delta(close, 5), 8, sensitivity=0.5, force=0.1), 44)",
+   "add(ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 44), ts_rank(jump_decay(ts_delta(volume, 5), 3, sensitivity=0.3, force=0.05), 44))",
+   "ts_rank(jump_decay(ts_delta(close, 5), 3, sensitivity=0.3, force=0.05), 88)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ },
+ "ts": 1785894641.775231
+}

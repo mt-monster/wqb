@@ -1,0 +1,15 @@
+# USA TOP3000 D1 shortinterest3 轮次1 (decay4/SUBIND/maxTrade ON) — 首攻大突破
+# multisim: 12wsLy1nQ5jv98L138PpnWvi | 2026-08-16 | 门禁: 三重门禁首次实战, 8/8 无连坐
+# 表达式 | alpha_id | sharpe | fitness | 2y | RN_sharpe | turnover | margin | 结论
+reverse(quantile(vec_avg(shrt3_bar))) | npN5PbOw | 0.98 | 0.71 | 1.48 | 0.56 | 17.5% | 10.6bp | ra_failed (2y差0.1/subU差0.07)
+group_rank(ts_delta(vec_avg(shrt3_utilizationpercent_units), 21), subindustry) | vRNX2VJv | 0.88 | 0.31 | 1.34 | 1.28 | 16.5% | 2.5bp | ra_failed
+quantile(ts_decay_linear(vec_avg(borrow_activity_score), 10)) | O0GX8v5J | -0.93 | -0.73 | -1.41 | -0.43 | 11.1% | - | 方向反! S2反转
+reverse(rank(divide(vec_avg(mean_loan_rate), add(vec_avg(min_loan_rate), 0.01)))) | O0GX8v5d | -0.03 | -0.00 | -0.69 | -0.23 | 32.7% | - | 废
+ts_zscore(vec_avg(loan_rate_volatility_main), 126) | VkGb0o2V | 0.12 | 0.01 | 1.73 | -0.18 | 29.7% | - | 弱
+divide(vec_avg(new_loaned_share_count), add(vec_avg(available_share_count), 1)) | MPGN3AK8 | -1.35 | -1.30 | -2.59 | -1.19 | 20.4% | - | UNITS警告+集中权重; 方向反且单位冲突→已入门禁
+signed_power(group_zscore(ts_delta(vec_avg(loan_utilization_ratio), 5), subindustry), 0.5) | blQ1O3oR | 1.34 | 0.43 | 2.76 | 1.48 | 34.9% | 2bp | ★优化候选: 2y/RN已过, 差sharpe0.24+fitness+tv压<30%
+ts_rank(vec_avg(max_loan_rate_main), 252) | LLGYZxg2 | 0.22 | 0.04 | 1.32 | -0.57 | 22.7% | - | 弱
+
+# 金字塔: USA/D1/SHORTINTEREST multiplier 1.1 (未点亮, 攻击目标成立)
+# 主信号源: loan_utilization_ratio 5日delta + subindustry组内zscore + signed_power 0.5
+# 下一步: S2 优化批已提交 (21TtH969z53qb1x3L7Bvwpe)

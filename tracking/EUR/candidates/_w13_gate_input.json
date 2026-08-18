@@ -1,0 +1,18 @@
+[
+ "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+ "add(0.70 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.30 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+ "add(0.60 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.40 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+ "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_estimate_revision_europe_rank))",
+ "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_deep_value_europe_rank))",
+ "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_change_in_price_adj_eps_2))",
+ "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_enterprise_value_europe_rank))",
+ "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_balance_sheet_strength_europe_rank))",
+ "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_estimate_revision_europe_rank))",
+ "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_deep_value_europe_rank))",
+ "add(0.70 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.30 * rank(long_term_change_in_price_adj_eps_2))",
+ "add(0.70 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.30 * rank(long_term_enterprise_value_europe_rank))",
+ "rank(long_term_estimate_revision_europe_rank)",
+ "rank(long_term_deep_value_europe_rank)",
+ "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.40 * subtract(0, rank(long_term_estimate_revision_europe_rank)))",
+ "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_ebitda_to_enterprise_value_ratio_2))"
+]

@@ -1,0 +1,59 @@
+{
+  "wave": "09",
+  "dataset": "pattern_scores",
+  "expressions": [
+    {
+      "id": "gbr_w09_pattern_scores_01",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_breakout",
+      "skeleton": "rank(ts_max(FIELD,20))",
+      "expression": "rank(ts_max(asc_triangle_mean_simscore_lookback120,20))",
+      "operators": [
+        "rank",
+        "ts_max"
+      ],
+      "field": "asc_triangle_mean_simscore_lookback120",
+      "logic": "上升三角形形态突破：120日三角形相似度均值的近期高点"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_02",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_mean_reversion",
+      "skeleton": "subtract(rank(FIELD),ts_mean(rank(FIELD),40))",
+      "expression": "subtract(rank(avg_similarity_falling_wedge_pattern_120),ts_mean(rank(avg_similarity_falling_wedge_pattern_120),40))",
+      "operators": [
+        "subtract",
+        "rank",
+        "ts_mean"
+      ],
+      "field": "avg_similarity_falling_wedge_pattern_120",
+      "logic": "下降楔形形态均值回归：120日楔形相似度的长期偏离修复"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_03",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_volatility",
+      "skeleton": "rank(ts_std_dev(FIELD,30))",
+      "expression": "rank(ts_std_dev(avg_similarity_v_reversal_bottom_120,30))",
+      "operators": [
+        "rank",
+        "ts_std_dev"
+      ],
+      "field": "avg_similarity_v_reversal_bottom_120",
+      "logic": "V形底部反转形态波动率：形态匹配度的不稳定性"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_04",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_cross",
+      "skeleton": "rank(corr(FIELD1,FIELD2,20))",
+      "expression": "rank(corr(avg_similarity_upward_breakaway_gap_120,asc_triangle_std_simscore_lookback120,20))",
+      "operators": [
+        "rank",
+        "corr"
+      ],
+      "field": "avg_similarity_upward_breakaway_gap_120+asc_triangle_std_simscore_lookback120",
+      "logic": "缺口-三角形形态统计耦合：向上突破缺口与三角形波动率的相关性"
+    }
+  ]
+}

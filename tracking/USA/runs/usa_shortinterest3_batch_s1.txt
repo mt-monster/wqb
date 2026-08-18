@@ -1,0 +1,10 @@
+# USA TOP3000 D1 shortinterest3 轮次1 (做空压力反转/利用率动量/费率波动/新借入流 多骨架)
+# 字段全部 coverage=1.0 VECTOR, 均 vec_avg 聚合; 依据: OS sharpe 类目1.028, shortinterest3 score 0.739
+reverse(quantile(vec_avg(shrt3_bar)))
+group_rank(ts_delta(vec_avg(shrt3_utilizationpercent_units), 21), subindustry)
+quantile(ts_decay_linear(vec_avg(borrow_activity_score), 10))
+reverse(rank(divide(vec_avg(mean_loan_rate), add(vec_avg(min_loan_rate), 0.01))))
+ts_zscore(vec_avg(loan_rate_volatility_main), 126)
+divide(vec_avg(new_loaned_share_count), add(vec_avg(available_share_count), 1))
+signed_power(group_zscore(ts_delta(vec_avg(loan_utilization_ratio), 5), subindustry), 0.5)
+ts_rank(vec_avg(max_loan_rate_main), 252)

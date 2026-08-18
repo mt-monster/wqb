@@ -1,0 +1,19 @@
+# USA TOP3000 D1 insiders3 轮次3 (高覆盖字段 + 论坛 ts_corr 风格) — 结果: 8/8 ra_failed
+# multisim: 2f8Zz01N04kDa92AJ58jiyg | 2026-08-16
+# 表达式 | alpha_id | sharpe | fitness | 2y | turnover | 结论
+quantile(ts_decay_linear(ts_backfill(insd3_10q_freq_latest_release, 90), 21)) | mL5Wm8LE | -0.00 | -0.00 | 0.66 | 3.3% | ra_failed
+reverse(rank(ts_corr(ts_backfill(insd3_form4_trans_shares, 90), close, 63))) | 9qpOjwZo | 0.05 | 0.00 | 0.21 | 7.1% | ra_failed
+group_rank(ts_decay_linear(ts_backfill(insd3_corresp_file_count, 60), 21), subindustry) | P0Gm2pQp | 0.44 | 0.15 | 1.62 | 1.9% | ra_failed (tv过低)
+ts_rank(ts_backfill(insd3_dlh_qca, 90), 252) | MPGNapMa | 0.65 | 0.22 | 0.23 | 7.3% | ra_failed
+quantile(subtract(vec_avg(insd3_10q_positive_score), vec_avg(insd3_10q_negative_score))) | npN5dgxq | 0.25 | 0.08 | 1.02 | 63.7% | ra_failed + CONCENTRATED_WEIGHT (覆盖42/30多头)
+group_rank(divide(ts_backfill(insd3_qca, 60), add(ts_backfill(insd3_spd, 60), 1)), subindustry) | mL5Wm8wE | 0.07 | 0.01 | -0.52 | 9.8% | ra_failed
+winsorize(ts_delta(ts_backfill(insd3_upload_file_count, 60), 63)) | RRmwbpMn | -0.29 | -0.06 | -1.57 | 48.3% | ra_failed + CONCENTRATED_WEIGHT
+quantile(ts_decay_linear(ts_backfill(insd3_sic, 60), 21)) | E5GPpw1r | 0.14 | 0.03 | 0.35 | 0.5% | ra_failed (tv过低)
+
+# 探针批 (hump 命名参数验证, multisim 3ceLct68n4rq8OvTZu42beZ)
+group_neutralize(mdl238_country_rank, subindustry) | leWPvQKA | 0.31 | 0.15 | 0.70 | 7.5% | ra_failed
+hump(group_neutralize(quantile(mdl238_country_rank), subindustry), hump=0.01) | mL5Wmr6E | 0.38 | 0.18 | 0.96 | 0.8% | ra_failed (语法确认: hump=0.01 命名写法 OK)
+
+# 结论: insiders3 累计 4 轮 32 条全灭, 最高 sharpe 0.65 (距 1.58 差距大)
+# 失效归因: form4/事件字段覆盖率低 (TOP3000 中 <10% 股票有值) → 信号稀疏+权重集中; 覆盖高的 freq/count 类字段信息量弱
+# 决策: 满足切换条件 (模板多样性穷尽 + 论坛无计可施), 切换至下一个未点亮金字塔数据集

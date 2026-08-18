@@ -1,0 +1,60 @@
+{
+ "meta": {
+  "wave": "20",
+  "source": "D:/coding/traeCN_project/wqb/tracking/GBR/candidates/gbr_wave20_sentiment27_raw_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-18T01:40:14",
+  "input": 24,
+  "duplicates_dropped": 0,
+  "selected": 24,
+  "buckets": {
+   "add>rank": 5,
+   "divide>rank": 2,
+   "group_rank>ts_delta": 1,
+   "group_rank>vec_avg": 1,
+   "if_else>greater": 1,
+   "multiply>rank": 4,
+   "rank>ts_arg_max": 1,
+   "rank>ts_delta": 3,
+   "rank>vec_avg": 3,
+   "trade_when>greater": 1,
+   "ts_decay_linear>rank": 1,
+   "ts_zscore>vec_avg": 1
+  },
+  "skeleton_distribution": {
+   "linear_mix": 9,
+   "ratio": 2,
+   "group": 2,
+   "event_gated": 2,
+   "single": 9
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "add(0.5 * rank(ts_delta(vec_avg(snl27_relpopularity08), 66)), 0.5 * rank(ts_delta(vec_avg(snl27_relpopularity08), 22)))",
+  "add(0.5 * rank(vec_avg(snl27_relpopularity08)), 0.5 * rank(ts_delta(vec_avg(snl27_relpopularity08), 66)))",
+  "add(0.5 * rank(vec_avg(snl27_relpopularity1)), 0.5 * multiply(rank(vec_avg(snl27_avgranking)), -1))",
+  "add(0.5 * rank(vec_avg(snl27_top50pctranking)), 0.5 * rank(vec_avg(snl27_top75pctranking)))",
+  "add(0.5 * rank(vec_avg(snl27_skewness)), 0.5 * multiply(rank(vec_avg(snl27_kurtosis)), -1))",
+  "divide(rank(vec_avg(snl27_relpopularity08)), add(rank(vec_avg(snl27_totaldomains)), 0.01))",
+  "divide(rank(vec_avg(snl27_topranking)), add(rank(vec_avg(snl27_totaldomains)), 0.01))",
+  "group_rank(ts_delta(vec_avg(snl27_relpopularity1), 66), subindustry)",
+  "group_rank(vec_avg(snl27_relpopularity08), sector)",
+  "if_else(greater(vec_avg(snl27_totaldomains), vec_avg(snl27_totalcountrydomains)), rank(vec_avg(snl27_relpopularity1)), multiply(rank(vec_avg(snl27_avgranking)), -1))",
+  "multiply(rank(vec_avg(snl27_avgranking)), -1)",
+  "multiply(rank(vec_avg(snl27_topranking)), -1)",
+  "multiply(rank(vec_avg(snl27_kurtosis)), -1)",
+  "multiply(rank(ts_arg_max(vec_avg(snl27_relpopularity08), 252)), -1)",
+  "rank(ts_arg_max(vec_avg(snl27_avgranking), 252))",
+  "rank(ts_delta(vec_avg(snl27_relpopularity1), 66))",
+  "rank(ts_delta(vec_avg(snl27_relpopularity1), 22))",
+  "rank(ts_delta(vec_avg(snt27_rank), 66))",
+  "rank(vec_avg(snl27_relpopularity08))",
+  "rank(vec_avg(snl27_relpopularity1))",
+  "rank(vec_avg(snl27_skewness))",
+  "trade_when(greater(ts_delta(vec_avg(snl27_relpopularity08), 22), 0), rank(vec_avg(snl27_relpopularity08)), -1)",
+  "ts_decay_linear(rank(ts_delta(vec_avg(snl27_relpopularity1), 22)), 5)",
+  "ts_zscore(vec_avg(snl27_relpopularity1), 252)"
+ ]
+}

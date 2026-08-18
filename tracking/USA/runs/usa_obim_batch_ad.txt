@@ -1,0 +1,8 @@
+quantile(group_zscore(ts_decay_linear(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))), 4), subindustry))
+quantile(group_zscore(ts_decay_linear(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))), 16), subindustry))
+reverse(quantile(group_zscore(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))), subindustry)))
+quantile(group_zscore(divide(vec_sum(dark_trade_count), add(vec_sum(dark_trade_count), vec_sum(lit_trade_count))), subindustry))
+quantile(group_zscore(divide(vec_sum(dark_trade_notional_value), add(vec_sum(dark_trade_notional_value), vec_sum(lit_trade_notional_value))), subindustry))
+quantile(group_zscore(divide(vec_sum(nonaddressable_trade_volume), add(vec_sum(nonaddressable_trade_volume), vec_sum(bilateral_trade_volume))), subindustry))
+quantile(group_zscore(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(time_weighted_spread_bps)), subindustry))
+quantile(group_zscore(divide(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)), subindustry))

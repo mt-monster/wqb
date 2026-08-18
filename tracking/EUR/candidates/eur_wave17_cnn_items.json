@@ -1,0 +1,18 @@
+[
+ {"code": "rank(eur_img_feature1_leapstar6_d1)", "note": "C1 leapstar6 feature1 原始"},
+ {"code": "subtract(0, rank(eur_img_feature1_leapstar6_d1))", "note": "C2 leapstar6 feature1 镜像"},
+ {"code": "rank(eur_img_feature2_leapstar6_d1)", "note": "C3 leapstar6 feature2 原始"},
+ {"code": "subtract(0, rank(eur_img_feature2_leapstar6_d1))", "note": "C4 leapstar6 feature2 镜像"},
+ {"code": "rank(img_leapstar6_r30_q5_prob_class4)", "note": "C5 r30 q5 prob最高档(看涨) 原始"},
+ {"code": "subtract(0, rank(img_leapstar6_r30_q5_prob_class4))", "note": "C6 r30 q5 prob最高档 镜像"},
+ {"code": "rank(img_leapstar6_r30_q5_prob_class0)", "note": "C7 r30 q5 prob最低档(看跌) 原始"},
+ {"code": "subtract(0, rank(img_leapstar6_r30_q5_prob_class0))", "note": "C8 r30 q5 prob最低档 镜像"},
+ {"code": "rank(subtract(img_leapstar6_r30_q5_prob_class4, img_leapstar6_r30_q5_prob_class0))", "note": "C9 r30 q5 prob差(多-空) 原始"},
+ {"code": "subtract(0, rank(subtract(img_leapstar6_r30_q5_prob_class4, img_leapstar6_r30_q5_prob_class0)))", "note": "C10 r30 q5 prob差 镜像"},
+ {"code": "rank(img_leapstar6_r5_q5_prob_class4)", "note": "C11 r5 q5 prob最高档 原始"},
+ {"code": "subtract(0, rank(img_leapstar6_r5_q5_prob_class4))", "note": "C12 r5 q5 prob最高档 镜像"},
+ {"code": "rank(subtract(img_leapstar6_r5_q5_prob_class4, img_leapstar6_r5_q5_prob_class0))", "note": "C13 r5 q5 prob差 原始"},
+ {"code": "subtract(0, rank(subtract(img_leapstar6_r5_q5_prob_class4, img_leapstar6_r5_q5_prob_class0)))", "note": "C14 r5 q5 prob差 镜像"},
+ {"code": "rank(add(eur_img_feature1_leapstar6_d1, eur_img_feature2_leapstar6_d1))", "note": "C15 feature1+2 复合 原始"},
+ {"code": "subtract(0, rank(add(eur_img_feature1_leapstar6_d1, eur_img_feature2_leapstar6_d1)))", "note": "C16 feature1+2 复合 镜像"}
+]

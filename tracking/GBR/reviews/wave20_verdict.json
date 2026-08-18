@@ -1,0 +1,17 @@
+{
+  "wave": 20,
+  "dataset": "sentiment27",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "Tranco 网站流量排名数据集一轮判弱。24/24 全回测，最强 multiply(rank(vec_avg(snl27_topranking)), -1) sh=0.59 2y=1.71 mg14.8bp tvr3.8%。全部 failed_checks 带 LOW_SHARPE。VECTOR vec_avg 单参包裹正确（双参语法非法）。网站流量关注度信号在 GBR D1 无强 alpha，不加波。",
+  "top": [
+    {"id": "KP7KvRal", "code": "multiply(rank(vec_avg(snl27_topranking)), -1)", "sharpe": 0.59, "fitness": 0.28, "two_year_sharpe": 1.71, "margin_bp": 14.8, "turnover_pct": 3.8, "rn_sharpe": 0.98},
+    {"id": "j2j5om8Z", "code": "rank(vec_avg(snl27_relpopularity1))", "sharpe": 0.57, "fitness": 0.28, "two_year_sharpe": 1.66, "margin_bp": 15.7, "turnover_pct": 3.7, "rn_sharpe": 0.91}
+  ],
+  "lessons": [
+    "vec_avg 是单参算子（vec_avg(field)），双参 vec_avg(field, n) 语法非法",
+    "人气水平/动量/排名反转在 GBR 全 LOW_SHARPE，2Y 1.6-1.7 是唯一亮点",
+    "PowerShell Set-Content 写 UTF8 带 BOM 会致 json.load 失败，须用 python utf-8 重写"
+  ],
+  "next": "轮换 shortinterest3（最后一个 crowd_band tier2）。"
+}

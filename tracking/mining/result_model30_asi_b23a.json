@@ -1,0 +1,33 @@
+{
+ "batch": "b23a",
+ "exprs": [
+  "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 60), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+  "group_neutralize(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+  "ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy2, std=5), 60), 44)"
+ ],
+ "settings": {
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08
+ },
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 5 alpha expressions",
+  "async": true,
+  "multisimulation_id": "3pY5aMcxp4gpclGgJ63rla5",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/3pY5aMcxp4gpclGgJ63rla5",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/3pY5aMcxp4gpclGgJ63rla5",
+  "submitted_expressions": [
+   "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 60), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+   "group_neutralize(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+   "ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy2, std=5), 60), 44)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ },
+ "ts": 1785858532.869823
+}

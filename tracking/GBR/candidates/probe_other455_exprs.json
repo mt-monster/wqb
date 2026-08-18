@@ -1,0 +1,231 @@
+{
+ "dataset": "other455",
+ "data_type": "GROUP",
+ "region": "GBR",
+ "created_at": "2026-08-17T16:21:40",
+ "settings": {
+  "_doc": "GBR 战役固定仿真设置（与台账 settings 键一致）。pipeline/build_wave/probe 统一引用。",
+  "instrumentType": "EQUITY",
+  "region": "GBR",
+  "universe": "TOP700",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "maxTrade": "ON",
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "_alt_neutralization": "STATISTICAL 对照轨（论坛证据上限更高，双轨对照制）",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）",
+  "_diversity_enhance": "auto",
+  "_diversity_weight": 0.3
+ },
+ "fields": [
+  "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+  "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20",
+  "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5",
+  "oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10",
+  "oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20",
+  "oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5"
+ ],
+ "stageA": {
+  "probes": [
+   "P1_水平正",
+   "P2_水平镜像",
+   "P4_均值差分",
+   "P5_衰减水平"
+  ],
+  "batches": [
+   [
+    "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),5)",
+    "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),5)"
+   ],
+   [
+    "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),5)",
+    "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),5)"
+   ],
+   [
+    "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),5)",
+    "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5)",
+    "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),-1)",
+    "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,10))",
+    "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),5)"
+   ]
+  ],
+  "early_stop_rule": "Stage A 完成即 --probe-score --stage A 评分：max|sh|<0.3 且无镜像 -> EARLY RED，不跑 Stage B（省 3 批）"
+ },
+ "stageB": {
+  "probes": [
+   "P3_差分",
+   "P6_时序自归一",
+   "P7_动量",
+   "P8_稀疏修复"
+  ],
+  "batches": [
+   [
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,66))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,66))"
+   ],
+   [
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,66))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,66))"
+   ],
+   [
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,66))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,5))",
+    "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,60))",
+    "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,22))",
+    "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,66))"
+   ]
+  ]
+ },
+ "expressions": [
+  "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),5)",
+  "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),5)",
+  "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),5)",
+  "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),5)",
+  "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),5)",
+  "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5)",
+  "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),-1)",
+  "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,10))",
+  "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),5)",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,66))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,66))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,66))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,66))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,66))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,5))",
+  "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,60))",
+  "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,22))",
+  "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,66))"
+ ],
+ "batches": [
+  [
+   "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),5)",
+   "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),5)"
+  ],
+  [
+   "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),5)",
+   "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),5)"
+  ],
+  [
+   "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),5)",
+   "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5)",
+   "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),-1)",
+   "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,10))",
+   "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),5)"
+  ],
+  [
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,66))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,66))"
+  ],
+  [
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,66))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,66))"
+  ],
+  [
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,66))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,5))",
+   "rank(ts_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,60))",
+   "rank(ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,22))",
+   "rank(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,66))"
+  ]
+ ],
+ "note": "两段式探针：先提 Stage A 批，评分非 EARLY RED 再提 Stage B；multisim id 交给 --probe-score"
+}

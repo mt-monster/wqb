@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1msLHs3nP4Tl90sDplHfL0a",
+ "ts": 1785863391.282373,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2DBYUl3Vq54K8GUxGs2fQ18",
+   "location_url": "https://api.worldquantbrain.com/simulations/2DBYUl3Vq54K8GUxGs2fQ18",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "QPGXmkzM",
+   "raw": {
+    "id": "2DBYUl3Vq54K8GUxGs2fQ18",
+    "parent": "1msLHs3nP4Tl90sDplHfL0a",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 12,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+    "status": "COMPLETE",
+    "alpha": "QPGXmkzM"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2DSR0eJJ5318wDo5CReyEV",
+   "location_url": "https://api.worldquantbrain.com/simulations/2DSR0eJJ5318wDo5CReyEV",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "P0G9jerK",
+   "raw": {
+    "id": "2DSR0eJJ5318wDo5CReyEV",
+    "parent": "1msLHs3nP4Tl90sDplHfL0a",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 12,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 66)",
+    "status": "COMPLETE",
+    "alpha": "P0G9jerK"
+   },
+   "extra_info": ""
+  }
+ ]
+}

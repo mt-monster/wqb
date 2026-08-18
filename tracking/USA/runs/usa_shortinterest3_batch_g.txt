@@ -1,0 +1,10 @@
+# USA TOP3000 D1 shortinterest3 轮次8 (G: 组合信号/交叉骨架) | 并行波2-批G
+# divide(share,share) 单位安全; 同域字段相减; rank 单参
+subtract(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), group_zscore(ts_av_diff(vec_avg(mean_loan_rate), 10), subindustry))
+divide(vec_avg(new_loaned_share_count), vec_avg(loaned_share_count))
+ts_corr(vec_avg(loan_utilization_ratio), vec_avg(mean_loan_rate), 20)
+signed_power(group_zscore(ts_av_diff(divide(vec_avg(new_loaned_share_count), vec_avg(loaned_share_count)), 10), subindustry), 0.5)
+subtract(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(ts_av_diff(vec_avg(mean_loan_rate), 10)))
+reverse(quantile(ts_decay_linear(vec_avg(shrt3_bar), 10)))
+group_rank(subtract(ts_av_diff(vec_avg(loan_utilization_ratio), 10), ts_av_diff(vec_avg(loan_utilization_ratio), 60)), subindustry)
+quantile(group_zscore(divide(vec_avg(new_loaned_share_count), vec_avg(loaned_share_count)), subindustry))

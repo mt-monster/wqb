@@ -1,0 +1,11 @@
+{
+ "batch": "glb_b13",
+ "resps": [
+  "3yh37f1Ng4yvbOi10Ugvo6H8",
+  "1ny7lK4ne4XoaAx19igyuP2x",
+  "2FMIOE24s4tBbZnluueSg64",
+  null
+ ],
+ "strategy": "margin 5bp 冲刺: decay14/16/18/20",
+ "ts": 1785901758.691636
+}

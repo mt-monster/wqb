@@ -1,0 +1,59 @@
+{
+ "meta": {
+  "wave": "19",
+  "source": "D:/coding/traeCN_project/wqb/tracking/GBR/candidates/gbr_wave19_model238_raw_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-18T00:59:39",
+  "input": 24,
+  "duplicates_dropped": 0,
+  "selected": 23,
+  "buckets": {
+   "add>rank": 7,
+   "divide>rank": 3,
+   "group_rank>atom": 2,
+   "if_else>greater": 1,
+   "multiply>rank": 3,
+   "rank>atom": 1,
+   "rank>ts_arg_max": 1,
+   "rank>ts_delta": 2,
+   "subtract>rank": 1,
+   "trade_when>greater": 1,
+   "ts_decay_linear>rank": 1,
+   "ts_zscore>atom": 1
+  },
+  "skeleton_distribution": {
+   "linear_mix": 10,
+   "ratio": 3,
+   "group": 2,
+   "event_gated": 1,
+   "single": 7
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "add(0.5 * rank(mdl238_global_change_rank), 0.5 * multiply(rank(mdl238_global_owner_rank), -1))",
+  "add(0.5 * rank(ts_delta(mdl238_region_change_rank, 66)), 0.5 * rank(ts_delta(mdl238_global_change_rank, 22)))",
+  "add(0.7 * rank(mdl238_region_rank), 0.3 * rank(mdl238_global_screening_rank))",
+  "add(0.5 * rank(mdl238_region_change_rank), 0.5 * multiply(rank(mdl238_region_owner_rank), -1))",
+  "add(0.5 * rank(mdl238_global_rank), 0.5 * rank(mdl238_global_screening_rank))",
+  "add(0.5 * rank(ts_delta(mdl238_region_change_rank, 126)), 0.5 * rank(ts_delta(mdl238_region_change_rank, 22)))",
+  "add(0.5 * rank(mdl238_industry_rank), 0.5 * rank(mdl238_sector_rank))",
+  "divide(rank(mdl238_global_change_rank), add(rank(mdl238_global_owner_rank), 0.01))",
+  "divide(rank(mdl238_global_rank), add(rank(mdl238_region_owner_rank), 0.01))",
+  "divide(rank(mdl238_global_screening_rank), add(rank(mdl238_global_owner_rank), 0.01))",
+  "group_rank(mdl238_global_change_rank, sector)",
+  "group_rank(mdl238_global_rank, subindustry)",
+  "if_else(greater(mdl238_region_change_rank, mdl238_global_change_rank), rank(mdl238_region_rank), rank(ts_delta(mdl238_global_change_rank, 66)))",
+  "multiply(rank(mdl238_global_owner_rank), -1)",
+  "multiply(rank(mdl238_region_owner_rank), -1)",
+  "multiply(rank(ts_arg_max(mdl238_global_change_rank, 252)), -1)",
+  "rank(mdl238_region_change_rank)",
+  "rank(ts_arg_max(mdl238_region_change_rank, 126))",
+  "rank(ts_delta(mdl238_country_rank, 66))",
+  "rank(ts_delta(mdl238_global_change_rank, 66))",
+  "subtract(rank(mdl238_global_change_rank), rank(mdl238_region_change_rank))",
+  "ts_decay_linear(rank(ts_delta(mdl238_sector_rank, 22)), 5)",
+  "ts_zscore(mdl238_sector_rank, 252)"
+ ]
+}

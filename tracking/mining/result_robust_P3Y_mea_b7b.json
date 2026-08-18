@@ -1,0 +1,403 @@
+{
+ "batch": "b7b",
+ "expressions": [
+  {
+   "expr": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 5))",
+   "label": "ak1vlwVO_expr_P3Y"
+  },
+  {
+   "expr": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 20))",
+   "label": "mL59_expr_P3Y"
+  },
+  {
+   "expr": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 10))",
+   "label": "dy_rev10_P3Y"
+  },
+  {
+   "expr": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 20))",
+   "label": "dy_rev20_P3Y"
+  }
+ ],
+ "results": [
+  {
+   "id": "3qpL63l6",
+   "code": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 5))",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "INDUSTRY",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "testPeriod": "P3Y0M"
+   },
+   "metrics": {
+    "sharpe": 1.76,
+    "fitness": 1.83,
+    "turnover": 0.0903,
+    "returns": 0.1349,
+    "drawdown": 0.0818,
+    "margin": 0.002989,
+    "longCount": 143,
+    "shortCount": 144,
+    "pnl": 13931545,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.28,
+    "two_year_sharpe": 2.17,
+    "two_year_ladder_window": 2
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "model/pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "REVERSION_COMPONENT",
+      "message": "Alpha expression includes a reversion component so we may not accept these alphas in the future, try working on different alpha ideas"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "IS_LADDER_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION"
+    ]
+   },
+   "pyramids": {
+    "effective": 2,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     },
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "zqNpoQkV",
+   "code": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 20))",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "INDUSTRY",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "testPeriod": "P3Y0M"
+   },
+   "metrics": {
+    "sharpe": 1.62,
+    "fitness": 1.6,
+    "turnover": 0.0204,
+    "returns": 0.1225,
+    "drawdown": 0.1229,
+    "margin": 0.012025,
+    "longCount": 138,
+    "shortCount": 143,
+    "pnl": 12648519,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.16,
+    "two_year_sharpe": 2.12
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "model"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "REVERSION_COMPONENT",
+      "message": "Alpha expression includes a reversion component so we may not accept these alphas in the future, try working on different alpha ideas"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION"
+    ]
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "xANgz9Yg",
+   "code": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 10))",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "INDUSTRY",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "testPeriod": "P3Y0M"
+   },
+   "metrics": {
+    "sharpe": 1.66,
+    "fitness": 1.67,
+    "turnover": 0.0714,
+    "returns": 0.1258,
+    "drawdown": 0.0963,
+    "margin": 0.003524,
+    "longCount": 143,
+    "shortCount": 145,
+    "pnl": 12989077,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.11,
+    "two_year_sharpe": 2.1,
+    "two_year_ladder_window": 2
+   },
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "model/pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "REVERSION_COMPONENT",
+      "message": "Alpha expression includes a reversion component so we may not accept these alphas in the future, try working on different alpha ideas"
+     },
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "IS_LADDER_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION"
+    ]
+   },
+   "pyramids": {
+    "effective": 2,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     },
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "1YpEm1xz",
+   "code": "rank(ts_backfill(winsorize(mdl31_dy_pct_current, std=5), 60)) + -rank(ts_delta(close, 20))",
+   "status": "UNSUBMITTED",
+   "stage": "IS",
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "INDUSTRY",
+    "truncation": 0.05,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "testPeriod": "P3Y0M"
+   },
+   "metrics": {
+    "sharpe": 1.5,
+    "fitness": 1.46,
+    "turnover": 0.0567,
+    "returns": 0.1188,
+    "drawdown": 0.1258,
+    "margin": 0.004192,
+    "longCount": 143,
+    "shortCount": 145,
+    "pnl": 12269279,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.02,
+    "two_year_sharpe": 1.17,
+    "two_year_ladder_window": 3
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "IS_LADDER_SHARPE"
+    ],
+    "pyramid_short": "model/pv"
+   },
+   "checks": {
+    "fail": [],
+    "warning": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 1.5,
+      "limit": 1.58
+     },
+     {
+      "name": "REVERSION_COMPONENT",
+      "message": "Alpha expression includes a reversion component so we may not accept these alphas in the future, try working on different alpha ideas"
+     },
+     {
+      "name": "IS_LADDER_SHARPE",
+      "value": 1.17,
+      "limit": 1.58,
+      "year": 3
+     },
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_FITNESS",
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION",
+     "POWER_POOL_CORRELATION"
+    ]
+   },
+   "pyramids": {
+    "effective": 2,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     },
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,122 @@
+[
+ {
+  "code": "rank(normalized_trend_indicator_0)",
+  "note": "dl_trend0_raw",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "subtract(0, rank(normalized_trend_indicator_0))",
+  "note": "dl_trend0_mirror",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "rank(normalized_trend_indicator_1)",
+  "note": "dl_trend1_raw",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "rank(normalized_trend_indicator_2)",
+  "note": "dl_trend2_raw",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "rank(normalized_volume_indicator_0)",
+  "note": "dl_vol0_raw",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "rank(normalized_volume_indicator_1)",
+  "note": "dl_vol1_raw",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "subtract(0, rank(normalized_volume_indicator_0))",
+  "note": "dl_vol0_mirror",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "add(rank(normalized_trend_indicator_0), rank(normalized_volume_indicator_0))",
+  "note": "dl_tv0_combo",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "add(rank(normalized_trend_indicator_0), subtract(0, rank(normalized_trend_indicator_1)))",
+  "note": "dl_trend_diff",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "subtract(0, rank(raw_trend_indicator_3))",
+  "note": "dl_rawt3_mirror",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "rank(ts_delta(normalized_trend_indicator_0, 22))",
+  "note": "dl_trend0_delta22",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "add(subtract(0, rank(normalized_trend_indicator_0)), rank(normalized_volume_indicator_3))",
+  "note": "dl_antitrend_vol3",
+  "dataset": "price_signal_dl"
+ },
+ {
+  "code": "subtract(0, rank(median_similarity_breakaway_gap_upward))",
+  "note": "pat_bgapup_mirror",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "subtract(0, rank(mean_similarity_common_gap_upward))",
+  "note": "pat_cgapup_mirror",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "subtract(0, rank(mean_similarity_rising_wedge))",
+  "note": "pat_rwedge_mirror",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "rank(mean_similarity_continuation_rising_wedge)",
+  "note": "pat_crwedge_raw",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "rank(mean_similarity_continuation_v_bottom)",
+  "note": "pat_cvbottom_raw",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "subtract(0, rank(mean_similarity_reversal_v_top))",
+  "note": "pat_rvtop_mirror",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "add(0.4 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.3 * rank(mean_similarity_continuation_rising_wedge), 0.3 * rank(mean_similarity_continuation_v_bottom))",
+  "note": "pat_gbr_template",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "add(0.5 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.5 * rank(median_similarity_continuation_rising_wedge))",
+  "note": "pat_gbr2",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "subtract(0, rank(mean_similarity_falling_wedge))",
+  "note": "pat_fwedge_mirror",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "rank(mean_similarity_continuation_falling_wedge)",
+  "note": "pat_cfwedge_raw",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "add(rank(mean_similarity_continuation_rising_wedge), subtract(0, rank(mean_similarity_common_gap_downward)))",
+  "note": "pat_crwedge_negcgapdown",
+  "dataset": "pattern_scores"
+ },
+ {
+  "code": "rank(mean_similarity_desc_triangle_upward)",
+  "note": "pat_dtriangle_raw",
+  "dataset": "pattern_scores"
+ }
+]

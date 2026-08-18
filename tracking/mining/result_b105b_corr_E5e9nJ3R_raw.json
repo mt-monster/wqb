@@ -1,0 +1,136 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  400,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"alpha_id\": \"E5e9nJ3R\",\n  \"threshold\": 0.7,\n  \"correlation_type\": \"both\",\n  \"checks\": {\n    \"production\": {\n      \"max_correlation\": 0.7442,\n      \"passes_check\": false,\n      \"histogram_nonzero\": [\n        {\n          \"range\": [\n            -0.7,\n            -0.6\n          ],\n          \"n\": 2\n        },\n        {\n          \"range\": [\n            -0.6,\n            -0.5\n          ],\n          \"n\": 3\n        },\n        {\n          \"range\": [\n            -0.5,\n            -0.4\n          ],\n          \"n\": 2\n        },\n        {\n          \"range\": [\n            -0.4,\n            -0.3\n          ],\n          \"n\": 63\n        },\n        {\n          \"range\": [\n            -0.3,\n            -0.2\n          ],\n          \"n\": 6880\n        },\n        {\n          \"range\": [\n            -0.2,\n            -0.1\n          ],\n          \"n\": 103106\n        },\n        {\n          \"range\": [\n            -0.1,\n            0.0\n          ],\n          \"n\": 808649\n        },\n        {\n          \"range\": [\n            0.0,\n            0.1\n          ],\n          \"n\": 1244069\n        },\n        {\n          \"range\": [\n            0.1,\n            0.2\n          ],\n          \"n\": 439926\n        },\n        {\n          \"range\": [\n            0.2,\n            0.3\n          ],\n          \"n\": 87995\n        },\n        {\n          \"range\": [\n            0.3,\n            0.4\n          ],\n          \"n\": 23912\n        },\n        {\n          \"range\": [\n            0.4,\n            0.5\n          ],\n          \"n\": 10477\n        },\n        {\n          \"range\": [\n            0.5,\n            0.6\n          ],\n          \"n\": 2397\n        },\n        {\n          \"range\": [\n            0.6,\n            0.7\n          ],\n          \"n\": 91\n        },\n        {\n          \"range\": [\n            0.7,\n            0.8\n          ],\n          \"n\": 1\n        }\n      ],\n      \"max\": 0.7442,\n      \"min\": -0.6878\n    }\n  },\n  \"all_passed\": false\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "alpha_id":  "E5e9nJ3R",
+                                                            "threshold":  0.7,
+                                                            "correlation_type":  "both",
+                                                            "checks":  {
+                                                                           "production":  {
+                                                                                              "max_correlation":  0.7442,
+                                                                                              "passes_check":  false,
+                                                                                              "histogram_nonzero":  [
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.7,
+                                                                                                                                          -0.6
+                                                                                                                                      ],
+                                                                                                                            "n":  2
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.6,
+                                                                                                                                          -0.5
+                                                                                                                                      ],
+                                                                                                                            "n":  3
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.5,
+                                                                                                                                          -0.4
+                                                                                                                                      ],
+                                                                                                                            "n":  2
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.4,
+                                                                                                                                          -0.3
+                                                                                                                                      ],
+                                                                                                                            "n":  63
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.3,
+                                                                                                                                          -0.2
+                                                                                                                                      ],
+                                                                                                                            "n":  6880
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.2,
+                                                                                                                                          -0.1
+                                                                                                                                      ],
+                                                                                                                            "n":  103106
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          -0.1,
+                                                                                                                                          0.0
+                                                                                                                                      ],
+                                                                                                                            "n":  808649
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.0,
+                                                                                                                                          0.1
+                                                                                                                                      ],
+                                                                                                                            "n":  1244069
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.1,
+                                                                                                                                          0.2
+                                                                                                                                      ],
+                                                                                                                            "n":  439926
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.2,
+                                                                                                                                          0.3
+                                                                                                                                      ],
+                                                                                                                            "n":  87995
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.3,
+                                                                                                                                          0.4
+                                                                                                                                      ],
+                                                                                                                            "n":  23912
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.4,
+                                                                                                                                          0.5
+                                                                                                                                      ],
+                                                                                                                            "n":  10477
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.5,
+                                                                                                                                          0.6
+                                                                                                                                      ],
+                                                                                                                            "n":  2397
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.6,
+                                                                                                                                          0.7
+                                                                                                                                      ],
+                                                                                                                            "n":  91
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "range":  [
+                                                                                                                                          0.7,
+                                                                                                                                          0.8
+                                                                                                                                      ],
+                                                                                                                            "n":  1
+                                                                                                                        }
+                                                                                                                    ],
+                                                                                              "max":  0.7442,
+                                                                                              "min":  -0.6878
+                                                                                          }
+                                                                       },
+                                                            "all_passed":  false
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

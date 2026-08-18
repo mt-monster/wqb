@@ -1,0 +1,74 @@
+[
+ {
+  "code": "rank(mdl264_es_ebit_fy1_r1m_l3)"
+ },
+ {
+  "code": "rank(mdl264_es_ebitda_fy1_r1m_l3)"
+ },
+ {
+  "code": "rank(mdl264_es_roe_fy1_r1m_l3)"
+ },
+ {
+  "code": "rank(mdl264_es_sale_fy1_r1m_l3)"
+ },
+ {
+  "code": "rank(mdl264_es_ebit_ntm_r1m_l3)"
+ },
+ {
+  "code": "rank(mdl264_1l_bb)"
+ },
+ {
+  "code": "rank(mdl264_1l_ips)"
+ },
+ {
+  "code": "rank(mdl264_1l_lda)"
+ },
+ {
+  "code": "subtract(0, rank(mdl264_1l_im))"
+ },
+ {
+  "code": "rank(mdl264_1l_m1m21_ntr)"
+ },
+ {
+  "code": "rank(mdl264_1l_fmc)"
+ },
+ {
+  "code": "rank(mdl264_macd_l3)"
+ },
+ {
+  "code": "subtract(0, rank(mdl264_lottery_l3))"
+ },
+ {
+  "code": "subtract(0, rank(mdl264_amihud_l3))"
+ },
+ {
+  "code": "rank(mdl264_news_abno_sent_1d_l3)"
+ },
+ {
+  "code": "rank(mdl264_news_sentvol_1d_l3)"
+ },
+ {
+  "code": "rank(mdl264_eps_sur_decay_l3)"
+ },
+ {
+  "code": "rank(mdl264_bookp_l3)"
+ },
+ {
+  "code": "add(0.34 * rank(mdl264_es_ebit_fy1_r1m_l3), 0.33 * rank(mdl264_es_sale_fy1_r1m_l3), 0.33 * rank(mdl264_es_ebitda_fy1_r1m_l3))"
+ },
+ {
+  "code": "add(0.34 * rank(mdl264_1l_bb), 0.33 * rank(mdl264_1l_lda), 0.33 * rank(mdl264_1l_ips))"
+ },
+ {
+  "code": "add(0.5 * rank(mdl264_es_ebit_fy1_r1m_l3), 0.5 * rank(mdl264_1l_bb))"
+ },
+ {
+  "code": "add(0.34 * rank(mdl264_news_abno_sent_1d_l3), 0.33 * rank(mdl264_news_sentvol_1d_l3), 0.33 * rank(mdl264_eps_sur_decay_l3))"
+ },
+ {
+  "code": "rank(ts_av_diff(mdl264_1l_bb, 20))"
+ },
+ {
+  "code": "rank(ts_av_diff(mdl264_es_ebit_fy1_r1m_l3, 20))"
+ }
+]

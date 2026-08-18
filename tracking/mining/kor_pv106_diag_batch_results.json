@@ -1,0 +1,11 @@
+{
+  "batch": "pv106 诊断批次 (1GjFvR1E04l0bZmdZvb4KPB)",
+  "date": "2026-08-03",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 8, "neutralization": "SECTOR", "truncation": 0.04, "maxTrade": "ON"},
+  "diagnosis": "ts_regression+densify(sector) 组合平台通用运行错误; 单独均可用. group_rank(ts_rank(x,D), densify(sector)) 破局: sharpe 1.53->1.62",
+  "results": [
+    {"id": "wpaqP76x", "expr": "group_rank(ts_regression(ts_zscore(spread,44), ts_zscore(lastspread,44), 44), sector)", "sharpe": 0.73, "fitness": 0.32, "turnover": 0.227, "two_year": 0.31, "risk_neut": 0.64, "cw": "PASS", "note": "ts_regression 残差信号弱, 但 CONCENTRATED_WEIGHT 天然通过"},
+    {"id": "vRN8670d", "expr": "group_rank(ts_rank(pv106_wli_spread, 44), densify(sector))", "sharpe": 1.62, "fitness": 1.09, "turnover": 0.263, "margin": 0.000902, "sub_universe": 1.59, "two_year": 1.22, "risk_neut": 1.7, "cw": 0.231, "ra_failed": ["CONCENTRATED_WEIGHT", "LOW_2Y_SHARPE"], "note": "首个 sharpe>1.58 达标候选! 行业分组 +0.09 sharpe"}
+  ],
+  "action": "展开 group_rank(ts_rank(F,D), densify(group)) 家族: 窗口 22/44/66 x 字段 x group(subindustry/industry)"
+}

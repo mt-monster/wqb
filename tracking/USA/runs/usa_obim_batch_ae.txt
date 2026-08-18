@@ -1,0 +1,8 @@
+quantile(group_zscore(add(rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+quantile(group_zscore(multiply(rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+quantile(group_zscore(vec_avg(closing_auction_dislocation_last), subindustry))
+quantile(group_zscore(vec_avg(closing_auction_dislocation_1min), subindustry))
+quantile(group_zscore(vec_avg(auction_order_imbalance_pct_auction), subindustry))
+quantile(group_zscore(vec_avg(intraday_price_volatility), subindustry))
+reverse(quantile(group_zscore(vec_avg(volume_weighted_relative_spread), subindustry)))
+quantile(group_zscore(subtract(vec_sum(bid_order_volume_change_modification_2), vec_sum(ask_order_volume_change_modification)), subindustry))

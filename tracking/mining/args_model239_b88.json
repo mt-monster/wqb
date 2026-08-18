@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_shortlasso1d), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_shortlasso1d), sector), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_shortlasso30d), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_shortlasso92d), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(subtract(1, group_rank(vec_avg(mdl239_shortlasso1d), subindustry)), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_combo_utilisation), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_combo_loanrate1), subindustry), 3), 90)",
+    "ts_decay_linear(signed_power(group_rank(vec_avg(mdl239_combo_utilisation_x_rate), subindustry), 3), 90)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

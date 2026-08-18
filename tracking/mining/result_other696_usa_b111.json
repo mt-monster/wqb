@@ -1,0 +1,504 @@
+{
+ "batch": "b111",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SECTOR",
+  "truncation": 0.04,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "rank(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60))",
+  "rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))",
+  "group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(oth696_combined_sentiment_score), std=5), lookback=60), 5), sector)",
+  "rank(ts_delta(ts_backfill(vec_avg(oth696_alldlneg), lookback=60), 5))",
+  "rank(ts_backfill(vec_avg(oth696_events_sentiment_score), lookback=60))",
+  "rank(ts_mean(vec_avg(oth696_growthweightedpos), 20))",
+  "rank(ts_backfill(vec_avg(oth696_opportunity_positive), lookback=60))",
+  "rank(add(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60), vec_avg(oth696_events_sentiment_score)))"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "rank(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60))",
+   "child": "4f6LlMdTT4Ad9iidXmuYwyk",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "npNVP358",
+   "metrics": {
+    "sharpe": 0.71,
+    "fitness": 0.42,
+    "turnover": 0.0396,
+    "returns": 0.0434,
+    "margin": 0.002188,
+    "drawdown": 0.0876,
+    "two_year_sharpe": -0.45,
+    "sub_universe_sharpe": 0.31
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.71,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.42,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.45,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60))"
+  },
+  {
+   "index": 1,
+   "expression": "rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))",
+   "child": "2h2AlG4fY54QccWmMbRFyS6",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "qMNq0gJE",
+   "metrics": {
+    "sharpe": 0.42,
+    "fitness": 0.19,
+    "turnover": 0.1548,
+    "returns": 0.0328,
+    "margin": 0.000424,
+    "drawdown": 0.1825,
+    "two_year_sharpe": -0.09,
+    "sub_universe_sharpe": 0.22
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.42,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.19,
+     "limit": 1.0
+    },
+    {
+     "name": "CONCENTRATED_WEIGHT",
+     "value": 0.111656,
+     "limit": 0.1,
+     "date": "2014-01-02"
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.09,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))"
+  },
+  {
+   "index": 2,
+   "expression": "group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(oth696_combined_sentiment_score), std=5), lookback=60), 5), sector)",
+   "child": "oA3TcfHu575bibeiHJXZPb",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "xANgbRpp",
+   "metrics": {
+    "sharpe": 1.39,
+    "fitness": 1.0,
+    "turnover": 0.0426,
+    "returns": 0.0641,
+    "margin": 0.003011,
+    "drawdown": 0.0596,
+    "two_year_sharpe": 0.31,
+    "sub_universe_sharpe": 0.65
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(oth696_combined_sentiment_score), std=5), lookback=60), 5), sector)"
+  },
+  {
+   "index": 3,
+   "expression": "rank(ts_delta(ts_backfill(vec_avg(oth696_alldlneg), lookback=60), 5))",
+   "child": "3JjkrM9HT5ba9fgTmSKsaBi",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "3qpLVzmQ",
+   "metrics": {
+    "sharpe": -0.66,
+    "fitness": -0.22,
+    "turnover": 0.4375,
+    "returns": -0.0483,
+    "margin": -0.000221,
+    "drawdown": 0.5767,
+    "two_year_sharpe": -0.29,
+    "sub_universe_sharpe": -0.49
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": -0.66,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": -0.22,
+     "limit": 1.0
+    },
+    {
+     "name": "CONCENTRATED_WEIGHT",
+     "value": 0.180547,
+     "limit": 0.1,
+     "date": "2015-01-08"
+    },
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": -0.49,
+     "limit": -0.29
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.29,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 5,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_delta(ts_backfill(vec_avg(oth696_alldlneg), lookback=60), 5))"
+  },
+  {
+   "index": 4,
+   "expression": "rank(ts_backfill(vec_avg(oth696_events_sentiment_score), lookback=60))",
+   "child": "27hcO5US4kq9BEV6p7vV7Q",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "N1b9VAEg",
+   "metrics": {
+    "sharpe": 0.75,
+    "fitness": 0.4,
+    "turnover": 0.0405,
+    "returns": 0.0354,
+    "margin": 0.001751,
+    "drawdown": 0.0936,
+    "two_year_sharpe": 0.21,
+    "sub_universe_sharpe": 0.25
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.75,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.4,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.25,
+     "limit": 0.32
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": 0.21,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_backfill(vec_avg(oth696_events_sentiment_score), lookback=60))"
+  },
+  {
+   "index": 5,
+   "expression": "rank(ts_mean(vec_avg(oth696_growthweightedpos), 20))",
+   "child": "4y5NSz38R50S8J9e0cKCeO6",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "78z96JPL",
+   "metrics": {
+    "sharpe": 0.19,
+    "fitness": 0.06,
+    "turnover": 0.1436,
+    "returns": 0.0153,
+    "margin": 0.000212,
+    "drawdown": 0.2317,
+    "two_year_sharpe": -0.08,
+    "sub_universe_sharpe": 0.08
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.19,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.06,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.08,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_mean(vec_avg(oth696_growthweightedpos), 20))"
+  },
+  {
+   "index": 6,
+   "expression": "rank(ts_backfill(vec_avg(oth696_opportunity_positive), lookback=60))",
+   "child": "1VtU5v77r4gXabynMAcCXwQ",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "xANgbR7p",
+   "metrics": {
+    "sharpe": 0.04,
+    "fitness": 0.0,
+    "turnover": 0.0401,
+    "returns": 0.0011,
+    "margin": 5.5e-05,
+    "drawdown": 0.1038,
+    "two_year_sharpe": -0.26,
+    "sub_universe_sharpe": 0.04
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.04,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.0,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.26,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_backfill(vec_avg(oth696_opportunity_positive), lookback=60))"
+  },
+  {
+   "index": 7,
+   "expression": "rank(add(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60), vec_avg(oth696_events_sentiment_score)))",
+   "child": "3TxRDi4if5aQbol9CG9Ojml",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "LLGJZkva",
+   "metrics": {
+    "sharpe": -0.26,
+    "fitness": -0.06,
+    "turnover": 1.3723,
+    "returns": -0.0825,
+    "margin": -0.00012,
+    "drawdown": 1.5838,
+    "two_year_sharpe": 0.38,
+    "sub_universe_sharpe": -0.2
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": -0.26,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": -0.06,
+     "limit": 1.0
+    },
+    {
+     "name": "HIGH_TURNOVER",
+     "value": 1.3723,
+     "limit": 0.7
+    },
+    {
+     "name": "CONCENTRATED_WEIGHT",
+     "value": 0.5,
+     "limit": 0.1,
+     "date": "2018-04-16"
+    },
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": -0.2,
+     "limit": -0.11
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": 0.38,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 6,
+    "failed_ppa_count": 3,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(add(ts_backfill(vec_avg(oth696_combined_sentiment_score), lookback=60), vec_avg(oth696_events_sentiment_score)))"
+  }
+ ]
+}

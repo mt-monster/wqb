@@ -1,0 +1,22 @@
+[
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 44)))",
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 126)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 126)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 63)))",
+  "add(0.7 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.3 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+  "add(0.5 * rank(ts_decay_linear(ts_delta(ep_yield_pct_smest_fy2_3, 66), 3)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+  "add(0.7 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.3 * rank(smest_fy1_ebitda_4))",
+  "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ep_yield_pct_smest_fy1_3))",
+  "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+  "rank(ts_delta(ep_yield_pct_smest_fy1_3, 44))",
+  "rank(ts_delta(smest_fy1_earnings_4, 126))",
+  "ts_decay_linear(rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)), 5)",
+  "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 10))",
+  "divide(rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), add(rank(ep_yield_pct_smest_fy1_3), 0.01))",
+  "divide(multiply(rank(forward_pe_smest_fy1_3), -1), add(rank(smest_fy1_ebitda_4), 0.01))",
+  "divide(rank(ts_delta(smest_fy1_earnings_4, 66)), add(rank(ts_delta(smest_fy1_revenue, 66)), 0.01))",
+  "trade_when(greater(analyst_upgrade_count_14d_3, analyst_downgrade_count_14d_2), rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), -1)",
+  "trade_when(arm_new_activity_flag_2 > 0, rank(ts_delta(smest_fy2_earnings_4, 66)), -1)",
+  "if_else(greater(analyst_upgrade_count_14d_3, analyst_downgrade_count_14d_2), rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)), rank(ep_yield_pct_smest_fy2_3))",
+  "group_rank(ts_delta(ep_yield_pct_smest_fy2_3, 66), sector)",
+  "group_rank(ts_delta(smest_fy1_earnings_4, 66), subindustry)"
+]

@@ -1,0 +1,20 @@
+{
+ "batch": "glb_b12",
+ "resps": [
+  "3aU0EJeyE4Z0bMx12UnmWGF",
+  "WWbSH2Rn4rRblJ1911pD7Mh",
+  "2FZ5Cr1XD4hIaGzoVKmSm44",
+  null
+ ],
+ "exprs": [
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 200), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 200), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)"
+ ],
+ "ts": 1785900843.8846476
+}

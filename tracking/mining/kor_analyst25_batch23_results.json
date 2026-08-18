@@ -1,0 +1,15 @@
+{
+  "batch": "analyst25 深化+冲刺 (3Ht7vM90 / 66fFjdk)",
+  "date": "2026-08-04",
+  "results": [
+    {"id": "78zEroMx", "expr": "adj_op66+roe66", "sharpe": 1.32, "fitness": 1.13, "two_year": 0.61, "risk_neut": 1.74, "margin": 0.002263, "note": "★ analyst25 天花板"},
+    {"id": "j26bJeG5", "expr": "adj_op44+revert44", "sharpe": 1.29, "fitness": 1.08, "two_year": 0.86, "risk_neut": 1.58},
+    {"id": "Xgo5ZYVx", "expr": "adj_op66+revert66", "sharpe": 1.27, "fitness": 1.07, "two_year": 0.93, "margin": 0.002606},
+    {"id": "9qpL3Ed9", "expr": "adj_op66", "sharpe": 1.26, "fitness": 1.03, "two_year": 0.87, "risk_neut": 1.6, "margin": 0.002443},
+    {"id": "LLGAolE6", "expr": "adj_op66+esor44", "sharpe": 1.17, "fitness": 0.91, "two_year": 1.2, "note": "esor 腿 2y 最高但 sharpe 降"},
+    {"id": "A1GM5Qzw", "expr": "adj_op44+esor22", "sharpe": 1.14, "two_year": 1.15}
+  ],
+  "conclusion": "analyst25 天花板 1.32 (sharpe 差 0.26, 2y 差 0.67-1.0)。与 JjGwjd5E 相关 0.36<0.4 ✅ 但自身不达标。模板空间已穷尽(3批24模拟: 窗口/腿/字段组合)。按目标规则切换数据集。",
+  "correlation": {"JjGwjd5E x analyst25家族": "0.358-0.363 (<0.4 ✅)", "max_mutually_below": ["JjGqA81l", "JjGwjd5E", "j26bJeG5"]},
+  "next": "risk71 (推荐表 OS sharpe 1.306 最高)"
+}

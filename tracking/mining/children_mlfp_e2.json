@@ -1,0 +1,40 @@
+{
+ "success": true,
+ "multisimulation_id": "zXMI03Sn54x92lmKBWUjJH",
+ "child_count": 8,
+ "children": [
+  {
+   "location": "1DDHgi6q50x8RP2vwbOezW",
+   "location_url": "https://api.worldquantbrain.com/simulations/1DDHgi6q50x8RP2vwbOezW"
+  },
+  {
+   "location": "3hGBkz1hb4KWcG0qLIt4GVx",
+   "location_url": "https://api.worldquantbrain.com/simulations/3hGBkz1hb4KWcG0qLIt4GVx"
+  },
+  {
+   "location": "4xzhxo1Wm4S0aaYNU5bDNJk",
+   "location_url": "https://api.worldquantbrain.com/simulations/4xzhxo1Wm4S0aaYNU5bDNJk"
+  },
+  {
+   "location": "miGIzalQ4TIco83IAr6gUg",
+   "location_url": "https://api.worldquantbrain.com/simulations/miGIzalQ4TIco83IAr6gUg"
+  },
+  {
+   "location": "42Q8Qa9mt4RS8SEfZlKBPqc",
+   "location_url": "https://api.worldquantbrain.com/simulations/42Q8Qa9mt4RS8SEfZlKBPqc"
+  },
+  {
+   "location": "3Z3OLFb9l5cdbyuU59pTRhu",
+   "location_url": "https://api.worldquantbrain.com/simulations/3Z3OLFb9l5cdbyuU59pTRhu"
+  },
+  {
+   "location": "9GdwrdZQ4MabD5RoSFIF1m",
+   "location_url": "https://api.worldquantbrain.com/simulations/9GdwrdZQ4MabD5RoSFIF1m"
+  },
+  {
+   "location": "1dcmhi1gW4WtahcU7rIGPvN",
+   "location_url": "https://api.worldquantbrain.com/simulations/1dcmhi1gW4WtahcU7rIGPvN"
+  }
+ ],
+ "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
+}

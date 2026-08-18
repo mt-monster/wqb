@@ -1,0 +1,37 @@
+{
+  "wave": 23,
+  "dataset": "predictive_starmine",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "四向混合冲刺。24/24 全回测，无过闸。top A1lRzrAw（0.3 av20 四向 d4）sh=1.83 fit=1.19 但 2y=1.21（LOW_2Y_SHARPE）+ rn_f=0.67。8 条 sh≥1.67 全卡 2y/rn_f。四向混合 sh 已够但 2y 与 rn_fitness 双短板。",
+  "top": [
+    {
+      "id": "A1lRzrAw",
+      "code": "0.3 av20 四向",
+      "sharpe": 1.83,
+      "fitness": 1.19,
+      "two_year_sharpe": 1.21,
+      "rn_fitness": 0.67
+    },
+    {
+      "id": "QP71zNxW",
+      "code": "四向变体",
+      "sharpe": 1.77,
+      "two_year_sharpe": 1.09,
+      "rn_fitness": 0.64
+    },
+    {
+      "id": "RR7Jzlgb",
+      "code": "四向变体",
+      "sharpe": 1.75,
+      "two_year_sharpe": 1.2,
+      "rn_fitness": 0.76
+    }
+  ],
+  "lessons": [
+    "四向混合 sh 天花板 1.83，但 2y 被 av20 毒性压低到 1.2 附近",
+    "rn_fitness 成为新约束短板：decay 增大抬 2y 但降 rn_fitness，阈值 >0.7 严格大于",
+    "权重再分配（av20 降到 0.3 以下）是同时抬 2y 和 rn_f 的方向"
+  ],
+  "next": "wave24 网格：四向权重 0.2-0.4 全网格 + decay 变体 + 门控变体。"
+}

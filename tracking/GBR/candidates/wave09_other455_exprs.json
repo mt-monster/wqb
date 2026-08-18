@@ -1,0 +1,6 @@
+[
+ "rank(ts_delta(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value,66),20))",
+ "subtract(rank(oth455_customer_roam_w1_pca_fact2_value),ts_mean(rank(oth455_customer_roam_w1_pca_fact2_value),60))",
+ "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p50_q200_w2_pca_fact3_value,5),20))",
+ "rank(corr(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value,oth455_relation_n2v_p10_q200_w1_pca_fact1_value,30))"
+]

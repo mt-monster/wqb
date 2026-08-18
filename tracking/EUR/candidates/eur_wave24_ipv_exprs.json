@@ -1,0 +1,18 @@
+[
+ "rank(momentum_bid_price_daily)",
+ "subtract(0, rank(momentum_bid_price_daily))",
+ "rank(momentum_ask_price_daily)",
+ "subtract(0, rank(momentum_ask_price_daily))",
+ "rank(mean_return_last_trade_price_interval)",
+ "subtract(0, rank(mean_return_last_trade_price_interval))",
+ "rank(corr_volume_with_bid_price_first_half)",
+ "subtract(0, rank(corr_volume_with_bid_price_first_half))",
+ "rank(corr_volume_with_ask_price_last_half)",
+ "subtract(0, rank(corr_volume_with_ask_price_last_half))",
+ "rank(momentum_bid_price_last_half)",
+ "subtract(0, rank(momentum_bid_price_last_half))",
+ "add(0.5*rank(momentum_bid_price_daily), 0.5*rank(momentum_ask_price_daily))",
+ "add(0.5*subtract(0, rank(momentum_bid_price_daily)), 0.5*subtract(0, rank(momentum_ask_price_daily)))",
+ "add(0.4*rank(momentum_bid_price_daily), add(0.3*rank(mean_return_last_trade_price_interval), 0.3*rank(corr_volume_with_bid_price_first_half)))",
+ "add(0.4*subtract(0, rank(momentum_bid_price_daily)), add(0.3*subtract(0, rank(mean_return_last_trade_price_interval)), 0.3*subtract(0, rank(corr_volume_with_bid_price_first_half))))"
+]

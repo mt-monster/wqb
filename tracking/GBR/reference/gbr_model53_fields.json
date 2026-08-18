@@ -1,0 +1,191 @@
+{
+ "dataset": "model53",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 21,
+  "SYMBOL": 1
+ },
+ "field_count": 22,
+ "fetched_at": "2026-08-17T21:26:11",
+ "fields": [
+  {
+   "id": "annualized_pd_10_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Annualized probability of default over a 10-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_1_month_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Annualized probability of default over a 1-month horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_1_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Annualized probability of default over a 1-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_2_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 2-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_3_month_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 3-month horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_3_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 3-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_4_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 4-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_5_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 5-year horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_6_month_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 6-month horizon using JC7 model."
+  },
+  {
+   "id": "annualized_pd_7_year_jc7",
+   "type": "MATRIX",
+   "coverage": 0.7979,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized probability of default over a 7-year horizon using JC7 model."
+  },
+  {
+   "id": "data_observation_date_4",
+   "type": "SYMBOL",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date when the data observation was recorded."
+  },
+  {
+   "id": "mdl53_implied_spreads",
+   "type": "MATRIX",
+   "coverage": 0.8596,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Model-implied credit spread level for the issuer on the given date, typically expressed in basis points"
+  },
+  {
+   "id": "mdl53_ms5_10year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Annualized default probability at the 10-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+  },
+  {
+   "id": "mdl53_ms5_1month",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Annualized default probability at the 1-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+  },
+  {
+   "id": "mdl53_ms5_1year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Annualized default probability at the 1-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  },
+  {
+   "id": "mdl53_ms5_2year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized default probability at the 2-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  },
+  {
+   "id": "mdl53_ms5_3month",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized default probability at the 3-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+  },
+  {
+   "id": "mdl53_ms5_3year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Annualized default probability at the 3-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  },
+  {
+   "id": "mdl53_ms5_4year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized default probability at the 4-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  },
+  {
+   "id": "mdl53_ms5_5year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized default probability at the 5-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  },
+  {
+   "id": "mdl53_ms5_6month",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Annualized default probability at the 6-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+  },
+  {
+   "id": "mdl53_ms5_7year",
+   "type": "MATRIX",
+   "coverage": 0.8759,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized default probability at the 7-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+  }
+ ]
+}

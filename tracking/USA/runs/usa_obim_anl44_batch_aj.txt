@@ -1,0 +1,17 @@
+# AJ 批: 混合冠军精调3 (decay16 慢变 + impact-spread 组合变体, SUBIND)
+# 1: 冠军原样 (EPS 63d + dark/lit) decay16 对照
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 2: EPS 126d 修正 + dark/lit decay16 (慢窗口+慢decay)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 126)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: EPS 63d × dark/lit 乘法 decay16 对照
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 4: EPS 63d + dark/lit + executed 三成员加法 decay16 对照
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 5: EPS 63d + (impact−spread) 加法 (AG#3 乘法 0.63, 试加法)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 6: EPS 63d + dark/adv20 暗池深度比 decay16
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), adv20))), subindustry))
+# 7: EPS 63d + bid−ask executed 差 (执行侧向)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(subtract(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed)))), subindustry))
+# 8: EPS 63d + (impact−spread) + dark/lit 三成员加法
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread))), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))

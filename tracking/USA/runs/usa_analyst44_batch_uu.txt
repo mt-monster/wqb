@@ -1,0 +1,8 @@
+quantile(ts_zscore(ts_delta(anl44_eps_best_eeps_cur_yr, 21), 63))
+quantile(group_rank(ts_delta(anl44_eps_best_eeps_cur_yr, 21), subindustry))
+quantile(group_zscore(ts_delta(anl44_sales_best_eeps_cur_yr, 21), subindustry))
+quantile(group_zscore(ts_delta(anl44_operatingprofit_best_eeps_cur_yr, 21), subindustry))
+quantile(group_zscore(ts_delta(anl44_eps_ratio_best_eeps_cur_yr, 21), subindustry))
+quantile(group_zscore(ts_delta(anl44_dps_best_eeps_cur_yr, 21), subindustry))
+quantile(group_zscore(ts_delta(anl44_eps_best_eeps_cur_yr, 126), subindustry))
+quantile(ts_decay_linear(group_zscore(ts_delta(anl44_eps_best_eeps_nxt_yr, 63), subindustry), 15))

@@ -1,0 +1,9 @@
+{
+  "dataset": "multi_horizon_alpha",
+  "wave": "wave4_uni",
+  "verdict": "RED",
+  "probe": 8,
+  "top_sharpe": 1.78,
+  "note": "universe 扫描（TOP400/800/1200/2500 × FCF 0.65/0.35、0.70/0.30、0.60/0.40 + d2）：窄 universe 全线崩盘——TOP400-1200 的 FCF 镜像 sh 0.46-0.74（LOW_SHARPE 全挂），仅 TOP2500 基线达标（sh=1.78 对照 wave3d 的 1.79 一致）。结论：FCF 价值反转信号只在 TOP2500 宽池有效；窄池虽可能降低 prod corr 池（GBR TOP700 池 1.6 万 vs EUR TOP2500 池 150 万）但 IS 先死。universe 杠杆不可用。",
+  "salvage": "prod 墙需信号层去相关：EUR TOP2500 与全球 prod 池 150 万重叠，需非价值/非动量/非反转的异质信号，或冷门数据集复合（GBR WjAV89jG 模板 prodCorr 0.6882）"
+}

@@ -1,0 +1,18 @@
+# AX 批: insiders3 内部人交易探针 (波13 首发, 高 coverage 字段), decay4/SUBIND
+# 经济学含义: 内部人买入=信息不对称下的正向信号; 买卖不对称=净买入强度
+# 1: Form 4 交易股数 20d 累积 (内部人交易规模, cov 0.71)
+quantile(ts_sum(insd3_form4_trans_shares, 20))
+# 2: xzhou 内部人买入 20d 累积 (专有内部人买入信号, cov 0.74)
+quantile(ts_sum(insd3_xzhou_insider_acquire_raw, 20))
+# 3: xzhou 内部人买卖差 20d (净买入方向, cov 0.74)
+quantile(ts_sum(subtract(insd3_xzhou_insider_acquire_raw, insd3_xzhou_insider_disposal_raw), 20))
+# 4: xzhou 内部人买卖比 20d (净买入相对强度, +1 防除零)
+quantile(ts_sum(divide(insd3_xzhou_insider_acquire_raw, add(insd3_xzhou_insider_disposal_raw, 1)), 20))
+# 5: xzhou 内部人持仓 20d 变化 (持仓方向变化, cov 0.74)
+quantile(ts_av_diff(insd3_xzhou_insider_holding_raw, 20))
+# 6: 8-K 文件频率 20d (信息披露活跃度, cov 0.87, margin 预检对照)
+quantile(ts_sum(insd3_8k_freq_latest_filed, 20))
+# 7: Form 4 交易股数 60d 变化 (长期趋势变化, margin 预检对照)
+quantile(ts_av_diff(insd3_form4_trans_shares, 60))
+# 8: xzhou 买入 20d × 8-K 频率 20d 乘法 (内部人买入 × 披露活跃度确认)
+quantile(multiply(rank(ts_sum(insd3_xzhou_insider_acquire_raw, 20)), rank(ts_sum(insd3_8k_freq_latest_filed, 20))))

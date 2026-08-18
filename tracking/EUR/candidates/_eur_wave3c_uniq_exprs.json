@@ -1,0 +1,10 @@
+[
+  "subtract(0, rank(long_term_trailing_free_cash_flow_to_price))",
+  "subtract(0, rank(mid_term_trailing_free_cash_flow_to_price))",
+  "subtract(0, rank(short_term_trailing_free_cash_flow_to_price))",
+  "subtract(0, rank(ts_delta(long_term_free_cash_flow_to_price_2, 66)))",
+  "add(0.5 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.5 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+  "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * rank(ts_delta(short_term_trailing_free_cash_flow_to_price, 20)))",
+  "subtract(0, rank(long_term_growth_flow_to_price_2))",
+  "subtract(0, rank(mid_term_growth_flow_to_price_ratio))"
+]

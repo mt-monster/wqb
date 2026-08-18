@@ -1,0 +1,53 @@
+{
+  "day_key": "2026-08-15",
+  "timezone": "America/New_York",
+  "progress_log": "tracking/USA/deepexplore/progress.txt",
+  "daily_diagnose": {
+    "done": true,
+    "objective": "USA/D1/TOP3000 挖掘 3 个 PPA 或 RA；基于已证范式 xAdL5vmN(group_rank+signed_power5+decay90, S4.51/F4.13) × 分析师字段(ai_equity_alpha) + 修正反转混合(60/40)；中性化 A/B 已定默认 SUBINDUSTRY",
+    "constraints": "P0-P4 已落地：dataset_health mode=general(alphaCount 软罚)/quantile 分位带；gate 已修 std= 命名参数误报；wave01 A/B 已定 SUBINDUSTRY 默认；目标>=3 个 PPA(Sharpe>=1.0/算子<=8/字段<=3/PC<0.5) 或 RA(D1 Sharpe>=1.58/Fit>=1.0 项目标准)",
+    "done_at": "2026-08-15T22:40:00+08:00"
+  },
+  "iteration": {
+    "current": 2,
+    "max": 12,
+    "no_progress_streak": 0,
+    "max_no_progress": 3,
+    "last_branch": "sim"
+  },
+  "artifacts": {
+    "gem_idea_file": "",
+    "gem_expression_file": "",
+    "inspect_input_idea_file": "",
+    "alpha_list_file": "tracking/USA/candidates/usa_wave02A_gem.json",
+    "sim_status_csv": "",
+    "enhance_outputs": []
+  },
+  "sim_summary": {
+    "complete": 32,
+    "failed": 0,
+    "running": 0,
+    "updated_at": "2026-08-16T00:00:00+08:00",
+    "note": "来源：results/pipeline_*_checkpoint.json（2026-08-16 走查回填）。已评审 wave：01A/B/C(3)+02A(6)+02B(4)+04A(6)+05(6)+06A(3)+07(4)=32 式全部回测完成；wave03(10式)已回测待 review（wave03_ms_result.json）。恢复点以 pipeline checkpoint 为准，本字段勿手编。"
+  },
+  "submit_gate": {
+    "submit_ready_count": 0,
+    "verified_by_mcp": false,
+    "alpha_ids_checked": [],
+    "checked_at": ""
+  },
+  "stop": {
+    "should_stop": false,
+    "reason": ""
+  },
+  "waves": {
+    "wave01": "中性化 A/B 完成：SUBINDUSTRY 定为默认 (3 alphas: KPGp6nzj/58p19Yz5/1YpRmL6m, 全弱信号)",
+    "wave02A": "已评审（reviews/usa_review_02A.json）：6 式全过闸回测完成，candidates 0 / near 2 (78zrw0r8 sh1.18, j26JZWMk sh1.17，墙：SHARPE/FITNESS/2Y)",
+    "wave02B": "已评审（reviews/usa_review_02B.json）：4 式回测完成，candidates 0 / near 0",
+    "wave03": "已回测待 review：10 式全过闸（results/wave03_ms_result.json + pipeline_03_checkpoint.json）",
+    "wave04A": "已评审：6 式，candidates 0 / near 6",
+    "wave05": "已评审：6 式，candidates 0 / near 5",
+    "wave06A": "已评审：3 式，candidates 0 / near 3",
+    "wave07": "已评审：4 式，candidates 0 / near 3 (88pZlrjV sh1.89/fit0.9 最强，墙：FITNESS/MARGIN/TVR)"
+  }
+}

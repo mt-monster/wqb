@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(rank(anl10_epsinnovate_increase_fq1), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(anl10_epsinnovation_score_fq2), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(anl10_salfy1_pred_surps_v1_975), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(anl10_cpsff_2371), 0.5), 15), 60)",
+    "ts_decay_linear(rank(anl10_epsinnovate_increase_fq1), 10)",
+    "ts_decay_linear(rank(anl10_epsinnovation_score_fq2), 10)",
+    "ts_decay_linear(rank(anl10_salfy1_pred_surps_v1_975), 10)",
+    "ts_decay_linear(rank(anl10_cpsff_2371), 10)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "FAST",
+  "truncation": 0.04,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

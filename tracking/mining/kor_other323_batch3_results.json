@@ -1,0 +1,126 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/uH7lpb1t4MA9rm135melcbw",
+ "ts": 1785913121.232587,
+ "alphas": [
+  {
+   "id": "rK2m0Nba",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.52,
+   "fit": 1.2,
+   "tvr": 0.1712,
+   "ret": 0.1068,
+   "2y": 2.3,
+   "margin": 0.001248,
+   "subU": 1.22,
+   "rn": 1.69,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "pwNgWM8V",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 16))",
+   "sh": 1.48,
+   "fit": 1.15,
+   "tvr": 0.1739,
+   "ret": 0.1041,
+   "2y": 2.26,
+   "margin": 0.001197,
+   "subU": 1.19,
+   "rn": 1.66,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "vRNVYpdA",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 18))",
+   "sh": 1.5,
+   "fit": 1.17,
+   "tvr": 0.1733,
+   "ret": 0.1055,
+   "2y": 2.28,
+   "margin": 0.001218,
+   "subU": 1.2,
+   "rn": 1.68,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGx8mRL",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 26))",
+   "sh": 1.52,
+   "fit": 1.21,
+   "tvr": 0.1694,
+   "ret": 0.107,
+   "2y": 2.29,
+   "margin": 0.001264,
+   "subU": 1.23,
+   "rn": 1.68,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "3qpWGkAg",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 30))",
+   "sh": 1.52,
+   "fit": 1.21,
+   "tvr": 0.1681,
+   "ret": 0.1072,
+   "2y": 2.27,
+   "margin": 0.001276,
+   "subU": 1.23,
+   "rn": 1.66,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "58pVGAvM",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 52), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.49,
+   "fit": 1.19,
+   "tvr": 0.1656,
+   "ret": 0.1062,
+   "2y": 2.33,
+   "margin": 0.001283,
+   "subU": 1.19,
+   "rn": 1.7,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "pwNgWM7v",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 66), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.45,
+   "fit": 1.19,
+   "tvr": 0.1581,
+   "ret": 0.1058,
+   "2y": 2.28,
+   "margin": 0.001338,
+   "subU": 1.17,
+   "rn": 1.65,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "E5GAm8K9",
+   "code": "subtract(group_rank(ts_rank(group_buy_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.52,
+   "fit": 1.2,
+   "tvr": 0.1712,
+   "ret": 0.1068,
+   "2y": 2.3,
+   "margin": 0.001248,
+   "subU": 1.22,
+   "rn": 1.69,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+# USA TOP3000 D1 sentiment21 轮次4 (J: decay=21 长窗口水平/分位骨架) | 并行波2-批J
+reverse(ts_rank(snt21_neg_mean, 63))
+group_zscore(ts_av_diff(snt21_pos_mean, 63), subindustry)
+quantile(ts_decay_linear(divide(snt21_pos_mean, add(snt21_neg_mean, 0.01)), 21))
+signed_power(group_zscore(ts_delta(snt21_pos_mean, 21), subindustry), 0.5)
+reverse(ts_zscore(snt21_neg_mean, 252))
+group_rank(ts_av_diff(subtract(snt21_pos_mean, snt21_neg_mean), 63), subindustry)
+reverse(quantile(ts_decay_linear(snt21_neg_max, 21)))
+ts_rank(subtract(snt21_pos_mean, snt21_neg_mean), 63)

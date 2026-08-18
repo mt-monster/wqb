@@ -1,0 +1,173 @@
+{
+ "campaign": "USA REGULAR D1 max_trade 挖掘（本会话 b107-b128）",
+ "date": "2026-08-04/05",
+ "conclusion": "USA 区域 9+ 族/15 批评估完毕：所有 sharpe>1.5 的强信号均被 prod_corr>0.7 封顶（最佳 0.724）；无 prod_corr<0.7 的提交级候选。按任务标准（不含 prod_corr）4 个达标候选已 set_alpha_properties。",
+ "batch_files": [
+  "result_b107_corr_6Xpnb2dG_raw.json",
+  "result_b110_corr_2rp1vPX6_raw.json",
+  "result_b110_corr_MPGjb9eL_raw.json",
+  "result_b110_corr_XgojYEJa_raw.json",
+  "result_b110_corr_j2659EPo_raw.json",
+  "result_blend_usa_b121.json",
+  "result_blend_usa_b124.json",
+  "result_fundamental91_usa_b112.json",
+  "result_fundamental91_usa_b126.json",
+  "result_model239_usa_b109.json",
+  "result_option40_b107_batchA_raw.json",
+  "result_option40_b107_batchB_raw.json",
+  "result_option40_b107_batchC_raw.json",
+  "result_option40_b108_TOP1000_raw.json",
+  "result_option40_b108_TOP500_raw.json",
+  "result_option40_b108_batchA_raw.json",
+  "result_option40_b108_batchB_TOP1000_raw.json",
+  "result_option40_b108_batchB_TOP500_raw.json",
+  "result_option40_b109_decay_raw.json",
+  "result_option40_b109_param_raw.json",
+  "result_option40_b109_trunc06_raw.json",
+  "result_option40_b110_batchA_raw.json",
+  "result_option40_b110_batchB_raw.json",
+  "result_option40_b110_batchC_raw.json",
+  "result_option40_b110_batchD_raw.json",
+  "result_option40_b110_batchE_raw.json",
+  "result_option40_b110_batchF_raw.json",
+  "result_option40_b111_batchA_raw.json",
+  "result_option40_b111_batchB_raw.json",
+  "result_option40_b111_batchC_raw.json",
+  "result_option40_b111_batchD_raw.json",
+  "result_option40_b111_batchE_raw.json",
+  "result_option40_usa_b107.json",
+  "result_option40_usa_b125.json",
+  "result_option40_usa_b128.json",
+  "result_other566_usa_b108.json",
+  "result_other566_usa_b110.json",
+  "result_other566_usa_b113.json",
+  "result_other566_usa_b115.json",
+  "result_other566_usa_b116.json",
+  "result_other696_usa_b111.json",
+  "result_risk65_usa_b118.json",
+  "result_risk65_usa_b119.json",
+  "result_risk65_usa_b120.json",
+  "result_sentiment21_usa_b117.json",
+  "result_top1000_usa_b127.json"
+ ],
+ "candidates_set_props": [
+  {
+   "alpha_id": "LLGJMOGa",
+   "expr": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), -rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))))",
+   "sharpe": 2.08,
+   "fitness": 1.51,
+   "2Y": 1.76,
+   "subU": 1.55,
+   "tvr": 0.232,
+   "ops": 5,
+   "yearly_pos": "10/10",
+   "prod_corr": 0.859,
+   "checks": "all pass",
+   "settings": "TOP3000 D1 INDUSTRY trunc0.08 decay6 max_trade ON"
+  },
+  {
+   "alpha_id": "pwNOd9OX",
+   "expr": "rank(add(-rank(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60)), -rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))))",
+   "sharpe": 1.97,
+   "fitness": 1.17,
+   "2Y": 2.24,
+   "subU": 1.43,
+   "tvr": 0.206,
+   "ops": 5,
+   "yearly_pos": "10/10",
+   "prod_corr": 0.894,
+   "checks": "all pass",
+   "settings": "TOP3000 D1 INDUSTRY trunc0.08 decay6"
+  },
+  {
+   "alpha_id": "WjA8Ov6x",
+   "expr": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), -rank(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60))))",
+   "sharpe": 2.06,
+   "fitness": 1.52,
+   "2Y": 2.21,
+   "subU": 1.16,
+   "tvr": 0.104,
+   "ops": 7,
+   "yearly_pos": "9/10",
+   "prod_corr": 0.784,
+   "checks": "all pass",
+   "settings": "TOP3000 D1 INDUSTRY trunc0.08 decay6"
+  },
+  {
+   "alpha_id": "VkGJ73eA",
+   "expr": "group_rank(ts_decay_linear(oth566_l2r20_label, 20), subindustry)",
+   "sharpe": 1.7,
+   "fitness": 1.15,
+   "2Y": 1.91,
+   "subU": 0.89,
+   "tvr": 0.112,
+   "ops": 2,
+   "yearly_pos": "9/10",
+   "prod_corr": 0.856,
+   "checks": "all pass",
+   "settings": "TOP3000 D1 INDUSTRY trunc0.08 decay6"
+  }
+ ],
+ "near_miss_option40": [
+  {
+   "alpha_id": "2rN3V7KP",
+   "sharpe": 2.07,
+   "fitness": 1.7,
+   "2Y": 2.02,
+   "subU": 1.09,
+   "tvr": 0.097,
+   "ops": 10,
+   "prod_corr": 0.744,
+   "note": "operator 10>8 超标, prod_corr 0.744"
+  },
+  {
+   "alpha_id": "A17oXw3g",
+   "sharpe": 2.03,
+   "fitness": 1.59,
+   "2Y": 1.78,
+   "subU": 1.07,
+   "ops": 15,
+   "prod_corr": 0.724,
+   "note": "最佳 prod_corr 0.724 但 ops 15 超标"
+  },
+  {
+   "alpha_id": "QP9wR6WG",
+   "sharpe": 2.03,
+   "fitness": 1.57,
+   "2Y": 1.62,
+   "subU": 1.03,
+   "ops": 15,
+   "prod_corr": 0.724,
+   "note": "同 A17oXw3g"
+  }
+ ],
+ "family_verdicts": {
+  "option40": "IV skew+theta 复合 sh~2.0 全指标过，prod_corr 0.72-0.79 封顶（@SLOW_AND_FAST 最优 0.724；@INDUSTRY 0.85 更差；TOP2000 0.76；TOP1000 信号崩 1.0）；operator≤8 精简后信号崩（signed_power 是支柱）",
+  "other566": "l2r20_label 家族 sh 1.45-1.70/2Y 1.6-1.9 强，prod_corr 0.86 全族失败（生产已有同信号）；return/r20marsi/l5r20 弱",
+  "risk65": "特异收益强反转 sh 2.28（tvr 49%），低换手版 1.2-1.5；prod_corr 0.98（经典生产交易）",
+  "fundamental91": "8-K 情感/topic 反向 sh 1.3-1.77（fit 0.8-0.97 微差），prod_corr 0.73-0.81 最近但未过",
+  "model239": "短拥挤弱（峰值 0.87）",
+  "sentiment21/other696": "USA 情感类弱（峰值 0.42/1.39，2Y 崩）",
+  "blends": "label×risk65 2.08、label×fnd91 2.06、fnd91×risk65 1.97（全指标+10/10 年度），prod_corr 0.78-0.89"
+ },
+ "decorrelated_pair": {
+  "pair": [
+   "pwNOd9OX",
+   "VkGJ73eA"
+  ],
+  "mutual_corr": 0.2,
+  "note": "互相关<0.4 唯一对；label 系族内 0.61-0.84"
+ },
+ "prod_corr_best_ever": {
+  "alpha": "A17oXw3g/QP9wR6WG",
+  "value": 0.724,
+  "gap": 0.024,
+  "note": "USA 本会话最低 prod_corr，仍差 0.024 未过 0.7 门槛"
+ },
+ "next_steps": [
+  "option40 复合方向：唯一接近 0.7 的族，可尝试 (a) 权重微调 theta 比例 (b) 双中性化交替 (c) 等新主题/新数据包后再战",
+  "fundamental91：prod_corr 0.73 次近，深度字段（cat1_metric/cat8）未穷尽",
+  "新数据包（WebDataScope 更新）重新跑 --recommend 找新甜点区",
+  "留意新公告：DEU/GBR 新区发布（对 Consultant），USA 主题期后可借新主题红利"
+ ]
+}

@@ -1,0 +1,28 @@
+{
+  "query": "get_datafields(dataset_id=analyst10, region=ASI, universe=MINVOL1M, delay=1, search=surprise)",
+  "total_fields": 105,
+  "naming_pattern": "anl10_smartest_<metric>_<fiscalperiod>_pred_surps_<version>",
+  "metrics": {
+    "bps": "book value per share",
+    "cpx": "capex (likely)",
+    "dps": "dividends per share",
+    "ebi": "earnings before interest",
+    "ebt": "earnings before tax",
+    "gps": "China-specific earnings metric",
+    "nav": "net asset value",
+    "ndt": "unknown (possibly net debt?)",
+    "net": "NET INCOME / EARNINGS (closest to forum star_eps_surprise_prediction_fy1)",
+    "opr": "operating income",
+    "pre": "pre-tax income",
+    "sal": "sales / revenue"
+  },
+  "versions": {"v0": "raw", "v1": "stabilized/core (default choice)", "v2": "refined"},
+  "fiscal_periods": {"fq1": "quarter 1 (low coverage ~0.3-0.5)", "fq2": "quarter 2 (low coverage)", "fy1": "year 1 (HIGH coverage ~0.7-0.9 - PREFERRED)", "fy2": "year 2 (good coverage ~0.6-0.8)"},
+  "selected_fields_for_b10": [
+    {"id": "anl10_smartest_net_fy1_pred_surps_v1", "cov": 0.8969, "rationale": "NET INCOME/earnings FY1 v1-core. Closest to forum star_eps_surprise_prediction_fy1. PRIMARY."},
+    {"id": "anl10_smartest_pre_fy1_pred_surps_v2", "cov": 0.8879, "users": 3, "rationale": "Pre-tax income FY1 v2-refined. Most validated (3 users)."},
+    {"id": "anl10_smartest_sal_fy1_pred_surps_v1", "cov": 0.9033, "rationale": "Sales/revenue surprise FY1. Different signal (revenue vs earnings). Highest coverage."},
+    {"id": "anl10_smartest_ebt_fy1_pred_surps_v1", "cov": 0.7986, "rationale": "EBT FY1 v1-core. Earnings variant for diversity."}
+  ],
+  "note": "Forum field star_eps_surprise_prediction_fy1 not found verbatim. 'net' (net income) is the closest semantic match for 'earnings surprise'. All fields MATRIX type, used directly (no vec_avg)."
+}

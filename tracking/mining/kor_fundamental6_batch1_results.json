@@ -1,0 +1,12 @@
+{
+  "batch": "fundamental6 验证批次 (1h3WYycgN4U199213sCX17of)",
+  "date": "2026-08-04",
+  "results": [
+    {"id": "6XpvkbmG", "expr": "+cptnewq_ibq44", "sharpe": 0.55, "two_year": 0.64, "cw": "FAIL"},
+    {"id": "N1bvZo0E", "expr": "+ibmiiy66", "sharpe": 0.44, "two_year": 0.74, "cw": "PASS"},
+    {"id": "wpaMrVqp", "expr": "+teq44", "sharpe": 0.28, "cw": "FAIL"}
+  ],
+  "conclusion": "fundamental6 cov 0.5 稀疏, cw 大量失败——与 fundamental44 同病。KOR fundamental 类整体不可行(2/2 数据集失败)。",
+  "kor_landscape": "已试12数据集: pv106✅ analyst39✅ analyst25(1.32天花板/相关0.36) fundamental44❌ fundamental6❌ shortinterest3❌ insiders5❌ risk70❌ risk71❌ fundamental65❌(1.26) other323(0.87) other532(EVENT)",
+  "next": "model53 (model 类新风格, 0.507)"
+}

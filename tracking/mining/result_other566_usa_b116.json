@@ -1,0 +1,83 @@
+{
+ "batch": "b116",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "rank(ts_decay_linear(oth566_l2r20_label, 20))",
+  "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "rank(ts_decay_linear(oth566_l2r20_label, 20))",
+   "child": "3QEIwf44J4Hh8CZGGsH3m2d",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "wpaga3R2",
+   "metrics": {
+    "sharpe": 1.62,
+    "fitness": 1.2,
+    "turnover": 0.1102,
+    "returns": 0.0691,
+    "margin": 0.001254,
+    "drawdown": 0.0815,
+    "two_year_sharpe": 1.6,
+    "sub_universe_sharpe": 0.85
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(oth566_l2r20_label, 20))"
+  },
+  {
+   "index": 1,
+   "expression": "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)",
+   "child": "2ylHqVepn4Nv961eTgPekfI",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "kqPlKKnP",
+   "metrics": {
+    "sharpe": 1.66,
+    "fitness": 1.24,
+    "turnover": 0.1098,
+    "returns": 0.0697,
+    "margin": 0.00127,
+    "drawdown": 0.0788,
+    "two_year_sharpe": 1.65,
+    "sub_universe_sharpe": 0.91
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "other"
+   },
+   "code": "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)"
+  }
+ ]
+}

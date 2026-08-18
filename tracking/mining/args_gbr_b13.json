@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "ts_rank(ts_backfill(winsorize(mdl264_1l_dlyspe_rh, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(probability_label0_2quantile_5day_ohlcv, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(probability_label0_3quantile_20day_ohlcv_2, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(mdl250_eq_medium, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(mdl262_cheq_predict, std=5), lookback=60), 44)",
+  "ts_rank(vec_avg(oth545_score), 44)",
+  "ts_rank(ts_backfill(winsorize(mdl264_1l_d36ntr, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(probability_label0_2quantile_60day_ohlcv, std=5), lookback=60), 44)"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "2UL0oZ5Ky4xobAjHrpZie0S",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/2UL0oZ5Ky4xobAjHrpZie0S",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/2UL0oZ5Ky4xobAjHrpZie0S",
+  "submitted_expressions": [
+   "ts_rank(ts_backfill(winsorize(mdl264_1l_dlyspe_rh, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(probability_label0_2quantile_5day_ohlcv, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(probability_label0_3quantile_20day_ohlcv_2, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(mdl250_eq_medium, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(mdl262_cheq_predict, std=5), lookback=60), 44)",
+   "ts_rank(vec_avg(oth545_score), 44)",
+   "ts_rank(ts_backfill(winsorize(mdl264_1l_d36ntr, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(probability_label0_2quantile_60day_ohlcv, std=5), lookback=60), 44)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

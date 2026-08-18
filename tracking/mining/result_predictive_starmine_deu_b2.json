@@ -1,0 +1,103 @@
+{
+ "meta": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.06,
+  "max_trade": "ON",
+  "batch": "b2",
+  "date": "2026-08-04"
+ },
+ "results": [
+  {
+   "child_id": "1b5QobeL84zFb6cANpVxMss",
+   "status": "COMPLETE",
+   "alpha_id": "QPGX5EEQ",
+   "sharpe": 0.44,
+   "fitness": 0.17,
+   "turnover": 0.082,
+   "returns": 0.0197,
+   "margin": 0.000481,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.52,
+   "rn_sharpe": 0.34,
+   "sub_universe_sharpe": 0.26,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "49FZuWddj4zUbiQp89DdnKi",
+   "status": "COMPLETE",
+   "alpha_id": "88p1KnnX",
+   "sharpe": 0.4,
+   "fitness": 0.15,
+   "turnover": 0.0758,
+   "returns": 0.0184,
+   "margin": 0.000485,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.41,
+   "rn_sharpe": 0.31,
+   "sub_universe_sharpe": 0.32,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "3yJ40JbIM4LqaIJ11tH0lDZH",
+   "status": "COMPLETE",
+   "alpha_id": "leWXRr0O",
+   "sharpe": 0.21,
+   "fitness": 0.06,
+   "turnover": 0.0975,
+   "returns": 0.0102,
+   "margin": 0.000209,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.27,
+   "rn_sharpe": -0.18,
+   "sub_universe_sharpe": 0.34,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "7W9SC3pi4LF8zig6DpNL13",
+   "status": "COMPLETE",
+   "alpha_id": "78z9KJdx",
+   "sharpe": 0.19,
+   "fitness": 0.05,
+   "turnover": 0.1178,
+   "returns": 0.009,
+   "margin": 0.000153,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": -0.97,
+   "rn_sharpe": 0.38,
+   "sub_universe_sharpe": 0.28,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  }
+ ]
+}

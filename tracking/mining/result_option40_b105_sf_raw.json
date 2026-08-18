@@ -1,0 +1,18 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  300,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"error\": \"Error creating multisimulation: Failed to connect to https://api.worldquantbrain.com/simulations\"\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "error":  "Error creating multisimulation: Failed to connect to https://api.worldquantbrain.com/simulations"
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

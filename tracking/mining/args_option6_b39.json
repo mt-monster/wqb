@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(rank(opt6_fcstr2imp), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(opt6_slopeavg1y), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(opt6_etfivhvxernratio), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(opt6_divyield), 0.5), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(opt6_fcstr2imp)), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(0.5, rank(opt6_slopeavg1y)), 15), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(opt6_etfivhvxernratio), 0.5), 9), 60)",
+    "ts_decay_linear(signed_power(subtract(rank(opt6_divyield), 0.5), 21), 60)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.04,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

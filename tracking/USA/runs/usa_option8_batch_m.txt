@@ -1,0 +1,8 @@
+reverse(quantile(historical_volatility_60))
+reverse(quantile(ts_decay_linear(parkinson_volatility_60, 10)))
+reverse(quantile(group_zscore(historical_volatility_30, subindustry)))
+reverse(quantile(signed_power(historical_volatility_120, 0.5)))
+reverse(quantile(ts_zscore(historical_volatility_60, 60)))
+reverse(quantile(ts_av_diff(historical_volatility_30, 20)))
+reverse(quantile(parkinson_volatility_20))
+reverse(quantile(divide(historical_volatility_30, historical_volatility_120)))

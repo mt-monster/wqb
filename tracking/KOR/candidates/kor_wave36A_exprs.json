@@ -1,0 +1,42 @@
+{
+ "_campaign": "KOR/D1",
+ "_wave": "36A",
+ "_target": "O0Gj6PqJ PROD专攻(G5门): 设置空间剩余杠杆 SUBINDUSTRY/STATISTICAL/universe",
+ "_base_expr": "multiply(rank(probability_label4_5quantile_5day_ohlcv_2),rank(quantile_label_1bucket_20day_ohlcv))",
+ "_base_metrics": "sh2.83/fit3.39/2y2.48 PROD0.8211 (SECTOR d14 TOP600)",
+ "_fields_verified": true,
+ "candidates": [
+  {
+   "id": "p68a_subind_d14",
+   "expression": "multiply(rank(probability_label4_5quantile_5day_ohlcv_2),rank(quantile_label_1bucket_20day_ohlcv))",
+   "neutralization": "SUBINDUSTRY", "decay": 14, "universe": "TOP600",
+   "hypothesis": "SUBINDUSTRY权重扰动最大, 可能改变PROD配对"
+  },
+  {
+   "id": "p68b_stat_d14",
+   "expression": "multiply(rank(probability_label4_5quantile_5day_ohlcv_2),rank(quantile_label_1bucket_20day_ohlcv))",
+   "neutralization": "STATISTICAL", "decay": 14, "universe": "TOP600",
+   "hypothesis": "论坛证据STATISTICAL上限更高(settings._alt_neutralization双轨制)"
+  },
+  {
+   "id": "p68c_top200_d14",
+   "expression": "multiply(rank(probability_label4_5quantile_5day_ohlcv_2),rank(quantile_label_1bucket_20day_ohlcv))",
+   "neutralization": "SECTOR", "decay": 14, "universe": "TOP200",
+   "hypothesis": "小股池turnover/权重结构变化或降PROD"
+  },
+  {
+   "id": "p68d_top1500_d14",
+   "expression": "multiply(rank(probability_label4_5quantile_5day_ohlcv_2),rank(quantile_label_1bucket_20day_ohlcv))",
+   "neutralization": "SECTOR", "decay": 14, "universe": "TOP1500",
+   "hypothesis": "大股池稀释头部配对或降PROD"
+  }
+ ],
+ "_submit_settings": {
+  "instrumentType": "EQUITY", "region": "KOR", "delay": 1,
+  "truncation": 0.08, "maxTrade": "ON", "pasteurization": "ON",
+  "unitHandling": "VERIFY", "nanHandling": "ON", "language": "FASTEXPR",
+  "startDate": "2014-01-01", "endDate": "2023-12-31",
+  "validate_fields": false, "wait_for_completion": false
+ },
+ "_note": "提交前需确认 KOR 支持 SUBINDUSTRY/STATISTICAL 与 TOP200/TOP1500(get_platform_setting_options); 单批4式不触发连坐风险(全白名单字段)"
+}

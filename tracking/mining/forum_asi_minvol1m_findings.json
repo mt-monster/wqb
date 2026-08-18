@@ -1,0 +1,50 @@
+{
+  "source": "forum search 'ASI MINVOL1M news alpha sharpe' + 2 post reads",
+  "query": "b9 pivot research after 3 green news datasets exhausted (news104 cap1.01, news7 cap0.33, news29 cap0.21)",
+  "posts_read": [
+    {
+      "id": "37473718017175",
+      "title": "ASI MINVOL1M市场Robust Universe优化案例",
+      "votes": 15, "date": "2026-01-06",
+      "key_field": "star_eps_surprise_prediction_fy1 (EARNINGS SURPRISE - analyst/fundamental, NOT news!)",
+      "results": "Main Sharpe 3.28, Robust Universe Sharpe 3.04, 12/12 checks passed",
+      "expression": "scale((group_rank(ts_mean(volume, 20), country) > 0.03) * group_neutralize(group_rank(ts_rank(ts_decay_linear(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 5), 30), country), group_cartesian_product(country, densify(bucket(rank(cap), range='0, 1, 0.1')))))",
+      "techniques": [
+        "winsorize std=5 (not 4) - preserve extremes esp Japan",
+        "liquidity filter: (group_rank(ts_mean(volume,20),country)>0.03) * alpha - uses MULTIPLY (forbidden by handoff)",
+        "country-based grouping group_neutralize(...,country) - ASI multi-country so country > subindustry",
+        "group_cartesian_product(country, cap-decile) - country x marketcap decile",
+        "ts_decay_linear(5), ts_rank(30), ts_backfill(60)",
+        "ratio control: Robust = Main x 0.9, control Main to ensure Robust passes"
+      ],
+      "comment_warnings": ["too many ops -> overfit risk", "forcing japan to compare within small env loses meaning if all japan declines"]
+    },
+    {
+      "id": "41311721014423",
+      "title": "MINVOL1M中的行业中性化探讨",
+      "votes": 19, "date": "2026-06-18",
+      "finding": "Subindustry neutralization in MINVOL1M OVER-ERODES alpha returns, especially valuation factors. Root cause: MINVOL1M few stocks -> subindustry groups only 2-3 stocks -> neutralization ~= erasing signal.",
+      "solution": "Use INDUSTRY neutralization as base + group_zscore for milder adjustment. OR filter small groups via group_size. Winsorize/rank valuation factors BEFORE neutralizing.",
+      "implication": "Our fixed SUBINDUSTRY sim neutralization may be eroding our news signals - possible reason we cap ~1.0 not 1.58"
+    }
+  ],
+  "other_relevant_snippets": [
+    "iflow-cli post: ASI alpha sh1.53->1.58 achievable (confirms 1.58 target reachable on ASI)",
+    "《模板合集》真实评测: 'ASI MINVOL1M Matrix...没交' - confirms ASI/MINVOL1M Matrix is HARD",
+    "Grandmaster复盘: 'ASI MINVOL1M subuniverse_ratio 0.295' - small subuniverse explains robust universe difficulty",
+    "news12 REACTION motifs post (169 votes): news reaction-based construction motifs M1-M6"
+  ],
+  "strategic_conclusions": [
+    "1. NEWS CATEGORY EXHAUSTED on ASI/MINVOL1M: 3 datasets tested (news104/7/29), best 1.01, forum confirms '没交'. News cannot reach 1.58.",
+    "2. EARNINGS/FUNDAMENTAL signals reach sh3.28 on ASI/MINVOL1M (forum-proven via star_eps_surprise_prediction_fy1). This is the path to 1.58.",
+    "3. SUBINDUSTRY neutralization likely eroding signals in MINVOL1M (few stocks/group). Test INDUSTRY + country grouping.",
+    "4. Handoff step 4 sanctions analyst pivot (x1.5). star_eps_surprise_prediction_fy1 is analyst-category. ALIGN WITH HANDOFF.",
+    "5. Forum uses multiply/trade_when (forbidden) + many ops (>8). Must ADAPT insights to constraints: no multiply/add/trade_when, ops<8."
+  ],
+  "b10_plan": {
+    "field_pivot": "Find star_eps_surprise_prediction_fy1 dataset for ASI/MINVOL1M/delay1. Test analyst/earnings surprise fields.",
+    "grouping_test": "Test country grouping (group_rank(field,country)) vs subindustry vs industry - forum says country>subindustry for ASI, industry>subindustry for MINVOL1M.",
+    "template_adapt": "Proven ts_zscore(group_rank(ts_mean(field,20),<group>),40) with country/industry group. Plus forum-adapted: ts_rank(ts_backfill(winsorize(field,5),60),30) if ops allow.",
+    "constraints": "no multiply/add/trade_when (skip liquidity filter), ops<8, sim neutralization test SUBINDUSTRY vs INDUSTRY"
+  }
+}

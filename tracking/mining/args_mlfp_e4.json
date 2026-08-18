@@ -1,0 +1,39 @@
+{
+ "tag": "e4",
+ "ts": "2026-08-05 17:34:55",
+ "labels": [
+  "F_52w_high_price_rat",
+  "F_50_200d_price_rati",
+  "F_30_75w_price_ratio",
+  "F_analyst_consensus_",
+  "F_3m_revision_fy2_ep",
+  "F_6m_rating_revision",
+  "F_dispersion_fy2_eps",
+  "F_20d_volume_to_pric"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250))",
+   "rank(ts_zscore(ts_backfill(change_50_200d_price_ratio,120),250))",
+   "rank(ts_zscore(ts_backfill(change_30_75w_price_ratio,120),250))",
+   "rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250))",
+   "rank(ts_zscore(ts_backfill(change_3m_revision_fy2_eps,120),250))",
+   "rank(ts_zscore(ts_backfill(change_6m_rating_revision,120),250))",
+   "rank(ts_zscore(ts_backfill(change_dispersion_fy2_eps_estimates,120),250))",
+   "rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250))"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

@@ -1,0 +1,386 @@
+[
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_20),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),-1)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(ts_av_diff(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5,10))",
+  "dataset": "other455"
+ },
+ {
+  "regular": "ts_decay_linear(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_5),5)",
+  "dataset": "other455"
+ },
+ {
+  "regular": "rank(asc_triangle_median_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(asc_triangle_median_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(asc_triangle_median_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(asc_triangle_median_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(asc_triangle_std_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(asc_triangle_std_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(asc_triangle_std_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(asc_triangle_std_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(breakaway_gap_down_std_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(breakaway_gap_down_std_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(breakaway_gap_down_std_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(breakaway_gap_down_std_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(breakaway_gap_up_std_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(breakaway_gap_up_std_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(breakaway_gap_up_std_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(breakaway_gap_up_std_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(common_gap_down_min_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(common_gap_down_min_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(common_gap_down_min_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(common_gap_down_min_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(common_gap_down_std_simscore_lookback60)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "multiply(rank(common_gap_down_std_simscore_lookback60),-1)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(ts_av_diff(common_gap_down_std_simscore_lookback60,10))",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "ts_decay_linear(rank(common_gap_down_std_simscore_lookback60),5)",
+  "dataset": "pattern_scores"
+ },
+ {
+  "regular": "rank(closing_price_dlr2)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(closing_price_dlr2),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(closing_price_dlr2,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(closing_price_dlr2),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(closing_price_dlr3)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(closing_price_dlr3),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(closing_price_dlr3,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(closing_price_dlr3),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(trading_volume_dlr3)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(trading_volume_dlr3),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(trading_volume_dlr3,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(trading_volume_dlr3),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(trading_volume_dlr1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(trading_volume_dlr1),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(trading_volume_dlr1,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(trading_volume_dlr1),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(highest_price_dlr2)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(highest_price_dlr2),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(highest_price_dlr2,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(highest_price_dlr2),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(highest_price_dlr3)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "multiply(rank(highest_price_dlr3),-1)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(ts_av_diff(highest_price_dlr3,10))",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "ts_decay_linear(rank(highest_price_dlr3),5)",
+  "dataset": "analyst_earnings_ibes"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_confidence))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_confidence)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_confidence),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_confidence)),5)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_headlineonly))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_headlineonly)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_headlineonly),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_headlineonly)),5)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_novelty))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_novelty)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_novelty),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_novelty)),5)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_prob_ntr))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_prob_ntr)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_prob_ntr),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_prob_ntr)),5)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_relevance))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_relevance)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_relevance),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_relevance)),5)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(vec_avg(nws104_timestamp))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "multiply(rank(vec_avg(nws104_timestamp)),-1)",
+  "dataset": "news104"
+ },
+ {
+  "regular": "rank(ts_av_diff(vec_avg(nws104_timestamp),10))",
+  "dataset": "news104"
+ },
+ {
+  "regular": "ts_decay_linear(rank(vec_avg(nws104_timestamp)),5)",
+  "dataset": "news104"
+ }
+]

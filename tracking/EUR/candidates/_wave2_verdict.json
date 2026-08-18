@@ -1,0 +1,7 @@
+{
+  "dataset": "chart_cnn_alpha",
+  "verdict": "RED",
+  "probe": 24,
+  "top_sharpe": 1.39,
+  "note": "leapstar6 图像 CNN 特征 IS 中等（feature2 sh=1.39），但 rn 全家族 -0.07~0.13 近期失效、2y<1，过时信号判死；malta 组 cov<0.65 不用。附带修复：runner 原子写 PermissionError 重试 + ledger 首写空文件"
+}

@@ -1,0 +1,17 @@
+# AS 批: 3-5 数据集混合探针 (用户授权放宽上限, --max-datasets 5), decay4/SUBIND
+# 1: 3数据集加法: si3 借贷15d + obim dark/lit + macro38 技术共识
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(mcr38_overall_signal)), industry))
+# 2: 3数据集乘法: si3 借贷15d × obim impact-spread × macro38 技术共识
+quantile(group_zscore(multiply(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), rank(mcr38_overall_signal)), industry))
+# 3: 4数据集加法: +analyst44 EPS 42d 修正
+quantile(group_zscore(add(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(mcr38_overall_signal)), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), industry))
+# 4: 5数据集加法: +inst6 机构持股占比
+quantile(group_zscore(add(add(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(mcr38_overall_signal)), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), rank(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners))), industry))
+# 5: 2数据集乘法对照 (波11 冠军骨架 xAN7NPkb 复跑基准)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), industry))
+# 6: 3数据集乘法变体: si3 × dark/lit × macro38 (obim 成分换 dark/lit)
+quantile(group_zscore(multiply(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(mcr38_overall_signal)), industry))
+# 7: 4数据集乘法: si3 × impact-spread × macro38 × EPS 42d
+quantile(group_zscore(multiply(multiply(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), rank(mcr38_overall_signal)), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), industry))
+# 8: 3数据集加法变体: si3 + impact-spread + macro38 (obim 成分换 impact-spread)
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), rank(mcr38_overall_signal)), industry))

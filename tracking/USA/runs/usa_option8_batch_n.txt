@@ -1,0 +1,8 @@
+reverse(quantile(subtract(implied_volatility_mean_30, historical_volatility_30)))
+reverse(quantile(divide(implied_volatility_mean_30, historical_volatility_30)))
+reverse(quantile(subtract(implied_volatility_mean_60, historical_volatility_60)))
+reverse(quantile(ts_decay_linear(subtract(implied_volatility_mean_20, historical_volatility_20), 10)))
+reverse(quantile(group_zscore(subtract(implied_volatility_mean_30, historical_volatility_30), industry)))
+reverse(quantile(subtract(implied_volatility_call_30, historical_volatility_30)))
+reverse(quantile(subtract(implied_volatility_put_30, historical_volatility_30)))
+reverse(quantile(ts_delta(subtract(implied_volatility_mean_30, historical_volatility_30), 10)))

@@ -1,0 +1,110 @@
+{
+  "diversity_config": {
+    "version": "1.0",
+    "description": "多样性增强系统配置",
+    "operator_quotas": {
+      "ts_*": 0.25,
+      "group_*": 0.20,
+      "vec_*": 0.10,
+      "rank_*": 0.15,
+      "arithmetic": 0.20,
+      "conditional": 0.05,
+      "transform": 0.05
+    },
+    "mutation_settings": {
+      "base_mutation_rate": 0.3,
+      "max_mutation_rate": 0.8,
+      "structural_mutations": [
+        "swap_branches",
+        "insert_layer",
+        "delete_layer",
+        "change_operator",
+        "reorder_sequence",
+        "add_condition",
+        "change_window",
+        "add_transform"
+      ]
+    },
+    "diversity_thresholds": {
+      "min_operator_entropy": 2.0,
+      "min_coverage_rate": 0.5,
+      "min_novelty_score": 0.8,
+      "max_structural_similarity": 0.7
+    },
+    "adaptive_adjustment": {
+      "enabled": true,
+      "entropy_weight": 0.3,
+      "coverage_weight": 0.3,
+      "novelty_weight": 0.2,
+      "similarity_weight": 0.2
+    },
+    "generation_strategy": {
+      "template_ratio": 0.5,
+      "quota_ratio": 0.25,
+      "mutation_ratio": 0.25,
+      "random_injection_rate": 0.1
+    },
+    "monitoring": {
+      "history_size": 100,
+      "report_interval": 10,
+      "alert_thresholds": {
+        "entropy_drop": -0.2,
+        "coverage_drop": -0.1,
+        "novelty_drop": -0.15
+      }
+    }
+  },
+  "operator_categories": {
+    "ts_*": [
+      "ts_mean", "ts_sum", "ts_std_dev", "ts_rank", "ts_delta",
+      "ts_zscore", "ts_decay_linear", "ts_backfill", "ts_ir",
+      "ts_av_diff", "ts_scale", "ts_arg_max", "ts_arg_min",
+      "ts_product", "ts_delay", "ts_median", "ts_kurtosis",
+      "ts_skewness", "ts_quantile", "ts_regression"
+    ],
+    "group_*": [
+      "group_rank", "group_neutralize", "group_mean", "group_sum",
+      "group_zscore", "group_scale", "group_quantile", "group_backfill"
+    ],
+    "vec_*": [
+      "vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count",
+      "vec_norm", "vec_stddev", "vec_range", "vec_skewness"
+    ],
+    "rank_*": [
+      "rank", "quantile", "normalize", "scale", "densify",
+      "bucket", "winsorize", "pasteurize"
+    ],
+    "arithmetic": [
+      "add", "subtract", "multiply", "divide", "signed_power",
+      "sqrt", "abs", "log", "sign", "exp", "power", "max", "min"
+    ],
+    "conditional": [
+      "if_else", "trade_when", "greater", "less", "greater_equal",
+      "less_equal", "equal", "not_equal", "and", "or", "not"
+    ],
+    "transform": [
+      "winsorize", "pasteurize", "bucket", "range", "densify",
+      "clamp", "floor", "ceil", "round", "truncate"
+    ]
+  },
+  "skeleton_templates": {
+    "time_series_basic": "ts_{op}({field}, {window})",
+    "time_series_nested": "ts_{op1}(ts_{op2}({field}, {window1}), {window2})",
+    "group_basic": "group_{op}({field}, {group})",
+    "group_ts_combined": "group_{op1}(ts_{op2}({field}, {window}), {group})",
+    "vector_aggregated": "{vec_op}({field})",
+    "vector_ts": "ts_{op}(vec_{vec_op}({field}), {window})",
+    "conditional_gated": "trade_when({condition}, {expression})",
+    "ratio": "divide({field1}, {field2})",
+    "linear_mix": "add(multiply({field1}, {weight1}), multiply({field2}, {weight2}))",
+    "multi_layer": "rank(ts_rank(group_rank({field}, {group}), {window}))"
+  },
+  "field_categories": {
+    "price": ["close", "open", "high", "low", "vwap", "returns"],
+    "volume": ["volume", "turnover", "shares_outstanding"],
+    "fundamental": ["eps", "pe_ratio", "pb_ratio", "roe", "debt_to_equity"],
+    "analyst": ["analyst_rating", "target_price", "earnings_estimate"],
+    "technical": ["rsi", "macd", "bollinger_upper", "bollinger_lower"],
+    "event": ["earnings_date", "dividend_date", "split_date"]
+  }
+}

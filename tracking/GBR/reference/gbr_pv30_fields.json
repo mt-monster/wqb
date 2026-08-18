@@ -1,0 +1,1934 @@
+{
+ "dataset": "pv30",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "GROUP",
+ "type_distribution": {
+  "GROUP": 240
+ },
+ "field_count": 240,
+ "fetched_at": "2026-08-18T02:57:58",
+ "fields": [
+  {
+   "id": "eighth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "eighth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 7 for the TOP600 universe, compute"
+  },
+  {
+   "id": "eleventh_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "eleventh_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 10 for the TOP600 universe, comput"
+  },
+  {
+   "id": "factor1_group10_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 10 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor1_group20_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 20 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor1_group2_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 2 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor1_group50_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 50 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor1_group5_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 5 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor1_grouping10_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 10 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping10_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 10 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping20_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 20 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping20_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 20 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping2_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 2 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping2_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 2 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping50_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 50 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping50_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 50 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping5_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 5 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor1_grouping5_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the first factor using 5 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor2_group10_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 10 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor2_group20_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 20 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor2_group2_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 2 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor2_group50_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 50 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor2_group5_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 5 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor2_grouping10_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 10 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping10_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 10 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping20_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 20 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping20_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 20 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping2_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 2 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping2_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 2 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping50_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 50 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping50_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 50 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping5_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 5 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor2_grouping5_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the second factor using 5 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor3_group10_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 10 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor3_group20_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 20 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor3_group2_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 2 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor3_group50_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 50 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor3_group5_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 5 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor3_grouping10_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 10 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping10_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 10 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping20_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 20 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping20_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 20 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping2_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 2 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping2_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 2 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping50_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 50 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping50_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 50 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping5_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 5 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor3_grouping5_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the third factor using 5 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor4_group10_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 10 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor4_group20_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 20 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor4_group2_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 2 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor4_group50_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 50 clusters, for the TOP800 universe using"
+  },
+  {
+   "id": "factor4_group5_top800_513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cluster membership (integer label) for statistically derived industry groups, 5 clusters, for the TOP800 universe using "
+  },
+  {
+   "id": "factor4_grouping10_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 10 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping10_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 10 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping20_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 20 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping20_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 20 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping2_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 2 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping2_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 2 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping50_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 50 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping50_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 50 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping5_score_top100_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 5 industry groupings for top 100 EAS513 securities."
+  },
+  {
+   "id": "factor4_grouping5_score_top200_eas513",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score for the fourth factor using 5 industry groupings for top 200 EAS513 securities."
+  },
+  {
+   "id": "fifteenth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fifteenth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 14 for the TOP600 universe, comput"
+  },
+  {
+   "id": "fifth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fifth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 4 for the TOP600 universe, compute"
+  },
+  {
+   "id": "first_method_cluster10_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_method_cluster20_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_method_cluster2_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_method_cluster50_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_method_cluster5_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "first_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 0 for the TOP600 universe, compute"
+  },
+  {
+   "id": "fourteenth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourteenth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 13 for the TOP600 universe, comput"
+  },
+  {
+   "id": "fourth_method_cluster10_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_method_cluster20_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_method_cluster2_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_method_cluster50_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_method_cluster5_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "fourth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 3 for the TOP600 universe, compute"
+  },
+  {
+   "id": "ninth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "ninth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 8 for the TOP600 universe, compute"
+  },
+  {
+   "id": "pca_factor_score_0_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 1st robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_0_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 0 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_10_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 11th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_10_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 10 for the TOP800 universe (method varian"
+  },
+  {
+   "id": "pca_factor_score_11_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 12th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_11_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 11 for the TOP800 universe (method varian"
+  },
+  {
+   "id": "pca_factor_score_12_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 13th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_12_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 12 for the TOP800 universe (method varian"
+  },
+  {
+   "id": "pca_factor_score_13_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 14th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_13_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 13 for the TOP800 universe (method varian"
+  },
+  {
+   "id": "pca_factor_score_14_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 15th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_14_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 14 for the TOP800 universe (method varian"
+  },
+  {
+   "id": "pca_factor_score_1_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 2nd robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_1_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 1 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_2_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 3rd robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_2_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 2 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_3_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 4th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_3_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 3 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_4_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 5th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_4_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 4 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_5_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 6th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_5_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 5 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_6_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 7th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_6_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 6 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_7_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 8th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_7_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 7 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_8_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 9th robust, return-based principal component (statistical industry factor) f"
+  },
+  {
+   "id": "pca_factor_score_8_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 8 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "pca_factor_score_9_top800",
+   "type": "GROUP",
+   "coverage": 0.2824,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Loading (continuous factor exposure) on the 10th robust, return-based principal component (statistical industry factor) "
+  },
+  {
+   "id": "pca_factor_score_9_top800_513",
+   "type": "GROUP",
+   "coverage": 0.2988,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous loading on robust PCA-derived statistical industry factor component 9 for the TOP800 universe (method variant"
+  },
+  {
+   "id": "principal_component_grouping_method1_10clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 10 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method1_10clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 10 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method1_20clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 20 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method1_20clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 20 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method1_2clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 2 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method1_2clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 2 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method1_50clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 50 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method1_50clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 50 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method1_5clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 5 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method1_5clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 5 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method2_10clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 10 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method2_10clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 10 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method2_20clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 20 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method2_20clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 20 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method2_2clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 2 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method2_2clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 2 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method2_50clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 50 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method2_50clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 50 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method2_5clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 5 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method2_5clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 5 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method3_10clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 10 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method3_10clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 10 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method3_20clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 20 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method3_20clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 20 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method3_2clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 2 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method3_2clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 2 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method3_50clusters_2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 50 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method3_50clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 50 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method3_5clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 5 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method3_5clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 5 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method4_10clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 10 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method4_10clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 10 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method4_20clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 20 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method4_20clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 20 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method4_2clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 2 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method4_2clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 2 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "principal_component_grouping_method4_50clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 50 return-based robust industry clusters usi"
+  },
+  {
+   "id": "principal_component_grouping_method4_50clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 50 robust, return-based industry clusters for the TOP400 universe u"
+  },
+  {
+   "id": "principal_component_grouping_method4_5clusters_top1200",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical label assigning each security in the TOP1200 universe to one of 5 return-based robust industry clusters usin"
+  },
+  {
+   "id": "principal_component_grouping_method4_5clusters_top400",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer cluster label assigning each stock to one of 5 robust, return-based industry clusters for the TOP400 universe us"
+  },
+  {
+   "id": "second_method_cluster10_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_method_cluster20_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_method_cluster2_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_method_cluster50_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_method_cluster5_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "second_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 1 for the TOP600 universe, compute"
+  },
+  {
+   "id": "seventh_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "seventh_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 6 for the TOP600 universe, compute"
+  },
+  {
+   "id": "sixth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "sixth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 5 for the TOP600 universe, compute"
+  },
+  {
+   "id": "sta2_top1200_fact1_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Categorical cluster label assigning each stock to one of 10 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact1_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 2 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact1_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 20 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact1_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical cluster label assigning each stock to one of 5 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact1_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 50 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact2_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Categorical cluster label assigning each stock to one of 10 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact2_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 2 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact2_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 20 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact2_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical cluster label assigning each stock to one of 5 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact2_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 50 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact3_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical cluster label assigning each stock to one of 10 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact3_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 2 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact3_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Categorical cluster label assigning each stock to one of 20 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact3_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Categorical cluster label assigning each stock to one of 5 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact3_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Categorical cluster label assigning each stock to one of 50 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact4_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 10 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact4_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 2 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact4_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 20 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top1200_fact4_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Categorical cluster label assigning each stock to one of 5 return-based robust industry groups in the TOP1200 universe ("
+  },
+  {
+   "id": "sta2_top1200_fact4_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Categorical cluster label assigning each stock to one of 50 return-based robust industry groups in the TOP1200 universe "
+  },
+  {
+   "id": "sta2_top400_fact1_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 10 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact1_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 2 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact1_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 20 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact1_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 5 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact1_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 50 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact2_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 10 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact2_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 2 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact2_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 20 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact2_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 5 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact2_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 50 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact3_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 10 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact3_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 2 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact3_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 20 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact3_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 5 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact3_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 50 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact4_c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 10 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact4_c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 2 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact4_c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 20 robust, return-based industry clust"
+  },
+  {
+   "id": "sta2_top400_fact4_c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 5 robust, return-based industry cluste"
+  },
+  {
+   "id": "sta2_top400_fact4_c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster label assigning each TOP400-universe stock to one of 50 robust, return-based industry clust"
+  },
+  {
+   "id": "tenth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "tenth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 9 for the TOP600 universe, compute"
+  },
+  {
+   "id": "third_method_cluster10_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_method_cluster20_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_method_cluster2_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_method_cluster50_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_method_cluster5_top100",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "third_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 2 for the TOP600 universe, compute"
+  },
+  {
+   "id": "thirteenth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "thirteenth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 12 for the TOP600 universe, comput"
+  },
+  {
+   "id": "top300_factor1_group10_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT1"
+  },
+  {
+   "id": "top300_factor1_group20_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT1"
+  },
+  {
+   "id": "top300_factor1_group2_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT1"
+  },
+  {
+   "id": "top300_factor1_group50_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT1"
+  },
+  {
+   "id": "top300_factor1_group5_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT1"
+  },
+  {
+   "id": "top300_factor2_group10_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT2"
+  },
+  {
+   "id": "top300_factor2_group20_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT2"
+  },
+  {
+   "id": "top300_factor2_group2_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT2"
+  },
+  {
+   "id": "top300_factor2_group50_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT2"
+  },
+  {
+   "id": "top300_factor2_group5_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT2"
+  },
+  {
+   "id": "top300_factor3_group10_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT3"
+  },
+  {
+   "id": "top300_factor3_group20_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT3"
+  },
+  {
+   "id": "top300_factor3_group2_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT3"
+  },
+  {
+   "id": "top300_factor3_group50_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT3"
+  },
+  {
+   "id": "top300_factor3_group5_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT3"
+  },
+  {
+   "id": "top300_factor4_group10_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT4"
+  },
+  {
+   "id": "top300_factor4_group20_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT4"
+  },
+  {
+   "id": "top300_factor4_group2_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT4"
+  },
+  {
+   "id": "top300_factor4_group50_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT4"
+  },
+  {
+   "id": "top300_factor4_group5_score",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer label for statistically derived, return-based industry cluster membership in the TOP300 universe using the FACT4"
+  },
+  {
+   "id": "twelfth_pca_component_top1200_group513",
+   "type": "GROUP",
+   "coverage": 0.4396,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "statistical industry classification"
+  },
+  {
+   "id": "twelfth_pca_component_top600_group513",
+   "type": "GROUP",
+   "coverage": 0.2175,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Continuous factor loading (exposure) on the robust industry principal component index 11 for the TOP600 universe, comput"
+  }
+ ]
+}

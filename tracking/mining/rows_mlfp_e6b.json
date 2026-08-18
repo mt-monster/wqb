@@ -1,0 +1,72 @@
+[
+ {
+  "label": "T3_opearn",
+  "sim": "https://api.worldquantbrain.com/simulations/gA1Pucec5jN92Qmq92tRiE",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T14_semivar",
+  "sim": "https://api.worldquantbrain.com/simulations/4BGppS9RV4LjcsKV75WlWlQ",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T10v_36_6",
+  "sim": "https://api.worldquantbrain.com/simulations/2ATxsa4af4V5c0PBnFnNPVU",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T10v_24_9",
+  "sim": "https://api.worldquantbrain.com/simulations/3c4VUJ9Iq4kmbcW4AWAvddC",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T10v_12_1",
+  "sim": "https://api.worldquantbrain.com/simulations/10bAcm4qQ4L0bMH1hfEwhHgC",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T10v_60_3",
+  "sim": "https://api.worldquantbrain.com/simulations/SHtet9Z0521bR19C9Nd6Yi",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T1v_cf",
+  "sim": "https://api.worldquantbrain.com/simulations/eOjJO1KF4Cj9Rs1dj9WG3fN",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T2v_mom",
+  "sim": "https://api.worldquantbrain.com/simulations/3NFNKLc7D52rc2KJzsCk7Fi",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T7v_divpeg",
+  "sim": "https://api.worldquantbrain.com/simulations/17qPUA9Pv4YMaNMlHbKIX1d",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T13v_entg",
+  "sim": "https://api.worldquantbrain.com/simulations/XSU4idpX52r8MW2n14wa64",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+ }
+]

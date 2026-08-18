@@ -1,0 +1,109 @@
+{
+ "id": "Xgo6lX18",
+ "code": "ts_rank(ts_backfill(winsorize(star_new_eps_surprise_prediction_fy1, std=5), lookback=60), 44)",
+ "status": "UNSUBMITTED",
+ "stage": "IS",
+ "settings": {
+  "instrumentType": "EQUITY",
+  "region": "GBR",
+  "universe": "TOP700",
+  "delay": 1,
+  "decay": 8,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "ON",
+  "maxPosition": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31"
+ },
+ "metrics": {
+  "sharpe": 0.3,
+  "fitness": 0.09,
+  "turnover": 0.0891,
+  "returns": 0.0114,
+  "drawdown": 0.0799,
+  "margin": 0.000257,
+  "longCount": 261,
+  "shortCount": 264,
+  "pnl": 1180694,
+  "bookSize": 20000000,
+  "startDate": "2014-01-01",
+  "sub_universe_sharpe": 0.38,
+  "two_year_sharpe": 0.23,
+  "risk_neutralized_sharpe": 0.41
+ },
+ "ra": {
+  "failed_ra_count": 3,
+  "failed_ppa_count": 1,
+  "ra_failed": true,
+  "ppa_failed": true,
+  "ra_failed_checks": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "ppa_failed_checks": [
+   "LOW_SHARPE"
+  ],
+  "pyramid_short": "model"
+ },
+ "checks": {
+  "fail": [
+   {
+    "name": "LOW_SHARPE",
+    "value": 0.3,
+    "limit": 1.58
+   },
+   {
+    "name": "LOW_FITNESS",
+    "value": 0.09,
+    "limit": 1.0
+   },
+   {
+    "name": "LOW_2Y_SHARPE",
+    "value": 0.23,
+    "limit": 1.58
+   }
+  ],
+  "warning": [
+   {
+    "name": "CLUSTER_TEST",
+    "value": 0.23,
+    "limit": 1
+   },
+   {
+    "name": "MATCHES_THEMES"
+   },
+   {
+    "name": "OSMOSIS_ALLOCATION"
+   }
+  ],
+  "pass": [
+   "LOW_TURNOVER",
+   "HIGH_TURNOVER",
+   "CONCENTRATED_WEIGHT",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "MATCHES_PYRAMID"
+  ],
+  "pending": [
+   "SELF_CORRELATION",
+   "DATA_DIVERSITY",
+   "PROD_CORRELATION",
+   "REGULAR_SUBMISSION"
+  ]
+ },
+ "pyramids": {
+  "effective": 1,
+  "list": [
+   {
+    "name": "GBR/D1/MODEL",
+    "multiplier": 2.0
+   }
+  ]
+ }
+}

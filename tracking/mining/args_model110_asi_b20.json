@@ -1,0 +1,34 @@
+{
+  "batch": "b20",
+  "category": "model (ML/AI composite) - optimization",
+  "dataset": "model110",
+  "base_alpha": "wpE0L5K6 (b19, mdl110_score w=20): sh1.72/fit0.88/2Y0.61/rn_sh1.34/margin5.25bp/tvr13.75%/asi_jpn0.79",
+  "objective": "Fix 2Y0.61 (IS_LADDER_SHARPE fail) while keeping sh>1.58, asi_jpn>1.0. Signal decayed 2022-2023.",
+  "strategy": "Longer ts_rank windows (smoother=better 2Y), no ts_rank (raw), ts_zscore (different normalization). All ops<=7.",
+  "fixed_params": {
+    "region": "ASI",
+    "universe": "MINVOL1M",
+    "delay": 1,
+    "decay": 20,
+    "neutralization": "INDUSTRY",
+    "truncation": 0.15,
+    "test_period": "P0Y0M",
+    "pasteurization": "ON",
+    "nan_handling": "OFF",
+    "unit_handling": "VERIFY",
+    "language": "FASTEXPR",
+    "max_trade": "ON",
+    "instrument_type": "EQUITY"
+  },
+  "expressions": [
+    {"idx": 1, "desc": "ts_rank w=30 (slightly longer)", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),30),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 2, "desc": "ts_rank w=40", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),40),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 3, "desc": "ts_rank w=60 (medium)", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 4, "desc": "ts_rank w=120 (long)", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),120),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 5, "desc": "ts_rank w=250 (very long, ~1yr)", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),250),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 6, "desc": "no ts_rank (raw group_rank)", "ops": 6, "expr": "group_rank(ts_backfill(winsorize(mdl110_score,std=5),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 7, "desc": "ts_zscore w=20 (same window, zscore norm)", "ops": 7, "expr": "group_rank(ts_zscore(ts_backfill(winsorize(mdl110_score,std=5),60),20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 8, "desc": "ts_zscore w=60 (longer zscore)", "ops": 7, "expr": "group_rank(ts_zscore(ts_backfill(winsorize(mdl110_score,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"}
+  ],
+  "targets": {"sh": ">1.58", "fit": ">1.0", "2Y": ">1.6", "margin": ">5bp", "tvr": "5-30%", "ops": "<8", "rn_sh": ">1.0", "asi_jpn": ">1.0"}
+}

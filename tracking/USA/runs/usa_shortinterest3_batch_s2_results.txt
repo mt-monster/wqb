@@ -1,0 +1,16 @@
+# USA TOP3000 D1 shortinterest3 轮次2 (S2 优化批) — multisim 21TtH969z53qb1x3L7Bvwpe | 2026-08-16
+# 表达式 | alpha_id | sharpe | fitness | 2y | RN | subU | tv | margin | 结论
+quantile(signed_power(group_zscore(ts_delta(util_ratio,5),subind),0.5)) | N1blVaVe | 1.34 | 0.42 | 2.94 | 1.42 | 0.50 | 35.3% | 2.0bp | ra_failed(sharpe/fitness/subU)
+ts_decay_linear(...同上核...,5) | 2rpomwmx | 1.15 | 0.37 | 2.06 | 1.38 | 0.45 | 29.4% | 2.1bp | tv达标但sharpe降
+reverse(quantile(ts_decay_linear(vec_avg(borrow_activity_score),10))) | A1G8vNQR | 0.93 | 0.73 | 1.41 | 0.43 | 0.43 | 11.1% | 13.8bp | 方向反转确认有效
+group_zscore(ts_delta(vec_avg(loan_utilization_ratio_d1),5),subind) | LLGYZN5a | 1.14 | 0.36 | 2.75 | 1.08 | 0.47 | 36.9% | 2.0bp | d1版略弱
+reverse(quantile(ts_delta(vec_avg(shrt3_bar),5))) | 9qpOWjEo | -0.25 | -0.03 | -0.67 | -0.06 | -0.28 | 60.8% | - | 废(bar的delta无信号)
+hump(group_neutralize(ts_rank(util_ratio,126),subind),hump=0.01) | E5GPRpVr | 0.46 | 0.16 | 0.24 | 0.27 | 0.43 | 2.7% | 10.4bp | 慢信号弱+集中权重
+signed_power(group_zscore(ts_av_diff(util_ratio,21),subind),0.5) | 9qpOWjEr | 1.17 | 0.47 | 1.84 | 1.51 | 0.85 | 19.3% | 3.3bp | ★★最佳: checks.fail=[], PPA过, 仅LOW_SHARPE/LOW_FITNESS警告
+trade_when(rank(ts_delta(util_ratio,5)), ts_delta(shrt3_bar,5), 0) | gJ8VZbWe | 0.19 | 0.02 | 0.88 | 0.03 | 0.20 | 60.2% | - | 废
+
+# ★ 最佳骨架: ts_av_diff(loan_utilization_ratio, 21) + group_zscore(subindustry) + signed_power(0.5)
+#   已过: 2y 1.84>1.6, RN 1.51>1, subU 0.85>0, tv 19.3%∈(5%,30%), margin 3.3bp(差1.7bp), PPA
+#   待攻: sharpe 1.17→1.58, fitness 0.47→1, margin→5bp
+# 注意: fitness=sharpe*sqrt(|tv|), tv~25%时 sharpe 需≈2 才 fitness=1 → 需强信号增强
+# 下一步: S3 围绕该骨架 8 变体 (窗口/幂次/decay/聚合/融合)

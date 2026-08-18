@@ -1,0 +1,18 @@
+[
+ {"code": "rank(oth571_views7d)", "note": "P1 7d浏览量原始方向"},
+ {"code": "subtract(0, rank(oth571_views7d))", "note": "P2 7d浏览量镜像"},
+ {"code": "rank(oth571_views28d)", "note": "P3 28d浏览量原始"},
+ {"code": "subtract(0, rank(oth571_views28d))", "note": "P4 28d浏览量镜像"},
+ {"code": "rank(ts_delta(oth571_views7d, 7))", "note": "P5 7d浏览量7日变化原始"},
+ {"code": "subtract(0, rank(ts_delta(oth571_views7d, 7)))", "note": "P6 7d浏览量7日变化镜像"},
+ {"code": "rank(divide(oth571_views7d, oth571_views28d))", "note": "P7 7d/28d比率原始(短期关注爆发)"},
+ {"code": "subtract(0, rank(divide(oth571_views7d, oth571_views28d)))", "note": "P8 7d/28d比率镜像"},
+ {"code": "rank(divide(oth571_viewstoday, oth571_views7d))", "note": "P9 today/7d比率原始(当日爆发)"},
+ {"code": "subtract(0, rank(divide(oth571_viewstoday, oth571_views7d)))", "note": "P10 today/7d比率镜像"},
+ {"code": "rank(ts_zscore(oth571_views7d, 60))", "note": "P11 7d浏览量60日zscore原始"},
+ {"code": "subtract(0, rank(ts_zscore(oth571_views7d, 60)))", "note": "P12 7d浏览量60日zscore镜像"},
+ {"code": "rank(divide(oth571_views7dmobile, oth571_views7ddesktop))", "note": "P13 移动/桌面比率原始"},
+ {"code": "subtract(0, rank(divide(oth571_views7dmobile, oth571_views7ddesktop)))", "note": "P14 移动/桌面比率镜像"},
+ {"code": "rank(divide(oth571_views7dnight, oth571_views7d))", "note": "P15 夜间占比原始"},
+ {"code": "subtract(0, rank(divide(oth571_views7dnight, oth571_views7d)))", "note": "P16 夜间占比镜像"}
+]

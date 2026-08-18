@@ -1,0 +1,10 @@
+# USA TOP3000 D1 sentiment21 轮次1 (NT1: 第二数据集首攻, SLOW_AND_FAST风格) | 并行批B
+# 字段 coverage 0.9996+, MATRIX 免聚合; 情绪均值0-1区间, delta/zscore/趋势骨架
+group_zscore(subtract(snt21_pos_mean, snt21_neg_mean), subindustry)
+quantile(ts_decay_linear(subtract(snt21_pos_mean, snt21_neg_mean), 5))
+reverse(rank(ts_delta(snt21_neg_mean, 5)))
+ts_zscore(subtract(snt21_pos_mean, snt21_neg_mean), 63)
+signed_power(group_zscore(ts_delta(snt21_pos_mean, 10), subindustry), 0.5)
+group_rank(ts_av_diff(subtract(snt21_pos_mean, snt21_neg_mean), 21), subindustry)
+reverse(quantile(ts_decay_linear(snt21_neg_std, 10)))
+hump(group_neutralize(quantile(subtract(snt21_pos_mean, snt21_neg_mean)), subindustry), hump=0.01)

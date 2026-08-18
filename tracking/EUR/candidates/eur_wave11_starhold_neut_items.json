@@ -1,0 +1,18 @@
+[
+ {"code": "rank(star_hold_global_rank)", "note": "N1 global x SECTOR", "neut": "SECTOR"},
+ {"code": "rank(star_hold_global_rank)", "note": "N2 global x COUNTRY", "neut": "COUNTRY"},
+ {"code": "rank(star_hold_global_rank)", "note": "N3 global x STATISTICAL", "neut": "STATISTICAL"},
+ {"code": "rank(star_hold_global_screening_rank)", "note": "N4 screening x SECTOR", "neut": "SECTOR"},
+ {"code": "rank(star_hold_global_screening_rank)", "note": "N5 screening x COUNTRY", "neut": "COUNTRY"},
+ {"code": "rank(star_hold_global_screening_rank)", "note": "N6 screening x STATISTICAL", "neut": "STATISTICAL"},
+ {"code": "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))", "note": "N7 复合C5 x SECTOR", "neut": "SECTOR"},
+ {"code": "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))", "note": "N8 复合C5 x COUNTRY", "neut": "COUNTRY"},
+ {"code": "add(0.7*rank(star_hold_global_rank), 0.3*subtract(0, rank(star_hold_region_change_rank)))", "note": "N9 复合C5 x STATISTICAL", "neut": "STATISTICAL"},
+ {"code": "rank(star_hold_sector_rank)", "note": "N10 sector x SECTOR", "neut": "SECTOR"},
+ {"code": "rank(star_hold_sector_rank)", "note": "N11 sector x COUNTRY", "neut": "COUNTRY"},
+ {"code": "rank(star_hold_sector_rank)", "note": "N12 sector x STATISTICAL", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))", "note": "N13 复合C8 x SECTOR", "neut": "SECTOR"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))", "note": "N14 复合C8 x COUNTRY", "neut": "COUNTRY"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_global_screening_rank))", "note": "N15 复合C8 x STATISTICAL", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_region_change_rank))", "note": "N16 复合C1 x SECTOR", "neut": "SECTOR"}
+]

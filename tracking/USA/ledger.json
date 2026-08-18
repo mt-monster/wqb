@@ -1,0 +1,284 @@
+{
+ "region": "USA",
+ "universe": "TOP3000",
+ "delay": 1,
+ "updated": "2026-08-16",
+ "waves_completed": 12,
+ "wave_in_progress": "波12 完成: macro38 技术面七批 56 条判死 (冠军 YPv3aOwq MAHILO+ADX STAT decay3 1.65/2y1.80/tv29.97%✅, fit 0.79+margin 0.46bp 双墙); 波13 待启动 (候选 earnings4/news52)",
+ "backtests_total": "波1-9: 352 条 + 波10: 96 条 + 波11: 120 条 + 波12: 56 条 (AP~AW 七批) = 624 条",
+ "whitelist": "D1 scope 628 字段 / 10 数据集（analyst44 37字段 + institutions6 21字段 新登记）",
+ "gates": {
+  "sharpe": 1.58,
+  "fitness": 1.0,
+  "two_year_sharpe": 1.6,
+  "margin_bp": 5,
+  "turnover_min": 0.05,
+  "turnover_max": 0.3,
+  "rn_sharpe": 1.0,
+  "ra_failed_count": 0,
+  "prod_correlation_max": 0.7
+ },
+ "datasets": {
+  "shortinterest3": {
+   "status": "dead",
+   "evidence": "3qpvJwVN PROD 0.957；loan_utilization_ratio骨架族sharpe上限1.39",
+   "ban": "拥挤骨架族禁发（例外：翻案批NN一次性执行）",
+   "retrial": "翻案批已回收：vec_max/vec_avg tvr_decay 1.13-1.18 不足 + subU 0.2-0.28 fail → 例外失效，永久封存"
+  },
+  "sentiment21": {
+   "status": "dead",
+   "evidence": "两波16条（decay4/decay21）换手>80%-119%全灭",
+   "ban": "任何表达式禁发"
+  },
+  "option8": {
+   "status": "dead",
+   "evidence": "put/call IV比率族PROD 0.83-0.91全骨架超标，优化器穷尽参数/字段族/骨架/D0低竞争区；详见经验主文档附录C",
+   "ban": "put/call IV比率族禁发（例外：翻案批NN一次性执行）",
+   "retrial": "翻案批已回收（ts_target_tvr_decay/残差差分/vec_max 三武器实测）：tvr_decay 压换手但 sharpe 差 0.05 且 subU 0.24 仍 fail；残差差分全无效 → 例外失效，永久封存",
+   "dead_alpha_prods": {
+    "6XpL2qjP": 0.8299,
+    "2rpooMZ5": 0.8648,
+    "gJ8VVAPe": 0.8329,
+    "MPGNNO56": 0.8688,
+    "ZYEvv6ex": 0.8554,
+    "RRmww3ad": 0.8611,
+    "j26KMdxk": 0.8693,
+    "P0GmA71W": 0.9051,
+    "rK2Mnjom": 0.8847
+   }
+  },
+  "news_transformer_scores": {
+   "status": "dead_sentiment_pyramid",
+   "evidence": "并入情绪金字塔终判（见sentiment22）",
+   "note": "原结论：信号上限~1.0，换手100%+困境"
+  },
+  "sentiment22": {
+   "status": "dead_sentiment_pyramid",
+   "evidence": "情绪金字塔终判：3数据集88条PASS=0，天花板~1.0；论坛求证ts_zscore模板上限1.10/ASI骨架只降PROD不救弱信号",
+   "note": "snt23未测但同族推定判死"
+  },
+  "option40": {
+   "status": "dead_option_pyramid",
+   "note": "★option 类金字塔整体判死（option8+option40 88+条）：IV衍生族 PROD 0.83-0.91 结构性墙 + subU 结构性低 + 三武器无法解封；标准曲面 Greeks 弱信号；翻案批例外已失效",
+   "ban": "IV 族/标准曲面任何表达式禁发",
+   "dead_alpha_prods": {
+    "O0Gd05Ng": 0.8306,
+    "3qpmqn9N": 0.8369,
+    "VkGQ1LK5": 0.8787,
+    "VkGQvdOw": 0.9018
+   }
+  },
+  "analyst44": {
+   "status": "dead",
+   "evidence": "consensus 修正类信号天花板 ~0.45（24条 PASS=0，最高 WjArQLLd 0.45）；RN 全负；3中性化x3decay 全灭；21d 修正稀疏多数为0",
+   "ban": "consensus 修正/水平/增长任何表达式禁发"
+  },
+  "institutions6": {
+   "status": "dead",
+   "evidence": "96 条 PASS=0；sharpe 天花板 1.03（ZYEVZQw0 d2），4 中性化 × 7 decay × 2 universe × 21 字段 × 全骨架穷尽；decay1/TOP1000/STATISTICAL 均负贡献；signed_power 单调变换被 quantile 抵消实测无效",
+   "ban": "share/value/quantity/count/num/market_value 全口径任何表达式禁发"
+  },
+  "macro38": {
+   "status": "dead",
+   "evidence": "波12 七批 56 条 PASS=0；冠军 YPv3aOwq MAHILO+ADX STAT decay3 1.65/2y1.80/tv29.97%✅ 三指标达标，但 fit 天花板 0.82（GrGjmx8x，距 1.0 差 1.22 倍）+ margin 天花板 0.62bp（距 5bp 差 8 倍）双结构性墙；STATISTICAL 是唯一破 sharpe/2y 闸门路径（1.71-1.79），SUBIND/INDUSTRY/MARKET 均 ≤1.47",
+   "ban": "mcr38_* 全字段任何表达式禁发（技术评级信号 fit/margin 双墙不可解锁）",
+   "asset": "STATISTICAL 中性化对技术面数据集有效性已验证（可复用）；冠军 YPv3aOwq 留档"
+  }
+ },
+ "best_candidates": [
+  {
+   "id": "xAN7NPkb",
+   "role": "波11 双数据集混合冠军 (shortinterest3×obim 乘法, INDUSTRY 组标准化)",
+   "note": "quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), industry)) decay4/SUBIND; 混合路线定案后留档观察 (margin 0.6bp 结构性天花板)",
+   "metrics": {
+    "sharpe": 1.13,
+    "fitness": 0.64,
+    "turnover": 0.164,
+    "rn_sharpe": 1.48,
+    "rn_fitness": 0.56,
+    "drawdown": 0.053,
+    "two_year_sharpe": 1.08
+   }
+  },
+  {
+   "id": "kqPpZqxz",
+   "role": "波11 双数据集混合亚军 (shortinterest3×obim 乘法)",
+   "note": "si3 loan_utilization 10d × (impact−spread) 乘法, decay4/SUBIND; 乘法>加法突破, 2y 首次大幅转正; 随混合族判死封存",
+   "metrics": {
+    "sharpe": 1.09,
+    "fitness": 0.56,
+    "turnover": 0.1878,
+    "rn_sharpe": 1.34,
+    "rn_fitness": 0.5,
+    "cluster": 0.93,
+    "two_year_sharpe": 1.06
+   }
+  },
+  {
+   "id": "RRmxpwxa",
+   "role": "波11 双数据集混合冠军 (shortinterest3×obim)",
+   "note": "si3 loan_utilization 10d 变化 + dark/lit 加法, decay4/SUBIND; 借贷×微结构混合, RN 双闸门全过",
+   "metrics": {
+    "sharpe": 0.94,
+    "fitness": 0.45,
+    "turnover": 0.2338,
+    "rn_sharpe": 2.16,
+    "rn_fitness": 0.93,
+    "cluster": 1.02,
+    "two_year_sharpe": -0.1
+   }
+  },
+  {
+   "id": "QPGRE2RM",
+   "role": "波11 双数据集混合冠军 (analyst44×obim)",
+   "note": "EPS 42d 修正 + dark/lit 加法, decay4/SUBIND; 混合放大实证",
+   "metrics": {
+    "sharpe": 0.88,
+    "fitness": 0.44,
+    "turnover": 0.1499,
+    "rn_sharpe": 0.85,
+    "cluster": 0.81,
+    "two_year_sharpe": -0.08
+   }
+  },
+  {
+   "id": "VkGQvdOw",
+   "note": "波7冠军（opt40 -ivcall10/ivcall360期限结构倒挂，SUBIND d5），活候选",
+   "metrics": {
+    "sharpe": 1.06,
+    "turnover": 0.084,
+    "rn_sharpe": 0.9
+   },
+   "role": "opt40主攻参照"
+  },
+  {
+   "id": "6XpL2qjP",
+   "note": "波3冠军，七闸门数值全过但PROD 0.8299墙，不可提交",
+   "metrics": {
+    "sharpe": 2.19,
+    "fitness": 1.11,
+    "two_year_sharpe": 2.62,
+    "turnover": 0.262,
+    "margin_bp": 5.2,
+    "rn_sharpe": 1.69,
+    "prod": 0.8299
+   },
+   "role": "PROD墙参照"
+  },
+  {
+   "id": "A1G8Vpaw",
+   "expr": "reverse(quantile(ts_decay_linear(vec_avg(max_loan_rate), 10)))",
+   "metrics": {
+    "sharpe": 1.18,
+    "fitness": 0.93,
+    "two_year_sharpe": 1.69,
+    "margin_bp": 14.4,
+    "turnover": 0.108,
+    "rn_sharpe": 1.21
+   },
+   "role": "已随si3 PROD墙封存"
+  },
+  {
+   "id": "ZYEVZQw0",
+   "sharpe": 1.03,
+   "fitness": 0.55,
+   "tv": 0.099,
+   "margin_bp": 7.2,
+   "two_year_sharpe": 2.01,
+   "subU": 0.37,
+   "notes": "inst6 share-quantity复合 signed_power0.5 d2 SUBIND, 精调中, sharpe差0.55"
+  },
+  {
+   "id": "ZYEVZQw0",
+   "sharpe": 1.03,
+   "fitness": 0.55,
+   "tv": 0.099,
+   "margin_bp": 7.2,
+   "two_year_sharpe": 2.01,
+   "subU": 0.37,
+   "notes": "inst6 冠军（share−quantity复合 d2 SUBIND），已随 institutions6 判死封存"
+  }
+ ],
+ "structural_findings": [
+  "信号强度上限由数据集信息含量决定，骨架优化只能逼近上限不能突破（Round10收益归因）",
+  "数值七闸门全过≠可提交：PROD相关性是隐藏第八闸门，波3有17条全过仍全灭",
+  "拥挤信号族PROD墙与delay/中性化/骨架/decay无关；但论坛降PC三武器未实测，判死待翻案批NN闭环",
+  "换手率-信号两难：事后平滑信号腰斩，应优先选慢变字段（月度更新/长窗口）而非事后平滑",
+  "方向假设必须实证：transformer reverse(neg)有效 vs snt22 正向有效，完全相反",
+  "decay是margin/turnover杠杆而非sharpe杠杆",
+  "白名单登记必须逐字段核对：negative_sentiment_mean_score_12假字段实证ERROR",
+  "单调变换定律：signed_power(x,p) 等单调变换被外层 quantile 完全抵消，指数参数无效（TUNE 批 5 档指数同指标实证）",
+  "decay 阶梯实证：d1 margin 0.1bp → d2 7.2bp（70 倍）→ d8-16 1.0-3.8bp；decay2 是 institutions6 margin 唯一解锁点",
+  "universe 敏感度：TOP1000 下 institutions6 信号全灭（sharpe≤0.55），机构信号无小盘边际",
+  "decay2 解锁 margin 不可推广：AO 批 si3×obim 乘法族 decay2/4 全档 margin 0.0-0.6bp 无差异，低频借贷信号 margin 天花板是结构性的（数据集特性决定解锁变量）",
+  "双数据集混合实证：乘法>加法（+0.09~+0.15）；强成分混入两律（si3 成功/inst6 反稀释）；成分与微结构相关结构决定混合增益；margin 短板是混合族共同瓶颈"
+ ],
+ "invalidated_directions": [
+  "情绪族全部（3数据集88条终判，天花板~1.0）",
+  "IV-RV spread（implied minus historical）",
+  "skew字段族（option8）",
+  "低波异象方向反转",
+  "hump(0.01/0.17/0.33)包裹与group_vector_neut",
+  "tenor错位（pc20/pc360等）",
+  "ts_zscore/ts_rank时序变形（option8）",
+  "option40: IV水平族/theta/gamma/ts_delta上行"
+ ],
+ "pending": {
+  "prodwall_retrial_NN": "runs/usa_prodwall_retrial_batch_nn.txt 8条已过四重门禁待提交；任一武器PROD<0.7且数值闸门保持→解封，三武器全灭→维持判死封存；结果回写WAVE_LEDGER.md审计节+本文件，例外即失效",
+  "in_flight": [
+   "AP 批 18SROS4J04PPayJ1c9tpVSmg (usa_macro38_batch_ap.txt, decay4/SUBIND): macro38 技术面探针 8 条 (共识/百分位/方向×强度/短期变化/MACD 背离/MA 排列/trendspotter/价格动量)"
+  ],
+  "next_dataset": "macro38 (Technical Ratings, 已启动波12 AP 批; 备选 earnings4/news52)"
+ },
+ "wave8_directives": [
+  "先回收PP/QQ：skew反向(call-put)或长tenor结构sharpe>1.3则深挖option40全31字段；否则转备选macro38(Technical Ratings)/imbalance5(Oil Price Resilience)",
+  "翻案批NN一次性执行（一次性证据链闭环例外，结果回写后例外失效）",
+  "禁发：情绪族任何数据集、option8红海、group_vector_neut/hump、snt22/news裸反转族（翻案批NN为唯一例外）",
+  "提交前置顺序：数值七闸门→PROD<0.7→robust/过拟合，不可颠倒",
+  "待落地工具箱（Round10）：ts_entropy信息熵骨架/days_from_last_change换手控制/winsorize+ts_backfill+group_rank稳健三件套"
+ ],
+ "forum_template_audit": {
+  "date": "2026-08-16",
+  "adopted": [
+   "ts_zscore包裹（17处）",
+   "ts_decay_linear/group_zscore/signed_power/hump"
+  ],
+  "never_used": [
+   "残差差分模板 subtract(ts_zscore(A,63), ts_zscore(group_neutralize(A,sector),63))（帖3）",
+   "ts_target_tvr_decay(x, lambda_min, lambda_max, target_tvr)（帖8：prod corr 0.90→0.77）",
+   "vec_avg→vec_max 换聚合（PC 0.7288→0.6967）"
+  ],
+  "lesson": "论坛模板读取后必须逐条对照入批；判死前须实测论坛救援工具箱全部武器，否则证据链不闭环"
+ },
+ "wave10_primary": "institutions6 判死（96 条 PASS=0，维度全穷尽，天花板 1.03 差 1.53 倍）；decay2 解锁 margin 但 sharpe 天花板由 13F 低频信息含量决定",
+ "dead_summary": {
+  "sentiment_pyramid": [
+   "sentiment21",
+   "news_transformer_scores",
+   "sentiment22"
+  ],
+  "option_pyramid": [
+   "option8",
+   "option40"
+  ],
+  "shortinterest": [
+   "shortinterest3"
+  ],
+  "analyst": [
+   "analyst44"
+  ],
+  "submission_candidates": 0,
+  "institutions": [
+   "institutions6"
+  ]
+ },
+ "mix_strategy": {
+  "authorized": "2026-08-16 用户授权 (初限 2, 后放宽至 3-5)",
+  "max_datasets": "2→5 (用户 2026-08-16 二次授权: 只要能对生出 alpha 有利就可以多用)",
+  "gate": "expr_lint.py 双数据集门控: 字段→数据集归属追踪, >N 拦截 (--max-datasets N 参数化), ==2 标 [MIX]",
+  "naming": "usa_<ds1>_<ds2>_batch_<tag>.txt (波11 统一 usa_mix_batch_<tag>.txt)",
+  "rationale": "经济学意义优先 (知情交易确认 / 估值×流动性 / 信息×微结构); 已判死数据集可作混合成分",
+  "evidence": "完整实证链: ① 2ds (AG~AO 八批 64 条): 加法 0.81→0.88→0.94 → 乘法 1.03→1.09→1.10 → INDUSTRY 组标准化 1.13 (xAN7NPkb/2y 1.08/fit 0.64); AO 批 decay2 未解锁 margin → 乘法族 margin 结构性天花板 0.0-0.6bp 定案判死 (仅骨架族, 混合流程保留); ② 3-5ds (AT 批 8 条): 5ds 加法 LLGoZ29L=1.27/fit 0.67/2y 0.90/tv 18.0% 混合族新高; 成分增加单调提升 sharpe (加法路线 2ds 1.13→4ds 1.21→5ds 1.27) 但 margin 0.5-0.7bp 无改善; 乘法路线 3ds 1.03/4ds 1.09 均低于加法",
+  "2y_check_rename": "IS_LADDER_SHARPE = 新 LOW_2Y_SHARPE 槽位 (REGULAR_SUBMISSION 之后), _wait_sims.py 已兼容"
+ }
+}

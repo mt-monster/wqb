@@ -1,0 +1,20 @@
+{
+ "batch": "kor_other323_b4",
+ "strategy": "sharpe冲刺: 预处理/decay/字段变体",
+ "exprs": [
+  "subtract(group_rank(ts_rank(ts_backfill(winsorize(average_spread_slippage, std=5), 60), 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+  "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))",
+  "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+  "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+  "subtract(group_rank(ts_rank(asian_market_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+  "subtract(group_rank(ts_rank(aggregated_slippage_metric, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+  "subtract(group_rank(ts_rank(ts_backfill(winsorize(asian_market_slippage, std=5), 60), 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))",
+  "subtract(group_rank(ts_rank(ts_backfill(winsorize(average_spread_slippage, std=5), 60), 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))"
+ ],
+ "resps": [
+  "1WM44Ogcf4IxcCVxAR2N2mC",
+  "4pSKPZ3w353k8PP9vQoEhiq",
+  "cSh3oeCS57hbQOPwiqdtUL"
+ ],
+ "ts": 1785913142.6671658
+}

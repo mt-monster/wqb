@@ -1,0 +1,9 @@
+{
+ "batch": "glb_b17",
+ "resps": [
+  "1WIgtL8uY5858FsvAHGhOd7",
+  "2rfhjf654UFa5ZjON3lOeG"
+ ],
+ "strategy": "剩余字段 × 300窗 × decay14/15",
+ "ts": 1785907101.3467789
+}

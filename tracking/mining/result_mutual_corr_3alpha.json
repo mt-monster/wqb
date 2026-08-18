@@ -1,0 +1,47 @@
+﻿{
+  "alpha_ids": [
+    "6XeWqEE7",
+    "xAdL5vmN",
+    "78n550PL"
+  ],
+  "threshold": 0.4,
+  "years": 4,
+  "num_points": 986,
+  "matrix": {
+    "6XeWqEE7": {
+      "6XeWqEE7": 1.0,
+      "xAdL5vmN": 0.1124,
+      "78n550PL": 0.5672
+    },
+    "xAdL5vmN": {
+      "6XeWqEE7": 0.1124,
+      "xAdL5vmN": 1.0,
+      "78n550PL": 0.1953
+    },
+    "78n550PL": {
+      "6XeWqEE7": 0.5672,
+      "xAdL5vmN": 0.1953,
+      "78n550PL": 1.0
+    }
+  },
+  "max_pair": {
+    "a": "6XeWqEE7",
+    "b": "78n550PL",
+    "correlation": 0.5672
+  },
+  "pairs_over_threshold": [
+    {
+      "a": "6XeWqEE7",
+      "b": "78n550PL",
+      "correlation": 0.5672
+    }
+  ],
+  "all_below_threshold": false,
+  "max_mutually_below_subset": [
+    "xAdL5vmN",
+    "6XeWqEE7"
+  ],
+  "max_mutually_below_subset_size": 2,
+  "missing_pnl": [],
+  "local_calculation": true
+}

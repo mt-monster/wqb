@@ -1,0 +1,17 @@
+# AK 批: 混合冠军 QPGRE2RM(0.88) 精调矩阵 + 强成分混入 (si3/inst6 × obim), decay4/SUBIND
+# 1: 冠军骨架 × INDUSTRY 组标准化 (原 SUBIND)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), industry))
+# 2: EPS 35d 窗口微调 (42d 最优, 试 35d)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 35)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: EPS 45d 窗口微调 (42d 邻域上探)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 45)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 4: EBITDA 42d 修正 + dark/lit (AH 批 63d 冗余, 42d 窗口验证是否分化)
+quantile(group_zscore(add(rank(ts_delta(anl44_ebitda_best_eeps_cur_yr, 42)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 5: EPS 42d 加权复合 (2×EPS + dark/lit 权重变体)
+quantile(group_zscore(add(multiply(2, rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 6: EPS nxt_yr 42d + dark/lit (前瞻共识成分)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_nxt_yr, 42)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 7: si3 借贷利用率 10d 变化 (1.39 强骨架) + dark/lit 加法 [si3×obim 混合]
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 8: inst6 share-占比复合 (1.03 骨架) + dark/lit 加法 [inst6×obim 混合]
+quantile(group_zscore(add(rank(subtract(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners), divide(quantity_institutional_shares_acquired, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed)))), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))

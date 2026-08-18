@@ -1,0 +1,38 @@
+{
+ "meta": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.06,
+  "max_trade": "ON",
+  "batch": "b13",
+  "date": "2026-08-04"
+ },
+ "results": [
+  {
+   "child_id": "13d6U59iQ4u2bdCtgn4LxlX",
+   "status": "COMPLETE",
+   "alpha_id": "leWX3pNe",
+   "sharpe": -0.04,
+   "fitness": -0.01,
+   "turnover": 0.1455,
+   "returns": -0.0027,
+   "margin": -3.7e-05,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": -0.32,
+   "rn_sharpe": -0.56,
+   "sub_universe_sharpe": -0.19,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "meta": {
+  "wave": "15",
+  "source": "d:/coding/traeCN_project/wqb/tracking/GBR/candidates/gbr_wave15_model53_raw_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-17T21:25:37",
+  "input": 16,
+  "duplicates_dropped": 0,
+  "selected": 8,
+  "buckets": {
+   "atom": 1,
+   "divide>add": 3,
+   "divide>ts_delta": 1,
+   "if_else>greater": 1,
+   "inverse>add": 1,
+   "log>add": 1,
+   "quantile>atom": 1,
+   "subtract>add": 1,
+   "subtract>atom": 3,
+   "ts_decay_linear>atom": 1,
+   "ts_delta>atom": 1,
+   "winsorize>subtract": 1
+  },
+  "skeleton_distribution": {
+   "single": 3,
+   "ratio": 4,
+   "event_gated": 1
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "annualized_pd_10_year_jc7",
+  "divide(mdl53_implied_spreads, add(mdl53_ms5_1year, 0.0001))",
+  "divide(mdl53_implied_spreads, add(annualized_pd_1_year_jc7, 0.0001))",
+  "divide(annualized_pd_1_month_jc7, add(annualized_pd_10_year_jc7, 0.0001))",
+  "divide(ts_delta(mdl53_implied_spreads, 21), add(ts_delta(annualized_pd_1_year_jc7, 21), 0.0001))",
+  "if_else(greater(annualized_pd_1_year_jc7, mdl53_ms5_1year), annualized_pd_1_year_jc7, mdl53_ms5_1year)",
+  "subtract(annualized_pd_10_year_jc7, annualized_pd_1_month_jc7)",
+  "subtract(annualized_pd_5_year_jc7, mdl53_ms5_5year)"
+ ]
+}

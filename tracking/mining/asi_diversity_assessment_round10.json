@@ -1,0 +1,43 @@
+# ASI model30×110 轨道多样性评估（第 10 轮，2026-08-05）
+
+> 覆盖批次：b22-b33（12 批，96 表达式），区域 ASI/MINVOL1M，数据集 model30 × model110。
+
+## 1. 操作符探索率（13/可用算子 ~25%）
+已用：winsorize、ts_backfill、ts_rank、add、group_rank、group_neutralize、ts_decay_linear、zscore、bucket、rank、group_mean、subtract、group_cartesian_product。
+未用：group_zscore、ts_av_diff、ts_max_diff、ts_ir、pasteurize、signed_power、quantile、scale、ts_regression、hump、trunc（算式内）、vec_*。
+**评估**：核心算子覆盖充分；组内相对类（group_zscore/group_mean）仅试 1 种；无事件类算子（EVENT 字段 ASI 无可用）。
+
+## 2. 字段探索率（model30 8/8 + model110 8/8 + 基础字段 2）
+- model30：fy1（主力）、fy2（0.8 无效）、12m（0.97 无效）、_d1（平台去重）、psprise_pct（1.01）——5 字段有效验证
+- model110：score（2.25 最强）、value（JPN 最优 0.75）、growth/sentiment/momentum/alternative（JPN 灾难性 <0.1）
+- 基础：volume/cap（分组用）
+**评估**：字段族探索接近穷尽；ASI 有效信号族确认为 earnings surprise + ML 复合两类。
+
+## 3. 模板骨架多样性（5 类）
+A. 单腿 rank 系（裸/country/cap 组/中性化）→ 收敛 1.35-1.48
+B. 双窗 blend（同字段 add）→ 2Y 提升（1.54）
+C. **跨数据集 blend（model30×model110 add）→ sharpe 1.4→2.25、fitness→1.4、subU→1.43（最大突破）**
+D. 双层 rank / zscore 输出 / decay 输出 / group_mean 超额 → 全部无效或有害
+E. 细粒度中性化（cartesian country×cap）→ 无效（1.40）
+**评估**：C 类是本轨道唯一突破范式（与 KOR 经验一致：跨族 blend 是 sharpe 突破关键）。
+
+## 4. 风格多样性（2 种）
+earnings surprise（model30 盈利意外预测）✕ ML 复合评分（model110）——互补成功。ASI 已无第三有效信号族（fundamental 探索实为 model30 变体）。
+
+## 5. 预处理
+winsorize std：3（无效）5（基线）6（JPN 无改善）；backfill：40/60/120（60 基线，120 无益）；trunc：0.04/0.08/0.15（无差异）；decay：6（最优）/12（sharpe -0.12）/20（blend 1.92 可用）。
+
+## 6. 收益来源归因
+- 单腿 returns 2.5% → blend 4.9%（+96%）：model110 腿是 returns 主贡献
+- sharpe 1.48→2.25：blend 协方差分散 + returns 提升
+- JPN 0.97→0.70：model110 腿 JPN 弱（0.65-0.75），blend 稀释——**结构性矛盾**
+- 2Y 1.64→1.47：同上稀释
+
+## 7. 失效风险
+- **JPN 墙**：LOW_ASI_JPN_SHARPE 全 blend 变体 0.53-0.75 vs 1.0——ASI 区域结构性难点（论坛文章证实"合围之势"），所有 model110 字段腿均无法突破
+- 2Y 墙：blend 后 1.30-1.47 vs 1.6——model110 腿 2Y 弱稀释
+- 窗口敏感性：双窗 blend 对窗口组合敏感（±0.1 sharpe），过拟合风险中等
+- 字段拥挤：fy1 非 d1 版本仅 12 users（安全）；mdl110_score 2978 users（偏高，ProdCorr 风险）
+
+## 8. 结论
+ASI 达标（1.58/1.0/1.6/1.0）需要 JPN≥1.0 + 2Y≥1.6 同时满足——单腿（JPN 0.97/2Y 1.64 达标但 sharpe 1.4）与 blend（sharpe 2.25 但 JPN 0.75/2Y 1.47）互斥，**当前算子约束（<8、无 multiply）下无解**。论坛原版 3.28 分依赖 multiply 流动性过滤与 >8 算子。ASI 轨道转入"候补等待"（若平台放宽约束或 JPN 门槛调整可复用），主目标回 KOR 候选 #3 或等区域 subagent 结果。

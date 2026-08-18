@@ -1,0 +1,144 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1WmkXbpF4SjbTDcqn4fBNE",
+   "location_url": "https://api.worldquantbrain.com/simulations/1WmkXbpF4SjbTDcqn4fBNE",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "1WmkXbpF4SjbTDcqn4fBNE",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1tilomcOb4WscMhgKMeS8k",
+   "location_url": "https://api.worldquantbrain.com/simulations/1tilomcOb4WscMhgKMeS8k",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "1tilomcOb4WscMhgKMeS8k",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2os7pQ9gK4yebm8guALzMbm",
+   "location_url": "https://api.worldquantbrain.com/simulations/2os7pQ9gK4yebm8guALzMbm",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "2os7pQ9gK4yebm8guALzMbm",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2SBEf5dTK4FJblFx3ffnmjc",
+   "location_url": "https://api.worldquantbrain.com/simulations/2SBEf5dTK4FJblFx3ffnmjc",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "2SBEf5dTK4FJblFx3ffnmjc",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/12II2w3e84zg9ODCIrHxYIQ",
+   "location_url": "https://api.worldquantbrain.com/simulations/12II2w3e84zg9ODCIrHxYIQ",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "12II2w3e84zg9ODCIrHxYIQ",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3bmZJY4W04ZobwbSuDZSmMb",
+   "location_url": "https://api.worldquantbrain.com/simulations/3bmZJY4W04ZobwbSuDZSmMb",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3bmZJY4W04ZobwbSuDZSmMb",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3GQ0RR5Nh4ZQbmXCzjHWYFe",
+   "location_url": "https://api.worldquantbrain.com/simulations/3GQ0RR5Nh4ZQbmXCzjHWYFe",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3GQ0RR5Nh4ZQbmXCzjHWYFe",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3YgsejdaY5e2cDhqBl5Fu61",
+   "location_url": "https://api.worldquantbrain.com/simulations/3YgsejdaY5e2cDhqBl5Fu61",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3YgsejdaY5e2cDhqBl5Fu61",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/29B8rRb3R4wa9CGfEe1YgqR",
+   "location_url": "https://api.worldquantbrain.com/simulations/29B8rRb3R4wa9CGfEe1YgqR",
+   "error": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "29B8rRb3R4wa9CGfEe1YgqR",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 13,
+     "end": 57,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/K7n8eeW24kYbtB1aWvmEnbK",
+   "location_url": "https://api.worldquantbrain.com/simulations/K7n8eeW24kYbtB1aWvmEnbK",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "K7n8eeW24kYbtB1aWvmEnbK",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  99,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"error\": \"Failed to create multisimulation. Status: 400\",\n  \"details\": \"[{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}},{\\\"settings\\\":{\\\"testPeriod\\\":[\\\"Invalid duration format: \\\"]}}]\"\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "error":  "Failed to create multisimulation. Status: 400",
+                                                            "details":  "[{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}},{\"settings\":{\"testPeriod\":[\"Invalid duration format: \"]}}]"
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

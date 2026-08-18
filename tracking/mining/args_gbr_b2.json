@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "-ts_rank(ts_backfill(pv106_spread, lookback=60), 44)",
+  "-ts_rank(ts_backfill(pv106_lastspreadbp, lookback=60), 44)",
+  "group_rank(ts_rank(ts_backfill(winsorize(star_new_eps_surprise_prediction_fy1, std=5), lookback=60), 44), industry)",
+  "ts_rank(ts_backfill(winsorize(mdl106_stars, std=5), lookback=60), 66)",
+  "ts_rank(ts_backfill(winsorize(mdl106_global_evaluation, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(mdl238_global_change_rank, std=5), lookback=60), 44)",
+  "ts_rank(ts_backfill(winsorize(mdl238_sector_rank, std=5), lookback=60), 44)",
+  "ts_rank(vec_avg(anl44_2_netprofit_value), 50)"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "3QQcxf4dD4qrbSCleyxWGfE",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/3QQcxf4dD4qrbSCleyxWGfE",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/3QQcxf4dD4qrbSCleyxWGfE",
+  "submitted_expressions": [
+   "-ts_rank(ts_backfill(pv106_spread, lookback=60), 44)",
+   "-ts_rank(ts_backfill(pv106_lastspreadbp, lookback=60), 44)",
+   "group_rank(ts_rank(ts_backfill(winsorize(star_new_eps_surprise_prediction_fy1, std=5), lookback=60), 44), industry)",
+   "ts_rank(ts_backfill(winsorize(mdl106_stars, std=5), lookback=60), 66)",
+   "ts_rank(ts_backfill(winsorize(mdl106_global_evaluation, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(mdl238_global_change_rank, std=5), lookback=60), 44)",
+   "ts_rank(ts_backfill(winsorize(mdl238_sector_rank, std=5), lookback=60), 44)",
+   "ts_rank(vec_avg(anl44_2_netprofit_value), 50)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "dataset": "price_signal_dl + pattern_scores",
+  "wave": "wave5_pspat",
+  "verdict": "RED",
+  "probe": 24,
+  "harvested": 16,
+  "platform_fail": 8,
+  "top_sharpe": 0.72,
+  "top_fitness": 0.34,
+  "top_code": "subtract(0, rank(raw_trend_indicator_3))",
+  "note": "双零竞争数据集探针（price_signal_dl 12 条 trend/volume 单字段+轻复合；pattern_scores 12 条 gap/wedge/V 形态相似度镜像+GBR 模板复合）。16 条收割全失败：top sh=0.72（raw_trend_indicator_3 镜像）、0.69（median_similarity_breakaway_gap_upward 镜像），全部 LOW_SHARPE/LOW_FITNESS/LOW_2Y_SHARPE，rn_sharpe 0.17-0.58 近期弱；GBR 模板复合（add(0.4*breakaway_gap, 0.3*rising_wedge, 0.3*v_bottom)）sh 0.15-0.46 亦无效。8 条平台 FAIL（3K21A6fwo4IjaGfEfGcoHBj，8 children status=FAIL 无 alpha，与同批同类表达式正常形成对照，判定平台瞬时错误，非表达式问题，低价值单字段不重跑）。结论：EUR TOP2500 单字段/轻加工信号 IS 弱，零竞争数据集不等于有 alpha，需加工型/异质复合信号。",
+  "salvage": "EUR 剩余杠杆：① FCF 镜像家族与低相关异质分量复合稀释 prod corr（当前 0.9013 撞墙）；② 深挖 model354/ml_factor_proj/ai_factor_transfer 冷门复合模板（GBR oth455/mdl264 模板 prodCorr 0.69 路径）；③ pattern_scores 需加工（多形态加权/时序组合）而非单字段"
+}

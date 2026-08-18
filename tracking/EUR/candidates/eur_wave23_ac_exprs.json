@@ -1,0 +1,18 @@
+[
+ "rank(divide(mean_estimate_targetprice_annual12_tribes, close))",
+ "subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close)))",
+ "rank(divide(median_estimate_targetprice_annual12_tribes, close))",
+ "subtract(0, rank(divide(median_estimate_targetprice_annual12_tribes, close)))",
+ "rank(divide(max_estimate_targetprice_annual12_tribes, close))",
+ "subtract(0, rank(divide(max_estimate_targetprice_annual12_tribes, close)))",
+ "rank(stddev_estimate_targetprice_annual12_tribes)",
+ "subtract(0, rank(stddev_estimate_targetprice_annual12_tribes))",
+ "rank(stddev_estimate_eps_longterm)",
+ "subtract(0, rank(stddev_estimate_eps_longterm))",
+ "rank(mean_estimate_eps_longterm)",
+ "subtract(0, rank(mean_estimate_eps_longterm))",
+ "add(0.5*rank(divide(mean_estimate_targetprice_annual12_tribes, close)), 0.5*rank(mean_estimate_eps_longterm))",
+ "add(0.5*subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close))), 0.5*subtract(0, rank(mean_estimate_eps_longterm)))",
+ "add(0.4*rank(divide(mean_estimate_targetprice_annual12_tribes, close)), add(0.3*rank(mean_estimate_eps_longterm), 0.3*subtract(0, rank(stddev_estimate_targetprice_annual12_tribes))))",
+ "add(0.4*subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close))), add(0.3*subtract(0, rank(mean_estimate_eps_longterm)), 0.3*rank(stddev_estimate_targetprice_annual12_tribes)))"
+]

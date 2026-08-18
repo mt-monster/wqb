@@ -1,0 +1,6 @@
+{
+ "batch": "b114/b114d (failed - diagnostic)",
+ "date": "2026-08-05",
+ "finding": "vec_avg() 应用于 MATRIX 类型字段（oth566_l2r20_prob）会使整个 multisim 原子性全灭（所有 child 显示 FAIL，含对照表达式）；b116 对照批（无 vec_avg）全部通过。教训：MATRIX 字段直接作标量用，VECTOR 字段才用 vec_* 算子。",
+ "detail": "b114 8/8 FAIL, b114d 4/4 FAIL (含已知良好对照), b116 2/2 PASS (同设置同表达式无 vec_avg)"
+}

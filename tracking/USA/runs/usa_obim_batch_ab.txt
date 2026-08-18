@@ -1,0 +1,8 @@
+quantile(group_zscore(divide(vec_avg(twa_notional_bid_1_level), add(vec_avg(twa_notional_bid_1_level), vec_avg(twa_notional_ask_1_level))), subindustry))
+quantile(group_zscore(divide(vec_avg(twa_share_count_bid_1_level), add(vec_avg(twa_share_count_bid_1_level), vec_avg(twa_share_count_ask_1_level))), subindustry))
+quantile(group_zscore(subtract(vec_avg(fill_prob_bid_lvl1), vec_avg(fill_prob_ask_lvl1)), subindustry))
+quantile(group_zscore(divide(vec_avg(fill_prob_bid_lvl1), add(vec_avg(fill_prob_bid_lvl1), vec_avg(fill_prob_ask_lvl1))), subindustry))
+quantile(group_zscore(divide(vec_avg(avg_rest_time_bid_cancelled_lvl1), add(vec_avg(avg_rest_time_bid_cancelled_lvl1), vec_avg(avg_rest_time_ask_cancelled_lvl1))), subindustry))
+quantile(group_zscore(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))), subindustry))
+quantile(group_zscore(vec_avg(trade_market_impact_coefficient), subindustry))
+quantile(group_zscore(ts_mean(vec_avg(mean_relative_bid_ask_spread), 5), subindustry))

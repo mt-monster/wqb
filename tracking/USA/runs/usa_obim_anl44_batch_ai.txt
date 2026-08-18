@@ -1,0 +1,17 @@
+# AI 批: 混合冠军精调2 (decay4 + 窗口扫描 + adv20 归一化暗池深度, SUBIND)
+# 1: 冠军原样 (EPS 63d + dark/lit) decay4 对照
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 2: EPS 42d 修正 + dark/lit
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: EPS 84d 修正 + dark/lit
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 84)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 4: EPS 63d × dark/lit 乘法 decay4 对照 (AG#1 decay8=0.80)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 5: EPS 63d + dark/lit + executed 三成员加法 decay4 对照 (AH#5 decay8=0.76)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 6: EPS 63d + dark 成交量/adv20 暗池深度比 (新口径: 暗池量占日均量比例)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), adv20))), subindustry))
+# 7: EPS 63d + (dark+lit)/adv20 总成交强度
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)), adv20))), subindustry))
+# 8: EPS 63d + ts_mean5 平滑 dark/lit (慢变版本)
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(ts_mean(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))), 5))), subindustry))

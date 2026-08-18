@@ -1,0 +1,18 @@
+[
+ "rank(momentum_williams_r_adjusted)",
+ "subtract(0, rank(momentum_williams_r_adjusted))",
+ "rank(short_term_price_change)",
+ "subtract(0, rank(short_term_price_change))",
+ "rank(cumulative_money_flow_volume_adjusted)",
+ "subtract(0, rank(cumulative_money_flow_volume_adjusted))",
+ "rank(volume_trend_money_flow_interaction)",
+ "subtract(0, rank(volume_trend_money_flow_interaction))",
+ "rank(liquidity_money_flow_alignment)",
+ "subtract(0, rank(liquidity_money_flow_alignment))",
+ "rank(money_flow_strength_typical_price)",
+ "subtract(0, rank(money_flow_strength_typical_price))",
+ "rank(balanced_price_oscillator)",
+ "subtract(0, rank(balanced_price_oscillator))",
+ "rank(typical_price_bollinger_band_position)",
+ "subtract(0, rank(typical_price_bollinger_band_position))"
+]

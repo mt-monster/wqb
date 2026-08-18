@@ -1,0 +1,10 @@
+[
+ "rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),120),22))",
+ "ts_decay_linear(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),120),22)),10)",
+ "group_zscore(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66), subindustry)",
+ "rank(ts_av_diff(vec_avg(nws20_multiple_comp_ghc_lna),10))",
+ "rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ghc_lna),66),10))",
+ "rank(ts_zscore(vec_avg(nws20_multiple_comp_event_sentiment_score),10))",
+ "ts_decay_linear(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),22)),5)",
+ "rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),44))"
+]

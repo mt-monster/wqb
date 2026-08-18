@@ -1,0 +1,23 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  99,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"results\": [],\n  \"count\": 0,\n  \"sharpe_filter_applied\": true,\n  \"sharpe_filter_removed\": 0\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "results":  [
+
+                                                                        ],
+                                                            "count":  0,
+                                                            "sharpe_filter_applied":  true,
+                                                            "sharpe_filter_removed":  0
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

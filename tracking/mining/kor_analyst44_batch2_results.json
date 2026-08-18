@@ -1,0 +1,12 @@
+{
+  "batch": "analyst44 深化 (Nop4q6IN4okajbKNhrCL3r)",
+  "date": "2026-08-04",
+  "results": [
+    {"id": "vRNgwd23", "expr": "eps44+pretax_down44", "sharpe": 1.46, "fitness": 1.06, "two_year": 1.74, "risk_neut": 1.51, "margin": 0.001052, "fail": ["LOW_SHARPE"], "note": "2y 达标! sharpe 差 0.12"},
+    {"id": "Xgo6m1Rm", "expr": "eps66+pretax_down66", "sharpe": 1.5, "fitness": 1.15, "two_year": 1.5, "risk_neut": 1.5, "margin": 0.001177, "fail": ["LOW_SHARPE", "LOW_2Y"], "note": "★ sharpe 差 0.08, 2y 差 0.10"},
+    {"id": "WjA819ex", "expr": "eps+esor22", "sharpe": 1.43, "fitness": 0.94, "two_year": 1.25},
+    {"id": "O0GaQo87", "expr": "eps+sales_down", "sharpe": 1.22, "two_year": 1.66}
+  ],
+  "conclusion": "analyst44 blend 突破: second_eps + pretax_down 组合 fitness 1.06-1.15 / 2y 1.50-1.74 / risk 1.5 / margin 10-12bp / cw PASS。剩 sharpe 0.08-0.12。",
+  "next": "decay16 冲刺 (JjGwjd5E 模式)"
+}

@@ -1,0 +1,54 @@
+{
+  "track": "EUR/TOP1200/D1",
+  "revised_at": "2026-08-05",
+  "supersedes": "eur_track_conclusion.json",
+  "revision_trigger": "用 tools/eur_field_coverage.py 实时拉平台数据集覆盖率，推翻原根因判断",
+
+  "original_conclusion": "EUR 无达标候选（天花板 0.72）。数据包过期导致预筛推荐失效；可用数据集信号全灭。等数据包更新或平台灌数据后重探。",
+
+  "why_original_was_wrong": {
+    "误判1_平台0字段": "fundamental86 / risk59 / model216 / fundamental94 并非'平台0字段'，而是 EUR 区域根本不提供这四个数据集。它们在 KOR 区域全部存在且可用（fundamental94 有 215 字段 cov 0.8558）。属于跨区域误推荐，与数据包新鲜度无关。",
+    "误判2_可用数据集信号全灭": "EUR/TOP1200/D1 实际有 178 个数据集 / 38609 个字段。战役只测了其中 4 个，且这 4 个全部是低覆盖或高拥挤的劣质选择。'全灭'的是选择，不是区域。",
+    "误判3_等数据包更新": "无需等待。平台侧数据充足，19 个高覆盖未开发数据集当前即可用。"
+  },
+
+  "platform_ground_truth": {
+    "dataset_count": 178,
+    "total_fields": 38609,
+    "coverage_mean": 0.6616,
+    "coverage_median": 0.6657,
+    "bucket_ge_090": 35,
+    "bucket_070_090": 43,
+    "bucket_lt_070": 100
+  },
+
+  "used_datasets_audit": {
+    "model30": {"coverage": 0.713, "fieldCount": 77, "userCount": 174, "alphaCount": 4202, "pyramidMultiplier": 1.3, "verdict": "极度拥挤（4202 alpha），prod_corr 几乎必然超标"},
+    "pv20": {"coverage": 0.6915, "fieldCount": 1475, "userCount": 28, "alphaCount": 65, "pyramidMultiplier": 1.1, "verdict": "覆盖率偏低 0.69 + 最低金字塔倍率 1.1"},
+    "news21": {"coverage": 0.5266, "fieldCount": 47, "userCount": 8, "alphaCount": 9, "pyramidMultiplier": 1.3, "verdict": "覆盖率仅 0.53，近半标的无数据，高 tvr 属必然"},
+    "insiders12": {"coverage": 0.2008, "fieldCount": 8, "userCount": 11, "alphaCount": 15, "pyramidMultiplier": 1.2, "verdict": "覆盖率 0.20，结构性不可用"}
+  },
+
+  "revised_conclusion": "EUR 不是死路。原战役的失败源于数据集选择错误——4 个样本全部落在低覆盖/高拥挤区间，而平台上有 19 个 coverage>=0.85 且 alphaCount<=50 的数据集完全未被触碰，其中 7 个 alphaCount=0（零竞争）。建议以 ml_factor_proj / news_sentiment_nlp / global_seasonal_model 为起点重开 EUR 战役。",
+
+  "recommended_restart_targets": [
+    {"id": "ml_factor_proj", "coverage": 1.0, "fieldCount": 333, "userCount": 0, "alphaCount": 0, "valueScore": 5.0, "pyramidMultiplier": 1.5, "category": "other", "note": "全字段 coverage=1.0 的 MATRIX 因子投影集，零用户零 alpha，最高优先级"},
+    {"id": "news_sentiment_nlp", "coverage": 0.9134, "fieldCount": 23, "userCount": 0, "alphaCount": 0, "valueScore": 6.0, "pyramidMultiplier": 1.5, "category": "other", "note": "valueScore 6.0 全场最高，字段少易穷举"},
+    {"id": "global_seasonal_model", "coverage": 0.9886, "fieldCount": 449, "userCount": 0, "alphaCount": 0, "valueScore": 5.0, "pyramidMultiplier": 1.3, "category": "model"},
+    {"id": "continuation_score", "coverage": 0.9924, "fieldCount": 560, "userCount": 0, "alphaCount": 0, "valueScore": 5.0, "pyramidMultiplier": 1.1, "category": "pv"},
+    {"id": "pattern_scores", "coverage": 0.9924, "fieldCount": 504, "userCount": 0, "alphaCount": 0, "valueScore": 5.0, "pyramidMultiplier": 1.1, "category": "pv"},
+    {"id": "ai_factor_transfer", "coverage": 1.0, "fieldCount": 20, "userCount": 0, "alphaCount": 0, "valueScore": 4.0, "pyramidMultiplier": 1.3, "category": "model"},
+    {"id": "dl_riskfree_returns", "coverage": 0.9429, "fieldCount": 133, "userCount": 6, "alphaCount": 14, "valueScore": 4.0, "pyramidMultiplier": 1.5, "category": "other"},
+    {"id": "analyst_earnings_ibes", "coverage": 0.9976, "fieldCount": 42, "userCount": 1, "alphaCount": 1, "valueScore": 5.0, "pyramidMultiplier": 1.3, "category": "model"},
+    {"id": "model354", "coverage": 1.0, "fieldCount": 236, "userCount": 5, "alphaCount": 7, "valueScore": 4.0, "pyramidMultiplier": 1.3, "category": "model"},
+    {"id": "intraday_pv_feats", "coverage": 0.9548, "fieldCount": 585, "userCount": 1, "alphaCount": 1, "valueScore": 4.0, "pyramidMultiplier": 1.1, "category": "pv"}
+  ],
+
+  "cross_region_note": {
+    "KOR/TOP600/D1": "同一批优质数据集在 KOR 的 pyramidMultiplier=1.7、valueScore=6.0，显著高于 EUR 的 1.5/5.0；ml_factor_proj 在 KOR 也仅 10 alpha。若追求金字塔收益，KOR 优先级应高于 EUR。",
+    "KOR_dataset_count": 192,
+    "KOR_coverage_mean": 0.7046
+  },
+
+  "selection_rule_learned": "开战役前必须先跑 tools/eur_field_coverage.py 做数据集体检：coverage>=0.85、alphaCount<=50、fieldCount>=10 三条硬门槛。低于 coverage 0.7 或 alphaCount>1000 的数据集直接排除，不再消耗回测配额。"
+}

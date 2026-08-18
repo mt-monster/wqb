@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_percentile_acquisition_likelihood)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(region_percentile_acquisition_likelihood)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_valuation_percentile_rank)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(region_valuation_percentile_rank)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_credit_quality_percentile_rank)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_fundamental_factor_percentile_rank)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_text_factor_percentile_rank)), 0.5), 4), 1)",
+    "ts_decay_linear(signed_power(subtract(rank(vec_avg(global_percentile_acquisition_likelihood)), 0.5), 4), 10)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

@@ -1,0 +1,17 @@
+# AL 批: si3×obim 混合追批 (RRmxpwxa 0.94 骨架精调: 窗口/方向/成分/乘法), decay4/SUBIND
+# 1: 冠军骨架 × INDUSTRY 组标准化 (AK#1 同款增益验证)
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), industry))
+# 2: loan_utilization 5d + dark/lit (窗口下探)
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 5)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: loan_utilization 15d + dark/lit (窗口上探)
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 4: max_loan_rate 费率水平反转 (1.18 骨架 A1G8Vpaw) + dark/lit
+quantile(group_zscore(add(rank(reverse(ts_decay_linear(vec_avg(max_loan_rate), 10))), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 5: loan_utilization 10d × (impact−spread) 乘法 (第二微结构成分)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 6: 三成员 si3 + dark/lit + impact−spread 加法
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 7: loan_utilization_ratio_d1 口径对照 (口径敏感性)
+quantile(group_zscore(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio_d1), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 8: loan_utilization 10d × dark/lit 乘法 (乘法对照)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))

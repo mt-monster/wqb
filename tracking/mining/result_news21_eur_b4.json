@@ -1,0 +1,142 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3CoHdm9FQ5088GCX4zS9pfR",
+ "ts": 1785870071.5109253,
+ "alphas": [
+  {
+   "id": "omNOqVAE",
+   "code": "ts_rank(ts_backfill(winsorize(event_transcript_sentiment_score, std=5), 60), 44)",
+   "sh": -0.28,
+   "fit": -0.08,
+   "tvr": 0.0931,
+   "ret": -0.0113,
+   "2y": -0.13,
+   "rn": null,
+   "subU": 0.09,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "QPGX7Eqp",
+   "code": "-ts_rank(ts_backfill(winsorize(event_transcript_sentiment_score, std=5), 60), 44)",
+   "sh": 0.28,
+   "fit": 0.08,
+   "tvr": 0.0931,
+   "ret": 0.0113,
+   "2y": 0.13,
+   "rn": null,
+   "subU": -0.09,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "WjA879dQ",
+   "code": "ts_rank(vec_avg(negative_word_count_1), 44)",
+   "sh": 0.03,
+   "fit": 0.0,
+   "tvr": 0.5642,
+   "ret": 0.0053,
+   "2y": 0.26,
+   "rn": null,
+   "subU": -0.08,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "N1b97A6q",
+   "code": "-ts_rank(vec_avg(negative_word_count_1), 44)",
+   "sh": -0.03,
+   "fit": -0.0,
+   "tvr": 0.5642,
+   "ret": -0.0053,
+   "2y": -0.26,
+   "rn": null,
+   "subU": 0.08,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "blQEjvMq",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(event_transcript_sentiment_score, std=5), 60), 44), country)",
+   "sh": -0.08,
+   "fit": -0.01,
+   "tvr": 0.0825,
+   "ret": -0.0028,
+   "2y": 0.47,
+   "rn": null,
+   "subU": 0.23,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "E5GJlkbm",
+   "code": "add(ts_rank(ts_backfill(winsorize(event_transcript_sentiment_score, std=5), 60), 44), ts_rank(vec_avg(negative_word_count_1), 44))",
+   "sh": 0.59,
+   "fit": 0.26,
+   "tvr": 0.5462,
+   "ret": 0.1089,
+   "2y": 1.16,
+   "rn": null,
+   "subU": 0.34,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "VkGJ7OEA",
+   "code": "ts_rank(ts_backfill(winsorize(event_transcript_sentiment_score, std=5), 60), 88)",
+   "sh": 0.36,
+   "fit": 0.11,
+   "tvr": 0.0691,
+   "ret": 0.0114,
+   "2y": 0.5,
+   "rn": null,
+   "subU": 0.46,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGm7k89",
+   "code": "group_rank(ts_rank(vec_avg(negative_word_count_1), 44), industry)",
+   "sh": 0.72,
+   "fit": 0.32,
+   "tvr": 0.6087,
+   "ret": 0.1167,
+   "2y": 1.11,
+   "rn": null,
+   "subU": 0.36,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

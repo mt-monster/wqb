@@ -1,0 +1,333 @@
+{
+ "batch": "b125",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.04,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 60)",
+  "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall1080, opt40_ivput1080)), 0.5), 15)), 60)",
+  "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)",
+  "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days)), 0.5), 15)), 60)",
+  "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall720, opt40_ivput720)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)",
+  "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 30)",
+  "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 90)",
+  "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 30)"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 60)",
+   "child": "3pw01V8Up4zibEuIZg6JKcA",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "WjA8lbAN",
+   "metrics": {
+    "sharpe": 1.82,
+    "fitness": 1.9,
+    "turnover": 0.0401,
+    "returns": 0.1364,
+    "margin": 0.006804,
+    "drawdown": 0.1636,
+    "two_year_sharpe": 2.31,
+    "sub_universe_sharpe": 0.81
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 60)"
+  },
+  {
+   "index": 1,
+   "expression": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall1080, opt40_ivput1080)), 0.5), 15)), 60)",
+   "child": "33lrFt7N64Tcc5W6KBRn28J",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "kqPlaoPg",
+   "metrics": {
+    "sharpe": 1.89,
+    "fitness": 1.93,
+    "turnover": 0.0399,
+    "returns": 0.1308,
+    "margin": 0.00656,
+    "drawdown": 0.1149,
+    "two_year_sharpe": 2.3,
+    "sub_universe_sharpe": 0.81
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.81,
+     "limit": 0.82
+    }
+   ],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall1080, opt40_ivput1080)), 0.5), 15)), 60)"
+  },
+  {
+   "index": 2,
+   "expression": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)",
+   "child": "1C4D6e8QA4nX9RxkghzjNHg",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "j26maA6o",
+   "metrics": {
+    "sharpe": 1.94,
+    "fitness": 2.1,
+    "turnover": 0.0392,
+    "returns": 0.1464,
+    "margin": 0.007474,
+    "drawdown": 0.1372,
+    "two_year_sharpe": 2.61,
+    "sub_universe_sharpe": 0.83
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.83,
+     "limit": 0.84
+    }
+   ],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)"
+  },
+  {
+   "index": 3,
+   "expression": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days)), 0.5), 15)), 60)",
+   "child": "6IXsb2pg4OhcD6Zpo5zk5t",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "A1GKxNGX",
+   "metrics": {
+    "sharpe": 1.73,
+    "fitness": 1.93,
+    "turnover": 0.0306,
+    "returns": 0.1554,
+    "margin": 0.010149,
+    "drawdown": 0.2125,
+    "two_year_sharpe": 2.16,
+    "sub_universe_sharpe": 0.74
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.74,
+     "limit": 0.75
+    }
+   ],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days)), 0.5), 15)), 60)"
+  },
+  {
+   "index": 4,
+   "expression": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall720, opt40_ivput720)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)",
+   "child": "1x0qYq1L54ncblvE4fpzkTF",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "xANgv3jq",
+   "metrics": {
+    "sharpe": 2.03,
+    "fitness": 2.14,
+    "turnover": 0.0387,
+    "returns": 0.1387,
+    "margin": 0.00716,
+    "drawdown": 0.0906,
+    "two_year_sharpe": 2.64,
+    "sub_universe_sharpe": 0.82
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.82,
+     "limit": 0.88
+    }
+   ],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall720, opt40_ivput720)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 60)"
+  },
+  {
+   "index": 5,
+   "expression": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 30)",
+   "child": "1TO8br9SJ4nOavTSETRHWph",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "E5GJQpl0",
+   "metrics": {
+    "sharpe": 1.81,
+    "fitness": 1.84,
+    "turnover": 0.0578,
+    "returns": 0.1289,
+    "margin": 0.004462,
+    "drawdown": 0.1486,
+    "two_year_sharpe": 2.2,
+    "sub_universe_sharpe": 0.78
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 30)"
+  },
+  {
+   "index": 6,
+   "expression": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 90)",
+   "child": "4pu6KGKl4gC8Bh2Qh08Qxf",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "xANgv3jm",
+   "metrics": {
+    "sharpe": 1.78,
+    "fitness": 1.88,
+    "turnover": 0.0329,
+    "returns": 0.1393,
+    "margin": 0.008454,
+    "drawdown": 0.1752,
+    "two_year_sharpe": 2.3,
+    "sub_universe_sharpe": 0.78
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(add(signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15)), 90)"
+  },
+  {
+   "index": 7,
+   "expression": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 30)",
+   "child": "y4mW48Xo4I1bd5QkVYmDsf",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "ZYEGab7n",
+   "metrics": {
+    "sharpe": 1.96,
+    "fitness": 2.08,
+    "turnover": 0.0554,
+    "returns": 0.1405,
+    "margin": 0.005075,
+    "drawdown": 0.128,
+    "two_year_sharpe": 2.55,
+    "sub_universe_sharpe": 0.79
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.79,
+     "limit": 0.85
+    }
+   ],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option"
+   },
+   "code": "ts_decay_linear(add(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), signed_power(subtract(rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days)), 0.5), 15)), 30)"
+  }
+ ]
+}

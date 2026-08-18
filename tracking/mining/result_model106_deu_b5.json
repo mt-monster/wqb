@@ -1,0 +1,123 @@
+{
+ "meta": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.06,
+  "max_trade": "ON",
+  "batch": "b5",
+  "date": "2026-08-04"
+ },
+ "results": [
+  {
+   "child_id": "1U6ZLgfNv55acJb11JX2Fc6x",
+   "status": "COMPLETE",
+   "alpha_id": "MPGmKp6o",
+   "sharpe": 0.84,
+   "fitness": 0.55,
+   "turnover": 0.0727,
+   "returns": 0.0536,
+   "margin": 0.001475,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.8,
+   "rn_sharpe": 0.75,
+   "sub_universe_sharpe": 0.94,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "4sM59F5jB4BVaNlk3n0l6m0",
+   "status": "COMPLETE",
+   "alpha_id": "qMNqPA7A",
+   "sharpe": 0.81,
+   "fitness": 0.52,
+   "turnover": 0.0669,
+   "returns": 0.0512,
+   "margin": 0.001532,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.81,
+   "rn_sharpe": 0.74,
+   "sub_universe_sharpe": 0.92,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "4xTwmT7Lh4r28xM11ArCUlrA",
+   "status": "COMPLETE",
+   "alpha_id": "xANgPxvl",
+   "sharpe": 0.04,
+   "fitness": 0.01,
+   "turnover": 0.0563,
+   "returns": 0.0026,
+   "margin": 9.3e-05,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.73,
+   "rn_sharpe": -0.02,
+   "sub_universe_sharpe": 0.06,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "aaR59um4UuaFCy57hmLrK",
+   "status": "COMPLETE",
+   "alpha_id": "d5ZLEx9J",
+   "sharpe": 0.55,
+   "fitness": 0.3,
+   "turnover": 0.0908,
+   "returns": 0.0371,
+   "margin": 0.000817,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.2,
+   "rn_sharpe": 0.57,
+   "sub_universe_sharpe": 0.6,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "46Ha4PbKY4Otbee1fwpbPcP1",
+   "status": "COMPLETE",
+   "alpha_id": "MPGmKpdk",
+   "sharpe": 0.47,
+   "fitness": 0.22,
+   "turnover": 0.0743,
+   "returns": 0.0286,
+   "margin": 0.000769,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.09,
+   "rn_sharpe": 0.5,
+   "sub_universe_sharpe": 0.56,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  }
+ ]
+}

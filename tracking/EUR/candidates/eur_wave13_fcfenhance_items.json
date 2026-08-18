@@ -1,0 +1,18 @@
+[
+ {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "F1 FCF_065_035 基线重测(TOP2500)"},
+ {"code": "add(0.70 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.30 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "F2 FCF_070_030 权重变体"},
+ {"code": "add(0.60 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.40 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "F3 FCF_060_040 权重变体"},
+ {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_estimate_revision_europe_rank))", "note": "F4 FCF 65% + est_rev 35%"},
+ {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_deep_value_europe_rank))", "note": "F5 FCF 65% + deep_value 35%"},
+ {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_change_in_price_adj_eps_2))", "note": "F6 FCF 65% + change_eps_2 35%"},
+ {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_enterprise_value_europe_rank))", "note": "F7 FCF 65% + EV_rank 35%"},
+ {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * rank(long_term_balance_sheet_strength_europe_rank))", "note": "F8 FCF 65% + balance_sheet 35%"},
+ {"code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_estimate_revision_europe_rank))", "note": "F9 FCF 50% + est_rev 50% 深度稀释"},
+ {"code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_deep_value_europe_rank))", "note": "F10 FCF 50% + deep_value 50% 深度稀释"},
+ {"code": "add(0.70 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.30 * rank(long_term_change_in_price_adj_eps_2))", "note": "F11 FCF 70% + change_eps 30%"},
+ {"code": "add(0.70 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.30 * rank(long_term_enterprise_value_europe_rank))", "note": "F12 FCF 70% + EV_rank 30%"},
+ {"code": "rank(long_term_estimate_revision_europe_rank)", "note": "F13 est_rev 单字段原始方向(近期正信号)"},
+ {"code": "rank(long_term_deep_value_europe_rank)", "note": "F14 deep_value 单字段原始方向"},
+ {"code": "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.40 * subtract(0, rank(long_term_estimate_revision_europe_rank)))", "note": "F15 FCF + est_rev 镜像(双反转)"},
+ {"code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * rank(long_term_ebitda_to_enterprise_value_ratio_2))", "note": "F16 FCF 50% + EBITDA/EV 50%"}
+]

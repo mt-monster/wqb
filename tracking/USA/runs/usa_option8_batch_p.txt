@@ -1,0 +1,8 @@
+reverse(quantile(ts_decay_linear(historical_volatility_20, 10)))
+reverse(quantile(ts_av_diff(parkinson_volatility_60, 20)))
+reverse(quantile(subtract(implied_volatility_mean_20, implied_volatility_mean_180)))
+reverse(quantile(ts_delta(implied_volatility_mean_skew_60, 10)))
+reverse(quantile(divide(parkinson_volatility_30, historical_volatility_30)))
+reverse(quantile(ts_zscore(implied_volatility_mean_30, 60)))
+reverse(quantile(subtract(implied_volatility_put_60, historical_volatility_60)))
+reverse(quantile(ts_av_diff(divide(historical_volatility_30, historical_volatility_120), 10)))

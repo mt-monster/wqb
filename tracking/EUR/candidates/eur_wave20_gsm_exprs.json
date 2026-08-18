@@ -1,0 +1,18 @@
+[
+ "rank(pv_weekly_event_20d_return_quantile4_confscore)",
+ "subtract(0, rank(pv_weekly_event_20d_return_quantile4_confscore))",
+ "rank(weekly_pricevol_r5_regression_pred)",
+ "subtract(0, rank(weekly_pricevol_r5_regression_pred))",
+ "rank(weekly_pricevol_event_r5_quantile4_prob)",
+ "subtract(0, rank(weekly_pricevol_event_r5_quantile4_prob))",
+ "rank(pvweekly_monthquarter_20d_5bucket_pred)",
+ "subtract(0, rank(pvweekly_monthquarter_20d_5bucket_pred))",
+ "rank(analyst_monthquarter_120d_5bucket_prob_label_1)",
+ "subtract(0, rank(analyst_monthquarter_120d_5bucket_prob_label_1))",
+ "rank(weekly_pricevol_event_r5_regression_pred)",
+ "subtract(0, rank(weekly_pricevol_event_r5_regression_pred))",
+ "rank(analyst_calendar_120d_return_quantile5_prob1)",
+ "subtract(0, rank(analyst_calendar_120d_return_quantile5_prob1))",
+ "rank(add(weekly_pricevol_r5_regression_pred, analyst_calendar_60d_regression_pred))",
+ "subtract(0, rank(add(weekly_pricevol_r5_regression_pred, analyst_calendar_60d_regression_pred)))"
+]

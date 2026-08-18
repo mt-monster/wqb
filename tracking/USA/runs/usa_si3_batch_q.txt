@@ -1,0 +1,8 @@
+reverse(quantile(ts_decay_linear(vec_avg(transaction_count), 10)))
+quantile(divide(vec_avg(transaction_count), vec_avg(loaned_share_count)))
+reverse(quantile(ts_av_diff(vec_avg(average_loan_duration_days), 20)))
+reverse(quantile(ts_decay_linear(vec_avg(loaned_share_count), 10)))
+reverse(quantile(ts_delta(vec_avg(mean_loan_rate), 10)))
+reverse(quantile(ts_zscore(vec_avg(borrow_activity_score), 60)))
+quantile(divide(vec_avg(loan_utilization_ratio), vec_avg(average_loan_duration_days)))
+reverse(quantile(ts_decay_linear(vec_avg(loan_rate_volatility), 20)))

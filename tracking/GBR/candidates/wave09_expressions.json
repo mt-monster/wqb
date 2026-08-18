@@ -1,0 +1,138 @@
+{
+  "wave": "09",
+  "generated_at": "2026-08-17T02:45:00",
+  "region": "GBR",
+  "universe": "TOP700",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "maxTrade": "ON",
+  "diversity_target": {
+    "operator_entropy_min": 2.0,
+    "coverage_rate_min": 0.30,
+    "unique_structures_min": 8
+  },
+  "expressions": [
+    {
+      "id": "gbr_w09_other455_01",
+      "dataset": "other455",
+      "style": "graph_embedding_momentum",
+      "skeleton": "rank(ts_delta(ts_backfill(FIELD,66),20))",
+      "expression": "rank(ts_delta(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value,66),20))",
+      "operators": ["rank", "ts_delta", "ts_backfill"],
+      "field": "oth455_competitor_n2v_p10_q200_w1_pca_fact1_value",
+      "logic": "竞争对手网络嵌入动量：捕捉竞争关系图结构的短期变化"
+    },
+    {
+      "id": "gbr_w09_other455_02",
+      "dataset": "other455",
+      "style": "graph_embedding_mean_reversion",
+      "skeleton": "subtract(rank(FIELD),ts_mean(rank(FIELD),60))",
+      "expression": "subtract(rank(oth455_customer_roam_w1_pca_fact2_value),ts_mean(rank(oth455_customer_roam_w1_pca_fact2_value),60))",
+      "operators": ["subtract", "rank", "ts_mean"],
+      "field": "oth455_customer_roam_w1_pca_fact2_value",
+      "logic": "客户关系网络嵌入均值回归：偏离长期均值时反向操作"
+    },
+    {
+      "id": "gbr_w09_other455_03",
+      "dataset": "other455",
+      "style": "graph_embedding_volatility",
+      "skeleton": "rank(ts_std_dev(ts_delta(FIELD,5),20))",
+      "expression": "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p50_q200_w2_pca_fact3_value,5),20))",
+      "operators": ["rank", "ts_std_dev", "ts_delta"],
+      "field": "oth455_partner_n2v_p50_q200_w2_pca_fact3_value",
+      "logic": "合作伙伴网络嵌入波动率：网络结构不稳定性的风险定价"
+    },
+    {
+      "id": "gbr_w09_other455_04",
+      "dataset": "other455",
+      "style": "graph_embedding_cross_network",
+      "skeleton": "rank(corr(FIELD1,FIELD2,30))",
+      "expression": "rank(corr(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value,oth455_relation_n2v_p10_q200_w1_pca_fact1_value,30))",
+      "operators": ["rank", "corr"],
+      "field": "oth455_competitor_n2v_p10_q200_w1_pca_fact1_value+oth455_relation_n2v_p10_q200_w1_pca_fact1_value",
+      "logic": "竞争-关系网络嵌入相关性：跨网络结构耦合度"
+    },
+    {
+      "id": "gbr_w09_model264_01",
+      "dataset": "model264",
+      "style": "ml_probability_trend",
+      "skeleton": "rank(ts_mean(FIELD,10))",
+      "expression": "rank(ts_mean(mdl264_3l_bb,10))",
+      "operators": ["rank", "ts_mean"],
+      "field": "mdl264_3l_bb",
+      "logic": "ML上涨概率趋势：布林带3层模型预测概率的短期平滑"
+    },
+    {
+      "id": "gbr_w09_model264_02",
+      "dataset": "model264",
+      "style": "ml_probability_reversal",
+      "skeleton": "subtract(rank(FIELD),rank(ts_mean(FIELD,20)))",
+      "expression": "subtract(rank(mdl264_1l_atr),rank(ts_mean(mdl264_1l_atr,20)))",
+      "operators": ["subtract", "rank", "ts_mean"],
+      "field": "mdl264_1l_atr",
+      "logic": "ML下跌概率反转：ATR指标1层模型预测概率的均值回归"
+    },
+    {
+      "id": "gbr_w09_model264_03",
+      "dataset": "model264",
+      "style": "ml_probability_spread",
+      "skeleton": "rank(subtract(FIELD1,FIELD2))",
+      "expression": "rank(subtract(mdl264_3l_cci,mdl264_1l_cci))",
+      "operators": ["rank", "subtract"],
+      "field": "mdl264_3l_cci+mdl264_1l_cci",
+      "logic": "ML多空概率差：CCI指标3层与1层模型预测的方向性净信号"
+    },
+    {
+      "id": "gbr_w09_model264_04",
+      "dataset": "model264",
+      "style": "ml_probability_acceleration",
+      "skeleton": "rank(ts_delta(ts_delta(FIELD,5),5))",
+      "expression": "rank(ts_delta(ts_delta(mdl264_2l_macd,5),5))",
+      "operators": ["rank", "ts_delta"],
+      "field": "mdl264_2l_macd",
+      "logic": "ML中性概率加速度：MACD指标2层模型预测不确定性的二阶变化"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_01",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_breakout",
+      "skeleton": "rank(ts_max(FIELD,20))",
+      "expression": "rank(ts_max(asc_triangle_mean_simscore_lookback120,20))",
+      "operators": ["rank", "ts_max"],
+      "field": "asc_triangle_mean_simscore_lookback120",
+      "logic": "上升三角形形态突破：120日三角形相似度均值的近期高点"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_02",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_mean_reversion",
+      "skeleton": "subtract(rank(FIELD),ts_mean(rank(FIELD),40))",
+      "expression": "subtract(rank(avg_similarity_falling_wedge_pattern_120),ts_mean(rank(avg_similarity_falling_wedge_pattern_120),40))",
+      "operators": ["subtract", "rank", "ts_mean"],
+      "field": "avg_similarity_falling_wedge_pattern_120",
+      "logic": "下降楔形形态均值回归：120日楔形相似度的长期偏离修复"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_03",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_volatility",
+      "skeleton": "rank(ts_std_dev(FIELD,30))",
+      "expression": "rank(ts_std_dev(avg_similarity_v_reversal_bottom_120,30))",
+      "operators": ["rank", "ts_std_dev"],
+      "field": "avg_similarity_v_reversal_bottom_120",
+      "logic": "V形底部反转形态波动率：形态匹配度的不稳定性"
+    },
+    {
+      "id": "gbr_w09_pattern_scores_04",
+      "dataset": "pattern_scores",
+      "style": "pattern_similarity_cross",
+      "skeleton": "rank(corr(FIELD1,FIELD2,20))",
+      "expression": "rank(corr(avg_similarity_upward_breakaway_gap_120,asc_triangle_std_simscore_lookback120,20))",
+      "operators": ["rank", "corr"],
+      "field": "avg_similarity_upward_breakaway_gap_120+asc_triangle_std_simscore_lookback120",
+      "logic": "缺口-三角形形态统计耦合：向上突破缺口与三角形波动率的相关性"
+    }
+  ]
+}

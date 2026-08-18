@@ -1,0 +1,17 @@
+# AH 批: 双数据集混合精调 (AG 冠军 EPS修正+dark/lit 变体 + executed 三成员结构, decay8/SUBIND)
+# 1: 21d 短窗口修正 + dark/lit
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 21)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 2: EPS 63d 修正 − dark/lit (差异信号)
+quantile(group_zscore(subtract(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: EPS 63d 修正 × executed 占比 (无 dark/lit 的纯执行确认)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 4: EPS 63d 修正 × dark/lit × executed 三成员乘法 (对齐 AF#2 vRN7eLab 0.71/RN1.63 结构)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 5: EPS 63d 修正 + dark/lit + executed 三成员加法
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 6: EPS 63d 修正 × (impact−spread) × executed (AF#2 结构 + EPS 混合)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread))), rank(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))
+# 7: EBITDA 63d 修正 + dark/lit (换基本面指标)
+quantile(group_zscore(add(rank(ts_delta(anl44_ebitda_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 8: EPS 63d 修正 × ask executed 占比 (反向方向测试)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(ask_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))))), subindustry))

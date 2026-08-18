@@ -1,0 +1,1828 @@
+{
+ "model30": {
+  "count": 10,
+  "fields": [
+   {
+    "id": "star_new_eps_analyst_number_fq1",
+    "type": "MATRIX",
+    "cov": 0.4966,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Qua"
+   },
+   {
+    "id": "star_new_eps_analyst_number_fq2",
+    "type": "MATRIX",
+    "cov": 0.497,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Qua"
+   },
+   {
+    "id": "star_new_eps_analyst_number_fy1",
+    "type": "MATRIX",
+    "cov": 0.58,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Yea"
+   },
+   {
+    "id": "star_new_eps_analyst_number_fy2",
+    "type": "MATRIX",
+    "cov": 0.5805,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts included in the StarMine SmartEstimate for EPS for Fiscal Yea"
+   },
+   {
+    "id": "star_new_eps_smart_estimate_12m",
+    "type": "MATRIX",
+    "cov": 0.57,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "StarMine SmartEstimate (analyst-weighted) EPS forecast for the forward 12 months"
+   },
+   {
+    "id": "star_new_eps_smart_estimate_fy1",
+    "type": "MATRIX",
+    "cov": 0.5734,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Year 1"
+   },
+   {
+    "id": "star_new_eps_smart_estimate_fy2",
+    "type": "MATRIX",
+    "cov": 0.5733,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "StarMine SmartEstimate (analyst-weighted) EPS forecast for Fiscal Year 2"
+   },
+   {
+    "id": "star_new_eps_surprise_prediction_12m",
+    "type": "MATRIX",
+    "cov": 0.57,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Predicted surprise percentage for EPS over the forward 12 months, as the deviati"
+   },
+   {
+    "id": "star_new_eps_surprise_prediction_fy1",
+    "type": "MATRIX",
+    "cov": 0.5734,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Predicted surprise percentage for EPS for Fiscal Year 1, as the deviation of Sma"
+   },
+   {
+    "id": "star_new_eps_surprise_prediction_fy2",
+    "type": "MATRIX",
+    "cov": 0.5733,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Predicted surprise percentage for EPS for Fiscal Year 2, as the deviation of Sma"
+   }
+  ]
+ },
+ "analyst44": {
+  "count": 72,
+  "fields": [
+   {
+    "id": "anl44_2_csh_coveredby",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Identifier representing the regime or coverage regime for the cash estimate (e.g"
+   },
+   {
+    "id": "anl44_2_csh_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the last published/prior cash estimate value"
+   },
+   {
+    "id": "anl44_2_csh_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Value of the last known/published cash estimate before this current event"
+   },
+   {
+    "id": "anl44_2_csh_prevalue",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Prior estimate value before the current revision"
+   },
+   {
+    "id": "anl44_2_csh_value",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Actual value of the analyst's cash-related estimate for the event"
+   },
+   {
+    "id": "anl44_2_dps_coveredby",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Identifier indicating which regime or policy covers the DPS estimate event"
+   },
+   {
+    "id": "anl44_2_dps_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code of the last reported DPS value, in ISO 4217 format"
+   },
+   {
+    "id": "anl44_2_dps_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous or last reported value for DPS before the current event"
+   },
+   {
+    "id": "anl44_2_dps_prevalue",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous DPS estimate value before the current revision/event"
+   },
+   {
+    "id": "anl44_2_dps_value",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current estimate value reported for Dividends Per Share (DPS)"
+   },
+   {
+    "id": "anl44_2_ebitda_coveredby",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "String identifier indicating the coverage regime or regime status for the estima"
+   },
+   {
+    "id": "anl44_2_ebitda_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) in which the last known estimate value was reported"
+   },
+   {
+    "id": "anl44_2_ebitda_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The most recent known value for the estimate prior to the current or latest even"
+   },
+   {
+    "id": "anl44_2_ebitda_prevalue",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous value of the EBITDA estimate before the current event, enables tracking"
+   },
+   {
+    "id": "anl44_2_ebitda_value",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current value of the EBITDA estimate"
+   },
+   {
+    "id": "anl44_2_eps_coveredby",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regime or coverage identifier for the EPS event, helps regime linkage"
+   },
+   {
+    "id": "anl44_2_eps_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code of the last published EPS estimate"
+   },
+   {
+    "id": "anl44_2_eps_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Value of the most recent EPS estimate before the current event"
+   },
+   {
+    "id": "anl44_2_eps_prevalue",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous EPS estimate value before the current event"
+   },
+   {
+    "id": "anl44_2_eps_value",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current EPS estimate value"
+   },
+   {
+    "id": "anl44_2_epsr_coveredby",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "epsr coveredby"
+   },
+   {
+    "id": "anl44_2_epsr_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code for the last known/published estimate value, follows ISO 4217"
+   },
+   {
+    "id": "anl44_2_epsr_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Most recent EPSR estimate value before the current event"
+   },
+   {
+    "id": "anl44_2_epsr_prevalue",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous EPSR estimate value immediately before the current event"
+   },
+   {
+    "id": "anl44_2_epsr_value",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current estimate value for EPS (or relevant indicator), numeric"
+   },
+   {
+    "id": "anl44_2_fcfps_coveredby",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "fcfps coveredby"
+   },
+   {
+    "id": "anl44_2_fcfps_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the last reported FCFPS estimate before the current"
+   },
+   {
+    "id": "anl44_2_fcfps_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Last recorded Free Cash Flow Per Share value before the current event"
+   },
+   {
+    "id": "anl44_2_fcfps_prevalue",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous value of the FCFPS estimate before revision"
+   },
+   {
+    "id": "anl44_2_fcfps_value",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current value of the FCFPS estimate"
+   },
+   {
+    "id": "anl44_2_netdebt_coveredby",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regime or coverage regime identifier for linkage and validation"
+   },
+   {
+    "id": "anl44_2_netdebt_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code for the most recent prior estimate value"
+   },
+   {
+    "id": "anl44_2_netdebt_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Most recent NETDEBT estimate value prior to the current event"
+   },
+   {
+    "id": "anl44_2_netdebt_prevalue",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous estimate value before this event, used to indicate revision"
+   },
+   {
+    "id": "anl44_2_netdebt_value",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current estimate value for Net Debt"
+   },
+   {
+    "id": "anl44_2_netprofit_coveredby",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regime or coverage indicator identifying the regime under which the estimate is "
+   },
+   {
+    "id": "anl44_2_netprofit_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) of the last known net profit estimate value"
+   },
+   {
+    "id": "anl44_2_netprofit_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Value of the last known net profit estimate prior to the current event"
+   },
+   {
+    "id": "anl44_2_netprofit_prevalue",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous value of the net profit estimate prior to the current event"
+   },
+   {
+    "id": "anl44_2_netprofit_value",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current value of the net profit estimate for the event"
+   },
+   {
+    "id": "anl44_2_operatingprofit_coveredby",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "operatingprofit coveredby"
+   },
+   {
+    "id": "anl44_2_operatingprofit_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code used for the last known operating profit estimate value"
+   },
+   {
+    "id": "anl44_2_operatingprofit_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Most recent published operating profit estimate before the current event"
+   },
+   {
+    "id": "anl44_2_operatingprofit_prevalue",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous operating profit estimate prior to the current event"
+   },
+   {
+    "id": "anl44_2_operatingprofit_value",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current estimate value for operating profit"
+   },
+   {
+    "id": "anl44_2_roe_coveredby",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Code or regime identifier marking coverage logic for this ROE event, useful for "
+   },
+   {
+    "id": "anl44_2_roe_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for last known ROE estimate value before the current ev"
+   },
+   {
+    "id": "anl44_2_roe_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Last known ROE estimate value prior to the current event; the previously publish"
+   },
+   {
+    "id": "anl44_2_roe_prevalue",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous analyst estimate value for ROE, prior to the current event or revision"
+   },
+   {
+    "id": "anl44_2_roe_value",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current analyst estimate for Return on Equity (ROE), as of this event"
+   },
+   {
+    "id": "anl44_2_sales_coveredby",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Coverage regime or identifier indicating which regulatory/data regime governs th"
+   },
+   {
+    "id": "anl44_2_sales_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code for the last known prior estimate for sales"
+   },
+   {
+    "id": "anl44_2_sales_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The most recent prior sales estimate value (before the current event)"
+   },
+   {
+    "id": "anl44_2_sales_prevalue",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous value of the sales estimate prior to this event (enables tracking of re"
+   },
+   {
+    "id": "anl44_2_sales_value",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current value of the analyst sales estimate"
+   },
+   {
+    "id": "anl44_2_tbvps_coveredby",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "tbvps coveredby"
+   },
+   {
+    "id": "anl44_2_tbvps_lastactccy",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) of the last TBVPS estimate prior to the current event"
+   },
+   {
+    "id": "anl44_2_tbvps_lastactvalue",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Value of the last TBVPS estimate prior to the current event"
+   },
+   {
+    "id": "anl44_2_tbvps_prevalue",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Previous TBVPS estimate value before this event (shows revision amount)"
+   },
+   {
+    "id": "anl44_2_tbvps_value",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Current TBVPS estimate value submitted in this event"
+   },
+   {
+    "id": "cash_eps_currency_code_2",
+    "type": "VECTOR",
+    "cov": 0.2518,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) in which current cash estimate value is denominated"
+   },
+   {
+    "id": "ebitda_currency_code",
+    "type": "VECTOR",
+    "cov": 0.4996,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "ISO 4217 currency code for the current EBITDA estimate value"
+   },
+   {
+    "id": "eps_currency_code_2",
+    "type": "VECTOR",
+    "cov": 0.5168,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the current EPS estimate"
+   },
+   {
+    "id": "epsr_currency_code",
+    "type": "VECTOR",
+    "cov": 0.4884,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code for the current estimate, usually ISO 4217"
+   },
+   {
+    "id": "forecast_currency_dps",
+    "type": "VECTOR",
+    "cov": 0.514,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code for current DPS estimate, usually ISO 4217 format"
+   },
+   {
+    "id": "forecast_currency_fcfps",
+    "type": "VECTOR",
+    "cov": 0.3795,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the current FCFPS estimate"
+   },
+   {
+    "id": "forecast_currency_netprofit",
+    "type": "VECTOR",
+    "cov": 0.5091,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the net profit estimate value"
+   },
+   {
+    "id": "forecast_currency_roe",
+    "type": "VECTOR",
+    "cov": 0.4568,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) in which the current ROE estimate is stated"
+   },
+   {
+    "id": "forecast_currency_sales",
+    "type": "VECTOR",
+    "cov": 0.515,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "ISO currency code of the sales estimate"
+   },
+   {
+    "id": "forecast_currency_tangible_book_value_per_share",
+    "type": "VECTOR",
+    "cov": 0.2464,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code (ISO 4217) for the TBVPS estimate in this event"
+   },
+   {
+    "id": "netdebt_currency_code",
+    "type": "VECTOR",
+    "cov": 0.4875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Currency code of the estimate (ISO 4217 standard)"
+   },
+   {
+    "id": "operatingprofit_currency_code",
+    "type": "VECTOR",
+    "cov": 0.2898,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "ISO 4217 currency code of the operating profit estimate"
+   }
+  ]
+ },
+ "pv106": {
+  "count": 8,
+  "fields": [
+   {
+    "id": "aggregated_slippage_metric",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Comprehensive measure of slippage across multiple trades or venues."
+   },
+   {
+    "id": "pv106_lastspread",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Bid-ask spread averaged over the last 30 minutes (in instrument currency)"
+   },
+   {
+    "id": "pv106_lastspreadbp",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Bid-ask spread over the last 30 minutes expressed in basis points"
+   },
+   {
+    "id": "pv106_spread",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Difference between best bid and best ask price for the security (in instrument c"
+   },
+   {
+    "id": "pv106_spreadbp",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Bid-ask spread expressed in basis points (normalized to mid/VWAP)"
+   },
+   {
+    "id": "slippage_at_spread_35",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Modeled slippage/transaction cost estimate for executing an order equal to 35% o"
+   },
+   {
+    "id": "transaction_cost_maximum",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Maximum estimated transaction cost for a trade."
+   },
+   {
+    "id": "transaction_cost_percentile_10",
+    "type": "MATRIX",
+    "cov": 0.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Estimated transaction cost at the 10th percentile for a trade."
+   }
+  ]
+ },
+ "model106": {
+  "count": 14,
+  "fields": [
+   {
+    "id": "mdl106_country",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Country of listing"
+   },
+   {
+    "id": "mdl106_dividend",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Forecast dividend yield for the next 12 months (percent)"
+   },
+   {
+    "id": "mdl106_fmb",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Measure of a stock’s downside sensitivity in bear markets; higher values imply g"
+   },
+   {
+    "id": "mdl106_fnb",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Bad News Factor indicating the stock’s sensitivity to negative news and its tend"
+   },
+   {
+    "id": "mdl106_global_evaluation",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Composite multi-criteria evaluation score combining fundamentals, technicals, an"
+   },
+   {
+    "id": "mdl106_mkt_cap",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Market capitalization in USD billions, calculated as share price times shares ou"
+   },
+   {
+    "id": "mdl106_pr",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "4-week performance relative to the national or regional index, in percent"
+   },
+   {
+    "id": "mdl106_price",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Latest daily stock price in the security’s trading currency"
+   },
+   {
+    "id": "mdl106_risk",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "risk levels by historic price"
+   },
+   {
+    "id": "mdl106_rv",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Valuation rating from -2 to +2 indicating whether the stock appears overvalued o"
+   },
+   {
+    "id": "mdl106_stars",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Overall star rating summarizing the four pillars, on a 0–4 scale"
+   },
+   {
+    "id": "mdl106_tre",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Earnings Revision (Revenue) Trend score in the range [-1, 1], with positive valu"
+   },
+   {
+    "id": "mdl106_tt",
+    "type": "MATRIX",
+    "cov": 0.3782,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Medium-term technical trend indicator: +1 positive, -1 negative; includes a tech"
+   },
+   {
+    "id": "mdl106_ycc",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "ISO 4217 currency code of the security (currency used for price and related fiel"
+   }
+  ]
+ },
+ "shortinterest3": {
+  "count": 25,
+  "fields": [
+   {
+    "id": "average_loan_duration_days",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Weighted average age of loans in this group, measured in days"
+   },
+   {
+    "id": "average_loan_duration_days_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The weighted average age of loans in this primary key group, measured in days"
+   },
+   {
+    "id": "average_loan_duration_days_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Weighted average age of loans in this group, in days"
+   },
+   {
+    "id": "loan_rate_volatility",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The standard deviation of loan rates for all transactions in this primary key gr"
+   },
+   {
+    "id": "loan_rate_volatility_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Standard deviation of loan rates across transactions in this primary key group"
+   },
+   {
+    "id": "loan_rate_volatility_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Standard deviation of loan rates for transactions in this group"
+   },
+   {
+    "id": "loaned_market_value_usd",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "US dollar market value of the units lent in the transactions in this group"
+   },
+   {
+    "id": "loaned_market_value_usd_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "USD market value of the units lent in transactions in this primary key group"
+   },
+   {
+    "id": "loaned_market_value_usd_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Market value in US dollars of units lent in transactions in this group"
+   },
+   {
+    "id": "loaned_share_count",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of units (shares or par value) lent in the transactions in this group"
+   },
+   {
+    "id": "loaned_share_count_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of units (shares or par value) lent in transactions in this primary key g"
+   },
+   {
+    "id": "loaned_share_count_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of units (shares or par value) lent in transactions in this group"
+   },
+   {
+    "id": "max_loan_rate",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The maximum loan rate among all transactions in this primary key group"
+   },
+   {
+    "id": "max_loan_rate_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Maximum loan rate among transactions in this group"
+   },
+   {
+    "id": "max_loan_rate_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Maximum loan rate among transactions in this group"
+   },
+   {
+    "id": "mean_loan_rate",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The weighted average loan rate for all transactions in this primary key group"
+   },
+   {
+    "id": "mean_loan_rate_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Weighted average loan rate for transactions in this group"
+   },
+   {
+    "id": "mean_loan_rate_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Weighted average loan rate for all transactions in this group"
+   },
+   {
+    "id": "min_loan_rate",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The minimum loan rate among all transactions in this primary key group"
+   },
+   {
+    "id": "min_loan_rate_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Minimum loan rate among transactions in this group"
+   },
+   {
+    "id": "min_loan_rate_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Minimum loan rate among transactions in this group"
+   },
+   {
+    "id": "shrt3_bar",
+    "type": "VECTOR",
+    "cov": 0.8669,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Borrow demand rating on a 1–10 scale for a stock (1 = relatively low demand, 10 "
+   },
+   {
+    "id": "transaction_count",
+    "type": "VECTOR",
+    "cov": 0.8217,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of transactions included in this primary key group"
+   },
+   {
+    "id": "transaction_count_main",
+    "type": "VECTOR",
+    "cov": 0.8512,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of transactions in this primary key group"
+   },
+   {
+    "id": "transaction_count_p5_d1",
+    "type": "VECTOR",
+    "cov": 0.8719,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of transactions that fit this primary key group"
+   }
+  ]
+ },
+ "model238": {
+  "count": 22,
+  "fields": [
+   {
+    "id": "country_relative_investment_rank",
+    "type": "MATRIX",
+    "cov": 0.6104,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value for the stock’s Smart Holdings score within its c"
+   },
+   {
+    "id": "global_change_in_preference_rank",
+    "type": "MATRIX",
+    "cov": 0.6108,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (float, 0–100) global rank of the Change Component, representing rece"
+   },
+   {
+    "id": "global_institutional_preference_rank",
+    "type": "MATRIX",
+    "cov": 0.611,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float percentile rank of the stock’s Smart Holdings score glo"
+   },
+   {
+    "id": "global_peer_investment_concentration_rank",
+    "type": "MATRIX",
+    "cov": 0.611,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value measuring global peer crowding/risk, where higher"
+   },
+   {
+    "id": "global_screening_factor_alignment_rank",
+    "type": "MATRIX",
+    "cov": 0.611,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value indicating the stock's style-fit or screening com"
+   },
+   {
+    "id": "industry_relative_investment_rank",
+    "type": "MATRIX",
+    "cov": 0.6058,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value representing the stock’s Smart Holdings score wit"
+   },
+   {
+    "id": "mdl238_country_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Country rank (1–100) of Smart Holdings score. Higher rank = higher likelihood of"
+   },
+   {
+    "id": "mdl238_global_change_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Global rank (1–100) for the momentum or recent change component, representing th"
+   },
+   {
+    "id": "mdl238_global_owner_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Global rank (1–100) of peer crowding/capacity risk. 100 = highest global institu"
+   },
+   {
+    "id": "mdl238_global_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Global rank (1–100) of Smart Holdings model score. Higher ranks imply greater pr"
+   },
+   {
+    "id": "mdl238_global_screening_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Global rank (1–100) of the stock’s style-fit or screening component, adjusted fo"
+   },
+   {
+    "id": "mdl238_industry_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Industry rank (1–100) of Smart Holdings score. Higher rank means higher probabil"
+   },
+   {
+    "id": "mdl238_region_change_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regional rank (1–100) indicating the strength of recent change or momentum in in"
+   },
+   {
+    "id": "mdl238_region_owner_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regional rank (1–100) of peer crowding. 100 = highest regional institutional own"
+   },
+   {
+    "id": "mdl238_region_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regional rank (1–100) of Smart Holdings score. Higher rank = higher likelihood o"
+   },
+   {
+    "id": "mdl238_region_screening_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Regional rank (1–100) of the stock’s style-fit or screening component, peer-adju"
+   },
+   {
+    "id": "mdl238_sector_rank",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Sector rank (1–100) of Smart Holdings score. Higher values represent higher expe"
+   },
+   {
+    "id": "regional_change_in_preference_rank",
+    "type": "MATRIX",
+    "cov": 0.6104,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (float, 0–100) regional rank of the Change Component, representing mo"
+   },
+   {
+    "id": "regional_institutional_preference_rank",
+    "type": "MATRIX",
+    "cov": 0.611,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value for the stock’s Smart Holdings score within its r"
+   },
+   {
+    "id": "regional_peer_investment_concentration_rank",
+    "type": "MATRIX",
+    "cov": 0.6108,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value measuring regional peer crowding. High values mea"
+   },
+   {
+    "id": "regional_screening_factor_alignment_rank",
+    "type": "MATRIX",
+    "cov": 0.611,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value indicating the stock's style-fit or screening com"
+   },
+   {
+    "id": "sector_relative_investment_rank",
+    "type": "MATRIX",
+    "cov": 0.6102,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Normalized (0–100) float value reflecting the stock’s Smart Holdings score withi"
+   }
+  ]
+ },
+ "analyst47": {
+  "count": 5,
+  "fields": [
+   {
+    "id": "anl47_indicator",
+    "type": "MATRIX",
+    "cov": 1.0,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Composite alpha indicator scaled 1–10, with higher values indicating stronger bu"
+   },
+   {
+    "id": "anl47_rawalphadecay",
+    "type": "MATRIX",
+    "cov": 0.6445,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Raw component measuring impact of idea age or decay"
+   },
+   {
+    "id": "anl47_rawexperts",
+    "type": "MATRIX",
+    "cov": 0.6445,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Contribution of author historical performance to the raw signal"
+   },
+   {
+    "id": "anl47_rawsentiment",
+    "type": "MATRIX",
+    "cov": 0.6445,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Raw component reflecting long or short idea counts and open or closed status"
+   },
+   {
+    "id": "anl47_totalrawsignal",
+    "type": "MATRIX",
+    "cov": 0.6445,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Sum of raw components: sentiment + alpha decay + earnings + experts"
+   }
+  ]
+ },
+ "other545": {
+  "count": 4,
+  "fields": [
+   {
+    "id": "oth545_mktcap",
+    "type": "VECTOR",
+    "cov": 0.4878,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Market capitalization of the company in US dollars"
+   },
+   {
+    "id": "oth545_mpd",
+    "type": "VECTOR",
+    "cov": 0.4878,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Score based on dynamic price momentum, capturing advanced or machine-learned pri"
+   },
+   {
+    "id": "oth545_pln_omen",
+    "type": "VECTOR",
+    "cov": 0.4878,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Score based on NLP-derived network momentum using text-mined linkages"
+   },
+   {
+    "id": "oth545_score",
+    "type": "VECTOR",
+    "cov": 0.4878,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Final composite NEMO 2.0 model score aggregated from seven network momentum sign"
+   }
+  ]
+ },
+ "model307": {
+  "count": 11,
+  "fields": [
+   {
+    "id": "australia_nz_sales_ratio",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of total company sales attributed to Australia and New Zealand at the r"
+   },
+   {
+    "id": "canada_sales_fraction",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company’s total sales revenue allocated to Canada as a proportio"
+   },
+   {
+    "id": "mdl307_sales_pct_axj",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of total company sales attributed to Asia excluding Japan at the report"
+   },
+   {
+    "id": "mdl307_sales_pct_cnax",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of total company sales attributed to Mainland China (excluding Hong Kon"
+   },
+   {
+    "id": "mdl307_sales_pct_emea",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company's total sales revenue allocated to Europe, Middle East, "
+   },
+   {
+    "id": "mdl307_sales_pct_eu",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of company sales allocated to the European Union excluding Great Britai"
+   },
+   {
+    "id": "mdl307_sales_pct_gb",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company's total sales allocated to Great Britain (UK) for the gi"
+   },
+   {
+    "id": "mdl307_sales_pct_jp",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company’s total sales revenue allocated to Japan as a proportion"
+   },
+   {
+    "id": "mdl307_sales_pct_latam",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company's total sales revenue allocated to the Latin America and"
+   },
+   {
+    "id": "mdl307_sales_pct_unclassified",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company’s total sales revenue that is unallocated or not classif"
+   },
+   {
+    "id": "mdl307_sales_pct_us",
+    "type": "VECTOR",
+    "cov": 0.6441,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Fraction of the company’s total sales revenue allocated to the United States as "
+   }
+  ]
+ },
+ "analyst9": {
+  "count": 51,
+  "fields": [
+   {
+    "id": "anl9_confirmtime",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intraday time of the most recent confirmation of the current estimate"
+   },
+   {
+    "id": "anl9_consensusanalysis_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.694,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Numeric consensus estimate value for the specified data item"
+   },
+   {
+    "id": "anl9_consensusanalysis_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.694,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intra-day time when the consensus estimate calculation became effective"
+   },
+   {
+    "id": "anl9_consensusv2span_cashflowstatement_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.714,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Numeric consensus estimate value for the specified data item"
+   },
+   {
+    "id": "anl9_consensusv2span_cashflowstatement_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.714,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Start/effective time when the estimate became valid or was calculated"
+   },
+   {
+    "id": "anl9_consensusv2span_cashflowstatement_splitfactor",
+    "type": "VECTOR",
+    "cov": 0.714,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Adjustment factor for corporate actions such as stock splits applied to normaliz"
+   },
+   {
+    "id": "anl9_consensusv2span_cashflowstatement_totime",
+    "type": "VECTOR",
+    "cov": 0.714,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "End time of the estimate's validity window"
+   },
+   {
+    "id": "anl9_consensusv2span_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.7952,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Numeric value of the estimated metric"
+   },
+   {
+    "id": "anl9_consensusv2span_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.7952,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intraday time when the consensus estimate became effective/was calculated (start"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeebt_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.7811,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "The consensus estimate value for the specified metric (Income before taxes/EBT)"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeebt_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.7811,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Start time-of-day when this consensus Income Before Taxes (EBT) estimate became "
+   },
+   {
+    "id": "anl9_consensusv2span_incomeebt_splitfactor",
+    "type": "VECTOR",
+    "cov": 0.7811,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Adjustment factor for corporate actions (e.g., stock splits) applied to maintain"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeebt_totime",
+    "type": "VECTOR",
+    "cov": 0.7811,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intraday time when the consensus estimate record stops being effective (end of t"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeeps_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.7793,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Numeric consensus estimate value for the specified data item"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeeps_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.7793,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intra-day time when the estimate becomes effective or is calculated"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeeps_splitfactor",
+    "type": "VECTOR",
+    "cov": 0.7793,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Ratio used to unadjust per-share EPS estimates for stock splits that occur after"
+   },
+   {
+    "id": "anl9_consensusv2span_incomeeps_totime",
+    "type": "VECTOR",
+    "cov": 0.7793,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "End time when the estimate’s validity window ends"
+   },
+   {
+    "id": "anl9_consensusv2span_splitfactor",
+    "type": "VECTOR",
+    "cov": 0.7952,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Adjustment factor for corporate actions (e.g., stock splits) to maintain compara"
+   },
+   {
+    "id": "anl9_consensusv2span_totime",
+    "type": "VECTOR",
+    "cov": 0.7952,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intraday time when the estimate’s validity period ends"
+   },
+   {
+    "id": "anl9_daily_numanalystall",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of analysts contributing estimates for the company, including those"
+   },
+   {
+    "id": "anl9_daily_numanalysts",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts whose estimates are included in the consensus for the revisio"
+   },
+   {
+    "id": "anl9_daily_numdn",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Count of downward revisions among analysts included in the consensus"
+   },
+   {
+    "id": "anl9_daily_numdownunfiltered",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of analysts whose estimates were revised downward, including those "
+   },
+   {
+    "id": "anl9_daily_numnochangeunfiltered",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of analysts that did not change their estimates, including those ex"
+   },
+   {
+    "id": "anl9_daily_numnochg",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Count of revisions with no change among analysts included in the consensus"
+   },
+   {
+    "id": "anl9_daily_numup",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Count of upward revisions among analysts included in the consensus"
+   },
+   {
+    "id": "anl9_daily_numupunfiltered",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of analysts whose estimates were revised upward, including those ex"
+   },
+   {
+    "id": "anl9_detail_dataitemvalue",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Numeric value of the estimated metric"
+   },
+   {
+    "id": "anl9_detail_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Time of day when the estimate became effective (start time of validity)"
+   },
+   {
+    "id": "anl9_detail_totime",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "End time of the estimate’s validity period (intraday)"
+   },
+   {
+    "id": "anl9_estimatetime",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Intra-day time at which the estimate was recorded/issued"
+   },
+   {
+    "id": "anl9_isexcluded",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Flag indicating the estimate is excluded from consensus/analysis due to data qua"
+   },
+   {
+    "id": "anl9_isnmflag",
+    "type": "VECTOR",
+    "cov": 0.694,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Flag indicating the estimate is not meaningful (NM)"
+   },
+   {
+    "id": "anl9_parentflag",
+    "type": "VECTOR",
+    "cov": 0.6875,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Entity consolidation flag: 0=consolidated entity estimate, 1=parent-only entity "
+   },
+   {
+    "id": "anl9_revisiondaily_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Time when the revision metrics were calculated or became effective"
+   },
+   {
+    "id": "anl9_revisions_effectivetime",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Time when the revision snapshot/estimate was calculated"
+   },
+   {
+    "id": "anl9_s_numanalystall",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of contributing analysts, including those excluded from the consens"
+   },
+   {
+    "id": "anl9_s_numanalysts",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of analysts whose estimates are included in the consensus for the revisio"
+   },
+   {
+    "id": "anl9_s_numdn",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Count of downward revisions included in the consensus during the specified revis"
+   },
+   {
+    "id": "anl9_s_numdownunfiltered",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total analysts with downward revisions, including those excluded from the consen"
+   },
+   {
+    "id": "anl9_s_numnochangeunfiltered",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total number of no-change revisions, without exclusions"
+   },
+   {
+    "id": "anl9_s_numnochg",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Number of revisions with no change in the consensus (included analysts) over the"
+   },
+   {
+    "id": "anl9_s_numup",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Count of upward revisions included in the consensus during the specified revisio"
+   },
+   {
+    "id": "anl9_s_numupunfiltered",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Total analysts with upward revisions, including those excluded from the consensu"
+   },
+   {
+    "id": "cashflow_consensus_estimate_value",
+    "type": "VECTOR",
+    "cov": 0.714,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Integer index identifying the consensus estimate category or type, joinable to C"
+   },
+   {
+    "id": "consensus_analysis_value",
+    "type": "VECTOR",
+    "cov": 0.694,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "<baseModule>.ConsensusIdIx idx"
+   },
+   {
+    "id": "ebt_consensus_estimate_value",
+    "type": "VECTOR",
+    "cov": 0.7811,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "<baseModule>.ConsensusIdIx idx"
+   },
+   {
+    "id": "eps_consensus_estimate_value",
+    "type": "VECTOR",
+    "cov": 0.7793,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Lookup index identifying the consensus category/type for the estimate"
+   },
+   {
+    "id": "revision_consensus_value",
+    "type": "VECTOR",
+    "cov": 0.7368,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Index key referencing the consensus estimate category in the ConsensusId lookup"
+   },
+   {
+    "id": "revision_consensus_value_revisions",
+    "type": "VECTOR",
+    "cov": 0.8027,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Integer code identifying the consensus estimate category for the metric/period, "
+   },
+   {
+    "id": "span_consensus_estimate_value",
+    "type": "VECTOR",
+    "cov": 0.7952,
+    "usr": 0,
+    "alpha": 0,
+    "desc": "Consensus value for estimates in the span module."
+   }
+  ]
+ }
+}

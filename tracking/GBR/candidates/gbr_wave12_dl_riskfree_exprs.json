@@ -1,0 +1,42 @@
+[
+  {
+    "id": "dl_01",
+    "expression": "rank(subtract(probability_label4_5quantile_5day_ohlcv_2, probability_label0_5quantile_5day_ohlcv_2))",
+    "desc": "5-day 5-quantile: P(top bucket) - P(bottom bucket). ML bullish signal."
+  },
+  {
+    "id": "dl_02",
+    "expression": "rank(ts_delta(quantile_label_1bucket_5day_ohlcv_2, 5))",
+    "desc": "5-day continuous regression prediction, 5-day change. Momentum of ML forecast."
+  },
+  {
+    "id": "dl_03",
+    "expression": "rank(subtract(probability_label1_2quantile_20day_ohlcv_2, probability_label0_2quantile_20day_ohlcv))",
+    "desc": "20-day 2-quantile: P(up) - P(down). Medium-term ML direction."
+  },
+  {
+    "id": "dl_04",
+    "expression": "multiply(rank(quantile_label_1bucket_60day_ohlcv), -1)",
+    "desc": "60-day continuous regression, inverted. Long-term contrarian."
+  },
+  {
+    "id": "dl_05",
+    "expression": "rank(ts_decay_linear(subtract(probability_label4_5quantile_20day_ohlcv, probability_label0_5quantile_20day_ohlcv), 5))",
+    "desc": "20-day 5-quantile spread with 5-day decay. Smoothed ML signal."
+  },
+  {
+    "id": "dl_06",
+    "expression": "rank(add(add(probability_label3_4quantile_5day_ohlcv, probability_label4_5quantile_5day_ohlcv_2), multiply(probability_label0_5quantile_5day_ohlcv_2, -1)))",
+    "desc": "5-day multi-quantile: P(Q3)+P(Q4)-P(Q0). Bullish tail probability."
+  },
+  {
+    "id": "dl_07",
+    "expression": "rank(ts_ir(quantile_label_1bucket_20day_ohlcv, 10))",
+    "desc": "20-day continuous prediction 10-day IR. Signal consistency."
+  },
+  {
+    "id": "dl_08",
+    "expression": "rank(subtract(ts_mean(quantile_label_1bucket_5day_ohlcv_2, 10), ts_mean(quantile_label_1bucket_5day_ohlcv_2, 30)))",
+    "desc": "5-day prediction: 10-day mean minus 30-day mean. Short-term ML momentum."
+  }
+]

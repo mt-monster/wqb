@@ -1,0 +1,30 @@
+[
+ {
+  "label": "T12_qual",
+  "sim": "https://api.worldquantbrain.com/simulations/2jyBJW6WU4k79Gk4phYQ7M5",
+  "status": "COMPLETE",
+  "alpha": "QPGeYwOW",
+  "message": "COMPLETE",
+  "sharpe": -0.13,
+  "fitness": -0.02,
+  "turnover": 0.1603,
+  "returns": -0.0041,
+  "drawdown": 0.1455,
+  "margin": -5.1e-05,
+  "fail": []
+ },
+ {
+  "label": "T12_qual2",
+  "sim": "https://api.worldquantbrain.com/simulations/28OwCsfu34Gp9sRBVx6pWuh",
+  "status": "COMPLETE",
+  "alpha": "P0GeMkxL",
+  "message": "COMPLETE",
+  "sharpe": 0.14,
+  "fitness": 0.02,
+  "turnover": 0.1729,
+  "returns": 0.0039,
+  "drawdown": 0.0822,
+  "margin": 4.6e-05,
+  "fail": []
+ }
+]

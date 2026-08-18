@@ -1,0 +1,21 @@
+{
+  "wave": 26,
+  "dataset": "pattern_scores",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "技术形态相似度数据集判弱。24/24 全回测，top asc_triangle_mean_simscore sh=0.13，全部 |sh|<0.6 且多数为负。图表形态相似度评分在 GBR D1 TOP700 无 alpha（形态信号本身无方向性信息或已被套利）。判死。",
+  "top": [
+    {
+      "id": "0mwbaoP2",
+      "code": "rank(asc_triangle_mean_simscore_lookback120)",
+      "sharpe": 0.13,
+      "fitness": 0.03,
+      "two_year_sharpe": 0.63
+    }
+  ],
+  "lessons": [
+    "pattern_scores 形态相似度字段方向性极弱（sh 正负混杂接近 0），GBR D1 无 alpha",
+    "技术形态类数据集探针 1 轮 24 条足以判定天花板（全弱即判死，不必二轮）"
+  ],
+  "next": "判死，转 model264。"
+}

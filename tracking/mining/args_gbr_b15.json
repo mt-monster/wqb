@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 50), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 50))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 66))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 40))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+  "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "1dQ7sF6K34LMctfMmBrMgpa",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/1dQ7sF6K34LMctfMmBrMgpa",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/1dQ7sF6K34LMctfMmBrMgpa",
+  "submitted_expressions": [
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 50), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 50))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 66))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 40))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66), sector), ts_rank(ts_backfill(winsorize(mdl238_global_screening_rank, std=5), lookback=60), 44))",
+   "add(-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), sector), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

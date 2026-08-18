@@ -1,0 +1,8 @@
+quantile(-ts_decay_linear(group_rank(opt40_ivmean180, subindustry), 21))
+quantile(-ts_decay_linear(signed_power(opt40_ivmean60, 0.5), 21))
+quantile(-ts_decay_linear(divide(opt40_01vhp, opt40_021vhp), 21))
+quantile(ts_decay_linear(ts_rank(opt40_call_gamma_273days, 252), 21))
+quantile(ts_decay_linear(divide(opt40_put_theta_122days, opt40_ivmean90), 21))
+quantile(-ts_decay_linear(ts_zscore(opt40_ivput150, 120), 21))
+quantile(-ts_decay_linear(divide(opt40_ivcall150, opt40_ivcall360), 21))
+quantile(-ts_decay_linear(group_zscore(ts_mean(opt40_ivmean30, 21), subindustry), 21))

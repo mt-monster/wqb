@@ -1,0 +1,9 @@
+{
+  "dataset": "multi_horizon_alpha",
+  "wave": "wave3b_mirror",
+  "verdict": "AMBER_NEAR",
+  "probe": 8,
+  "top_sharpe": 1.91,
+  "note": "镜像探针：subtract(0, rank(long_term_free_cash_flow_to_price_2)) sh=1.91/fit=1.26/2y=2.17/mg=62bp/rn=1.08——7 项硬闸过 5 项，缺口 tvr=1.8%（<5%）与 rnf=0.43（<0.7）。decay 0 无效（长期因子换手天然低）。证实 EUR 全期限反转统治，镜像 FCF 为白空间。",
+  "salvage": "wave3c/3d L/S 混合抬 tvr"
+}

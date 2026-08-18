@@ -1,0 +1,10 @@
+# USA TOP3000 D1 shortinterest3 轮次7 (F: 费率类新字段骨架) | 并行波2-批F
+# 门禁: 字段白名单31个全覆盖; rank第二参数值; hump命名参; 单位语义已过
+signed_power(group_zscore(ts_av_diff(vec_avg(mean_loan_rate), 10), subindustry), 0.5)
+reverse(quantile(ts_decay_linear(vec_avg(max_loan_rate), 10)))
+group_rank(ts_av_diff(vec_avg(loan_rate_volatility), 10), subindustry)
+signed_power(group_zscore(ts_delta(vec_avg(mean_loan_rate), 10), subindustry), 0.5)
+quantile(reverse(rank(ts_av_diff(vec_avg(average_loan_duration_days), 10))))
+ts_zscore(vec_avg(mean_loan_rate), 63)
+reverse(quantile(ts_decay_linear(vec_avg(transaction_count), 10)))
+signed_power(group_zscore(ts_av_diff(vec_avg(min_loan_rate), 10), subindustry), 0.5)

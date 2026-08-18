@@ -1,0 +1,6 @@
+[
+ "rank(ts_max(asc_triangle_mean_simscore_lookback120,20))",
+ "subtract(rank(avg_similarity_falling_wedge_pattern_120),ts_mean(rank(avg_similarity_falling_wedge_pattern_120),40))",
+ "rank(ts_std_dev(avg_similarity_v_reversal_bottom_120,30))",
+ "rank(corr(avg_similarity_upward_breakaway_gap_120,asc_triangle_std_simscore_lookback120,20))"
+]

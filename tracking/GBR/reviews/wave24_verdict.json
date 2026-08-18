@@ -1,0 +1,39 @@
+{
+  "wave": 24,
+  "dataset": "predictive_starmine",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "权重网格突破。24/24 全回测，1 条过闸：GrlqxwKx（0.3 av20 四向 d4）sh=1.80 fit=1.28 2y=1.62 mg=10.1 tvr=13.0 rn=1.30 rn_f=0.71 fc=[]——战役首个硬闸全过候选。4 条 near-miss（rn_f 0.62-0.70）全卡 rn_fitness>0.7。0.3 av20 权重是 2y/rn_f 双过阈值的最优点。",
+  "top": [
+    {
+      "id": "GrlqxwKx",
+      "code": "add(0.3 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.233 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.233 * rank(ep_yield_pct_smest_fy1_3), 0.233 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+      "sharpe": 1.8,
+      "fitness": 1.28,
+      "two_year_sharpe": 1.62,
+      "margin_bp": 10.1,
+      "turnover_pct": 13.0,
+      "rn_sharpe": 1.3,
+      "rn_fitness": 0.71
+    },
+    {
+      "id": "mLjP180E",
+      "code": "0.25 四向 d4",
+      "sharpe": 1.78,
+      "two_year_sharpe": 1.66,
+      "rn_fitness": 0.7
+    },
+    {
+      "id": "58lZewAk",
+      "code": "0.4 四向 d4",
+      "sharpe": 1.84,
+      "two_year_sharpe": 1.43
+    }
+  ],
+  "lessons": [
+    "0.3 av20 权重是甜点：0.25/0.2 系 rn_f 略低（0.67-0.70），0.4/0.5 系 2y 崩（1.38-1.43）",
+    "rn_fitness 阈值 >0.7 严格大于，0.70 就是失败",
+    "gate 用字符串数组格式（非对象数组），对象数组会 total=0"
+  ],
+  "next": "wave25 围绕 0.3 av20 结构微调：decay 3/5/6/7 + truncation 0.05/0.1 + 第三维权重微调 + 五向结构。"
+}

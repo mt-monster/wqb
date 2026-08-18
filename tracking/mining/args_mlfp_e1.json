@@ -1,0 +1,39 @@
+{
+ "tag": "e1",
+ "ts": "2026-08-05 17:26:10",
+ "labels": [
+  "A1_ar60_3",
+  "A2_ar24_6",
+  "A3_ar12_1",
+  "B1_eps_1y3y",
+  "B2_cf_1y3y",
+  "B3_relE_eps",
+  "C1_alpha12_60",
+  "C2_ar36_9"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_60m_active_return,66),22),ts_mean(ts_backfill(change_3m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_24m_active_return,66),22),ts_mean(ts_backfill(change_6m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_twelve_month_active_return,66),22),ts_mean(ts_backfill(change_1m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_to_price,66),22),ts_mean(ts_backfill(change_3y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_cashflow_to_price,66),22),ts_mean(ts_backfill(change_3y_cashflow_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_5y_relative_earnings_to_price,66),22),ts_mean(ts_backfill(change_1y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_12m_alpha,66),22),ts_mean(ts_backfill(change_60m_alpha,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+   "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_36m_active_return,66),22),ts_mean(ts_backfill(change_9m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "wave": 17,
+  "dataset": "predictive_starmine",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "tier2 crowd_band 首波。ep_yield 动量混合家族最强：fy2_3 (66,22) 混合 sh=1.16 fit=0.68 failed_checks 全空（Wj7EPb7Z）；forward_pe 镜像+ebitda 混合 2Y=2.11 margin=20bp tvr=3.9%（rKj15Oj9）。均未过用户硬闸（sharpe>1.58）。",
+  "top": [
+    {"id": "Wj7EPb7Z", "code": "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))", "sharpe": 1.16, "fitness": 0.68, "two_year_sharpe": 1.24, "margin_bp": 6.8, "turnover_pct": 12.85, "rn_sharpe": 0.92, "failed_checks": []},
+    {"id": "rKj15Oj9", "code": "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(smest_fy1_ebitda_4))", "sharpe": 0.98, "fitness": 0.55, "two_year_sharpe": 2.11, "margin_bp": 19.99, "turnover_pct": 3.94, "rn_sharpe": 0.82, "failed_checks": ["LOW_SHARPE", "LOW_FITNESS"]},
+    {"id": "KP7KGZmN", "code": "multiply(rank(forward_pe_smest_fy1_3), -1)", "sharpe": 0.66, "fitness": 0.33, "two_year_sharpe": 1.58, "margin_bp": 17.48, "turnover_pct": 3.58, "failed_checks": ["LOW_SHARPE", "LOW_FITNESS"]}
+  ],
+  "lessons": [
+    "bucket() 产生 Group unit，表达式以 bucket 结尾 → 整批 ERROR+CANCELLED（2 ERROR + 6 级联）；ts_av_diff(bucket()) 同样单位不兼容。bucket 家族放弃，已加区域 poison naked_bucket_tail。",
+    "build_wave.py 字段重复上限未过滤算子 token 的引擎 bug 已修（known_ops 传入 expr_fields）。",
+    "新算子家族实证：ts_rank/ts_scale/ts_zscore/group_rank/group_zscore/trade_when/if_else 均无显著信号；rank(ts_delta) 动量仍是唯一强结构。"
+  ],
+  "next": "wave18：围绕 Wj7EPb7Z（fy2_3 动量窗口变体+三腿左结合）与 rKj15Oj9（价值+质量权重变体）做参数层增强。"
+}

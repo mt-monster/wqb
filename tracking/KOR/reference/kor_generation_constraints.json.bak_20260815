@@ -1,0 +1,107 @@
+{
+ "_doc": "KOR 生成约束（M5）。由全量 wave 文件实测生成；build_wave/gate 消费，并可注入 LLM 生成提示词。",
+ "generated_at": "2026-08-15",
+ "operator_stats": {
+  "used": {
+   "rank": 1552,
+   "multiply": 1396,
+   "add": 852,
+   "subtract": 396,
+   "ts_av_diff": 333,
+   "vec_avg": 286,
+   "divide": 282,
+   "ts_decay_linear": 185,
+   "ts_delta": 97,
+   "ts_backfill": 44,
+   "ts_zscore": 38,
+   "signed_power": 27,
+   "ts_mean": 20,
+   "group_rank": 19,
+   "ts_delay": 14,
+   "ts_rank": 10,
+   "group_neutralize": 8,
+   "quantile": 7,
+   "greater": 7,
+   "ts_ir": 5,
+   "ts_std_dev": 3,
+   "ts_sum": 3,
+   "trade_when": 1,
+   "less": 1,
+   "normalize": 1,
+   "ts_scale": 1,
+   "winsorize": 1,
+   "vec_count": 1
+  },
+  "unused": [
+   "sqrt",
+   "if_else",
+   "delay",
+   "delta",
+   "ts_arg_max",
+   "ts_arg_min",
+   "ts_product",
+   "group_mean",
+   "group_sum",
+   "group_zscore",
+   "pasteurize",
+   "vec_max",
+   "vec_min",
+   "vec_sum",
+   "vec_norm",
+   "bucket",
+   "range",
+   "abs",
+   "log",
+   "sign",
+   "exp",
+   "power"
+  ],
+  "rare(<=10)": [
+   "greater",
+   "less",
+   "trade_when",
+   "ts_sum",
+   "ts_std_dev",
+   "ts_rank",
+   "ts_ir",
+   "ts_scale",
+   "group_neutralize",
+   "quantile",
+   "normalize",
+   "vec_count",
+   "winsorize"
+  ]
+ },
+ "injection_rules": {
+  "force_explore_ops": [
+   "trade_when",
+   "bucket",
+   "winsorize",
+   "ts_ir",
+   "ts_corr",
+   "ts_product",
+   "if_else",
+   "ts_arg_max"
+  ],
+  "cap_ops": {
+   "rank+multiply+add 线性混合骨架": "每波占比 <=50%"
+  },
+  "skeleton_quota": {
+   "linear_mix": 0.5,
+   "event_gated(trade_when/if_else)": 0.15,
+   "group(group_*)": 0.15,
+   "ratio(divide/subtract)": 0.1,
+   "other": 0.1
+  }
+ },
+ "poison_patterns": [
+  {
+   "name": "nested_three_leg_add",
+   "regex": "add\\s*\\(\\s*multiply\\s*\\(\\s*rank\\s*\\(.*add\\s*\\(\\s*multiply\\s*\\(\\s*rank",
+   "rule": "add(multiply(rank(x),a),add(multiply(rank(y),b),multiply(rank(z),c))) 嵌套三腿 add 高度疑似整批 CANCELLED（record_poison 实证）；三腿混合改写 add(add(a,b),c) 左结合",
+   "severity": "block"
+  }
+ ],
+ "vec_rules": "VECTOR/event 字段必须先 vec_avg/vec_max 等聚合再套 rank/ts_*；VECTOR 禁直接 ts_backfill；MATRIX 数据集禁 vec_*（kor_preflight 3a/3e 已实证）",
+ "settings_hint": "KOR 默认 SECTOR；论坛证据 STATISTICAL+rank-diff 上限更高 -> 双轨对照"
+}

@@ -1,0 +1,102 @@
+{
+ "tag": "10",
+ "region": "GBR",
+ "all": [
+  {
+   "id": "0mp1Axv1",
+   "code": "multiply(ts_backfill(mdl264_es_ebit_fy1_d1m_l3, 10), ts_backfill(mdl264_vol_vo_p_1m_l2, 10))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.38,
+   "fitness": 0.18,
+   "two_year_sharpe": 0.18,
+   "margin_bp": 5.29,
+   "turnover_pct": 10.47,
+   "rn_sharpe": 0.27,
+   "rn_fitness": 0.07,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:17:42"
+  },
+  {
+   "id": "88pMOVgo",
+   "code": "ts_ir(mdl264_es_ebitda_ntm_r1m_l3 - mdl264_es_ebitda_ntm_r1m_l1, 20)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.25,
+   "fitness": 0.08,
+   "two_year_sharpe": -0.39,
+   "margin_bp": 3.39,
+   "turnover_pct": 6.98,
+   "rn_sharpe": 0.52,
+   "rn_fitness": 0.2,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:17:47"
+  },
+  {
+   "id": "e73XnNAg",
+   "code": "subtract(ts_backfill(mdl264_1l_d0252ntr, 5), ts_backfill(mdl264_1l_m1m21_ntr, 5))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.23,
+   "fitness": 0.07,
+   "two_year_sharpe": -0.45,
+   "margin_bp": 1.83,
+   "turnover_pct": 13.81,
+   "rn_sharpe": 0.34,
+   "rn_fitness": 0.08,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:17:45"
+  },
+  {
+   "id": "vRNW5ZVG",
+   "code": "multiply(ts_backfill(mdl264_es_ebitda_fy1_d1m_l3, 10), ts_backfill(mdl264_news_abno_vol_1d_l3, 10))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.22,
+   "fitness": 0.08,
+   "two_year_sharpe": 0.01,
+   "margin_bp": 4.16,
+   "turnover_pct": 7.61,
+   "rn_sharpe": 0.13,
+   "rn_fitness": 0.02,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:17:44"
+  },
+  {
+   "id": "vRNW5Z0G",
+   "code": "ts_av_diff(mdl264_eps_sur_decay_l3, 60)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.17,
+   "fitness": 0.03,
+   "two_year_sharpe": 1.63,
+   "margin_bp": 0.53,
+   "turnover_pct": 21.53,
+   "rn_sharpe": 0.21,
+   "rn_fitness": 0.03,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ],
+   "cached_at": "2026-08-17T16:17:46"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

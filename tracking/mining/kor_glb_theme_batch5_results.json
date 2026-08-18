@@ -1,0 +1,19 @@
+{
+  "batch": "GLB 主题轨道 第5批 (2Wx8GeasU57rccWUN4V1Ynu, 2y 冲刺)",
+  "date": "2026-08-04",
+  "settings": "GLB/TOPDIV3000/D1/SLOW/decay16/trunc0.04",
+  "results": [
+    {"id": "wpaxEkv6", "expr": "pred5d_ret19 250", "sharpe": 1.77, "fitness": 0.97, "two_year": 1.6, "margin": 0.000607, "note": "2y 达标! 剩 fitness 0.97 + 子域"},
+    {"id": "ZYE3Kv9Y", "expr": "pred5d250+curindfcfp66", "sharpe": 1.71, "fitness": 1.01, "two_year": 2.19, "margin": 0.000697, "cw": "PASS", "note": "★ 全指标达标! 仅剩 EMEA 0.44/APAC 0.38 子域(<1)"},
+    {"id": "omN5g0kl", "expr": "pred5d250+pred10d250", "sharpe": 1.94, "fitness": 1.14, "two_year": 1.42, "margin": 0.000692},
+    {"id": "9qp17O2x", "expr": "pred5d130+fcf66", "sharpe": 1.61, "fitness": 0.96, "two_year": 1.64},
+    {"id": "88p9exXX", "expr": "pred5d 200", "sharpe": 1.77, "fitness": 0.97, "two_year": 1.48}
+  ],
+  "takeaways": [
+    "pred5d(5日预测)系列 2y 显著强于 pred10d (1.6 vs 1.1)",
+    "ZYE3Kv9Y = pred5d250(techindi19) + -curindfcfp66(model77): 唯一全指标达标 GLB 候选",
+    "GLB 特有门槛 LOW_GLB_EMEA/APAC_SHARPE (limit 1): pred 信号 EMEA/APAC 子域弱(0.3-0.5), AMER 强",
+    "第六批(3nGzAK2) 子域均衡尝试因队列拥堵排队中 (>1.5h progress 0.1)"
+  ],
+  "candidate_glb": {"id": "ZYE3Kv9Y", "expr": "add(ts_rank(predicted_first_quantile_five_day_return_techindi19_1, 250), -ts_rank(mdl177_global_curindfcfp_, 66))", "settings": "GLB/TOPDIV3000/D1/SLOW/decay16/trunc0.04/maxTrade ON", "sharpe": 1.71, "fitness": 1.01, "two_year": 2.19, "risk_neut": null, "margin": 0.000697, "turnover": 0.1334, "cw": "PASS", "remaining": ["LOW_GLB_EMEA_SHARPE 0.44<1", "LOW_GLB_APAC_SHARPE 0.38<1"]}
+}

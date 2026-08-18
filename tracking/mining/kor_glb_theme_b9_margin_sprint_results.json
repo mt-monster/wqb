@@ -1,0 +1,21 @@
+{
+ "batch": "glb_b9",
+ "strategy": "margin冲刺: wpaVM6pQ(pred10d country 250) 的 decay/窗口/trunc 变体",
+ "exprs": [
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 200), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=4), 60), 250), country)"
+ ],
+ "resps": [
+  "1T8Wl29wd51d8Vg14KBvDzgw",
+  null,
+  "2O42aw9vn4Cb9eo641hkjrW",
+  "3raN9A3Sd4UWcMc5oEwsUa3"
+ ],
+ "ts": 1785897782.8251798
+}

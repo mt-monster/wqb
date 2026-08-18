@@ -1,0 +1,11 @@
+{
+  "batch": "risk71 deshorting 第一批 (2o94yr5x34Vd9xG18tqzWVTQ)",
+  "date": "2026-08-04",
+  "results": [
+    {"id": "e73oMZxJ", "expr": "-dsrt_asi44", "sharpe": 0.59, "two_year": -0.18, "turnover": 0.313},
+    {"id": "N1bvElbq", "expr": "-resid44", "sharpe": 0.62, "two_year": 0.05},
+    {"id": "2rpbVoNN", "expr": "+dsrt_asi44", "sharpe": -0.8, "note": "方向: 反向正确但弱"}
+  ],
+  "conclusion": "risk71 deshorting/残差收益 KOR 无效: sharpe 0.5-0.6, 2y 负, turnover 31% 超上限。放弃。",
+  "next": "fundamental6 (0.561, 1433 count)"
+}

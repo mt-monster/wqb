@@ -1,0 +1,14 @@
+# AG 批: order_book_imbalance × analyst44 双数据集混合 (知情交易确认 / 估值×流动性)
+# 1-2: EPS 63d/126d 共识修正 × dark/lit 暗池占比 (分析师修正 + 暗池活跃 = 知情交易确认)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 126)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 3: EPS 63d 修正 × (impact−spread) (分析师上调 + 流动性压力 = 机构买入确认)
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 4-5: earnings yield (EPS/close) × dark/lit / × (impact−spread) (波9 因单数据集纪律放弃的方向, 混合解锁)
+quantile(group_zscore(multiply(rank(divide(anl44_eps_best_eeps_cur_yr, close)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+quantile(group_zscore(multiply(rank(divide(anl44_eps_best_eeps_cur_yr, close)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 6-7: EBITDA 63d 修正 / nxt_yr EPS 63d 修正 × dark/lit
+quantile(group_zscore(multiply(rank(ts_delta(anl44_ebitda_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+quantile(group_zscore(multiply(rank(ts_delta(anl44_eps_best_eeps_nxt_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 8: EPS 63d 修正 + dark/lit 加法复合
+quantile(group_zscore(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 63)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))

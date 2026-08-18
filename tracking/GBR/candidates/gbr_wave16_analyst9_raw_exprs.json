@@ -1,0 +1,17 @@
+[
+    "ts_delta(vec_avg(anl9_consensusv2span_incomeeps_dataitemvalue), 5)",
+    "vec_avg(anl9_consensusanalysis_dataitemvalue)",
+    "subtract(vec_avg(anl9_consensusanalysis_dataitemvalue), vec_avg(anl9_detail_dataitemvalue))",
+    "divide(vec_avg(anl9_daily_numanalysts), vec_avg(anl9_daily_numanalystall))",
+    "vec_count(anl9_detail_dataitemvalue)",
+    "vec_range(anl9_consensusv2span_cashflowstatement_dataitemvalue)",
+    "vec_range(anl9_detail_dataitemvalue)",
+    "divide(vec_stddev(anl9_consensusv2span_dataitemvalue), abs(vec_avg(anl9_consensusv2span_dataitemvalue)))",
+    "vec_stddev(anl9_detail_dataitemvalue)",
+    "subtract(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn))",
+    "subtract(vec_sum(anl9_daily_numupunfiltered), vec_sum(anl9_daily_numdn))",
+    "divide(vec_sum(anl9_daily_numup), add(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn)))",
+    "divide(vec_sum(anl9_daily_numupunfiltered), add(vec_sum(anl9_daily_numupunfiltered), vec_sum(anl9_daily_numdn)))",
+    "subtract(vec_sum(anl9_s_numup), vec_sum(anl9_s_numdn))",
+    "subtract(vec_sum(anl9_s_numupunfiltered), vec_sum(anl9_s_numdn))"
+]

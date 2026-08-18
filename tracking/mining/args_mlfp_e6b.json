@@ -1,0 +1,43 @@
+{
+ "tag": "e6b",
+ "ts": "2026-08-05 20:49:16",
+ "labels": [
+  "T3_opearn",
+  "T14_semivar",
+  "T10v_36_6",
+  "T10v_24_9",
+  "T10v_12_1",
+  "T10v_60_3",
+  "T1v_cf",
+  "T2v_mom",
+  "T7v_divpeg",
+  "T13v_entg"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "ts_rank(change_1y_eps_growth, 252)",
+   "-ts_std_dev(change_1m_active_return, 30)",
+   "group_zscore(subtract(group_zscore(change_36m_active_return, industry), group_zscore(change_6m_active_return, industry)), industry)",
+   "group_zscore(subtract(group_zscore(change_24m_active_return, industry), group_zscore(change_9m_active_return, industry)), industry)",
+   "group_zscore(subtract(group_zscore(change_twelve_month_active_return, industry), group_zscore(change_1m_active_return, industry)), industry)",
+   "group_zscore(subtract(group_zscore(change_60m_active_return, industry), group_zscore(change_3m_active_return, industry)), industry)",
+   "-ts_delta(change_3y_cashflow_to_price, 66)",
+   "-change_fama_french_momentum * ts_std_dev(change_fama_french_momentum, 30)",
+   "-group_zscore(divide(change_1y_eps_to_price, change_1y_eps_growth), industry)",
+   "signed_power(ts_entropy(change_1y_eps_growth, 144), 0.618)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

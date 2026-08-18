@@ -1,0 +1,19 @@
+{
+  "wave": 18,
+  "dataset": "predictive_starmine",
+  "total": 16,
+  "backtested": 16,
+  "conclusion": "参数层增强波。前 5 名 failed_checks 全空但 sharpe 卡 1.04-1.19 < 用户闸 1.58。最强组合家族：fwdpe 镜像 + ep_yield 水平/动量（E5lZp6Yr sh1.16 2y1.25 mg18.4；Vk7vaxq0 sh1.11 2y2.05）；fy2_3 动量 0.7/0.3 加权 1.05。starmine 挖掘趋近平台质量上限。",
+  "top": [
+    {"id": "gJjYbQNl", "code": "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 10))", "sharpe": 1.19, "fitness": 0.51, "two_year_sharpe": 0.44, "margin_bp": 3.7, "turnover_pct": 23.7, "rn_sharpe": 0.79, "failed_checks": []},
+    {"id": "E5lZp6Yr", "code": "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ep_yield_pct_smest_fy1_3))", "sharpe": 1.16, "fitness": 0.66, "two_year_sharpe": 1.25, "margin_bp": 18.4, "turnover_pct": 4.3, "rn_sharpe": 0.76, "failed_checks": []},
+    {"id": "Vk7vaxq0", "code": "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))", "sharpe": 1.11, "fitness": 0.68, "two_year_sharpe": 2.05, "margin_bp": 11.6, "turnover_pct": 8.2, "rn_sharpe": 0.86, "failed_checks": []},
+    {"id": "1YwqXNLz", "code": "add(0.7 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.3 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))", "sharpe": 1.05, "fitness": 0.58, "two_year_sharpe": 1.29, "margin_bp": 6.8, "turnover_pct": 11.3, "rn_sharpe": 0.89, "failed_checks": []}
+  ],
+  "lessons": [
+    "starmine 最强结构 = fwdpe 镜像 + ep_yield（水平/动量）双因子组合，2Y 可达 2.05，但 sharpe 天花板 ~1.2",
+    "fy2_3 动量权重 0.7/0.3 优于 0.5/0.5（1.05 vs 0.82/1.16 基线）",
+    "divide 比率骨架在 starmine 上无信号（-0.73 到 -0.12）"
+  ],
+  "next": "建议轮换到 tier2 crowd_band 其余数据集（shortinterest3/sentiment27/model238）或对 top2 做 decay/中性化参数扫描；starmine 不再加波。"
+}

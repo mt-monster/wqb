@@ -1,0 +1,16 @@
+{
+ "success": true,
+ "multisimulation_id": "4kErBm7AA4pk8RVvDxlG6nV",
+ "child_count": 2,
+ "children": [
+  {
+   "location": "2jyBJW6WU4k79Gk4phYQ7M5",
+   "location_url": "https://api.worldquantbrain.com/simulations/2jyBJW6WU4k79Gk4phYQ7M5"
+  },
+  {
+   "location": "28OwCsfu34Gp9sRBVx6pWuh",
+   "location_url": "https://api.worldquantbrain.com/simulations/28OwCsfu34Gp9sRBVx6pWuh"
+  }
+ ],
+ "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
+}

@@ -1,0 +1,17 @@
+# AN 批: si3×obim 乘法冠军终调 (RRmx1VKa 1.10/2y1.07 骨架: 中性化/窗口/口径/平滑), decay4/SUBIND
+# 1: RRmx1VKa 骨架 × INDUSTRY 组标准化
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), industry))
+# 2: 12d 窗口微调 (15d 邻域下探)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 12)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 3: 20d 窗口微调 (15d 邻域上探)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 20)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 4: 加权乘法 (2×loan_util × (impact−spread))
+quantile(group_zscore(multiply(multiply(2, rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 5: ts_delta 变化口径对照 (ts_av_diff vs ts_delta)
+quantile(group_zscore(multiply(rank(ts_delta(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 6: loan_utilization_ratio_d1 15d × (impact−spread) d1 口径乘法
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio_d1), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 7: mean_loan_rate 15d 变化 × (impact−spread) (费率均值成分)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(mean_loan_rate), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 8: impact ts_mean5 平滑变体 × loan_util 15d
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(ts_mean(vec_avg(trade_market_impact_coefficient), 5), vec_avg(mean_relative_bid_ask_spread)))), subindustry))

@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 8 alpha expressions",
+ "async": true,
+ "multisimulation_id": "1uy5n76U74PI8AM1fsawiHjF",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/1uy5n76U74PI8AM1fsawiHjF",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/1uy5n76U74PI8AM1fsawiHjF",
+ "submitted_expressions": [
+  "rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250))",
+  "rank(ts_zscore(ts_backfill(change_50_200d_price_ratio,120),250))",
+  "rank(ts_zscore(ts_backfill(change_30_75w_price_ratio,120),250))",
+  "rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250))",
+  "rank(ts_zscore(ts_backfill(change_3m_revision_fy2_eps,120),250))",
+  "rank(ts_zscore(ts_backfill(change_6m_rating_revision,120),250))",
+  "rank(ts_zscore(ts_backfill(change_dispersion_fy2_eps_estimates,120),250))",
+  "rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250))"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

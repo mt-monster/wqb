@@ -1,0 +1,9 @@
+# USA TOP3000 D1 sentiment21 轮次2 (NT2: 更多骨架, 与NT1并行) | 并行批E
+reverse(quantile(ts_decay_linear(snt21_neg_mean, 5)))
+ts_rank(subtract(snt21_pos_mean, snt21_neg_mean), 21)
+group_zscore(ts_delta(subtract(snt21_pos_mean, snt21_neg_mean), 3), subindustry)
+signed_power(group_zscore(ts_av_diff(snt21_neg_mean, 10), subindustry), 0.5)
+divide(snt21_pos_mean, add(snt21_neg_mean, 0.01))
+ts_corr(snt21_pos_mean, returns, 20)
+reverse(rank(snt21_neg_max))
+ts_delta(subtract(snt21_pos_mean, snt21_neg_mean), 21)

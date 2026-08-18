@@ -1,0 +1,10 @@
+{
+ "batch": "glb_b15",
+ "resps": [
+  "3fry8L4x655Yc7OANDWOwMY",
+  "3W5lUKbrL5819nmi9tF4pl8",
+  "2svgxU5ID4ExcC010JCTPNHy"
+ ],
+ "strategy": "decay14+长窗/trunc 组合破 margin5bp",
+ "ts": 1785904623.8385296
+}

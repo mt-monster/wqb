@@ -1,0 +1,6 @@
+[
+ "rank(ts_mean(mdl264_3l_bb,10))",
+ "subtract(rank(mdl264_1l_atr),rank(ts_mean(mdl264_1l_atr,20)))",
+ "rank(subtract(mdl264_3l_cci,mdl264_1l_cci))",
+ "rank(ts_delta(ts_delta(mdl264_2l_macd,5),5))"
+]

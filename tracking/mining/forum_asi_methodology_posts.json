@@ -1,0 +1,38 @@
+{
+ "36383377642391": {
+  "success": true,
+  "post": {
+   "title": "ASI robust FAIL优化小技巧",
+   "author": "SZ83096",
+   "body": "robust 测试是什么：（结合AI和官方文档的理解）\n稳健宇宙测试\n是一种严格健壮性评估方法，旨在确保Alpha因子在不同市场范围\n和规模条件下都能保持稳定优异的表现。\nbrain 平台要求robust 合格的条件是：\n收益保持率\n≥ 90% : 在调整后的可扩展的universe上的收益至少达到原始提交版本\n的90%\nsharpe >=90: 在调整后的可扩展的universe上的sharpe至少达到原始提交版本\n理解了robust 的概念后，开始尝试优化alpha的robust 过提交标准：\n如图： 这是优化前的初始alpha，is指标都不错，但是robust Sharpe和robust returns都差一些，没法提交。\n优化1: 尝试了用power ，参数设置3 （参考论坛优化robust 的），没有明显改善\n原alpha最后一步是neut 操作，想了下，更换下power和 group_op的处理顺序后，结果如下，robust returns 过了，但是robust sharpe 还是没改善\n根据字段的定义和labs中查看了字段的分布，值范围，了解到 字段的值范围在0-10；\n想了下，是否可以过滤掉一些影响robust sharpe信号的数据（可能过拟合？）\n尝试了用tail处理，robust sharpe有比较明显的改善，如图：\n最后，凭直觉用quantile 变换下分布，robust pass\n这个alpha op数6个，有亿点点多，尝试去掉power  ，robust也是能过的，优化完成✅\n结束语：\n这个alpha，是需要反转的，考虑到我group_mean op这个季度还没用到，所以，\n我把 -group_neutralize 换成了group_mean(d,1,group)-d (来着研究小组同学的讨论分享，感谢)",
+   "details": {
+    "votes": "78",
+    "date": "2025-11-17T12:22:21Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/36383377642391-ASI-robust-FAIL%E4%BC%98%E5%8C%96%E5%B0%8F%E6%8A%80%E5%B7%A7"
+   }
+  },
+  "comments": [],
+  "total_comments": 0
+ },
+ "37010445148695": {
+  "error": "An unexpected error occurred: 429 Client Error: Too Many Requests for url: https://support.worldquantbrain.com/api/v2/community/posts/37010445148695.json?include=users"
+ },
+ "37473718017175": {
+  "success": true,
+  "post": {
+   "title": "ASI MINVOL1M市场Robust Universe优化案例",
+   "author": "SC16582",
+   "body": "在ASI MINVOL1M市场（亚太地区除日本，最小波动率前1000只股票）的优化实践中，我们通过系统性的方法解决了Robust Universe Sharpe和Returns不达标的问题，成功将Alpha 优化至12项检查全部通过。\n问题分析\n原始Alpha 在Robust Universe测试中失败：\n- Robust Universe Sharpe**: 2.78 < 2.88（阈值）\n- Robust Universe Returns**: 0.0604 < 0.0624（阈值）\n- 日本市场Sharpe**: 1.12（达标但偏低）\n核心优化策略\n1. 释放信号上限（异常值管理）\n- 问题：过度压缩异常值（winsorize std=4）削弱了日本市场的有效信号\n- 解决方案：放宽winsorize阈值至std=5，保留更多极端信号\n- 效果：日本市场Sharpe从1.12提升至1.34，提供安全垫\n2. 外科手术式去噪（流动性过滤）\n- 问题：低流动性股票（成交量尾部3%）贡献噪音但无实际交易价值\n- 解决方案：使用乘法过滤 `(group_rank(ts_mean(volume, 20), country) > 0.03) * alpha`\n- 效果：剔除尾部噪音，降低Main Sharpe分母，助攻Robust Universe通过\n3. 精妙的比率控制\n- 机制：通过控制Main Sharpe（3.28）来确保Robust Universe达标\n- 计算：Robust Threshold = 3.28 × 0.9 = 2.95，实际Robust Sharpe = 3.04\n- 策略：使用成交量过滤防止Main Sharpe过度膨胀，保持合理比率\n4. 细粒度分组中性化\n- 分组结构：`group_cartesian_product(country, densify(bucket(rank(cap), range='0, 1, 0.1')))`\n- 优势：同时锁定国家和市值十分位，创造更公平的竞争环境\n- 效果：日本大票只与日本大票比较，消除跨国市值偏差\n5. 时序参数优化\n- 衰减窗口：`ts_decay_linear(..., 5)` 替代原始decay=1\n- 排名窗口：`ts_rank(..., 30)` 保持信号时效性\n- 回填窗口：`ts_backfill(..., 60)` 确保数据连续性\n最终优化表达式：\nscale((group_rank(ts_mean(volume, 20), country) > 0.03) *\ngroup_neutralize(\ngroup_rank(\nts_rank(\nts_decay_linear(\nts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60),\n5\n),\n30\n),\ncountry\n),\ngroup_cartesian_product(country, densify(bucket(rank(cap), range='0, 1, 0.1')))\n)\n)\n优化结果\n- Main Sharpe: 3.28 → **Robust Universe Sharpe**: 3.04（通过）\n- Main Returns: 6.61% → **Robust Universe Returns**: 6.07%（通过）\n- 日本市场Sharpe: 1.34（显著提升）\n- 所有12项检查: 全部通过（完美答卷）\n关键经验总结\n1. 异常值管理需要市场特异性：日本市场对异常值更敏感，适当放宽winsorize阈值可提升表现\n2. 流动性过滤是双刃剑：既要剔除噪音，又要避免过度削弱信号\n3. 比率控制是Robust Universe的关键：通过控制Main Sharpe来确保Robust达标\n4. 分组粒度决定公平性：国家×市值分组比单一分组更有效\n5. 参数优化需要系统方法：衰减、排名、回填窗口需要协同优化",
+   "details": {
+    "votes": "15",
+    "date": "2026-01-06T14:23:59Z",
+    "url": "https://support.worldquantbrain.com/hc/en-us/community/posts/37473718017175-ASI-MINVOL1M%E5%B8%82%E5%9C%BARobust-Universe%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B"
+   }
+  },
+  "comments": [],
+  "total_comments": 0
+ },
+ "36915879627295": {
+  "error": "An unexpected error occurred: 429 Client Error: Too Many Requests for url: https://support.worldquantbrain.com/api/v2/community/posts/36915879627295.json?include=users"
+ }
+}

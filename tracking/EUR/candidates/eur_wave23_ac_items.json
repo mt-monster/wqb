@@ -1,0 +1,18 @@
+[
+  {"code": "rank(divide(mean_estimate_targetprice_annual12_tribes, close))", "note": "target price upside 原始"},
+  {"code": "subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close)))", "note": "target price upside 镜像"},
+  {"code": "rank(divide(median_estimate_targetprice_annual12_tribes, close))", "note": "median TP upside 原始"},
+  {"code": "subtract(0, rank(divide(median_estimate_targetprice_annual12_tribes, close)))", "note": "median TP upside 镜像"},
+  {"code": "rank(divide(max_estimate_targetprice_annual12_tribes, close))", "note": "max TP upside 原始"},
+  {"code": "subtract(0, rank(divide(max_estimate_targetprice_annual12_tribes, close)))", "note": "max TP upside 镜像"},
+  {"code": "rank(stddev_estimate_targetprice_annual12_tribes)", "note": "TP stddev 原始"},
+  {"code": "subtract(0, rank(stddev_estimate_targetprice_annual12_tribes))", "note": "TP stddev 镜像"},
+  {"code": "rank(stddev_estimate_eps_longterm)", "note": "EPS stddev 原始"},
+  {"code": "subtract(0, rank(stddev_estimate_eps_longterm))", "note": "EPS stddev 镜像"},
+  {"code": "rank(mean_estimate_eps_longterm)", "note": "EPS mean 原始"},
+  {"code": "subtract(0, rank(mean_estimate_eps_longterm))", "note": "EPS mean 镜像"},
+  {"code": "add(0.5*rank(divide(mean_estimate_targetprice_annual12_tribes, close)), 0.5*rank(mean_estimate_eps_longterm))", "note": "TP upside+EPS 复合"},
+  {"code": "add(0.5*subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close))), 0.5*subtract(0, rank(mean_estimate_eps_longterm)))", "note": "TP upside+EPS 双镜像"},
+  {"code": "add(0.4*rank(divide(mean_estimate_targetprice_annual12_tribes, close)), add(0.3*rank(mean_estimate_eps_longterm), 0.3*subtract(0, rank(stddev_estimate_targetprice_annual12_tribes))))", "note": "TP+EPS+stddev 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(divide(mean_estimate_targetprice_annual12_tribes, close))), add(0.3*subtract(0, rank(mean_estimate_eps_longterm)), 0.3*rank(stddev_estimate_targetprice_annual12_tribes)))", "note": "TP+EPS+stddev 三路镜像"}
+]

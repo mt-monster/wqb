@@ -1,0 +1,753 @@
+{
+ "batch": "b1",
+ "ts": "2026-08-05 00:31:39",
+ "expressions": [
+  {
+   "expr": "-rank(ts_backfill(winsorize(bid_ask_price_gap, std=5), 60))",
+   "label": "pv106_spread_short"
+  },
+  {
+   "expr": "rank(ts_backfill(winsorize(price_difference_bid_ask, std=5), 60))",
+   "label": "pv106_pdba_long"
+  },
+  {
+   "expr": "-ts_rank(ts_backfill(winsorize(bid_ask_price_gap, std=5), 60), 100)",
+   "label": "pv106_spread_trend_short"
+  },
+  {
+   "expr": "group_rank(ts_rank(ts_decay_linear(ts_backfill(winsorize(bid_ask_price_gap, std=5), 60), 5), 30), sector)",
+   "label": "pv106_spread_forum_sector"
+  },
+  {
+   "expr": "rank(ts_backfill(winsorize(mdl242_reversal_component, std=5), 60))",
+   "label": "mdl242_reversal_long"
+  },
+  {
+   "expr": "-rank(ts_backfill(winsorize(mdl242_1mt, std=5), 60))",
+   "label": "mdl242_1mt_short"
+  },
+  {
+   "expr": "-ts_rank(ts_backfill(winsorize(sudden_volume_spike_score, std=5), 60), 60)",
+   "label": "mdl242_vspike_short"
+  },
+  {
+   "expr": "-ts_rank(ts_backfill(ern3_pre_interval, 60), 120)",
+   "label": "ern3_preinterval_short"
+  }
+ ],
+ "settings": {
+  "dataset": "pv106_model242_earnings3",
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.05
+ },
+ "results": [
+  {
+   "alpha_id": "LLGJq5JL",
+   "formula": null,
+   "metrics": {
+    "sharpe": -0.46,
+    "fitness": -0.26,
+    "turnover": 0.0254,
+    "returns": -0.0409,
+    "drawdown": 0.522,
+    "margin": -0.003219,
+    "longCount": 168,
+    "shortCount": 166,
+    "pnl": -4220575,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": -0.39,
+    "two_year_sharpe": -1.69
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": -0.46,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": -0.26,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": -0.39,
+      "limit": -0.3
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": -1.69,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "WjA8nL8N",
+   "formula": null,
+   "metrics": {
+    "sharpe": 0.46,
+    "fitness": 0.26,
+    "turnover": 0.0254,
+    "returns": 0.0409,
+    "drawdown": 0.3154,
+    "margin": 0.003219,
+    "longCount": 166,
+    "shortCount": 168,
+    "pnl": 4220546,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.39,
+    "two_year_sharpe": 1.69
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.46,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.26,
+      "limit": 1.0
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "wpagO9gQ",
+   "formula": null,
+   "metrics": {
+    "sharpe": -0.05,
+    "fitness": -0.01,
+    "turnover": 0.0824,
+    "returns": -0.0039,
+    "drawdown": 0.272,
+    "margin": -9.5e-05,
+    "longCount": 168,
+    "shortCount": 166,
+    "pnl": -404773,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": -0.21,
+    "two_year_sharpe": -0.52
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": -0.05,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": -0.01,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": -0.21,
+      "limit": -0.03
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": -0.52,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "E5GJYVJ9",
+   "formula": null,
+   "metrics": {
+    "sharpe": 0.0,
+    "fitness": 0.0,
+    "turnover": 0.0707,
+    "returns": 0.0,
+    "drawdown": 0.2058,
+    "margin": 0.0,
+    "longCount": 192,
+    "shortCount": 182,
+    "pnl": 1142,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.1,
+    "two_year_sharpe": 0.05
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.0,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.0,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.05,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "pv"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/PV",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "QPGXqYdX",
+   "formula": null,
+   "metrics": {
+    "sharpe": 0.08,
+    "fitness": 0.02,
+    "turnover": 0.0454,
+    "returns": 0.006,
+    "drawdown": 0.2151,
+    "margin": 0.000264,
+    "longCount": 50,
+    "shortCount": 51,
+    "pnl": 618469,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": -0.03,
+    "two_year_sharpe": 0.0
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.08,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.02,
+      "limit": 1.0
+     },
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 0.441022,
+      "limit": 0.1,
+      "date": "2014-01-08"
+     },
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": -0.03,
+      "limit": 0.05
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.0,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 5,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "model"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "58pW3jVM",
+   "formula": null,
+   "metrics": {
+    "sharpe": -0.23,
+    "fitness": -0.08,
+    "turnover": 0.0468,
+    "returns": -0.015,
+    "drawdown": 0.381,
+    "margin": -0.000641,
+    "longCount": 49,
+    "shortCount": 52,
+    "pnl": -1548879,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 0.14,
+    "two_year_sharpe": -0.23
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": -0.23,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": -0.08,
+      "limit": 1.0
+     },
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 0.461601,
+      "limit": 0.1,
+      "date": "2014-01-01"
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": -0.23,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "model"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "pwNOovgv",
+   "formula": null,
+   "metrics": {
+    "sharpe": -0.05,
+    "fitness": -0.01,
+    "turnover": 0.0508,
+    "returns": -0.0029,
+    "drawdown": 0.2936,
+    "margin": -0.000113,
+    "longCount": 50,
+    "shortCount": 52,
+    "pnl": -297355,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": -0.4,
+    "two_year_sharpe": 0.76
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": -0.05,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": -0.01,
+      "limit": 1.0
+     },
+     {
+      "name": "CONCENTRATED_WEIGHT",
+      "value": 0.42909,
+      "limit": 0.1,
+      "date": "2014-01-13"
+     },
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": -0.4,
+      "limit": -0.03
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": 0.76,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 5,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "model"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/MODEL",
+      "multiplier": 1.2
+     }
+    ]
+   }
+  },
+  {
+   "alpha_id": "78z90oV2",
+   "formula": null,
+   "metrics": {
+    "sharpe": 0.11,
+    "fitness": 0.03,
+    "turnover": 0.0546,
+    "returns": 0.0084,
+    "drawdown": 0.1549,
+    "margin": 0.000308,
+    "longCount": 114,
+    "shortCount": 101,
+    "pnl": 867490,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": -0.11,
+    "two_year_sharpe": -0.16
+   },
+   "checks": {
+    "fail": [
+     {
+      "name": "LOW_SHARPE",
+      "value": 0.11,
+      "limit": 1.58
+     },
+     {
+      "name": "LOW_FITNESS",
+      "value": 0.03,
+      "limit": 1.0
+     },
+     {
+      "name": "LOW_SUB_UNIVERSE_SHARPE",
+      "value": -0.11,
+      "limit": 0.07
+     },
+     {
+      "name": "LOW_2Y_SHARPE",
+      "value": -0.16,
+      "limit": 1.58
+     }
+    ],
+    "warning": [
+     {
+      "name": "MATCHES_THEMES"
+     },
+     {
+      "name": "OSMOSIS_ALLOCATION"
+     }
+    ],
+    "pass": [
+     "LOW_TURNOVER",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "MATCHES_PYRAMID"
+    ],
+    "pending": [
+     "SELF_CORRELATION",
+     "DATA_DIVERSITY",
+     "PROD_CORRELATION",
+     "REGULAR_SUBMISSION"
+    ]
+   },
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "earnings"
+   },
+   "pyramids": {
+    "effective": 1,
+    "list": [
+     {
+      "name": "MEA/D1/EARNINGS",
+      "multiplier": 1.0
+     }
+    ]
+   }
+  }
+ ]
+}

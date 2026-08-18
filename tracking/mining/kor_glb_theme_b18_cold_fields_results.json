@@ -1,0 +1,53 @@
+{
+ "batch": "glb_b18",
+ "strategy": "users=0 冷门字段 × 黄金配方(300窗/decay15)",
+ "fields": [
+  "predicted_first_quantile_ten_day_return_4",
+  "predicted_first_quantile_ten_day_return_tech1_1",
+  "predicted_first_quantile_ten_day_return_tech1_2",
+  "predicted_first_quantile_ten_day_return_tech2_1",
+  "predicted_first_quantile_ten_day_return_tech2_2",
+  "predicted_first_quantile_ten_day_return_tech3_1",
+  "predicted_first_quantile_ten_day_return_tech3_2",
+  "predicted_first_quantile_ten_day_return_6"
+ ],
+ "exprs": [
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_4, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech1_1, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech1_2, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech2_1, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech2_2, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech3_1, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech3_2, std=5), 60), 300), country)",
+  "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_6, std=5), 60), 300), country)"
+ ],
+ "settings": {
+  "region": "GLB",
+  "universe": "TOPDIV3000",
+  "delay": 1,
+  "decay": 15,
+  "neutralization": "FAST",
+  "truncation": 0.04
+ },
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "19BBh21tI5f2aQv1enuZcsLo",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/19BBh21tI5f2aQv1enuZcsLo",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/19BBh21tI5f2aQv1enuZcsLo",
+  "submitted_expressions": [
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_4, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech1_1, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech1_2, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech2_1, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech2_2, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech3_1, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_tech3_2, std=5), 60), 300), country)",
+   "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_6, std=5), 60), 300), country)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ },
+ "ts": 1785908470.7458768
+}

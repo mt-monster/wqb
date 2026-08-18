@@ -1,0 +1,177 @@
+{
+ "tag": "07",
+ "region": "USA",
+ "all": [
+  {
+   "id": "88pZlrjV",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.89,
+   "fitness": 0.9,
+   "two_year_sharpe": null,
+   "margin_bp": 4.53,
+   "turnover_pct": 39.27,
+   "rn_sharpe": 2.7,
+   "rn_fitness": 1.03,
+   "failed_checks": [
+    "LOW_FITNESS"
+   ],
+   "cached_at": "2026-08-15T23:36:11",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "MARGIN",
+    "TVR",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "RRmo7Yb1",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.7), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.42,
+   "fitness": 0.73,
+   "two_year_sharpe": null,
+   "margin_bp": 5.25,
+   "turnover_pct": 21.02,
+   "rn_sharpe": 1.64,
+   "rn_fitness": 0.65,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE"
+   ],
+   "cached_at": "2026-08-15T23:36:10",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE"
+   ]
+  },
+  {
+   "id": "xANojQ3w",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.29,
+   "fitness": 0.77,
+   "two_year_sharpe": null,
+   "margin_bp": 7.05,
+   "turnover_pct": 14.75,
+   "rn_sharpe": 1.23,
+   "rn_fitness": 0.5,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T23:36:09",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "0mpLwdX2",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.75,
+   "fitness": 0.51,
+   "two_year_sharpe": null,
+   "margin_bp": 11.16,
+   "turnover_pct": 10.26,
+   "rn_sharpe": 1.48,
+   "rn_fitness": 0.72,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T23:36:12"
+  }
+ ],
+ "candidates": [],
+ "near": [
+  {
+   "id": "88pZlrjV",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.89,
+   "fitness": 0.9,
+   "two_year_sharpe": null,
+   "margin_bp": 4.53,
+   "turnover_pct": 39.27,
+   "rn_sharpe": 2.7,
+   "rn_fitness": 1.03,
+   "failed_checks": [
+    "LOW_FITNESS"
+   ],
+   "cached_at": "2026-08-15T23:36:11",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "MARGIN",
+    "TVR",
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "RRmo7Yb1",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.7), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.42,
+   "fitness": 0.73,
+   "two_year_sharpe": null,
+   "margin_bp": 5.25,
+   "turnover_pct": 21.02,
+   "rn_sharpe": 1.64,
+   "rn_fitness": 0.65,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE"
+   ],
+   "cached_at": "2026-08-15T23:36:10",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE"
+   ]
+  },
+  {
+   "id": "xANojQ3w",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.29,
+   "fitness": 0.77,
+   "two_year_sharpe": null,
+   "margin_bp": 7.05,
+   "turnover_pct": 14.75,
+   "rn_sharpe": 1.23,
+   "rn_fitness": 0.5,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T23:36:09",
+   "walls": [
+    "FITNESS",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  }
+ ]
+}

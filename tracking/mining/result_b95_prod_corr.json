@@ -1,0 +1,61 @@
+{
+  "batch": "b95_prod_corr_check",
+  "description": "Production correlation check for b95 RA-passing alphas",
+  "original": {"alpha_id": "6XeWqEE7", "tenor": "150d", "neutralization": "STATISTICAL", "prod_corr": 0.7755},
+  "results": [
+    {
+      "alpha_id": "9q7Nmqjr",
+      "tenor": "180d",
+      "neutralization": "SLOW_AND_FAST",
+      "metrics": {"sharpe": 2.20, "fitness": 2.04, "subU": 1.09, "2Y": 2.46, "tvr_pct": 10.94},
+      "prod_corr": 0.7825,
+      "passes": false,
+      "field_popularity": {"ivcall_users": 35, "ivput_users": 27},
+      "delta_from_original": -0.007,
+      "histogram_0.7_0.8": 10,
+      "status": "FAIL_PROD_CORR"
+    },
+    {
+      "alpha_id": "mLVE1LjE",
+      "tenor": "360d",
+      "neutralization": "SLOW_AND_FAST",
+      "metrics": {"sharpe": 2.03, "fitness": 1.81, "subU": 0.93, "2Y": 2.37, "tvr_pct": 10.84},
+      "prod_corr": 0.7529,
+      "passes": false,
+      "field_popularity": {"ivcall_users": 25, "ivput_users": 20},
+      "delta_from_original": -0.0226,
+      "histogram_0.7_0.8": 10,
+      "status": "FAIL_PROD_CORR_BEST"
+    },
+    {
+      "alpha_id": "E5e9L5vr",
+      "tenor": "720d",
+      "neutralization": "SLOW_AND_FAST",
+      "metrics": {"sharpe": 1.99, "fitness": 1.73, "subU": 0.87, "2Y": 2.20, "tvr_pct": 10.51},
+      "prod_corr": 0.7632,
+      "passes": false,
+      "field_popularity": {"ivcall_users": 32, "ivput_users": 15},
+      "delta_from_original": -0.0123,
+      "histogram_0.7_0.8": 10,
+      "status": "FAIL_PROD_CORR"
+    },
+    {
+      "alpha_id": "MPLJZPan",
+      "tenor": "270d",
+      "neutralization": "SLOW_AND_FAST",
+      "metrics": {"sharpe": 2.00, "fitness": 1.70, "subU": 0.89, "2Y": 2.26, "tvr_pct": 10.19},
+      "prod_corr": 0.7718,
+      "passes": false,
+      "field_popularity": {"ivcall_users": 30, "ivput_users": 30},
+      "delta_from_original": -0.0037,
+      "histogram_0.7_0.8": 18,
+      "status": "FAIL_PROD_CORR"
+    }
+  ],
+  "analysis": {
+    "trend": "Longer tenors reduce prod_corr: 180d=0.7825 > 270d=0.7718 > 720d=0.7632 > 360d=0.7529. 360d is the sweet spot (25/20 users). 720d has more put users gap (32 call vs 15 put).",
+    "best": "mLVE1LjE (360d) at 0.7529 - 0.053 above threshold",
+    "hypothesis": "1080d (19/18 users - even less popular) could push prod_corr further down. IV term structure signals (completely different from IV skew) might have much lower prod_corr.",
+    "next_action": "b97: 1080d IV skew + IV term structure + composite signals @ SLOW_AND_FAST"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "batch": "analyst44 经纪人整合预测 第一批 (4i2zjF3SB4wZ8JAr0X147FC)",
+  "date": "2026-08-04",
+  "results": [
+    {"id": "6XpOXPKY", "expr": "grp(second_eps44)", "sharpe": 1.33, "fitness": 0.84, "two_year": 1.37, "risk_neut": 1.04, "margin": 0.000798, "note": "★ 最佳: 2y 1.37 好于 analyst25"},
+    {"id": "58pW87zM", "expr": "+second_eps44", "sharpe": 1.33, "fitness": 0.85, "two_year": 1.27, "risk_neut": 1.09},
+    {"id": "9qp0qPj1", "expr": "-pretax_down44", "sharpe": 0.75, "two_year": 1.25, "note": "下调反向 2y 好"},
+    {"id": "QPGXPr3p", "expr": "-eps_down44", "sharpe": 0.47, "two_year": 1.32},
+    {"id": "GrGJr0do", "expr": "-sales_down44", "sharpe": 0.42, "two_year": 1.05}
+  ],
+  "takeaways": [
+    "second_en_eps_value 1.33 + 2y 1.27-1.37: 比 analyst25 (2y 0.5-0.9) 的 2y 好得多",
+    "下调计数反向信号 2y 全部 >1.2 (分析师下调→未来2年弱)",
+    "fitness 0.84-0.85 差 0.15, margin 8.0bp 达标",
+    "blend 方向: second_eps + 下调反向 (双 2y 腿)"
+  ],
+  "next": "深化: second_eps x 下调反向/esor/明年EPS blend"
+}

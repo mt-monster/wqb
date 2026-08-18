@@ -1,0 +1,66 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/2JStar1Wr4Nda9Ts7dcVZhV",
+ "ts": 1785911403.041121,
+ "alphas": [
+  {
+   "id": "gJ8zWjZ0",
+   "w": "350",
+   "sh": 2.04,
+   "fit": 0.97,
+   "tvr": 0.2002,
+   "2y": 1.44,
+   "margin": 0.000453,
+   "subU": 1.61,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "78zVojox",
+   "w": "400",
+   "sh": 2.04,
+   "fit": 0.97,
+   "tvr": 0.2,
+   "2y": 1.43,
+   "margin": 0.000455,
+   "subU": 1.62,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "xANa1j1b",
+   "w": "450",
+   "sh": 2.03,
+   "fit": 0.97,
+   "tvr": 0.1998,
+   "2y": 1.48,
+   "margin": 0.000456,
+   "subU": 1.61,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmL8KZ0",
+   "w": "300",
+   "sh": 2.04,
+   "fit": 0.97,
+   "tvr": 0.2004,
+   "2y": 1.51,
+   "margin": 0.000451,
+   "subU": 1.59,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1WM44Ogcf4IxcCVxAR2N2mC",
+ "ts": 1785913855.3775914,
+ "alphas": [
+  {
+   "id": "ZYELdG31",
+   "code": "subtract(group_rank(ts_rank(ts_backfill(winsorize(average_spread_slippage, std=5), 60), 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.47,
+   "fit": 1.12,
+   "tvr": 0.1739,
+   "ret": 0.1006,
+   "2y": 1.4,
+   "margin": 0.001157,
+   "subU": 1.31,
+   "rn": 1.49,
+   "failed": [
+    "LOW_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "WjAmo86j",
+   "code": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))",
+   "sh": 1.46,
+   "fit": 1.13,
+   "tvr": 0.1715,
+   "ret": 0.1024,
+   "2y": 2.25,
+   "margin": 0.001194,
+   "subU": 1.16,
+   "rn": 1.66,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGAemoo",
+   "code": "subtract(group_rank(ts_rank(asian_market_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 1.52,
+   "fit": 1.2,
+   "tvr": 0.1712,
+   "ret": 0.1067,
+   "2y": 2.3,
+   "margin": 0.001246,
+   "subU": 1.22,
+   "rn": 1.69,
+   "failed": [
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "kqP5Wl2k",
+   "code": "subtract(group_rank(ts_rank(aggregated_slippage_metric, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+   "sh": 0.02,
+   "fit": 0.0,
+   "tvr": 0.1201,
+   "ret": 0.0021,
+   "2y": 0.1,
+   "margin": 3.5e-05,
+   "subU": -0.12,
+   "rn": 0.33,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "zqNz2p1R",
+   "code": "subtract(group_rank(ts_rank(ts_backfill(winsorize(asian_market_slippage, std=5), 60), 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))",
+   "sh": 1.4,
+   "fit": 1.04,
+   "tvr": 0.1743,
+   "ret": 0.0957,
+   "2y": 1.37,
+   "margin": 0.001098,
+   "subU": 1.24,
+   "rn": 1.46,
+   "failed": [
+    "LOW_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "xANa2g0l",
+   "code": "subtract(group_rank(ts_rank(ts_backfill(winsorize(average_spread_slippage, std=5), 60), 44), sector), ts_rank(ts_backfill(winsorize(vec_avg(oth323_esor), std=5), 60), 22))",
+   "sh": 1.41,
+   "fit": 1.05,
+   "tvr": 0.1743,
+   "ret": 0.0959,
+   "2y": 1.38,
+   "margin": 0.0011,
+   "subU": 1.24,
+   "rn": 1.46,
+   "failed": [
+    "LOW_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  }
+ ]
+}

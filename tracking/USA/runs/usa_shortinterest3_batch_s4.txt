@@ -1,0 +1,10 @@
+# USA TOP3000 D1 shortinterest3 轮次4 (S4: 10日窗口骨架精调) | 并行批A
+# 基线 9qpOEQdo(av_diff w=10): sharpe 1.32 / fitness 0.47 / 2y 2.32 / RN 1.52 / tv 28.4% / PPA过 / fail=[]
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 7), subindustry), 0.5)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 14), subindustry), 0.5)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), 0.3)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), 1)
+group_rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry)
+ts_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), 252)
+quantile(signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), 0.5))
+reverse(quantile(ts_decay_linear(vec_avg(borrow_activity_score), 10)))

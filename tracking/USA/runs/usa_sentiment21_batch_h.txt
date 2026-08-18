@@ -1,0 +1,9 @@
+# USA TOP3000 D1 sentiment21 轮次3 (H: 高decay=21慢骨架, 治换手>80%) | 并行波2-批H
+quantile(ts_decay_linear(subtract(snt21_pos_mean, snt21_neg_mean), 21))
+group_zscore(ts_av_diff(subtract(snt21_pos_mean, snt21_neg_mean), 21), subindustry)
+reverse(rank(ts_av_diff(snt21_neg_mean, 21)))
+signed_power(group_zscore(ts_av_diff(subtract(snt21_pos_mean, snt21_neg_mean), 21), subindustry), 0.5)
+ts_zscore(subtract(snt21_pos_mean, snt21_neg_mean), 252)
+group_rank(ts_decay_linear(subtract(snt21_pos_mean, snt21_neg_mean), 10), subindustry)
+reverse(quantile(ts_av_diff(snt21_neg_std, 21)))
+quantile(ts_delta(subtract(snt21_pos_mean, snt21_neg_mean), 63))

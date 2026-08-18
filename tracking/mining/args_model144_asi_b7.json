@@ -1,0 +1,29 @@
+{
+  "batch": "b7",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.15,
+  "decay": 20,
+  "max_trade": "ON",
+  "pasteurization": "ON",
+  "nan_handling": "OFF",
+  "unit_handling": "VERIFY",
+  "language": "FASTEXPR",
+  "test_period": "P0Y0M",
+  "dataset": "model144",
+  "pyramid_target": "ASI/D1/model x1.3",
+  "changes_from_b6": "SWITCH DATASET from news104 (exhausted, sh ceiling 1.0) to model144 (webdata sh0.614/OS0.654 highest). 2 MATRIX fields: mdl144_predict (raw DL output) + mdl144_score (normalized [0,1]). Apply proven ts_zscore(group_rank(ts_mean())) template + variants from news104 learnings (w=30, convex5-inside, group_zscore, industry neut)",
+  "expressions": [
+    "ts_zscore(group_rank(ts_mean(mdl144_score, 20), subindustry), 40)",
+    "ts_zscore(group_rank(ts_mean(mdl144_predict, 20), subindustry), 40)",
+    "ts_zscore(group_rank(ts_mean(mdl144_score, 20), subindustry), 30)",
+    "ts_zscore(group_rank(ts_mean(mdl144_score, 10), subindustry), 40)",
+    "ts_zscore(group_rank(mdl144_score, subindustry), 40)",
+    "ts_zscore(signed_power(subtract(group_rank(ts_mean(mdl144_score, 20), subindustry), 0.5), 5), 30)",
+    "ts_zscore(group_zscore(ts_mean(mdl144_score, 20), subindustry), 40)",
+    "ts_zscore(group_rank(ts_mean(mdl144_score, 20), industry), 40)"
+  ]
+}

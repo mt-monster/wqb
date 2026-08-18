@@ -1,0 +1,144 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/gA1Pucec5jN92Qmq92tRiE",
+   "location_url": "https://api.worldquantbrain.com/simulations/gA1Pucec5jN92Qmq92tRiE",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "gA1Pucec5jN92Qmq92tRiE",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4BGppS9RV4LjcsKV75WlWlQ",
+   "location_url": "https://api.worldquantbrain.com/simulations/4BGppS9RV4LjcsKV75WlWlQ",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "4BGppS9RV4LjcsKV75WlWlQ",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2ATxsa4af4V5c0PBnFnNPVU",
+   "location_url": "https://api.worldquantbrain.com/simulations/2ATxsa4af4V5c0PBnFnNPVU",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "2ATxsa4af4V5c0PBnFnNPVU",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3c4VUJ9Iq4kmbcW4AWAvddC",
+   "location_url": "https://api.worldquantbrain.com/simulations/3c4VUJ9Iq4kmbcW4AWAvddC",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3c4VUJ9Iq4kmbcW4AWAvddC",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/10bAcm4qQ4L0bMH1hfEwhHgC",
+   "location_url": "https://api.worldquantbrain.com/simulations/10bAcm4qQ4L0bMH1hfEwhHgC",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "10bAcm4qQ4L0bMH1hfEwhHgC",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/SHtet9Z0521bR19C9Nd6Yi",
+   "location_url": "https://api.worldquantbrain.com/simulations/SHtet9Z0521bR19C9Nd6Yi",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "SHtet9Z0521bR19C9Nd6Yi",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/eOjJO1KF4Cj9Rs1dj9WG3fN",
+   "location_url": "https://api.worldquantbrain.com/simulations/eOjJO1KF4Cj9Rs1dj9WG3fN",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "eOjJO1KF4Cj9Rs1dj9WG3fN",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3NFNKLc7D52rc2KJzsCk7Fi",
+   "location_url": "https://api.worldquantbrain.com/simulations/3NFNKLc7D52rc2KJzsCk7Fi",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3NFNKLc7D52rc2KJzsCk7Fi",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/17qPUA9Pv4YMaNMlHbKIX1d",
+   "location_url": "https://api.worldquantbrain.com/simulations/17qPUA9Pv4YMaNMlHbKIX1d",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "17qPUA9Pv4YMaNMlHbKIX1d",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/XSU4idpX52r8MW2n14wa64",
+   "location_url": "https://api.worldquantbrain.com/simulations/XSU4idpX52r8MW2n14wa64",
+   "error": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "XSU4idpX52r8MW2n14wa64",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 13,
+     "end": 50,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": ""
+  }
+ ]
+}

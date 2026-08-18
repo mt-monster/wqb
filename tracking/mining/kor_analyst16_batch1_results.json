@@ -1,0 +1,164 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1DplY33Ut4tPbTFQ0Rg8058",
+ "ts": 1785857557.0996687,
+ "children": [
+  {
+   "location": "6kEjlb2y4RQ9jET14AA7P2",
+   "location_url": "https://api.worldquantbrain.com/simulations/6kEjlb2y4RQ9jET14AA7P2"
+  },
+  {
+   "location": "1sqiRxfEx53faWdFy21EW2p",
+   "location_url": "https://api.worldquantbrain.com/simulations/1sqiRxfEx53faWdFy21EW2p"
+  },
+  {
+   "location": "2M0S4w6C44pm9RT7H1Tb5QX",
+   "location_url": "https://api.worldquantbrain.com/simulations/2M0S4w6C44pm9RT7H1Tb5QX"
+  },
+  {
+   "location": "4unju5bKL50x9ZLhZEORv8V",
+   "location_url": "https://api.worldquantbrain.com/simulations/4unju5bKL50x9ZLhZEORv8V"
+  },
+  {
+   "location": "3WQasK3na4zpaedOy55kfux",
+   "location_url": "https://api.worldquantbrain.com/simulations/3WQasK3na4zpaedOy55kfux"
+  },
+  {
+   "location": "1F5v54gHs4qBb5XSL4cXCVM",
+   "location_url": "https://api.worldquantbrain.com/simulations/1F5v54gHs4qBb5XSL4cXCVM"
+  },
+  {
+   "location": "lpGRj1HL4PebSV7WotqlhB",
+   "location_url": "https://api.worldquantbrain.com/simulations/lpGRj1HL4PebSV7WotqlhB"
+  },
+  {
+   "location": "1EILRnAY4ZI8yq14eoAbwI1",
+   "location_url": "https://api.worldquantbrain.com/simulations/1EILRnAY4ZI8yq14eoAbwI1"
+  }
+ ],
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/6kEjlb2y4RQ9jET14AA7P2",
+   "location_url": "https://api.worldquantbrain.com/simulations/6kEjlb2y4RQ9jET14AA7P2",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "6kEjlb2y4RQ9jET14AA7P2",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1sqiRxfEx53faWdFy21EW2p",
+   "location_url": "https://api.worldquantbrain.com/simulations/1sqiRxfEx53faWdFy21EW2p",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "1sqiRxfEx53faWdFy21EW2p",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2M0S4w6C44pm9RT7H1Tb5QX",
+   "location_url": "https://api.worldquantbrain.com/simulations/2M0S4w6C44pm9RT7H1Tb5QX",
+   "error": "Attempted to use inaccessible or unknown operator \"vec_ts_rank\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "2M0S4w6C44pm9RT7H1Tb5QX",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Attempted to use inaccessible or unknown operator \"vec_ts_rank\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 42,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4unju5bKL50x9ZLhZEORv8V",
+   "location_url": "https://api.worldquantbrain.com/simulations/4unju5bKL50x9ZLhZEORv8V",
+   "error": "Attempted to use inaccessible or unknown operator \"vec_ts_rank\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "4unju5bKL50x9ZLhZEORv8V",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Attempted to use inaccessible or unknown operator \"vec_ts_rank\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 1,
+     "end": 43,
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3WQasK3na4zpaedOy55kfux",
+   "location_url": "https://api.worldquantbrain.com/simulations/3WQasK3na4zpaedOy55kfux",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "3WQasK3na4zpaedOy55kfux",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1F5v54gHs4qBb5XSL4cXCVM",
+   "location_url": "https://api.worldquantbrain.com/simulations/1F5v54gHs4qBb5XSL4cXCVM",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "1F5v54gHs4qBb5XSL4cXCVM",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/lpGRj1HL4PebSV7WotqlhB",
+   "location_url": "https://api.worldquantbrain.com/simulations/lpGRj1HL4PebSV7WotqlhB",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "lpGRj1HL4PebSV7WotqlhB",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1EILRnAY4ZI8yq14eoAbwI1",
+   "location_url": "https://api.worldquantbrain.com/simulations/1EILRnAY4ZI8yq14eoAbwI1",
+   "error": "CANCELLED",
+   "status": "CANCELLED",
+   "alpha": null,
+   "raw": {
+    "id": "1EILRnAY4ZI8yq14eoAbwI1",
+    "type": "REGULAR",
+    "status": "CANCELLED"
+   },
+   "extra_info": ""
+  }
+ ]
+}

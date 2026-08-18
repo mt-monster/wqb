@@ -1,0 +1,18 @@
+[
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_country_rank))", "note": "S1 国家维度混合", "neut": "STATISTICAL"},
+ {"code": "add(0.6*rank(star_hold_global_rank), 0.4*rank(star_hold_industry_rank))", "note": "S2 行业维度混合", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_sector_rank), 0.5*rank(star_hold_industry_rank))", "note": "S3 板块x行业均衡", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_global_rank), add(0.3*rank(star_hold_sector_rank), 0.2*rank(star_hold_country_rank)))", "note": "S4 三路嵌套混合", "neut": "STATISTICAL"},
+ {"code": "ts_zscore(rank(star_hold_global_rank), 66)", "note": "S5 时序标准化66d", "neut": "STATISTICAL"},
+ {"code": "ts_rank(rank(star_hold_global_rank), 66)", "note": "S6 时序百分位66d", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*ts_zscore(rank(star_hold_global_rank), 66))", "note": "S7 横截面+时序混合", "neut": "STATISTICAL"},
+ {"code": "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_region_change_rank))", "note": "S8 水平+变化均衡", "neut": "STATISTICAL"},
+ {"code": "add(0.7*rank(star_hold_global_rank), 0.3*rank(star_hold_region_change_rank))", "note": "S9 水平主导+变化", "neut": "STATISTICAL"},
+ {"code": "rank(star_hold_global_rank)", "note": "S10 truncation=0.02 截断变体", "neut": "STATISTICAL", "truncation": 0.02},
+ {"code": "rank(star_hold_global_rank)", "note": "S11 decay=2 快衰减", "neut": "STATISTICAL", "decay": 2},
+ {"code": "rank(star_hold_global_rank)", "note": "S12 decay=6 慢衰减", "neut": "STATISTICAL", "decay": 6},
+ {"code": "add(0.5*rank(star_hold_global_screening_rank), 0.5*rank(star_hold_region_screening_rank))", "note": "S13 双筛选均衡", "neut": "STATISTICAL"},
+ {"code": "add(0.6*rank(star_hold_global_screening_rank), 0.4*rank(star_hold_global_rank))", "note": "S14 筛选主导混合", "neut": "STATISTICAL"},
+ {"code": "rank(star_hold_global_owner_rank)", "note": "S15 owner原始方向", "neut": "STATISTICAL"},
+ {"code": "rank(star_hold_global_change_rank)", "note": "S16 变化排名原始", "neut": "STATISTICAL"}
+]

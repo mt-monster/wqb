@@ -1,0 +1,23 @@
+{
+  "wave": "wave6b_fcfmix_deep",
+  "region": "EUR",
+  "universe": "TOP2500",
+  "dataset": "multi_horizon_alpha + price_signal_dl + pattern_scores",
+  "purpose": "wave6 证实：0.70FCF+0.30gap sh=2.02 且 prod corr 0.9013->0.8235（边际稀释 0.26/权重）。深度稀释至 FCF<=0.6 目标 prod corr<0.7",
+  "wave6_evidence": {
+    "N17x1Lgo_070_030": "sh=2.02 fit=1.41 2y=2.78 mg=16bp tvr=7.6% rn=1.37 rnf=0.61 prod_corr=0.8235 FAIL",
+    "LL7VLEXn_075_025": "sh=2.00 rnf=0.63",
+    "j2jz2owE_080_020": "sh=1.96 rnf=0.63",
+    "note": "gap 权重 20->30% 时 IS 上升，prod corr 下降，分散化红利未到顶"
+  },
+  "items": [
+    {"code": "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.40 * subtract(0, rank(median_similarity_breakaway_gap_upward)))", "dataset": "mix", "tag": "fcf60_gap40"},
+    {"code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.45 * subtract(0, rank(median_similarity_breakaway_gap_upward)))", "dataset": "mix", "tag": "fcf55_gap45"},
+    {"code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.50 * subtract(0, rank(median_similarity_breakaway_gap_upward)))", "dataset": "mix", "tag": "fcf50_gap50"},
+    {"code": "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.25 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.15 * subtract(0, rank(raw_trend_indicator_3)))", "dataset": "mix", "tag": "fcf60_gap25_tr3_15"},
+    {"code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.30 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.15 * subtract(0, rank(raw_trend_indicator_3)))", "dataset": "mix", "tag": "fcf55_gap30_tr3_15"},
+    {"code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.35 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.15 * subtract(0, rank(raw_trend_indicator_3)))", "dataset": "mix", "tag": "fcf50_gap35_tr3_15"},
+    {"code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.25 * subtract(0, rank(median_similarity_breakaway_gap_upward)), 0.10 * subtract(0, rank(raw_trend_indicator_3)))", "dataset": "mix", "tag": "fcf65_gap25_tr3_10"},
+    {"code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price))), 0.45 * subtract(0, rank(raw_trend_indicator_3)))", "dataset": "mix", "tag": "fcf55_tr3_45"}
+  ]
+}

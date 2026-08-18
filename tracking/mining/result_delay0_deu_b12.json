@@ -1,0 +1,4 @@
+{
+ "note": "delay=0 不可用：mdl106_rv 字段在 DEU delay=0 下不存在（Attempted to use unknown variable），4 表达式全 ERROR",
+ "sim": "3OvQGBesP4sB9RGiWMUYj1R"
+}

@@ -1,0 +1,18 @@
+[
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_country_rank))",
+ "add(0.6*rank(star_hold_global_rank), 0.4*rank(star_hold_industry_rank))",
+ "add(0.5*rank(star_hold_sector_rank), 0.5*rank(star_hold_industry_rank))",
+ "add(0.5*rank(star_hold_global_rank), add(0.3*rank(star_hold_sector_rank), 0.2*rank(star_hold_country_rank)))",
+ "ts_zscore(rank(star_hold_global_rank), 66)",
+ "ts_rank(rank(star_hold_global_rank), 66)",
+ "add(0.5*rank(star_hold_global_rank), 0.5*ts_zscore(rank(star_hold_global_rank), 66))",
+ "add(0.5*rank(star_hold_global_rank), 0.5*rank(star_hold_region_change_rank))",
+ "add(0.7*rank(star_hold_global_rank), 0.3*rank(star_hold_region_change_rank))",
+ "rank(star_hold_global_rank)",
+ "rank(star_hold_global_rank)",
+ "rank(star_hold_global_rank)",
+ "add(0.5*rank(star_hold_global_screening_rank), 0.5*rank(star_hold_region_screening_rank))",
+ "add(0.6*rank(star_hold_global_screening_rank), 0.4*rank(star_hold_global_rank))",
+ "rank(star_hold_global_owner_rank)",
+ "rank(star_hold_global_change_rank)"
+]

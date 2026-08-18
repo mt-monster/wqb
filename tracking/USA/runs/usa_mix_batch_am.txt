@@ -1,0 +1,17 @@
+# AM 批: si3×obim 乘法族精调 (kqPpZqxz 1.09/2y1.06 骨架: 中性化/窗口/三成员/成分), decay4/SUBIND
+# 1: kqPpZqxz 骨架 × INDUSTRY 组标准化
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), industry))
+# 2: loan_util 5d × (impact−spread) 窗口下探
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 5)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 3: loan_util 15d × (impact−spread) 窗口上探
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 4: 三成员乘法 loan_util × dark/lit × (impact−spread)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume)))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 5: loan_util 15d × dark/lit 乘法 (MPGvLPMo 1.03 骨架窗口上探)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 6: max_loan_rate 费率反转 × (impact−spread) 乘法
+quantile(group_zscore(multiply(rank(reverse(ts_decay_linear(vec_avg(max_loan_rate), 10))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 7: new_loaned_share_count 10d × (impact−spread) 乘法 (新借贷量成分)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(new_loaned_share_count), 10)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 8: loan_util 10d × 单 impact 成分 (差值 vs 单值对照)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(vec_avg(trade_market_impact_coefficient))), subindustry))

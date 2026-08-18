@@ -1,0 +1,10 @@
+[
+ "add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),10)), rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ssc),66),10)))",
+ "add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),10)), rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_nip),66),10)))",
+ "add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),10)), rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ghc_lna),66),10)))",
+ "add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),10)), add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ssc),66),10)), rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_nip),66),10))))",
+ "add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),66),10)), add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ssc),66),10)), add(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_nip),66),10)), rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_ghc_lna),66),10)))))",
+ "ts_decay_linear(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),120),22)),5)",
+ "rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),120),44))",
+ "ts_decay_linear(rank(ts_av_diff(ts_backfill(vec_avg(nws20_multiple_comp_event_sentiment_score),120),22)),3)"
+]

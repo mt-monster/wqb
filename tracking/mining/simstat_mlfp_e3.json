@@ -1,0 +1,116 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/bVFe1fQJ4ql9ktBUO5pbsQ",
+   "location_url": "https://api.worldquantbrain.com/simulations/bVFe1fQJ4ql9ktBUO5pbsQ",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "bVFe1fQJ4ql9ktBUO5pbsQ",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2FDMxG3H84YIc2Uu6ICDfgt",
+   "location_url": "https://api.worldquantbrain.com/simulations/2FDMxG3H84YIc2Uu6ICDfgt",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "2FDMxG3H84YIc2Uu6ICDfgt",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2dQEoF2kO4nxcDP138ygO2qv",
+   "location_url": "https://api.worldquantbrain.com/simulations/2dQEoF2kO4nxcDP138ygO2qv",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "2dQEoF2kO4nxcDP138ygO2qv",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/Gc8Me2aL5ejbimEkTLEwF2",
+   "location_url": "https://api.worldquantbrain.com/simulations/Gc8Me2aL5ejbimEkTLEwF2",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "Gc8Me2aL5ejbimEkTLEwF2",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4DSiSOd8K54TcJ58NTj96lM",
+   "location_url": "https://api.worldquantbrain.com/simulations/4DSiSOd8K54TcJ58NTj96lM",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "4DSiSOd8K54TcJ58NTj96lM",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1yIDiucId4WN9aZlw1M0ivo",
+   "location_url": "https://api.worldquantbrain.com/simulations/1yIDiucId4WN9aZlw1M0ivo",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "1yIDiucId4WN9aZlw1M0ivo",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/PSlJV5rw54FceOrWEqrg4N",
+   "location_url": "https://api.worldquantbrain.com/simulations/PSlJV5rw54FceOrWEqrg4N",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "PSlJV5rw54FceOrWEqrg4N",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1HO3fBbrK4Xda55U0JuCbD4",
+   "location_url": "https://api.worldquantbrain.com/simulations/1HO3fBbrK4Xda55U0JuCbD4",
+   "error": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists.",
+   "status": "ERROR",
+   "alpha": null,
+   "raw": {
+    "id": "1HO3fBbrK4Xda55U0JuCbD4",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+   },
+   "extra_info": ""
+  }
+ ]
+}

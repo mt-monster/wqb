@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "reverse(rank(vec_avg(rsk60_offer)))",
+    "rank(ts_mean(vec_avg(rsk60_offer), 10))",
+    "ts_decay_linear(reverse(rank(vec_avg(rsk60_crowding))), 10)",
+    "ts_decay_linear(reverse(rank(vec_avg(rsk60_offer))), 15)",
+    "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(rsk60_offer))), 0.5), 3), 15)",
+    "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(rsk60_crowding))), 0.5), 3), 10)",
+    "reverse(group_rank(vec_avg(rsk60_offer), subindustry))",
+    "ts_decay_linear(reverse(rank(ts_mean(subtract(vec_avg(rsk60_offer), vec_avg(lending_fee_bid_rate)), 10))), 10)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

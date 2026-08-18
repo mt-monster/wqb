@@ -1,0 +1,17 @@
+# AO 批: si3×obim 乘法族 decay2 矩阵 (波10 教训: decay2 是 margin/tv 双解锁点), decay2/SUBIND
+# 1: SUBIND 冠军骨架 (RRmx1VKa 1.10) decay2
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 2: INDUSTRY 冠军骨架 (xAN7NPkb 1.13) decay2
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), industry))
+# 3: 窗口 10d decay2 对照
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 4: 窗口 20d decay2 对照
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 20)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 5: ×dark/lit 10d 乘法 decay2 (MPGvLPMo 1.03 骨架)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 6: ×dark/lit 15d 乘法 decay2 (MPGvL1Zz 1.07 骨架)
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 7: loan_util 15d ts_mean3 平滑变化 × (impact−spread) decay2
+quantile(group_zscore(multiply(rank(ts_mean(ts_av_diff(vec_avg(loan_utilization_ratio), 15), 3)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), subindustry))
+# 8: loan_util 15d × ts_decay5(impact)−spread decay2
+quantile(group_zscore(multiply(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(ts_decay_linear(vec_avg(trade_market_impact_coefficient), 5), vec_avg(mean_relative_bid_ask_spread)))), subindustry))

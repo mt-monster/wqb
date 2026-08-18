@@ -62,3 +62,6 @@ cleanup_tmp.py
 # agent/IDE state
 .qoder/
 .vscode/
+
+# Skills mirror (local sync copy, not project code)
+.qoder-cn/

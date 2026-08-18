@@ -1,0 +1,17 @@
+# AS 批: macro38 冠军骨架精调 (MAHILO 1.33/ADX 1.26/CCI 1.23, tv 达标, margin 待解锁), decay4/SUBIND
+# 1: MAHILO 信号 decay2 (margin 解锁测试, 波10 教训)
+quantile(mcr38_mahilo_signal)
+# 2: MAHILO × MAHILO 强度 乘法 (信号加权确认)
+quantile(multiply(rank(mcr38_mahilo_signal), rank(mcr38_mahilo_strength)))
+# 3: MAHILO × ADX 强度 乘法 (趋势强度确认)
+quantile(multiply(rank(mcr38_mahilo_signal), rank(mcr38_adx_strength)))
+# 4: ADX × ADX 强度 乘法 (趋势方向加权)
+quantile(multiply(rank(mcr38_adx_signal), rank(mcr38_adx_strength)))
+# 5: CCI 40d 信号 decay8 (压换手到 30% 内)
+quantile(mcr38_cci_40_signal)
+# 6: CCI 40d × CCI 强度 乘法
+quantile(multiply(rank(mcr38_cci_40_signal), rank(mcr38_cci_40_strength)))
+# 7: MAHILO + ADX 加法复合 (双趋势确认)
+quantile(add(rank(mcr38_mahilo_signal), rank(mcr38_adx_signal)))
+# 8: MAHILO 信号 5d 变化 (趋势转向信号)
+quantile(ts_av_diff(mcr38_mahilo_signal, 5))

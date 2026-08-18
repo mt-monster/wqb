@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 8 alpha expressions",
+ "async": true,
+ "multisimulation_id": "zXMI03Sn54x92lmKBWUjJH",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/zXMI03Sn54x92lmKBWUjJH",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/zXMI03Sn54x92lmKBWUjJH",
+ "submitted_expressions": [
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_60m_active_return,66),22),ts_mean(ts_backfill(change_3m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_24m_active_return,66),22),ts_mean(ts_backfill(change_6m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_twelve_month_active_return,66),22),ts_mean(ts_backfill(change_1m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_to_price,66),22),ts_mean(ts_backfill(change_3y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_cashflow_to_price,66),22),ts_mean(ts_backfill(change_3y_cashflow_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_5y_relative_earnings_to_price,66),22),ts_mean(ts_backfill(change_1y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_12m_alpha,66),22),ts_mean(ts_backfill(change_60m_alpha,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_36m_active_return,66),22),ts_mean(ts_backfill(change_9m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

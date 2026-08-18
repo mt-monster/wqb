@@ -1,0 +1,8 @@
+reverse(quantile(ts_decay_linear(divide(implied_volatility_put_30, implied_volatility_call_30), 10)))
+reverse(quantile(ts_decay_linear(divide(implied_volatility_put_60, implied_volatility_call_60), 10)))
+reverse(quantile(group_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), subindustry)))
+reverse(quantile(signed_power(divide(implied_volatility_put_30, implied_volatility_call_30), 0.5)))
+reverse(quantile(ts_av_diff(divide(implied_volatility_put_30, implied_volatility_call_30), 10)))
+reverse(quantile(ts_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), 60)))
+reverse(quantile(divide(implied_volatility_put_60, implied_volatility_call_60)))
+reverse(quantile(divide(implied_volatility_put_20, implied_volatility_call_20)))

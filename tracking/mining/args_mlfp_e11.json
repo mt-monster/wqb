@@ -1,0 +1,27 @@
+{
+ "tag": "e11",
+ "ts": "2026-08-05 21:16:02",
+ "labels": [
+  "T12_qual",
+  "T12_qual2"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "if_else(greater(abs(change_dispersion_fy2_eps_estimates), 0.001), ts_scale(change_3m_revision_fy2_eps, 60), 0)",
+   "if_else(greater(change_3m_revision_fy2_eps, 0), ts_rank(change_dispersion_fy2_eps_estimates, 60), 0)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

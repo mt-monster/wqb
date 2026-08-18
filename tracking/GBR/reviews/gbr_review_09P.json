@@ -1,0 +1,46 @@
+{
+ "tag": "09P",
+ "region": "GBR",
+ "all": [
+  {
+   "id": "1YpradxJ",
+   "code": "rank(ts_std_dev(avg_similarity_v_reversal_bottom_120,30))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.03,
+   "fitness": -0.0,
+   "two_year_sharpe": -0.58,
+   "margin_bp": -0.18,
+   "turnover_pct": 9.79,
+   "rn_sharpe": 0.21,
+   "rn_fitness": 0.04,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:08:59"
+  },
+  {
+   "id": "qMNQPlW1",
+   "code": "subtract(rank(avg_similarity_falling_wedge_pattern_120),ts_mean(rank(avg_similarity_falling_wedge_pattern_120)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.89,
+   "fitness": -0.4,
+   "two_year_sharpe": -0.77,
+   "margin_bp": -3.97,
+   "turnover_pct": 15.85,
+   "rn_sharpe": -0.02,
+   "rn_fitness": -0.0,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:08:58"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

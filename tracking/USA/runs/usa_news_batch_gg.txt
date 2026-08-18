@@ -1,0 +1,8 @@
+quantile(group_zscore(subtract(negative_sentiment_average_pre5, negative_sentiment_average_12), subindustry))
+reverse(quantile(group_zscore(subtract(negative_sentiment_average_pre5, negative_sentiment_average_12), subindustry)))
+quantile(group_zscore(subtract(neutral_sentiment_mean_value_2, neutral_sentiment_mean_value_6), subindustry))
+quantile(group_zscore(subtract(positive_sentiment_typical_value, negative_sentiment_peak_score_12), subindustry))
+quantile(group_zscore(subtract(positive_sentiment_peak_value_7, positive_sentiment_peak_value_2), subindustry))
+quantile(group_zscore(neutral_sentiment_typical_value, subindustry))
+reverse(quantile(group_zscore(neutral_sentiment_average_7, subindustry)))
+quantile(group_zscore(subtract(positive_sentiment_mean_score_12, negative_sentiment_least_score_12), subindustry))

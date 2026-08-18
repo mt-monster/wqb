@@ -1,0 +1,118 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/GvGAS8wm4ATb0H1aNAniM9l",
+ "ts": 1785910388.1372783,
+ "alphas": [
+  {
+   "id": "j26QAwZO",
+   "field": "predicted_first_quantile_ten_day_return_4",
+   "sh": 0.91,
+   "fit": 0.29,
+   "tvr": 0.1948,
+   "2y": 0.61,
+   "margin": 0.000203,
+   "subU": 0.63,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "rK2mOzlj",
+   "field": "predicted_first_quantile_ten_day_return_tech1_1",
+   "sh": 1.17,
+   "fit": 0.43,
+   "tvr": 0.1912,
+   "2y": 0.56,
+   "margin": 0.000268,
+   "subU": 0.81,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "wpaVZzEp",
+   "field": "predicted_first_quantile_ten_day_return_24",
+   "sh": 1.15,
+   "fit": 0.42,
+   "tvr": 0.1988,
+   "2y": 1.47,
+   "margin": 0.00026,
+   "subU": 0.94,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "ZYELblK0",
+   "field": "predicted_first_quantile_ten_day_return",
+   "sh": 1.52,
+   "fit": 0.64,
+   "tvr": 0.2008,
+   "2y": 1.32,
+   "margin": 0.000354,
+   "subU": 1.12,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "wpaVZzap",
+   "field": "predicted_first_quantile_ten_day_return_23",
+   "sh": 1.65,
+   "fit": 0.7,
+   "tvr": 0.1904,
+   "2y": 1.51,
+   "margin": 0.000364,
+   "subU": 1.17,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "omNeLzN6",
+   "field": "predicted_first_quantile_ten_day_return_3",
+   "sh": 1.48,
+   "fit": 0.6,
+   "tvr": 0.1958,
+   "2y": 1.38,
+   "margin": 0.000334,
+   "subU": 1.12,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "WjAmbX7j",
+   "field": "predicted_first_quantile_ten_day_return_22",
+   "sh": 1.28,
+   "fit": 0.5,
+   "tvr": 0.1911,
+   "2y": 2.18,
+   "margin": 0.000308,
+   "subU": 0.8,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_GLB_EMEA_SHARPE"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,304 @@
+{
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1DDHgi6q50x8RP2vwbOezW",
+   "location_url": "https://api.worldquantbrain.com/simulations/1DDHgi6q50x8RP2vwbOezW",
+   "error": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[TSPrice:1]\", found \"Unit[]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "WARNING",
+   "alpha": "omN2O3gb",
+   "raw": {
+    "id": "1DDHgi6q50x8RP2vwbOezW",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_60m_active_return,66),22),ts_mean(ts_backfill(change_3m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "WARNING",
+    "message": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[TSPrice:1]\", found \"Unit[]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 195,
+     "type": "UNITS",
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    },
+    "alpha": "omN2O3gb"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3hGBkz1hb4KWcG0qLIt4GVx",
+   "location_url": "https://api.worldquantbrain.com/simulations/3hGBkz1hb4KWcG0qLIt4GVx",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "e73ARd3O",
+   "raw": {
+    "id": "3hGBkz1hb4KWcG0qLIt4GVx",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_24m_active_return,66),22),ts_mean(ts_backfill(change_6m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "COMPLETE",
+    "alpha": "e73ARd3O"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4xzhxo1Wm4S0aaYNU5bDNJk",
+   "location_url": "https://api.worldquantbrain.com/simulations/4xzhxo1Wm4S0aaYNU5bDNJk",
+   "error": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "WARNING",
+   "alpha": "78zO9az2",
+   "raw": {
+    "id": "4xzhxo1Wm4S0aaYNU5bDNJk",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_twelve_month_active_return,66),22),ts_mean(ts_backfill(change_1m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "WARNING",
+    "message": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 204,
+     "type": "UNITS",
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    },
+    "alpha": "78zO9az2"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/miGIzalQ4TIco83IAr6gUg",
+   "location_url": "https://api.worldquantbrain.com/simulations/miGIzalQ4TIco83IAr6gUg",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "LLGeJg76",
+   "raw": {
+    "id": "miGIzalQ4TIco83IAr6gUg",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_eps_to_price,66),22),ts_mean(ts_backfill(change_3y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "COMPLETE",
+    "alpha": "LLGeJg76"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/42Q8Qa9mt4RS8SEfZlKBPqc",
+   "location_url": "https://api.worldquantbrain.com/simulations/42Q8Qa9mt4RS8SEfZlKBPqc",
+   "error": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[TSPrice:1,TSShare:1]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "WARNING",
+   "alpha": "WjAk8a7O",
+   "raw": {
+    "id": "42Q8Qa9mt4RS8SEfZlKBPqc",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_1y_cashflow_to_price,66),22),ts_mean(ts_backfill(change_3y_cashflow_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "WARNING",
+    "message": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[TSPrice:1,TSShare:1]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 202,
+     "type": "UNITS",
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    },
+    "alpha": "WjAk8a7O"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3Z3OLFb9l5cdbyuU59pTRhu",
+   "location_url": "https://api.worldquantbrain.com/simulations/3Z3OLFb9l5cdbyuU59pTRhu",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "ak1JvAL6",
+   "raw": {
+    "id": "3Z3OLFb9l5cdbyuU59pTRhu",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_5y_relative_earnings_to_price,66),22),ts_mean(ts_backfill(change_1y_eps_to_price,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "COMPLETE",
+    "alpha": "ak1JvAL6"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/9GdwrdZQ4MabD5RoSFIF1m",
+   "location_url": "https://api.worldquantbrain.com/simulations/9GdwrdZQ4MabD5RoSFIF1m",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "E5G3Jgv0",
+   "raw": {
+    "id": "9GdwrdZQ4MabD5RoSFIF1m",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_12m_alpha,66),22),ts_mean(ts_backfill(change_60m_alpha,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "COMPLETE",
+    "alpha": "E5G3Jgv0"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1dcmhi1gW4WtahcU7rIGPvN",
+   "location_url": "https://api.worldquantbrain.com/simulations/1dcmhi1gW4WtahcU7rIGPvN",
+   "error": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+   "status": "WARNING",
+   "alpha": "gJ8vpRQQ",
+   "raw": {
+    "id": "1dcmhi1gW4WtahcU7rIGPvN",
+    "parent": "zXMI03Sn54x92lmKBWUjJH",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "EUR",
+     "universe": "TOP1200",
+     "delay": 1,
+     "decay": 4,
+     "neutralization": "COUNTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "OFF",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_36m_active_return,66),22),ts_mean(ts_backfill(change_9m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.35",
+    "status": "WARNING",
+    "message": "Incompatible unit for input of \"subtract\" at index 1, expected \"Unit[]\", found \"Unit[TSPrice:1]\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+     "line": 1,
+     "start": 0,
+     "end": 195,
+     "type": "UNITS",
+     "property": "regular"
+    },
+    "links": {
+     "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    },
+    "alpha": "gJ8vpRQQ"
+   },
+   "extra_info": ""
+  }
+ ]
+}

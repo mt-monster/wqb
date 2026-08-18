@@ -1,0 +1,28 @@
+{
+ "success": true,
+ "multisimulation_id": "3dzvTaaVt4m2aqmkZMNeuy0",
+ "child_count": 5,
+ "children": [
+  {
+   "location": "FYY2a4IZ4uu9ZU9FgbAfm9",
+   "location_url": "https://api.worldquantbrain.com/simulations/FYY2a4IZ4uu9ZU9FgbAfm9"
+  },
+  {
+   "location": "1lPhix7Ox51Bb0ep20eNVmE",
+   "location_url": "https://api.worldquantbrain.com/simulations/1lPhix7Ox51Bb0ep20eNVmE"
+  },
+  {
+   "location": "1hHQvz7cF4XzaGQzoZTsFA4",
+   "location_url": "https://api.worldquantbrain.com/simulations/1hHQvz7cF4XzaGQzoZTsFA4"
+  },
+  {
+   "location": "3byEJIcRY4Xy9UCvcOK6jjU",
+   "location_url": "https://api.worldquantbrain.com/simulations/3byEJIcRY4Xy9UCvcOK6jjU"
+  },
+  {
+   "location": "1na30dh2H5jXatKon5yHUaO",
+   "location_url": "https://api.worldquantbrain.com/simulations/1na30dh2H5jXatKon5yHUaO"
+  }
+ ],
+ "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
+}

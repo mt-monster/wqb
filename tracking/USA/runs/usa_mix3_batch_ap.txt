@@ -1,0 +1,19 @@
+# AP 批: 3/4 数据集混合放大验证 (用户 2026-08-16 授权: 上限不止 2, 优先获取 alpha), decay4/SUBIND
+# 对照基线(波11 双数据集): S10+DL=0.94(RRmxpwxa) / E42+DL=0.88(QPGRE2RM) / S15×IS=1.10-1.13(xAN7NPkb)
+# 信号腿: E42=EPS42d惊喜(0.45) DL=dark/lit(0.51) S10/S15=si3借贷10/15d变化 IS=impact−spread(0.60) I1=inst6占比复合(1.03)
+# 1: [si3+obim+anl44] 0.94 冠军(S10+DL)直接加第三腿 E42
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), subindustry))
+# 2: [si3+obim+anl44] 乘法冠军腿改加法(S15+IS)+E42 第三腿
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), subindustry))
+# 3: [anl44+obim+si3] 0.88 冠军(E42+DL)加 si3 第三腿 S15
+quantile(group_zscore(add(add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15))), subindustry))
+# 4: [si3+anl44+obim] 门控乘法: 信号和(S15+E42) × dark/lit 知情门
+quantile(group_zscore(multiply(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), subindustry))
+# 5: [si3+obim+inst6] 无 anl44 三腿(规避 analyst44 数据 2y 缺口): S10+DL+I1
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(subtract(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners), divide(quantity_institutional_shares_acquired, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed))))), subindustry))
+# 6: [si3+obim+anl44+inst6] 四腿等权: (S15+IS)+(E42+I1)
+quantile(group_zscore(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15)), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), add(rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42)), rank(subtract(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners), divide(quantity_institutional_shares_acquired, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed)))))), subindustry))
+# 7: [si3+obim+anl44+inst6] 四腿: 0.94 冠军(S10+DL)+E42+I1
+quantile(group_zscore(add(add(add(rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10)), rank(divide(vec_sum(dark_trade_volume), add(vec_sum(dark_trade_volume), vec_sum(lit_trade_volume))))), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), rank(subtract(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners), divide(quantity_institutional_shares_acquired, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed))))), subindustry))
+# 8: [si3+obim+anl44] 主腿加权 2:1:1: 2×S15+IS+E42
+quantile(group_zscore(add(add(multiply(2, rank(ts_av_diff(vec_avg(loan_utilization_ratio), 15))), rank(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)))), rank(ts_delta(anl44_eps_best_eeps_cur_yr, 42))), subindustry))

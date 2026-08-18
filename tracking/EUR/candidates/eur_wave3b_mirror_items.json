@@ -1,0 +1,10 @@
+[
+  {"code": "subtract(0, rank(long_term_free_cash_flow_to_price_2))", "note": "mirror_fcf_d4", "decay": 4},
+  {"code": "subtract(0, rank(long_term_free_cash_flow_to_price_2))", "note": "mirror_fcf_d2", "decay": 2},
+  {"code": "subtract(0, rank(long_term_free_cash_flow_to_price_2))", "note": "mirror_fcf_d0", "decay": 0},
+  {"code": "subtract(0, rank(long_term_value_analyst_europe_rank))", "note": "mirror_valana", "decay": 4},
+  {"code": "subtract(0, rank(long_term_estimate_revision_europe_rank))", "note": "mirror_estrev", "decay": 4},
+  {"code": "subtract(0, rank(long_term_financial_statement_rank_europe))", "note": "mirror_finst", "decay": 4},
+  {"code": "subtract(0, rank(long_term_momentum_analyst_europe_rank))", "note": "mirror_momana", "decay": 4},
+  {"code": "subtract(0, rank(long_term_deep_value_europe_rank))", "note": "mirror_deepval", "decay": 4}
+]

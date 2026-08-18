@@ -1,0 +1,14 @@
+[
+  {"code": "rank(vec_avg(nws104_prob_pos))"},
+  {"code": "subtract(0, rank(vec_avg(nws104_prob_neg)))"},
+  {"code": "rank(vec_avg(nws104_marketimpactscore))"},
+  {"code": "rank(vec_avg(nws104_sentiment))"},
+  {"code": "rank(vec_avg(nws104_relevance))"},
+  {"code": "rank(vec_avg(nws104_confidence))"},
+  {"code": "rank(vec_max(nws104_marketimpactscore))"},
+  {"code": "rank(vec_sum(nws104_prob_pos))"},
+  {"code": "add(0.5 * rank(vec_avg(nws104_prob_pos)), 0.5 * rank(vec_avg(nws104_marketimpactscore)))"},
+  {"code": "add(0.34 * rank(vec_avg(nws104_prob_pos)), 0.33 * subtract(0, rank(vec_avg(nws104_prob_neg))), 0.33 * rank(vec_avg(nws104_marketimpactscore)))"},
+  {"code": "add(0.34 * rank(vec_avg(nws104_marketimpactscore)), 0.33 * rank(vec_avg(nws104_relevance)), 0.33 * rank(vec_avg(nws104_sentiment)))"},
+  {"code": "rank(ts_av_diff(vec_avg(nws104_marketimpactscore), 20))"}
+]

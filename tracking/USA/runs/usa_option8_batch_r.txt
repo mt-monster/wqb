@@ -1,0 +1,8 @@
+reverse(quantile(implied_volatility_put_60))
+reverse(quantile(implied_volatility_mean_90))
+reverse(quantile(ts_decay_linear(implied_volatility_call_60, 20)))
+reverse(quantile(ts_zscore(parkinson_volatility_90, 120)))
+reverse(quantile(group_zscore(implied_volatility_mean_60, industry)))
+reverse(quantile(ts_delta(historical_volatility_60, 20)))
+reverse(quantile(divide(implied_volatility_mean_60, parkinson_volatility_60)))
+reverse(signed_power(quantile(implied_volatility_mean_30), 0.5))

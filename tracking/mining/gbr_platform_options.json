@@ -1,0 +1,389 @@
+{
+ "instrument_options": [
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "USA",
+   "Delay": 1,
+   "Universe": [
+    "TOP3000",
+    "TOP2000",
+    "TOP1000",
+    "TOP500",
+    "TOP200",
+    "ILLIQUID_MINVOL1M",
+    "TOPSP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "USA",
+   "Delay": 0,
+   "Universe": [
+    "TOP3000",
+    "TOP2000",
+    "TOP1000",
+    "TOP500",
+    "TOP200",
+    "ILLIQUID_MINVOL1M",
+    "TOPSP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "GLB",
+   "Delay": 1,
+   "Universe": [
+    "TOP3000",
+    "MINVOL1M",
+    "MINVOL10M",
+    "TOPDIV3000"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "COUNTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "EUR",
+   "Delay": 1,
+   "Universe": [
+    "TOP2500",
+    "TOP1200",
+    "TOP800",
+    "TOP400",
+    "ILLIQUID_MINVOL1M",
+    "TOPCS1600"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "COUNTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "EUR",
+   "Delay": 0,
+   "Universe": [
+    "TOP2500",
+    "TOP1200",
+    "TOP800",
+    "TOP400",
+    "ILLIQUID_MINVOL1M",
+    "TOPCS1600"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "COUNTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "ASI",
+   "Delay": 1,
+   "Universe": [
+    "MINVOL1M",
+    "MINVOL10M",
+    "ILLIQUID_MINVOL1M",
+    "TOP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "COUNTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "CHN",
+   "Delay": 0,
+   "Universe": [
+    "TOP2000U"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "CHN",
+   "Delay": 1,
+   "Universe": [
+    "TOP2000U"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "KOR",
+   "Delay": 1,
+   "Universe": [
+    "TOP600"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "HKG",
+   "Delay": 1,
+   "Universe": [
+    "TOP800",
+    "TOP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "IND",
+   "Delay": 1,
+   "Universe": [
+    "TOP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "MEA",
+   "Delay": 1,
+   "Universe": [
+    "TOP400",
+    "TOP300"
+   ],
+   "Neutralization": [
+    "NONE",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "COUNTRY"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "DEU",
+   "Delay": 1,
+   "Universe": [
+    "TOP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "DEU",
+   "Delay": 0,
+   "Universe": [
+    "TOP500"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "GBR",
+   "Delay": 1,
+   "Universe": [
+    "TOP700"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  },
+  {
+   "InstrumentType": "EQUITY",
+   "Region": "GBR",
+   "Delay": 0,
+   "Universe": [
+    "TOP700"
+   ],
+   "Neutralization": [
+    "NONE",
+    "REVERSION_AND_MOMENTUM",
+    "STATISTICAL",
+    "CROWDING",
+    "FAST",
+    "SLOW",
+    "MARKET",
+    "SECTOR",
+    "INDUSTRY",
+    "SUBINDUSTRY",
+    "SLOW_AND_FAST"
+   ]
+  }
+ ],
+ "total_combinations": 16,
+ "instrument_types": [
+  "EQUITY"
+ ],
+ "regions_by_type": {
+  "EQUITY": [
+   "USA",
+   "GLB",
+   "EUR",
+   "ASI",
+   "CHN",
+   "KOR",
+   "HKG",
+   "IND",
+   "MEA",
+   "DEU",
+   "GBR"
+  ]
+ },
+ "from_cache": false
+}

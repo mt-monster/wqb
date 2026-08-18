@@ -1,0 +1,10 @@
+[
+  {"code": "subtract(0, rank(long_term_trailing_free_cash_flow_to_price))", "note": "fcf_long_b"},
+  {"code": "subtract(0, rank(mid_term_trailing_free_cash_flow_to_price))", "note": "fcf_mid"},
+  {"code": "subtract(0, rank(short_term_trailing_free_cash_flow_to_price))", "note": "fcf_short"},
+  {"code": "subtract(0, rank(ts_delta(long_term_free_cash_flow_to_price_2, 66)))", "note": "fcf_d66"},
+  {"code": "add(0.5 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.5 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_LS"},
+  {"code": "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * rank(ts_delta(short_term_trailing_free_cash_flow_to_price, 20)))", "note": "fcf_LmixD"},
+  {"code": "subtract(0, rank(long_term_growth_flow_to_price_2))", "note": "gflow_L"},
+  {"code": "subtract(0, rank(mid_term_growth_flow_to_price_ratio))", "note": "gflow_M"}
+]

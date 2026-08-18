@@ -1,0 +1,29 @@
+{
+  "batch": "b2",
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "instrument_type": "EQUITY",
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.15,
+  "decay": 20,
+  "max_trade": "ON",
+  "pasteurization": "ON",
+  "nan_handling": "OFF",
+  "unit_handling": "VERIFY",
+  "language": "FASTEXPR",
+  "test_period": "P0Y0M",
+  "dataset": "news104",
+  "pyramid_target": "ASI/D1/news x1.3",
+  "changes_from_b1": "decay 6->20 (turnover control), truncation 0.08->0.15 (fix CONCENTRATED_WEIGHT), focus reversal+marketimpactscore, add ts_rank/ts_mean/ts_zscore smooth skeletons",
+  "expressions": [
+    "ts_decay_linear(subtract(0, signed_power(subtract(group_rank(vec_avg(nws104_sentiment), subindustry), 0.5), 7)), 120)",
+    "ts_decay_linear(subtract(0, signed_power(subtract(group_rank(vec_avg(nws104_sentiment), subindustry), 0.5), 5)), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 0.5), 5), 120)",
+    "ts_decay_linear(subtract(0, signed_power(subtract(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 0.5), 7)), 120)",
+    "subtract(0, ts_rank(vec_avg(nws104_sentiment), 60))",
+    "group_rank(ts_mean(vec_avg(nws104_marketimpactscore), 20), subindustry)",
+    "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(nws104_marketimpactscore), subindustry), 0.5), 7), 90)",
+    "subtract(0, ts_zscore(vec_avg(nws104_sentiment), 60))"
+  ]
+}

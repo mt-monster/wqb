@@ -1,0 +1,18 @@
+[
+  {"code": "rank(momentum_bid_price_daily)", "note": "bid momentum daily 原始"},
+  {"code": "subtract(0, rank(momentum_bid_price_daily))", "note": "bid momentum daily 镜像"},
+  {"code": "rank(momentum_ask_price_daily)", "note": "ask momentum daily 原始"},
+  {"code": "subtract(0, rank(momentum_ask_price_daily))", "note": "ask momentum daily 镜像"},
+  {"code": "rank(mean_return_last_trade_price_interval)", "note": "intraday return 原始"},
+  {"code": "subtract(0, rank(mean_return_last_trade_price_interval))", "note": "intraday return 镜像"},
+  {"code": "rank(corr_volume_with_bid_price_first_half)", "note": "vol-bid corr 1H 原始"},
+  {"code": "subtract(0, rank(corr_volume_with_bid_price_first_half))", "note": "vol-bid corr 1H 镜像"},
+  {"code": "rank(corr_volume_with_ask_price_last_half)", "note": "vol-ask corr 2H 原始"},
+  {"code": "subtract(0, rank(corr_volume_with_ask_price_last_half))", "note": "vol-ask corr 2H 镜像"},
+  {"code": "rank(momentum_bid_price_last_half)", "note": "bid momentum 2H 原始"},
+  {"code": "subtract(0, rank(momentum_bid_price_last_half))", "note": "bid momentum 2H 镜像"},
+  {"code": "add(0.5*rank(momentum_bid_price_daily), 0.5*rank(momentum_ask_price_daily))", "note": "bid+ask momentum 复合"},
+  {"code": "add(0.5*subtract(0, rank(momentum_bid_price_daily)), 0.5*subtract(0, rank(momentum_ask_price_daily)))", "note": "bid+ask momentum 双镜像"},
+  {"code": "add(0.4*rank(momentum_bid_price_daily), add(0.3*rank(mean_return_last_trade_price_interval), 0.3*rank(corr_volume_with_bid_price_first_half)))", "note": "momentum+return+volcorr 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(momentum_bid_price_daily)), add(0.3*subtract(0, rank(mean_return_last_trade_price_interval)), 0.3*subtract(0, rank(corr_volume_with_bid_price_first_half))))", "note": "momentum+return+volcorr 三路镜像"}
+]

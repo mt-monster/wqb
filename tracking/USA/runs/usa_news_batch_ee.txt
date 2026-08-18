@@ -1,0 +1,8 @@
+reverse(quantile(negative_sentiment_average_12))
+reverse(quantile(group_zscore(negative_sentiment_typical_value, subindustry)))
+reverse(quantile(group_zscore(negative_sentiment_peak_score_12, subindustry)))
+reverse(quantile(group_zscore(negative_sentiment_middle_score_12, subindustry)))
+reverse(quantile(group_rank(negative_sentiment_median_pre5, industry)))
+reverse(quantile(group_zscore(negative_sentiment_mean_value_4, sector)))
+reverse(quantile(ts_decay_linear(group_zscore(negative_sentiment_typical_value, subindustry), 8)))
+reverse(quantile(signed_power(negative_sentiment_average_7, 0.5)))

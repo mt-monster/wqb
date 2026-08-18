@@ -1,0 +1,143 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/2ffkWE3ej59lbJjCtyA7heO",
+ "ts": 1785877820.5973184,
+ "alphas": [
+  {
+   "id": "O0GaRjNJ",
+   "code": "ts_rank(ts_backfill(winsorize(ern3_pre_interval, std=5), 60), 44)",
+   "sh": -0.56,
+   "fit": -0.32,
+   "tvr": 0.0867,
+   "ret": -0.0412,
+   "2y": -1.17,
+   "rn": -0.44,
+   "subU": -0.54,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "3qpL1OXP",
+   "code": "-ts_rank(ts_backfill(winsorize(ern3_pre_interval, std=5), 60), 44)",
+   "sh": 0.48,
+   "fit": 0.25,
+   "tvr": 0.0866,
+   "ret": 0.0348,
+   "2y": 1.09,
+   "rn": 0.35,
+   "subU": 0.46,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "kqPlvMgl",
+   "code": "ts_rank(ts_backfill(winsorize(ern3_pre_reptime, std=5), 60), 44)",
+   "sh": -0.5,
+   "fit": -0.37,
+   "tvr": 0.0899,
+   "ret": -0.0669,
+   "2y": 0.44,
+   "rn": -0.4,
+   "subU": -0.39,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "blQEJgOM",
+   "code": "-ts_rank(ts_backfill(winsorize(ern3_pre_reptime, std=5), 60), 44)",
+   "sh": 0.43,
+   "fit": 0.29,
+   "tvr": 0.0899,
+   "ret": 0.0573,
+   "2y": -0.5,
+   "rn": 0.32,
+   "subU": 0.34,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGJEwZ9",
+   "code": "ts_rank(ts_backfill(winsorize(ern3_next_interval, std=5), 60), 44)",
+   "sh": -0.64,
+   "fit": -0.41,
+   "tvr": 0.1035,
+   "ret": -0.0523,
+   "2y": -1.14,
+   "rn": -0.43,
+   "subU": -0.57,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "QPGXOAKW",
+   "code": "ts_rank(ts_backfill(winsorize(ern3_next_reptime, std=5), 60), 44)",
+   "sh": -0.02,
+   "fit": -0.0,
+   "tvr": 0.0803,
+   "ret": -0.0035,
+   "2y": -0.28,
+   "rn": -0.1,
+   "subU": 0.14,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "KPGavprp",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(ern3_pre_interval, std=5), 60), 44), industry)",
+   "sh": -0.67,
+   "fit": -0.4,
+   "tvr": 0.0865,
+   "ret": -0.0451,
+   "2y": -0.85,
+   "rn": -0.66,
+   "subU": -0.65,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "e73RNP6l",
+   "code": "add(ts_rank(ts_backfill(winsorize(ern3_pre_interval, std=5), 60), 44), ts_rank(ts_backfill(winsorize(ern3_pre_reptime, std=5), 60), 44))",
+   "sh": -0.68,
+   "fit": -0.42,
+   "tvr": 0.0819,
+   "ret": -0.0482,
+   "2y": -0.97,
+   "rn": -0.5,
+   "subU": -0.72,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

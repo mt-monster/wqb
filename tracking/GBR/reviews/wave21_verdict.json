@@ -1,0 +1,19 @@
+{
+  "wave": 21,
+  "dataset": "shortinterest3",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "证券借贷数据集一轮判弱。24/24 全回测，最强 multiply(rank(ts_delta(vec_avg(loaned_market_value_usd_p5_d1), 66)), -1) sh=0.53 fit=0.17 2y=0.57 tvr15.3%。全部 failed_checks 带 LOW_SHARPE+LOW_FITNESS。借贷活动变化动量在 GBR D1 无强 alpha，不加波。三个 crowd_band tier2 数据集（model238/sentiment27/shortinterest3）全部判弱，轮换路线耗尽。",
+  "top": [
+    {"id": "O071MwAp", "code": "multiply(rank(ts_delta(vec_avg(loaned_market_value_usd_p5_d1), 66)), -1)", "sharpe": 0.53, "fitness": 0.17, "two_year_sharpe": 0.57, "margin_bp": 2.1, "turnover_pct": 15.3, "rn_sharpe": 0.52},
+    {"id": "ZY7RdZ20", "code": "add(0.5 * multiply(rank(ts_delta(vec_avg(loaned_share_count_p5_d1), 66)), -1), 0.5 * multiply(rank(ts_delta(vec_avg(loaned_market_value_usd_p5_d1), 66)), -1))", "sharpe": 0.50, "fitness": 0.16, "two_year_sharpe": 0.38, "margin_bp": 2.0, "turnover_pct": 15.2, "rn_sharpe": 0.50},
+    {"id": "j2j5PlYE", "code": "multiply(rank(ts_delta(vec_avg(loaned_share_count_p5_d1), 66)), -1)", "sharpe": 0.42, "fitness": 0.13, "two_year_sharpe": 0.22, "margin_bp": 1.8, "turnover_pct": 15.1, "rn_sharpe": 0.46}
+  ],
+  "lessons": [
+    "build_wave skeleton 五分类中任何含 add(/multiply( 的表达式都算 linear_mix，配额=size*0.5；multiply(rank(x),-1) 可换成 subtract(0,rank(x)) 变 single 骨架规避配额",
+    "max-field-repeat 配额碰撞会把依赖高频字段的表达式（如 ts_arg_max 变体）整条丢弃，闸6 表达式应挂在低频字段上",
+    "证券借贷活动量 ts_delta 动量 sh 仅 0.53，方向与情绪/持仓一致地弱",
+    "per-bucket 默认 8，multiply>rank 桶超过 8 条须显式 --per-bucket"
+  ],
+  "next": "轮换路线耗尽，转入后备：starmine top2 参数扫描（decay 4/6/8 + 中性化变体）冲 1.58 线。"
+}

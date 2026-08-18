@@ -1,0 +1,84 @@
+{
+ "tag": "02B",
+ "region": "USA",
+ "all": [
+  {
+   "id": "pwNk6PlV",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_forecast_dispersion, std=4), 66), 250)), 0.6), multipl",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.02,
+   "fitness": -0.0,
+   "two_year_sharpe": null,
+   "margin_bp": -0.06,
+   "turnover_pct": 24.3,
+   "rn_sharpe": -0.73,
+   "rn_fitness": -0.18,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:55:52"
+  },
+  {
+   "id": "1YpR7x7R",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.6), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.1,
+   "fitness": -0.01,
+   "two_year_sharpe": null,
+   "margin_bp": -0.32,
+   "turnover_pct": 23.88,
+   "rn_sharpe": -0.09,
+   "rn_fitness": -0.01,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:55:49"
+  },
+  {
+   "id": "JjGkpxOl",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.6), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.34,
+   "fitness": -0.08,
+   "two_year_sharpe": null,
+   "margin_bp": -1.03,
+   "turnover_pct": 24.96,
+   "rn_sharpe": -0.69,
+   "rn_fitness": -0.16,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:55:51"
+  },
+  {
+   "id": "ak18dLn1",
+   "code": "add(multiply(rank(ts_rank(ts_backfill(winsorize(expected_excess_return_forecast, std=4), 66), 250)), 0.6), mul",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.78,
+   "fitness": -0.32,
+   "two_year_sharpe": null,
+   "margin_bp": -3.37,
+   "turnover_pct": 24.53,
+   "rn_sharpe": -1.33,
+   "rn_fitness": -0.45,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:55:53"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

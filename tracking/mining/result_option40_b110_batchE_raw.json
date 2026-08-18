@@ -1,0 +1,32 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  1104,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"success\": true,\n  \"message\": \"Successfully created 2 regular alpha simulations\",\n  \"total_requested\": 2,\n  \"total_created\": 2,\n  \"multisimulation_id\": \"3I0kb8b6D4nVczid9Bvldpa\",\n  \"alpha_results\": [\n    {\n      \"location\": \"https://api.worldquantbrain.com/simulations/1rhLdrboF5479LMSGTsSTdR\",\n      \"error\": \"No alpha ID found in completed simulation\"\n    },\n    {\n      \"location\": \"https://api.worldquantbrain.com/simulations/t2AB986U4iX91EP0fzDmPu\",\n      \"error\": \"No alpha ID found in completed simulation\"\n    }\n  ]\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "success":  true,
+                                                            "message":  "Successfully created 2 regular alpha simulations",
+                                                            "total_requested":  2,
+                                                            "total_created":  2,
+                                                            "multisimulation_id":  "3I0kb8b6D4nVczid9Bvldpa",
+                                                            "alpha_results":  [
+                                                                                  {
+                                                                                      "location":  "https://api.worldquantbrain.com/simulations/1rhLdrboF5479LMSGTsSTdR",
+                                                                                      "error":  "No alpha ID found in completed simulation"
+                                                                                  },
+                                                                                  {
+                                                                                      "location":  "https://api.worldquantbrain.com/simulations/t2AB986U4iX91EP0fzDmPu",
+                                                                                      "error":  "No alpha ID found in completed simulation"
+                                                                                  }
+                                                                              ]
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

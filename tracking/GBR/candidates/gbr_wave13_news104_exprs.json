@@ -1,0 +1,42 @@
+[
+  {
+    "id": "nws_01",
+    "expression": "rank(vec_avg(nws104_prob_pos))",
+    "desc": "News positive probability vector average, ranked. Sentiment momentum."
+  },
+  {
+    "id": "nws_02",
+    "expression": "rank(subtract(vec_avg(nws104_prob_pos), vec_avg(nws104_prob_neg)))",
+    "desc": "News sentiment spread: avg(P(pos)) - avg(P(neg)). Net sentiment."
+  },
+  {
+    "id": "nws_03",
+    "expression": "rank(ts_delta(vec_avg(nws104_sentiment), 5))",
+    "desc": "News sentiment 5-day change. Sentiment momentum shift."
+  },
+  {
+    "id": "nws_04",
+    "expression": "rank(vec_avg(nws104_marketimpactscore))",
+    "desc": "News market impact score average. Event-driven signal."
+  },
+  {
+    "id": "nws_05",
+    "expression": "rank(ts_decay_linear(vec_avg(nws104_prob_pos), 5))",
+    "desc": "News positive probability with 5-day decay. Smoothed sentiment."
+  },
+  {
+    "id": "nws_06",
+    "expression": "rank(multiply(vec_avg(nws104_prob_pos), vec_avg(nws104_confidence)))",
+    "desc": "Positive prob weighted by confidence. High-confidence bullish news."
+  },
+  {
+    "id": "nws_07",
+    "expression": "rank(multiply(vec_avg(nws104_marketimpactscore), vec_avg(nws104_relevance)))",
+    "desc": "Market impact weighted by relevance. High-impact relevant news."
+  },
+  {
+    "id": "nws_08",
+    "expression": "rank(ts_ir(vec_avg(nws104_sentiment), 10))",
+    "desc": "News sentiment 10-day information ratio. Sentiment consistency."
+  }
+]

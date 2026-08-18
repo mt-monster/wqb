@@ -1,0 +1,230 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3L35IjeX54lRaX8MbM1mU3Z",
+ "ts": 1785862028.4957867,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1keR4zdGS59H9C5OXvq0ajk",
+   "location_url": "https://api.worldquantbrain.com/simulations/1keR4zdGS59H9C5OXvq0ajk",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "omNOv5Jb",
+   "raw": {
+    "id": "1keR4zdGS59H9C5OXvq0ajk",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88))",
+    "status": "COMPLETE",
+    "alpha": "omNOv5Jb"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3P8OFTff64J7b272wmkxylR",
+   "location_url": "https://api.worldquantbrain.com/simulations/3P8OFTff64J7b272wmkxylR",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "O0GakPzY",
+   "raw": {
+    "id": "3P8OFTff64J7b272wmkxylR",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 66), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88))",
+    "status": "COMPLETE",
+    "alpha": "O0GakPzY"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/14sTza2hi4pZbLyQ9GXOxH6",
+   "location_url": "https://api.worldquantbrain.com/simulations/14sTza2hi4pZbLyQ9GXOxH6",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "VkGJEjzw",
+   "raw": {
+    "id": "14sTza2hi4pZbLyQ9GXOxH6",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=6), 60), 52), country)",
+    "status": "COMPLETE",
+    "alpha": "VkGJEjzw"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2wAOjqgAe4yzbCzHbZqvU3N",
+   "location_url": "https://api.worldquantbrain.com/simulations/2wAOjqgAe4yzbCzHbZqvU3N",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "0mpvd3g8",
+   "raw": {
+    "id": "2wAOjqgAe4yzbCzHbZqvU3N",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 120), 52), country)",
+    "status": "COMPLETE",
+    "alpha": "0mpvd3g8"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/484HFO8ao4x39Ag9ycE51ns",
+   "location_url": "https://api.worldquantbrain.com/simulations/484HFO8ao4x39Ag9ycE51ns",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "npNVoRqa",
+   "raw": {
+    "id": "484HFO8ao4x39Ag9ycE51ns",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "ts_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), 10)",
+    "status": "COMPLETE",
+    "alpha": "npNVoRqa"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2c1nnte6u4LFbp1Bc6sX4hX",
+   "location_url": "https://api.worldquantbrain.com/simulations/2c1nnte6u4LFbp1Bc6sX4hX",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "vRNg9MGQ",
+   "raw": {
+    "id": "2c1nnte6u4LFbp1Bc6sX4hX",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "zscore(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52))",
+    "status": "COMPLETE",
+    "alpha": "vRNg9MGQ"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2a2yEf8bc4lm8HXBp03XNRS",
+   "location_url": "https://api.worldquantbrain.com/simulations/2a2yEf8bc4lm8HXBp03XNRS",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "vRNg9M6a",
+   "raw": {
+    "id": "2a2yEf8bc4lm8HXBp03XNRS",
+    "parent": "3L35IjeX54lRaX8MbM1mU3Z",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 100))",
+    "status": "COMPLETE",
+    "alpha": "vRNg9M6a"
+   },
+   "extra_info": ""
+  }
+ ]
+}

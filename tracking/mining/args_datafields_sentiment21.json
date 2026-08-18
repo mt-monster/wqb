@@ -1,0 +1,7 @@
+{
+  "dataset_id": "sentiment21",
+  "region": "USA",
+  "delay": 1,
+  "universe": "TOP3000",
+  "instrument_type": "EQUITY"
+}

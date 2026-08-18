@@ -1,0 +1,25 @@
+{
+  "dataset": "pv106",
+  "batch": 3,
+  "multisim": "2AF7BnbDC4ZBa4Aog2dZICG",
+  "settings": {"neutralization": "SECTOR", "decay": 8, "truncation": 0.08, "maxTrade": "ON"},
+  "date": "2026-08-03",
+  "strategy": "窗口扩大(33/44/66/88/110) 提升 fitness 与 2y",
+  "results": [
+    {"expr": "ts_rank(pv106_wli_spread, 88)", "alpha": "GrGPOAlx", "sharpe": 1.24, "fitness": 0.8, "two_year_sharpe": 1.28, "risk_neutralized_sharpe": 1.51, "turnover": 0.23, "margin": 0.000842, "concentrated": 0.33},
+    {"expr": "ts_rank(pv106_wli_spread, 110)", "alpha": "A1G9vZ0R", "sharpe": 1.17, "fitness": 0.76, "two_year_sharpe": 1.27, "risk_neutralized_sharpe": 1.53, "turnover": 0.2215, "margin": 0.000846, "concentrated": 0.33, "cluster": 0.99},
+    {"expr": "ts_rank(slippage_at_spread_20, 66)", "alpha": "LLGWZa9a", "sharpe": 1.19, "fitness": 0.83, "two_year_sharpe": 1.64, "risk_neutralized_sharpe": 1.56, "turnover": 0.1832, "margin": 0.000977, "concentrated": "PASS", "note": "2y达标! 唯一LOW_2Y_SHARPE PASS者; ra_failed 仅 LOW_SHARPE+LOW_FITNESS"},
+    {"expr": "ts_rank(slippage_at_spread_20, 33)", "alpha": "QPGMKk3r", "sharpe": 1.23, "fitness": 0.78, "two_year_sharpe": 1.23, "risk_neutralized_sharpe": 1.46, "turnover": 0.2126, "margin": 0.00081, "concentrated": "PASS"},
+    {"expr": "ts_rank(transaction_cost_maximum, 44)", "alpha": "6Xp7KVrE", "sharpe": 1.23, "fitness": 0.82, "two_year_sharpe": 1.48, "risk_neutralized_sharpe": 1.53, "turnover": 0.1992, "margin": 0.000896, "concentrated": "PASS", "cluster": 0.99},
+    {"expr": "ts_rank(pv106_wli_lastspread, 66)", "alpha": "pwNm5rPx", "sharpe": 1.2, "fitness": 0.66, "two_year_sharpe": 0.92, "risk_neutralized_sharpe": 1.26, "turnover": 0.2849, "margin": 0.000611, "concentrated": 0.23},
+    {"expr": "ts_rank(pv106_wli_spread, 44)", "alpha": "qMN80rW2", "sharpe": 1.54, "fitness": 1.02, "two_year_sharpe": 1.23, "risk_neutralized_sharpe": 1.62, "turnover": 0.2596, "margin": 0.000876, "concentrated": 0.23, "note": "★★ 主候选: fitness✅ risk-neut✅ margin✅ turnover✅; sharpe差0.04, 2y差0.35"},
+    {"expr": "ts_rank(slippage_at_spread_20, 88)", "alpha": "d5Zp1VbX", "sharpe": 1.08, "fitness": 0.75, "two_year_sharpe": 1.54, "risk_neutralized_sharpe": 1.55, "turnover": 0.1731, "margin": 0.000975, "concentrated": "PASS"}
+  ],
+  "takeaways": [
+    "qMN80rW2 (spread 44窗口 decay8): 1.54/1.02/1.62risk — 主候选, 只差 sharpe 0.04 与 2y 0.35",
+    "LLGWZa9a (slippage 66窗口): 2y=1.64 已达标, 但 sharpe 1.19/fitness 0.83 不足",
+    "窗口增大: spread 44→66→88→110 sharpe 1.54→1.40→1.24→1.17 (递减); 2y 基本不变 1.23-1.28",
+    "slippage 窗口 22→33→44→66→88: sharpe 1.24→1.23→1.23→1.19→1.08, 2y 1.30→1.23→1.48→1.64→1.54 (66 最优)",
+    "第4批: decay=12 扫; 第5批: MARKET 中性化扫"
+  ]
+}

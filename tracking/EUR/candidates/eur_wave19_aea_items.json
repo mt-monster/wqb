@@ -1,0 +1,18 @@
+[
+ {"code": "rank(vec_avg(financial_statement_volatility_factor))", "note": "E1 fsvf 原始"},
+ {"code": "subtract(0, rank(vec_avg(financial_statement_volatility_factor)))", "note": "E2 fsvf 镜像"},
+ {"code": "rank(vec_avg(alpha_score))", "note": "E3 alpha_score 原始"},
+ {"code": "subtract(0, rank(vec_avg(alpha_score)))", "note": "E4 alpha_score 镜像"},
+ {"code": "rank(vec_avg(projected_excess_return))", "note": "E5 projected_excess_return 原始"},
+ {"code": "subtract(0, rank(vec_avg(projected_excess_return)))", "note": "E6 projected_excess_return 镜像"},
+ {"code": "rank(vec_avg(accounting_forensics_factor_2))", "note": "E7 acct_forensics_2 原始"},
+ {"code": "subtract(0, rank(vec_avg(accounting_forensics_factor_2)))", "note": "E8 acct_forensics_2 镜像"},
+ {"code": "rank(vec_avg(dividend_growth_rate_factor))", "note": "E9 dividend_growth 原始"},
+ {"code": "subtract(0, rank(vec_avg(dividend_growth_rate_factor)))", "note": "E10 dividend_growth 镜像"},
+ {"code": "rank(vec_avg(analyst_sentiment_consistency_score_2))", "note": "E11 analyst_sentiment 原始"},
+ {"code": "subtract(0, rank(vec_avg(analyst_sentiment_consistency_score_2)))", "note": "E12 analyst_sentiment 镜像"},
+ {"code": "rank(add(vec_avg(financial_statement_volatility_factor), vec_avg(alpha_score)))", "note": "E13 fsvf+alpha_score 复合 原始"},
+ {"code": "subtract(0, rank(add(vec_avg(financial_statement_volatility_factor), vec_avg(alpha_score))))", "note": "E14 fsvf+alpha_score 复合 镜像"},
+ {"code": "rank(add(vec_avg(projected_excess_return), vec_avg(analyst_sentiment_consistency_score_2)))", "note": "E15 proj_exret+analyst_sent 复合 原始"},
+ {"code": "subtract(0, rank(add(vec_avg(projected_excess_return), vec_avg(analyst_sentiment_consistency_score_2))))", "note": "E16 proj_exret+analyst_sent 复合 镜像"}
+]

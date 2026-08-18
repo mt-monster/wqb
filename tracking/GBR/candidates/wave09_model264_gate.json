@@ -1,0 +1,10 @@
+{
+  "wave": "09",
+  "dataset": "model264",
+  "expressions": [
+    "rank(ts_mean(mdl264_3l_bb,10))",
+    "subtract(rank(mdl264_1l_d12ntr),rank(ts_mean(mdl264_1l_d12ntr,20)))",
+    "rank(subtract(mdl264_3l_d36ntr,mdl264_1l_d36ntr))",
+    "rank(ts_delta(ts_delta(mdl264_2l_fmc,5),5))"
+  ]
+}

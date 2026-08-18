@@ -1,0 +1,36 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1xBq9xc9S53Qcr318Hd8Dlnw",
+ "ts": 1785911408.8486419,
+ "alphas": [
+  {
+   "id": "ak13VLk2",
+   "w": "300",
+   "sh": 2.01,
+   "fit": 0.96,
+   "tvr": 0.1953,
+   "2y": 1.51,
+   "margin": 0.000456,
+   "subU": 1.56,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmLAVR1",
+   "w": "350",
+   "sh": 2.01,
+   "fit": 0.96,
+   "tvr": 0.1951,
+   "2y": 1.44,
+   "margin": 0.000458,
+   "subU": 1.58,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

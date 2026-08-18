@@ -1,0 +1,62 @@
+{
+ "tag": "09O",
+ "region": "GBR",
+ "all": [
+  {
+   "id": "ZYEOWQr0",
+   "code": "rank(ts_delta(ts_backfill(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value,66),20))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.04,
+   "fitness": 0.0,
+   "two_year_sharpe": 0.91,
+   "margin_bp": 0.86,
+   "turnover_pct": 2.89,
+   "rn_sharpe": 0.25,
+   "rn_fitness": 0.06,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:03:17"
+  },
+  {
+   "id": "GrGZ3WoP",
+   "code": "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p50_q200_w2_pca_fact3_value,5),20))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.08,
+   "fitness": -0.01,
+   "two_year_sharpe": 1.11,
+   "margin_bp": -1.92,
+   "turnover_pct": 3.45,
+   "rn_sharpe": -0.11,
+   "rn_fitness": -0.02,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:03:19"
+  },
+  {
+   "id": "e73Xq5LE",
+   "code": "subtract(rank(oth455_customer_roam_w1_pca_fact2_value),ts_mean(rank(oth455_customer_roam_w1_pca_fact2_value),6",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.52,
+   "fitness": -0.2,
+   "two_year_sharpe": -1.08,
+   "margin_bp": -6.38,
+   "turnover_pct": 6.08,
+   "rn_sharpe": -0.43,
+   "rn_fitness": -0.14,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T16:03:18"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

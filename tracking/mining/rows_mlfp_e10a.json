@@ -1,0 +1,72 @@
+[
+ {
+  "label": "T1_drev",
+  "sim": "https://api.worldquantbrain.com/simulations/FYY2a4IZ4uu9ZU9FgbAfm9",
+  "status": "COMPLETE",
+  "alpha": "N1bMNX5w",
+  "message": "COMPLETE",
+  "sharpe": -0.36,
+  "fitness": -0.09,
+  "turnover": 0.1558,
+  "returns": -0.0106,
+  "drawdown": 0.1637,
+  "margin": -0.000136,
+  "fail": []
+ },
+ {
+  "label": "T2_small",
+  "sim": "https://api.worldquantbrain.com/simulations/1lPhix7Ox51Bb0ep20eNVmE",
+  "status": "COMPLETE",
+  "alpha": "KPGemxep",
+  "message": "COMPLETE",
+  "sharpe": -0.49,
+  "fitness": -0.21,
+  "turnover": 0.1122,
+  "returns": -0.0238,
+  "drawdown": 0.3211,
+  "margin": -0.000424,
+  "fail": []
+ },
+ {
+  "label": "T5_base",
+  "sim": "https://api.worldquantbrain.com/simulations/1hHQvz7cF4XzaGQzoZTsFA4",
+  "status": "COMPLETE",
+  "alpha": "MPGw099M",
+  "message": "COMPLETE",
+  "sharpe": -0.04,
+  "fitness": -0.0,
+  "turnover": 0.1541,
+  "returns": -0.0009,
+  "drawdown": 0.0571,
+  "margin": -1.1e-05,
+  "fail": []
+ },
+ {
+  "label": "T6_eymom",
+  "sim": "https://api.worldquantbrain.com/simulations/3byEJIcRY4Xy9UCvcOK6jjU",
+  "status": "COMPLETE",
+  "alpha": "xANMrKmb",
+  "message": "COMPLETE",
+  "sharpe": 0.1,
+  "fitness": 0.01,
+  "turnover": 0.231,
+  "returns": 0.0025,
+  "drawdown": 0.0849,
+  "margin": 2.2e-05,
+  "fail": []
+ },
+ {
+  "label": "T7_peg",
+  "sim": "https://api.worldquantbrain.com/simulations/1na30dh2H5jXatKon5yHUaO",
+  "status": "COMPLETE",
+  "alpha": "RRmXEJko",
+  "message": "COMPLETE",
+  "sharpe": 0.04,
+  "fitness": 0.0,
+  "turnover": 0.0739,
+  "returns": 0.0015,
+  "drawdown": 0.1328,
+  "margin": 4.1e-05,
+  "fail": []
+ }
+]

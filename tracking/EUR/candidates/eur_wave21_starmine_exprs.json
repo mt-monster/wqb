@@ -1,0 +1,18 @@
+[
+ "rank(arm_global_rank_score)",
+ "subtract(0, rank(arm_global_rank_score))",
+ "rank(rel_val_global_rank_score_3)",
+ "subtract(0, rank(rel_val_global_rank_score_3))",
+ "rank(price_to_intrinsic_value_region_rank_3)",
+ "subtract(0, rank(price_to_intrinsic_value_region_rank_3))",
+ "rank(predicted_surprise_pct_fy1_earnings_5)",
+ "subtract(0, rank(predicted_surprise_pct_fy1_earnings_5))",
+ "rank(eq_vr_dlra3_new_region_rank)",
+ "subtract(0, rank(eq_vr_dlra3_new_region_rank))",
+ "rank(arm_score_change_30d_4)",
+ "subtract(0, rank(arm_score_change_30d_4))",
+ "add(0.5*rank(arm_global_rank_score), 0.5*rank(rel_val_global_rank_score_3))",
+ "add(0.5*subtract(0, rank(arm_global_rank_score)), 0.5*subtract(0, rank(rel_val_global_rank_score_3)))",
+ "add(0.4*rank(arm_global_rank_score), add(0.3*rank(rel_val_global_rank_score_3), 0.3*rank(predicted_surprise_pct_fy1_earnings_5)))",
+ "add(0.4*subtract(0, rank(arm_global_rank_score)), add(0.3*subtract(0, rank(rel_val_global_rank_score_3)), 0.3*subtract(0, rank(predicted_surprise_pct_fy1_earnings_5))))"
+]

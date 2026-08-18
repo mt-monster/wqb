@@ -1,0 +1,1615 @@
+﻿{
+  "results": [
+    {
+      "id": "call_option_delta_convexity_152d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Rate of change in a call option's delta with respect to the underlying price, 152 days to expiration."
+    },
+    {
+      "id": "call_option_delta_convexity_365d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Gamma (sensitivity of delta to price changes) of the standardized call option at 365 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_delta_convexity_547d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 547-day tenor call option"
+    },
+    {
+      "id": "call_option_exercise_price_182d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Strike price corresponding to the standardized call option gridpoint at 182 days to expiry"
+    },
+    {
+      "id": "call_option_exercise_price_273d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Strike price corresponding to the 273-day tenor call option gridpoint"
+    },
+    {
+      "id": "call_option_exercise_price_730d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Strike price corresponding to the standardized call option gridpoint at 730 days to expiry"
+    },
+    {
+      "id": "call_option_implied_volatility_122d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Implied volatility from OptionMetrics IvyDB US standardized surface for the 122-day tenor call at the ATM/forward gridpoint; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "call_option_implied_volatility_91d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 4,
+      "alphaCount": 5,
+      "description": "Implied volatility for call options at 91 days to expiry from the OptionMetrics standardized surface (annualized)"
+    },
+    {
+      "id": "call_option_market_value_182d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Call option premium (price) at 182 days to expiry from the standard surface"
+    },
+    {
+      "id": "call_option_market_value_273d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Option premium (price) for call options at 273 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "call_option_market_value_30d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Option premium (price) of the standardized call at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_market_value_365d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Option premium (price) for call options at 365 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "call_option_market_value_60d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Option premium (price) for the standard 60-day tenor call option from the OptionMetrics surface"
+    },
+    {
+      "id": "call_option_market_value_91d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Call option premium (price) at 91 days to expiry from the standard surface"
+    },
+    {
+      "id": "call_option_price_sensitivity_30d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the standardized call option at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_price_sensitivity_547d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the call option at 547 days to expiry (price sensitivity per $1 move in the underlying)"
+    },
+    {
+      "id": "call_option_price_sensitivity_60d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the standardized call option at 60 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_price_sensitivity_91d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta (price sensitivity to the underlying) for the standardized 91-day tenor call at the ATM/forward gridpoint from OptionMetrics; D1-lagged and masked if unreâ¦"
+    },
+    {
+      "id": "call_option_projected_underlying_365d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward price of the underlying used for the call option surface at 365 days to expiry"
+    },
+    {
+      "id": "call_option_projected_underlying_60d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Model-implied forward price of the underlying at 60 days to expiry used for the standardized call on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_time_decay_152d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Daily time decay (theta) of the call option price at 152 days to expiry, from the standard OptionMetrics surface"
+    },
+    {
+      "id": "call_option_time_decay_273d",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Theta (time decay) for call options at 273 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "call_option_time_decay_30d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Theta (time decay) of the standardized call option at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "call_option_time_decay_365d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Theta (time decay) for call options at 365 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "call_option_volatility_exposure_182d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Vega of the call option at 182 days to expiry (sensitivity of price to a 1 vol point change)"
+    },
+    {
+      "id": "call_option_volatility_exposure_30d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sensitivity of a call option's price to changes in implied volatility, 30 days to expiration."
+    },
+    {
+      "id": "call_option_volatility_exposure_91d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Vega (sensitivity to implied volatility) for call options at 91 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_01vhp",
+      "type": "MATRIX",
+      "coverage": 0.984,
+      "userCount": 39,
+      "alphaCount": 105,
+      "description": "Historical Parkinson volatility for approximately 10 calendar days"
+    },
+    {
+      "id": "opt40_021vh",
+      "type": "MATRIX",
+      "coverage": 0.9843,
+      "userCount": 35,
+      "alphaCount": 90,
+      "description": "Historical close-to-close volatility for approximately 120 calendar days"
+    },
+    {
+      "id": "opt40_021vhp",
+      "type": "MATRIX",
+      "coverage": 0.9843,
+      "userCount": 31,
+      "alphaCount": 89,
+      "description": "Parkinson historical volatility over last 120 trading days; annualized %"
+    },
+    {
+      "id": "opt40_02vh",
+      "type": "MATRIX",
+      "coverage": 0.984,
+      "userCount": 19,
+      "alphaCount": 93,
+      "description": "Historical close-to-close volatility for approximately 20 calendar days"
+    },
+    {
+      "id": "opt40_02vhp",
+      "type": "MATRIX",
+      "coverage": 0.9842,
+      "userCount": 21,
+      "alphaCount": 60,
+      "description": "Annualized historical Parkinson volatility (based on highâlow prices) over approximately the prior 20 days"
+    },
+    {
+      "id": "opt40_03vh",
+      "type": "MATRIX",
+      "coverage": 0.9842,
+      "userCount": 22,
+      "alphaCount": 53,
+      "description": "Historical volatility over last 30 trading days; annualized %"
+    },
+    {
+      "id": "opt40_03vhp",
+      "type": "MATRIX",
+      "coverage": 0.9842,
+      "userCount": 22,
+      "alphaCount": 83,
+      "description": "Annualized historical Parkinson volatility (based on highâlow prices) over approximately the prior 30 days"
+    },
+    {
+      "id": "opt40_051vh",
+      "type": "MATRIX",
+      "coverage": 0.9843,
+      "userCount": 25,
+      "alphaCount": 69,
+      "description": "Historical close-to-close volatility for approximately 150 calendar days"
+    },
+    {
+      "id": "opt40_051vhp",
+      "type": "MATRIX",
+      "coverage": 0.9843,
+      "userCount": 36,
+      "alphaCount": 98,
+      "description": "Historical Parkinson volatility for approximately 150 calendar days"
+    },
+    {
+      "id": "opt40_06vh",
+      "type": "MATRIX",
+      "coverage": 0.9842,
+      "userCount": 23,
+      "alphaCount": 74,
+      "description": "Historical close-to-close volatility for approximately 60 calendar days"
+    },
+    {
+      "id": "opt40_06vhp",
+      "type": "MATRIX",
+      "coverage": 0.984,
+      "userCount": 26,
+      "alphaCount": 81,
+      "description": "Historical Parkinson volatility for approximately 60 calendar days"
+    },
+    {
+      "id": "opt40_081vh",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 25,
+      "alphaCount": 70,
+      "description": "Historical close-to-close volatility for approximately 180 calendar days"
+    },
+    {
+      "id": "opt40_081vhp",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 24,
+      "alphaCount": 76,
+      "description": "Historical Parkinson volatility for approximately 180 calendar days"
+    },
+    {
+      "id": "opt40_09vh",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 22,
+      "alphaCount": 70,
+      "description": "Annualized historical closeâtoâclose realized volatility over approximately the prior 90 days"
+    },
+    {
+      "id": "opt40_09vhp",
+      "type": "MATRIX",
+      "coverage": 0.984,
+      "userCount": 31,
+      "alphaCount": 155,
+      "description": "Historical Parkinson volatility for approximately 90 calendar days"
+    },
+    {
+      "id": "opt40_call_delta_122days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 88,
+      "alphaCount": 213,
+      "description": "Delta of the standardized call option at 122 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_delta_152days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 20,
+      "alphaCount": 30,
+      "description": "Delta of the call option at 152 days to expiry (price sensitivity per $1 move in the underlying)"
+    },
+    {
+      "id": "opt40_call_delta_182days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 29,
+      "alphaCount": 38,
+      "description": "Delta (price sensitivity to underlying) of call options at 182 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_delta_273days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 28,
+      "alphaCount": 35,
+      "description": "Delta (price sensitivity to underlying) of call options at 273 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_delta_365days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 21,
+      "alphaCount": 29,
+      "description": "Delta (sensitivity of option price to underlying price) for the 365-day tenor call option"
+    },
+    {
+      "id": "opt40_call_delta_730days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 30,
+      "alphaCount": 32,
+      "description": "Delta (sensitivity of option price to underlying price) for the 730-day tenor call option"
+    },
+    {
+      "id": "opt40_call_forwardprice_122days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 15,
+      "alphaCount": 28,
+      "description": "Forward price used for the 122-day tenor call option gridpoint (model forward at that maturity)"
+    },
+    {
+      "id": "opt40_call_forwardprice_152days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Forward price of the underlying used for the call option surface at 152 days to expiry"
+    },
+    {
+      "id": "opt40_call_forwardprice_182days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "182-day forward price of the underlying used for the call option point on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_forwardprice_273days",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 12,
+      "alphaCount": 14,
+      "description": "Forward price of the underlying used for the call option surface at 273 days to expiry"
+    },
+    {
+      "id": "opt40_call_forwardprice_547days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Model-implied forward price of the underlying at 547 days to expiry used for the standardized call on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_forwardprice_730days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Forward price of the underlying corresponding to the standardized call option at 730 days to expiry from the OptionMetrics surface"
+    },
+    {
+      "id": "opt40_call_forwardprice_91days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 6,
+      "alphaCount": 9,
+      "description": "91-day forward price of the underlying used for the call option point on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_gamma_122days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 4,
+      "alphaCount": 7,
+      "description": "Gamma (sensitivity of delta to underlying) for call options at 122 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_gamma_182days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Gamma (sensitivity of delta to price changes) of the standardized call option at 182 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_gamma_273days",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 16,
+      "alphaCount": 18,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 273-day tenor call option"
+    },
+    {
+      "id": "opt40_call_gamma_30days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Gamma (sensitivity of delta to price changes) of the standardized call option at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_gamma_60days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 11,
+      "alphaCount": 22,
+      "description": "Gamma for call options with 60 days to expiration."
+    },
+    {
+      "id": "opt40_call_gamma_91days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 11,
+      "alphaCount": 14,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 91-day tenor call option"
+    },
+    {
+      "id": "opt40_call_premium_122days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Call option premium (price) at 122 days to expiry from the standard surface"
+    },
+    {
+      "id": "opt40_call_premium_152days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 5,
+      "alphaCount": 6,
+      "description": "Call option premium (price) at 152 days to expiry from the standard surface"
+    },
+    {
+      "id": "opt40_call_premium_547days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Option premium (price) for call options at 547 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_premium_730days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Option premium (price) for the standard 730-day tenor call option from the OptionMetrics surface"
+    },
+    {
+      "id": "opt40_call_strikeprice_122days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 11,
+      "alphaCount": 11,
+      "description": "Strike price corresponding to the call option gridpoint at 122 days to expiry on the standard surface"
+    },
+    {
+      "id": "opt40_call_strikeprice_152days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Strike price corresponding to the standardized call option gridpoint at 152 days to expiry"
+    },
+    {
+      "id": "opt40_call_strikeprice_30days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Strike price corresponding to the standardized call option gridpoint at 30 days to expiry"
+    },
+    {
+      "id": "opt40_call_strikeprice_365days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Strike price corresponding to the call option gridpoint at 365 days to expiry on the standard surface"
+    },
+    {
+      "id": "opt40_call_strikeprice_60days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Strike price corresponding to the 60-day tenor call option gridpoint"
+    },
+    {
+      "id": "opt40_call_strikeprice_91days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Strike price for call options with 91 days to expiration."
+    },
+    {
+      "id": "opt40_call_theta_122days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 17,
+      "alphaCount": 28,
+      "description": "Theta (time decay) for call options at 122 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_theta_182days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 17,
+      "alphaCount": 19,
+      "description": "Theta (time decay) for call options at 182 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_call_theta_547days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 21,
+      "alphaCount": 21,
+      "description": "Theta (time decay) of the standardized call option at 547 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_theta_60days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 17,
+      "alphaCount": 21,
+      "description": "Theta for call options with 60 days to expiration."
+    },
+    {
+      "id": "opt40_call_theta_91days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 39,
+      "alphaCount": 61,
+      "description": "Theta (time decay) of the standardized call option at 91 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_vega_122days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 10,
+      "alphaCount": 38,
+      "description": "Vega (sensitivity to implied volatility) of the standardized call option at 122 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_vega_152days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 8,
+      "alphaCount": 26,
+      "description": "Vega (sensitivity to implied volatility) of the standardized call option at 152 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_vega_273days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 14,
+      "alphaCount": 26,
+      "description": "Vega for call options with 273 days to expiration."
+    },
+    {
+      "id": "opt40_call_vega_365days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 26,
+      "alphaCount": 39,
+      "description": "Vega for call options with 365 days to expiration."
+    },
+    {
+      "id": "opt40_call_vega_547days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Vega for call options with 547 days to expiration."
+    },
+    {
+      "id": "opt40_call_vega_60days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 8,
+      "alphaCount": 15,
+      "description": "Vega for call options with 60 days to expiration."
+    },
+    {
+      "id": "opt40_call_vega_730days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 4,
+      "alphaCount": 4,
+      "description": "Vega (sensitivity to implied volatility) of the standardized call option at 730 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_call_volatility_152days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 35,
+      "alphaCount": 45,
+      "description": "Implied volatility for the at-the-money call option at the standard 152-day tenor from the OptionMetrics surface, annualized (decimal)"
+    },
+    {
+      "id": "opt40_call_volatility_182days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 20,
+      "alphaCount": 27,
+      "description": "Implied volatility for calls with 182-day tenor; annualized percentage"
+    },
+    {
+      "id": "opt40_call_volatility_273days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 27,
+      "alphaCount": 30,
+      "description": "Implied volatility from OptionMetrics IvyDB US standardized surface for the 273-day tenor call at the ATM/forward gridpoint; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "opt40_call_volatility_30days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 18,
+      "alphaCount": 21,
+      "description": "Annualized implied volatility of the call option at 30 days to expiry"
+    },
+    {
+      "id": "opt40_call_volatility_365days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 15,
+      "alphaCount": 15,
+      "description": "Annualized implied volatility of the call option at 365 days to expiry"
+    },
+    {
+      "id": "opt40_call_volatility_547days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 30,
+      "alphaCount": 42,
+      "description": "Implied volatility from OptionMetrics IvyDB US standardized surface for the 547-day tenor call at the ATM/forward gridpoint; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "opt40_call_volatility_60days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 20,
+      "alphaCount": 25,
+      "description": "Implied volatility for the at-the-money call option at the standard 60-day tenor from the OptionMetrics US surface, annualized (decimal)"
+    },
+    {
+      "id": "opt40_call_volatility_730days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 14,
+      "alphaCount": 15,
+      "description": "Implied volatility for calls with 730-day tenor; annualized percentage"
+    },
+    {
+      "id": "opt40_ivcall10",
+      "type": "MATRIX",
+      "coverage": 0.9816,
+      "userCount": 10,
+      "alphaCount": 14,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 10 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall1080",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 19,
+      "alphaCount": 21,
+      "description": "Implied volatility of the at-the-money call for the stock with an expiration 1080 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall120",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 59,
+      "alphaCount": 149,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 120 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall150",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 73,
+      "alphaCount": 269,
+      "description": "Implied volatility of the at-the-money call for the stock with an expiration 150 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall180",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 35,
+      "alphaCount": 53,
+      "description": "Implied volatility of the at-the-money call for the stock with an expiration 180 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall20",
+      "type": "MATRIX",
+      "coverage": 0.9819,
+      "userCount": 22,
+      "alphaCount": 24,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 20 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall270",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 30,
+      "alphaCount": 38,
+      "description": "Implied volatility of the at-the-money call for the stock with an expiration 270 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall30",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 53,
+      "alphaCount": 78,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 30 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall360",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 25,
+      "alphaCount": 31,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 360 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall60",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 61,
+      "alphaCount": 151,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 60 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall720",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 32,
+      "alphaCount": 114,
+      "description": "Implied volatility of the at-the-money call for the stock with an expiration 720 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivcall90",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 46,
+      "alphaCount": 66,
+      "description": "Annualized implied volatility of the at-the-money call option with expiration 90 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivmean10",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 9,
+      "alphaCount": 10,
+      "description": "The average of IvCall10 and IvPut10 representing mean implied volatility for 10 calendar days"
+    },
+    {
+      "id": "opt40_ivmean1080",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "The average of IvCall1080 and IvPut1080"
+    },
+    {
+      "id": "opt40_ivmean120",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 46,
+      "alphaCount": 121,
+      "description": "The average of IvCall120 and IvPut120"
+    },
+    {
+      "id": "opt40_ivmean150",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 20,
+      "alphaCount": 24,
+      "description": "The average of IvCall150 and IvPut150"
+    },
+    {
+      "id": "opt40_ivmean180",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 30,
+      "alphaCount": 38,
+      "description": "Mean implied volatility (calls and puts) over 180-day window; annualized %"
+    },
+    {
+      "id": "opt40_ivmean20",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 17,
+      "alphaCount": 20,
+      "description": "The average of IvCall20 and IvPut20 representing mean implied volatility for 20 calendar days"
+    },
+    {
+      "id": "opt40_ivmean270",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 16,
+      "alphaCount": 18,
+      "description": "Average of the at-the-money call and put annualized implied volatilities at a 270âday expiration"
+    },
+    {
+      "id": "opt40_ivmean30",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 21,
+      "alphaCount": 23,
+      "description": "Average of the at-the-money call and put annualized implied volatilities at a 30âday expiration"
+    },
+    {
+      "id": "opt40_ivmean360",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 12,
+      "alphaCount": 15,
+      "description": "Average of the at-the-money call and put annualized implied volatilities at a 360âday expiration"
+    },
+    {
+      "id": "opt40_ivmean60",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 37,
+      "alphaCount": 105,
+      "description": "The average of IvCall60 and IvPut60"
+    },
+    {
+      "id": "opt40_ivmean720",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 15,
+      "alphaCount": 17,
+      "description": "The average of IvCall720 and IvPut720"
+    },
+    {
+      "id": "opt40_ivmean90",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 31,
+      "alphaCount": 42,
+      "description": "Average of the at-the-money call and put annualized implied volatilities at a 90âday expiration"
+    },
+    {
+      "id": "opt40_ivput10",
+      "type": "MATRIX",
+      "coverage": 0.9825,
+      "userCount": 25,
+      "alphaCount": 29,
+      "description": "Implied volatility of the at-the-money put for the stock with an expiration 10 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput1080",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 18,
+      "alphaCount": 25,
+      "description": "Implied volatility of the at-the-money put for the stock with an expiration 1080 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput120",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 41,
+      "alphaCount": 59,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 120 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput150",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 39,
+      "alphaCount": 78,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 150 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput180",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 27,
+      "alphaCount": 44,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 180 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput20",
+      "type": "MATRIX",
+      "coverage": 0.9827,
+      "userCount": 44,
+      "alphaCount": 94,
+      "description": "Implied volatility of the at-the-money put for the stock with an expiration 20 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput270",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 30,
+      "alphaCount": 38,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 270 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput30",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 54,
+      "alphaCount": 79,
+      "description": "Implied volatility of the at-the-money put for the stock with an expiration 30 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput360",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 20,
+      "alphaCount": 28,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 360 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput60",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 61,
+      "alphaCount": 147,
+      "description": "Implied volatility of the at-the-money put for the stock with an expiration 60 calendar days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput720",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 15,
+      "alphaCount": 21,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 720 days from the measurement date"
+    },
+    {
+      "id": "opt40_ivput90",
+      "type": "MATRIX",
+      "coverage": 0.9841,
+      "userCount": 28,
+      "alphaCount": 37,
+      "description": "Annualized implied volatility of the at-the-money put option with expiration 90 days from the measurement date"
+    },
+    {
+      "id": "opt40_put_delta_152days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 11,
+      "alphaCount": 12,
+      "description": "Delta (price sensitivity to underlying) of put options at 152 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_put_delta_60days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "Delta of the standardized put option at 60 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_delta_730days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Delta of the put option at 730 days to expiry (price sensitivity per $1 move in the underlying)"
+    },
+    {
+      "id": "opt40_put_forwardprice_182days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 5,
+      "alphaCount": 8,
+      "description": "Forward price of the underlying used for the standardized 182-day tenor put point on the OptionMetrics surface; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "opt40_put_forwardprice_273days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Forward price of the underlying used for the standardized 273-day tenor put point on the OptionMetrics surface; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "opt40_put_forwardprice_365days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 2,
+      "alphaCount": 5,
+      "description": "Forward price of the underlying used for the put option surface at 365 days to expiry"
+    },
+    {
+      "id": "opt40_put_forwardprice_60days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Forward price of the underlying used for the put option surface at 60 days to expiry"
+    },
+    {
+      "id": "opt40_put_forwardprice_91days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 6,
+      "alphaCount": 6,
+      "description": "Forward price of the underlying used for the put option surface at 91 days to expiry"
+    },
+    {
+      "id": "opt40_put_gamma_152days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 152-day tenor put option"
+    },
+    {
+      "id": "opt40_put_gamma_182days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 8,
+      "alphaCount": 8,
+      "description": "Gamma of the put option at 182 days to expiry (change in delta per $1 move in the underlying)"
+    },
+    {
+      "id": "opt40_put_gamma_273days",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 9,
+      "alphaCount": 11,
+      "description": "Gamma for put options with 273 days to expiration."
+    },
+    {
+      "id": "opt40_put_gamma_60days",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 17,
+      "alphaCount": 29,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 60-day tenor put option"
+    },
+    {
+      "id": "opt40_put_gamma_91days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 10,
+      "alphaCount": 10,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 91-day tenor put option"
+    },
+    {
+      "id": "opt40_put_premium_182days",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 7,
+      "alphaCount": 11,
+      "description": "Premium for put options with 182 days to expiration."
+    },
+    {
+      "id": "opt40_put_premium_273days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Premium for put options with 273 days to expiration."
+    },
+    {
+      "id": "opt40_put_premium_365days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Put option premium (price) at 365 days to expiry from the standard surface"
+    },
+    {
+      "id": "opt40_put_premium_547days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Premium for put options with 547 days to expiration."
+    },
+    {
+      "id": "opt40_put_premium_60days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 5,
+      "alphaCount": 5,
+      "description": "Premium for put options with 60 days to expiration."
+    },
+    {
+      "id": "opt40_put_premium_730days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 3,
+      "alphaCount": 3,
+      "description": "Option premium (price) for the standard 730-day tenor put option from the OptionMetrics surface"
+    },
+    {
+      "id": "opt40_put_strikeprice_152days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 8,
+      "alphaCount": 9,
+      "description": "Strike price corresponding to the put option gridpoint at 152 days to expiry on the standard surface"
+    },
+    {
+      "id": "opt40_put_strikeprice_182days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 6,
+      "alphaCount": 7,
+      "description": "Strike price corresponding to the 182-day tenor put option gridpoint"
+    },
+    {
+      "id": "opt40_put_strikeprice_30days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 13,
+      "alphaCount": 19,
+      "description": "Strike price for put options with 30 days to expiration."
+    },
+    {
+      "id": "opt40_put_strikeprice_60days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 15,
+      "alphaCount": 18,
+      "description": "Strike price of the standardized put option at 60 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_strikeprice_91days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 7,
+      "alphaCount": 8,
+      "description": "Strike price corresponding to the put option gridpoint at 91 days to expiry on the standard surface"
+    },
+    {
+      "id": "opt40_put_theta_122days",
+      "type": "MATRIX",
+      "coverage": 0.9724,
+      "userCount": 22,
+      "alphaCount": 36,
+      "description": "Theta (time decay) of the standardized put option at 122 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_theta_152days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 14,
+      "alphaCount": 14,
+      "description": "Theta (time decay per day) for the 152-day tenor put option"
+    },
+    {
+      "id": "opt40_put_theta_182days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 8,
+      "alphaCount": 10,
+      "description": "Theta (time decay) of the standardized put option at 182 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_theta_273days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Theta (time decay per day) for the 273-day tenor put option"
+    },
+    {
+      "id": "opt40_put_theta_30days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 7,
+      "alphaCount": 7,
+      "description": "Theta for put options with 30 days to expiration."
+    },
+    {
+      "id": "opt40_put_theta_365days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 9,
+      "alphaCount": 10,
+      "description": "Daily time decay (theta) of the put option price at 365 days to expiry"
+    },
+    {
+      "id": "opt40_put_theta_547days",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 14,
+      "alphaCount": 14,
+      "description": "Theta (time decay) for put options at 547 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_put_theta_60days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 12,
+      "alphaCount": 14,
+      "description": "Time decay (theta) for put options at 60 days to expiry"
+    },
+    {
+      "id": "opt40_put_theta_730days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 17,
+      "alphaCount": 23,
+      "description": "Daily time decay (theta) of the put option price at 730 days to expiry"
+    },
+    {
+      "id": "opt40_put_vega_182days",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 6,
+      "alphaCount": 23,
+      "description": "Vega (sensitivity to implied volatility) for put options at 182 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_put_vega_30days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 5,
+      "alphaCount": 7,
+      "description": "Vega (sensitivity of option price to changes in implied volatility) for the 30-day tenor put option"
+    },
+    {
+      "id": "opt40_put_vega_365days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 21,
+      "alphaCount": 21,
+      "description": "Vega (sensitivity of option price to changes in implied volatility) for the 365-day tenor put option"
+    },
+    {
+      "id": "opt40_put_vega_547days",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 1,
+      "alphaCount": 2,
+      "description": "Vega (sensitivity to implied volatility) for put options at 547 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "opt40_put_vega_60days",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 10,
+      "alphaCount": 18,
+      "description": "Vega (sensitivity to implied volatility) of the standardized put option at 60 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_vega_730days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 6,
+      "alphaCount": 8,
+      "description": "Vega for put options with 730 days to expiration."
+    },
+    {
+      "id": "opt40_put_volatility_122days",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 11,
+      "alphaCount": 11,
+      "description": "Implied volatility of the standardized put option at 122 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_volatility_152days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 18,
+      "alphaCount": 20,
+      "description": "Implied volatility from OptionMetrics IvyDB US standardized surface for the 152-day tenor put at the ATM/forward gridpoint; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "opt40_put_volatility_273days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 30,
+      "alphaCount": 34,
+      "description": "Implied volatility of the standardized put option at 273 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "opt40_put_volatility_547days",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 23,
+      "alphaCount": 26,
+      "description": "Implied volatility for put options at 547 days to expiry from the OptionMetrics standardized surface (annualized)"
+    },
+    {
+      "id": "opt40_put_volatility_60days",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 10,
+      "alphaCount": 17,
+      "description": "Annualized implied volatility of the put option at 60 days to expiry"
+    },
+    {
+      "id": "put_option_delta_convexity_122d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gamma (second derivative of option price with respect to underlying price) for the 122-day tenor put option"
+    },
+    {
+      "id": "put_option_delta_convexity_30d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Gamma (sensitivity of delta to price changes) of the standardized put option at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_delta_convexity_365d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Rate of change in a put option's delta with respect to the underlying price, 365 days to expiration."
+    },
+    {
+      "id": "put_option_delta_convexity_730d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Rate of change in a put option's delta with respect to the underlying price, 730 days to expiration."
+    },
+    {
+      "id": "put_option_exercise_price_122d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Strike price for a put option contract with 122 days until expiration."
+    },
+    {
+      "id": "put_option_exercise_price_273d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Strike price corresponding to the standardized put option gridpoint at 273 days to expiry"
+    },
+    {
+      "id": "put_option_exercise_price_365d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Strike price of the standardized put option at 365 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_exercise_price_730d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Strike price of the standardized put option at 730 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_implied_volatility_182d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Implied volatility for put options at 182 days to expiry from the OptionMetrics standardized surface (annualized)"
+    },
+    {
+      "id": "put_option_implied_volatility_30d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Implied volatility for put options at 30 days to expiry from the OptionMetrics standardized surface (annualized)"
+    },
+    {
+      "id": "put_option_implied_volatility_365d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Implied volatility for puts with 365-day tenor; annualized percentage"
+    },
+    {
+      "id": "put_option_implied_volatility_91d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 2,
+      "alphaCount": 2,
+      "description": "Implied volatility for put options at 91 days to expiry from the OptionMetrics standardized surface (annualized)"
+    },
+    {
+      "id": "put_option_market_value_122d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Option premium (price) for the standard 122-day tenor put option from the OptionMetrics surface"
+    },
+    {
+      "id": "put_option_market_value_152d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Option premium (price) for put options at 152 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "put_option_market_value_91d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Put option premium (price) at 91 days to expiry from the standard surface"
+    },
+    {
+      "id": "put_option_price_sensitivity_122d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the put option at 122 days to expiry (price sensitivity per $1 move in the underlying)"
+    },
+    {
+      "id": "put_option_price_sensitivity_182d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta (price sensitivity to the underlying; typically negative for puts) for the standardized 182-day tenor put at the ATM/forward gridpoint from OptionMetrics;â¦"
+    },
+    {
+      "id": "put_option_price_sensitivity_273d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta (price sensitivity to underlying) of put options at 273 days to expiry from the OptionMetrics standardized surface"
+    },
+    {
+      "id": "put_option_price_sensitivity_30d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the standardized put option at 30 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_price_sensitivity_365d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta (sensitivity of option price to underlying price) for the 365-day tenor put option"
+    },
+    {
+      "id": "put_option_price_sensitivity_547d",
+      "type": "MATRIX",
+      "coverage": 0.9723,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Delta of the standardized put option at 547 days to expiry on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_price_sensitivity_91d",
+      "type": "MATRIX",
+      "coverage": 0.9729,
+      "userCount": 1,
+      "alphaCount": 3,
+      "description": "Delta (price sensitivity to the underlying; typically negative for puts) for the standardized 91-day tenor put at the ATM/forward gridpoint from OptionMetrics;â¦"
+    },
+    {
+      "id": "put_option_projected_underlying_122d",
+      "type": "MATRIX",
+      "coverage": 0.9727,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Model-implied forward price of the underlying at 122 days to expiry used for the standardized put on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_projected_underlying_152d",
+      "type": "MATRIX",
+      "coverage": 0.9726,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward price of the underlying used for the standardized 152-day tenor put point on the OptionMetrics surface; D1-lagged and masked if unreliable"
+    },
+    {
+      "id": "put_option_projected_underlying_547d",
+      "type": "MATRIX",
+      "coverage": 0.9731,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Forward price used for the 547-day tenor put option gridpoint (model forward at that maturity)"
+    },
+    {
+      "id": "put_option_projected_underlying_730d",
+      "type": "MATRIX",
+      "coverage": 0.9725,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Model-implied forward price of the underlying at 730 days to expiry used for the standardized put on the OptionMetrics standard surface"
+    },
+    {
+      "id": "put_option_volatility_exposure_122d",
+      "type": "MATRIX",
+      "coverage": 0.973,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sensitivity of a put option's price to changes in implied volatility, 122 days to expiration."
+    },
+    {
+      "id": "put_option_volatility_exposure_152d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Sensitivity of a put option's price to changes in implied volatility, 152 days to expiration."
+    },
+    {
+      "id": "put_option_volatility_exposure_273d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 0,
+      "alphaCount": 0,
+      "description": "Vega (sensitivity of option price to changes in implied volatility) for the 273-day tenor put option"
+    },
+    {
+      "id": "put_option_volatility_exposure_91d",
+      "type": "MATRIX",
+      "coverage": 0.9728,
+      "userCount": 1,
+      "alphaCount": 1,
+      "description": "Sensitivity of a put option's price to changes in implied volatility, 91 days to expiration."
+    }
+  ],
+  "count": 201,
+  "sharpe_filter_applied": true,
+  "sharpe_filter_removed": 7
+}

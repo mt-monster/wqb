@@ -1,0 +1,198 @@
+{
+ "dataset": "news_sentiment_nlp",
+ "region": "EUR",
+ "universe": "TOP800",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 23
+ },
+ "field_count": 23,
+ "fetched_at": "2026-08-18T14:53:58",
+ "fields": [
+  {
+   "id": "headline_average_sentence_length",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of words per sentence in the headline"
+  },
+  {
+   "id": "headline_flesch_kincaid_score",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flesch–Kincaid Grade Level readability score of the headline text"
+  },
+  {
+   "id": "headline_flesch_readability_score",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flesch Reading Ease score of the headline text"
+  },
+  {
+   "id": "headline_gunning_fog_index",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Gunning Fog readability index of the headline text"
+  },
+  {
+   "id": "headline_sentence_sentiment_average",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean of the per-sentence sentiment scores within the headline"
+  },
+  {
+   "id": "headline_sentence_sentiment_maximum",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum per-sentence sentiment score within the headline, based on the same sentiment metric used for sentence analysis "
+  },
+  {
+   "id": "headline_sentence_sentiment_median",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median of the per-sentence sentiment scores within the headline"
+  },
+  {
+   "id": "headline_sentence_sentiment_minimum",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum per-sentence sentiment score within the headline"
+  },
+  {
+   "id": "headline_sentence_sentiment_variance",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Variance of the per-sentence sentiment scores within the headline"
+  },
+  {
+   "id": "headline_sentiment_vader_score",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "VADER compound sentiment score of the headline text, approximately ranging from -1 (negative) to 1 (positive)"
+  },
+  {
+   "id": "headline_sentiwordnet_negative_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Negative polarity score from SentiWordNet for the headline text (approximately 0–1, not necessarily summing to 1 with ot"
+  },
+  {
+   "id": "headline_sentiwordnet_neutral_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Neutral polarity score from SentiWordNet for the headline text (approximately 0–1)"
+  },
+  {
+   "id": "headline_sentiwordnet_positive_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Positive polarity score from SentiWordNet for the headline text (approximately 0–1)"
+  },
+  {
+   "id": "headline_smog_readability_index",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SMOG readability index of the headline text"
+  },
+  {
+   "id": "headline_stopword_frequency",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of stop words among the words in the headline"
+  },
+  {
+   "id": "headline_subjectivity_score",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "TextBlob subjectivity score of the headline, from 0 (objective) to 1 (subjective)"
+  },
+  {
+   "id": "headline_textblob_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "TextBlob polarity sentiment score of the headline, approximately from -1 (negative) to 1 (positive)"
+  },
+  {
+   "id": "headline_total_sentence_count",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sentences detected in the headline"
+  },
+  {
+   "id": "headline_unique_word_count",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of unique words in the headline"
+  },
+  {
+   "id": "headline_vader_negative_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Negative polarity component from VADER for the headline, typically between 0 and 1"
+  },
+  {
+   "id": "headline_vader_neutral_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Neutral polarity component from VADER for the headline, typically between 0 and 1"
+  },
+  {
+   "id": "headline_vader_positive_polarity",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Positive polarity component from VADER for the headline, typically between 0 and 1"
+  },
+  {
+   "id": "headline_word_count_total",
+   "type": "VECTOR",
+   "coverage": 0.9134,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of words in the headline"
+  }
+ ]
+}

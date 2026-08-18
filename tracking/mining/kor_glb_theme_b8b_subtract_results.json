@@ -1,0 +1,140 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/NMSym89k4BqagX1h4mEBfNU",
+ "ts": 1785898883.186101,
+ "alphas": [
+  {
+   "id": "omNeM0xv",
+   "code": "group_rank(subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 66)), country)",
+   "sh": 1.83,
+   "fit": 0.93,
+   "tvr": 0.1334,
+   "ret": 0.0347,
+   "2y": 2.2,
+   "margin": 0.000521,
+   "subU": 1.5,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_APAC_SHARPE"
+   ]
+  },
+  {
+   "id": "O0GvEXlR",
+   "code": "subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 66))",
+   "sh": 1.66,
+   "fit": 0.95,
+   "tvr": 0.1358,
+   "ret": 0.0446,
+   "2y": 2.1,
+   "margin": 0.000657,
+   "subU": 1.32,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE"
+   ]
+  },
+  {
+   "id": "JjGLZaVE",
+   "code": "subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 130), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 66))",
+   "sh": 1.58,
+   "fit": 0.88,
+   "tvr": 0.1366,
+   "ret": 0.0427,
+   "2y": 1.54,
+   "margin": 0.000625,
+   "subU": 1.28,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "qMNZo2KA",
+   "code": "subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 44))",
+   "sh": 1.75,
+   "fit": 1.02,
+   "tvr": 0.1471,
+   "ret": 0.0496,
+   "2y": 1.57,
+   "margin": 0.000674,
+   "subU": 1.43,
+   "failed": [
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmLnxJe",
+   "code": "group_rank(subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 44)), country)",
+   "sh": 1.93,
+   "fit": 0.98,
+   "tvr": 0.1455,
+   "ret": 0.0378,
+   "2y": 2.21,
+   "margin": 0.00052,
+   "subU": 1.6,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_APAC_SHARPE"
+   ]
+  },
+  {
+   "id": "KPGRjAK1",
+   "code": "subtract(group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), country), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 66))",
+   "sh": 1.57,
+   "fit": 0.82,
+   "tvr": 0.138,
+   "ret": 0.0373,
+   "2y": 1.53,
+   "margin": 0.00054,
+   "subU": 1.28,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "kqP52pqk",
+   "code": "subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl38_rel_val_global_rk, std=5), 60), 66))",
+   "sh": 0.03,
+   "fit": 0.0,
+   "tvr": 0.1369,
+   "ret": 0.0012,
+   "2y": -0.26,
+   "margin": 1.8e-05,
+   "subU": -0.16,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "qMNZo2MA",
+   "code": "ts_rank(subtract(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 250), ts_rank(ts_backfill(winsorize(mdl177_global_curindfcfp_, std=5), 60), 66)), 22)",
+   "sh": 1.67,
+   "fit": 0.78,
+   "tvr": 0.2091,
+   "ret": 0.0451,
+   "2y": 0.54,
+   "margin": 0.000431,
+   "subU": 1.58,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_EMEA_SHARPE",
+    "LOW_GLB_APAC_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  }
+ ]
+}

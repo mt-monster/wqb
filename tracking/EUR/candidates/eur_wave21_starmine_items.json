@@ -1,0 +1,18 @@
+[
+  {"code": "rank(arm_global_rank_score)", "note": "ARM global rank 原始"},
+  {"code": "subtract(0, rank(arm_global_rank_score))", "note": "ARM global rank 镜像"},
+  {"code": "rank(rel_val_global_rank_score_3)", "note": "RelVal global rank 原始"},
+  {"code": "subtract(0, rank(rel_val_global_rank_score_3))", "note": "RelVal global rank 镜像"},
+  {"code": "rank(price_to_intrinsic_value_region_rank_3)", "note": "P/IV region rank 原始"},
+  {"code": "subtract(0, rank(price_to_intrinsic_value_region_rank_3))", "note": "P/IV region rank 镜像"},
+  {"code": "rank(predicted_surprise_pct_fy1_earnings_5)", "note": "FY1 earnings surprise 原始"},
+  {"code": "subtract(0, rank(predicted_surprise_pct_fy1_earnings_5))", "note": "FY1 earnings surprise 镜像"},
+  {"code": "rank(eq_vr_dlra3_new_region_rank)", "note": "EQ+Val composite region rank 原始"},
+  {"code": "subtract(0, rank(eq_vr_dlra3_new_region_rank))", "note": "EQ+Val composite region rank 镜像"},
+  {"code": "rank(arm_score_change_30d_4)", "note": "ARM 30d change 原始"},
+  {"code": "subtract(0, rank(arm_score_change_30d_4))", "note": "ARM 30d change 镜像"},
+  {"code": "add(0.5*rank(arm_global_rank_score), 0.5*rank(rel_val_global_rank_score_3))", "note": "ARM+RelVal 复合"},
+  {"code": "add(0.5*subtract(0, rank(arm_global_rank_score)), 0.5*subtract(0, rank(rel_val_global_rank_score_3)))", "note": "ARM+RelVal 双镜像"},
+  {"code": "add(0.4*rank(arm_global_rank_score), add(0.3*rank(rel_val_global_rank_score_3), 0.3*rank(predicted_surprise_pct_fy1_earnings_5)))", "note": "ARM+RelVal+Surprise 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(arm_global_rank_score)), add(0.3*subtract(0, rank(rel_val_global_rank_score_3)), 0.3*subtract(0, rank(predicted_surprise_pct_fy1_earnings_5))))", "note": "ARM+RelVal+Surprise 三路镜像"}
+]

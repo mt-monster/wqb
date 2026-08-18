@@ -1,0 +1,21 @@
+{
+  "batch": "analyst25 KOR专属分析师 第一批 (zGzD85qv4xt90r5KXyVbHd)",
+  "date": "2026-08-04",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 12, "neutralization": "SECTOR", "truncation": 0.04, "maxTrade": "ON"},
+  "results": [
+    {"id": "pwNApda6", "expr": "ts_rank(vec_avg(adj_oper_profit_12f),44)", "sharpe": 1.24, "fitness": 1.0, "two_year": 0.89, "risk_neut": 1.53, "margin": 0.001924, "cw": "PASS", "note": "★ 最佳: fitness/risk/margin 达标, 剩 sharpe+0.34 2y+0.71"},
+    {"id": "78zE2LG5", "expr": "grp(adj_oper_profit44)", "sharpe": 1.25, "fitness": 1.0, "two_year": 0.88, "risk_neut": 1.51, "margin": 0.001758, "cw": "PASS"},
+    {"id": "E5GX26m1", "expr": "revert_net_profit44", "sharpe": 1.2, "fitness": 0.94, "two_year": 0.71, "margin": 0.001791},
+    {"id": "RRmnvE9n", "expr": "net_profit_12f44", "sharpe": 1.2, "fitness": 0.94, "two_year": 0.66},
+    {"id": "ZYEe1QXx", "expr": "roe66", "sharpe": 1.16, "fitness": 0.87, "two_year": 0.14},
+    {"id": "P0GdAoPp", "expr": "ebit_margin66", "sharpe": 1.03, "fitness": 0.7, "two_year": 0.91},
+    {"id": "vRN3o1AG", "expr": "-eps_down44", "sharpe": 0.66, "note": "EPS下调反向弱"}
+  ],
+  "takeaways": [
+    "KOR 分析师数据族强 (analyst39 1.22 / analyst25 1.24): 盈利预测字段正向有效",
+    "全部 cw PASS + margin 15-19bp (分析师数据 KOR 质量好)",
+    "turnover 7.5-9.1% 低 (慢变量, 需防 LOW_TURNOVER)",
+    "关键机会: analyst25 x esor(other323) 跨数据集 blend 与 JjGwjd5E 无共享腿, 有望相关性<0.4"
+  ],
+  "next": "深化: 窗口66/88 + 内部blend + analyst25 x esor 跨数据集"
+}

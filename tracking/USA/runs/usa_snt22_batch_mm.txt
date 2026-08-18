@@ -1,0 +1,8 @@
+quantile(ts_decay_linear(group_zscore(snt22neg_mean_253, subindustry), 20))
+quantile(ts_decay_linear(group_zscore(snt22_5neg_mean_307, subindustry), 20))
+quantile(ts_mean(group_zscore(subtract(snt22pos_mean_270, snt22neg_mean_253), subindustry), 20))
+quantile(ts_decay_linear(group_zscore(snt22neg_median_256, subindustry), 25))
+quantile(ts_decay_linear(signed_power(snt22neg_mean_253, 0.5), 20))
+quantile(ts_mean(group_zscore(snt22_5neg_mean_307, subindustry), 25))
+quantile(ts_decay_linear(group_zscore(subtract(snt22neg_mean_253, snt22neut_mean_267), subindustry), 20))
+quantile(ts_decay_linear(group_rank(snt22neg_mean_253, subindustry), 20))

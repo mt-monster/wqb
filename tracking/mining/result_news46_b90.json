@@ -1,0 +1,20 @@
+{
+  "batch": "b90",
+  "dataset": "news46 (nip-focused with alpha2-style convexity)",
+  "status": "DEAD_END - SIMS_NOT_CREATED",
+  "reason": "create_multi_simulation returned REQUEST_TIMEOUT. Verified by get_user_alphas(order=-dateCreated, limit=12, region=USA, type=REGULAR): latest 12 alphas are ALL from b89 (8 alphas, power=3, no centering) and b88 (4 alphas, model239, power=3). NO b90 alphas with convexity template (subtract(group_rank,0.5) + power=5) are present. Conclusion: the timeout meant the request was REJECTED before sims started, not just delayed. No alphas were created on the BRAIN platform.",
+  "args_file": "args_news46_b90.json",
+  "attempted_expressions": [
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 5), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 5), sector), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 10), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 10), sector), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 3), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_mean_nip, 20), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_sum_ssc, 10), subindustry), 0.5), 5), 90)",
+    "ts_decay_linear(signed_power(subtract(group_rank(ts_mean(mws46_ravenpack_sum_story_count, 20), subindustry), 0.5), 5), 90)"
+  ],
+  "verification": "get_user_alphas(order=-dateCreated, limit=12) returned: omgdqKkl, RR1g7pva, A17Alw2d, le3mjV1N, Jjv97prW, gJ92j1LQ, 9q7nXwk9, A17AlwEd (b89 power3), 1YzMz7VM, A17A7wJe, zqRVR9wO, le3m3V6O (b88 power3). None contain 'subtract' + 'power 5' convexity.",
+  "budget_note": "Cumulative sims ~302/300 (already over budget). No retry attempted.",
+  "final_verdict": "b90 DEAD END. Only alpha2 (xAdL5vmN) remains the sole submittable alpha of the 3-alpha target."
+}

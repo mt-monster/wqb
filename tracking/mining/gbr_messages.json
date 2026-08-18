@@ -1,0 +1,277 @@
+{
+ "count": 424,
+ "next": "https://api.worldquantbrain.com/users/self/messages?limit=30&offset=30",
+ "previous": null,
+ "results": [
+  {
+   "id": "yqNeJ67",
+   "type": "ANNOUNCEMENT",
+   "title": "📢 Launching new region DEU and GBR for Consultants",
+   "description": "<p>🎉 Exciting news! We have launched new region GBR and DEU. You can view this on Brain platform simulation page.</p>\n<p>Check out the <a href=\"/learn/documentation/regions-and-universes/getting-started-on-gbrdeu\">this article</a> to learn more.</p>",
+   "dateCreated": "2026-08-03T05:19:34-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7k8ODwA",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – finalize your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Sunday, did not meet the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a>. Please review your allocations before next Sunday. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.",
+   "dateCreated": "2026-08-03T02:09:07.987607-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "yqNe667",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – review your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Saturday, may not meet some of the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a> - number of scopes, points, Alphas etc. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.<br/>Please ignore this message if you have already revised your allocations.",
+   "dateCreated": "2026-08-02T02:08:59.669197-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R2qLlOA",
+   "type": "ANNOUNCEMENT",
+   "title": "Systematic Predictions Challenge August 2026 edition starts today!",
+   "description": "<p>Submissions for SPC August 2026 edition are open now. The leaderboard resets today, your prompt submissions from previous months continue unless you change your allocation in the submissions page.</p>",
+   "dateCreated": "2026-08-01T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7MPw5ey",
+   "type": "ANNOUNCEMENT",
+   "title": "Platform Performance Update: Faster Simulations & Submissions",
+   "description": "<p>Hey Brain community 👋</p>\n<p>Thank you for your feedback- we have made improvements to simulation and submission times on the platform, with more improvements in the pipeline.</p>\n<p>Recent slowdowns were inadvertently driven by a huge inflow of new talent and the launch of several new features. We are actively working to optimize performance and your overall experience.</p>\n<p>More updates to come soon.</p>",
+   "dateCreated": "2026-07-31T08:33:58-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "RbMGG0A",
+   "type": "ANNOUNCEMENT",
+   "title": "Quantcepts Quiz #23",
+   "description": "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"> <iframe src=\"https://survey.worldquantbrain.com/314844?lang=en\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;\"></iframe> </div>",
+   "dateCreated": "2026-07-31T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "ywKGvay",
+   "type": "ANNOUNCEMENT",
+   "title": "Register for the BRAIN Opportunity Webinar for consultants today!",
+   "description": "<p>Registrations for the BRAIN Opportunity Webinar are now open</p>\n<p>When: 6th Aug, 2026 at 8 AM EST</p>\n<p>Where: <a href=\"https://worldquant.zoom.us/webinar/register/WN_-vbMotTWTXadzjF8m9wmQw\">Zoom Registeration Link</a></p>\n<p>Agenda:</p>\n<p> </p>\n<ul>\n<li>Compensation pool opportunities</li>\n<li>Upcoming themes, Power Pools and competitions</li>\n<li>Results of recent consultant competitions</li>\n</ul>\n<p> </p>\n<p>This webinar qualifies for the Brain Community Score. To have your attendance count, join using the email ID registered with Brain.</p>\n<p>Hurry! Register now. </p>",
+   "dateCreated": "2026-07-30T09:12:33-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R8lYagR",
+   "type": "ANNOUNCEMENT",
+   "title": "Reminder - Submissions for SPC July end on 23:59 EST, 31st July 2026",
+   "description": "<p>Last date for July edition of SPC is 31st July. August will have a new edition.<br/>\r\nNew Feature - Now you can submit prompts in your native language as well, please test to ensure the output is in the correct format</p>",
+   "dateCreated": "2026-07-29T07:58:47-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "yjpgNJA",
+   "type": "ANNOUNCEMENT",
+   "title": "Value Factor updated",
+   "description": "<p>Value Factors have been refreshed on the <a href=\"/competition/consultant\">consultant leaderboard</a>. This Value Factor considers all the Alphas and SuperAlphas submitted in the 3 month period ending 31 May 2026<strong>.</strong></p>",
+   "dateCreated": "2026-07-28T23:30:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7MPmexy",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – finalize your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Sunday, did not meet the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a>. Please review your allocations before next Sunday. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.",
+   "dateCreated": "2026-07-27T02:09:01.441939-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "yObm3YR",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – review your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Saturday, may not meet some of the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a> - number of scopes, points, Alphas etc. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.<br/>Please ignore this message if you have already revised your allocations.",
+   "dateCreated": "2026-07-26T02:10:03.950756-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "A0QZB9R",
+   "type": "ANNOUNCEMENT",
+   "title": "📢 Launching a new \"GLB/D1 Power Pool Aug`26\"",
+   "description": "🎉 Exciting news! We have launched a new \"GLB/D1 Power Pool Aug`26\" theme.<br/>Duration: 27 July’26 - 9th August’26 (2 weeks)<br/>Multiplier: 1X for regular power pool alphas.<br/>Details:<a href=\"https://platform.worldquantbrain.com/learn/documentation/consultant-information/getting-started-power-pool-alphas\">Power Pool</a> Alpha must be on GLB region and delay \"1\" and universe \"TOPDIV3000\" and use one of the following neutralizations: Slow Factors, Fast Factors, Slow + Fast Factors, Crowding Factors, RAM.<br/>\"PV1\" and \"MODEL110\" datasets are not allowed (except support fields).<br/>Alphas that match the theme are eligible for Power Pool Thematic competition. Total stipend pool of up to USD 15,000:<br/><ul>\n<li>1st: $600</li>\n<li>2nd: $500</li>\n<li>3rd: $400</li>\n<li>4th-8th: $300 each</li>\n<li>9th-10th: $250 each</li>\n<li>11th15th: $200 each</li>\n<li>16th20th: $150 each</li>\n<li>21st30th: $125 each</li>\n<li>31st40th: $100 each</li>\n</ul><br/>Learn more about <b>Power Pool Alphas Thematic Competition</b>:<a href=\"https://support.worldquantbrain.com/hc/en-us/categories/37443642117783-Power-Pool-Alphas-Thematic-Competition\">FAQ</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/advanced-topics/getting-started-risk-neutralized-alphas\">Risk Neutralized Alphas</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/advanced-topics/getting-started-risk-neutralized-metrics\">Risk Neutralization: Default setting</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/advanced-topics/getting-started-crowding-risk-neutralized-alphas\">Crowding Risk-Neutralized Alphas</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/advanced-topics/getting-started-ram-risk-neutralized-alphas\">RAM Risk-Neutralized Alphas</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/advanced-topics/getting-started-statistical-risk-neutralized-alphas\">Statistical Risk-Neutralized Alphas</a>",
+   "dateCreated": "2026-07-26T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7ELmjXy",
+   "type": "NOTIFICATION",
+   "title": "We analyzed your alphas - here is a tip tailored for you!",
+   "description": "Boost your combined alpha performance and Genius quarterly stipends - take Osmosis seriously by allocating points to your strongest alphas across at least 3 scopes (read more on the Genius page).",
+   "dateCreated": "2026-07-25T20:08:55.332648-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "A6vzz4A",
+   "type": "ANNOUNCEMENT",
+   "title": "Quantcepts Quiz #22",
+   "description": "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"> <iframe src=\"https://survey.worldquantbrain.com/352311?lang=en\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;\"></iframe> </div>",
+   "dateCreated": "2026-07-24T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R2qlP2A",
+   "type": "ANNOUNCEMENT",
+   "title": "🌐 View Learn page in your language",
+   "description": "<p>We've launched Language Preferences, a new setting that lets you choose your preferred display language for the platform. Select from English, Simplified Chinese, Traditional Chinese, Korean, or Vietnamese — your choice is saved to your account and applied automatically across sessions and devices.<br/>\n<br/>\r\nFind it here: click your avatar (top-right) → Language</p>",
+   "dateCreated": "2026-07-23T06:13:12-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R8lE5nR",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – finalize your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Sunday, did not meet the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a>. Please review your allocations before next Sunday. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.",
+   "dateCreated": "2026-07-20T02:09:01.903299-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "ywK3nqy",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – review your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Saturday, may not meet some of the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a> - number of scopes, points, Alphas etc. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.<br/>Please ignore this message if you have already revised your allocations.",
+   "dateCreated": "2026-07-19T02:10:12.270142-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "AnJvpGA",
+   "type": "ANNOUNCEMENT",
+   "title": "🆕 Introducing Cluster Test for Consultants!",
+   "description": "<p>We are happy to introduce <strong>Cluster Test </strong>for our consultants, now available in <strong>USA, EUR, ASI, CHN, GLB, HKG, KOR, TWN, JPN, and IND</strong>.</p>\n<p>Learn more about this new submission check in <a href=\"/learn/documentation/consultant-information/consultant-submission-tests#cluster-test\">Consultant Submission Tests</a>.</p>",
+   "dateCreated": "2026-07-17T09:23:07-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "RXzJJG7",
+   "type": "ANNOUNCEMENT",
+   "title": "Quantcepts Quiz #21",
+   "description": "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"> <iframe src=\"https://survey.worldquantbrain.com/849889?lang=en\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;\"></iframe> </div>",
+   "dateCreated": "2026-07-17T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "RKL3wwy",
+   "type": "ANNOUNCEMENT",
+   "title": "Path to Genius [1/3]: Consultant toolkit and exclusive competition for IQC consultants",
+   "description": "<p>Registrations for the Webinar are now open</p>\n<p>When: 17th July, 2026 at 8 AM EST</p>\n<p>Where: <a href=\"https://worldquant.zoom.us/webinar/register/WN_vNZMaCc0QA-sLYten1Cy9w\">Zoom Registeration Link</a> </p>\n<p> </p>\n<p>Agenda</p>\n<ul>\n<li>Upcoming competition exclusively for consultants from IQC</li>\n<li>Introduction to Consultant toolkit</li>\n<li>Avenues to maximize stipends (Osmosis, SPC Power Pool etc)</li>\n</ul>\n<p> </p>\n<p>The webinar will count for Genius community points.</p>",
+   "dateCreated": "2026-07-16T00:50:23-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7ELPYqy",
+   "type": "ANNOUNCEMENT",
+   "title": "🏆Genius Levels Refreshed!",
+   "description": "<p>The <a href=\"/genius/\" target=\"_blank\">Genius</a> levels have been refreshed. Congratulations to all the Genius consultants!<br/>\r\nAlphas submitted in Q2 2026, decide which genius level a consultant will be in Q3 2026.<br/>\r\nFor Alphas submitted in Q3 2026, consultant will accrue quarterly payout, based on their Genius levels in Q3 2026.</p>\n<p>You can track your individual performance metrics on the Genius status tab, and previous leaderboards using the dropdown on the Genius leaderboard tab.</p>",
+   "dateCreated": "2026-07-15T04:18:10-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "y5VdJj7",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – finalize your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Sunday, did not meet the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a>. Please review your allocations before next Sunday. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.",
+   "dateCreated": "2026-07-13T02:10:00.666721-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "yQxOz3R",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – review your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Saturday, may not meet some of the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a> - number of scopes, points, Alphas etc. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.<br/>Please ignore this message if you have already revised your allocations.",
+   "dateCreated": "2026-07-12T02:09:06.162483-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "yVMjOlR",
+   "type": "ANNOUNCEMENT",
+   "title": "📢 Launching a new \"USA/D1 Power Pool July`26 2\" theme",
+   "description": "🎉 Exciting news! We have launched a new \"USA/D1 Power Pool July`26 2\" theme.<br/>Duration: 12 Jul’26 - 26th Jul’26 (2 weeks)<br/>Multiplier: 1X for regular power pool alphas.<br/>Details:<a href=\"https://platform.worldquantbrain.com/learn/documentation/consultant-information/getting-started-power-pool-alphas\">Power Pool</a> Alpha must be on USA region and delay \"1\" and universe \"TOP1000\" and pass High Turnover: High Turnover returns ratio test.<br/>\"PV1\" dataset is not allowed (except support fields).<br/>Alphas that match the theme are eligible for Power Pool Thematic competition. Total stipend pool of up to USD 15,000:<br/><ul>\n<li>1st: $600</li>\n<li>2nd: $500</li>\n<li>3rd: $400</li>\n<li>4th-8th: $300 each</li>\n<li>9th-10th: $250 each</li>\n<li>11th15th: $200 each</li>\n<li>16th20th: $150 each</li>\n<li>21st30th: $125 each</li>\n<li>31st40th: $100 each</li>\n</ul><br/>Learn more about <b>Power Pool Alphas Thematic Competition</b>: <a href=\"https://support.worldquantbrain.com/hc/en-us/categories/37443642117783-Power-Pool-Alphas-Thematic-Competition\">FAQ</a>, <a href=\"https://platform.worldquantbrain.com/learn/documentation/discover-brain/getting-started-high-turnover-alphas#base-eligibility-criteria\">Getting Started with High Turnover Alphas</a>",
+   "dateCreated": "2026-07-12T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "Rm2MM9y",
+   "type": "ANNOUNCEMENT",
+   "title": "Quantcepts Quiz #20",
+   "description": "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"> <iframe src=\"https://survey.worldquantbrain.com/851755?lang=en\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;\"></iframe> </div>",
+   "dateCreated": "2026-07-10T00:00:00-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "AnJ0rmA",
+   "type": "ANNOUNCEMENT",
+   "title": "Combined Alpha Performance updated",
+   "description": "<p>Combined Alpha Performance has been refreshed on the Genius leaderboard, including Combined Osmosis Performance. This <a href=\"https://support.worldquantbrain.com/hc/en-us/articles/26715994416535-What-is-Combined-Alpha-Performance\" rel=\"noopener noreferrer\" target=\"_blank\">Combined Alpha Performance</a> considers all the Alphas and SuperAlphas submitted during the entire OS period ending 31 May 2026.</p>\n<p>Please note that cutoff date for Combined Osmosis Performance is 30 June 2026 while it is 31 May 2026 for the remaining combined metrics.</p>\n<p>Congratulations to the 1,028 consultants who improved their Combined Alpha Performance through Osmosis.</p>",
+   "dateCreated": "2026-07-09T10:00:25-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "AZZwbQA",
+   "type": "ANNOUNCEMENT",
+   "title": "Power Pool Alphas Thematic Competition June 2026 leaderboards",
+   "description": "<p>Power Pool Alphas Thematic Competition June'26 leaderboards are out! Congratulations to all the top performers. Check out your score in “<a href=\"/competition/power-pool\">Power Pool Leaderboard</a>” using the Board Name dropdown on the top right.</p>\n<p>Reminder that the overall stipend pool of up to $15,000 across Power Pool Themes each month is distributed among 80 winners. The stipend pool for each Power Pool Theme in a month can vary based on its duration and its number of winners. Given two Power Pool Themes in June 2026 - USA/D1 Fast Datasets Power Pool June`26 and GLB/D1 Dataset Power Pool June`26, the stipend pool structure for each theme is:</p>\n<ul style=\"list-style-type:disc\">\n<li><strong>1st:</strong> $600</li>\n<li><strong>2nd:</strong> $500</li>\n<li><strong>3rd:</strong> $400</li>\n<li><strong>4th-8th:</strong> $300 each</li>\n<li><strong>9th-10th:</strong> $250 each</li>\n<li><strong>11th–15th:</strong> $200 each</li>\n<li><strong>16th–20th:</strong> $150 each</li>\n<li><strong>21st–30th:</strong> $125 each</li>\n<li><strong>31st–40th:</strong> $100 each</li>\n</ul>",
+   "dateCreated": "2026-07-08T07:46:59-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R36g1zA",
+   "type": "ANNOUNCEMENT",
+   "title": "🔥Launching Systematic Predictions Challenge (SPC) today!",
+   "description": "<p>We are thrilled to announce the launch of SPC today. Start submitting your prompts <a href=\"/competition/spc/submissions\" rel=\"noopener\">here</a>. Do read the <a href=\"https://support.worldquantbrain.com/hc/en-us/categories/41681062887191\" rel=\"noopener\">FAQs</a> before starting you research on prompts.</p>",
+   "dateCreated": "2026-07-08T06:26:43-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "R4bELj7",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – finalize your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Sunday, did not meet the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a>. Please review your allocations before next Sunday. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.",
+   "dateCreated": "2026-07-06T02:09:00.647414-04:00",
+   "tags": [],
+   "read": false
+  },
+  {
+   "id": "7MPaMzy",
+   "type": "NOTIFICATION",
+   "title": "🎗️Reminder – review your Osmosis allocations",
+   "description": "Your Osmosis Allocations as of Saturday, may not meet some of the <a href=\"/learn/documentation/consultant-information/osmosis-allocation-guide-consultants\">eligibility criteria</a> - number of scopes, points, Alphas etc. As a reminder, your allocations as of Sunday 23:59 PM EST, if found eligible, will be used to compute your <a href=\"/competition/consultant\">Daily Osmosis Rank</a>, starting 7 days later.<br/>Please ignore this message if you have already revised your allocations.",
+   "dateCreated": "2026-07-05T02:10:03.289963-04:00",
+   "tags": [],
+   "read": false
+  }
+ ]
+}

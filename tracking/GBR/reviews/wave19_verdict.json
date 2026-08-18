@@ -1,0 +1,16 @@
+{
+  "wave": 19,
+  "dataset": "model238",
+  "total": 23,
+  "backtested": 23,
+  "conclusion": "Smart Holdings 机构持仓数据集一轮判弱。23/23 全回测，最强 divide(rank(mdl238_global_rank), rank(mdl238_region_owner_rank)+0.01) sh=0.67 2y=0.07，全部 failed_checks 带 LOW_SHARPE。机构持仓 rank 信号在 GBR D1 TOP700 无 alpha，不加波。",
+  "top": [
+    {"id": "6XlnAzOp", "code": "divide(rank(mdl238_global_rank), add(rank(mdl238_region_owner_rank), 0.01))", "sharpe": 0.67, "fitness": 0.44, "two_year_sharpe": 0.07, "margin_bp": 16.3, "turnover_pct": 6.5, "rn_sharpe": 0.23},
+    {"id": "2rl1jJdY", "code": "divide(rank(mdl238_global_screening_rank), add(rank(mdl238_global_owner_rank), 0.01))", "sharpe": 0.67, "fitness": 0.44, "two_year_sharpe": -0.02, "margin_bp": 19.8, "turnover_pct": 5.4, "rn_sharpe": 0.21}
+  ],
+  "lessons": [
+    "机构持仓偏好 rank 类字段在 GBR 无截面 alpha（拥挤度反向也无信号，divide 比率最弱正收益 sh<0.7）",
+    "ts_arg_max 多样性闸表达式（2 条）无信号但无副作用，闸6 已满足"
+  ],
+  "next": "轮换 sentiment27（crowd_band tier2）。"
+}

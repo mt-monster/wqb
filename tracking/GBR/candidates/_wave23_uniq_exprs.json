@@ -1,0 +1,20 @@
+[
+ "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20))",
+ "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 15))",
+ "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 30))",
+ "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 44))",
+ "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 10))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.25 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.25 * rank(ep_yield_pct_smest_fy1_3))",
+ "add(0.4 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.3 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.3 * rank(ep_yield_pct_smest_fy1_3))",
+ "add(0.6 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.2 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.2 * rank(ep_yield_pct_smest_fy1_3))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.17 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.165 * rank(ep_yield_pct_smest_fy1_3), 0.165 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.5 * multiply(rank(ts_av_diff(forward_pe_smest_fy1_3, 66)), -1))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 15)), 0.25 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.25 * rank(ep_yield_pct_smest_fy1_3))",
+ "add(0.34 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.33 * rank(ep_yield_pct_smest_fy1_3), 0.33 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+ "add(0.4 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.3 * rank(ep_yield_pct_smest_fy1_3), 0.3 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+ "add(0.3 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.35 * rank(ep_yield_pct_smest_fy1_3), 0.35 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+ "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.25 * rank(ep_yield_pct_smest_fy1_3), 0.25 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+ "add(0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20)), 0.5 * rank(ts_av_diff(ep_yield_pct_smest_fy1_3, 20)))",
+ "multiply(rank(ts_av_diff(forward_pe_smest_fy1_3, 66)), -1)"
+]

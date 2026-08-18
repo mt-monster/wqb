@@ -1,0 +1,47 @@
+{
+  "region": "EUR",
+  "delay": 1,
+  "fetched_at": "2026-08-05 16:52:39",
+  "focus_check": [
+    {
+      "dataset": "model30",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "pv20",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "news21",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "fundamental86",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "risk59",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "model216",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "fundamental94",
+      "field_count": null,
+      "coverage_mean": null
+    },
+    {
+      "dataset": "insiders12",
+      "field_count": null,
+      "coverage_mean": null
+    }
+  ]
+}

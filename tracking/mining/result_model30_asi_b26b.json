@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/36K0596ax4Ipcfe1higE4MuQ",
+ "ts": 1785862030.030303,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1GupNL4tJ4FD9vM1w3L0Vel",
+   "location_url": "https://api.worldquantbrain.com/simulations/1GupNL4tJ4FD9vM1w3L0Vel",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "E5GJbYeK",
+   "raw": {
+    "id": "1GupNL4tJ4FD9vM1w3L0Vel",
+    "parent": "36K0596ax4Ipcfe1higE4MuQ",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "SUBINDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), country)",
+    "status": "COMPLETE",
+    "alpha": "E5GJbYeK"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3QVBhf9EU4TqcConjCnHdbs",
+   "location_url": "https://api.worldquantbrain.com/simulations/3QVBhf9EU4TqcConjCnHdbs",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "E5GJbYeK",
+   "raw": {
+    "id": "3QVBhf9EU4TqcConjCnHdbs",
+    "parent": "36K0596ax4Ipcfe1higE4MuQ",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "SUBINDUSTRY",
+     "truncation": 0.08,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), country)",
+    "status": "COMPLETE",
+    "alpha": "E5GJbYeK"
+   },
+   "extra_info": ""
+  }
+ ]
+}

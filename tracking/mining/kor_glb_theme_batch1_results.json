@@ -1,0 +1,22 @@
+{
+  "batch": "GLB/D1/TOPDIV3000 主题轨道第一批 (2ARtD0xe57fatVIopkSeis, SLOW 中性化)",
+  "date": "2026-08-04",
+  "theme": "GLB/D1 Power Pool Aug'26 (7-27~8-9): TOPDIV3000 + SLOW/FAST/SLOW_AND_FAST/CROWDING 中性化, 禁 PV1/MODEL110, RAM 实测 400 不可用",
+  "results": [
+    {"id": "RRmQYxmd", "expr": "+pred_10d_ret techindi6_2 22", "sharpe": 1.39, "fitness": 0.56, "two_year": 0.42, "margin": 0.000323, "cw": "PASS", "note": "预测收益信号正向正确, 但 margin/fitness/2y 不达标"},
+    {"id": "1YpbL3pz", "expr": "-pred_10d_ret", "sharpe": -1.39, "note": "方向验证: 正向正确"},
+    {"id": "3qprxmpX", "expr": "+anl15 1m_chg 44", "sharpe": -0.28, "note": "盈利修正动量 GLB 无效 (同 KOR)"},
+    {"id": "6XpV16pG", "expr": "+anl15 ests_up 44", "sharpe": 0.44, "two_year": 0.04},
+    {"id": "MPGRXvGn", "expr": "+mdl177 ttmfcfev 44", "sharpe": -0.97, "note": "FCF 方向反了, 反向应正"},
+    {"id": "leWO2wWn", "expr": "+mdl177 curindfcfp 44", "sharpe": -1.09, "note": "同上"},
+    {"id": "GrGA6jlP", "expr": "grp(anl15 1m_chg)", "sharpe": -0.46},
+    {"id": "78zbQPjO", "expr": "+pred_bucket tech17", "sharpe": -1.54, "note": "pred_bucket 反向 -1.54 -> 反向版应 +1.5 级"}
+  ],
+  "takeaways": [
+    "techindi predicted_first_quantile_ten_day_return 正向 1.39 是 GLB 首个强信号",
+    "pred_bucket(probability_second_bucket) 语义不同, 反向才是正确方向",
+    "GLB 上 LOW_GLB_AMER/EMEA/APAC_SHARPE 是区域子域检查(新)",
+    "anl15 修正动量类字段跨区域无效(与 KOR 一致)"
+  ],
+  "next": "第二批: -pred_bucket + predicted 系列深化 + mdl177 反向"
+}

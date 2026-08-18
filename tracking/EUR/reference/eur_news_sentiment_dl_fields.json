@@ -1,0 +1,542 @@
+{
+ "dataset": "news_sentiment_dl",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 66
+ },
+ "field_count": 66,
+ "fetched_at": "2026-08-18T10:23:27",
+ "fields": [
+  {
+   "id": "avg_syllables_per_word_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average number of syllables per word in the news article."
+  },
+  {
+   "id": "avg_syllables_per_word_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of syllables per word in the article."
+  },
+  {
+   "id": "avg_syllables_per_word_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of syllables per word in the article for news analytics."
+  },
+  {
+   "id": "avg_words_per_sentence_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of words per sentence in the Bloomberg news article."
+  },
+  {
+   "id": "avg_words_per_sentence_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of words per sentence in the article."
+  },
+  {
+   "id": "avg_words_per_sentence_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average number of words per sentence in the analyzed text."
+  },
+  {
+   "id": "max_negative_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum sentiment score among all negative words in the news article."
+  },
+  {
+   "id": "max_negative_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum sentiment score among negative words in the article."
+  },
+  {
+   "id": "max_negative_word_sentiment_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum sentiment score among negative words in the article for news analytics."
+  },
+  {
+   "id": "max_positive_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum sentiment score among all positive words in the news article."
+  },
+  {
+   "id": "max_positive_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum sentiment score among positive words in the article."
+  },
+  {
+   "id": "max_positive_word_sentiment_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum sentiment score among positive words in the article for news analytics."
+  },
+  {
+   "id": "mean_negative_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average sentiment score for all negative words in the news text."
+  },
+  {
+   "id": "mean_negative_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean sentiment score of all negative words in the article."
+  },
+  {
+   "id": "mean_negative_word_sentiment_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean sentiment score of all negative words in the article for news analytics."
+  },
+  {
+   "id": "mean_positive_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average sentiment score for all positive words in the Bloomberg news article."
+  },
+  {
+   "id": "mean_positive_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean sentiment score of all positive words in the article."
+  },
+  {
+   "id": "mean_positive_word_sentiment_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean sentiment score for all positive words identified in the text."
+  },
+  {
+   "id": "min_negative_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among all negative words in the news article."
+  },
+  {
+   "id": "min_negative_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among negative words in the article."
+  },
+  {
+   "id": "min_negative_word_sentiment_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among negative words in the article for news analytics."
+  },
+  {
+   "id": "min_positive_word_sentiment_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among all positive words in the news article."
+  },
+  {
+   "id": "min_positive_word_sentiment_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among positive words in the article."
+  },
+  {
+   "id": "min_positive_word_sentiment_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum sentiment score among positive words in the article for news analytics."
+  },
+  {
+   "id": "negative_word_count_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of negative sentiment words present in the news article."
+  },
+  {
+   "id": "negative_word_count_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of negative sentiment words identified in the article."
+  },
+  {
+   "id": "negative_word_count_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of negative sentiment words found in the text."
+  },
+  {
+   "id": "negative_word_sentiment_entropy_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy value reflecting the diversity of sentiment among negative words in the news text."
+  },
+  {
+   "id": "negative_word_sentiment_entropy_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy of sentiment distribution among negative words in the article."
+  },
+  {
+   "id": "negative_word_sentiment_entropy_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy of sentiment distribution among negative words in the article for news analytics."
+  },
+  {
+   "id": "negative_word_sentiment_stddev_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores among negative words in the news article."
+  },
+  {
+   "id": "negative_word_sentiment_stddev_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores for negative words in the article."
+  },
+  {
+   "id": "negative_word_sentiment_stddev_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores among negative words in the text."
+  },
+  {
+   "id": "output_metric_1_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "First custom output metric derived from Bloomberg news text features."
+  },
+  {
+   "id": "output_metric_1_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "First custom output metric derived from the article's text analysis."
+  },
+  {
+   "id": "output_metric_1_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "First custom output metric derived from the article's text analysis for news analytics."
+  },
+  {
+   "id": "output_metric_2_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second custom output metric derived from Bloomberg news text features."
+  },
+  {
+   "id": "output_metric_2_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Second custom output metric derived from the article's text analysis."
+  },
+  {
+   "id": "output_metric_2_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second custom output metric derived from the article's text analysis for news analytics."
+  },
+  {
+   "id": "output_metric_3_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third custom output metric derived from Bloomberg news text analysis."
+  },
+  {
+   "id": "output_metric_3_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third custom output metric derived from the article's text analysis."
+  },
+  {
+   "id": "output_metric_3_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third custom output metric derived from enhanced text features."
+  },
+  {
+   "id": "output_metric_4_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fourth custom output metric derived from Bloomberg news text analysis."
+  },
+  {
+   "id": "output_metric_4_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fourth custom output metric derived from the article's text analysis."
+  },
+  {
+   "id": "output_metric_4_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fourth custom output metric derived from advanced text analysis features."
+  },
+  {
+   "id": "positive_word_count_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of positive sentiment words present in the news article."
+  },
+  {
+   "id": "positive_word_count_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of positive sentiment words identified in the article."
+  },
+  {
+   "id": "positive_word_count_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of positive sentiment words identified in the article for news analytics."
+  },
+  {
+   "id": "positive_word_sentiment_entropy_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy value measuring the diversity of sentiment among positive words in the news article."
+  },
+  {
+   "id": "positive_word_sentiment_entropy_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy of sentiment distribution among positive words in the article."
+  },
+  {
+   "id": "positive_word_sentiment_entropy_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Entropy value measuring the diversity of sentiment among positive words in the text."
+  },
+  {
+   "id": "positive_word_sentiment_stddev_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores among positive words in the news text."
+  },
+  {
+   "id": "positive_word_sentiment_stddev_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores for positive words in the article."
+  },
+  {
+   "id": "positive_word_sentiment_stddev_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sentiment scores for positive words in the article for news analytics."
+  },
+  {
+   "id": "sentence_count_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of sentences in the Bloomberg news article."
+  },
+  {
+   "id": "sentence_count_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of sentences in the article."
+  },
+  {
+   "id": "sentence_count_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of sentences present in the text sample."
+  },
+  {
+   "id": "text_complexity_score_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A score indicating the linguistic complexity of the Bloomberg news text."
+  },
+  {
+   "id": "text_complexity_score_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A score representing the linguistic complexity of the article."
+  },
+  {
+   "id": "text_complexity_score_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A score representing the linguistic complexity of the analyzed text."
+  },
+  {
+   "id": "text_perplexity_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Perplexity score indicating the unpredictability or complexity of the news text."
+  },
+  {
+   "id": "text_perplexity_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Perplexity score indicating the unpredictability of the article's text."
+  },
+  {
+   "id": "text_perplexity_trna",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Perplexity score indicating the unpredictability of the article's text for news analytics."
+  },
+  {
+   "id": "vocab_coverage_ratio_bbgnews_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7443,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of words in the news article that match a reference vocabulary."
+  },
+  {
+   "id": "vocab_coverage_ratio_inferess",
+   "type": "VECTOR",
+   "coverage": 0.7723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of words in the article matching a reference vocabulary."
+  },
+  {
+   "id": "vocab_coverage_ratio_trna_enhanced",
+   "type": "VECTOR",
+   "coverage": 0.7508,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of words in the text that match a reference vocabulary set."
+  }
+ ]
+}

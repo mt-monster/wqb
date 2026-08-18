@@ -1,0 +1,159 @@
+{
+ "dataset": "sentiment27",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "SYMBOL": 4,
+  "VECTOR": 14
+ },
+ "field_count": 18,
+ "fetched_at": "2026-08-18T01:36:43",
+ "fields": [
+  {
+   "id": "aggregate_collection_timestamp",
+   "type": "SYMBOL",
+   "coverage": 0.7976,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The date when aggregated ranking data was collected from the source."
+  },
+  {
+   "id": "aggregate_reference_date",
+   "type": "SYMBOL",
+   "coverage": 0.7976,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The date representing the effective period for the aggregated ranking data."
+  },
+  {
+   "id": "ranking_reference_date",
+   "type": "SYMBOL",
+   "coverage": 0.814,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The date representing the effective period of the website ranking data."
+  },
+  {
+   "id": "snl27_avgranking",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Arithmetic mean of the Tranco ranks across all domains mapped to the issuer on that date; lower values indicate higher o"
+  },
+  {
+   "id": "snl27_kurtosis",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Excess kurtosis of the issuer’s domain rank distribution, indicating tail heaviness/extremes"
+  },
+  {
+   "id": "snl27_relpopularity08",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Composite relative popularity score computed with alpha=0.8; higher values indicate broader attention across the issuer’"
+  },
+  {
+   "id": "snl27_relpopularity1",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Composite relative popularity score computed with alpha=1; higher values indicate broader attention across the issuer’s "
+  },
+  {
+   "id": "snl27_skewness",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Skewness of the issuer’s domain rank distribution, indicating asymmetry/concentration"
+  },
+  {
+   "id": "snl27_top50pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "50th-percentile (median) rank cutoff of the issuer’s domain rank distribution; lower is better"
+  },
+  {
+   "id": "snl27_top50pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Average rank within the top 50% (best half) of the issuer’s domain rank distribution"
+  },
+  {
+   "id": "snl27_top75pctranking",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "75th-percentile rank cutoff of the issuer’s domain rank distribution; lower is better"
+  },
+  {
+   "id": "snl27_top75pctrankingavg",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average rank within the top 75% of the issuer’s domain rank distribution"
+  },
+  {
+   "id": "snl27_topranking",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Best (lowest) rank among the issuer’s domains on that date"
+  },
+  {
+   "id": "snl27_totalcountrydomains",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of domains associated with the issuer that have a country-code TLD (ccTLD) or regional identifier"
+  },
+  {
+   "id": "snl27_totaldomains",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Total number of distinct domains associated with the issuer on that date (de-duplicated count)"
+  },
+  {
+   "id": "snl27_wq_pit",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Internal PIT alignment marker (wq_append_time for ongoing data or simulated for historical), used for point-in-time deco"
+  },
+  {
+   "id": "snt27_rank",
+   "type": "VECTOR",
+   "coverage": 0.814,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Daily popularity rank of the domain in Tranco, 1 = most popular"
+  },
+  {
+   "id": "source_collection_timestamp",
+   "type": "SYMBOL",
+   "coverage": 0.814,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The date when the website ranking data was collected from the source."
+  }
+ ]
+}

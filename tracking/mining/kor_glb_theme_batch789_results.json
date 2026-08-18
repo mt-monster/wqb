@@ -1,0 +1,17 @@
+{
+  "batch": "GLB 换源+价值+ts_delta 批次 (3wXNxZbj / 1do3Te3a / 2tIjv3rm)",
+  "date": "2026-08-04",
+  "conclusion": "GLB 主题轨道结构性结论: 当期主题(TOPDIV3000+SLOW)下三区域(sharpe>1)与强 sharpe 难以兼得。pred 系 sharpe 1.7-1.9 但 EMEA/APAC 0.3-0.5; 价值系区域均衡(0.4-0.5)但 sharpe 0.7-1.0; ts_delta 比值模板(论坛 GLB 优化案例)在主题设置下无效(案例靠 MINVOL1M+STATISTICAL+HT主题, 与当期 SLOW 主题不匹配)。",
+  "key_results": [
+    {"id": "QPGkww0W", "expr": "+aggr_inst66", "sharpe": -0.73, "note": "institutions6 弱"},
+    {"id": "6XpV55GO", "expr": "ebitda2ev66", "sharpe": 0.7, "regions": {"AMER": 0.33, "EMEA": 0.48, "APAC": 0.46}, "note": "区域最均衡但弱"},
+    {"id": "1YpQe51k", "expr": "ebitda2ev+curindfcfp", "sharpe": 1.06, "regions": {"AMER": 0.93}, "note": "blend 提升 sharpe 但 AMER 主导"},
+    {"id": "j26bvQle", "expr": "grp(ebitda2ev66)", "sharpe": 0.73, "regions": {"AMER": 0.43, "EMEA": 0.43, "APAC": 0.41}, "note": "行业版区域最均衡"},
+    {"id": "QPGLL75w", "expr": "ts_quantile(winsorize(ts_delta(ebitda42)/ts_delay,std4),5)", "sharpe": 0.79, "note": "比值模板在主题设置下无效"},
+    {"id": "N1bvv7gg", "expr": "pred5d42 比值", "sharpe": -0.03, "note": "pred 比值无效"},
+    {"id": "ZYEee7WY", "expr": "divyld42 比值", "sharpe": 0.16, "note": "股息增长率 GLB 无效"}
+  ],
+  "glb_policy": "LOW_GLB_AMER/EMEA/APAC_SHARPE limit=1 为 GLB 硬性政策(2025-08 新政, FAQ 确认三子区域 sharpe 都须>1), 非 warning",
+  "forum_method": "GLB 优化方法论(2026-06-28 帖): ts_delta/ts_delay 比值⭐⭐⭐ > ts_rank⭐⭐; 窗口42平衡(EMEA弱用63/AMER弱用20); winsorize std 4→2 区域接近时微调; 案例 RRp1Earb Sharpe 4.79 靠 MINVOL1M+STATISTICAL+HT主题",
+  "decision": "待用户: (A) 接受 ZYE3Kv9Y 提交实测子域项; (B) GLB 暂停回 KOR; (C) 继续 GLB 剩余数据集(model26/other335)"
+}

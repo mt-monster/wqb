@@ -1,0 +1,40 @@
+{
+ "meta": {
+  "wave": "16",
+  "source": "tracking/GBR/candidates/gbr_wave16_analyst9_raw_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-17T21:53:26",
+  "input": 15,
+  "duplicates_dropped": 0,
+  "selected": 9,
+  "buckets": {
+   "divide>vec_avg": 1,
+   "divide>vec_stddev": 1,
+   "divide>vec_sum": 2,
+   "subtract>vec_avg": 1,
+   "subtract>vec_sum": 4,
+   "ts_delta>vec_avg": 1,
+   "vec_avg>atom": 1,
+   "vec_count>atom": 1,
+   "vec_range>atom": 2,
+   "vec_stddev>atom": 1
+  },
+  "skeleton_distribution": {
+   "ratio": 4,
+   "single": 5
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "divide(vec_avg(anl9_daily_numanalysts), vec_avg(anl9_daily_numanalystall))",
+  "divide(vec_stddev(anl9_consensusv2span_dataitemvalue), abs(vec_avg(anl9_consensusv2span_dataitemvalue)))",
+  "divide(vec_sum(anl9_daily_numup), add(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn)))",
+  "divide(vec_sum(anl9_daily_numupunfiltered), add(vec_sum(anl9_daily_numupunfiltered), vec_sum(anl9_daily_numdn)))",
+  "subtract(vec_avg(anl9_consensusanalysis_dataitemvalue), vec_avg(anl9_detail_dataitemvalue))",
+  "subtract(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn))",
+  "vec_count(anl9_detail_dataitemvalue)",
+  "vec_range(anl9_consensusv2span_cashflowstatement_dataitemvalue)",
+  "vec_range(anl9_detail_dataitemvalue)"
+ ]
+}

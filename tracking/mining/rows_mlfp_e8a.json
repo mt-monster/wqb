@@ -1,0 +1,72 @@
+[
+ {
+  "label": "T1_drev",
+  "sim": "https://api.worldquantbrain.com/simulations/4gcv9l7MI4lEctR1d10pOxeq",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T2_small",
+  "sim": "https://api.worldquantbrain.com/simulations/fEDALtR4LIbav13Nxgw4Vo",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T5_base",
+  "sim": "https://api.worldquantbrain.com/simulations/1vnavJgrX4Ag8yVzIcp4Wjz",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T6_eymom",
+  "sim": "https://api.worldquantbrain.com/simulations/446DQc4175gBcjLza4GpacN",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T7_peg",
+  "sim": "https://api.worldquantbrain.com/simulations/23BLOV59f4zabFxe1mFpsVw",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T10_term",
+  "sim": "https://api.worldquantbrain.com/simulations/1cBHOc6wN4oEcMi13y3qlxFd",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T11_dupont",
+  "sim": "https://api.worldquantbrain.com/simulations/11FRVQ1FA503ajQbnBvUjRT",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T15_vol",
+  "sim": "https://api.worldquantbrain.com/simulations/Fxvzw1xU4Xr96aZhbobduW",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T3_opearn",
+  "sim": "https://api.worldquantbrain.com/simulations/3wTUaO8nY4wNaRmwFUw1sTf",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T14_semivar",
+  "sim": "https://api.worldquantbrain.com/simulations/2qDBS4b5B53m8CdogoUtM6V",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ }
+]

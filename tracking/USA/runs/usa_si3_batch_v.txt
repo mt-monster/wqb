@@ -1,0 +1,8 @@
+reverse(quantile(divide(vec_avg(max_loan_rate), vec_avg(mean_loan_rate))))
+reverse(quantile(divide(vec_avg(loan_rate_volatility), vec_avg(mean_loan_rate))))
+reverse(quantile(ts_rank(vec_avg(max_loan_rate), 60)))
+reverse(quantile(ts_ir(vec_avg(max_loan_rate), 20)))
+reverse(quantile(ts_max_diff(vec_avg(max_loan_rate), 20)))
+reverse(quantile(group_zscore(vec_avg(loan_rate_volatility), subindustry)))
+reverse(quantile(divide(vec_avg(borrow_activity_score), vec_avg(transaction_count))))
+reverse(quantile(subtract(vec_avg(max_loan_rate), ts_delay(vec_avg(max_loan_rate), 20))))

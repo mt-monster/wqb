@@ -1,0 +1,103 @@
+{
+ "meta": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "max_trade": "ON",
+  "batch": "b11",
+  "date": "2026-08-04"
+ },
+ "results": [
+  {
+   "child_id": "4v6g8k1CK4xDcxTNnWow2kE",
+   "status": "COMPLETE",
+   "alpha_id": "O0Ga9XKR",
+   "sharpe": 0.88,
+   "fitness": 0.57,
+   "turnover": 0.0798,
+   "returns": 0.0532,
+   "margin": 0.001334,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.57,
+   "rn_sharpe": 0.96,
+   "sub_universe_sharpe": 0.97,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "2A7qNo3UM4HMc7YViGeOS1N",
+   "status": "COMPLETE",
+   "alpha_id": "VkGJ8bKb",
+   "sharpe": 0.96,
+   "fitness": 0.65,
+   "turnover": 0.0782,
+   "returns": 0.0576,
+   "margin": 0.001472,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.9,
+   "rn_sharpe": 0.97,
+   "sub_universe_sharpe": 1.03,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "46PP9Za7V4Yq9CktiVvp0M0",
+   "status": "COMPLETE",
+   "alpha_id": "P0G91mrJ",
+   "sharpe": 0.9,
+   "fitness": 0.59,
+   "turnover": 0.0763,
+   "returns": 0.0543,
+   "margin": 0.001424,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.52,
+   "rn_sharpe": 0.94,
+   "sub_universe_sharpe": 1.03,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "49aK6k7Ob50ZbmH1diDyZiVX",
+   "status": "COMPLETE",
+   "alpha_id": "MPGmxNlo",
+   "sharpe": 0.93,
+   "fitness": 0.62,
+   "turnover": 0.0739,
+   "returns": 0.0559,
+   "margin": 0.001512,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.9,
+   "rn_sharpe": 0.91,
+   "sub_universe_sharpe": 1.01,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  }
+ ]
+}

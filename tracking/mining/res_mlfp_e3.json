@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 8 alpha expressions",
+ "async": true,
+ "multisimulation_id": "4qGi332j5hkboCUral5nAo",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/4qGi332j5hkboCUral5nAo",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/4qGi332j5hkboCUral5nAo",
+ "submitted_expressions": [
+  "rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)))",
+  "group_rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),subindustry)",
+  "ts_rank(subtract(ts_backfill(change_twelve_month_active_return,250),ts_backfill(change_1m_active_return,250)),250)",
+  "normalize(winsorize(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),std=4))",
+  "rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),60))",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_twelve_month_active_return,66),22),ts_mean(ts_backfill(change_1m_active_return,66),22),filter=true),189)))",
+  "scale(rank(ts_zscore(subtract(ts_mean(ts_backfill(change_twelve_month_active_return,66),22),ts_mean(ts_backfill(change_1m_active_return,66),22),filter=true),189)))+scale(-rank(ts_zscore(returns,42)))*0.7",
+  "rank(subtract(add(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_24m_active_return,120)),add(ts_backfill(change_1m_active_return,120),ts_backfill(change_3m_active_return,120))))"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

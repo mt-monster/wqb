@@ -1,0 +1,35 @@
+{
+  "batch": "b21",
+  "category": "fundamental (accounting quality)",
+  "dataset": "fundamental44",
+  "objective": "Alpha #2: Accounting quality signals. Completely different from alpha #1 (earnings surprise) and mdl110_score (ML composite). Lower prod_corr expected.",
+  "coverage": 0.875,
+  "fields_tested": ["fnd44_score", "fnd44_fscore", "fnd44_mscore", "fnd44_probability_restatement_global", "fnd44_cashflow_accruals", "fnd44_factor_benford", "fnd44_working_capital_accruals"],
+  "strategy": "Screen 7 fields with ts_rank w=60 (best balance from b20). Also test raw fnd44_score (no ts_rank) since raw was best for mdl110_score.",
+  "field_directions": {
+    "fnd44_score": "HIGH=good quality → LONG (no negation)",
+    "fnd44_fscore": "HIGH=misstatement risk → SHORT (may need negation)",
+    "fnd44_mscore": "HIGH=manipulation risk → SHORT (may need negation)",
+    "fnd44_probability_restatement_global": "HIGH=restatement risk → SHORT (may need negation)",
+    "fnd44_cashflow_accruals": "HIGH=accruals → SHORT (may need negation)",
+    "fnd44_factor_benford": "HIGH=Benford deviation → SHORT (may need negation)",
+    "fnd44_working_capital_accruals": "HIGH=accruals → SHORT (may need negation)"
+  },
+  "fixed_params": {
+    "region": "ASI", "universe": "MINVOL1M", "delay": 1, "decay": 20,
+    "neutralization": "INDUSTRY", "truncation": 0.15, "test_period": "P0Y0M",
+    "pasteurization": "ON", "nan_handling": "OFF", "unit_handling": "VERIFY",
+    "language": "FASTEXPR", "max_trade": "ON", "instrument_type": "EQUITY"
+  },
+  "expressions": [
+    {"idx": 1, "field": "fnd44_score", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_score,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 2, "field": "fnd44_score", "variant": "raw (no ts_rank)", "ops": 6, "expr": "group_rank(ts_backfill(winsorize(fnd44_score,std=5),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 3, "field": "fnd44_fscore", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_fscore,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 4, "field": "fnd44_mscore", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_mscore,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 5, "field": "fnd44_probability_restatement_global", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_probability_restatement_global,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 6, "field": "fnd44_cashflow_accruals", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_cashflow_accruals,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 7, "field": "fnd44_factor_benford", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_factor_benford,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"},
+    {"idx": 8, "field": "fnd44_working_capital_accruals", "variant": "ts_rank w=60", "ops": 7, "expr": "group_rank(ts_rank(ts_backfill(winsorize(fnd44_working_capital_accruals,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))"}
+  ],
+  "targets": {"sh": ">1.58", "fit": ">1.0", "2Y": ">1.6", "margin": ">5bp", "tvr": "5-30%", "ops": "<8", "rn_sh": ">1.0", "asi_jpn": ">1.0", "prod_corr": "<0.7"}
+}

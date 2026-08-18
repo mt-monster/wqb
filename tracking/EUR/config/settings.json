@@ -1,0 +1,30 @@
+{
+  "_doc": "EUR 战役固定仿真设置（2026-08-18 新开，平台 get_platform_setting_options 实测档位）。pipeline/build_wave/probe 统一引用。wave6 起用户要求 universe 参考 TOP700，EUR 合法档位最接近为 TOP800（2026-08-18）。",
+  "instrumentType": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "maxTrade": "ON",
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "_alt_neutralization": "STATISTICAL/COUNTRY 对照轨",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "五槽填槽模式：5 批 multisim 同提保持槽位常满，即收即补（wqb-concurrency §8）",
+  "_diversity_enhance": "auto",
+  "_diversity_weight": 0.3,
+  "_known_wall": "returns 反转家族 prod_corr 0.95 不可破（2026-08-12 实证）；优先 alphaCount=0 零竞争数据集",
+  "_universe_restored": {
+    "from": "TOP800",
+    "to": "TOP2500",
+    "when": "2026-08-18",
+    "why": "settings.json 于 14:52 被外部会话改为 TOP800 导致 wave6b 误跑窄池（结果全崩，见 wave6b_univ800_probe_results.json）；wave6/wave3d 基线为 TOP2500，FCF 家族仅在宽池有效（wave4 实证）"
+  }
+}

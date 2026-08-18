@@ -1,0 +1,18 @@
+{
+  "track": "EUR/TOP1200/D1",
+  "date": "2026-08-05",
+  "batches": ["eur_b1 model30 REVERSION_AND_MOMENTUM", "eur_b2 model30 CROWDING", "eur_b3 pv20 INDUSTRY", "eur_b4 news21 REVERSION_AND_MOMENTUM"],
+  "total_backtests": 32,
+  "results": {
+    "model30 (surprise)": "sh 0.3-0.6 全灭（预筛⚠退化验证：社区 sharpe 0.24 < 区域均值 0.478；方向正确但强度区域异质）",
+    "pv20 (流动性/动量)": "sh -0.06~0.36 全灭（score_870/252_mom/best_eps 均无效）",
+    "news21 (情绪)": "sh 0.03-0.72 全灭（tvr 0.55-0.61 超高 + CONCENTRATED_WEIGHT；event_transcript_sentiment 微弱）"
+  },
+  "prequalify_findings": {
+    "最优中性化": "REVERSION_AND_MOMENTUM 0.668 > FAST 0.595 > CROWDING 0.521",
+    "甜点区之王 fundamental86": "sharpe 1.09/FAST 1.259 但平台无字段（数据包 2026-02 与平台脱节）",
+    "推荐榜大部分无数据": "fundamental86/risk59/model216/fundamental94 平台 0 字段；insiders12 cov 0.19 过低"
+  },
+  "conclusion": "EUR 无达标候选（天花板 0.72）。数据包过期导致预筛推荐失效；可用数据集信号全灭。等数据包更新或平台灌数据后重探。",
+  "archive": ["result_model30_eur_b1.json", "result_model30_eur_b2.json", "result_pv20_eur_b3.json", "result_news21_eur_b4.json"]
+}

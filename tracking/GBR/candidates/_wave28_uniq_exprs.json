@@ -1,0 +1,14 @@
+[
+ "rank(vec_avg(nws104_prob_pos))",
+ "subtract(0, rank(vec_avg(nws104_prob_neg)))",
+ "rank(vec_avg(nws104_marketimpactscore))",
+ "rank(vec_avg(nws104_sentiment))",
+ "rank(vec_avg(nws104_relevance))",
+ "rank(vec_avg(nws104_confidence))",
+ "rank(vec_max(nws104_marketimpactscore))",
+ "rank(vec_sum(nws104_prob_pos))",
+ "add(0.5 * rank(vec_avg(nws104_prob_pos)), 0.5 * rank(vec_avg(nws104_marketimpactscore)))",
+ "add(0.34 * rank(vec_avg(nws104_prob_pos)), 0.33 * subtract(0, rank(vec_avg(nws104_prob_neg))), 0.33 * rank(vec_avg(nws104_marketimpactscore)))",
+ "add(0.34 * rank(vec_avg(nws104_marketimpactscore)), 0.33 * rank(vec_avg(nws104_relevance)), 0.33 * rank(vec_avg(nws104_sentiment)))",
+ "rank(ts_av_diff(vec_avg(nws104_marketimpactscore), 20))"
+]

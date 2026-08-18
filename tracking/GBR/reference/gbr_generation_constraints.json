@@ -1,0 +1,26 @@
+{
+ "operator_stats": {
+  "used": [],
+  "unused": [],
+  "rare": []
+ },
+ "injection_rules": {
+  "force_explore_ops": [],
+  "cap_ops": [],
+  "skeleton_quota": {
+   "linear_mix": 0.5,
+   "event_gated": 0.1,
+   "group": 0.1,
+   "ratio": 0.1,
+   "single": 0.2
+  }
+ },
+ "poison_patterns": [
+  {
+   "name": "naked_bucket_tail",
+   "regex": "^\\s*bucket\\s*\\(.*\\)\\s*$",
+   "rule": "bucket 产生 group unit 值，表达式不得以 bucket(...) 结尾（wave17 batch1 实证：2 ERROR + 6 级联 CANCELLED）；必须再包一层截面算子，如 ts_av_diff(bucket(...), 10)",
+   "severity": "block"
+  }
+ ]
+}

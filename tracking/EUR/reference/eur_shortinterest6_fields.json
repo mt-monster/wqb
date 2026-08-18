@@ -1,0 +1,102 @@
+{
+ "dataset": "shortinterest6",
+ "region": "EUR",
+ "universe": "TOP2500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 11
+ },
+ "field_count": 11,
+ "fetched_at": "2026-08-18T15:32:36",
+ "fields": [
+  {
+   "id": "star_hold_country_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 25,
+   "description": "The country 1-100 rank of the smart holdings model"
+  },
+  {
+   "id": "star_hold_global_change_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "The change component 1-100 global rank"
+  },
+  {
+   "id": "star_hold_global_owner_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The peers adjustment factor 1-100 global rank. This factor is reversed - 100 indicates high peer ownership for the secur"
+  },
+  {
+   "id": "star_hold_global_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 42,
+   "description": "The global 1-100 rank of the Smart Holdings model"
+  },
+  {
+   "id": "star_hold_global_screening_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "The peers-adjusted screening component 1-100 global rank"
+  },
+  {
+   "id": "star_hold_industry_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "The industry 1-100 rank of the Smart Holdings model"
+  },
+  {
+   "id": "star_hold_region_change_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "The change component 1-100 regional rank"
+  },
+  {
+   "id": "star_hold_region_owner_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "The peers adjustment factor 1-100 regional rank. This factor is reversed - 100 indicates high peer ownership for the sec"
+  },
+  {
+   "id": "star_hold_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "The regional 1-100 rank of the Smart Holdings model"
+  },
+  {
+   "id": "star_hold_region_screening_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "The peers-adjusted screening component 1-100 regional rank"
+  },
+  {
+   "id": "star_hold_sector_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 19,
+   "alphaCount": 27,
+   "description": "The sector 1-100 rank of the smart holdings model"
+  }
+ ]
+}

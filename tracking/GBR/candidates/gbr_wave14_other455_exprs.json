@@ -1,0 +1,58 @@
+{
+  "wave": "W14",
+  "dataset": "other455",
+  "region": "GBR",
+  "universe": "TOP700",
+  "delay": 1,
+  "generated_at": "2026-08-17T13:00:00",
+  "expressions": [
+    {
+      "id": "gbr_other455_w14_01",
+      "expression": "rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value)",
+      "style": "single_factor",
+      "description": "单一PCA因子排名"
+    },
+    {
+      "id": "gbr_other455_w14_02",
+      "expression": "add(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value), rank(oth455_competitor_n2v_p10_q200_w1_pca_fact2_value))",
+      "style": "multi_factor",
+      "description": "双PCA因子加性组合"
+    },
+    {
+      "id": "gbr_other455_w14_03",
+      "expression": "multiply(rank(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value), rank(oth455_competitor_n2v_p10_q200_w1_pca_fact2_value))",
+      "style": "multi_factor",
+      "description": "双PCA因子乘性组合"
+    },
+    {
+      "id": "gbr_other455_w14_04",
+      "expression": "ts_delta(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 5)",
+      "style": "momentum",
+      "description": "PCA因子5日变化率"
+    },
+    {
+      "id": "gbr_other455_w14_05",
+      "expression": "ts_mean(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 10)",
+      "style": "smoothing",
+      "description": "PCA因子10日平滑"
+    },
+    {
+      "id": "gbr_other455_w14_06",
+      "expression": "group_zscore(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, industry)",
+      "style": "neutralized",
+      "description": "行业中性化PCA因子"
+    },
+    {
+      "id": "gbr_other455_w14_07",
+      "expression": "winsorize(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, std=4)",
+      "style": "robust",
+      "description": "去极值PCA因子"
+    },
+    {
+      "id": "gbr_other455_w14_08",
+      "expression": "ts_ir(oth455_competitor_n2v_p10_q200_w1_pca_fact1_value, 20)",
+      "style": "stability",
+      "description": "PCA因子20日信息比率"
+    }
+  ]
+}

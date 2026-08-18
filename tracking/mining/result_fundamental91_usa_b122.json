@@ -1,0 +1,429 @@
+{
+ "batch": "b122",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "FAST",
+  "truncation": 0.04,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "-rank(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60))",
+  "-rank(ts_mean(vec_avg(fnd91_sentiment2_0), 20))",
+  "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_topic_4), std=5), lookback=60), 5), sector)",
+  "-rank(ts_backfill(vec_avg(fnd91_topic_4), lookback=60))",
+  "-rank(ts_decay_linear(vec_avg(fnd91_sentiment2_0), 20))",
+  "-rank(add(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60), ts_backfill(vec_avg(fnd91_topic_4), lookback=60)))",
+  "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_sentiment2_0), std=5), lookback=60), 5), sector)",
+  "-rank(ts_backfill(vec_avg(fnd91_cat1_metric0_0), lookback=60))"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "-rank(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60))",
+   "child": "2hLw8y65x5gXbFfjp16tO8k",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "mL59Yg9p",
+   "metrics": {
+    "sharpe": 1.38,
+    "fitness": 0.65,
+    "turnover": 0.0841,
+    "returns": 0.0274,
+    "margin": 0.00065,
+    "drawdown": 0.0388,
+    "two_year_sharpe": 1.69,
+    "sub_universe_sharpe": 0.6
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60))"
+  },
+  {
+   "index": 1,
+   "expression": "-rank(ts_mean(vec_avg(fnd91_sentiment2_0), 20))",
+   "child": "39Blpt3tF4Ug9KJ1eR4xFdqe",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "rK2Xd5XJ",
+   "metrics": {
+    "sharpe": 1.3,
+    "fitness": 0.6,
+    "turnover": 0.1367,
+    "returns": 0.0293,
+    "margin": 0.000428,
+    "drawdown": 0.0296,
+    "two_year_sharpe": 1.63,
+    "sub_universe_sharpe": 0.6
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(ts_mean(vec_avg(fnd91_sentiment2_0), 20))"
+  },
+  {
+   "index": 2,
+   "expression": "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_topic_4), std=5), lookback=60), 5), sector)",
+   "child": "QKOc6X50UaCUHVAIPucx",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "6XpOArOp",
+   "metrics": {
+    "sharpe": 0.84,
+    "fitness": 0.34,
+    "turnover": 0.0818,
+    "returns": 0.0203,
+    "margin": 0.000495,
+    "drawdown": 0.0735,
+    "two_year_sharpe": 1.07,
+    "sub_universe_sharpe": 0.41
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.84,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.34,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": 1.07,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_topic_4), std=5), lookback=60), 5), sector)"
+  },
+  {
+   "index": 3,
+   "expression": "-rank(ts_backfill(vec_avg(fnd91_topic_4), lookback=60))",
+   "child": "4DkAwPOf5gfa9X18CadZoDN",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "e73R69R6",
+   "metrics": {
+    "sharpe": 1.58,
+    "fitness": 0.81,
+    "turnover": 0.0794,
+    "returns": 0.0325,
+    "margin": 0.000819,
+    "drawdown": 0.0258,
+    "two_year_sharpe": 1.0,
+    "sub_universe_sharpe": 0.88
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(ts_backfill(vec_avg(fnd91_topic_4), lookback=60))"
+  },
+  {
+   "index": 4,
+   "expression": "-rank(ts_decay_linear(vec_avg(fnd91_sentiment2_0), 20))",
+   "child": "2SgnO5esl5eb8yYPVt0EGg",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "kqPlJVlO",
+   "metrics": {
+    "sharpe": -0.02,
+    "fitness": -0.0,
+    "turnover": 1.1579,
+    "returns": -0.001,
+    "margin": -2e-06,
+    "drawdown": 0.1487,
+    "two_year_sharpe": -0.35,
+    "sub_universe_sharpe": -0.41
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": -0.02,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": -0.0,
+     "limit": 1.0
+    },
+    {
+     "name": "HIGH_TURNOVER",
+     "value": 1.1579,
+     "limit": 0.7
+    },
+    {
+     "name": "CONCENTRATED_WEIGHT",
+     "value": 0.365298,
+     "limit": 0.1,
+     "date": "2021-11-12"
+    },
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": -0.41,
+     "limit": -0.01
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.35,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 6,
+    "failed_ppa_count": 3,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "HIGH_TURNOVER",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(ts_decay_linear(vec_avg(fnd91_sentiment2_0), 20))"
+  },
+  {
+   "index": 5,
+   "expression": "-rank(add(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60), ts_backfill(vec_avg(fnd91_topic_4), lookback=60)))",
+   "child": "HX4yy2iw4UJa92147GB2jmC",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "ak1vVLv5",
+   "metrics": {
+    "sharpe": 1.64,
+    "fitness": 0.86,
+    "turnover": 0.0812,
+    "returns": 0.034,
+    "margin": 0.000838,
+    "drawdown": 0.0256,
+    "two_year_sharpe": 1.13,
+    "sub_universe_sharpe": 0.97
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(add(ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60), ts_backfill(vec_avg(fnd91_topic_4), lookback=60)))"
+  },
+  {
+   "index": 6,
+   "expression": "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_sentiment2_0), std=5), lookback=60), 5), sector)",
+   "child": "1Fa4HR7wS5aMaobExqb5Jos",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "E5GJVvAJ",
+   "metrics": {
+    "sharpe": 0.27,
+    "fitness": 0.07,
+    "turnover": 0.0945,
+    "returns": 0.0081,
+    "margin": 0.000172,
+    "drawdown": 0.1099,
+    "two_year_sharpe": 0.8,
+    "sub_universe_sharpe": -0.16
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.27,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.07,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": -0.16,
+     "limit": 0.12
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": 0.8,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 4,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-group_rank(ts_decay_linear(ts_backfill(winsorize(vec_avg(fnd91_sentiment2_0), std=5), lookback=60), 5), sector)"
+  },
+  {
+   "index": 7,
+   "expression": "-rank(ts_backfill(vec_avg(fnd91_cat1_metric0_0), lookback=60))",
+   "child": "VFmdy4GH4tNbe5QwEavuRP",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "E5GJVvAK",
+   "metrics": {
+    "sharpe": -0.47,
+    "fitness": -0.14,
+    "turnover": 0.0799,
+    "returns": -0.0115,
+    "margin": -0.000288,
+    "drawdown": 0.1494,
+    "two_year_sharpe": -0.94,
+    "sub_universe_sharpe": -0.02
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": -0.47,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": -0.14,
+     "limit": 1.0
+    },
+    {
+     "name": "LOW_2Y_SHARPE",
+     "value": -0.94,
+     "limit": 1.58
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "fundamental"
+   },
+   "code": "-rank(ts_backfill(vec_avg(fnd91_cat1_metric0_0), lookback=60))"
+  }
+ ]
+}

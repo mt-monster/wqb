@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/WWbSH2Rn4rRblJ1911pD7Mh",
+ "ts": 1785907745.4927647,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/3hHwDQ1XY4D8bodBasReay7",
+   "location_url": "https://api.worldquantbrain.com/simulations/3hHwDQ1XY4D8bodBasReay7",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "3qpWgOM0",
+   "raw": {
+    "id": "3hHwDQ1XY4D8bodBasReay7",
+    "parent": "WWbSH2Rn4rRblJ1911pD7Mh",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 12,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 250), country)",
+    "status": "COMPLETE",
+    "alpha": "3qpWgOM0"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/4t09Cv1DP4T5cuEl1340ECi",
+   "location_url": "https://api.worldquantbrain.com/simulations/4t09Cv1DP4T5cuEl1340ECi",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "npNbwlpM",
+   "raw": {
+    "id": "4t09Cv1DP4T5cuEl1340ECi",
+    "parent": "WWbSH2Rn4rRblJ1911pD7Mh",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 12,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 200), country)",
+    "status": "COMPLETE",
+    "alpha": "npNbwlpM"
+   },
+   "extra_info": ""
+  }
+ ]
+}

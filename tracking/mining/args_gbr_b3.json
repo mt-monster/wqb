@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "-ts_rank(ts_backfill(pv106_spread, lookback=60), 66)",
+  "-ts_rank(ts_backfill(pv106_spreadbp, lookback=60), 44)",
+  "-ts_rank(ts_backfill(slippage_at_spread_35, lookback=60), 44)",
+  "-ts_rank(ts_backfill(transaction_cost_maximum, lookback=60), 44)",
+  "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44)",
+  "-ts_rank(ts_backfill(aggregated_slippage_metric, lookback=60), 44)",
+  "-ts_rank(ts_backfill(pv106_spread, lookback=60), 33)",
+  "-ts_rank(ts_backfill(pv106_lastspread, lookback=60), 44)"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "1zTS8w9PB4hTaThPGsNWcd",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/1zTS8w9PB4hTaThPGsNWcd",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/1zTS8w9PB4hTaThPGsNWcd",
+  "submitted_expressions": [
+   "-ts_rank(ts_backfill(pv106_spread, lookback=60), 66)",
+   "-ts_rank(ts_backfill(pv106_spreadbp, lookback=60), 44)",
+   "-ts_rank(ts_backfill(slippage_at_spread_35, lookback=60), 44)",
+   "-ts_rank(ts_backfill(transaction_cost_maximum, lookback=60), 44)",
+   "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44)",
+   "-ts_rank(ts_backfill(aggregated_slippage_metric, lookback=60), 44)",
+   "-ts_rank(ts_backfill(pv106_spread, lookback=60), 33)",
+   "-ts_rank(ts_backfill(pv106_lastspread, lookback=60), 44)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

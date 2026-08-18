@@ -1,0 +1,26 @@
+﻿{
+    "unit_handling":  "VERIFY",
+    "max_trade":  "ON",
+    "decay":  4,
+    "test_period":  "P0Y0M",
+    "neutralization":  "SECTOR",
+    "language":  "FASTEXPR",
+    "universe":  "TOP3000",
+    "delay":  1,
+    "alpha_expressions":  [
+                              "rank(ts_delta(vec_avg(oth696_combined_sentiment_score), 5))",
+                              "rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))",
+                              "rank(ts_delta(vec_avg(oth696_events_sentiment_score), 5))",
+                              "rank(ts_delta(vec_avg(oth696_growthweightedpos), 5))",
+                              "rank(ts_sum(vec_avg(oth696_opportunity_positive_62), 10))",
+                              "rank(ts_sum(vec_avg(oth696_capex_negative_44), 10))",
+                              "-rank(ts_sum(vec_avg(oth696_headwinds_negative), 10))",
+                              "rank(ts_mean(vec_avg(oth696_accessaffordability_positive), 10))"
+                          ],
+    "truncation":  0.08,
+    "pasteurization":  "ON",
+    "region":  "USA",
+    "instrument_type":  "EQUITY",
+    "visualization":  false,
+    "nan_handling":  "ON"
+}

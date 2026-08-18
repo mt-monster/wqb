@@ -1,0 +1,21 @@
+{
+  "wave": 27,
+  "dataset": "model264",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "ML 趋势概率数据集判弱。24/24 全回测，top rank(mdl264_es_ebit_fy1_r1m_l3) sh=0.22。es 组 l3（move-up 概率）、1l 组技术趋势概率、news 情绪趋势概率全部 |sh|<0.25。ML 预测的趋势概率在 GBR D1 TOP700 无 alpha。判死。",
+  "top": [
+    {
+      "id": "0mwbaJVk",
+      "code": "rank(mdl264_es_ebit_fy1_r1m_l3)",
+      "sharpe": 0.22,
+      "fitness": 0.07,
+      "two_year_sharpe": 0.41
+    }
+  ],
+  "lessons": [
+    "model264 的 l1/l2/l3 三分类趋势概率与 1l 单概率字段均无 alpha（sh<0.25）",
+    "es 组字段命名只有 ebit/ebitda/roe/sale/vol（无 bps/cfps/dps l3），设计前必须查字段清单"
+  ],
+  "next": "判死，转 news104。"
+}

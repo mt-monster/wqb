@@ -1,0 +1,51 @@
+{
+ "meta": {
+  "wave": "18",
+  "source": "tracking/GBR/candidates/gbr_wave18_starmine_enhance_raw_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-18T00:40:37",
+  "input": 20,
+  "duplicates_dropped": 0,
+  "selected": 16,
+  "buckets": {
+   "add>multiply": 3,
+   "add>rank": 5,
+   "divide>multiply": 1,
+   "divide>rank": 2,
+   "group_rank>ts_delta": 2,
+   "if_else>greater": 1,
+   "rank>ts_av_diff": 1,
+   "rank>ts_delta": 2,
+   "trade_when>greater": 1,
+   "trade_when>rank": 1,
+   "ts_decay_linear>rank": 1
+  },
+  "skeleton_distribution": {
+   "linear_mix": 7,
+   "ratio": 3,
+   "group": 2,
+   "event_gated": 1,
+   "single": 3
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "add(0.7 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.3 * rank(smest_fy1_ebitda_4))",
+  "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ep_yield_pct_smest_fy1_3))",
+  "add(0.5 * multiply(rank(forward_pe_smest_fy1_3), -1), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)))",
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 44)))",
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 126)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+  "add(0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 126)), 0.5 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 63)))",
+  "add(0.7 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), 0.3 * rank(ts_delta(ep_yield_pct_smest_fy2_3, 22)))",
+  "divide(multiply(rank(forward_pe_smest_fy1_3), -1), add(rank(smest_fy1_ebitda_4), 0.01))",
+  "divide(rank(ts_delta(ep_yield_pct_smest_fy2_3, 66)), add(rank(ep_yield_pct_smest_fy1_3), 0.01))",
+  "divide(rank(ts_delta(smest_fy1_earnings_4, 66)), add(rank(ts_delta(smest_fy1_revenue, 66)), 0.01))",
+  "group_rank(ts_delta(ep_yield_pct_smest_fy2_3, 66), sector)",
+  "group_rank(ts_delta(smest_fy1_earnings_4, 66), subindustry)",
+  "if_else(greater(analyst_upgrade_count_14d_3, analyst_downgrade_count_14d_2), rank(ts_delta(ep_yield_pct_smest_fy1_3, 66)), rank(ep_yield_pct_smest_fy2_3))",
+  "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 10))",
+  "rank(ts_delta(ep_yield_pct_smest_fy1_3, 44))",
+  "rank(ts_delta(smest_fy1_earnings_4, 126))"
+ ]
+}

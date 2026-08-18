@@ -1,0 +1,8 @@
+reverse(quantile(group_zscore(snt22_2neg_mean_168, subindustry)))
+reverse(quantile(group_zscore(snt22_3neg_mean_112, subindustry)))
+quantile(ts_decay_linear(group_zscore(subtract(snt22_3neg_mean_112, snt22_3pos_mean_116), subindustry), 15))
+reverse(quantile(ts_decay_linear(group_zscore(snt22_2neg_median_156, subindustry), 15)))
+quantile(group_zscore(divide(snt22neg_mean_253, add(snt22pos_mean_270, 0.0001)), subindustry))
+reverse(quantile(ts_av_diff(snt22_5neg_mean_307, 10)))
+quantile(ts_decay_linear(group_zscore(add(snt22neg_mean_253, snt22_5neg_mean_307), subindustry), 15))
+reverse(quantile(ts_decay_linear(group_zscore(snt22_5pos_median_295, subindustry), 15)))

@@ -1,0 +1,97 @@
+{
+ "batch": "b108",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "REVERSION_AND_MOMENTUM",
+  "truncation": 0.04,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "rank(oth566_return)",
+  "rank(ts_backfill(oth566_return, lookback=60))",
+  "group_rank(ts_decay_linear(ts_backfill(winsorize(oth566_return, std=5), lookback=60), 5), sector)",
+  "rank(ts_delta(ts_backfill(oth566_return, lookback=60), 5))",
+  "rank(subtract(ts_mean(ts_backfill(oth566_r20marsi_ret, lookback=60), 20), ts_mean(ts_backfill(oth566_r20marsi_ret, lookback=60), 60)))",
+  "rank(ts_mean(oth566_l2r20_label, 10))",
+  "rank(ts_backfill(oth566_l5r20gasfculr_ret, lookback=60))",
+  "group_rank(ts_decay_linear(ts_backfill(winsorize(oth566_r20marsi_ret, std=5), lookback=60), 10), subindustry)"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "rank(oth566_return)",
+   "location": "2a9AWqaxO4CNbsSz8MyyJsW",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 1,
+   "expression": "rank(ts_backfill(oth566_return, lookback=60))",
+   "location": "3arjIA3B74PX9DwKk8sWjcx",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 2,
+   "expression": "group_rank(ts_decay_linear(ts_backfill(winsorize(oth566_return, std=5), lookback=60), 5), sector)",
+   "location": "13xNTvcxy5gCb0aF6Xs0rSA",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 3,
+   "expression": "rank(ts_delta(ts_backfill(oth566_return, lookback=60), 5))",
+   "location": "22rZy4c5w4XNcFxPgdUCo2z",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 4,
+   "expression": "rank(subtract(ts_mean(ts_backfill(oth566_r20marsi_ret, lookback=60), 20), ts_mean(ts_backfill(oth566_r20marsi_ret, lookback=60), 60)))",
+   "location": "1zFAhg3K44qwbG0g17JBdzw",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 5,
+   "expression": "rank(ts_mean(oth566_l2r20_label, 10))",
+   "location": "1jTE2j5FF4C6bb410UpxXwUR",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 6,
+   "expression": "rank(ts_backfill(oth566_l5r20gasfculr_ret, lookback=60))",
+   "location": "1pkiPnfXQ4Y1agjZo6on26H",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  },
+  {
+   "index": 7,
+   "expression": "group_rank(ts_decay_linear(ts_backfill(winsorize(oth566_r20marsi_ret, std=5), lookback=60), 10), subindustry)",
+   "location": "QYfBh9wp50fb1RFR4MQ60G",
+   "status": null,
+   "error": "HTTP 404",
+   "raw_status": null,
+   "raw_error": ""
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+[
+  "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 42))), 0.5))",
+  "ts_decay_linear(add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 21))), 0.5)), 10)",
+  "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 250)), 0.6), multiply(reverse(rank(ts_zscore(returns, 21))), 0.4))",
+  "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 42))), 0.5))",
+  "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_surprise_prediction, std=4), 66), 250)), 0.5), multiply(reverse(rank(ts_zscore(returns, 42))), 0.5))",
+  "add(multiply(rank(ts_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 66), 500)), 0.5), multiply(reverse(rank(ts_zscore(returns, 42))), 0.5))"
+]

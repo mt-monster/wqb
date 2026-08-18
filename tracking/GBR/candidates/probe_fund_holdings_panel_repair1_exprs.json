@@ -1,0 +1,10 @@
+[
+ "rank(ts_av_diff(ts_backfill(vec_avg(stable_boundary_trade_count_21d),66),10))",
+ "ts_decay_linear(rank(ts_backfill(vec_avg(stable_boundary_trade_count_21d),66)),10)",
+ "rank(ts_av_diff(ts_backfill(vec_avg(stable_boundary_trade_count_21d),120),22))",
+ "ts_decay_linear(rank(vec_avg(stable_boundary_trade_count_21d)),10)",
+ "add(rank(vec_avg(stable_boundary_trade_count_21d)), rank(vec_avg(boundary_transaction_total)))",
+ "add(rank(vec_avg(stable_boundary_trade_count_21d)), rank(vec_avg(large_trade_count_50bps)))",
+ "add(rank(vec_avg(stable_boundary_trade_count_21d)), rank(vec_avg(top_weighted_transaction_number)))",
+ "rank(ts_av_diff(vec_avg(stable_boundary_trade_count_21d),22))"
+]

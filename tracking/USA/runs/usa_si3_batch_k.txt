@@ -1,0 +1,8 @@
+reverse(quantile(ts_decay_linear(vec_avg(max_loan_rate), 20)))
+reverse(quantile(ts_decay_linear(vec_avg(max_loan_rate), 5)))
+reverse(quantile(group_zscore(vec_avg(max_loan_rate), subindustry)))
+reverse(quantile(ts_av_diff(vec_avg(max_loan_rate), 20)))
+reverse(signed_power(quantile(ts_decay_linear(vec_avg(max_loan_rate), 10)), 0.5))
+reverse(quantile(subtract(vec_avg(max_loan_rate), vec_avg(mean_loan_rate))))
+reverse(quantile(ts_zscore(vec_avg(max_loan_rate), 60)))
+reverse(rank(ts_decay_linear(vec_avg(max_loan_rate), 10)))

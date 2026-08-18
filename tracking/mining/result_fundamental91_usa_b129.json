@@ -1,0 +1,137 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/2c20MD39a4AR8HTvv93e6hP",
+ "ts": 1785878418.9323664,
+ "alphas": [
+  {
+   "id": "leWX5dRx",
+   "code": "-ts_rank(ts_backfill(vec_avg(cat1_secondary_sentiment_score0), 60), 44)",
+   "sh": 0.56,
+   "fit": 0.24,
+   "tvr": 0.1319,
+   "ret": 0.0239,
+   "2y": 0.95,
+   "rn": null,
+   "subU": 0.42,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "j26mPvd9",
+   "code": "-ts_rank(ts_backfill(vec_avg(cat1_secondary_sentiment_score0), 60), 88)",
+   "sh": 0.34,
+   "fit": 0.1,
+   "tvr": 0.1067,
+   "ret": 0.0101,
+   "2y": 0.72,
+   "rn": null,
+   "subU": 0.6,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "zqNp2ZJR",
+   "code": "-ts_rank(ts_backfill(winsorize(vec_avg(cat10_primary_sentiment_score2), std=5), 60), 44)",
+   "sh": 0.15,
+   "fit": 0.03,
+   "tvr": 0.1494,
+   "ret": 0.0069,
+   "2y": 0.94,
+   "rn": null,
+   "subU": -0.36,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGJmWlM",
+   "code": "-ts_rank(ts_backfill(winsorize(vec_avg(cat11_secondary_sentiment_score0), std=5), 60), 44)",
+   "sh": 0.14,
+   "fit": 0.03,
+   "tvr": 0.1295,
+   "ret": 0.0055,
+   "2y": 0.14,
+   "rn": null,
+   "subU": 0.41,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "ZYEGd6W1",
+   "code": "ts_rank(ts_backfill(winsorize(vec_avg(cat10_section_metric1_0_value), std=5), 60), 44)",
+   "sh": 0.14,
+   "fit": 0.03,
+   "tvr": 0.1418,
+   "ret": 0.0062,
+   "2y": 0.82,
+   "rn": null,
+   "subU": 0.26,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "KPGa53w1",
+   "code": "-ts_rank(ts_backfill(winsorize(vec_avg(cat13_secondary_sentiment_score1), std=5), 60), 44)",
+   "sh": 0.22,
+   "fit": 0.06,
+   "tvr": 0.1451,
+   "ret": 0.0108,
+   "2y": 0.74,
+   "rn": null,
+   "subU": 0.17,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "JjGKWqgE",
+   "code": "add(-ts_rank(ts_backfill(vec_avg(cat1_secondary_sentiment_score0), 60), 44), -ts_rank(ts_backfill(vec_avg(cat11_secondary_sentiment_score0), 60), 44))",
+   "sh": 0.62,
+   "fit": 0.26,
+   "tvr": 0.131,
+   "ret": 0.0236,
+   "2y": 0.93,
+   "rn": null,
+   "subU": 0.53,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "blQErXoN",
+   "code": "-ts_rank(ts_backfill(winsorize(vec_avg(cat5_secondary_sentiment_score0), std=5), 60), 44)",
+   "sh": 0.13,
+   "fit": 0.03,
+   "tvr": 0.1389,
+   "ret": 0.0062,
+   "2y": 0.93,
+   "rn": null,
+   "subU": -0.0,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

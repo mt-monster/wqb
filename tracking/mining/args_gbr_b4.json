@@ -1,0 +1,32 @@
+{
+ "exprs": [
+  "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33)",
+  "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66)",
+  "-ts_rank(transaction_cost_percentile_10, 44)",
+  "-ts_rank(ts_backfill(pv106_spread, lookback=60), 88)",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+  "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl106_stars, std=5), lookback=60), 44))",
+  "-ts_rank(ts_backfill(winsorize(transaction_cost_percentile_10, std=5), lookback=60), 44)",
+  "-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), industry)"
+ ],
+ "resp": {
+  "success": true,
+  "message": "Multisimulation submitted successfully with 8 alpha expressions",
+  "async": true,
+  "multisimulation_id": "4ms5kAayX4rF8HS19SFu7TmT",
+  "multisimulation_location": "https://api.worldquantbrain.com/simulations/4ms5kAayX4rF8HS19SFu7TmT",
+  "multisimulation_url": "https://api.worldquantbrain.com/simulations/4ms5kAayX4rF8HS19SFu7TmT",
+  "submitted_expressions": [
+   "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 33)",
+   "-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 66)",
+   "-ts_rank(transaction_cost_percentile_10, 44)",
+   "-ts_rank(ts_backfill(pv106_spread, lookback=60), 88)",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl238_global_rank, std=5), lookback=60), 44))",
+   "add(-ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), ts_rank(ts_backfill(winsorize(mdl106_stars, std=5), lookback=60), 44))",
+   "-ts_rank(ts_backfill(winsorize(transaction_cost_percentile_10, std=5), lookback=60), 44)",
+   "-group_rank(ts_rank(ts_backfill(transaction_cost_percentile_10, lookback=60), 44), industry)"
+  ],
+  "polling_tool": "lookINTO_SimError_message",
+  "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+ }
+}

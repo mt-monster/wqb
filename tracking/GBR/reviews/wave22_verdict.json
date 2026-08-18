@@ -1,0 +1,38 @@
+{
+  "wave": 22,
+  "dataset": "predictive_starmine",
+  "total": 24,
+  "backtested": 24,
+  "conclusion": "starmine 参数扫描第一波（decay 6/8 + 14 条新变体）。24/24 全回测，无过闸。top e7zlGen6（av20 单信号 decay6）sh=1.51 2y=0.27——sh 主力但 2y 毒性；78jkmOkL（三向混合）sh=1.36 2y=1.68——2y 主力但 sh 低。确认 sh 与 2y 权衡矛盾：av20 抬 sh 毁 2y，fwdPE 反转抬 2y 拖 sh。需要两者混合。",
+  "top": [
+    {
+      "id": "e7zlGen6",
+      "code": "rank(ts_av_diff(ep_yield_pct_smest_fy2_3, 20))",
+      "sharpe": 1.51,
+      "fitness": 0.85,
+      "two_year_sharpe": 0.27,
+      "rn_fitness": 0.46
+    },
+    {
+      "id": "78jkmOkL",
+      "code": "三向混合",
+      "sharpe": 1.36,
+      "two_year_sharpe": 1.68,
+      "rn_fitness": 0.46
+    },
+    {
+      "id": "rKj1GkK1",
+      "code": "fwdPE fy1_3 反转族",
+      "sharpe": 1.31,
+      "two_year_sharpe": 1.33,
+      "rn_fitness": 0.64
+    }
+  ],
+  "lessons": [
+    "av20（ts_av_diff(ep_yield_pct_smest_fy2_3, 20)）是 sh 主力（1.51）但 2y=0.27 毒性，单信号必死",
+    "fwdPE fy1_3 反转是 2y 主力（1.68-2.05）但 sh 低（1.3-1.36），单信号也过不了 sh 硬闸",
+    "per-item settings 绕过 build_wave 历史去重：同表达式不同 settings 必须直接走 runner 不进 build_wave",
+    "forward_pe_smest_fy2_3 不在字段白名单，fy2 的 fwdPE 只能用 ts_av_diff 变换后的 fy1_3"
+  ],
+  "next": "wave23 四向混合（av20+fwdPE反转+fy1水平+delta66）冲 1.58 线。"
+}

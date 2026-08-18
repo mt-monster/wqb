@@ -1,0 +1,383 @@
+﻿{
+    "results":  [
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolume10mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  3,
+                        "alphaCount":  3,
+                        "description":  "Average dollar volume after the event (10 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolume30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Average dollar volume after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolume5mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (5 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolume60mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  3,
+                        "alphaCount":  3,
+                        "description":  "Average dollar volume after the event (60 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolumeafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_dollarvolumebeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  3,
+                        "alphaCount":  3,
+                        "description":  "Average dollar volume before the event (from the open of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_flag_intraday",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  7,
+                        "alphaCount":  8,
+                        "description":  "Flag to show if the news item arrived overnight (0) or intraday (1)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_postevhightoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Return from the price before the event to the low price after the event."
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_postevlowtoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Return from the price before the event to the high price after the event."
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_preevhightoclose",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  3,
+                        "alphaCount":  5,
+                        "description":  "Return from the previous close to the intraday low price (before the event)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_preevlowtoclose",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Return from the previous close to the intraday high price (before the event)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_return10mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  6,
+                        "alphaCount":  6,
+                        "description":  "Average return after the event (10 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_return30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average return after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_return5mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average return after the event (5 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_return60mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average return after the event (60 mins)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_returnafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  5,
+                        "alphaCount":  5,
+                        "description":  "Average return after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_returnbeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  4,
+                        "alphaCount":  4,
+                        "description":  "Average return before the event (from the open of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_pr_v2_comp_utc_time",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  4,
+                        "alphaCount":  4,
+                        "description":  "Time of the news item (HHmmss)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_dollarvolume30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_dollarvolume5mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Average dollar volume after the event (5 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_dollarvolume60mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (60 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_dollarvolumeafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average dollar volume after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_dollarvolumebeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  6,
+                        "alphaCount":  6,
+                        "description":  "Average dollar volume before the event (from the open of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_flag_intraday",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Flag to show if the news item arrived overnight (0) or intraday (1)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_postevhightoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Return from the price before the event to the low price after the event."
+                    },
+                    {
+                        "id":  "nws94_v2_comp_postevlowtoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Return from the price before the event to the high price after the event."
+                    },
+                    {
+                        "id":  "nws94_v2_comp_preevlowtoclose",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  3,
+                        "alphaCount":  3,
+                        "description":  "Return from the previous close to the intraday high price (before the event)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_return10mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average return after the event (10 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_return30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Average return after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_return5mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average return after the event (5 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_return60mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average return after the event (60 mins)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_returnafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average return after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_returnbeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  18,
+                        "alphaCount":  19,
+                        "description":  "Average return before the event (from the open of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_v2_comp_utc_time",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Time of the news item (HHmmss)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_dollarvolume10mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Average dollar volume after the event (10 mins)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_dollarvolume30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_dollarvolume5mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (5 mins)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_dollarvolumeafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_dollarvolumebeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average dollar volume before the event (from the open of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_flag_intraday",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Flag to show if the news item arrived overnight (0) or intraday (1)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_postevhightoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Return from the price before the event to the low price after the event."
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_postevlowtoev",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  2,
+                        "alphaCount":  2,
+                        "description":  "Return from the price before the event to the high price after the event."
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_preevhightoclose",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Return from the previous close to the intraday low price (before the event)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_return10mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Average return after the event (10 mins)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_return30mins",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  0,
+                        "alphaCount":  0,
+                        "description":  "Average return after the event (30 mins)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_returnafterevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  1,
+                        "alphaCount":  1,
+                        "description":  "Average return after the event (until the close of the trading day)"
+                    },
+                    {
+                        "id":  "nws94_web_v2_comp_returnbeforeevent",
+                        "type":  "VECTOR",
+                        "coverage":  0.5,
+                        "userCount":  5,
+                        "alphaCount":  5,
+                        "description":  "Average return before the event (from the open of the trading day)"
+                    }
+                ],
+    "count":  47,
+    "sharpe_filter_applied":  true,
+    "sharpe_filter_removed":  7
+}

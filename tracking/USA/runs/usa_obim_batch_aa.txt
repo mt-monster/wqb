@@ -1,0 +1,8 @@
+quantile(group_zscore(divide(vec_avg(bid_trade_imbalance_all_levels), add(vec_avg(bid_trade_imbalance_all_levels), vec_avg(ask_trade_imbalance_all_levels))), subindustry))
+reverse(quantile(group_zscore(divide(vec_avg(bid_trade_imbalance_all_levels), add(vec_avg(bid_trade_imbalance_all_levels), vec_avg(ask_trade_imbalance_all_levels))), subindustry)))
+quantile(group_zscore(divide(vec_sum(bid_order_volume_deleted), add(vec_sum(bid_order_volume_deleted), vec_sum(ask_order_volume_deleted))), subindustry))
+quantile(group_zscore(vec_avg(auction_order_imbalance_pct_adv), subindustry))
+reverse(quantile(group_zscore(vec_avg(auction_order_imbalance_pct_adv), subindustry)))
+quantile(group_zscore(vec_avg(mean_relative_bid_ask_spread), subindustry))
+quantile(group_zscore(divide(vec_sum(bid_order_volume_executed), add(vec_sum(bid_order_volume_executed), vec_sum(ask_order_volume_executed))), subindustry))
+quantile(group_zscore(vec_avg(quote_to_trade_ratio), subindustry))

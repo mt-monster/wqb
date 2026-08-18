@@ -1,0 +1,9 @@
+{
+  "dataset": "multi_horizon_alpha",
+  "wave": "wave3c_fcf",
+  "verdict": "AMBER_NEAR",
+  "probe": 8,
+  "top_sharpe": 1.9,
+  "note": "结构增强：L/S 混合 0.5/0.5 把 tvr 抬到 6.5%（>5% 闸）、rn=1.36，但 sh=1.51/fit=0.94/rnf=0.61 差 4-7%；ts_delta(66) 短期化死路（sh=0.74，长期信号微分变噪声）；growth_flow 变体近期崩（rn=0.42/rnf=0.1）。结论：tvr 已解决，sh 需更高 L 权重。",
+  "salvage": "wave3d 权重扫描（L 权重 0.55-0.70）"
+}

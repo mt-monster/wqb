@@ -1,0 +1,1063 @@
+﻿{
+  "results": [
+    {
+      "id": "opt6_1000dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 271,
+      "alphaCount": 782,
+      "description": "1000-day realized historical intraday volatility based on open-high-low-close prices"
+    },
+    {
+      "id": "opt6_10dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 99,
+      "alphaCount": 336,
+      "description": "10-day realized historical intraday volatility based on open-high-low-close prices"
+    },
+    {
+      "id": "opt6_120dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 130,
+      "alphaCount": 268,
+      "description": "120-day open-high-low-close realized historical volatility"
+    },
+    {
+      "id": "opt6_1dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 78,
+      "alphaCount": 289,
+      "description": "The 1-day historical intraday volatility"
+    },
+    {
+      "id": "opt6_20div",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 89,
+      "alphaCount": 312,
+      "description": "20-day interpolated implied at-the-money volatility (calendar day)"
+    },
+    {
+      "id": "opt6_20dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 95,
+      "alphaCount": 397,
+      "description": "20-day historical intraday volatility based on open-high-low-close prices"
+    },
+    {
+      "id": "opt6_252dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 97,
+      "alphaCount": 251,
+      "description": "The 252-day historical intraday volatility"
+    },
+    {
+      "id": "opt6_2rtscf",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 118,
+      "alphaCount": 417,
+      "description": "Goodness of fit metric for the 20-day volatility forecast compared to the actual future 20-day realized volatility"
+    },
+    {
+      "id": "opt6_30div",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 98,
+      "alphaCount": 369,
+      "description": "The 20-day interpolated implied volatility."
+    },
+    {
+      "id": "opt6_500dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 83,
+      "alphaCount": 259,
+      "description": "The 500-day historical intraday volatility"
+    },
+    {
+      "id": "opt6_5dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 58,
+      "alphaCount": 298,
+      "description": "5-day historical realized volatility using open-high-low-close prices"
+    },
+    {
+      "id": "opt6_60div",
+      "type": "MATRIX",
+      "coverage": 0.9759,
+      "userCount": 99,
+      "alphaCount": 212,
+      "description": "Interpolated implied volatility for a 60-day expiry"
+    },
+    {
+      "id": "opt6_60dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 87,
+      "alphaCount": 419,
+      "description": "The 60-day historical intraday volatility"
+    },
+    {
+      "id": "opt6_90div",
+      "type": "MATRIX",
+      "coverage": 0.9758,
+      "userCount": 75,
+      "alphaCount": 163,
+      "description": "90-day interpolated implied volatility"
+    },
+    {
+      "id": "opt6_90dorhv",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 65,
+      "alphaCount": 133,
+      "description": "The 90-day historical intraday volatility."
+    },
+    {
+      "id": "opt6_absavgernmv",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 122,
+      "alphaCount": 660,
+      "description": "Average percentage absolute stock price move associated with the next earnings announcement"
+    },
+    {
+      "id": "opt6_am002vi",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 69,
+      "alphaCount": 275,
+      "description": "The 200-day moving average of the vendor 20-day ex-earn implied volatility."
+    },
+    {
+      "id": "opt6_asset_type",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 52,
+      "alphaCount": 152,
+      "description": "Classification of stock type indicating easy-to-borrow, hard-to-borrow, dividend paying status, or security type such as ETF or index using predefined codes"
+    },
+    {
+      "id": "opt6_bestetf",
+      "type": "MATRIX",
+      "coverage": 0.834,
+      "userCount": 75,
+      "alphaCount": 220,
+      "description": "The closest SPDR Sector ETF (default to SPY or RUT if none)."
+    },
+    {
+      "id": "opt6_beta1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 80,
+      "alphaCount": 348,
+      "description": "Short term price beta with SPY for 30 calendar days"
+    },
+    {
+      "id": "opt6_beta1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 104,
+      "alphaCount": 238,
+      "description": "One-year price beta measuring sensitivity to market movements over 365 calendar days"
+    },
+    {
+      "id": "opt6_correletf1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 63,
+      "alphaCount": 169,
+      "description": "Vendor 30-day implied volatility ex-earnings correlation with the best ETF 30-day IV over the last month."
+    },
+    {
+      "id": "opt6_correletf1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 113,
+      "alphaCount": 316,
+      "description": "One-year rolling correlation between vendor 30-day implied volatility excluding earnings of the asset and the SPDR sector ETF 30-day implied volatility"
+    },
+    {
+      "id": "opt6_correlspy1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 65,
+      "alphaCount": 270,
+      "description": "Vendor 30-day implied volatility ex-earnings correlation with SPY one month."
+    },
+    {
+      "id": "opt6_correlspy1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 117,
+      "alphaCount": 279,
+      "description": "One-year correlation of 30-day ex-earnings implied volatility of the asset with that of SPY"
+    },
+    {
+      "id": "opt6_cvolu",
+      "type": "MATRIX",
+      "coverage": 0.9776,
+      "userCount": 69,
+      "alphaCount": 177,
+      "description": "Todayâs call option volume for all strikes for the current trading day"
+    },
+    {
+      "id": "opt6_derivinf",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 68,
+      "alphaCount": 485,
+      "description": "Derivative infinite implied."
+    },
+    {
+      "id": "opt6_derivinffcst",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 69,
+      "alphaCount": 371,
+      "description": "Forecast infinite derivative."
+    },
+    {
+      "id": "opt6_divamt",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 56,
+      "alphaCount": 354,
+      "description": "Dividend amount"
+    },
+    {
+      "id": "opt6_divfreq",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 107,
+      "alphaCount": 382,
+      "description": "Number of dividends paid per year"
+    },
+    {
+      "id": "opt6_divyield",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 211,
+      "alphaCount": 557,
+      "description": "Annualized dividend yield calculated as dividends divided by current stock price"
+    },
+    {
+      "id": "opt6_etfivhvxernratio",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 44,
+      "alphaCount": 216,
+      "description": "Ratio of 30-day implied volatility excluding earnings divided by 20-day ex-earnings historical volatility, normalized by ETF equivalent ratio"
+    },
+    {
+      "id": "opt6_etfivhvxernratio1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 64,
+      "alphaCount": 293,
+      "description": "Ratio of 30-day implied volatility excluding earnings divided by 20-day ex-earnings historical volatility, normalized by ETF equivalent ratio, averaged over oneâ¦"
+    },
+    {
+      "id": "opt6_etfivhvxernratio1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 85,
+      "alphaCount": 257,
+      "description": "30-day implied volatility ex-earnings / HV20xErn Ratio divided by ETF 30-day implied / HV20d ratio year average."
+    },
+    {
+      "id": "opt6_etfivhvxernratiostd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 98,
+      "alphaCount": 291,
+      "description": "30-day implied volatility ex-earnings / HV20xErn Ratio divided by ETF 30-day implied / HV20d ratio year standard deviation."
+    },
+    {
+      "id": "opt6_etfsloperatio",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 54,
+      "alphaCount": 163,
+      "description": "Slope divided by ETF slope current"
+    },
+    {
+      "id": "opt6_etfsloperatioavg1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 54,
+      "alphaCount": 139,
+      "description": "Slope divided by ETF slope month average"
+    },
+    {
+      "id": "opt6_etfsloperatioavg1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 68,
+      "alphaCount": 226,
+      "description": "Slope divided by ETF slope year average."
+    },
+    {
+      "id": "opt6_etfsloperatioavgstd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 66,
+      "alphaCount": 230,
+      "description": "Slope divided by ETF slope year standard deviation."
+    },
+    {
+      "id": "opt6_fcstr2imp",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 509,
+      "alphaCount": 918,
+      "description": "The goodness of fit of the implied forecast vs actual implied in 20 days."
+    },
+    {
+      "id": "opt6_impliediee",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 63,
+      "alphaCount": 299,
+      "description": "Market implied earnings effect is found by solving for a term structure equation where the earnings effects adjust the months affected by earnings."
+    },
+    {
+      "id": "opt6_ioc",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 123,
+      "alphaCount": 491,
+      "description": "Total call option open interest"
+    },
+    {
+      "id": "opt6_irate5wk",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 79,
+      "alphaCount": 302,
+      "description": "Short-term risk-free interest rate based on 5-week treasury yields"
+    },
+    {
+      "id": "opt6_iratelt",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 58,
+      "alphaCount": 189,
+      "description": "Long-term risk-free interest rate from treasuries."
+    },
+    {
+      "id": "opt6_ivetfratio",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 89,
+      "alphaCount": 283,
+      "description": "Ratio of 30-day implied volatility excluding earnings to the 30-day implied volatility of a matched ETF"
+    },
+    {
+      "id": "opt6_ivetfratioavg1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 81,
+      "alphaCount": 336,
+      "description": "30-day implied volatility ex-earnings divided by ETF 30-day vendor implied volatility 30-day average."
+    },
+    {
+      "id": "opt6_ivetfratioavg1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 80,
+      "alphaCount": 200,
+      "description": "30-day implied volatility ex-earnings divided by ETF 30-day vendor implied volatility 1-year average."
+    },
+    {
+      "id": "opt6_ivetfratiostd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 184,
+      "alphaCount": 362,
+      "description": "One-year standard deviation of the ratio of 30-day implied volatility excluding earnings over the ETF's 30-day vendor implied volatility"
+    },
+    {
+      "id": "opt6_ivhvxernratio",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 74,
+      "alphaCount": 225,
+      "description": "30-day implied volatility ex-earnings / HV20xErn Ratio."
+    },
+    {
+      "id": "opt6_ivhvxernratio1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 64,
+      "alphaCount": 136,
+      "description": "30-day implied volatility ex-earnings / HV20xErn Ratio vs month average."
+    },
+    {
+      "id": "opt6_ivhvxernratio1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 61,
+      "alphaCount": 202,
+      "description": "30-day implied volatility ex-earnings/HV20xErn Ratio vs yearly average."
+    },
+    {
+      "id": "opt6_ivhvxernratiostd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 125,
+      "alphaCount": 347,
+      "description": "30-day implied volatility ex-earnings/HV20xErn Ratio vs yearly range standard deviation."
+    },
+    {
+      "id": "opt6_ivpctile1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 178,
+      "alphaCount": 950,
+      "description": "Percentile of the current 30-day implied volatility ex-earnings vs. month range."
+    },
+    {
+      "id": "opt6_ivpctile1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 83,
+      "alphaCount": 162,
+      "description": "Percentile ranking of the current 30-day ex-earnings implied volatility within the past one-year range"
+    },
+    {
+      "id": "opt6_ivpctileetf",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 56,
+      "alphaCount": 113,
+      "description": "Percentile ranking of the current ETF 30-day implied volatility ex-earnings against its 1-year historical range"
+    },
+    {
+      "id": "opt6_ivpctilespy",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 52,
+      "alphaCount": 157,
+      "description": "Percentile of the current 30-day implied volatility ex-earnings / SPY vs. year range."
+    },
+    {
+      "id": "opt6_ivspyratio",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 78,
+      "alphaCount": 445,
+      "description": "Ratio of 30-day implied volatility excluding earnings for the asset to the 30-day vendor implied volatility of SPY"
+    },
+    {
+      "id": "opt6_ivspyratioavg1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 89,
+      "alphaCount": 254,
+      "description": "30-day implied volatility ex-earning divided by SPY 30-day vendor implied volatility 30-day average."
+    },
+    {
+      "id": "opt6_ivspyratioavg1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 88,
+      "alphaCount": 283,
+      "description": "One-year rolling average of the ratio of the asset's 30-day ex-earnings implied volatility to SPY's 30-day implied volatility"
+    },
+    {
+      "id": "opt6_ivspyratiostd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 164,
+      "alphaCount": 322,
+      "description": "One-year rolling standard deviation of the ratio between asset 30-day ex-earnings implied volatility and SPY 30-day implied volatility"
+    },
+    {
+      "id": "opt6_ivstdev1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 81,
+      "alphaCount": 257,
+      "description": "The standard deviation of the 30-day implied volatility ex-earnings for the year."
+    },
+    {
+      "id": "opt6_ivstdevsmean",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 67,
+      "alphaCount": 184,
+      "description": "Number of standard deviations the 30-day implied volatility ex-earnings is away from the mean for the year"
+    },
+    {
+      "id": "opt6_kw1gnhcxpkts",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 79,
+      "alphaCount": 192,
+      "description": "Stock price change over 1 week."
+    },
+    {
+      "id": "opt6_lastern",
+      "type": "MATRIX",
+      "coverage": 0.9691,
+      "userCount": 111,
+      "alphaCount": 395,
+      "description": "Last earnings date"
+    },
+    {
+      "id": "opt6_lasterntod",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 166,
+      "alphaCount": 698,
+      "description": "Deprecated field, no active use"
+    },
+    {
+      "id": "opt6_m1atmfitiv",
+      "type": "MATRIX",
+      "coverage": 0.9777,
+      "userCount": 51,
+      "alphaCount": 198,
+      "description": "Forecasted at-the-money volatility for month 1, based on ex-earnings forecast plus earnings effect for the current days to expiration"
+    },
+    {
+      "id": "opt6_m1gnhcxpkts",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 73,
+      "alphaCount": 256,
+      "description": "Stock price change over 1 month"
+    },
+    {
+      "id": "opt6_m2atmfitiv",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 66,
+      "alphaCount": 182,
+      "description": "At-the-money implied volatility for month 2 calculated from a volatility surface or curve fit"
+    },
+    {
+      "id": "opt6_m3atmfitiv",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 53,
+      "alphaCount": 187,
+      "description": "The at-the-money monthly fit volatility for month 3."
+    },
+    {
+      "id": "opt6_m4atmfitiv",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 63,
+      "alphaCount": 185,
+      "description": "The at-the-money monthly fit volatility for month 4"
+    },
+    {
+      "id": "opt6_m6gnhcxpkts",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 58,
+      "alphaCount": 204,
+      "description": "Stock price change over 6 months"
+    },
+    {
+      "id": "opt6_mktcap",
+      "type": "MATRIX",
+      "coverage": 0.9706,
+      "userCount": 66,
+      "alphaCount": 226,
+      "description": "Market capitalization of the underlying security"
+    },
+    {
+      "id": "opt6_mktwidthvol",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 45,
+      "alphaCount": 178,
+      "description": "Market width in implied vol points at the interpolated 30 days to expiration."
+    },
+    {
+      "id": "opt6_mktwidthvolinf",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 48,
+      "alphaCount": 194,
+      "description": "Market width in implied volatility points at the interpolated 2 years to expiration."
+    },
+    {
+      "id": "opt6_nexterntod",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 120,
+      "alphaCount": 321,
+      "description": "Deprecated item."
+    },
+    {
+      "id": "opt6_nrexvifniro",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 49,
+      "alphaCount": 194,
+      "description": "Infinite implied option volatility."
+    },
+    {
+      "id": "opt6_optvolu20davg",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 139,
+      "alphaCount": 406,
+      "description": "The 20-day moving average of total options trading volume for the symbol"
+    },
+    {
+      "id": "opt6_or20divfcst",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 87,
+      "alphaCount": 260,
+      "description": "The forecast of implied volatility in 20 days with earnings taken out."
+    },
+    {
+      "id": "opt6_or20divxern",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 60,
+      "alphaCount": 170,
+      "description": "The 20-day interpolated implied option volatility with earnings effect taken out."
+    },
+    {
+      "id": "opt6_poi",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 70,
+      "alphaCount": 298,
+      "description": "Total put open interest, representing the number of outstanding put option contracts"
+    },
+    {
+      "id": "opt6_pvolu",
+      "type": "MATRIX",
+      "coverage": 0.9768,
+      "userCount": 62,
+      "alphaCount": 154,
+      "description": "Today's total put option volume across all strikes"
+    },
+    {
+      "id": "opt6_px1kgam",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 57,
+      "alphaCount": 356,
+      "description": "Estimated daily cost of hedging 1000 units of gamma for 30-day options"
+    },
+    {
+      "id": "opt6_rip",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 60,
+      "alphaCount": 365,
+      "description": "The dollar amount of options to start ignoring in delta calculation."
+    },
+    {
+      "id": "opt6_sector_des",
+      "type": "MATRIX",
+      "coverage": 0.8965,
+      "userCount": 63,
+      "alphaCount": 293,
+      "description": "Sector Description"
+    },
+    {
+      "id": "opt6_sector_num",
+      "type": "MATRIX",
+      "coverage": 0.8818,
+      "userCount": 28,
+      "alphaCount": 119,
+      "description": "The sector as derived by cusip number"
+    },
+    {
+      "id": "opt6_sectorname",
+      "type": "MATRIX",
+      "coverage": 0.6975,
+      "userCount": 22,
+      "alphaCount": 36,
+      "description": "SPDR short name of the sector."
+    },
+    {
+      "id": "opt6_slcxp",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 57,
+      "alphaCount": 280,
+      "description": "Closing price of the security on the prior trading day"
+    },
+    {
+      "id": "opt6_slope",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 48,
+      "alphaCount": 174,
+      "description": "The put-call slope at the interpolated 30 calendar days of the tangent at 50 delta."
+    },
+    {
+      "id": "opt6_slopeavg1m",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 76,
+      "alphaCount": 350,
+      "description": "Slope average for trailing month"
+    },
+    {
+      "id": "opt6_slopeavg1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 176,
+      "alphaCount": 1383,
+      "description": "Slope average for trailing year"
+    },
+    {
+      "id": "opt6_slopefcst",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 62,
+      "alphaCount": 263,
+      "description": "Forecasted slope of the implied volatility skew, useful to compare against the actual slope"
+    },
+    {
+      "id": "opt6_slopeinf",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 60,
+      "alphaCount": 374,
+      "description": "Implied infinite slope."
+    },
+    {
+      "id": "opt6_slopeinffcst",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 41,
+      "alphaCount": 227,
+      "description": "Slope forecast infinite."
+    },
+    {
+      "id": "opt6_slopepctile",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 72,
+      "alphaCount": 367,
+      "description": "One-year percentile rank of the volatility surface slope"
+    },
+    {
+      "id": "opt6_slopestd1y",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 108,
+      "alphaCount": 511,
+      "description": "Standard deviation of the Slope."
+    },
+    {
+      "id": "opt6_stkvolu",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 146,
+      "alphaCount": 796,
+      "description": "Total stock trading volume for the underlying asset, measured in shares"
+    },
+    {
+      "id": "opt6_tkover",
+      "type": "MATRIX",
+      "coverage": 0.0641,
+      "userCount": 21,
+      "alphaCount": 64,
+      "description": "0 - Not a takeover. 1 - A takeover or rumored takeover stock."
+    },
+    {
+      "id": "opt6_tscfd02ro",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 79,
+      "alphaCount": 254,
+      "description": "Forecasted volatility for the next 20 days accounting for removal of earnings effects"
+    },
+    {
+      "id": "opt6_tscffniro",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 43,
+      "alphaCount": 172,
+      "description": "Forecast of the infinite implied volatility. Could be compared to actual implied volatility or actual infinite. The forecasts of the 2-year implied volatility aâ¦"
+    },
+    {
+      "id": "opt6_tscfvired",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 52,
+      "alphaCount": 196,
+      "description": "Forecast derivative at 30-day interpolated."
+    },
+    {
+      "id": "opt6_vhslcd0001",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 65,
+      "alphaCount": 238,
+      "description": "1000-day historical close-to-close realized volatility"
+    },
+    {
+      "id": "opt6_vhslcd005",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 57,
+      "alphaCount": 170,
+      "description": "The 500-day historical close to close volatility"
+    },
+    {
+      "id": "opt6_vhslcd01",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 60,
+      "alphaCount": 161,
+      "description": "10-day close-to-close historical realized volatility"
+    },
+    {
+      "id": "opt6_vhslcd02",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 43,
+      "alphaCount": 158,
+      "description": "20-day historical close-to-close realized volatility, annualized"
+    },
+    {
+      "id": "opt6_vhslcd021",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 52,
+      "alphaCount": 169,
+      "description": "120-day historical realized volatility calculated using close-to-close prices"
+    },
+    {
+      "id": "opt6_vhslcd06",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 41,
+      "alphaCount": 139,
+      "description": "60-day historical realized volatility calculated using close-to-close prices"
+    },
+    {
+      "id": "opt6_vhslcd09",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 42,
+      "alphaCount": 122,
+      "description": "90-day historical close-to-close realized volatility"
+    },
+    {
+      "id": "opt6_vhslcd252",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 39,
+      "alphaCount": 109,
+      "description": "The 252-day historical close to close volatility"
+    },
+    {
+      "id": "opt6_vhslcd5",
+      "type": "MATRIX",
+      "coverage": 0.976,
+      "userCount": 31,
+      "alphaCount": 74,
+      "description": "The 5-day historical close to close volatility"
+    },
+    {
+      "id": "opt6_vim6",
+      "type": "MATRIX",
+      "coverage": 0.89,
+      "userCount": 27,
+      "alphaCount": 55,
+      "description": "The 6 month interpolated implied volatility"
+    },
+    {
+      "id": "opt6_vimta1m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 55,
+      "alphaCount": 233,
+      "description": "At-the-money implied volatility for the first standard expiration (month 1)"
+    },
+    {
+      "id": "opt6_vimta2m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 52,
+      "alphaCount": 124,
+      "description": "At-the-money implied volatility for the options expiring in month 2"
+    },
+    {
+      "id": "opt6_vimta3m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 101,
+      "alphaCount": 1293,
+      "description": "At-the-money implied volatility for the options expiring in month 3"
+    },
+    {
+      "id": "opt6_vimta4m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 39,
+      "alphaCount": 144,
+      "description": "At-the-money implied volatility for the 4th standard expiration month"
+    },
+    {
+      "id": "opt6_vimtaxp",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 50,
+      "alphaCount": 136,
+      "description": "Stock price taken at the time of implied volatility calculation"
+    },
+    {
+      "id": "opt6_vired",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 46,
+      "alphaCount": 310,
+      "description": "Derivative or curvature of the monthly strikes at 30-day interpolated. The derivative is the change in the slope for every 10 delta increase in the call delta."
+    },
+    {
+      "id": "opt6_vitscfmta1m",
+      "type": "MATRIX",
+      "coverage": 0.9777,
+      "userCount": 59,
+      "alphaCount": 128,
+      "description": "Forecast of volatility for month 1."
+    },
+    {
+      "id": "opt6_vitscfmta2m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 50,
+      "alphaCount": 213,
+      "description": "Forecast of volatility for month 2."
+    },
+    {
+      "id": "opt6_vitscfmta3m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 38,
+      "alphaCount": 209,
+      "description": "Forecast of volatility for month 3."
+    },
+    {
+      "id": "opt6_vitscfmta4m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 44,
+      "alphaCount": 155,
+      "description": "Forecast of volatility for month 4."
+    },
+    {
+      "id": "opt6_volofivol",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 116,
+      "alphaCount": 319,
+      "description": "Annualized standard deviation of ex-earnings 30-day implied."
+    },
+    {
+      "id": "opt6_volofvol",
+      "type": "MATRIX",
+      "coverage": 0.9781,
+      "userCount": 62,
+      "alphaCount": 362,
+      "description": "Annualized standard deviation of daily (1-day) statistical volatility for one year"
+    },
+    {
+      "id": "opt6_xetd1m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 64,
+      "alphaCount": 232,
+      "description": "Days to expiration in standard first options month"
+    },
+    {
+      "id": "opt6_xetd2m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 49,
+      "alphaCount": 168,
+      "description": "Number of days to expiration for the second options month"
+    },
+    {
+      "id": "opt6_xetd3m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 46,
+      "alphaCount": 231,
+      "description": "Number of days to expiration for the options in month 3"
+    },
+    {
+      "id": "opt6_xetd4m",
+      "type": "MATRIX",
+      "coverage": 0.9778,
+      "userCount": 45,
+      "alphaCount": 123,
+      "description": "Days to expiration for month 4 options"
+    },
+    {
+      "id": "opt6_xpslcm1",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 77,
+      "alphaCount": 348,
+      "description": "Stock price at the prior month (21 trading days ago)"
+    },
+    {
+      "id": "opt6_xpslcm6",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 66,
+      "alphaCount": 188,
+      "description": "Stock closing price from approximately 6 months (126 trading days) ago"
+    },
+    {
+      "id": "opt6_xpslcy1",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 51,
+      "alphaCount": 169,
+      "description": "Stock price at the prior year (252 trading days ago)."
+    },
+    {
+      "id": "opt6_xxpslckw1",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 58,
+      "alphaCount": 389,
+      "description": "Stock price at the prior week (5 trading days ago)"
+    },
+    {
+      "id": "opt6_y1gnhcxpkts",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 87,
+      "alphaCount": 282,
+      "description": "Stock price change over 1 year."
+    },
+    {
+      "id": "takeover_event_flag",
+      "type": "MATRIX",
+      "coverage": 0.9817,
+      "userCount": 11,
+      "alphaCount": 13,
+      "description": "Indicator flag where 0 means no takeover and 1 means a takeover or rumored takeover stock"
+    }
+  ],
+  "count": 132,
+  "sharpe_filter_applied": true,
+  "sharpe_filter_removed": 1
+}

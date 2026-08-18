@@ -1,0 +1,8 @@
+{
+  "dataset": "multi_horizon_alpha",
+  "verdict": "RED",
+  "probe": 24,
+  "top_sharpe": 0.61,
+  "note": "EUR 基本面复合因子全线失效：long 因子强负（fcf_to_price sh=-1.9 2y=-2.17 rn=-1.08、value_analyst -1.34、est_rev -1.41），印证 EUR 全期限反转统治。salvage=镜像家族 wave3b（镜像 fcf sh≈+1.9 超硬闸，缺口 tvr=1.7% 需 decay 调升）",
+  "salvage": "mirror_long_fundamental"
+}

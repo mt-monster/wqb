@@ -1,0 +1,128 @@
+!!! 本文件仅作原始过程留痕，不再是台账 !!!
+!!! 波结论/判死/决策必须写入 tracking/USA/WAVE_LEDGER.md + ledger.json（SOP §8 第4步，强制阻断）!!!
+!!! 向本文件追加结论 = 流程违规，会导致下一波选波失联 !!!
+
+# 波3 台账 (USA/TOP3000/D1, max_trade=ON, FASTEXPR)
+# 提交时间: 2026-08-16, 五槽填槽模式 SOP
+# 目标金字塔: shortinterest(=0) + option(=0)
+
+K = 3GcYdLdnM4mI8QeukkZwibS   # si3 max_loan_rate精调 | SUBINDUSTRY | decay4 | 文件 usa_si3_batch_k.txt
+L = 25quLUeKC4Hscbi19u1arW4G   # si3 费率组合收尾   | INDUSTRY    | decay8 | 文件 usa_si3_batch_l.txt
+M = 2Uel2G4yQ4H5cgBd3nKlIqo    # option8 低波异象     | SUBINDUSTRY | decay4 | 文件 usa_option8_batch_m.txt
+N = 2Lfk94fF95iVbeO1aHbLwEcY   # option8 IV-RV价差    | STATISTICAL | decay4 | 文件 usa_option8_batch_n.txt
+O = 3s4ewZ6RH5fXcB518w9iDnzv   # option8 skew/期限结构| SUBINDUSTRY | decay4 | 文件 usa_option8_batch_o.txt
+
+# 门禁: 40/40 通过 (白名单 195 字段, option8 64 字段本轮新登记)
+# K/M/N/O COMPLETE, L 运行中(35%)
+
+# --- 即收即补 ---
+P = rYrNddQM4vo979ubjNQv7J    # option8 二轮变体     | INDUSTRY    | decay4 | 文件 usa_option8_batch_p.txt
+Q = 2MWBYNdK34UrbEkP3dOXi9q   # si3 剩余字段         | INDUSTRY    | decay4 | 文件 usa_si3_batch_q.txt
+R = 1ByQXP3MJ5b49BWRIXI21BC   # option8 IV水平/decay8| INDUSTRY    | decay8 | 文件 usa_option8_batch_r.txt
+S = 4tXSZ5cob519c8Yq91MDkrY   # put/call比率精调批   | SUBINDUSTRY | decay8 | 针对 e73ZEoNz
+
+# --- 首轮筛选 (K/L部分/M/N/O, 40条) ---
+# e73ZEoNz ★★ sharpe 2.06/2y 2.74/RN 1.69/fit 0.95/tv 32.7%(超)/margin 4.2bp(差)
+#   reverse(quantile(divide(implied_volatility_put_30, implied_volatility_call_30))) SUB/decay4
+#   → 批S(decay8)攻降换手+提margin
+# 3qpvJwVN 1.31 si3 group_zscore; j26KOv8Q 1.16 tv8%/margin19.3bp(decay20窗)
+# N批IV-RV spread全灭; skew全灭; 低波方向反转(做多高波负收益→低波做多无效)
+# PASS=0 (e73ZEoNz 仅差 tv/margin 两项)
+
+# --- 续批 T/U/V/W ---
+T = 4GeB7sdaH4yH8Ew1dnvbSabw   # put/call SUBIND d8
+U = 6xD792j54Z28IOOsp1kCLX      # put/call SUBIND d12 (含hump变体 0.33/0.17 失效)
+V = nCQrrawm4MWcnTDaooPYJt      # si3新结构 SUBIND d8
+W = 1KGrAK7v4zG8TgQpFzOVmQ      # put/call SECTOR d8
+
+# --- 波3终轮筛选 (104条): 17条七闸门全过, 唯一RA失败项均LOW_SUB_UNIVERSE_SHARPE ---
+# 冠军 6XpL2qjP 2.19/1.11/2y2.62/tv26.2%/5.2bp/RN1.69 d8 SUBIND
+#   验证: yearly 10/10全正(2018=0.46最弱) | self-corr 0.39 PASS | PROD 0.8299 FAIL
+# xANpEjRW 2.18 | 3qpv26VZ 2.16 | vRNXozrb 2.12 | vRNXozO3 2.08 | wpakvzbY 2.05
+# rK2Mnjom 1.58 PROD 0.8847 | si3 3qpvJwVN PROD 0.957 结构性墙
+# j26KMdxk/P0GmA71W PROD null 待重查
+
+# --- 波4 (PROD突围, 2026-08-16) ---
+# 依据: option8 D0 userCount 11-744 (D1的~1/50) 低竞争; D0 scope白名单已登记(64字段)
+X  = 1gWVUdfaS4HNbcskF51VNua  # D0 put/call移植     | SUBIND | d8  | usa_option8_d0_batch_x.txt
+Y  = 2jhkGbdir56XcapKy7MOHBt  # D0 signed_power/rank | SUBIND | d12 | usa_option8_d0_batch_y.txt
+Z  = 2IdAWG7Xz4OYb68ZalDqVLl  # D0 期限/低竞争tenor | SECTOR | d8  | usa_option8_d0_batch_z.txt
+AA = 4io0AF2SN5gsbWNx8k7ZrMr  # D1 tenor错位降PROD | SUBIND | d8  | usa_option8_batch_aa.txt
+BB = 2V1GIP6bn4K4aTxD2jenMs0  # D1 ts_*时序变形     | INDUSTRY| d8 | usa_option8_batch_bb.txt
+# 门禁: 40/40 全过 (X/Y/Z scope=D0, AA/BB scope=D1)
+
+# --- 波4回收 (40/40, 0 ERROR) ---
+# 数值闸门过 20条: 2rpooMZ5 2.19(D0冠军) gJ8VVAPe 2.17 MPGNNO56 2.17 88pxxb5X 2.15 ...
+# AA tenor错位全灭(XgoAAGG5 1.39最高); BB ts_*变形全灭(0.87以下)
+# Z批: 跨tenor组合 O0GXXq6J 2.14 达标但属拥挤族; 波动率期限结构(parkinson/hist比)全负
+# PROD普检(结构性墙判定): 2rpooMZ5 0.8648 | gJ8VVAPe 0.8329 | MPGNNO56 0.8688 |
+#   ZYEvv6ex(ts_decay) 0.8554 | RRmww3ad(composite) 0.8611 | j26KMdxk 0.8693 | P0GmA71W 0.9051
+# 结论: put/call IV比率 PROD 0.83-0.91 全骨架超标, 与delay/中性化/骨架无关 → 结构性墙
+# 判死依据: 优化器已覆盖 参数层(decay4/8/12) + 字段族(pc10~360/skew/复合) + 骨架层(5种) + D0低竞争区
+
+# --- 第10轮边界多样性评估 (波1-4, ~19轮回测) ---
+# 数据集: option8(深)/shortinterest3(浅) → 字段探索率 option8 24/64=38%, si3 ~30%
+# 骨架: quantile+group_zscore/signed_power/group_rank/ts_decay_linear/composite/hump(失效) 7种
+# 风格: 全部波动率相对价值单一风格 → 风格多样性严重不足, 需转新数据集
+# 失效风险: 拥挤信号族PROD墙(si3 0.957/option8 0.83+), 低波异象/skew/IV-RV实证无效
+# 下一步: 转 news(=0)/socialmedia(=0) 未点亮金字塔, 事件驱动/情绪风格与波动率风格天然低相关
+
+# --- 波5 (news_transformer_scores, news金字塔=0, USA/TOP3000/D1) ---
+# 依据: 组合文档 Tier A; 315字段零竞争(userCount 0-12); 315字段已登记白名单(cov0.881主窗105个)
+CC = KhQcUb3b4J69Ml1h8rJICwD  # 净情绪方向(pos-neg)   | SUBIND | d4 | usa_news_batch_cc.txt
+DD = 44AQFjc1150C8UyVGmhK3wO  # 正面情绪水平          | INDUSTRY | d8 | usa_news_batch_dd.txt
+EE = 3Bfwi7glQ4OwaVg18MDUztK0 # 负面情绪反转          | SUBIND | d8 | usa_news_batch_ee.txt
+FF = 1GK0sV69x56a8C7GhHw9r2m  # 共识/离散度+信噪比    | SECTOR | d4 | usa_news_batch_ff.txt
+GG = ThZ0T1cc5jucwOLLN8zSFX   # 变化/中性情绪结构      | INDUSTRY | d4 | usa_news_batch_gg.txt
+# 门禁: 40/40 全过 (白名单扩至 510 字段)
+
+# --- 波5首轮结论 (CC/EE回收, DD/FF/GG运行中) ---
+# 情绪反转(contrarian)方向实证有效: XgoAZb38 0.82(净情绪反转) qMNJ2xE1 0.91(neg sp反转)
+#   vRNX7rra 0.89(neg typical反转); 正向做多净情绪全负(-0.55~-0.87)
+# 致命问题: 换手率 100%+ (新闻字段日变剧烈), decay4/8不够 → 需 ts_decay_linear(20+) 强平滑
+HH = 30u94mbee4sscmR1hwC97X3  # 强平滑补位(反转骨架+ts_decay20/30) | SUBIND | d8 | usa_news_batch_hh.txt
+II = 1T9JZFcrr4mgb78H9nxXlka  # ts_mean/ts_decay20 正/中性情绪      | INDUSTRY | d8 | usa_news_batch_ii.txt
+# 门禁: HH/II 16/16 全过
+
+# --- 波5终判 (56/56回收, PASS=0) ---
+# 信号天花板: 9qpO5lor 1.03(neutral typical, FF批); 反转族 0.77-0.91(d5ZrM5KJ/qMNJ2xE1/vRNX7rra)
+# 换手困境: ts_decay(20/30)在quantile后仅微降(tv仍100%); ts_mean(20)压至13%但信号衰减(78zR577L 0.66)
+# II批假字段实证: negative_sentiment_mean_score_12 不存在(该条ERROR), 白名单未登记
+# 结论: news_transformer_scores 情绪水平族信号强度不足(上限~1.0), 仅留 JJ 复合批交叉验证
+JJ = 2K4e9LdhP5jTbA8131spdvTg   # news 多窗口复合+decay15/20 | SUBIND | d4 | usa_news_batch_jj.txt
+# 门禁: 8/8 (修复#3假字段 mean_score_12→peak_score_12)
+
+# --- 波6 (sentiment22, 新闻金字塔第2数据集, USA/TOP3000/D1) ---
+# 依据: Tier A fieldCount强; 210字段 MATRIX cov≈1.0 userCount 0-12 极低竞争; 日度聚合比transformer平滑
+# 白名单新增 12 字段(_register_sentiment22.py), D1 scope 522 字段 7 数据集
+KK = 3iOTWOcN94vAabS15JGXm9BX   # snt22 反转族(_253/_5系)  | SUBIND | d8 | usa_snt22_batch_kk.txt
+LL = 4epeb3wz4yU8IpliLfJazu      # snt22 变体2/3+比率/平滑 | INDUSTRY | d8 | usa_snt22_batch_ll.txt
+MM = 2E49WI7bC5hGcIRh9T2wmSb     # snt22 正向+强平滑 | SUBIND | d8 | usa_snt22_batch_mm.txt
+# 门禁: KK/LL/MM 24/24 全过
+# 回收: KK reverse(neg)全负(-0.51/-0.59)→方向与transformer相反; LL全灭(最高0.13);
+#       MM正向做多高负面情绪最强 9qpOnWzq 0.66/tv107%, 全部ra_failed
+# ★终判: 情绪金字塔判死——3数据集(transformer/snt22/snt23未测)88条 PASS=0,
+#   信号天花板~1.0(远低于1.58), 换手率困境无解; 论坛求证:「Slowly Incorporated News」
+#   ts_zscore模板上限仅1.10, ASI帖条件化骨架只降PROD不救弱信号 → 转向新金字塔
+
+# --- 波7 (option40, 未点亮option金字塔, 蓝海703用户/2540alpha, 乘数1.3) ---
+# 登记: 19字段(_register_option40.py+ivmean60), D1 scope 541字段8数据集
+# 风格: IV低波异象(做空高IV)+期限结构+IV-HV价差+skew+Greeks, 与情绪/期权put-call完全不同风格
+NN = 3uLGkq3GU5k4bLl6MfNwwjs     # opt40 IV族8骨架(ts_rank/group_zscore/比率/ts_zscore/ts_delta) | SUBIND | d5 | usa_opt40_batch_nn.txt
+OO = 1533GbenS59t8BGzPzUkvB5     # opt40 差异骨架(group_rank/signed_power/short-long HV比/gamma/theta) | INDUSTRY | d8 | usa_opt40_batch_oo.txt
+# 门禁: NN 8/8, OO 8/8
+# 回收 NN/OO 16条: 冠军 VkGQvdOw 1.06(-ivcall10/ivcall360期限结构倒挂, tv8.4%✅, RN 0.90);
+#   强信号方向实证: E5GnZVk9 skew(put-call)/ivmean = -1.66/fit-1.06/tv9.6% → 反向(call-put)待验
+#   IV水平族弱(±0.3内); theta/gamma 无效; ts_delta(IV) 上行=-0.61 方向确认
+# 结论: opt40 skew+期限结构族信号未封顶, 换手/保证金全过, 值得深挖
+PP = 4crexdcXh4Tlb2B15w1WiPEo   # opt40 skew反向+期限结构强化(ts_rank/group_zscore/ts_zscore) | SUBIND | d5 | usa_opt40_batch_pp.txt
+QQ = 1KKwmse0r4wnbD5f1ol5Phr     # opt40 skew长tenor(60/90/150)+ivmean结构 | MARKET | d6 | usa_opt40_batch_qq.txt
+# 门禁: PP 8/8, QQ 8/8 (option40白名单累计31字段)
+
+[2026-08-16 波10] STAT批(STATISTICAL中性化,decay8) multisim=1zNNx8eb54VtaEnd1A3zQQA 8条 已提交 15:xx
+=== WAVE10 T1/T2 (2026-08-16) ===
+T1=aInFTd2m54Zc2eEvZbZar0 TOP3000/d1: E5Gn0YaR 1.04/0.56/m0.1bp; QPGRrq2M 1.03; RRmxZqke 0.99; leWw6kQl 0.91/m2.4bp/tv3.9; j26klWd9 0.90; LLGobqgv 0.70; 58pK73qn -0.39
+T2=1RYSQiaC4ZkaVhWBp8euRD TOP1000/d2: ȫ�� sharpe 0.03-0.55 margin 0.0-0.1bp (WjArw88o 0.03/blQ02E3Z -0.02/omNjwOev 0.04/omNjwOe6 0.53/npNGkV0z 0.55/58pK7WRn 0.25/1Yp3VE5K -0.05)
+CONCLUSION: decay1������(margin����0.1bp), TOP1000������; institutions6 96��PASS=0 ����; ��һ�� order_book_imbalance
+[2026-08-16 波11] 探针六批48条回收: AA全灭/AB发现dark/lit 0.51(0mpZQ0A6 RN1.44)/AC发现impact-spread 0.60(VkGQl72G)/AD确认dark/lit族天花板/AE双亮点复合0.66新高(d5ZJlJmK)/AF在途
+[2026-08-16 策略升级] 用户授权双数据集混合(上限2): expr_lint.py新增ds_map归属+[MIX]门控; AG批obim×anl44已提(3aXpmIbcV54q9DtrmdLazRO, EPS修正×dark/lit + earnings yield×impact-spread)

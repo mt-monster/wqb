@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3prm9e1Tt5ar8SgjSGq6rnb",
+ "ts": 1785865856.8148715,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1tPpI8cV94gAaMq2nOhbM9O",
+   "location_url": "https://api.worldquantbrain.com/simulations/1tPpI8cV94gAaMq2nOhbM9O",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "58pW7MPk",
+   "raw": {
+    "id": "1tPpI8cV94gAaMq2nOhbM9O",
+    "parent": "3prm9e1Tt5ar8SgjSGq6rnb",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+    "status": "COMPLETE",
+    "alpha": "58pW7MPk"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/2f1Tpjgn34IP8Pl1hBo6Y7XU",
+   "location_url": "https://api.worldquantbrain.com/simulations/2f1Tpjgn34IP8Pl1hBo6Y7XU",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "78z9qJe5",
+   "raw": {
+    "id": "2f1Tpjgn34IP8Pl1hBo6Y7XU",
+    "parent": "3prm9e1Tt5ar8SgjSGq6rnb",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "ASI",
+     "universe": "MINVOL1M",
+     "delay": 1,
+     "decay": 6,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44)",
+    "status": "COMPLETE",
+    "alpha": "78z9qJe5"
+   },
+   "extra_info": ""
+  }
+ ]
+}

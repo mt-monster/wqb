@@ -1,0 +1,21 @@
+{
+  "wave": 28,
+  "dataset": "news104",
+  "total": 12,
+  "backtested": 12,
+  "conclusion": "新闻情绪数据集判弱。12/12 全回测，top vec_avg(marketimpactscore) sh=0.30 tvr=61.9%。与 news20 判死一致：GBR 新闻情绪类信号天花板 ~0.3-0.83，远低于 1.58。GBR tier1 数据集至此全部挖穿。判死。",
+  "top": [
+    {
+      "id": "lejLY052",
+      "code": "rank(vec_avg(nws104_marketimpactscore))",
+      "sharpe": 0.3,
+      "fitness": 0.05,
+      "two_year_sharpe": 1.23
+    }
+  ],
+  "lessons": [
+    "GBR 新闻情绪天花板确认：news20 0.83、news104 0.30，均远低于 1.58",
+    "GBR tier1 全部挖穿：仅 starmine earnings 家族可达 1.58+，其余家族天花板 0.2-1.5"
+  ],
+  "next": "GBR 战役收官。4 个可提交评估见最终报告。"
+}

@@ -1,0 +1,13 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  99,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "Error executing tool get_multisimulation_children: 1 validation error for get_multisimulation_childrenArguments\nmultisimulation_location\n  Field required [type=missing, input_value={\u0027multisimulation_id\u0027: \u00272fe0qz92O4UUbunXbYOShTv\u0027}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+                                   }
+                               ],
+                   "isError":  true
+               }
+}

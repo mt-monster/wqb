@@ -1,0 +1,313 @@
+{
+ "batch": "b113",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "rank(ts_decay_linear(oth566_l2r20_label, 30))",
+  "rank(ts_decay_linear(oth566_l2r20_label, 10))",
+  "rank(ts_decay_linear(ts_backfill(oth566_l2r20_label, lookback=60), 20))",
+  "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)",
+  "rank(add(oth566_return, ts_decay_linear(oth566_l2r20_label, 20)))",
+  "rank(ts_mean(ts_decay_linear(oth566_l2r20_label, 20), 5))",
+  "rank(ts_decay_linear(oth566_l2r20_label, 40))",
+  "rank(ts_decay_linear(oth566_l2r5_label, 20))"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "rank(ts_decay_linear(oth566_l2r20_label, 30))",
+   "child": "2IpJTN89M4LzbMw7Pgn8hCk",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "xANgnnPJ",
+   "metrics": {
+    "sharpe": 1.54,
+    "fitness": 1.13,
+    "turnover": 0.0909,
+    "returns": 0.0675,
+    "margin": 0.001485,
+    "drawdown": 0.0943,
+    "two_year_sharpe": 1.55,
+    "sub_universe_sharpe": 0.86
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(oth566_l2r20_label, 30))"
+  },
+  {
+   "index": 1,
+   "expression": "rank(ts_decay_linear(oth566_l2r20_label, 10))",
+   "child": "1x4lySfbu4BVc6S1b2od9jaB",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "3qpLAAEZ",
+   "metrics": {
+    "sharpe": 1.61,
+    "fitness": 1.09,
+    "turnover": 0.1443,
+    "returns": 0.0666,
+    "margin": 0.000924,
+    "drawdown": 0.0846,
+    "two_year_sharpe": 1.55,
+    "sub_universe_sharpe": 0.89
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(oth566_l2r20_label, 10))"
+  },
+  {
+   "index": 2,
+   "expression": "rank(ts_decay_linear(ts_backfill(oth566_l2r20_label, lookback=60), 20))",
+   "child": "mOuJtfh54pNbOr19XwPXhtO",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "WjA8ggNd",
+   "metrics": {
+    "sharpe": 1.62,
+    "fitness": 1.2,
+    "turnover": 0.1102,
+    "returns": 0.0691,
+    "margin": 0.001254,
+    "drawdown": 0.0817,
+    "two_year_sharpe": 1.6,
+    "sub_universe_sharpe": 0.85
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(ts_backfill(oth566_l2r20_label, lookback=60), 20))"
+  },
+  {
+   "index": 3,
+   "expression": "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)",
+   "child": "32xe9i3nF4pF9ulKkKCIcrj",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "kqPlKKnP",
+   "metrics": {
+    "sharpe": 1.66,
+    "fitness": 1.24,
+    "turnover": 0.1098,
+    "returns": 0.0697,
+    "margin": 0.00127,
+    "drawdown": 0.0788,
+    "two_year_sharpe": 1.65,
+    "sub_universe_sharpe": 0.91
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "other"
+   },
+   "code": "group_rank(ts_decay_linear(oth566_l2r20_label, 20), sector)"
+  },
+  {
+   "index": 4,
+   "expression": "rank(add(oth566_return, ts_decay_linear(oth566_l2r20_label, 20)))",
+   "child": "rFNhVgme51CcKp816GQlqA",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "qMNqXXnO",
+   "metrics": {
+    "sharpe": 1.63,
+    "fitness": 1.22,
+    "turnover": 0.1112,
+    "returns": 0.0698,
+    "margin": 0.001256,
+    "drawdown": 0.0792,
+    "two_year_sharpe": 1.56,
+    "sub_universe_sharpe": 0.87
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(add(oth566_return, ts_decay_linear(oth566_l2r20_label, 20)))"
+  },
+  {
+   "index": 5,
+   "expression": "rank(ts_mean(ts_decay_linear(oth566_l2r20_label, 20), 5))",
+   "child": "4CtKkT8dL4Lk8Q7Y6BHHQAG",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "E5GJKKqP",
+   "metrics": {
+    "sharpe": 1.53,
+    "fitness": 1.1,
+    "turnover": 0.1028,
+    "returns": 0.0652,
+    "margin": 0.001269,
+    "drawdown": 0.0897,
+    "two_year_sharpe": 1.56,
+    "sub_universe_sharpe": 0.81
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_mean(ts_decay_linear(oth566_l2r20_label, 20), 5))"
+  },
+  {
+   "index": 6,
+   "expression": "rank(ts_decay_linear(oth566_l2r20_label, 40))",
+   "child": "3O3rzjsk51HcGzlmtNTcRl",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "QPGXQQEM",
+   "metrics": {
+    "sharpe": 1.45,
+    "fitness": 1.05,
+    "turnover": 0.0786,
+    "returns": 0.0653,
+    "margin": 0.001663,
+    "drawdown": 0.1181,
+    "two_year_sharpe": 1.64,
+    "sub_universe_sharpe": 0.84
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(oth566_l2r20_label, 40))"
+  },
+  {
+   "index": 7,
+   "expression": "rank(ts_decay_linear(oth566_l2r5_label, 20))",
+   "child": "4l0WBi5lj4zIaQHfOoJKXxz",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "6XpOEEzP",
+   "metrics": {
+    "sharpe": 1.0,
+    "fitness": 0.55,
+    "turnover": 0.1423,
+    "returns": 0.0431,
+    "margin": 0.000605,
+    "drawdown": 0.1096,
+    "two_year_sharpe": 1.17,
+    "sub_universe_sharpe": 0.54
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(ts_decay_linear(oth566_l2r5_label, 20))"
+  }
+ ]
+}

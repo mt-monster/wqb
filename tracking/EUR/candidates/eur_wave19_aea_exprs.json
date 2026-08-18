@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(financial_statement_volatility_factor))",
+ "subtract(0, rank(vec_avg(financial_statement_volatility_factor)))",
+ "rank(vec_avg(alpha_score))",
+ "subtract(0, rank(vec_avg(alpha_score)))",
+ "rank(vec_avg(projected_excess_return))",
+ "subtract(0, rank(vec_avg(projected_excess_return)))",
+ "rank(vec_avg(accounting_forensics_factor_2))",
+ "subtract(0, rank(vec_avg(accounting_forensics_factor_2)))",
+ "rank(vec_avg(dividend_growth_rate_factor))",
+ "subtract(0, rank(vec_avg(dividend_growth_rate_factor)))",
+ "rank(vec_avg(analyst_sentiment_consistency_score_2))",
+ "subtract(0, rank(vec_avg(analyst_sentiment_consistency_score_2)))",
+ "rank(add(vec_avg(financial_statement_volatility_factor), vec_avg(alpha_score)))",
+ "subtract(0, rank(add(vec_avg(financial_statement_volatility_factor), vec_avg(alpha_score))))",
+ "rank(add(vec_avg(projected_excess_return), vec_avg(analyst_sentiment_consistency_score_2)))",
+ "subtract(0, rank(add(vec_avg(projected_excess_return), vec_avg(analyst_sentiment_consistency_score_2))))"
+]

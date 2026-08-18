@@ -1,0 +1,143 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/4hDIux1OD51y9LwHqhCKgCl",
+ "ts": 1785879345.8762398,
+ "alphas": [
+  {
+   "id": "blQErg2r",
+   "code": "ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 44)",
+   "sh": 0.37,
+   "fit": 0.17,
+   "tvr": 0.1258,
+   "ret": 0.0261,
+   "2y": 0.73,
+   "rn": 0.61,
+   "subU": 0.52,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "qMNqYpkV",
+   "code": "-ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 44)",
+   "sh": -0.37,
+   "fit": -0.17,
+   "tvr": 0.1258,
+   "ret": -0.0261,
+   "2y": -0.73,
+   "rn": -0.61,
+   "subU": -0.52,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "A1GKr5JX",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 44), industry)",
+   "sh": 0.37,
+   "fit": 0.17,
+   "tvr": 0.1295,
+   "ret": 0.0262,
+   "2y": 0.81,
+   "rn": 0.66,
+   "subU": 0.59,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGJmwqL",
+   "code": "ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 52)",
+   "sh": 0.38,
+   "fit": 0.18,
+   "tvr": 0.1232,
+   "ret": 0.0275,
+   "2y": 0.76,
+   "rn": 0.63,
+   "subU": 0.6,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "VkGJmLqw",
+   "code": "add(ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 44), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 66))",
+   "sh": 0.42,
+   "fit": 0.21,
+   "tvr": 0.1235,
+   "ret": 0.0304,
+   "2y": 0.82,
+   "rn": 0.68,
+   "subU": 0.62,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "WjA8oRnN",
+   "code": "ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 88)",
+   "sh": 0.56,
+   "fit": 0.32,
+   "tvr": 0.1159,
+   "ret": 0.0399,
+   "2y": 0.92,
+   "rn": 0.78,
+   "subU": 0.75,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "YPvqEOnv",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 52), sector)",
+   "sh": 0.35,
+   "fit": 0.15,
+   "tvr": 0.1268,
+   "ret": 0.0245,
+   "2y": 0.79,
+   "rn": 0.65,
+   "subU": 0.6,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "2rpdXxQ6",
+   "code": "add(ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 88))",
+   "sh": 0.48,
+   "fit": 0.25,
+   "tvr": 0.1207,
+   "ret": 0.0343,
+   "2y": 0.85,
+   "rn": 0.72,
+   "subU": 0.67,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

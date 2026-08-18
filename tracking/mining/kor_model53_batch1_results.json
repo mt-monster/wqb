@@ -1,0 +1,7 @@
+{
+  "batch": "model53 信用风险 (3fqCcoda84J7b37h4EtThwk)",
+  "date": "2026-08-04",
+  "results": [{"id": "pwNA9YbX", "expr": "-jc5_3y44", "sharpe": 0.16, "note": "最佳也极弱"}, {"id": "omNMx805", "expr": "-ms5_7y44", "sharpe": -0.08}],
+  "conclusion": "model53 信用风险 KOR 无效 (违约概率/隐含利差不预测收益), cov 1.0 但无信号。放弃。",
+  "next": "analyst25 decay16 微调 (JjGwjd5E 模式: decay12->16 曾突破 fitness/2y)"
+}

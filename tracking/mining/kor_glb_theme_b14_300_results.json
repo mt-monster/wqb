@@ -1,0 +1,35 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/exvzQ5cj59ja8qbKiNHfl",
+ "ts": 1785904595.2725677,
+ "alphas": [
+  {
+   "id": "npNbzNld",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 300), country)",
+   "sh": 2.14,
+   "fit": 1.08,
+   "tvr": 0.1948,
+   "ret": 0.0496,
+   "2y": 2.07,
+   "margin": 0.000509,
+   "subU": 1.61,
+   "failed": [
+    "LOW_GLB_AMER_SHARPE"
+   ]
+  },
+  {
+   "id": "d5Zw7Z6J",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 300), country)",
+   "sh": 1.92,
+   "fit": 0.94,
+   "tvr": 0.1898,
+   "ret": 0.0453,
+   "2y": 1.78,
+   "margin": 0.000477,
+   "subU": 1.43,
+   "failed": [
+    "LOW_FITNESS",
+    "LOW_GLB_AMER_SHARPE"
+   ]
+  }
+ ]
+}

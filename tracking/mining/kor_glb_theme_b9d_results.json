@@ -1,0 +1,30 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3raN9A3Sd4UWcMc5oEwsUa3",
+ "ts": 1785898927.207167,
+ "alphas": [
+  {
+   "id": "QPGdXrzw",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 250), country)",
+   "sh": 2.93,
+   "fit": 1.38,
+   "tvr": 0.299,
+   "ret": 0.0659,
+   "2y": 1.98,
+   "margin": 0.000441,
+   "subU": 2.35,
+   "failed": null
+  },
+  {
+   "id": "QPGdXrzw",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 250), country)",
+   "sh": 2.93,
+   "fit": 1.38,
+   "tvr": 0.299,
+   "ret": 0.0659,
+   "2y": 1.98,
+   "margin": 0.000441,
+   "subU": 2.35,
+   "failed": null
+  }
+ ]
+}

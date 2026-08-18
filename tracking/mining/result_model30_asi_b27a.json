@@ -1,0 +1,72 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/4osqmCbVp4hbbFPcqMo1Zr5",
+ "ts": 1785862427.6265411,
+ "alphas": [
+  {
+   "id": "xANgzK2J",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88))",
+   "sh": 1.38,
+   "fit": 0.65,
+   "tvr": 0.0907,
+   "ret": 0.0276,
+   "2y": 1.63,
+   "rn": 1.21,
+   "subU": 0.96,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "58pW6Z56",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 88))",
+   "sh": 1.4,
+   "fit": 0.66,
+   "tvr": 0.0943,
+   "ret": 0.0278,
+   "2y": 1.64,
+   "rn": 1.25,
+   "subU": 0.94,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE"
+   ]
+  },
+  {
+   "id": "kqPlmxGP",
+   "code": "ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52)",
+   "sh": 1.35,
+   "fit": 0.62,
+   "tvr": 0.097,
+   "ret": 0.0262,
+   "2y": 1.52,
+   "rn": 1.26,
+   "subU": 0.91,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "2rpdZ165",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), country)",
+   "sh": 1.38,
+   "fit": 0.59,
+   "tvr": 0.1028,
+   "ret": 0.023,
+   "2y": 1.25,
+   "rn": 1.35,
+   "subU": 0.92,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ASI_JPN_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

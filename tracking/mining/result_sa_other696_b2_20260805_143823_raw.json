@@ -1,0 +1,35 @@
+﻿{
+    "jsonrpc":  "2.0",
+    "id":  99,
+    "result":  {
+                   "content":  [
+                                   {
+                                       "type":  "text",
+                                       "text":  "{\n  \"success\": true,\n  \"message\": \"Multisimulation submitted successfully with 8 alpha expressions\",\n  \"async\": true,\n  \"multisimulation_id\": \"2fe0qz92O4UUbunXbYOShTv\",\n  \"multisimulation_location\": \"https://api.worldquantbrain.com/simulations/2fe0qz92O4UUbunXbYOShTv\",\n  \"multisimulation_url\": \"https://api.worldquantbrain.com/simulations/2fe0qz92O4UUbunXbYOShTv\",\n  \"submitted_expressions\": [\n    \"rank(ts_delta(vec_avg(oth696_combined_sentiment_score), 5))\",\n    \"rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))\",\n    \"rank(ts_delta(vec_avg(oth696_events_sentiment_score), 5))\",\n    \"rank(ts_delta(vec_avg(oth696_growthweightedpos), 5))\",\n    \"rank(ts_sum(vec_avg(oth696_opportunity_positive_62), 10))\",\n    \"rank(ts_sum(vec_avg(oth696_capex_negative_44), 10))\",\n    \"-rank(ts_sum(vec_avg(oth696_headwinds_negative), 10))\",\n    \"rank(ts_mean(vec_avg(oth696_accessaffordability_positive), 10))\"\n  ],\n  \"polling_tool\": \"lookINTO_SimError_message\",\n  \"note\": \"Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available.\"\n}"
+                                   }
+                               ],
+                   "structuredContent":  {
+                                             "result":  {
+                                                            "success":  true,
+                                                            "message":  "Multisimulation submitted successfully with 8 alpha expressions",
+                                                            "async":  true,
+                                                            "multisimulation_id":  "2fe0qz92O4UUbunXbYOShTv",
+                                                            "multisimulation_location":  "https://api.worldquantbrain.com/simulations/2fe0qz92O4UUbunXbYOShTv",
+                                                            "multisimulation_url":  "https://api.worldquantbrain.com/simulations/2fe0qz92O4UUbunXbYOShTv",
+                                                            "submitted_expressions":  [
+                                                                                          "rank(ts_delta(vec_avg(oth696_combined_sentiment_score), 5))",
+                                                                                          "rank(ts_mean(vec_avg(oth696_combined_sentiment_score), 20))",
+                                                                                          "rank(ts_delta(vec_avg(oth696_events_sentiment_score), 5))",
+                                                                                          "rank(ts_delta(vec_avg(oth696_growthweightedpos), 5))",
+                                                                                          "rank(ts_sum(vec_avg(oth696_opportunity_positive_62), 10))",
+                                                                                          "rank(ts_sum(vec_avg(oth696_capex_negative_44), 10))",
+                                                                                          "-rank(ts_sum(vec_avg(oth696_headwinds_negative), 10))",
+                                                                                          "rank(ts_mean(vec_avg(oth696_accessaffordability_positive), 10))"
+                                                                                      ],
+                                                            "polling_tool":  "lookINTO_SimError_message",
+                                                            "note":  "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+                                                        }
+                                         },
+                   "isError":  false
+               }
+}

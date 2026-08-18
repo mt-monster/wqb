@@ -1,0 +1,5 @@
+[
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(alpha_score), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(intrinsic_valuation_estimate_3), subindustry), 0.5), 5), 90)"
+]

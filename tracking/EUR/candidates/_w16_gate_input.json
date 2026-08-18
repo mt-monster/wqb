@@ -1,0 +1,18 @@
+[
+ "rank(oth571_views7d)",
+ "subtract(0, rank(oth571_views7d))",
+ "rank(oth571_views28d)",
+ "subtract(0, rank(oth571_views28d))",
+ "rank(ts_delta(oth571_views7d, 7))",
+ "subtract(0, rank(ts_delta(oth571_views7d, 7)))",
+ "rank(divide(oth571_views7d, oth571_views28d))",
+ "subtract(0, rank(divide(oth571_views7d, oth571_views28d)))",
+ "rank(divide(oth571_viewstoday, oth571_views7d))",
+ "subtract(0, rank(divide(oth571_viewstoday, oth571_views7d)))",
+ "rank(ts_zscore(oth571_views7d, 60))",
+ "subtract(0, rank(ts_zscore(oth571_views7d, 60)))",
+ "rank(divide(oth571_views7dmobile, oth571_views7ddesktop))",
+ "subtract(0, rank(divide(oth571_views7dmobile, oth571_views7ddesktop)))",
+ "rank(divide(oth571_views7dnight, oth571_views7d))",
+ "subtract(0, rank(divide(oth571_views7dnight, oth571_views7d)))"
+]

@@ -1,0 +1,72 @@
+[
+ {
+  "label": "T1_drev",
+  "sim": "https://api.worldquantbrain.com/simulations/1WmkXbpF4SjbTDcqn4fBNE",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T2_small",
+  "sim": "https://api.worldquantbrain.com/simulations/1tilomcOb4WscMhgKMeS8k",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T5_base",
+  "sim": "https://api.worldquantbrain.com/simulations/2os7pQ9gK4yebm8guALzMbm",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T6_eymom",
+  "sim": "https://api.worldquantbrain.com/simulations/2SBEf5dTK4FJblFx3ffnmjc",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T7_peg",
+  "sim": "https://api.worldquantbrain.com/simulations/12II2w3e84zg9ODCIrHxYIQ",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T10_term",
+  "sim": "https://api.worldquantbrain.com/simulations/3bmZJY4W04ZobwbSuDZSmMb",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T11_dupont",
+  "sim": "https://api.worldquantbrain.com/simulations/3GQ0RR5Nh4ZQbmXCzjHWYFe",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T12_qual",
+  "sim": "https://api.worldquantbrain.com/simulations/3YgsejdaY5e2cDhqBl5Fu61",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ },
+ {
+  "label": "T13_entropy",
+  "sim": "https://api.worldquantbrain.com/simulations/29B8rRb3R4wa9CGfEe1YgqR",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "Attempted to use inaccessible or unknown operator \"ts_entropy\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+ },
+ {
+  "label": "T15_vol",
+  "sim": "https://api.worldquantbrain.com/simulations/K7n8eeW24kYbtB1aWvmEnbK",
+  "status": "CANCELLED",
+  "alpha": null,
+  "message": "CANCELLED"
+ }
+]

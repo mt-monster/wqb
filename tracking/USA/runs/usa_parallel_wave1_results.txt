@@ -1,0 +1,28 @@
+# USA 并行波1结果 (5批×8=40条, 全部COMPLETE, 2026-08-16)
+# 闸门: sharpe>1.58 fitness>1 2y>1.6 margin>5bp tv 5-30% RN>1 ra_failed=0
+# 结论: 0条全过; shortinterest3 稳健(前20全来自它), sentiment21 decay4 高换手全灭
+#
+# 批A S4  QCAUm44P4QN9WkzEip8jV9 (decay4 SUBIND)
+# 批B NT1 UJtgA7Tw4DNb4W1sy9yVhY (decay4 SUBIND)
+# 批C S5  2ClRKxecA59Ra3i1PNwRlfv (decay8 SUBIND)
+# 批D S6  2IoAs4gI4It9vz18RyPujWe (decay4 INDUSTRY)
+# 批E NT2 1FivjA9RB5fa9CwAikOTmcS (decay4 SUBIND)
+#
+sharpe    id        dc neu  fit   tv%  m_bp   2y    RN    subU raF expr
+  1.39  kqP6JGkK  4 SUB  0.50  28.9  2.6  2.62  1.56  0.79   2 quantile(signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), 0.5))
+  1.38  VkGbdZzJ  4 IND  0.49  28.9  2.5  2.49  1.57  0.75   2 (同上 INDUSTRY中性化)
+  1.37  omN0oGQJ  4 SUB  0.47  28.2  2.4  2.31  1.68  0.62   2 group_rank(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry)
+  1.37  MPGN0dzk  4 IND  0.43  34.8  2.0  2.70  1.49  0.48   3 signed_power(group_zscore(ts_delta(...,5), subindustry), 0.5)
+  1.37  E5GPVz3G  4 SUB  0.45  34.4  2.1  2.80  1.47  0.65   2 signed_power(group_zscore(ts_av_diff(...,7), subindustry), 0.5)
+  1.36  E5GPVN8P  4 IND  0.47  28.2  2.4  2.31  1.68  0.61   2 group_rank w10 INDUSTRY
+  1.32  LLGY5Ezv  4 IND  0.46  28.2  2.4  2.15  1.54  0.75   2 winsorize(sp w10)
+  1.32  JjGJPoWn  4 IND  0.46  28.2  2.4  2.15  1.54  0.75   2 sp w10 INDUSTRY
+  1.32  78zRomgx  4 SUB  0.49  29.8  2.8  2.67  1.40  0.79   2 sp w10 power=1
+  1.31  78zRoMOZ  8 SUB  0.51  23.8  3.0  2.30  1.52  0.82   2 quantile(sp w10) decay8
+  ... (shortinterest3 其余 1.04-1.28)
+  0.92  pwNevZQv  8 SUB  0.72   9.0 17.0  1.42  0.40  0.40   3 reverse(quantile(ts_decay_linear(vec_avg(borrow_activity_score), 10))) [margin/tv达标但sharpe低]
+# sentiment21 decay4 全部换手 80-119%, sharpe -0.93~+0.31 → 需高decay(波2 H/J 批 decay=21)
+#
+# 波2已提交(填5槽): F=VoSj1b4U4ZSbyXzsGCCSlW(费率字段) G=3Io2Xd6Xm56o9OAqyVk0fEi(组合)
+#   H=3lz5tQ8QT4J28Wxv4CMaZ4N(snt21 decay21) I=1lDkGXfHb4y89aT7zE1e5y9(si3 decay12)
+#   J=2qGMOGeeg56wbBbS2TP9t6R(snt21 decay21 长窗口)

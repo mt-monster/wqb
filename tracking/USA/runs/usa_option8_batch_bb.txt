@@ -1,0 +1,8 @@
+reverse(quantile(group_zscore(ts_zscore(divide(implied_volatility_put_20, implied_volatility_call_20), 60), subindustry)))
+reverse(quantile(group_zscore(ts_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), 120), subindustry)))
+reverse(quantile(group_zscore(ts_rank(divide(implied_volatility_put_20, implied_volatility_call_20), 60), subindustry)))
+reverse(quantile(group_zscore(subtract(divide(implied_volatility_put_20, implied_volatility_call_20), ts_delay(divide(implied_volatility_put_20, implied_volatility_call_20), 21)), subindustry)))
+reverse(quantile(group_zscore(subtract(divide(implied_volatility_put_30, implied_volatility_call_30), ts_mean(divide(implied_volatility_put_30, implied_volatility_call_30), 60)), subindustry)))
+reverse(quantile(group_zscore(divide(implied_volatility_mean_skew_20, implied_volatility_mean_skew_180), subindustry)))
+reverse(quantile(group_zscore(add(divide(implied_volatility_put_20, implied_volatility_call_20), divide(implied_volatility_put_180, implied_volatility_call_180)), subindustry)))
+reverse(quantile(group_zscore(divide(add(implied_volatility_put_20, implied_volatility_put_30), add(implied_volatility_call_20, implied_volatility_call_30)), subindustry)))

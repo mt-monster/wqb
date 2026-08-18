@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3dkOoif2K4ju8Jt1a822t0UD",
+ "ts": 1785916768.7250977,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/49dOWn5Pn5e19Kd6Av9ePFb",
+   "location_url": "https://api.worldquantbrain.com/simulations/49dOWn5Pn5e19Kd6Av9ePFb",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "d5ZwzEgg",
+   "raw": {
+    "id": "49dOWn5Pn5e19Kd6Av9ePFb",
+    "parent": "3dkOoif2K4ju8Jt1a822t0UD",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 10,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+    "status": "COMPLETE",
+    "alpha": "d5ZwzEgg"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1jIEUq2034WV91i1gxJOSmVu",
+   "location_url": "https://api.worldquantbrain.com/simulations/1jIEUq2034WV91i1gxJOSmVu",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "d5ZwzEgg",
+   "raw": {
+    "id": "1jIEUq2034WV91i1gxJOSmVu",
+    "parent": "3dkOoif2K4ju8Jt1a822t0UD",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "KOR",
+     "universe": "TOP600",
+     "delay": 1,
+     "decay": 10,
+     "neutralization": "INDUSTRY",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "subtract(group_rank(ts_rank(average_spread_slippage, 44), sector), ts_rank(vec_avg(oth323_esor), 22))",
+    "status": "COMPLETE",
+    "alpha": "d5ZwzEgg"
+   },
+   "extra_info": ""
+  }
+ ]
+}

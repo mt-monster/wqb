@@ -1,0 +1,14 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 2 alpha expressions",
+ "async": true,
+ "multisimulation_id": "4kErBm7AA4pk8RVvDxlG6nV",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/4kErBm7AA4pk8RVvDxlG6nV",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/4kErBm7AA4pk8RVvDxlG6nV",
+ "submitted_expressions": [
+  "if_else(greater(abs(change_dispersion_fy2_eps_estimates), 0.001), ts_scale(change_3m_revision_fy2_eps, 60), 0)",
+  "if_else(greater(change_3m_revision_fy2_eps, 0), ts_rank(change_dispersion_fy2_eps_estimates, 60), 0)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

@@ -1,0 +1,7 @@
+{
+ "success": true,
+ "multisimulation_id": "2LLjGmboQ4kWceGwXvsTube",
+ "child_count": 0,
+ "children": [],
+ "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
+}

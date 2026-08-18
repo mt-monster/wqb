@@ -1,0 +1,26 @@
+{
+  "alpha_expressions": [
+    "ts_decay_linear(reverse(rank(vec_avg(mws76_score))), 3)",
+    "ts_decay_linear(reverse(rank(vec_avg(mws76_score))), 5)",
+    "reverse(rank(ts_mean(vec_avg(mws76_score), 5)))",
+    "ts_decay_linear(signed_power(subtract(reverse(rank(vec_avg(mws76_score))), 0.5), 5), 5)",
+    "ts_decay_linear(reverse(rank(ts_std_dev(vec_avg(mws76_score), 10))), 5)",
+    "ts_decay_linear(rank(ts_std_dev(vec_avg(mws76_score), 10)), 5)",
+    "reverse(group_rank(vec_avg(mws76_score), subindustry))",
+    "ts_decay_linear(reverse(rank(ts_zscore(vec_avg(mws76_score), 22))), 5)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON"
+}

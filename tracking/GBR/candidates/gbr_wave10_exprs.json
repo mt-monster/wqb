@@ -1,0 +1,38 @@
+{
+ "meta": {
+  "wave": "10",
+  "source": "tracking/GBR/candidates/wave10_model264_deu_adapt_exprs.json",
+  "region": "GBR",
+  "created_at": "2026-08-17T16:11:33",
+  "input": 34,
+  "duplicates_dropped": 0,
+  "selected": 6,
+  "buckets": {
+   "max>atom": 1,
+   "multiply>ts_backfill": 2,
+   "subtract>ts_backfill": 20,
+   "ts_av_diff>atom": 1,
+   "ts_delta>ts_backfill": 3,
+   "ts_ir>atom": 1,
+   "ts_ir>ts_backfill": 1,
+   "ts_mean>ts_backfill": 1,
+   "ts_returns>ts_backfill": 1,
+   "ts_sum>ts_backfill": 2,
+   "winsorize>ts_backfill": 1
+  },
+  "skeleton_distribution": {
+   "single": 4,
+   "linear_mix": 2
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "subtract(max(mdl264_eps_sur_decay_l3, mdl264_eps_sur_decay_l1), mdl264_eps_sur_decay_l2)",
+  "multiply(ts_backfill(mdl264_es_ebit_fy1_d1m_l3, 10), ts_backfill(mdl264_vol_vo_p_1m_l2, 10))",
+  "multiply(ts_backfill(mdl264_es_ebitda_fy1_d1m_l3, 10), ts_backfill(mdl264_news_abno_vol_1d_l3, 10))",
+  "subtract(ts_backfill(mdl264_1l_d0252ntr, 5), ts_backfill(mdl264_1l_m1m21_ntr, 5))",
+  "ts_av_diff(mdl264_eps_sur_decay_l3, 60)",
+  "ts_ir(mdl264_es_ebitda_ntm_r1m_l3 - mdl264_es_ebitda_ntm_r1m_l1, 20)"
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "batch": "analyst44 eps×pd blend 达标批次 (151kbt9C64oLcCRWXSSGzz5)",
+  "date": "2026-08-04",
+  "settings": "KOR/TOP600/D1/SECTOR/decay16/trunc0.04/maxTrade ON",
+  "results": [
+    {"id": "QPGXkrlw", "expr": "eps48+pd22", "sharpe": 1.6, "fitness": 1.21, "two_year": 1.64, "fail": []},
+    {"id": "e73Rw8qg", "expr": "eps50+pd22", "sharpe": 1.62, "fitness": 1.24, "two_year": 1.63, "risk_neut": 1.52, "margin": 0.001165, "fail": [], "note": "★ 主候选"},
+    {"id": "GrGJA03G", "expr": "eps52+pd22", "sharpe": 1.62, "fitness": 1.24, "two_year": 1.6, "fail": []},
+    {"id": "omNO5w3m", "expr": "eps50+pd20", "sharpe": 1.63, "fitness": 1.24, "two_year": 1.62, "fail": []},
+    {"id": "O0GaPw5d", "expr": "eps53+pd22", "sharpe": 1.62, "fitness": 1.24, "two_year": 1.58, "fail": []},
+    {"id": "xANg8wPg", "expr": "eps50+pd24", "sharpe": 1.6, "fitness": 1.22, "two_year": 1.64, "fail": []}
+  ],
+  "candidate2": {"id": "e73Rw8qg", "expr": "add(ts_rank(vec_avg(anl44_second_en_eps_value), 50), -ts_rank(vec_avg(pretaxprofit_estimates_down_4w), 22))", "dataset": "analyst44 (经纪人整合预测)", "sharpe": 1.62, "fitness": 1.24, "two_year": 1.63, "risk_neut": 1.52, "margin": 0.001165, "turnover": 0.1664, "cw": "PASS", "operators": 5, "ra_failed": 0},
+  "next": "robust (yearly) + 与 JjGwjd5E 相关性 + 属性设置"
+}

@@ -1,0 +1,11 @@
+{
+ "dataset": "model354",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "UNKNOWN",
+ "type_distribution": {},
+ "field_count": 0,
+ "fetched_at": "2026-08-18T17:30:29",
+ "fields": []
+}

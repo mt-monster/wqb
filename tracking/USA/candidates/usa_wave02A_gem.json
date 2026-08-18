@@ -1,0 +1,8 @@
+[
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 22), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4), 22), subindustry), 0.5), 5), 20)",
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4), 22), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_forecast_dispersion, std=4), 22), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(expected_excess_return_forecast, std=4), 22), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(relative_alpha_position, std=4), 22), subindustry), 0.5), 5), 90)"
+]

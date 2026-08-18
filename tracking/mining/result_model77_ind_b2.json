@@ -1,0 +1,147 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/3tQeKTgUR4t9aE1wCvEOgiM",
+ "ts": 1785879886.9343,
+ "alphas": [
+  {
+   "id": "1YpEK7dJ",
+   "code": "ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=5), 60), 44)",
+   "sh": -1.05,
+   "fit": -0.65,
+   "tvr": 0.1027,
+   "ret": -0.0485,
+   "2y": -1.63,
+   "rn": -0.63,
+   "subU": -0.88,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "1YpEK7dW",
+   "code": "-ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=5), 60), 44)",
+   "sh": 1.05,
+   "fit": 0.65,
+   "tvr": 0.1027,
+   "ret": 0.0485,
+   "2y": 1.63,
+   "rn": 0.63,
+   "subU": 0.88,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE"
+   ]
+  },
+  {
+   "id": "P0G9zp3L",
+   "code": "ts_rank(ts_backfill(winsorize(value_score_india, std=5), 60), 44)",
+   "sh": -1.12,
+   "fit": -0.8,
+   "tvr": 0.1053,
+   "ret": -0.0633,
+   "2y": -1.13,
+   "rn": -1.17,
+   "subU": -0.74,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "MPGmzpLM",
+   "code": "ts_rank(ts_backfill(winsorize(three_month_revision_fy1_earnings_india, std=5), 60), 44)",
+   "sh": -0.57,
+   "fit": -0.26,
+   "tvr": 0.0983,
+   "ret": -0.0258,
+   "2y": -0.56,
+   "rn": -0.42,
+   "subU": -0.45,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "wpagGRE6",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=5), 60), 44), industry)",
+   "sh": -1.02,
+   "fit": -0.62,
+   "tvr": 0.1074,
+   "ret": -0.0456,
+   "2y": -1.53,
+   "rn": -0.62,
+   "subU": -0.8,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "qMNqGA6P",
+   "code": "add(ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=5), 60), 44), ts_rank(ts_backfill(winsorize(value_score_india, std=5), 60), 44))",
+   "sh": -1.33,
+   "fit": -1.01,
+   "tvr": 0.111,
+   "ret": -0.0722,
+   "2y": -1.53,
+   "rn": -1.17,
+   "subU": -1.01,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "omNOGKgl",
+   "code": "ts_rank(ts_backfill(winsorize(composite_score_qsg_india, std=5), 60), 88)",
+   "sh": -1.1,
+   "fit": -0.7,
+   "tvr": 0.0832,
+   "ret": -0.0505,
+   "2y": -1.95,
+   "rn": -0.53,
+   "subU": -0.89,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  },
+  {
+   "id": "LLGJzpd9",
+   "code": "-ts_rank(ts_backfill(winsorize(three_month_revision_fy1_earnings_india, std=5), 60), 44)",
+   "sh": 0.57,
+   "fit": 0.26,
+   "tvr": 0.0983,
+   "ret": 0.0258,
+   "2y": 0.56,
+   "rn": 0.42,
+   "subU": 0.45,
+   "failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ]
+  }
+ ]
+}

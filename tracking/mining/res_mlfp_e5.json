@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 8 alpha expressions",
+ "async": true,
+ "multisimulation_id": "b7lnfaFr4kpa8JZehED58Z",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/b7lnfaFr4kpa8JZehED58Z",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/b7lnfaFr4kpa8JZehED58Z",
+ "submitted_expressions": [
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.2+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.3+scale(rank(ts_zscore(subtract(ts_backfill(change_5y_relative_earnings_to_price,120),ts_backfill(change_1y_eps_to_price,120)),189)))*0.2+scale(rank(ts_zscore(subtract(ts_backfill(change_12m_alpha,120),ts_backfill(change_60m_alpha,120)),189)))*0.15+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.35+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(-rank(ts_zscore(returns,42)))*0.5",
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.2+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(group_rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),subindustry))*0.4+scale(group_rank(ts_backfill(change_52w_high_price_ratio,120),subindustry))*0.2+scale(group_rank(ts_backfill(change_20d_volume_to_price_volatility,120),subindustry))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(ts_rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),250))*0.4+scale(ts_rank(ts_backfill(change_52w_high_price_ratio,120),250))*0.2+scale(ts_rank(ts_backfill(change_20d_volume_to_price_volatility,120),250))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(-rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250)))*0.2+scale(-rank(ts_zscore(ts_backfill(change_30_75w_price_ratio,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+  "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.3+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.15+scale(-rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250)))*0.1+scale(-rank(ts_zscore(ts_backfill(change_dispersion_fy2_eps_estimates,120),250)))*0.1+scale(-rank(ts_zscore(returns,42)))*0.2"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

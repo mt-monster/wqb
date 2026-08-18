@@ -1,0 +1,29 @@
+{
+ "tag": "e7",
+ "ts": "2026-08-05 21:00:16",
+ "labels": [
+  "T10_term",
+  "T2_small",
+  "T5_base"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "group_zscore(subtract(group_zscore(change_60m_active_return, industry), group_zscore(change_1m_active_return, industry)), industry)",
+   "-change_1y_eps_growth * ts_std_dev(change_1y_eps_growth, 30)",
+   "group_rank(ts_rank(change_1y_eps_growth, 252), industry)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

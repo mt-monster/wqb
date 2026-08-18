@@ -1,0 +1,17 @@
+# AP 批: macro38 Technical Ratings 技术面探针 (波12 首发), decay4/SUBIND
+# 1: 全指标共识信号 (B/S/H 平均) 正向
+quantile(mcr38_overall_signal)
+# 2: 共识信号百分位 (信号分布位置)
+quantile(mcr38_overall_percent)
+# 3: 跨指标方向评级 × 强度评级 乘法 (技术共识强化确认)
+quantile(multiply(rank(mcr38_direction_rating), rank(mcr38_strength_rating)))
+# 4: 短期共识 5d 变化 (margin 预检: 变化信号对照)
+quantile(ts_av_diff(mcr38_shorttermsignal, 5))
+# 5: MACD 期限结构 (快 20/50 vs 慢 50/100 背离)
+quantile(subtract(mcr38_macd_20_50_signal, mcr38_macd_50_100_signal))
+# 6: MA 多头排列 (20d vs 100d 均线结构)
+quantile(subtract(mcr38_ma_20_signal, mcr38_ma_100_signal))
+# 7: Trendspotter 专有指标确认 × 强度 (margin 预检: 评级信号对照)
+quantile(multiply(rank(mcr38_trendspotter_signal), rank(mcr38_trendspotter_strength)))
+# 8: 价格动量 (margin 预检: 水平信号对照)
+quantile(mcr38_percent_change)

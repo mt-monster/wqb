@@ -1,0 +1,8 @@
+quantile(ts_decay_linear(subtract(reverse(quantile(negative_sentiment_average_7)), reverse(quantile(negative_sentiment_average_12))), 15))
+quantile(ts_decay_linear(subtract(reverse(quantile(negative_sentiment_typical_value)), reverse(quantile(negative_sentiment_average_12))), 15))
+quantile(ts_decay_linear(add(reverse(quantile(negative_sentiment_average_7)), quantile(negative_sentiment_peak_score_12)), 15))
+quantile(ts_decay_linear(add(reverse(quantile(negative_sentiment_typical_value)), reverse(quantile(negative_sentiment_peak_score_12))), 20))
+quantile(ts_decay_linear(group_zscore(add(negative_sentiment_average_7, negative_sentiment_average_12), subindustry), 20))
+quantile(ts_decay_linear(group_zscore(add(negative_sentiment_typical_value, negative_sentiment_mean_value_4), subindustry), 15))
+quantile(ts_decay_linear(group_zscore(add(add(negative_sentiment_average_7, negative_sentiment_typical_value), negative_sentiment_average_12), subindustry), 20))
+quantile(ts_decay_linear(add(reverse(quantile(group_zscore(negative_sentiment_average_7, subindustry))), reverse(quantile(group_zscore(negative_sentiment_typical_value, subindustry)))), 15))

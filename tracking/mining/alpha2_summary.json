@@ -1,0 +1,39 @@
+{
+  "alpha_number": 2,
+  "status": "CANDIDATES MARKED (2 variants, user chooses at submission)",
+  "dataset": "model110",
+  "field": "mdl110_score",
+  "category": "model (ML/AI composite)",
+  "candidates": [
+    {
+      "id": "qM6QgwkK",
+      "variant": "ts_rank w=60",
+      "expression": "group_rank(ts_rank(ts_backfill(winsorize(mdl110_score,std=5),60),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "metrics": {"sh": 2.13, "fit": 1.28, "2Y": 1.33, "rn_sh": 1.79, "margin_bp": 9.85, "tvr": 0.0912, "asi_jpn": 0.87, "subU": 0.72, "ops": 7},
+      "robust": {"self_corr": 0.0, "prod_corr": 0.8344, "mutual_corr_alpha1": 0.0525},
+      "yearly": {"positive_years": "8/10", "weak_years": "2021 sh0.42, 2022 sh0.55", "strong_years": "2014 sh4.36, 2020 sh2.80, 2023 sh2.14"},
+      "checks": {"pass": ["sh>1.58", "fit>1.0", "margin>5bp", "tvr 5-30%", "rn_sh>1.0", "ops<8", "self_corr<0.7", "mutual_corr<0.4"], "fail": ["asi_jpn 0.87<1.0", "IS_LADDER 1.33<1.58(warn)", "prod_corr 0.834>0.7", "PPA robust_univ 1.89v1.92(marginal)"]},
+      "properties": {"name": "0.8344", "color": "YELLOW", "tags": ["PowerPoolSelected","ASI","MINVOL1M","model110","mdl110_score","ts_rank_w60","asi_jpn_fail","prod_corr_fail","is_ladder_warn","alpha2_candidate"]},
+      "verdict": "BEST BALANCE. Lowest prod_corr among all mdl110 variants. Good rn_sh 1.79. 2Y improved 0.61→1.33 but still <1.6."
+    },
+    {
+      "id": "QP9wEor5",
+      "variant": "raw (no ts_rank)",
+      "expression": "group_rank(ts_backfill(winsorize(mdl110_score,std=5),60),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1')))",
+      "metrics": {"sh": 2.42, "fit": 1.89, "2Y": 2.65, "rn_sh": 1.05, "margin_bp": 35.08, "tvr": 0.0434, "asi_jpn": 0.77, "subU": 1.36, "ops": 6},
+      "robust": {"self_corr": 0.0, "prod_corr": 0.972, "mutual_corr_alpha1": 0.0096},
+      "yearly": {"positive_years": "9/10", "weak_years": "2020 sh0.11", "strong_years": "2014 sh5.0, 2022 sh2.43, 2023 sh2.90"},
+      "checks": {"pass": ["sh>1.58", "fit>1.0", "2Y>1.6 IS_LADDER PASS", "margin>5bp", "rn_sh>1.0(barely)", "ops<8", "self_corr<0.7", "mutual_corr<0.4"], "fail": ["asi_jpn 0.77<1.0", "prod_corr 0.972>0.7", "tvr 4.34%<5%", "PPA robust_univ(marginal)"]},
+      "properties": {"name": "0.972", "color": "YELLOW", "tags": ["PowerPoolSelected","ASI","MINVOL1M","model110","mdl110_score","raw_no_ts_rank","asi_jpn_fail","prod_corr_fail","is_ladder_pass","alpha2_candidate"]},
+      "verdict": "BEST PERFORMANCE. 2Y 2.65 PASSES IS_LADDER! sh2.42/fit1.89/margin35bp. But prod_corr 0.972 = essentially duplicate of production alpha."
+    }
+  ],
+  "comparison": {
+    "qM6QgwkK_pros": ["Lower prod_corr (0.834 vs 0.972)", "Better rn_sh (1.79 vs 1.05)", "Better tvr (9.1% vs 4.3%)", "Better asi_jpn (0.87 vs 0.77)"],
+    "QP9wEor5_pros": ["2Y 2.65 PASSES IS_LADDER (vs 1.33 fails)", "Better sh (2.42 vs 2.13)", "Better fit (1.89 vs 1.28)", "Better margin (35 vs 10bp)", "Better mutual corr (0.0096 vs 0.0525)"],
+    "key_tradeoff": "qM6QgwkK has better robustness (lower prod_corr, higher rn_sh) but fails IS_LADDER. QP9wEor5 has stellar performance but prod_corr 0.972 means near-duplicate of production."
+  },
+  "batches_searched": "b19 (8 fields), b20 (8 window variants), b21 (8 fundamental44 fields) = 24 sims for alpha #2",
+  "total_sims": "176 (b1-b21)",
+  "next": "Alpha #3: different category (analyst69 or other)"
+}

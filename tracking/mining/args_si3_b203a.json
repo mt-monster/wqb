@@ -1,0 +1,26 @@
+﻿{
+    "unit_handling":  "VERIFY",
+    "max_trade":  "ON",
+    "decay":  6,
+    "test_period":  "P0Y0M",
+    "neutralization":  "STATISTICAL",
+    "language":  "FASTEXPR",
+    "universe":  "TOP3000",
+    "delay":  1,
+    "alpha_expressions":  [
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 50), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 55), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 58), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 55), 30)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 50), 30)",
+                              "ts_decay_linear(signed_power(subtract(0.5, group_rank(ts_mean(vec_avg(shrt3_bar), 10), sector)), 55), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, group_rank(ts_mean(vec_avg(shrt3_bar), 10), subindustry)), 55), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 55), 120)"
+                          ],
+    "truncation":  0.08,
+    "pasteurization":  "ON",
+    "region":  "USA",
+    "instrument_type":  "EQUITY",
+    "visualization":  false,
+    "nan_handling":  "ON"
+}

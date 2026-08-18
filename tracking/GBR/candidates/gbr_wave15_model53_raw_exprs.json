@@ -1,0 +1,18 @@
+[
+    "divide(ts_delta(mdl53_implied_spreads, 21), add(ts_delta(annualized_pd_1_year_jc7, 21), 0.0001))",
+    "divide(mdl53_implied_spreads, add(mdl53_ms5_1year, 0.0001))",
+    "divide(mdl53_implied_spreads, add(annualized_pd_1_year_jc7, 0.0001))",
+    "divide(annualized_pd_1_month_jc7, add(annualized_pd_10_year_jc7, 0.0001))",
+    "if_else(greater(annualized_pd_1_year_jc7, mdl53_ms5_1year), annualized_pd_1_year_jc7, mdl53_ms5_1year)",
+    "inverse(add(annualized_pd_1_year_jc7, 0.0001))",
+    "log(add(annualized_pd_1_year_jc7, 0.0001))",
+    "quantile(mdl53_implied_spreads, driver = gaussian, sigma = 1.0)",
+    "subtract(add(annualized_pd_1_month_jc7, annualized_pd_10_year_jc7), add(annualized_pd_1_year_jc7, annualized_pd_1_year_jc7))",
+    "subtract(annualized_pd_10_year_jc7, annualized_pd_1_month_jc7)",
+    "subtract(annualized_pd_1_year_jc7, mdl53_ms5_1year)",
+    "subtract(annualized_pd_5_year_jc7, mdl53_ms5_5year)",
+    "ts_decay_linear(mdl53_implied_spreads, 5)",
+    "ts_delta(annualized_pd_1_year_jc7, 21)",
+    "winsorize(subtract(annualized_pd_1_year_jc7, mdl53_ms5_1year), std = 4)",
+    "annualized_pd_10_year_jc7"
+]

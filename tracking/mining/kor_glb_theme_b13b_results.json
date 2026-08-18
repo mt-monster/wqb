@@ -1,0 +1,70 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/1ny7lK4ne4XoaAx19igyuP2x",
+ "ts": 1785907748.6156821,
+ "results": [
+  {
+   "location": "https://api.worldquantbrain.com/simulations/bF8fu2wp5bw9km1fHRCXpjx",
+   "location_url": "https://api.worldquantbrain.com/simulations/bF8fu2wp5bw9km1fHRCXpjx",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "JjGL0YQE",
+   "raw": {
+    "id": "bF8fu2wp5bw9km1fHRCXpjx",
+    "parent": "1ny7lK4ne4XoaAx19igyuP2x",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 16,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi6_2, std=5), 60), 250), country)",
+    "status": "COMPLETE",
+    "alpha": "JjGL0YQE"
+   },
+   "extra_info": ""
+  },
+  {
+   "location": "https://api.worldquantbrain.com/simulations/1f4uRp2Ao4E2aogH5i9IZjo",
+   "location_url": "https://api.worldquantbrain.com/simulations/1f4uRp2Ao4E2aogH5i9IZjo",
+   "error": "COMPLETE",
+   "status": "COMPLETE",
+   "alpha": "j26QlW89",
+   "raw": {
+    "id": "1f4uRp2Ao4E2aogH5i9IZjo",
+    "parent": "1ny7lK4ne4XoaAx19igyuP2x",
+    "type": "REGULAR",
+    "settings": {
+     "instrumentType": "EQUITY",
+     "region": "GLB",
+     "universe": "TOPDIV3000",
+     "delay": 1,
+     "decay": 16,
+     "neutralization": "FAST",
+     "truncation": 0.04,
+     "pasteurization": "ON",
+     "unitHandling": "VERIFY",
+     "nanHandling": "OFF",
+     "maxTrade": "ON",
+     "maxPosition": "OFF",
+     "language": "FASTEXPR",
+     "visualization": false
+    },
+    "regular": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_techindi17_1, std=5), 60), 250), country)",
+    "status": "COMPLETE",
+    "alpha": "j26QlW89"
+   },
+   "extra_info": ""
+  }
+ ]
+}

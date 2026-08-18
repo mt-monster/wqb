@@ -1,0 +1,8 @@
+hump(reverse(quantile(divide(implied_volatility_put_30, implied_volatility_call_30))), hump=0.01)
+hump(reverse(quantile(group_zscore(divide(implied_volatility_put_30, implied_volatility_call_30), subindustry))), hump=0.01)
+reverse(quantile(ts_decay_linear(divide(implied_volatility_put_30, implied_volatility_call_30), 15)))
+reverse(quantile(ts_decay_linear(divide(implied_volatility_put_20, implied_volatility_call_20), 15)))
+reverse(quantile(ts_decay_linear(divide(implied_volatility_put_90, implied_volatility_call_90), 10)))
+reverse(quantile(group_zscore(divide(implied_volatility_put_120, implied_volatility_call_120), subindustry)))
+reverse(quantile(divide(implied_volatility_put_120, implied_volatility_call_120)))
+reverse(quantile(subtract(divide(implied_volatility_put_30, implied_volatility_call_30), divide(implied_volatility_put_120, implied_volatility_call_120))))

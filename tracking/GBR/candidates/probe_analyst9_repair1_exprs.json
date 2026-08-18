@@ -1,0 +1,10 @@
+[
+ "ts_decay_linear(multiply(rank(ts_backfill(vec_avg(anl9_detail_dataitemvalue),66)),-1),10)",
+ "multiply(rank(ts_backfill(vec_avg(anl9_detail_dataitemvalue),66)),-1)",
+ "ts_decay_linear(rank(ts_backfill(vec_avg(anl9_detail_dataitemvalue),66)),10)",
+ "multiply(rank(ts_backfill(vec_avg(anl9_consensusanalysis_dataitemvalue),66)),-1)",
+ "ts_decay_linear(rank(ts_backfill(vec_avg(anl9_consensusanalysis_dataitemvalue),66)),10)",
+ "rank(ts_backfill(vec_avg(anl9_consensusv2span_incomeeps_dataitemvalue),66))",
+ "multiply(rank(ts_backfill(vec_avg(anl9_consensusv2span_incomeeps_dataitemvalue),66)),-1)",
+ "ts_decay_linear(rank(ts_backfill(vec_avg(anl9_consensusv2span_incomeeps_dataitemvalue),66)),10)"
+]

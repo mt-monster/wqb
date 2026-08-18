@@ -1,0 +1,23 @@
+{
+  "batch": "GLB 主题轨道 第2-4批 (faYcya4L / 15G69O6 / 1vSAtja0)",
+  "date": "2026-08-04",
+  "settings": "GLB/TOPDIV3000/D1/SLOW/trunc0.04/maxTrade ON, decay 12->16",
+  "results": [
+    {"id": "vRNMz7KQ", "expr": "-bucket tech17 22", "sharpe": 1.54, "two_year": 0.99, "note": "pred_bucket 反向确认"},
+    {"id": "O0GPmdQb", "expr": "+pred_10d techindi6 44", "sharpe": 1.64, "fitness": 0.77, "margin": 0.000439},
+    {"id": "1YpborWX", "expr": "pred130", "sharpe": 1.79, "fitness": 0.97, "two_year": 0.85, "margin": 0.000584, "note": "decay16 解决 margin"},
+    {"id": "omN5nxPn", "expr": "-bucket44+ttmfcfev44", "sharpe": 1.6, "fitness": 0.9, "two_year": 1.26, "margin": 0.000638},
+    {"id": "78zbwGnv", "expr": "pred250", "sharpe": 1.82, "fitness": 1.0, "two_year": 1.13, "margin": 0.000609, "cw": "PASS", "note": "★ GLB 候选: sharpe/fitness/margin/turnover 达标, 剩 2y 1.13 + LOW_GLB_EMEA"},
+    {"id": "LLGap8dv", "expr": "pred130+bucket44", "sharpe": 1.78, "fitness": 1.0, "two_year": 1.05, "margin": 0.000627},
+    {"id": "blQZLxQm", "expr": "pred5d_ret19 130", "sharpe": 1.74, "fitness": 0.94, "two_year": 1.47, "margin": 0.000585, "note": "5日预测 2y 1.47 最好"},
+    {"id": "rK2go02J", "expr": "pred130+curindfcfp66", "sharpe": 1.66, "fitness": 0.97, "two_year": 1.23, "margin": 0.000684}
+  ],
+  "takeaways": [
+    "GLB 主题轨道核心信号: techindi_model predicted 系列 (预测收益分位)",
+    "decay16 + 长窗(130-250) 解决 margin 3-4bp 通病",
+    "pred250 成为 GLB 候选: 剩余 2y 1.13 和 LOW_GLB_EMEA_SHARPE 两项",
+    "2y 突破口: pred5d_ret19 系列 (2y 1.47)",
+    "LOW_GLB_EMEA/APAC_SHARPE = GLB 区域子域检查(新)"
+  ],
+  "next": "第五批: pred5d 200/250窗 + 双预测 blend + 5日×价值组合"
+}

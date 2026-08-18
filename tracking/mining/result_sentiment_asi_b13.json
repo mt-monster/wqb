@@ -1,0 +1,40 @@
+{
+  "batch": "b13",
+  "category": "sentiment",
+  "dataset": "sentiment21 + sentiment23",
+  "multisim_id": "4fNZTN73W4xw9j4IAmzb7xl",
+  "neutralization": "INDUSTRY",
+  "objective": "Optimize snt23_2neg_conf_low (b12 best sh0.53). Test cap-decile/z30/z60/ts_rank + other neg level fields (mean/max). FLIP snt21_2pos_std (expect sh0.74). Retest dts_gen_20 (b12 platform bug).",
+  "alphas": [
+    {"id": "58kP7drM", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),group_cartesian_product(country,bucket(rank(cap),range='0,1,0.1'))),40)", "design": "conf_low + cap-decile z40", "ops": 6, "sh": 0.29, "fit": 0.06, "tvr": 0.1582, "returns": 0.0077, "margin_bp": 0.97, "sub_univ_sh": 0.45, "2Y_sh": 0.02, "rn_sh": 0.08, "ra_failed": true, "note": "Cap-decile HURTS conf_low! sh 0.53->0.29. Confirmed cap-decile bad for sentiment level signals (same as b12 std fields)."},
+    {"id": "GreZ05XQ", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),country),30)", "design": "conf_low + z30", "ops": 3, "sh": 0.55, "fit": 0.18, "tvr": 0.1614, "returns": 0.0167, "margin_bp": 2.07, "sub_univ_sh": 0.67, "2Y_sh": 0.04, "rn_sh": 0.14, "ra_failed": true, "note": "z30 marginal improvement over z40 (0.55 vs 0.53). 2Y still dead (0.04). z30 doesn't help 2Y for sentiment."},
+    {"id": "zqRlwngE", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_conf_low,20),country),60)", "design": "conf_low + z60", "ops": 3, "sh": 0.50, "fit": 0.15, "tvr": 0.1505, "returns": 0.0131, "margin_bp": 1.74, "sub_univ_sh": 0.66, "2Y_sh": 0.39, "rn_sh": 0.16, "ra_failed": true, "note": "z60 LOWER sh (0.50) but MUCH better 2Y (0.39 vs 0.07 for z40). z60 more stable over time. rn_sh 0.16 best among z variants for conf_low."},
+    {"id": "xAdJwp2q", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_mean,20),country),40)", "design": "snt23_2neg_mean (18 users) + proven z40", "ops": 3, "sh": 0.64, "fit": 0.23, "tvr": 0.1556, "returns": 0.0199, "margin_bp": 2.55, "sub_univ_sh": 0.75, "2Y_sh": 0.12, "rn_sh": 0.31, "ra_failed": true, "note": "neg_mean BEATS conf_low! sh 0.64 vs 0.53. rn_sh 0.31 BEST at this point. Average negative sentiment > confidence lower bound. mean > conf_low."},
+    {"id": "d5RN8r3g", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_max,20),country),40)", "design": "snt23_2neg_max (20 users) + proven z40", "ops": 3, "sh": 0.75, "fit": 0.29, "tvr": 0.1555, "returns": 0.0227, "margin_bp": 2.92, "sub_univ_sh": 0.76, "2Y_sh": 0.26, "rn_sh": 0.45, "ra_failed": true, "note": "BEST NEG SENTIMENT! sh0.75 BEATS analyst best 0.66! neg_max > neg_mean > conf_low. Max (extreme) negative sentiment is strongest signal. sub_univ 0.76. rn_sh 0.45 excellent."},
+    {"id": "3qe8Yvke", "expr": "ts_zscore(group_rank(ts_mean(-snt21_2pos_std,20),country),40)", "design": "FLIP -snt21_2pos_std (b12 sh-0.74, expect sh0.74)", "ops": 3, "sh": 0.76, "fit": 0.30, "tvr": 0.1456, "returns": 0.0224, "margin_bp": 3.07, "sub_univ_sh": 0.40, "2Y_sh": 0.78, "rn_sh": 0.54, "ra_failed": true, "note": "FLIP WORKS! Unary minus ALLOWED in FASTEXPR! sh0.76 (expected ~0.74). BEST 2Y_sh=0.78 (HIGHEST EVER, prev best 0.39). BEST rn_sh=0.54. BEST margin 3.07bp. Low sub_univ (0.40) - signal weaker in robust universe. Low positive sentiment volatility -> high returns (uncertainty aversion)."},
+    {"id": "Jjv6Rz5W", "expr": "ts_zscore(group_rank(ts_mean(snt23_2neg_std,20),country),40)", "design": "snt23_2dts_gen_20 + z40 - PLATFORM BUG", "ops": 3, "sh": 0.01, "fit": 0.0, "tvr": 0.1571, "returns": 0.0003, "margin_bp": 0.04, "sub_univ_sh": 0.14, "2Y_sh": -0.54, "rn_sh": -0.03, "ra_failed": true, "note": "PLATFORM BUG CONFIRMED: Submitted snt23_2dts_gen_20 but platform returned DUPLICATE of b12 expr1 (snt23_2neg_std, same alpha_id Jjv6Rz5W). The platform replaces dts_gen_20 with neg_std. Cannot test dts_gen_20 field. Field exists in ASI datafield list (coverage 0.9563, 12 users) but simulation engine has a bug."},
+    {"id": "Jjv60JWW", "expr": "ts_zscore(group_rank(ts_rank(snt23_2neg_conf_low,30),country),40)", "design": "conf_low + ts_rank(30) variant (momentum vs level)", "ops": 3, "sh": 0.23, "fit": 0.05, "tvr": 0.4399, "returns": 0.0226, "margin_bp": 1.03, "sub_univ_sh": 0.55, "2Y_sh": 1.02, "rn_sh": 0.21, "ra_failed": true, "note": "2Y_sh=1.02! FIRST ALPHA TO BREAK 2Y>1! But tvr 0.44 WAY too high (limit 30%). CONCENTRATED_WEIGHT fail (0.336>0.1). ts_rank captures sentiment momentum (not level) - extremely strong recent signal. Need to reduce turnover: longer ts_rank window or add ts_mean smoothing."}
+  ],
+  "key_findings": {
+    "flip_works": "Unary minus (-) ALLOWED in FASTEXPR. expr6 FLIP -snt21_2pos_std: sh0.76/2Y0.78/rn_sh0.54. BEST overall alpha. Low positive sentiment volatility -> high returns (uncertainty aversion). Flipping reverses the negative signal.",
+    "neg_field_ranking": "snt23_2neg_max (sh0.75) > snt23_2neg_mean (sh0.64) > snt23_2neg_conf_low (sh0.53). Max (extreme) negative sentiment is strongest. All are LEVEL signals, all show reversal (high neg sentiment -> high returns = oversold bounce).",
+    "cap_decile_confirmed_bad": "Cap-decile HURTS sentiment: conf_low sh 0.53->0.29 (-45%). Confirmed across b12 (std fields) and b13 (level fields). Sentiment signals do NOT concentrate in small-caps unlike analyst signals.",
+    "z60_best_for_2Y": "z60 dramatically boosts 2Y: conf_low 2Y 0.07(z40)->0.04(z30)->0.39(z60). Longer zscore window = more stable over time. z60 trades lower sh for higher 2Y stability.",
+    "ts_rank_breakthrough": "ts_rank(conf_low,30) gives 2Y=1.02! FIRST alpha to break 2Y>1. Captures sentiment MOMENTUM (rank within trailing window) vs absolute level. But tvr 0.44 too high. Need turnover reduction strategy.",
+    "best_overall": "expr6 FLIP -snt21_2pos_std: sh0.76/2Y0.78/rn_sh0.54/margin3.07bp. 2Y=0.78 is close to 1.0 threshold. If combined with z60 (which boosted conf_low 2Y from 0.07 to 0.39), 2Y could exceed 1.0.",
+    "platform_bug_dts_gen": "snt23_2dts_gen_20 CANNOT be tested. Platform returns duplicate of snt23_2neg_std (same alpha_id Jjv6Rz5W). Bug confirmed in both b12 and b13. Field exists in datafield list but simulation engine has caching/replacement issue.",
+    "2Y_improvement": "b12 best 2Y=0.07. b13 best 2Y=1.02 (ts_rank) / 0.78 (FLIP). Massive improvement in recent-period stability. Sentiment signal is strengthening over time."
+  },
+  "ranking_by_potential": [
+    {"rank": 1, "id": "3qe8Yvke", "expr": "FLIP -snt21_2pos_std z40", "sh": 0.76, "2Y": 0.78, "rn_sh": 0.54, "reason": "Best overall. 2Y close to 1.0. rn_sh highest. margin highest. Low tvr. Can optimize with z60 for 2Y boost."},
+    {"rank": 2, "id": "d5RN8r3g", "expr": "neg_max z40", "sh": 0.75, "2Y": 0.26, "rn_sh": 0.45, "reason": "Best sh (tied). Best sub_univ 0.76. Can optimize with z60 for 2Y. Different signal type (neg sentiment level vs pos sentiment vol flip)."},
+    {"rank": 3, "id": "xAdJwp2q", "expr": "neg_mean z40", "sh": 0.64, "2Y": 0.12, "rn_sh": 0.31, "reason": "Solid sh. Good sub_univ 0.75. Can optimize with z60."},
+    {"rank": 4, "id": "Jjv60JWW", "expr": "conf_low ts_rank z40", "sh": 0.23, "2Y": 1.02, "rn_sh": 0.21, "reason": "2Y=1.02 breakthrough but tvr 0.44 too high. If turnover reduced, could be viable. Test ts_mean smoothing or longer window."}
+  ],
+  "status": "0/3 alphas. b13 done (104 total sims: b1-b13). Best sh0.76 (FLIP -snt21_2pos_std, 2Y0.78). Best 2Y=1.02 (ts_rank, tvr too high). Still below 1.58 threshold but 2Y signals promising. Sentiment category showing improvement.",
+  "next_steps": {
+    "decision": "Best sh0.76 < 1.0. Per plan should pivot. BUT 2Y=0.78 (expr6) and 2Y=1.02 (expr8) are breakthrough signals. Recommend ONE more optimization batch (b14) before pivoting.",
+    "b14_plan": "Optimize top 2 candidates: (1) FLIP -snt21_2pos_std with z60 (2Y boost), z30, cap-decile. (2) neg_max with z60, z30. (3) ts_rank with longer window/smoothing to reduce tvr. (4) FLIP -snt21_2neut_std (b12 sh-0.54, flip potential).",
+    "pivot_if_fail": "If b14 best sh still <1.0: pivot to model144/165/267 (fundamental models, untested on ASI) OR forum search for ASI/MINVOL1M high-sharpe alphas."
+  }
+}

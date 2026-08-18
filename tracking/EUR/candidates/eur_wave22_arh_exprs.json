@@ -1,0 +1,18 @@
+[
+ "rank(model_score_change_30d_long)",
+ "subtract(0, rank(model_score_change_30d_long))",
+ "rank(model_score_change_90d_medium)",
+ "subtract(0, rank(model_score_change_90d_medium))",
+ "rank(avg_estimate_change_pct_current_year_profit_90d_medium)",
+ "subtract(0, rank(avg_estimate_change_pct_current_year_profit_90d_medium))",
+ "rank(forecasted_earnings_surprise_fy1_long)",
+ "subtract(0, rank(forecasted_earnings_surprise_fy1_long))",
+ "rank(analyst_count_raising_current_year_earnings_30d_short_term_5)",
+ "subtract(0, rank(analyst_count_raising_current_year_earnings_30d_short_term_5))",
+ "rank(analyst_count_lowering_current_year_earnings_30d_short_term_5)",
+ "subtract(0, rank(analyst_count_lowering_current_year_earnings_30d_short_term_5))",
+ "add(0.5*rank(model_score_change_30d_long), 0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium))",
+ "add(0.5*subtract(0, rank(model_score_change_30d_long)), 0.5*subtract(0, rank(avg_estimate_change_pct_current_year_profit_90d_medium)))",
+ "add(0.4*rank(model_score_change_30d_long), add(0.3*rank(forecasted_earnings_surprise_fy1_long), 0.3*rank(analyst_count_raising_current_year_earnings_30d_short_term_5)))",
+ "add(0.4*subtract(0, rank(model_score_change_30d_long)), add(0.3*subtract(0, rank(forecasted_earnings_surprise_fy1_long)), 0.3*subtract(0, rank(analyst_count_raising_current_year_earnings_30d_short_term_5))))"
+]

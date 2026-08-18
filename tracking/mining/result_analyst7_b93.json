@@ -1,0 +1,23 @@
+{
+  "batch": "b93",
+  "multisimulation_id": "1fTLu46Da4rVah9S33Ce3Xt",
+  "dataset": "analyst7 - convex5 turnover boost",
+  "settings": {"universe": "TOP3000", "delay": 1, "decay": 6, "neutralization": "SUBINDUSTRY", "truncation": 0.08, "max_trade": "ON", "nan_handling": "ON"},
+  "thresholds": {"sharpe": 1.58, "fitness": 1.0, "2Y_sharpe": 1.6, "margin_bp": 5, "turnover_pct": "5-30", "ra_failed": false},
+  "results_summary": [
+    {"alpha_id": "zqRVLqGd", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 30)", "sharpe": 1.56, "fitness": 1.12, "2Y": 2.59, "margin_bp": 34.45, "tvr_pct": 3.76, "subU": 0.83, "rn_sh": 1.07, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "omgdkmrm", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 20)", "sharpe": 1.57, "fitness": 1.12, "2Y": 2.59, "margin_bp": 29.32, "tvr_pct": 4.37, "subU": 0.83, "rn_sh": 1.07, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "QP98oPgr", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 10)", "sharpe": 1.58, "fitness": 1.13, "2Y": 2.58, "margin_bp": 23.66, "tvr_pct": 5.37, "subU": 0.83, "rn_sh": 1.08, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_BUT_PROD_CORR_0.8111", "pyramid": "USA/D1/ANALYST x1.3"},
+    {"alpha_id": "Jjv92j1x", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 4), 30)", "sharpe": 1.56, "fitness": 1.11, "2Y": 2.58, "margin_bp": 32.63, "tvr_pct": 3.85, "subU": 0.83, "rn_sh": 1.07, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "j2r7M2xO", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 3), 30)", "sharpe": 1.57, "fitness": 1.09, "2Y": 2.55, "margin_bp": 30.03, "tvr_pct": 3.98, "subU": 0.84, "rn_sh": 1.07, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "E5ed25x1", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, industry), 0.5), 5), 30)", "sharpe": 1.53, "fitness": 1.14, "2Y": 2.60, "margin_bp": 41.55, "tvr_pct": 3.37, "subU": 0.85, "rn_sh": 1.02, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "gJ920JLm", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 45)", "sharpe": 1.58, "fitness": 1.15, "2Y": 2.62, "margin_bp": 41.90, "tvr_pct": 3.17, "subU": 0.86, "rn_sh": 1.07, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_BUT_TVR_3.17%_BELOW_5%_MIN"},
+    {"alpha_id": "Xg80OgMa", "expr": "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 4), 20)", "sharpe": 1.57, "fitness": 1.11, "2Y": 2.57, "margin_bp": 27.74, "tvr_pct": 4.47, "subU": 0.83, "rn_sh": 1.07, "ra_failed": true, "ra_checks": ["LOW_SHARPE"], "status": "FAIL"}
+  ],
+  "analysis": {
+    "best_alpha": "QP98oPgr (convex5 P5 D10) - sh1.58/fit1.13/tvr5.37%/2Y2.58/ra=0 - PASSES ALL RA CHECKS but prod_corr=0.8111 >> 0.7",
+    "key_insight": "Convex5 power5 + short decay10 is the winning formula for passing Sharpe+Fitness+Turnover thresholds simultaneously. Decay10 gives 5.37% turnover (above 5% min), convex5 boosts Sharpe to 1.58 (at threshold). But est_q_ner_raised_1wk is too popular a field - prod_corr 0.8111 means near-duplicate of production alphas.",
+    "prod_corr_checked": {"alpha_id": "QP98oPgr", "max_correlation": 0.8111, "passes": false},
+    "next_action": "b96: try SLOW_AND_FAST neutralization + different transformations to reduce prod_corr"
+  }
+}

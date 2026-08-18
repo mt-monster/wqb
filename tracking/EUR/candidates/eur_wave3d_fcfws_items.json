@@ -1,0 +1,10 @@
+[
+  {"code": "add(0.55 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.45 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_5545"},
+  {"code": "add(0.6 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.4 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_6040"},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_6535"},
+  {"code": "add(0.6 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.4 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_6040_d2", "decay": 2},
+  {"code": "add(0.55 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.45 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_5545_d2", "decay": 2},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_6535_d2", "decay": 2},
+  {"code": "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_7030"},
+  {"code": "add(0.6 * subtract(0, rank(long_term_trailing_free_cash_flow_to_price)), 0.4 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "note": "fcf_alt_6040"}
+]

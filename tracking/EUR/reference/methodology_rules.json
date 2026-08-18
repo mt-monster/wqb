@@ -1,0 +1,34 @@
+{
+ "version": 1,
+ "updated_at": "2026-08-18T17:32:14",
+ "_note": "EUR 区域方法论规则库（L2 结构化层）：仅 EUR 专属规则（trigger.region=\"EUR\"）。跨 region 通用规则在 toolkit config/methodology_rules.json（全局库），加载时自动合并（区域覆盖全局同名规则）。rules.json 给机器消费，docs/experience/*.md 给人看，两者同源。",
+ "rules": [
+  {
+   "rule_id": "universe_lever_top800_eur_dead",
+   "type": "universe_lever",
+   "trigger": {
+    "universe": "TOP800",
+    "region": "EUR"
+   },
+   "action": {
+    "op": "block_universe",
+    "dead_universe": "TOP800",
+    "message": "EUR TOP800 杠杆判死：wave6b 误跑 8 条全崩（max sharpe<0.5）。EUR D1 价值策略必须用 TOP2500；TOP800 池太窄信号被压垮。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "wave": "wave6b",
+    "max_sharpe": 0.42,
+    "n": 8,
+    "correct_universe": "TOP2500"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  }
+ ]
+}

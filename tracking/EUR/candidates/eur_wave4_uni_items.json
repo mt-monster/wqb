@@ -1,0 +1,10 @@
+[
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP400", "note": "fcf6535_TOP400"},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP800", "note": "fcf6535_TOP800"},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP1200", "note": "fcf6535_TOP1200"},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP2500", "note": "fcf6535_TOP2500_baseline"},
+  {"code": "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP400", "note": "fcf7030_TOP400"},
+  {"code": "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP800", "note": "fcf7030_TOP800"},
+  {"code": "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP400", "decay": 2, "note": "fcf6535_TOP400_d2"},
+  {"code": "add(0.6 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.4 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))", "universe": "TOP400", "note": "fcf6040_TOP400"}
+]

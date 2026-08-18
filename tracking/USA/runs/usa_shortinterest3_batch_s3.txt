@@ -1,0 +1,10 @@
+# USA TOP3000 D1 shortinterest3 轮次3 (S3: 最佳骨架 ts_av_diff+group_zscore+signed_power 变体)
+# 基线 9qpOWjEr: sharpe 1.17 / fitness 0.47 / 2y 1.84 / RN 1.51 / subU 0.85 / tv 19.3% / margin 3.3bp / PPA过
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 10), subindustry), 0.5)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 42), subindustry), 0.5)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry), 0.3)
+signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry), 1)
+group_rank(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry)
+quantile(signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry), 0.5))
+winsorize(signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry), 0.5))
+subtract(signed_power(group_zscore(ts_av_diff(vec_avg(loan_utilization_ratio), 21), subindustry), 0.5), reverse(quantile(ts_decay_linear(vec_avg(borrow_activity_score), 10))))

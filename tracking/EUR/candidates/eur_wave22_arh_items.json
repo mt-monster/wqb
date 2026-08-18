@@ -1,0 +1,18 @@
+[
+  {"code": "rank(model_score_change_30d_long)", "note": "model_score 30d long 原始"},
+  {"code": "subtract(0, rank(model_score_change_30d_long))", "note": "model_score 30d long 镜像"},
+  {"code": "rank(model_score_change_90d_medium)", "note": "model_score 90d medium 原始"},
+  {"code": "subtract(0, rank(model_score_change_90d_medium))", "note": "model_score 90d medium 镜像"},
+  {"code": "rank(avg_estimate_change_pct_current_year_profit_90d_medium)", "note": "FY profit est chg 90d 原始"},
+  {"code": "subtract(0, rank(avg_estimate_change_pct_current_year_profit_90d_medium))", "note": "FY profit est chg 90d 镜像"},
+  {"code": "rank(forecasted_earnings_surprise_fy1_long)", "note": "FY1 earnings surprise 原始"},
+  {"code": "subtract(0, rank(forecasted_earnings_surprise_fy1_long))", "note": "FY1 earnings surprise 镜像"},
+  {"code": "rank(analyst_count_raising_current_year_earnings_30d_short_term_5)", "note": "analyst raising count 30d 原始"},
+  {"code": "subtract(0, rank(analyst_count_raising_current_year_earnings_30d_short_term_5))", "note": "analyst raising count 30d 镜像"},
+  {"code": "rank(analyst_count_lowering_current_year_earnings_30d_short_term_5)", "note": "analyst lowering count 30d 原始"},
+  {"code": "subtract(0, rank(analyst_count_lowering_current_year_earnings_30d_short_term_5))", "note": "analyst lowering count 30d 镜像"},
+  {"code": "add(0.5*rank(model_score_change_30d_long), 0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium))", "note": "model_score+est_chg 复合"},
+  {"code": "add(0.5*subtract(0, rank(model_score_change_30d_long)), 0.5*subtract(0, rank(avg_estimate_change_pct_current_year_profit_90d_medium)))", "note": "model_score+est_chg 双镜像"},
+  {"code": "add(0.4*rank(model_score_change_30d_long), add(0.3*rank(forecasted_earnings_surprise_fy1_long), 0.3*rank(analyst_count_raising_current_year_earnings_30d_short_term_5)))", "note": "model+surprise+raising 三路复合"},
+  {"code": "add(0.4*subtract(0, rank(model_score_change_30d_long)), add(0.3*subtract(0, rank(forecasted_earnings_surprise_fy1_long)), 0.3*subtract(0, rank(analyst_count_raising_current_year_earnings_30d_short_term_5))))", "note": "model+surprise+raising 三路镜像"}
+]

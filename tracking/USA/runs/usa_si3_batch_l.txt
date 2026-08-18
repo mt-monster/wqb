@@ -1,0 +1,8 @@
+reverse(quantile(ts_decay_linear(vec_avg(mean_loan_rate), 10)))
+reverse(quantile(ts_decay_linear(vec_avg(loan_rate_volatility), 10)))
+reverse(quantile(ts_decay_linear(divide(vec_avg(max_loan_rate), vec_avg(loaned_share_count)), 10)))
+reverse(quantile(ts_av_diff(vec_avg(borrow_activity_score), 10)))
+reverse(quantile(ts_decay_linear(vec_avg(average_loan_duration_days), 10)))
+quantile(divide(vec_avg(new_loaned_share_count), vec_avg(loaned_share_count)))
+reverse(quantile(subtract(vec_avg(max_loan_rate), vec_avg(min_loan_rate))))
+reverse(quantile(ts_decay_linear(vec_avg(shrt3_bar), 10)))

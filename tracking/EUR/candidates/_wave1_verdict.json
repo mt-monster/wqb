@@ -1,0 +1,7 @@
+{
+  "dataset": "news_sentiment_dl",
+  "verdict": "RED",
+  "probe": 24,
+  "top_sharpe": 0.37,
+  "note": "66 字段全 VECTOR 新闻情绪文本特征（bbgnews_enhanced/inferess/trna），24 探针全弱 top sh=0.37，与 GBR news 情绪弱经验一致，判死"
+}

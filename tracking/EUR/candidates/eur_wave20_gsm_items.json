@@ -1,0 +1,18 @@
+[
+ {"code": "rank(analyst_metadata_feature1)", "note": "G1 analyst_metadata_feature1 原始"},
+ {"code": "subtract(0, rank(analyst_metadata_feature1))", "note": "G2 analyst_metadata_feature1 镜像"},
+ {"code": "rank(trading_days_to_next_event)", "note": "G3 trading_days_to_next_event 原始"},
+ {"code": "subtract(0, rank(trading_days_to_next_event))", "note": "G4 trading_days_to_next_event 镜像"},
+ {"code": "rank(confidence_bucket4_pricevol_calendar_5d)", "note": "G5 conf_bucket4_pv_cal_5d 原始"},
+ {"code": "subtract(0, rank(confidence_bucket4_pricevol_calendar_5d))", "note": "G6 conf_bucket4_pv_cal_5d 镜像"},
+ {"code": "rank(confidence_bucket0_pricevol_20d)", "note": "G7 conf_bucket0_pv_20d 原始"},
+ {"code": "subtract(0, rank(confidence_bucket0_pricevol_20d))", "note": "G8 conf_bucket0_pv_20d 镜像"},
+ {"code": "rank(daily_pricevol_12m_r5_quantile4_confscore)", "note": "G9 daily_pv_12m_r5_q4_conf 原始"},
+ {"code": "subtract(0, rank(daily_pricevol_12m_r5_quantile4_confscore))", "note": "G10 daily_pv_12m_r5_q4_conf 镜像"},
+ {"code": "rank(add(analyst_metadata_feature1, trading_days_to_next_event))", "note": "G11 analyst_meta+trading_days 复合 原始"},
+ {"code": "subtract(0, rank(add(analyst_metadata_feature1, trading_days_to_next_event)))", "note": "G12 analyst_meta+trading_days 复合 镜像"},
+ {"code": "rank(add(confidence_bucket4_pricevol_calendar_5d, confidence_bucket0_pricevol_20d))", "note": "G13 conf_bucket4+conf_bucket0 复合 原始"},
+ {"code": "subtract(0, rank(add(confidence_bucket4_pricevol_calendar_5d, confidence_bucket0_pricevol_20d)))", "note": "G14 conf_bucket4+conf_bucket0 复合 镜像"},
+ {"code": "rank(ts_delta(analyst_metadata_feature1, 5))", "note": "G15 analyst_meta_feature1 5日变化 原始"},
+ {"code": "subtract(0, rank(ts_delta(analyst_metadata_feature1, 5)))", "note": "G16 analyst_meta_feature1 5日变化 镜像"}
+]

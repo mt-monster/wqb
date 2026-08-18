@@ -1,0 +1,98 @@
+[
+ {
+  "code": "subtract(0, rank(negative_score_average_value_3))",
+  "note": "neg_avg_rev"
+ },
+ {
+  "code": "rank(negative_score_average_value_3)",
+  "note": "neg_avg_raw"
+ },
+ {
+  "code": "rank(positive_score_average_value_3)",
+  "note": "pos_avg_raw"
+ },
+ {
+  "code": "subtract(0, rank(positive_score_average_value_3))",
+  "note": "pos_avg_rev"
+ },
+ {
+  "code": "rank(subtract(positive_score_average_value_3, negative_score_average_value_3))",
+  "note": "pos_minus_neg"
+ },
+ {
+  "code": "rank(ts_mean(positive_score_average_value_3, 10))",
+  "note": "pos_ts10"
+ },
+ {
+  "code": "subtract(0, rank(ts_mean(negative_score_average_value_3, 5)))",
+  "note": "neg_ts5_rev"
+ },
+ {
+  "code": "rank(neutral_score_average_value_3)",
+  "note": "neu_avg_raw"
+ },
+ {
+  "code": "rank(negative_score_standard_deviation_3)",
+  "note": "neg_std"
+ },
+ {
+  "code": "subtract(0, rank(negative_score_standard_deviation_3))",
+  "note": "neg_std_rev"
+ },
+ {
+  "code": "rank(positive_score_maximum_value_3)",
+  "note": "pos_max"
+ },
+ {
+  "code": "subtract(0, rank(negative_score_maximum_value_3))",
+  "note": "neg_max_rev"
+ },
+ {
+  "code": "rank(positive_score_median_value_3)",
+  "note": "pos_med"
+ },
+ {
+  "code": "rank(negative_score_minimum_value_3)",
+  "note": "neg_min"
+ },
+ {
+  "code": "rank(subtract(positive_score_confidence_upper_bound_3, positive_score_confidence_lower_bound_3))",
+  "note": "pos_ci_width"
+ },
+ {
+  "code": "subtract(0, rank(subtract(negative_score_confidence_upper_bound_3, negative_score_confidence_lower_bound_3)))",
+  "note": "neg_ci_rev"
+ },
+ {
+  "code": "add(multiply(rank(positive_score_average_value_3), 0.6), multiply(subtract(0, rank(negative_score_average_value_3)), 0.4))",
+  "note": "pos60_neg40"
+ },
+ {
+  "code": "rank(ts_delta(positive_score_average_value_3, 5))",
+  "note": "pos_d5"
+ },
+ {
+  "code": "subtract(0, rank(ts_delta(negative_score_average_value_3, 5)))",
+  "note": "neg_d5_rev"
+ },
+ {
+  "code": "ts_mean(rank(positive_score_average_value_3), 22)",
+  "note": "pos_ts22"
+ },
+ {
+  "code": "add(multiply(rank(positive_score_median_value_3), 0.5), multiply(subtract(0, rank(negative_score_median_value_3)), 0.5))",
+  "note": "med_pm"
+ },
+ {
+  "code": "rank(ts_decay_linear(positive_score_average_value_3, 10))",
+  "note": "pos_dcl10"
+ },
+ {
+  "code": "rank(ts_delta(positive_score_standard_deviation_3, 10))",
+  "note": "pos_std_d10"
+ },
+ {
+  "code": "subtract(rank(positive_score_maximum_value_3), rank(negative_score_maximum_value_3))",
+  "note": "max_diff"
+ }
+]

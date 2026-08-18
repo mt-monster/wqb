@@ -1,0 +1,18 @@
+[
+ "rank(eur_img_feature1_leapstar6_d1)",
+ "subtract(0, rank(eur_img_feature1_leapstar6_d1))",
+ "rank(eur_img_feature2_leapstar6_d1)",
+ "subtract(0, rank(eur_img_feature2_leapstar6_d1))",
+ "rank(img_leapstar6_r30_q5_prob_class4)",
+ "subtract(0, rank(img_leapstar6_r30_q5_prob_class4))",
+ "rank(img_leapstar6_r30_q5_prob_class0)",
+ "subtract(0, rank(img_leapstar6_r30_q5_prob_class0))",
+ "rank(subtract(img_leapstar6_r30_q5_prob_class4, img_leapstar6_r30_q5_prob_class0))",
+ "subtract(0, rank(subtract(img_leapstar6_r30_q5_prob_class4, img_leapstar6_r30_q5_prob_class0)))",
+ "rank(img_leapstar6_r5_q5_prob_class4)",
+ "subtract(0, rank(img_leapstar6_r5_q5_prob_class4))",
+ "rank(subtract(img_leapstar6_r5_q5_prob_class4, img_leapstar6_r5_q5_prob_class0))",
+ "subtract(0, rank(subtract(img_leapstar6_r5_q5_prob_class4, img_leapstar6_r5_q5_prob_class0)))",
+ "rank(add(eur_img_feature1_leapstar6_d1, eur_img_feature2_leapstar6_d1))",
+ "subtract(0, rank(add(eur_img_feature1_leapstar6_d1, eur_img_feature2_leapstar6_d1)))"
+]

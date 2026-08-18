@@ -1,0 +1,5 @@
+[
+  "add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+  "add(0.7 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.3 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))",
+  "add(0.6 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.4 * subtract(0, rank(short_term_trailing_free_cash_flow_to_price)))"
+]

@@ -1,0 +1,111 @@
+{
+ "tag": "06A",
+ "region": "USA",
+ "all": [
+  {
+   "id": "A1G5l72d",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5)",
+   "neut": "MARKET",
+   "sharpe": 2.86,
+   "fitness": 3.16,
+   "two_year_sharpe": 2.46,
+   "margin_bp": 140.87,
+   "turnover_pct": 2.16,
+   "rn_sharpe": 4.45,
+   "rn_fitness": 3.92,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:20",
+   "walls": [
+    "TVR"
+   ]
+  },
+  {
+   "id": "RRmo71va",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(alpha_score), subindustry), 0.5), 5), 90)",
+   "neut": "MARKET",
+   "sharpe": 2.77,
+   "fitness": 3.12,
+   "two_year_sharpe": 2.32,
+   "margin_bp": 146.12,
+   "turnover_pct": 2.17,
+   "rn_sharpe": 4.32,
+   "rn_fitness": 3.76,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:24",
+   "walls": [
+    "TVR"
+   ]
+  },
+  {
+   "id": "1YpRwz2J",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(intrinsic_valuation_estimate_3), subindustry), 0.5), ",
+   "neut": "MARKET",
+   "sharpe": 2.69,
+   "fitness": 3.19,
+   "two_year_sharpe": 2.4,
+   "margin_bp": 155.83,
+   "turnover_pct": 2.25,
+   "rn_sharpe": 4.32,
+   "rn_fitness": 3.94,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:25",
+   "walls": [
+    "TVR"
+   ]
+  }
+ ],
+ "candidates": [],
+ "near": [
+  {
+   "id": "A1G5l72d",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5)",
+   "neut": "MARKET",
+   "sharpe": 2.86,
+   "fitness": 3.16,
+   "two_year_sharpe": 2.46,
+   "margin_bp": 140.87,
+   "turnover_pct": 2.16,
+   "rn_sharpe": 4.45,
+   "rn_fitness": 3.92,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:20",
+   "walls": [
+    "TVR"
+   ]
+  },
+  {
+   "id": "RRmo71va",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(alpha_score), subindustry), 0.5), 5), 90)",
+   "neut": "MARKET",
+   "sharpe": 2.77,
+   "fitness": 3.12,
+   "two_year_sharpe": 2.32,
+   "margin_bp": 146.12,
+   "turnover_pct": 2.17,
+   "rn_sharpe": 4.32,
+   "rn_fitness": 3.76,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:24",
+   "walls": [
+    "TVR"
+   ]
+  },
+  {
+   "id": "1YpRwz2J",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(intrinsic_valuation_estimate_3), subindustry), 0.5), ",
+   "neut": "MARKET",
+   "sharpe": 2.69,
+   "fitness": 3.19,
+   "two_year_sharpe": 2.4,
+   "margin_bp": 155.83,
+   "turnover_pct": 2.25,
+   "rn_sharpe": 4.32,
+   "rn_fitness": 3.94,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T23:39:25",
+   "walls": [
+    "TVR"
+   ]
+  }
+ ]
+}

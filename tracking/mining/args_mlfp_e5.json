@@ -1,0 +1,39 @@
+{
+ "tag": "e5",
+ "ts": "2026-08-05 17:51:51",
+ "labels": [
+  "M1_core3",
+  "M2_core5",
+  "M3_core3_re05",
+  "M4_core3_big",
+  "M5_grp_core3",
+  "M6_ts_core3",
+  "M7_neg_short",
+  "M8_full_mix"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.2+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.3+scale(rank(ts_zscore(subtract(ts_backfill(change_5y_relative_earnings_to_price,120),ts_backfill(change_1y_eps_to_price,120)),189)))*0.2+scale(rank(ts_zscore(subtract(ts_backfill(change_12m_alpha,120),ts_backfill(change_60m_alpha,120)),189)))*0.15+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.35+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(-rank(ts_zscore(returns,42)))*0.5",
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.2+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(group_rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),subindustry))*0.4+scale(group_rank(ts_backfill(change_52w_high_price_ratio,120),subindustry))*0.2+scale(group_rank(ts_backfill(change_20d_volume_to_price_volatility,120),subindustry))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(ts_rank(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),250))*0.4+scale(ts_rank(ts_backfill(change_52w_high_price_ratio,120),250))*0.2+scale(ts_rank(ts_backfill(change_20d_volume_to_price_volatility,120),250))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.4+scale(-rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250)))*0.2+scale(-rank(ts_zscore(ts_backfill(change_30_75w_price_ratio,120),250)))*0.2+scale(-rank(ts_zscore(returns,42)))*0.2",
+   "scale(rank(ts_zscore(subtract(ts_backfill(change_twelve_month_active_return,120),ts_backfill(change_1m_active_return,120)),189)))*0.3+scale(rank(ts_zscore(ts_backfill(change_52w_high_price_ratio,120),250)))*0.15+scale(rank(ts_zscore(ts_backfill(change_20d_volume_to_price_volatility,120),250)))*0.15+scale(-rank(ts_zscore(ts_backfill(change_analyst_consensus_rating,120),250)))*0.1+scale(-rank(ts_zscore(ts_backfill(change_dispersion_fy2_eps_estimates,120),250)))*0.1+scale(-rank(ts_zscore(returns,42)))*0.2"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

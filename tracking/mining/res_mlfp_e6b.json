@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Multisimulation submitted successfully with 10 alpha expressions",
+ "async": true,
+ "multisimulation_id": "2bgzVPbYr5iAbSJ1cV5hCNiP",
+ "multisimulation_location": "https://api.worldquantbrain.com/simulations/2bgzVPbYr5iAbSJ1cV5hCNiP",
+ "multisimulation_url": "https://api.worldquantbrain.com/simulations/2bgzVPbYr5iAbSJ1cV5hCNiP",
+ "submitted_expressions": [
+  "ts_rank(change_1y_eps_growth, 252)",
+  "-ts_std_dev(change_1m_active_return, 30)",
+  "group_zscore(subtract(group_zscore(change_36m_active_return, industry), group_zscore(change_6m_active_return, industry)), industry)",
+  "group_zscore(subtract(group_zscore(change_24m_active_return, industry), group_zscore(change_9m_active_return, industry)), industry)",
+  "group_zscore(subtract(group_zscore(change_twelve_month_active_return, industry), group_zscore(change_1m_active_return, industry)), industry)",
+  "group_zscore(subtract(group_zscore(change_60m_active_return, industry), group_zscore(change_3m_active_return, industry)), industry)",
+  "-ts_delta(change_3y_cashflow_to_price, 66)",
+  "-change_fama_french_momentum * ts_std_dev(change_fama_french_momentum, 30)",
+  "-group_zscore(divide(change_1y_eps_to_price, change_1y_eps_growth), industry)",
+  "signed_power(ts_entropy(change_1y_eps_growth, 144), 0.618)"
+ ],
+ "polling_tool": "lookINTO_SimError_message",
+ "note": "Simulations are processing. Poll the multisimulation children (GET /simulations/{id}) or use lookINTO_SimError_message once children are available."
+}

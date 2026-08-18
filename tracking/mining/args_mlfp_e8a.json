@@ -1,0 +1,43 @@
+{
+ "tag": "e8a",
+ "ts": "2026-08-05 21:12:46",
+ "labels": [
+  "T1_drev",
+  "T2_small",
+  "T5_base",
+  "T6_eymom",
+  "T7_peg",
+  "T10_term",
+  "T11_dupont",
+  "T15_vol",
+  "T3_opearn",
+  "T14_semivar"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "-ts_delta(change_1y_eps_growth, 66)",
+   "-change_1y_eps_growth * ts_std_dev(change_1y_eps_growth, 30)",
+   "group_rank(ts_rank(change_1y_eps_growth, 252), industry)",
+   "group_rank(ts_rank(change_1y_eps_to_price, 60), industry)",
+   "-group_zscore(subtract(change_1y_eps_to_price, change_1y_eps_growth), industry)",
+   "group_zscore(subtract(group_zscore(change_60m_active_return, industry), group_zscore(change_1m_active_return, industry)), industry)",
+   "group_zscore(subtract(ts_zscore(change_1y_eps_growth, 250), ts_zscore(change_3y_cashflow_to_price, 250)), industry)",
+   "-ts_std_dev(change_20d_volume_to_price_volatility, 10)",
+   "ts_rank(change_1y_eps_growth, 252)",
+   "-ts_std_dev(change_1m_active_return, 30)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

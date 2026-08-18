@@ -1,0 +1,44 @@
+{
+  "batch": "b95",
+  "multisimulation_id": "1HxAOucg44tF8Dfoc7aab0Z",
+  "dataset": "option40 - 6XeWqEE7 prod_corr optimization (different IV tenors)",
+  "settings": {"universe": "TOP3000", "delay": 1, "decay": 6, "neutralization": "SLOW_AND_FAST", "truncation": 0.04, "max_trade": "ON", "nan_handling": "ON"},
+  "original_alpha": {"id": "6XeWqEE7", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall150, opt40_ivput150)), 0.5), 15), 60)", "neutralization": "STATISTICAL", "prod_corr": 0.7755},
+  "field_popularity": {
+    "opt40_ivcall150": {"users": 73, "alphas": 269, "note": "original - most popular"},
+    "opt40_ivput150": {"users": 39, "alphas": 78},
+    "opt40_ivcall360": {"users": 25, "alphas": 31, "note": "much less popular"},
+    "opt40_ivput360": {"users": 20, "alphas": 28},
+    "opt40_ivcall720": {"users": 32, "alphas": 114},
+    "opt40_ivput720": {"users": 15, "alphas": 21, "note": "least popular put"},
+    "opt40_ivcall180": {"users": 35, "alphas": 53},
+    "opt40_ivput180": {"users": 27, "alphas": 44},
+    "opt40_ivcall270": {"users": 30, "alphas": 38},
+    "opt40_ivput270": {"users": 30, "alphas": 38}
+  },
+  "results_summary": [
+    {"alpha_id": "mLVE1LjE", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), 60)", "tenor": "360d", "power": 15, "decay_linear": 60, "sharpe": 2.03, "fitness": 1.81, "2Y": 2.37, "margin_bp": 18.44, "tvr_pct": 10.84, "subU": 0.93, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_PENDING_PROD_CORR"},
+    {"alpha_id": "E5e9L5vr", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall720, opt40_ivput720)), 0.5), 15), 60)", "tenor": "720d", "power": 15, "decay_linear": 60, "sharpe": 1.99, "fitness": 1.73, "2Y": 2.20, "margin_bp": 18.02, "tvr_pct": 10.51, "subU": 0.87, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_PENDING_PROD_CORR"},
+    {"alpha_id": "88eMY83v", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 5), 60)", "tenor": "360d", "power": 5, "decay_linear": 60, "sharpe": 1.69, "fitness": 1.23, "2Y": 1.95, "tvr_pct": 9.18, "subU": 0.63, "ra_failed": true, "ra_checks": ["LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "0mM16mR6", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall720, opt40_ivput720)), 0.5), 5), 60)", "tenor": "720d", "power": 5, "decay_linear": 60, "sharpe": 1.70, "fitness": 1.21, "2Y": 1.90, "tvr_pct": 8.88, "subU": 0.54, "ra_failed": true, "ra_checks": ["LOW_SUB_UNIVERSE_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "wpE0PpZp", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall360, opt40_ivput360)), 0.5), 15), 30)", "tenor": "360d", "power": 15, "decay_linear": 30, "sharpe": 1.98, "fitness": 1.74, "2Y": 2.20, "tvr_pct": 11.41, "subU": 0.85, "ra_failed": true, "ra_checks": ["LOW_SUB_UNIVERSE_SHARPE(0.85<0.86)"], "status": "FAIL_MARGINAL"},
+    {"alpha_id": "mLVE1Lm2", "expr": "ts_decay_linear(signed_power(subtract(group_rank(subtract(opt40_ivcall360, opt40_ivput360), subindustry), 0.5), 10), 60)", "tenor": "360d_grp", "power": 10, "decay_linear": 60, "sharpe": 0.72, "fitness": 0.28, "2Y": 1.51, "subU": -0.20, "ra_failed": true, "ra_checks": ["LOW_SHARPE","LOW_FITNESS","LOW_SUB_UNIVERSE_SHARPE","LOW_2Y_SHARPE"], "status": "FAIL"},
+    {"alpha_id": "9q7Nmqjr", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall180, opt40_ivput180)), 0.5), 15), 60)", "tenor": "180d", "power": 15, "decay_linear": 60, "sharpe": 2.20, "fitness": 2.04, "2Y": 2.46, "margin_bp": 19.69, "tvr_pct": 10.94, "subU": 1.09, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_BEST_PERFORMANCE", "pyramid": "USA/D1/OPTION x1.3"},
+    {"alpha_id": "MPLJZPan", "expr": "ts_decay_linear(signed_power(subtract(rank(subtract(opt40_ivcall270, opt40_ivput270)), 0.5), 10), 60)", "tenor": "270d", "power": 10, "decay_linear": 60, "sharpe": 2.00, "fitness": 1.70, "2Y": 2.26, "margin_bp": 17.67, "tvr_pct": 10.19, "subU": 0.89, "ra_failed": false, "ra_checks": [], "status": "PASS_RA_PENDING_PROD_CORR"}
+  ],
+  "analysis": {
+    "best_alpha": "9q7Nmqjr (180d IV skew, P15, D60) - sh2.20/fit2.04/tvr10.94%/2Y2.46/subU1.09/ra=0 - BEST overall performance + highest subU",
+    "key_insights": [
+      "180d IV skew (9q7Nmqjr) is the BEST: sh2.20/fit2.04/subU1.09, even better subU than original 6XeWqEE7 (0.99)",
+      "360d IV skew (mLVE1LjE) also strong: sh2.03/fit1.81/subU0.93, uses much less popular fields (25/20 users vs 73/39)",
+      "720d IV skew (E5e9L5vr) decent: sh1.99/fit1.73/subU0.87, least popular put field (15 users)",
+      "Power 5 (vs 15) significantly reduces subU (0.54-0.63 vs 0.87-1.09) - power 15 is necessary",
+      "group_rank kills the signal (sh0.72) - rank is the correct normalization",
+      "Shorter decay_linear 30 marginally fails subU (0.85 vs 0.86 limit) - D60 is optimal",
+      "All pass-RA alphas use SLOW_AND_FAST + power15 + D60 + rank + IV skew at different tenors"
+    ],
+    "prod_corr_hypothesis": "180d (35/27 users) and 270d (30/30 users) are moderately less popular than 150d (73/39 users). 360d (25/20 users) and 720d (32/15 users) are significantly less popular. Switching from STATISTICAL to SLOW_AND_FAST also changes the risk model. Combined effect should reduce prod_corr from 0.7755.",
+    "prod_corr_candidates_to_check": ["9q7Nmqjr (180d best perf)", "mLVE1LjE (360d least popular)", "E5e9L5vr (720d least popular put)"],
+    "next_action": "Check prod_corr for top 3 candidates, then run b96 (analyst7) and b97 (1080d IV + STATISTICAL with 360d)"
+  }
+}

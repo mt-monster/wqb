@@ -1,0 +1,324 @@
+{
+ "batch": "b119",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "-rank(ts_backfill(rsk65_mfm_etfm3_dsrt_intermediate, lookback=60))",
+  "-rank(ts_mean(rsk65_mfm_etfm3_dsrt_intermediate, 20))",
+  "-group_rank(ts_decay_linear(ts_backfill(winsorize(rsk65_mfm_etfm3_dsrt_intermediate, std=5), lookback=60), 5), sector)",
+  "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 20))",
+  "-rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))",
+  "-rank(subtract(ts_mean(rsk65_trsd_4mfte_mfm, 20), ts_mean(rsk65_trsd_4mfte_mfm, 60)))",
+  "-rank(ts_decay_linear(rsk65_mfm_etfm4_dsrt_intermediate, 20))",
+  "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 30))"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "-rank(ts_backfill(rsk65_mfm_etfm3_dsrt_intermediate, lookback=60))",
+   "child": "1aoBxP5xO57yaEY1h6wxCGaw",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "A1GKNd9g",
+   "metrics": {
+    "sharpe": 2.28,
+    "fitness": 1.02,
+    "turnover": 0.4908,
+    "returns": 0.0985,
+    "margin": 0.000401,
+    "drawdown": 0.0505,
+    "two_year_sharpe": 1.75,
+    "sub_universe_sharpe": 2.08
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_backfill(rsk65_mfm_etfm3_dsrt_intermediate, lookback=60))"
+  },
+  {
+   "index": 1,
+   "expression": "-rank(ts_mean(rsk65_mfm_etfm3_dsrt_intermediate, 20))",
+   "child": "G2sxDgRw4jq8TjU2LZfMQR",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "9qp0jQYV",
+   "metrics": {
+    "sharpe": 1.07,
+    "fitness": 0.59,
+    "turnover": 0.1434,
+    "returns": 0.0438,
+    "margin": 0.000611,
+    "drawdown": 0.0739,
+    "two_year_sharpe": 1.01,
+    "sub_universe_sharpe": 0.57
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_mean(rsk65_mfm_etfm3_dsrt_intermediate, 20))"
+  },
+  {
+   "index": 2,
+   "expression": "-group_rank(ts_decay_linear(ts_backfill(winsorize(rsk65_mfm_etfm3_dsrt_intermediate, std=5), lookback=60), 5), sector)",
+   "child": "15BbPx4NJ4U0czKeB1PpyBQ",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "gJ8pbz6g",
+   "metrics": {
+    "sharpe": 1.74,
+    "fitness": 0.81,
+    "turnover": 0.3151,
+    "returns": 0.0686,
+    "margin": 0.000435,
+    "drawdown": 0.0556,
+    "two_year_sharpe": 1.1,
+    "sub_universe_sharpe": 1.44
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-group_rank(ts_decay_linear(ts_backfill(winsorize(rsk65_mfm_etfm3_dsrt_intermediate, std=5), lookback=60), 5), sector)"
+  },
+  {
+   "index": 3,
+   "expression": "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 20))",
+   "child": "3K75VVgBj503c6RXywun2Sl",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "pwNORgXX",
+   "metrics": {
+    "sharpe": 1.33,
+    "fitness": 0.76,
+    "turnover": 0.1674,
+    "returns": 0.0551,
+    "margin": 0.000658,
+    "drawdown": 0.0646,
+    "two_year_sharpe": 0.99,
+    "sub_universe_sharpe": 0.88
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 20))"
+  },
+  {
+   "index": 4,
+   "expression": "-rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))",
+   "child": "3etgBrdek5gfb5lhzyEjt6R",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "blQEb3kp",
+   "metrics": {
+    "sharpe": 2.28,
+    "fitness": 1.02,
+    "turnover": 0.4908,
+    "returns": 0.0984,
+    "margin": 0.000401,
+    "drawdown": 0.05,
+    "two_year_sharpe": 1.75,
+    "sub_universe_sharpe": 2.08
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))"
+  },
+  {
+   "index": 5,
+   "expression": "-rank(subtract(ts_mean(rsk65_trsd_4mfte_mfm, 20), ts_mean(rsk65_trsd_4mfte_mfm, 60)))",
+   "child": "34I2VD3Lx4PPaxe16Gww9A43",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "E5GJpA7K",
+   "metrics": {
+    "sharpe": 1.44,
+    "fitness": 0.77,
+    "turnover": 0.1585,
+    "returns": 0.0458,
+    "margin": 0.000578,
+    "drawdown": 0.057,
+    "two_year_sharpe": 0.72,
+    "sub_universe_sharpe": 0.82
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(subtract(ts_mean(rsk65_trsd_4mfte_mfm, 20), ts_mean(rsk65_trsd_4mfte_mfm, 60)))"
+  },
+  {
+   "index": 6,
+   "expression": "-rank(ts_decay_linear(rsk65_mfm_etfm4_dsrt_intermediate, 20))",
+   "child": "1DYjrv5u34MMb6SKy8qO8JB",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "ZYEGbL5Q",
+   "metrics": {
+    "sharpe": 1.33,
+    "fitness": 0.76,
+    "turnover": 0.1674,
+    "returns": 0.0551,
+    "margin": 0.000658,
+    "drawdown": 0.0647,
+    "two_year_sharpe": 0.99,
+    "sub_universe_sharpe": 0.88
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_decay_linear(rsk65_mfm_etfm4_dsrt_intermediate, 20))"
+  },
+  {
+   "index": 7,
+   "expression": "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 30))",
+   "child": "itFAdaIk4kgb6rLX63DOBs",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "e73RbJpM",
+   "metrics": {
+    "sharpe": 1.23,
+    "fitness": 0.75,
+    "turnover": 0.1395,
+    "returns": 0.0516,
+    "margin": 0.00074,
+    "drawdown": 0.0691,
+    "two_year_sharpe": 1.07,
+    "sub_universe_sharpe": 0.77
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "LOW_2Y_SHARPE"
+    ],
+    "pyramid_short": "risk"
+   },
+   "code": "-rank(ts_decay_linear(rsk65_mfm_etfm3_dsrt_intermediate, 30))"
+  }
+ ]
+}

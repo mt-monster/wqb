@@ -1,0 +1,8 @@
+reverse(quantile(group_zscore(divide(quantity_institutional_shares_acquired, add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed)), subindustry)))
+reverse(quantile(group_zscore(subtract(count_institutional_buyers_security, count_institutional_sellers_security), subindustry)))
+reverse(quantile(group_zscore(subtract(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed), subindustry)))
+quantile(ts_rank(divide(aggregate_equity_value_institutions, aggregate_equity_value_all_owners), 126))
+quantile(group_rank(divide(aggregate_equity_value_institutions, aggregate_equity_value_all_owners), subindustry))
+quantile(ts_decay_linear(group_zscore(divide(aggregate_equity_value_institutions, aggregate_equity_value_all_owners), subindustry), 21))
+reverse(quantile(group_zscore(divide(inst6_value_of_institutional_shares_bought, inst6_value_of_institutional_shares_sold), subindustry)))
+quantile(group_zscore(divide(aggregate_share_count_institutions, inst6_total_share_held_by_owners), subindustry))

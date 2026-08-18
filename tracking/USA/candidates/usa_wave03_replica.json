@@ -1,0 +1,12 @@
+[
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 5), 60)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 5), 120)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 10), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), industry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(alpha_score), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(debt_to_equity_ratio_metric_41), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(accounting_forensics_factor), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(intrinsic_valuation_estimate_3), subindustry), 0.5), 5), 90)",
+  "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(alpha_excess_return_forecast), subindustry), 0.5), 5), 90)"
+]

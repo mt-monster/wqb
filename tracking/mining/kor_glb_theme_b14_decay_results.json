@@ -1,0 +1,11 @@
+{
+ "batch": "glb_b14",
+ "resps": [
+  "3yGmXP9JO4y59DJ1asZbT3wK",
+  "4wd0bc4dD5au9I3X7sDPkAY",
+  "4ttGIebs058dczEYgAfBswm",
+  "exvzQ5cj59ja8qbKiNHfl"
+ ],
+ "strategy": "decay18/20/22 + 300窗decay16 margin破5bp",
+ "ts": 1785903244.142517
+}

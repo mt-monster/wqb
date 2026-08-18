@@ -1,0 +1,13 @@
+{
+  "batch": "GLB 第六批重提小批次 (4n6NDc88Y4v48Xw1deHKu0RX, 4表达式, 原8表达式批次取消)",
+  "date": "2026-08-04",
+  "settings": "GLB/TOPDIV3000/D1/SLOW/decay16/trunc0.04",
+  "results": [
+    {"id": "RRmQPnZo", "expr": "pred10d techindi19 250", "sharpe": 1.63, "fitness": 0.89, "two_year": 1.4, "margin": 0.000598, "regions": {"EMEA": 0.23, "APAC": 0.89}},
+    {"id": "gJ8OLEwO", "expr": "pred5d250+ttmfcfev66", "sharpe": 1.63, "fitness": 0.98, "two_year": 1.65, "margin": 0.000721, "regions": {"EMEA": 0.38, "APAC": 0.28}},
+    {"id": "78zblE0L", "expr": "pred5d250+ests_up66", "sharpe": 1.21, "fitness": 0.7, "note": "分析师腿稀释信号"},
+    {"id": "QPGk6Lqw", "expr": "rank(pred5d250+curindfcfp66)", "sharpe": 1.68, "fitness": 0.97, "two_year": 2.18, "margin": 0.000666, "regions": {"EMEA": 0.44, "APAC": 0.33}}
+  ],
+  "conclusion": "子域均衡尝试失败(结构性): pred 信号 AMER 强 EMEA/APAC 弱, 换腿/rank/字段均无法提升子域 sharpe>1。ZYE3Kv9Y 保持 GLB 最佳候选 (1.71/1.01/2y2.19/margin7bp), 剩余 EMEA 0.44/APAC 0.38 为 GLB 区域子域固有门槛。",
+  "note": "小批次取消重提有效: 原批次排队3h progress 0.1, 取消后小批次 ~14min 完成"
+}

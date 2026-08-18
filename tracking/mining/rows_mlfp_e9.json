@@ -1,0 +1,16 @@
+[
+ {
+  "label": "T12_qual",
+  "sim": "https://api.worldquantbrain.com/simulations/1lwocYgpR4xLbitUl1WoIXy",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ },
+ {
+  "label": "T12_qual2",
+  "sim": "https://api.worldquantbrain.com/simulations/3awq7dfZI58OaCmqSQeC4dP",
+  "status": "ERROR",
+  "alpha": null,
+  "message": "There was an error while running the simulation. Please try again or contact BRAIN support if this problem persists."
+ }
+]

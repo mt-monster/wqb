@@ -1,0 +1,36 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/37QZIyXd4qIbm611vRZop7U",
+ "ts": 1785864300.7432806,
+ "alphas": [
+  {
+   "id": "O0GabMdg",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60))",
+   "sh": 1.92,
+   "fit": 1.16,
+   "tvr": 0.0829,
+   "ret": 0.0454,
+   "2y": 1.24,
+   "rn": 1.56,
+   "subU": 0.97,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "O0GabMdg",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60))",
+   "sh": 1.92,
+   "fit": 1.16,
+   "tvr": 0.0829,
+   "ret": 0.0454,
+   "2y": 1.24,
+   "rn": 1.56,
+   "subU": 0.97,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  }
+ ]
+}

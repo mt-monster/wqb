@@ -1,0 +1,157 @@
+{
+ "tag": "02A",
+ "region": "USA",
+ "all": [
+  {
+   "id": "78zrw0r8",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(relative_alpha_position, std=4), 22), s",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 1.18,
+   "fitness": 0.56,
+   "two_year_sharpe": 0.29,
+   "margin_bp": 6.8,
+   "turnover_pct": 8.18,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T22:52:43",
+   "walls": [
+    "SHARPE",
+    "FITNESS",
+    "2Y"
+   ]
+  },
+  {
+   "id": "j26JZWMk",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(expected_excess_return_forecast, std=4)",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 1.17,
+   "fitness": 0.55,
+   "two_year_sharpe": 0.24,
+   "margin_bp": 6.74,
+   "turnover_pct": 8.18,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T22:52:42",
+   "walls": [
+    "SHARPE",
+    "FITNESS",
+    "2Y"
+   ]
+  },
+  {
+   "id": "YPvOpn9l",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4)",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 0.82,
+   "fitness": 0.32,
+   "two_year_sharpe": 0.61,
+   "margin_bp": 4.71,
+   "turnover_pct": 8.02,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:52:39"
+  },
+  {
+   "id": "pwNk6op3",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_forecast_dispersion, std=4), 22",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 0.73,
+   "fitness": 0.27,
+   "two_year_sharpe": -0.7,
+   "margin_bp": 4.37,
+   "turnover_pct": 7.84,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:52:41"
+  },
+  {
+   "id": "JjGkpY2e",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_trend, std=4)",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 0.72,
+   "fitness": 0.26,
+   "two_year_sharpe": 0.52,
+   "margin_bp": 4.42,
+   "turnover_pct": 7.56,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:52:38"
+  },
+  {
+   "id": "N1bGpq2L",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(analyst_earnings_revision_score, std=4)",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 0.64,
+   "fitness": 0.22,
+   "two_year_sharpe": -0.35,
+   "margin_bp": 4.03,
+   "turnover_pct": 7.55,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-15T22:52:40"
+  }
+ ],
+ "candidates": [],
+ "near": [
+  {
+   "id": "78zrw0r8",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(relative_alpha_position, std=4), 22), s",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 1.18,
+   "fitness": 0.56,
+   "two_year_sharpe": 0.29,
+   "margin_bp": 6.8,
+   "turnover_pct": 8.18,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T22:52:43",
+   "walls": [
+    "SHARPE",
+    "FITNESS",
+    "2Y"
+   ]
+  },
+  {
+   "id": "j26JZWMk",
+   "code": "ts_decay_linear(signed_power(subtract(group_rank(ts_backfill(winsorize(expected_excess_return_forecast, std=4)",
+   "neut": "SLOW_AND_FAST",
+   "sharpe": 1.17,
+   "fitness": 0.55,
+   "two_year_sharpe": 0.24,
+   "margin_bp": 6.74,
+   "turnover_pct": 8.18,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-15T22:52:42",
+   "walls": [
+    "SHARPE",
+    "FITNESS",
+    "2Y"
+   ]
+  }
+ ]
+}

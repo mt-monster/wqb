@@ -1,0 +1,24 @@
+{
+  "total_fields": 7,
+  "valid_fields": 0,
+  "invalid_fields": 7,
+  "validation_results": {
+    "mdl264_3l_bb": false,
+    "mdl264_3l_m1d_1yf_spe_se": false,
+    "mdl264_3l_m1r_1yf_roe_se": false,
+    "mdl264_3l_m1r_1yf_spe_se": false,
+    "mdl264_3l_m1r_cer_se": false,
+    "mdl264_3l_m1r_gtl_se": false,
+    "mdl264_3l_m1r_pt_se": false
+  },
+  "invalid_field_list": [
+    "mdl264_3l_m1d_1yf_spe_se",
+    "mdl264_3l_m1r_gtl_se",
+    "mdl264_3l_bb",
+    "mdl264_3l_m1r_cer_se",
+    "mdl264_3l_m1r_1yf_spe_se",
+    "mdl264_3l_m1r_1yf_roe_se",
+    "mdl264_3l_m1r_pt_se"
+  ],
+  "valid_field_list": []
+}

@@ -1,0 +1,33 @@
+{
+ "tag": "e10a",
+ "ts": "2026-08-05 21:15:01",
+ "labels": [
+  "T1_drev",
+  "T2_small",
+  "T5_base",
+  "T6_eymom",
+  "T7_peg"
+ ],
+ "args": {
+  "alpha_expressions": [
+   "-ts_delta(change_1y_eps_growth, 66)",
+   "-change_1y_eps_growth * ts_std_dev(change_1y_eps_growth, 30)",
+   "group_rank(ts_rank(change_1y_eps_growth, 252), industry)",
+   "group_rank(ts_rank(change_1y_eps_to_price, 60), industry)",
+   "-group_zscore(subtract(change_1y_eps_to_price, change_1y_eps_growth), industry)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "EUR",
+  "universe": "TOP1200",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON"
+ }
+}

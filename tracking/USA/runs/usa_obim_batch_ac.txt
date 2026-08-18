@@ -1,0 +1,8 @@
+quantile(group_zscore(vec_avg(trade_market_impact_coefficient), subindustry))
+quantile(group_zscore(ts_decay_linear(vec_avg(trade_market_impact_coefficient), 4), subindustry))
+quantile(group_zscore(ts_decay_linear(vec_avg(trade_market_impact_coefficient), 16), subindustry))
+reverse(quantile(group_zscore(vec_avg(trade_market_impact_coefficient), subindustry)))
+quantile(group_zscore(subtract(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)), subindustry))
+quantile(group_zscore(vec_avg(time_weighted_spread_bps), subindustry))
+quantile(group_zscore(vec_avg(volume_weighted_relative_spread), subindustry))
+quantile(group_zscore(multiply(vec_avg(trade_market_impact_coefficient), vec_avg(mean_relative_bid_ask_spread)), subindustry))

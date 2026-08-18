@@ -1,0 +1,39 @@
+{
+  "batch": "b92",
+  "dataset": "analyst7 (Broker Estimates) - tuning est_q_ner_raised_1wk",
+  "hypothesis": "b91 found d5RGoJXx (est_q_ner_raised_1wk, subindustry, decay60) at sh1.55/fit0.98/2Y2.28 - just 0.03 below sharpe threshold and 0.02 below fitness. Turnover 3.3% below 5% min. b92 tunes this signal: shorter decay windows (30/45) to boost turnover, less aggressive neutralization (INDUSTRY/SECTOR) to preserve signal, convexity variants (alpha2-style signed_power), and combined signals (ner+sal revisions).",
+  "alpha_expressions": [
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk, subindustry), 30)",
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk, subindustry), 45)",
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk, industry), 60)",
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk, sector), 60)",
+    "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 0.5), 60)",
+    "ts_decay_linear(signed_power(subtract(group_rank(est_q_ner_raised_1wk, subindustry), 0.5), 5), 60)",
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk + est_q_sal_raised_1wk, subindustry), 60)",
+    "ts_decay_linear(group_rank(est_q_ner_raised_1wk, subindustry) + group_rank(est_q_sal_raised_1wk, subindustry), 30)"
+  ],
+  "instrument_type": "EQUITY",
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.08,
+  "test_period": "P0Y0M",
+  "unit_handling": "VERIFY",
+  "nan_handling": "ON",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "pasteurization": "ON",
+  "max_trade": "ON",
+  "style_notes": {
+    "expr1": "decay30 - shorter window for more turnover",
+    "expr2": "decay45 - medium turnover",
+    "expr3": "INDUSTRY neut - less aggressive than subindustry",
+    "expr4": "SECTOR neut - even less aggressive",
+    "expr5": "convexity power 0.5 - gentle centered",
+    "expr6": "convexity power 5 - aggressive alpha2-style",
+    "expr7": "combined ner+sal revisions, same neut",
+    "expr8": "combined ner+sal with shorter decay30 for higher turnover"
+  }
+}

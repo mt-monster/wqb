@@ -1,0 +1,83 @@
+{
+ "meta": {
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.06,
+  "max_trade": "ON",
+  "batch": "b5",
+  "date": "2026-08-04"
+ },
+ "results": [
+  {
+   "child_id": "4AX7tr3tr4glaQyyxXSA8SM",
+   "status": "COMPLETE",
+   "alpha_id": "O0Gabp61",
+   "sharpe": -0.09,
+   "fitness": -0.02,
+   "turnover": 0.1009,
+   "returns": -0.0056,
+   "margin": -0.00011,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 1.08,
+   "rn_sharpe": -0.12,
+   "sub_universe_sharpe": -0.13,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "27YNxZ8rU4YXclpve4SLqVK",
+   "status": "COMPLETE",
+   "alpha_id": "P0G9wpPq",
+   "sharpe": 0.12,
+   "fitness": 0.03,
+   "turnover": 0.0995,
+   "returns": 0.0076,
+   "margin": 0.000153,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.81,
+   "rn_sharpe": 0.12,
+   "sub_universe_sharpe": 0.02,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  },
+  {
+   "child_id": "2h5HLq98f4LucJfYSErr0eZ",
+   "status": "COMPLETE",
+   "alpha_id": "blQEoLx6",
+   "sharpe": 0.4,
+   "fitness": 0.19,
+   "turnover": 0.0814,
+   "returns": 0.0286,
+   "margin": 0.000702,
+   "checks": {},
+   "ra": {},
+   "two_year_sharpe": 0.42,
+   "rn_sharpe": 0.43,
+   "sub_universe_sharpe": 0.19,
+   "ra_failed": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "ra_success": [],
+   "expression": null
+  }
+ ]
+}

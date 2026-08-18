@@ -1,0 +1,1 @@
+["rank(mdl264_nvi_class)", "multiply(rank(mdl264_nvi_class),-1)", "rank(ts_av_diff(mdl264_nvi_class,10))"]

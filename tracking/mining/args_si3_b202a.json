@@ -1,0 +1,20 @@
+﻿{
+    "unit_handling":  "VERIFY",
+    "max_trade":  "ON",
+    "decay":  6,
+    "test_period":  "P0Y0M",
+    "neutralization":  "SUBINDUSTRY",
+    "language":  "FASTEXPR",
+    "universe":  "TOP3000",
+    "delay":  1,
+    "alpha_expressions":  [
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 5), 60)",
+                              "ts_decay_linear(signed_power(subtract(0.5, rank(ts_mean(vec_avg(shrt3_bar), 10))), 5), 60)"
+                          ],
+    "truncation":  0.08,
+    "pasteurization":  "ON",
+    "region":  "USA",
+    "instrument_type":  "EQUITY",
+    "visualization":  false,
+    "nan_handling":  "ON"
+}

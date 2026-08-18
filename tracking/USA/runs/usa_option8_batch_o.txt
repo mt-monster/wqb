@@ -1,0 +1,8 @@
+reverse(quantile(implied_volatility_mean_skew_30))
+quantile(implied_volatility_mean_skew_60)
+reverse(quantile(subtract(implied_volatility_mean_30, implied_volatility_mean_120)))
+reverse(quantile(subtract(implied_volatility_mean_10, implied_volatility_mean_90)))
+reverse(quantile(group_zscore(implied_volatility_mean_skew_30, subindustry)))
+reverse(quantile(ts_decay_linear(implied_volatility_mean_skew_30, 10)))
+reverse(quantile(divide(implied_volatility_put_30, implied_volatility_call_30)))
+reverse(quantile(ts_av_diff(implied_volatility_mean_skew_30, 10)))

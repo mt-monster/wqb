@@ -1,0 +1,402 @@
+{
+ "batch": "b121",
+ "settings": {
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "decay": 6,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "nan_handling": "ON",
+  "max_trade": "ON"
+ },
+ "expressions": [
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days))))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_ivcall360, opt40_ivput360))))",
+  "rank(add(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(oth566_l2r20_label, 20)), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(oth566_return)))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), -rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(vec_avg(oth696_combined_sentiment_score), 20)))",
+  "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60)))"
+ ],
+ "results": [
+  {
+   "index": 0,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))",
+   "child": "4ht4fhgWU4zK9TF18ObzieVN",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "O0GaAKxv",
+   "metrics": {
+    "sharpe": 1.27,
+    "fitness": 0.89,
+    "turnover": 0.1623,
+    "returns": 0.0799,
+    "margin": 0.000985,
+    "drawdown": 0.1737,
+    "two_year_sharpe": 1.08,
+    "sub_universe_sharpe": 0.87
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "IS_LADDER_SHARPE"
+    ],
+    "pyramid_short": "option/other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))"
+  },
+  {
+   "index": 1,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days))))",
+   "child": "2Oa8193gu4iccBE12znvXAtr",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "VkGJxK3Y",
+   "metrics": {
+    "sharpe": 0.98,
+    "fitness": 0.76,
+    "turnover": 0.1202,
+    "returns": 0.0758,
+    "margin": 0.001261,
+    "drawdown": 0.2761,
+    "two_year_sharpe": 0.92,
+    "sub_universe_sharpe": 0.7
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.98,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.76,
+     "limit": 1.0
+    },
+    {
+     "name": "IS_LADDER_SHARPE",
+     "value": 0.92,
+     "limit": 1.58,
+     "year": 2
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "IS_LADDER_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "option/other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_put_theta_182days, opt40_call_theta_182days))))"
+  },
+  {
+   "index": 2,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_ivcall360, opt40_ivput360))))",
+   "child": "1KIup2a5K4DHakmsU0NkEVy",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "58pWENkk",
+   "metrics": {
+    "sharpe": 1.82,
+    "fitness": 1.39,
+    "turnover": 0.1356,
+    "returns": 0.0792,
+    "margin": 0.001168,
+    "drawdown": 0.0665,
+    "two_year_sharpe": 1.44,
+    "sub_universe_sharpe": 0.62
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SUB_UNIVERSE_SHARPE",
+     "value": 0.62,
+     "limit": 0.79
+    },
+    {
+     "name": "IS_LADDER_SHARPE",
+     "value": 1.44,
+     "limit": 1.58,
+     "year": 2
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE",
+     "IS_LADDER_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "option/other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(subtract(opt40_ivcall360, opt40_ivput360))))"
+  },
+  {
+   "index": 3,
+   "expression": "rank(add(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(oth566_l2r20_label, 20)), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))",
+   "child": "36IP262Ma4wNbQQ83xfW4DK",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "pwNOdQKx",
+   "metrics": {
+    "sharpe": 1.43,
+    "fitness": 1.05,
+    "turnover": 0.136,
+    "returns": 0.0738,
+    "margin": 0.001086,
+    "drawdown": 0.1317,
+    "two_year_sharpe": 1.25,
+    "sub_universe_sharpe": 0.94
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "LOW_SHARPE",
+    "CLUSTER_TEST",
+    "IS_LADDER_SHARPE",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 2,
+    "failed_ppa_count": 0,
+    "ra_failed": true,
+    "ppa_failed": false,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "IS_LADDER_SHARPE"
+    ],
+    "pyramid_short": "option/other"
+   },
+   "code": "rank(add(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(oth566_l2r20_label, 20)), rank(subtract(opt40_put_theta_60days, opt40_call_theta_60days))))"
+  },
+  {
+   "index": 4,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(oth566_return)))",
+   "child": "2qmS9o3Le4hk8ZTmddNV0b5",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "78z9Lgn5",
+   "metrics": {
+    "sharpe": 1.6,
+    "fitness": 1.03,
+    "turnover": 0.1761,
+    "returns": 0.073,
+    "margin": 0.00083,
+    "drawdown": 0.111,
+    "two_year_sharpe": 1.69,
+    "sub_universe_sharpe": 1.07
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), rank(oth566_return)))"
+  },
+  {
+   "index": 5,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), -rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))))",
+   "child": "dKi8k4Kd4T88BO1cSIKUCOw",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "LLGJMOGa",
+   "metrics": {
+    "sharpe": 2.08,
+    "fitness": 1.51,
+    "turnover": 0.2317,
+    "returns": 0.1219,
+    "margin": 0.001052,
+    "drawdown": 0.0711,
+    "two_year_sharpe": 1.76,
+    "sub_universe_sharpe": 1.55
+   },
+   "checks_fail": [],
+   "checks_warning": [
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 0,
+    "failed_ppa_count": 0,
+    "ra_failed": false,
+    "ppa_failed": false,
+    "pyramid_short": "risk/other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), -rank(ts_backfill(rsk65_trsd_4mfte_mfm, lookback=60))))"
+  },
+  {
+   "index": 6,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(vec_avg(oth696_combined_sentiment_score), 20)))",
+   "child": "2BfjE518T4Irb1mspUan865",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "omNOEQNv",
+   "metrics": {
+    "sharpe": -0.21,
+    "fitness": -0.05,
+    "turnover": 1.3659,
+    "returns": -0.0728,
+    "margin": -0.000107,
+    "drawdown": 2.4259,
+    "two_year_sharpe": 1.04,
+    "sub_universe_sharpe": -0.03
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": -0.21,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": -0.05,
+     "limit": 1.0
+    },
+    {
+     "name": "HIGH_TURNOVER",
+     "value": 1.3659,
+     "limit": 0.7
+    },
+    {
+     "name": "CONCENTRATED_WEIGHT",
+     "value": 0.5,
+     "limit": 0.1,
+     "date": "2021-03-23"
+    },
+    {
+     "name": "IS_LADDER_SHARPE",
+     "value": 1.04,
+     "limit": 1.58,
+     "year": 2
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 5,
+    "failed_ppa_count": 2,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "HIGH_TURNOVER",
+     "CONCENTRATED_WEIGHT",
+     "IS_LADDER_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE",
+     "HIGH_TURNOVER"
+    ],
+    "pyramid_short": "other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_decay_linear(vec_avg(oth696_combined_sentiment_score), 20)))"
+  },
+  {
+   "index": 7,
+   "expression": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60)))",
+   "child": "1u9ps215L4Us9bKlDbYemVW",
+   "status": "COMPLETE",
+   "error": null,
+   "alpha_id": "RRmWE0md",
+   "metrics": {
+    "sharpe": 0.12,
+    "fitness": 0.02,
+    "turnover": 0.0936,
+    "returns": 0.0033,
+    "margin": 7.1e-05,
+    "drawdown": 0.0782,
+    "two_year_sharpe": -0.01,
+    "sub_universe_sharpe": 0.14
+   },
+   "checks_fail": [
+    {
+     "name": "LOW_SHARPE",
+     "value": 0.12,
+     "limit": 1.58
+    },
+    {
+     "name": "LOW_FITNESS",
+     "value": 0.02,
+     "limit": 1.0
+    },
+    {
+     "name": "IS_LADDER_SHARPE",
+     "value": -0.01,
+     "limit": 1.58,
+     "year": 2
+    }
+   ],
+   "checks_warning": [
+    "CLUSTER_TEST",
+    "MATCHES_THEMES",
+    "OSMOSIS_ALLOCATION"
+   ],
+   "ra": {
+    "failed_ra_count": 3,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+     "LOW_SHARPE",
+     "LOW_FITNESS",
+     "IS_LADDER_SHARPE"
+    ],
+    "ppa_failed_checks": [
+     "LOW_SHARPE"
+    ],
+    "pyramid_short": "fundamental/other"
+   },
+   "code": "rank(add(ts_decay_linear(oth566_l2r20_label, 20), ts_backfill(vec_avg(fnd91_sentiment2_0), lookback=60)))"
+  }
+ ]
+}

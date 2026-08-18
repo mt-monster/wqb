@@ -1,0 +1,56 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/2O42aw9vn4Cb9eo641hkjrW",
+ "ts": 1785898921.4903622,
+ "alphas": [
+  {
+   "id": "LLGxJA76",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 300), country)",
+   "sh": 2.96,
+   "fit": 1.4,
+   "tvr": 0.2987,
+   "ret": 0.0664,
+   "2y": 1.93,
+   "margin": 0.000445,
+   "subU": 2.36,
+   "failed": null
+  },
+  {
+   "id": "3qpWLZle",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=5), 60), 200), country)",
+   "sh": 2.95,
+   "fit": 1.38,
+   "tvr": 0.2997,
+   "ret": 0.0659,
+   "2y": 1.84,
+   "margin": 0.00044,
+   "subU": 2.36,
+   "failed": null
+  },
+  {
+   "id": "P0GE9d7M",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_five_day_return_techindi19_1, std=5), 60), 300), country)",
+   "sh": 2.29,
+   "fit": 0.93,
+   "tvr": 0.3193,
+   "ret": 0.0527,
+   "2y": 1.7,
+   "margin": 0.00033,
+   "subU": 1.71,
+   "failed": [
+    "LOW_FITNESS"
+   ]
+  },
+  {
+   "id": "GrGvJplZ",
+   "code": "group_rank(ts_rank(ts_backfill(winsorize(predicted_first_quantile_ten_day_return_41, std=4), 60), 250), country)",
+   "sh": 2.94,
+   "fit": 1.38,
+   "tvr": 0.299,
+   "ret": 0.066,
+   "2y": 1.98,
+   "margin": 0.000441,
+   "subU": 2.34,
+   "failed": null
+  }
+ ]
+}

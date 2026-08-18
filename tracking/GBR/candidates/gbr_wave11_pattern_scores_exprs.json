@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ps_01",
+    "expression": "rank(subtract(avg_similarity_upward_breakaway_gap_120, avg_similarity_downward_breakaway_gap_120))",
+    "desc": "Breakaway gap direction spread: upward minus downward gap similarity, ranked cross-sectionally. Momentum style."
+  },
+  {
+    "id": "ps_02",
+    "expression": "rank(ts_delta(dynamic_similarity_v_reversal_bottom_120, 10))",
+    "desc": "V-reversal bottom dynamic similarity 10-day change. Reversal signal on pattern emergence."
+  },
+  {
+    "id": "ps_03",
+    "expression": "rank(subtract(mean_similarity_rising_wedge, mean_similarity_falling_wedge))",
+    "desc": "Rising vs falling wedge mean similarity spread. Wedge direction momentum."
+  },
+  {
+    "id": "ps_04",
+    "expression": "multiply(rank(quantile95_similarity_common_gap_upward), -1)",
+    "desc": "Common gap upward q95 similarity, inverted. Contrarian on gap exhaustion."
+  },
+  {
+    "id": "ps_05",
+    "expression": "rank(ts_decay_linear(dynamic_similarity_asc_triangle, 5))"
+    "desc": "Ascending triangle upward dynamic similarity with 5-day linear decay. Pattern persistence."
+  },
+  {
+    "id": "ps_06",
+    "expression": "rank(subtract(max_similarity_v_continuation_top, max_similarity_v_reversal_top))",
+    "desc": "V-continuation vs V-reversal top max similarity spread. Trend continuation signal."
+  },
+  {
+    "id": "ps_07",
+    "expression": "rank(ts_ir(std_similarity_rising_wedge, 10))",
+    "desc": "Rising wedge similarity std 10-day information ratio. Pattern volatility regime."
+  },
+  {
+    "id": "ps_08",
+    "expression": "rank(ts_corr(dynamic_similarity_sym_triangle_upward, dynamic_similarity_sym_triangle_downward, 10))",
+    "desc": "Sym triangle up/down dynamic similarity 10-day correlation. Pattern convergence regime."
+  }
+]

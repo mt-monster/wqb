@@ -1,0 +1,109 @@
+﻿{
+  "id": "QP9xgkmW",
+  "code": "ts_decay_linear(signed_power(subtract(group_rank(vec_avg(historic_earnings_surprise_score), subindustry), 0.5), 30), 90)",
+  "status": "UNSUBMITTED",
+  "stage": "IS",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "decay": 6,
+    "neutralization": "SLOW_AND_FAST",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "metrics": {
+    "sharpe": 4.4,
+    "fitness": 4.2,
+    "turnover": 0.0635,
+    "returns": 0.1137,
+    "drawdown": 0.0165,
+    "margin": 0.003579,
+    "longCount": 1964,
+    "shortCount": 1165,
+    "pnl": 11345593,
+    "bookSize": 20000000,
+    "startDate": "2014-01-01",
+    "sub_universe_sharpe": 1.68,
+    "two_year_sharpe": 3.55
+  },
+  "ra": {
+    "failed_ra_count": 1,
+    "failed_ppa_count": 1,
+    "ra_failed": true,
+    "ppa_failed": true,
+    "ra_failed_checks": [
+      "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "ppa_failed_checks": [
+      "LOW_SUB_UNIVERSE_SHARPE"
+    ],
+    "pyramid_short": "model"
+  },
+  "checks": {
+    "fail": [
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "value": 1.68,
+        "limit": 1.91
+      }
+    ],
+    "warning": [
+      {
+        "name": "HT_TURNOVER",
+        "value": 0.0635,
+        "limit": 0.2
+      },
+      {
+        "name": "HT_HIGH_TURNOVER_RETURNS_RATIO",
+        "value": 0.1266,
+        "limit": 0.75
+      },
+      {
+        "name": "HT_PNL_REALIZATION_HORIZON",
+        "value": 120,
+        "limit": 20
+      },
+      {
+        "name": "MATCHES_THEMES"
+      },
+      {
+        "name": "OSMOSIS_ALLOCATION"
+      }
+    ],
+    "pass": [
+      "LOW_SHARPE",
+      "CLUSTER_TEST:ERROR",
+      "LOW_FITNESS",
+      "LOW_TURNOVER",
+      "HIGH_TURNOVER",
+      "CONCENTRATED_WEIGHT",
+      "LOW_2Y_SHARPE",
+      "MATCHES_PYRAMID"
+    ],
+    "pending": [
+      "SELF_CORRELATION",
+      "DATA_DIVERSITY",
+      "PROD_CORRELATION",
+      "REGULAR_SUBMISSION"
+    ]
+  },
+  "pyramids": {
+    "effective": 1,
+    "list": [
+      {
+        "name": "USA/D1/MODEL",
+        "multiplier": 1.4
+      }
+    ]
+  }
+}

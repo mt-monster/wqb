@@ -1,0 +1,415 @@
+{
+ "dataset": "pv29",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 40,
+  "GROUP": 10
+ },
+ "field_count": 50,
+ "fetched_at": "2026-08-18T02:40:24",
+ "fields": [
+  {
+   "id": "industry_grouping_level10_all_instruments_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Statistical cluster assignment for each stock and date, grouping all stocks in region 513 into 10 adaptive clusters base"
+  },
+  {
+   "id": "industry_grouping_level10_top100_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label (1-10, -1, or 10000) for each stock (in top 100 East Asia universe, Zura Robust Industry Classi"
+  },
+  {
+   "id": "industry_grouping_level10_top1200_513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment (out of 10 clusters) for each stock and date in the TOP1200 universe, based on s"
+  },
+  {
+   "id": "industry_grouping_level10_top200_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment label (1–10) for each of the top 200 East Asian stocks on each date per Zura met"
+  },
+  {
+   "id": "industry_grouping_level10_top400_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock in the TOP400 universe (using Zura robust statistical industry classification, version "
+  },
+  {
+   "id": "industry_grouping_level10_top600_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label for each stock (per date) among ten statistically derived industry groups in the top 600 stock "
+  },
+  {
+   "id": "industry_grouping_level10_top800_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock (from top 800 universe), per date, into one of 10 statistically-derived industry groups"
+  },
+  {
+   "id": "industry_grouping_level20_all_instruments_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock and date, grouping all stocks in region 513 into 20 adaptive clusters base"
+  },
+  {
+   "id": "industry_grouping_level20_top100_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label (1-20, -1, or 10000) for each stock (in top 100 East Asia universe, Zura Robust Industry Classi"
+  },
+  {
+   "id": "industry_grouping_level20_top1200_513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment (out of 20 clusters) for each stock and date in the TOP1200 universe, based on s"
+  },
+  {
+   "id": "industry_grouping_level20_top200_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment label (1–20) for each of the top 200 East Asian stocks on each date per Zura met"
+  },
+  {
+   "id": "industry_grouping_level20_top400_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock in the TOP400 universe (using Zura robust statistical industry classification, version "
+  },
+  {
+   "id": "industry_grouping_level20_top600_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label for each stock (per date) among twenty statistically derived industry groups in the top 600 sto"
+  },
+  {
+   "id": "industry_grouping_level20_top800_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock (from top 800 universe), per date, into one of 20 statistically-derived industry groups"
+  },
+  {
+   "id": "industry_grouping_level2_all_instruments_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock and date, grouping all stocks in region 513 into 2 adaptive clusters based"
+  },
+  {
+   "id": "industry_grouping_level2_top100_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster assignment label (1-2, -1, or 10000) for each stock (in top 100 East Asia universe, Zura Robust Industry Classif"
+  },
+  {
+   "id": "industry_grouping_level2_top1200_513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment (out of 2 clusters) for each stock and date in the TOP1200 universe, based on st"
+  },
+  {
+   "id": "industry_grouping_level2_top200_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment label (1 or 2) for each of the top 200 East Asian stocks on each date per Zura m"
+  },
+  {
+   "id": "industry_grouping_level2_top400_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock in the TOP400 universe (using Zura robust statistical industry classification, version "
+  },
+  {
+   "id": "industry_grouping_level2_top600_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label for each stock (per date) among two statistically derived industry groups in the top 600 stock "
+  },
+  {
+   "id": "industry_grouping_level2_top800_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock (from top 800 universe), per date, into one of 2 statistically-derived industry groups "
+  },
+  {
+   "id": "industry_grouping_level50_all_instruments_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock and date, grouping all stocks in region 513 into 50 adaptive clusters base"
+  },
+  {
+   "id": "industry_grouping_level50_top100_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster assignment label (1-50, -1, or 10000) for each stock (in top 100 East Asia universe, Zura Robust Industry Classi"
+  },
+  {
+   "id": "industry_grouping_level50_top1200_513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment (out of 50 clusters) for each stock and date in the TOP1200 universe, based on s"
+  },
+  {
+   "id": "industry_grouping_level50_top200_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Statistical industry cluster assignment label (1–50) for each of the top 200 East Asian stocks on each date, generated u"
+  },
+  {
+   "id": "industry_grouping_level50_top400_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock in the TOP400 universe (using Zura robust statistical industry classification, version "
+  },
+  {
+   "id": "industry_grouping_level50_top600_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label for each stock (per date) among fifty statistically derived industry groups in the top 600 stoc"
+  },
+  {
+   "id": "industry_grouping_level50_top800_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster assignment of each stock (from top 800 universe), per date, into one of 50 statistically-derived industry groups"
+  },
+  {
+   "id": "industry_grouping_level5_all_instruments_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Statistical cluster assignment for each stock and date, grouping all stocks in region 513 into 5 adaptive clusters based"
+  },
+  {
+   "id": "industry_grouping_level5_top100_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment label (1-5, -1, or 10000) for each stock (in top 100 East Asia universe, Zura Robust Industry Classif"
+  },
+  {
+   "id": "industry_grouping_level5_top1200_513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Statistical industry cluster assignment (out of 5 clusters) for each stock and date in the TOP1200 universe, based on st"
+  },
+  {
+   "id": "industry_grouping_level5_top200_eas513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical industry cluster assignment label (1–5) for each of the top 200 East Asian stocks on each date, generated us"
+  },
+  {
+   "id": "industry_grouping_level5_top400_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock in the TOP400 universe (using Zura robust statistical industry classification, version "
+  },
+  {
+   "id": "industry_grouping_level5_top600_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Cluster assignment label for each stock (per date) among five statistically derived industry groups in the top 600 stock"
+  },
+  {
+   "id": "industry_grouping_level5_top800_variant513",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster assignment of each stock (from top 800 universe), per date, into one of 5 statistically-derived industry groups "
+  },
+  {
+   "id": "sta1_top1200c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Statistical cluster assignment for each stock (out of 10 possible clusters) in the top 1200 stock universe, based on his"
+  },
+  {
+   "id": "sta1_top1200c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock (out of 2 possible clusters) in the top 1200 stock universe, based on hist"
+  },
+  {
+   "id": "sta1_top1200c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock (out of 20 possible clusters) in the top 1200 stock universe, based on his"
+  },
+  {
+   "id": "sta1_top1200c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Statistical cluster assignment for each stock (out of 5 possible clusters) in the top 1200 stock universe, based on hist"
+  },
+  {
+   "id": "sta1_top1200c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Statistical cluster assignment for each stock (out of 50 possible clusters) in the top 1200 stock universe, based on his"
+  },
+  {
+   "id": "sta1_top400c10",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock, by date, into one of 10 statistically derived industry groups based on historical retu"
+  },
+  {
+   "id": "sta1_top400c2",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock, by date, into one of 2 statistically derived industry groups based on historical retur"
+  },
+  {
+   "id": "sta1_top400c20",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock, by date, into one of 20 statistically derived industry groups based on historical retu"
+  },
+  {
+   "id": "sta1_top400c5",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock, by date, into one of 5 statistically derived industry groups based on historical retur"
+  },
+  {
+   "id": "sta1_top400c50",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster assignment of each stock, by date, into one of 50 statistically derived industry groups based on historical retu"
+  },
+  {
+   "id": "top_300_equity_513_grouping_10_clusters",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Cluster label assignment indicating which of 10 statistically-derived industry groups each stock in the top 300 universe"
+  },
+  {
+   "id": "top_300_equity_513_grouping_20_clusters",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster label assignment indicating which of 20 statistically-derived industry groups each stock in the top 300 universe"
+  },
+  {
+   "id": "top_300_equity_513_grouping_2_clusters",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cluster label assignment indicating which of 2 statistically-derived industry groups each stock in the top 300 universe "
+  },
+  {
+   "id": "top_300_equity_513_grouping_50_clusters",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster label assignment indicating which of 50 statistically-derived industry groups each stock in the top 300 universe"
+  },
+  {
+   "id": "top_300_equity_513_grouping_5_clusters",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cluster label assignment indicating which of 5 statistically-derived industry groups each stock in the top 300 universe "
+  }
+ ]
+}

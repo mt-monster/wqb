@@ -1,0 +1,26 @@
+{
+ "tag": "09M",
+ "region": "GBR",
+ "all": [
+  {
+   "id": "ZYEOWwRn",
+   "code": "rank(ts_mean(mdl264_3l_bb,10))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.47,
+   "fitness": 0.24,
+   "two_year_sharpe": 0.8,
+   "margin_bp": 12.39,
+   "turnover_pct": 5.42,
+   "rn_sharpe": 0.34,
+   "rn_fitness": 0.09,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T15:59:44"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

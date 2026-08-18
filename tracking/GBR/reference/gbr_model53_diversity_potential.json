@@ -1,0 +1,419 @@
+{
+ "dataset": "model53",
+ "audited_at": "2026-08-17T21:40:33",
+ "field_count": 22,
+ "field_groups": {
+  "other": 21,
+  "liquidity": 1
+ },
+ "field_groups_detail": {
+  "other": [
+   {
+    "id": "annualized_pd_10_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 10-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_1_month_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 1-month horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_1_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 1-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_2_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 2-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_3_month_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 3-month horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_3_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 3-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_4_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 4-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_5_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 5-year horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_6_month_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 6-month horizon using JC7 model."
+   },
+   {
+    "id": "annualized_pd_7_year_jc7",
+    "type": "MATRIX",
+    "coverage": 0.7979,
+    "description": "Annualized probability of default over a 7-year horizon using JC7 model."
+   },
+   {
+    "id": "data_observation_date_4",
+    "type": "SYMBOL",
+    "coverage": 1.0,
+    "description": "Date when the data observation was recorded."
+   },
+   {
+    "id": "mdl53_ms5_10year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 10-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+   },
+   {
+    "id": "mdl53_ms5_1month",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 1-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+   },
+   {
+    "id": "mdl53_ms5_1year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 1-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   },
+   {
+    "id": "mdl53_ms5_2year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 2-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   },
+   {
+    "id": "mdl53_ms5_3month",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 3-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+   },
+   {
+    "id": "mdl53_ms5_3year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 3-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   },
+   {
+    "id": "mdl53_ms5_4year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 4-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   },
+   {
+    "id": "mdl53_ms5_5year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 5-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   },
+   {
+    "id": "mdl53_ms5_6month",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 6-month horizon from Kamakura’s Merton structural model v5 (MS5), reported in perc"
+   },
+   {
+    "id": "mdl53_ms5_7year",
+    "type": "MATRIX",
+    "coverage": 0.8759,
+    "description": "Annualized default probability at the 7-year horizon from Kamakura’s Merton structural model v5 (MS5), reported in perce"
+   }
+  ],
+  "liquidity": [
+   {
+    "id": "mdl53_implied_spreads",
+    "type": "MATRIX",
+    "coverage": 0.8596,
+    "description": "Model-implied credit spread level for the issuer on the given date, typically expressed in basis points"
+   }
+  ]
+ },
+ "operator_trees": {
+  "annualized_pd_10_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_1_month_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_1_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_2_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_3_month_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_3_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_4_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_5_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_6_month_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "annualized_pd_7_year_jc7": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "data_observation_date_4": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_implied_spreads": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_10year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_1month": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_1year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_2year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_3month": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_3year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_4year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_5year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_6month": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl53_ms5_7year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ]
+ },
+ "param_spaces": {
+  "ts_rank": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_zscore": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_delta": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_decay_linear": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "rank": {},
+  "zscore": {},
+  "quantile": {},
+  "normalize": {}
+ },
+ "diversity_score": 0.625,
+ "recommended_rounds": 4,
+ "estimated_alphas_per_round": 8,
+ "total_estimated_alphas": 32
+}

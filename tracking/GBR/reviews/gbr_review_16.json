@@ -1,0 +1,186 @@
+{
+ "tag": "16",
+ "region": "GBR",
+ "all": [
+  {
+   "id": "P07Jj5Zq",
+   "code": "vec_count(anl9_detail_dataitemvalue)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.25,
+   "fitness": 0.06,
+   "two_year_sharpe": 0.78,
+   "margin_bp": 1.14,
+   "turnover_pct": 47.3,
+   "rn_sharpe": 0.02,
+   "rn_fitness": 0.0,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:37"
+  },
+  {
+   "id": "2rl1P5O5",
+   "code": "vec_range(anl9_consensusv2span_cashflowstatement_dataitemvalue)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.14,
+   "fitness": 0.03,
+   "two_year_sharpe": 0.73,
+   "margin_bp": 0.64,
+   "turnover_pct": 48.8,
+   "rn_sharpe": -0.02,
+   "rn_fitness": -0.0,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:38"
+  },
+  {
+   "id": "pwjqQaNo",
+   "code": "divide(vec_stddev(anl9_consensusv2span_dataitemvalue), abs(vec_avg(anl9_consensusv2span_dataitemvalue)))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.1,
+   "fitness": 0.01,
+   "two_year_sharpe": 0.67,
+   "margin_bp": 0.39,
+   "turnover_pct": 49.77,
+   "rn_sharpe": -0.08,
+   "rn_fitness": -0.01,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:30"
+  },
+  {
+   "id": "E5lZoQGR",
+   "code": "divide(vec_sum(anl9_daily_numup), add(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn)))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.0,
+   "fitness": 0.0,
+   "two_year_sharpe": -0.8,
+   "margin_bp": 0.02,
+   "turnover_pct": 43.79,
+   "rn_sharpe": -0.43,
+   "rn_fitness": -0.12,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:32"
+  },
+  {
+   "id": "58lZNJl6",
+   "code": "subtract(vec_avg(anl9_consensusanalysis_dataitemvalue), vec_avg(anl9_detail_dataitemvalue))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.03,
+   "fitness": -0.0,
+   "two_year_sharpe": 0.45,
+   "margin_bp": -0.13,
+   "turnover_pct": 73.6,
+   "rn_sharpe": -0.22,
+   "rn_fitness": -0.05,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "HIGH_TURNOVER",
+    "CONCENTRATED_WEIGHT",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:34"
+  },
+  {
+   "id": "6XlngMe5",
+   "code": "divide(vec_avg(anl9_daily_numanalysts), vec_avg(anl9_daily_numanalystall))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.04,
+   "fitness": -0.0,
+   "two_year_sharpe": -0.52,
+   "margin_bp": -0.14,
+   "turnover_pct": 44.33,
+   "rn_sharpe": -0.09,
+   "rn_fitness": -0.01,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:29"
+  },
+  {
+   "id": "O071KW71",
+   "code": "divide(vec_sum(anl9_daily_numupunfiltered), add(vec_sum(anl9_daily_numupunfiltered), vec_sum(anl9_daily_numdn)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.07,
+   "fitness": -0.01,
+   "two_year_sharpe": -0.85,
+   "margin_bp": -0.31,
+   "turnover_pct": 43.82,
+   "rn_sharpe": -0.53,
+   "rn_fitness": -0.16,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:33"
+  },
+  {
+   "id": "zqkvXdkG",
+   "code": "subtract(vec_sum(anl9_daily_numup), vec_sum(anl9_daily_numdn))",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.21,
+   "fitness": -0.05,
+   "two_year_sharpe": -0.66,
+   "margin_bp": -0.93,
+   "turnover_pct": 43.01,
+   "rn_sharpe": -0.4,
+   "rn_fitness": -0.11,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:36"
+  },
+  {
+   "id": "1Ywq6AAJ",
+   "code": "vec_range(anl9_detail_dataitemvalue)",
+   "neut": "SUBINDUSTRY",
+   "sharpe": -0.27,
+   "fitness": -0.07,
+   "two_year_sharpe": 0.19,
+   "margin_bp": -1.28,
+   "turnover_pct": 46.56,
+   "rn_sharpe": 0.13,
+   "rn_fitness": 0.04,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "CONCENTRATED_WEIGHT",
+    "LOW_SUB_UNIVERSE_SHARPE",
+    "LOW_2Y_SHARPE"
+   ],
+   "cached_at": "2026-08-17T22:00:39"
+  }
+ ],
+ "candidates": [],
+ "near": []
+}

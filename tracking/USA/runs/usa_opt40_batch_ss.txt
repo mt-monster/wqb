@@ -1,0 +1,8 @@
+quantile(-ts_decay_linear(ts_rank(call_option_time_decay_30d, 252), 21))
+quantile(ts_decay_linear(divide(call_option_time_decay_30d, call_option_time_decay_152d), 21))
+quantile(ts_decay_linear(divide(call_option_volatility_exposure_30d, call_option_market_value_30d), 21))
+quantile(ts_decay_linear(divide(call_option_delta_convexity_152d, call_option_price_sensitivity_30d), 21))
+quantile(-ts_decay_linear(subtract(call_option_price_sensitivity_30d, call_option_price_sensitivity_91d), 21))
+quantile(ts_decay_linear(divide(call_option_market_value_30d, call_option_projected_underlying_365d), 21))
+quantile(ts_decay_linear(divide(put_option_implied_volatility_91d, call_option_implied_volatility_91d), 21))
+quantile(-ts_decay_linear(divide(call_option_volatility_exposure_30d, call_option_time_decay_30d), 21))

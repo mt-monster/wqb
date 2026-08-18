@@ -1,0 +1,96 @@
+{
+ "sim": "https://api.worldquantbrain.com/simulations/sNvw56Fp4gB9MMyGwmqg0c",
+ "ts": 1785864295.083972,
+ "alphas": [
+  {
+   "id": "vRNgeavb",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60))",
+   "sh": 2.23,
+   "fit": 1.36,
+   "tvr": 0.1303,
+   "ret": 0.0488,
+   "2y": 1.35,
+   "rn": 1.75,
+   "subU": 1.22,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "QPGX2mG5",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 44), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60))",
+   "sh": 2.25,
+   "fit": 1.36,
+   "tvr": 0.133,
+   "ret": 0.0488,
+   "2y": 1.34,
+   "rn": 1.8,
+   "subU": 1.2,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "0mpvenpr",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 40))",
+   "sh": 2.14,
+   "fit": 1.22,
+   "tvr": 0.1415,
+   "ret": 0.0463,
+   "2y": 1.31,
+   "rn": 1.65,
+   "subU": 1.14,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "ak1vAX15",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 80))",
+   "sh": 2.18,
+   "fit": 1.35,
+   "tvr": 0.1242,
+   "ret": 0.0479,
+   "2y": 1.21,
+   "rn": 1.76,
+   "subU": 1.24,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "RRmW2070",
+   "code": "add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 60), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60))",
+   "sh": 2.25,
+   "fit": 1.4,
+   "tvr": 0.1283,
+   "ret": 0.0496,
+   "2y": 1.37,
+   "rn": 1.74,
+   "subU": 1.24,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  },
+  {
+   "id": "WjA8aK7P",
+   "code": "zscore(add(ts_rank(ts_backfill(winsorize(star_eps_surprise_prediction_fy1, std=5), 60), 52), ts_rank(ts_backfill(winsorize(mdl110_score, std=5), 60), 60)))",
+   "sh": 2.23,
+   "fit": 1.36,
+   "tvr": 0.1303,
+   "ret": 0.0487,
+   "2y": 1.35,
+   "rn": 1.74,
+   "subU": 1.22,
+   "failed": [
+    "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE"
+   ]
+  }
+ ]
+}
