@@ -1,0 +1,61 @@
+{
+  "wave_id": "MEA_W1_ANALYST7_V2",
+  "region": "MEA",
+  "dataset": "analyst7",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "target_pyramid": "analyst",
+  "note": "VECTOR字段必须用vec_*聚合",
+  "expressions": [
+    {
+      "id": "A7V2_001",
+      "expr": "rank(ts_zscore(vec_avg(analyst_eps_upward_revisions_4weeks) / (vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "EPS revision ratio - 修正动量比"
+    },
+    {
+      "id": "A7V2_002",
+      "expr": "rank(ts_zscore(vec_avg(analyst_net_income_raised_count_one_week) / (vec_avg(analyst_net_income_downward_revision_count_4wks) + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "Net income revision momentum - 净利润修正动量"
+    },
+    {
+      "id": "A7V2_003",
+      "expr": "rank(ts_zscore(vec_avg(analyst_consensus_mean_roe) - vec_avg(analyst_mean_roe_3m_ago), 60))",
+      "style": "estimate_change",
+      "desc": "ROE estimate change 3m - ROE预期变化"
+    },
+    {
+      "id": "A7V2_004",
+      "expr": "rank(ts_zscore(vec_avg(analyst_mean_revenue) - vec_avg(analyst_mean_revenue_three_months_ago), 60))",
+      "style": "estimate_change",
+      "desc": "Revenue estimate change 3m - 营收预期变化"
+    },
+    {
+      "id": "A7V2_005",
+      "expr": "rank(ts_zscore(vec_avg(analyst_flash_mean_eps) - vec_avg(analyst_median_eps_estimate), 20))",
+      "style": "flash_signal",
+      "desc": "Flash vs consensus EPS - 闪估与共识差异"
+    },
+    {
+      "id": "A7V2_006",
+      "expr": "rank(ts_zscore(vec_avg(analyst_bps_raised_count_1m) / (vec_avg(analyst_bps_lowered_count_1m) + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "BPS revision ratio - 每股账面价值修正比"
+    },
+    {
+      "id": "A7V2_007",
+      "expr": "rank(ts_zscore(vec_avg(analyst_dividend_per_share_raises_1m_count) / (vec_avg(analyst_lowered_dividend_per_share_count_1m) + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "DPS revision ratio - 股息修正比"
+    },
+    {
+      "id": "A7V2_008",
+      "expr": "rank(ts_zscore(vec_avg(analyst_consensus_mean_estimate) - vec_avg(analyst_consensus_mean_3m_ago), 60))",
+      "style": "estimate_change",
+      "desc": "Consensus estimate change 3m - 共识预期变化"
+    }
+  ]
+}

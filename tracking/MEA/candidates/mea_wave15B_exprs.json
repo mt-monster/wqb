@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "wave": "15B",
+    "source": "manual_optimization",
+    "region": "MEA",
+    "created_at": "2026-08-19T19:40:00",
+    "input": 8,
+    "duplicates_dropped": 0,
+    "selected": 8,
+    "coverage_injected": 0,
+    "buckets": {
+      "rank>ts_zscore": 3,
+      "add>rank": 3,
+      "subtract>rank": 1,
+      "rank>ts_delta": 1
+    },
+    "skeleton_distribution": {
+      "linear_mix": 4,
+      "single": 4
+    },
+    "linear_mix_cap": 0.5,
+    "diversity_enhanced": false,
+    "notes": "Wave15B: optimized model31 expressions based on wave15A best performer (roe_pct_t4q)"
+  },
+  "expressions": [
+    "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+    "rank(ts_zscore(mdl31_roe_pct_t4q, 22))",
+    "rank(ts_zscore(mdl31_roe_pct_last_qtr, 60))",
+    "add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_gm_pct_t4q, 60)))",
+    "add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_om_pct_t4q, 60)))",
+    "add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_acc_chg_1_qtr, 60)))",
+    "subtract(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_dse_last_qtr, 60)))",
+    "rank(ts_delta(mdl31_roe_pct_t4q, 22))"
+  ]
+}

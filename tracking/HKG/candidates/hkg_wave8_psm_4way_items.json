@@ -1,0 +1,84 @@
+[
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路 IV.3+ARM.25+PB.25+PE.2",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_ev_ebitda_component_score_3)))",
+  "note": "四路 IV.3+ARM.25+PB.25+EV.2",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路 IV.3+ARM.3+PB.2+PE.2",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(0.35*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_ev_ebitda_component_score_3)))",
+  "note": "四路 IV.35+ARM.25+PB.2+EV.2",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(add(0.25*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.2*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3))), 0.15*subtract(0, rank(rel_val_ev_ebitda_component_score_3)))",
+  "note": "五路 IV.25+ARM.2+PB.2+PE.2+EV.15",
+  "decay": 2
+ },
+ {
+  "code": "ts_rank(add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*subtract(0, rank(rel_val_p_book_component_score_3))), 126)",
+  "note": "三路 ts_rank126 提2y",
+  "decay": 2
+ },
+ {
+  "code": "ts_rank(add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*subtract(0, rank(rel_val_p_book_component_score_3))), 63)",
+  "note": "三路 ts_rank63 提2y",
+  "decay": 2
+ },
+ {
+  "code": "ts_rank(add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*subtract(0, rank(rel_val_p_book_component_score_3))), 252)",
+  "note": "三路 ts_rank252 提2y",
+  "decay": 2
+ },
+ {
+  "code": "ts_rank(add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3))), 126)",
+  "note": "四路PE ts_rank126",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路PE decay4",
+  "decay": 4
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路PE decay6",
+  "decay": 6
+ },
+ {
+  "code": "subtract(0, rank(rel_val_pe_component_score_3))",
+  "note": "PE 镜像 单字段",
+  "decay": 2
+ },
+ {
+  "code": "subtract(0, rank(rel_val_ev_ebitda_component_score_3))",
+  "note": "EV-EBITDA 镜像 单字段",
+  "decay": 2
+ },
+ {
+  "code": "rank(rel_val_pe_component_score_3)",
+  "note": "PE 原始 单字段",
+  "decay": 2
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路PE trunc0.05",
+  "decay": 2,
+  "truncation": 0.05
+ },
+ {
+  "code": "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*subtract(0, rank(rel_val_pe_component_score_3)))",
+  "note": "四路PE trunc0.12",
+  "decay": 2,
+  "truncation": 0.12
+ }
+]

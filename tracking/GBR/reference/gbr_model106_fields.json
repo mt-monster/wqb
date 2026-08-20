@@ -1,0 +1,126 @@
+{
+ "dataset": "model106",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 14
+ },
+ "field_count": 14,
+ "fetched_at": "2026-08-19T03:41:09",
+ "fields": [
+  {
+   "id": "mdl106_country",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Country of listing"
+  },
+  {
+   "id": "mdl106_dividend",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Forecast dividend yield for the next 12 months (percent)"
+  },
+  {
+   "id": "mdl106_fmb",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Measure of a stock’s downside sensitivity in bear markets; higher values imply greater susceptibility during market down"
+  },
+  {
+   "id": "mdl106_fnb",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Bad News Factor indicating the stock’s sensitivity to negative news and its tendency to underperform during adverse even"
+  },
+  {
+   "id": "mdl106_global_evaluation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Composite multi-criteria evaluation score combining fundamentals, technicals, and risk; range -2 (negative) to +2 (posit"
+  },
+  {
+   "id": "mdl106_mkt_cap",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market capitalization in USD billions, calculated as share price times shares outstanding"
+  },
+  {
+   "id": "mdl106_pr",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "4-week performance relative to the national or regional index, in percent"
+  },
+  {
+   "id": "mdl106_price",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Latest daily stock price in the security’s trading currency"
+  },
+  {
+   "id": "mdl106_risk",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "risk levels by historic price"
+  },
+  {
+   "id": "mdl106_rv",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Valuation rating from -2 to +2 indicating whether the stock appears overvalued or undervalued relative to growth potenti"
+  },
+  {
+   "id": "mdl106_stars",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Overall star rating summarizing the four pillars, on a 0–4 scale"
+  },
+  {
+   "id": "mdl106_tre",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Earnings Revision (Revenue) Trend score in the range [-1, 1], with positive values indicating upward revisions"
+  },
+  {
+   "id": "mdl106_tt",
+   "type": "MATRIX",
+   "coverage": 0.3782,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Medium-term technical trend indicator: +1 positive, -1 negative; includes a tech reverse price threshold where the trend"
+  },
+  {
+   "id": "mdl106_ycc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code of the security (currency used for price and related fields)"
+  }
+ ]
+}

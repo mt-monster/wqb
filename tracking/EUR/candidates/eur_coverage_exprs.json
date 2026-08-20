@@ -1,0 +1,35 @@
+{
+ "meta": {
+  "source": "operator_coverage.semantic",
+  "contract_rule_id": "explore_contract_EUR_20260818_222511_783255",
+  "required_operators": [
+   "group_backfill",
+   "group_cartesian_product",
+   "group_count",
+   "group_mean",
+   "group_neutralize",
+   "group_rank",
+   "group_scale",
+   "group_std_dev",
+   "group_sum",
+   "ts_arg_max",
+   "ts_arg_min",
+   "ts_corr"
+  ],
+  "region": "EUR"
+ },
+ "expressions": [
+  "group_backfill(combined_technical_indicators, feature_category_label)",
+  "group_cartesian_product(combined_technical_indicators, feature_category_label)",
+  "group_count(combined_technical_indicators, feature_category_label)",
+  "group_mean(combined_technical_indicators, feature_category_label)",
+  "group_neutralize(combined_technical_indicators, feature_category_label)",
+  "group_rank(combined_technical_indicators, feature_category_label)",
+  "group_scale(combined_technical_indicators, feature_category_label)",
+  "group_std_dev(combined_technical_indicators, feature_category_label)",
+  "group_sum(combined_technical_indicators, feature_category_label)",
+  "ts_arg_max(combined_technical_indicators, 20)",
+  "ts_arg_min(combined_technical_indicators, 20)",
+  "ts_corr(analyst_target_price_deviation, asset_turnover_ratio_metric, 20)"
+ ]
+}

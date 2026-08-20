@@ -1,0 +1,119 @@
+[
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_illiq_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_illiq_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_illiq_d4",
+  "decay": 4,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_illiq_d4",
+  "decay": 4,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_illiq_sector_d6",
+  "decay": 6,
+  "neut": "SECTOR",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M10_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M10_d6_t03",
+  "decay": 6,
+  "truncation": 0.03,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M10_d4_t05",
+  "decay": 4,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "ts_decay_linear(add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1)), 3)",
+  "note": "45325_tsdecay3_M10_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "ts_decay_linear(add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1)), 5)",
+  "note": "45325_tsdecay5_M10_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M1_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M1_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M1_d4",
+  "decay": 4,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.5*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "532_illiq_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.5*rank(img60d_return_quantile1), 0.25*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "525_M10_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_M10_d6_control",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ }
+]

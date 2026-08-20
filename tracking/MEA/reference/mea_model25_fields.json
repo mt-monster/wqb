@@ -1,0 +1,1726 @@
+{
+ "dataset": "model25",
+ "region": "MEA",
+ "universe": "TOP400",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 214
+ },
+ "field_count": 214,
+ "fetched_at": "2026-08-19T18:57:36",
+ "fields": [
+  {
+   "id": "accruals_component_score",
+   "type": "MATRIX",
+   "coverage": 0.917,
+   "userCount": 56,
+   "alphaCount": 201,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "accruals_component_score_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 25,
+   "alphaCount": 61,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "cash_flow_component_score",
+   "type": "MATRIX",
+   "coverage": 0.9544,
+   "userCount": 35,
+   "alphaCount": 79,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "cash_flow_component_score_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 20,
+   "alphaCount": 61,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9651,
+   "userCount": 22,
+   "alphaCount": 88,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 23,
+   "alphaCount": 109,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_cb_01",
+   "type": "MATRIX",
+   "coverage": 0.9375,
+   "userCount": 158,
+   "alphaCount": 642,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_change_1_day",
+   "type": "MATRIX",
+   "coverage": 0.9563,
+   "userCount": 140,
+   "alphaCount": 336,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_change_1_day_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 21,
+   "alphaCount": 117,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_current",
+   "type": "MATRIX",
+   "coverage": 0.9477,
+   "userCount": 100,
+   "alphaCount": 221,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_current_cb",
+   "type": "MATRIX",
+   "coverage": 0.9811,
+   "userCount": 24,
+   "alphaCount": 87,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_raw",
+   "type": "MATRIX",
+   "coverage": 0.8949,
+   "userCount": 112,
+   "alphaCount": 344,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "earnings_quality_score_raw_cb",
+   "type": "MATRIX",
+   "coverage": 0.5175,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "exclusions_component_score",
+   "type": "MATRIX",
+   "coverage": 0.9592,
+   "userCount": 28,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "exclusions_component_score_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 16,
+   "alphaCount": 47,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v10",
+   "type": "MATRIX",
+   "coverage": 0.9619,
+   "userCount": 129,
+   "alphaCount": 456,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v11",
+   "type": "MATRIX",
+   "coverage": 0.9471,
+   "userCount": 126,
+   "alphaCount": 290,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v12",
+   "type": "MATRIX",
+   "coverage": 0.9257,
+   "userCount": 57,
+   "alphaCount": 163,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v13",
+   "type": "MATRIX",
+   "coverage": 0.9256,
+   "userCount": 76,
+   "alphaCount": 296,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v19",
+   "type": "MATRIX",
+   "coverage": 0.3201,
+   "userCount": 14,
+   "alphaCount": 22,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v5",
+   "type": "MATRIX",
+   "coverage": 0.9619,
+   "userCount": 57,
+   "alphaCount": 164,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v6",
+   "type": "MATRIX",
+   "coverage": 0.9424,
+   "userCount": 34,
+   "alphaCount": 66,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v7",
+   "type": "MATRIX",
+   "coverage": 0.942,
+   "userCount": 28,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v8",
+   "type": "MATRIX",
+   "coverage": 0.9621,
+   "userCount": 27,
+   "alphaCount": 115,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_bs_v9",
+   "type": "MATRIX",
+   "coverage": 0.9481,
+   "userCount": 31,
+   "alphaCount": 127,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v10",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 43,
+   "alphaCount": 130,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v11",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 62,
+   "alphaCount": 146,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v12",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 30,
+   "alphaCount": 104,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v20",
+   "type": "MATRIX",
+   "coverage": 0.9938,
+   "userCount": 28,
+   "alphaCount": 129,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v21",
+   "type": "MATRIX",
+   "coverage": 0.9628,
+   "userCount": 24,
+   "alphaCount": 49,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v22",
+   "type": "MATRIX",
+   "coverage": 0.9937,
+   "userCount": 28,
+   "alphaCount": 88,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v23",
+   "type": "MATRIX",
+   "coverage": 0.9623,
+   "userCount": 24,
+   "alphaCount": 101,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v27",
+   "type": "MATRIX",
+   "coverage": 0.9563,
+   "userCount": 12,
+   "alphaCount": 40,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v6",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 72,
+   "alphaCount": 142,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v7",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 35,
+   "alphaCount": 62,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v8",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 84,
+   "alphaCount": 208,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cb_v9",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 36,
+   "alphaCount": 80,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v10",
+   "type": "MATRIX",
+   "coverage": 0.8744,
+   "userCount": 17,
+   "alphaCount": 34,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v11",
+   "type": "MATRIX",
+   "coverage": 0.8564,
+   "userCount": 28,
+   "alphaCount": 104,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v12",
+   "type": "MATRIX",
+   "coverage": 0.8106,
+   "userCount": 18,
+   "alphaCount": 67,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v13",
+   "type": "MATRIX",
+   "coverage": 0.8945,
+   "userCount": 27,
+   "alphaCount": 54,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v14",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 23,
+   "alphaCount": 72,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v15",
+   "type": "MATRIX",
+   "coverage": 0.8405,
+   "userCount": 23,
+   "alphaCount": 105,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v16",
+   "type": "MATRIX",
+   "coverage": 0.8144,
+   "userCount": 19,
+   "alphaCount": 40,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v19",
+   "type": "MATRIX",
+   "coverage": 0.8838,
+   "userCount": 16,
+   "alphaCount": 39,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v5",
+   "type": "MATRIX",
+   "coverage": 0.8937,
+   "userCount": 21,
+   "alphaCount": 56,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v6",
+   "type": "MATRIX",
+   "coverage": 0.879,
+   "userCount": 21,
+   "alphaCount": 45,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v7",
+   "type": "MATRIX",
+   "coverage": 0.8945,
+   "userCount": 17,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v8",
+   "type": "MATRIX",
+   "coverage": 0.8812,
+   "userCount": 16,
+   "alphaCount": 50,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_cfs_v9",
+   "type": "MATRIX",
+   "coverage": 0.8916,
+   "userCount": 20,
+   "alphaCount": 43,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v10",
+   "type": "MATRIX",
+   "coverage": 0.916,
+   "userCount": 43,
+   "alphaCount": 196,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v11",
+   "type": "MATRIX",
+   "coverage": 0.8301,
+   "userCount": 63,
+   "alphaCount": 219,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v12",
+   "type": "MATRIX",
+   "coverage": 0.8274,
+   "userCount": 98,
+   "alphaCount": 384,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v13",
+   "type": "MATRIX",
+   "coverage": 0.9164,
+   "userCount": 21,
+   "alphaCount": 62,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v14",
+   "type": "MATRIX",
+   "coverage": 0.934,
+   "userCount": 81,
+   "alphaCount": 284,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v15",
+   "type": "MATRIX",
+   "coverage": 0.9173,
+   "userCount": 27,
+   "alphaCount": 99,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v16",
+   "type": "MATRIX",
+   "coverage": 0.9483,
+   "userCount": 69,
+   "alphaCount": 270,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v17",
+   "type": "MATRIX",
+   "coverage": 0.9292,
+   "userCount": 32,
+   "alphaCount": 98,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v18",
+   "type": "MATRIX",
+   "coverage": 0.3342,
+   "userCount": 12,
+   "alphaCount": 31,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v24",
+   "type": "MATRIX",
+   "coverage": 0.9484,
+   "userCount": 113,
+   "alphaCount": 410,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v25",
+   "type": "MATRIX",
+   "coverage": 0.9293,
+   "userCount": 40,
+   "alphaCount": 105,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v26",
+   "type": "MATRIX",
+   "coverage": 0.9124,
+   "userCount": 123,
+   "alphaCount": 347,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v27",
+   "type": "MATRIX",
+   "coverage": 0.857,
+   "userCount": 124,
+   "alphaCount": 378,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v28",
+   "type": "MATRIX",
+   "coverage": 0.3601,
+   "userCount": 17,
+   "alphaCount": 50,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v29",
+   "type": "MATRIX",
+   "coverage": 0.8209,
+   "userCount": 51,
+   "alphaCount": 181,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v30",
+   "type": "MATRIX",
+   "coverage": 0.8185,
+   "userCount": 46,
+   "alphaCount": 153,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v31",
+   "type": "MATRIX",
+   "coverage": 0.9347,
+   "userCount": 59,
+   "alphaCount": 185,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v32",
+   "type": "MATRIX",
+   "coverage": 0.9179,
+   "userCount": 31,
+   "alphaCount": 132,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v33",
+   "type": "MATRIX",
+   "coverage": 0.9176,
+   "userCount": 38,
+   "alphaCount": 180,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v34",
+   "type": "MATRIX",
+   "coverage": 0.9347,
+   "userCount": 15,
+   "alphaCount": 35,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v35",
+   "type": "MATRIX",
+   "coverage": 0.9179,
+   "userCount": 11,
+   "alphaCount": 26,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v37",
+   "type": "MATRIX",
+   "coverage": 0.9456,
+   "userCount": 65,
+   "alphaCount": 202,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v38",
+   "type": "MATRIX",
+   "coverage": 0.9272,
+   "userCount": 30,
+   "alphaCount": 78,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v39",
+   "type": "MATRIX",
+   "coverage": 0.927,
+   "userCount": 27,
+   "alphaCount": 69,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v43",
+   "type": "MATRIX",
+   "coverage": 0.9877,
+   "userCount": 50,
+   "alphaCount": 127,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v44",
+   "type": "MATRIX",
+   "coverage": 0.972,
+   "userCount": 29,
+   "alphaCount": 87,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v45",
+   "type": "MATRIX",
+   "coverage": 0.9717,
+   "userCount": 28,
+   "alphaCount": 101,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v46",
+   "type": "MATRIX",
+   "coverage": 0.9877,
+   "userCount": 17,
+   "alphaCount": 47,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v47",
+   "type": "MATRIX",
+   "coverage": 0.972,
+   "userCount": 13,
+   "alphaCount": 58,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v48",
+   "type": "MATRIX",
+   "coverage": 0.9878,
+   "userCount": 88,
+   "alphaCount": 310,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v49",
+   "type": "MATRIX",
+   "coverage": 0.972,
+   "userCount": 28,
+   "alphaCount": 96,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v5",
+   "type": "MATRIX",
+   "coverage": 0.9474,
+   "userCount": 56,
+   "alphaCount": 342,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v50",
+   "type": "MATRIX",
+   "coverage": 0.9718,
+   "userCount": 41,
+   "alphaCount": 154,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v51",
+   "type": "MATRIX",
+   "coverage": 0.2552,
+   "userCount": 10,
+   "alphaCount": 23,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v6",
+   "type": "MATRIX",
+   "coverage": 0.9205,
+   "userCount": 32,
+   "alphaCount": 94,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v7",
+   "type": "MATRIX",
+   "coverage": 0.9173,
+   "userCount": 27,
+   "alphaCount": 95,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v8",
+   "type": "MATRIX",
+   "coverage": 0.9143,
+   "userCount": 36,
+   "alphaCount": 189,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_is_v9",
+   "type": "MATRIX",
+   "coverage": 0.9332,
+   "userCount": 107,
+   "alphaCount": 476,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v10",
+   "type": "MATRIX",
+   "coverage": 0.9873,
+   "userCount": 60,
+   "alphaCount": 217,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v11",
+   "type": "MATRIX",
+   "coverage": 0.9873,
+   "userCount": 76,
+   "alphaCount": 335,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v12",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 37,
+   "alphaCount": 177,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v13",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 37,
+   "alphaCount": 106,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v14",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 38,
+   "alphaCount": 202,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v15",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 18,
+   "alphaCount": 83,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v16",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 24,
+   "alphaCount": 66,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v17",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 27,
+   "alphaCount": 58,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v18",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 27,
+   "alphaCount": 94,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v19",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 21,
+   "alphaCount": 47,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v20",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 26,
+   "alphaCount": 70,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v21",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 17,
+   "alphaCount": 44,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v22",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 22,
+   "alphaCount": 50,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v23",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 28,
+   "alphaCount": 97,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v24",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 24,
+   "alphaCount": 76,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v25",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 16,
+   "alphaCount": 64,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v26",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 21,
+   "alphaCount": 55,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v27",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 21,
+   "alphaCount": 84,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v28",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 26,
+   "alphaCount": 69,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v29",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 21,
+   "alphaCount": 62,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v30",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 25,
+   "alphaCount": 61,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v31",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 19,
+   "alphaCount": 82,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v32",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 21,
+   "alphaCount": 66,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v33",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 24,
+   "alphaCount": 75,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v34",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 22,
+   "alphaCount": 68,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v35",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 22,
+   "alphaCount": 61,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_pc_v5",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 38,
+   "alphaCount": 215,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v6",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 74,
+   "alphaCount": 156,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v7",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 45,
+   "alphaCount": 77,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v8",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 52,
+   "alphaCount": 123,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_pc_v9",
+   "type": "MATRIX",
+   "coverage": 0.9918,
+   "userCount": 77,
+   "alphaCount": 278,
+   "description": "StarMine Earnings Quality headline score for the Middle East & Africa universe expressed as a cross-sectional percentile"
+  },
+  {
+   "id": "mdl25_eq_rd_v10",
+   "type": "MATRIX",
+   "coverage": 0.9197,
+   "userCount": 25,
+   "alphaCount": 54,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v11",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 18,
+   "alphaCount": 48,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v12",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 12,
+   "alphaCount": 49,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v13",
+   "type": "MATRIX",
+   "coverage": 0.948,
+   "userCount": 45,
+   "alphaCount": 102,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v14",
+   "type": "MATRIX",
+   "coverage": 0.9275,
+   "userCount": 18,
+   "alphaCount": 65,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v15",
+   "type": "MATRIX",
+   "coverage": 0.9399,
+   "userCount": 50,
+   "alphaCount": 130,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v16",
+   "type": "MATRIX",
+   "coverage": 0.9196,
+   "userCount": 22,
+   "alphaCount": 72,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v17",
+   "type": "MATRIX",
+   "coverage": 0.6224,
+   "userCount": 9,
+   "alphaCount": 39,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v18",
+   "type": "MATRIX",
+   "coverage": 0.5315,
+   "userCount": 13,
+   "alphaCount": 24,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v19",
+   "type": "MATRIX",
+   "coverage": 0.6155,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v20",
+   "type": "MATRIX",
+   "coverage": 0.5245,
+   "userCount": 14,
+   "alphaCount": 28,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v5",
+   "type": "MATRIX",
+   "coverage": 0.9388,
+   "userCount": 15,
+   "alphaCount": 57,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v6",
+   "type": "MATRIX",
+   "coverage": 0.9187,
+   "userCount": 11,
+   "alphaCount": 26,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v7",
+   "type": "MATRIX",
+   "coverage": 0.9381,
+   "userCount": 57,
+   "alphaCount": 195,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v8",
+   "type": "MATRIX",
+   "coverage": 0.919,
+   "userCount": 16,
+   "alphaCount": 76,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rd_v9",
+   "type": "MATRIX",
+   "coverage": 0.9399,
+   "userCount": 59,
+   "alphaCount": 204,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rlev_v10",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 16,
+   "alphaCount": 41,
+   "description": "Long-Term Debt to Total Capital - 1 Quarter Difference (percentage-point change from the prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v11",
+   "type": "MATRIX",
+   "coverage": 0.9331,
+   "userCount": 41,
+   "alphaCount": 99,
+   "description": "(Total Debt - Cash) / EBITDA - Last Quarter (net debt to EBITDA for the most recent reported quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v12",
+   "type": "MATRIX",
+   "coverage": 0.9154,
+   "userCount": 33,
+   "alphaCount": 78,
+   "description": "(Total Debt - Cash) / EBITDA - 1 Quarter Difference (change from the prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v5",
+   "type": "MATRIX",
+   "coverage": 0.9617,
+   "userCount": 17,
+   "alphaCount": 54,
+   "description": "Assets to Equity - Last Quarter (total assets divided by shareholders’ equity for the most recent reported quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v6",
+   "type": "MATRIX",
+   "coverage": 0.9423,
+   "userCount": 14,
+   "alphaCount": 54,
+   "description": "Assets to Equity - 1 Quarter Difference (change from the prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v7",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 12,
+   "alphaCount": 28,
+   "description": "Debt to Equity - Last Quarter (total debt divided by shareholders’ equity for the most recent reported quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v8",
+   "type": "MATRIX",
+   "coverage": 0.9422,
+   "userCount": 18,
+   "alphaCount": 61,
+   "description": "Debt to Equity - 1 Quarter Difference (change from the prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v9",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 15,
+   "alphaCount": 32,
+   "description": "Long-Term Debt to Total Capital - Last Quarter (%) (long-term debt divided by long-term debt plus equity)"
+  },
+  {
+   "id": "mdl25_eq_rliq_v10",
+   "type": "MATRIX",
+   "coverage": 0.3158,
+   "userCount": 7,
+   "alphaCount": 29,
+   "description": "Times Interest Earned - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_rliq_v11",
+   "type": "MATRIX",
+   "coverage": 0.8223,
+   "userCount": 18,
+   "alphaCount": 36,
+   "description": "Cash Cycle - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v12",
+   "type": "MATRIX",
+   "coverage": 0.8031,
+   "userCount": 9,
+   "alphaCount": 23,
+   "description": "Cash Cycle - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_rliq_v5",
+   "type": "MATRIX",
+   "coverage": 0.6361,
+   "userCount": 12,
+   "alphaCount": 28,
+   "description": "Quick Ratio - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v6",
+   "type": "MATRIX",
+   "coverage": 0.6212,
+   "userCount": 8,
+   "alphaCount": 20,
+   "description": "Quick Ratio - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_rliq_v7",
+   "type": "MATRIX",
+   "coverage": 0.7481,
+   "userCount": 16,
+   "alphaCount": 32,
+   "description": "Current Ratio - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v8",
+   "type": "MATRIX",
+   "coverage": 0.7294,
+   "userCount": 11,
+   "alphaCount": 38,
+   "description": "Current Ratio - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_rliq_v9",
+   "type": "MATRIX",
+   "coverage": 0.3351,
+   "userCount": 13,
+   "alphaCount": 27,
+   "description": "Times Interest Earned - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_ro_v10",
+   "type": "MATRIX",
+   "coverage": 0.6149,
+   "userCount": 12,
+   "alphaCount": 33,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v11",
+   "type": "MATRIX",
+   "coverage": 0.6003,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v12",
+   "type": "MATRIX",
+   "coverage": 0.616,
+   "userCount": 6,
+   "alphaCount": 27,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v13",
+   "type": "MATRIX",
+   "coverage": 0.601,
+   "userCount": 7,
+   "alphaCount": 23,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v14",
+   "type": "MATRIX",
+   "coverage": 0.7186,
+   "userCount": 9,
+   "alphaCount": 34,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v15",
+   "type": "MATRIX",
+   "coverage": 0.7015,
+   "userCount": 13,
+   "alphaCount": 37,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v16",
+   "type": "MATRIX",
+   "coverage": 0.9326,
+   "userCount": 31,
+   "alphaCount": 109,
+   "description": "Net Operating Asset Turnover - Last Quarter (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v17",
+   "type": "MATRIX",
+   "coverage": 0.9726,
+   "userCount": 24,
+   "alphaCount": 63,
+   "description": "Adjusted Net Operating Asset Turnover - 1 Fiscal Year Difference (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v18",
+   "type": "MATRIX",
+   "coverage": 0.9593,
+   "userCount": 29,
+   "alphaCount": 92,
+   "description": "Average Accounts Receivable Days - Last Quarter (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v19",
+   "type": "MATRIX",
+   "coverage": 0.9213,
+   "userCount": 38,
+   "alphaCount": 120,
+   "description": "Average Accounts Receivable Days - 1 Quarter Difference (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v20",
+   "type": "MATRIX",
+   "coverage": 0.9027,
+   "userCount": 31,
+   "alphaCount": 64,
+   "description": "Inventory Turnover - Last Quarter (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v21",
+   "type": "MATRIX",
+   "coverage": 0.9495,
+   "userCount": 17,
+   "alphaCount": 87,
+   "description": "Inventory Turnover - 1 Quarter Difference (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v22",
+   "type": "MATRIX",
+   "coverage": 0.9351,
+   "userCount": 31,
+   "alphaCount": 123,
+   "description": "Return on Net Operating Assets (%) - 1 Quarter Difference (MEA region, D1 lag)"
+  },
+  {
+   "id": "mdl25_eq_ro_v5",
+   "type": "MATRIX",
+   "coverage": 0.9137,
+   "userCount": 18,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v6",
+   "type": "MATRIX",
+   "coverage": 0.812,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v7",
+   "type": "MATRIX",
+   "coverage": 0.7931,
+   "userCount": 8,
+   "alphaCount": 36,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v8",
+   "type": "MATRIX",
+   "coverage": 0.8051,
+   "userCount": 12,
+   "alphaCount": 38,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_ro_v9",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 4,
+   "alphaCount": 25,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v10",
+   "type": "MATRIX",
+   "coverage": 0.9065,
+   "userCount": 17,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v11",
+   "type": "MATRIX",
+   "coverage": 0.925,
+   "userCount": 32,
+   "alphaCount": 92,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v12",
+   "type": "MATRIX",
+   "coverage": 0.908,
+   "userCount": 16,
+   "alphaCount": 33,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v13",
+   "type": "MATRIX",
+   "coverage": 0.9302,
+   "userCount": 22,
+   "alphaCount": 89,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v14",
+   "type": "MATRIX",
+   "coverage": 0.9264,
+   "userCount": 40,
+   "alphaCount": 136,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v15",
+   "type": "MATRIX",
+   "coverage": 0.9381,
+   "userCount": 54,
+   "alphaCount": 250,
+   "description": "Nonperforming loans as a percentage of total loans for the last fiscal year"
+  },
+  {
+   "id": "mdl25_eq_rp_v16",
+   "type": "MATRIX",
+   "coverage": 0.919,
+   "userCount": 23,
+   "alphaCount": 69,
+   "description": "Other Real Estate Owned (OREO) as a percentage of total loans for the last fiscal year"
+  },
+  {
+   "id": "mdl25_eq_rp_v17",
+   "type": "MATRIX",
+   "coverage": 0.8844,
+   "userCount": 26,
+   "alphaCount": 114,
+   "description": "Earnings retention ratio for the last quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v18",
+   "type": "MATRIX",
+   "coverage": 0.8628,
+   "userCount": 24,
+   "alphaCount": 106,
+   "description": "Quarter-over-quarter change in the earnings retention ratio (1 quarter difference)"
+  },
+  {
+   "id": "mdl25_eq_rp_v19",
+   "type": "MATRIX",
+   "coverage": 0.938,
+   "userCount": 61,
+   "alphaCount": 277,
+   "description": "Reinvestment rate (%) for the last quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v20",
+   "type": "MATRIX",
+   "coverage": 0.9187,
+   "userCount": 24,
+   "alphaCount": 54,
+   "description": "Quarter-over-quarter change in the reinvestment rate (%) (1 quarter difference)"
+  },
+  {
+   "id": "mdl25_eq_rp_v5",
+   "type": "MATRIX",
+   "coverage": 0.8162,
+   "userCount": 34,
+   "alphaCount": 100,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v6",
+   "type": "MATRIX",
+   "coverage": 0.8012,
+   "userCount": 25,
+   "alphaCount": 116,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v7",
+   "type": "MATRIX",
+   "coverage": 0.8243,
+   "userCount": 21,
+   "alphaCount": 73,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v8",
+   "type": "MATRIX",
+   "coverage": 0.822,
+   "userCount": 34,
+   "alphaCount": 113,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_rp_v9",
+   "type": "MATRIX",
+   "coverage": 0.9238,
+   "userCount": 28,
+   "alphaCount": 165,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v10",
+   "type": "MATRIX",
+   "coverage": 0.9651,
+   "userCount": 19,
+   "alphaCount": 74,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v12",
+   "type": "MATRIX",
+   "coverage": 0.8949,
+   "userCount": 36,
+   "alphaCount": 86,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v13",
+   "type": "MATRIX",
+   "coverage": 0.8946,
+   "userCount": 11,
+   "alphaCount": 46,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v14",
+   "type": "MATRIX",
+   "coverage": 0.917,
+   "userCount": 19,
+   "alphaCount": 80,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v16",
+   "type": "MATRIX",
+   "coverage": 0.9477,
+   "userCount": 33,
+   "alphaCount": 93,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v17",
+   "type": "MATRIX",
+   "coverage": 0.9474,
+   "userCount": 13,
+   "alphaCount": 38,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v18",
+   "type": "MATRIX",
+   "coverage": 0.9544,
+   "userCount": 15,
+   "alphaCount": 78,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v22",
+   "type": "MATRIX",
+   "coverage": 0.9563,
+   "userCount": 25,
+   "alphaCount": 87,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v6",
+   "type": "MATRIX",
+   "coverage": 0.9563,
+   "userCount": 37,
+   "alphaCount": 121,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v7",
+   "type": "MATRIX",
+   "coverage": 0.9561,
+   "userCount": 16,
+   "alphaCount": 57,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v8",
+   "type": "MATRIX",
+   "coverage": 0.9592,
+   "userCount": 14,
+   "alphaCount": 38,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_v9",
+   "type": "MATRIX",
+   "coverage": 0.9588,
+   "userCount": 12,
+   "alphaCount": 91,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "mdl25_eq_vr_v10",
+   "type": "MATRIX",
+   "coverage": 0.8902,
+   "userCount": 12,
+   "alphaCount": 32,
+   "description": "Return on Assets (%) (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v11",
+   "type": "MATRIX",
+   "coverage": 0.8374,
+   "userCount": 53,
+   "alphaCount": 153,
+   "description": "Return on Equity (%) (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v12",
+   "type": "MATRIX",
+   "coverage": 0.7513,
+   "userCount": 48,
+   "alphaCount": 196,
+   "description": "Return on Equity (%) (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v13",
+   "type": "MATRIX",
+   "coverage": 0.9774,
+   "userCount": 82,
+   "alphaCount": 390,
+   "description": "Earnings Retention (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v14",
+   "type": "MATRIX",
+   "coverage": 0.8692,
+   "userCount": 44,
+   "alphaCount": 165,
+   "description": "Earnings Retention (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v15",
+   "type": "MATRIX",
+   "coverage": 0.8147,
+   "userCount": 64,
+   "alphaCount": 189,
+   "description": "Reinvestment Rate (%) (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v16",
+   "type": "MATRIX",
+   "coverage": 0.9618,
+   "userCount": 33,
+   "alphaCount": 159,
+   "description": "Reinvestment Rate (%) (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v17",
+   "type": "MATRIX",
+   "coverage": 0.9572,
+   "userCount": 46,
+   "alphaCount": 158,
+   "description": "Effective Tax Rate (%) (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v18",
+   "type": "MATRIX",
+   "coverage": 0.9104,
+   "userCount": 40,
+   "alphaCount": 191,
+   "description": "Effective Tax Rate (%) (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v19",
+   "type": "MATRIX",
+   "coverage": 0.9135,
+   "userCount": 61,
+   "alphaCount": 174,
+   "description": "Net Margin (%) (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v5",
+   "type": "MATRIX",
+   "coverage": 0.975,
+   "userCount": 138,
+   "alphaCount": 704,
+   "description": "Asset Turnover (most recent reported quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v6",
+   "type": "MATRIX",
+   "coverage": 0.9388,
+   "userCount": 34,
+   "alphaCount": 102,
+   "description": "Asset Turnover (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v7",
+   "type": "MATRIX",
+   "coverage": 0.9388,
+   "userCount": 32,
+   "alphaCount": 167,
+   "description": "Leverage (Assets/Equity) (most recent quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v8",
+   "type": "MATRIX",
+   "coverage": 0.962,
+   "userCount": 22,
+   "alphaCount": 73,
+   "description": "Leverage (Assets/Equity) (previous quarter)"
+  },
+  {
+   "id": "mdl25_eq_vr_v9",
+   "type": "MATRIX",
+   "coverage": 0.8902,
+   "userCount": 25,
+   "alphaCount": 49,
+   "description": "Return on Assets (%) (most recent quarter)"
+  },
+  {
+   "id": "operating_efficiency_component_score",
+   "type": "MATRIX",
+   "coverage": 0.9563,
+   "userCount": 73,
+   "alphaCount": 189,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  },
+  {
+   "id": "operating_efficiency_component_score_cb",
+   "type": "MATRIX",
+   "coverage": 0.9945,
+   "userCount": 22,
+   "alphaCount": 119,
+   "description": "A vendor-specific variable or version identifier within a StarMine model, such as the Earnings Quality (EQ) model. The p"
+  }
+ ]
+}

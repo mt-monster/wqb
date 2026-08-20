@@ -12,6 +12,15 @@ from mcp_core import (mcp, brain_client, logger, save_config, _slim_checks, _sli
 
 from brain_api import SimulationSettings, SimulationData
 
+# 复用工作区 tools/lib 下的 vector_wrap（单一权威源，避免副本 drift）
+_REPO_TOOLS_LIB = Path(__file__).resolve().parents[1] / "tools" / "lib"
+if _REPO_TOOLS_LIB.is_dir() and str(_REPO_TOOLS_LIB) not in sys.path:
+    sys.path.insert(0, str(_REPO_TOOLS_LIB))
+try:
+    from vector_wrap import wrap_naked_vectors
+except Exception:  # pragma: no cover - 工作区布局异常时降级
+    wrap_naked_vectors = None
+
 @mcp.tool()
 
 async def create_simulation(
@@ -523,5 +532,68 @@ async def lookINTO_SimError_message(locations: Sequence[str]) -> dict:
                 "raw": None
             })
     return _slim_text_lookup({"results": results}, n=2000)
+
+
+@mcp.tool()
+async def fix_vector_fields(
+    alpha_expressions: List[str],
+    region: str,
+    dataset_id: str,
+    universe: str,
+    delay: int = 1,
+    agg: Optional[str] = None,
+) -> Dict[str, Any]:
+    """本地预检并自动修复：把表达式中裸用的 VECTOR(event) 字段裹上 vec_* 聚合。
+
+    平台规则：VECTOR 类型字段必须先经 vec_* 聚合成标量(MATRIX)，才能被
+    ts_*/divide/subtract/add/rank 等常规算子使用，否则提交后平台报
+    "does not support event inputs"（HTTP 400），浪费一次回测。
+
+    本工具在 create_simulation / create_multi_simulation 之前调用：
+    按 dataset_id 拉取字段类型，找出 type==VECTOR 的字段，把表达式中
+    未被 vec_* 包裹的出现位置自动裹上聚合算子（幂等，已裹的不动）。
+
+    Args:
+        alpha_expressions: 待检测/修复的表达式列表
+        region: 市场区域（如 "USA"、"EUR"、"ASI"）
+        dataset_id: 数据集 ID（用于拉取字段类型）
+        universe: 股票池（与回测一致）
+        delay: 数据延迟（0 或 1）
+        agg: 强制指定聚合算子（如 "vec_sum"）；None 则按字段语义自动选
+             （count/sum/num/vol 等 -> vec_sum，其余 -> vec_avg）
+
+    Returns:
+        {"results": [{"original", "fixed", "wrapped_fields", "changed"}],
+         "vector_fields": [...], "any_changed": bool}
+        调用方应用 fixed 替换原表达式后再提交回测。
+    """
+    if wrap_naked_vectors is None:
+        return {"error": "vector_wrap 模块不可用（tools/lib 未找到），无法本地修复"}
+    try:
+        await brain_client.ensure_authenticated()
+        resp = await brain_client.get_datafields(
+            "EQUITY", region, delay, universe, "false", dataset_id, "VECTOR", None, False)
+        fields = resp.get("results") if isinstance(resp, dict) else resp
+        if not isinstance(fields, list):
+            fields = (resp or {}).get("fields", []) if isinstance(resp, dict) else []
+        vector_fields = [f.get("id") for f in fields
+                         if isinstance(f, dict) and str(f.get("type", "")).upper() == "VECTOR" and f.get("id")]
+        if not vector_fields:
+            return {"results": [{"original": e, "fixed": e, "wrapped_fields": [], "changed": False}
+                                for e in alpha_expressions],
+                    "vector_fields": [], "any_changed": False,
+                    "note": "数据集无 VECTOR 字段或拉取为空，未做改动"}
+        results, any_changed = [], False
+        for e in alpha_expressions:
+            fixed, wrapped = wrap_naked_vectors(e, vector_fields, agg=agg)
+            changed = bool(wrapped)
+            any_changed = any_changed or changed
+            results.append({"original": e, "fixed": fixed,
+                            "wrapped_fields": wrapped, "changed": changed})
+        return {"results": results, "vector_fields": sorted(vector_fields),
+                "any_changed": any_changed}
+    except Exception as e:
+        return {"error": f"fix_vector_fields 失败: {str(e)}"}
+
 
 # --- Main entry point ---

@@ -74,18 +74,23 @@ async def submit_alpha(alpha_id: str, force: bool = False) -> Dict[str, Any]:
 
 async def get_submission_quota() -> Dict[str, Any]:
     """
-    Estimate the REGULAR_SUBMISSION quota usage (rolling 48h window, limit 4).
+    Estimate the REGULAR_SUBMISSION quota usage — DUAL view (rolling + daily).
 
     RA and PPA share the same quota pool — PPA has no separate daily cap;
     its extra gates are theme matching, prod correlation, and pyramid lighting
     (3 alphas per category). D0 submissions carry a separate D0_SUBMISSION check.
 
-    This is a conservative read-only estimate (no POST /submit side effects):
-    counts OS alphas whose dateSubmitted falls inside the trailing window.
-    Platform-verified: REGULAR_SUBMISSION check shows limit=4 rolling 48h.
+    Read-only estimate (no POST /submit side effects). Returns both lenses:
+      * `remaining` / `used` — legacy rolling trailing-window estimate (limit=4,
+        48h), often undercounts the live cap.
+      * `daily_remaining` / `daily_used` — current local-day cap (empirically the
+        real platform limit: 4/day, resets at Beijing midnight). Use this for
+        immediate submit capacity.
+
+    Platform-verified: REGULAR_SUBMISSION check shows limit=4.
 
     Returns:
-        Quota usage with remaining slots and earliest release time.
+        Quota usage with remaining slots (both views) and earliest release time.
     """
     try:
         return await brain_client.get_submission_quota()

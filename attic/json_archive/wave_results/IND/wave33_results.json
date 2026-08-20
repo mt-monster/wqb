@@ -1,0 +1,22 @@
+{
+  "wave": 33,
+  "theme": "anl39 EPS差分 破LADDER冲刺（三rev腿/长反转）",
+  "region": "IND",
+  "neut": "SUBINDUSTRY",
+  "decay": 3,
+  "n": 10,
+  "candidates_fullgate": 3,
+  "results": [
+    {"alpha": "LL7W3e1L", "note": "m33z252 r21*.2+r63*.2+r126*.25", "verdict": "待查"},
+    {"alpha": "E5l1x3E0", "note": "m33z252 r21*.15+r63*.2+r126*.3", "sh": 1.76, "fit": 1.48, "robust": 1.05, "y2": 2.14, "tvr": 0.0886, "margin": 0.00199, "verdict": "全硬闸过(failed_ra=0)! 但self_corr=0.787 vs 1YzLbZzQ 撞车"},
+    {"alpha": "88lbXAQl", "note": "m33z252 四腿各.15", "verdict": "待查"},
+    {"alpha": "N1708Mr8", "note": "m33z252 r21*.15+r63*.15+r126*.2+r252*.2", "verdict": "待查"},
+    {"alpha": "mLjpQOV9", "note": "m33z252 r63*.3+r126*.3", "verdict": "待查"},
+    {"alpha": "9qXYko79", "note": "m33z252 r63*.25+r126*.35", "sh": 1.78, "fit": 1.50, "robust": 1.05, "y2": 2.10, "tvr": 0.0861, "margin": 0.00206, "verdict": "全硬闸过(failed_ra=0)! 同核心corr撞车"},
+    {"alpha": "gJj6Lv9Q", "note": "m33z300 r21*.2+r63*.2+r126*.2", "verdict": "待查"},
+    {"alpha": "e7zmEAxN", "note": "m33z300 r21*.15+r63*.2+r126*.25", "verdict": "待查"},
+    {"alpha": "np79r08E", "note": "m33z252 r126*.55(纯长反转单腿,无rev21)", "sh": 1.79, "fit": 1.51, "robust": 1.06, "y2": 2.08, "tvr": 0.0835, "margin": 0.00213, "verdict": "全硬闸过(failed_ra=0)! 但self_corr=0.783 vs 1YzLbZzQ 撞车"},
+    {"alpha": "mLjpQO59", "note": "m28z252 r21*.2+r63*.2+r126*.25", "verdict": "待查"}
+  ],
+  "verdict": "重大突破:3个候选(E5l1x3E0/np79r08E/9qXYko79)全硬闸过 failed_ra_count=0! sh 1.76-1.79, 2Y 2.08-2.14, ROBUST 1.05-1.06。关键=三rev腿/长反转(rev126权重0.3+)把2Y从1.52推到2.1。但全部因保留diff(anl39_ttmepsincx,anl39_qepsinclxo)核心,与1YzLbZzQ self_corr~0.78>0.7撞车(prod_corr也0.786)。根本困境:1YzLbZzQ已占据anl39 TTM-Q EPS差分核心,任何保留该核心的变体corr都>0.7。wave30已验证其他anl39字段(ptmepsincx/aepsinclxo/除非常)信号全崩。结论:anl39 TTM-Q核心无法差异化,需彻底换信号或换区域。"
+}

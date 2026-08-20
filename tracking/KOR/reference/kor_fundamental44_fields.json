@@ -1,0 +1,110 @@
+{
+ "dataset": "fundamental44",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 12
+ },
+ "field_count": 12,
+ "fetched_at": "2026-08-19T15:58:02",
+ "fields": [
+  {
+   "id": "fnd44_cashflow_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 24,
+   "alphaCount": 55,
+   "description": "Accruals computed based on the difference between accounting earnings and cash flow from operations, scaled by total ass"
+  },
+  {
+   "id": "fnd44_factor_benford",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 42,
+   "alphaCount": 111,
+   "description": "Benford forensic score measuring deviations from expected digit frequency distributions (per Benford’s Law) in financial"
+  },
+  {
+   "id": "fnd44_fscore",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 39,
+   "alphaCount": 104,
+   "description": "A composite model-derived score predicting the likelihood of accounting misstatements by aggregating signals from accrua"
+  },
+  {
+   "id": "fnd44_jones_cf_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 17,
+   "alphaCount": 33,
+   "description": "Accruals calculated using the (original) Jones Model, a standard approach to estimate discretionary and non-discretionar"
+  },
+  {
+   "id": "fnd44_modified_jones_cf_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 22,
+   "alphaCount": 51,
+   "description": "Accruals calculated using the Modified Jones Model, which isolates discretionary accruals by assuming only credit sales "
+  },
+  {
+   "id": "fnd44_mscore",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 28,
+   "alphaCount": 54,
+   "description": "Beneish M-Score: a statistical score derived to assess the likelihood of earnings manipulation by analyzing key financia"
+  },
+  {
+   "id": "fnd44_perc_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 25,
+   "alphaCount": 54,
+   "description": "Net Accruals / Percentage Accruals"
+  },
+  {
+   "id": "fnd44_probability_restatement",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 24,
+   "alphaCount": 47,
+   "description": "A machine learning-based metric indicating the probability that a company will issue a financial statement restatement, "
+  },
+  {
+   "id": "fnd44_probability_restatement_global",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 23,
+   "alphaCount": 58,
+   "description": "Proprietary model-based probability, region-adjusted, estimating the likelihood that the company will restate its financ"
+  },
+  {
+   "id": "fnd44_score",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 25,
+   "alphaCount": 73,
+   "description": "An overall, equally weighted composite score assessing a company's accounting quality, aggregating metrics from various "
+  },
+  {
+   "id": "fnd44_working_capital_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 27,
+   "alphaCount": 58,
+   "description": "Working capital accruals, typically calculated as the accrual component of working capital, scaled by total assets as an"
+  },
+  {
+   "id": "fnd44_yoon_wc_accruals",
+   "type": "MATRIX",
+   "coverage": 0.8984,
+   "userCount": 26,
+   "alphaCount": 61,
+   "description": "Working capital accruals estimated via the Yoon model, which incorporates more comprehensive factors (e.g., cash sales, "
+  }
+ ]
+}

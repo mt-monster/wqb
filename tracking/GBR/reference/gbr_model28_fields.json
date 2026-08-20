@@ -1,0 +1,214 @@
+{
+ "dataset": "model28",
+ "region": "GBR",
+ "universe": "TOP700",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 25
+ },
+ "field_count": 25,
+ "fetched_at": "2026-08-19T03:41:06",
+ "fields": [
+  {
+   "id": "mdl28_sm_structural__credit_structural_leverage",
+   "type": "MATRIX",
+   "coverage": 0.5862,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Ratio of the estimated default threshold to the firm's asset value, representing financial leverage; higher means more r"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_asset_drift_pct",
+   "type": "MATRIX",
+   "coverage": 0.5839,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Annualized rate of change (percentage drift) in the market value of the firm’s assets"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_asset_volatility_pct",
+   "type": "MATRIX",
+   "coverage": 0.5838,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Annualized volatility (percentage) of the market value of the firm’s assets"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_country_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentile rank (1-100) of a company's 1-year default probability within the country; higher scores indicate lower risk "
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_country_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100, floating-point) of a company's 1-year default probability within the same country; higher means "
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_distance_to_default",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Number of standard deviations by which the firm's estimated asset value exceeds the default threshold; higher numbers me"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_global_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Percentile rank (1-100) of a company's 1-year default probability among all global firms; higher scores mean less risk o"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_global_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank (1-100, floating-point) of a company's 1-year default probability among all global firms; higher means l"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_industry_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Percentile rank (1-100) of a company's 1-year default probability among firms in the same region and industry; higher va"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_industry_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.5781,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-relative percentile rank (1-100, floating) of 1-year default probability; higher is less risk"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_pd_pct",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Estimated 1-year probability of default expressed as a percentage for the company"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100) of a company's 1-year default probability among firms in the same region; higher values mean low"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_region_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100, floating-point) of a company's 1-year default probability among regional firms; higher means les"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_sector_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank (1-100) of a company's 1-year default probability among firms in the same region and sector; higher mean"
+  },
+  {
+   "id": "mdl28_sm_structural_credit_structural_sector_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.5834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative percentile rank (1-100, floating) of 1-year default probability; higher is less risk"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_asset_drift_percent",
+   "type": "MATRIX",
+   "coverage": 0.5838,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected annualized percent change (drift) in asset value under the structural credit risk model"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_asset_volatility_percent",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annualized asset value volatility percentage as estimated by the structural credit risk model"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_country_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile rank (1-100) of the firm's default probability among companies in the same country, higher value means lower "
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_distance_to_default",
+   "type": "MATRIX",
+   "coverage": 0.5836,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of standard deviations between the market value of the firm's assets and its estimated default point"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_global_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Global percentile rank (1-100) of firm's default probability among all companies worldwide, higher means lower risk"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_industry_rank_",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100) of firm's default probability among companies in the same industry group, higher means lower ris"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_leverage",
+   "type": "MATRIX",
+   "coverage": 0.5862,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Ratio of the default point to the market value of the firm's assets, lower values indicate lower default risk"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_pd_percent",
+   "type": "MATRIX",
+   "coverage": 0.5836,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Estimated forward 1-year probability of default, expressed as a percentage, from StarMine model"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100) of firm's default probability among companies in the same region, higher means lower risk"
+  },
+  {
+   "id": "mdl28_sm_structural_multiple_credit_structural_sector_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank (1-100) of firm's default probability among companies in the same sector and region, higher means safer"
+  }
+ ]
+}

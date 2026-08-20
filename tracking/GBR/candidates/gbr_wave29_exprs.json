@@ -1,0 +1,44 @@
+{
+ "meta": {
+  "wave": "29",
+  "source": "d:\\coding\\traeCN_project\\wqb\\tracking\\GBR\\candidates\\gbr_wave29_base.json",
+  "region": "GBR",
+  "created_at": "2026-08-19T01:10:11",
+  "input": 20,
+  "duplicates_dropped": 9,
+  "selected": 11,
+  "coverage_injected": 12,
+  "coverage_signed": "explore_contract_GBR_20260819_011011_612361",
+  "buckets": {
+   "group_sum>atom": 1,
+   "multiply>rank": 1,
+   "rank>atom": 1,
+   "rank>ts_av_diff": 1,
+   "rank>ts_delta": 2,
+   "rank>ts_zscore": 2,
+   "ts_arg_min>atom": 1,
+   "ts_corr>atom": 1,
+   "ts_decay_linear>rank": 1
+  },
+  "skeleton_distribution": {
+   "group": 1,
+   "linear_mix": 1,
+   "single": 9
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "group_sum(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+  "multiply(rank(oth455_relation_n2v_p10_q200_w1_pca_fact2_value), -1)",
+  "rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value)",
+  "rank(ts_av_diff(oth455_relation_n2v_p10_q200_w2_pca_fact1_value, 10))",
+  "rank(ts_delta(oth455_relation_n2v_p10_q200_w1_pca_fact1_value, 5))",
+  "rank(ts_delta(oth455_relation_n2v_p10_q50_w1_pca_fact1_value, 22))",
+  "rank(ts_zscore(oth455_relation_n2v_p10_q200_w1_pca_fact1_value, 60))",
+  "rank(ts_zscore(oth455_relation_n2v_p10_q200_w3_pca_fact2_value, 120))",
+  "ts_arg_min(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+  "ts_corr(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20, 20)",
+  "ts_decay_linear(rank(oth455_relation_n2v_p10_q200_w1_pca_fact3_value), 5)"
+ ]
+}

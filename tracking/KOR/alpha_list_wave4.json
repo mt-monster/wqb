@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "add(fnd44_probability_restatement_global, fnd44_factor_benford)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(fnd44_cashflow_accruals, add(fnd44_working_capital_accruals, 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "multiply(fnd44_factor_benford, fnd44_working_capital_accruals)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "reverse(fnd44_perc_accruals)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "reverse(fnd44_probability_restatement_global)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "reverse(fnd44_probability_restatement)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "reverse(fnd44_yoon_wc_accruals)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "subtract(fnd44_modified_jones_cf_accruals, fnd44_modified_jones_cf_accruals)"
+  }
+]

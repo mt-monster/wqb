@@ -1,0 +1,188 @@
+{
+  "static": {
+    "universe_default": "TOP3000",
+    "universe_legal": [
+      "TOP500",
+      "TOP1000",
+      "TOP2000",
+      "TOP3000"
+    ],
+    "universe_illegal_tried": [
+      "TOP800",
+      "TOP1500",
+      "TOP2500",
+      "TOP5000"
+    ],
+    "delay_default": 1,
+    "neutralization_default": "SUBINDUSTRY",
+    "neutralization_notes": "单 alpha 层面 SUBINDUSTRY 对 prod-corr 无效（KOR 实证 0.7668→0.7654）；仅在 SA 组合层面是压 prod-corr 的决定性杠杆（0.7169→0.6944）",
+    "event_field_rule": "EVENT 字段禁 winsorize（报 does not support event inputs），改 ts_event_* 或去 winsorize"
+  },
+  "assets": {
+    "dataset_count": 294,
+    "field_total": 85184,
+    "coverage_mean": 0.7923,
+    "top_datasets": [
+      {
+        "id": "pv1",
+        "name": "Price Volume Data for Equity",
+        "category": "pv",
+        "fieldCount": 24,
+        "alphaCount": 2034668,
+        "coverage": 1.0,
+        "pyramid": 1.1
+      },
+      {
+        "id": "fundamental6",
+        "name": "Company Fundamental Data for Equity",
+        "category": "fundamental",
+        "fieldCount": 886,
+        "alphaCount": 809756,
+        "coverage": 0.5,
+        "pyramid": 1.1
+      },
+      {
+        "id": "analyst4",
+        "name": "Analyst Estimate Data for Equity",
+        "category": "analyst",
+        "fieldCount": 1324,
+        "alphaCount": 734524,
+        "coverage": 0.7263,
+        "pyramid": 1.2
+      },
+      {
+        "id": "option8",
+        "name": "Volatility Data",
+        "category": "option",
+        "fieldCount": 64,
+        "alphaCount": 163597,
+        "coverage": 0.9698,
+        "pyramid": 1.3
+      },
+      {
+        "id": "pv13",
+        "name": "Relationship Data for Equity",
+        "category": "pv",
+        "fieldCount": 165,
+        "alphaCount": 159317,
+        "coverage": 0.7977,
+        "pyramid": 1.1
+      },
+      {
+        "id": "news12",
+        "name": "US News Data",
+        "category": "news",
+        "fieldCount": 875,
+        "alphaCount": 157459,
+        "coverage": 0.8228,
+        "pyramid": 1.2
+      },
+      {
+        "id": "model77",
+        "name": "Analysts' Factor Model",
+        "category": "model",
+        "fieldCount": 3256,
+        "alphaCount": 148992,
+        "coverage": 0.8277,
+        "pyramid": 1.3
+      },
+      {
+        "id": "fundamental2",
+        "name": "Report Footnotes",
+        "category": "fundamental",
+        "fieldCount": 766,
+        "alphaCount": 134169,
+        "coverage": 0.4386,
+        "pyramid": 1.1
+      },
+      {
+        "id": "analyst15",
+        "name": "Earnings forecasts",
+        "category": "analyst",
+        "fieldCount": 2567,
+        "alphaCount": 102072,
+        "coverage": 0.9944,
+        "pyramid": 1.2
+      },
+      {
+        "id": "analyst7",
+        "name": "Broker Estimates",
+        "category": "analyst",
+        "fieldCount": 1317,
+        "alphaCount": 81642,
+        "coverage": 0.5,
+        "pyramid": 1.2
+      },
+      {
+        "id": "analyst14",
+        "name": "Estimations of Key Fundamentals",
+        "category": "analyst",
+        "fieldCount": 868,
+        "alphaCount": 70341,
+        "coverage": 0.5,
+        "pyramid": 1.2
+      },
+      {
+        "id": "option9",
+        "name": "Options Analytics",
+        "category": "option",
+        "fieldCount": 74,
+        "alphaCount": 68691,
+        "coverage": 0.9817,
+        "pyramid": 1.3
+      }
+    ],
+    "ppa_pregate_note": "PPA 三硬门槛(cov>=0.85/alphaCount<=50/fields>=10)下上述热门集几乎全部不过 alphaCount 门；PPA 候选须从长尾数据集找，逐集过 wq-brain-ppa-mining §1.0"
+  },
+  "empirical": {
+    "wins": [
+      {
+        "id": "USA-SA-KPGvRMg1",
+        "what": "SuperAlpha KPGvRMg1 (name=0.6944) ACTIVE",
+        "key": "SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr；prod_correlation 在 selection 可用、combo 不可用",
+        "date": "2026-08-13"
+      }
+    ],
+    "dead_ends": [
+      {
+        "id": "USA-SA-SECOND",
+        "family": "USA 第二条 SA（任意子集重组）",
+        "reason": "组件池全 value/quality 同质，彼此 ~0.9 相关，SELF 闸必拒（0mpgQ6Wv/78zmav3L 实证）",
+        "rule": "除非组件池出现非 value 源（novel REGULAR ACTIVE），否则不再尝试",
+        "dead_at": "2026-08-14"
+      },
+      {
+        "id": "USA-VALUE-PRODCORR",
+        "family": "mdl177_* 价值/盈利因子族新增提交",
+        "reason": "book 145 ACTIVE 已饱和该风格，prod-corr 结构性 >0.7",
+        "rule": "USA 新提交必须来自正交信号族",
+        "dead_at": "2026-08-14"
+      }
+    ],
+    "campaigns": [
+      {
+        "dataset": "pv1",
+        "status": "exhausted",
+        "note": "203 万 alpha 最拥挤，勿入"
+      },
+      {
+        "dataset": "option9",
+        "status": "in_progress",
+        "note": "tabbit_option9.py 独立 gmail 账号 ThreadPool=3 持续挖掘中"
+      },
+      {
+        "dataset": "mdl177 族",
+        "status": "exhausted",
+        "note": "价值/盈利风格，book 饱和"
+      }
+    ],
+    "poison_patterns": {
+      "_note": "仅区域特有毒模式；平台级（nested_three_leg_add 等）单一事实源见 wq-brain-campaign-toolkit/config/platform_constraints.json",
+      "items": []
+    },
+    "submit_ready": {
+      "_note": "达标待提交缓冲池镜像（战役台账 submit_ready 的跨会话快照）；写回走 toolkit campaign.py ledger",
+      "items": []
+    }
+  }
+}

@@ -3,3 +3,5 @@ cache/
 logs/
 results/
 *.bak
+# 根目录临时/一次性脚本归档（可恢复，不进版本控制）
+_scratch/

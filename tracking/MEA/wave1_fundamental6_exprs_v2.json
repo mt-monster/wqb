@@ -1,0 +1,61 @@
+{
+  "wave_id": "MEA_W1_FUND6_V2",
+  "region": "MEA",
+  "dataset": "fundamental6",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "target_pyramid": "fundamental",
+  "note": "VECTOR字段必须用vec_*聚合",
+  "expressions": [
+    {
+      "id": "F6V2_001",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_ebitda) / (vec_avg(fundamental_assets_other) + 1), 60))",
+      "style": "value_quality",
+      "desc": "EBITDA/Assets ratio zscore - 盈利能力"
+    },
+    {
+      "id": "F6V2_002",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_operating_income_before_depreciation) / (vec_avg(fundamental_net_revenue) + 1), 60))",
+      "style": "profitability",
+      "desc": "Operating margin zscore - 经营利润率"
+    },
+    {
+      "id": "F6V2_003",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_retained_earnings) / (vec_avg(fundamental_common_equity_total) + 1), 60))",
+      "style": "quality",
+      "desc": "Retained earnings/Equity - 留存收益占比"
+    },
+    {
+      "id": "F6V2_004",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_net_operating_cash_flow_ytd) / (vec_avg(fundamental_assets_other) + 1), 60))",
+      "style": "cashflow",
+      "desc": "Operating cash flow/Assets - 现金流质量"
+    },
+    {
+      "id": "F6V2_005",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_gross_profit) / (vec_avg(fundamental_net_revenue) + 1), 60))",
+      "style": "profitability",
+      "desc": "Gross margin zscore - 毛利率"
+    },
+    {
+      "id": "F6V2_006",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_pretax_income) / (vec_avg(fundamental_invested_capital_total) + 1), 60))",
+      "style": "returns",
+      "desc": "Pretax ROIC - 税前投资资本回报率"
+    },
+    {
+      "id": "F6V2_007",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_current_assets_total) / (vec_avg(fundamental_current_liabilities_total) + 1), 60))",
+      "style": "liquidity",
+      "desc": "Current ratio - 流动比率"
+    },
+    {
+      "id": "F6V2_008",
+      "expr": "rank(ts_zscore(vec_avg(fundamental_long_term_debt) / (vec_avg(fundamental_common_equity_total) + 1), 60))",
+      "style": "leverage",
+      "desc": "Debt/Equity - 长期负债权益比(反向)"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+[
+ {
+  "id": "w37_01",
+  "expr": "rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS修订比率(上调/总修订) zscore120 - wave36最强信号的比率化升级"
+ },
+ {
+  "id": "w37_02",
+  "expr": "rank(ts_zscore(subtract(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS修订净额 zscore120 - wave36 blj3bKQp(0.79)的窗口扩展版"
+ },
+ {
+  "id": "w37_03",
+  "expr": "rank(ts_zscore(divide(vec_avg(analyst_flash_mean_eps), vec_avg(analyst_eps_mean)), 60))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "Flash/共识EPS偏离度 - 近期分析师情绪 vs 长期共识"
+ },
+ {
+  "id": "w37_04",
+  "expr": "rank(ts_delta(vec_avg(analyst_eps_mean), 20))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS共识动量 delta20"
+ },
+ {
+  "id": "w37_05",
+  "expr": "rank(ts_zscore(divide(subtract(vec_avg(analyst_consensus_high_eps), vec_avg(analyst_consensus_eps_low_estimate)), vec_avg(analyst_eps_mean)), 60)) * -1",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS离散度(高低差/均值) 反向 - 分歧小=确定性强"
+ },
+ {
+  "id": "w37_06",
+  "expr": "rank(ts_zscore(divide(vec_avg(est_q_roe_raisednum_4wks), add(vec_avg(est_q_roe_raisednum_4wks), vec_avg(est_q_roe_lowerednum_4wks))), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "ROE修订比率 zscore120"
+ },
+ {
+  "id": "w37_07",
+  "expr": "rank(ts_zscore(vec_avg(analyst_consensus_mean_roe_flash), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "ROE flash共识 zscore120 - 高质量ROE预期"
+ },
+ {
+  "id": "w37_08",
+  "expr": "add(rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120)), rank(ts_zscore(divide(vec_avg(analyst_flash_mean_eps), vec_avg(analyst_eps_mean)), 60)))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS修订比率 + Flash/共识偏离 复合信号"
+ },
+ {
+  "id": "w37_09",
+  "expr": "rank(ts_mean(vec_avg(fnd72_pit_or_is_q_is_eps), 252))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS长期均值 ts_mean252 - 降turnover版"
+ },
+ {
+  "id": "w37_10",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 504))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "CFO/总资产 zscore504(2年) - 超长窗口降turnover"
+ },
+ {
+  "id": "w37_11",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_is_oper_inc), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 504))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "ROA(经营利润/总资产) zscore504"
+ },
+ {
+  "id": "w37_12",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_depr_amort), vec_avg(fnd72_pit_or_is_q_sales_rev_turn)), 252))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "折旧摊销/营收 - 资本密集度反向指标"
+ },
+ {
+  "id": "w37_13",
+  "expr": "rank(ts_zscore(divide(vec_avg(analyst_eps_mean), close), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "共识EPS/价格 = 分析师预期收益率(E/P)"
+ },
+ {
+  "id": "w37_14",
+  "expr": "rank(ts_zscore(multiply(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_mean)), 120))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS上调数×共识EPS = 修订加权动量"
+ },
+ {
+  "id": "w37_15",
+  "expr": "rank(ts_zscore(divide(subtract(vec_avg(analyst_eps_mean), vec_avg(analyst_consensus_eps_low_estimate)), vec_avg(analyst_eps_mean)), 60))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS上行空间(均值-最低)/均值 - 共识偏保守程度"
+ },
+ {
+  "id": "w37_16",
+  "expr": "add(rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120)), rank(ts_zscore(divide(vec_avg(analyst_eps_mean), close), 120)))",
+  "settings": {"region": "MEA", "universe": "TOP400", "delay": 1, "decay": 4, "neutralization": "SECTOR", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "ON", "language": "FASTEXPR"},
+  "note": "EPS修订比率 + 分析师E/P 复合"
+ }
+]

@@ -1,0 +1,22 @@
+{
+  "wave": 50,
+  "focus": "fundamental72 is_q remaining LEVEL fields z252 W=10 - find low-corr family members after lejx2r5n PROD rejection",
+  "context": "lejx2r5n REJECTED (PROD 0.7879). is_q LEVEL family saturated in PROD pool. Test tax/non-oper/per-share calibers for possible low-corr escapes.",
+  "results": [
+    {"id": "ak7JPJEO", "field": "earn_for_common", "sharpe": 1.41, "fit": 1.1, "2y": 0.93, "sub": 1.23, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "weak"},
+    {"id": "vRj0z0vb", "field": "is_dil_eps_cont_ops", "sharpe": 1.29, "fit": 0.92, "2y": 1.05, "sub": 1.18, "verdict": "WARN LOW_SHARPE+LOW_FITNESS+LOW_2Y", "note": "weak"},
+    {"id": "1YwvmvzK", "field": "is_basic_eps_cont_ops", "sharpe": 1.45, "fit": 1.11, "2y": 1.01, "sub": 1.33, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "per-share caliber 2y weak"},
+    {"id": "A1l6a67l", "field": "inc_bef_xo_less_min_int_pref_dvd", "sharpe": 1.53, "fit": 1.25, "2y": 0.75, "sub": 1.4, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "2y 0.75 too weak"},
+    {"id": "kqjRmRPP", "field": "is_net_non_oper_loss", "sharpe": -0.15, "fit": -0.04, "2y": 0.53, "sub": -0.46, "verdict": "FAIL 4", "note": "non-oper loss no signal"},
+    {"id": "Vk7nlnGJ", "field": "is_earn_bef_xo_items_per_sh", "sharpe": 1.41, "fit": 1.09, "2y": 0.58, "sub": 1.24, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "weak"},
+    {"id": "e7zA2A3d", "field": "is_inc_tax_exp", "sharpe": 0.66, "fit": 0.4, "2y": 0.31, "sub": 0.49, "verdict": "FAIL 3", "note": "tax level no signal"},
+    {"id": "ak7JPJ1R", "field": "is_inc_bef_xo_item W=10", "sharpe": 1.53, "fit": 1.26, "2y": 1.07, "sub": 1.39, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "W=10 improves but 2y still 1.07"},
+    {"id": "d5jq7qRK", "field": "ebit W=10", "sharpe": 1.7, "fit": 1.57, "2y": 1.99, "sub": 1.09, "verdict": "FAIL LOW_SUB 1.09 vs 1.1", "note": "same family as EBITDA (corr>0.9) - PROD doomed anyway, skip"},
+    {"id": "xAjMzMdJ", "field": "is_diluted_eps", "sharpe": 1.35, "fit": 1.02, "2y": 0.45, "sub": 1.11, "verdict": "WARN LOW_SHARPE+LOW_2Y", "note": "weak"}
+  ],
+  "key_findings": [
+    "*** fundamental72 is_q LEVEL family STRUCTURALLY DEAD in MEA: only EBITDA-family IS-passes (PROD 0.7879 rejected), ebit W=10 sub 1.09 FAIL by 0.01 (and same family), everything else WARN below 1.58 ***",
+    "Per-share/tax/non-oper calibers do NOT escape: 2y sharpe 0.31-1.07 all WARN - no independent signal in is_q beyond the LEVEL family",
+    "fundamental72 campaign → exhausted. Pivot to fundamental6 (Worldscope source, alphaCount 15-58 = 40-100x less crowded)"
+  ]
+}

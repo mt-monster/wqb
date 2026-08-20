@@ -1,0 +1,17 @@
+{
+  "wave": "11A",
+  "dataset": "model25",
+  "generated_at": "2026-08-19T16:00:00",
+  "description": "MEA model25 StarMine Earnings Quality 策略 - 第11轮候选",
+  "strategy_style": "earnings_quality_starmine",
+  "expressions": [
+    "rank(ts_zscore(mdl25_eq_pc_v10, 60)) * rank(ts_zscore(mdl25_eq_vr_v11, 60))",
+    "rank(ts_zscore(mdl25_eq_pc_v11, 60)) * rank(ts_zscore(mdl25_eq_vr_v5, 60))",
+    "rank(ts_zscore(mdl25_eq_ro_v16, 60)) * rank(ts_zscore(mdl25_eq_vr_v9, 60))",
+    "rank(ts_zscore(mdl25_eq_ro_v22, 60)) * rank(ts_zscore(mdl25_eq_vr_v19, 60))",
+    "rank(ts_zscore(mdl25_eq_pc_v10, 120)) * rank(ts_zscore(mdl25_eq_vr_v11, 120))",
+    "rank(ts_zscore(mdl25_eq_pc_v11, 120)) * rank(ts_zscore(mdl25_eq_vr_v5, 120))",
+    "rank(ts_zscore(mdl25_eq_ro_v16, 120)) * rank(ts_zscore(mdl25_eq_vr_v9, 120))",
+    "rank(ts_zscore(mdl25_eq_ro_v22, 120)) * rank(ts_zscore(mdl25_eq_vr_v19, 120))"
+  ]
+}

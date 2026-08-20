@@ -95,6 +95,28 @@ NAMED_ONLY = {'hump': {1: 'hump'}}
 # 修法: divide(a, b) 相除消单位, 或 multiply(x, 1.0) 不可靠, 优先用比率结构
 UNIT_SUFFIXES = ('share_count', '_shares', 'market_value')
 
+# VECTOR 字段禁止直接包裹的算子 (event 输入不支持, 2026-08-18 wave34 教训)
+# 这些算子直接包裹 VECTOR 字段会报 "does not support event inputs"
+VECTOR_FORBIDDEN_OPS = {
+    'ts_backfill', 'ts_delta', 'divide', 'subtract', 'add', 'multiply',
+    'ts_zscore', 'ts_rank', 'ts_corr', 'ts_covariance', 'ts_regression',
+    'ts_mean', 'ts_sum', 'ts_std_dev', 'ts_product', 'ts_av_diff',
+    'ts_kurtosis', 'ts_arg_max', 'ts_arg_min', 'ts_max_diff',
+    'ts_scale', 'ts_delay', 'ts_quantile', 'ts_count_nans',
+    'ts_decay_linear', 'ts_ir', 'ts_returns', 'ts_step',
+    'rank', 'zscore', 'scale', 'normalize', 'quantile',
+    'winsorize', 'bucket', 'tail', 'trade_when',
+    'group_mean', 'group_rank', 'group_backfill', 'group_scale',
+    'group_count', 'group_zscore', 'group_std_dev', 'group_sum',
+    'group_neutralize', 'group_cartesian_product',
+    'power', 'signed_power', 'log', 'sqrt', 'abs', 'inverse', 'reverse',
+    'sign', 'pasteurize', 'densify', 'max', 'min',
+    'if_else', 'equal', 'not_equal', 'greater', 'greater_equal',
+    'less', 'less_equal', 'or', 'and', 'not', 'is_nan',
+    'days_from_last_change', 'last_diff_value', 'kth_element',
+    'hump', 'ts_target_tvr_decay', 'ts_target_tvr_hump',
+}
+
 # 已知权限受限 / scope 受限算子 (REGULAR alpha 不可用)
 FORBIDDEN = {
     'group_vector_neut': '顾问(Consultant)专属, 报 inaccessible/unknown operator',
@@ -282,6 +304,19 @@ def _walk(expr, errors, ctx, path='', in_vec=False):
         rng = f'{lo}+' if hi is None else str(lo) if lo == hi else f'{lo}-{hi}'
         errors.append(f'[{loc}] {name} 需要 {rng} 个参数, 实给 {n}: {expr.strip()}')
         return
+
+    # VECTOR 字段禁止直接包裹检查 (2026-08-18 wave34 教训)
+    # 若当前算子在 VECTOR_FORBIDDEN_OPS 中, 且参数中包含 VECTOR 字段 → 报错
+    if name in VECTOR_FORBIDDEN_OPS and ctx.get('fields'):
+        for i, a in enumerate(args):
+            if _is_leaf(a):
+                a_name = a.strip().split('=')[-1].strip() if '=' in a else a.strip()
+                if a_name in ctx['fields'] and ctx['fields'][a_name].get('type') == 'VECTOR':
+                    errors.append(
+                        f'[{loc}] VECTOR 字段 "{a_name}" 不能被 {name} 直接包裹 '
+                        f'(event 输入不支持, 会报 "does not support event inputs"); '
+                        f'请先用 vec_avg/vec_sum 聚合: {name}(vec_avg({a_name}), ...)'
+                    )
 
     # 命名参数强制检查 (hump 第二参必须 hump=0.01)
     for pos, kw in NAMED_ONLY.get(name, {}).items():

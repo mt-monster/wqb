@@ -1,0 +1,87 @@
+{
+  "wave": 6,
+  "dataset": "pattern_scores",
+  "dataset_info": {
+    "score": 0.9278,
+    "coverage": 0.9939,
+    "fieldCount": 504,
+    "alphaCount": 43,
+    "userCount": 17,
+    "valueScore": 5.0,
+    "pyramidMultiplier": 1.1,
+    "category": "pv"
+  },
+  "strategy": "高 alphaCount 字段优先，技术形态识别信号",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 5,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR"
+  },
+  "expressions": [
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_min_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_min_simscore_lookback120",
+      "alphaCount": 4,
+      "userCount": 1,
+      "note": "上升三角形最小相似度 120 天窗口"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(avg_similarity_continuation_falling_wedge), 22), 44)",
+      "field": "avg_similarity_continuation_falling_wedge",
+      "alphaCount": 4,
+      "userCount": 1,
+      "note": "持续下降楔形平均相似度"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(desc_triangle_q95_simscore_lookback60), 22), 44)",
+      "field": "desc_triangle_q95_simscore_lookback60",
+      "alphaCount": 2,
+      "userCount": 2,
+      "note": "下降三角形 95 分位相似度 60 天窗口"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(breakaway_gap_down_std_simscore_lookback60), 22), 44)",
+      "field": "breakaway_gap_down_std_simscore_lookback60",
+      "alphaCount": 2,
+      "userCount": 1,
+      "note": "向下突破缺口标准差 60 天窗口"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(breakaway_gap_up_max_simscore_lookback120), 22), 44)",
+      "field": "breakaway_gap_up_max_simscore_lookback120",
+      "alphaCount": 2,
+      "userCount": 1,
+      "note": "向上突破缺口最大相似度 120 天窗口"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(quantile95_similarity_breakaway_gap_upward), 22), 44)",
+      "field": "quantile95_similarity_breakaway_gap_upward",
+      "alphaCount": 2,
+      "userCount": 1,
+      "note": "向上突破缺口 95 分位相似度"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_mean_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_down_mean_simscore_lookback120",
+      "alphaCount": 2,
+      "userCount": 2,
+      "note": "下降上升三角形平均相似度 120 天窗口"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_std_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_down_std_simscore_lookback120",
+      "alphaCount": 2,
+      "userCount": 1,
+      "note": "下降上升三角形标准差 120 天窗口"
+    }
+  ]
+}

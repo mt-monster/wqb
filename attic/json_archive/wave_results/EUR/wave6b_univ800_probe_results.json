@@ -1,0 +1,162 @@
+{
+ "ran_at": "2026-08-18 15:05:41",
+ "dataset": "multi_horizon_alpha+price_signal_dl+pattern_scores",
+ "universe": "TOP800",
+ "note": "wave6b 误用 TOP800（settings.json 14:52 被外部改为 TOP800），附带数据点：复合 x 窄池",
+ "total_alphas": 8,
+ "candidates": [],
+ "results": [
+  {
+   "id": "A1ljj85w",
+   "code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.07,
+   "fitness": 0.61,
+   "two_year_sharpe": null,
+   "margin_bp": 7.04,
+   "turnover_pct": 11.35,
+   "rn_sharpe": 0.88,
+   "rn_fitness": 0.36,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:34",
+   "tag": "fcf50_gap50"
+  },
+  {
+   "id": "wpjKKkA6",
+   "code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 1.01,
+   "fitness": 0.56,
+   "two_year_sharpe": null,
+   "margin_bp": 7.12,
+   "turnover_pct": 10.73,
+   "rn_sharpe": 0.82,
+   "rn_fitness": 0.32,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:32",
+   "tag": "fcf55_gap45"
+  },
+  {
+   "id": "MP7MMNnM",
+   "code": "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.95,
+   "fitness": 0.51,
+   "two_year_sharpe": null,
+   "margin_bp": 7.21,
+   "turnover_pct": 10.08,
+   "rn_sharpe": 0.75,
+   "rn_fitness": 0.28,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:30",
+   "tag": "fcf60_gap40"
+  },
+  {
+   "id": "N17xxllg",
+   "code": "add(0.50 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.84,
+   "fitness": 0.43,
+   "two_year_sharpe": null,
+   "margin_bp": 6.31,
+   "turnover_pct": 10.45,
+   "rn_sharpe": 0.64,
+   "rn_fitness": 0.22,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:38",
+   "tag": "fcf50_gap35_tr3_15"
+  },
+  {
+   "id": "ZY7PPvvY",
+   "code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.8,
+   "fitness": 0.4,
+   "two_year_sharpe": null,
+   "margin_bp": 6.44,
+   "turnover_pct": 9.79,
+   "rn_sharpe": 0.58,
+   "rn_fitness": 0.19,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:36",
+   "tag": "fcf55_gap30_tr3_15"
+  },
+  {
+   "id": "E5lOOPML",
+   "code": "add(0.60 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.74,
+   "fitness": 0.36,
+   "two_year_sharpe": null,
+   "margin_bp": 6.51,
+   "turnover_pct": 9.13,
+   "rn_sharpe": 0.53,
+   "rn_fitness": 0.17,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:35",
+   "tag": "fcf60_gap25_tr3_15"
+  },
+  {
+   "id": "Grl1155G",
+   "code": "add(0.65 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.73,
+   "fitness": 0.35,
+   "two_year_sharpe": null,
+   "margin_bp": 6.62,
+   "turnover_pct": 8.75,
+   "rn_sharpe": 0.5,
+   "rn_fitness": 0.15,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:40",
+   "tag": "fcf65_gap25_tr3_10"
+  },
+  {
+   "id": "LL7VVYY2",
+   "code": "add(0.55 * add(0.65 * subtract(0, rank(long_term_free_cash_flow_to_price_2)), 0.35 * subtract(0, rank(short_te",
+   "neut": "SUBINDUSTRY",
+   "sharpe": 0.46,
+   "fitness": 0.19,
+   "two_year_sharpe": null,
+   "margin_bp": 4.58,
+   "turnover_pct": 8.98,
+   "rn_sharpe": 0.31,
+   "rn_fitness": 0.07,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-18T15:05:41",
+   "tag": "fcf55_tr3_45"
+  }
+ ]
+}

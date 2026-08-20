@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "wave": 29,
+  "region": "GBR",
+  "dataset": "predictive_starmine",
+  "strategy": "算子全覆盖 × starmine 强信号字段（ep_yield_pct_smest）",
+  "contract_required_ops": [
+   "group_backfill",
+   "group_cartesian_product",
+   "group_count",
+   "group_mean",
+   "group_neutralize",
+   "group_rank",
+   "group_scale",
+   "group_std_dev",
+   "group_sum",
+   "ts_arg_max",
+   "ts_arg_min",
+   "ts_corr"
+  ],
+  "note": "12 欠用算子全命中 + 强信号字段，兼顾覆盖与 sharpe"
+ },
+ "expressions": [
+  "group_backfill(ep_yield_pct_smest_fy1_3, sector)",
+  "group_cartesian_product(ep_yield_pct_smest_f12m, sector)",
+  "group_count(ep_yield_pct_smest_fy1_3, sector)",
+  "group_mean(ep_yield_pct_smest_fy1_3, sector)",
+  "group_neutralize(ep_yield_pct_smest_fy1_3, sector)",
+  "group_neutralize(ep_yield_pct_smest_fy2_3, sector)",
+  "group_rank(ep_yield_pct_smest_fy1_3, sector)",
+  "group_rank(ep_yield_pct_smest_f12m, sector)",
+  "group_scale(ep_yield_pct_smest_fy1_3, sector)",
+  "group_std_dev(ep_yield_pct_smest_fy1_3, sector)",
+  "group_sum(ep_yield_pct_smest_fy1_3, sector)",
+  "ts_arg_max(ep_yield_pct_smest_fy1_3, 20)",
+  "ts_arg_min(ep_yield_pct_smest_fy1_3, 20)",
+  "ts_arg_max(ep_yield_pct_smest_f12m, 60)",
+  "ts_corr(ep_yield_pct_smest_fy1_3, forward_pe_mean_fy1_3, 20)",
+  "ts_corr(ep_yield_pct_smest_fy1_3, ep_yield_pct_smest_fy2_3, 60)",
+  "rank(group_mean(ep_yield_pct_smest_fy1_3, sector))",
+  "subtract(ep_yield_pct_smest_fy1_3, group_mean(ep_yield_pct_smest_fy1_3, sector))",
+  "multiply(rank(ep_yield_pct_smest_fy1_3), -1)",
+  "add(rank(group_neutralize(ep_yield_pct_smest_fy1_3, sector)), rank(ts_arg_max(ep_yield_pct_smest_f12m, 20)))"
+ ]
+}

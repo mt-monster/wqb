@@ -1,0 +1,162 @@
+{
+ "dataset": "model170",
+ "audited_at": "2026-08-19T16:54:01",
+ "field_count": 11,
+ "field_groups": {
+  "valuation": 8,
+  "other": 2,
+  "momentum": 1
+ },
+ "field_groups_detail": {
+  "valuation": [
+   {
+    "id": "annual_price_peak",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "The highest share price of the stock in the past 52 weeks as of the given date"
+   },
+   {
+    "id": "annual_price_trough",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "The lowest share price of the stock in the past 52 weeks as of the given date"
+   },
+   {
+    "id": "implied_price_range_maximum",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Implied maximum share price threshold estimated by CapitalCube analytical models"
+   },
+   {
+    "id": "implied_price_range_minimum",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "CapitalCube model's implied minimum price range for the company's stock"
+   },
+   {
+    "id": "latest_implied_valuation_price",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "CapitalCube's model-derived implied price for the company's stock as of the most recent date"
+   },
+   {
+    "id": "price_position_within_annual_range",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Current share price’s position relative to the 52-week price range (e.g., high, median, low)"
+   },
+   {
+    "id": "prior_close_price",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "The most recent closing price of the company's stock prior to the current date"
+   },
+   {
+    "id": "recent_earnings_momentum_score",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Recent average score of earnings quality or momentum, scaled 0-100"
+   }
+  ],
+  "other": [
+   {
+    "id": "composite_fundamental_score",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Composite score evaluating company’s fundamental quality relative to peers, across valuation, operations, and diagnostic"
+   },
+   {
+    "id": "recent_dividend_yield_pct",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Most recent dividend yield percentage for the company’s stock"
+   }
+  ],
+  "momentum": [
+   {
+    "id": "dividend_quality_composite_score",
+    "type": "VECTOR",
+    "coverage": 0.9537,
+    "description": "Overall numerical score (not relative) evaluating the company’s current dividend quality, historical trend, and dividend"
+   }
+  ]
+ },
+ "operator_trees": {
+  "annual_price_peak": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "annual_price_trough": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "composite_fundamental_score": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "dividend_quality_composite_score": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "implied_price_range_maximum": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "implied_price_range_minimum": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "latest_implied_valuation_price": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "price_position_within_annual_range": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "prior_close_price": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "recent_dividend_yield_pct": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ],
+  "recent_earnings_momentum_score": [
+   "vec_avg",
+   "vec_max",
+   "vec_min",
+   "vec_sum"
+  ]
+ },
+ "param_spaces": {
+  "vec_avg": {},
+  "vec_max": {},
+  "vec_min": {},
+  "vec_sum": {}
+ },
+ "diversity_score": 0.438,
+ "recommended_rounds": 3,
+ "estimated_alphas_per_round": 8,
+ "total_estimated_alphas": 24
+}

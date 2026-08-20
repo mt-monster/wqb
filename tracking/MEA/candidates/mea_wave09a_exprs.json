@@ -1,0 +1,16 @@
+{
+  "wave": "09A",
+  "dataset": "analyst7",
+  "generated_at": "2026-08-19T15:20:00",
+  "description": "MEA analyst7 修正净占比+volume 组合 - 第9轮候选",
+  "expressions": [
+    "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1)) * rank(ts_zscore(volume, 30))",
+    "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1)) * rank(ts_zscore(volume, 60))",
+    "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1)) * rank(ts_zscore(volume, 20))",
+    "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1)) * rank(ts_zscore(volume, 10))",
+    "rank(ts_zscore((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1), 60)) * rank(ts_zscore(volume, 20))",
+    "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)) / (vec_avg(analyst_eps_upward_revisions_4weeks) + vec_avg(analyst_eps_downward_revisions_last_four_weeks_count) + 1)) * rank(ts_zscore(volume / (ts_mean(volume, 20) + 0.01), 20))",
+    "rank((vec_avg(analyst_count_raised_estimates_1m) - vec_avg(analyst_lowered_estimates_1m)) / (vec_avg(analyst_count_raised_estimates_1m) + vec_avg(analyst_lowered_estimates_1m) + 1)) * rank(ts_zscore(volume, 30))",
+    "rank((vec_avg(analyst_count_raised_estimates_1m) - vec_avg(analyst_lowered_estimates_1m)) / (vec_avg(analyst_count_raised_estimates_1m) + vec_avg(analyst_lowered_estimates_1m) + 1)) * rank(ts_zscore(volume, 60))"
+  ]
+}

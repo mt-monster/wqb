@@ -1,0 +1,19 @@
+{
+ "meta": {
+  "wave": "D02",
+  "round_type": "L2_operator",
+  "round_num": 2,
+  "dataset": "model31",
+  "created_at": "2026-08-19T19:25:51"
+ },
+ "expressions": [
+  "ts_rank(mdl31_acc_chg_1_day, 20)",
+  "ts_zscore(mdl31_acc_chg_1_day, 20)",
+  "ts_delta(mdl31_acc_chg_1_day, 20)",
+  "ts_decay_linear(mdl31_acc_chg_1_day, 20)",
+  "rank(mdl31_acc_chg_1_day)",
+  "zscore(mdl31_acc_chg_1_day)",
+  "quantile(mdl31_acc_chg_1_day)",
+  "normalize(mdl31_acc_chg_1_day)"
+ ]
+}

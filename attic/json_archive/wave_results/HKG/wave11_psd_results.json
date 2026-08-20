@@ -1,0 +1,9 @@
+{
+ "ran_at": "2026-08-18 21:43:22",
+ "dataset": "price_signal_dl",
+ "slots": 5,
+ "batch_size": 8,
+ "total_alphas": 0,
+ "candidates": [],
+ "results": []
+}

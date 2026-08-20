@@ -1,0 +1,72 @@
+{
+  "wave_id": "MEA_W1_FUND6",
+  "region": "MEA",
+  "dataset": "fundamental6",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "target_pyramid": "fundamental",
+  "expressions": [
+    {
+      "id": "F6_001",
+      "expr": "rank(ts_zscore(fundamental_ebitda / (fundamental_assets_other + 1), 60))",
+      "style": "value_quality",
+      "desc": "EBITDA/Assets ratio zscore - 盈利能力"
+    },
+    {
+      "id": "F6_002",
+      "expr": "rank(ts_zscore(fundamental_operating_income_before_depreciation / (fundamental_net_revenue + 1), 60))",
+      "style": "profitability",
+      "desc": "Operating margin zscore - 经营利润率"
+    },
+    {
+      "id": "F6_003",
+      "expr": "rank(ts_zscore(fundamental_retained_earnings / (fundamental_common_equity_total + 1), 60))",
+      "style": "quality",
+      "desc": "Retained earnings/Equity - 留存收益占比"
+    },
+    {
+      "id": "F6_004",
+      "expr": "rank(ts_zscore(fundamental_net_operating_cash_flow_ytd / (fundamental_assets_other + 1), 60))",
+      "style": "cashflow",
+      "desc": "Operating cash flow/Assets - 现金流质量"
+    },
+    {
+      "id": "F6_005",
+      "expr": "rank(ts_zscore(fundamental_gross_profit / (fundamental_net_revenue + 1), 60))",
+      "style": "profitability",
+      "desc": "Gross margin zscore - 毛利率"
+    },
+    {
+      "id": "F6_006",
+      "expr": "rank(ts_zscore(fundamental_pretax_income / (fundamental_invested_capital_total + 1), 60))",
+      "style": "returns",
+      "desc": "Pretax ROIC - 税前投资资本回报率"
+    },
+    {
+      "id": "F6_007",
+      "expr": "rank(ts_zscore(fundamental_current_assets_total / (fundamental_current_liabilities_total + 1), 60))",
+      "style": "liquidity",
+      "desc": "Current ratio - 流动比率"
+    },
+    {
+      "id": "F6_008",
+      "expr": "rank(ts_zscore(fundamental_long_term_debt / (fundamental_common_equity_total + 1), 60))",
+      "style": "leverage",
+      "desc": "Debt/Equity - 长期负债权益比(反向)"
+    },
+    {
+      "id": "F6_009",
+      "expr": "rank(ts_zscore(fundamental_inventory_total_annual / (fundamental_net_revenue + 1), 60))",
+      "style": "efficiency",
+      "desc": "Inventory/Sales - 存货周转(反向)"
+    },
+    {
+      "id": "F6_010",
+      "expr": "rank(ts_zscore(fundamental_accounts_payable_quarterly / (fundamental_cost_of_goods_sold + 1), 60))",
+      "style": "efficiency",
+      "desc": "AP/COGS - 应付账款周转"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+ {
+  "id": "w46_g01",
+  "expr": "normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 0.2)",
+  "note": "SECTOR limit=0.2 - locate U-curve valley (0.25->0.152)"
+ },
+ {
+  "id": "w46_g02",
+  "expr": "normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 0.3)",
+  "note": "SECTOR limit=0.3"
+ },
+ {
+  "id": "w46_g03",
+  "expr": "normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 0.35)",
+  "note": "SECTOR limit=0.35"
+ },
+ {
+  "id": "w46_g04",
+  "expr": "normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 0.4)",
+  "note": "SECTOR limit=0.4"
+ },
+ {
+  "id": "w46_h01",
+  "expr": "normalize(ts_mean(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), 10), useStd = true, limit = 0.25)",
+  "note": "time-smooth 10d - reduce single-day weight spikes"
+ },
+ {
+  "id": "w46_h02",
+  "expr": "normalize(ts_mean(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), 20), useStd = true, limit = 0.25)",
+  "note": "time-smooth 20d - stronger smoothing"
+ },
+ {
+  "id": "w46_h03",
+  "expr": "signed_power(normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 0.25), 0.5)",
+  "note": "double compression: normalize 0.25 then signed_power 0.5"
+ },
+ {
+  "id": "w46_h04",
+  "expr": "normalize(sub(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), ts_mean(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), 60)), useStd = true, limit = 0.25)",
+  "note": "detrend: S - ts_mean(S,60) then normalize 0.25 - symmetric around zero"
+ }
+]

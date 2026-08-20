@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "max_trade": "ON",
+    "decay": 4,
+    "truncation": 0.08,
+    "language": "FASTEXPR",
+    "dataset": "analyst15",
+    "wave": "usa_wave01",
+    "created": "2026-08-20"
+  },
+  "alphas": [
+    {
+      "id": "usa_w01_01",
+      "expr": "rank(ts_delta(anl15_bps_gr_12_m_mean, 20))",
+      "category": "BPS_revision_momentum"
+    },
+    {
+      "id": "usa_w01_02",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60))",
+      "category": "BPS_revision_momentum"
+    },
+    {
+      "id": "usa_w01_03",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_3m_chg, 120))",
+      "category": "BPS_revision_momentum"
+    },
+    {
+      "id": "usa_w01_04",
+      "expr": "rank(anl15_bps_gr_12_m_cos_up - anl15_bps_gr_12_m_cos_dn)",
+      "category": "BPS_estimate_breadth"
+    },
+    {
+      "id": "usa_w01_05",
+      "expr": "rank(anl15_bps_gr_12_m_ests_up / (anl15_bps_gr_12_m_ests_up + anl15_bps_gr_12_m_ests_dn + 1))",
+      "category": "BPS_estimate_breadth"
+    },
+    {
+      "id": "usa_w01_06",
+      "expr": "rank(anl15_bps_gr_12_m_gro)",
+      "category": "BPS_growth"
+    },
+    {
+      "id": "usa_w01_07",
+      "expr": "rank(anl15_bps_gr_cal_fy1_gro)",
+      "category": "BPS_growth"
+    },
+    {
+      "id": "usa_w01_08",
+      "expr": "rank(-anl15_bps_gr_12_m_pe)",
+      "category": "BPS_valuation"
+    },
+    {
+      "id": "usa_w01_09",
+      "expr": "rank(-anl15_bps_gr_cal_fy1_pe)",
+      "category": "BPS_valuation"
+    },
+    {
+      "id": "usa_w01_10",
+      "expr": "rank(-anl15_bps_gr_12_m_st_dev)",
+      "category": "BPS_dispersion"
+    },
+    {
+      "id": "usa_w01_11",
+      "expr": "rank(ts_delta(anl15_bps_s_12_m_mean, 20))",
+      "category": "BPS_revision_sector"
+    },
+    {
+      "id": "usa_w01_12",
+      "expr": "rank(anl15_bps_s_12_m_cos_up - anl15_bps_s_12_m_cos_dn)",
+      "category": "BPS_revision_sector"
+    },
+    {
+      "id": "usa_w01_13",
+      "expr": "rank(ts_zscore(anl15_bps_ind_12_m_1m_chg, 60))",
+      "category": "BPS_revision_industry"
+    },
+    {
+      "id": "usa_w01_14",
+      "expr": "rank(ts_delta(anl15_bps_gr_18_m_mean, 60))",
+      "category": "BPS_long_term"
+    },
+    {
+      "id": "usa_w01_15",
+      "expr": "rank(anl15_bps_gr_18_m_gro)",
+      "category": "BPS_long_term"
+    },
+    {
+      "id": "usa_w01_16",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60)) + rank(anl15_bps_gr_12_m_gro) + rank(-anl15_bps_gr_12_m_pe)",
+      "category": "BPS_composite"
+    }
+  ]
+}

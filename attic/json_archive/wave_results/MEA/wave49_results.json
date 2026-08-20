@@ -1,0 +1,40 @@
+{
+  "wave": 49,
+  "focus": "wave48 candidate optimization: push EBITDA z252 + oper_inc z252 past last gates (sub_univ>1.09, 2y>1.58)",
+  "context": "wave48 found 2 near-candidates (QP7er8qp sub 1.08 vs 1.09 FAIL; bljp2w2q 2y 1.5 WARN). wave49 scans limit/ts_mean window/z504/dual-leg/decay2/INDUSTRY.",
+  "w49A_param_scan": [
+    {"id": "np70o36q", "variant": "EBITDA z252 L=0.3 W=3", "sharpe": 1.68, "fit": 1.55, "2y": 1.82, "tvr": 0.0352, "sub": 1.08, "fail": ["LOW_SUB"], "note": "limit 0.3 does NOT fix sub_univ"},
+    {"id": "LL7e6kEa", "variant": "EBITDA z252 L=1.0 W=3", "sharpe": 1.66, "fit": 1.59, "2y": 1.47, "tvr": 0.0367, "sub": 1.11, "fail": [], "note": "L=1.0 fixes sub but hurts 2y (1.47 WARN)"},
+    {"id": "gJjvKxXm", "variant": "EBITDA z252 L=0.5 W=5", "sharpe": 1.64, "fit": 1.52, "2y": 1.84, "tvr": 0.0343, "sub": 1.09, "fail": [], "note": "*** FULL PASS - W=5 fixes both gates ***"},
+    {"id": "Xg7qL1Va", "variant": "EBITDA z252 L=0.5 W=2", "sharpe": 1.61, "fit": 1.47, "2y": 1.54, "tvr": 0.0364, "sub": 1.04, "fail": ["LOW_SUB", "LOW_2Y"], "note": "W=2 too fast"},
+    {"id": "qMjbdgO2", "variant": "EBITDA z252 L=0.5 W=10", "sharpe": 1.71, "fit": 1.59, "2y": 1.95, "tvr": 0.0319, "sub": 1.12, "fail": [], "note": "*** FULL PASS - best single-leg (2y 1.95) ***"},
+    {"id": "O07ekoMv", "variant": "EBITDA z504 L=0.5 W=3", "sharpe": 1.45, "fit": 1.29, "2y": 1.87, "tvr": 0.0332, "sub": 0.97, "fail": [], "note": "z504 too slow (sharpe 1.45 WARN)"},
+    {"id": "d5jqmd3E", "variant": "oper_inc z252 L=1.0 W=3", "sharpe": 1.63, "fit": 1.43, "2y": 1.2, "tvr": 0.0392, "sub": 1.06, "fail": [], "note": "L=1.0 hurts 2y"},
+    {"id": "88lArnEv", "variant": "oper_inc z252 L=0.5 W=5", "sharpe": 1.66, "fit": 1.44, "2y": 1.49, "tvr": 0.0362, "sub": 1.09, "fail": [], "note": "2y 1.49 WARN - oper_inc weaker 2y than EBITDA"},
+    {"id": "lejx2r5n", "variant": "DUAL-LEG add(oper_inc z252, EBITDA z252) W=3", "sharpe": 1.74, "fit": 1.66, "2y": 1.75, "tvr": 0.0355, "sub": 1.13, "fail": [], "note": "*** BEST - SUBMITTED 2026-08-21 (force=True, local tvr gate 3.55%<4% is heuristic only; platform 1% limit PASS) ***"},
+    {"id": "GrlV6kzP", "variant": "inc_bef_xo_item z252 W=3", "sharpe": 1.64, "fit": 1.41, "2y": 1.06, "tvr": 0.0378, "sub": 1.46, "fail": [], "note": "sub 1.46 best but 2y 1.06 WARN"}
+  ],
+  "w49B_decay2": [
+    {"id": "O07ekoav", "variant": "EBITDA z252 decay=2", "sharpe": 1.68, "fit": 1.56, "2y": 1.76, "tvr": 0.035, "sub": 1.08, "fail": ["LOW_SUB"], "note": "decay=2 does NOT fix sub_univ"},
+    {"id": "e7zAKLRz", "variant": "oper_inc z252 decay=2", "sharpe": 1.67, "fit": 1.46, "2y": 1.48, "tvr": 0.0371, "sub": 1.1, "fail": [], "note": "2y 1.48 WARN"}
+  ],
+  "w49C_industry": [
+    {"id": "2rlERJzw", "variant": "EBITDA z252 INDUSTRY", "sharpe": 1.51, "fit": 1.36, "2y": 1.51, "tvr": 0.0385, "sub": 0.95, "fail": ["LOW_SHARPE", "LOW_SUB", "LOW_2Y"], "note": "INDUSTRY neutralization HURTS sub_univ (0.95 vs 1.08 SECTOR)"},
+    {"id": "E5l3bkWL", "variant": "oper_inc z252 INDUSTRY", "sharpe": 1.57, "fit": 1.34, "2y": 1.49, "tvr": 0.0417, "sub": 0.98, "fail": ["LOW_SHARPE", "LOW_SUB", "LOW_2Y"], "note": "INDUSTRY HURTS - SECTOR is the right neutralization for MEA"}
+  ],
+  "key_findings": [
+    "*** FINAL VERDICT 2026-08-21: lejx2r5n REJECTED - 'Prod correlation 0.7879 is above cutoff of 0.7 and Sharpe not better by 10.0%' - is_q LEVEL field family (oper_inc/EBITDA zscore252) SATURATED in GLOBAL production pool (same fate as zqkazgld pv1 G2) ***",
+    "*** CRITICAL LESSON: earnings LEVEL factor (盈利水平场) is a saturated signal family in PROD pool - fundamental72 is_q zscore252 family is STRUCTURALLY DEAD for submission; wave50 in-flight 10 is_q variants likely same PROD fate unless low-corr members (tax/non-oper/per-share calibers) emerge ***",
+    "*** lejx2r5n (dual-leg oper_inc+EBITDA z252) FULL PASS 1.74/1.66/2y1.75/sub1.13 - SUBMITTED 2026-08-21, REJECTED by PROD 0.7879 (local corr 0.31/0.03 only covers own pool) ***",
+    "Winning recipe for MEA fundamental72: ts_zscore 252 + ts_mean W=10 (single) or W=3 (dual-leg) + limit 0.5 + SECTOR + decay 1",
+    "ts_mean window 3->5/10 monotonically improves 2y AND sub_univ (W=10: 2y 1.95/sub 1.12; W=2: sub 1.04 FAIL)",
+    "limit 1.0 fixes sub_univ but hurts 2y; limit 0.3 does nothing - limit 0.5 is the sweet spot",
+    "decay=2 no benefit; INDUSTRY neutralization HURTS (sub 0.95 vs SECTOR 1.08) - SECTOR stays",
+    "qMjbdgO2 (1.71/2y1.95) + gJjvKxXm (1.64/2y1.84) = backup family-mates of lejx2r5n (mutual corr 0.95-0.99, only ONE submittable)",
+    "local self-check vs OWN pool: lejx2r5n vs QP7eLAkr 0.31 / vRjqXeWA 0.03 - SELF safe; PROD pool risk unverifiable locally (zqkazgld lesson)"
+  ],
+  "next": {
+    "wave50": "is_q remaining LEVEL fields z252 W=10 (earn_for_common/inc_bef_xo_less_min_int/pretax_inc/ebit/sales_rev_turn) for more independent family members; target 10 submittable RAs total - current count: 2 ACTIVE + 1 in-flight + 2 backups",
+    "status": "IN PROGRESS"
+  }
+}

@@ -1,0 +1,619 @@
+{
+ "version": 1,
+ "region": "IND",
+ "operators": {
+  "ts_sum": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "or": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_rank": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_returns": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_neutralize": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "days_from_last_change": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_sum": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "add": {
+   "total_uses": 22,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "ts_kurtosis": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "normalize": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_zscore": {
+   "total_uses": 15,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "inverse": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_zscore": {
+   "total_uses": 15,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "log": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reverse": {
+   "total_uses": 9,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "sign": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "divide": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_count_nans": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_rank": {
+   "total_uses": 41,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "zscore": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "pasteurize": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "universe_size": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_corr": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "greater": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "is_nan": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_avg": {
+   "total_uses": 8,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "ts_mean": {
+   "total_uses": 15,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "ts_target_tvr_decay": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_mean": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "combo_a": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_std_dev": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "bucket": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_powersum": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "generate_stats": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_stddev": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_decay_linear": {
+   "total_uses": 1,
+   "waves_since_use": 5,
+   "best_sharpe": null,
+   "last_wave": "IND_fnd94_boost.json"
+  },
+  "less_equal": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_sum": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_choose": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_stddev": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_product": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_arg_min": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "power": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_percentage": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "tail": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_std_dev": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_max": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "max": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "quantile": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_sum": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_max_diff": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "trade_when": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "abs": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "scale": {
+   "total_uses": 15,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "reduce_min": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_ir": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_quantile": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "hump": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_av_diff": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_kurtosis": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_range": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_scale": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_count": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_cartesian_product": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_covariance": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "densify": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_scale": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "not_equal": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "rank": {
+   "total_uses": 29,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "signed_power": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_norm": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "and": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_delta": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_arg_max": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "multiply": {
+   "total_uses": 13,
+   "waves_since_use": 2,
+   "best_sharpe": null,
+   "last_wave": "IND_model77.json"
+  },
+  "in": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "greater_equal": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "if_else": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "kth_element": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_backfill": {
+   "total_uses": 56,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "reduce_skewness": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_min": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "last_diff_value": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "subtract": {
+   "total_uses": 18,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "reduce_count": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_max": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "vec_range": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "reduce_avg": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "winsorize": {
+   "total_uses": 29,
+   "waves_since_use": 1,
+   "best_sharpe": null,
+   "last_wave": "IND_orthogonal.json"
+  },
+  "reduce_ir": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "equal": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_count": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "min": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "self_corr": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_target_tvr_hump": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "group_backfill": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "not": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "less": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "sqrt": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_regression": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_step": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  },
+  "ts_delay": {
+   "total_uses": 0,
+   "waves_since_use": 999,
+   "best_sharpe": null,
+   "last_wave": null
+  }
+ },
+ "waves_covered": 12
+}

@@ -154,3 +154,46 @@
 - **不**删 `tracking/` 任何 JSON 台账（34 MB 尚在可接受范围，且有 MANIFEST 索引）。
 - **不**在 Phase 1/2 触碰 MCP 服务端逻辑（拆分属 Phase 3，需独立冒烟窗口）。
 - **不**批量 `rm` 任何文件——所有清理走"归档目录/压缩包 + 分批 ≤10 + 确认"流程。
+
+---
+
+## 6. 执行状态（2026-08-19）
+
+> 用户决策链：① 分析 → ② 优化（选"归档/临时脚本隔离"）→ ③ "除了 P2 其它继续优化"（做 P0 brain_api 拆分 + src/wqb 单源、P1 labs 拆分；**跳过 P2** ruff + 行数 CI）→ ④ "按 A（推荐），brain_api 原码可以不动就不动，帮我备份好"。
+
+### 6.1 已完成的动作
+
+| 项 | 内容 | 状态 |
+|----|------|------|
+| 归档隔离 | `attic/tools_archive/`（92）、`attic/mining_archive/`（44，含 legacy_mine_v6_v27）、`attic/root_scripts/`（3：`_analyze.py`/`_check_reg.py`/`_extend_asi.py`）、`attic/experience_scripts/`（7 个 .py，rules.json/README 留原位） | ✅ |
+| brain_api 拆分（P0） | 4074 行单体 → `brain_api.py` 门面（36 行）+ `brain_api_models.py`（66）+ `brain_config.py`（87）+ 5×`brain_mixin_*.py`（transport/auth/simulation/spcread/correlation，共 ~4080 行）。方法体 verbatim 迁移，`BrainApiClient` 类名 + `brain_client` 单例 + 旧导入路径全部保留 | ✅ |
+| 方向 A（单源核心） | 确立 `src/wqb` 为规范核心（区域/算子/中性化域常量唯一来源）；`brain_api` 为稳定 API 客户端，方法逻辑不重写 | ✅ |
+| 原码备份 | `attic/brain_api_backup/original/brain_api.py`（git HEAD 原样 4074 行）+ `attic/brain_api_backup/current_refactored/`（拆解后 7 文件） | ✅ |
+| labs 文件 | `labs_data_analysis_agent.py` 由 `labs_functions.emit_labs_script` 经 `read_text()` 整文件读入后粘贴进 BRAIN Labs，**不拆分**（拆分会破坏特性） | ✅ 明确划界 |
+| 测试硬化 | 修正 `test_mcp_tools_unit.py` 两处陈旧断言（注册工具总数 51→52、`tools_sim` 4→5，因 `fix_vector_fields`/`lookINTO_SimError_message` 新增未同步测试） | ✅ |
+
+### 6.2 验证结果（执行后）
+
+| 套件 | 命令 | 结果 |
+|------|------|------|
+| 根 `tests/`（src/wqb 单源闸） | 托管 python 3.13.12 `pytest tests/ -q` | **254 passed** |
+| MCP 包 `world-quant-brain-mcp/tests/` | `.venv/Scripts/python -m pytest tests/ -q` | **34 passed**（修复前 32 pass + 2 陈旧失败） |
+
+- 行为保全证明：`BrainApiClient` 51 个公开方法全部保留，MRO 为 `BrainApiClient → TransportMixin → AuthMixin → SimulationMixin → SpcDataMixin → CorrelationMixin → object`；`brain_client`/`BrainApiClient`/`load_config`/`SimulationSettings`/`AuthCredentials`/`SimulationData` 旧导入路径全部 re-export 可用。
+- 2 个 MCP 测试失败经 `brain_api.py.bak` 置换验证为**预存在**（与拆分无关），根因是测试硬编码计数未随 `tools_sim` 增加第 5 个工具更新。
+
+### 6.3 拆分映射（方法 → mixin）
+
+| mixin 文件 | 承载职责（原 brain_api.py 行段） |
+|-----------|-------------------------------|
+| `brain_mixin_transport.py` | `__init__` / 日志 / URL 解析 / 响应解析 / 缓存键 / Redis 锁 / 限速 / `_request` / 重试 |
+| `brain_mixin_auth.py` | `authenticate` / 生物识别 / `is_authenticated` / `ensure_authenticated` / 状态 |
+| `brain_mixin_simulation.py` | 仿真创建 / alpha 详情 / 数据集 / datafields / PNL / 用户 alphas / `pre_submit_check` / `submit_alpha` / 配额 / 事件 / 榜单 |
+| `brain_mixin_spcread.py` | SPC 校验 / SPC 提交 / SPC 榜单 / `value_factor_trendScore` / 算子 / `recommend_datasets` / `run_selection` / 用户档案 / 文档 / 论坛 / `get_production_correlation` |
+| `brain_mixin_correlation.py` | PNL 序列 / OS pnl / self/mutual 相关 / `check_self_correlation` / `check_correlation` / `set_alpha_properties` / 记录集 / 活动 / 金字塔 / 比赛 / 平台设置 / 性能对比 |
+
+> 扩展新端点：在对应 `brain_mixin_*.py` 新增方法即可，勿改写既有方法体（满足"原码可以不动就不动"约束）。
+
+### 6.4 跳过项（用户明确）
+
+- **P2**：ruff 代码规范 + 行数 CI 门禁 —— 按用户"除了 P2 其它帮我继续优化"跳过。

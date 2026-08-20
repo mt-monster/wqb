@@ -1,0 +1,73 @@
+{
+  "wave": 34,
+  "theme": "MEA fundamental72 Q字段 第一波探针 v2 (修正VECTOR用法)",
+  "region": "MEA",
+  "dataset": "fundamental72",
+  "settings": {
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "COUNTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR"
+  },
+  "candidates": [
+    {
+      "id": "w34_01",
+      "expr": "rank(ts_rank(vec_avg(fnd72_pit_or_is_q_is_eps), 126))",
+      "note": "EPS ts_rank 126"
+    },
+    {
+      "id": "w34_02",
+      "expr": "rank(ts_delta(vec_avg(fnd72_pit_or_is_q_is_eps), 66))",
+      "note": "EPS delta 66"
+    },
+    {
+      "id": "w34_03",
+      "expr": "rank(ts_delta(vec_avg(fnd72_pit_or_is_q_sales_rev_turn), 66))",
+      "note": "SALES delta 66"
+    },
+    {
+      "id": "w34_04",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_is_oper_inc), vec_avg(fnd72_pit_or_is_q_sales_rev_turn)), 252))",
+      "note": "利润率 zscore"
+    },
+    {
+      "id": "w34_05",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_is_q_earn_for_common)), 252))",
+      "note": "现金流质量 CFO/NI"
+    },
+    {
+      "id": "w34_06",
+      "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_cf_q_cf_cap_expend_prpty_add)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))",
+      "note": "FCF/资产"
+    },
+    {
+      "id": "w34_07",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_earn_for_common), add(vec_avg(fnd72_pit_or_bs_q_bs_sh_cap_and_apic), vec_avg(fnd72_pit_or_bs_q_bs_retain_earn))), 252))",
+      "note": "ROE"
+    },
+    {
+      "id": "w34_08",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_lt_borrow), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+      "note": "低负债偏好"
+    },
+    {
+      "id": "w34_09",
+      "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_is_q_earn_for_common), vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+      "note": "低应计偏好"
+    },
+    {
+      "id": "w34_10",
+      "expr": "add(rank(ts_delta(vec_avg(fnd72_pit_or_is_q_is_eps), 66)), rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_is_q_earn_for_common)), 252)))",
+      "note": "EPS增长+现金流质量复合"
+    }
+  ],
+  "note": "修正: VECTOR字段直接用vec_avg包裹, 不用ts_backfill。参考e73Rw8qg结构。"
+}

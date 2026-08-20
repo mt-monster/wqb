@@ -1,0 +1,18 @@
+[
+ "rank(vec_avg(price_to_book_ratio_metric))",
+ "subtract(0, rank(vec_avg(price_to_book_ratio_metric)))",
+ "rank(vec_avg(intrinsic_valuation_estimate))",
+ "subtract(0, rank(vec_avg(intrinsic_valuation_estimate)))",
+ "rank(vec_avg(cashflow_trend_analysis))",
+ "subtract(0, rank(vec_avg(cashflow_trend_analysis)))",
+ "rank(vec_avg(operational_efficiency_metric))",
+ "subtract(0, rank(vec_avg(operational_efficiency_metric)))",
+ "rank(vec_avg(analyst_forecast_revision_factor))",
+ "subtract(0, rank(vec_avg(analyst_forecast_revision_factor)))",
+ "rank(vec_avg(trend_in_buzz_score))",
+ "subtract(0, rank(vec_avg(trend_in_buzz_score)))",
+ "add(0.5*rank(vec_avg(intrinsic_valuation_estimate)), 0.5*rank(vec_avg(cashflow_trend_analysis)))",
+ "add(0.5*rank(vec_avg(operational_efficiency_metric)), 0.5*rank(vec_avg(shareholder_yield_metric)))",
+ "add(0.5*rank(vec_avg(analyst_forecast_revision_factor)), 0.5*rank(vec_avg(analyst_sentiment_consistency_score)))",
+ "add(0.5*subtract(0, rank(vec_avg(price_to_book_ratio_metric))), 0.5*rank(vec_avg(intrinsic_valuation_estimate)))"
+]

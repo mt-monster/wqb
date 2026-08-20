@@ -1,0 +1,49 @@
+{
+  "wave": 3,
+  "region": "USA",
+  "dataset": "predictive_starmine",
+  "strategy": "starmine 设置调优（换 universe + neutralization 冲 RA）",
+  "base_expression": "ts_zscore(ep_yield_pct_smest_fy2_3, 20)",
+  "variants": [
+    {
+      "universe": "TOP1000",
+      "neutralization": "SUBINDUSTRY",
+      "note": "TOP1000 更集中"
+    },
+    {
+      "universe": "TOP500",
+      "neutralization": "SUBINDUSTRY",
+      "note": "TOP500 最集中"
+    },
+    {
+      "universe": "TOP3000",
+      "neutralization": "SECTOR",
+      "note": "SECTOR 中性化"
+    },
+    {
+      "universe": "TOP3000",
+      "neutralization": "MARKET",
+      "note": "MARKET 中性化"
+    },
+    {
+      "universe": "TOP1000",
+      "neutralization": "SECTOR",
+      "note": "TOP1000 + SECTOR"
+    },
+    {
+      "universe": "TOP1000",
+      "neutralization": "MARKET",
+      "note": "TOP1000 + MARKET"
+    },
+    {
+      "universe": "TOP500",
+      "neutralization": "SECTOR",
+      "note": "TOP500 + SECTOR"
+    },
+    {
+      "universe": "TOP500",
+      "neutralization": "MARKET",
+      "note": "TOP500 + MARKET"
+    }
+  ]
+}

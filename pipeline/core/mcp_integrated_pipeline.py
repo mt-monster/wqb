@@ -18,16 +18,13 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from .campaign_pipeline import CampaignPipeline, RegionConfig, Checkpoint
 
-# 尝试导入直接 import 的 MCP 客户端
+# 尝试导入 MCP SSE 客户端
 try:
-    from .mcp_direct import get_direct_client, is_available as direct_available
-    MCP_AVAILABLE = direct_available()
-    if MCP_AVAILABLE:
-        print("[INFO] 使用直接 import 模式调用 MCP")
-    else:
-        print("[WARN] 直接 import 模式不可用，使用模拟提交")
+    from tools.mcp_5slot_batch import McpClient, normalize_settings
+    MCP_AVAILABLE = True
+    print("[INFO] 使用 MCP SSE 模式调用 create_multi_simulation")
 except ImportError as e:
-    print(f"[WARN] 无法导入 MCP 直接客户端: {e}")
+    print(f"[WARN] 无法导入 MCP SSE 客户端: {e}")
     MCP_AVAILABLE = False
 
 
@@ -51,28 +48,46 @@ class MCPIntegratedPipeline(CampaignPipeline):
             print(f"[submit] 注意：实际提交需要 MCP 集成")
             return mock_id
         
-        # 使用直接 import 模式提交
+        # 使用 MCP SSE 模式提交
         exprs = [p["expr"] for p in passed]
         
         try:
-            client = get_direct_client()
-            result = client.create_multi_simulation(
-                expressions=exprs,
-                region=self.config.region,
-                universe=self.config.universe,
-                delay=self.config.delay,
-                decay=self.config.decay,
-                neutralization=self.config.neutralization,
-                truncation=self.config.truncation,
-                max_trade=self.config.max_trade,
-                validate_fields=True
-            )
+            client = McpClient()
             
-            print(f"[submit] 提交成功: {result.get('status')}")
-            print(f"[submit] 数量: {result.get('count')}")
+            # 构建设置
+            settings = {
+                'instrumentType': 'EQUITY',
+                'region': self.config.region,
+                'universe': self.config.universe,
+                'delay': self.config.delay,
+                'decay': self.config.decay,
+                'neutralization': self.config.neutralization,
+                'truncation': self.config.truncation,
+                'pasteurization': 'ON',
+                'language': 'FASTEXPR',
+                'visualization': False,
+                'testPeriod': 'P0Y0M',
+                'maxTrade': self.config.max_trade,
+                'unitHandling': 'VERIFY',
+                'nanHandling': 'OFF',
+            }
+            mcp_settings = normalize_settings(settings)
+            mcp_settings['wait_for_completion'] = False
+            mcp_settings['validate_fields'] = True
             
-            # 返回模拟 ID（如果有）
-            return result.get("multisimulation_id", f"direct_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
+            # 构建 payload
+            payload = dict(mcp_settings)
+            payload['alpha_expressions'] = exprs
+            
+            result = client.call("create_multi_simulation", payload, timeout=120.0)
+            
+            print(f"[submit] 提交成功: {result.get('status', 'unknown')}")
+            
+            # 返回模拟 ID
+            location = result.get('location') or result.get('multisimulation_id')
+            if location:
+                return location.split('/')[-1] if '/' in str(location) else str(location)
+            return f"mcp_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
             
         except Exception as e:
             print(f"[submit] 提交失败: {e}")
@@ -87,10 +102,58 @@ class MCPIntegratedPipeline(CampaignPipeline):
         if not self.mcp_available:
             return {"status": "PENDING", "note": "需要 MCP 集成"}
         
-        # TODO: 实际 MCP 轮询
-        # 使用 get_multisimulation_children + lookINTO_SimError_message
-        
-        return {"status": "COMPLETE", "note": "模拟完成"}
+        try:
+            client = McpClient()
+            
+            # 1. 获取子模拟列表
+            children_result = client.call("get_multisimulation_children", {
+                "multisimulation_id": multisim_id
+            }, timeout=60.0)
+            
+            children = children_result.get('children', [])
+            if not children:
+                return {"status": "PENDING", "note": "无子模拟"}
+            
+            # 2. 检查每个子模拟的状态
+            results = []
+            all_complete = True
+            
+            for child in children:
+                child_id = child.get('id') or child.get('location', '').split('/')[-1]
+                if not child_id:
+                    continue
+                    
+                # 获取详细状态和错误信息
+                detail = client.call("lookINTO_SimError_message", {
+                    "simulation_id": child_id
+                }, timeout=60.0)
+                
+                status = detail.get('status', 'UNKNOWN')
+                results.append({
+                    'id': child_id,
+                    'status': status,
+                    'detail': detail
+                })
+                
+                if status not in ('COMPLETE', 'ERROR', 'WARNING'):
+                    all_complete = False
+            
+            if all_complete:
+                return {
+                    "status": "COMPLETE",
+                    "children": results,
+                    "note": "所有子模拟已完成"
+                }
+            else:
+                return {
+                    "status": "PENDING",
+                    "children": results,
+                    "note": "部分子模拟仍在运行"
+                }
+                
+        except Exception as e:
+            print(f"[poll] 轮询失败: {e}")
+            return {"status": "ERROR", "error": str(e)}
 
 
 def create_pipeline(region: str, **kwargs) -> MCPIntegratedPipeline:

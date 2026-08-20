@@ -1,0 +1,278 @@
+{
+ "dataset": "pv70",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 33
+ },
+ "field_count": 33,
+ "fetched_at": "2026-08-19T00:07:43",
+ "fields": [
+  {
+   "id": "entity_association_strength_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A module-specific integer metric (such as count or category) associated with each analyst recommendation relationship be"
+  },
+  {
+   "id": "entity_association_strength_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A normalized, continuous measure (such as z-score or relevance score) representing the significance or strength of the a"
+  },
+  {
+   "id": "entity_pair_association_type",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A vector listing stock identifiers (Instrument2) that have a real, observed, event-driven analyst recommendation relatio"
+  },
+  {
+   "id": "entity_pair_relationship_type",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lists the identifiers of stocks (Instrument2) that have an observed analyst recommendation event-driven relationship wit"
+  },
+  {
+   "id": "entity_relationship_strength_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Numeric value indicating the strength or closeness of the relationship between two entities."
+  },
+  {
+   "id": "entity_relationship_strength_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, float value measuring the research-grade significance or relevance of the analyst recommendation-based relat"
+  },
+  {
+   "id": "pv70_bbgnews_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A vector listing the stock identifiers (Instrument2) that have a real, observed, event-driven relationship with Instrume"
+  },
+  {
+   "id": "pv70_bbgnews_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "An integer score quantifying the relationship between Instrument1 and each related Instrument2 in the Bloomberg News mod"
+  },
+  {
+   "id": "pv70_bbgnews_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A normalized, continuous measure representing the strength, relevance, or significance of each relationship in the Bloom"
+  },
+  {
+   "id": "pv70_ibeseps1_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A vector of stock identifiers (Instrument2) that have a real, observed, event-driven earnings relationship with Instrume"
+  },
+  {
+   "id": "pv70_ibeseps1_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Integer metric representing the closeness or significance of the real, observed, event-driven earnings relationship betw"
+  },
+  {
+   "id": "pv70_ibeseps1_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Normalized, continuous metric (such as z-score or relative significance) representing the research-grade strength or rel"
+  },
+  {
+   "id": "pv70_ibeseps_nobackfill_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Vector listing the stock identifiers (Instrument2) with which the primary stock (Instrument1) has a real, observed, poin"
+  },
+  {
+   "id": "pv70_ibeseps_nobackfill_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "score"
+  },
+  {
+   "id": "pv70_ibeseps_nobackfill_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, continuous measure (such as z-score or relevance score) indicating the significance or strength of the obser"
+  },
+  {
+   "id": "pv70_ibeseps_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Vector of stock identifiers (Instrument2) that have a real, observed, event-driven earnings relationship with Instrument"
+  },
+  {
+   "id": "pv70_ibeseps_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer metric representing the strength or count of the observed event-driven earnings relationship between Instrument1"
+  },
+  {
+   "id": "pv70_ibeseps_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, continuous (float) metric indicating the significance or strength of the event-driven earnings relationship "
+  },
+  {
+   "id": "pv70_ibesptg1_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "List of stock identifiers for Instrument2 with real, observed, event-driven price target-based relationships to Instrume"
+  },
+  {
+   "id": "pv70_ibesptg1_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Module-specific integer metric representing the strength, relevance, or significance of observed price target-based anal"
+  },
+  {
+   "id": "pv70_ibesptg1_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized continuous measure (e.g., z-score, relevance score) representing the significance or strength of observed pri"
+  },
+  {
+   "id": "pv70_ibesptg_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "List of directional, event-driven relationships from one APAC ex-Japan, ex-China stock to another, observed via price ta"
+  },
+  {
+   "id": "pv70_ibesptg_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Module-specific integer score indicating the closeness or overlap strength of the observed price target relationship bet"
+  },
+  {
+   "id": "pv70_ibesptg_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, continuous metric (e.g., z-score) representing the significance or strength of the price target relationship"
+  },
+  {
+   "id": "pv70_ibesrec1_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A list of stock identifiers that have a real, observed, event-driven directional analyst recommendation relationship wit"
+  },
+  {
+   "id": "pv70_ibesrec1_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Module-specific integer score representing the significance or count of analyst recommendation relationship events obser"
+  },
+  {
+   "id": "pv70_ibesrec1_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, float-valued score indicating the relevance or strength of the analyst recommendation relationship, suitable"
+  },
+  {
+   "id": "pv70_news1_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "List of stock identifiers representing observed, event-driven, directional news relationships from Instrument1 to each r"
+  },
+  {
+   "id": "pv70_news1_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Integer score representing the closeness or relevance of the observed news relationship between two stocks in the ASI un"
+  },
+  {
+   "id": "pv70_news1_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized (float) score representing the research-grade strength or significance of the observed news relationship betw"
+  },
+  {
+   "id": "pv70_news_relation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "List of stock identifiers (Instrument2) that have a real, observed, event-driven (news-based) relationship with the targ"
+  },
+  {
+   "id": "pv70_news_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Module-specific integer score describing the closeness or strength of the news-based relationship between companies, bas"
+  },
+  {
+   "id": "pv70_news_score_float",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized, continuous (float) metric representing the strength or significance of the news-based relationship for each "
+  }
+ ]
+}

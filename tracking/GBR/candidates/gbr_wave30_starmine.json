@@ -1,0 +1,16 @@
+{
+  "wave": 30,
+  "region": "GBR",
+  "dataset": "predictive_starmine",
+  "strategy": "纯 starmine 强信号（无契约因子，直接回测）",
+  "expressions": [
+    "group_neutralize(ep_yield_pct_smest_f12m, sector)",
+    "group_rank(ep_yield_pct_smest_f12m, subindustry)",
+    "group_zscore(ep_yield_pct_smest_f12m, industry)",
+    "ts_zscore(ep_yield_pct_smest_f12m, 20)",
+    "ts_corr(ep_yield_pct_smest_f12m, ep_yield_pct_smest_fy1_3, 20)",
+    "rank((ep_yield_pct_smest_f12m + ep_yield_pct_smest_fy1_3 + ep_yield_pct_smest_fy2_3) / 3)",
+    "rank(ep_yield_pct_smest_f12m)",
+    "ts_decay_linear(ep_yield_pct_smest_f12m, 10)"
+  ]
+}

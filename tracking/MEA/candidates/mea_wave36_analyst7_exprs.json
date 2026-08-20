@@ -1,0 +1,104 @@
+[
+ {
+  "id": "w36_09",
+  "expr": "rank(ts_zscore(divide(analyst_price_target_mean, close), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ },
+ {
+  "id": "w36_10",
+  "expr": "rank(ts_delta(analyst_price_target_mean, 20))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ },
+ {
+  "id": "w36_11",
+  "expr": "rank(ts_zscore(subtract(analyst_price_target_raised_count_four_weeks, analyst_price_target_lowered_count_4_weeks), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ },
+ {
+  "id": "w36_12",
+  "expr": "rank(ts_zscore(divide(subtract(analyst_price_target_high, analyst_price_target_low), analyst_price_target_mean), 60)) * -1",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ },
+ {
+  "id": "w36_13",
+  "expr": "rank(ts_zscore(analyst_price_target_count, 120))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ },
+ {
+  "id": "w36_16",
+  "expr": "rank(ts_zscore(divide(analyst_price_target_median, analyst_price_target_mean), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  }
+ }
+]

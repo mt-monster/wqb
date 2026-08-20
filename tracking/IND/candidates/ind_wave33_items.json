@@ -1,0 +1,62 @@
+[
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.2), add(scale(-rank(ts_zscore(returns, 63))) * 0.2, scale(-rank(ts_zscore(returns, 126))) * 0.25))",
+  "note": "W33 m33z252 r21*.2+r63*.2+r126*.25",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.15), add(scale(-rank(ts_zscore(returns, 63))) * 0.2, scale(-rank(ts_zscore(returns, 126))) * 0.3))",
+  "note": "W33 m33z252 r21*.15+r63*.2+r126*.3",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.15), add(scale(-rank(ts_zscore(returns, 63))) * 0.15, add(scale(-rank(ts_zscore(returns, 126))) * 0.15, scale(-rank(ts_zscore(returns, 252))) * 0.15)))",
+  "note": "W33 m33z252 r21+r63+r126+r252 各.15",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.15), add(scale(-rank(ts_zscore(returns, 63))) * 0.15, add(scale(-rank(ts_zscore(returns, 126))) * 0.2, scale(-rank(ts_zscore(returns, 252))) * 0.2)))",
+  "note": "W33 m33z252 r21*.15+r63*.15+r126*.2+r252*.2",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 63))) * 0.3), scale(-rank(ts_zscore(returns, 126))) * 0.3)",
+  "note": "W33 m33z252 r63*.3+r126*.3",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 63))) * 0.25), scale(-rank(ts_zscore(returns, 126))) * 0.35)",
+  "note": "W33 m33z252 r63*.25+r126*.35",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 300), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.2), add(scale(-rank(ts_zscore(returns, 63))) * 0.2, scale(-rank(ts_zscore(returns, 126))) * 0.2))",
+  "note": "W33 m33z300 r21*.2+r63*.2+r126*.2",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 300), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.15), add(scale(-rank(ts_zscore(returns, 63))) * 0.2, scale(-rank(ts_zscore(returns, 126))) * 0.25))",
+  "note": "W33 m33z300 r21*.15+r63*.2+r126*.25",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 126))) * 0.55)",
+  "note": "W33 m33z252 r126*.55",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 28), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 28), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.2), add(scale(-rank(ts_zscore(returns, 63))) * 0.2, scale(-rank(ts_zscore(returns, 126))) * 0.25))",
+  "note": "W33 m28z252 r21*.2+r63*.2+r126*.25",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ }
+]

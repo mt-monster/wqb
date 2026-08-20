@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave05结构增强ModeB: wave04加权组合sh0.97卡壳; 本批zscore/ts_zscore/winsorize/group_neutralize预处理增强+decay网格; 目标突破sh1.2",
+ "expressions": [
+  "zscore(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(add(multiply(2, ts_zscore(fnd44_working_capital_accruals, 120)), ts_zscore(fnd44_probability_restatement_global, 120)))",
+  "rank(add(multiply(2, rank(ts_delta(winsorize(fnd44_working_capital_accruals, std=4), 60))), rank(ts_delta(winsorize(fnd44_probability_restatement_global, std=4), 60))))",
+  "rank(group_neutralize(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), industry))",
+  "rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(ts_rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), 20))",
+  "rank(add(multiply(3, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), add(rank(ts_delta(fnd44_probability_restatement_global, 60)), rank(ts_delta(fnd44_mscore, 60)))))"
+ ]
+}

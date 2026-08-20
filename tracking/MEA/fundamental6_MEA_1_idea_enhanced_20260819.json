@@ -1,0 +1,36 @@
+{
+  "region": "MEA",
+  "dataset_id": "fundamental6",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "type": "REGULAR",
+  "data_type": "VECTOR",
+  "template": "rank(ts_delta(divide(vec_avg({income_field}), add(vec_avg({revenue_field}), 0.0001)), 63))",
+  "idea": "改进的财务比率表达式，修复单位问题，提高Sharpe和Turnover",
+  "target": {
+    "sharpe": 1.58,
+    "fitness": 1.0,
+    "2ysharpe": 1.6,
+    "margin": 5,
+    "turnover_min": 5,
+    "turnover_max": 30,
+    "risk_neutralization_sharpe": 1.0,
+    "risk_neutralization_fitness": 0.7,
+    "risk_neutralization_margin": 5,
+    "ra_failed_count": 0,
+    "prod_correlation": 0.7,
+    "pairwise_correlation": 0.4
+  },
+  "focus": "未点亮金字塔",
+  "pyramid": 1.5,
+  "fieldCount": 382,
+  "coverage": 0.5078,
+  "improvements": [
+    "修复单位不兼容问题",
+    "使用ts_delta增加turnover",
+    "使用rank提高信号质量",
+    "添加时间序列变化捕捉趋势"
+  ]
+}

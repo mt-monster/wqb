@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental90",
+ "data_type": "MATRIX",
+ "probe_note": "wave03组合: 质量评分+质量指标+变化族三信号组合; group_neutralize(industry)增强; 目标sh>1.4",
+ "expressions": [
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_cash_flow_coverage)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_game_asset_turnover_chg)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_game_receivable_chg)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_ohlson), rank(fnd90_qes_gamef_grossprofit_asset)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_cscore), rank(fnd90_qes_gamef_grossprofit_asset)), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_mohanram), rank(fnd90_qes_gamef_grossprofit_asset)), industry))",
+  "rank(group_neutralize(add(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), rank(fnd90_game_asset_turnover_chg)), industry))"
+ ]
+}

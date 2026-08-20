@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-"""batch_simulate.py - GBR Wave 09 批量回测（8并发 create_multi_simulation）"""
+"""batch_simulate.py - GBR Wave 09 批量回测（使用 MCP create_multi_simulation）"""
 import json
 import os
 import sys
 import time
+from pathlib import Path
 
-sys.path.insert(0, r'D:\coding\traeCN_project\wqb\.workbuddy\skills\wq-brain-campaign-toolkit\scripts')
-from _lib.common import load_credentials
-from _lib.api import Api, api_call
+# 添加项目根目录到路径以便导入 tools
+PROJECT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from tools.mcp_5slot_batch import McpClient, normalize_settings
 
 def load_exprs(path):
     with open(path, encoding='utf-8') as f:
@@ -15,13 +18,15 @@ def load_exprs(path):
     return data.get('expressions', [])
 
 def main():
-    # 加载凭证并登录
-    email, password = load_credentials()
-    api = Api()
-    api.login(email, password)
-    print("Logged in successfully")
-    
-    # GBR 设置（与 create_multi_simulation 格式对齐）
+    # 初始化 MCP 客户端
+    print("[INFO] 初始化 MCP 客户端...")
+    try:
+        client = McpClient()
+    except Exception as e:
+        print(f"[ERROR] 无法连接到 MCP 服务，请确保 wq-brain-http 已在 http://127.0.0.1:8876/mcp 运行: {e}")
+        return
+
+    # GBR 设置（camelCase，将被 normalize_settings 转换）
     settings = {
         'instrumentType': 'EQUITY',
         'region': 'GBR',
@@ -39,89 +44,65 @@ def main():
         'nanHandling': 'OFF',
     }
     
+    # 转换为 MCP 参数格式
+    mcp_settings = normalize_settings(settings)
+    mcp_settings['wait_for_completion'] = False
+    mcp_settings['validate_fields'] = False
+
     # 加载三个数据集的表达式
-    base = r'D:\coding\traeCN_project\wqb\tracking\GBR\candidates'
+    base = PROJECT_ROOT / 'tracking' / 'GBR' / 'candidates'
     datasets = {
-        'other455': load_exprs(os.path.join(base, 'wave09_other455_gate.json')),
-        'model264': load_exprs(os.path.join(base, 'wave09_model264_gate.json')),
-        'pattern_scores': load_exprs(os.path.join(base, 'wave09_pattern_scores_gate.json')),
+        'other455': load_exprs(base / 'wave09_other455_gate.json'),
+        'model264': load_exprs(base / 'wave09_model264_gate.json'),
+        'pattern_scores': load_exprs(base / 'wave09_pattern_scores_gate.json'),
     }
     
-    # 准备批量提交（每个数据集4个，共12个，分2批，每批8个槽位）
+    # 准备批量提交
     all_exprs = []
     for ds, exprs in datasets.items():
         for e in exprs:
             all_exprs.append({
                 'dataset': ds,
                 'expression': e,
-                'settings': settings
             })
     
     print(f"Total expressions: {len(all_exprs)}")
     print(f"Datasets: {list(datasets.keys())}")
     
-    # 第一批：8个表达式（other455 4个 + model264 4个）
-    batch1 = all_exprs[:8]
-    batch2 = all_exprs[8:]
+    # 分批（每批最多 10 个，MCP create_multi_simulation 限制）
+    batch_size = 8
+    batches = [all_exprs[i:i + batch_size] for i in range(0, len(all_exprs), batch_size)]
     
-    print(f"\n=== Batch 1: {len(batch1)} expressions ===")
-    for i, item in enumerate(batch1, 1):
-        print(f"  {i}. [{item['dataset']}] {item['expression'][:60]}...")
-    
-    # 提交第一批
-    batch1_payload = [{
-        'type': 'REGULAR',
-        'settings': item['settings'],
-        'regular': item['expression']
-    } for item in batch1]
-    
-    print("\nSubmitting batch 1...")
-    try:
-        resp = api_call(api, 'post', '/simulations', batch1_payload)
-        # 检查响应状态
-        if resp.status == 201:
-            location = resp.headers.get('Location', '')
-            print(f"Batch 1 submitted successfully!")
-            print(f"  Location: {location}")
-            print(f"  Multisim ID: {location.split('/')[-1] if location else 'N/A'}")
-        else:
-            result = json.loads(resp.read())
-            print(f"Batch 1 response: {result}")
-    except Exception as e:
-        print(f"Batch 1 failed: {e}")
-        import traceback
-        traceback.print_exc()
-        return
-    
-    # 等待第一批完成
-    print("\nWaiting for batch 1 to complete...")
-    time.sleep(10)
-    
-    # 提交第二批
-    if batch2:
-        print(f"\n=== Batch 2: {len(batch2)} expressions ===")
-        for i, item in enumerate(batch2, 1):
+    for batch_idx, batch in enumerate(batches, 1):
+        print(f"\n=== Batch {batch_idx}: {len(batch)} expressions ===")
+        for i, item in enumerate(batch, 1):
             print(f"  {i}. [{item['dataset']}] {item['expression'][:60]}...")
         
-        batch2_payload = [{
-            'type': 'REGULAR',
-            'settings': item['settings'],
-            'regular': item['expression']
-        } for item in batch2]
+        # 构建 MCP payload
+        payload = dict(mcp_settings)
+        payload['alpha_expressions'] = [item['expression'] for item in batch]
         
-        print("\nSubmitting batch 2...")
+        print(f"\nSubmitting batch {batch_idx} via MCP create_multi_simulation...")
         try:
-            resp = api_call(api, 'post', '/simulations', batch2_payload)
-            if resp.status == 201:
-                location = resp.headers.get('Location', '')
-                print(f"Batch 2 submitted successfully!")
-                print(f"  Location: {location}")
-                print(f"  Multisim ID: {location.split('/')[-1] if location else 'N/A'}")
-            else:
-                result = json.loads(resp.read())
-                print(f"Batch 2 response: {result}")
+            result = client.call("create_multi_simulation", payload, timeout=120.0)
+            print(f"Batch {batch_idx} submitted successfully!")
+            print(f"  Result: {json.dumps(result, indent=2, ensure_ascii=False)}")
+            
+            # 提取 location 或 multisim_id
+            if isinstance(result, dict):
+                location = result.get('location') or result.get('multisimulation_id')
+                if location:
+                    print(f"  Multisim ID: {location}")
+                    
         except Exception as e:
-            print(f"Batch 2 failed: {e}")
+            print(f"Batch {batch_idx} failed: {e}")
+            import traceback
+            traceback.print_exc()
+            
+        # 批次间稍作等待，避免触发并发限制
+        if batch_idx < len(batches):
+            print("\nWaiting before next batch...")
+            time.sleep(5)
 
 if __name__ == '__main__':
     main()

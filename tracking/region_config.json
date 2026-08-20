@@ -1,0 +1,72 @@
+{
+  "GBR": {
+    "universe": ["TOP700", "TOP1000"],
+    "neutralization": ["SUBINDUSTRY", "SECTOR"],
+    "strong_datasets": ["starmine"],
+    "weak_datasets": ["model264", "model36", "other455"],
+    "field_rules": {
+      "model264": "mdl264_ 前缀 + _l1 分层",
+      "model36": "star_sr_ 前缀 + _d1 分层"
+    },
+    "window_adaptive": {
+      "news_abno_vol": 10,
+      "ep_yield_pct_smest": 30
+    },
+    "probe_size": 3,
+    "settings_priority": [
+      {"universe": "TOP700", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP1000", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP700", "neutralization": "SECTOR"}
+    ]
+  },
+  "USA": {
+    "universe": ["TOP3000", "TOP1000", "TOP500"],
+    "neutralization": ["SUBINDUSTRY", "SECTOR", "MARKET"],
+    "strong_datasets": ["starmine"],
+    "weak_datasets": ["ml_factor_proj"],
+    "field_groups": {
+      "ml_factor_proj": ["attention_*", "change_*", "基础指标"],
+      "starmine": ["ep_yield_pct_smest_*"]
+    },
+    "combo_signal": [
+      "ts_zscore(ep_yield_pct_smest_fy1_3, 20) + ts_zscore(ep_yield_pct_smest_fy2_3, 20)"
+    ],
+    "probe_size": 4,
+    "settings_priority": [
+      {"universe": "TOP3000", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP1000", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP3000", "neutralization": "SECTOR"},
+      {"universe": "TOP3000", "neutralization": "MARKET"},
+      {"universe": "TOP500", "neutralization": "SUBINDUSTRY"}
+    ]
+  },
+  "KOR": {
+    "universe": ["TOP600"],
+    "neutralization": ["SECTOR"],
+    "strong_datasets": ["insider_feats"],
+    "weak_datasets": [],
+    "prod_wall": {
+      "insider_feats": 0.78,
+      "DL": "0.84-0.92"
+    },
+    "structure_rebuild": true,
+    "probe_size": 3,
+    "settings_priority": [
+      {"universe": "TOP600", "neutralization": "SECTOR"}
+    ]
+  },
+  "MEA": {
+    "universe": ["TOP400", "TOP300"],
+    "neutralization": ["SUBINDUSTRY", "SECTOR", "INDUSTRY", "MARKET", "COUNTRY"],
+    "strong_datasets": [],
+    "weak_datasets": [],
+    "probe_size": 3,
+    "settings_priority": [
+      {"universe": "TOP400", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP400", "neutralization": "SECTOR"},
+      {"universe": "TOP300", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP400", "neutralization": "MARKET"},
+      {"universe": "TOP400", "neutralization": "COUNTRY"}
+    ]
+  }
+}

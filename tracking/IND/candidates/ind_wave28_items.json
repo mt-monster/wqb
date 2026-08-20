@@ -1,0 +1,74 @@
+[
+ {
+  "code": "add(0.7*rank(anl46_sentiment), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "A sent70+dy30",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(anl46_sentiment), 0.4*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "A sent60+dy40",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(anl46_sentiment), 0.5*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "A sent50+dy50",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.7*rank(anl46_indicator), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "B ind70+dy30",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(anl46_indicator), 0.4*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "B ind60+dy40",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(add(0.4*rank(anl46_sentiment), 0.3*rank(anl46_indicator)), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "C sent40+ind30+dy30",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(add(0.35*rank(anl46_sentiment), 0.35*rank(anl46_indicator)), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+  "note": "C sent35+ind35+dy30",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(anl46_sentiment), 0.4*rank(fnd86_relative_valuation_score))",
+  "note": "D sent60+fndval40",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(anl46_sentiment), 0.4*rank(fnd86_average_score))",
+  "note": "D sent60+fndavg40",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(add(0.5*rank(anl46_sentiment), 0.3*rank(anl46_indicator)), 0.2*rank(anl46_experts))",
+  "note": "E sent50+ind30+exp20",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(anl46_sentiment), 0.4*rank(anl46_indicator))",
+  "note": "E sent60+ind40",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(ts_backfill(mdl177_divyield, 66))",
+  "note": "F probe divyield",
+  "neut": "SECTOR",
+  "decay": 4
+ }
+]

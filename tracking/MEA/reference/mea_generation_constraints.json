@@ -1,0 +1,19 @@
+{
+ "operator_stats": {
+  "used": [],
+  "unused": [],
+  "rare": []
+ },
+ "injection_rules": {
+  "force_explore_ops": [],
+  "cap_ops": [],
+  "skeleton_quota": {
+   "linear_mix": 0.5,
+   "event_gated": 0.1,
+   "group": 0.1,
+   "ratio": 0.1,
+   "single": 0.2
+  }
+ },
+ "poison_patterns": []
+}

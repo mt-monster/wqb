@@ -1,0 +1,114 @@
+[
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路4222_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.35*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.25*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路malta重_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.3*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.3*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路malta更重_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路4222_d6_t08",
+  "decay": 6,
+  "truncation": 0.08,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路4222_d4_t05",
+  "decay": 4,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(img_pred_malta_star3_100d_2bucket_rank))",
+  "note": "malta换asi2b2_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(img_pred_malta_star3_100d_2bucket_rank))",
+  "note": "malta换asi2b2_433_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.5*rank(img60d_return_quantile1), 0.25*rank(img_pred_malta_star3_100d_2bucket_rank)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "malta换cnn_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.3*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), add(0.2*rank(img_pred_malta_star3_100d_2bucket_rank), 0.1*rank(imgfeat_asi_eqstar1b1d1))))",
+  "note": "五路_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(add(0.5*rank(img60d_return_quantile1), 0.25*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1)), 0.15*rank(img_pred_malta_star3_100d_2bucket_rank))",
+  "note": "base+malta015_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(add(0.5*rank(img60d_return_quantile1), 0.25*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank))",
+  "note": "base+malta02_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路4222_illiq_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.35*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), add(0.2*rank(imgfeat_asi_eqstar2b2d1f1), 0.25*rank(img_pred_malta_star3_100d_2bucket_rank)))",
+  "note": "四路malta重_illiq_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "ILLIQUID_MINVOL1M"
+ },
+ {
+  "code": "add(add(0.5*rank(img60d_return_quantile1), 0.25*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "base525_d6_t05_control",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ }
+]

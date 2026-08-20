@@ -1,0 +1,19 @@
+{
+ "status": "evaluated",
+ "dataset": "analyst7",
+ "evaluated_at": "2026-08-20T21:32:47",
+ "wave_count": 3,
+ "total_expressions": 21,
+ "structural_metrics": {},
+ "ppac_metrics": {
+  "avg_ppac": 0.57,
+  "max_ppac": 1.0,
+  "low_ppac_ratio": 0.824
+ },
+ "evaluation": {
+  "recommendation": "continue_extraction",
+  "reason": "多样性榨取效果良好，建议继续榨取 1-2 轮",
+  "quality_score": 0.275,
+  "estimated_high_quality_alphas": 8
+ }
+}

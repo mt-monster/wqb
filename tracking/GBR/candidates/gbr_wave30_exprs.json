@@ -1,0 +1,44 @@
+{
+ "meta": {
+  "wave": "30",
+  "source": "tracking/GBR/candidates/gbr_wave30_base.json",
+  "region": "GBR",
+  "created_at": "2026-08-19T01:46:39",
+  "input": 26,
+  "duplicates_dropped": 5,
+  "selected": 6,
+  "coverage_injected": 12,
+  "coverage_signed": "explore_contract_GBR_20260819_014639_089477",
+  "buckets": {
+   "group_mean>atom": 1,
+   "group_neutralize>atom": 2,
+   "group_rank>atom": 2,
+   "group_scale>atom": 1,
+   "group_std_dev>atom": 1,
+   "group_sum>atom": 1,
+   "group_zscore>atom": 1,
+   "rank>atom": 2,
+   "ts_arg_max>atom": 1,
+   "ts_arg_min>atom": 1,
+   "ts_corr>atom": 2,
+   "ts_decay_linear>atom": 1,
+   "ts_delta>atom": 1,
+   "ts_quantile>atom": 1,
+   "ts_regression>atom": 1,
+   "ts_zscore>atom": 2
+  },
+  "skeleton_distribution": {
+   "group": 6
+  },
+  "linear_mix_cap": 0.5,
+  "diversity_enhanced": false
+ },
+ "expressions": [
+  "group_mean(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_relation_n2v_p10_q200_w2_pca_fact1_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+  "group_neutralize(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+  "group_neutralize(ep_yield_pct_smest_f12m, sector)",
+  "group_rank(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+  "group_rank(ep_yield_pct_smest_f12m, subindustry)",
+  "group_zscore(ep_yield_pct_smest_f12m, industry)"
+ ]
+}

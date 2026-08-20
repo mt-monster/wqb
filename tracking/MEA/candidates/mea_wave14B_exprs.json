@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "wave": "14B",
+    "source": "manual_diversified",
+    "region": "MEA",
+    "created_at": "2026-08-19T19:20:00",
+    "input": 8,
+    "duplicates_dropped": 0,
+    "selected": 8,
+    "coverage_injected": 0,
+    "buckets": {
+      "rank>ts_rank": 2,
+      "rank>ts_zscore": 2,
+      "add>rank": 2,
+      "subtract>rank": 1,
+      "rank>ts_delta": 1
+    },
+    "skeleton_distribution": {
+      "linear_mix": 3,
+      "single": 5
+    },
+    "linear_mix_cap": 0.5,
+    "diversity_enhanced": false,
+    "notes": "Wave14B: diversified model25 expressions with different operators and time windows"
+  },
+  "expressions": [
+    "rank(ts_rank(mdl25_eq_pc_v10, 22))",
+    "rank(ts_rank(mdl25_eq_vr_v5, 60))",
+    "rank(ts_zscore(mdl25_eq_ro_v22, 120))",
+    "rank(ts_zscore(mdl25_eq_rp_v19, 22))",
+    "add(rank(ts_zscore(mdl25_eq_pc_v5, 60)), rank(ts_zscore(mdl25_eq_vr_v10, 60)))",
+    "add(rank(ts_zscore(mdl25_eq_ro_v16, 120)), rank(ts_zscore(mdl25_eq_rliq_v5, 60)))",
+    "subtract(rank(ts_zscore(mdl25_eq_vr_v19, 60)), rank(ts_zscore(mdl25_eq_rlev_v10, 60)))",
+    "rank(ts_delta(mdl25_eq_pc_v11, 60))"
+  ]
+}

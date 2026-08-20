@@ -1,0 +1,415 @@
+{
+ "dataset": "fundamental6",
+ "region": "MEA",
+ "universe": "TOP400",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 47,
+  "MATRIX": 3
+ },
+ "field_count": 50,
+ "fetched_at": "2026-08-20T00:50:38",
+ "fields": [
+  {
+   "id": "accounts_payable_change_ytd",
+   "type": "VECTOR",
+   "coverage": 0.5477,
+   "userCount": 50,
+   "alphaCount": 65,
+   "description": "Year-to-date change in accounts payable/creditors (increase or decrease)"
+  },
+  {
+   "id": "accounts_payable_other",
+   "type": "VECTOR",
+   "coverage": 0.5546,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Accounts payable – other"
+  },
+  {
+   "id": "accounts_receivable_change",
+   "type": "VECTOR",
+   "coverage": 0.548,
+   "userCount": 28,
+   "alphaCount": 37,
+   "description": "Accounts Receivable - Decrease (Increase)"
+  },
+  {
+   "id": "accrued_expenses_deferred_income_fs_memo",
+   "type": "VECTOR",
+   "coverage": 0.3139,
+   "userCount": 14,
+   "alphaCount": 23,
+   "description": "Accrued Expenses & Deferred Income - FS (Memo)"
+  },
+  {
+   "id": "acquisition_cash_outflow",
+   "type": "VECTOR",
+   "coverage": 0.3877,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Acquisition-related cash outflow/amount during the period"
+  },
+  {
+   "id": "additional_paid_in_capital",
+   "type": "VECTOR",
+   "coverage": 0.7462,
+   "userCount": 24,
+   "alphaCount": 28,
+   "description": "Capital surplus/share premium reserve (additional paid‑in capital)"
+  },
+  {
+   "id": "administrative_and_general_expense_total",
+   "type": "VECTOR",
+   "coverage": 0.355,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Administrative and General Expense - Total"
+  },
+  {
+   "id": "annual_depreciation_and_amortization",
+   "type": "VECTOR",
+   "coverage": 0.9153,
+   "userCount": 30,
+   "alphaCount": 33,
+   "description": "Annual Depreciation and Amortization"
+  },
+  {
+   "id": "annual_foreign_exchange_income_loss",
+   "type": "VECTOR",
+   "coverage": 0.7652,
+   "userCount": 19,
+   "alphaCount": 20,
+   "description": "Annual Foreign Exchange Income (Loss)"
+  },
+  {
+   "id": "annual_reinsurance_liabilities_total",
+   "type": "VECTOR",
+   "coverage": 0.2881,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Annual Reinsurance Liabilities - Total"
+  },
+  {
+   "id": "annual_unappropriated_net_profit",
+   "type": "VECTOR",
+   "coverage": 0.6137,
+   "userCount": 8,
+   "alphaCount": 20,
+   "description": "Annual Unappropriated Net Profit (Stockholders' Equity)"
+  },
+  {
+   "id": "annual_unearned_premium_reserves",
+   "type": "VECTOR",
+   "coverage": 0.2515,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Annual reserves for unearned premiums (insurance)"
+  },
+  {
+   "id": "broker_dealer_other_expense",
+   "type": "VECTOR",
+   "coverage": 0.2507,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Expense - Other (Broker/Dealer)"
+  },
+  {
+   "id": "cash_dividends_paid",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "Total cash dividends paid per cash flow statement (annual)"
+  },
+  {
+   "id": "common_stock_capital",
+   "type": "VECTOR",
+   "coverage": 0.9102,
+   "userCount": 24,
+   "alphaCount": 26,
+   "description": "Common/ordinary stock capital (par or stated value)"
+  },
+  {
+   "id": "current_liabilities_total_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4583,
+   "userCount": 106,
+   "alphaCount": 188,
+   "description": "Current liabilities - total (quarterly)"
+  },
+  {
+   "id": "customer_advances_annual",
+   "type": "VECTOR",
+   "coverage": 0.2531,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Customer Advances (annual)"
+  },
+  {
+   "id": "customer_demand_deposits_annual",
+   "type": "VECTOR",
+   "coverage": 0.2515,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Deposits - Demand - Customer (annual)"
+  },
+  {
+   "id": "customer_time_deposits",
+   "type": "VECTOR",
+   "coverage": 0.2515,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Deposits - Time - Customer"
+  },
+  {
+   "id": "debt_current_liabilities_total",
+   "type": "VECTOR",
+   "coverage": 0.8254,
+   "userCount": 66,
+   "alphaCount": 117,
+   "description": "Debt in current liabilities – total"
+  },
+  {
+   "id": "equity_in_earnings_of_associates_annual",
+   "type": "VECTOR",
+   "coverage": 0.411,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Equity Interest in Earnings of Associated Companies (annual)"
+  },
+  {
+   "id": "equity_in_earnings_unconsolidated_subsidiaries_quarterly",
+   "type": "VECTOR",
+   "coverage": 0.2594,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Equity in Earnings (Income Statement) - Unconsolidated Subsidiaries (Quarterly)"
+  },
+  {
+   "id": "equity_in_earnings_unconsolidated_subsidiaries_ytd",
+   "type": "VECTOR",
+   "coverage": 0.2721,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year-to-Date Equity in Earnings (Income Statement) - Unconsolidated Subsidiaries"
+  },
+  {
+   "id": "fnd6_adesinda_curcd",
+   "type": "MATRIX",
+   "coverage": 0.9068,
+   "userCount": 56,
+   "alphaCount": 111,
+   "description": "ISO currency code used for the company’s annual market data in the Annual Descriptor module"
+  },
+  {
+   "id": "fnd6_idesindq_curcd",
+   "type": "MATRIX",
+   "coverage": 0.9166,
+   "userCount": 34,
+   "alphaCount": 40,
+   "description": "ISO currency code representing the company's annual market reporting currency"
+  },
+  {
+   "id": "fundamental_acceptances_outstanding",
+   "type": "VECTOR",
+   "coverage": 0.2533,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Acceptances outstanding"
+  },
+  {
+   "id": "fundamental_accounts_payable_change",
+   "type": "VECTOR",
+   "coverage": 0.5582,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Accounts payable - increase (decrease)"
+  },
+  {
+   "id": "fundamental_accounts_payable_quarterly",
+   "type": "VECTOR",
+   "coverage": 0.7913,
+   "userCount": 38,
+   "alphaCount": 62,
+   "description": "Accounts payable (trade creditors), quarterly"
+  },
+  {
+   "id": "fundamental_accounts_payable_trade_annual",
+   "type": "VECTOR",
+   "coverage": 0.832,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Accounts Payable - Trade (annual)"
+  },
+  {
+   "id": "fundamental_accounts_receivable_change",
+   "type": "VECTOR",
+   "coverage": 0.5577,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Accounts Receivable - Decrease (Increase)"
+  },
+  {
+   "id": "fundamental_accounts_receivable_quarter_end",
+   "type": "VECTOR",
+   "coverage": 0.3429,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total accounts receivable/debtors at quarter end"
+  },
+  {
+   "id": "fundamental_accounts_receivable_total",
+   "type": "VECTOR",
+   "coverage": 0.3472,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Accounts Receivable/Debtors - Total"
+  },
+  {
+   "id": "fundamental_accrued_expenses_deferred_income_q",
+   "type": "VECTOR",
+   "coverage": 0.5066,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Accrued Expenses & Deferred Income (quarterly)"
+  },
+  {
+   "id": "fundamental_accrued_liabilities_change",
+   "type": "VECTOR",
+   "coverage": 0.2591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accrued Liabilities - Increase/(Decrease)"
+  },
+  {
+   "id": "fundamental_accumulated_depreciation_depletion_amortization",
+   "type": "VECTOR",
+   "coverage": 0.8016,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Annual Depreciation, Depletion and Amortization (Accumulated)"
+  },
+  {
+   "id": "fundamental_admin_general_expense_ytd",
+   "type": "VECTOR",
+   "coverage": 0.3536,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Year-to-Date Administrative and General Expense - Total"
+  },
+  {
+   "id": "fundamental_administrative_and_general_expense_semiannual_total",
+   "type": "VECTOR",
+   "coverage": 0.3438,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Semi-annual administrative and general expense, total"
+  },
+  {
+   "id": "fundamental_administrative_and_general_expense_total_q",
+   "type": "VECTOR",
+   "coverage": 0.3475,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Administrative and General Expense - Total"
+  },
+  {
+   "id": "fundamental_amortization_deferred_policy_acquisition_costs_annual",
+   "type": "VECTOR",
+   "coverage": 0.2749,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Amortization of Deferred Policy Acquisition Costs (annual)"
+  },
+  {
+   "id": "fundamental_amortization_intangibles_expense_quarterly",
+   "type": "VECTOR",
+   "coverage": 0.3273,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Amortization of intangibles expense, quarterly"
+  },
+  {
+   "id": "fundamental_annual_change_current_debt",
+   "type": "VECTOR",
+   "coverage": 0.4395,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Annual change in current debt, including net change in short-term borrowings and current maturities of long-term debt"
+  },
+  {
+   "id": "fundamental_annual_change_working_capital_to_net_operating_assets",
+   "type": "VECTOR",
+   "coverage": 0.5584,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Annual change in working capital/net operating assets"
+  },
+  {
+   "id": "fundamental_annual_commissions_and_fees_other",
+   "type": "VECTOR",
+   "coverage": 0.2677,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Annual Commissions and Fees - Other"
+  },
+  {
+   "id": "fundamental_annual_commissions_expense_insurance",
+   "type": "VECTOR",
+   "coverage": 0.2596,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annual Commissions Expense (Insurance)"
+  },
+  {
+   "id": "fundamental_annual_deferred_policy_acquisition_costs",
+   "type": "VECTOR",
+   "coverage": 0.2786,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Annual Deferred Policy Acquisition Costs"
+  },
+  {
+   "id": "fundamental_annual_excise_taxes",
+   "type": "VECTOR",
+   "coverage": 0.5546,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Annual excise taxes"
+  },
+  {
+   "id": "fundamental_annual_income_before_extraordinary_items",
+   "type": "VECTOR",
+   "coverage": 0.9206,
+   "userCount": 30,
+   "alphaCount": 42,
+   "description": "Annual Income Before Extraordinary Items"
+  },
+  {
+   "id": "fundamental_annual_interest_expense_total",
+   "type": "VECTOR",
+   "coverage": 0.8481,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Annual Interest and Related Expense - Total"
+  },
+  {
+   "id": "fundamental_annual_investment_expense",
+   "type": "VECTOR",
+   "coverage": 0.2515,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annual investment expense (insurance)"
+  },
+  {
+   "id": "fundamental_annual_loans_from_securities_finance_margin_transactions",
+   "type": "VECTOR",
+   "coverage": 0.2515,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Annual Loans From Securities Finance Companies for Margin Transactions"
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+  "wave": 44,
+  "focus": "Weaken signals (zscore window 250->120/60 + truncation 0.08->0.05) to select more stocks and reduce CONCENTRATED_WEIGHT",
+  "baseline": {"id": "Xg7E0N58", "expr": "4sig+VolSurge z250 t0.08", "sharpe": 1.96, "fitness": 1.69, "2y": 2.19, "cw": 0.206},
+  "results": [
+    {"id": "E5lA9L3G", "variant": "4sig z120 t0.08", "sharpe": 1.48, "fitness": 1.18, "2y": 1.33, "cw": 0.238, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "Jj7L61Rm", "variant": "4sig z60 t0.08", "sharpe": 1.33, "fitness": 1.03, "2y": 0.73, "cw": 0.480, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "9qXQNmge", "variant": "4sig+VolSurge z120 t0.08", "sharpe": 1.74, "fitness": 1.42, "2y": 2.09, "cw": 0.236, "fail": ["CW"]},
+    {"id": "YP7dRJwW", "variant": "4sig+VolSurge z60 t0.08", "sharpe": 1.45, "fitness": 1.12, "2y": 1.05, "cw": 0.445, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "1Yw5rPL6", "variant": "4sig z120 t0.05", "sharpe": 1.48, "fitness": 1.18, "2y": 1.33, "cw": 0.238, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "KP7RWQ6k", "variant": "4sig z60 t0.05", "sharpe": 1.33, "fitness": 1.03, "2y": 0.73, "cw": 0.491, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "lejZo92A", "variant": "4sig+VolSurge z120 t0.05", "sharpe": 1.74, "fitness": 1.42, "2y": 2.09, "cw": 0.236, "fail": ["CW"]},
+    {"id": "ak735wl9", "variant": "4sig+VolSurge z60 t0.05", "sharpe": 1.47, "fitness": 1.15, "2y": 1.05, "cw": 0.440, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]}
+  ],
+  "key_findings": [
+    "HYPOTHESIS FAILED: Weakening signals INCREASES CW - opposite of expectation",
+    "z120: CW 0.236-0.238 (worse than z250's 0.206); z60: CW EXPLODES to 0.44-0.49 (2x+ worse)",
+    "Short zscore windows create EXTREME z-scores on earnings releases in MEA - concentrates weights MORE",
+    "longCount drops 133->83-86 with z60: short windows produce more NaNs, cover FEWER stocks, weights MORE concentrated",
+    "truncation 0.05 vs 0.08: ZERO difference in all metrics (truncation does not affect CW)",
+    "z250 remains optimal: CW ~0.206 is the confirmed structural floor, sharpe 1.96 the ceiling",
+    "Xg7E0N58 (4sig+VolSurge z250) remains MEA's best: sharpe 1.96 / fitness 1.69 / 2y 2.19 / CW 0.206 - only CW blocks submission"
+  ],
+  "cw_analysis": {
+    "problem": "Signal weakening is a DEAD END - CW floor confirmed at ~0.206 with z250",
+    "evidence": "z120 CW=0.236, z60 CW=0.44-0.49 - shorter windows concentrate MORE, not less",
+    "root_cause": "Short-window z-scores are more extreme in MEA (low liquidity, earnings spikes), rank() then concentrates on fewer stocks",
+    "remaining_options": [
+      "1. rank(subtract(...)) relative rankings to force spread - UNTESTED",
+      "2. Outer rank(add(...)) to soften extreme weights - UNTESTED",
+      "3. Different neutralization (INDUSTRY/SUBINDUSTRY) - UNTESTED",
+      "4. Accept MEA CW floor: pivot to larger region (GLB/EUR) with proven 4sig+VolSurge recipe",
+      "5. PPA channel check"
+    ]
+  }
+}

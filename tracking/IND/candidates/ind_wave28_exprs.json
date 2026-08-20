@@ -1,0 +1,14 @@
+[
+ "add(0.7*rank(anl46_sentiment), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(0.6*rank(anl46_sentiment), 0.4*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(0.5*rank(anl46_sentiment), 0.5*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(0.7*rank(anl46_indicator), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(0.6*rank(anl46_indicator), 0.4*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(add(0.4*rank(anl46_sentiment), 0.3*rank(anl46_indicator)), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(add(0.35*rank(anl46_sentiment), 0.35*rank(anl46_indicator)), 0.3*rank(ts_backfill(mdl177_divyield, 66)))",
+ "add(0.6*rank(anl46_sentiment), 0.4*rank(fnd86_relative_valuation_score))",
+ "add(0.6*rank(anl46_sentiment), 0.4*rank(fnd86_average_score))",
+ "add(add(0.5*rank(anl46_sentiment), 0.3*rank(anl46_indicator)), 0.2*rank(anl46_experts))",
+ "add(0.6*rank(anl46_sentiment), 0.4*rank(anl46_indicator))",
+ "rank(ts_backfill(mdl177_divyield, 66))"
+]

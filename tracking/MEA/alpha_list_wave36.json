@@ -1,0 +1,322 @@
+[
+ {
+  "id": "w36_01",
+  "expr": "rank(ts_rank(vec_avg(fnd72_pit_or_is_q_is_eps), 126))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "EPS_momentum",
+  "note": "EPS 长期排名动量（半年窗口）"
+ },
+ {
+  "id": "w36_02",
+  "expr": "rank(ts_delta(vec_avg(fnd72_pit_or_is_q_is_eps), 66))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "EPS_growth",
+  "note": "EPS 季度增长（66 交易日 delta）"
+ },
+ {
+  "id": "w36_03",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_is_oper_inc), vec_avg(fnd72_pit_or_is_q_sales_rev_turn)), 252))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "Profitability",
+  "note": "营业利润率（运营收入/营收）"
+ },
+ {
+  "id": "w36_04",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_is_q_earn_for_common)), 252))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "CashFlow_quality",
+  "note": "现金流/净利润比率（盈利质量）"
+ },
+ {
+  "id": "w36_05",
+  "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_cf_q_cf_cap_expend_prpty_add)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "FCF_yield",
+  "note": "自由现金流收益率（CFO-CapEx)/总资产"
+ },
+ {
+  "id": "w36_06",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_earn_for_common), add(vec_avg(fnd72_pit_or_bs_q_bs_sh_cap_and_apic), vec_avg(fnd72_pit_or_bs_q_bs_retain_earn))), 252))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "ROE",
+  "note": "ROE（净利润/股东权益）"
+ },
+ {
+  "id": "w36_07",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_lt_borrow), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "Leverage_low",
+  "note": "低杠杆（长期借款/总资产，取负）"
+ },
+ {
+  "id": "w36_08",
+  "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_is_q_earn_for_common), vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "Accruals_low",
+  "note": "低应计（净利润-CFO)/总资产，取负）"
+ },
+ {
+  "id": "w36_09",
+  "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_cash_near_cash_item), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "fundamental72",
+  "category": "Cash_strength",
+  "note": "现金强度（现金/总资产）"
+ },
+ {
+  "id": "w36_10",
+  "expr": "rank(ts_zscore(vec_avg(analyst_eps_upward_revisions_4weeks), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_EPS_rev_up",
+  "note": "EPS 上调修订数（4 周）"
+ },
+ {
+  "id": "w36_11",
+  "expr": "rank(ts_zscore(vec_avg(analyst_eps_downward_revisions_last_four_weeks_count), 60)) * -1",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_EPS_rev_down",
+  "note": "EPS 下调修订数（4 周，取负）"
+ },
+ {
+  "id": "w36_12",
+  "expr": "rank(ts_zscore(subtract(vec_avg(analyst_net_income_upward_revisions_4_weeks_count), vec_avg(analyst_net_income_downward_revision_count_4wks)), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_NI_rev",
+  "note": "净利润修订净方向（上调-下调）"
+ },
+ {
+  "id": "w36_13",
+  "expr": "rank(ts_zscore(subtract(vec_avg(analyst_num_sales_estimates_raised_last_4_weeks), vec_avg(analyst_lowered_revenue_estimates_count_4wks)), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_sales_rev",
+  "note": "营收修订净方向（上调-下调）"
+ },
+ {
+  "id": "w36_14",
+  "expr": "rank(ts_zscore(divide(analyst_price_target_mean, close), 60))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_PT_upside",
+  "note": "价格目标上行空间（PT均值/现价）"
+ },
+ {
+  "id": "w36_15",
+  "expr": "rank(ts_delta(analyst_price_target_mean, 20))",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_PT_momentum",
+  "note": "价格目标动量（20 日变化）"
+ },
+ {
+  "id": "w36_16",
+  "expr": "rank(ts_zscore(divide(subtract(analyst_price_target_high, analyst_price_target_low), analyst_price_target_mean), 60)) * -1",
+  "settings": {
+   "region": "MEA",
+   "universe": "TOP400",
+   "delay": 1,
+   "decay": 4,
+   "neutralization": "SECTOR",
+   "truncation": 0.08,
+   "pasteurization": "ON",
+   "unitHandling": "VERIFY",
+   "nanHandling": "OFF",
+   "maxTrade": "ON",
+   "language": "FASTEXPR"
+  },
+  "dataset": "analyst7",
+  "category": "Analyst_PT_dispersion",
+  "note": "价格目标离散度（高-低）/均值，取负=低离散=共识强"
+ }
+]

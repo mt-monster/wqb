@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 60))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_oe_chg_1_qtr, 60))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_delta(mdl31_acc_chg_1_qtr, 22))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_delta(mdl31_cf_chg_1_qtr, 22))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_oe_chg_1_qtr, 60)))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "add(rank(ts_zscore(mdl31_acc_chg_1_qtr, 60)), rank(ts_zscore(mdl31_cf_chg_1_qtr, 60)))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "subtract(rank(ts_zscore(mdl31_erq_re_rk_chg_1_qtr, 60)), rank(ts_zscore(mdl31_acc_chg_1_qtr, 60)))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_rank(mdl31_gm_pct_t4q, 60))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "max_trade": "ON",
+    "dataset": "analyst15",
+    "wave": "usa_wave01",
+    "created": "2026-08-20",
+    "note": "USA analyst15 多样性榨取 - 避开 mdl177_* 价值/盈利死路，专注分析师修订/动量/情绪"
+  },
+  "expressions": [
+    {
+      "id": "usa_w01_01",
+      "category": "BPS_revision_momentum",
+      "expr": "rank(ts_delta(anl15_bps_gr_12_m_mean, 20))",
+      "note": "12个月前向BPS预测的20日变化率"
+    },
+    {
+      "id": "usa_w01_02",
+      "category": "BPS_revision_momentum",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60))",
+      "note": "12个月前向BPS预测1个月变化的zscore"
+    },
+    {
+      "id": "usa_w01_03",
+      "category": "BPS_revision_momentum",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_3m_chg, 120))",
+      "note": "12个月前向BPS预测3个月变化的zscore"
+    },
+    {
+      "id": "usa_w01_04",
+      "category": "BPS_estimate_breadth",
+      "expr": "rank(anl15_bps_gr_12_m_cos_up - anl15_bps_gr_12_m_cos_dn)",
+      "note": "12个月前向BPS预测上调公司数-下调公司数"
+    },
+    {
+      "id": "usa_w01_05",
+      "category": "BPS_estimate_breadth",
+      "expr": "rank(anl15_bps_gr_12_m_ests_up / (anl15_bps_gr_12_m_ests_up + anl15_bps_gr_12_m_ests_dn + 1))",
+      "note": "12个月前向BPS预测上调估计数占比"
+    },
+    {
+      "id": "usa_w01_06",
+      "category": "BPS_growth",
+      "expr": "rank(anl15_bps_gr_12_m_gro)",
+      "note": "12个月前向BPS同比增长率"
+    },
+    {
+      "id": "usa_w01_07",
+      "category": "BPS_growth",
+      "expr": "rank(anl15_bps_gr_cal_fy1_gro)",
+      "note": "FY1 BPS同比增长率"
+    },
+    {
+      "id": "usa_w01_08",
+      "category": "BPS_valuation",
+      "expr": "rank(-anl15_bps_gr_12_m_pe)",
+      "note": "12个月前向BPS PE比率（反向）"
+    },
+    {
+      "id": "usa_w01_09",
+      "category": "BPS_valuation",
+      "expr": "rank(-anl15_bps_gr_cal_fy1_pe)",
+      "note": "FY1 BPS PE比率（反向）"
+    },
+    {
+      "id": "usa_w01_10",
+      "category": "BPS_dispersion",
+      "expr": "rank(-anl15_bps_gr_12_m_st_dev)",
+      "note": "12个月前向BPS预测标准差（反向，低离散度好）"
+    },
+    {
+      "id": "usa_w01_11",
+      "category": "BPS_revision_sector",
+      "expr": "rank(ts_delta(anl15_bps_s_12_m_mean, 20))",
+      "note": "Sector层级12个月前向BPS预测的20日变化率"
+    },
+    {
+      "id": "usa_w01_12",
+      "category": "BPS_revision_sector",
+      "expr": "rank(anl15_bps_s_12_m_cos_up - anl15_bps_s_12_m_cos_dn)",
+      "note": "Sector层级12个月前向BPS预测上调-下调公司数"
+    },
+    {
+      "id": "usa_w01_13",
+      "category": "BPS_revision_industry",
+      "expr": "rank(ts_zscore(anl15_bps_ind_12_m_1m_chg, 60))",
+      "note": "Industry层级12个月前向BPS预测1个月变化的zscore"
+    },
+    {
+      "id": "usa_w01_14",
+      "category": "BPS_long_term",
+      "expr": "rank(ts_delta(anl15_bps_gr_18_m_mean, 60))",
+      "note": "18个月前向BPS预测的60日变化率"
+    },
+    {
+      "id": "usa_w01_15",
+      "category": "BPS_long_term",
+      "expr": "rank(anl15_bps_gr_18_m_gro)",
+      "note": "18个月前向BPS同比增长率"
+    },
+    {
+      "id": "usa_w01_16",
+      "category": "BPS_composite",
+      "expr": "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60)) + rank(anl15_bps_gr_12_m_gro) + rank(-anl15_bps_gr_12_m_pe)",
+      "note": "复合信号：动量+增长+估值"
+    }
+  ]
+}

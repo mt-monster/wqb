@@ -1,0 +1,139 @@
+{
+  "wave": 35,
+  "theme": "MEA fundamental72 + analyst7 多样性榨取",
+  "region": "MEA",
+  "datasets": ["fundamental72", "analyst7"],
+  "settings": {
+    "region": "MEA",
+    "universe": "TOP400",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR"
+  },
+  "diversity_dimensions": {
+    "L1_fields": ["EPS", "ROE", "CashFlow", "BalanceSheet", "AnalystRevision", "Valuation"],
+    "L2_operators": ["ts_rank", "ts_delta", "ts_zscore", "group_rank", "vec_avg", "divide", "subtract"],
+    "L3_parameters": ["window_60", "window_120", "window_252", "sector_neutral", "country_neutral"]
+  },
+  "expressions": [
+    {
+      "id": "w35_01",
+      "dataset": "fundamental72",
+      "category": "EPS_momentum",
+      "expr": "rank(ts_rank(vec_avg(fnd72_pit_or_is_q_is_eps), 126))",
+      "note": "EPS长期排名动量"
+    },
+    {
+      "id": "w35_02",
+      "dataset": "fundamental72",
+      "category": "EPS_growth",
+      "expr": "rank(ts_delta(vec_avg(fnd72_pit_or_is_q_is_eps), 66))",
+      "note": "EPS季度增长"
+    },
+    {
+      "id": "w35_03",
+      "dataset": "fundamental72",
+      "category": "Profitability",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_is_oper_inc), vec_avg(fnd72_pit_or_is_q_sales_rev_turn)), 252))",
+      "note": "营业利润率zscore"
+    },
+    {
+      "id": "w35_04",
+      "dataset": "fundamental72",
+      "category": "CashFlow_quality",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_is_q_earn_for_common)), 252))",
+      "note": "现金流质量CFO/NI"
+    },
+    {
+      "id": "w35_05",
+      "dataset": "fundamental72",
+      "category": "FCF_yield",
+      "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_cf_q_cf_cap_expend_prpty_add)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))",
+      "note": "自由现金流/总资产"
+    },
+    {
+      "id": "w35_06",
+      "dataset": "fundamental72",
+      "category": "ROE",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_earn_for_common), add(vec_avg(fnd72_pit_or_bs_q_bs_sh_cap_and_apic), vec_avg(fnd72_pit_or_bs_q_bs_retain_earn))), 252))",
+      "note": "ROE股东回报率"
+    },
+    {
+      "id": "w35_07",
+      "dataset": "fundamental72",
+      "category": "Leverage_low",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_lt_borrow), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+      "note": "低负债偏好"
+    },
+    {
+      "id": "w35_08",
+      "dataset": "fundamental72",
+      "category": "Accruals_low",
+      "expr": "rank(ts_zscore(divide(subtract(vec_avg(fnd72_pit_or_is_q_earn_for_common), vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper)), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252)) * -1",
+      "note": "低应计偏好"
+    },
+    {
+      "id": "w35_09",
+      "dataset": "analyst7",
+      "category": "Analyst_revision_up",
+      "expr": "rank(ts_zscore(analyst_eps_upward_revisions_4weeks, 60))",
+      "note": "EPS上调修订计数"
+    },
+    {
+      "id": "w35_10",
+      "dataset": "analyst7",
+      "category": "Analyst_revision_down",
+      "expr": "rank(ts_zscore(analyst_eps_downward_revisions_last_four_weeks_count, 60)) * -1",
+      "note": "EPS下调修订计数反向"
+    },
+    {
+      "id": "w35_11",
+      "dataset": "analyst7",
+      "category": "Analyst_consensus_momentum",
+      "expr": "rank(ts_delta(analyst_eps_mean, 20))",
+      "note": "EPS共识均值动量"
+    },
+    {
+      "id": "w35_12",
+      "dataset": "analyst7",
+      "category": "Analyst_ROE",
+      "expr": "rank(ts_zscore(analyst_consensus_mean_roe, 120))",
+      "note": "分析师ROE共识"
+    },
+    {
+      "id": "w35_13",
+      "dataset": "analyst7",
+      "category": "Analyst_dispersion",
+      "expr": "rank(ts_zscore(subtract(analyst_consensus_high_eps, analyst_consensus_eps_low_estimate), 60)) * -1",
+      "note": "分析师预测离散度反向"
+    },
+    {
+      "id": "w35_14",
+      "dataset": "fundamental72",
+      "category": "Composite_quality",
+      "expr": "add(rank(ts_delta(vec_avg(fnd72_pit_or_is_q_is_eps), 66)), rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_is_q_earn_for_common)), 252)))",
+      "note": "EPS增长+现金流质量复合"
+    },
+    {
+      "id": "w35_15",
+      "dataset": "fundamental72",
+      "category": "Balance_sheet_strength",
+      "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_cash_near_cash_item), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))",
+      "note": "现金/资产比率"
+    },
+    {
+      "id": "w35_16",
+      "dataset": "analyst7",
+      "category": "Analyst_surprise",
+      "expr": "rank(ts_zscore(divide(analyst_flash_mean_eps, analyst_eps_mean), 60))",
+      "note": "闪估/共识比率"
+    }
+  ]
+}

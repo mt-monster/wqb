@@ -1,0 +1,98 @@
+[
+ {
+  "code": "rank(analyst_revision_percentile_score_long_3)",
+  "note": "probe rev_pct_long",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "rank(analyst_revision_score_change_30d_long)",
+  "note": "probe rev_chg30",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))",
+  "note": "probe breadth_eps(raising-lowering)",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "rank(analyst_opinion_avg_shift_30d_long)",
+  "note": "probe op_shift30",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(0.5*rank(analyst_revision_percentile_score_long_3), 0.5*rank(analyst_revision_score_change_30d_long))",
+  "note": "rev_pct+rev_chg30",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(0.5*rank(analyst_revision_percentile_score_long_3), 0.5*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)))",
+  "note": "rev_pct+breadth_eps",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.3*rank(analyst_revision_score_change_30d_long)), 0.3*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)))",
+  "note": "rev3(pct+chg+breadth)",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.3*rank(analyst_opinion_avg_shift_30d_long)), 0.3*subtract(rank(analyst_recommendation_upgrades_30d_long_2), rank(analyst_recommendation_downgrades_30d_long_3)))",
+  "note": "rev3(pct+opshift+updn)",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.3*rank(analyst_revision_percentile_score_long_3), 0.25*rank(analyst_revision_percentile_score_medium_2)), add(0.25*rank(analyst_revision_score_change_30d_long), 0.2*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))))",
+  "note": "rev4(pctL+pctM+chg+breadth)",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.2*rank(analyst_revision_score_change_30d_long)), add(0.2*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)), 0.2*rank(rsk70_mfm2_asetrd_divyild)))",
+  "note": "rev3+divyild20",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(0.6*rank(analyst_revision_percentile_score_long_3), 0.4*rank(rsk70_mfm2_asetrd_divyild))",
+  "note": "rev_pct+divyild40",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.35*rank(analyst_revision_percentile_score_long_3), 0.25*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))), add(0.2*rank(rsk70_mfm2_asetrd_divyild), 0.2*rank(rsk70_mfm2_asetrd_earnyild)))",
+  "note": "rev2+divyild+earnyild",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ }
+]

@@ -1,0 +1,43 @@
+[
+ {
+  "id": "w42_01",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250)))",
+  "note": "4sig: ROE+ER+AT+GM z250 - add GrossMargin for weight diversification"
+ },
+ {
+  "id": "w42_02",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(star_eq_accruals_rank, 250)))",
+  "note": "4sig: ROE+ER+AT+Accruals z250 - add accruals quality"
+ },
+ {
+  "id": "w42_03",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(star_eq_cashflow_rank, 250)))",
+  "note": "4sig: ROE+ER+AT+CFRank z250 - add cashflow quality"
+ },
+ {
+  "id": "w42_04",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(star_eq_accruals_rank, 250)))",
+  "note": "5sig: ROE+ER+AT+GM+Accruals z250 - maximum diversification"
+ },
+ {
+  "id": "w42_05",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(star_eq_cashflow_rank, 250)))",
+  "note": "5sig: ROE+ER+AT+GM+CFRank z250"
+ },
+ {
+  "id": "w42_06",
+  "expr": "add(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(star_eq_accruals_rank, 250))), rank(ts_zscore(star_eq_cashflow_rank, 250)))",
+  "note": "6sig: ROE+ER+AT+GM+Accruals+CFRank z250 - max signals"
+ },
+ {
+  "id": "w42_07",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_dy_pct_current, 250)))",
+  "note": "4sig: ROE+ER+AT+DivYield z250 - add dividend yield"
+ },
+ {
+  "id": "w42_08",
+  "expr": "add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250)))",
+  "note": "3sig baseline z250 + truncation=0.05",
+  "override": {"truncation": 0.05}
+ }
+]

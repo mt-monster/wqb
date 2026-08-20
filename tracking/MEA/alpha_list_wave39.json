@@ -1,0 +1,92 @@
+[
+ {
+  "id": "w39_01",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 60))",
+  "note": "ROE zscore60 - shorter window"
+ },
+ {
+  "id": "w39_02",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 250))",
+  "note": "ROE zscore250 - longer window"
+ },
+ {
+  "id": "w39_03",
+  "expr": "add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120)))",
+  "note": "ROE + Earnings Retention composite"
+ },
+ {
+  "id": "w39_04",
+  "expr": "add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl31_ass_tvr_t4q, 120)))",
+  "note": "ROE + Asset Turnover composite"
+ },
+ {
+  "id": "w39_05",
+  "expr": "rank(winsorize(ts_zscore(mdl31_roe_pct_t4q, 120), 0.05))",
+  "note": "ROE + winsorize 5%"
+ },
+ {
+  "id": "w39_06",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_last_qtr, 120))",
+  "note": "ROE last_qtr (not t4q)"
+ },
+ {
+  "id": "w39_07",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE baseline + decay=0",
+  "override": {"decay": 0}
+ },
+ {
+  "id": "w39_08",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE baseline + decay=8",
+  "override": {"decay": 8}
+ },
+ {
+  "id": "w39_09",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + INDUSTRY neut",
+  "override": {"neutralization": "INDUSTRY"}
+ },
+ {
+  "id": "w39_10",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + SUBINDUSTRY neut",
+  "override": {"neutralization": "SUBINDUSTRY"}
+ },
+ {
+  "id": "w39_11",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + MARKET neut",
+  "override": {"neutralization": "MARKET"}
+ },
+ {
+  "id": "w39_12",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + NONE neut",
+  "override": {"neutralization": "NONE"}
+ },
+ {
+  "id": "w39_13",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + trunc=0.05",
+  "override": {"truncation": 0.05}
+ },
+ {
+  "id": "w39_14",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + trunc=0.15",
+  "override": {"truncation": 0.15}
+ },
+ {
+  "id": "w39_15",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + trunc=0.05 + INDUSTRY",
+  "override": {"truncation": 0.05, "neutralization": "INDUSTRY"}
+ },
+ {
+  "id": "w39_16",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE + trunc=0.05 + SUBINDUSTRY",
+  "override": {"truncation": 0.05, "neutralization": "SUBINDUSTRY"}
+ }
+]

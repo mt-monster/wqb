@@ -131,6 +131,31 @@ def test_quota_estimate_exhausted():
     assert q["remaining"] == 0
 
 
+def test_quota_daily_view():
+    """Daily view counts OS submissions on the current local (Beijing) day."""
+    import datetime as dt
+    now = dt.datetime.now(dt.timezone.utc)
+    # Mirror the method's day-boundary math (daily_tz_hours=8 default).
+    local_now = now + dt.timedelta(hours=8)
+    local_day_start = local_now.replace(hour=0, minute=0, second=0, microsecond=0)
+    day_start_utc = local_day_start - dt.timedelta(hours=8)
+
+    def sub_at(ts_utc, aid):
+        return {"id": aid, "dateSubmitted": ts_utc.isoformat()}
+
+    today_a = sub_at(day_start_utc + dt.timedelta(hours=1), "d1")
+    today_b = sub_at(day_start_utc + dt.timedelta(hours=3), "d2")
+    yesterday = sub_at(day_start_utc - dt.timedelta(hours=2), "y1")  # prior local day
+    c = _mk_quota_client([today_a, today_b, yesterday])
+    q = asyncio.run(c.get_submission_quota())
+    assert q["daily_used"] == 2, q["daily_used_ids"]
+    assert q["daily_remaining"] == 2
+    assert q["daily_tz"] == "UTC+8"
+    assert q["recommended_view"] == "daily"
+    # yesterday's submission must NOT leak into the daily count
+    assert "y1" not in q["daily_used_ids"]
+
+
 # ---------------------------------------------------------------------------
 # get_datafields targeted search (must hit platform, not unscoped dump cache)
 # ---------------------------------------------------------------------------

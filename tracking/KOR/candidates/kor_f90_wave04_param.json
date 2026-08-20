@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental90",
+ "data_type": "MATRIX",
+ "probe_note": "wave04参数收敛: 基于wave03最优骨架, decay6+winsorize+zscore增强; 目标sh>1.5",
+ "expressions": [
+  "rank(group_neutralize(add(rank(winsorize(fnd90_qes_gamef_pscore, std=4)), rank(winsorize(fnd90_qes_gamef_grossprofit_asset, std=4))), industry))",
+  "zscore(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), industry))",
+  "rank(group_neutralize(add(rank(ts_delta(fnd90_qes_gamef_pscore, 60)), rank(ts_delta(fnd90_qes_gamef_grossprofit_asset, 60))), industry))",
+  "rank(group_neutralize(add(rank(ts_delta(winsorize(fnd90_qes_gamef_pscore, std=4), 60)), rank(ts_delta(winsorize(fnd90_qes_gamef_grossprofit_asset, std=4), 60))), industry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), sector))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), subindustry))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), market))",
+  "rank(group_neutralize(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)), industry))"
+ ]
+}

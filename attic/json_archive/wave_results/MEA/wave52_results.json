@@ -1,0 +1,22 @@
+{
+  "wave": 52,
+  "focus": "fundamental6 Worldscope differentiated signals (depreciation rate/capex intensity/tax rate/retained/turnover) - fnd72 template probe",
+  "context": "Probed fundamental6 with fnd72 winning template (z252 + W10 + SECTOR + decay1). Batch FAILED at submission level: 2 ERROR (wrong field name fundamental_annual_depreciation_and_amortization, correct is annual_depreciation_and_amortization), 8 CANCELLED by platform.",
+  "results": [
+    {"id": null, "status": "ERROR", "sim": "2oubKV2kE4kK8C2W4jw3Fyo", "cause": "CANCELLED"},
+    {"id": null, "status": "ERROR", "sim": "4kL2jLaJq4Gs99MGelc1f5K", "cause": "unknown variable fundamental_annual_depreciation_and_amortization (correct: annual_depreciation_and_amortization)"},
+    {"id": null, "status": "ERROR", "sim": "13nGou1D04pOafNJM4SYnAI", "cause": "unknown variable fundamental_annual_depreciation_and_amortization (correct: annual_depreciation_and_amortization)"},
+    {"id": null, "status": "CANCELLED", "sim": "1aabiqg7j5jwaTF1d0UtZnIf", "cause": "platform cancel"},
+    {"id": null, "status": "CANCELLED", "sim": "1CPlzG6pb4CDaVK6OAi8m4V", "cause": "platform cancel"},
+    {"id": null, "status": "CANCELLED", "sim": "28bgAh7ez4ivcJK19oDEMTja", "cause": "platform cancel"},
+    {"id": null, "status": "CANCELLED", "sim": "MmJIh8XF4RkcFCpa83zBoU", "cause": "platform cancel"},
+    {"id": null, "status": "CANCELLED", "sim": "1Xhfki7tg4CiaXCJv0IU67T", "cause": "platform cancel"},
+    {"id": null, "status": "CANCELLED", "sim": "4rsZzZ1Nb4Hb91kc4wdmxGt", "cause": "platform cancel"}
+  ],
+  "key_findings": [
+    "*** wave52 batch dead at submission: 2 ERROR (field name fundamental_annual_depreciation_and_amortization invalid; authoritative name is annual_depreciation_and_amortization - fundamental6 field naming is MIXED prefix, cannot assume fnd72 convention) + 8 CANCELLED ***",
+    "LESSON: always pull get_datafields authoritative field list BEFORE building expressions - do not reuse template field names across datasets",
+    "fundamental6 coverage pattern differs from fnd72: core VECTOR fields 0.85-0.92, many at 0.55; MATRIX fields (income q 562 ac / revenue q 261 ac / net sales q 185 ac) are CROWDED - avoid",
+    "fundamental6 campaign stays in_progress. Wave53 rebuilt from scratch: field-audit-driven expressions with CORRECT names"
+  ]
+}

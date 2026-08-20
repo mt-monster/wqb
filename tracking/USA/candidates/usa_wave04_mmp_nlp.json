@@ -1,0 +1,32 @@
+{
+  "wave": 4,
+  "region": "USA",
+  "dataset": "mmp_nlp_sentiment",
+  "strategy": "NLP 情绪数据集首攻：bbgnews eigen 特征 + supernews shamshel 特征 + 情绪计数",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 5,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR",
+    "visualization": false
+  },
+  "expressions": [
+    "ts_rank(ts_backfill(winsorize(bbgnews_eigen_feature_0), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(eigenvector_component_1_trna), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(feature_1_supernews_shamshel), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(afinn_negative_sentiment_count), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(afinn_sentiment_mad), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(article_count_benzinga_standard), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(feature_10_supernews_shamshel), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(average_important_topic_score), 22), 44)"
+  ],
+  "notes": "基于 dataset_ranking 第2名 (score=0.9283, coverage=97.2%, 1650字段, alphaCount=112)。主攻高 alphaCount 字段：bbgnews_eigen_feature_0(20), eigenvector_component_1_trna(9), feature_1_supernews_shamshel(8)。使用标准 ts_rank(ts_backfill(winsorize(x), 22), 44) 骨架，SUBINDUSTRY 中性化。"
+}

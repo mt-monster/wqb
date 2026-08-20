@@ -1,0 +1,32 @@
+{
+  "wave": 5,
+  "region": "USA",
+  "dataset": "continuation_score",
+  "strategy": "continuation_score 数据集首攻：技术形态延续性得分",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 5,
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR",
+    "visualization": false
+  },
+  "expressions": [
+    "ts_rank(ts_backfill(winsorize(gap_down_continuation_similarity_average), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(ascending_channel_similarity_recent), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(descending_channel_similarity_recent), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(avg_similarity_ascending_channel), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(ascending_channel_similarity_dispersion), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(ascending_channel_similarity_middle), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(ascending_channel_similarity_percentile_95), 22), 44)",
+    "ts_rank(ts_backfill(winsorize(bull_flag_min_similarity), 22), 44)"
+  ],
+  "notes": "基于 dataset_ranking 第3名 (score=0.9278, coverage=99.4%, 560字段, alphaCount=59)。主攻高 alphaCount 字段：gap_down_continuation_similarity_average(6), ascending_channel_similarity_recent(5), descending_channel_similarity_recent(4), avg_similarity_ascending_channel(4)。使用标准 ts_rank(ts_backfill(winsorize(x), 22), 44) 骨架，SUBINDUSTRY 中性化。"
+}

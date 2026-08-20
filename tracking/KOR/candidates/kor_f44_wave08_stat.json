@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave08分叉: STATISTICAL中性化对照轨(数据质量次优但释放不同信号)+信号翻转+decay8; SECTOR轨sharpe卡1.14天花板, 试STATISTICAL能否突破",
+ "expressions": [
+  "rank(group_neutralize(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), industry))",
+  "rank(group_neutralize(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))), industry))",
+  "zscore(group_neutralize(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), industry))",
+  "rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(group_neutralize(add(multiply(2, rank(ts_delta(winsorize(fnd44_working_capital_accruals, std=4), 60))), rank(ts_delta(winsorize(fnd44_probability_restatement_global, std=4), 60))), industry))",
+  "rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(group_neutralize(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), sector))",
+  "rank(group_neutralize(add(multiply(2, rank(ts_delta(fnd44_cashflow_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))), industry))"
+ ]
+}

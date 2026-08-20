@@ -1,0 +1,82 @@
+[
+ {
+  "code": "rank(vec_avg(price_to_book_ratio_metric))",
+  "note": "price_to_book_ratio_metric 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(price_to_book_ratio_metric)))",
+  "note": "price_to_book_ratio_metric 镜像",
+  "decay": 4
+ },
+ {
+  "code": "rank(vec_avg(intrinsic_valuation_estimate))",
+  "note": "intrinsic_valuation_estimate 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(intrinsic_valuation_estimate)))",
+  "note": "intrinsic_valuation_estimate 镜像",
+  "decay": 4
+ },
+ {
+  "code": "rank(vec_avg(cashflow_trend_analysis))",
+  "note": "cashflow_trend_analysis 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(cashflow_trend_analysis)))",
+  "note": "cashflow_trend_analysis 镜像",
+  "decay": 4
+ },
+ {
+  "code": "rank(vec_avg(operational_efficiency_metric))",
+  "note": "operational_efficiency_metric 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(operational_efficiency_metric)))",
+  "note": "operational_efficiency_metric 镜像",
+  "decay": 4
+ },
+ {
+  "code": "rank(vec_avg(analyst_forecast_revision_factor))",
+  "note": "analyst_forecast_revision_factor 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(analyst_forecast_revision_factor)))",
+  "note": "analyst_forecast_revision_factor 镜像",
+  "decay": 4
+ },
+ {
+  "code": "rank(vec_avg(trend_in_buzz_score))",
+  "note": "trend_in_buzz_score 正向",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(vec_avg(trend_in_buzz_score)))",
+  "note": "trend_in_buzz_score 镜像",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(vec_avg(intrinsic_valuation_estimate)), 0.5*rank(vec_avg(cashflow_trend_analysis)))",
+  "note": "估值+现金流",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(vec_avg(operational_efficiency_metric)), 0.5*rank(vec_avg(shareholder_yield_metric)))",
+  "note": "运营+股东回报",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(vec_avg(analyst_forecast_revision_factor)), 0.5*rank(vec_avg(analyst_sentiment_consistency_score)))",
+  "note": "分析师修订+一致",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*subtract(0, rank(vec_avg(price_to_book_ratio_metric))), 0.5*rank(vec_avg(intrinsic_valuation_estimate)))",
+  "note": "PB镜+内在估值",
+  "decay": 4
+ }
+]

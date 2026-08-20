@@ -1,0 +1,74 @@
+[
+ {
+  "code": "rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250))",
+  "note": "P dv_curep",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250))",
+  "note": "P dv_estep",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250))",
+  "note": "P eq_uaccl",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250))",
+  "note": "P rv_5yep",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.5))",
+  "note": "DV curep+estep 负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_pdy, 66), 250)),-0.3))",
+  "note": "DV 三路负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.6),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.4))",
+  "note": "DV+EQ 负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.6),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.4))",
+  "note": "RV5y+EQ 负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5ycfp, 66), 250)),-0.5))",
+  "note": "RV5y ep+cfp 负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningmomentumfactor400_perg, 66), 250)),0.5))",
+  "note": "DV负+EM正",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.3))",
+  "note": "DV+RV+EQ 负",
+  "neut": "SECTOR",
+  "decay": 6
+ },
+ {
+  "code": "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5ycfp, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uar, 66), 250)),-0.3))",
+  "note": "DV+RV+EQ v2 负",
+  "neut": "SECTOR",
+  "decay": 6
+ }
+]

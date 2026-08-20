@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave04增强: wave03双信号组合突破sh0.86/rn1.02/2y1.42; 本批三信号组合(mscore/fscore加入)+加权+窗口微调(50/70); 目标sh>1.2",
+ "expressions": [
+  "rank(add(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))), rank(ts_delta(fnd44_mscore, 60))))",
+  "rank(add(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))), rank(ts_delta(fnd44_fscore, 60))))",
+  "rank(add(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))), rank(ts_delta(fnd44_score, 60))))",
+  "rank(add(multiply(2, rank(ts_delta(fnd44_working_capital_accruals, 60))), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), multiply(2, rank(ts_delta(fnd44_probability_restatement_global, 60)))))",
+  "rank(add(rank(ts_delta(fnd44_working_capital_accruals, 50)), rank(ts_delta(fnd44_probability_restatement_global, 50))))",
+  "rank(add(rank(ts_delta(fnd44_working_capital_accruals, 70)), rank(ts_delta(fnd44_probability_restatement_global, 70))))",
+  "rank(add(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))), rank(ts_delta(fnd44_cashflow_accruals, 60))))"
+ ]
+}

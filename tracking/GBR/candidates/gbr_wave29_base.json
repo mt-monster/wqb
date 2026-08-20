@@ -1,0 +1,19 @@
+{
+ "meta": {
+  "wave": 29,
+  "region": "GBR",
+  "dataset": "other455",
+  "strategy": "纯 other455 批：PCA 数值字段探针 + 契约注入 cluster 分组键因子（锚点修复后）",
+  "note": "relation_n2v pca_fact 是连续数值信号(cov0.763)，kmeans_cluster 是分组键(cov1.0)；WjAV89jG 实证 other455 强信号"
+ },
+ "expressions": [
+  "rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value)",
+  "multiply(rank(oth455_relation_n2v_p10_q200_w1_pca_fact2_value), -1)",
+  "rank(ts_delta(oth455_relation_n2v_p10_q200_w1_pca_fact1_value, 5))",
+  "rank(ts_av_diff(oth455_relation_n2v_p10_q200_w2_pca_fact1_value, 10))",
+  "ts_decay_linear(rank(oth455_relation_n2v_p10_q200_w1_pca_fact3_value), 5)",
+  "rank(ts_zscore(oth455_relation_n2v_p10_q200_w1_pca_fact1_value, 60))",
+  "rank(ts_delta(oth455_relation_n2v_p10_q50_w1_pca_fact1_value, 22))",
+  "rank(ts_zscore(oth455_relation_n2v_p10_q200_w3_pca_fact2_value, 120))"
+ ]
+}

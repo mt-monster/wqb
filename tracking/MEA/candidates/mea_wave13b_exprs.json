@@ -1,0 +1,18 @@
+{
+  "wave": "13B",
+  "dataset": "fundamental6",
+  "generated_at": "2026-08-19T16:16:00",
+  "description": "MEA fundamental6 复杂信号 - 第13轮候选B",
+  "strategy_style": "fundamental_quality_momentum",
+  "note": "尝试更复杂的fundamental6表达式，非简单比率",
+  "expressions": [
+    "rank(ts_zscore(vec_avg(fundamental_ebitda) / (vec_avg(fundamental_total_assets) + 1), 60)) * rank(ts_zscore(vec_avg(fundamental_ebitda_growth), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_roe) - vec_avg(fundamental_roa), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_current_ratio) / (vec_avg(fundamental_quick_ratio) + 0.01), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_debt_to_equity) * vec_avg(fundamental_interest_coverage), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_asset_turnover) / (vec_avg(fundamental_inventory_turnover) + 0.01), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_gross_margin) - vec_avg(fundamental_operating_margin), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_working_capital) / (vec_avg(fundamental_total_assets) + 1), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_retained_earnings) / (vec_avg(fundamental_common_equity) + 1), 60))"
+  ]
+}

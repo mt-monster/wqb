@@ -1,0 +1,1496 @@
+{
+ "version": 1,
+ "rules": [
+  {
+   "rule_id": "explore_contract_GBR_20260819_001727_883072",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-19T00:17:27",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3",
+       "arm_country_rank_score_3"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(iv_steady_state_dividend_payout_rate_3, 20)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(iv_steady_state_dividend_payout_rate_3, 20)",
+      "fields": [
+       "iv_steady_state_dividend_payout_rate_3"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(analyst_downward_revision_count_fq2_revenue_14d_4, predicted_surprise_fq2_revenue_3, 20)",
+      "fields": [
+       "analyst_downward_revision_count_fq2_revenue_14d_4",
+       "predicted_surprise_fq2_revenue_3"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "predictive_starmine",
+    "anchor_reason": null,
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T00:17:27",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_GBR_20260819_005357_666020",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-19T00:53:57",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(nws104_automessage, sector, 20)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(sector, sector)",
+      "fields": [
+       "sector"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(nws104_automessage, nws104_headlineonly, sector)",
+      "fields": [
+       "sector",
+       "nws104_headlineonly",
+       "nws104_automessage"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(nws104_automessage, sector)",
+      "fields": [
+       "sector",
+       "nws104_automessage"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(nws104_automessage, 20)",
+      "fields": [
+       "nws104_automessage"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(nws104_automessage, 20)",
+      "fields": [
+       "nws104_automessage"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(nws104_automessage, nws104_headlineonly, 20)",
+      "fields": [
+       "nws104_headlineonly",
+       "nws104_automessage"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "news104",
+    "anchor_reason": "ranking tier1 字段池最丰富（可实例化 82 算子）",
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T00:53:57",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_GBR_20260819_010814_106199",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-19T01:08:14",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_20"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "other455",
+    "anchor_reason": "ranking tier1 优先 MATRIX 强信号（MATRIX，valueScore=7.0，可实例化 75 算子）",
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T01:08:14",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_GBR_20260819_011011_612361",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [
+     "2aef2d3e072a8b69f1aa943eb2c521fcd2252ad2"
+    ],
+    "issued_at": "2026-08-19T01:10:11",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_20"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20, 20)",
+      "fields": [
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_20",
+       "oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "other455",
+    "anchor_reason": "ranking tier1 优先 MATRIX 强信号（MATRIX，valueScore=7.0，可实例化 75 算子）",
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T01:10:11",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_GBR_20260819_014410_664655",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-19T01:44:10",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20",
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_relation_n2v_p10_q200_w2_pca_fact1_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w2_pca_fact1_value",
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_relation_n2v_p10_q200_w2_pca_fact1_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w2_pca_fact1_value",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "other455",
+    "anchor_reason": "ranking tier1 优先 MATRIX 强信号（MATRIX，valueScore=7.0，可实例化 75 算子）",
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T01:44:10",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_GBR_20260819_014639_089477",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "GBR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [
+     "3312e2e398f496306d2f2dbc8640f5d76bc575e5"
+    ],
+    "issued_at": "2026-08-19T01:46:39",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10, 20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_relation_n2v_p10_q200_w2_pca_fact1_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value",
+       "oth455_relation_n2v_p10_q200_w2_pca_fact1_value"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)",
+      "fields": [
+       "oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10",
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(oth455_relation_n2v_p10_q200_w1_pca_fact3_value, oth455_relation_n2v_p10_q200_w2_pca_fact1_value, 20)",
+      "fields": [
+       "oth455_relation_n2v_p10_q200_w1_pca_fact3_value",
+       "oth455_relation_n2v_p10_q200_w2_pca_fact1_value"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "anchor_dataset": "other455",
+    "anchor_reason": "ranking tier1 优先 MATRIX 强信号（MATRIX，valueScore=7.0，可实例化 75 算子）",
+    "degraded": false,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "divide",
+      "equal",
+      "generate_stats",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_backfill",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_delay",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_rank",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "ts_zscore",
+      "universe_size",
+      "vec_count",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "active",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T01:46:39",
+   "times_applied": 0,
+   "times_succeeded": 0
+  }
+ ],
+ "updated_at": "2026-08-19T01:48:19"
+}

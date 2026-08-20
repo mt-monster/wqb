@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave02探针StageB: wave01发现rank(-x)方向8/8全灭(best0.46), 信号方向存疑; 本批测反向rank(x)做多高应计 + 时序变化ts_delta/ts_rank(应计恶化/改善动量); 双向定位真实信号方向",
+ "expressions": [
+  "rank(fnd44_probability_restatement_global)",
+  "rank(fnd44_fscore)",
+  "rank(fnd44_mscore)",
+  "rank(fnd44_score)",
+  "rank(ts_delta(fnd44_working_capital_accruals, 60))",
+  "rank(ts_delta(fnd44_cashflow_accruals, 60))",
+  "rank(-ts_delta(fnd44_probability_restatement_global, 120))",
+  "rank(ts_rank(fnd44_working_capital_accruals, 120))"
+ ]
+}

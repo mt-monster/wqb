@@ -1,0 +1,29 @@
+﻿{
+  "wave": 35,
+  "theme": "KOR analyst44 best_eps+revision+non-EPS",
+  "region": "KOR",
+  "dataset": "analyst44",
+  "universe": "TOP600",
+  "neut": "SECTOR",
+  "decay": 16,
+  "n": 12,
+  "batches": [
+    {"multisim": "2vvBZi5jv5jBa0J4urb6OJK", "n": 10, "status": "COMPLETE"},
+    {"multisim": "BarWKcWX4occ2TfayAjNdK", "n": 2, "status": "COMPLETE"}
+  ],
+  "results": [
+    {"id": "w35_01", "alpha": "YP7rZzKw", "expr": "rank(ts_rank(vec_avg(anl44_best_eps), 50))", "sh": 0.63, "fit": 0.33, "tvr": 0.08, "margin": 0.000861, "2y": 0.39, "sub": 0.5, "rn": 0.57, "longN": 246, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_02", "alpha": "wpjm6Gx5", "expr": "rank(ts_delta(vec_avg(anl44_best_eps), 22))", "sh": 0.46, "fit": 0.21, "tvr": 0.09, "margin": 0.000598, "2y": 0.35, "sub": 0.44, "rn": 0.35, "longN": 241, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_03", "alpha": "bljkpzZq", "expr": "rank(ts_rank(vec_avg(anl44_best_eps_chg_pct), 50))", "sh": -0.08, "fit": -0.01, "tvr": 0.38, "margin": -0.000022, "2y": -0.48, "sub": -0.25, "rn": -0.2, "longN": 243, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_SUB_UNI", "LOW_2Y_SHARPE"]},
+    {"id": "w35_04", "alpha": "qMj1bGrj", "expr": "subtract(rank(ts_rank(vec_avg(anl44_best_eps_4wk_up), 22)), rank(ts_rank(vec_avg(anl44_best_eps_4wk_dn), 22)))", "sh": 0.76, "fit": 0.41, "tvr": 0.14, "margin": 0.000569, "2y": 0.75, "sub": 0.35, "rn": 0.76, "longN": 245, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_SUB_UNI", "LOW_2Y_SHARPE"]},
+    {"id": "w35_05", "alpha": "RR73XzQz", "expr": "rank(ts_rank(divide(vec_avg(anl44_best_eps_4wk_up), add(add(vec_avg(anl44_best_eps_4wk_up), vec_avg(anl44_best_eps_4wk_dn)), 1)), 50))", "sh": 0.37, "fit": 0.14, "tvr": 0.10, "margin": 0.000368, "2y": -0.37, "sub": 0.19, "rn": 0.44, "longN": 248, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_SUB_UNI", "LOW_2Y_SHARPE"]},
+    {"id": "w35_06", "alpha": "QP7Jezkp", "expr": "rank(ts_zscore(vec_avg(anl44_best_eps_stddev), 126)) * -1", "sh": -0.44, "fit": -0.18, "tvr": 0.05, "margin": -0.000801, "2y": -0.85, "sub": -0.47, "rn": -0.47, "longN": 213, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_SUB_UNI", "LOW_2Y_SHARPE"]},
+    {"id": "w35_07", "alpha": "Vk79nzjA", "expr": "rank(ts_rank(vec_avg(anl44_best_eps_numest), 50))", "sh": 0.62, "fit": 0.31, "tvr": 0.07, "margin": 0.000846, "2y": 0.85, "sub": 0.45, "rn": 0.57, "longN": 246, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_08", "alpha": "KP70ezjl", "expr": "rank(ts_rank(vec_avg(anl44_second_en_sales_value), 50))", "sh": -0.01, "fit": -0.0, "tvr": 0.16, "margin": -3e-06, "2y": -0.19, "sub": 0.02, "rn": -0.33, "longN": 223, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_09", "alpha": "58lbR5oo", "expr": "rank(ts_rank(vec_avg(anl44_second_en_roe_value), 50))", "sh": 1.44, "fit": 0.46, "tvr": 1.40, "margin": 0.000203, "2y": 0.03, "sub": 1.18, "rn": 1.49, "longN": 46, "fail": ["LOW_SHARPE", "LOW_FITNESS", "HIGH_TURNOVER", "CONC_WEIGHT", "LOW_2Y_SHARPE"]},
+    {"id": "w35_10", "alpha": "MP7Wwzo9", "expr": "rank(ts_delta(vec_avg(anl44_second_en_ebit_value), 22))", "sh": 0.04, "fit": 0.0, "tvr": 0.25, "margin": 0.000016, "2y": -0.63, "sub": 0.14, "rn": -0.04, "longN": 208, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_11", "alpha": "9qXvoWn9", "expr": "add(rank(ts_rank(vec_avg(anl44_best_eps), 50)), subtract(rank(ts_rank(vec_avg(anl44_best_eps_4wk_up), 22)), rank(ts_rank(vec_avg(anl44_best_eps_4wk_dn), 22))))", "sh": 0.95, "fit": 0.61, "tvr": 0.12, "margin": 0.00088, "2y": 0.84, "sub": 0.61, "rn": 0.9, "longN": 244, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]},
+    {"id": "w35_12", "alpha": "Vk79n0WG", "expr": "add(rank(ts_rank(vec_avg(anl44_best_eps), 50)), rank(ts_rank(vec_avg(anl44_second_en_sales_value), 50)))", "sh": 0.47, "fit": 0.21, "tvr": 0.13, "margin": 0.00041, "2y": 0.21, "sub": 0.41, "rn": 0.18, "longN": 218, "fail": ["LOW_SHARPE", "LOW_FITNESS", "LOW_2Y_SHARPE"]}
+  ],
+  "verdict": "12条全部COMPLETE但全部卡LOW_SHARPE。最好w35_11(best_eps+netrev复合) sh=0.95 fit=0.61 2y=0.84 sub=0.61, 仍差1.58门槛40%。w35_09(roe) sh=1.44但tvr=1.40+CONC_WEIGHT 0.17+longN=46。KOR analyst44信号天花板~0.95, 远低于e73Rw8qg的1.62。结论: best_eps系列信号弱于second_en_eps_value, KOR analyst44扩展空间受限。"
+}

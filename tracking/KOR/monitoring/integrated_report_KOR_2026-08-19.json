@@ -1,0 +1,612 @@
+{
+ "generated_at": "2026-08-19T15:21:12",
+ "region": "KOR",
+ "waves_evaluated": 10,
+ "discipline_report": {
+  "generated_at": "2026-08-19T15:21:12",
+  "summary": {
+   "total_waves": 10,
+   "total_exprs": 200,
+   "total_complete": 190,
+   "total_candidates": 35,
+   "prod_classification": {
+    "UNKNOWN": 5,
+    "SUSPEND": 2,
+    "DEAD": 2,
+    "DEEP": 0
+   },
+   "switch_triggered_count": 2,
+   "avg_waves_to_death": null,
+   "datasets": [
+    "test_dataset",
+    "chart_cnn_alpha",
+    "multi_source_model",
+    "other455"
+   ],
+   "complete_rate": 0.95,
+   "candidate_rate": 0.175
+  },
+  "wave_details": [
+   {
+    "wave": "17B",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "other455",
+    "batches": [
+     {
+      "batch_id": "batch_17B_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_17B_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_17B_2",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "UNKNOWN": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 24,
+     "total_complete": 24,
+     "total_candidates": 6,
+     "total_quota_used": 24,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "17C",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "other455",
+    "batches": [
+     {
+      "batch_id": "batch_17C_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_17C_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "UNKNOWN": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 16,
+     "total_complete": 16,
+     "total_candidates": 4,
+     "total_quota_used": 16,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "18A",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "multi_source_model",
+    "batches": [
+     {
+      "batch_id": "batch_18A_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 1,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_18A_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 1,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_18A_2",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 1,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "SUSPEND": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 24,
+     "total_complete": 24,
+     "total_candidates": 3,
+     "total_quota_used": 24,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "18B",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "multi_source_model",
+    "batches": [
+     {
+      "batch_id": "batch_18B_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 1,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_18B_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 1,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "SUSPEND": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 16,
+     "total_complete": 16,
+     "total_candidates": 2,
+     "total_quota_used": 16,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "19A",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "chart_cnn_alpha",
+    "batches": [
+     {
+      "batch_id": "batch_19A_0",
+      "exprs": 8,
+      "complete": 6,
+      "candidates": 0,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_19A_1",
+      "exprs": 8,
+      "complete": 6,
+      "candidates": 0,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_19A_2",
+      "exprs": 8,
+      "complete": 6,
+      "candidates": 0,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "DEAD": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": true,
+      "structures_exhausted": true,
+      "rescue_weapons_exhausted": true,
+      "prod_wall_structural": true
+     },
+     "switch_triggered": true,
+     "switch_reason": "PROD 墙 0.83 > 0.80，判死封存",
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 24,
+     "total_complete": 18,
+     "total_candidates": 0,
+     "total_quota_used": 24,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "19B",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "chart_cnn_alpha",
+    "batches": [
+     {
+      "batch_id": "batch_19B_0",
+      "exprs": 8,
+      "complete": 6,
+      "candidates": 0,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_19B_1",
+      "exprs": 8,
+      "complete": 6,
+      "candidates": 0,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "DEAD": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": true,
+      "structures_exhausted": true,
+      "rescue_weapons_exhausted": true,
+      "prod_wall_structural": true
+     },
+     "switch_triggered": true,
+     "switch_reason": "PROD 墙 0.83 > 0.80，判死封存",
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 16,
+     "total_complete": 12,
+     "total_candidates": 0,
+     "total_quota_used": 16,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "20A",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "other455",
+    "batches": [
+     {
+      "batch_id": "batch_20A_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_20A_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     },
+     {
+      "batch_id": "batch_20A_2",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:32"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "UNKNOWN": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 24,
+     "total_complete": 24,
+     "total_candidates": 6,
+     "total_quota_used": 24,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:32"
+   },
+   {
+    "wave": "20B",
+    "started_at": "2026-08-19T15:01:32",
+    "dataset": "other455",
+    "batches": [
+     {
+      "batch_id": "batch_20B_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:33"
+     },
+     {
+      "batch_id": "batch_20B_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:33"
+     },
+     {
+      "batch_id": "batch_20B_2",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:33"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "UNKNOWN": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 24,
+     "total_complete": 24,
+     "total_candidates": 6,
+     "total_quota_used": 24,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:33"
+   },
+   {
+    "wave": "20C",
+    "started_at": "2026-08-19T15:01:33",
+    "dataset": "other455",
+    "batches": [
+     {
+      "batch_id": "batch_20C_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:33"
+     },
+     {
+      "batch_id": "batch_20C_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:01:33"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "UNKNOWN": 1
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 16,
+     "total_complete": 16,
+     "total_candidates": 4,
+     "total_quota_used": 16,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:01:33"
+   },
+   {
+    "wave": "test_17A",
+    "started_at": "2026-08-19T15:21:12",
+    "dataset": "test_dataset",
+    "batches": [
+     {
+      "batch_id": "batch_0",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:21:12"
+     },
+     {
+      "batch_id": "batch_1",
+      "exprs": 8,
+      "complete": 8,
+      "candidates": 2,
+      "recorded_at": "2026-08-19T15:21:12"
+     }
+    ],
+    "discipline_metrics": {
+     "prod_classification": {
+      "DEEP": 0,
+      "SUSPEND": 0,
+      "DEAD": 0,
+      "UNKNOWN": 0
+     },
+     "death_evidence_check": {
+      "settings_exhausted": false,
+      "structures_exhausted": false,
+      "rescue_weapons_exhausted": false,
+      "prod_wall_structural": false
+     },
+     "switch_triggered": false,
+     "switch_reason": null,
+     "deepen_strategies": []
+    },
+    "efficiency_metrics": {
+     "total_exprs": 16,
+     "total_complete": 16,
+     "total_candidates": 4,
+     "total_quota_used": 16,
+     "prod_wall_first_seen": null,
+     "death_verdict_wave": null,
+     "waves_to_death": null
+    },
+    "completed_at": "2026-08-19T15:21:12"
+   }
+  ],
+  "conclusion": [
+   "PROD 分类分布: DEEP 0.0% / SUSPEND 22.2% / DEAD 22.2%",
+   "切换触发 2 次，说明判死证据链闭环有效",
+   "候选率 17.5%，说明挖掘效率良好"
+  ]
+ },
+ "comparison_report": {
+  "generated_at": "2026-08-19T15:21:12",
+  "before": {
+   "label": "改进前",
+   "total_waves": 6,
+   "total_exprs": 55,
+   "total_complete": 55,
+   "total_candidates": 2,
+   "prod_stats": {
+    "DEEP": 0,
+    "SUSPEND": 1,
+    "DEAD": 0,
+    "UNKNOWN": 5
+   },
+   "switch_count": 4,
+   "datasets": [
+    null,
+    "ai_factor_transfer + ml_factor_proj网格",
+    "acquisition_model",
+    "ml_factor_proj",
+    "price_signal_dl",
+    "multi_source_model"
+   ],
+   "complete_rate": 1.0,
+   "candidate_rate": 0.03636363636363636
+  },
+  "after": {
+   "label": "改进后",
+   "total_waves": 11,
+   "total_exprs": 224,
+   "total_complete": 214,
+   "total_candidates": 41,
+   "prod_stats": {
+    "DEEP": 0,
+    "SUSPEND": 2,
+    "DEAD": 2,
+    "UNKNOWN": 6
+   },
+   "switch_count": 2,
+   "datasets": [
+    "test_dataset",
+    "chart_cnn_alpha",
+    "multi_source_model",
+    "other455"
+   ],
+   "complete_rate": 0.9553571428571429,
+   "candidate_rate": 0.18303571428571427
+  },
+  "improvement": {
+   "complete_rate_change": -4.46428571428571,
+   "candidate_rate_change": 403.34821428571433,
+   "dead_classification_change": 20.0,
+   "switch_count_change": -2
+  }
+ },
+ "diversity_metrics": {
+  "status": "ok",
+  "waves_analyzed": 1,
+  "avg_metrics": {
+   "operator_entropy": 0.0,
+   "coverage_rate": 0.0,
+   "novelty_score": 0.0,
+   "structural_similarity": 0.0
+  },
+  "latest": {
+   "at": "2026-08-15T15:50:20",
+   "total": 1210,
+   "unique": 1069,
+   "exploration_rate": 0.56,
+   "skeleton": {
+    "linear_mix": 473,
+    "single": 442,
+    "event_gated": 1,
+    "ratio": 280,
+    "group": 14
+   }
+  }
+ },
+ "integrated_conclusion": [
+  "纪律评估: 候选率 17.5%, 切换触发 2 次",
+  "改进效果: 候选率提升 403.3%",
+  "判死及时性: DEAD 分类比例提升 20.0%",
+  "多样性评估: 算子熵 0.00, 覆盖率 0.0%, 新颖度 0.0%",
+  "多样性警告: 算子熵偏低，建议增加算子多样性",
+  "多样性警告: 覆盖率偏低，建议扩大字段覆盖",
+  "多样性警告: 新颖度偏低，建议引入新骨架"
+ ]
+}

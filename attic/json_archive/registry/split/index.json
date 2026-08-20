@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-15",
+  "maintained_by": "skill: wq-brain-campaign-matrix",
+  "purpose": "区域×数据集战役矩阵：静态层(区域合法配置) + 资产层(数据集清单) + 实证层(死路/胜绩/战役状态)。输入目标区域即得预解析配置包，避免每次现场推理。",
+  "data_sources": {
+    "assets": "fresh_datasets_7region.json (2026-08-15 官方 API 实拉)",
+    "empirical": "项目记忆 MEMORY.md + research-data/*.md 历史实证",
+    "static": "get_platform_setting_options 实测 + dataset-exploration 映射表"
+  },
+  "write_back_rule": "每次战役结束（或发现关键实证）必须回写 empirical 层：dead_ends / wins / campaigns[].status。战役状态三值：untried / in_progress / exhausted。",
+  "regions": [
+    "ASI",
+    "KOR",
+    "MEA",
+    "USA"
+  ],
+  "cross_region_lessons": [
+    {
+      "id": "GLB-EMOTION-DEAD",
+      "family": "emotion 信号族 (label 含 p0q2/p1q2/q4sp/ql4/y60w15/y60L)",
+      "finding": "GLB 42 个 PASS_CHEAP 全被 PROD_CORRELATION 0.82-0.86 硬闸挡掉；跨前缀/universe/中性化均失败",
+      "rule": "该族在任何区域都不值得再挖；如需 emotion 方向必须先正交化或换新数据"
+    },
+    {
+      "id": "ANL15-GLB-FO-BLOCKED",
+      "family": "anl15_* 裸字段 winsorize(ts_backfill(x,120),std=4) 长历史模板",
+      "finding": "GLB/TOP3000 下 8 个精确表达式稳定触发 resource 超限（精确清单见 glb_alpha_machine/cache/blocked_fields.txt）；同数据集其他字段正常",
+      "rule": "封禁按精确表达式匹配，禁止按 anl15_ 前缀通杀"
+    },
+    {
+      "id": "UNIVERSE-ILLEGAL-TIERS",
+      "family": "universe 档位合法性",
+      "finding": "TOP800/1500/2500/5000 全平台非法（400 拒或静默返空）",
+      "rule": "只允许 TOP500/1000/2000/3000（USA 系）或各区域默认档，见各 region.static"
+    }
+  ],
+  "pending_regions": [
+    "EUR",
+    "GLB",
+    "CHN"
+  ],
+  "pending_note": "EUR/ASI/GLB/CHN 待 USA+KOR 格式验证后补建；GLB 的实证（emotion 死路、anl15 封禁字段）暂存 cross_region_lessons",
+  "_layout": "regions 每层拆到 <REGION>.json；本文件只存元信息+跨区教训+待扩区"
+}

@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave01探针: 会计质量信号族(非value/quality死路族); 核心逻辑=做空高应计/高操纵概率=做多高质量; 4族覆盖accruals/score/probability/benford; rank(-x)做多高质量",
+ "expressions": [
+  "rank(-fnd44_cashflow_accruals)",
+  "rank(-fnd44_working_capital_accruals)",
+  "rank(-fnd44_modified_jones_cf_accruals)",
+  "rank(-fnd44_mscore)",
+  "rank(-fnd44_fscore)",
+  "rank(-fnd44_score)",
+  "rank(-fnd44_probability_restatement_global)",
+  "rank(-fnd44_factor_benford)"
+ ]
+}

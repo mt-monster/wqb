@@ -5,8 +5,8 @@
     "delay": 1,
     "universe": "TOP600"
   },
-  "fetched_at": "2026-08-14 13:14:00",
-  "channel": "direct",
+  "fetched_at": "2026-08-19 10:56:59",
+  "channel": "mcp",
   "stats": {
     "dataset_count": 192,
     "coverage_mean": 0.7046,
@@ -70,7 +70,7 @@
       "userCount": 51,
       "alphaCount": 119,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     "insiders12": {
       "available": false
@@ -95,7 +95,7 @@
       "coverage": 0.9806,
       "fieldCount": 16,
       "userCount": 154,
-      "alphaCount": 458,
+      "alphaCount": 461,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.3
     },
@@ -106,8 +106,8 @@
       "category": "model",
       "coverage": 0.6838,
       "fieldCount": 88,
-      "userCount": 129,
-      "alphaCount": 410,
+      "userCount": 131,
+      "alphaCount": 416,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -118,8 +118,8 @@
       "category": "fundamental",
       "coverage": 0.8558,
       "fieldCount": 215,
-      "userCount": 244,
-      "alphaCount": 613,
+      "userCount": 250,
+      "alphaCount": 631,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.6
     }
@@ -137,17 +137,6 @@
       "pyramidMultiplier": 1.7
     },
     {
-      "id": "acquisition_model",
-      "name": "Corporate Acquisition Likelihood Model",
-      "category": "other",
-      "coverage": 0.9937,
-      "fieldCount": 15,
-      "userCount": 4,
-      "alphaCount": 6,
-      "valueScore": 7.0,
-      "pyramidMultiplier": 1.7
-    },
-    {
       "id": "model170",
       "name": "Asia Technical and Fundamental ranking model",
       "category": "model",
@@ -159,13 +148,24 @@
       "pyramidMultiplier": 1.7
     },
     {
+      "id": "acquisition_model",
+      "name": "Corporate Acquisition Likelihood Model",
+      "category": "other",
+      "coverage": 0.9937,
+      "fieldCount": 15,
+      "userCount": 5,
+      "alphaCount": 7,
+      "valueScore": 7.0,
+      "pyramidMultiplier": 1.7
+    },
+    {
       "id": "price_signal_dl",
       "name": "Deep Learning Price Signal Dataset",
       "category": "model",
       "coverage": 0.9742,
       "fieldCount": 28,
-      "userCount": 6,
-      "alphaCount": 7,
+      "userCount": 7,
+      "alphaCount": 9,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -175,8 +175,8 @@
       "category": "model",
       "coverage": 1.0,
       "fieldCount": 20,
-      "userCount": 6,
-      "alphaCount": 9,
+      "userCount": 8,
+      "alphaCount": 12,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -186,8 +186,8 @@
       "category": "other",
       "coverage": 1.0,
       "fieldCount": 333,
-      "userCount": 8,
-      "alphaCount": 13,
+      "userCount": 9,
+      "alphaCount": 14,
       "valueScore": 7.0,
       "pyramidMultiplier": 1.7
     },
@@ -197,8 +197,8 @@
       "category": "model",
       "coverage": 0.9298,
       "fieldCount": 60,
-      "userCount": 12,
-      "alphaCount": 16,
+      "userCount": 17,
+      "alphaCount": 23,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -208,30 +208,8 @@
       "category": "model",
       "coverage": 0.8854,
       "fieldCount": 1010,
-      "userCount": 19,
-      "alphaCount": 26,
-      "valueScore": 6.0,
-      "pyramidMultiplier": 1.7
-    },
-    {
-      "id": "ai_equity_alpha",
-      "name": "AI Equity Alpha Forecasts",
-      "category": "model",
-      "coverage": 1.0,
-      "fieldCount": 582,
-      "userCount": 14,
-      "alphaCount": 33,
-      "valueScore": 6.0,
-      "pyramidMultiplier": 1.7
-    },
-    {
-      "id": "predictive_starmine",
-      "name": "Predictive Analyst-Company Signal Set",
-      "category": "model",
-      "coverage": 0.9434,
-      "fieldCount": 645,
-      "userCount": 24,
-      "alphaCount": 41,
+      "userCount": 21,
+      "alphaCount": 29,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -247,13 +225,35 @@
       "pyramidMultiplier": 1.7
     },
     {
+      "id": "predictive_starmine",
+      "name": "Predictive Analyst-Company Signal Set",
+      "category": "model",
+      "coverage": 0.9434,
+      "fieldCount": 645,
+      "userCount": 27,
+      "alphaCount": 46,
+      "valueScore": 6.0,
+      "pyramidMultiplier": 1.7
+    },
+    {
+      "id": "ai_equity_alpha",
+      "name": "AI Equity Alpha Forecasts",
+      "category": "model",
+      "coverage": 1.0,
+      "fieldCount": 582,
+      "userCount": 20,
+      "alphaCount": 48,
+      "valueScore": 6.0,
+      "pyramidMultiplier": 1.7
+    },
+    {
       "id": "news_sentiment_transfer",
       "name": "Transferred News Sentiment Analytics",
       "category": "sentiment",
       "coverage": 0.9654,
       "fieldCount": 23,
-      "userCount": 11,
-      "alphaCount": 19,
+      "userCount": 13,
+      "alphaCount": 25,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.6
     },
@@ -263,20 +263,9 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 504,
-      "userCount": 14,
-      "alphaCount": 41,
+      "userCount": 19,
+      "alphaCount": 46,
       "valueScore": 6.0,
-      "pyramidMultiplier": 1.4
-    },
-    {
-      "id": "continuation_score",
-      "name": "Price Chart Continuation Pattern Similarity",
-      "category": "pv",
-      "coverage": 1.0,
-      "fieldCount": 560,
-      "userCount": 21,
-      "alphaCount": 49,
-      "valueScore": 5.0,
       "pyramidMultiplier": 1.4
     }
   ],
@@ -287,8 +276,8 @@
       "category": "other",
       "coverage": 0.9937,
       "fieldCount": 15,
-      "userCount": 4,
-      "alphaCount": 6,
+      "userCount": 5,
+      "alphaCount": 7,
       "valueScore": 7.0,
       "pyramidMultiplier": 1.7
     },
@@ -298,8 +287,8 @@
       "category": "model",
       "coverage": 1.0,
       "fieldCount": 582,
-      "userCount": 14,
-      "alphaCount": 33,
+      "userCount": 20,
+      "alphaCount": 48,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -309,8 +298,8 @@
       "category": "model",
       "coverage": 1.0,
       "fieldCount": 20,
-      "userCount": 6,
-      "alphaCount": 9,
+      "userCount": 8,
+      "alphaCount": 12,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -320,8 +309,8 @@
       "category": "other",
       "coverage": 0.373,
       "fieldCount": 103,
-      "userCount": 4,
-      "alphaCount": 5,
+      "userCount": 5,
+      "alphaCount": 6,
       "valueScore": 7.0,
       "pyramidMultiplier": 1.7
     },
@@ -331,8 +320,8 @@
       "category": "analyst",
       "coverage": 0.7306,
       "fieldCount": 640,
-      "userCount": 94,
-      "alphaCount": 179,
+      "userCount": 98,
+      "alphaCount": 190,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.6
     },
@@ -342,8 +331,8 @@
       "category": "analyst",
       "coverage": 0.5831,
       "fieldCount": 210,
-      "userCount": 24,
-      "alphaCount": 29,
+      "userCount": 25,
+      "alphaCount": 30,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.6
     },
@@ -353,8 +342,8 @@
       "category": "analyst",
       "coverage": 0.5,
       "fieldCount": 461,
-      "userCount": 496,
-      "alphaCount": 3639,
+      "userCount": 497,
+      "alphaCount": 3643,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -364,8 +353,8 @@
       "category": "analyst",
       "coverage": 0.5255,
       "fieldCount": 304,
-      "userCount": 694,
-      "alphaCount": 9255,
+      "userCount": 699,
+      "alphaCount": 10005,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -375,8 +364,8 @@
       "category": "analyst",
       "coverage": 0.6526,
       "fieldCount": 109,
-      "userCount": 86,
-      "alphaCount": 218,
+      "userCount": 89,
+      "alphaCount": 224,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
@@ -386,8 +375,8 @@
       "category": "analyst",
       "coverage": 0.5,
       "fieldCount": 207,
-      "userCount": 502,
-      "alphaCount": 3231,
+      "userCount": 508,
+      "alphaCount": 3308,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -397,8 +386,8 @@
       "category": "analyst",
       "coverage": 0.8952,
       "fieldCount": 43,
-      "userCount": 414,
-      "alphaCount": 1856,
+      "userCount": 417,
+      "alphaCount": 1876,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.6
     },
@@ -408,8 +397,8 @@
       "category": "analyst",
       "coverage": 0.6331,
       "fieldCount": 308,
-      "userCount": 645,
-      "alphaCount": 3816,
+      "userCount": 655,
+      "alphaCount": 3842,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -419,8 +408,8 @@
       "category": "analyst",
       "coverage": 0.773,
       "fieldCount": 540,
-      "userCount": 258,
-      "alphaCount": 902,
+      "userCount": 261,
+      "alphaCount": 920,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.6
     },
@@ -474,8 +463,8 @@
       "category": "analyst",
       "coverage": 0.5672,
       "fieldCount": 48,
-      "userCount": 41,
-      "alphaCount": 93,
+      "userCount": 43,
+      "alphaCount": 95,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.6
     },
@@ -486,7 +475,7 @@
       "coverage": 0.7322,
       "fieldCount": 14,
       "userCount": 8,
-      "alphaCount": 14,
+      "alphaCount": 15,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
@@ -496,8 +485,8 @@
       "category": "analyst",
       "coverage": 0.6899,
       "fieldCount": 2343,
-      "userCount": 10,
-      "alphaCount": 22,
+      "userCount": 11,
+      "alphaCount": 23,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.6
     },
@@ -518,8 +507,8 @@
       "category": "analyst",
       "coverage": 0.577,
       "fieldCount": 59,
-      "userCount": 9,
-      "alphaCount": 19,
+      "userCount": 12,
+      "alphaCount": 25,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
@@ -551,8 +540,8 @@
       "category": "model",
       "coverage": 0.8854,
       "fieldCount": 1010,
-      "userCount": 19,
-      "alphaCount": 26,
+      "userCount": 21,
+      "alphaCount": 29,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -562,8 +551,8 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 560,
-      "userCount": 21,
-      "alphaCount": 49,
+      "userCount": 26,
+      "alphaCount": 56,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.4
     },
@@ -573,8 +562,8 @@
       "category": "other",
       "coverage": 0.9095,
       "fieldCount": 57,
-      "userCount": 144,
-      "alphaCount": 657,
+      "userCount": 158,
+      "alphaCount": 818,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -584,8 +573,8 @@
       "category": "earnings",
       "coverage": 0.6603,
       "fieldCount": 8,
-      "userCount": 521,
-      "alphaCount": 2276,
+      "userCount": 523,
+      "alphaCount": 2284,
       "valueScore": 1.0,
       "pyramidMultiplier": 1.1
     },
@@ -628,8 +617,8 @@
       "category": "institutions",
       "coverage": 0.8093,
       "fieldCount": 30,
-      "userCount": 15,
-      "alphaCount": 28,
+      "userCount": 16,
+      "alphaCount": 33,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.5
     },
@@ -639,8 +628,8 @@
       "category": "fundamental",
       "coverage": 0.8896,
       "fieldCount": 373,
-      "userCount": 706,
-      "alphaCount": 3253,
+      "userCount": 712,
+      "alphaCount": 3274,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -650,8 +639,8 @@
       "category": "fundamental",
       "coverage": 0.6444,
       "fieldCount": 153,
-      "userCount": 91,
-      "alphaCount": 203,
+      "userCount": 94,
+      "alphaCount": 207,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
@@ -661,8 +650,8 @@
       "category": "fundamental",
       "coverage": 0.7092,
       "fieldCount": 381,
-      "userCount": 912,
-      "alphaCount": 6575,
+      "userCount": 917,
+      "alphaCount": 6586,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -673,7 +662,7 @@
       "coverage": 0.5,
       "fieldCount": 535,
       "userCount": 478,
-      "alphaCount": 2758,
+      "alphaCount": 2766,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -683,8 +672,8 @@
       "category": "fundamental",
       "coverage": 0.6433,
       "fieldCount": 99,
-      "userCount": 113,
-      "alphaCount": 501,
+      "userCount": 114,
+      "alphaCount": 502,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.6
     },
@@ -705,8 +694,8 @@
       "category": "fundamental",
       "coverage": 0.8984,
       "fieldCount": 12,
-      "userCount": 103,
-      "alphaCount": 442,
+      "userCount": 104,
+      "alphaCount": 445,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.6
     },
@@ -716,8 +705,8 @@
       "category": "fundamental",
       "coverage": 0.5,
       "fieldCount": 259,
-      "userCount": 328,
-      "alphaCount": 1723,
+      "userCount": 333,
+      "alphaCount": 1731,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -728,7 +717,7 @@
       "coverage": 0.7616,
       "fieldCount": 663,
       "userCount": 406,
-      "alphaCount": 2559,
+      "alphaCount": 2562,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -751,7 +740,7 @@
       "fieldCount": 368,
       "userCount": 52,
       "alphaCount": 91,
-      "valueScore": 4.0,
+      "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
     {
@@ -782,8 +771,8 @@
       "category": "fundamental",
       "coverage": 0.8558,
       "fieldCount": 215,
-      "userCount": 244,
-      "alphaCount": 613,
+      "userCount": 250,
+      "alphaCount": 631,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.6
     },
@@ -793,8 +782,8 @@
       "category": "model",
       "coverage": 0.9421,
       "fieldCount": 681,
-      "userCount": 49,
-      "alphaCount": 132,
+      "userCount": 60,
+      "alphaCount": 217,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -804,8 +793,8 @@
       "category": "imbalance",
       "coverage": 0.8559,
       "fieldCount": 2,
-      "userCount": 228,
-      "alphaCount": 627,
+      "userCount": 230,
+      "alphaCount": 631,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.0
     },
@@ -815,8 +804,8 @@
       "category": "other",
       "coverage": 0.6636,
       "fieldCount": 31,
-      "userCount": 48,
-      "alphaCount": 163,
+      "userCount": 55,
+      "alphaCount": 230,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
@@ -826,8 +815,8 @@
       "category": "insiders",
       "coverage": 0.3526,
       "fieldCount": 9,
-      "userCount": 135,
-      "alphaCount": 441,
+      "userCount": 136,
+      "alphaCount": 442,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.2
     },
@@ -837,8 +826,8 @@
       "category": "insiders",
       "coverage": 0.8918,
       "fieldCount": 53,
-      "userCount": 532,
-      "alphaCount": 4006,
+      "userCount": 539,
+      "alphaCount": 4024,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.2
     },
@@ -848,8 +837,8 @@
       "category": "institutions",
       "coverage": 0.9996,
       "fieldCount": 11,
-      "userCount": 133,
-      "alphaCount": 533,
+      "userCount": 134,
+      "alphaCount": 534,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.5
     },
@@ -859,9 +848,9 @@
       "category": "pv",
       "coverage": 0.9925,
       "fieldCount": 574,
-      "userCount": 37,
-      "alphaCount": 118,
-      "valueScore": 4.0,
+      "userCount": 42,
+      "alphaCount": 131,
+      "valueScore": 5.0,
       "pyramidMultiplier": 1.4
     },
     {
@@ -870,8 +859,8 @@
       "category": "macro",
       "coverage": 1.0,
       "fieldCount": 1,
-      "userCount": 54,
-      "alphaCount": 132,
+      "userCount": 55,
+      "alphaCount": 135,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -881,8 +870,8 @@
       "category": "other",
       "coverage": 1.0,
       "fieldCount": 333,
-      "userCount": 8,
-      "alphaCount": 13,
+      "userCount": 9,
+      "alphaCount": 14,
       "valueScore": 7.0,
       "pyramidMultiplier": 1.7
     },
@@ -892,8 +881,8 @@
       "category": "other",
       "coverage": 0.6187,
       "fieldCount": 521,
-      "userCount": 5,
-      "alphaCount": 6,
+      "userCount": 7,
+      "alphaCount": 8,
       "valueScore": 7.0,
       "pyramidMultiplier": 1.7
     },
@@ -903,8 +892,8 @@
       "category": "model",
       "coverage": 0.7782,
       "fieldCount": 539,
-      "userCount": 271,
-      "alphaCount": 1458,
+      "userCount": 272,
+      "alphaCount": 1461,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -914,8 +903,8 @@
       "category": "model",
       "coverage": 0.9071,
       "fieldCount": 8,
-      "userCount": 489,
-      "alphaCount": 2131,
+      "userCount": 491,
+      "alphaCount": 2137,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -927,7 +916,7 @@
       "fieldCount": 137,
       "userCount": 21,
       "alphaCount": 39,
-      "valueScore": 5.0,
+      "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
     {
@@ -936,8 +925,8 @@
       "category": "model",
       "coverage": 0.862,
       "fieldCount": 120,
-      "userCount": 102,
-      "alphaCount": 203,
+      "userCount": 104,
+      "alphaCount": 210,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -991,8 +980,8 @@
       "category": "model",
       "coverage": 1.0,
       "fieldCount": 101,
-      "userCount": 162,
-      "alphaCount": 1843,
+      "userCount": 163,
+      "alphaCount": 1845,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1002,8 +991,8 @@
       "category": "model",
       "coverage": 0.6838,
       "fieldCount": 88,
-      "userCount": 129,
-      "alphaCount": 410,
+      "userCount": 131,
+      "alphaCount": 416,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1024,8 +1013,8 @@
       "category": "model",
       "coverage": 0.7449,
       "fieldCount": 666,
-      "userCount": 166,
-      "alphaCount": 755,
+      "userCount": 167,
+      "alphaCount": 758,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
@@ -1035,8 +1024,8 @@
       "category": "model",
       "coverage": 0.9945,
       "fieldCount": 44,
-      "userCount": 64,
-      "alphaCount": 135,
+      "userCount": 65,
+      "alphaCount": 136,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
@@ -1058,7 +1047,7 @@
       "coverage": 1.0,
       "fieldCount": 4,
       "userCount": 21,
-      "alphaCount": 32,
+      "alphaCount": 33,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1068,8 +1057,8 @@
       "category": "model",
       "coverage": 0.4589,
       "fieldCount": 30,
-      "userCount": 2,
-      "alphaCount": 8,
+      "userCount": 3,
+      "alphaCount": 9,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -1079,8 +1068,8 @@
       "category": "model",
       "coverage": 0.8556,
       "fieldCount": 554,
-      "userCount": 688,
-      "alphaCount": 9737,
+      "userCount": 701,
+      "alphaCount": 9782,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1090,8 +1079,8 @@
       "category": "model",
       "coverage": 0.9042,
       "fieldCount": 20,
-      "userCount": 204,
-      "alphaCount": 498,
+      "userCount": 205,
+      "alphaCount": 501,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1134,8 +1123,8 @@
       "category": "model",
       "coverage": 0.6499,
       "fieldCount": 673,
-      "userCount": 721,
-      "alphaCount": 6436,
+      "userCount": 723,
+      "alphaCount": 6455,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1156,8 +1145,8 @@
       "category": "model",
       "coverage": 0.9867,
       "fieldCount": 125,
-      "userCount": 209,
-      "alphaCount": 1982,
+      "userCount": 210,
+      "alphaCount": 1984,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1167,8 +1156,8 @@
       "category": "model",
       "coverage": 0.6039,
       "fieldCount": 92,
-      "userCount": 113,
-      "alphaCount": 617,
+      "userCount": 114,
+      "alphaCount": 618,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1200,8 +1189,8 @@
       "category": "model",
       "coverage": 0.986,
       "fieldCount": 156,
-      "userCount": 167,
-      "alphaCount": 548,
+      "userCount": 168,
+      "alphaCount": 551,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1222,8 +1211,8 @@
       "category": "model",
       "coverage": 0.9914,
       "fieldCount": 36,
-      "userCount": 124,
-      "alphaCount": 479,
+      "userCount": 125,
+      "alphaCount": 481,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1234,7 +1223,7 @@
       "coverage": 0.6856,
       "fieldCount": 32,
       "userCount": 98,
-      "alphaCount": 687,
+      "alphaCount": 690,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1244,8 +1233,8 @@
       "category": "model",
       "coverage": 0.9911,
       "fieldCount": 43,
-      "userCount": 133,
-      "alphaCount": 1203,
+      "userCount": 134,
+      "alphaCount": 1204,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1266,8 +1255,8 @@
       "category": "model",
       "coverage": 0.7803,
       "fieldCount": 120,
-      "userCount": 412,
-      "alphaCount": 2087,
+      "userCount": 415,
+      "alphaCount": 2094,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1277,8 +1266,8 @@
       "category": "model",
       "coverage": 0.9458,
       "fieldCount": 24,
-      "userCount": 385,
-      "alphaCount": 1914,
+      "userCount": 387,
+      "alphaCount": 1935,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1343,8 +1332,8 @@
       "category": "model",
       "coverage": 0.9298,
       "fieldCount": 60,
-      "userCount": 12,
-      "alphaCount": 16,
+      "userCount": 17,
+      "alphaCount": 23,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -1354,9 +1343,9 @@
       "category": "model",
       "coverage": 0.9274,
       "fieldCount": 648,
-      "userCount": 44,
-      "alphaCount": 98,
-      "valueScore": 6.0,
+      "userCount": 51,
+      "alphaCount": 168,
+      "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
     {
@@ -1366,9 +1355,9 @@
       "coverage": 0.2671,
       "fieldCount": 11,
       "userCount": 27,
-      "alphaCount": 75,
+      "alphaCount": 76,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news17",
@@ -1379,7 +1368,7 @@
       "userCount": 46,
       "alphaCount": 181,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news18",
@@ -1390,7 +1379,7 @@
       "userCount": 201,
       "alphaCount": 824,
       "valueScore": 2.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news20",
@@ -1401,7 +1390,7 @@
       "userCount": 44,
       "alphaCount": 116,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news21",
@@ -1412,7 +1401,7 @@
       "userCount": 51,
       "alphaCount": 119,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news23",
@@ -1423,7 +1412,7 @@
       "userCount": 16,
       "alphaCount": 44,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news29",
@@ -1433,8 +1422,8 @@
       "fieldCount": 12,
       "userCount": 11,
       "alphaCount": 23,
-      "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "valueScore": 5.0,
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news3",
@@ -1445,7 +1434,7 @@
       "userCount": 11,
       "alphaCount": 19,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news31",
@@ -1455,8 +1444,8 @@
       "fieldCount": 25,
       "userCount": 15,
       "alphaCount": 28,
-      "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "valueScore": 5.0,
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news36",
@@ -1467,7 +1456,7 @@
       "userCount": 14,
       "alphaCount": 30,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news38",
@@ -1478,7 +1467,7 @@
       "userCount": 63,
       "alphaCount": 197,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news46",
@@ -1489,7 +1478,7 @@
       "userCount": 45,
       "alphaCount": 114,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news48",
@@ -1500,7 +1489,7 @@
       "userCount": 14,
       "alphaCount": 54,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news50",
@@ -1511,7 +1500,7 @@
       "userCount": 34,
       "alphaCount": 88,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news54",
@@ -1522,7 +1511,7 @@
       "userCount": 15,
       "alphaCount": 24,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news59",
@@ -1533,7 +1522,7 @@
       "userCount": 242,
       "alphaCount": 2310,
       "valueScore": 1.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news66",
@@ -1544,7 +1533,7 @@
       "userCount": 27,
       "alphaCount": 41,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news7",
@@ -1552,10 +1541,10 @@
       "category": "news",
       "coverage": 0.6327,
       "fieldCount": 56,
-      "userCount": 88,
-      "alphaCount": 319,
+      "userCount": 89,
+      "alphaCount": 320,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news73",
@@ -1565,8 +1554,8 @@
       "fieldCount": 22,
       "userCount": 2,
       "alphaCount": 4,
-      "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "valueScore": 6.0,
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news76",
@@ -1577,7 +1566,7 @@
       "userCount": 2,
       "alphaCount": 3,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news79",
@@ -1585,10 +1574,10 @@
       "category": "news",
       "coverage": 0.8563,
       "fieldCount": 85,
-      "userCount": 148,
-      "alphaCount": 501,
+      "userCount": 150,
+      "alphaCount": 506,
       "valueScore": 3.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news84",
@@ -1599,7 +1588,7 @@
       "userCount": 5,
       "alphaCount": 8,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news85",
@@ -1610,7 +1599,7 @@
       "userCount": 8,
       "alphaCount": 15,
       "valueScore": 5.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "news_sentiment_dl",
@@ -1640,8 +1629,8 @@
       "category": "sentiment",
       "coverage": 0.9654,
       "fieldCount": 23,
-      "userCount": 11,
-      "alphaCount": 19,
+      "userCount": 13,
+      "alphaCount": 25,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.6
     },
@@ -1651,8 +1640,8 @@
       "category": "socialmedia",
       "coverage": 1.0,
       "fieldCount": 1,
-      "userCount": 120,
-      "alphaCount": 336,
+      "userCount": 122,
+      "alphaCount": 342,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.0
     },
@@ -1663,7 +1652,7 @@
       "coverage": 0.4038,
       "fieldCount": 15,
       "userCount": 52,
-      "alphaCount": 157,
+      "alphaCount": 158,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.4
     },
@@ -1673,8 +1662,8 @@
       "category": "model",
       "coverage": 0.7478,
       "fieldCount": 20,
-      "userCount": 711,
-      "alphaCount": 6756,
+      "userCount": 712,
+      "alphaCount": 6760,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1706,8 +1695,8 @@
       "category": "other",
       "coverage": 0.4022,
       "fieldCount": 32,
-      "userCount": 103,
-      "alphaCount": 371,
+      "userCount": 104,
+      "alphaCount": 372,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1718,7 +1707,7 @@
       "coverage": 1.0,
       "fieldCount": 11,
       "userCount": 214,
-      "alphaCount": 917,
+      "alphaCount": 918,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1739,8 +1728,8 @@
       "category": "other",
       "coverage": 0.59,
       "fieldCount": 10,
-      "userCount": 223,
-      "alphaCount": 715,
+      "userCount": 224,
+      "alphaCount": 716,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1783,8 +1772,8 @@
       "category": "other",
       "coverage": 0.5919,
       "fieldCount": 3,
-      "userCount": 20,
-      "alphaCount": 26,
+      "userCount": 21,
+      "alphaCount": 27,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
@@ -1794,8 +1783,8 @@
       "category": "model",
       "coverage": 0.7922,
       "fieldCount": 122,
-      "userCount": 300,
-      "alphaCount": 3547,
+      "userCount": 302,
+      "alphaCount": 3551,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.7
     },
@@ -1807,7 +1796,7 @@
       "fieldCount": 3,
       "userCount": 9,
       "alphaCount": 12,
-      "valueScore": 5.0,
+      "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
     {
@@ -1829,7 +1818,7 @@
       "fieldCount": 1500,
       "userCount": 92,
       "alphaCount": 475,
-      "valueScore": 5.0,
+      "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
     {
@@ -1838,8 +1827,8 @@
       "category": "fundamental",
       "coverage": 0.8269,
       "fieldCount": 177,
-      "userCount": 618,
-      "alphaCount": 4490,
+      "userCount": 622,
+      "alphaCount": 4514,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.6
     },
@@ -1849,8 +1838,8 @@
       "category": "other",
       "coverage": 0.357,
       "fieldCount": 1,
-      "userCount": 120,
-      "alphaCount": 357,
+      "userCount": 121,
+      "alphaCount": 358,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.7
     },
@@ -1861,7 +1850,7 @@
       "coverage": 0.8006,
       "fieldCount": 104,
       "userCount": 126,
-      "alphaCount": 646,
+      "alphaCount": 648,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.7
     },
@@ -1915,8 +1904,8 @@
       "category": "sentiment",
       "coverage": 0.6243,
       "fieldCount": 21,
-      "userCount": 26,
-      "alphaCount": 38,
+      "userCount": 27,
+      "alphaCount": 39,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.6
     },
@@ -1959,8 +1948,8 @@
       "category": "other",
       "coverage": 0.4886,
       "fieldCount": 3,
-      "userCount": 28,
-      "alphaCount": 49,
+      "userCount": 30,
+      "alphaCount": 52,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.7
     },
@@ -1973,7 +1962,7 @@
       "userCount": 11,
       "alphaCount": 28,
       "valueScore": 4.0,
-      "pyramidMultiplier": 1.5
+      "pyramidMultiplier": 1.6
     },
     {
       "id": "other72",
@@ -2014,8 +2003,8 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 504,
-      "userCount": 14,
-      "alphaCount": 41,
+      "userCount": 19,
+      "alphaCount": 46,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.4
     },
@@ -2025,8 +2014,8 @@
       "category": "model",
       "coverage": 0.9434,
       "fieldCount": 645,
-      "userCount": 24,
-      "alphaCount": 41,
+      "userCount": 27,
+      "alphaCount": 46,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -2036,8 +2025,8 @@
       "category": "model",
       "coverage": 0.9742,
       "fieldCount": 28,
-      "userCount": 6,
-      "alphaCount": 7,
+      "userCount": 7,
+      "alphaCount": 9,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.7
     },
@@ -2047,8 +2036,8 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 24,
-      "userCount": 2143,
-      "alphaCount": 63083,
+      "userCount": 2176,
+      "alphaCount": 64221,
       "valueScore": 1.0,
       "pyramidMultiplier": 1.4
     },
@@ -2058,8 +2047,8 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 7,
-      "userCount": 31,
-      "alphaCount": 55,
+      "userCount": 32,
+      "alphaCount": 57,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -2069,8 +2058,8 @@
       "category": "pv",
       "coverage": 1.0,
       "fieldCount": 29,
-      "userCount": 181,
-      "alphaCount": 652,
+      "userCount": 182,
+      "alphaCount": 653,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.4
     },
@@ -2091,8 +2080,8 @@
       "category": "pv",
       "coverage": 0.8191,
       "fieldCount": 36,
-      "userCount": 200,
-      "alphaCount": 866,
+      "userCount": 203,
+      "alphaCount": 871,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -2115,7 +2104,7 @@
       "fieldCount": 2,
       "userCount": 2,
       "alphaCount": 3,
-      "valueScore": 5.0,
+      "valueScore": 6.0,
       "pyramidMultiplier": 1.4
     },
     {
@@ -2146,8 +2135,8 @@
       "category": "pv",
       "coverage": 0.6678,
       "fieldCount": 40,
-      "userCount": 279,
-      "alphaCount": 6043,
+      "userCount": 281,
+      "alphaCount": 6053,
       "valueScore": 1.0,
       "pyramidMultiplier": 1.4
     },
@@ -2157,8 +2146,8 @@
       "category": "pv",
       "coverage": 0.9418,
       "fieldCount": 690,
-      "userCount": 193,
-      "alphaCount": 4048,
+      "userCount": 195,
+      "alphaCount": 4051,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -2168,8 +2157,8 @@
       "category": "pv",
       "coverage": 0.734,
       "fieldCount": 873,
-      "userCount": 388,
-      "alphaCount": 1825,
+      "userCount": 393,
+      "alphaCount": 1842,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -2213,7 +2202,7 @@
       "coverage": 0.9806,
       "fieldCount": 16,
       "userCount": 154,
-      "alphaCount": 458,
+      "alphaCount": 461,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.3
     },
@@ -2235,7 +2224,7 @@
       "coverage": 0.9914,
       "fieldCount": 5,
       "userCount": 171,
-      "alphaCount": 405,
+      "alphaCount": 410,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.3
     },
@@ -2245,8 +2234,8 @@
       "category": "risk",
       "coverage": 0.9798,
       "fieldCount": 96,
-      "userCount": 843,
-      "alphaCount": 6418,
+      "userCount": 855,
+      "alphaCount": 6645,
       "valueScore": 1.0,
       "pyramidMultiplier": 1.3
     },
@@ -2256,8 +2245,8 @@
       "category": "risk",
       "coverage": 0.6658,
       "fieldCount": 7,
-      "userCount": 83,
-      "alphaCount": 245,
+      "userCount": 85,
+      "alphaCount": 247,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.3
     },
@@ -2278,8 +2267,8 @@
       "category": "risk",
       "coverage": 0.9727,
       "fieldCount": 64,
-      "userCount": 367,
-      "alphaCount": 1195,
+      "userCount": 368,
+      "alphaCount": 1196,
       "valueScore": 2.0,
       "pyramidMultiplier": 1.3
     },
@@ -2289,8 +2278,8 @@
       "category": "sentiment",
       "coverage": 0.3812,
       "fieldCount": 138,
-      "userCount": 30,
-      "alphaCount": 64,
+      "userCount": 31,
+      "alphaCount": 65,
       "valueScore": 6.0,
       "pyramidMultiplier": 1.6
     },
@@ -2333,8 +2322,8 @@
       "category": "shortinterest",
       "coverage": 0.9238,
       "fieldCount": 56,
-      "userCount": 219,
-      "alphaCount": 1244,
+      "userCount": 221,
+      "alphaCount": 1249,
       "valueScore": 4.0,
       "pyramidMultiplier": 1.4
     },
@@ -2344,8 +2333,8 @@
       "category": "shortinterest",
       "coverage": 0.9953,
       "fieldCount": 88,
-      "userCount": 399,
-      "alphaCount": 1677,
+      "userCount": 404,
+      "alphaCount": 1694,
       "valueScore": 3.0,
       "pyramidMultiplier": 1.4
     },
@@ -2355,8 +2344,8 @@
       "category": "shortinterest",
       "coverage": 1.0,
       "fieldCount": 3,
-      "userCount": 16,
-      "alphaCount": 36,
+      "userCount": 17,
+      "alphaCount": 37,
       "valueScore": 5.0,
       "pyramidMultiplier": 1.4
     },
@@ -2377,8 +2366,8 @@
       "category": "socialmedia",
       "coverage": 1.0,
       "fieldCount": 1,
-      "userCount": 130,
-      "alphaCount": 463,
+      "userCount": 131,
+      "alphaCount": 466,
       "valueScore": 1.0,
       "pyramidMultiplier": 1.0
     },

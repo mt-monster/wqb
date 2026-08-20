@@ -1,0 +1,17 @@
+{
+  "wave": "10A",
+  "dataset": "fundamental6",
+  "generated_at": "2026-08-19T15:50:00",
+  "description": "MEA fundamental6 基本面价值/质量策略 - 第10轮候选",
+  "strategy_style": "fundamental_value_quality",
+  "expressions": [
+    "rank(ts_zscore(vec_avg(fundamental_annual_revenue), 60)) * rank(ts_zscore(vec_avg(fundamental_common_equity_total), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_annual_income_before_extraordinary_items), 60)) * rank(ts_zscore(vec_avg(fundamental_assets_other), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_annual_revenue), 120)) * rank(ts_zscore(vec_avg(fundamental_common_equity_total), 120))",
+    "rank(ts_zscore(vec_avg(fundamental_annual_income_before_extraordinary_items), 120)) * rank(ts_zscore(vec_avg(fundamental_assets_other), 120))",
+    "rank(vec_avg(fundamental_annual_income_before_extraordinary_items) / (vec_avg(fundamental_common_equity_total) + 1))",
+    "rank(vec_avg(fundamental_annual_revenue) / (vec_avg(fundamental_assets_other) + 1))",
+    "rank(ts_zscore(vec_avg(fundamental_annual_change_working_capital_to_net_operating_assets), 60))",
+    "rank(ts_zscore(vec_avg(fundamental_annual_staff_expense_total), 60))"
+  ]
+}

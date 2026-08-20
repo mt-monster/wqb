@@ -1,0 +1,11 @@
+{
+ "expressions": [
+  "rank(ts_zscore(vec_avg(analyst_eps_upward_revisions_4weeks), 60))",
+  "rank(ts_zscore(vec_avg(analyst_eps_downward_revisions_last_four_weeks_count), 60)) * -1",
+  "rank(ts_zscore(subtract(vec_avg(analyst_net_income_upward_revisions_4_weeks_count), vec_avg(analyst_net_income_downward_revision_count_4wks)), 60))",
+  "rank(ts_zscore(subtract(vec_avg(analyst_num_sales_estimates_raised_last_4_weeks), vec_avg(analyst_lowered_revenue_estimates_count_4wks)), 60))",
+  "rank(ts_zscore(divide(analyst_price_target_mean, close), 60))",
+  "rank(ts_delta(analyst_price_target_mean, 20))",
+  "rank(ts_zscore(divide(subtract(analyst_price_target_high, analyst_price_target_low), analyst_price_target_mean), 60)) * -1"
+ ]
+}

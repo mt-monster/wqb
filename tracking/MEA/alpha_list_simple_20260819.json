@@ -1,0 +1,192 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_delta(divide(fundamental_income_before_extraordinary_items_q, add(fundamental_revenue_quarterly, 0.0001)), 63))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_mean(divide(fundamental_income_before_extraordinary_items_q, add(fundamental_revenue_quarterly, 0.0001)), 10))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_zscore(divide(fundamental_income_before_extraordinary_items_q, add(fundamental_revenue_quarterly, 0.0001)), 252))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(divide(fundamental_operating_net_cash_flow, add(fundamental_total_assets_quarterly, 0.0001)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_delta(divide(fundamental_operating_net_cash_flow, add(fundamental_total_assets_quarterly, 0.0001)), 63))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(divide(fundamental_current_assets_total_q, add(fundamental_total_assets_quarterly, 0.0001)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_delta(divide(fundamental_current_assets_total_q, add(fundamental_total_assets_quarterly, 0.0001)), 63))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(divide(fundamental_net_sales_quarterly, add(fundamental_total_assets_quarterly, 0.0001)))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_zscore(divide(fundamental_net_sales_quarterly, add(fundamental_total_assets_quarterly, 0.0001)), 252))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON"
+    },
+    "regular": "rank(ts_mean(divide(fundamental_income_before_extraordinary_items_q, add(fundamental_total_assets_quarterly, 0.0001)), 10))"
+  }
+]

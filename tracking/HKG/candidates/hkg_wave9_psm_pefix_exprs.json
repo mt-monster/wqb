@@ -1,0 +1,18 @@
+[
+ "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3))",
+ "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3))",
+ "add(add(add(0.35*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3))",
+ "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_ev_ebitda_component_score_3))",
+ "add(add(add(add(0.25*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.2*subtract(0, rank(arm_score_5pt_scale_2))), 0.2*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3)), 0.15*rank(rel_val_ev_ebitda_component_score_3))",
+ "add(add(0.4*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.3*rank(rel_val_pe_component_score_3))",
+ "rank(rel_val_pe_component_score_3)",
+ "rank(rel_val_pe_component_score_3)",
+ "rank(rel_val_pe_component_score_3)",
+ "add(0.5*rank(rel_val_pe_component_score_3), 0.5*rank(rel_val_ev_ebitda_component_score_3))",
+ "add(0.6*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.4*rank(rel_val_pe_component_score_3))",
+ "add(0.5*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.5*rank(rel_val_pe_component_score_3))",
+ "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3))",
+ "add(add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.25*subtract(0, rank(arm_score_5pt_scale_2))), 0.25*subtract(0, rank(rel_val_p_book_component_score_3))), 0.2*rank(rel_val_pe_component_score_3))",
+ "add(0.5*subtract(0, rank(arm_score_5pt_scale_2)), 0.5*rank(rel_val_pe_component_score_3))",
+ "add(0.5*subtract(0, rank(rel_val_p_book_component_score_3)), 0.5*rank(rel_val_pe_component_score_3))"
+]

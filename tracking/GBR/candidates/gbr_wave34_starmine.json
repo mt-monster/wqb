@@ -1,0 +1,17 @@
+{
+  "wave": 34,
+  "region": "GBR",
+  "dataset": "predictive_starmine",
+  "strategy": "冲 2Y sharpe（基线 bljX8elN 2Y1.09 差 0.49）",
+  "base_settings": "decay=6 SUBINDUSTRY truncation=0.08",
+  "expressions": [
+    "ts_zscore(ep_yield_pct_smest_fy2_3, 30) + ts_zscore(ep_yield_pct_smest_fy1_3, 30)",
+    "ts_zscore(ep_yield_pct_smest_fy2_3, 40) + ts_zscore(ep_yield_pct_smest_fy1_3, 40)",
+    "ts_decay_linear(ts_zscore(ep_yield_pct_smest_fy2_3, 20) + ts_zscore(ep_yield_pct_smest_fy1_3, 20), 5)",
+    "ts_decay_linear(ts_zscore(ep_yield_pct_smest_fy2_3, 20) + ts_zscore(ep_yield_pct_smest_fy1_3, 20), 10)",
+    "ts_zscore((ep_yield_pct_smest_fy1_3 + ep_yield_pct_smest_fy2_3) / 2, 30)",
+    "ts_zscore((ep_yield_pct_smest_fy1_3 + ep_yield_pct_smest_fy2_3) / 2, 40)",
+    "2 * ts_zscore(ep_yield_pct_smest_fy2_3, 20) + ts_zscore(ep_yield_pct_smest_fy1_3, 20)",
+    "ts_zscore(ep_yield_pct_smest_fy2_3, 20) + 0.5 * ts_zscore(ep_yield_pct_smest_fy1_3, 20)"
+  ]
+}

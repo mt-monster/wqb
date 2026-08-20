@@ -1,0 +1,26 @@
+{
+  "wave": 53,
+  "focus": "fundamental6 ratio signals (depreciation rate/capex/tax rate/retained/turnover/profit margin/inventory/tangibility/leverage/cash) - field-audit-driven rebuild",
+  "context": "wave52 field-name errors made it clear template field names cannot be reused. Wave53 v1 (validate_fields=True) blocked by false-positive unknown field (limit/useStd), real fields all confirmed. v1 all ERROR: 'Operator divide does not support event inputs' - fundamental6 VECTOR fields MUST be wrapped in vec_*. v2 resubmitted all vec_avg() wrapped (multisim 2sX2PX5Pt4M0bn8wZgAnW5a), 10/10 COMPLETE.",
+  "multisim": "2sX2PX5Pt4M0bn8wZgAnW5a",
+  "settings": "MEA TOP400 delay1 SECTOR decay1 z252 W10",
+  "results": [
+    {"id": "ZY7ZWzbd", "signal": "depreciation rate (dep/PPE_net)", "sharpe": 0.45, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "N17M5zVw", "signal": "capex intensity (capex/dep)", "sharpe": -0.26, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "j2jLdG8W", "signal": "tax rate (tax/pretax)", "sharpe": 0.26, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "vRj0JG2v", "signal": "retained ratio (retained/equity)", "sharpe": 0.43, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "9qXoAMWx", "signal": "capital turnover (revenue/invested_capital)", "sharpe": -0.74, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "O07e5z8d", "signal": "operating margin (op_inc/revenue)", "sharpe": 0.63, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "Wj7kWzLk", "signal": "inventory change (inv_delta/revenue)", "sharpe": 0.39, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "kqjRLGJK", "signal": "tangibility (PPE_net/total_assets)", "sharpe": -0.37, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "mLjOx7YK", "signal": "leverage (lt_debt/invested_capital)", "sharpe": -0.22, "ra_failed": true, "verdict": "FAIL"},
+    {"id": "9qXoAMEe", "signal": "cash ratio (cash/total_assets)", "sharpe": -0.29, "ra_failed": true, "verdict": "FAIL"}
+  ],
+  "key_findings": [
+    "*** wave53 v2 10/10 FAIL: fundamental6 ratio signals under z252+W10+SECTOR+decay1 template ALL dead, sharpe range -0.74 to 0.63 (best = operating margin 0.63, far below 1.58 gate) ***",
+    "ROOT CAUSE ANALYSIS: z252 template is INVALID for fundamental6 - Worldscope data is ANNUAL/semi-annual granularity; a 252-trading-day window contains only 1-4 data points, ts_zscore degenerates to near-static values with no statistical meaning (fnd72 is_q worked because quarterly PIT data has ~4 updates per year)",
+    "SECONDARY FACTOR: many wave53 fields had LOW coverage (dep_exp 5ac, PPE_net 6ac, invested_capital 13ac = 0.25-0.56 cov in TOP400) leaving <220 stocks with data - rank then dominated by NaN",
+    "TEMPLATE VERDICT: fnd72 template (z252+W10) DEAD for fundamental6 - per user directive 'if template fails, start from scratch', wave54 must use data-granularity-correct forms: cross-sectional rank of ratios + short-window (66d) zscore + annual-change (ts_delta 250d) signals, ONLY on high-coverage core fields (EBITDA/EBIT/pretax/revenue/equity 0.85-0.92)",
+    "LESSON: template transferability is bounded by data update granularity - always check field update frequency before choosing lookback window"
+  ]
+}

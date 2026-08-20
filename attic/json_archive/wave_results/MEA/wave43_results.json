@@ -1,0 +1,44 @@
+{
+  "wave": 43,
+  "focus": "Add NON-QUALITY signals (volatility/momentum/reversal/volume) to 4sig composite to diversify stock selection and reduce CONCENTRATED_WEIGHT",
+  "baseline": {"id": "kqj5M528", "expr": "4sig z250 (ROE+ER+AT+GM)", "sharpe": 1.76, "fitness": 1.52, "2y": 2.08, "cw": 0.236},
+  "best_ever": {
+    "id": "Xg7E0N58",
+    "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250)))",
+    "note": "4sig + VolumeSurge z250 - MEA BEST EVER (beat kqj5M528 1.76)",
+    "sharpe": 1.96, "fitness": 1.69, "2y": 2.19, "cw": 0.206, "tvr": 0.260, "margin": 14.8,
+    "sub_universe_sharpe": 1.69, "drawdown": 0.103
+  },
+  "results": [
+    {"id": "P07EVxjJ", "variant": "+Vol60", "sharpe": 1.53, "fitness": 1.21, "2y": 2.05, "cw": 0.216, "fail": ["LOW_SHARPE", "CW"]},
+    {"id": "Jj7L9oRE", "variant": "+LowVol60", "sharpe": 1.71, "fitness": 1.49, "2y": 2.04, "cw": 0.210, "fail": ["CW"]},
+    {"id": "kqj5Avek", "variant": "+Momentum120", "sharpe": 1.18, "fitness": 0.84, "2y": 1.46, "cw": 0.217, "fail": ["LOW_SHARPE", "LOW_FITNESS", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "j2jQ7oN9", "variant": "+Reversal20", "sharpe": 1.91, "fitness": 1.68, "2y": 2.28, "cw": 0.209, "fail": ["CW"]},
+    {"id": "Xg7E0N58", "variant": "+VolumeSurge", "sharpe": 1.96, "fitness": 1.69, "2y": 2.19, "cw": 0.206, "fail": ["CW"]},
+    {"id": "zqkzVA1G", "variant": "+MEA_Vol60", "sharpe": 1.76, "fitness": 1.48, "2y": 2.31, "cw": 0.206, "fail": ["CW"]},
+    {"id": "O07v36a1", "variant": "+LowMEA_Vol60", "sharpe": 1.51, "fitness": 1.24, "2y": 1.47, "cw": 0.200, "fail": ["LOW_SHARPE", "CW", "IS_LADDER_SHARPE"]},
+    {"id": "np7bE6Vd", "variant": "6sig (LowVol+Reversal)", "sharpe": 1.86, "fitness": 1.63, "2y": 2.12, "cw": 0.227, "fail": ["CW"]}
+  ],
+  "key_findings": [
+    "Xg7E0N58 (4sig+VolumeSurge) = sharpe 1.96 / fitness 1.69 - MEA BEST EVER, beating kqj5M528 (1.76)",
+    "j2jQ7oN9 (+Reversal20) = 1.91 and np7bE6Vd (6sig) = 1.86 also break 1.85",
+    "VolumeSurge and Reversal20 boost sharpe; Momentum120 KILLS it (1.18) - conflicts with quality signals",
+    "CRITICAL: NON-QUALITY signals do NOT reduce CW - all 8 variants still CW 0.200-0.227",
+    "CW range 0.200-0.227 vs wave42 0.210-0.368: slight improvement (~0.03) but nowhere near 0.1",
+    "CONFIRMED: CW ~0.2 is a STRUCTURAL floor in MEA TOP400 - 4 quality signals already set the concentration",
+    "Any 4sig+1 or 6sig composite in MEA TOP400 lands CW 0.20-0.23 regardless of 5th signal type",
+    "VolumeSurge lowest CW (0.206) and highest sharpe (1.96) - best available MEA alpha but still unsubmittable"
+  ],
+  "cw_analysis": {
+    "problem": "CW ~0.21 floor confirmed - adding non-quality signals (vol/rev/volsurge) does not break the concentration",
+    "evidence": "CW 0.200-0.227 across 8 variants with fundamentally different 5th signals",
+    "root_cause": "TOP400 small universe + 4 correlated quality signals define ~130 long / ~135 short positions with 20%+ weight in top names",
+    "remaining_options": [
+      "1. Weaken base signals (shorter zscore window, lower truncation) to select MORE stocks - may trade sharpe for CW",
+      "2. Use rank(subtract(...)) relative rankings to force spread across sectors",
+      "3. Try industry/other neutralization to alter weight distribution",
+      "4. Accept MEA TOP400 structural CW limit - pivot to larger region (GLB/EUR) or PPA",
+      "5. Try 'rank(add(...))' outer rank to soften extreme weights"
+    ]
+  }
+}

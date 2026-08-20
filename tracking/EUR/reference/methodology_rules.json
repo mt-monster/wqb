@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-08-18T17:32:14",
+ "updated_at": "2026-08-18T22:25:11",
  "_note": "EUR 区域方法论规则库（L2 结构化层）：仅 EUR 专属规则（trigger.region=\"EUR\"）。跨 region 通用规则在 toolkit config/methodology_rules.json（全局库），加载时自动合并（区域覆盖全局同名规则）。rules.json 给机器消费，docs/experience/*.md 给人看，两者同源。",
  "rules": [
   {
@@ -29,6 +29,603 @@
    "created_at": "2026-08-18T04:00:00",
    "validated_at": "2026-08-18T04:00:00",
    "source": "manual_retro"
+  },
+  {
+   "rule_id": "explore_contract_EUR_20260818_213056_040169",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "EUR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr",
+     "ts_count_nans",
+     "ts_covariance",
+     "ts_kurtosis",
+     "ts_max_diff",
+     "ts_product",
+     "ts_quantile",
+     "ts_regression",
+     "ts_scale",
+     "ts_std_dev",
+     "ts_step",
+     "ts_sum",
+     "ts_target_tvr_decay"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-18T21:30:56"
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "equal",
+      "generate_stats",
+      "greater",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "if_else",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "trade_when",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_ir",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "universe_size",
+      "vec_count",
+      "vec_max",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 24,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-18T21:30:56",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_EUR_20260818_221512_220592",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "EUR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-18T22:15:12",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "combined_technical_indicators",
+       "feature_category_label"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "equal",
+      "generate_stats",
+      "greater",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "if_else",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "trade_when",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_ir",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "universe_size",
+      "vec_count",
+      "vec_max",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 8,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "deprecated",
+   "source": "diversity_audit",
+   "created_at": "2026-08-18T22:15:12",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "explore_contract_EUR_20260818_222511_783255",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "EUR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "group_backfill",
+     "group_cartesian_product",
+     "group_count",
+     "group_mean",
+     "group_neutralize",
+     "group_rank",
+     "group_scale",
+     "group_std_dev",
+     "group_sum",
+     "ts_arg_max",
+     "ts_arg_min",
+     "ts_corr"
+    ],
+    "skeleton_quota": {},
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-18T22:25:11",
+    "factor_templates": {
+     "group_backfill": {
+      "expr": "group_backfill(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内回填：用组内统计填充缺失",
+      "category": "group"
+     },
+     "group_cartesian_product": {
+      "expr": "group_cartesian_product(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组笛卡尔积：组间组合特征",
+      "category": "group"
+     },
+     "group_count": {
+      "expr": "group_count(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内计数：组内有效样本数",
+      "category": "group"
+     },
+     "group_mean": {
+      "expr": "group_mean(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内均值：行业/风格平均水平（相对基准）",
+      "category": "group"
+     },
+     "group_neutralize": {
+      "expr": "group_neutralize(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+      "category": "group"
+     },
+     "group_rank": {
+      "expr": "group_rank(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+      "category": "group"
+     },
+     "group_scale": {
+      "expr": "group_scale(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内缩放：按组内幅度归一",
+      "category": "group"
+     },
+     "group_std_dev": {
+      "expr": "group_std_dev(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内离散度：行业内部一致性/分歧",
+      "category": "group"
+     },
+     "group_sum": {
+      "expr": "group_sum(combined_technical_indicators, feature_category_label)",
+      "fields": [
+       "feature_category_label",
+       "combined_technical_indicators"
+      ],
+      "meaning": "组内求和：行业总量/资金流合计",
+      "category": "group"
+     },
+     "ts_arg_max": {
+      "expr": "ts_arg_max(combined_technical_indicators, 20)",
+      "fields": [
+       "combined_technical_indicators"
+      ],
+      "meaning": "最大值位置：峰值出现的时间点",
+      "category": "ts_window"
+     },
+     "ts_arg_min": {
+      "expr": "ts_arg_min(combined_technical_indicators, 20)",
+      "fields": [
+       "combined_technical_indicators"
+      ],
+      "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+      "category": "ts_window"
+     },
+     "ts_corr": {
+      "expr": "ts_corr(analyst_target_price_deviation, asset_turnover_ratio_metric, 20)",
+      "fields": [
+       "analyst_target_price_deviation",
+       "asset_turnover_ratio_metric"
+      ],
+      "meaning": "量价相关性：捕捉量价背离/共振",
+      "category": "ts_window"
+     }
+    }
+   },
+   "evidence": {
+    "source": "operator_coverage",
+    "semantic": true,
+    "coverage_before": {
+     "total": 102,
+     "used": 17,
+     "never_used": [
+      "abs",
+      "and",
+      "bucket",
+      "combo_a",
+      "days_from_last_change",
+      "densify",
+      "equal",
+      "generate_stats",
+      "greater",
+      "greater_equal",
+      "group_backfill",
+      "group_cartesian_product",
+      "group_count",
+      "group_mean",
+      "group_neutralize",
+      "group_rank",
+      "group_scale",
+      "group_std_dev",
+      "group_sum",
+      "hump",
+      "if_else",
+      "in",
+      "inverse",
+      "is_nan",
+      "kth_element",
+      "last_diff_value",
+      "less",
+      "less_equal",
+      "log",
+      "max",
+      "min",
+      "normalize",
+      "not",
+      "not_equal",
+      "or",
+      "pasteurize",
+      "power",
+      "quantile",
+      "reduce_avg",
+      "reduce_choose",
+      "reduce_count",
+      "reduce_ir",
+      "reduce_kurtosis",
+      "reduce_max",
+      "reduce_min",
+      "reduce_norm",
+      "reduce_percentage",
+      "reduce_powersum",
+      "reduce_range",
+      "reduce_skewness",
+      "reduce_stddev",
+      "reduce_sum",
+      "reverse",
+      "scale",
+      "self_corr",
+      "sign",
+      "signed_power",
+      "sqrt",
+      "tail",
+      "trade_when",
+      "ts_arg_max",
+      "ts_arg_min",
+      "ts_corr",
+      "ts_count_nans",
+      "ts_covariance",
+      "ts_ir",
+      "ts_kurtosis",
+      "ts_max_diff",
+      "ts_product",
+      "ts_quantile",
+      "ts_regression",
+      "ts_returns",
+      "ts_scale",
+      "ts_std_dev",
+      "ts_step",
+      "ts_sum",
+      "ts_target_tvr_decay",
+      "ts_target_tvr_hump",
+      "universe_size",
+      "vec_count",
+      "vec_max",
+      "vec_min",
+      "vec_range",
+      "vec_stddev",
+      "zscore"
+     ],
+     "coverage_rate": 0.167
+    },
+    "n_cover": 12,
+    "has_vector": false
+   },
+   "confidence": 1.0,
+   "status": "active",
+   "source": "diversity_audit",
+   "created_at": "2026-08-18T22:25:11",
+   "times_applied": 0,
+   "times_succeeded": 0
   }
  ]
 }

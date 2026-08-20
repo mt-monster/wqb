@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental44",
+ "data_type": "MATRIX",
+ "probe_note": "wave03增强: wave02确认ts_delta60应计动量方向(sh0.64/mg9.15); 本批窗口网格(20/40/120)+双信号组合+归一化增强; 目标突破sh1.0",
+ "expressions": [
+  "rank(ts_delta(fnd44_working_capital_accruals, 40))",
+  "rank(ts_delta(fnd44_working_capital_accruals, 120))",
+  "rank(ts_delta(fnd44_cashflow_accruals, 40))",
+  "rank(ts_delta(fnd44_cashflow_accruals, 120))",
+  "rank(add(ts_delta(fnd44_working_capital_accruals, 60), ts_delta(fnd44_cashflow_accruals, 60)))",
+  "rank(add(rank(ts_delta(fnd44_working_capital_accruals, 60)), rank(ts_delta(fnd44_probability_restatement_global, 60))))",
+  "rank(ts_delta(fnd44_yoon_wc_accruals, 60))",
+  "rank(ts_delta(fnd44_perc_accruals, 60))"
+ ]
+}

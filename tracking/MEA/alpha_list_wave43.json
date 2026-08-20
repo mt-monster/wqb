@@ -1,0 +1,42 @@
+[
+ {
+  "id": "w43_01",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_std_dev(returns, 60), 250)))",
+  "note": "4sig + Volatility60 z250 - add vol signal (long high vol)"
+ },
+ {
+  "id": "w43_02",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(reverse(ts_std_dev(returns, 60)), 250)))",
+  "note": "4sig + LowVol60 z250 (reverse) - add low vol signal (long low vol)"
+ },
+ {
+  "id": "w43_03",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_returns(close, 120), 250)))",
+  "note": "4sig + Momentum120 z250 - add price momentum"
+ },
+ {
+  "id": "w43_04",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(reverse(ts_returns(close, 20)), 250)))",
+  "note": "4sig + Reversal20 z250 (reverse) - add short-term reversal"
+ },
+ {
+  "id": "w43_05",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250)))",
+  "note": "4sig + VolumeSurge z250 - add volume signal"
+ },
+ {
+  "id": "w43_06",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(mea_volatility_60d, 250)))",
+  "note": "4sig + MEA_Vol60 z250 - add MEA volatility field"
+ },
+ {
+  "id": "w43_07",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(reverse(mea_volatility_60d), 250)))",
+  "note": "4sig + LowMEA_Vol60 z250 (reverse) - low MEA volatility"
+ },
+ {
+  "id": "w43_08",
+  "expr": "add(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(reverse(ts_std_dev(returns, 60)), 250))), rank(ts_zscore(reverse(ts_returns(close, 20)), 250)))",
+  "note": "6sig: 4quality + LowVol + Reversal (reverse) - max non-quality diversification"
+ }
+]

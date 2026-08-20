@@ -1,0 +1,53 @@
+{
+ "version": 1,
+ "rules": [
+  {
+   "rule_id": "auto_universe_collapse_TOP3000_2026-08-20",
+   "type": "universe_lever",
+   "trigger": {
+    "universe": "TOP3000",
+    "region": "USA"
+   },
+   "action": {
+    "op": "block_universe",
+    "dead_universe": "TOP3000",
+    "message": "universe=TOP3000 下 16 条全崩 (max sharpe=0.33)，疑似杠杆判死"
+   },
+   "evidence": {
+    "universe": "TOP3000",
+    "max_sharpe": 0.33,
+    "n": 16
+   },
+   "confidence": 0.55,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-20T20:23:44",
+   "times_applied": 0,
+   "times_succeeded": 2,
+   "validated_at": "2026-08-20T20:26:40"
+  },
+  {
+   "rule_id": "auto_low_sharpe_x_2026-08-20",
+   "type": "diagnosis",
+   "trigger": {
+    "dataset": "*",
+    "region": "USA"
+   },
+   "action": {
+    "op": "flag_dataset_weak",
+    "message": "dataset=None 16 条 max sharpe=0.33<1.0，单字段太弱需复合/加工"
+   },
+   "evidence": {
+    "max_sharpe": 0.33,
+    "n": 16
+   },
+   "confidence": 0.5,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-20T20:23:44",
+   "times_applied": 0,
+   "times_succeeded": 0
+  }
+ ],
+ "updated_at": "2026-08-20T20:26:40"
+}

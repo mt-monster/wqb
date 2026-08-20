@@ -1,0 +1,11 @@
+{
+ "expressions": [
+  "rank(ts_zscore(mdl25_eq_pc_v9, 120))",
+  "rank(ts_zscore(earnings_quality_score_cb_01, 120))",
+  "rank(ts_zscore(mdl25_eq_vr_v5, 120))",
+  "rank(ts_zscore(mdl25_eq_vr_v19, 120))",
+  "rank(ts_zscore(mdl25_eq_vr_v13, 120))",
+  "rank(ts_zscore(mdl25_eq_rlev_v7, 120)) * -1",
+  "add(rank(ts_zscore(mdl25_eq_pc_v9, 120)), rank(ts_zscore(mdl25_eq_vr_v5, 120)))"
+ ]
+}

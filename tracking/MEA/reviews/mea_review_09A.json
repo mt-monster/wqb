@@ -1,0 +1,257 @@
+{
+ "tag": "09A",
+ "region": "MEA",
+ "all": [
+  {
+   "id": "E5lWZGW9",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.6,
+   "fitness": 1.66,
+   "two_year_sharpe": null,
+   "margin_bp": 22.56,
+   "turnover_pct": 11.87,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-19T15:29:55",
+   "walls": [
+    "2Y_UNKNOWN"
+   ]
+  },
+  {
+   "id": "GrlAqGAo",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.58,
+   "fitness": 1.62,
+   "two_year_sharpe": null,
+   "margin_bp": 21.13,
+   "turnover_pct": 12.36,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-19T15:29:53",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN"
+   ]
+  },
+  {
+   "id": "6XlVnpvY",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.53,
+   "fitness": 1.51,
+   "two_year_sharpe": null,
+   "margin_bp": 19.35,
+   "turnover_pct": 12.68,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:56",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "GrlAqGpQ",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.45,
+   "fitness": 1.34,
+   "two_year_sharpe": null,
+   "margin_bp": 17.11,
+   "turnover_pct": 13.34,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:57",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "N17mXb97",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.31,
+   "fitness": 1.18,
+   "two_year_sharpe": null,
+   "margin_bp": 16.09,
+   "turnover_pct": 12.65,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:59",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "RR7QJmLa",
+   "code": "rank((vec_avg(analyst_count_raised_estimates_1m) - vec_avg(analyst_lowered_estimates_1m)) / (vec_avg(analyst_c",
+   "neut": "SECTOR",
+   "sharpe": 1.07,
+   "fitness": 0.92,
+   "two_year_sharpe": null,
+   "margin_bp": 15.4,
+   "turnover_pct": 12.1,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ],
+   "cached_at": "2026-08-19T15:30:01"
+  },
+  {
+   "id": "zqk6vNpE",
+   "code": "rank((vec_avg(analyst_count_raised_estimates_1m) - vec_avg(analyst_lowered_estimates_1m)) / (vec_avg(analyst_c",
+   "neut": "SECTOR",
+   "sharpe": 1.05,
+   "fitness": 0.88,
+   "two_year_sharpe": null,
+   "margin_bp": 13.98,
+   "turnover_pct": 12.52,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS"
+   ],
+   "cached_at": "2026-08-19T15:30:00"
+  },
+  {
+   "id": "rKjg12Xm",
+   "code": "rank(ts_zscore((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_fou",
+   "neut": "SECTOR",
+   "sharpe": 0.69,
+   "fitness": 0.44,
+   "two_year_sharpe": null,
+   "margin_bp": 7.98,
+   "turnover_pct": 14.11,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE",
+    "LOW_FITNESS",
+    "IS_LADDER_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:58"
+  }
+ ],
+ "candidates": [],
+ "near": [
+  {
+   "id": "E5lWZGW9",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.6,
+   "fitness": 1.66,
+   "two_year_sharpe": null,
+   "margin_bp": 22.56,
+   "turnover_pct": 11.87,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-19T15:29:55",
+   "walls": [
+    "2Y_UNKNOWN"
+   ]
+  },
+  {
+   "id": "GrlAqGAo",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.58,
+   "fitness": 1.62,
+   "two_year_sharpe": null,
+   "margin_bp": 21.13,
+   "turnover_pct": 12.36,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [],
+   "cached_at": "2026-08-19T15:29:53",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN"
+   ]
+  },
+  {
+   "id": "6XlVnpvY",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.53,
+   "fitness": 1.51,
+   "two_year_sharpe": null,
+   "margin_bp": 19.35,
+   "turnover_pct": 12.68,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:56",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "GrlAqGpQ",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.45,
+   "fitness": 1.34,
+   "two_year_sharpe": null,
+   "margin_bp": 17.11,
+   "turnover_pct": 13.34,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:57",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  },
+  {
+   "id": "N17mXb97",
+   "code": "rank((vec_avg(analyst_eps_upward_revisions_4weeks) - vec_avg(analyst_eps_downward_revisions_last_four_weeks_co",
+   "neut": "SECTOR",
+   "sharpe": 1.31,
+   "fitness": 1.18,
+   "two_year_sharpe": null,
+   "margin_bp": 16.09,
+   "turnover_pct": 12.65,
+   "rn_sharpe": null,
+   "rn_fitness": null,
+   "failed_checks": [
+    "LOW_SHARPE"
+   ],
+   "cached_at": "2026-08-19T15:29:59",
+   "walls": [
+    "SHARPE",
+    "2Y_UNKNOWN",
+    "LOW_SHARPE"
+   ]
+  }
+ ]
+}

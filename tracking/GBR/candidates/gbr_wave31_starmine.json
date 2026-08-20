@@ -1,0 +1,16 @@
+{
+  "wave": 31,
+  "region": "GBR",
+  "dataset": "predictive_starmine",
+  "strategy": "ts_zscore 参数调优（基线 sharpe 1.27 冲 1.58）",
+  "expressions": [
+    "ts_zscore(ep_yield_pct_smest_f12m, 10)",
+    "ts_zscore(ep_yield_pct_smest_f12m, 40)",
+    "ts_zscore(ep_yield_pct_smest_f12m, 60)",
+    "ts_zscore(ep_yield_pct_smest_fy1_3, 20)",
+    "ts_zscore(ep_yield_pct_smest_fy2_3, 20)",
+    "ts_zscore((ep_yield_pct_smest_f12m + ep_yield_pct_smest_fy1_3) / 2, 20)",
+    "rank(ts_zscore(ep_yield_pct_smest_f12m, 20))",
+    "ts_zscore(ep_yield_pct_smest_f12m, 20) + ts_delta(ep_yield_pct_smest_f12m, 5)"
+  ]
+}

@@ -1,0 +1,18 @@
+[
+ "add(0.5*rank(img60d_return_quantile1), 0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2))",
+ "add(0.6*rank(img60d_return_quantile1), 0.4*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2))",
+ "rank(add(add(rank(img20d_return_quantile1), rank(img60d_return_quantile1)), rank(img100d_return_quartile1_prob_leap1)))",
+ "rank(add(0.5*rank(img60d_return_quantile1), 0.5*rank(img100d_return_quartile1_prob_leap1)))",
+ "rank(add(0.5*rank(img60d_return_quantile1), 0.5*rank(img200d_return_quartile1_prob_leap1)))",
+ "add(0.6*rank(img60d_return_quantile1), 0.4*rank(imgfeat_asi_eqstar2b2d1f1))",
+ "add(0.5*rank(img60d_return_quantile1), 0.5*rank(imgfeat_asi_eqstar2b2d1f1))",
+ "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+ "add(0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2), 0.5*rank(cnn_predicted_prob_q2_bucket0_60d_equity2b2))",
+ "add(0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2), 0.5*rank(cnn_predicted_prob_q2_bucket1_100d_malta3))",
+ "rank(img20d_return_quantile1)",
+ "rank(img100d_return_quartile1_prob_leap1)",
+ "rank(img200d_return_quartile1_prob_leap1)",
+ "rank(img60d_return_quantile1)",
+ "rank(img60d_return_quantile1)",
+ "rank(img60d_return_quantile1)"
+]

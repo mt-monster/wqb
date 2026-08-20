@@ -1,0 +1,42 @@
+[
+ {
+  "id": "w45b_01",
+  "expr": "rank(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))))",
+  "note": "Outer rank() - uniform redistribution of composite, softens extreme weights"
+ },
+ {
+  "id": "w45b_02",
+  "expr": "quantile(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), driver = 'uniform')",
+  "note": "quantile uniform - uniform distribution kills outliers"
+ },
+ {
+  "id": "w45b_03",
+  "expr": "quantile(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))))",
+  "note": "quantile default gaussian - outlier reduction"
+ },
+ {
+  "id": "w45b_04",
+  "expr": "signed_power(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), 0.5)",
+  "note": "signed_power 0.5 - compress extreme composite values"
+ },
+ {
+  "id": "w45b_05",
+  "expr": "normalize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), useStd = true, limit = 2)",
+  "note": "normalize clamp to +/-2 std - hard cap extreme weights"
+ },
+ {
+  "id": "w45b_06",
+  "expr": "winsorize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), 2)",
+  "note": "winsorize std=2 - trim extreme composite values"
+ },
+ {
+  "id": "w45b_07",
+  "expr": "group_rank(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), sector)",
+  "note": "group_rank by sector - force rank within sector groups"
+ },
+ {
+  "id": "w45b_08",
+  "expr": "group_neutralize(add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250))), rank(ts_zscore(ts_zscore(volume, 60), 250))), sector)",
+  "note": "group_neutralize by sector - subtract sector mean"
+ }
+]

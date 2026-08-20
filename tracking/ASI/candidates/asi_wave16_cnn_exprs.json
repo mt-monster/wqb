@@ -1,0 +1,18 @@
+[
+ "rank(imgfeat_asi_eqstar1b1d1)",
+ "subtract(0, rank(imgfeat_asi_eqstar1b1d1))",
+ "rank(imgfeat_asi_eqstar2b2d1f1)",
+ "subtract(0, rank(imgfeat_asi_eqstar2b2d1f1))",
+ "rank(imgfeat_asi_eqstar5f2d1)",
+ "subtract(0, rank(imgfeat_asi_eqstar5f2d1))",
+ "rank(imgfeat_asi_leapstar5f1d1)",
+ "subtract(0, rank(imgfeat_asi_leapstar5f1d1))",
+ "rank(img_pred_malta_star3_100d_2bucket_rank)",
+ "subtract(0, rank(img_pred_malta_star3_100d_2bucket_rank))",
+ "rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)",
+ "subtract(0, rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2))",
+ "rank(probability_rank0_20d_3bucket_equitystar5)",
+ "subtract(0, rank(probability_rank0_20d_3bucket_equitystar5))",
+ "rank(img60d_return_quantile1)",
+ "subtract(0, rank(img60d_return_quantile1))"
+]

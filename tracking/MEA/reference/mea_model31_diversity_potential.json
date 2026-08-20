@@ -1,0 +1,1263 @@
+{
+ "dataset": "model31",
+ "audited_at": "2026-08-19T19:25:51",
+ "field_count": 74,
+ "field_groups": {
+  "growth": 7,
+  "other": 2,
+  "quality": 25,
+  "valuation": 35,
+  "size": 3,
+  "sentiment": 2
+ },
+ "field_groups_detail": {
+  "growth": [
+   {
+    "id": "auditor_switch_indicator_prev_year",
+    "type": "MATRIX",
+    "coverage": 1.0134,
+    "description": "Indicates whether the company changed its audit firm in the last fiscal year; 1 means changed, 0 means not changed"
+   },
+   {
+    "id": "mdl31_acc_chg_1_day",
+    "type": "MATRIX",
+    "coverage": 1.0003,
+    "description": "Change in accruals component percentile rank compared to the previous day; measures short-term movement in accruals qual"
+   },
+   {
+    "id": "mdl31_acc_chg_1_fy",
+    "type": "MATRIX",
+    "coverage": 0.9247,
+    "description": "Change in accruals component percentile rank compared to the prior fiscal year; measures yearly movement in accruals qua"
+   },
+   {
+    "id": "mdl31_acc_chg_1_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9553,
+    "description": "Change in accruals component percentile rank compared to the prior fiscal quarter; measures quarterly movement in accrua"
+   },
+   {
+    "id": "mdl31_oe_chg_1_day",
+    "type": "MATRIX",
+    "coverage": 0.994,
+    "description": "Change in operating efficiency component percentile rank compared to previous day; measures daily movement in operationa"
+   },
+   {
+    "id": "mdl31_oe_chg_1_fy",
+    "type": "MATRIX",
+    "coverage": 0.917,
+    "description": "Change in operating efficiency component percentile rank compared to prior year; measures yearly movement in operational"
+   },
+   {
+    "id": "mdl31_oe_chg_1_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9489,
+    "description": "Change in operating efficiency component percentile rank compared to prior quarter; measures quarterly movement in opera"
+   }
+  ],
+  "other": [
+   {
+    "id": "mdl31_acc_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.96,
+    "description": "Percentile rank for the stock’s accruals component as of the previous fiscal quarter"
+   },
+   {
+    "id": "mdl31_acc_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9463,
+    "description": "Percentile rank for the stock’s accruals component as of the prior fiscal year"
+   }
+  ],
+  "quality": [
+   {
+    "id": "mdl31_ass_tvr_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9802,
+    "description": "Net revenue divided by total assets for the last fiscal quarter, measuring asset turnover"
+   },
+   {
+    "id": "mdl31_ass_tvr_last_y",
+    "type": "MATRIX",
+    "coverage": 1.0071,
+    "description": "Net revenue divided by total assets for the last fiscal year, measuring asset turnover"
+   },
+   {
+    "id": "mdl31_ass_tvr_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9711,
+    "description": "Net revenue divided by total assets for the prior fiscal quarter, measuring asset turnover"
+   },
+   {
+    "id": "mdl31_ass_tvr_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9958,
+    "description": "Net revenue divided by total assets for the prior fiscal year, measuring asset turnover"
+   },
+   {
+    "id": "mdl31_ass_tvr_t4q",
+    "type": "MATRIX",
+    "coverage": 0.9573,
+    "description": "Net revenue divided by total assets for the trailing four quarters, measuring asset turnover"
+   },
+   {
+    "id": "mdl31_dse_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9905,
+    "description": "Ratio of long-term debt to total equity for the last fiscal quarter, indicates company leverage"
+   },
+   {
+    "id": "mdl31_dse_last_y",
+    "type": "MATRIX",
+    "coverage": 1.0122,
+    "description": "Ratio of long-term debt to total equity for the last fiscal year, indicates company leverage"
+   },
+   {
+    "id": "mdl31_dse_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9825,
+    "description": "Ratio of long-term debt to total equity for the prior fiscal quarter, indicates company leverage"
+   },
+   {
+    "id": "mdl31_dse_prior_y",
+    "type": "MATRIX",
+    "coverage": 1.0082,
+    "description": "Ratio of long-term debt to total equity for the prior fiscal year, indicates company leverage"
+   },
+   {
+    "id": "mdl31_gm_pct_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.8658,
+    "description": "Gross margin percentage for the last fiscal quarter"
+   },
+   {
+    "id": "mdl31_gm_pct_last_y",
+    "type": "MATRIX",
+    "coverage": 0.8914,
+    "description": "Gross margin percentage for the last fiscal year"
+   },
+   {
+    "id": "mdl31_gm_pct_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.8618,
+    "description": "Gross margin percentage for the prior fiscal quarter"
+   },
+   {
+    "id": "mdl31_gm_pct_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.888,
+    "description": "Gross margin percentage for the prior fiscal year"
+   },
+   {
+    "id": "mdl31_gm_pct_t4q",
+    "type": "MATRIX",
+    "coverage": 0.8412,
+    "description": "Gross margin percentage for the trailing four quarters"
+   },
+   {
+    "id": "mdl31_gva",
+    "type": "MATRIX",
+    "coverage": 0.9908,
+    "description": "Average value of Net Operating Assets in millions for the last completed quarter; measures the company's operating asset"
+   },
+   {
+    "id": "mdl31_om_pct_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9782,
+    "description": "Operating margin percentage for the last fiscal quarter"
+   },
+   {
+    "id": "mdl31_om_pct_last_y",
+    "type": "MATRIX",
+    "coverage": 1.004,
+    "description": "Operating margin percentage for the last fiscal year"
+   },
+   {
+    "id": "mdl31_om_pct_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9741,
+    "description": "Operating margin percentage for the prior fiscal quarter"
+   },
+   {
+    "id": "mdl31_om_pct_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9989,
+    "description": "Operating margin percentage for the prior fiscal year"
+   },
+   {
+    "id": "mdl31_om_pct_t4q",
+    "type": "MATRIX",
+    "coverage": 0.9534,
+    "description": "Operating margin percentage for the trailing four quarters"
+   },
+   {
+    "id": "mdl31_roe_pct_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9804,
+    "description": "Return on equity percentage for the last fiscal quarter"
+   },
+   {
+    "id": "mdl31_roe_pct_last_y",
+    "type": "MATRIX",
+    "coverage": 1.0072,
+    "description": "Return on equity percentage for the last fiscal year"
+   },
+   {
+    "id": "mdl31_roe_pct_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9713,
+    "description": "Return on equity percentage for the prior fiscal quarter"
+   },
+   {
+    "id": "mdl31_roe_pct_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.996,
+    "description": "Return on equity percentage for the prior fiscal year"
+   },
+   {
+    "id": "mdl31_roe_pct_t4q",
+    "type": "MATRIX",
+    "coverage": 0.9572,
+    "description": "Return on equity percentage for the trailing four quarters"
+   }
+  ],
+  "valuation": [
+   {
+    "id": "mdl31_bv_share_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9849,
+    "description": "Book value per share as of the last quarter; ratio of total book value to total shares outstanding at last quarter's end"
+   },
+   {
+    "id": "mdl31_bv_share_last_y",
+    "type": "MATRIX",
+    "coverage": 1.0112,
+    "description": "Book value per share as of the last fiscal year end; ratio of total book value to total shares outstanding at year-end"
+   },
+   {
+    "id": "mdl31_bv_share_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9783,
+    "description": "Book value per share as of the prior quarter; ratio of total book value to total shares outstanding at prior quarter's e"
+   },
+   {
+    "id": "mdl31_bv_share_prior_y",
+    "type": "MATRIX",
+    "coverage": 1.0059,
+    "description": "Book value per share as of the prior fiscal year; ratio of total book value to total shares outstanding at prior year's "
+   },
+   {
+    "id": "mdl31_cf_chg_1_day",
+    "type": "MATRIX",
+    "coverage": 0.9504,
+    "description": "Change in cash flow component percentile rank compared to the previous day; reflects short-term shift in cash flow quali"
+   },
+   {
+    "id": "mdl31_cf_chg_1_fy",
+    "type": "MATRIX",
+    "coverage": 0.8704,
+    "description": "Change in cash flow component percentile rank compared to the prior fiscal year; reflects yearly shift in cash flow qual"
+   },
+   {
+    "id": "mdl31_cf_chg_1_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9099,
+    "description": "Change in cash flow component percentile rank compared to the prior fiscal quarter; reflects quarterly shift in cash flo"
+   },
+   {
+    "id": "mdl31_cf_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9175,
+    "description": "Percentile rank of the stock’s cash flow component as of the previous fiscal quarter"
+   },
+   {
+    "id": "mdl31_cf_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.8991,
+    "description": "Percentile rank of the stock’s cash flow component as of the prior fiscal year"
+   },
+   {
+    "id": "mdl31_dty_mm_fcf",
+    "type": "MATRIX",
+    "coverage": 0.9807,
+    "description": "Free Cash Flow in millions year-to-date; total operating cash flow minus capital expenditures since the start of the cur"
+   },
+   {
+    "id": "mdl31_dy_pct_current",
+    "type": "MATRIX",
+    "coverage": 0.8033,
+    "description": "Current dividend yield percentage; annual dividends per share divided by current market price per share"
+   },
+   {
+    "id": "mdl31_erq_raw_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9587,
+    "description": "Raw Earnings Quality Region Rank for the prior quarter before beta neutralization; higher scores indicate better regiona"
+   },
+   {
+    "id": "mdl31_erq_re_rk_chg_1_day",
+    "type": "MATRIX",
+    "coverage": 0.9994,
+    "description": "Change in earnings quality percentile rank for the region compared to the previous day; scale indicates improvement or d"
+   },
+   {
+    "id": "mdl31_erq_re_rk_chg_1_fy",
+    "type": "MATRIX",
+    "coverage": 0.9247,
+    "description": "Change in earnings quality percentile rank for the region compared to the prior fiscal year; scale indicates improvement"
+   },
+   {
+    "id": "mdl31_erq_re_rk_chg_1_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9534,
+    "description": "Change in earnings quality percentile rank for the region compared to the prior fiscal quarter; scale indicates improvem"
+   },
+   {
+    "id": "mdl31_erq_re_rk_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9587,
+    "description": "Percentile rank of the stock’s earnings quality in its region as of the prior fiscal quarter; higher values signal bette"
+   },
+   {
+    "id": "mdl31_erq_re_rk_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9471,
+    "description": "Percentile rank of the stock’s earnings quality in its region as of the prior fiscal year; higher values signal better q"
+   },
+   {
+    "id": "mdl31_fcf_mm_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9558,
+    "description": "Free Cash Flow in millions for the last completed quarter; operating cash flow minus capital expenditures for that perio"
+   },
+   {
+    "id": "mdl31_fcf_mm_last_y",
+    "type": "MATRIX",
+    "coverage": 1.0117,
+    "description": "Free Cash Flow in millions for the last fiscal year; total operating cash flow minus capital expenditures for the previo"
+   },
+   {
+    "id": "mdl31_pb_current",
+    "type": "MATRIX",
+    "coverage": 1.0079,
+    "description": "Current price to book ratio; market price per share divided by book value per share"
+   },
+   {
+    "id": "mdl31_pb_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9786,
+    "description": "Price to book ratio as of the most recently completed quarter; market price per share divided by book value per share at"
+   },
+   {
+    "id": "mdl31_pb_last_y",
+    "type": "MATRIX",
+    "coverage": 0.9844,
+    "description": "Price to book ratio as of the most recent fiscal year end; market price per share divided by book value per share at las"
+   },
+   {
+    "id": "mdl31_pb_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9671,
+    "description": "Price to book ratio as of the prior quarter; market price per share divided by book value per share at the prior quarter"
+   },
+   {
+    "id": "mdl31_pb_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9503,
+    "description": "Price to book ratio as of the prior fiscal year; market price per share divided by book value per share at previous year"
+   },
+   {
+    "id": "mdl31_pricesales_current",
+    "type": "MATRIX",
+    "coverage": 1.0031,
+    "description": "Current price to sales ratio; market price per share divided by sales per share"
+   },
+   {
+    "id": "mdl31_pricesales_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9698,
+    "description": "Price to sales ratio as of the most recently completed quarter; market price per share divided by sales per share for th"
+   },
+   {
+    "id": "mdl31_pricesales_last_y",
+    "type": "MATRIX",
+    "coverage": 0.9799,
+    "description": "Price to sales ratio as of the most recent fiscal year end; market price per share divided by sales per share at last ye"
+   },
+   {
+    "id": "mdl31_pricesales_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9615,
+    "description": "Price to sales ratio as of the prior quarter; market price per share divided by sales per share at prior quarter's end"
+   },
+   {
+    "id": "mdl31_pricesales_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9446,
+    "description": "Price to sales ratio as of the prior fiscal year; market price per share divided by sales per share at previous year's e"
+   },
+   {
+    "id": "mdl31_q4t_mm_fcf",
+    "type": "MATRIX",
+    "coverage": 0.9702,
+    "description": "Free Cash Flow in millions for the trailing four quarters; sum of operating cash flow minus capital expenditures over th"
+   },
+   {
+    "id": "star_eq_accruals_rank",
+    "type": "MATRIX",
+    "coverage": 0.9212,
+    "description": "Current percentile rank comparing accruals-related earnings quality for the stock, with higher indicating lower accruals"
+   },
+   {
+    "id": "star_eq_cashflow_rank",
+    "type": "MATRIX",
+    "coverage": 0.8733,
+    "description": "Current percentile rank comparing cash flow-related earnings quality for the stock, with higher indicating stronger cash"
+   },
+   {
+    "id": "star_eq_ope_rank",
+    "type": "MATRIX",
+    "coverage": 0.9092,
+    "description": "Current percentile rank for the stock’s operating efficiency as determined by the Earnings Quality Model; higher means m"
+   },
+   {
+    "id": "star_eq_rank",
+    "type": "MATRIX",
+    "coverage": 0.9186,
+    "description": "Raw Earnings Quality Region Rank for the current period before beta neutralization; higher scores indicate better region"
+   },
+   {
+    "id": "star_eq_region_rank",
+    "type": "MATRIX",
+    "coverage": 0.9186,
+    "description": "Current percentile rank of the stock’s earnings quality in its region, based on the Earnings Quality Model; higher value"
+   }
+  ],
+  "size": [
+   {
+    "id": "mdl31_dps_last_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9776,
+    "description": "Total cash dividends declared per share on common and preferred stock during the most recently completed quarter"
+   },
+   {
+    "id": "mdl31_dps_last_y",
+    "type": "MATRIX",
+    "coverage": 0.8006,
+    "description": "Total cash dividends declared per share on common and preferred stock during the last fiscal year"
+   },
+   {
+    "id": "mdl31_dps_t4q",
+    "type": "MATRIX",
+    "coverage": 0.7545,
+    "description": "Total cash dividends declared per share on common and preferred stock for the trailing four quarters"
+   }
+  ],
+  "sentiment": [
+   {
+    "id": "mdl31_oe_prior_qtr",
+    "type": "MATRIX",
+    "coverage": 0.9543,
+    "description": "Percentile rank for the stock’s operating efficiency as of the previous fiscal quarter"
+   },
+   {
+    "id": "mdl31_oe_prior_y",
+    "type": "MATRIX",
+    "coverage": 0.9407,
+    "description": "Percentile rank for the stock’s operating efficiency as of the prior fiscal year"
+   }
+  ]
+ },
+ "operator_trees": {
+  "auditor_switch_indicator_prev_year": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_acc_chg_1_day": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_acc_chg_1_fy": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_acc_chg_1_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_acc_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_acc_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_ass_tvr_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_ass_tvr_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_ass_tvr_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_ass_tvr_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_ass_tvr_t4q": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_bv_share_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_bv_share_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_bv_share_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_bv_share_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_cf_chg_1_day": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_cf_chg_1_fy": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_cf_chg_1_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_cf_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_cf_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dps_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dps_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dps_t4q": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dse_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dse_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dse_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dse_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dty_mm_fcf": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_dy_pct_current": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_raw_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_re_rk_chg_1_day": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_re_rk_chg_1_fy": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_re_rk_chg_1_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_re_rk_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_erq_re_rk_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_fcf_mm_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_fcf_mm_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gm_pct_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gm_pct_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gm_pct_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gm_pct_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gm_pct_t4q": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_gva": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_oe_chg_1_day": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_oe_chg_1_fy": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_oe_chg_1_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_oe_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_oe_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_om_pct_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_om_pct_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_om_pct_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_om_pct_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_om_pct_t4q": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pb_current": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pb_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pb_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pb_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pb_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pricesales_current": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pricesales_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pricesales_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pricesales_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_pricesales_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_q4t_mm_fcf": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_roe_pct_last_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_roe_pct_last_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_roe_pct_prior_qtr": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_roe_pct_prior_y": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "mdl31_roe_pct_t4q": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "star_eq_accruals_rank": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "star_eq_cashflow_rank": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "star_eq_ope_rank": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "star_eq_rank": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ],
+  "star_eq_region_rank": [
+   "ts_rank",
+   "ts_zscore",
+   "ts_delta",
+   "ts_decay_linear",
+   "rank",
+   "zscore",
+   "quantile",
+   "normalize"
+  ]
+ },
+ "param_spaces": {
+  "ts_rank": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_zscore": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_delta": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "ts_decay_linear": {
+   "window": [
+    5,
+    10,
+    20,
+    60,
+    120,
+    250
+   ]
+  },
+  "rank": {},
+  "zscore": {},
+  "quantile": {},
+  "normalize": {}
+ },
+ "diversity_score": 0.875,
+ "recommended_rounds": 5,
+ "estimated_alphas_per_round": 8,
+ "total_estimated_alphas": 40
+}

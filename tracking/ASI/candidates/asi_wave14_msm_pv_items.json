@@ -1,0 +1,82 @@
+[
+ {
+  "code": "rank(add(add(rank(price_volume_quantile5_5d_pred), rank(price_volume_quantile5_20d_pred)), rank(price_volume_quantile5_60d_pred)))",
+  "note": "pv q5 5+20+60d 多周期",
+  "decay": 4
+ },
+ {
+  "code": "rank(add(0.5*rank(price_volume_quantile5_20d_pred), 0.5*rank(price_volume_quantile5_60d_pred)))",
+  "note": "pv q5 20+60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(add(0.6*rank(price_volume_quantile5_20d_pred), 0.4*rank(price_volume_quantile5_5d_pred)))",
+  "note": "pv q5 20+5d",
+  "decay": 4
+ },
+ {
+  "code": "rank(multiply(price_volume_quantile5_20d_pred, price_volume_quantile5_confidence_20d_pred))",
+  "note": "pv q5*conf 20d",
+  "decay": 4
+ },
+ {
+  "code": "rank(multiply(price_volume_quantile5_5d_pred, price_volume_quantile5_confidence_5d_pred))",
+  "note": "pv q5*conf 5d",
+  "decay": 4
+ },
+ {
+  "code": "rank(multiply(price_volume_quantile5_60d_pred, price_volume_quantile5_confidence_60d_pred))",
+  "note": "pv q5*conf 60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(price_volume_quantile5_20d_pred, price_volume_quantile1_20d_pred))",
+  "note": "pv q5-q1 20d 差分",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(price_volume_quantile5_5d_pred, price_volume_quantile1_5d_pred))",
+  "note": "pv q5-q1 5d 差分",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(price_volume_quantile5_60d_pred, price_volume_quantile1_60d_pred))",
+  "note": "pv q5-q1 60d 差分",
+  "decay": 4
+ },
+ {
+  "code": "rank(price_volume_quantile5_5d_pred)",
+  "note": "pv q5 5d 单",
+  "decay": 4
+ },
+ {
+  "code": "rank(price_volume_quantile5_60d_pred)",
+  "note": "pv q5 60d 单",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(price_volume_quantile5_20d_pred), 0.4*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)))",
+  "note": "pv20 + lt差分 0.6/0.4",
+  "decay": 4
+ },
+ {
+  "code": "add(0.7*rank(price_volume_quantile5_20d_pred), 0.3*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)))",
+  "note": "pv20 + lt差分 0.7/0.3",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(price_volume_quantile5_20d_pred), 0.5*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)))",
+  "note": "pv20 + lt差分 五五",
+  "decay": 4
+ },
+ {
+  "code": "rank(price_volume_quantile5_20d_pred)",
+  "note": "pv q5 20d decay2",
+  "decay": 2
+ },
+ {
+  "code": "rank(price_volume_quantile5_20d_pred)",
+  "note": "pv q5 20d decay6",
+  "decay": 6
+ }
+]

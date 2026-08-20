@@ -1,0 +1,14 @@
+[
+ "rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250))",
+ "rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250))",
+ "rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250))",
+ "rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250))",
+ "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.5))",
+ "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_pdy, 66), 250)),-0.3))",
+ "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.6),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.4))",
+ "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.6),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.4))",
+ "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5ycfp, 66), 250)),-0.5))",
+ "add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.5),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningmomentumfactor400_perg, 66), 250)),0.5))",
+ "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_curep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5yep, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uaccl, 66), 250)),-0.3))",
+ "add(add(multiply(rank(ts_rank(ts_backfill(mdl177_2_deepvaluefactor_estep, 66), 250)),-0.4),multiply(rank(ts_rank(ts_backfill(mdl177_2_5yearrelativevaluefactor_rel5ycfp, 66), 250)),-0.3)),multiply(rank(ts_rank(ts_backfill(mdl177_2_earningsqualityfactor_uar, 66), 250)),-0.3))"
+]

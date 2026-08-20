@@ -1,0 +1,43 @@
+[
+ {
+  "id": "w40_01",
+  "expr": "add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120))), rank(ts_zscore(mdl31_ass_tvr_t4q, 120)))",
+  "note": "ROE + ER + AssetTvr 三信号等权复合"
+ },
+ {
+  "id": "w40_02",
+  "expr": "add(multiply(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), 2), rank(ts_zscore(mdl25_eq_vr_v13, 120)))",
+  "note": "ROE(2x) + ER(1x) 加权复合"
+ },
+ {
+  "id": "w40_03",
+  "expr": "multiply(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl31_roe_pct_t4q, 20)))",
+  "note": "ROE 水平 x ROE 动量 交互"
+ },
+ {
+  "id": "w40_04",
+  "expr": "add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_delta(mdl31_roe_pct_t4q, 63)))",
+  "note": "ROE 水平 + ROE 季度变化"
+ },
+ {
+  "id": "w40_05",
+  "expr": "rank(ts_zscore(divide(mdl31_roe_pct_t4q, add(ts_std_dev(returns, 120), 0.001)), 120))",
+  "note": "ROE / 波动率 调整后 zscore"
+ },
+ {
+  "id": "w40_06",
+  "expr": "rank(ts_zscore(multiply(mdl31_roe_pct_t4q, mdl31_ass_tvr_t4q), 120))",
+  "note": "ROE x AssetTvr = DuPont 分解"
+ },
+ {
+  "id": "w40_07",
+  "expr": "rank(ts_zscore(add(mdl31_roe_pct_t4q, mdl31_om_pct_t4q), 120))",
+  "note": "ROE + OpMargin 加法合成"
+ },
+ {
+  "id": "w40_08",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "note": "ROE baseline + decay=0",
+  "override": {"decay": 0}
+ }
+]

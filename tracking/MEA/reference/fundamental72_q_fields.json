@@ -1,0 +1,70 @@
+{
+  "dataset": "fundamental72",
+  "region": "MEA",
+  "universe": "TOP400",
+  "extracted_at": "2026-08-19",
+  "note": "Q季度字段cov>0.7, A年度字段cov低拖累整体ranking。只用Q字段策略绕过硬excluded。VECTOR类型需vec_*包裹。",
+  "q_fields_high_cov": {
+    "is_q": [
+      {"id": "fnd72_pit_or_is_q_earn_for_common", "cov": 0.8772, "desc": "Net income available to common shareholders"},
+      {"id": "fnd72_pit_or_is_q_ebit", "cov": 0.6671, "desc": "Earnings before interest and taxes"},
+      {"id": "fnd72_pit_or_is_q_ebitda", "cov": 0.6809, "desc": "EBITDA"},
+      {"id": "fnd72_pit_or_is_q_is_eps", "cov": 0.876, "desc": "Basic EPS"},
+      {"id": "fnd72_pit_or_is_q_is_oper_inc", "cov": 0.8758, "desc": "Operating income"},
+      {"id": "fnd72_pit_or_is_q_sales_rev_turn", "cov": 0.7974, "desc": "Sales/revenue"},
+      {"id": "fnd72_pit_or_is_q_is_diluted_eps", "cov": 0.8036, "desc": "Diluted EPS"},
+      {"id": "fnd72_pit_or_is_q_is_earn_bef_xo_items_per_sh", "cov": 0.8758, "desc": "EPS before extraordinary items"},
+      {"id": "fnd72_pit_or_is_q_inc_bef_xo_less_min_int_pref_dvd", "cov": 0.875, "desc": "Income before XO after minority interest"},
+      {"id": "fnd72_pit_or_is_q_is_inc_bef_xo_item", "cov": 0.8759, "desc": "Income from continuing ops before XO"},
+      {"id": "fnd72_pit_or_is_q_is_basic_eps_cont_ops", "cov": 0.7038, "desc": "Basic EPS from continuing ops"},
+      {"id": "fnd72_pit_or_is_q_is_dil_eps_cont_ops", "cov": 0.6879, "desc": "Diluted EPS from continuing ops"},
+      {"id": "fnd72_pit_or_is_q_is_sga_other_op_depr_op_maint", "cov": 0.8601, "desc": "SG&A + other operating expenses"},
+      {"id": "fnd72_pit_or_is_q_is_abnormal_item", "cov": 0.7263, "desc": "Abnormal/exceptional items"},
+      {"id": "fnd72_pit_or_is_q_is_avg_num_sh_for_eps", "cov": 0.8758, "desc": "Weighted avg shares for EPS"}
+    ],
+    "bs_q": [
+      {"id": "fnd72_pit_or_bs_q_bs_tot_asset", "cov": 0.8762, "desc": "Total assets"},
+      {"id": "fnd72_pit_or_bs_q_bs_cash_near_cash_item", "cov": 0.8758, "desc": "Cash and equivalents"},
+      {"id": "fnd72_pit_or_bs_q_bs_lt_borrow", "cov": 0.8733, "desc": "Long-term debt"},
+      {"id": "fnd72_pit_or_bs_q_bs_net_fix_asset", "cov": 0.8553, "desc": "Net PP&E"},
+      {"id": "fnd72_pit_or_bs_q_bs_retain_earn", "cov": 0.8753, "desc": "Retained earnings"},
+      {"id": "fnd72_pit_or_bs_q_bs_sh_cap_and_apic", "cov": 0.872, "desc": "Share capital + APIC"},
+      {"id": "fnd72_pit_or_bs_q_bs_sh_out", "cov": 0.8748, "desc": "Shares outstanding"},
+      {"id": "fnd72_pit_or_bs_q_bs_st_borrow", "cov": 0.8652, "desc": "Short-term borrowings"},
+      {"id": "fnd72_pit_or_bs_q_bs_other_st_liab", "cov": 0.8678, "desc": "Other short-term liabilities"},
+      {"id": "fnd72_pit_or_bs_q_bs_pfd_eqy", "cov": 0.8651, "desc": "Preferred equity"},
+      {"id": "fnd72_pit_or_bs_q_bs_other_lt_liabilities", "cov": 0.8279, "desc": "Other long-term liabilities"},
+      {"id": "fnd72_pit_or_bs_q_bs_other_asset_def_chng_other", "cov": 0.8476, "desc": "Other long-term assets"},
+      {"id": "fnd72_pit_or_bs_q_bs_par_val", "cov": 0.8423, "desc": "Par value of shares"},
+      {"id": "fnd72_pit_or_bs_q_bs_lt_invest", "cov": 0.7729, "desc": "Long-term investments"},
+      {"id": "fnd72_pit_or_bs_q_bs_pension_rsrv", "cov": 0.7086, "desc": "Pension obligations"}
+    ],
+    "cf_q": [
+      {"id": "fnd72_pit_or_cf_q_cf_cash_from_oper", "cov": 0.8413, "desc": "Cash from operations"},
+      {"id": "fnd72_pit_or_cf_q_cf_net_inc", "cov": 0.8641, "desc": "Net income (cash flow)"},
+      {"id": "fnd72_pit_or_cf_q_cf_cap_expend_prpty_add", "cov": 0.833, "desc": "Capital expenditures"},
+      {"id": "fnd72_pit_or_cf_q_cf_depr_amort", "cov": 0.8251, "desc": "Depreciation & amortization"},
+      {"id": "fnd72_pit_or_cf_q_cf_chng_non_cash_work_cap", "cov": 0.8322, "desc": "Change in non-cash working capital"},
+      {"id": "fnd72_pit_or_cf_q_cf_net_chng_cash", "cov": 0.8414, "desc": "Net change in cash"},
+      {"id": "fnd72_pit_or_cf_q_cf_cash_from_inv_act", "cov": 0.8405, "desc": "Cash from investing"},
+      {"id": "fnd72_pit_or_cf_q_cf_cash_from_fnc_act", "cov": 0.8381, "desc": "Cash from financing"},
+      {"id": "fnd72_pit_or_cf_q_cf_other_fnc_act", "cov": 0.8216, "desc": "Other financing activities"},
+      {"id": "fnd72_pit_or_cf_q_cf_reimb_lt_borrow", "cov": 0.8076, "desc": "Repayment of long-term borrowings"}
+    ]
+  },
+  "signal_directions": [
+    "EPS增长: ts_delta(is_eps, 66) 或 ts_zscore(is_eps, 252)",
+    "营收增长: ts_delta(sales_rev_turn, 66)",
+    "利润率: oper_inc / sales_rev_turn 或 ebitda / sales_rev_turn",
+    "资产负债结构: lt_borrow / tot_asset 或 cash / tot_asset",
+    "现金流质量: cash_from_oper / net_inc 或 (cash_from_oper - cap_expend) / tot_asset",
+    "ROE: earn_for_common / (sh_cap_and_apic + retain_earn)",
+    "应计利润: (net_inc - cash_from_oper) / tot_asset"
+  ],
+  "existing_active_mea": [
+    {"id": "LLG9EArv", "structure": "rank(ts_rank(ts_backfill(mdl31_oe_chg_1_qtr,66),250))*0.6 + rank(ts_backfill(mdl31_dy_pct_current,66))*0.4"},
+    {"id": "gJ8QXEdv", "structure": "rank(ts_rank(ts_backfill(star_eq_cashflow_rank,66),126))*0.6 + rank(ts_backfill(mdl31_dy_pct_current,66))*0.4"},
+    {"id": "2rpOGr7P", "structure": "rank(ts_rank(ts_backfill(star_eq_ope_rank,66),126))*0.6 + rank(ts_backfill(mdl31_dy_pct_current,66))*0.4"}
+  ],
+  "differentiation": "fundamental72 Q字段与mdl31/star_eq低相关, 信号方向完全不同(基本面vs模型预测)"
+}

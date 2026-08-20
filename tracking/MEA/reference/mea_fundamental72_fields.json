@@ -1,0 +1,3278 @@
+{
+ "dataset": "fundamental72",
+ "region": "MEA",
+ "universe": "TOP400",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 408
+ },
+ "field_count": 408,
+ "fetched_at": "2026-08-20T20:57:54",
+ "fields": [
+  {
+   "id": "accounts_payable_trade_amt",
+   "type": "VECTOR",
+   "coverage": 0.3724,
+   "userCount": 23,
+   "alphaCount": 27,
+   "description": "Trade accounts payable for goods and services billed by suppliers"
+  },
+  {
+   "id": "additional_paid_in_capital_amt",
+   "type": "VECTOR",
+   "coverage": 0.2627,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Additional paid-in capital"
+  },
+  {
+   "id": "additional_paid_in_capital_ard",
+   "type": "VECTOR",
+   "coverage": 0.303,
+   "userCount": 27,
+   "alphaCount": 32,
+   "description": "Additional paid-in capital, equity contributed by shareholders above par value"
+  },
+  {
+   "id": "aggregate_shareholders_equity_4",
+   "type": "VECTOR",
+   "coverage": 0.3232,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total shareholders’ equity (balance sheet, revised/rebased)"
+  },
+  {
+   "id": "cash_and_equivalents_7",
+   "type": "VECTOR",
+   "coverage": 0.7072,
+   "userCount": 36,
+   "alphaCount": 51,
+   "description": "Cash and cash equivalents"
+  },
+  {
+   "id": "cash_and_equivalents_amt",
+   "type": "VECTOR",
+   "coverage": 0.6159,
+   "userCount": 17,
+   "alphaCount": 29,
+   "description": "Cash and cash equivalents"
+  },
+  {
+   "id": "cash_and_equivalents_balance_2",
+   "type": "VECTOR",
+   "coverage": 0.2546,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Cash and cash equivalents balance"
+  },
+  {
+   "id": "cash_equivalents_other_amt",
+   "type": "VECTOR",
+   "coverage": 0.3636,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Revised/rebased cash and cash equivalents balance"
+  },
+  {
+   "id": "common_stock_amt",
+   "type": "VECTOR",
+   "coverage": 0.2776,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Common stock reported on the balance sheet"
+  },
+  {
+   "id": "common_stock_annual",
+   "type": "VECTOR",
+   "coverage": 0.5933,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Common stock balance as reported by the company (share capital)"
+  },
+  {
+   "id": "common_stock_balance",
+   "type": "VECTOR",
+   "coverage": 0.6358,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Common stock (share capital) balance as reported"
+  },
+  {
+   "id": "current_portion_long_term_debt_5",
+   "type": "VECTOR",
+   "coverage": 0.3532,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Amount of long-term debt payments due within one year"
+  },
+  {
+   "id": "current_portion_long_term_debt_7",
+   "type": "VECTOR",
+   "coverage": 0.3236,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Current portion of long-term debt due within one year"
+  },
+  {
+   "id": "current_portion_long_term_debt_alt",
+   "type": "VECTOR",
+   "coverage": 0.3118,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Portion of long-term debt due within the next year; a current liability"
+  },
+  {
+   "id": "dividends_paid_cash_flow",
+   "type": "VECTOR",
+   "coverage": 0.7686,
+   "userCount": 27,
+   "alphaCount": 42,
+   "description": "Cash dividends paid to shareholders"
+  },
+  {
+   "id": "dividends_paid_cash_flow_q",
+   "type": "VECTOR",
+   "coverage": 0.803,
+   "userCount": 57,
+   "alphaCount": 72,
+   "description": "Dividends paid (cash outflow)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.7551,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Latest full earnings report date for which complete fundamentals are available"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_accrual",
+   "type": "VECTOR",
+   "coverage": 0.3533,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other accounts payable and accruals"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_acct_note_rcv",
+   "type": "VECTOR",
+   "coverage": 0.6413,
+   "userCount": 19,
+   "alphaCount": 33,
+   "description": "Accounts and notes receivable"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_acct_payable",
+   "type": "VECTOR",
+   "coverage": 0.5624,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Accounts payable (trade payables)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_accts_rec_excl_notes_rec",
+   "type": "VECTOR",
+   "coverage": 0.2671,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trade accounts receivable excluding notes receivable, net of allowances"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_accum_depr",
+   "type": "VECTOR",
+   "coverage": 0.5565,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "Accumulated depreciation on fixed assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_amt_of_tsy_stock",
+   "type": "VECTOR",
+   "coverage": 0.4502,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Carrying amount of treasury stock (repurchased shares)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_capital_reserve",
+   "type": "VECTOR",
+   "coverage": 0.4431,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Capital reserve within equity (other equity reserves such as share premium or legal reserves)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_cash_near_cash_item",
+   "type": "VECTOR",
+   "coverage": 0.7997,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Cash and cash equivalents"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_cur_asset_report",
+   "type": "VECTOR",
+   "coverage": 0.5411,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total current assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_cur_liab",
+   "type": "VECTOR",
+   "coverage": 0.5412,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Total current liabilities at the reporting date"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_def_tax_liab",
+   "type": "VECTOR",
+   "coverage": 0.4766,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Long-term net deferred tax liabilities"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_disclosed_intangibles",
+   "type": "VECTOR",
+   "coverage": 0.553,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net carrying value of disclosed intangible assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_future_min_oper_lease_oblig",
+   "type": "VECTOR",
+   "coverage": 0.3349,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Future minimum payments due under operating lease obligations"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_goodwill",
+   "type": "VECTOR",
+   "coverage": 0.4243,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Goodwill intangible asset from acquisitions"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_gross_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.5438,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Gross property, plant, and equipment before accumulated depreciation"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_inventories",
+   "type": "VECTOR",
+   "coverage": 0.4962,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Inventory balances held by the company"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_invest_in_assoc_co",
+   "type": "VECTOR",
+   "coverage": 0.5746,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Investments in associate or affiliate companies (equity method)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.795,
+   "userCount": 20,
+   "alphaCount": 25,
+   "description": "Total long-term debt obligations due beyond one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_lt_invest",
+   "type": "VECTOR",
+   "coverage": 0.7221,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Long-term investments and receivables reported on the balance sheet"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_mkt_sec_other_st_invest",
+   "type": "VECTOR",
+   "coverage": 0.6472,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Marketable securities and other short-term investments"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_net_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.787,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Property, plant and equipment net of accumulated depreciation"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_non_depr_decomm_fund",
+   "type": "VECTOR",
+   "coverage": 0.4376,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Carrying value of non-depreciable decommissioning fund assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_num_of_tsy_sh",
+   "type": "VECTOR",
+   "coverage": 0.3785,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Number of shares held in treasury by the company"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_asset_def_chng_other",
+   "type": "VECTOR",
+   "coverage": 0.7766,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Other long-term assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_cur_asset",
+   "type": "VECTOR",
+   "coverage": 0.5141,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Other current assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_cur_asset_less_prepay",
+   "type": "VECTOR",
+   "coverage": 0.3542,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other current assets excluding prepaid expenses"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_cur_liab",
+   "type": "VECTOR",
+   "coverage": 0.3524,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other current (short-term) liabilities"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_inv",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other inventories and related allowances"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_lt_liabilities",
+   "type": "VECTOR",
+   "coverage": 0.7672,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Other long-term liabilities"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_other_st_liab",
+   "type": "VECTOR",
+   "coverage": 0.7959,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Other current liabilities not otherwise classified, due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_par_val",
+   "type": "VECTOR",
+   "coverage": 0.7744,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Par value of issued shares"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_pension_rsrv",
+   "type": "VECTOR",
+   "coverage": 0.6476,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Pension and post-retirement benefit obligations (liability)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_pfd_eqy",
+   "type": "VECTOR",
+   "coverage": 0.7687,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Preferred equity (preferred stock) outstanding"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_prepay",
+   "type": "VECTOR",
+   "coverage": 0.334,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prepaid expenses"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_pure_retained_earnings",
+   "type": "VECTOR",
+   "coverage": 0.4355,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Retained earnings (accumulated profits/losses)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_re_invest",
+   "type": "VECTOR",
+   "coverage": 0.3083,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Real estate investments"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_retain_earn",
+   "type": "VECTOR",
+   "coverage": 0.7976,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Retained earnings and other equity components"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_sh_cap_and_apic",
+   "type": "VECTOR",
+   "coverage": 0.7984,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Share capital at par plus additional paid-in capital"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_sh_out",
+   "type": "VECTOR",
+   "coverage": 0.7961,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Shares outstanding at period end"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_st_borrow",
+   "type": "VECTOR",
+   "coverage": 0.7906,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Short-term borrowings and debt due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_st_debt",
+   "type": "VECTOR",
+   "coverage": 0.4163,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term debt"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_st_portion_of_lt_debt",
+   "type": "VECTOR",
+   "coverage": 0.5567,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Current maturities of long-term debt due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_tot_asset",
+   "type": "VECTOR",
+   "coverage": 0.8001,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Total assets on the balance sheet"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_tot_eqy",
+   "type": "VECTOR",
+   "coverage": 0.2892,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total shareholders’ equity or partnership capital"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_tot_liab_eqy",
+   "type": "VECTOR",
+   "coverage": 0.3014,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total liabilities plus equity as presented for REITs, typically equal to total assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_bs_total_capital_leases",
+   "type": "VECTOR",
+   "coverage": 0.3197,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total capital lease obligations"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Currency in which the fundamental data is reported (currency override)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "Fiscal year and period identifier for the reported quarter"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Date when the fundamental data point was entered"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_invtry_finished_goods",
+   "type": "VECTOR",
+   "coverage": 0.3524,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Finished goods component of inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_invtry_in_progress",
+   "type": "VECTOR",
+   "coverage": 0.3115,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Work-in-progress inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_invtry_raw_materials",
+   "type": "VECTOR",
+   "coverage": 0.3497,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Raw materials component of inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Latest available period end date from full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_lt_capital_lease_obligations",
+   "type": "VECTOR",
+   "coverage": 0.2986,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Noncurrent portion of obligations under capital/finance leases"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_minority_noncontrolling_interest",
+   "type": "VECTOR",
+   "coverage": 0.7775,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Equity attributable to non-controlling interests in subsidiaries"
+  },
+  {
+   "id": "fnd72_pit_or_bs_a_st_capital_lease_obligations",
+   "type": "VECTOR",
+   "coverage": 0.289,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current portion of capital lease liabilities due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.8686,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Date of the latest full earnings report available"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_accrual",
+   "type": "VECTOR",
+   "coverage": 0.4815,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Other accounts payable and accrued expenses"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_acct_note_rcv",
+   "type": "VECTOR",
+   "coverage": 0.666,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Accounts and notes receivable"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_acct_payable",
+   "type": "VECTOR",
+   "coverage": 0.5852,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Accounts payable/trade payables owed to suppliers"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_accts_rec_excl_notes_rec",
+   "type": "VECTOR",
+   "coverage": 0.3568,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Trade accounts receivable excluding notes receivable, net of allowances"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_accum_depr",
+   "type": "VECTOR",
+   "coverage": 0.4525,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Accumulated depreciation on fixed assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_add_paid_in_cap",
+   "type": "VECTOR",
+   "coverage": 0.2897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Additional paid-in capital (share premium)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_amt_of_tsy_stock",
+   "type": "VECTOR",
+   "coverage": 0.5111,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Amount of treasury stock"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_capital_reserve",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Capital reserves within equity reported quarterly"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_cash_near_cash_item",
+   "type": "VECTOR",
+   "coverage": 0.8758,
+   "userCount": 22,
+   "alphaCount": 31,
+   "description": "Cash and cash equivalents"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_common_stock",
+   "type": "VECTOR",
+   "coverage": 0.2943,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Common stock (par value of issued common shares)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_cur_asset_report",
+   "type": "VECTOR",
+   "coverage": 0.6122,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Total current assets"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_cur_liab",
+   "type": "VECTOR",
+   "coverage": 0.6126,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total current liabilities due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_def_tax_liab",
+   "type": "VECTOR",
+   "coverage": 0.4925,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term net deferred tax liabilities"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_disclosed_intangibles",
+   "type": "VECTOR",
+   "coverage": 0.6283,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Total intangible assets, net"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_future_min_oper_lease_oblig",
+   "type": "VECTOR",
+   "coverage": 0.2798,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total future minimum payments under operating lease obligations"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_goodwill",
+   "type": "VECTOR",
+   "coverage": 0.4274,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Carrying value of goodwill (intangible asset arising from acquisitions)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_gross_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.4427,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Gross property, plant and equipment (before accumulated depreciation)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_inventories",
+   "type": "VECTOR",
+   "coverage": 0.5509,
+   "userCount": 19,
+   "alphaCount": 31,
+   "description": "Inventories"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_invest_in_assoc_co",
+   "type": "VECTOR",
+   "coverage": 0.5986,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Investment in associate/affiliated companies"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_lifo_reserve",
+   "type": "VECTOR",
+   "coverage": 0.3675,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "LIFO reserve (difference between FIFO and LIFO inventory valuation)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.8733,
+   "userCount": 20,
+   "alphaCount": 20,
+   "description": "Long-term debt"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_lt_invest",
+   "type": "VECTOR",
+   "coverage": 0.7729,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Long-term investments and long-term receivables"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_mkt_sec_other_st_invest",
+   "type": "VECTOR",
+   "coverage": 0.6958,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Marketable securities and other short-term investments"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_net_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.8553,
+   "userCount": 20,
+   "alphaCount": 23,
+   "description": "Property, plant and equipment, net of accumulated depreciation"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_non_depr_decomm_fund",
+   "type": "VECTOR",
+   "coverage": 0.3707,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Non-depreciable decommissioning fund assets (e.g., nuclear decommissioning trust funds)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_num_of_tsy_sh",
+   "type": "VECTOR",
+   "coverage": 0.4097,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Number of treasury shares"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_asset_def_chng_other",
+   "type": "VECTOR",
+   "coverage": 0.8476,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other long-term (noncurrent) assets not classified elsewhere"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_cur_asset",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other current assets not separately classified"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_cur_asset_less_prepay",
+   "type": "VECTOR",
+   "coverage": 0.4903,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other current assets excluding prepayments (miscellaneous short-term assets)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_cur_liab",
+   "type": "VECTOR",
+   "coverage": 0.4886,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other current liabilities (miscellaneous short-term liabilities)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_inv",
+   "type": "VECTOR",
+   "coverage": 0.3409,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other inventory items and allowances"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_lt_liabilities",
+   "type": "VECTOR",
+   "coverage": 0.8279,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other long-term liabilities not otherwise classified"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_other_st_liab",
+   "type": "VECTOR",
+   "coverage": 0.8678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other short-term liabilities"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_par_val",
+   "type": "VECTOR",
+   "coverage": 0.8423,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Par value of issued share capital"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_pension_rsrv",
+   "type": "VECTOR",
+   "coverage": 0.7086,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Pension and postretirement benefit obligations (liability)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_pfd_eqy",
+   "type": "VECTOR",
+   "coverage": 0.8651,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Preferred equity"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_prepay",
+   "type": "VECTOR",
+   "coverage": 0.354,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prepaid expenses and other prepayments (current asset)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_pure_retained_earnings",
+   "type": "VECTOR",
+   "coverage": 0.5825,
+   "userCount": 7,
+   "alphaCount": 20,
+   "description": "Pure retained earnings balance"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_re_invest",
+   "type": "VECTOR",
+   "coverage": 0.3291,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Real estate investments"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_retain_earn",
+   "type": "VECTOR",
+   "coverage": 0.8753,
+   "userCount": 35,
+   "alphaCount": 47,
+   "description": "Retained earnings (and other equity reserves where applicable)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_sh_cap_and_apic",
+   "type": "VECTOR",
+   "coverage": 0.872,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "Share capital at par plus additional paid-in capital (APIC)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_sh_out",
+   "type": "VECTOR",
+   "coverage": 0.8748,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Shares outstanding at period end"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_st_borrow",
+   "type": "VECTOR",
+   "coverage": 0.8652,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Short-term borrowings or debt due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_st_debt",
+   "type": "VECTOR",
+   "coverage": 0.5627,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term debt (due within one year)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_st_portion_of_lt_debt",
+   "type": "VECTOR",
+   "coverage": 0.5311,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Current (short-term) portion of long-term debt due within one year"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_tot_asset",
+   "type": "VECTOR",
+   "coverage": 0.8762,
+   "userCount": 45,
+   "alphaCount": 84,
+   "description": "Total assets at period end"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_tot_eqy",
+   "type": "VECTOR",
+   "coverage": 0.3882,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total equity or partnership capital on the balance sheet"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_bs_tot_liab_eqy",
+   "type": "VECTOR",
+   "coverage": 0.3899,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total liabilities and equity for REITs (balance sheet total)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_contingent_liabilities",
+   "type": "VECTOR",
+   "coverage": 0.2898,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Contingent liabilities and commitments"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8764,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Currency in which the fundamental data is reported"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8764,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Label of the fiscal year and quarter for the period (e.g., FY2023Q2)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.8764,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fundamental data entry date (timestamp of entry)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_invtry_finished_goods",
+   "type": "VECTOR",
+   "coverage": 0.3061,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Finished goods inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_invtry_in_progress",
+   "type": "VECTOR",
+   "coverage": 0.2713,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Work-in-progress inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_invtry_raw_materials",
+   "type": "VECTOR",
+   "coverage": 0.3033,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Raw materials component of inventory"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8764,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Latest available period end date from full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_minority_noncontrolling_interest",
+   "type": "VECTOR",
+   "coverage": 0.8692,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Equity attributable to noncontrolling interests in subsidiaries"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_notes_receivable",
+   "type": "VECTOR",
+   "coverage": 0.2652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Promissory notes owed to the company (notes receivable)"
+  },
+  {
+   "id": "fnd72_pit_or_bs_q_num_outlets_branches",
+   "type": "VECTOR",
+   "coverage": 0.4095,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of physical outlets or branches operated"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.7555,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Date of the latest earnings announcement for which full fundamental information is available"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_act_cash_paid_for_int_debt",
+   "type": "VECTOR",
+   "coverage": 0.2767,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual cash paid for interest on debt"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_cap_expend_prpty_add",
+   "type": "VECTOR",
+   "coverage": 0.7955,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Capital expenditures or property additions (cash outflows for PP&E)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_cash_from_fnc_act",
+   "type": "VECTOR",
+   "coverage": 0.7987,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Quarterly total cash flows from financing activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_cash_from_inv_act",
+   "type": "VECTOR",
+   "coverage": 0.7993,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Net cash provided by (used in) investing activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_cash_from_oper",
+   "type": "VECTOR",
+   "coverage": 0.7993,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Net cash provided by (used in) operating activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_cash_paid_for_tax",
+   "type": "VECTOR",
+   "coverage": 0.358,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Cash taxes paid during the period"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_change_in_inventories",
+   "type": "VECTOR",
+   "coverage": 0.382,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Change in inventories"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_chng_non_cash_work_cap",
+   "type": "VECTOR",
+   "coverage": 0.7864,
+   "userCount": 9,
+   "alphaCount": 25,
+   "description": "Change in non-cash working capital (e.g., receivables, inventory, payables)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_decr_cap_stock",
+   "type": "VECTOR",
+   "coverage": 0.7241,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Cash outflows from reductions in share capital, including share repurchases"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_decr_invest",
+   "type": "VECTOR",
+   "coverage": 0.7551,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Proceeds from sales or maturities of investments (decrease in investment holdings)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_def_of_fund",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 5,
+   "alphaCount": 11,
+   "description": "Definition of “funds” used in the cash flow statement, indicating what is treated as funds (e.g., cash, cash and cash eq"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_depr_amort",
+   "type": "VECTOR",
+   "coverage": 0.7869,
+   "userCount": 17,
+   "alphaCount": 33,
+   "description": "Depreciation and amortization addback on the cash flow statement"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_disp_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.7645,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Cash proceeds from disposal of fixed assets"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_form_of_statement",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Form/method of presenting the cash flow statement, typically whether it is prepared using the Direct or Indirect method"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_incr_cap_stock",
+   "type": "VECTOR",
+   "coverage": 0.7431,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Proceeds from issuing share capital"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_incr_invest",
+   "type": "VECTOR",
+   "coverage": 0.7379,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Increase in investments (purchases of investments), cash outflow"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_incr_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.745,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Proceeds from issuance of long-term borrowings"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_incr_st_borrow",
+   "type": "VECTOR",
+   "coverage": 0.7076,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Net increase or decrease in short-term borrowings (financing cash flow)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_issue_com_stock",
+   "type": "VECTOR",
+   "coverage": 0.256,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Cash inflow from issuance of common stock"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_net_chng_cash",
+   "type": "VECTOR",
+   "coverage": 0.7993,
+   "userCount": 4,
+   "alphaCount": 11,
+   "description": "Net change in cash and cash equivalents for the period"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_net_inc",
+   "type": "VECTOR",
+   "coverage": 0.799,
+   "userCount": 9,
+   "alphaCount": 22,
+   "description": "Net income as presented on the cash flow statement, the starting point for operating cash flows"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_other_fnc_act",
+   "type": "VECTOR",
+   "coverage": 0.7726,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other cash flows from financing activities not captured in specific financing line items"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_other_inv_act",
+   "type": "VECTOR",
+   "coverage": 0.7843,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Other investing cash flows not classified elsewhere"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_other_non_cash_adj_less",
+   "type": "VECTOR",
+   "coverage": 0.4393,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Other non-cash adjustments (reductions) used to reconcile net income to cash from operations, excluding specified items"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_other_non_cash_adjust",
+   "type": "VECTOR",
+   "coverage": 0.7969,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other non-cash adjustments included in operating cash flow (e.g., gains/losses, deferred taxes)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_cf_reimb_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.7512,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Repayments of long-term borrowings"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Currency in which the fundamental data is reported (fundamental currency override)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Fiscal year and quarter identifier corresponding to the reporting period (e.g., FY2023Q2)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.8,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Date the fundamental data was entered into the system"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_id_bb_global",
+   "type": "VECTOR",
+   "coverage": 0.8,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Financial Instrument Global Identifier (Bloomberg global ID linking the record across systems)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_a_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Latest available period end date from the full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.8619,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Latest earnings announcement date corresponding to a full fundamental report"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_acct_rcv_unbilled_rev",
+   "type": "VECTOR",
+   "coverage": 0.31,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accounts receivable related to unbilled revenue"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_act_cash_paid_for_int_debt",
+   "type": "VECTOR",
+   "coverage": 0.3327,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual cash paid for interest on debt"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_cap_expend_prpty_add",
+   "type": "VECTOR",
+   "coverage": 0.833,
+   "userCount": 16,
+   "alphaCount": 26,
+   "description": "Capital Expenditures (Cash Flow)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_cash_from_fnc_act",
+   "type": "VECTOR",
+   "coverage": 0.8381,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quarterly net cash provided by financing activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_cash_from_inv_act",
+   "type": "VECTOR",
+   "coverage": 0.8405,
+   "userCount": 3,
+   "alphaCount": 11,
+   "description": "Total cash flows from investing activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_cash_from_oper",
+   "type": "VECTOR",
+   "coverage": 0.8413,
+   "userCount": 36,
+   "alphaCount": 54,
+   "description": "Total cash flows from operations"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_cash_paid_for_tax",
+   "type": "VECTOR",
+   "coverage": 0.425,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cash Paid for Tax (Cash Flow)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_change_in_inventories",
+   "type": "VECTOR",
+   "coverage": 0.4595,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Inventories (Cash Flow Statement)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_chng_non_cash_work_cap",
+   "type": "VECTOR",
+   "coverage": 0.8322,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Change in non-cash working capital"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_decr_cap_stock",
+   "type": "VECTOR",
+   "coverage": 0.7768,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash outflow from decreases in capital stock (share repurchases or retirements)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_decr_invest",
+   "type": "VECTOR",
+   "coverage": 0.7942,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Proceeds from investments (decrease in investments)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_def_of_fund",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator describing the basis used for “funds” in the cash flow/funds-flow statement (e.g., cash and cash equivalents v"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_depr_amort",
+   "type": "VECTOR",
+   "coverage": 0.8251,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Depreciation and amortization (cash flow)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_disp_fix_asset",
+   "type": "VECTOR",
+   "coverage": 0.8022,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash proceeds from disposal of fixed assets"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_form_of_statement",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator of the presentation format/method of the cash flow statement (e.g., direct versus indirect, or funds-flow vers"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_incr_cap_stock",
+   "type": "VECTOR",
+   "coverage": 0.7864,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Increase in capital stock"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_incr_invest",
+   "type": "VECTOR",
+   "coverage": 0.7782,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Purchases of investments (increase in investments)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_incr_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.792,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Quarterly cash inflow from increases in long-term borrowings"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_incr_st_borrow",
+   "type": "VECTOR",
+   "coverage": 0.7579,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase (decrease) in short-term borrowings"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_issue_com_stock",
+   "type": "VECTOR",
+   "coverage": 0.3031,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarterly cash inflow from issuance of common stock"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_net_chng_cash",
+   "type": "VECTOR",
+   "coverage": 0.8414,
+   "userCount": 4,
+   "alphaCount": 11,
+   "description": "Net change in cash and cash equivalents for the period"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_net_inc",
+   "type": "VECTOR",
+   "coverage": 0.8641,
+   "userCount": 16,
+   "alphaCount": 26,
+   "description": "Net income as presented in the cash flow statement (starting point for operating cash flow)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_other_fnc_act",
+   "type": "VECTOR",
+   "coverage": 0.8216,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other financing activities"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_other_inv_act",
+   "type": "VECTOR",
+   "coverage": 0.8302,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other investing activities cash flows not otherwise classified"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_other_non_cash_adj_less",
+   "type": "VECTOR",
+   "coverage": 0.585,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other non-cash adjustments excluding specific items"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_other_non_cash_adjust",
+   "type": "VECTOR",
+   "coverage": 0.8384,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Other non-cash adjustments"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_cf_reimb_lt_borrow",
+   "type": "VECTOR",
+   "coverage": 0.8076,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Quarterly cash outflow for reimbursement/repayment of long-term borrowings"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8699,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Equity Fundamental Currency (currency in which the fundamental data is reported)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8699,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Fiscal year and period identifier for the report (e.g., FY2023Q2)"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.8699,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date the fundamental data point was entered into the system"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_id_bb_global",
+   "type": "VECTOR",
+   "coverage": 0.8699,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Instrument Global Identifier used to link entities across Bloomberg datasets"
+  },
+  {
+   "id": "fnd72_pit_or_cf_q_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8699,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Latest available period end date from full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.755,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quarterly latest full earnings report date"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_earn_for_common",
+   "type": "VECTOR",
+   "coverage": 0.7999,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Net income available to common shareholders for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_ebit",
+   "type": "VECTOR",
+   "coverage": 0.5951,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Earnings before interest and taxes for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_ebitda",
+   "type": "VECTOR",
+   "coverage": 0.6394,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Earnings before interest, taxes, depreciation, and amortization for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_eff_int_rate",
+   "type": "VECTOR",
+   "coverage": 0.4608,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Effective interest rate"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Currency in which the fundamental data is reported (currency override)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Identifier of the fiscal year and quarter for the reporting period (for example FY2023Q2)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Date when the fundamental data point was entered into the system"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_id_bb_global",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg Financial Instrument Global Identifier"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_inc_bef_xo_less_min_int_pref_dvd",
+   "type": "VECTOR",
+   "coverage": 0.7984,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Income before extraordinary items after minority interest and preferred dividends"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_abnormal_item",
+   "type": "VECTOR",
+   "coverage": 0.5945,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Gross amount of abnormal or exceptional gains or losses recognized during the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_avg_num_sh_for_eps",
+   "type": "VECTOR",
+   "coverage": 0.7961,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarterly basic weighted average number of shares used for EPS calculation"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_basic_eps_cont_ops",
+   "type": "VECTOR",
+   "coverage": 0.5891,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Basic earnings per share from continuing operations, adjusted"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_cogs_to_fe_and_pp_and_g",
+   "type": "VECTOR",
+   "coverage": 0.497,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Cost of revenue"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_comprehensive_income",
+   "type": "VECTOR",
+   "coverage": 0.388,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total comprehensive income including net income and other comprehensive income"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_comprehensive_income_per_shr",
+   "type": "VECTOR",
+   "coverage": 0.3852,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Quarterly comprehensive income per share"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_depr_exp",
+   "type": "VECTOR",
+   "coverage": 0.5882,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quarterly depreciation expense"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_dil_eps_bef_xo",
+   "type": "VECTOR",
+   "coverage": 0.3665,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Diluted EPS before extraordinary items (from continuing operations)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_dil_eps_cont_ops",
+   "type": "VECTOR",
+   "coverage": 0.5433,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Diluted earnings per share from continuing operations, adjusted"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_diluted_eps",
+   "type": "VECTOR",
+   "coverage": 0.682,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Diluted earnings per share"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_div_per_shr",
+   "type": "VECTOR",
+   "coverage": 0.7375,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Dividend per share for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_earn_bef_xo_items_per_sh",
+   "type": "VECTOR",
+   "coverage": 0.7962,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Basic earnings per share from continuing operations (before extraordinary items)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_eps",
+   "type": "VECTOR",
+   "coverage": 0.7962,
+   "userCount": 15,
+   "alphaCount": 24,
+   "description": "Basic earnings per share for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_eqy_earn_from_invest_assoc",
+   "type": "VECTOR",
+   "coverage": 0.4855,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Equity income or loss from investments in associates for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_expense_stock_based_comp",
+   "type": "VECTOR",
+   "coverage": 0.3449,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total stock-based compensation expense recognized in the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_foreign_exch_loss",
+   "type": "VECTOR",
+   "coverage": 0.3404,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Foreign exchange losses or gains recognized in the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_inc_bef_xo_item",
+   "type": "VECTOR",
+   "coverage": 0.7998,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "Earnings from continuing operations before extraordinary items and discontinued operations"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_inc_tax_exp",
+   "type": "VECTOR",
+   "coverage": 0.5767,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Income tax expense or benefit for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_int_expense",
+   "type": "VECTOR",
+   "coverage": 0.4875,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Interest expense for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_int_inc",
+   "type": "VECTOR",
+   "coverage": 0.5017,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Interest income earned during the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_interest_inc",
+   "type": "VECTOR",
+   "coverage": 0.5017,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Interest income for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_invest_income",
+   "type": "VECTOR",
+   "coverage": 0.5361,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Investment income for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_net_inc_avail_com_shrhldrs",
+   "type": "VECTOR",
+   "coverage": 0.3972,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Net income attributable to common shareholders (after preferred dividends)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_net_non_oper_loss",
+   "type": "VECTOR",
+   "coverage": 0.7564,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net non-operating losses or gains for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_oper_inc",
+   "type": "VECTOR",
+   "coverage": 0.7994,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Operating income (or loss)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_oprb_expense_income",
+   "type": "VECTOR",
+   "coverage": 0.2862,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarterly other post-retirement benefits expense or income (income statement)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_other_adj_comp_inc",
+   "type": "VECTOR",
+   "coverage": 0.355,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other adjustments to other comprehensive income for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_other_oper_inc",
+   "type": "VECTOR",
+   "coverage": 0.3145,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other operating income"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_pension_expense_income",
+   "type": "VECTOR",
+   "coverage": 0.2857,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Pension expense or income recognized for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_personnel_exp",
+   "type": "VECTOR",
+   "coverage": 0.6399,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Personnel expenses such as wages and benefits for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_rd_expend",
+   "type": "VECTOR",
+   "coverage": 0.3166,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Quarterly research and development expense"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_sga_other_op_depr_op_maint",
+   "type": "VECTOR",
+   "coverage": 0.7867,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Operating expenses including selling, general and administrative, other operating depreciation, and maintenance"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_sh_for_diluted_eps",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Diluted weighted average shares used in EPS calculation"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_tax_eff_on_abnormal_item",
+   "type": "VECTOR",
+   "coverage": 0.3987,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Tax effects related to abnormal or extraordinary items"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_tax_eff_on_xo_item",
+   "type": "VECTOR",
+   "coverage": 0.7083,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Tax effect related to extraordinary items"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_tot_cash_com_dvd",
+   "type": "VECTOR",
+   "coverage": 0.7435,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Total cash common dividends"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_tot_cash_pfd_dvd",
+   "type": "VECTOR",
+   "coverage": 0.7513,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total cash preferred dividends"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_unrealized_gain_loss_comp_inc",
+   "type": "VECTOR",
+   "coverage": 0.2683,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unrealized gains or losses recognized in other comprehensive income"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_is_xo_loss_bef_tax_eff",
+   "type": "VECTOR",
+   "coverage": 0.752,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Extraordinary gains or losses before tax effects"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8003,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Latest available period end date from full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_min_noncontrol_interest_credits",
+   "type": "VECTOR",
+   "coverage": 0.7706,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minority/noncontrolling interest credits (share of income attributable to minority interests)"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_net_income",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Net income (net profit or loss) for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_net_income_bef_mi",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net income before minority interest"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_net_non_oper_loss",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarterly net non-operating loss or gain for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_other_adjustments",
+   "type": "VECTOR",
+   "coverage": 0.3055,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quarterly catch-all adjustments on the income statement not classified elsewhere"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_pretax_inc",
+   "type": "VECTOR",
+   "coverage": 0.6556,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Income before income taxes for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_sales_rev_turn",
+   "type": "VECTOR",
+   "coverage": 0.7974,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Sales or revenue for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_tot_int_exp",
+   "type": "VECTOR",
+   "coverage": 0.5795,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Quarterly total interest expense incurred"
+  },
+  {
+   "id": "fnd72_pit_or_is_a_xo_gl_net_of_tax",
+   "type": "VECTOR",
+   "coverage": 0.7563,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net extraordinary gains or losses after tax"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_announcement_dt",
+   "type": "VECTOR",
+   "coverage": 0.8694,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Date of the latest full quarterly earnings report"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_earn_for_common",
+   "type": "VECTOR",
+   "coverage": 0.8772,
+   "userCount": 35,
+   "alphaCount": 47,
+   "description": "Net income available to common shareholders"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_ebit",
+   "type": "VECTOR",
+   "coverage": 0.6671,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Earnings before interest and taxes"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_ebitda",
+   "type": "VECTOR",
+   "coverage": 0.6809,
+   "userCount": 49,
+   "alphaCount": 66,
+   "description": "Earnings before interest, taxes, depreciation, and amortization for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_eff_int_rate",
+   "type": "VECTOR",
+   "coverage": 0.4452,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Effective interest rate for the reporting period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_eqy_fund_crncy",
+   "type": "VECTOR",
+   "coverage": 0.8778,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency in which the fundamental data is reported"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_fiscal_year_period",
+   "type": "VECTOR",
+   "coverage": 0.8778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Identifier of the fiscal year and quarter for the record (e.g., FY2023Q2)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_fundamental_entry_dt",
+   "type": "VECTOR",
+   "coverage": 0.9665,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Fundamental data entry date"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_id_bb_global",
+   "type": "VECTOR",
+   "coverage": 0.8778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial Instrument Global Identifier linking the instrument across Bloomberg systems"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_inc_bef_xo_less_min_int_pref_dvd",
+   "type": "VECTOR",
+   "coverage": 0.875,
+   "userCount": 22,
+   "alphaCount": 28,
+   "description": "Income before extraordinary items after deducting minority interest and preferred dividends for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_abnormal_item",
+   "type": "VECTOR",
+   "coverage": 0.7263,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total abnormal/exceptional items (gains or losses) recognized for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_avg_num_sh_for_eps",
+   "type": "VECTOR",
+   "coverage": 0.8758,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Basic weighted average number of shares for EPS calculation"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_basic_eps_cont_ops",
+   "type": "VECTOR",
+   "coverage": 0.7038,
+   "userCount": 18,
+   "alphaCount": 24,
+   "description": "Basic earnings per share from continuing operations (Income Statement)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_cogs_to_fe_and_pp_and_g",
+   "type": "VECTOR",
+   "coverage": 0.5569,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Cost of revenue (cost of goods sold)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_comprehensive_income",
+   "type": "VECTOR",
+   "coverage": 0.5052,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Comprehensive income"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_comprehensive_income_per_shr",
+   "type": "VECTOR",
+   "coverage": 0.5029,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Comprehensive income per share for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_depr_exp",
+   "type": "VECTOR",
+   "coverage": 0.4735,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Depreciation expense"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_dil_eps_bef_xo",
+   "type": "VECTOR",
+   "coverage": 0.5109,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Diluted earnings per share from continuing operations for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_dil_eps_cont_ops",
+   "type": "VECTOR",
+   "coverage": 0.6879,
+   "userCount": 28,
+   "alphaCount": 45,
+   "description": "Adjusted diluted earnings per share from continuing operations"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_diluted_eps",
+   "type": "VECTOR",
+   "coverage": 0.8036,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Diluted earnings per share for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_div_per_shr",
+   "type": "VECTOR",
+   "coverage": 0.4044,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividend per share"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_earn_bef_xo_items_per_sh",
+   "type": "VECTOR",
+   "coverage": 0.8758,
+   "userCount": 20,
+   "alphaCount": 28,
+   "description": "Earnings Before Extraordinary Items Per Share (Basic EPS)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_eps",
+   "type": "VECTOR",
+   "coverage": 0.876,
+   "userCount": 31,
+   "alphaCount": 47,
+   "description": "Basic earnings per share for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_eqy_earn_from_invest_assoc",
+   "type": "VECTOR",
+   "coverage": 0.4391,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Equity in earnings (loss) from investments in associates for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_foreign_crncy_trans_adj",
+   "type": "VECTOR",
+   "coverage": 0.2869,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Foreign currency translation adjustment (Income Statement)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_gnrl_and_admin_exp",
+   "type": "VECTOR",
+   "coverage": 0.303,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "General and administrative expense (adjusted) for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_inc_bef_xo_item",
+   "type": "VECTOR",
+   "coverage": 0.8759,
+   "userCount": 22,
+   "alphaCount": 28,
+   "description": "Income (loss) from continuing operations before extraordinary items"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_inc_tax_exp",
+   "type": "VECTOR",
+   "coverage": 0.6549,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Income tax expense or benefit recognized for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_int_expense",
+   "type": "VECTOR",
+   "coverage": 0.3063,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Interest expense"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_int_inc",
+   "type": "VECTOR",
+   "coverage": 0.3424,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Interest income recognized in the income statement for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_interest_inc",
+   "type": "VECTOR",
+   "coverage": 0.3424,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Interest income recognized on the income statement for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_invest_income",
+   "type": "VECTOR",
+   "coverage": 0.4149,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Investment income"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_net_inc_avail_com_shrhldrs",
+   "type": "VECTOR",
+   "coverage": 0.5294,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Net income available to common shareholders for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_net_non_oper_loss",
+   "type": "VECTOR",
+   "coverage": 0.8227,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net non-operating losses (gains)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_oper_inc",
+   "type": "VECTOR",
+   "coverage": 0.8758,
+   "userCount": 75,
+   "alphaCount": 126,
+   "description": "Operating income (loss) for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_oprb_expense_income",
+   "type": "VECTOR",
+   "coverage": 0.4268,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Other post-retirement benefits (OPRB) expense or income recognized for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_other_adj_comp_inc",
+   "type": "VECTOR",
+   "coverage": 0.4999,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other Adjustments to Comprehensive Income (Income Statement)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_other_oper_inc",
+   "type": "VECTOR",
+   "coverage": 0.3728,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other operating income recognized during the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_pension_expense_income",
+   "type": "VECTOR",
+   "coverage": 0.3494,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net pension expense (income) for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_personnel_exp",
+   "type": "VECTOR",
+   "coverage": 0.2619,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Personnel expenses for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_rd_expend",
+   "type": "VECTOR",
+   "coverage": 0.396,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Research and development expense"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_sga_other_op_depr_op_maint",
+   "type": "VECTOR",
+   "coverage": 0.8601,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Operating expenses including SG&A, other operating depreciation, and maintenance for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_sh_for_diluted_eps",
+   "type": "VECTOR",
+   "coverage": 0.8012,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Weighted average diluted shares outstanding used to compute diluted EPS for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_tax_eff_on_abnormal_item",
+   "type": "VECTOR",
+   "coverage": 0.5023,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Tax effect related to abnormal or extraordinary items for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_tax_eff_on_xo_item",
+   "type": "VECTOR",
+   "coverage": 0.8252,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Tax effect on extraordinary items for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_tot_cash_com_dvd",
+   "type": "VECTOR",
+   "coverage": 0.4069,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash dividends paid to common shareholders for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_tot_cash_pfd_dvd",
+   "type": "VECTOR",
+   "coverage": 0.8164,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash preferred dividends for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_unrealized_gain_loss_comp_inc",
+   "type": "VECTOR",
+   "coverage": 0.3022,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unrealized gains or losses recognized in comprehensive income for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_is_xo_loss_bef_tax_eff",
+   "type": "VECTOR",
+   "coverage": 0.8566,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Extraordinary loss before tax effects"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_latest_period_end_dt_full_record",
+   "type": "VECTOR",
+   "coverage": 0.8778,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Latest available period end date from the full financial records"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_min_noncontrol_interest_credits",
+   "type": "VECTOR",
+   "coverage": 0.8703,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Credits attributable to minority or noncontrolling interests for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_net_income",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 14,
+   "alphaCount": 25,
+   "description": "Net income/net profit (loss)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_net_income_bef_mi",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Net income before minority interests"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_net_non_oper_loss",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net non-operating loss (Income Statement)"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_other_adjustments",
+   "type": "VECTOR",
+   "coverage": 0.426,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other adjustments reported on the income statement for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_pretax_inc",
+   "type": "VECTOR",
+   "coverage": 0.7678,
+   "userCount": 38,
+   "alphaCount": 48,
+   "description": "Income before income taxes for the period"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_sales_rev_turn",
+   "type": "VECTOR",
+   "coverage": 0.8721,
+   "userCount": 87,
+   "alphaCount": 151,
+   "description": "Total revenue (sales) for the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_tot_int_exp",
+   "type": "VECTOR",
+   "coverage": 0.5705,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Total interest expense incurred during the quarter"
+  },
+  {
+   "id": "fnd72_pit_or_is_q_xo_gl_net_of_tax",
+   "type": "VECTOR",
+   "coverage": 0.8631,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net extraordinary gains or losses after tax"
+  },
+  {
+   "id": "furniture_machinery_equipment_amt",
+   "type": "VECTOR",
+   "coverage": 0.5518,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Furniture, machinery, and equipment balance (revised/rebased)"
+  },
+  {
+   "id": "furniture_machinery_equipment_value_2",
+   "type": "VECTOR",
+   "coverage": 0.3568,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Furniture, machinery, and equipment reported as noncurrent assets"
+  },
+  {
+   "id": "income_tax_payable_4",
+   "type": "VECTOR",
+   "coverage": 0.3252,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Income taxes accrued and payable for the current period"
+  },
+  {
+   "id": "income_unconsolidated_equity_interest",
+   "type": "VECTOR",
+   "coverage": 0.9665,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Income from unconsolidated equity interests"
+  },
+  {
+   "id": "interest_income_received_2",
+   "type": "VECTOR",
+   "coverage": 0.2959,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Interest received as cash inflow"
+  },
+  {
+   "id": "inventory_annual_2",
+   "type": "VECTOR",
+   "coverage": 0.3198,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Inventory, revised/rebased figure"
+  },
+  {
+   "id": "inventory_balance_5",
+   "type": "VECTOR",
+   "coverage": 0.5191,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Inventories including raw materials work in process and finished goods within current assets as reported"
+  },
+  {
+   "id": "inventory_finished_goods_amt",
+   "type": "VECTOR",
+   "coverage": 0.2789,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Finished goods inventory"
+  },
+  {
+   "id": "inventory_total_value_4",
+   "type": "VECTOR",
+   "coverage": 0.4613,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total inventories including raw materials, work-in-process, supplies, and finished goods"
+  },
+  {
+   "id": "investment_in_affiliates_jv",
+   "type": "VECTOR",
+   "coverage": 0.3177,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Investments in affiliates and joint ventures"
+  },
+  {
+   "id": "investments_in_affiliates_joint_ventures_2",
+   "type": "VECTOR",
+   "coverage": 0.2522,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Investments in affiliates and joint ventures"
+  },
+  {
+   "id": "issued_shares_annual",
+   "type": "VECTOR",
+   "coverage": 0.6146,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of shares outstanding at the reporting date"
+  },
+  {
+   "id": "liabilities_and_equity_total_4",
+   "type": "VECTOR",
+   "coverage": 0.7649,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total liabilities and shareholders equity"
+  },
+  {
+   "id": "long_term_debt_annual_2",
+   "type": "VECTOR",
+   "coverage": 0.3932,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term debt obligations"
+  },
+  {
+   "id": "long_term_debt_balance_2",
+   "type": "VECTOR",
+   "coverage": 0.4206,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term debt (financing and lease obligations maturing in more than one year)"
+  },
+  {
+   "id": "long_term_deferred_tax_liabilities",
+   "type": "VECTOR",
+   "coverage": 0.2533,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term deferred tax liabilities arising from temporary differences"
+  },
+  {
+   "id": "net_intangible_assets",
+   "type": "VECTOR",
+   "coverage": 0.3544,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total intangible assets, net of amortization and impairments"
+  },
+  {
+   "id": "net_interest_income_8",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net interest income"
+  },
+  {
+   "id": "net_interest_income_after_provision_4",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net interest income after provisions (e.g., for loan losses)"
+  },
+  {
+   "id": "net_interest_income_after_provision_5",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net interest income after provisions for credit losses"
+  },
+  {
+   "id": "net_interest_income_total_2",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net interest income (interest income minus interest expense) for the quarter"
+  },
+  {
+   "id": "net_operating_income",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net operating income for the quarter"
+  },
+  {
+   "id": "net_operating_income_total",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net operating income"
+  },
+  {
+   "id": "net_other_tangible_assets",
+   "type": "VECTOR",
+   "coverage": 0.2867,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net other tangible assets on the balance sheet"
+  },
+  {
+   "id": "net_premiums_earned_non_life",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net premiums earned (non-life)"
+  },
+  {
+   "id": "net_premiums_earned_nonlife",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net premiums earned for non-life insurance, reported quarterly"
+  },
+  {
+   "id": "net_premiums_written_non_life",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net premiums written for non-life insurance (gross less reinsurance)"
+  },
+  {
+   "id": "net_premiums_written_non_life_2",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net premiums written for non-life insurance"
+  },
+  {
+   "id": "net_property_plant_equipment_3",
+   "type": "VECTOR",
+   "coverage": 0.6665,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net property, plant and equipment (PP&E) after accumulated depreciation"
+  },
+  {
+   "id": "net_revenue",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net revenue for the period"
+  },
+  {
+   "id": "net_revenue_total",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net revenue"
+  },
+  {
+   "id": "non_equity_reserves_3",
+   "type": "VECTOR",
+   "coverage": 0.3938,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Non-equity reserves recorded on the balance sheet"
+  },
+  {
+   "id": "non_equity_reserves_q",
+   "type": "VECTOR",
+   "coverage": 0.4218,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Non-equity reserves"
+  },
+  {
+   "id": "non_interest_expense_total_2",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total non-interest expense for the quarter"
+  },
+  {
+   "id": "non_interest_expenses",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total operating expenses excluding interest expense"
+  },
+  {
+   "id": "non_interest_income",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total non-interest income for the period"
+  },
+  {
+   "id": "non_interest_income_total_2",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total non-interest income for the quarter"
+  },
+  {
+   "id": "number_of_outlets_branches",
+   "type": "VECTOR",
+   "coverage": 0.3183,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of outlets and branches"
+  },
+  {
+   "id": "other_accounts_receivable",
+   "type": "VECTOR",
+   "coverage": 0.2878,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Accounts receivable and other receivables"
+  },
+  {
+   "id": "other_current_liabilities_11",
+   "type": "VECTOR",
+   "coverage": 0.3094,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other current liabilities"
+  },
+  {
+   "id": "other_current_liabilities_annual",
+   "type": "VECTOR",
+   "coverage": 0.2697,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other current liabilities"
+  },
+  {
+   "id": "other_financial_reserves_2",
+   "type": "VECTOR",
+   "coverage": 0.3056,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other reserve on the balance sheet"
+  },
+  {
+   "id": "other_gross_fixed_assets_3",
+   "type": "VECTOR",
+   "coverage": 0.2566,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other gross fixed assets before accumulated depreciation (as reported, in millions)"
+  },
+  {
+   "id": "other_gross_fixed_assets_amt",
+   "type": "VECTOR",
+   "coverage": 0.4352,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revised/rebased other gross fixed assets"
+  },
+  {
+   "id": "other_noncurrent_assets_balance_5",
+   "type": "VECTOR",
+   "coverage": 0.2501,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other noncurrent assets not separately classified"
+  },
+  {
+   "id": "other_noncurrent_liabilities_5",
+   "type": "VECTOR",
+   "coverage": 0.337,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other noncurrent liabilities"
+  },
+  {
+   "id": "other_noncurrent_liabilities_amt",
+   "type": "VECTOR",
+   "coverage": 0.3011,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other long-term liabilities not separately classified"
+  },
+  {
+   "id": "other_operating_income_losses",
+   "type": "VECTOR",
+   "coverage": 0.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Other operating income or losses not classified elsewhere for the period"
+  },
+  {
+   "id": "other_operating_income_losses_2",
+   "type": "VECTOR",
+   "coverage": 0.2624,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Other operating income or losses"
+  },
+  {
+   "id": "other_receivables_amt",
+   "type": "VECTOR",
+   "coverage": 0.2712,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Accounts receivable and other receivables"
+  },
+  {
+   "id": "other_short_term_receivables_4",
+   "type": "VECTOR",
+   "coverage": 0.2795,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Other short-term receivables"
+  },
+  {
+   "id": "par_value_annual",
+   "type": "VECTOR",
+   "coverage": 0.66,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Par (nominal) value of issued shares"
+  },
+  {
+   "id": "par_value_of_shares_2",
+   "type": "VECTOR",
+   "coverage": 0.5336,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Par value of shares (balance sheet, revised/rebased)"
+  },
+  {
+   "id": "pension_postretirement_liabilities_2",
+   "type": "VECTOR",
+   "coverage": 0.574,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Pension and postretirement benefit obligations (liabilities)"
+  },
+  {
+   "id": "pension_postretirement_liabilities_3",
+   "type": "VECTOR",
+   "coverage": 0.4801,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Pension and postretirement benefit obligations"
+  },
+  {
+   "id": "plant_and_equipment_net",
+   "type": "VECTOR",
+   "coverage": 0.534,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Net plant and equipment after accumulated depreciation; revised/reference value"
+  },
+  {
+   "id": "property_plant_equipment_gross_amt",
+   "type": "VECTOR",
+   "coverage": 0.5024,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Gross property, plant and equipment before accumulated depreciation (revised or rebased)"
+  },
+  {
+   "id": "property_plant_equipment_net_a",
+   "type": "VECTOR",
+   "coverage": 0.467,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Net property, plant and equipment (after accumulated depreciation); standardized/revised"
+  },
+  {
+   "id": "property_plant_equipment_net_annual",
+   "type": "VECTOR",
+   "coverage": 0.5819,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Property, plant and equipment, net of accumulated depreciation"
+  },
+  {
+   "id": "raw_material_inventory",
+   "type": "VECTOR",
+   "coverage": 0.2652,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Raw materials inventory"
+  },
+  {
+   "id": "reported_common_stock_amount",
+   "type": "VECTOR",
+   "coverage": 0.2785,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Common stock balance within shareholders equity"
+  },
+  {
+   "id": "reserve_charge_income_statement",
+   "type": "VECTOR",
+   "coverage": 0.3742,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Reserve charges or credits recognized in the income statement"
+  },
+  {
+   "id": "reserve_charge_total",
+   "type": "VECTOR",
+   "coverage": 0.3716,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net reserve charges or credits recorded during the quarter"
+  },
+  {
+   "id": "retained_earnings_accumulated_deficit_2",
+   "type": "VECTOR",
+   "coverage": 0.3103,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Retained earnings balance (or accumulated deficit)"
+  },
+  {
+   "id": "retained_earnings_accumulated_deficit_3",
+   "type": "VECTOR",
+   "coverage": 0.7909,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "Retained earnings balance or accumulated deficit within shareholders equity"
+  },
+  {
+   "id": "retained_earnings_accumulated_deficit_4",
+   "type": "VECTOR",
+   "coverage": 0.6987,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Retained earnings (or accumulated deficit) balance within shareholders’ equity"
+  },
+  {
+   "id": "shareholders_equity_total_amt",
+   "type": "VECTOR",
+   "coverage": 0.7063,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Total shareholders’ equity"
+  },
+  {
+   "id": "short_term_borrowings_6",
+   "type": "VECTOR",
+   "coverage": 0.3577,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Short-term borrowings with maturities within one year, as reported"
+  },
+  {
+   "id": "short_term_borrowings_a",
+   "type": "VECTOR",
+   "coverage": 0.3204,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Short-term borrowings"
+  },
+  {
+   "id": "stock_option_expense_post_tax",
+   "type": "VECTOR",
+   "coverage": 0.3515,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "After-tax expense related to stock option compensation"
+  },
+  {
+   "id": "stock_option_expense_pre_tax",
+   "type": "VECTOR",
+   "coverage": 0.3523,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Stock option expense before tax"
+  },
+  {
+   "id": "total_assets_amt",
+   "type": "VECTOR",
+   "coverage": 0.6649,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Total assets"
+  },
+  {
+   "id": "total_assets_value_9",
+   "type": "VECTOR",
+   "coverage": 0.771,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Total assets, the sum of current and noncurrent assets as reported"
+  },
+  {
+   "id": "total_current_assets_10",
+   "type": "VECTOR",
+   "coverage": 0.605,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Total current assets, as reported"
+  },
+  {
+   "id": "total_current_assets_amt",
+   "type": "VECTOR",
+   "coverage": 0.5262,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total current assets"
+  },
+  {
+   "id": "total_current_liabilities_9",
+   "type": "VECTOR",
+   "coverage": 0.6056,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total obligations due within one year including short term debt accounts payable accrued liabilities and other current d"
+  },
+  {
+   "id": "total_current_liabilities_amt",
+   "type": "VECTOR",
+   "coverage": 0.5255,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total current liabilities"
+  },
+  {
+   "id": "total_intangible_assets_net_amt",
+   "type": "VECTOR",
+   "coverage": 0.3013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net intangible assets (e.g., patents, trademarks) after amortization/impairments"
+  },
+  {
+   "id": "total_liabilities_9",
+   "type": "VECTOR",
+   "coverage": 0.6853,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Total liabilities, as reported"
+  },
+  {
+   "id": "total_liabilities_amt",
+   "type": "VECTOR",
+   "coverage": 0.569,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total liabilities reported on the balance sheet"
+  },
+  {
+   "id": "total_liabilities_and_equity_8",
+   "type": "VECTOR",
+   "coverage": 0.6629,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Total liabilities and shareholders’ equity (balance sheet total)"
+  },
+  {
+   "id": "total_noncurrent_assets_2",
+   "type": "VECTOR",
+   "coverage": 0.4933,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total noncurrent (long-term) assets"
+  },
+  {
+   "id": "total_noncurrent_assets_3",
+   "type": "VECTOR",
+   "coverage": 0.5773,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total noncurrent (long-term) assets"
+  },
+  {
+   "id": "total_noncurrent_liabilities_3",
+   "type": "VECTOR",
+   "coverage": 0.5679,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total noncurrent liabilities"
+  },
+  {
+   "id": "total_noncurrent_liabilities_amt",
+   "type": "VECTOR",
+   "coverage": 0.4819,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Total noncurrent liabilities"
+  },
+  {
+   "id": "total_shareholders_equity_4",
+   "type": "VECTOR",
+   "coverage": 0.805,
+   "userCount": 32,
+   "alphaCount": 42,
+   "description": "Total shareholders’ equity"
+  },
+  {
+   "id": "total_shares_issued_8",
+   "type": "VECTOR",
+   "coverage": 0.4895,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of shares outstanding"
+  },
+  {
+   "id": "trade_accounts_payable_2",
+   "type": "VECTOR",
+   "coverage": 0.4461,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Amounts owed to suppliers for goods and services received (trade payables)"
+  },
+  {
+   "id": "trade_accounts_payable_4",
+   "type": "VECTOR",
+   "coverage": 0.364,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Trade accounts payable (revised/standardized)"
+  },
+  {
+   "id": "trade_accounts_receivable",
+   "type": "VECTOR",
+   "coverage": 0.4741,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Amounts billed to customers for goods or services delivered but not yet collected (trade receivables)"
+  },
+  {
+   "id": "trade_accounts_receivable_3",
+   "type": "VECTOR",
+   "coverage": 0.3065,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Trade accounts receivable reported on the balance sheet"
+  },
+  {
+   "id": "trade_accounts_receivable_annual",
+   "type": "VECTOR",
+   "coverage": 0.4045,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Trade accounts receivable billed to customers and not yet paid"
+  }
+ ]
+}

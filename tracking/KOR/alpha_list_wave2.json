@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(closing_price_dlr1, ts_delay(closing_price_dlr1, 20)), add(ts_delay(closing_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(highest_price_dlr1, ts_delay(highest_price_dlr1, 20)), add(ts_delay(highest_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(lowest_price_dlr1, ts_delay(lowest_price_dlr1, 20)), add(ts_delay(lowest_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(opening_price_dlr1, ts_delay(opening_price_dlr1, 20)), add(ts_delay(opening_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(volume_weighted_avg_price_dlr1, ts_delay(volume_weighted_avg_price_dlr1, 20)), add(ts_delay(volume_weighted_avg_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(closing_price_dlr1, add(ts_mean(closing_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(highest_price_dlr1, add(ts_mean(highest_price_dlr1, 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(lowest_price_dlr1, add(ts_mean(lowest_price_dlr1, 20), 0.0001))"
+  }
+]

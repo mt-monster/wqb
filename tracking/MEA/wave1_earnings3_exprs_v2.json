@@ -1,0 +1,49 @@
+{
+  "wave_id": "MEA_W1_EARNINGS3_V2",
+  "region": "MEA",
+  "dataset": "earnings3",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "target_pyramid": "earnings",
+  "note": "earnings3字段是MATRIX类型，直接用rank",
+  "expressions": [
+    {
+      "id": "E3V2_001",
+      "expr": "rank(ts_zscore(ern3_pre_interval, 20))",
+      "style": "earnings_timing",
+      "desc": "Days since last earnings - 财报后时间衰减"
+    },
+    {
+      "id": "E3V2_002",
+      "expr": "rank(ts_zscore(ern3_next_interval, 20))",
+      "style": "earnings_timing",
+      "desc": "Days until next earnings - 财报前预期"
+    },
+    {
+      "id": "E3V2_003",
+      "expr": "rank(ern3_pre_interval * ern3_next_interval)",
+      "style": "earnings_cycle",
+      "desc": "Earnings cycle position - 财报周期位置"
+    },
+    {
+      "id": "E3V2_004",
+      "expr": "rank(ts_zscore(ern3_pre_interval, 60))",
+      "style": "earnings_timing",
+      "desc": "Days since last earnings 60d - 长期财报后衰减"
+    },
+    {
+      "id": "E3V2_005",
+      "expr": "rank(ts_delta(ern3_pre_interval, 5))",
+      "style": "earnings_momentum",
+      "desc": "Earnings interval momentum - 财报间隔动量"
+    },
+    {
+      "id": "E3V2_006",
+      "expr": "rank(ern3_next_interval / (ern3_pre_interval + 1))",
+      "style": "earnings_ratio",
+      "desc": "Next/Prev earnings ratio - 财报间隔比"
+    }
+  ]
+}

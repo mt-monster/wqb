@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(ts_delta(vec_avg(loan_utilization_ratio), 5), add(ts_delay(vec_avg(loan_utilization_ratio), 5), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(ts_delta(vec_avg(loan_utilization_ratio_d1), 5), add(ts_delay(vec_avg(loan_utilization_ratio_d1), 5), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(ts_delta(vec_avg(loan_utilization_ratio_twn), 5), add(ts_delay(vec_avg(loan_utilization_ratio_twn), 5), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(ts_delta(vec_avg(loan_utilization_ratio_u2_twn), 5), add(ts_delay(vec_avg(loan_utilization_ratio_u2_twn), 5), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_avg(loan_rate_volatility), add(vec_avg(loan_rate_volatility), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_avg(loan_rate_volatility), add(vec_avg(loan_rate_volatility_main), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_avg(loan_rate_volatility), add(vec_avg(loan_rate_volatility_p5_d1), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_avg(loan_rate_volatility), add(vec_avg(loan_rate_volatility_p5_twn), 0.0001))"
+  }
+]

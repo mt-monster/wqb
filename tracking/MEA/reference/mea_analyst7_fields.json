@@ -1,0 +1,5735 @@
+{
+ "dataset": "analyst7",
+ "region": "MEA",
+ "universe": "TOP400",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 707,
+  "MATRIX": 8
+ },
+ "field_count": 715,
+ "fetched_at": "2026-08-20T20:59:32",
+ "fields": [
+  {
+   "id": "analyst_book_value_per_share_median",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 83,
+   "alphaCount": 159,
+   "description": "Current median of Book Value per Share (BPS) consensus estimates"
+  },
+  {
+   "id": "analyst_bps_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 31,
+   "alphaCount": 52,
+   "description": "Current number of contributing BPS estimates"
+  },
+  {
+   "id": "analyst_bps_lowered_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 51,
+   "alphaCount": 69,
+   "description": "Number of BPS estimates lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_bps_lowered_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 39,
+   "alphaCount": 45,
+   "description": "Number of BPS estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_bps_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2736,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Standard deviation of BPS estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_capex_estimate_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3751,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Highest CPX estimate 3 months ago"
+  },
+  {
+   "id": "analyst_capex_low_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3878,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Lowest CPX estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_capex_mean_flash",
+   "type": "VECTOR",
+   "coverage": 0.4529,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "Mean of flash (near real-time) CPX estimates"
+  },
+  {
+   "id": "analyst_consensus_bps_stddev",
+   "type": "VECTOR",
+   "coverage": 0.2711,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of current BPS consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_eps_low_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5316,
+   "userCount": 17,
+   "alphaCount": 17,
+   "description": "Lowest EPS estimate in the consensus three months ago"
+  },
+  {
+   "id": "analyst_consensus_eps_low_estimate",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 96,
+   "alphaCount": 223,
+   "description": "Current lowest EPS estimate in the consensus"
+  },
+  {
+   "id": "analyst_consensus_eps_lowest_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.543,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Lowest EPS estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_high_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4732,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Highest consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_consensus_high_eps",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 115,
+   "alphaCount": 263,
+   "description": "Current highest EPS estimate in the consensus"
+  },
+  {
+   "id": "analyst_consensus_high_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4883,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Highest consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_high_nav_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 22,
+   "alphaCount": 48,
+   "description": "Current highest NAV estimate in the consensus"
+  },
+  {
+   "id": "analyst_consensus_low_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4883,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest consensus estimate value recorded four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_low_nav_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Current lowest NAV estimate in the consensus"
+  },
+  {
+   "id": "analyst_consensus_low_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4732,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Lowest consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_consensus_mean_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.481,
+   "userCount": 45,
+   "alphaCount": 89,
+   "description": "Mean consensus estimate 3 months ago"
+  },
+  {
+   "id": "analyst_consensus_mean_bps",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 43,
+   "alphaCount": 77,
+   "description": "Current mean of BPS consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_mean_bps_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 22,
+   "alphaCount": 28,
+   "description": "Mean BPS consensus 4 weeks ago"
+  },
+  {
+   "id": "analyst_consensus_mean_capex",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 21,
+   "alphaCount": 24,
+   "description": "Current mean of CPX consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_mean_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 117,
+   "alphaCount": 246,
+   "description": "Current mean consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_mean_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3878,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Mean consensus estimate value four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_mean_gps",
+   "type": "VECTOR",
+   "coverage": 0.4275,
+   "userCount": 28,
+   "alphaCount": 40,
+   "description": "Current mean of GPS consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_mean_net_earnings",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 21,
+   "alphaCount": 29,
+   "description": "Current mean of Net Earnings consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_mean_operating_profit",
+   "type": "VECTOR",
+   "coverage": 0.3996,
+   "userCount": 39,
+   "alphaCount": 52,
+   "description": "Mean of the current consensus Operating Profit estimates"
+  },
+  {
+   "id": "analyst_consensus_mean_roa",
+   "type": "VECTOR",
+   "coverage": 0.4675,
+   "userCount": 22,
+   "alphaCount": 23,
+   "description": "Current mean ROA consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_mean_roe",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 39,
+   "alphaCount": 59,
+   "description": "Current mean ROE consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_mean_roe_flash",
+   "type": "VECTOR",
+   "coverage": 0.5176,
+   "userCount": 28,
+   "alphaCount": 42,
+   "description": "Mean ROE consensus including flash (near real-time) updates"
+  },
+  {
+   "id": "analyst_consensus_mean_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3751,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Mean consensus estimate value three months ago"
+  },
+  {
+   "id": "analyst_consensus_median_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3878,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Median consensus estimate value four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_median_ebi_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.465,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Median EBI consensus estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_consensus_median_ebt_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Median EBT consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_consensus_median_estimate",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 23,
+   "alphaCount": 30,
+   "description": "Current median consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_median_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4883,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Median of consensus estimates four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_median_operating_profit",
+   "type": "VECTOR",
+   "coverage": 0.3996,
+   "userCount": 30,
+   "alphaCount": 70,
+   "description": "Median of the consensus Operating Profit (Opr) estimate for the specified forecast period"
+  },
+  {
+   "id": "analyst_consensus_median_prr",
+   "type": "VECTOR",
+   "coverage": 0.4712,
+   "userCount": 35,
+   "alphaCount": 89,
+   "description": "Current consensus median for the Prr metric across all contributing analysts"
+  },
+  {
+   "id": "analyst_consensus_median_roa",
+   "type": "VECTOR",
+   "coverage": 0.4675,
+   "userCount": 17,
+   "alphaCount": 86,
+   "description": "Current median ROA consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_median_roe",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Current median ROE consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_median_roe_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4641,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Median ROE consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_consensus_median_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3751,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Median consensus estimate value three months ago"
+  },
+  {
+   "id": "analyst_consensus_nav_mean",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 22,
+   "alphaCount": 41,
+   "description": "Current mean (average) consensus NAV estimate"
+  },
+  {
+   "id": "analyst_consensus_net_earnings_low",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 15,
+   "alphaCount": 21,
+   "description": "Lowest current Net Earnings consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_net_earnings_std_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3103,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Standard deviation of Net Earnings consensus estimates four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_revenue_high_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5298,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Highest sales/revenue estimate in the consensus 3 months ago"
+  },
+  {
+   "id": "analyst_consensus_revenue_low_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5298,
+   "userCount": 14,
+   "alphaCount": 17,
+   "description": "Lowest sales/revenue estimate in the consensus 3 months ago"
+  },
+  {
+   "id": "analyst_consensus_roa_high",
+   "type": "VECTOR",
+   "coverage": 0.4675,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Current highest ROA estimate in the consensus"
+  },
+  {
+   "id": "analyst_consensus_roa_low_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4173,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Lowest ROA consensus estimate recorded four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_roe_high",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Highest current ROE consensus estimate"
+  },
+  {
+   "id": "analyst_consensus_roe_low_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.474,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Lowest ROE consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_roe_stddev",
+   "type": "VECTOR",
+   "coverage": 0.2774,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current standard deviation of ROE consensus estimates"
+  },
+  {
+   "id": "analyst_consensus_std_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.318,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of consensus estimates 3 months ago"
+  },
+  {
+   "id": "analyst_consensus_stddev_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3343,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Standard deviation of consensus estimates three months ago"
+  },
+  {
+   "id": "analyst_consensus_stddev_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3252,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of consensus estimates four weeks ago"
+  },
+  {
+   "id": "analyst_consensus_summed_eps_mean_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5316,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Mean of the summed EPS consensus as of 3 months ago"
+  },
+  {
+   "id": "analyst_contrib_eps_count_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Number of contributing EPS estimates three months ago"
+  },
+  {
+   "id": "analyst_contributing_count_operating_profit_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Number of contributing Operating Profit estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_contributing_ebi_estimates_count",
+   "type": "VECTOR",
+   "coverage": 0.4835,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of contributing analyst EBI estimates in the current consensus"
+  },
+  {
+   "id": "analyst_contributor_count_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing estimates three months ago"
+  },
+  {
+   "id": "analyst_count_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Number of contributing analysts 3 months ago for the dividend per share consensus"
+  },
+  {
+   "id": "analyst_count_ebi_estimates_raised_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of analysts who raised EBI estimates in the last 4 weeks"
+  },
+  {
+   "id": "analyst_count_ebt_estimates_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of EBT estimates four weeks ago"
+  },
+  {
+   "id": "analyst_count_flash_capex_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Number of flash (near real-time) CPX estimates"
+  },
+  {
+   "id": "analyst_count_flash_roe",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of analyst inputs in the flash (near real-time) ROE consensus"
+  },
+  {
+   "id": "analyst_count_four_weeks_ago_dividend_per_share_consensus",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analysts 4 weeks ago for the dividend per share consensus"
+  },
+  {
+   "id": "analyst_count_lowered_ebi_estimates_1m",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Number of analysts who lowered EBI estimates in the last 1 month"
+  },
+  {
+   "id": "analyst_count_nav_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current number of contributing analyst NAV estimates"
+  },
+  {
+   "id": "analyst_count_nav_estimates_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analyst NAV estimates three months ago"
+  },
+  {
+   "id": "analyst_count_net_income_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Number of contributing estimates in the Net Income consensus 4 weeks ago"
+  },
+  {
+   "id": "analyst_count_prr_estimates_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of contributing Prr estimates as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_count_raised_estimates_1m",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Number of analysts who raised EBI estimates in the last 1 month"
+  },
+  {
+   "id": "analyst_count_revenue_estimates",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "Current number of analyst sales (revenue) estimates in the consensus"
+  },
+  {
+   "id": "analyst_count_roa_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Number of contributing analysts four weeks ago for ROA"
+  },
+  {
+   "id": "analyst_count_roe_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing ROE estimates three months ago"
+  },
+  {
+   "id": "analyst_count_roe_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of contributing ROE estimates four weeks ago"
+  },
+  {
+   "id": "analyst_count_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing estimates three months ago"
+  },
+  {
+   "id": "analyst_cpx_contrib_count_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of contributing CPX estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_cpx_lowered_estimates_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of CPX estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "analyst_cpx_upward_revision_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Number of CPX estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_current_low_estimate_90pct",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Lowest current individual estimate"
+  },
+  {
+   "id": "analyst_dividend_per_share_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4575,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Highest dividend per share estimate 3 months ago"
+  },
+  {
+   "id": "analyst_dividend_per_share_raises_1m_count",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 21,
+   "alphaCount": 41,
+   "description": "Number of dividend per share estimates raised in the last 1 month"
+  },
+  {
+   "id": "analyst_dividend_per_share_stddev",
+   "type": "VECTOR",
+   "coverage": 0.2952,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Current standard deviation of dividend per share consensus estimates"
+  },
+  {
+   "id": "analyst_downward_revision_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 24,
+   "alphaCount": 27,
+   "description": "Number of estimates revised downward in the last four weeks"
+  },
+  {
+   "id": "analyst_downward_revision_count_operating_profit_one_month",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of operating profit estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "analyst_earnings_before_tax_consensus_high_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Highest EBT consensus estimate value three months ago"
+  },
+  {
+   "id": "analyst_ebi_consensus_std_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3035,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of EBI consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_ebi_consensus_stddev",
+   "type": "VECTOR",
+   "coverage": 0.2928,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of the current EBI consensus estimates"
+  },
+  {
+   "id": "analyst_ebi_consensus_stddev_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3146,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of EBI consensus estimates 3 months ago"
+  },
+  {
+   "id": "analyst_ebi_estimate_count_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing EBI estimates 3 months ago"
+  },
+  {
+   "id": "analyst_ebi_estimates_count_4w_ago",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing EBI estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_ebi_estimates_lowered_count_1_week",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of EBI estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_ebi_high_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.465,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Highest EBI estimate recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_ebi_low_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4835,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Lowest current EBI estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_ebi_mean_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.465,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Mean EBI consensus estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_ebt_consensus_high",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Highest current EBT consensus estimate value"
+  },
+  {
+   "id": "analyst_ebt_consensus_low",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Lowest current EBT consensus estimate value"
+  },
+  {
+   "id": "analyst_ebt_estimates_lowered_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Count of EBT estimates lowered in the last one week"
+  },
+  {
+   "id": "analyst_ebt_estimates_raised_1m_count",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of EBT estimates raised in the last one month"
+  },
+  {
+   "id": "analyst_ebt_flash_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Number of analyst flash estimates currently contributing to the EBT consensus"
+  },
+  {
+   "id": "analyst_ebt_lowered_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 17,
+   "alphaCount": 20,
+   "description": "Number of EBT estimates lowered in the last one month"
+  },
+  {
+   "id": "analyst_ebt_raised_one_week_count",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Count of EBT estimates raised in the last one week"
+  },
+  {
+   "id": "analyst_eps_downward_revisions_last_four_weeks_count",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 40,
+   "alphaCount": 66,
+   "description": "Number of EPS estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_eps_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5316,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Highest EPS estimate in the consensus three months ago"
+  },
+  {
+   "id": "analyst_eps_lowered_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Number of EPS estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_eps_mean",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 100,
+   "alphaCount": 316,
+   "description": "Current mean of EPS consensus estimates"
+  },
+  {
+   "id": "analyst_eps_std_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3621,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of EPS estimates three months ago"
+  },
+  {
+   "id": "analyst_eps_std_flash",
+   "type": "VECTOR",
+   "coverage": 0.2811,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of flash (near real-time) EPS estimates"
+  },
+  {
+   "id": "analyst_eps_std_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3524,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of EPS estimates four weeks ago"
+  },
+  {
+   "id": "analyst_eps_stddev",
+   "type": "VECTOR",
+   "coverage": 0.3523,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current standard deviation of EPS consensus estimates"
+  },
+  {
+   "id": "analyst_eps_upward_revisions_4weeks",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 44,
+   "alphaCount": 67,
+   "description": "Number of EPS estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_estimate_bps_stddev_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.2829,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of BPS estimates 3 months ago"
+  },
+  {
+   "id": "analyst_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Current number of estimates contributing to the consensus"
+  },
+  {
+   "id": "analyst_estimate_count_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_estimate_count_net_earnings_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Net Earnings estimates three months ago"
+  },
+  {
+   "id": "analyst_estimate_count_roa_flash",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst estimates in the flash (intra-day) ROA consensus"
+  },
+  {
+   "id": "analyst_estimate_count_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of estimates 3 months ago"
+  },
+  {
+   "id": "analyst_estimate_std_dev_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3119,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_estimate_stddev",
+   "type": "VECTOR",
+   "coverage": 0.3025,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current standard deviation of estimates"
+  },
+  {
+   "id": "analyst_estimate_value",
+   "type": "VECTOR",
+   "coverage": 0.4518,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Estimated value submitted by the analyst"
+  },
+  {
+   "id": "analyst_estimates_lowered_num_one_week",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 21,
+   "alphaCount": 26,
+   "description": "Number of estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_estimates_raised_1w_count",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of EBI estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_estimates_raised_count_1w",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of estimates raised in the past 1 week"
+  },
+  {
+   "id": "analyst_estimates_raised_one_week_count",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_flash_bps_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Number of flash (near real-time) BPS estimates"
+  },
+  {
+   "id": "analyst_flash_count_net_income",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Number of analyst flash estimates included in the Net Income consensus"
+  },
+  {
+   "id": "analyst_flash_dividend_per_share_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of flash (near real-time) dividend per share estimates included"
+  },
+  {
+   "id": "analyst_flash_eps_count",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of flash (near real-time) EPS estimates"
+  },
+  {
+   "id": "analyst_flash_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Number of flash estimates"
+  },
+  {
+   "id": "analyst_flash_mean_eps",
+   "type": "VECTOR",
+   "coverage": 0.5949,
+   "userCount": 14,
+   "alphaCount": 26,
+   "description": "Mean of flash (near real-time) EPS estimates"
+  },
+  {
+   "id": "analyst_flash_nav_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "Number of flash (near real-time) NAV estimates"
+  },
+  {
+   "id": "analyst_flash_operating_profit_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of flash (near real-time) Operating Profit estimates"
+  },
+  {
+   "id": "analyst_gps_consensus_high_95pct",
+   "type": "VECTOR",
+   "coverage": 0.4275,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Current highest GPS consensus estimate"
+  },
+  {
+   "id": "analyst_gps_consensus_low_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4275,
+   "userCount": 19,
+   "alphaCount": 24,
+   "description": "Current lowest GPS consensus estimate"
+  },
+  {
+   "id": "analyst_gps_consensus_median_95_ci",
+   "type": "VECTOR",
+   "coverage": 0.4275,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Current median of GPS consensus estimates"
+  },
+  {
+   "id": "analyst_gps_consensus_stddev_95pct",
+   "type": "VECTOR",
+   "coverage": 0.2704,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current standard deviation of GPS consensus estimates"
+  },
+  {
+   "id": "analyst_gps_estimate_count",
+   "type": "VECTOR",
+   "coverage": 0.4275,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of GPS estimates contributing to the consensus"
+  },
+  {
+   "id": "analyst_high_bps_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4472,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Highest BPS estimate reported 3 months ago"
+  },
+  {
+   "id": "analyst_high_bps_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 15,
+   "alphaCount": 22,
+   "description": "Highest current BPS estimate"
+  },
+  {
+   "id": "analyst_high_bps_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest individual BPS estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_high_cpx_estimate_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3878,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Highest CPX estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_high_dividend_per_share_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Highest current dividend per share estimate in the consensus"
+  },
+  {
+   "id": "analyst_high_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 21,
+   "alphaCount": 28,
+   "description": "Highest current estimate"
+  },
+  {
+   "id": "analyst_high_estimate_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.481,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Highest estimate value recorded 3 months ago"
+  },
+  {
+   "id": "analyst_high_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5003,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Highest estimate value recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_high_estimate_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4469,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Highest EBI estimate recorded 3 months ago"
+  },
+  {
+   "id": "analyst_high_ner_estimate_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4737,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest NER estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_high_prr_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4712,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Highest current Prr estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_high_revenue_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Highest current sales (revenue) estimate"
+  },
+  {
+   "id": "analyst_high_roa_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.399,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Highest ROA consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_high_roe_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.474,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest ROE consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_high_sales_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5491,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Highest sales/revenue estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_highest_dividend_per_share_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4672,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Highest dividend per share estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_highest_ebi_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4835,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Highest current EBI estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_highest_ebt_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Highest EBT consensus estimate value as of four weeks ago"
+  },
+  {
+   "id": "analyst_highest_individual_estimate_certainty_90pct",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Highest current individual estimate"
+  },
+  {
+   "id": "analyst_highest_ner_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest NER estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_highest_operating_profit_estimate",
+   "type": "VECTOR",
+   "coverage": 0.3996,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Highest current Operating Profit estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_highest_prr_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4487,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest Prr estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_highest_roa_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4173,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest ROA estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "analyst_low_bps_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Lowest current BPS estimate"
+  },
+  {
+   "id": "analyst_low_bps_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest BPS estimate reported 4 weeks ago"
+  },
+  {
+   "id": "analyst_low_dividend_per_share_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4575,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest dividend per share estimate 3 months ago"
+  },
+  {
+   "id": "analyst_low_ebi_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.465,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest EBI estimate recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_low_ebi_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4469,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest EBI estimate recorded 3 months ago"
+  },
+  {
+   "id": "analyst_low_estimate_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.481,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest estimate value recorded 3 months ago"
+  },
+  {
+   "id": "analyst_lowered_count_one_week",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of estimates revised downward in the last 1 week"
+  },
+  {
+   "id": "analyst_lowered_dividend_per_share_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Number of dividend per share estimates lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_lowered_dividend_per_share_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of dividend per share estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_lowered_dividend_per_share_estimates_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of dividend per share estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_earnings_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Net Earnings estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_ebi_count_4_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of analysts who lowered EBI estimates in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_ebt_estimate_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Number of EBT estimates lowered in the last four weeks"
+  },
+  {
+   "id": "analyst_lowered_eps_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 19,
+   "alphaCount": 23,
+   "description": "Number of EPS estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "analyst_lowered_estimate_count_4_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Number of BPS estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_estimates_1m",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Number of estimates lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_lowered_estimates_last_four_weeks_count",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Number of estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_estimates_one_month_count",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 24,
+   "alphaCount": 35,
+   "description": "Number of estimates that were lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_lowered_nav_estimates_1m_count",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of NAV estimates lowered in the last one month"
+  },
+  {
+   "id": "analyst_lowered_net_income_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 11,
+   "alphaCount": 16,
+   "description": "Number of Net Income estimates lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_lowered_revenue_estimates_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Number of sales (revenue) estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "analyst_lowered_sales_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Number of sales/revenue estimates lowered (downward revisions) in the last 1 week"
+  },
+  {
+   "id": "analyst_lowest_bps_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4472,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest individual BPS estimate 3 months ago"
+  },
+  {
+   "id": "analyst_lowest_capex_estimate_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3751,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Lowest CPX estimate 3 months ago"
+  },
+  {
+   "id": "analyst_lowest_current_estimate_ninety_percent",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Lowest current estimate"
+  },
+  {
+   "id": "analyst_lowest_current_operating_profit_estimate",
+   "type": "VECTOR",
+   "coverage": 0.3996,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Lowest current Operating Profit estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_lowest_dividend_per_share_estimate_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4672,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest dividend per share estimate recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_lowest_ebt_consensus_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest EBT consensus estimate value three months ago"
+  },
+  {
+   "id": "analyst_lowest_ebt_consensus_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Lowest EBT consensus estimate value four weeks ago"
+  },
+  {
+   "id": "analyst_lowest_estimate_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5003,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Lowest estimate value recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_lowest_ner_estimate_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4737,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest NER estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_lowest_net_earnings_consensus_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Lowest Net Earnings consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_lowest_net_income_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5765,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Lowest Net Income estimate among contributors"
+  },
+  {
+   "id": "analyst_lowest_operating_profit_estimate_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3512,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest Operating Profit estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_lowest_operating_profit_estimate_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3767,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Lowest Operating Profit estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_lowest_revenue_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Lowest current sales (revenue) estimate"
+  },
+  {
+   "id": "analyst_lowest_revenue_estimate_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5491,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Lowest sales (revenue) estimate from 4 weeks ago"
+  },
+  {
+   "id": "analyst_lowest_roa_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4675,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Current lowest ROA estimate in the consensus"
+  },
+  {
+   "id": "analyst_lowest_roe_consensus",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Lowest current ROE consensus estimate"
+  },
+  {
+   "id": "analyst_mean_basis_points_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4472,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean BPS consensus 3 months ago"
+  },
+  {
+   "id": "analyst_mean_dividend_per_share",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 16,
+   "alphaCount": 19,
+   "description": "Current mean (average) dividend per share consensus estimate"
+  },
+  {
+   "id": "analyst_mean_dividend_per_share_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4575,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean dividend per share consensus estimate 3 months ago"
+  },
+  {
+   "id": "analyst_mean_dividend_per_share_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4672,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean dividend per share consensus estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_mean_earnings_before_tax_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 10,
+   "alphaCount": 45,
+   "description": "Mean EBT consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_mean_ebi_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4469,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Mean EBI consensus estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_mean_ebt_consensus",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Mean of the current EBT consensus estimates"
+  },
+  {
+   "id": "analyst_mean_ebt_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean EBT consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_mean_eps_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.543,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Mean EPS consensus value calculated four weeks ago"
+  },
+  {
+   "id": "analyst_mean_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4835,
+   "userCount": 10,
+   "alphaCount": 21,
+   "description": "Mean (average) of the current EBI consensus estimates"
+  },
+  {
+   "id": "analyst_mean_flash_basis_points",
+   "type": "VECTOR",
+   "coverage": 0.4972,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Mean of flash BPS estimates"
+  },
+  {
+   "id": "analyst_mean_flash_dividend_per_share",
+   "type": "VECTOR",
+   "coverage": 0.5028,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean of flash (near real-time) dividend per share estimates"
+  },
+  {
+   "id": "analyst_mean_flash_ebi",
+   "type": "VECTOR",
+   "coverage": 0.5187,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Mean of near real-time flash EBI estimates"
+  },
+  {
+   "id": "analyst_mean_flash_ebt_consensus",
+   "type": "VECTOR",
+   "coverage": 0.4903,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Mean of the flash EBT consensus estimates"
+  },
+  {
+   "id": "analyst_mean_flash_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5223,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Mean of flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_mean_flash_nav",
+   "type": "VECTOR",
+   "coverage": 0.4777,
+   "userCount": 13,
+   "alphaCount": 22,
+   "description": "Mean of flash (near real-time) NAV estimates"
+  },
+  {
+   "id": "analyst_mean_flash_operating_profit",
+   "type": "VECTOR",
+   "coverage": 0.4187,
+   "userCount": 19,
+   "alphaCount": 32,
+   "description": "Mean of flash (near real-time) Operating Profit estimates"
+  },
+  {
+   "id": "analyst_mean_flash_sales",
+   "type": "VECTOR",
+   "coverage": 0.6009,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Mean of flash (near real-time) sales estimates"
+  },
+  {
+   "id": "analyst_mean_nav_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4237,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean consensus NAV estimate four weeks ago"
+  },
+  {
+   "id": "analyst_mean_nav_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Mean consensus NAV estimate three months ago"
+  },
+  {
+   "id": "analyst_mean_net_earnings_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4737,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean of Net Earnings consensus estimates three months ago"
+  },
+  {
+   "id": "analyst_mean_net_earnings_flash",
+   "type": "VECTOR",
+   "coverage": 0.529,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Mean of Net Earnings flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_mean_net_earnings_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean of Net Earnings consensus estimates four weeks ago"
+  },
+  {
+   "id": "analyst_mean_net_income_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Mean of the Net Income consensus as of 3 months ago"
+  },
+  {
+   "id": "analyst_mean_net_income_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5513,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Mean of the Net Income consensus as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_mean_net_income_flash",
+   "type": "VECTOR",
+   "coverage": 0.601,
+   "userCount": 19,
+   "alphaCount": 27,
+   "description": "Mean Net Income consensus from flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_mean_operating_profit_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3512,
+   "userCount": 13,
+   "alphaCount": 22,
+   "description": "Mean Operating Profit consensus estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_mean_operating_profit_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3767,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Mean Operating Profit consensus estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_mean_pre_tax_profit_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5003,
+   "userCount": 11,
+   "alphaCount": 18,
+   "description": "Mean consensus estimate for pre-tax profit recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_mean_price_return_flash",
+   "type": "VECTOR",
+   "coverage": 0.4995,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Mean of SumPrr flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_mean_prr",
+   "type": "VECTOR",
+   "coverage": 0.4712,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Current consensus mean for the Prr metric across all contributing analysts"
+  },
+  {
+   "id": "analyst_mean_prr_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4363,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus mean for the Prr metric as of 3 months ago"
+  },
+  {
+   "id": "analyst_mean_revenue",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 16,
+   "alphaCount": 25,
+   "description": "Current mean sales (revenue) consensus estimate"
+  },
+  {
+   "id": "analyst_mean_revenue_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5491,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean sales/revenue consensus value 4 weeks ago"
+  },
+  {
+   "id": "analyst_mean_revenue_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5298,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Mean sales (revenue) consensus estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_mean_roa_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4173,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Mean ROA consensus estimate as of four weeks ago"
+  },
+  {
+   "id": "analyst_mean_roa_flash",
+   "type": "VECTOR",
+   "coverage": 0.465,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Mean ROA consensus including flash (intra-day) updates"
+  },
+  {
+   "id": "analyst_mean_roa_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.399,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean ROA consensus estimate as of three months ago"
+  },
+  {
+   "id": "analyst_mean_roe_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4641,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Mean ROE consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_mean_roe_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.474,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean ROE consensus estimate four weeks ago"
+  },
+  {
+   "id": "analyst_median_book_value_per_share_4w_ago",
+   "type": "VECTOR",
+   "coverage": 0.461,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median of the Book Value per Share (BPS) consensus as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_consensus_bps_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4472,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median BPS consensus 3 months ago"
+  },
+  {
+   "id": "analyst_median_consensus_estimate",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 16,
+   "alphaCount": 18,
+   "description": "Current median consensus estimate"
+  },
+  {
+   "id": "analyst_median_consensus_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4732,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median of consensus estimates three months ago"
+  },
+  {
+   "id": "analyst_median_dividend_per_share",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Current median dividend per share consensus estimate"
+  },
+  {
+   "id": "analyst_median_dividend_per_share_4w_ago",
+   "type": "VECTOR",
+   "coverage": 0.4672,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median dividend per share consensus estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_dividend_per_share_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4575,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median dividend per share consensus estimate 3 months ago"
+  },
+  {
+   "id": "analyst_median_ebi_consensus_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4469,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Median EBI consensus estimate 3 months ago"
+  },
+  {
+   "id": "analyst_median_ebt_estimate",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Median of the current EBT consensus estimates"
+  },
+  {
+   "id": "analyst_median_ebt_estimate_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Median EBT consensus estimate as of four weeks ago"
+  },
+  {
+   "id": "analyst_median_eps_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5316,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Median EPS consensus value calculated three months ago"
+  },
+  {
+   "id": "analyst_median_eps_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.543,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Median EPS consensus value calculated four weeks ago"
+  },
+  {
+   "id": "analyst_median_eps_estimate",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 35,
+   "alphaCount": 47,
+   "description": "Current median of EPS consensus estimates"
+  },
+  {
+   "id": "analyst_median_estimate_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.481,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Median estimate 3 months ago"
+  },
+  {
+   "id": "analyst_median_estimate_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5003,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Median estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_nav",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current median of the NAV consensus"
+  },
+  {
+   "id": "analyst_median_nav_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median NAV consensus as of 3 months ago"
+  },
+  {
+   "id": "analyst_median_nav_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4237,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Median consensus Net Asset Value (NAV) estimate as of four weeks ago"
+  },
+  {
+   "id": "analyst_median_net_earnings_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4737,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median of Net Earnings consensus estimates three months ago"
+  },
+  {
+   "id": "analyst_median_net_earnings_consensus",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current median of Net Earnings consensus estimates"
+  },
+  {
+   "id": "analyst_median_net_earnings_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median of Net Earnings consensus estimates four weeks ago"
+  },
+  {
+   "id": "analyst_median_net_income",
+   "type": "VECTOR",
+   "coverage": 0.5765,
+   "userCount": 22,
+   "alphaCount": 29,
+   "description": "Current median of the Net Income consensus estimates"
+  },
+  {
+   "id": "analyst_median_net_income_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5513,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Median of the Net Income consensus as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_net_income_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Median of the Net Income consensus as of 3 months ago"
+  },
+  {
+   "id": "analyst_median_operating_profit_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3512,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Median Operating Profit consensus estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_median_operating_profit_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3767,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Median Operating Profit consensus estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_prr_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4363,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Consensus median for the Prr metric as of 3 months ago"
+  },
+  {
+   "id": "analyst_median_prr_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4487,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Consensus median for the Prr metric as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_revenue_consensus",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Current median of the sales/revenue consensus estimates"
+  },
+  {
+   "id": "analyst_median_revenue_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5491,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median sales (revenue) estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_median_revenue_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5298,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Median sales/revenue consensus value 3 months ago"
+  },
+  {
+   "id": "analyst_median_roa_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4173,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Median ROA consensus estimate as of four weeks ago"
+  },
+  {
+   "id": "analyst_median_roa_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.399,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Median ROA consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_median_roe_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.474,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median ROE consensus estimate as of four weeks ago"
+  },
+  {
+   "id": "analyst_min_dividend_per_share",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Lowest current dividend per share estimate in the consensus"
+  },
+  {
+   "id": "analyst_nav_consensus_std_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2665,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of the NAV consensus as of four weeks ago"
+  },
+  {
+   "id": "analyst_nav_contributors_count_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of contributing NAV estimates as of four weeks ago"
+  },
+  {
+   "id": "analyst_nav_high_3_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Highest NAV estimate recorded three months ago"
+  },
+  {
+   "id": "analyst_nav_high_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4237,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest NAV estimate recorded four weeks ago"
+  },
+  {
+   "id": "analyst_nav_low_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4237,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Lowest NAV estimate recorded four weeks ago"
+  },
+  {
+   "id": "analyst_nav_low_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Lowest NAV estimate recorded three months ago"
+  },
+  {
+   "id": "analyst_nav_lowered_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of NAV estimates lowered in the past 1 week"
+  },
+  {
+   "id": "analyst_nav_lowered_count_last_4_weeks",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of NAV estimates revised downward in the last four weeks"
+  },
+  {
+   "id": "analyst_nav_raised_count_1w",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of NAV estimates raised in the past 1 week"
+  },
+  {
+   "id": "analyst_nav_std_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.2823,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of NAV estimates three months ago"
+  },
+  {
+   "id": "analyst_net_earnings_consensus_high",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Highest current Net Earnings consensus estimate"
+  },
+  {
+   "id": "analyst_net_earnings_consensus_stddev",
+   "type": "VECTOR",
+   "coverage": 0.3132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current standard deviation of Net Earnings consensus estimates"
+  },
+  {
+   "id": "analyst_net_earnings_estimates_raised_1_week",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of Net Earnings (NER) estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_net_earnings_raised_count_4w",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Net Earnings estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_net_earnings_std_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3177,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of Net Earnings consensus estimates as of three months ago"
+  },
+  {
+   "id": "analyst_net_income_consensus_mean",
+   "type": "VECTOR",
+   "coverage": 0.5765,
+   "userCount": 17,
+   "alphaCount": 37,
+   "description": "Current mean (average) of the Net Income consensus estimates"
+  },
+  {
+   "id": "analyst_net_income_downward_revision_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 30,
+   "alphaCount": 41,
+   "description": "Number of Net Income estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_net_income_estimate_count_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Number of contributing estimates in the Net Income consensus 3 months ago"
+  },
+  {
+   "id": "analyst_net_income_estimate_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest Net Income estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_net_income_high",
+   "type": "VECTOR",
+   "coverage": 0.5765,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Highest Net Income estimate among contributors"
+  },
+  {
+   "id": "analyst_net_income_high_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5513,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest Net Income estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_net_income_low_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest Net Income estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_net_income_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5513,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Lowest Net Income estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_net_income_raised_count_one_week",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Number of Net Income estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_net_income_std_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3551,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of Net Income estimates as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_net_income_std_flash",
+   "type": "VECTOR",
+   "coverage": 0.3044,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of flash Net Income consensus estimates"
+  },
+  {
+   "id": "analyst_net_income_stddev",
+   "type": "VECTOR",
+   "coverage": 0.3604,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current standard deviation of the Net Income consensus estimates"
+  },
+  {
+   "id": "analyst_net_income_stdev_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of Net Income estimates as of 3 months ago"
+  },
+  {
+   "id": "analyst_net_income_upward_revisions_1m_count",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 32,
+   "alphaCount": 58,
+   "description": "Number of Net Income estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "analyst_net_income_upward_revisions_4_weeks_count",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 35,
+   "alphaCount": 54,
+   "description": "Number of Net Income estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_net_profit_lowered_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of Net Profit consensus estimates that were lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_net_profit_lowered_num_one_week",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Net Profit consensus estimates that were lowered in the last 1 week"
+  },
+  {
+   "id": "analyst_num_book_value_per_share_estimates_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing BPS estimates 3 months ago"
+  },
+  {
+   "id": "analyst_num_bps_raises_4w",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Number of BPS estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_num_capex_estimates_lowered_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of CPX estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_num_contributing_bps_estimates_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing BPS estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_num_contributing_estimates_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Number of contributing Prr estimates as of 3 months ago"
+  },
+  {
+   "id": "analyst_num_contributing_roe_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Current number of contributing ROE estimates"
+  },
+  {
+   "id": "analyst_num_contributors_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 4,
+   "alphaCount": 16,
+   "description": "Number of contributing estimates four weeks ago"
+  },
+  {
+   "id": "analyst_num_cpx_contributors",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Current number of contributing CPX estimates"
+  },
+  {
+   "id": "analyst_num_dividend_per_share_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current number of dividend per share estimates contributing to the consensus"
+  },
+  {
+   "id": "analyst_num_ebt_estimates_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of EBT estimates three months ago"
+  },
+  {
+   "id": "analyst_num_eps_contributors",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current number of contributing EPS estimates"
+  },
+  {
+   "id": "analyst_num_eps_contributors_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of contributing EPS estimates four weeks ago"
+  },
+  {
+   "id": "analyst_num_eps_estimates_raised_one_week",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Number of EPS estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_num_estimates_ebt_consensus",
+   "type": "VECTOR",
+   "coverage": 0.459,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of analyst estimates in the current EBT consensus"
+  },
+  {
+   "id": "analyst_num_estimates_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of estimates lowered in the past 1 week"
+  },
+  {
+   "id": "analyst_num_estimates_raised_1m",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of estimates that were raised in the last 1 month"
+  },
+  {
+   "id": "analyst_num_flash_ebi_estimates",
+   "type": "VECTOR",
+   "coverage": 0.5285,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Number of contributing flash EBI estimates"
+  },
+  {
+   "id": "analyst_num_flash_net_earnings_estimates",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of Net Earnings flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_num_flash_sales_estimates",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of flash (near real-time) sales estimates currently included"
+  },
+  {
+   "id": "analyst_num_lowered_net_income_estimates_one_month",
+   "type": "VECTOR",
+   "coverage": 0.6139,
+   "userCount": 27,
+   "alphaCount": 38,
+   "description": "Number of Net Income estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "analyst_num_lowered_sales_estimates_1_month",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of sales (revenue) estimates lowered in the last 1 month"
+  },
+  {
+   "id": "analyst_num_nav_estimates_raised_1m",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of NAV estimates revised upward in the last one month"
+  },
+  {
+   "id": "analyst_num_net_earnings_estimates",
+   "type": "VECTOR",
+   "coverage": 0.5041,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current number of contributing Net Earnings estimates"
+  },
+  {
+   "id": "analyst_num_net_earnings_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of Net Earnings estimates four weeks ago"
+  },
+  {
+   "id": "analyst_num_operating_profit_contributors",
+   "type": "VECTOR",
+   "coverage": 0.3996,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current number of analysts contributing operating profit estimates to the consensus"
+  },
+  {
+   "id": "analyst_num_operating_profit_estimates_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of contributing Operating Profit estimates 3 months ago"
+  },
+  {
+   "id": "analyst_num_prr_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4712,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current number of contributing analyst Prr estimates used in the consensus"
+  },
+  {
+   "id": "analyst_num_raised_net_earnings_1m",
+   "type": "VECTOR",
+   "coverage": 0.5367,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of Net Earnings estimates raised in the last 1 month"
+  },
+  {
+   "id": "analyst_num_revenue_estimates_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of analyst sales (revenue) estimates recorded 3 months ago"
+  },
+  {
+   "id": "analyst_num_roa_estimates",
+   "type": "VECTOR",
+   "coverage": 0.4675,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current number of contributing estimates for the ROA consensus"
+  },
+  {
+   "id": "analyst_num_roa_estimates_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of contributing ROA estimates three months ago"
+  },
+  {
+   "id": "analyst_num_roa_estimates_raised_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of ROA estimates raised in the last four weeks"
+  },
+  {
+   "id": "analyst_num_roe_estimates_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Number of ROE estimates lowered in the past 1 week"
+  },
+  {
+   "id": "analyst_num_roe_estimates_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of ROE estimates raised in the past 1 week"
+  },
+  {
+   "id": "analyst_num_sales_estimates_raised_1m",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of sales (revenue) estimates raised in the last 1 month"
+  },
+  {
+   "id": "analyst_num_sales_estimates_raised_last_4_weeks",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Number of sales (revenue) estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_num_sales_revenue_estimates_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Number of sales/revenue estimates raised (upward revisions) in the last 1 week"
+  },
+  {
+   "id": "analyst_num_upward_revisions_1m",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Number of estimates raised in the last 1 month"
+  },
+  {
+   "id": "analyst_operating_profit_downward_revision_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of operating profit estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_operating_profit_estimate_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3767,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Highest Operating Profit estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_operating_profit_high_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3512,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Highest Operating Profit estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_operating_profit_raised_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of operating profit estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_operating_profit_revisions_down_1wk_count",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of operating profit estimates revised downward in the last 1 week"
+  },
+  {
+   "id": "analyst_pretax_profit_raised_1w_count",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of Pre-tax Profit estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_previous_estimate_value",
+   "type": "VECTOR",
+   "coverage": 0.3845,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previously reported estimate value before the latest revision"
+  },
+  {
+   "id": "analyst_previous_exclusion_flag",
+   "type": "VECTOR",
+   "coverage": 0.4518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous exclusion flag status before the latest update"
+  },
+  {
+   "id": "analyst_price_target_count",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 104,
+   "alphaCount": 331,
+   "description": "Number of contributing analyst price target estimates in the current consensus"
+  },
+  {
+   "id": "analyst_price_target_high",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 154,
+   "alphaCount": 420,
+   "description": "Highest price target estimate in the current consensus"
+  },
+  {
+   "id": "analyst_price_target_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4363,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Highest Prr estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_price_target_low",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 122,
+   "alphaCount": 348,
+   "description": "Lowest price target estimate in the current consensus"
+  },
+  {
+   "id": "analyst_price_target_lowered_count_4_weeks",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 161,
+   "alphaCount": 443,
+   "description": "Number of price target estimates lowered in the past 4 weeks"
+  },
+  {
+   "id": "analyst_price_target_mean",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 273,
+   "alphaCount": 710,
+   "description": "Mean (average) of the current consensus price target estimates"
+  },
+  {
+   "id": "analyst_price_target_median",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 199,
+   "alphaCount": 537,
+   "description": "Median of the current consensus price target estimates"
+  },
+  {
+   "id": "analyst_price_target_raised_count_four_weeks",
+   "type": "MATRIX",
+   "coverage": 0.6648,
+   "userCount": 197,
+   "alphaCount": 505,
+   "description": "Number of price target estimates raised in the past 4 weeks"
+  },
+  {
+   "id": "analyst_price_target_std",
+   "type": "MATRIX",
+   "coverage": 0.3924,
+   "userCount": 95,
+   "alphaCount": 218,
+   "description": "Standard deviation of the current consensus price target estimates"
+  },
+  {
+   "id": "analyst_prr_consensus_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4487,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Consensus mean for the Prr metric as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_prr_low_4_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4487,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Lowest Prr estimate as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_prr_low_estimate",
+   "type": "VECTOR",
+   "coverage": 0.4712,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Lowest current Prr estimate among contributing analysts"
+  },
+  {
+   "id": "analyst_prr_low_estimate_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4363,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest Prr estimate as of 3 months ago"
+  },
+  {
+   "id": "analyst_prr_lowered_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of Prr estimates revised downward in the last 1 week"
+  },
+  {
+   "id": "analyst_prr_std_dev_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.2623,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of Prr estimates as of 3 months ago"
+  },
+  {
+   "id": "analyst_prr_upward_revision_count_one_week",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of Prr estimates revised upward in the last 1 week"
+  },
+  {
+   "id": "analyst_raised_bps_count_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of BPS estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_raised_count_last_4_weeks",
+   "type": "VECTOR",
+   "coverage": 0.535,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Number of estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_raised_count_last_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5633,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_raised_dps_1wk_count",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Number of dividend per share estimates raised in the last 1 week"
+  },
+  {
+   "id": "analyst_raised_dps_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5222,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Number of dividend per share estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "analyst_raised_ebt_estimates_4wks_count",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of EBT estimates raised in the last four weeks"
+  },
+  {
+   "id": "analyst_raised_operating_profit_1w_num",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of operating profit estimates revised upward in the last 1 week"
+  },
+  {
+   "id": "analyst_raised_roa_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of ROA estimates raised in the last one month"
+  },
+  {
+   "id": "analyst_return_on_assets_low_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.399,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Lowest ROA consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_revenue_stdev_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3563,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sales (revenue) estimates as of 4 weeks ago"
+  },
+  {
+   "id": "analyst_roa_estimates_lowered_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of ROA estimates lowered in the last four weeks"
+  },
+  {
+   "id": "analyst_roa_lowered_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Number of ROA estimates lowered in the last one month"
+  },
+  {
+   "id": "analyst_roa_lowered_count_one_week",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of ROA estimates revised downward in the past 1 week"
+  },
+  {
+   "id": "analyst_roa_upward_revisions_one_week",
+   "type": "VECTOR",
+   "coverage": 0.4837,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of ROA estimates revised upward in the past 1 week"
+  },
+  {
+   "id": "analyst_roe_high_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.4641,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest ROE consensus estimate three months ago"
+  },
+  {
+   "id": "analyst_roe_low_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.4641,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Lowest ROE consensus estimate recorded three months ago"
+  },
+  {
+   "id": "analyst_roe_lowered_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Number of ROE estimates lowered over the past four weeks"
+  },
+  {
+   "id": "analyst_roe_lowered_count_one_month",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of ROE estimates lowered in the last one month"
+  },
+  {
+   "id": "analyst_roe_raised_count_one_month",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Number of ROE estimates raised in the last one month"
+  },
+  {
+   "id": "analyst_roe_std_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2909,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of ROE consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_roe_upward_revisions_count_four_weeks",
+   "type": "VECTOR",
+   "coverage": 0.5342,
+   "userCount": 5,
+   "alphaCount": 13,
+   "description": "Number of ROE estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "analyst_sales_estimates_count_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6162,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of analyst sales (revenue) estimates recorded 4 weeks ago"
+  },
+  {
+   "id": "analyst_sales_std_95pct",
+   "type": "VECTOR",
+   "coverage": 0.3614,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current standard deviation of sales (revenue) estimates"
+  },
+  {
+   "id": "analyst_sales_stddev_flash",
+   "type": "VECTOR",
+   "coverage": 0.2973,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of flash (near real-time) sales estimates"
+  },
+  {
+   "id": "analyst_sales_stddev_three_months_ago",
+   "type": "VECTOR",
+   "coverage": 0.3675,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of sales (revenue) estimates as of 3 months ago"
+  },
+  {
+   "id": "analyst_std_dividend_per_share_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.3132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of dividend per share consensus estimates as of 3 months ago"
+  },
+  {
+   "id": "analyst_stddev_dividend_per_share_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3036,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of dividend per share consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "analyst_stddev_roe_3m_ago",
+   "type": "VECTOR",
+   "coverage": 0.2995,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of ROE consensus estimates 3 months ago"
+  },
+  {
+   "id": "analyst_summed_eps_high_four_weeks_ago",
+   "type": "VECTOR",
+   "coverage": 0.543,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Highest summed EPS estimate 4 weeks ago"
+  },
+  {
+   "id": "analyst_sumprr_flash_count",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of SumPrr flash (near real-time) estimates"
+  },
+  {
+   "id": "analyst_sumprr_lowered_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of SumPrr estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "analyst_upward_nav_revision_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4868,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of NAV estimates revised upward in the last four weeks"
+  },
+  {
+   "id": "analyst_upward_revision_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of SumPrr estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "analyst_upward_revision_count_operating_profit_1m",
+   "type": "VECTOR",
+   "coverage": 0.4349,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of operating profit estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "analyst_upward_revisions_1m_count",
+   "type": "VECTOR",
+   "coverage": 0.4721,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of CPX estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "analyst_upward_revisions_count_1m",
+   "type": "VECTOR",
+   "coverage": 0.6095,
+   "userCount": 20,
+   "alphaCount": 66,
+   "description": "Number of EPS estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "analyst_upward_revisions_count_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5105,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of SumPrr estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "est_12m_bps_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2829,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Standard deviation of Book Value Per Share estimates three months ago"
+  },
+  {
+   "id": "est_12m_csh_high",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 17,
+   "alphaCount": 25,
+   "description": "Current highest estimate in the cash-related consensus"
+  },
+  {
+   "id": "est_12m_csh_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4429,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Highest estimate in the cash (Csh) consensus as of 3 months ago"
+  },
+  {
+   "id": "est_12m_csh_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4519,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Highest estimate in the cash (Csh) consensus as of 4 weeks ago"
+  },
+  {
+   "id": "est_12m_csh_low",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Current lowest estimate in the cash-related consensus"
+  },
+  {
+   "id": "est_12m_csh_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4429,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest estimate in the cash (Csh) consensus as of 3 months ago"
+  },
+  {
+   "id": "est_12m_csh_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4519,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest estimate in the cash (Csh) consensus as of 4 weeks ago"
+  },
+  {
+   "id": "est_12m_csh_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of cash (Csh) estimates lowered in the past 1 week"
+  },
+  {
+   "id": "est_12m_csh_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of analyst estimates for the cash (Csh) measure revised downward in the last 1 month"
+  },
+  {
+   "id": "est_12m_csh_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of analyst estimates for the cash (Csh) measure revised downward in the last 4 weeks"
+  },
+  {
+   "id": "est_12m_csh_mean",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 29,
+   "alphaCount": 36,
+   "description": "Current mean of the cash-related consensus estimates"
+  },
+  {
+   "id": "est_12m_csh_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.4824,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Mean of the flash (intra-day) analyst estimates"
+  },
+  {
+   "id": "est_12m_csh_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4429,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean of the CSH consensus estimates 3 months ago"
+  },
+  {
+   "id": "est_12m_csh_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4519,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Mean of the CSH consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "est_12m_csh_median",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Current median of the cash-related consensus estimates"
+  },
+  {
+   "id": "est_12m_csh_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4429,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median of the CSH consensus estimates 3 months ago"
+  },
+  {
+   "id": "est_12m_csh_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4519,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Median of the CSH consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "est_12m_csh_num",
+   "type": "VECTOR",
+   "coverage": 0.3964,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current number of contributing estimates in the cash-related consensus"
+  },
+  {
+   "id": "est_12m_csh_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of flash (intra-day) analyst estimates currently included in the consensus for this metric"
+  },
+  {
+   "id": "est_12m_csh_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing estimates as of 3 months ago for the cash (Csh) consensus"
+  },
+  {
+   "id": "est_12m_csh_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of contributing estimates as of 4 weeks ago for the cash (Csh) consensus"
+  },
+  {
+   "id": "est_12m_csh_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of cash (Csh) estimates raised in the past 1 week"
+  },
+  {
+   "id": "est_12m_csh_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analyst estimates for the cash (Csh) measure revised upward in the last 1 month"
+  },
+  {
+   "id": "est_12m_csh_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4947,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analyst estimates for the cash (Csh) measure revised upward in the last 4 weeks"
+  },
+  {
+   "id": "est_12m_csh_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2902,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of cash (Csh) consensus estimates as of 3 months ago"
+  },
+  {
+   "id": "est_12m_csh_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.277,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of cash (Csh) consensus estimates as of 4 weeks ago"
+  },
+  {
+   "id": "est_12m_roe_std",
+   "type": "VECTOR",
+   "coverage": 0.2772,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of current ROE consensus estimates"
+  },
+  {
+   "id": "est_12m_roe_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2994,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of ROE estimates three months ago"
+  },
+  {
+   "id": "est_12m_roe_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2908,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of ROE consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_bps_high",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 31,
+   "alphaCount": 45,
+   "description": "Current highest Book Value Per Share estimate in the consensus"
+  },
+  {
+   "id": "est_q_bps_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4471,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Highest Book Value Per Share estimate three months ago"
+  },
+  {
+   "id": "est_q_bps_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4609,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Highest Book Value Per Share estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_bps_low",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 23,
+   "alphaCount": 34,
+   "description": "Current lowest Book Value Per Share estimate in the consensus"
+  },
+  {
+   "id": "est_q_bps_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4471,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest Book Value Per Share estimate three months ago"
+  },
+  {
+   "id": "est_q_bps_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4609,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Lowest Book Value Per Share estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_bps_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 12,
+   "alphaCount": 22,
+   "description": "Number of BPS estimates lowered in the last 1 week"
+  },
+  {
+   "id": "est_q_bps_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 19,
+   "alphaCount": 28,
+   "description": "Number of BPS estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "est_q_bps_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Number of BPS estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "est_q_bps_mean",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 55,
+   "alphaCount": 80,
+   "description": "Current mean of Book Value Per Share consensus estimates"
+  },
+  {
+   "id": "est_q_bps_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.4971,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Mean of near real-time (flash) BPS estimates"
+  },
+  {
+   "id": "est_q_bps_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4471,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Mean Book Value Per Share estimate three months ago"
+  },
+  {
+   "id": "est_q_bps_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4609,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Mean Book Value Per Share estimate four weeks ago"
+  },
+  {
+   "id": "est_q_bps_median",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 28,
+   "alphaCount": 48,
+   "description": "Current median of Book Value Per Share consensus estimates"
+  },
+  {
+   "id": "est_q_bps_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4471,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Median Book Value Per Share estimate three months ago"
+  },
+  {
+   "id": "est_q_bps_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4609,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Median Book Value Per Share estimate four weeks ago"
+  },
+  {
+   "id": "est_q_bps_num",
+   "type": "VECTOR",
+   "coverage": 0.4733,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Current number of Book Value Per Share estimates in the consensus"
+  },
+  {
+   "id": "est_q_bps_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of flash Book Value Per Share estimates contributing to the consensus"
+  },
+  {
+   "id": "est_q_bps_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of Book Value Per Share estimates three months ago"
+  },
+  {
+   "id": "est_q_bps_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Number of Book Value Per Share estimates four weeks ago"
+  },
+  {
+   "id": "est_q_bps_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Number of BPS estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_bps_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Number of BPS estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "est_q_bps_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5113,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Number of BPS estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "est_q_bps_std",
+   "type": "VECTOR",
+   "coverage": 0.2705,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of current BPS consensus estimates"
+  },
+  {
+   "id": "est_q_bps_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2736,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Standard deviation of Book Value Per Share estimates four weeks ago"
+  },
+  {
+   "id": "est_q_cps_high",
+   "type": "VECTOR",
+   "coverage": 0.3089,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Highest current Cash Flow per Share estimate among contributors"
+  },
+  {
+   "id": "est_q_cps_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2765,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest CPS consensus estimate recorded three months ago"
+  },
+  {
+   "id": "est_q_cps_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2876,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest CPS consensus estimate recorded four weeks ago"
+  },
+  {
+   "id": "est_q_cps_low",
+   "type": "VECTOR",
+   "coverage": 0.3089,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Lowest current Cash Flow per Share estimate among contributors"
+  },
+  {
+   "id": "est_q_cps_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2765,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest cash flow per share estimate 3 months ago"
+  },
+  {
+   "id": "est_q_cps_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2876,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest CPS consensus estimate recorded four weeks ago"
+  },
+  {
+   "id": "est_q_cps_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Count of CPS estimates revised downward in the last 1 week"
+  },
+  {
+   "id": "est_q_cps_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 15,
+   "alphaCount": 24,
+   "description": "Count of CPS estimates revised downward in the last 1 month"
+  },
+  {
+   "id": "est_q_cps_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "Count of CPS estimates revised downward in the last 4 weeks"
+  },
+  {
+   "id": "est_q_cps_mean",
+   "type": "VECTOR",
+   "coverage": 0.3089,
+   "userCount": 12,
+   "alphaCount": 22,
+   "description": "Current mean (average) of cash flow per share consensus estimates"
+  },
+  {
+   "id": "est_q_cps_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.3155,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean of the CPS flash (near real-time) consensus estimates"
+  },
+  {
+   "id": "est_q_cps_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2765,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean CPS consensus value as of three months ago"
+  },
+  {
+   "id": "est_q_cps_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2876,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean CPS consensus value as of four weeks ago"
+  },
+  {
+   "id": "est_q_cps_median",
+   "type": "VECTOR",
+   "coverage": 0.3089,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Current median of consensus estimates"
+  },
+  {
+   "id": "est_q_cps_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2765,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Median CPS consensus value as of three months ago"
+  },
+  {
+   "id": "est_q_cps_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2876,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median CPS consensus value as of four weeks ago"
+  },
+  {
+   "id": "est_q_cps_num",
+   "type": "VECTOR",
+   "coverage": 0.3089,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current number of contributing estimates"
+  },
+  {
+   "id": "est_q_cps_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of flash (near real-time) estimates"
+  },
+  {
+   "id": "est_q_cps_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing estimates/analysts for CPS consensus three months ago"
+  },
+  {
+   "id": "est_q_cps_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of contributing cash flow per share estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_cps_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of CPS estimates revised upward in the last 1 week"
+  },
+  {
+   "id": "est_q_cps_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Count of CPS estimates revised upward in the last 1 month"
+  },
+  {
+   "id": "est_q_cps_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.3367,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Count of CPS estimates revised upward in the last 4 weeks"
+  },
+  {
+   "id": "est_q_dps_high",
+   "type": "VECTOR",
+   "coverage": 0.4863,
+   "userCount": 27,
+   "alphaCount": 48,
+   "description": "Highest current DPS estimate among contributing analysts"
+  },
+  {
+   "id": "est_q_dps_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4573,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest DPS consensus estimate three months ago"
+  },
+  {
+   "id": "est_q_dps_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4668,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest dividend per share (DPS) consensus estimate recorded four weeks ago"
+  },
+  {
+   "id": "est_q_dps_low",
+   "type": "VECTOR",
+   "coverage": 0.4863,
+   "userCount": 20,
+   "alphaCount": 27,
+   "description": "Lowest current DPS estimate among contributing analysts"
+  },
+  {
+   "id": "est_q_dps_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4573,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest DPS consensus estimate three months ago"
+  },
+  {
+   "id": "est_q_dps_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4668,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest DPS consensus estimate recorded four weeks ago"
+  },
+  {
+   "id": "est_q_dps_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Number of DPS estimates lowered in the last one week"
+  },
+  {
+   "id": "est_q_dps_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Number of DPS estimates lowered in the last one month"
+  },
+  {
+   "id": "est_q_dps_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 17,
+   "alphaCount": 24,
+   "description": "Number of DPS estimates lowered in the last four weeks"
+  },
+  {
+   "id": "est_q_dps_mean",
+   "type": "VECTOR",
+   "coverage": 0.4863,
+   "userCount": 56,
+   "alphaCount": 156,
+   "description": "Current mean DPS consensus estimate"
+  },
+  {
+   "id": "est_q_dps_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.5028,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Mean of flash (near real-time) DPS estimates"
+  },
+  {
+   "id": "est_q_dps_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4573,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean DPS consensus value calculated three months ago"
+  },
+  {
+   "id": "est_q_dps_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4668,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Mean DPS consensus value calculated four weeks ago"
+  },
+  {
+   "id": "est_q_dps_median",
+   "type": "VECTOR",
+   "coverage": 0.4863,
+   "userCount": 29,
+   "alphaCount": 54,
+   "description": "Current median DPS consensus estimate"
+  },
+  {
+   "id": "est_q_dps_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4573,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Median DPS consensus estimate three months ago"
+  },
+  {
+   "id": "est_q_dps_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4668,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Median DPS consensus value as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_dps_num",
+   "type": "VECTOR",
+   "coverage": 0.4863,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current number of contributing analysts in the DPS consensus"
+  },
+  {
+   "id": "est_q_dps_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of flash DPS estimates"
+  },
+  {
+   "id": "est_q_dps_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing analysts to the DPS consensus three months ago"
+  },
+  {
+   "id": "est_q_dps_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing analysts to the DPS consensus four weeks ago"
+  },
+  {
+   "id": "est_q_dps_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Number of DPS estimates raised in the last one week"
+  },
+  {
+   "id": "est_q_dps_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 12,
+   "alphaCount": 19,
+   "description": "Number of DPS estimates raised in the last one month"
+  },
+  {
+   "id": "est_q_dps_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.522,
+   "userCount": 18,
+   "alphaCount": 25,
+   "description": "Number of DPS estimates raised in the last four weeks"
+  },
+  {
+   "id": "est_q_dps_std",
+   "type": "VECTOR",
+   "coverage": 0.2952,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current standard deviation of the DPS consensus estimates"
+  },
+  {
+   "id": "est_q_dps_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.313,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of DPS consensus estimates three months ago"
+  },
+  {
+   "id": "est_q_dps_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3033,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Standard deviation of DPS consensus estimates four weeks ago"
+  },
+  {
+   "id": "est_q_ebi_high",
+   "type": "VECTOR",
+   "coverage": 0.4833,
+   "userCount": 26,
+   "alphaCount": 45,
+   "description": "Current highest EBI estimate"
+  },
+  {
+   "id": "est_q_ebi_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4467,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest EBI estimate in the consensus 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4648,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest EBI estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebi_low",
+   "type": "VECTOR",
+   "coverage": 0.4833,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Current lowest EBI estimate in the consensus"
+  },
+  {
+   "id": "est_q_ebi_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4467,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest EBI estimate 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4648,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest EBI estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebi_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of EBI estimates lowered in the last 1 week"
+  },
+  {
+   "id": "est_q_ebi_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Number of EBI estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_ebi_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Number of EBI estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_ebi_mean",
+   "type": "VECTOR",
+   "coverage": 0.4833,
+   "userCount": 34,
+   "alphaCount": 56,
+   "description": "Current mean consensus EBI estimate"
+  },
+  {
+   "id": "est_q_ebi_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.5187,
+   "userCount": 19,
+   "alphaCount": 26,
+   "description": "Mean of flash Earnings Before Interest consensus estimates"
+  },
+  {
+   "id": "est_q_ebi_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4467,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Mean EBI consensus 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4648,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean EBI consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebi_median",
+   "type": "VECTOR",
+   "coverage": 0.4833,
+   "userCount": 29,
+   "alphaCount": 39,
+   "description": "Current median of EBI consensus estimates"
+  },
+  {
+   "id": "est_q_ebi_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4467,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Median EBI consensus 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4648,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median EBI consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebi_num",
+   "type": "VECTOR",
+   "coverage": 0.4833,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Current number of contributing EBI estimates"
+  },
+  {
+   "id": "est_q_ebi_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of flash (near real-time) EBI estimates/analysts"
+  },
+  {
+   "id": "est_q_ebi_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing EBI estimates 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of contributing EBI estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebi_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Number of EBI estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_ebi_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of Earnings Before Interest estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_ebi_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5283,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of EBI estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "est_q_ebi_std",
+   "type": "VECTOR",
+   "coverage": 0.2931,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Current standard deviation of EBI estimates"
+  },
+  {
+   "id": "est_q_ebi_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.3143,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of EBI estimates 3 months ago"
+  },
+  {
+   "id": "est_q_ebi_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3033,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of EBI estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_ebt_high",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "Highest current analyst estimate in the consensus for Earnings Before Taxes (EBT) for the specified forecast period"
+  },
+  {
+   "id": "est_q_ebt_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest EBT estimate three months ago"
+  },
+  {
+   "id": "est_q_ebt_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest EBT estimate four weeks ago"
+  },
+  {
+   "id": "est_q_ebt_low",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 9,
+   "alphaCount": 15,
+   "description": "Lowest current analyst estimate in the EBT consensus"
+  },
+  {
+   "id": "est_q_ebt_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Lowest EBT (Earnings Before Tax) estimate in the consensus 3 months ago"
+  },
+  {
+   "id": "est_q_ebt_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Lowest EBT estimate four weeks ago"
+  },
+  {
+   "id": "est_q_ebt_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of EBT estimates lowered in the last one week"
+  },
+  {
+   "id": "est_q_ebt_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Number of EBT estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_ebt_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Count of EBT estimates revised downward in the last four weeks"
+  },
+  {
+   "id": "est_q_ebt_mean",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Current mean (average) of EBT consensus estimates"
+  },
+  {
+   "id": "est_q_ebt_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.4904,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "Mean of flash EBT estimates"
+  },
+  {
+   "id": "est_q_ebt_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean EBT consensus value as of three months ago"
+  },
+  {
+   "id": "est_q_ebt_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Mean EBT consensus value as of four weeks ago"
+  },
+  {
+   "id": "est_q_ebt_median",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 17,
+   "alphaCount": 29,
+   "description": "Current median EBT estimate"
+  },
+  {
+   "id": "est_q_ebt_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4096,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median EBT consensus as of three months ago"
+  },
+  {
+   "id": "est_q_ebt_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.422,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Median EBT consensus as of four weeks ago"
+  },
+  {
+   "id": "est_q_ebt_num",
+   "type": "VECTOR",
+   "coverage": 0.4589,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current number of contributing analyst EBT estimates"
+  },
+  {
+   "id": "est_q_ebt_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of flash EBT estimates"
+  },
+  {
+   "id": "est_q_ebt_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of analyst EBT (Earnings Before Tax) estimates in the consensus 3 months ago"
+  },
+  {
+   "id": "est_q_ebt_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of estimates contributing to EBT consensus four weeks ago"
+  },
+  {
+   "id": "est_q_ebt_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "Number of EBT estimates raised in the last one week"
+  },
+  {
+   "id": "est_q_ebt_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Number of EBT estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_ebt_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4988,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Count of EBT estimates revised upward in the last four weeks"
+  },
+  {
+   "id": "est_q_eps_high",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 64,
+   "alphaCount": 100,
+   "description": "Highest current EPS estimate in the consensus"
+  },
+  {
+   "id": "est_q_eps_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest EPS estimate three months ago"
+  },
+  {
+   "id": "est_q_eps_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5428,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Highest EPS estimate four weeks ago"
+  },
+  {
+   "id": "est_q_eps_low",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 56,
+   "alphaCount": 97,
+   "description": "Lowest current EPS estimate in the consensus"
+  },
+  {
+   "id": "est_q_eps_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Lowest EPS estimate three months ago"
+  },
+  {
+   "id": "est_q_eps_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5428,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Lowest EPS estimate four weeks ago"
+  },
+  {
+   "id": "est_q_eps_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Number of EPS estimates lowered in the last 1 week"
+  },
+  {
+   "id": "est_q_eps_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 38,
+   "alphaCount": 59,
+   "description": "Number of EPS estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_eps_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 61,
+   "alphaCount": 134,
+   "description": "Number of EPS estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_eps_mean",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 207,
+   "alphaCount": 523,
+   "description": "Current mean consensus EPS estimate"
+  },
+  {
+   "id": "est_q_eps_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.5948,
+   "userCount": 30,
+   "alphaCount": 42,
+   "description": "Mean of flash (near real-time) EPS estimates in the consensus"
+  },
+  {
+   "id": "est_q_eps_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Mean consensus EPS estimate three months ago"
+  },
+  {
+   "id": "est_q_eps_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5428,
+   "userCount": 16,
+   "alphaCount": 25,
+   "description": "Mean consensus EPS estimate four weeks ago"
+  },
+  {
+   "id": "est_q_eps_median",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 136,
+   "alphaCount": 359,
+   "description": "Current median consensus EPS estimate"
+  },
+  {
+   "id": "est_q_eps_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5315,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Median EPS consensus as of three months ago"
+  },
+  {
+   "id": "est_q_eps_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5428,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Median consensus EPS estimate four weeks ago"
+  },
+  {
+   "id": "est_q_eps_num",
+   "type": "VECTOR",
+   "coverage": 0.572,
+   "userCount": 11,
+   "alphaCount": 16,
+   "description": "Current number of contributing EPS estimates"
+  },
+  {
+   "id": "est_q_eps_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of contributors to flash EPS estimates"
+  },
+  {
+   "id": "est_q_eps_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Number of contributing EPS estimates three months ago"
+  },
+  {
+   "id": "est_q_eps_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Number of contributing EPS estimates four weeks ago"
+  },
+  {
+   "id": "est_q_eps_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 16,
+   "alphaCount": 24,
+   "description": "Number of EPS estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_eps_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 42,
+   "alphaCount": 57,
+   "description": "Number of EPS estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_eps_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6094,
+   "userCount": 56,
+   "alphaCount": 94,
+   "description": "Number of EPS estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "est_q_eps_std",
+   "type": "VECTOR",
+   "coverage": 0.3515,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Current standard deviation of EPS estimates in the consensus"
+  },
+  {
+   "id": "est_q_eps_std_28d",
+   "type": "VECTOR",
+   "coverage": 0.2822,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of flash EPS estimates"
+  },
+  {
+   "id": "est_q_eps_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.362,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of EPS estimates three months ago"
+  },
+  {
+   "id": "est_q_eps_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3523,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Standard deviation of EPS estimates four weeks ago"
+  },
+  {
+   "id": "est_q_nav_high",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Highest analyst NAV estimate in the current consensus"
+  },
+  {
+   "id": "est_q_nav_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Highest NAV estimate as of 3 months ago"
+  },
+  {
+   "id": "est_q_nav_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4236,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Highest NAV estimate as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_nav_low",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Lowest analyst NAV estimate in the current consensus"
+  },
+  {
+   "id": "est_q_nav_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Lowest NAV estimate in the consensus three months ago"
+  },
+  {
+   "id": "est_q_nav_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4236,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Lowest NAV estimate as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_nav_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of NAV estimates lowered in the last 1 week"
+  },
+  {
+   "id": "est_q_nav_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of NAV estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_nav_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of NAV estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_nav_mean",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Current mean NAV consensus estimate"
+  },
+  {
+   "id": "est_q_nav_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.4778,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean NAV value from flash estimates"
+  },
+  {
+   "id": "est_q_nav_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean NAV consensus value as of 3 months ago"
+  },
+  {
+   "id": "est_q_nav_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4236,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Mean NAV consensus value as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_nav_median",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Current median NAV consensus estimate"
+  },
+  {
+   "id": "est_q_nav_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4113,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Median NAV consensus value as of 3 months ago"
+  },
+  {
+   "id": "est_q_nav_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4236,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median NAV consensus value as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_nav_num",
+   "type": "VECTOR",
+   "coverage": 0.4375,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current number of contributing NAV estimates"
+  },
+  {
+   "id": "est_q_nav_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Number of analysts contributing to NAV flash estimates"
+  },
+  {
+   "id": "est_q_nav_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing NAV estimates 3 months ago"
+  },
+  {
+   "id": "est_q_nav_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Number of contributing NAV estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_nav_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of NAV estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_nav_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Number of NAV estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_nav_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.4867,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of NAV estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "est_q_nav_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.2823,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of NAV estimates as of 3 months ago"
+  },
+  {
+   "id": "est_q_nav_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.2665,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Standard deviation of NAV estimates as of 4 weeks ago"
+  },
+  {
+   "id": "est_q_net_high",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 30,
+   "alphaCount": 50,
+   "description": "Highest current Net Income estimate"
+  },
+  {
+   "id": "est_q_net_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Highest Net Income estimate three months ago"
+  },
+  {
+   "id": "est_q_net_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5512,
+   "userCount": 14,
+   "alphaCount": 23,
+   "description": "Highest estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_net_low",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 39,
+   "alphaCount": 52,
+   "description": "Lowest current Net Income estimate"
+  },
+  {
+   "id": "est_q_net_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Lowest Net Income estimate three months ago"
+  },
+  {
+   "id": "est_q_net_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5512,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Lowest Net Income estimate four weeks ago"
+  },
+  {
+   "id": "est_q_net_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Number of Net Income estimates lowered in the last 1 week"
+  },
+  {
+   "id": "est_q_net_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 22,
+   "alphaCount": 24,
+   "description": "Number of Net Income estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_net_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 39,
+   "alphaCount": 51,
+   "description": "Number of Net Income estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_net_mean",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 79,
+   "alphaCount": 139,
+   "description": "Current mean Net Income consensus estimate"
+  },
+  {
+   "id": "est_q_net_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.6009,
+   "userCount": 41,
+   "alphaCount": 60,
+   "description": "Mean of flash (near real-time) estimates"
+  },
+  {
+   "id": "est_q_net_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Mean estimate 3 months ago"
+  },
+  {
+   "id": "est_q_net_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5512,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Mean Net Income consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_net_median",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 46,
+   "alphaCount": 83,
+   "description": "Current median of the contributing estimates"
+  },
+  {
+   "id": "est_q_net_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Median estimate 3 months ago"
+  },
+  {
+   "id": "est_q_net_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5512,
+   "userCount": 12,
+   "alphaCount": 17,
+   "description": "Median estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_net_num",
+   "type": "VECTOR",
+   "coverage": 0.5764,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Current number of contributing Net Income estimates"
+  },
+  {
+   "id": "est_q_net_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of flash Net income estimates"
+  },
+  {
+   "id": "est_q_net_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of Net Income estimates 3 months ago"
+  },
+  {
+   "id": "est_q_net_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of contributing estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_net_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Number of Net Income estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_net_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 33,
+   "alphaCount": 40,
+   "description": "Number of Net Income estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_net_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6138,
+   "userCount": 40,
+   "alphaCount": 58,
+   "description": "Number of Net Income estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "est_q_net_std",
+   "type": "VECTOR",
+   "coverage": 0.3604,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Current standard deviation of the estimates"
+  },
+  {
+   "id": "est_q_net_std_28d",
+   "type": "VECTOR",
+   "coverage": 0.3053,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of flash estimates"
+  },
+  {
+   "id": "est_q_net_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.3653,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of estimates 3 months ago"
+  },
+  {
+   "id": "est_q_net_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3549,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Standard deviation of estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_pre_high",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 41,
+   "alphaCount": 56,
+   "description": "Highest current estimate in the consensus"
+  },
+  {
+   "id": "est_q_pre_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 3,
+   "alphaCount": 23,
+   "description": "Highest analyst estimate in the consensus three months ago"
+  },
+  {
+   "id": "est_q_pre_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5002,
+   "userCount": 21,
+   "alphaCount": 26,
+   "description": "Highest analyst estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_pre_low",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 53,
+   "alphaCount": 95,
+   "description": "Lowest current estimate in the consensus"
+  },
+  {
+   "id": "est_q_pre_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest analyst estimate in the consensus three months ago"
+  },
+  {
+   "id": "est_q_pre_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5002,
+   "userCount": 12,
+   "alphaCount": 49,
+   "description": "Lowest analyst estimate in the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_pre_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of estimates lowered in the past one week"
+  },
+  {
+   "id": "est_q_pre_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Number of estimates lowered in the past one month"
+  },
+  {
+   "id": "est_q_pre_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Number of estimates that were lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_pre_mean",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 101,
+   "alphaCount": 253,
+   "description": "Current mean of analyst estimates in the consensus"
+  },
+  {
+   "id": "est_q_pre_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.5486,
+   "userCount": 24,
+   "alphaCount": 39,
+   "description": "Mean of flash (near real-time) estimates"
+  },
+  {
+   "id": "est_q_pre_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Mean of the pre-tax profit consensus three months ago"
+  },
+  {
+   "id": "est_q_pre_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5002,
+   "userCount": 27,
+   "alphaCount": 38,
+   "description": "Mean of the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_pre_median",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 116,
+   "alphaCount": 254,
+   "description": "Current median of analyst estimates in the consensus"
+  },
+  {
+   "id": "est_q_pre_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.4809,
+   "userCount": 9,
+   "alphaCount": 23,
+   "description": "Median of the consensus three months ago"
+  },
+  {
+   "id": "est_q_pre_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5002,
+   "userCount": 21,
+   "alphaCount": 30,
+   "description": "Median of the consensus estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_pre_num",
+   "type": "VECTOR",
+   "coverage": 0.5212,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Current number of analyst estimates in the consensus"
+  },
+  {
+   "id": "est_q_pre_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of flash (near real-time) estimates"
+  },
+  {
+   "id": "est_q_pre_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of analyst estimates in the consensus three months ago"
+  },
+  {
+   "id": "est_q_pre_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of analyst estimates in the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_pre_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 5,
+   "alphaCount": 46,
+   "description": "Number of estimates raised in the past one week"
+  },
+  {
+   "id": "est_q_pre_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 15,
+   "alphaCount": 15,
+   "description": "Number of estimates raised in the past one month"
+  },
+  {
+   "id": "est_q_pre_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5632,
+   "userCount": 25,
+   "alphaCount": 32,
+   "description": "Number of estimates raised in the past four weeks"
+  },
+  {
+   "id": "est_q_pre_std",
+   "type": "VECTOR",
+   "coverage": 0.3023,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Current standard deviation of analyst estimates in the consensus"
+  },
+  {
+   "id": "est_q_pre_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.3179,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of the consensus estimates measured as of 3 months ago"
+  },
+  {
+   "id": "est_q_pre_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3117,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of the consensus four weeks ago"
+  },
+  {
+   "id": "est_q_roe_high",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Highest current ROE consensus estimate"
+  },
+  {
+   "id": "est_q_roe_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Highest ROE consensus estimate 3 months ago"
+  },
+  {
+   "id": "est_q_roe_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4738,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest ROE consensus estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_roe_low",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Lowest current ROE consensus estimate"
+  },
+  {
+   "id": "est_q_roe_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest ROE consensus estimate 3 months ago"
+  },
+  {
+   "id": "est_q_roe_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4738,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest ROE consensus estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_roe_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Number of ROE estimates lowered in the past 1 week"
+  },
+  {
+   "id": "est_q_roe_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 19,
+   "alphaCount": 27,
+   "description": "Number of ROE estimates lowered in the last 1 month"
+  },
+  {
+   "id": "est_q_roe_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 11,
+   "alphaCount": 18,
+   "description": "Number of ROE estimates lowered in the last 4 weeks"
+  },
+  {
+   "id": "est_q_roe_mean",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 29,
+   "alphaCount": 54,
+   "description": "Current mean ROE consensus estimate"
+  },
+  {
+   "id": "est_q_roe_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.5175,
+   "userCount": 17,
+   "alphaCount": 23,
+   "description": "Mean ROE flash consensus estimate"
+  },
+  {
+   "id": "est_q_roe_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean ROE consensus 3 months ago"
+  },
+  {
+   "id": "est_q_roe_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4738,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Mean ROE consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_roe_median",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 27,
+   "alphaCount": 75,
+   "description": "Current median ROE consensus estimate"
+  },
+  {
+   "id": "est_q_roe_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median ROE consensus 3 months ago"
+  },
+  {
+   "id": "est_q_roe_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.4738,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median ROE consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_roe_num",
+   "type": "VECTOR",
+   "coverage": 0.4887,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Current number of analyst ROE estimates in the consensus"
+  },
+  {
+   "id": "est_q_roe_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Number of contributing flash ROE estimates"
+  },
+  {
+   "id": "est_q_roe_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of contributing analyst estimates three months ago for the ROE consensus"
+  },
+  {
+   "id": "est_q_roe_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts contributing ROE estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_roe_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of ROE estimates raised in the past 1 week"
+  },
+  {
+   "id": "est_q_roe_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 19,
+   "alphaCount": 32,
+   "description": "Number of ROE estimates raised in the last 1 month"
+  },
+  {
+   "id": "est_q_roe_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.5341,
+   "userCount": 20,
+   "alphaCount": 33,
+   "description": "Number of ROE estimates raised in the last 4 weeks"
+  },
+  {
+   "id": "est_q_sal_high",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 35,
+   "alphaCount": 43,
+   "description": "Current highest sales estimate"
+  },
+  {
+   "id": "est_q_sal_high_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5297,
+   "userCount": 6,
+   "alphaCount": 14,
+   "description": "Highest sales estimate in the consensus 3 months ago"
+  },
+  {
+   "id": "est_q_sal_high_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5489,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Highest sales estimate 4 weeks ago"
+  },
+  {
+   "id": "est_q_sal_low",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 21,
+   "alphaCount": 52,
+   "description": "Current lowest sales estimate"
+  },
+  {
+   "id": "est_q_sal_low_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5297,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Lowest sales estimate 3 months ago"
+  },
+  {
+   "id": "est_q_sal_low_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5489,
+   "userCount": 9,
+   "alphaCount": 24,
+   "description": "Lowest sales estimate in the consensus 4 weeks ago"
+  },
+  {
+   "id": "est_q_sal_lowered_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Number of sales/revenue estimates lowered in the past 1 week"
+  },
+  {
+   "id": "est_q_sal_lowerednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Number of downward revisions to sales estimates in the last 1 month"
+  },
+  {
+   "id": "est_q_sal_lowerednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 20,
+   "alphaCount": 26,
+   "description": "Number of downward revisions to sales estimates in the last 4 weeks"
+  },
+  {
+   "id": "est_q_sal_mean",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 70,
+   "alphaCount": 141,
+   "description": "Current mean (consensus) of analyst sales estimates"
+  },
+  {
+   "id": "est_q_sal_mean_28d",
+   "type": "VECTOR",
+   "coverage": 0.6008,
+   "userCount": 12,
+   "alphaCount": 18,
+   "description": "Mean of flash (near real-time) sales/revenue estimates"
+  },
+  {
+   "id": "est_q_sal_mean_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5297,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Mean of analyst sales estimates 3 months ago"
+  },
+  {
+   "id": "est_q_sal_mean_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5489,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Mean of analyst sales estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_sal_median",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 36,
+   "alphaCount": 55,
+   "description": "Current median sales (revenue) consensus estimate"
+  },
+  {
+   "id": "est_q_sal_median_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.5297,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Median of analyst sales estimates 3 months ago"
+  },
+  {
+   "id": "est_q_sal_median_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.5489,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Median of analyst sales estimates 4 weeks ago"
+  },
+  {
+   "id": "est_q_sal_num",
+   "type": "VECTOR",
+   "coverage": 0.5779,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "Current number of contributing analyst sales estimates"
+  },
+  {
+   "id": "est_q_sal_num_28d",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Number of flash (near real-time) sales/revenue estimates"
+  },
+  {
+   "id": "est_q_sal_num_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Number of contributing analyst sales estimates 3 months ago"
+  },
+  {
+   "id": "est_q_sal_num_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Number of contributing sales (revenue) estimates as of four weeks ago"
+  },
+  {
+   "id": "est_q_sal_raised_1wk",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Number of sales estimates raised in the last 1 week"
+  },
+  {
+   "id": "est_q_sal_raisednum_1mth",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Number of upward revisions to sales estimates in the last 1 month"
+  },
+  {
+   "id": "est_q_sal_raisednum_4wks",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 29,
+   "alphaCount": 48,
+   "description": "Number of upward revisions to sales estimates in the last 4 weeks"
+  },
+  {
+   "id": "est_q_sal_std",
+   "type": "VECTOR",
+   "coverage": 0.3608,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Current standard deviation of analyst sales estimates"
+  },
+  {
+   "id": "est_q_sal_std_28d",
+   "type": "VECTOR",
+   "coverage": 0.2986,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of flash (near real-time) sales/revenue estimates"
+  },
+  {
+   "id": "est_q_sal_std_3mth_ago",
+   "type": "VECTOR",
+   "coverage": 0.3674,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of sales estimates 3 months ago"
+  },
+  {
+   "id": "est_q_sal_std_4wks_ago",
+   "type": "VECTOR",
+   "coverage": 0.3562,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of sales estimates 4 weeks ago"
+  },
+  {
+   "id": "num_contributing_analysts_net_income_estimates",
+   "type": "VECTOR",
+   "coverage": 0.5765,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Current number of contributing analyst Net Income estimates"
+  }
+ ]
+}

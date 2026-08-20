@@ -1,0 +1,5198 @@
+{
+ "dataset": "multifactor_return_pred",
+ "region": "ASI",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 648
+ },
+ "field_count": 648,
+ "fetched_at": "2026-08-18T22:15:00",
+ "fields": [
+  {
+   "id": "alt2_short_hedge_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for second alternative short-term hedge, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "alt2_short_hedge_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for second alternative short-term hedge, 60-day horizon, quantile 5."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second alternative short-term hedge signal for 20-day horizon, quantile 1."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second alternative short-term hedge signal for 20-day horizon, quantile 5."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Second alternative short-term hedge signal for 5-day horizon, quantile 1."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second alternative short-term hedge signal for 5-day horizon, quantile 5."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second alternative short-term hedge signal for 60-day horizon, quantile 1."
+  },
+  {
+   "id": "alt2_short_term_hedge_signal_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second alternative short-term hedge signal for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_hedge_20d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third alternative short-term hedge, 20-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_hedge_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third alternative short-term hedge, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_hedge_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third alternative short-term hedge, 60-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_term_hedge_signal_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third alternative short-term hedge signal for 20-day horizon, quantile 1."
+  },
+  {
+   "id": "alt3_short_term_hedge_signal_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third alternative short-term hedge signal for 20-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_term_hedge_signal_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third alternative short-term hedge signal for 5-day horizon, quantile 1."
+  },
+  {
+   "id": "alt3_short_term_hedge_signal_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third alternative short-term hedge signal for 5-day horizon, quantile 5."
+  },
+  {
+   "id": "alt3_short_term_hedge_signal_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third alternative short-term hedge signal for 60-day horizon, quantile 1."
+  },
+  {
+   "id": "alt_fundamental_120d_bin5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative fundamental-based signal over 120 days, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_120d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative fundamental-based signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_fundamental_60d_bin5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative fundamental-based signal over 60 days, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative fundamental-based signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_fundamental_pred_120d_q5",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based prediction for 120-day horizon, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_pred_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based prediction for 60-day horizon, quantile 1."
+  },
+  {
+   "id": "alt_fundamental_pred_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based prediction for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_pred_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for alternative fundamental-based prediction, 60-day horizon, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_signal_120d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based signal over 120 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_fundamental_signal_120d_bin5",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based signal over 120 days, quantile 5."
+  },
+  {
+   "id": "alt_fundamental_signal_120d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_fundamental_signal_60d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative fundamental-based signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_long_hedge_120d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative long-term hedge signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_long_hedge_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative long-term hedge signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_long_term_hedge_signal_120d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative long-term hedge signal over 120 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_long_term_hedge_signal_120d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative long-term hedge signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_long_term_hedge_signal_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative long-term hedge signal over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_short_hedge_20d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative short-term hedge signal over 20 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_short_hedge_5d_bin5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative short-term hedge signal over 5 days, quantile 5."
+  },
+  {
+   "id": "alt_short_hedge_5d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative short-term hedge signal over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_short_hedge_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternative short-term hedge signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 20 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_5d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 5 days, quantile 1."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 5 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_5d_bin5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 5 days, quantile 5."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_5d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_60d_bin5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal over 60 days, quantile 5."
+  },
+  {
+   "id": "alt_short_term_hedge_signal_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_120d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day analyst-based 5-bucket classification."
+  },
+  {
+   "id": "analyst_120d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day forward return classification into five buckets using analyst-derived features (SolarEquiNox variant)."
+  },
+  {
+   "id": "analyst_120d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day, 5-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_120d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day, 5-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_120d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day, 5-quantile return prediction using analyst data (alternate model version)."
+  },
+  {
+   "id": "analyst_120d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for analyst-based signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "analyst_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day prediction using analyst-derived features, quantile 1."
+  },
+  {
+   "id": "analyst_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Model confidence score for 120-day analyst-based quantile 5 prediction."
+  },
+  {
+   "id": "analyst_120d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day analyst-based quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "analyst_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regression-based 120-day forward return prediction using analyst data."
+  },
+  {
+   "id": "analyst_120d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day, single-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_60d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return classification into five buckets using analyst-derived features (SolarEquiNox variant)."
+  },
+  {
+   "id": "analyst_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_60d_5quantile_confidence_score_m1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile return prediction using analyst data (alternate model version)."
+  },
+  {
+   "id": "analyst_60d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day, 5-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for analyst-based signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "analyst_60d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day return into quantile 5 using analyst-based features."
+  },
+  {
+   "id": "analyst_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using analyst-derived features, quantile 1."
+  },
+  {
+   "id": "analyst_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using analyst-derived features, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "analyst_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day analyst-based quantile 5 prediction."
+  },
+  {
+   "id": "analyst_60d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day analyst-based quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "analyst_60d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using analyst-derived features, quantile 5."
+  },
+  {
+   "id": "analyst_60d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regression-based 60-day forward return prediction using analyst-derived features."
+  },
+  {
+   "id": "analyst_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day, single-quantile return prediction using analyst data."
+  },
+  {
+   "id": "analyst_based_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 120-day analyst-based return."
+  },
+  {
+   "id": "analyst_based_120d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day forward return forecast derived from analyst data inputs."
+  },
+  {
+   "id": "analyst_based_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 60-day analyst-based return."
+  },
+  {
+   "id": "analyst_based_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return forecast derived from analyst data."
+  },
+  {
+   "id": "analyst_based_pred_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-derived prediction for 120-day horizon, quantile 1."
+  },
+  {
+   "id": "analyst_based_pred_120d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-derived prediction for 120-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_based_pred_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-derived prediction for 60-day horizon, quantile 1."
+  },
+  {
+   "id": "analyst_based_pred_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-derived prediction for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_pred_120d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for analyst-based prediction, 120-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_pred_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for analyst-based prediction, 60-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 120-day, quantile 1 return using analyst data."
+  },
+  {
+   "id": "analyst_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 60-day, quantile 1 return using analyst data."
+  },
+  {
+   "id": "analyst_quantile5_confidence_r120",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 120-day, quantile 5 return prediction from analyst data."
+  },
+  {
+   "id": "analyst_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 60-day, quantile 5 return prediction from analyst data."
+  },
+  {
+   "id": "analyst_quantile5_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 120-day, quantile 5 return using analyst data."
+  },
+  {
+   "id": "analyst_quantile5_r120_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 120-day, quantile 5 return using analyst data from Mfm2 module."
+  },
+  {
+   "id": "analyst_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 60-day, quantile 5 return using analyst data."
+  },
+  {
+   "id": "analyst_signal_120d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based signal over 120 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "analyst_signal_120d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based signal over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "analyst_signal_120d_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based return prediction for 120-day horizon, quantile 1."
+  },
+  {
+   "id": "analyst_signal_120d_quantile5",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based return prediction for 120-day horizon, quantile 5."
+  },
+  {
+   "id": "analyst_signal_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based signal over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "analyst_signal_60d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "analyst_signal_60d_quantile5",
+   "type": "MATRIX",
+   "coverage": 0.9535,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based return prediction for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "event_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile return prediction using event-driven features."
+  },
+  {
+   "id": "event_5d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile return prediction using event-driven features (alternate model version)."
+  },
+  {
+   "id": "event_embedded_pred_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction using event-based features for 5-day horizon, quantile 1."
+  },
+  {
+   "id": "event_embedding_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction using event-driven features, quantile 1."
+  },
+  {
+   "id": "event_embedding_5d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction using event-driven features, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "event_embedding_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day forward return forecast based on event-driven model inputs."
+  },
+  {
+   "id": "event_embedding_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using event-driven data embedding."
+  },
+  {
+   "id": "event_embedding_signal_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal from event embedding over 5 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "fundamental2_120d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day, 5-quantile return prediction using secondary fundamental features."
+  },
+  {
+   "id": "fundamental2_120d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day, 5-quantile return prediction using secondary set of fundamental features."
+  },
+  {
+   "id": "fundamental2_120d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day, 5-quantile return prediction using secondary set of fundamental features (alternate model version)."
+  },
+  {
+   "id": "fundamental2_120d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day prediction using alternate fundamental features, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "fundamental2_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 120-day return using secondary fundamental features."
+  },
+  {
+   "id": "fundamental2_120d_single_quantile_forecast",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day single-quantile return prediction using secondary set of fundamental features."
+  },
+  {
+   "id": "fundamental2_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile return prediction using secondary fundamental features."
+  },
+  {
+   "id": "fundamental2_60d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day, 5-quantile return prediction using secondary set of fundamental features."
+  },
+  {
+   "id": "fundamental2_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using alternate fundamental features, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "fundamental2_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day return using secondary fundamental features into one of five quantile buckets."
+  },
+  {
+   "id": "fundamental2_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 60-day return using secondary fundamental features."
+  },
+  {
+   "id": "fundamental2_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using alternate fundamental features, quantile 5 (multi-model variant)."
+  },
+  {
+   "id": "fundamental2_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return prediction using secondary set of fundamental features."
+  },
+  {
+   "id": "fundamental2_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day, single-quantile return prediction using secondary set of fundamental features."
+  },
+  {
+   "id": "fundamental2_based_return_60d_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day return prediction using alternate fundamental data fields, quantile 1."
+  },
+  {
+   "id": "fundamental2_based_return_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction using secondary fundamental data over 60 days."
+  },
+  {
+   "id": "fundamental2_quantile5_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second set of fundamental data-based 60-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "fundamental_alt_120d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day alternative fundamental-based 5-bucket classification."
+  },
+  {
+   "id": "fundamental_alt_120d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day forward return classification into five buckets using alternative fundamental features (SolarEquiNox variant)."
+  },
+  {
+   "id": "fundamental_alt_120d_qtile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for classifying 120-day return into quantile 5 using alternative fundamental data."
+  },
+  {
+   "id": "fundamental_alt_120d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted 120-day forward return using alternative fundamental features."
+  },
+  {
+   "id": "fundamental_alt_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regression-based 120-day forward return prediction using alternative fundamental features."
+  },
+  {
+   "id": "fundamental_alt_120d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regression-based 120-day forward return prediction using alternative fundamental features (SolarEquiNox variant)."
+  },
+  {
+   "id": "fundamental_alt_60d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.7864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day alternative fundamental-based 5-bucket classification."
+  },
+  {
+   "id": "long_hedge2_120d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon alternate hedge prediction, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "long_hedge2_120d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon alternate hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "long_hedge2_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon alternate hedge prediction, quantile 1 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "long_hedge2_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon alternate hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "long_hedge2_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate long-term, 120-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge2_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate long-term, 60-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge2_quantile5_confidence_r120",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternate long-term, 120-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "long_hedge2_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternate long-term, 60-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "long_hedge2_quantile5_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate long-term, 120-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge2_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate long-term, 60-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge3_120d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-horizon 120-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "long_hedge3_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-horizon 120-day hedge signal (regression output)."
+  },
+  {
+   "id": "long_hedge3_120d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-horizon 120-day hedge signal (regression output, SolarEquiNox variant)."
+  },
+  {
+   "id": "long_hedge3_60d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third variant of long-term 60-day hedge signal (5-bucket classification)."
+  },
+  {
+   "id": "long_hedge3_60d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-term 60-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "long_hedge3_quantile5_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-term hedge signal, 60-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "long_hedge_120d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day, 5-quantile long-horizon hedge signal."
+  },
+  {
+   "id": "long_hedge_120d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-horizon hedge signal, 120-day period, quantile 5."
+  },
+  {
+   "id": "long_hedge_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon hedge prediction, quantile 1 (low correlation signal)."
+  },
+  {
+   "id": "long_hedge_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day long horizon hedge quantile 5 prediction."
+  },
+  {
+   "id": "long_hedge_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 120-day hedge signal with low correlation to main predictions (regression output)."
+  },
+  {
+   "id": "long_hedge_60d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-term 60-day hedge signal (5-bucket classification, SolarEquiNox variant)."
+  },
+  {
+   "id": "long_hedge_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile long-horizon hedge signal."
+  },
+  {
+   "id": "long_hedge_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-horizon hedge signal, 60-day period, quantile 5."
+  },
+  {
+   "id": "long_hedge_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 60-day hedge signal (regression output, SolarEquiNox variant)."
+  },
+  {
+   "id": "long_hedge_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge_quantile1_r60_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 hedge signal prediction from Mfm2 module."
+  },
+  {
+   "id": "long_hedge_quantile5_confidence_r120",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term, 120-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "long_hedge_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term, 60-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "long_hedge_quantile5_confidence_r60_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term, 60-day, quantile 5 hedge signal from Mfm2 module."
+  },
+  {
+   "id": "long_hedge_quantile5_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge_quantile5_r120_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 5 hedge signal prediction from Mfm2 module."
+  },
+  {
+   "id": "long_hedge_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "long_hedge_quantile5_r60_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 5 hedge signal prediction from Mfm2 module."
+  },
+  {
+   "id": "long_horizon_hedge2_120d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the second long-horizon hedge signal (120-day), quantile 5."
+  },
+  {
+   "id": "long_horizon_hedge2_60d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the second long-horizon hedge signal (60-day), quantile 5."
+  },
+  {
+   "id": "long_pred_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 120-day regression-based return prediction."
+  },
+  {
+   "id": "long_pred_60d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-horizon 60-day 5-bucket classification prediction."
+  },
+  {
+   "id": "long_pred_60d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-horizon 60-day 5-bucket classification prediction (SolarEquiNox variant)."
+  },
+  {
+   "id": "long_pred_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-horizon prediction, 60-day period, quantile 5."
+  },
+  {
+   "id": "long_pred_regime2_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for 2-phase regime, 120-day period, quantile 1."
+  },
+  {
+   "id": "long_pred_regime2_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 120-day regression prediction adjusted for two-phase market regime."
+  },
+  {
+   "id": "long_pred_regime2_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for 2-phase regime, 60-day period, quantile 1."
+  },
+  {
+   "id": "long_pred_regime2_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 60-day regression prediction adjusted for two-phase market regime (SolarEquiNox variant)."
+  },
+  {
+   "id": "long_pred_regime4_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for 4-phase regime, 120-day period, quantile 1."
+  },
+  {
+   "id": "long_pred_regime4_120d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 120-day regression prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "long_pred_regime4_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for 4-phase regime, 60-day period, quantile 1."
+  },
+  {
+   "id": "long_pred_regime4_60d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 60-day regression prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "long_pred_seasonal_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for seasonal effects, 120-day period, quantile 1."
+  },
+  {
+   "id": "long_pred_seasonal_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon prediction adjusted for seasonal effects, 60-day period, quantile 1."
+  },
+  {
+   "id": "long_term_120d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day, 5-quantile long-horizon return prediction."
+  },
+  {
+   "id": "long_term_120d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) 5-quantile return prediction."
+  },
+  {
+   "id": "long_term_120d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) 5-quantile return prediction (alternate model version)."
+  },
+  {
+   "id": "long_term_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon return prediction, quantile 1."
+  },
+  {
+   "id": "long_term_120d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 120-day long-horizon return into one of five quantile buckets."
+  },
+  {
+   "id": "long_term_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day long horizon quantile 5 prediction."
+  },
+  {
+   "id": "long_term_120d_quantile5_confidence_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 120-day long-term return."
+  },
+  {
+   "id": "long_term_120d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 120-day long horizon quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "long_term_120d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon return prediction, quantile 5."
+  },
+  {
+   "id": "long_term_120d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted 120-day forward return using all available features."
+  },
+  {
+   "id": "long_term_120d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long-horizon regression-based return forecast."
+  },
+  {
+   "id": "long_term_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile long-horizon return prediction."
+  },
+  {
+   "id": "long_term_60d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) 5-quantile return prediction (alternate model version)."
+  },
+  {
+   "id": "long_term_60d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day return into quantile 5 using long-horizon prediction model."
+  },
+  {
+   "id": "long_term_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon return prediction, quantile 1."
+  },
+  {
+   "id": "long_term_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon return prediction, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "long_term_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day forward return into one of five quantile buckets for long-term prediction."
+  },
+  {
+   "id": "long_term_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day long horizon quantile 5 prediction."
+  },
+  {
+   "id": "long_term_60d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day long horizon quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "long_term_60d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon return prediction, quantile 5."
+  },
+  {
+   "id": "long_term_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon return prediction, quantile 5 (multi-model variant)."
+  },
+  {
+   "id": "long_term_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) regression-based return forecast."
+  },
+  {
+   "id": "long_term_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) single-quantile return prediction."
+  },
+  {
+   "id": "long_term_alternate_hedge3_quantile_120d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative long-horizon (120-day) hedge signal variant 3, quantile bucket 5."
+  },
+  {
+   "id": "long_term_forecast_regime2_120d_single_quantile",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction adjusted for 2-phase market regime over 120 days, single quantile output."
+  },
+  {
+   "id": "long_term_hedge3_120d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-horizon (120-day) hedge signal variant 3 in quantile 5."
+  },
+  {
+   "id": "long_term_hedge3_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 120-day long-horizon hedge3 signal."
+  },
+  {
+   "id": "long_term_hedge3_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 60-day long-horizon hedge3 signal."
+  },
+  {
+   "id": "long_term_hedge3_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return forecast from the third variant of long-horizon hedge signal."
+  },
+  {
+   "id": "long_term_hedge_120d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 120-day long-horizon hedge signal into one of five quantile buckets."
+  },
+  {
+   "id": "long_term_hedge_120d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 120-day long-horizon hedge signal."
+  },
+  {
+   "id": "long_term_hedge_120d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day forward return forecast from the primary long-horizon hedge signal."
+  },
+  {
+   "id": "long_term_hedge_60d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon 60-day hedge signal predicting membership in quantile 5, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_term_hedge_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day long-horizon hedge signal into one of five quantile buckets."
+  },
+  {
+   "id": "long_term_hedge_pred_r60_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term hedge signal for 60-day horizon, 5-quantile classification prediction, designed for low correlation with main "
+  },
+  {
+   "id": "long_term_hedge_signal_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon hedge signal for 120-day period, quantile 1."
+  },
+  {
+   "id": "long_term_hedge_signal_120d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon hedge signal for 120-day period, quantile 5."
+  },
+  {
+   "id": "long_term_hedge_signal_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon hedge signal for 60-day period, quantile 1."
+  },
+  {
+   "id": "long_term_hedge_signal_quantile_120d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) hedge signal assigned to quantile bucket 5, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_term_hedge_variant3_quantile5_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of long-horizon hedge signal, 5-quantile, over 60 days."
+  },
+  {
+   "id": "long_term_pred_120d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 120 days, quantile 1."
+  },
+  {
+   "id": "long_term_pred_120d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term prediction over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "long_term_pred_120d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 120 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "long_term_pred_120d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for 120-day period, quantile 1."
+  },
+  {
+   "id": "long_term_pred_120d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for 120-day period, quantile 5."
+  },
+  {
+   "id": "long_term_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "long_term_pred_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term prediction over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "long_term_pred_60d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "long_term_pred_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for 60-day period, quantile 1."
+  },
+  {
+   "id": "long_term_pred_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for 60-day period, quantile 5."
+  },
+  {
+   "id": "long_term_predicted_return_quantile5_120d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) return prediction, quantile 5."
+  },
+  {
+   "id": "long_term_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 1 return prediction."
+  },
+  {
+   "id": "long_term_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return prediction."
+  },
+  {
+   "id": "long_term_quantile5_confidence_r120",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term, 120-day, quantile 5 return prediction."
+  },
+  {
+   "id": "long_term_quantile5_confidence_r120_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-quantile long-horizon return prediction over 120 days."
+  },
+  {
+   "id": "long_term_quantile5_confidence_r120_3",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for long-term 120-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "long_term_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for long-term, 60-day, quantile 5 return prediction."
+  },
+  {
+   "id": "long_term_quantile5_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 5 return prediction."
+  },
+  {
+   "id": "long_term_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 5 return prediction."
+  },
+  {
+   "id": "long_term_regime2_120d_return_forecast",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) return prediction adjusted for 2-phase market regime."
+  },
+  {
+   "id": "long_term_regime2_60d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long-horizon return prediction with two-phase regime adjustment."
+  },
+  {
+   "id": "long_term_regime2_adj_pred_120d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 120 days, adjusted for 2-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "long_term_regime2_adj_pred_r60_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term return prediction for 60-day horizon, adjusted for 2-phase market regime, regression output."
+  },
+  {
+   "id": "long_term_regime2_adjusted_return_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction over 60 days, adjusted for 2-phase market regime."
+  },
+  {
+   "id": "long_term_regime2_phase_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon return prediction adjusted for regime 2, quantile 1."
+  },
+  {
+   "id": "long_term_regime2_phase_120d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon prediction adjusted for regime 2, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "long_term_regime2_phase_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon prediction adjusted for regime 2, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "long_term_regime2_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 1 return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "long_term_regime2_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "long_term_regime2_quantile1_r60_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return forecast adjusted for 2-phase market regime from Mfm2 module."
+  },
+  {
+   "id": "long_term_regime4_120d_return_forecast",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long-horizon return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_120d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) single-quantile return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_60d_return_forecast",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long-horizon return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) single-quantile return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_adj_pred_120d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 120 days, adjusted for 4-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "long_term_regime4_adj_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 60 days, adjusted for 4-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "long_term_regime4_adjusted_pred_q1_60d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) prediction adjusted for 4-phase regime, quantile 1."
+  },
+  {
+   "id": "long_term_regime4_phase_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon prediction adjusted for regime 4, quantile 1."
+  },
+  {
+   "id": "long_term_regime4_phase_120d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon prediction adjusted for regime 4, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "long_term_regime4_phase_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long horizon prediction adjusted for regime 4, quantile 1."
+  },
+  {
+   "id": "long_term_regime4_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 1 return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "long_term_return_forecast_r120",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon single-quantile return prediction over 120 days."
+  },
+  {
+   "id": "long_term_return_pred_r60_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term return prediction for a 60-day horizon, regression output."
+  },
+  {
+   "id": "long_term_seasonal_120d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long horizon prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "long_term_seasonal_120d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long-horizon return forecast incorporating seasonal or calendar effects."
+  },
+  {
+   "id": "long_term_seasonal_120d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "120-day long-horizon return forecast adjusted for seasonal and calendar effects."
+  },
+  {
+   "id": "long_term_seasonal_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day long-horizon return forecast adjusted for seasonal and calendar effects."
+  },
+  {
+   "id": "long_term_seasonal_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (60-day) single-quantile return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_adj_pred_60d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 60 days, seasonally adjusted, quantile 1."
+  },
+  {
+   "id": "long_term_seasonal_adj_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term prediction over 60 days, seasonally adjusted, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "long_term_seasonal_adjusted_pred_q1_120d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon (120-day) prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "long_term_seasonal_adjusted_return_forecast_120d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction over 120 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_adjusted_return_pred_r120",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction adjusted for seasonal effects over 120 days."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_r120_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 120-day, quantile 1 return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_r60_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term, 60-day, quantile 1 return prediction adjusted for seasonal effects from Mfm2 module."
+  },
+  {
+   "id": "mid_term_hedge3_signal_60d_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Medium-term (60-day) hedge signal variant 3, quantile bucket 1."
+  },
+  {
+   "id": "mid_term_hedge_signal_60d_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Medium-term (60-day) hedge signal, quantile bucket 1, designed for low correlation with main signals."
+  },
+  {
+   "id": "mid_term_price_volume_quantile5_confidence_60d",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for price-volume based prediction over 60 days, quantile 5."
+  },
+  {
+   "id": "mid_term_seasonal_adjusted_return_forecast_60d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Medium-term (60-day) return forecast with seasonal effect adjustment."
+  },
+  {
+   "id": "price_volume_20d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day, 5-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_20d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, 5-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_20d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for price-volume signal over 20 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "price_volume_20d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 20-day price-volume based return into one of five quantile buckets."
+  },
+  {
+   "id": "price_volume_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast using price and volume features."
+  },
+  {
+   "id": "price_volume_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_5d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day, 5-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_5d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "5-day, 5-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_5d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, 5-quantile return prediction using price-volume features (alternate model version)."
+  },
+  {
+   "id": "price_volume_5d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for price-volume signal over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "price_volume_5d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day price-volume based return into one of five quantile buckets."
+  },
+  {
+   "id": "price_volume_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 5-day price-volume based return."
+  },
+  {
+   "id": "price_volume_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day forward return forecast using price and volume features."
+  },
+  {
+   "id": "price_volume_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "5-day single-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile return prediction using price-volume features."
+  },
+  {
+   "id": "price_volume_60d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day, 5-quantile return prediction using price-volume features (alternate model version)."
+  },
+  {
+   "id": "price_volume_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for price-volume signal over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "price_volume_60d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day return into quantile 5 using price-volume features."
+  },
+  {
+   "id": "price_volume_60d_qtile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for classifying 60-day return into quantile 5 using price-volume features."
+  },
+  {
+   "id": "price_volume_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day price-volume based return into one of five quantile buckets."
+  },
+  {
+   "id": "price_volume_60d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted 60-day forward return using price and volume data."
+  },
+  {
+   "id": "price_volume_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return forecast based on price-volume model inputs."
+  },
+  {
+   "id": "price_volume_based_return_pred_r20",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction using price-volume data over 20 days."
+  },
+  {
+   "id": "price_volume_based_return_pred_r5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction using price-volume data over 5 days."
+  },
+  {
+   "id": "price_volume_pred_r20_q1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction for 20-day horizon using price-volume data, regression output."
+  },
+  {
+   "id": "price_volume_pred_r60_q1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction for 60-day horizon using price-volume data, regression output."
+  },
+  {
+   "id": "price_volume_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 20-day, quantile 1 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 60-day, quantile 1 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_r20",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 20-day, quantile 5 return prediction using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_r20_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 20-day, quantile 5 return prediction using price-volume data from Mfm2 module."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 5-day, quantile 5 return prediction using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 60-day, quantile 5 return prediction using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_r60_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 60-day, quantile 5 return prediction using price-volume data from Mfm2 module."
+  },
+  {
+   "id": "price_volume_quantile5_pred_r20",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based 20-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "price_volume_quantile5_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 20-day, quantile 5 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 5 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 60-day, quantile 5 return using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_return_pred_r20",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-quantile return prediction using price-volume data over 20 days."
+  },
+  {
+   "id": "price_volume_signal_5d_bin5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal from price-volume data over 5 days, quantile 5."
+  },
+  {
+   "id": "price_volume_signal_5d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal from price-volume data over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "price_volume_signal_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal from price-volume data over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "price_volume_signal_60d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal from price-volume data over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "pv_20d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day price-volume based 5-bucket classification."
+  },
+  {
+   "id": "pv_20d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day price-volume based 5-bucket classification (SolarEquiNox variant)."
+  },
+  {
+   "id": "pv_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 20-day horizon, quantile 1."
+  },
+  {
+   "id": "pv_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 20-day horizon, quantile 5."
+  },
+  {
+   "id": "pv_20d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for price-volume based prediction, 20-day horizon, quantile 5."
+  },
+  {
+   "id": "pv_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction using price-volume features, quantile 1."
+  },
+  {
+   "id": "pv_20d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day price-volume quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "pv_20d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction using price-volume features, quantile 5."
+  },
+  {
+   "id": "pv_20d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction using price-volume features, quantile 5 (multi-model variant)."
+  },
+  {
+   "id": "pv_5d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day price-volume based 5-bucket classification."
+  },
+  {
+   "id": "pv_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 5-day horizon, quantile 1."
+  },
+  {
+   "id": "pv_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 5-day horizon, quantile 5."
+  },
+  {
+   "id": "pv_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for price-volume based prediction, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "pv_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "5-day prediction using price-volume features, quantile 1."
+  },
+  {
+   "id": "pv_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day price-volume quantile 5 prediction."
+  },
+  {
+   "id": "pv_5d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day price-volume quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "pv_5d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction using price-volume features, quantile 5."
+  },
+  {
+   "id": "pv_60d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day price-volume based 5-bucket classification."
+  },
+  {
+   "id": "pv_60d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day price-volume based 5-bucket classification (SolarEquiNox variant)."
+  },
+  {
+   "id": "pv_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 60-day horizon, quantile 1."
+  },
+  {
+   "id": "pv_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-volume based prediction for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "pv_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using price-volume features, quantile 1."
+  },
+  {
+   "id": "pv_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using price-volume features, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "pv_60d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using price-volume features, quantile 5."
+  },
+  {
+   "id": "pv_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day prediction using price-volume features, quantile 5 (multi-model variant)."
+  },
+  {
+   "id": "regime2_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast adjusted for 2-phase market regime effects."
+  },
+  {
+   "id": "regime2_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile return prediction adjusted for 2-phase market regime."
+  },
+  {
+   "id": "regime2_5d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day return prediction using two-phase market regime adjustment."
+  },
+  {
+   "id": "regime2_5d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day regression prediction adjusted for two-phase market regime (SolarEquiNox variant)."
+  },
+  {
+   "id": "regime2_adj_pred_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction adjusted for 2-phase market regime, 20-day horizon, quantile 1."
+  },
+  {
+   "id": "regime2_adj_pred_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction adjusted for 2-phase regime, 5-day horizon, quantile 1."
+  },
+  {
+   "id": "regime2_adj_pred_r20_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction for 20-day horizon, adjusted for 2-phase market regime, regression output."
+  },
+  {
+   "id": "regime2_adjusted_5d_return_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day return prediction in quantile 1, adjusted for 2-phase market regime."
+  },
+  {
+   "id": "regime2_phase_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction adjusted for regime 2 phase, quantile 1."
+  },
+  {
+   "id": "regime2_phase_20d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction adjusted for regime 2 phase, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "regime2_phase_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction adjusted for regime 2 phase, quantile 1."
+  },
+  {
+   "id": "regime2_phase_signal_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal based on 2-phase regime embedding over 20 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "regime2_phase_signal_5d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal based on 2-phase regime embedding over 5 days, quantile 1."
+  },
+  {
+   "id": "regime2_phase_signal_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal based on 2-phase regime embedding over 5 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "regime2_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 20-day, quantile 1 return using 2-phase market regime adjustment."
+  },
+  {
+   "id": "regime2_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using 2-phase market regime adjustment."
+  },
+  {
+   "id": "regime4_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast adjusted for 4-phase market regime effects."
+  },
+  {
+   "id": "regime4_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile return prediction adjusted for 4-phase market regime embedding."
+  },
+  {
+   "id": "regime4_5d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day four-phase regime adjusted 5-bucket classification (SolarEquiNox variant)."
+  },
+  {
+   "id": "regime4_5d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day, 5-quantile return prediction with 4-phase regime adjustment."
+  },
+  {
+   "id": "regime4_5d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, 5-quantile return prediction adjusted for 4-phase market regime embedding."
+  },
+  {
+   "id": "regime4_5d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day return adjusted for 4-phase regime into one of five quantile buckets."
+  },
+  {
+   "id": "regime4_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day forward return forecast adjusted for 4-phase market regime effects."
+  },
+  {
+   "id": "regime4_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile return prediction adjusted for 4-phase market regime embedding."
+  },
+  {
+   "id": "regime4_5d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile return prediction adjusted for 4-phase market regime embedding (alternate model version)."
+  },
+  {
+   "id": "regime4_adj_pred_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction adjusted for 4-phase regime, 20-day horizon, quantile 1."
+  },
+  {
+   "id": "regime4_adj_pred_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction adjusted for 4-phase regime, 5-day horizon, quantile 1."
+  },
+  {
+   "id": "regime4_adj_pred_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction adjusted for 4-phase regime, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "regime4_adj_pred_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 4-phase regime adjusted prediction, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "regime4_adj_pred_r20_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction for 20-day horizon, adjusted for 4-phase market regime, regression output."
+  },
+  {
+   "id": "regime4_adjusted_5d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Confidence score for 5-day return prediction in quantile 5, adjusted for 4-phase market regime."
+  },
+  {
+   "id": "regime4_adjusted_5d_return_quantile5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day return prediction in quantile 5, adjusted for 4-phase market regime."
+  },
+  {
+   "id": "regime4_phase_5d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for 4-phase regime signal over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "regime4_phase_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day regime 4 phase quantile 5 prediction."
+  },
+  {
+   "id": "regime4_phase_5d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day regime 4 phase quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "regime4_phase_5d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction adjusted for regime 4 phase, quantile 5."
+  },
+  {
+   "id": "regime4_phase_adjusted_pred_q1_20d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day prediction adjusted for 4-phase market regime, quantile 1."
+  },
+  {
+   "id": "regime4_phase_adjusted_pred_q5_5d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day prediction adjusted for 4-phase market regime, quantile 5."
+  },
+  {
+   "id": "regime4_phase_quantile5_pred_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-quantile return prediction adjusted for 4-phase market regime over 5 days."
+  },
+  {
+   "id": "regime4_phase_return_pred_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return prediction adjusted for 4-phase market regime over 20 days."
+  },
+  {
+   "id": "regime4_phase_signal_5d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal based on 4-phase regime embedding over 5 days, quantile 1."
+  },
+  {
+   "id": "regime4_phase_signal_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Signal based on 4-phase regime embedding over 5 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "regime4_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 20-day, quantile 1 return using 4-phase market regime adjustment."
+  },
+  {
+   "id": "regime4_quantile1_r20_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 20-day, quantile 1 return using 4-phase market regime adjustment from Mfm2 module."
+  },
+  {
+   "id": "regime4_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using 4-phase market regime adjustment."
+  },
+  {
+   "id": "regime4_quantile1_r5_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using 4-phase market regime adjustment from Mfm2 module."
+  },
+  {
+   "id": "regime4_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Model confidence for 5-day, quantile 5 return prediction using 4-phase market regime adjustment."
+  },
+  {
+   "id": "regime4_quantile5_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 5 return using 4-phase market regime adjustment."
+  },
+  {
+   "id": "seasonal_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Prediction for 5-day, quantile 1 return using seasonal effects."
+  },
+  {
+   "id": "short_hedge2_20d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 20-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge2_20d_qtile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for secondary short-term hedge signal classifying 20-day return into quantile 5."
+  },
+  {
+   "id": "short_hedge2_20d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 20-day hedge signal (regression output)."
+  },
+  {
+   "id": "short_hedge2_5d_5bucket_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 5-day hedge signal classified into five quantile buckets."
+  },
+  {
+   "id": "short_hedge2_5d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 5-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge2_5d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for second variant of 5-day, 5-quantile short-term hedge signal."
+  },
+  {
+   "id": "short_hedge2_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term hedge signal for 5-day, single-quantile prediction."
+  },
+  {
+   "id": "short_hedge2_60d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for second variant of short-term 60-day hedge signal (5-bucket classification, SolarEquiNox varia"
+  },
+  {
+   "id": "short_hedge2_60d_5bucket_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 60-day hedge signal classified into five quantile buckets."
+  },
+  {
+   "id": "short_hedge2_60d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 60-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge2_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second variant of short-term 60-day hedge signal (regression output, SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge2_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 20-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge2_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 5-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge2_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 60-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge2_quantile5_confidence_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternate short-term, 20-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge2_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternate short-term, 5-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge2_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for alternate short-term, 60-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge2_quantile5_confidence_r60_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the second short-term hedge signal, 60-day, 5-quantile classification."
+  },
+  {
+   "id": "short_hedge2_quantile5_pred_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Second short-term hedge signal, 20-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "short_hedge2_quantile5_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 20-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge2_quantile5_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 5-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge2_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternate short-term, 60-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge3_20d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third variant of short-term 20-day hedge signal (5-bucket classification)."
+  },
+  {
+   "id": "short_hedge3_20d_5bucket_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term 20-day hedge signal classified into five quantile buckets."
+  },
+  {
+   "id": "short_hedge3_20d_5quantile_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third variant of 20-day short-term hedge signal (5-quantile)."
+  },
+  {
+   "id": "short_hedge3_20d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 20-day, 5-quantile prediction."
+  },
+  {
+   "id": "short_hedge3_20d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day third variant hedge prediction, quantile 1 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge3_20d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day third variant hedge quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_hedge3_20d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day third variant hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge3_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 20-day, single-quantile prediction."
+  },
+  {
+   "id": "short_hedge3_5d_5quantile_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the third variant of short-term hedge signal (5-day, 5-quantile)."
+  },
+  {
+   "id": "short_hedge3_5d_5quantile_confidence_score_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third variant of 5-day, 5-quantile short-term hedge signal (alternate model version)."
+  },
+  {
+   "id": "short_hedge3_5d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 5-day, 5-quantile prediction (alternate model version)."
+  },
+  {
+   "id": "short_hedge3_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 5-day, single-quantile prediction."
+  },
+  {
+   "id": "short_hedge3_5d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 5-day, single-quantile prediction (alternate model version)."
+  },
+  {
+   "id": "short_hedge3_60d_5quantile_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for third variant of 60-day short-term hedge signal (5-quantile)."
+  },
+  {
+   "id": "short_hedge3_60d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 60-day, 5-quantile prediction."
+  },
+  {
+   "id": "short_hedge3_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day third variant hedge prediction, quantile 1 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge3_60d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day third variant hedge quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_hedge3_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal for 60-day, single-quantile prediction."
+  },
+  {
+   "id": "short_hedge3_pred_r20_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal, 20-day horizon, regression output."
+  },
+  {
+   "id": "short_hedge3_quantile5_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-term hedge signal, 60-day, 5-quantile classification prediction."
+  },
+  {
+   "id": "short_hedge_20d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term hedge signal, 20-day horizon, quantile 5."
+  },
+  {
+   "id": "short_hedge_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon hedge prediction, quantile 1 (low correlation signal)."
+  },
+  {
+   "id": "short_hedge_20d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon hedge prediction, quantile 5 (low correlation signal)."
+  },
+  {
+   "id": "short_hedge_20d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge_5d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 5-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term hedge signal, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "short_hedge_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short horizon hedge quantile 5 prediction."
+  },
+  {
+   "id": "short_hedge_5d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short horizon hedge quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_hedge_5d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon hedge prediction, quantile 5 (low correlation signal)."
+  },
+  {
+   "id": "short_hedge_5d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge_5d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 5-day hedge signal (regression output, SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge_60d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day hedge signal classified into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_hedge_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term hedge signal, 60-day horizon, quantile 5."
+  },
+  {
+   "id": "short_hedge_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon hedge prediction, quantile 1 (low correlation signal)."
+  },
+  {
+   "id": "short_hedge_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day short horizon hedge quantile 5 prediction."
+  },
+  {
+   "id": "short_hedge_60d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon hedge prediction, quantile 5 (low correlation signal)."
+  },
+  {
+   "id": "short_hedge_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon hedge prediction, quantile 5 (multi-model variant, low correlation)."
+  },
+  {
+   "id": "short_hedge_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge_quantile1_r5_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 hedge signal prediction from Mfm2 module."
+  },
+  {
+   "id": "short_hedge_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 1 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge_quantile5_confidence_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 20-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge_quantile5_confidence_r20_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 20-day, quantile 5 hedge signal from Mfm2 module."
+  },
+  {
+   "id": "short_hedge_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 5-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 60-day, quantile 5 hedge signal."
+  },
+  {
+   "id": "short_hedge_quantile5_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge_quantile5_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_hedge_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 5 hedge signal prediction."
+  },
+  {
+   "id": "short_horizon_hedge2_20d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 20-day short-horizon hedge2 signal."
+  },
+  {
+   "id": "short_horizon_hedge2_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast from the second variant of short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge2_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 5-day short-horizon hedge2 signal."
+  },
+  {
+   "id": "short_horizon_hedge2_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day forward return forecast from the second variant of short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge3_20d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 20-day short-horizon hedge3 signal into one of five quantile buckets."
+  },
+  {
+   "id": "short_horizon_hedge3_20d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 20-day short-horizon hedge3 signal."
+  },
+  {
+   "id": "short_horizon_hedge3_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast from the third variant of short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge3_5d_5quantile_signal",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal (third variant) for 5-day, 5-quantile classification."
+  },
+  {
+   "id": "short_horizon_hedge3_5d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day hedge3 signal into one of five quantile buckets for short-term horizon."
+  },
+  {
+   "id": "short_horizon_hedge3_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 5-day short-horizon hedge3 signal."
+  },
+  {
+   "id": "short_horizon_hedge3_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day forward return forecast from the third variant of short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge3_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day short-horizon hedge3 signal into one of five quantile buckets."
+  },
+  {
+   "id": "short_horizon_hedge3_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 60-day short-horizon hedge3 signal."
+  },
+  {
+   "id": "short_horizon_hedge3_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return forecast from the third variant of short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge_20d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 20-day short-horizon hedge signal into one of five quantile buckets."
+  },
+  {
+   "id": "short_horizon_hedge_20d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 20-day short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return forecast from the primary short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 5-day short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 60-day short-horizon hedge signal."
+  },
+  {
+   "id": "short_horizon_hedge_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return forecast from the primary short-horizon hedge signal."
+  },
+  {
+   "id": "short_pred_20d_5bucket_class_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 20-day return classification into five quantile buckets (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_20d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term prediction, 20-day horizon, quantile 5."
+  },
+  {
+   "id": "short_pred_5d_5bucket_class_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short-term 5-bucket classification prediction."
+  },
+  {
+   "id": "short_pred_5d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term prediction, 5-day horizon, quantile 5."
+  },
+  {
+   "id": "short_pred_60d_5bucket_class_confidence_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day short-term 5-bucket classification prediction (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_60d_q5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term prediction, 60-day period, quantile 5."
+  },
+  {
+   "id": "short_pred_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day regression-based return prediction (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_regime2_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for 2-phase regime, 20-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_regime2_20d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 20-day regression prediction adjusted for two-phase market regime."
+  },
+  {
+   "id": "short_pred_regime2_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for 2-phase regime, 5-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_regime2_5d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 5-day regression prediction adjusted for two-phase market regime (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_regime2_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for 2-phase regime, 60-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_regime2_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day regression prediction adjusted for two-phase market regime (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_regime4_20d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 20-day regression prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_pred_regime4_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for 4-phase regime, 5-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_regime4_5d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 5-day regression prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_pred_regime4_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for 4-phase regime, 60-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_seasonal_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction adjusted for seasonal effects, 20-day horizon, quantile 1."
+  },
+  {
+   "id": "short_pred_seasonal_5d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 5-day regression prediction adjusted for seasonal effects (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_pred_seasonal_60d_regression_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day regression prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "short_pred_seasonal_60d_regression_pred_solar",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day regression prediction adjusted for seasonal effects (SolarEquiNox variant)."
+  },
+  {
+   "id": "short_term_20d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day, 5-quantile short-term return prediction."
+  },
+  {
+   "id": "short_term_20d_5quantile_confidence_score_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day, 5-quantile short-term return prediction (alternate model version)."
+  },
+  {
+   "id": "short_term_20d_5quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) 5-quantile return prediction."
+  },
+  {
+   "id": "short_term_20d_5quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) 5-quantile return prediction (alternate model version)."
+  },
+  {
+   "id": "short_term_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction, quantile 1."
+  },
+  {
+   "id": "short_term_20d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day short horizon quantile 5 prediction."
+  },
+  {
+   "id": "short_term_20d_quantile5_confidence_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 20-day short-term return."
+  },
+  {
+   "id": "short_term_20d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 20-day short horizon quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_term_20d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction, quantile 5."
+  },
+  {
+   "id": "short_term_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) regression-based return forecast."
+  },
+  {
+   "id": "short_term_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) single-quantile return prediction."
+  },
+  {
+   "id": "short_term_5d_5bucket_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day short-term return into one of five quantile buckets."
+  },
+  {
+   "id": "short_term_5d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short-term return prediction in 5 quantile classification."
+  },
+  {
+   "id": "short_term_5d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day return into quantile 5 using short-term prediction model."
+  },
+  {
+   "id": "short_term_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon prediction, quantile 1."
+  },
+  {
+   "id": "short_term_5d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 5-day short-horizon return into one of five quantile buckets."
+  },
+  {
+   "id": "short_term_5d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short horizon quantile 5 prediction."
+  },
+  {
+   "id": "short_term_5d_quantile5_confidence_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model's confidence in the 5-bucket quantile prediction for 5-day short-term return."
+  },
+  {
+   "id": "short_term_5d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-day short horizon quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_term_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (5-day) regression-based return forecast."
+  },
+  {
+   "id": "short_term_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (5-day) single-quantile return prediction."
+  },
+  {
+   "id": "short_term_5d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (5-day) single-quantile return prediction (alternate model version)."
+  },
+  {
+   "id": "short_term_60d_5bucket_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day short-term return into one of five quantile buckets."
+  },
+  {
+   "id": "short_term_60d_5quantile_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day, 5-quantile short-term return prediction."
+  },
+  {
+   "id": "short_term_60d_qtile5_class_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day return into quantile 5 using short-term prediction model."
+  },
+  {
+   "id": "short_term_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction, quantile 1."
+  },
+  {
+   "id": "short_term_60d_quantile5_classification",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Classification of 60-day short-horizon return into one of five quantile buckets."
+  },
+  {
+   "id": "short_term_60d_quantile5_confidence_score",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day short horizon quantile 5 prediction."
+  },
+  {
+   "id": "short_term_60d_quantile5_confidence_score_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 60-day short horizon quantile 5 prediction (multi-model variant)."
+  },
+  {
+   "id": "short_term_60d_quantile5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction, quantile 5."
+  },
+  {
+   "id": "short_term_60d_quantile5_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction, quantile 5 (multi-model variant)."
+  },
+  {
+   "id": "short_term_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (60-day) single-quantile return prediction."
+  },
+  {
+   "id": "short_term_60d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (60-day) single-quantile return prediction (alternate model version)."
+  },
+  {
+   "id": "short_term_hedge2_20d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term (20-day) hedge signal variant 2 in quantile 5."
+  },
+  {
+   "id": "short_term_hedge2_pred_r60_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative short-term hedge signal for 60-day horizon, regression output, designed for low correlation with main signal"
+  },
+  {
+   "id": "short_term_hedge3_60d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term (60-day) hedge signal variant 3 in quantile 5."
+  },
+  {
+   "id": "short_term_hedge3_signal_60d_quantile1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term (60-day) hedge signal variant 3, assigned to quantile bucket 1."
+  },
+  {
+   "id": "short_term_hedge_60d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term 60-day return forecast designed to be uncorrelated with main signals."
+  },
+  {
+   "id": "short_term_hedge_signal_20d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal over 20 days, quantile 1."
+  },
+  {
+   "id": "short_term_hedge_signal_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for 20-day horizon, quantile 1."
+  },
+  {
+   "id": "short_term_hedge_signal_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for 20-day horizon, quantile 5."
+  },
+  {
+   "id": "short_term_hedge_signal_5d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal over 5 days, quantile 1."
+  },
+  {
+   "id": "short_term_hedge_signal_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for 5-day horizon, quantile 1."
+  },
+  {
+   "id": "short_term_hedge_signal_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for 5-day horizon, quantile 5."
+  },
+  {
+   "id": "short_term_hedge_signal_60d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal over 60 days, quantile 1."
+  },
+  {
+   "id": "short_term_hedge_signal_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for 60-day horizon, quantile 5."
+  },
+  {
+   "id": "short_term_hedge_signal_confidence_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-horizon (20-day) hedge signal, quantile 5."
+  },
+  {
+   "id": "short_term_hedge_signal_confidence_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-horizon (60-day) hedge signal, quantile 5."
+  },
+  {
+   "id": "short_term_hedge_variant3_quantile5_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-horizon hedge signal, 5-quantile, over 20 days."
+  },
+  {
+   "id": "short_term_hedge_variant3_quantile5_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third variant of short-horizon hedge signal, 5-quantile, over 60 days."
+  },
+  {
+   "id": "short_term_pred_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_20d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term prediction over 20 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_20d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_20d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 20-day period, quantile 1."
+  },
+  {
+   "id": "short_term_pred_20d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 20-day period, quantile 5."
+  },
+  {
+   "id": "short_term_pred_5d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 5 days, quantile 1."
+  },
+  {
+   "id": "short_term_pred_5d_bin5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 5 days, quantile 5."
+  },
+  {
+   "id": "short_term_pred_5d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 5 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_5d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 5-day period, quantile 1."
+  },
+  {
+   "id": "short_term_pred_5d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 5-day period, quantile 5."
+  },
+  {
+   "id": "short_term_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_60d_bin5_confidence_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term prediction over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_60d_bin5_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, quantile 5, Mfmcr module."
+  },
+  {
+   "id": "short_term_pred_60d_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 60-day period, quantile 1."
+  },
+  {
+   "id": "short_term_pred_60d_q5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for 60-day period, quantile 5."
+  },
+  {
+   "id": "short_term_predicted_return_quantile1_20d_v2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) return prediction, quantile 1 (alternate version)."
+  },
+  {
+   "id": "short_term_predicted_return_quantile1_60d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (60-day) return prediction, quantile 1."
+  },
+  {
+   "id": "short_term_predicted_return_quantile5_20d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) return prediction, quantile 5."
+  },
+  {
+   "id": "short_term_price_volume_based_return_5d",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term (5-day) return forecast using price and volume data."
+  },
+  {
+   "id": "short_term_price_volume_return_quantile1_20d",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term (20-day) return prediction based on price-volume data, quantile 1."
+  },
+  {
+   "id": "short_term_price_volume_return_quantile1_5d",
+   "type": "MATRIX",
+   "coverage": 0.9534,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term (5-day) return prediction based on price-volume data, quantile 1."
+  },
+  {
+   "id": "short_term_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 1 return prediction."
+  },
+  {
+   "id": "short_term_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 return prediction."
+  },
+  {
+   "id": "short_term_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 1 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_confidence_r20",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term, 20-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 5-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_confidence_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence for short-term, 60-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_quantile5_r5_pred_mfm2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 5 return prediction from Mfm2 module."
+  },
+  {
+   "id": "short_term_quantile5_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 5 return prediction."
+  },
+  {
+   "id": "short_term_regime2_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short-horizon return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile short-term return prediction adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile short-term return prediction adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_5d_single_quantile_pred_m1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile short-term return prediction adjusted for 2-phase market regime (alternate model version)."
+  },
+  {
+   "id": "short_term_regime2_60d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (60-day) single-quantile return prediction adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_adj_pred_20d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, adjusted for 2-phase regime, quantile 1."
+  },
+  {
+   "id": "short_term_regime2_adj_pred_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, adjusted for 2-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_regime2_adj_pred_60d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, adjusted for 2-phase regime, quantile 1."
+  },
+  {
+   "id": "short_term_regime2_adj_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, adjusted for 2-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_regime2_adj_return_pred_r60_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction over 60 days, adjusted for 2-phase market regime, regression output."
+  },
+  {
+   "id": "short_term_regime2_adjusted_return_pred_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction over 5 days, adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_phase_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction adjusted for regime 2, quantile 1."
+  },
+  {
+   "id": "short_term_regime2_phase_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon prediction adjusted for regime 2, quantile 1."
+  },
+  {
+   "id": "short_term_regime2_phase_5d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon prediction adjusted for regime 2, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "short_term_regime2_phase_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction adjusted for regime 2, quantile 1."
+  },
+  {
+   "id": "short_term_regime2_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 1 return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 1 return forecast adjusted for 2-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_20d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short-term return prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short-horizon return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile short-term return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_5d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short-horizon return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day, single-quantile short-term return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_60d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short-term return prediction adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_60d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short-horizon return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_adj_pred_20d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, adjusted for 4-phase regime, quantile 1."
+  },
+  {
+   "id": "short_term_regime4_adj_pred_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, adjusted for 4-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_regime4_adj_pred_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 5 days, adjusted for 4-phase regime, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_regime4_adjusted_pred_q1_5d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (5-day) prediction adjusted for 4-phase regime, quantile 1."
+  },
+  {
+   "id": "short_term_regime4_adjusted_return_60d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term (60-day) return prediction adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_adjusted_return_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction over 60 days, adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_phase_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction adjusted for regime 4, quantile 1."
+  },
+  {
+   "id": "short_term_regime4_phase_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon prediction adjusted for regime 4, quantile 1."
+  },
+  {
+   "id": "short_term_regime4_phase_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction adjusted for regime 4, quantile 1."
+  },
+  {
+   "id": "short_term_regime4_phase_60d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction adjusted for regime 4, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "short_term_regime4_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 1 return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 1 return forecast adjusted for 4-phase market regime."
+  },
+  {
+   "id": "short_term_return_60d_quantile5_confidence",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for short-term (60-day) return prediction in quantile 5."
+  },
+  {
+   "id": "short_term_return_forecast_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon single-quantile return prediction over 5 days."
+  },
+  {
+   "id": "short_term_return_pred_r20_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for a 20-day horizon, regression output."
+  },
+  {
+   "id": "short_term_return_quantile5_confidence_r5",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for 5-quantile short-term return prediction over 5 days."
+  },
+  {
+   "id": "short_term_seasonal_20d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "short_term_seasonal_20d_quantile1_pred_mfml",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short horizon prediction adjusted for seasonal effects, quantile 1 (multi-model variant)."
+  },
+  {
+   "id": "short_term_seasonal_20d_regression_prediction",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day short-horizon return forecast adjusted for seasonal and calendar effects."
+  },
+  {
+   "id": "short_term_seasonal_20d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day, single-quantile short-term return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_5d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short horizon prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "short_term_seasonal_5d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "5-day short-term return forecast incorporating seasonal or calendar effects."
+  },
+  {
+   "id": "short_term_seasonal_5d_single_quantile_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "5-day, single-quantile short-term return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_60d_quantile1_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short horizon prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "short_term_seasonal_60d_regress_return_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day short-term return forecast incorporating seasonal or calendar effects."
+  },
+  {
+   "id": "short_term_seasonal_adj_pred_20d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 20 days, seasonally adjusted, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_seasonal_adj_pred_5d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 5 days, seasonally adjusted, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_seasonal_adj_pred_60d_bin1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, seasonally adjusted, quantile 1."
+  },
+  {
+   "id": "short_term_seasonal_adj_pred_60d_bin1_mcr",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term prediction over 60 days, seasonally adjusted, quantile 1, Mfmcr module."
+  },
+  {
+   "id": "short_term_seasonal_adj_pred_r5_q1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for 5-day horizon, adjusted for seasonal effects, regression output."
+  },
+  {
+   "id": "short_term_seasonal_adjusted_pred_q1_5d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (5-day) prediction adjusted for seasonal effects, quantile 1."
+  },
+  {
+   "id": "short_term_seasonal_adjusted_return_20d",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon (20-day) return prediction incorporating seasonal adjustments."
+  },
+  {
+   "id": "short_term_seasonal_adjusted_return_pred_r60",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction adjusted for seasonal effects over 60 days."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_r20_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 20-day, quantile 1 return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_r5_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 5-day, quantile 1 return prediction adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_r60_pred",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term, 60-day, quantile 1 return prediction adjusted for seasonal effects."
+  }
+ ]
+}

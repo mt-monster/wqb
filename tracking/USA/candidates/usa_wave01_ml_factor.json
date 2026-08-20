@@ -1,0 +1,16 @@
+{
+  "wave": 1,
+  "region": "USA",
+  "dataset": "ml_factor_proj",
+  "strategy": "ml_factor_proj 强信号字段探针（ts_zscore 骨架，attention+change+基础指标）",
+  "expressions": [
+    "ts_zscore(attention_altman_z_score, 20)",
+    "ts_zscore(attention_beta, 20)",
+    "ts_zscore(attention_atm_call_option_volatility_2, 20)",
+    "ts_zscore(change_12m_alpha, 20)",
+    "ts_zscore(change_1y_eps_growth, 20)",
+    "ts_zscore(altman_z_score, 20)",
+    "ts_zscore(atm_call_option_volatility, 20)",
+    "ts_zscore(beta_times_sigma, 20)"
+  ]
+}

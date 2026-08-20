@@ -1,0 +1,41 @@
+{
+  "wave": 42,
+  "focus": "Reduce CONCENTRATED_WEIGHT by adding more signals to z250 3-signal composite",
+  "baseline": {"id": "RR7Llwoj", "expr": "3sig z250", "sharpe": 1.58, "fitness": 1.30, "2y": 2.02, "cw": 0.212},
+  "best_ever": {
+    "id": "kqj5M528",
+    "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 250)), rank(ts_zscore(mdl25_eq_vr_v13, 250))), rank(ts_zscore(mdl31_ass_tvr_t4q, 250))), rank(ts_zscore(mdl31_gm_pct_t4q, 250)))",
+    "note": "4sig: ROE+ER+AT+GM z250 - MEA BEST EVER",
+    "sharpe": 1.76, "fitness": 1.52, "2y": 2.08, "cw": 0.236, "tvr": 0.227, "margin": 14.9,
+    "sub_universe_sharpe": 1.48
+  },
+  "results": [
+    {"id": "kqj5M528", "variant": "+GM", "sharpe": 1.76, "fitness": 1.52, "2y": 2.08, "cw": 0.236, "fail": ["CW"]},
+    {"id": "A1ld5dKR", "variant": "+Accruals", "sharpe": 1.58, "fitness": 1.27, "2y": 2.16, "cw": 0.210, "fail": ["CW"]},
+    {"id": "LL7xwxJa", "variant": "+CFRank", "sharpe": 1.60, "fitness": 1.32, "2y": 2.16, "cw": 0.262, "fail": ["CW"]},
+    {"id": "E5lAMAJr", "variant": "+DivYield", "sharpe": 1.63, "fitness": 1.38, "2y": 1.95, "cw": 0.368, "fail": ["CW"]},
+    {"id": "lejZYxON", "variant": "+GM+Accruals", "sharpe": 1.67, "fitness": 1.39, "2y": 2.16, "cw": 0.272, "fail": ["CW"]},
+    {"id": "LL7xweA6", "variant": "+GM+CFRank", "sharpe": 1.65, "fitness": 1.39, "2y": 2.08, "cw": 0.270, "fail": ["CW"]},
+    {"id": "MP7AnwmM", "variant": "+GM+Acc+CF", "sharpe": 1.57, "fitness": 1.27, "2y": 2.14, "cw": 0.287, "fail": ["LOW_SHARPE", "CW"]}
+  ],
+  "key_findings": [
+    "kqj5M528 (ROE+ER+AT+GM z250) is MEA BEST EVER: sharpe=1.76, fitness=1.52",
+    "GM (Gross Margin) is the best 4th signal - boosts sharpe from 1.58 to 1.76",
+    "Adding more signals does NOT reduce CW - all variants still >0.1",
+    "CW increases with sharpe - stronger signals concentrate weights more",
+    "All signals are quality/fundamental direction - highly correlated, select overlapping stocks",
+    "CW is a STRUCTURAL problem in MEA TOP400 - cannot be solved by adding similar signals",
+    "6-signal composite (MP7AnwmM) actually DROPS below 1.58 sharpe - diminishing returns"
+  ],
+  "cw_analysis": {
+    "problem": "All quality signals select the same ~50 stocks in MEA TOP400, causing concentrated weights",
+    "evidence": "CW ranges 0.21-0.37 across all variants, no improvement from signal diversification",
+    "root_cause": "MEA TOP400 is small (~400 stocks), quality signals are highly correlated, selected stocks overlap heavily",
+    "possible_solutions": [
+      "1. Use fundamentally DIFFERENT signal types (momentum, volatility, volume) to diversify stock selection",
+      "2. Reduce signal strength (lower z-score threshold) to select more stocks",
+      "3. Use rank subtraction/division instead of addition to create relative rankings",
+      "4. Accept CW as unsolvable in MEA and move to larger universe region"
+    ]
+  }
+}

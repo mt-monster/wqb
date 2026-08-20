@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "wave": "15A",
+    "source": "manual_diversified",
+    "region": "MEA",
+    "created_at": "2026-08-19T19:30:00",
+    "input": 8,
+    "duplicates_dropped": 0,
+    "selected": 8,
+    "coverage_injected": 0,
+    "buckets": {
+      "rank>ts_zscore": 2,
+      "rank>ts_delta": 2,
+      "add>rank": 2,
+      "subtract>rank": 1,
+      "rank>ts_rank": 1
+    },
+    "skeleton_distribution": {
+      "linear_mix": 3,
+      "single": 5
+    },
+    "linear_mix_cap": 0.5,
+    "diversity_enhanced": false,
+    "notes": "Wave15A: model31 expressions avoiding existing alpha fields (dy_pct_current, star_eq_*)"
+  },
+  "expressions": [
+    "rank(ts_zscore(mdl31_roe_pct_t4q, 60))",
+    "rank(ts_zscore(mdl31_oe_chg_1_qtr, 60))",
+    "rank(ts_delta(mdl31_acc_chg_1_qtr, 22))",
+    "rank(ts_delta(mdl31_cf_chg_1_qtr, 22))",
+    "add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl31_oe_chg_1_qtr, 60)))",
+    "add(rank(ts_zscore(mdl31_acc_chg_1_qtr, 60)), rank(ts_zscore(mdl31_cf_chg_1_qtr, 60)))",
+    "subtract(rank(ts_zscore(mdl31_erq_re_rk_chg_1_qtr, 60)), rank(ts_zscore(mdl31_acc_chg_1_qtr, 60)))",
+    "rank(ts_rank(mdl31_gm_pct_t4q, 60))"
+  ]
+}

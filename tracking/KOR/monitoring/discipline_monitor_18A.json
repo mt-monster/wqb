@@ -1,0 +1,52 @@
+{
+ "wave": "18A",
+ "started_at": "2026-08-19T15:01:32",
+ "dataset": "multi_source_model",
+ "batches": [
+  {
+   "batch_id": "batch_18A_0",
+   "exprs": 8,
+   "complete": 8,
+   "candidates": 1,
+   "recorded_at": "2026-08-19T15:01:32"
+  },
+  {
+   "batch_id": "batch_18A_1",
+   "exprs": 8,
+   "complete": 8,
+   "candidates": 1,
+   "recorded_at": "2026-08-19T15:01:32"
+  },
+  {
+   "batch_id": "batch_18A_2",
+   "exprs": 8,
+   "complete": 8,
+   "candidates": 1,
+   "recorded_at": "2026-08-19T15:01:32"
+  }
+ ],
+ "discipline_metrics": {
+  "prod_classification": {
+   "SUSPEND": 1
+  },
+  "death_evidence_check": {
+   "settings_exhausted": false,
+   "structures_exhausted": false,
+   "rescue_weapons_exhausted": false,
+   "prod_wall_structural": false
+  },
+  "switch_triggered": false,
+  "switch_reason": null,
+  "deepen_strategies": []
+ },
+ "efficiency_metrics": {
+  "total_exprs": 24,
+  "total_complete": 24,
+  "total_candidates": 3,
+  "total_quota_used": 24,
+  "prod_wall_first_seen": null,
+  "death_verdict_wave": null,
+  "waves_to_death": null
+ },
+ "completed_at": "2026-08-19T15:01:32"
+}

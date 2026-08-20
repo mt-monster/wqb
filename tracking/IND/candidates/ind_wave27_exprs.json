@@ -1,0 +1,14 @@
+[
+ "rank(anl46_indicator)",
+ "rank(anl46_sentiment)",
+ "rank(anl46_experts)",
+ "rank(anl46_performancepercentile)",
+ "add(scale(rank(ts_zscore(anl46_indicator, 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+ "add(scale(rank(ts_zscore(anl46_sentiment, 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+ "add(add(0.5*rank(anl46_indicator), 0.3*rank(anl46_sentiment)), 0.2*rank(anl46_experts))",
+ "add(scale(rank(ts_zscore(add(add(0.5*anl46_indicator, 0.3*anl46_sentiment), 0.2*anl46_experts), 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+ "rank(ts_backfill(anl39_ghcspemtt, 66))",
+ "rank(ts_backfill(anl39_ghcspea, 66))",
+ "add(0.6*rank(ts_backfill(anl39_ghcspemtt, 66)), 0.4*rank(ts_backfill(anl39_ghcspea, 66)))",
+ "add(scale(rank(ts_backfill(anl39_agrosmgn, 66))), scale(-rank(ts_zscore(returns, 21))) * 0.3)"
+]

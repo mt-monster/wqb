@@ -16,5 +16,10 @@
   "startDate": "2014-01-01",
   "endDate": "2023-12-31",
   "_multi_sim_batch_size": 8,
-  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批"
+  "_concurrency_rule": "五槽填槽：每轮5批同提、即收即补保持槽位常满（wqb-concurrency §8；旧'单批在飞'已废弃，2026-08-16）",
+  "submit_quota": {
+    "limit": 10,
+    "window_hours": 48,
+    "_doc": "48小时滚动窗口内最多提交10个alpha（平台默认4个，已调整）"
+  }
 }

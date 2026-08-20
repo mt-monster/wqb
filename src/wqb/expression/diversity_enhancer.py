@@ -67,35 +67,89 @@ def op_arity_style(op: str) -> str:
 
 
 class OperatorQuotaManager:
-    """算子配额管理器 - 强制算子轮换机制"""
-    
-    # 算子类别定义
-    OPERATOR_CATEGORIES = {
-        'ts_*': ['ts_mean', 'ts_sum', 'ts_std_dev', 'ts_rank', 'ts_delta', 'ts_zscore', 
-                 'ts_decay_linear', 'ts_backfill', 'ts_ir', 'ts_av_diff', 'ts_scale',
-                 'ts_arg_max', 'ts_arg_min', 'ts_product', 'ts_delay'],
-        'group_*': ['group_rank', 'group_neutralize', 'group_mean', 'group_sum', 'group_zscore'],
-        'vec_*': ['vec_avg', 'vec_max', 'vec_min', 'vec_sum', 'vec_count', 'vec_norm'],
-        'rank_*': ['rank', 'quantile', 'normalize', 'scale'],
-        'arithmetic': ['add', 'subtract', 'multiply', 'divide', 'signed_power', 'sqrt', 
-                      'abs', 'log', 'sign', 'exp', 'power'],
-        'conditional': ['if_else', 'trade_when', 'greater', 'less'],
-        'transform': ['winsorize', 'pasteurize', 'bucket', 'range', 'densify']
-    }
-    
-    # 默认配额比例
+    """算子配额管理器 - 强制算子轮换机制
+
+    2026-08-18 修复（EUR+GBR 836 表达式实证：真实算子覆盖率仅 22%）：
+      原 OPERATOR_CATEGORIES 是手写 50 算子小池，漏掉 55 个真实可用算子、
+      混入 exp/range/vec_norm 3 个幽灵算子，导致 coverage_rate 分母失真、
+      配额被幽灵算子污染、欠用建议永远照不见池外盲区。
+      现改为以平台权威全集 VERIFIED_SAFE_OPERATORS（102）为唯一分母动态构建，
+      剔除幽灵、补全漏网；新增 reduce_*/special 两类，配额键同步。
+    """
+
+    # 算子类别定义：由 VERIFIED_SAFE_OPERATORS 动态构建（见下方 _build_categories），
+    # 保证与平台真实可用算子严格对齐，不再手写维护。
+    OPERATOR_CATEGORIES = {}
+
+    # 默认配额比例（按 8 类；special 为 combo/self_corr 等元算子，默认低配额）
     DEFAULT_QUOTAS = {
-        'ts_*': 0.25,
-        'group_*': 0.20,
-        'vec_*': 0.10,
-        'rank_*': 0.15,
-        'arithmetic': 0.20,
-        'conditional': 0.05,
-        'transform': 0.05
+        'ts_*': 0.22,
+        'group_*': 0.18,
+        'vec_*': 0.08,
+        'rank_*': 0.10,
+        'arithmetic': 0.18,
+        'conditional': 0.06,
+        'transform': 0.05,
+        'reduce_*': 0.08,
+        'special': 0.05,
     }
-    
+
+    # 语义分类规则（仅对 VERIFIED 真实算子生效；顺序即优先级）
+    _CATEGORY_RULES = (
+        ('ts_*', lambda o: o.startswith('ts_')),
+        ('group_*', lambda o: o.startswith('group_')),
+        ('vec_*', lambda o: o.startswith('vec_')),
+        ('reduce_*', lambda o: o.startswith('reduce_')),
+        ('rank_*', lambda o: o in ('rank', 'quantile', 'normalize', 'scale', 'zscore')),
+        ('arithmetic', lambda o: o in ('add', 'subtract', 'multiply', 'divide', 'signed_power',
+                                       'sqrt', 'abs', 'log', 'sign', 'power', 'max', 'min',
+                                       'inverse', 'bucket')),
+        ('conditional', lambda o: o in ('if_else', 'trade_when', 'greater', 'less', 'greater_equal',
+                                        'less_equal', 'equal', 'not_equal', 'and', 'or', 'not',
+                                        'in', 'is_nan')),
+        ('transform', lambda o: o in ('winsorize', 'pasteurize', 'densify', 'hump', 'reverse', 'tail')),
+        # 兜底：combo_a/self_corr/generate_stats/universe_size/days_from_last_change/
+        #       last_diff_value/kth_element 等元/特殊算子
+        ('special', lambda o: True),
+    )
+
+    @classmethod
+    def _verified_operators(cls):
+        """平台权威真实算子全集（102）。优先取 config.VERIFIED_SAFE_OPERATORS。"""
+        try:
+            from wqb.config import VERIFIED_SAFE_OPERATORS
+            ops = set(VERIFIED_SAFE_OPERATORS)
+            if ops:
+                return ops
+        except Exception:
+            pass
+        return set()
+
+    @classmethod
+    def _build_categories(cls):
+        """按 _CATEGORY_RULES 把 VERIFIED 真实算子分入各类别（并集 == VERIFIED 全集）。"""
+        cats = {name: [] for name, _ in cls._CATEGORY_RULES}
+        for op in sorted(cls._verified_operators()):
+            for name, pred in cls._CATEGORY_RULES:
+                if pred(op):
+                    cats[name].append(op)
+                    break
+        # 只保留非空类别，且每个类别内排序稳定
+        return {k: v for k, v in cats.items() if v}
+
+    @classmethod
+    def all_verified_operators(cls):
+        """coverage_rate 的权威分母：平台真实可用算子全集（102）。"""
+        return cls._verified_operators()
+
     def __init__(self, quotas: Optional[Dict[str, float]] = None):
-        self.quotas = quotas or self.DEFAULT_QUOTAS.copy()
+        # 动态构建 categories（首次实例化时），并同步配额键
+        if not OperatorQuotaManager.OPERATOR_CATEGORIES:
+            OperatorQuotaManager.OPERATOR_CATEGORIES = OperatorQuotaManager._build_categories()
+        base = self.DEFAULT_QUOTAS.copy()
+        # 只保留实际存在类别的配额，缺失类别补 0
+        base = {k: v for k, v in base.items() if k in self.OPERATOR_CATEGORIES}
+        self.quotas = quotas or base
         self.usage_history = defaultdict(int)
         self.category_usage = defaultdict(int)
         
@@ -400,11 +454,15 @@ class DiversityMonitor:
         # 字符串唯一率（旧 novelty 语义，兼容保留）
         expr_uniqueness = len(set(expressions)) / len(expressions) if expressions else 0
         
-        # 计算覆盖率
-        all_possible_ops = set()
-        for ops in OperatorQuotaManager.OPERATOR_CATEGORIES.values():
-            all_possible_ops.update(ops)
-        used_ops = set(operator_dist.keys())
+        # 计算覆盖率：分母用平台权威真实算子全集（102），而非 categories 小池。
+        # 2026-08-18 修复：原 categories 并集仅 50 算子，coverage_rate 虚高，
+        # 实战 102 全集覆盖率仅 22% 的盲区被掩盖。切到 VERIFIED 全集后口径真实。
+        all_possible_ops = OperatorQuotaManager.all_verified_operators()
+        if not all_possible_ops:  # config 不可用兜底：退回 categories 并集
+            for ops in OperatorQuotaManager.OPERATOR_CATEGORIES.values():
+                all_possible_ops.update(ops)
+        # 分子只统计真实算子（剔除字段名误匹配/幽灵算子）
+        used_ops = set(operator_dist.keys()) & all_possible_ops
         coverage_rate = len(used_ops) / len(all_possible_ops) if all_possible_ops else 0
         
         # top 算子占比与信号单点检测（GBR 复盘：rank 占 90% 的"伪多样性"必须暴露）

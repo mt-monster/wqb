@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_gm_pct_t4q, 120))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_om_pct_t4q, 120))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roa_pct_t4q, 120))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 252))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 252))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 252))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  },
+  {
+    "type": "REGULAR",
+    "regular": "rank(ts_zscore(mdl31_roe_pct_t4q, 252))",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 4,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false
+    }
+  }
+]

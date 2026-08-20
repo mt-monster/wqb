@@ -1,0 +1,45 @@
+{
+ "wave": "17C",
+ "started_at": "2026-08-19T15:01:32",
+ "dataset": "other455",
+ "batches": [
+  {
+   "batch_id": "batch_17C_0",
+   "exprs": 8,
+   "complete": 8,
+   "candidates": 2,
+   "recorded_at": "2026-08-19T15:01:32"
+  },
+  {
+   "batch_id": "batch_17C_1",
+   "exprs": 8,
+   "complete": 8,
+   "candidates": 2,
+   "recorded_at": "2026-08-19T15:01:32"
+  }
+ ],
+ "discipline_metrics": {
+  "prod_classification": {
+   "UNKNOWN": 1
+  },
+  "death_evidence_check": {
+   "settings_exhausted": false,
+   "structures_exhausted": false,
+   "rescue_weapons_exhausted": false,
+   "prod_wall_structural": false
+  },
+  "switch_triggered": false,
+  "switch_reason": null,
+  "deepen_strategies": []
+ },
+ "efficiency_metrics": {
+  "total_exprs": 16,
+  "total_complete": 16,
+  "total_candidates": 4,
+  "total_quota_used": 16,
+  "prod_wall_first_seen": null,
+  "death_verdict_wave": null,
+  "waves_to_death": null
+ },
+ "completed_at": "2026-08-19T15:01:32"
+}

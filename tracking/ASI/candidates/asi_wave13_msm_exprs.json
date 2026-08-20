@@ -1,0 +1,18 @@
+[
+ "rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred))",
+ "rank(subtract(analyst_quantile5_60d_pred, analyst_quantile1_60d_pred))",
+ "rank(subtract(long_term_quantile5_120d_pred, long_term_quantile1_120d_pred))",
+ "rank(subtract(analyst_quantile5_120d_pred, analyst_quantile1_120d_pred))",
+ "rank(long_term_quantile5_60d_pred)",
+ "rank(analyst_quantile5_60d_pred)",
+ "subtract(0, rank(long_term_quantile1_60d_pred))",
+ "subtract(0, rank(analyst_quantile1_60d_pred))",
+ "rank(price_volume_quantile5_20d_pred)",
+ "subtract(0, rank(price_volume_quantile1_20d_pred))",
+ "add(0.5*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.5*rank(subtract(analyst_quantile5_60d_pred, analyst_quantile1_60d_pred)))",
+ "add(0.6*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.4*rank(price_volume_quantile5_20d_pred))",
+ "add(0.5*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.5*rank(subtract(long_term_quantile5_120d_pred, long_term_quantile1_120d_pred)))",
+ "rank(multiply(long_term_quantile5_60d_pred, long_term_quantile5_confidence_60d_pred))",
+ "rank(subtract(short_term_quantile5_60d_pred, short_term_quantile1_60d_pred))",
+ "rank(subtract(short_term_quantile5_20d_pred, short_term_quantile1_20d_pred))"
+]

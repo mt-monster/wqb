@@ -1,0 +1,82 @@
+[
+ {
+  "code": "rank(normalized_trend_indicator_3)",
+  "note": "趋势3 正向",
+  "decay": 2
+ },
+ {
+  "code": "subtract(0, rank(normalized_trend_indicator_3))",
+  "note": "趋势3 镜像",
+  "decay": 2
+ },
+ {
+  "code": "rank(normalized_volume_indicator_0)",
+  "note": "量能0 正向",
+  "decay": 2
+ },
+ {
+  "code": "subtract(0, rank(normalized_volume_indicator_0))",
+  "note": "量能0 镜像",
+  "decay": 2
+ },
+ {
+  "code": "rank(normalized_trend_indicator_0)",
+  "note": "趋势0 正向",
+  "decay": 2
+ },
+ {
+  "code": "subtract(0, rank(normalized_trend_indicator_0))",
+  "note": "趋势0 镜像",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(0.5*subtract(0, rank(arm_score_5pt_scale_2)), 0.5*rank(rel_val_pe_component_score_3)), 0.3*rank(normalized_trend_indicator_3))",
+  "note": "价值双路+趋势3正",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(0.5*subtract(0, rank(arm_score_5pt_scale_2)), 0.5*rank(rel_val_pe_component_score_3)), 0.3*subtract(0, rank(normalized_trend_indicator_3)))",
+  "note": "价值双路+趋势3镜",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(0.5*subtract(0, rank(arm_score_5pt_scale_2)), 0.5*rank(rel_val_pe_component_score_3)), 0.3*rank(normalized_volume_indicator_0))",
+  "note": "价值双路+量能0正",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(0.5*subtract(0, rank(arm_score_5pt_scale_2)), 0.5*rank(rel_val_pe_component_score_3)), 0.3*subtract(0, rank(normalized_volume_indicator_0)))",
+  "note": "价值双路+量能0镜",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.4*rank(rel_val_pe_component_score_3)), 0.3*rank(normalized_trend_indicator_3))",
+  "note": "三路+趋势3正",
+  "decay": 2
+ },
+ {
+  "code": "add(0.7*add(add(0.3*subtract(0, rank(price_to_intrinsic_value_ratio_3)), 0.3*subtract(0, rank(arm_score_5pt_scale_2))), 0.4*rank(rel_val_pe_component_score_3)), 0.3*subtract(0, rank(normalized_trend_indicator_3)))",
+  "note": "三路+趋势3镜",
+  "decay": 2
+ },
+ {
+  "code": "add(0.5*rank(normalized_trend_indicator_3), 0.5*rank(normalized_volume_indicator_0))",
+  "note": "趋势3+量能0 双正",
+  "decay": 2
+ },
+ {
+  "code": "add(0.5*subtract(0, rank(normalized_trend_indicator_3)), 0.5*subtract(0, rank(normalized_volume_indicator_0)))",
+  "note": "趋势3+量能0 双镜",
+  "decay": 2
+ },
+ {
+  "code": "add(0.5*rank(normalized_trend_indicator_0), 0.5*rank(normalized_trend_indicator_3))",
+  "note": "趋势0+3 双正",
+  "decay": 2
+ },
+ {
+  "code": "add(0.5*subtract(0, rank(normalized_trend_indicator_0)), 0.5*subtract(0, rank(normalized_trend_indicator_3)))",
+  "note": "趋势0+3 双镜",
+  "decay": 2
+ }
+]

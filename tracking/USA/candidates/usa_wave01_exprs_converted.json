@@ -1,0 +1,20 @@
+{
+  "expressions": [
+    "rank(ts_delta(anl15_bps_gr_12_m_mean, 20))",
+    "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60))",
+    "rank(ts_zscore(anl15_bps_gr_12_m_3m_chg, 120))",
+    "rank(anl15_bps_gr_12_m_cos_up - anl15_bps_gr_12_m_cos_dn)",
+    "rank(anl15_bps_gr_12_m_ests_up / (anl15_bps_gr_12_m_ests_up + anl15_bps_gr_12_m_ests_dn + 1))",
+    "rank(anl15_bps_gr_12_m_gro)",
+    "rank(anl15_bps_gr_cal_fy1_gro)",
+    "rank(-anl15_bps_gr_12_m_pe)",
+    "rank(-anl15_bps_gr_cal_fy1_pe)",
+    "rank(-anl15_bps_gr_12_m_st_dev)",
+    "rank(ts_delta(anl15_bps_s_12_m_mean, 20))",
+    "rank(anl15_bps_s_12_m_cos_up - anl15_bps_s_12_m_cos_dn)",
+    "rank(ts_zscore(anl15_bps_ind_12_m_1m_chg, 60))",
+    "rank(ts_delta(anl15_bps_gr_18_m_mean, 60))",
+    "rank(anl15_bps_gr_18_m_gro)",
+    "rank(ts_zscore(anl15_bps_gr_12_m_1m_chg, 60)) + rank(anl15_bps_gr_12_m_gro) + rank(-anl15_bps_gr_12_m_pe)"
+  ]
+}

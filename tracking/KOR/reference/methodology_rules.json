@@ -1,0 +1,43 @@
+{
+ "version": 1,
+ "rules": [
+  {
+   "rule_id": "explore_contract_KOR_20260819_165818_735092",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "KOR"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "ts_corr",
+     "ts_kurtosis",
+     "bucket",
+     "if_else"
+    ],
+    "skeleton_quota": {
+     "event_gated": 1,
+     "group": 1
+    },
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [],
+    "issued_at": "2026-08-19T16:58:18"
+   },
+   "evidence": {
+    "exploration_rate": 0.271,
+    "total_exprs": 1284
+   },
+   "confidence": 1.0,
+   "status": "active",
+   "source": "diversity_audit",
+   "created_at": "2026-08-19T16:58:18",
+   "times_applied": 0,
+   "times_succeeded": 0
+  }
+ ],
+ "updated_at": "2026-08-19T16:58:18"
+}

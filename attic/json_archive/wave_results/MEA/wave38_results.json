@@ -1,0 +1,38 @@
+{
+ "wave": 38,
+ "batches": [
+  {"multisim": "4kqORk9b14uZ8GO15gVx7MD", "ds": "model31", "count": 8},
+  {"multisim": "3crAoj1es4ZZ8HKljzpkQh8", "ds": "model25+model31mix", "count": 8}
+ ],
+ "settings": "MEA/TOP400/D1/SECTOR/decay=4/truncation=0.08/maxTrade=ON",
+ "results": [
+  {"id":"xAjark7J","expr":"rank(ts_zscore(mdl31_roe_pct_t4q, 120))","ds":"model31","sharpe":1.39,"fitness":0.96,"tvr":0.236,"margin_bp":0.95,"2y":1.38,"cw":0.174,"sub":1.30,"note":"ROE T4Q - BEST"},
+  {"id":"N17oNQ78","expr":"add(rank(ts_zscore(mdl31_roe_pct_t4q,120)),rank(ts_zscore(mdl31_dy_pct_current,120)))","ds":"model31","sharpe":0.93,"fitness":0.55,"tvr":0.284,"margin_bp":0.69,"2y":1.34,"cw":0.411,"sub":0.80,"note":"ROE+DY composite"},
+  {"id":"LL7xM9GL","expr":"rank(ts_zscore(mdl25_eq_vr_v13, 120))","ds":"model25","sharpe":0.80,"fitness":0.46,"tvr":0.249,"margin_bp":0.67,"2y":1.19,"cw":0.180,"sub":0.63,"note":"Earnings Retention"},
+  {"id":"Vk7ox63w","expr":"rank(ts_zscore(mdl25_eq_vr_v5, 120))","ds":"model25","sharpe":0.64,"fitness":0.33,"tvr":0.253,"margin_bp":0.55,"2y":0.21,"cw":0.219,"sub":0.63,"note":"Asset Turnover"},
+  {"id":"ZY7LQn8j","expr":"rank(ts_zscore(mdl31_om_pct_t4q, 120))","ds":"model31","sharpe":0.52,"fitness":0.23,"tvr":0.231,"margin_bp":0.38,"2y":0.65,"cw":0.186,"sub":0.55,"note":"Operating Margin"},
+  {"id":"QP7dv37X","expr":"add(rank(ts_zscore(mdl25_eq_pc_v9,120)),rank(ts_zscore(mdl25_eq_vr_v5,120)))","ds":"model25","sharpe":0.45,"fitness":0.20,"tvr":0.248,"margin_bp":0.41,"2y":-0.07,"cw":0.198,"sub":0.41,"note":"EQ+AssetTvr composite"},
+  {"id":"vRjV1lW3","expr":"rank(ts_zscore(mdl31_dse_last_qtr, 120)) * -1","ds":"model31","sharpe":0.35,"fitness":0.12,"tvr":0.234,"margin_bp":0.24,"2y":1.01,"cw":0.259,"sub":0.0,"note":"Low D/E"},
+  {"id":"pwjgdPNv","expr":"rank(ts_zscore(mdl25_eq_rlev_v7, 120)) * -1","ds":"model25","sharpe":0.35,"fitness":0.12,"tvr":0.234,"margin_bp":0.24,"2y":1.02,"cw":0.259,"sub":0.0,"note":"Low D/E"},
+  {"id":"pwjgdlL3","expr":"rank(ts_zscore(divide(mdl31_fcf_mm_last_qtr, mdl31_bv_share_last_qtr), 120))","ds":"model31","sharpe":0.28,"fitness":0.08,"tvr":0.234,"margin_bp":0.17,"2y":0.11,"cw":0.169,"sub":0.55,"note":"FCF/BV"},
+  {"id":"P07Eo3V7","expr":"rank(ts_zscore(star_eq_rank, 120))","ds":"model31","sharpe":0.22,"fitness":0.05,"tvr":0.234,"margin_bp":0.12,"2y":0.12,"cw":0.201,"sub":0.09,"note":"StarMine EQ rank"},
+  {"id":"xAjarYkW","expr":"rank(ts_zscore(earnings_quality_score_cb_01, 120))","ds":"model25","sharpe":0.18,"fitness":0.04,"tvr":0.253,"margin_bp":0.13,"2y":-0.92,"cw":0.465,"sub":0.40,"note":"EQ score cb_01"},
+  {"id":"YP7d10Vl","expr":"rank(ts_zscore(mdl31_dy_pct_current, 120))","ds":"model31","sharpe":0.13,"fitness":0.03,"tvr":0.283,"margin_bp":0.09,"2y":0.63,"cw":0.412,"sub":0.02,"note":"Dividend Yield"},
+  {"id":"GrlvWdLo","expr":"rank(ts_zscore(mdl25_eq_pc_v9, 120))","ds":"model25","sharpe":0.13,"fitness":0.03,"tvr":0.248,"margin_bp":0.12,"2y":-0.34,"cw":0.242,"sub":0.06,"note":"EQ percentile v9"},
+  {"id":"O07vAZ3q","expr":"rank(ts_zscore(mdl31_erq_re_rk_chg_1_qtr, 60))","ds":"model31","sharpe":0.12,"fitness":0.02,"tvr":0.264,"margin_bp":0.06,"2y":-0.74,"cw":0.287,"sub":0.34,"note":"EQ rank change"},
+  {"id":"Xg7E9W8b","expr":"rank(ts_zscore(mdl25_eq_vr_v19, 120))","ds":"model25","sharpe":-0.23,"fitness":-0.06,"tvr":0.230,"margin_bp":-0.15,"2y":0.01,"cw":0.266,"sub":-0.30,"note":"Net Margin%"},
+  {"id":"78jVL1p8","expr":"rank(ts_zscore(mdl31_pb_current, 120)) * -1","ds":"model31","sharpe":-0.65,"fitness":-0.34,"tvr":0.253,"margin_bp":-0.55,"2y":-0.22,"cw":0.219,"sub":-0.64,"note":"Low P/B (inverted)"}
+ ],
+ "summary": {
+  "total": 16,
+  "complete": 16,
+  "pass_158": 0,
+  "best_sharpe": 1.39,
+  "best_id": "xAjark7J",
+  "best_expr": "mdl31_roe_pct_t4q",
+  "near_10": 1,
+  "turnover_range": "23-28% (all within 5-30% target)",
+  "cw_issue": "ALL 16 have CONCENTRATED_WEIGHT > 0.1 (fail)",
+  "key_finding": "model31 ROE T4Q sharpe=1.39 close to 1.58 threshold, 2y=1.38 also close. Margin 0.95bp < 5bp threshold. CW is the persistent blocker."
+ }
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(365, vec_avg(nws79_title_similarity_days)), 365)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(365, vec_avg(nws79_title_similarity_days_201)), 365)"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(vec_count(nws79_event_sentiment), ts_mean(vec_count(nws79_event_sentiment), 20)), add(ts_std_dev(vec_count(nws79_event_sentiment), 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(subtract(vec_count(nws79_event_sentiment_196), ts_mean(vec_count(nws79_event_sentiment_196), 20)), add(ts_std_dev(vec_count(nws79_event_sentiment_196), 20), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_sum(nws79_composite_sentiment_score), add(vec_sum(nws79_document_sentiment_confidence), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_sum(nws79_composite_sentiment_score_191), add(vec_sum(nws79_document_sentiment_confidence), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_sum(nws79_composite_sentiment_score), add(vec_sum(nws79_document_sentiment_confidence_193), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "KOR",
+      "universe": "TOP600",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "maxTrade": "ON",
+      "testPeriod": "P0D"
+    },
+    "regular": "divide(vec_sum(nws79_composite_sentiment_score_191), add(vec_sum(nws79_document_sentiment_confidence_193), 0.0001))"
+  }
+]

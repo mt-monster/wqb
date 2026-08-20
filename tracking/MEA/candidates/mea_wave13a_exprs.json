@@ -1,0 +1,18 @@
+{
+  "wave": "13A",
+  "dataset": "analyst7",
+  "generated_at": "2026-08-19T16:15:00",
+  "description": "MEA analyst7 正交信号 - 第13轮候选",
+  "strategy_style": "analyst_sentiment_divergence",
+  "note": "尝试与已有revision_momentum信号正交的analyst7字段",
+  "expressions": [
+    "rank(ts_zscore(vec_avg(analyst_consensus_mean_estimate) - vec_avg(analyst_consensus_median_estimate), 60))",
+    "rank(ts_zscore(vec_avg(analyst_high_estimate) - vec_avg(analyst_low_estimate), 60))",
+    "rank(ts_zscore(vec_avg(analyst_num_estimates), 60))",
+    "rank(ts_zscore(vec_avg(analyst_std_dev) / (vec_avg(analyst_consensus_mean_estimate) + 0.01), 60))",
+    "rank(ts_zscore(vec_avg(analyst_eps_surprise), 60))",
+    "rank(ts_zscore(vec_avg(analyst_target_price) / (close + 0.01), 60))",
+    "rank(ts_zscore(vec_avg(analyst_recommendation_mean), 60))",
+    "rank(ts_zscore(vec_avg(analyst_num_buy_ratings) / (vec_avg(analyst_num_sell_ratings) + 0.5), 60))"
+  ]
+}

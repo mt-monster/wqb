@@ -1,0 +1,82 @@
+[
+ {
+  "code": "rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred))",
+  "note": "long_term q5-q1 60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(analyst_quantile5_60d_pred, analyst_quantile1_60d_pred))",
+  "note": "analyst q5-q1 60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(long_term_quantile5_120d_pred, long_term_quantile1_120d_pred))",
+  "note": "long_term q5-q1 120d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(analyst_quantile5_120d_pred, analyst_quantile1_120d_pred))",
+  "note": "analyst q5-q1 120d",
+  "decay": 4
+ },
+ {
+  "code": "rank(long_term_quantile5_60d_pred)",
+  "note": "long_term q5 60d 单",
+  "decay": 4
+ },
+ {
+  "code": "rank(analyst_quantile5_60d_pred)",
+  "note": "analyst q5 60d 单",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(long_term_quantile1_60d_pred))",
+  "note": "long_term q1 60d 镜",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(analyst_quantile1_60d_pred))",
+  "note": "analyst q1 60d 镜",
+  "decay": 4
+ },
+ {
+  "code": "rank(price_volume_quantile5_20d_pred)",
+  "note": "pv q5 20d 单",
+  "decay": 4
+ },
+ {
+  "code": "subtract(0, rank(price_volume_quantile1_20d_pred))",
+  "note": "pv q1 20d 镜",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.5*rank(subtract(analyst_quantile5_60d_pred, analyst_quantile1_60d_pred)))",
+  "note": "lt+analyst 差分复合",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.4*rank(price_volume_quantile5_20d_pred))",
+  "note": "lt差分+pv q5",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(subtract(long_term_quantile5_60d_pred, long_term_quantile1_60d_pred)), 0.5*rank(subtract(long_term_quantile5_120d_pred, long_term_quantile1_120d_pred)))",
+  "note": "lt 60d+120d 差分",
+  "decay": 4
+ },
+ {
+  "code": "rank(multiply(long_term_quantile5_60d_pred, long_term_quantile5_confidence_60d_pred))",
+  "note": "lt q5*conf 60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(short_term_quantile5_60d_pred, short_term_quantile1_60d_pred))",
+  "note": "short_term q5-q1 60d",
+  "decay": 4
+ },
+ {
+  "code": "rank(subtract(short_term_quantile5_20d_pred, short_term_quantile1_20d_pred))",
+  "note": "short_term q5-q1 20d",
+  "decay": 4
+ }
+]

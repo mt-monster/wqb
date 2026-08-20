@@ -1,0 +1,127 @@
+{
+  "_doc": "区域差异化数据集健康阈值配置。根据各区域市场成熟度、数据覆盖特点差异化设定。",
+  "_version": "2026-08-19",
+  "_evidence": {
+    "mea_analysis": "MEA 区域 16 个数据集中 10 个被硬排除（coverage<0.7），其中 fundamental6(0.5078)、analyst7(0.478) 在 MEA 是核心数据源",
+    "market_maturity": "新兴市场数据覆盖天然稀疏，0.7 硬地板会结构性误杀可用数据集"
+  },
+  "regions": {
+    "USA": {
+      "coverage_hard_min": 0.70,
+      "field_count_hard_min": 5,
+      "coverage_min": 0.85,
+      "field_count_min": 10,
+      "alpha_count_max": 50,
+      "tier2_coverage_min": 0.85,
+      "tier2_field_count_min": 5,
+      "tier2_alpha_count_max": 200,
+      "_note": "成熟市场，维持高标准"
+    },
+    "MEA": {
+      "coverage_hard_min": 0.45,
+      "field_count_hard_min": 3,
+      "coverage_min": 0.60,
+      "field_count_min": 5,
+      "alpha_count_max": 100,
+      "tier2_coverage_min": 0.55,
+      "tier2_field_count_min": 3,
+      "tier2_alpha_count_max": 300,
+      "_note": "新兴市场，coverage 天然稀疏；0.45 硬地板可覆盖 fundamental6(0.51)/analyst7(0.48) 等核心数据集",
+      "_backfill_band": {
+        "coverage_min": 0.40,
+        "coverage_max": 0.60,
+        "alpha_count_max": 100,
+        "value_score_min": 5,
+        "_note": "保底带：低覆盖但高价值数据集可进 tier2，需 ts_backfill"
+      }
+    },
+    "KOR": {
+      "coverage_hard_min": 0.60,
+      "field_count_hard_min": 5,
+      "coverage_min": 0.75,
+      "field_count_min": 10,
+      "alpha_count_max": 50,
+      "tier2_coverage_min": 0.70,
+      "tier2_field_count_min": 5,
+      "tier2_alpha_count_max": 200,
+      "_note": "中等成熟市场，介于 USA 与 MEA 之间"
+    },
+    "ASI": {
+      "coverage_hard_min": 0.50,
+      "field_count_hard_min": 3,
+      "coverage_min": 0.65,
+      "field_count_min": 5,
+      "alpha_count_max": 100,
+      "tier2_coverage_min": 0.60,
+      "tier2_field_count_min": 3,
+      "tier2_alpha_count_max": 300,
+      "_note": "亚洲新兴市场，参考 MEA 标准"
+    },
+    "IND": {
+      "coverage_hard_min": 0.50,
+      "field_count_hard_min": 3,
+      "coverage_min": 0.65,
+      "field_count_min": 5,
+      "alpha_count_max": 100,
+      "tier2_coverage_min": 0.60,
+      "tier2_field_count_min": 3,
+      "tier2_alpha_count_max": 300,
+      "_note": "印度市场，数据覆盖与 MEA 类似"
+    },
+    "HKG": {
+      "coverage_hard_min": 0.55,
+      "field_count_hard_min": 3,
+      "coverage_min": 0.70,
+      "field_count_min": 5,
+      "alpha_count_max": 100,
+      "tier2_coverage_min": 0.65,
+      "tier2_field_count_min": 3,
+      "tier2_alpha_count_max": 300,
+      "_note": "香港市场，介于成熟与新兴之间"
+    },
+    "EUR": {
+      "coverage_hard_min": 0.65,
+      "field_count_hard_min": 5,
+      "coverage_min": 0.80,
+      "field_count_min": 10,
+      "alpha_count_max": 50,
+      "tier2_coverage_min": 0.75,
+      "tier2_field_count_min": 5,
+      "tier2_alpha_count_max": 200,
+      "_note": "欧洲成熟市场，接近 USA 标准"
+    },
+    "GBR": {
+      "coverage_hard_min": 0.65,
+      "field_count_hard_min": 5,
+      "coverage_min": 0.80,
+      "field_count_min": 10,
+      "alpha_count_max": 50,
+      "tier2_coverage_min": 0.75,
+      "tier2_field_count_min": 5,
+      "tier2_alpha_count_max": 200,
+      "_note": "英国成熟市场，接近 USA 标准"
+    },
+    "DEU": {
+      "coverage_hard_min": 0.65,
+      "field_count_hard_min": 5,
+      "coverage_min": 0.80,
+      "field_count_min": 10,
+      "alpha_count_max": 50,
+      "tier2_coverage_min": 0.75,
+      "tier2_field_count_min": 5,
+      "tier2_alpha_count_max": 200,
+      "_note": "德国成熟市场，接近 USA 标准"
+    }
+  },
+  "default": {
+    "coverage_hard_min": 0.60,
+    "field_count_hard_min": 5,
+    "coverage_min": 0.75,
+    "field_count_min": 10,
+    "alpha_count_max": 50,
+    "tier2_coverage_min": 0.70,
+    "tier2_field_count_min": 5,
+    "tier2_alpha_count_max": 200,
+    "_note": "默认阈值，未列明区域时使用"
+  }
+}

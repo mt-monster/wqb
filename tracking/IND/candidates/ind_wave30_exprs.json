@@ -1,0 +1,14 @@
+[
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_xlcxspemtp, 66), 22), ts_mean(ts_backfill(anl39_roxlcxspeq, 66), 22), filter=true), 189), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ptmepsincx, 66), 22), ts_mean(ts_backfill(anl39_roxlcxspeq, 66), 22), filter=true), 189), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 44), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 44), filter=true), 126), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(-rank(ts_zscore(returns, 63))) * 0.4)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(-rank(ts_backfill(mdl177_divyield, 66))) * 0.4)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), subindustry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+ "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_xlcxspemtp, 66), 33), ts_mean(ts_backfill(anl39_roxlcxspeq, 66), 33), filter=true), 126), industry)))",
+ "scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ptmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 126), industry)))",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_aepsinclxo, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.4)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_roxlcxspea, 66), 22), ts_mean(ts_backfill(anl39_roxlcxspeq, 66), 22), filter=true), 189), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.4)",
+ "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) * 0.6, scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ptmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 189), industry))) * 0.4)"
+]

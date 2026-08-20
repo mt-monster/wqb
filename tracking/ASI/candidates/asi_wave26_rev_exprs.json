@@ -1,0 +1,38 @@
+[
+ {
+  "expression": "rank(analyst_revision_percentile_score_long_3)"
+ },
+ {
+  "expression": "rank(analyst_revision_score_change_30d_long)"
+ },
+ {
+  "expression": "subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))"
+ },
+ {
+  "expression": "rank(analyst_opinion_avg_shift_30d_long)"
+ },
+ {
+  "expression": "add(0.5*rank(analyst_revision_percentile_score_long_3), 0.5*rank(analyst_revision_score_change_30d_long))"
+ },
+ {
+  "expression": "add(0.5*rank(analyst_revision_percentile_score_long_3), 0.5*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)))"
+ },
+ {
+  "expression": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.3*rank(analyst_revision_score_change_30d_long)), 0.3*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)))"
+ },
+ {
+  "expression": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.3*rank(analyst_opinion_avg_shift_30d_long)), 0.3*subtract(rank(analyst_recommendation_upgrades_30d_long_2), rank(analyst_recommendation_downgrades_30d_long_3)))"
+ },
+ {
+  "expression": "add(add(0.3*rank(analyst_revision_percentile_score_long_3), 0.25*rank(analyst_revision_percentile_score_medium_2)), add(0.25*rank(analyst_revision_score_change_30d_long), 0.2*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))))"
+ },
+ {
+  "expression": "add(add(0.4*rank(analyst_revision_percentile_score_long_3), 0.2*rank(analyst_revision_score_change_30d_long)), add(0.2*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long)), 0.2*rank(rsk70_mfm2_asetrd_divyild)))"
+ },
+ {
+  "expression": "add(0.6*rank(analyst_revision_percentile_score_long_3), 0.4*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(0.35*rank(analyst_revision_percentile_score_long_3), 0.25*subtract(rank(analysts_raising_quarterly_eps_est_30d_long), rank(analysts_lowering_quarterly_eps_est_30d_long))), add(0.2*rank(rsk70_mfm2_asetrd_divyild), 0.2*rank(rsk70_mfm2_asetrd_earnyild)))"
+ }
+]

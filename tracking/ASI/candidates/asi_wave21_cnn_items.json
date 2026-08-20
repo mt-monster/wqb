@@ -1,0 +1,119 @@
+[
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d4",
+  "decay": 4,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d5",
+  "decay": 5,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d7",
+  "decay": 7,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_t03",
+  "decay": 6,
+  "truncation": 0.03,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_t10",
+  "decay": 6,
+  "truncation": 0.1,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.34*rank(img60d_return_quantile1), 0.33*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.33*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "333_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.45*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.25*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "45325_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.35*rank(img60d_return_quantile1), 0.35*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "35353_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.3*rank(img60d_return_quantile1), 0.35*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.35*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "33535_d6",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_MINVOL1M",
+  "decay": 6,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_t05_MINVOL1M",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d4_MINVOL1M",
+  "decay": 4,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL1M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_market",
+  "decay": 6,
+  "neut": "MARKET",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "433_d6_sector",
+  "decay": 6,
+  "neut": "SECTOR",
+  "universe": "MINVOL10M"
+ },
+ {
+  "code": "add(add(0.34*rank(img60d_return_quantile1), 0.33*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.33*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "333_d6_t05",
+  "decay": 6,
+  "truncation": 0.05,
+  "neut": "INDUSTRY",
+  "universe": "MINVOL10M"
+ }
+]

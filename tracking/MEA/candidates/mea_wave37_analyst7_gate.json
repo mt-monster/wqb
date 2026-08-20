@@ -1,0 +1,16 @@
+{
+ "expressions": [
+  "rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120))",
+  "rank(ts_zscore(subtract(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count)), 120))",
+  "rank(ts_zscore(divide(vec_avg(analyst_flash_mean_eps), vec_avg(analyst_eps_mean)), 60))",
+  "rank(ts_delta(vec_avg(analyst_eps_mean), 20))",
+  "rank(ts_zscore(divide(subtract(vec_avg(analyst_consensus_high_eps), vec_avg(analyst_consensus_eps_low_estimate)), vec_avg(analyst_eps_mean)), 60)) * -1",
+  "rank(ts_zscore(divide(vec_avg(est_q_roe_raisednum_4wks), add(vec_avg(est_q_roe_raisednum_4wks), vec_avg(est_q_roe_lowerednum_4wks))), 120))",
+  "rank(ts_zscore(vec_avg(analyst_consensus_mean_roe_flash), 120))",
+  "add(rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120)), rank(ts_zscore(divide(vec_avg(analyst_flash_mean_eps), vec_avg(analyst_eps_mean)), 60)))",
+  "rank(ts_zscore(divide(vec_avg(analyst_eps_mean), close), 120))",
+  "rank(ts_zscore(multiply(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_mean)), 120))",
+  "rank(ts_zscore(divide(subtract(vec_avg(analyst_eps_mean), vec_avg(analyst_consensus_eps_low_estimate)), vec_avg(analyst_eps_mean)), 60))",
+  "add(rank(ts_zscore(divide(vec_avg(analyst_eps_upward_revisions_4weeks), add(vec_avg(analyst_eps_upward_revisions_4weeks), vec_avg(analyst_eps_downward_revisions_last_four_weeks_count))), 120)), rank(ts_zscore(divide(vec_avg(analyst_eps_mean), close), 120)))"
+ ]
+}

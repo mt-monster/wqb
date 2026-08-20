@@ -1,0 +1,8 @@
+{
+ "expressions": [
+  "rank(ts_mean(vec_avg(fnd72_pit_or_is_q_is_eps), 252))",
+  "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 504))",
+  "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_is_q_is_oper_inc), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 504))",
+  "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_depr_amort), vec_avg(fnd72_pit_or_is_q_sales_rev_turn)), 252))"
+ ]
+}

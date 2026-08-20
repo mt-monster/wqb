@@ -1,0 +1,17 @@
+{
+  "wave": "12A",
+  "dataset": "pv1",
+  "generated_at": "2026-08-19T16:05:00",
+  "description": "MEA pv1 Price Volume 策略 - 第12轮候选",
+  "strategy_style": "price_volume_momentum",
+  "expressions": [
+    "rank(ts_zscore(close / (vwap + 0.01), 20))",
+    "rank(ts_zscore(volume / (adv20 + 0.01), 20))",
+    "rank(ts_zscore(returns, 20)) * rank(ts_zscore(volume, 20))",
+    "rank(ts_zscore(high - low, 20))",
+    "rank(ts_zscore(close / (open + 0.01), 20))",
+    "rank(ts_zscore(volume, 60)) * rank(ts_zscore(returns, 60))",
+    "rank(ts_zscore(cap, 20))",
+    "rank(ts_zscore(vwap / (close + 0.01), 20))"
+  ]
+}

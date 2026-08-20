@@ -56,6 +56,11 @@
     "self_correlation_max": 0.7,
     "_note": "平台提交期硬闸，异步计算须以重检为准"
   },
+  "submit_quota": {
+    "limit": 10,
+    "window_h": 48,
+    "_note": "48小时滚动窗口内最大提交数，2026-08-19 调整为10"
+  },
   "dataset_health": {
     "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。",
     "mode": "general",

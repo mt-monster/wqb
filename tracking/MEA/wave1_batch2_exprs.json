@@ -1,0 +1,66 @@
+{
+  "wave_id": "MEA_W1_BATCH2",
+  "region": "MEA",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "max_trade": "ON",
+  "expressions": [
+    {
+      "id": "E3_001",
+      "dataset": "earnings3",
+      "expr": "rank(ts_zscore(ern3_pre_interval, 20))",
+      "style": "earnings_timing",
+      "desc": "Days since last earnings - 财报后时间衰减"
+    },
+    {
+      "id": "E3_002",
+      "dataset": "earnings3",
+      "expr": "rank(ts_zscore(ern3_next_interval, 20))",
+      "style": "earnings_timing",
+      "desc": "Days until next earnings - 财报前预期"
+    },
+    {
+      "id": "E3_003",
+      "dataset": "earnings3",
+      "expr": "rank(ern3_pre_interval * ern3_next_interval)",
+      "style": "earnings_cycle",
+      "desc": "Earnings cycle position - 财报周期位置"
+    },
+    {
+      "id": "A7_001",
+      "dataset": "analyst7",
+      "expr": "rank(ts_zscore(analyst_eps_upward_revisions_4weeks / (analyst_eps_downward_revisions_last_four_weeks_count + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "EPS revision ratio - 修正动量比"
+    },
+    {
+      "id": "A7_002",
+      "dataset": "analyst7",
+      "expr": "rank(ts_zscore(analyst_net_income_raised_count_one_week / (analyst_net_income_downward_revision_count_4wks + 0.5), 60))",
+      "style": "revision_momentum",
+      "desc": "Net income revision momentum - 净利润修正动量"
+    },
+    {
+      "id": "A7_003",
+      "dataset": "analyst7",
+      "expr": "rank(ts_zscore(analyst_consensus_mean_roe - analyst_consensus_mean_roe_3m_ago, 60))",
+      "style": "estimate_change",
+      "desc": "ROE estimate change 3m - ROE预期变化"
+    },
+    {
+      "id": "A7_004",
+      "dataset": "analyst7",
+      "expr": "rank(ts_zscore(analyst_mean_revenue - analyst_mean_revenue_three_months_ago, 60))",
+      "style": "estimate_change",
+      "desc": "Revenue estimate change 3m - 营收预期变化"
+    },
+    {
+      "id": "A7_005",
+      "dataset": "analyst7",
+      "expr": "rank(ts_zscore(analyst_flash_mean_eps - analyst_median_eps_estimate, 20))",
+      "style": "flash_signal",
+      "desc": "Flash vs consensus EPS - 闪估与共识差异"
+    }
+  ]
+}

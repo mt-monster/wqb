@@ -1,7 +1,45 @@
-"""Parse a create_multi_simulation MCP result file and print key metrics."""
+"""Parse a create_multi_simulation MCP result file and print key metrics.
+
+修复 (2026-08-18): 复合表达式(含 add/subtract/multiply)需额外抓 IS_LADDER 指标
+- 复合表达式的 two_year_sharpe 在 metrics 中可能缺失, 需从 is_ladder 中提取
+"""
 import json
+import re
 import sys
 from pathlib import Path
+
+
+def _is_composite_expr(code: str) -> bool:
+    """判断是否为复合表达式(含 add/subtract/multiply 等组合算子)"""
+    composite_ops = {'add', 'subtract', 'multiply', 'divide'}
+    # 提取所有函数名
+    fns = set(re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\(', code))
+    return bool(fns & composite_ops)
+
+
+def _extract_two_year_sharpe(alpha: dict) -> float:
+    """提取 two_year_sharpe, 复合表达式需从 is_ladder 中抓取"""
+    m = alpha.get('metrics', {})
+    # 先尝试从 metrics 中直接获取
+    tys = m.get('two_year_sharpe')
+    if tys is not None:
+        return tys
+    
+    # 复合表达式: 从 is_ladder 中提取
+    code = alpha.get('code', '')
+    if _is_composite_expr(code):
+        is_ladder = alpha.get('is_ladder', {})
+        if isinstance(is_ladder, dict):
+            # is_ladder 结构: {'sharpe': [{'year': 2024, 'value': 1.23}, ...]}
+            sharpe_list = is_ladder.get('sharpe', [])
+            if isinstance(sharpe_list, list) and len(sharpe_list) >= 2:
+                # 取最近两年的 sharpe 平均值
+                recent = sharpe_list[-2:]
+                values = [s.get('value', 0) for s in recent if isinstance(s, dict)]
+                if values:
+                    return sum(values) / len(values)
+    
+    return None
 
 
 def main(path: str) -> None:
@@ -33,11 +71,16 @@ def main(path: str) -> None:
         # rn_fitness / rn_margin not always present in summary; try get
         rn_fit = m.get("risk_neutralized_fitness")
         rn_mrg = m.get("risk_neutralized_margin")
+        
+        # 修复: 复合表达式需额外抓 IS_LADDER 指标
+        tys = _extract_two_year_sharpe(a)
+        tys_str = f"{tys:.2f}" if tys is not None else "-"
+        
         print(
             f"{i:>2}  "
             f"{m.get('sharpe',''):>6}  "
             f"{m.get('fitness',''):>5}  "
-            f"{m.get('two_year_sharpe',''):>6}  "
+            f"{tys_str:>6}  "
             f"{m.get('margin',''):>8}  "
             f"{m.get('turnover',''):>6}  "
             f"{m.get('risk_neutralized_sharpe',''):>6}  "
@@ -51,6 +94,9 @@ def main(path: str) -> None:
         failed_checks = ra.get("ra_failed_checks", [])
         if failed_checks:
             print(f"     ra_failed_checks: {', '.join(failed_checks)}")
+        # 标记复合表达式
+        if _is_composite_expr(a.get('code', '')):
+            print(f"     [复合表达式] two_year_sharpe 从 IS_LADDER 提取")
 
 
 if __name__ == "__main__":

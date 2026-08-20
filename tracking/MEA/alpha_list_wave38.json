@@ -1,0 +1,98 @@
+[
+ {
+  "id": "w38_01",
+  "expr": "rank(ts_zscore(mdl31_roe_pct_t4q, 120))",
+  "ds": "model31",
+  "note": "ROE% T4Q zscore120 - 核心盈利能力"
+ },
+ {
+  "id": "w38_02",
+  "expr": "rank(ts_zscore(mdl31_om_pct_t4q, 120))",
+  "ds": "model31",
+  "note": "营业利润率 T4Q zscore120"
+ },
+ {
+  "id": "w38_03",
+  "expr": "rank(ts_zscore(mdl31_dy_pct_current, 120))",
+  "ds": "model31",
+  "note": "股息率 zscore120 - 收益型价值"
+ },
+ {
+  "id": "w38_04",
+  "expr": "rank(ts_zscore(mdl31_pb_current, 120)) * -1",
+  "ds": "model31",
+  "note": "P/B 反向 zscore120 - 低估值"
+ },
+ {
+  "id": "w38_05",
+  "expr": "rank(ts_zscore(mdl31_erq_re_rk_chg_1_qtr, 60))",
+  "ds": "model31",
+  "note": "EQ区域排名季度变化 zscore60 - 质量改善动量"
+ },
+ {
+  "id": "w38_06",
+  "expr": "rank(ts_zscore(star_eq_rank, 120))",
+  "ds": "model31",
+  "note": "StarMine EQ排名 zscore120"
+ },
+ {
+  "id": "w38_07",
+  "expr": "rank(ts_zscore(divide(mdl31_fcf_mm_last_qtr, mdl31_bv_share_last_qtr), 120))",
+  "ds": "model31",
+  "note": "FCF/BV比率 zscore120 - 现金流/账面价值"
+ },
+ {
+  "id": "w38_08",
+  "expr": "rank(ts_zscore(mdl31_dse_last_qtr, 120)) * -1",
+  "ds": "model31",
+  "note": "债务/权益 反向 zscore120 - 低杠杆"
+ },
+ {
+  "id": "w38_09",
+  "expr": "rank(ts_zscore(mdl25_eq_pc_v9, 120))",
+  "ds": "model25",
+  "note": "EQ headline percentile v9 zscore120 - cov0.99 alphaCount278"
+ },
+ {
+  "id": "w38_10",
+  "expr": "rank(ts_zscore(earnings_quality_score_cb_01, 120))",
+  "ds": "model25",
+  "note": "EQ score cb_01 zscore120 - alphaCount642最高"
+ },
+ {
+  "id": "w38_11",
+  "expr": "rank(ts_zscore(mdl25_eq_vr_v5, 120))",
+  "ds": "model25",
+  "note": "Asset Turnover zscore120 - alphaCount704最高"
+ },
+ {
+  "id": "w38_12",
+  "expr": "rank(ts_zscore(mdl25_eq_vr_v19, 120))",
+  "ds": "model25",
+  "note": "Net Margin% zscore120"
+ },
+ {
+  "id": "w38_13",
+  "expr": "rank(ts_zscore(mdl25_eq_vr_v13, 120))",
+  "ds": "model25",
+  "note": "Earnings Retention zscore120 - cov0.977"
+ },
+ {
+  "id": "w38_14",
+  "expr": "rank(ts_zscore(mdl25_eq_rlev_v7, 120)) * -1",
+  "ds": "model25",
+  "note": "Debt/Equity 反向 zscore120 - 低杠杆"
+ },
+ {
+  "id": "w38_15",
+  "expr": "add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl31_dy_pct_current, 120)))",
+  "ds": "model31",
+  "note": "ROE + 股息率 复合 - 盈利+收益双因子"
+ },
+ {
+  "id": "w38_16",
+  "expr": "add(rank(ts_zscore(mdl25_eq_pc_v9, 120)), rank(ts_zscore(mdl25_eq_vr_v5, 120)))",
+  "ds": "model25",
+  "note": "EQ排名 + Asset Turnover 复合 - 质量+效率"
+ }
+]

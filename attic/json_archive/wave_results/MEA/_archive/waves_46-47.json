@@ -1,0 +1,665 @@
+{
+  "region": "MEA",
+  "archived_at": "2026-08-21",
+  "wave_range": [
+    46,
+    47
+  ],
+  "count": 2,
+  "waves": {
+    "wave46": {
+      "wave": 46,
+      "focus": "Break CW floor with time-smoothing (ts_mean) + locate turnover/CW balance",
+      "context": "wave45 pushed CW to 0.152 floor via normalize limit=0.3 but ra_failed=true. wave46a confirmed limit valley; wave46b discovered ts_mean BREAKS CW entirely",
+      "wave46a_limit_refine": [
+        {
+          "id": "gJjvAmoK",
+          "limit": 0.2,
+          "sharpe": 1.99,
+          "fitness": 1.61,
+          "2y": 2.33,
+          "cw": 0.1626,
+          "fail": [
+            "CW"
+          ]
+        },
+        {
+          "id": "qMjb1nmV",
+          "limit": 0.3,
+          "sharpe": 2.02,
+          "fitness": 1.66,
+          "2y": 2.34,
+          "cw": 0.152,
+          "fail": [
+            "CW"
+          ],
+          "note": "tied all-time low CW with 0.25"
+        },
+        {
+          "id": "rKjk3bJm",
+          "limit": 0.35,
+          "sharpe": 2.03,
+          "fitness": 1.68,
+          "2y": 2.34,
+          "cw": 0.1573,
+          "fail": [
+            "CW"
+          ]
+        },
+        {
+          "id": "58lRbLaM",
+          "limit": 0.4,
+          "sharpe": 2.03,
+          "fitness": 1.69,
+          "2y": 2.32,
+          "cw": 0.1643,
+          "fail": [
+            "CW"
+          ]
+        }
+      ],
+      "wave46b_time_smooth": [
+        {
+          "id": "3qldrYLO",
+          "variant": "ts_mean(S,10)+norm0.3",
+          "sharpe": 1.96,
+          "fitness": 2.03,
+          "2y": 2.38,
+          "tvr": 0.0289,
+          "cw": null,
+          "fail": [],
+          "note": "*** BREAKTHROUGH: ra_failed=FALSE, CW PASS! turnover 2.9% too low"
+        },
+        {
+          "id": "KP7edYa1",
+          "variant": "ts_mean(S,20)+norm0.3",
+          "sharpe": 1.82,
+          "fitness": 1.82,
+          "2y": 2.32,
+          "tvr": 0.0244,
+          "cw": null,
+          "fail": [],
+          "note": "ra_failed=FALSE, CW PASS, turnover 2.4%"
+        },
+        {
+          "id": "58lR07Vn",
+          "variant": "signed_power(norm0.3,0.5)",
+          "sharpe": 2.0,
+          "fitness": 1.62,
+          "2y": 2.33,
+          "tvr": 0.2575,
+          "cw": 0.1607,
+          "fail": [
+            "CW"
+          ],
+          "note": "double compression INEFFECTIVE"
+        },
+        {
+          "id": "Xg7qQwEX",
+          "variant": "ts_av_diff(S,60)+norm0.3",
+          "sharpe": 0.85,
+          "fitness": 0.39,
+          "2y": 1.09,
+          "tvr": 0.324,
+          "cw": 0.1993,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "IS_LADDER_SHARPE"
+          ],
+          "note": "detrend destroys signal"
+        }
+      ],
+      "wave46c_turnover_push": [
+        {
+          "id": "3qldZr06",
+          "variant": "ts_mean(S,5)+norm0.3",
+          "sharpe": 2.06,
+          "fitness": 2.2,
+          "2y": 2.42,
+          "tvr": 0.0363,
+          "cw": null,
+          "fail": [],
+          "note": "ra_failed=FALSE, CW PASS, turnover 3.6%"
+        },
+        {
+          "id": "A1l6MZLR",
+          "variant": "ts_mean(S,3)+norm0.3",
+          "sharpe": 2.05,
+          "fitness": 2.21,
+          "2y": 2.34,
+          "tvr": 0.0428,
+          "cw": null,
+          "fail": [],
+          "note": "ra_failed=FALSE, CW PASS, turnover 4.3% - BEST turnover so far"
+        },
+        {
+          "id": "YP7ZGKlM",
+          "variant": "ts_decay_linear(S,5)+norm0.3",
+          "sharpe": 1.91,
+          "fitness": 1.58,
+          "2y": 2.24,
+          "tvr": 0.2427,
+          "cw": 0.1487,
+          "fail": [
+            "CW"
+          ],
+          "note": "decay_linear INEFFECTIVE for CW"
+        },
+        {
+          "id": "bljp5ZxK",
+          "variant": "ts_decay_linear(S,10)+norm0.3",
+          "sharpe": 1.9,
+          "fitness": 1.57,
+          "2y": 2.26,
+          "tvr": 0.2416,
+          "cw": 0.1523,
+          "fail": [
+            "CW"
+          ],
+          "note": "decay_linear INEFFECTIVE"
+        }
+      ],
+      "wave46d_limit_turnover_balance": [
+        {
+          "id": "QP7eLAkr",
+          "variant": "ts_mean(S,3)+limit0.5",
+          "sharpe": 2.11,
+          "fitness": 2.33,
+          "2y": 2.4,
+          "tvr": 0.0427,
+          "fail": [],
+          "note": "*** NEW RECORD sharpe 2.11, all checks pass ***"
+        },
+        {
+          "id": "LL7eAwan",
+          "variant": "ts_mean(S,3)+limit0.4",
+          "sharpe": 2.08,
+          "fitness": 2.27,
+          "2y": 2.37,
+          "tvr": 0.0426,
+          "fail": [],
+          "note": "all checks pass"
+        },
+        {
+          "id": "QP7eLAkG",
+          "variant": "ts_mean(S,3)+limit0.35",
+          "sharpe": 2.06,
+          "fitness": 2.23,
+          "2y": 2.35,
+          "tvr": 0.0427,
+          "fail": [],
+          "note": "all checks pass"
+        },
+        {
+          "id": "vRj03bMw",
+          "variant": "ts_mean(S,2)+limit0.3",
+          "sharpe": 2.04,
+          "fitness": 2.22,
+          "2y": 2.27,
+          "tvr": 0.0481,
+          "fail": [],
+          "note": "*** BEST turnover 4.81% - closest to 5% target ***"
+        }
+      ],
+      "wave46e_decay1_push": [
+        {
+          "id": "vRj0g7Ed",
+          "variant": "ts_mean(S,2)+limit1",
+          "decay": 1,
+          "sharpe": 2.15,
+          "fitness": 2.52,
+          "2y": 2.33,
+          "tvr": 0.0748,
+          "fail": [],
+          "note": "*** NEW RECORD sharpe 2.15 + turnover 7.48% BOTH targets hit ***"
+        },
+        {
+          "id": "mLjO9nvx",
+          "variant": "ts_mean(S,3)+limit1",
+          "decay": 1,
+          "sharpe": 2.15,
+          "fitness": 2.5,
+          "2y": 2.48,
+          "tvr": 0.0586,
+          "fail": [],
+          "note": "sharpe 2.15 + best 2y 2.48 + turnover 5.86%"
+        },
+        {
+          "id": "pwj0ObLX",
+          "variant": "ts_mean(S,3)+limit0.5",
+          "decay": 1,
+          "sharpe": 2.05,
+          "fitness": 2.26,
+          "2y": 2.29,
+          "tvr": 0.0564,
+          "fail": []
+        },
+        {
+          "id": "YP7Zq33R",
+          "variant": "ts_mean(S,2)+limit0.5",
+          "decay": 1,
+          "sharpe": 2.03,
+          "fitness": 2.24,
+          "2y": 2.2,
+          "tvr": 0.0718,
+          "fail": []
+        },
+        {
+          "id": "Vk7nJQrM",
+          "variant": "ts_mean(S,3)+limit0.3",
+          "decay": 1,
+          "sharpe": 2.0,
+          "fitness": 2.14,
+          "2y": 2.25,
+          "tvr": 0.0562,
+          "fail": []
+        },
+        {
+          "id": "LL7eJoo1",
+          "variant": "ts_mean(S,2)+limit0.3",
+          "decay": 1,
+          "sharpe": 1.97,
+          "fitness": 2.11,
+          "2y": 2.14,
+          "tvr": 0.0711,
+          "fail": []
+        }
+      ],
+      "wave46_summary": {
+        "passed_all": [
+          "QP7eLAkr",
+          "LL7eAwan",
+          "QP7eLAkG",
+          "vRj03bMw",
+          "3qldZr06",
+          "A1l6MZLR",
+          "3qldrYLO",
+          "KP7edYa1",
+          "vRj0g7Ed",
+          "mLjO9nvx",
+          "pwj0ObLX",
+          "YP7Zq33R",
+          "Vk7nJQrM",
+          "LL7eJoo1"
+        ],
+        "best_sharpe": {
+          "id": "vRj0g7Ed",
+          "sharpe": 2.15,
+          "tvr": 0.0748
+        },
+        "best_turnover": {
+          "id": "vRj0g7Ed",
+          "tvr": 0.0748
+        },
+        "submission_status": {
+          "id": "QP7eLAkr",
+          "status": "ACTIVE",
+          "date": "2026-08-20",
+          "selfCorr": 0.389,
+          "prodCorr": 0.683
+        },
+        "submission_pending": {
+          "id": "vRj03bMw",
+          "status": "UNSUBMITTED",
+          "note": "async checks in progress"
+        }
+      },
+      "key_findings": [
+        "*** BREAKTHROUGH: ts_mean(x, N) EQUAL-WEIGHT smoothing BREAKS the CW floor entirely - ra_failed=false, fail=[] (first in MEA campaign) ***",
+        "CW mechanism: single-day weight spike on 2021-05-16 - ts_mean averages it away over N days",
+        "ts_decay_linear INEFFECTIVE (weighted average keeps spike) - ONLY equal-weight ts_mean works",
+        "signed_power double compression INEFFECTIVE (0.161 same as single)",
+        "ts_av_diff detrend DESTROYS signal (sharpe 0.85) - dead end",
+        "turnover vs window: ts_mean 20->2.4% / 10->2.9% / 5->3.6% / 3->4.3% / 2->4.81% (decay=4)",
+        "*** decay=1 PUSHES turnover to 5.6-7.5% (all 6 variants PASS all checks) - turnover target 5-30% HIT ***",
+        "decay=1 also RAISES sharpe: 2.15 max (vRj0g7Ed ts_mean2+limit1, tvr 7.48%) and mLjO9nvx (2y 2.48)",
+        "limit 0.3->1 monotonic: higher limit = higher sharpe/tvr (limit=1 best)",
+        "*** QP7eLAkr SUBMITTED & ACTIVE (2026-08-20) - first MEA campaign ACTIVE alpha ***",
+        "NEXT: pv1 dataset wave47a in flight (4 combos x ts_mean 2/3, decay=4) - new expression family for submission #4 / pyramid lighting"
+      ]
+    },
+    "wave47": {
+      "wave": 47,
+      "focus": "pv1 Price Volume dataset RA mining - new expression family for pyramid lighting (MEA/D1/PV)",
+      "context": "QP7eLAkr ACTIVE (1st MEA submit). Need 1 more pv-category submit to light pyramid. wave46 family is same-expression-family (SELF_CORR risk), so mining NEW family on pv1.",
+      "wave47a_pv1_direct": [
+        {
+          "id": "58lRV9L1",
+          "variant": "A: ret20+vol20+vwap60+adv20+cap, ts_mean3+lim0.5",
+          "sharpe": 0.83,
+          "fit": 0.62,
+          "tvr": 0.0668,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_2Y"
+          ],
+          "note": "ra_failed=TRUE, CW 0.117 on 2014-01-01"
+        },
+        {
+          "id": "Xg7qEL1m",
+          "variant": "A: ts_mean2+lim0.3",
+          "sharpe": 0.9,
+          "fit": 0.67,
+          "tvr": 0.0862,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_2Y"
+          ],
+          "note": "CW 0.248 on 2015-09-28"
+        },
+        {
+          "id": "np70bo3M",
+          "variant": "B: vol20+ret10+adv20, ts_mean3+lim0.5",
+          "sharpe": 1.08,
+          "fit": 0.9,
+          "tvr": 0.0983,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": "BEST of batch but still ra_failed; sub 0.65"
+        },
+        {
+          "id": "A1l6dbkg",
+          "variant": "B: ts_mean2+lim0.3",
+          "sharpe": 0.99,
+          "fit": 0.8,
+          "tvr": 0.1144,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": ""
+        },
+        {
+          "id": "O07evko7",
+          "variant": "C: vwap60+close60+sharesout+open20, ts_mean3+lim0.5",
+          "sharpe": 0.4,
+          "fit": 0.25,
+          "tvr": 0.06,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_2Y"
+          ],
+          "note": "CW 0.5! only 31 stocks - sharesout sparse?"
+        },
+        {
+          "id": "88lAqrnV",
+          "variant": "C: ts_mean2+lim0.3",
+          "sharpe": 0.41,
+          "fit": 0.26,
+          "tvr": 0.0988,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_2Y"
+          ],
+          "note": "CW 0.5 on 2014-01-05, 2y -0.37"
+        },
+        {
+          "id": "58lRV9M1",
+          "variant": "D: vol60+adv20+vol20+ret60, ts_mean3+lim0.5",
+          "sharpe": 0.86,
+          "fit": 0.67,
+          "tvr": 0.1042,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": ""
+        },
+        {
+          "id": "N17Mo6OX",
+          "variant": "D: ts_mean2+lim0.3",
+          "sharpe": 0.74,
+          "fit": 0.54,
+          "tvr": 0.1214,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": "2y 0.51"
+        }
+      ],
+      "wave47b_liquidity_size": [
+        {
+          "id": "zqkazgld",
+          "variant": "G2: vol20+adv20+cap, ts_mean5+lim0.5",
+          "sharpe": 1.79,
+          "fit": 1.92,
+          "2y": 1.98,
+          "tvr": 0.058,
+          "fail": [],
+          "note": "*** PASS - first pv1 alpha to pass all checks, SUBMITTED 2026-08-21 ***"
+        },
+        {
+          "id": "rKjkmN11",
+          "variant": "G2: ts_mean10+lim1",
+          "sharpe": 1.59,
+          "fit": 1.66,
+          "2y": 1.72,
+          "tvr": 0.049,
+          "fail": [],
+          "note": "PASS but marginal sharpe 1.59, tvr 4.9% just below 5%"
+        },
+        {
+          "id": "lejxZ5L7",
+          "variant": "G3: vol250+adv20+cap, ts_mean5+lim0.5",
+          "sharpe": 1.15,
+          "fit": 1.04,
+          "2y": 1.33,
+          "tvr": 0.0517,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_2Y"
+          ],
+          "note": "long-window volume momentum weak"
+        },
+        {
+          "id": "LL7exmP2",
+          "variant": "G3: ts_mean10+lim1",
+          "sharpe": 1.09,
+          "fit": 0.99,
+          "2y": 1.04,
+          "tvr": 0.0454,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_2Y"
+          ],
+          "note": ""
+        },
+        {
+          "id": "A1l6dr1R",
+          "variant": "G4: vol60+cap+sharesout, ts_mean5+lim0.5",
+          "sharpe": 0.57,
+          "fit": 0.45,
+          "2y": 0.2,
+          "tvr": 0.0589,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": "sharesout POISON - 22 stocks held, CW 0.5"
+        },
+        {
+          "id": "ZY7ZLdYx",
+          "variant": "G4: ts_mean10+lim1",
+          "sharpe": 0.4,
+          "fit": 0.26,
+          "2y": -0.01,
+          "tvr": 0.05,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "CW",
+            "LOW_2Y"
+          ],
+          "note": "sharesout POISON"
+        },
+        {
+          "id": "Wj7km3vk",
+          "variant": "G1: vol60+adv20+sharesout, ts_mean5+lim0.5",
+          "sharpe": -0.12,
+          "fit": -0.04,
+          "2y": -0.38,
+          "tvr": 0.0541,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": "sharesout POISON - negative sharpe"
+        },
+        {
+          "id": "np70bmL8",
+          "variant": "G1: ts_mean10+lim1",
+          "sharpe": -0.33,
+          "fit": -0.18,
+          "2y": -0.57,
+          "tvr": 0.0467,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_FITNESS",
+            "LOW_SUB",
+            "LOW_2Y"
+          ],
+          "note": "sharesout POISON"
+        }
+      ],
+      "wave47c_g2_enhanced": [
+        {
+          "id": "omq229MJ",
+          "variant": "G2 ts_mean5 lim0.5 decay1",
+          "sharpe": 1.78,
+          "fit": 1.91,
+          "2y": 1.97,
+          "tvr": 0.0679,
+          "fail": [],
+          "note": "PASS - best decay=1 variant but still < zqkazgld 1.79"
+        },
+        {
+          "id": "9qXooA0o",
+          "variant": "G2 ts_mean3 lim1 decay1",
+          "sharpe": 1.64,
+          "fit": 1.77,
+          "2y": 1.8,
+          "tvr": 0.0896,
+          "fail": [],
+          "note": "PASS"
+        },
+        {
+          "id": "lejxxRb7",
+          "variant": "G2 ts_mean3 lim0.5 decay1",
+          "sharpe": 1.61,
+          "fit": 1.67,
+          "2y": 1.73,
+          "tvr": 0.0864,
+          "fail": [],
+          "note": "PASS"
+        },
+        {
+          "id": "omq229Om",
+          "variant": "G2 ts_mean2 lim0.5 decay1",
+          "sharpe": 1.58,
+          "fit": 1.63,
+          "2y": 1.47,
+          "tvr": 0.1059,
+          "fail": [
+            "LOW_2Y"
+          ],
+          "note": "ts_mean2 too fast for 2y"
+        },
+        {
+          "id": "lejxxRXA",
+          "variant": "G2+adv20_250 ts_mean5 lim0.5 decay1",
+          "sharpe": 1.52,
+          "fit": 1.51,
+          "2y": 1.92,
+          "tvr": 0.0591,
+          "fail": [
+            "LOW_SHARPE"
+          ],
+          "note": "4th component dilutes"
+        },
+        {
+          "id": "P07eeX9p",
+          "variant": "G2+vol60 ts_mean3 lim0.5 decay1",
+          "sharpe": 1.44,
+          "fit": 1.45,
+          "2y": 1.5,
+          "tvr": 0.1133,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_2Y"
+          ],
+          "note": "4th component dilutes"
+        },
+        {
+          "id": "qMjbbmq2",
+          "variant": "vol10+adv20_20+cap ts_mean3 lim0.5 decay1",
+          "sharpe": 1.43,
+          "fit": 1.39,
+          "2y": 1.66,
+          "tvr": 0.0977,
+          "fail": [
+            "LOW_SHARPE"
+          ],
+          "note": ""
+        },
+        {
+          "id": "xAjMMmag",
+          "variant": "G2 cap120 ts_mean3 lim0.5 decay1",
+          "sharpe": 1.35,
+          "fit": 1.28,
+          "2y": 1.29,
+          "tvr": 0.0878,
+          "fail": [
+            "LOW_SHARPE",
+            "LOW_2Y"
+          ],
+          "note": ""
+        }
+      ],
+      "key_findings": [
+        "*** wave47a pv1 DIRECT price/volume combos ALL FAIL (sharpe 0.40-1.08) - pure price-volume signal too weak in MEA TOP400 ***",
+        "*** REVERSION_COMPONENT warning on ALL 8 (returns/price fields) - may block future submission; AVOID returns/close/vwap/ohlc ts_zscore ***",
+        "CW on daily-frequency price data is MUCH worse than quarterly fundamental: ts_mean3+lim0.5 still CW 0.117-0.5 (fundamental family same settings = PASS)",
+        "O07evko7/88lAqrnV only 31 stocks held - sharesout field sparse in MEA, avoid",
+        "*** wave47b: G2 combo (rank vol20 + rank adv20 + rank cap) is the ONLY working pv1 signal family ***",
+        "*** sharesout is POISON in MEA (22-36 stocks held, CW 0.5, negative sharpe) - NEVER use in MEA ***",
+        "*** zqkazgld (G2 ts_mean5 lim0.5 decay4): sharpe 1.79 / fit 1.92 / 2y 1.98 / tvr 5.8% ALL PASS - SUBMITTED 2026-08-21 (201 async) ***",
+        "rKjkmN11 (ts_mean10) also passes but marginal (1.59)",
+        "wave47c decay=1 variants: 3 PASS (1.61-1.78) but NONE beats zqkazgld; adding 4th component DILUTES signal (1.35-1.52)",
+        "G2 family is now saturated - zqkazgld is the definitive pv1 submission",
+        "vRj03bMw + zqkazgld submissions BOTH stuck in platform async check queue (60+ / 15+ min) - keep polling",
+        "LOCAL SELF-CHECK 2026-08-21 (bypass queue, no slot cost): zqkazgld self-corr 0.612<0.7 PASS (vs QP7eLAkr), mutual 0.612<0.7 PASS - submission will succeed once queue drains",
+        "*** FINAL VERDICT 2026-08-21: zqkazgld REJECTED - 'Prod correlation 0.7723 is above cutoff of 0.7 and Sharpe not better by 10.0%' - pv1 G2 family SATURATED in GLOBAL production pool (local check only covers own pool - LOWER BOUND) ***",
+        "G2 family definitively DEAD for submission in MEA - do NOT re-mine vol/adv/cap combos; pivot to fundamental72 (wave48/49)",
+        "vRj03bMw local self-corr 0.9935 vs QP7eLAkr - SAME fundamental family, submission DOOMED to REJECT (SELF_CORRELATION) - no point re-submitting",
+        "NEXT if zqkazgld fails correlation: pv106 microstructure or NEW fundamental family"
+      ]
+    }
+  }
+}

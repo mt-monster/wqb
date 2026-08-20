@@ -1,0 +1,77 @@
+{
+  "wave": 7,
+  "dataset": "pattern_scores",
+  "parent_alpha": "1Yw9LkwJ",
+  "parent_field": "asc_triangle_down_mean_simscore_lookback120",
+  "parent_metrics": {
+    "sharpe": 1.13,
+    "fitness": 0.55,
+    "two_year_sharpe": 1.22,
+    "turnover": 0.1751,
+    "margin": 0.000478
+  },
+  "strategy": "围绕 PPA 通过骨架精调：窗口/聚合/decay 矩阵",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "USA",
+    "universe": "TOP3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "maxTrade": "OFF",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "language": "FASTEXPR"
+  },
+  "expressions": [
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_mean_simscore_lookback60), 22), 44)",
+      "field": "asc_triangle_down_mean_simscore_lookback60",
+      "decay": 5,
+      "note": "窗口变体：60d 均值"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_min_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_down_min_simscore_lookback120",
+      "decay": 5,
+      "note": "聚合变体：120d 最小值"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_std_simscore_lookback60), 22), 44)",
+      "field": "asc_triangle_down_std_simscore_lookback60",
+      "decay": 5,
+      "note": "聚合变体：60d 标准差"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_mean_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_down_mean_simscore_lookback120",
+      "decay": 2,
+      "note": "decay 变体：d2（margin 解锁测试）"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_mean_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_down_mean_simscore_lookback120",
+      "decay": 8,
+      "note": "decay 变体：d8（平滑测试）"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(desc_triangle_up_mean_simscore_lookback120), 22), 44)",
+      "field": "desc_triangle_up_mean_simscore_lookback120",
+      "decay": 5,
+      "note": "相关形态：上升下降三角形"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_mean_simscore_lookback120), 22), 44)",
+      "field": "asc_triangle_mean_simscore_lookback120",
+      "decay": 5,
+      "note": "相关形态：上升三角形均值"
+    },
+    {
+      "expr": "ts_rank(ts_backfill(winsorize(asc_triangle_down_mean_simscore_lookback120), 44), 88)",
+      "field": "asc_triangle_down_mean_simscore_lookback120",
+      "decay": 5,
+      "note": "骨架变体：更长窗口（44/88）"
+    }
+  ]
+}

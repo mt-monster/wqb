@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental90",
+ "data_type": "MATRIX",
+ "probe_note": "wave01探针: fundamental90质量评分族(pscore/ohlson/cscore/mohanram)+质量指标(grossprofit_asset/cash_flow_coverage)+变化族(asset_turnover_chg/receivable_chg); 双向测试水平值+时序变化; 目标发现信号方向",
+ "expressions": [
+  "rank(fnd90_qes_gamef_pscore)",
+  "rank(-fnd90_qes_gamef_pscore)",
+  "rank(fnd90_qes_gamef_ohlson)",
+  "rank(-fnd90_qes_gamef_ohlson)",
+  "rank(fnd90_qes_gamef_grossprofit_asset)",
+  "rank(ts_delta(fnd90_qes_gamef_pscore, 60))",
+  "rank(ts_delta(fnd90_qes_gamef_ohlson, 60))",
+  "rank(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_grossprofit_asset)))"
+ ]
+}

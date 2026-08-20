@@ -1,0 +1,74 @@
+[
+ {
+  "code": "rank(anl46_indicator)",
+  "note": "A probe indicator",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(anl46_sentiment)",
+  "note": "A probe sentiment",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(anl46_experts)",
+  "note": "A probe experts",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(anl46_performancepercentile)",
+  "note": "A probe perfpercentile",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(scale(rank(ts_zscore(anl46_indicator, 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+  "note": "A indicator tsz63+rev0.3",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(scale(rank(ts_zscore(anl46_sentiment, 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+  "note": "A sentiment tsz63+rev0.3",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(add(0.5*rank(anl46_indicator), 0.3*rank(anl46_sentiment)), 0.2*rank(anl46_experts))",
+  "note": "A ind+sent+exp 复合",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(scale(rank(ts_zscore(add(add(0.5*anl46_indicator, 0.3*anl46_sentiment), 0.2*anl46_experts), 63))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+  "note": "A 三路 tsz63+rev",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(ts_backfill(anl39_ghcspemtt, 66))",
+  "note": "B probe EPS TTM chg%",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "rank(ts_backfill(anl39_ghcspea, 66))",
+  "note": "B probe EPS yoy chg%",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(ts_backfill(anl39_ghcspemtt, 66)), 0.4*rank(ts_backfill(anl39_ghcspea, 66)))",
+  "note": "B EPS动量 ttm+yoy",
+  "neut": "SECTOR",
+  "decay": 4
+ },
+ {
+  "code": "add(scale(rank(ts_backfill(anl39_agrosmgn, 66))), scale(-rank(ts_zscore(returns, 21))) * 0.3)",
+  "note": "B 毛利率+rev",
+  "neut": "SECTOR",
+  "decay": 4
+ }
+]

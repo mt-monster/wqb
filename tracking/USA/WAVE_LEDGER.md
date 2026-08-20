@@ -14,13 +14,13 @@ sharpe>1.58 · fitness>1 · 2y sharpe>1.6 · margin>5bp · turnover 5%–30% · 
 
 | 指标 | 值 | 更新时间 |
 |---|---|---|
-| 累计波次 | 10（波10 institutions6 精调中） | 2026-08-16 |
-| 累计回测条数 | 波1-9 约 352 条 + 波10 已回收 64 条（WW~FINAL 7 批），0 ERROR 连坐 | 2026-08-16 |
-| 白名单 | D1 scope 649 字段 / 11 数据集（institutions6 新增 21 字段） | 2026-08-16 |
-| 主攻数据集 | institutions6（decay2+signed_power 解锁，精调中） | 2026-08-16 |
-| 判死数据集 | sentiment21 · news_transformer_scores · sentiment22（情绪金字塔 3 数据集 88 条）· option8 · option40（option 金字塔 88+ 条 PROD 墙）· shortinterest3（PROD 墙）· analyst44（天花板 0.45 差 3.5 倍） | 2026-08-16 |
-| 数值七闸门全过 | 17 条（波3）但 PROD 0.83-0.91 全灭，**提交候选仍为 0** | 2026-08-16 |
-| 最佳候选 | 6XpL2qjP（2.19/PROD 墙）；活候选 ZYEVZQw0 1.03（inst6 share 复合 d2，tv 9.9%/margin 7.2bp 双达标，精调中） | 2026-08-16 |
+| 累计波次 | 15（波15 analyst15 BPS 族判死） | 2026-08-20 |
+| 累计回测条数 | 波1-14 约 672 条 + 波15 已回收 22 条（2 批），0 ERROR 连坐 | 2026-08-20 |
+| 白名单 | D1 scope 649 字段 / 12 数据集（analyst15 新增 300 字段） | 2026-08-20 |
+| 主攻数据集 | 待确定（analyst15 BPS 族已判死） | 2026-08-20 |
+| 判死数据集 | sentiment21 · news_transformer_scores · sentiment22（情绪金字塔 3 数据集 88 条）· option8 · option40（option 金字塔 88+ 条 PROD 墙）· shortinterest3（PROD 墙）· analyst44（天花板 0.45 差 3.5 倍）· institutions6（96 条 PASS=0）· macro38（fit/margin 双结构性墙）· pattern_scores（1 PPA 过但信号弱）· option_horizon_decomp（2 PPA 过但需验证 PROD）· **analyst15 BPS 族（22 条全灭，天花板 0.34 差 4.6 倍）** | 2026-08-20 |
+| 数值七闸门全过 | 17 条（波3）但 PROD 0.83-0.91 全灭，**提交候选仍为 0** | 2026-08-20 |
+| 最佳候选 | 6XpL2qjP（2.19/PROD 墙）；活候选 ZYEVZQw0 1.03（inst6 share 复合 d2，tv 9.9%/margin 7.2bp 双达标，精调中） | 2026-08-20 |
 
 ---
 
@@ -339,6 +339,60 @@ option8/si3 有 17 条数值七闸门全过但 PROD 0.83-0.91 判死，依据是
 
 ---
 
+## 波13（2026-08-19）：pattern_scores 首攻（wave06）
+
+### 批次
+| 批 | multisim | 内容 | 结论 |
+|---|---|---|---|
+| wave06 | QrXwG69N4Yu8Y5Dp4rIYtF | pattern_scores 高 alphaCount 字段 8 条（三角形/楔形/缺口形态相似度），decay5/SUBIND | **回收：1 个 PPA 通过**。1Yw9LkwJ（asc_triangle_down_mean_simscore_lookback120）=**1.13/fit 0.55/2y 1.22/tv 17.5%/margin 0.48bp**（PPA 过，RA 差 sharpe/fit/2y）；其余 7 条全灭（0.52/-0.31/0.42/-0.01/-0.44/-0.10/-0.24） |
+
+### 回测结论
+- **★第 2 个 PPA 通过**：1Yw9LkwJ（下降上升三角形平均相似度 120 天窗口）sharpe 1.13 / fitness 0.55 / 2y 1.22 / turnover 17.5% / margin 0.48bp / subU 1.14 / RN 0.65
+- **信号方向**：下降上升三角形（asc_triangle_down）形态相似度信号有效，但强度不足（距 RA 闸门 sharpe 1.58 差 1.4 倍）
+- **形态类信号特征**：技术形态识别信号（三角形/楔形/缺口）普遍较弱，仅 asc_triangle_down_mean 达到 PPA 水平
+- **pattern_scores 数据集评估**：coverage 99.4% / alphaCount 43 / userCount 17（低竞争），但信号强度有限
+
+### 下一波决策（wave07）
+1. **继续 pattern_scores 精调**：围绕 1Yw9LkwJ 骨架，尝试不同窗口（60d/120d）、不同聚合（mean/min/max/std）、decay 调优（2/4/8）
+2. **备选数据集**：option_horizon_decomp（score 0.922，model 类，pyramid 1.3）/ multifactor_return_pred（score 0.919）
+3. **禁发**：已判死 8 族（sentiment/option/shortinterest/analyst/institutions/macro38/si3×obim 混合）
+4. **提交前置**：数值七闸门 → PROD<0.7 → robust/过拟合
+
+---
+
+## 波14（2026-08-19）：option_horizon_decomp 首攻（wave08）
+
+### 批次
+| 批 | multisim | 内容 | 结论 |
+|---|---|---|---|
+| wave08 | 63LSudSU51j9csbewdtdqk | option_horizon_decomp 高 alphaCount 字段 8 条（波动率/特质风险/IV 排名），decay5/SUBIND | **回收：2 个 PPA 通过**。0mwldxZq（implied_volatility_60d_rank_long_term）=**1.17/fit 0.56/2y 1.26/RN 1.11**（PPA 过）；zqkMjg7R（idiosyncratic_risk_360d_medium_term）=**1.07/fit 0.43/2y 1.52/RN 1.38**（PPA 过，RN 最高）；其余 6 条全灭（0.56-0.79） |
+
+### 回测结论
+- **★第 3、4 个 PPA 通过**：
+  - 0mwldxZq（60d IV 排名长期）：sharpe 1.17 / fitness 0.56 / 2y 1.26 / turnover 17.5% / margin 0.45bp / RN 1.11
+  - zqkMjg7R（特质风险 360d 中期）：sharpe 1.07 / fitness 0.43 / 2y 1.52 / turnover 23.7% / margin 0.32bp / RN 1.38（RN 最高）
+- **信号方向**：
+  - **idiosyncratic_risk**（特质风险）和 **IV rank**（IV 排名）信号比纯波动率信号更强
+  - **RN sharpe** 普遍较高（1.11-1.38），说明风险中性化后表现好
+  - 但 **fitness** 和 **margin** 仍然不足（0.43-0.56, 0.32-0.45bp），距 RA 闸门差 1.8-2.3 倍
+- **option_horizon_decomp 数据集评估**：
+  - coverage 97.4% / alphaCount 73 / userCount 41（中等竞争）
+  - 与已判死的 option8/option40（IV 比率族 PROD 墙 0.83-0.91）不同，这是**波动率分解**数据集
+  - **需要验证 PROD**：若 PROD < 0.7，则有希望突破 RA 闸门
+
+### 下一波决策（wave09）
+1. **PROD 验证**：对 0mwldxZq 和 zqkMjg7R 进行 PROD 相关性检查，若 < 0.7 则进入精调
+2. **精调方向**：
+   - 围绕 implied_volatility_60d_rank 和 idiosyncratic_risk_360d 骨架
+   - 尝试不同期限（30d/90d/180d）
+   - 尝试 decay 调优（2/4/8）
+   - 尝试 group_zscore 骨架（提升 fitness）
+3. **备选数据集**：multifactor_return_pred（score 0.919，model 类）
+4. **禁发**：已判死 8 族（sentiment/option8/option40/shortinterest/analyst/institutions/macro38/si3×obim 混合）
+5. **提交前置**：数值七闸门 → PROD<0.7 → robust/过拟合
+
+---
+
 ## 每 10 波全量多样性评估（独立成章）
 
 > 触发条件：累计波次达 10 的整数倍，或回测轮次达 10 轮边界。内容：算子探索率、字段探索率、骨架多样性、风格多样性、预处理分布、收益来源归因、失效风险、skills 优化项。
@@ -348,3 +402,41 @@ option8/si3 有 17 条数值七闸门全过但 PROD 0.83-0.91 判死，依据是
 **Round10 全量评估（波1-7，批次 A→OO，~26 轮 ≈208 条）**：详见 `runs/usa_diversity_review_round10.md`。核心：数据集探索率 3.4%（8/237，情绪超配）、字段 ~11%、算子 ~16%（ts_entropy/days_from_last_change/winsorize 未试）；收益归因：信号上限由数据集信息含量决定，骨架只能逼近不能突破；skills 已落地：选集 SOP（userCount<1000 蓝海优先）+ 情绪族判死标准。下 10 轮主攻 option40，备选 macro38/imbalance5。下次全量评估：波17 或 Round20。
 
 **Round20 全量评估（波8-11，批次 PP→AO，~44 轮 ≈352 条）**：详见 `runs/usa_diversity_review_round20.md`。核心：① 收益归因升级——每条路线撞不同类型的墙（红海族=PROD 墙 / 低频弱信号族=信息含量墙 / 混合族=margin 结构性墙 0.0-0.6bp），margin 墙与数据集特性绑定（inst6 d2 解锁 7.2bp vs si3×obim 全档无效）；② 探索率：数据集 4.6% / 字段 ~16% / 算子 ~19%，obim 198 字段仅探 ~35；③ 风格 7 类仍缺技术面/宏观/盈余漂移/事件；④ skills 落地：混合流程融合（expr_lint 门控+命名+台账）、2y 双名称兼容、乘法定式、判死粒度升级（骨架族级）；⑤ 建议新增 margin 预检规则（新数据集首发批混入水平/变化信号对照）。**波12 决策：主攻 macro38（Technical Ratings），备选 earnings4/news52；禁用已判死 8 数据集全系 + 情绪类 + si3×obim 混合骨架族**。
+
+---
+
+## 波15（2026-08-20）：analyst15 BPS 族首攻（判死）
+
+### 批次
+| 批 | multisim | 内容 | 结论 |
+|---|---|---|---|
+| usa_wave01_batch1 | 4bm9TJa6q4HL9IHOMUERybS | BPS 修订动量/广度/增长/估值 8 条，decay4/SUBIND | **全灭**：sharpe -0.28~0.07，最佳 xAjgRdpb（反向离散度）0.34 |
+| usa_wave01_batch2 | 2wegqbaCj5fV99h1aWbgZfHt | BPS 估值/离散度/sector/industry/长期/复合 8 条，decay4/SUBIND | **全灭**：sharpe -0.42~0.34，最佳 xAjgRdpb 0.34 |
+
+### 回测结论（22 条全灭，PASS=0 → 判死）
+- **最佳**：xAjgRdpb = `rank(-anl15_bps_gr_12_m_st_dev)` —— sharpe 0.34 / fitness 0.12 / tv 3.81% / margin 0.84bp / 2y 0.67（距闸门 1.58 差 4.6 倍）
+- **信号族全灭**：
+  - 裸 rank 信号：-0.28 ~ 0.07（增长/估值/广度全弱）
+  - ts_delta 动量：0.07 ~ 0.09（20d/60d 窗口均弱）
+  - ts_zscore：0.27 ~ 0.28（60d/120d 窗口微升但仍远不足）
+  - 反向离散度：0.34（最佳但仍差 4.6 倍）
+  - 复合信号：-0.10（动量+增长+估值复合反降）
+- **与历史对比**：
+  - 波9 analyst44（EPS/EBITDA consensus）天花板 0.45
+  - 波12 macro38（Technical Ratings）天花板 1.79
+  - **analyst15 BPS 天花板 0.34，比 analyst44 还弱 24%**
+- **结构性结论**：BPS（Book Value Per Share）分析师预测信号在 USA/TOP3000/D1 下信息含量极低，所有信号构造方式（裸 rank/ts_delta/ts_zscore/反向/复合）均无法突破 0.34 天花板
+
+### ★analyst15 BPS 族判死定案（22 条全灭）
+1. **已穷尽信号构造**：裸 rank / ts_delta(20/60) / ts_zscore(60/120) / 反向 / 复合（动量+增长+估值）
+2. **已穷尽字段族**：12m/18m/FY1 前向预测、group/sector/industry 层级、增长/估值/离散度/广度
+3. **天花板 0.34 距闸门 1.58 差 4.6 倍**，远超 3 倍结构性判死线
+4. **禁发**：analyst15 BPS 字段族任何表达式（anl15_bps_*）
+
+### 下一波决策（波16）
+1. **切换数据集**：analyst15 还有 EPS（Earnings Per Share）字段族未试（anl15_eps_*），但 BPS 族已判死，EPS 族可能同样弱；备选：
+   - news12（US News Data，875 字段，157k alpha，coverage 0.8228，pyramid 1.2）
+   - model77（Analysts' Factor Model，3256 字段，149k alpha，coverage 0.8277，pyramid 1.3）
+   - fundamental2（Report Footnotes，766 字段，134k alpha，coverage 0.4386，pyramid 1.1）
+2. **禁发**：analyst15 BPS 字段族；已判死 11 数据集全系
+3. **提交前置不变**：数值七闸门 → PROD<0.7 → robust/过拟合

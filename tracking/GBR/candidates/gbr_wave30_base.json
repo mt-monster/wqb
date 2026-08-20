@@ -1,0 +1,22 @@
+{
+  "wave": 30,
+  "region": "GBR",
+  "dataset": "predictive_starmine",
+  "strategy": "starmine 强信号 × 欠用算子增强",
+  "expressions": [
+    "rank(ep_yield_pct_smest_f12m)",
+    "rank(ep_yield_pct_smest_fy1_3)",
+    "ts_zscore(ep_yield_pct_smest_f12m, 20)",
+    "ts_delta(ep_yield_pct_smest_f12m, 5)",
+    "ts_decay_linear(ep_yield_pct_smest_f12m, 10)",
+    "ts_arg_max(ep_yield_pct_smest_f12m, 20)",
+    "ts_quantile(ep_yield_pct_smest_f12m, 60, 0.8)",
+    "ts_corr(ep_yield_pct_smest_f12m, ep_yield_pct_smest_fy1_3, 20)",
+    "ts_regression(ep_yield_pct_smest_f12m, ep_yield_pct_smest_fy1_3, 20)",
+    "group_neutralize(ep_yield_pct_smest_f12m, sector)",
+    "group_zscore(ep_yield_pct_smest_f12m, industry)",
+    "group_rank(ep_yield_pct_smest_f12m, subindustry)",
+    "rank((ep_yield_pct_smest_f12m + ep_yield_pct_smest_fy1_3 + ep_yield_pct_smest_fy2_3) / 3)",
+    "ts_zscore((ep_yield_pct_smest_f12m + ep_yield_pct_smest_fy1_3) / 2, 20)"
+  ]
+}

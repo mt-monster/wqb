@@ -1,0 +1,35 @@
+[
+ {
+  "expression": "add(add(add(0.4*rank(img20d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar1b1d1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.3*rank(img20d_return_quantile1), 0.25*subtract(0, rank(probability_rank0_20d_3bucket_equitystar5))), 0.25*rank(imgfeat_asi_eqstar1b1d1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*subtract(0, rank(probability_rank0_20d_3bucket_equitystar5))), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.35*rank(img60d_return_quantile1), 0.25*rank(img_pred_malta_star3_100d_2bucket_rank)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.35*rank(img60d_return_quantile1), 0.15*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.15*rank(imgfeat_asi_eqstar2b2d1f1)), add(0.2*rank(rsk70_mfm2_asetrd_divyild), 0.15*rank(rsk70_mfm2_asetrd_earnyild)))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.25*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.3*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img20d_return_quantile1), 0.2*subtract(0, rank(probability_rank0_20d_3bucket_equitystar5))), 0.2*rank(img_pred_malta_star3_100d_2bucket_rank)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ },
+ {
+  "expression": "add(add(add(0.4*rank(img60d_return_quantile1), 0.2*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.2*rank(imgfeat_asi_eqstar2b2d1f1)), 0.2*rank(rsk70_mfm2_asetrd_divyild))"
+ }
+]

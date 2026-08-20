@@ -1,0 +1,42 @@
+[
+ {
+  "id": "w44_01",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120))), rank(ts_zscore(mdl31_ass_tvr_t4q, 120))), rank(ts_zscore(mdl31_gm_pct_t4q, 120)))",
+  "note": "4sig z120 t0.08 - weaken window 250->120 to select more stocks"
+ },
+ {
+  "id": "w44_02",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl25_eq_vr_v13, 60))), rank(ts_zscore(mdl31_ass_tvr_t4q, 60))), rank(ts_zscore(mdl31_gm_pct_t4q, 60)))",
+  "note": "4sig z60 t0.08 - weaken window 250->60"
+ },
+ {
+  "id": "w44_03",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120))), rank(ts_zscore(mdl31_ass_tvr_t4q, 120))), rank(ts_zscore(mdl31_gm_pct_t4q, 120)))",
+  "note": "4sig z120 t0.05 - weaken window + lower truncation"
+ },
+ {
+  "id": "w44_04",
+  "expr": "add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl25_eq_vr_v13, 60))), rank(ts_zscore(mdl31_ass_tvr_t4q, 60))), rank(ts_zscore(mdl31_gm_pct_t4q, 60)))",
+  "note": "4sig z60 t0.05 - max weakening"
+ },
+ {
+  "id": "w44_05",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120))), rank(ts_zscore(mdl31_ass_tvr_t4q, 120))), rank(ts_zscore(mdl31_gm_pct_t4q, 120))), rank(ts_zscore(ts_zscore(volume, 60), 120)))",
+  "note": "4sig+VolSurge z120 t0.08 - best signal, weakened window"
+ },
+ {
+  "id": "w44_06",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl25_eq_vr_v13, 60))), rank(ts_zscore(mdl31_ass_tvr_t4q, 60))), rank(ts_zscore(mdl31_gm_pct_t4q, 60))), rank(ts_zscore(ts_zscore(volume, 60), 60)))",
+  "note": "4sig+VolSurge z60 t0.08 - best signal, strong weakening"
+ },
+ {
+  "id": "w44_07",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 120)), rank(ts_zscore(mdl25_eq_vr_v13, 120))), rank(ts_zscore(mdl31_ass_tvr_t4q, 120))), rank(ts_zscore(mdl31_gm_pct_t4q, 120))), rank(ts_zscore(ts_zscore(volume, 60), 120)))",
+  "note": "4sig+VolSurge z120 t0.05 - weakened window + lower truncation"
+ },
+ {
+  "id": "w44_08",
+  "expr": "add(add(add(add(rank(ts_zscore(mdl31_roe_pct_t4q, 60)), rank(ts_zscore(mdl25_eq_vr_v13, 60))), rank(ts_zscore(mdl31_ass_tvr_t4q, 60))), rank(ts_zscore(mdl31_gm_pct_t4q, 60))), rank(ts_zscore(ts_zscore(volume, 60), 60)))",
+  "note": "4sig+VolSurge z60 t0.05 - max weakening + best signal"
+ }
+]

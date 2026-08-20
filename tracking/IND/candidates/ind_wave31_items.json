@@ -1,0 +1,68 @@
+[
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+  "note": "W31-基底复现 m33z252 rev21*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+  "note": "W31 m22 z252 rev21*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 28), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 28), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+  "note": "W31 m28 z252 rev21*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.5)",
+  "note": "W31 m33 z252 rev21*0.5",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.55)",
+  "note": "W31 m33 z252 rev21*0.55",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 200), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+  "note": "W31 m33 z200 rev21*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 300), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.45)",
+  "note": "W31 m33 z300 rev21*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 22), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 22), filter=true), 200), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.5)",
+  "note": "W31 m22 z200 rev21*0.5",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 15))) * 0.45)",
+  "note": "W31 m33 z252 rev15*0.45",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 28), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 28), filter=true), 220), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.5)",
+  "note": "W31 m28 z220 rev21*0.5",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ },
+ {
+  "code": "add(add(scale(rank(group_zscore(ts_zscore(subtract(ts_mean(ts_backfill(anl39_ttmepsincx, 66), 33), ts_mean(ts_backfill(anl39_qepsinclxo, 66), 33), filter=true), 252), industry))), scale(-rank(ts_zscore(returns, 21))) * 0.3), scale(-rank(ts_zscore(returns, 63))) * 0.2)",
+  "note": "W31 m33 z252 rev21*0.3+rev63*0.2",
+  "neut": "SUBINDUSTRY",
+  "decay": 3
+ }
+]

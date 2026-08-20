@@ -1,0 +1,24 @@
+{
+ "setting": {
+  "region": "KOR",
+  "delay": 1,
+  "universe": "TOP600",
+  "decay": 4,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "max_trade": "ON"
+ },
+ "dataset": "fundamental90",
+ "data_type": "MATRIX",
+ "probe_note": "wave02增强: 基于wave01结果预期方向, 强化质量评分组合+时序变化+波动率族; 注入ts_corr/ts_kurtosis/bucket/if_else算子; 目标sh>1.3",
+ "expressions": [
+  "rank(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_ohlson)))",
+  "rank(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_cscore)))",
+  "rank(add(rank(fnd90_qes_gamef_pscore), rank(fnd90_qes_gamef_mohanram)))",
+  "rank(ts_corr(fnd90_qes_gamef_pscore, fnd90_qes_gamef_grossprofit_asset, 60))",
+  "rank(ts_kurtosis(fnd90_qes_gamef_pscore, 60))",
+  "rank(bucket(fnd90_qes_gamef_pscore, 5))",
+  "rank(if_else(fnd90_qes_gamef_pscore > 5, fnd90_qes_gamef_grossprofit_asset, -fnd90_qes_gamef_grossprofit_asset))",
+  "rank(add(rank(ts_delta(fnd90_qes_gamef_pscore, 60)), rank(ts_delta(fnd90_qes_gamef_grossprofit_asset, 60))))"
+ ]
+}

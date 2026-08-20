@@ -1,6 +1,6 @@
 """MCP 工具层单元测试 (venv) — 拆分不变量 / 瘦身助手 / 表达式字段校验 (无网络)。
 
-- 51 工具注册数不变量 (防拆分丢工具)
+- 52 工具注册数不变量 (防拆分丢工具)
 - 单例 identity 跨 main/mcp_core/tools_* 一致
 - 响应瘦身助手 (_truncate/_unwrap_result/_is_error/_ra_bad/_slim_alpha)
 - _extract_field_candidates 算子关键字过滤
@@ -27,9 +27,9 @@ from mcp_core import (
 # 拆分不变量
 # ---------------------------------------------------------------------------
 
-def test_tool_registry_count_is_51():
+def test_tool_registry_count_is_52():
     import main  # noqa: F401 — 副作用注册全部 tools_*
-    assert len(mcp_core.mcp._tool_manager._tools) == 51
+    assert len(mcp_core.mcp._tool_manager._tools) == 52
 
 
 def test_brain_client_singleton_identity():
@@ -42,7 +42,7 @@ def test_brain_client_singleton_identity():
 def test_each_tool_module_registers_at_least_one_tool():
     import importlib
     expected = {
-        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 4,
+        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 5,
         "tools_alpha": 7, "tools_data": 10, "tools_submit": 2, "tools_corr": 3,
         "tools_forum": 4, "tools_spc": 4,
     }

@@ -1,0 +1,35 @@
+{
+ "meta": {
+  "source": "operator_coverage.semantic",
+  "contract_rule_id": "explore_contract_GBR_20260819_001727_883072",
+  "required_operators": [
+   "group_backfill",
+   "group_cartesian_product",
+   "group_count",
+   "group_mean",
+   "group_neutralize",
+   "group_rank",
+   "group_scale",
+   "group_std_dev",
+   "group_sum",
+   "ts_arg_max",
+   "ts_arg_min",
+   "ts_corr"
+  ],
+  "region": "GBR"
+ },
+ "expressions": [
+  "group_backfill(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_cartesian_product(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_count(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_mean(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_neutralize(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_rank(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_scale(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_std_dev(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "group_sum(iv_steady_state_dividend_payout_rate_3, arm_country_rank_score_3)",
+  "ts_arg_max(iv_steady_state_dividend_payout_rate_3, 20)",
+  "ts_arg_min(iv_steady_state_dividend_payout_rate_3, 20)",
+  "ts_corr(analyst_downward_revision_count_fq2_revenue_14d_4, predicted_surprise_fq2_revenue_3, 20)"
+ ]
+}

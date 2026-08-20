@@ -1,0 +1,83 @@
+[
+ {
+  "code": "add(0.5*rank(img60d_return_quantile1), 0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2))",
+  "note": "img60+cnn60 五五",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(img60d_return_quantile1), 0.4*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2))",
+  "note": "img60+cnn60 64",
+  "decay": 4
+ },
+ {
+  "code": "rank(add(add(rank(img20d_return_quantile1), rank(img60d_return_quantile1)), rank(img100d_return_quartile1_prob_leap1)))",
+  "note": "img 20+60+100d",
+  "decay": 4
+ },
+ {
+  "code": "rank(add(0.5*rank(img60d_return_quantile1), 0.5*rank(img100d_return_quartile1_prob_leap1)))",
+  "note": "img 60+100d",
+  "decay": 4
+ },
+ {
+  "code": "rank(add(0.5*rank(img60d_return_quantile1), 0.5*rank(img200d_return_quartile1_prob_leap1)))",
+  "note": "img 60+200d",
+  "decay": 4
+ },
+ {
+  "code": "add(0.6*rank(img60d_return_quantile1), 0.4*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "img60+asi2b2 64",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(img60d_return_quantile1), 0.5*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "img60+asi2b2 五五",
+  "decay": 4
+ },
+ {
+  "code": "add(add(0.4*rank(img60d_return_quantile1), 0.3*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2)), 0.3*rank(imgfeat_asi_eqstar2b2d1f1))",
+  "note": "img60+cnn60+asi2b2",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2), 0.5*rank(cnn_predicted_prob_q2_bucket0_60d_equity2b2))",
+  "note": "cnn60 b1+b0",
+  "decay": 4
+ },
+ {
+  "code": "add(0.5*rank(cnn_predicted_prob_q2_bucket1_60d_equity2b2), 0.5*rank(cnn_predicted_prob_q2_bucket1_100d_malta3))",
+  "note": "cnn 60+100d",
+  "decay": 4
+ },
+ {
+  "code": "rank(img20d_return_quantile1)",
+  "note": "img20d 单",
+  "decay": 4
+ },
+ {
+  "code": "rank(img100d_return_quartile1_prob_leap1)",
+  "note": "img100d 单",
+  "decay": 4
+ },
+ {
+  "code": "rank(img200d_return_quartile1_prob_leap1)",
+  "note": "img200d 单",
+  "decay": 4
+ },
+ {
+  "code": "rank(img60d_return_quantile1)",
+  "note": "img60 decay2",
+  "decay": 2
+ },
+ {
+  "code": "rank(img60d_return_quantile1)",
+  "note": "img60 decay6",
+  "decay": 6
+ },
+ {
+  "code": "rank(img60d_return_quantile1)",
+  "note": "img60 INDUSTRY",
+  "decay": 4,
+  "neut": "INDUSTRY"
+ }
+]
