@@ -4,8 +4,34 @@
 #   （或将本文件复制到 .git/hooks/pre-commit 并赋予可执行权限）
 # 跳过（紧急情况）：git commit --no-verify
 
+# --- pytest temp-dir redirect ---------------------------------------------
+# 默认临时目录（如 C:\Users\<user>\AppData\Local\Temp\pytest-of-<user>）
+# 可能残留上一次高完整性级别进程留下的 `pytest-current` 联结(junction)；
+# pytest 退出清理该目录时会抛 PermissionError [WinError 5] 并阻断提交。
+# 下方把临时基目录重定向到用户自有、无 junction 锁的路径，并用每次运行
+# 唯一的 base temp，使 pytest 会话末不 rmtree 整棵累积树（否则会触发沙箱
+# safe-delete 守卫，误判测试失败）。提交时无需再手动注入 TMPDIR。
+# 注意：本沙箱 Bash 的 $TMP/$TEMP 常为空，故用 Python 取真实用户临时目录，
+# 且用 mkdir -p 显式建目录（mktemp -d 在此环境只取名不建目录，不可用）。
+_WQB_OS_TMP=$(python -c "import tempfile; print(tempfile.gettempdir())" 2>/dev/null)
+if [ -z "$_WQB_OS_TMP" ]; then
+    _WQB_OS_TMP="${TMP:-${TEMP:-/tmp}}"
+fi
+_WQB_PYTEST_TMP="$_WQB_OS_TMP/wqb_pytest"
+mkdir -p "$_WQB_PYTEST_TMP"
+export TMPDIR="$_WQB_PYTEST_TMP"
+export TEMP="$_WQB_PYTEST_TMP"
+export TMP="$_WQB_PYTEST_TMP"
+# 每次运行唯一 base temp：pytest 对 --basetemp 指定的目录在会话结束不会
+# 删除（只保留/复用），彻底避免"会话末对累积的 pytest-of-<user> 整树做
+# 一次性 rmtree"触发 safe-delete 守卫。各测试 tmp_path 仍在运行内按原
+# 方式清理（单文件，不受影响）。
+_WQB_BASETEMP="$_WQB_PYTEST_TMP/run_$(date +%s%N)_$$"
+mkdir -p "$_WQB_BASETEMP"
+# --------------------------------------------------------------------------
+
 echo "[pre-commit] running pytest validation route..."
-if ! python -m pytest tests/ -x; then
+if ! python -m pytest tests/ -x "--basetemp=$_WQB_BASETEMP"; then
     echo ""
     echo "[pre-commit] BLOCKED: pytest failed. Fix failing tests before committing."
     echo "[pre-commit] (results written to logs/test-results.xml)"
