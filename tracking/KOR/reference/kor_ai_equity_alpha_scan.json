@@ -1,0 +1,2418 @@
+﻿{
+ "dataset": "ai_equity_alpha",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 300
+ },
+ "field_count": 300,
+ "estimated_stock_count": 600,
+ "low_stock_coverage": false,
+ "avg_coverage": 1.0,
+ "sample_stock_count": null,
+ "fetched_at": "2026-08-22T22:44:32",
+ "fields": [
+  {
+   "id": "accounting_forensics_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of accounts for signs of financial trouble or strength."
+  },
+  {
+   "id": "accounting_forensics_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Alternative analysis of accounts for signs of financial trouble or strength."
+  },
+  {
+   "id": "accounting_forensics_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Analysis of accounts for signs of financial trouble or strength."
+  },
+  {
+   "id": "accounting_forensics_factor_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of accounts for signs of trouble and strength."
+  },
+  {
+   "id": "accounting_forensics_factor_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Subtle analysis of accounts for signs of trouble and strength."
+  },
+  {
+   "id": "accounting_forensics_factor_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Subtle analysis of accounts for signs of trouble and strength."
+  },
+  {
+   "id": "accounting_forensics_factor_51",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of accounts for signs of trouble and strength."
+  },
+  {
+   "id": "accruals_analysis_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accounting-based measure reflecting accruals contribution to financial analysis."
+  },
+  {
+   "id": "accruals_contribution_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating the contribution of accruals to financial analysis."
+  },
+  {
+   "id": "accruals_contribution_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score measuring the contribution of accruals to financial analysis."
+  },
+  {
+   "id": "accruals_contribution_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score quantifying the impact of accruals in financial analysis."
+  },
+  {
+   "id": "accruals_contribution_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score quantifying the contribution of accruals in financial analysis."
+  },
+  {
+   "id": "accruals_contribution_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accounting measure indicating the contribution of accruals."
+  },
+  {
+   "id": "accruals_contribution_score_51",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accounting measure indicating the contribution of accruals to financial analysis."
+  },
+  {
+   "id": "alpha_excess_return_forecast",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forecast of excess return relative to a benchmark."
+  },
+  {
+   "id": "alpha_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "Numeric score indicating relative forecasted return for a security."
+  },
+  {
+   "id": "analyst_coverage_breadth_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Breadth of analyst coverage for the security."
+  },
+  {
+   "id": "analyst_coverage_density_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Extent of analyst coverage for the security."
+  },
+  {
+   "id": "analyst_earnings_revision_frequency",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Frequency of analyst earnings forecast revisions."
+  },
+  {
+   "id": "analyst_earnings_revision_intensity",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Intensity of recent analyst earnings forecast revisions."
+  },
+  {
+   "id": "analyst_earnings_revision_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score capturing changes in analyst earnings forecasts or recommendations."
+  },
+  {
+   "id": "analyst_earnings_revision_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score capturing changes in analyst earnings forecasts."
+  },
+  {
+   "id": "analyst_forecast_change_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_change_metric_21",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Models capturing changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_change_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting the magnitude of recent changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_revision_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model capturing changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_revision_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric capturing changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_revision_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Models capturing changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_forecast_revision_factor_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Models capturing changes in analyst forecasts or recommendations."
+  },
+  {
+   "id": "analyst_opinion_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor reflecting analyst opinions or perspectives."
+  },
+  {
+   "id": "analyst_opinion_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor reflecting analyst opinions or perspectives."
+  },
+  {
+   "id": "analyst_opinion_metric_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric summarizing analyst opinions or recommendations."
+  },
+  {
+   "id": "analyst_opinion_metric_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric summarizing analyst recommendations or outlook."
+  },
+  {
+   "id": "analyst_opinion_metric_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric summarizing analyst recommendations or outlook."
+  },
+  {
+   "id": "analyst_opinion_metric_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor reflecting analyst opinions or perspectives."
+  },
+  {
+   "id": "analyst_opinion_metric_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor reflecting analyst opinions or perspectives."
+  },
+  {
+   "id": "analyst_recommendation_consensus",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 11,
+   "description": "Consensus level among analyst recommendations."
+  },
+  {
+   "id": "analyst_recommendation_consensus_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of analyst recommendation consensus."
+  },
+  {
+   "id": "analyst_sentiment_consistency_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consistency of analyst sentiment over time."
+  },
+  {
+   "id": "analyst_sentiment_consistency_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of analyst sentiment consistency."
+  },
+  {
+   "id": "analyst_sentiment_score_10",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score reflecting analyst sentiment for a security."
+  },
+  {
+   "id": "analyst_sentiment_score_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting analyst opinions or perspectives on a security."
+  },
+  {
+   "id": "analyst_sentiment_score_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score summarizing analyst sentiment towards a security."
+  },
+  {
+   "id": "analyst_sentiment_score_9",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting the sentiment of analysts regarding a security."
+  },
+  {
+   "id": "analyst_sentiment_shift_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Recent changes in analyst sentiment or recommendations."
+  },
+  {
+   "id": "analyst_sentiment_shift_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of analyst sentiment shift."
+  },
+  {
+   "id": "analyst_target_price_deviation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Deviation of analyst target price from current price."
+  },
+  {
+   "id": "analyst_view_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor reflecting analyst opinions or perspectives."
+  },
+  {
+   "id": "asset_impairment_frequency_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Frequency of asset write-downs or impairments."
+  },
+  {
+   "id": "asset_impairment_frequency_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of asset impairment frequency."
+  },
+  {
+   "id": "asset_impairment_probability",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Likelihood that a company's assets will be written down due to impairment risk."
+  },
+  {
+   "id": "asset_impairment_probability_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Probability of asset value reduction due to impairment."
+  },
+  {
+   "id": "asset_impairment_probability_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Probability score estimating the risk of asset value reduction due to impairment."
+  },
+  {
+   "id": "asset_impairment_risk",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Risk of asset value reduction due to impairment or write-downs."
+  },
+  {
+   "id": "asset_impairment_risk_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Probability of asset value reduction due to impairment events."
+  },
+  {
+   "id": "asset_impairment_risk_score_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Probability of asset value reduction due to impairment events."
+  },
+  {
+   "id": "asset_impairment_risk_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Probability that a company's assets will be written down due to impairment."
+  },
+  {
+   "id": "asset_liquidity_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating how easily assets can be converted to cash."
+  },
+  {
+   "id": "asset_liquidity_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of asset liquidity."
+  },
+  {
+   "id": "asset_replacement_cost_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated cost to replace the company's assets."
+  },
+  {
+   "id": "asset_replacement_cost_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative estimate of the cost to replace company assets."
+  },
+  {
+   "id": "asset_replacement_cost_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third estimate of the cost to replace company assets."
+  },
+  {
+   "id": "asset_turnover_ratio_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio indicating efficiency in using assets to generate revenue."
+  },
+  {
+   "id": "asset_utilization_efficiency_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Efficiency in utilizing assets to generate returns."
+  },
+  {
+   "id": "asset_utilization_efficiency_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of asset utilization efficiency."
+  },
+  {
+   "id": "asset_utilization_efficiency_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third measure of asset utilization efficiency."
+  },
+  {
+   "id": "balance_sheet_trend_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_31",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "balance_sheet_trend_metric_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in balance sheet items."
+  },
+  {
+   "id": "business_model_clarity_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Certainty or uncertainty surrounding a company's business model."
+  },
+  {
+   "id": "business_model_clarity_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative certainty or uncertainty score for business model."
+  },
+  {
+   "id": "business_model_clarity_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating the certainty or uncertainty of a company's business model."
+  },
+  {
+   "id": "business_model_clarity_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Certainty or uncertainty surrounding a company's business model."
+  },
+  {
+   "id": "business_model_clarity_score_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Certainty or uncertainty surrounding a company's business model."
+  },
+  {
+   "id": "business_model_clarity_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Certainty or uncertainty surrounding a company's business model."
+  },
+  {
+   "id": "business_model_transparency_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Degree of transparency in the company's business model."
+  },
+  {
+   "id": "business_model_volatility_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Volatility in the company's business model or operations."
+  },
+  {
+   "id": "buzz_intensity_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Measure of the level of market or media attention for a security."
+  },
+  {
+   "id": "buzz_intensity_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of the level of market or media attention for a security."
+  },
+  {
+   "id": "buzz_intensity_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score measuring the level of market or media attention to a security."
+  },
+  {
+   "id": "buzz_intensity_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating the level of attention a security receives in the market."
+  },
+  {
+   "id": "buzz_intensity_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating the intensity of market or media attention."
+  },
+  {
+   "id": "buzz_intensity_score_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of market or media attention to a security."
+  },
+  {
+   "id": "buzz_intensity_score_61",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of market or media attention to a security."
+  },
+  {
+   "id": "buzz_intensity_score_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of market or media attention to a security."
+  },
+  {
+   "id": "buzz_trend_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of changes in market or media attention over time."
+  },
+  {
+   "id": "buzz_trend_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric indicating changes in market or media attention over time."
+  },
+  {
+   "id": "buzz_trend_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of changes in market or media attention over time."
+  },
+  {
+   "id": "buzz_trend_metric_31",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of changes in market or media attention over time."
+  },
+  {
+   "id": "buzz_trend_metric_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Measure of changes in market or media attention over time."
+  },
+  {
+   "id": "cash_conversion_efficiency_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Efficiency of converting earnings into cash flow."
+  },
+  {
+   "id": "cash_conversion_efficiency_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of cash conversion efficiency."
+  },
+  {
+   "id": "cashflow_trend_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_10",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_101",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_11",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_111",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_12",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing trends and changes in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends and changes in cash flow statements over time."
+  },
+  {
+   "id": "cashflow_trend_analysis_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Analysis of cash flow statement trends and their implications."
+  },
+  {
+   "id": "cashflow_trend_analysis_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of changes and trends in cash flow statements."
+  },
+  {
+   "id": "cashflow_trend_analysis_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of cash flow statement trends and variations."
+  },
+  {
+   "id": "cashflow_trend_analysis_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends in cash flow statements over time."
+  },
+  {
+   "id": "cashflow_trend_analysis_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Analysis of cash flow statement trends and their significance."
+  },
+  {
+   "id": "cashflow_trend_analysis_9",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of cash flow statement trends and their impact."
+  },
+  {
+   "id": "cashflow_variation_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score indicating the variability in a company's cash flows."
+  },
+  {
+   "id": "cashflow_variation_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Degree of fluctuation in a company's cash flow over time."
+  },
+  {
+   "id": "combined_technical_indicators",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Aggregated technical indicators for momentum and mean reversion."
+  },
+  {
+   "id": "combined_technical_indicators_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative aggregated technical indicators for momentum and reversion."
+  },
+  {
+   "id": "combined_technical_indicators_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Third aggregated technical indicators for momentum and reversion."
+  },
+  {
+   "id": "combined_technical_indicators_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Aggregated technical indicators for momentum and reversion."
+  },
+  {
+   "id": "combined_technical_indicators_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Aggregated technical indicators for momentum and reversion."
+  },
+  {
+   "id": "combined_technical_indicators_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Aggregated technical indicators for momentum and reversion."
+  },
+  {
+   "id": "company_physics_model_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mathematical model of shareholder returns using financial and technical properties."
+  },
+  {
+   "id": "company_physics_model_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mathematical models of shareholder returns compounding financial and technical properties."
+  },
+  {
+   "id": "company_physics_model_31",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mathematical model of shareholder returns compounding."
+  },
+  {
+   "id": "company_physics_model_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mathematical model of shareholder returns compounding."
+  },
+  {
+   "id": "company_physics_model_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mathematical models of shareholder returns compounding financial and technical properties."
+  },
+  {
+   "id": "company_size_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor representing the scale or market capitalization of a company."
+  },
+  {
+   "id": "company_size_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative factor representing company scale or market capitalization."
+  },
+  {
+   "id": "company_size_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third factor representing company scale or market capitalization."
+  },
+  {
+   "id": "company_size_factor_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor representing the scale or market capitalization of a company."
+  },
+  {
+   "id": "company_size_factor_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor representing the scale or market capitalization of a company."
+  },
+  {
+   "id": "company_size_factor_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor representing the scale or market capitalization of a company."
+  },
+  {
+   "id": "company_size_factor_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor representing the scale or market capitalization of a company."
+  },
+  {
+   "id": "competitive_advantage_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator of a company's ability to maintain profits due to competitive advantage."
+  },
+  {
+   "id": "competitive_advantage_indicator_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator of a company's ability to maintain profits over competitors."
+  },
+  {
+   "id": "competitive_advantage_model",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing the sustainability of a company's competitive advantage."
+  },
+  {
+   "id": "competitive_advantage_model_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model analyzing the sustainability of competitive advantage."
+  },
+  {
+   "id": "competitive_advantage_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator of a company's ability to maintain profits over competitors."
+  },
+  {
+   "id": "correlation_risk_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative model assessing risk from correlated asset movements."
+  },
+  {
+   "id": "correlation_risk_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third model assessing risk from correlated asset movements."
+  },
+  {
+   "id": "correlation_risk_factor_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor assessing risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor assessing risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_61",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_71",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk from correlated movements in assets."
+  },
+  {
+   "id": "correlation_risk_factor_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk from correlated movements in assets."
+  },
+  {
+   "id": "credit_default_risk_assessment_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the likelihood that a company will default on its obligations."
+  },
+  {
+   "id": "credit_default_risk_assessment_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the probability of a company defaulting on obligations."
+  },
+  {
+   "id": "credit_default_risk_assessment_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk of default or creditworthiness of a company."
+  },
+  {
+   "id": "credit_default_risk_assessment_51",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the risk of default or creditworthiness."
+  },
+  {
+   "id": "credit_default_risk_assessment_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk of default or creditworthiness of a company."
+  },
+  {
+   "id": "credit_risk_model_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score from models assessing the risk of default or creditworthiness."
+  },
+  {
+   "id": "credit_risk_model_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score from models assessing the risk of default or creditworthiness."
+  },
+  {
+   "id": "creditworthiness_assessment_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model output assessing the risk of default or creditworthiness."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk of default or creditworthiness."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor assessing the risk of default or creditworthiness of a company."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Factor assessing a company's credit risk and default probability."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor assessing the credit risk and default probability of a company."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Factor assessing a company's credit risk and default probability."
+  },
+  {
+   "id": "creditworthiness_assessment_factor_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model assessing the risk of default or creditworthiness of a company."
+  },
+  {
+   "id": "debt_coverage_ratio_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio indicating the ability to cover debt obligations."
+  },
+  {
+   "id": "debt_coverage_ratio_metric_10",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio measuring a company's ability to cover its debt obligations."
+  },
+  {
+   "id": "debt_maturity_profile_score_11",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the timing and structure of a company's debt maturities."
+  },
+  {
+   "id": "debt_servicing_capacity_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting the company's ability to service its debt."
+  },
+  {
+   "id": "debt_to_assets_ratio_metric_12",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to total assets for solvency risk assessment."
+  },
+  {
+   "id": "debt_to_assets_ratio_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio comparing a company's total debt to its total assets."
+  },
+  {
+   "id": "debt_to_capital_ratio_metric_11",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of debt in a company's capital structure for financial analysis."
+  },
+  {
+   "id": "debt_to_enterprise_value_ratio_metric_11",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to enterprise value for capital structure evaluation."
+  },
+  {
+   "id": "debt_to_equity_ratio_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to shareholders' equity."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_14",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio measuring a company's financial leverage by comparing total debt to equity."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_15",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio measuring a company's financial leverage using debt and equity values."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_151",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial leverage ratio comparing total debt to equity."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_16",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio comparing a company's total debt to its equity base."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_17",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial leverage ratio of total debt to equity."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_18",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity, indicating financial leverage."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_19",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for financial leverage assessment."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_20",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Financial leverage ratio of total debt to equity."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_21",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage analysis."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_22",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage evaluation."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_23",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage measurement."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_24",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for financial leverage analysis."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_25",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage assessment."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_26",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage calculation."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_27",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage purposes."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_28",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for financial leverage."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_29",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage analysis."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_30",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage measurement."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_31",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage analysis."
+  },
+  {
+   "id": "debt_to_equity_ratio_metric_32",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to equity for leverage calculation."
+  },
+  {
+   "id": "debt_to_market_cap_ratio_metric_11",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to market capitalization for financial risk analysis."
+  },
+  {
+   "id": "debt_to_market_cap_ratio_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of a company's total debt to its market capitalization."
+  },
+  {
+   "id": "dividend_analysis_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and policies."
+  },
+  {
+   "id": "dividend_consistency_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Consistency of dividend payments over time."
+  },
+  {
+   "id": "dividend_consistency_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of dividend consistency."
+  },
+  {
+   "id": "dividend_growth_rate_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rate of growth in dividend payments."
+  },
+  {
+   "id": "dividend_payout_ratio_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Proportion of earnings paid out as dividends."
+  },
+  {
+   "id": "dividend_policy_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and company dividend policies."
+  },
+  {
+   "id": "dividend_policy_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative analysis of dividend payments and company policies."
+  },
+  {
+   "id": "dividend_policy_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third analysis of dividend payments and company policies."
+  },
+  {
+   "id": "dividend_policy_analysis_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and company dividend policies."
+  },
+  {
+   "id": "dividend_policy_analysis_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and company dividend policies."
+  },
+  {
+   "id": "dividend_policy_analysis_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's dividend payment policies and their sustainability."
+  },
+  {
+   "id": "dividend_policy_analysis_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and policies."
+  },
+  {
+   "id": "dividend_policy_analysis_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of dividend payments and policies."
+  },
+  {
+   "id": "dividend_policy_stability_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Stability and predictability of the company's dividend policy."
+  },
+  {
+   "id": "dividend_yield_stability_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Stability of dividend yield over time."
+  },
+  {
+   "id": "dividend_yield_stability_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Alternative measure of dividend yield stability."
+  },
+  {
+   "id": "earnings_growth_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of earnings growth rates and sustainability."
+  },
+  {
+   "id": "earnings_growth_rate_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of earnings growth rates and their sustainability."
+  },
+  {
+   "id": "earnings_growth_rate_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative analysis of earnings growth rates and sustainability."
+  },
+  {
+   "id": "earnings_growth_rate_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of earnings growth rates and their sustainability."
+  },
+  {
+   "id": "earnings_growth_rate_analysis_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of earnings growth rates and sustainability."
+  },
+  {
+   "id": "earnings_growth_rate_analysis_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of earnings growth rates and sustainability."
+  },
+  {
+   "id": "earnings_per_share_growth_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Growth rate of earnings per share."
+  },
+  {
+   "id": "earnings_per_share_growth_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of earnings per share growth."
+  },
+  {
+   "id": "earnings_per_share_growth_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third measure of earnings per share growth."
+  },
+  {
+   "id": "earnings_quality_score_10",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the reliability and sustainability of reported earnings."
+  },
+  {
+   "id": "earnings_quality_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score assessing the reliability and sustainability of reported earnings."
+  },
+  {
+   "id": "earnings_quality_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score evaluating the quality and sustainability of earnings."
+  },
+  {
+   "id": "earnings_quality_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score assessing the quality and sustainability of earnings."
+  },
+  {
+   "id": "earnings_quality_score_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the reliability and sustainability of reported earnings."
+  },
+  {
+   "id": "earnings_quality_score_61",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the reliability and sustainability of reported earnings."
+  },
+  {
+   "id": "earnings_quality_score_9",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of the reliability and sustainability of reported earnings."
+  },
+  {
+   "id": "earnings_surprise_frequency_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Frequency of earnings results differing from expectations."
+  },
+  {
+   "id": "earnings_surprise_frequency_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of earnings surprise frequency."
+  },
+  {
+   "id": "earnings_surprise_magnitude_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Magnitude of earnings surprises relative to expectations."
+  },
+  {
+   "id": "efficiency_model_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting operational efficiency of a company."
+  },
+  {
+   "id": "efficiency_model_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score reflecting operational efficiency of a company."
+  },
+  {
+   "id": "efficiency_model_score_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting operational efficiency of a company."
+  },
+  {
+   "id": "efficiency_model_score_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting operational efficiency of a company."
+  },
+  {
+   "id": "efficiency_model_score_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting operational efficiency of a company."
+  },
+  {
+   "id": "feature_agreement_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a data agreement."
+  },
+  {
+   "id": "feature_cao_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a chief administrative officer."
+  },
+  {
+   "id": "feature_category_label",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Label indicating the grouping of features by analytical purpose."
+  },
+  {
+   "id": "feature_claim_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a legal claim."
+  },
+  {
+   "id": "feature_column_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field is a column in the data table."
+  },
+  {
+   "id": "feature_column_name",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Name of the column in the data table for the feature."
+  },
+  {
+   "id": "feature_coo_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a chief operating officer."
+  },
+  {
+   "id": "feature_data_type",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Data type of the feature, such as float or text."
+  },
+  {
+   "id": "feature_description_text",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Textual description explaining the feature or factor."
+  },
+  {
+   "id": "feature_dispute_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a legal dispute."
+  },
+  {
+   "id": "feature_example_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field is a sample value for the feature."
+  },
+  {
+   "id": "feature_example_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sample value for the feature or factor."
+  },
+  {
+   "id": "feature_float_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the feature is a float data type."
+  },
+  {
+   "id": "feature_general_counsel_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to a general counsel."
+  },
+  {
+   "id": "feature_london_england_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to London, England."
+  },
+  {
+   "id": "feature_losses_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to legal losses."
+  },
+  {
+   "id": "feature_name_label",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Name or label of the feature or factor."
+  },
+  {
+   "id": "feature_nan_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator for missing or undefined data in the feature."
+  },
+  {
+   "id": "feature_plus_x_innovation_hub_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to Plus X Innovation Hub."
+  },
+  {
+   "id": "feature_string_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the feature is a string data type."
+  },
+  {
+   "id": "feature_subcategory_label",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Label indicating the sub-grouping of features for detailed analysis."
+  },
+  {
+   "id": "feature_subscriber_parties_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to subscriber parties."
+  },
+  {
+   "id": "feature_text_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the feature is a text data type."
+  },
+  {
+   "id": "feature_worldquant_llc_indicator",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator if the field relates to WorldQuant, LLC."
+  },
+  {
+   "id": "financial_change_trend_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends across all financial statements."
+  },
+  {
+   "id": "financial_change_trend_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends across all financial statements."
+  },
+  {
+   "id": "financial_change_trend_analysis_21",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends across all financial statements."
+  },
+  {
+   "id": "financial_change_trend_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends across all financial statements."
+  },
+  {
+   "id": "financial_change_trend_analysis_31",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of trends across all financial statements."
+  },
+  {
+   "id": "financial_statement_volatility_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Measure of variability in key financial statement items."
+  },
+  {
+   "id": "financial_statement_volatility_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of financial statement volatility."
+  },
+  {
+   "id": "financial_yield_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financial_yield_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financial_yield_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financial_yield_analysis_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financial_yield_analysis_41",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financial_yield_analysis_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of financial yields such as dividend or earnings yield."
+  },
+  {
+   "id": "financing_analysis_score_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and structure."
+  },
+  {
+   "id": "financing_structure_analysis",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and capital structure."
+  },
+  {
+   "id": "financing_structure_analysis_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative analysis of company financing activities and structure."
+  },
+  {
+   "id": "financing_structure_analysis_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third analysis of company financing activities and structure."
+  },
+  {
+   "id": "financing_structure_analysis_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and capital structure."
+  },
+  {
+   "id": "financing_structure_analysis_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and capital structure."
+  },
+  {
+   "id": "financing_structure_analysis_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Assessment of a company's financing activities and capital structure."
+  },
+  {
+   "id": "financing_structure_analysis_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and structure."
+  },
+  {
+   "id": "financing_structure_analysis_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of a company's financing activities and structure."
+  },
+  {
+   "id": "forecast_accuracy_variance_score",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Variance in the accuracy of analyst or model forecasts."
+  },
+  {
+   "id": "forecast_dispersion_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dispersion among analyst or model forecasts."
+  },
+  {
+   "id": "forecast_dispersion_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of forecast dispersion."
+  },
+  {
+   "id": "forecast_error_magnitude_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Magnitude of errors in earnings or revenue forecasts."
+  },
+  {
+   "id": "forecast_error_magnitude_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative measure of forecast error magnitude."
+  },
+  {
+   "id": "forecast_error_magnitude_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Third measure of forecast error magnitude."
+  },
+  {
+   "id": "forecast_sentiment_nlp_alpha_factor_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of perception of stock and its performance using NLP."
+  },
+  {
+   "id": "forecast_value_accuracy_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the value and accuracy of forecasts."
+  },
+  {
+   "id": "forecast_value_accuracy_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the accuracy and value of forecasts."
+  },
+  {
+   "id": "forecast_value_accuracy_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the value and accuracy of forecasts."
+  },
+  {
+   "id": "forecast_value_accuracy_metric_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the value and accuracy of forecasts."
+  },
+  {
+   "id": "forecast_value_accuracy_metric_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the value and accuracy of forecasts."
+  },
+  {
+   "id": "forecast_yield_metric",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of expected future yields for a security."
+  },
+  {
+   "id": "forecast_yield_metric_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Alternative analysis of expected future yields for a security."
+  },
+  {
+   "id": "forecast_yield_metric_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of expected future yields for a security."
+  },
+  {
+   "id": "forecast_yield_metric_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the expected future yield of a security."
+  },
+  {
+   "id": "forecast_yield_metric_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric assessing the expected yield based on forecasts."
+  },
+  {
+   "id": "forecast_yield_metric_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric evaluating the expected yield from forecasts."
+  },
+  {
+   "id": "forecast_yield_metric_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Metric assessing the expected yield based on forecast models."
+  },
+  {
+   "id": "forecast_yield_metric_8",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of expected future yields."
+  },
+  {
+   "id": "forecast_yield_metric_81",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of expected future yields."
+  },
+  {
+   "id": "forecast_yield_metric_9",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysis of expected future yields."
+  },
+  {
+   "id": "forecasted_alpha_ranking",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Ranking of securities based on their predicted excess returns."
+  },
+  {
+   "id": "free_cashflow_margin_factor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Free cash flow as a percentage of revenue."
+  }
+ ]
+}

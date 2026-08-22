@@ -1,0 +1,102 @@
+{
+  "wave": "wave100",
+  "dataset": "predictive_starmine",
+  "region": "KOR",
+  "universe": "TOP600",
+  "multisim_id": "HIu7ydDx4wzaAlEmYEzVKp",
+  "submitted_at": "2026-08-22",
+  "settings": "KOR/TOP600/d1/d10/SECTOR/t0.04/maxTrade ON/2014-2023",
+  "baseline": "wave99 B1 omqzqRkE rank(analyst_revisions_score_7) sharpe 0.78/fitness 0.51/2y 1.71/tvr 4.1%",
+  "verdicts": [
+    {
+      "id": "C1",
+      "alpha": "rKjzOJQ8",
+      "variant": "score_7 5d 差分激活",
+      "sharpe": -0.7,
+      "fitness": -0.28,
+      "two_year_sharpe": 0.09,
+      "turnover": 0.2175,
+      "verdict": "RED_NEG",
+      "note": "差分激活反向, 修正加速无预测力"
+    },
+    {
+      "id": "C2",
+      "alpha": "0mwQXekq",
+      "variant": "score_7 3d 差分激活",
+      "sharpe": -0.61,
+      "fitness": -0.21,
+      "two_year_sharpe": 0.24,
+      "turnover": 0.2515,
+      "verdict": "RED_NEG",
+      "note": "3d 差分仍反向"
+    },
+    {
+      "id": "C3",
+      "alpha": "Xg7lb2wX",
+      "variant": "score_2 超短期水平",
+      "sharpe": 0.4,
+      "fitness": 0.18,
+      "two_year_sharpe": 0.68,
+      "turnover": 0.0432,
+      "verdict": "RED",
+      "note": "score_2 弱于 score_7: 越短窗口评分越弱"
+    },
+    {
+      "id": "C4",
+      "alpha": "j2jwA9l9",
+      "variant": "score_2 3d 差分激活",
+      "sharpe": -0.77,
+      "fitness": -0.3,
+      "two_year_sharpe": -0.59,
+      "turnover": 0.2505,
+      "verdict": "RED_NEG",
+      "note": "差分全家反向确认"
+    },
+    {
+      "id": "C5",
+      "alpha": "78jXNaq1",
+      "variant": "B1 水平 + 5d 动量混合 0.5/0.5",
+      "sharpe": 0.49,
+      "fitness": 0.23,
+      "two_year_sharpe": 1.72,
+      "turnover": 0.1385,
+      "verdict": "RED_2Y_GREEN",
+      "note": "2y 1.72 但全期 0.49 比 B1 0.78 更差: 动量腿稀释水平信号"
+    },
+    {
+      "id": "C6",
+      "alpha": "RR7ab2Ze",
+      "variant": "score_7 - score_21 短长期差",
+      "sharpe": 0.1,
+      "fitness": 0.02,
+      "two_year_sharpe": 0.37,
+      "turnover": 0.0409,
+      "verdict": "RED",
+      "note": "短长期差无信号"
+    },
+    {
+      "id": "C7",
+      "alpha": "0mwQXe9q",
+      "variant": "0.6 水平 + 0.4 短长期差",
+      "sharpe": 0.27,
+      "fitness": 0.1,
+      "two_year_sharpe": 0.26,
+      "turnover": 0.044,
+      "verdict": "RED",
+      "note": "稀释后更弱"
+    },
+    {
+      "id": "C8",
+      "alpha": "pwjzRVoo",
+      "variant": "score_7 10d 均值差分激活",
+      "sharpe": -0.58,
+      "fitness": -0.22,
+      "two_year_sharpe": -0.19,
+      "turnover": 0.1882,
+      "verdict": "RED_NEG",
+      "note": "P4 探针式激活也反向"
+    }
+  ],
+  "conclusion": "predictive_starmine 修正评分族判死: 水平值 B1 (0.78/2y1.71) 是该族天花板, 所有差分/动量/短长期差激活全部失败且差分转负. 信号为慢信号 (tvr 4.1%), 2y 亮点 (2022-2023) 无法补偿全期缺口 (差 0.80), Mode A 参数微调无法翻倍 → 该族无 RA 潜力, 回写 registry.",
+  "next": "转向 ai_equity_alpha (0.9434 最高分 VECTOR model 类, 与已验证 ml_factor_proj 同族, 582 字段) S1 扫描"
+}

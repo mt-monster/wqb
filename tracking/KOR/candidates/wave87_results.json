@@ -1,0 +1,23 @@
+{
+  "wave": 87,
+  "tag": "wave87",
+  "date": "2026-08-22",
+  "multisim": "30lc9oNk4PN9sXQKikxJxP (10/10 COMPLETE 零 ERROR)",
+  "datasets": {"A批": "multi_source_model (模型分数 60 MATRIX 字段)", "B批": "news_sentiment_transfer (转移情绪聚合 23 字段)"},
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON"},
+  "results": [
+    {"id": "Vk7EaVgG", "expr": "rank(long_term_quantile1_120d_pred)", "sharpe": 0.33, "fitness": 0.09, "turnover": 0.1966, "cw": "PASS", "two_year": -0.36, "sub": 0.23, "verdict": "FAIL"},
+    {"id": "kqjXod26", "expr": "rank(ts_mean(long_term_quantile1_60d_pred, 10))", "sharpe": 0.09, "fitness": 0.01, "turnover": 0.1121, "cw": "PASS", "two_year": -0.27, "sub": 0.13, "verdict": "FAIL"},
+    {"id": "zqkj8Zp1", "expr": "rank(long_horizon_hedge3_quantile1_120d_pred)", "sharpe": 0.11, "fitness": 0.02, "turnover": 0.2065, "cw": "PASS", "two_year": 0.57, "sub": 0.02, "verdict": "FAIL", "note": "2y 全场最高但 sub 0.02 未达 0.06, hedge3 覆盖偏窄"},
+    {"id": "1YwLXeEJ", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_quantile1_20d_pred)))", "sharpe": 0.92, "fitness": 0.37, "turnover": 0.235, "cw": "PASS", "two_year": 0.13, "sub": 0.63, "verdict": "NEAR", "note": "全场最佳: 长短结合比单字段 A1(0.33) 提升 3x, 全部结构闸 PASS, 只差 sharpe/fitness"},
+    {"id": "1YwLXeEW", "expr": "rank(ts_delta(short_term_regime2_quantile1_20d_pred, 5))", "sharpe": 0.45, "fitness": 0.09, "turnover": 0.4597, "cw": "PASS", "two_year": -1.0, "sub": 0.33, "verdict": "FAIL", "note": "regime 短周期动量 2y 深负"},
+    {"id": "e7zKbmJl", "expr": "rank(multiply(-1, long_term_quantile5_120d_pred))", "sharpe": -0.51, "fitness": -0.16, "turnover": 0.224, "cw": "PASS", "two_year": 0.16, "sub": -0.51, "verdict": "FAIL", "note": "q5 反转后仍负 → q5 族无可交易信息"},
+    {"id": "pwjERmgg", "expr": "rank(ts_mean(primary_sentiment_average, 10))", "sharpe": -0.13, "fitness": -0.02, "turnover": 0.2563, "cw": "PASS", "two_year": -0.9, "sub": -0.4, "verdict": "FAIL"},
+    {"id": "mLjAmpkX", "expr": "rank(add(rank(primary_sentiment_average), rank(ts_delta(primary_sentiment_average, 10))))", "sharpe": 0.22, "fitness": 0.02, "turnover": 1.2522, "cw": 1.0, "cw_date": "2018-02-20", "two_year": -0.23, "sub": 0.09, "verdict": "FAIL", "note": "情绪动量 TVR 1.25 + CW 1.0 双败"},
+    {"id": "xAjQ3qab", "expr": "rank(ts_delta(sentiment_score_average, 20))", "sharpe": -0.17, "fitness": -0.02, "turnover": 1.2597, "cw": 1.0, "cw_date": "2018-02-20", "two_year": -0.36, "sub": -0.08, "verdict": "FAIL", "note": "同 mLjAmpkX: 动量路径 TVR+CW 结构性"},
+    {"id": "KP76N3Rp", "expr": "rank(ts_mean(secondary_sentiment_average, 20))", "sharpe": -0.03, "fitness": -0.0, "turnover": 0.1622, "cw": "PASS", "two_year": -0.22, "sub": -0.04, "verdict": "FAIL"}
+  ],
+  "key_insight": "1) multi_source_model 长短结合(A4 rank(long_term_q1_120d)+rank(short_term_q1_20d)) sharpe 0.92 全场最佳: 组合效应显著(单字段 0.33→组合 0.92, 3x), 全部结构闸 PASS(TVR 0.235 目标区内, CW PASS, sub 0.63), 只差 sharpe(需 1.58) 与 fitness(需 1.0) → 值得 wave88 深化(加第三路 mid_term/regime 分项 + 权重调优)。2) news_sentiment_transfer 情绪水平类(B1/B4)信号弱 2y 全负, 动量类(B2/B3) TVR 1.25 + CW 1.0(2018-02-20 单日集中) 与 wave86 forum 同型 → 转移情绪在 KOR 无可用信号。3) q5 反转(A6 -0.51)证实 q5 分位无可交易信息, 后续只做 q1 族。4) hedge3 低相关对冲信号 2y 0.57 全场最高但 sub 0.02 覆盖不足, 可考虑与 q1 主信号组合救 sub。",
+  "verdict": "无提交(10/10 FAIL, 最佳 1YwLXeEJ 0.92 NEAR 未达 1.58)。wave88 深化 multi_source_model A4 路线: 三路组合(long+mid+short) + 权重扫描 + hedge3 救 sub; news_sentiment_transfer 情绪族判弱(不判死, 水平路径结构闸全过但信号弱)",
+  "submit_gate": {"best_sharpe": 0.92, "required": 1.58, "submitted": false}
+}

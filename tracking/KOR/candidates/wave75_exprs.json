@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_zscore(vec_avg(composite_fundamental_score), 126))", "note": "model170: 基本面评分半年标准化+rank"},
+  {"id": 2, "expr": "rank(ts_delta(vec_avg(recent_earnings_momentum_score), 20))", "note": "model170: 盈利动量20d变化+rank"},
+  {"id": 3, "expr": "rank(group_zscore(vec_avg(composite_fundamental_score), industry))", "note": "model170: 行业中性化基本面评分"},
+  {"id": 4, "expr": "rank(vec_avg(price_position_within_annual_range)) * rank(vec_avg(recent_earnings_momentum_score))", "note": "model170: 价格位置×盈利动量（双因子）"},
+  {"id": 5, "expr": "rank(ts_decay_linear(vec_avg(composite_fundamental_score), 10))", "note": "model170: 基本面评分10d线性衰减"},
+  {"id": 6, "expr": "rank(normalized_trend_indicator_0) * rank(normalized_volume_indicator_0)", "note": "price_signal_dl: 趋势×量双因子"},
+  {"id": 7, "expr": "rank(ts_zscore(normalized_trend_indicator_0, 60))", "note": "price_signal_dl: 趋势指标60d标准化"},
+  {"id": 8, "expr": "rank(ts_delta(normalized_volume_indicator_0, 5))", "note": "price_signal_dl: 量指标5d变化"},
+  {"id": 9, "expr": "rank(group_zscore(normalized_trend_indicator_0, industry))", "note": "price_signal_dl: 行业中性化趋势"},
+  {"id": 10, "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 10)) * rank(ts_zscore(normalized_volume_indicator_0, 20))", "note": "price_signal_dl: 趋势衰减×量标准化（复合）"}
+]

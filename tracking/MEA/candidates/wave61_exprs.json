@@ -1,0 +1,55 @@
+{
+  "wave": 61,
+  "dataset": "model31",
+  "region": "MEA",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "decay": 1,
+  "truncation": 0.1,
+  "focus": "model31 (StarMine EQ model components) chg_* CHANGE-family fields: quarterly/yearly/daily percentile-rank changes (acc/cf/oe/erq_re_rk) + auditor switch event. Distinct signal morphology from wave60 model25 LEVEL fields.",
+  "context": "wave60 model25 EQ LEVEL components all dead (dual failure: sparse OR negative sharpe). Only remaining tier1 = model31 (cov 0.9518, 74 MATRIX fields). chg_* fields measure CHANGE in component percentile ranks (qtr/fy/day), auditor_switch is a binary event - structurally different from the level fields that failed. All fields cov>=0.87, MATRIX direct-ref. Avoided star_eq_* level fields (same-source risk with model25).",
+  "rationale": "Change/event signals (accruals quality improvement, CF quality shift, operational efficiency shift, regional EQ rank improvement, auditor switch) are mean-reversion-adjacent and structurally orthogonal to the failed level fields. Long ts_zscore windows control turnover; ts_mean smooths daily noise.",
+  "expressions": [
+    {
+      "code": "rank(ts_zscore(mdl31_acc_chg_1_qtr, 250))",
+      "concept": "accruals quality quarterly change, long-window zscore"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_acc_chg_1_fy, 120))",
+      "concept": "accruals quality yearly change"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_cf_chg_1_qtr, 250))",
+      "concept": "cashflow quality quarterly change"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_cf_chg_1_fy, 120))",
+      "concept": "cashflow quality yearly change (lowest alphaCount 57)"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_oe_chg_1_qtr, 250))",
+      "concept": "operating efficiency quarterly change"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_oe_chg_1_fy, 120))",
+      "concept": "operating efficiency yearly change (ac 66)"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_erq_re_rk_chg_1_qtr, 250))",
+      "concept": "regional earnings-quality rank quarterly change"
+    },
+    {
+      "code": "rank(ts_zscore(mdl31_erq_re_rk_chg_1_fy, 120))",
+      "concept": "regional earnings-quality rank yearly change (ac 50, lowest competition)"
+    },
+    {
+      "code": "rank(ts_mean(mdl31_erq_re_rk_chg_1_day, 20))",
+      "concept": "regional EQ rank daily change smoothed 20d"
+    },
+    {
+      "code": "rank(ts_mean(auditor_switch_indicator_prev_year, 60))",
+      "concept": "auditor switch event, 60d rolling presence"
+    }
+  ]
+}

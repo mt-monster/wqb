@@ -1,0 +1,55 @@
+{
+  "wave": 62,
+  "dataset": "analyst7",
+  "region": "MEA",
+  "universe": "TOP400",
+  "delay": 1,
+  "neutralization": "SECTOR",
+  "decay": 1,
+  "truncation": 0.1,
+  "focus": "analyst7 STRUCTURAL DECORRELATION (FIXED TYPES): PT-only and non-EPS breadth axes, ZERO est_q_*_median/3mth_ago revision legs. PT fields are MATRIX (bare use, wave58 precedent 1YwvoRRK), est_q_* are VECTOR (vec_avg).",
+  "context": "First submit FAILED 10/10 - root cause: analyst_price_target_* are MATRIX fields, vec_avg() wrapping invalid. Fixed: PT legs bare, est_q_* legs vec_avg. wave58 key_findings: EPS-revision leg SATURATED MEA production correlation space. PT-breadth was strongest real signal (1YwvoRRK 2y 3.27). Goal: IS>=1.58 with PROD_CORR<0.7.",
+  "rationale": "Removing revision legs entirely should drop PROD corr below 0.7. est_q_eps_raisednum (breadth axis, NOT revision) was in N17MnG2o which PASSED IS - breadth axis may be safe even for EPS.",
+  "expressions": [
+    {
+      "code": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count)",
+      "concept": "PT raised-breadth 4wks pure leg (MATRIX bare, signal from 1YwvoRRK)"
+    },
+    {
+      "code": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) - rank(analyst_price_target_lowered_count_4_weeks / analyst_price_target_count)",
+      "concept": "PT NET breadth: raised minus lowered, both normalized by count"
+    },
+    {
+      "code": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) + rank(vec_avg(est_q_net_raisednum_4wks) / vec_avg(est_q_net_num))",
+      "concept": "PT breadth + Net estimate breadth (dual breadth, no revision)"
+    },
+    {
+      "code": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) + rank(vec_avg(est_q_sal_raisednum_4wks) / vec_avg(est_q_sal_num))",
+      "concept": "PT breadth + Sales estimate breadth"
+    },
+    {
+      "code": "rank(analyst_price_target_high / vec_avg(analyst_price_target_high_three_months_ago) - 1)",
+      "concept": "PT high 3-month momentum (MATRIX high / VECTOR 3m ago)"
+    },
+    {
+      "code": "rank(ts_delta(analyst_price_target_mean, 20))",
+      "concept": "PT mean 20d delta (ts_delta morphology, MATRIX bare)"
+    },
+    {
+      "code": "rank(ts_delta(analyst_price_target_mean, 60))",
+      "concept": "PT mean 60d delta (slower momentum)"
+    },
+    {
+      "code": "rank(vec_avg(est_q_net_raisednum_4wks) / vec_avg(est_q_net_num)) + rank(vec_avg(est_q_sal_raisednum_4wks) / vec_avg(est_q_sal_num)) + rank(vec_avg(est_q_pre_raisednum_4wks) / vec_avg(est_q_pre_num))",
+      "concept": "triple non-EPS breadth (net+sal+pre) - pure breadth axis"
+    },
+    {
+      "code": "rank(vec_avg(est_q_net_raisednum_4wks) / vec_avg(est_q_net_num)) + rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) + rank(ts_delta(analyst_price_target_mean, 20))",
+      "concept": "Net breadth + PT breadth + PT momentum triple"
+    },
+    {
+      "code": "rank(vec_avg(est_q_eps_raisednum_4wks) / vec_avg(est_q_eps_num)) + rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count)",
+      "concept": "EPS raisednum BREADTH (not revision) + PT breadth - N17MnG2o precedent"
+    }
+  ]
+}

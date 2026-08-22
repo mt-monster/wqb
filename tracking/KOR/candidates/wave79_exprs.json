@@ -1,0 +1,20 @@
+{
+  "wave": 79,
+  "tag": "wave79",
+  "created": "2026-08-21",
+  "baseline": "np7kL5Mw rank(rank(ts_decay_linear(normalized_trend_indicator_2,20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6,20), industry))) sharpe 1.12 fitness 0.68 sub 1.03",
+  "focus": "Mode A 收敛: trend6 中性化层级(sector/subindustry) + trend6 窗口扫描 + 双中性 + 中性因子替换 + 外层衰减/双重中性",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), sector)))", "note": "trend6 sector 中性化"},
+    {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), subindustry)))", "note": "trend6 subindustry 中性化"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), industry)))", "note": "trend6 窗口 10d"},
+    {"id": 4, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 30), industry)))", "note": "trend6 窗口 30d"},
+    {"id": 5, "expr": "rank(rank(group_zscore(ts_decay_linear(normalized_trend_indicator_2, 20), industry)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)))", "note": "双行业中性"},
+    {"id": 6, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_0, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)))", "note": "trend0 + trend6中性"},
+    {"id": 7, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_4, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)))", "note": "trend4 + trend6中性"},
+    {"id": 8, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)), 10))", "note": "外层衰减10d 降TVR"},
+    {"id": 9, "expr": "rank(group_zscore(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)), industry))", "note": "双重中性叠加"},
+    {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)))", "note": "trend2 15d + trend6中性"}
+  ]
+}

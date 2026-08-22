@@ -1,0 +1,27 @@
+{
+  "wave": 90,
+  "tag": "wave90",
+  "created": "2026-08-22",
+  "baseline": "gJjKWbKM rank(add(rank(long_term_quantile1_120d_pred), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred)))) sharpe 1.50 fitness 0.82 TVR 0.2268 sub 1.28 (wave89 C2 全场最佳 NEAR)",
+  "focus": "hedge5 权重单调扫描上探(4x/5x/6x) + 纯 hedge5 主导 + C2×seasonal5d/regime4-5d 组合 + 短周期互叠",
+  "direction": "wave89 证实 hedge5 权重单调递增 1x→3x(1.23→1.50) 未到峰, C2 距 1.58 仅差 0.08。本波: ①权重 4x/5x/6x 上探找峰 ②纯 hedge5 单信号(裸/加权/加 ts_delay 平滑) ③C2 结构与 seasonal5d(1.24)/regime4-5d(1.18) 组合(短周期双信号互验) ④hedge5 与 5d 族互叠(hedge5×seasonal5d 交叉) ⑤CLUSTER 监控。冲 sharpe≥1.58 + fitness≥1.0",
+  "batches": [
+    {
+      "batch": "A",
+      "note": "wave90 hedge5 权重上探批: 4x/5x/6x + 纯信号 + seasonal/regime 组合, 冲 sharpe≥1.58",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "D1", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(4, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "hedge5 权重 4x (单调扫描第 4 点)"},
+        {"id": "D2", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(5, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "hedge5 权重 5x (单调扫描第 5 点)"},
+        {"id": "D3", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(6, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "hedge5 权重 6x (单调扫描第 6 点, 找峰上界)"},
+        {"id": "D4", "expr": "rank(short_horizon_hedge3_quantile1_5d_pred)", "note": "纯 hedge5 单信号 (wave87 单字段 0.33 类比, 验证 hedge5 独立强度)"},
+        {"id": "D5", "expr": "rank(multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred)))", "note": "纯 hedge5 权重 2x (单信号加权)"},
+        {"id": "D6", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred)), rank(short_term_seasonal_quantile1_5d_pred))))", "note": "C2×seasonal5d: 3x hedge5 + seasonal5d (短周期双信号)"},
+        {"id": "D7", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred)), rank(short_term_regime4_quantile1_5d_pred))))", "note": "C2×regime4-5d: 3x hedge5 + regime4 5d"},
+        {"id": "D8", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(3, add(rank(short_horizon_hedge3_quantile1_5d_pred), rank(short_term_seasonal_quantile1_5d_pred)))))", "note": "双短信号 3x 合并: 3×(hedge5+seasonal5d) (合并加权)"},
+        {"id": "D9", "expr": "rank(add(multiply(2, rank(long_term_quantile1_120d_pred)), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "双端加权: long 2x + hedge5 3x (对称放大)"},
+        {"id": "D10", "expr": "rank(ts_delay(rank(add(rank(long_term_quantile1_120d_pred), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred)))), 1))", "note": "C2 + ts_delay(1) 平滑 (降 TVR 试 2y)"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "wave": 93,
+  "tag": "wave93",
+  "dataset": "other455",
+  "created": "2026-08-22",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "multisimulation_id": "1GTctUgbI4J58FpjUoT7Prm",
+  "verdict": "10/10 RED 全灭。other455 网络嵌入 PCA MATRIX 族在 KOR 判死（无任何接近提交门槛的候选）",
+  "verdict_detail": "7 种结构全覆盖探针: 水平(K1/K9/K10) 动量(K2/K8) 均值回归(K3) 波动率(K4) 跨网络相关(K5) 时序自归一(K6) 双网络组合(K7)。全部 Sharpe<=0.18 (门槛 1.58), 2y 最高 1.04(K4) 但整体 -0.12 不稳定; K7 2y -1.04 / K10 2y -1.95 结构性负信号。relation cov 1.0 覆盖无济于事——PCA 因子不携带可交易横截面信号",
+  "results": [
+    {"id": "K1", "alpha": "bljP3E8Z", "expr": "rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value)", "concept": "relation PC1 水平", "sharpe": -0.21, "fitness": -0.06, "turnover": 0.0692, "two_year_sharpe": -0.77, "sub_universe_sharpe": -0.18, "light": "RED"},
+    {"id": "K2", "alpha": "gJjPzpWe", "expr": "rank(ts_delta(ts_backfill(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,66),20))", "concept": "relation PC1 动量", "sharpe": -0.03, "fitness": -0.0, "turnover": 0.0689, "two_year_sharpe": 0.38, "sub_universe_sharpe": -0.09, "light": "RED"},
+    {"id": "K3", "alpha": "bljP3E6Z", "expr": "subtract(rank(oth455_relation_roam_w1_pca_fact2_value),ts_mean(rank(oth455_relation_roam_w1_pca_fact2_value),60))", "concept": "ROAM 均值回归", "sharpe": 0.18, "fitness": 0.05, "turnover": 0.0977, "two_year_sharpe": 0.07, "sub_universe_sharpe": 0.23, "light": "RED"},
+    {"id": "K4", "alpha": "O07mvaAp", "expr": "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p10_q200_w3_pca_fact1_value,5),20))", "concept": "partner 波动率", "sharpe": -0.12, "fitness": -0.02, "turnover": 0.0693, "two_year_sharpe": 1.04, "sub_universe_sharpe": -0.11, "light": "RED", "note": "唯一 2y 亮点但 10y 整体为负, 信号不稳定"},
+    {"id": "K5", "alpha": "ZY7lLGQ1", "expr": "rank(ts_corr(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,oth455_partner_n2v_p10_q200_w1_pca_fact1_value,30))", "concept": "跨网络耦合度", "sharpe": 0.05, "fitness": 0.01, "turnover": 0.1134, "two_year_sharpe": 0.16, "sub_universe_sharpe": 0.19, "light": "RED"},
+    {"id": "K6", "alpha": "0mwQWvPq", "expr": "rank(ts_zscore(oth455_partner_n2v_p10_q200_w4_pca_fact1_value,60))", "concept": "partner 时序自归一", "sharpe": -0.26, "fitness": -0.08, "turnover": 0.0904, "two_year_sharpe": 0.05, "sub_universe_sharpe": -0.26, "light": "RED"},
+    {"id": "K7", "alpha": "np7zbVaz", "expr": "rank(add(rank(oth455_relation_roam_w3_pca_fact1_value),rank(oth455_customer_roam_w1_pca_fact2_value)))", "concept": "双网络组合", "sharpe": 0.14, "fitness": 0.03, "turnover": 0.0616, "two_year_sharpe": -1.04, "sub_universe_sharpe": -0.05, "light": "RED", "note": "2y 强负"},
+    {"id": "K8", "alpha": "E5laAJQR", "expr": "rank(ts_delta(oth455_relation_n2v_p10_q200_w3_pca_fact1_value,22))", "concept": "relation 22d 差分", "sharpe": 0.18, "fitness": 0.04, "turnover": 0.0647, "two_year_sharpe": 0.57, "sub_universe_sharpe": 0.18, "light": "RED"},
+    {"id": "K9", "alpha": "ZY7lLGa1", "expr": "rank(add(rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value),rank(oth455_relation_n2v_p10_q200_w1_pca_fact2_value)))", "concept": "双 PCA 因子组合", "sharpe": -0.01, "fitness": -0.0, "turnover": 0.0659, "two_year_sharpe": 0.12, "sub_universe_sharpe": -0.0, "light": "RED"},
+    {"id": "K10", "alpha": "e7z2JR1p", "expr": "ts_decay_linear(rank(oth455_partner_n2v_p10_q200_w2_pca_fact1_value),5)", "concept": "partner 衰减水平", "sharpe": -0.18, "fitness": -0.05, "turnover": 0.0602, "two_year_sharpe": -1.95, "sub_universe_sharpe": -0.28, "light": "RED", "note": "2y 强负"}
+  ],
+  "dead_ends": [
+    {
+      "family": "other455 network embedding PCA MATRIX",
+      "verdict": "DEAD",
+      "reason": "10 探针全灭: relation(cov 1.0)/partner/partner/customer MATRIX pca_fact*_value 的 水平/动量/均值回归/波动率/跨网络相关/自归一/组合 7 结构, 全部 Sharpe<=0.18 (门槛 1.58), 2y 多数 <0.6, K7/K10 2y 结构性强负。PCA 因子在 KOR TOP600 无横截面信号",
+      "rule": "KOR OTHER 不再重复 other455 relation/partner/customer/competitor 的 n2v/roam MATRIX pca_fact*_value 探针; 若再攻 other455 仅剩两条路: (1) GROUP cluster 字段 (vec_kmeans/cluster_5/10/20 包裹, GBR 教训) (2) 与 KOR 已验证金矿 (评级修正 ml_factor_proj / model170 short_horizon) 跨数据集混合",
+      "salvage": "GROUP cluster 字段未探 + 跨数据集混合未试"
+    }
+  ]
+}

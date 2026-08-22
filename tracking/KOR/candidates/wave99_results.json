@@ -1,0 +1,101 @@
+{
+  "wave": "wave99",
+  "dataset": "predictive_starmine",
+  "region": "KOR",
+  "universe": "TOP600",
+  "multisim_id": "1VLKOT4134D0bH0dPp6i7Mc",
+  "submitted_at": "2026-08-22",
+  "settings": "KOR/TOP600/d1/d10/SECTOR/t0.04/maxTrade ON/2014-2023",
+  "verdicts": [
+    {
+      "id": "A1",
+      "alpha": "Grl8lX7J",
+      "variant": "GBR 4腿最优迁移",
+      "sharpe": 0.32,
+      "fitness": 0.13,
+      "two_year_sharpe": 0.63,
+      "turnover": 0.0881,
+      "verdict": "RED",
+      "note": "ep_yield fy2 av_diff20 + forward_pe 反向 + fy1 水平 + fy1 diff66; GBR 1.78+ 配方 KOR 无信号"
+    },
+    {
+      "id": "A2",
+      "alpha": "ak7P7eg2",
+      "variant": "GBR 3腿",
+      "sharpe": 0.6,
+      "fitness": 0.33,
+      "two_year_sharpe": 0.85,
+      "turnover": 0.106,
+      "verdict": "RED",
+      "note": "A 组最高但仍差 0.98; value 风格 KOR 弱"
+    },
+    {
+      "id": "A3",
+      "alpha": "omqzqRkn",
+      "variant": "GBR 2腿差分",
+      "sharpe": 0.4,
+      "fitness": 0.18,
+      "two_year_sharpe": 0.94,
+      "turnover": 0.1092,
+      "verdict": "RED",
+      "note": "risk_neutralized 0.42 但全期弱"
+    },
+    {
+      "id": "A4",
+      "alpha": "O07m7R27",
+      "variant": "GBR 4腿短窗10",
+      "sharpe": 0.33,
+      "fitness": 0.14,
+      "two_year_sharpe": 0.64,
+      "turnover": 0.1035,
+      "verdict": "RED",
+      "note": "短窗无改善"
+    },
+    {
+      "id": "B1",
+      "alpha": "omqzqRkE",
+      "variant": "analyst_revisions_score_7 水平",
+      "sharpe": 0.78,
+      "fitness": 0.51,
+      "two_year_sharpe": 1.71,
+      "turnover": 0.0414,
+      "verdict": "RED_2Y_GREEN",
+      "note": "2y 1.71 过线 PASS LOW_2Y_SHARPE; 全期 sharpe 差 0.80; tvr 4.1% 极低; CLUSTER 0.65; 信号近期活跃 → wave100 Mode B 激活优化候选"
+    },
+    {
+      "id": "B2",
+      "alpha": "9qX6X822",
+      "variant": "score_21 av_diff20 慢变量",
+      "sharpe": 0.07,
+      "fitness": 0.01,
+      "two_year_sharpe": -0.52,
+      "turnover": 0.1335,
+      "verdict": "RED",
+      "note": "慢变量激活失败, 2y 转负"
+    },
+    {
+      "id": "B3",
+      "alpha": "P07l7xbW",
+      "variant": "净修正计数水平",
+      "sharpe": 0.07,
+      "fitness": 0.01,
+      "two_year_sharpe": -0.48,
+      "turnover": 0.0958,
+      "verdict": "RED",
+      "note": "修正计数无独立信号"
+    },
+    {
+      "id": "B4",
+      "alpha": "Jj7X7okl",
+      "variant": "净修正计数 5d 动量",
+      "sharpe": 0.19,
+      "fitness": 0.04,
+      "two_year_sharpe": -0.16,
+      "turnover": 0.2129,
+      "verdict": "RED",
+      "note": "动量版仍弱"
+    }
+  ],
+  "conclusion": "predictive_starmine KOR 首探: A 组 value 配方全灭 (KOR-VALUE-QUALITY 死路族一致), B 组修正评分族 B1 2y 1.71 亮点但全期不足. 有效面确认: 分析师短期修正评分 (7d) 近两年活跃, 走 wave100 Mode B 激活. 修正计数类字段判死.",
+  "next": "wave100: B1 (score_7) Mode B 激活优化 (ts_delta 短窗/近期加权/与 momentum 混合) + 评估 ai_equity_alpha / continuation_score 并行 S1"
+}

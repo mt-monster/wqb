@@ -1,0 +1,27 @@
+{
+  "wave": "wave98-R3",
+  "dataset": "chart_cnn_alpha",
+  "mode": "Mode B 字段级升级",
+  "updated": "2026-08-22",
+  "multisim": "4f9csj9pG4wfaEy4uUfN7W6",
+  "summary": "8/8 全部落地, 无一过 1.58 线 (最高 1.51). Mode B 字段升级全部回退于基线 mLjzVRXp 1.55 → chart_cnn 族空间确认耗尽",
+  "results": [
+    {"id": "S1", "alpha": "58l6pbLk", "variant": "第二腿换 img200d_quintile2 (fit1.36 历史最高)", "sharpe": 1.41, "fitness": 1.32, "two_year": 1.31, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]},
+    {"id": "S2", "alpha": "mLjz53qE", "variant": "第二腿换 cnn_confidence_score3", "sharpe": 1.41, "fitness": 1.24, "two_year": 1.43, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]},
+    {"id": "S3", "alpha": "ZY7lE5rx", "variant": "第二腿换 probability_rank5_next60d", "sharpe": 1.38, "fitness": 1.22, "two_year": 1.56, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]},
+    {"id": "S4", "alpha": "0mwQplzp", "variant": "核心字段 50d→60d", "sharpe": 1.51, "fitness": 1.35, "two_year": 1.73, "fails": ["LOW_SHARPE"]},
+    {"id": "S5", "alpha": "j2jw6E1O", "variant": "第二腿换 img200d_quintile4", "sharpe": 1.25, "fitness": 1.12, "two_year": 1.22, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]},
+    {"id": "S6", "alpha": "mLjz53ZE", "variant": "双第二腿 (img60d+img200d_quintile2, 扁平化)", "sharpe": 1.51, "fitness": 1.45, "two_year": 1.57, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]},
+    {"id": "S7", "alpha": "9qX6pvRo", "variant": "第二腿换 img60d_confscore3", "sharpe": 1.49, "fitness": 1.33, "two_year": 1.69, "fails": ["LOW_SHARPE"]},
+    {"id": "S8", "alpha": "1Ywmp9gz", "variant": "主腿 0.7/0.3 + img200d_quintile2, 权重 0.9/0.1", "sharpe": 1.45, "fitness": 1.36, "two_year": 1.41, "fails": ["LOW_SHARPE", "LOW_2Y_SHARPE"]}
+  ],
+  "findings": [
+    "img200d_quintile2 单独融合 (S1) 1.41 远差于 R2 基线 1.55 → 该字段在 0.95 权重下稀释主腿",
+    "核心字段 50d→60d (S4) 2y 1.73 最好但 sharpe 1.51 仍不足",
+    "双第二腿 (S6) fitness 1.45 最高但 sharpe/2y 双 FAIL 差 0.01-0.07",
+    "S7 (confscore3) 2y 1.69 PASS 但 sharpe 1.49 FAIL",
+    "所有第二腿替换均降低 sharpe → 0.95/0.05 融合已达结构最优"
+  ],
+  "conclusion": "chart_cnn_alpha 空间耗尽: Mode A (18 条) + Mode B (8 条) 共 26 条变体, 天花板 1.55 (mLjzVRXp), 全线 LOW_SHARPE FAIL (差 0.03-0.33). 参数与字段双维度收敛, 判死回写 registry",
+  "next": "转向新数据集 (候选: continuation_score / analyst_earnings_ibes / 未挖 tier1)"
+}

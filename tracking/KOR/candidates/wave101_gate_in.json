@@ -1,0 +1,36 @@
+{
+ "expressions": [
+  {
+   "code": "rank(ts_zscore(vec_avg(alpha_excess_return_forecast),60))",
+   "note": "H1: AI 超额收益预测 60d 标准化 (uc0)"
+  },
+  {
+   "code": "rank(ts_delta(vec_avg(analyst_forecast_change_score),20))",
+   "note": "H2: 分析师预测变化评分 20d 差分 (uc0)"
+  },
+  {
+   "code": "rank(ts_zscore(vec_avg(analyst_earnings_revision_intensity),60))",
+   "note": "H3: 盈余修正强度 60d 标准化 (uc2)"
+  },
+  {
+   "code": "rank(ts_delta(vec_avg(analyst_sentiment_shift_score_2),20))",
+   "note": "H4: 分析师情绪转移 20d 差分 (uc0)"
+  },
+  {
+   "code": "rank(ts_zscore(vec_avg(buzz_trend_metric_4),60))",
+   "note": "H5: buzz 趋势 60d 标准化 (uc1)"
+  },
+  {
+   "code": "rank(ts_delta(vec_avg(buzz_intensity_score_6),20))",
+   "note": "H6: buzz 强度 20d 差分 (uc0)"
+  },
+  {
+   "code": "rank(ts_zscore(vec_avg(accruals_contribution_score_4),60))",
+   "note": "H7: 应计贡献评分 60d 标准化 (uc0)"
+  },
+  {
+   "code": "rank(ts_zscore(vec_avg(earnings_surprise_magnitude_score),60))",
+   "note": "H8: 盈余惊喜幅度 60d 标准化 (uc0)"
+  }
+ ]
+}

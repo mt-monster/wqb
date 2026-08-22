@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_delta(sharesout, 21))", "note": "sharesout 21d 变化（增发/回购信号）"},
+  {"id": 2, "expr": "rank(-ts_zscore(sharesout, 63))", "note": "sharesout 63d zscore 反向（回购=股本减少=正信号）"},
+  {"id": 3, "expr": "rank(ts_delta(dividend, 63))", "note": "dividend 63d 变化（分红政策变化）"},
+  {"id": 4, "expr": "rank(dividend / close)", "note": "股息率（价值/质量）"},
+  {"id": 5, "expr": "rank(ts_zscore(dividend / close, 126))", "note": "股息率 126d zscore（股息率异常）"},
+  {"id": 6, "expr": "rank(ts_sum(adjfactor, 252))", "note": "adjfactor 252d 累积（公司行动强度）"},
+  {"id": 7, "expr": "rank(ts_delta(adjfactor, 63))", "note": "adjfactor 63d 变化（近期公司行动）"},
+  {"id": 8, "expr": "rank(days_from_last_change(split))", "note": "距上次 split 天数（拆分事件新鲜度）"},
+  {"id": 9, "expr": "rank(ts_delta(sharesout, 63)) + rank(ts_delta(dividend, 63))", "note": "股本变化+分红变化双轴"},
+  {"id": 10, "expr": "rank(ts_zscore(sharesout, 126)) + rank(dividend / close)", "note": "股本 zscore+股息率双轴"}
+]

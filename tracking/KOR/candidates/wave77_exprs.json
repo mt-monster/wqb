@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "trend2+trend6 双强相加"},
+  {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_0, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "trend0+trend6 相加"},
+  {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_4, 20)))", "note": "trend2+trend4 相加"},
+  {"id": 4, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20) + ts_decay_linear(normalized_trend_indicator_0, 20) + ts_decay_linear(normalized_trend_indicator_6, 20))", "note": "三因子直接相加对照"},
+  {"id": 5, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 10)) + rank(ts_decay_linear(normalized_trend_indicator_0, 20)))", "note": "跨窗口相加 10d+20d"},
+  {"id": 6, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 30)) + rank(ts_decay_linear(normalized_trend_indicator_0, 20)))", "note": "跨窗口相加 30d+20d"},
+  {"id": 7, "expr": "rank(rank(group_zscore(ts_decay_linear(normalized_trend_indicator_2, 20), industry)) + rank(ts_decay_linear(normalized_trend_indicator_0, 20)))", "note": "trend2行业中性+trend0 相加"},
+  {"id": 8, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_0, 20)), 20))", "note": "rank相加后再衰减20d"},
+  {"id": 9, "expr": "rank(ts_zscore(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_0, 20)), 60))", "note": "rank相加后 zscore60d"},
+  {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 40)))", "note": "trend2 20d + trend6 40d 跨窗口"}
+]

@@ -1,0 +1,33 @@
+{
+  "wave": "wave98-R1/R2",
+  "dataset": "chart_cnn_alpha",
+  "mode": "Mode A 参数收敛",
+  "updated": "2026-08-22",
+  "summary": "两轮 18 条参数变体全落地, 全家族唯一 FAIL=LOW_SHARPE(1.55 vs 1.58), 参数空间已收敛",
+  "round1_MS-A": {
+    "note": "decay10/SECTOR/trunc0.06/maxTrade ON",
+    "best": {"id": "pwjz69mb", "variant": "0.8/0.2 权重", "sharpe": 1.53, "fitness": 1.4, "two_year": 1.76}
+  },
+  "round1_MS-B~F": {
+    "note": "decay12/14, INDUSTRY/SUBINDUSTRY, trunc0.04",
+    "findings": [
+      "权重 0.8→0.9: sharpe 1.53→1.54 基本不动, 2y 1.76→1.83 升",
+      "INDUSTRY 中性化 1.43/1.40 更差 → 淘汰",
+      "SUBINDUSTRY 1.21-1.22 + fit0.93 更差 → 淘汰",
+      "trunc 0.04 略优于 0.06 (88l6QO7X 1.54/2y1.78)"
+    ],
+    "best": {"id": "88l6QO7X", "variant": "0.85/0.15, trunc0.04", "sharpe": 1.54, "fitness": 1.4, "two_year": 1.78}
+  },
+  "round2_MS-R1~R4": {
+    "note": "权重 0.95/0.05, decay8-14, trunc 0.04/0.06, 主腿 0.7/0.3 与 0.5/0.5",
+    "findings": [
+      "0.95/0.05 最优: mLjzVRXp 1.55/1.40/2y1.81 (decay10/trunc0.04)",
+      "trunc 0.04 与 0.06 结果完全一致 (xAjzdq2w 同值) → 无差异",
+      "主腿 0.5/0.5 (Jj7XvEde) 2y 最高 1.87 但 sharpe 1.53",
+      "decay 12/14 2y 更高 (1.83-1.85) 但 sharpe 1.51-1.54"
+    ],
+    "best": {"id": "mLjzVRXp", "variant": "0.95/0.05, d10, t0.04", "sharpe": 1.55, "fitness": 1.4, "two_year": 1.81}
+  },
+  "conclusion": "chart_cnn 族参数天花板 ≈1.55 (差 0.03), 权重 0.95 封顶/decay10 最优/trunc 无差异/SECTOR 最优. 参数空间耗尽, 转 Mode B 字段级升级 (wave98-R3, 8 条在飞)",
+  "next": "wave98-R3: 第二腿换 img200d_quintile2 / cnn_confidence_score3 / probability_rank5_next60d / 核心字段 60d / 双第二腿, 冻结 0.95/0.05 参数"
+}

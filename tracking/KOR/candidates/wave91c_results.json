@@ -1,0 +1,30 @@
+{
+  "wave": 91,
+  "tag": "wave91c",
+  "date": "2026-08-22",
+  "multisim": {"id": "4D9UH4c0V4si9YOQkkxHuM1", "status": "10/10 COMPLETE"},
+  "dataset": "ml_factor_proj × model170 跨数据集混合",
+  "baseline": "wave91 E3 rank(change_6m_rating_revision) 0.89/0.49/2y 2.14 + wave90 D8 model170 long_term 1.79/0.99/2y 1.24",
+  "focus": "跨数据集混合: 评级修正(2y 金矿) × model170 高 sharpe 族, 权重格扫描",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "C5", "alpha": "78jQ29rL", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))", "sharpe": 1.91, "fitness": 1.24, "tvr": 0.2079, "two_year": 2.43, "sub": 1.78, "note": "★评级1+SH2: sharpe 最高 1.91, 三闸全过, 但与 C6 互相关 0.76>0.7 未提交"},
+    {"id": "C6", "alpha": "88lr21xo", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile1_5d_pred)))", "sharpe": 1.77, "fitness": 1.4, "tvr": 0.125, "two_year": 2.52, "sub": 1.76, "note": "★评级2+SH1: 2y 2.52 最高+fitness 1.40 最高, PROD 0.568 最低 → 首选提交 ✅ ACTIVE"},
+    {"id": "C10", "alpha": "A1lb2KpR", "expr": "rank(add(rank(change_6m_rating_revision), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred))))", "sharpe": 1.83, "fitness": 1.14, "tvr": 0.2178, "two_year": 2.34, "sub": 1.69, "note": "★评级1+SH3: 三闸全过, 与 C6 互相关 0.67<0.7 → 提交 ✅ ACTIVE"},
+    {"id": "C2", "alpha": "np7oXVXw", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(long_term_quantile1_120d_pred)))", "sharpe": 1.17, "fitness": 0.75, "tvr": 0.1172, "two_year": 1.28, "sub": 1.22, "note": "评级2+LT1: LT 混合稀释, 2y 1.28 不足"},
+    {"id": "C4", "alpha": "58l92W1N", "expr": "rank(add(multiply(3, rank(change_6m_rating_revision)), rank(long_term_quantile1_120d_pred)))", "sharpe": 1.21, "fitness": 0.79, "tvr": 0.1008, "two_year": 1.34, "sub": 1.28, "note": "评级3+LT1: LT 混合稀释, 2y 1.34 不足"},
+    {"id": "C8", "alpha": "vRj9og7w", "expr": "rank(multiply(rank(change_6m_rating_revision), rank(long_term_quantile1_120d_pred)))", "sharpe": 1.1, "fitness": 0.6, "tvr": 0.1538, "two_year": 1.28, "sub": 1.19, "note": "乘法共振: sharpe 1.1 弱于加法混合"},
+    {"id": "C7", "alpha": "2rlR2dow", "expr": "rank(add(rank(change_6m_rating_revision), add(multiply(2, rank(long_term_quantile1_120d_pred)), rank(short_horizon_hedge3_quantile1_5d_pred))))", "sharpe": 1.27, "fitness": 0.66, "tvr": 0.1977, "two_year": 0.92, "sub": 1.14, "note": "三路混合: LT 拖累 2y"},
+    {"id": "C1", "alpha": "RR7YvWPb", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(long_term_quantile1_120d_pred))))", "sharpe": 0.8, "fitness": 0.34, "tvr": 0.1814, "two_year": 0.57, "sub": 0.76, "note": "评级1+LT2: LT 主导稀释 2y 至 0.57"},
+    {"id": "C9", "alpha": "Wj7dx8rG", "expr": "rank(add(rank(change_6m_rating_revision), add(rank(change_six_month_long_term_growth_estimate), multiply(2, rank(long_term_quantile1_120d_pred)))))", "sharpe": 0.71, "fitness": 0.31, "tvr": 0.1648, "two_year": 0.94, "sub": 0.74, "note": "B8 组合+LT: LT 稀释 2y 2.27→0.94"},
+    {"id": "C3", "alpha": "xAjQEgEb", "expr": "rank(add(rank(change_6m_rating_revision), multiply(3, rank(long_term_quantile1_120d_pred))))", "sharpe": 0.66, "fitness": 0.25, "tvr": 0.1888, "two_year": 0.31, "sub": 0.62, "note": "评级1+LT3: LT 主导, 全指标最差"}
+  ],
+  "submissions": [
+    {"alpha": "88lr21xo", "status": "ACTIVE", "date_submitted": "2026-08-22T05:22:12-04:00", "verdict": "HTTP 200 IS checks passed (SELF 0.3571/PROD 0.568/REGULAR_SUBMISSION 0/4)", "note": "首个 RA! 2y 2.52 + fitness 1.40 全场最优"},
+    {"alpha": "A1lb2KpR", "status": "ACTIVE", "date_submitted": "2026-08-22T05:25:27-04:00", "verdict": "HTTP 200 IS checks passed (SELF 0.6709/PROD 0.6743/REGULAR_SUBMISSION 1/4)", "note": "第二 RA"},
+    {"alpha": "78jQ29rL", "status": "NOT_SUBMITTED", "date_submitted": null, "verdict": "与已提交 88lr21xo 互相关 0.7604 > 0.7, SELF_CORRELATION 会 FAIL", "note": "同族保留, 未提交"}
+  ],
+  "key_insight": "★★★ 跨数据集混合方法论突破: 评级修正(ml_factor_proj 慢变量, 2y 2.14) × short_horizon_hedge3_quantile1_5d_pred(model170 短周期对冲, sharpe 1.57) 组合三闸全过! 关键规律: 与【短周期低相关信号】SH 混合同时拉高 sharpe(0.89→1.77-1.91)+2y(2.14→2.34-2.52)+fitness(0.49→1.14-1.40); 与【同周期慢信号】LT 混合全灭(sharpe 0.66-1.27, 2y 0.31-1.34)。信号正交性是关键: 评级修正(基本面分析师行为) × SH(ML 短周期价格模式) 相关性低且互补。C6(评级2+SH1) 2y 2.52 全场纪录, PROD 0.568 最低; C5(评级1+SH2) sharpe 1.91 最高但与 C6 相关 0.76 未提交; C10(评级1+SH3) 0.67 互相关可提交。两 RA 落库 ACTIVE, KOR 战役 2026-08-22 实现从 0 到 2 的突破",
+  "verdict": "✅ 2 RA 提交成功 (88lr21xo + A1lb2KpR 均 ACTIVE)。wave91 全链闭环: 首探→发现 2y 金矿→同族穷尽→跨族混合→双 RA 落地",
+  "submit_gate": {"best_sharpe": 1.91, "required": 1.58, "best_fitness": 1.4, "fitness_required": 1.0, "best_2y": 2.52, "two_year_required": 1.58, "submitted": 2, "active": ["88lr21xo", "A1lb2KpR"]}
+}

@@ -1,0 +1,17 @@
+{
+  "wave": 97,
+  "tag": "wave97",
+  "created": "2026-08-22",
+  "baseline": "KOR 4 ACTIVE (88lr21xo/A1lb2KpR 评级修正×SH, WjAxxZVk SH×seasonal, e73Rw8qg EPS×pretaxdown); dead_ends 10 族已排除 (含 wave96 判死的 price_signal_dl/ai_factor_transfer)",
+  "focus": "model219 (Canadian Equity Quant Models, 1012 字段全 MATRIX, 976 零竞争, KOR/D1/MODEL 金字塔 1.7x) 盈余质量/前瞻估值族首波: 避开评级修正×短周期饱和族(PROD 相关风险), 主打 surp 盈余惊喜变化/fwdroe 前瞻ROE/fcfp 前瞻估值/盈余质量-增长协同",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "note_tvr": "基本面慢信号 TVR 风险: 水平字段全配 ts_delta(63) 扰动, chg/pctchg 族自带变化, decay4 压 tvr",
+  "expressions": [
+    {"id": "M1", "expr": "rank(ts_delta(mdl219_q_dlr_1_surp, 63))", "note": "盈余惊喜 63d 变化 (事件驱动, 与评级修正族差异化)"},
+    {"id": "M2", "expr": "rank(ts_delta(mdl219_q_dlr_1_fc_fwdroe, 63))", "note": "前瞻 ROE 63d 变化 (forward quality 改善)"},
+    {"id": "M3", "expr": "rank(add(multiply(2, rank(mdl219_q_dlr_1_pctchgeps)), rank(mdl219_q_dlr_1_yoychgroa)))", "note": "EPS 增长×ROA 变化双信号 (88lr21xo 权重配方)"},
+    {"id": "M4", "expr": "rank(ts_zscore(ts_delta(mdl219_q_dlr_1_fc_fcfp, 63), 120))", "note": "前瞻 FCF/价格 63d 变化 120d zscore 稳定性过滤"},
+    {"id": "M5", "expr": "rank(ts_corr(mdl219_q_dlr_1_ocfmargin, mdl219_q_dlr_1_pctchgeps, 252))", "note": "现金流质量×盈利增长 252d 协同 (注入1, 覆盖 4+ 财报期)"},
+    {"id": "M6", "expr": "rank(ts_corr(mdl219_q_dlr_1_indrelcroe_, mdl219_q_dlr_1_fc_fwdroe, 252))", "note": "行业调整 ROE×前瞻 ROE 252d 协同 (注入2)"}
+  ]
+}

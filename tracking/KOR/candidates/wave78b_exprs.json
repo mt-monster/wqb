@@ -1,0 +1,30 @@
+{
+  "wave": 78,
+  "tag": "wave78b",
+  "created": "2026-08-21",
+  "fix_reason": "wave78 连坐失败: #1 vec_avg(rank,rank,rank) ERROR 'Operator vec_avg expects only event inputs', 其余 9 个 CANCELLED。本批剔除 vec_avg, 全用已验证结构(rank相加/再衰减/group_zscore 中性化)。",
+  "baseline": "Grl0jOEo rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20))) sharpe 0.80",
+  "settings": {
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF"
+  },
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "窗口扫描 15d+20d"},
+    {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 25)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "窗口扫描 25d+20d"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 30)))", "note": "窗口扫描 20d+30d"},
+    {"id": 4, "expr": "rank(rank(group_zscore(ts_decay_linear(normalized_trend_indicator_2, 20), industry)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "trend2 行业中性 + trend6"},
+    {"id": 5, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry)))", "note": "trend2 + trend6 行业中性"},
+    {"id": 6, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)), 10))", "note": "Grl0jOEo 再衰减 10d"},
+    {"id": 7, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)), 20))", "note": "Grl0jOEo 再衰减 20d"},
+    {"id": 8, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)), 30))", "note": "Grl0jOEo 再衰减 30d"},
+    {"id": 9, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)), 60))", "note": "Grl0jOEo 再衰减 60d"},
+    {"id": 10, "expr": "rank(group_zscore(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)), industry))", "note": "相加后整体行业中性(新结构)"}
+  ]
+}

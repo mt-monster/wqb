@@ -1,0 +1,27 @@
+{
+  "wave": 89,
+  "tag": "wave89",
+  "created": "2026-08-22",
+  "baseline": "3qlxVYqX rank(add(rank(long_term_quantile1_120d_pred), rank(short_horizon_hedge3_quantile1_5d_pred))) sharpe 1.23 fitness 0.60 TVR 0.2196 sub 1.02 (wave88 A8 全场最佳 NEAR)",
+  "focus": "hedge5 明星字段深化: 权重扫描(2x/3x) + A3×hedge5 交叉 + 新白空间 hedge3-60d/hedge-q2-60d + q5 反转 + 5d regime/seasonal/confidence",
+  "direction": "wave88 证实 hedge5(short_horizon_hedge3_quantile1_5d_pred) 是明星字段(+34%)。本波: ①hedge5 权重放大(2x/3x) ②A3 short2x 与 hedge5 交叉(信息双短端) ③新白空间 long_horizon_hedge3_60d 与 long_horizon_hedge_q2_60d(alphaCount 0-1 未测) ④q5 反转(hedge3 q5 5d) ⑤5d 短周期 seasonal/regime4 替换(20d 版已证无益, 试 5d) ⑥confidence 置信度版。全部结构闸 PASS 预期族, 冲 sharpe≥1.58",
+  "batches": [
+    {
+      "batch": "A",
+      "note": "wave89 hedge5 深化批: 权重/交叉/新白空间/q5反转/5d变体, 冲 sharpe≥1.58",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "C1", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "hedge5 权重 2x (基线 1.23 结构, 放大短端对冲贡献)"},
+        {"id": "C2", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "hedge5 权重 3x (权重扫描上界)"},
+        {"id": "C3", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(multiply(2, rank(short_term_quantile1_20d_pred)), rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "A3×hedge5 交叉: short20 2x + hedge5 (双短端信息)"},
+        {"id": "C4", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(rank(short_term_quantile1_20d_pred), rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "三路等权: long120+short20+hedge5 (A8+short20 补 2y)"},
+        {"id": "C5", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(long_horizon_hedge3_quantile1_60d_pred)))", "note": "新白空间: hedge3-60d (alphaCount 1 未测, 120d 版已证冗余, 60d 或不同)"},
+        {"id": "C6", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(long_horizon_hedge_quantile2_60d_pred)))", "note": "新白空间: hedge 基本款 q2-60d (alphaCount 0 纯白)"},
+        {"id": "C7", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(-1, rank(short_horizon_hedge3_quantile5_5d_pred))))", "note": "q5 反转: 加 -1×hedge3 q5-5d (低分位坏信号反转, sub 算子不存在改用 multiply(-1))"}
+        {"id": "C8", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_seasonal_quantile1_5d_pred)))", "note": "seasonal 5d 替换 (20d 版 0.96 微增, 试 5d 版)"},
+        {"id": "C9", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_regime4_quantile1_5d_pred)))", "note": "regime4 5d 替换 (20d 版 0.91 持平, 试 5d 版)"},
+        {"id": "C10", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_horizon_hedge3_quantile5_confidence_5d_pred)))", "note": "confidence 版: hedge3 q5 置信度 (alphaCount 0 纯白)"}
+      ]
+    }
+  ]
+}

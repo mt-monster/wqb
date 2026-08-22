@@ -1,0 +1,23 @@
+{
+  "wave": 80,
+  "tag": "wave80",
+  "date": "2026-08-21",
+  "multisim": "2vhGLw1Fw4Ij9mZe2q52ZgX",
+  "status": "10/10 COMPLETE",
+  "baselines": ["Xg7PjOL0 trend2+trend6 subindustry 1.21/0.77", "qMjvKwzZ trend6 10d窗口 1.19/0.75"],
+  "results": [
+    {"id": "j2jW2gJW", "expr": "rank(rank(decay(t2,20)) + rank(gz(decay(t6,10),subindustry)))", "sharpe": 1.22, "fitness": 0.78, "tvr": 0.1078, "two_year": 0.88, "sub": 1.11, "ppa": "PASS", "note": "交叉: subindustry+10d"},
+    {"id": "xAj9Anob", "expr": "rank(rank(decay(t2,20)) + rank(gz(decay(t6,15),subindustry)))", "sharpe": 1.2, "fitness": 0.76, "tvr": 0.1016, "two_year": 0.77, "sub": 1.05, "ppa": "PASS", "note": "15d subindustry"},
+    {"id": "6Xl3XEQL", "expr": "rank(rank(decay(t2,15)) + rank(gz(decay(t6,10),subindustry)))", "sharpe": 1.23, "fitness": 0.79, "tvr": 0.1096, "two_year": 0.88, "sub": 1.1, "ppa": "PASS", "note": "trend2 15d + trend6 10d subindustry = 新最佳"},
+    {"id": "kqjbqK6l", "expr": "rank(rank(decay(t2,10)) + rank(gz(decay(t6,10),industry)))", "sharpe": 1.2, "fitness": 0.76, "tvr": 0.1069, "two_year": 1.01, "sub": 1.1, "ppa": "PASS", "note": "trend2 10d + trend6 10d industry, 2y 全场最高"},
+    {"id": "mLjJLXWX", "expr": "rank(rank(decay(t2,30)) + rank(gz(decay(t6,10),industry)))", "sharpe": 1.14, "fitness": 0.7, "tvr": 0.0992, "two_year": 0.99, "sub": 1.13, "ppa": "PASS", "note": "trend2 30d"},
+    {"id": "QP7qPQpW", "expr": "rank(rank(gz(decay(t2,20),subindustry)) + rank(gz(decay(t6,10),subindustry)))", "sharpe": 0.89, "fitness": 0.48, "tvr": 0.1116, "two_year": 0.21, "sub": 0.78, "ppa": "FAIL", "note": "双 subindustry 中性 = trend2 不应中性化"},
+    {"id": "rKjEKWa1", "expr": "rank(ts_decay_linear(rank(decay(t2,20)) + rank(gz(decay(t6,10),subindustry)),10))", "sharpe": 1.14, "fitness": 0.7, "tvr": 0.0949, "two_year": 0.69, "sub": 1.07, "ppa": "PASS", "note": "交叉+再衰减 10d 伤害信号"},
+    {"id": "MP7qPxv8", "expr": "rank(gz(rank(decay(t2,20)) + rank(gz(decay(t6,10),subindustry)), industry))", "sharpe": 1.08, "fitness": 0.64, "tvr": 0.1113, "two_year": 0.41, "sub": 0.95, "ppa": "PASS", "note": "交叉+整体行业中性 2y 弱"},
+    {"id": "A1lY13Xe", "expr": "rank(rank(decay(t2,20)) + rank(gz(decay(t6,5),subindustry)))", "sharpe": 1.19, "fitness": 0.75, "tvr": 0.1178, "two_year": 0.89, "sub": 1.13, "ppa": "PASS", "note": "5d 超短窗口 TVR 微升"},
+    {"id": "88l78L0o", "expr": "rank(rank(decay(t0,20)) + rank(gz(decay(t6,10),subindustry)))", "sharpe": 0.97, "fitness": 0.54, "tvr": 0.1121, "two_year": 0.62, "sub": 0.9, "ppa": "FAIL", "note": "trend0 替代 trend2 第三次确认劣化"}
+  ],
+  "key_insight": "trend6 10d 窗口 + subindustry 是稳定最优象限, 但家族进入平台期: 1.21→1.23 微增(+0.02)。trend2 窗口 15d(1.23) > 20d(1.22) > 10d(1.20) > 30d(1.14), 15d 是局部最优点。trend2 不可中性化(双 subindustry 0.89 FAIL), 不可替换(trend0 0.97 第三次劣化)。再衰减/整体中性继续伤害信号(1.14/1.08)。kqjbqK6l(industry+10d) 2y 1.01 全场最高, 是 2y 稳健性最佳变体。8/10 PPA PASS。CLUSTER_TEST 0.44-0.68 全族聚类偏高, 提交时需查 SELF_CORR。",
+  "verdict": "无提交(sharpe 1.23 < 1.58), 6Xl3XEQL(trend2 15d+trend6 10d subindustry) 新基线进入 wave81, 需结构性升级突破平台期",
+  "submit_gate": {"best_sharpe": 1.23, "required": 1.58, "submitted": false}
+}

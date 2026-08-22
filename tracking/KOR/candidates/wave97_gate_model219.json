@@ -1,0 +1,10 @@
+{
+ "expressions": [
+  "rank(ts_delta(mdl219_q_dlr_1_surp, 63))",
+  "rank(ts_delta(mdl219_q_dlr_1_fc_fwdroe, 63))",
+  "rank(add(multiply(2, rank(mdl219_q_dlr_1_pctchgeps)), rank(mdl219_q_dlr_1_yoychgroa)))",
+  "rank(ts_zscore(ts_delta(mdl219_q_dlr_1_fc_fcfp, 63), 120))",
+  "rank(ts_corr(mdl219_q_dlr_1_ocfmargin, mdl219_q_dlr_1_pctchgeps, 252))",
+  "rank(ts_corr(mdl219_q_dlr_1_indrelcroe_, mdl219_q_dlr_1_fc_fwdroe, 252))"
+ ]
+}

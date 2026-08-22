@@ -1,0 +1,23 @@
+{
+  "wave": 84,
+  "tag": "wave84",
+  "date": "2026-08-22",
+  "multisim": "dVYEKeks5etb75fdCRsxKU",
+  "status": "10/10 COMPLETE",
+  "baseline": "Jj7mdmJl trend2 12d + trend6 8d ×1.5x subindustry 1.29/0.83",
+  "results": [
+    {"id": "Xg7LKO21", "expr": "rank(rank(decay(t2,12)) + multiply(1.3, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.83, "tvr": 0.116, "two_year": 0.76, "sub": 1.12, "invest": 1.35, "cluster": 0.66, "ppa": "PASS", "note": "1.3x: sharpe 微降但 2y 0.76 全场最高(权重↔2y trade-off)"},
+    {"id": "O07k92bd", "expr": "rank(rank(decay(t2,12)) + multiply(1.7, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.83, "tvr": 0.1174, "two_year": 0.61, "sub": 1.1, "invest": 1.38, "cluster": 0.67, "ppa": "PASS", "note": "1.7x 并列最佳 1.29/0.83"},
+    {"id": "kqjXKYnK", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,10),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1127, "two_year": 0.66, "sub": 1.06, "invest": 1.33, "cluster": 0.71, "ppa": "PASS", "note": "1.5x + trend6 10d: 8d 仍最优"},
+    {"id": "d5jmQPnv", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,12),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1093, "two_year": 0.65, "sub": 1.04, "invest": 1.34, "cluster": 0.73, "ppa": "PASS", "note": "1.5x + trend6 12d"},
+    {"id": "ZY7xo1rx", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,6),sub))))", "sharpe": 1.26, "fitness": 0.8, "tvr": 0.1218, "two_year": 0.67, "sub": 1.09, "invest": 1.36, "cluster": 0.61, "ppa": "PASS", "note": "1.5x + trend6 6d: 6d 边界仍低于 8d"},
+    {"id": "wpj1evL2", "expr": "rank(rank(decay(t2,15)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1158, "two_year": 0.71, "sub": 1.12, "invest": 1.36, "cluster": 0.66, "ppa": "PASS", "note": "1.5x + trend2 15d: 平台区"},
+    {"id": "rKjLWnWE", "expr": "rank(rank(decay(t2,18)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1151, "two_year": 0.7, "sub": 1.12, "invest": 1.35, "cluster": 0.65, "ppa": "PASS", "note": "1.5x + trend2 18d: 平台区"},
+    {"id": "kqjXKYK8", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),industry))))", "sharpe": 1.25, "fitness": 0.79, "tvr": 0.1098, "two_year": 0.83, "sub": 1.13, "invest": 1.25, "cluster": 0.64, "ppa": "PASS", "note": "industry×1.5x: sharpe 降 0.04 但 2y 0.83 全场最高, sub 1.13 最高"},
+    {"id": "mLjAXlXE", "expr": "multiply(0.5, rank(decay(t2,12))) + multiply(1.5, rank(gz(decay(t6,8),sub)))", "sharpe": 1.17, "fitness": 0.72, "tvr": 0.1199, "two_year": 0.3, "sub": 0.95, "invest": 1.3, "cluster": 0.56, "ppa": "PASS", "note": "ratio 3:1 失败: 缺外层 rank(与去外层 rank 1.18 一致), ratio 非主因"},
+    {"id": "1YwLg276", "expr": "rank(rank(decay(t2,10)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.83, "tvr": 0.1176, "two_year": 0.66, "sub": 1.11, "invest": 1.37, "cluster": 0.68, "ppa": "PASS", "note": "1.5x + trend2 10d 并列最佳 1.29/0.83"}
+  ],
+  "key_insight": "参数层全面收敛到 1.29 平台: 权重 1.3-1.7x 平台(1.28-1.29), 2y 与权重严格单调(1.3x=0.76 > 1.5x=0.68 > 1.7x=0.61 > 2x=0.52); trend2 窗口 10-18d 全平台(1.28-1.29); trend6 8d 确认最优(6d=1.26, 10d=1.27, 12d=1.27 均更低)。industry×1.5x 组合 kqjXKYK8: sharpe 1.25 但 2y 0.83+sub 1.13 全场最高——2y 优化型最优解。ratio 3:1(缺外层 rank) 1.17 与去外层 rank 1.18 一致, 确认外层 rank 是结构必需。连续 2 波无 sharpe 提升(1.29), 参数层(权重×窗口×中性化×结构)已穷尽, 需想法层升级: (a) decay 设置扫描(2/6/8, 与结构正交的未探索自由度) (b) model25 数据集组合 (c) 其他 trend 字段",
+  "verdict": "无提交(sharpe 1.29 < 1.58), 参数层穷尽。wave85 转向 decay 设置扫描(设置级, 需独立 multisim 批)",
+  "submit_gate": {"best_sharpe": 1.29, "required": 1.58, "submitted": false}
+}

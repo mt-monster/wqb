@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(mdl25_22v)", "note": "Raw Earnings Quality (73 users/1001 alphas, cov 0.97)"},
+  {"id": 2, "expr": "rank(mdl25_history_31v)", "note": "Cash Flow Component Current (188 users/2914 alphas, cov 0.97)"},
+  {"id": 3, "expr": "rank(mdl25_61v)", "note": "Earnings Quality by Operating Efficiency (88 users/1336 alphas, cov 0.97)"},
+  {"id": 4, "expr": "rank(mdl25_6v)", "note": "Earnings Quality Region Rank (71 users/838 alphas, cov 0.97)"},
+  {"id": 5, "expr": "rank(mdl25_34v)", "note": "Diluted EPS Continuing Ops Last Qtr (119 users/2295 alphas, cov 0.86)"},
+  {"id": 6, "expr": "rank(mdl25_history_11v)", "note": "Earnings Quality Region Rank Current (123 users/2606 alphas, cov 0.97)"},
+  {"id": 7, "expr": "rank(mdl25_21v)", "note": "Earnings Quality by Cash Flow (71 users/738 alphas, cov 0.96)"},
+  {"id": 8, "expr": "rank(mdl25_22v) * rank(mdl25_history_31v)", "note": "Raw EQ × Cash Flow Component (双因子确认)"},
+  {"id": 9, "expr": "rank(mdl25_61v) * rank(mdl25_6v)", "note": "Op Efficiency × Region Rank (效率+区域排名)"},
+  {"id": 10, "expr": "rank(ts_delta(mdl25_22v, 5))", "note": "Raw EQ 5d 变化（盈利质量动量）"}
+]

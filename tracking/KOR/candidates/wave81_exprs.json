@@ -1,0 +1,20 @@
+{
+  "wave": 81,
+  "tag": "wave81",
+  "created": "2026-08-21",
+  "baseline": "6Xl3XEQL rank(rank(ts_decay_linear(normalized_trend_indicator_2,15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6,10), subindustry))) sharpe 1.23 fitness 0.79",
+  "focus": "结构性升级突破平台期: 平滑算子替换(ts_mean/ts_zscore) + 第三因子叠加 + trend6 双窗口 + 权重倾斜 + 窗口精扫(8/12/18d)",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_mean(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend2 ts_mean 平滑替换 decay"},
+    {"id": 2, "expr": "rank(rank(ts_zscore(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend2 ts_zscore 平滑替换"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_mean(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend6 ts_mean 平滑"},
+    {"id": 4, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)) + rank(ts_delta(normalized_trend_indicator_6, 5)))", "note": "三因子: + trend6 5d 变化"},
+    {"id": 5, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend2 12d 精扫"},
+    {"id": 6, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 18)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend2 18d 精扫"},
+    {"id": 7, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry)))", "note": "trend6 8d 精扫"},
+    {"id": 8, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 12), subindustry)))", "note": "trend6 12d 精扫"},
+    {"id": 9, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "trend6 权重 2x 倾斜"},
+    {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)) + rank(ts_decay_linear(normalized_trend_indicator_6, 20)))", "note": "trend6 双窗口 10d+20d"}
+  ]
+}

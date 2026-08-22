@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(vec_avg(global_percentile_acquisition_likelihood))", "note": "全球收购目标概率（vec_avg 聚合 EVENT 字段）"},
+  {"id": 2, "expr": "rank(vec_avg(industry_percentile_acquisition_likelihood))", "note": "行业内收购目标概率"},
+  {"id": 3, "expr": "rank(vec_avg(region_percentile_acquisition_likelihood))", "note": "区域内收购目标概率"},
+  {"id": 4, "expr": "rank(vec_avg(global_text_factor_percentile_rank))", "note": "NLP 新闻文本因子"},
+  {"id": 5, "expr": "rank(vec_avg(global_percentile_acquisition_likelihood)) * rank(vec_avg(global_text_factor_percentile_rank))", "note": "收购概率 × 文本因子（双重确认）"},
+  {"id": 6, "expr": "rank(vec_avg(region_percentile_acquisition_likelihood)) * rank(vec_avg(region_fundamental_factor_percentile_rank))", "note": "区域收购概率 × 区域基本面"},
+  {"id": 7, "expr": "rank(vec_avg(latest_implied_valuation_price) / vec_avg(prior_close_price))", "note": "model170 隐含估值/市价（隐含溢价）"},
+  {"id": 8, "expr": "rank(vec_avg(recent_earnings_momentum_score))", "note": "model170 盈利动量分数"},
+  {"id": 9, "expr": "rank(ts_delta(vec_avg(latest_implied_valuation_price) / vec_avg(prior_close_price), 63))", "note": "隐含估值溢价 63d 变化"},
+  {"id": 10, "expr": "rank(vec_avg(composite_fundamental_score))", "note": "model170 综合基本面分数"}
+]

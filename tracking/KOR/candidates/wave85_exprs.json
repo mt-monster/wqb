@@ -1,0 +1,45 @@
+{
+  "wave": 85,
+  "tag": "wave85",
+  "created": "2026-08-22",
+  "baseline": "Jj7mdmJl rank(rank(ts_decay_linear(t2,12)) + multiply(1.5, rank(gz(ts_decay_linear(t6,8), subindustry)))) sharpe 1.29 fitness 0.83",
+  "focus": "decay 设置扫描(设置级正交自由度): decay=6 批 + decay=2 批, 每批内窗口网格(6/8/10d × trend2 10/12/15d) + 权重(1.3/1.5/1.7/2x) + industry 对照",
+  "batches": [
+    {
+      "batch": "A",
+      "decay": 6,
+      "note": "decay=6 更平滑, 与 ts_decay_linear 正交",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 6, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "A1", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "基线结构 × decay=6"},
+        {"id": "A2", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 10)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "trend2 10d"},
+        {"id": "A3", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "trend2 15d"},
+        {"id": "A4", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "trend6 10d"},
+        {"id": "A5", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 6), subindustry))))", "note": "trend6 6d"},
+        {"id": "A6", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.3, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.3x 权重"},
+        {"id": "A7", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.7, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.7x 权重"},
+        {"id": "A8", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), industry))))", "note": "industry 中性化(2y 型)"},
+        {"id": "A9", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "trend2 15d + trend6 10d"},
+        {"id": "A10", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "2x 对照"}
+      ]
+    },
+    {
+      "batch": "B",
+      "decay": 2,
+      "note": "decay=2 更敏锐, 与 ts_decay_linear 正交",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 2, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "B1", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "基线结构 × decay=2"},
+        {"id": "B2", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 10)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "trend2 10d"},
+        {"id": "B3", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "trend2 15d"},
+        {"id": "B4", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "trend6 10d"},
+        {"id": "B5", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 6), subindustry))))", "note": "trend6 6d"},
+        {"id": "B6", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.3, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.3x 权重"},
+        {"id": "B7", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.7, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.7x 权重"},
+        {"id": "B8", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), industry))))", "note": "industry 中性化(2y 型)"},
+        {"id": "B9", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "trend2 15d + trend6 10d"},
+        {"id": "B10", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "2x 对照"}
+      ]
+    }
+  ]
+}

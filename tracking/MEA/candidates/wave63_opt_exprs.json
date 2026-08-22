@@ -1,0 +1,10 @@
+[
+  {"id": 1, "expr": "rank(ts_decay_linear(ts_delta(adjfactor, 63), 21))", "note": "decay_linear 21d 降TVR"},
+  {"id": 2, "expr": "rank(ts_scale(ts_delta(adjfactor, 63), 252))", "note": "ts_scale 252d 标准化"},
+  {"id": 3, "expr": "group_neutralize(rank(ts_delta(adjfactor, 63)), sector)", "note": "group_neutralize sector 降CW"},
+  {"id": 4, "expr": "rank(ts_delta(adjfactor, 42))", "note": "窗口 42d 微调"},
+  {"id": 5, "expr": "rank(ts_delta(adjfactor, 84))", "note": "窗口 84d 微调"},
+  {"id": 6, "expr": "rank(ts_decay_linear(ts_delta(adjfactor, 63), 42))", "note": "decay_linear 42d 更强降TVR"},
+  {"id": 7, "expr": "group_neutralize(rank(ts_decay_linear(ts_delta(adjfactor, 63), 21)), sector)", "note": "decay+group_neutralize 组合"},
+  {"id": 8, "expr": "rank(ts_zscore(ts_delta(adjfactor, 63), 126))", "note": "zscore 126d 标准化"}
+]

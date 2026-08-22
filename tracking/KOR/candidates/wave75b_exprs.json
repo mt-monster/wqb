@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_zscore(normalized_trend_indicator_1, 60))", "note": "price_signal_dl: 第2趋势指标60d标准化（新字段，alphaCount=1）"},
+  {"id": 2, "expr": "rank(ts_delta(normalized_trend_indicator_0, 10))", "note": "price_signal_dl: 趋势指标10d变化（原5d拉长）"},
+  {"id": 3, "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 20))", "note": "price_signal_dl: 趋势指标20d线性衰减（原10d拉长）"},
+  {"id": 4, "expr": "rank(group_zscore(normalized_volume_indicator_0, industry))", "note": "price_signal_dl: 行业中性化量指标（新方向）"},
+  {"id": 5, "expr": "rank(ts_zscore(normalized_volume_indicator_0, 60))", "note": "price_signal_dl: 量指标60d标准化（新方向）"},
+  {"id": 6, "expr": "rank(ts_zscore(normalized_trend_indicator_4, 126))", "note": "price_signal_dl: 第5趋势指标半年标准化（alphaCount=1）"},
+  {"id": 7, "expr": "rank(ts_zscore(vec_avg(latest_implied_valuation_price), 126))", "note": "model170: 隐含估值价格半年标准化（新字段）"},
+  {"id": 8, "expr": "rank(ts_delta(vec_avg(recent_dividend_yield_pct), 20))", "note": "model170: 股息率20d变化（新字段）"},
+  {"id": 9, "expr": "rank(ts_zscore(vec_avg(implied_price_range_maximum) - vec_avg(implied_price_range_minimum), 126))", "note": "model170: 隐含估值区间宽度半年标准化（不确定度）"},
+  {"id": 10, "expr": "rank(vec_avg(price_position_within_annual_range)) * rank(vec_avg(dividend_quality_composite_score))", "note": "model170: 价格位置×股息质量（VECTOR聚合后乘积，已验证合法）"}
+]

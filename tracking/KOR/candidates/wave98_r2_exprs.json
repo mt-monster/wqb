@@ -1,0 +1,73 @@
+{
+  "wave": "wave98-R2",
+  "dataset": "chart_cnn_alpha",
+  "mode": "Mode A 参数收敛 (第2轮)",
+  "base_alpha": "88l6QO7X (sharpe 1.54 / fit 1.40 / 2y 1.78, 唯一 FAIL=LOW_SHARPE 差0.04)",
+  "frozen_core": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),A),multiply(rank(img60d_return_quantile5_confscore4),B)),C),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),D))",
+  "rationale": "轮1结论: 权重0.8→0.9 sharpe 1.53→1.54 但 2y 1.76→1.83; trunc0.04 优于 0.06; INDUSTRY/SUBINDUSTRY 更差淘汰. 本轮收敛: C权重 0.9/0.95, trunc 0.04/0.02/0.06, decay 8-14, 主腿 A/B 0.7/0.3 与 0.5/0.5 对照",
+  "settings_default": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "neutralization": "SECTOR",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "R1",
+      "variant": "C=0.95/D=0.05, decay10, trunc0.04",
+      "settings": {"decay": 10, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "R2",
+      "variant": "C=0.95/D=0.05, decay12, trunc0.04",
+      "settings": {"decay": 12, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "R3",
+      "variant": "C=0.95/D=0.05, decay10, trunc0.06",
+      "settings": {"decay": 10, "truncation": 0.06},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "R4",
+      "variant": "主腿 0.7/0.3, C=0.9/D=0.1, decay10, trunc0.04",
+      "settings": {"decay": 10, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.7),multiply(rank(img60d_return_quantile5_confscore4),0.3)),0.9),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.1))"
+    },
+    {
+      "id": "R5",
+      "variant": "C=0.95/D=0.05, decay8, trunc0.04",
+      "settings": {"decay": 8, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "R6",
+      "variant": "C=0.9/D=0.1, decay12, trunc0.04 (e7z20nxp 2y 最优方向+trunc0.04)",
+      "settings": {"decay": 12, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.9),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.1))"
+    },
+    {
+      "id": "R7",
+      "variant": "C=0.95/D=0.05, decay14, trunc0.04",
+      "settings": {"decay": 14, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "R8",
+      "variant": "主腿 0.5/0.5, C=0.95/D=0.05, decay10, trunc0.04",
+      "settings": {"decay": 10, "truncation": 0.04},
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(img60d_return_quantile5_confscore4),0.5)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "wave": 92,
+  "tag": "wave92",
+  "created": "2026-08-22",
+  "multisim": {"id": "2awT8u67W5jgcpLZA7Rk2QQ", "status": "submitted", "location": "https://api.worldquantbrain.com/simulations/2awT8u67W5jgcpLZA7Rk2QQ"},
+  "baseline": "wave91c 成功配方: 评级修正(ml_factor_proj 2y 金矿 2.14) × 正交短周期信号 → 2 RA ACTIVE (88lr21xo/A1lb2KpR)",
+  "focus": "OTHER 金字塔数据集首探: other546 网络强度族(ac 4 白空间) + other545 NEMO 网络动量(ac 28) + other327 利率敏感度(ac 29)",
+  "direction": "KOR/D1/OTHER 金字塔 multiplier 1.7。other546 是配对网络相似度(业务/MD&A/NLP/风险文本+分析师/地理), 概念=网络联动信号; other545 NEMO 2.0 已验证网络动量(score 综合分); other327 利率敏感度 MATRIX 单字段。本批: ①网络强度单信号 ②网络组合 ③NEMO 单/组合 ④利率敏感度 ⑤跨数据集混合(评级修正×NEMO, 复用 wave91c 成功配方) ⑥利率×NEMO。全部 VECTOR 字段用 vec_avg 聚合",
+  "batches": [
+    {
+      "batch": "O",
+      "note": "OTHER 数据集首探批: 网络强度/NEMO/利率敏感度 + 跨数据集混合",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "O1", "expr": "rank(vec_avg(oth546_busnet_strength))", "note": "业务分部相似度网络强度 (联动信号)"},
+        {"id": "O2", "expr": "rank(vec_avg(oth546_mdanet_strength))", "note": "MD&A 文本相似度 (运营相似度)"},
+        {"id": "O3", "expr": "rank(vec_avg(oth546_nlpbusnet_strength))", "note": "NLP 业务文本相似度 (文本网络)"},
+        {"id": "O4", "expr": "rank(add(vec_avg(oth546_busnet_strength), vec_avg(oth546_nlpbusnet_strength)))", "note": "业务+NLP 双网络 (多维相似度)"},
+        {"id": "O5", "expr": "rank(add(vec_avg(oth546_analystnet_common), vec_avg(oth546_geonet_strength)))", "note": "分析师+地理网络 (覆盖联动)"},
+        {"id": "O6", "expr": "rank(vec_avg(oth545_score))", "note": "NEMO 2.0 综合网络动量 (7 信号聚合)"},
+        {"id": "O7", "expr": "rank(add(rank(vec_avg(oth545_score)), rank(vec_avg(oth545_mpd))))", "note": "NEMO 综合 + 动态价格动量 (双动量)"},
+        {"id": "O8", "expr": "rank(oth327_sirc_lev)", "note": "利率敏感度 (MATRIX 单字段)"},
+        {"id": "O9", "expr": "rank(add(rank(oth327_sirc_lev), rank(vec_avg(oth545_score))))", "note": "利率敏感度 × NEMO (宏观+网络)"},
+        {"id": "O10", "expr": "rank(add(rank(change_6m_rating_revision), rank(vec_avg(oth545_score))))", "note": "评级修正(2y 金矿) × NEMO 网络动量 (wave91c 成功配方复用)"}
+      ]
+    }
+  ]
+}

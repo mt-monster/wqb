@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_delta(shares_outstanding, 63))", "note": "shares_outstanding 63d Δ（pv96 版 sharesout，cov 1.089 vs pv1 可能更低）"},
+  {"id": 2, "expr": "rank(-ts_zscore(shares_outstanding, 126))", "note": "shares_outstanding 126d zscore 反向"},
+  {"id": 3, "expr": "rank(ts_delta(dividend_per_share, 63))", "note": "dividend_per_share 63d Δ（pv96 版 dividend，33α vs pv1 169α）"},
+  {"id": 4, "expr": "rank(dividend_per_share / closing_price)", "note": "股息率（pv96 版）"},
+  {"id": 5, "expr": "rank(ts_zscore(net_dividend_per_share / closing_price, 126))", "note": "net 股息率 126d zscore"},
+  {"id": 6, "expr": "rank(ts_delta(forward_cumulative_adjustment_factor, 63))", "note": "forward adjfactor 63d Δ（46α vs pv1 adjfactor 413α）"},
+  {"id": 7, "expr": "rank(ts_delta(forward_looking_cumulative_split_ratio, 63))", "note": "forward split ratio 63d Δ（57α vs pv1 split 177α）"},
+  {"id": 8, "expr": "rank(days_from_last_change(stock_split_ratio))", "note": "距上次 split 天数（pv96 版，27α）"},
+  {"id": 9, "expr": "rank(ts_delta(shares_outstanding, 63)) + rank(ts_delta(dividend_per_share, 63))", "note": "股本+分红双轴（pv96 版）"},
+  {"id": 10, "expr": "rank(ts_zscore(shares_outstanding, 126)) + rank(net_dividend_per_share / closing_price)", "note": "股本 zscore+net 股息率双轴"}
+]

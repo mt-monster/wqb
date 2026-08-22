@@ -1,0 +1,23 @@
+{
+  "wave": 78,
+  "tag": "wave78b",
+  "date": "2026-08-21",
+  "multisim": "3IR3qrbsx52Gbj1WToxJqJL",
+  "status": "10/10 COMPLETE",
+  "baseline": "Grl0jOEo rank(rank(trend2,20)+rank(trend6,20)) sharpe 0.80",
+  "results": [
+    {"id": "mLj2EWRX", "expr": "rank(rank(ts_decay_linear(trend2,15)) + rank(ts_decay_linear(trend6,20)))", "sharpe": 0.81, "fitness": 0.43, "tvr": 0.0945, "two_year": 1.03, "sub": 0.72, "note": "窗口 15d+20d 最优窗口"},
+    {"id": "9qXPNO1x", "expr": "rank(rank(ts_decay_linear(trend2,25)) + rank(ts_decay_linear(trend6,20)))", "sharpe": 0.79, "fitness": 0.41, "tvr": 0.0902, "two_year": 1.02, "sub": 0.74, "note": "窗口 25d+20d"},
+    {"id": "88lkMx9X", "expr": "rank(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,30)))", "sharpe": 0.74, "fitness": 0.38, "tvr": 0.0879, "two_year": 0.96, "sub": 0.66, "note": "窗口 20d+30d"},
+    {"id": "0mwk1231", "expr": "rank(rank(group_zscore(ts_decay_linear(trend2,20),industry)) + rank(ts_decay_linear(trend6,20)))", "sharpe": 0.80, "fitness": 0.42, "tvr": 0.0924, "two_year": 0.67, "sub": 0.72, "note": "trend2 中性化持平"},
+    {"id": "np7kL5Mw", "expr": "rank(rank(ts_decay_linear(trend2,20)) + rank(group_zscore(ts_decay_linear(trend6,20),industry)))", "sharpe": 1.12, "fitness": 0.68, "tvr": 0.0921, "two_year": 0.95, "sub": 1.03, "note": "trend6 行业中性 = 全场最佳 + PPA 全过"},
+    {"id": "mLj2EWMX", "expr": "rank(ts_decay_linear(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,20)),10))", "sharpe": 0.74, "fitness": 0.37, "tvr": 0.0869, "two_year": 0.90, "sub": 0.69, "note": "再衰减10d"},
+    {"id": "A1lJo8Me", "expr": "rank(ts_decay_linear(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,20)),20))", "sharpe": 0.62, "fitness": 0.29, "tvr": 0.0812, "two_year": 0.66, "sub": 0.60, "note": "再衰减20d"},
+    {"id": "QP7rwpLw", "expr": "rank(ts_decay_linear(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,20)),30))", "sharpe": 0.54, "fitness": 0.23, "tvr": 0.0765, "two_year": 0.48, "sub": 0.54, "note": "再衰减30d"},
+    {"id": "KP7YWMaj", "expr": "rank(ts_decay_linear(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,20)),60))", "sharpe": 0.31, "fitness": 0.10, "tvr": 0.0699, "two_year": 0.18, "sub": 0.38, "note": "再衰减60d 过度衰减"},
+    {"id": "pwjJ9eO6", "expr": "rank(group_zscore(rank(ts_decay_linear(trend2,20)) + rank(ts_decay_linear(trend6,20)),industry))", "sharpe": 0.98, "fitness": 0.56, "tvr": 0.0932, "two_year": 0.80, "sub": 0.86, "note": "相加后整体行业中性 第二佳"}
+  ],
+  "key_insight": "trend6 行业中性化是核心增益: np7kL5Mw 1.12/0.68 大幅超越基线 0.80(+40%), sub 1.03 全场唯一>1, PPA 全过(failed_ppa=0)。方向性结论: 对 trend6 中性化增益巨大, 对 trend2 中性化持平(0.80), 对组合整体中性化中等增益(0.98)。再衰减系列单调递减(10d 0.74→60d 0.31), 衰减伤害信号, 不适用于本组合。窗口 20d 附近最优(15d 0.81 > 20d 0.80 > 25d 0.79 > 30d 0.74)。",
+  "verdict": "无提交(sharpe 1.12 < 1.58 提交闸), np7kL5Mw 进入 Mode A 收敛, wave79 以其为基线",
+  "submit_gate": {"best_sharpe": 1.12, "required": 1.58, "submitted": false}
+}

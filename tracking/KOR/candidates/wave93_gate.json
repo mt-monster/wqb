@@ -1,0 +1,16 @@
+{
+  "wave": 93,
+  "dataset": "other455",
+  "expressions": [
+    "rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value)",
+    "rank(ts_delta(ts_backfill(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,66),20))",
+    "subtract(rank(oth455_relation_roam_w1_pca_fact2_value),ts_mean(rank(oth455_relation_roam_w1_pca_fact2_value),60))",
+    "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p10_q200_w3_pca_fact1_value,5),20))",
+    "rank(ts_corr(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,oth455_partner_n2v_p10_q200_w1_pca_fact1_value,30))",
+    "rank(ts_zscore(oth455_partner_n2v_p10_q200_w4_pca_fact1_value,60))",
+    "rank(add(rank(oth455_relation_roam_w3_pca_fact1_value),rank(oth455_customer_roam_w1_pca_fact2_value)))",
+    "rank(ts_delta(oth455_relation_n2v_p10_q200_w3_pca_fact1_value,22))",
+    "rank(add(rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value),rank(oth455_relation_n2v_p10_q200_w1_pca_fact2_value)))",
+    "ts_decay_linear(rank(oth455_partner_n2v_p10_q200_w2_pca_fact1_value),5)"
+  ]
+}

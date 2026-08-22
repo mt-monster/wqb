@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20)) * rank(ts_decay_linear(normalized_trend_indicator_6, 20))", "note": "trend2×trend6 衰减乘积（已验证结构新组合）"},
+  {"id": 2, "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 20)) * rank(ts_decay_linear(normalized_trend_indicator_6, 20))", "note": "trend0×trend6 衰减乘积"},
+  {"id": 3, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20)) * rank(ts_decay_linear(normalized_trend_indicator_3, 20))", "note": "trend2×trend3 衰减乘积"},
+  {"id": 4, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 10))", "note": "trend2 衰减10d（窗口扫描）"},
+  {"id": 5, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 30))", "note": "trend2 衰减30d（窗口扫描）"},
+  {"id": 6, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 60))", "note": "trend2 衰减60d（窗口扫描）"},
+  {"id": 7, "expr": "rank(ts_decay_linear(normalized_trend_indicator_6, 40))", "note": "trend6 衰减40d（窗口扫描）"},
+  {"id": 8, "expr": "rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), industry))", "note": "trend6 衰减+行业中性（已验证结构新字段）"},
+  {"id": 9, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20)) * rank(ts_decay_linear(normalized_trend_indicator_4, 20))", "note": "trend2×trend4 衰减乘积"},
+  {"id": 10, "expr": "rank(group_zscore(ts_decay_linear(normalized_trend_indicator_0, 20), industry))", "note": "trend0 衰减+行业中性"}
+]

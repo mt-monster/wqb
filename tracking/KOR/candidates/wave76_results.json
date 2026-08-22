@@ -1,0 +1,25 @@
+{
+  "wave": "wave76",
+  "date": "2026-08-21",
+  "region": "KOR",
+  "universe": "TOP600",
+  "settings": {"delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "dataset": "price_signal_dl",
+  "multisim": "4tovnK8Gd4Hx8EG15vKBdYDf",
+  "status": "10/10 COMPLETE",
+  "results": [
+    {"id": 1, "alpha_id": "wpjwjqn5", "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 40))", "sharpe": 0.46, "fitness": 0.18, "turnover": 0.0805, "two_year_sharpe": 0.96, "sub_universe_sharpe": 0.69, "verdict": "NEAR", "note": "trend0 衰减40d 2y0.96 sub0.69"},
+    {"id": 2, "alpha_id": "vRjnj8eA", "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 60))", "sharpe": 0.41, "fitness": 0.15, "turnover": 0.0729, "two_year_sharpe": 0.76, "sub_universe_sharpe": 0.7, "verdict": "FAIL", "note": "trend0 衰减60d TVR最低7.3%"},
+    {"id": 3, "alpha_id": "RR7Z7M2z", "expr": "rank(ts_decay_linear(normalized_trend_indicator_1, 20))", "sharpe": -0.23, "fitness": -0.07, "turnover": 0.0983, "two_year_sharpe": -0.09, "sub_universe_sharpe": -0.26, "verdict": "FAIL", "note": "trend1 衰减20d 负"},
+    {"id": 4, "alpha_id": "Vk7w7V2A", "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20))", "sharpe": 0.65, "fitness": 0.33, "turnover": 0.0944, "two_year_sharpe": 0.94, "sub_universe_sharpe": 0.79, "verdict": "NEAR", "note": "BEST: trend2 衰减20d 全闸除sharpe/fitness/2y通过"},
+    {"id": 5, "alpha_id": "Jj707qnl", "expr": "rank(ts_decay_linear(normalized_trend_indicator_3, 20))", "sharpe": -0.05, "fitness": -0.01, "turnover": 0.1356, "two_year_sharpe": 0.06, "sub_universe_sharpe": -0.13, "verdict": "FAIL", "note": "trend3 衰减20d 弱负"},
+    {"id": 6, "alpha_id": "kqjkjdnL", "expr": "rank(ts_decay_linear(normalized_trend_indicator_5, 20))", "sharpe": -0.22, "fitness": -0.06, "turnover": 0.1684, "two_year_sharpe": -0.09, "sub_universe_sharpe": -0.08, "verdict": "FAIL", "note": "trend5 衰减20d 负"},
+    {"id": 7, "alpha_id": "qMjkj8nj", "expr": "rank(ts_decay_linear(normalized_trend_indicator_6, 20))", "sharpe": 0.63, "fitness": 0.29, "turnover": 0.0929, "two_year_sharpe": 0.31, "sub_universe_sharpe": 0.36, "verdict": "NEAR", "note": "trend6 衰减20d 正"},
+    {"id": 8, "alpha_id": "O07w7Ong", "expr": "rank(ts_zscore(normalized_trend_indicator_2, 60))", "sharpe": 0.12, "fitness": 0.02, "turnover": 0.202, "two_year_sharpe": 0.12, "sub_universe_sharpe": 0.01, "verdict": "FAIL", "note": "trend2 zscore 弱"},
+    {"id": 9, "alpha_id": "1YwVweJQ", "expr": "rank(ts_zscore(normalized_trend_indicator_3, 126))", "sharpe": 0.03, "fitness": 0.0, "turnover": 0.1976, "two_year_sharpe": 0.0, "sub_universe_sharpe": 0.39, "verdict": "FAIL", "note": "trend3 zscore 弱"},
+    {"id": 10, "alpha_id": "e7z8zmLO", "expr": "rank(ts_delta(normalized_trend_indicator_1, 20))", "sharpe": -0.58, "fitness": -0.21, "turnover": 0.2182, "two_year_sharpe": -0.49, "sub_universe_sharpe": -0.41, "verdict": "FAIL", "note": "trend1 delta 负"}
+  ],
+  "key_insight": "ts_decay_linear(trend_X, 20) 为稳定正信号族: trend0 0.47/trend2 0.65/trend6 0.63, TVR 7-10% 低, CW/sub 全过。trend2×trend0 乘积 2y1.23 sub0.85 (ak727ge9) 最佳复合。",
+  "verdict": "no_submit",
+  "next_wave": "wave76b: 乘积组合+窗口扫描+行业中性深化"
+}

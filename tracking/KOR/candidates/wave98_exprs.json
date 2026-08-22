@@ -1,0 +1,31 @@
+{
+  "wave": 98,
+  "tag": "wave98",
+  "created": "2026-08-22",
+  "baseline": "KOR 4 ACTIVE (88lr21xo/A1lb2KpR 评级修正×SH, WjAxxZVk SH×seasonal, e73Rw8qg EPS×pretaxdown); E10 判死(与88lr21xo 相关0.82); wave96/97 判死 price_signal_dl/ai_factor_transfer/model219",
+  "focus": "chart_cnn_alpha (CNN 图形成像预测, 300 字段全 MATRIX 零竞争) 老候选复活: N1b3ojGq 1.51/1.3/2y1.66 只差 LOW_SHARPE 0.07 (decay8/SECTOR/trunc0.06/maxTrade ON); 与评级修正族正交无 PROD 风险; Mode A 参数批推过 1.58",
+  "batch": "N",
+  "note": "冻结核心: add(0.7*(0.6*rank(prob_q5_bucket4_50d)+0.4*rank(img60d_ret_q5_conf4)), 0.3*(rank(prob_q5_bucket4_50d)-rank(prob_q5_bucket0_50d))). 每候选只动 1 参数(Mode A 纪律). N7 三腿融合结构化升级. 设置沿用基线: maxTrade ON 保持可比",
+  "settings": {
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "SECTOR",
+    "truncation": 0.06,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON"
+  },
+  "expressions": [
+    {"id": "N1", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "基线结构 decay 8→10", "settings": {"decay": 10}},
+    {"id": "N2", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "decay 12", "settings": {"decay": 12}},
+    {"id": "N3", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "decay 10 + INDUSTRY", "settings": {"decay": 10, "neutralization": "INDUSTRY"}},
+    {"id": "N4", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "decay 10 + SUBINDUSTRY", "settings": {"decay": 10, "neutralization": "SUBINDUSTRY"}},
+    {"id": "N5", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.8),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.2))", "note": "decay 10 + 主腿权重 0.7→0.8", "settings": {"decay": 10}},
+    {"id": "N6", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "decay 10 + truncation 0.04", "settings": {"decay": 10, "truncation": 0.04}},
+    {"id": "N7", "expr": "add(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.5),multiply(rank(img200d_return_quintile2_prob_leap1),0.3)),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.2))", "note": "三腿融合: 主腿0.5 + 200d quintile2 0.3 + 多空差0.2 (1YpPEMEz 融合腿)", "settings": {"decay": 10}},
+    {"id": "N8", "expr": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.7),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.3))", "note": "decay 14", "settings": {"decay": 14}}
+  ]
+}

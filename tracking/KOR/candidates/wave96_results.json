@@ -1,0 +1,27 @@
+{
+  "wave": 96,
+  "tag": "wave96",
+  "date": "2026-08-22",
+  "multisim": {"batchP": {"id": "2Yfs2P5Dk51R9OG14kbEwIvC", "status": "6/6 FAIL(ERROR)"}, "batchA": {"id": "3PG9BH6CL4Fwb5411AtE8ubt", "status": "6/6 COMPLETE"}, "batchP_replay": "单仿真重放 4 COMPLETE / 2 FAIL (raw_volume_indicator_0 字段失败)"},
+  "dataset": "price_signal_dl (DL 优化趋势/量指标, ac 9) + ai_factor_transfer (AI 转移技术指标, ac 12)",
+  "baseline": "KOR 4 ACTIVE (88lr21xo/A1lb2KpR 评级修正×SH, WjAxxZVk SH×seasonal, e73Rw8qg EPS×pretaxdown); dead_ends 8 族已排除",
+  "focus": "新数据集双探针: 批P price_signal_dl 6 条(趋势动量/组合/量价相关), 批A ai_factor_transfer 6 条(资金流/BB/量异常相关), 每批 2 个 ts_corr 注入满足探索合约",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "A3", "alpha": "78jXa1VQ", "expr": "rank(ts_zscore(typical_price_bollinger_band_position, 20))", "sharpe": 1.02, "fitness": 0.31, "tvr": 0.4846, "two_year": -0.78, "sub": 0.66, "light": "RED", "note": "ai_factor_transfer BB 位置 zscore: 4 FAIL (LOW_SHARPE/LOW_FITNESS/LOW_INVESTABILITY/LOW_2Y)"},
+    {"id": "A2", "alpha": "Grl8MLvJ", "expr": "rank(ts_delta(momentum_williams_r_adjusted, 10))", "sharpe": 0.89, "fitness": 0.27, "tvr": 0.4562, "two_year": -0.15, "sub": 0.55, "light": "RED", "note": "Williams R 动量: 4 FAIL"},
+    {"id": "P4", "alpha": "88l6OpGz", "expr": "rank(ts_zscore(ts_delta(raw_trend_indicator_3, 20), 60))", "sharpe": 0.1, "fitness": 0.02, "tvr": 0.2027, "two_year": 0.57, "sub": 0.21, "light": "RED", "note": "price_signal_dl 趋势 60d zscore: 4 FAIL"},
+    {"id": "P6", "alpha": "omqzn6Gm", "expr": "rank(ts_corr(normalized_trend_indicator_1, normalized_volume_indicator_0, 20))", "sharpe": 0.06, "fitness": 0.01, "tvr": 0.1699, "two_year": -0.27, "sub": -0.12, "light": "RED", "note": "归一化量价相关: 4 FAIL"},
+    {"id": "A1", "alpha": "Jj7XgOKA", "expr": "rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))", "sharpe": 0.19, "fitness": 0.03, "tvr": 0.3936, "two_year": 0.86, "sub": 0.17, "light": "RED", "note": "资金流 10d 动量: 3 FAIL"},
+    {"id": "A4", "alpha": "RR7a28L1", "expr": "rank(add(multiply(2, rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))), rank(ts_delta(liquidity_money_flow_alignment, 10))))", "sharpe": 0.04, "fitness": 0.0, "tvr": 0.4053, "two_year": 0.67, "sub": 0.06, "light": "RED", "note": "资金流+流动性组合: 3 FAIL"},
+    {"id": "P1", "alpha": "P07ln9qK", "expr": "rank(ts_delta(raw_trend_indicator_0, 20))", "sharpe": -0.06, "fitness": -0.0, "tvr": 0.8093, "two_year": -0.31, "sub": 0.17, "light": "RED", "note": "raw 趋势动量: 4 FAIL (含 HIGH_TURNOVER 0.81)"},
+    {"id": "A5", "alpha": "6Xlqa9bJ", "expr": "rank(ts_corr(cumulative_money_flow_volume_adjusted, short_term_price_change, 20))", "sharpe": -0.25, "fitness": -0.05, "tvr": 0.2063, "two_year": 0.34, "sub": -0.42, "light": "RED", "note": "资金流×价格 相关: 5 FAIL"},
+    {"id": "A6", "alpha": "Xg7l2nqm", "expr": "rank(ts_corr(volume_anomaly_price_positioning, short_term_price_change, 20))", "sharpe": -0.17, "fitness": -0.03, "tvr": 0.2063, "two_year": -0.78, "sub": -0.09, "light": "RED", "note": "量异常×价格 相关: 4 FAIL"},
+    {"id": "P2", "alpha": "d5j7nZzx", "expr": "rank(ts_delta(normalized_trend_indicator_1, 20))", "sharpe": -0.58, "fitness": -0.21, "tvr": 0.2182, "two_year": -0.49, "sub": -0.41, "light": "RED", "note": "归一化趋势动量: 5 FAIL"},
+    {"id": "P3", "alpha": null, "expr": "rank(add(multiply(2, rank(ts_delta(raw_trend_indicator_0, 20))), rank(ts_delta(raw_volume_indicator_0, 20))))", "sharpe": null, "fitness": null, "tvr": null, "two_year": null, "sub": null, "light": "RED", "note": "SIM FAIL: raw_volume_indicator_0 字段仿真失败(无数据/类型) → 整批 multisim 连带 ERROR"},
+    {"id": "P5", "alpha": null, "expr": "rank(ts_corr(raw_trend_indicator_0, raw_volume_indicator_0, 20))", "sharpe": null, "fitness": null, "tvr": null, "two_year": null, "sub": null, "light": "RED", "note": "SIM FAIL: 同上 raw_volume_indicator_0"}
+  ],
+  "key_insight": "两个新数据集首探全部 RED (0/12)。ai_factor_transfer 最佳 A3 BB 位置 1.02 但 2y -0.78 与 investability 双 FAIL; price_signal_dl 趋势指标 KOR 上信号近零(绝对值<0.6) 且 raw 系列 turnover 极高(81%); raw_volume_indicator_0 字段仿真直接 FAIL(需从白名单剔除)。教训: multisim 批内若含字段失败表达式, 平台将整批子仿真标记 FAIL(连带 ERROR), 批提交前须对未验证字段先行单仿真探针。",
+  "verdict": "RED (判死): 0 可提交。price_signal_dl + ai_factor_transfer 两数据集在 KOR TOP600 无 alpha 信号, 不入 book; 不继续投入。",
+  "submit_gate": {"best_sharpe": 1.02, "required": 1.58, "best_fitness": 0.31, "fitness_required": 1.0, "best_2y": -0.78, "two_year_required": 1.58, "submitted": 0}
+}

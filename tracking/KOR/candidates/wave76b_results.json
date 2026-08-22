@@ -1,0 +1,25 @@
+{
+  "wave": "wave76b",
+  "date": "2026-08-21",
+  "region": "KOR",
+  "universe": "TOP600",
+  "settings": {"delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "dataset": "price_signal_dl",
+  "multisim": "3070tN4sG5ercwtBBHOvdJY",
+  "status": "10/10 COMPLETE (multisim 记录过期, 经 get_user_alphas 补拉确认)",
+  "results": [
+    {"id": 1, "alpha_id": "Jj70xEE2", "expr": "rank(decay(trend2,20)) * rank(decay(trend6,20))", "sharpe": 0.52, "fitness": 0.23, "turnover": 0.0984, "two_year_sharpe": 0.4, "sub_universe_sharpe": 0.6, "verdict": "FAIL", "note": "trend2×trend6 乘积"},
+    {"id": 2, "alpha_id": "78jqZbEO", "expr": "rank(decay(trend0,20)) * rank(decay(trend6,20))", "sharpe": 0.63, "fitness": 0.3, "turnover": 0.1036, "two_year_sharpe": 0.81, "sub_universe_sharpe": 0.67, "verdict": "NEAR", "note": "trend0×trend6 乘积 最佳乘积"},
+    {"id": 3, "alpha_id": "rKj65gvj", "expr": "rank(decay(trend2,20)) * rank(decay(trend3,20))", "sharpe": 0.39, "fitness": 0.15, "turnover": 0.1286, "two_year_sharpe": 0.77, "sub_universe_sharpe": 0.37, "verdict": "FAIL", "note": "trend2×trend3 乘积"},
+    {"id": 4, "alpha_id": "e7z89woE", "expr": "rank(decay(trend2,10))", "sharpe": 0.62, "fitness": 0.31, "turnover": 0.107, "two_year_sharpe": 0.83, "sub_universe_sharpe": 0.73, "verdict": "NEAR", "note": "trend2 衰减10d"},
+    {"id": 5, "alpha_id": "j2jl3RmE", "expr": "rank(decay(trend2,30))", "sharpe": 0.6, "fitness": 0.29, "turnover": 0.0865, "two_year_sharpe": 0.88, "sub_universe_sharpe": 0.8, "verdict": "NEAR", "note": "trend2 衰减30d 2y最高0.88"},
+    {"id": 6, "alpha_id": "E5l0vWJr", "expr": "rank(decay(trend2,60))", "sharpe": 0.37, "fitness": 0.14, "turnover": 0.0758, "two_year_sharpe": 0.55, "sub_universe_sharpe": 0.63, "verdict": "FAIL", "note": "trend2 衰减60d 窗口过长信号衰减"},
+    {"id": 7, "alpha_id": "omqw65O6", "expr": "rank(decay(trend6,40))", "sharpe": 0.52, "fitness": 0.22, "turnover": 0.0798, "two_year_sharpe": 0.14, "sub_universe_sharpe": 0.24, "verdict": "FAIL", "note": "trend6 衰减40d sub FAIL"},
+    {"id": 8, "alpha_id": "QP7r3kXg", "expr": "rank(group_zscore(decay(trend6,20), industry))", "sharpe": 0.89, "fitness": 0.47, "turnover": 0.0921, "two_year_sharpe": -0.08, "sub_universe_sharpe": 0.57, "verdict": "NEAR", "note": "trend6 行业中性 sharpe 0.89 最高但 2y -0.08 不稳"},
+    {"id": 9, "alpha_id": "Wj7wPQmj", "expr": "rank(decay(trend2,20)) * rank(decay(trend4,20))", "sharpe": 0.5, "fitness": 0.21, "turnover": 0.0869, "two_year_sharpe": 0.7, "sub_universe_sharpe": 0.69, "verdict": "FAIL", "note": "trend2×trend4 乘积"},
+    {"id": 10, "alpha_id": "pwjJPrgo", "expr": "rank(group_zscore(decay(trend0,20), industry))", "sharpe": 0.62, "fitness": 0.27, "turnover": 0.104, "two_year_sharpe": 1.35, "sub_universe_sharpe": 0.85, "verdict": "NEAR", "note": "trend0 行业中性 2y1.35 sub0.85"}
+  ],
+  "key_insight": "乘积 vs 相加对比(同设置): rank相加 QP7r3w25 0.70/2y1.40/sub0.94 > 最佳乘积 78jqZbEO 0.63/2y0.81 < 单因子 trend2 0.65。乘积家族 0.39-0.63 整体劣化(交集逻辑压缩分布), 直接相加 0.47≈平均无增益; 只有 rank 化后相加才同时保留排序+等权平均。行业中性家族: trend6 中性 0.89 但 2y -0.08 结构性不稳, trend0 中性 0.62/2y1.35 稳健。",
+  "verdict": "no_submit",
+  "next_wave": "wave77: rank(rank(a)+rank(b)) 相加结构深化 + 相加后处理(再衰减/zscore) + 行业中性交叉"
+}

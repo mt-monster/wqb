@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(fundamental_ebitda / fundamental_net_revenue)", "note": "分析师PT上调比例 × EBITDA利润率（盈利质量过滤）"},
+  {"id": 2, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(ts_delta(fundamental_retained_earnings, 63))", "note": "分析师PT上调比例 × 留存收益63d变化（基本面改善确认）"},
+  {"id": 3, "expr": "rank(vec_avg(est_q_net_raisednum_4wks) / vec_avg(est_q_net_num)) * rank(fundamental_pretax_income / fundamental_total_assets)", "note": "盈利预期上调比例 × 资产收益率（ROA过滤）"},
+  {"id": 4, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(ts_zscore(fundamental_operating_income_before_depreciation, 252))", "note": "分析师PT上调比例 × 经营利润252d zscore（长期盈利趋势）"},
+  {"id": 5, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) + rank(fundamental_ebitda / fundamental_net_revenue) + rank(ts_delta(fundamental_retained_earnings, 63))", "note": "三信号等权：分析师PT + EBITDA利润率 + 留存收益变化"},
+  {"id": 6, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(fundamental_income_before_extraordinary_items / fundamental_net_revenue) * rank(ts_delta(fundamental_ebitda, 63))", "note": "三信号相乘：分析师PT × 净利率 × EBITDA变化（强确认）"},
+  {"id": 7, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(fundamental_operating_income_before_depreciation / fundamental_net_revenue)", "note": "分析师PT上调比例 × 经营利润率（核心盈利质量）"},
+  {"id": 8, "expr": "rank(vec_avg(est_q_net_raisednum_4wks) / vec_avg(est_q_net_num)) * rank(ts_delta(fundamental_pretax_income, 63) / fundamental_total_assets)", "note": "盈利预期上调比例 × 税前利润变化/资产（ROA趋势）"},
+  {"id": 9, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(fundamental_ebitda / fundamental_total_assets) * rank(fundamental_retained_earnings / fundamental_total_assets)", "note": "分析师PT × EBITDA/资产 × 留存收益/资产（双资产效率）"},
+  {"id": 10, "expr": "rank(analyst_price_target_raised_count_four_weeks / analyst_price_target_count) * rank(ts_zscore(fundamental_ebitda, 252)) + rank(ts_delta(fundamental_net_revenue, 63))", "note": "分析师PT × EBITDA长期趋势 + 收入短期变化（混合信号）"}
+]

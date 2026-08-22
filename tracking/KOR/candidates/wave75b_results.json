@@ -1,0 +1,27 @@
+{
+  "wave": "wave75b",
+  "date": "2026-08-21",
+  "region": "KOR",
+  "universe": "TOP600",
+  "settings": {"delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "datasets": ["price_signal_dl", "model170"],
+  "multisim": {
+    "failed_batch": "H2avfKH4kPbCkTo9C4aOp",
+    "success_batch": "2FIaco1SF4MPbwniLA56AI8"
+  },
+  "root_cause": "wave75 与 wave75b 批 FAIL 根因修正: normalized_volume_indicator_0(volume 系列) 字段在批处理中触发平台错误, 非 MATRIX 乘积本身。trend 系列字段单字段变换/乘积均合法。平台对相同表达式+设置自动去重(复用已有 alpha)。",
+  "results": [
+    {"id": 1, "alpha_id": "ak72ErJv", "expr": "rank(ts_zscore(normalized_trend_indicator_1, 60))", "sharpe": -0.03, "fitness": -0.0, "turnover": 0.2004, "two_year_sharpe": -0.26, "sub_universe_sharpe": 0.28, "verdict": "FAIL", "note": "trend1 60d标准化 弱"},
+    {"id": 2, "alpha_id": "gJjq9qn0", "expr": "rank(ts_delta(normalized_trend_indicator_0, 10))", "sharpe": 0.38, "fitness": 0.05, "turnover": 0.7615, "two_year_sharpe": 0.11, "sub_universe_sharpe": 0.18, "verdict": "FAIL", "note": "10d变化 TVR过高 76%"},
+    {"id": 3, "alpha_id": "xAjwdwJb", "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 20))", "sharpe": 0.47, "fitness": 0.19, "turnover": 0.1029, "two_year_sharpe": 1.2, "sub_universe_sharpe": 0.65, "verdict": "NEAR", "note": "BEST: 衰减20d TVR 10.3% 2y 1.2 sub 0.65, 差sharpe 1.11"},
+    {"id": 4, "alpha_id": null, "expr": "rank(group_zscore(normalized_volume_indicator_0, industry))", "sharpe": null, "verdict": "BATCH_KILLER", "note": "volume字段触发整批FAIL 判死"},
+    {"id": 5, "alpha_id": null, "expr": "rank(ts_zscore(normalized_volume_indicator_0, 60))", "sharpe": null, "verdict": "BATCH_KILLER", "note": "volume字段触发整批FAIL 判死"},
+    {"id": 6, "alpha_id": "Vk7w3NAJ", "expr": "rank(ts_zscore(normalized_trend_indicator_4, 126))", "sharpe": -0.3, "fitness": -0.1, "turnover": 0.1282, "two_year_sharpe": 0.05, "sub_universe_sharpe": -0.45, "verdict": "FAIL", "note": "trend4 半年标准化 负"},
+    {"id": 7, "alpha_id": "RR7Z1E9d", "expr": "rank(ts_zscore(vec_avg(latest_implied_valuation_price), 126))", "sharpe": -0.03, "fitness": -0.0, "turnover": 0.4417, "two_year_sharpe": -0.45, "sub_universe_sharpe": -0.33, "verdict": "FAIL", "note": "model170 隐含估值 弱"},
+    {"id": 8, "alpha_id": "9qXP7wgq", "expr": "rank(ts_delta(vec_avg(recent_dividend_yield_pct), 20))", "sharpe": 0.27, "fitness": 0.04, "turnover": 0.5023, "two_year_sharpe": -0.94, "sub_universe_sharpe": 0.04, "verdict": "FAIL", "note": "model170 股息率 弱"},
+    {"id": 9, "alpha_id": "mLj2VwGK", "expr": "rank(ts_zscore(vec_avg(implied_price_range_maximum) - vec_avg(implied_price_range_minimum), 126))", "sharpe": 0.16, "fitness": 0.02, "turnover": 0.4213, "two_year_sharpe": 0.21, "sub_universe_sharpe": 0.19, "verdict": "FAIL", "note": "model170 区间宽度 弱"},
+    {"id": 10, "alpha_id": "RR7Z8g8d", "expr": "rank(vec_avg(price_position_within_annual_range)) * rank(vec_avg(dividend_quality_composite_score))", "sharpe": -0.66, "fitness": -0.19, "turnover": 0.4232, "two_year_sharpe": -0.48, "sub_universe_sharpe": -0.49, "verdict": "FAIL", "note": "model170 乘积 负"}
+  ],
+  "verdict": "no_submit",
+  "next_wave": "wave76: trend系列字段深化 ts_decay_linear 窗口扫描(40/60d)+新字段(1/2/3/5/6) 避开 volume 系列"
+}

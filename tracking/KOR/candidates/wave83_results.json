@@ -1,0 +1,23 @@
+{
+  "wave": 83,
+  "tag": "wave83",
+  "date": "2026-08-22",
+  "multisim": "18Vs5l6104i1bYaBIPw74Xt",
+  "status": "10/10 COMPLETE",
+  "baseline": "Wj7nM9Zo trend2 12d + trend6 8d ×2x subindustry 1.28/0.82",
+  "results": [
+    {"id": "Jj7mdmJl", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.83, "tvr": 0.1167, "two_year": 0.68, "sub": 1.11, "invest": 1.37, "cluster": 0.67, "ppa": "PASS", "note": "1.5x 权重 = 新最佳 1.29/0.83, 2y 0.68 大幅改善(2x 仅 0.52), sub 1.11 全场最高"},
+    {"id": "O07k9kXg", "expr": "rank(rank(decay(t2,12)) + multiply(2.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.26, "fitness": 0.79, "tvr": 0.1192, "two_year": 0.41, "sub": 1.04, "invest": 1.39, "cluster": 0.62, "ppa": "PASS", "note": "2.5x 比 2x 差: 权重过冲"},
+    {"id": "kqjXKXpg", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,8),sector))))", "sharpe": 0.93, "fitness": 0.52, "tvr": 0.1093, "two_year": 0.85, "sub": 0.76, "invest": 1.01, "cluster": 0.42, "ppa": "FAIL", "note": "sector 中性化硬失败(3 FAIL): sub 0.76 塌方, 但 2y 0.85 + cluster 0.42 最低"},
+    {"id": "9qXKRKe1", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,8),industry))))", "sharpe": 1.23, "fitness": 0.77, "tvr": 0.1108, "two_year": 0.71, "sub": 1.09, "invest": 1.26, "cluster": 0.58, "ppa": "PASS", "note": "industry 中性化: sharpe 略降 0.05 但 2y 0.71 提升, cluster 0.58 全场最低"},
+    {"id": "lej202n8", "expr": "rank(rank(gz(decay(t6,8),sub)) + rank(gz(decay(t6,15),sub)))", "sharpe": 1.06, "fitness": 0.61, "tvr": 0.113, "two_year": -0.17, "sub": 0.73, "invest": 1.21, "cluster": 0.47, "ppa": "PASS", "note": "trend6 纯双窗口(无 trend2): 1.06/2y -0.17, trend2 不可或缺"},
+    {"id": "d5jmQmG2", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(ts_rank(decay(t6,8),20),sub))))", "sharpe": -0.01, "fitness": 0.0, "tvr": 0.2447, "two_year": 0.79, "sub": 0.32, "invest": 0.19, "cluster": -0.11, "ppa": "FAIL", "note": "ts_rank 完全破坏信号(-0.01): 与 zscore 类同病, trend 族免疫时序排名"},
+    {"id": "gJjK3K2Q", "expr": "rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,8),sub)))", "sharpe": 1.18, "fitness": 0.73, "tvr": 0.1192, "two_year": 0.45, "sub": 1.0, "invest": 1.28, "cluster": 0.59, "ppa": "PASS", "note": "去外层 rank: 降 0.10, 外层 rank 统一尺度必要"},
+    {"id": "mLjAXAE9", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(ts_delta(t6,8),sub))))", "sharpe": 0.06, "fitness": 0.01, "tvr": 0.2896, "two_year": 0.25, "sub": 0.25, "invest": 0.06, "cluster": -0.23, "ppa": "FAIL", "note": "ts_delta 完全破坏信号(0.06): 加速度无 alpha, TVR 29% 爆表"},
+    {"id": "ZY7xoxOn", "expr": "rank(rank(decay(t2,15)) + multiply(2, rank(gz(decay(t6,5),sub))))", "sharpe": 1.21, "fitness": 0.75, "tvr": 0.1266, "two_year": 0.5, "sub": 1.04, "invest": 1.34, "cluster": 0.51, "ppa": "PASS", "note": "trend6 5d 超短窗口: 降 0.07, 8d 仍是最优窗口"},
+    {"id": "lej202oN", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,20),sub))))", "sharpe": 1.27, "fitness": 0.8, "tvr": 0.0994, "two_year": 0.33, "sub": 0.93, "invest": 1.34, "cluster": 0.74, "ppa": "PASS", "note": "trend6 20d ×2x: TVR 0.099 最低但 2y 0.33 塌, 长窗口牺牲 2y"}
+  ],
+  "key_insight": "权重精扫揭示新甜点: 1x(1.23)→1.5x(1.29/2y 0.68)→2x(1.28/0.52)→2.5x(1.26/0.41)→3x(1.22/0.30)。sharpe 峰值在 1.5x, 2y 随权重单调下降, 1.5x 是 sharpe×2y 最优平衡点(Jj7mdmJl 1.29/0.83/sub 1.11 全场最佳)。中性化粒度: sector 硬失败(sub 0.76), industry 略降但 2y 0.71+cluster 0.58 改善——2y 提升型备选。ts_rank/ts_delta 双双完全破坏(trend 族对时序排名与变化率类操作免疫, 第三次确认 zscore 族伤害)。去外层 rank 降 0.10(外层 rank 必要)。纯双窗口 1.06/2y -0.17(trend2 不可或缺)。5d 窗口过短(1.21), 20d 长窗口 2y 塌(0.33), 8d 最优窗口确认。",
+  "verdict": "无提交(sharpe 1.29 < 1.58), Jj7mdmJl(1.5x) 新基线进入 wave84: 1.5x 权重邻域精扫(1.3/1.7x) + 1.5x×窗口网格 + industry×1.5x 叠加 + trend2 半权重 ratio 3:1",
+  "submit_gate": {"best_sharpe": 1.29, "required": 1.58, "submitted": false}
+}

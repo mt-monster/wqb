@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(mdl25_eq_vr_v9 / mdl31_acc_chg_1_qtr)", "note": "model25 ROA / model31 应计变化（盈利质量/应计调整）"},
+  {"id": 2, "expr": "rank(mdl25_eq_vr_v11 / mdl31_cf_chg_1_qtr)", "note": "model25 ROE / model31 现金流变化（股东回报/现金流稳定性）"},
+  {"id": 3, "expr": "rank(mdl25_eq_rlev_v7 / mdl31_oe_chg_1_qtr)", "note": "model25 债务权益比 / model31 经营费用变化（杠杆/成本控制）"},
+  {"id": 4, "expr": "rank(ts_delta(mdl25_eq_vr_v9, 63) / mdl31_acc_chg_1_qtr)", "note": "model25 ROA 63d 变化 / model31 应计变化（盈利趋势/应计调整）"},
+  {"id": 5, "expr": "rank(mdl25_eq_vr_v15 / mdl31_cf_chg_1_qtr)", "note": "model25 再投资率 / model31 现金流变化（投资强度/现金流支持）"},
+  {"id": 6, "expr": "rank(mdl25_eq_vr_v17 / mdl31_oe_chg_1_qtr)", "note": "model25 有效税率 / model31 经营费用变化（税务效率/成本控制）"},
+  {"id": 7, "expr": "rank(ts_zscore(mdl25_eq_vr_v11, 252) / mdl31_acc_chg_1_qtr)", "note": "model25 ROE 252d zscore / model31 应计变化（长期股东回报趋势）"},
+  {"id": 8, "expr": "rank(mdl25_eq_ro_v16 / mdl31_cf_chg_1_qtr)", "note": "model25 经营资产周转率 / model31 现金流变化（运营效率/现金流支持）"},
+  {"id": 9, "expr": "rank(mdl25_eq_ro_v20 / mdl31_oe_chg_1_qtr)", "note": "model25 存货周转率 / model31 经营费用变化（库存效率/成本控制）"},
+  {"id": 10, "expr": "rank(ts_delta(mdl25_eq_vr_v19, 63) / mdl31_acc_chg_1_qtr)", "note": "model25 净利率 63d 变化 / model31 应计变化（盈利能力趋势）"}
+]

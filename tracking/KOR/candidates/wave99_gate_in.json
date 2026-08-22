@@ -1,0 +1,36 @@
+{
+ "expressions": [
+  {
+   "code": "add(0.3*rank(ts_av_diff(ep_yield_pct_smest_fy2_3,20)),0.233*multiply(rank(forward_pe_smest_fy1_3),-1),0.233*rank(ep_yield_pct_smest_fy1_3),0.233*rank(ts_delta(ep_yield_pct_smest_fy1_3,66)))",
+   "note": "A1: GBR 4腿最优: ep_yield fy2 av_diff20 + 前瞻PE反向 + fy1水平 + fy1差分66"
+  },
+  {
+   "code": "add(0.5*rank(ts_av_diff(ep_yield_pct_smest_fy2_3,20)),0.25*multiply(rank(forward_pe_smest_fy1_3),-1),0.25*rank(ep_yield_pct_smest_fy1_3))",
+   "note": "A2: GBR 3腿: 去 ts_delta66 (GBR wave23 变体)"
+  },
+  {
+   "code": "add(0.5*rank(ts_av_diff(ep_yield_pct_smest_fy2_3,20)),0.5*multiply(rank(ts_av_diff(forward_pe_smest_fy1_3,66)),-1))",
+   "note": "A3: GBR 2腿差分: ep_yield av_diff20 + forward_pe av_diff66 反向"
+  },
+  {
+   "code": "add(0.3*rank(ts_av_diff(ep_yield_pct_smest_fy2_3,10)),0.233*multiply(rank(forward_pe_smest_fy1_3),-1),0.233*rank(ep_yield_pct_smest_fy1_3),0.233*rank(ts_delta(ep_yield_pct_smest_fy1_3,66)))",
+   "note": "A4: GBR 4腿短窗口: ts_av_diff(,10) 变体"
+  },
+  {
+   "code": "rank(analyst_revisions_score_7)",
+   "note": "B1: Starmine 修正评分 7d 水平 (uc1/ac1, cov1.0)"
+  },
+  {
+   "code": "rank(ts_av_diff(analyst_revisions_score_21,20))",
+   "note": "B2: Starmine 修正评分 21d 慢变量激活 (P4 探针公式: model219 numrevy1 0.3→1.08 经验)"
+  },
+  {
+   "code": "rank(subtract(analyst_upward_revision_count_fq1_earnings_30d_3,analyst_downward_revision_count_fq1_earnings_30d))",
+   "note": "B3: 净修正计数: upward fq1 earnings 30d - downward fq1 earnings 30d"
+  },
+  {
+   "code": "rank(ts_delta(subtract(analyst_upward_revision_count_fq1_earnings_30d_3,analyst_downward_revision_count_fq1_earnings_30d),5))",
+   "note": "B4: 净修正计数 5d 变化 (动量)"
+  }
+ ]
+}

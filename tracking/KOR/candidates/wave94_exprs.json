@@ -1,0 +1,37 @@
+{
+  "wave": 94,
+  "tag": "wave94",
+  "created": "2026-08-22",
+  "baseline": "wave91c C6 88lr21xo rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile1_5d_pred))) 1.77/1.40/2y 2.52 PROD 0.568 ACTIVE + C10 A1lb2KpR 1.83/1.14/2y 2.34 ACTIVE",
+  "focus": "评级修正金矿纵深: 冻结评级2+SH1 骨架, 换 SH 家族字段变体(hedge3 q4 20d/q5 5d/confidence/regime4/seasonal/PV/event/analyst) + 新评级字段 change_analyst_consensus_rating(零竞争白空间)",
+  "direction": "wave91c 方法论: 评级修正(慢变量 2y 金矿) × 短周期低相关信号 → 全指标拉高; 与 LT 混合全灭。本批每式只动一个概念: D1-D6 换 SH/短周期字段(保持评级2 权重), D7-D8 换评级字段(consensus_rating 零竞争), D9-D10 换信号源(event embedding/analyst)。目的: (1)找 fitness/2y 更高的变体 (2)确认 SH 家族最佳字段 (3)零竞争 hedge3 q4 20d 若与基线 SH 相关性低可形成新提交槽。设置沿用 wave91c 标准: KOR/TOP600/delay 1/decay 4/STATISTICAL/trunc 0.08/pasteurization ON/unitHandling VERIFY/nanHandling OFF",
+  "batches": [
+    {
+      "batch": "D",
+      "note": "评级修正 × SH 家族字段变体纵深 (10 条)",
+      "settings": {
+        "region": "KOR",
+        "universe": "TOP600",
+        "delay": 1,
+        "decay": 4,
+        "neutralization": "STATISTICAL",
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unitHandling": "VERIFY",
+        "nanHandling": "OFF"
+      },
+      "expressions": [
+        {"id": "D1", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_20d_pred)))", "note": "评级2 + SH hedge3 q4 20d (零竞争 20d 中窗变体)"},
+        {"id": "D2", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile5_5d_pred)))", "note": "评级2 + SH hedge3 q5 5d (低 quantile 反向端)"},
+        {"id": "D3", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_confidence_20d_pred)))", "note": "评级2 + SH 置信度信号 (零竞争)"},
+        {"id": "D4", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_term_regime4_quantile1_5d_pred)))", "note": "评级2 + 四相 regime 短周期 (零竞争)"},
+        {"id": "D5", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_term_seasonal_quantile1_5d_pred)))", "note": "评级2 + 季节调整短周期"},
+        {"id": "D6", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(price_volume_quantile1_5d_pred)))", "note": "评级2 + 量价短周期"},
+        {"id": "D7", "expr": "rank(add(multiply(2, rank(change_analyst_consensus_rating)), rank(short_horizon_hedge3_quantile1_5d_pred)))", "note": "新评级 consensus_rating(零竞争) + 基线 SH"},
+        {"id": "D8", "expr": "rank(add(multiply(2, rank(change_analyst_consensus_rating)), rank(short_horizon_hedge3_quantile4_20d_pred)))", "note": "新评级 + SH q4 20d (双零竞争组合)"},
+        {"id": "D9", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(event_embedding_quantile2_60d_pred)))", "note": "评级2 + 事件嵌入 60d (零竞争)"},
+        {"id": "D10", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(analyst_quantile1_60d_pred)))", "note": "评级2 + 分析师源预测 60d (同源异窗)"}
+      ]
+    }
+  ]
+}

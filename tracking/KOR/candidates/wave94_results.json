@@ -1,0 +1,24 @@
+{
+  "wave": 94,
+  "tag": "wave94",
+  "date": "2026-08-22",
+  "multisim": {"id": "4kGfc582G4Pu9dN1gI5oP4Fw", "status": "10/10 COMPLETE"},
+  "dataset": "ml_factor_proj 评级修正金矿族纵深 (wave91c 成功配方扩展)",
+  "baseline": "wave91c C6=88lr21xo (评级2+SH1 2y2.52 ACTIVE) + C10=A1lb2KpR (评级1+SH3 ACTIVE); wave91 E3 rank(change_6m_rating_revision) 0.89/0.49/2y2.14",
+  "focus": "评级修正(2y 金矿) × SH 家族字段变体: hedge3 q4/q5 窗口、confidence、regime4、seasonal、price_volume、event_embedding、analyst; 新评级字段 change_analyst_consensus_rating(零竞争) 替换主线",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "D6", "alpha": "A1labdPw", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(price_volume_quantile1_5d_pred)))", "sharpe": 1.83, "fitness": 1.32, "tvr": 0.1583, "two_year": 2.49, "sub": 1.67, "prod_corr": 0.8971, "light": "GREEN", "note": "IS 全绿(1.83/1.32/2y2.49) 但 PROD 0.897>0.7 硬闸 FAIL; 与 88lr21xo 互相关 0.897>0.7 → 不可提交"},
+    {"id": "D4", "alpha": "pwjzEg6b", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_term_regime4_quantile1_5d_pred)))", "sharpe": 1.76, "fitness": 1.29, "tvr": 0.1462, "two_year": 2.4, "sub": 1.68, "prod_corr": 0.9294, "light": "GREEN", "note": "IS 全绿(1.76/1.29/2y2.40) 但 PROD 0.929>0.7 硬闸 FAIL; 与 88lr21xo 互相关 0.929>0.7 → 不可提交"},
+    {"id": "D10", "alpha": "np7zob8w", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(analyst_quantile1_60d_pred)))", "sharpe": 1.48, "fitness": 1.1, "tvr": 0.1244, "two_year": 1.34, "sub": 1.38, "light": "YELLOW", "note": "LOW_SHARPE 1.48<1.58 + IS_LADDER 1.34(yr3)<1.58 warning; 2y 1.34 差门槛"},
+    {"id": "D3", "alpha": "Vk7lEopG", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_confidence_20d_pred)))", "sharpe": 1.36, "fitness": 0.92, "tvr": 0.1211, "two_year": null, "sub": null, "light": "RED", "note": "sharpe/fitness 双差门槛"},
+    {"id": "D9", "alpha": "MP78XALM", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(event_embedding_quantile2_60d_pred)))", "sharpe": 1.23, "fitness": 0.81, "tvr": 0.0844, "two_year": null, "sub": null, "light": "RED", "note": "事件嵌入信号弱"},
+    {"id": "D2", "alpha": "vRjz9VLa", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile5_5d_pred)))", "sharpe": 1.22, "fitness": 0.8, "tvr": 0.1306, "two_year": null, "sub": null, "light": "RED", "note": "q5 反向端弱于 q1"},
+    {"id": "D1", "alpha": "0mwQdW8G", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_20d_pred)))", "sharpe": 1.21, "fitness": 0.77, "tvr": 0.1386, "two_year": null, "sub": null, "light": "RED", "note": "hedge3 q4 20d 变体边际递减(基线 q1 5d 已最佳)"},
+    {"id": "D7", "alpha": "O07mkvZJ", "expr": "rank(add(multiply(2, rank(change_analyst_consensus_rating)), rank(short_horizon_hedge3_quantile1_5d_pred)))", "sharpe": 1.2, "fitness": 0.78, "tvr": 0.1191, "two_year": null, "sub": null, "light": "RED", "note": "consensus 评级弱于 6m 评级(白空间但不增效)"},
+    {"id": "D8", "alpha": "KP786R9p", "expr": "rank(add(multiply(2, rank(change_analyst_consensus_rating)), rank(short_horizon_hedge3_quantile4_20d_pred)))", "sharpe": 0.85, "fitness": 0.46, "tvr": 0.1329, "two_year": null, "sub": null, "light": "RED", "note": "3 FAIL (LOW_SHARPE/LOW_FITNESS/IS_LADDER)"}
+  ],
+  "key_insight": "评级修正 × 短周期混合族已近饱和: 两颗新绿灯(A1labdPw 量价、pwjzEg6b regime4) IS 全达标(2y 2.49/2.40) 但 PROD 相关 0.897/0.929 双双超 0.7 硬闸, 与已提交 88lr21xo 互相关 0.897/0.929 —— 同一信号族的近似复制, 提交必 FAIL。族内最佳组合仍停留在 wave91c 的 SH1 基线(2y 2.52 纪录)。量价/regime 短周期在 KOR production book 高度拥挤。",
+  "verdict": "RED (族饱和): 0 可提交。2 颗 IS 绿灯因 PROD 相关 FAIL 判不可提交; 新评级字段 consensus 不增效(0.85-1.20)。族内变体空间已挖尽, 需换中性化/更长窗口差异化或转数据集。",
+  "submit_gate": {"best_sharpe": 1.83, "required": 1.58, "best_fitness": 1.32, "fitness_required": 1.0, "best_2y": 2.49, "two_year_required": 1.58, "submitted": 0, "blocked": ["A1labdPw: PROD 0.897", "pwjzEg6b: PROD 0.929"]}
+}

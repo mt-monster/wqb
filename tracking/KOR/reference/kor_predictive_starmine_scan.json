@@ -1,0 +1,2414 @@
+﻿{
+ "dataset": "predictive_starmine",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 300
+ },
+ "field_count": 300,
+ "fetched_at": "2026-08-22T22:15:26",
+ "fields": [
+  {
+   "id": "actual_last_year_earnings_2",
+   "type": "MATRIX",
+   "coverage": 0.7146,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual earnings reported for the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_earnings_3",
+   "type": "MATRIX",
+   "coverage": 0.9668,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual earnings reported for the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_earnings_6",
+   "type": "MATRIX",
+   "coverage": 0.9668,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual earnings reported for the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_ebitda_2",
+   "type": "MATRIX",
+   "coverage": 0.9311,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual EBITDA reported for the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_ebitda_7",
+   "type": "MATRIX",
+   "coverage": 0.9311,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual EBITDA reported for the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_revenue_2",
+   "type": "MATRIX",
+   "coverage": 0.9716,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual revenue reported for the most recently completed fiscal year"
+  },
+  {
+   "id": "actual_last_year_revenue_3",
+   "type": "MATRIX",
+   "coverage": 0.7201,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual revenue reported in the last fiscal year"
+  },
+  {
+   "id": "actual_last_year_revenue_4",
+   "type": "MATRIX",
+   "coverage": 0.9716,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual revenue reported for the last fiscal year"
+  },
+  {
+   "id": "analyst_downgrade_count_14d_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst rating downgrades aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downgrade_count_14d_21",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst downgrades in the past 14 days"
+  },
+  {
+   "id": "analyst_downgrade_count_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst downgrades over the last 14 days"
+  },
+  {
+   "id": "analyst_downgrade_count_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst downgrades in the past 30 days"
+  },
+  {
+   "id": "analyst_downgrade_count_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst downgrades over the last 30 days"
+  },
+  {
+   "id": "analyst_downgrade_count_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 30 days"
+  },
+  {
+   "id": "analyst_downgrade_count_60d_2",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst downgrades over the last 60 days"
+  },
+  {
+   "id": "analyst_downgrade_count_60d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 60 days"
+  },
+  {
+   "id": "analyst_downgrade_count_60d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 60 days"
+  },
+  {
+   "id": "analyst_downgrade_count_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_downgrade_count_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_downgrade_count_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_downgrade_count_90d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 90 days"
+  },
+  {
+   "id": "analyst_downgrade_count_90d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the last 90 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates downward for fiscal quarter 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered FQ1 earnings estimates in the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising earnings estimates downward for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for fiscal quarter 1, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_30d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered FQ1 earnings estimates over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their fiscal quarter 1 earnings estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates downward for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_earnings_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates downward for fiscal quarter 1 (FQ1) over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their fiscal quarter 1 EBITDA estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their FQ1 EBITDA estimates downward over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their EBITDA estimates for fiscal quarter 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised EBITDA estimates downward for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their EBITDA estimates for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates downward for fiscal quarter 1 (FQ1) over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_ebitda_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their EBITDA estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates downward for fiscal quarter 1, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their revenue estimates for fiscal quarter 1, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their revenue estimates for fiscal quarter 1, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates downward for fiscal quarter 1, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their revenue estimates for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_30d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their revenue estimates for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised revenue estimates downward for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their revenue estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq1_revenue_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their revenue estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their earnings estimates downward for fiscal quarter 2, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their earnings estimates for Fiscal Quarter 2, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal quarter 2 earnings estimates downward over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_30d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their earnings estimates for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_30d_31",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising their earnings estimates downward for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their earnings estimates for fiscal quarter 2 (FQ2) over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their earnings estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_earnings_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates downward for fiscal quarter 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised down EBITDA estimates for fiscal quarter 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their EBITDA estimates for fiscal quarter 2, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_14d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised EBITDA estimates downward for fiscal quarter 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_30d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising their EBITDA estimates downward for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_7d_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised down their EBITDA estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_ebitda_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their EBITDA estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts lowering their revenue estimates for fiscal quarter 2 (FQ2) over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their FQ2 revenue estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their revenue estimates for fiscal quarter 2 (FQ2) over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_30d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising downward their revenue estimates for fiscal quarter 2, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their revenue estimates for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their revenue estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fq2_revenue_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised down their revenue estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their FY1 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their earnings estimates for fiscal year 1 (FY1) over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates downward for fiscal year 1, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_30d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their earnings estimates for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised down their earnings estimates for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_earnings_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their earnings estimates for fiscal year 1 (FY1) over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_14d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their FY1 EBITDA estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their EBITDA estimate for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_30d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised EBITDA estimates downward for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates downward for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_ebitda_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down their EBITDA estimates for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates downward for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal year 1 revenue estimates downward over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down revenue estimates for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down revenue estimates for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down revenue estimates for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their fiscal year 1 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their FY1 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_downward_revision_count_fy1_revenue_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who lowered their revenue estimates for fiscal year 1 (FY1) over the last 7 days"
+  },
+  {
+   "id": "analyst_revisions_score_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Overall score from the Analyst Revisions Model (ARM)"
+  },
+  {
+   "id": "analyst_revisions_score_21",
+   "type": "MATRIX",
+   "coverage": 0.7547,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Composite score indicating analyst revisions activity (ARM)"
+  },
+  {
+   "id": "analyst_revisions_score_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Composite score reflecting analyst revisions activity"
+  },
+  {
+   "id": "analyst_upgrade_count_14d_2",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst rating upgrades over the last 14 days"
+  },
+  {
+   "id": "analyst_upgrade_count_14d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 14 days"
+  },
+  {
+   "id": "analyst_upgrade_count_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 14 days"
+  },
+  {
+   "id": "analyst_upgrade_count_30d_2",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 30 days"
+  },
+  {
+   "id": "analyst_upgrade_count_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the last 30 days"
+  },
+  {
+   "id": "analyst_upgrade_count_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 30 days"
+  },
+  {
+   "id": "analyst_upgrade_count_60d_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the last 60 days"
+  },
+  {
+   "id": "analyst_upgrade_count_60d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst upgrades over the last 60 days"
+  },
+  {
+   "id": "analyst_upgrade_count_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_upgrade_count_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_upgrade_count_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the last 7 days"
+  },
+  {
+   "id": "analyst_upgrade_count_90d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades over the last 90 days"
+  },
+  {
+   "id": "analyst_upgrade_count_90d_31",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst upgrades in the last 90 days"
+  },
+  {
+   "id": "analyst_upgrade_count_90d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the last 90 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_14d_4",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates upward for fiscal quarter 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ1 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal quarter 1 (FQ1) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal quarter 1 earnings estimates upward over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their earnings estimates upward for fiscal quarter 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_30d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal quarter 1 (FQ1) over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised FQ1 earnings estimates in the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_earnings_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ1 earnings estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal quarter 1, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their EBITDA estimates for fiscal quarter 1 (FQ1) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ1 EBITDA estimates over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal quarter 1, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_7d_2",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised EBITDA estimates upward for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised FQ1 EBITDA estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_ebitda_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimate for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their revenue estimates for fiscal quarter 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for fiscal quarter 1, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 1 (FQ1) over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimate for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq1_revenue_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their revenue estimates for fiscal quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_14d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ2 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal quarter 2 (FQ2) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ2 earnings estimates over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal quarter 2 earnings estimates upward over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_7d_2",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their earnings estimates upward for fiscal quarter 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their earnings estimates for fiscal quarter 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_earnings_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimate for fiscal quarter 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal quarter 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their EBITDA estimate for fiscal quarter 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_14d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal quarter 2, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal quarter 2, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who increased their EBITDA estimates for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal quarter 2 EBITDA estimates upward over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_ebitda_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ2 EBITDA estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upwards for fiscal quarter 2, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 2 (FQ2) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_30d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who raised their revenue estimates for fiscal quarter 2 (FQ2) over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_7d_4",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal quarter 2 revenue estimates upward over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal quarter 2 (FQ2) over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fq2_revenue_7d_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising upward their revenue estimates for fiscal quarter 2 within the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their fiscal year 1 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upwards for Fiscal Year 1, aggregated over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal year 1 (FY1) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_30d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY1 earnings estimates over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal year 1 (FY1) over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_earnings_7d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who increased their earnings estimates for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimate for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 1 (FY1) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimate for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their EBITDA estimate for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their EBITDA estimates for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_ebitda_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their EBITDA estimates for fiscal year 1 (FY1) over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up revenue estimates for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY1 revenue estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who increased their revenue estimates for fiscal year 1 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their revenue estimates for fiscal year 1 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal year 1 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upwards for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy1_revenue_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their revenue estimates for fiscal year 1, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates upward for fiscal year 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_14d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates upward for fiscal year 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates upward for fiscal year 2 (FY2) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised earnings estimates upward for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their earnings estimates upward for fiscal year 2 (FY2) over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their earnings estimates for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising earnings estimates upward for fiscal year 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_7d_41",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their fiscal year 2 earnings estimates over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_earnings_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their earnings estimates for fiscal year 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_14d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_14d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_14d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 2 (FY2) over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal year 2 EBITDA estimates upward over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_30d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their EBITDA estimates upward for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_30d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their EBITDA estimates for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising EBITDA estimates upward for fiscal year 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_ebitda_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for fiscal year 2 over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY2 revenue estimates over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_14d_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for fiscal year 2 over the last 14 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for fiscal year 2, aggregated over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7657,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upward for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_30d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who increased their revenue estimates for fiscal year 2 over the last 30 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_7d_3",
+   "type": "MATRIX",
+   "coverage": 0.7655,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised their fiscal year 2 revenue estimates upward over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_7d_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising revenue estimates upwards for fiscal year 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "analyst_upward_revision_count_fy2_revenue_7d_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up their revenue estimates for fiscal year 2, aggregated over the last 7 days"
+  },
+  {
+   "id": "arm_country_rank_score_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Analyst Revisions Model country rank represented as a floating-point value"
+  },
+  {
+   "id": "arm_country_rank_score_31",
+   "type": "MATRIX",
+   "coverage": 0.7544,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Country-level percentile rank of the ARM score expressed as a floating-point value"
+  },
+  {
+   "id": "arm_country_rank_score_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model rank at the country level represented as a floating-point value"
+  },
+  {
+   "id": "arm_global_rank_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Analyst Revisions Model global percentile rank expressed as a floating-point value"
+  },
+  {
+   "id": "arm_global_rank_score_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model global rank as a floating-point value"
+  },
+  {
+   "id": "arm_global_rank_score_31",
+   "type": "MATRIX",
+   "coverage": 0.7547,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile rank of the ARM score expressed as a floating-point value"
+  },
+  {
+   "id": "arm_new_activity_flag_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating new activity detected by the Analyst Revisions Model (ARM)"
+  },
+  {
+   "id": "arm_new_activity_flag_21",
+   "type": "MATRIX",
+   "coverage": 0.7961,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating new analyst revisions activity"
+  },
+  {
+   "id": "arm_new_activity_flag_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating new activity detected by the Analyst Revisions Model"
+  },
+  {
+   "id": "arm_preferred_earnings_component_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred earnings revisions component score in the Analyst Revisions Model, expressed as a floating point value"
+  },
+  {
+   "id": "arm_preferred_earnings_component_score_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred earnings component of the Analyst Revisions Model expressed as a floating-point value"
+  },
+  {
+   "id": "arm_recommendations_component_score",
+   "type": "MATRIX",
+   "coverage": 0.7154,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Floating-point component score of the Analyst Revisions Model representing analyst recommendations"
+  },
+  {
+   "id": "arm_recommendations_component_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9754,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Floating-point component score for analyst recommendations within the Analyst Revisions Model (ARM)"
+  },
+  {
+   "id": "arm_recommendations_component_score_6",
+   "type": "MATRIX",
+   "coverage": 0.9751,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Floating-point score for the analyst recommendations component within the Analyst Revisions Model (ARM)"
+  },
+  {
+   "id": "arm_region_rank_decimal_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Decimal regional rank in the Analyst Revisions Model"
+  },
+  {
+   "id": "arm_region_rank_decimal_21",
+   "type": "MATRIX",
+   "coverage": 0.7547,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regional percentile rank of the ARM score expressed as a decimal"
+  },
+  {
+   "id": "arm_region_rank_decimal_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model regional rank expressed as a decimal"
+  },
+  {
+   "id": "arm_revenue_component_score_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Revenue component of the Analyst Revisions Model expressed as a float"
+  },
+  {
+   "id": "arm_revenue_component_score_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model (ARM) revenue component score represented as a floating-point value"
+  },
+  {
+   "id": "arm_score_5pt_scale_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model (ARM) score representing 5-day change"
+  },
+  {
+   "id": "arm_score_5pt_scale_21",
+   "type": "MATRIX",
+   "coverage": 0.7547,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model score representing 5-day change"
+  },
+  {
+   "id": "arm_score_5pt_scale_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst Revisions Model five-day change score"
+  },
+  {
+   "id": "arm_score_change_1d_2",
+   "type": "MATRIX",
+   "coverage": 0.9851,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Analyst Revisions Model (ARM) score over the last 1 day"
+  },
+  {
+   "id": "arm_score_change_1d_21",
+   "type": "MATRIX",
+   "coverage": 0.7539,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model score over the last 1 day"
+  },
+  {
+   "id": "arm_score_change_1d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model score over the last 1 day"
+  },
+  {
+   "id": "arm_score_change_30d_3",
+   "type": "MATRIX",
+   "coverage": 0.7436,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model score over the last 30 days"
+  },
+  {
+   "id": "arm_score_change_30d_4",
+   "type": "MATRIX",
+   "coverage": 0.9957,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 30 days"
+  },
+  {
+   "id": "arm_score_change_30d_6",
+   "type": "MATRIX",
+   "coverage": 0.9957,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model score over the last 30 days"
+  },
+  {
+   "id": "arm_score_change_3d_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 3 days"
+  },
+  {
+   "id": "arm_score_change_3d_21",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model (ARM) score over the last 3 days"
+  },
+  {
+   "id": "arm_score_change_60d_3",
+   "type": "MATRIX",
+   "coverage": 0.9895,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model score over the last 60 days"
+  },
+  {
+   "id": "arm_score_change_60d_31",
+   "type": "MATRIX",
+   "coverage": 0.7341,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 60 days"
+  },
+  {
+   "id": "arm_score_change_60d_7",
+   "type": "MATRIX",
+   "coverage": 0.9895,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 60 days"
+  },
+  {
+   "id": "arm_score_change_7d_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model (ARM) score over the last 7 days"
+  },
+  {
+   "id": "arm_score_change_7d_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 7 days"
+  },
+  {
+   "id": "arm_score_change_90d",
+   "type": "MATRIX",
+   "coverage": 0.7248,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model score over the last 90 days"
+  },
+  {
+   "id": "arm_score_change_90d_3",
+   "type": "MATRIX",
+   "coverage": 0.984,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the Analyst Revisions Model (ARM) score over the last 90 days"
+  },
+  {
+   "id": "arm_score_change_90d_4",
+   "type": "MATRIX",
+   "coverage": 0.984,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Analyst Revisions Model score over the last 90 days"
+  },
+  {
+   "id": "arm_secondary_earnings_component_score",
+   "type": "MATRIX",
+   "coverage": 0.7369,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Float value representing the secondary earnings component in the Analyst Revisions Model"
+  },
+  {
+   "id": "arm_secondary_earnings_component_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Secondary earnings component in the Analyst Revisions Model (floating point value)"
+  },
+  {
+   "id": "arm_secondary_earnings_component_score_7",
+   "type": "MATRIX",
+   "coverage": 0.9786,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Secondary earnings component value in the Analyst Revisions Model (float)"
+  },
+  {
+   "id": "cagr_base_year_projection",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Base year used for the CAGR calculations in the intrinsic value model"
+  },
+  {
+   "id": "days_since_last_report_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of days since the last analyst report"
+  },
+  {
+   "id": "days_since_last_report_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of days since the last report was issued"
+  },
+  {
+   "id": "ep_yield_pct_smest_f12m",
+   "type": "MATRIX",
+   "coverage": 0.994,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Earnings yield percentage based on SmartEstimate for the next 12 months (F12M)"
+  },
+  {
+   "id": "ep_yield_pct_smest_f12m_3",
+   "type": "MATRIX",
+   "coverage": 0.7404,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings yield percentage based on the SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "ep_yield_pct_smest_f12m_6",
+   "type": "MATRIX",
+   "coverage": 0.994,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Earnings yield percentage based on SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "ep_yield_pct_smest_fy1_3",
+   "type": "MATRIX",
+   "coverage": 0.9942,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Earnings yield percentage based on the SmartEstimate for FY1"
+  },
+  {
+   "id": "ep_yield_pct_smest_fy1_6",
+   "type": "MATRIX",
+   "coverage": 0.9938,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings yield percentage based on SmartEstimate for fiscal year 1"
+  },
+  {
+   "id": "ep_yield_pct_smest_fy2_2",
+   "type": "MATRIX",
+   "coverage": 0.73,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings yield percentage based on the SmartEstimate for fiscal year 2 (year after next)"
+  },
+  {
+   "id": "ep_yield_pct_smest_fy2_3",
+   "type": "MATRIX",
+   "coverage": 0.9871,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings yield percentage based on SmartEstimate for fiscal year 2 (FY2)"
+  },
+  {
+   "id": "ep_yield_pct_smest_fy2_7",
+   "type": "MATRIX",
+   "coverage": 0.9868,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings yield percentage based on SmartEstimate for fiscal year 2 (FY2)"
+  },
+  {
+   "id": "eq_vr_dlra1_accruals_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Book (P/B) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_accruals_component_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Book (P/B) ratio quarter-over-quarter change (level difference), 1 quarter difference (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_cashflow_component",
+   "type": "MATRIX",
+   "coverage": 0.9063,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Free Cash Flow (P/FCF) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_cashflow_component_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Free Cash Flow to Enterprise Value (%) (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_cashflow_component_change_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Free Cash Flow Yield (%) (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_exclusions_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Sales ratio year-over-year change (%), 1 fiscal year difference (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_exclusions_component_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "EV/EBITDA quarter-over-quarter change (%), 1 quarter difference (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_operating_efficiency_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Enterprise Value to EBITDA (EV/EBITDA) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_operating_efficiency_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Sales (P/S) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_operating_efficiency_component_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Enterprise Value (EV) (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_operating_efficiency_component_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Book (P/B) ratio quarter-over-quarter change (%), 1 quarter difference (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_raw_score",
+   "type": "MATRIX",
+   "coverage": 0.9961,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Cash Flow from Operations (P/CFO) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to Sales (P/S) ratio year-over-year change (level difference), 1 fiscal year difference (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_region_rank_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Enterprise Value to Sales (EV/Sales) ratio (relation-value adjusted)"
+  },
+  {
+   "id": "eq_vr_dlra1_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Cash Flow from Operations to Enterprise Value (%) (relation-value adjusted)"
+  },
+  {
+   "id": "forward_10yr_eps_cagr_projection",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward 10-year EPS compound annual growth rate from SmartGrowth"
+  },
+  {
+   "id": "forward_5yr_eps_cagr_projection",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of EPS from current to year 5 projected by the SmartGrowth model"
+  },
+  {
+   "id": "forward_pe_mean_f12m_3",
+   "type": "MATRIX",
+   "coverage": 0.7477,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean forward price-to-earnings ratio estimated for the next 12 months"
+  },
+  {
+   "id": "forward_pe_mean_f12m_4",
+   "type": "MATRIX",
+   "coverage": 0.9986,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price to earnings ratio based on mean estimates for the next 12 months"
+  },
+  {
+   "id": "forward_pe_mean_f12m_6",
+   "type": "MATRIX",
+   "coverage": 0.9982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean forward price-to-earnings ratio based on estimates for the next 12 months"
+  },
+  {
+   "id": "forward_pe_mean_fy1_3",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on mean FY1 earnings estimates"
+  },
+  {
+   "id": "forward_pe_mean_fy1_5",
+   "type": "MATRIX",
+   "coverage": 0.9949,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean forward price-to-earnings ratio based on fiscal year 1 (FY1) estimates"
+  },
+  {
+   "id": "forward_pe_mean_fy2_3",
+   "type": "MATRIX",
+   "coverage": 0.9927,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean forward price-to-earnings ratio estimate for fiscal year 2"
+  },
+  {
+   "id": "forward_pe_mean_fy2_7",
+   "type": "MATRIX",
+   "coverage": 0.9923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio using mean analyst estimates for fiscal year 2"
+  },
+  {
+   "id": "forward_pe_smest_f12m_4",
+   "type": "MATRIX",
+   "coverage": 0.9898,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Forward price to earnings ratio based on SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "forward_pe_smest_f12m_6",
+   "type": "MATRIX",
+   "coverage": 0.9898,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on SmartEstimate for the next 12 months (F12M)"
+  },
+  {
+   "id": "forward_pe_smest_fy1_2",
+   "type": "MATRIX",
+   "coverage": 0.7281,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on SmartEstimate for fiscal year 1"
+  },
+  {
+   "id": "forward_pe_smest_fy1_3",
+   "type": "MATRIX",
+   "coverage": 0.9863,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on the StarMine SmartEstimate for FY1"
+  },
+  {
+   "id": "forward_pe_smest_fy1_5",
+   "type": "MATRIX",
+   "coverage": 0.9863,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on SmartEstimate for fiscal year 1"
+  },
+  {
+   "id": "forward_pe_smest_fy2",
+   "type": "MATRIX",
+   "coverage": 0.9847,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on SmartEstimate for fiscal year 2 (FY2)"
+  },
+  {
+   "id": "forward_pe_smest_fy2_7",
+   "type": "MATRIX",
+   "coverage": 0.9846,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on SmartEstimate for fiscal year 2"
+  },
+  {
+   "id": "intrinsic_valuation_discount_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Discount rate used in the intrinsic valuation model"
+  },
+  {
+   "id": "intrinsic_value_projection_currency_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The intrinsic value calculated in a specified projection currency"
+  },
+  {
+   "id": "intrinsic_value_projection_currency_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Intrinsic value calculated in the specified projection currency"
+  },
+  {
+   "id": "iv_cagr_base_year_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Base year used for CAGR calculations in the intrinsic value model"
+  },
+  {
+   "id": "iv_discount_rate_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Discount rate used in the valuation model"
+  },
+  {
+   "id": "iv_forward_10yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected 10-year forward EPS compound annual growth rate from the SmartGrowth model"
+  },
+  {
+   "id": "iv_forward_5yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of EPS from current to Year 5 projected by SmartGrowth"
+  },
+  {
+   "id": "iv_market_implied_10yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market-implied compound annual growth rate of EPS over 10 years based on current market price"
+  },
+  {
+   "id": "iv_market_implied_10yr_eps_cagr_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market-implied compound annual growth rate of EPS over 10 years based on current price"
+  },
+  {
+   "id": "iv_market_implied_5yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market-implied compound annual growth rate of EPS over 5 years based on current market price"
+  },
+  {
+   "id": "iv_projected_dividends_fy10_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 10 dividends per share estimate (DPS)"
+  },
+  {
+   "id": "iv_projected_dividends_fy11_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 11 dividends per share estimate (DPS)"
+  },
+  {
+   "id": "iv_projected_dividends_fy12_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 12 dividends per share estimate (DPS)"
+  },
+  {
+   "id": "iv_projected_dividends_fy13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 13 dividends per share estimate (DPS)"
+  },
+  {
+   "id": "iv_projected_dividends_fy13_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividends per share (DPS) projection for fiscal year 13"
+  },
+  {
+   "id": "iv_projected_dividends_fy14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal year 14 dividends per share estimate (DPS)"
+  }
+ ]
+}

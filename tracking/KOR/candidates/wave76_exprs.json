@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 40))", "note": "trend0 衰减40d（窗口扫描）"},
+  {"id": 2, "expr": "rank(ts_decay_linear(normalized_trend_indicator_0, 60))", "note": "trend0 衰减60d（窗口扫描）"},
+  {"id": 3, "expr": "rank(ts_decay_linear(normalized_trend_indicator_1, 20))", "note": "trend1 衰减20d（新字段）"},
+  {"id": 4, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 20))", "note": "trend2 衰减20d（新字段）"},
+  {"id": 5, "expr": "rank(ts_decay_linear(normalized_trend_indicator_3, 20))", "note": "trend3 衰减20d（新字段）"},
+  {"id": 6, "expr": "rank(ts_decay_linear(normalized_trend_indicator_5, 20))", "note": "trend5 衰减20d（新字段）"},
+  {"id": 7, "expr": "rank(ts_decay_linear(normalized_trend_indicator_6, 20))", "note": "trend6 衰减20d（新字段）"},
+  {"id": 8, "expr": "rank(ts_zscore(normalized_trend_indicator_2, 60))", "note": "trend2 标准化60d（新字段）"},
+  {"id": 9, "expr": "rank(ts_zscore(normalized_trend_indicator_3, 126))", "note": "trend3 半年标准化（新字段）"},
+  {"id": 10, "expr": "rank(ts_delta(normalized_trend_indicator_1, 20))", "note": "trend1 20d变化（新字段）"}
+]

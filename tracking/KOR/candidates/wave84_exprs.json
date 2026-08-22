@@ -1,0 +1,20 @@
+{
+  "wave": 84,
+  "tag": "wave84",
+  "created": "2026-08-22",
+  "baseline": "Jj7mdmJl rank(rank(ts_decay_linear(t2,12)) + multiply(1.5, rank(gz(ts_decay_linear(t6,8), subindustry)))) sharpe 1.29 fitness 0.83 2y 0.68",
+  "focus": "1.5x 邻域深化: 权重精扫(1.3/1.7x) + 1.5x×窗口网格(trend6 6/10/12d, trend2 10/15/18d) + industry×1.5x 叠加 + trend2 半权重 ratio 3:1",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.3, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "权重 1.3x 精扫(1x=1.23 → 1.5x=1.29 间)"},
+    {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.7, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "权重 1.7x 精扫(1.5x=1.29 → 2x=1.28 间)"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry))))", "note": "1.5x + trend6 10d"},
+    {"id": 4, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 12), subindustry))))", "note": "1.5x + trend6 12d"},
+    {"id": 5, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 6), subindustry))))", "note": "1.5x + trend6 6d 边界(5d 塌 1.21, 8d 1.29)"},
+    {"id": 6, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.5x + trend2 15d"},
+    {"id": 7, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 18)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.5x + trend2 18d"},
+    {"id": 8, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), industry))))", "note": "1.5x + industry 中性化(2y 提升叠加测试)"},
+    {"id": 9, "expr": "multiply(0.5, rank(ts_decay_linear(normalized_trend_indicator_2, 12))) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry)))", "note": "trend2 半权重 + trend6 1.5x = ratio 3:1"},
+    {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 10)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "1.5x + trend2 10d"}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "wave": 87,
+  "tag": "wave87",
+  "created": "2026-08-22",
+  "baseline": "Jj7mdmJl rank(rank(ts_decay_linear(t2,12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(t6,8), subindustry)))) sharpe 1.29 fitness 0.83 (KOR trend 基线, 已收敛)",
+  "direction": "wave86 双数据集判死(forum/behavioral 事件流 CW 结构性集中)后换方向: registry untried 'news/sentiment/insiders/shortinterest 全族' 中按 PPA 双门槛(cov≥0.85/ac≤50/fc≥10)筛出两个 tier1: multi_source_model(cov 0.93/ac 26/60 字段全 MATRIX) + news_sentiment_transfer(cov 0.965/ac 31/23 字段, 情绪聚合统计)。全 MATRIX/VECTOR → 无 EVENT 流 CW 集中风险",
+  "probe_findings": {
+    "multi_source_model": "60 字段全 MATRIX 模型预测分数, cov 0.8999-0.9464, alphaCount 26 低竞争。quantile1=top 分位预测(正信号), quantile5=最差分位(负信号反转), 含 regime2/4 调整/seasonal/hedge3 低相关对冲/confidence 置信度",
+    "news_sentiment_transfer": "23 字段, cov 0.9654, MATRIX 聚合统计(avg/max/median/min/skewness/total) + 2 个 VECTOR。非事件流 → 无 CW 集中风险",
+    "excluded": "model242(5 字段 TM1)/model243(4 字段)/event_stock_model(3 字段) 字段过少; insider_feats cov 0.6757 不达 tier1 留探针; shortinterest38/insiders5 alphaCount 1700+/4000+ 过度拥挤"
+  },
+  "batches": [
+    {
+      "batch": "A",
+      "note": "multi_source_model 模型分数批: 长周期预测(120d 低 TVR) + 短周期 regime 动量 + 低相关对冲 + 5 分位反转",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "A1", "expr": "rank(long_term_quantile1_120d_pred)", "note": "长周期 120d top 分位预测直接排序(模型综合信号)"},
+        {"id": "A2", "expr": "rank(ts_mean(long_term_quantile1_60d_pred, 10))", "note": "60d 预测 10d 平滑降噪"},
+        {"id": "A3", "expr": "rank(long_horizon_hedge3_quantile1_120d_pred)", "note": "长周期低相关对冲信号(设计为与主信号正交)"},
+        {"id": "A4", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_quantile1_20d_pred)))", "note": "长短周期预测等权结合"},
+        {"id": "A5", "expr": "rank(ts_delta(short_term_regime2_quantile1_20d_pred, 5))", "note": "两相 regime 短周期预测 5d 动量(预测改善)"},
+        {"id": "A6", "expr": "rank(multiply(-1, long_term_quantile5_120d_pred))", "note": "5 分位(最差收益预测)反转做多"}
+      ]
+    },
+    {
+      "batch": "B",
+      "note": "news_sentiment_transfer 情绪聚合批: 情绪水平 + 动量 + 20d 变化, 全 MATRIX 无事件流风险",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "B1", "expr": "rank(ts_mean(primary_sentiment_average, 10))", "note": "主情绪均值 10d 平滑(情绪水平)"},
+        {"id": "B2", "expr": "rank(add(rank(primary_sentiment_average), rank(ts_delta(primary_sentiment_average, 10))))", "note": "情绪水平 + 10d 动量组合"},
+        {"id": "B3", "expr": "rank(ts_delta(sentiment_score_average, 20))", "note": "综合情绪均值 20d 变化(情绪改善)"},
+        {"id": "B4", "expr": "rank(ts_mean(secondary_sentiment_average, 20))", "note": "次情绪均值 20d 平滑(交叉验证信号)"}
+      ]
+    }
+  ]
+}

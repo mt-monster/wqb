@@ -1,0 +1,56 @@
+{
+  "wave": 96,
+  "tag": "wave96",
+  "created": "2026-08-22",
+  "baseline": "KOR 4 ACTIVE (88lr21xo/A1lb2KpR 评级修正×SH, WjAxxZVk SH×seasonal, e73Rw8qg EPS×pretaxdown); dead_ends 8 个族已排除; 目标从其他数据集挖新信号与 book 差异化",
+  "focus": "新数据集双探针: price_signal_dl (DL 优化趋势/量指标, ac 9) + ai_factor_transfer (AI 转移技术指标, ac 12)。两数据集均 cov>=0.97, 全 MATRIX, 竞争者极少, 信号族与现有 book (评级修正/盈利预测) 天然低相关",
+  "direction": "KOR 已验证配方结构: rank(add(multiply(w, rank(A)), rank(B))) 双信号组合 (88lr21xo), rank(ts_zscore(x,n)) 稳定性过滤; 本批加入 ts_corr 量价相关探针 (探索合约注入算子 ts_corr/ts_kurtosis/bucket/if_else 每批>=2)。技术指标类信号在 KOR 短周期动量/量确认方向未挖。设置沿用 wave91c 标准: KOR/TOP600/delay 1/decay 4/STATISTICAL/trunc 0.08/pasteurization ON/unitHandling VERIFY/nanHandling OFF",
+  "batches": [
+    {
+      "batch": "P",
+      "note": "price_signal_dl 趋势/量指标探针 (6 条, 2 个 ts_corr 注入)",
+      "settings": {
+        "region": "KOR",
+        "universe": "TOP600",
+        "delay": 1,
+        "decay": 4,
+        "neutralization": "STATISTICAL",
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unitHandling": "VERIFY",
+        "nanHandling": "OFF"
+      },
+      "expressions": [
+        {"id": "P1", "expr": "rank(ts_delta(raw_trend_indicator_0, 20))", "note": "趋势动量基线 (20d 变化)"},
+        {"id": "P2", "expr": "rank(ts_delta(normalized_trend_indicator_1, 20))", "note": "归一化趋势动量"},
+        {"id": "P3", "expr": "rank(add(multiply(2, rank(ts_delta(raw_trend_indicator_0, 20))), rank(ts_delta(raw_volume_indicator_0, 20))))", "note": "趋势+量确认组合 (88lr21xo 配方)"},
+        {"id": "P4", "expr": "rank(ts_zscore(ts_delta(raw_trend_indicator_3, 20), 60))", "note": "趋势动量 60d zscore 稳定性过滤"},
+        {"id": "P5", "expr": "rank(ts_corr(raw_trend_indicator_0, raw_volume_indicator_0, 20))", "note": "量价相关 20d (注入1)"},
+        {"id": "P6", "expr": "rank(ts_corr(normalized_trend_indicator_1, normalized_volume_indicator_0, 20))", "note": "归一化量价相关 (注入2)"}
+      ]
+    },
+    {
+      "batch": "A",
+      "note": "ai_factor_transfer 资金流/动量/量异常探针 (6 条, 2 个 ts_corr 注入)",
+      "settings": {
+        "region": "KOR",
+        "universe": "TOP600",
+        "delay": 1,
+        "decay": 4,
+        "neutralization": "STATISTICAL",
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unitHandling": "VERIFY",
+        "nanHandling": "OFF"
+      },
+      "expressions": [
+        {"id": "A1", "expr": "rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))", "note": "资金流(RSI 型) 10d 动量"},
+        {"id": "A2", "expr": "rank(ts_delta(momentum_williams_r_adjusted, 10))", "note": "return momentum 变化"},
+        {"id": "A3", "expr": "rank(ts_zscore(typical_price_bollinger_band_position, 20))", "note": "BB 位置 20d zscore (波动回归)"},
+        {"id": "A4", "expr": "rank(add(multiply(2, rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))), rank(ts_delta(liquidity_money_flow_alignment, 10))))", "note": "资金流+流动性对齐组合"},
+        {"id": "A5", "expr": "rank(ts_corr(cumulative_money_flow_volume_adjusted, short_term_price_change, 20))", "note": "资金流×价格 20d 相关 (注入1)"},
+        {"id": "A6", "expr": "rank(ts_corr(volume_anomaly_price_positioning, short_term_price_change, 20))", "note": "量异常×价格 20d 相关 (注入2)"}
+      ]
+    }
+  ]
+}

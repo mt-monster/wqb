@@ -1,0 +1,25 @@
+{
+  "wave": "wave77",
+  "date": "2026-08-21",
+  "region": "KOR",
+  "universe": "TOP600",
+  "settings": {"delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "dataset": "price_signal_dl",
+  "multisim": "YtZXc1X4vycjUYIDltVHB",
+  "status": "10/10 COMPLETE",
+  "results": [
+    {"id": 1, "alpha_id": "Grl0jOEo", "expr": "rank(rank(decay(trend2,20)) + rank(decay(trend6,20)))", "sharpe": 0.8, "fitness": 0.42, "turnover": 0.0922, "two_year_sharpe": 1.04, "sub_universe_sharpe": 0.73, "verdict": "NEAR", "note": "BEST: trend2+trend6 双强相加 0.80 全场最高"},
+    {"id": 2, "alpha_id": "9qXP5Wg2", "expr": "rank(rank(decay(trend0,20)) + rank(decay(trend6,20)))", "sharpe": 0.68, "fitness": 0.33, "turnover": 0.0988, "two_year_sharpe": 0.98, "sub_universe_sharpe": 0.59, "verdict": "NEAR", "note": "trend0+trend6"},
+    {"id": 3, "alpha_id": "QP7rRKrX", "expr": "rank(rank(decay(trend2,20)) + rank(decay(trend4,20)))", "sharpe": 0.61, "fitness": 0.28, "turnover": 0.0841, "two_year_sharpe": 1.1, "sub_universe_sharpe": 0.73, "verdict": "NEAR", "note": "trend2+trend4"},
+    {"id": 4, "alpha_id": "MP7lv3lL", "expr": "rank(decay(trend2,20) + decay(trend0,20) + decay(trend6,20))", "sharpe": 0.48, "fitness": 0.19, "turnover": 0.1026, "two_year_sharpe": 1.19, "sub_universe_sharpe": 0.66, "verdict": "FAIL", "note": "三因子直接相加 无rank预处理 退化为平均"},
+    {"id": 5, "alpha_id": "zqkw7bwE", "expr": "rank(rank(decay(trend2,10)) + rank(decay(trend0,20)))", "sharpe": 0.67, "fitness": 0.33, "turnover": 0.1028, "two_year_sharpe": 1.29, "sub_universe_sharpe": 0.91, "verdict": "NEAR", "note": "跨窗口 10d+20d"},
+    {"id": 6, "alpha_id": "KP7YArq8", "expr": "rank(rank(decay(trend2,30)) + rank(decay(trend0,20)))", "sharpe": 0.66, "fitness": 0.32, "turnover": 0.0936, "two_year_sharpe": 1.41, "sub_universe_sharpe": 0.94, "verdict": "NEAR", "note": "跨窗口 30d+20d 2y 1.41 全场最高"},
+    {"id": 7, "alpha_id": "np7kGPYa", "expr": "rank(rank(group_zscore(decay(trend2,20), industry)) + rank(decay(trend0,20)))", "sharpe": 0.64, "fitness": 0.3, "turnover": 0.0963, "two_year_sharpe": 0.94, "sub_universe_sharpe": 0.83, "verdict": "NEAR", "note": "trend2行业中性+trend0"},
+    {"id": 8, "alpha_id": "omqwjWAb", "expr": "rank(ts_decay_linear(rank(decay(trend2,20)) + rank(decay(trend0,20)), 20))", "sharpe": 0.63, "fitness": 0.3, "turnover": 0.0783, "two_year_sharpe": 1.31, "sub_universe_sharpe": 0.93, "verdict": "NEAR", "note": "rank相加后再衰减20d TVR 7.8% 最低 降TVR有效"},
+    {"id": 9, "alpha_id": "xAjw7bQq", "expr": "rank(ts_zscore(rank(decay(trend2,20)) + rank(decay(trend0,20)), 60))", "sharpe": 0.16, "fitness": 0.03, "turnover": 0.1575, "two_year_sharpe": 1.0, "sub_universe_sharpe": -0.01, "verdict": "FAIL", "note": "相加后 zscore 破坏信号 sub FAIL"},
+    {"id": 10, "alpha_id": "d5j8J1mg", "expr": "rank(rank(decay(trend2,20)) + rank(decay(trend6,40)))", "sharpe": 0.73, "fitness": 0.37, "turnover": 0.0856, "two_year_sharpe": 0.87, "sub_universe_sharpe": 0.65, "verdict": "NEAR", "note": "trend2 20d + trend6 40d 跨窗口"}
+  ],
+  "key_insight": "rank 相加结构全族验证成功: 8/10 NEAR。Grl0jOEo(trend2+trend6) 0.80 全场最佳, 超越 wave76b 所有结构(乘积 0.63/单因子 0.65)。跨窗口 30d+20d 2y 1.41 最高; 相加后再衰减 20d TVR 降至 7.8% 为有效降 TVR 技巧; 相加后 zscore 破坏信号(0.16 FAIL); 无 rank 预处理的三因子直接相加退化为平均(0.48)。",
+  "verdict": "no_submit: sharpe 最高 0.80 未达 1.58, 无提交",
+  "next_wave": "wave78: 以 Grl0jOEo(0.80) 为基线 Mode A 收敛: 窗口扫描(15/25/30d)+再衰减(10/30/60d)+行业中性交叉+三因子 vec_avg"
+}

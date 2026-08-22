@@ -1,0 +1,25 @@
+{
+  "wave": 95,
+  "tag": "wave95",
+  "date": "2026-08-22",
+  "multisim": {"id": "1LiMmQ4A54rK9YRj9etSB7Q", "status": "10/10 COMPLETE"},
+  "dataset": "other455 GROUP cluster 攻坚 (wave93 判死 PCA MATRIX 族后的出路尝试)",
+  "baseline": "wave93 other455 PCA MATRIX 族 10/10 RED (sharpe<=0.18); wave91c 评级修正金矿(change_6m_rating_revision 2y2.14)",
+  "focus": "1200 个 GROUP cluster 字段(4 关系系×n2v/roam×w1/w4×kmeans/pca_fact×k5/10/20, cov 0.79) 作分组器, 经 group_rank/group_neutralize 包裹评级修正; GBR 经验 GROUP 字段是分组器不可直接 rank; E1-E3 k 扫描, E4 w4 换窗, E5 簇间成分, E6 consensus, E7 双簇, E8 ROAM, E9 PCA 簇, E10 评级2+簇内SH 三数据集混合",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "E10", "alpha": "KP786YG1", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(group_rank(short_horizon_hedge3_quantile1_5d_pred, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))))", "sharpe": 1.42, "fitness": 0.98, "tvr": 0.1281, "two_year": 2.26, "sub": 1.37, "light": "YELLOW", "note": "LOW_SHARPE 1.42<1.58 + LOW_FITNESS 0.98<1.0 warning + CLUSTER 0.63 warning; 三数据集混合构造幸存但未达门槛"},
+    {"id": "E9", "alpha": "vRjz9nNr", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10))", "sharpe": 0.53, "fitness": 0.23, "tvr": 0.0811, "two_year": null, "sub": null, "light": "RED", "note": "PCA 分解簇分组: 3 FAIL"},
+    {"id": "E4", "alpha": "np7zok8x", "expr": "rank(group_neutralize(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10))", "sharpe": 0.5, "fitness": 0.21, "tvr": 0.0719, "two_year": null, "sub": null, "light": "RED", "note": "w4 窗口簇中性化: 3 FAIL"},
+    {"id": "E2", "alpha": "vRjz9nlz", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5))", "sharpe": 0.48, "fitness": 0.2, "tvr": 0.0727, "two_year": null, "sub": null, "light": "RED", "note": "5 簇粗分组: 3 FAIL"},
+    {"id": "E3", "alpha": "Wj7XdwGo", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20))", "sharpe": 0.42, "fitness": 0.16, "tvr": 0.0788, "two_year": null, "sub": null, "light": "RED", "note": "20 簇细分组: 3 FAIL"},
+    {"id": "E7", "alpha": "kqjmXkZz", "expr": "rank(add(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10), group_rank(change_6m_rating_revision, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10)))", "sharpe": 0.42, "fitness": 0.16, "tvr": 0.076, "two_year": null, "sub": null, "light": "RED", "note": "竞争+客户双簇组合: 3 FAIL"},
+    {"id": "E8", "alpha": "E5lab0Gr", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_roam_w1_kmeans_cluster_10))", "sharpe": 0.42, "fitness": 0.16, "tvr": 0.0736, "two_year": null, "sub": null, "light": "RED", "note": "ROAM 嵌入簇: 3 FAIL"},
+    {"id": "E1", "alpha": "pwjzEJ6x", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))", "sharpe": 0.4, "fitness": 0.15, "tvr": 0.0747, "two_year": null, "sub": null, "light": "RED", "note": "k10 基线分组: 3 FAIL"},
+    {"id": "E6", "alpha": "88l6rkev", "expr": "rank(group_rank(change_analyst_consensus_rating, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))", "sharpe": 0.13, "fitness": 0.03, "tvr": 0.0758, "two_year": null, "sub": null, "light": "RED", "note": "consensus 簇内: 4 FAIL (含 LOW_SUB_UNIVERSE_SHARPE)"},
+    {"id": "E5", "alpha": "vRjz9nvz", "expr": "rank(subtract(rank(change_6m_rating_revision), group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)))", "sharpe": -0.26, "fitness": -0.08, "tvr": 0.108, "two_year": null, "sub": null, "light": "RED", "note": "簇间成分: 负信号! 簇内排名反而承载了主要 alpha"}
+  ],
+  "key_insight": "GROUP cluster 分组器路线判死: 9/10 RED。簇内排名/中性化把评级修正信号打散(1.42→0.40), 簇内样本同质化后 alpha 信息被平均掉; E5 簇间成分转负(-0.26) 反证簇内排名才是信号主要载体——但簇内排名相对全网 rank 无增量。E10 三数据集混合(评级2权重主导+簇内SH辅助) 幸存至 1.42/0.98/2y2.26 但 cluster_test 0.63 warning, 仍差门槛。GROUP 字段 cov 0.79 覆盖率不足 + 分组粒度信息量有限。",
+  "verdict": "RED (判死): 0 可提交。GROUP cluster 作分组器包裹评级修正的路线整体失败, 簇内分组削信号; E10 混合构造黄灯可作后续低权重辅助参考, 不建议继续投入。",
+  "submit_gate": {"best_sharpe": 1.42, "required": 1.58, "best_fitness": 0.98, "fitness_required": 1.0, "best_2y": 2.26, "two_year_required": 1.58, "submitted": 0}
+}

@@ -1,0 +1,27 @@
+{
+  "wave": 91,
+  "tag": "wave91b",
+  "created": "2026-08-22",
+  "baseline": "wave91 E3 Grl6z28J rank(change_6m_rating_revision) sharpe 0.89/fitness 0.49/TVR 0.0717/2y 2.14 (KOR 首次 2y 破 1.58 硬闸!)",
+  "focus": "评级修正主信号增强: 同族修正类字段加权组合 + 平滑/动能变换",
+  "direction": "wave91 发现 change_6m_rating_revision 2y=2.14 破闸但 sharpe 0.89/fitness 0.49 不足, TVR 0.07 极低有大量组合空间。本波: ①评级修正×同族修正类字段(street_magnitude/net_revisions/consensus_rating/revision_confidence/coverage_count)加权 2x 组合 ②纯权重 2x 放大 ③ts_zscore 60d 平滑 ④评级×长期增长预测变化 ⑤评级修正 5d 动能 ⑥评级×预测离散度。冲 sharpe≥1.58 + fitness≥1.0, 保持 2y≥1.58",
+  "batches": [
+    {
+      "batch": "B",
+      "note": "评级修正增强批: 同族组合/权重/平滑/动能, 冲 sharpe≥1.58 + fitness≥1.0 + 2y≥1.58",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "B1", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_street_revision_magnitude))))", "note": "评级修正 + 2x street 修正幅度 (修正力度加权)"},
+        {"id": "B2", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_net_number_fy1_eps_revisions))))", "note": "评级修正 + 2x FY1 净修正数 (修正广度)"},
+        {"id": "B3", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_analyst_consensus_rating))))", "note": "评级修正 + 2x 共识评级变化 (consensus shift)"},
+        {"id": "B4", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_street_revision_confidence))))", "note": "评级修正 + 2x 修正置信度 (信心加权)"},
+        {"id": "B5", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_analyst_coverage_count))))", "note": "评级修正 + 2x 覆盖率变化 (关注度)"},
+        {"id": "B6", "expr": "rank(multiply(2, rank(change_6m_rating_revision)))", "note": "纯评级修正 2x 权重 (信号放大对照)"},
+        {"id": "B7", "expr": "rank(ts_zscore(change_6m_rating_revision, 60))", "note": "评级修正 ts_zscore 60d 平滑 (相对历史强度)"},
+        {"id": "B8", "expr": "rank(add(rank(change_6m_rating_revision), rank(change_six_month_long_term_growth_estimate)))", "note": "评级修正 + 6m 长期增长预测变化 (增长预期)"},
+        {"id": "B9", "expr": "rank(ts_delta(rank(change_6m_rating_revision), 5))", "note": "评级修正 5d 动能 (修正加速)"},
+        {"id": "B10", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_dispersion_fy2_eps_estimates))))", "note": "评级修正 + 2x FY2 预测离散度 (不确定性)"}
+      ]
+    }
+  ]
+}

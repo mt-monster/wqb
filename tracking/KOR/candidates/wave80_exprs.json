@@ -1,0 +1,20 @@
+{
+  "wave": 80,
+  "tag": "wave80",
+  "created": "2026-08-21",
+  "baselines": ["Xg7PjOL0 trend2+trend6 subindustry 1.21/0.77", "qMjvKwzZ trend6 10d窗口 1.19/0.75 2y1.10 sub1.14"],
+  "focus": "双基线交叉收敛: subindustry × 10d/15d/5d 窗口 + trend2 窗口扫描 + 双 subindustry + 交叉再衰减/整体中性",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "交叉: subindustry + 10d"},
+    {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 15), subindustry)))", "note": "15d subindustry"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend2 15d + trend6 10d subindustry"},
+    {"id": 4, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 10)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), industry)))", "note": "trend2 10d + trend6 10d industry"},
+    {"id": 5, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 30)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), industry)))", "note": "trend2 30d + trend6 10d"},
+    {"id": 6, "expr": "rank(rank(group_zscore(ts_decay_linear(normalized_trend_indicator_2, 20), subindustry)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "双 subindustry 中性"},
+    {"id": 7, "expr": "rank(ts_decay_linear(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)), 10))", "note": "交叉 + 再衰减 10d"},
+    {"id": 8, "expr": "rank(group_zscore(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)), industry))", "note": "交叉 + 整体行业中性"},
+    {"id": 9, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 5), subindustry)))", "note": "5d 超短窗口 subindustry"},
+    {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_0, 20)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 10), subindustry)))", "note": "trend0 + trend6 10d subindustry"}
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "wave": 92,
+  "tag": "wave92",
+  "date": "2026-08-22",
+  "multisim": {"id": "2awT8u67W5jgcpLZA7Rk2QQ", "status": "10/10 COMPLETE"},
+  "dataset": "OTHER 金字塔首探: other546 网络强度族 + other545 NEMO + other327 利率敏感度",
+  "baseline": "wave91c 成功配方: 评级修正(2y 金矿 2.14) × 正交短周期信号 → 2 RA ACTIVE",
+  "focus": "KOR/D1/OTHER 金字塔(1.7): 网络相似度联动/NEMO 网络动量/利率敏感度 + 跨数据集混合",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "O1", "alpha": "bljP57Rm", "expr": "rank(vec_avg(oth546_busnet_strength))", "sharpe": -0.07, "fitness": -0.0, "tvr": 0.088, "two_year": -0.36, "sub": -0.18, "note": "业务分部相似度: 仅 15 long, CW 1.0 FAIL (2022-10-13), 配对网络覆盖率太低"},
+    {"id": "O2", "alpha": "omqzMQLn", "expr": "rank(vec_avg(oth546_mdanet_strength))", "sharpe": -0.39, "fitness": -0.07, "tvr": 0.0872, "two_year": -0.5, "sub": -0.35, "note": "MD&A 文本相似度: 负, CW 1.0, 14 long"},
+    {"id": "O3", "alpha": "6XlqvgjJ", "expr": "rank(vec_avg(oth546_nlpbusnet_strength))", "sharpe": -0.36, "fitness": -0.06, "tvr": 0.0872, "two_year": -0.31, "sub": -0.26, "note": "NLP 业务文本相似度: 负, CW 1.0, 14 long"},
+    {"id": "O4", "alpha": "lejzbJKe", "expr": "rank(add(vec_avg(oth546_busnet_strength), vec_avg(oth546_nlpbusnet_strength)))", "sharpe": 0.2, "fitness": 0.03, "tvr": 0.0856, "two_year": -0.23, "sub": 0.22, "note": "业务+NLP 双网络: CW 1.0 FAIL, 14 long, 组合也无救"},
+    {"id": "O5", "alpha": "mLjzMe6x", "expr": "rank(add(vec_avg(oth546_analystnet_common), vec_avg(oth546_geonet_strength)))", "sharpe": 0.03, "fitness": 0.0, "tvr": 0.0864, "two_year": -0.49, "sub": 0.01, "note": "分析师+地理网络: CW 1.0, 16 long, sub FAIL"},
+    {"id": "O6", "alpha": "ZY7lekAQ", "expr": "rank(vec_avg(oth545_score))", "sharpe": 0.26, "fitness": 0.06, "tvr": 0.1916, "two_year": -1.3, "sub": 0.45, "note": "NEMO 2.0 综合分: 2y -1.30 强负, CW 0.357 FAIL, KOR 网络动量无预测力"},
+    {"id": "O7", "alpha": "N17jvkeX", "expr": "rank(add(rank(vec_avg(oth545_score)), rank(vec_avg(oth545_mpd))))", "sharpe": 0.08, "fitness": 0.01, "tvr": 0.2009, "two_year": -1.31, "sub": 0.19, "note": "NEMO+动态动量: 2y -1.31, CW 0.375 FAIL"},
+    {"id": "O8", "alpha": "ak7PqXV2", "expr": "rank(oth327_sirc_lev)", "sharpe": 0.3, "fitness": 0.04, "tvr": 0.3704, "two_year": -0.85, "sub": 0.49, "note": "利率敏感度单信号: 弱, CW FAIL, TVR 0.37 偏高"},
+    {"id": "O9", "alpha": "d5j7AeKY", "expr": "rank(add(rank(oth327_sirc_lev), rank(vec_avg(oth545_score))))", "sharpe": 0.35, "fitness": 0.05, "tvr": 0.3707, "two_year": -0.85, "sub": 0.45, "note": "利率×NEMO: 无增益, CW FAIL"},
+    {"id": "O10", "alpha": "e7z2oe5J", "expr": "rank(add(rank(change_6m_rating_revision), rank(vec_avg(oth545_score))))", "sharpe": 0.76, "fitness": 0.33, "tvr": 0.1659, "two_year": -0.47, "sub": 0.77, "note": "★评级修正×NEMO: sharpe 0.76 被稀释(0.89→0.76), 2y 崩 2.14→-0.47! NEMO 2y 负拉崩金矿"}
+  ],
+  "key_insight": "wave92 OTHER 首探 10/10 全灭, 三条死路确认: ①other546 网络配对族结构性死: KOR TOP600 配对网络覆盖率低 → longCount 仅 14-16 只 + CW 1.0(2022-10-13 单日), 任何网络强度字段无法用; ②other545 NEMO 网络动量死: score/mpd 2y -1.30/-1.31 强负, KOR 网络动量无预测力; ③other327 利率敏感度死: sharpe 0.30 弱 + CW FAIL + TVR 0.37。O10 关键验证: 与 2y 负信号(NEMO)混合会拉崩评级修正金矿(2y 2.14→-0.47), 再次确认 wave91b 规律——只能与 2y 正/正交信号混合(wave91c SH 成功)。other 类剩余候选: other455(AI/ML 关系增强, cov 0.8973/fc 1500/ac 476) 待查历史探查记录",
+  "verdict": "无提交 (10/10 全灭)。other546/other545/other327 三数据集判死。OTHER 金字塔方向转 other455 或放弃",
+  "submit_gate": {"best_sharpe": 0.76, "required": 1.58, "best_fitness": 0.33, "fitness_required": 1.0, "best_2y": -0.23, "two_year_required": 1.58, "submitted": false}
+}

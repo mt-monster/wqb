@@ -1,0 +1,27 @@
+{
+  "wave": 91,
+  "tag": "wave91",
+  "created": "2026-08-22",
+  "baseline": "wave90 D8 2rlRAZaZ sharpe 1.79/fitness 0.99/2y 1.24 (MSM 5d 组合族判死: fitness+2y 提交硬闸结构性无解)",
+  "focus": "ml_factor_proj 分析师修正/长期增长/长周期动量变化类信号首探",
+  "direction": "wave90 判死 multi_source_model 5d 短周期组合族(fitness 天花板 0.99, 2y 天花板 1.24)。本波转向全新数据集 ml_factor_proj(333 字段全 MATRIX, coverage 1.0, alphaCount 0-2 几乎全白空间): ①分析师修正类(3m FY1/FY2 修正/6m 评级修正/盈利惊喜) ②长期增长变化类(3y FCF/EPS/OCF 增长) ③长周期价格动量变化类(1y 价格动量/FF 动量/52w 趋势斜率) ④会计应计项目(ACC anomaly)。信号全为季度/月度慢变量 → 天然低 TVR → 冲 2y≥1.58。避开 value/quality 水平类(判死)与 MSM 5d 族。settings 沿用 wave90 最佳: STATISTICAL/truncation 0.08",
+  "batches": [
+    {
+      "batch": "A",
+      "note": "ml_factor_proj 首探批: 修正/增长/动量/应计四类信号单发+组合, 冲 sharpe≥1.58 + fitness≥1.0 + 2y≥1.58",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "E1", "expr": "rank(change_3m_revision_fy2_eps)", "note": "FY2 EPS 预测 3m 修正单信号 (expectation momentum)"},
+        {"id": "E2", "expr": "rank(change_three_month_revision_fy1_eps)", "note": "FY1 EPS 预测 3m 修正单信号 (对照 E1)"},
+        {"id": "E3", "expr": "rank(change_6m_rating_revision)", "note": "6m 分析师评级修正单信号 (consensus shift)"},
+        {"id": "E4", "expr": "rank(add(rank(change_3m_revision_fy2_eps), rank(change_three_month_revision_fy1_eps)))", "note": "FY1+FY2 双修正叠加 (跨期互验)"},
+        {"id": "E5", "expr": "rank(change_real_earnings_surprise)", "note": "实际 EPS 惊喜 (surprise 动量)"},
+        {"id": "E6", "expr": "rank(change_one_year_price_momentum_indicator)", "note": "1y 价格动量指示器变化 (长周期动量)"},
+        {"id": "E7", "expr": "rank(add(rank(change_3y_fcf_growth), rank(change_3y_eps_growth)))", "note": "3y FCF+EPS 增长双信号 (长期盈利趋势)"},
+        {"id": "E8", "expr": "rank(change_ttm_accounting_accruals)", "note": "TTM 会计应计项目 (ACC anomaly, 方向待测)"},
+        {"id": "E9", "expr": "rank(add(rank(change_6m_rating_revision), rank(change_six_month_eps_revision)))", "note": "评级+EPS 双修正叠加 (consensus revision 组合)"},
+        {"id": "E10", "expr": "rank(add(rank(change_3m_revision_fy2_eps), rank(change_slope_52w_price_trend)))", "note": "FY2 修正 + 52w 趋势斜率 (期望+动量跨类组合)"}
+      ]
+    }
+  ]
+}

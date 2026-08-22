@@ -1,0 +1,57 @@
+{
+ "wave": 59,
+ "settings": "MEA TOP400 delay1 SECTOR decay1 trunc0.1",
+ "focus": "dataset switch: pv106 spread white-space + fundamental72 CF-family differentiation (avoid is_q level family saturated)",
+ "expressions": [
+  {
+   "id": "w59_01",
+   "signal": "pv106 low spread (liquidity premium) - rank(-bid_ask_price_gap)",
+   "expr": "rank(-bid_ask_price_gap)"
+  },
+  {
+   "id": "w59_02",
+   "signal": "pv106 spread zscore reversal 252d",
+   "expr": "rank(ts_zscore(bid_ask_price_gap, 252)) * -1"
+  },
+  {
+   "id": "w59_03",
+   "signal": "pv106 spread narrowing 21d",
+   "expr": "rank(ts_delta(bid_ask_price_gap, 21)) * -1"
+  },
+  {
+   "id": "w59_04",
+   "signal": "pv106 raw bid-ask diff level",
+   "expr": "rank(-price_difference_bid_ask)"
+  },
+  {
+   "id": "w59_05",
+   "signal": "pv106 raw bid-ask diff zscore 252 reversal",
+   "expr": "rank(ts_zscore(price_difference_bid_ask, 252)) * -1"
+  },
+  {
+   "id": "w59_06",
+   "signal": "pv106 spread 63d zscore (medium window)",
+   "expr": "rank(ts_zscore(bid_ask_price_gap, 63)) * -1"
+  },
+  {
+   "id": "w59_07",
+   "signal": "f72 CFO/asset cash-flow yield zscore252",
+   "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))"
+  },
+  {
+   "id": "w59_08",
+   "signal": "f72 CFO/asset 66d change (cash-flow momentum)",
+   "expr": "rank(ts_delta(divide(vec_avg(fnd72_pit_or_cf_q_cf_cash_from_oper), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 66))"
+  },
+  {
+   "id": "w59_09",
+   "signal": "f72 unconsolidated equity income (cov 0.967, alphaCount 6 white space)",
+   "expr": "rank(ts_zscore(vec_avg(income_unconsolidated_equity_interest), 252))"
+  },
+  {
+   "id": "w59_10",
+   "signal": "f72 retained earnings/asset (profit retention accumulation)",
+   "expr": "rank(ts_zscore(divide(vec_avg(fnd72_pit_or_bs_q_bs_retain_earn), vec_avg(fnd72_pit_or_bs_q_bs_tot_asset)), 252))"
+  }
+ ]
+}

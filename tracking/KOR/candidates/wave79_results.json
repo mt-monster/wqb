@@ -1,0 +1,23 @@
+{
+  "wave": 79,
+  "tag": "wave79",
+  "date": "2026-08-21",
+  "multisim": "1UqaJSgsG4WbaHqusHVwPIT",
+  "status": "10/10 COMPLETE",
+  "baseline": "np7kL5Mw trend2 + trend6(industry) 1.12/0.68",
+  "results": [
+    {"id": "QP7q1ojG", "expr": "rank(rank(trend2,20) + rank(gz(trend6,20,sector)))", "sharpe": 0.86, "fitness": 0.47, "tvr": 0.0917, "two_year": 1.05, "sub": 0.74, "ppa": "FAIL", "note": "sector 中性化劣于 industry"},
+    {"id": "Xg7PjOL0", "expr": "rank(rank(trend2,20) + rank(gz(trend6,20,subindustry)))", "sharpe": 1.21, "fitness": 0.77, "tvr": 0.0974, "two_year": 0.70, "sub": 1.01, "ppa": "PASS", "note": "subindustry 中性化 = 全场最佳"},
+    {"id": "qMjvKwzZ", "expr": "rank(rank(trend2,20) + rank(gz(trend6,10,industry)))", "sharpe": 1.19, "fitness": 0.75, "tvr": 0.1019, "two_year": 1.10, "sub": 1.14, "ppa": "PASS", "note": "trend6 10d 窗口 = 2y/sub 双最高"},
+    {"id": "xAj9KEzn", "expr": "rank(rank(trend2,20) + rank(gz(trend6,30,industry)))", "sharpe": 1.02, "fitness": 0.60, "tvr": 0.0871, "two_year": 0.86, "sub": 0.92, "ppa": "PASS", "note": "trend6 30d 窗口"},
+    {"id": "Jj7YV2X2", "expr": "rank(rank(gz(trend2,20,industry)) + rank(gz(trend6,20,industry)))", "sharpe": 1.02, "fitness": 0.59, "tvr": 0.0916, "two_year": 0.41, "sub": 0.87, "ppa": "PASS", "note": "双行业中性 2y 弱"},
+    {"id": "ak7MrgWv", "expr": "rank(rank(trend0,20) + rank(gz(trend6,20,industry)))", "sharpe": 0.85, "fitness": 0.44, "tvr": 0.0981, "two_year": 0.64, "sub": 0.74, "ppa": "FAIL", "note": "trend0 替代 trend2 劣化"},
+    {"id": "9qXbz2Ad", "expr": "rank(rank(trend4,20) + rank(gz(trend6,20,industry)))", "sharpe": 0.74, "fitness": 0.36, "tvr": 0.0855, "two_year": 0.26, "sub": 0.57, "ppa": "FAIL", "note": "trend4 替代 trend2 劣化"},
+    {"id": "MP7qj2Ko", "expr": "rank(ts_decay_linear(rank(trend2,20) + rank(gz(trend6,20,industry)),10))", "sharpe": 0.99, "fitness": 0.57, "tvr": 0.0857, "two_year": 0.70, "sub": 0.95, "ppa": "FAIL", "note": "外层衰减10d 略降"},
+    {"id": "GrlYq7M3", "expr": "rank(gz(rank(trend2,20) + rank(gz(trend6,20,industry)), industry))", "sharpe": 1.05, "fitness": 0.61, "tvr": 0.0925, "two_year": 0.66, "sub": 0.92, "ppa": "PASS", "note": "双重中性叠加"},
+    {"id": "omqA1k36", "expr": "rank(rank(trend2,15) + rank(gz(trend6,20,industry)))", "sharpe": 1.13, "fitness": 0.70, "tvr": 0.0942, "two_year": 0.95, "sub": 1.02, "ppa": "PASS", "note": "trend2 15d 微升"}
+  ],
+  "key_insight": "中性化层级: subindustry(1.21) > industry(1.12) > sector(0.86), 更细分组更好。trend6 窗口: 10d(1.19) > 20d(1.12) > 30d(1.02), 快信号占优, 10d 窗口 2y 1.10 + sub 1.14 双最高。6/10 PPA PASS (Xg7PjOL0/qMjvKwzZ/GrlYq7M3/Jj7YV2X2/xAj9KEzn/omqA1k36)。trend0/trend4 替代 trend2 均劣化(0.85/0.74), trend2 不可替换。外层衰减 10d 伤害信号(1.12→0.99)。",
+  "verdict": "无提交(sharpe 1.21 < 1.58), Xg7PjOL0(subindustry) 与 qMjvKwzZ(10d窗口) 双基线进入 wave80 交叉收敛",
+  "submit_gate": {"best_sharpe": 1.21, "required": 1.58, "submitted": false}
+}

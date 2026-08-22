@@ -1,0 +1,36 @@
+{
+ "expressions": [
+  {
+   "code": "rank(ts_delta(analyst_revisions_score_7,5))",
+   "note": "C1: score_7 5d 差分激活"
+  },
+  {
+   "code": "rank(ts_delta(analyst_revisions_score_7,3))",
+   "note": "C2: score_7 3d 差分激活"
+  },
+  {
+   "code": "rank(analyst_revisions_score_2)",
+   "note": "C3: score_2 超短期水平 (新字段 cov1.0)"
+  },
+  {
+   "code": "rank(ts_delta(analyst_revisions_score_2,3))",
+   "note": "C4: score_2 3d 差分激活"
+  },
+  {
+   "code": "add(0.5*rank(analyst_revisions_score_7),0.5*rank(ts_delta(analyst_revisions_score_7,5)))",
+   "note": "C5: B1 水平 + 5d 动量混合"
+  },
+  {
+   "code": "rank(subtract(analyst_revisions_score_7,analyst_revisions_score_21))",
+   "note": "C6: score_7 - score_21 短长期差加速"
+  },
+  {
+   "code": "add(0.6*rank(analyst_revisions_score_7),0.4*rank(subtract(analyst_revisions_score_7,analyst_revisions_score_21)))",
+   "note": "C7: B1 水平 0.6 + 短长期差 0.4"
+  },
+  {
+   "code": "rank(ts_av_diff(analyst_revisions_score_7,10))",
+   "note": "C8: score_7 10d 均值差分激活 (P4 探针式)"
+  }
+ ]
+}

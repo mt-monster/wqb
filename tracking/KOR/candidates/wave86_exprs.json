@@ -1,0 +1,31 @@
+{
+  "wave": 86,
+  "tag": "wave86",
+  "created": "2026-08-22",
+  "baseline": "Jj7mdmJl rank(rank(ts_decay_linear(t2,12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(t6,8), subindustry)))) sharpe 1.29 fitness 0.83",
+  "focus": "想法层升级(三层全穷尽后首次换数据源): equity_forum_data 论坛情绪/注意力白空间(0 alphas, coverage 0.895, valueScore 10) + behavioral_signals 行为金融(0 alphas, coverage 0.868) + 第三路叠加(基线+forum裸值, operatorCount 8 压线)",
+  "datasets": {
+    "equity_forum_data": {"coverage": 0.8948, "alphas": 0, "valueScore": 10.0, "fields": ["aggregate_buy_opinion_score", "aggregate_sell_opinion_score", "aggregate_comment_volume", "comment_volume_per_platform", "distinct_user_count_per_platform", "total_distinct_participants_count"]},
+    "behavioral_signals": {"coverage": 0.8682, "alphas": 0, "valueScore": 9.0, "fields": ["consecutive_return_streak_length", "salience_weighted_return_score"]},
+    "excluded": "news_sentiment_dl/nlp coverage 0.26-0.28 太低, 独立 alpha 必触发 sub-universe 硬闸, 排除"
+  },
+  "batches": [
+    {
+      "batch": "A",
+      "note": "forum 情绪/注意力独立挖掘(6) + behavioral 行为金融(2) + 第三路叠加(2, 6函数2加号=8算子压线)",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "A1", "expr": "rank(ts_mean(aggregate_buy_opinion_score - aggregate_sell_opinion_score, 20))", "note": "forum 净买入情绪 20d 均值"},
+        {"id": "A2", "expr": "rank(ts_delta(ts_mean(aggregate_comment_volume, 10), 5))", "note": "forum 评论量激增(注意力)"},
+        {"id": "A3", "expr": "rank(ts_zscore(aggregate_buy_opinion_score, 60))", "note": "forum 买入情绪 60d 历史偏离"},
+        {"id": "A4", "expr": "rank(ts_delta(total_distinct_participants_count, 10))", "note": "forum 参与者人数扩散"},
+        {"id": "A5", "expr": "rank(ts_mean(aggregate_buy_opinion_score, 40) - ts_mean(aggregate_sell_opinion_score, 40))", "note": "forum 长窗口买卖情绪差 40d"},
+        {"id": "A6", "expr": "rank(ts_decay_linear(aggregate_buy_opinion_score - aggregate_sell_opinion_score, 12))", "note": "forum 情绪差 decay 平滑(与基线同构)"},
+        {"id": "A7", "expr": "rank(consecutive_return_streak_length)", "note": "behavioral 连涨连跌 streak(短期反转方向待定)"},
+        {"id": "A8", "expr": "rank(ts_mean(salience_weighted_return_score, 20))", "note": "behavioral 显著性加权收益动量"},
+        {"id": "A9", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))) + aggregate_buy_opinion_score)", "note": "第三路叠加: 基线 + forum 买入情绪裸值(0-1与rank同尺度, 8算子压线)"},
+        {"id": "A10", "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))) + aggregate_sell_opinion_score)", "note": "第三路叠加对照: 基线 + forum 卖出情绪裸值(方向对照)"}
+      ]
+    }
+  ]
+}

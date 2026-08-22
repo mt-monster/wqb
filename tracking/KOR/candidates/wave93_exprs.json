@@ -1,0 +1,27 @@
+{
+  "wave": 93,
+  "tag": "wave93",
+  "created": "2026-08-22",
+  "baseline": "wave92 OTHER 首探 10/10 全灭 (other546/545/327 判死), 唯一剩余候选 other455 (AI/ML 关系增强网络嵌入)",
+  "focus": "other455 网络嵌入 PCA 因子白空间: relation(cov 1.0)/partner(cov 0.946)/customer(cov 0.8587) 系 MATRIX pca_fact*_value, 平台竞争度 0-4 user",
+  "direction": "KOR/D1/OTHER 金字塔 1.7。GBR wave09 已证 other455 MATRIX 骨架可用 (rank/ts_delta/ts_mean/ts_std_dev/corr), GROUP cluster 字段须 vec_* 包裹(本批不用)。本批: ①单因子水平 ②动量(GBR 骨架) ③均值回归 ④波动率 ⑤跨网络相关 ⑥时序自归一 ⑦双网络组合 ⑧差分 ⑨多 PCA 因子组合 ⑩衰减水平。设置复用 wave91c 成功配方(STATISTICAL/decay 4/trunc 0.08)",
+  "batches": [
+    {
+      "batch": "K",
+      "note": "other455 网络嵌入探针批: relation/partner/customer MATRIX 字段",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "K1", "expr": "rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value)", "note": "relation PC1 水平 (cov 1.0 最高覆盖)"},
+        {"id": "K2", "expr": "rank(ts_delta(ts_backfill(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,66),20))", "note": "relation PC1 动量 (GBR wave09 骨架)"},
+        {"id": "K3", "expr": "subtract(rank(oth455_relation_roam_w1_pca_fact2_value),ts_mean(rank(oth455_relation_roam_w1_pca_fact2_value),60))", "note": "relation ROAM 均值回归 (GBR wave09 同构)"},
+        {"id": "K4", "expr": "rank(ts_std_dev(ts_delta(oth455_partner_n2v_p10_q200_w3_pca_fact1_value,5),20))", "note": "partner 网络波动率 (cov 0.946)"},
+        {"id": "K5", "expr": "rank(ts_corr(oth455_relation_n2v_p10_q200_w1_pca_fact1_value,oth455_partner_n2v_p10_q200_w1_pca_fact1_value,30))", "note": "relation×partner 跨网络耦合度 (GBR wave09 corr 骨架, 平台算子为 ts_corr)"},
+        {"id": "K6", "expr": "rank(ts_zscore(oth455_partner_n2v_p10_q200_w4_pca_fact1_value,60))", "note": "partner 时序自归一 (GBR probe 骨架)"},
+        {"id": "K7", "expr": "rank(add(rank(oth455_relation_roam_w3_pca_fact1_value),rank(oth455_customer_roam_w1_pca_fact2_value)))", "note": "relation+customer 双网络组合 (正交关系类型)"},
+        {"id": "K8", "expr": "rank(ts_delta(oth455_relation_n2v_p10_q200_w3_pca_fact1_value,22))", "note": "relation 22d 差分 (中周期动量)"},
+        {"id": "K9", "expr": "rank(add(rank(oth455_relation_n2v_p10_q200_w1_pca_fact1_value),rank(oth455_relation_n2v_p10_q200_w1_pca_fact2_value)))", "note": "relation 同窗口双 PCA 因子 (PC1+PC2 互补)"},
+        {"id": "K10", "expr": "ts_decay_linear(rank(oth455_partner_n2v_p10_q200_w2_pca_fact1_value),5)", "note": "partner 衰减水平 (降 TVR, Mode A 风格)"}
+      ]
+    }
+  ]
+}

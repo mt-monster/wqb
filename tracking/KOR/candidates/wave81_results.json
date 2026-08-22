@@ -1,0 +1,23 @@
+{
+  "wave": 81,
+  "tag": "wave81",
+  "date": "2026-08-21",
+  "multisim": "1wP4nK2ax4DY8NZaSLSv9PW",
+  "status": "10/10 COMPLETE",
+  "baseline": "6Xl3XEQL trend2 15d + trend6 10d subindustry 1.23/0.79",
+  "results": [
+    {"id": "ak7Mjxa9", "expr": "rank(rank(ts_mean(t2,15)) + rank(gz(decay(t6,10),sub)))", "sharpe": 1.21, "fitness": 0.77, "tvr": 0.1082, "two_year": 0.91, "sub": 1.1, "ppa": "PASS", "note": "trend2 ts_mean 平滑 持平"},
+    {"id": "xAj9Oblg", "expr": "rank(rank(ts_zscore(t2,15)) + rank(gz(decay(t6,10),sub)))", "sharpe": 0.76, "fitness": 0.28, "tvr": 0.2321, "two_year": -0.51, "sub": 0.36, "ppa": "FAIL", "note": "trend2 ts_zscore 完全破坏信号(4 FAIL)"},
+    {"id": "vRjxw2Yz", "expr": "rank(rank(decay(t2,15)) + rank(gz(ts_mean(t6,10),sub)))", "sharpe": 1.2, "fitness": 0.76, "tvr": 0.1063, "two_year": 0.77, "sub": 1.04, "ppa": "PASS", "note": "trend6 ts_mean 平滑 微降"},
+    {"id": "1Yw1kZGz", "expr": "rank(rank(decay(t2,15)) + rank(gz(decay(t6,10),sub)) + rank(ts_delta(t6,5)))", "sharpe": 0.89, "fitness": 0.37, "tvr": 0.2224, "two_year": 0.4, "sub": 0.79, "ppa": "FAIL", "note": "三因子+ts_delta 失败 TVR 22%"},
+    {"id": "6Xl3mKGG", "expr": "rank(rank(decay(t2,12)) + rank(gz(decay(t6,10),sub)))", "sharpe": 1.24, "fitness": 0.8, "tvr": 0.1113, "two_year": 0.86, "sub": 1.09, "ppa": "PASS", "note": "trend2 12d 微升"},
+    {"id": "Jj7YMQ32", "expr": "rank(rank(decay(t2,18)) + rank(gz(decay(t6,10),sub)))", "sharpe": 1.22, "fitness": 0.78, "tvr": 0.1085, "two_year": 0.89, "sub": 1.1, "ppa": "PASS", "note": "trend2 18d"},
+    {"id": "wpjOKb3p", "expr": "rank(rank(decay(t2,15)) + rank(gz(decay(t6,8),sub)))", "sharpe": 1.24, "fitness": 0.8, "tvr": 0.1129, "two_year": 0.9, "sub": 1.14, "ppa": "PASS", "note": "trend6 8d sub 1.14 最高"},
+    {"id": "2rlQ8m9b", "expr": "rank(rank(decay(t2,15)) + rank(gz(decay(t6,12),sub)))", "sharpe": 1.24, "fitness": 0.8, "tvr": 0.107, "two_year": 0.88, "sub": 1.08, "ppa": "PASS", "note": "trend6 12d"},
+    {"id": "zqkQKbgX", "expr": "rank(rank(decay(t2,15)) + multiply(2, rank(gz(decay(t6,10),sub))))", "sharpe": 1.27, "fitness": 0.8, "tvr": 0.113, "two_year": 0.51, "sub": 1.04, "ppa": "PASS", "note": "trend6 权重 2x = 新最佳 但 2y 弱 0.51"},
+    {"id": "RR7qj69d", "expr": "rank(rank(decay(t2,15)) + rank(gz(decay(t6,10),sub)) + rank(decay(t6,20)))", "sharpe": 1.07, "fitness": 0.64, "tvr": 0.1014, "two_year": 0.6, "sub": 0.88, "ppa": "FAIL", "note": "trend6 双窗口 失败"}
+  ],
+  "key_insight": "权重倾斜突破平台期: trend6 权重 2x(zqkQKbgX) 1.27/0.80 超越 1.23, 但 2y 0.51 弱化是隐患。窗口扫描: 12d/8d/12d 三路均 1.24, 最优窗口区域宽泛(8-15d), 短窗口 sub 更高(wpjOKb3p 1.14)。ts_mean 平滑持平(1.21/1.20), ts_zscore 完全破坏信号(0.76 FAIL, 与 wave77 '相加后 zscore' 结论一致: zscore 类操作伤害 trend 族)。三因子(ts_delta)与双窗口均失败(0.89/1.07)。investability: 8/10 > 1.25, zqkQKbgX 1.36/0.90 最高。CLUSTER_TEST 0.6-0.7 聚类持续。",
+  "verdict": "无提交(sharpe 1.27 < 1.58), zqkQKbgX(权重 2x) 新基线进入 wave82: 权重×窗口联合扫描 + 3x 权重 + trend2 反向倾斜对照",
+  "submit_gate": {"best_sharpe": 1.27, "required": 1.58, "submitted": false}
+}

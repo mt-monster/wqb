@@ -1,0 +1,57 @@
+{
+ "wave": 60,
+ "settings": "MEA TOP400 delay1 SECTOR decay1 trunc0.1",
+ "focus": "model25 StarMine EQ field-level white space: 54 fields alphaCount<=50; avoid wave11a tested families (pc_v10/11, ro_v16/22, vr_v5/9/11/13/19, rlev_v7, rp_v19); vr_v13 marked unverified in MEA gate cache",
+ "expressions": [
+  {
+   "id": "w60_01",
+   "signal": "m25 IS-component v35 EQ score z120 (ac26 白空间)",
+   "expr": "rank(ts_zscore(mdl25_eq_is_v35, 120))"
+  },
+  {
+   "id": "w60_02",
+   "signal": "m25 IS-component v46 EQ score z120 (ac47)",
+   "expr": "rank(ts_zscore(mdl25_eq_is_v46, 120))"
+  },
+  {
+   "id": "w60_03",
+   "signal": "m25 RD-component v6 EQ score z120 (ac26)",
+   "expr": "rank(ts_zscore(mdl25_eq_rd_v6, 120))"
+  },
+  {
+   "id": "w60_04",
+   "signal": "m25 RD-component v11 EQ score z250 (ac48)",
+   "expr": "rank(ts_zscore(mdl25_eq_rd_v11, 250))"
+  },
+  {
+   "id": "w60_05",
+   "signal": "m25 CFS-component v10 EQ score z120 (ac34)",
+   "expr": "rank(ts_zscore(mdl25_eq_cfs_v10, 120))"
+  },
+  {
+   "id": "w60_06",
+   "signal": "m25 CFS-component v19 EQ score z120 (ac39)",
+   "expr": "rank(ts_zscore(mdl25_eq_cfs_v19, 120))"
+  },
+  {
+   "id": "w60_07",
+   "signal": "m25 CB-component v27 EQ score z120 (ac40)",
+   "expr": "rank(ts_zscore(mdl25_eq_cb_v27, 120))"
+  },
+  {
+   "id": "w60_08",
+   "signal": "m25 PC-component v21 EQ score z250 (ac44, 避开 wave11a pc_v10/v11)",
+   "expr": "rank(ts_zscore(mdl25_eq_pc_v21, 250))"
+  },
+  {
+   "id": "w60_09",
+   "signal": "m25 generic v17 EQ score z120 (ac38)",
+   "expr": "rank(ts_zscore(mdl25_eq_v17, 120))"
+  },
+  {
+   "id": "w60_10",
+   "signal": "m25 IS-v35 x CFS-v10 dual-leg z120 (盈利质量 x 现金流质量)",
+   "expr": "rank(ts_zscore(mdl25_eq_is_v35, 120)) * rank(ts_zscore(mdl25_eq_cfs_v10, 120))"
+  }
+ ]
+}

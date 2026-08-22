@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(vec_avg(consecutive_return_streak_length))", "note": "behavioral: 连续涨/跌天数（vec_avg 聚合 EVENT 字段）"},
+  {"id": 2, "expr": "rank(vec_avg(price_path_curvature_measure))", "note": "behavioral: 价格路径曲率"},
+  {"id": 3, "expr": "rank(vec_avg(salience_weighted_return_score))", "note": "behavioral: 显著性加权收益"},
+  {"id": 4, "expr": "rank(vec_avg(extreme_daily_return_indicator))", "note": "behavioral: 极端日收益指标"},
+  {"id": 5, "expr": "rank(vec_avg(chronological_return_sequence_correlation))", "note": "behavioral: 时序收益相关性"},
+  {"id": 6, "expr": "rank(vec_avg(aggregate_buy_opinion_score) - vec_avg(aggregate_sell_opinion_score))", "note": "forum: 净买入情绪（买-卖差值）"},
+  {"id": 7, "expr": "rank(vec_avg(aggregate_buy_opinion_score) / (vec_avg(aggregate_buy_opinion_score) + vec_avg(aggregate_sell_opinion_score) + 0.001))", "note": "forum: 买入情绪占比（归一化）"},
+  {"id": 8, "expr": "rank(ts_delta(vec_avg(aggregate_comment_volume), 5))", "note": "forum: 评论量 5d 变化（关注度动量）"},
+  {"id": 9, "expr": "rank(vec_avg(consecutive_return_streak_length)) * rank(vec_avg(aggregate_buy_opinion_score) - vec_avg(aggregate_sell_opinion_score))", "note": "混合: 连续涨跌 × 净买入情绪"},
+  {"id": 10, "expr": "rank(vec_avg(price_path_curvature_measure)) * rank(ts_delta(vec_avg(aggregate_comment_volume), 5))", "note": "混合: 价格曲率 × 评论量变化"}
+]

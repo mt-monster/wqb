@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(network_pagerank_centrality_metric)", "note": "board: PageRank 中心性（网络影响力）"},
+  {"id": 2, "expr": "rank(network_eigenvector_centrality_metric)", "note": "board: 特征向量中心性"},
+  {"id": 3, "expr": "rank(network_betweenness_centrality_metric)", "note": "board: 中介中心性（结构洞）"},
+  {"id": 4, "expr": "rank(overall_board_network_strength_score)", "note": "board: 综合网络强度评分"},
+  {"id": 5, "expr": "rank(count_connected_companies)", "note": "board: 连接公司数（网络广度）"},
+  {"id": 6, "expr": "rank(positive_score_average_value - negative_score_average_value)", "note": "news: 净正面情绪（正-负差值）"},
+  {"id": 7, "expr": "rank(positive_score_average_value / (positive_score_average_value + negative_score_average_value + 0.001))", "note": "news: 正面情绪占比（归一化）"},
+  {"id": 8, "expr": "rank(ts_delta(positive_score_average_value, 5))", "note": "news: 正面情绪 5d 变化（情绪动量）"},
+  {"id": 9, "expr": "rank(network_pagerank_centrality_metric) * rank(positive_score_average_value - negative_score_average_value)", "note": "混合: 网络中心性 × 净正面情绪（影响力+情绪确认）"},
+  {"id": 10, "expr": "rank(overall_board_network_strength_score) * rank(ts_delta(positive_score_average_value, 5))", "note": "混合: 网络强度 × 情绪动量（网络+情绪趋势）"}
+]

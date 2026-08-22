@@ -1,0 +1,20 @@
+{
+  "wave": 83,
+  "tag": "wave83",
+  "created": "2026-08-21",
+  "baseline": "Wj7nM9Zo/RR7qMdgd rank(rank(ts_decay_linear(t2,12/15)) + multiply(2, rank(gz(ts_decay_linear(t6,8), subindustry)))) sharpe 1.28 fitness 0.82 2y 0.52-0.53",
+  "focus": "表达式级正交自由度扫描: 权重中间态(1.5x/2.5x) + 中性化粒度(sector/industry) + 结构变体(ts_rank/去外层rank/纯双窗口) + 平滑替代(ts_delta) + 窗口补全(5d/20d)",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "expressions": [
+    {"id": 1, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "权重 1.5x 中间态(1x=1.23 → 2x=1.28, 测中间是否更高)"},
+    {"id": 2, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2.5, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry))))", "note": "权重 2.5x (2x=1.28 → 3x=1.22 间)"},
+    {"id": 3, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), sector))))", "note": "sector 中性化粒度(比 subindustry 粗)"},
+    {"id": 4, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), industry))))", "note": "industry 中性化粒度(最粗)"},
+    {"id": 5, "expr": "rank(rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry)) + rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 15), subindustry)))", "note": "trend6 纯双窗口 rank 相加(无 trend2, 测多尺度自足性)"},
+    {"id": 6, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_rank(ts_decay_linear(normalized_trend_indicator_6, 8), 20), subindustry))))", "note": "ts_rank 时序排名包装 trend6(稳定性提升?)"},
+    {"id": 7, "expr": "rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 8), subindustry)))", "note": "去外层 rank(测总排序包装的必要性)"},
+    {"id": 8, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_delta(normalized_trend_indicator_6, 8), subindustry))))", "note": "ts_delta 变化率替换 trend6 平滑(加速度信号)"},
+    {"id": 9, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 15)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 5), subindustry))))", "note": "trend6 5d 超短窗口(8d 以下未测)"},
+    {"id": 10, "expr": "rank(rank(ts_decay_linear(normalized_trend_indicator_2, 12)) + multiply(2, rank(group_zscore(ts_decay_linear(normalized_trend_indicator_6, 20), subindustry))))", "note": "trend6 20d 长窗口 ×2x(对称补全)"}
+  ]
+}

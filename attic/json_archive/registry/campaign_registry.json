@@ -539,7 +539,7 @@
           {
             "dataset": "analyst7",
             "status": "in_progress",
-            "note": "已有2个alpha通过IS检查但prod_corr>0.8（consensus 类饱和）；wave55 转向正交信号族：估计分歧/修正动量/覆盖变化，从 get_datafields 审计重建"
+            "note": "wave56 提交 j2jL9x6j(EPS rev3m leg) 后 EPS-revision 家族整体 PROD 墙（wave58 0.716-0.741 全拒）；wave62 结构性去相关突破：9qXoJge2(PT raised-breadth + Net est breadth, 零 revision 腿) IS 全过(S1.65/F1.57/2y2.11) + PROD 0.6525 + SELF 0.0975 → 已提交 ACTIVE(2026-08-20) 进 OS 池；剩余素材 58lRMNXo(1.37)/KP7e15ol(1.39)/Xg7q0v3l(1.27) 仅差 SHARPE 可微调"
           },
           {
             "dataset": "fundamental6",
@@ -555,6 +555,11 @@
             "dataset": "fundamental72",
             "status": "exhausted",
             "note": "wave50 确认 is_q 整族判死（per-share/tax/non-oper 均 WARN 无独立信号），仅 EBITDA 族 IS 全过但 PROD 0.7879 拒"
+          },
+          {
+            "dataset": "model31",
+            "status": "exhausted",
+            "note": "wave61 chg_* 变化类 10/10 FAIL（最高 oe_chg_1_qtr 250 = 0.87 + CW FAIL，erq day 20d = 0.36 唯一 CW 过）；auditor_switch longCount 0 死字段；StarMine EQ 家族全图关闭（model25 LEVEL + model31 CHANGE）"
           }
         ],
         "dead_ends": [
@@ -573,10 +578,53 @@
             "rule": "MEA 不再挖 fundamental 盈利水平场 (earnings LEVEL factor)；is_q 整族判死（wave50 per-share/tax/non-oper 无独立信号）；下一族 fundamental6 差异化信号或 analyst7 正交方向",
             "dead_at": "2026-08-21",
             "salvage": "fundamental6 Worldscope 差异化信号（折旧率/capex/税率/留存/周转）；analyst7 估计分歧/覆盖变化类"
+          },
+          {
+            "id": "MEA-PV106-SPREAD-DEAD",
+            "family": "pv106 spread 白空间 (bid_ask_price_gap / price_difference_bid_ask 的 level/zscore/delta 变体)",
+            "reason": "wave59 6 个表达式全灭：level/zscore252/63/delta21 最高 sharpe 0.82 但结构性 HIGH_TURNOVER 0.80-1.01（spread 日频变动无常驻信号），rank(-gap) 方向反转负 sharpe——低 spread 溢价在 MEA TOP400 不存在",
+            "rule": "MEA pv106 不再挖 spread 水平/反转/动量任何形态；2 字段集信号空间已耗尽",
+            "dead_at": "2026-08-21",
+            "salvage": "无（2 字段集无剩余信号面）"
+          },
+          {
+            "id": "MEA-FND72-CF-SPARSE-DEAD",
+            "family": "fundamental72 CF 家族 (CFO/asset、retain_earn/asset、income_unconsolidated_equity_interest)",
+            "reason": "wave59 4 个表达式全灭：cov 0.83-0.87 的 pit_or VECTOR 字段在 MEA TOP400 实际 longCount 仅 11-16，income_unconsolidated_equity_interest longCount 0（cov 0.967 严重误导）；platform cov 是字段可用性而非小宇宙个股覆盖",
+            "rule": "MEA TOP400 任何 VECTOR 字段挖前必须 longCount>=80 sanity check；f72 仅剩 is_q 已判死，f72 整集收官",
+            "dead_at": "2026-08-21",
+            "salvage": "无（f72 已 exhausted）"
+          },
+          {
+            "id": "MEA-MDL25-EQ-COMPONENT-DEAD",
+            "family": "model25 StarMine EQ 组件字段 (mdl25_eq_is/rd/cfs/cb/pc/v 全系列)",
+            "reason": "wave60 10 个表达式全灭，双失败模式：(1) is_*/cb_v27 字段级 alphaCount<=50 是每股不可用性伪装（longCount 0-13 + CW 0.14-0.29，非白空间）；(2) rd_*/cfs_*/pc_*/v17 覆盖好（longCount 127-141）但 sharpe 全负 -0.18~-0.80，反向也远低于 1.58",
+            "rule": "MEA 不再挖 model25 EQ 组件任何形态；字段级 alphaCount 低在小宇宙不是白空间信号（可能是没人能用或没人想要）；model25 earnings-quality 风格与 f72 is_q 同判死",
+            "dead_at": "2026-08-21",
+            "salvage": "无（model25 收官）；仅剩 tier1 model31（同为 StarMine 系，风险高）或 analyst7 结构性去相关 / pv96 tier2"
+          },
+          {
+            "id": "MEA-MDL31-CHG-WEAK",
+            "family": "model31 chg_* 变化类字段 (acc/cf/oe/erq_re_rk 的 qtr/fy/day 变化 + auditor_switch 事件)",
+            "reason": "wave61 10 个表达式全灭：变化类信号在 MEA TOP400 结构性弱——最高 oe_chg_1_qtr 250 仅 0.87（CW FAIL + 2y 0.78），erq_re_rk_chg_1_day 20d 0.36（唯一 CW 过，longCount 175）；qtr>fy 规律一致但强度均远低于 1.58；auditor_switch_indicator_prev_year longCount 0（platform cov 1.0134 第三次误导，同 f72 CF / model25 cb_v27 陷阱）",
+            "rule": "MEA model31 变化类单腿信号封顶 0.87，组合增强概率低；二元/年度事件字段（auditor_switch 类）在 MEA TOP400 结构性不可用；StarMine EQ 家族全图关闭（model25 LEVEL + model31 CHANGE 均判弱/死）",
+            "dead_at": "2026-08-21",
+            "salvage": "理论残留：oe_chg_1_qtr + erq_re_rk_chg_1_day 组合（正交变化信号，低概率）；MEA tier1 数据集已全部关闭，下一步 analyst7 结构性去相关 / pv96 tier2"
           }
         ],
-        "wins": [],
-        "orphans": []
+        "wins": [
+          {
+            "id": "MEA-ANL7-PT-NET-BREADTH-DECORR",
+            "what": "wave62 9qXoJge2 提交 ACTIVE：PT raised-breadth + Net est breadth 双轴零 revision 腿破 PROD 墙",
+            "key": "analyst_price_target_raised_count_four_weeks/analyst_price_target_count (MATRIX 裸用) + vec_avg(est_q_net_raisednum_4wks)/vec_avg(est_q_net_num) (VECTOR)；去掉 est_q_*_median/3mth_ago revision 腿后 PROD 从 0.716-0.741 降至 0.6525",
+            "date": "2026-08-21"
+          }
+        ],
+        "orphans": [],
+        "submit_ready": {
+          "_note": "达标待提交缓冲池镜像（战役台账 submit_ready 的跨会话快照）；写回走 toolkit campaign.py ledger",
+          "items": []
+        }
       }
     }
   },

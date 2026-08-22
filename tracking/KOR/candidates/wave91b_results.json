@@ -1,0 +1,25 @@
+{
+  "wave": 91,
+  "tag": "wave91b",
+  "date": "2026-08-22",
+  "multisim": {"status": "10/10 COMPLETE", "note": "子项经 get_user_alphas 按 dateCreated 倒序映射"},
+  "dataset": "ml_factor_proj (评级修正增强批)",
+  "baseline": "wave91 E3 Grl6z28J rank(change_6m_rating_revision) sharpe 0.89/fitness 0.49/TVR 0.0717/2y 2.14",
+  "focus": "评级修正主信号增强: 同族修正类字段加权组合 + 平滑/动能变换, 冲 sharpe≥1.58 + fitness≥1.0 + 2y≥1.58",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "B8", "alpha": "88lrYZdq", "expr": "rank(add(rank(change_6m_rating_revision), rank(change_six_month_long_term_growth_estimate)))", "sharpe": 0.71, "fitness": 0.36, "tvr": 0.0727, "two_year": 2.27, "sub": 0.72, "note": "★评级修正+6m长期增长变化: 2y 2.27 全场新纪录! sharpe 0.71 仍不足"},
+    {"id": "B6", "alpha": "78jQMrbv", "expr": "rank(multiply(2, rank(change_6m_rating_revision)))", "sharpe": 0.89, "fitness": 0.49, "tvr": 0.0717, "two_year": 2.14, "sub": 0.89, "note": "纯评级修正 2x: 与 E3 完全等价(rank 嵌套归一化), sharpe 天花板确认 0.89"},
+    {"id": "B4", "alpha": "ZY7xM933", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_street_revision_confidence))))", "sharpe": 0.72, "fitness": 0.35, "tvr": 0.0865, "two_year": 1.59, "sub": 0.81, "note": "+2x 修正置信度: 2y 仍破闸 1.59, sharpe 0.72 低于单信号"},
+    {"id": "B10", "alpha": "mLjA1NM1", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_dispersion_fy2_eps_estimates))))", "sharpe": 0.5, "fitness": 0.22, "tvr": 0.0738, "two_year": 1.62, "sub": 0.45, "note": "+2x FY2 离散度: 2y 破闸但 sharpe 0.5 大降"},
+    {"id": "B2", "alpha": "78jQMrA1", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_net_number_fy1_eps_revisions))))", "sharpe": 0.53, "fitness": 0.22, "tvr": 0.0941, "two_year": 1.57, "sub": 0.8, "note": "+2x FY1 净修正数: 2y 贴线 1.57"},
+    {"id": "B3", "alpha": "1YwLPR9K", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_analyst_consensus_rating))))", "sharpe": 0.6, "fitness": 0.27, "tvr": 0.072, "two_year": 1.56, "sub": 0.48, "note": "+2x 共识评级: 2y 贴线 1.56"},
+    {"id": "B1", "alpha": "1YwLPReK", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_street_revision_magnitude))))", "sharpe": 0.62, "fitness": 0.29, "tvr": 0.0859, "two_year": 0.89, "sub": 0.77, "note": "+2x street 修正幅度: 2y 崩至 0.89"},
+    {"id": "B5", "alpha": "YP7mJOKA", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(change_analyst_coverage_count))))", "sharpe": 0.4, "fitness": 0.15, "tvr": 0.0771, "two_year": 0.82, "sub": 0.61, "note": "+2x 覆盖率变化: 稀释"},
+    {"id": "B7", "alpha": "9qXKm3Lq", "expr": "rank(ts_zscore(change_6m_rating_revision, 60))", "sharpe": 0.08, "fitness": 0.01, "tvr": 0.1453, "two_year": 0.46, "sub": 0.37, "note": "ts_zscore 60d 平滑: 信号被抹平, 失败"},
+    {"id": "B9", "alpha": "YP7mJOGA", "expr": "rank(ts_delta(rank(change_6m_rating_revision), 5))", "sharpe": -0.12, "fitness": -0.01, "tvr": 0.4319, "two_year": -0.33, "sub": 0.08, "note": "5d 动能: 负 sharpe + TVR 0.43 超高, 失败"}
+  ],
+  "key_insight": "wave91b 全批 10/10 无一提过三闸。同族组合全部稀释 sharpe(E3 0.89→0.4-0.72), 但 2y 数据揭示关键规律: 与【慢变量】(6m长期增长变化 2.27/修正置信度 1.59/FY2离散度 1.62) 混合 2y 保持/增强, 与【快变量】(street幅度 0.89/覆盖率 0.82) 混合 2y 崩。平滑/动能变换全失败(ts_zscore 抹平信号, ts_delta TVR 0.43)。sharpe 0.89 天花板在同族内无法突破, 必须跨信号源混合: 候选 = model170 已验证的高 sharpe 族(long_term_quantile1_120d_pred sharpe 1.79) × 评级修正(2y 2.14), 两者相关性低(分析师修正 vs ML价格预测), 理论可同时拉高 sharpe 与 2y",
+  "verdict": "无提交 (sharpe 0.89 < 1.58)。同族组合穷尽, wave91c 转向跨数据集混合: 评级修正 × model170 long_term 族",
+  "submit_gate": {"best_sharpe": 0.89, "required": 1.58, "best_fitness": 0.49, "fitness_required": 1.0, "best_2y": 2.27, "two_year_required": 1.58, "submitted": false}
+}

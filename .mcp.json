@@ -1,3 +1,23 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "wq-brain-http": {
+      "command": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe",
+      "args": [
+        "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      },
+      "description": "WorldQuant BRAIN MCP Server — 权威前缀 wq-brain-http（skills 统一引用）"
+    },
+    "wqb-db": {
+      "command": "D:/coding/traeCN_project/wqb/.venv/Scripts/python.exe",
+      "args": [
+        "D:/coding/traeCN_project/wqb/wqb_db_mcp.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
 }

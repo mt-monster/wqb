@@ -1,0 +1,37 @@
+{
+  "wave": 95,
+  "tag": "wave95",
+  "created": "2026-08-22",
+  "baseline": "wave93 判死 other455 PCA MATRIX 族 (10/10 RED, sharpe<=0.18); dead_ends 建议: GROUP cluster 字段(vec_* 包裹, GBR 教训) 或与已验证金矿跨数据集混合",
+  "focus": "other455 GROUP cluster 字段攻坚: 1200 个 GROUP 字段(kmeans/pca_fact* cluster, 4 关系系×n2v/roam×w1-5×k5/10/20, cov 0.7914) 作分组器, 与 KOR 已验证金矿(评级修正 ml_factor_proj, 2y 2.14) 混合",
+  "direction": "GBR 经验(tracking/GBR/reference/methodology_rules.json): GROUP 字段是分组器, 经 group_rank/group_neutralize 等 group_* 算子包裹后输出 VECTOR 信号; 不可直接 rank。语义: 在竞争网络簇/客户簇内对评级修正做组内排名/中性化 = 剥离簇效应后的纯分析师行为信号, 与全网 rank 正交。E1-E3 k 值扫描(5/10/20), E4 换窗口 w4, E5 簇间成分(全网-簇内), E6 换新评级字段, E7 双簇组合, E8 ROAM 嵌入簇, E9 PCA 分解簇, E10 评级2+簇内 SH 排名(三数据集混合)。设置沿用 wave91c 标准: KOR/TOP600/delay 1/decay 4/STATISTICAL/trunc 0.08/pasteurization ON/unitHandling VERIFY/nanHandling OFF",
+  "batches": [
+    {
+      "batch": "E",
+      "note": "other455 GROUP cluster 分组器 × 评级修正金矿 (10 条)",
+      "settings": {
+        "region": "KOR",
+        "universe": "TOP600",
+        "delay": 1,
+        "decay": 4,
+        "neutralization": "STATISTICAL",
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unitHandling": "VERIFY",
+        "nanHandling": "OFF"
+      },
+      "expressions": [
+        {"id": "E1", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))", "note": "竞争簇内评级修正排名 (w1 k10)"},
+        {"id": "E2", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_5))", "note": "5 簇粗分组 (簇内样本更多)"},
+        {"id": "E3", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_20))", "note": "20 簇细分组 (簇内更同质)"},
+        {"id": "E4", "expr": "rank(group_neutralize(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w4_kmeans_cluster_10))", "note": "w4 窗口簇中性化 (换窗口)"},
+        {"id": "E5", "expr": "rank(subtract(rank(change_6m_rating_revision), group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10)))", "note": "簇间成分: 全网 rank - 簇内 rank"},
+        {"id": "E6", "expr": "rank(group_rank(change_analyst_consensus_rating, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))", "note": "consensus 新评级簇内排名 (双零竞争)"},
+        {"id": "E7", "expr": "rank(add(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10), group_rank(change_6m_rating_revision, oth455_customer_n2v_p10_q200_w1_kmeans_cluster_10)))", "note": "竞争簇+客户簇双分组组合"},
+        {"id": "E8", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_roam_w1_kmeans_cluster_10))", "note": "ROAM 嵌入簇分组"},
+        {"id": "E9", "expr": "rank(group_rank(change_6m_rating_revision, oth455_competitor_n2v_p10_q200_w1_pca_fact1_cluster_10))", "note": "PCA 分解簇分组 (PC1)"},
+        {"id": "E10", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(group_rank(short_horizon_hedge3_quantile1_5d_pred, oth455_competitor_n2v_p10_q200_w1_kmeans_cluster_10))))", "note": "评级2 + 簇内 SH 排名 (三数据集混合)"}
+      ]
+    }
+  ]
+}

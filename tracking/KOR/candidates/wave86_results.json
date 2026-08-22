@@ -1,0 +1,27 @@
+{
+  "wave": 86,
+  "tag": "wave86b",
+  "date": "2026-08-22",
+  "multisims": {"wave86_first_batch": "2Gp9qWns54uapGyXya4IfQ (10/10 ERROR event inputs)", "probe_batch": "10t2yzcOZ55EaF3akiurWfH (vec_* 路径验证)", "wave86b_fix_batch": "1fWVzf2Dt5c1cqgwFNt0pH0 (10/10 COMPLETE)"},
+  "probes": {
+    "rank(vec_avg(aggregate_buy_opinion_score))": {"alpha": "E5lbGzWL", "sharpe": 0.0, "note": "vec_avg 压缩无区分度(全NaN/常数), opinion_score 族弃"},
+    "rank(ts_mean(vec_avg(aggregate_buy_opinion_score), 20))": {"alpha": "rKjLjgPE", "sharpe": 0.0, "note": "语法可行: vec_* 输出可接 ts_* 流水线"},
+    "rank(vec_sum(aggregate_comment_volume))": {"alpha": "d5jmjwoj", "sharpe": -0.46, "note": "有真实负信号(高评论→差, 注意力反转) 但静态累计 CW 0.973"},
+    "rank(vec_sum(aggregate_comment_volume))2": {"alpha": "d5jmjwoj", "CW": 0.973, "date": "2016-12-26"}
+  },
+  "results": [
+    {"id": "QP7j7okX", "expr": "rank(ts_delta(vec_sum(aggregate_comment_volume), 5))", "sharpe": -0.83, "fitness": -0.22, "turnover": 0.8749, "cw": 1.0, "two_year": -1.09, "verdict": "FAIL"},
+    {"id": "ak7l7gZw", "expr": "rank(ts_delta(vec_sum(aggregate_comment_volume), 20))", "sharpe": -0.27, "fitness": -0.04, "turnover": 0.7887, "cw": 1.0, "two_year": -0.86, "verdict": "FAIL"},
+    {"id": "E5lbl2X0", "expr": "rank(ts_returns(vec_sum(aggregate_comment_volume), 10))", "sharpe": -0.44, "fitness": -0.08, "turnover": 0.8909, "cw": 1.0, "two_year": -1.42, "verdict": "FAIL"},
+    {"id": "P0767AdM", "expr": "rank(ts_zscore(vec_sum(aggregate_comment_volume), 60))", "sharpe": -0.2, "fitness": -0.03, "turnover": 0.8242, "cw": 0.851, "two_year": -1.69, "verdict": "FAIL"},
+    {"id": "j2jXjMm5", "expr": "rank(ts_delta(vec_count(aggregate_comment_volume), 5))", "sharpe": -0.4, "fitness": -0.1, "turnover": 0.8224, "cw": 1.0, "two_year": -0.54, "verdict": "FAIL"},
+    {"id": "xAjQjEgm", "expr": "rank(ts_returns(vec_sum(aggregate_comment_volume), 20))", "sharpe": -0.41, "fitness": -0.08, "turnover": 0.8561, "cw": 1.0, "two_year": -1.04, "verdict": "FAIL"},
+    {"id": "58l9l2WJ", "expr": "rank(ts_delta(vec_sum(total_distinct_participants_count), 5))", "sharpe": -0.82, "fitness": -0.22, "turnover": 0.8825, "cw": 1.0, "two_year": -0.98, "verdict": "FAIL"},
+    {"id": "Grl6l7JZ", "expr": "rank(ts_delta(vec_max(aggregate_comment_volume), 5))", "sharpe": -0.79, "fitness": -0.21, "turnover": 0.878, "cw": 1.0, "two_year": -1.2, "verdict": "FAIL"},
+    {"id": "d5jmjPwg", "expr": "rank(ts_delta(vec_avg(consecutive_return_streak_length), 5))", "sharpe": 0.62, "fitness": 0.11, "turnover": 0.7376, "cw": 1.0, "two_year": -1.15, "sub": 0.23, "verdict": "FAIL", "note": "全场唯一正 sharpe, streak 变化有信号但 CW 1.0 (2018-03-19) 结构性无解"},
+    {"id": "vRj9joVv", "expr": "rank(ts_returns(vec_avg(salience_weighted_return_score), 10))", "sharpe": -0.13, "fitness": -0.01, "turnover": 0.5855, "cw": 1.0, "two_year": -0.79, "verdict": "FAIL"}
+  ],
+  "key_insight": "1) equity_forum_data 判死: 评论量/参与者/峰值全族 CW 0.85-1.0 结构性集中(KOR 论坛幂律分布, 事件日单股权重极端), 负 sharpe 方向一致(-0.2~-0.83, 注意力反转假设成立但信号不可用)。2) behavioral_signals 判死: 稀疏事件流导致事件日有效股票少→CW 1.0, d5jmjPwg streakΔ5d +0.62 是唯一正信号但 CW 无解。3) 平台行为实证: 字段虽标 VECTOR 但按 event 流处理, ts_backfill/rank/subtract/add 全拒, 必须 vec_* 包裹; vec_* 输出可接 ts_* 流水线。4) opinion_score 族(vec_avg)无区分度全 NaN。",
+  "verdict": "无提交(10/10 FAIL)。equity_forum_data + behavioral_signals 双数据集判死。wave87 需换方向: KOR untried 中 shortinterest/insider 类(coverage 0.995 高) 或 quant_factor_lib/ai_news_scores",
+  "submit_gate": {"best_sharpe": 0.62, "required": 1.58, "submitted": false}
+}

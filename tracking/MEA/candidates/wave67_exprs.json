@@ -1,0 +1,12 @@
+[
+  {"id": 1, "expr": "rank(ern3_next_interval)", "note": "距下次财报天数（事件驱动，近财报日效应）"},
+  {"id": 2, "expr": "rank(-ern3_next_interval)", "note": "距下次财报天数反向（远财报日效应）"},
+  {"id": 3, "expr": "rank(ern3_pre_interval)", "note": "距上次财报天数（财报后漂移）"},
+  {"id": 4, "expr": "rank(-ern3_pre_interval)", "note": "距上次财报天数反向"},
+  {"id": 5, "expr": "rank(ern3_next_reptime)", "note": "下次财报时间（HHMM，盘前/盘后效应）"},
+  {"id": 6, "expr": "rank(ern3_pre_reptime)", "note": "上次财报时间"},
+  {"id": 7, "expr": "rank(ern3_next_interval) - rank(ern3_pre_interval)", "note": "财报间隔不对称（next-pre）"},
+  {"id": 8, "expr": "rank(ern3_next_interval / (ern3_pre_interval + ern3_next_interval + 1))", "note": "财报周期位置（next/total）"},
+  {"id": 9, "expr": "rank(ts_delta(ern3_next_interval, 5))", "note": "next_interval 5d 变化（财报日临近加速）"},
+  {"id": 10, "expr": "rank(ern3_next_interval) + rank(ern3_next_reptime)", "note": "next 间隔+时间双轴"}
+]

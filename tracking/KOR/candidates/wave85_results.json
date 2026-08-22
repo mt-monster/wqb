@@ -1,0 +1,36 @@
+{
+  "wave": 85,
+  "tag": "wave85",
+  "date": "2026-08-22",
+  "multisims": {"A_decay6": "QYC5o7gj4Y48QenYLcbMvD", "B_decay2": "1TYmnHb1y4N4crHWkFRxc2i"},
+  "status": "20/20 COMPLETE",
+  "baseline": "Jj7mdmJl trend2 12d + trend6 8d ×1.5x subindustry decay4 1.29/0.83",
+  "focus": "decay 设置扫描: decay=6 批 A + decay=2 批 B, 窗口网格×权重邻域×industry 对照",
+  "batch_A_decay6": [
+    {"id": "e7zKOLng", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1109, "two_year": 0.66, "sub": 1.1, "invest": 1.35, "cluster": 0.7, "ppa": "PASS", "note": "A1 基线结构×decay=6: 较 decay4 微降 0.01"},
+    {"id": "E5lbwkqL", "expr": "rank(rank(decay(t2,10)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1116, "two_year": 0.64, "sub": 1.1, "invest": 1.35, "cluster": 0.7, "ppa": "PASS", "note": "A2 trend2 10d"},
+    {"id": "LL76pkka", "expr": "rank(rank(decay(t2,15)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.11, "two_year": 0.67, "sub": 1.11, "invest": 1.34, "cluster": 0.69, "ppa": "PASS", "note": "A3 trend2 15d"},
+    {"id": "Jj7mpbbx", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,10),sub))))", "sharpe": 1.26, "fitness": 0.8, "tvr": 0.1075, "two_year": 0.63, "sub": 1.05, "invest": 1.31, "cluster": 0.73, "ppa": "PASS", "note": "A4 trend6 10d"},
+    {"id": "zqkj9OOV", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,6),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1147, "two_year": 0.64, "sub": 1.1, "invest": 1.35, "cluster": 0.64, "ppa": "PASS", "note": "A5 trend6 6d"},
+    {"id": "Vk7EpO8Y", "expr": "rank(rank(decay(t2,12)) + multiply(1.3, rank(gz(decay(t6,8),sub))))", "sharpe": 1.27, "fitness": 0.82, "tvr": 0.1102, "two_year": 0.74, "sub": 1.11, "invest": 1.33, "cluster": 0.68, "ppa": "PASS", "note": "A6 1.3x: 2y 0.74"},
+    {"id": "2rlR7JKx", "expr": "rank(rank(decay(t2,12)) + multiply(1.7, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1114, "two_year": 0.58, "sub": 1.09, "invest": 1.36, "cluster": 0.69, "ppa": "PASS", "note": "A7 1.7x"},
+    {"id": "RR7Ypdpd", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),industry))))", "sharpe": 1.23, "fitness": 0.77, "tvr": 0.1053, "two_year": 0.81, "sub": 1.1, "invest": 1.23, "cluster": 0.64, "ppa": "PASS", "note": "A8 industry: 2y 0.81"},
+    {"id": "58l9wMw5", "expr": "rank(rank(decay(t2,15)) + multiply(1.5, rank(gz(decay(t6,10),sub))))", "sharpe": 1.25, "fitness": 0.79, "tvr": 0.1066, "two_year": 0.64, "sub": 1.05, "invest": 1.31, "cluster": 0.72, "ppa": "PASS", "note": "A9 trend2 15d + trend6 10d"},
+    {"id": "78jQwJ1O", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,8),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1121, "two_year": 0.48, "sub": 1.07, "invest": 1.37, "cluster": 0.69, "ppa": "PASS", "note": "A10 2x: 2y 0.48 最低"}
+  ],
+  "batch_B_decay2": [
+    {"id": "Jj7mpkbE", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.83, "tvr": 0.126, "two_year": 0.69, "sub": 1.13, "invest": 1.37, "cluster": 0.63, "ppa": "PASS", "note": "B1 基线结构×decay=2: 与 decay4 持平 1.29, sub 1.13"},
+    {"id": "np7ogl3z", "expr": "rank(rank(decay(t2,10)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.83, "tvr": 0.1271, "two_year": 0.67, "sub": 1.13, "invest": 1.37, "cluster": 0.63, "ppa": "PASS", "note": "B2 trend2 10d"},
+    {"id": "mLjA8NZ5", "expr": "rank(rank(decay(t2,15)) + multiply(1.5, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.82, "tvr": 0.1248, "two_year": 0.72, "sub": 1.13, "invest": 1.37, "cluster": 0.61, "ppa": "PASS", "note": "B3 trend2 15d: 2y 0.72"},
+    {"id": "d5jmx6dK", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,10),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1211, "two_year": 0.67, "sub": 1.08, "invest": 1.34, "cluster": 0.66, "ppa": "PASS", "note": "B4 trend6 10d"},
+    {"id": "Vk7EpLOb", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,6),sub))))", "sharpe": 1.24, "fitness": 0.76, "tvr": 0.1326, "two_year": 0.68, "sub": 1.08, "invest": 1.33, "cluster": 0.57, "ppa": "PASS", "note": "B5 trend6 6d: cluster 最低 0.57"},
+    {"id": "Jj7mpkdE", "expr": "rank(rank(decay(t2,12)) + multiply(1.3, rank(gz(decay(t6,8),sub))))", "sharpe": 1.27, "fitness": 0.82, "tvr": 0.125, "two_year": 0.77, "sub": 1.13, "invest": 1.35, "cluster": 0.62, "ppa": "PASS", "note": "B6 1.3x: 2y 0.77"},
+    {"id": "kqjX3MKk", "expr": "rank(rank(decay(t2,12)) + multiply(1.7, rank(gz(decay(t6,8),sub))))", "sharpe": 1.29, "fitness": 0.82, "tvr": 0.1268, "two_year": 0.62, "sub": 1.11, "invest": 1.39, "cluster": 0.62, "ppa": "PASS", "note": "B7 1.7x: 并列最佳 1.29"},
+    {"id": "mLjA8NX5", "expr": "rank(rank(decay(t2,12)) + multiply(1.5, rank(gz(decay(t6,8),industry))))", "sharpe": 1.26, "fitness": 0.81, "tvr": 0.1159, "two_year": 0.85, "sub": 1.17, "invest": 1.27, "cluster": 0.64, "ppa": "PASS", "note": "B8 industry×decay2: 2y 0.85 全场最高纪录, sub 1.17 最高"},
+    {"id": "RR7Ypore", "expr": "rank(rank(decay(t2,15)) + multiply(1.5, rank(gz(decay(t6,10),sub))))", "sharpe": 1.27, "fitness": 0.81, "tvr": 0.1199, "two_year": 0.7, "sub": 1.08, "invest": 1.34, "cluster": 0.65, "ppa": "PASS", "note": "B9 trend2 15d + trend6 10d"},
+    {"id": "d5jmx6QJ", "expr": "rank(rank(decay(t2,12)) + multiply(2, rank(gz(decay(t6,8),sub))))", "sharpe": 1.28, "fitness": 0.81, "tvr": 0.1279, "two_year": 0.53, "sub": 1.09, "invest": 1.41, "cluster": 0.61, "ppa": "PASS", "note": "B10 2x: invest 1.41 最高但 2y 0.53"}
+  ],
+  "key_insight": "decay 设置扫描完成: decay 2/4/6 三档全部收敛在 1.27-1.29 平台(decay=2 与 4 持平 1.29, decay=6 微降 0.01), TVR 随 decay 单调(d2=0.116-0.133 > d4≈0.116 > d6=0.105-0.115)。2y 与权重单调性在两档 decay 下继续成立(1.3x>1.5x>1.7x>2x)。mLjA8NX5(decay2×industry×1.5x) 2y 0.85+sub 1.17 刷新全场纪录(>kqjXKYK8 0.83), cluster 0.64 同批最低——2y 优化型最优解确认。cluster: decay=2 整体更低(0.57-0.66 vs d6 0.64-0.73)。表达层(结构)+参数层(权重×窗口×中性化)+设置层(decay/truncation)三层全穷尽, sharpe 天花板 1.29 连续 4 波未破, 必须想法层升级: (a) 第三路信号加入(当前仅 trend2+trend6 两路) (b) 其他 trend 字段(trend3/5/7, 0/4 已判死) (c) 数据集混合(model25/model31 已试全灭, 需新数据集) (d) 2y 专项无价值(0.85 距 1.58 太远)",
+  "verdict": "无提交(sharpe 1.29 < 1.58), decay 维度确认穷尽。wave86 转向想法层: 第三路信号/新数据集组合",
+  "submit_gate": {"best_sharpe": 1.29, "required": 1.58, "submitted": false}
+}

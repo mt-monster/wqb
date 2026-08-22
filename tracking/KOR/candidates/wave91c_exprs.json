@@ -1,0 +1,27 @@
+{
+  "wave": 91,
+  "tag": "wave91c",
+  "created": "2026-08-22",
+  "baseline": "wave91 E3 rank(change_6m_rating_revision) sharpe 0.89/fitness 0.49/2y 2.14 + wave90 D8 rank(add(rank(long_term_quantile1_120d_pred), multiply(3, ...))) sharpe 1.79/fitness 0.99/2y 1.24",
+  "focus": "跨数据集混合: 评级修正(ml_factor_proj, 2y 金矿 2.14) × model170 long_term/short 族(wave90 验证 sharpe 1.79), 两信号源正交(分析师修正 vs ML 价格预测), 权重格扫描冲 sharpe≥1.58 + fitness≥1.0 + 2y≥1.58",
+  "direction": "wave91b 结论: 同族组合稀释 sharpe(0.89→0.4-0.72), 2y 与慢变量混合保持(2.27)/快变量混合崩(0.89)。跨信号源是唯一出路: 评级修正 2y 强(2.14)但 sharpe 弱(0.89), model170 long_term sharpe 强(1.79)但 2y 弱(1.24)——两者相关性低, 混合理论可互补。本批权重格: LT×评级 1:1/1:2/1:3/2:1/3:1, SH×评级 1:2/2:1, 三路 1+2+1, 乘法共振, B8 最优2y组合+LT",
+  "batches": [
+    {
+      "batch": "C",
+      "note": "跨数据集混合批: 评级修正 × model170 (权重格扫描)",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "C1", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(long_term_quantile1_120d_pred))))", "note": "评级1 + LT2 (model 主导提 sharpe)"},
+        {"id": "C2", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(long_term_quantile1_120d_pred)))", "note": "评级2 + LT1 (评级主导保 2y)"},
+        {"id": "C3", "expr": "rank(add(rank(change_6m_rating_revision), multiply(3, rank(long_term_quantile1_120d_pred))))", "note": "评级1 + LT3 (强 model 权重)"},
+        {"id": "C4", "expr": "rank(add(multiply(3, rank(change_6m_rating_revision)), rank(long_term_quantile1_120d_pred)))", "note": "评级3 + LT1 (强评级权重)"},
+        {"id": "C5", "expr": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "评级1 + SH2 (短周期对冲)"},
+        {"id": "C6", "expr": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile1_5d_pred)))", "note": "评级2 + SH1"},
+        {"id": "C7", "expr": "rank(add(rank(change_6m_rating_revision), add(multiply(2, rank(long_term_quantile1_120d_pred)), rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "三路: 评级1 + LT2 + SH1"},
+        {"id": "C8", "expr": "rank(multiply(rank(change_6m_rating_revision), rank(long_term_quantile1_120d_pred)))", "note": "乘法共振: 双信号高时更强"},
+        {"id": "C9", "expr": "rank(add(rank(change_6m_rating_revision), add(rank(change_six_month_long_term_growth_estimate), multiply(2, rank(long_term_quantile1_120d_pred)))))", "note": "B8 最优2y组合(2.27) + LT2"},
+        {"id": "C10", "expr": "rank(add(rank(change_6m_rating_revision), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "评级1 + SH3 (强短周期)"}
+      ]
+    }
+  ]
+}

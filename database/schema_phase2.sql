@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS wave_results (
     status VARCHAR(20),                 -- open / closed
     source_file VARCHAR(200),           -- 原 JSON 文件路径（追溯）
     archived INTEGER DEFAULT 0,         -- 是否已归档
+    full_payload JSON,                  -- 完整 wave JSON（MD 快照导出用）
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(region, wave_number)

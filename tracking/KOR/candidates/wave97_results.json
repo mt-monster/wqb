@@ -1,0 +1,21 @@
+{
+  "wave": 97,
+  "tag": "wave97",
+  "date": "2026-08-22",
+  "multisim": {"id": "2gykxk2yZ4S4cpBrsRI19Kp", "status": "6/6 COMPLETE"},
+  "dataset": "model219 (Canadian Equity Quantitative Models, 1012 字段全 MATRIX, 976 零竞争)",
+  "baseline": "KOR 4 ACTIVE; wave96 判死 price_signal_dl/ai_factor_transfer; model219 wave20 曾发掘未判死(白名单 21 字段)",
+  "focus": "盈余质量/前瞻估值族首波: surp 盈余惊喜变化 / fwdroe 前瞻ROE / fcfp 前瞻估值 / EPS增长×ROA双信号 / 现金流质量-增长 252d 协同 / 行业ROE-前瞻ROE 协同; 避开评级修正饱和族(PROD 相关风险), 水平字段配 ts_delta(63) 压 TVR",
+  "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+  "candidates": [
+    {"id": "M3", "alpha": "mLjzXdE6", "expr": "rank(add(multiply(2, rank(mdl219_q_dlr_1_pctchgeps)), rank(mdl219_q_dlr_1_yoychgroa)))", "sharpe": 0.01, "fitness": 0.0, "tvr": 0.0615, "two_year": -0.08, "sub": 0.15, "light": "RED", "note": "EPS 增长×ROA 双信号: 3 FAIL"},
+    {"id": "M1", "alpha": "58l6vrPo", "expr": "rank(ts_delta(mdl219_q_dlr_1_surp, 63))", "sharpe": 0.03, "fitness": 0.0, "tvr": 0.1082, "two_year": -0.48, "sub": 0.2, "light": "RED", "note": "盈余惊喜 63d: 4 FAIL"},
+    {"id": "M2", "alpha": "np7zWmL3", "expr": "rank(ts_delta(mdl219_q_dlr_1_fc_fwdroe, 63))", "sharpe": -0.02, "fitness": -0.0, "tvr": 0.1042, "two_year": -0.1, "sub": 0.0, "light": "RED", "note": "前瞻 ROE 63d: 4 FAIL"},
+    {"id": "M6", "alpha": "kqjmKWxL", "expr": "rank(ts_corr(mdl219_q_dlr_1_indrelcroe_, mdl219_q_dlr_1_fc_fwdroe, 252))", "sharpe": -0.07, "fitness": -0.01, "tvr": 0.0642, "two_year": 0.2, "sub": -0.42, "light": "RED", "note": "行业ROE×前瞻ROE 252d: 5 FAIL"},
+    {"id": "M4", "alpha": "O07m9Rlg", "expr": "rank(ts_zscore(ts_delta(mdl219_q_dlr_1_fc_fcfp, 63), 120))", "sharpe": -0.12, "fitness": -0.02, "tvr": 0.1187, "two_year": 0.25, "sub": -0.04, "light": "RED", "note": "前瞻 FCF 估值: 3 FAIL"},
+    {"id": "M5", "alpha": "88l6LEmm", "expr": "rank(ts_corr(mdl219_q_dlr_1_ocfmargin, mdl219_q_dlr_1_pctchgeps, 252))", "sharpe": -0.42, "fitness": -0.15, "tvr": 0.0635, "two_year": -0.48, "sub": -0.99, "light": "RED", "note": "现金流质量×增长协同: 5 FAIL"}
+  ],
+  "key_insight": "model219 盈余质量/前瞻估值族全灭 (0/6): 所有结构 sharpe 绝对值<0.5。KOR TOP600 慢变基本面因子(盈余惊喜/前瞻ROE/估值比变化)定价效率高无 alpha; 与评级修正族(有效)对比, 分析师预期变化类信息才是 KOR 有效面。TVR 全部 6-12% 低换手说明信号本身无预测力而非执行问题。",
+  "verdict": "RED (判死): 0 可提交。model219 盈余质量/前瞻估值族不入 book; 不继续投入该方向。",
+  "submit_gate": {"best_sharpe": 0.03, "required": 1.58, "best_fitness": 0.0, "fitness_required": 1.0, "best_2y": 0.25, "two_year_required": 1.58, "submitted": 0}
+}

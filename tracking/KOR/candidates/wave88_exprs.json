@@ -1,0 +1,27 @@
+{
+  "wave": 88,
+  "tag": "wave88",
+  "created": "2026-08-22",
+  "baseline": "1YwLXeEJ rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_quantile1_20d_pred))) sharpe 0.92 fitness 0.37 TVR 0.235 (wave87 A4 全场最佳 NEAR)",
+  "focus": "multi_source_model A4 长短结合深化: 三路组合(long+mid+short) + 权重扫描(1.5x/2x) + hedge3 救 sub + regime/seasonal 变体 + 窗口替换(5d/60d/120d)", 
+  "direction": "wave87 证明组合效应显著(单字段 0.33→双字段 0.92, 3x) 且全部结构闸 PASS。本波扩展组合维度: ①三路(加 60d mid-term) ②权重(long 或 short 加 2x) ③+hedge3(2y 0.57 全场最高可救 sub) ④regime4/seasonal 分项替换 ⑤窗口网格(5d/20d/60d/120d)",
+  "batches": [
+    {
+      "batch": "A",
+      "note": "multi_source_model A4 深化批: 全部结构闸预期 PASS 族, 冲 sharpe≥1.58",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "A1", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(rank(short_term_quantile1_20d_pred), rank(short_term_quantile1_60d_pred))))", "note": "三路组合 long120+short20+short60 (等权)"},
+        {"id": "A2", "expr": "rank(add(multiply(2, rank(long_term_quantile1_120d_pred)), rank(short_term_quantile1_20d_pred)))", "note": "long 权重 2x (长周期主导)"},
+        {"id": "A3", "expr": "rank(add(rank(long_term_quantile1_120d_pred), multiply(2, rank(short_term_quantile1_20d_pred))))", "note": "short 权重 2x (短周期主导)"},
+        {"id": "A4", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(rank(short_term_quantile1_20d_pred), rank(long_horizon_hedge3_quantile1_120d_pred))))", "note": "A4 基线+hedge3 救 sub (hedge3 2y 0.57)"},
+        {"id": "A5", "expr": "rank(add(rank(long_term_quantile1_60d_pred), rank(short_term_quantile1_20d_pred)))", "note": "窗口替换: long 120d→60d"},
+        {"id": "A6", "expr": "rank(add(rank(long_term_regime4_quantile1_120d_pred), rank(short_term_quantile1_20d_pred)))", "note": "regime4 调整版长周期替换"},
+        {"id": "A7", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_term_seasonal_quantile1_20d_pred)))", "note": "seasonal 短周期替换 (季节调整)"},
+        {"id": "A8", "expr": "rank(add(rank(long_term_quantile1_120d_pred), rank(short_horizon_hedge3_quantile1_5d_pred)))", "note": "短周期 5d 对冲信号替换 (short_term_quantile1_5d 不存在, 用 hedge3 5d)"},
+        {"id": "A9", "expr": "rank(add(multiply(1.5, rank(long_term_quantile1_120d_pred)), add(rank(short_term_quantile1_20d_pred), rank(short_horizon_hedge3_quantile1_5d_pred))))", "note": "三路 1.5x long + 20d + 5d 对冲"},
+        {"id": "A10", "expr": "rank(add(rank(long_term_quantile1_120d_pred), add(rank(short_term_quantile1_20d_pred), add(rank(short_horizon_hedge3_quantile1_5d_pred), rank(long_horizon_hedge3_quantile1_120d_pred)))))", "note": "四路全组合: long120+short20+hedge5+hedge120 (operatorCount=8 上限)"}
+      ]
+    }
+  ]
+}

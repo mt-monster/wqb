@@ -1,0 +1,10 @@
+{
+ "expressions": [
+  "rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))",
+  "rank(ts_delta(momentum_williams_r_adjusted, 10))",
+  "rank(ts_zscore(typical_price_bollinger_band_position, 20))",
+  "rank(add(multiply(2, rank(ts_delta(cumulative_money_flow_volume_adjusted, 10))), rank(ts_delta(liquidity_money_flow_alignment, 10))))",
+  "rank(ts_corr(cumulative_money_flow_volume_adjusted, short_term_price_change, 20))",
+  "rank(ts_corr(volume_anomaly_price_positioning, short_term_price_change, 20))"
+ ]
+}

@@ -1,0 +1,32 @@
+{
+  "wave": 86,
+  "tag": "wave86b",
+  "created": "2026-08-22",
+  "baseline": "Jj7mdmJl rank(rank(ts_decay_linear(t2,12)) + multiply(1.5, rank(group_zscore(ts_decay_linear(t6,8), subindustry)))) sharpe 1.29 fitness 0.83",
+  "focus": "wave86 修复批: forum/behavioral 字段平台按 event 流处理(ts_backfill/rank/subtract/add 全部 'does not support event inputs') → 必须 vec_* 包裹。探针实证: vec_sum(comment_volume) sharpe -0.46 有负信号但静态累计 CW 0.973 集中 → 用 ts_delta/ts_returns/ts_zscore 转时变窗口解决",
+  "probe_findings": {
+    "rank(vec_avg(aggregate_buy_opinion_score))": "E5lbGzWL sharpe 0.0/TVR 0.0: vec_avg 压缩后无区分度(全NaN/常数)",
+    "rank(ts_mean(vec_avg(aggregate_buy_opinion_score), 20))": "rKjLjgPE 语法可行(无报错), vec_* 输出可接 ts_* 流水线",
+    "rank(vec_sum(aggregate_comment_volume))": "d5jmjwoj sharpe -0.46 (高评论→差, 注意力反转!) 但 CW 0.973 集中 + 2y -1.27",
+    "conclusion": "comment_volume 族有真实信号, 需时变化; opinion_score 族无区分度, 弃"
+  },
+  "batches": [
+    {
+      "batch": "B",
+      "note": "vec_* 包裹修复批: forum 评论量时变化(6) + forum 参与者/峰值(2) + behavioral vec_avg 时变化(2)",
+      "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF"},
+      "expressions": [
+        {"id": "B1", "expr": "rank(ts_delta(vec_sum(aggregate_comment_volume), 5))", "note": "评论增量 5d (注意力时变)"},
+        {"id": "B2", "expr": "rank(ts_delta(vec_sum(aggregate_comment_volume), 20))", "note": "评论增量 20d"},
+        {"id": "B3", "expr": "rank(ts_returns(vec_sum(aggregate_comment_volume), 10))", "note": "评论增长率 10d"},
+        {"id": "B4", "expr": "rank(ts_zscore(vec_sum(aggregate_comment_volume), 60))", "note": "评论量 60d 相对偏离"},
+        {"id": "B5", "expr": "rank(ts_delta(vec_count(aggregate_comment_volume), 5))", "note": "评论事件频率增量 5d"},
+        {"id": "B6", "expr": "rank(ts_returns(vec_sum(aggregate_comment_volume), 20))", "note": "评论增长率 20d"},
+        {"id": "B7", "expr": "rank(ts_delta(vec_sum(total_distinct_participants_count), 5))", "note": "参与者人数增量 5d (关注度扩散)"},
+        {"id": "B8", "expr": "rank(ts_delta(vec_max(aggregate_comment_volume), 5))", "note": "单平台评论峰值增量 5d"},
+        {"id": "B9", "expr": "rank(ts_delta(vec_avg(consecutive_return_streak_length), 5))", "note": "behavioral streak 变化 5d"},
+        {"id": "B10", "expr": "rank(ts_returns(vec_avg(salience_weighted_return_score), 10))", "note": "behavioral salience 变化率 10d"}
+      ]
+    }
+  ]
+}

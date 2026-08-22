@@ -1,0 +1,70 @@
+{
+  "wave": "wave98-R3",
+  "dataset": "chart_cnn_alpha",
+  "mode": "Mode B 字段级升级 (参数天花板 1.55 已确认, 换第二腿/核心窗口突破)",
+  "base_alpha": "mLjzVRXp (0.95/0.05, d10, t0.04, sharpe 1.55/1.40/2y1.81)",
+  "frozen_params": {
+    "decay": 10,
+    "neutralization": "SECTOR",
+    "truncation": 0.04,
+    "maxTrade": "ON"
+  },
+  "rationale": "R2 结论: 权重0.95 封顶、decay10 最优、trunc 无差异 → 参数空间收敛 1.55. 本轮 Mode B: 冻结 prob50d 主腿与 0.95/0.05 融合权重, 替换/增补第二腿字段(白名单 25 字段中未用于当前结构者)",
+  "settings_default": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "neutralization": "SECTOR",
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "S1",
+      "variant": "第二腿换 img200d_return_quintile2_prob_leap1 (fit1.36 历史最高)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img200d_return_quintile2_prob_leap1),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S2",
+      "variant": "第二腿换 cnn_confidence_score3_q5_50d (置信度原生字段)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(cnn_confidence_score3_q5_50d_equity2b2),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S3",
+      "variant": "第二腿换 probability_rank5_next60d_return_p4_equity_star6 (A1 三源腿)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(probability_rank5_next60d_return_p4_equity_star6),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S4",
+      "variant": "核心字段 50d→60d (prob q5 bucket4 60d)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_60d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_60d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S5",
+      "variant": "第二腿换 img200d_return_quintile4_prob_leap1",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img200d_return_quintile4_prob_leap1),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S6",
+      "variant": "双第二腿: 0.6prob + 0.2img60d + 0.2img200d_quintile2 [已扁平化 add(add(a,b),c)]",
+      "expression": "add(multiply(add(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore4),0.2)),multiply(rank(img200d_return_quintile2_prob_leap1),0.2)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S7",
+      "variant": "第二腿换 img60d_return_quantile5_confscore3 (confscore3 变体)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.6),multiply(rank(img60d_return_quantile5_confscore3),0.4)),0.95),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.05))"
+    },
+    {
+      "id": "S8",
+      "variant": "主腿 0.7/0.3 + img200d_quintile2, 权重 0.9/0.1 (新字段+已知次优参数)",
+      "expression": "add(multiply(add(multiply(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),0.7),multiply(rank(img200d_return_quintile2_prob_leap1),0.3)),0.9),multiply(subtract(rank(cnn_predicted_prob_q5_bucket4_50d_equity2b2),rank(cnn_predicted_prob_q5_bucket0_50d_equity2b2)),0.1))"
+    }
+  ]
+}

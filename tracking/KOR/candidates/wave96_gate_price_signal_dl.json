@@ -1,0 +1,10 @@
+{
+ "expressions": [
+  "rank(ts_delta(raw_trend_indicator_0, 20))",
+  "rank(ts_delta(normalized_trend_indicator_1, 20))",
+  "rank(add(multiply(2, rank(ts_delta(raw_trend_indicator_0, 20))), rank(ts_delta(raw_volume_indicator_0, 20))))",
+  "rank(ts_zscore(ts_delta(raw_trend_indicator_3, 20), 60))",
+  "rank(ts_corr(raw_trend_indicator_0, raw_volume_indicator_0, 20))",
+  "rank(ts_corr(normalized_trend_indicator_1, normalized_volume_indicator_0, 20))"
+ ]
+}
