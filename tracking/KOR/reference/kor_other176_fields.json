@@ -1,0 +1,174 @@
+{
+ "dataset": "other176",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 20
+ },
+ "field_count": 20,
+ "fetched_at": "2026-08-23T00:59:27",
+ "fields": [
+  {
+   "id": "oth176_close_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 117,
+   "alphaCount": 510,
+   "description": "Market cap in US dollars for US and local currency for each region"
+  },
+  {
+   "id": "oth176_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 173,
+   "alphaCount": 654,
+   "description": "Score of Hedge model (A hedge model is developed to provide downside insurance to our baseline scenario, using those per"
+  },
+  {
+   "id": "oth176_eq_medium",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 133,
+   "alphaCount": 472,
+   "description": "Score of the Medium model (A medium-term model is trained using a rolling 12-month window)"
+  },
+  {
+   "id": "oth176_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 113,
+   "alphaCount": 404,
+   "description": "Market Cap. US dollars for US. Local Currency for each region"
+  },
+  {
+   "id": "oth176_eq_seasonality",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 128,
+   "alphaCount": 678,
+   "description": "Score of the Seasonality Model (A seasonal model is trained using a rolling 10-year window of the same calendar months)"
+  },
+  {
+   "id": "oth176_eq_short",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 103,
+   "alphaCount": 415,
+   "description": "Score of the Short model (A short-term model uses only the previous month data)"
+  },
+  {
+   "id": "oth176_hc_eq_hedge",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 218,
+   "alphaCount": 1075,
+   "description": "Score of Hedge model (A hedge model is developed to provide downside insurance to our baseline scenario, using periods t"
+  },
+  {
+   "id": "oth176_hc_eq_medium",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 94,
+   "alphaCount": 354,
+   "description": "Score of the Medium model (A medium-term model is trained using a rolling 12-month window)"
+  },
+  {
+   "id": "oth176_hc_eq_mktcap",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 106,
+   "alphaCount": 452,
+   "description": "Market cap in US dollars for US and local currency for each region"
+  },
+  {
+   "id": "oth176_hc_eq_seasonality",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 115,
+   "alphaCount": 525,
+   "description": "Score of the Seasonality Model (A seasonal model is trained using a rolling 10-year window of the same calendar months)"
+  },
+  {
+   "id": "oth176_hc_eq_short",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 119,
+   "alphaCount": 435,
+   "description": "Score of the Short model (A short-term model uses only the previous month data)"
+  },
+  {
+   "id": "oth176_lmt_close_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 519,
+   "alphaCount": 4146,
+   "description": "Model Composite Score"
+  },
+  {
+   "id": "oth176_lmt_close_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 82,
+   "alphaCount": 309,
+   "description": "GICS sector"
+  },
+  {
+   "id": "oth176_lmt_open_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 228,
+   "alphaCount": 1403,
+   "description": "Model Composite Score"
+  },
+  {
+   "id": "oth176_lmt_open_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.7708,
+   "userCount": 61,
+   "alphaCount": 215,
+   "description": "GICS sector"
+  },
+  {
+   "id": "oth176_malta_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 232,
+   "alphaCount": 1232,
+   "description": "Model Composite Score"
+  },
+  {
+   "id": "oth176_malta_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 93,
+   "alphaCount": 300,
+   "description": "GICS sector"
+  },
+  {
+   "id": "oth176_maltahc_eq_score",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 204,
+   "alphaCount": 1138,
+   "description": "Model Composite Score"
+  },
+  {
+   "id": "oth176_maltahc_eq_sector",
+   "type": "MATRIX",
+   "coverage": 0.738,
+   "userCount": 77,
+   "alphaCount": 250,
+   "description": "GICS sector"
+  },
+  {
+   "id": "oth176_open_eq_cap",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 90,
+   "alphaCount": 559,
+   "description": "Market Cap. US dollars for US. Local Currency for each region"
+  }
+ ]
+}

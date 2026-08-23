@@ -1,0 +1,238 @@
+{
+ "dataset": "price_signal_dl",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 28
+ },
+ "field_count": 28,
+ "fetched_at": "2026-08-23T04:13:16",
+ "fields": [
+  {
+   "id": "normalized_trend_indicator_0",
+   "type": "MATRIX",
+   "coverage": 0.9889,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Rescaled value of the first trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_1",
+   "type": "MATRIX",
+   "coverage": 0.9889,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Rescaled value of the second trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_2",
+   "type": "MATRIX",
+   "coverage": 0.9889,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the third trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_3",
+   "type": "MATRIX",
+   "coverage": 0.9933,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the third trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_4",
+   "type": "MATRIX",
+   "coverage": 0.9933,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Rescaled value of the fifth trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_5",
+   "type": "MATRIX",
+   "coverage": 0.9933,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the sixth trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_trend_indicator_6",
+   "type": "MATRIX",
+   "coverage": 0.9889,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the seventh trend-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_0",
+   "type": "MATRIX",
+   "coverage": 0.9897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the first volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_1",
+   "type": "MATRIX",
+   "coverage": 0.9849,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the second volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_2",
+   "type": "MATRIX",
+   "coverage": 0.985,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the third volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_3",
+   "type": "MATRIX",
+   "coverage": 0.9897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the fourth volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_4",
+   "type": "MATRIX",
+   "coverage": 0.9897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the fifth volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_5",
+   "type": "MATRIX",
+   "coverage": 0.9897,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the sixth volume-based indicator for comparability."
+  },
+  {
+   "id": "normalized_volume_indicator_6",
+   "type": "MATRIX",
+   "coverage": 0.9834,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Rescaled value of the seventh volume-based indicator for comparability."
+  },
+  {
+   "id": "raw_trend_indicator_0",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the first trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_1",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the second trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_2",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the second trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_3",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the fourth trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_4",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the fourth trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_5",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the sixth trend-based indicator."
+  },
+  {
+   "id": "raw_trend_indicator_6",
+   "type": "MATRIX",
+   "coverage": 0.9573,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the seventh trend-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_0",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the first volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_1",
+   "type": "MATRIX",
+   "coverage": 0.9568,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the second volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_2",
+   "type": "MATRIX",
+   "coverage": 0.9569,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the third volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_3",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the fourth volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_4",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the fifth volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_5",
+   "type": "MATRIX",
+   "coverage": 0.9615,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the sixth volume-based indicator."
+  },
+  {
+   "id": "raw_volume_indicator_6",
+   "type": "MATRIX",
+   "coverage": 0.9554,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unadjusted value of the seventh volume-based indicator."
+  }
+ ]
+}

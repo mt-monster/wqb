@@ -1,0 +1,10 @@
+[
+  "rank(avg_similarity_bullish_flag)",
+  "rank(avg_similarity_bearish_flag)",
+  "rank(avg_similarity_continuation_gap_up)",
+  "rank(avg_similarity_bullish_rectangle)",
+  "rank(ascending_staircase_similarity_average)",
+  "rank(bear_pennant_recent_similarity_h40)",
+  "rank(add(multiply(2, rank(avg_similarity_bullish_flag)), rank(price_volume_quantile1_20d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(avg_similarity_bullish_flag)), rank(price_volume_quantile1_20d_pred))), sector)"
+]

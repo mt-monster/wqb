@@ -1,0 +1,270 @@
+{
+ "dataset": "quant_factor_lib",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 32
+ },
+ "field_count": 32,
+ "fetched_at": "2026-08-23T14:04:43",
+ "fields": [
+  {
+   "id": "qfl_cassie_convention_cng_longdebt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Change in the ratio of long-term debt to equity over a period."
+  },
+  {
+   "id": "qfl_cassie_convention_current_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current ratio measuring a company's ability to pay short-term liabilities."
+  },
+  {
+   "id": "qfl_cassie_convention_debt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Ratio of total debt to total capital for a company."
+  },
+  {
+   "id": "qfl_cassie_convention_debt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Ratio of total debt to total equity for a company."
+  },
+  {
+   "id": "qfl_cassie_convention_debt_mktcapital",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Ratio of total debt to market capitalization."
+  },
+  {
+   "id": "qfl_cassie_convention_longdebt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Ratio of long-term debt to total capital."
+  },
+  {
+   "id": "qfl_cassie_convention_longdebt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "Ratio of long-term debt to equity for a company."
+  },
+  {
+   "id": "qfl_cassie_convention_ocf_currliab",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Ratio of operating cash flow to current liabilities."
+  },
+  {
+   "id": "qfl_cassie_convention_quick_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Quick ratio measuring a company's ability to meet short-term obligations."
+  },
+  {
+   "id": "qfl_cassie_mktcap",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total market value of a company's outstanding shares."
+  },
+  {
+   "id": "qfl_cassie_model_altman_zscore",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 13,
+   "alphaCount": 33,
+   "description": "Altman Z-Score indicating probability of bankruptcy."
+  },
+  {
+   "id": "qfl_cassie_model_chs_default",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "Score from the CHS model predicting likelihood of default."
+  },
+  {
+   "id": "qfl_cassie_model_merton",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Distance to default as estimated by the Merton model."
+  },
+  {
+   "id": "qfl_cassie_model_ohlson_oscore",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Ohlson O-Score indicating probability of default or bankruptcy."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_debt_weighted_duration",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average maturity of debt, weighted by principal amounts."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_debt_weighted_interest_rate",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average interest rate on debt, weighted by principal amounts."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_distance_insolvency_1y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Distance to insolvency threshold projected one year ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_extreme_insolvency_stress_1y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating extreme insolvency risk projected one year ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_extreme_insolvency_stress_9m",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating extreme insolvency risk projected nine months ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_growth_shortterm_debt",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Growth rate of short-term debt over a specified period."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_insolvency_stress_1y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating the level of insolvency risk projected one year ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_insolvency_stress_2y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Score indicating the level of insolvency risk projected two years ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_insolvency_stress_9m",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating the level of insolvency risk projected nine months ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_moderate_insolvency_stress_1y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating moderate insolvency risk projected one year ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_moderate_insolvency_stress_2y",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating moderate insolvency risk projected two years ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_moderate_insolvency_stress_9m",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score indicating moderate insolvency risk projected nine months ahead."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_revolver_debt",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total amount of revolving debt outstanding."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_short_longterm_debt_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Ratio of short-term debt to long-term debt."
+  },
+  {
+   "id": "qfl_cassie_qes_alter_shortterm_debt_ratio",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of short-term debt to total debt."
+  },
+  {
+   "id": "qfl_cassie_qes_cassie_impliedalpha",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Implied alpha or expected excess return derived from credit risk models."
+  },
+  {
+   "id": "qfl_cassie_qes_cassie_prelimcomposite",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Preliminary composite score from the credit risk model."
+  },
+  {
+   "id": "qfl_cassie_qes_cassie_score",
+   "type": "VECTOR",
+   "coverage": 0.8335,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Composite credit risk score from the CASSIE model."
+  }
+ ]
+}

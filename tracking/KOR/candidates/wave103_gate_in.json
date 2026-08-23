@@ -1,0 +1,12 @@
+{
+ "expressions": [
+  "rank(asc_triangle_dynamic_simscore_lookback120)",
+  "rank(asc_triangle_mean_simscore_lookback60)",
+  "rank(breakaway_gap_up_dynamic_simscore_lookback60)",
+  "rank(avg_similarity_falling_wedge_pattern_120)",
+  "rank(avg_similarity_v_reversal_bottom)",
+  "rank(avg_similarity_v_continuation_top)",
+  "rank(avg_similarity_upward_symmetrical_triangle)",
+  "rank(ts_zscore(asc_triangle_dynamic_simscore_lookback120, 60))"
+ ]
+}

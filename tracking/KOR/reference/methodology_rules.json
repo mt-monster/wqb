@@ -24,7 +24,13 @@
     "exempt": [
      "repair"
     ],
-    "consumed_batches": [],
+    "consumed_batches": [
+     "a9813301dfc4cbddac444024b38127e99c70f67d",
+     "aa9d1d9fbc2c57c1292a27b05a40e9ee1588f1ac",
+     "fc63d77c5be446f5b9b704124b4bcfa0a58a5ea8",
+     "40550106f8021afe8968913e1a9b1457195889e2",
+     "9d4df121e96b2187b8b6cc1e322d02d6c386dc58"
+    ],
     "issued_at": "2026-08-19T16:58:18"
    },
    "evidence": {
@@ -39,5 +45,5 @@
    "times_succeeded": 0
   }
  ],
- "updated_at": "2026-08-19T16:58:18"
+ "updated_at": "2026-08-23T01:14:24"
 }

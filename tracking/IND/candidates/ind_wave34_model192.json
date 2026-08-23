@@ -1,0 +1,10 @@
+[
+  "-rank(ts_rank(ts_backfill(mdl192_id_y5dpghcd5_sdc,66),250))",
+  "-rank(ts_zscore(ts_backfill(mdl192_id_y5dpghcm1_sdc,66),126))",
+  "-rank(ts_backfill(mdl192_cds_pd5y_di,66))",
+  "rank(ts_zscore(ts_backfill(mdl192_id_mrspe_cf,66),126))",
+  "rank(ts_backfill(mdl192_fc_numrevy1_di,66))",
+  "-rank(ts_backfill(mdl192_indrelrtn5d_di,5))",
+  "rank(ts_decay_linear(ts_backfill(mdl192_fc_fqsurstd_di,66),63))",
+  "-rank(ts_rank(ts_backfill(mdl192_id_tni_ths,66),250))"
+]

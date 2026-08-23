@@ -1,0 +1,694 @@
+{
+ "dataset": "news79",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 85
+ },
+ "field_count": 85,
+ "fetched_at": "2026-08-23T03:07:50",
+ "fields": [
+  {
+   "id": "document_version_number",
+   "type": "VECTOR",
+   "coverage": 0.1122,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Revision number of the document processed by RavenPack; 0 indicates initial version"
+  },
+  {
+   "id": "nws79_analyst_ratings_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 14,
+   "alphaCount": 23,
+   "description": "Numerical score indicating changes in analyst recommendations about a company: values of -1 (downgrade), 0 (neutral), or"
+  },
+  {
+   "id": "nws79_analyst_ratings_sentiment_207",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "A score that represents a change in recommendation by an analyst firm in the form of a numerical score. When the mention"
+  },
+  {
+   "id": "nws79_atlas_unit_name_186",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Atlas unit name"
+  },
+  {
+   "id": "nws79_category_218",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "A unique tag to label, identify, and recognize a particular type and property of an entity-specific event. The category "
+  },
+  {
+   "id": "nws79_commentary_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Sentiment score (-1=negative, 0=neutral, 1=positive) trained on headlines for short commentary or editorials on global e"
+  },
+  {
+   "id": "nws79_commentary_sentiment_212",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A score that represents the sentiment of the given document, trained on headlines providing short commentary and editori"
+  },
+  {
+   "id": "nws79_composite_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "A granular score between -1.00 and +1.00 with up to 2 decimal places, representing the sentiment of a document by combin"
+  },
+  {
+   "id": "nws79_composite_sentiment_score_191",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "A granular score between -1.00 and +1.00 with up to 2 decimal places that represents the sentiment of a given document b"
+  },
+  {
+   "id": "nws79_corporate_actions_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "A score indicating sentiment derived from headlines about corporate action announcements, with -1 for negative, 0 for ne"
+  },
+  {
+   "id": "nws79_corporate_actions_sentiment_185",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A score that represents the sentiment of the given document, trained on headlines about corporate action announcements. "
+  },
+  {
+   "id": "nws79_credit_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 27,
+   "alphaCount": 47,
+   "description": "Score (-1.00 to +1.00) indicating effect of the event on entity’s creditworthiness; positive means ability to pay debt, "
+  },
+  {
+   "id": "nws79_credit_sentiment_182",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "A score between -1.00 and +1.00 that measures how the event affects the creditworthiness of the entity. Credit Sentiment"
+  },
+  {
+   "id": "nws79_document_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 21,
+   "description": "A score from -1.00 to +1.00 indicating the overall sentiment in the document, calculated by averaging sentence-level sen"
+  },
+  {
+   "id": "nws79_document_sentiment_195",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 9,
+   "alphaCount": 26,
+   "description": "A score between -1.00 and +1.00 that represents the sentiment for the document by analyzing the language in each and eve"
+  },
+  {
+   "id": "nws79_document_sentiment_confidence",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Score (0.00 to 1.00) representing confidence in the DOCUMENT_SENTIMENT value, calculated from aggregated sentiment distr"
+  },
+  {
+   "id": "nws79_document_sentiment_confidence_193",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "A granular score from 0.00 to +1.00 with up to 2 decimal places, that provides a measure of the confidence when determin"
+  },
+  {
+   "id": "nws79_document_type_189",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Classifies the type of document into one of more than 600 categories"
+  },
+  {
+   "id": "nws79_earnings_release_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Sentiment score (-1=negative, 0=neutral, 1=positive) trained on headlines about earnings releases"
+  },
+  {
+   "id": "nws79_earnings_release_sentiment_199",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "A score that represents the sentiment of the given document, trained on headlines about earnings releases. Scores can ta"
+  },
+  {
+   "id": "nws79_earnings_tone_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "A score representing the sentiment of a document regarding earnings evaluations, with values -1 (negative), 0 (neutral),"
+  },
+  {
+   "id": "nws79_earnings_tone_sentiment_183",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "A score that represents the sentiment of the given document, trained on headlines about earnings evaluations. Scores can"
+  },
+  {
+   "id": "nws79_entity_detection_distance",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 15,
+   "alphaCount": 27,
+   "description": "Integer (0, 1, 2,...) indicating how directly the entity was detected in the document: 0=direct/inferred, 1=unit match, "
+  },
+  {
+   "id": "nws79_entity_detection_distance_188",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "An integer value from 0, where 0 means that the entity was directly detected in the document or inferred from a entity d"
+  },
+  {
+   "id": "nws79_entity_detection_type_219",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Indicates whether the entity detection was “direct” meaning the entity was mentioned in the document, “indirect” which m"
+  },
+  {
+   "id": "nws79_entity_name_214",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The official canonical name of the entity identified"
+  },
+  {
+   "id": "nws79_entity_relevance",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 7,
+   "alphaCount": 22,
+   "description": "An integer (0-100) measuring how strongly relevant a mentioned entity is to the document, with higher values indicating "
+  },
+  {
+   "id": "nws79_entity_relevance_221",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "An integer score between 0-100 that indicates how strongly related the mention of an entity is to the underlying documen"
+  },
+  {
+   "id": "nws79_entity_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Score between -1.00 and +1.00 representing overall story-level sentiment for a specific entity, based on document langua"
+  },
+  {
+   "id": "nws79_entity_sentiment_224",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A score between -1.00 and +1.00 that represents the story-level sentiment for a given entity by combining the analysis o"
+  },
+  {
+   "id": "nws79_entity_sentiment_confidence",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Score (0.00 to 1.00) representing confidence in the ENTITY_SENTIMENT value, derived from sentiment aggregation; higher m"
+  },
+  {
+   "id": "nws79_entity_sentiment_confidence_232",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A granular score from 0.00 to +1.00 with up to 2 decimal places, that provides a measure of the confidence when determin"
+  },
+  {
+   "id": "nws79_entity_text_sent_confidence",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Confidence score (0.00–1.00) indicating certainty in the computed ENTITY_TEXT_SENTIMENT"
+  },
+  {
+   "id": "nws79_entity_text_sent_confidence_198",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A granular score from 0.00 to +1.00 with up to 2 decimal places, that provides a measure of the confidence when determin"
+  },
+  {
+   "id": "nws79_entity_text_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 20,
+   "description": "Granular sentiment score (-1.00 to +1.00) for an entity, calculated by aggregating sentence-level sentiment mentions in "
+  },
+  {
+   "id": "nws79_entity_text_sentiment_211",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "A score between -1.00 and +1.00 that represents the text-level sentiment for a given entity by analyzing the language in"
+  },
+  {
+   "id": "nws79_evaluation_method_176",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "A period of time used to measure changes from previous levels in an event. Currently Vendor supports the following evalu"
+  },
+  {
+   "id": "nws79_event_detected_entity_name_205",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "The canonical name of the entity involved in the event."
+  },
+  {
+   "id": "nws79_event_detection_distance",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Integer (0+) measuring how directly the entity was detected in the event (0 = direct or inferred, 1 = through unit, 2+ ="
+  },
+  {
+   "id": "nws79_event_detection_distance_226",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "A positive integer value from 0, where 0 means that the entity was directly detected in the event or it was inferred fro"
+  },
+  {
+   "id": "nws79_event_relevance",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 16,
+   "alphaCount": 29,
+   "description": "Integer (0–100) reflecting the relevance of the event in the document, based on mention order and frequency"
+  },
+  {
+   "id": "nws79_event_relevance_175",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "An integer between 0-100 that reflects the relevance of the event in the document. An event relevance score is assigned "
+  },
+  {
+   "id": "nws79_event_risk",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Score (0–1.00) measuring the possibility that the event will have a negative impact on the entity, including reputationa"
+  },
+  {
+   "id": "nws79_event_risk_200",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A positive float value between 0 and 1.00 that measures the possibility that the event will negatively affect the entity"
+  },
+  {
+   "id": "nws79_event_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Sentiment score (between -1.00 and +1.00) for a given entity’s role within an event"
+  },
+  {
+   "id": "nws79_event_sentiment_196",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "A score between -1.00 and +1.00 that represents the sentiment for a given entity playing a role in an event."
+  },
+  {
+   "id": "nws79_event_similarity_days",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "The number of days (up to five decimals) since the last document from the same provider mentioning a similar event; 0 me"
+  },
+  {
+   "id": "nws79_event_similarity_days_225",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "A granular number with up to 5 decimal places which indicates the number of days since a document from the same provider"
+  },
+  {
+   "id": "nws79_event_text",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Short text summary of the event captured in the document"
+  },
+  {
+   "id": "nws79_event_text_228",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A short text summary of an event captured in a document"
+  },
+  {
+   "id": "nws79_fact_level_180",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Acts as an indicator of how close the event detected relates to a fact. Detection of facts, forecasts and opinions relie"
+  },
+  {
+   "id": "nws79_group_213",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "A collection of related themes or events. The second highest level of the Vendor Taxonomy."
+  },
+  {
+   "id": "nws79_interest_rate_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Score (-1.00 to +1.00) indicating likely event impact on benchmark interest rates (hawkish = negative, dovish = positive"
+  },
+  {
+   "id": "nws79_interest_rate_sentiment_204",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "A score between -1.00 and +1.00 that measures how the event (and the role played by the entity) is likely to impact thei"
+  },
+  {
+   "id": "nws79_maturity_194",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "For events related to debt, this named attribute indicates the period of time for which a financial instrument remains o"
+  },
+  {
+   "id": "nws79_mergers_acquisitions_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "A score indicating the sentiment of news coverage about mergers, acquisitions, or takeovers, based on headlines and trai"
+  },
+  {
+   "id": "nws79_mergers_acquisitions_sentiment_220",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A score that represents the news sentiment of the given document, trained on headlines about mergers, acquisitions, and "
+  },
+  {
+   "id": "nws79_multi_stock_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Score (-1, 0, 1) representing combined sentiment of a document mentioning multiple companies, integrating several analyt"
+  },
+  {
+   "id": "nws79_multi_stock_sentiment_210",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A combined score that represents the sentiment based on the tone of the document, trained on documents that mention comp"
+  },
+  {
+   "id": "nws79_paragraph_count",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Number of paragraphs in the document as detected by RavenPack lexer"
+  },
+  {
+   "id": "nws79_paragraph_count_181",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "The number of paragraphs in the document, as determined by the Vendor lexer."
+  },
+  {
+   "id": "nws79_position_name_184",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "The position held by an individual within the entity involved in a specific event. A full list of POSITION_NAMEs and the"
+  },
+  {
+   "id": "nws79_related_entity_name_197",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "The canonical name of the entity that relates directly to another entity within the context of the same event in a docum"
+  },
+  {
+   "id": "nws79_relationship_227",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "The type of relationship between entities reported in the related entity field. Values are PRODUCT A product that is own"
+  },
+  {
+   "id": "nws79_reporting_period_230",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "A period on a financial calendar that acts as a basis for reporting business information. YYYY-Q{1-4} Quarter-long regul"
+  },
+  {
+   "id": "nws79_reporting_type_215",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 10,
+   "alphaCount": 40,
+   "description": "A named attribute that indicates the type of calculation method used for reporting an event. about earnings (Net Income,"
+  },
+  {
+   "id": "nws79_segment_name_206",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The canonical name of the type of organization, sector, or product associated with the event. This field is null if the "
+  },
+  {
+   "id": "nws79_sentiment_impact_projection",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Score (-1.00 to +1.00) predicting market impact and volatility of news on a stock over the next two hours after publicat"
+  },
+  {
+   "id": "nws79_sentiment_impact_projection_217",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "A granular score between -1.00 and 1.00 with up to 2 decimal places that represents the degree of impact a headline or n"
+  },
+  {
+   "id": "nws79_source_name_179",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 16,
+   "alphaCount": 39,
+   "description": "The official canonical name for the news source."
+  },
+  {
+   "id": "nws79_source_rank",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Rank of the news source at time of content processing, according to the source_mapping file"
+  },
+  {
+   "id": "nws79_source_rank_229",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "The rank of the source at the time of processing the content, as stored in the source_mapping file"
+  },
+  {
+   "id": "nws79_stock_tone_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "A categorical sentiment score (-1, 0, 1) representing negative, neutral, or positive sentiment of a document about globa"
+  },
+  {
+   "id": "nws79_stock_tone_sentiment_177",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A score that represents the sentiment of the given document according to a sentiment classifier that specializes in iden"
+  },
+  {
+   "id": "nws79_sustainability_sentiment",
+   "type": "VECTOR",
+   "coverage": 0.7293,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Score (-1.00 to +1.00) reflecting entity sentiment with respect to ESG and sustainability goals in the event context"
+  },
+  {
+   "id": "nws79_sustainability_sentiment_216",
+   "type": "VECTOR",
+   "coverage": 0.735,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A score between -1.00 and +1.00 that represents the sentiment for a given entity and how its role in the event meets sus"
+  },
+  {
+   "id": "nws79_timestamp_utc",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "UTC datetime when document analytics were generated by RavenPack Edge servers"
+  },
+  {
+   "id": "nws79_timestamp_utc_209",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Represents the Date/Time (YYYY-MM-DD hh:mm:ss.sss) at which the analytics for the document were generated by Vendor Edge"
+  },
+  {
+   "id": "nws79_title",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 13,
+   "alphaCount": 32,
+   "description": "The headline or title of the document"
+  },
+  {
+   "id": "nws79_title_222",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 3,
+   "alphaCount": 9,
+   "description": "The title or headline of the document"
+  },
+  {
+   "id": "nws79_title_similarity_days",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "A value showing the number of days since a document with a similar or duplicate title was last detected, rounded to five"
+  },
+  {
+   "id": "nws79_title_similarity_days_201",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A granular number with up to 5 decimal places which indicates the number of days since a document with a similar title o"
+  },
+  {
+   "id": "nws79_topic_208",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "A subject or theme of events detected by Vendor. The highest level of the Vendor Taxonomy"
+  },
+  {
+   "id": "nws79_word_count",
+   "type": "VECTOR",
+   "coverage": 0.869,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "The number of word tokens in the document, as identified by text parsing algorithms"
+  },
+  {
+   "id": "nws79_word_count_203",
+   "type": "VECTOR",
+   "coverage": 0.92,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The number of word tokens in the document, as determined by the Vendor lexer."
+  }
+ ]
+}

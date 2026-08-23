@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(nws79_entity_sentiment_224))",
+  "rank(vec_avg(nws79_mergers_acquisitions_sentiment_220))",
+  "rank(vec_avg(nws79_stock_tone_sentiment_177))",
+  "rank(vec_avg(nws79_corporate_actions_sentiment_185))",
+  "rank(vec_avg(nws79_multi_stock_sentiment_210))",
+  "rank(vec_avg(nws79_commentary_sentiment_212))",
+  "rank(add(multiply(2, rank(vec_avg(nws79_entity_sentiment_224))), rank(price_volume_quantile1_20d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(vec_avg(nws79_entity_sentiment_224))), rank(price_volume_quantile1_20d_pred))), sector)"
+]

@@ -1,0 +1,42 @@
+{
+  "wave": "wave101",
+  "dataset": "ai_equity_alpha",
+  "region": "KOR",
+  "universe": "TOP600",
+  "mode": "首探探针批 8 条 5 方向",
+  "updated": "2026-08-22",
+  "simulation_id": "wXmHI72554ybz4OlXml4I9",
+  "settings": {
+    "neutralization": "SECTOR", "decay": 10, "truncation": 0.04,
+    "startDate": "2014-01-01", "endDate": "2023-12-31"
+  },
+  "results": [
+    {"id": "H1", "alpha_id": "omqzW9mn", "sharpe": -0.26, "fitness": null,
+     "turnover": null, "checks": "CW 1.0", "verdict": "RED",
+     "reason": "AI 超额收益预测 60d zscore 负信号；CONCENTRATED_WEIGHT 1.0 结构性 FAIL (2019-03-04 事件日集中)"},
+    {"id": "H2", "alpha_id": "gJjPZoJg", "sharpe": 0.47, "fitness": null,
+     "turnover": "TVR 77%", "checks": "CW 1.0", "verdict": "RED",
+     "reason": "分析师预测变化 20d 差分 0.47 弱正；TVR 77% 高超限 + CW 1.0 双 FAIL"},
+    {"id": "H3", "alpha_id": "Xg7lJYmm", "sharpe": 0.51, "fitness": null,
+     "turnover": null, "checks": "CW 1.0; 唯一 PASS LOW_SUB_UNIVERSE", "verdict": "RED",
+     "reason": "盈余修正强度 60d zscore 0.51 全场最高但仍远低于 1.58；CW 1.0 结构性无解 (2019-03-04)"},
+    {"id": "H4", "alpha_id": "A1lavOjg", "sharpe": 0.15, "fitness": null,
+     "turnover": null, "checks": "CW 1.0", "verdict": "RED",
+     "reason": "分析师情绪转移 20d 差分 0.15 近零；CW 1.0 结构性 FAIL"},
+    {"id": "H5", "alpha_id": "d5j71lkY", "sharpe": -0.26, "fitness": null,
+     "turnover": "TVR 79%", "checks": null, "verdict": "RED",
+     "reason": "buzz 趋势 60d zscore 负信号；TVR 79% 高超限"},
+    {"id": "H6", "alpha_id": "0mwQrKqv", "sharpe": -0.00, "fitness": null,
+     "turnover": "TVR 79%", "checks": null, "verdict": "RED",
+     "reason": "buzz 强度 20d 差分 0.00 无信号；TVR 79% 高超限"},
+    {"id": "H7", "alpha_id": "bljPOWXq", "sharpe": 0.26, "fitness": null,
+     "turnover": "TVR 77%", "checks": "CW 1.0", "verdict": "RED",
+     "reason": "应计贡献 60d zscore 0.26 弱正；TVR 77% + CW 1.0 双 FAIL"},
+    {"id": "H8", "alpha_id": "9qX6WAY2", "sharpe": -0.13, "fitness": null,
+     "turnover": null, "checks": "2y 0.81", "verdict": "RED",
+     "reason": "盈余惊喜幅度 60d zscore 全期负；2y 0.81 亮点但全期 -0.13 不稳定"}
+  ],
+  "verdict": "FULL_RED",
+  "conclusion": "ai_equity_alpha 首探 5 方向全灭：最高 0.51 (H3 盈余修正强度)，无一条接近 1.58；CONCENTRATED_WEIGHT 1.0 结构性 FAIL 普遍（2019-03-04 事件日集中，KOR 论坛/AI 事件类数据通病），TVR 77-79% 高超限。VECTOR AI 因子库的 zscore/差分探针方向判死。",
+  "next": "转 continuation_score (0.9312 tier1) / pattern_scores (0.9302 tier1) 做 S1 scan_fields"
+}

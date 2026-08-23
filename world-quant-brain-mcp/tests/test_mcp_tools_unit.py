@@ -1,6 +1,6 @@
 """MCP 工具层单元测试 (venv) — 拆分不变量 / 瘦身助手 / 表达式字段校验 (无网络)。
 
-- 52 工具注册数不变量 (防拆分丢工具)
+- 53 工具注册数不变量 (防拆分丢工具)
 - 单例 identity 跨 main/mcp_core/tools_* 一致
 - 响应瘦身助手 (_truncate/_unwrap_result/_is_error/_ra_bad/_slim_alpha)
 - _extract_field_candidates 算子关键字过滤
@@ -27,9 +27,9 @@ from mcp_core import (
 # 拆分不变量
 # ---------------------------------------------------------------------------
 
-def test_tool_registry_count_is_52():
+def test_tool_registry_count_is_53():
     import main  # noqa: F401 — 副作用注册全部 tools_*
-    assert len(mcp_core.mcp._tool_manager._tools) == 52
+    assert len(mcp_core.mcp._tool_manager._tools) == 53
 
 
 def test_brain_client_singleton_identity():
@@ -42,7 +42,7 @@ def test_brain_client_singleton_identity():
 def test_each_tool_module_registers_at_least_one_tool():
     import importlib
     expected = {
-        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 5,
+        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 6,
         "tools_alpha": 7, "tools_data": 10, "tools_submit": 2, "tools_corr": 3,
         "tools_forum": 4, "tools_spc": 4,
     }
@@ -273,3 +273,49 @@ def test_create_multi_simulation_validate_fields_false_skips_lookup(monkeypatch)
     assert stub.calls == []
     assert stub.posted is True
     assert out.get("success") is True
+
+
+# ---------------------------------------------------------------------------
+# batch_create_simulations（per-item settings 批量，2026-08-23 新增）
+# ---------------------------------------------------------------------------
+
+class _BatchStubClient:
+    def __init__(self):
+        self.payloads = None
+
+    async def batch_create_simulations(self, payloads):
+        self.payloads = payloads
+        return {
+            "submitted": len(payloads),
+            "total": len(payloads),
+            "results": [{"index": i, "ok": True, "location": f"/simulations/sim{i}",
+                         "simulation_id": f"sim{i}"} for i in range(len(payloads))],
+            "note": "stub",
+        }
+
+
+def test_batch_create_simulations_per_item_settings_merge(monkeypatch):
+    stub = _BatchStubClient()
+    monkeypatch.setattr(tools_sim, "brain_client", stub)
+    out = asyncio.run(tools_sim.batch_create_simulations(
+        items=[
+            {"expression": "rank(close)", "tag": "A"},
+            {"expression": "rank(close)", "tag": "B",
+             "settings": {"decay": 16, "neutralization": "SECTOR"}},
+        ],
+        base_region="KOR", base_universe="TOP600", base_decay=4,
+        base_neutralization="STATISTICAL"))
+    assert out["submitted"] == 2 and out.get("async") is True
+    p0, p1 = stub.payloads
+    assert p0["settings"]["decay"] == 4 and p0["settings"]["neutralization"] == "STATISTICAL"
+    assert p1["settings"]["decay"] == 16 and p1["settings"]["neutralization"] == "SECTOR"
+    assert p1["settings"]["region"] == "KOR" and p0["regular"] == "rank(close)"
+    assert [r["tag"] for r in out["results"]] == ["A", "B"]
+
+
+def test_batch_create_simulations_requires_base_region(monkeypatch):
+    stub = _BatchStubClient()
+    monkeypatch.setattr(tools_sim, "brain_client", stub)
+    out = asyncio.run(tools_sim.batch_create_simulations(
+        items=[{"expression": "rank(close)"}]))
+    assert "error" in out and stub.payloads is None

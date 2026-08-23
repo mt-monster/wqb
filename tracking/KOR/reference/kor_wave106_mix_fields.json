@@ -1,0 +1,5875 @@
+{
+ "dataset": "wave106_mix",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MIXED",
+ "field_count": 733,
+ "description": "wave106 混合目录: model26 (673) + multi_source_model (SH)",
+ "fields": [
+  {
+   "id": "analyst_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Analyst-based prediction for the top quantile of 120-day forward returns."
+  },
+  {
+   "id": "analyst_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Analyst-based prediction for the top quantile of 60-day forward returns."
+  },
+  {
+   "id": "analyst_quantile5_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based prediction for the 5th quantile of 120-day forward returns."
+  },
+  {
+   "id": "analyst_quantile5_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based prediction for the 5th quantile of 60-day forward returns."
+  },
+  {
+   "id": "analyst_quantile5_confidence_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile of 120-day analyst-based return prediction."
+  },
+  {
+   "id": "analyst_quantile5_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile of 60-day analyst-based return prediction."
+  },
+  {
+   "id": "event_embedding_quantile2_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "60-day forward return prediction for the 2nd quantile using event embedding features."
+  },
+  {
+   "id": "event_embedding_quantile2_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 2nd quantile of 60-day event embedding-based return prediction."
+  },
+  {
+   "id": "fundamental_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.7641,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "120-day forward return prediction for the top quantile using fundamental data."
+  },
+  {
+   "id": "fundamental_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.7641,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return prediction for the top quantile using fundamental data."
+  },
+  {
+   "id": "long_horizon_hedge3_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term hedge signal for the top quantile over 120 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_horizon_hedge3_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-term hedge signal for the top quantile over 60 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_horizon_hedge_quantile2_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term hedge signal for the 2nd quantile over 60 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_horizon_hedge_quantile2_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 2nd quantile of 60-day long-term hedge signal."
+  },
+  {
+   "id": "long_term_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-horizon return prediction for the top quantile over a 120-day period."
+  },
+  {
+   "id": "long_term_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over a 60-day period."
+  },
+  {
+   "id": "long_term_quantile5_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the 5th quantile over a 120-day period."
+  },
+  {
+   "id": "long_term_quantile5_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the 5th quantile over a 60-day period."
+  },
+  {
+   "id": "long_term_quantile5_confidence_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile bucket of 120-day long-term return prediction."
+  },
+  {
+   "id": "long_term_quantile5_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile bucket of 60-day long-term return prediction."
+  },
+  {
+   "id": "long_term_regime2_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "long_term_regime2_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 60 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 60 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 60 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "price_volume_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "20-day forward return prediction for the top quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile1_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "5-day forward return prediction for the top quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "60-day forward return prediction for the top quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile5_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "20-day forward return prediction for the 5th quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile5_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "5-day forward return prediction for the 5th quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile5_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "60-day forward return prediction for the 5th quantile using price-volume features."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Confidence score for the 5th quantile of 20-day return prediction using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Confidence score for the 5th quantile of 5-day return prediction using price-volume data."
+  },
+  {
+   "id": "price_volume_quantile5_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9075,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Confidence score for the 5th quantile of 60-day return prediction based on price-volume data."
+  },
+  {
+   "id": "regime4_embedding_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "20-day forward return prediction for the top quantile using four-phase regime embedding features."
+  },
+  {
+   "id": "short_horizon_hedge3_quantile1_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Short-term hedge signal for the top quantile over 5 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "short_horizon_hedge3_quantile4_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for the 4th quantile over 20 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "short_horizon_hedge3_quantile4_confidence_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 4th quantile of 20-day short-term hedge signal (third variant)."
+  },
+  {
+   "id": "short_horizon_hedge3_quantile5_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term hedge signal for the 5th quantile over 5 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "short_horizon_hedge3_quantile5_confidence_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile of 5-day short-term hedge signal (third variant)."
+  },
+  {
+   "id": "short_term_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Short-horizon return prediction for the top quantile over a 20-day period."
+  },
+  {
+   "id": "short_term_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Short-horizon return prediction for the top quantile over a 60-day period."
+  },
+  {
+   "id": "short_term_quantile2_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for the 2nd quantile over a 5-day period."
+  },
+  {
+   "id": "short_term_quantile2_confidence_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 2nd quantile of 5-day short-term return prediction."
+  },
+  {
+   "id": "short_term_quantile5_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for the 5th quantile over a 20-day period."
+  },
+  {
+   "id": "short_term_quantile5_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Short-horizon return prediction for the 5th quantile over a 5-day period."
+  },
+  {
+   "id": "short_term_quantile5_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-horizon return prediction for the 5th quantile over a 60-day period."
+  },
+  {
+   "id": "short_term_quantile5_confidence_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile bucket of 20-day short-term return prediction."
+  },
+  {
+   "id": "short_term_quantile5_confidence_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile bucket of 5-day short-term return prediction."
+  },
+  {
+   "id": "short_term_quantile5_confidence_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model confidence score for the 5th quantile bucket of 60-day short-term return prediction."
+  },
+  {
+   "id": "short_term_regime2_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Short-term return prediction for the top quantile over 20 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_quantile1_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Short-term return prediction for the top quantile over 5 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "short_term_regime2_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for the top quantile over 60 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for the top quantile over 20 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_quantile1_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for the top quantile over 5 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_term_regime4_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for the top quantile over 60 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_20d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Short-term return prediction for the top quantile over 20 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_5d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Short-term return prediction for the top quantile over 5 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "short_term_seasonal_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Short-term return prediction for the top quantile over 60 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "actual_vs_predicted_earnings_surprise_pct_lastq",
+   "type": "MATRIX",
+   "coverage": 0.4145,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage surprise for the last quarter’s earnings, calculated as actual reported minus consensus estimate, expressed a"
+  },
+  {
+   "id": "actual_vs_predicted_ebitda_surprise_pct_lastq",
+   "type": "MATRIX",
+   "coverage": 0.3059,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage surprise for the last quarter’s EBITDA, calculated as actual reported minus consensus estimate, expressed as "
+  },
+  {
+   "id": "analyst_count_prior_seven_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4336,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts contributing to the mean FQ1 earnings estimate 7 days prior"
+  },
+  {
+   "id": "analyst_count_revised_down_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of analysts who lowered FQ1 earnings estimates in the last 30 days"
+  },
+  {
+   "id": "analyst_count_revised_up_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of analysts who raised FQ1 earnings estimates in the last 30 days"
+  },
+  {
+   "id": "analyst_recommendation_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "The portion of the score based on changes in analyst recommendations."
+  },
+  {
+   "id": "analyst_recommendation_score_component",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score component reflecting changes in analyst buy/sell/hold recommendations."
+  },
+  {
+   "id": "analyst_recommendation_upgrades_count_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the past 30 days"
+  },
+  {
+   "id": "analyst_revision_primary_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Score component reflecting analyst revisions and surprises in the primary earnings measure."
+  },
+  {
+   "id": "analyst_revision_revenue_score",
+   "type": "MATRIX",
+   "coverage": 0.6884,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "ARM revenue component percentile score reflecting revenue-related estimate revisions"
+  },
+  {
+   "id": "analyst_revision_revenue_score_d1",
+   "type": "MATRIX",
+   "coverage": 0.7422,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Score component reflecting analyst revisions and surprises in company revenue (daily version)."
+  },
+  {
+   "id": "analyst_revision_secondary_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.7012,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Score component reflecting analyst revisions and surprises in the secondary earnings measure."
+  },
+  {
+   "id": "analysts_count_revising_down_quarter1_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising down earnings estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "analysts_count_revising_down_year1_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Count of analysts who lowered their earnings estimates for the current fiscal year (FY1) in the past 14 days"
+  },
+  {
+   "id": "analysts_count_revising_down_year1_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of analysts who lowered their EBITDA estimates for the current fiscal year (FY1) in the past 14 days"
+  },
+  {
+   "id": "analysts_count_revising_up_quarter2_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ2 earnings estimates in the past 30 days"
+  },
+  {
+   "id": "analysts_count_revising_up_year2_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of analysts who raised their FY2 EBITDA estimates in the past 14 days"
+  },
+  {
+   "id": "auxiliary_earnings_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "The portion of the score derived from changes in a secondary earnings metric."
+  },
+  {
+   "id": "average_estimate_change_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent change in the consensus mean FQ1 earnings estimate over the past 30 days"
+  },
+  {
+   "id": "avg_change_analyst_recommendation_14d",
+   "type": "MATRIX",
+   "coverage": 0.6587,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in the mean analyst recommendation over the past 14 days"
+  },
+  {
+   "id": "avg_change_analyst_recommendation_30d",
+   "type": "MATRIX",
+   "coverage": 0.6555,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 30 days"
+  },
+  {
+   "id": "avg_change_analyst_recommendation_60d",
+   "type": "MATRIX",
+   "coverage": 0.6491,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the mean analyst recommendation over the past 60 days"
+  },
+  {
+   "id": "avg_change_analyst_recommendation_7d",
+   "type": "MATRIX",
+   "coverage": 0.6598,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Change in the mean analyst recommendation over the past 7 days"
+  },
+  {
+   "id": "avg_change_analyst_recommendation_90d",
+   "type": "MATRIX",
+   "coverage": 0.643,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 90 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_f12m_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.6461,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean percentage change in analyst EBITDA estimates for the next 12 months over the last 7 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_quarter1_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.3384,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_quarter1_revenue_60d",
+   "type": "MATRIX",
+   "coverage": 0.6015,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_quarter2_ebitda_60d",
+   "type": "MATRIX",
+   "coverage": 0.3213,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 60 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_year1_earnings_90d",
+   "type": "MATRIX",
+   "coverage": 0.6711,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Year 1 over the last 90 days"
+  },
+  {
+   "id": "avg_estimate_change_pct_year1_revenue_90d",
+   "type": "MATRIX",
+   "coverage": 0.6722,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in FY1 revenue estimates over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_12m_30d",
+   "type": "MATRIX",
+   "coverage": 0.6726,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Mean percentage change in next-12-months earnings estimates over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_12m_90d",
+   "type": "MATRIX",
+   "coverage": 0.6562,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst earnings estimates for the next 12 months over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_qtr_14d",
+   "type": "MATRIX",
+   "coverage": 0.4239,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_qtr_30d",
+   "type": "MATRIX",
+   "coverage": 0.4186,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_qtr_60d",
+   "type": "MATRIX",
+   "coverage": 0.4086,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_earnings_est_year_14d",
+   "type": "MATRIX",
+   "coverage": 0.69,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean percentage change in earnings estimates for Fiscal Year 1 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_ebitda_est_12m_14d",
+   "type": "MATRIX",
+   "coverage": 0.6448,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in next 12 months (F12M) EBITDA estimates over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_ebitda_est_12m_90d",
+   "type": "MATRIX",
+   "coverage": 0.6237,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Mean percentage change in next 12 months EBITDA estimates over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_ebitda_est_next_qtr_90d",
+   "type": "MATRIX",
+   "coverage": 0.3127,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_ebitda_est_next_qtr_90d_d1",
+   "type": "MATRIX",
+   "coverage": 0.3161,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.6766,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean percentage change in next 12 months (F12M) earnings consensus estimates over the past 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_earnings_60d",
+   "type": "MATRIX",
+   "coverage": 0.6641,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst earnings estimates for the next 12 months over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.6779,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean percentage change in next 12 months earnings estimates over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.6406,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in forward 12-month EBITDA estimates over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_ebitda_60d",
+   "type": "MATRIX",
+   "coverage": 0.6317,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in next 12 months (F12M) EBITDA estimates over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.6734,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.6785,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in forward 12-month revenue estimates over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_12m_revenue_90d",
+   "type": "MATRIX",
+   "coverage": 0.6571,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_curr_qtr_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.3404,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_curr_qtr_ebitda_90d",
+   "type": "MATRIX",
+   "coverage": 0.3166,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in FQ1 EBITDA estimates over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_curr_qtr_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.6114,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_forward_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.6773,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in next 12 months revenue estimates over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_forward_revenue_60d",
+   "type": "MATRIX",
+   "coverage": 0.6649,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.4187,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.3353,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.3303,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.3372,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.5967,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_quarter_revenue_60d",
+   "type": "MATRIX",
+   "coverage": 0.5758,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FQ2 revenue estimates over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_year_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.6862,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in earnings estimates for Fiscal Year 1 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_year_earnings_60d",
+   "type": "MATRIX",
+   "coverage": 0.6785,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 earnings estimates over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_year_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.691,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 earnings estimates over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_year_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in FY1 EBITDA consensus estimates over the past 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_next_year_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.6902,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 revenue estimates over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.4129,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_earnings_60d",
+   "type": "MATRIX",
+   "coverage": 0.4026,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.4209,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_earnings_90d",
+   "type": "MATRIX",
+   "coverage": 0.393,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.5895,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in Fiscal Quarter 2 revenue estimates over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.5991,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FQ2 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_qtr2_revenue_90d",
+   "type": "MATRIX",
+   "coverage": 0.5607,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FQ2 revenue estimates over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.426,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_earnings_90d",
+   "type": "MATRIX",
+   "coverage": 0.3992,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.3335,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_ebitda_60d",
+   "type": "MATRIX",
+   "coverage": 0.3247,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.6163,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_quarter_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.6179,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_year_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.65,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 EBITDA consensus estimates over the past 30 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_year_ebitda_60d",
+   "type": "MATRIX",
+   "coverage": 0.6417,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in the consensus EBITDA estimate for Fiscal Year 1 (next fiscal year) over the last 60 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_year_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.6552,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in Fiscal Year 1 EBITDA estimates over the last 7 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_year_ebitda_90d",
+   "type": "MATRIX",
+   "coverage": 0.6339,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in Fiscal Year 1 EBITDA estimates over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_estimate_year_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.6867,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 revenue estimates over the last 30 days"
+  },
+  {
+   "id": "avg_pct_change_revenue_est_qtr_90d",
+   "type": "MATRIX",
+   "coverage": 0.59,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 90 days"
+  },
+  {
+   "id": "avg_pct_change_revenue_est_year_60d",
+   "type": "MATRIX",
+   "coverage": 0.6793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in FY1 revenue consensus estimates over the past 60 days"
+  },
+  {
+   "id": "avg_pct_change_revenue_est_year_7d",
+   "type": "MATRIX",
+   "coverage": 0.6912,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average percentage change in Fiscal Year 1 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_next_quarter_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their EBITDA estimates for fiscal quarter 2 (FQ2) in the past 30 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_quarter_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts lowering FQ1 earnings estimates in the past 14 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_quarter_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their FQ1 EBITDA estimates in the past 14 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_quarter_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of analysts who lowered Fiscal Quarter 1 EBITDA estimates over the past 7 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_quarter_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for the next fiscal quarter (FQ1) in the past 30 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_quarter_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of analysts who lowered their revenue estimates for the next fiscal quarter (FQ1) in the past 7 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_year_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their EBITDA estimates for the current fiscal year (FY1) in the past 30 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_year_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their EBITDA estimates for the current fiscal year (FY1) in the past 7 days"
+  },
+  {
+   "id": "count_analyst_downward_revision_year_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for the current fiscal year (FY1) in the past 30 days"
+  },
+  {
+   "id": "count_analyst_recommendation_downgrades_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst recommendation downgrades over the past 14 days"
+  },
+  {
+   "id": "count_analyst_recommendation_downgrades_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the past 30 days"
+  },
+  {
+   "id": "count_analyst_recommendation_downgrades_60d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the past 60 days"
+  },
+  {
+   "id": "count_analyst_recommendation_downgrades_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the past 7 days"
+  },
+  {
+   "id": "count_analyst_recommendation_downgrades_90d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades over the past 90 days"
+  },
+  {
+   "id": "count_analyst_recommendation_upgrades_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst recommendation upgrades over the past 14 days"
+  },
+  {
+   "id": "count_analyst_recommendation_upgrades_60d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the past 60 days"
+  },
+  {
+   "id": "count_analyst_recommendation_upgrades_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst recommendation upgrades over the past 7 days"
+  },
+  {
+   "id": "count_analyst_recommendation_upgrades_90d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades over the past 90 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_quarter_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up FQ2 EBITDA estimates in the last 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_quarter_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised FQ2 revenue estimates in the past 30 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_quarter_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts raising FQ2 revenue estimates in the past 7 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_year_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Year 2 earnings estimates over the past 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_year_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 2 over the last 30 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_next_year_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up Fiscal Year 2 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_quarter_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised Fiscal Quarter 1 earnings estimates in the last 30 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_quarter_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ1 revenue estimates over the last 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_quarter_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Quarter 1 revenue estimates over the past 7 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_year_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of analysts who raised their Fiscal Year 1 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_year_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY1 earnings estimates in the last 7 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_year_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts raising FY1 EBITDA estimates in the past 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_year_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised their FY1 revenue estimates in the past 14 days"
+  },
+  {
+   "id": "count_analyst_upward_revision_year_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up Fiscal Year 1 revenue estimates over the last 7 days"
+  },
+  {
+   "id": "count_analysts_lower_curr_qtr_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "count_analysts_lower_curr_qtr_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "count_analysts_lower_curr_qtr_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for the next fiscal quarter (FQ1) in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_earnings_est_next_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Quarter 2 in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_earnings_est_next_qtr_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their earnings estimates for fiscal quarter 2 (FQ2) in the past 30 days"
+  },
+  {
+   "id": "count_analysts_lower_earnings_est_next_qtr_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their earnings estimates for fiscal quarter 2 (FQ2) in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_earnings_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Quarter 2 in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_earnings_est_year_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of analysts who lowered their earnings estimates for the current fiscal year (FY1) in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_next_qtr_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their EBITDA estimates for fiscal quarter 2 (FQ2) in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_next_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Quarter 2 in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_next_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Quarter 2 in the past 30 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Quarter 2 in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for Fiscal Quarter 1 over the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising down EBITDA estimates for Fiscal Quarter 1 over the past 30 days"
+  },
+  {
+   "id": "count_analysts_lower_ebitda_est_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down EBITDA estimates for Fiscal Quarter 1 over the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_next_year_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their earnings estimates for the current fiscal year (FY1) in the past 30 days"
+  },
+  {
+   "id": "count_analysts_lower_next_year_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Count of analysts who lowered their revenue estimates for the current fiscal year (FY1) in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_qtr2_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their earnings estimates for fiscal quarter 2 (FQ2) in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_qtr2_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their EBITDA estimates for fiscal quarter 2 (FQ2) in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_qtr2_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for fiscal quarter 2 (FQ2) in the past 30 days"
+  },
+  {
+   "id": "count_analysts_lower_qtr2_revenue_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for fiscal quarter 2 (FQ2) in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_revenue_est_next_qtr_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who lowered their revenue estimates for fiscal quarter 2 (FQ2) in the past 14 days"
+  },
+  {
+   "id": "count_analysts_lower_revenue_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 2 in the past 7 days"
+  },
+  {
+   "id": "count_analysts_lower_revenue_est_year_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Count of analysts who lowered their revenue estimates for the current fiscal year (FY1) in the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_curr_qtr_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised their Fiscal Quarter 1 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "count_analysts_raise_curr_qtr_ebitda_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Quarter 1 EBITDA estimates over the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_curr_qtr_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FQ1 EBITDA estimates in the last 30 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_next_qtr_14d",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who raised their Fiscal Quarter 2 earnings estimates in the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_next_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 2 earnings estimates in the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 2 earnings estimates in the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 earnings estimates in the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_qtr_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "count_analysts_raise_earnings_est_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 earnings estimates in the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Quarter 1 EBITDA estimates over the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_next_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Quarter 2 over the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_next_qtr_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised Fiscal Quarter 2 EBITDA estimates in the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_next_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Quarter 2 over the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_next_qtr_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Quarter 2 EBITDA estimates over the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Quarter 2 over the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 EBITDA estimates in the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 EBITDA estimates in the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_ebitda_est_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 EBITDA estimates in the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_next_year_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised their earnings estimates for Fiscal Year 1 (FY1) in the past 30 calendar days"
+  },
+  {
+   "id": "count_analysts_raise_next_year_ebitda_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised Fiscal Year 1 EBITDA estimates over the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_next_year_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up FY1 EBITDA estimates in the last 7 days"
+  },
+  {
+   "id": "count_analysts_raise_next_year_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY1 revenue estimates over the last 30 days"
+  },
+  {
+   "id": "count_analysts_raise_qtr2_earnings_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up Fiscal Quarter 2 earnings estimates over the last 14 days"
+  },
+  {
+   "id": "count_analysts_raise_qtr2_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "count_analysts_raise_revenue_est_next_qtr_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up FQ2 revenue estimates in the last 14 days"
+  },
+  {
+   "id": "count_analysts_raise_revenue_est_next_qtr_14d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Quarter 2 over the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_revenue_est_next_qtr_30d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Quarter 2 over the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_revenue_est_next_qtr_7d_d1",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Quarter 2 over the past 7 days"
+  },
+  {
+   "id": "count_analysts_raise_revenue_est_qtr_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised Fiscal Quarter 1 revenue estimates in the past 30 days"
+  },
+  {
+   "id": "count_analysts_raise_year2_earnings_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of analysts who raised their earnings estimates for Fiscal Year 2 (FY2) in the past 30 calendar days"
+  },
+  {
+   "id": "count_analysts_raise_year2_earnings_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 2 over the last 7 days"
+  },
+  {
+   "id": "count_analysts_raise_year2_ebitda_7d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their FY2 EBITDA estimates over the last 7 days"
+  },
+  {
+   "id": "count_analysts_raise_year2_revenue_14d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised FY2 revenue estimates in the past 14 days"
+  },
+  {
+   "id": "count_analysts_raise_year2_revenue_30d",
+   "type": "MATRIX",
+   "coverage": 0.7013,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who revised up Fiscal Year 2 revenue estimates over the last 30 days"
+  },
+  {
+   "id": "country_percentile_rank_model_score",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Country-level percentile rank of the ARM headline signal (1–100)"
+  },
+  {
+   "id": "country_percentile_rank_score",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Country-level percentile rank of the ARM signal 1–100, higher indicates stronger revision prospects"
+  },
+  {
+   "id": "country_rank_score_float",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score representing the country-based ranking for a stock."
+  },
+  {
+   "id": "days_since_previous_financial_report",
+   "type": "MATRIX",
+   "coverage": 0.7799,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model days since the company last reported results"
+  },
+  {
+   "id": "earnings_surprise_previous_quarter",
+   "type": "MATRIX",
+   "coverage": 0.4186,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent surprise for the last reported quarter’s earnings versus the consensus at the time"
+  },
+  {
+   "id": "earnings_surprise_previous_year",
+   "type": "MATRIX",
+   "coverage": 0.6512,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings surprise for the last fiscal year, expressed as the percent difference between actual and consensus"
+  },
+  {
+   "id": "earnings_to_price_yield_smartest_12m",
+   "type": "MATRIX",
+   "coverage": 0.6692,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Earnings yield percentage based on the StarMine SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "earnings_to_price_yield_smartest_next_year",
+   "type": "MATRIX",
+   "coverage": 0.6683,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Earnings-to-price yield percentage based on SmartEstimate for Fiscal Year 1"
+  },
+  {
+   "id": "earnings_to_price_yield_smartest_year2",
+   "type": "MATRIX",
+   "coverage": 0.658,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Earnings-to-Price yield percentage based on StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "estimate_diffusion_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.3338,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimate Diffusion FQ1 Earnings 30"
+  },
+  {
+   "id": "estimate_revision_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "The portion of the score based on analyst estimate revisions."
+  },
+  {
+   "id": "expected_surprise_forward_earnings_12m",
+   "type": "MATRIX",
+   "coverage": 0.6579,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Difference between the SmartEstimate and the mean consensus for forward 12 months earnings"
+  },
+  {
+   "id": "expected_surprise_forward_ebitda_12m",
+   "type": "MATRIX",
+   "coverage": 0.6229,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the SmartEstimate and the mean consensus for forward 12 months EBITDA"
+  },
+  {
+   "id": "expected_surprise_next_quarter_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4057,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted earnings surprise amount for Fiscal Quarter 2"
+  },
+  {
+   "id": "expected_surprise_next_quarter_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted EBITDA surprise amount for Fiscal Quarter 2"
+  },
+  {
+   "id": "expected_surprise_quarter_earnings",
+   "type": "MATRIX",
+   "coverage": 0.41,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted earnings surprise amount for FQ1 (SmartEstimate minus consensus mean)"
+  },
+  {
+   "id": "expected_surprise_quarter_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for Fiscal Quarter 1"
+  },
+  {
+   "id": "expected_surprise_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6693,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine predicted earnings surprise amount for Fiscal Year 1"
+  },
+  {
+   "id": "expected_surprise_year_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Difference between the SmartEstimate and the mean consensus for Fiscal Year 1 EBITDA"
+  },
+  {
+   "id": "forecasted_surprise_12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6554,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for forward 12 months"
+  },
+  {
+   "id": "forecasted_surprise_curr_qtr2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.5859,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for Fiscal Quarter 2 (SmartEstimate minus mean consensus)"
+  },
+  {
+   "id": "forecasted_surprise_earnings_next_year",
+   "type": "MATRIX",
+   "coverage": 0.6591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted earnings surprise amount for fiscal year 2 (SmartEstimate minus consensus mean)"
+  },
+  {
+   "id": "forecasted_surprise_ebitda_qtr",
+   "type": "MATRIX",
+   "coverage": 0.3256,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted EBITDA surprise amount for Fiscal Quarter 1 (SmartEstimate minus mean consensus)"
+  },
+  {
+   "id": "forecasted_surprise_pct_12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6554,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine predicted percentage revenue surprise for the next 12 months"
+  },
+  {
+   "id": "forecasted_surprise_pct_curr_qtr_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3256,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage EBITDA surprise for Fiscal Quarter 1"
+  },
+  {
+   "id": "forecasted_surprise_pct_earnings_12m",
+   "type": "MATRIX",
+   "coverage": 0.6579,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted surprise percentage for trailing 12 months earnings (actual minus predicted)"
+  },
+  {
+   "id": "forecasted_surprise_pct_earnings_qtr",
+   "type": "MATRIX",
+   "coverage": 0.41,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage earnings surprise for FQ1 (SmartEstimate vs mean)"
+  },
+  {
+   "id": "forecasted_surprise_pct_ebitda_12m",
+   "type": "MATRIX",
+   "coverage": 0.6229,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage EBITDA surprise for the next 12 months (F12M)"
+  },
+  {
+   "id": "forecasted_surprise_pct_next_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6693,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the SmartEstimate and the mean consensus for Fiscal Year 1 earnings"
+  },
+  {
+   "id": "forecasted_surprise_pct_qtr2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.5859,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage revenue surprise for Fiscal Quarter 2"
+  },
+  {
+   "id": "forecasted_surprise_pct_year2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6565,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted percentage revenue surprise for Fiscal Year 2, i.e., SmartEstimate versus mean consensus as a percent of the m"
+  },
+  {
+   "id": "forecasted_surprise_year2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for Fiscal Year 2"
+  },
+  {
+   "id": "forward_pe_ratio_mean_12m",
+   "type": "MATRIX",
+   "coverage": 0.6717,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on mean analyst estimates for the next 12 months (F12M)"
+  },
+  {
+   "id": "forward_pe_ratio_mean_year",
+   "type": "MATRIX",
+   "coverage": 0.6578,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on mean analyst estimates for Fiscal Year 1"
+  },
+  {
+   "id": "forward_pe_ratio_mean_year2",
+   "type": "MATRIX",
+   "coverage": 0.6665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price-to-earnings ratio based on mean analyst estimates for Fiscal Year 2"
+  },
+  {
+   "id": "forward_pe_ratio_smartest_12m",
+   "type": "MATRIX",
+   "coverage": 0.6509,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Forward price-to-earnings ratio based on the SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "forward_pe_ratio_smartest_next_year",
+   "type": "MATRIX",
+   "coverage": 0.6363,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Forward price-to-earnings ratio based on StarMine SmartEstimate for Fiscal Year 1"
+  },
+  {
+   "id": "forward_pe_ratio_smartest_year2",
+   "type": "MATRIX",
+   "coverage": 0.6476,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Forward price-to-earnings ratio based on StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "global_percentile_rank_score",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Global percentile rank of the ARM headline signal (1–100)"
+  },
+  {
+   "id": "global_percentile_score",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile rank of the ARM composite signal (1–100, higher = better)"
+  },
+  {
+   "id": "global_percentile_score_float",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Global percentile rank of the overall ARM signal, expressed as a floating-point value"
+  },
+  {
+   "id": "growth_rate_estimate_current_vs_prior_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.531,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model SmartEstimate earnings growth (this year versus last year)"
+  },
+  {
+   "id": "growth_rate_estimate_current_vs_prior_year_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.5049,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Growth rate of EBITDA from last fiscal year to this fiscal year based on the SmartEstimate"
+  },
+  {
+   "id": "growth_rate_estimate_current_vs_prior_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6176,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "SmartEstimate growth rate for revenue, comparing this fiscal year to last fiscal year"
+  },
+  {
+   "id": "growth_rate_estimate_next_vs_current_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SmartEstimate growth rate for revenue, comparing next fiscal year to this fiscal year"
+  },
+  {
+   "id": "highest_estimate_change_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent change in the highest FQ1 earnings estimate over the past 30 days"
+  },
+  {
+   "id": "highest_estimate_prior_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4302,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest FQ1 earnings estimate as of 30 days prior"
+  },
+  {
+   "id": "lowest_estimate_change_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4237,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent change in the lowest FQ1 earnings estimate over the past 30 days"
+  },
+  {
+   "id": "lowest_estimate_prior_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4302,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest FQ1 earnings estimate as of 30 days prior"
+  },
+  {
+   "id": "main_earnings_component",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 18,
+   "description": "The portion of the score derived from changes in the primary earnings metric."
+  },
+  {
+   "id": "mdl26_5yr_hstrcl_grwth_rt",
+   "type": "MATRIX",
+   "coverage": 0.554,
+   "userCount": 29,
+   "alphaCount": 55,
+   "description": "5year historical growth rate"
+  },
+  {
+   "id": "mdl26_actual_last_q_earnings",
+   "type": "MATRIX",
+   "coverage": 0.5136,
+   "userCount": 8,
+   "alphaCount": 15,
+   "description": "Actual earnings reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl26_actual_last_q_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3216,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual EBITDA reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl26_actual_last_q_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6788,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual revenue reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl26_actual_last_y_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6693,
+   "userCount": 25,
+   "alphaCount": 69,
+   "description": "Actual earnings reported for the most recent fiscal year"
+  },
+  {
+   "id": "mdl26_actual_last_y_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.5867,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual EBITDA reported for the most recent fiscal year"
+  },
+  {
+   "id": "mdl26_actual_last_y_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6889,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual revenue reported for the most recent fiscal year"
+  },
+  {
+   "id": "mdl26_arm_new_activity_flag",
+   "type": "MATRIX",
+   "coverage": 0.7841,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating newly detected analyst activity or revisions impacting ARM on this date; 1 = new activity present, 0 = n"
+  },
+  {
+   "id": "mdl26_arm_recommendations",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "recommendations"
+  },
+  {
+   "id": "mdl26_arm_revenue",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "revenue"
+  },
+  {
+   "id": "mdl26_arm_revisions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "revisions"
+  },
+  {
+   "id": "mdl26_arm_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Overall ARM composite score (Analyst Revisions Score) for the security, expressed as a regional percentile rank where hi"
+  },
+  {
+   "id": "mdl26_arm_score_change_1",
+   "type": "MATRIX",
+   "coverage": 0.7432,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Change in the ARM score over the last 1 day"
+  },
+  {
+   "id": "mdl26_arm_score_change_3",
+   "type": "MATRIX",
+   "coverage": 0.7425,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Change in the ARM score over the last 3 days"
+  },
+  {
+   "id": "mdl26_arm_score_change_60",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ARM score over the last 60 days"
+  },
+  {
+   "id": "mdl26_arm_score_change_7",
+   "type": "MATRIX",
+   "coverage": 0.7408,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in the ARM score over the last 7 days"
+  },
+  {
+   "id": "mdl26_arm_score_change_90",
+   "type": "MATRIX",
+   "coverage": 0.7052,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in the ARM score over the last 90 days"
+  },
+  {
+   "id": "mdl26_average_revison",
+   "type": "MATRIX",
+   "coverage": 0.328,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "average revison"
+  },
+  {
+   "id": "mdl26_bld_stmt_flg_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7566,
+   "userCount": 17,
+   "alphaCount": 27,
+   "description": "Flag indicating whether the current fiscal quarter 1 earnings estimate is bold (significantly different from consensus)"
+  },
+  {
+   "id": "mdl26_blndd_grwth_ndstry_prcntl",
+   "type": "MATRIX",
+   "coverage": 0.6949,
+   "userCount": 19,
+   "alphaCount": 31,
+   "description": "blended growth industry percentile"
+  },
+  {
+   "id": "mdl26_blndd_grwth_rt_smrtstmt",
+   "type": "MATRIX",
+   "coverage": 0.696,
+   "userCount": 36,
+   "alphaCount": 135,
+   "description": "blended growth rate smartestimate"
+  },
+  {
+   "id": "mdl26_blndd_grwth_sctr_prcntl",
+   "type": "MATRIX",
+   "coverage": 0.6949,
+   "userCount": 18,
+   "alphaCount": 48,
+   "description": "blended growth sector percentile"
+  },
+  {
+   "id": "mdl26_chng_frm_52wk_hgh_prc",
+   "type": "MATRIX",
+   "coverage": 0.7837,
+   "userCount": 46,
+   "alphaCount": 123,
+   "description": "Percentage price change from the 52-week high price"
+  },
+  {
+   "id": "mdl26_chng_frm_52wk_lw_prc",
+   "type": "MATRIX",
+   "coverage": 0.7837,
+   "userCount": 26,
+   "alphaCount": 54,
+   "description": "Percentage change from the 52-week low price to the current price"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_cc_40_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 18,
+   "alphaCount": 48,
+   "description": "Change relative to CAC 40 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_cntry_bnchmrk_30",
+   "type": "MATRIX",
+   "coverage": 0.7817,
+   "userCount": 12,
+   "alphaCount": 23,
+   "description": "Percentage change relative to the country benchmark over the last 30 trading days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_dj_stxx_600_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 11,
+   "alphaCount": 22,
+   "description": "Change relative to DJ STOXX 600 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_fts_100_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 12,
+   "alphaCount": 23,
+   "description": "Change relative to FTSE 100 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_hng_sng_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 15,
+   "alphaCount": 32,
+   "description": "Change relative to Hang Seng index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_js_ll_shr_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 8,
+   "alphaCount": 17,
+   "description": "Change relative to JSE All Share index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_msc_f_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 13,
+   "alphaCount": 35,
+   "description": "Change relative to MSCI EAFE index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_msc_mf_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 14,
+   "alphaCount": 25,
+   "description": "Change relative to MSCI Emerging Markets Free index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_msc_pc_x_jp_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 18,
+   "alphaCount": 37,
+   "description": "Change relative to MSCI Pacific excluding Japan index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_msc_rp_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 9,
+   "alphaCount": 20,
+   "description": "Change relative to MSCI Europe index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_ndstry_bnchmrk_30",
+   "type": "MATRIX",
+   "coverage": 0.7817,
+   "userCount": 12,
+   "alphaCount": 21,
+   "description": "Percentage change relative to the industry benchmark over the last 30 trading days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_r1000_grwth_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 9,
+   "alphaCount": 27,
+   "description": "Change relative to Russell 1000 Growth index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_rssll_2000_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 8,
+   "alphaCount": 20,
+   "description": "Change relative to Russell 2000 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_rssll_mdcp_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 10,
+   "alphaCount": 26,
+   "description": "Change relative to Russell Midcap index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sp_400_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 10,
+   "alphaCount": 30,
+   "description": "Change relative to S&P 400 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sp_500_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 13,
+   "alphaCount": 26,
+   "description": "Change relative to S&P 500 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sp_600_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 13,
+   "alphaCount": 36,
+   "description": "The stock’s 30-day percentage price change minus the S&P 600 index’s 30-day percentage change"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sx_100_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 13,
+   "alphaCount": 25,
+   "description": "Change relative to ASX 100 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sx_200_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 15,
+   "alphaCount": 30,
+   "description": "Change relative to ASX 200 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sx_300_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 11,
+   "alphaCount": 24,
+   "description": "Change relative to ASX 300 index over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_sx_ll_rd_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Change relative to ASX All Ordinaries over 30 days"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_tpx_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Stock’s 30-day percentage price change minus the TOPIX index’s 30-day percentage change"
+  },
+  {
+   "id": "mdl26_chng_rltv_t_tsx_cmpst_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 10,
+   "alphaCount": 40,
+   "description": "Stock’s 30-day percentage price change minus the TSX Composite index’s 30-day percentage change"
+  },
+  {
+   "id": "mdl26_dff_frm_200dy_mvng_vrg",
+   "type": "MATRIX",
+   "coverage": 0.7837,
+   "userCount": 21,
+   "alphaCount": 55,
+   "description": "Difference between the current price and the 200-day moving average price"
+  },
+  {
+   "id": "mdl26_dff_frm_50dy_mvng_vrg",
+   "type": "MATRIX",
+   "coverage": 0.7837,
+   "userCount": 24,
+   "alphaCount": 66,
+   "description": "Difference between the current price and the 50-day moving average price"
+  },
+  {
+   "id": "mdl26_dffrnc_frm_hstrcl_p",
+   "type": "MATRIX",
+   "coverage": 0.7148,
+   "userCount": 27,
+   "alphaCount": 55,
+   "description": "difference from historical (Price/Earnings ratio)"
+  },
+  {
+   "id": "mdl26_dffrnc_frm_hstrcl_prc_rt_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7148,
+   "userCount": 19,
+   "alphaCount": 37,
+   "description": "Percent difference between the current P/E and the company’s historical median P/E"
+  },
+  {
+   "id": "mdl26_divisor_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4345,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Scaling divisor used in calculations for FQ1 earnings"
+  },
+  {
+   "id": "mdl26_dsnc_clstr_bgn_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.254,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity fo"
+  },
+  {
+   "id": "mdl26_dsnc_clstr_dtctd_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.254,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of unique IDs of industry participants. Industry stands for an aggregate view of all  equity clearance activity fo"
+  },
+  {
+   "id": "mdl26_ep_industry_percentile_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7104,
+   "userCount": 126,
+   "alphaCount": 954,
+   "description": "Percentile rank within industry of the Fiscal Year 1 earnings yield (E/P)"
+  },
+  {
+   "id": "mdl26_ep_sector_percentile_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7104,
+   "userCount": 112,
+   "alphaCount": 661,
+   "description": "Percentile rank within sector of the Fiscal Year 1 earnings yield (E/P)"
+  },
+  {
+   "id": "mdl26_ep_yield_smartestimate_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7117,
+   "userCount": 81,
+   "alphaCount": 260,
+   "description": "Earnings yield (earnings-to-price ratio) for next fiscal year based on StarMine SmartEstimate, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_est_diffusion",
+   "type": "MATRIX",
+   "coverage": 0.328,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "estimate diffusion"
+  },
+  {
+   "id": "mdl26_forward_pe_mean_f12m",
+   "type": "MATRIX",
+   "coverage": 0.7253,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Forward price to earnings ratio based on the mean consensus estimate for the next 12 months"
+  },
+  {
+   "id": "mdl26_forward_pe_mean_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7044,
+   "userCount": 23,
+   "alphaCount": 62,
+   "description": "Forward price-to-earnings ratio using the mean analyst EPS estimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_forward_pe_mean_fy2",
+   "type": "MATRIX",
+   "coverage": 0.7162,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price to earnings ratio based on the mean consensus estimate for the next fiscal year FY2"
+  },
+  {
+   "id": "mdl26_frwrd_p_stm_f12m",
+   "type": "MATRIX",
+   "coverage": 0.6996,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Forward price to earnings ratio based on StarMine SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "mdl26_frwrd_p_stm_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6781,
+   "userCount": 49,
+   "alphaCount": 159,
+   "description": "Forward price-to-earnings ratio using StarMine SmartEstimate for Fiscal Year 1 EPS"
+  },
+  {
+   "id": "mdl26_frwrd_p_stm_fy2",
+   "type": "MATRIX",
+   "coverage": 0.6928,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Forward price to earnings ratio based on StarMine SmartEstimate for the next fiscal year FY2"
+  },
+  {
+   "id": "mdl26_grwth_nxt_yr_ndstry_prcntl_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6646,
+   "userCount": 14,
+   "alphaCount": 46,
+   "description": "Industry percentile rank of next fiscal year’s earnings growth (SmartEstimate)"
+  },
+  {
+   "id": "mdl26_grwth_nxt_yr_sctr_prcntl_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6646,
+   "userCount": 13,
+   "alphaCount": 29,
+   "description": "Sector percentile rank of next fiscal year’s earnings growth (SmartEstimate)"
+  },
+  {
+   "id": "mdl26_grwth_ths_yr_ndstry_prcntl_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.5548,
+   "userCount": 12,
+   "alphaCount": 19,
+   "description": "Industry percentile rank of this fiscal year’s earnings growth (SmartEstimate)"
+  },
+  {
+   "id": "mdl26_grwth_ths_yr_sctr_prcntl_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.5548,
+   "userCount": 12,
+   "alphaCount": 26,
+   "description": "Percentile rank versus sector peers of expected earnings growth for the current fiscal year higher indicates faster expe"
+  },
+  {
+   "id": "mdl26_high_est",
+   "type": "MATRIX",
+   "coverage": 0.4228,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Highest analyst estimate among current estimates for the period"
+  },
+  {
+   "id": "mdl26_high_est_chg",
+   "type": "MATRIX",
+   "coverage": 0.4164,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "high estimate chg"
+  },
+  {
+   "id": "mdl26_high_price_52",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "high price 52 days"
+  },
+  {
+   "id": "mdl26_high_price_52_2",
+   "type": "MATRIX",
+   "coverage": 0.7857,
+   "userCount": 55,
+   "alphaCount": 316,
+   "description": "Highest price recorded in the past 52 weeks"
+  },
+  {
+   "id": "mdl26_last_fiscal_year_pe",
+   "type": "MATRIX",
+   "coverage": 0.5797,
+   "userCount": 34,
+   "alphaCount": 82,
+   "description": "Price-to-earnings ratio using the last fiscal year’s actual earnings"
+  },
+  {
+   "id": "mdl26_low_est",
+   "type": "MATRIX",
+   "coverage": 0.4228,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Lowest analyst estimate among current estimates for the period"
+  },
+  {
+   "id": "mdl26_low_est_chg",
+   "type": "MATRIX",
+   "coverage": 0.4164,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "low estimate chg"
+  },
+  {
+   "id": "mdl26_low_price_52",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "low price 52 days"
+  },
+  {
+   "id": "mdl26_low_price_52_2",
+   "type": "MATRIX",
+   "coverage": 0.7857,
+   "userCount": 22,
+   "alphaCount": 59,
+   "description": "Lowest price recorded in the past 52 weeks"
+  },
+  {
+   "id": "mdl26_lt_grwth_ndstry_prcntl",
+   "type": "MATRIX",
+   "coverage": 0.3803,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Industry percentile rank of long-term growth"
+  },
+  {
+   "id": "mdl26_lt_grwth_sctr_prcntl",
+   "type": "MATRIX",
+   "coverage": 0.3803,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Sector percentile rank of long-term growth"
+  },
+  {
+   "id": "mdl26_market_cap_l",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "market cap Local Currency"
+  },
+  {
+   "id": "mdl26_market_cap_l_2",
+   "type": "MATRIX",
+   "coverage": 0.7856,
+   "userCount": 58,
+   "alphaCount": 180,
+   "description": "Market capitalization of the company in its local currency at the given date"
+  },
+  {
+   "id": "mdl26_market_cap_u",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "market cap USD"
+  },
+  {
+   "id": "mdl26_market_cap_u_2",
+   "type": "MATRIX",
+   "coverage": 0.7856,
+   "userCount": 134,
+   "alphaCount": 688,
+   "description": "Market capitalization in USD"
+  },
+  {
+   "id": "mdl26_mdn_hstrcl_f12m_prc_rt_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7401,
+   "userCount": 13,
+   "alphaCount": 32,
+   "description": "Median historical forward 12-month price-to-earnings ratio for the company"
+  },
+  {
+   "id": "mdl26_mean_est",
+   "type": "MATRIX",
+   "coverage": 0.4261,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Consensus mean estimate for the period"
+  },
+  {
+   "id": "mdl26_mean_est_chg",
+   "type": "MATRIX",
+   "coverage": 0.4164,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "mean estimate chg"
+  },
+  {
+   "id": "mdl26_median_historical_f12m_pe",
+   "type": "MATRIX",
+   "coverage": 0.7402,
+   "userCount": 8,
+   "alphaCount": 24,
+   "description": "Median historical Price-to-Earnings ratio for the last twelve months"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_f12m_btd",
+   "type": "MATRIX",
+   "coverage": 0.6917,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-EBITDA ratio using the mean consensus estimate for forward 12 months EBITDA"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_f12m_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7253,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-earnings ratio using the mean consensus estimate for forward 12 months earnings"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_f12m_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7455,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-revenue ratio using the mean consensus estimate for forward 12 months revenue"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy1_btd",
+   "type": "MATRIX",
+   "coverage": 0.6857,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-EBITDA ratio using the mean consensus estimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7044,
+   "userCount": 24,
+   "alphaCount": 68,
+   "description": "Mean analyst estimate Price-to-Earnings ratio for FY1"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy1_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-revenue ratio using the mean consensus estimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy2_btd",
+   "type": "MATRIX",
+   "coverage": 0.6831,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-EBITDA ratio using the mean consensus estimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy2_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7162,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-earnings ratio using the mean consensus estimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_mn_stmt_prc_rt_fy2_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7287,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-revenue ratio using the mean consensus estimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.6899,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentage change in the consensus mean forward 12 month EBITDA estimate over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.6836,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the consensus mean forward 12 month EBITDA estimate over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_btd_60",
+   "type": "MATRIX",
+   "coverage": 0.6704,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the consensus mean forward 12 month EBITDA estimate over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.6918,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage change in the consensus mean forward 12 month EBITDA estimate over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_btd_90",
+   "type": "MATRIX",
+   "coverage": 0.6584,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage change in the consensus mean forward 12 month EBITDA estimate over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7259,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentage change in the consensus mean forward 12 month earnings estimate over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the consensus mean forward 12 month earnings estimate over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rnngs_60",
+   "type": "MATRIX",
+   "coverage": 0.7066,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage change in the consensus mean forward 12 month earnings estimate over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7278,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage change in the consensus mean forward 12 month earnings estimate over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rnngs_90",
+   "type": "MATRIX",
+   "coverage": 0.6942,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the consensus mean forward 12 month earnings estimate over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7271,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the consensus mean forward 12 month revenue estimate over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7211,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rvn_60",
+   "type": "MATRIX",
+   "coverage": 0.7081,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7289,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage change in the consensus mean forward 12 month revenue estimate over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_f12m_rvn_90",
+   "type": "MATRIX",
+   "coverage": 0.6955,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for the next 12 months over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.344,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.3386,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_btd_60",
+   "type": "MATRIX",
+   "coverage": 0.3287,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.3464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_btd_90",
+   "type": "MATRIX",
+   "coverage": 0.32,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 1 over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.4326,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.4265,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rnngs_60",
+   "type": "MATRIX",
+   "coverage": 0.4152,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.4351,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rnngs_90",
+   "type": "MATRIX",
+   "coverage": 0.4047,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 1 over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.6517,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.6446,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rvn_60",
+   "type": "MATRIX",
+   "coverage": 0.6303,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq1_rvn_90",
+   "type": "MATRIX",
+   "coverage": 0.6152,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 1 over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.3407,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.3352,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_btd_60",
+   "type": "MATRIX",
+   "coverage": 0.3252,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.3431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in EBITDA estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.4272,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.4207,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rnngs_60",
+   "type": "MATRIX",
+   "coverage": 0.4088,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.4299,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rnngs_90",
+   "type": "MATRIX",
+   "coverage": 0.3983,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in earnings estimates for Fiscal Quarter 2 over the last 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.6274,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 2 over the last 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.6179,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Quarter 2 over the past 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rvn_60",
+   "type": "MATRIX",
+   "coverage": 0.5999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Quarter 2 over the past 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.6305,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in revenue estimates for Fiscal Quarter 2 over the last 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fq2_rvn_90",
+   "type": "MATRIX",
+   "coverage": 0.5808,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Quarter 2 over the past 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.7016,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst EBITDA estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.6955,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst EBITDA estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_btd_60",
+   "type": "MATRIX",
+   "coverage": 0.6828,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst EBITDA estimates for Fiscal Year 1 over the past 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.7034,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst EBITDA estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_btd_90",
+   "type": "MATRIX",
+   "coverage": 0.6715,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst EBITDA estimates for Fiscal Year 1 over the past 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7439,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst earnings estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7381,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst earnings estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rnngs_60",
+   "type": "MATRIX",
+   "coverage": 0.7258,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst earnings estimates for Fiscal Year 1 over the past 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7455,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst earnings estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rnngs_90",
+   "type": "MATRIX",
+   "coverage": 0.714,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean percentage change in analyst earnings estimates for Fiscal Year 1 over the past 90 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7443,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7388,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rvn_60",
+   "type": "MATRIX",
+   "coverage": 0.7271,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Year 1 over the past 60 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7458,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_mstchg_pct_fy1_rvn_90",
+   "type": "MATRIX",
+   "coverage": 0.7156,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean percentage change in analyst revenue estimates for Fiscal Year 1 over the past 90 days"
+  },
+  {
+   "id": "mdl26_nm_ngtv_bld_stmts_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7566,
+   "userCount": 8,
+   "alphaCount": 18,
+   "description": "Count of negative bold (significantly below consensus) estimates for fiscal quarter 1 earnings"
+  },
+  {
+   "id": "mdl26_nm_pstv_bld_stmts_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7566,
+   "userCount": 6,
+   "alphaCount": 12,
+   "description": "Count of positive bold estimates for fiscal quarter 1 earnings"
+  },
+  {
+   "id": "mdl26_nm_stm_nlysts_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7566,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Number of analyst estimates included in the SmartEstimate for FQ1 earnings"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq1_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for Fiscal Quarter 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for Fiscal Quarter 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 1 in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 1 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 1 in the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq2_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Quarter 2 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq2_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 2 in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fq2_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Quarter 2 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Year 1 in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Year 1 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their EBITDA estimate for Fiscal Year 1 in the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Year 1 in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Year 1 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of sell-side analysts who lowered their earnings estimate for Fiscal Year 1 in the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Year 1 in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Year 1 in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_dwn_fy1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of sell-side analysts who lowered their revenue estimate for Fiscal Year 1 in the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fq1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 revenue estimates in the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fq1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 revenue estimates in the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fq1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 revenue estimates in the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 1 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy1_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 1 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_btd_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 2 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_btd_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 2 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_btd_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up EBITDA estimates for Fiscal Year 2 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rnngs_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 2 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 2 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up earnings estimates for Fiscal Year 2 over the past 7 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rvn_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 2 over the past 14 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rvn_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 2 over the past 30 days"
+  },
+  {
+   "id": "mdl26_nnlyst_rvsng_p_fy2_rvn_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising up revenue estimates for Fiscal Year 2 over the past 7 days"
+  },
+  {
+   "id": "mdl26_num_downgrades_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of analyst recommendation downgrades in the past 14 days"
+  },
+  {
+   "id": "mdl26_num_downgrades_60",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst recommendation downgrades in the past 60 days"
+  },
+  {
+   "id": "mdl26_num_downgrades_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades in the past 7 days"
+  },
+  {
+   "id": "mdl26_num_downgrades_90",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades in the past 90 days"
+  },
+  {
+   "id": "mdl26_num_mean_analyst",
+   "type": "MATRIX",
+   "coverage": 0.4261,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of analysts contributing to the mean estimate"
+  },
+  {
+   "id": "mdl26_num_revions_up",
+   "type": "MATRIX",
+   "coverage": 0.7397,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "num revions up"
+  },
+  {
+   "id": "mdl26_num_revisons_down",
+   "type": "MATRIX",
+   "coverage": 0.7397,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "num revisons down"
+  },
+  {
+   "id": "mdl26_num_upgrades_14",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades in the past 14 days"
+  },
+  {
+   "id": "mdl26_num_upgrades_60",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst recommendation upgrades in the past 60 days"
+  },
+  {
+   "id": "mdl26_num_upgrades_7",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades in the past 7 days"
+  },
+  {
+   "id": "mdl26_num_upgrades_90",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades in the past 90 days"
+  },
+  {
+   "id": "mdl26_p_yld_pct_stm_f12m",
+   "type": "MATRIX",
+   "coverage": 0.7187,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Earnings yield percentage earnings divided by price based on SmartEstimate for the next 12 months"
+  },
+  {
+   "id": "mdl26_p_yld_pct_stm_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7176,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Earnings yield percentage earnings divided by price based on SmartEstimate for the current fiscal year FY1"
+  },
+  {
+   "id": "mdl26_p_yld_pct_stm_fy2",
+   "type": "MATRIX",
+   "coverage": 0.7036,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Earnings-to-Price yield percentage based on StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_peg_mean_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6592,
+   "userCount": 40,
+   "alphaCount": 99,
+   "description": "PEG ratio computed using forward FY1 P/E from mean estimates and the corresponding growth estimate"
+  },
+  {
+   "id": "mdl26_peg_smartestimate_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6363,
+   "userCount": 68,
+   "alphaCount": 244,
+   "description": "(Price/Earnings-to-growth) smartestimate FYEAR1"
+  },
+  {
+   "id": "mdl26_preferred",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "preferred"
+  },
+  {
+   "id": "mdl26_price_change_30",
+   "type": "MATRIX",
+   "coverage": 0.7831,
+   "userCount": 11,
+   "alphaCount": 38,
+   "description": "Percentage price change over the last 30 trading days"
+  },
+  {
+   "id": "mdl26_prsprise_f12m_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7034,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted surprise (actual minus predicted value) for trailing 12 months earnings"
+  },
+  {
+   "id": "mdl26_prsprise_f12m_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6638,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for forward 12 months EBITDA (Predicted Surprise am"
+  },
+  {
+   "id": "mdl26_prsprise_f12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7009,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine predicted revenue surprise amount for the next 12 months"
+  },
+  {
+   "id": "mdl26_prsprise_flag_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7566,
+   "userCount": 7,
+   "alphaCount": 14,
+   "description": "Flag indicating the predicted surprise status such as positive, negative, or neutral for fiscal quarter 1 earnings"
+  },
+  {
+   "id": "mdl26_prsprise_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4145,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Predicted earnings surprise amount for fiscal quarter 1, i.e., SmartEstimate minus consensus mean"
+  },
+  {
+   "id": "mdl26_prsprise_fq1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3297,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 1 EBITDA (Predicted Surprise amo"
+  },
+  {
+   "id": "mdl26_prsprise_fq1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6359,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 1 revenue (Predicted Surprise am"
+  },
+  {
+   "id": "mdl26_prsprise_fq2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted earnings surprise amount for Fiscal Quarter 2"
+  },
+  {
+   "id": "mdl26_prsprise_fq2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.327,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 2 EBITDA (Predicted Surprise amo"
+  },
+  {
+   "id": "mdl26_prsprise_fq2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6148,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for Fiscal Quarter 2"
+  },
+  {
+   "id": "mdl26_prsprise_fy1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7187,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted earnings surprise amount for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_prsprise_fy1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6749,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Predicted surprise (actual minus predicted) for Fiscal Year 1 EBITDA"
+  },
+  {
+   "id": "mdl26_prsprise_fy1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine predicted revenue surprise amount for fiscal year 1"
+  },
+  {
+   "id": "mdl26_prsprise_fy2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7047,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 earnings (Predicted Surprise amou"
+  },
+  {
+   "id": "mdl26_prsprise_fy2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6656,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 EBITDA (Predicted Surprise amount"
+  },
+  {
+   "id": "mdl26_prsprise_fy2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7022,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 revenue (Predicted Surprise amoun"
+  },
+  {
+   "id": "mdl26_prsprise_pct_f12m_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7034,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine predicted percentage earnings surprise for the next 12 months (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_f12m_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6638,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "StarMine predicted percentage EBITDA surprise for the next 12 months (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_f12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7009,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine predicted percentage revenue surprise for the next 12 months (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4172,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage earnings surprise for the next fiscal quarter (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3297,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage EBITDA surprise for the next fiscal quarter (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6359,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage revenue surprise for the next fiscal quarter (SmartEstimate versus mean consensus)"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 2 earnings (Predicted"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.327,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 2 EBITDA (Predicted S"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fq2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6148,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal quarter 2 revenue (Predicted "
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7187,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 1 earnings (Predicted Su"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 1 EBITDA (Predicted Surp"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 1 revenue (Predicted Sur"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7047,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 earnings (Predicted Su"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6656,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 EBITDA (Predicted Surp"
+  },
+  {
+   "id": "mdl26_prsprise_pct_fy2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7022,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage difference between the StarMine SmartEstimate and the mean consensus for fiscal year 2 revenue (Predicted Sur"
+  },
+  {
+   "id": "mdl26_prsprise_per_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4145,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "predicted surprise (actual value - predicted value) per FQTR1 earnings"
+  },
+  {
+   "id": "mdl26_rank",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 30,
+   "alphaCount": 56,
+   "description": "Time series of the security’s percentile rank of the overall ARM score within its universe"
+  },
+  {
+   "id": "mdl26_rcmmndtn_mn_chng_14",
+   "type": "MATRIX",
+   "coverage": 0.7039,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 14 days"
+  },
+  {
+   "id": "mdl26_rcmmndtn_mn_chng_60",
+   "type": "MATRIX",
+   "coverage": 0.6887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 60 days"
+  },
+  {
+   "id": "mdl26_rcmmndtn_mn_chng_7",
+   "type": "MATRIX",
+   "coverage": 0.7055,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 7 days"
+  },
+  {
+   "id": "mdl26_rcmmndtn_mn_chng_90",
+   "type": "MATRIX",
+   "coverage": 0.6793,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Change in the mean analyst recommendation over the past 90 days"
+  },
+  {
+   "id": "mdl26_recommendations",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Recommendations component of ARM history capturing analyst recommendation changes and momentum"
+  },
+  {
+   "id": "mdl26_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7422,
+   "userCount": 34,
+   "alphaCount": 71,
+   "description": "Revenue component of ARM history capturing analyst revenue estimate revisions"
+  },
+  {
+   "id": "mdl26_revisions",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 28,
+   "alphaCount": 55,
+   "description": "revisions"
+  },
+  {
+   "id": "mdl26_score",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 38,
+   "alphaCount": 94,
+   "description": "Time series of the overall ARM composite score (1–100) for the security"
+  },
+  {
+   "id": "mdl26_secondary",
+   "type": "MATRIX",
+   "coverage": 0.7012,
+   "userCount": 37,
+   "alphaCount": 80,
+   "description": "secondary"
+  },
+  {
+   "id": "mdl26_sm_frwrd_p_stm_fy1",
+   "type": "MATRIX",
+   "coverage": 0.6837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price to earnings ratio based on StarMine SmartEstimate for the current fiscal year FY1"
+  },
+  {
+   "id": "mdl26_sm_mn_stmt_prc_rt_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7102,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-earnings ratio using the mean consensus estimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_sm_nlyst_rvsns_scr",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Composite ARM percentile score indicating strength of analyst estimate and recommendation revisions for the stock"
+  },
+  {
+   "id": "mdl26_sm_nnlyst_rvsng_dwn_fq1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts revising down earnings estimates for Fiscal Quarter 1 over the past 30 days"
+  },
+  {
+   "id": "mdl26_sm_nnlyst_rvsng_p_fq1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who raised their Fiscal Quarter 1 earnings estimates in the past 30 days"
+  },
+  {
+   "id": "mdl26_sm_rcmmndtn_mn_chng_30",
+   "type": "MATRIX",
+   "coverage": 0.699,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the mean analyst recommendation over the past 30 days"
+  },
+  {
+   "id": "mdl26_sm_rm_prfrrd_rnngs_cmpnnt",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred earnings subcomponent of the ARM score (portion of final score, scaled 1–100)"
+  },
+  {
+   "id": "mdl26_sm_rm_rcmmndtns_cmpnnt",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recommendations subcomponent score contributing to the overall ARM score"
+  },
+  {
+   "id": "mdl26_sm_rm_scndry_rnngs_cmpnnt",
+   "type": "MATRIX",
+   "coverage": 0.7012,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Secondary earnings component contributing to the final ARM score"
+  },
+  {
+   "id": "mdl26_sm_smrtst_grwth_nxt_yrths_yr_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6712,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SmartEstimate growth rate ratio of next year’s to this year’s earnings"
+  },
+  {
+   "id": "mdl26_sm_smrtst_grwth_ths_yrlst_yr_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.5596,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "SmartEstimate growth rate ratio of this year’s to last year’s earnings"
+  },
+  {
+   "id": "mdl26_sm_stm_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.4172,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for fiscal quarter 1 earnings"
+  },
+  {
+   "id": "mdl26_sm_stm_prc_rt_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6837,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-earnings ratio using StarMine SmartEstimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_sma_actual_last_q_earnings",
+   "type": "MATRIX",
+   "coverage": 0.5165,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual earnings reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl26_sma_actual_last_y_earnings",
+   "type": "MATRIX",
+   "coverage": 0.675,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Actual earnings reported for the most recent fiscal year"
+  },
+  {
+   "id": "mdl26_sma_arm_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Country-level percentile rank of the ARM signal (integer 1–100)"
+  },
+  {
+   "id": "mdl26_sma_arm_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile rank of the ARM signal (integer 1–100)"
+  },
+  {
+   "id": "mdl26_sma_arm_new_activity_flag",
+   "type": "MATRIX",
+   "coverage": 0.7917,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating new ARM-related analyst activity"
+  },
+  {
+   "id": "mdl26_sma_arm_revenue_component",
+   "type": "MATRIX",
+   "coverage": 0.7422,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Revenue subcomponent of the ARM score, reflecting revenue-related analyst signals (scaled as a component score)"
+  },
+  {
+   "id": "mdl26_sma_arm_score_5",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Five-day average of the composite ARM score"
+  },
+  {
+   "id": "mdl26_sma_arm_score_change_30",
+   "type": "MATRIX",
+   "coverage": 0.7303,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Change in the ARM score over the last 30 days"
+  },
+  {
+   "id": "mdl26_sma_days_since_last_report",
+   "type": "MATRIX",
+   "coverage": 0.7865,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of model days since the last analyst report or estimate activity"
+  },
+  {
+   "id": "mdl26_sma_forward_pe_mean_fy1",
+   "type": "MATRIX",
+   "coverage": 0.7102,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward price to earnings ratio based on the mean consensus estimate for the current fiscal year FY1"
+  },
+  {
+   "id": "mdl26_sma_last_fiscal_year_pe",
+   "type": "MATRIX",
+   "coverage": 0.5847,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price to earnings ratio using earnings from the last completed fiscal year"
+  },
+  {
+   "id": "mdl26_sma_num_downgrades_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation downgrades in the past 30 days"
+  },
+  {
+   "id": "mdl26_sma_num_upgrades_30",
+   "type": "MATRIX",
+   "coverage": 0.7581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst recommendation upgrades in the past 30 days"
+  },
+  {
+   "id": "mdl26_sma_prsprise_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4172,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "StarMine predicted earnings surprise amount for fiscal quarter 1"
+  },
+  {
+   "id": "mdl26_sma_trailing_4_quarter_pe",
+   "type": "MATRIX",
+   "coverage": 0.336,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price to earnings ratio using earnings from the most recent four reported quarters"
+  },
+  {
+   "id": "mdl26_smartestimate_f12m_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6638,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for forward 12 months EBITDA"
+  },
+  {
+   "id": "mdl26_smartestimate_f12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7009,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for forward 12 months revenue"
+  },
+  {
+   "id": "mdl26_smartestimate_fq1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4145,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "StarMine SmartEstimate for fiscal Q1 earnings"
+  },
+  {
+   "id": "mdl26_smartestimate_fq1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3297,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for fiscal quarter 1 EBITDA"
+  },
+  {
+   "id": "mdl26_smartestimate_fq1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6359,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for fiscal quarter 1 revenue"
+  },
+  {
+   "id": "mdl26_smartestimate_fq2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.413,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for earnings for Fiscal Quarter 2"
+  },
+  {
+   "id": "mdl26_smartestimate_fq2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.327,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for EBITDA for Fiscal Quarter 2"
+  },
+  {
+   "id": "mdl26_smartestimate_fq2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6148,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for revenue for Fiscal Quarter 2"
+  },
+  {
+   "id": "mdl26_smartestimate_fy1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7187,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for earnings for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_smartestimate_fy1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6749,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for EBITDA for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_smartestimate_fy1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7171,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for revenue for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_smartestimate_fy2_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7047,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for earnings for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_smartestimate_fy2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6656,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for EBITDA for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_smartestimate_fy2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.7022,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for revenue for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_f12mt12m_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.5803,
+   "userCount": 15,
+   "alphaCount": 74,
+   "description": "Expected earnings growth from trailing 12 months to forward 12 months based on SmartEstimate"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_f24mf12m_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6409,
+   "userCount": 14,
+   "alphaCount": 26,
+   "description": "Expected earnings growth from forward 12 months to forward 24 months based on SmartEstimate"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_nxt_yrths_yr_btd",
+   "type": "MATRIX",
+   "coverage": 0.6491,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "SmartEstimate growth rate ratio of next year’s to this year’s EBITDA"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_nxt_yrths_yr_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6657,
+   "userCount": 8,
+   "alphaCount": 23,
+   "description": "Expected earnings growth from this fiscal year to next fiscal year based on the StarMine SmartEstimate"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_nxt_yrths_yr_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7006,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "SmartEstimate growth rate ratio of next year’s to this year’s revenue"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_ths_yrlst_yr_btd",
+   "type": "MATRIX",
+   "coverage": 0.529,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SmartEstimate growth rate ratio of this year’s to last year’s EBITDA"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_ths_yrlst_yr_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.5549,
+   "userCount": 21,
+   "alphaCount": 183,
+   "description": "Earnings growth from last fiscal year to this fiscal year based on the StarMine SmartEstimate"
+  },
+  {
+   "id": "mdl26_smrtst_grwth_ths_yrlst_yr_rvn",
+   "type": "MATRIX",
+   "coverage": 0.6538,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "SmartEstimate growth rate ratio of this year’s to last year’s revenue"
+  },
+  {
+   "id": "mdl26_smrtst_pg_ndstry_prcntl_f12m",
+   "type": "MATRIX",
+   "coverage": 0.6394,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Industry percentile ranking of the PEG ratio based on SmartEstimate and forward 12-month growth"
+  },
+  {
+   "id": "mdl26_smrtst_pg_sctr_prcntl_f12m",
+   "type": "MATRIX",
+   "coverage": 0.6394,
+   "userCount": 33,
+   "alphaCount": 74,
+   "description": "Sector percentile ranking of the PEG ratio based on SmartEstimate and forward 12-month growth"
+  },
+  {
+   "id": "mdl26_srprs_pct_lst_q_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.4214,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentage surprise for last quarter earnings: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_srprs_pct_lst_q_rvn",
+   "type": "MATRIX",
+   "coverage": 0.6408,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentage surprise for last quarter revenue: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_srprs_pct_lst_y_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6569,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for last year earnings: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_srprs_pct_lst_y_rvn",
+   "type": "MATRIX",
+   "coverage": 0.6725,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for last year revenue: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_stdv_stm_nlysts_fq1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.4145,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of analyst estimates contributing to the FQ1 earnings SmartEstimate"
+  },
+  {
+   "id": "mdl26_stm_chng_fq1_rnngs_30",
+   "type": "MATRIX",
+   "coverage": 0.4014,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Change in the SmartEstimate for FQ1 earnings over the past 30 days"
+  },
+  {
+   "id": "mdl26_stm_f12m_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7034,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "StarMine SmartEstimate (proprietary weighted consensus) for forward 12 months earnings"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_f12m_btd",
+   "type": "MATRIX",
+   "coverage": 0.6649,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price-to-EBITDA ratio using StarMine SmartEstimate for forward 12 months EBITDA"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_f12m_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6996,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-earnings ratio using StarMine SmartEstimate for forward 12 months earnings"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_f12m_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7168,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price-to-revenue ratio using StarMine SmartEstimate for forward 12 months revenue"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy1_btd",
+   "type": "MATRIX",
+   "coverage": 0.6574,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-EBITDA ratio using StarMine SmartEstimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6781,
+   "userCount": 39,
+   "alphaCount": 170,
+   "description": "Price-to-earnings ratio based on the StarMine SmartEstimate for FY1 earnings"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy1_rvn",
+   "type": "MATRIX",
+   "coverage": 0.7156,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-revenue ratio using StarMine SmartEstimate for Fiscal Year 1"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy2_btd",
+   "type": "MATRIX",
+   "coverage": 0.6567,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-EBITDA ratio using StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy2_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.6928,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-earnings ratio using StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_stm_prc_rt_fy2_rvn",
+   "type": "MATRIX",
+   "coverage": 0.701,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-revenue ratio using StarMine SmartEstimate for Fiscal Year 2"
+  },
+  {
+   "id": "mdl26_stm_prr_fq1_rnngs_7",
+   "type": "MATRIX",
+   "coverage": 0.4118,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The StarMine SmartEstimate for Fiscal Quarter 1 earnings as of seven days prior"
+  },
+  {
+   "id": "mdl26_surprise_60_q",
+   "type": "MATRIX",
+   "coverage": 0.3988,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "surprise (actual value - predicted value) 60 q"
+  },
+  {
+   "id": "mdl26_surprise_60_y",
+   "type": "MATRIX",
+   "coverage": 0.6252,
+   "userCount": 5,
+   "alphaCount": 15,
+   "description": "surprise (actual value - predicted value) 60 y"
+  },
+  {
+   "id": "mdl26_surprise_pct_last_q_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3101,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for last quarter EBITDA: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_surprise_pct_last_y_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.5851,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for last year EBITDA: (actual minus predicted) divided by predicted, expressed as a percentage"
+  },
+  {
+   "id": "mdl26_surprise_q",
+   "type": "MATRIX",
+   "coverage": 0.4115,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "surprise (actual value - predicted value) q"
+  },
+  {
+   "id": "mdl26_surprise_y",
+   "type": "MATRIX",
+   "coverage": 0.6413,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "surprise (actual value - predicted value) y"
+  },
+  {
+   "id": "mdl26_traded_volume",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "traded volume (in 1000s)"
+  },
+  {
+   "id": "mdl26_traded_volume_2",
+   "type": "MATRIX",
+   "coverage": 0.7857,
+   "userCount": 15,
+   "alphaCount": 26,
+   "description": "traded volume (in 1000s)"
+  },
+  {
+   "id": "mdl26_traded_volume_l",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 14,
+   "alphaCount": 39,
+   "description": "Traded volume (in 1000s) - Local Currency"
+  },
+  {
+   "id": "mdl26_traded_volume_l_2",
+   "type": "MATRIX",
+   "coverage": 0.7857,
+   "userCount": 14,
+   "alphaCount": 39,
+   "description": "traded volume (in 1000s)-Local Currency"
+  },
+  {
+   "id": "mdl26_traded_volume_u",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "traded volume (in 1000s)-USD"
+  },
+  {
+   "id": "mdl26_traded_volume_u_2",
+   "type": "MATRIX",
+   "coverage": 0.7857,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "traded volume (in 1000s)-USD"
+  },
+  {
+   "id": "mdl26_trailing_4_quarter_pe",
+   "type": "MATRIX",
+   "coverage": 0.3338,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Price-to-earnings ratio using the sum of earnings per share over the most recent four reported quarters"
+  },
+  {
+   "id": "mdl26_yld_ndstry_prcntl_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7104,
+   "userCount": 35,
+   "alphaCount": 234,
+   "description": "Industry percentile ranking of the dividend yield based on FY1 estimates"
+  },
+  {
+   "id": "mdl26_yld_sctr_prcntl_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7104,
+   "userCount": 58,
+   "alphaCount": 314,
+   "description": "Sector percentile ranking of the dividend yield based on FY1 estimates"
+  },
+  {
+   "id": "mdl26_yld_stm_fy1_rnngs",
+   "type": "MATRIX",
+   "coverage": 0.7117,
+   "userCount": 96,
+   "alphaCount": 506,
+   "description": "Dividend yield percentage estimated using StarMine SmartEstimate for fiscal year 1"
+  },
+  {
+   "id": "mean_estimate_seven_days_ago_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.4336,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean FQ1 earnings estimate as of 7 days prior"
+  },
+  {
+   "id": "mean_estimate_to_price_ratio_year1_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6382,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus mean price-to-EBITDA ratio for FY1"
+  },
+  {
+   "id": "mean_revision_thirty_days_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.3338,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average percent change of individual analyst FQ1 earnings estimate revisions over the past 30 days"
+  },
+  {
+   "id": "model_score_delta_3d",
+   "type": "MATRIX",
+   "coverage": 0.6888,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Change in the StarMine ARM score over the last 3 days"
+  },
+  {
+   "id": "model_score_delta_60d",
+   "type": "MATRIX",
+   "coverage": 0.6723,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the StarMine ARM composite score over the last 60 days"
+  },
+  {
+   "id": "new_model_activity_indicator",
+   "type": "MATRIX",
+   "coverage": 0.7277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Flag indicating newly detected activity or updates in the StarMine ARM dataset for the company since the prior day"
+  },
+  {
+   "id": "parent_entity_indicator",
+   "type": "MATRIX",
+   "coverage": 0.7846,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Indicator flag showing whether the company is a parent company in a corporate group"
+  },
+  {
+   "id": "pct_expected_surprise_next_quarter_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4057,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage earnings surprise for Fiscal Quarter 2 (SmartEstimate vs mean consensus)"
+  },
+  {
+   "id": "pct_expected_surprise_next_quarter_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage EBITDA surprise for Fiscal Quarter 2"
+  },
+  {
+   "id": "pct_expected_surprise_next_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Predicted percentage earnings surprise for Fiscal Year 2, i.e., SmartEstimate versus mean consensus as a percent of the "
+  },
+  {
+   "id": "pct_expected_surprise_next_year_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6242,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted percentage EBITDA surprise for FY2 (SmartEstimate vs mean)"
+  },
+  {
+   "id": "pct_expected_surprise_quarter_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6029,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "StarMine predicted percentage revenue surprise for Fiscal Quarter 1"
+  },
+  {
+   "id": "pct_expected_surprise_year_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine predicted percentage surprise for FY1 EBITDA, i.e., (SmartEstimate − mean) / mean"
+  },
+  {
+   "id": "pct_expected_surprise_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6679,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Predicted percentage revenue surprise for Fiscal Year 1 (SmartEstimate vs mean consensus)"
+  },
+  {
+   "id": "pct_surprise_reported_earnings_previous_year",
+   "type": "MATRIX",
+   "coverage": 0.6211,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for the last year’s earnings, calculated as actual reported minus consensus estimate, expressed as a"
+  },
+  {
+   "id": "pct_surprise_reported_ebitda_previous_year",
+   "type": "MATRIX",
+   "coverage": 0.5556,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for the last year’s EBITDA, calculated as actual reported minus consensus estimate, expressed as a p"
+  },
+  {
+   "id": "pct_surprise_reported_revenue_previous_quarter",
+   "type": "MATRIX",
+   "coverage": 0.609,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentage surprise for the last quarter’s revenue, calculated as actual reported minus consensus estimate, expressed as"
+  },
+  {
+   "id": "pct_surprise_reported_revenue_previous_year",
+   "type": "MATRIX",
+   "coverage": 0.633,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage surprise for the last year’s revenue, calculated as actual reported minus consensus estimate, expressed as a "
+  },
+  {
+   "id": "pe_ratio_previous_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.5513,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-earnings ratio using earnings from the last completed fiscal year"
+  },
+  {
+   "id": "pe_ratio_trailing_4q_2",
+   "type": "MATRIX",
+   "coverage": 0.331,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-earnings ratio using earnings from the most recent four reported quarters"
+  },
+  {
+   "id": "predicted_surprise_pct_year1_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6679,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted revenue surprise amount for Fiscal Year 1 (SmartEstimate minus mean consensus)"
+  },
+  {
+   "id": "predicted_surprise_pct_year2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6242,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine predicted EBITDA surprise amount for Fiscal Year 2 (SmartEstimate minus mean consensus)"
+  },
+  {
+   "id": "price_to_mean_earnings_ratio_12m",
+   "type": "MATRIX",
+   "coverage": 0.6717,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean price-to-earnings estimate ratio for the next 12 months"
+  },
+  {
+   "id": "price_to_mean_earnings_ratio_year",
+   "type": "MATRIX",
+   "coverage": 0.6578,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price-to-earnings ratio using the mean (consensus) estimate for Fiscal Year 1 earnings"
+  },
+  {
+   "id": "price_to_mean_estimate_next_year_earnings_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean price-to-earnings estimate ratio for Fiscal Year 2"
+  },
+  {
+   "id": "price_to_mean_estimate_ratio_12m_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean price-to-EBITDA estimate ratio for the next 12 months"
+  },
+  {
+   "id": "price_to_mean_estimate_ratio_next_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6901,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-revenue ratio using the mean (consensus) estimate for Fiscal Year 1 revenue"
+  },
+  {
+   "id": "price_to_mean_estimate_ratio_year2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6373,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean price-to-EBITDA estimate ratio for Fiscal Year 2"
+  },
+  {
+   "id": "price_to_mean_estimate_ratio_year2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus mean price-to-revenue ratio for FY2"
+  },
+  {
+   "id": "price_to_mean_revenue_ratio_12m",
+   "type": "MATRIX",
+   "coverage": 0.6906,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean price-to-revenue estimate ratio for forward 12 months"
+  },
+  {
+   "id": "price_to_smartest_earnings_ratio_next_year",
+   "type": "MATRIX",
+   "coverage": 0.6476,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Price-to-earnings ratio using the SmartEstimate for Fiscal Year 2 earnings"
+  },
+  {
+   "id": "price_to_smartest_ebitda_ratio_year",
+   "type": "MATRIX",
+   "coverage": 0.6152,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate price-to-EBITDA ratio for FY1"
+  },
+  {
+   "id": "price_to_smartest_estimate_ratio_12m_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6509,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Price-to-earnings ratio for the next 12 months based on the SmartEstimate of forward 12-month earnings"
+  },
+  {
+   "id": "price_to_smartest_estimate_ratio_next_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6363,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Price-to-earnings ratio using the StarMine SmartEstimate for Fiscal Year 1 earnings"
+  },
+  {
+   "id": "price_to_smartest_estimate_ratio_next_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6664,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-revenue ratio using the StarMine SmartEstimate for Fiscal Year 1 revenue"
+  },
+  {
+   "id": "price_to_smartest_estimate_ratio_year2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6553,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Price-to-revenue ratio using the StarMine SmartEstimate for Fiscal Year 2 revenue"
+  },
+  {
+   "id": "price_to_smartest_forward_ebitda_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6218,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-EBITDA ratio using StarMine SmartEstimate for forward 12 months EBITDA"
+  },
+  {
+   "id": "price_to_smartest_forward_revenue_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6674,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Price-to-revenue ratio using StarMine SmartEstimate for forward 12 months revenue"
+  },
+  {
+   "id": "price_to_smartest_next_year_ebitda_ratio",
+   "type": "MATRIX",
+   "coverage": 0.6157,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-EBITDA ratio using the StarMine SmartEstimate for Fiscal Year 2 EBITDA"
+  },
+  {
+   "id": "primary_earnings_measure_type_4",
+   "type": "MATRIX",
+   "coverage": 0.7572,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Preferred methodology or measure for earnings used in analysis"
+  },
+  {
+   "id": "recommendation_change_score",
+   "type": "MATRIX",
+   "coverage": 0.6461,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recommendations component portion of the final ARM score expressed as a percentile 1–100"
+  },
+  {
+   "id": "recommendation_change_score_component",
+   "type": "MATRIX",
+   "coverage": 0.6461,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ARM recommendations component percentile score reflecting recommendation momentum"
+  },
+  {
+   "id": "region_rank_decimal_score",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-specific relative rank of the ARM signal, expressed in decimal form"
+  },
+  {
+   "id": "region_rank_score_decimal",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Region-specific relative rank of the ARM signal expressed as a decimal percentile"
+  },
+  {
+   "id": "region_score_component",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score component reflecting the regional ranking of the stock."
+  },
+  {
+   "id": "region_score_float",
+   "type": "MATRIX",
+   "coverage": 0.7437,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score representing the region-based ranking for a stock."
+  },
+  {
+   "id": "reported_earnings_last_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.6363,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual earnings reported for the most recent fiscal year"
+  },
+  {
+   "id": "reported_earnings_previous_quarter",
+   "type": "MATRIX",
+   "coverage": 0.4978,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual earnings reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "reported_ebitda_last_quarter",
+   "type": "MATRIX",
+   "coverage": 0.3168,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual EBITDA reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "reported_ebitda_previous_year",
+   "type": "MATRIX",
+   "coverage": 0.5569,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual EBITDA reported for the most recent fiscal year"
+  },
+  {
+   "id": "reported_revenue_last_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.6469,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual revenue reported for the most recent fiscal year"
+  },
+  {
+   "id": "reported_revenue_last_quarter",
+   "type": "MATRIX",
+   "coverage": 0.6408,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Actual revenue reported for the most recent fiscal quarter"
+  },
+  {
+   "id": "revenue_component_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "The portion of the score based on changes in revenue estimates."
+  },
+  {
+   "id": "revenue_revision_score_3",
+   "type": "MATRIX",
+   "coverage": 0.6884,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Revenue component portion of the final ARM score expressed as a percentile 1–100"
+  },
+  {
+   "id": "score_analyst_estimate_revisions",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Composite StarMine ARM percentile score reflecting the direction, breadth, and momentum of analyst estimate revisions"
+  },
+  {
+   "id": "score_avg_5d",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "ARM score averaged over the past 5 days"
+  },
+  {
+   "id": "score_change_model_30d",
+   "type": "MATRIX",
+   "coverage": 0.6813,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Change in the StarMine ARM composite score over the last 30 days"
+  },
+  {
+   "id": "score_change_model_7d",
+   "type": "MATRIX",
+   "coverage": 0.6877,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Change in the StarMine ARM composite score over the last 7 days"
+  },
+  {
+   "id": "score_component_primary_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Preferred earnings component portion of the final ARM score"
+  },
+  {
+   "id": "score_component_primary_earnings_float",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ARM preferred earnings component percentile score"
+  },
+  {
+   "id": "score_delta_1d",
+   "type": "MATRIX",
+   "coverage": 0.6892,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Change in the ARM composite score over the last 1 day"
+  },
+  {
+   "id": "score_delta_90d",
+   "type": "MATRIX",
+   "coverage": 0.6647,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Change in the StarMine ARM score over the last 90 days"
+  },
+  {
+   "id": "secondary_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.6533,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Secondary earnings component portion of the final ARM score expressed as a percentile 1–100"
+  },
+  {
+   "id": "secondary_earnings_score_component",
+   "type": "MATRIX",
+   "coverage": 0.6533,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score component reflecting revisions and surprises in secondary earnings measures."
+  },
+  {
+   "id": "seven_day_mean_estimate_change_flag_quarterly",
+   "type": "MATRIX",
+   "coverage": 0.3179,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Flag indicating a significant change in mean quarterly earnings estimates over seven days."
+  },
+  {
+   "id": "sixty_day_earnings_surprise_quarter",
+   "type": "MATRIX",
+   "coverage": 0.4057,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings surprise for the last quarter measured over the past 60 days."
+  },
+  {
+   "id": "sixty_day_earnings_surprise_year",
+   "type": "MATRIX",
+   "coverage": 0.635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings surprise for the last year measured over the past 60 days."
+  },
+  {
+   "id": "smartest_growth_ebitda_next_vs_this_year",
+   "type": "MATRIX",
+   "coverage": 0.609,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Growth rate of EBITDA from this fiscal year to next fiscal year based on the SmartEstimate"
+  },
+  {
+   "id": "smartest_growth_rate_next_vs_current_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6277,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SmartEstimate growth rate for earnings, comparing next fiscal year to this fiscal year"
+  },
+  {
+   "id": "star_arm_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 139,
+   "alphaCount": 469,
+   "description": "Country-level percentile rank of the ARM signal (higher means stronger revisions vs country peers)"
+  },
+  {
+   "id": "star_arm_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 164,
+   "alphaCount": 593,
+   "description": "Global percentile rank of the ARM signal (higher means stronger revisions vs global peers)"
+  },
+  {
+   "id": "star_arm_pref_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 94,
+   "alphaCount": 456,
+   "description": "Percentile sub-score for the company’s preferred earnings metric revisions used by ARM; contributes to the overall ARM s"
+  },
+  {
+   "id": "star_arm_rec_change_flag",
+   "type": "MATRIX",
+   "coverage": 0.0894,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "7day recommendation mean chg flag"
+  },
+  {
+   "id": "star_arm_rec_days_since_2lv_change",
+   "type": "MATRIX",
+   "coverage": 0.4876,
+   "userCount": 13,
+   "alphaCount": 26,
+   "description": "Number of days since a two-level change in analyst recommendation occurred"
+  },
+  {
+   "id": "star_arm_rec_days_since_new",
+   "type": "MATRIX",
+   "coverage": 0.754,
+   "userCount": 25,
+   "alphaCount": 49,
+   "description": "Number of calendar days since the most recent new analyst recommendation was issued"
+  },
+  {
+   "id": "star_arm_rec_days_since_newsell",
+   "type": "MATRIX",
+   "coverage": 0.4441,
+   "userCount": 12,
+   "alphaCount": 14,
+   "description": "Number of calendar days since the latest new Sell recommendation was issued for the stock"
+  },
+  {
+   "id": "star_arm_rec_mean_change30",
+   "type": "MATRIX",
+   "coverage": 0.6932,
+   "userCount": 36,
+   "alphaCount": 106,
+   "description": "Change in the average analyst recommendation over the past 30 calendar days"
+  },
+  {
+   "id": "star_arm_rec_mean_prior7",
+   "type": "MATRIX",
+   "coverage": 0.7001,
+   "userCount": 35,
+   "alphaCount": 70,
+   "description": "The mean analyst recommendation as of 7 calendar days ago"
+  },
+  {
+   "id": "star_arm_rec_ndown_30",
+   "type": "MATRIX",
+   "coverage": 0.6999,
+   "userCount": 13,
+   "alphaCount": 44,
+   "description": "Count of analyst rating downgrades in the last 30 days"
+  },
+  {
+   "id": "star_arm_rec_nup_30",
+   "type": "MATRIX",
+   "coverage": 0.7518,
+   "userCount": 26,
+   "alphaCount": 75,
+   "description": "Count of analyst rating upgrades in the last 30 days"
+  },
+  {
+   "id": "star_arm_recommendations_score",
+   "type": "MATRIX",
+   "coverage": 0.6821,
+   "userCount": 38,
+   "alphaCount": 77,
+   "description": "Percentile sub-score capturing analyst recommendation momentum; contributes to the overall ARM score"
+  },
+  {
+   "id": "star_arm_region_rank_decimal",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 66,
+   "alphaCount": 202,
+   "description": "Regional percentile rank expressed as a decimal between 0 and 1 for the ARM signal"
+  },
+  {
+   "id": "star_arm_revenue_score",
+   "type": "MATRIX",
+   "coverage": 0.7362,
+   "userCount": 38,
+   "alphaCount": 77,
+   "description": "Percentile sub-score for revenue estimate revisions; contributes to the overall ARM score"
+  },
+  {
+   "id": "star_arm_score",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 73,
+   "alphaCount": 224,
+   "description": "Headline ARM composite score summarizing analyst estimate and recommendation revisions"
+  },
+  {
+   "id": "star_arm_score_5",
+   "type": "MATRIX",
+   "coverage": 0.7377,
+   "userCount": 62,
+   "alphaCount": 267,
+   "description": "Five-day moving average of the ARM composite (Analyst Revisions) score"
+  },
+  {
+   "id": "star_arm_score_change_1m",
+   "type": "MATRIX",
+   "coverage": 0.7244,
+   "userCount": 50,
+   "alphaCount": 155,
+   "description": "Change in the ARM composite score over the last 30 days"
+  },
+  {
+   "id": "star_arm_secondary_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.6954,
+   "userCount": 69,
+   "alphaCount": 221,
+   "description": "Percentile sub-score for the secondary earnings metric revisions; contributes to the overall ARM score"
+  },
+  {
+   "id": "stock_model_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Overall score assigned to the stock by the model."
+  },
+  {
+   "id": "stock_percentile_ranking",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Percentile rank of the stock based on the model score."
+  },
+  {
+   "id": "suspect_data_indicator_any_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7572,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator flag showing whether any earnings-related data (across forecast/reporting periods) is considered suspect; 1 = "
+  },
+  {
+   "id": "suspect_data_indicator_model",
+   "type": "MATRIX",
+   "coverage": 0.7799,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator that the ARM calculation/data for this record are suspect (1=flagged, 0=clean)"
+  },
+  {
+   "id": "suspect_data_indicator_quarter1_earnings",
+   "type": "MATRIX",
+   "coverage": 0.7572,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Indicator that FQ1 earnings data are suspect (1=flagged, 0=clean)"
+  },
+  {
+   "id": "weighted_estimate_12m_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6579,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "StarMine weighted consensus estimate for forward 12 months earnings"
+  },
+  {
+   "id": "weighted_estimate_12m_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6229,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine weighted consensus estimate for forward 12 months EBITDA"
+  },
+  {
+   "id": "weighted_estimate_curr_qtr_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3256,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine weighted consensus estimate for Fiscal Quarter 1 EBITDA"
+  },
+  {
+   "id": "weighted_estimate_curr_qtr_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6029,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine weighted consensus estimate for Fiscal Quarter 1 revenue"
+  },
+  {
+   "id": "weighted_estimate_forward_12m_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6554,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "StarMine weighted consensus estimate for forward 12 months revenue"
+  },
+  {
+   "id": "weighted_estimate_next_quarter_earnings",
+   "type": "MATRIX",
+   "coverage": 0.4057,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (weighted consensus) for Fiscal Quarter 2 earnings"
+  },
+  {
+   "id": "weighted_estimate_next_quarter_revenue",
+   "type": "MATRIX",
+   "coverage": 0.5859,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for Fiscal Quarter 2 revenue"
+  },
+  {
+   "id": "weighted_estimate_next_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6693,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for next fiscal year (FY1) earnings"
+  },
+  {
+   "id": "weighted_estimate_next_year_earnings_2",
+   "type": "MATRIX",
+   "coverage": 0.6591,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for the following fiscal year (FY2) earnings"
+  },
+  {
+   "id": "weighted_estimate_next_year_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.6316,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for next fiscal year (FY1) EBITDA"
+  },
+  {
+   "id": "weighted_estimate_next_year_ebitda_2",
+   "type": "MATRIX",
+   "coverage": 0.6242,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "SmartEstimate consensus for FY2 EBITDA"
+  },
+  {
+   "id": "weighted_estimate_next_year_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6679,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for next fiscal year (FY1) revenue"
+  },
+  {
+   "id": "weighted_estimate_qtr2_ebitda",
+   "type": "MATRIX",
+   "coverage": 0.3231,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for Fiscal Quarter 2 EBITDA"
+  },
+  {
+   "id": "weighted_estimate_quarter_earnings",
+   "type": "MATRIX",
+   "coverage": 0.41,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine weighted consensus estimate for Fiscal Quarter 1 earnings"
+  },
+  {
+   "id": "weighted_estimate_year2_revenue",
+   "type": "MATRIX",
+   "coverage": 0.6565,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "StarMine SmartEstimate (proprietary weighted analyst consensus) for the following fiscal year (FY2) revenue"
+  }
+ ]
+}

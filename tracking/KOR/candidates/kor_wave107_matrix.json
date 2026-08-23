@@ -1,0 +1,10 @@
+[
+  {"tag": "A", "decay": 8,  "neutralization": "STATISTICAL", "truncation": 0.08},
+  {"tag": "B", "decay": 16, "neutralization": "STATISTICAL", "truncation": 0.08},
+  {"tag": "C", "decay": 12, "neutralization": "INDUSTRY",    "truncation": 0.08},
+  {"tag": "D", "decay": 16, "neutralization": "SECTOR",      "truncation": 0.08},
+  {"tag": "E", "decay": 16, "neutralization": "SECTOR",      "truncation": 0.04},
+  {"tag": "F", "decay": 8,  "neutralization": "SUBINDUSTRY", "truncation": 0.08},
+  {"tag": "G", "decay": 10, "neutralization": "SECTOR",      "truncation": 0.04},
+  {"tag": "H", "decay": 6,  "neutralization": "STATISTICAL", "truncation": 0.04}
+]

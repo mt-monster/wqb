@@ -1,0 +1,10 @@
+[
+  "rank(add(rank(change_6m_rating_revision), rank(earnings_quality_score_raw)))",
+  "rank(add(rank(change_6m_rating_revision), rank(buyback_yield_percentile_float)))",
+  "rank(add(rank(change_6m_rating_revision), rank(dividend_yield_relative_score_backfill)))",
+  "rank(add(rank(change_6m_rating_revision), rank(subtract(0, ev_ebitda_ratio_percentile_float))))",
+  "rank(add(rank(change_6m_rating_revision), rank(subtract(0, credit_risk_default_probability_percent))))",
+  "rank(add(rank(change_6m_rating_revision), rank(industry_value_momentum_percentile_float)))",
+  "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(price_volume_quantile1_20d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(change_6m_rating_revision)), rank(price_volume_quantile1_20d_pred))), sector)"
+]

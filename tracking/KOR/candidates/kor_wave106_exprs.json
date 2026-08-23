@@ -1,0 +1,10 @@
+[
+  "rank(add(avg_pct_change_estimate_quarter_earnings_7d, ts_corr(avg_pct_change_estimate_qtr2_earnings_90d, close, 20)))",
+  "rank(add(avg_pct_change_estimate_12m_ebitda_30d, ts_kurtosis(avg_pct_change_estimate_year_revenue_30d, 63)))",
+  "multiply(rank(avg_pct_change_estimate_next_quarter_ebitda_14d), rank(short_horizon_hedge3_quantile1_5d_pred))",
+  "group_neutralize(rank(add(multiply(2, rank(analyst_recommendation_score_component)), rank(avg_pct_change_estimate_quarter_earnings_7d))), sector)",
+  "trade_when(rank(analyst_recommendation_score_component) > 0.5, avg_change_analyst_recommendation_30d > 0, 0)",
+  "rank(add(avg_change_analyst_recommendation_30d, avg_pct_change_estimate_qtr2_revenue_30d))",
+  "rank(subtract(avg_pct_change_estimate_quarter_ebitda_60d, avg_pct_change_estimate_quarter_ebitda_30d))",
+  "add(ts_rank(analysts_count_revising_up_quarter2_earnings_30d, 40), rank(avg_pct_change_estimate_qtr2_earnings_30d))"
+]

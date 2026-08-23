@@ -1,0 +1,4 @@
+[
+  "rank(vec_avg(mws76_score))",
+  "rank(vec_avg(mws76_confidence))"
+]

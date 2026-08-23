@@ -1,0 +1,53 @@
+{
+ "version": 1,
+ "rules": [
+  {
+   "rule_id": "auto_low_sharpe_x_2026-08-23",
+   "type": "diagnosis",
+   "trigger": {
+    "dataset": "*",
+    "region": "IND"
+   },
+   "action": {
+    "op": "flag_dataset_weak",
+    "message": "dataset=None 5 条 max sharpe=0.00<1.0，单字段太弱需复合/加工"
+   },
+   "evidence": {
+    "max_sharpe": 0.0,
+    "n": 5
+   },
+   "confidence": 0.5,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-23T14:16:28",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "auto_universe_collapse_TOP500_2026-08-23",
+   "type": "universe_lever",
+   "trigger": {
+    "universe": "TOP500",
+    "region": "IND"
+   },
+   "action": {
+    "op": "block_universe",
+    "dead_universe": "TOP500",
+    "message": "universe=TOP500 下 5 条全崩 (max sharpe=0.00)，疑似杠杆判死"
+   },
+   "evidence": {
+    "universe": "TOP500",
+    "max_sharpe": 0.0,
+    "n": 5
+   },
+   "confidence": 0.6,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-23T14:32:03",
+   "times_applied": 0,
+   "times_succeeded": 3,
+   "validated_at": "2026-08-23T14:52:01"
+  }
+ ],
+ "updated_at": "2026-08-23T14:52:01"
+}

@@ -1,0 +1,10 @@
+[
+  "rank(add(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), multiply(2, rank(price_volume_quantile1_20d_pred))))",
+  "group_neutralize(rank(add(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), multiply(2, rank(price_volume_quantile1_20d_pred)))), sector)",
+  "rank(add(multiply(2, rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float)))), rank(price_volume_quantile1_20d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float)))), rank(price_volume_quantile1_20d_pred))), sector)",
+  "rank(add(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), multiply(2, rank(price_volume_quantile1_5d_pred))))",
+  "group_neutralize(rank(add(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), multiply(2, rank(price_volume_quantile1_5d_pred)))), sector)",
+  "group_neutralize(rank(add(multiply(2, rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float)))), multiply(2, rank(price_volume_quantile1_20d_pred)))), sector)",
+  "rank(add(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), rank(price_volume_quantile1_20d_pred)))"
+]

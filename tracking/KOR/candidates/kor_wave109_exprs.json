@@ -1,0 +1,10 @@
+[
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(subtract(global_value_momentum_percentile_float, ts_delay(global_value_momentum_percentile_float, 21)), ts_corr(industry_value_momentum_percentile_float, close, 20)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(long_term_momentum_percentile)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(industry_value_momentum_percentile_float)))",
+  "rank(add(ts_rank(global_value_momentum_percentile_float, 42), rank(industry_value_momentum_percentile_float)))",
+  "rank(add(rank(global_value_momentum_percentile_float), rank(earnings_quality_score_raw)))",
+  "trade_when(if_else(rank(global_value_momentum_percentile_float) > 0.5, rank(industry_value_momentum_percentile_float), 0), industry_value_momentum_percentile_float > 0, 0)",
+  "group_neutralize(rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float))), sector)"
+]

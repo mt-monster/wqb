@@ -1,0 +1,23 @@
+{
+  "wave": "wave103",
+  "dataset": "pattern_scores",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "updated": "2026-08-22",
+  "multisim_id": "1hVfGkd2E4gOcIf1acnEqgqB",
+  "verdict": "8/8 RED - 形态族三连判死",
+  "conclusion": "pattern_scores 首探 8 条 8 方向全灭: 最高 K1 asc_triangle_dynamic sh 0.49/2y 0.83, K8 ts_zscore 变体 2y 0.50 (与 wave102 J6 同向线索), 其余 6 条全负. 图表形态延续族三连判死: chart_cnn_alpha(wave98 最高 1.51) -> continuation_score(wave102 0.34) -> pattern_scores(wave103 0.49). KOR 形态类信号结构性无信息量, 已回写 registry.",
+  "results": [
+    {"id": "K1", "alpha_id": "pwjzda3q", "variant": "上升三角 dynamic simscore 120d", "sharpe": 0.49, "fitness": 0.25, "two_year_sharpe": 0.83, "turnover": 0.091, "verdict": "RED"},
+    {"id": "K2", "alpha_id": "zqko3deX", "variant": "上升三角 mean simscore 60d", "sharpe": -0.05, "fitness": -0.01, "two_year_sharpe": -0.06, "turnover": 0.118, "verdict": "RED"},
+    {"id": "K3", "alpha_id": "LL7XMK3n", "variant": "breakaway gap up dynamic 60d", "sharpe": -0.27, "fitness": -0.10, "two_year_sharpe": -0.43, "turnover": 0.130, "verdict": "RED"},
+    {"id": "K4", "alpha_id": "A1laVxEl", "variant": "下降楔形 avg 120d", "sharpe": -0.75, "fitness": -0.46, "two_year_sharpe": -0.19, "turnover": 0.086, "verdict": "RED"},
+    {"id": "K5", "alpha_id": "LL7XMK3M", "variant": "V 反转底 avg", "sharpe": -0.43, "fitness": -0.24, "two_year_sharpe": -0.50, "turnover": 0.055, "verdict": "RED"},
+    {"id": "K6", "alpha_id": "3ql6o0JO", "variant": "V 延续顶 avg", "sharpe": -0.34, "fitness": -0.15, "two_year_sharpe": -0.25, "turnover": 0.063, "verdict": "RED"},
+    {"id": "K7", "alpha_id": "58l6EJ2n", "variant": "对称三角向上 avg", "sharpe": 0.21, "fitness": 0.07, "two_year_sharpe": 0.16, "turnover": 0.071, "verdict": "RED"},
+    {"id": "K8", "alpha_id": "MP78Y62o", "variant": "上升三角 dynamic 60d zscore", "sharpe": -0.07, "fitness": -0.01, "two_year_sharpe": 0.50, "turnover": 0.114, "verdict": "RED"}
+  ],
+  "max_sharpe": 0.49,
+  "max_2y": 0.83
+}

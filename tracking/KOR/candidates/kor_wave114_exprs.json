@@ -1,0 +1,10 @@
+[
+  "add(ts_rank(vec_avg(anl44_2_roe_value), 50), -ts_rank(vec_avg(roe_num_estimates_down_4w), 22))",
+  "add(ts_rank(vec_avg(anl44_2_eps_value), 50), -ts_rank(vec_avg(eps_estimate_4wk_down_count), 22))",
+  "add(ts_rank(vec_avg(eps_upward_revisions_4w), 42), -ts_rank(vec_avg(eps_estimate_4wk_down_count), 22))",
+  "add(ts_rank(vec_avg(anl44_2_netprofit_value), 50), -ts_rank(vec_avg(anl44_2_netprofit_prevalue), 50))",
+  "add(ts_rank(vec_avg(anl44_2_pretaxprofit_value), 50), -ts_rank(vec_avg(pretaxprofit_estimates_down_4w), 22))",
+  "add(ts_rank(vec_avg(net_debt_4week_down_revisions), 42), -ts_rank(vec_avg(net_debt_4week_up_revisions), 42))",
+  "add(ts_rank(vec_avg(ffops_num_estimates_up_4w), 22), -ts_rank(vec_avg(ffops_num_estimates_down_4w), 22))",
+  "add(ts_rank(vec_avg(anl44_2_ebitda_value), 50), -ts_rank(vec_avg(anl44_2_ebitda_prevalue), 50))"
+]

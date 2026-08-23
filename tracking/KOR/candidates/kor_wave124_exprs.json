@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(vec_sum(boundary_transaction_usd_value), 20))",
+  "rank(add(vec_sum(boundary_transaction_usd_value), vec_sum(large_trade_count_50bps)))",
+  "rank(ts_delta(vec_sum(security_transaction_usd_value), 20))",
+  "group_neutralize(rank(vec_count(top_weighted_transaction_number)), sector)",
+  "rank(add(vec_sum(stable_boundary_trade_count_21d), vec_avg(transaction_value_distribution_score)))",
+  "rank(vec_avg(herfindahl_index_transactions))",
+  "rank(add(vec_sum(large_trade_count_50bps), rank(top_weighted_account_number)))",
+  "group_neutralize(rank(ts_mean(vec_sum(boundary_transaction_total), 20)), sector)"
+]

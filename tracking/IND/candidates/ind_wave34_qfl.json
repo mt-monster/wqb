@@ -1,0 +1,8 @@
+[
+  "rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63))",
+  "-rank(ts_rank(vec_avg(qfl_cassie_qes_alter_insolvency_stress_1y),250))",
+  "rank(vec_avg(qfl_cassie_model_altman_zscore))",
+  "-rank(vec_avg(qfl_cassie_convention_debt_mktcapital))",
+  "rank(ts_zscore(vec_avg(qfl_cassie_convention_ocf_currliab),252))",
+  "rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_score),126))"
+]

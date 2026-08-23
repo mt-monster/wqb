@@ -1,0 +1,69 @@
+{
+  "wave": "wave103",
+  "dataset": "pattern_scores",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "mode": "首探探针批 (图表形态模式评分, 504 字段全 MATRIX, 503 零竞争)",
+  "updated": "2026-08-22",
+  "rationale": "pattern_scores = 图表形态模式评分 (triangle/wedge/gap/V形/breakaway 等形态的 dynamic/mean/max/median simscore + lookback60/120 窗口). 同族 continuation_score wave102 教训: recent/dynamic 时变方向最优(0.34), 差分/动量全负. 本批 8 条侧重: dynamic 时变水平值 (K1/K3), mean 水平值 (K2), 空头形态水平 (K4), V形反转/延续 (K5/K6), 对称三角多头 (K7), 时变标准化 (K8 参考 wave102 J6 2y 0.61 线索). 预期与形态族天花板一致 (~0.3-0.6), 若全灭则形态族三连判死.",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "SECTOR",
+    "truncation": 0.04,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "K1",
+      "variant": "上升三角 dynamic simscore 120d (uc0 时变)",
+      "expression": "rank(asc_triangle_dynamic_simscore_lookback120)"
+    },
+    {
+      "id": "K2",
+      "variant": "上升三角 mean simscore 60d (uc0 水平)",
+      "expression": "rank(asc_triangle_mean_simscore_lookback60)"
+    },
+    {
+      "id": "K3",
+      "variant": "向上 breakaway gap dynamic 60d (uc0 时变)",
+      "expression": "rank(breakaway_gap_up_dynamic_simscore_lookback60)"
+    },
+    {
+      "id": "K4",
+      "variant": "下降楔形 avg 120d (空头形态水平)",
+      "expression": "rank(avg_similarity_falling_wedge_pattern_120)"
+    },
+    {
+      "id": "K5",
+      "variant": "V 反转底 avg (反转方向)",
+      "expression": "rank(avg_similarity_v_reversal_bottom)"
+    },
+    {
+      "id": "K6",
+      "variant": "V 延续顶 avg (延续方向)",
+      "expression": "rank(avg_similarity_v_continuation_top)"
+    },
+    {
+      "id": "K7",
+      "variant": "对称三角向上 avg (多头水平)",
+      "expression": "rank(avg_similarity_upward_symmetrical_triangle)"
+    },
+    {
+      "id": "K8",
+      "variant": "上升三角 dynamic 60d zscore (时变标准化, wave102 J6 线索)",
+      "expression": "rank(ts_zscore(asc_triangle_dynamic_simscore_lookback120, 60))"
+    }
+  ]
+}

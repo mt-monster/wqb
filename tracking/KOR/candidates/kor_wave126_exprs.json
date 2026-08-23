@@ -1,0 +1,10 @@
+[
+  "rank(liquidity_money_flow_alignment_2)",
+  "rank(volume_anomaly_price_positioning_2)",
+  "rank(money_flow_strength_typical_price_2)",
+  "rank(ts_delta(liquidity_weighted_returns_ma, 5))",
+  "rank(add(volume_anomaly_price_positioning, liquidity_money_flow_alignment_2))",
+  "group_neutralize(rank(volume_anomaly_price_positioning_2), sector)",
+  "rank(ts_decay_linear(money_flow_strength_typical_price_2, 10))",
+  "group_neutralize(rank(add(multiply(2, rank(liquidity_money_flow_alignment_2)), rank(volume_anomaly_price_positioning))), sector)"
+]

@@ -1,0 +1,4490 @@
+{
+ "dataset": "continuation_score",
+ "region": "KOR",
+ "data_type": "MATRIX",
+ "low_stock_coverage": false,
+ "estimated_stock_count": 600,
+ "banned_patterns": [],
+ "fields": [
+  {
+   "id": "ascending_channel_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Standard deviation of similarity scores for ascending channel pattern."
+  },
+  {
+   "id": "ascending_channel_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest similarity score to the ascending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_channel_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median similarity score for ascending channel pattern."
+  },
+  {
+   "id": "ascending_channel_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "95th percentile similarity score for ascending channel pattern."
+  },
+  {
+   "id": "ascending_channel_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Similarity score for ascending channel pattern focusing on recent data."
+  },
+  {
+   "id": "ascending_channel_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the ascending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_scallop_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_scallop_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "ascending_scallop_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_scallop_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "ascending_scallop_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "ascending_scallop_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "ascending_scallop_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_scallop_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "ascending_staircase_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 0.9804,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the ascending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_staircase_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for ascending staircase pattern."
+  },
+  {
+   "id": "ascending_staircase_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of similarity scores for ascending staircase pattern."
+  },
+  {
+   "id": "ascending_staircase_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum similarity score for ascending staircase pattern."
+  },
+  {
+   "id": "ascending_staircase_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the ascending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_staircase_similarity_median_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the ascending staircase pattern over a 60-day horizon."
+  },
+  {
+   "id": "ascending_staircase_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median similarity score for ascending staircase pattern."
+  },
+  {
+   "id": "ascending_staircase_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the ascending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "ascending_staircase_similarity_minimum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the ascending staircase pattern over a 60-day horizon."
+  },
+  {
+   "id": "ascending_staircase_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "95th percentile similarity score for ascending staircase pattern."
+  },
+  {
+   "id": "avg_similarity_ascending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score to the ascending channel pattern."
+  },
+  {
+   "id": "avg_similarity_ascending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score to the ascending staircase pattern."
+  },
+  {
+   "id": "avg_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "avg_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "avg_similarity_bearish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish rectangle pattern."
+  },
+  {
+   "id": "avg_similarity_bullish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bullish flag pattern."
+  },
+  {
+   "id": "avg_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bullish rectangle pattern."
+  },
+  {
+   "id": "avg_similarity_continuation_gap_down",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the continuation gap down pattern."
+  },
+  {
+   "id": "avg_similarity_continuation_gap_up",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the continuation gap up pattern."
+  },
+  {
+   "id": "avg_similarity_descending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score to the descending channel pattern."
+  },
+  {
+   "id": "avg_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average similarity score to the inverse cup and handle pattern."
+  },
+  {
+   "id": "avg_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "avg_similarity_inverted_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "avg_similarity_inverted_ascending_scallop_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "bear_cup_handle_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the inverse cup and handle pattern."
+  },
+  {
+   "id": "bear_cup_handle_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent inverse cup and handle pattern."
+  },
+  {
+   "id": "bear_flag_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the bearish flag pattern."
+  },
+  {
+   "id": "bear_flag_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent bearish flag pattern."
+  },
+  {
+   "id": "bear_pennant_95th_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the bearish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bear_pennant_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the bearish pennant pattern."
+  },
+  {
+   "id": "bear_pennant_recent_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent bearish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bear_rectangle_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the bearish rectangle pattern."
+  },
+  {
+   "id": "bear_rectangle_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the bearish rectangle pattern."
+  },
+  {
+   "id": "bear_rectangle_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the bearish rectangle pattern."
+  },
+  {
+   "id": "bear_rectangle_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Standard deviation of similarity scores for the bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_flag_pattern_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_flag_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_flag_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_flag_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_flag_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_flag_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for bearish flag pattern."
+  },
+  {
+   "id": "bearish_flag_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bearish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_95th_percentile_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bearish pennant pattern over a 60-day horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score to the bearish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the bearish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_maximum_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the bearish pennant pattern over a 60-day horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Median similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the bearish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_pennant_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for bearish pennant pattern."
+  },
+  {
+   "id": "bearish_pennant_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for bearish pennant pattern emphasizing recent bars."
+  },
+  {
+   "id": "bearish_pennant_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bearish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_rectangle_pattern_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_rectangle_similarity_average_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the bearish rectangle pattern over a 60-day horizon."
+  },
+  {
+   "id": "bearish_rectangle_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Standard deviation of similarity scores for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bearish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_rectangle_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the bearish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bearish_rectangle_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for bearish rectangle pattern."
+  },
+  {
+   "id": "bearish_rectangle_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for bearish rectangle pattern focusing on recent bars."
+  },
+  {
+   "id": "bearish_rectangle_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bearish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bull_flag_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_flag_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the bullish flag pattern."
+  },
+  {
+   "id": "bull_flag_mid_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_flag_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the bullish flag pattern."
+  },
+  {
+   "id": "bull_flag_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_flag_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the bullish flag pattern."
+  },
+  {
+   "id": "bull_flag_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_flag_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent bullish flag pattern."
+  },
+  {
+   "id": "bull_flag_recent_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_flag_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the bullish flag pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_pennant_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the bullish pennant pattern."
+  },
+  {
+   "id": "bull_pennant_95th_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the bullish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_pennant_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the bullish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_pennant_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the bullish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_pennant_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the bullish pennant pattern (40-day horizon)."
+  },
+  {
+   "id": "bull_rectangle_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the bullish rectangle pattern."
+  },
+  {
+   "id": "bull_rectangle_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_flag_pattern_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_pattern_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_pattern_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_pattern_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_pattern_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bullish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_flag_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the bullish flag pattern over a 60-day horizon."
+  },
+  {
+   "id": "bullish_flag_similarity_median_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish flag pattern over a 60-day horizon."
+  },
+  {
+   "id": "bullish_flag_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for bullish flag pattern."
+  },
+  {
+   "id": "bullish_flag_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bullish flag pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average similarity score for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_average_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for bullish pennant pattern."
+  },
+  {
+   "id": "bullish_pennant_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest similarity score to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_pennant_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for bullish pennant pattern emphasizing recent bars."
+  },
+  {
+   "id": "bullish_pennant_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bullish pennant pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_rectangle_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_dynamic_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the bullish rectangle pattern over a 60-day horizon."
+  },
+  {
+   "id": "bullish_rectangle_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_maximum_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the bullish rectangle pattern over a 60-day horizon."
+  },
+  {
+   "id": "bullish_rectangle_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_rectangle_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the bullish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "bullish_rectangle_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for bullish rectangle pattern."
+  },
+  {
+   "id": "bullish_rectangle_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for bullish rectangle pattern focusing on recent bars."
+  },
+  {
+   "id": "bullish_rectangle_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bullish rectangle pattern over a 40-week horizon."
+  },
+  {
+   "id": "cup_and_handle_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "cup_and_handle_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "cup_and_handle_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the cup and handle pattern over a 60-day horizon."
+  },
+  {
+   "id": "cup_and_handle_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "cup_and_handle_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "cup_handle_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the cup and handle pattern (40-day horizon)."
+  },
+  {
+   "id": "cup_handle_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_pattern_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for cup-and-handle pattern."
+  },
+  {
+   "id": "cup_handle_pattern_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for cup-and-handle pattern."
+  },
+  {
+   "id": "cup_handle_pattern_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for cup-and-handle pattern."
+  },
+  {
+   "id": "cup_handle_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum similarity score for the cup and handle pattern (40-day horizon)."
+  },
+  {
+   "id": "cup_handle_recent_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Similarity score for the most recent cup and handle pattern (40-day horizon)."
+  },
+  {
+   "id": "cup_handle_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the cup and handle pattern (40-day horizon)."
+  },
+  {
+   "id": "cup_handle_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for cup and handle pattern."
+  },
+  {
+   "id": "cup_handle_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for cup and handle pattern emphasizing recent bars."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for dead cat bounce pattern."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for dead cat bounce pattern emphasizing recent data."
+  },
+  {
+   "id": "dead_cat_bounce_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_channel_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for descending channel pattern."
+  },
+  {
+   "id": "descending_channel_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for descending channel pattern."
+  },
+  {
+   "id": "descending_channel_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the descending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_channel_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest similarity score to the descending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_channel_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the descending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_channel_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for descending channel pattern."
+  },
+  {
+   "id": "descending_channel_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the descending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_channel_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for descending channel pattern."
+  },
+  {
+   "id": "descending_channel_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for descending channel pattern focusing on recent bars."
+  },
+  {
+   "id": "descending_channel_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the descending channel pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_95th_percentile_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the descending scallop pattern over a 60-day horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_dynamic_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the descending scallop pattern over a 60-day horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the descending scallop pattern over a 60-day horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for descending scallop pattern."
+  },
+  {
+   "id": "descending_scallop_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_scallop_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for descending scallop pattern."
+  },
+  {
+   "id": "descending_staircase_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the descending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_95th_percentile_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the descending staircase pattern over a 60-day horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average similarity score for descending staircase pattern."
+  },
+  {
+   "id": "descending_staircase_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the descending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum similarity score for descending staircase pattern."
+  },
+  {
+   "id": "descending_staircase_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the descending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the descending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for descending staircase pattern."
+  },
+  {
+   "id": "descending_staircase_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for descending staircase pattern."
+  },
+  {
+   "id": "descending_staircase_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the descending staircase pattern over a 40-week horizon."
+  },
+  {
+   "id": "descending_staircase_similarity_minimum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the descending staircase pattern over a 60-day horizon."
+  },
+  {
+   "id": "downward_channel_95th_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the descending channel pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_channel_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the descending channel pattern."
+  },
+  {
+   "id": "downward_channel_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the descending channel pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_channel_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the descending channel pattern."
+  },
+  {
+   "id": "downward_channel_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the descending channel pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_channel_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for downward channel patterns."
+  },
+  {
+   "id": "downward_channel_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for downward channel pattern."
+  },
+  {
+   "id": "downward_channel_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the descending channel pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_gap_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the downward gap pattern."
+  },
+  {
+   "id": "downward_gap_mid_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the downward gap pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_gap_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the downward gap pattern."
+  },
+  {
+   "id": "downward_gap_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the downward gap pattern."
+  },
+  {
+   "id": "downward_gap_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the downward gap pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_gap_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent downward gap pattern."
+  },
+  {
+   "id": "downward_gap_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the downward gap pattern."
+  },
+  {
+   "id": "downward_gap_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the downward gap pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_scallop_95th_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the downward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_scallop_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the downward scallop pattern."
+  },
+  {
+   "id": "downward_scallop_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the downward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_scallop_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the downward scallop pattern."
+  },
+  {
+   "id": "downward_scallop_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the downward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_scallop_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the downward scallop pattern."
+  },
+  {
+   "id": "downward_scallop_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent downward scallop pattern."
+  },
+  {
+   "id": "downward_scallop_recent_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent downward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_scallop_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for descending scallop pattern."
+  },
+  {
+   "id": "downward_scallop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the downward scallop pattern."
+  },
+  {
+   "id": "downward_scallop_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for descending scallop pattern."
+  },
+  {
+   "id": "downward_scallop_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for descending scallop pattern."
+  },
+  {
+   "id": "downward_staircase_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the downward staircase pattern."
+  },
+  {
+   "id": "downward_staircase_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the downward staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_staircase_mid_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the downward staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_staircase_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the downward staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_staircase_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent downward staircase pattern."
+  },
+  {
+   "id": "downward_staircase_recent_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent downward staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "downward_staircase_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the downward staircase pattern."
+  },
+  {
+   "id": "downward_staircase_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for descending staircase pattern."
+  },
+  {
+   "id": "downward_staircase_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for descending staircase pattern."
+  },
+  {
+   "id": "drop_after_rise_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "drop_after_rise_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "drop_after_rise_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent inverse dead cat bounce pattern."
+  },
+  {
+   "id": "drop_after_rise_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "dynamic_ascending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to ascending channel pattern."
+  },
+  {
+   "id": "dynamic_ascending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to ascending staircase pattern."
+  },
+  {
+   "id": "dynamic_bear_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to bearish flag pattern."
+  },
+  {
+   "id": "dynamic_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to bearish rectangle pattern."
+  },
+  {
+   "id": "dynamic_bull_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to bullish flag pattern."
+  },
+  {
+   "id": "dynamic_bull_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to bullish pennant pattern."
+  },
+  {
+   "id": "dynamic_cup_handle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to cup-and-handle pattern."
+  },
+  {
+   "id": "dynamic_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to dead cat bounce pattern."
+  },
+  {
+   "id": "dynamic_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to descending channel pattern."
+  },
+  {
+   "id": "dynamic_descending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to descending staircase pattern."
+  },
+  {
+   "id": "dynamic_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to downward gap continuation pattern."
+  },
+  {
+   "id": "dynamic_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to inverse cup-and-handle pattern."
+  },
+  {
+   "id": "dynamic_inverse_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to inverse dead cat bounce pattern."
+  },
+  {
+   "id": "dynamic_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to inverted ascending scallop pattern."
+  },
+  {
+   "id": "dynamic_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent-bar weighted similarity score to upward gap continuation pattern."
+  },
+  {
+   "id": "flipped_downward_scallop_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the inverted downward scallop pattern."
+  },
+  {
+   "id": "flipped_downward_scallop_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the inverted downward scallop pattern."
+  },
+  {
+   "id": "flipped_downward_scallop_mid_similarity_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the inverted downward scallop pattern."
+  },
+  {
+   "id": "flipped_upward_scallop_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the inverted upward scallop pattern."
+  },
+  {
+   "id": "flipped_upward_scallop_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the inverted upward scallop pattern."
+  },
+  {
+   "id": "flipped_upward_scallop_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent inverted upward scallop pattern."
+  },
+  {
+   "id": "flipped_upward_scallop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the inverted upward scallop pattern."
+  },
+  {
+   "id": "gap_down_continuation_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score for downward gap continuation pattern."
+  },
+  {
+   "id": "gap_down_continuation_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average similarity score to the downward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_down_continuation_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the downward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_down_continuation_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the downward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_down_continuation_similarity_maximum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the downward gap continuation pattern over a 60-day horizon."
+  },
+  {
+   "id": "gap_down_continuation_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the downward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_down_continuation_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for downward gap continuation pattern."
+  },
+  {
+   "id": "gap_down_continuation_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for downward gap continuation pattern."
+  },
+  {
+   "id": "gap_down_continuation_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for downward gap continuation pattern focusing on recent bars."
+  },
+  {
+   "id": "gap_up_continuation_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_up_continuation_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average similarity score for upward gap continuation pattern."
+  },
+  {
+   "id": "gap_up_continuation_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_up_continuation_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for upward gap continuation pattern."
+  },
+  {
+   "id": "gap_up_continuation_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_up_continuation_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for upward gap continuation pattern."
+  },
+  {
+   "id": "gap_up_continuation_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_up_continuation_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "gap_up_continuation_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for upward gap continuation pattern."
+  },
+  {
+   "id": "gap_up_continuation_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for upward gap continuation pattern."
+  },
+  {
+   "id": "gap_up_continuation_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for upward gap continuation pattern focusing on recent bars."
+  },
+  {
+   "id": "gap_up_continuation_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the upward gap continuation pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverse_cup_and_handle_similarity_average_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the inverse cup and handle pattern over a 60-day horizon."
+  },
+  {
+   "id": "inverse_cup_and_handle_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverse cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverse_cup_and_handle_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the inverse cup and handle pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_cup_handle_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for inverse cup and handle pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the inverse dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_minimum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the inverse dead cat bounce pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_minimum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the inverse dead cat bounce pattern over a 60-day horizon."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "inverse_dead_cat_bounce_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for inverse dead cat bounce pattern focusing on recent bars."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverted ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the inverted ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_middle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_ascending_scallop_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the inverted ascending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_95th_percentile_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_95th_percentile_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverted descending scallop pattern over a 60-day horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_average_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_dynamic_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Recent similarity score to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_maximum_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest similarity score to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_median_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_minimum_h60",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest similarity score to the inverted descending scallop pattern over a 60-day horizon."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_percentile_95",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_recent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for inverted descending scallop pattern focusing on recent bars."
+  },
+  {
+   "id": "inverted_descending_scallop_similarity_stdev_h40w",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the inverted descending scallop pattern over a 40-week horizon."
+  },
+  {
+   "id": "inverted_downward_scallop_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverted descending scallop pattern."
+  },
+  {
+   "id": "inverted_upward_scallop_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_upward_scallop_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_upward_scallop_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "inverted_upward_scallop_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for inverted ascending scallop pattern."
+  },
+  {
+   "id": "max_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "max_ascending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to ascending staircase pattern over 60 days."
+  },
+  {
+   "id": "max_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to bearish rectangle pattern over 60 days."
+  },
+  {
+   "id": "max_bull_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to bullish pennant pattern over the 60-day horizon."
+  },
+  {
+   "id": "max_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "max_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to descending channel pattern over 60 days."
+  },
+  {
+   "id": "max_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to inverse cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "max_inverse_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to inverse dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "max_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to inverted ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "max_inverted_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to inverted descending scallop pattern over 60 days."
+  },
+  {
+   "id": "max_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to upward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "mean_ascending_channel_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to ascending channel pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_ascending_scallop_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to ascending scallop pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_ascending_staircase_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to ascending staircase pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_bear_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to bearish flag pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_bear_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to bearish pennant pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_bull_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to bullish pennant pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_bull_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to bullish rectangle pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_cup_handle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to cup-and-handle pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_dead_cat_bounce_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to dead cat bounce pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_descending_channel_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to descending channel pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_descending_scallop_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to descending scallop pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_descending_staircase_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to descending staircase pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to downward gap continuation pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_inverse_dead_cat_bounce_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to inverse dead cat bounce pattern over the 60-day horizon."
+  },
+  {
+   "id": "mean_inverted_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score to inverted descending scallop pattern over the 60-day horizon."
+  },
+  {
+   "id": "median_ascending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to ascending channel pattern over 60 days."
+  },
+  {
+   "id": "median_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "median_bear_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to bearish flag pattern over the 60-day horizon."
+  },
+  {
+   "id": "median_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to bearish rectangle pattern over 60 days."
+  },
+  {
+   "id": "median_bull_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to bullish rectangle pattern over 60 days."
+  },
+  {
+   "id": "median_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "median_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to descending channel pattern over 60 days."
+  },
+  {
+   "id": "median_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to descending scallop pattern over 60 days."
+  },
+  {
+   "id": "median_descending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to descending staircase pattern over 60 days."
+  },
+  {
+   "id": "median_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to downward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "median_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to inverse cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "median_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to inverted ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "median_inverted_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to inverted descending scallop pattern over 60 days."
+  },
+  {
+   "id": "median_similarity_ascending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the ascending channel pattern."
+  },
+  {
+   "id": "median_similarity_ascending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the ascending staircase pattern."
+  },
+  {
+   "id": "median_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "median_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "median_similarity_bearish_pennant_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "median_similarity_bullish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish pennant pattern."
+  },
+  {
+   "id": "median_similarity_bullish_pennant_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish pennant pattern."
+  },
+  {
+   "id": "median_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the bullish rectangle pattern."
+  },
+  {
+   "id": "median_similarity_continuation_gap_up",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the continuation gap up pattern."
+  },
+  {
+   "id": "median_similarity_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median similarity score to the cup and handle pattern."
+  },
+  {
+   "id": "median_similarity_cup_handle_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the cup and handle pattern."
+  },
+  {
+   "id": "median_similarity_dead_cat_bounce",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the dead cat bounce pattern."
+  },
+  {
+   "id": "median_similarity_descending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the descending channel pattern."
+  },
+  {
+   "id": "median_similarity_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the descending scallop pattern."
+  },
+  {
+   "id": "median_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverse cup and handle pattern."
+  },
+  {
+   "id": "median_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "median_similarity_inverse_dead_cat_recovery_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "median_similarity_inverted_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "median_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score to upward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "min_ascending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to ascending channel pattern over 60 days."
+  },
+  {
+   "id": "min_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "min_bear_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to bearish pennant pattern over 60 days."
+  },
+  {
+   "id": "min_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to bearish rectangle pattern over 60 days."
+  },
+  {
+   "id": "min_bull_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to bullish flag pattern over 60 days."
+  },
+  {
+   "id": "min_bull_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to bullish pennant pattern over 60 days."
+  },
+  {
+   "id": "min_bull_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to bullish rectangle pattern over 60 days."
+  },
+  {
+   "id": "min_cup_handle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "min_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "min_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to descending channel pattern over 60 days."
+  },
+  {
+   "id": "min_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to descending scallop pattern over 60 days."
+  },
+  {
+   "id": "min_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to downward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "min_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to inverse cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "min_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to inverted ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "min_similarity_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the ascending scallop pattern."
+  },
+  {
+   "id": "min_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "min_similarity_bearish_flag_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "min_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "min_similarity_bearish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the bearish rectangle pattern."
+  },
+  {
+   "id": "min_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the bullish rectangle pattern."
+  },
+  {
+   "id": "min_similarity_continuation_gap_up",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the continuation gap up pattern."
+  },
+  {
+   "id": "min_similarity_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the cup and handle pattern."
+  },
+  {
+   "id": "min_similarity_descending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the descending staircase pattern."
+  },
+  {
+   "id": "min_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Minimum similarity score to the inverse cup and handle pattern."
+  },
+  {
+   "id": "min_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "min_similarity_inverted_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to the inverted descending scallop pattern."
+  },
+  {
+   "id": "min_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score to upward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "peak_similarity_ascending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the ascending channel pattern."
+  },
+  {
+   "id": "peak_similarity_ascending_channel_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the ascending channel pattern."
+  },
+  {
+   "id": "peak_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "peak_similarity_bearish_flag_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "peak_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "peak_similarity_bearish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the bearish rectangle pattern."
+  },
+  {
+   "id": "peak_similarity_bullish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the bullish pennant pattern."
+  },
+  {
+   "id": "peak_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum similarity score to the bullish rectangle pattern."
+  },
+  {
+   "id": "peak_similarity_dead_cat_bounce",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the dead cat bounce pattern."
+  },
+  {
+   "id": "peak_similarity_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the descending scallop pattern."
+  },
+  {
+   "id": "peak_similarity_descending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the descending staircase pattern."
+  },
+  {
+   "id": "peak_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the inverse cup and handle pattern."
+  },
+  {
+   "id": "peak_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "peak_similarity_inverted_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "peak_similarity_inverted_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score to the inverted descending scallop pattern."
+  },
+  {
+   "id": "quantile95_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "quantile95_ascending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to ascending staircase pattern over 60 days."
+  },
+  {
+   "id": "quantile95_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to bearish rectangle pattern over 60 days."
+  },
+  {
+   "id": "quantile95_bull_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to bullish flag pattern over 60 days."
+  },
+  {
+   "id": "quantile95_bull_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to bullish rectangle pattern over 60 days."
+  },
+  {
+   "id": "quantile95_cup_handle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "quantile95_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "quantile95_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to descending channel pattern over 60 days."
+  },
+  {
+   "id": "quantile95_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to downward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "quantile95_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to inverse cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "quantile95_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "95th percentile similarity score to inverted ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "quantile95_similarity_ascending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the ascending channel pattern."
+  },
+  {
+   "id": "quantile95_similarity_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the ascending scallop pattern."
+  },
+  {
+   "id": "quantile95_similarity_ascending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "95th percentile similarity score to the ascending staircase pattern."
+  },
+  {
+   "id": "quantile95_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "quantile95_similarity_bearish_flag_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "quantile95_similarity_bullish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bullish flag pattern."
+  },
+  {
+   "id": "quantile95_similarity_bullish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the bullish pennant pattern."
+  },
+  {
+   "id": "quantile95_similarity_continuation_gap_down",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the continuation gap down pattern."
+  },
+  {
+   "id": "quantile95_similarity_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the cup and handle pattern."
+  },
+  {
+   "id": "quantile95_similarity_dead_cat_bounce",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the dead cat bounce pattern."
+  },
+  {
+   "id": "quantile95_similarity_descending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the descending staircase pattern."
+  },
+  {
+   "id": "quantile95_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "quantile95_similarity_inverted_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "quantile95_similarity_inverted_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to the inverted descending scallop pattern."
+  },
+  {
+   "id": "quantile95_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score to upward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "rebound_after_drop_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the dead cat bounce pattern (40-day horizon)."
+  },
+  {
+   "id": "rebound_after_drop_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the dead cat bounce pattern."
+  },
+  {
+   "id": "rebound_after_drop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the dead cat bounce pattern."
+  },
+  {
+   "id": "recent_similarity_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Most recent similarity score to the ascending scallop pattern."
+  },
+  {
+   "id": "recent_similarity_ascending_scallop_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the ascending scallop pattern."
+  },
+  {
+   "id": "recent_similarity_ascending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the ascending staircase pattern."
+  },
+  {
+   "id": "recent_similarity_bearish_flag_pattern",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the bearish flag pattern."
+  },
+  {
+   "id": "recent_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the bearish pennant pattern."
+  },
+  {
+   "id": "recent_similarity_bearish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the bearish rectangle pattern."
+  },
+  {
+   "id": "recent_similarity_bullish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Most recent similarity score to the bullish pennant pattern."
+  },
+  {
+   "id": "recent_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the bullish rectangle pattern."
+  },
+  {
+   "id": "recent_similarity_dead_cat_bounce",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the dead cat bounce pattern."
+  },
+  {
+   "id": "recent_similarity_descending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the descending channel pattern."
+  },
+  {
+   "id": "recent_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Most recent similarity score to the inverse cup and handle pattern."
+  },
+  {
+   "id": "recent_similarity_inverted_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the inverted ascending scallop pattern."
+  },
+  {
+   "id": "recent_similarity_inverted_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the inverted descending scallop pattern."
+  },
+  {
+   "id": "recent_similarity_inverted_descending_scallop_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent similarity score to the inverted descending scallop pattern."
+  },
+  {
+   "id": "reverse_cup_handle_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for inverse cup-and-handle pattern."
+  },
+  {
+   "id": "reverse_cup_handle_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverse cup-and-handle pattern."
+  },
+  {
+   "id": "reverse_cup_handle_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for inverse cup-and-handle pattern."
+  },
+  {
+   "id": "reverse_cup_handle_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for inverse cup-and-handle pattern."
+  },
+  {
+   "id": "reverse_cup_handle_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverse cup-and-handle pattern."
+  },
+  {
+   "id": "reverse_dead_cat_bounce_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "reverse_dead_cat_bounce_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "reverse_dead_cat_bounce_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "reverse_dead_cat_bounce_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "reverse_dead_cat_bounce_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for inverse dead cat bounce pattern."
+  },
+  {
+   "id": "stddev_ascending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to ascending channel pattern over 60 days."
+  },
+  {
+   "id": "stddev_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "stddev_ascending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to ascending staircase pattern over 60 days."
+  },
+  {
+   "id": "stddev_bear_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to bearish flag pattern over 60 days."
+  },
+  {
+   "id": "stddev_bear_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to bearish pennant pattern over 60 days."
+  },
+  {
+   "id": "stddev_bear_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 10,
+   "description": "Standard deviation of similarity scores to bearish rectangle pattern over 60 days."
+  },
+  {
+   "id": "stddev_bull_flag_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to bullish flag pattern over 60 days."
+  },
+  {
+   "id": "stddev_bull_pennant_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to bullish pennant pattern over 60 days."
+  },
+  {
+   "id": "stddev_bull_rectangle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to bullish rectangle pattern over 60 days."
+  },
+  {
+   "id": "stddev_cup_handle_similarity_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of similarity scores to cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "stddev_dead_cat_bounce_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to dead cat bounce pattern over 60 days."
+  },
+  {
+   "id": "stddev_descending_channel_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to descending channel pattern over 60 days."
+  },
+  {
+   "id": "stddev_descending_staircase_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to descending staircase pattern over 60 days."
+  },
+  {
+   "id": "stddev_downward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of similarity scores to downward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "stddev_inverse_cup_handle_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to inverse cup-and-handle pattern over 60 days."
+  },
+  {
+   "id": "stddev_inverted_ascending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of similarity scores to inverted ascending scallop pattern over 60 days."
+  },
+  {
+   "id": "stddev_inverted_descending_scallop_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to inverted descending scallop pattern over 60 days."
+  },
+  {
+   "id": "stddev_similarity_ascending_channel",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the ascending channel pattern."
+  },
+  {
+   "id": "stddev_similarity_ascending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the ascending scallop pattern."
+  },
+  {
+   "id": "stddev_similarity_bearish_flag",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Standard deviation of similarity scores to the bearish flag pattern."
+  },
+  {
+   "id": "stddev_similarity_bearish_pennant",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bearish pennant pattern."
+  },
+  {
+   "id": "stddev_similarity_bullish_rectangle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the bullish rectangle pattern."
+  },
+  {
+   "id": "stddev_similarity_continuation_gap_up",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the continuation gap up pattern."
+  },
+  {
+   "id": "stddev_similarity_dead_cat_bounce",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the dead cat bounce pattern."
+  },
+  {
+   "id": "stddev_similarity_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the descending scallop pattern."
+  },
+  {
+   "id": "stddev_similarity_descending_scallop_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the descending scallop pattern."
+  },
+  {
+   "id": "stddev_similarity_descending_staircase",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the descending staircase pattern."
+  },
+  {
+   "id": "stddev_similarity_inverse_cup_handle",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of similarity scores to the inverse cup and handle pattern."
+  },
+  {
+   "id": "stddev_similarity_inverse_dead_cat_recovery",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the inverse dead cat bounce pattern."
+  },
+  {
+   "id": "stddev_similarity_inverted_descending_scallop",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to the inverted descending scallop pattern."
+  },
+  {
+   "id": "stddev_upward_gap_continuation_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores to upward gap continuation pattern over 60 days."
+  },
+  {
+   "id": "trend_gap_down_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for downward gap continuation pattern."
+  },
+  {
+   "id": "trend_gap_down_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for downward gap continuation pattern."
+  },
+  {
+   "id": "trend_gap_down_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for downward gap continuation pattern."
+  },
+  {
+   "id": "trend_gap_up_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for upward gap continuation pattern."
+  },
+  {
+   "id": "upward_channel_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the ascending channel pattern."
+  },
+  {
+   "id": "upward_channel_avg_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the ascending channel pattern."
+  },
+  {
+   "id": "upward_channel_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the ascending channel pattern."
+  },
+  {
+   "id": "upward_channel_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the ascending channel pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_channel_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the ascending channel pattern."
+  },
+  {
+   "id": "upward_channel_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent ascending channel pattern."
+  },
+  {
+   "id": "upward_channel_similarity_95th_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile of similarity scores for upward channel pattern."
+  },
+  {
+   "id": "upward_channel_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for upward channel pattern."
+  },
+  {
+   "id": "upward_channel_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for upward channel pattern."
+  },
+  {
+   "id": "upward_channel_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for upward channel pattern."
+  },
+  {
+   "id": "upward_channel_similarity_minimum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for upward channel pattern."
+  },
+  {
+   "id": "upward_gap_95th_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "95th percentile similarity score for the upward gap pattern."
+  },
+  {
+   "id": "upward_gap_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the upward gap pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_gap_mid_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the upward gap pattern."
+  },
+  {
+   "id": "upward_gap_peak_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the upward gap pattern."
+  },
+  {
+   "id": "upward_gap_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent upward gap pattern."
+  },
+  {
+   "id": "upward_scallop_avg_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for the upward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_scallop_mid_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for the upward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_scallop_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the upward scallop pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_scallop_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent upward scallop pattern."
+  },
+  {
+   "id": "upward_scallop_similarity_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the upward scallop pattern."
+  },
+  {
+   "id": "upward_scallop_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "upward_scallop_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "upward_scallop_similarity_median",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median similarity score for ascending scallop pattern."
+  },
+  {
+   "id": "upward_scallop_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for ascending scallop pattern."
+  },
+  {
+   "id": "upward_staircase_min_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the ascending staircase pattern."
+  },
+  {
+   "id": "upward_staircase_min_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum similarity score for the ascending staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_staircase_pattern_similarity_average",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average similarity score for upward staircase pattern."
+  },
+  {
+   "id": "upward_staircase_pattern_similarity_dynamic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dynamic similarity score for upward staircase pattern."
+  },
+  {
+   "id": "upward_staircase_pattern_similarity_maximum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum similarity score for upward staircase pattern."
+  },
+  {
+   "id": "upward_staircase_pattern_similarity_standard_deviation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for upward staircase pattern."
+  },
+  {
+   "id": "upward_staircase_peak_similarity_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum similarity score for the ascending staircase pattern (40-day horizon)."
+  },
+  {
+   "id": "upward_staircase_recent_similarity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Similarity score for the most recent ascending staircase pattern."
+  },
+  {
+   "id": "upward_staircase_similarity_dispersion_h40",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of similarity scores for the ascending staircase pattern (40-day horizon)."
+  }
+ ]
+}

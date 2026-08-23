@@ -1,0 +1,10 @@
+[
+  "rank(mdl313_iai)",
+  "rank(mdl313_ick)",
+  "rank(mdl313_ico)",
+  "group_neutralize(rank(mdl313_iai), sector)",
+  "rank(ts_delta(mdl313_iai, 63))",
+  "rank(add(mdl313_iai, mdl313_ick))",
+  "group_neutralize(rank(add(multiply(2, rank(mdl313_ick)), rank(mdl313_iai))), sector)",
+  "rank(ts_decay_linear(mdl313_iai, 20))"
+]

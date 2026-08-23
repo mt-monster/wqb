@@ -1,0 +1,7 @@
+[
+  "rank(ts_zscore(vec_count(pv70_news_score),126))",
+  "rank(ts_zscore(vec_count(pv70_news_score),21))",
+  "rank(vec_avg(pv70_ibeseps1_score_float))",
+  "rank(vec_avg(pv70_bbgnews_score_float))",
+  "rank(vec_avg(pv70_ibesptg1_score_float))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(add(rank(global_value_momentum_percentile_float), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))",
+  "rank(add(rank(global_value_momentum_percentile_float), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred))))",
+  "rank(add(multiply(2, rank(industry_value_momentum_percentile_float)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(long_term_momentum_percentile)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, ts_rank(global_value_momentum_percentile_float, 21)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, ts_decay_linear(rank(global_value_momentum_percentile_float), 6)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_horizon_hedge3_quantile1_5d_pred))), subindustry)",
+  "multiply(rank(global_value_momentum_percentile_float), rank(short_horizon_hedge3_quantile1_5d_pred))"
+]

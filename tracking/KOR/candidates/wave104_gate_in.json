@@ -1,0 +1,12 @@
+{
+ "expressions": [
+  "rank(add(multiply(2, rank(group_zscore(change_net_number_fy1_eps_revisions, sector))), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(change_six_month_eps_revision)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(change_street_revision_magnitude)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(change_street_revision_confidence)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_20d_pred)))",
+  "rank(add(multiply(2, rank(change_6m_rating_revision)), add(rank(short_horizon_hedge3_quantile5_5d_pred), rank(ts_corr(change_6m_rating_revision, short_horizon_hedge3_quantile5_5d_pred, 20)))))",
+  "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_term_seasonal_quantile1_5d_pred)))",
+  "rank(add(multiply(2, rank(change_6m_rating_revision)), if_else(rank(short_horizon_hedge3_quantile1_5d_pred) > 0.5, rank(short_horizon_hedge3_quantile1_5d_pred), 0)))"
+ ]
+}

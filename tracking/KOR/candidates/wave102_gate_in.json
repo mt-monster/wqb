@@ -1,0 +1,12 @@
+{
+ "expressions": [
+  "rank(avg_similarity_bullish_flag)",
+  "rank(bull_flag_recent_similarity)",
+  "rank(dynamic_upward_gap_continuation_score)",
+  "rank(subtract(avg_similarity_bullish_flag, avg_similarity_bearish_flag))",
+  "rank(ts_delta(avg_similarity_bullish_flag, 5))",
+  "rank(ts_zscore(avg_similarity_continuation_gap_up, 60))",
+  "rank(cup_handle_recent_similarity_h40)",
+  "rank(ts_delta(bullish_pennant_similarity_recent, 10))"
+ ]
+}

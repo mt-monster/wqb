@@ -1,0 +1,822 @@
+{
+ "dataset": "model192",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 101
+ },
+ "field_count": 101,
+ "fetched_at": "2026-08-23T12:32:15",
+ "fields": [
+  {
+   "id": "mdl192_altmanz_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 50,
+   "alphaCount": 95,
+   "description": "Altman Z-score, a measure of company credit risk or bankruptcy risk"
+  },
+  {
+   "id": "mdl192_benchmark_fee_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 30,
+   "alphaCount": 82,
+   "description": "Imputed or backfilled value of Benchmark_fee used when the raw benchmark fee is missing to enhance continuity"
+  },
+  {
+   "id": "mdl192_booklev_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 42,
+   "alphaCount": 143,
+   "description": "Book leverage ratio (likely debt to equity or related measure using book values)"
+  },
+  {
+   "id": "mdl192_cashburnrate_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 24,
+   "alphaCount": 94,
+   "description": "Imputed/backfilled version of CashBurnRate to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_cashc_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 25,
+   "alphaCount": 65,
+   "description": "Imputed/backfilled version of CashC to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_cashratio_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 34,
+   "alphaCount": 85,
+   "description": "Imputed or backfilled ratio of cash & equivalents to current liabilities; measure of short-term liquidity"
+  },
+  {
+   "id": "mdl192_cds_1mvol_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 28,
+   "alphaCount": 57,
+   "description": "1-month CDS Spread Change Volatility (Tenor=5Y)"
+  },
+  {
+   "id": "mdl192_cds_1ybeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 39,
+   "description": "Imputed or backfilled value of CDS_1YBeta used when the raw beta is missing to enhance continuity"
+  },
+  {
+   "id": "mdl192_cds_beta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 55,
+   "description": "5-year (60 month) beta of CDS spread changes (measure of CDS spread sensitivity to market)"
+  },
+  {
+   "id": "mdl192_cds_canbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 41,
+   "description": "Sovereign Sensitivity - Canada"
+  },
+  {
+   "id": "mdl192_cds_eurusd_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 53,
+   "description": "Sensitivity of CDS spread to EUR/USD exchange rate movements"
+  },
+  {
+   "id": "mdl192_cds_frabeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 34,
+   "description": "Sensitivity of an entity's CDS spread changes to France sovereign CDS, representing how much the entity's CDS responds t"
+  },
+  {
+   "id": "mdl192_cds_gerbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Sensitivity of an entity's CDS spread changes to German sovereign CDS, representing correlation to changes in Germany's "
+  },
+  {
+   "id": "mdl192_cds_gnd_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 24,
+   "alphaCount": 89,
+   "description": "Imputed or backfilled gross notional CDS volume as reported by DTCC relative to total debt"
+  },
+  {
+   "id": "mdl192_cds_gnvol5wavg_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 17,
+   "description": "Five-week moving average of weekly gross notional CDS transaction volumes from DTCC, measuring recent liquidity/activity"
+  },
+  {
+   "id": "mdl192_cds_gnvol5wchg_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "5-week Change in DTCC Weekly Gross Notional Volumes"
+  },
+  {
+   "id": "mdl192_cds_itabeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Sensitivity of CDS spread changes to Italian sovereign movements"
+  },
+  {
+   "id": "mdl192_cds_japbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Sovereign Sensitivity - Japan"
+  },
+  {
+   "id": "mdl192_cds_op_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 24,
+   "description": "Imputed or backfilled sensitivity of CDS spread to oil price movements"
+  },
+  {
+   "id": "mdl192_cds_pd1y_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 26,
+   "description": "Estimated probability of default over a one-year horizon, typically derived from the entity’s CDS data (Tenor=1Y)"
+  },
+  {
+   "id": "mdl192_cds_pd5y_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Probability of default over a 5-year horizon implied by CDS spread"
+  },
+  {
+   "id": "mdl192_cds_porbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 18,
+   "description": "Imputed/backfilled version of CDS_PorBeta, the ranked sensitivity of daily CDS spread changes to Portugal sovereign CDS "
+  },
+  {
+   "id": "mdl192_cds_ps_rank1m_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "1-month Momentum Divergence"
+  },
+  {
+   "id": "mdl192_cds_ps_rank5d_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Imputed/backfilled version of CDS_PS_Rank5D, the same 5-day momentum divergence measure used when raw data are missing"
+  },
+  {
+   "id": "mdl192_cds_ps_reg3_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Imputed/backfilled version of CDS_PS_Reg3, representing the same model-based value divergence when raw data are missing"
+  },
+  {
+   "id": "mdl192_cds_spabeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Imputed/backfilled version of CDS_SpaBeta, the ranked sensitivity of daily CDS spread changes to Spain sovereign CDS cha"
+  },
+  {
+   "id": "mdl192_cds_tier_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 16,
+   "description": "CDS seniority tier (e.g., senior/subordinated), imputed for missing data"
+  },
+  {
+   "id": "mdl192_cds_ukbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Sensitivity of CDS spread changes to UK sovereign movements"
+  },
+  {
+   "id": "mdl192_cds_usbeta_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Sensitivity of CDS spread changes to US sovereign movements"
+  },
+  {
+   "id": "mdl192_cfleverage_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Imputed/backfilled version of CFLeverage to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_chg12mtotdebt_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Change in total debt over the past 12 months"
+  },
+  {
+   "id": "mdl192_chg3ycfast_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Imputed/backfilled version of Chg3YCFAst to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_chgshare_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Percent change in the number of shares outstanding compared to a specified previous period, typically one year ago"
+  },
+  {
+   "id": "mdl192_curratio_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Current ratio; company liquidity measured as current assets divided by current liabilities"
+  },
+  {
+   "id": "mdl192_days_to_cover_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Number of days of typical volume needed for short sellers to cover positions (imputed)"
+  },
+  {
+   "id": "mdl192_div5yg_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "5-Year Dividend Growth Rate"
+  },
+  {
+   "id": "mdl192_dmd_supply_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 18,
+   "description": "Imputed or backfilled demand supply ratio, i.e., borrowed stock relative to lendable inventory"
+  },
+  {
+   "id": "mdl192_earnshortfall_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Earnings Shortfall"
+  },
+  {
+   "id": "mdl192_ebitdadebt_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "EBITDA-to-debt ratio (imputed/backfill value)"
+  },
+  {
+   "id": "mdl192_ebitdadebtchg_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Year-over-Year Change in EBITDA-to-Debt"
+  },
+  {
+   "id": "mdl192_ebitdaev_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Trailing-twelve-month EBITDA divided by enterprise value (imputed/backfill value)"
+  },
+  {
+   "id": "mdl192_fc_fqsurstd_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Most recent quarterly earnings surprise (difference between actual and estimated EPS), normalized by the standard deviat"
+  },
+  {
+   "id": "mdl192_fc_numrevy1_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Net number of analyst forecast revisions for fiscal year 1"
+  },
+  {
+   "id": "mdl192_gear_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Imputed/backfilled version of GEAR, used when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_2adpmoc_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Relative Value - Comprehensive Debt to Total Assets"
+  },
+  {
+   "id": "mdl192_id_2vd_adpmoc_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Comprehensive debt-to-assets ratio; total company debt as percentage of total assets for deep value analysis"
+  },
+  {
+   "id": "mdl192_id_2vd_voctni_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Deep Value - Interest Coverage"
+  },
+  {
+   "id": "mdl192_id_2voctni_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Relative value metric based on interest coverage ratio (imputed/backfill value)"
+  },
+  {
+   "id": "mdl192_id_ad",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Total Debt to Total Assets ratio (leverage measure)"
+  },
+  {
+   "id": "mdl192_id_adpmoc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Imputed/backfilled version of CompDA to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_aoer",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Retained earnings divided by total assets"
+  },
+  {
+   "id": "mdl192_id_aor",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Return on Assets: net income or similar measure divided by total assets"
+  },
+  {
+   "id": "mdl192_id_dcc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Current Cash Flow Debt Coverage Ratio"
+  },
+  {
+   "id": "mdl192_id_dtsm1_rd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Standard deviation of realized stock returns over the past 1 month (realized volatility)"
+  },
+  {
+   "id": "mdl192_id_dtsm1_rd_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Imputed or backfilled 1-month realized volatility of stock returns, relative value signal"
+  },
+  {
+   "id": "mdl192_id_ed",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Long-term debt divided by equity (Debt-to-Equity, imputed/backfill value)"
+  },
+  {
+   "id": "mdl192_id_fcghc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "1-year change in assets-adjusted trailing twelve month cash flow, imputed"
+  },
+  {
+   "id": "mdl192_id_gtl",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Estimate of long-term growth rate for the company"
+  },
+  {
+   "id": "mdl192_id_htrgm1ng_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "One-month growth rate in DTCC (central clearinghouse) gross notional CDS volumes, reflecting liquidity/trading activity "
+  },
+  {
+   "id": "mdl192_id_htrgy1ng_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Year-on-year growth in DTCC gross notional CDS volumes, imputed"
+  },
+  {
+   "id": "mdl192_id_idb",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Imputed or backfilled value of BDI used when the raw BDI is missing to enhance continuity"
+  },
+  {
+   "id": "mdl192_id_irl_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Imputed/backfilled version of CDS_LRI, representing the same leading risk measure when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_md",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Imputed/backfilled version of DM to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_md_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Imputed/backfilled value of CDS_DM used when raw data are missing to maintain series continuity"
+  },
+  {
+   "id": "mdl192_id_mrspe_cf",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 203,
+   "description": "Magnitude of analyst EPS estimate revisions over a recent period, possibly imputed"
+  },
+  {
+   "id": "mdl192_id_ox_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Imputed/backfilled version of CDS_XO to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_pu",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Unexpected Profitability"
+  },
+  {
+   "id": "mdl192_id_rp",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Imputed/backfilled Profitability Ratio used when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_rq",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Quick Ratio (Acid Test Ratio): measure of a company's short-term liquidity calculated as (Current Assets - Inventories) "
+  },
+  {
+   "id": "mdl192_id_spe1yfvc_cf",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Dispersion of analysts' FY1 EPS estimates (coefficient of variation)"
+  },
+  {
+   "id": "mdl192_id_spefcn",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Imputed/backfilled version of NCFEPS used when raw data are missing"
+  },
+  {
+   "id": "mdl192_id_tni_ths",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Short interest (likely number or percentage of shares shorted for the security)"
+  },
+  {
+   "id": "mdl192_id_tqe_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Equity price sensitivity (how the CDS spread responds to equity price movements)"
+  },
+  {
+   "id": "mdl192_id_voctni",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Interest coverage ratio (likely EBIT or similar over interest expense)"
+  },
+  {
+   "id": "mdl192_id_xiv_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Sensitivity of the entity’s CDS spread to changes in overall market volatility (typically measured by VIX), reflecting h"
+  },
+  {
+   "id": "mdl192_id_y1dpghcd1_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Change in probability of default (implied from 1-year CDS) over a single day, measuring daily credit risk movement for t"
+  },
+  {
+   "id": "mdl192_id_y1dpghcd5_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Imputed or delta value for 5-day change in the probability of default implied by the 1-year CDS spread"
+  },
+  {
+   "id": "mdl192_id_y1dpghcm1_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "1-month change in probability of default for the 1-year tenor"
+  },
+  {
+   "id": "mdl192_id_y5dpghcd1_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "1-day change in probability of default using CDS spread at 5-year tenor"
+  },
+  {
+   "id": "mdl192_id_y5dpghcd5_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 43,
+   "description": "5-day change in probability of default as implied by 5-year CDS, showing short-term movement in perceived credit risk fo"
+  },
+  {
+   "id": "mdl192_id_y5dpghcm1_sdc",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "1-month Change in Probability of Default (Tenor=5Y)"
+  },
+  {
+   "id": "mdl192_indrelcroe_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Industry-adjusted quarterly return on equity"
+  },
+  {
+   "id": "mdl192_indrelrtn4w_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "4-week Industry Relative Return"
+  },
+  {
+   "id": "mdl192_indrelrtn5d_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "5-day relative stock return compared to industry peers, imputed for missing observations"
+  },
+  {
+   "id": "mdl192_netdebt_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Net debt ratio (net debt divided by a relevant base like equity or total assets)"
+  },
+  {
+   "id": "mdl192_nopatmargin_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Net Operating Profit After Tax Margin; margin calculated as NOPAT divided by revenue"
+  },
+  {
+   "id": "mdl192_ocfratio_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Operating cash flow to total debt ratio (ability to cover debt with operating cash flow, imputed/backfill value)"
+  },
+  {
+   "id": "mdl192_ohlsonscore_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "Ohlson Bankruptcy Score; statistical measure of bankruptcy risk based on Ohlson's financial ratios"
+  },
+  {
+   "id": "mdl192_ollev_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Imputed/backfilled Operating Liability Leverage used when raw data are missing"
+  },
+  {
+   "id": "mdl192_opincltd_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Change in trailing twelve months operating income compared to long-term debt"
+  },
+  {
+   "id": "mdl192_oplev_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Operating Leverage, likely percent change in operating income divided by percent change in sales"
+  },
+  {
+   "id": "mdl192_ratrev6m_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Imputed/backfilled version of RatRev6M to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_reinrate_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Imputed/backfilled version of ReInRate to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_rev3my2std_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Relative dispersion (standard deviation) of 3-month revisions in next-fiscal-year-2 EPS forecasts"
+  },
+  {
+   "id": "mdl192_roic_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Return on Invested Capital (profitability relative to invested capital)"
+  },
+  {
+   "id": "mdl192_stockrating_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Consensus stock rating from market participants or analysts"
+  },
+  {
+   "id": "mdl192_ticker_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Ticker"
+  },
+  {
+   "id": "mdl192_totalcov_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Imputed/backfilled version of TotalCov to maintain continuity when raw data are missing"
+  },
+  {
+   "id": "mdl192_visiratio_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Liquidity volume ratio, calculated as trading volume divided by average volume over the last 50 days (imputed/backfill v"
+  },
+  {
+   "id": "mdl192_yoychgcr_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Year-over-year change in current ratio (liquidity metric)"
+  },
+  {
+   "id": "mdl192_yoychgda_di",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 19,
+   "description": "Year-over-year change in total debt to total assets ratio (imputed/backfill value)"
+  }
+ ]
+}

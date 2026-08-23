@@ -1,0 +1,4446 @@
+{
+ "dataset": "model25",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 554
+ },
+ "field_count": 554,
+ "fetched_at": "2026-08-23T00:59:03",
+ "fields": [
+  {
+   "id": "analyst_recommendation_score_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Score reflecting changes in analyst buy, hold, or sell recommendations."
+  },
+  {
+   "id": "analyst_revision_composite_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Composite score summarizing analyst estimate revisions across all components."
+  },
+  {
+   "id": "analyst_revision_model_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Overall score from the analyst revision model for a security."
+  },
+  {
+   "id": "analyst_revision_percentile_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of a security based on analyst revision model output."
+  },
+  {
+   "id": "analyst_revisions_preferred_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Score reflecting analyst estimate revisions and predicted surprises for preferred earnings measures."
+  },
+  {
+   "id": "analyst_revisions_revenue_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Score reflecting analyst estimate revisions and predicted surprises for revenue."
+  },
+  {
+   "id": "analyst_revisions_secondary_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Score reflecting analyst estimate revisions for secondary earnings measures such as EBITDA."
+  },
+  {
+   "id": "buyback_yield_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile ranking for share buyback yield."
+  },
+  {
+   "id": "buyback_yield_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking for share buyback yield as a float."
+  },
+  {
+   "id": "buyback_yield_relative_score_float_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Relative score for share buyback yield as a floating-point value."
+  },
+  {
+   "id": "cagr_base_year_4",
+   "type": "MATRIX",
+   "coverage": 0.8198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Base year used for calculating compound annual growth rates in projections."
+  },
+  {
+   "id": "country_credit_risk_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank of a company's credit risk compared to country peers."
+  },
+  {
+   "id": "credit_risk_default_probability_percent",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated probability of default for a company over the next year, expressed as a percent."
+  },
+  {
+   "id": "discount_rate_valuation_model",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Discount rate used in intrinsic value calculation."
+  },
+  {
+   "id": "discounted_dividends_sum_projection_currency",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sum of discounted future dividends in the currency used for projections."
+  },
+  {
+   "id": "dividend_yield_relative_score_2",
+   "type": "MATRIX",
+   "coverage": 0.7394,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Relative score for dividend yield compared to global peers."
+  },
+  {
+   "id": "dividend_yield_relative_score_backfill",
+   "type": "MATRIX",
+   "coverage": 0.7394,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Relative score for dividend yield compared to global peers (backfill version)."
+  },
+  {
+   "id": "earnings_quality_score_change_1_day",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the earnings quality region rank over one day."
+  },
+  {
+   "id": "earnings_quality_score_current",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 17,
+   "description": "Current region-relative percentile ranking for earnings quality."
+  },
+  {
+   "id": "earnings_quality_score_raw",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Raw region-relative percentile ranking for earnings quality before normalization."
+  },
+  {
+   "id": "ev_ebitda_ratio_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Percentile ranking for enterprise value to EBITDA ratio."
+  },
+  {
+   "id": "ev_ebitda_ratio_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking for enterprise value to EBITDA ratio as a float."
+  },
+  {
+   "id": "ev_sales_ratio_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Percentile ranking for enterprise value to sales ratio."
+  },
+  {
+   "id": "ev_sales_ratio_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking for enterprise value to sales ratio as a float."
+  },
+  {
+   "id": "ev_to_ebitda_relative_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Relative score for enterprise value to EBITDA ratio compared to global peers."
+  },
+  {
+   "id": "ev_to_ebitda_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Relative score for enterprise value to EBITDA ratio as a floating-point value."
+  },
+  {
+   "id": "ev_to_sales_relative_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Relative score for enterprise value to sales ratio compared to global peers."
+  },
+  {
+   "id": "ev_to_sales_relative_score_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Relative score for enterprise value to sales ratio as a floating-point value."
+  },
+  {
+   "id": "exclusions_component_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile score for exclusions-based factors in the earnings quality model."
+  },
+  {
+   "id": "forward_10yr_eps_cagr",
+   "type": "MATRIX",
+   "coverage": 0.8198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of earnings per share over the next 10 years."
+  },
+  {
+   "id": "forward_five_year_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.8198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of projected earnings per share over the next five years."
+  },
+  {
+   "id": "forward_five_year_eps_growth_rate_iv",
+   "type": "MATRIX",
+   "coverage": 0.8198,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Compound annual growth rate of projected earnings per share over the next five years from intrinsic value model."
+  },
+  {
+   "id": "forward_ten_year_eps_growth_rate_iv",
+   "type": "MATRIX",
+   "coverage": 0.8198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of projected earnings per share over the next ten years from intrinsic value model."
+  },
+  {
+   "id": "global_credit_risk_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile rank of a company's credit risk score."
+  },
+  {
+   "id": "global_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Global percentile ranking for price momentum score."
+  },
+  {
+   "id": "global_price_momentum_percentile_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile ranking for a stock's price momentum score."
+  },
+  {
+   "id": "global_value_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile ranking for a stock's value-momentum score."
+  },
+  {
+   "id": "global_value_momentum_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "industry_credit_risk_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-relative percentile rank of a company's credit risk score."
+  },
+  {
+   "id": "industry_momentum_percentile_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile score for price momentum relative to industry peers."
+  },
+  {
+   "id": "industry_price_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank for price momentum compared to industry peers."
+  },
+  {
+   "id": "industry_relative_valuation_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentile ranking of a stock's relative valuation score compared to industry peers."
+  },
+  {
+   "id": "industry_relative_valuation_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Industry-relative valuation percentile score as a floating-point value."
+  },
+  {
+   "id": "industry_value_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Industry-relative value-momentum percentile score."
+  },
+  {
+   "id": "industry_value_momentum_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Industry-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "intrinsic_valuation_discount_rate_2",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Discount rate used in the intrinsic valuation model for present value calculations."
+  },
+  {
+   "id": "intrinsic_value_projection_currency",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Intrinsic value of the company expressed in the projection currency."
+  },
+  {
+   "id": "long_term_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile score for long-term price momentum."
+  },
+  {
+   "id": "long_term_price_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank for price momentum over a long-term horizon, such as twelve months."
+  },
+  {
+   "id": "market_implied_10yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 0.8181,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Compound annual growth rate of earnings per share implied by market price over 10 years."
+  },
+  {
+   "id": "market_implied_10yr_eps_cagr_4",
+   "type": "MATRIX",
+   "coverage": 0.8181,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of earnings per share implied by market price over 10 years."
+  },
+  {
+   "id": "market_implied_5yr_eps_cagr_3",
+   "type": "MATRIX",
+   "coverage": 0.8181,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Compound annual growth rate of earnings per share implied by market price over 5 years."
+  },
+  {
+   "id": "market_implied_five_year_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 0.8181,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Five-year compound annual growth rate of earnings implied by the current market price."
+  },
+  {
+   "id": "mdl25_01v",
+   "type": "MATRIX",
+   "coverage": 0.9655,
+   "userCount": 25,
+   "alphaCount": 77,
+   "description": "Earnings Quality by Accruals - Period End Date"
+  },
+  {
+   "id": "mdl25_05v",
+   "type": "MATRIX",
+   "coverage": 0.8348,
+   "userCount": 18,
+   "alphaCount": 61,
+   "description": "Diluted EPS from Total Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_15v",
+   "type": "MATRIX",
+   "coverage": 0.5816,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Pension Expense - Last Year"
+  },
+  {
+   "id": "mdl25_21v",
+   "type": "MATRIX",
+   "coverage": 0.9582,
+   "userCount": 71,
+   "alphaCount": 738,
+   "description": "Earnings Quality by Cash Flow"
+  },
+  {
+   "id": "mdl25_22v",
+   "type": "MATRIX",
+   "coverage": 0.9679,
+   "userCount": 73,
+   "alphaCount": 1001,
+   "description": "Raw Earnings Quality"
+  },
+  {
+   "id": "mdl25_31v",
+   "type": "MATRIX",
+   "coverage": 0.958,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Earnings Quality by Cash Flow - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_34v",
+   "type": "MATRIX",
+   "coverage": 0.8593,
+   "userCount": 119,
+   "alphaCount": 2295,
+   "description": "Diluted EPS from Continuing Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_41v",
+   "type": "MATRIX",
+   "coverage": 0.9652,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Earnings Quality by Cash Flow - Period End Date"
+  },
+  {
+   "id": "mdl25_44v",
+   "type": "MATRIX",
+   "coverage": 0.8328,
+   "userCount": 11,
+   "alphaCount": 24,
+   "description": "Diluted EPS from Continuing Ops - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_54v",
+   "type": "MATRIX",
+   "coverage": 0.8328,
+   "userCount": 12,
+   "alphaCount": 19,
+   "description": "Diluted EPS from Continuing Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_61v",
+   "type": "MATRIX",
+   "coverage": 0.9666,
+   "userCount": 88,
+   "alphaCount": 1336,
+   "description": "Earnings Quality by Operating Efficiency"
+  },
+  {
+   "id": "mdl25_64v",
+   "type": "MATRIX",
+   "coverage": 0.8593,
+   "userCount": 16,
+   "alphaCount": 29,
+   "description": "Diluted EPS from Disc Ops & XO - Last Qtr"
+  },
+  {
+   "id": "mdl25_6v",
+   "type": "MATRIX",
+   "coverage": 0.9679,
+   "userCount": 71,
+   "alphaCount": 838,
+   "description": "Earnings Quality Region Rank"
+  },
+  {
+   "id": "mdl25_71v",
+   "type": "MATRIX",
+   "coverage": 0.9663,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Earnings Quality by Operating Efficiency - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_73v",
+   "type": "MATRIX",
+   "coverage": 0.8019,
+   "userCount": 89,
+   "alphaCount": 205,
+   "description": "Basic EPS from Total Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_74v",
+   "type": "MATRIX",
+   "coverage": 0.8328,
+   "userCount": 8,
+   "alphaCount": 36,
+   "description": "Diluted EPS from Disc Ops & XO - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_7v",
+   "type": "MATRIX",
+   "coverage": 0.9677,
+   "userCount": 15,
+   "alphaCount": 21,
+   "description": "Earnings Quality Region Rank - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_81v",
+   "type": "MATRIX",
+   "coverage": 0.9684,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Earnings Quality by Operating Efficiency - Period End Date"
+  },
+  {
+   "id": "mdl25_83v",
+   "type": "MATRIX",
+   "coverage": 0.775,
+   "userCount": 16,
+   "alphaCount": 81,
+   "description": "Basic EPS from Total Ops - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_84v",
+   "type": "MATRIX",
+   "coverage": 0.8614,
+   "userCount": 31,
+   "alphaCount": 142,
+   "description": "Diluted EPS from Total Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_8v",
+   "type": "MATRIX",
+   "coverage": 0.9632,
+   "userCount": 10,
+   "alphaCount": 23,
+   "description": "Earnings Quality by Accruals"
+  },
+  {
+   "id": "mdl25_93v",
+   "type": "MATRIX",
+   "coverage": 0.775,
+   "userCount": 19,
+   "alphaCount": 41,
+   "description": "Basic EPS from Total Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_94v",
+   "type": "MATRIX",
+   "coverage": 0.8348,
+   "userCount": 8,
+   "alphaCount": 20,
+   "description": "Diluted EPS from Total Ops - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_9v",
+   "type": "MATRIX",
+   "coverage": 0.9631,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "Earnings Quality by Accruals - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_bs_01v",
+   "type": "MATRIX",
+   "coverage": 0.8337,
+   "userCount": 18,
+   "alphaCount": 57,
+   "description": "Book Value - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_11v",
+   "type": "MATRIX",
+   "coverage": 0.8002,
+   "userCount": 47,
+   "alphaCount": 100,
+   "description": "BV / Share - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_21v",
+   "type": "MATRIX",
+   "coverage": 0.7703,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "BV / Share - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_bs_31v",
+   "type": "MATRIX",
+   "coverage": 0.7703,
+   "userCount": 7,
+   "alphaCount": 21,
+   "description": "BV / Share - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_bs_41v",
+   "type": "MATRIX",
+   "coverage": 0.6688,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Accum Depr / Gross FA - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_51v",
+   "type": "MATRIX",
+   "coverage": 0.5652,
+   "userCount": 4,
+   "alphaCount": 18,
+   "description": "Accum Depr / Gross FA - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_bs_5v",
+   "type": "MATRIX",
+   "coverage": 0.8336,
+   "userCount": 6,
+   "alphaCount": 23,
+   "description": "Total Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_61v",
+   "type": "MATRIX",
+   "coverage": 0.565,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Accum Depr / Gross FA - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_bs_6v",
+   "type": "MATRIX",
+   "coverage": 0.7909,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Total Assets - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_bs_71v",
+   "type": "MATRIX",
+   "coverage": 0.6933,
+   "userCount": 4,
+   "alphaCount": 18,
+   "description": "Allowance for Doubtful Accts - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_7v",
+   "type": "MATRIX",
+   "coverage": 0.8255,
+   "userCount": 13,
+   "alphaCount": 50,
+   "description": "Average Net Operating Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_81v",
+   "type": "MATRIX",
+   "coverage": 0.6152,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Allowance for Doubtful Accts - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_bs_8v",
+   "type": "MATRIX",
+   "coverage": 0.8337,
+   "userCount": 8,
+   "alphaCount": 25,
+   "description": "Adjusted Average Net Operating Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_bs_91v",
+   "type": "MATRIX",
+   "coverage": 0.6784,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unearned Revenue - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_bs_9v",
+   "type": "MATRIX",
+   "coverage": 0.7946,
+   "userCount": 10,
+   "alphaCount": 20,
+   "description": "Adjusted Average Net Operating Assets - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cb_01v",
+   "type": "MATRIX",
+   "coverage": 0.9867,
+   "userCount": 31,
+   "alphaCount": 162,
+   "description": "Average Traded Volume"
+  },
+  {
+   "id": "mdl25_cb_02v",
+   "type": "MATRIX",
+   "coverage": 0.9899,
+   "userCount": 55,
+   "alphaCount": 979,
+   "description": "Data-Through Date (Fundamental) Current"
+  },
+  {
+   "id": "mdl25_cb_11v",
+   "type": "MATRIX",
+   "coverage": 0.9867,
+   "userCount": 16,
+   "alphaCount": 40,
+   "description": "Average Traded Volume (Local Currency)"
+  },
+  {
+   "id": "mdl25_cb_12v",
+   "type": "MATRIX",
+   "coverage": 0.838,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Period End Date - Last Qtr"
+  },
+  {
+   "id": "mdl25_cb_21v",
+   "type": "MATRIX",
+   "coverage": 0.9867,
+   "userCount": 10,
+   "alphaCount": 38,
+   "description": "Average Traded Volume (USD)"
+  },
+  {
+   "id": "mdl25_cb_22v",
+   "type": "MATRIX",
+   "coverage": 0.8734,
+   "userCount": 7,
+   "alphaCount": 19,
+   "description": "Company Filing Date - Last Qtr"
+  },
+  {
+   "id": "mdl25_cb_32v",
+   "type": "MATRIX",
+   "coverage": 0.8339,
+   "userCount": 11,
+   "alphaCount": 19,
+   "description": "New Filing Received Date - Last Qtr"
+  },
+  {
+   "id": "mdl25_cb_6v",
+   "type": "MATRIX",
+   "coverage": 0.9866,
+   "userCount": 71,
+   "alphaCount": 1599,
+   "description": "Market Cap (Local Currency)"
+  },
+  {
+   "id": "mdl25_cb_7v",
+   "type": "MATRIX",
+   "coverage": 0.9866,
+   "userCount": 96,
+   "alphaCount": 1527,
+   "description": "Market Cap (USD)"
+  },
+  {
+   "id": "mdl25_cb_8v",
+   "type": "MATRIX",
+   "coverage": 0.9867,
+   "userCount": 103,
+   "alphaCount": 2286,
+   "description": "52-week High Price"
+  },
+  {
+   "id": "mdl25_cb_9v",
+   "type": "MATRIX",
+   "coverage": 0.9867,
+   "userCount": 18,
+   "alphaCount": 127,
+   "description": "52-week Low Price"
+  },
+  {
+   "id": "mdl25_cfs_01v",
+   "type": "MATRIX",
+   "coverage": 0.778,
+   "userCount": 3,
+   "alphaCount": 20,
+   "description": "Cash Flow from Investing - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_11v",
+   "type": "MATRIX",
+   "coverage": 0.7866,
+   "userCount": 6,
+   "alphaCount": 18,
+   "description": "Cash Flow from Financing - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_21v",
+   "type": "MATRIX",
+   "coverage": 0.7361,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Cash Flow from Financing - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_31v",
+   "type": "MATRIX",
+   "coverage": 0.8019,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "FCF - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_41v",
+   "type": "MATRIX",
+   "coverage": 0.7789,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "FCF - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_51v",
+   "type": "MATRIX",
+   "coverage": 0.7937,
+   "userCount": 2,
+   "alphaCount": 20,
+   "description": "Capex - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_5v",
+   "type": "MATRIX",
+   "coverage": 0.801,
+   "userCount": 13,
+   "alphaCount": 18,
+   "description": "Total Cash Flow - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_61v",
+   "type": "MATRIX",
+   "coverage": 0.7665,
+   "userCount": 9,
+   "alphaCount": 21,
+   "description": "Capex - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_6v",
+   "type": "MATRIX",
+   "coverage": 0.778,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Total Cash Flow - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_cfs_71v",
+   "type": "MATRIX",
+   "coverage": 0.4808,
+   "userCount": 5,
+   "alphaCount": 25,
+   "description": "CF Working Capital - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_7v",
+   "type": "MATRIX",
+   "coverage": 0.8019,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Cash Flow from Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_81v",
+   "type": "MATRIX",
+   "coverage": 0.4452,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "CF Working Capital - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_8v",
+   "type": "MATRIX",
+   "coverage": 0.7789,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Cash Flow from Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_cfs_91v",
+   "type": "MATRIX",
+   "coverage": 0.7911,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Excess Cash Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_cfs_9v",
+   "type": "MATRIX",
+   "coverage": 0.8016,
+   "userCount": 4,
+   "alphaCount": 10,
+   "description": "Cash Flow from Investing - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Book Value - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "BV / Share - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "BV / Share - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_bs_v13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "BV / Share - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_bs_v14",
+   "type": "MATRIX",
+   "coverage": 0.874,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accum Depr / Gross FA - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v15",
+   "type": "MATRIX",
+   "coverage": 0.734,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accum Depr / Gross FA - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_bs_v16",
+   "type": "MATRIX",
+   "coverage": 0.7338,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accum Depr / Gross FA - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_bs_v17",
+   "type": "MATRIX",
+   "coverage": 0.9108,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Allowance for Doubtful Accts - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v18",
+   "type": "MATRIX",
+   "coverage": 0.8194,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Allowance for Doubtful Accts - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_bs_v19",
+   "type": "MATRIX",
+   "coverage": 0.9102,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Unearned Revenue - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_bs_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Total Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total Assets - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_bs_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Net Operating Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted Average Net Operating Assets - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_bs_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adjusted Average Net Operating Assets - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_cb_v10",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Traded Volume"
+  },
+  {
+   "id": "mdl25_eq_cb_v11",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Traded Volume (Local Currency)"
+  },
+  {
+   "id": "mdl25_eq_cb_v12",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average Traded Volume (USD)"
+  },
+  {
+   "id": "mdl25_eq_cb_v20",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Data-Through Date (Fundamental) Current"
+  },
+  {
+   "id": "mdl25_eq_cb_v21",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Period End Date - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_cb_v22",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Company Filing Date - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_cb_v23",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "New Filing Received Date - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_cb_v6",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market Cap (Local Currency)"
+  },
+  {
+   "id": "mdl25_eq_cb_v7",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Market Cap (USD)"
+  },
+  {
+   "id": "mdl25_eq_cb_v8",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "52-week High Price"
+  },
+  {
+   "id": "mdl25_eq_cb_v9",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "52-week Low Price"
+  },
+  {
+   "id": "mdl25_eq_cfs_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from investing activities, quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from financing activities, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from financing activities, quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Free cash flow (FCF), last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Free cash flow (FCF), quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Capital expenditures (Capex), last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Capital expenditures (Capex), quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v17",
+   "type": "MATRIX",
+   "coverage": 0.7545,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow related to working capital, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v18",
+   "type": "MATRIX",
+   "coverage": 0.6644,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow related to working capital, quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Excess cash margin percentage, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash flow, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total cash flow, quarter-over-quarter absolute difference"
+  },
+  {
+   "id": "mdl25_eq_cfs_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from operating activities, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_cfs_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from operating activities, quarter-over-quarter percentage change"
+  },
+  {
+   "id": "mdl25_eq_cfs_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash flow from investing activities, last reported quarter"
+  },
+  {
+   "id": "mdl25_eq_history_v10",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality Raw Current"
+  },
+  {
+   "id": "mdl25_eq_history_v11",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality Region Rank Current"
+  },
+  {
+   "id": "mdl25_eq_history_v12",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Accruals Component Current"
+  },
+  {
+   "id": "mdl25_eq_history_v13",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Cash Flow Component Current"
+  },
+  {
+   "id": "mdl25_eq_history_v9",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality Region"
+  },
+  {
+   "id": "mdl25_eq_is_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in EBITDA"
+  },
+  {
+   "id": "mdl25_eq_is_v11",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Historical EBITDA Growth over 5 Years"
+  },
+  {
+   "id": "mdl25_eq_is_v12",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference from Average Historical EBITDA Growth over 5 Years"
+  },
+  {
+   "id": "mdl25_eq_is_v13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in operating expenses"
+  },
+  {
+   "id": "mdl25_eq_is_v14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "EBIT for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in EBIT"
+  },
+  {
+   "id": "mdl25_eq_is_v16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net income from continuing operations for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v17",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in net income from continuing operations"
+  },
+  {
+   "id": "mdl25_eq_is_v18",
+   "type": "MATRIX",
+   "coverage": 0.9291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Special items amount in the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v19",
+   "type": "MATRIX",
+   "coverage": 0.8263,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in special items"
+  },
+  {
+   "id": "mdl25_eq_is_v24",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net income for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v25",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in net income"
+  },
+  {
+   "id": "mdl25_eq_is_v26",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dividends per share for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v27",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter absolute change in dividends per share"
+  },
+  {
+   "id": "mdl25_eq_is_v28",
+   "type": "MATRIX",
+   "coverage": 0.3562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in dividends per share"
+  },
+  {
+   "id": "mdl25_eq_is_v29",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Historical EPS Growth over 5 Years"
+  },
+  {
+   "id": "mdl25_eq_is_v30",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference from average historical EPS growth (5-year)"
+  },
+  {
+   "id": "mdl25_eq_is_v31",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basic EPS from continuing operations for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v32",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter absolute change in basic EPS from continuing operations"
+  },
+  {
+   "id": "mdl25_eq_is_v33",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter percentage change in basic EPS from continuing operations"
+  },
+  {
+   "id": "mdl25_eq_is_v34",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basic EPS from discontinued operations and extraordinary items for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v35",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basic EPS from discontinued operations and extraordinary items - 1 quarter difference"
+  },
+  {
+   "id": "mdl25_eq_is_v37",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Basic EPS from Total Operations - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v38",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basic EPS from Total Operations - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_is_v39",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basic EPS from total operations - 1 quarter difference (%)"
+  },
+  {
+   "id": "mdl25_eq_is_v43",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from continuing operations - last quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v44",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from continuing operations - 1 quarter difference"
+  },
+  {
+   "id": "mdl25_eq_is_v45",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from continuing operations - 1 quarter difference (%)"
+  },
+  {
+   "id": "mdl25_eq_is_v46",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from Discontinued Operations and Extraordinary Items - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v47",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from discontinued operations and extraordinary items - 1 quarter difference"
+  },
+  {
+   "id": "mdl25_eq_is_v48",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from Total Operations - Last Quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v49",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from Total Operations - 1 Quarter Difference"
+  },
+  {
+   "id": "mdl25_eq_is_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Total revenue recognized in the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_is_v50",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Diluted EPS from total operations - 1 quarter difference (%)"
+  },
+  {
+   "id": "mdl25_eq_is_v51",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pension Expense - Last Year"
+  },
+  {
+   "id": "mdl25_eq_is_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Quarter-over-quarter percentage change in revenue"
+  },
+  {
+   "id": "mdl25_eq_is_v7",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average Historical Revenue Growth over 5 Years"
+  },
+  {
+   "id": "mdl25_eq_is_v8",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference from average historical revenue growth (5-year)"
+  },
+  {
+   "id": "mdl25_eq_is_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "EBITDA for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rd_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax ROA (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Leverage (Assets/Equity) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Leverage (Assets/Equity) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax ROE (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax ROE (%) - Chg 1 Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ROE (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ROE (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v17",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Retention - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v18",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Retention - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Reinvestment Rate (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reinvestment Rate (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Asset Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rd_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rd_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax ROA (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_rlev_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in long-term debt to total capital percentage"
+  },
+  {
+   "id": "mdl25_eq_rlev_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net debt (total debt minus cash) divided by EBITDA for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_rlev_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in net debt to EBITDA ratio"
+  },
+  {
+   "id": "mdl25_eq_rlev_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total assets to shareholders’ equity for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_rlev_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in the assets-to-equity ratio (current quarter minus prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of total debt to shareholders’ equity for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_rlev_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in the debt-to-equity ratio (current quarter minus prior quarter)"
+  },
+  {
+   "id": "mdl25_eq_rlev_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term debt as a percentage of total capital for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v10",
+   "type": "MATRIX",
+   "coverage": 0.9221,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in times interest earned (current quarter minus prior)"
+  },
+  {
+   "id": "mdl25_eq_rliq_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Cash conversion cycle (days) for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in cash conversion cycle (days) (current quarter minus prior)"
+  },
+  {
+   "id": "mdl25_eq_rliq_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Quick ratio (acid-test) for the most recent reported quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v6",
+   "type": "MATRIX",
+   "coverage": 0.9975,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in quick ratio (current quarter minus prior)"
+  },
+  {
+   "id": "mdl25_eq_rliq_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current ratio for the most recent reported quarter"
+  },
+  {
+   "id": "mdl25_eq_rliq_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in current ratio (current quarter minus prior)"
+  },
+  {
+   "id": "mdl25_eq_rliq_v9",
+   "type": "MATRIX",
+   "coverage": 0.9639,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Times interest earned (interest coverage ratio) for the most recent quarter"
+  },
+  {
+   "id": "mdl25_eq_ro_v10",
+   "type": "MATRIX",
+   "coverage": 0.9869,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Inv Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v11",
+   "type": "MATRIX",
+   "coverage": 0.9687,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Inv Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v12",
+   "type": "MATRIX",
+   "coverage": 0.9868,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Avg Inventory Days - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v13",
+   "type": "MATRIX",
+   "coverage": 0.9686,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Avg Inventory Days - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "WC/Sales - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "WC/Sales - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Net Op. Asset Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v17",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adj. Net Op. Asset Turnover - Last Year"
+  },
+  {
+   "id": "mdl25_eq_ro_v18",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Adj. Net Op. Asset Turnover - 1 FY Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on Net Op. Assets (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on Net Operating Assets (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v21",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on Adj. Net Op. Assets (%) - Last Year"
+  },
+  {
+   "id": "mdl25_eq_ro_v22",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return on Adj. Net Op. Assets (%) - 1 FY Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net Op. Asset Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A/R Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "A/R Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_ro_v8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Avg. A/R Days - Last Qtr"
+  },
+  {
+   "id": "mdl25_eq_ro_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Avg. A/R Days - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_rp_v10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in EBITDA margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in operating margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v13",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Five-year average operating margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v14",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between current operating margin and its five-year average"
+  },
+  {
+   "id": "mdl25_eq_rp_v15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Pretax margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in pretax margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v17",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Effective tax rate for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v18",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in effective tax rate"
+  },
+  {
+   "id": "mdl25_eq_rp_v19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net profit margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in net profit margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Gross margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_rp_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quarter-over-quarter change in gross margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v7",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Five-year average gross margin percentage"
+  },
+  {
+   "id": "mdl25_eq_rp_v8",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between current gross margin and its five-year average"
+  },
+  {
+   "id": "mdl25_eq_rp_v9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "EBITDA margin percentage for the most recent fiscal quarter"
+  },
+  {
+   "id": "mdl25_eq_v10",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Accruals - Period End Date"
+  },
+  {
+   "id": "mdl25_eq_v12",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Cash Flow"
+  },
+  {
+   "id": "mdl25_eq_v13",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Cash Flow - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_eq_v14",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Cash Flow - Period End Date"
+  },
+  {
+   "id": "mdl25_eq_v16",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Operating Efficiency"
+  },
+  {
+   "id": "mdl25_eq_v17",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Operating Efficiency - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_eq_v18",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Operating Efficiency - Period End Date"
+  },
+  {
+   "id": "mdl25_eq_v22",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Raw Earnings Quality"
+  },
+  {
+   "id": "mdl25_eq_v6",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality Region Rank"
+  },
+  {
+   "id": "mdl25_eq_v7",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality Region Rank - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_eq_v8",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Accruals"
+  },
+  {
+   "id": "mdl25_eq_v9",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Earnings Quality by Accruals - 1 Day Difference"
+  },
+  {
+   "id": "mdl25_eq_vr_v10",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/Sales - 1 FY Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v11",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/CFO"
+  },
+  {
+   "id": "mdl25_eq_vr_v12",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/FCF"
+  },
+  {
+   "id": "mdl25_eq_vr_v13",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Enterprise Value (EV)"
+  },
+  {
+   "id": "mdl25_eq_vr_v14",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "EV/EBITDA"
+  },
+  {
+   "id": "mdl25_eq_vr_v15",
+   "type": "MATRIX",
+   "coverage": 0.9581,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "EV/EBITDA - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v16",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "EV/Sales"
+  },
+  {
+   "id": "mdl25_eq_vr_v17",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "FCF Yield (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v18",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "FCF/EV (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v19",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "CFO/EV (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v5",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price/Book"
+  },
+  {
+   "id": "mdl25_eq_vr_v6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price/Book - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_eq_vr_v7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/Book - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_eq_vr_v8",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/Sales"
+  },
+  {
+   "id": "mdl25_eq_vr_v9",
+   "type": "MATRIX",
+   "coverage": 0.5,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price/Sales - 1 FY Difference"
+  },
+  {
+   "id": "mdl25_history_01v",
+   "type": "MATRIX",
+   "coverage": 0.9734,
+   "userCount": 137,
+   "alphaCount": 2008,
+   "description": "Earnings Quality Raw Current"
+  },
+  {
+   "id": "mdl25_history_11v",
+   "type": "MATRIX",
+   "coverage": 0.9686,
+   "userCount": 123,
+   "alphaCount": 2606,
+   "description": "Earnings Quality Region Rank Current"
+  },
+  {
+   "id": "mdl25_history_21v",
+   "type": "MATRIX",
+   "coverage": 0.9643,
+   "userCount": 122,
+   "alphaCount": 1626,
+   "description": "Accruals Component Current"
+  },
+  {
+   "id": "mdl25_history_31v",
+   "type": "MATRIX",
+   "coverage": 0.972,
+   "userCount": 188,
+   "alphaCount": 2914,
+   "description": "Cash Flow Component Current"
+  },
+  {
+   "id": "mdl25_history_9v",
+   "type": "MATRIX",
+   "coverage": 0.9734,
+   "userCount": 136,
+   "alphaCount": 2156,
+   "description": "Earnings Quality Region"
+  },
+  {
+   "id": "mdl25_is_01v",
+   "type": "MATRIX",
+   "coverage": 0.7745,
+   "userCount": 18,
+   "alphaCount": 27,
+   "description": "EBITDA - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_03v",
+   "type": "MATRIX",
+   "coverage": 0.7458,
+   "userCount": 8,
+   "alphaCount": 27,
+   "description": "Diff from Average Hist EPS Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_11v",
+   "type": "MATRIX",
+   "coverage": 0.8415,
+   "userCount": 8,
+   "alphaCount": 14,
+   "description": "Average Historical EBITDA Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_13v",
+   "type": "MATRIX",
+   "coverage": 0.7984,
+   "userCount": 92,
+   "alphaCount": 2409,
+   "description": "Basic EPS from Continuing Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_21v",
+   "type": "MATRIX",
+   "coverage": 0.8402,
+   "userCount": 5,
+   "alphaCount": 37,
+   "description": "Diff from Average Hist EBITDA Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_23v",
+   "type": "MATRIX",
+   "coverage": 0.7718,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Basic EPS from Continuing Ops - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_is_31v",
+   "type": "MATRIX",
+   "coverage": 0.7755,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Operating Expenses - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_33v",
+   "type": "MATRIX",
+   "coverage": 0.7718,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Basic EPS from Continuing Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_41v",
+   "type": "MATRIX",
+   "coverage": 0.8022,
+   "userCount": 35,
+   "alphaCount": 51,
+   "description": "EBIT - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_42v",
+   "type": "MATRIX",
+   "coverage": 0.801,
+   "userCount": 78,
+   "alphaCount": 1964,
+   "description": "Net Income - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_43v",
+   "type": "MATRIX",
+   "coverage": 0.7983,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Basic EPS from Disc Ops & XO - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_51v",
+   "type": "MATRIX",
+   "coverage": 0.7755,
+   "userCount": 16,
+   "alphaCount": 36,
+   "description": "EBIT - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_52v",
+   "type": "MATRIX",
+   "coverage": 0.7738,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Net Income - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_53v",
+   "type": "MATRIX",
+   "coverage": 0.7718,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Basic EPS from Disc Ops & XO - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_is_5v",
+   "type": "MATRIX",
+   "coverage": 0.8038,
+   "userCount": 33,
+   "alphaCount": 53,
+   "description": "Revenue - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_61v",
+   "type": "MATRIX",
+   "coverage": 0.8012,
+   "userCount": 35,
+   "alphaCount": 125,
+   "description": "NI from Cont. Ops - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_62v",
+   "type": "MATRIX",
+   "coverage": 0.7932,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dividends Per Share - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_6v",
+   "type": "MATRIX",
+   "coverage": 0.7739,
+   "userCount": 12,
+   "alphaCount": 63,
+   "description": "Revenue - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_71v",
+   "type": "MATRIX",
+   "coverage": 0.7742,
+   "userCount": 10,
+   "alphaCount": 42,
+   "description": "NI from Cont. Ops - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_72v",
+   "type": "MATRIX",
+   "coverage": 0.7569,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Dividends Per Share - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_is_7v",
+   "type": "MATRIX",
+   "coverage": 0.9146,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Average Historical Revenue Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_81v",
+   "type": "MATRIX",
+   "coverage": 0.5908,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Special Items - Last Qtr"
+  },
+  {
+   "id": "mdl25_is_8v",
+   "type": "MATRIX",
+   "coverage": 0.9135,
+   "userCount": 13,
+   "alphaCount": 20,
+   "description": "Diff from Average Hist Revenue Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_91v",
+   "type": "MATRIX",
+   "coverage": 0.5051,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Special Items - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_is_92v",
+   "type": "MATRIX",
+   "coverage": 0.7468,
+   "userCount": 6,
+   "alphaCount": 22,
+   "description": "Average Historical EPS Growth 5-Year"
+  },
+  {
+   "id": "mdl25_is_9v",
+   "type": "MATRIX",
+   "coverage": 0.8017,
+   "userCount": 30,
+   "alphaCount": 50,
+   "description": "EBITDA - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_01v",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Pretax ROA (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_02v",
+   "type": "MATRIX",
+   "coverage": 0.7306,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Reinvestment Rate (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_11v",
+   "type": "MATRIX",
+   "coverage": 0.8333,
+   "userCount": 3,
+   "alphaCount": 44,
+   "description": "Leverage (Assets/Equity) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_21v",
+   "type": "MATRIX",
+   "coverage": 0.7908,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "Leverage (Assets/Equity) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_31v",
+   "type": "MATRIX",
+   "coverage": 0.8035,
+   "userCount": 26,
+   "alphaCount": 123,
+   "description": "Pretax ROE (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_41v",
+   "type": "MATRIX",
+   "coverage": 0.7732,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Pretax ROE (%) - Chg 1 Qtr"
+  },
+  {
+   "id": "mdl25_rd_51v",
+   "type": "MATRIX",
+   "coverage": 0.7818,
+   "userCount": 21,
+   "alphaCount": 107,
+   "description": "ROE (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_5v",
+   "type": "MATRIX",
+   "coverage": 0.7846,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Asset Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_61v",
+   "type": "MATRIX",
+   "coverage": 0.7499,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "ROE (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_6v",
+   "type": "MATRIX",
+   "coverage": 0.7529,
+   "userCount": 6,
+   "alphaCount": 13,
+   "description": "Asset Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_71v",
+   "type": "MATRIX",
+   "coverage": 0.7893,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Earnings Retention - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_7v",
+   "type": "MATRIX",
+   "coverage": 0.8011,
+   "userCount": 17,
+   "alphaCount": 63,
+   "description": "Pretax Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_81v",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Earnings Retention - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_8v",
+   "type": "MATRIX",
+   "coverage": 0.7735,
+   "userCount": 16,
+   "alphaCount": 47,
+   "description": "Pretax Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rd_91v",
+   "type": "MATRIX",
+   "coverage": 0.7721,
+   "userCount": 27,
+   "alphaCount": 51,
+   "description": "Reinvestment Rate (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rd_9v",
+   "type": "MATRIX",
+   "coverage": 0.7846,
+   "userCount": 25,
+   "alphaCount": 39,
+   "description": "Pretax ROA (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rlev_01v",
+   "type": "MATRIX",
+   "coverage": 0.7878,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "% Long-Term Debt to Total Capital - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rlev_11v",
+   "type": "MATRIX",
+   "coverage": 0.8017,
+   "userCount": 82,
+   "alphaCount": 3314,
+   "description": "(Total Debt - Cash) / EBITDA - Last Qtr"
+  },
+  {
+   "id": "mdl25_rlev_21v",
+   "type": "MATRIX",
+   "coverage": 0.7723,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "(Total Debt - Cash) / EBITDA - Chg 1 Qtr"
+  },
+  {
+   "id": "mdl25_rlev_5v",
+   "type": "MATRIX",
+   "coverage": 0.8333,
+   "userCount": 9,
+   "alphaCount": 38,
+   "description": "Assets to Equity - Last Qtr"
+  },
+  {
+   "id": "mdl25_rlev_6v",
+   "type": "MATRIX",
+   "coverage": 0.7908,
+   "userCount": 5,
+   "alphaCount": 13,
+   "description": "Assets to Equity - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rlev_7v",
+   "type": "MATRIX",
+   "coverage": 0.8306,
+   "userCount": 3,
+   "alphaCount": 48,
+   "description": "Debt to Equity - Last Qtr"
+  },
+  {
+   "id": "mdl25_rlev_8v",
+   "type": "MATRIX",
+   "coverage": 0.7878,
+   "userCount": 9,
+   "alphaCount": 58,
+   "description": "Debt to Equity - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rlev_9v",
+   "type": "MATRIX",
+   "coverage": 0.8306,
+   "userCount": 5,
+   "alphaCount": 48,
+   "description": "Long-Term Debt to Total Capital - Last Qtr (%)"
+  },
+  {
+   "id": "mdl25_rliq_01v",
+   "type": "MATRIX",
+   "coverage": 0.6095,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "Times Interest Earned - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rliq_11v",
+   "type": "MATRIX",
+   "coverage": 0.7758,
+   "userCount": 10,
+   "alphaCount": 32,
+   "description": "Cash Cycle - Last Qtr"
+  },
+  {
+   "id": "mdl25_rliq_21v",
+   "type": "MATRIX",
+   "coverage": 0.7435,
+   "userCount": 2,
+   "alphaCount": 31,
+   "description": "Cash Cycle - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rliq_5v",
+   "type": "MATRIX",
+   "coverage": 0.7417,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "Quick Ratio - Last Qtr"
+  },
+  {
+   "id": "mdl25_rliq_6v",
+   "type": "MATRIX",
+   "coverage": 0.7017,
+   "userCount": 6,
+   "alphaCount": 18,
+   "description": "Quick Ratio - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rliq_7v",
+   "type": "MATRIX",
+   "coverage": 0.7825,
+   "userCount": 5,
+   "alphaCount": 15,
+   "description": "Current Ratio - Last Qtr"
+  },
+  {
+   "id": "mdl25_rliq_8v",
+   "type": "MATRIX",
+   "coverage": 0.7405,
+   "userCount": 2,
+   "alphaCount": 8,
+   "description": "Current Ratio - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rliq_9v",
+   "type": "MATRIX",
+   "coverage": 0.6623,
+   "userCount": 16,
+   "alphaCount": 32,
+   "description": "Times Interest Earned - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_01v",
+   "type": "MATRIX",
+   "coverage": 0.6932,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Inv Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_02v",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 8,
+   "alphaCount": 18,
+   "description": "Return on Net Operating Assets (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_11v",
+   "type": "MATRIX",
+   "coverage": 0.662,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Inv Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_12v",
+   "type": "MATRIX",
+   "coverage": 0.9769,
+   "userCount": 61,
+   "alphaCount": 1025,
+   "description": "Return on Adj. Net Op. Assets (%) - Last Year"
+  },
+  {
+   "id": "mdl25_ro_21v",
+   "type": "MATRIX",
+   "coverage": 0.6931,
+   "userCount": 5,
+   "alphaCount": 28,
+   "description": "Avg Inventory Days - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_22v",
+   "type": "MATRIX",
+   "coverage": 0.9634,
+   "userCount": 17,
+   "alphaCount": 36,
+   "description": "Return on Adj. Net Op. Assets (%) - 1 FY Difference"
+  },
+  {
+   "id": "mdl25_ro_31v",
+   "type": "MATRIX",
+   "coverage": 0.662,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Avg Inventory Days - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_41v",
+   "type": "MATRIX",
+   "coverage": 0.7322,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "WC/Sales - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_51v",
+   "type": "MATRIX",
+   "coverage": 0.7014,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "WC/Sales - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_5v",
+   "type": "MATRIX",
+   "coverage": 0.7701,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Net Op. Asset Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_61v",
+   "type": "MATRIX",
+   "coverage": 0.7998,
+   "userCount": 27,
+   "alphaCount": 48,
+   "description": "Net Op. Asset Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_6v",
+   "type": "MATRIX",
+   "coverage": 0.7714,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "A/R Turnover - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_71v",
+   "type": "MATRIX",
+   "coverage": 0.9822,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Adj. Net Op. Asset Turnover - Last Year"
+  },
+  {
+   "id": "mdl25_ro_7v",
+   "type": "MATRIX",
+   "coverage": 0.74,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "A/R Turnover - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_ro_81v",
+   "type": "MATRIX",
+   "coverage": 0.9713,
+   "userCount": 4,
+   "alphaCount": 13,
+   "description": "Adj. Net Op. Asset Turnover - 1 FY Difference"
+  },
+  {
+   "id": "mdl25_ro_8v",
+   "type": "MATRIX",
+   "coverage": 0.7692,
+   "userCount": 7,
+   "alphaCount": 15,
+   "description": "Avg. A/R Days - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_91v",
+   "type": "MATRIX",
+   "coverage": 0.7971,
+   "userCount": 48,
+   "alphaCount": 153,
+   "description": "Return on Net Op. Assets (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_ro_9v",
+   "type": "MATRIX",
+   "coverage": 0.7372,
+   "userCount": 6,
+   "alphaCount": 18,
+   "description": "Avg. A/R Days - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_01v",
+   "type": "MATRIX",
+   "coverage": 0.7721,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "EBITDA Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_02v",
+   "type": "MATRIX",
+   "coverage": 0.771,
+   "userCount": 9,
+   "alphaCount": 45,
+   "description": "Net Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_11v",
+   "type": "MATRIX",
+   "coverage": 0.7998,
+   "userCount": 14,
+   "alphaCount": 26,
+   "description": "Operating Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rp_21v",
+   "type": "MATRIX",
+   "coverage": 0.7723,
+   "userCount": 10,
+   "alphaCount": 22,
+   "description": "Operating Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_31v",
+   "type": "MATRIX",
+   "coverage": 0.9479,
+   "userCount": 15,
+   "alphaCount": 33,
+   "description": "Average Historical Operating Margin 5-Year"
+  },
+  {
+   "id": "mdl25_rp_41v",
+   "type": "MATRIX",
+   "coverage": 0.9457,
+   "userCount": 21,
+   "alphaCount": 115,
+   "description": "Diff from Average Hist Operating Margin 5-Year"
+  },
+  {
+   "id": "mdl25_rp_51v",
+   "type": "MATRIX",
+   "coverage": 0.8011,
+   "userCount": 17,
+   "alphaCount": 32,
+   "description": "Pretax Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rp_5v",
+   "type": "MATRIX",
+   "coverage": 0.7629,
+   "userCount": 10,
+   "alphaCount": 15,
+   "description": "Gross Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rp_61v",
+   "type": "MATRIX",
+   "coverage": 0.7735,
+   "userCount": 5,
+   "alphaCount": 9,
+   "description": "Pretax Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_6v",
+   "type": "MATRIX",
+   "coverage": 0.7358,
+   "userCount": 4,
+   "alphaCount": 20,
+   "description": "Gross Margin (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_71v",
+   "type": "MATRIX",
+   "coverage": 0.8011,
+   "userCount": 8,
+   "alphaCount": 19,
+   "description": "Effective Tax Rate (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rp_7v",
+   "type": "MATRIX",
+   "coverage": 0.9087,
+   "userCount": 14,
+   "alphaCount": 23,
+   "description": "Average Historical Gross Margin - 5-Year"
+  },
+  {
+   "id": "mdl25_rp_81v",
+   "type": "MATRIX",
+   "coverage": 0.7739,
+   "userCount": 6,
+   "alphaCount": 15,
+   "description": "Effective Tax Rate (%) - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_rp_8v",
+   "type": "MATRIX",
+   "coverage": 0.9045,
+   "userCount": 11,
+   "alphaCount": 20,
+   "description": "Diff from Average Hist Gross Margin - 5-Year"
+  },
+  {
+   "id": "mdl25_rp_91v",
+   "type": "MATRIX",
+   "coverage": 0.7988,
+   "userCount": 31,
+   "alphaCount": 79,
+   "description": "Net Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_rp_9v",
+   "type": "MATRIX",
+   "coverage": 0.7997,
+   "userCount": 99,
+   "alphaCount": 2336,
+   "description": "EBITDA Margin (%) - Last Qtr"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_country_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of the combined credit risk score within the company’s country, where a higher rank indicates lower cred"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_global_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank (1–100) of the firm’s combined CCR credit risk score within the global universe, where higher rank indic"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_industry_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of the combined credit risk score within the company’s industry, where a higher rank indicates lower cre"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_pd",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Credit risk score"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_region_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile rank of the combined credit risk score within the region, where a higher rank indicates lower credit risk amo"
+  },
+  {
+   "id": "mdl25_starmine_ccr_credit_combined_sector_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank of the combined credit risk score within the company’s sector, where a higher rank indicates lower credi"
+  },
+  {
+   "id": "mdl25_vr_01v",
+   "type": "MATRIX",
+   "coverage": 0.9119,
+   "userCount": 11,
+   "alphaCount": 44,
+   "description": "Price/Sales - 1 FY Difference (%)"
+  },
+  {
+   "id": "mdl25_vr_11v",
+   "type": "MATRIX",
+   "coverage": 0.8173,
+   "userCount": 21,
+   "alphaCount": 70,
+   "description": "Price/CFO"
+  },
+  {
+   "id": "mdl25_vr_21v",
+   "type": "MATRIX",
+   "coverage": 0.6464,
+   "userCount": 58,
+   "alphaCount": 535,
+   "description": "Price/FCF"
+  },
+  {
+   "id": "mdl25_vr_31v",
+   "type": "MATRIX",
+   "coverage": 0.9832,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Enterprise Value (EV)"
+  },
+  {
+   "id": "mdl25_vr_41v",
+   "type": "MATRIX",
+   "coverage": 0.9061,
+   "userCount": 51,
+   "alphaCount": 150,
+   "description": "EV/EBITDA"
+  },
+  {
+   "id": "mdl25_vr_51v",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "EV/EBITDA - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_vr_5v",
+   "type": "MATRIX",
+   "coverage": 0.9816,
+   "userCount": 69,
+   "alphaCount": 1763,
+   "description": "Price/Book"
+  },
+  {
+   "id": "mdl25_vr_61v",
+   "type": "MATRIX",
+   "coverage": 0.9765,
+   "userCount": 60,
+   "alphaCount": 1041,
+   "description": "EV/Sales"
+  },
+  {
+   "id": "mdl25_vr_6v",
+   "type": "MATRIX",
+   "coverage": 0.818,
+   "userCount": 10,
+   "alphaCount": 24,
+   "description": "Price/Book - 1 Qtr Difference"
+  },
+  {
+   "id": "mdl25_vr_71v",
+   "type": "MATRIX",
+   "coverage": 0.9733,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "FCF Yield (%)"
+  },
+  {
+   "id": "mdl25_vr_7v",
+   "type": "MATRIX",
+   "coverage": 0.818,
+   "userCount": 17,
+   "alphaCount": 46,
+   "description": "Price/Book - 1 Qtr Difference (%)"
+  },
+  {
+   "id": "mdl25_vr_81v",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 8,
+   "alphaCount": 16,
+   "description": "FCF/EV (%)"
+  },
+  {
+   "id": "mdl25_vr_8v",
+   "type": "MATRIX",
+   "coverage": 0.9771,
+   "userCount": 73,
+   "alphaCount": 1422,
+   "description": "Price/Sales"
+  },
+  {
+   "id": "mdl25_vr_91v",
+   "type": "MATRIX",
+   "coverage": 0.9644,
+   "userCount": 25,
+   "alphaCount": 133,
+   "description": "CFO/EV (%)"
+  },
+  {
+   "id": "mdl25_vr_9v",
+   "type": "MATRIX",
+   "coverage": 0.9119,
+   "userCount": 12,
+   "alphaCount": 28,
+   "description": "Price/Sales - 1 FY Difference"
+  },
+  {
+   "id": "mid_term_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile score for mid-term price momentum."
+  },
+  {
+   "id": "mid_term_price_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank for price momentum over a mid-term horizon, such as six months."
+  },
+  {
+   "id": "operating_efficiency_component_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile score for operating efficiency factors in the earnings quality model."
+  },
+  {
+   "id": "pe_ratio_relative_score_float_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Relative score for price-to-earnings ratio as a floating-point value."
+  },
+  {
+   "id": "price_book_ratio_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile ranking for price to book value ratio."
+  },
+  {
+   "id": "price_cashflow_ratio_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile ranking for price to cash flow ratio."
+  },
+  {
+   "id": "price_cashflow_ratio_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile ranking for price to cash flow ratio as a float."
+  },
+  {
+   "id": "price_earnings_ratio_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Percentile ranking for price to earnings ratio."
+  },
+  {
+   "id": "price_earnings_ratio_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Percentile ranking for price to earnings ratio as a float."
+  },
+  {
+   "id": "price_intrinsic_value_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-relative percentile ranking for price to intrinsic value ratio."
+  },
+  {
+   "id": "price_intrinsic_value_industry_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-relative percentile score for price to intrinsic value ratio as a float."
+  },
+  {
+   "id": "price_intrinsic_value_region_percentile",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile ranking for price to intrinsic value ratio."
+  },
+  {
+   "id": "price_intrinsic_value_region_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile score for price to intrinsic value ratio as a float."
+  },
+  {
+   "id": "price_intrinsic_value_sector_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.8163,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Sector-relative percentile score for price to intrinsic value ratio as a float."
+  },
+  {
+   "id": "price_intrinsicvalue_industry_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Precise industry-relative ranking of the ratio of current price to intrinsic value."
+  },
+  {
+   "id": "price_intrinsicvalue_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative ranking of the ratio of current price to intrinsic value."
+  },
+  {
+   "id": "price_intrinsicvalue_region_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Precise region-relative ranking of the ratio of current price to intrinsic value."
+  },
+  {
+   "id": "price_intrinsicvalue_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.8163,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative ranking of the ratio of current price to intrinsic value."
+  },
+  {
+   "id": "price_to_book_value_relative_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Relative score for the price-to-book value ratio compared to global peers."
+  },
+  {
+   "id": "price_to_book_value_relative_score_backfill",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Relative score for price-to-book value ratio compared to global peers (backfill version)."
+  },
+  {
+   "id": "price_to_intrinsic_value_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 0.7665,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking of a stock's price to intrinsic value ratio compared to industry peers."
+  },
+  {
+   "id": "price_to_intrinsic_value_ratio_4",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of current share price to calculated intrinsic value."
+  },
+  {
+   "id": "price_to_intrinsic_value_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 0.8163,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking of a stock's price to intrinsic value ratio compared to sector peers."
+  },
+  {
+   "id": "price_to_intrinsic_value_sector_percentile_float",
+   "type": "MATRIX",
+   "coverage": 0.8163,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative price to intrinsic value percentile score as a floating-point value."
+  },
+  {
+   "id": "price_to_intrinsicvalue_ratio",
+   "type": "MATRIX",
+   "coverage": 0.8188,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of current share price to estimated intrinsic value."
+  },
+  {
+   "id": "proj_dividends_fy12",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividends per share for fiscal year 12."
+  },
+  {
+   "id": "proj_dividends_fy13",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividends per share for fiscal year 13."
+  },
+  {
+   "id": "proj_dividends_fy14",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividends per share for fiscal year 14."
+  },
+  {
+   "id": "proj_dividends_fy5",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividends per share for fiscal year 5."
+  },
+  {
+   "id": "proj_dividends_fy7",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividends per share for fiscal year 7."
+  },
+  {
+   "id": "proj_earnings_fy1",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 1 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy13",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 13 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy14",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 14 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy15",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 15 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy2",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 2 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy4",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 4 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy5",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 5 based on model estimates."
+  },
+  {
+   "id": "proj_earnings_fy9",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings for fiscal year 9 based on model estimates."
+  },
+  {
+   "id": "projected_dividend_fy1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 1."
+  },
+  {
+   "id": "projected_dividend_fy10",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 10."
+  },
+  {
+   "id": "projected_dividend_fy11",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 11."
+  },
+  {
+   "id": "projected_dividend_fy12",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 12."
+  },
+  {
+   "id": "projected_dividend_fy13",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 13."
+  },
+  {
+   "id": "projected_dividend_fy14",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 14."
+  },
+  {
+   "id": "projected_dividend_fy15",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 15."
+  },
+  {
+   "id": "projected_dividend_fy2",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 2."
+  },
+  {
+   "id": "projected_dividend_fy3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 3."
+  },
+  {
+   "id": "projected_dividend_fy4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 4."
+  },
+  {
+   "id": "projected_dividend_fy5",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 5."
+  },
+  {
+   "id": "projected_dividend_fy6",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 6."
+  },
+  {
+   "id": "projected_dividend_fy7",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 7."
+  },
+  {
+   "id": "projected_dividend_fy8",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 8."
+  },
+  {
+   "id": "projected_dividend_fy9",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected dividend per share for fiscal year 9."
+  },
+  {
+   "id": "projected_dividend_per_share_year_1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 1 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_10",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 10 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_11",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 11 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_15",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 15 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_2",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 2 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_3",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 3 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_4",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 4 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_6",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 6 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_8",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 8 based on model projections."
+  },
+  {
+   "id": "projected_dividend_per_share_year_9",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated dividend per share for fiscal year 9 based on model projections."
+  },
+  {
+   "id": "projected_earnings_fy10_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 10."
+  },
+  {
+   "id": "projected_earnings_fy11_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 11."
+  },
+  {
+   "id": "projected_earnings_fy12_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 12."
+  },
+  {
+   "id": "projected_earnings_fy14_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 14."
+  },
+  {
+   "id": "projected_earnings_fy15_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 15."
+  },
+  {
+   "id": "projected_earnings_fy1_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 1."
+  },
+  {
+   "id": "projected_earnings_fy2_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 2."
+  },
+  {
+   "id": "projected_earnings_fy3_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Projected earnings per share for fiscal year 3."
+  },
+  {
+   "id": "projected_earnings_fy4_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Projected earnings per share for fiscal year 4."
+  },
+  {
+   "id": "projected_earnings_fy5_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 5."
+  },
+  {
+   "id": "projected_earnings_fy6_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 6."
+  },
+  {
+   "id": "projected_earnings_fy7_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 7."
+  },
+  {
+   "id": "projected_earnings_fy8_4",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected earnings per share for fiscal year 8."
+  },
+  {
+   "id": "projected_earnings_fy9_3",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Projected earnings per share for fiscal year 9."
+  },
+  {
+   "id": "projected_eps_year_10",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 10 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_11",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 11 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_12",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 12 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_13",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 13 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_3",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 3 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_6",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 6 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_7",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimated earnings per share for fiscal year 7 based on model projections."
+  },
+  {
+   "id": "projected_eps_year_8",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings per share for fiscal year 8 based on model projections."
+  },
+  {
+   "id": "region_credit_risk_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile rank of a company's credit risk score."
+  },
+  {
+   "id": "region_price_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile ranking for a stock's price momentum score."
+  },
+  {
+   "id": "region_relative_valuation_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile ranking of a stock's relative valuation score compared to region peers."
+  },
+  {
+   "id": "region_relative_valuation_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative valuation percentile score as a floating-point value."
+  },
+  {
+   "id": "region_value_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Region-relative value-momentum percentile score."
+  },
+  {
+   "id": "region_value_momentum_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "regional_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile score for price momentum relative to region."
+  },
+  {
+   "id": "relative_valuation_global_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global percentile ranking for relative valuation score."
+  },
+  {
+   "id": "relative_valuation_global_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Global relative valuation percentile score as a floating-point value."
+  },
+  {
+   "id": "relative_valuation_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Industry-relative percentile ranking for relative valuation score."
+  },
+  {
+   "id": "relative_valuation_industry_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Industry-relative relative valuation percentile score as a float."
+  },
+  {
+   "id": "relative_valuation_region_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile ranking for relative valuation score."
+  },
+  {
+   "id": "relative_valuation_region_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative relative valuation percentile score as a float."
+  },
+  {
+   "id": "relative_valuation_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative percentile ranking for relative valuation score."
+  },
+  {
+   "id": "relative_valuation_sector_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative relative valuation percentile score as a float."
+  },
+  {
+   "id": "relval_buyback_yield_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global ranking for share buyback yield within the relative value model."
+  },
+  {
+   "id": "relval_dividend_yield_rank_float",
+   "type": "MATRIX",
+   "coverage": 0.7394,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Precise global ranking for dividend yield within the relative value model."
+  },
+  {
+   "id": "relval_global_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Global ranking of a security in the relative value model."
+  },
+  {
+   "id": "relval_global_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Precise global ranking of a security in the relative value model."
+  },
+  {
+   "id": "relval_price_book_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Precise global ranking for price-to-book ratio within the relative value model."
+  },
+  {
+   "id": "relval_price_cashflow_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global ranking for price-to-cash flow ratio within the relative value model."
+  },
+  {
+   "id": "relval_price_cashflow_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Precise global ranking for price-to-cash flow ratio within the relative value model."
+  },
+  {
+   "id": "relval_price_earnings_rank",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Global ranking for price-to-earnings ratio within the relative value model."
+  },
+  {
+   "id": "sector_credit_risk_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative percentile rank of a company's credit risk score."
+  },
+  {
+   "id": "sector_relative_valuation_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile ranking of a stock's relative valuation score compared to sector peers."
+  },
+  {
+   "id": "sector_relative_valuation_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Sector-relative valuation percentile score as a floating-point value."
+  },
+  {
+   "id": "sector_value_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Sector-relative value-momentum percentile score."
+  },
+  {
+   "id": "sector_value_momentum_percentile_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sector-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "short_term_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percentile score for short-term price momentum."
+  },
+  {
+   "id": "short_term_price_momentum_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentile rank for price momentum over a short-term horizon, such as three months or one week."
+  },
+  {
+   "id": "star_ccr_combined_pd",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 132,
+   "alphaCount": 1948,
+   "description": "Credit risk score"
+  },
+  {
+   "id": "star_ccr_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 111,
+   "alphaCount": 1094,
+   "description": "Credit risk rank in the country"
+  },
+  {
+   "id": "star_ccr_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 97,
+   "alphaCount": 1238,
+   "description": "Credit risk rank"
+  },
+  {
+   "id": "star_ccr_implied_rating",
+   "type": "MATRIX",
+   "coverage": 0.9633,
+   "userCount": 96,
+   "alphaCount": 1236,
+   "description": "Agency-equivalent credit rating implied by the estimate forward 1-year default probability"
+  },
+  {
+   "id": "star_ccr_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9589,
+   "userCount": 109,
+   "alphaCount": 1336,
+   "description": "Credit Risk Rank in the Industry"
+  },
+  {
+   "id": "star_ccr_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9595,
+   "userCount": 118,
+   "alphaCount": 1483,
+   "description": "Credit risk rank in the region"
+  },
+  {
+   "id": "star_ccr_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9591,
+   "userCount": 110,
+   "alphaCount": 1265,
+   "description": "Credit risk rank in the sector"
+  },
+  {
+   "id": "steady_state_annual_dividend_per_share",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term expected annual dividend per share in the model's steady state."
+  },
+  {
+   "id": "steady_state_dividend_payout_rate",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term dividend payout rate assumed in valuation model."
+  },
+  {
+   "id": "steady_state_dividend_payout_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term expected ratio of dividends paid out relative to earnings."
+  },
+  {
+   "id": "steady_state_earnings",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Estimated earnings in the steady-state year of the projection model."
+  },
+  {
+   "id": "steady_state_earnings_growth",
+   "type": "MATRIX",
+   "coverage": 0.8201,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Projected long-term growth rate of earnings in the steady-state period."
+  },
+  {
+   "id": "steady_state_earnings_growth_rate_2",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term earnings growth rate assumed in valuation model."
+  },
+  {
+   "id": "steady_state_year_dividends",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annual dividend per share assumed in steady-state valuation."
+  },
+  {
+   "id": "steady_state_year_earnings",
+   "type": "MATRIX",
+   "coverage": 0.82,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Annual earnings per share assumed in steady-state valuation."
+  },
+  {
+   "id": "value_momentum_global_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Global percentile ranking for value-momentum score."
+  },
+  {
+   "id": "value_momentum_global_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Global value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "value_momentum_industry_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Industry-relative percentile ranking for value-momentum score."
+  },
+  {
+   "id": "value_momentum_industry_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 11,
+   "description": "Industry-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "value_momentum_region_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Region-relative percentile ranking for value-momentum score."
+  },
+  {
+   "id": "value_momentum_region_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Region-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "value_momentum_sector_percentile",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 7,
+   "description": "Sector-relative percentile ranking for value-momentum score."
+  },
+  {
+   "id": "value_momentum_sector_rank_float",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Sector-relative value-momentum percentile score as a floating-point value."
+  },
+  {
+   "id": "warranted_forward_pe_ratio_2",
+   "type": "MATRIX",
+   "coverage": 0.8192,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Forward 12-month price to earnings ratio warranted by valuation model."
+  },
+  {
+   "id": "warranted_forward_pe_ratio_3",
+   "type": "MATRIX",
+   "coverage": 0.8192,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Model-implied forward price-to-earnings ratio for the next twelve months."
+  }
+ ]
+}

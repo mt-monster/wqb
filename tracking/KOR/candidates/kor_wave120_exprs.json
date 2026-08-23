@@ -1,0 +1,10 @@
+[
+  "rank(twenty_day_total_return_dlr1)",
+  "rank(sixty_day_total_return_dlr1)",
+  "rank(one_twenty_day_total_return_dlr1)",
+  "rank(two_fifty_day_total_return_dlr1)",
+  "rank(five_day_total_return_dlr1)",
+  "rank(subtract(rank(sixty_day_total_return_dlr1), rank(twenty_day_total_return_dlr1)))",
+  "rank(add(multiply(2, rank(sixty_day_total_return_dlr1)), rank(price_volume_quantile1_20d_pred)))",
+  "group_neutralize(rank(add(multiply(2, rank(sixty_day_total_return_dlr1)), rank(price_volume_quantile1_20d_pred))), sector)"
+]

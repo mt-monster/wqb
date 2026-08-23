@@ -1,0 +1,4335 @@
+{
+ "dataset": "analyst44",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 374,
+  "MATRIX": 166
+ },
+ "field_count": 540,
+ "fetched_at": "2026-08-23T00:18:01",
+ "fields": [
+  {
+   "id": "actual_capex_value",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last known CAPEX estimate value before the current revision event"
+  },
+  {
+   "id": "anl44_2_bps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.59,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "bps coveredby"
+  },
+  {
+   "id": "anl44_2_bps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5846,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Currency code (ISO 4217) for the last known estimate value"
+  },
+  {
+   "id": "anl44_2_bps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5114,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last known estimate value before this event, often the prior published value"
+  },
+  {
+   "id": "anl44_2_bps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5523,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Previous estimate value before the current revision/change"
+  },
+  {
+   "id": "anl44_2_bps_value",
+   "type": "VECTOR",
+   "coverage": 0.59,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current estimate value for Book Value Per Share from this event"
+  },
+  {
+   "id": "anl44_2_cfps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5083,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "cfps coveredby"
+  },
+  {
+   "id": "anl44_2_cfps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5012,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last known CFPS estimate"
+  },
+  {
+   "id": "anl44_2_cfps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4146,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last known CFPS estimate value before the current event"
+  },
+  {
+   "id": "anl44_2_cfps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.4706,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous estimate value immediately before the current revision event"
+  },
+  {
+   "id": "anl44_2_cfps_value",
+   "type": "VECTOR",
+   "coverage": 0.5083,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current analyst estimate value for Cash Flow Per Share"
+  },
+  {
+   "id": "anl44_2_dps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Identifier indicating which regime or policy covers the DPS estimate event"
+  },
+  {
+   "id": "anl44_2_dps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5733,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code of the last reported DPS value, in ISO 4217 format"
+  },
+  {
+   "id": "anl44_2_dps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.3999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous or last reported value for DPS before the current event"
+  },
+  {
+   "id": "anl44_2_dps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5331,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous DPS estimate value before the current revision/event"
+  },
+  {
+   "id": "anl44_2_dps_value",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current estimate value reported for Dividends Per Share (DPS)"
+  },
+  {
+   "id": "anl44_2_ebit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6255,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "String indicating regime or coverage regime; helps track which regime the event/estimate belongs to"
+  },
+  {
+   "id": "anl44_2_ebit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6161,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Currency code for the last known EBIT estimate (ISO 4217 format)"
+  },
+  {
+   "id": "anl44_2_ebit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5665,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Most recent EBIT estimate before the current event, often prior published or final value"
+  },
+  {
+   "id": "anl44_2_ebit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5881,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Previous EBIT estimate value directly before the current event, useful for measuring revision size"
+  },
+  {
+   "id": "anl44_2_ebit_value",
+   "type": "VECTOR",
+   "coverage": 0.6255,
+   "userCount": 5,
+   "alphaCount": 14,
+   "description": "Current estimated value of EBIT"
+  },
+  {
+   "id": "anl44_2_ebitda_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5702,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "String identifier indicating the coverage regime or regime status for the estimate event"
+  },
+  {
+   "id": "anl44_2_ebitda_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5648,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code (ISO 4217) in which the last known estimate value was reported"
+  },
+  {
+   "id": "anl44_2_ebitda_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4737,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The most recent known value for the estimate prior to the current or latest event/revision"
+  },
+  {
+   "id": "anl44_2_ebitda_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5327,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Previous value of the EBITDA estimate before the current event, enables tracking of revisions"
+  },
+  {
+   "id": "anl44_2_ebitda_value",
+   "type": "VECTOR",
+   "coverage": 0.5702,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Current value of the EBITDA estimate"
+  },
+  {
+   "id": "anl44_2_ebitdaps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.4172,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "ebitdaps coveredby"
+  },
+  {
+   "id": "anl44_2_ebitdaps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.4171,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ebitdaps lastactccy"
+  },
+  {
+   "id": "anl44_2_ebitdaps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.2688,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ebitdaps lastactvalue"
+  },
+  {
+   "id": "anl44_2_ebitdaps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.3533,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ebitdaps prevalue"
+  },
+  {
+   "id": "anl44_2_ebitdaps_value",
+   "type": "VECTOR",
+   "coverage": 0.4172,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ebitdaps value"
+  },
+  {
+   "id": "anl44_2_eps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6203,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Regime or coverage identifier for the EPS event, helps regime linkage"
+  },
+  {
+   "id": "anl44_2_eps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6123,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency code of the last published EPS estimate"
+  },
+  {
+   "id": "anl44_2_eps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5476,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Value of the most recent EPS estimate before the current event"
+  },
+  {
+   "id": "anl44_2_eps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5827,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous EPS estimate value before the current event"
+  },
+  {
+   "id": "anl44_2_eps_value",
+   "type": "VECTOR",
+   "coverage": 0.6203,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current EPS estimate value"
+  },
+  {
+   "id": "anl44_2_epsr_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.545,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "epsr coveredby"
+  },
+  {
+   "id": "anl44_2_epsr_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.544,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last known/published estimate value, follows ISO 4217"
+  },
+  {
+   "id": "anl44_2_epsr_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4915,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Most recent EPSR estimate value before the current event"
+  },
+  {
+   "id": "anl44_2_epsr_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5033,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous EPSR estimate value immediately before the current event"
+  },
+  {
+   "id": "anl44_2_epsr_value",
+   "type": "VECTOR",
+   "coverage": 0.545,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Current estimate value for EPS (or relevant indicator), numeric"
+  },
+  {
+   "id": "anl44_2_grossmargin_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.4781,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Coverage or regime linkage indicator specifying the coverage regime for the gross margin event"
+  },
+  {
+   "id": "anl44_2_grossmargin_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.4701,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code (ISO 4217) in which the last gross margin estimate value was denominated"
+  },
+  {
+   "id": "anl44_2_grossmargin_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4008,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last known gross margin estimate value prior to the current event"
+  },
+  {
+   "id": "anl44_2_grossmargin_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.3764,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous gross margin estimate value prior to the current revision"
+  },
+  {
+   "id": "anl44_2_grossmargin_value",
+   "type": "VECTOR",
+   "coverage": 0.4781,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current gross margin estimate value for the event"
+  },
+  {
+   "id": "anl44_2_nav_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5122,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "nav coveredby"
+  },
+  {
+   "id": "anl44_2_nav_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5121,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO) used for reporting the last NAV value"
+  },
+  {
+   "id": "anl44_2_nav_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4542,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Value of NAV at the time of the most recent prior update before this event"
+  },
+  {
+   "id": "anl44_2_nav_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.4601,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous NAV estimate value before the current event (shows revision)"
+  },
+  {
+   "id": "anl44_2_nav_value",
+   "type": "VECTOR",
+   "coverage": 0.5122,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The current NAV estimate value"
+  },
+  {
+   "id": "anl44_2_netprofit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6224,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Regime or coverage indicator identifying the regime under which the estimate is covered"
+  },
+  {
+   "id": "anl44_2_netprofit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6137,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) of the last known net profit estimate value"
+  },
+  {
+   "id": "anl44_2_netprofit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5672,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Value of the last known net profit estimate prior to the current event"
+  },
+  {
+   "id": "anl44_2_netprofit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5871,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Previous value of the net profit estimate prior to the current event"
+  },
+  {
+   "id": "anl44_2_netprofit_rep_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5737,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Regime or coverage identifier linking the event to a coverage regime or delay regime"
+  },
+  {
+   "id": "anl44_2_netprofit_rep_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5714,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Currency code for the last net profit value, according to ISO 4217"
+  },
+  {
+   "id": "anl44_2_netprofit_rep_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5305,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The last known net profit estimate before the current event, often the previously published value"
+  },
+  {
+   "id": "anl44_2_netprofit_rep_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5327,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Previous net profit estimate value before the current revision"
+  },
+  {
+   "id": "anl44_2_netprofit_rep_value",
+   "type": "VECTOR",
+   "coverage": 0.5737,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current value of the net profit estimate or report"
+  },
+  {
+   "id": "anl44_2_netprofit_value",
+   "type": "VECTOR",
+   "coverage": 0.6224,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current value of the net profit estimate for the event"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6045,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "pretaxprofit coveredby"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5968,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "Currency code of the last known estimate value (ISO 4217 format)"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5522,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last recorded value of pre-tax profit estimate before current event or revision"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5702,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous estimate value before the current event—quantifies revision magnitude"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_rep_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Regime or coverage identifier indicating the regime under which the pretax profit estimate is submitted"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_rep_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5308,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO currency code for the last acted (prior) pretax profit estimate"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_rep_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.4929,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last known pretax profit estimate value prior to this event"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_rep_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.4864,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous pretax profit estimate value directly before the current event"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_rep_value",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current pretax profit estimate value provided in this event"
+  },
+  {
+   "id": "anl44_2_pretaxprofit_value",
+   "type": "VECTOR",
+   "coverage": 0.6045,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current estimate value for pre-tax profit (numeric, float)"
+  },
+  {
+   "id": "anl44_2_roa_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5612,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "roa coveredby"
+  },
+  {
+   "id": "anl44_2_roa_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5597,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "roa lastactccy"
+  },
+  {
+   "id": "anl44_2_roa_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.3898,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "roa lastactvalue"
+  },
+  {
+   "id": "anl44_2_roa_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5068,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "roa prevalue"
+  },
+  {
+   "id": "anl44_2_roa_value",
+   "type": "VECTOR",
+   "coverage": 0.5612,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "roa value"
+  },
+  {
+   "id": "anl44_2_roe_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.5501,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Code or regime identifier marking coverage logic for this ROE event, useful for regime analysis"
+  },
+  {
+   "id": "anl44_2_roe_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.5484,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code (ISO 4217) for last known ROE estimate value before the current event"
+  },
+  {
+   "id": "anl44_2_roe_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.3745,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last known ROE estimate value prior to the current event; the previously published or revised ROE"
+  },
+  {
+   "id": "anl44_2_roe_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.4925,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous analyst estimate value for ROE, prior to the current event or revision"
+  },
+  {
+   "id": "anl44_2_roe_value",
+   "type": "VECTOR",
+   "coverage": 0.5501,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Current analyst estimate for Return on Equity (ROE), as of this event"
+  },
+  {
+   "id": "anl44_2_sales_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6289,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Coverage regime or identifier indicating which regulatory/data regime governs this sales event"
+  },
+  {
+   "id": "anl44_2_sales_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6204,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last known prior estimate for sales"
+  },
+  {
+   "id": "anl44_2_sales_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.5771,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The most recent prior sales estimate value (before the current event)"
+  },
+  {
+   "id": "anl44_2_sales_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.5913,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous value of the sales estimate prior to this event (enables tracking of revisions)"
+  },
+  {
+   "id": "anl44_2_sales_value",
+   "type": "VECTOR",
+   "coverage": 0.6289,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current value of the analyst sales estimate"
+  },
+  {
+   "id": "anl44_best_dps",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Bloomberg BEst consensus Dividend Per Share estimate on an annualized basis (net or gross per country convention)"
+  },
+  {
+   "id": "anl44_best_dps_4wk_chg",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the consensus Dividend Per Share estimate over the last 4 weeks for the specified period (not a percent)"
+  },
+  {
+   "id": "anl44_best_dps_4wk_dn",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of analysts who decreased their Dividend Per Share estimates over the last 4 weeks for the specified period"
+  },
+  {
+   "id": "anl44_best_dps_4wk_up",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who increased their Dividend Per Share estimates over the last 4 weeks for the specified period"
+  },
+  {
+   "id": "anl44_best_dps_chg_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The percent change in the consensus Dividend Per Share estimate for the specified fiscal period over the last four weeks"
+  },
+  {
+   "id": "anl44_best_dps_hi",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The highest analyst estimate for Dividend Per Share (DPS) for the specified period"
+  },
+  {
+   "id": "anl44_best_dps_lo",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The lowest analyst estimate for Dividend Per Share (DPS) for the specified period"
+  },
+  {
+   "id": "anl44_best_dps_median",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The median estimated Dividend Per Share (DPS) for the specified estimate period, representing the middle value among all"
+  },
+  {
+   "id": "anl44_best_dps_numest",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analyst Dividend Per Share estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "anl44_best_dps_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of analyst Dividend Per Share (DPS) estimates, measuring the dispersion or consensus among estimates"
+  },
+  {
+   "id": "anl44_best_eps",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "BEst EPS consensus estimate for the specified period (defaults to adjusted EPS definition)"
+  },
+  {
+   "id": "anl44_best_eps_4wk_chg",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Absolute change in the specified period Bloomberg consensus EPS estimate over the last four weeks (not a percent change)"
+  },
+  {
+   "id": "anl44_best_eps_4wk_dn",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Number of analysts who lowered their EPS estimates in the last 4 weeks for the specified period"
+  },
+  {
+   "id": "anl44_best_eps_4wk_up",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Number of analysts who have increased their EPS estimates over the last 4 weeks (consensus-based)"
+  },
+  {
+   "id": "anl44_best_eps_chg_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Percent change in the specified-period EPS estimate versus the prior estimate"
+  },
+  {
+   "id": "anl44_best_eps_hi",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Highest analyst EPS estimate for the specified period within the consensus"
+  },
+  {
+   "id": "anl44_best_eps_lo",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest analyst EPS estimate for the specified period within the consensus"
+  },
+  {
+   "id": "anl44_best_eps_median",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median EPS estimate for the specified period across contributing analysts"
+  },
+  {
+   "id": "anl44_best_eps_numest",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributing analyst EPS estimates in the consensus for the specified period"
+  },
+  {
+   "id": "anl44_best_eps_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of contributed EPS estimates, measuring dispersion of the consensus for the specified period"
+  },
+  {
+   "id": "anl44_broker",
+   "type": "VECTOR",
+   "coverage": 0.6717,
+   "userCount": 4,
+   "alphaCount": 9,
+   "description": "broker"
+  },
+  {
+   "id": "anl44_cfps_latest_ann_dt_qtrly",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date of the latest quarterly earnings or sales announcement"
+  },
+  {
+   "id": "anl44_cfps_most_recent_period_end_dt",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "End date of the most recently available financial period (annual, quarterly, or semi-annual)"
+  },
+  {
+   "id": "anl44_dps_best_crncy_iso",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 10,
+   "description": "ISO currency code in which the DPS consensus value is calculated (e.g., USD, JPY)"
+  },
+  {
+   "id": "anl44_dps_best_cur_fiscal_qtr_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 3,
+   "alphaCount": 23,
+   "description": "Current fiscal quarter end date for which Bloomberg Earnings Estimates content is provided"
+  },
+  {
+   "id": "anl44_dps_best_cur_fiscal_semi_year_period",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 10,
+   "description": "The end date of the current fiscal semi-annual period for which Bloomberg Earnings Estimates are provided (for semi-annu"
+  },
+  {
+   "id": "anl44_dps_best_cur_fiscal_year_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 2,
+   "alphaCount": 13,
+   "description": "Current fiscal year end date for which Bloomberg Estimates content is provided"
+  },
+  {
+   "id": "anl44_dps_best_eeps_cur_yr",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "Estimated Earnings Per Share (EPS) for the current fiscal year as provided by Bloomberg estimates"
+  },
+  {
+   "id": "anl44_dps_best_eeps_nxt_yr",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 9,
+   "alphaCount": 25,
+   "description": "Estimated Earnings Per Share (EPS) for the next fiscal year as provided by Bloomberg estimates"
+  },
+  {
+   "id": "anl44_dps_best_fiscal_period_dt",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date corresponding to the fiscal period for which the Bloomberg estimate data applies (year and month of period end)"
+  },
+  {
+   "id": "anl44_dps_best_fperiod_override",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "User or system-specified fiscal period override indicating which fiscal period BEst should reference"
+  },
+  {
+   "id": "anl44_dps_latest_ann_dt_qtrly",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The most recent date on which quarterly earnings or sales results were announced"
+  },
+  {
+   "id": "anl44_dps_most_recent_period_end_dt",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The end date for the most recently completed fiscal period (annual, quarterly, or semi-annual)"
+  },
+  {
+   "id": "anl44_eps_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7214,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "eps analyst"
+  },
+  {
+   "id": "anl44_eps_best_crncy_iso",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "ISO currency code for the currency in which the Bloomberg consensus EPS value is stated for the current annual period; m"
+  },
+  {
+   "id": "anl44_eps_best_cur_fiscal_qtr_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 2,
+   "alphaCount": 12,
+   "description": "Current fiscal quarter end date for which Bloomberg Earnings Estimates content is provided"
+  },
+  {
+   "id": "anl44_eps_best_cur_fiscal_semi_year_period",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current fiscal semi-annual end date or period for which Bloomberg Estimates content is provided"
+  },
+  {
+   "id": "anl44_eps_best_cur_fiscal_year_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 1,
+   "alphaCount": 17,
+   "description": "Current fiscal year end date for which Bloomberg Earnings Estimates content is provided"
+  },
+  {
+   "id": "anl44_eps_best_eeps_cur_yr",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Estimated earnings per share for the current fiscal year from Bloomberg Estimates (BEst)"
+  },
+  {
+   "id": "anl44_eps_best_eeps_nxt_yr",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 8,
+   "alphaCount": 32,
+   "description": "Consensus estimated EPS for the next fiscal year"
+  },
+  {
+   "id": "anl44_eps_best_fiscal_period_dt",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Calendar year and month of the fiscal period associated with the Bloomberg Estimate data"
+  },
+  {
+   "id": "anl44_eps_best_fperiod_override",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Fiscal period override string for Bloomberg Estimates (e.g., 1FY, 2FQ, 05Q1, 06Y, 07S2) specifying which period the EPS "
+  },
+  {
+   "id": "anl44_eps_latest_ann_dt_qtrly",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Latest quarterly earnings or sales announcement date"
+  },
+  {
+   "id": "anl44_eps_most_recent_period_end_dt",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent available period end date from annual, quarterly, or semi-annual reporting, possibly from partial updates"
+  },
+  {
+   "id": "anl44_sales_analyst",
+   "type": "VECTOR",
+   "coverage": 0.7294,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "sales analyst"
+  },
+  {
+   "id": "anl44_second_en_bps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Identifier for the coverage regime or handler associated with the estimate"
+  },
+  {
+   "id": "anl44_second_en_bps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 10,
+   "alphaCount": 38,
+   "description": "Prior estimate value before the current revision"
+  },
+  {
+   "id": "anl44_second_en_bps_value",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Current estimate value"
+  },
+  {
+   "id": "anl44_second_en_capex_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Identifier for the regime or coverage under which the CAPEX event is reported"
+  },
+  {
+   "id": "anl44_second_en_capex_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Currency code for the last known CAPEX estimate"
+  },
+  {
+   "id": "anl44_second_en_capex_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Value of the CAPEX estimate immediately before the current revision or event; shows prior value for change/revision calc"
+  },
+  {
+   "id": "anl44_second_en_capex_value",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Numeric value of the CAPEX estimate for the current event"
+  },
+  {
+   "id": "anl44_second_en_cfps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Identifier of the regime or coverage state for this estimate event, used for regime linkage and validation"
+  },
+  {
+   "id": "anl44_second_en_cfps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "ISO 4217 currency code for the last recorded CFPS estimate value prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_cfps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last known CFPS estimate value prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_cfps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 3,
+   "alphaCount": 18,
+   "description": "Previous CFPS estimate value prior to current event"
+  },
+  {
+   "id": "anl44_second_en_cfps_value",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Current CFPS estimate value (e.g., cash flow per share), numeric"
+  },
+  {
+   "id": "anl44_second_en_dps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Regime or coverage regime identifier associated with the DPS event"
+  },
+  {
+   "id": "anl44_second_en_dps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Currency code of the last reported DPS estimate"
+  },
+  {
+   "id": "anl44_second_en_dps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 4,
+   "alphaCount": 28,
+   "description": "Previous DPS estimate value prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_dps_value",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current value of the DPS estimate (Dividends Per Share)"
+  },
+  {
+   "id": "anl44_second_en_ebit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 5,
+   "alphaCount": 11,
+   "description": "ebit coveredby"
+  },
+  {
+   "id": "anl44_second_en_ebit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 6,
+   "alphaCount": 14,
+   "description": "ISO 4217 currency code for the last known EBIT estimate value before the current event"
+  },
+  {
+   "id": "anl44_second_en_ebit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The last known estimate value for EBIT before the current event in the revision chain"
+  },
+  {
+   "id": "anl44_second_en_ebit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 4,
+   "alphaCount": 35,
+   "description": "Previous EBIT estimate value before this update"
+  },
+  {
+   "id": "anl44_second_en_ebit_value",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Current EBIT estimate value"
+  },
+  {
+   "id": "anl44_second_en_ebitda_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 8,
+   "alphaCount": 22,
+   "description": "ebitda coveredby"
+  },
+  {
+   "id": "anl44_second_en_ebitda_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency code (ISO 4217) used for the last published estimate value of EBITDA"
+  },
+  {
+   "id": "anl44_second_en_ebitda_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Value of the last published or most recent estimate for EBITDA prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_ebitda_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Previous value of the EBITDA estimate before the current revision"
+  },
+  {
+   "id": "anl44_second_en_ebitda_value",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Current value of the EBITDA estimate"
+  },
+  {
+   "id": "anl44_second_en_ebitdaps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 5,
+   "alphaCount": 12,
+   "description": "Identifier for the coverage or regime under which the estimate event is classified"
+  },
+  {
+   "id": "anl44_second_en_ebitdaps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last known estimate value, using ISO 4217 standard (e.g., USD, EUR)"
+  },
+  {
+   "id": "anl44_second_en_ebitdaps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous EBITDA per share estimate value prior to the current update"
+  },
+  {
+   "id": "anl44_second_en_ebitdaps_value",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current EBITDA per share estimate value"
+  },
+  {
+   "id": "anl44_second_en_eps_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 9,
+   "alphaCount": 16,
+   "description": "eps coveredby"
+  },
+  {
+   "id": "anl44_second_en_eps_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Currency code of last published/prior EPS estimate, ISO 4217"
+  },
+  {
+   "id": "anl44_second_en_eps_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Last known EPS estimate value prior to the current event, i.e., the most recent previous EPS figure in the event chain"
+  },
+  {
+   "id": "anl44_second_en_eps_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Previous EPS estimate value before current event (for revision tracking)"
+  },
+  {
+   "id": "anl44_second_en_eps_value",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 42,
+   "alphaCount": 70,
+   "description": "Current EPS estimate value (numeric, float)"
+  },
+  {
+   "id": "anl44_second_en_epsr_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Identifier for the coverage regime or mask under which the estimate/event is categorized"
+  },
+  {
+   "id": "anl44_second_en_epsr_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency code for the last known EPSR estimate prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_epsr_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent estimate value recorded prior to the current event/revision"
+  },
+  {
+   "id": "anl44_second_en_epsr_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Value of the EPSR estimate immediately before the current event; used to compute revision magnitude"
+  },
+  {
+   "id": "anl44_second_en_epsr_value",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 9,
+   "alphaCount": 13,
+   "description": "Current value of the EPSR estimate"
+  },
+  {
+   "id": "anl44_second_en_grossmargin_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "grossmargin coveredby"
+  },
+  {
+   "id": "anl44_second_en_grossmargin_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "The currency code (e.g., USD, EUR) associated with the last recorded gross margin estimate value, following ISO 4217"
+  },
+  {
+   "id": "anl44_second_en_grossmargin_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "The most recent previous estimate value for gross margin, recorded before the current event in the estimate revision cha"
+  },
+  {
+   "id": "anl44_second_en_grossmargin_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous reported gross margin value prior to the current event/revision"
+  },
+  {
+   "id": "anl44_second_en_grossmargin_value",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current value of the gross margin estimate/event"
+  },
+  {
+   "id": "anl44_second_en_nav_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "nav coveredby"
+  },
+  {
+   "id": "anl44_second_en_nav_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code for last known NAV value (ISO 4217)"
+  },
+  {
+   "id": "anl44_second_en_nav_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Prior estimate value before the current revision"
+  },
+  {
+   "id": "anl44_second_en_nav_value",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current NAV estimate value"
+  },
+  {
+   "id": "anl44_second_en_netdebt_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Identifier for the coverage regime or regime source for net debt"
+  },
+  {
+   "id": "anl44_second_en_netdebt_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "ISO 4217 currency code corresponding to the last known net debt estimate value prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_netdebt_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Last known net debt estimate before the current event"
+  },
+  {
+   "id": "anl44_second_en_netdebt_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Previous Net Debt estimate value immediately before the current event"
+  },
+  {
+   "id": "anl44_second_en_netdebt_value",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current Net Debt estimate value for the identified period"
+  },
+  {
+   "id": "anl44_second_en_netprofit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "netprofit coveredby"
+  },
+  {
+   "id": "anl44_second_en_netprofit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 3,
+   "alphaCount": 9,
+   "description": "ISO 4217 currency code for the last recorded or revised net profit estimate prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_netprofit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "The value of the most recent previous net profit estimate before the current event update, used to reference the last kn"
+  },
+  {
+   "id": "anl44_second_en_netprofit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Previous value of the NETPROFIT estimate before the current revision"
+  },
+  {
+   "id": "anl44_second_en_netprofit_rep_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "netprofit rep coveredby"
+  },
+  {
+   "id": "anl44_second_en_netprofit_rep_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ISO 4217 currency code for the last prior net profit estimate value before the current event"
+  },
+  {
+   "id": "anl44_second_en_netprofit_rep_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Last reported net profit value before the current event, typically prior published estimate"
+  },
+  {
+   "id": "anl44_second_en_netprofit_rep_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Previous value of the Net Profit estimate before latest revision"
+  },
+  {
+   "id": "anl44_second_en_netprofit_rep_value",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Current reported value of net profit (numeric, float)"
+  },
+  {
+   "id": "anl44_second_en_netprofit_value",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Current estimated value of NETPROFIT"
+  },
+  {
+   "id": "anl44_second_en_operatingprofit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "operatingprofit coveredby"
+  },
+  {
+   "id": "anl44_second_en_operatingprofit_value",
+   "type": "VECTOR",
+   "coverage": 0.2833,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Operating profit value"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 9,
+   "alphaCount": 22,
+   "description": "pretaxprofit coveredby"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Currency code (using ISO 4217 standard) for the last reported pretax profit estimate"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "The most recent known estimate of pretax profit prior to the current event in the revision chain"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Previous estimate value before the current revision"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_rep_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "String specifying the regime or coverage source ID relevant for validation/masking"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_rep_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "ISO 4217 currency code corresponding to the last reported pre-tax profit estimate value"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_rep_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The most recent estimate of pre-tax profit before the current event, i.e., the last published or finalized value in the "
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_rep_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Previous estimate or reported value for pre-tax profit before the current update"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_rep_value",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current estimate or reported value for pre-tax profit"
+  },
+  {
+   "id": "anl44_second_en_pretaxprofit_value",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Current value of the pre-tax profit estimate"
+  },
+  {
+   "id": "anl44_second_en_roa_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "roa coveredby"
+  },
+  {
+   "id": "anl44_second_en_roa_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code associated with the last known ROA estimate or value"
+  },
+  {
+   "id": "anl44_second_en_roa_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Previous ROA estimate value prior to the current revision"
+  },
+  {
+   "id": "anl44_second_en_roa_value",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current ROA estimate value"
+  },
+  {
+   "id": "anl44_second_en_roe_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "roe coveredby"
+  },
+  {
+   "id": "anl44_second_en_roe_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency of the last reported ROE value prior to the current event"
+  },
+  {
+   "id": "anl44_second_en_roe_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "ROE value prior to the current event (previous value in the revision chain)"
+  },
+  {
+   "id": "anl44_second_en_roe_value",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Current ROE estimate value"
+  },
+  {
+   "id": "anl44_second_en_sales_coveredby",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 10,
+   "alphaCount": 20,
+   "description": "sales coveredby"
+  },
+  {
+   "id": "anl44_second_en_sales_lastactccy",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "The currency code (ISO 4217) associated with the last known sales estimate value before the current event"
+  },
+  {
+   "id": "anl44_second_en_sales_lastactvalue",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 3,
+   "alphaCount": 16,
+   "description": "Most recent known sales estimate value prior to the current event; typically, the previously published or finalized valu"
+  },
+  {
+   "id": "anl44_second_en_sales_prevalue",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 10,
+   "alphaCount": 22,
+   "description": "Previous value for the sales estimate, before current event"
+  },
+  {
+   "id": "anl44_second_en_sales_value",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Current sales estimate value"
+  },
+  {
+   "id": "anl44_source",
+   "type": "VECTOR",
+   "coverage": 0.6717,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "source"
+  },
+  {
+   "id": "annual_capex_currency",
+   "type": "MATRIX",
+   "coverage": 0.8281,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "capex lastupdatedannccy"
+  },
+  {
+   "id": "annual_capex_latest_value",
+   "type": "MATRIX",
+   "coverage": 0.7388,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "capex lastupdatedannval"
+  },
+  {
+   "id": "annual_tbvps_currency",
+   "type": "MATRIX",
+   "coverage": 0.2842,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last-updated annual TBVPS value"
+  },
+  {
+   "id": "annual_tbvps_latest_value",
+   "type": "MATRIX",
+   "coverage": 0.2551,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "tbvps lastupdatedannval"
+  },
+  {
+   "id": "annual_update_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.7729,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Currency code for the most recent annual net debt value"
+  },
+  {
+   "id": "annual_update_ebitda_per_share_currency",
+   "type": "MATRIX",
+   "coverage": 0.629,
+   "userCount": 1,
+   "alphaCount": 17,
+   "description": "ebitdaps lastupdatedannccy"
+  },
+  {
+   "id": "annual_update_ebitda_per_share_value",
+   "type": "MATRIX",
+   "coverage": 0.4786,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "ebitdaps lastupdatedannval"
+  },
+  {
+   "id": "annual_update_gross_margin_currency",
+   "type": "MATRIX",
+   "coverage": 0.8009,
+   "userCount": 3,
+   "alphaCount": 15,
+   "description": "Currency code of the latest updated annual gross margin value"
+  },
+  {
+   "id": "annual_update_gross_margin_value",
+   "type": "MATRIX",
+   "coverage": 0.7062,
+   "userCount": 3,
+   "alphaCount": 8,
+   "description": "Most recent annual gross margin value that was updated/entered"
+  },
+  {
+   "id": "annual_update_net_income_currency",
+   "type": "MATRIX",
+   "coverage": 0.8378,
+   "userCount": 3,
+   "alphaCount": 19,
+   "description": "netprofit rep lastupdatedannccy"
+  },
+  {
+   "id": "annual_update_net_income_value",
+   "type": "MATRIX",
+   "coverage": 0.7961,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "netprofit rep lastupdatedannval"
+  },
+  {
+   "id": "annual_update_value",
+   "type": "MATRIX",
+   "coverage": 0.6959,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Most recent net debt value linked to the annual reporting period"
+  },
+  {
+   "id": "anticipated_earnings_period",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected earnings reporting period code (Q1–Q4, C1–C4, S1–S2, Y)"
+  },
+  {
+   "id": "anticipated_earnings_report_time_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 14,
+   "description": "Expected time of the earnings announcement such as before market, after market, or specific time"
+  },
+  {
+   "id": "bbo_ebitda_market_status",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Status of the market/tradability for the security (e.g., active, suspended, halted)"
+  },
+  {
+   "id": "bps_4week_consensus_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the specified period BPS estimate over the last 4 weeks (not a percent change)"
+  },
+  {
+   "id": "bps_consensus_change_percent",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the specified period BPS estimate versus the prior BPS estimate (broker estimates only)"
+  },
+  {
+   "id": "bps_consensus_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "BEst consensus Book Value Per Share estimate for the specified period"
+  },
+  {
+   "id": "bps_current_fiscal_quarter_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 2,
+   "alphaCount": 17,
+   "description": "Current fiscal quarter end date used for Bloomberg Estimates content"
+  },
+  {
+   "id": "bps_current_fiscal_semiannual_period",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Current fiscal semi-annual period end date for which Bloomberg Estimates content is provided (populated for semi-annual "
+  },
+  {
+   "id": "bps_current_fiscal_year_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 1,
+   "alphaCount": 18,
+   "description": "Current fiscal year end date or period for which the BEst BPS estimate applies"
+  },
+  {
+   "id": "bps_estimate_currency_iso",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO currency code indicating the reporting currency of the BEst BPS estimate"
+  },
+  {
+   "id": "bps_estimate_standard_deviation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of contributed BPS estimates around the consensus mean"
+  },
+  {
+   "id": "bps_estimated_eps_next_year",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 4,
+   "alphaCount": 43,
+   "description": "Bloomberg Estimates projected earnings per share for the next fiscal year"
+  },
+  {
+   "id": "bps_expected_earnings_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected time of the earnings announcement (e.g., military time, Before market, After market, Week of, Other) in the use"
+  },
+  {
+   "id": "bps_forecast_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current estimate currency code (ISO 4217)"
+  },
+  {
+   "id": "bps_highest_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high Book Value per Share (BPS) estimate for the specified period; available for Consensus only"
+  },
+  {
+   "id": "bps_lowest_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ low Book Value per Share (BPS) estimate for the specified period; available for Consensus only (Standard, Re-S"
+  },
+  {
+   "id": "bps_market_status_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange-provided trading status of the equity (e.g., active, halted, suspended) when available"
+  },
+  {
+   "id": "bps_median_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median of contributed BPS estimates for the specified period"
+  },
+  {
+   "id": "bps_num_estimates_down_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Number of analysts who decreased their BPS estimates over the last 4 weeks"
+  },
+  {
+   "id": "bps_num_estimates_up_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who have increased their Book Value per Share (BPS) estimates over the past 4 weeks for consensus est"
+  },
+  {
+   "id": "bps_period_override_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg Estimates fiscal period override specifying which estimate period to return (relative or fixed formats)"
+  },
+  {
+   "id": "cfps_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.5083,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current estimate"
+  },
+  {
+   "id": "consensus_eps_forecast_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg BEst adjusted EPS estimate for the specified fiscal period (defaults to adjusted/continuing operations)"
+  },
+  {
+   "id": "consensus_ffops_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Consensus Funds From Operations per share estimate for the specified period"
+  },
+  {
+   "id": "consensus_last_update_timestamp",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Date when BEst estimates were last updated, reflecting any applicable overrides"
+  },
+  {
+   "id": "consensus_last_update_timestamp_roa",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last date when the ROA estimate data was updated"
+  },
+  {
+   "id": "consensus_net_debt_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Best Net Debt estimate value"
+  },
+  {
+   "id": "current_fiscal_quarter_period_code_3",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "Current fiscal quarter end date for which BEst content is provided"
+  },
+  {
+   "id": "current_fiscal_semiannual_period_code_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 8,
+   "description": "Current fiscal semi-annual period end date for which BEst content is provided"
+  },
+  {
+   "id": "current_fiscal_year_period_code_2",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 1,
+   "alphaCount": 27,
+   "description": "Current fiscal year end date for which BEst content is provided"
+  },
+  {
+   "id": "current_year_eps_estimate",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 3,
+   "alphaCount": 12,
+   "description": "Estimated earnings per share for the current fiscal year"
+  },
+  {
+   "id": "current_year_eps_estimate_2",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 2,
+   "alphaCount": 20,
+   "description": "Consensus estimate for earnings per share for the current fiscal year."
+  },
+  {
+   "id": "dps_expected_report_date",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected date of the next earnings report (may be adjusted for time zone details)"
+  },
+  {
+   "id": "dps_expected_report_period_label",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The reporting period (e.g., Q1, Q2, S1, Y) for which the next earnings report is expected"
+  },
+  {
+   "id": "dps_expected_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "The expected earnings announcement time, shown as a specific time when available or labels such as before market open (B"
+  },
+  {
+   "id": "dps_last_forecast_update",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "The most recent date that any update was made to Bloomberg Estimates data for this security or period"
+  },
+  {
+   "id": "dps_market_session_status",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market status code indicating whether the security is actively traded, suspended, or otherwise impacted on its exchange"
+  },
+  {
+   "id": "ebit_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.6255,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current EBIT estimate"
+  },
+  {
+   "id": "ebit_forecast_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.7675,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current EBIT estimate"
+  },
+  {
+   "id": "ebitda_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.5702,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current EBITDA estimate value"
+  },
+  {
+   "id": "ebitda_forecast_currency",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "ISO 4217 currency code for the current EBITDA estimate"
+  },
+  {
+   "id": "ebitda_latest_actual_date",
+   "type": "VECTOR",
+   "coverage": 0.7022,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Date of last activity or revision for EBITDA data"
+  },
+  {
+   "id": "ebitda_latest_annual_currency",
+   "type": "MATRIX",
+   "coverage": 0.8271,
+   "userCount": 2,
+   "alphaCount": 13,
+   "description": "Currency of the last updated annual EBITDA value"
+  },
+  {
+   "id": "ebitda_latest_annual_value",
+   "type": "MATRIX",
+   "coverage": 0.7084,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last reported value for annual EBITDA"
+  },
+  {
+   "id": "ebitda_latest_quarter_currency",
+   "type": "MATRIX",
+   "coverage": 0.6539,
+   "userCount": 2,
+   "alphaCount": 12,
+   "description": "Currency of the last updated quarterly EBITDA value"
+  },
+  {
+   "id": "ebitda_per_share_forecast_currency",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the EBITDA per share estimate (ISO 4217)"
+  },
+  {
+   "id": "ebitda_recent_quarter_value",
+   "type": "MATRIX",
+   "coverage": 0.5396,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "ebitda lastupdatedqtrval"
+  },
+  {
+   "id": "enterprise_value_to_ebitda_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Enterprise Value to estimated EBITDA ratio for the specified period per Bloomberg Estimates"
+  },
+  {
+   "id": "eps_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 0.6203,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) for the current EPS estimate"
+  },
+  {
+   "id": "eps_estimate_4wk_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the EPS (adjusted) estimate over the last 4 weeks for the specified period (not a percent)"
+  },
+  {
+   "id": "eps_estimate_4wk_down_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts who decreased their EPS (non-GAAP) estimates over the last 4 weeks"
+  },
+  {
+   "id": "eps_estimate_current_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Bloomberg Estimates projected earnings per share for the current fiscal year; switches to next year after current-year e"
+  },
+  {
+   "id": "eps_estimate_current_fiscal_year_2",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 1,
+   "alphaCount": 13,
+   "description": "Bloomberg Estimates (BEst) consensus EPS for the current fiscal year; replaced by next-year EPS on the day current-year "
+  },
+  {
+   "id": "eps_estimate_current_year",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Bloomberg Estimates projected earnings per share for the current fiscal year; replaced by next year on the earnings anno"
+  },
+  {
+   "id": "eps_estimate_current_year_2",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 4,
+   "alphaCount": 17,
+   "description": "Estimated EPS for the current fiscal year from Bloomberg Estimates"
+  },
+  {
+   "id": "eps_estimate_high_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high EPS (non-GAAP) estimate for the specified period; consensus-only"
+  },
+  {
+   "id": "eps_estimate_low_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ lowest EPS estimate for the specified period (Consensus only)"
+  },
+  {
+   "id": "eps_estimate_median_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median estimated EPS for the specified estimate period (Consensus)"
+  },
+  {
+   "id": "eps_estimate_next_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 5,
+   "alphaCount": 21,
+   "description": "Bloomberg Estimates projected earnings per share for the next fiscal year; for Japanese securities may use Toyo Keizai i"
+  },
+  {
+   "id": "eps_estimate_next_year",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "Next fiscal year EPS estimate from Bloomberg Estimates (BEst); for Japan may use Toyo Keizai if BEst unavailable"
+  },
+  {
+   "id": "eps_estimate_percent_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the specified period EPS estimate versus the prior estimate"
+  },
+  {
+   "id": "eps_estimate_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of the GAAP EPS estimates, measuring dispersion among analyst estimates"
+  },
+  {
+   "id": "eps_gaap_estimate_4wk_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the GAAP EPS estimate over the last 4 weeks for the specified period (not a percent)"
+  },
+  {
+   "id": "eps_gaap_estimate_4wk_down_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 12,
+   "alphaCount": 33,
+   "description": "Number of analysts who decreased their GAAP EPS estimates for the specified period"
+  },
+  {
+   "id": "eps_gaap_estimate_4wk_up_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Number of analysts who increased their GAAP EPS estimates for the specified period over the last 4 weeks"
+  },
+  {
+   "id": "eps_gaap_estimate_high_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high GAAP EPS estimate for the specified period (consensus high)"
+  },
+  {
+   "id": "eps_gaap_estimate_median_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median estimated GAAP EPS for the specified estimate period (Consensus)"
+  },
+  {
+   "id": "eps_gaap_estimate_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of contributed GAAP EPS estimates (consensus dispersion)"
+  },
+  {
+   "id": "eps_upward_revisions_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of analysts increasing their EPS estimates over the last 4 weeks"
+  },
+  {
+   "id": "epsr_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.545,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current estimate, usually ISO 4217"
+  },
+  {
+   "id": "epsr_forecast_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.6778,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code of the current EPSR estimate value"
+  },
+  {
+   "id": "epsr_last_annual_update_annual_period",
+   "type": "MATRIX",
+   "coverage": 0.8414,
+   "userCount": 2,
+   "alphaCount": 15,
+   "description": "epsr lastupdatedannann"
+  },
+  {
+   "id": "epsr_last_annual_update_currency",
+   "type": "MATRIX",
+   "coverage": 0.8414,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "epsr lastupdatedannccy"
+  },
+  {
+   "id": "epsr_last_annual_update_value",
+   "type": "MATRIX",
+   "coverage": 0.7881,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Most recent updated value of the annual EPSR"
+  },
+  {
+   "id": "epsr_last_quarterly_update_annual_period",
+   "type": "MATRIX",
+   "coverage": 0.7571,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "epsr lastupdatedqtrann"
+  },
+  {
+   "id": "epsr_last_quarterly_update_currency",
+   "type": "MATRIX",
+   "coverage": 0.7571,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "Currency code associated with the most recent quarterly EPSR value"
+  },
+  {
+   "id": "epsr_last_quarterly_update_value",
+   "type": "MATRIX",
+   "coverage": 0.713,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Most recent updated value of the quarterly EPSR"
+  },
+  {
+   "id": "estimate_currency_iso_code",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "ISO-standard currency code for the \"best\" pre-tax profit estimate (e.g., USD, EUR)"
+  },
+  {
+   "id": "estimate_currency_iso_code_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "ISO currency code for the best Net Debt estimate (e.g., USD, EUR)"
+  },
+  {
+   "id": "estimate_currency_iso_code_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 8,
+   "description": "ISO currency code of the Bloomberg Estimates EPS consensus for the current annual period, may include sub-currencies lik"
+  },
+  {
+   "id": "estimate_last_update_time",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last update date of Bloomberg Estimates (BEst), affected by override settings"
+  },
+  {
+   "id": "expected_earnings_announcement_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 8,
+   "description": "Expected time of the earnings announcement (military time or Bef-mkt/Aft-mkt/Week of/Other)"
+  },
+  {
+   "id": "expected_earnings_report_date",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "Expected date for the next earnings or financial report"
+  },
+  {
+   "id": "expected_earnings_report_period",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected reporting period code for the upcoming earnings (e.g., Q1–Q4, S1–S2, Y)"
+  },
+  {
+   "id": "expected_earnings_report_period_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected earnings report period code, for example Q1–Q4, C1–C4, S1–S2, or Y"
+  },
+  {
+   "id": "expected_earnings_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 7,
+   "description": "Expected time of day for the future earnings report release"
+  },
+  {
+   "id": "expected_earnings_report_time_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 9,
+   "description": "Expected time of the earnings announcement (actual time if known, else codes like Bef-mkt, Aft-mkt, Week of)"
+  },
+  {
+   "id": "expected_report_period_label",
+   "type": "VECTOR",
+   "coverage": 0.6837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected earnings reporting period, coded as Q1-Q4, C1-C4, S1-S2, or Y (annual)"
+  },
+  {
+   "id": "expected_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected time of the next earnings report; values may be military time, Bef-mkt, Aft-mkt, Week of, or Other; reported in"
+  },
+  {
+   "id": "expected_report_time_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 12,
+   "description": "Expected time of the upcoming earnings announcement (local time or labels such as Bef-mkt/Aft-mkt)"
+  },
+  {
+   "id": "expected_report_time_roa",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "Expected time of the upcoming earnings announcement, if available"
+  },
+  {
+   "id": "ffops_4week_consensus_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Absolute change in the FFOPS estimate over the last 4 weeks for the specified fiscal period (not a percent)"
+  },
+  {
+   "id": "ffops_consensus_change_percent",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The percentage change in the specified period Funds from Operations per share (FFOPS) estimate versus the prior FFOPS es"
+  },
+  {
+   "id": "ffops_estimate_standard_deviation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of the contributed FFOPS estimates around their mean for the specified period"
+  },
+  {
+   "id": "ffops_expected_earnings_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Expected time of the earnings announcement in military time or qualitative notation such as Bef-mkt or Aft-mkt"
+  },
+  {
+   "id": "ffops_expected_report_period_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The reporting period code (Q1–Q4 for quarters, C1–C4 for cumulative quarters, S1–S2 for semi-annual, Y for annual)"
+  },
+  {
+   "id": "ffops_highest_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high FFOPS estimate for the specified period"
+  },
+  {
+   "id": "ffops_lowest_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ low FFOPS estimate for the specified period"
+  },
+  {
+   "id": "ffops_market_status_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of an equity based on exchange information when available; if absent or incorrect, status is supplied by "
+  },
+  {
+   "id": "ffops_median_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median FFOPS estimate for the specified period within the consensus"
+  },
+  {
+   "id": "ffops_num_analyst_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of FFOPS estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "ffops_num_estimates_down_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts decreasing their FFOPS estimates over the last four weeks"
+  },
+  {
+   "id": "ffops_num_estimates_up_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who have raised their Funds From Operations per share (FFOPS) estimates over the last 4 weeks for the"
+  },
+  {
+   "id": "ffops_period_override_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "User-specified fiscal period override for Bloomberg Estimates using relative or fixed period formats"
+  },
+  {
+   "id": "fiscal_period_override_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Field to specify the fiscal period override for BEst using relative or fixed codes"
+  },
+  {
+   "id": "fiscal_period_override_flag_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Code specifying the fiscal period override for Bloomberg Estimates (e.g., 1FY, -1FS, 2FQ, fixed formats like 06Y, 07S2)"
+  },
+  {
+   "id": "forecast_currency_book_value_per_share",
+   "type": "VECTOR",
+   "coverage": 0.59,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) for the current estimate value"
+  },
+  {
+   "id": "forecast_currency_cash_flow_per_share_second",
+   "type": "VECTOR",
+   "coverage": 0.6209,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current CFPS estimate"
+  },
+  {
+   "id": "forecast_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code of the current DPS estimate"
+  },
+  {
+   "id": "forecast_currency_code_10",
+   "type": "VECTOR",
+   "coverage": 0.6766,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current currency code used for the CAPEX estimate"
+  },
+  {
+   "id": "forecast_currency_code_11",
+   "type": "VECTOR",
+   "coverage": 0.6613,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 3-letter code for the currency of the pre-tax profit value"
+  },
+  {
+   "id": "forecast_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 0.5737,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO currency code indicating the currency in which the net profit estimate/report is denominated"
+  },
+  {
+   "id": "forecast_currency_code_3",
+   "type": "VECTOR",
+   "coverage": 0.7584,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 3-letter currency code used for the EPS estimate value"
+  },
+  {
+   "id": "forecast_currency_code_7",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code in which the ROE estimate/report is denominated"
+  },
+  {
+   "id": "forecast_currency_code_8",
+   "type": "VECTOR",
+   "coverage": 0.6614,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code (ISO 3-letter) in which the net debt estimate is reported"
+  },
+  {
+   "id": "forecast_currency_code_9",
+   "type": "VECTOR",
+   "coverage": 0.7635,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 3-letter) in which the Net Profit estimate is provided"
+  },
+  {
+   "id": "forecast_currency_code_pretax",
+   "type": "VECTOR",
+   "coverage": 0.7445,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current pretax profit estimate (ISO 4217 standard)"
+  },
+  {
+   "id": "forecast_currency_code_roa",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current estimate"
+  },
+  {
+   "id": "forecast_currency_dps",
+   "type": "VECTOR",
+   "coverage": 0.5793,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for current DPS estimate, usually ISO 4217 format"
+  },
+  {
+   "id": "forecast_currency_netprofit",
+   "type": "VECTOR",
+   "coverage": 0.6224,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) for the net profit estimate value"
+  },
+  {
+   "id": "forecast_currency_roe",
+   "type": "VECTOR",
+   "coverage": 0.5334,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) in which the current ROE estimate is stated"
+  },
+  {
+   "id": "forecast_currency_sales",
+   "type": "VECTOR",
+   "coverage": 0.6289,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO currency code of the sales estimate"
+  },
+  {
+   "id": "forecast_period_end_date_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "End date of Bloomberg's fundamental period for the data point"
+  },
+  {
+   "id": "forecast_period_override_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Override specifying the fiscal period for BEst, using relative or fixed formats (e.g., 1FY, 2FQ, 06Y)"
+  },
+  {
+   "id": "gaap_eps_estimate_low_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Analysts’ lowest GAAP EPS estimate for the specified period (Consensus)"
+  },
+  {
+   "id": "gaap_eps_estimate_next_year",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 4,
+   "alphaCount": 8,
+   "description": "Estimated EPS for next fiscal year; uses Toyo Keizai for Japan if BEst is unavailable"
+  },
+  {
+   "id": "gaap_eps_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg BEst GAAP EPS estimate (reported/bottom-line) for the specified fiscal period"
+  },
+  {
+   "id": "gaap_eps_num_analyst_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analyst EPS estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "gaap_eps_num_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of GAAP EPS estimates contributed for the specified period (consensus)"
+  },
+  {
+   "id": "gaap_estimate_currency_iso_code",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 10,
+   "description": "ISO currency code in which the BEst EPS consensus is calculated for the current annual period (may include sub-currencie"
+  },
+  {
+   "id": "gross_margin_forecast_currency",
+   "type": "VECTOR",
+   "coverage": 0.6,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) for the gross margin value in this event"
+  },
+  {
+   "id": "grossmargin_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.4486,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code (ISO 4217) for the current gross margin estimate value"
+  },
+  {
+   "id": "highest_net_debt_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest analyst Net Debt estimate for the specified period (consensus range)"
+  },
+  {
+   "id": "last_actual_bps_currency",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code associated with the last known estimate value, indicating the currency in which the previous esti"
+  },
+  {
+   "id": "last_actual_bps_value",
+   "type": "VECTOR",
+   "coverage": 0.7258,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent estimate value prior to the current event"
+  },
+  {
+   "id": "last_actual_ebitda_per_share_value",
+   "type": "VECTOR",
+   "coverage": 0.4291,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The most recent estimate value prior to the current event for the module’s measure"
+  },
+  {
+   "id": "last_actual_roe_value_2",
+   "type": "VECTOR",
+   "coverage": 0.6818,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Last known ROE estimate value prior to the current event, often the previously published or finalized estimate"
+  },
+  {
+   "id": "last_actual_value_roa",
+   "type": "VECTOR",
+   "coverage": 0.6488,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent ROA value prior to the current event"
+  },
+  {
+   "id": "last_annual_bps_currency",
+   "type": "MATRIX",
+   "coverage": 0.849,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Currency code used in the most recent annual book value per share update."
+  },
+  {
+   "id": "last_annual_bps_update_time",
+   "type": "MATRIX",
+   "coverage": 0.849,
+   "userCount": 3,
+   "alphaCount": 23,
+   "description": "Timestamp of the most recent annual book value per share update."
+  },
+  {
+   "id": "last_annual_bps_value_update",
+   "type": "MATRIX",
+   "coverage": 0.7741,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent BPS value last updated for the annual period"
+  },
+  {
+   "id": "last_annual_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.8285,
+   "userCount": 2,
+   "alphaCount": 8,
+   "description": "Currency code of the last updated annual ROE value"
+  },
+  {
+   "id": "last_annual_currency_update",
+   "type": "MATRIX",
+   "coverage": 0.8369,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Currency code for the latest updated annual DPS estimate"
+  },
+  {
+   "id": "last_annual_operatingprofit_currency",
+   "type": "MATRIX",
+   "coverage": 0.5636,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "operatingprofit lastupdatedannccy"
+  },
+  {
+   "id": "last_annual_operatingprofit_update_time",
+   "type": "MATRIX",
+   "coverage": 0.5636,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "operatingprofit lastupdatedannann"
+  },
+  {
+   "id": "last_annual_operatingprofit_value_update",
+   "type": "MATRIX",
+   "coverage": 0.2988,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "operatingprofit lastupdatedannval"
+  },
+  {
+   "id": "last_annual_update_annual_period",
+   "type": "MATRIX",
+   "coverage": 0.8255,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "pretaxprofit rep lastupdatedannann"
+  },
+  {
+   "id": "last_annual_update_currency",
+   "type": "MATRIX",
+   "coverage": 0.8255,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "Currency code corresponding to the most recently updated annual pre-tax profit value"
+  },
+  {
+   "id": "last_annual_update_time",
+   "type": "MATRIX",
+   "coverage": 0.8285,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "Date of last update for the annual ROE value"
+  },
+  {
+   "id": "last_annual_update_value",
+   "type": "MATRIX",
+   "coverage": 0.7789,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "pretaxprofit rep lastupdatedannval"
+  },
+  {
+   "id": "last_annual_value_update",
+   "type": "MATRIX",
+   "coverage": 0.6319,
+   "userCount": 2,
+   "alphaCount": 14,
+   "description": "dps lastupdatedannval"
+  },
+  {
+   "id": "last_annual_value_update_3",
+   "type": "MATRIX",
+   "coverage": 0.6228,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Most recently updated annual ROE value for the entity"
+  },
+  {
+   "id": "last_forecast_update_timestamp",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last update date of BEst estimates content (reflects any period/data source/consolidation overrides)"
+  },
+  {
+   "id": "last_quarterly_annual_update_time",
+   "type": "MATRIX",
+   "coverage": 0.4534,
+   "userCount": 1,
+   "alphaCount": 9,
+   "description": "Date when the quarterly announced ROE value was last updated"
+  },
+  {
+   "id": "last_quarterly_bps_annual_update",
+   "type": "MATRIX",
+   "coverage": 0.7141,
+   "userCount": 1,
+   "alphaCount": 12,
+   "description": "Timestamp of the latest quarterly-to-annual book value per share update."
+  },
+  {
+   "id": "last_quarterly_bps_currency",
+   "type": "MATRIX",
+   "coverage": 0.7141,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Currency code used in the most recent quarterly book value per share update."
+  },
+  {
+   "id": "last_quarterly_bps_value_update",
+   "type": "MATRIX",
+   "coverage": 0.6511,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Most recent BPS value last updated for the quarterly period"
+  },
+  {
+   "id": "last_quarterly_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.4534,
+   "userCount": 2,
+   "alphaCount": 10,
+   "description": "Currency code for the most recent quarterly ROE update"
+  },
+  {
+   "id": "last_quarterly_currency_update",
+   "type": "MATRIX",
+   "coverage": 0.3986,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Currency code for the latest updated quarterly DPS estimate"
+  },
+  {
+   "id": "last_quarterly_operatingprofit_annual_update",
+   "type": "MATRIX",
+   "coverage": 0.5079,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "operatingprofit lastupdatedqtrann"
+  },
+  {
+   "id": "last_quarterly_operatingprofit_currency",
+   "type": "MATRIX",
+   "coverage": 0.5079,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "operatingprofit lastupdatedqtrccy"
+  },
+  {
+   "id": "last_quarterly_operatingprofit_value_update",
+   "type": "MATRIX",
+   "coverage": 0.3069,
+   "userCount": 3,
+   "alphaCount": 28,
+   "description": "operatingprofit lastupdatedqtrval"
+  },
+  {
+   "id": "last_quarterly_update_annual_period",
+   "type": "MATRIX",
+   "coverage": 0.7911,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "pretaxprofit rep lastupdatedqtrann"
+  },
+  {
+   "id": "last_quarterly_update_currency",
+   "type": "MATRIX",
+   "coverage": 0.7911,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Currency code corresponding to the most recently updated quarterly pre-tax profit value"
+  },
+  {
+   "id": "last_quarterly_update_value",
+   "type": "MATRIX",
+   "coverage": 0.7645,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "pretaxprofit rep lastupdatedqtrval"
+  },
+  {
+   "id": "last_quarterly_value_update",
+   "type": "MATRIX",
+   "coverage": 0.2899,
+   "userCount": 1,
+   "alphaCount": 22,
+   "description": "dps lastupdatedqtrval"
+  },
+  {
+   "id": "last_quarterly_value_update_2",
+   "type": "MATRIX",
+   "coverage": 0.272,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recently updated quarterly ROE value"
+  },
+  {
+   "id": "latest_actual_value",
+   "type": "VECTOR",
+   "coverage": 0.7132,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Last published value of the DPS estimate before the current event"
+  },
+  {
+   "id": "latest_annual_annual_update",
+   "type": "MATRIX",
+   "coverage": 0.8721,
+   "userCount": 7,
+   "alphaCount": 39,
+   "description": "Timestamp or date when the annual annual value was last updated."
+  },
+  {
+   "id": "latest_annual_annual_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8641,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Announcement date associated with the most recent update of the annual pre-tax profit estimate"
+  },
+  {
+   "id": "latest_annual_annual_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.8036,
+   "userCount": 3,
+   "alphaCount": 16,
+   "description": "roa lastupdatedannann"
+  },
+  {
+   "id": "latest_annual_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.8824,
+   "userCount": 2,
+   "alphaCount": 26,
+   "description": "Currency code of the EPS value at the last updated annual period"
+  },
+  {
+   "id": "latest_annual_currency_update_2",
+   "type": "MATRIX",
+   "coverage": 0.8721,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "Timestamp or date when the annual currency was last updated."
+  },
+  {
+   "id": "latest_annual_currency_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.7886,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "cfps lastupdatedannccy"
+  },
+  {
+   "id": "latest_annual_currency_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8641,
+   "userCount": 2,
+   "alphaCount": 14,
+   "description": "Currency code for the latest updated annual pre-tax profit estimate value"
+  },
+  {
+   "id": "latest_annual_currency_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.8036,
+   "userCount": 4,
+   "alphaCount": 40,
+   "description": "roa lastupdatedannccy"
+  },
+  {
+   "id": "latest_annual_currency_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8735,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "sales lastupdatedannccy"
+  },
+  {
+   "id": "latest_annual_ebit_currency",
+   "type": "MATRIX",
+   "coverage": 0.866,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency code for the most recently updated annual EBIT value."
+  },
+  {
+   "id": "latest_annual_ebit_value",
+   "type": "MATRIX",
+   "coverage": 0.7916,
+   "userCount": 3,
+   "alphaCount": 9,
+   "description": "Most recently updated EBIT value for the annual period."
+  },
+  {
+   "id": "latest_annual_period_end_update_2",
+   "type": "MATRIX",
+   "coverage": 0.8721,
+   "userCount": 2,
+   "alphaCount": 14,
+   "description": "Timestamp or date when the annual period end was last updated."
+  },
+  {
+   "id": "latest_annual_period_end_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.7886,
+   "userCount": 1,
+   "alphaCount": 8,
+   "description": "cfps lastupdatedannann"
+  },
+  {
+   "id": "latest_annual_period_end_update_cash_flow_per_share_second_2",
+   "type": "MATRIX",
+   "coverage": 0.7886,
+   "userCount": 4,
+   "alphaCount": 13,
+   "description": "Date when annual CFPS data was last updated for its period end"
+  },
+  {
+   "id": "latest_annual_period_end_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8641,
+   "userCount": 2,
+   "alphaCount": 28,
+   "description": "Date of the announced fiscal period end associated with the most recent update to the pretax profit estimate"
+  },
+  {
+   "id": "latest_annual_period_end_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.8036,
+   "userCount": 2,
+   "alphaCount": 9,
+   "description": "Timestamp when the annual period end date was last updated"
+  },
+  {
+   "id": "latest_annual_period_end_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8735,
+   "userCount": 5,
+   "alphaCount": 23,
+   "description": "sales lastupdatedannann"
+  },
+  {
+   "id": "latest_annual_period_end_update_sales_2",
+   "type": "MATRIX",
+   "coverage": 0.8735,
+   "userCount": 9,
+   "alphaCount": 53,
+   "description": "sales lastupdatedannend"
+  },
+  {
+   "id": "latest_annual_value",
+   "type": "MATRIX",
+   "coverage": 0.8083,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "EPS value at the time of the last updated annual end period"
+  },
+  {
+   "id": "latest_annual_value_update_3",
+   "type": "MATRIX",
+   "coverage": 0.8087,
+   "userCount": 1,
+   "alphaCount": 13,
+   "description": "Timestamp or date when the annual value was last updated."
+  },
+  {
+   "id": "latest_annual_value_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.661,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "cfps lastupdatedannval"
+  },
+  {
+   "id": "latest_annual_value_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8039,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Value from the most recently updated annual pretax profit estimate"
+  },
+  {
+   "id": "latest_annual_value_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.6034,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "roa lastupdatedannval"
+  },
+  {
+   "id": "latest_annual_value_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8114,
+   "userCount": 1,
+   "alphaCount": 9,
+   "description": "Sales value for the last updated annual period"
+  },
+  {
+   "id": "latest_best_estimate_update_time",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last update date/time of the BEst estimates content (reflects any fiscal period, data source, or consolidation overrides"
+  },
+  {
+   "id": "latest_quarter_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.7984,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Currency code for the most recent quarterly EPS estimate, likely ISO 4217 format"
+  },
+  {
+   "id": "latest_quarter_currency_code_roa",
+   "type": "MATRIX",
+   "coverage": 0.4239,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "roa lastupdatedqtrccy"
+  },
+  {
+   "id": "latest_quarter_eps_value",
+   "type": "MATRIX",
+   "coverage": 0.7449,
+   "userCount": 2,
+   "alphaCount": 20,
+   "description": "Numeric value of the most recent quarterly EPS estimate"
+  },
+  {
+   "id": "latest_quarterly_annual_update",
+   "type": "MATRIX",
+   "coverage": 0.8332,
+   "userCount": 1,
+   "alphaCount": 14,
+   "description": "Timestamp or date when the quarterly annual value was last updated."
+  },
+  {
+   "id": "latest_quarterly_annual_update_cash_flow_per_share",
+   "type": "MATRIX",
+   "coverage": 0.5261,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "cfps lastupdatedqtrann"
+  },
+  {
+   "id": "latest_quarterly_annual_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8207,
+   "userCount": 1,
+   "alphaCount": 7,
+   "description": "Timestamp or date when the quarterly annual value for pretax profit was last updated."
+  },
+  {
+   "id": "latest_quarterly_annual_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.4239,
+   "userCount": 1,
+   "alphaCount": 6,
+   "description": "Timestamp when the quarterly announcement date field was last updated"
+  },
+  {
+   "id": "latest_quarterly_annual_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "sales lastupdatedqtrann"
+  },
+  {
+   "id": "latest_quarterly_currency_update_3",
+   "type": "MATRIX",
+   "coverage": 0.8332,
+   "userCount": 2,
+   "alphaCount": 19,
+   "description": "ISO 4217 currency code corresponding to the last updated fiscal-quarter net profit value"
+  },
+  {
+   "id": "latest_quarterly_currency_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.5261,
+   "userCount": 2,
+   "alphaCount": 10,
+   "description": "cfps lastupdatedqtrccy"
+  },
+  {
+   "id": "latest_quarterly_currency_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8207,
+   "userCount": 1,
+   "alphaCount": 11,
+   "description": "Currency code of the most recent quarterly pretax profit estimate update"
+  },
+  {
+   "id": "latest_quarterly_currency_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the last updated quarterly sales value"
+  },
+  {
+   "id": "latest_quarterly_ebit_currency",
+   "type": "MATRIX",
+   "coverage": 0.816,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Currency code for the most recently updated quarterly EBIT value."
+  },
+  {
+   "id": "latest_quarterly_ebit_value",
+   "type": "MATRIX",
+   "coverage": 0.7734,
+   "userCount": 3,
+   "alphaCount": 20,
+   "description": "Most recently updated EBIT value for the quarterly period."
+  },
+  {
+   "id": "latest_quarterly_period_end_update_2",
+   "type": "MATRIX",
+   "coverage": 0.8332,
+   "userCount": 2,
+   "alphaCount": 11,
+   "description": "Timestamp or date when the quarterly period end was last updated."
+  },
+  {
+   "id": "latest_quarterly_period_end_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.5261,
+   "userCount": 1,
+   "alphaCount": 9,
+   "description": "End date of the quarterly reporting period tied to the last CFPS update"
+  },
+  {
+   "id": "latest_quarterly_period_end_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.8207,
+   "userCount": 1,
+   "alphaCount": 12,
+   "description": "End date of the reporting or fiscal period for the most recent quarterly pretax profit estimate update"
+  },
+  {
+   "id": "latest_quarterly_period_end_update_roa",
+   "type": "MATRIX",
+   "coverage": 0.4239,
+   "userCount": 2,
+   "alphaCount": 12,
+   "description": "Timestamp when the quarterly period end date was last updated"
+  },
+  {
+   "id": "latest_quarterly_period_end_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.8464,
+   "userCount": 2,
+   "alphaCount": 17,
+   "description": "sales lastupdatedqtrend"
+  },
+  {
+   "id": "latest_quarterly_value_update_2",
+   "type": "MATRIX",
+   "coverage": 0.802,
+   "userCount": 9,
+   "alphaCount": 30,
+   "description": "Timestamp or date when the quarterly value was last updated."
+  },
+  {
+   "id": "latest_quarterly_value_update_cash_flow_per_share_second",
+   "type": "MATRIX",
+   "coverage": 0.4404,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "cfps lastupdatedqtrval"
+  },
+  {
+   "id": "latest_quarterly_value_update_pretax",
+   "type": "MATRIX",
+   "coverage": 0.7869,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Value of the most recent quarterly pretax profit estimate update"
+  },
+  {
+   "id": "latest_quarterly_value_update_sales",
+   "type": "MATRIX",
+   "coverage": 0.814,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Sales value for the last updated quarterly period"
+  },
+  {
+   "id": "lowest_net_debt_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest analyst Net Debt estimate for the specified period (consensus range)"
+  },
+  {
+   "id": "market_session_status",
+   "type": "VECTOR",
+   "coverage": 0.6837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the instrument, indicating active, inactive, suspended, halted, or paused per exchange reporting"
+  },
+  {
+   "id": "market_status_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the equity based on exchange-provided codes (e.g., ACTV, HALT, SUSP)"
+  },
+  {
+   "id": "market_trading_status_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the security (e.g., active, inactive, suspended)"
+  },
+  {
+   "id": "market_trading_status_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the equity based on exchange information (e.g., active, halted, suspended)"
+  },
+  {
+   "id": "market_trading_status_5",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the equity based on exchange information or Bloomberg"
+  },
+  {
+   "id": "market_trading_status_6",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Market status indicator; shows PRNA if no price has been available for the last 30 days (see Trading Status)"
+  },
+  {
+   "id": "market_trading_status_7",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the equity based on exchange information when available (e.g., active, halted, suspended)"
+  },
+  {
+   "id": "market_trading_status_roa",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current trading status of the security (active, suspended, etc.)"
+  },
+  {
+   "id": "median_net_debt_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median analyst Net Debt estimate for the specified estimate period (consensus)"
+  },
+  {
+   "id": "nav_actual_value",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Most recent NAV estimate value prior to the current event (last published or final NAV)"
+  },
+  {
+   "id": "nav_currency_code_3",
+   "type": "VECTOR",
+   "coverage": 0.5122,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current NAV estimate (ISO 4217)"
+  },
+  {
+   "id": "nav_forecast_currency",
+   "type": "VECTOR",
+   "coverage": 0.6415,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for current NAV estimate (ISO 4217)"
+  },
+  {
+   "id": "nav_latest_annual_currency",
+   "type": "MATRIX",
+   "coverage": 0.8494,
+   "userCount": 2,
+   "alphaCount": 13,
+   "description": "nav lastupdatedannccy"
+  },
+  {
+   "id": "nav_latest_annual_value",
+   "type": "MATRIX",
+   "coverage": 0.7847,
+   "userCount": 2,
+   "alphaCount": 14,
+   "description": "nav lastupdatedannval"
+  },
+  {
+   "id": "nav_latest_quarter_currency",
+   "type": "MATRIX",
+   "coverage": 0.658,
+   "userCount": 1,
+   "alphaCount": 5,
+   "description": "nav lastupdatedqtrccy"
+  },
+  {
+   "id": "nav_latest_quarter_value",
+   "type": "MATRIX",
+   "coverage": 0.5867,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "nav lastupdatedqtrval"
+  },
+  {
+   "id": "net_debt_4week_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Absolute change in the Net Debt (NDEBT) estimate over the last 4 weeks for the specified period; not a percent change"
+  },
+  {
+   "id": "net_debt_4week_down_revisions",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who decreased their Net Debt estimates over the last 4 weeks"
+  },
+  {
+   "id": "net_debt_4week_up_revisions",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who have increased their Net Debt (NDEBT) estimates over the last 4 weeks; available for Consensus on"
+  },
+  {
+   "id": "net_debt_estimate_change_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the specified period Net Debt (NDEBT) estimate versus the prior Net Debt estimate; available for Br"
+  },
+  {
+   "id": "net_debt_estimate_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of contributed Net Debt estimates for the specified period, measuring dispersion of analyst views"
+  },
+  {
+   "id": "net_debt_num_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of Net Debt estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "net_income_forecast_currency",
+   "type": "VECTOR",
+   "coverage": 0.7051,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current net profit estimate (ISO 4217 format, e.g., USD, EUR)"
+  },
+  {
+   "id": "net_income_to_sales_ratio_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "BEst profit margin: BEst Net Income divided by BEst Sales"
+  },
+  {
+   "id": "next_year_eps_estimate",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Estimated earnings per share for next fiscal year"
+  },
+  {
+   "id": "next_year_eps_estimate_2",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Consensus estimate for earnings per share for the next fiscal year."
+  },
+  {
+   "id": "num_analysts_book_value_est",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of contributed BPS estimates in the consensus for the specified period"
+  },
+  {
+   "id": "operating_profit_expected_report_period",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Reporting period associated with the expected earnings release; codes include Q1–Q4, S1–S2, or Y (annual)"
+  },
+  {
+   "id": "operating_profit_expected_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "The expected time of the company's next earnings report, given in military time or by notation (before market, after mar"
+  },
+  {
+   "id": "operating_profit_market_status",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Current trading status of the company’s equity (e.g., active, suspended, halted)"
+  },
+  {
+   "id": "pretaxprofit_4w_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Absolute change in the consensus pre-tax profit (PTP) estimate over the last 4 weeks (not a percent change)"
+  },
+  {
+   "id": "pretaxprofit_change_percent",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in pre-tax profit estimate compared to previous period."
+  },
+  {
+   "id": "pretaxprofit_consensus_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 7,
+   "description": "BEst pre-tax profit estimate defined as income before extraordinary items plus income tax expense"
+  },
+  {
+   "id": "pretaxprofit_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.6045,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code for the current estimate value (ISO 4217 standard)"
+  },
+  {
+   "id": "pretaxprofit_estimate_high",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high pre-tax profit estimate for the specified period"
+  },
+  {
+   "id": "pretaxprofit_estimate_low",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ low pre-tax profit estimate for the specified period"
+  },
+  {
+   "id": "pretaxprofit_estimate_median",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median of analyst pre-tax profit (PTP) estimates for the specified estimate period"
+  },
+  {
+   "id": "pretaxprofit_estimate_stddev",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of contributed PTP estimates, measuring dispersion of the consensus"
+  },
+  {
+   "id": "pretaxprofit_estimates_down_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 17,
+   "description": "Number of analysts decreasing their PTP estimates over the last 4 weeks"
+  },
+  {
+   "id": "pretaxprofit_estimates_up_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Number of analysts who have raised their pre-tax profit (PTP) estimates over the past 4 weeks"
+  },
+  {
+   "id": "pretaxprofit_num_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of analyst pre-tax profit (PTP) estimates for the specified estimate period"
+  },
+  {
+   "id": "pretaxprofit_to_sales_ratio",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Ratio of the \"best\" pre-tax profit estimate to sales; a profitability metric relative to revenue"
+  },
+  {
+   "id": "pretaxprofitrep_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.5314,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "ISO 4217 currency code for the current pretax profit estimate value"
+  },
+  {
+   "id": "price_to_book_value_per_share_ratio",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price-to-Book-Value-Per-Share ratio calculated as current price divided by the Book Value Per Share estimate from Bloomb"
+  },
+  {
+   "id": "price_to_cashflow_per_share_ratio",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-Cash-Per-Share ratio calculated as current price divided by the Cash Per Share estimate from Bloomberg Estimate"
+  },
+  {
+   "id": "price_to_earnings_ratio_estimate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Price-to-Earnings ratio calculated using the EPS estimate from Bloomberg Estimates"
+  },
+  {
+   "id": "quarterly_capex_currency",
+   "type": "MATRIX",
+   "coverage": 0.5785,
+   "userCount": 1,
+   "alphaCount": 8,
+   "description": "Currency code used for the last updated quarterly CAPEX value"
+  },
+  {
+   "id": "quarterly_capex_latest_value",
+   "type": "MATRIX",
+   "coverage": 0.5365,
+   "userCount": 1,
+   "alphaCount": 14,
+   "description": "capex lastupdatedqtrval"
+  },
+  {
+   "id": "quarterly_update_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.6544,
+   "userCount": 1,
+   "alphaCount": 23,
+   "description": "Currency code (ISO 3-letter) used in the last updated fiscal quarter net debt value"
+  },
+  {
+   "id": "quarterly_update_gross_margin_currency",
+   "type": "MATRIX",
+   "coverage": 0.6552,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Currency code of the last updated quarterly gross margin value"
+  },
+  {
+   "id": "quarterly_update_gross_margin_value",
+   "type": "MATRIX",
+   "coverage": 0.6151,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "grossmargin lastupdatedqtrval"
+  },
+  {
+   "id": "quarterly_update_net_income_currency",
+   "type": "MATRIX",
+   "coverage": 0.8152,
+   "userCount": 2,
+   "alphaCount": 15,
+   "description": "netprofit rep lastupdatedqtrccy"
+  },
+  {
+   "id": "quarterly_update_net_income_reported",
+   "type": "MATRIX",
+   "coverage": 0.7924,
+   "userCount": 10,
+   "alphaCount": 23,
+   "description": "netprofit rep lastupdatedqtrval"
+  },
+  {
+   "id": "quarterly_update_value",
+   "type": "MATRIX",
+   "coverage": 0.5941,
+   "userCount": 2,
+   "alphaCount": 16,
+   "description": "netdebt lastupdatedqtrval"
+  },
+  {
+   "id": "roe_4week_consensus_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Absolute change in the ROE estimate over the last 4 weeks for the specified period (not a percent change)"
+  },
+  {
+   "id": "roe_consensus_change_percent",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Percentage change in the specified period ROE estimate versus the prior ROE estimate; only available for broker estimate"
+  },
+  {
+   "id": "roe_consensus_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Consensus estimate of Return on Equity (ROE), calculated as (Net Income − Preferred Dividends) divided by Average Common"
+  },
+  {
+   "id": "roe_current_fiscal_quarter_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 1,
+   "alphaCount": 8,
+   "description": "Current fiscal quarter end date for which Bloomberg Estimates content is provided"
+  },
+  {
+   "id": "roe_current_fiscal_semiannual_period",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Current fiscal semi-annual period end date for which Bloomberg Estimates content is provided (populated for semi-annual "
+  },
+  {
+   "id": "roe_current_fiscal_year_period",
+   "type": "MATRIX",
+   "coverage": 0.9952,
+   "userCount": 2,
+   "alphaCount": 5,
+   "description": "Current fiscal year end date for which Bloomberg Estimates content is provided"
+  },
+  {
+   "id": "roe_estimate_currency_iso",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 10,
+   "description": "ISO code of the currency in which the BEst consensus values are calculated for the current period; may include sub-curre"
+  },
+  {
+   "id": "roe_estimate_standard_deviation",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Standard deviation of analyst ROE estimates for the specified period, indicating dispersion or consensus among contribut"
+  },
+  {
+   "id": "roe_estimated_eps_current_year",
+   "type": "MATRIX",
+   "coverage": 0.7591,
+   "userCount": 4,
+   "alphaCount": 17,
+   "description": "Estimated earnings per share for the current fiscal year from BEst; replaced by next-year data on the day current-year e"
+  },
+  {
+   "id": "roe_estimated_eps_next_year",
+   "type": "MATRIX",
+   "coverage": 0.7519,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Estimated earnings per share for next fiscal year from BEst (or Toyo Keizai for Japan if BEst unavailable)"
+  },
+  {
+   "id": "roe_expected_earnings_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 23,
+   "description": "Expected time of the earnings announcement (e.g., Bef-mkt, Aft-mkt, time-of-day), in the user's time zone except market "
+  },
+  {
+   "id": "roe_expected_report_period_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected earnings reporting period code (Q1–Q4, C1–C4, S1–S2, Y)"
+  },
+  {
+   "id": "roe_highest_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ highest consensus estimate of Return on Equity for the specified estimate period"
+  },
+  {
+   "id": "roe_lowest_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest analyst Return on Equity (ROE) estimate for the specified period"
+  },
+  {
+   "id": "roe_market_status_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Trading status of the security (e.g., active, suspended, halted)"
+  },
+  {
+   "id": "roe_median_estimate_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of analyst ROE estimates for the specified period"
+  },
+  {
+   "id": "roe_num_analyst_estimates",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of individual ROE estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "roe_num_estimates_down_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of analysts who have decreased their ROE estimates in the last 4 weeks"
+  },
+  {
+   "id": "roe_num_estimates_up_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of analysts who have increased their Return on Equity (ROE) estimates over the last 4 weeks (consensus series: St"
+  },
+  {
+   "id": "roe_period_override_flag",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg Estimates fiscal period override specifying the target period using relative or fixed formats"
+  },
+  {
+   "id": "sales_consensus_forecast_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Bloomberg Estimates (BEst) consensus net revenue/sales for the specified period"
+  },
+  {
+   "id": "sales_downward_revisions_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 22,
+   "description": "Count of analysts who decreased their sales estimates over the last 4 weeks"
+  },
+  {
+   "id": "sales_estimate_4w_change",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Absolute change in the sales estimate over the last 4 weeks (not a percent change)"
+  },
+  {
+   "id": "sales_estimate_analyst_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 10,
+   "description": "Number of sales estimates contributing to the consensus for the specified period"
+  },
+  {
+   "id": "sales_estimate_change_percent",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage change in the specified period sales estimate versus the prior sales estimate"
+  },
+  {
+   "id": "sales_estimate_currency_iso",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 6,
+   "description": "ISO currency code in which the BEst consensus (e.g., EPS or Sales) is calculated"
+  },
+  {
+   "id": "sales_estimate_high_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ high Sales (revenue) estimate for the specified estimate period within Bloomberg BEst consensus"
+  },
+  {
+   "id": "sales_estimate_low_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analysts’ low Sales (revenue) estimate for the specified estimate period within Bloomberg BEst consensus"
+  },
+  {
+   "id": "sales_estimate_median_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median of contributing analysts’ sales estimates for the specified period"
+  },
+  {
+   "id": "sales_estimate_standard_deviation_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Standard deviation of contributed Sales estimates, measuring dispersion/agreement (Consensus)"
+  },
+  {
+   "id": "sales_expected_report_period",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Expected earnings report period code (Q1–Q4, C1–C4, S1–S2, Y)"
+  },
+  {
+   "id": "sales_expected_report_time",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 8,
+   "description": "Expected earnings announcement time (military time if available, otherwise Bef-mkt/Aft-mkt/Week of/Other)"
+  },
+  {
+   "id": "sales_forecast_currency_code",
+   "type": "VECTOR",
+   "coverage": 0.769,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency code of the current sales estimate"
+  },
+  {
+   "id": "sales_forecast_period_override_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "BEst Fiscal Period Override code specifying relative or fixed period (e.g., 1FY, 2FQ, 05Q1)"
+  },
+  {
+   "id": "sales_market_status",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange-reported trading status of the security (e.g., active, suspended, halted)"
+  },
+  {
+   "id": "sales_upward_revisions_4w",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Number of analysts who increased their sales estimates over the last 4 weeks"
+  }
+ ]
+}

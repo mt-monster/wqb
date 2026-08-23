@@ -1,0 +1,10 @@
+[
+  "rank(subtract(market_implied_5yr_eps_cagr_3, forward_five_year_eps_growth_rate))",
+  "rank(add(earnings_quality_score_raw, ts_corr(earnings_quality_score_change_1_day, close, 20)))",
+  "group_neutralize(rank(add(multiply(2, rank(subtract(0, credit_risk_default_probability_percent))), rank(global_price_momentum_percentile_4))), sector)",
+  "rank(add(rank(global_value_momentum_percentile_float), rank(industry_value_momentum_percentile_float)))",
+  "trade_when(if_else(rank(dividend_yield_relative_score_2) > 0.5, rank(earnings_quality_score_change_1_day), 0), earnings_quality_score_change_1_day > 0, 0)",
+  "rank(add(multiply(2, rank(subtract(0, ev_ebitda_ratio_percentile_float))), ts_kurtosis(earnings_quality_score_change_1_day, 63)))",
+  "rank(subtract(market_implied_10yr_eps_cagr_4, forward_10yr_eps_cagr))",
+  "rank(add(buyback_yield_percentile_float, dividend_yield_relative_score_backfill))"
+]

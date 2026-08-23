@@ -1,0 +1,74 @@
+{
+  "wave": "wave104",
+  "dataset": "wave104_mix",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "mode": "复杂经济学模板批 (ACTIVE 家族扩展, 非探针)",
+  "updated": "2026-08-22",
+  "baseline": {
+    "88lr21xo": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile1_5d_pred))) sh1.77/fit1.40/2y2.52/PROD0.568",
+    "A1lb2KpR": "rank(add(rank(change_6m_rating_revision), multiply(3, rank(short_horizon_hedge3_quantile1_5d_pred)))) sh1.83/fit1.14/2y2.34/PROD0.674",
+    "economics": "评级修正慢变量(预期漂移, 6m) 提供长期 alpha, SH 短周期快变量(5d 量化预测) 提供短期 alpha, 两腿低相关加权混合 -> 三闸全过. wave91c 唯一成功路径, 2 RA ACTIVE."
+  },
+  "rationale": "A 组: 换慢腿 - EPS 修订家族 (net_number/six_month/magnitude/confidence) 是评级修订的前置信号 (分析师先改 EPS 后改评级), 验证哪个修订字段与 SH 混合同样出金. B 组: 换快腿 - 评级金矿固定, 验证 SH 家族变体 (quantile4_20d/quantile5_5d/seasonal/regime) 谁与慢腿混合最优; B4 为三腿混合 (评级+SH+regime, wave90 D6 seasonal 增量有效线索外推). 权重沿用 2:1 (88lr21xo 胜出权重).",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "A1",
+      "variant": "sector 内 FY1 EPS 修订净数量 x SH (行业相对修订强度, 2:1)",
+      "expression": "rank(add(multiply(2, rank(group_zscore(change_net_number_fy1_eps_revisions, sector))), rank(short_horizon_hedge3_quantile1_5d_pred)))"
+    },
+    {
+      "id": "A2",
+      "variant": "6m EPS 修订 x SH (与 6m 评级同窗口, 2:1)",
+      "expression": "rank(add(multiply(2, rank(change_six_month_eps_revision)), rank(short_horizon_hedge3_quantile1_5d_pred)))"
+    },
+    {
+      "id": "A3",
+      "variant": "Street 修订幅度 x SH (预期漂移强度, 2:1)",
+      "expression": "rank(add(multiply(2, rank(change_street_revision_magnitude)), rank(short_horizon_hedge3_quantile1_5d_pred)))"
+    },
+    {
+      "id": "A4",
+      "variant": "Street 修订置信度 x SH (一致性强弱加权, 2:1)",
+      "expression": "rank(add(multiply(2, rank(change_street_revision_confidence)), rank(short_horizon_hedge3_quantile1_5d_pred)))"
+    },
+    {
+      "id": "B1",
+      "variant": "评级 x quantile4_20d (更长窗口快腿, 2:1)",
+      "expression": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile4_20d_pred)))"
+    },
+    {
+      "id": "B2",
+      "variant": "评级 + quantile5_5d + 共振项 (ts_corr 20d 预期漂移协同, 三腿)",
+      "expression": "rank(add(multiply(2, rank(change_6m_rating_revision)), add(rank(short_horizon_hedge3_quantile5_5d_pred), rank(ts_corr(change_6m_rating_revision, short_horizon_hedge3_quantile5_5d_pred, 20)))))"
+    },
+    {
+      "id": "B3",
+      "variant": "评级 x seasonal 5d (wave90 D6 增量线索, 2:1)",
+      "expression": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_term_seasonal_quantile1_5d_pred)))"
+    },
+    {
+      "id": "B4",
+      "variant": "评级 + 动量门控 SH (if_else: SH 强则动, 弱则零)",
+      "expression": "rank(add(multiply(2, rank(change_6m_rating_revision)), if_else(rank(short_horizon_hedge3_quantile1_5d_pred) > 0.5, rank(short_horizon_hedge3_quantile1_5d_pred), 0)))"
+    }
+  ]
+}

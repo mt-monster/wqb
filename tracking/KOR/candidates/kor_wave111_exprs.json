@@ -1,0 +1,10 @@
+[
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_term_seasonal_quantile1_20d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(price_volume_quantile1_20d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(analyst_quantile1_60d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(fundamental_quantile1_120d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(long_horizon_hedge3_quantile1_60d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_term_regime4_quantile1_20d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(event_embedding_quantile2_60d_pred)))",
+  "rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_term_momentum_percentile)))"
+]

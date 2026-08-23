@@ -1,0 +1,10 @@
+[
+  "rank(normalized_trend_indicator_3)",
+  "rank(normalized_volume_indicator_0)",
+  "rank(ts_delta(normalized_trend_indicator_5, 5))",
+  "rank(add(normalized_trend_indicator_3, normalized_volume_indicator_4))",
+  "group_neutralize(rank(normalized_volume_indicator_3), sector)",
+  "rank(ts_decay_linear(normalized_trend_indicator_2, 10))",
+  "rank(add(normalized_volume_indicator_1, normalized_trend_indicator_6))",
+  "group_neutralize(rank(add(multiply(2, rank(normalized_trend_indicator_3)), rank(normalized_volume_indicator_0))), sector)"
+]

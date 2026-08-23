@@ -1,0 +1,24 @@
+{
+  "wave": "wave104",
+  "dataset": "wave104_mix",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "updated": "2026-08-22",
+  "multisim_id": "1ihkIc1Qc4QzcK517l9Dbfwu",
+  "verdict": "2 GREEN + 6 RED - ACTIVE 家族扩展命中",
+  "conclusion": "wave104 复杂经济学模板批 8 条: B3 评级xseasonal sh1.80/fit1.34/2y2.45 GREEN, B4 评级+if_else动量门控SH sh1.82/fit1.31/2y2.47 GREEN (两候选全硬闸 PASS). A 组 EPS 修订家族全 RED (最高 A4 confidence 1.34/2y1.38 NEAR), 证实慢腿金矿是评级修正本身 (非 EPS 修订前置). B 组快腿变体: quantile4_20d/q5_5d 2y 强 (2.15/2.26) 但 sharpe 不足, seasonal 与 if_else 门控 SH 双达标. 关键发现: 快腿多样性 (seasonal/门控) 比慢腿替换更有效.",
+  "results": [
+    {"id": "A1", "alpha_id": "6XlqZYrY", "variant": "sector 内 FY1 EPS 修订净数量 x SH", "sharpe": 0.81, "fitness": 0.41, "two_year_sharpe": 1.25, "turnover": 0.136, "verdict": "RED"},
+    {"id": "A2", "alpha_id": "kqjmvLVg", "variant": "6m EPS 修订 x SH", "sharpe": 1.02, "fitness": 0.59, "two_year_sharpe": 0.95, "turnover": 0.121, "verdict": "RED"},
+    {"id": "A3", "alpha_id": "78jX3KZ2", "variant": "Street 修订幅度 x SH", "sharpe": 1.17, "fitness": 0.73, "two_year_sharpe": 0.62, "turnover": 0.127, "verdict": "RED"},
+    {"id": "A4", "alpha_id": "xAjzVm3q", "variant": "Street 修订置信度 x SH", "sharpe": 1.34, "fitness": 0.88, "two_year_sharpe": 1.38, "turnover": 0.129, "verdict": "RED", "note": "NEAR: 最接近达标的 EPS 修订变体"},
+    {"id": "B1", "alpha_id": "0mwQdW8G", "variant": "评级 x quantile4_20d", "sharpe": 1.21, "fitness": 0.77, "two_year_sharpe": 2.15, "turnover": 0.139, "verdict": "RED", "note": "2y 强但 sharpe/fitness 不足"},
+    {"id": "B2", "alpha_id": "Wj7X3WbN", "variant": "评级 + q5_5d + ts_corr 共振", "sharpe": 1.35, "fitness": 0.76, "two_year_sharpe": 2.26, "turnover": 0.198, "verdict": "RED", "note": "2y 强但 sharpe/fitness 不足"},
+    {"id": "B3", "alpha_id": "vRjz9Vla", "variant": "评级 x seasonal 5d", "sharpe": 1.80, "fitness": 1.34, "two_year_sharpe": 2.45, "turnover": 0.146, "verdict": "GREEN", "note": "全硬闸 PASS, 待 PROD/SELF 检查"},
+    {"id": "B4", "alpha_id": "Grl8X3bQ", "variant": "评级 + if_else 动量门控 SH", "sharpe": 1.82, "fitness": 1.31, "two_year_sharpe": 2.47, "turnover": 0.156, "verdict": "GREEN", "note": "全硬闸 PASS, 待 PROD/SELF 检查"}
+  ],
+  "green_candidates": ["vRjz9Vla", "Grl8X3bQ"],
+  "max_sharpe": 1.82,
+  "max_2y": 2.47
+}

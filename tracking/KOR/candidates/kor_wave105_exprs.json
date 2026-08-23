@@ -1,0 +1,10 @@
+[
+  "rank(add(vec_avg(eps_upward_revisions_4w), ts_corr(vec_avg(eps_estimate_4wk_change), close, 20)))",
+  "rank(add(vec_avg(eps_estimate_4wk_change), ts_kurtosis(vec_avg(bps_4week_consensus_change), 63)))",
+  "rank(add(multiply(2, rank(vec_avg(sales_upward_revisions_4w))), rank(vec_avg(anl44_2_pretaxprofit_value))))",
+  "group_neutralize(rank(add(multiply(2, rank(vec_avg(consensus_eps_forecast_value))), rank(short_horizon_hedge3_quantile1_5d_pred))), sector)",
+  "trade_when(if_else(rank(current_year_eps_estimate) > 0.5, rank(vec_avg(eps_upward_revisions_4w)), 0), vec_avg(eps_estimate_4wk_change) > 0, 0)",
+  "multiply(rank(ts_decay_linear(vec_avg(eps_upward_revisions_4w), 20)), rank(short_horizon_hedge3_quantile1_5d_pred))",
+  "rank(add(multiply(2, rank(vec_avg(consensus_eps_forecast_value))), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+  "add(ts_rank(vec_avg(anl44_second_en_eps_value), 50), rank(vec_avg(eps_estimate_4wk_change)))"
+]

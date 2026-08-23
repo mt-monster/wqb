@@ -1,0 +1,6 @@
+[
+  "-rank(ts_backfill(mdl192_fc_numrevy1_di,66))",
+  "-rank(ts_zscore(ts_backfill(mdl192_cds_pd5y_di,66),252))",
+  "-rank(ts_delta(ts_backfill(mdl192_indrelrtn5d_di,5),21))",
+  "rank(ts_scale(ts_backfill(mdl192_id_mrspe_cf,66),252))"
+]

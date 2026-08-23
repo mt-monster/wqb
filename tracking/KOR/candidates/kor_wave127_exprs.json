@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(qfl_cassie_model_merton))",
+  "rank(vec_avg(qfl_cassie_model_altman_zscore))",
+  "rank(vec_avg(qfl_cassie_model_ohlson_oscore))",
+  "rank(vec_avg(qfl_cassie_model_chs_default))",
+  "rank(vec_avg(qfl_cassie_qes_cassie_score))",
+  "rank(add(vec_avg(qfl_cassie_model_merton), multiply(-1, vec_avg(qfl_cassie_model_ohlson_oscore))))",
+  "group_neutralize(rank(vec_avg(qfl_cassie_qes_cassie_prelimcomposite)), sector)",
+  "rank(vec_avg(qfl_cassie_convention_ocf_currliab))"
+]

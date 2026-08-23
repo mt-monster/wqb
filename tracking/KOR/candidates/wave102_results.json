@@ -1,0 +1,43 @@
+{
+  "wave": "wave102",
+  "dataset": "continuation_score",
+  "region": "KOR",
+  "universe": "TOP600",
+  "mode": "首探探针批 8 条 5 方向 (图表形态延续评分)",
+  "updated": "2026-08-22",
+  "simulation_id": "1DcQhR3564o3bzupQ4u8atV",
+  "settings": {
+    "neutralization": "SECTOR", "decay": 10, "truncation": 0.04,
+    "startDate": "2014-01-01", "endDate": "2023-12-31"
+  },
+  "results": [
+    {"id": "J1", "alpha_id": "MP7806b8", "sharpe": -0.17, "fitness": -0.05, "turnover": 0.1394,
+     "two_year_sharpe": -0.52, "checks": "CW PASS, SUB_UNIVERSE PASS", "verdict": "RED",
+     "reason": "多头旗形平均相似度水平值负信号；2y -0.52 不稳"},
+    {"id": "J2", "alpha_id": "bljP8aNR", "sharpe": 0.34, "fitness": 0.15, "turnover": 0.1016,
+     "two_year_sharpe": 0.48, "checks": "CW PASS, SUB_UNIVERSE 0.5 PASS, TVR 10% 健康", "verdict": "RED",
+     "reason": "最近 bar 多头旗形相似度全场最佳 0.34，recent 时变信号弱有效，但远低于 1.58；可作 salvage 线索"},
+    {"id": "J3", "alpha_id": "A1laQxne", "sharpe": 0.15, "fitness": 0.05, "turnover": 0.1157,
+     "two_year_sharpe": 0.15, "checks": "SUB_UNIVERSE -0.01 FAIL", "verdict": "RED",
+     "reason": "向上跳空延续动态分弱正，SUB_UNIVERSE FAIL"},
+    {"id": "J4", "alpha_id": "RR7aAeNo", "sharpe": -0.01, "fitness": -0.0, "turnover": 0.1558,
+     "two_year_sharpe": -0.03, "checks": null, "verdict": "RED",
+     "reason": "多空形态差近零，bull/bear flag 相似度信息量对称"},
+    {"id": "J5", "alpha_id": "vRjzOAdw", "sharpe": -0.26, "fitness": -0.07, "turnover": 0.2421,
+     "two_year_sharpe": -0.97, "checks": "SUB_UNIVERSE -0.38 FAIL", "verdict": "RED",
+     "reason": "多头形态 5d 动量显著负 (慢信号差分反向特征，wave100 同型)"},
+    {"id": "J6", "alpha_id": "xAjz1vRg", "sharpe": 0.18, "fitness": 0.06, "turnover": 0.1302,
+     "two_year_sharpe": 0.61, "checks": "SUB_UNIVERSE 0.05 FAIL(限0.1)", "verdict": "RED",
+     "reason": "gap up 延续 60d zscore 0.18，2y 0.61 有动量但全期弱，SUB_UNIVERSE 微差"},
+    {"id": "J7", "alpha_id": "ZY7lmarx", "sharpe": -0.84, "fitness": -0.47, "turnover": 0.1823,
+     "two_year_sharpe": -0.52, "checks": "SUB_UNIVERSE -0.87 FAIL", "verdict": "RED",
+     "reason": "杯柄形态 recent 显著负 -0.84 (KOR 形态后下跌特征)，翻转 2y 0.52 亦不达标"},
+    {"id": "J8", "alpha_id": "Wj7XLl9G", "sharpe": -0.08, "fitness": -0.01, "turnover": 0.1753,
+     "two_year_sharpe": -0.46, "checks": "SUB_UNIVERSE -0.11 FAIL", "verdict": "RED",
+     "reason": "多头三角旗 recent 10d 动量弱负"}
+  ],
+  "verdict": "FULL_RED",
+  "conclusion": "continuation_score 首探 8 条 5 方向全灭：最高 J2 0.34 (bull_flag recent 时变)，动量/差分全负 (慢信号差分反向，wave100 同型)，与 chart_cnn_alpha 形态族判死结论一致。亮点：CW 全 PASS、TVR 10-24% 健康，说明 MATRIX 形态数据无事件日集中问题，但信号强度天花板低。",
+  "salvage": "J2 bull_flag_recent_similarity (0.34, TVR 10%) 与 J6 gap_up 60d zscore (2y 0.61) 为最强线索；若未来想再探，方向是 recent 时变 + 更长标准化窗口的组合 (如 ts_zscore(bull_flag_recent_similarity, 90) + decay 15)，但按形态族 KOR 判死纪律不优先。",
+  "next": "转 pattern_scores (0.9302 tier1, pv 类 504 字段) 做 S1 scan_fields"
+}

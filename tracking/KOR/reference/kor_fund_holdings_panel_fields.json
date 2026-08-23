@@ -1,0 +1,255 @@
+{
+ "dataset": "fund_holdings_panel",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 18,
+  "MATRIX": 12
+ },
+ "field_count": 30,
+ "fetched_at": "2026-08-23T03:54:28",
+ "fields": [
+  {
+   "id": "boundary_transaction_total",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Number of boundary transactions (new position initiations or complete liquidations) across all fund accounts on the date"
+  },
+  {
+   "id": "boundary_transaction_total_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of boundary transactions across fund accounts (introductions of new positions or complete liquidations)"
+  },
+  {
+   "id": "boundary_transaction_usd_value",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total USD value of boundary transactions (entries into new positions or complete liquidations) across all accounts on th"
+  },
+  {
+   "id": "boundary_transaction_usd_value_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dollar value of boundary transactions in USD"
+  },
+  {
+   "id": "herfindahl_index_holdings",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Herfindahl-Hirschman Index of holdings concentration based on account weights"
+  },
+  {
+   "id": "herfindahl_index_holdings_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Herfindahl-Hirschman Index of holdings weights across accounts (0 to 1)"
+  },
+  {
+   "id": "herfindahl_index_transactions",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Herfindahl-Hirschman Index of trade value concentration across transacting accounts (0 to 1, higher means more concentra"
+  },
+  {
+   "id": "herfindahl_index_transactions_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Herfindahl-Hirschman Index concentration measure based on distribution of transaction value across accounts"
+  },
+  {
+   "id": "holder_account_total",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Number of distinct investment accounts or funds holding the ISIN on the date"
+  },
+  {
+   "id": "holder_account_total_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of distinct accounts holding this ISIN on the date"
+  },
+  {
+   "id": "holding_value_distribution_score",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Concentration of holdings value across accounts, a custom crowding metric"
+  },
+  {
+   "id": "holding_value_distribution_score_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Concentration of holdings value across accounts; higher values indicate more crowding among holders"
+  },
+  {
+   "id": "large_trade_count_50bps",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of transactions where the trade value exceeds 0.5% of the respective fund’s AUM"
+  },
+  {
+   "id": "large_trade_count_50bps_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Count of transactions with transaction value greater than 0.5% of the fund’s AUM"
+  },
+  {
+   "id": "mean_security_weight",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average portfolio weight of the security across only the accounts that hold it, measured as a share of each fund’s AUM ("
+  },
+  {
+   "id": "mean_security_weight_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average portfolio weight of this ISIN across accounts that hold it, as a share of each account’s assets"
+  },
+  {
+   "id": "security_holding_usd_value",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total USD value of shares held in the ISIN across all accounts"
+  },
+  {
+   "id": "security_holding_usd_value_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total dollar value in USD of shares held in this ISIN"
+  },
+  {
+   "id": "security_transaction_usd_value",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dollar value of transactions in USD"
+  },
+  {
+   "id": "security_transaction_usd_value_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Dollar value of transactions in USD"
+  },
+  {
+   "id": "stable_boundary_trade_count_21d",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of boundary transactions by accounts that had no boundary trade in the same security in the prior 21 weekdays (ind"
+  },
+  {
+   "id": "stable_boundary_trade_count_21d_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Count of boundary transactions from fund accounts with no prior boundary transaction in the past 21 weekdays for the sec"
+  },
+  {
+   "id": "top_weighted_account_number",
+   "type": "MATRIX",
+   "coverage": 0.9553,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of accounts for which the ISIN is a conviction holding (top 30% by portfolio weight)"
+  },
+  {
+   "id": "top_weighted_account_number_active",
+   "type": "MATRIX",
+   "coverage": 0.7666,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Number of fund accounts for which the security is a conviction holding (within the top 30% of AUM by weight)"
+  },
+  {
+   "id": "top_weighted_transaction_number",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of transactions in securities that were conviction holdings as of the prior or current day across all accounts"
+  },
+  {
+   "id": "top_weighted_transaction_number_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of conviction transactions across fund accounts, where a conviction transaction is one in a security that was par"
+  },
+  {
+   "id": "transaction_account_total",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of distinct accounts that transacted the security on the date"
+  },
+  {
+   "id": "transaction_account_total_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of accounts that transacted the security"
+  },
+  {
+   "id": "transaction_value_distribution_score",
+   "type": "VECTOR",
+   "coverage": 0.887,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Index from 0 to 1 measuring how the day’s trade value is distributed across transacting accounts (higher means more conc"
+  },
+  {
+   "id": "transaction_value_distribution_score_active",
+   "type": "VECTOR",
+   "coverage": 0.6626,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Concentration index (0 to 1) measuring how the transaction value is distributed across transacting accounts"
+  }
+ ]
+}

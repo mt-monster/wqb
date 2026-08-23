@@ -1,0 +1,10 @@
+[
+  "group_neutralize(rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_horizon_hedge3_quantile1_5d_pred))), sector)",
+  "group_neutralize(rank(add(multiply(2, rank(industry_value_momentum_percentile_float)), rank(short_horizon_hedge3_quantile1_5d_pred))), sector)",
+  "group_neutralize(rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_term_seasonal_quantile1_20d_pred))), sector)",
+  "group_neutralize(rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(analyst_quantile1_60d_pred))), sector)",
+  "group_neutralize(rank(add(multiply(2, rank(global_value_momentum_percentile_float)), rank(short_term_regime4_quantile1_20d_pred))), sector)",
+  "group_neutralize(rank(add(rank(global_value_momentum_percentile_float), multiply(2, rank(price_volume_quantile1_20d_pred)))), subindustry)",
+  "group_neutralize(multiply(rank(global_value_momentum_percentile_float), rank(price_volume_quantile1_20d_pred)), sector)",
+  "group_neutralize(rank(add(ts_rank(global_value_momentum_percentile_float, 21), rank(price_volume_quantile1_20d_pred))), sector)"
+]

@@ -1,0 +1,69 @@
+{
+  "wave": "wave102",
+  "dataset": "continuation_score",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "mode": "首探探针批 (图表形态延续评分, 560 字段全 MATRIX, 558 零竞争)",
+  "updated": "2026-08-22",
+  "rationale": "continuation_score = K线图表形态延续评分 (flag/pennant/rectangle/gap/channel/cup_handle/scallop 相似度, 含 average/recent/dynamic/percentile95 统计口径). 零竞争 (558/560 uc=0). 5 方向探针: 水平值 (J1/J2), 数据集主输出 gap 延续分 (J3), 多空形态差 (J4), 形态动量 (J5/J8), 标准化/窗口变体 (J6/J7). 与 chart_cnn_alpha 形态族不同源 (规则相似度 vs CNN), 值得独立探测.",
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "SECTOR",
+    "truncation": 0.04,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "ON",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "J1",
+      "variant": "多头旗形平均相似度水平值 (uc0)",
+      "expression": "rank(avg_similarity_bullish_flag)"
+    },
+    {
+      "id": "J2",
+      "variant": "最近 bar 多头旗形相似度 (uc0)",
+      "expression": "rank(bull_flag_recent_similarity)"
+    },
+    {
+      "id": "J3",
+      "variant": "向上跳空延续动态评分 (uc0 主字段)",
+      "expression": "rank(dynamic_upward_gap_continuation_score)"
+    },
+    {
+      "id": "J4",
+      "variant": "多空形态差 (bull - bear flag)",
+      "expression": "rank(subtract(avg_similarity_bullish_flag, avg_similarity_bearish_flag))"
+    },
+    {
+      "id": "J5",
+      "variant": "多头形态相似度 5d 动量",
+      "expression": "rank(ts_delta(avg_similarity_bullish_flag, 5))"
+    },
+    {
+      "id": "J6",
+      "variant": "gap up 延续 60d 标准化",
+      "expression": "rank(ts_zscore(avg_similarity_continuation_gap_up, 60))"
+    },
+    {
+      "id": "J7",
+      "variant": "杯柄形态 recent 40d 窗口 (uc1)",
+      "expression": "rank(cup_handle_recent_similarity_h40)"
+    },
+    {
+      "id": "J8",
+      "variant": "多头三角旗 recent 10d 动量",
+      "expression": "rank(ts_delta(bullish_pennant_similarity_recent, 10))"
+    }
+  ]
+}

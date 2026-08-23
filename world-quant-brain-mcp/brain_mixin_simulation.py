@@ -32,6 +32,49 @@ logger = logging.getLogger("brain_api")
 
 
 class SimulationMixin:
+    async def batch_create_simulations(self, payloads: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """逐条提交多个独立仿真（场景：同一表达式×多套设置参数矩阵，或 per-item
+        settings 批），提交完立即返回全部 location，不等待仿真完成。
+        新增方法（2026-08-23）；既有 create_simulation 阻塞轮询语义不变。
+        """
+        await self.ensure_authenticated()
+        results = []
+        for i, payload in enumerate(payloads):
+            item: Dict[str, Any] = {"index": i}
+            try:
+                response = None
+                for attempt in range(3):
+                    response = await self._request(
+                        'POST', f"{self.base_url}/simulations", json=payload)
+                    if response.status_code != 429:
+                        break
+                    await asyncio.sleep(2.0 * (attempt + 1))
+                if response.status_code < 400:
+                    location = response.headers.get('Location', '')
+                    item["location"] = location
+                    item["simulation_id"] = (location.rstrip('/').split('/')[-1]
+                                               if location else None)
+                    item["ok"] = True
+                else:
+                    item["ok"] = False
+                    item["status_code"] = response.status_code
+                    item["error"] = str(self._response_payload(response))[:200]
+            except Exception as e:
+                item["ok"] = False
+                item["error"] = str(e)[:200]
+            results.append(item)
+            if i < len(payloads) - 1:
+                await asyncio.sleep(0.5)  # 限流缓冲，防 429 风暴（wqb-concurrency 纪律）
+        n_ok = sum(1 for r in results if r.get("ok"))
+        self.log(f"Batch submitted {n_ok}/{len(payloads)} simulations", "INFO")
+        return {
+            "submitted": n_ok,
+            "total": len(payloads),
+            "results": results,
+            "note": "Async submit: poll each location with lookINTO_SimError_message "
+                    "or GET /simulations/{id} until status is terminal.",
+        }
+
     async def create_simulation(self, simulation_data: SimulationData) -> Dict[str, str]:
         """Create a new simulation on BRAIN platform."""
         await self._create_simulation_semaphore.acquire()

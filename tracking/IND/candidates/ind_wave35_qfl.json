@@ -1,0 +1,6 @@
+[
+  "-rank(vec_avg(qfl_cassie_model_altman_zscore))",
+  "-rank(winsorize(vec_avg(qfl_cassie_convention_debt_mktcapital)))",
+  "-rank(ts_delta(vec_avg(qfl_cassie_convention_debt_mktcapital),63))",
+  "rank(ts_zscore(vec_avg(qfl_cassie_convention_ocf_currliab),126))"
+]

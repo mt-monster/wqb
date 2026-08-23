@@ -309,6 +309,89 @@ async def create_multi_simulation(
 
 @mcp.tool()
 
+async def batch_create_simulations(
+    items: List[Dict[str, Any]],
+    base_region: Optional[str] = None,
+    base_universe: Optional[str] = None,
+    base_delay: int = 1,
+    base_decay: int = 4,
+    base_neutralization: str = "STATISTICAL",
+    base_truncation: float = 0.08,
+    language: str = "FASTEXPR",
+    unit_handling: str = "VERIFY",
+    nan_handling: str = "OFF",
+    pasteurization: str = "ON",
+    max_trade: str = "OFF",
+) -> Dict[str, Any]:
+    """🎯 一次调用提交 N 个“各自独立设置”的仿真（异步，立即返回全部 location）。
+
+    填补 create_multi_simulation 的盲区：multisim 整批共享同一套设置，做不了
+    “同一表达式×N 套设置”的参数矩阵（Mode A）或 per-item settings 批。
+    本工具服务端内逐条顺序提交（带 429 退避与限流缓冲），不阻塞等待仿真完成，
+    避免并行 MCP 单仿真调用挤爆 stdio 通道（2026-08-23 八连超时实证）。
+    提交后用 lookINTO_SimError_message 轮询返回的 locations。
+
+    Args:
+        items: 1-20 条，每条 {"expression": "...", "settings": {...}?, "tag": "..."?}；
+            settings 缺省键用 base_* 填充；支持的键：region / universe / delay /
+            decay / neutralization / truncation（平台 camelCase 键亦接受）
+        base_region: 默认区域（item 未给 region 时用）
+        base_universe: 默认 universe
+        base_delay / base_decay / base_neutralization / base_truncation: 默认设置
+        language / unit_handling / nan_handling / pasteurization / max_trade: 固定设置段
+    Returns:
+        {submitted, total, results: [{index, tag, ok, simulation_id, location} | 错误], note}
+    """
+    try:
+        if not isinstance(items, list) or not (1 <= len(items) <= 20):
+            return {"error": "items 需为 1-20 条的列表"}
+        if not base_region:
+            return {"error": "base_region 必填（防 MCP 默认值误用：不设 USA/TOP3000 默认）"}
+
+        base = {
+            'instrumentType': 'EQUITY',
+            'region': base_region,
+            'universe': base_universe,
+            'delay': base_delay,
+            'decay': base_decay,
+            'neutralization': base_neutralization,
+            'truncation': base_truncation,
+            'pasteurization': pasteurization,
+            'language': language.upper(),
+            'visualization': False,
+            'testPeriod': 'P0Y0M',
+            'maxTrade': max_trade,
+        }
+        if language.upper() != "PYTHON":
+            base['unitHandling'] = unit_handling
+            base['nanHandling'] = nan_handling
+
+        payloads = []
+        tags = []
+        for it in items:
+            expr = it.get('expression') or it.get('expr') or it.get('regular')
+            if not expr:
+                return {"error": f"items[{len(payloads)}] 缺 expression 字段"}
+            settings = dict(base)
+            for k, v in (it.get('settings') or {}).items():
+                settings[k] = v
+            payloads.append({'type': 'REGULAR', 'settings': settings, 'regular': expr})
+            tags.append(it.get('tag'))
+
+        logger.info(f"[batch_create_simulations] n={len(payloads)} base_region={base_region} "
+                    f"base_universe={base_universe}")
+        res = await brain_client.batch_create_simulations(payloads)
+        for r, tag in zip(res.get("results", []), tags):
+            if tag:
+                r["tag"] = tag
+        res['async'] = True
+        res['polling_tool'] = 'lookINTO_SimError_message'
+        return res
+    except Exception as e:
+        return {"error": f"Error in batch_create_simulations: {str(e)}"}
+
+@mcp.tool()
+
 async def get_multisimulation_children(multisimulation_location: str) -> Dict[str, Any]:
     """Get the child simulation locations/status of a submitted multisimulation.
 

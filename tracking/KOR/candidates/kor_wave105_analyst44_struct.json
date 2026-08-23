@@ -1,0 +1,50 @@
+[
+  {
+    "tag": "A1",
+    "expr": "rank(add(vec_avg(eps_upward_revisions_4w), vec_avg(bps_num_estimates_up_4w)))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "EPS上修广度双轴: 值上修+人数上修 共振(纯analyst44新族, 与rating_revision无关)"
+  },
+  {
+    "tag": "A2",
+    "expr": "rank(add(vec_avg(eps_estimate_4wk_change), vec_avg(bps_4week_consensus_change)))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "EPS+共识值4周双动量: 盈利预期与净资产预期同向修正=强信号"
+  },
+  {
+    "tag": "A3",
+    "expr": "rank(add(multiply(2, rank(vec_avg(sales_upward_revisions_4w))), rank(vec_avg(anl44_2_pretaxprofit_value))))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "销售上修快腿(2x)+税前利润共识水平慢腿: 顶线修正带动利润预期"
+  },
+  {
+    "tag": "B1",
+    "expr": "multiply(rank(ts_decay_linear(vec_avg(eps_upward_revisions_4w), 20)), rank(short_horizon_hedge3_quantile1_5d_pred))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "跨数据集混合: EPS上修慢×SH快 乘积门控 (换主导腿为eps_upward, 复刻wave91c成功结构)"
+  },
+  {
+    "tag": "B2",
+    "expr": "rank(add(multiply(2, rank(vec_avg(consensus_eps_forecast_value))), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "共识EPS水平(2x)+SH快腿加和: 复刻88lr21xo 2:1结构但主导腿换成consensus_level(新族)"
+  },
+  {
+    "tag": "B3",
+    "expr": "multiply(rank(add(multiply(2, rank(vec_avg(sales_upward_revisions_4w))), rank(short_horizon_hedge3_quantile1_5d_pred))), rank(short_term_seasonal_quantile1_20d_pred))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "三腿: 销售上修2:1加和SH × 季节门控 (WjAxxZVk 乘积门控配方换慢腿)"
+  },
+  {
+    "tag": "C1",
+    "expr": "add(ts_rank(vec_avg(anl44_second_en_eps_value), 50), rank(vec_avg(eps_estimate_4wk_change)))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "win配方e73Rw8qg变体: EPS共识水平50d ts_rank + 4wk变化加速腿 (删pretax_down换4wk_change)"
+  },
+  {
+    "tag": "C2",
+    "expr": "rank(add(vec_avg(roe_consensus_estimate_value), vec_avg(sales_upward_revisions_4w)))",
+    "settings": {"region": "KOR", "universe": "TOP600", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.08, "instrumentType": "EQUITY", "language": "FASTEXPR", "pasteurization": "ON", "unitHandling": "VERIFY", "nanHandling": "OFF", "maxTrade": "OFF", "maxPosition": "OFF", "startDate": "2014-01-01", "endDate": "2023-12-31"},
+    "note": "ROE共识水平+销售上修: 盈利质量×顶线动量双指标 (与win配方无共享腿)"
+  }
+]
