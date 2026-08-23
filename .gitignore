@@ -68,3 +68,6 @@ cleanup_tmp.py
 
 # Skills mirror (local sync copy, not project code)
 .qoder-cn/
+
+# temp commit-message files (never commit)
+logs/_commit_msg.txt
