@@ -2,6 +2,10 @@
 
 > 整理时间：2026-08-13 ｜ 整理动作：归类子目录 + 合并去重 + 精简 + 本索引生成。
 > 整理前：13 个文件散落在 `reports/` 根目录；整理后：6 个子目录 + 本索引，文件按主题归组。
+>
+> **2026-08-23 更新**：9 份互相矛盾的 skills 审计（reports/ 6 份 + project-audit/ 1 份 + research-data/ 2 份）
+> 合并为唯一现行版本 `skills_review_2026-08-23.md`，原件归档 `attic/reports_archive/2026-08-23-superseded/`。
+> 后续 skills 审计**只更新该文件，不再新建报告**。
 
 ---
 
@@ -10,6 +14,7 @@
 ```
 reports/
 ├── 00-INDEX.md                          ← 本文件（索引 + 摘要 + 归类依据）
+├── skills_review_2026-08-23.md          ← 【skills 审计】现行唯一版本（评估结论 + 整改记录）
 │
 ├── forum-experience/                    ← 【论坛经验】WQ BRAIN 社区高赞实战帖系统总结
 │   ├── ppa_forum_experience_2026-08-07.md     (PPA 挖掘经验总纲，已并入提交闸门专题)

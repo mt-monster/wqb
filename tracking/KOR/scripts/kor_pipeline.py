@@ -28,8 +28,8 @@ from kor_fetch_metrics import Api, load_creds
 
 SETTINGS = json.load(open(os.path.join(ROOT, "config", "settings.json"), encoding="utf-8"))
 BATCH = SETTINGS.get("_multi_sim_batch_size", 8)
-SUBMIT_LIMIT = 4          # REGULAR_SUBMISSION 48h 滚动上限
-SUBMIT_WINDOW_H = 48
+SUBMIT_LIMIT = 4          # REGULAR_SUBMISSION 日配额上限（每日重置）
+SUBMIT_TZ_HOURS = 8       # 日配额时区（UTC+8 北京时间，每日 00:00 重置）
 
 TERMINAL = {"COMPLETE", "ERROR", "CANCELLED"}
 
@@ -52,29 +52,42 @@ def ckpt_save(ck):
     os.replace(tmp, p)
 
 
-# ---------------- M14: 配额闸（修正 earliest_release 算法） ----------------
+# ---------------- M14: 配额闸（日配额模式，每日 00:00 重置） ----------------
 
 def submission_quota(api):
+    """日配额检查：统计当日已提交数量，返回剩余额度。
+    
+    平台实证（2026-08-20）：REGULAR_SUBMISSION 为日配额（4/day），每日本地时间
+    00:00（UTC+8）重置，而非 48h 滚动窗口。
+    """
     j = json.load(api.get("/users/self/alphas?stage=OS&limit=100&order=-dateSubmitted"))
     now = datetime.datetime.now(datetime.timezone.utc)
-    win = []
+    
+    # 计算当日 UTC 起始时间（本地 00:00 对应的 UTC 时间）
+    local_now = now + datetime.timedelta(hours=SUBMIT_TZ_HOURS)
+    local_day_start = local_now.replace(hour=0, minute=0, second=0, microsecond=0)
+    day_start_utc = local_day_start - datetime.timedelta(hours=SUBMIT_TZ_HOURS)
+    
+    # 统计当日已提交
+    daily_used = []
     for a in j.get("results", []):
         ds = a.get("dateSubmitted")
         if not ds:
             continue
         t = datetime.datetime.fromisoformat(ds.replace("Z", "+00:00"))
-        if (now - t).total_seconds() < SUBMIT_WINDOW_H * 3600:
-            win.append((t, a.get("id")))
-    win.sort()
-    used = len(win)
+        if t >= day_start_utc:
+            daily_used.append((t, a.get("id")))
+    
+    daily_used.sort()
+    used = len(daily_used)
     remaining = max(0, SUBMIT_LIMIT - used)
-    release = None
-    if used >= SUBMIT_LIMIT:
-        release = (win[used - SUBMIT_LIMIT][0]
-                   + datetime.timedelta(hours=SUBMIT_WINDOW_H)).isoformat()
-    return {"used": used, "remaining": remaining, "earliest_release_utc": release,
-            "window_ids": [w[1] for w in win],
-            "_note": "release 为窗口内最早一笔滑出 48h 的时间（已修正旧版 max() 语义）；"
+    
+    # 次日重置时间（UTC）
+    next_reset_utc = (day_start_utc + datetime.timedelta(days=1)).isoformat()
+    
+    return {"used": used, "remaining": remaining, "daily_reset_utc": next_reset_utc,
+            "daily_used_ids": [w[1] for w in daily_used],
+            "_note": "日配额模式：每日 00:00（UTC+8）重置，上限 4/day；"
                      "SUPER 是否独立配额池未验证"}
 
 
@@ -155,9 +168,9 @@ def poll_until_terminal(api, msid, hang_min=60, timeout_min=360):
 def stage_submit_poll(ck, passed, max_batches, force):
     api = Api(); api.login(*load_creds())  # 单进程单登录（M17）
     q = submission_quota(api)
-    print(f"[quota] used={q['used']} remaining={q['remaining']} release={q['earliest_release_utc']}")
+    print(f"[quota] 日配额 used={q['used']} remaining={q['remaining']} reset={q['daily_reset_utc']}")
     if q["remaining"] <= 0 and not force:
-        print("[quota] 提交配额耗尽，中止（--force 强行继续）")
+        print("[quota] 当日提交配额耗尽，中止（--force 强行继续，或等待次日 00:00 重置）")
         return
     exprs = [p["expr"] for p in passed]
     done_exprs = {e for b in ck["batches"] if b.get("status") in TERMINAL

@@ -29,7 +29,10 @@
      "aa9d1d9fbc2c57c1292a27b05a40e9ee1588f1ac",
      "fc63d77c5be446f5b9b704124b4bcfa0a58a5ea8",
      "40550106f8021afe8968913e1a9b1457195889e2",
-     "9d4df121e96b2187b8b6cc1e322d02d6c386dc58"
+     "9d4df121e96b2187b8b6cc1e322d02d6c386dc58",
+     "a646e708f597c54636c58f16a2040b7ecc89f99a",
+     "56a9199f37eb97f892b76217334a9798017737ea",
+     "5915ead0c57b48c7916ead734e7f0ca08b9b068e"
     ],
     "issued_at": "2026-08-19T16:58:18"
    },
@@ -41,9 +44,9 @@
    "status": "active",
    "source": "diversity_audit",
    "created_at": "2026-08-19T16:58:18",
-   "times_applied": 0,
+   "times_applied": 8,
    "times_succeeded": 0
   }
  ],
- "updated_at": "2026-08-23T01:14:24"
+ "updated_at": "2026-08-23T16:00:20"
 }

@@ -10,11 +10,11 @@
    },
    "action": {
     "op": "flag_dataset_weak",
-    "message": "dataset=None 5 条 max sharpe=0.00<1.0，单字段太弱需复合/加工"
+    "message": "dataset=None 8 条 max sharpe=0.46<1.0，单字段太弱需复合/加工"
    },
    "evidence": {
-    "max_sharpe": 0.0,
-    "n": 5
+    "max_sharpe": 0.46,
+    "n": 8
    },
    "confidence": 0.5,
    "status": "contested",
@@ -33,21 +33,390 @@
    "action": {
     "op": "block_universe",
     "dead_universe": "TOP500",
-    "message": "universe=TOP500 下 5 条全崩 (max sharpe=0.00)，疑似杠杆判死"
+    "message": "universe=TOP500 下 8 条全崩 (max sharpe=0.46)，疑似杠杆判死"
    },
    "evidence": {
     "universe": "TOP500",
-    "max_sharpe": 0.0,
-    "n": 5
+    "max_sharpe": 0.46,
+    "n": 8
    },
-   "confidence": 0.6,
+   "confidence": 0.127,
    "status": "contested",
    "source": "auto_extract",
    "created_at": "2026-08-23T14:32:03",
+   "times_applied": 8,
+   "times_succeeded": 24,
+   "validated_at": "2026-08-24T00:52:39",
+   "contest_evidence": [
+    {
+     "at": "2026-08-23T14:56:46",
+     "max_sharpe": 1.53,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T15:12:08",
+     "max_sharpe": 1.77,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T15:30:26",
+     "max_sharpe": 1.53,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T15:36:56",
+     "max_sharpe": 1.91,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T15:45:08",
+     "max_sharpe": 1.22,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T15:50:14",
+     "max_sharpe": 1.72,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T16:29:33",
+     "max_sharpe": 1.74,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T16:59:32",
+     "max_sharpe": 1.05,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:09:21",
+     "max_sharpe": 2.21,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:14:50",
+     "max_sharpe": 1.06,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:17:45",
+     "max_sharpe": 2.31,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:20:57",
+     "max_sharpe": 1.55,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:24:38",
+     "max_sharpe": 2.27,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:26:53",
+     "max_sharpe": 1.55,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:33:11",
+     "max_sharpe": 1.56,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:39:29",
+     "max_sharpe": 2.31,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:42:57",
+     "max_sharpe": 1.07,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:50:58",
+     "max_sharpe": 1.57,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T17:54:21",
+     "max_sharpe": 2.62,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:01:19",
+     "max_sharpe": 1.72,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:09:20",
+     "max_sharpe": 1.76,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:15:05",
+     "max_sharpe": 2.21,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:17:50",
+     "max_sharpe": 1.46,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:24:47",
+     "max_sharpe": 1.9,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:30:58",
+     "max_sharpe": 2.25,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:35:11",
+     "max_sharpe": 1.95,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:44:41",
+     "max_sharpe": 1.82,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:48:42",
+     "max_sharpe": 1.64,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:53:31",
+     "max_sharpe": 1.87,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T18:59:10",
+     "max_sharpe": 2.01,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T19:03:15",
+     "max_sharpe": 1.52,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T19:11:08",
+     "max_sharpe": 1.59,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T19:37:48",
+     "max_sharpe": 1.64,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T19:44:16",
+     "max_sharpe": 1.65,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:12:01",
+     "max_sharpe": 1.07,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:21:07",
+     "max_sharpe": 1.36,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:28:45",
+     "max_sharpe": 1.23,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:33:51",
+     "max_sharpe": 1.8,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:48:24",
+     "max_sharpe": 1.78,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T20:56:14",
+     "max_sharpe": 2.13,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:11:49",
+     "max_sharpe": 1.71,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:19:27",
+     "max_sharpe": 1.52,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:28:03",
+     "max_sharpe": 1.86,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:43:27",
+     "max_sharpe": 2.59,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:49:45",
+     "max_sharpe": 2.54,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T22:56:59",
+     "max_sharpe": 2.26,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T23:38:08",
+     "max_sharpe": 1.86,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-23T23:46:19",
+     "max_sharpe": 1.93,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-24T00:15:39",
+     "max_sharpe": 2.37,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-24T00:24:50",
+     "max_sharpe": 1.18,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-24T00:52:39",
+     "max_sharpe": 2.56,
+     "universe": "TOP500"
+    }
+   ]
+  },
+  {
+   "rule_id": "explore_contract_IND_20260823_153913_577025",
+   "type": "explore_contract",
+   "trigger": {
+    "region": "IND"
+   },
+   "action": {
+    "op": "inject_diversity",
+    "required_operators": [
+     "ts_corr",
+     "ts_kurtosis",
+     "bucket",
+     "trade_when"
+    ],
+    "skeleton_quota": {
+     "ratio": 1,
+     "event_gated": 1
+    },
+    "per_batch_min_operators": 2,
+    "expires_after_batches": 10,
+    "exempt": [
+     "repair"
+    ],
+    "consumed_batches": [
+     "a6fb291d30cf123a4487f35b26f52a2afd6455b1",
+     "bbc385ca55847991afa538d101a6eae63614531f",
+     "49e7e98de1febca6d5607814bbb72a193363aaeb",
+     "e38639d0cfa4e6685b8ccaa99dd98820dbda9322",
+     "4389a9b874dd414bb65afe84151154a1e799c4c7",
+     "79b2863e90058aed27433491edc58df40b288f3a",
+     "d6a3899279943a6b2374f163b35f1852217e2d37",
+     "0d1b5b593129ec7529134bfbb31c5599bdf7e621",
+     "dc2befb948bc75da66f3a915ec1a3506678d7399",
+     "61bf627497fbc285f4173c4c588f3a1f64022a13"
+    ],
+    "issued_at": "2026-08-23T15:39:13"
+   },
+   "evidence": {
+    "exploration_rate": 0.15,
+    "total_exprs": 97
+   },
+   "confidence": 1.0,
+   "status": "active",
+   "source": "diversity_audit",
+   "created_at": "2026-08-23T15:39:13",
+   "times_applied": 10,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "auto_low_sharpe_x_2026-08-24",
+   "type": "diagnosis",
+   "trigger": {
+    "dataset": "*",
+    "region": "IND"
+   },
+   "action": {
+    "op": "flag_dataset_weak",
+    "message": "dataset=None 8 条 max sharpe=0.27<1.0，单字段太弱需复合/加工"
+   },
+   "evidence": {
+    "max_sharpe": 0.27,
+    "n": 8
+   },
+   "confidence": 0.5,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-24T00:01:07",
    "times_applied": 0,
-   "times_succeeded": 3,
-   "validated_at": "2026-08-23T14:52:01"
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "auto_universe_collapse_TOP500_2026-08-24",
+   "type": "universe_lever",
+   "trigger": {
+    "universe": "TOP500",
+    "region": "IND"
+   },
+   "action": {
+    "op": "block_universe",
+    "dead_universe": "TOP500",
+    "message": "universe=TOP500 下 8 条全崩 (max sharpe=0.27)，疑似杠杆判死"
+   },
+   "evidence": {
+    "universe": "TOP500",
+    "max_sharpe": 0.27,
+    "n": 8
+   },
+   "confidence": 0.188,
+   "status": "contested",
+   "source": "auto_extract",
+   "created_at": "2026-08-24T00:08:52",
+   "times_applied": 0,
+   "times_succeeded": 1,
+   "validated_at": "2026-08-24T00:52:39",
+   "contest_evidence": [
+    {
+     "at": "2026-08-24T00:15:39",
+     "max_sharpe": 2.37,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-24T00:24:50",
+     "max_sharpe": 1.18,
+     "universe": "TOP500"
+    },
+    {
+     "at": "2026-08-24T00:52:39",
+     "max_sharpe": 2.56,
+     "universe": "TOP500"
+    }
+   ]
   }
  ],
- "updated_at": "2026-08-23T14:52:01"
+ "updated_at": "2026-08-24T00:52:39"
 }

@@ -5,6 +5,7 @@ Comprehensive forum functionality including glossary, search, and post viewing u
 """
 
 import asyncio
+import logging
 import re
 import sys
 import time
@@ -100,7 +101,7 @@ def get_browser_path():
                         _v = _v.strip().strip('"').strip("'")
                         os.environ.setdefault(_k, _v)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
         
         # 如果都失败了，返回None使用默认设置
         log("未找到browser_setup模块，将使用默认Playwright浏览器", "WARNING")
@@ -207,7 +208,7 @@ class ForumClient:
                 if candidate.exists():
                     load_dotenv(candidate, override=False)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
 
         self.base_url = os.getenv("FORUM_SETTINGS_BASE_URL", "https://support.worldquantbrain.com")
         # timeouts: seconds in env -> milliseconds for playwright waits
@@ -579,7 +580,7 @@ class ForumClient:
                             try:
                                 await asyncio.wait_for(browser.close(), timeout=5)
                             except Exception:
-                                pass
+                                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
         
         try:
             return await asyncio.wait_for(_do_search(), timeout=overall_timeout)

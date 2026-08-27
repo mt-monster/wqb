@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-"""submit_batch.py - 通用 alpha 批量提交，取代 tools/_submit_*.py（共 31 个同构一次性脚本）。
+"""submit_batch.py - 通用 alpha 批量提交（REST 直连），取代 tools/_submit_*.py（共 31 个同构一次性脚本）。
+
+提交入口边界（避免重复实现）：
+  - 本文件 = 规范 REST CLI：直接 POST {base_url}/simulations，payload 为 [{type, settings, regular}]。
+  - tools/mcp_5slot_batch.py = MCP-SSE 客户端：经 wq-brain-http MCP 调 create_multi_simulation
+    （payload 形状为 {alpha_expressions, **settings}），二者传输层与 payload schema 不同，不合并。
+  - world-quant-brain-mcp/tools_submit.py 的 submit_alpha = 唯一「生产提交」原语（提交已存在的 alpha_id）。
+  回测批量仿真只有上述两条 REST / MCP 客户端，请勿再新增第三套。
 
 所有被取代脚本的共同结构：
   MCP_DIR + chdir + BrainApiClient + BASE(USA/TOP3000/EQUITY/2014-2023)

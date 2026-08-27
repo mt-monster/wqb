@@ -1,5 +1,6 @@
 """数据集/字段/算子/文档/表达式校验工具 — MCP 工具层 (2026-08-13 自 main.py 按域拆分)。"""
 import json, os, re, sys, asyncio, time, logging
+import logging
 from typing import Dict, List, Optional, Any, Union, Sequence, Tuple
 from datetime import datetime, timedelta
 from time import sleep
@@ -382,7 +383,7 @@ async def _verify_fields_exist(
                         try:
                             redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "1")
                         except Exception:
-                            pass
+                            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                     return (field_id, "known", None)
                 else:
                     # Cache the negative result
@@ -390,7 +391,7 @@ async def _verify_fields_exist(
                         try:
                             redis_cli.setex(f"{cache_prefix}:{field_id}", cache_ttl, "0")
                         except Exception:
-                            pass
+                            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                     return (field_id, "unknown", None)
             except Exception as exc:
                 return (field_id, "error", str(exc))

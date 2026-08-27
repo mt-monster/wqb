@@ -42,7 +42,8 @@ REGIONS: Dict[str, dict] = {
         "default_universe": "TOP3000",
     },
     "EUR": {
-        "universes": ["TOP2500", "TOPCS1600", "TOP1200", "TOP500"],
+        "universes": ["TOP2500", "TOPCS1600", "TOP1200", "TOP800", "TOP400",
+                      "ILLIQUID_MINVOL1M"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
         "categories": ["equity", "fundamental", "sentiment", "news", "analyst",
@@ -197,7 +198,7 @@ OP_FAMILIES: Dict[str, List[str]] = {
               "group_arg_min"],
     "MATH": ["abs", "multiply", "divide", "add", "subtract", "power", "log",
               "sign", "signed_power", "sqrt", "ceiling", "floor", "fraction",
-              "truncate", "exp", "inverse", "max", "min", "bucket"],
+              "truncate", "exp", "inverse", "max", "min", "bucket", "reverse"],
     "RANK": ["rank"],
     "SCALE": ["scale", "normalize", "vector_norm", "step", "sigmoid",
               "filter", "keep", "pasteurize", "winsorize"],
@@ -208,6 +209,8 @@ OP_FAMILIES: Dict[str, List[str]] = {
                "vec_percentage", "vec_is_nan"],
     "TIME": ["tick", "day", "week", "month", "year", "quarter"],
     "COND": ["ternary", "is_nan"],
+    "LOGIC": ["if_else", "greater", "less", "equal", "not_equal",
+               "less_equal", "greater_equal", "and", "or", "not"],
 }
 
 _OP_TO_FAMILY: Dict[str, str] = {
@@ -302,6 +305,80 @@ def compute_webdata_failed_counts(checks: List[dict]) -> dict:
 BATCH_SIZE = 4
 PRODCORR_CEILING = 0.70
 SHAPE_CLASSES = {"S1", "S4", "S5", "S9"}
+
+
+# ---------------------------------------------------------------------------
+# 闸门阶梯与并发口径（唯一事实源）
+#
+# skills / tools / tracking 一律引用本节，禁止在各自文档或脚本中复写数字。
+# 背景：2026-08-23 审计实测 Sharpe 门槛在 skills 中并存 1.58/1.5/1.28/1.1 四个取值，
+# Fitness 并存 1.0/0.75/1.6，并发槽位并存 5/8/6/4/3，判定结果取决于加载了哪份文档。
+# ---------------------------------------------------------------------------
+
+#: 内部严线——研究仿真阶段即要求，用于省配额的本地预筛。
+GATES_INTERNAL: Dict[str, object] = {
+    "sharpe_min": 1.58,
+    "fitness_min": 1.0,
+    "turnover_range": (0.05, 0.20),
+    "margin_bp_min": 10.0,
+    "returns_min": 0.05,
+    "self_corr_max": 0.50,
+}
+
+#: 平台硬线——提交阶段平台实际判定口径，比内部线宽。
+GATES_PLATFORM: Dict[str, object] = {
+    "sharpe_min": 1.58,
+    "fitness_min": 1.0,
+    "turnover_range": (0.01, 0.70),
+    "self_corr_max": 0.70,
+    "prod_corr_max": PRODCORR_CEILING,
+}
+
+GATES: Dict[str, Dict[str, object]] = {
+    "internal": GATES_INTERNAL,
+    "platform": GATES_PLATFORM,
+}
+
+#: 七槽填槽并发模式（2026-08-25 更新：5→7，基于 Token-Bucket 模型 C≈7 实测）。旧「单批在飞串行」与固定槽位模型已废弃。
+CONCURRENCY: Dict[str, object] = {
+    "slots": 7,
+    "burst_capacity": 7,
+    "safe_instant_submits": 6,
+    "min_batch_interval_sec": 45,
+    "refill_sec_per_token": (20, 40),
+}
+
+# ---------------------------------------------------------------------------
+# 选波 / S0 金字塔配额（2026-08-24 EUR Wave35–40 复盘）
+#
+# 根因：S0 的 category_weight + pyramidMultiplier 把 MODEL 打到 tier1，
+# PV/NEWS 整座金字塔被挤出 generate 池；六波纯 MODEL 近闸全撞 prod≥0.7。
+# 唯一 OS ACTIVE（Wj71Q12o）是 0.40 慢 MODEL × 0.60 快 PV，双金字塔。
+# skills / toolkit / tracking thresholds 一律引用本节，禁止各写一套数字。
+# ---------------------------------------------------------------------------
+
+MINING: Dict[str, object] = {
+    "pyramid_quota_enable": True,
+    "pyramid_quota_non_model_min": 2,
+    "category_weight_floor": 0.9,
+    "category_weight_cap": 1.15,
+    "cross_pyramid_slots_min": 2,
+    "win_replay_slots_min": 1,
+    "weak_probe_slots_max": 1,
+    "prod_first_skeletons_per_slot": 2,
+    "slow_fast_mix": {"slow_weight": 0.40, "fast_weight": 0.60},
+    "follow_win_settings": True,
+}
+
+
+def gate_thresholds(stage: str = "internal") -> Dict[str, object]:
+    """返回指定阶段的闸门阈值。stage ∈ {'internal', 'platform'}。"""
+    try:
+        return GATES[stage]
+    except KeyError:
+        raise ValueError(
+            "unknown gate stage %r (expected 'internal' or 'platform')" % stage
+        ) from None
 
 PARADIGMS: List[str] = [
     "P1_SPREAD",

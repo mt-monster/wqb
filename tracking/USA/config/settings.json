@@ -18,7 +18,7 @@
   "_alt_neutralization": "SECTOR",
   "_alt_neutralization_note": "A/B 次优轨：wave01 A/B 实测 SECTOR(sharpe=0.39, fitness=0.14 最高, TVR=0.1545) 优于 MARKET、略逊 SUBINDUSTRY；作对照轨。MARKET 已降为 fallback（A/B 中 sharpe=0.29 最低）。",
   "_multi_sim_batch_size": 8,
-  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）",
+  "_concurrency_rule": "七槽填槽：7 批 multisim（各 8 条）同提保持槽位常满（wqb-concurrency §8，Token-Bucket C≈7 实测）；提交前必过 gate 闸预检杜绝批内 ERROR 连坐；即收即补，任一批 COMPLETE 立即回收筛选并补新批",
   "_evidence": {
     "source": "wq-brain-http get_user_alphas(stage=OS) 平台真实回测数据，region=USA 抽取",
     "total_usa_d1": 86,

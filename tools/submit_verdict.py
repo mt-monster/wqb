@@ -100,11 +100,12 @@ async def main():
     else:
         print(f"  非预期响应 {submit_status}：{str(resp.text)[:300]}")
 
-    if a.with_quota:
-        q = await brain.get_submission_quota()
-        print(f"\n--- 提交配额 ---")
-        print(f"  rolling  剩余: {q.get('rolling', {}).get('remaining', '?')}")
-        print(f"  daily    剩余: {q.get('daily', {}).get('remaining', '?')}")
+    # 配额检查已移除（2026-08-25 用户要求）
+    # if a.with_quota:
+    #     q = await brain.get_submission_quota()
+    #     print(f"\n--- 提交配额 ---")
+    #     print(f"  rolling  剩余: {q.get('rolling', {}).get('remaining', '?')}")
+    #     print(f"  daily    剩余: {q.get('daily', {}).get('remaining', '?')}")
 
     # 判定：模拟层无 FAIL 且提交层 200 才算可提交
     ok = not fails and submit_status == 200

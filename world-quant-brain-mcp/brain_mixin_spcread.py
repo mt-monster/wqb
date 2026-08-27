@@ -819,7 +819,7 @@ class SpcDataMixin:
                     except json.JSONDecodeError:
                         desc += f"\n\n---\n**Details (raw)**\n{json_str}"
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                 
             return desc, attachments
 
@@ -1039,7 +1039,7 @@ class SpcDataMixin:
                         self.log(f"[PC成功] Alpha {alpha_id} PC={corr_data['max']} (第 {attempt} 次查询, 耗时 {int(elapsed)}s)", "INFO")
                         return corr_data
                 except json.JSONDecodeError:
-                    pass
+                    logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                     
             except (requests.RequestException, ConnectionError, TimeoutError) as e:
                 consecutive_network_failures += 1

@@ -9,7 +9,9 @@
 
 | 工具 | 用途 | 取代 |
 |---|---|---|
-| `wave_gate.py` | 每波门禁编排：语法校验 + 5 闸 + 多样性，一键落盘 `cache/gate_wave<N>_<ds>.{json,txt}` | `tracking/<R>/scripts/_gate_waveNN.py` 族 |
+| `wave_gate.py` | 每波门禁编排：语法校验 + 5 闸 + 六维多样性 + 质量预估（EXPECTED_BLOCK 默认标注，`--quality-block` 硬拦截），一键落盘 `cache/gate_wave<N>_<ds>.{json,txt}` | `tracking/<R>/scripts/_gate_waveNN.py` 族 |
+| `pool_diversity.py` | 候选池表达式结构多样性评估（算子熵/骨架配额/字段集中度/预处理/成对相似度/主导族风险，六维），`--file/--exprs/DB`，`--json` 落盘；已被 `wave_gate.py` 集成调用 | 手写多样性统计脚本 |
+| `quality_predict.py` | 候选池质量预估（回测前）：三层先验预估 Sharpe/Fitness + 本地结构代理预估 SELF_CORR 风险，输出 EXPECTED_PASS/REVIEW/EXPECTED_BLOCK；`--status UNSUBMITTED` 直筛存量池，已被 `wave_gate.py` 集成调用 | 手写相关性/质量预判脚本 |
 | `gate.py` | 战役统一提交前闸门（5 闸 + 批级多样性，权威实现在 skill toolkit） | — |
 | `expr_lint.py` | 算子签名/字段白名单快速门禁（非战役场景） | — |
 | `corr_precheck.py` | 相关性墙预判（设计阶段字段重叠检查） | — |
@@ -20,6 +22,7 @@
 |---|---|---|
 | `mcp_5slot_batch.py` | 五槽并发回测（MCP 驱动） | — |
 | `batch_status.py` | 批次/子任务状态查询与 `--watch` 轮询（multisim 或单条） | `tracking/_scratch/check_*batch*.py`、`track_mea_super_resume.py` 轮询段 |
+| `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
 | `submit_batch.py` | 批量提交（`--spec` 支持逐批不同设置） | 31 个 `_submit_*.py` |
 
 ## SUPER alpha 流水线

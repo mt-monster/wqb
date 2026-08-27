@@ -57,7 +57,7 @@ class TransportMixin:
                         v = v.strip().strip('"').strip("'")
                         os.environ.setdefault(k, v)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
 
         self.base_url = "https://api.worldquantbrain.com"
         self.session = requests.Session()
@@ -401,7 +401,7 @@ class TransportMixin:
                 try:
                     return min(max(float(retry_after), 0.0), max_delay)
                 except (TypeError, ValueError):
-                    pass
+                    logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
         backoff = min(base_delay * (1.6 ** attempt), max_delay)
         return backoff + random.uniform(0, min(1.0, backoff * 0.1))
 

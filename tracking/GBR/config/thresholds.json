@@ -1,5 +1,9 @@
 {
  "_doc": "GBR 战役集中阈值配置（2026-08-17 从 KOR 复制改 region 参数）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
+ "submit_quota": {
+  "_doc": "2026-08-26 用户指令：关闭提交配额闸（used>=limit 不再中止提交）。",
+  "enabled": false
+ },
  "diversity": {
   "_doc": "GBR 多样性体系区域参数（2026-08-18 GBR 复盘新增）。窄截面模式：GBR TOP700 max|sharpe|~0.8，旧全局阈值（entropy<2.0/coverage<50%/similarity>70%）与回测表现零相关，还驱动无效增强烧配额。signal_floor 为信号证据闸参数：连续 min_batches 批 max|sharpe| < floor 即判信号天花板，停止生成/增强并转区域决策。",
   "narrow_cross_section": true,

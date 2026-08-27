@@ -21,6 +21,7 @@ other's tokens.
 """
 
 import asyncio
+import logging
 import os
 import sys
 import json
@@ -103,7 +104,7 @@ class LabsClient:
                 if candidate.exists():
                     load_dotenv(candidate, override=False)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
 
         self.platform_url = os.getenv("LABS_PLATFORM_URL", "https://platform.worldquantbrain.com")
         self.brainlabs_path = "/profile/account/brainlabs"
@@ -258,7 +259,7 @@ class LabsClient:
                     try:
                         await popup.close()
                     except Exception:
-                        pass
+                        logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
 
                     if "workspaces-web.com" not in deeplink:
                         raise RuntimeError(f"Did not capture a WorkSpaces deepLink (got: {deeplink!r})")
@@ -344,7 +345,7 @@ class LabsClient:
                 if os.path.exists(result_json):
                     text = Path(result_json).read_text()
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
             try:
                 data = json.loads(text)
             except json.JSONDecodeError as e:

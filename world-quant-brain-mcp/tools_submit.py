@@ -70,29 +70,11 @@ async def submit_alpha(alpha_id: str, force: bool = False) -> Dict[str, Any]:
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 
-@mcp.tool()
-
-async def get_submission_quota() -> Dict[str, Any]:
-    """
-    Estimate the REGULAR_SUBMISSION quota usage — DUAL view (rolling + daily).
-
-    RA and PPA share the same quota pool — PPA has no separate daily cap;
-    its extra gates are theme matching, prod correlation, and pyramid lighting
-    (3 alphas per category). D0 submissions carry a separate D0_SUBMISSION check.
-
-    Read-only estimate (no POST /submit side effects). Returns both lenses:
-      * `remaining` / `used` — legacy rolling trailing-window estimate (limit=4,
-        48h), often undercounts the live cap.
-      * `daily_remaining` / `daily_used` — current local-day cap (empirically the
-        real platform limit: 4/day, resets at Beijing midnight). Use this for
-        immediate submit capacity.
-
-    Platform-verified: REGULAR_SUBMISSION check shows limit=4.
-
-    Returns:
-        Quota usage with remaining slots (both views) and earliest release time.
-    """
-    try:
-        return await brain_client.get_submission_quota()
-    except Exception as e:
-        return {"error": f"An unexpected error occurred: {str(e)}"}
+# get_submission_quota MCP tool removed (2026-08-25 user request)
+# @mcp.tool()
+# async def get_submission_quota() -> Dict[str, Any]:
+#     """Estimate the REGULAR_SUBMISSION quota usage — DUAL view (rolling + daily)."""
+#     try:
+#         return await brain_client.get_submission_quota()
+#     except Exception as e:
+#         return {"error": f"An unexpected error occurred: {str(e)}"}

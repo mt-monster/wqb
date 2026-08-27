@@ -37,7 +37,9 @@ def _mcp_venv_python():
 def _bootstrap():
     """路径引导：优先 MCP venv 解释器重启，否则把工作区 MCP 包加入 sys.path。"""
     py = _mcp_venv_python()
-    if py and os.path.abspath(py) != os.path.abspath(sys.executable):
+    # Windows abspath keeps drive-letter case, so D:\ vs d:\ would execv and
+    # the parent would exit 0 while the child is detached (wave31 false-complete).
+    if py and os.path.normcase(os.path.abspath(py)) != os.path.normcase(os.path.abspath(sys.executable)):
         os.execv(py, [py] + sys.argv)
     mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
     sys.path.insert(0, mcp)
@@ -87,7 +89,22 @@ async def fetch_batch(brain, batch_id):
     data = resp.json() if resp.text else {}
     children = data.get("children") or []
     if not children:
-        return {"batch_id": batch_id, **await fetch_one(brain, loc)}
+        # Children not expanded yet: must NOT look like a finished single sim,
+        # or --watch exits immediately (EUR wave31 false-complete).
+        parent = await fetch_one(brain, loc)
+        st = (parent.get("status") or "").upper()
+        done = st in TERMINAL
+        return {
+            "batch_id": batch_id,
+            "kind": "multisim",
+            "child_count": 0,
+            "terminal": 0,
+            "errors": 1 if (parent.get("error") or done) else 0,
+            "all_terminal": done,
+            "children": [],
+            "parent_status": parent.get("status"),
+            "error": parent.get("error") or (f"parent {st} but children empty" if done else ""),
+        }
     out_children = []
     for c in children:
         cloc = _shape_url(base, c if isinstance(c, str) else c.get("location"))

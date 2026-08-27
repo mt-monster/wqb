@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-08-18T22:25:11",
+ "updated_at": "2026-08-23T23:31:48",
  "_note": "EUR 区域方法论规则库（L2 结构化层）：仅 EUR 专属规则（trigger.region=\"EUR\"）。跨 region 通用规则在 toolkit config/methodology_rules.json（全局库），加载时自动合并（区域覆盖全局同名规则）。rules.json 给机器消费，docs/experience/*.md 给人看，两者同源。",
  "rules": [
   {
@@ -28,6 +28,30 @@
    "times_succeeded": 1,
    "created_at": "2026-08-18T04:00:00",
    "validated_at": "2026-08-18T04:00:00",
+    "source": "manual_retro"
+  },
+  {
+   "rule_id": "combo_first_fill_slots_eur",
+   "type": "strategy",
+   "trigger": {
+    "region": "EUR",
+    "condition": "has_verified_signal_fields"
+   },
+   "action": {
+    "op": "prefer_intra_dataset_combo",
+    "message": "组合优先填槽：已有信号字段（wave |Sharpe|≥1.0 或过廉价闸，或 registry 标明有 IS 但卡 prod/LOW_SUB；腿禁用≠整集判死）必须先做成同一 dataset 内多字段组合批填满空槽。S0 弱探针仅当本波尚无近闸字段时最多占 1 槽。禁止五槽同时打 5 个未证明信号的新数据集裸探针；复合后仍 |S|<0.5 的弱集不再占槽。跨集乱混导致 gate 白名单失败则退回单数据集内组合，不停挖。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "wave": "wave31",
+    "note": "2026-08-23：有信号集应榨组合（vol/score 有信号但 prod 0.78–0.83 禁主导腿非整集判死；starhold 有 IS 但 LOW_SUB；ARH/model36 曾 |S|≥1.0）。continuation 复合后 max |S| 0.44 不再占槽。判定标准是 |Sharpe|/廉价闸，不写死字段名。"
+   },
+   "confidence": 0.9,
+   "status": "active",
+    "times_applied": 6,
+    "times_succeeded": 0,
+   "created_at": "2026-08-23T23:30:00",
+   "validated_at": "2026-08-23T23:30:00",
    "source": "manual_retro"
   },
   {
@@ -411,7 +435,18 @@
     "exempt": [
      "repair"
     ],
-    "consumed_batches": [],
+    "consumed_batches": [
+     "6e6029d7cbf741bc76137c04d999c19f204c3ec0",
+     "d55ef7bfa6ee092037c9bd01c8c55b6ee08ec65a",
+     "9b61db397270a6c8d6866ac3a2ee7929b4628b59",
+     "17f7639023fd65aba5e5f00b2d528cbd51222251",
+     "bc61302f753a2444b22ad4a8b5c90760a2d0ba2d",
+     "a629eb1fde93f274dbb5eecfcbe04743cfc40330",
+     "036ae2cd92d12cf435bfb465987c9e13d5d08394",
+     "3d36427c7d5694fe4828b47646b7e9447df2b109",
+     "5323f9978c7a73c94d8e2a1e5f0334d165afc478",
+     "10f9e56f08e77f6bd774a9e36f173d50f45b9cf1"
+    ],
     "issued_at": "2026-08-18T22:25:11",
     "factor_templates": {
      "group_backfill": {
@@ -624,7 +659,7 @@
    "status": "active",
    "source": "diversity_audit",
    "created_at": "2026-08-18T22:25:11",
-   "times_applied": 0,
+   "times_applied": 10,
    "times_succeeded": 0
   }
  ]

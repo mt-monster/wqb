@@ -65,6 +65,21 @@
   "backfill_band_value_score_min": 6,
   "probe_exception_enable": true,
   "probe_exception_cov_min": 0.9,
-  "probe_exception_value_score_min": 6
+  "probe_exception_value_score_min": 6,
+  "category_weight_enable": true,
+  "category_weight_floor": 0.9,
+  "category_weight_cap": 1.15,
+  "pyramid_quota_enable": true,
+  "pyramid_quota_non_model_min": 2,
+  "category_weights": {
+   "other": 1.0,
+   "pv": 1.0,
+   "model": 1.15
+  },
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 32,
+  "sweet_spot_ac_max": 77,
+  "_calibrated_at": "2026-08-27T02:08:11",
+  "_calibrated_from": "alpha_store 214 alphas/9 ds + results/ 扫描 → 共 13 datasets 实测"
  }
 }

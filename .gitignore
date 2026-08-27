@@ -62,12 +62,16 @@ cleanup_tmp.py
 
 # pytest cache
 .pytest_cache/
+# pytest custom temp dir (tests redirect TMPDIR here; runtime artifacts, never commit)
+.pytest_tmp/
 # agent/IDE state
 .qoder/
 .vscode/
 
 # Skills mirror (local sync copy, not project code)
 .qoder-cn/
+# attic skills mirror/export (37 MB auto-dumped, contains .mojibake_bak junk) — not project source
+attic/skills_archive/
 
 # temp commit-message files (never commit)
 logs/_commit_msg.txt

@@ -140,8 +140,8 @@ def test_check_batch_uniform_fails():
     assert "shape_signatures" in reason or "outer_wrappers" in reason
 
 
-def test_check_batch_dual_field_gate():
-    """Fewer than 3 dual-field expressions should fail the dual_field gate."""
+def test_check_batch_no_dual_field_gate():
+    """dual_field gate removed: single-field batches are no longer blocked by it."""
     expressions = [
         "rank(close)",
         "rank(volume)",
@@ -149,8 +149,10 @@ def test_check_batch_dual_field_gate():
         "rank(volume)",
     ]
     ok, reason, details = check_batch(expressions)
-    # All expressions have only 1 field each → dual_field gate should fail
-    assert details["gates"]["dual_field"]["passed"] is False
+    # dual_field is no longer an enforced gate
+    assert "dual_field" not in details["gates"]
+    # remaining gates (shape_signatures/outer_wrappers) may still fail this uniform batch
+    assert isinstance(ok, bool)
 
 
 def test_check_batch_group_vars_gate():

@@ -18,12 +18,14 @@ import sys
 # 添加 tools/lib 到路径
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
 
-# ---- verifier：import 直调，路径搜索 .workbuddy 优先 ----
+# ---- verifier：import 直调。权威套为 ~/.qoder-cn/skills（2026-08-23 单源化），
+# ~/.cursor/skills 为 Cursor 联接安装位（同内容），~/.workbuddy/skills 仅作跨 Agent 回退；
+# WQ_VALIDATOR_DIR 可覆盖 ----
 _VALIDATOR_DIRS = [
     os.environ.get("WQ_VALIDATOR_DIR"),
     os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "alpha-expression-verifier", "scripts"),
+    os.path.join(os.path.expanduser("~"), ".cursor", "skills", "alpha-expression-verifier", "scripts"),
     os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "alpha-expression-verifier", "scripts"),
-    r"D:\coding\traeCN_project\wqb\.cursor\skills\alpha-expression-verifier\scripts",
 ]
 _VALIDATOR = None
 
@@ -298,7 +300,9 @@ def check_one(expr, wl, dataset, poison_patterns, fix=False):
     inac = idents & INACCESSIBLE_OPS
     if inac:
         issues.append(f"[INACCESSIBLE] 平台不可访问算子(整批CANCELLED元凶): {sorted(inac)}")
-    for qm in re.finditer(r"quantile\(", expr):
+    # 负 lookbehind 排除 ts_quantile 等前缀算子（2026-08-26 wave40: ts_quantile 的
+    # 子串被误匹配导致 [ARITY] quantile 2 参误报）
+    for qm in re.finditer(r"(?<![A-Za-z0-9_])quantile\(", expr):
         depth, args, i = 0, 1, qm.end()
         while i < len(expr) and depth >= 0:
             c = expr[i]

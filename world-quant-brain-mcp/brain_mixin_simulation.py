@@ -1050,7 +1050,7 @@ class SimulationMixin:
                 try:
                     detail = response.json()
                 except Exception:
-                    pass
+                    logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
                 failing = []
                 checks = []
                 if 'is' in detail and 'checks' in detail['is']:
@@ -1119,96 +1119,15 @@ class SimulationMixin:
         self.log(f"Alpha {alpha_id} submission successful!", "INFO")
         return {"success": True, "reason": "IS checks passed", "status_code": response.status_code, "checks": checks}
 
-    async def get_submission_quota(
-        self,
-        window_hours: int = 48,
-        limit: int = 4,
-        daily_tz_hours: int = 8,
-    ) -> Dict[str, Any]:
-        """Estimate REGULAR_SUBMISSION quota usage — DUAL view (rolling + daily).
-
-        Read-only: counts OS alphas by dateSubmitted and returns BOTH lenses:
-
-        * ``rolling`` view — submissions inside the trailing ``window_hours``
-          (legacy conservative estimate; often undercounts the live cap).
-        * ``daily`` view — submissions on the current local day, which resets at
-          local midnight in ``daily_tz_hours`` (default UTC+8 / Beijing). This is
-          the empirically-verified real platform cap.
-
-        Platform-verified 2026-08-13: REGULAR_SUBMISSION check limit=4.
-        Empirical 2026-08-20: OS history shows clean 4/day clusters (08-11:4,
-        08-13:4) and disproves the rolling-48h reading — 08-11:4 + 08-12:2 = 6
-        inside 48h yet both succeeded, so the live cap is daily, not rolling.
-        Use ``daily_remaining`` for "how many can I submit right now".
-        """
-        import datetime as _dt
-        try:
-            payload = await self.get_user_alphas(stage="OS", limit=100, order="-dateSubmitted")
-        except Exception as exc:
-            return {"error": str(exc)}
-
-        now = _dt.datetime.now(_dt.timezone.utc)
-
-        def _parse(ts: str):
-            if not ts:
-                return None
-            try:
-                parsed = _dt.datetime.fromisoformat(ts)
-                if parsed.tzinfo is None:
-                    parsed = parsed.replace(tzinfo=_dt.timezone.utc)
-                return parsed
-            except ValueError:
-                return None
-
-        submissions = []
-        for alpha in payload.get("results", []):
-            parsed = _parse(alpha.get("dateSubmitted"))
-            if parsed:
-                submissions.append((alpha.get("id"), parsed))
-
-        # ---- rolling view (legacy, kept for backward compatibility) ----
-        used = [aid for aid, ts in submissions if (now - ts).total_seconds() <= window_hours * 3600]
-        rolling_remaining = max(0, limit - len(used))
-        latest = max((ts for _, ts in submissions), default=None)
-        release = (latest + _dt.timedelta(hours=window_hours)).isoformat() if latest else None
-        hours_left = (
-            max(0.0, (latest + _dt.timedelta(hours=window_hours) - now).total_seconds() / 3600)
-            if latest else None
-        )
-
-        # ---- daily view (current local day, resets at local midnight) ----
-        local_now = now + _dt.timedelta(hours=daily_tz_hours)
-        local_day_start = local_now.replace(hour=0, minute=0, second=0, microsecond=0)
-        day_start_utc = local_day_start - _dt.timedelta(hours=daily_tz_hours)
-        daily_used = [aid for aid, ts in submissions if ts >= day_start_utc]
-        daily_remaining = max(0, limit - len(daily_used))
-        daily_reset_utc = (day_start_utc + _dt.timedelta(days=1)).isoformat()
-
-        return {
-            # ---- legacy rolling view (unchanged keys) ----
-            "limit": limit,
-            "window_hours": window_hours,
-            "used": len(used),
-            "used_ids": used,
-            "remaining": rolling_remaining,
-            "earliest_release_utc": release,
-            "hours_until_release": hours_left,
-            # ---- new daily view ----
-            "daily_limit": limit,
-            "daily_tz": f"UTC+{daily_tz_hours}",
-            "daily_used": len(daily_used),
-            "daily_used_ids": daily_used,
-            "daily_remaining": daily_remaining,
-            "daily_reset_utc": daily_reset_utc,
-            # ---- guidance ----
-            "recommended_view": "daily",
-            "note": (
-                "Dual view. 'remaining' = rolling trailing-window estimate "
-                "(conservative; often undercounts). 'daily_remaining' = current "
-                "local-day cap (empirically the real platform limit: 4/day, resets "
-                "at local midnight). Trust daily_remaining for immediate capacity."
-            ),
-        }
+    # get_submission_quota method removed (2026-08-25 user request)
+    # async def get_submission_quota(
+    #     self,
+    #     window_hours: int = 48,
+    #     limit: int = 4,
+    #     daily_tz_hours: int = 8,
+    # ) -> Dict[str, Any]:
+    #     """Estimate REGULAR_SUBMISSION quota usage — DUAL view (rolling + daily)."""
+    #     ...
 
     async def get_events(self) -> Dict[str, Any]:
         """Get available events and competitions."""

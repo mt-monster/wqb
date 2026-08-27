@@ -413,7 +413,12 @@ async def get_multisimulation_children(multisimulation_location: str) -> Dict[st
         children = data.get('children', [])
         out_children = []
         for c in children:
-            child_url = c if c.startswith('http') else f"{brain_client.base_url}/simulations/{c}"
+            if c.startswith('http'):
+                child_url = c
+            elif c.startswith('/'):
+                child_url = f"{brain_client.base_url}{c}"
+            else:
+                child_url = f"{brain_client.base_url}/simulations/{c}"
             out_children.append({"location": c, "location_url": child_url})
         return {
             "success": True,
@@ -529,7 +534,12 @@ async def _wait_for_multisimulation_completion(location: str, expected_children:
 
         child_urls = []
         for c in children:
-            url = c if c.startswith('http') else f"{brain_client.base_url}/simulations/{c}"
+            if c.startswith('http'):
+                url = c
+            elif c.startswith('/'):
+                url = f"{brain_client.base_url}{c}"
+            else:
+                url = f"{brain_client.base_url}/simulations/{c}"
             child_urls.append(url)
 
         # Launch all child polls concurrently

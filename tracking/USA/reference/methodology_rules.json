@@ -22,7 +22,7 @@
    "status": "contested",
    "source": "auto_extract",
    "created_at": "2026-08-20T20:23:44",
-   "times_applied": 0,
+   "times_applied": 2,
    "times_succeeded": 2,
    "validated_at": "2026-08-20T20:26:40"
   },

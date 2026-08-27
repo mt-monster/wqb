@@ -1,6 +1,7 @@
 import asyncio
 import sys
-sys.path.insert(0, r"D:\coding\traeCN_project\wqb\world-quant-brain-mcp")
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from brain_api import brain_client
 
 async def test():

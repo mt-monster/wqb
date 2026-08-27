@@ -6,6 +6,7 @@ diversity_enhancer.py - Alpha表达式多样性增强系统
 """
 
 import json
+import logging
 import random
 import re
 import math
@@ -122,7 +123,7 @@ class OperatorQuotaManager:
             if ops:
                 return ops
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
         return set()
 
     @classmethod

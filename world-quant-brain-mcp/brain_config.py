@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 import json
 import os
 import re
@@ -57,7 +58,7 @@ def _load_dotenv_into_environ():
                     v = v.strip().strip('"').strip("'")
                     os.environ.setdefault(k, v)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
 
 def load_config() -> Dict[str, Any]:
     """Load configuration from file and overlay environment variables (from .env if present)."""

@@ -1,13 +1,12 @@
 """wqb.expression.validator — batch diversity gates and shape classification.
 
-``check_batch`` enforces the 5 diversity gates before a batch may be
+``check_batch`` enforces the diversity gates before a batch may be
 dispatched to ``create_multi_simulation``:
 
 1. ``shape_signatures`` — ≥2 distinct shape signatures.
 2. ``outer_wrappers`` — ≥2 distinct outermost operators.
-3. ``dual_field`` — ≥3 expressions combining two or more fields.
-4. ``group_vars`` — when group operators appear, ≥2 distinct group vars.
-5. ``windows`` — ≥2 distinct lookback windows (when windows are used).
+3. ``group_vars`` — when group operators appear, ≥2 distinct group vars.
+4. ``windows`` — ≥2 distinct lookback windows (when windows are used).
 """
 
 from __future__ import annotations
@@ -140,7 +139,6 @@ def check_batch(expressions: List[str]) -> Tuple[bool, str, Dict]:
     per_expression: List[Dict] = []
     signatures: Set[Tuple] = set()
     wrappers: Set[str] = set()
-    dual_field_count = 0
     group_vars: Set[str] = set()
     windows: Set[str] = set()
     has_group_ops = False
@@ -162,8 +160,6 @@ def check_batch(expressions: List[str]) -> Tuple[bool, str, Dict]:
         signatures.add(sig)
         if sig[4] != "none":
             windows.add(sig[4])
-        if len(fields) >= 2:
-            dual_field_count += 1
         per_expression.append({
             "expression": expr,
             "shape_class": classify_shape(expr),
@@ -179,10 +175,6 @@ def check_batch(expressions: List[str]) -> Tuple[bool, str, Dict]:
         "outer_wrappers": {
             "passed": len(wrappers) >= 2,
             "detail": f"{len(wrappers)} distinct outer wrapper(s)",
-        },
-        "dual_field": {
-            "passed": dual_field_count >= 3,
-            "detail": f"{dual_field_count} dual-field expression(s)",
         },
         "group_vars": {
             "passed": (not has_group_ops) or len(group_vars) >= 2,

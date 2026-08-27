@@ -12,9 +12,12 @@ docs/
 ├── README.md                              ← 本文件（索引与导航）
 ├── experience/                            ← 经验总结类
 │   ├── project_experience_master.md         项目经验总纲（10章，325行）
-│   └── wq_alpha_mining_knowledge_base.md    挖掘方法知识库（10章，374行）
+│   ├── wq_alpha_mining_knowledge_base.md    挖掘方法知识库（10章，374行）
+│   └── region_template_kb.md                区域/模板知识库使用协议（内容在 DB ledger_kv）
 ├── reference/                             ← 参考速查类
-│   └── operators_notes.md                   WQ BRAIN 全算子速查表（87条）
+│   ├── operators_notes.md                   WQ BRAIN 全算子速查表（87条）
+│   ├── feature_engineering_sop.md           标准化特征工程流程 SOP（六阶段）
+│   └── feature_engineering_template.md      特征工程文档模板（波级六节式）
 ├── architecture/                          ← 架构与结构类
 │   └── project_structure_analysis.md        项目目录结构分析（含迁移状态）
 ├── tutorials/                             ← 教程课件类
@@ -61,6 +64,12 @@ docs/
 
 **适用场景**：挖掘流程标准化、新人上手、避坑参考。
 
+#### 2b. 区域/模板知识库 `experience/region_template_kb.md`
+**定位**：每区域"怎么挖"的知识卡 + 跨区域已验证通用模板的**使用协议**（内容本体在 `data/wqb.db` ledger_kv：`<REGION>/region_kb` ×9 区、`KB/template_kb` T-KB-01~10、`KB/kb_index`）。
+**内容**（6章）：与既有建设的关系回顾 / 键布局 / Schema / 读写协议（S-PRE 必读、S6 回写、Mode B 找骨架）/ 三层分工（KB 蒸馏层 vs registry 明细层 vs wave 波次层）/ 建库快照。
+**适用场景**：开战役前查区域配方与死路模式、优化时取已验证骨架、跨区移植前查 failed 记录。
+**MCP 入口**：`get_ledger_key(region, "region_kb")` / `get_ledger_key("KB", "template_kb")`。
+
 ### 二、参考速查（reference/）
 
 #### 3. 算子速查表 `reference/operators_notes.md`
@@ -71,6 +80,11 @@ docs/
 - 幽灵算子清单（平台上不存在）：ts_entropy/ts_percentage/ts_skewness/ts_median 等 17 个
 
 **适用场景**：表达式编写时查算子签名、确认算子可用性、规划算子探索率。
+
+#### 3b. 特征工程流程与模板 `reference/feature_engineering_sop.md` + `reference/feature_engineering_template.md`
+**定位**：每波挖掘的特征工程执行规范（字段理解→筛选→预处理决策→表达式生成→质量预估→候选池优化六阶段）+ 波级文档模板。
+**内容**：SOP 含逐阶段执行者/数据源/产出/通过标准/反模式，与 S0-S6 战役流水线映射；模板含〔必填〕节与量化证据表格（入选/淘汰字段、预处理决策、BLOCK 处理、复盘钩子）。
+**适用场景**：新波开始前复制模板到 `tracking/<REGION>/feature_engineering_wave<N>_<ds>.md` 填写；配套工具 `tools/pool_diversity.py`/`quality_predict.py`/`wave_gate.py`。
 
 ### 三、架构与结构（architecture/）
 

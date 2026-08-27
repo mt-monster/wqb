@@ -15,7 +15,9 @@ import pytest
 
 from wqb.config import (
     BATCH_SIZE,
+    CONCURRENCY,
     GHOST_OPERATORS,
+    MINING,
     neutralization_best,
     OP_FAMILIES,
     PARADIGMS,
@@ -289,6 +291,25 @@ def test_new_regions_universes():
 def test_eur_universes_aligned_with_platform():
     assert "TOP2500" in REGIONS["EUR"]["universes"]
     assert "TOPCS1600" in REGIONS["EUR"]["universes"]
+    assert "TOP800" in REGIONS["EUR"]["universes"]
+    assert "TOP400" in REGIONS["EUR"]["universes"]
+    assert "ILLIQUID_MINVOL1M" in REGIONS["EUR"]["universes"]
+
+
+def test_mining_policy_caps_category_weight_and_requires_quota():
+    assert MINING["pyramid_quota_enable"] is True
+    assert MINING["pyramid_quota_non_model_min"] >= 2
+    assert MINING["category_weight_floor"] == 0.9
+    assert MINING["category_weight_cap"] == 1.15
+    assert MINING["cross_pyramid_slots_min"] >= 2
+    assert MINING["win_replay_slots_min"] >= 1
+    assert MINING["weak_probe_slots_max"] == 1
+    assert MINING["prod_first_skeletons_per_slot"] == 2
+    mix = MINING["slow_fast_mix"]
+    assert mix["slow_weight"] + mix["fast_weight"] == pytest.approx(1.0)
+    assert mix["fast_weight"] > mix["slow_weight"]
+    assert MINING["follow_win_settings"] is True
+    assert CONCURRENCY["slots"] == 7
 
 
 def test_glb_universes_aligned_with_platform():

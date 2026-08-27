@@ -15,9 +15,13 @@
   alpha 查询：get_alpha_by_id / list_alphas_by_wave / search_alphas_by_sharpe
   综合查询：get_campaign_summary / get_region_overview
   写工具（upsert 幂等）：upsert_ledger_key / upsert_wave_result / upsert_registry_empirical
+  战役产物：upsert_expressions / list_expressions / upsert_field_catalog / get_field_catalog
+            / upsert_backtest_rows / upsert_gate_result / get_gate_result
 """
 import json
+import logging
 import sqlite3
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -25,7 +29,16 @@ from mcp.server.fastmcp import FastMCP
 
 # 数据库路径（wqb_db_mcp.py 在 wqb 工作区根目录）
 ROOT = Path(__file__).resolve().parent
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 DB_PATH = ROOT / "data" / "wqb.db"
+
+from wqb.store import CampaignStore  # noqa: E402
+
+
+def _store() -> CampaignStore:
+    return CampaignStore(str(DB_PATH))
 
 mcp = FastMCP(
     "wqb-db-mcp",
@@ -37,6 +50,7 @@ def _conn():
     """获取数据库连接（row_factory=Row）。"""
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
 
@@ -52,7 +66,7 @@ def _parse_json_fields(row, fields):
             try:
                 row[f] = json.loads(row[f])
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
     return row
 
 
@@ -170,7 +184,8 @@ def get_region_config(region: str) -> Dict[str, Any]:
     if not row:
         return {"error": f"region not found: {region}"}
     result = dict(row)
-    return _parse_json_fields(result, ["config"])
+    # P1 fix: parse the real JSON columns, not the non-existent "config" column.
+    return _parse_json_fields(result, ["universe_legal", "delay_legal"])
 
 
 @mcp.tool()
@@ -338,13 +353,17 @@ def get_alpha_by_id(alpha_id: str) -> Dict[str, Any]:
     """
     conn = _conn()
     c = conn.cursor()
-    c.execute("SELECT * FROM alphas WHERE alpha_id=?", (alpha_id,))
+    c.execute(
+        "SELECT a.*, r.name AS region FROM alphas a "
+        "JOIN regions r ON a.region_id = r.id "
+        "WHERE a.alpha_id=?",
+        (alpha_id,),
+    )
     row = c.fetchone()
     conn.close()
     if not row:
         return {"error": f"alpha not found: {alpha_id}"}
-    result = dict(row)
-    return _parse_json_fields(result, ["metrics", "settings", "checks"])
+    return dict(row)
 
 
 @mcp.tool()
@@ -360,21 +379,18 @@ def list_alphas_by_wave(region: str, wave_number: int) -> List[Dict[str, Any]]:
     """
     conn = _conn()
     c = conn.cursor()
-    # waves 表找 wave_id
+    # 先通过 regions 表查 region_id，再联合 waves 查数据
     c.execute(
-        "SELECT id FROM waves WHERE region=? AND wave_number=?",
-        (region, wave_number),
+        "SELECT a.*, r.name AS region, w.wave_number "
+        "FROM alphas a "
+        "JOIN regions r ON a.region_id = r.id "
+        "JOIN waves w ON a.region_id = w.region_id AND a.dataset_id = w.dataset_id "
+        "WHERE r.name=? AND w.wave_number=?",
+        (region, str(wave_number)),
     )
-    wave_row = c.fetchone()
-    if not wave_row:
-        conn.close()
-        return []
-    wave_id = wave_row[0]
-    # alphas 表找该 wave 的 alpha
-    c.execute("SELECT * FROM alphas WHERE wave_id=?", (wave_id,))
     rows = _rows_to_dicts(c.fetchall())
     conn.close()
-    return [_parse_json_fields(r, ["metrics", "settings", "checks"]) for r in rows]
+    return rows
 
 
 @mcp.tool()
@@ -383,7 +399,7 @@ def search_alphas_by_sharpe(
     min_sharpe: float = 1.0,
     limit: int = 20,
 ) -> List[Dict[str, Any]]:
-    """按 sharpe 搜索 alpha（metrics->>'$.sharpe' >= min_sharpe）。
+    """按 sharpe 搜索 alpha（sharpe >= min_sharpe）。
 
     Args:
         region: 区域过滤（可选）
@@ -395,22 +411,21 @@ def search_alphas_by_sharpe(
     """
     conn = _conn()
     c = conn.cursor()
-    sql = """
-        SELECT a.*, w.region, w.wave_number
-        FROM alphas a
-        JOIN waves w ON a.wave_id = w.id
-        WHERE json_extract(a.metrics, '$.sharpe') >= ?
-    """
+    sql = (
+        "SELECT a.*, r.name AS region FROM alphas a "
+        "JOIN regions r ON a.region_id = r.id "
+        "WHERE a.sharpe >= ?"
+    )
     params = [min_sharpe]
     if region:
-        sql += " AND w.region=?"
+        sql += " AND r.name=?"
         params.append(region)
-    sql += " ORDER BY json_extract(a.metrics, '$.sharpe') DESC LIMIT ?"
+    sql += " ORDER BY a.sharpe DESC LIMIT ?"
     params.append(limit)
     c.execute(sql, params)
     rows = _rows_to_dicts(c.fetchall())
     conn.close()
-    return [_parse_json_fields(r, ["metrics", "settings", "checks"]) for r in rows]
+    return rows
 
 
 # ---------------- 综合查询 ----------------
@@ -458,7 +473,7 @@ def get_campaign_summary(region: str) -> Dict[str, Any]:
             sr_list = json.loads(sr_row[0])
             submit_ready_count = len(sr_list) if isinstance(sr_list, list) else 0
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("swallowed exception", exc_info=True)
     conn.close()
     return {
         "region": region,
@@ -645,6 +660,180 @@ def upsert_registry_empirical(
     conn.commit()
     conn.close()
     return {"action": action, "region": region, "layer": layer, "entry_id": entry_id}
+
+
+@mcp.tool()
+def upsert_expressions(
+    region: str,
+    wave: str,
+    expressions: Any,
+    dataset: Optional[str] = None,
+    status: str = "pending",
+) -> Dict[str, Any]:
+    """写入本波表达式（幂等，按 region+wave+expression）。
+
+    expressions 为字符串列表或 {expression/expr/code, status, settings} 对象列表。
+    """
+    store = _store()
+    try:
+        return store.upsert_expressions(region, str(wave), expressions or [], dataset=dataset, status=status)
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def list_expressions(
+    region: str,
+    wave: str,
+    dataset: Optional[str] = None,
+    status: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """列出某波表达式。"""
+    store = _store()
+    try:
+        return store.list_expressions(region, str(wave), dataset=dataset, status=status)
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def upsert_field_catalog(region: str, catalog: Any) -> Dict[str, Any]:
+    """写入 typed catalog（scan_fields 产物）。catalog 须含 dataset 与 fields。"""
+    store = _store()
+    try:
+        return store.upsert_field_catalog(region, catalog)
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def get_field_catalog(region: str, dataset: str) -> Dict[str, Any]:
+    """读取 typed catalog。"""
+    store = _store()
+    try:
+        cat = store.get_field_catalog(region, dataset)
+        return cat or {"error": f"catalog not found: {region}/{dataset}"}
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def upsert_backtest_rows(
+    region: str,
+    wave: str,
+    rows: Any,
+    dataset: Optional[str] = None,
+) -> Dict[str, Any]:
+    """写入回测行（pipeline/review 产物）。rows 为 metrics 行列表。"""
+    store = _store()
+    try:
+        n = store.upsert_backtest_rows(region, str(wave), rows or [], dataset=dataset)
+        return {"n": n, "region": region, "wave": str(wave)}
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def upsert_gate_result(
+    region: str,
+    wave: str,
+    dataset: str,
+    report: Any,
+) -> Dict[str, Any]:
+    """写入门禁报告（wave_gate / gate.py）。"""
+    store = _store()
+    try:
+        return store.upsert_gate_result(region, str(wave), dataset, report or {})
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def get_gate_result(region: str, wave: str, dataset: str) -> Dict[str, Any]:
+    """读取门禁报告。"""
+    store = _store()
+    try:
+        got = store.get_gate_result(region, str(wave), dataset)
+        return got or {"error": f"gate result not found: {region} wave{wave} {dataset}"}
+    finally:
+        store.close()
+
+
+@mcp.tool()
+def harvest_multisim_results(
+    region: str,
+    wave: str,
+    alphas: Any,
+    auto_link: bool = True,
+    auto_upsert: bool = True,
+) -> Dict[str, Any]:
+    """收批 multisim 结果：关联 expressions 并写回 backtest_rows（幂等）。
+
+    接收已从 BRAIN 平台拉取的 alpha 详情列表，负责：
+      1. 按 alpha_id / expression 关联 expressions 表中的 expression_id
+      2. 转换为 backtest_rows 格式
+      3. 写回 backtest_results 表（幂等 upsert）
+
+    网络拉取请使用 tools/harvest_multisim.py 或 wq-brain-http 的
+    get_multisimulation_children + get_alpha_details。
+
+    Args:
+        region: 区域（如 GBR/USA/KOR）
+        wave: 波次编号
+        alphas: alpha 详情列表，每项含 alpha_id/sharpe/fitness/turnover 等
+        auto_link: 是否自动关联 expressions 表（默认 True）
+        auto_upsert: 是否自动写回 backtest_results（默认 True）
+
+    Returns:
+        {"linked": n, "upserted": n, "region": ..., "wave": ...}
+    """
+    store = _store()
+    try:
+        alpha_list = alphas if isinstance(alphas, list) else []
+        linked = 0
+        upserted = 0
+
+        if auto_link and alpha_list:
+            exprs = store.list_expressions(region, str(wave))
+            expr_map = {e.get("alpha_id"): e.get("id") for e in exprs if e.get("alpha_id")}
+            code_map = {e.get("expression"): e.get("id") for e in exprs if e.get("expression")}
+
+            for a in alpha_list:
+                alpha_id = a.get("alpha_id")
+                code = a.get("expression") or a.get("code")
+                if alpha_id and alpha_id in expr_map:
+                    a["expression_id"] = expr_map[alpha_id]
+                    linked += 1
+                elif code and code in code_map:
+                    a["expression_id"] = code_map[code]
+                    linked += 1
+                else:
+                    a["expression_id"] = None
+
+        if auto_upsert and alpha_list:
+            rows = []
+            for a in alpha_list:
+                row = {
+                    "alpha_id": a.get("alpha_id"),
+                    "code": a.get("expression") or a.get("code"),
+                    "status": "COMPLETE" if not a.get("error") else "ERROR",
+                    "sharpe": a.get("sharpe"),
+                    "fitness": a.get("fitness"),
+                    "turnover": a.get("turnover"),
+                    "margin": a.get("margin"),
+                    "two_year_sharpe": a.get("two_year_sharpe"),
+                    "sub_universe_sharpe": a.get("sub_universe_sharpe"),
+                    "failed_checks": a.get("failed_checks"),
+                    "universe": a.get("settings", {}).get("universe") if isinstance(a.get("settings"), dict) else None,
+                    "delay": a.get("settings", {}).get("delay") if isinstance(a.get("settings"), dict) else None,
+                    "neut": a.get("settings", {}).get("neutralization") if isinstance(a.get("settings"), dict) else None,
+                }
+                rows.append(row)
+            upserted = store.upsert_backtest_rows(region, str(wave), rows)
+
+        return {"linked": linked, "upserted": upserted, "region": region, "wave": str(wave)}
+    finally:
+        store.close()
 
 
 if __name__ == "__main__":
