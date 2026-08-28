@@ -4,7 +4,38 @@
 > 扫描范围：仓库全量（排除 `attic/` 归档区、`.git`、`.venv`、`data/`、`research-data/`）
 > 扫描工具：`tracking/_scratch/_scan_deadcode.py`（v1）、`_scan_deadcode_v2.py`（v2，排除装饰器误报）
 > 原始报告：`tracking/_scratch/_deadcode_report_v2.json`
-> **状态：仅扫描分析，未做任何修改/删除。待用户确认后执行。**
+> **状态：✅ 已执行（用户 2026-08-28 确认后完成），commit `d93cba0` 已推送 origin/main。**
+
+---
+
+## 〇、执行结果（2026-08-28 更新）
+
+| 项目 | 用户决策 | 执行结果 |
+|---|---|---|
+| BOM 损坏脚本 | 修复 16 + 删除 8 | ✅ 16 个修复、8 个删除，全仓语法错误 **24 → 0** |
+| 未使用 import | 仅清理 `src/` + `tools/` | ✅ 清理 26 个（19 文件），**273 测试全通过** |
+| 临时文件 | 清理 3 个 `.bak_*`，保留 `_scratch` | ✅ 3 个删除，`_scratch` 保留 |
+
+### ⚠️ 执行中发现的关键误报（已修复）
+
+自动化扫描把 `src/wqb/expression/validator.py` 的 `SHAPE_CLASSES` 判为"未使用 import"，
+删除后导致 `tests/unit/test_skills.py` **ImportError**：
+
+```
+ImportError: cannot import name 'SHAPE_CLASSES' from 'wqb.expression.validator'
+```
+
+**根因**：`SHAPE_CLASSES` 是**重导出（re-export）**——`validator.py` 导入它不是为了自己用，
+而是为了让 `tests/unit/test_skills.py` 能从 `validator` 导入。单文件 AST 分析无法识别此模式。
+
+**教训**：未使用 import 的自动清理必须做**跨文件引用校验**，否则会破坏重导出链路。
+已将 `SHAPE_CLASSES` 恢复，并在下文的清理方法中补充了这条校验规则。
+
+### 剩余未处理（用户选择暂缓）
+
+- `world-quant-brain-mcp/` 454 个未用 import（占全仓 85%，模板化复制所致）
+- 4 个真死代码：`get_mcp_tool_for_task`、`format_mcp_reminder`、`read_wave_result`、`load_policy`
+- `tracking/_scratch/` 97 个一次性脚本（按用户决策保留）
 
 ---
 
@@ -202,6 +233,20 @@ from mcp_core import (mcp, brain_client, logger, save_config, _slim_checks, _sli
 - **`attic/` 归档区**（266 个文件）：项目"不硬删"纪律的归档区，**不建议清理**
 - **`src/wqb/config.py` 等公共 API**：初筛误报，实际被多文件引用
 - **`world-quant-brain-mcp/` 的 mixin 类**：被 `brain_api.py` 组合使用，非死代码
+
+---
+
+## 八、扫描脚本工具化收编（2026-08-28 补充，AGENTS.md §6）
+
+一次性扫描脚本已从 `tracking/_scratch/` 收编为 `tools/` 可复用工具（原稿归档 `attic/tools_archive/_2026-08-28_*`）：
+
+| 工具 | 取代 | 安全设计 |
+|---|---|---|
+| `tools/scan_deadcode.py` | `_scan_deadcode.py` (v1) + `_scan_deadcode_v2.py` (v2) 合并 | 只读；`--path`/`--out`/`--include-tests`；默认排除 tests（pytest 反射收集误报 347→57） |
+| `tools/fix_bom.py` | `_fix_bom.py` | 默认 `--dry-run`；`--apply` 才修；备份 + CJK 校验 + ast 校验 |
+| `tools/clean_unused_imports.py` | `_clean_unused_imports.py` | 默认 `--dry-run`；**跨文件 re-export 校验**（SHAPE_CLASSES 教训落地为代码）；`.bak_imp` 备份 + ast 校验 |
+
+收编过程中新修的两个工具 bug：① 生成器函数内 `return [file]` 不产出值 → 单文件模式静默返回空，改为 `yield`；② `SKIP_DIRS` 中的 `tracking/_scratch` 作为单层目录名永远匹配不上，改为按相对路径跳过。
 
 ---
 
