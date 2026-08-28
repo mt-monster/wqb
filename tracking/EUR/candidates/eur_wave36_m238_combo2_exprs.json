@@ -1,0 +1,10 @@
+[
+  "rank(subtract(mdl238_region_change_rank_d1, group_mean(mdl238_region_change_rank_d1, 1, industry)))",
+  "add(0.5*rank(mdl238_region_screening_rank_d1), 0.5*rank(mdl238_region_change_rank_d1))",
+  "subtract(0, rank(mdl238_region_owner_rank_d1))",
+  "add(0.5*rank(country_relative_investment_rank_d1), 0.5*rank(mdl238_global_change_rank_d1))",
+  "rank(ts_av_diff(mdl238_region_screening_rank_d1, 22))",
+  "add(0.4*rank(mdl238_industry_rank_d1), add(0.3*rank(mdl238_region_change_rank_d1), 0.3*rank(mdl238_global_screening_rank_d1)))",
+  "rank(subtract(mdl238_country_rank_d1, group_mean(mdl238_country_rank_d1, 1, industry)))",
+  "add(0.5*subtract(0, rank(mdl238_global_owner_rank_d1)), 0.5*rank(mdl238_global_change_rank_d1))"
+]

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """轮询 wave35 回测结果"""
 import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.path.insert(0, 'world-quant-brain-mcp')
 
 from brain_api import brain_client

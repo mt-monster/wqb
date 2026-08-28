@@ -1,0 +1,10 @@
+﻿[
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.5))", "settings": {"truncation": 0.05}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.5))", "settings": {"truncation": 0.04}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.3), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.7))", "settings": {"truncation": 0.05}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.2), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.8))", "settings": {"truncation": 0.05}},
+    {"expr": "-ts_rank(vec_avg(security_transaction_unit_price_usd), 60)", "settings": {"truncation": 0.05}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.3), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 60), 0.7))", "settings": {"truncation": 0.05}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.5))", "settings": {"decay": 8, "truncation": 0.05}},
+    {"expr": "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.5))", "settings": {"decay": 6, "truncation": 0.05}}
+]

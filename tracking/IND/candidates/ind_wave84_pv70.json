@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(pv70_news_score_float))",
+  "rank(vec_avg(pv70_ibeseps1_score_float))",
+  "rank(vec_avg(pv70_bbgnews_score_float))",
+  "rank(vec_avg(pv70_ibesptg1_score_float))",
+  "rank(ts_mean(vec_avg(pv70_news_score_float), 10))",
+  "rank(ts_mean(vec_avg(pv70_ibeseps1_score_float), 10))",
+  "rank(ts_mean(vec_avg(pv70_bbgnews_score_float), 10))",
+  "rank(ts_mean(vec_avg(pv70_ibesptg1_score_float), 10))"
+]

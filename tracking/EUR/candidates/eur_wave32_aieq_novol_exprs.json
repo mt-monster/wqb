@@ -1,0 +1,10 @@
+[
+ "group_rank(vec_avg(analyst_target_price_deviation), country)",
+ "group_rank(vec_avg(analyst_earnings_revision_intensity), industry)",
+ "add(0.6*rank(vec_avg(analyst_target_price_deviation)), 0.4*rank(ts_rank(vec_avg(analyst_earnings_revision_intensity), 5)))",
+ "group_neutralize(vec_avg(asset_turnover_ratio_metric), country)",
+ "rank(ts_av_diff(vec_avg(analyst_forecast_revision_factor_2), 22))",
+ "signed_power(rank(vec_avg(analyst_opinion_metric)), 0.5)",
+ "rank(ts_corr(vec_avg(analyst_forecast_revision_factor_2), vec_avg(analyst_earnings_revision_intensity), 20))",
+ "group_scale(vec_avg(accruals_analysis_factor), country)"
+]

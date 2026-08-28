@@ -1,0 +1,366 @@
+{
+ "dataset": "model238",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 44
+ },
+ "field_count": 44,
+ "fetched_at": "2026-08-23T23:31:13",
+ "fields": [
+  {
+   "id": "country_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 141,
+   "alphaCount": 250,
+   "description": "Normalized (0–100) float value for the stock’s Smart Holdings score within its country"
+  },
+  {
+   "id": "country_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 85,
+   "alphaCount": 136,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its country"
+  },
+  {
+   "id": "global_change_in_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 242,
+   "alphaCount": 1223,
+   "description": "Normalized (float, 0–100) global rank of the Change Component, representing recent changes (momentum) in ownership signa"
+  },
+  {
+   "id": "global_change_in_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 132,
+   "alphaCount": 633,
+   "description": "Normalized (0-100) score of the recent change momentum for the stock globally"
+  },
+  {
+   "id": "global_institutional_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 161,
+   "alphaCount": 1053,
+   "description": "Normalized (0–100) float percentile rank of the stock’s Smart Holdings score globally. Higher value = higher likelihood "
+  },
+  {
+   "id": "global_institutional_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 101,
+   "alphaCount": 171,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership at global level"
+  },
+  {
+   "id": "global_peer_investment_concentration_rank",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 57,
+   "alphaCount": 85,
+   "description": "Normalized (0–100) float value measuring global peer crowding/risk, where higher values indicate higher global instituti"
+  },
+  {
+   "id": "global_peer_investment_concentration_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 35,
+   "alphaCount": 116,
+   "description": "Normalized (0-100) peer ownership score for the stock at the global level"
+  },
+  {
+   "id": "global_screening_factor_alignment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 61,
+   "alphaCount": 87,
+   "description": "Normalized (0–100) float value indicating the stock's style-fit or screening component, globally, adjusted for peer char"
+  },
+  {
+   "id": "global_screening_factor_alignment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 50,
+   "alphaCount": 74,
+   "description": "Normalized (0-100) score of the stock’s style-fit (screening component) globally, adjusted for peer ownership"
+  },
+  {
+   "id": "industry_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9825,
+   "userCount": 79,
+   "alphaCount": 122,
+   "description": "Normalized (0–100) float value representing the stock’s Smart Holdings score within its industry"
+  },
+  {
+   "id": "industry_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9825,
+   "userCount": 88,
+   "alphaCount": 127,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its industry"
+  },
+  {
+   "id": "mdl238_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 311,
+   "alphaCount": 1502,
+   "description": "Country rank (1–100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within that cou"
+  },
+  {
+   "id": "mdl238_country_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 125,
+   "alphaCount": 433,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its country according to the Sm"
+  },
+  {
+   "id": "mdl238_global_change_rank",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 161,
+   "alphaCount": 437,
+   "description": "Global rank (1–100) for the momentum or recent change component, representing the degree of recent increase in instituti"
+  },
+  {
+   "id": "mdl238_global_change_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 134,
+   "alphaCount": 459,
+   "description": "Rank (1–100) measuring recent changes or momentum in institutional ownership for the stock, globally"
+  },
+  {
+   "id": "mdl238_global_owner_rank",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 73,
+   "alphaCount": 161,
+   "description": "Global rank (1–100) of peer crowding/capacity risk. 100 = highest global institutional ownership (most crowded), 1 = low"
+  },
+  {
+   "id": "mdl238_global_owner_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 64,
+   "alphaCount": 107,
+   "description": "Peer ownership score of the stock globally, ranked 1-100 where 100 indicates highest peer ownership and liquidity risk"
+  },
+  {
+   "id": "mdl238_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 217,
+   "alphaCount": 1155,
+   "description": "Global rank (1–100) of Smart Holdings model score. Higher ranks imply greater probability of global institutional owners"
+  },
+  {
+   "id": "mdl238_global_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 89,
+   "alphaCount": 144,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock across the global universe according t"
+  },
+  {
+   "id": "mdl238_global_screening_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 127,
+   "alphaCount": 423,
+   "description": "Global rank (1–100) of the stock’s style-fit or screening component, adjusted for peer characteristics. Higher values re"
+  },
+  {
+   "id": "mdl238_global_screening_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 121,
+   "alphaCount": 467,
+   "description": "Peers-adjusted screening (style fit) score for a stock, ranked 1-100 at the global level, indicating how well its charac"
+  },
+  {
+   "id": "mdl238_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9825,
+   "userCount": 139,
+   "alphaCount": 418,
+   "description": "Industry rank (1–100) of Smart Holdings score. Higher rank means higher probability of institutional ownership within th"
+  },
+  {
+   "id": "mdl238_industry_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9825,
+   "userCount": 92,
+   "alphaCount": 226,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its industry according to the S"
+  },
+  {
+   "id": "mdl238_region_change_rank",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 65,
+   "alphaCount": 130,
+   "description": "Regional rank (1–100) indicating the strength of recent change or momentum in institutional ownership within the region"
+  },
+  {
+   "id": "mdl238_region_change_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 73,
+   "alphaCount": 132,
+   "description": "Rank (1-100) of recent changes or momentum in ownership signals for the stock within its region, reflecting directional "
+  },
+  {
+   "id": "mdl238_region_owner_rank",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 39,
+   "alphaCount": 46,
+   "description": "Regional rank (1–100) of peer crowding. 100 = highest regional institutional ownership (most crowded), 1 = lowest. Highl"
+  },
+  {
+   "id": "mdl238_region_owner_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 32,
+   "alphaCount": 37,
+   "description": "Peer ownership score of the stock within its region, ranked 1-100 where 100 indicates highest peer ownership and liquidi"
+  },
+  {
+   "id": "mdl238_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 93,
+   "alphaCount": 169,
+   "description": "Regional rank (1–100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within the reg"
+  },
+  {
+   "id": "mdl238_region_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 52,
+   "alphaCount": 80,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its region according to the Sma"
+  },
+  {
+   "id": "mdl238_region_screening_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 95,
+   "alphaCount": 215,
+   "description": "Regional rank (1–100) of the stock’s style-fit or screening component, peer-adjusted. Higher rank suggests stronger regi"
+  },
+  {
+   "id": "mdl238_region_screening_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 177,
+   "alphaCount": 2100,
+   "description": "Peers-adjusted screening (style fit) score for a stock, ranked 1-100 within its region, indicating how well its characte"
+  },
+  {
+   "id": "mdl238_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.9827,
+   "userCount": 102,
+   "alphaCount": 265,
+   "description": "Sector rank (1–100) of Smart Holdings score. Higher values represent higher expected institutional ownership in that sec"
+  },
+  {
+   "id": "mdl238_sector_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9827,
+   "userCount": 66,
+   "alphaCount": 124,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its sector according to the Sma"
+  },
+  {
+   "id": "regional_change_in_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 51,
+   "alphaCount": 75,
+   "description": "Normalized (float, 0–100) regional rank of the Change Component, representing momentum in institutional ownership signal"
+  },
+  {
+   "id": "regional_change_in_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9824,
+   "userCount": 66,
+   "alphaCount": 82,
+   "description": "Normalized (0-100) score of the recent change momentum for the stock in its region"
+  },
+  {
+   "id": "regional_institutional_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 56,
+   "alphaCount": 80,
+   "description": "Normalized (0–100) float value for the stock’s Smart Holdings score within its region"
+  },
+  {
+   "id": "regional_institutional_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 50,
+   "alphaCount": 74,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its region"
+  },
+  {
+   "id": "regional_peer_investment_concentration_rank",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 22,
+   "alphaCount": 33,
+   "description": "Normalized (0–100) float value measuring regional peer crowding. High values mean higher institutional ownership regiona"
+  },
+  {
+   "id": "regional_peer_investment_concentration_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9826,
+   "userCount": 34,
+   "alphaCount": 41,
+   "description": "Normalized (0-100) peer ownership score for the stock in its region"
+  },
+  {
+   "id": "regional_screening_factor_alignment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 45,
+   "alphaCount": 69,
+   "description": "Normalized (0–100) float value indicating the stock's style-fit or screening component within the region, adjusted for p"
+  },
+  {
+   "id": "regional_screening_factor_alignment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9828,
+   "userCount": 70,
+   "alphaCount": 409,
+   "description": "Normalized (0-100) score of the stock’s style-fit (screening component) in its region, adjusted for peer ownership"
+  },
+  {
+   "id": "sector_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9827,
+   "userCount": 168,
+   "alphaCount": 796,
+   "description": "Normalized (0–100) float value reflecting the stock’s Smart Holdings score within its sector"
+  },
+  {
+   "id": "sector_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.9827,
+   "userCount": 84,
+   "alphaCount": 208,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its sector"
+  }
+ ]
+}

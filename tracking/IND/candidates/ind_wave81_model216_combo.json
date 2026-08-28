@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobal100score)), rank(vec_avg(mdl216_armglobalcombinationscore))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobal100score)), rank(vec_avg(mdl216_armrecommendation100rank))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobal100score)), rank(vec_avg(mdl216_armpreferredrevisionscore))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobal100score)), rank(vec_avg(mdl216_armrecommendationscore))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobalcombinationscore)), rank(vec_avg(mdl216_armpreferredrevisionscore))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armrecommendation100rank)), rank(vec_avg(mdl216_armpreferredrevisionscore))), 10))",
+  "rank(ts_mean(add(rank(vec_avg(mdl216_armglobal100score)), rank(vec_avg(mdl216_preferredblendedrevisionfy1percent))), 10))",
+  "rank(add(ts_mean(rank(vec_avg(mdl216_armglobal100score)), 10), ts_mean(rank(vec_avg(mdl216_armglobal100score)), 90)))"
+]

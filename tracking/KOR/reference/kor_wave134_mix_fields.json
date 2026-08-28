@@ -1,0 +1,108 @@
+{
+ "dataset": "multi_source_model",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MIX",
+ "field_count": 12,
+ "description": "MSM long-horizon white-space family (120d/60d MATRIX)",
+ "banned_patterns": [],
+ "fields": [
+  {
+   "id": "analyst_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Analyst-based prediction for the top quantile of 120-day forward returns."
+  },
+  {
+   "id": "analyst_quantile5_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.8999,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Analyst-based prediction for the 5th quantile of 120-day forward returns."
+  },
+  {
+   "id": "fundamental_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.7641,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "120-day forward return prediction for the top quantile using fundamental data."
+  },
+  {
+   "id": "long_horizon_hedge3_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term hedge signal for the top quantile over 120 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_horizon_hedge_quantile2_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-term hedge signal for the 2nd quantile over 60 days, designed for low correlation with main signals."
+  },
+  {
+   "id": "long_term_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Long-horizon return prediction for the top quantile over a 120-day period."
+  },
+  {
+   "id": "long_term_quantile5_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the 5th quantile over a 120-day period."
+  },
+  {
+   "id": "long_term_quantile5_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the 5th quantile over a 60-day period."
+  },
+  {
+   "id": "long_term_regime2_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for two-phase market regime."
+  },
+  {
+   "id": "long_term_regime4_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for four-phase market regime."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_120d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 120 days, adjusted for seasonal effects."
+  },
+  {
+   "id": "long_term_seasonal_quantile1_60d_pred",
+   "type": "MATRIX",
+   "coverage": 0.9464,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Long-horizon return prediction for the top quantile over 60 days, adjusted for seasonal effects."
+  }
+ ]
+}

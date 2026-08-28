@@ -1,0 +1,1942 @@
+{
+ "dataset": "analyst45",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 241
+ },
+ "field_count": 241,
+ "fetched_at": "2026-08-23T20:13:36",
+ "fields": [
+  {
+   "id": "absolute_price_change_today_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 107,
+   "alphaCount": 134,
+   "description": "Change in the stock price since the previous day’s close"
+  },
+  {
+   "id": "adjusted_bias_return",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Non-functional field; not in use"
+  },
+  {
+   "id": "aggregate_realized_unrealized_return",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Sum of realised and unrealised returns for the idea"
+  },
+  {
+   "id": "aggregate_return_excluding_fx",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Total return excluding FX effects, as a percentage of average investment"
+  },
+  {
+   "id": "aggregate_return_percentage",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Total return over the idea’s lifetime expressed as a percentage of average investment"
+  },
+  {
+   "id": "allocated_funds_currency_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Currency of the idea investment"
+  },
+  {
+   "id": "anl45_ad_rel_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 33,
+   "alphaCount": 40,
+   "description": "Average daily index relative return percentage"
+  },
+  {
+   "id": "anl45_ad_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 22,
+   "alphaCount": 25,
+   "description": "Average daily percent return over the idea’s lifetime"
+  },
+  {
+   "id": "anl45_ang_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 27,
+   "alphaCount": 32,
+   "description": "Time-weighted average investment"
+  },
+  {
+   "id": "anl45_avg_dur",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Average age of the idea limited to the selected period"
+  },
+  {
+   "id": "anl45_avg_initial_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Average share price weighted by volume of each share purchase"
+  },
+  {
+   "id": "anl45_avg_initial_prc_wfee",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "The avg initial price adjusted to include fee payment when fees are applied"
+  },
+  {
+   "id": "anl45_beta",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "A measure of the volatility or systematic risk of a security compared to the market, updated monthly based on last 20 mo"
+  },
+  {
+   "id": "anl45_bias_weighted_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Non-Functional"
+  },
+  {
+   "id": "anl45_bm_exchange_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Exchange rate by which the benchmark will be measured"
+  },
+  {
+   "id": "anl45_bm_fx_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "FX return made by the benchmark due to currency movements"
+  },
+  {
+   "id": "anl45_bm_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 38,
+   "alphaCount": 51,
+   "description": "Return of the benchmark index"
+  },
+  {
+   "id": "anl45_bm_ret_wo_fx",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Benchmark’s return excluding foreign exchange effects (raw benchmark return)"
+  },
+  {
+   "id": "anl45_closed_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "Price at which the idea was closed"
+  },
+  {
+   "id": "anl45_current_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Current investment amount, including increases and partial closures"
+  },
+  {
+   "id": "anl45_days_since_inception",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Number of trading days since the idea was submitted"
+  },
+  {
+   "id": "anl45_idea_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Number of ideas in a group, useful when grouping ideas"
+  },
+  {
+   "id": "anl45_index_period_end_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Benchmark or index end price for the selected performance period"
+  },
+  {
+   "id": "anl45_index_period_start_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "Benchmark or index start price for the selected performance period"
+  },
+  {
+   "id": "anl45_index_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Return percentage had the investment been made in the selected index"
+  },
+  {
+   "id": "anl45_initial_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Initial investment amount allocated to the idea"
+  },
+  {
+   "id": "anl45_inv_exchange_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Exchange rate between stock and investment currencies, typically the FX rate on the period end date"
+  },
+  {
+   "id": "anl45_jensensalpha",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "Risk-adjusted performance measure representing return over market"
+  },
+  {
+   "id": "anl45_latest_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "The current price of the stock in the idea"
+  },
+  {
+   "id": "anl45_limited_ang_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Time-weighted average investment"
+  },
+  {
+   "id": "anl45_limited_avg_dur",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average age of the idea (limited to the period selected)"
+  },
+  {
+   "id": "anl45_limited_avg_initial_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Volume-weighted average entry price across initial purchases"
+  },
+  {
+   "id": "anl45_limited_avg_initial_prc_wfee",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Average initial price including fees when applied"
+  },
+  {
+   "id": "anl45_limited_beta",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Beta of the security relative to the market, updated monthly using ~20 months of data"
+  },
+  {
+   "id": "anl45_limited_bias_weighted_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Non-Functional"
+  },
+  {
+   "id": "anl45_limited_bm_exchange_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate used to measure the benchmark"
+  },
+  {
+   "id": "anl45_limited_bm_fx_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Foreign exchange return attributable to the benchmark due to currency movements"
+  },
+  {
+   "id": "anl45_limited_current_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current invested amount in the idea, including increases and partial closures"
+  },
+  {
+   "id": "anl45_limited_idea_count",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of ideas in a group, useful for grouping views"
+  },
+  {
+   "id": "anl45_limited_index_period_start_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Benchmark/Index start price based on the performance period you chose"
+  },
+  {
+   "id": "anl45_limited_initial_inv",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Initial investment amount for the Idea"
+  },
+  {
+   "id": "anl45_limited_inv_exchange_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange rate between stock and investment currencies / FX Rate on the period End date"
+  },
+  {
+   "id": "anl45_limited_net_market_exposure",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Net exposure to the market, difference between long and short values"
+  },
+  {
+   "id": "anl45_limited_period_end_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Close price on day at end of selected period"
+  },
+  {
+   "id": "anl45_limited_period_start_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Close price on day before start of selected period"
+  },
+  {
+   "id": "anl45_limited_prc_change_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the stock price since the previous day’s close"
+  },
+  {
+   "id": "anl45_limited_real_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Realized return on the idea since inception"
+  },
+  {
+   "id": "anl45_limited_real_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The value of realised (closed) parts of an idea"
+  },
+  {
+   "id": "anl45_limited_ret_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Increase in realized return since the last market close"
+  },
+  {
+   "id": "anl45_limited_risk_free_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "anl45_limited_stock_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Net total return from all ideas since previous market close"
+  },
+  {
+   "id": "anl45_limited_tot_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of realised and unrealised returns"
+  },
+  {
+   "id": "anl45_limited_tot_ret_wo_fx",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Return of the stock ignoring any foreign exchange effects"
+  },
+  {
+   "id": "anl45_limited_transaction_charge",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Transaction fee charged for the idea (in calculation currency)"
+  },
+  {
+   "id": "anl45_limited_treynor_ratio",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Risk-adjusted return metric measuring excess return per unit of systematic risk (Treynor ratio)"
+  },
+  {
+   "id": "anl45_limited_unreal_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unrealized (mark-to-market) return on the open idea"
+  },
+  {
+   "id": "anl45_limited_unreal_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Unrealised value of an open idea"
+  },
+  {
+   "id": "anl45_net_market_exposure",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 37,
+   "alphaCount": 41,
+   "description": "Difference in fractional total value between long and short ideas (net market exposure)"
+  },
+  {
+   "id": "anl45_new_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "New value set for the stop-loss percent, target price, or capital allocation"
+  },
+  {
+   "id": "anl45_old_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Previous value of the stop-loss percent, target price, or capital allocation before the latest change"
+  },
+  {
+   "id": "anl45_period_end_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Close price on day at end of selected period"
+  },
+  {
+   "id": "anl45_period_start_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Close price on day before start of selected period"
+  },
+  {
+   "id": "anl45_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "The price given to the investment change"
+  },
+  {
+   "id": "anl45_prc_change_per_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percent change in stock price since previous close of day price"
+  },
+  {
+   "id": "anl45_prc_change_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Change in stock price since previous day close"
+  },
+  {
+   "id": "anl45_prev_close_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Last available close price for the stock"
+  },
+  {
+   "id": "anl45_probability",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Tag giving a quantitative measure of conviction"
+  },
+  {
+   "id": "anl45_real_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Realized return from closed portions of the idea since inception"
+  },
+  {
+   "id": "anl45_real_ret_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Increase in realized return since the previous market close"
+  },
+  {
+   "id": "anl45_real_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Monetary value of the realized (closed) portion of the idea"
+  },
+  {
+   "id": "anl45_rel_index_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Difference in return percentage between the idea and the comparative index"
+  },
+  {
+   "id": "anl45_rel_index_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Difference in return percentage between the idea and the comparative index"
+  },
+  {
+   "id": "anl45_rel_ret_per_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Relative return percentage today"
+  },
+  {
+   "id": "anl45_rel_ret_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "anl45_ret_per_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentage return since last market close"
+  },
+  {
+   "id": "anl45_ret_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "anl45_risk_free_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "anl45_stock_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Net total return from all ideas since the previous market close"
+  },
+  {
+   "id": "anl45_stock_ret_per_relative",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average daily return percentage had the investment been made in the relative benchmark index"
+  },
+  {
+   "id": "anl45_target_prc",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Author’s stated likely exit price for the idea"
+  },
+  {
+   "id": "anl45_time",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Approximate time horizon for the idea"
+  },
+  {
+   "id": "anl45_tot_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Sum of realised and unrealised returns"
+  },
+  {
+   "id": "anl45_tot_ret_per",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "Total return as a percentage of average investment"
+  },
+  {
+   "id": "anl45_tot_ret_wo_fx",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Total return excluding any foreign exchange effects"
+  },
+  {
+   "id": "anl45_transaction_charge",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Transaction fee charged for the idea (in calculation currency)"
+  },
+  {
+   "id": "anl45_treynor_ratio",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A ratio that measures returns earned in excess of that which could have been earned on a riskless investment (such as th"
+  },
+  {
+   "id": "anl45_unreal_ret",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 7,
+   "description": "Unrealized return on the open idea (mark-to-market)"
+  },
+  {
+   "id": "anl45_unreal_ret_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in unrealised return since the last market close"
+  },
+  {
+   "id": "anl45_unreal_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Unrealised value of an open idea"
+  },
+  {
+   "id": "anticipated_exit_price",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "The likely exit price for the idea according to the author"
+  },
+  {
+   "id": "average_daily_percent_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average daily percentage return over the lifetime of the idea"
+  },
+  {
+   "id": "average_daily_percent_return_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average daily percent return over lifetime of idea"
+  },
+  {
+   "id": "average_daily_relative_index_return_pct",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average daily index relative return percentage"
+  },
+  {
+   "id": "average_idea_age_period",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average age of the idea limited to the period selected"
+  },
+  {
+   "id": "average_idea_age_period_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average age of the idea (limited to the period selected)"
+  },
+  {
+   "id": "average_trade_investment",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Time-weighted average investment"
+  },
+  {
+   "id": "avg_daily_index_relative_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average daily return percent had all investments been in the relative index"
+  },
+  {
+   "id": "avg_daily_index_relative_return_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average daily return % had all investments been in the relative index"
+  },
+  {
+   "id": "avg_daily_index_relative_return_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average daily return percentage had all investments been in the relative index"
+  },
+  {
+   "id": "avg_entry_price_incl_fees",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "The avg initial price adjusted to include fee payment when fees are applied"
+  },
+  {
+   "id": "benchmark_currency_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Currency of the benchmark"
+  },
+  {
+   "id": "benchmark_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency of the benchmark index"
+  },
+  {
+   "id": "benchmark_fx_conversion_rate",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange rate by which the benchmark will be measured"
+  },
+  {
+   "id": "benchmark_fx_return_value_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Foreign exchange return made by the benchmark over the period"
+  },
+  {
+   "id": "benchmark_index_return_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Return had all investments been in the relative index rather than specific stocks"
+  },
+  {
+   "id": "benchmark_index_return_percent_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Percentage return that would have been earned in the benchmark index over the period"
+  },
+  {
+   "id": "benchmark_index_return_percent_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return % had the investment been made in an index"
+  },
+  {
+   "id": "benchmark_period_closing_price_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Benchmark/index price at the end of the selected performance period"
+  },
+  {
+   "id": "benchmark_period_end_price",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Benchmark/Index end price based on the performance period you chose"
+  },
+  {
+   "id": "benchmark_period_final_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Benchmark or index price at the end of the selected performance period"
+  },
+  {
+   "id": "benchmark_period_initial_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Benchmark or index price at the start of the selected performance period"
+  },
+  {
+   "id": "benchmark_period_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return of the benchmark over the relevant period"
+  },
+  {
+   "id": "benchmark_period_return_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return of the benchmark index assigned to the idea"
+  },
+  {
+   "id": "benchmark_period_start_price",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Benchmark/Index start price based on the performance period you chose"
+  },
+  {
+   "id": "benchmark_return_ex_fx_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Benchmark return excluding foreign exchange effects"
+  },
+  {
+   "id": "benchmark_return_ex_fx_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Basically tracking the raw returns of the benchmark"
+  },
+  {
+   "id": "bias_adjusted_return_value_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Non-functional placeholder metric (not to be used)"
+  },
+  {
+   "id": "closed_position_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Value of the realised (closed) portions of the idea"
+  },
+  {
+   "id": "conversion_rate_summary",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate between investment and performance currencies"
+  },
+  {
+   "id": "currency_gain_percentage",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "FX-driven return expressed as a percentage of the invested amount"
+  },
+  {
+   "id": "currency_gain_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return generated from variations in foreign exchange"
+  },
+  {
+   "id": "currency_of_investment",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Currency of the idea investment"
+  },
+  {
+   "id": "currency_rate_return",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return generated from variations in FX"
+  },
+  {
+   "id": "currency_return_percentage",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return from variations in FX expressed as a percentage of the investment"
+  },
+  {
+   "id": "current_total_investment_amount",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Current investment amount for the idea, after increases and partial closures"
+  },
+  {
+   "id": "daily_price_change_percentage",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Percent change in stock price since previous close of day price"
+  },
+  {
+   "id": "daily_price_change_value",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Change in stock price since previous day close"
+  },
+  {
+   "id": "event_associated_price_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Price applied to the investment change"
+  },
+  {
+   "id": "event_associated_price_3",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "The price used for the investment change"
+  },
+  {
+   "id": "event_associated_price_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The price associated with the investment change event"
+  },
+  {
+   "id": "exit_price_of_idea",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The price at which the idea was closed"
+  },
+  {
+   "id": "exit_trade_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Price at which the idea was closed"
+  },
+  {
+   "id": "expected_exit_price_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Likely exit price for the idea as set by the author"
+  },
+  {
+   "id": "expected_exit_price_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The likely exit price for the idea set by the author"
+  },
+  {
+   "id": "foreign_exchange_return_value_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return generated from variations in foreign exchange rates"
+  },
+  {
+   "id": "foreign_exchange_return_value_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Return generated from foreign exchange movements"
+  },
+  {
+   "id": "fx_return_percent_of_investment",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return from FX movements expressed as a percentage of the invested amount"
+  },
+  {
+   "id": "fx_return_percent_of_investment_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return from FX movements as a percentage of investment"
+  },
+  {
+   "id": "grouped_idea_quantity",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of ideas in a group, useful for grouping views"
+  },
+  {
+   "id": "initial_price_including_fees",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average initial price adjusted to include applicable fees"
+  },
+  {
+   "id": "investment_currency_code",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Currency of the investment"
+  },
+  {
+   "id": "investment_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency of the idea investment"
+  },
+  {
+   "id": "investment_fx_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Exchange rate between the stock and investment currencies (FX rate on the period end date)"
+  },
+  {
+   "id": "investment_performance_fx_rate_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Exchange rate between investment and performance currencies"
+  },
+  {
+   "id": "investment_to_performance_fx_rate",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Exchange rate between investment and performance currencies"
+  },
+  {
+   "id": "investment_to_performance_fx_rate_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate between the investment and performance currencies"
+  },
+  {
+   "id": "jensens_alpha_performance",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "A risk-adjusted performance measure that represents the average return on a portfolio over and above the average market "
+  },
+  {
+   "id": "last_available_closing_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Last available close price for the stock"
+  },
+  {
+   "id": "mean_daily_relative_index_return_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Average daily index relative return percentage"
+  },
+  {
+   "id": "mean_daily_relative_performance",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average daily index-relative return percentage"
+  },
+  {
+   "id": "mean_daily_return_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 14,
+   "description": "Average daily percent return over the lifetime of the idea"
+  },
+  {
+   "id": "most_recent_security_price_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "The current price of the stock in the idea"
+  },
+  {
+   "id": "most_recent_security_price_3",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The current price of the stock in the idea"
+  },
+  {
+   "id": "most_recent_security_price_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Most recent price of the stock referenced by the idea"
+  },
+  {
+   "id": "net_exposure_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Difference in fractional total value between long and short ideas"
+  },
+  {
+   "id": "net_market_position_exposure",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Difference in fractional total value between long and short ideas"
+  },
+  {
+   "id": "net_total_return_since_close_pct",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Daily return of the stock in percent"
+  },
+  {
+   "id": "net_total_return_since_last_close",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Net total return from all ideas since the previous market close"
+  },
+  {
+   "id": "new_field_value",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 7,
+   "alphaCount": 12,
+   "description": "New value of a stop loss percent, target price, or capital change"
+  },
+  {
+   "id": "number_of_ideas_in_group",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of ideas in the group, useful when grouping ideas in the view"
+  },
+  {
+   "id": "open_position_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Unrealised value of an open idea"
+  },
+  {
+   "id": "open_trade_position_value",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The unrealised value of an open idea"
+  },
+  {
+   "id": "percent_return_since_last_close",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Percentage return since last market close"
+  },
+  {
+   "id": "percent_return_since_last_close_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage return since last market close"
+  },
+  {
+   "id": "period_ending_price",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Close price on day at end of selected period"
+  },
+  {
+   "id": "period_final_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Close price on the day at the end of the selected period"
+  },
+  {
+   "id": "period_initial_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Close price on the day before the start of the selected period"
+  },
+  {
+   "id": "period_starting_price",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Close price on day before start of selected period"
+  },
+  {
+   "id": "position_exit_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "The price at which the idea was closed"
+  },
+  {
+   "id": "present_investment_amount",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Current investment amount of the idea including all increases and partial closures"
+  },
+  {
+   "id": "previous_closing_price_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Last available closing price for the stock"
+  },
+  {
+   "id": "previous_field_value_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous value of a stop-loss percent, target price, or capital change"
+  },
+  {
+   "id": "price_change_percent_today_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Percent change in stock price since previous close of day price"
+  },
+  {
+   "id": "price_change_percentage_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Percent change in stock price since previous close of day price"
+  },
+  {
+   "id": "prior_day_closing_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Last available close price for the stock"
+  },
+  {
+   "id": "prior_value_before_change",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Previous value of a stop loss percent, target price, or capital change"
+  },
+  {
+   "id": "prior_value_before_change_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Previous value of a stop-loss percent, target price, or capital change"
+  },
+  {
+   "id": "realized_return_closed_positions",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "The realised return on an idea"
+  },
+  {
+   "id": "realized_return_since_last_close",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Increase in realised return since the previous market close"
+  },
+  {
+   "id": "realized_return_since_last_close_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "realized_return_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in realized return since the last market close"
+  },
+  {
+   "id": "realized_return_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Realised return on the idea"
+  },
+  {
+   "id": "realized_value_closed_positions",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The value of realised parts of an idea that have been closed"
+  },
+  {
+   "id": "reference_index_currency_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Currency of the benchmark"
+  },
+  {
+   "id": "reference_index_currency_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Currency of the benchmark"
+  },
+  {
+   "id": "reference_index_fx_rate",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate by which the benchmark will be measured"
+  },
+  {
+   "id": "reference_index_fx_return",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Foreign exchange return of the benchmark (movement due to FX)"
+  },
+  {
+   "id": "reference_index_return_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Return of the benchmark over the relevant period"
+  },
+  {
+   "id": "reference_index_return_ex_fx_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Return of the author-assigned benchmark excluding foreign exchange effects"
+  },
+  {
+   "id": "relative_index_investment_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Difference in return percentage between the idea and the comparative benchmark index"
+  },
+  {
+   "id": "relative_index_investment_return_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference in return % between making investment in idea and comparative index"
+  },
+  {
+   "id": "relative_index_return_pct_value",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Difference in percentage return between the idea and the comparative index"
+  },
+  {
+   "id": "relative_index_return_percent_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percentage return difference between the idea and its benchmark index"
+  },
+  {
+   "id": "relative_index_return_percentage_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return had all investments been in the relative index rather than specific stocks"
+  },
+  {
+   "id": "relative_index_return_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference in return percentage between the idea and its comparative benchmark index"
+  },
+  {
+   "id": "relative_percent_return_today",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Relative return percentage for today"
+  },
+  {
+   "id": "relative_percent_return_today_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Relative return percentage for today versus the chosen benchmark"
+  },
+  {
+   "id": "relative_return_increment_today",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Increase in realised return since the last market close"
+  },
+  {
+   "id": "relative_return_increment_today_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "relative_return_percentage_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "relative_return_today_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "risk_adjusted_excess_return_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Risk-adjusted performance (alpha) relative to the market using Jensen’s method"
+  },
+  {
+   "id": "risk_adjusted_performance_alpha",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "A risk-adjusted performance measure that represents the average return on a portfolio over and above the average market "
+  },
+  {
+   "id": "risk_adjusted_return_treynor",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Risk-adjusted performance ratio measuring returns earned in excess of the risk-free rate per unit of systematic risk"
+  },
+  {
+   "id": "riskless_investment_rate_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "riskless_investment_rate_3",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "security_trading_currency_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency in which the security is traded"
+  },
+  {
+   "id": "security_trading_currency_4",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency in which the security is traded"
+  },
+  {
+   "id": "security_trading_currency_5",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Currency in which the security is traded"
+  },
+  {
+   "id": "security_trading_currency_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Currency in which the security is traded"
+  },
+  {
+   "id": "starting_investment_amount_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Initial investment amount allocated to the idea"
+  },
+  {
+   "id": "starting_investment_amount_3",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Initial investment amount for the idea"
+  },
+  {
+   "id": "stock_to_investment_fx_rate",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Exchange rate between the stock and investment currencies, typically the FX rate on the period end date"
+  },
+  {
+   "id": "success_likelihood_score_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Quantitative measure of conviction assigned to the idea"
+  },
+  {
+   "id": "success_likelihood_score_4",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Tag giving a quantitative measure of conviction"
+  },
+  {
+   "id": "success_likelihood_score_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Tag giving a quantitative measure of conviction"
+  },
+  {
+   "id": "systematic_risk_beta_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "A measure of the volatility or systematic risk relative to the market updated monthly based on last 20 months"
+  },
+  {
+   "id": "systematic_risk_beta_value",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "A measure of volatility or systematic risk relative to the market, updated monthly based on the last 20 months"
+  },
+  {
+   "id": "time_weighted_average_investment",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Time-weighted average investment amount"
+  },
+  {
+   "id": "total_realized_unrealized_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of realised and unrealised returns for the idea"
+  },
+  {
+   "id": "total_return_ex_fx_effects",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Return of the stock ignoring any FX considerations"
+  },
+  {
+   "id": "total_return_increment_today",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "total_return_percent_avg_investment",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total return as a percentage of average investment"
+  },
+  {
+   "id": "total_return_percent_avg_investment_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total return as a percentage of average investment"
+  },
+  {
+   "id": "total_return_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Increase in realised return since last market close"
+  },
+  {
+   "id": "trade_return_percent_today",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 19,
+   "description": "Percentage return since last market close"
+  },
+  {
+   "id": "trade_transaction_fee_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Transaction fee charged for the idea in the calculation currency"
+  },
+  {
+   "id": "trade_transaction_fee_3",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Transaction fee charged for the idea in the calculation currency"
+  },
+  {
+   "id": "trading_days_since_idea_start",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of trading days since an Idea was submitted"
+  },
+  {
+   "id": "trading_days_since_idea_start_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Number of trading days since the idea was submitted"
+  },
+  {
+   "id": "trading_days_since_start",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of trading days since the idea was submitted"
+  },
+  {
+   "id": "treynor_risk_adjusted_return",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Ratio measuring returns earned in excess of those from a riskless investment relative to beta"
+  },
+  {
+   "id": "unrealized_return_increment_today",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Increase in unrealised return since the previous market close"
+  },
+  {
+   "id": "unrealized_return_increment_today_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Increase in unrealised return since last market close"
+  },
+  {
+   "id": "unrealized_return_open_positions",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "unrealized_return_today_value_2",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Increase in unrealised return since last market close"
+  },
+  {
+   "id": "unrealized_return_value",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "The unrealised return on an open idea"
+  },
+  {
+   "id": "updated_field_value_3",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "New value set for a stop-loss percent, target price, or capital change"
+  },
+  {
+   "id": "updated_value_after_change_limited",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "New value of a stoploss percent, target price, or capital change"
+  },
+  {
+   "id": "volume_weighted_entry_price_2",
+   "type": "VECTOR",
+   "coverage": 0.4329,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average share price weighted by volume of each share purchase"
+  },
+  {
+   "id": "volume_weighted_initial_price",
+   "type": "VECTOR",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Average share price weighted by the volume of each share purchase"
+  }
+ ]
+}

@@ -12,6 +12,43 @@ from mcp_core import (mcp, brain_client, logger, save_config, _slim_checks, _sli
 
 from brain_api import SimulationSettings, SimulationData
 
+# ── region→universe 合法性校验表（与 src/wqb/config.py REGIONS 同步） ──
+_REGION_UNIVERSE_MAP: Dict[str, List[str]] = {
+    "USA": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200"],
+    "EUR": ["TOP2500", "TOPCS1600", "TOP1200", "TOP800", "TOP400", "ILLIQUID_MINVOL1M"],
+    "CHN": ["TOP2000U", "TOP1000", "TOP500"],
+    "ASI": ["TOP2000", "TOP1000", "TOP500"],
+    "GLB": ["MINVOL10M", "TOPDIV3000", "TOP3000", "TOP2000"],
+    "JPN": ["TOP2000", "TOP1000", "TOP500"],
+    "KOR": ["TOP600"],  # 平台实证：KOR/D1 唯一可用 universe 是 TOP600
+    "AMR": ["TOP2000", "TOP1000", "TOP500"],
+    "TWN": ["TOP1000", "TOP500"],
+    "GBR": ["TOP700", "TOP350"],
+    "DEU": ["TOP500", "TOP300"],
+    "IND": ["TOP500", "TOP300"],
+    "MEA": ["TOP400", "TOP200"],
+    "HKG": ["TOP800", "TOP500"],
+}
+
+_VALID_NEUTRALIZATIONS: List[str] = [
+    "STATISTICAL", "SUBINDUSTRY", "INDUSTRY", "FAST", "SLOW",
+    "CROWDING", "NONE", "MARKET", "SECTOR", "REVERSION_AND_MOMENTUM",
+    "SLOW_AND_FAST",
+]
+
+
+def _validate_region_settings(region: str, universe: str, neutralization: str) -> Optional[Dict[str, Any]]:
+    """校验 region/universe/neutralization 组合合法性。返回 None=合法，dict=错误。"""
+    if region not in _REGION_UNIVERSE_MAP:
+        return {"error": f"Unknown region '{region}'. Valid: {sorted(_REGION_UNIVERSE_MAP.keys())}"}
+    valid_universes = _REGION_UNIVERSE_MAP[region]
+    if universe not in valid_universes:
+        return {"error": f"universe '{universe}' not valid for region '{region}'. Valid: {valid_universes}"}
+    if neutralization not in _VALID_NEUTRALIZATIONS:
+        return {"error": f"Unknown neutralization '{neutralization}'. Valid: {_VALID_NEUTRALIZATIONS}"}
+    return None
+
+
 # 复用工作区 tools/lib 下的 vector_wrap（单一权威源，避免副本 drift）
 _REPO_TOOLS_LIB = Path(__file__).resolve().parents[1] / "tools" / "lib"
 if _REPO_TOOLS_LIB.is_dir() and str(_REPO_TOOLS_LIB) not in sys.path:
@@ -80,6 +117,10 @@ async def create_simulation(
         if region == "USA" and universe == "TOP3000":
             logger.warning("[create_simulation] 使用默认 USA/TOP3000！"
                            "如果期望其他区域，请检查 MCP 调用参数是否正确传递。")
+
+        _err = _validate_region_settings(region, universe, neutralization)
+        if _err:
+            return _err
 
         normalized_language = language.upper()
         settings_kwargs = {
@@ -200,6 +241,10 @@ async def create_multi_simulation(
         if region == "USA" and universe == "TOP3000":
             logger.warning("[create_multi_simulation] 使用默认 USA/TOP3000！"
                            "如果期望其他区域，请检查 MCP 调用参数是否正确传递。")
+
+        _err = _validate_region_settings(region, universe, neutralization)
+        if _err:
+            return _err
 
         # Validate input
         if len(alpha_expressions) < 2:
@@ -347,6 +392,10 @@ async def batch_create_simulations(
             return {"error": "items 需为 1-20 条的列表"}
         if not base_region:
             return {"error": "base_region 必填（防 MCP 默认值误用：不设 USA/TOP3000 默认）"}
+
+        _err = _validate_region_settings(base_region, base_universe or "", base_neutralization)
+        if _err:
+            return _err
 
         base = {
             'instrumentType': 'EQUITY',

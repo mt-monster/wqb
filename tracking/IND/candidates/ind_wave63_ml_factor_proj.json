@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(change_operating_cashflow_assets_adj), 21))",
+  "-rank(ts_mean(rank(change_unexpected_accounts_receivable), 21))",
+  "rank(ts_mean(add(rank(change_nopat_profit_margin), reverse(rank(change_net_debt_ratio_2))), 21))",
+  "rank(if_else(greater(rank(change_operating_cashflow_ratio_2), 0.5), rank(change_five_year_relative_ebitda_to_price), reverse(rank(change_five_year_relative_ebitda_to_price))))",
+  "rank(ts_corr(rank(change_sales_vs_eps_growth), rank(change_sales_vs_receivables), 21))",
+  "rank(ts_kurtosis(rank(change_operating_cash_burn_rate), 21))",
+  "rank(ts_mean(divide(add(1, rank(change_net_net_assets_to_price)), add(1, rank(change_price_to_total_assets))), 21))",
+  "rank(ts_mean(add(rank(change_industry_relative_cashflow_to_price), reverse(rank(change_inventory_to_assets_ratio))), 21))"
+]

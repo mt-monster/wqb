@@ -1,0 +1,10 @@
+[
+  "add(0.30*subtract(0, rank(subtract(long_term_estimate_revision_europe_rank, group_mean(long_term_estimate_revision_europe_rank, 1, industry)))), 0.70*rank(long_term_growth_analyst_europe_rank))",
+  "add(0.30*subtract(0, rank(subtract(long_term_estimate_revision_europe_rank, group_mean(long_term_estimate_revision_europe_rank, 1, industry)))), 0.70*rank(long_term_financial_statement_strength_europe_rank))",
+  "add(0.40*subtract(0, rank(subtract(long_term_estimate_revision_europe_rank, group_mean(long_term_estimate_revision_europe_rank, 1, industry)))), 0.60*rank(mid_term_estimate_revision_europe_rank))",
+  "rank(ts_av_diff(long_term_estimate_revision_europe_rank, 66))",
+  "subtract(0, rank(ts_av_diff(long_term_estimate_revision_europe_rank, 66)))",
+  "group_zscore(long_term_estimate_revision_europe_rank, country)",
+  "add(0.5*rank(short_term_estimate_revision_europe_rank), 0.5*rank(mid_term_estimate_revision_europe_rank))",
+  "rank(subtract(short_term_estimate_revision_europe_rank, group_mean(short_term_estimate_revision_europe_rank, 1, industry)))"
+]

@@ -1,0 +1,10 @@
+[
+ "add(0.5*rank(forecasted_earnings_surprise_fy1_long), 0.5*rank(model_score_change_30d_long))",
+ "add(0.6*rank(forecasted_earnings_surprise_fy1_long), 0.4*rank(score_component_primary_profit_long))",
+ "signed_power(rank(forecasted_earnings_surprise_fy1_long), 0.5)",
+ "group_rank(forecasted_earnings_surprise_fy1_long, industry)",
+ "add(0.5*rank(recommendation_change_component_medium_term_4), 0.5*rank(score_component_primary_profit_long))",
+ "add(add(0.4*rank(forecasted_earnings_surprise_fy1_long), 0.3*rank(model_score_change_30d_long)), 0.3*rank(score_component_primary_profit_long))",
+ "group_zscore(add(rank(forecasted_earnings_surprise_fy1_long), rank(model_score_change_30d_long)), industry)",
+ "scale(group_zscore(forecasted_earnings_surprise_fy1_long, industry))"
+]

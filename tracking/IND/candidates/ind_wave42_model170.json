@@ -1,0 +1,10 @@
+[
+  "-rank(ts_mean(add(rank(vec_avg(recent_earnings_momentum_score)), rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price)))), 21))",
+  "-rank(ts_mean(add(rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price))), rank(vec_avg(composite_fundamental_score))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(recent_earnings_momentum_score)), rank(vec_avg(price_position_within_annual_range))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(composite_fundamental_score)), rank(vec_avg(price_position_within_annual_range))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(recent_dividend_yield_pct)), rank(vec_avg(recent_earnings_momentum_score))), 21))",
+  "-rank(ts_mean(add(rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price))), rank(ts_zscore(vec_avg(recent_earnings_momentum_score),126))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(composite_fundamental_score)), rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(annual_price_peak)))), 21))",
+  "-rank(ts_mean(add(rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price))), rank(vec_avg(recent_dividend_yield_pct))), 21))"
+]

@@ -1,0 +1,10 @@
+[
+  "-rank(ts_mean(eps_revision_magnitude, 10))",
+  "-rank(ts_mean(eps_y1_estimate_change_3mo, 21))",
+  "-rank(ts_mean(eps_y1_estimate_coeff_var, 21))",
+  "-rank(ts_mean(eps_y2_estimate_change_3mo, 21))",
+  "-rank(ts_mean(revenue_revision_magnitude, 10))",
+  "-rank(ts_mean(revenue_y1_estimate_change_3mo, 21))",
+  "-rank(ts_mean(eps_estimate_trend_slope_1yr, 21))",
+  "-rank(ts_mean(eps_y1_cagr_2yr, 21))"
+]

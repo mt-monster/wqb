@@ -1,0 +1,50 @@
+[
+ {
+  "code": "add(0.5*signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5), 0.5*group_rank(model_score_change_30d_long, country))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "group_rank(add(rank(avg_estimate_change_pct_current_year_profit_90d_medium), rank(model_score_change_30d_long)), country)",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "add(add(0.4*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.3*rank(preferred_earnings_revision_component_medium_term_5)), 0.3*rank(recommendation_change_component_medium_term_4))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "add(0.5*group_zscore(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.5*rank(revenue_revision_component_medium_term_3))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "divide(rank(avg_estimate_change_pct_current_year_profit_90d_medium), ts_std_dev(avg_estimate_change_pct_current_year_profit_90d_medium, 66))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "add(0.5*rank(score_component_primary_profit_long), 0.5*signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "group_neutralize(add(rank(avg_estimate_change_pct_current_year_profit_90d_medium), rank(forecasted_earnings_surprise_fy1_long)), industry)",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ },
+ {
+  "code": "add(0.5*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5*group_rank(model_score_change_30d_long, country))",
+  "note": "Intra-ARH combos of wave22/32 signal fields (profit90d 1.38-1.39, model_score_change, surprise, revision components).",
+  "dataset": "analyst_revision_horizons",
+  "wave": 33
+ }
+]

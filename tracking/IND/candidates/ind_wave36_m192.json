@@ -1,0 +1,6 @@
+[
+  "-rank(add(rank(ts_backfill(mdl192_cds_pd5y_di,66)), rank(ts_backfill(mdl192_indrelrtn5d_di,5))))",
+  "-rank(add(rank(ts_backfill(mdl192_cds_pd5y_di,66)), reverse(rank(ts_backfill(mdl192_fc_numrevy1_di,66)))))",
+  "-rank(add(rank(ts_backfill(mdl192_indrelrtn5d_di,5)), reverse(rank(ts_backfill(mdl192_fc_numrevy1_di,66)))))",
+  "-rank(add(rank(ts_zscore(ts_backfill(mdl192_cds_pd5y_di,66),126)), rank(ts_backfill(mdl192_indrelrtn5d_di,5))))"
+]

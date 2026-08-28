@@ -1,0 +1,718 @@
+{
+ "dataset": "model216",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 88
+ },
+ "field_count": 88,
+ "fetched_at": "2026-08-23T22:33:20",
+ "fields": [
+  {
+   "id": "analyst_recommendation_score_2",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 50,
+   "alphaCount": 75,
+   "description": "ARM component score derived from analyst recommendation revisions (coverage-normalized and combined with estimate revisi"
+  },
+  {
+   "id": "country_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 26,
+   "alphaCount": 59,
+   "description": "Country-relative ARM score mapped to a 1–5 scale from percentile (1 best, 5 worst)"
+  },
+  {
+   "id": "country_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 25,
+   "alphaCount": 33,
+   "description": "Country-relative ARM rank expressed on a 0–1 scale (percentile) for greater precision"
+  },
+  {
+   "id": "country_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 18,
+   "alphaCount": 53,
+   "description": "Percentile score within the country based on the ARM; 100 indicates highest rated and 1 lowest"
+  },
+  {
+   "id": "estimate_revision_combined_score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 19,
+   "alphaCount": 21,
+   "description": "Combined estimate revisions rank from preferred, secondary, and revenue components with profitability-based weights"
+  },
+  {
+   "id": "global_combined_score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 49,
+   "alphaCount": 194,
+   "description": "Combined ARM score blending estimate revisions and recommendations globally; if no recommendations component, equals the"
+  },
+  {
+   "id": "global_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Global ARM score mapped to a 1–5 scale from percentile (1 best, 5 worst)"
+  },
+  {
+   "id": "global_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 21,
+   "alphaCount": 28,
+   "description": "Global ARM percentile rank with greater precision on a 0–1 scale"
+  },
+  {
+   "id": "global_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 15,
+   "alphaCount": 15,
+   "description": "Percentile rank (1–100) versus the global universe based on the ARM algorithm; 100 is highest"
+  },
+  {
+   "id": "industry_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 10,
+   "alphaCount": 14,
+   "description": "Industry-relative ARM score mapped to a 1–5 scale from percentile (1 best, 5 worst)"
+  },
+  {
+   "id": "industry_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 10,
+   "alphaCount": 17,
+   "description": "Industry-relative ARM rank on a 0–1 scale (percentile precision)"
+  },
+  {
+   "id": "industry_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 21,
+   "alphaCount": 28,
+   "description": "Percentile score within the industry based on the ARM; 100 indicates highest rated and 1 lowest"
+  },
+  {
+   "id": "mdl216_armcountry100score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 101,
+   "alphaCount": 321,
+   "description": "Percentile rank 1–100 within the country based on the Analyst Revisions Model; 100 best, 1 worst"
+  },
+  {
+   "id": "mdl216_armcountry1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 43,
+   "alphaCount": 81,
+   "description": "0–1 scaled country-relative ARM rank, with higher values indicating stronger signals versus country peers"
+  },
+  {
+   "id": "mdl216_armcountry5score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 52,
+   "alphaCount": 86,
+   "description": "1–5 mapped score of the country ARM percentile (bell-shaped bins); 1 best, 5 worst"
+  },
+  {
+   "id": "mdl216_armestimaterevisioncombinationrank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 25,
+   "alphaCount": 29,
+   "description": "Combined estimate revisions rank that weights preferred, secondary, and revenue revisions, with weights varying by profi"
+  },
+  {
+   "id": "mdl216_armglobal100score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 58,
+   "alphaCount": 231,
+   "description": "Global 1–100 percentile score from the ARM model, where 100 indicates highest rated globally"
+  },
+  {
+   "id": "mdl216_armglobal1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 48,
+   "alphaCount": 84,
+   "description": "0–1 precision version of the global ARM percentile rank"
+  },
+  {
+   "id": "mdl216_armglobal5score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 35,
+   "alphaCount": 80,
+   "description": "Global ARM score mapped from the 1–100 percentile to a 1–5 scale, where 1 indicates highest rated and 5 indicates lowest"
+  },
+  {
+   "id": "mdl216_armglobalcombinationscore",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 54,
+   "alphaCount": 150,
+   "description": "Combined global ARM score that blends the Estimates Revisions component with the Recommendations component; if recommend"
+  },
+  {
+   "id": "mdl216_armindustry100score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 52,
+   "alphaCount": 290,
+   "description": "Percentile rank (1–100) within the industry based on the ARM algorithm; 100 is highest and 1 is lowest"
+  },
+  {
+   "id": "mdl216_armindustry1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 47,
+   "alphaCount": 129,
+   "description": "0–1 precision version of the industry ARM percentile rank"
+  },
+  {
+   "id": "mdl216_armindustry5score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 30,
+   "alphaCount": 43,
+   "description": "Industry score mapped from the 1–100 ARM percentile to a 1–5 scale (bell-shaped distribution), where 1 is highest and 5 "
+  },
+  {
+   "id": "mdl216_armpreferredrevision1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 13,
+   "alphaCount": 22,
+   "description": "0–1 scaled rank for the preferred revisions component, providing higher precision than 1–100; higher values indicate str"
+  },
+  {
+   "id": "mdl216_armpreferredrevisioncomponent100rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 12,
+   "alphaCount": 19,
+   "description": "1–100 rank of the preferred (primary) revisions component based on the ARM algorithm, where 100 is strongest"
+  },
+  {
+   "id": "mdl216_armpreferredrevisioncomponent5rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Analyst Revisions rank for the Preferred measure mapped from the 1–100 percentile to a 1–5 scale, where 1 is highest and"
+  },
+  {
+   "id": "mdl216_armpreferredrevisionscore",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 18,
+   "alphaCount": 44,
+   "description": "Component score of the ARM derived from revisions and predicted surprises in the preferred earnings measure"
+  },
+  {
+   "id": "mdl216_armrecommendation100rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 26,
+   "alphaCount": 52,
+   "description": "1–100 percentile rank based solely on recommendations-based factors; 100 best, 1 worst"
+  },
+  {
+   "id": "mdl216_armrecommendation1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 39,
+   "alphaCount": 68,
+   "description": "ARM recommendation rank expressed on a 0–1 scale providing greater precision than the 1–100 ranking"
+  },
+  {
+   "id": "mdl216_armrecommendation5rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "1–5 mapped rank of the recommendations-based ARM percentile; 1 best, 5 worst (bell-shaped bins)"
+  },
+  {
+   "id": "mdl216_armrecommendationscore",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 40,
+   "alphaCount": 161,
+   "description": "ARM component score derived from analyst recommendations with coverage normalization and combined ranking approach"
+  },
+  {
+   "id": "mdl216_armregion100score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 35,
+   "alphaCount": 86,
+   "description": "Percentile rank 1–100 within the region based on the Analyst Revisions Model; 100 best, 1 worst"
+  },
+  {
+   "id": "mdl216_armregion1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 35,
+   "alphaCount": 81,
+   "description": "0–1 scaled regional rank for the ARM model, with higher values indicating stronger signals relative to regional peers"
+  },
+  {
+   "id": "mdl216_armregion5score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 25,
+   "alphaCount": 35,
+   "description": "Region score mapped from the 1–100 ARM percentile to a 1–5 scale (bell-shaped distribution), where 1 is highest and 5 is"
+  },
+  {
+   "id": "mdl216_armrevenuerevision1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 18,
+   "alphaCount": 30,
+   "description": "0–1 precision rank of the revenue-related component in the Analyst Revisions Model"
+  },
+  {
+   "id": "mdl216_armrevenuerevisioncomponent100rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "1–100 rank of the revenue revisions component based on the ARM algorithm, where 100 is strongest and 1 is weakest"
+  },
+  {
+   "id": "mdl216_armrevenuerevisioncomponent5rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Rank of the revenue revisions component mapped to a 1–5 scale, where 1 is highest and 5 is lowest"
+  },
+  {
+   "id": "mdl216_armrevenuerevisionscore",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 26,
+   "alphaCount": 52,
+   "description": "Component score of the ARM based on revenue revisions and predicted surprises"
+  },
+  {
+   "id": "mdl216_armsecondaryrevision1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 15,
+   "alphaCount": 23,
+   "description": "0–1 scaled rank for the secondary revisions component, with higher values indicating stronger signals"
+  },
+  {
+   "id": "mdl216_armsecondaryrevisioncomponent100rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Analyst Revisions 1–100 rank for the Secondary measure based on the ARM algorithm, where 100 is highest and 1 is lowest"
+  },
+  {
+   "id": "mdl216_armsecondaryrevisioncomponent5rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 16,
+   "alphaCount": 22,
+   "description": "Analyst Revisions rank for the Secondary measure mapped from the 1–100 percentile to a 1–5 scale, where 1 is highest and"
+  },
+  {
+   "id": "mdl216_armsecondaryrevisionscore",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 27,
+   "alphaCount": 47,
+   "description": "Component score of the Analyst Revisions Model derived from secondary earnings revisions and predicted surprises"
+  },
+  {
+   "id": "mdl216_armsector100score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 29,
+   "alphaCount": 85,
+   "description": "Percentile rank 1–100 within the sector based on the Analyst Revisions Model; 100 best, 1 worst"
+  },
+  {
+   "id": "mdl216_armsector1rank",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 21,
+   "alphaCount": 53,
+   "description": "0–1 precision version of the sector ARM percentile rank"
+  },
+  {
+   "id": "mdl216_armsector5score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 39,
+   "alphaCount": 83,
+   "description": "1–5 mapped score of the sector ARM percentile (bell-shaped bins); 1 best, 5 worst"
+  },
+  {
+   "id": "mdl216_industryclassification",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 14,
+   "alphaCount": 18,
+   "description": "TRBC Industry Group code as of the as-of date (point-in-time)"
+  },
+  {
+   "id": "mdl216_preferredblendedrevisionfq1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Even-weighted blended revision percent for the Preferred measure in FQ1 across 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "mdl216_preferredblendedrevisionfy1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 15,
+   "alphaCount": 16,
+   "description": "Even-weighted blend of Preferred FY1 revision measures over 7, 14, 30, 60, and 90 days, expressed as a percent change"
+  },
+  {
+   "id": "mdl216_preferredblendedrevisionfy2percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 20,
+   "alphaCount": 21,
+   "description": "Even-weighted blend of Preferred FY2 revision measures over 7, 14, 30, 60, and 90 days, expressed as a percent change"
+  },
+  {
+   "id": "mdl216_recommendationblendedrevisionpercent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 23,
+   "alphaCount": 42,
+   "description": "Even-weighted blend of recommendation revisions over 7, 14, 30, 60, and 90 days, expressed as a percent change"
+  },
+  {
+   "id": "mdl216_revenueblendedrevisionfq1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 13,
+   "alphaCount": 25,
+   "description": "Even-weighted blended percentage change in revenue estimate revisions for next fiscal quarter (FQ1) across 7, 14, 30, 60"
+  },
+  {
+   "id": "mdl216_revenueblendedrevisionfy1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Even-weighted blend of Revenue FY1 revision measures over 7, 14, 30, 60, and 90 days, expressed as a percent change"
+  },
+  {
+   "id": "mdl216_revenueblendedrevisionfy2percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Even-weighted blend of Revenue FY2 revision measures over 7, 14, 30, 60, and 90 days, expressed as a percent change"
+  },
+  {
+   "id": "mdl216_secondaryblendedrevisionfq1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "Even-weighted blended revision percent for the Secondary measure in FQ1 across 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "mdl216_secondaryblendedrevisionfy1percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Even-weighted blended revision percent for the Secondary measure in FY1 across 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "mdl216_secondaryblendedrevisionfy2percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 7,
+   "alphaCount": 17,
+   "description": "Even-weighted blended revision percent for the Secondary measure in FY2 across 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "mdl216_sectorclassification",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Refinitiv TRBC Economic Sector code as of the AsOfDate; earliest available TRBC used if missing on that date"
+  },
+  {
+   "id": "preferred_earnings_blended_revision_current_quarter",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Blended percent change in FQ1 preferred earnings estimates using 7/14/30/60/90-day lookbacks (even-weighted)"
+  },
+  {
+   "id": "preferred_earnings_blended_revision_current_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Even-weighted blended percent change in preferred FY1 estimate revisions over 7, 14, 30, 60, and 90-day lookbacks; posit"
+  },
+  {
+   "id": "preferred_earnings_blended_revision_next_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Even-weighted blend of 7, 14, 30, 60, and 90-day preferred estimate revisions for FY2, expressed as a percent; positive "
+  },
+  {
+   "id": "preferred_earnings_component_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Preferred measure rank mapped from the 1–100 percentile to a 1–5 scale, where 1 is highest and 5 is lowest"
+  },
+  {
+   "id": "preferred_earnings_component_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "1–100 rank for the preferred revisions component; 100 is best and 1 worst"
+  },
+  {
+   "id": "preferred_earnings_revision_score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "ARM component score based on revisions and predicted surprises in the preferred earnings measure"
+  },
+  {
+   "id": "preferred_earnings_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Preferred measure ARM percentile rank with greater precision on a 0–1 scale"
+  },
+  {
+   "id": "recommendation_blended_revision_percent",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 19,
+   "alphaCount": 24,
+   "description": "Even-weighted blend of 7, 14, 30, 60, and 90-day recommendation revisions, expressed as a percent; positive indicates mo"
+  },
+  {
+   "id": "recommendation_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Recommendations-only component rank mapped to a 1–5 bell-shaped scale; 1 is best and 5 is worst"
+  },
+  {
+   "id": "recommendation_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Recommendations component rank on a 0–1 scale (percentile precision)"
+  },
+  {
+   "id": "recommendation_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "1–100 rank based solely on recommendations factors; 100 is best and 1 worst"
+  },
+  {
+   "id": "region_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Region-relative ARM score mapped to a 1–5 scale from percentile (1 best, 5 worst)"
+  },
+  {
+   "id": "region_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 17,
+   "alphaCount": 38,
+   "description": "Region-relative ARM rank expressed on a 0–1 scale (percentile) for greater precision"
+  },
+  {
+   "id": "region_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 17,
+   "alphaCount": 27,
+   "description": "Region-relative ARM percentile rank on a 1–100 scale (100 best)"
+  },
+  {
+   "id": "revenue_blended_revision_current_quarter",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 10,
+   "alphaCount": 18,
+   "description": "Blended percent change in FQ1 revenue estimates using 7/14/30/60/90-day lookbacks (even-weighted)"
+  },
+  {
+   "id": "revenue_blended_revision_current_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Even-weighted blend of 7, 14, 30, 60, and 90-day revenue estimate revisions for FY1, expressed as a percent; positive in"
+  },
+  {
+   "id": "revenue_blended_revision_next_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Even-weighted blend of 7, 14, 30, 60, and 90-day revenue estimate revisions for FY2, expressed as a percent"
+  },
+  {
+   "id": "revenue_component_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Revenue revisions component rank mapped to a 1–5 scale; 1 is best and 5 is worst"
+  },
+  {
+   "id": "revenue_component_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "1–100 rank of the revenue revision component from the ARM model (100 is best)"
+  },
+  {
+   "id": "revenue_revision_score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "ARM component score based on revenue revisions and predicted surprises"
+  },
+  {
+   "id": "revenue_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Revenue revisions rank on a 0–1 scale (percentile precision)"
+  },
+  {
+   "id": "secondary_earnings_blended_revision_current_quarter",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Blended percent change in FQ1 secondary earnings estimates using 7/14/30/60/90-day lookbacks (even-weighted)"
+  },
+  {
+   "id": "secondary_earnings_blended_revision_current_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Even-weighted blended percent change in secondary FY1 estimate revisions over 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "secondary_earnings_blended_revision_next_year",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "Even-weighted blended percent change in secondary FY2 estimate revisions over 7, 14, 30, 60, and 90-day lookbacks"
+  },
+  {
+   "id": "secondary_earnings_component_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 14,
+   "alphaCount": 17,
+   "description": "Analyst Revisions secondary measure rank mapped from the 1–100 percentile to a 1–5 scale, where 1 is highest and 5 is lo"
+  },
+  {
+   "id": "secondary_earnings_component_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "1–100 rank for the secondary revisions component; 100 is best and 1 worst"
+  },
+  {
+   "id": "secondary_earnings_revision_score",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "ARM component score based on revisions and predicted surprises for the secondary earnings measure"
+  },
+  {
+   "id": "secondary_earnings_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Secondary measure ARM percentile rank with greater precision on a 0–1 scale"
+  },
+  {
+   "id": "sector_score_five_scale",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 23,
+   "alphaCount": 54,
+   "description": "Sector-relative ARM score mapped to a 1–5 scale from percentile (1 best, 5 worst)"
+  },
+  {
+   "id": "sector_score_normalized",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Sector-relative ARM percentile rank with greater precision on a 0–1 scale"
+  },
+  {
+   "id": "sector_score_percentile",
+   "type": "VECTOR",
+   "coverage": 0.8223,
+   "userCount": 15,
+   "alphaCount": 30,
+   "description": "Percentile score within the sector based on the ARM; 100 indicates highest rated and 1 lowest"
+  }
+ ]
+}

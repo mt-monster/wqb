@@ -1,0 +1,4182 @@
+{
+ "dataset": "mmp_nlp_sentiment",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 521
+ },
+ "field_count": 521,
+ "fetched_at": "2026-08-23T19:11:32",
+ "fields": [
+  {
+   "id": "advertisement_mention_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 30,
+   "alphaCount": 32,
+   "description": "Mean absolute deviation of advertisement-related topic mentions in the news set."
+  },
+  {
+   "id": "advertisement_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 22,
+   "description": "Total number of advertisement-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "analyst_reference_count_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 25,
+   "alphaCount": 31,
+   "description": "Total count of analyst-related references across all news articles in the period."
+  },
+  {
+   "id": "average_analyst_reference_count",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Average number of analyst-related references across all news articles."
+  },
+  {
+   "id": "average_bearish_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 18,
+   "alphaCount": 20,
+   "description": "Average score for bearish topic mentions across the news set."
+  },
+  {
+   "id": "average_chatting_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Average score for topics related to informal discussion or chatting in the news corpus."
+  },
+  {
+   "id": "average_earnings_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Average score for earnings-related topic mentions in the news set."
+  },
+  {
+   "id": "average_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Average score for topics marked as important in the news corpus."
+  },
+  {
+   "id": "average_low_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Mean value of low relevance scores assigned to news articles."
+  },
+  {
+   "id": "average_lower_price_target_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Average number of lower price target mentions across the news set."
+  },
+  {
+   "id": "average_moving_average_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Average value of the moving average topic score across the news set."
+  },
+  {
+   "id": "average_opinion_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average score for opinion-related topics in the news corpus."
+  },
+  {
+   "id": "average_overweight_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Average score for overweight topic mentions across the news set."
+  },
+  {
+   "id": "average_raise_price_target_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Average number of raise price target mentions across the news set."
+  },
+  {
+   "id": "avg_advertisement_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Average score indicating presence of advertisement-like content in the text."
+  },
+  {
+   "id": "avg_advertisement_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Average score for topics related to advertisements in the news."
+  },
+  {
+   "id": "avg_bullish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Average score for bullish topics in the news sample."
+  },
+  {
+   "id": "avg_buy_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Average score for buy recommendation topics in the news."
+  },
+  {
+   "id": "avg_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Average score for dividend-related topics in the news."
+  },
+  {
+   "id": "avg_downgrade_theme_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 18,
+   "alphaCount": 21,
+   "description": "Average value of the downgrade-related topic score across news items."
+  },
+  {
+   "id": "avg_downgrade_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Average score for topics indicating a downgrade recommendation."
+  },
+  {
+   "id": "avg_emotional_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average score for topics classified as emotional in the news sample."
+  },
+  {
+   "id": "avg_fact_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Average score for topics classified as factual in the news sample."
+  },
+  {
+   "id": "avg_filing_event_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Average score for the topic of regulatory or company filings."
+  },
+  {
+   "id": "avg_formal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average score for topics classified as formal in the news sample."
+  },
+  {
+   "id": "avg_formality_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Average formality score assigned to the text content."
+  },
+  {
+   "id": "avg_hold_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 6,
+   "alphaCount": 11,
+   "description": "Average score for the topic of hold investment recommendations."
+  },
+  {
+   "id": "avg_hold_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average score for hold recommendation topics in the news."
+  },
+  {
+   "id": "avg_importance_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Average importance score assigned to the text content."
+  },
+  {
+   "id": "avg_insider_trading_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Average score for the topic related to insider trading events."
+  },
+  {
+   "id": "avg_insider_trading_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average score for topics related to insider trading in the news."
+  },
+  {
+   "id": "avg_lowering_stake_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Average score for the topic of reducing ownership stake."
+  },
+  {
+   "id": "avg_not_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average score for topics classified as not important in the news."
+  },
+  {
+   "id": "avg_objectivity_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 7,
+   "alphaCount": 13,
+   "description": "Average objectivity score assigned to the text content."
+  },
+  {
+   "id": "avg_opinion_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average opinion score derived from the text content."
+  },
+  {
+   "id": "avg_raise_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Average score for the topic of raising price targets."
+  },
+  {
+   "id": "avg_raising_stake_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Average score for the topic of increasing ownership stake."
+  },
+  {
+   "id": "avg_sell_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Average score for sell recommendation topics in the news."
+  },
+  {
+   "id": "avg_sentiment_lvl0_neutral",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average value of neutral sentiment at level 0 granularity."
+  },
+  {
+   "id": "avg_sentiment_lvl1_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Average value of negative sentiment at level 1 granularity."
+  },
+  {
+   "id": "avg_sentiment_lvl1_neutral",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Average value of neutral sentiment at level 1 granularity."
+  },
+  {
+   "id": "avg_seriousness_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Average seriousness score assigned to the text content."
+  },
+  {
+   "id": "avg_stock_related_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Average score for topics related to stocks in the news sample."
+  },
+  {
+   "id": "avg_subjectivity_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Average subjectivity score assigned to the text content."
+  },
+  {
+   "id": "avg_underperform_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 6,
+   "description": "Average score for the topic of underperform investment recommendations."
+  },
+  {
+   "id": "bearish_topic_sum_bbgnews",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Total count of bearish topic mentions in news articles."
+  },
+  {
+   "id": "buy_recommendation_mention_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Sum of buy recommendation mentions in the analyzed news articles."
+  },
+  {
+   "id": "buy_topic_min_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Minimum value of buy recommendation topic mentions in news."
+  },
+  {
+   "id": "buyback_mention_mad_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Median absolute deviation of buyback-related mentions in news articles."
+  },
+  {
+   "id": "buyback_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total number of buyback-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "chatting_topic_min_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of chatting or informal discussion topic mentions in news."
+  },
+  {
+   "id": "count_mild_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Number of occurrences of mild positive sentiment in the text."
+  },
+  {
+   "id": "count_negative_sentiment_level_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Count of negative sentiment occurrences at the second intensity level."
+  },
+  {
+   "id": "count_positive_sentiment_news",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Number of news articles classified as having positive sentiment."
+  },
+  {
+   "id": "count_sentiment_lvl0_positive",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Count of positive sentiment occurrences at level 0 granularity."
+  },
+  {
+   "id": "count_sentiment_lvl1_negative",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Count of negative sentiment occurrences at level 1 granularity."
+  },
+  {
+   "id": "count_sentiment_three_negative",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Number of news items classified as negative in sentiment category 3."
+  },
+  {
+   "id": "count_sentiment_two_positive",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Number of news items classified as positive in sentiment category 2."
+  },
+  {
+   "id": "count_sentiment_zero_negative",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Number of news items classified as negative in sentiment category 0."
+  },
+  {
+   "id": "count_very_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 25,
+   "alphaCount": 39,
+   "description": "Count of occurrences of very positive sentiment in the text."
+  },
+  {
+   "id": "downgrade_mention_mad_value",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of downgrade-related topic mentions in news."
+  },
+  {
+   "id": "downgrade_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total number of downgrade-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "earnings_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Total number of earnings-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "factual_content_mad_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of factual content mentions in news stories."
+  },
+  {
+   "id": "forecast_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total number of forecast-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "high_relevance_news_sum_bbgnews",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of high-relevance news items identified in the dataset."
+  },
+  {
+   "id": "high_relevance_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean absolute deviation of high relevance scores assigned to news articles."
+  },
+  {
+   "id": "high_relevance_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median value of high relevance scores assigned to the text."
+  },
+  {
+   "id": "high_relevance_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of high relevance scores assigned to the text."
+  },
+  {
+   "id": "hold_recommendation_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean absolute deviation of hold recommendation mentions in the news set."
+  },
+  {
+   "id": "insider_trading_mention_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Mean absolute deviation of insider trading topic mentions in the news set."
+  },
+  {
+   "id": "low_relevance_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Minimum value of low relevance scores assigned to the text."
+  },
+  {
+   "id": "mad_advertisement_text_flag",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 14,
+   "alphaCount": 20,
+   "description": "Median absolute deviation of advertisement-related text flag in news."
+  },
+  {
+   "id": "mad_analyst_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Median absolute deviation of analyst topic mentions in news articles."
+  },
+  {
+   "id": "mad_analyst_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Mean absolute deviation of scores for analyst-related topics."
+  },
+  {
+   "id": "mad_bearish_theme_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 9,
+   "alphaCount": 17,
+   "description": "Median absolute deviation of scores for the 'bearish' topic across news."
+  },
+  {
+   "id": "mad_bearish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 14,
+   "alphaCount": 17,
+   "description": "Mean absolute deviation of scores for bearish topics in the news."
+  },
+  {
+   "id": "mad_bullish_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Median absolute deviation of bullish topic mentions in news content."
+  },
+  {
+   "id": "mad_bullish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Mean absolute deviation of scores for bullish topics in the news."
+  },
+  {
+   "id": "mad_buy_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Mean absolute deviation for topics related to buy recommendations."
+  },
+  {
+   "id": "mad_buy_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Mean absolute deviation of scores for buy recommendation topics."
+  },
+  {
+   "id": "mad_buyback_activity_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Median absolute deviation for the topic of share buybacks."
+  },
+  {
+   "id": "mad_chatting_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Median absolute deviation of the 'chatting' style text score."
+  },
+  {
+   "id": "mad_chatting_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean absolute deviation of scores for topics related to chatting or informal discussion."
+  },
+  {
+   "id": "mad_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for dividend-related topics."
+  },
+  {
+   "id": "mad_dividend_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median absolute deviation for the 'dividend' topic score in the text."
+  },
+  {
+   "id": "mad_downgrade_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of downgrade topic mentions in news."
+  },
+  {
+   "id": "mad_earnings_theme_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of scores for the 'earnings' topic across news."
+  },
+  {
+   "id": "mad_earnings_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of news items discussing earnings topics."
+  },
+  {
+   "id": "mad_emotional_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for emotional topics in the news."
+  },
+  {
+   "id": "mad_emotionality_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of emotionality scores in the text."
+  },
+  {
+   "id": "mad_fact_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation of the factual content score in news text."
+  },
+  {
+   "id": "mad_filing_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Median absolute deviation of the filing-related topic score in the news sample."
+  },
+  {
+   "id": "mad_filing_theme_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of scores for the 'filing' topic across news."
+  },
+  {
+   "id": "mad_forecast_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of the forecast-related text score."
+  },
+  {
+   "id": "mad_forecast_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation for the forecast topic score in the news set."
+  },
+  {
+   "id": "mad_formal_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of scores for topics marked as formal."
+  },
+  {
+   "id": "mad_formality_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median absolute deviation of formality scores in the text."
+  },
+  {
+   "id": "mad_greetings_text_flag",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of greetings or salutation text flag in news."
+  },
+  {
+   "id": "mad_greetings_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of the greetings-related topic score in the news sample."
+  },
+  {
+   "id": "mad_high_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of high relevance scores among news items."
+  },
+  {
+   "id": "mad_hold_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of the hold recommendation topic score in the news sample."
+  },
+  {
+   "id": "mad_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for important topics in the news."
+  },
+  {
+   "id": "mad_informal_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation for the informal tone detected in the text."
+  },
+  {
+   "id": "mad_informal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for informal topics in the news."
+  },
+  {
+   "id": "mad_insider_trading_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of the insider trading topic score in the news sample."
+  },
+  {
+   "id": "mad_low_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation for low relevance classification in the text."
+  },
+  {
+   "id": "mad_low_relevance_topic",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean absolute deviation of scores for topics with low relevance."
+  },
+  {
+   "id": "mad_lower_price_target_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of news items referencing lower price targets."
+  },
+  {
+   "id": "mad_lower_stake_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of the lower stake topic score in the news sample."
+  },
+  {
+   "id": "mad_lowered_price_target_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation for mentions of lowered price targets."
+  },
+  {
+   "id": "mad_mergers_acquisitions_topic",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation for the mergers and acquisitions topic score in the news set."
+  },
+  {
+   "id": "mad_moving_average_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation for the 'moving average' topic score in the text."
+  },
+  {
+   "id": "mad_not_serious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of the not-serious text style score in the news sample."
+  },
+  {
+   "id": "mad_objective_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation for objectivity detected in the text."
+  },
+  {
+   "id": "mad_opinion_expression_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation of the opinion-related topic score in the news sample."
+  },
+  {
+   "id": "mad_outperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for topics indicating outperformance."
+  },
+  {
+   "id": "mad_overweight_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation for the topic of overweight investment recommendations."
+  },
+  {
+   "id": "mad_overweight_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for overweight recommendation topics."
+  },
+  {
+   "id": "mad_primary_negative_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of the primary negative sentiment score across news items."
+  },
+  {
+   "id": "mad_raise_price_target_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of news items referencing raised price targets."
+  },
+  {
+   "id": "mad_raise_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean absolute deviation for topics about raising price targets."
+  },
+  {
+   "id": "mad_raise_stake_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of the raise stake topic score in the news sample."
+  },
+  {
+   "id": "mad_risk_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of scores for risk-related topics in the news."
+  },
+  {
+   "id": "mad_secondary_negative_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Median absolute deviation of the secondary negative sentiment score across news items."
+  },
+  {
+   "id": "mad_sell_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation for the topic of sell recommendations."
+  },
+  {
+   "id": "mad_sell_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Mean absolute deviation of scores for sell recommendation topics."
+  },
+  {
+   "id": "mad_sentiment_level2_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of positive sentiment at level 2 granularity."
+  },
+  {
+   "id": "mad_sentiment_lvl0_neutral",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation of neutral sentiment at level 0 granularity."
+  },
+  {
+   "id": "mad_sentiment_lvl0_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of positive sentiment at level 0 granularity."
+  },
+  {
+   "id": "mad_sentiment_lvl3_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation of positive sentiment at level 3 granularity."
+  },
+  {
+   "id": "mad_sentiment_one_neutral",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of neutral sentiment scores in sentiment category 1."
+  },
+  {
+   "id": "mad_sentiment_three_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of negative sentiment scores in sentiment category 3."
+  },
+  {
+   "id": "mad_stock_related_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation for the topic related to stocks."
+  },
+  {
+   "id": "mad_subjectivity_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of subjectivity scores in the text."
+  },
+  {
+   "id": "mad_underweight_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of the underweight rating topic score in the news sample."
+  },
+  {
+   "id": "mad_unimportant_text_flag",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of the 'not important' text flag in news content."
+  },
+  {
+   "id": "mad_unimportant_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation of the unimportant topic score in the news sample."
+  },
+  {
+   "id": "mad_upgrade_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median absolute deviation for the topic of analyst upgrades."
+  },
+  {
+   "id": "mad_vividness_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of vividness scores in the text."
+  },
+  {
+   "id": "max_advertisement_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Maximum value of the advertisement text style score in the news sample."
+  },
+  {
+   "id": "max_advertising_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value for the advertising-related topic score in news articles."
+  },
+  {
+   "id": "max_analyst_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the analyst mention topic score in the news sample."
+  },
+  {
+   "id": "max_analyst_topic_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Maximum score for the analyst-related topic in news content."
+  },
+  {
+   "id": "max_bearish_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum value of the bearish tone topic score in the news sample."
+  },
+  {
+   "id": "max_bearish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum score for the 'bearish' topic found in the text."
+  },
+  {
+   "id": "max_bullish_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the bullish tone topic score in the news sample."
+  },
+  {
+   "id": "max_buy_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the buy recommendation topic score in the news sample."
+  },
+  {
+   "id": "max_buy_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score among buy recommendation topics in the news."
+  },
+  {
+   "id": "max_buyback_theme_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the 'buyback' topic score across news items."
+  },
+  {
+   "id": "max_buyback_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum score observed for the buyback topic in the news data."
+  },
+  {
+   "id": "max_chatting_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the 'chatting' style text score among news items."
+  },
+  {
+   "id": "max_chatting_topic_count",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum number of news items identified as casual or chatting in tone."
+  },
+  {
+   "id": "max_dividend_announcement_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for the topic of dividend announcements."
+  },
+  {
+   "id": "max_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score among dividend-related topics in the news."
+  },
+  {
+   "id": "max_downgrade_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Maximum value of the downgrade recommendation topic score in the news sample."
+  },
+  {
+   "id": "max_downgrade_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum score among topics indicating a downgrade recommendation."
+  },
+  {
+   "id": "max_emotional_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Maximum score for emotional tone detected in the text."
+  },
+  {
+   "id": "max_emotional_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score among topics classified as emotional in the news."
+  },
+  {
+   "id": "max_expectation_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum expectation score derived from the text content."
+  },
+  {
+   "id": "max_fact_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Maximum value of the factual text style score in the news sample."
+  },
+  {
+   "id": "max_fact_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score among topics classified as factual in the news."
+  },
+  {
+   "id": "max_filing_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score among topics related to regulatory filings."
+  },
+  {
+   "id": "max_filing_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum value for topics related to regulatory or company filings."
+  },
+  {
+   "id": "max_forecast_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value for the forecast-related content detected in the text."
+  },
+  {
+   "id": "max_forecast_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for the forecast-related topic in news analysis."
+  },
+  {
+   "id": "max_greetings_phrase_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score for the presence of greeting phrases in the text."
+  },
+  {
+   "id": "max_greetings_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score among topics related to greetings or salutations."
+  },
+  {
+   "id": "max_high_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of high relevance scores assigned to news items."
+  },
+  {
+   "id": "max_high_relevance_score_news",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the high relevance score among news items."
+  },
+  {
+   "id": "max_hold_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the hold recommendation topic score in the news sample."
+  },
+  {
+   "id": "max_hold_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum score among topics indicating a hold recommendation."
+  },
+  {
+   "id": "max_importance_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum importance score assigned to the text content."
+  },
+  {
+   "id": "max_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum score among topics classified as important in the news."
+  },
+  {
+   "id": "max_informal_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the informal style score in news text."
+  },
+  {
+   "id": "max_informal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value for the informal topic score in news analysis."
+  },
+  {
+   "id": "max_insider_trading_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the insider trading topic score in the news sample."
+  },
+  {
+   "id": "max_insider_trading_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Maximum score among topics related to insider trading."
+  },
+  {
+   "id": "max_low_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the low relevance score among news items."
+  },
+  {
+   "id": "max_low_relevance_score_news",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the low relevance score assigned to news items."
+  },
+  {
+   "id": "max_lower_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Highest value among lower price target topic indicators in news analysis."
+  },
+  {
+   "id": "max_lower_stake_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value for topics related to reducing ownership stakes."
+  },
+  {
+   "id": "max_lowered_price_target_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the lowered price target topic score in the news sample."
+  },
+  {
+   "id": "max_merger_acquisition_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the merger and acquisition topic score in the news sample."
+  },
+  {
+   "id": "max_negative_sentiment_level_3",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum negative sentiment score at the third sentiment intensity level."
+  },
+  {
+   "id": "max_negative_sentiment_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value among negative sentiment scores in the news sample."
+  },
+  {
+   "id": "max_neutral_sentiment_level_1",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum neutral sentiment score at the first sentiment intensity level."
+  },
+  {
+   "id": "max_neutral_sentiment_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value among neutral sentiment scores in the news sample."
+  },
+  {
+   "id": "max_neutral_sentiment_score_4",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value for neutral sentiment detected in the text."
+  },
+  {
+   "id": "max_not_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest value for topics classified as not important in the news set."
+  },
+  {
+   "id": "max_not_serious_text_flag",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the 'not serious' text flag in news content."
+  },
+  {
+   "id": "max_opinion_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of opinion-related mentions detected in news articles."
+  },
+  {
+   "id": "max_opinion_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the opinion text style score in the news sample."
+  },
+  {
+   "id": "max_outperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score for outperform-related topics found in news articles."
+  },
+  {
+   "id": "max_outperform_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Maximum score for the 'outperform' topic identified in the text."
+  },
+  {
+   "id": "max_overweight_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the overweight rating topic score in the news sample."
+  },
+  {
+   "id": "max_overweight_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score for the topic of overweight investment recommendations."
+  },
+  {
+   "id": "max_positive_sentiment_lvl1",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Maximum value of positive sentiment at level 1 detected in the text."
+  },
+  {
+   "id": "max_positive_sentiment_score_4",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum value among positive sentiment scores in the news sample."
+  },
+  {
+   "id": "max_raise_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value for topics related to raising price targets in news content."
+  },
+  {
+   "id": "max_risk_topic_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value for topics related to risk or risk factors in the news."
+  },
+  {
+   "id": "max_secondary_negative_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of the secondary negative sentiment score across news items."
+  },
+  {
+   "id": "max_sell_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the sell recommendation topic score in the news sample."
+  },
+  {
+   "id": "max_sell_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum score for the 'sell' topic found in the text."
+  },
+  {
+   "id": "max_sentiment_lvl0_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of positive sentiment at level 0 granularity."
+  },
+  {
+   "id": "max_sentiment_lvl3_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value of positive sentiment at level 3 granularity."
+  },
+  {
+   "id": "max_serious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the serious tone score in news text."
+  },
+  {
+   "id": "max_stock_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for the stock-related topic in news content."
+  },
+  {
+   "id": "max_strong_negative_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value for strong negative sentiment detected in the text."
+  },
+  {
+   "id": "max_subjective_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the subjective text style score in the news sample."
+  },
+  {
+   "id": "max_underperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for the 'underperform' topic in news content."
+  },
+  {
+   "id": "max_underperform_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the underperform topic score in news articles."
+  },
+  {
+   "id": "max_underweight_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score among topics indicating an underweight recommendation."
+  },
+  {
+   "id": "max_unimportance_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum score indicating lack of importance in the text content."
+  },
+  {
+   "id": "max_upgrade_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 18,
+   "alphaCount": 23,
+   "description": "Highest score for upgrade recommendations found in the text."
+  },
+  {
+   "id": "max_upgrade_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum number of news items referencing upgrades (e.g., rating or outlook)."
+  },
+  {
+   "id": "max_vivid_language_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Maximum score for the use of vivid or descriptive language in the text."
+  },
+  {
+   "id": "maximum_earnings_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum number of earnings-related mentions found in any news article."
+  },
+  {
+   "id": "maximum_formal_language_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum value of the formal language indicator found in news articles."
+  },
+  {
+   "id": "maximum_moving_average_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the moving average topic score in the analyzed news articles."
+  },
+  {
+   "id": "maximum_objective_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum number of objective topic mentions found in any news article."
+  },
+  {
+   "id": "maximum_raise_price_target_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Maximum number of raise price target mentions found in any news article."
+  },
+  {
+   "id": "maximum_risk_topic_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum number of risk-related topic mentions found in any single news article."
+  },
+  {
+   "id": "mean_bearish_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average value of the bearish tone topic score in the news sample."
+  },
+  {
+   "id": "mean_boring_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the 'boring' style score in news text."
+  },
+  {
+   "id": "mean_bullish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of bullish topic mentions or scores in the analyzed text."
+  },
+  {
+   "id": "mean_buyback_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average value of the buyback reference topic score in the news sample."
+  },
+  {
+   "id": "mean_chatting_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the chatting text style score in the news sample."
+  },
+  {
+   "id": "mean_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average score for the 'dividend' topic across the text data."
+  },
+  {
+   "id": "mean_emotional_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average score indicating emotional tone in news text."
+  },
+  {
+   "id": "mean_expectation_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the expectation text style score in the news sample."
+  },
+  {
+   "id": "mean_fact_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the factual content score in news text."
+  },
+  {
+   "id": "mean_filing_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the filing-related topic score in the news sample."
+  },
+  {
+   "id": "mean_forecast_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the forecast text style score in the news sample."
+  },
+  {
+   "id": "mean_forecast_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of forecast-related topic mentions in news content."
+  },
+  {
+   "id": "mean_greetings_phrase_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Average score for the presence of greeting phrases in the text."
+  },
+  {
+   "id": "mean_greetings_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the greetings-related topic score in the news sample."
+  },
+  {
+   "id": "mean_high_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average value of high relevance scores across all news items."
+  },
+  {
+   "id": "mean_high_relevance_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of high relevance scores among news items."
+  },
+  {
+   "id": "mean_informal_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average score indicating informality in news text."
+  },
+  {
+   "id": "mean_informal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average score for topics marked as not formal in news analysis."
+  },
+  {
+   "id": "mean_low_relevance_score_news",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the low relevance score for news articles."
+  },
+  {
+   "id": "mean_merger_acquisition_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the merger and acquisition topic score in the news sample."
+  },
+  {
+   "id": "mean_mild_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value for mild positive sentiment detected in the text."
+  },
+  {
+   "id": "mean_negative_sentiment_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the negative sentiment score from news sentiment analysis."
+  },
+  {
+   "id": "mean_neutral_sentiment_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the neutral sentiment score from news sentiment analysis."
+  },
+  {
+   "id": "mean_not_serious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the 'not serious' style score in news text."
+  },
+  {
+   "id": "mean_objective_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value for the 'objective' topic score across all news articles."
+  },
+  {
+   "id": "mean_outperform_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the outperform rating topic score in the news sample."
+  },
+  {
+   "id": "mean_outperform_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of the outperform recommendation topic score in the news sample."
+  },
+  {
+   "id": "mean_primary_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the primary positive sentiment score across news items."
+  },
+  {
+   "id": "mean_quaternary_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 7,
+   "alphaCount": 22,
+   "description": "Average value of the quaternary positive sentiment score across news items."
+  },
+  {
+   "id": "mean_risk_topic_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average score for the risk-related topic in news content."
+  },
+  {
+   "id": "mean_risk_topic_score_4",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average score for risk-related topics in news content."
+  },
+  {
+   "id": "mean_sell_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average value of the sell recommendation topic score in the news sample."
+  },
+  {
+   "id": "mean_sentiment_level0_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of positive sentiment at level 0 granularity."
+  },
+  {
+   "id": "mean_sentiment_level2_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average value of negative sentiment at level 2 granularity."
+  },
+  {
+   "id": "mean_sentiment_three_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average value of negative sentiment scores in sentiment category 3."
+  },
+  {
+   "id": "mean_sentiment_two_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Average value of positive sentiment scores in sentiment category 2."
+  },
+  {
+   "id": "mean_share_repurchase_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of the share repurchase (buyback) topic score in the news sample."
+  },
+  {
+   "id": "mean_underperform_references",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average value of underperform-related references in news articles."
+  },
+  {
+   "id": "mean_underweight_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average score for the 'underweight' recommendation topic in the news data."
+  },
+  {
+   "id": "mean_underweight_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average score for the 'underweight' topic across the text data."
+  },
+  {
+   "id": "mean_upgrade_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Average value of the upgrade recommendation topic score in the news sample."
+  },
+  {
+   "id": "mean_upgrade_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Average score for upgrade-related topics in news articles."
+  },
+  {
+   "id": "mean_vivid_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Average score indicating vividness or descriptiveness in news text."
+  },
+  {
+   "id": "median_advertisement_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the advertisement text style score in the news sample."
+  },
+  {
+   "id": "median_advertising_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 8,
+   "description": "Median score for the advertising-related topic in news content."
+  },
+  {
+   "id": "median_analyst_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Median value for analyst-related mentions in the text."
+  },
+  {
+   "id": "median_analyst_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for analyst-related topics in the news corpus."
+  },
+  {
+   "id": "median_bearish_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of bearish topic mentions across news articles."
+  },
+  {
+   "id": "median_bearish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of bearish topic mentions or scores in the analyzed text."
+  },
+  {
+   "id": "median_boring_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value for the 'boring' tone or content detected in the text."
+  },
+  {
+   "id": "median_bullish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for bullish topics in the news data."
+  },
+  {
+   "id": "median_buy_recommendation_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median count of buy recommendation mentions across the news articles."
+  },
+  {
+   "id": "median_buyback_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Median value of the buyback reference topic score in the news sample."
+  },
+  {
+   "id": "median_calm_language_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median score for the use of calm or neutral language in the text."
+  },
+  {
+   "id": "median_chatting_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the 'chatting' style text score among news items."
+  },
+  {
+   "id": "median_chatting_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the chatting-related topic score in the news sample."
+  },
+  {
+   "id": "median_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for dividend-related topics in the news."
+  },
+  {
+   "id": "median_downgrade_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the downgrade recommendation topic score in the news sample."
+  },
+  {
+   "id": "median_downgrade_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for topics indicating a downgrade recommendation."
+  },
+  {
+   "id": "median_earnings_announcement_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median score for the topic of earnings announcements."
+  },
+  {
+   "id": "median_earnings_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Median value of news items discussing earnings topics."
+  },
+  {
+   "id": "median_emotional_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of the emotional tone score in news text."
+  },
+  {
+   "id": "median_emotional_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for topics classified as emotional in the news sample."
+  },
+  {
+   "id": "median_expectation_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value for the 'expectation' content detected in the text."
+  },
+  {
+   "id": "median_fact_based_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of fact-based topic mentions in the news set."
+  },
+  {
+   "id": "median_filing_event_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score for the topic of regulatory or company filings."
+  },
+  {
+   "id": "median_filing_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for topics related to regulatory filings."
+  },
+  {
+   "id": "median_forecast_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for forecast-related content in the text."
+  },
+  {
+   "id": "median_forecast_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for the forecast-related topic score in news articles."
+  },
+  {
+   "id": "median_formal_language_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the formal language topic score in the news sample."
+  },
+  {
+   "id": "median_formal_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the formal text style score in the news sample."
+  },
+  {
+   "id": "median_greetings_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the greetings-related topic score in the news sample."
+  },
+  {
+   "id": "median_high_relevance_news",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score of news items classified as highly relevant."
+  },
+  {
+   "id": "median_hold_recommendation_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of hold recommendation mentions in the news set."
+  },
+  {
+   "id": "median_importance_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median importance score assigned to the text content."
+  },
+  {
+   "id": "median_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for topics marked as important in the news corpus."
+  },
+  {
+   "id": "median_informal_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the informal text style score in the news sample."
+  },
+  {
+   "id": "median_informal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the informal topic score extracted from news articles."
+  },
+  {
+   "id": "median_insider_trading_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for the topic related to insider trading events."
+  },
+  {
+   "id": "median_insider_trading_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 5,
+   "description": "Median score for topics related to insider trading."
+  },
+  {
+   "id": "median_low_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value for the low relevance score assigned to the text."
+  },
+  {
+   "id": "median_low_relevance_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score for topics with low relevance in the news sample."
+  },
+  {
+   "id": "median_lower_price_target_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of lower price target mentions in the news set."
+  },
+  {
+   "id": "median_lowering_stake_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score for the topic of reducing ownership stake."
+  },
+  {
+   "id": "median_ma_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of merger and acquisition topic mentions in news."
+  },
+  {
+   "id": "median_merger_acquisition_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for the topic of mergers and acquisitions."
+  },
+  {
+   "id": "median_negative_sentiment_lvl1",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Median value of negative sentiment at level 1 detected in the text."
+  },
+  {
+   "id": "median_negative_sentiment_score_8",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value among negative sentiment scores in the news sample."
+  },
+  {
+   "id": "median_neutral_sentiment_score_7",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median value of neutral sentiment scores across analyzed news items."
+  },
+  {
+   "id": "median_neutral_sentiment_score_8",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for neutral sentiment detected in the text."
+  },
+  {
+   "id": "median_nonserious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the non-serious tone detected in text content."
+  },
+  {
+   "id": "median_not_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score for topics classified as not important in the news set."
+  },
+  {
+   "id": "median_objective_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median score for topics classified as objective in the news."
+  },
+  {
+   "id": "median_opinion_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score for opinion-related topics in the news corpus."
+  },
+  {
+   "id": "median_outperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for the 'outperform' topic score in analyzed news."
+  },
+  {
+   "id": "median_overweight_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the overweight rating topic score in the news sample."
+  },
+  {
+   "id": "median_overweight_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Median value of overweight recommendations or mentions in news content."
+  },
+  {
+   "id": "median_positive_sentiment_level_3",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Median positive sentiment score at the third sentiment intensity level."
+  },
+  {
+   "id": "median_positive_sentiment_score_7",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value among positive sentiment scores in the news sample."
+  },
+  {
+   "id": "median_primary_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the primary positive sentiment score across news items."
+  },
+  {
+   "id": "median_raise_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for topics indicating a raised price target in news."
+  },
+  {
+   "id": "median_raise_price_target_topic_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for the topic of raising price targets."
+  },
+  {
+   "id": "median_raising_stake_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median score for the topic of increasing ownership stake."
+  },
+  {
+   "id": "median_risk_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the risk-related topic score in the news sample."
+  },
+  {
+   "id": "median_risk_topic_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of risk-related topic mentions across news articles."
+  },
+  {
+   "id": "median_secondary_neutral_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the secondary neutral sentiment score across news items."
+  },
+  {
+   "id": "median_sell_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median score for sell recommendations found in the text."
+  },
+  {
+   "id": "median_sell_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value for the 'sell' recommendation topic in news analysis."
+  },
+  {
+   "id": "median_sentiment_lvl3_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of negative sentiment at level 3 granularity."
+  },
+  {
+   "id": "median_sentiment_one_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Median value of positive sentiment scores in sentiment category 1."
+  },
+  {
+   "id": "median_sentiment_two_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of negative sentiment scores in sentiment category 2."
+  },
+  {
+   "id": "median_sentiment_zero_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 21,
+   "description": "Median value of negative sentiment scores in sentiment category 0."
+  },
+  {
+   "id": "median_share_repurchase_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the share repurchase (buyback) topic score in the news sample."
+  },
+  {
+   "id": "median_stock_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the stock reference topic score in the news sample."
+  },
+  {
+   "id": "median_stock_reference_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median score for references to stocks or equities in the text."
+  },
+  {
+   "id": "median_subjective_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the subjective text style score in the news sample."
+  },
+  {
+   "id": "median_tertiary_positive_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the tertiary positive sentiment score across news items."
+  },
+  {
+   "id": "median_underperform_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of the underperform rating topic score in the news sample."
+  },
+  {
+   "id": "median_underperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of underperform-related topic mentions in news articles."
+  },
+  {
+   "id": "median_underweight_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of underweight topic mentions across news articles."
+  },
+  {
+   "id": "median_unimportance_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median score indicating lack of importance in the text content."
+  },
+  {
+   "id": "median_upgrade_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of upgrade-related topic mentions across news articles."
+  },
+  {
+   "id": "median_upgrade_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median score for the topic of analyst upgrades."
+  },
+  {
+   "id": "median_vivid_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of vividness detected in the text content."
+  },
+  {
+   "id": "min_advertisement_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score for advertisement-related topics in the news data."
+  },
+  {
+   "id": "min_advertising_tone_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for advertising or promotional tone in the text."
+  },
+  {
+   "id": "min_analyst_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the analyst mention topic score in the news sample."
+  },
+  {
+   "id": "min_bearish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score among topics classified as bearish in the news."
+  },
+  {
+   "id": "min_bearish_topic_score_2",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum score for the 'bearish' topic found in the text."
+  },
+  {
+   "id": "min_boring_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Minimum value of the boring text style score in the news sample."
+  },
+  {
+   "id": "min_bullish_sentiment_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for the topic of bullish sentiment."
+  },
+  {
+   "id": "min_bullish_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum score among topics classified as bullish in the news data."
+  },
+  {
+   "id": "min_buy_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Minimum score for the topic of buy recommendations."
+  },
+  {
+   "id": "min_buyback_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value for topics related to share repurchase or buyback events."
+  },
+  {
+   "id": "min_calm_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the calm text style score in the news sample."
+  },
+  {
+   "id": "min_chatting_style_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score indicating conversational or chatting style in the text."
+  },
+  {
+   "id": "min_dividend_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest score among dividend-related topics in the analyzed news."
+  },
+  {
+   "id": "min_downgrade_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score among topics indicating a downgrade recommendation."
+  },
+  {
+   "id": "min_earnings_topic_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score among topics related to earnings in the news."
+  },
+  {
+   "id": "min_emotional_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the emotional text style score in the news sample."
+  },
+  {
+   "id": "min_emotional_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the emotional tone topic score in the news sample."
+  },
+  {
+   "id": "min_expectation_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum expectation score derived from the text content."
+  },
+  {
+   "id": "min_fact_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the factual content score in news text."
+  },
+  {
+   "id": "min_filing_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the filing-related topic score in the news sample."
+  },
+  {
+   "id": "min_filing_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value for the regulatory filing topic score in news articles."
+  },
+  {
+   "id": "min_forecast_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum forecast score derived from the text content."
+  },
+  {
+   "id": "min_formality_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum formality score derived from the text content."
+  },
+  {
+   "id": "min_greeting_phrase_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum score for greeting phrases present in the text."
+  },
+  {
+   "id": "min_greetings_tone_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the greetings-related topic score in the news sample."
+  },
+  {
+   "id": "min_high_relevance_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest value among high relevance scores in the news dataset."
+  },
+  {
+   "id": "min_hold_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the hold recommendation topic score in the news sample."
+  },
+  {
+   "id": "min_hold_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for the 'hold' topic detected in the text."
+  },
+  {
+   "id": "min_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score among topics classified as important in the news data."
+  },
+  {
+   "id": "min_insider_trading_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score for the topic related to insider trading events."
+  },
+  {
+   "id": "min_insider_trading_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score among topics related to insider trading."
+  },
+  {
+   "id": "min_low_relevance_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score among topics with low relevance in the news."
+  },
+  {
+   "id": "min_lower_price_target_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of the lower price target topic score in the news sample."
+  },
+  {
+   "id": "min_lower_stake_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value for the 'lower stake' topic score in the text."
+  },
+  {
+   "id": "min_lowered_price_target_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the lowered price target topic score in the news sample."
+  },
+  {
+   "id": "min_negative_sentiment_lvl1",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Minimum value of negative sentiment at level 1 in the text."
+  },
+  {
+   "id": "min_neutral_sentiment_level_0",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Minimum neutral sentiment score at the base sentiment intensity level."
+  },
+  {
+   "id": "min_not_important_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value observed for the 'not important' topic score across the news sample."
+  },
+  {
+   "id": "min_not_serious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the not-serious text style score in the news sample."
+  },
+  {
+   "id": "min_objective_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum score among topics classified as objective in the news."
+  },
+  {
+   "id": "min_opinion_score_text",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum opinion score derived from the text content."
+  },
+  {
+   "id": "min_opinion_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Lowest value for the 'opinion' topic score found in the news sample."
+  },
+  {
+   "id": "min_outperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum score among topics indicating outperformance."
+  },
+  {
+   "id": "min_overweight_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value for the 'overweight' topic score in the text."
+  },
+  {
+   "id": "min_positive_sentiment_score_3",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of the positive sentiment score from news sentiment analysis."
+  },
+  {
+   "id": "min_primary_neutral_sentiment",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the primary neutral sentiment score across news items."
+  },
+  {
+   "id": "min_raise_price_target_theme_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the 'raise price target' topic score across news."
+  },
+  {
+   "id": "min_raise_stake_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value for topics related to increasing ownership stakes."
+  },
+  {
+   "id": "min_risk_mention_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the risk-related topic score in the news sample."
+  },
+  {
+   "id": "min_sell_recommendation_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the sell recommendation topic score in the news sample."
+  },
+  {
+   "id": "min_sell_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value for the 'sell' recommendation topic in news analysis."
+  },
+  {
+   "id": "min_sentiment_level3_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of negative sentiment at level 3 granularity."
+  },
+  {
+   "id": "min_sentiment_lvl0_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum value of negative sentiment at level 0 granularity."
+  },
+  {
+   "id": "min_sentiment_lvl2_negative",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of negative sentiment at level 2 granularity."
+  },
+  {
+   "id": "min_sentiment_lvl2_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of positive sentiment at level 2 granularity."
+  },
+  {
+   "id": "min_sentiment_lvl3_positive",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Minimum value of positive sentiment at level 3 granularity."
+  },
+  {
+   "id": "min_sentiment_one_neutral",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of neutral sentiment scores in sentiment category 1."
+  },
+  {
+   "id": "min_serious_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the serious tone score in news text."
+  },
+  {
+   "id": "min_share_repurchase_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the share repurchase (buyback) topic score in the news sample."
+  },
+  {
+   "id": "min_stock_reference_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of the stock reference topic score in the news sample."
+  },
+  {
+   "id": "min_subjective_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value of the subjective tone score in news text."
+  },
+  {
+   "id": "min_underperform_rating_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Minimum value of the underperform rating topic score in the news sample."
+  },
+  {
+   "id": "min_underperform_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value for the 'underperform' topic score in news articles."
+  },
+  {
+   "id": "min_underweight_recommendation_topic",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score for the topic of underweight investment recommendations."
+  },
+  {
+   "id": "min_underweight_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score for the 'underweight' topic detected in news articles."
+  },
+  {
+   "id": "min_vividness_text_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Lowest value of vividness detected in the text content."
+  },
+  {
+   "id": "minimum_analyst_reference_count",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum number of analyst-related references found in any news article."
+  },
+  {
+   "id": "minimum_fact_based_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum count of fact-based topic mentions in the news set."
+  },
+  {
+   "id": "minimum_forecast_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum number of forecast-related topic mentions in any news article."
+  },
+  {
+   "id": "minimum_formal_language_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of the formal language indicator found in news articles."
+  },
+  {
+   "id": "minimum_informal_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for topics identified as informal in the news corpus."
+  },
+  {
+   "id": "minimum_moving_average_topic_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest value of the moving average topic score across the analyzed news articles."
+  },
+  {
+   "id": "minimum_negative_sentiment_score",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Lowest negative sentiment score observed in the news articles."
+  },
+  {
+   "id": "minimum_overweight_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum number of overweight topic mentions in any news article."
+  },
+  {
+   "id": "minimum_raise_price_target_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum number of raise price target mentions in any news article."
+  },
+  {
+   "id": "minimum_upgrade_mention",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Minimum number of upgrade-related topic mentions in any news article."
+  },
+  {
+   "id": "negative_sentiment_count",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 6,
+   "alphaCount": 8,
+   "description": "Count of news items with negative sentiment classification."
+  },
+  {
+   "id": "negative_sentiment_mention_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Sum of negative sentiment mentions across the analyzed news articles."
+  },
+  {
+   "id": "neutral_sentiment_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean absolute deviation of neutral sentiment scores across news articles."
+  },
+  {
+   "id": "news_article_count_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Total number of news articles included in the sample."
+  },
+  {
+   "id": "news_item_count_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total number of news items included in the record."
+  },
+  {
+   "id": "objective_mention_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 10,
+   "alphaCount": 16,
+   "description": "Mean absolute deviation of objective topic mentions in the news set."
+  },
+  {
+   "id": "outperform_mention_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Sum of outperform-related topic mentions in the news set."
+  },
+  {
+   "id": "overweight_mention_total",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of overweight-related mentions in the analyzed news articles."
+  },
+  {
+   "id": "positive_sentiment_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean absolute deviation of positive sentiment scores across news articles."
+  },
+  {
+   "id": "sell_recommendation_mention_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Sum of news article mentions related to sell recommendations."
+  },
+  {
+   "id": "sentiment_negative_0_mean",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Mean value of the first negative sentiment score in the text."
+  },
+  {
+   "id": "sentiment_one_positive_minimum",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum positive sentiment score for sentiment category 1."
+  },
+  {
+   "id": "sentiment_positive_0_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of the first positive sentiment score in the text."
+  },
+  {
+   "id": "sentiment_positive_1_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Median absolute deviation of the first positive sentiment score in the text."
+  },
+  {
+   "id": "sentiment_positive_2_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the second positive sentiment score in the text."
+  },
+  {
+   "id": "sentiment_two_negative_median_abs_deviation",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of negative sentiment for sentiment category 2."
+  },
+  {
+   "id": "sentiment_zero_negative_mad_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Median absolute deviation of negative sentiment scores for sentiment group 0."
+  },
+  {
+   "id": "sentiment_zero_negative_maximum",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Maximum negative sentiment score for sentiment category 0."
+  },
+  {
+   "id": "stock_topic_mad_value",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Median absolute deviation for stock-related topic mentions in news."
+  },
+  {
+   "id": "stock_topic_min_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value of stock-related topic mentions in the news."
+  },
+  {
+   "id": "sum_bullish_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Total count of bullish topic mentions in the news sample."
+  },
+  {
+   "id": "sum_chatting_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total number of chatting or conversational topic mentions in news."
+  },
+  {
+   "id": "sum_emotional_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total count of emotional topic mentions in the news sample."
+  },
+  {
+   "id": "sum_fact_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of fact-based topics detected in the news dataset."
+  },
+  {
+   "id": "sum_filing_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total number of filing-related topics identified in the news corpus."
+  },
+  {
+   "id": "sum_formal_tone_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of news items classified as having a formal tone."
+  },
+  {
+   "id": "sum_greetings_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total count of topics related to greetings or salutations in the news."
+  },
+  {
+   "id": "sum_hold_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of hold recommendation topics found in news articles."
+  },
+  {
+   "id": "sum_important_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total number of times news content is tagged as important."
+  },
+  {
+   "id": "sum_informal_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Total count of topics classified as informal in the news sample."
+  },
+  {
+   "id": "sum_insider_trading_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of insider trading topic mentions in the analyzed news set."
+  },
+  {
+   "id": "sum_low_relevance_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Total count of low relevance topic mentions in the news sample."
+  },
+  {
+   "id": "sum_lower_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of scores for topics indicating a lower price target in news articles."
+  },
+  {
+   "id": "sum_merger_acquisition_topic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 4,
+   "description": "Total count of topics related to mergers and acquisitions in the news."
+  },
+  {
+   "id": "sum_neutral_sentiment_score_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total sum of neutral sentiment scores in the news sample."
+  },
+  {
+   "id": "sum_not_important_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of not important topic mentions in the news sample."
+  },
+  {
+   "id": "sum_objective_statement_score",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Sum of the objective statement topic scores in the news sample."
+  },
+  {
+   "id": "sum_opinionated_news_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Total count of news items categorized as opinion pieces."
+  },
+  {
+   "id": "sum_positive_sentiment_score_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Total sum of positive sentiment scores in the news sample."
+  },
+  {
+   "id": "sum_raise_price_target_topic",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Sum of scores for topics indicating a raised price target in news articles."
+  },
+  {
+   "id": "sum_risk_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total count of risk-related topics identified in news articles."
+  },
+  {
+   "id": "sum_stock_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total count of stock-related topic mentions in the analyzed news."
+  },
+  {
+   "id": "sum_underperform_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Total number of times underperform topics are referenced in news content."
+  },
+  {
+   "id": "sum_upgrade_topic_mentions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Total count of upgrade-related topic mentions across news articles."
+  },
+  {
+   "id": "text_boredom_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Maximum value of boredom-related scores in the text."
+  },
+  {
+   "id": "text_boring_median_abs_deviation",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of 'boring' tone detected in news text."
+  },
+  {
+   "id": "text_calm_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Mean value of the 'calm' tone score in the news text."
+  },
+  {
+   "id": "text_calmness_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 11,
+   "description": "Median absolute deviation of calmness-related scores in the text."
+  },
+  {
+   "id": "text_calmness_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of calmness-related scores in the text."
+  },
+  {
+   "id": "text_expectation_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of expectation-related scores in the text."
+  },
+  {
+   "id": "text_fact_median_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median value of the 'fact' score in the news text."
+  },
+  {
+   "id": "text_formality_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Maximum value of the formality score detected in the text."
+  },
+  {
+   "id": "text_greeting_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median value of greeting-related scores in the text."
+  },
+  {
+   "id": "text_importance_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Median absolute deviation of importance scores in the text."
+  },
+  {
+   "id": "text_important_minimum_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Minimum detected importance score in the news text."
+  },
+  {
+   "id": "text_informality_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum value of informality scores detected in the text."
+  },
+  {
+   "id": "text_objective_maximum_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Maximum detected objectivity score in the news text."
+  },
+  {
+   "id": "text_objective_minimum_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum detected objectivity score in the news text."
+  },
+  {
+   "id": "text_objectivity_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of objectivity scores detected in the text."
+  },
+  {
+   "id": "text_opinion_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of opinion-based scores in the text."
+  },
+  {
+   "id": "text_opinion_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of opinion-based scores in the text."
+  },
+  {
+   "id": "text_serious_median_abs_deviation",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of 'serious' tone detected in news text."
+  },
+  {
+   "id": "text_serious_median_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Median value of the 'serious' tone score in the news text."
+  },
+  {
+   "id": "text_unimportance_score_mean",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 9,
+   "alphaCount": 11,
+   "description": "Mean value of scores indicating lack of importance in the text."
+  },
+  {
+   "id": "text_unimportance_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Minimum value of scores indicating lack of importance in the text."
+  },
+  {
+   "id": "topic_analyst_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the 'analyst' topic score in the news content."
+  },
+  {
+   "id": "topic_bullish_maximum_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Maximum value of the 'bullish' topic score in the analyzed text."
+  },
+  {
+   "id": "topic_bullish_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 2,
+   "description": "Median value of bullish topic scores in the text."
+  },
+  {
+   "id": "topic_buy_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the 'buy' topic score across news articles."
+  },
+  {
+   "id": "topic_buy_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of buy-related topic scores in the text."
+  },
+  {
+   "id": "topic_dividend_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median value of dividend-related topic scores in the text."
+  },
+  {
+   "id": "topic_dividend_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Minimum score for dividend-related topics in the text."
+  },
+  {
+   "id": "topic_downgrade_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Minimum score for downgrade-related topics in the text."
+  },
+  {
+   "id": "topic_earnings_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the 'earnings' topic score in the news content."
+  },
+  {
+   "id": "topic_earnings_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for earnings-related topics in the text."
+  },
+  {
+   "id": "topic_earnings_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for earnings-related topics in the text."
+  },
+  {
+   "id": "topic_hold_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of hold-related topic scores in the text."
+  },
+  {
+   "id": "topic_lower_price_target_mean",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean score for topics related to lowering price targets in the text."
+  },
+  {
+   "id": "topic_lower_price_target_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value for topics related to lowering price targets in the text."
+  },
+  {
+   "id": "topic_merger_acquisition_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Minimum score for merger and acquisition related topics in the text."
+  },
+  {
+   "id": "topic_outperform_median_abs_deviation",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Median absolute deviation of the 'outperform' topic score in news."
+  },
+  {
+   "id": "topic_outperform_median_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median value of the 'outperform' topic score in the news text."
+  },
+  {
+   "id": "topic_outperform_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum score for outperform-related topics in the text."
+  },
+  {
+   "id": "topic_overweight_score_mean",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean score for overweight-related topics in the text."
+  },
+  {
+   "id": "topic_raise_stake_maximum_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Maximum value of the 'raise stake' topic score in the analyzed text."
+  },
+  {
+   "id": "topic_risk_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Median absolute deviation of risk-related topic scores in the text."
+  },
+  {
+   "id": "topic_risk_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum score for risk-related topics in the text."
+  },
+  {
+   "id": "topic_stock_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the 'stock' topic score across analyzed news."
+  },
+  {
+   "id": "topic_stock_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Maximum score for stock-related topics in the text."
+  },
+  {
+   "id": "topic_underperform_score_mad",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Median absolute deviation of underperform-related topic scores in the text."
+  },
+  {
+   "id": "topic_underweight_score_max",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Maximum score for underweight-related topics in the text."
+  },
+  {
+   "id": "topic_underweight_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of underweight-related topic scores in the text."
+  },
+  {
+   "id": "topic_upgrade_score_min",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Minimum score for upgrade-related topics in the text."
+  },
+  {
+   "id": "total_dividend_mentions_sum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of news article mentions related to dividends within the analyzed period."
+  },
+  {
+   "id": "underperform_mention_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean absolute deviation of underperform topic mentions in the news set."
+  },
+  {
+   "id": "underweight_mention_mad_bbgnews",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median absolute deviation of underweight recommendation mentions in news."
+  },
+  {
+   "id": "underweight_topic_sum_bbgnews",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Sum of underweight recommendation topic mentions in news articles."
+  },
+  {
+   "id": "upgrade_mention_mad",
+   "type": "MATRIX",
+   "coverage": 0.9368,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Mean absolute deviation of upgrade-related topic mentions in the news set."
+  }
+ ]
+}

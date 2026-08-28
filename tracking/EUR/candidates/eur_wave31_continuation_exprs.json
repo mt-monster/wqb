@@ -1,0 +1,10 @@
+[
+ "rank(subtract(avg_similarity_bullish_rectangle, avg_similarity_bearish_flag))",
+ "group_rank(avg_similarity_ascending_channel, industry)",
+ "rank(ts_av_diff(avg_similarity_inverse_cup_handle, 22))",
+ "rank(ts_corr(avg_similarity_bearish_pennant, avg_similarity_bullish_rectangle, 20))",
+ "group_neutralize(gap_up_continuation_similarity_average, country)",
+ "signed_power(rank(dynamic_bear_flag_similarity_score), 0.5)",
+ "add(0.6*group_rank(avg_similarity_bearish_flag, country), 0.4*rank(ts_rank(avg_similarity_bullish_rectangle, 5)))",
+ "scale(-rank(avg_similarity_ascending_channel))"
+]

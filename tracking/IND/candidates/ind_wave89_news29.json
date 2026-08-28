@@ -1,0 +1,10 @@
+[
+"-rank(vec_avg(nws29_significance))",
+"rank(ts_mean(vec_avg(nws29_significance), 10))",
+"rank(vec_avg(nws29_frontpage))",
+"-rank(ts_mean(vec_avg(nws29_frontpage), 20))",
+"rank(vec_avg(nws29_full_significance))",
+"-rank(vec_avg(event_secondary_topic_code))",
+"rank(vec_avg(nws29_topic1))",
+"rank(ts_mean(vec_avg(nws29_significance), 5))"
+]

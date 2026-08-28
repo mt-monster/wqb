@@ -1,0 +1,153 @@
+{
+ "wins": [
+  {
+   "id": "SuperAlpha selection+combo",
+   "what": "SuperAlpha selection+combo",
+   "key": "SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr",
+   "evidence": "registry USA-SA-KPGvRMg1",
+   "source": "region_kb"
+  },
+  {
+   "id": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
+   "what": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
+   "key": "skeleton=rank(add(multiply(w1, rank(ts_backfill(long_term, 66))), multiply(w2, rank(ts_backfill(short_hedge2, 66))), multiply(w3, rank(ts_backfill(pv, 66))), multiply(w4, rank(ts_backfill(event_5d, 66))))); evidence=GrlGJnPJ sh2.02/fit1.01/2y1.62/sub0.91/prod0.685 ACTIVE; settings=decay=5, neut=SUBINDUSTRY, universe=TOP3000, delay=1",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "USA-SA-KPGvRMg1",
+   "what": "SuperAlpha KPGvRMg1 (name=0.6944) ACTIVE",
+   "key": "SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr；prod_correlation 在 selection 可用、combo 不可用",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "USA-W14-78jZmqJO",
+   "what": "Wave 14 回测成功，78jZmqJO 达到 Fitness=1.18，所有平台硬闸通过（除 SELF_CORRELATION）",
+   "key": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), multiply(0.3, rank(ts_backfill(event_5d_single_quantile_pred, 66)))))",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "USA-W14-SUCCESS-FORMULA",
+   "what": "Wave 14 成功配方：3腿组合（long_term + short_term + event_5d），平衡权重（0.4/0.3/0.3），所有平台硬闸通过",
+   "key": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), multiply(0.3, rank(ts_backfill(event_5d_single_quantile_pred, 66)))))",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "KPGvRMg1 (SUPER)",
+   "what": "KPGvRMg1 (SUPER)",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "acquisition_model percentile",
+   "reason": "4 个候选全部失败：3 个全负 Sharpe（-0.02/-0.03/-0.12），1 个 Sharpe 0.95 但低于 1.58 门槛。百分位排名类信号在 USA/TOP3000 高效市场无预测能力，与 pattern_scores/pv_tech_indicators 死路模式一致。",
+   "salvage": "可尝试其他事件驱动数据集（如 earnings_surprise, insider_transactions）或跨区变体",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-ACQUISITION-MODEL-DEAD"
+  },
+  {
+   "family": "ai_news_scores sentiment",
+   "reason": "RavenPack PR sentiment scores have zero alpha in USA/TOP3000/D1; all 8 single-field and composite probes far below 1.58 gate",
+   "salvage": "cross-region variants (prv2 ASI, prv23 EUR) untested; may work in other regions",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-AI-NEWS-SCORES-DEAD"
+  },
+  {
+   "family": "earningscall_embed embedding components",
+   "reason": "All 8 probes |S|<1.0: best ts_mean(analyst_embed_1,5) sh0.59. Embedding components produce only 21 holdings (CW=0.5) + HIGH_TURNOVER=1.49. ts_mean smoothing improves to 120 holdings but sharpe still insufficient. Same concentration problem as finnews.",
+   "salvage": "Could try combining multiple embedding components with learned weights, but 21-holding concentration is a fundamental data limitation.",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-EARNINGSCALL-EMBED-DEAD"
+  },
+  {
+   "family": "event_sentiment_signals section_sentiment",
+   "reason": "All 4 probes |S|<0.5: section_sentiment_score_3 sh0.40, -key_factor_negative sh0.45, pos-neg spread sh0.46, count spread sh0.48. vec_avg leaves only 21-22 holdings -> CONCENTRATED_WEIGHT=0.5 + HIGH_TURNOVER=1.59. Earnings call transcript sentiment not viable with vec_avg approach.",
+   "salvage": "Could try vec_sum or other vec_* wrappers, but concentration issue likely persists. Not worth further investment.",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-EVENT-SENTIMENT-SIGNALS-DEAD"
+  },
+  {
+   "family": "insider_feats buy_sell_ratio",
+   "reason": "All 4 probes |S|<0.5: buy_sell_ratio_all_250d sh0.32, all_20d sh0.15, top5_60d sh-0.06, tx_count_ratio_250d sh0.24. Insider trading signals too weak in USA/TOP3000.",
+   "salvage": "May work as dilution component for high-sharpe signals from other datasets, but not worth dedicated waves.",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-INSIDER-FEATS-DEAD"
+  },
+  {
+   "family": "model",
+   "reason": "fitness 天花板 0.95-1.00，sub 天花板 0.52（SECTOR），无法同时达标。最佳候选 GrlGJnPJ sh2.02/fit1.01/sub0.91 已提交 ACTIVE，但后续变体无法突破。option_quantile5_r20_pred 字段 sub 特性差（天花板 0.52）。",
+   "salvage": "已提交 GrlGJnPJ ACTIVE，无需进一步挖掘",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-MFP-FITNESS-SUB-CEILING"
+  },
+  {
+   "family": "multifactor_return_pred regression difference",
+   "reason": "60d-120d regression difference all negative sharpe (max -0.33, min -1.33)",
+   "salvage": "focus on quantile5 mix and event_x_confidence families",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-MFP-REGRESSION-DIFF-DEAD"
+  },
+  {
+   "family": "multifactor_return_pred sibling",
+   "reason": "同数据集同腿兄弟 alpha（表达式相似度 > 0.99）不能同时提交。78jz9X5b 与 GrlGJnPJ 表达式几乎相同（只差 long_term 权重 0.48 vs 0.46），平台检测到 self_corr=0.9981 且 Sharpe 差距 < 10%（2.00 vs 2.02），拒绝提交。",
+   "salvage": "换字段组合（如 analyst_conf, liquidity_risk）或换数据集",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-MFP-SIBLING-CONFLICT"
+  },
+  {
+   "family": "ml_factor_proj all signal families",
+   "reason": "All promising signal families PROD saturated: analyst_coverage×LTG prod=0.92, liquidity_risk prod=0.93. Dataset has 1068 fields but core signals (analyst, liquidity, short_interest, bankruptcy) all overlap with existing PROD alphas.",
+   "salvage": "May work in other regions (EUR/ASI) where PROD coverage is thinner; or as dilution leg (not primary signal) in cross-dataset combos",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-ML-FACTOR-PROJ-PROD-SATURATED"
+  },
+  {
+   "family": "news_sentiment_dl word sentiment",
+   "reason": "news_sentiment_dl VECTOR word-level sentiment in USA/TOP3000/D1: 10 probes max sh 0.63, far below 1.58 gate; ts_mean smoothing trades signal for turnover",
+   "salvage": "none identified; dataset exhausted for single-field probes",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-NEWS-SENTIMENT-DL-DEAD"
+  },
+  {
+   "family": "option_chart_model core signals (pcg + predicted_stock_return)",
+   "reason": "put_call_parity_gap_3_thvu prod_corr=0.8386 (bare) / 0.7533 (multiply hybrid) / 0.7844 (diluted); predicted_stock_return_50d_image prod_corr=0.782. Both core signal families are PROD-saturated. 0.2-0.3 weight probability dilution insufficient to bring prod_corr < 0.7.",
+   "salvage": "option_chart_model may still yield value via exotic field combinations (e.g., atm_iv_skew × volume interactions) but core directional signals are PROD-saturated. Consider other datasets first.",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-OPTION-CHART-MODEL-PROD-SATURATED"
+  },
+  {
+   "family": "pattern_scores",
+   "reason": "pattern_scores 数据集信号质量非常差，8 个候选全部失败（Sharpe: 0.16 到 0.41, Fitness: 0.02 到 0.10）",
+   "salvage": "可尝试其他图表模式相关的数据集（如 chart_cnn_alpha, chart_return_model 等）",
+   "source": "registry_dead_end",
+   "_entry_id": "USA-PATTERN-SCORES-DEAD"
+  }
+ ],
+ "region_context": {
+  "tier": "SA 达成 / RA 饱和区",
+  "settings_proven": {
+   "universe": "TOP3000（TOP500/1000/2000 可用）",
+   "delay": "0/1",
+   "neutralization_default": "SUBINDUSTRY"
+  },
+  "key_notes": [
+   "RA 新提交必须正交信号族，调参数无效",
+   "CROWDING 中性化 USA/D0 连续失败，直接跳过"
+  ]
+ },
+ "_meta": {
+  "region": "USA",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

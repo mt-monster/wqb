@@ -1,0 +1,10 @@
+﻿[
+    "rank(mdl238_global_rank)",
+    "rank(mdl238_global_change_rank)",
+    "-rank(mdl238_global_owner_rank)",
+    "rank(mdl238_global_screening_rank)",
+    "rank(mdl238_region_change_rank)",
+    "rank(mdl238_country_rank)",
+    "rank(ts_mean(mdl238_global_rank, 10))",
+    "-rank(mdl238_region_owner_rank_d1)"
+]

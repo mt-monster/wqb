@@ -1,0 +1,10 @@
+[
+  "-rank(add(rank(vec_avg(consensus_surprise_percentage)), rank(vec_avg(consensus_stddev_estimate))))",
+  "-rank(ts_mean(add(rank(vec_avg(consensus_surprise_percentage)), rank(vec_avg(consensus_stddev_estimate))), 21))",
+  "-rank(add(rank(vec_avg(consensus_vs_actual_diff)), rank(vec_avg(reported_actual_value))))",
+  "rank(add(rank(vec_avg(consensus_surprise_percentage)), rank(vec_avg(num_estimates_consensus))))",
+  "rank(ts_mean(add(rank(vec_avg(consensus_surprise_percentage)), rank(vec_avg(num_estimates_consensus))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(consensus_stddev_estimate)), rank(ts_zscore(vec_avg(num_estimates_consensus), 63))), 21))",
+  "rank(add(rank(vec_avg(consensus_surprise_percentage)), reverse(rank(ts_zscore(vec_avg(consensus_stddev_estimate), 63)))))",
+  "-rank(ts_zscore(vec_avg(consensus_surprise_percentage), 63))"
+]

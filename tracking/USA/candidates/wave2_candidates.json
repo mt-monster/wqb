@@ -1,0 +1,89 @@
+{
+  "wave": 2,
+  "region": "USA",
+  "universe": "TOP3000",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "candidates": [
+    {
+      "id": "w2_c1",
+      "dataset": "analyst_earnings_ibes",
+      "expression": "rank(ts_delta(winsorize(one_day_total_return_dlr1, 0.05), 5))",
+      "fields": ["one_day_total_return_dlr1"],
+      "mechanism": "短期动量+去极值：5日价格变化，winsorize去极值后排名",
+      "category": "momentum"
+    },
+    {
+      "id": "w2_c2",
+      "dataset": "analyst_earnings_ibes",
+      "expression": "-rank(ts_mean(winsorize(one_day_total_return_dlr1, 0.05), 20))",
+      "fields": ["one_day_total_return_dlr1"],
+      "mechanism": "短期反转+去极值：20日平均回报负排名，winsorize去极值",
+      "category": "reversal"
+    },
+    {
+      "id": "w2_c3",
+      "dataset": "analyst_earnings_ibes",
+      "expression": "rank(ts_rank(closing_price_dlr1, 20) - ts_rank(volume_weighted_avg_price_dlr1, 20))",
+      "fields": ["closing_price_dlr1", "volume_weighted_avg_price_dlr1"],
+      "mechanism": "价格偏离时序：收盘价与VWAP的20日时序排名差",
+      "category": "price_deviation"
+    },
+    {
+      "id": "w2_c4",
+      "dataset": "analyst_earnings_ibes",
+      "expression": "rank(ts_delta(trading_volume_dlr1, 5) / ts_mean(market_capitalization_dlr1, 20))",
+      "fields": ["trading_volume_dlr1", "market_capitalization_dlr1"],
+      "mechanism": "换手率变化：5日成交量变化/20日平均市值",
+      "category": "liquidity"
+    },
+    {
+      "id": "w2_c5",
+      "dataset": "price_signal_dl",
+      "expression": "rank(ts_delta(normalized_trend_indicator_0, 5))",
+      "fields": ["normalized_trend_indicator_0"],
+      "mechanism": "DL趋势变化：5日趋势指标变化排名",
+      "category": "trend"
+    },
+    {
+      "id": "w2_c6",
+      "dataset": "price_signal_dl",
+      "expression": "rank(ts_mean(normalized_volume_indicator_0, 10))",
+      "fields": ["normalized_volume_indicator_0"],
+      "mechanism": "DL成交量均值：10日成交量指标均值排名",
+      "category": "volume"
+    },
+    {
+      "id": "w2_c7",
+      "dataset": "price_signal_dl",
+      "expression": "rank(ts_corr(normalized_trend_indicator_0, normalized_volume_indicator_0, 10))",
+      "fields": ["normalized_trend_indicator_0", "normalized_volume_indicator_0"],
+      "mechanism": "价量相关性：10日趋势与成交量相关性排名",
+      "category": "price_volume"
+    },
+    {
+      "id": "w2_c8",
+      "dataset": "pv_tech_indicators",
+      "expression": "rank(ts_delta(momentum_shift_indicator, 3))",
+      "fields": ["momentum_shift_indicator"],
+      "mechanism": "动量转换加速：3日动量转换指标变化",
+      "category": "momentum_shift"
+    },
+    {
+      "id": "w2_c9",
+      "dataset": "pv_tech_indicators",
+      "expression": "rank(ts_mean(price_reversal_signal, 5))",
+      "fields": ["price_reversal_signal"],
+      "mechanism": "反转信号均值：5日反转信号均值排名",
+      "category": "reversal"
+    },
+    {
+      "id": "w2_c10",
+      "dataset": "pv_tech_indicators",
+      "expression": "rank(ts_corr(price_acceleration_factor, volume_spike_score, 10))",
+      "fields": ["price_acceleration_factor", "volume_spike_score"],
+      "mechanism": "加速+放量相关性：10日价格加速度与成交量突增相关性",
+      "category": "breakout"
+    }
+  ]
+}

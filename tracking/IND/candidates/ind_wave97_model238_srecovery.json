@@ -1,0 +1,10 @@
+[
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 63) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 63)), 0.35), multiply(rank(analyst_revision_percentile_score_medium_4), 0.65))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 63) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 63)), 0.3), multiply(rank(analyst_revision_percentile_score_medium_4), 0.7))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 63) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 63)), 0.25), multiply(rank(analyst_revision_percentile_score_medium_4), 0.75))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 21) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 21)), 0.5), multiply(rank(analyst_revision_percentile_score_medium_4), 0.5))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 21) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 21)), 0.55), multiply(rank(analyst_revision_percentile_score_medium_4), 0.45))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 63) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 63)), 0.3), multiply(-rank(analyst_recommendation_downgrades_30d_medium_31), 0.7))",
+  "add(multiply(rank(ts_zscore(mdl238_global_rank, 63) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 63)), 0.25), multiply(-rank(analyst_recommendation_downgrades_30d_medium_31), 0.75))",
+  "add(add(multiply(rank(ts_zscore(mdl238_global_rank, 21) - ts_zscore(group_neutralize(mdl238_global_rank, sector), 21)), 0.5), multiply(rank(analyst_revision_percentile_score_medium_4), 0.35)), multiply(-rank(analyst_recommendation_downgrades_30d_medium_31), 0.15))"
+]

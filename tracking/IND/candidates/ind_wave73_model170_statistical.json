@@ -1,0 +1,10 @@
+[
+  "-rank(divide(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price)))",
+  "-rank(vec_avg(price_position_within_annual_range))",
+  "rank(vec_avg(composite_fundamental_score))",
+  "rank(vec_avg(recent_earnings_momentum_score))",
+  "-rank(vec_avg(recent_dividend_yield_pct))",
+  "-rank(ts_mean(vec_avg(implied_price_range_maximum), 21))",
+  "rank(ts_mean(vec_avg(latest_implied_valuation_price), 21))",
+  "-rank(ts_corr(vec_avg(latest_implied_valuation_price), vec_avg(prior_close_price), 21))"
+]

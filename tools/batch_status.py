@@ -17,6 +17,8 @@
 退出码: 0=全部 terminal 且无 error, 1=存在 error/未完成
 运行环境: 使用 MCP venv（`$WQ_PY` 或 world-quant-brain-mcp/.venv），依赖 brain_api。
 """
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import argparse
 import asyncio
 import json

@@ -1,0 +1,74 @@
+{
+ "dataset": "fundamental86",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 7
+ },
+ "field_count": 7,
+ "estimated_stock_count": 400,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8001,
+ "sample_stock_count": null,
+ "fetched_at": "2026-08-28T15:24:31",
+ "fields": [
+  {
+   "id": "fnd86_average_score",
+   "type": "MATRIX",
+   "coverage": 0.9739,
+   "userCount": 760,
+   "alphaCount": 2409,
+   "description": "Overall composite score aggregating all pillars, scaled as deciles 1–10 with higher being better"
+  },
+  {
+   "id": "fnd86_earnings_score",
+   "type": "MATRIX",
+   "coverage": 0.7632,
+   "userCount": 508,
+   "alphaCount": 1254,
+   "description": "Earnings pillar score (1–10 decile, higher is better), reflecting earnings quality, revisions, and growth"
+  },
+  {
+   "id": "fnd86_fundamental_score",
+   "type": "MATRIX",
+   "coverage": 0.9737,
+   "userCount": 359,
+   "alphaCount": 793,
+   "description": "Fundamental score on a 1–10 decile scale, higher indicates stronger fundamental quality"
+  },
+  {
+   "id": "fnd86_insider_trading_score",
+   "type": "MATRIX",
+   "coverage": 0.0,
+   "userCount": 42,
+   "alphaCount": 107,
+   "description": "Insider trading score"
+  },
+  {
+   "id": "fnd86_price_momentum_score",
+   "type": "MATRIX",
+   "coverage": 0.9686,
+   "userCount": 372,
+   "alphaCount": 1089,
+   "description": "Price momentum score on a 1–10 decile scale, higher indicates stronger recent price trend"
+  },
+  {
+   "id": "fnd86_relative_valuation_score",
+   "type": "MATRIX",
+   "coverage": 0.9456,
+   "userCount": 404,
+   "alphaCount": 1029,
+   "description": "Relative valuation score on a 1–10 decile scale, higher indicates more attractive valuation versus peers in the region"
+  },
+  {
+   "id": "fnd86_risk_score",
+   "type": "MATRIX",
+   "coverage": 0.9755,
+   "userCount": 372,
+   "alphaCount": 825,
+   "description": "Risk pillar score, integer decile 1–10 where higher indicates a more favorable risk profile"
+  }
+ ]
+}

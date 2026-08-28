@@ -1,0 +1,10 @@
+[
+  "add(0.35*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.65*subtract(0, rank(long_term_ebitda_to_enterprise_value_ratio)))",
+  "add(0.40*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.60*subtract(0, rank(long_term_deep_value_europe_rank)))",
+  "add(0.40*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.60*rank(long_term_change_in_net_operating_assets))",
+  "add(0.35*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.65*rank(long_term_estimate_revision_europe_rank))",
+  "add(0.40*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.60*subtract(0, rank(mid_term_sales_to_price)))",
+  "add(0.45*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.55*rank(long_term_growth_analyst_europe_rank))",
+  "add(0.40*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.60*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))))",
+  "add(0.35*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.65*rank(mid_term_return_on_equity))"
+]

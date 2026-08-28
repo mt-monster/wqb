@@ -1,0 +1,10 @@
+[
+ "add(0.5*rank(default_risk_global_percentile_d1_2), 0.5*rank(credit_risk_profitability_score_d1))",
+ "group_rank(add(rank(default_risk_global_percentile_d1_2), rank(credit_risk_leverage_score_d1)), country)",
+ "add(0.5*group_rank(default_risk_global_percentile_d1_2, country), 0.5*group_rank(credit_risk_profitability_score_d1, industry))",
+ "signed_power(add(0.5*rank(default_risk_global_percentile_d1_2), 0.5*rank(credit_risk_liquidity_score_d1)), 0.5)",
+ "add(add(0.4*rank(default_risk_global_percentile_d1_2), 0.3*rank(credit_risk_profitability_score_d1)), 0.3*rank(credit_risk_leverage_score_d1))",
+ "rank(subtract(credit_risk_profitability_score_d1, credit_risk_leverage_score_d1))",
+ "group_zscore(default_risk_global_percentile_d1_2, country)",
+ "divide(rank(credit_risk_profitability_score_d1), ts_std_dev(credit_risk_leverage_score_d1, 22))"
+]

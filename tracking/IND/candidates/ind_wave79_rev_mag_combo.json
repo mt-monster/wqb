@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(add(rank(eps_revision_magnitude), rank(eps_y1_estimate_change_3mo)), 10))",
+  "rank(ts_mean(add(rank(eps_revision_magnitude), rank(eps_y2_estimate_change_3mo)), 10))",
+  "rank(add(ts_mean(rank(eps_revision_magnitude), 10), ts_mean(rank(eps_revision_magnitude), 90)))",
+  "rank(ts_mean(add(rank(eps_revision_magnitude), reverse(rank(eps_y1_estimate_coeff_var))), 10))",
+  "rank(ts_mean(add(rank(eps_revision_magnitude), rank(eps_y1_consensus_value)), 10))",
+  "rank(ts_mean(add(rank(eps_revision_magnitude), rank(revenue_revision_magnitude)), 10))",
+  "rank(ts_mean(add(rank(eps_y1_estimate_change_3mo), rank(eps_y2_estimate_change_3mo)), 10))",
+  "rank(ts_mean(add(rank(eps_revision_magnitude), rank(eps_estimate_trend_slope_1yr)), 10))"
+]

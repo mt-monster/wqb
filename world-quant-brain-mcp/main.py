@@ -22,6 +22,7 @@ import tools_submit    # noqa: F401,E402  提交/配额
 import tools_corr      # noqa: F401,E402  相关性
 import tools_forum     # noqa: F401,E402  论坛/消息
 import tools_spc       # noqa: F401,E402  SPC
+import tools_workflow  # noqa: F401,E402  Workflow 引擎节点
 
 # --- Main entry point ---
 if __name__ == "__main__":

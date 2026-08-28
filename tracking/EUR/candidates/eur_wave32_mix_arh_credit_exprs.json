@@ -1,0 +1,10 @@
+[
+ "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(credit_risk_profitability_score_d1))",
+ "add(0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5*rank(default_risk_global_percentile_d1_2))",
+ "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.4*group_rank(credit_risk_profitability_score_d1, country))",
+ "add(0.7*rank(forecasted_earnings_surprise_fy1_long), 0.3*rank(default_risk_industry_percentile_d1_2))",
+ "add(0.5*group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5*group_rank(credit_risk_leverage_score_d1, country))",
+ "signed_power(add(0.6*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.4*rank(credit_risk_growth_score_d1)), 0.5)",
+ "rank(ts_corr(avg_estimate_change_pct_current_year_profit_90d_medium, credit_risk_profitability_score_d1, 20))",
+ "add(0.6*group_scale(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(ts_av_diff(default_risk_global_percentile_d1_2, 22)))"
+]

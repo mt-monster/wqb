@@ -1,0 +1,50 @@
+[
+ {
+  "code": "group_rank(vec_avg(financial_statement_volatility_factor), country)",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "group_neutralize(rank(vec_avg(alpha_score)), industry)",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_av_diff(vec_avg(analyst_earnings_revision_intensity), 22))",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "signed_power(rank(vec_avg(accruals_analysis_factor)), 0.5)",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "rank(divide(vec_avg(analyst_forecast_revision_factor_2), ts_std_dev(vec_avg(analyst_opinion_metric), 22)))",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_corr(vec_avg(analyst_target_price_deviation), vec_avg(asset_turnover_ratio_metric), 20))",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_arg_max(vec_avg(analyst_earnings_revision_intensity), 20))",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "scale(-rank(vec_avg(analyst_target_price_deviation)))",
+  "note": "Mode B on wave19 winner family: NOT add(vol, alpha_score). group/ts/signed_power/new fields.",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ }
+]

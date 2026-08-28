@@ -1,0 +1,10 @@
+[
+  "-rank(mdl192_cds_pd1y_di)",
+  "-rank(mdl192_cds_pd5y_di)",
+  "-rank(mdl192_cds_gnd_di)",
+  "-rank(mdl192_cds_ps_rank1m_di)",
+  "rank(mdl192_altmanz_di)",
+  "rank(mdl192_indrelcroe_di)",
+  "-rank(mdl192_cds_1mvol_di)",
+  "-rank(mdl192_days_to_cover_di)"
+]

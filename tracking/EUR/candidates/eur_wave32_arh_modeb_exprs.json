@@ -1,0 +1,10 @@
+[
+ "group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country)",
+ "group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry)",
+ "rank(ts_av_diff(avg_estimate_change_pct_current_year_profit_90d_medium, 22))",
+ "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(forecasted_earnings_surprise_fy1_long))",
+ "signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5)",
+ "group_rank(forecasted_earnings_surprise_fy1_long, country)",
+ "rank(ts_corr(avg_estimate_change_pct_current_year_profit_90d_medium, forecasted_earnings_surprise_fy1_long, 20))",
+ "group_scale(avg_estimate_change_pct_current_year_profit_90d_medium, country)"
+]

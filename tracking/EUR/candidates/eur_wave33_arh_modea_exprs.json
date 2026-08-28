@@ -1,0 +1,10 @@
+[
+ "signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5)",
+ "signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.25)",
+ "signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.75)",
+ "rank(avg_estimate_change_pct_current_year_profit_90d_medium)",
+ "group_zscore(avg_estimate_change_pct_current_year_profit_90d_medium, industry)",
+ "scale(signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5))",
+ "add(0.7*signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5), 0.3*group_rank(model_score_change_30d_long, country))",
+ "ts_rank(signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5), 66)"
+]

@@ -1,0 +1,10 @@
+﻿[
+    "-rank(ts_mean(vec_avg(security_transaction_unit_price_usd), 5))",
+    "ts_mean(-rank(vec_avg(security_transaction_unit_price_usd)), 10)",
+    "-ts_rank(vec_avg(security_transaction_unit_price_usd), 5)",
+    "-ts_rank(vec_avg(security_transaction_unit_price_usd), 20)",
+    "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 20), 0.5))",
+    "add(multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.7), multiply(-ts_rank(vec_avg(security_transaction_unit_price_usd), 5), 0.3))",
+    "-zscore(vec_avg(security_transaction_unit_price_usd))",
+    "divide(add(1, -rank(vec_avg(security_transaction_unit_price_usd))), add(1, rank(vec_avg(post_transaction_share_balance))))"
+]

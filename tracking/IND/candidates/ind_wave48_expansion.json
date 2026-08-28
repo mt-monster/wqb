@@ -1,0 +1,10 @@
+[
+  "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_downgrades_30d_medium_31))), 21))",
+  "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_14d_medium_4))), 21))",
+  "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_count_increasing_current_year_earnings_14d_medium_3))), 21))",
+  "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_opinion_avg_shift_30d_short))), 21))",
+  "-rank(ts_mean(rank(analyst_revision_score_5d_medium), 42))",
+  "-rank(ts_decay_linear(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 21))",
+  "-rank(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))))",
+  "-rank(ts_mean(add(rank(ts_zscore(analyst_revision_score_5d_medium, 63)), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 21))"
+]

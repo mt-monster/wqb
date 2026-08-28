@@ -1,0 +1,10 @@
+[
+"rank(anl46_sentiment)",
+"rank(anl46_indicator)",
+"rank(anl46_experts)",
+"rank(anl46_performancepercentile)",
+"rank(ts_mean(anl46_sentiment, 10))",
+"add(multiply(rank(anl46_sentiment), 0.5), multiply(rank(anl46_indicator), 0.5))",
+"add(multiply(rank(anl46_sentiment), 0.7), multiply(rank(anl46_experts), 0.3))",
+"rank(profit_report_component)"
+]

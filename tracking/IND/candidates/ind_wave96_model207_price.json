@@ -1,0 +1,10 @@
+﻿[
+    "-rank(vec_avg(security_transaction_unit_price_usd))",
+    "ts_rank(vec_avg(security_transaction_unit_price_usd), 20)",
+    "divide(rank(vec_sum(transactional_share_quantity_change)), add(1, rank(vec_sum(security_transaction_unit_price_usd))))",
+    "divide(rank(vec_avg(post_transaction_share_balance)), add(1, rank(vec_avg(security_transaction_unit_price_usd))))",
+    "add(multiply(rank(vec_avg(transactional_share_quantity_change)), 0.5), multiply(-rank(vec_avg(security_transaction_unit_price_usd)), 0.5))",
+    "ts_mean(divide(rank(vec_avg(transactional_share_quantity_change)), add(1, rank(vec_avg(security_transaction_unit_price_usd)))), 5)",
+    "ts_delta(rank(vec_avg(security_transaction_unit_price_usd)), 5)",
+    "multiply(rank(vec_avg(transactional_share_quantity_change)), -rank(vec_avg(security_transaction_unit_price_usd)))"
+]

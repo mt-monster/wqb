@@ -1,0 +1,50 @@
+[
+ {
+  "code": "group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country)",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry)",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_av_diff(avg_estimate_change_pct_current_year_profit_90d_medium, 22))",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(forecasted_earnings_surprise_fy1_long))",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5)",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "group_rank(forecasted_earnings_surprise_fy1_long, country)",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_corr(avg_estimate_change_pct_current_year_profit_90d_medium, forecasted_earnings_surprise_fy1_long, 20))",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ },
+ {
+  "code": "group_scale(avg_estimate_change_pct_current_year_profit_90d_medium, country)",
+  "note": "ARH Mode B on wave22 1.39/0.90/0.56 winner field; fix 2Y via group/ts not naked rank clone.",
+  "dataset": "analyst_revision_horizons",
+  "wave": 32
+ }
+]

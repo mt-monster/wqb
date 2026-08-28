@@ -1,0 +1,10 @@
+[
+ "group_rank(credit_risk_leverage_score_d1, country)",
+ "rank(ts_av_diff(credit_risk_profitability_score_d1, 22))",
+ "rank(subtract(default_risk_industry_percentile_d1_2, default_risk_sector_percentile_d1_2))",
+ "group_neutralize(creditworthiness_letter_rating_numeric_d1, industry)",
+ "rank(ts_corr(credit_risk_leverage_score_d1, credit_risk_liquidity_score_d1, 20))",
+ "signed_power(rank(credit_risk_growth_score_d1), 0.5)",
+ "add(0.7*group_rank(credit_risk_profitability_score_d1, country), 0.3*rank(ts_rank(credit_risk_leverage_score_d1, 5)))",
+ "scale(-rank(default_risk_global_percentile_d1_2))"
+]

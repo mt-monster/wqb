@@ -1,0 +1,10 @@
+[
+ "group_rank(star_hold_global_screening_rank, country)",
+ "group_rank(star_hold_global_rank, country)",
+ "group_neutralize(star_hold_sector_rank, country)",
+ "group_zscore(star_hold_region_screening_rank, industry)",
+ "rank(ts_corr(star_hold_global_screening_rank, star_hold_region_screening_rank, 20))",
+ "rank(ts_arg_max(star_hold_global_screening_rank, 20))",
+ "signed_power(group_rank(star_hold_global_rank, country), 0.5)",
+ "add(0.7*group_rank(star_hold_global_screening_rank, country), 0.3*rank(ts_av_diff(star_hold_global_screening_rank, 5)))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(mdl216_armrecommendation100rank))",
+  "rank(ts_mean(vec_avg(mdl216_armrecommendationscore), 10))",
+  "rank(ts_mean(vec_avg(mdl216_recommendationblendedrevisionpercent), 10))",
+  "rank(vec_avg(mdl216_armglobal100score))",
+  "rank(ts_mean(vec_avg(mdl216_armglobalcombinationscore), 10))",
+  "rank(ts_mean(vec_avg(mdl216_preferredblendedrevisionfy1percent), 10))",
+  "rank(ts_mean(vec_avg(mdl216_armpreferredrevisionscore), 10))",
+  "rank(ts_mean(vec_avg(mdl216_revenueblendedrevisionfy1percent), 10))"
+]

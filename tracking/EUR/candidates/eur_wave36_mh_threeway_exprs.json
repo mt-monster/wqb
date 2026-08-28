@@ -1,0 +1,10 @@
+[
+  "add(add(0.30*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.35*subtract(0, rank(long_term_ebitda_to_enterprise_value_ratio))), 0.35*rank(long_term_estimate_revision_europe_rank))",
+  "add(add(0.30*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.35*subtract(0, rank(long_term_deep_value_europe_rank))), 0.35*rank(long_term_growth_analyst_europe_rank))",
+  "add(add(0.30*subtract(0, rank(subtract(long_term_free_cash_flow_to_price_2, group_mean(long_term_free_cash_flow_to_price_2, 1, industry)))), 0.40*rank(long_term_change_in_net_operating_assets)), 0.30*rank(mid_term_return_on_equity))",
+  "add(0.5*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))), 0.5*subtract(0, rank(subtract(mid_term_sales_to_price, group_mean(mid_term_sales_to_price, 1, industry)))))",
+  "add(0.5*rank(long_term_estimate_revision_europe_rank), 0.5*rank(mid_term_growth_analyst_europe_rank))",
+  "add(0.4*subtract(0, rank(long_term_deep_value_europe_rank)), 0.6*rank(long_term_financial_statement_rank_europe))",
+  "subtract(0, rank(subtract(mid_term_ebitda_to_enterprise_value_ratio, group_mean(mid_term_ebitda_to_enterprise_value_ratio, 1, industry))))",
+  "add(0.5*rank(subtract(long_term_estimate_revision_europe_rank, group_mean(long_term_estimate_revision_europe_rank, 1, industry))), 0.5*rank(mid_term_return_on_equity))"
+]

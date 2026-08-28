@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(analyst_revision_percentile_score_medium_4), 21))",
+  "rank(ts_decay_linear(analyst_revision_percentile_score_medium_4, 21))",
+  "rank(ts_rank(analyst_revision_percentile_score_medium_4, 21))",
+  "ts_delta(rank(ts_mean(rank(analyst_revision_percentile_score_medium_4), 21)), 5)",
+  "rank(ts_mean(rank(analyst_revision_percentile_score_medium_4), 42))",
+  "rank(ts_mean(rank(ts_zscore(analyst_revision_percentile_score_medium_4, 63)), 21))",
+  "rank(ts_mean(add(rank(analyst_revision_percentile_score_medium_4), rank(analyst_recommendation_downgrades_30d_medium_31)), 21))",
+  "rank(ts_mean(rank(analyst_count_increasing_current_year_earnings_14d_medium_3), 21))"
+]

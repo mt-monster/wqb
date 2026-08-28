@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(next_event_transcript_flag), 21))",
+  "-rank(ts_mean(rank(last_event_update_flag), 21))",
+  "rank(ts_mean(add(rank(next_event_confirmation_level), rank(last_event_transcript_flag)), 21))",
+  "rank(if_else(greater(rank(next_event_transcript_flag), 0.5), rank(last_event_confirmation_level), reverse(rank(last_event_confirmation_level))))",
+  "rank(ts_corr(rank(last_event_update_flag), rank(last_event_transcript_flag), 21))",
+  "rank(ts_delta(rank(next_event_confirmation_level), 21))",
+  "rank(ts_kurtosis(rank(last_event_confirmation_level), 21))",
+  "rank(ts_mean(divide(add(1, rank(next_event_transcript_flag)), add(1, rank(future_event_update_flag))), 21))"
+]

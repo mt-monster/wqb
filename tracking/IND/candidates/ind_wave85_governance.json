@@ -1,0 +1,10 @@
+[
+  "-rank(vec_avg(director_attrition_ratio_3yr))",
+  "-rank(vec_avg(director_attrition_ratio))",
+  "-rank(vec_avg(fnd1_succession))",
+  "rank(vec_avg(wealth_sensitivity_to_stock))",
+  "rank(vec_avg(board_nationality_diversity_ratio_2))",
+  "rank(vec_avg(compensation_change_percent))",
+  "rank(ts_mean(vec_avg(wealth_sensitivity_to_stock), 10))",
+  "-rank(ts_mean(vec_avg(fnd1_succession), 21))"
+]

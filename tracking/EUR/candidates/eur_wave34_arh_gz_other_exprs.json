@@ -1,0 +1,10 @@
+[
+ "group_zscore(forecasted_earnings_surprise_fy1_long, industry)",
+ "group_zscore(model_score_change_30d_long, industry)",
+ "group_zscore(score_component_primary_profit_long, industry)",
+ "group_zscore(preferred_earnings_revision_component_medium_term_5, industry)",
+ "group_zscore(recommendation_change_component_medium_term_4, industry)",
+ "group_zscore(revenue_revision_component_medium_term_3, industry)",
+ "group_zscore(preferred_earnings_revision_component_short_term_41, industry)",
+ "add(0.5*group_zscore(forecasted_earnings_surprise_fy1_long, industry), 0.5*group_zscore(model_score_change_30d_long, industry))"
+]

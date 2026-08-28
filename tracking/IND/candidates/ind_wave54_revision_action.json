@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(add(rank(analyst_recommendation_upgrades_30d_medium_31), reverse(rank(analyst_recommendation_downgrades_30d_medium_31))), 21))",
+  "rank(ts_mean(divide(add(1, rank(analyst_recommendation_upgrades_14d_medium_4)), add(1, rank(analyst_recommendation_downgrades_14d_medium_4))), 21))",
+  "rank(ts_mean(add(rank(analyst_count_increasing_current_year_earnings_14d_medium_3), reverse(rank(analyst_count_decreasing_current_year_earnings_30d_long_3))), 21))",
+  "rank(if_else(greater(rank(analyst_recommendation_upgrades_30d_medium_31), 0.5), rank(anticipated_revenue_surprise_fy1_short), reverse(rank(anticipated_revenue_surprise_fy1_short))))",
+  "rank(ts_corr(rank(analyst_recommendation_upgrades_14d_medium_4), rank(anticipated_revenue_surprise_fy1_short), 21))",
+  "rank(ts_kurtosis(rank(analyst_count_decreasing_current_year_earnings_30d_long_3), 21))",
+  "rank(ts_corr(rank(analyst_opinion_avg_shift_30d_short), rank(analyst_recommendation_downgrades_14d_medium_4), 21))",
+  "rank(ts_mean(add(rank(anticipated_revenue_surprise_fy1_short), reverse(rank(actual_earnings_surprise_pct_lasty_medium))), 21))"
+]

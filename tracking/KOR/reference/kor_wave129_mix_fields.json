@@ -1,0 +1,2676 @@
+{
+ "dataset": "ml_factor_proj",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "field_count": 333,
+ "description": "ML factor projections change- family",
+ "banned_patterns": [],
+ "fields": [
+  {
+   "id": "change_12m_alpha",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in 12-month alpha, measuring the difference in excess return over a benchmark between two periods."
+  },
+  {
+   "id": "change_1m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in one-month active return, reflecting the difference in price performance over one month."
+  },
+  {
+   "id": "change_1y_accounts_receivable_to_sales",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in accounts receivable as a percentage of sales compared to four quarters ago."
+  },
+  {
+   "id": "change_1y_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in one-year growth of cash flow per share relative to price."
+  },
+  {
+   "id": "change_1y_eps_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in one-year growth rate of trailing twelve-month earnings per share."
+  },
+  {
+   "id": "change_1y_eps_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in one-year growth of earnings per share relative to price."
+  },
+  {
+   "id": "change_1y_inventory_to_sales",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in inventory as a percentage of sales compared to four quarters ago."
+  },
+  {
+   "id": "change_1y_operating_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in one-year growth of operating cash flow per share relative to price."
+  },
+  {
+   "id": "change_1y_quarterly_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the most recent quarterly total assets per share compared to four quarters ago."
+  },
+  {
+   "id": "change_20d_volume_to_price_volatility",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the coefficient of variation of last 20 days closing prices divided by coefficient of variation of trading vol"
+  },
+  {
+   "id": "change_24m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in 24-month active return, measuring the difference in price performance over two years."
+  },
+  {
+   "id": "change_24m_value_at_risk",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in 24-month value at risk, measuring shifts in the minimum monthly price return over a 20-month period."
+  },
+  {
+   "id": "change_2m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the percent change in stock price from month t-2 to t, relative to a benchmark."
+  },
+  {
+   "id": "change_30_75w_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of 30-week to 75-week moving average prices, indicating long-term price momentum shifts."
+  },
+  {
+   "id": "change_36m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the 36-month active return, measuring long-term performance relative to a benchmark."
+  },
+  {
+   "id": "change_3m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the 3-month active return, measuring recent performance relative to a benchmark."
+  },
+  {
+   "id": "change_3m_revision_fy2_eps",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in current FY2 mean earnings estimate less three months ago, deflated by month-end price."
+  },
+  {
+   "id": "change_3y_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the difference between trailing twelve-month cash flow per share and 12-quarters ago, divided by month-end tra"
+  },
+  {
+   "id": "change_3y_compound_sales_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the geometric growth rate of trailing twelve-month sales per share over last 12 quarters."
+  },
+  {
+   "id": "change_3y_eps_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in three-year growth rate of trailing twelve-month earnings per share."
+  },
+  {
+   "id": "change_3y_eps_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in trailing twelve-month EPS before extra items minus EPS 12-quarters ago, deflated by average total assets per s"
+  },
+  {
+   "id": "change_3y_eps_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in three-year growth of earnings per share relative to price."
+  },
+  {
+   "id": "change_3y_fcf_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percent change in trailing twelve-month free cash flow per share compared to twelve quarters ago."
+  },
+  {
+   "id": "change_3y_fcf_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in trailing twelve-month free cash flow minus 12-quarters ago, divided by average total assets."
+  },
+  {
+   "id": "change_3y_operating_cashflow_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percent change in trailing twelve-month operating cash flow per share compared to twelve quarters ago."
+  },
+  {
+   "id": "change_3y_operating_cashflow_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the trailing twelve-month operating cash flow minus OCF 12-quarters ago, deflated by average total assets."
+  },
+  {
+   "id": "change_3y_operating_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the three-year growth of operating cash flow per share relative to price."
+  },
+  {
+   "id": "change_3y_price_adj_fcf_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the 3-year growth of free cash flow per share adjusted for price, indicating long-term cash flow trends."
+  },
+  {
+   "id": "change_4y_avg_trading_volume",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the average trading volume over a four-year period, reflecting shifts in liquidity."
+  },
+  {
+   "id": "change_50_200d_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the moving average of last 50 days prices divided by moving average of last 200 days prices."
+  },
+  {
+   "id": "change_52w_high_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of current price to the highest price over the past 52 weeks."
+  },
+  {
+   "id": "change_5y_dividend_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in five-year dividend growth rate, indicating shifts in dividend policy over time."
+  },
+  {
+   "id": "change_5y_relative_book_to_market",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the 5-year relative book-to-market ratio, indicating shifts in long-term valuation relative to peers."
+  },
+  {
+   "id": "change_5y_relative_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the current cash flow-to-price ratio minus 5-year average, scaled by standard deviation."
+  },
+  {
+   "id": "change_5y_relative_earnings_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in five-year relative earnings-to-price ratio, comparing current to historical values."
+  },
+  {
+   "id": "change_5y_relative_fcf_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in five-year relative free cash flow-to-price ratio, comparing current to historical values."
+  },
+  {
+   "id": "change_5y_relative_forward_earnings_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in five-year relative forward earnings yield, comparing current to historical values."
+  },
+  {
+   "id": "change_5y_relative_operating_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the five-year relative operating cash flow-to-price ratio, comparing current to historical values."
+  },
+  {
+   "id": "change_5y_relative_sales_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the five-year relative sales-to-price ratio, comparing current value to historical average."
+  },
+  {
+   "id": "change_60m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the percent change in stock price from month t-61 to t-1, relative to a benchmark."
+  },
+  {
+   "id": "change_60m_alpha",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in 60-month alpha, measuring the difference in excess return over a benchmark over five years."
+  },
+  {
+   "id": "change_60m_regression_error",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the standard error of the slope of the 60-month CAPM regression."
+  },
+  {
+   "id": "change_6m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Change in the percent change in stock price from month t-7 to t-1, relative to a benchmark."
+  },
+  {
+   "id": "change_6m_alpha_18m",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in a stock's 18-month alpha from regression of monthly returns against a benchmark over the last 6 months."
+  },
+  {
+   "id": "change_6m_rating_revision",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in six-month average of analyst rating revisions, indicating shifts in consensus sentiment."
+  },
+  {
+   "id": "change_9m_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in 9-month active return, reflecting the difference in price performance over nine months."
+  },
+  {
+   "id": "change_abnormal_capital_investment_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in abnormal capital investment, measuring the difference in recent capital investment intensity compared to histo"
+  },
+  {
+   "id": "change_acquisition_valuation_multiple",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of invested capital to trailing twelve-month EBITDA, reflecting acquisition valuation shifts."
+  },
+  {
+   "id": "change_analyst_consensus_rating",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the average analyst recommendation tracked by standardized rating systems."
+  },
+  {
+   "id": "change_analyst_coverage_count",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the number of analysts providing earnings estimates for the current fiscal year."
+  },
+  {
+   "id": "change_asset_composition_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of total current assets to total assets, indicating shifts in asset structure."
+  },
+  {
+   "id": "change_asset_quality_index",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the asset quality index, measuring year-over-year change in the ratio of current assets plus PP&E to total ass"
+  },
+  {
+   "id": "change_asset_turnover_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the percent growth of the asset turnover ratio compared to the previous year."
+  },
+  {
+   "id": "change_asset_turnover_ratio_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Event-aligned change in asset turnover"
+  },
+  {
+   "id": "change_attention_span_ratio_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of quarterly operating assets minus operating liabilities, deflated by lagged total assets."
+  },
+  {
+   "id": "change_average_collection_period_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the average number of days it takes a company to collect payments from customers, reflecting trends in receiva"
+  },
+  {
+   "id": "change_avg_payable_period",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the average payable period, indicating shifts in the time taken to pay suppliers."
+  },
+  {
+   "id": "change_basic_defensive_interval",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in basic defensive interval, indicating shifts in the number of days a company can cover expenses with cash and r"
+  },
+  {
+   "id": "change_beta_times_sigma",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the product of adjusted 60-month Beta and 60-month Sigma (standard deviation of monthly returns)."
+  },
+  {
+   "id": "change_book_leverage_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of total assets to book equity, indicating shifts in financial leverage."
+  },
+  {
+   "id": "change_book_to_market_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of book value per share divided by month-end trading price."
+  },
+  {
+   "id": "change_capex_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of capital expenditures to total assets, indicating shifts in investment intensity."
+  },
+  {
+   "id": "change_capex_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of trailing twelve-month capital expenditures per share to price."
+  },
+  {
+   "id": "change_capex_to_sales_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of capital expenditures to sales, indicating shifts in investment intensity relative to revenue."
+  },
+  {
+   "id": "change_capital_acquisition_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the capital acquisition ratio, measuring the ability to finance capital spending without new debt or equity."
+  },
+  {
+   "id": "change_capital_gearing_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of long-term debt divided by total assets minus current liability."
+  },
+  {
+   "id": "change_cash_conversion_cycle_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the cash conversion cycle, measuring shifts in the time between cash outflows for purchases and inflows from s"
+  },
+  {
+   "id": "change_cash_flow_debt_coverage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of cash flow from operations less dividends to current interest-bearing debt, measuring debt coverag"
+  },
+  {
+   "id": "change_cash_to_current_liabilities_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of cash and equivalents to current liabilities, indicating shifts in liquidity."
+  },
+  {
+   "id": "change_cash_to_enterprise_value_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of total cash and equivalents to market value of equity plus long-term debt."
+  },
+  {
+   "id": "change_cash_to_liabilities_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "change in cash ratio (cash and equivalents/current liabilities)"
+  },
+  {
+   "id": "change_cash_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of most recent cash and equivalents per share divided by month-end trading price."
+  },
+  {
+   "id": "change_cash_to_sales_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of average cash and equivalents in trailing twelve months divided by trailing twelve-month sales."
+  },
+  {
+   "id": "change_cashflow_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent change in trailing twelve-month cash flow per share compared to four quarters ago."
+  },
+  {
+   "id": "change_cashflow_investment_to_assets_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of cash flow from investment to total assets, indicating shifts in investment activity."
+  },
+  {
+   "id": "change_cashflow_leverage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in cash flow leverage, calculated as total liabilities divided by trailing twelve-month operating cash flow."
+  },
+  {
+   "id": "change_cashflow_return_on_invested_capital_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in cash flow return on invested capital, measuring shifts in profitability from capital employed."
+  },
+  {
+   "id": "change_cogs_vs_inventory_level_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the absolute difference between yearly percent change in cost of goods sold and inventory level."
+  },
+  {
+   "id": "change_current_liabilities_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the ratio of current liabilities per share to closing price."
+  },
+  {
+   "id": "change_current_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Event-aligned change in the current ratio (current assets divided by current liabilities)"
+  },
+  {
+   "id": "change_cv_prior_90_day_prices",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the coefficient of variation of prior 90-day closing prices, measuring shifts in price volatility."
+  },
+  {
+   "id": "change_debt_to_cashflow_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of long-term debt to cash flow, indicating shifts in debt service ability."
+  },
+  {
+   "id": "change_depreciation_vs_capex_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the absolute difference between yearly percent change in depreciation and capital expenditure."
+  },
+  {
+   "id": "change_dispersion_fy2_eps_estimates",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the coefficient of variation of FY2 earnings per share estimates, measuring forecast uncertainty."
+  },
+  {
+   "id": "change_dividend_coverage_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in dividend coverage ratio, indicating shifts in the ability to pay dividends from earnings."
+  },
+  {
+   "id": "change_dividend_yield_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in trailing twelve-month dividend yield, indicating shifts in income generation."
+  },
+  {
+   "id": "change_dividends_to_cashflow_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of dividends paid to cash flow, indicating shifts in payout sustainability."
+  },
+  {
+   "id": "change_ebitda_to_enterprise_value",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event-aligned change in EBITDA to enterprise value ratio"
+  },
+  {
+   "id": "change_ebitda_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month EBITDA to price."
+  },
+  {
+   "id": "change_ebo_value_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the Edwards-Bell-Ohlson value-to-price ratio, indicating shifts in intrinsic value relative to price."
+  },
+  {
+   "id": "change_eighteen_month_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in 18-month active return, representing the difference in stock price performance over an 18-month period compare"
+  },
+  {
+   "id": "change_eps_from_tax_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in earnings per share attributed to changes in effective tax rate over four quarters."
+  },
+  {
+   "id": "change_eps_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Percent change in trailing twelve-month earnings per share before extra items compared to four quarters ago."
+  },
+  {
+   "id": "change_eps_vs_operating_cashflow",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the absolute difference between yearly percent change in operating cash flow per share and diluted EPS."
+  },
+  {
+   "id": "change_equity_turnover_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month sales divided by average trailing twelve-month book equity."
+  },
+  {
+   "id": "change_fama_french_momentum",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in Fama-French momentum, measuring the difference in price return over a specified period."
+  },
+  {
+   "id": "change_fcf_yield_forward_roe_product",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the product of trailing free cash flow yield and forward return on equity, reflecting profitability and cash g"
+  },
+  {
+   "id": "change_fifteen_thirtysix_week_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of the 15-week to 36-week moving average of stock prices."
+  },
+  {
+   "id": "change_financial_leverage_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in financial leverage, measuring shifts in the ratio of pretax income and interest expense to pretax income."
+  },
+  {
+   "id": "change_five_year_relative_dividend_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the five-year relative trailing twelve-month dividend yield compared to its historical average."
+  },
+  {
+   "id": "change_five_year_relative_ebitda_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the five-year relative trailing twelve-month EBITDA-to-price ratio compared to its historical average."
+  },
+  {
+   "id": "change_five_year_sales_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the five-year sales growth rate, measuring the difference in sales per share over five years."
+  },
+  {
+   "id": "change_fixed_assets_turnover",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month sales to average total fixed assets."
+  },
+  {
+   "id": "change_flow_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the flow ratio, calculated as the difference between current assets and cash divided by the difference between"
+  },
+  {
+   "id": "change_forward_2y_eps_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the most recent FY2 consensus earnings forecast minus FY1 forecast divided by month-end price."
+  },
+  {
+   "id": "change_forward_earnings_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the leading 12-month mean earnings yield, calculated as next four quarters' mean earnings estimates divided by"
+  },
+  {
+   "id": "change_forward_eps_to_enterprise_value",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of forward 12-month earnings per share to enterprise value, indicating shifts in forward-looking val"
+  },
+  {
+   "id": "change_forward_estimated_earnings_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the most recent next 4-quarter median earnings estimates divided by month-end price."
+  },
+  {
+   "id": "change_forward_fcf_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of next four-quarter mean earnings estimates plus depreciation minus capex divided by month-end pric"
+  },
+  {
+   "id": "change_forward_return_on_equity_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the forward-looking return on equity, based on analyst earnings forecasts."
+  },
+  {
+   "id": "change_free_cashflow_return_on_invested_capital_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in free cash flow return on invested capital, measuring trends in capital efficiency."
+  },
+  {
+   "id": "change_free_cashflow_to_equity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month free cash flow to equity."
+  },
+  {
+   "id": "change_free_cashflow_to_sales_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month free cash flow to sales, indicating shifts in a company's cash generation e"
+  },
+  {
+   "id": "change_fy1_eps_estimate_dispersion",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the standard deviation of FY1 earnings estimates divided by mean, measuring forecast uncertainty."
+  },
+  {
+   "id": "change_industry_adjusted_12m_price_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in industry-adjusted 12-month relative price strength, comparing stock performance to industry peers."
+  },
+  {
+   "id": "change_industry_adjusted_quarterly_roe",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the industry-adjusted quarterly return on equity, calculated as lagged quarterly ROE minus industry average."
+  },
+  {
+   "id": "change_industry_relative_book_to_market",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in book-to-market ratio relative to the industry, indicating shifts in valuation compared to peers."
+  },
+  {
+   "id": "change_industry_relative_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the cash flow-to-price ratio relative to the industry average."
+  },
+  {
+   "id": "change_industry_relative_dividend_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the dividend yield relative to the industry average, adjusted for industry standard deviation."
+  },
+  {
+   "id": "change_industry_relative_doubtful_receivables",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in industry-adjusted doubtful account receivables, measuring shifts in asset quality relative to peers."
+  },
+  {
+   "id": "change_industry_relative_ebitda_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the stock's EBITDA-to-price ratio less industry average, deflated by industry standard deviation."
+  },
+  {
+   "id": "change_industry_relative_eps_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the stock's EPS-to-price ratio less industry average, deflated by industry standard deviation."
+  },
+  {
+   "id": "change_industry_relative_fcf_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the stock's free cash flow-to-price ratio less industry average, deflated by industry standard deviation."
+  },
+  {
+   "id": "change_industry_relative_five_day_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the five-day return of a stock relative to its industry average."
+  },
+  {
+   "id": "change_industry_relative_forward_ep",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the stock's next 4-quarter earnings estimates-to-price ratio less industry average, deflated by standard devia"
+  },
+  {
+   "id": "change_industry_relative_four_week_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the four-week return of a stock relative to its industry average."
+  },
+  {
+   "id": "change_industry_relative_oper_cashflow_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in operating cash flow to total assets ratio relative to the industry average."
+  },
+  {
+   "id": "change_industry_relative_oper_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the operating cash flow-to-price ratio relative to the industry average."
+  },
+  {
+   "id": "change_industry_relative_sales_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the sales-to-price ratio relative to the industry average."
+  },
+  {
+   "id": "change_interest_coverage_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in interest coverage ratio, indicating the difference in a company's ability to meet interest payments over time."
+  },
+  {
+   "id": "change_inventory_to_assets_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of inventory to total assets, indicating shifts in asset composition."
+  },
+  {
+   "id": "change_inventory_turnover_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month cost of goods sold divided by average inventory."
+  },
+  {
+   "id": "change_inverse_peg_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the inverse of the PEG ratio, indicating shifts in valuation relative to growth."
+  },
+  {
+   "id": "change_lagged_inverse_peg_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the lagged inverse PEG ratio, calculated as trailing twelve-month EPS times change in sales growth rate divide"
+  },
+  {
+   "id": "change_liquidity_coefficient",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the liquidity coefficient, measuring the relationship between trading turnover and price returns."
+  },
+  {
+   "id": "change_log_closing_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the natural logarithm of the closing price, indicating shifts in price level on a log scale."
+  },
+  {
+   "id": "change_log_market_capitalization",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the natural logarithm of market capitalization, reflecting shifts in company size."
+  },
+  {
+   "id": "change_log_sales",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the natural logarithm of trailing twelve-month sales, reflecting shifts in company revenue size."
+  },
+  {
+   "id": "change_log_total_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the natural logarithm of most recent quarterly total assets."
+  },
+  {
+   "id": "change_log_trading_volume_to_market_cap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the natural logarithm of average monthly trading volume divided by average monthly market capitalization."
+  },
+  {
+   "id": "change_long_term_debt_to_equity_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of long-term debt to equity, indicating shifts in financial leverage."
+  },
+  {
+   "id": "change_long_term_growth_estimate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the long-term growth rate estimate, reflecting shifts in analyst expectations."
+  },
+  {
+   "id": "change_market_beta",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "change in market beta"
+  },
+  {
+   "id": "change_market_cap_per_analyst",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in market capitalization per analyst, reflecting shifts in analyst coverage relative to company size."
+  },
+  {
+   "id": "change_market_leverage_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of month-end total market value plus most recent quarterly book debt divided by market value."
+  },
+  {
+   "id": "change_nav_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of net asset value per share to month-end closing price."
+  },
+  {
+   "id": "change_net_cash_to_equity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of net cash (cash and equivalents less debt) to market value of equity."
+  },
+  {
+   "id": "change_net_debt_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event-aligned change in net debt"
+  },
+  {
+   "id": "change_net_fixed_assets_to_longterm_debt",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of net fixed assets to total long-term debt."
+  },
+  {
+   "id": "change_net_income_per_employee_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in net income per employee, measuring trends in workforce profitability."
+  },
+  {
+   "id": "change_net_net_assets_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of current assets per share minus total liabilities per share divided by month-end price."
+  },
+  {
+   "id": "change_net_number_fy1_eps_revisions",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the net number of analyst forecast revisions for fiscal year 1."
+  },
+  {
+   "id": "change_net_operating_asset_turnover_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in net operating asset turnover, indicating changes in efficiency of asset utilization."
+  },
+  {
+   "id": "change_net_operating_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in net operating assets, measuring the year-over-year difference as a percentage of total assets."
+  },
+  {
+   "id": "change_net_profit_margin_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in net profit margin, measuring the difference in profitability as a percentage of sales between two periods."
+  },
+  {
+   "id": "change_nopat_profit_margin",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in net operating profit after tax margin over time."
+  },
+  {
+   "id": "change_one_year_cashflow_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the percent growth of trailing twelve-month cash flow per share compared to one year ago."
+  },
+  {
+   "id": "change_one_year_free_cashflow_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the percent growth of trailing twelve-month free cash flow per share compared to one year ago."
+  },
+  {
+   "id": "change_one_year_free_cashflow_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the one-year difference in assets-adjusted trailing twelve-month free cash flow."
+  },
+  {
+   "id": "change_one_year_free_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the one-year difference in price-adjusted trailing twelve-month free cash flow per share."
+  },
+  {
+   "id": "change_one_year_price_momentum_indicator",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the one-year price momentum indicator, based on correlation of price over the last 260 days."
+  },
+  {
+   "id": "change_operating_cash_burn_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the rate at which a company uses cash from operations and investments relative to cash holdings."
+  },
+  {
+   "id": "change_operating_cashflow_assets_adj",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in assets-adjusted trailing twelve-month operating cash flow compared to the previous year."
+  },
+  {
+   "id": "change_operating_cashflow_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Percent change in trailing twelve-month operating cash flow per share compared to four quarters ago."
+  },
+  {
+   "id": "change_operating_cashflow_margin_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in the operating cash flow margin, measuring shifts in cash profitability relative to sales."
+  },
+  {
+   "id": "change_operating_cashflow_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of quarterly cash flow from operations to current liabilities."
+  },
+  {
+   "id": "change_operating_cashflow_return_on_invested_capital",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month operating cash flow divided by average invested capital."
+  },
+  {
+   "id": "change_operating_cashflow_to_assets_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month net cash flow from operations divided by average total assets."
+  },
+  {
+   "id": "change_operating_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month operating cash flow per share to price."
+  },
+  {
+   "id": "change_operating_income_vs_long_term_debt_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between operating income growth and long-term debt growth, reflecting leverage impact on profit"
+  },
+  {
+   "id": "change_operating_leverage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in operating leverage, calculated as the percent change in operating income divided by percent change in sales fr"
+  },
+  {
+   "id": "change_operating_liability_leverage_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in operating liability leverage, measuring shifts in the use of non-debt financing."
+  },
+  {
+   "id": "change_operating_liability_leverage_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in the ratio of operating liabilities to operating assets, indicating shifts in non-debt financing"
+  },
+  {
+   "id": "change_operating_profit_margin_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year-over-year change in operating profit margin, indicating trends in operational efficiency and profitability."
+  },
+  {
+   "id": "change_operating_profit_margin_21",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in operating profit margin, calculated as the difference in quarterly operating income to sales ratio."
+  },
+  {
+   "id": "change_percent_shares_outstanding",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the percentage of shares outstanding, reflecting share issuance or buybacks."
+  },
+  {
+   "id": "change_predicted_dividend_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in predicted dividend yield, reflecting shifts in expected payout relative to price."
+  },
+  {
+   "id": "change_pretax_return_on_operating_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Year-over-year change in pretax return on net operating assets, measuring shifts in operational profitability."
+  },
+  {
+   "id": "change_price_above_260d_low",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of current closing price to the lowest daily low price in the last 260 trading days."
+  },
+  {
+   "id": "change_price_to_total_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trading price to most recent total assets per share."
+  },
+  {
+   "id": "change_quarterly_sales_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the growth rate of quarterly sales per share compared to four quarters ago."
+  },
+  {
+   "id": "change_quick_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "change in quick ratio"
+  },
+  {
+   "id": "change_rational_decay_alpha",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the market-adjusted excess return using a decay function for weighting historical returns."
+  },
+  {
+   "id": "change_rd_expense_to_sales",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of average research and development expenses divided by total sales over trailing twelve months."
+  },
+  {
+   "id": "change_real_earnings_surprise",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the real earnings surprise, calculated as the difference between actual EPS and consensus forecast scaled by p"
+  },
+  {
+   "id": "change_reciprocal_dividend_yield_adjusted_peg",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the reciprocal of the dividend yield-adjusted PEG ratio, indicating shifts in valuation adjusted for growth an"
+  },
+  {
+   "id": "change_reinvestment_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of EPS before extra items less dividends per share divided by average book equity per share."
+  },
+  {
+   "id": "change_residual_return_variance",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the variance of monthly residual returns over the last 24 months."
+  },
+  {
+   "id": "change_retained_earnings_to_assets_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in the ratio of retained earnings to total assets, reflecting shifts in earnings reinvestment."
+  },
+  {
+   "id": "change_return_on_assets_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in return on assets, measuring the difference in profitability relative to total assets over time."
+  },
+  {
+   "id": "change_return_on_equity_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event-aligned change in Return on Equity (ROE)"
+  },
+  {
+   "id": "change_return_on_invested_capital_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in return on invested capital, measuring the difference in profitability from capital employed over time."
+  },
+  {
+   "id": "change_revenue_per_employee_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in revenue generated per employee, reflecting trends in workforce productivity."
+  },
+  {
+   "id": "change_risk_adjusted_peg_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the risk-adjusted price/earnings-to-growth ratio, indicating shifts in valuation relative to growth and risk."
+  },
+  {
+   "id": "change_sales_vs_eps_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Absolute difference between the yearly percent change in sales per share and diluted earnings per share."
+  },
+  {
+   "id": "change_sales_vs_gross_margin_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between sales growth and gross profit margin, reflecting profitability trends."
+  },
+  {
+   "id": "change_sales_vs_receivables",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between yearly percent change in sales and accounts receivable, indicating shifts in revenue qu"
+  },
+  {
+   "id": "change_second_preceding_six_month_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the return from the second preceding six-month period, measuring price performance from 12 to 7 months ago."
+  },
+  {
+   "id": "change_sga_expense_vs_sales_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between yearly change in quarterly SG&A expenses and yearly change in quarterly sales."
+  },
+  {
+   "id": "change_sga_to_sales_ratio_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of selling, general, and administrative expenses to sales."
+  },
+  {
+   "id": "change_six_month_alpha_36m",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the six-month nominal change in 36-month alpha from regression of monthly returns against a benchmark."
+  },
+  {
+   "id": "change_six_month_average_trading_volume",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the six-month moving average of trading volume, indicating shifts in liquidity."
+  },
+  {
+   "id": "change_six_month_eps_revision",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the average of the last six months' EPS revisions for the current fiscal year."
+  },
+  {
+   "id": "change_six_month_long_term_growth_estimate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the long-term growth rate estimate over the past six months."
+  },
+  {
+   "id": "change_skewness_90_day_excess_returns",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the skewness of 90-day stock daily excess returns, indicating shifts in the asymmetry of return distribution."
+  },
+  {
+   "id": "change_skewness_90_day_returns",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the skewness of 90-day stock daily returns, indicating shifts in the asymmetry of return distribution."
+  },
+  {
+   "id": "change_slope_52w_price_trend",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the slope of the 52-week price trend line, indicating shifts in long-term price momentum."
+  },
+  {
+   "id": "change_slope_66_week_price_trend",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the slope coefficient of the 66-week price trend line, indicating shifts in long-term price momentum."
+  },
+  {
+   "id": "change_stddev_fy1_eps_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the standard deviation of FY1 earnings forecasts scaled by month-end price."
+  },
+  {
+   "id": "change_stddev_fy2_eps_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Change in the standard deviation of FY2 earnings forecasts scaled by price, indicating shifts in forecast dispersion."
+  },
+  {
+   "id": "change_stock_illiquidity",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the stock illiquidity measure, reflecting shifts in trading volume relative to price movements."
+  },
+  {
+   "id": "change_stock_return_volatility",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the standard deviation of monthly returns, indicating shifts in stock return volatility."
+  },
+  {
+   "id": "change_street_revision_confidence",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in street revision confidence, calculated as the sum of 3-month change in highest and lowest earnings forecasts f"
+  },
+  {
+   "id": "change_street_revision_magnitude",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the magnitude of analyst earnings forecast revisions over three months."
+  },
+  {
+   "id": "change_sustainable_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the maximum growth rate a firm can sustain without increasing leverage."
+  },
+  {
+   "id": "change_thirty_nine_week_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in 39-week return, measuring the difference in stock price over a 39-week period."
+  },
+  {
+   "id": "change_three_month_revision_fy1_eps",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the three-month revision of current fiscal year earnings per share estimates."
+  },
+  {
+   "id": "change_three_year_cashflow_growth",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the percent growth of trailing twelve-month cash flow per share compared to three years ago."
+  },
+  {
+   "id": "change_three_year_cashflow_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the three-year difference in assets-adjusted trailing twelve-month cash flow."
+  },
+  {
+   "id": "change_time_weighted_earnings_yield",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the time-weighted earnings yield, which combines reported and forecasted earnings relative to price."
+  },
+  {
+   "id": "change_tobins_q_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in Tobin's Q, measuring the difference in market value to asset replacement cost over time."
+  },
+  {
+   "id": "change_total_coverage_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in total coverage ratio, measuring shifts in the ability to cover interest and principal payments from cash flow."
+  },
+  {
+   "id": "change_total_sales_growth_rate",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the yearly growth rate of total sales over the trailing twelve months."
+  },
+  {
+   "id": "change_trading_turnover_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the trading turnover ratio, calculated as monthly trading volume divided by shares outstanding."
+  },
+  {
+   "id": "change_trading_volume_trend",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the trend of trading volume over a specified period, indicating shifts in market activity."
+  },
+  {
+   "id": "change_trailing_fcf_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in trailing twelve-month free cash flow to price ratio, reflecting shifts in cash flow valuation."
+  },
+  {
+   "id": "change_ttm_accounting_accruals",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between trailing twelve-month net income and operating cash flow scaled by beginning total asse"
+  },
+  {
+   "id": "change_ttm_cashflow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month cash flows per share divided by month-end trading price."
+  },
+  {
+   "id": "change_ttm_eps_after_items_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in trailing twelve-month earnings per share after extraordinary items divided by price."
+  },
+  {
+   "id": "change_ttm_eps_before_items_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month EPS before extraordinary items to price."
+  },
+  {
+   "id": "change_ttm_fcf_to_enterprise_value",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month free cash flow divided by month-end enterprise value."
+  },
+  {
+   "id": "change_ttm_growth_flow_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the sum of trailing twelve-month growth flow value per share divided by month-end trading price."
+  },
+  {
+   "id": "change_ttm_pretax_income_to_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in trailing twelve-month pretax income per share divided by price."
+  },
+  {
+   "id": "change_ttm_sales_to_enterprise_value",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in trailing twelve-month sales divided by enterprise value, indicating shifts in valuation."
+  },
+  {
+   "id": "change_ttm_sales_to_price_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of trailing twelve-month sales per share to price."
+  },
+  {
+   "id": "change_twelve_month_active_return",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in 12-month active return, representing the difference in stock price performance over a 12-month period compared"
+  },
+  {
+   "id": "change_twenty_six_week_relative_strength",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Event-aligned change in the 26-week Relative Strength Index"
+  },
+  {
+   "id": "change_unexpected_accounts_payable",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in unexpected accounts payable, measuring the difference between actual and expected payables as a percentage of "
+  },
+  {
+   "id": "change_unexpected_accounts_receivable",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the difference between current accounts receivable and expected level, scaled by total assets."
+  },
+  {
+   "id": "change_unexpected_depreciation",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in unexpected depreciation, calculated as the difference between actual and expected depreciation scaled by total"
+  },
+  {
+   "id": "change_unexpected_inventory_level",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in unexpected inventory level, measuring the difference between actual and expected inventory as a percentage of "
+  },
+  {
+   "id": "change_visibility_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of recent daily trading volume to average daily volume over the previous 50 days."
+  },
+  {
+   "id": "change_working_capital_accruals_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in working capital accruals, measuring shifts in non-cash current asset and liability adjustments."
+  },
+  {
+   "id": "change_working_capital_to_assets_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of working capital to total assets, indicating shifts in liquidity position."
+  },
+  {
+   "id": "change_working_capital_to_inventory_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of most recent working capital to inventory."
+  },
+  {
+   "id": "change_working_capital_to_sales_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the ratio of working capital to trailing twelve-month sales."
+  },
+  {
+   "id": "change_yearly_current_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in the current ratio, reflecting shifts in short-term liquidity."
+  },
+  {
+   "id": "change_yearly_gross_profit_margin_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the yearly gross profit margin, calculated as the difference between the most recent and prior year's margin."
+  },
+  {
+   "id": "change_yearly_leverage",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in leverage, calculated as the difference in total liabilities as a percentage of assets compared "
+  },
+  {
+   "id": "change_yearly_net_profit_margin",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in net profit margin, indicating shifts in profitability."
+  },
+  {
+   "id": "change_yearly_return_on_assets_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Year-over-year change in return on assets, indicating shifts in profitability relative to assets."
+  },
+  {
+   "id": "change_yoy_accruals_to_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in year-over-year accruals to assets, measuring the difference in operating cash flow and income before extra ite"
+  },
+  {
+   "id": "change_yoy_receivables_to_current_assets",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Change in the percent of accounts receivable to current assets ratio from same quarter one year ago."
+  },
+  {
+   "id": "log_variance_global_feature_0",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 0th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 1st global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 10th global feature, representing dispersion in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 11th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 12th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 13th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 14th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 15th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 16th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_17",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 17th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_18",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 18th global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 19th global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 2nd global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 20th global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "log_variance_global_feature_21",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 21st global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_22",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 22nd global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "log_variance_global_feature_23",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Logarithm of the variance of the 23rd global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_24",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 24th global feature, representing dispersion in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_25",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 25th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_26",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 26th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_27",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 27th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_28",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 28th global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_29",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 29th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 3rd global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_30",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 30th global feature, indicating variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_31",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 31st global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_32",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 32nd global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_33",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 33rd global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_34",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 34th global model feature, typically used to assess feature volatility."
+  },
+  {
+   "id": "log_variance_global_feature_35",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 35th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_36_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 36th global feature, measuring its volatility."
+  },
+  {
+   "id": "log_variance_global_feature_37",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 37th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_38",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 38th global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "log_variance_global_feature_39",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 39th global feature, indicating variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 4th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 5th global feature, representing variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 6th global feature, indicating variability in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance of the 7th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "log_variance_global_feature_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 8th global feature, representing dispersion in the metric."
+  },
+  {
+   "id": "log_variance_global_feature_9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Logarithm of the variance for the 9th global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "mean_global_feature_0",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 0th global feature, representing a summary statistic for a specific metric."
+  },
+  {
+   "id": "mean_global_feature_1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 1st global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_10",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 10th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_11",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 11th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_12",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 12th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_13",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 13th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_14",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 14th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_15",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 15th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_16",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 16th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_17",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 17th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_18",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 18th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_19",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 19th global feature, representing an aggregated metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 2nd global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "mean_global_feature_20",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 20th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_21",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 21st global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "mean_global_feature_22",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the 22nd global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_23",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 23rd global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_24",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 24th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_25",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 25th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_26",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 26th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_27",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 27th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_28",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 28th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_29",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 29th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_3",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 3rd global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_30",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 30th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_31",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 31st global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_32",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 32nd global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_33",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 33rd global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_34",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 34th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_35",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 35th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_36",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 36th global latent feature, typically from a model's latent space."
+  },
+  {
+   "id": "mean_global_feature_37",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 37th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_38",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 38th global feature, typically a model-derived or latent variable."
+  },
+  {
+   "id": "mean_global_feature_39",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 39th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_4",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 4th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_5",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 5th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_6",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 6th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_7",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 7th global model feature, typically a latent or model-derived metric."
+  },
+  {
+   "id": "mean_global_feature_8",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 8th global feature, summarizing a specific metric across the dataset."
+  },
+  {
+   "id": "mean_global_feature_9",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Mean value of the 9th global model feature, typically a latent or model-derived metric."
+  }
+ ]
+}

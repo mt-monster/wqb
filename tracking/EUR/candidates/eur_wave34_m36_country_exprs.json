@@ -1,0 +1,10 @@
+[
+ "group_zscore(default_risk_global_percentile_d1_2, industry)",
+ "signed_power(group_zscore(default_risk_global_percentile_d1_2, industry), 0.5)",
+ "rank(default_risk_global_percentile_d1_2)",
+ "group_zscore(credit_risk_profitability_score_d1, industry)",
+ "add(0.7*group_zscore(default_risk_global_percentile_d1_2, industry), 0.3*group_zscore(credit_risk_profitability_score_d1, industry))",
+ "group_zscore(credit_risk_liquidity_score_d1, industry)",
+ "ts_zscore(default_risk_global_percentile_d1_2, 66)",
+ "add(0.8*rank(default_risk_global_percentile_d1_2), 0.2*rank(credit_risk_leverage_score_d1))"
+]

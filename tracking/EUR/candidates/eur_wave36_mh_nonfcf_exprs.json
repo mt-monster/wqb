@@ -1,0 +1,10 @@
+[
+  "subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry))))",
+  "subtract(0, rank(subtract(long_term_deep_value_europe_rank, group_mean(long_term_deep_value_europe_rank, 1, industry))))",
+  "rank(subtract(long_term_change_in_net_operating_assets, group_mean(long_term_change_in_net_operating_assets, 1, industry)))",
+  "subtract(0, rank(subtract(mid_term_sales_to_price, group_mean(mid_term_sales_to_price, 1, industry))))",
+  "rank(subtract(long_term_estimate_revision_europe_rank, group_mean(long_term_estimate_revision_europe_rank, 1, industry)))",
+  "add(0.5*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))), 0.5*rank(long_term_estimate_revision_europe_rank))",
+  "subtract(0, rank(ts_av_diff(long_term_ebitda_to_enterprise_value_ratio, 22)))",
+  "add(0.5*subtract(0, rank(long_term_ebitda_to_enterprise_value_ratio)), 0.5*subtract(0, rank(long_term_deep_value_europe_rank)))"
+]

@@ -1,0 +1,10 @@
+[
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(ts_decay_linear(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y),5)))), 10))",
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(ts_zscore(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y),63)))), 10))",
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(ts_decay_linear(vec_avg(qfl_cassie_convention_debt_mktcapital),21))), reverse(rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y)))), 10))",
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y)))), 30))",
+  "-rank(ts_decay_linear(add(add(rank(ts_zscore(vec_avg(qfl_cassie_model_altman_zscore),126)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y)))), 10))",
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y)))), 45))",
+  "-rank(ts_decay_linear(add(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(ts_decay_linear(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y),15)))), 15))",
+  "-rank(ts_decay_linear(add(add(rank(ts_mean(vec_avg(qfl_cassie_model_altman_zscore),63)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), reverse(rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y)))), 10))"
+]

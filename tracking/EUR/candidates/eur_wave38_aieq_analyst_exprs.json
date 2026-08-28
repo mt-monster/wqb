@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(analyst_earnings_revision_intensity))",
+  "subtract(0, rank(vec_avg(analyst_earnings_revision_intensity)))",
+  "rank(subtract(vec_avg(analyst_earnings_revision_intensity), group_mean(vec_avg(analyst_earnings_revision_intensity), 1, industry)))",
+  "rank(vec_avg(analyst_forecast_revision_factor_2))",
+  "rank(vec_avg(analyst_target_price_deviation))",
+  "add(0.5*rank(vec_avg(analyst_earnings_revision_intensity)), 0.5*rank(vec_avg(analyst_forecast_revision_factor_2)))",
+  "add(0.5*rank(vec_avg(analyst_earnings_revision_intensity)), 0.5*rank(vec_avg(analyst_target_price_deviation)))",
+  "add(0.4*rank(vec_avg(analyst_earnings_revision_intensity)), add(0.3*rank(vec_avg(analyst_forecast_revision_factor_2)), 0.3*rank(vec_avg(analyst_opinion_metric))))"
+]

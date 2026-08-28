@@ -1,0 +1,10 @@
+[
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(rank(analyst_opinion_avg_shift_30d_short), 0.4))",
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(rank(analyst_count_increasing_current_year_earnings_14d_medium_3), 0.4))",
+    "add(multiply(rank(mdl238_global_rank), 0.5), multiply(rank(analyst_count_increasing_current_year_earnings_30d_medium_3), 0.5))",
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(rank(analyst_count_increasing_current_year_ebitda_14d_long_3), 0.4))",
+    "add(multiply(rank(mdl238_global_rank), 0.7), multiply(rank(analyst_revision_percentile_score_medium_4), 0.3))",
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(rank(analyst_revision_percentile_score_medium_4), 0.4))",
+    "add(multiply(rank(mdl238_global_rank), 0.7), multiply(-rank(analyst_recommendation_downgrades_30d_medium_31), 0.3))",
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(-rank(analyst_recommendation_downgrades_30d_medium_31), 0.4))"
+]

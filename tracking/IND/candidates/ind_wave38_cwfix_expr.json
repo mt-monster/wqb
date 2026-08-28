@@ -1,0 +1,10 @@
+[
+  "-rank(ts_decay_linear(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), 21))",
+  "-rank(ts_mean(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), 21))",
+  "-rank(add(rank(ts_decay_linear(vec_avg(qfl_cassie_model_altman_zscore),63)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))",
+  "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(ts_decay_linear(vec_avg(qfl_cassie_convention_debt_mktcapital),63))))",
+  "-rank(add(rank(ts_rank(vec_avg(qfl_cassie_model_altman_zscore),126)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))",
+  "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(ts_rank(vec_avg(qfl_cassie_convention_debt_mktcapital),126))))",
+  "-rank(ts_decay_linear(add(rank(ts_zscore(vec_avg(qfl_cassie_model_altman_zscore),126)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), 21))",
+  "-rank(ts_mean(add(rank(ts_zscore(vec_avg(qfl_cassie_model_altman_zscore),126)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), 63))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(consensus_surprise_percentage))",
+  "rank(vec_avg(consensus_stddev_estimate))",
+  "rank(vec_avg(consensus_vs_actual_diff))",
+  "rank(vec_avg(num_estimates_consensus))",
+  "group_neutralize(rank(vec_avg(consensus_surprise_percentage)), sector)",
+  "rank(add(vec_avg(consensus_surprise_percentage), multiply(-1, vec_avg(consensus_stddev_estimate))))",
+  "rank(ts_decay_linear(vec_avg(consensus_surprise_percentage), 10))",
+  "rank(ts_delta(vec_avg(consensus_mean_estimate), 20))"
+]

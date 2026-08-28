@@ -1,0 +1,10 @@
+[
+  "rank(star_hold_global_owner_rank)",
+  "group_zscore(star_hold_global_owner_rank, industry)",
+  "rank(star_hold_global_change_rank)",
+  "group_zscore(star_hold_global_change_rank, industry)",
+  "rank(star_hold_sector_rank)",
+  "group_neutralize(star_hold_sector_rank, country)",
+  "add(0.5*rank(star_hold_global_owner_rank), 0.5*rank(star_hold_global_change_rank))",
+  "add(0.5*group_neutralize(star_hold_sector_rank, country), 0.5*rank(star_hold_global_owner_rank))"
+]

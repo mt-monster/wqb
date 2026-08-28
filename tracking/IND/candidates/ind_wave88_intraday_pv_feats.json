@@ -1,0 +1,10 @@
+[
+    "-rank(avg_bid_to_ask_price_ratio_last_half)",
+    "rank(momentum_ask_size_to_volume_ratio_last_half)",
+    "rank(mean_ask_price_return_60m_pre_close_2)",
+    "rank(corr_ask_price_with_volume)",
+    "-rank(avg_vwap_to_last_price_ratio)",
+    "rank(mean_price_modulo_100_ratio_60m_pre_close_2)",
+    "rank(momentum_slippage_daily)",
+    "-rank(kurtosis_last_trade_price_interval)"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(total_sentiment_score)",
+  "rank(sentiment_score_average)",
+  "rank(primary_sentiment_average)",
+  "rank(primary_sentiment_skewness_2)",
+  "rank(normalized_news_article_count)",
+  "rank(news_article_count)",
+  "group_neutralize(rank(total_sentiment_score), sector)",
+  "rank(add(primary_sentiment_average, multiply(-1, sentiment_score_median)))"
+]

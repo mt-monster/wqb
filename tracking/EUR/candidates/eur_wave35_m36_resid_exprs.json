@@ -1,0 +1,10 @@
+[
+  "rank(ts_av_diff(default_risk_global_percentile_d1_2, 22))",
+  "rank(ts_av_diff(default_risk_global_percentile_d1_2, 66))",
+  "rank(subtract(default_risk_global_percentile_d1_2, group_mean(default_risk_global_percentile_d1_2, 1, industry)))",
+  "rank(subtract(default_risk_global_percentile_d1_2, group_mean(default_risk_global_percentile_d1_2, 1, country)))",
+  "add(0.7*rank(ts_av_diff(default_risk_global_percentile_d1_2, 22)), 0.3*rank(credit_risk_profitability_score_d1))",
+  "add(0.5*rank(subtract(default_risk_global_percentile_d1_2, group_mean(default_risk_global_percentile_d1_2, 1, industry))), 0.5*rank(ts_av_diff(credit_risk_profitability_score_d1, 22)))",
+  "rank(ts_av_diff(credit_risk_profitability_score_d1, 22))",
+  "add(0.6*rank(ts_av_diff(default_risk_global_percentile_d1_2, 66)), 0.4*rank(credit_risk_leverage_score_d1))"
+]

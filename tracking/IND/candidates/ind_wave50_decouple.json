@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(add(rank(analyst_revision_percentile_score_medium_4), reverse(rank(analyst_revision_score_5d_medium))), 21))",
+  "rank(ts_decay_linear(add(rank(analyst_revision_percentile_score_medium_4), reverse(rank(analyst_revision_score_5d_medium))), 21))",
+  "rank(ts_mean(add(rank(analyst_revision_percentile_score_medium_4), rank(analyst_count_decreasing_current_year_earnings_30d_medium_3)), 21))",
+  "rank(ts_mean(add(rank(analyst_revision_percentile_score_medium_4), reverse(rank(analyst_opinion_avg_shift_30d_short))), 21))",
+  "rank(ts_mean(add(rank(analyst_revision_percentile_score_medium_4), reverse(rank(analyst_recommendation_downgrades_30d_medium_31))), 21))",
+  "rank(ts_mean(add(rank(ts_zscore(analyst_revision_percentile_score_medium_4, 63)), reverse(rank(analyst_revision_score_5d_medium))), 21))",
+  "group_rank(ts_mean(rank(analyst_revision_percentile_score_medium_4), 21), industry)",
+  "group_rank(ts_decay_linear(analyst_revision_percentile_score_medium_4, 21), sector)"
+]

@@ -1,0 +1,10 @@
+[
+  "-rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),126))",
+  "rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63))",
+  "-rank(ts_mean(add(rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63)), rank(vec_avg(qfl_cassie_model_altman_zscore))), 21))",
+  "-rank(ts_mean(add(rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))), 21))",
+  "-rank(ts_mean(add(rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63)), rank(vec_avg(qfl_cassie_qes_alter_insolvency_stress_1y))), 21))",
+  "-rank(ts_mean(add(rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63)), reverse(rank(vec_avg(qfl_cassie_convention_ocf_currliab)))), 21))",
+  "-rank(ts_mean(add(rank(ts_corr(vec_avg(qfl_cassie_model_altman_zscore), vec_avg(qfl_cassie_qes_cassie_impliedalpha), 126)), rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63))), 21))",
+  "-rank(ts_mean(add(rank(ts_kurtosis(vec_avg(qfl_cassie_qes_cassie_impliedalpha),126)), rank(ts_zscore(vec_avg(qfl_cassie_qes_cassie_impliedalpha),63))), 21))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(ts_av_diff(forecasted_earnings_surprise_fy1_long, 5))",
+  "rank(ts_av_diff(forecasted_earnings_surprise_fy1_long, 22))",
+  "rank(subtract(forecasted_earnings_surprise_fy1_long, group_mean(forecasted_earnings_surprise_fy1_long, 1, industry)))",
+  "rank(subtract(score_component_primary_profit_long, group_mean(score_component_primary_profit_long, 1, industry)))",
+  "add(0.6*rank(ts_av_diff(forecasted_earnings_surprise_fy1_long, 5)), 0.4*rank(subtract(score_component_primary_profit_long, group_mean(score_component_primary_profit_long, 1, industry))))",
+  "add(0.5*rank(ts_av_diff(forecasted_earnings_surprise_fy1_long, 22)), 0.5*rank(ts_av_diff(score_component_primary_profit_long, 22)))",
+  "add(0.5*rank(subtract(forecasted_earnings_surprise_fy1_long, group_mean(forecasted_earnings_surprise_fy1_long, 1, industry))), 0.5*rank(ts_av_diff(model_score_change_30d_long, 5)))",
+  "rank(ts_av_diff(add(0.6*rank(forecasted_earnings_surprise_fy1_long), 0.4*rank(score_component_primary_profit_long)), 5))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(implied_price_range_maximum))",
+  "rank(vec_avg(price_position_within_annual_range))",
+  "rank(vec_avg(latest_implied_valuation_price))",
+  "subtract(rank(vec_avg(latest_implied_valuation_price)), rank(close))",
+  "group_neutralize(rank(vec_avg(price_position_within_annual_range)), sector)",
+  "rank(ts_decay_linear(vec_avg(implied_price_range_maximum), 10))",
+  "rank(add(vec_avg(price_position_within_annual_range), ts_corr(vec_avg(price_position_within_annual_range), close, 20)))",
+  "trade_when(if_else(rank(vec_avg(latest_implied_valuation_price)) > 0.5, rank(vec_avg(price_position_within_annual_range)), 0), ts_delta(vec_avg(latest_implied_valuation_price), 20) > 0, 0)"
+]

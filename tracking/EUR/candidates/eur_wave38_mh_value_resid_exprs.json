@@ -1,0 +1,10 @@
+[
+  "add(0.5*subtract(0, rank(subtract(long_term_deep_value_europe_rank, group_mean(long_term_deep_value_europe_rank, 1, industry)))), 0.5*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))))",
+  "add(0.6*subtract(0, rank(subtract(long_term_deep_value_europe_rank, group_mean(long_term_deep_value_europe_rank, 1, industry)))), 0.4*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))))",
+  "add(0.5*subtract(0, rank(subtract(long_term_deep_value_europe_rank, group_mean(long_term_deep_value_europe_rank, 1, industry)))), 0.5*rank(long_term_enterprise_value_europe_rank))",
+  "subtract(0, group_zscore(long_term_deep_value_europe_rank, industry))",
+  "subtract(0, group_zscore(long_term_ebitda_to_enterprise_value_ratio, industry))",
+  "add(0.4*subtract(0, rank(subtract(long_term_deep_value_europe_rank, group_mean(long_term_deep_value_europe_rank, 1, industry)))), add(0.3*subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio, group_mean(long_term_ebitda_to_enterprise_value_ratio, 1, industry)))), 0.3*rank(long_term_enterprise_value_europe_rank)))",
+  "rank(subtract(long_term_ebitda_to_enterprise_value_ratio_2, group_mean(long_term_ebitda_to_enterprise_value_ratio_2, 1, industry)))",
+  "subtract(0, rank(subtract(long_term_ebitda_to_enterprise_value_ratio_2, group_mean(long_term_ebitda_to_enterprise_value_ratio_2, 1, industry))))"
+]

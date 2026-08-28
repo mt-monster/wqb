@@ -1,0 +1,32 @@
+[
+ {
+  "key": "ai_equity_alpha",
+  "dataset": "ai_equity_alpha",
+  "file": "eur_wave31_aieq_modeb_exprs.json",
+  "data_type": "VECTOR"
+ },
+ {
+  "key": "ai_equity_alpha_mix",
+  "dataset": "ai_equity_alpha",
+  "file": "eur_wave31_aieq_mix_exprs.json",
+  "data_type": "VECTOR"
+ },
+ {
+  "key": "shortinterest6",
+  "dataset": "shortinterest6",
+  "file": "eur_wave31_starhold_modeb_exprs.json",
+  "data_type": "MATRIX"
+ },
+ {
+  "key": "continuation_score",
+  "dataset": "continuation_score",
+  "file": "eur_wave31_continuation_exprs.json",
+  "data_type": "MATRIX"
+ },
+ {
+  "key": "model36",
+  "dataset": "model36",
+  "file": "eur_wave31_model36_exprs.json",
+  "data_type": "MATRIX"
+ }
+]

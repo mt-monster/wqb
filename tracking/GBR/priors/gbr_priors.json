@@ -1,0 +1,141 @@
+{
+ "wins": [
+  {
+   "id": "starmine 四向价值结构",
+   "what": "starmine 四向价值结构",
+   "key": "ep_yield fy2 av_diff + fwdPE 反转 + fy1 水平 + delta66",
+   "evidence": "2026-08-22-full-campaign-history-retro.md §2",
+   "source": "region_kb"
+  },
+  {
+   "id": "delta66 双时序差分家族",
+   "what": "delta66 双时序差分家族",
+   "key": "ep_yield delta66/22 双差分",
+   "evidence": "retro §2 #3",
+   "source": "region_kb"
+  },
+  {
+   "id": "other455×model264 混合",
+   "what": "other455×model264 混合",
+   "key": "跨数据集混合（含 pattern_scores PV 变体）",
+   "evidence": "retro §1",
+   "source": "region_kb"
+  },
+  {
+   "id": "T-KB-01 慢×快跨周期混合",
+   "what": "T-KB-01 慢×快跨周期混合",
+   "key": "skeleton=rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD)))); iron_law=必须跨周期/跨数据源；同周期互混零增量",
+   "evidence": "other455×model264",
+   "source": "template_kb_validated"
+  },
+  {
+   "id": "T-KB-07 四向价值结构",
+   "what": "T-KB-07 四向价值结构",
+   "key": "skeleton=ep_yield fy2 av_diff + fwdPE 反转 + fy1 水平 + delta66/22 双差分; iron_law=配方跨区移植不保真：换区必须重走 1 批验证",
+   "evidence": "4 ACTIVE，sh 1.8 / margin 10.1bp",
+   "source": "template_kb_validated"
+  },
+  {
+   "id": "GrlqxwKx",
+   "what": "GrlqxwKx",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "analyst9",
+   "reason": "ledger analyst9_dead 标记判死",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-ANALYST9-DEAD"
+  },
+  {
+   "family": "dl_riskfree_label",
+   "reason": "wave30 dl_riskfree_returns 5 条全 FAIL：max sharpe 1.09 但 2Y=-0.05，quantile_label/probability_label 族 2Y 段结构性崩溃（GEM 8-26 生成 6 条同族重复）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-DLRISKFREE-LABEL-DEAD"
+  },
+  {
+   "family": "fund_holdings_panel",
+   "reason": "ledger fund_holdings_panel_dead 标记判死",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-FUNDHOLDINGS-DEAD"
+  },
+  {
+   "family": "credit_reverse",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-M28-REVERSE-CEILING"
+  },
+  {
+   "family": "model106_rank",
+   "reason": "wave31 model106 10 条 GEM 全 FAIL（含 T-KB-01 慢×快混合/ts_regression 复合结构），max sharpe 0.38；TOP700 排名类信号结构性偏弱（与 model238 同型）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-MDL106-CEILING"
+  },
+  {
+   "family": "model238_rank",
+   "reason": "wave29 model238 9 条 GEM 多结构全 FAIL，IS 天花板 0.68（TOP700 排名类信号结构性偏弱）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-MDL238-RANK-CEILING"
+  },
+  {
+   "family": "model53",
+   "reason": "ledger model53_dead 标记判死",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-MODEL53-DEAD"
+  },
+  {
+   "family": "news17",
+   "reason": "ledger news17_dead 标记判死",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-NEWS17-DEAD"
+  },
+  {
+   "family": "news18",
+   "reason": "wave36 8 条 GEM 复合结构全 FAIL（max sh 0.40，max|S| 0.53）；ts_backfill(66) 结构全部 resource 超限（去掉 backfill 才能跑）；ts_corr 机制从 sentiment27 换腿不泛化（np7Nd37M sh 0.06）；与 ppa-mining-experience 记录一致（news18 GBR 结构性弱数据，INDUSTRY 中性化下 Sharpe<0.7 被中和）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-NEWS18-STRUCTURAL-WEAK"
+  },
+  {
+   "family": "news20",
+   "reason": "ledger news20_dead 标记判死",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-NEWS20-DEAD"
+  },
+  {
+   "family": "prod_saturated",
+   "reason": "predictive_starmine（GrlqxwKx 四向价值）/ analyst_earnings_ibes（vRNk56mz ep_yield delta66）/ pattern_scores（A1G7o1EE）/ other455×model264（WjAV89jG）已各 1 颗 ACTIVE，同族变体 PROD 饱和，禁生成同族新表达式",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-PROD-SATURATED"
+  },
+  {
+   "family": "shortinterest3",
+   "reason": "wave37-39 共 22 条实证：镜像 4/4 精确反转确认 squeeze 反向机制，但信号 IS/2Y 分裂天花板——乘积族（mktval×rate）IS 1.04/2Y 0.29，比值族（vol/rate）IS 0.80/2Y 1.52，两组均不达闸（1.58/1.6）且无重叠；Mode A 差分/zscore/窗口变体全部衰减（基线 1.04 最优）；ts_corr 换腿方向不稳定；判死（复合双腿混合未验证，留口子）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-SI3-MIRROR-CEILING"
+  }
+ ],
+ "_meta": {
+  "region": "GBR",
+  "sources": [
+   "ledger_kv:region_kb",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

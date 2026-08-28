@@ -1,0 +1,10 @@
+[
+  "rank(min_bid_size_to_ask_size_ratio)",
+  "rank(avg_bid_ask_size_to_volume_ratio)",
+  "rank(avg_vwap_to_last_price_ratio)",
+  "rank(corr_bid_price_with_bid_size)",
+  "group_neutralize(rank(min_bid_size_to_ask_size_ratio), sector)",
+  "rank(ts_decay_linear(min_bid_size_to_ask_size_ratio, 10))",
+  "rank(add(avg_bid_ask_size_to_volume_ratio, ts_corr(avg_bid_ask_size_to_volume_ratio, close, 20)))",
+  "trade_when(if_else(rank(avg_vwap_to_last_price_ratio) > 0.5, rank(min_bid_size_to_ask_size_ratio), 0), ts_delta(avg_vwap_to_last_price_ratio, 5) > 0, 0)"
+]

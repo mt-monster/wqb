@@ -1,0 +1,10 @@
+[
+  "rank(subtract(mdl238_global_screening_rank_d1, mdl238_country_rank_d1))",
+  "rank(subtract(mdl238_industry_rank_d1, mdl238_country_rank_d1))",
+  "rank(subtract(global_screening_factor_alignment_rank_d1, mdl238_global_screening_rank_d1))",
+  "rank(group_neutralize(mdl238_global_screening_rank_d1, industry))",
+  "rank(subtract(mdl238_region_rank_d1, mdl238_country_rank_d1))",
+  "rank(ts_zscore(global_change_in_preference_rank_d1, 66))",
+  "subtract(0, rank(subtract(mdl238_global_screening_rank_d1, mdl238_country_rank_d1)))",
+  "add(0.4*rank(global_screening_factor_alignment_rank_d1), add(0.3*rank(global_change_in_preference_rank), 0.3*rank(industry_relative_investment_rank)))"
+]

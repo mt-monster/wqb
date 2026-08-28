@@ -75,3 +75,6 @@ attic/skills_archive/
 
 # temp commit-message files (never commit)
 logs/_commit_msg.txt
+
+# SuperAlpha API result dumps (runtime artifacts, never commit)
+world-quant-brain-mcp/super_alpha_result_*.json

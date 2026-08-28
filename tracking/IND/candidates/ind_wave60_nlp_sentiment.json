@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(max_raise_price_target_topic), 21))",
+  "-rank(ts_mean(rank(max_lower_stake_topic_score), 21))",
+  "rank(ts_mean(add(rank(max_buy_topic_score), reverse(rank(max_risk_topic_score_3))), 21))",
+  "rank(if_else(greater(rank(max_sentiment_lvl3_positive), 0.5), rank(max_merger_acquisition_score), reverse(rank(max_merger_acquisition_score))))",
+  "rank(ts_corr(rank(max_high_relevance_score), rank(max_opinion_mention_score), 21))",
+  "rank(ts_kurtosis(rank(mad_sentiment_lvl0_neutral), 21))",
+  "rank(ts_mean(divide(add(1, rank(mean_fact_text_score)), add(1, rank(mad_fact_text_score))), 21))",
+  "rank(ts_mean(add(rank(max_outperform_topic_score), reverse(rank(max_emotional_topic_score))), 21))"
+]

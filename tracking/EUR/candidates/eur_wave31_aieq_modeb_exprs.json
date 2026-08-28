@@ -1,0 +1,10 @@
+[
+ "group_rank(vec_avg(financial_statement_volatility_factor), country)",
+ "group_neutralize(rank(vec_avg(alpha_score)), industry)",
+ "rank(ts_av_diff(vec_avg(analyst_earnings_revision_intensity), 22))",
+ "signed_power(rank(vec_avg(accruals_analysis_factor)), 0.5)",
+ "rank(divide(vec_avg(analyst_forecast_revision_factor_2), ts_std_dev(vec_avg(analyst_opinion_metric), 22)))",
+ "rank(ts_corr(vec_avg(analyst_target_price_deviation), vec_avg(asset_turnover_ratio_metric), 20))",
+ "rank(ts_arg_max(vec_avg(analyst_earnings_revision_intensity), 20))",
+ "scale(-rank(vec_avg(analyst_target_price_deviation)))"
+]

@@ -1,0 +1,196 @@
+{
+ "dataset": "news_sentiment_transfer",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MIX",
+ "field_count": 23,
+ "description": "news sentiment transfer (MATRIX daily)",
+ "banned_patterns": [],
+ "fields": [
+  {
+   "id": "news_article_count",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 6,
+   "alphaCount": 10,
+   "description": "Total number of news articles considered for the entity."
+  },
+  {
+   "id": "news_sentiment_score",
+   "type": "VECTOR",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Overall sentiment value derived from news articles for an entity."
+  },
+  {
+   "id": "normalized_news_article_count",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Number of news articles normalized for comparison across entities."
+  },
+  {
+   "id": "primary_sentiment_average",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Mean value of the primary sentiment scores for the entity."
+  },
+  {
+   "id": "primary_sentiment_maximum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Maximum value observed in the primary sentiment scores."
+  },
+  {
+   "id": "primary_sentiment_middle_value",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median value of the primary sentiment scores for the entity."
+  },
+  {
+   "id": "primary_sentiment_minimum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Minimum value observed in the primary sentiment scores."
+  },
+  {
+   "id": "primary_sentiment_skewness_2",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Skewness statistic of the primary sentiment values for the entity."
+  },
+  {
+   "id": "primary_sentiment_total_2",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sum of all primary sentiment values for the entity over the period."
+  },
+  {
+   "id": "primary_sentiment_value",
+   "type": "VECTOR",
+   "coverage": 0.9654,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Main sentiment score calculated for the entity from news data."
+  },
+  {
+   "id": "secondary_sentiment_average",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Mean value of the secondary sentiment scores for the entity."
+  },
+  {
+   "id": "secondary_sentiment_maximum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Maximum value observed in the secondary sentiment scores."
+  },
+  {
+   "id": "secondary_sentiment_middle_value",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Median value of the secondary sentiment scores for the entity."
+  },
+  {
+   "id": "secondary_sentiment_minimum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Minimum value observed in the secondary sentiment scores."
+  },
+  {
+   "id": "secondary_sentiment_skewness_2",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Skewness statistic of the secondary sentiment values for the entity."
+  },
+  {
+   "id": "secondary_sentiment_total_2",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sum of all secondary sentiment values for the entity over the period."
+  },
+  {
+   "id": "secondary_sentiment_value",
+   "type": "VECTOR",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Secondary sentiment score calculated for the entity from news data."
+  },
+  {
+   "id": "sentiment_distribution_skewness_2",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Skewness of the distribution of sentiment scores for the entity."
+  },
+  {
+   "id": "sentiment_score_average",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Average sentiment score for the entity over the period."
+  },
+  {
+   "id": "sentiment_score_maximum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest sentiment score observed for the entity."
+  },
+  {
+   "id": "sentiment_score_median",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Median sentiment score for the entity over the period."
+  },
+  {
+   "id": "sentiment_score_minimum",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Lowest sentiment score observed for the entity."
+  },
+  {
+   "id": "total_sentiment_score",
+   "type": "MATRIX",
+   "coverage": 0.9654,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Sum of all sentiment values for the entity over the period."
+  }
+ ]
+}

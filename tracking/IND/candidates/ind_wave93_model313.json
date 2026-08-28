@@ -1,0 +1,10 @@
+[
+    "rank(mdl313_ico)",
+    "rank(mdl313_iai)",
+    "-rank(mdl313_mktcap_usd)",
+    "divide(rank(mdl313_iai), add(1, rank(mdl313_mktcap_usd)))",
+    "divide(rank(mdl313_ico), add(1, rank(mdl313_mktcap_usd)))",
+    "add(multiply(rank(mdl313_iai), 0.5), multiply(rank(mdl313_ico), 0.5))",
+    "divide(add(1, rank(mdl313_ico)), add(1, rank(mdl313_mktcap_usd)))",
+    "rank(ts_mean(mdl313_iai, 5))"
+]

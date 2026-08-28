@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(iv_forward_10yr_eps_cagr_3), 21))",
+  "rank(ts_mean(subtract(rank(iv_forward_5yr_eps_cagr_3), rank(iv_market_implied_5yr_eps_cagr_3)), 21))",
+  "rank(ts_mean(add(rank(iv_forward_10yr_eps_cagr_3), reverse(rank(iv_discount_rate_3))), 21))",
+  "rank(if_else(greater(rank(iv_steady_state_growth_earnings_3), 0.5), rank(iv_forward_5yr_eps_cagr_3), reverse(rank(iv_forward_5yr_eps_cagr_3))))",
+  "rank(ts_corr(rank(iv_forward_5yr_eps_cagr_3), rank(iv_market_implied_5yr_eps_cagr_3), 21))",
+  "rank(ts_kurtosis(rank(iv_market_implied_10yr_eps_cagr_3), 21))",
+  "rank(ts_mean(divide(add(1, rank(iv_steady_state_growth_earnings_3)), add(1, rank(iv_steady_state_dividend_payout_rate_3))), 21))",
+  "rank(ts_mean(add(rank(iv_forward_10yr_eps_cagr_3), reverse(rank(iv_steady_state_dividend_payout_rate_3))), 21))"
+]

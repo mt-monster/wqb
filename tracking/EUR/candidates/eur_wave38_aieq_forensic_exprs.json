@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(accounting_forensics_factor))",
+  "subtract(0, rank(vec_avg(accounting_forensics_factor)))",
+  "rank(vec_avg(accruals_analysis_factor))",
+  "subtract(0, rank(vec_avg(accruals_analysis_factor)))",
+  "rank(subtract(vec_avg(accounting_forensics_factor), group_mean(vec_avg(accounting_forensics_factor), 1, industry)))",
+  "subtract(0, rank(subtract(vec_avg(accruals_analysis_factor), group_mean(vec_avg(accruals_analysis_factor), 1, industry))))",
+  "add(0.5*rank(vec_avg(accounting_forensics_factor)), 0.5*rank(vec_avg(accruals_analysis_factor)))",
+  "add(0.5*subtract(0, rank(vec_avg(accounting_forensics_factor))), 0.5*subtract(0, rank(vec_avg(accruals_analysis_factor))))"
+]

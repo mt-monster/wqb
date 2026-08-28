@@ -1,0 +1,50 @@
+[
+ {
+  "code": "rank(default_risk_global_percentile_d1_2)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "group_rank(default_risk_global_percentile_d1_2, country)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "group_rank(credit_risk_profitability_score_d1, industry)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "rank(credit_risk_profitability_score_d1)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "signed_power(rank(default_risk_global_percentile_d1_2), 0.5)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_av_diff(default_risk_global_percentile_d1_2, 22))",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "add(0.6*group_rank(credit_risk_profitability_score_d1, country), 0.4*rank(default_risk_industry_percentile_d1_2))",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ },
+ {
+  "code": "group_neutralize(credit_risk_growth_score_d1, country)",
+  "note": "Uninvert default_risk (wave31 scale(-rank) was -1.05) + credit group wrappers.",
+  "dataset": "model36",
+  "wave": 32
+ }
+]

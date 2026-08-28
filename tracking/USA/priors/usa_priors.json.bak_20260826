@@ -1,0 +1,45 @@
+{
+  "wins": [],
+  "dead_ends": [
+    {
+      "family": "ai_news_scores sentiment",
+      "reason": "RavenPack PR sentiment scores have zero alpha in USA/TOP3000/D1; all 8 single-field and composite probes far below 1.58 "
+    },
+    {
+      "family": "earningscall_embed embedding components",
+      "reason": "All 8 probes |S|<1.0: best ts_mean(analyst_embed_1,5) sh0.59. Embedding components produce only 21 holdings (CW=0.5) + H"
+    },
+    {
+      "family": "event_sentiment_signals section_sentiment",
+      "reason": "All 4 probes |S|<0.5: section_sentiment_score_3 sh0.40, -key_factor_negative sh0.45, pos-neg spread sh0.46, count spread"
+    },
+    {
+      "family": "insider_feats buy_sell_ratio",
+      "reason": "All 4 probes |S|<0.5: buy_sell_ratio_all_250d sh0.32, all_20d sh0.15, top5_60d sh-0.06, tx_count_ratio_250d sh0.24. Insi"
+    },
+    {
+      "family": "multifactor_return_pred regression difference",
+      "reason": "60d-120d regression difference all negative sharpe (max -0.33, min -1.33)"
+    },
+    {
+      "family": "USA-ML-FACTOR-PROJ-PROD-SATURATED",
+      "reason": "All promising signal families PROD saturated: analyst_coverage×LTG prod=0.92, liquidity_risk prod=0.93. Dataset has 1068"
+    },
+    {
+      "family": "news_sentiment_dl word sentiment",
+      "reason": "news_sentiment_dl VECTOR word-level sentiment in USA/TOP3000/D1: 10 probes max sh 0.63, far below 1.58 gate; ts_mean smo"
+    },
+    {
+      "family": "option_chart_model core signals",
+      "reason": "put_call_parity_gap_3_thvu prod_corr=0.8386 (bare) / 0.7533 (multiply hybrid) / 0.7844 (diluted); predicted_stock_return"
+    },
+    {
+      "family": "USA 第二条 SA（任意子集重组）",
+      "reason": "组件池全 value/quality 同质，彼此 ~0.9 相关，SELF 闸必拒（0mpgQ6Wv/78zmav3L 实证）"
+    },
+    {
+      "family": "mdl177_* 价值/盈利因子族新增提交",
+      "reason": "book 145 ACTIVE 已饱和该风格，prod-corr 结构性 >0.7"
+    }
+  ]
+}

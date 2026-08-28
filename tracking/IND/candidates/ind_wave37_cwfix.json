@@ -1,0 +1,7 @@
+[
+  {"expr": "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))", "settings": {"decay": 8, "truncation": 0.08}},
+  {"expr": "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))", "settings": {"decay": 16, "truncation": 0.08}},
+  {"expr": "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))", "settings": {"decay": 4, "truncation": 0.05}},
+  {"expr": "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))", "settings": {"decay": 8, "truncation": 0.05}},
+  {"expr": "-rank(add(rank(vec_avg(qfl_cassie_model_altman_zscore)), rank(vec_avg(qfl_cassie_convention_debt_mktcapital))))", "settings": {"decay": 4, "truncation": 0.08, "neutralization": "STATISTICAL"}}
+]

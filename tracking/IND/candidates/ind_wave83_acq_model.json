@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(global_percentile_acquisition_likelihood))",
+  "rank(ts_mean(vec_avg(global_percentile_acquisition_likelihood), 5))",
+  "rank(ts_mean(vec_avg(global_percentile_acquisition_likelihood), 10))",
+  "rank(ts_mean(vec_avg(global_percentile_acquisition_likelihood), 21))",
+  "rank(vec_avg(region_percentile_acquisition_likelihood))",
+  "rank(ts_mean(vec_avg(region_percentile_acquisition_likelihood), 21))",
+  "rank(vec_avg(sector_percentile_acquisition_likelihood))",
+  "rank(vec_avg(industry_percentile_acquisition_likelihood))"
+]

@@ -1,0 +1,124 @@
+{
+ "dataset": "analyst_base_ref",
+ "region": "KOR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MIX",
+ "field_count": 14,
+ "description": "analyst consensus base (surprise/dispersion)",
+ "banned_patterns": [],
+ "fields": [
+  {
+   "id": "actual_category",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Classification of the actual value (e.g., earnings, revenue)."
+  },
+  {
+   "id": "consensus_high_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Highest analyst estimate in the consensus snapshot for that metric and period"
+  },
+  {
+   "id": "consensus_low_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Lowest analyst estimate in the consensus snapshot for that metric and period"
+  },
+  {
+   "id": "consensus_mean_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The mean (average) of all analysts’ consensus estimates for the indicator or data item"
+  },
+  {
+   "id": "consensus_median_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "The median of all analysts’ consensus estimates for the indicator or data item"
+  },
+  {
+   "id": "consensus_stddev_estimate",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The standard deviation of the analysts’ consensus estimates, indicating dispersion of estimates"
+  },
+  {
+   "id": "consensus_surprise_percentage",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 5,
+   "alphaCount": 8,
+   "description": "Percentage difference between consensus estimate and actual value for the period."
+  },
+  {
+   "id": "consensus_vs_actual_diff",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Difference between consensus estimate and actual value for the period."
+  },
+  {
+   "id": "dilution_adjustment_ratio",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Dilution adjustment factor applied to convert/normalize per-share metrics for the chosen dilution regime"
+  },
+  {
+   "id": "last_close_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 3,
+   "description": "Point-in-time corporate-action–adjusted price overlay for the security used in ratios and analytics (not a full historic"
+  },
+  {
+   "id": "num_estimates_consensus",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The number of analyst estimates contributing to the consensus for this data item"
+  },
+  {
+   "id": "number_of_issued_shares",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Point-in-time shares outstanding for the security, without forward or backfill adjustments"
+  },
+  {
+   "id": "reported_actual_value",
+   "type": "VECTOR",
+   "coverage": 0.6683,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "The actual reported value for the indicator or data item for the specified period and event"
+  },
+  {
+   "id": "split_adjustment_factor",
+   "type": "MATRIX",
+   "coverage": 0.5684,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Stock split adjustment ratio effective on splDate"
+  }
+ ]
+}

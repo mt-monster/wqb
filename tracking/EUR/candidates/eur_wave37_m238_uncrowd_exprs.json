@@ -1,0 +1,10 @@
+[
+  "rank(global_screening_factor_alignment_rank_d1)",
+  "rank(subtract(global_screening_factor_alignment_rank_d1, group_mean(global_screening_factor_alignment_rank_d1, 1, industry)))",
+  "rank(global_change_in_preference_rank)",
+  "rank(subtract(global_change_in_preference_rank, group_mean(global_change_in_preference_rank, 1, industry)))",
+  "rank(industry_relative_investment_rank)",
+  "add(0.5*rank(global_screening_factor_alignment_rank_d1), 0.5*rank(global_change_in_preference_rank))",
+  "rank(ts_av_diff(global_change_in_preference_rank, 22))",
+  "add(0.6*rank(global_screening_factor_alignment_rank_d1), 0.4*rank(industry_relative_investment_rank))"
+]

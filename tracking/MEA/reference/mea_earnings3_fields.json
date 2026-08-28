@@ -1,0 +1,46 @@
+{
+ "dataset": "earnings3",
+ "region": "MEA",
+ "universe": "TOP400",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 4
+ },
+ "field_count": 4,
+ "fetched_at": "2026-08-28T02:08:52",
+ "fields": [
+  {
+   "id": "ern3_next_interval",
+   "type": "MATRIX",
+   "coverage": 0.4293,
+   "userCount": 296,
+   "alphaCount": 531,
+   "description": "Number of trading days until the next scheduled earnings report date"
+  },
+  {
+   "id": "ern3_next_reptime",
+   "type": "MATRIX",
+   "coverage": 0.4293,
+   "userCount": 141,
+   "alphaCount": 211,
+   "description": "Scheduled time for the next earnings report (in HHMM or session code)"
+  },
+  {
+   "id": "ern3_pre_interval",
+   "type": "MATRIX",
+   "coverage": 0.5248,
+   "userCount": 314,
+   "alphaCount": 645,
+   "description": "Number of trading days elapsed since the previous earnings report date (always non-positive)"
+  },
+  {
+   "id": "ern3_pre_reptime",
+   "type": "MATRIX",
+   "coverage": 0.5248,
+   "userCount": 237,
+   "alphaCount": 391,
+   "description": "Scheduled or actual event time of the previous earnings report (in HHMM or session code)"
+  }
+ ]
+}

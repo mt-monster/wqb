@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(eps_revision_magnitude, 10))",
+  "rank(ts_mean(eps_revision_magnitude, 21))",
+  "rank(ts_mean(eps_y1_estimate_change_3mo, 21))",
+  "rank(ts_mean(eps_y1_estimate_change_3mo, 63))",
+  "rank(ts_mean(eps_y2_estimate_change_3mo, 21))",
+  "rank(ts_zscore(eps_revision_magnitude, 21))",
+  "rank(ts_mean(eps_y1_estimate_change_3mo, 10))",
+  "rank(ts_mean(eps_y2_estimate_change_3mo, 63))"
+]

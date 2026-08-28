@@ -1,0 +1,10 @@
+[
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 10))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 30))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 45))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 63))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 90))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 126))",
+ "-rank(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 252))",
+ "-rank(add(ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 21), ts_mean(add(rank(analyst_revision_score_5d_medium), reverse(rank(analyst_recommendation_upgrades_30d_medium_31))), 90)))"
+]

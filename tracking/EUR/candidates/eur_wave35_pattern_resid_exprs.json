@@ -1,0 +1,10 @@
+[
+  "rank(ts_av_diff(median_similarity_breakaway_gap_upward, 5))",
+  "rank(ts_av_diff(median_similarity_breakaway_gap_upward, 22))",
+  "rank(subtract(median_similarity_breakaway_gap_upward, group_mean(median_similarity_breakaway_gap_upward, 1, industry)))",
+  "subtract(0, rank(ts_av_diff(median_similarity_breakaway_gap_upward, 22)))",
+  "add(0.6*rank(ts_av_diff(median_similarity_breakaway_gap_upward, 5)), 0.4*rank(median_similarity_breakaway_gap_downward))",
+  "add(0.5*rank(subtract(median_similarity_breakaway_gap_upward, group_mean(median_similarity_breakaway_gap_upward, 1, industry))), 0.5*rank(mean_similarity_breakaway_gap_upward))",
+  "rank(ts_av_diff(median_similarity_common_gap_upward, 22))",
+  "add(0.5*subtract(0, rank(ts_av_diff(median_similarity_breakaway_gap_upward, 22))), 0.5*subtract(0, rank(max_similarity_breakaway_gap_upward)))"
+]

@@ -1,0 +1,10 @@
+[
+ "add(0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5*rank(preferred_earnings_revision_component_short_term_41))",
+ "add(0.6*signed_power(rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5), 0.4*rank(revenue_revision_component_medium_term_3))",
+ "group_rank(add(rank(preferred_earnings_revision_component_medium_term_5), rank(recommendation_change_component_medium_term_4)), country)",
+ "add(0.5*group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5*group_rank(model_score_change_30d_long, country))",
+ "rank(subtract(avg_estimate_change_pct_current_year_profit_90d_medium, model_score_change_30d_long))",
+ "signed_power(group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5)",
+ "add(0.5*rank(forecasted_earnings_surprise_fy1_long), 0.5*rank(score_component_primary_profit_long))",
+ "group_scale(add(rank(avg_estimate_change_pct_current_year_profit_90d_medium), rank(model_score_change_30d_long)), country)"
+]

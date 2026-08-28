@@ -1,0 +1,10 @@
+[
+  "rank(long_term_growth_analyst_europe_rank)",
+  "subtract(0, rank(long_term_growth_analyst_europe_rank))",
+  "rank(subtract(long_term_growth_analyst_europe_rank, group_mean(long_term_growth_analyst_europe_rank, 1, industry)))",
+  "rank(long_term_financial_statement_strength_europe_rank)",
+  "rank(subtract(long_term_financial_statement_strength_europe_rank, group_mean(long_term_financial_statement_strength_europe_rank, 1, industry)))",
+  "add(0.5*rank(long_term_growth_analyst_europe_rank), 0.5*rank(long_term_financial_statement_strength_europe_rank))",
+  "add(0.5*rank(mid_term_growth_analyst_europe_rank), 0.5*rank(mid_term_financial_statement_rank_europe))",
+  "rank(subtract(mid_term_financial_statement_rank_europe, group_mean(mid_term_financial_statement_rank_europe, 1, industry)))"
+]

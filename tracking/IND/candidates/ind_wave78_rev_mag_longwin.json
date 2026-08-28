@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(eps_revision_magnitude, 30))",
+  "rank(ts_mean(eps_revision_magnitude, 45))",
+  "rank(ts_mean(eps_revision_magnitude, 63))",
+  "rank(ts_mean(eps_revision_magnitude, 90))",
+  "rank(ts_mean(eps_revision_magnitude, 126))",
+  "rank(ts_mean(eps_revision_magnitude, 180))",
+  "rank(ts_mean(eps_revision_magnitude, 252))",
+  "rank(ts_rank(eps_revision_magnitude, 63))"
+]

@@ -1,0 +1,10 @@
+[
+  "rank(subtract(long_term_balance_sheet_rank_europe, group_mean(long_term_balance_sheet_rank_europe, 1, industry)))",
+  "subtract(0, rank(subtract(long_term_balance_sheet_rank_europe, group_mean(long_term_balance_sheet_rank_europe, 1, industry))))",
+  "rank(subtract(long_term_capital_acquisition_ratio_3, group_mean(long_term_capital_acquisition_ratio_3, 1, industry)))",
+  "subtract(0, rank(subtract(long_term_capital_acquisition_ratio_3, group_mean(long_term_capital_acquisition_ratio_3, 1, industry))))",
+  "rank(subtract(long_term_change_in_price_adj_eps, group_mean(long_term_change_in_price_adj_eps, 1, industry)))",
+  "subtract(0, rank(subtract(long_term_change_in_price_adj_eps, group_mean(long_term_change_in_price_adj_eps, 1, industry))))",
+  "add(0.5*rank(subtract(long_term_balance_sheet_rank_europe, group_mean(long_term_balance_sheet_rank_europe, 1, industry))), 0.5*rank(long_term_capital_acquisition_ratio_3))",
+  "add(0.5*subtract(0, rank(subtract(long_term_balance_sheet_rank_europe, group_mean(long_term_balance_sheet_rank_europe, 1, industry)))), 0.5*rank(subtract(long_term_change_in_price_adj_eps, group_mean(long_term_change_in_price_adj_eps, 1, industry))))"
+]

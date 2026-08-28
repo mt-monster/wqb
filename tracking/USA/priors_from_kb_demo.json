@@ -1,0 +1,56 @@
+{
+  "_doc": "S2/步4 priors.json 组装协议产物（DB KB 优先，profile 兜底）。本文件由知识库回放生成，非 GEM 实跑产物；用于展示 ra-pipeline 的'走知识库'步骤应交付给 GEM 的先验。",
+  "_assembled_at": "2026-08-26",
+  "_source_trace": {
+    "wins": {
+      "region_kb.win_recipes[USA]": 1,
+      "template_kb.validated(含USA)": 0
+    },
+    "dead_ends": {
+      "region_kb.dead_patterns[USA]": 2,
+      "template_kb.failed(含USA)": 0,
+      "profile.signal_families_exclude": 4,
+      "profile.datasets.red": 2
+    }
+  },
+  "wins": [
+    {
+      "id": "SuperAlpha selection+combo",
+      "key": "skeleton=SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr; evidence=registry USA-SA-KPGvRMg1"
+    }
+  ],
+  "dead_ends": [
+    {
+      "family": "value/quality book",
+      "reason": "USA-VALUE-PRODCORR: 145 ACTIVE 已饱和，prod_corr 必贴 0.7 红线"
+    },
+    {
+      "family": "SA 组件池",
+      "reason": "USA-SA-SECOND: 组件彼此相关 ~0.9，selection+combo 封死"
+    },
+    {
+      "family": "classic_value",
+      "reason": "profile signal_families_exclude: 经典价值单因子及其线性变体必死"
+    },
+    {
+      "family": "classic_quality",
+      "reason": "profile signal_families_exclude: 经典质量因子已饱和"
+    },
+    {
+      "family": "book_ratio",
+      "reason": "profile signal_families_exclude: 账面比率类同族撞 PROD"
+    },
+    {
+      "family": "seed_basics",
+      "reason": "profile signal_families_exclude: seed basics 全族判死"
+    },
+    {
+      "family": "dataset:pv1",
+      "reason": "profile datasets.red: exhausted"
+    },
+    {
+      "family": "dataset:mdl177",
+      "reason": "profile datasets.red: exhausted"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+ {
+  "code": "add(0.7*group_rank(vec_avg(financial_statement_volatility_factor), industry), 0.3*rank(ts_rank(vec_avg(analyst_earnings_revision_intensity), 5)))",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "add(0.6*rank(vec_avg(alpha_score)), 0.4*group_rank(vec_avg(analyst_target_price_deviation), country))",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_av_diff(vec_avg(financial_statement_volatility_factor), 22))",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "group_rank(vec_avg(alpha_score), country)",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "subtract(rank(vec_avg(alpha_score)), group_rank(vec_avg(alpha_score), industry))",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "trade_when(greater(vec_count(alpha_score), 1), rank(vec_avg(alpha_score)), -1)",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "group_scale(vec_avg(financial_statement_volatility_factor), country)",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ },
+ {
+  "code": "group_backfill(vec_avg(analyst_forecast_revision_factor_2), industry, 20)",
+  "note": "SLOW-X-FAST within ai_equity + group residual on winning fields (no add(vol,alpha_score)).",
+  "dataset": "ai_equity_alpha",
+  "wave": 31
+ }
+]

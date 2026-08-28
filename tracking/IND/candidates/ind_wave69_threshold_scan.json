@@ -1,0 +1,57 @@
+[
+  {
+    "tag": "th05_q5_d8",
+    "simulation_id": "hOpCi7jY4oZbEdKQuOmMMZ",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.5), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "if_else阈值0.5：else平滑成分占比70%→50%，prod预期降"
+  },
+  {
+    "tag": "th07_q5_d8",
+    "simulation_id": "SFBrse4X4RR8JZXAfg0DOg",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.7), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "阈值0.7：else占比30%"
+  },
+  {
+    "tag": "th08_q5_d8",
+    "simulation_id": "3FkPD5bqc4jwbsizI37k7PD",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.8), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "阈值0.8：else占比20%"
+  },
+  {
+    "tag": "th05_q10_d8",
+    "simulation_id": "xqRakgrk4VbbVH1hpZsCjnA",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.5), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "阈值0.5 + quantile(ts_mean10)"
+  },
+  {
+    "tag": "th07_q10_d8",
+    "simulation_id": "46omlwbeo5eAcve180TvwWfJ",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.7), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "阈值0.7 + quantile(ts_mean10)"
+  },
+  {
+    "tag": "th05_q5_d16",
+    "simulation_id": "2qbrWv30N4TE9nDkDH73vQh",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.5), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(quantile(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5))))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 16, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "阈值0.5 + decay16（decay升S规律）"
+  },
+  {
+    "tag": "corr20_s5_d8",
+    "simulation_id": "ATb49fEB5gT9G314nIqmmLW",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_mean(ts_corr(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), vec_avg(qfl_cassie_convention_debt_mktcapital), 20), 5)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "ts_corr 双字段时序相关：非线性有界破秩+平滑"
+  },
+  {
+    "tag": "rkmix_s5_d8",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_mean(add(ts_rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 20), ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 20)), 5)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03, "nanHandling": "ON", "maxTrade": "ON"},
+    "note": "ts_rank破秩成分+ts_mean平滑成分混合，提升S（纯ts_rank族S崩1.3）——429待补"
+  }
+]

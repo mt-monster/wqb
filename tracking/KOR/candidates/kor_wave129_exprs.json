@@ -1,0 +1,10 @@
+[
+  "rank(change_1y_inventory_to_sales)",
+  "rank(change_1y_quarterly_assets)",
+  "group_neutralize(rank(change_5y_relative_book_to_market), sector)",
+  "rank(change_3y_fcf_to_assets)",
+  "rank(change_abnormal_capital_investment_2)",
+  "rank(change_cash_conversion_cycle_2)",
+  "rank(change_5y_dividend_growth_rate)",
+  "rank(change_6m_alpha_18m)"
+]

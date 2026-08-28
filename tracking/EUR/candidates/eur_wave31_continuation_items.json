@@ -1,0 +1,50 @@
+[
+ {
+  "code": "rank(subtract(avg_similarity_bullish_rectangle, avg_similarity_bearish_flag))",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "group_rank(avg_similarity_ascending_channel, industry)",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_av_diff(avg_similarity_inverse_cup_handle, 22))",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "rank(ts_corr(avg_similarity_bearish_pennant, avg_similarity_bullish_rectangle, 20))",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "group_neutralize(gap_up_continuation_similarity_average, country)",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "signed_power(rank(dynamic_bear_flag_similarity_score), 0.5)",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "add(0.6*group_rank(avg_similarity_bearish_flag, country), 0.4*rank(ts_rank(avg_similarity_bullish_rectangle, 5)))",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ },
+ {
+  "code": "scale(-rank(avg_similarity_ascending_channel))",
+  "note": "Fresh probe composites (not naked rank); bull vs bear + group/ts.",
+  "dataset": "continuation_score",
+  "wave": 31
+ }
+]

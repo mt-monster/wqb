@@ -1,0 +1,78 @@
+{
+ "dataset": "global_seasonal_model",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 8
+ },
+ "field_count": 8,
+ "fetched_at": "2026-08-23T15:56:02",
+ "fields": [
+  {
+   "id": "future_event_update_flag",
+   "type": "MATRIX",
+   "coverage": 0.9968,
+   "userCount": 41,
+   "alphaCount": 51,
+   "description": "Indicator for whether the next scheduled corporate event has been updated, rescheduled, or cancelled."
+  },
+  {
+   "id": "last_event_confirmation_level",
+   "type": "MATRIX",
+   "coverage": 0.9951,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Confirmation or tentative status for the most recent past corporate event."
+  },
+  {
+   "id": "last_event_transcript_flag",
+   "type": "MATRIX",
+   "coverage": 0.9951,
+   "userCount": 23,
+   "alphaCount": 27,
+   "description": "Indicator for whether a transcript is available for the most recent past corporate event."
+  },
+  {
+   "id": "last_event_type_code",
+   "type": "MATRIX",
+   "coverage": 0.9951,
+   "userCount": 45,
+   "alphaCount": 67,
+   "description": "Categorical code for the type of the most recent past corporate event."
+  },
+  {
+   "id": "last_event_update_flag",
+   "type": "MATRIX",
+   "coverage": 0.9951,
+   "userCount": 15,
+   "alphaCount": 16,
+   "description": "Indicator for whether the most recent past corporate event was updated, rescheduled, or cancelled."
+  },
+  {
+   "id": "next_event_confirmation_level",
+   "type": "MATRIX",
+   "coverage": 0.9968,
+   "userCount": 18,
+   "alphaCount": 26,
+   "description": "Confirmation or tentative status for the next scheduled corporate event."
+  },
+  {
+   "id": "next_event_transcript_flag",
+   "type": "MATRIX",
+   "coverage": 0.9968,
+   "userCount": 23,
+   "alphaCount": 36,
+   "description": "Indicator for whether a transcript is expected or available for the next scheduled corporate event."
+  },
+  {
+   "id": "next_event_type_code",
+   "type": "MATRIX",
+   "coverage": 0.9968,
+   "userCount": 23,
+   "alphaCount": 26,
+   "description": "Categorical code for the type of the next scheduled corporate event."
+  }
+ ]
+}

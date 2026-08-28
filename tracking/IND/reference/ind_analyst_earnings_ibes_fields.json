@@ -1,0 +1,238 @@
+{
+ "dataset": "analyst_earnings_ibes",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 28
+ },
+ "field_count": 28,
+ "fetched_at": "2026-08-23T15:55:51",
+ "fields": [
+  {
+   "id": "closing_price_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 50,
+   "alphaCount": 99,
+   "description": "Daily closing price for the security, D1-delayed, point-in-time, event-masked, split- and FX-adjusted"
+  },
+  {
+   "id": "closing_price_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 42,
+   "alphaCount": 78,
+   "description": "Closing price for the trading day, split- and FX-adjusted, point-in-time and D1-delayed, event-masked"
+  },
+  {
+   "id": "five_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 49,
+   "alphaCount": 66,
+   "description": "Stock return over the last 5 trading days for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted and"
+  },
+  {
+   "id": "five_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 40,
+   "alphaCount": 106,
+   "description": "Stock return over the last 5 trading days for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked ("
+  },
+  {
+   "id": "highest_price_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 43,
+   "description": "Daily highest traded price (session high) for the security, D1-delayed, point-in-time, event-masked, split- and FX-adjus"
+  },
+  {
+   "id": "highest_price_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 23,
+   "alphaCount": 38,
+   "description": "Highest traded price of the day, split- and FX-adjusted, point-in-time and D1-delayed, event-masked"
+  },
+  {
+   "id": "lowest_price_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 22,
+   "description": "Daily lowest traded price (session low) for the security, D1-delayed, point-in-time, event-masked, split- and FX-adjuste"
+  },
+  {
+   "id": "lowest_price_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 29,
+   "alphaCount": 60,
+   "description": "Lowest traded price of the day, split- and FX-adjusted, point-in-time and D1-delayed, event-masked"
+  },
+  {
+   "id": "market_capitalization_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 28,
+   "alphaCount": 45,
+   "description": "Market capitalization as of the as-of-date close (price × shares outstanding), D1-delayed, point-in-time, event-masked"
+  },
+  {
+   "id": "market_capitalization_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 36,
+   "alphaCount": 56,
+   "description": "Europe region market capitalization as of close (price times shares outstanding), D1-delayed, point-in-time, currency- a"
+  },
+  {
+   "id": "one_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 32,
+   "alphaCount": 46,
+   "description": "Daily (1-day) stock return for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted and event-masked"
+  },
+  {
+   "id": "one_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 20,
+   "alphaCount": 48,
+   "description": "Daily stock return (1 trading day) for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked"
+  },
+  {
+   "id": "one_twenty_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 0.9894,
+   "userCount": 29,
+   "alphaCount": 55,
+   "description": "Stock return over the last 120 trading days for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted a"
+  },
+  {
+   "id": "one_twenty_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 0.9894,
+   "userCount": 29,
+   "alphaCount": 47,
+   "description": "Stock return over the last 120 trading days for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked"
+  },
+  {
+   "id": "opening_price_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 29,
+   "description": "Daily opening price for the stock in the Europe region (D1-delayed, point-in-time, split- and FX-adjusted, event-masked)"
+  },
+  {
+   "id": "opening_price_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 34,
+   "description": "Opening price for the trading day, split- and FX-adjusted, point-in-time and D1-delayed, event-masked"
+  },
+  {
+   "id": "shares_outstanding_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 29,
+   "description": "Shares outstanding for the stock as of the as-of-date in the Europe region (D1-delayed, point-in-time, masked if unavail"
+  },
+  {
+   "id": "shares_outstanding_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 28,
+   "alphaCount": 35,
+   "description": "Shares outstanding as of the as-of-date, point-in-time and D1-delayed, masked when unavailable or invalid"
+  },
+  {
+   "id": "sixty_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 0.9997,
+   "userCount": 25,
+   "alphaCount": 32,
+   "description": "Stock return over the last 60 trading days for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted an"
+  },
+  {
+   "id": "sixty_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 0.9997,
+   "userCount": 18,
+   "alphaCount": 35,
+   "description": "Stock return over the last 60 trading days for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked "
+  },
+  {
+   "id": "trading_volume_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 18,
+   "alphaCount": 24,
+   "description": "Total traded volume for the day, D1-delayed, point-in-time, event-masked per calendar and events"
+  },
+  {
+   "id": "trading_volume_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Europe region daily traded volume, D1-delayed, point-in-time, with event and calendar masking"
+  },
+  {
+   "id": "twenty_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 21,
+   "alphaCount": 35,
+   "description": "Stock return over the last 20 trading days for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted an"
+  },
+  {
+   "id": "twenty_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 20,
+   "alphaCount": 46,
+   "description": "Stock return over the last 20 trading days for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked "
+  },
+  {
+   "id": "two_fifty_day_total_return_dlr1",
+   "type": "MATRIX",
+   "coverage": 0.9688,
+   "userCount": 23,
+   "alphaCount": 25,
+   "description": "Stock return over the last 250 trading days for Americas-region equities, D1-delayed, point-in-time, split/FX-adjusted a"
+  },
+  {
+   "id": "two_fifty_day_total_return_dlr2",
+   "type": "MATRIX",
+   "coverage": 0.9688,
+   "userCount": 18,
+   "alphaCount": 34,
+   "description": "Stock return over the last 250 trading days for Europe, D1-delayed and point-in-time, split/FX-adjusted and event-masked"
+  },
+  {
+   "id": "volume_weighted_avg_price_dlr1",
+   "type": "MATRIX",
+   "coverage": 0.9927,
+   "userCount": 15,
+   "alphaCount": 33,
+   "description": "Daily volume-weighted average price, D1-delayed, point-in-time, event-masked, split- and FX-adjusted"
+  },
+  {
+   "id": "volume_weighted_avg_price_dlr2",
+   "type": "MATRIX",
+   "coverage": 0.9931,
+   "userCount": 16,
+   "alphaCount": 26,
+   "description": "Europe region daily volume-weighted average price, D1-delayed, point-in-time, split- and currency-adjusted, event-masked"
+  }
+ ]
+}

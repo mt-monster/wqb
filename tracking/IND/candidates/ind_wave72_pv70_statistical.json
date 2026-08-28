@@ -1,0 +1,10 @@
+[
+  "-rank(ts_mean(vec_avg(entity_association_strength_score), 21))",
+  "-rank(ts_mean(vec_avg(entity_relationship_strength_value_2), 21))",
+  "-rank(ts_zscore(vec_avg(pv70_bbgnews_score_float), 63))",
+  "-rank(ts_mean(vec_avg(pv70_ibeseps_score_float), 21))",
+  "-rank(ts_mean(vec_avg(pv70_ibesrec1_score_float), 21))",
+  "-rank(ts_mean(vec_avg(pv70_ibesptg1_score_float), 21))",
+  "-rank(ts_mean(vec_avg(pv70_news1_score_float), 21))",
+  "-rank(ts_corr(vec_avg(pv70_bbgnews_score_float), vec_avg(pv70_ibesrec1_score_float), 21))"
+]

@@ -1,0 +1,50 @@
+[
+ {
+  "code": "add(0.5*rank(default_risk_global_percentile_d1_2), 0.5*rank(credit_risk_profitability_score_d1))",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "group_rank(add(rank(default_risk_global_percentile_d1_2), rank(credit_risk_leverage_score_d1)), country)",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "add(0.5*group_rank(default_risk_global_percentile_d1_2, country), 0.5*group_rank(credit_risk_profitability_score_d1, industry))",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "signed_power(add(0.5*rank(default_risk_global_percentile_d1_2), 0.5*rank(credit_risk_liquidity_score_d1)), 0.5)",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "add(add(0.4*rank(default_risk_global_percentile_d1_2), 0.3*rank(credit_risk_profitability_score_d1)), 0.3*rank(credit_risk_leverage_score_d1))",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "rank(subtract(credit_risk_profitability_score_d1, credit_risk_leverage_score_d1))",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "group_zscore(default_risk_global_percentile_d1_2, country)",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ },
+ {
+  "code": "divide(rank(credit_risk_profitability_score_d1), ts_std_dev(credit_risk_leverage_score_d1, 22))",
+  "note": "Intra-model36 combos of default_risk (~1.05 inverted) x profitability/leverage/liquidity.",
+  "dataset": "model36",
+  "wave": 33
+ }
+]

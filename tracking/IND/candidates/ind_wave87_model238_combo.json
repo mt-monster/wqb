@@ -1,0 +1,10 @@
+﻿[
+    "add(multiply(rank(mdl238_global_rank), 0.9), multiply(rank(mdl238_global_change_rank), 0.1))",
+    "add(multiply(rank(mdl238_global_rank), 0.7), multiply(rank(mdl238_global_change_rank), 0.3))",
+    "add(multiply(rank(mdl238_global_rank), 0.6), multiply(rank(mdl238_global_change_rank), 0.4))",
+    "add(multiply(rank(mdl238_global_rank), 0.5), multiply(rank(mdl238_global_change_rank), 0.5))",
+    "add(multiply(rank(mdl238_global_rank), 0.4), multiply(rank(mdl238_global_change_rank), 0.6))",
+    "add(multiply(rank(mdl238_global_rank), 0.3), multiply(rank(mdl238_global_change_rank), 0.7))",
+    "add(multiply(rank(mdl238_global_screening_rank), 0.5), multiply(rank(mdl238_global_change_rank), 0.5))",
+    "add(rank(mdl238_global_rank), rank(mdl238_region_change_rank))"
+]

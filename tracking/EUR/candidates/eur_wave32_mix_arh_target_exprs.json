@@ -1,0 +1,10 @@
+[
+ "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(vec_avg(analyst_target_price_deviation)))",
+ "add(0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5*group_rank(vec_avg(analyst_target_price_deviation), country))",
+ "add(0.7*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.3*rank(ts_rank(vec_avg(analyst_target_price_deviation), 5)))",
+ "add(0.6*rank(forecasted_earnings_surprise_fy1_long), 0.4*group_scale(vec_avg(analyst_target_price_deviation), country))",
+ "add(0.5*group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5*rank(vec_avg(analyst_target_price_deviation)))",
+ "signed_power(add(0.6*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.4*rank(vec_avg(analyst_target_price_deviation))), 0.5)",
+ "rank(ts_corr(avg_estimate_change_pct_current_year_profit_90d_medium, vec_avg(analyst_target_price_deviation), 20))",
+ "add(0.6*group_scale(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*group_rank(vec_avg(analyst_forecast_revision_factor_2), industry))"
+]

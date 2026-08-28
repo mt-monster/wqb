@@ -1,0 +1,10 @@
+[
+    "divide(rank(mdl238_global_rank), add(1, rank(analyst_recommendation_downgrades_30d_medium_31)))",
+    "divide(rank(mdl238_global_rank), add(0.5, rank(analyst_recommendation_downgrades_30d_medium_31)))",
+    "divide(add(1, rank(mdl238_global_rank)), add(1, rank(analyst_recommendation_downgrades_30d_medium_31)))",
+    "divide(rank(analyst_revision_percentile_score_medium_4), add(1, rank(analyst_recommendation_downgrades_30d_medium_31)))",
+    "if_else(greater(analyst_recommendation_downgrades_30d_medium_31, 0), rank(mdl238_global_rank), 0)",
+    "if_else(greater(analyst_revision_percentile_score_medium_4, 5), rank(mdl238_global_rank), rank(analyst_recommendation_downgrades_30d_medium_31))",
+    "add(multiply(rank(mdl238_global_rank), 0.4), multiply(divide(rank(analyst_revision_percentile_score_medium_4), add(1, rank(analyst_recommendation_downgrades_30d_medium_31))), 0.6))",
+    "divide(rank(ts_mean(mdl238_global_rank, 5)), add(1, rank(analyst_recommendation_downgrades_30d_medium_31)))"
+]

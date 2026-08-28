@@ -1,0 +1,478 @@
+{
+ "dataset": "analyst_factor_signals",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 58
+ },
+ "field_count": 58,
+ "fetched_at": "2026-08-23T21:56:10",
+ "fields": [
+  {
+   "id": "eps_actual_q1_qoq_growth",
+   "type": "MATRIX",
+   "coverage": 0.3852,
+   "userCount": 58,
+   "alphaCount": 79,
+   "description": "Actual reported Q1 EPS growth quarter over quarter"
+  },
+  {
+   "id": "eps_actual_q1_yoy_growth",
+   "type": "MATRIX",
+   "coverage": 0.2924,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "Actual EPS growth for fiscal Q1, year-over-year"
+  },
+  {
+   "id": "eps_estimate_trend_slope_1yr",
+   "type": "MATRIX",
+   "coverage": 0.6352,
+   "userCount": 58,
+   "alphaCount": 82,
+   "description": "Slope of the 1-year consensus EPS forecast time series (quarterly)"
+  },
+  {
+   "id": "eps_estimate_trend_slope_2yr",
+   "type": "MATRIX",
+   "coverage": 0.3086,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Slope of the combined consensus forecast and actual EPS series (quarterly)"
+  },
+  {
+   "id": "eps_estimate_trend_slope_3yr",
+   "type": "MATRIX",
+   "coverage": 0.3086,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "Slope of the current actual EPS series over the past year (quarterly)"
+  },
+  {
+   "id": "eps_q1_estimate_change_1mo",
+   "type": "MATRIX",
+   "coverage": 0.553,
+   "userCount": 48,
+   "alphaCount": 67,
+   "description": "Change in consensus EPS forecast for fiscal Q1 over the past 1 month"
+  },
+  {
+   "id": "eps_q1_estimate_qoq_growth",
+   "type": "MATRIX",
+   "coverage": 0.428,
+   "userCount": 19,
+   "alphaCount": 21,
+   "description": "Forecast Q1 EPS growth quarter over quarter"
+  },
+  {
+   "id": "eps_q1_estimate_sequential",
+   "type": "MATRIX",
+   "coverage": 0.2924,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Difference between sequentially forecast and actual EPS growth for Q1"
+  },
+  {
+   "id": "eps_q1_estimate_skewness",
+   "type": "MATRIX",
+   "coverage": 0.6352,
+   "userCount": 23,
+   "alphaCount": 28,
+   "description": "Pearson skewness of the Q1 EPS forecast distribution"
+  },
+  {
+   "id": "eps_q1_estimate_yoy_growth",
+   "type": "MATRIX",
+   "coverage": 0.3086,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Forecast Q1 EPS growth year over year"
+  },
+  {
+   "id": "eps_q2_estimate_qoq_growth",
+   "type": "MATRIX",
+   "coverage": 0.6352,
+   "userCount": 21,
+   "alphaCount": 22,
+   "description": "Forecast Q2 EPS growth quarter over quarter"
+  },
+  {
+   "id": "eps_q2_estimate_skewness",
+   "type": "MATRIX",
+   "coverage": 0.6352,
+   "userCount": 20,
+   "alphaCount": 25,
+   "description": "Pearson's skewness of the forecast Q2 EPS estimate distribution"
+  },
+  {
+   "id": "eps_revision_magnitude",
+   "type": "MATRIX",
+   "coverage": 0.8784,
+   "userCount": 104,
+   "alphaCount": 176,
+   "description": "Scaled magnitude of revisions to FY1 EPS (Street revision magnitude)"
+  },
+  {
+   "id": "eps_surprise_mean_diff",
+   "type": "MATRIX",
+   "coverage": 0.3713,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Difference in EPS surprise between Q1 and Q2 (Q1 minus Q2)"
+  },
+  {
+   "id": "eps_surprise_stddev",
+   "type": "MATRIX",
+   "coverage": 0.3776,
+   "userCount": 14,
+   "alphaCount": 16,
+   "description": "Standard deviation of EPS surprises"
+  },
+  {
+   "id": "eps_trailing_4q_estimate",
+   "type": "MATRIX",
+   "coverage": 0.428,
+   "userCount": 20,
+   "alphaCount": 22,
+   "description": "Forecast trailing-twelve-month EPS growth"
+  },
+  {
+   "id": "eps_y1_cagr_2yr",
+   "type": "MATRIX",
+   "coverage": 0.793,
+   "userCount": 43,
+   "alphaCount": 53,
+   "description": "Forecast FY1 EPS growth CAGR over 2 years"
+  },
+  {
+   "id": "eps_y1_cagr_3yr",
+   "type": "MATRIX",
+   "coverage": 0.7362,
+   "userCount": 27,
+   "alphaCount": 34,
+   "description": "Forecast FY1 EPS growth CAGR over 3 years"
+  },
+  {
+   "id": "eps_y1_cagr_4yr",
+   "type": "MATRIX",
+   "coverage": 0.6844,
+   "userCount": 30,
+   "alphaCount": 35,
+   "description": "Forecast FY1 EPS growth CAGR over 4 years"
+  },
+  {
+   "id": "eps_y1_cagr_5yr",
+   "type": "MATRIX",
+   "coverage": 0.6348,
+   "userCount": 26,
+   "alphaCount": 32,
+   "description": "Forecast FY1 EPS growth CAGR over 5 years"
+  },
+  {
+   "id": "eps_y1_consensus_value",
+   "type": "MATRIX",
+   "coverage": 0.856,
+   "userCount": 61,
+   "alphaCount": 81,
+   "description": "Forecast FY1 EPS growth rate"
+  },
+  {
+   "id": "eps_y1_estimate_asymmetry",
+   "type": "MATRIX",
+   "coverage": 0.7523,
+   "userCount": 19,
+   "alphaCount": 19,
+   "description": "Asymmetry measure of the distribution of FY1 EPS forecasts"
+  },
+  {
+   "id": "eps_y1_estimate_change_3mo",
+   "type": "MATRIX",
+   "coverage": 0.8783,
+   "userCount": 127,
+   "alphaCount": 238,
+   "description": "Change in consensus FY1 EPS forecast over the past 3 months"
+  },
+  {
+   "id": "eps_y1_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.7523,
+   "userCount": 27,
+   "alphaCount": 34,
+   "description": "Coefficient of variation (std/mean) of consensus FY1 EPS estimates"
+  },
+  {
+   "id": "eps_y1_estimate_skewness",
+   "type": "MATRIX",
+   "coverage": 0.8893,
+   "userCount": 27,
+   "alphaCount": 31,
+   "description": "Pearson skewness of the FY1 EPS forecast distribution"
+  },
+  {
+   "id": "eps_y2_consensus_value",
+   "type": "MATRIX",
+   "coverage": 0.8893,
+   "userCount": 26,
+   "alphaCount": 32,
+   "description": "Forecast FY2 EPS growth rate"
+  },
+  {
+   "id": "eps_y2_estimate_change_3mo",
+   "type": "MATRIX",
+   "coverage": 0.8784,
+   "userCount": 71,
+   "alphaCount": 98,
+   "description": "Change in consensus FY2 EPS forecast over the past 3 months"
+  },
+  {
+   "id": "eps_y2_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.7534,
+   "userCount": 12,
+   "alphaCount": 15,
+   "description": "Coefficient of variation (std/mean) of FY2 EPS estimates"
+  },
+  {
+   "id": "revenue_estimate_trend_slope_1yr",
+   "type": "MATRIX",
+   "coverage": 0.7363,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Slope of the 1-year consensus revenue forecast (quarterly), indicating trend"
+  },
+  {
+   "id": "revenue_estimate_trend_slope_2yr",
+   "type": "MATRIX",
+   "coverage": 0.2892,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Slope of the linear trend in consensus revenue estimates over the past 2 years."
+  },
+  {
+   "id": "revenue_estimate_trend_slope_3yr",
+   "type": "MATRIX",
+   "coverage": 0.2892,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Slope of the linear trend in consensus revenue estimates over the past 3 years."
+  },
+  {
+   "id": "revenue_estimate_zscore",
+   "type": "MATRIX",
+   "coverage": 0.4506,
+   "userCount": 14,
+   "alphaCount": 15,
+   "description": "Standardized z-score of the fiscal Q1 revenue surprise"
+  },
+  {
+   "id": "revenue_q1_estimate_asymmetry",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Asymmetry measure of the analyst forecast distribution for fiscal Q1 revenue"
+  },
+  {
+   "id": "revenue_q1_estimate_change_1mo",
+   "type": "MATRIX",
+   "coverage": 0.641,
+   "userCount": 12,
+   "alphaCount": 12,
+   "description": "Change in consensus forecast for fiscal Q1 revenue over the past 1 month"
+  },
+  {
+   "id": "revenue_q1_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.5837,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Coefficient of variation (std/mean) of Q1 revenue estimates"
+  },
+  {
+   "id": "revenue_q1_estimate_qoq_growth",
+   "type": "MATRIX",
+   "coverage": 0.5028,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Forecast Q1 revenue growth quarter-over-quarter"
+  },
+  {
+   "id": "revenue_q1_estimate_sequential",
+   "type": "MATRIX",
+   "coverage": 0.2653,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Difference between sequential forecast and actual revenue growth for Q1"
+  },
+  {
+   "id": "revenue_q1_estimate_skewness",
+   "type": "MATRIX",
+   "coverage": 0.7363,
+   "userCount": 4,
+   "alphaCount": 5,
+   "description": "Pearson's skewness of the analyst forecast distribution for fiscal Q1 revenue"
+  },
+  {
+   "id": "revenue_q1_estimate_yoy_growth",
+   "type": "MATRIX",
+   "coverage": 0.2891,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Forecast year-over-year growth for fiscal Q1 revenue"
+  },
+  {
+   "id": "revenue_q2_estimate_asymmetry",
+   "type": "MATRIX",
+   "coverage": 0.4313,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Asymmetry measure of the forecast Q2 revenue estimate distribution from analysts"
+  },
+  {
+   "id": "revenue_q2_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.4313,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Coefficient of variation (std/mean) of Q2 revenue estimates"
+  },
+  {
+   "id": "revenue_q2_estimate_qoq_growth",
+   "type": "MATRIX",
+   "coverage": 0.7363,
+   "userCount": 6,
+   "alphaCount": 7,
+   "description": "Forecast Q2 revenue growth quarter-over-quarter"
+  },
+  {
+   "id": "revenue_q2_estimate_skewness",
+   "type": "MATRIX",
+   "coverage": 0.7363,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Pearson's skewness of the analyst forecast distribution for fiscal Q2 revenue"
+  },
+  {
+   "id": "revenue_revision_magnitude",
+   "type": "MATRIX",
+   "coverage": 0.8714,
+   "userCount": 35,
+   "alphaCount": 38,
+   "description": "Scaled revision magnitude of the median FY1 revenue estimate (Street Revision Magnitude)"
+  },
+  {
+   "id": "revenue_surprise_mean_diff",
+   "type": "MATRIX",
+   "coverage": 0.4178,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Difference between Q1 and Q2 revenue surprise metrics (Q1 minus Q2)"
+  },
+  {
+   "id": "revenue_surprise_stddev",
+   "type": "MATRIX",
+   "coverage": 0.4201,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Standard deviation of revenue surprise"
+  },
+  {
+   "id": "revenue_trailing_4q_estimate",
+   "type": "MATRIX",
+   "coverage": 0.5029,
+   "userCount": 11,
+   "alphaCount": 15,
+   "description": "Trailing-twelve-month forecast revenue growth"
+  },
+  {
+   "id": "revenue_y1_cagr_2yr",
+   "type": "MATRIX",
+   "coverage": 0.7866,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Forecast compound annual growth rate to FY1 revenue measured over a 2-year horizon"
+  },
+  {
+   "id": "revenue_y1_cagr_3yr",
+   "type": "MATRIX",
+   "coverage": 0.7281,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Forecast compound annual growth rate to FY1 revenue measured over a 3-year horizon"
+  },
+  {
+   "id": "revenue_y1_cagr_4yr",
+   "type": "MATRIX",
+   "coverage": 0.6762,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Forecast compound annual growth rate to FY1 revenue measured over a 4-year horizon"
+  },
+  {
+   "id": "revenue_y1_cagr_5yr",
+   "type": "MATRIX",
+   "coverage": 0.6256,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Forecast compound annual growth rate to FY1 revenue measured over a 5-year horizon"
+  },
+  {
+   "id": "revenue_y1_consensus_value",
+   "type": "MATRIX",
+   "coverage": 0.8522,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Forecast growth for FY1 revenue"
+  },
+  {
+   "id": "revenue_y1_estimate_asymmetry",
+   "type": "MATRIX",
+   "coverage": 0.7514,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Asymmetry measure of the forecast FY1 revenue estimate distribution from analysts"
+  },
+  {
+   "id": "revenue_y1_estimate_change_3mo",
+   "type": "MATRIX",
+   "coverage": 0.8714,
+   "userCount": 26,
+   "alphaCount": 32,
+   "description": "Change in FY1 revenue consensus forecast over the past 3 months"
+  },
+  {
+   "id": "revenue_y1_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.7514,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Coefficient of variation (std/mean) of FY1 revenue estimates"
+  },
+  {
+   "id": "revenue_y2_consensus_value",
+   "type": "MATRIX",
+   "coverage": 0.883,
+   "userCount": 30,
+   "alphaCount": 42,
+   "description": "Forecast growth for FY2 revenue"
+  },
+  {
+   "id": "revenue_y2_estimate_change_3mo",
+   "type": "MATRIX",
+   "coverage": 0.8714,
+   "userCount": 16,
+   "alphaCount": 18,
+   "description": "Change in consensus forecast for FY2 revenue over the past 3 months"
+  },
+  {
+   "id": "revenue_y2_estimate_coeff_var",
+   "type": "MATRIX",
+   "coverage": 0.7522,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Coefficient of variation (std/mean) of FY2 revenue estimates"
+  }
+ ]
+}

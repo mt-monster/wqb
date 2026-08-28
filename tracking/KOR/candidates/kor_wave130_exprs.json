@@ -1,0 +1,10 @@
+[
+  "rank(vec_avg(chronological_return_sequence_correlation))",
+  "rank(vec_avg(consecutive_return_streak_length))",
+  "rank(vec_avg(extreme_daily_return_indicator))",
+  "rank(vec_avg(price_path_curvature_measure))",
+  "rank(vec_avg(salience_weighted_return_score))",
+  "rank(vec_avg(visual_price_path_shape_score))",
+  "rank(vec_avg(total_equity_market_value_usd))",
+  "group_neutralize(rank(vec_avg(consecutive_return_streak_length)), sector)"
+]

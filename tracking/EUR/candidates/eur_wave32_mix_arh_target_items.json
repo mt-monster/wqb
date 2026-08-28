@@ -1,0 +1,50 @@
+[
+ {
+  "code": "add(0.6*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*rank(vec_avg(analyst_target_price_deviation)))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.5*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.5*group_rank(vec_avg(analyst_target_price_deviation), country))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.7*group_rank(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.3*rank(ts_rank(vec_avg(analyst_target_price_deviation), 5)))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.6*rank(forecasted_earnings_surprise_fy1_long), 0.4*group_scale(vec_avg(analyst_target_price_deviation), country))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.5*group_neutralize(avg_estimate_change_pct_current_year_profit_90d_medium, industry), 0.5*rank(vec_avg(analyst_target_price_deviation)))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "signed_power(add(0.6*rank(avg_estimate_change_pct_current_year_profit_90d_medium), 0.4*rank(vec_avg(analyst_target_price_deviation))), 0.5)",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_corr(avg_estimate_change_pct_current_year_profit_90d_medium, vec_avg(analyst_target_price_deviation), 20))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.6*group_scale(avg_estimate_change_pct_current_year_profit_90d_medium, country), 0.4*group_rank(vec_avg(analyst_forecast_revision_factor_2), industry))",
+  "note": "SLOW-X-FAST: ARH 90d profit change (IS 1.39, 2Y 0.56) x target_price_deviation (IS 0.28, 2Y 1.64).",
+  "dataset": "analyst_revision_horizons+ai_equity_alpha",
+  "wave": 32
+ }
+]

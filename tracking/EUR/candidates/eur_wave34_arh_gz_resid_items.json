@@ -1,0 +1,50 @@
+[
+ {
+  "code": "group_zscore(ts_delta(forecasted_earnings_surprise_fy1_long, 5), industry)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "ts_zscore(forecasted_earnings_surprise_fy1_long, 22)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "signed_power(group_zscore(forecasted_earnings_surprise_fy1_long, industry), 0.5)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "group_zscore(forecasted_earnings_surprise_fy1_long, sector)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "add(0.6*group_zscore(score_component_primary_profit_long, industry), 0.4*group_zscore(model_score_change_30d_long, industry))",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "group_neutralize(group_zscore(forecasted_earnings_surprise_fy1_long, industry), country)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "ts_delta(group_zscore(model_score_change_30d_long, industry), 5)",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ },
+ {
+  "code": "add(0.5*group_zscore(recommendation_change_component_medium_term_4, industry), 0.5*group_zscore(preferred_earnings_revision_component_medium_term_5, industry))",
+  "note": "wave34 Mode B: leave profit90d prod wall; reuse COUNTRY+group_zscore wrapper on other fields / starhold / model36",
+  "dataset": "auto",
+  "wave": 34
+ }
+]

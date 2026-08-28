@@ -1,0 +1,174 @@
+{
+ "dataset": "ai_factor_transfer",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 20
+ },
+ "field_count": 20,
+ "fetched_at": "2026-08-23T19:19:03",
+ "fields": [
+  {
+   "id": "balanced_price_oscillator",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 83,
+   "alphaCount": 130,
+   "description": "Price-Volume Ratio"
+  },
+  {
+   "id": "balanced_price_oscillator_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 19,
+   "alphaCount": 35,
+   "description": "Compares short-term and long-term price trends to measure their balance."
+  },
+  {
+   "id": "cumulative_money_flow_volume_adjusted",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 73,
+   "alphaCount": 110,
+   "description": "Relative Strength (RSI)"
+  },
+  {
+   "id": "cumulative_money_flow_volume_adjusted_2",
+   "type": "MATRIX",
+   "coverage": 0.9359,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Logarithmic Price Transform"
+  },
+  {
+   "id": "liquidity_money_flow_alignment",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 36,
+   "alphaCount": 44,
+   "description": "Relative Turnover (RTN63D)"
+  },
+  {
+   "id": "liquidity_money_flow_alignment_2",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 17,
+   "alphaCount": 25,
+   "description": "Indicates whether liquidity and money flow are moving together."
+  },
+  {
+   "id": "liquidity_weighted_returns_ma",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 49,
+   "alphaCount": 61,
+   "description": "13-week price change"
+  },
+  {
+   "id": "liquidity_weighted_returns_ma_2",
+   "type": "MATRIX",
+   "coverage": 0.9359,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Commodity Channel Index (CCI)"
+  },
+  {
+   "id": "momentum_williams_r_adjusted",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 81,
+   "alphaCount": 133,
+   "description": "Return momentum"
+  },
+  {
+   "id": "momentum_williams_r_adjusted_2",
+   "type": "MATRIX",
+   "coverage": 0.9329,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Price momentum (from ABN_VOLM)"
+  },
+  {
+   "id": "money_flow_strength_typical_price",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 44,
+   "alphaCount": 101,
+   "description": "Assesses the relative strength of money flow adjusted for typical price levels."
+  },
+  {
+   "id": "money_flow_strength_typical_price_2",
+   "type": "MATRIX",
+   "coverage": 0.8522,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "ADL trend component"
+  },
+  {
+   "id": "short_term_price_change",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 74,
+   "alphaCount": 128,
+   "description": "Williams %R"
+  },
+  {
+   "id": "short_term_price_change_2",
+   "type": "MATRIX",
+   "coverage": 0.9137,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Chaikin Money Flow (CMF)"
+  },
+  {
+   "id": "typical_price_bollinger_band_position",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 29,
+   "alphaCount": 38,
+   "description": "Shows the position of the typical price within Bollinger Bands."
+  },
+  {
+   "id": "typical_price_bollinger_band_position_2",
+   "type": "MATRIX",
+   "coverage": 0.9346,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Price Volume Oscillator (PVO)"
+  },
+  {
+   "id": "volume_anomaly_price_positioning",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 39,
+   "alphaCount": 45,
+   "description": "Examines the relationship between unusual trading volume events and the current price level."
+  },
+  {
+   "id": "volume_anomaly_price_positioning_2",
+   "type": "MATRIX",
+   "coverage": 0.9263,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Detrended Price Oscillator (DPO)"
+  },
+  {
+   "id": "volume_trend_money_flow_interaction",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 49,
+   "alphaCount": 94,
+   "description": "Analyzes how volume trends interact with money flow dynamics."
+  },
+  {
+   "id": "volume_trend_money_flow_interaction_2",
+   "type": "MATRIX",
+   "coverage": 0.9356,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Bollinger Band (BB) indicator"
+  }
+ ]
+}

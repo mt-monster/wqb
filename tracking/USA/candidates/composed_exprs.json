@@ -1,0 +1,120 @@
+{
+ "meta": {
+  "source": "compose_signals.py",
+  "fields": [
+   "mws85_sentiment",
+   "nws18_ber",
+   "mdl41_numericvalue"
+  ],
+  "transform": "ts_decay_linear(vec_avg({f}), 10)",
+  "n_pairs": 2,
+  "n_exprs": 6,
+  "templates": [
+   "A",
+   "B",
+   "C"
+  ]
+ },
+ "classification": {
+  "mws85_sentiment": {
+   "role": "secondary",
+   "family": "news_sentiment",
+   "best_sharpe": null,
+   "reason": "无历史回测记录，待验证"
+  },
+  "nws18_ber": {
+   "role": "secondary",
+   "family": "news_sentiment",
+   "best_sharpe": null,
+   "reason": "无历史回测记录，待验证"
+  },
+  "mdl41_numericvalue": {
+   "role": "secondary",
+   "family": "model_fsi",
+   "best_sharpe": null,
+   "reason": "无历史回测记录，待验证"
+  }
+ },
+ "expressions": [
+  "multiply(rank(ts_decay_linear(vec_avg(mws85_sentiment), 10)), add(1, multiply(0.3, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+  "multiply(rank(ts_decay_linear(vec_avg(mws85_sentiment), 10)), rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))",
+  "rank(add(multiply(0.6, rank(ts_decay_linear(vec_avg(mws85_sentiment), 10))), multiply(0.4, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+  "multiply(rank(ts_decay_linear(vec_avg(nws18_ber), 10)), add(1, multiply(0.3, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+  "multiply(rank(ts_decay_linear(vec_avg(nws18_ber), 10)), rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))",
+  "rank(add(multiply(0.6, rank(ts_decay_linear(vec_avg(nws18_ber), 10))), multiply(0.4, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))"
+ ],
+ "details": [
+  {
+   "expr": "multiply(rank(ts_decay_linear(vec_avg(mws85_sentiment), 10)), add(1, multiply(0.3, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+   "template": "A",
+   "template_name": "调权型",
+   "primary_field": "mws85_sentiment",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 mws85_sentiment 捕捉核心机制，辅助信号 mdl41_numericvalue 调节信号强度",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  },
+  {
+   "expr": "multiply(rank(ts_decay_linear(vec_avg(mws85_sentiment), 10)), rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))",
+   "template": "B",
+   "template_name": "过滤型",
+   "primary_field": "mws85_sentiment",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 mws85_sentiment 与辅助信号 mdl41_numericvalue 同时确认时信号最强",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  },
+  {
+   "expr": "rank(add(multiply(0.6, rank(ts_decay_linear(vec_avg(mws85_sentiment), 10))), multiply(0.4, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+   "template": "C",
+   "template_name": "降噪型",
+   "primary_field": "mws85_sentiment",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 mws85_sentiment 为核心 alpha 来源，辅助信号 mdl41_numericvalue 降低噪音",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  },
+  {
+   "expr": "multiply(rank(ts_decay_linear(vec_avg(nws18_ber), 10)), add(1, multiply(0.3, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+   "template": "A",
+   "template_name": "调权型",
+   "primary_field": "nws18_ber",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 nws18_ber 捕捉核心机制，辅助信号 mdl41_numericvalue 调节信号强度",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  },
+  {
+   "expr": "multiply(rank(ts_decay_linear(vec_avg(nws18_ber), 10)), rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))",
+   "template": "B",
+   "template_name": "过滤型",
+   "primary_field": "nws18_ber",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 nws18_ber 与辅助信号 mdl41_numericvalue 同时确认时信号最强",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  },
+  {
+   "expr": "rank(add(multiply(0.6, rank(ts_decay_linear(vec_avg(nws18_ber), 10))), multiply(0.4, rank(ts_decay_linear(vec_avg(mdl41_numericvalue), 10)))))",
+   "template": "C",
+   "template_name": "降噪型",
+   "primary_field": "nws18_ber",
+   "secondary_field": "mdl41_numericvalue",
+   "primary_weight": 0.6,
+   "secondary_weight": 0.4,
+   "narrative": "主信号 nws18_ber 为核心 alpha 来源，辅助信号 mdl41_numericvalue 降低噪音",
+   "primary_sharpe_hist": null,
+   "secondary_sharpe_hist": null
+  }
+ ]
+}

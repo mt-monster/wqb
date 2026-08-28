@@ -1,0 +1,94 @@
+{
+  "field_count_strategy_layered_v1": {
+    "version": "2026-08-28-layered",
+    "description": "表达式字段数分层放开策略：基于四区域实证（IND robust 墙 / KOR 正交组合 / USA 强信号 / MEA 数据集上限）",
+    "applicable_regions": ["IND", "KOR", "USA", "MEA", "EUR", "GLB", "ASI", "HKG", "DEU", "GBR"],
+    "layers": {
+      "L1_probe": {
+        "field_count": 1,
+        "purpose": "新数据集首探，验证信号存在性",
+        "stage": "S0/S1 only, not for S2 candidate pool",
+        "max_expressions": 8,
+        "early_stop": "max |sharpe| < 0.7 -> dead_end",
+        "evidence": "KOR 连续 10+ 数据集首探 8/8 RED, max |sharpe| 0.2-0.52"
+      },
+      "L2_base": {
+        "field_count": "1-2",
+        "purpose": "主信号 + 辅助过滤（默认）",
+        "constraint": "辅助字段仅用于降换手/控风险，非信号增强",
+        "examples": ["rank(ts_backfill(field, 66))", "ts_mean(field, 22)"],
+        "preprocessing_sweet_spot": "仅 rank(ts_backfill(...)) 简单预处理，过度预处理引入噪声"
+      },
+      "L3_combination": {
+        "field_count": "2-3",
+        "purpose": "正交组合（跨周期/跨逻辑/跨数据集）",
+        "entry_criteria": [
+          "单/双字段已证明有效（S>=1.0 或 2y>=1.5）",
+          "新增字段提供正交性（周期/逻辑/数据集/信息源）",
+          "通过六维多样性审查"
+        ],
+        "orthogonality_types": {
+          "period": "慢变量（季度/年度）× 快变量（日频/周频）",
+          "logic": "基本面 × 量价 × 事件 × 情绪",
+          "dataset": "跨数据集组合，相关性 < 0.4",
+          "source": "不同信息源（财报/分析师/新闻/交易）"
+        },
+        "prohibited": [
+          "同族字段组合（如 fnd94 内部）",
+          "同周期信号互组（KOR 实证：慢×慢全灭）",
+          "同信号族调权重（用户 2026-08-26 明令禁止）"
+        ],
+        "success_cases": [
+          "KOR: 评级修正（慢, 2y=2.14）× SH 短周期（快）→ S=1.91, 2y=2.52",
+          "USA: long_term + short_term + event_5d（同数据集不同周期）→ S=2.10"
+        ],
+        "failure_cases": [
+          "IND: fnd94 + fnd86（信号冲突）→ S=0.54-0.73",
+          "IND: fnd94 + mdl28（稀释 IS）→ S=1.44-1.57, robust=0.16-0.50"
+        ]
+      },
+      "L4_composite": {
+        "field_count": "3+",
+        "purpose": "多因子复合（谨慎使用）",
+        "entry_criteria": [
+          "L3 验证成功",
+          "每新增字段单独论证必要性",
+          "新增字段边际贡献 > 0.1 Sharpe"
+        ],
+        "max_datasets": 2,
+        "note": ">2 数据集混合不点亮金字塔（MEA 推广为全区域强制规则）"
+      }
+    },
+    "signal_strength_mapping": {
+      "strong": {"criteria": "S>=1.5, F>=1.0", "combination_need": "0-1 辅助腿", "example": "USA multifactor_return_pred (S=2.10)"},
+      "medium": {"criteria": "单项短板", "combination_need": "1 个高正交腿", "example": "KOR 评级修正（补 SH 快信号）"},
+      "weak": {"criteria": "多项不达标", "combination_need": "2+ 腿且成功率低", "example": "IND Operating-Margin（判死）"},
+      "none": {"criteria": "全灭", "combination_need": "任何组合无效", "example": "USA acquisition_model (S<0)"}
+    },
+    "diversity_audit": {
+      "dimensions": ["operator", "field_family", "skeleton", "preprocessing", "return_source", "failure_risk"],
+      "required_for": ["L3", "L4"],
+      "enforcement": "契约+闸6 强制落地（GBR 实证：自由文本建议零帮助）"
+    },
+    "regional_overrides": {
+      "IND": {
+        "robust_wall_signal": "Operating-Margin (fnd94)",
+        "robust_wall_range": "0.50-0.68",
+        "breakthrough_strategy": "需引入正交信号族（非参数优化）",
+        "prohibited_combinations": ["fnd94 + fnd86", "fnd94 + mdl28", "fnd94 内部多字段"]
+      },
+      "KOR": {
+        "neutralization_best": "SECTOR (0.562)",
+        "dead_families": ["chart_cnn_alpha", "continuation_score", "pattern_scores", "news79", "equity_forum_data"]
+      },
+      "USA": {
+        "neutralization_best": "SUBINDUSTRY",
+        "value_saturation": "book 145 ACTIVE 已饱和"
+      },
+      "MEA": {
+        "max_datasets_hard_limit": 2,
+        "preferred_combination": "analyst(1.9x) × fundamental(1.5-1.6x)"
+      }
+    }
+  }
+}

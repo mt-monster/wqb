@@ -1,0 +1,10 @@
+[
+  "rank(ts_mean(rank(volume_anomaly_price_positioning_2), 21))",
+  "-rank(ts_mean(rank(short_term_price_change_2), 21))",
+  "rank(ts_mean(add(rank(momentum_williams_r_adjusted_2), reverse(rank(liquidity_money_flow_alignment_2))), 21))",
+  "rank(if_else(greater(rank(volume_trend_money_flow_interaction_2), 0.5), rank(typical_price_bollinger_band_position_2), reverse(rank(typical_price_bollinger_band_position_2))))",
+  "rank(ts_corr(rank(balanced_price_oscillator_2), rank(liquidity_weighted_returns_ma_2), 21))",
+  "rank(ts_kurtosis(rank(cumulative_money_flow_volume_adjusted_2), 21))",
+  "rank(ts_mean(divide(add(1, rank(money_flow_strength_typical_price_2)), add(1, rank(volume_anomaly_price_positioning_2))), 21))",
+  "rank(ts_delta(rank(balanced_price_oscillator_2), 21))"
+]

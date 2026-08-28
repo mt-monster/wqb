@@ -1,0 +1,58 @@
+[
+  {
+    "tag": "e1_delta5_d4",
+    "simulation_id": "3rMI7t8wb59F9LZSOo2N5dx",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_delta(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_delta5 变化量信号"
+  },
+  {
+    "tag": "e2_delta10_d8",
+    "simulation_id": "47eQalbuO510aOXXZwAn9UW",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_delta(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_delta10 + decay8"
+  },
+  {
+    "tag": "e3_std10_d4",
+    "simulation_id": "1qx9MT9r04KkbVCjtB2aKEx",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_std_dev(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_std_dev10 波动信号"
+  },
+  {
+    "tag": "e4_zscore10_d4",
+    "simulation_id": "3EjniT5G659qcxB12SBFlb2F",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_zscore(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_zscore10 标准化"
+  },
+  {
+    "tag": "e5_rank10_d4",
+    "simulation_id": "3nSJYu8qQ4x49zRWr7jzAb",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_rank(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 10)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_rank10 时序百分位"
+  },
+  {
+    "tag": "e6_decaylin5_d4",
+    "simulation_id": "2st4hW2jd5jK8z2rdc1GhYR",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_decay_linear(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_decay_linear5 近期加权平滑"
+  },
+  {
+    "tag": "e7_avdiff5_d4",
+    "simulation_id": "4cPgMU42u4YLbQxYV4Y62cP",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_av_diff(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 5)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 4, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_av_diff5 均值差异"
+  },
+  {
+    "tag": "e8_mean3_d8",
+    "simulation_id": "4Bbako8N04EK99M12qMig5Qs",
+    "expression": "-rank(if_else(greater(rank(vec_avg(qfl_cassie_convention_debt_mktcapital)), 0.3), divide(rank(vec_avg(qfl_cassie_model_altman_zscore)), add(2, rank(vec_avg(qfl_cassie_convention_debt_mktcapital)))), reverse(rank(ts_mean(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 3)))))",
+    "settings": {"region": "IND", "universe": "TOP500", "delay": 1, "decay": 8, "neutralization": "STATISTICAL", "truncation": 0.03},
+    "note": "else=ts_mean3 轻平滑 + decay8"
+  }
+]

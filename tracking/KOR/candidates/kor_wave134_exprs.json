@@ -1,0 +1,10 @@
+[
+  "rank(long_term_quantile1_120d_pred)",
+  "rank(long_term_seasonal_quantile1_120d_pred)",
+  "rank(long_term_regime4_quantile1_120d_pred)",
+  "rank(long_horizon_hedge3_quantile1_120d_pred)",
+  "rank(analyst_quantile5_120d_pred)",
+  "group_neutralize(rank(long_term_seasonal_quantile1_120d_pred), sector)",
+  "rank(add(long_term_quantile1_120d_pred, ts_corr(long_term_quantile1_120d_pred, close, 20)))",
+  "trade_when(if_else(rank(long_term_seasonal_quantile1_120d_pred) > 0.5, rank(long_term_quantile1_120d_pred), 0), ts_delta(long_term_regime4_quantile1_120d_pred, 20) > 0, 0)"
+]

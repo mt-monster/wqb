@@ -1,0 +1,50 @@
+[
+ {
+  "code": "group_rank(vec_avg(analyst_target_price_deviation), country)",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "group_rank(vec_avg(analyst_earnings_revision_intensity), industry)",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "add(0.6*rank(vec_avg(analyst_target_price_deviation)), 0.4*rank(ts_rank(vec_avg(analyst_earnings_revision_intensity), 5)))",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "group_neutralize(vec_avg(asset_turnover_ratio_metric), country)",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_av_diff(vec_avg(analyst_forecast_revision_factor_2), 22))",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "signed_power(rank(vec_avg(analyst_opinion_metric)), 0.5)",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "rank(ts_corr(vec_avg(analyst_forecast_revision_factor_2), vec_avg(analyst_earnings_revision_intensity), 20))",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ },
+ {
+  "code": "group_scale(vec_avg(accruals_analysis_factor), country)",
+  "note": "ai_equity WITHOUT vol/alpha_score dominant legs (EUR-AIEQ-VOL-SCORE-PRODCORR).",
+  "dataset": "ai_equity_alpha",
+  "wave": 32
+ }
+]

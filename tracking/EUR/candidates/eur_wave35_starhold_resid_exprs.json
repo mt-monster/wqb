@@ -1,0 +1,10 @@
+[
+  "rank(ts_av_diff(star_hold_global_screening_rank, 5))",
+  "rank(ts_av_diff(star_hold_global_screening_rank, 22))",
+  "rank(subtract(star_hold_global_screening_rank, group_mean(star_hold_global_screening_rank, 1, industry)))",
+  "rank(subtract(star_hold_global_screening_rank, group_mean(star_hold_global_screening_rank, 1, country)))",
+  "add(0.6*rank(ts_av_diff(star_hold_global_screening_rank, 5)), 0.4*rank(star_hold_industry_rank))",
+  "add(0.5*rank(subtract(star_hold_global_screening_rank, group_mean(star_hold_global_screening_rank, 1, industry))), 0.5*rank(star_hold_global_change_rank))",
+  "rank(ts_av_diff(star_hold_global_rank, 22))",
+  "add(0.5*rank(ts_av_diff(star_hold_global_screening_rank, 22)), 0.5*rank(ts_av_diff(star_hold_region_rank, 22)))"
+]
