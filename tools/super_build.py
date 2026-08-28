@@ -28,7 +28,6 @@ import asyncio
 import json
 import os
 import sys
-import time
 
 REGION_HINT = {"USA": "the US equity market", "KOR": "the Korean equity market",
                "MEA": "the Middle East and Africa equity markets",

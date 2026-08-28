@@ -20,7 +20,6 @@ S3 输入格式（pipeline.py）：
 
 import json
 import sys
-from pathlib import Path
 
 
 def convert_alpha_list_to_exprs(alpha_list_path: str, output_path: str) -> None:

@@ -12,7 +12,7 @@ dispatched to ``create_multi_simulation``:
 from __future__ import annotations
 
 import re
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Set, Tuple
 
 from wqb.config import GHOST_OPERATORS, SHAPE_CLASSES, get_operator_family
 from wqb.expression.grammar import Node, ParseError, parse_expression

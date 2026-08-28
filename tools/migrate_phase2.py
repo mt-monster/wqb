@@ -13,7 +13,6 @@
   python tools/migrate_phase2.py             # 实跑
 """
 import argparse
-import glob
 import json
 import re
 import sqlite3

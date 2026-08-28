@@ -1,5 +1,5 @@
 import os
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 wave6b EUR FCF x hetero deep-dilution mix probe runner.

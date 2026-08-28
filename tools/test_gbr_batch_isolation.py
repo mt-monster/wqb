@@ -9,7 +9,7 @@ import json
 import sys
 import time
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 # 添加 MCP 目录到路径
 MCP_DIR = Path(__file__).parent.parent / "world-quant-brain-mcp"

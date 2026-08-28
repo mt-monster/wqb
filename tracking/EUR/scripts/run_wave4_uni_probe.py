@@ -1,5 +1,5 @@
 import os
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 wave4 EUR fcf universe scan probe runner.

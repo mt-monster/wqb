@@ -19,7 +19,6 @@ GET /alphas/{id}/submit 的 403 检查列表（零成本，不消耗提交配额
 """
 import argparse
 import asyncio
-import json
 import os
 import sys
 

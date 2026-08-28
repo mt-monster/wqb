@@ -1,5 +1,5 @@
 import os
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 wave5 EUR price_signal_dl + pattern_scores probe runner.

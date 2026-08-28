@@ -4,10 +4,8 @@
 替代 brain-alpha-judge 的 CLI 调用与配置管理。
 """
 
-import json
 import logging
 import os
-import subprocess
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 

@@ -31,7 +31,6 @@ import argparse
 import asyncio
 import json
 import os
-import sys
 import time
 
 MCP_DIR = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")

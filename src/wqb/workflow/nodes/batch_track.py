@@ -4,13 +4,12 @@
 替代 brain-simAlphasinBatch-and-track 的 PowerShell 命令模板。
 """
 
-import json
 import logging
 import os
 import subprocess
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
 

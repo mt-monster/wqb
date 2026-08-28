@@ -1,5 +1,5 @@
 import os
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 wave30 EUR news54 event-calendar probe runner.

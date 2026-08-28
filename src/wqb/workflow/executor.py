@@ -9,9 +9,9 @@ import logging
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from .registry import WorkflowRegistry, get_registry
+from .registry import get_registry
 
 logger = logging.getLogger(__name__)
 

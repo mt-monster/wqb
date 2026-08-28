@@ -5,12 +5,11 @@
 产出写入 ledger_kv s1_<dataset>_d<delay>，供 S2 自动注入。
 """
 
-import json
 import logging
 import os
 import subprocess
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
 
