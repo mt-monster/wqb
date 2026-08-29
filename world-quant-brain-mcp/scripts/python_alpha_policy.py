@@ -1,16 +1,6 @@
 from __future__ import annotations
 
-import json
-from pathlib import Path
 from typing import Any
-
-
-POLICY_PATH = Path(__file__).resolve().parents[1] / "reference" / "policy" / "python_alpha_policy.json"
-
-
-def load_policy(path: str | Path | None = None) -> dict[str, Any]:
-    policy_path = Path(path) if path else POLICY_PATH
-    return json.loads(policy_path.read_text())
 
 
 def is_auxiliary_group_key_field(field_id: str, description: str = "", field_type: str | None = None) -> bool:

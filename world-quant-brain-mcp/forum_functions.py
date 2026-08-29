@@ -10,7 +10,7 @@ import re
 import sys
 import time
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 def log(message: str, level: str = "INFO"):
     """Log message with timestamp."""

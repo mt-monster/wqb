@@ -31,10 +31,10 @@ ImportError: cannot import name 'SHAPE_CLASSES' from 'wqb.expression.validator'
 **教训**：未使用 import 的自动清理必须做**跨文件引用校验**，否则会破坏重导出链路。
 已将 `SHAPE_CLASSES` 恢复，并在下文的清理方法中补充了这条校验规则。
 
-### 剩余未处理（用户选择暂缓）
+### 剩余未处理（2026-08-28 晚已全部完成，见下）
 
-- `world-quant-brain-mcp/` 454 个未用 import（占全仓 85%，模板化复制所致）
-- 4 个真死代码：`get_mcp_tool_for_task`、`format_mcp_reminder`、`read_wave_result`、`load_policy`
+- ~~`world-quant-brain-mcp/` 454 个未用 import~~ → ✅ 已清理：451 → 17（剩余 17 个全在 3 个保护文件内：brain_api.py 门面重导出 / main.py 副作用注册导入 / labs_data_analysis_agent.py 整文件粘贴）。MCP 包测试 32 passed + 2 个**历史既有失败**（stash 基线验证与本次改动无关：注册数 60≠53、tools_submit 1≠2 为过期期望）。
+- ~~4 个真死代码~~ → ✅ 已删除：`get_mcp_tool_for_task`、`format_mcp_reminder`（mcp_check.py）、`read_wave_result`（wave_results_writer.py）、`load_policy`（python_alpha_policy.py，连带 POLICY_PATH 常量与 json/Path 导入）。`field_role` 经核实为公共 API 误报（labs_data_analysis_agent.py 大量调用），保留。根 pytest 273 passed。
 - `tracking/_scratch/` 97 个一次性脚本（按用户决策保留）
 
 ---

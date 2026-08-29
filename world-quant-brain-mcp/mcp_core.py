@@ -3,14 +3,14 @@
 持有: FastMCP 实例 (mcp) + 响应瘦身辅助 (_slim_*) + 健康检查路由 + save_config。
 工具模块 (tools_*.py) 统一 `from mcp_core import mcp, brain_client, ...`。
 """
-import json, re, os, sys, logging
+import json, re, os, logging
 from datetime import datetime, timezone
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, Any
 
 from mcp.server.fastmcp import FastMCP, Context
 from starlette.responses import JSONResponse
 
-from brain_api import brain_client, load_config, _resolve_config_path
+from brain_api import brain_client, _resolve_config_path, load_config  # noqa: F401 — load_config 供 tools_*/tests 重导出
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("mcp_core")

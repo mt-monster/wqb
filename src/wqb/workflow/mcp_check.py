@@ -6,7 +6,7 @@
 
 import functools
 import logging
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict
 
 logger = logging.getLogger(__name__)
 
@@ -151,40 +151,3 @@ def require_mcp_tools(node_name: str):
             return func(*args, **kwargs)
         return wrapper
     return decorator
-
-
-def get_mcp_tool_for_task(task_type: str) -> List[str]:
-    """获取特定任务类型推荐的 MCP 工具.
-
-    Args:
-        task_type: 任务类型（db_read/db_write/brain_api/workflow）
-
-    Returns:
-        推荐的 MCP 工具列表
-    """
-    return MCP_TOOLS.get(task_type, [])
-
-
-def format_mcp_reminder(node_name: str) -> str:
-    """格式化 MCP 工具提醒消息.
-
-    Args:
-        node_name: 节点名称
-
-    Returns:
-        格式化的提醒消息
-    """
-    check = check_mcp_tools(node_name)
-    lines = [
-        f"=== MCP 工具提醒: {node_name} ===",
-        f"描述: {check['description']}",
-        f"必需工具: {', '.join(check['required_tools']) or '无'}",
-        f"推荐工具: {', '.join(check['recommended_tools']) or '无'}",
-        "",
-        "规约提醒（AGENTS.md §5 层 0）:",
-        "  - 结构化数据读写首选 wqb-db MCP 工具",
-        "  - 禁止手写 requests 脚本调用平台 API",
-        "  - 网络工具统一走 BrainApiClient（自带 429 退避）",
-        "=" * 40,
-    ]
-    return "\n".join(lines)

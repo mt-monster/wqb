@@ -1,14 +1,9 @@
 """仿真工具 (单发/批量/子查询/错误诊断) — MCP 工具层 (2026-08-13 自 main.py 按域拆分)。"""
-import json, os, re, sys, asyncio, time, logging
-from typing import Dict, List, Optional, Any, Union, Sequence, Tuple
-from datetime import datetime, timedelta
-from time import sleep
+import re, sys, asyncio, time
+from typing import Dict, List, Optional, Any, Sequence
 from pathlib import Path
 
-from mcp_core import (mcp, brain_client, logger, save_config, _slim_checks, _slim_alpha,
-    _slim_alpha_response, _slim_alpha_list, _slim_multisim, _slim_datafields, _slim_datasets,
-    _records_to_dicts, _slim_yearly, _slim_pnl, _slim_correlation_block, _slim_check_correlation,
-    _slim_pyramids, _slim_text_lookup,     _ra_bad, _truncate, _unwrap_result, _rewrap, _is_error)
+from mcp_core import mcp, brain_client, logger, _slim_alpha_response, _slim_multisim, _slim_text_lookup
 
 from brain_api import SimulationSettings, SimulationData
 

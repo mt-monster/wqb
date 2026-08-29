@@ -81,10 +81,17 @@ def detect_unused_imports(path):
         if isinstance(node, ast.Import):
             for a in node.names:
                 local = a.asname or a.name.split(".")[0]
-                imported[local] = (node.lineno, None)
+                # module="" 表示普通 import 语句；None 保留给相对导入（level>0）
+                imported[local] = (node.lineno, "")
                 alias_map[local] = a.name
         elif isinstance(node, ast.ImportFrom):
             if node.module == "__future__":
+                continue
+            if node.level > 0:
+                # 相对导入 from . import x：保守起见整体不参与清理
+                for a in node.names:
+                    local = a.asname or a.name
+                    imported[local] = (node.lineno, None)
                 continue
             for a in node.names:
                 if a.name in ("annotations", "TYPE_CHECKING"):
@@ -141,29 +148,24 @@ def build_import_index(root):
 
 
 def is_reexported(rel, name, index):
-    """rel 文件的模块是否被其他文件 import 了 name（即 rel 在重导出 name）。"""
-    canon = rel[:-3].replace("/", ".")
-    consumers = index.get(canon, {}).get(name, set())
-    return any(c != rel for c in consumers)
+    """rel 文件的模块是否被其他文件 import 了 name（即 rel 在重导出 name）。
+
+    同时匹配两种模块名：全路径 canon（src.wqb.config）与裸文件名（config）——
+    后者覆盖"以包目录为 cwd 运行"的隐式相对导入（如 world-quant-brain-mcp 内部
+    `from mcp_core import ...`）。
+    """
+    canon = rel[:-3].replace("\\", "/").replace("/", ".")
+    base = os.path.basename(rel)[:-3]
+    for key in (canon, base):
+        consumers = index.get(key, {}).get(name, set())
+        if any(c != rel for c in consumers):
+            return True
+    return False
 
 
-def rebuild_import_line(line, drop_names):
-    """用 AST 重建 import 行，移除 drop_names（保留缩进/注释）。返回 '' 表示整行删除。"""
-    stripped = line.lstrip()
-    indent = line[: len(line) - len(stripped)]
-    code_part = stripped
-    comment = ""
-    if "#" in code_part and not code_part.strip().startswith("#"):
-        idx = code_part.index("#")
-        comment = code_part[idx:]
-        code_part = code_part[:idx].rstrip()
-    try:
-        tree = ast.parse(code_part)
-    except SyntaxError:
-        return None
-    if not tree.body or not isinstance(tree.body[0], (ast.Import, ast.ImportFrom)):
-        return None
-    node = tree.body[0]
+def rebuild_import_stmt(node, drop_names):
+    """用 AST 重建 import 语句（支持多行括号形式），移除 drop_names。
+    返回新语句字符串；返回 "" 表示全部名字被删（整语句删除）。"""
     kept = []
     for a in node.names:
         local = a.asname or a.name.split(".")[0]
@@ -173,12 +175,10 @@ def rebuild_import_line(line, drop_names):
     if not kept:
         return ""
     if isinstance(node, ast.Import):
-        new_code = "import " + ", ".join(kept)
-    else:
-        dots = "." * (node.level or 0)
-        module = (dots + node.module) if node.module else dots
-        new_code = f"from {module} import " + ", ".join(kept)
-    return indent + new_code + (("  " + comment) if comment else "")
+        return "import " + ", ".join(kept)
+    dots = "." * (node.level or 0)
+    module = (dots + node.module) if node.module else dots
+    return f"from {module} import " + ", ".join(kept)
 
 
 def is_test_file(rel):
@@ -222,6 +222,8 @@ def main():
                     help="实际删除（带备份 + 跨文件校验 + ast 校验）；默认 dry-run")
     ap.add_argument("--include-tests", action="store_true",
                     help="纳入 tests/ 与 test_*.py（默认排除）")
+    ap.add_argument("--exclude", action="append", default=[],
+                    help="排除的文件相对路径（精确匹配，可重复）。用于门面重导出/副作用导入/整文件粘贴等不可清理文件")
     args = ap.parse_args()
 
     if args.report and args.path:
@@ -230,6 +232,9 @@ def main():
 
     dry_run = not args.apply
     candidates = collect_candidates(args.report, args.path, args.include_tests)
+    excludes = set(args.exclude)
+    if excludes:
+        candidates = [(rel, items) for rel, items in candidates if rel not in excludes]
     index = build_import_index(args.root)
 
     plan = []          # (rel, name, module, line, skip_reason)
@@ -270,7 +275,7 @@ def main():
         print("\n(dry-run) 未做任何修改。加 --apply 才实际删除（带 *.bak_imp 备份）。")
         return 1
 
-    # ---- 实际删除 ----
+    # ---- 实际删除（语句级：支持多行括号 import）----
     done, failed = [], []
     for rel in sorted(by_file):
         path = os.path.join(args.root, rel)
@@ -278,31 +283,48 @@ def main():
             original = f.read()
         with open(path + ".bak_imp", "w", encoding="utf-8", newline="") as f:
             f.write(original)
+
+        # 按语句起始行聚合待删名字
+        stmt_drops = {}
+        for name, lineno in by_file[rel]:
+            stmt_drops.setdefault(lineno, set()).add(name)
+
+        try:
+            tree = ast.parse(original)
+        except SyntaxError as e:
+            failed.append((rel, f"解析失败 L{e.lineno}: {e.msg}"))
+            continue
+
         lines = original.split("\n")
-        # 行号从大到小
-        ops = sorted(by_file[rel], key=lambda x: -x[1])
+        # 找到覆盖待删行的 import 语句节点，按起始行从大到小处理（避免偏移）
+        stmts = [n for n in ast.walk(tree)
+                 if isinstance(n, (ast.Import, ast.ImportFrom))
+                 and n.lineno in stmt_drops
+                 and not (isinstance(n, ast.ImportFrom) and n.level > 0)]
         removed = modified = 0
-        for name, lineno in ops:
-            idx = lineno - 1
-            if idx >= len(lines):
-                failed.append((rel, f"行号 {lineno} 越界"))
+        unresolved = set(stmt_drops)
+        for node in sorted(stmts, key=lambda n: -n.lineno):
+            drops = stmt_drops[node.lineno]
+            start = node.lineno - 1
+            end = node.end_lineno  # 切片右开：覆盖到语句最后一行
+            if end > len(lines):
+                failed.append((rel, f"L{node.lineno}-{end} 越界"))
                 continue
-            target = lines[idx]
-            s = target.strip()
-            if s.startswith("import ") or s.startswith("from "):
-                new_line = rebuild_import_line(target, {name})
-                if new_line is None:
-                    failed.append((rel, f"L{lineno} 无法解析"))
-                    continue
-                if new_line == "":
-                    del lines[idx]
-                    removed += 1
-                else:
-                    lines[idx] = new_line
-                    modified += 1
+            indent = re.match(r"[ \t]*", lines[start]).group(0)
+            new_stmt = rebuild_import_stmt(node, drops)
+            if new_stmt == "":
+                del lines[start:end]
+                removed += 1
             else:
-                failed.append((rel, f"L{lineno} 非 import 行"))
-                continue
+                lines[start:end] = [indent + new_stmt]
+                modified += 1
+            unresolved.discard(node.lineno)
+
+        if unresolved:
+            failed.append((rel, f"未定位到语句: {sorted(unresolved)}"))
+            os.remove(path + ".bak_imp")
+            continue
+
         new_content = "\n".join(lines)
         try:
             ast.parse(new_content)

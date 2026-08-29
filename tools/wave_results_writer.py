@@ -84,22 +84,6 @@ def write_wave_result(
     print(f"[OK] wave_results: {region} wave{wave_number} status={status}")
 
 
-def read_wave_result(region, wave_number):
-    """读取单个 wave 结果。"""
-    conn = sqlite3.connect(str(DB))
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-    c.execute(
-        "SELECT * FROM wave_results WHERE region=? AND wave_number=?",
-        (region, wave_number),
-    )
-    row = c.fetchone()
-    conn.close()
-    if not row:
-        return None
-    return dict(row)
-
-
 def list_wave_results(region=None, status=None, archived=None):
     """列出 wave 结果（可按 region/status/archived 过滤）。"""
     conn = sqlite3.connect(str(DB))
