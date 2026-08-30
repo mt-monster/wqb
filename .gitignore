@@ -55,6 +55,8 @@ research-data/
 
 # Runtime SQLite DB and state
 data/
+# DB backup files (only keep the latest; older ones go to attic/db_backups/)
+data/wqb.db.bak*
 
 # One-off cleanup script
 cleanup_tmp.py
