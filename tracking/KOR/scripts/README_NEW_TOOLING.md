@@ -27,24 +27,30 @@ tracking/KOR/
   scripts/  （新增 9 个，见下）
 ```
 
-## 新脚本一览
+## 新脚本一览（2026-09-01 清理后现状）
 
-| 脚本 | 对应优化 | 用途 |
-|---|---|---|
-| `kor_ledger.py` | M17 | 台账统一 CLI：原子写 + utf-8-sig + .bak 备份 + 写时重读合并（防并行覆盖）。`keys/get/set/mark-dead/add-wave/set-verdict/submit-ready/backup` |
-| `scan_fields.py` | M3/M4 | 统一字段扫描：直连 get_datafields 落 typed catalog（含字段级 type），取代 kor_scan_fields*/scan_aieq* |
-| `score_datasets.py` | M1/M2 | 数据集自动评分（排除台账死数据集）+ 探针电池接线（--probe-plan 生成 / --probe-score 三灯判定） |
-| `gate.py` | M4/M7/M9/M10/M11 | 统一闸门：import verifier（无子进程）、白名单按 dataset 自动派生、字段级类型数据驱动、毒模式拦截、结果缓存 |
-| `metrics_cache.py` | M12 | 指标读穿缓存 + 单进程单登录；CLI 兼容 kor_fetch_metrics 输出 |
-| `review_wave.py` | M15/M16 | 通用评审：消费指标缓存、集中阈值、near 池墙面诊断（CW/2Y/…）、--write-ledger 回写台账 |
-| `build_wave.py` | M6/M8 | 统一选波：全历史去重、算子树分桶（根>次节点）、骨架配给（linear_mix≤50%）、near-miss 字段加权、波内字段去重 |
-| `diversity_audit.py` | M18 | 多样性审计累积进台账 diversity_history（趋势可观测） |
-| `kor_pipeline.py` | B/M13/M14 | 端到端编排：gate→submit→poll→review→ledger，checkpoint 断点续跑；`quota` 子命令（修正 earliest_release 算法） |
+**活跃链 = v2 增强链**（战役脚本唯一权威实现在 `wq-brain-campaign-toolkit`；本目录为 KOR 专用 v2 扩展，含纪律监控）：
+
+| 脚本 | 用途 |
+|---|---|
+| `kor_pipeline_v2.py` | **v2 端到端编排**：v1 基础上集成战役纪律执行器 + 纪律监控器 + 波次规划器；gate→submit→poll→review→ledger，checkpoint 断点续跑 |
+| `wave_planner.py` | 波次规划器（消费 campaign_discipline 决策） |
+| `review_wave_v2.py` | v2 评审：walls 诊断 + 纪律评估 + 台账回写 |
+| `campaign_discipline.py` | 战役纪律执行器（数据集切换/营救/PROD 深度判停阈值） |
+| `discipline_monitor.py` | 纪律监控器（波次/数据集维度统计） |
+| `compare_improvement.py` | 改进前后对比 |
+| `build_wave.py` | 选波：去重/分桶/骨架配给/near 加权（KOR 本地版；通用版在 toolkit） |
+| `gate.py` | KOR 本地闸门（通用版在 toolkit `gate.py`） |
+| `kor_fetch_metrics.py` | Api/凭证 + 指标拉取（v2 链复用） |
+| `kor_ledger.py` | 台账统一 CLI：原子写 + .bak 备份 + 写时重读合并 |
+| `metrics_cache.py` | 指标读穿缓存 + 单进程单登录 |
+
+**已归档（2026-09-01 移入 `archive/`，非活跃勿用）**：v1 旧链 `kor_pipeline.py` / `kor_poll_pipeline.py` / `review_wave.py`；与 toolkit 重复的历史副本 `scan_fields.py` / `score_datasets.py` / `diversity_audit.py`；一次性探针与散件 `kor_preflight_check.py` / `batch_validate_kor.py` / `select_wave1.py` / `validate_wave2v2.py` / `validate_wave3.py` / `scan_whitelists.py` / `scan_dl_riskfree.py` / `probe_*.py` / `extract_p32.py` / `fetch_ac_fields.py` / `filter_ac.py` / `_gen_other455_catalog.py` / `_inspect_fail_p*.py` / `_q_kor_registry.py` / `_replay_*.py`。scan/评分/多样性等通用能力一律走 toolkit（`--campaign-dir tracking/KOR`）。
 
 ## 既有脚本补丁（向后兼容）
 
 - `kor_fetch_metrics.py`：+ 指标读穿缓存（`KOR_NO_CACHE=1` 或 `--refresh` 回源）；multisim 分支复用单登录。
-- `kor_poll_pipeline.py`：`--wait N` 改为轮询循环（指数退避 ≤120s，`--timeout` 总超时，progress 60min 无变化熔断 STALLED）；单登录；ERROR 分支取全量 child（原 [:8] 截断）。
+- 旧 `kor_poll_pipeline.py`（已归档）：曾为 `--wait N` 轮询循环实现（指数退避 ≤120s、progress 60min 熔断 STALLED、ERROR 全量 child）；其能力已被 `kor_pipeline_v2.py` 内置。
 
 ## 典型流程
 
@@ -70,17 +76,17 @@ $PY score_datasets.py --probe-score <multisim_id> --dataset behavioral_signals -
 $PY build_wave.py --file candidates/new_exprs.json --wave 36A
 $PY gate.py --dataset behavioral_signals --file candidates/kor_wave36A_exprs.json
 
-# 5. 端到端（带续跑+配额闸）
-$PY kor_pipeline.py quota
-$PY kor_pipeline.py run --file candidates/kor_wave36A_exprs.json --dataset behavioral_signals --wave 36A --submit --review --write-ledger
+# 5. 端到端（带续跑+配额闸；v2 增强链）
+$PY kor_pipeline_v2.py run --file candidates/kor_wave36A_exprs.json --dataset behavioral_signals --wave 36A --submit --review
 
-# 6. 复盘
-$PY diversity_audit.py
+# 6. 复盘（多样性审计走 toolkit）
+$PY "C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts/diversity_audit.py" --campaign-dir tracking/KOR
 $PY kor_ledger.py mark-dead xxx --reason "..."
 ```
 
 ## 纪律
 
 - 旧 `record_*.py`/`review_wave1/3/5.py`/`kor_scan_fields*.py`/`scan_aieq*.py`/`validate_wave*.py`/`batch_validate_kor.py` 全部冻结，新工作一律走新链。
-- `kor_preflight_check.py` 保留为历史参考；其 verifier 指向 `.qoder-cn` 的路径缺陷由 `gate.py` 修正（`.workbuddy` 优先 + `WQ_VALIDATOR_DIR` 环境变量）。
+- 2026-09-01 清理：v1 旧链、toolkit 重复副本、一次性探针共 26 个脚本已移入 `archive/`（见上「已归档」清单）。
+- scan/评分/多样性等通用能力一律走 toolkit（`--campaign-dir tracking/KOR`）；本目录只保留 KOR 专用 v2 扩展。
 - `_tmp_*` 探针属并行会话产物，待其确认后清理（M19 暂缓执行）。

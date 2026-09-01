@@ -94,3 +94,7 @@ world-quant-brain-mcp/super_alpha_result_*.json
 .box-agent/
 # local reference material (kept on disk, not part of the repo)
 alpha模板.docx
+# session planning scratch (planning-with-files 三件套：会话级草稿，不入库)
+/findings.md
+/progress.md
+/task_plan.md
