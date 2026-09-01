@@ -44,7 +44,7 @@ def test_brain_client_singleton_identity():
 def test_each_tool_module_registers_at_least_one_tool():
     import importlib
     expected = {
-        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 6,
+        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 7,
         "tools_alpha": 8, "tools_data": 10, "tools_submit": 1, "tools_corr": 3,
         "tools_forum": 4, "tools_spc": 4,
     }

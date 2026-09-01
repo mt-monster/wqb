@@ -85,6 +85,30 @@ def run(
     ctx = _context or {}
     store = ctx.get("store")
 
+    # dry-run：构建到六步闸判定计划即停，不触碰 network / 不写库
+    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
+    if ctx.get("dry_run"):
+        return {
+            "alpha_id": alpha_id,
+            "success": True,
+            "dry_run": True,
+            "verdict": None,
+            "gates": [],
+            "steps": [{
+                "step": "dry_run",
+                "success": True,
+                "message": (
+                    "Would run six-gate judge: platform_check → correlation(prod/self) "
+                    "→ yearly_attribution → trend_score → final verdict"
+                ),
+            }],
+            "plan": {
+                "alpha_id": alpha_id,
+                "trend_window_days": trend_window_days,
+                "confirm_submit": confirm_submit,
+            },
+        }
+
     result: Dict[str, Any] = {
         "alpha_id": alpha_id,
         "gates": [],

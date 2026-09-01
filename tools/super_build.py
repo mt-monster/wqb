@@ -6,7 +6,8 @@
                (self_correlation < gate) * (turnover > 0.01) * (turnover < 0.5)
     （USA 必备 no-op 门控；逻辑符只能用 * / || / ==）
   - combo:     1 - maxCorr（generate_stats/self_corr/reduce_max 构造，压 SELF）
-  - 关键杠杆：neutralization 用 SUBINDUSTRY（MARKET 地板 ~0.717 压不进 0.7）
+  - 关键杠杆：neutralization 逐区扫描（USA 最优 SUBINDUSTRY；IND 实测 STATISTICAL 最优、
+    SUBINDUSTRY 最差，极差 0.199——区域结论不可迁移，勿照搬 SUBINDUSTRY 默认）
   - 提交：description 各需 ≥100 英文字；name 用 prodCorrelation 最大值约定
 
 子命令:
@@ -67,7 +68,7 @@ def _bootstrap():
     sys.path.insert(0, mcp)
 
 
-def build_selection_description(region, limit, gate):
+def build_selection_description(region, limit, gate, neutralization):
     """selection_description：≥100 英文（平台硬门槛，勿缩写）。"""
     market = REGION_HINT.get(region, f"the {region} equity market")
     return (
@@ -82,11 +83,14 @@ def build_selection_description(region, limit, gate):
         f"A turnover band between one and fifty percent controls trading costs and "
         f"ensures the selected components are tradable in live execution. The final "
         f"score multiplies all factors, and the platform retains the top {limit} "
-        f"scoring components. Subindustry neutralization is used to decorrelate the "
-        f"component signals from the current production book, which is the decisive "
-        f"lever for passing the production correlation test. This description "
-        f"documents the design intent, the correlation penalty structure, and every "
-        f"hard gate applied before a candidate may enter the final combination."
+        f"scoring components. {neutralization} neutralization is applied to decorrelate "
+        f"the component signals from the current production book; the optimal scheme is "
+        f"region-dependent and must be scanned across all neutralization options per "
+        f"region (for example IND favours STATISTICAL while USA favours SUBINDUSTRY), "
+        f"and is the decisive lever for passing the production correlation test. This "
+        f"description documents the design intent, the correlation penalty structure, "
+        f"and every hard gate applied before a candidate may enter the final "
+        f"combination."
     )
 
 
@@ -205,7 +209,7 @@ async def cmd_submit(a):
         print(f"[precheck] 提交层 OK（HTTP {resp.status_code}）")
 
     # 2) 设置属性：name + 两个 ≥100 英文 description
-    sel_desc = build_selection_description(a.region, a.selection_limit or 10, a.self_gate or 0.55)
+    sel_desc = build_selection_description(a.region, a.selection_limit or 10, a.self_gate or 0.55, a.neutralization)
     combo_desc = build_combo_description(a.region)
     await brain.set_alpha_properties(a.alpha_id, name=a.name,
                                      selection_description=sel_desc,
@@ -242,7 +246,8 @@ def main():
     p.add_argument("--universe", default="TOP400")
     p.add_argument("--delay", type=int, default=1)
     p.add_argument("--decay", type=int, default=5)
-    p.add_argument("--neutralization", default="SUBINDUSTRY", help="关键杠杆，勿改 MARKET")
+    p.add_argument("--neutralization", default="SUBINDUSTRY",
+                   help="中性化方案；★区域相关须逐区扫描（USA 最优 SUBINDUSTRY、IND 最优 STATISTICAL，结论不可迁移），勿照搬默认")
     p.add_argument("--truncation", type=float, default=0.08)
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)

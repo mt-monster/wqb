@@ -266,7 +266,9 @@ _STATE = _load_operators_state()
 
 VERIFIED_SAFE_OPERATORS: List[str] = list(_STATE.get("verified", []))
 
-GHOST_OPERATORS: Set[str] = set(_STATE.get("known_ghosts", [])) | {"neutralize"}
+# 2026-09-01 兼容：operators_verified.json 的幽灵键存在两代 schema
+# （旧 known_ghosts / 新 ghost，operator-audit 工具已切新键），双读防漂移。
+GHOST_OPERATORS: Set[str] = set(_STATE.get("known_ghosts", [])) | set(_STATE.get("ghost", [])) | {"neutralize"}
 
 # Sanity guard: verified and ghost sets must stay disjoint.
 GHOST_OPERATORS -= set(VERIFIED_SAFE_OPERATORS)

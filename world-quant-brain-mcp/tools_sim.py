@@ -1,9 +1,9 @@
 """仿真工具 (单发/批量/子查询/错误诊断) — MCP 工具层 (2026-08-13 自 main.py 按域拆分)。"""
-import re, sys, asyncio, time
+import re, sys, asyncio, time, os, json
 from typing import Dict, List, Optional, Any, Sequence
 from pathlib import Path
 
-from mcp_core import mcp, brain_client, logger, _slim_alpha_response, _slim_multisim, _slim_text_lookup
+from mcp_core import mcp, brain_client, logger, _slim_alpha, _slim_alpha_response, _slim_multisim, _slim_text_lookup
 
 from brain_api import SimulationSettings, SimulationData
 
@@ -42,6 +42,176 @@ def _validate_region_settings(region: str, universe: str, neutralization: str) -
     if neutralization not in _VALID_NEUTRALIZATIONS:
         return {"error": f"Unknown neutralization '{neutralization}'. Valid: {_VALID_NEUTRALIZATIONS}"}
     return None
+
+
+# ---- toolkit gate 静态门禁（2026-09-01）----
+# 复用 toolkit 权威源：platform_constraints.json（毒模式/不可访问算子/known_ops）
+# + alpha-expression-verifier（语法）。与 tools_sim 已有的 vector_wrap 复用同一模式：
+# 从工作区/技能库单一权威源导入，不复制规则。
+_TOOLKIT_CANDIDATES = [
+    # 环境变量优先
+    os.environ.get("WQ_TOOLKIT_DIR"),
+    # 常规安装位
+    str(Path.home() / ".qoder-cn" / "skills" / "wq-brain-campaign-toolkit"),
+    str(Path.home() / ".workbuddy" / "skills" / "wq-brain-campaign-toolkit"),
+]
+
+_toolkit_pc_cache: Optional[Dict[str, Any]] = None
+_toolkit_validator = None
+_toolkit_validator_loaded = False
+
+
+def _load_toolkit_pc() -> Optional[Dict[str, Any]]:
+    """加载 toolkit platform_constraints.json（毒模式/不可访问算子等平台级约束）。"""
+    global _toolkit_pc_cache
+    if _toolkit_pc_cache is not None:
+        return _toolkit_pc_cache
+    for base in _TOOLKIT_CANDIDATES:
+        if not base:
+            continue
+        p = Path(base) / "config" / "platform_constraints.json"
+        if p.is_file():
+            try:
+                _toolkit_pc_cache = json.loads(p.read_text(encoding="utf-8"))
+                return _toolkit_pc_cache
+            except Exception:
+                continue
+    return None
+
+
+def _load_toolkit_validator():
+    """加载 alpha-expression-verifier 的 ExpressionValidator（语法校验权威）。"""
+    global _toolkit_validator, _toolkit_validator_loaded
+    if _toolkit_validator_loaded:
+        return _toolkit_validator
+    _toolkit_validator_loaded = True
+    vdir = os.environ.get("WQ_VALIDATOR_DIR")
+    cands = [vdir] if vdir else []
+    for root in (".qoder-cn", ".workbuddy", ".cursor"):
+        cands.append(str(Path.home() / root / "skills" / "alpha-expression-verifier" / "scripts"))
+    for d in cands:
+        if d and Path(d, "validator.py").is_file():
+            try:
+                if d not in sys.path:
+                    sys.path.insert(0, d)
+                from validator import ExpressionValidator
+                _toolkit_validator = ExpressionValidator()
+                return _toolkit_validator
+            except Exception:
+                continue
+    return None
+
+
+def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
+    """toolkit gate 静态门禁：MCP 直发 multisim 前的强制预检。
+
+    检查项（纯静态，不依赖战役目录/catalog）：
+      1. 语法（verifier 权威）
+      2. 不可访问算子（ts_min/ts_max 等 platform_constraints.inaccessible_ops）
+      3. 毒模式正则（platform_constraints.poison_patterns）
+    环境缺 toolkit/verifier 时降级跳过（不阻断业务），但首次会打 WARNING。
+    返回 None=通过，dict=整批拒绝（含逐条 issues 与修复提示）。
+    """
+    pc = _load_toolkit_pc()
+    if pc is None:
+        logger.warning("[toolkit-gate] platform_constraints.json 未找到（WQ_TOOLKIT_DIR 未设且候选位缺失），静态门禁降级跳过")
+        return None
+    inaccessible = set(pc.get("inaccessible_ops", []))
+    poison_patterns = []
+    for pat in pc.get("poison_patterns", []):
+        # poison_patterns 结构：[{name, regex, ...}, ...]（见 platform_constraints.json）
+        pattern_str = pat.get("regex") if isinstance(pat, dict) else pat
+        name = pat.get("name", "?") if isinstance(pat, dict) else "?"
+        if not pattern_str:
+            continue
+        try:
+            poison_patterns.append((name, re.compile(pattern_str)))
+        except re.error:
+            continue
+
+    issues_by_expr: Dict[int, List[str]] = {}
+    for i, expr in enumerate(expressions):
+        issues = []
+        # 2) 不可访问算子
+        for op in inaccessible:
+            if re.search(rf"\b{re.escape(op)}\s*\(", expr):
+                issues.append(f"[INACCESSIBLE_OP] {op} 平台不可访问，用已验证等价算子替换")
+        # 3) 毒模式
+        for name, pat in poison_patterns:
+            if pat.search(expr):
+                issues.append(f"[POISON] 命中毒模式 {name}")
+        if issues:
+            issues_by_expr[i] = issues
+
+    # 1) 语法（最权威，放最后汇总）
+    v = _load_toolkit_validator()
+    if v is not None:
+        for i, expr in enumerate(expressions):
+            try:
+                r = v.check_expression(expr)
+                if not r.get("valid"):
+                    issues_by_expr.setdefault(i, []).append(f"[SYNTAX] {r.get('errors')}")
+            except Exception as e:
+                issues_by_expr.setdefault(i, []).append(f"[SYNTAX] verifier error: {e}")
+    elif not issues_by_expr:
+        # 无 verifier 且无其他问题时提示一次（不阻断）
+        logger.warning("[toolkit-gate] alpha-expression-verifier 未找到（WQ_VALIDATOR_DIR 未设），语法闸降级跳过")
+
+    if not issues_by_expr:
+        return None
+    flat = {str(i + 1): iss for i, iss in issues_by_expr.items()}
+    return {
+        "error": "toolkit gate 静态门禁未通过 — 整批拒绝提交（绕过 toolkit 流程的批必须过静态闸）",
+        "gate": "toolkit_static",
+        "failed_expressions": flat,
+        "passed": len(expressions) - len(flat),
+        "total": len(expressions),
+        "hint": "走正规链：wave_gate.py / pipeline.py run（含 5+2 闸 + 多样性 + priors）；"
+                "或修复上述 issues 后重试。完整闸门见 wq-brain-campaign-toolkit gate.py。",
+    }
+
+
+def _record_gate_pass(region: str, expressions: List[str], failure: Optional[Dict[str, Any]]) -> None:
+    """MCP 门禁结果落库（2026-09-01 #5）：通过/拒绝都写 gate_results，与 toolkit 闸同一审计视图。
+
+    失败不阻断提交流程本身（调用方已 return）；落库异常静默（审计是尽力而为）。
+    """
+    try:
+        # 复用 toolkit store 定位 data/wqb.db（与 vector_wrap 同一工作区解析模式）
+        roots = []
+        env = os.environ.get("WQB_ROOT")
+        if env:
+            roots.append(env)
+        roots.append(str(Path(__file__).resolve().parents[1]))
+        db = None
+        for r in roots:
+            p = Path(r) / "data" / "wqb.db"
+            if p.is_file():
+                db = str(p)
+                break
+        if not db:
+            return
+        import sqlite3
+        import hashlib
+        from datetime import datetime
+        con = sqlite3.connect(db, timeout=5)
+        try:
+            fp = hashlib.sha1("\n".join(expressions).encode("utf-8")).hexdigest()[:16]
+            all_pass = failure is None
+            report = failure or {"gate": "toolkit_static", "passed": len(expressions), "total": len(expressions)}
+            con.execute(
+                "INSERT INTO gate_results (region, wave, dataset, all_pass, report_json, created_at, updated_at) "
+                "VALUES (?,?,?,?,?,?,?)",
+                (region, f"mcp_direct_{fp[:8]}", "mcp_direct", 1 if all_pass else 0,
+                 json.dumps(report, ensure_ascii=False),
+                 datetime.now().isoformat(timespec="seconds"),
+                 datetime.now().isoformat(timespec="seconds")),
+            )
+            con.commit()
+        finally:
+            con.close()
+    except Exception:
+        pass  # 审计落库失败不影响主流程
 
 
 # 复用工作区 tools/lib 下的 vector_wrap（单一权威源，避免副本 drift）
@@ -244,6 +414,17 @@ async def create_multi_simulation(
             return {"error": "At least 2 alpha expressions are required"}
         if len(alpha_expressions) > 10:
             return {"error": "Maximum 10 alpha expressions allowed per request"}
+
+        # ---- toolkit gate 静态门禁（2026-09-01 落地）----
+        # 根治"MCP 直发绕过 toolkit 流程"：本工具是所有回测的唯一推式出口，
+        # 在此强制 toolkit gate.py 的静态闸（语法/VECTOR 包裹/不可访问算子/毒模式）。
+        # 详见 AGENTS.md §6 与 INDEX.md 流水线契约；绕过 toolkit = 绕过闸门 = 拒绝。
+        # 只跑纯静态检查（不依赖战役目录/catalog），失败整批拒绝并给出修复提示。
+        gate_err = _toolkit_gate_check(alpha_expressions)
+        if gate_err:
+            _record_gate_pass(region, alpha_expressions, gate_err)
+            return gate_err
+        _record_gate_pass(region, alpha_expressions, None)
 
         await brain_client.ensure_authenticated()
 
@@ -471,6 +652,154 @@ async def get_multisimulation_children(multisimulation_location: str) -> Dict[st
         }
     except Exception as e:
         return {"error": f"Error getting multisimulation children: {str(e)}"}
+
+
+@mcp.tool()
+async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, Any]:
+    """一键收批 multisim 全部 alpha 详情（并行拉取，替代逐个 get_alpha_details）。
+
+    内部流程：
+      1. GET multisim → 提取 children sim URL 列表
+      2. 并行 GET 每个 child sim → 提取 alpha_id + status
+      3. 并行 GET /alphas/{alpha_id} → 拉完整指标（sharpe/fitness/turnover/...）
+      4. 返回 slim 化后的完整 alpha 列表（可直接传给 wqb-db harvest_multisim_results）
+
+    替代当前 18 次 MCP 调用链（children + lookINTO×8 + get_alpha_details×8 + harvest），
+    压缩为 2 次（本工具 + wqb-db harvest_multisim_results）。
+
+    Args:
+        multisimulation_location: multisim location（如 "/simulations/{id}" 或完整 URL）
+
+    Returns:
+        {
+            "success": bool,
+            "multisimulation_id": str,
+            "total": int,
+            "complete": int,
+            "error_count": int,
+            "alphas": [  # 完整 alpha 详情列表（slim 化）
+                {"alpha_id": str, "code": str, "status": str, "sharpe": float, ...},
+                ...
+            ],
+            "errors": [{"location": str, "error": str}, ...]
+        }
+    """
+    try:
+        await brain_client.ensure_authenticated()
+
+        # Step 1: 拿 children
+        resp = await brain_client._request('GET', multisimulation_location)
+        if resp.status_code != 200:
+            return {"error": f"HTTP {resp.status_code}", "raw": brain_client._response_payload(resp)}
+        data = resp.json() if resp.text else {}
+        children = data.get('children', [])
+        if not children:
+            return {"error": "No children found (multisim may still be processing)"}
+
+        # Step 2: 并行拉每个 child sim 状态 + alpha_id
+        child_urls = []
+        for c in children:
+            if c.startswith('http'):
+                child_urls.append(c)
+            elif c.startswith('/'):
+                child_urls.append(f"{brain_client.base_url}{c}")
+            else:
+                child_urls.append(f"{brain_client.base_url}/simulations/{c}")
+
+        async def _fetch_child_sim(url: str) -> Dict[str, Any]:
+            """拉单个 child sim，提取 alpha_id 和 status。"""
+            try:
+                r = await brain_client._request('GET', url)
+                if r.status_code != 200:
+                    return {"location": url, "error": f"HTTP {r.status_code}"}
+                sim = r.json()
+                alpha_id = sim.get("alpha")
+                status = sim.get("status", "UNKNOWN")
+                expr = sim.get("regular", "")
+                return {
+                    "location": url,
+                    "alpha_id": alpha_id,
+                    "sim_status": status,
+                    "expression": expr,
+                    "error": None if alpha_id else "No alpha_id in sim response",
+                }
+            except Exception as e:
+                return {"location": url, "error": str(e)[:200]}
+
+        sim_results = await asyncio.gather(
+            *[_fetch_child_sim(u) for u in child_urls],
+            return_exceptions=True,
+        )
+        # 规范化异常
+        sims = []
+        for i, r in enumerate(sim_results):
+            if isinstance(r, Exception):
+                sims.append({"location": child_urls[i], "error": str(r)[:200]})
+            else:
+                sims.append(r)
+
+        # Step 3: 并行拉 alpha 详情（仅对有 alpha_id 的）
+        async def _fetch_alpha_details(sim_info: Dict[str, Any]) -> Dict[str, Any]:
+            """拉单个 alpha 完整详情。"""
+            alpha_id = sim_info.get("alpha_id")
+            if not alpha_id:
+                return {
+                    "alpha_id": None,
+                    "expression": sim_info.get("expression", ""),
+                    "error": sim_info.get("error", "No alpha_id"),
+                }
+            try:
+                r = await brain_client._request(
+                    'GET', f"{brain_client.base_url}/alphas/{alpha_id}"
+                )
+                if r.status_code != 200:
+                    return {
+                        "alpha_id": alpha_id,
+                        "expression": sim_info.get("expression", ""),
+                        "error": f"HTTP {r.status_code}",
+                    }
+                detail = r.json()
+                slim = _slim_alpha(detail)
+                slim["alpha_id"] = alpha_id
+                slim["expression"] = sim_info.get("expression", "")
+                return slim
+            except Exception as e:
+                return {
+                    "alpha_id": alpha_id,
+                    "expression": sim_info.get("expression", ""),
+                    "error": str(e)[:200],
+                }
+
+        alpha_results = await asyncio.gather(
+            *[_fetch_alpha_details(s) for s in sims],
+            return_exceptions=True,
+        )
+        # 规范化
+        alphas = []
+        errors = []
+        for i, r in enumerate(alpha_results):
+            if isinstance(r, Exception):
+                errors.append({"location": child_urls[i] if i < len(child_urls) else f"child_{i}", "error": str(r)[:200]})
+            elif r.get("error"):
+                errors.append({"alpha_id": r.get("alpha_id"), "error": r["error"]})
+                alphas.append(r)  # 保留（含 error 字段）
+            else:
+                alphas.append(r)
+
+        complete_count = len([a for a in alphas if not a.get("error")])
+        return {
+            "success": True,
+            "multisimulation_id": multisimulation_location.split('/')[-1],
+            "total": len(alphas),
+            "complete": complete_count,
+            "error_count": len(errors),
+            "alphas": alphas,
+            "errors": errors if errors else None,
+        }
+
+    except Exception as e:
+        return {"error": f"Error in harvest_multisim_alphas: {str(e)}"}
+
 
 async def _poll_single_child(child_url: str, child_index: int) -> Dict[str, Any]:
     """Poll a single child simulation until completion, then fetch alpha details.

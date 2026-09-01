@@ -131,7 +131,10 @@ class TransportMixin:
             self.redis_client.ping()
             self.log("Redis connection established", "INFO")
         except Exception as e:
-            self.log(f"Redis connection failed: {str(e)}, caching disabled", "WARNING")
+            # 2026-09-01 降噪：Redis 是可选缓存（无 Redis 功能不受影响，只是无缓存），
+            # 连接失败降为一次性 INFO 提示，不再刷 WARNING（CLI 工具如 submit_verdict
+            # 每次调用都会初始化客户端，WARNING 噪音掩盖真实告警）。
+            self.log(f"Redis not available ({type(e).__name__}), caching disabled (optional)", "INFO")
             self.redis_client = None
 
     def log(self, message: str, level: str = "INFO"):

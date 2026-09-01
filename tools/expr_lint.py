@@ -409,10 +409,15 @@ def main():
     argv = sys.argv[1:]
     exprs, fields_path, scope, min_cov, max_ds = [], 'data/fields_gate', 'USA/TOP3000/D1', 0.6, 2
     db_verify = None
+    db_context = None
     if '--db-verify' in argv:
         i = argv.index('--db-verify')
         db_verify = argv[i + 1]
         argv = argv[:i] + argv[i + 2:]
+    if '--db-context' in argv:
+        j = argv.index('--db-context')
+        db_context = argv[j + 1]
+        argv = argv[:j] + argv[j + 2:]
     if '--file' in argv:
         i = argv.index('--file')
         with open(argv[i + 1], encoding='utf-8') as f:
@@ -448,8 +453,11 @@ def main():
     else:
         print(f'[门控] 字段白名单 {len(fields)} 个 (scope={scope}, 最低coverage={min_cov})')
 
-    # db_verify context: 由 scope 推出 (USA/TOP3000/D1 形式)
-    db_context = scope if db_verify else None
+    # db_verify context: 显式 --db-context 优先；否则 scope 区域与 db_verify 一致时用
+    # scope (如 DEU/TOP500/D1)，再否则退化为区域级 (context_prefix=None, 认该区域
+    # 全部 verified=1)，避免误拦。
+    if db_verify and db_context is None and scope.split('/')[0].upper() == db_verify.upper():
+        db_context = scope
     if db_verify:
         if not _HAS_FIELD_GATE:
             print('[警告] field_gate 库不可用, --db-verify 忽略')

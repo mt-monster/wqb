@@ -1,69 +1,10 @@
-{
-  "wave": "wave100",
-  "dataset": "predictive_starmine",
-  "region": "KOR",
-  "universe": "TOP600",
-  "delay": 1,
-  "mode": "Mode B 想法层激活优化 (wave99 B1 基线: rank(analyst_revisions_score_7) sharpe 0.78/2y 1.71)",
-  "updated": "2026-08-22",
-  "rationale": "wave99 B1 2y 1.71 过线但全期 sharpe 0.78 差 0.80, tvr 4.1% 极低 → 信号近期活跃但水平值太慢. model219 经验 numrevy1 0.3→1.08 差分激活. 批设计: 差分激活 (C1/C2/C4/C8) + 超短期 score_2 (C3/C4 新字段 cov1.0) + 短-长期差加速 (C6/C7) + 水平动量混合 (C5). 目标: 全期 sharpe ≥1.58 同时保持 2y ≥1.58.",
-  "settings": {
-    "instrumentType": "EQUITY",
-    "region": "KOR",
-    "universe": "TOP600",
-    "delay": 1,
-    "decay": 10,
-    "neutralization": "SECTOR",
-    "truncation": 0.04,
-    "pasteurization": "ON",
-    "unitHandling": "VERIFY",
-    "nanHandling": "OFF",
-    "maxTrade": "ON",
-    "maxPosition": "OFF",
-    "language": "FASTEXPR",
-    "startDate": "2014-01-01",
-    "endDate": "2023-12-31"
-  },
-  "candidates": [
-    {
-      "id": "C1",
-      "variant": "score_7 5d 差分激活",
-      "expression": "rank(ts_delta(analyst_revisions_score_7,5))"
-    },
-    {
-      "id": "C2",
-      "variant": "score_7 3d 差分激活",
-      "expression": "rank(ts_delta(analyst_revisions_score_7,3))"
-    },
-    {
-      "id": "C3",
-      "variant": "score_2 超短期水平 (新字段 cov1.0)",
-      "expression": "rank(analyst_revisions_score_2)"
-    },
-    {
-      "id": "C4",
-      "variant": "score_2 3d 差分激活",
-      "expression": "rank(ts_delta(analyst_revisions_score_2,3))"
-    },
-    {
-      "id": "C5",
-      "variant": "B1 水平 + 5d 动量混合",
-      "expression": "add(0.5*rank(analyst_revisions_score_7),0.5*rank(ts_delta(analyst_revisions_score_7,5)))"
-    },
-    {
-      "id": "C6",
-      "variant": "score_7 - score_21 短长期差加速",
-      "expression": "rank(subtract(analyst_revisions_score_7,analyst_revisions_score_21))"
-    },
-    {
-      "id": "C7",
-      "variant": "B1 水平 0.6 + 短长期差 0.4",
-      "expression": "add(0.6*rank(analyst_revisions_score_7),0.4*rank(subtract(analyst_revisions_score_7,analyst_revisions_score_21)))"
-    },
-    {
-      "id": "C8",
-      "variant": "score_7 10d 均值差分激活 (P4 探针式)",
-      "expression": "rank(ts_av_diff(analyst_revisions_score_7,10))"
-    }
-  ]
-}
+[
+  "rank(divide(ts_backfill(subtract(vec_avg(mean_estimate_eps_annual12_3), vec_avg(mean_estimate_four_weeks_prior_eps_annual12_3)), 66), add(abs(ts_backfill(vec_avg(mean_estimate_eps_annual12_3), 66)), 0.001)))",
+  "rank(divide(ts_backfill(subtract(vec_avg(mean_estimate_eps_annual12_3), vec_avg(mean_estimate_eps_annual12)), 66), add(abs(ts_backfill(vec_avg(mean_estimate_eps_annual12), 66)), 0.001)))",
+  "rank(divide(ts_backfill(subtract(vec_avg(mean_estimate_eps_annual12_3), vec_avg(mean_estimate_four_weeks_prior_eps_annual12_3)), 66), add(vec_stddev(mean_estimate_eps_annual12_3), 0.001)))",
+  "rank(subtract(ts_backfill(vec_avg(mean_estimate_roe_annual12), 66), ts_backfill(vec_avg(mean_estimate_three_months_prior_roe_annual12), 66)))",
+  "rank(divide(ts_backfill(subtract(vec_avg(mean_estimate_revenue_annual12), vec_avg(mean_estimate_three_months_prior_revenue_annual12)), 66), add(ts_backfill(vec_avg(mean_estimate_three_months_prior_revenue_annual12), 66), 0.001)))",
+  "rank(add(rank(ts_backfill(vec_avg(mean_estimate_fcf_annual12), 66)), rank(ts_backfill(vec_avg(mean_estimate_grossmargin_annual12), 66))))",
+  "rank(divide(ts_backfill(vec_avg(mean_estimate_eps_annual12), 66), add(ts_backfill(vec_avg(mean_estimate_bvps_annual12), 66), 0.001)))",
+  "rank(add(multiply(2, rank(subtract(ts_backfill(vec_avg(mean_estimate_roe_annual12), 66), ts_backfill(vec_avg(mean_estimate_three_months_prior_roe_annual12), 66)))), rank(vec_avg(mean_estimate_eps_quarterly16))))"
+]

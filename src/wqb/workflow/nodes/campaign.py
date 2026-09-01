@@ -120,25 +120,27 @@ def run(
         if dataset:
             cmd.extend(["--dataset", dataset])
     elif stage == "S2":
-        # S2 前强制前置条件预检（S0/S1 产物门禁）
-        preflight_result = _run_preflight(
-            region=region,
-            dataset=dataset,
-            wave=wave,
-            campaign_dir=campaign_dir,
-            py=wq_py(),
-        )
-        result["steps"].append(preflight_result)
+        # S2 前强制前置条件预检（S0/S1 产物门禁）。
+        # dry-run 下跳过预检子进程（零副作用），仅构建 build_wave 命令。
+        if not ctx.get("dry_run"):
+            preflight_result = _run_preflight(
+                region=region,
+                dataset=dataset,
+                wave=wave,
+                campaign_dir=campaign_dir,
+                py=wq_py(),
+            )
+            result["steps"].append(preflight_result)
 
-        # 预检 FAIL（前置产物缺失）则中止，禁止带着缺白名单的状态烧配额
-        if not preflight_result.get("success", False):
-            result["steps"].append({
-                "step": "preflight_block",
-                "success": False,
-                "error": preflight_result.get("error", "Preflight failed"),
-                "preflight": preflight_result,
-            })
-            return result
+            # 预检 FAIL（前置产物缺失）则中止，禁止带着缺白名单的状态烧配额
+            if not preflight_result.get("success", False):
+                result["steps"].append({
+                    "step": "preflight_block",
+                    "success": False,
+                    "error": preflight_result.get("error", "Preflight failed"),
+                    "preflight": preflight_result,
+                })
+                return result
 
         if dataset:
             cmd.extend(["--dataset", dataset])
@@ -146,25 +148,27 @@ def run(
             cmd.extend(["--wave", wave])
         cmd.append("--from-db")
     elif stage == "S3":
-        # S3 前强制质量闸（特征工程 SOP 阶段6）
-        quality_gate_result = _run_quality_gate(
-            region=region,
-            dataset=dataset,
-            wave=wave,
-            campaign_dir=campaign_dir,
-            py=wq_py(),
-        )
-        result["steps"].append(quality_gate_result)
+        # S3 前强制质量闸（特征工程 SOP 阶段6）。
+        # dry-run 下跳过质量闸子进程（零副作用），仅构建 pipeline run 命令。
+        if not ctx.get("dry_run"):
+            quality_gate_result = _run_quality_gate(
+                region=region,
+                dataset=dataset,
+                wave=wave,
+                campaign_dir=campaign_dir,
+                py=wq_py(),
+            )
+            result["steps"].append(quality_gate_result)
 
-        # 如果质量闸失败且要求 block，则中止
-        if not quality_gate_result.get("success", False):
-            result["steps"].append({
-                "step": "quality_gate_block",
-                "success": False,
-                "error": "Quality gate failed, blocking S3 execution",
-                "quality_gate": quality_gate_result,
-            })
-            return result
+            # 如果质量闸失败且要求 block，则中止
+            if not quality_gate_result.get("success", False):
+                result["steps"].append({
+                    "step": "quality_gate_block",
+                    "success": False,
+                    "error": "Quality gate failed, blocking S3 execution",
+                    "quality_gate": quality_gate_result,
+                })
+                return result
 
         # 质量闸通过，继续 pipeline.py
         cmd.append("run")
@@ -194,6 +198,14 @@ def run(
         "success": True,
         "command": " ".join(cmd),
     })
+
+    # 2026-09-01 dry-run 支持：_context.dry_run=True 时构建到命令即停，
+    # 返回待执行命令与工作目录（不 subprocess、不写库）。
+    if ctx.get("dry_run"):
+        result["success"] = True
+        result["dry_run"] = True
+        result["note"] = "dry-run：命令已构建，未执行"
+        return result
 
     # 执行
     try:

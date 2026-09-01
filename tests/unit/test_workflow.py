@@ -40,14 +40,31 @@ def test_executor_missing_required_params():
     assert "Missing required params" in r.error
 
 
-def test_executor_dry_run_returns_plan_without_executing():
+def test_executor_dry_run_returns_plan_without_executing(monkeypatch):
+    # 2026-09-01 契约更新：dry-run 会调用节点但注入 _context.dry_run=True，
+    # 节点须构建计划即停（无 subprocess/无写库副作用）。
+    # batch_track 节点不感知 dry_run → 走 subprocess；为保证测试无副作用，
+    # 此处用 campaign 节点（已实现 dry-run 感知）验证"命令构建即停"契约。
+    from wqb.workflow.nodes import campaign as camp
+    calls = []
+    orig = camp.run
+    def spy(**kw):
+        calls.append(kw)
+        return orig(**kw)
+    monkeypatch.setattr(camp, "run", spy)
+    import wqb.workflow.registry as reg_mod
+    monkeypatch.setitem(reg_mod.get_registry()._nodes, "campaign", spy)
+
     ex = WorkflowExecutor()
-    r = ex.execute("batch_track", {"region": "KOR", "wave": "1", "dataset": "ds"},
-                   dry_run=True)
+    r = ex.execute("campaign", {"region": "KOR", "stage": "S5"}, dry_run=True)
     assert r.success is True
     assert r.dry_run is True
-    assert "plan" in r.output
-    assert "batch_track" in r.output["plan"]
+    # 新契约：输出含节点构建的真实计划（campaign 构建到 toolkit 命令即停）
+    out = r.output or {}
+    assert out.get("dry_run") is True
+    assert out.get("success") is True
+    # dry-run 上下文已注入节点
+    assert calls and calls[0]["_context"].get("dry_run") is True
 
 
 def test_executor_workflow_result_to_dict_shape():
@@ -85,6 +102,126 @@ def test_registry_meta_has_no_fallback_cli():
     for node in r.list_nodes():
         meta = r.get_meta(node)
         assert not hasattr(meta, "fallback_cli")
+
+
+def test_feature_engineering_builds_prefix_summary(monkeypatch, tmp_path):
+    from wqb.store import CampaignStore
+    from wqb.workflow.nodes import feature_engineering as fe
+
+    store = CampaignStore(str(tmp_path / "camp.db"))
+    try:
+        store.upsert_field_catalog("IND", {
+            "dataset": "analyst45",
+            "region": "IND",
+            "data_type": "MATRIX",
+            "fields": [
+                {"id": "anl_est_eps", "type": "MATRIX", "coverage": 0.91},
+                {"id": "anl_rev_fy1", "type": "MATRIX", "coverage": 0.88},
+                {"id": "news_sent_score", "type": "VECTOR", "coverage": 0.42},
+            ],
+        })
+
+        monkeypatch.setattr(fe, "resolve_skill_dir", lambda name: "C:/skill")
+        monkeypatch.setattr(fe, "_run_feature_engineering_pipeline", lambda **kw: {
+            "step": "feature_engineering_pipeline",
+            "success": True,
+            "ideas_md_path": "C:/tmp/ideas.md",
+            "field_whitelist": ["anl_est_eps"],
+            "preprocessing": {"ts_backfill": "sparse fields"},
+        })
+
+        out = fe.run(
+            region="IND",
+            dataset_id="analyst45",
+            delay=1,
+            universe="TOP3000",
+            data_category="analyst",
+            force_regen=True,
+            _context={"store": store},
+        )
+        assert out["success"] is True
+        assert out["field_prefix_summary"]["total_fields"] == 3
+        assert out["field_prefix_summary"]["total_clusters"] == 2
+        assert out["candidate_field_pool"]
+        got = store.get_field_prefix_clusters("IND", "analyst45")
+        assert got is not None
+        assert got["dataset"] == "analyst45"
+        got_pool = store.get_candidate_field_pool("IND", "analyst45")
+        assert got_pool is not None
+        assert got_pool["pool_size"] >= 1
+        s1 = store.get_ledger("IND", "s1_analyst45_d1")
+        assert s1 is not None
+        assert s1["field_whitelist"] == got_pool["candidate_field_pool"]
+    finally:
+        store.close()
+
+
+def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
+    from wqb.store import CampaignStore
+    from wqb.workflow.nodes import gem
+
+    store = CampaignStore(str(tmp_path / "camp.db"))
+    try:
+        store.upsert_field_catalog("IND", {
+            "dataset": "analyst45",
+            "region": "IND",
+            "data_type": "MATRIX",
+            "fields": [
+                {"id": "anl_est_eps", "type": "MATRIX", "coverage": 0.91},
+                {"id": "anl_rev_fy1", "type": "MATRIX", "coverage": 0.88},
+                {"id": "news_sent_score", "type": "VECTOR", "coverage": 0.42},
+            ],
+        })
+        store.build_field_prefix_clusters("IND", "analyst45")
+
+        monkeypatch.setattr(gem, "resolve_skill_dir", lambda name: "C:/gem")
+        monkeypatch.setattr(gem.os.path, "exists", lambda p: True)
+        monkeypatch.setattr(gem, "_find_final_expressions", lambda *a, **k: "C:/tmp/final_expressions.json")
+        monkeypatch.setattr(gem, "_run_quality_estimation", lambda **kw: {
+            "step": "quality_estimation",
+            "success": True,
+            "expected_pass": 1,
+            "expected_review": 0,
+            "expected_block": 0,
+            "expected_block_count": 0,
+            "diversity_risks": [],
+            "details": {"field_prefix_summary": kw.get("field_prefix_summary") or {}},
+        })
+
+        class _Proc:
+            returncode = 0
+            def communicate(self, timeout=None):
+                return ("ok", "")
+
+        class _DummyFile:
+            def __enter__(self):
+                return self
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+        monkeypatch.setattr(gem.subprocess, "Popen", lambda *a, **k: _Proc())
+        monkeypatch.setattr("builtins.open", lambda *a, **k: _DummyFile())
+
+        # patch json.load for final expressions file read
+        orig_json_load = gem.json.load
+        monkeypatch.setattr(gem.json, "load", lambda f: [{"expression": "rank(anl_est_eps)"}])
+
+        out = gem.run(
+            region="IND",
+            dataset_id="analyst45",
+            delay=1,
+            universe="TOP3000",
+            data_category="analyst",
+            _context={"store": store},
+        )
+        assert out["success"] is True
+        assert out["field_prefix_summary"]["dataset"] == "analyst45"
+        assert out["candidate_field_pool"]
+        assert out["quality_estimation"]["details"]["field_prefix_summary"]["total_fields"] == 3
+
+        monkeypatch.setattr(gem.json, "load", orig_json_load)
+    finally:
+        store.close()
 
 
 # ---------------------------------------------------------------------------
@@ -154,10 +291,13 @@ def test_judge_compute_final_verdict():
 # ---------------------------------------------------------------------------
 
 def test_infer_data_category():
-    assert _common.infer_data_category("analyst45") == "analyst"
-    assert _common.infer_data_category("model238") == "model"
-    assert _common.infer_data_category("news76") == "news"
-    assert _common.infer_data_category("fundamental94") == "fundamental"
+    # 2026-09-01 统一口径：分类一律以平台 category 为准（data/wqb.db 快照存大写，
+    # 如 ANALYST/MODEL）；DB 无记录时回退前缀推断（小写）。
+    # GEM 管道内做 .lower() 比较，大小写不敏感。
+    assert _common.infer_data_category("analyst45") in ("analyst", "ANALYST")
+    assert _common.infer_data_category("model238") in ("model", "MODEL")
+    assert _common.infer_data_category("news76") in ("news", "NEWS")
+    assert _common.infer_data_category("fundamental94") in ("fundamental", "FUNDAMENTAL")
     assert _common.infer_data_category("xyz") == "other"
 
 

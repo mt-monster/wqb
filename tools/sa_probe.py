@@ -89,19 +89,22 @@ async def main():
     for p in pool:
         by_stage.setdefault(p["stage"], []).append(p)
 
-    # eligible：status ACTIVE 或处于 IS/OS 阶段（平台对已提交且在跑的 alpha 均计 ACTIVE）
-    eligible = [p for p in pool if p["status"] == "ACTIVE" or p["stage"] in ("IS", "OS")]
+    # ★ eligible 只算「已提交且在跑」的 REGULAR（status=ACTIVE）。
+    # IS 阶段的未提交 alpha 不能作为 SA 组件（平台 SA 只吃 OS/ACTIVE 成分）。
+    # 曾 bug：把 stage IS 也算 eligible → IND 875 颗误判 GO（实际 ACTIVE 远不足 10）。
+    eligible = [p for p in pool if p["status"] == "ACTIVE"]
     verdict = "GO" if len(eligible) >= a.min else "BLOCKED"
 
     print(f"=== {a.region} REGULAR pool: {len(pool)} "
           f"(OS {len(by_stage.get('OS', []))} / IS {len(by_stage.get('IS', []))}) ===")
+    print(f"    注：IS 阶段未提交的 alpha 不计入 eligible（SA 组件必须 OS/ACTIVE）")
     if a.detail:
         for st in ("OS", "IS"):
             print(f"\n--- stage={st} ---")
             for p in by_stage.get(st, []):
                 print(f"  {p['id']}  status={p['status']}  sharpe={p.get('sharpe')} "
                       f"fitness={p.get('fitness')}  sub={p.get('dateSubmitted')}")
-    print(f"\n=== eligible (ACTIVE/IS/OS) count: {len(eligible)} (need >= {a.min}) ===")
+    print(f"\n=== eligible (status=ACTIVE) count: {len(eligible)} (need >= {a.min}) ===")
     print(f"VERDICT: {verdict}"
           + ("" if verdict == "GO" else f" (还差 {a.min - len(eligible)} 颗)"))
 

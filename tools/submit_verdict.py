@@ -12,7 +12,7 @@ GET /alphas/{id}/submit 的 403 检查列表（零成本，不消耗提交配额
 
 用法:
   python tools/submit_verdict.py --alpha-id 2rlRAZaZ
-  python tools/submit_verdict.py --alpha-id 2rlRAZaZ --with-quota
+  python tools/submit_verdict.py --alpha-id 2rlRAZaZ
 
 退出码: 0=可直接提交（模拟无 FAIL 且提交层 200）, 1=BLOCKED/未就绪
 运行环境: 使用 MCP venv（`$WQ_PY` 或 world-quant-brain-mcp/.venv），依赖 brain_api。
@@ -51,7 +51,7 @@ def _render_checks(checks):
 async def main():
     ap = argparse.ArgumentParser(description="提交层判定：模拟层 + GET /alphas/{id}/submit 双视图")
     ap.add_argument("--alpha-id", required=True)
-    ap.add_argument("--with-quota", action="store_true", help="附带 48h 提交配额视图")
+    ap.add_argument("--with-quota", action="store_true", help="（已废弃：配额检查已于 2026-08-25 移除，此参数无效果）")
     a = ap.parse_args()
 
     _bootstrap()

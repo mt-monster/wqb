@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W6_F1",
+    "expr": "add(ts_rank(fnd93_accruals_d1_current_t, 63), multiply(scale(ts_rank(returns, 21)), -0.3))",
+    "dataset": "fundamental93",
+    "family": "accruals_momentum",
+    "desc": "应计Z-score时序排名+价格反转"
+  },
+  {
+    "id": "KOR_W6_F2",
+    "expr": "add(ts_rank(fnd93_deferred_tax_expense_11, 63), multiply(scale(ts_rank(returns, 42)), -0.35))",
+    "dataset": "fundamental93",
+    "family": "deferred_tax_momentum",
+    "desc": "递延税费用比率+价格反转"
+  },
+  {
+    "id": "KOR_W6_F3",
+    "expr": "multiply(ts_rank(fnd93_accruals_d1_current_t, 63), ts_rank(fnd93_accruals_d1_dts, 63))",
+    "dataset": "fundamental93",
+    "family": "accruals_volatility_interaction",
+    "desc": "应计水平×波动交互"
+  },
+  {
+    "id": "KOR_W6_F4",
+    "expr": "add(ts_rank(fnd93_tax_accruals_11, 63), multiply(scale(ts_rank(returns, 21)), -0.3))",
+    "dataset": "fundamental93",
+    "family": "tax_accruals_momentum",
+    "desc": "税务应计比率+价格反转"
+  },
+  {
+    "id": "KOR_W6_O1",
+    "expr": "add(ts_rank(oth496_kor_mapped_limit_status, 21), multiply(scale(ts_rank(returns, 5)), -0.4))",
+    "dataset": "other496",
+    "family": "limit_status_reversal",
+    "desc": "涨跌停状态+短期反转"
+  },
+  {
+    "id": "KOR_W6_O2",
+    "expr": "multiply(ts_rank(oth496_returns2, 10), ts_rank(oth496_kor_mapped_limit_status, 10))",
+    "dataset": "other496",
+    "family": "short_momentum_limit",
+    "desc": "2日动量×涨跌停状态"
+  },
+  {
+    "id": "KOR_W6_O3",
+    "expr": "add(ts_rank(oth496_ard_tot_assets, 63), multiply(scale(ts_rank(returns, 42)), -0.35))",
+    "dataset": "other496",
+    "family": "asset_size_momentum",
+    "desc": "总资产规模+价格反转"
+  },
+  {
+    "id": "KOR_W6_O4",
+    "expr": "multiply(ts_rank(oth496_returns60, 21), subtract(1, ts_rank(oth496_returns2, 5)))",
+    "dataset": "other496",
+    "family": "momentum_reversal_spread",
+    "desc": "60日动量×2日反转价差"
+  }
+]

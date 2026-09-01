@@ -80,6 +80,8 @@ attic/
 logs/_commit_msg.txt
 # one-off probe/verify scripts + their output dumps (tmp by convention; archive to attic/ before purge)
 logs/_tmp_*
+# 同上：MCP 包内一次性探针脚本（wave 检查/指标/字段抓取等，用完即弃）
+world-quant-brain-mcp/_tmp_*.py
 
 # SuperAlpha API result dumps (runtime artifacts, never commit)
 world-quant-brain-mcp/super_alpha_result_*.json

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W7_F1",
+    "expr": "add(ts_rank(ts_backfill(fnd93_accruals_d1_current_t, 66), 63), multiply(scale(ts_rank(returns, 21)), -0.3))",
+    "dataset": "fundamental93",
+    "family": "accruals_backfill_momentum",
+    "desc": "应计backfill+价格反转"
+  },
+  {
+    "id": "KOR_W7_F2",
+    "expr": "group_neutralize(ts_rank(fnd93_accruals_d1_current_t, 63), industry) + multiply(scale(ts_rank(returns, 21)), -0.3)",
+    "dataset": "fundamental93",
+    "family": "accruals_industry_neutral",
+    "desc": "应计行业中性+价格反转"
+  },
+  {
+    "id": "KOR_W7_F3",
+    "expr": "multiply(ts_rank(ts_backfill(fnd93_accruals_d1_current_t, 66), 63), ts_rank(ts_backfill(fnd93_accruals_d1_dts, 66), 63))",
+    "dataset": "fundamental93",
+    "family": "accruals_backfill_interaction",
+    "desc": "应计backfill水平×波动"
+  },
+  {
+    "id": "KOR_W7_F4",
+    "expr": "add(ts_rank(fnd93_accruals_d1_current_t, 63), multiply(ts_rank(fnd93_deferred_tax_expense_11, 63), 0.5))",
+    "dataset": "fundamental93",
+    "family": "accruals_tax_combo",
+    "desc": "应计+递延税组合"
+  },
+  {
+    "id": "KOR_W7_O1",
+    "expr": "multiply(scale(ts_rank(oth496_returns2, 10)), -1)",
+    "dataset": "other496",
+    "family": "short_reversal_pure",
+    "desc": "2日纯反转(翻转omqx6R5v)"
+  },
+  {
+    "id": "KOR_W7_O2",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 10)), -0.6), multiply(scale(ts_rank(returns, 5)), -0.4))",
+    "dataset": "other496",
+    "family": "double_reversal",
+    "desc": "2日+5日双重反转"
+  },
+  {
+    "id": "KOR_W7_O3",
+    "expr": "multiply(ts_rank(oth496_returns60, 21), ts_rank(oth496_returns2, 5))",
+    "dataset": "other496",
+    "family": "momentum_spread_positive",
+    "desc": "60日×2日动量价差(正)"
+  },
+  {
+    "id": "KOR_W7_O4",
+    "expr": "add(ts_rank(oth496_ard_tot_assets, 63), multiply(scale(ts_rank(oth496_returns2, 10)), -0.5))",
+    "dataset": "other496",
+    "family": "asset_reversal_combo",
+    "desc": "资产规模+2日反转"
+  }
+]

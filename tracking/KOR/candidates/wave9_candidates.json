@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W9_PV1",
+    "expr": "ts_rank(corr_high_price_with_volume, 63)",
+    "dataset": "intraday_pv_feats",
+    "family": "price_volume_correlation",
+    "desc": "高价-成交量相关性时序排名(量价背离)"
+  },
+  {
+    "id": "KOR_W9_PV2",
+    "expr": "ts_rank(corr_vwap_with_volume, 63)",
+    "dataset": "intraday_pv_feats",
+    "family": "vwap_volume_correlation",
+    "desc": "VWAP-成交量相关性(资金流向)"
+  },
+  {
+    "id": "KOR_W9_PV3",
+    "expr": "add(ts_rank(corr_high_price_with_volume, 63), multiply(scale(ts_rank(returns, 21)), -0.3))",
+    "dataset": "intraday_pv_feats",
+    "family": "pv_corr_momentum",
+    "desc": "量价相关性+价格反转辅助"
+  },
+  {
+    "id": "KOR_W9_PV4",
+    "expr": "ts_rank(avg_ask_to_vwap_ratio_last_half, 63)",
+    "dataset": "intraday_pv_feats",
+    "family": "ask_vwap_ratio",
+    "desc": "尾盘卖价/VWAP比率(收盘压力)"
+  },
+  {
+    "id": "KOR_W9_PV5",
+    "expr": "ts_rank(mean_bid_vwap_ratio_daily, 63)",
+    "dataset": "intraday_pv_feats",
+    "family": "bid_vwap_ratio",
+    "desc": "全日买价/VWAP比率(支撑强度)"
+  },
+  {
+    "id": "KOR_W9_PV6",
+    "expr": "add(ts_rank(corr_high_price_with_volume, 63), ts_rank(corr_low_price_with_volume, 63))",
+    "dataset": "intraday_pv_feats",
+    "family": "dual_price_volume_corr",
+    "desc": "高价+低价双重量价相关性"
+  },
+  {
+    "id": "KOR_W9_PV7",
+    "expr": "multiply(ts_rank(corr_high_price_with_volume, 63), ts_rank(kurtosis_trade_volume_interval, 63))",
+    "dataset": "intraday_pv_feats",
+    "family": "pv_corr_volume_kurtosis",
+    "desc": "量价相关性×成交量峰度(异常交易)"
+  },
+  {
+    "id": "KOR_W9_PV8",
+    "expr": "add(ts_rank(corr_vwap_with_volume, 63), multiply(scale(ts_rank(oth496_returns2, 10)), -0.4))",
+    "dataset": "intraday_pv_feats",
+    "family": "vwap_corr_reversal",
+    "desc": "VWAP相关性+2日反转辅助"
+  }
+]

@@ -185,11 +185,16 @@ def test_submit_alpha_all_fields_passthrough(monkeypatch):
     assert kwargs == {"dry_run": True}
 
 
-def test_submit_alpha_empty_tags_become_empty_list(monkeypatch):
-    """tags=None 归一为 []（节点 run 内部再兜底为 PowerPoolSelected）。"""
+def test_submit_alpha_none_tags_stay_none(monkeypatch):
+    """tags=None 保持 None 透传（节点 run 内部兜底为 PowerPoolSelected）。
+
+    2026-09-02 修复：原实现 `tags or []` 把 None 归一成 []，导致节点侧
+    `if tags is None: tags=["PowerPoolSelected"]` 兜底失效（丢默认标签）。
+    现改为 None 原样透传，兜底职责归还节点单一事实源。
+    """
     rec = _install_recorder(monkeypatch)
     tools_workflow.workflow_submit_alpha(alpha_id="a1")
-    assert rec.calls[0][1]["tags"] == []
+    assert rec.calls[0][1]["tags"] is None
 
 
 def test_superalpha_confirm_submit_true_passthrough(monkeypatch):
@@ -288,6 +293,31 @@ def test_batch_track_defaults_forwarded(monkeypatch):
     assert params["concurrency"] == 7
     assert params["max_rounds"] == 3
     assert kwargs == {"dry_run": False}
+
+
+def test_batch_track_output_csv_campaign_dir_passthrough(monkeypatch):
+    """2026-09-02 补齐：output_csv / campaign_dir 必须暴露并原样透传（此前 MCP 层未暴露）。"""
+    rec = _install_recorder(monkeypatch)
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78",
+        output_csv="out/sim.csv", campaign_dir="D:/tracking/KOR",
+    )
+
+    _, params, _ = rec.calls[0]
+    assert params["output_csv"] == "out/sim.csv"
+    assert params["campaign_dir"] == "D:/tracking/KOR"
+
+
+def test_batch_track_output_csv_campaign_dir_default_none(monkeypatch):
+    """未传时 output_csv / campaign_dir 默认 None（节点侧自动生成/解析）。"""
+    rec = _install_recorder(monkeypatch)
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78"
+    )
+
+    _, params, _ = rec.calls[0]
+    assert params["output_csv"] is None
+    assert params["campaign_dir"] is None
 
 
 def test_gem_and_campaign_confirm_free_tools_shape(monkeypatch):

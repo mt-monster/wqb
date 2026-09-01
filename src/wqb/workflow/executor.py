@@ -11,7 +11,7 @@
 """
 from __future__ import annotations
 
-import json
+import inspect
 import logging
 import time
 from dataclasses import dataclass, field
@@ -111,41 +111,30 @@ class WorkflowExecutor:
                 duration_sec=time.time() - start_time,
             )
 
-        # 干跑模式：返回执行计划（不调用节点函数）
-        if dry_run:
-            return WorkflowResult(
-                success=True,
-                node=node_name,
-                params=params,
-                output={
-                    "plan": f"Would execute {node_name} with params: "
-                            f"{json.dumps(params, ensure_ascii=False)}",
-                },
-                duration_sec=time.time() - start_time,
-                dry_run=True,
-                metadata={"category": meta.category, "phase": meta.phase},
-            )
-
-        # 执行节点
+        # 组装调用参数：注入执行上下文 +（节点签名接受 dry_run 时）透传 dry_run。
+        # 2026-09-01 缺陷修复（3 类）：
+        #   A. submit_alpha/judge/gem/feature_engineering 未读 _context.dry_run →
+        #      现已在各节点内短路（network/subprocess/写库前即停）。
+        #   B. batch_track/superalpha 有 dry_run 形参但 executor 从不透传 →
+        #      现按 inspect.signature 检测并透传 dry_run。
+        #   C. executor 干跑分支无条件 success=True 吞掉节点真实 success/error →
+        #      现统一按节点返回 dict 的 success 字段真值传播。
+        # 不原地修改调用方 params，避免 _context 泄漏回 WorkflowResult.params。
+        call_params = dict(params)
+        call_params["_context"] = {
+            "dry_run": dry_run,
+            "store": self.store,
+            "registry": self.registry,
+        }
         try:
-            # 注入执行上下文
-            params["_context"] = {
-                "dry_run": dry_run,
-                "store": self.store,
-                "registry": self.registry,
-            }
+            sig = inspect.signature(node_func)
+        except (TypeError, ValueError):
+            sig = None
+        if sig is not None and "dry_run" in sig.parameters:
+            call_params["dry_run"] = dry_run
 
-            output = node_func(**params)
-
-            return WorkflowResult(
-                success=True,
-                node=node_name,
-                params=params,
-                output=output,
-                duration_sec=time.time() - start_time,
-                metadata={"category": meta.category, "phase": meta.phase},
-            )
-
+        try:
+            output = node_func(**call_params)
         except Exception as e:
             logger.exception(f"Workflow node {node_name} failed")
             return WorkflowResult(
@@ -154,7 +143,28 @@ class WorkflowExecutor:
                 params=params,
                 error=str(e),
                 duration_sec=time.time() - start_time,
+                dry_run=dry_run,
             )
+
+        # 真值传播：节点返回 dict 且带 success 字段时，以节点判定为准；
+        # 否则（非 dict 或未声明 success）视为成功。
+        success = True
+        error = None
+        if isinstance(output, dict):
+            success = bool(output.get("success", True))
+            if not success:
+                error = output.get("error") or output.get("reason") or output.get("message")
+
+        return WorkflowResult(
+            success=success,
+            node=node_name,
+            params=params,
+            output=output,
+            error=error,
+            duration_sec=time.time() - start_time,
+            dry_run=dry_run,
+            metadata={"category": meta.category, "phase": meta.phase},
+        )
 
     def execute_chain(
         self,

@@ -51,6 +51,57 @@ def test_field_catalog_roundtrip(store):
     assert ids == {"mdl238_a", "mdl238_b"}
 
 
+def test_field_prefix_clusters_roundtrip(store):
+    cat = {
+        "dataset": "analyst45",
+        "region": "IND",
+        "data_type": "MATRIX",
+        "fields": [
+            {"id": "anl_est_eps", "type": "MATRIX", "coverage": 0.91},
+            {"id": "anl_rev_fy1", "type": "MATRIX", "coverage": 0.88},
+            {"id": "news_sent_score", "type": "VECTOR", "coverage": 0.42},
+            {"id": "pv_close", "type": "MATRIX", "coverage": 0.97},
+        ],
+    }
+    store.upsert_field_catalog("IND", cat)
+
+    built = store.build_field_prefix_clusters("IND", "analyst45", prefix_depth=1, top_n=3)
+    assert built["total_fields"] == 4
+    assert built["total_clusters"] == 3
+    assert built["top_clusters"][0]["prefix"] == "anl"
+    assert built["top_clusters"][0]["count"] == 2
+    assert built["top_clusters"][0]["sample_fields"] == ["anl_est_eps", "anl_rev_fy1"]
+    assert any(c["prefix"] == "news" and "vector_fields_present" in c["risk_flags"] for c in built["risk_clusters"])
+
+    got = store.get_field_prefix_clusters("IND", "analyst45")
+    assert got is not None
+    assert got["dataset"] == "analyst45"
+    assert got["total_fields"] == 4
+
+
+def test_candidate_field_pool_roundtrip(store):
+    cat = {
+        "dataset": "analyst45",
+        "region": "IND",
+        "data_type": "MATRIX",
+        "fields": [
+            {"id": "anl_est_eps", "type": "MATRIX", "coverage": 0.91},
+            {"id": "anl_rev_fy1", "type": "MATRIX", "coverage": 0.88},
+            {"id": "news_sent_score", "type": "VECTOR", "coverage": 0.42},
+            {"id": "pv_close", "type": "MATRIX", "coverage": 0.97},
+        ],
+    }
+    store.upsert_field_catalog("IND", cat)
+    payload = store.build_candidate_field_pool("IND", "analyst45")
+    assert payload["dataset"] == "analyst45"
+    assert payload["pool_size"] >= 2
+    assert "anl_est_eps" in payload["candidate_field_pool"]
+    got = store.get_candidate_field_pool("IND", "analyst45")
+    assert got is not None
+    assert got["dataset"] == "analyst45"
+    assert got["pool_size"] == payload["pool_size"]
+
+
 def test_gate_result_roundtrip(store):
     report = {"all_pass": True, "total": 8, "passed": 8}
     store.upsert_gate_result("EUR", "38", "shortinterest6", report)

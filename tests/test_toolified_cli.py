@@ -70,8 +70,8 @@ def test_super_build_templates_and_descriptions():
     assert "self_correlation < 0.55" in sel
     assert "(1 + 0 * (prod_correlation > 0))" in sel  # USA no-op 门控保留
     assert "self_corr(stats.returns, 500)" in COMBO_TEMPLATE
-    # 平台硬门槛：两个 description 各 ≥100 英文词
-    assert len(build_selection_description("USA", 10, 0.55).split()) >= 100
+    # 平台硬门槛：两个 description 各 ≥100 英文词（2026-08-28 起 selection 加 neutralization 参数）
+    assert len(build_selection_description("USA", 10, 0.55, "SUBINDUSTRY").split()) >= 100
     assert len(build_combo_description("USA").split()) >= 100
 
 

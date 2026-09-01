@@ -390,6 +390,29 @@ async def main():
                     rows = _to_backtest_rows(r["alphas"])
                     n = store.upsert_backtest_rows(a.region, str(a.wave), rows)
                     print(f"  [upsert] {n} rows → backtest_results (region={a.region} wave={a.wave})")
+
+            # --- 触发 salvage_pool（全 RED 时自动分层） ---
+            try:
+                # 导入 wqb_db_mcp 中的 salvage 函数
+                sys.path.insert(0, str(os.path.dirname(__file__)))
+                from wqb_db_mcp import _salvage_to_pool, _get_ledger_raw
+
+                # 汇总所有 alphas 检查是否全 RED
+                all_alphas = []
+                for r in results:
+                    if r.get("alphas"):
+                        all_alphas.extend(r["alphas"])
+
+                if all_alphas:
+                    # 检查是否全 RED（无 GREEN）
+                    green_count = sum(1 for a in all_alphas if a.get("sharpe") and a.get("sharpe") >= 1.58 and a.get("fitness") and a.get("fitness") >= 1.0)
+                    if green_count == 0:
+                        # 全 RED，触发 salvage
+                        _salvage_to_pool(a.region, int(a.wave), all_alphas)
+                        pool = _get_ledger_raw(a.region, "salvage_pool") or {"entries": []}
+                        print(f"  [salvage] all RED, pool entries: {len(pool.get('entries', []))}")
+            except Exception as e:
+                print(f"  [salvage] skipped: {e}")
         finally:
             store.close()
 

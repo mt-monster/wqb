@@ -38,7 +38,8 @@ if __name__ == "__main__":
     if brain_client.redis_client:
         print("[INFO] Redis connection established successfully", file=sys.stderr)
     else:
-        print("[WARNING] Redis connection failed - caching disabled", file=sys.stderr)
+        # 2026-09-01 降噪：Redis 为可选缓存，不可用时 INFO 一行即可（见 brain_mixin_transport）
+        print("[INFO] Redis not available - caching disabled (optional)", file=sys.stderr)
 
     # Run using configured transport:
     #   MCP_TRANSPORT=streamable-http -> HTTP server (DEFAULT now)

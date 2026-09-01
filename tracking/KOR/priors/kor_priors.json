@@ -1,0 +1,159 @@
+{
+ "wins": [
+  {
+   "id": "评级修正×SH 跨数据集跨周期混合",
+   "what": "评级修正×SH 跨数据集跨周期混合",
+   "key": "rank(add(multiply(2, rank(change_6m_rating_revision)), rank(short_horizon_hedge3_quantile1_5d_pred)))",
+   "evidence": "registry KOR-RATING-REV-SH-MIX-WIN；88lr21xo / A1lb2KpR",
+   "source": "region_kb"
+  },
+  {
+   "id": "PV 主导 + 表达式层 sector 中性化",
+   "what": "PV 主导 + 表达式层 sector 中性化",
+   "key": "model25 global_value_momentum_percentile_float 等 PV/模型字段，设置 STATISTICAL + group_neutralize(sector)",
+   "evidence": "registry KOR-W113-PVDOM-SECTOR-WIN；wpjJK60l",
+   "source": "region_kb"
+  },
+  {
+   "id": "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
+   "what": "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
+   "key": "慢变量 2y 金矿(评级修正 2.14) × 短周期低相关信号(SH) 混合三闸全过: 评级2+SH1 → 1.77/1.40/2y 2.52; 评级1+SH3 → 1.83/1.14/2y 2.34。与同周期慢信号(LT)混合全灭",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "KOR-W113-PVDOM-SECTOR-WIN",
+   "what": "wave113 grp_sec wpjJK60l: gvm(1x)+pv20(2x) blend wrapped group_neutralize(sector) -> PROD 0.6993 PASS, submitted ACTIVE (5th KOR RA)",
+   "key": "value_mom slow axis + price_volume_quantile1_20d_pred fast leg + expression-level group_neutralize(sector); sector strip is the only proven PROD-wall exit for this crowded blend space",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "T-KB-01 慢×快跨周期混合",
+   "what": "T-KB-01 慢×快跨周期混合",
+   "key": "skeleton=rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD)))); iron_law=必须跨周期/跨数据源；同周期互混零增量",
+   "evidence": "评级修正×SH，sh 1.77-1.83/2y 2.34-2.52",
+   "source": "template_kb_validated"
+  },
+  {
+   "id": "T-KB-02 镜像反转翻案",
+   "what": "T-KB-02 镜像反转翻案",
+   "key": "skeleton=subtract(0, rank(x)) 或 scale(-rank(x)); iron_law=探针批 |sh|≥1.0 强负 → 下一批必做镜像反转，不是判死",
+   "evidence": "pv106 wave34A 变化族镜像",
+   "source": "template_kb_validated"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "acquisition_model 收购概率",
+   "reason": "wave70 10/10 FAIL：收购概率类信号（global/industry/region_percentile_acquisition_likelihood）sharpe 天花板 0.27，2y 全负（-0.65~-1.34），NLP 文本因子 0.12，复合信号 -0.03~0.13 无正交增益",
+   "salvage": "model170 隐含估值/市价比率（9qXgWY79 sharpe 0.64/2y 0.37 全场唯一 2y 为正），CW 结构性集中需先解决集中度",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-ACQ-MODEL-DEAD"
+  },
+  {
+   "family": "ai_factor_transfer technical clones",
+   "reason": "wave126 8/8 RED max abs sh 0.86 (13w price change momentum clone); uc0 white-space fields carry no independent signal, classical indicators are price/volume clones",
+   "salvage": "none",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-AI-FACTOR-TRANSFER-DEAD"
+  },
+  {
+   "family": "ai_equity_alpha probe",
+   "reason": "wave101 8探针5方向全灭: 最高0.51(H3盈余修正强度60d zscore), 全批<=0.51; CONCENTRATED_WEIGHT 1.0 结构性FAIL普遍(2019-03-04事件日集中), TVR 77-79%高超限",
+   "salvage": "保留 alpha_excess_return_forecast/analyst_earnings_revision_intensity 线索, 若未来有非事件日聚合方法可再探",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-AIEQUITY-PROBE-DEAD"
+  },
+  {
+   "family": "ai_factor_transfer",
+   "reason": "wave96 首探 6/6 COMPLETE 全 RED: 最佳 A3 BB position 1.02 但 2y -0.78 investability 0.24 双 FAIL; 资金流/动量/量异常相关全部 <1.0; AI 转移技术指标在 KOR TOP600 信号弱",
+   "salvage": "无; 数据集整体无信号",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-AI_FACTOR_TRANSFER-DEAD"
+  },
+  {
+   "family": "analyst10 revise_value 修正幅度族",
+   "reason": "wave97 裸信号 rank(pre_revise_value_fy1) sharpe 0.67 为族最优（7/10年正、prod 0.34、self 0.02 全绿），但 sharpe<1.58 + CW 0.39 + 2Y 0.35 三墙；wave98 Mode B 线性组合 8/8 全部退化（辅助腿稀释）；wave99 Mode A 参数层 decay/trunc/neut 全无效（CW 0.39 纹丝不动，STATISTICAL 崩至 0.28）；族天花板 sharpe 0.67 无法突破",
+   "salvage": "ts_backfill5 包裹 CW 0.10 接近过闸（但 sharpe 0.52 退化），如需低 CW 变体可考虑；wave97 4号 sal_innovation_score_fq1 2Y 1.37 但 2022 单年依赖，稳健性不足",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-ANL10-REVISE-VALUE-CEILING"
+  },
+  {
+   "family": "behavioral_signals 行为金融",
+   "reason": "wave86 2 项全灭: 稀疏事件流→事件日有效股票少→CW 1.0(2018-03-19), streakΔ5d +0.62 唯一正信号但 CW 结构性无解, TVR 0.586-0.738 高",
+   "salvage": "streak 变化信号本身有效(+0.62)可考虑转价格衍生实现(非该数据集)",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-BEHAVIORAL-DEAD"
+  },
+  {
+   "family": "continuation_score chart-pattern similarity",
+   "reason": "wave117 8 probes all RED: single-field rank probes max -0.66..0.18 sharpe, bullish_flag+pv20 blend only 0.98; 560-field pure white space carries no usable signal on KOR/TOP600",
+   "salvage": "none; fields are technical pattern scores without economic edge",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-CONTINUATION-SCORE-DEAD"
+  },
+  {
+   "family": "continuation_score chart pattern",
+   "reason": "wave102 8探针5方向全灭: 最高0.34(bull_flag_recent_similarity), 动量/差分全负(慢信号差分反向 wave100同型); CW全PASS/TVR健康但信号天花板低, 与 chart_cnn_alpha 形态族判死一致",
+   "salvage": "J2 bull_flag_recent_similarity (0.34 TVR10%) + J6 gap_up 60d zscore (2y0.61) 线索: ts_zscore(recent,90)+decay15 组合若未来再探",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-CONTINUATION-SCORE-PROBE-DEAD"
+  },
+  {
+   "family": "E10 评级2+簇内SH 混合 (wave95)",
+   "reason": "wave95 E10 1.42/0.98/2y2.26 达标只差 0.16, 但与已 ACTIVE 88lr21xo 互相关 0.8236 超 0.7 SELF_CORRELATION 硬闸, 提交结构性死路; 簇内排名不改评级修正主信号族",
+   "salvage": "无",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-E10-CLUSTER-SH-DEAD"
+  },
+  {
+   "family": "equity_forum_data 论坛情绪/注意力",
+   "reason": "wave86 10 项全灭: 评论量/参与者/峰值全族 CW 0.85-1.0 结构性集中(2017-01-23 单日事件), 负 sharpe 方向一致(-0.2~-0.83 注意力反转成立但不可用), opinion_score 族 vec_avg 全 NaN 无区分度",
+   "salvage": "无。KOR 论坛幂律分布结构性无解",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-FORUM-DEAD"
+  },
+  {
+   "family": "fund_holdings_panel account flow/concentration",
+   "reason": "wave124 8/8 RED max abs sh 0.51; account-level transaction/holding aggregates carry no signal in KOR TOP600, flip ceiling 0.51 far below 1.58, several probes tvr>80%",
+   "salvage": "none",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-FUND-HOLDINGS-PANEL-DEAD"
+  },
+  {
+   "family": "fundamental89 应计异象(Sloan accruals anomaly)",
+   "reason": "wave11 8/8 RED max sharpe 0.18; 做空高应计方向sharpe接近0或为负, 2Y全负(除组合0.82); CW/TVR健康但信号本身无alpha; 与model219/quant_factor_lib判死一致: KOR慢变基本面因子定价效率高",
+   "salvage": "fundamental93税务应计+fundamental90盈利质量评分(G-score/C-score)未探但同属慢变基本面族, 预期同样判死; 如需基本面信号, 优先analyst系(已验证金矿)",
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-FUNDAMENTAL89-ACCRUALS-DEAD"
+  }
+ ],
+ "region_context": {
+  "tier": "主力区（进行中，目标 10 ACTIVE）",
+  "settings_proven": {
+   "universe": "TOP600",
+   "delay": 1,
+   "neutralization_default": "STATISTICAL",
+   "neutralization_proven": [
+    "STATISTICAL",
+    "SECTOR"
+   ],
+   "proven_combos": "wpjJK60l: 设置层 STATISTICAL + 表达式层 group_neutralize(sector)"
+  },
+  "key_notes": [
+   "TOP600 慢变基本面定价效率高：只有『预期变化类』信号有效，价值水平类全撞 PROD",
+   "win 配方扩展优先级高于盲探新数据集（产出率高一个数量级）"
+  ]
+ },
+ "_meta": {
+  "region": "KOR",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

@@ -88,6 +88,32 @@ def run(
     if tags is None:
         tags = ["PowerPoolSelected"]
 
+    # dry-run：构建到提交流程计划即停，不触碰 network / 不写库
+    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
+    if ctx.get("dry_run"):
+        return {
+            "alpha_id": alpha_id,
+            "success": True,
+            "dry_run": True,
+            "submitted": False,
+            "steps": [{
+                "step": "dry_run",
+                "success": True,
+                "message": (
+                    "Would run submit flow: get_alpha_details → pre_submit_check → "
+                    f"[set_properties → submit → poll]（confirm_submit={confirm_submit}）"
+                ),
+            }],
+            "plan": {
+                "alpha_id": alpha_id,
+                "name": name,
+                "color": color,
+                "tags": tags,
+                "confirm_submit": confirm_submit,
+                "force": force,
+            },
+        }
+
     result: Dict[str, Any] = {
         "alpha_id": alpha_id,
         "steps": [],

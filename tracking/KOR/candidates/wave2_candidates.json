@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W2_A1",
+    "expr": "rank(ts_mean(vec_avg(consensus_stddev_estimate), 22)) + scale(-rank(returns, 42)) * 0.35",
+    "dataset": "analyst_base_ref",
+    "family": "analyst_dispersion_momentum",
+    "desc": "离散度排名+价格反转混合 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_A2",
+    "expr": "ts_zscore(vec_avg(consensus_stddev_estimate), 63) + scale(-rank(returns, 21)) * 0.3",
+    "dataset": "analyst_base_ref",
+    "family": "analyst_dispersion_change",
+    "desc": "离散度变化率+短期反转 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_A3",
+    "expr": "rank(divide(vec_avg(consensus_stddev_estimate), add(vec_avg(num_estimates_consensus), 1))) + scale(-rank(returns, 42)) * 0.35",
+    "dataset": "analyst_base_ref",
+    "family": "quality_adjusted_dispersion",
+    "desc": "质量调整离散度+价格反转 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_B1",
+    "expr": "ts_zscore(vec_avg(consensus_surprise_percentage), 42) * rank(ts_mean(volume, 5))",
+    "dataset": "analyst_base_ref",
+    "family": "earnings_surprise_volume",
+    "desc": "意外动量×成交量确认 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_B2",
+    "expr": "multiply(rank(vec_avg(consensus_surprise_percentage)), subtract(1, rank(vec_avg(consensus_stddev_estimate))))",
+    "dataset": "analyst_base_ref",
+    "family": "surprise_dispersion_interaction",
+    "desc": "意外×离散度交互 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_C1",
+    "expr": "ts_zscore(vec_avg(estimate_count_current_period_eps_annual12_3), 63) + scale(-rank(returns, 21)) * 0.3",
+    "dataset": "analyst_consensus",
+    "family": "estimate_count_momentum",
+    "desc": "EPS估计数量变化+短期反转 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_C2",
+    "expr": "rank(divide(vec_avg(actual_eps_value_annual12_3), vec_avg(consensus_mean_estimate))) + scale(-rank(returns, 42)) * 0.35",
+    "dataset": "analyst_consensus",
+    "family": "earnings_quality_ratio",
+    "desc": "实际/预期比值+价格反转 (vec_avg修正)"
+  },
+  {
+    "id": "KOR_W2_D1",
+    "expr": "multiply(vec_avg(oth78_preliminaryresultsflag), rank(ts_mean(returns, 5)))",
+    "dataset": "other78",
+    "family": "event_driven_momentum",
+    "desc": "初步结果标记×价格动量 (vec_avg修正)"
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W8_A1",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 10)), -0.5), multiply(scale(ts_rank(oth496_returns60, 63)), 0.5))",
+    "dataset": "other496",
+    "family": "reversal_momentum_balanced",
+    "desc": "2日反转+60日动量均衡混合(解决2Y稳定性)"
+  },
+  {
+    "id": "KOR_W8_A2",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 10)), -0.4), multiply(scale(ts_rank(oth496_returns60, 63)), 0.6))",
+    "dataset": "other496",
+    "family": "momentum_dominant",
+    "desc": "60日动量主导+2日反转辅助"
+  },
+  {
+    "id": "KOR_W8_A3",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 10)), -0.3), multiply(scale(ts_rank(oth496_ard_tot_assets, 63)), 0.7))",
+    "dataset": "other496",
+    "family": "asset_reversal_slow",
+    "desc": "资产规模慢变量主导+2日反转"
+  },
+  {
+    "id": "KOR_W8_B1",
+    "expr": "add(multiply(scale(ts_rank(ts_mean(oth496_returns2, 3), 10)), -0.6), multiply(scale(ts_rank(returns, 5)), -0.4))",
+    "dataset": "other496",
+    "family": "smoothed_double_reversal",
+    "desc": "ts_mean平滑双重反转(降turnover)"
+  },
+  {
+    "id": "KOR_W8_B2",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 21)), -0.5), multiply(scale(ts_rank(returns, 10)), -0.5))",
+    "dataset": "other496",
+    "family": "longer_window_reversal",
+    "desc": "更长窗口反转(21日+10日降turnover)"
+  },
+  {
+    "id": "KOR_W8_C1",
+    "expr": "multiply(scale(ts_rank(oth496_returns3, 10)), -1)",
+    "dataset": "other496",
+    "family": "reversal_3day",
+    "desc": "3日纯反转(探索其他周期)"
+  },
+  {
+    "id": "KOR_W8_C2",
+    "expr": "multiply(scale(ts_rank(oth496_returns10, 21)), -1)",
+    "dataset": "other496",
+    "family": "reversal_10day",
+    "desc": "10日纯反转(探索其他周期)"
+  },
+  {
+    "id": "KOR_W8_C3",
+    "expr": "add(multiply(scale(ts_rank(oth496_returns2, 10)), -0.4), multiply(scale(ts_rank(oth496_returns10, 21)), -0.6))",
+    "dataset": "other496",
+    "family": "multi_scale_reversal",
+    "desc": "2日+10日多尺度反转"
+  }
+]

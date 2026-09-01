@@ -1,0 +1,58 @@
+[
+  {
+    "id": "KOR_W10_R1",
+    "expr": "ts_rank(vec_avg(rsk59_daystocover10day), 63)",
+    "dataset": "risk59",
+    "family": "days_to_cover",
+    "desc": "10日回补天数时序排名(空头压力)"
+  },
+  {
+    "id": "KOR_W10_R2",
+    "expr": "ts_rank(vec_avg(rsk59_squeeze_risk), 63)",
+    "dataset": "risk59",
+    "family": "squeeze_risk",
+    "desc": "轧空风险评分(逼空潜力)"
+  },
+  {
+    "id": "KOR_W10_R3",
+    "expr": "add(ts_rank(vec_avg(rsk59_daystocover10day), 63), multiply(scale(ts_rank(returns, 21)), -0.3))",
+    "dataset": "risk59",
+    "family": "dtc_momentum",
+    "desc": "回补天数+价格反转辅助"
+  },
+  {
+    "id": "KOR_W10_R4",
+    "expr": "multiply(ts_rank(vec_avg(rsk59_daystocover10day), 63), ts_rank(vec_avg(rsk59_s3utilization), 63))",
+    "dataset": "risk59",
+    "family": "dtc_utilization",
+    "desc": "回补天数×借券利用率(双重空头压力)"
+  },
+  {
+    "id": "KOR_W10_S1",
+    "expr": "ts_rank(vec_avg(shrt38_accum_net_buy_amt), 63)",
+    "dataset": "shortinterest38",
+    "family": "net_buy_amount",
+    "desc": "累计净买入金额(资金流向)"
+  },
+  {
+    "id": "KOR_W10_S2",
+    "expr": "ts_rank(vec_avg(shrt38_stk_short_sellshort_sell_amt), 63)",
+    "dataset": "shortinterest38",
+    "family": "short_sell_amount",
+    "desc": "卖空金额时序排名(空头活动)"
+  },
+  {
+    "id": "KOR_W10_S3",
+    "expr": "add(ts_rank(vec_avg(shrt38_accum_net_buy_amt), 63), multiply(scale(ts_rank(oth496_returns2, 10)), -0.4))",
+    "dataset": "shortinterest38",
+    "family": "netbuy_reversal",
+    "desc": "净买入+2日反转辅助"
+  },
+  {
+    "id": "KOR_W10_S4",
+    "expr": "multiply(ts_rank(vec_avg(shrt38_stk_short_sellshort_sell_amt), 63), ts_rank(vec_avg(rsk59_daystocover10day), 63))",
+    "dataset": "shortinterest38",
+    "family": "shortsell_dtc",
+    "desc": "卖空金额×回补天数(双重空头信号)"
+  }
+]

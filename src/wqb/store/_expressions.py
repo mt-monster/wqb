@@ -99,6 +99,9 @@ class ExpressionsMixin:
         if status:
             sql += " AND status=?"
             params.append(status)
+        else:
+            # 默认排除 superseded（2026-09-01：表达式更新留档态不参与选波/回测）
+            sql += " AND status != 'superseded'"
         sql += " ORDER BY id"
         cur = self.connection.cursor()
         cur.execute(sql, params)

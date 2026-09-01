@@ -77,6 +77,8 @@ def workflow_batch_track(
     dataset: str,
     concurrency: int = 7,
     max_rounds: int = 3,
+    output_csv: Optional[str] = None,
+    campaign_dir: Optional[str] = None,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """S3 批量回测跟踪（batch_track 节点快捷方式）.
@@ -87,6 +89,8 @@ def workflow_batch_track(
         dataset: 数据集 ID
         concurrency: 并发数（默认 7，七槽填槽）
         max_rounds: 最大轮次
+        output_csv: 输出 CSV 路径（默认自动生成）
+        campaign_dir: 战役目录（默认自动解析）
         dry_run: 是否干跑
 
     Returns:
@@ -99,6 +103,8 @@ def workflow_batch_track(
         "dataset": dataset,
         "concurrency": concurrency,
         "max_rounds": max_rounds,
+        "output_csv": output_csv,
+        "campaign_dir": campaign_dir,
     }, dry_run=dry_run)
     return result.to_dict()
 
@@ -136,7 +142,7 @@ def workflow_submit_alpha(
         "alpha_id": alpha_id,
         "name": name,
         "color": color,
-        "tags": tags or [],
+        "tags": tags,
         "descriptions": descriptions,
         "force": force,
         "confirm_submit": confirm_submit,

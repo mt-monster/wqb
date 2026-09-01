@@ -66,8 +66,35 @@ def run(
         "success": False,
     }
 
+    # dry-run：构建到 headless_runner 命令即停，不 subprocess、不写库
+    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍执行 Popen + build_candidate_field_pool persist）。
+    if ctx.get("dry_run"):
+        result["success"] = True
+        result["dry_run"] = True
+        result["steps"].append({
+            "step": "dry_run",
+            "success": True,
+            "message": (
+                "Would run GEM: resolve brain-makeSomeGem → build headless_runner command "
+                "→ execute → check final_expressions → quality_estimation"
+            ),
+        })
+        result["plan"] = {
+            "region": region,
+            "dataset_id": dataset_id,
+            "delay": delay,
+            "universe": universe,
+            "data_category": data_category,
+            "instrument_type": instrument_type,
+            "data_type": data_type,
+            "detached": detached,
+        }
+        return result
+
     # Step 1: 检查 S1 ledger（自动注入 ideas-file）
     s1_ledger = None
+    field_prefix_summary = None
+    candidate_field_pool = []
     if store:
         try:
             s1_key = f"s1_{dataset_id}_d{delay}"
@@ -82,6 +109,38 @@ def run(
                 })
         except Exception as e:
             logger.warning(f"Failed to check S1 ledger: {e}")
+
+        try:
+            field_prefix_summary = store.get_field_prefix_clusters(region, dataset_id)
+            if not field_prefix_summary and s1_ledger:
+                field_prefix_summary = s1_ledger.get("field_prefix_summary")
+            if field_prefix_summary:
+                result["steps"].append({
+                    "step": "field_prefix_summary_check",
+                    "success": True,
+                    "s1_prefix_key": f"s1_prefix_{dataset_id}",
+                    "total_fields": field_prefix_summary.get("total_fields"),
+                    "total_clusters": field_prefix_summary.get("total_clusters"),
+                    "auto_inject": True,
+                })
+        except Exception as e:
+            logger.warning(f"Failed to check field prefix summary: {e}")
+
+        try:
+            pool_payload = store.get_candidate_field_pool(region, dataset_id)
+            if not pool_payload:
+                pool_payload = store.build_candidate_field_pool(region, dataset_id, persist=True)
+            candidate_field_pool = (pool_payload or {}).get("candidate_field_pool", [])
+            if candidate_field_pool:
+                result["steps"].append({
+                    "step": "candidate_field_pool_check",
+                    "success": True,
+                    "s2_field_pool_key": f"s2_field_pool_{dataset_id}",
+                    "pool_size": len(candidate_field_pool),
+                    "auto_inject": True,
+                })
+        except Exception as e:
+            logger.warning(f"Failed to check candidate field pool: {e}")
 
     # Step 2: 定位 GEM runner
     gem_root = resolve_skill_dir("brain-makeSomeGem")
@@ -186,6 +245,8 @@ def run(
             result["success"] = True
             result["final_expressions_path"] = final_expr_path
             result["expression_count"] = len(expressions)
+            result["field_prefix_summary"] = field_prefix_summary or {}
+            result["candidate_field_pool"] = candidate_field_pool
 
             # Step 7: 质量预估（特征工程 SOP 阶段5，强制）
             quality_result = _run_quality_estimation(
@@ -194,6 +255,7 @@ def run(
                 final_expr_path=final_expr_path,
                 expressions=expressions,
                 store=store,
+                field_prefix_summary=field_prefix_summary,
             )
             result["steps"].append(quality_result)
             result["quality_estimation"] = quality_result
@@ -212,6 +274,8 @@ def run(
                         "dataset_id": dataset_id,
                         "expression_count": len(expressions),
                         "final_expressions_path": final_expr_path,
+                        "field_prefix_summary": field_prefix_summary or {},
+                        "candidate_field_pool": candidate_field_pool,
                         "quality_estimation": quality_result,
                         "mode_b_required": result.get("mode_b_required", False),
                     })
@@ -283,6 +347,7 @@ def _run_quality_estimation(
     final_expr_path: str,
     expressions: List[Dict],
     store: Optional[Any] = None,
+    field_prefix_summary: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """运行质量预估（特征工程 SOP 阶段5）.
 
@@ -296,7 +361,9 @@ def _run_quality_estimation(
         "expected_block": 0,
         "expected_block_count": 0,
         "diversity_risks": [],
-        "details": {},
+        "details": {
+            "field_prefix_summary": field_prefix_summary or {},
+        },
     }
 
     # 1. 运行 pool_diversity.py（六维多样性评估）

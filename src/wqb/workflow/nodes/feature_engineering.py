@@ -60,6 +60,29 @@ def run(
         "success": False,
     }
 
+    # dry-run：构建到特征工程流水线命令即停，不 subprocess、不写库
+    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实跑 pipeline + build_* persist）。
+    if ctx.get("dry_run"):
+        result["success"] = True
+        result["dry_run"] = True
+        result["steps"].append({
+            "step": "dry_run",
+            "success": True,
+            "message": (
+                "Would run feature engineering S1-S3: check S1 ledger → resolve "
+                "brain-data-feature-engineering → run pipeline → write s1_ledger"
+            ),
+        })
+        result["plan"] = {
+            "region": region,
+            "dataset_id": dataset_id,
+            "delay": delay,
+            "universe": universe,
+            "data_category": data_category,
+            "force_regen": force_regen,
+        }
+        return result
+
     # Step 1: 检查是否已有 S1 ledger（且不强制重新生成）
     if store and not force_regen:
         try:
@@ -118,6 +141,54 @@ def run(
             return result
 
         # Step 4: 写入 ledger（强制）
+        prefix_summary = None
+        candidate_field_pool = []
+        if store:
+            try:
+                prefix_summary = store.build_field_prefix_clusters(
+                    region=region,
+                    dataset=dataset_id,
+                    prefix_depth=1,
+                    top_n=10,
+                    samples_per_cluster=5,
+                    persist=True,
+                )
+                result["steps"].append({
+                    "step": "build_prefix_clusters",
+                    "success": True,
+                    "s1_prefix_key": f"s1_prefix_{dataset_id}",
+                    "total_fields": prefix_summary.get("total_fields"),
+                    "total_clusters": prefix_summary.get("total_clusters"),
+                })
+            except Exception as e:
+                logger.warning(f"Failed to build field prefix clusters: {e}")
+                result["steps"].append({
+                    "step": "build_prefix_clusters",
+                    "success": False,
+                    "error": str(e),
+                })
+
+            try:
+                pool_payload = store.build_candidate_field_pool(
+                    region=region,
+                    dataset=dataset_id,
+                    persist=True,
+                )
+                candidate_field_pool = pool_payload.get("candidate_field_pool", [])
+                result["steps"].append({
+                    "step": "build_candidate_field_pool",
+                    "success": True,
+                    "s2_field_pool_key": f"s2_field_pool_{dataset_id}",
+                    "pool_size": pool_payload.get("pool_size", 0),
+                })
+            except Exception as e:
+                logger.warning(f"Failed to build candidate field pool: {e}")
+                result["steps"].append({
+                    "step": "build_candidate_field_pool",
+                    "success": False,
+                    "error": str(e),
+                })
+
         if store:
             ledger_data = {
                 "generated_at": datetime.now().isoformat(),
@@ -127,8 +198,10 @@ def run(
                 "universe": universe,
                 "data_category": data_category,
                 "ideas_md_path": fe_result.get("ideas_md_path"),
-                "field_whitelist": fe_result.get("field_whitelist", []),
+                "field_whitelist": candidate_field_pool or fe_result.get("field_whitelist", []),
+                "candidate_field_pool": candidate_field_pool,
                 "preprocessing": fe_result.get("preprocessing", {}),
+                "field_prefix_summary": prefix_summary or {},
                 "source": "feature_engineering_node",
             }
 
@@ -138,6 +211,8 @@ def run(
                     "step": "write_ledger",
                     "success": True,
                     "s1_key": s1_key,
+                    "field_whitelist_size": len(ledger_data["field_whitelist"]),
+                    "candidate_field_pool_size": len(candidate_field_pool),
                 })
             except Exception as e:
                 logger.error(f"Failed to write S1 ledger: {e}")
@@ -151,8 +226,10 @@ def run(
 
         result["success"] = True
         result["ideas_md_path"] = fe_result.get("ideas_md_path")
-        result["field_whitelist"] = fe_result.get("field_whitelist", [])
+        result["field_whitelist"] = candidate_field_pool or fe_result.get("field_whitelist", [])
+        result["candidate_field_pool"] = candidate_field_pool
         result["preprocessing"] = fe_result.get("preprocessing", {})
+        result["field_prefix_summary"] = prefix_summary or {}
 
     except Exception as e:
         logger.exception("Feature engineering pipeline failed")

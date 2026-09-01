@@ -1,0 +1,108 @@
+{
+  "wave": "wave106",
+  "dataset": "analyst_base_ref",
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "mode": "首探探针批 8 条 3 方向",
+  "updated": "2026-09-01",
+  "baseline": "KOR 5 ACTIVE; wave105 intraday_pv_feats 8条全灭判死(CW=1.0); 目标 20 个还需 15 个",
+  "s1_field_understanding": {
+    "data_type": "VECTOR(10)+MATRIX(4)",
+    "field_count": 14,
+    "coverage": 0.6683,
+    "low_competition": "consensus_stddev_estimate(ac=0), consensus_high/low_estimate(ac=0), num_estimates_consensus(ac=0) 零竞争",
+    "key_fields": {
+      "consensus_mean_estimate": "分析师一致预期均值 (ac=1)",
+      "consensus_stddev_estimate": "预期分歧度/不确定性 (ac=0)",
+      "consensus_high_estimate": "预期上限 (ac=0)",
+      "consensus_low_estimate": "预期下限 (ac=0)",
+      "consensus_surprise_percentage": "预期惊喜百分比 (ac=8)",
+      "num_estimates_consensus": "覆盖分析师数量 (ac=0)"
+    },
+    "economic_logic": "分析师预期分歧度(stddev)和预期区间(high-low)衡量盈利不确定性, 与评级修正(趋势)是正交信号源; 不确定性高预示波动加大/信息不对称"
+  },
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "KOR",
+    "universe": "TOP600",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "SECTOR",
+    "truncation": 0.04,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31"
+  },
+  "candidates": [
+    {
+      "id": "Q1",
+      "variant": "预期分歧度 (stddev)",
+      "expression": "rank(vec_avg(consensus_stddev_estimate))",
+      "economic_logic": "分析师预期分歧度衡量盈利不确定性, 高分歧预示信息不对称/波动加大, 负向信号(不确定性折价)",
+      "field_count": 1
+    },
+    {
+      "id": "Q2",
+      "variant": "预期区间宽度 (high-low)",
+      "expression": "rank(subtract(vec_avg(consensus_high_estimate), vec_avg(consensus_low_estimate)))",
+      "economic_logic": "预期区间宽度=high-low, 直接衡量分析师意见分散程度, 与stddev类似但更稳健(不受极端值影响)",
+      "field_count": 2
+    },
+    {
+      "id": "Q3",
+      "variant": "预期分歧度标准化 (stddev/mean)",
+      "expression": "rank(divide(vec_avg(consensus_stddev_estimate), add(abs(vec_avg(consensus_mean_estimate)), 0.001)))",
+      "economic_logic": "分歧度相对预期水平的比率, 消除规模效应, 纯粹衡量相对不确定性",
+      "field_count": 2
+    },
+    {
+      "id": "Q4",
+      "variant": "覆盖分析师数量",
+      "expression": "rank(vec_avg(num_estimates_consensus))",
+      "economic_logic": "覆盖分析师数量衡量市场关注度, 低覆盖预示信息不足/潜在错误定价, 正向信号(关注度溢价)",
+      "field_count": 1
+    },
+    {
+      "id": "Q5",
+      "variant": "预期惊喜百分比",
+      "expression": "rank(vec_avg(consensus_surprise_percentage))",
+      "economic_logic": "历史惊喜百分比衡量分析师预测准确性, 持续正惊喜预示盈利动能, 与评级修正不同期限",
+      "field_count": 1
+    },
+    {
+      "id": "Q6",
+      "variant": "分歧度+覆盖度混合",
+      "expression": "rank(add(rank(vec_avg(consensus_stddev_estimate)), rank(vec_avg(num_estimates_consensus))))",
+      "economic_logic": "不确定性(分歧度)与信息环境(覆盖度)双因子, 高分歧+低覆盖=最大信息不对称",
+      "field_count": 2
+    },
+    {
+      "id": "Q7",
+      "variant": "预期区间宽度/价格",
+      "expression": "rank(divide(subtract(vec_avg(consensus_high_estimate), vec_avg(consensus_low_estimate)), add(last_close_price, 0.001)))",
+      "economic_logic": "预期区间宽度相对股价的比例, 衡量相对不确定性, 消除价格规模效应",
+      "field_count": 3
+    },
+    {
+      "id": "Q8",
+      "variant": "分歧度变化率 (ts_delta)",
+      "expression": "rank(ts_delta(vec_avg(consensus_stddev_estimate), 20))",
+      "economic_logic": "分歧度20日变化, 不确定性上升趋势预示风险积累, 与水平值不同的时间维度信号",
+      "field_count": 1
+    }
+  ],
+  "diversity_notes": {
+    "operator": "rank/vec_avg/subtract/divide/ts_delta - 基础+时序算子",
+    "field": "consensus_stddev/high/low/mean/surprise/num_estimates - 6个不同字段",
+    "skeleton": "单字段rank(4条) + 双字段组合(3条) + 三字段组合(1条)",
+    "preprocessing": "vec_avg(VECTOR聚合)",
+    "revenue_source": "不确定性折价(Q1/Q2/Q3/Q6/Q7/Q8), 关注度溢价(Q4), 盈利动能(Q5)",
+    "failure_risk": "覆盖率0.668<0.7可能CW问题; VECTOR类型需vec_avg聚合; 与已有ACTIVE相关性待查(不同信号源应低相关)"
+  }
+}
