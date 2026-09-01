@@ -11,7 +11,7 @@
   - 改进前：tracking/KOR/kor_d1_campaign_state.json 历史波次
   - 改进后：tracking/KOR/monitoring/discipline_monitor_*.json 监控数据
 """
-import collections, datetime, glob, json, os, re, sys
+import datetime, glob, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

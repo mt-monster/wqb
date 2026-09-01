@@ -17,6 +17,16 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 # Region search space
 # ---------------------------------------------------------------------------
 
+# 平台 dataset category 全集（2026-09-01 统一口径：以平台 get_datasets 的
+# category 字段为准，勿按内容语义/描述推断——如 model50 内容为下行风险评估打分，
+# 但平台分类为 model。来源：IND/TOP500/D1 实测 by_category 15 类 + 平台已知
+# 合法类别 equity/event。区域差异由 S0 体检实测决定，不在本表裁剪。)
+PLATFORM_CATEGORIES: List[str] = [
+    "equity", "fundamental", "sentiment", "news", "analyst", "option",
+    "shortinterest", "model", "earnings", "event", "pv", "risk",
+    "insiders", "institutions", "imbalance", "macro", "other",
+]
+
 # Full USA neutralization sweep (11 options) — platform-supported order.
 _USA_NEUTRALIZATIONS = [
     "STATISTICAL",
@@ -32,13 +42,27 @@ _USA_NEUTRALIZATIONS = [
     "SLOW_AND_FAST",
 ]
 
+# S0 数据集白名单两阶段策略（2026-09-01 落地，实证依据：6 区 catalog 分布对比——
+# cov 中位 0.666(EUR)~0.848(USA)、alphaCount 中位 12(CHN)~334(USA)，统一阈值对各区域
+# 松紧不一且卡点维度不同，故"区域差异化"以两阶段分层实现而非每区自由阈值）：
+#   阶段① 全局绝对底线（硬闸，不分区域）：见 DATASET_HEALTH_FLOOR，
+#          保数据可用性质量底线，跨区可比、可复现；
+#   阶段② 区域自适应相对排序（软）：各区域按自身 catalog 分位取 tier1/tier2 带，
+#          参数落 tracking/<REGION>/config/thresholds.json 的 dataset_health
+#          （tier_method=quantile + tier1/tier2_score_pct），由 toolkit
+#          score_datasets.py 消费；结构性全灭类目（如 IND risk 4 集字段数不足）
+#          在区域配置中显式标注，避免每波重查。
+DATASET_HEALTH_FLOOR: Dict[str, float] = {
+    "coverage_hard_min": 0.5,    # 低于此覆盖视为不可用数据，任何区域不放行
+    "field_count_hard_min": 5,   # 低于此字段数无组合空间，任何区域不放行
+}
+
 REGIONS: Dict[str, dict] = {
     "USA": {
         "universes": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst",
-                       "option", "short_interest", "model", "earnings", "event"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP3000",
     },
     "EUR": {
@@ -46,38 +70,35 @@ REGIONS: Dict[str, dict] = {
                       "ILLIQUID_MINVOL1M"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst",
-                       "option", "short_interest", "model", "earnings"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP2500",
     },
     "CHN": {
         "universes": ["TOP2000U", "TOP1000", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst",
-                       "short_interest", "model"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP2000U",
     },
     "ASI": {
         "universes": ["TOP2000", "TOP1000", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP2000",
     },
     "GLB": {
         "universes": ["MINVOL10M", "TOPDIV3000", "TOP3000", "TOP2000"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst",
-                       "model"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP3000",
     },
     "JPN": {
         "universes": ["TOP2000", "TOP1000", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP2000",
     },
     "KOR": {
@@ -85,56 +106,56 @@ REGIONS: Dict[str, dict] = {
         # KOR campaigns start from SECTOR (empirical conclusion 2026-07).
         "neutralizations": ["SECTOR"] + [n for n in _USA_NEUTRALIZATIONS if n != "SECTOR"],
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news", "analyst"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP3000",
     },
     "AMR": {
         "universes": ["TOP2000", "TOP1000", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment", "news"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP2000",
     },
     "TWN": {
         "universes": ["TOP1000", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP1000",
     },
     "GBR": {
         "universes": ["TOP700", "TOP350"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [0, 1],  # GBR D0 threshold 2.69 measured
-        "categories": ["equity", "fundamental", "sentiment", "news"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP700",
     },
     "DEU": {
         "universes": ["TOP500", "TOP300"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP500",
     },
     "IND": {
         "universes": ["TOP500", "TOP300"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental", "sentiment"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP500",
     },
     "MEA": {
         "universes": ["TOP400", "TOP200"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP400",
     },
     "HKG": {
         "universes": ["TOP800", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
-        "categories": ["equity", "fundamental"],
+        "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP800",
     },
 }

@@ -2,7 +2,7 @@ import json, sys, time
 import os
 sys.path.insert(0, os.environ.get("WQ_TOOLKIT", os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts")))
 from _lib.common import CampaignContext, atomic_write, load_credentials
-from _lib.api import Api, api_call
+from _lib.api import Api
 from _lib.poller import TERMINAL
 import metrics_cache
 

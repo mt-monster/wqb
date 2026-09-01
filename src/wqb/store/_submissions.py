@@ -13,13 +13,18 @@ class SubmissionsMixin:
 
     def upsert_submission(self, alpha_id: str, region: Optional[str] = None,
                           submission_type: str = "REGULAR", status: str = "PENDING",
-                          quota_used: int = 0, quota_remaining: Optional[int] = None,
+                          quota_used: int = 0,
                           verdict: Optional[Dict] = None, submitted_at: Optional[str] = None,
                           verified_at: Optional[str] = None) -> Dict[str, Any]:
-        """Upsert submission record."""
+        """Upsert submission record.
+
+        verified_at 默认 now()（提交即验证），消除旧版 None 不填的遗漏。
+        quota_remaining 已废弃（从未写入），不再接受。
+        """
         cur = self.connection.cursor()
         now = _now()
         submitted_at = submitted_at or now
+        verified_at = verified_at or now
         verdict_json = _dumps(verdict) if verdict else None
 
         cur.execute(
@@ -30,19 +35,19 @@ class SubmissionsMixin:
         if row:
             cur.execute(
                 """UPDATE submission_ledger SET region=?, submission_type=?, status=?,
-                   quota_used=?, quota_remaining=?, verdict=?, verified_at=?, updated_at=?
+                   quota_used=?, verdict=?, verified_at=?, updated_at=?
                    WHERE alpha_id=? AND submitted_at=?""",
-                (region, submission_type, status, quota_used, quota_remaining,
+                (region, submission_type, status, quota_used,
                  verdict_json, verified_at, now, alpha_id, submitted_at),
             )
             action = "updated"
         else:
             cur.execute(
                 """INSERT INTO submission_ledger
-                   (alpha_id, region, submission_type, status, quota_used, quota_remaining,
+                   (alpha_id, region, submission_type, status, quota_used,
                     verdict, submitted_at, verified_at, created_at, updated_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-                (alpha_id, region, submission_type, status, quota_used, quota_remaining,
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (alpha_id, region, submission_type, status, quota_used,
                  verdict_json, submitted_at, verified_at, now, now),
             )
             action = "inserted"

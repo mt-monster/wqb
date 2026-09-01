@@ -2,7 +2,7 @@
 """migrate_phase2.py - Phase 2 迁移：registry 实证层 + wave 结果台账 + 跨区教训入 SQLite。
 
 数据源（Phase 1 拆分后的结构）：
-  - research-data/registry/index.json        -> cross_region_lessons 表
+  - research-data/registry/index.json        -> registry_empirical 表（layer='cross_region'）
   - research-data/registry/<REGION>.json     -> registry_empirical 表（dead_ends/wins/orphans/campaigns）
   - tracking/<REGION>/results/wave*_results.json -> wave_results 表
   - tracking/<REGION>/results/_archive/waves_*.json -> wave_results 表（archived=1）
@@ -64,13 +64,17 @@ def migrate_cross_region_lessons(conn, dry_run):
     lessons = data.get("cross_region_lessons", [])
     n = 0
     for les in lessons:
+        payload = json.dumps({
+            "finding": les.get("finding"),
+            "rule": les.get("rule"),
+        }, ensure_ascii=False)
         row = (
-            les.get("id"), les.get("family"), les.get("finding"), les.get("rule"),
+            "GLOBAL", "cross_region", les.get("id"), les.get("family"), payload,
         )
         if not dry_run:
             conn.execute("""
-                INSERT OR REPLACE INTO cross_region_lessons (lesson_id, family, finding, rule, updated_at)
-                VALUES (?, ?, ?, ?, datetime('now'))
+                INSERT OR REPLACE INTO registry_empirical (region, layer, entry_id, family, payload, updated_at)
+                VALUES (?, ?, ?, ?, ?, datetime('now'))
             """, row)
         n += 1
     return n
@@ -259,7 +263,7 @@ def main():
 
     # 验证
     c = conn.cursor()
-    for t in ("cross_region_lessons", "registry_empirical", "wave_results"):
+    for t in ("registry_empirical", "wave_results"):
         c.execute(f'SELECT COUNT(*) FROM "{t}"')
         print(f"[db] {t}: {c.fetchone()[0]} rows")
 

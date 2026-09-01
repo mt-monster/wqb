@@ -1,0 +1,60 @@
+{
+  "region": "IND",
+  "universe": "TOP500",
+  "delay": 1,
+  "neutralization_default": "STATISTICAL",
+  "neutralization_ranking": ["SUBINDUSTRY", "SECTOR", "STATISTICAL", "REVERSION_AND_MOMENTUM"],
+  "win_recipes": [
+    {
+      "id": "IND-ANALYST9-SUBIND-WIN",
+      "dataset": "analyst9",
+      "recipe": "group_rank(ts_mean(ts_backfill(divide(subtract(vec_avg(anl9_daily_numup),vec_avg(anl9_daily_numdn)),add(add(vec_avg(anl9_daily_numup),vec_avg(anl9_daily_numdn)),vec_avg(anl9_daily_numnochg))),66),252),industry)",
+      "key": "analyst revision breadth + SUBINDUSTRY neutralization",
+      "sharpe": 1.58,
+      "robust": 1.02
+    },
+    {
+      "id": "IND-PV106-COST-FRAGILITY-WIN",
+      "dataset": "pv106",
+      "recipe": "group_rank(ts_mean(ts_backfill(divide(transaction_cost_maximum,transaction_cost_median),66),42),industry)",
+      "key": "cost fragility + group_rank + ts_mean",
+      "sharpe": 1.85,
+      "robust": 1.03
+    },
+    {
+      "id": "IND-FND86-EARNINGS-SCORE-WIN",
+      "dataset": "fundamental86",
+      "recipe": "group_neutralize(quantile(ts_backfill(fnd86_earnings_score,66)),industry)",
+      "key": "earnings score + group_neutralize + quantile",
+      "sharpe": 1.45,
+      "robust": 1.12
+    }
+  ],
+  "dead_end_rules": [
+    "IND model score families (model216/238/138/29/30/31/33) have robust wall 0.14-0.95, structural, do not expand",
+    "IND news/sentiment/NLP families all dead (news29/36/73/79/3, sentiment23, ai_news_scores, news_sentiment_nlp/transfer)",
+    "IND fundamental quality families dead (fnd44/90/94, model192, quant_factor_lib)",
+    "IND acquisition_model dead (weak negative, no reversal value)",
+    "IND other128/315/545/567 dead (executive/swap/network/employee signals no alpha)",
+    "IND pv70 region mismatch (APAC ex-Japan/ex-China only)",
+    "IND fnd94 group_neutralize反向稀释 (比率类字段不要用 group_neutralize)",
+    "IND fnd86 + fnd94 信号冲突禁止组合",
+    "IND fnd94 + mdl28 稀释 IS 禁止组合"
+  ],
+  "operator_preferences": {
+    "preferred": ["ts_backfill", "ts_mean", "ts_delta", "ts_zscore", "rank", "group_rank", "group_neutralize", "quantile", "subtract", "divide", "multiply", "add"],
+    "avoid": ["hump", "reverse(rank(...))"],
+    "note": "reverse(rank(x)) 不过 robust 闸，用 -rank(x) 替代"
+  },
+  "field_count_strategy": {
+    "max_fields_per_expression": 2,
+    "preferred_catalogs": 1,
+    "note": "每条表达式尽量只用 1-2 个 catalog，允许在 2 个 catalog 里多个数据字段组合"
+  },
+  "prod_saturation_risk": {
+    "model238": "prod_corr 0.70-0.92 saturated",
+    "analyst_revision_horizons": "prod_corr 0.82-0.96 saturated",
+    "Operating-Margin": "prod_corr 0.70-0.72 saturated",
+    "note": "prod_corr >= 0.7 一律不提交，回 Mode B 换字段组合"
+  }
+}

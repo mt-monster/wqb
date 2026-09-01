@@ -10,7 +10,7 @@
 用法:
   python review_wave_v2.py --multisim <id> [--tag wave36A] [--dataset chart_cnn_alpha] [--write-ledger]
 """
-import argparse, collections, datetime, glob, json, os, re, sys
+import argparse, datetime, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

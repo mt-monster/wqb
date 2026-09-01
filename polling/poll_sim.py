@@ -7,7 +7,7 @@
     # 也可用环境变量覆盖：POLL_CSV / POLL_PID / POLL_TOTAL / POLL_LOG
 默认 --log 写入仓库根 logs/<name>_poll.log。
 """
-import os, sys, time, argparse, subprocess
+import os, time, argparse, subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DEFAULT_LOG = os.path.join(ROOT, "logs", "poll.log")

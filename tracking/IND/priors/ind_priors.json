@@ -1,0 +1,233 @@
+{
+ "wins": [
+  {
+   "id": "中性化最优依赖信号族（w131）",
+   "what": "中性化最优档位因信号族而异，非全局常量",
+   "key": "双PV/组合腿族 MARKET>SUBIND（SUBIND 吃掉组合 S 增益 1.70→1.0x）；动量族 SUBIND>MARKET（robust +0.10，S −0.2~0.3）；decay 4→10 全面小升（S/F/rob 各 +0.02~0.05）",
+   "evidence": "wave131 轮 12-14: A1l8YdVX vs LL7Y6JR2 / E5lPbJLm vs LL7Y6v9a",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170"
+  },
+  {
+   "id": "winsorize 必须关键字传参（w131）",
+   "what": "winsorize(x, 4) 位置参数平台报错导致 multisim 全批连坐 CANCELLED",
+   "key": "winsorize(x, std=4) 关键字形式；validate_expressions 把 std= 误报为 unknown field 属工具侧误报，勿改回位置参数",
+   "evidence": "wave131 轮 12 首发全批 CANCELLED，改关键字后成功",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170"
+  },
+  {
+   "id": "mdl177 长窗结构（天然强 2Y）",
+   "what": "mdl177 长窗结构（天然强 2Y）",
+   "key": "rank(ts_rank(ts_backfill(F, 66), 250)) 负权重混合",
+   "evidence": "registry IND-MDL177-TSRANK250-WIN；QPGvgO2G / QPGbAOn5 / A1GN2mWX",
+   "source": "region_kb"
+  },
+  {
+   "id": "analyst_revision_horizons 双字段 ts_mean(21)",
+   "what": "analyst_revision_horizons 双字段 ts_mean(21)",
+   "key": "ts_mean(revision_score_5d_medium + recommendation_upgrades_30d_medium_31, 21)",
+   "evidence": "registry IND-VRJE-W21-STAT；vRje2ZGd",
+   "source": "region_kb"
+  },
+  {
+   "id": "scale(-rank(x)) 语法破 robust 墙",
+   "what": "scale(-rank(x)) 语法破 robust 墙",
+   "key": "scale(-rank(x))（而非 scale(reverse(rank(x)))）",
+   "evidence": "registry IND-ANL39-ROBUST-BREAK-WIN",
+   "source": "region_kb"
+  },
+  {
+   "id": "IND-ANALYST-FUNDAMENTAL-MIX",
+   "what": "分析师修正+基本面混合信号（58l2or1N）",
+   "key": "0.6 分析师修正 + 0.4 基本面 earnings score，通过引入基本面信号降低 prod_corr（0.8094 → 0.6617），S=2.17, F=1.78, 2Y=2.53",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "Analyst revision + fundamental combination alpha in IND region",
+   "what": "Analyst revision + fundamental combination alpha in IND region",
+   "key": "analyst_revision_percentile_score_long_4 (60%) + fnd86_earnings_score (40%) with INDUSTRY neutralization, decay=4",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "IND-ANL39-ROBUST-BREAK-WIN",
+   "what": "anl39 族破解 LOW_ROBUST_UNIVERSE_SHARPE 隐形墙",
+   "key": "scale(-rank(x)) 通过 robust 1.01; scale(reverse(rank(x))) 不过(0.90-0.94). IND 提交带 -rank 语法",
+   "evidence": "",
+   "source": "registry_win"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "pv106 双PV流动性族（w131 复挖）",
+   "reason": "wave131 轮 1-9: robust_universe_sharpe 结构天花板 0.85 vs 闸 1.0，三闸互斥（提 S 需混 pp 腿→prod 爆 0.744；提 robust 需 SUBIND→S 塌 1.0x）；Mode B 4 轮达上限",
+   "salvage": "无；IND robust 闸对该族是普遍结构墙",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
+   "_entry_id": "IND-PV106-DUALPV-ROBUST-WALL-W131"
+  },
+  {
+   "family": "quant_factor_lib CASSIE 信用风险族",
+   "reason": "wave131: prod_corr 0.84-0.92 全族爆 0.7 闸（信用风险与生产 book 高重叠），最强 S 达标但无法提交",
+   "salvage": "仅当生产 book 轮动后可重测；勿再投入同族变体",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
+   "_entry_id": "IND-CASSIE-CREDIT-PROD-SAT"
+  },
+  {
+   "family": "model170 earnings_momentum / price_position",
+   "reason": "wave131 轮 11-14: price_position 动量 S1.57 但 prod 0.7956 爆闸（52周动量经典因子）；earnings_momentum prod 0.67 白空间但 robust 天花板 0.91 三闸互斥，Mode B 4 轮达上限判死",
+   "salvage": "em+0.25pp SUBIND/d10 待生产 book 轮动后重试",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
+   "_entry_id": "IND-MDL170-EM-TRIGATE-DEAD"
+  },
+  {
+   "family": "pv70 关系网络（bbgnews/relations）",
+   "reason": "wave131 轮 15: 8/8 全零信号（S=0.00 tvr=0.00 longCount=0），数据区域错配——字段描述标注 APAC ex-Japan/ASI 系，IND 无实际数据；cov=1.0 是快照统一值，不可信",
+   "salvage": "无；同族 ai_news_scores 同判（105 字段全 USA/ASI/EUR 变体无 IND）",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
+   "_entry_id": "IND-PV70-REGION-MISMATCH"
+  },
+  {
+   "family": "news_sentiment_nlp 情绪极性/可读性/分歧族",
+   "reason": "wave131 轮 16-17: 情绪极性（vader/textblob/SWN 双向）+可读性（flesch/gunning fog）全部近零；唯一信号=情绪分歧族 -variance S0.73-0.79 但 2Y 结构性全负（因子衰减）+ CONCENTRATED_WEIGHT 0.50 结构 fail（新闻稀疏 2014 权重集中不可修），Mode B 2 周期判死",
+   "salvage": "无；头条级 NLP 情绪在 IND 无预测力",
+   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
+   "_entry_id": "IND-NSN-HEADLINE-DEAD"
+  },
+  {
+   "family": "acquisition_model",
+   "reason": "wave83 8/8 弱负向（S=-0.42~-0.50 统一方向，fit=-0.22~-0.29，robust=-0.20~-0.22），turnover 0.02 静态持仓；2Y 转正 +0.22~+0.36 但幅度不足以反转（|S|≤0.5 反转后远不到 1.58 闸）；wave131 轮 10 复挖确认：8/8 方向 100% 偏负（rumor fade 机制：并购溢价传闻被提前消化，公告后回落），最强 text_factor 翻转 S=-1.25 仍不足", 
+   "salvage": "无；acquisition_likelihood 与未来收益相关过弱，不抢救",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-ACQMODEL-WEAK-NEG"
+  },
+  {
+   "family": "ai_news_scores sentiment",
+   "reason": "Wave 126-127: 16 candidates (positive+reversed) all Sharpe<1.58. News sentiment signals too weak in IND region.",
+   "salvage": "Combine with fundamental data as auxiliary signal only",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-AI-NEWS-DEAD"
+  },
+  {
+   "family": "analyst consensus surprise/stddev/coverage",
+   "reason": "wave43 8/8 all dead S=-0.62~0.60, CW 0.5 all (2023 broker-update concentration), SUE both directions no signal in IND TOP500",
+   "salvage": "lejQQMMl S=1.91 prod 0.853 -> STATISTICAL neutralization may decouple; or Mode B dilution",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-ANALYSTBASE-SUE-DEAD"
+  },
+  {
+   "family": "anl39 除非常项/单季 EPS 字段(xlcxspemtp/roxlcxspeq/roxlcxspea/ptmepsincx/aepsinclxo)",
+   "reason": "wave30 实证: 上述字段在 ts_rank/ts_zscore 结构下信号全崩, 最强 sharpe 远低于 1.58 门槛",
+   "salvage": "无",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-ANL39-EPSCOL-DEAD"
+  },
+  {
+   "family": "anl39 TTM-Q EPS 差分核心(ttmepsincx/qepsinclxo)变体族",
+   "reason": "wave30-33 实证: 1YzLbZzQ 已占据 anl39 TTM-Q EPS 差分核心. 保留该核心的变体与 1YzLbZzQ self_corr 0.78 / prod_corr 0.786 双超 0.7, 无法差异化",
+   "salvage": "anl39 其余分析师行为类字段可尝试, 但 wave30 已证 ptmepsincx/aepsinclxo/除非常项 EPS 字段信号全崩",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-ANL39-TTMQ-EPS-CORE-DEAD"
+  },
+  {
+   "family": "cross_dataset_earnings_score",
+   "reason": "fnd94 margin + fnd86 earnings_score 组合彻底失败：信号冲突导致 S=0.54-0.73（远低于 margin 单边 1.42-1.49 或 earnings 单边 1.45），robust=0.38-0.60（远低于 earnings 单边 1.03-1.12）。换手率特征不兼容（margin 0.12 vs earnings 0.40），组合后 turnover 被拉高到 0.399。",
+   "salvage": "fundamental86 earnings_score 单独使用（qMj7b6nO robust=1.12）但 IS 失败（S=1.45, F=0.37），不适合 REGULAR 提交",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-CROSS-DS-EARNINGS-DEAD"
+  },
+  {
+   "family": "cross_dataset_volatility",
+   "reason": "fnd94 margin + mdl28 volatility 组合失败：volatility 腿稀释 IS 表现（S 1.44-1.57 vs 纯 margin 1.42-1.49），robust 未突破（0.16-0.50 vs 纯 margin 0.53-0.68）。8 条变体全部 LOW_SHARPE+LOW_ROBUST。",
+   "salvage": "model28 volatility 单独使用（Jj78wA6l S=0.71）或与其他区域数据集组合",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-CROSS-DS-VOLATILITY-DEAD"
+  },
+  {
+   "family": "earnings3 calendar",
+   "reason": "8/8 子任务 404（平台清理），主任务 ERROR。earnings3 是纯事件计时数据集（无方向性），单独排序必死，必须组合 fundamental/analyst 才能点亮金字塔。与 MEA earnings3 判死结论一致。",
+   "salvage": "可尝试：1) 组合 fundamental94 margin + earnings3 门控 2) 财报后 PEAD 漂移（ts_decay_linear）3) 盘后公告门控（ern3_pre_reptime>1600）",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-EARNINGS3-CALENDAR-DEAD"
+  },
+  {
+   "family": "model29 EBITDA SmartEstimate surprise",
+   "reason": "wave112 6unique全完成：EBITDA surprise信号有真实alpha（S 1.22-1.50，F 0.82-1.13，2Y 1.58-2.17极强）但robust死墙0.32-0.49，与predicted_surprise（0.20-0.62）互证IND surprise类信号robust结构性死墙",
+   "salvage": "88lE06Yv S=1.50 F=1.13 2Y=2.17是EBITDA surprise族最高记录，若未来有robust突破配方可再审",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-EBITDA-SURPRISE-ROBUST-WALL"
+  },
+  {
+   "family": "fundamental17 annual tax/leverage",
+   "reason": "年度数据频率太低，信号衰减严重。8 条表达式全灭，max S=0.71（omqaeMWv ptmgnpct）。税务（ataxpd/ataxrate）、杠杆（atotltd/atotd）、利息覆盖（aintcov）、债务服务（adebteps）方向全部失败。",
+   "salvage": "fundamental17 可作为辅助过滤条件（如排除高杠杆股），但不适合作为主信号源。",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-FND17-ANNUAL-DEAD"
+  },
+  {
+   "family": "fundamental23 annual balance sheet",
+   "reason": "39 字段全为年度资产负债表科目（仅 1 VECTOR 元数据），年度频率与 fnd17 同构；水平信号（fnd17 死因）与结构变化信号（本波）双双无定价，判定为频率层判死——IND 年度基本面科目族整体枯竭",
+   "salvage": "无；字段量纲不一致（retained_earnings_liabilities=CSShare）连组合修复成本都高",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-FND23-ANNUAL-BS-DEAD"
+  },
+  {
+   "family": "fundamental44 accounting quality",
+   "reason": "8/8 全灭，最高 Sharpe 1.32 (fnd44_mscore)，但 robust_universe_sharpe 0.73 <1，CONCENTRATED_WEIGHT 警告普遍。会计质量信号在 IND TOP500 有效但不够强，与 model192 CDS 因子判死互证 IND 基本面质量类信号枯竭。",
+   "salvage": "可尝试：1) 换 universe（TOP1000/TOP2000）2) 换 neutralization（INDUSTRY）3) 组合其他类别信号（pv + fundamental）",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-FND44-ACCOUNTING-QUALITY-DEAD"
+  }
+ ],
+ "region_context": {
+  "tier": "最富 submit_ready 区（31 候选待判定，68 波 w98 收官段）",
+  "settings_proven": {
+   "universe": "TOP500",
+   "delay": 1,
+   "neutralization_default": "STATISTICAL",
+   "neutralization_proven": [
+    "STATISTICAL",
+    "SECTOR"
+   ],
+   "caveat": "SECTOR 部分字段 robust 0.95 不过；STATISTICAL robust 1.03 过（vRje2ZGd 实证）"
+  },
+  "key_notes": [
+   "近期 wave89-98 主力全走 SECTOR 残差差分模板翻案批",
+   "提交前必跑 tools/submit_verdict.py 取平台判定（本地 prod_corr 系统性偏低）"
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [],
+  "dead": [
+   {
+    "skeleton": "任意骨架",
+    "field_family": "财报日历",
+    "reason": "wave30 实证: 上述字段在 ts_rank/ts_zscore 结构下信号全崩, 最强 sharpe 远低于 1.58 门槛",
+    "source": "registry_dead_end"
+   },
+   {
+    "skeleton": "任意骨架",
+    "field_family": "价量",
+    "reason": "fnd94 margin + mdl28 volatility 组合失败：volatility 腿稀释 IS 表现（S 1.44-1.57 vs 纯 margi",
+    "source": "registry_dead_end"
+   },
+   {
+    "skeleton": "任意骨架",
+    "field_family": "质量比率",
+    "reason": "wave112 6unique全完成：EBITDA surprise信号有真实alpha（S 1.22-1.50，F 0.82-1.13，2Y 1.58-2.1",
+    "source": "registry_dead_end"
+   }
+  ],
+  "orthogonal_hints": []
+ },
+ "_meta": {
+  "region": "IND",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "skeleton_field_matrix (P3 正交调度)",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

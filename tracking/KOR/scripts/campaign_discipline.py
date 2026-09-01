@@ -13,7 +13,7 @@
   python campaign_discipline.py pool --list
   python campaign_discipline.py pool --add insider_feats --status suspended
 """
-import argparse, collections, datetime, glob, json, os, re, sys
+import argparse, datetime, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

@@ -335,7 +335,7 @@ def _slim_correlation_block(b):
     if not isinstance(b, dict):
         return b
     out = {}
-    for k in ("max_correlation", "passes_check"):
+    for k in ("max_correlation", "passes_check", "from_cache", "cached_at"):
         if k in b:
             out[k] = b[k]
     cd = b.get("correlation_data") or {}

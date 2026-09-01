@@ -3,9 +3,12 @@
 Adds ``src/`` to ``sys.path`` so that ``import wqb`` resolves correctly
 when tests are run from the repository root or from ``tests/``.
 
-2026-08-18: removed the legacy ``collect_ignore`` skip list (it was a
-fallback for when ``src/wqb`` was still being reconstructed; the package
-has existed since 2026-08-02, so the skip never triggered — dead code).
+Design decision (2026-08-29): This project is a script/tool collection, not a
+pip-installable library (pyproject.toml declares ``py-modules = []``).  Using
+``sys.path.insert`` in conftest is the intended import mechanism, not a
+workaround — switching to ``pip install -e .`` would not provide additional
+benefit since there is no package to install.  The MCP package directory is
+also injected so that ``import brain_api`` resolves for cross-cutting tests.
 """
 
 import sys

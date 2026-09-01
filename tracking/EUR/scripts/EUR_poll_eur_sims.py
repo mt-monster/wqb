@@ -3,6 +3,11 @@
 import os
 """Poll EUR multisimulation results until complete (max 15 min)."""
 import sys, time, json, os
+
+# Windows 终端 GBK 兜底：强制 stdout/stderr 走 UTF-8
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 sys.path.insert(0, os.path.join(os.path.expanduser("~"), ".zcode", "skills", "shared_libs"))
 import ace_lib
 ace_lib.get_credentials = lambda: ('mthyzx@126.com', 'asdqwe123!')

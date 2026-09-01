@@ -9,7 +9,7 @@
 用法:
   python kor_pipeline_v2.py run --file candidates/x.json --dataset other455 --wave 17A [--submit] [--review]
 """
-import argparse, datetime, json, os, sys
+import argparse, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -17,9 +17,6 @@ sys.path.insert(0, HERE)
 
 # 导入原有模块
 import gate as gate_mod
-import kor_ledger
-import metrics_cache
-import review_wave as review_mod
 from kor_fetch_metrics import Api, load_creds
 
 # 导入新增模块
@@ -28,7 +25,6 @@ from discipline_monitor import (
     start_monitoring, record_batch, record_discipline_decision,
     complete_monitoring, generate_report
 )
-from wave_planner import plan_next_wave
 
 SETTINGS = json.load(open(os.path.join(ROOT, "config", "settings.json"), encoding="utf-8"))
 BATCH = SETTINGS.get("_multi_sim_batch_size", 8)

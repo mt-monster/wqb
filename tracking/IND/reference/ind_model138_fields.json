@@ -1,0 +1,978 @@
+{
+ "dataset": "model138",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 120
+ },
+ "field_count": 120,
+ "estimated_stock_count": 416,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8327,
+ "sample_stock_count": null,
+ "fetched_at": "2026-08-28T21:42:56",
+ "fields": [
+  {
+   "id": "mdl138_3idpc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 99,
+   "alphaCount": 153,
+   "description": "Composite Performance Deviation Index over 3 quarters, aggregating all PDI3 factors using risk parity weighting to refle"
+  },
+  {
+   "id": "mdl138_3idpqc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 54,
+   "alphaCount": 85,
+   "description": "Composite quality-adjusted performance deviation index over 3 trailing quarters, aggregating standardized deviations of "
+  },
+  {
+   "id": "mdl138_4idpc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 71,
+   "alphaCount": 122,
+   "description": "Composite PDI score aggregated from raw four-quarter PDI factors using risk parity weighting, showing a holistic measure"
+  },
+  {
+   "id": "mdl138_4idpqc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 55,
+   "alphaCount": 69,
+   "description": "Composite quality PDI score over 4 trailing quarters, aggregating all quality-adjusted PDI factors by clustering similar"
+  },
+  {
+   "id": "mdl138_5idpc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 75,
+   "alphaCount": 304,
+   "description": "Composite PDI score aggregating all PDI factors over 5 trailing quarters using risk parity weighting; summarizes absolut"
+  },
+  {
+   "id": "mdl138_5idpqc",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 48,
+   "alphaCount": 76,
+   "description": "Composite Quality-adjusted PDI score over 5 trailing quarters, aggregating QPDI5 factors across seven fundamental cluste"
+  },
+  {
+   "id": "mdl138_aor_3idpq",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 43,
+   "alphaCount": 63,
+   "description": "Quality-adjusted Performance Deviation Index over 3 trailing quarters based on Return on Assets (ROA), measuring deviati"
+  },
+  {
+   "id": "mdl138_aor_4idpq",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 49,
+   "alphaCount": 74,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters based on Return on Assets (Net Income divided by t"
+  },
+  {
+   "id": "mdl138_aor_5idpq",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 38,
+   "alphaCount": 107,
+   "description": "Quality-adjusted Performance Deviation Index over 5 quarters for return on assets, capturing deviations in firm profitab"
+  },
+  {
+   "id": "mdl138_dtl_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 30,
+   "alphaCount": 32,
+   "description": "Performance Deviation Index over 3 trailing quarters, measuring deviation of long-term debt from historical levels, prov"
+  },
+  {
+   "id": "mdl138_dtl_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 29,
+   "alphaCount": 49,
+   "description": "Performance Deviation Index over 4 trailing quarters measuring deviation of long-term debt from historical norm, likely "
+  },
+  {
+   "id": "mdl138_dtl_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 27,
+   "alphaCount": 33,
+   "description": "Performance Deviation Index over 5 trailing quarters, measuring the absolute deviation of a firm's long-term debt from i"
+  },
+  {
+   "id": "mdl138_epp_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 29,
+   "alphaCount": 32,
+   "description": "3-quarter absolute-level PDI factor measuring deviation in property, plant, and equipment over the last 3 quarters versu"
+  },
+  {
+   "id": "mdl138_epp_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 31,
+   "alphaCount": 51,
+   "description": "4-quarter absolute-level PDI factor measuring deviation in the amount of property, plant, and equipment (PPE) from its h"
+  },
+  {
+   "id": "mdl138_epp_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 27,
+   "alphaCount": 41,
+   "description": "Performance Deviation Index over trailing 5 quarters based on Property, Plant & Equipment (PPE), likely representing dev"
+  },
+  {
+   "id": "mdl138_er_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 22,
+   "alphaCount": 24,
+   "description": "Raw Performance Deviation Index over 3 trailing quarters, measuring the deviation in retained earnings from its historic"
+  },
+  {
+   "id": "mdl138_er_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 24,
+   "alphaCount": 27,
+   "description": "PDI-4 Factor based on Retained Earnings"
+  },
+  {
+   "id": "mdl138_er_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 21,
+   "alphaCount": 21,
+   "description": "Performance Deviation Index over trailing 5 quarters for retained earnings (cumulative net earnings retained in equity),"
+  },
+  {
+   "id": "mdl138_in_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 25,
+   "alphaCount": 26,
+   "description": "Deviation over the past 3 quarters of the firm's net income (scaled by firm size) from its historical average, capturing"
+  },
+  {
+   "id": "mdl138_in_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 29,
+   "alphaCount": 35,
+   "description": "Performance Deviation Index over 4 trailing quarters based on absolute net income, measuring how much net earnings devia"
+  },
+  {
+   "id": "mdl138_in_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Raw PDI factor over 5 trailing quarters measuring deviation in net income (scaled by firm size) from its long-term avera"
+  },
+  {
+   "id": "mdl138_ofc_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 18,
+   "alphaCount": 73,
+   "description": "Performance Deviation Index (PDI) over 3 quarters for Cash Flow from Operations (CFO), quantifying how much operational "
+  },
+  {
+   "id": "mdl138_ofc_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Performance Deviation Index (PDI) over 4 quarters for Cash Flow from Operations (CFO), indicating deviations in operatin"
+  },
+  {
+   "id": "mdl138_ofc_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 21,
+   "description": "Performance Deviation Index (PDI) over 5 quarters for Cash Flow from Operations (CFO), capturing the deviation of operat"
+  },
+  {
+   "id": "mdl138_pa_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 35,
+   "description": "Performance Deviation Index over 3 trailing quarters measuring the deviation of accounts payable from its historical nor"
+  },
+  {
+   "id": "mdl138_pa_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Performance Deviation Index over trailing 4 quarters for absolute accounts payable, scaled, quantifying deviation from i"
+  },
+  {
+   "id": "mdl138_pa_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "Performance Deviation Index over 5 trailing quarters, measuring the absolute deviation of Accounts Payable (amount owed "
+  },
+  {
+   "id": "mdl138_pdi3_caps",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 31,
+   "description": "Absolute deviation over the past 3 quarters in the firm's capital surplus (excess paid-in capital), scaled for firm size"
+  },
+  {
+   "id": "mdl138_pdi3_cash",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 22,
+   "alphaCount": 25,
+   "description": "Deviation in the firm's total cash holdings, measured at an absolute level over 3 trailing quarters and scaled by firm s"
+  },
+  {
+   "id": "mdl138_pdi3_ebitda",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Performance Deviation Index over 3 trailing quarters, measuring absolute deviation in EBITDA from the firm's historical "
+  },
+  {
+   "id": "mdl138_pdi3_sale",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 23,
+   "description": "Raw Performance Deviation Index over 3 trailing quarters, quantifying how much the firm's sales have deviated from their"
+  },
+  {
+   "id": "mdl138_pdi4_caps",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 20,
+   "alphaCount": 27,
+   "description": "Performance Deviation Index over 4 quarters for Capital Surplus, measuring its deviation from the historical or expected"
+  },
+  {
+   "id": "mdl138_pdi4_cash",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 20,
+   "description": "PDI factor quantifying the absolute deviation in cash levels from the firm’s historical norm over the trailing 4 quarter"
+  },
+  {
+   "id": "mdl138_pdi4_ebitda",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 15,
+   "description": "Performance Deviation Index (PDI) over 4 quarters for EBITDA, measuring deviation of EBITDA from its historical baseline"
+  },
+  {
+   "id": "mdl138_pdi4_sale",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Performance Deviation Index over 4 trailing quarters based on absolute sales (turnover), measuring deviation of firm's s"
+  },
+  {
+   "id": "mdl138_pdi5_caps",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Performance Deviation Index over five trailing quarters for capital surplus, quantifying absolute deviation from its his"
+  },
+  {
+   "id": "mdl138_pdi5_cash",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 14,
+   "description": "The PDI factor over 5 trailing quarters, measuring the deviation in the firm's cash holdings from its historical average"
+  },
+  {
+   "id": "mdl138_pdi5_ebitda",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 17,
+   "alphaCount": 17,
+   "description": "Performance Deviation Index (PDI) over 5 quarters for EBITDA, measuring the deviation in earnings before interest, taxes"
+  },
+  {
+   "id": "mdl138_pdi5_sale",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "Performance Deviation Index over trailing 5 quarters based on absolute sales revenue, scaled appropriately, capturing de"
+  },
+  {
+   "id": "mdl138_pg_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "The PDI factor over 3 trailing quarters, measuring the deviation of the firm's Gross Profit from its historical average,"
+  },
+  {
+   "id": "mdl138_pg_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Performance Deviation Index over 4 quarters measuring the deviation of Gross Profit from its expected or average value ("
+  },
+  {
+   "id": "mdl138_pg_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 16,
+   "description": "Raw PDI factor over 5 trailing quarters measuring deviation in gross profit (scaled appropriately) from its historical v"
+  },
+  {
+   "id": "mdl138_qpdi3_berry",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 19,
+   "alphaCount": 32,
+   "description": "Quality-adjusted Performance Deviation Index over 3 quarters capturing deviation in the Berry Ratio (Gross Profit / Oper"
+  },
+  {
+   "id": "mdl138_qpdi3_cfo_curr_liab",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 13,
+   "description": "Quality-adjusted PDI factor measuring deviation of operating cash flow to current liabilities ratio over the trailing 3 "
+  },
+  {
+   "id": "mdl138_qpdi3_cfrnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Quality-adjusted PDI over 3 trailing quarters based on Cash Flow Return on Net Operating Assets, tracking deviation from"
+  },
+  {
+   "id": "mdl138_qpdi3_cfroa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 4,
+   "alphaCount": 6,
+   "description": "Quality-adjusted Performance Deviation Index over 3 quarters measuring deviation in Cash Flow Return on Assets from its "
+  },
+  {
+   "id": "mdl138_qpdi3_cfroe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 11,
+   "alphaCount": 11,
+   "description": "3-quarter quality-adjusted PDI factor measuring deviation in cash flow return on equity (cash flow from operations divid"
+  },
+  {
+   "id": "mdl138_qpdi3_current_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Quality-adjusted Performance Deviation Index over 3 quarters for the current ratio (Current Assets / Current Liabilities"
+  },
+  {
+   "id": "mdl138_qpdi3_debt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Three-quarter trailing quality-adjusted PDI factor measuring deviation in the Debt-to-Capital ratio (Total Debt / [Debt "
+  },
+  {
+   "id": "mdl138_qpdi3_debt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 37,
+   "description": "Quality-adjusted Performance Deviation Index over 3 trailing quarters, measuring the deviation of the company's Debt to "
+  },
+  {
+   "id": "mdl138_qpdi3_debt_mktcapital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 33,
+   "description": "The QPDI factor over 3 trailing quarters, measuring deviation of the ratio of Total Debt to Total Capital at Market Valu"
+  },
+  {
+   "id": "mdl138_qpdi3_gross_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 17,
+   "alphaCount": 21,
+   "description": "Quality-adjusted PDI factor over 3 trailing quarters measuring deviation of the firm's gross margin ratio (gross profit "
+  },
+  {
+   "id": "mdl138_qpdi3_int_cover",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Quality-adjusted Performance Deviation Index over 3 trailing quarters, measuring deviation of the interest coverage rati"
+  },
+  {
+   "id": "mdl138_qpdi3_invent_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Quality-adjusted Performance Deviation Index measuring deviation of Inventory Turnover ratio (typically sales or cost of"
+  },
+  {
+   "id": "mdl138_qpdi3_lt_dt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Quality-adjusted Performance Deviation Index over 3 quarters for the Long-term Debt to Capital ratio, reflecting deviati"
+  },
+  {
+   "id": "mdl138_qpdi3_lt_dt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Quality-adjusted Performance Deviation Index over 3 trailing quarters, measuring the deviation of Long-Term Debt to Comm"
+  },
+  {
+   "id": "mdl138_qpdi3_net_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 28,
+   "description": "Quality-adjusted PDI factor over 3 trailing quarters measuring deviation in net income margin ratio from its normal leve"
+  },
+  {
+   "id": "mdl138_qpdi3_op_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 17,
+   "alphaCount": 18,
+   "description": "Quality-adjusted PDI factor over 3 trailing quarters measuring deviation of the firm's operating profit margin (EBIT div"
+  },
+  {
+   "id": "mdl138_qpdi3_payable_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 17,
+   "alphaCount": 19,
+   "description": "Quality-adjusted Performance Deviation Index over 3 trailing quarters, capturing deviation in Accounts Payable Turnover "
+  },
+  {
+   "id": "mdl138_qpdi3_quick_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Deviation over the past 3 quarters of the firm's quick ratio (liquid assets/current liabilities) from its historical ave"
+  },
+  {
+   "id": "mdl138_qpdi3_receiva_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Quality-adjusted PDI over 3 trailing quarters based on Accounts Receivable Turnover, capturing changes or deviations in "
+  },
+  {
+   "id": "mdl138_qpdi3_rnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Quality-adjusted PDI factor over 3 trailing quarters based on deviation in Return on Net Operating Assets ratio from its"
+  },
+  {
+   "id": "mdl138_qpdi3_roe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 20,
+   "alphaCount": 48,
+   "description": "Quality-adjusted PDI factor measuring the deviation of Return on Equity (ROE) from its historical average over the trail"
+  },
+  {
+   "id": "mdl138_qpdi3_roic",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 18,
+   "alphaCount": 26,
+   "description": "Deviation over the past 3 quarters in Return on Invested Capital (ROIC), a profitability quality ratio"
+  },
+  {
+   "id": "mdl138_qpdi3_sale_empl",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 40,
+   "alphaCount": 46,
+   "description": "Quality-adjusted PDI over 3 trailing quarters, measuring deviation in the ratio of sales (revenue) per employee from its"
+  },
+  {
+   "id": "mdl138_qpdi4_berry",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters, measuring deviation of the Berry Ratio (Gross Pro"
+  },
+  {
+   "id": "mdl138_qpdi4_cfo_curr_liab",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 14,
+   "description": "4-quarter quality-adjusted PDI factor measuring deviation in the ratio of operating cash flow to current liabilities fro"
+  },
+  {
+   "id": "mdl138_qpdi4_cfrnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Quality-adjusted PDI over 4 trailing quarters, measuring deviation in cash flow return on net operating assets (CFO/(Tot"
+  },
+  {
+   "id": "mdl138_qpdi4_cfroa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Quality-adjusted PDI over 4 trailing quarters, measuring deviation in the cash flow return on assets (CFO/Total Assets) "
+  },
+  {
+   "id": "mdl138_qpdi4_cfroe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Deviation over the past 4 quarters of the firm's cash flow return on equity (operating cash flow divided by equity) from"
+  },
+  {
+   "id": "mdl138_qpdi4_current_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Quality-adjusted Performance Deviation Index based on Current Ratio (Current Assets / Current Liabilities), measuring de"
+  },
+  {
+   "id": "mdl138_qpdi4_debt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters, measuring the deviation of the company's Debt to "
+  },
+  {
+   "id": "mdl138_qpdi4_debt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters, reflecting deviation in the Debt-to-Equity financ"
+  },
+  {
+   "id": "mdl138_qpdi4_debt_mktcapital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 12,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters, measuring deviation in the Total Debt to Total Ca"
+  },
+  {
+   "id": "mdl138_qpdi4_gross_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 21,
+   "description": "Quality-adjusted PDI over 4 quarters, measuring deviation in the firm's gross margin (gross profit to sales) compared to"
+  },
+  {
+   "id": "mdl138_qpdi4_int_cover",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Quality-adjusted PDI over 4 trailing quarters measuring deviation in the interest coverage ratio (such as EBIT/Interest "
+  },
+  {
+   "id": "mdl138_qpdi4_invent_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "Quality-adjusted PDI factor over 4 trailing quarters for inventory turnover ratio, measuring deviation from baseline inv"
+  },
+  {
+   "id": "mdl138_qpdi4_lt_dt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 10,
+   "description": "Quality-adjusted Performance Deviation Index over 4 quarters for the Long-term Debt to Capital ratio, reflecting deviati"
+  },
+  {
+   "id": "mdl138_qpdi4_lt_dt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Deviation (over last 4 quarters) of long-term debt to common equity ratio from its historical norm, quality-adjusted lev"
+  },
+  {
+   "id": "mdl138_qpdi4_net_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Quality-adjusted PDI factor over 4 trailing quarters measuring deviation of the firm's net income margin (net income div"
+  },
+  {
+   "id": "mdl138_qpdi4_op_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Quality-adjusted Performance Deviation Index over 4 quarters for operating profit margin (EBIT/Sales), indicating deviat"
+  },
+  {
+   "id": "mdl138_qpdi4_payable_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Quality-adjusted Performance Deviation Index over 4 quarters based on accounts payable turnover ratio, measuring deviati"
+  },
+  {
+   "id": "mdl138_qpdi4_quick_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Quality-adjusted PDI factor over 4 trailing quarters based on deviation in the Quick Ratio (liquid assets to current lia"
+  },
+  {
+   "id": "mdl138_qpdi4_receiva_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Quality-adjusted Performance Deviation Index over 4 quarters, measuring the deviation in the receivables turnover ratio "
+  },
+  {
+   "id": "mdl138_qpdi4_rnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Quality-adjusted Performance Deviation Index over 4 trailing quarters based on Return on Net Operating Assets (RNOA), me"
+  },
+  {
+   "id": "mdl138_qpdi4_roe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Four-quarter trailing quality-adjusted PDI factor measuring deviation of Return on Equity (Net Income / Average Sharehol"
+  },
+  {
+   "id": "mdl138_qpdi4_roic",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 6,
+   "alphaCount": 9,
+   "description": "4-quarter quality-adjusted PDI factor capturing deviation in return on invested capital (ROIC) over the past 4 quarters "
+  },
+  {
+   "id": "mdl138_qpdi4_sale_empl",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 4,
+   "alphaCount": 7,
+   "description": "Deviation (over last 4 quarters) of revenue per employee from its historical norm, quality-adjusted and scaled for cross"
+  },
+  {
+   "id": "mdl138_qpdi5_berry",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Quality-adjusted Performance Deviation Index over 5 quarters measuring how much the Berry Ratio (Gross Profit / Operatin"
+  },
+  {
+   "id": "mdl138_qpdi5_cfo_curr_liab",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Five-quarter trailing quality-adjusted PDI factor capturing changes in the CFO to Current Liabilities ratio (Operating C"
+  },
+  {
+   "id": "mdl138_qpdi5_cfrnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Quality-adjusted PDI factor over 5 trailing quarters measuring deviation in Cash Flow Return on Net Operating Assets rat"
+  },
+  {
+   "id": "mdl138_qpdi5_cfroa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Quality-adjusted PDI factor measuring deviation in cash flow return on assets (CFO/Total Assets) over the trailing 5 qua"
+  },
+  {
+   "id": "mdl138_qpdi5_cfroe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 10,
+   "description": "Quality-adjusted Performance Deviation Index over 5 trailing quarters, reflecting deviation in Cash Flow Return on Equit"
+  },
+  {
+   "id": "mdl138_qpdi5_current_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "5-quarter quality-adjusted PDI factor measuring deviation in the current ratio (current assets divided by current liabil"
+  },
+  {
+   "id": "mdl138_qpdi5_debt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "Quality-adjusted Performance Deviation Index over 5 quarters for the debt-to-total-capital ratio, measuring changes in b"
+  },
+  {
+   "id": "mdl138_qpdi5_debt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "5-quarter quality-adjusted PDI factor measuring deviation in total debt to total equity ratio versus historical levels, "
+  },
+  {
+   "id": "mdl138_qpdi5_debt_mktcapital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 17,
+   "description": "Quality-adjusted PDI over 5 trailing quarters, measuring deviation in the ratio of total debt to total capital at market"
+  },
+  {
+   "id": "mdl138_qpdi5_gross_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Deviation in the firm's Gross Margin (Gross Profit divided by Sales), measured over 5 trailing quarters as a quality-adj"
+  },
+  {
+   "id": "mdl138_qpdi5_int_cover",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "Deviation (over last 5 quarters) of interest coverage ratio (earnings to interest expense) from its historical norm, qua"
+  },
+  {
+   "id": "mdl138_qpdi5_invent_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "5-quarter quality-adjusted PDI factor capturing deviation in inventory turnover ratio from its historical norm, indicati"
+  },
+  {
+   "id": "mdl138_qpdi5_lt_dt_capital",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 7,
+   "alphaCount": 8,
+   "description": "5-quarter quality-adjusted PDI factor capturing deviation in the ratio of long-term debt to total capital (often debt pl"
+  },
+  {
+   "id": "mdl138_qpdi5_lt_dt_equity",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "5-quarter quality-adjusted PDI factor capturing deviation in the ratio of long-term debt to common equity from its histo"
+  },
+  {
+   "id": "mdl138_qpdi5_net_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 18,
+   "alphaCount": 18,
+   "description": "Quality-adjusted PDI factor over 5 trailing quarters measuring deviation of the firm's net income margin (net income div"
+  },
+  {
+   "id": "mdl138_qpdi5_op_margin",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Quality-adjusted PDI factor over 5 trailing quarters, measuring deviation in Operating Profit Margin (EBIT Margin) from "
+  },
+  {
+   "id": "mdl138_qpdi5_payable_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 8,
+   "alphaCount": 9,
+   "description": "The QPDI factor over 5 trailing quarters, measuring deviation of Accounts Payable Turnover (typically Cost of Goods Sold"
+  },
+  {
+   "id": "mdl138_qpdi5_quick_r",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 15,
+   "alphaCount": 22,
+   "description": "Deviation over the past 5 quarters of the firm's quick ratio (liquid assets divided by current liabilities, a liquidity "
+  },
+  {
+   "id": "mdl138_qpdi5_receiva_to",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 14,
+   "alphaCount": 22,
+   "description": "Deviation over the past 5 quarters in accounts receivable turnover (sales divided by accounts receivable), reflecting ef"
+  },
+  {
+   "id": "mdl138_qpdi5_rnoa",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 19,
+   "description": "Quality-adjusted PDI over 5 quarters measuring the deviation in return on net operating assets ratio (CFO or NI divided "
+  },
+  {
+   "id": "mdl138_qpdi5_roe",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 14,
+   "description": "5-quarter quality-adjusted PDI factor measuring deviation in return on equity (ROE) from its historical average, reflect"
+  },
+  {
+   "id": "mdl138_qpdi5_roic",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 18,
+   "alphaCount": 30,
+   "description": "5-quarter quality-adjusted PDI factor capturing deviation in return on invested capital (ROIC) from historical baseline,"
+  },
+  {
+   "id": "mdl138_qpdi5_sale_empl",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 23,
+   "alphaCount": 27,
+   "description": "Quality-adjusted PDI over 5 trailing quarters, measuring deviation in the ratio of sales (revenue) per employee from its"
+  },
+  {
+   "id": "mdl138_tvni_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 36,
+   "alphaCount": 40,
+   "description": "Performance Deviation Index over 3 trailing quarters based on inventory levels, indicating by how much the firm's invent"
+  },
+  {
+   "id": "mdl138_tvni_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 37,
+   "alphaCount": 76,
+   "description": "Performance Deviation Index over 4 quarters for inventory, measuring how much inventory levels have deviated from their "
+  },
+  {
+   "id": "mdl138_tvni_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 33,
+   "alphaCount": 66,
+   "description": "PDI factor quantifying the absolute deviation in inventories from the firm’s historical norm over the trailing 5 quarter"
+  },
+  {
+   "id": "mdl138_vcer_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 12,
+   "alphaCount": 16,
+   "description": "Performance Deviation Index over 3 trailing quarters, measuring the deviation of accounts receivable from its historical"
+  },
+  {
+   "id": "mdl138_vcer_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 10,
+   "alphaCount": 11,
+   "description": "The PDI factor over 4 trailing quarters, measuring the deviation in the firm's Accounts Receivable from its historical n"
+  },
+  {
+   "id": "mdl138_vcer_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 13,
+   "alphaCount": 17,
+   "description": "Raw Performance Deviation Index over 5 trailing quarters, quantifying the deviation in accounts receivable levels from t"
+  },
+  {
+   "id": "mdl138_vd_3idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 19,
+   "alphaCount": 23,
+   "description": "Performance Deviation Index over 3 quarters assessing how much the firm's cash dividends deviate from their recent histo"
+  },
+  {
+   "id": "mdl138_vd_4idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 9,
+   "alphaCount": 9,
+   "description": "Performance Deviation Index over 4 trailing quarters measuring deviation in Cash Dividends from its historical average, "
+  },
+  {
+   "id": "mdl138_vd_5idp",
+   "type": "VECTOR",
+   "coverage": 0.8327,
+   "userCount": 21,
+   "alphaCount": 23,
+   "description": "Raw PDI factor over 5 trailing quarters measuring deviation in cash dividends paid from the historical pattern or expect"
+  }
+ ]
+}

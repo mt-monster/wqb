@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
+from .._common import REPO_ROOT, resolve_campaign_dir, resolve_toolkit_dir, resolve_tools_dir, wq_py
 
 logger = logging.getLogger(__name__)
 
@@ -42,8 +43,8 @@ def run(
     ctx = _context or {}
     store = ctx.get("store")
 
-    # 构建 campaign-dir
-    campaign_dir = f"tracking/{region}"
+    # 构建 campaign-dir（基于仓库根，避免相对路径依赖 cwd）
+    campaign_dir = resolve_campaign_dir(region)
 
     result = {
         "region": region,
@@ -56,7 +57,7 @@ def run(
     }
 
     # 验证战役目录
-    if not os.path.exists(campaign_dir):
+    if not campaign_dir or not os.path.exists(campaign_dir):
         result["steps"].append({
             "step": "validate_campaign_dir",
             "success": False,
@@ -71,7 +72,7 @@ def run(
     })
 
     # 定位 toolkit
-    toolkit_dir = _find_toolkit_dir()
+    toolkit_dir = resolve_toolkit_dir()
     if not toolkit_dir:
         result["steps"].append({
             "step": "find_toolkit",
@@ -110,8 +111,7 @@ def run(
         return result
 
     # 构建命令
-    wq_py = os.environ.get("WQ_PY", "python")
-    cmd = [wq_py, script_path, "--campaign-dir", campaign_dir]
+    cmd = [wq_py(), script_path, "--campaign-dir", campaign_dir]
 
     # 添加 stage 特定参数
     if stage == "S0":
@@ -120,6 +120,26 @@ def run(
         if dataset:
             cmd.extend(["--dataset", dataset])
     elif stage == "S2":
+        # S2 前强制前置条件预检（S0/S1 产物门禁）
+        preflight_result = _run_preflight(
+            region=region,
+            dataset=dataset,
+            wave=wave,
+            campaign_dir=campaign_dir,
+            py=wq_py(),
+        )
+        result["steps"].append(preflight_result)
+
+        # 预检 FAIL（前置产物缺失）则中止，禁止带着缺白名单的状态烧配额
+        if not preflight_result.get("success", False):
+            result["steps"].append({
+                "step": "preflight_block",
+                "success": False,
+                "error": preflight_result.get("error", "Preflight failed"),
+                "preflight": preflight_result,
+            })
+            return result
+
         if dataset:
             cmd.extend(["--dataset", dataset])
         if wave:
@@ -132,7 +152,7 @@ def run(
             dataset=dataset,
             wave=wave,
             campaign_dir=campaign_dir,
-            wq_py=wq_py,
+            py=wq_py(),
         )
         result["steps"].append(quality_gate_result)
 
@@ -228,16 +248,72 @@ def run(
     return result
 
 
-def _find_toolkit_dir() -> Optional[str]:
-    """查找 wq-brain-campaign-toolkit 目录."""
-    for candidate in [
-        os.path.expanduser("~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts"),
-        os.path.expanduser("~/.cursor/skills/wq-brain-campaign-toolkit/scripts"),
-        os.path.expanduser("~/.workbuddy/skills/wq-brain-campaign-toolkit/scripts"),
-    ]:
-        if os.path.exists(candidate):
-            return candidate
-    return None
+# _find_toolkit_dir 已迁至 _common.resolve_toolkit_dir（单一事实源）
+
+
+def _run_preflight(
+    region: str,
+    dataset: Optional[str],
+    wave: Optional[str],
+    campaign_dir: str,
+    py: str,
+) -> Dict[str, Any]:
+    """波次前置条件预检（S0/S1 产物门禁，S2/S3 前强制）.
+
+    校验字段 catalog（文件 + DB 单一事实源）、新鲜度与判死清单。
+    通用修复入口：FAIL 时按 remediation 跑 tools/preflight_wave.py --repair。
+    """
+    result = {
+        "step": "preflight",
+        "success": True,
+        "preflight_output": None,
+    }
+
+    if not dataset:
+        result["warning"] = "no dataset specified, skip preflight"
+        return result
+
+    # 脚本路径基于 REPO_ROOT（单一事实源）；勿用 __file__ 逐级 dirname
+    # ——src/wqb/workflow/nodes/ 距仓库根 4 层，少一层会指到 src/ 导致门禁静默失效。
+    preflight_script = os.path.join(resolve_tools_dir(), "preflight_wave.py")
+    if not os.path.exists(preflight_script):
+        result["warning"] = f"preflight script not found: {preflight_script}"
+        return result
+
+    cmd = [py, preflight_script, "--campaign-dir", campaign_dir,
+           "--dataset", dataset, "--quiet"]
+    if wave:
+        cmd.extend(["--wave", str(wave)])
+
+    try:
+        logger.info(f"Running preflight: {' '.join(cmd)}")
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=300,
+            cwd=str(REPO_ROOT),
+        )
+        tail = (proc.stdout or "")[-2000:]
+        result["preflight_output"] = {
+            "returncode": proc.returncode,
+            "stdout_tail": tail,
+            "stderr_tail": (proc.stderr or "")[-500:],
+        }
+        if proc.returncode != 0:
+            result["success"] = False
+            result["error"] = (
+                "Preflight FAIL: S0/S1 前置产物缺失，禁止进入 S2/S3 烧配额。"
+                f"修复: {py} {preflight_script} --campaign-dir {campaign_dir} "
+                f"--dataset {dataset} --repair"
+            )
+    except subprocess.TimeoutExpired:
+        # 预检自身超时不阻断战役（避免检查器故障锁死流水线），仅记录
+        result["warning"] = "Preflight timeout after 300s, proceeding"
+    except Exception as e:
+        result["warning"] = f"Preflight error (not blocking): {e}"
+
+    return result
 
 
 def _run_quality_gate(
@@ -245,7 +321,7 @@ def _run_quality_gate(
     dataset: Optional[str],
     wave: Optional[str],
     campaign_dir: str,
-    wq_py: str,
+    py: str,
 ) -> Dict[str, Any]:
     """运行质量闸（特征工程 SOP 阶段6，S3 前强制）.
 
@@ -259,9 +335,9 @@ def _run_quality_gate(
         "gate_output": None,
     }
 
-    # 构建 wave_gate.py 命令
+    # 构建 wave_gate.py 命令（绝对路径，避免依赖 subprocess cwd）
     gate_cmd = [
-        wq_py, "tools/wave_gate.py",
+        py, os.path.join(resolve_tools_dir(), "wave_gate.py"),
         "--campaign-dir", campaign_dir,
         "--from-db",
         "--quality-block",  # 硬阻断模式
@@ -280,7 +356,7 @@ def _run_quality_gate(
             capture_output=True,
             text=True,
             timeout=600,
-            cwd=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+            cwd=str(REPO_ROOT),
         )
 
         result["gate_output"] = {

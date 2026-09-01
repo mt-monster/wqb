@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Inventory the workspace ROOT (excluding the already-organized tracking/)."""
-import os, json, re
+import os, re
 from collections import Counter, defaultdict
 
 ROOT = r"D:\coding\traeCN_project\wqb"

@@ -1,0 +1,1 @@
+(1 + 0 * (prod_correlation > 0)) * (0.7 - prod_correlation) * (self_correlation < 0.65) * (turnover > 0.01) * (turnover < 0.5)

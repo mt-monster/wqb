@@ -1,0 +1,387 @@
+{
+ "dataset": "analyst9",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "VECTOR",
+ "type_distribution": {
+  "VECTOR": 45,
+  "MATRIX": 1
+ },
+ "field_count": 46,
+ "estimated_stock_count": 357,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.7158,
+ "sample_stock_count": null,
+ "fetched_at": "2026-08-28T21:58:02",
+ "fields": [
+  {
+   "id": "anl9_confirmtime",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 108,
+   "alphaCount": 201,
+   "description": "Intraday time of the most recent confirmation of the current estimate"
+  },
+  {
+   "id": "anl9_consensusanalysis_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.7373,
+   "userCount": 136,
+   "alphaCount": 221,
+   "description": "Numeric consensus estimate value for the specified data item"
+  },
+  {
+   "id": "anl9_consensusanalysis_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.7373,
+   "userCount": 16,
+   "alphaCount": 23,
+   "description": "Intra-day time when the consensus estimate calculation became effective"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.7348,
+   "userCount": 57,
+   "alphaCount": 70,
+   "description": "Numeric consensus estimate value for the specified data item"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.7348,
+   "userCount": 22,
+   "alphaCount": 24,
+   "description": "Intra-day time when the estimate becomes effective or is calculated"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.7348,
+   "userCount": 25,
+   "alphaCount": 35,
+   "description": "Ratio used to unadjust per-share EPS estimates for stock splits that occur after the estimate’s EffectiveDate"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeeps_totime",
+   "type": "VECTOR",
+   "coverage": 0.7348,
+   "userCount": 21,
+   "alphaCount": 27,
+   "description": "End time when the estimate’s validity window ends"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 26,
+   "alphaCount": 32,
+   "description": "Numeric consensus estimate value for the specified data item"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 24,
+   "alphaCount": 33,
+   "description": "Intra-day time when the consensus estimate became effective (time of calculation)"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_splitfactor",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 27,
+   "alphaCount": 33,
+   "description": "Adjustment factor for corporate actions (e.g., stock splits) applied to maintain comparability of estimates"
+  },
+  {
+   "id": "anl9_consensusv2span_incomeothers_totime",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 26,
+   "alphaCount": 29,
+   "description": "Intra-day time when the estimate’s validity period ends"
+  },
+  {
+   "id": "anl9_daily_numanalystall",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 36,
+   "alphaCount": 46,
+   "description": "Total number of analysts contributing estimates for the company, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_daily_numanalysts",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 46,
+   "alphaCount": 65,
+   "description": "Number of analysts whose estimates are included in the consensus for the revision period"
+  },
+  {
+   "id": "anl9_daily_numdn",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 73,
+   "alphaCount": 112,
+   "description": "Count of downward revisions among analysts included in the consensus"
+  },
+  {
+   "id": "anl9_daily_numdownunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 38,
+   "alphaCount": 48,
+   "description": "Total number of analysts whose estimates were revised downward, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_daily_numnochangeunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 27,
+   "alphaCount": 29,
+   "description": "Total number of analysts that did not change their estimates, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_daily_numnochg",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 24,
+   "alphaCount": 29,
+   "description": "Count of revisions with no change among analysts included in the consensus"
+  },
+  {
+   "id": "anl9_daily_numup",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 96,
+   "alphaCount": 147,
+   "description": "Count of upward revisions among analysts included in the consensus"
+  },
+  {
+   "id": "anl9_daily_numupunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 43,
+   "alphaCount": 55,
+   "description": "Total number of analysts whose estimates were revised upward, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_detail_dataitemvalue",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 44,
+   "alphaCount": 59,
+   "description": "Numeric value of the estimated metric"
+  },
+  {
+   "id": "anl9_detail_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 16,
+   "alphaCount": 17,
+   "description": "Time of day when the estimate became effective (start time of validity)"
+  },
+  {
+   "id": "anl9_detail_totime",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 17,
+   "alphaCount": 17,
+   "description": "End time of the estimate’s validity period (intraday)"
+  },
+  {
+   "id": "anl9_estanalystmap",
+   "type": "MATRIX",
+   "coverage": 0.8467,
+   "userCount": 124,
+   "alphaCount": 234,
+   "description": "Human-readable name/description of the analyst corresponding to estimateAnalystIx"
+  },
+  {
+   "id": "anl9_estimatetime",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 15,
+   "alphaCount": 17,
+   "description": "Intra-day time at which the estimate was recorded/issued"
+  },
+  {
+   "id": "anl9_isexcluded",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 28,
+   "alphaCount": 28,
+   "description": "Flag indicating the estimate is excluded from consensus/analysis due to data quality rules"
+  },
+  {
+   "id": "anl9_isnmflag",
+   "type": "VECTOR",
+   "coverage": 0.7373,
+   "userCount": 36,
+   "alphaCount": 43,
+   "description": "Flag indicating the estimate is not meaningful (NM)"
+  },
+  {
+   "id": "anl9_parentflag",
+   "type": "VECTOR",
+   "coverage": 0.6945,
+   "userCount": 28,
+   "alphaCount": 28,
+   "description": "Entity consolidation flag: 0=consolidated entity estimate, 1=parent-only entity estimate"
+  },
+  {
+   "id": "anl9_revisiondaily_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 12,
+   "alphaCount": 13,
+   "description": "Time when the revision metrics were calculated or became effective"
+  },
+  {
+   "id": "anl9_revisions_effectivetime",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 9,
+   "alphaCount": 12,
+   "description": "Time when the revision snapshot/estimate was calculated"
+  },
+  {
+   "id": "anl9_s_numanalystall",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 19,
+   "alphaCount": 22,
+   "description": "Total number of contributing analysts, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_s_numanalysts",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 25,
+   "alphaCount": 33,
+   "description": "Number of analysts whose estimates are included in the consensus for the revision period"
+  },
+  {
+   "id": "anl9_s_numdn",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 34,
+   "alphaCount": 50,
+   "description": "Count of downward revisions included in the consensus during the specified revision period"
+  },
+  {
+   "id": "anl9_s_numdownunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 27,
+   "alphaCount": 28,
+   "description": "Total analysts with downward revisions, including those excluded from the consensus"
+  },
+  {
+   "id": "anl9_s_numnochangeunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 11,
+   "alphaCount": 12,
+   "description": "Total number of no-change revisions, without exclusions"
+  },
+  {
+   "id": "anl9_s_numnochg",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 15,
+   "alphaCount": 18,
+   "description": "Number of revisions with no change in the consensus (included analysts) over the period"
+  },
+  {
+   "id": "anl9_s_numup",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 110,
+   "alphaCount": 140,
+   "description": "Count of upward revisions included in the consensus during the specified revision period"
+  },
+  {
+   "id": "anl9_s_numupunfiltered",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 86,
+   "alphaCount": 99,
+   "description": "Total analysts with upward revisions, including those excluded from the consensus"
+  },
+  {
+   "id": "consensus_analysis_value",
+   "type": "VECTOR",
+   "coverage": 0.7373,
+   "userCount": 17,
+   "alphaCount": 20,
+   "description": "<baseModule>.ConsensusIdIx idx"
+  },
+  {
+   "id": "consensus_exclusion_flag",
+   "type": "VECTOR",
+   "coverage": 0.6408,
+   "userCount": 9,
+   "alphaCount": 10,
+   "description": "Boolean flag marking the estimate as excluded from analysis due to unreliability or rules"
+  },
+  {
+   "id": "eps_consensus_estimate_value",
+   "type": "VECTOR",
+   "coverage": 0.7348,
+   "userCount": 24,
+   "alphaCount": 27,
+   "description": "Lookup index identifying the consensus category/type for the estimate"
+  },
+  {
+   "id": "estimate_currency_code_2",
+   "type": "VECTOR",
+   "coverage": 0.6408,
+   "userCount": 16,
+   "alphaCount": 20,
+   "description": "Currency in which the estimate is reported."
+  },
+  {
+   "id": "estimated_metric_value",
+   "type": "VECTOR",
+   "coverage": 0.6408,
+   "userCount": 18,
+   "alphaCount": 19,
+   "description": "Numeric value of the estimate for the specified metric"
+  },
+  {
+   "id": "income_other_consensus_value",
+   "type": "VECTOR",
+   "coverage": 0.7415,
+   "userCount": 31,
+   "alphaCount": 36,
+   "description": "<baseModule>.ConsensusIdIx idx"
+  },
+  {
+   "id": "parent_company_only_flag",
+   "type": "VECTOR",
+   "coverage": 0.6408,
+   "userCount": 16,
+   "alphaCount": 18,
+   "description": "Flag indicating if the estimate is for the parent entity only."
+  },
+  {
+   "id": "revision_consensus_value",
+   "type": "VECTOR",
+   "coverage": 0.664,
+   "userCount": 21,
+   "alphaCount": 24,
+   "description": "Index key referencing the consensus estimate category in the ConsensusId lookup"
+  },
+  {
+   "id": "revision_consensus_value_revisions",
+   "type": "VECTOR",
+   "coverage": 0.7685,
+   "userCount": 21,
+   "alphaCount": 25,
+   "description": "Integer code identifying the consensus estimate category for the metric/period, joinable to a consensus lookup"
+  }
+ ]
+}

@@ -1,0 +1,331 @@
+{
+ "dataset": "fundamental23",
+ "region": "IND",
+ "universe": "TOP500",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 38,
+  "VECTOR": 1
+ },
+ "field_count": 39,
+ "estimated_stock_count": 447,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.8947,
+ "sample_stock_count": null,
+ "fetched_at": "2026-08-28T21:37:28",
+ "fields": [
+  {
+   "id": "accounts_receivable_current_assets",
+   "type": "MATRIX",
+   "coverage": 0.8387,
+   "userCount": 225,
+   "alphaCount": 298,
+   "description": "Accounts receivable included in current assets for the annual period."
+  },
+  {
+   "id": "annual_fiscal_month_number",
+   "type": "MATRIX",
+   "coverage": 0.9799,
+   "userCount": 66,
+   "alphaCount": 90,
+   "description": "The fiscal month number corresponding to the end of the annual period."
+  },
+  {
+   "id": "annual_fiscal_year_number",
+   "type": "MATRIX",
+   "coverage": 0.9799,
+   "userCount": 107,
+   "alphaCount": 175,
+   "description": "The fiscal year associated with the annual reporting period."
+  },
+  {
+   "id": "annual_net_income_value",
+   "type": "MATRIX",
+   "coverage": 0.9891,
+   "userCount": 229,
+   "alphaCount": 372,
+   "description": "Net income reported for the annual period."
+  },
+  {
+   "id": "annual_reporting_currency_code",
+   "type": "MATRIX",
+   "coverage": 0.9799,
+   "userCount": 31,
+   "alphaCount": 44,
+   "description": "The currency code in which annual financial values are presented after conversion."
+  },
+  {
+   "id": "currency_of_converted_financials",
+   "type": "MATRIX",
+   "coverage": 0.8745,
+   "userCount": 26,
+   "alphaCount": 33,
+   "description": "Currency in which the financial values have been converted for reporting."
+  },
+  {
+   "id": "fnd23_annfv_value",
+   "type": "VECTOR",
+   "coverage": 0.6755,
+   "userCount": 68,
+   "alphaCount": 98,
+   "description": "annual financial values."
+  },
+  {
+   "id": "fnd23_pamonper",
+   "type": "MATRIX",
+   "coverage": 0.3255,
+   "userCount": 32,
+   "alphaCount": 42,
+   "description": "maps each rep identifier to an instrument on a given day."
+  },
+  {
+   "id": "fnd23_repnotickermap",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 97,
+   "alphaCount": 138,
+   "description": "maps each rep to a ticker on a given day."
+  },
+  {
+   "id": "interim_fiscal_month",
+   "type": "MATRIX",
+   "coverage": 0.8745,
+   "userCount": 66,
+   "alphaCount": 92,
+   "description": "The fiscal month corresponding to the interim reporting period."
+  },
+  {
+   "id": "interim_fiscal_year",
+   "type": "MATRIX",
+   "coverage": 0.8745,
+   "userCount": 62,
+   "alphaCount": 79,
+   "description": "The fiscal year corresponding to the interim reporting period."
+  },
+  {
+   "id": "interim_period_sequence_number_2",
+   "type": "MATRIX",
+   "coverage": 0.8745,
+   "userCount": 82,
+   "alphaCount": 110,
+   "description": "Sequence number of the interim period within the fiscal year."
+  },
+  {
+   "id": "long_term_collateral_debt",
+   "type": "MATRIX",
+   "coverage": 0.8785,
+   "userCount": 99,
+   "alphaCount": 144,
+   "description": "Long-term collateralized debt reported for the annual period."
+  },
+  {
+   "id": "long_term_contract_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9087,
+   "userCount": 52,
+   "alphaCount": 66,
+   "description": "Long-term contract liabilities reported for the annual period."
+  },
+  {
+   "id": "long_term_debt_total",
+   "type": "MATRIX",
+   "coverage": 0.9233,
+   "userCount": 104,
+   "alphaCount": 176,
+   "description": "Total long-term debt reported for the annual period."
+  },
+  {
+   "id": "long_term_loans_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9887,
+   "userCount": 74,
+   "alphaCount": 94,
+   "description": "Long-term loans and liabilities reported for the annual period."
+  },
+  {
+   "id": "long_term_trade_debt",
+   "type": "MATRIX",
+   "coverage": 0.9878,
+   "userCount": 131,
+   "alphaCount": 224,
+   "description": "Long-term trade debt reported for the annual period."
+  },
+  {
+   "id": "other_accumulated_reserves",
+   "type": "MATRIX",
+   "coverage": 0.9049,
+   "userCount": 90,
+   "alphaCount": 125,
+   "description": "Other accumulated reserves reported for the annual period."
+  },
+  {
+   "id": "other_appropriations_balance",
+   "type": "MATRIX",
+   "coverage": 0.85,
+   "userCount": 82,
+   "alphaCount": 93,
+   "description": "Other appropriations balance reported for the annual period."
+  },
+  {
+   "id": "other_interest_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.7976,
+   "userCount": 161,
+   "alphaCount": 226,
+   "description": "Other interest-bearing liabilities reported for the annual period."
+  },
+  {
+   "id": "other_long_term_obligations",
+   "type": "MATRIX",
+   "coverage": 0.9858,
+   "userCount": 97,
+   "alphaCount": 143,
+   "description": "Other long-term obligations reported for the annual period."
+  },
+  {
+   "id": "other_net_equity_total",
+   "type": "MATRIX",
+   "coverage": 0.9766,
+   "userCount": 181,
+   "alphaCount": 284,
+   "description": "Total of other net equity items for the annual period."
+  },
+  {
+   "id": "other_off_balance_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.8219,
+   "userCount": 65,
+   "alphaCount": 77,
+   "description": "Other off-balance sheet liabilities for the annual period."
+  },
+  {
+   "id": "other_operating_assets",
+   "type": "MATRIX",
+   "coverage": 0.8365,
+   "userCount": 58,
+   "alphaCount": 69,
+   "description": "Other operating assets reported for the annual period."
+  },
+  {
+   "id": "quasi_equity_contracts",
+   "type": "MATRIX",
+   "coverage": 0.988,
+   "userCount": 53,
+   "alphaCount": 66,
+   "description": "Quasi-equity contracts reported for the annual period."
+  },
+  {
+   "id": "quasi_equity_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9887,
+   "userCount": 61,
+   "alphaCount": 86,
+   "description": "Quasi-equity liabilities reported for the annual period."
+  },
+  {
+   "id": "retained_earnings_liabilities",
+   "type": "MATRIX",
+   "coverage": 0.9254,
+   "userCount": 34,
+   "alphaCount": 40,
+   "description": "Retained earnings classified as liabilities for the annual period."
+  },
+  {
+   "id": "securities_deferred_net_income",
+   "type": "MATRIX",
+   "coverage": 0.9894,
+   "userCount": 50,
+   "alphaCount": 71,
+   "description": "Deferred net income related to securities for the annual period."
+  },
+  {
+   "id": "share_capital_extraordinary",
+   "type": "MATRIX",
+   "coverage": 0.9829,
+   "userCount": 72,
+   "alphaCount": 103,
+   "description": "Extraordinary share capital reported for the annual period."
+  },
+  {
+   "id": "share_capital_ordinary",
+   "type": "MATRIX",
+   "coverage": 0.9058,
+   "userCount": 55,
+   "alphaCount": 59,
+   "description": "Ordinary share capital reported for the annual period."
+  },
+  {
+   "id": "share_capital_subscribed",
+   "type": "MATRIX",
+   "coverage": 0.9155,
+   "userCount": 157,
+   "alphaCount": 253,
+   "description": "Share capital subscribed reported for the annual period."
+  },
+  {
+   "id": "share_deposit_equity",
+   "type": "MATRIX",
+   "coverage": 0.9766,
+   "userCount": 36,
+   "alphaCount": 42,
+   "description": "Share deposit equity reported for the annual period."
+  },
+  {
+   "id": "share_dividend_equity",
+   "type": "MATRIX",
+   "coverage": 0.9766,
+   "userCount": 48,
+   "alphaCount": 63,
+   "description": "Share dividend equity reported for the annual period."
+  },
+  {
+   "id": "statement_of_cash_flows",
+   "type": "MATRIX",
+   "coverage": 0.9863,
+   "userCount": 81,
+   "alphaCount": 121,
+   "description": "Statement of cash flows for the annual period."
+  },
+  {
+   "id": "total_assets_annual_atot",
+   "type": "MATRIX",
+   "coverage": 0.9885,
+   "userCount": 126,
+   "alphaCount": 198,
+   "description": "Total assets reported for the annual period."
+  },
+  {
+   "id": "total_current_assets_4",
+   "type": "MATRIX",
+   "coverage": 0.9086,
+   "userCount": 60,
+   "alphaCount": 71,
+   "description": "Total current assets reported for the annual period."
+  },
+  {
+   "id": "valuation_market_adjustment_amount",
+   "type": "MATRIX",
+   "coverage": 0.341,
+   "userCount": 25,
+   "alphaCount": 34,
+   "description": "Amount of market adjustment made to valuation."
+  },
+  {
+   "id": "voting_amortized_investments",
+   "type": "MATRIX",
+   "coverage": 0.9011,
+   "userCount": 108,
+   "alphaCount": 146,
+   "description": "Voting amortized investments reported for the annual period."
+  },
+  {
+   "id": "voting_beneficial_equity_shares",
+   "type": "MATRIX",
+   "coverage": 0.9906,
+   "userCount": 249,
+   "alphaCount": 430,
+   "description": "Voting beneficial equity shares reported for the annual period."
+  }
+ ]
+}

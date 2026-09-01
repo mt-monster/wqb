@@ -96,6 +96,14 @@ async def main():
     elif submit_status == 403:
         print("  BLOCKED：提交层重新评估为 FAIL（模拟 WARNING 升级实锤）")
         print(_render_checks(layer_checks) if isinstance(layer_checks, list) else f"  {layer_checks}")
+    elif submit_status == 404 and status == "UNSUBMITTED":
+        # 2026-09-01 实证（RR7OWQKd）：处女提交（从未 POST 过）的 alpha，GET /submit
+        # 无提交记录 → 404。这不是候选缺陷，是提交层视图本身不可用——
+        # 403 升级检查只有 POST 之后才存在。此时以模拟层 + 双闸预检
+        # （check_self_correlation 本地 + check_correlation("production") 平台新鲜值）为准；
+        # POST 201 异步受理后会翻 OS（~40s），再次 POST 得到的 403 是"已提交"拒绝而非硬闸失败。
+        print("  PREPOST：处女提交无提交记录（404），提交层视图不可用。")
+        print("  → 以模拟层（上方 checks）+ 双闸预检为准；POST 201 后 ~40s 内翻 OS 为成功实证。")
     else:
         print(f"  非预期响应 {submit_status}：{str(resp.text)[:300]}")
 
@@ -106,10 +114,13 @@ async def main():
     #     print(f"  rolling  剩余: {q.get('rolling', {}).get('remaining', '?')}")
     #     print(f"  daily    剩余: {q.get('daily', {}).get('remaining', '?')}")
 
-    # 判定：模拟层无 FAIL 且提交层 200 才算可提交
-    ok = not fails and submit_status == 200
+    # 判定：模拟层无 FAIL，且提交层为 200，或处女提交 404（视图不可用，降级为模拟层判定）
+    prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
+    ok = not fails and (submit_status == 200 or prepost_unverifiable)
     print(f"\nVERDICT: {'SUBMITTABLE' if ok else 'BLOCKED'}")
-    if fails:
+    if not fails and prepost_unverifiable:
+        print("  判定依据: 模拟层无 FAIL + 处女提交 404（提交层降级为模拟层+双闸预检）")
+    elif fails:
         print("  原因: 模拟层 checks 存在 FAIL，先优化再试")
     elif submit_status == 403:
         print("  原因: 提交层 403，见上检查列表（模拟层 WARNING 已升级）")

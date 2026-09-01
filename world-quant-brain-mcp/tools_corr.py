@@ -6,12 +6,16 @@ from mcp_core import mcp, brain_client, _slim_check_correlation
 
 @mcp.tool()
 
-async def check_correlation(alpha_id: str) -> Dict[str, Any]:
-    """Check alpha correlation against production alphas, self alphas, or both."""
+async def check_correlation(alpha_id: str, refresh: bool = False) -> Dict[str, Any]:
+    """Check alpha correlation against production alphas, self alphas, or both.
+
+    平台 prod 计算为异步排队（单并发，1-5 分钟）；同一 alpha 的已决结果缓存 7 天，
+    重查直接命中不占队列。提交前终验或怀疑缓存过期时用 refresh=True 强制回源平台。
+    """
     correlation_type = "both"
     threshold = 0.7
     try:
-        return _slim_check_correlation(await brain_client.check_correlation(alpha_id, correlation_type, threshold))
+        return _slim_check_correlation(await brain_client.check_correlation(alpha_id, correlation_type, threshold, refresh=refresh))
     except Exception as e:
         return {"error": str(e)}
 

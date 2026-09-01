@@ -42,7 +42,7 @@ result = executor.execute("batch_track", {
     "region": "KOR",
     "wave": "36A",
     "dataset": "model219",
-    "concurrency": 5,  # 五槽填槽
+    "concurrency": 7,  # 七槽填槽
 })
 
 # 方式 2：MCP 工具（结构化数据）
@@ -55,7 +55,7 @@ result = executor.execute("batch_track", {
 | 参数 | 来源 | 说明 |
 |------|------|------|
 | `campaign_dir` | 自动解析或环境变量 | 战役目录，优先级：参数 > `WQB_CAMPAIGN_DIR` > 自动探测 |
-| `concurrency` | 默认 5 | 并发数，五槽填槽模式（见 wqb-concurrency §7） |
+| `concurrency` | 默认 7 | 并发数，七槽填槽模式（见 wqb-concurrency §8） |
 | `max_rounds` | 默认 3 | 最大轮次，断点续跑关键 |
 | `--review` | 固定添加 | 自动评审 |
 | `--write-ledger` | 固定添加 | 结果写 ledger |

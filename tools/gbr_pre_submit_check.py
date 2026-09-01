@@ -11,6 +11,10 @@ import subprocess
 from pathlib import Path
 from typing import Dict
 
+# Windows 终端 GBK 兜底：强制 stdout/stderr 走 UTF-8
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 
 class GBRPreSubmitChecker:
     """GBR 区域提交前检查器"""

@@ -130,7 +130,7 @@ python tools/wave_gate.py --campaign-dir tracking/{REGION} --dataset {dataset} -
 | 语法 | {x}/{n} PASS |
 | 5 闸 | all_pass={…} |
 | 六维多样性 + 质量预估 | {摘要} |
-| 入批计划 | {批次划分、五槽填槽安排} |
+| 入批计划 | {批次划分、七槽填槽安排} |
 
 **台账回写**：〈wave 结论入 `wave_results` / WAVE_LEDGER.md（单入口，勿写散件）。〉
 

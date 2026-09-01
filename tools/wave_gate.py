@@ -134,11 +134,35 @@ def main():
     ap.add_argument("--skip-quality", action="store_true", help="跳过质量预估+六维多样性阶段")
     ap.add_argument("--quality-block", action="store_true",
                     help="EXPECTED_BLOCK 候选计入 FAIL（默认仅标注；回测配额闸门建议开启）")
+    ap.add_argument("--probe-mode", action="store_true",
+                    help="启用 2+6 探针批模式（早期判死）")
+    ap.add_argument("--gem-validate", action="store_true",
+                    help="启用 GEM 候选池强制校验")
+    ap.add_argument("--min-gem-ratio", type=float, default=0.8,
+                    help="GEM 候选最小占比（默认 0.8）")
     a = ap.parse_args()
 
     items = parse_candidates(a)
     campaign = a.campaign_dir.rstrip("/\\")
     tag = a.wave or int(__import__("time").time())
+
+    # ---- 0) GEM 候选池校验（可选）----
+    gem_report = None
+    if a.gem_validate:
+        try:
+            tools_dir = os.path.dirname(os.path.abspath(__file__))
+            if tools_dir not in sys.path:
+                sys.path.insert(0, tools_dir)
+            from gem_validator import GEMValidator
+            validator = GEMValidator()
+            candidates_for_gem = [{"id": cid, "expression": e} for cid, e in items]
+            gem_report = validator.validate_wave(candidates_for_gem, tag, a.min_gem_ratio)
+            print(f"[gem  ] GEM 候选: {gem_report['gem_count']}/{gem_report['total']} "
+                  f"({gem_report['gem_ratio']:.1%}) => {'PASS' if gem_report['pass'] else 'FAIL'}")
+            if not gem_report["pass"]:
+                print(f"[gem  ] 非 GEM 候选: {len(gem_report['non_gem_candidates'])} 条")
+        except Exception as e:
+            print(f"[gem  ] GEM 校验失败（不阻断）: {e}")
 
     # ---- 1) 语法校验 ----
     validator = load_validator()
@@ -226,7 +250,8 @@ def main():
             finally:
                 qconn.close()
             by_expr = {qr["expr"]: qr for qr in q_results}  # expr 被截断 120 字符，全量表达式前缀匹配
-            qp_summary = {"pass": 0, "review": 0, "block": 0, "blocked": []}
+            qp_summary = {"direct_submit": 0, "combo_candidate": 0, "weak_signal": 0,
+                          "expected_block": 0, "hard_reject": 0, "blocked": []}
             for (cid, e), s in zip(items, syntax):
                 if not s["valid"]:
                     continue
@@ -234,18 +259,26 @@ def main():
                 if not qr:
                     continue
                 v = qr["verdict"]
-                if v == "EXPECTED_PASS":
-                    qp_summary["pass"] += 1
-                elif v == "REVIEW":
-                    qp_summary["review"] += 1
-                else:
-                    qp_summary["block"] += 1
+                if v == "DIRECT_SUBMIT":
+                    qp_summary["direct_submit"] += 1
+                elif v == "COMBO_CANDIDATE":
+                    qp_summary["combo_candidate"] += 1
+                elif v == "WEAK_SIGNAL":
+                    qp_summary["weak_signal"] += 1
+                elif v == "HARD_REJECT":
+                    qp_summary["hard_reject"] += 1
                     quality_block_ids.append(cid)
-                    qp_summary["blocked"].append({"id": cid, "reasons": qr["reasons"]})
+                    qp_summary["blocked"].append({"id": cid, "reasons": qr["reasons"], "verdict": v})
+                    print(f"[qp   ] HARD_REJECT {cid}: {'; '.join(qr['reasons'])}")
+                else:  # EXPECTED_BLOCK
+                    qp_summary["expected_block"] += 1
+                    quality_block_ids.append(cid)
+                    qp_summary["blocked"].append({"id": cid, "reasons": qr["reasons"], "verdict": v})
                     print(f"[qp   ] BLOCK {cid}: {'; '.join(qr['reasons'])}")
             report["quality_predict"] = qp_summary
-            print(f"[qp   ] 质量预估: PASS={qp_summary['pass']} REVIEW={qp_summary['review']} "
-                  f"BLOCK={qp_summary['block']}" + ("（计入 FAIL）" if a.quality_block else "（仅标注）"))
+            print(f"[qp   ] 质量预估: DIRECT={qp_summary['direct_submit']} COMBO={qp_summary['combo_candidate']} "
+                  f"WEAK={qp_summary['weak_signal']} BLOCK={qp_summary['expected_block']} "
+                  f"HARD={qp_summary['hard_reject']}" + ("（计入 FAIL）" if a.quality_block else "（仅标注）"))
         except Exception as e:
             report["quality_predict"] = {"error": str(e)}
             print(f"[qp   ] 质量预估阶段失败（不阻断门禁）: {e}")
@@ -267,19 +300,45 @@ def main():
     except Exception as e:
         print(f"[out  ] gate 入库失败: {e}")
 
+    # ---- 4) 探针批模式（可选）----
+    probe_report = None
+    if a.probe_mode and len(items) > 2:
+        try:
+            tools_dir = os.path.dirname(os.path.abspath(__file__))
+            if tools_dir not in sys.path:
+                sys.path.insert(0, tools_dir)
+            from probe_batch_mode import ProbeBatchExecutor
+            executor = ProbeBatchExecutor(campaign, a.dataset, tag)
+            candidates_for_probe = [{"id": cid, "expression": e} for cid, e in items]
+            probe_report = executor.execute_probe_batch(candidates_for_probe)
+            print(f"[probe] 探针批模式: {probe_report['status']}")
+            print(f"[probe] 决策原因: {probe_report['decision_reason']}")
+            if probe_report["saved_quota"] > 0:
+                print(f"[probe] 节省配额: {probe_report['saved_quota']} 条")
+        except Exception as e:
+            print(f"[probe] 探针批模式失败（不阻断）: {e}")
+
     all_pass = all(s["valid"] for s in syntax) and r.returncode == 0
     if a.quality_block and quality_block_ids:
         all_pass = False
+    if gem_report and not gem_report["pass"]:
+        all_pass = False
+    if probe_report and probe_report["status"] == "PROBE_DEAD":
+        all_pass = False
+        print(f"[done ] 探针批判死数据集，整波拦截")
     g = gate_json or {}
     qp = report.get("quality_predict") or {}
     qp_note = ""
     if isinstance(qp, dict) and "error" not in qp and qp:
-        qp_note = (f" 质量预估 P/R/B={qp.get('pass')}/{qp.get('review')}/{qp.get('block')}"
-                   + (f"（BLOCK {len(quality_block_ids)} 条{'计入 FAIL' if a.quality_block else ' 仅标注'}）"
-                      if qp.get('block') else ""))
+        qp_note = (f" 质量预估 D/C/W/B/H={qp.get('direct_submit')}/{qp.get('combo_candidate')}/"
+                   f"{qp.get('weak_signal')}/{qp.get('expected_block')}/{qp.get('hard_reject')}"
+                   + (f"（拦截 {len(quality_block_ids)} 条{'计入 FAIL' if a.quality_block else ' 仅标注'}）"
+                      if (qp.get('expected_block') or qp.get('hard_reject')) else ""))
+    gem_note = f" GEM={gem_report['gem_ratio']:.0%}" if gem_report else ""
+    probe_note = f" Probe={probe_report['status']}" if probe_report else ""
     print(f"[done ] 语法 {report['syntax']['passed']}/{report['syntax']['total']}, "
           f"gate all_pass={g.get('all_pass')} passed={g.get('passed')}/{g.get('total')}"
-          f"{qp_note} => {'PASS' if all_pass else 'FAIL'}")
+          f"{qp_note}{gem_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
     if r.stderr:
         print(r.stderr[-800:])
     sys.exit(0 if all_pass else 1)

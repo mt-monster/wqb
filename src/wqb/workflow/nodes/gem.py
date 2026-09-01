@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
+from .._common import infer_data_category, resolve_skill_dir, wq_py
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +52,7 @@ def run(
 
     # 自动推断 data_category（如未提供）
     if not data_category:
-        data_category = _infer_category(dataset_id)
+        data_category = infer_data_category(dataset_id)
 
     result = {
         "region": region,
@@ -83,7 +84,7 @@ def run(
             logger.warning(f"Failed to check S1 ledger: {e}")
 
     # Step 2: 定位 GEM runner
-    gem_root = _find_gem_root()
+    gem_root = resolve_skill_dir("brain-makeSomeGem")
     if not gem_root:
         result["steps"].append({
             "step": "find_gem_root",
@@ -120,9 +121,8 @@ def run(
     })
 
     # Step 4: 构建命令
-    wq_py = os.environ.get("WQ_PY", "python")
     cmd = [
-        wq_py,
+        wq_py(),
         runner_script,
         "--config", config_file,
         "--data-category", data_category,
@@ -243,38 +243,13 @@ def run(
 
 
 def _infer_category(dataset_id: str) -> str:
-    """从 dataset_id 推断数据类别."""
-    # 简单映射
-    category_map = {
-        "analyst": "analyst",
-        "model": "model",
-        "news": "news",
-        "fundamental": "fundamental",
-        "pv": "pv",
-        "insider": "insider",
-        "option": "option",
-        "risk": "risk",
-        "other": "other",
-    }
-
-    dataset_lower = dataset_id.lower()
-    for key, value in category_map.items():
-        if key in dataset_lower:
-            return value
-
-    return "other"
+    """从 dataset_id 推断数据类别（向后兼容别名，实际逻辑在 _common）。"""
+    return infer_data_category(dataset_id)
 
 
 def _find_gem_root() -> Optional[str]:
-    """查找 brain-makeSomeGem skill 根目录."""
-    for candidate in [
-        os.path.expanduser("~/.qoder-cn/skills/brain-makeSomeGem"),
-        os.path.expanduser("~/.cursor/skills/brain-makeSomeGem"),
-        os.path.expanduser("~/.workbuddy/skills/brain-makeSomeGem"),
-    ]:
-        if os.path.exists(candidate):
-            return candidate
-    return None
+    """查找 brain-makeSomeGem skill 根目录（向后兼容别名）。"""
+    return resolve_skill_dir("brain-makeSomeGem")
 
 
 def _find_final_expressions(gem_root: str, dataset_id: str, region: str, delay: int) -> Optional[str]:
@@ -324,12 +299,10 @@ def _run_quality_estimation(
         "details": {},
     }
 
-    wq_py = os.environ.get("WQ_PY", "python")
-
     # 1. 运行 pool_diversity.py（六维多样性评估）
     try:
         diversity_cmd = [
-            wq_py, "tools/pool_diversity.py",
+            wq_py(), "tools/pool_diversity.py",
             "--region", region,
             "--dataset", dataset_id,
             "--json", "-",  # 输出到 stdout
@@ -377,7 +350,7 @@ def _run_quality_estimation(
 
         try:
             quality_cmd = [
-                wq_py, "tools/quality_predict.py",
+                wq_py(), "tools/quality_predict.py",
                 "--region", region,
                 "--input", temp_expr_path,
                 "--json", "-",

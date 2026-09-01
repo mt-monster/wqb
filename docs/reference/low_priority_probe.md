@@ -45,7 +45,7 @@ python tracking/EUR/scripts/low_priority_probe.py \
 | 文件 | 说明 |
 |------|------|
 | `candidates/<region>_wave<N>_<tag>_items.json` | 16 条探针表达式 |
-| `scripts/run_wave<N>_<tag>.py` | 五槽填槽 runner |
+| `scripts/run_wave<N>_<tag>.py` | 七槽填槽 runner |
 | 台账 `wave<N>_<tag>_verdict` | `LOW_PRIORITY_PROBE` 状态 |
 
 ## 判死标准
@@ -95,7 +95,7 @@ S1 判断：结构性死结？→ 是 → 跳过
        ↓ 否
 S2 低优先级探针生成（lag/neut/interact 三轨）
        ↓
-S3 五槽填槽回测（低优先级槽位）
+S3 七槽填槽回测（低优先级槽位）
        ↓
 S4 评审：top sharpe > 1.0？→ 是 → 升级为主攻
        ↓ 否

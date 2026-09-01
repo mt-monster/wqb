@@ -1,5 +1,5 @@
 # JJ/KK 闸门评估 (一次性脚本)
-import json, sys
+import json
 
 p = r'C:\Users\MENGTAO\.qoder-cn\cache\projects\wqb-a40170ec\agent-tools\task-080\6dffc0ad.txt'
 d = json.load(open(p, encoding='utf-8'))

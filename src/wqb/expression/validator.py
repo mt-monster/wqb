@@ -15,7 +15,7 @@ import re
 from typing import Dict, List, Set, Tuple
 
 from wqb.config import GHOST_OPERATORS, SHAPE_CLASSES, get_operator_family
-from wqb.expression.grammar import Node, ParseError, parse_expression
+from wqb.expression.grammar import Node, ParseError, parse_expression, extract_identifiers
 
 # Binary combiners whose two operands form a "shape".
 _BINARY_COMBINERS = {"subtract", "divide", "add", "multiply", "max", "min"}
@@ -205,3 +205,191 @@ def _iter_calls(node: Node):
         if n.is_call:
             yield n
             stack.extend(n.args)
+
+
+# ---------- P0-2 / P1-2 增强预检（2026-08-31） ----------
+
+# 信号族标签：按字段前缀/数据集类别自动归类（用于同族叠加拦截）
+_SIGNAL_FAMILY_PREFIXES = {
+    "momentum": ("momentum", "mom", "ts_returns", "ts_delta"),
+    "value": ("book", "pe", "pb", "ps", "earnings_yield", "ebitda"),
+    "quality": ("roe", "roa", "margin", "profitability", "accrual"),
+    "volatility": ("vol", "std", "variance", "beta", "ivol"),
+    "liquidity": ("volume", "turnover", "amihud", "liquidity", "adv"),
+    "sentiment": ("sentiment", "news", "snt", "nws", "social"),
+    "analyst": ("analyst", "anl", "estimate", "revision", "eps"),
+}
+
+
+def _signal_family(fields: Set[str]) -> str:
+    """按字段前缀归类信号族（用于同族叠加拦截）。
+
+    长前缀优先匹配（避免 'volume' 被 'vol' 抢先归 volatility）。
+    """
+    text = " ".join(sorted(fields)).lower()
+    # 按前缀长度降序排序，长前缀优先（volume > vol, momentum > mom）
+    for fam, prefixes in sorted(_SIGNAL_FAMILY_PREFIXES.items(),
+                                key=lambda kv: -max(len(p) for p in kv[1])):
+        if any(p in text for p in sorted(prefixes, key=len, reverse=True)):
+            return fam
+    return "other"
+
+
+def _jaccard(a: Set[str], b: Set[str]) -> float:
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def _fields_fallback(expr: str) -> Set[str]:
+    """字段提取 fallback：正则直接提取标识符后过滤算子。
+
+    parse_expression/extract_identifiers 都依赖 _tokenize，不支持数字参数
+    （ts_delta(close, 10) 的 10）和特殊字符（winsorize(close, std=4) 的 =）。
+    本函数用正则直接提取所有标识符，容错任意参数形式。
+    """
+    idents = re.findall(r"[A-Za-z_][A-Za-z0-9_]*", expr)
+    return {i.lower() for i in idents
+            if i.lower() not in _NON_FIELD_NAMES and not _is_operator(i.lower())}
+
+
+def check_combo_orthogonality(expr_a: str, expr_b: str,
+                              max_field_jaccard: float = 0.3) -> Tuple[bool, str, Dict]:
+    """P0-2 组合前正交性预检：两腿组合发批前判定是否同族叠加。
+
+    判据（IND behavioral_signals + risk70/pv30 实证 prod_corr<0.3 为有效组合）：
+    1. 字段集 Jaccard 相似度 <= max_field_jaccard（默认 0.3）
+    2. 信号族不同（同族组合 = 同周期/同逻辑叠加，KOR 实证全灭）
+
+    返回 (ok, reason, details)。ok=True 表示正交性达标，允许组合发批。
+    """
+    # 优先 AST 解析，失败则 fallback 到标识符提取（容错数字参数）
+    try:
+        fields_a = _fields_of(parse_expression(expr_a))
+    except ParseError:
+        fields_a = _fields_fallback(expr_a)
+    try:
+        fields_b = _fields_of(parse_expression(expr_b))
+    except ParseError:
+        fields_b = _fields_fallback(expr_b)
+    fam_a = _signal_family(fields_a)
+    fam_b = _signal_family(fields_b)
+    jac = _jaccard(fields_a, fields_b)
+    details = {
+        "fields_a": sorted(fields_a), "fields_b": sorted(fields_b),
+        "field_jaccard": round(jac, 3),
+        "signal_family_a": fam_a, "signal_family_b": fam_b,
+        "max_field_jaccard": max_field_jaccard,
+    }
+    if fam_a == fam_b and fam_a != "other":
+        return False, f"同族叠加拦截：两腿同属信号族 '{fam_a}'（KOR 同周期互组全灭教训）", details
+    if jac > max_field_jaccard:
+        return False, f"字段集 Jaccard {jac:.2f} > {max_field_jaccard}（正交性不足）", details
+    return True, f"正交性达标：信号族 {fam_a}×{fam_b}，字段 Jaccard {jac:.2f}", details
+
+
+def check_family_ceiling(expressions: List[str],
+                         dominant_leg_min_share: float = 2.0 / 3.0) -> Tuple[bool, str, Dict]:
+    """P1-2 家族扩展天花板预检：主导腿不变时任何快腿微调与母配方 SELF≥0.9。
+
+    判据（wave94/95/98/104 四次实证）：
+    - 提取每条表达式的主导腿（出现频次最高的字段）
+    - 若某字段在 >= dominant_leg_min_share（默认 2/3）的表达式中都是主导腿，
+      则该批属同族微调，标记高 SELF 风险，建议跳过仿真节省配额。
+
+    返回 (ok, reason, details)。ok=True 表示无天花板风险，可发批。
+    """
+    if len(expressions) < 2:
+        return True, "批次过小，跳过天花板检测", {"total": len(expressions)}
+    # 统计每条表达式的主导腿（第一个字段，近似主导腿）
+    # 优先 AST 解析，失败则 fallback 到标识符提取（容错数字参数）
+    dominant_legs: List[str] = []
+    for expr in expressions:
+        fields: Set[str] = set()
+        try:
+            fields = _fields_of(parse_expression(expr))
+        except ParseError:
+            fields = _fields_fallback(expr)
+        dominant_legs.append(sorted(fields)[0] if fields else "")
+    from collections import Counter
+    counts = Counter(d for d in dominant_legs if d)
+    if not counts:
+        return True, "无法提取主导腿，跳过天花板检测", {"total": len(expressions)}
+    top_leg, top_n = counts.most_common(1)[0]
+    share = top_n / len(expressions)
+    details = {
+        "dominant_leg": top_leg, "dominant_count": top_n,
+        "total": len(expressions), "share": round(share, 3),
+        "threshold": round(dominant_leg_min_share, 3),
+        "all_legs": dict(counts),
+    }
+    if share >= dominant_leg_min_share:
+        return False, (
+            f"家族扩展天花板：主导腿 '{top_leg}' 占 {share:.0%}（>= {dominant_leg_min_share:.0%}），"
+            f"与母配方 SELF 相关必然≥0.9（wave94/95/98/104 实证），建议跳过仿真"
+        ), details
+    return True, f"主导腿占比 {share:.0%} < {dominant_leg_min_share:.0%}，无天花板风险", details
+
+
+# ---------- P0-A 方向一致性预检（2026-08-31） ----------
+
+# 显式翻转结构正则（识别表达式符号倾向）：
+#   reverse(x) / multiply(-1, x) / multiply(x, -1) / divide(-1, x) / 前缀负算子
+# 注意：len 是偶数时翻转相互抵消（负负得正）。
+_FLIP_PATTERNS = (
+    r"reverse\s*\(",
+    r"multiply\s*\(\s*-\s*1(?:\.0+)?\s*,",
+    r"multiply\s*\([^,]+,\s*-\s*1(?:\.0+)?\s*\)",
+    r"divide\s*\(\s*-\s*1(?:\.0+)?\s*,",
+    r"(?<![\w)])-\s*(?:rank|zscore|ts_|winsorize|signed_power|group_rank|group_zscore|subtract|add|multiply|divide)\s*\(",
+)
+_FLIP_RX = [re.compile(p) for p in _FLIP_PATTERNS]
+
+
+def _expr_sign(expr: str) -> int:
+    """检测表达式显式符号倾向：-1 = 含奇数个翻转结构，+1 = 无翻转/偶数个翻转。
+
+    注意：只能识别显式翻转（reverse/乘负/前缀负），ts_delta 等方向由数据决定
+    不在此列；此处仅作组合前的静态参考（真正的方向以 IS 回测 Sharpe 符号为准）。
+    """
+    n_flip = sum(len(rx.findall(expr)) for rx in _FLIP_RX)
+    return -1 if n_flip % 2 == 1 else 1
+
+
+def check_combo_direction(expr_a: str, expr_b: str,
+                          sharpe_a: float = None, sharpe_b: float = None) -> Tuple[bool, str, Dict]:
+    """P0-A 组合前方向一致性预检：两腿方向相反会互相抵消。
+
+    两级检测：
+    1. 静态符号倾向（无回测数据时）：检测显式翻转结构差异——一腿翻转一腿常规
+       且字段集高度重叠时提示风险（WARN 不阻断，静态方向不可定）。
+    2. 回测后方向检查（传入 sharpe_a/sharpe_b）：两腿 IS Sharpe 符号相反
+       → 确定性抵消风险，建议对负腿乘以 -1 翻转后再组合。
+
+    返回 (ok, reason, details)。ok=False 仅当回测符号相反（有数据可判定）；
+    静态翻转差异为 WARN 提示，不阻断。
+    """
+    sign_a, sign_b = _expr_sign(expr_a), _expr_sign(expr_b)
+    # 静态翻转差异：一腿翻转一腿常规，且字段集有重叠 → 提示（不阻断）
+    details: Dict = {
+        "static_sign_a": sign_a, "static_sign_b": sign_b,
+        "static_flip_conflict": sign_a != sign_b,
+        "has_is_results": sharpe_a is not None and sharpe_b is not None,
+    }
+    if sharpe_a is not None and sharpe_b is not None:
+        details["sharpe_a"] = sharpe_a
+        details["sharpe_b"] = sharpe_b
+        if (sharpe_a > 0 > sharpe_b) or (sharpe_b > 0 > sharpe_a):
+            neg_leg = "A" if sharpe_a < 0 else "B"
+            return False, (
+                f"方向抵消风险：Sharpe 符号相反（A={sharpe_a:.2f}, B={sharpe_b:.2f}），"
+                f"组合将互相抵消；建议对{neg_leg}腿乘以 -1 翻转后再组合"
+            ), details
+        return True, f"方向一致：Sharpe 同号（A={sharpe_a:.2f}, B={sharpe_b:.2f}），可组合", details
+    # 无回测数据：静态提示
+    if sign_a != sign_b:
+        return True, (
+            f"静态翻转结构差异（A={sign_a:+d}, B={sign_b:+d}）：一腿显式翻转一腿常规，"
+            f"若字段经济意义同向建议先翻转对齐；实际方向以 IS Sharpe 为准（未传入，不阻断）"
+        ), details
+    return True, f"静态符号一致（A={sign_a:+d}, B={sign_b:+d}）", details

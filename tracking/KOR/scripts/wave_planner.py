@@ -11,7 +11,7 @@
   python wave_planner.py next --current-dataset chart_cnn_alpha [--wave 17A]
   python wave_planner.py status --dataset chart_cnn_alpha
 """
-import argparse, collections, datetime, glob, json, os, re, sys
+import argparse, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

@@ -57,13 +57,30 @@ class BacktestMixin:
             cur.execute(
                 """INSERT INTO backtest_results
                    (expression_id, alpha_id, status, sharpe, fitness, turnover,
-                    margin, two_year_sharpe, sub_universe_sharpe, ra_failed_checks,
+                    margin, returns, drawdown, two_year_sharpe, sub_universe_sharpe,
+                    long_count, short_count, pnl, book_size, ra_failed_checks,
                     region, wave, dataset, code, payload_json, created_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                   ON CONFLICT(alpha_id) DO UPDATE SET
+                    expression_id=excluded.expression_id, status=excluded.status,
+                    sharpe=excluded.sharpe, fitness=excluded.fitness,
+                    turnover=excluded.turnover, margin=excluded.margin,
+                    returns=excluded.returns, drawdown=excluded.drawdown,
+                    two_year_sharpe=excluded.two_year_sharpe,
+                    sub_universe_sharpe=excluded.sub_universe_sharpe,
+                    long_count=excluded.long_count, short_count=excluded.short_count,
+                    pnl=excluded.pnl, book_size=excluded.book_size,
+                    ra_failed_checks=excluded.ra_failed_checks,
+                    region=excluded.region, wave=excluded.wave, dataset=excluded.dataset,
+                    code=excluded.code, payload_json=excluded.payload_json,
+                    created_at=excluded.created_at""",
                 (
                     expr_id, alpha_id, r.get("status") or "COMPLETE",
                     r.get("sharpe"), r.get("fitness"), turnover, margin,
+                    r.get("returns"), r.get("drawdown"),
                     r.get("two_year_sharpe"), r.get("sub_universe_sharpe"),
+                    r.get("long_count"), r.get("short_count"),
+                    r.get("pnl"), r.get("book_size"),
                     _dumps(failed) if failed else None,
                     region, str(wave), dataset, code, payload, now,
                 ),
@@ -112,6 +129,13 @@ class BacktestMixin:
                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                         (alpha_id,) + aval + (now,),
                     )
+            # 回填 expressions 表的指标列（修复三表不一致根因）
+            if alpha_id and r.get("sharpe") is not None:
+                cur.execute(
+                    """UPDATE expressions SET sharpe=?, fitness=?, margin=?, turnover=?,
+                       updated_at=? WHERE alpha_id=?""",
+                    (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
+                )
             n += 1
         self.connection.commit()
         return n
@@ -128,34 +152,16 @@ class BacktestMixin:
     ) -> Dict[str, Any]:
         """记录一次真实提交到 submission_ledger（审计 P0-3）。
 
-        历史问题：该表长期只有 DRYRUN 测试数据，真实提交（MEA/IND/SA）从未入账。
-        提交脚本（含 SUPER alpha）在拿到 verdict 后应调用本方法落账。
+        已统一委托给 upsert_submission，消除双写路径冲突。
         """
-        cur = self.connection.cursor()
-        cur.execute("SELECT id FROM submission_ledger WHERE alpha_id=?", (alpha_id,))
-        row = cur.fetchone()
-        v = _dumps(verdict) if isinstance(verdict, (dict, list)) else verdict
-        now = _now()
-        if row:
-            cur.execute(
-                """UPDATE submission_ledger SET region=?, submission_type=?, status=?,
-                   quota_used=?, quota_remaining=?, verdict=?, submitted_at=?,
-                   verified_at=?, updated_at=? WHERE id=?""",
-                (region, submission_type, status, quota_used, quota_remaining, v,
-                 now, now, now, int(row[0])),
-            )
-        else:
-            cur.execute(
-                """INSERT INTO submission_ledger
-                   (alpha_id, region, submission_type, status, quota_used,
-                    quota_remaining, verdict, submitted_at, verified_at,
-                    created_at, updated_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-                (alpha_id, region, submission_type, status, quota_used,
-                 quota_remaining, v, now, now, now, now),
-            )
-        self.connection.commit()
-        return {"alpha_id": alpha_id, "status": status, "region": region}
+        return self.upsert_submission(
+            alpha_id=alpha_id,
+            region=region,
+            submission_type=submission_type,
+            status=status,
+            quota_used=quota_used,
+            verdict=verdict if isinstance(verdict, dict) else None,
+        )
 
     def upsert_alpha_from_platform(self, d: Dict[str, Any]) -> Optional[str]:
         """提交成功后把平台详情回写 alphas 表（2026-08-30 新增）。
@@ -226,9 +232,9 @@ class BacktestMixin:
             "fitness": d.get("fitness"),
             "turnover": d.get("turnover"),
             "two_year_sharpe": d.get("two_year_sharpe"),
-            "status": d.get("status") or "COMPLETE",
-            "prod_correlation": d.get("prod_correlation"),
-            "self_correlation": d.get("self_correlation"),
+            "status": d.get("status") or "UNSUBMITTED",
+            "prod_correlation": d.get("prod_correlation") or d.get("prod_corr"),
+            "self_correlation": d.get("self_correlation") or d.get("self_corr"),
             "is_ladder_sharpe": d.get("is_ladder_sharpe"),
             "platform_status": d.get("platform_status"),
             "stage": d.get("stage"),

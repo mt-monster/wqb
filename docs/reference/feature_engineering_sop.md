@@ -6,7 +6,7 @@
 > **背景**：USA Wave 13-28 实战暴露三大问题——① 字段筛选依赖历史经验无量化依据；
 > ② SELF_CORRELATION 无预估导致高质量候选提交时才被 BLOCK（78jZmqJO corr=0.9518）；
 > ③ 同数据集反复套模板导致信号同质化（214 个 UNSUBMITTED 中 123 个被本地预估判死）。
-> 本 SOP 即针对这三点的结构性修复。最后更新：2026-08-27
+> 本 SOP 即针对这三点的结构性修复。最后更新：2026-08-31（分层阈值体系升级）
 
 ---
 
@@ -19,7 +19,7 @@
      ↓
 阶段5 质量预估（回测前本地拦截，零配额）
      ↓
-阶段6 候选池优化与门禁（wave_gate.py）→ 五槽填槽回测 → 复盘回写
+阶段6 候选池优化与门禁（wave_gate.py）→ 七槽填槽回测 → 复盘回写
 ```
 
 **总纪律**：
@@ -102,9 +102,9 @@
 
 | 项 | 内容 |
 |---|---|
-| 执行者 | `tools/pool_diversity.py` + `tools/quality_predict.py`（2026-08-27 落地） |
+| 执行者 | `tools/pool_diversity.py` + `tools/quality_predict.py`（2026-08-27 落地，2026-08-31 分层阈值升级） |
 | 成本 | 零平台配额（纯本地结构分析 + 历史先验） |
-| 产出 | 六维多样性报告 + 逐候选 EXPECTED_PASS/REVIEW/EXPECTED_BLOCK 判定 |
+| 产出 | 六维多样性报告 + 逐候选分层判定（DIRECT_SUBMIT/COMBO_CANDIDATE/WEAK_SIGNAL/EXPECTED_BLOCK/HARD_REJECT） |
 | 通过标准 | 无 `[GROUP-DOMINANCE]`/`[HOMOG]` 风险；EXPECTED_BLOCK 全部有处理记录 |
 
 **命令**：
@@ -115,10 +115,32 @@ python tools/quality_predict.py --region <R> --wave <N> --dataset <DS>
 python tools/quality_predict.py --region <R> --status UNSUBMITTED
 ```
 
+**分层阈值体系（2026-08-31 新增）**：
+
+| 层级 | 判定 | 阈值 | 用途 |
+|:---|:---|:---|:---|
+| **DIRECT_SUBMIT** | 优选线达标 | S≥1.58, F≥1.0, prod_corr<0.7 | 直接提交 |
+| **COMBO_CANDIDATE** | 候选池达标 | S≥1.0, F≥0.8, T≤0.4, prod_corr<0.7 | 组合腿候选 |
+| **WEAK_SIGNAL** | 弱信号 | S 0.5-1.0 或 F 0.3-0.8 | 谨慎考虑 |
+| **EXPECTED_BLOCK** | 相关性超标 | prod_corr≥0.7 | 需组合稀释 |
+| **HARD_REJECT** | 硬拒绝 | S<0.5 或 F<0.3 | 直接丢弃 |
+
+**分层判定逻辑**（相关性优先，避免高 Sharpe 信号被 Turnover 误杀）：
+1. 相关性检查（prod_corr ≥ 0.7）→ EXPECTED_BLOCK
+2. 硬拒绝线（S<0.5 或 F<0.3）→ HARD_REJECT
+3. 优选线（S≥1.58 且 F≥1.0）→ DIRECT_SUBMIT
+4. 候选池线（S≥1.0 且 F≥0.8 且 T≤0.4）→ COMBO_CANDIDATE
+5. 其他 → WEAK_SIGNAL
+
 **EXPECTED_BLOCK 处理**：
 - 相关性代理分 ≥0.7（撞存量 alpha）→ 回 Mode B 换字段组合，**禁止调权重重试**
 - 字段族饱和（存量同族 ≥30）→ 换数据集或换信号族
 - 处理记录写入波级文档 §5 表格
+
+**COMBO_CANDIDATE 处理**（2026-08-31 新增）：
+- 标记为组合腿候选，进入组合优化流程
+- 优先与 prod_corr<0.3 的其他候选组合（稀释相关性）
+- 组合策略详见 `docs/reference/combination_optimization_strategy.md`
 
 **能力边界（如实）**：预估基于三层先验 Bayes 收缩，预测的是**均值不是尾部**——
 PASS=0 不代表没有赢家，只代表先验证据不足；它的价值是拦截必死候选省配额。
@@ -127,16 +149,29 @@ PASS=0 不代表没有赢家，只代表先验证据不足；它的价值是拦�
 
 | 项 | 内容 |
 |---|---|
-| 执行者 | `tools/wave_gate.py`（编排器）→ 五槽填槽回测（`pipeline.py`/`wqb-concurrency` §8） |
-| 产出 | gate_results 表记录（语法+5闸+六维多样性+质量预估）+ 入批计划 |
-| 通过标准 | 语法全过 + 5 闸 all_pass；`--quality-block` 时无 EXPECTED_BLOCK |
+| 执行者 | `tools/wave_gate.py`（编排器）→ 七槽填槽回测（`pipeline.py`/`wqb-concurrency` §8） |
+| 产出 | gate_results 表记录（语法+5闸+六维多样性+分层质量预估）+ 入批计划 |
+| 通过标准 | 语法全过 + 5 闸 all_pass；`--quality-block` 时无 EXPECTED_BLOCK/HARD_REJECT |
 
 **命令**：
 ```powershell
 python tools/wave_gate.py --campaign-dir tracking/<R> --dataset <DS> --wave <N> --from-db --quality-block
 ```
 
-**入批后**：五槽填槽回测 → 收批入 backtest_results 表 → 波结论写 `wave_results` +
+**门禁报告格式（2026-08-31 新增）**：
+```
+[qp   ] 质量预估: DIRECT=2 COMBO=8 WEAK=15 BLOCK=5 HARD=3（拦截 8 条计入 FAIL）
+[done ] 语法 22/22, gate all_pass=True passed=22/22 质量预估 D/C/W/B/H=2/8/15/5/3 => PASS
+```
+
+**分层结果解读**：
+- **D (DIRECT_SUBMIT)**: 优选线达标，可直接提交
+- **C (COMBO_CANDIDATE)**: 候选池达标，可作为组合腿
+- **W (WEAK_SIGNAL)**: 弱信号，需谨慎考虑
+- **B (EXPECTED_BLOCK)**: 相关性/饱和度超标，需 Mode B 处理
+- **H (HARD_REJECT)**: 硬拒绝线以下，直接丢弃
+
+**入批后**：七槽填槽回测 → 收批入 backtest_results 表 → 波结论写 `wave_results` +
 WAVE_LEDGER.md（单入口）→ 复盘回填波级文档 §7（预估 vs 实际偏差），判死/胜绩提炼进
 `registry_empirical`（`campaign.py registry` 幂等 CLI）。
 
@@ -150,7 +185,7 @@ WAVE_LEDGER.md（单入口）→ 复盘回填波级文档 §7（预估 vs 实际
 | 阶段 1-3 | S1 字段理解 | `brain-data-feature-engineering` → ledger `s1_<ds>_d<delay>` |
 | 阶段 4 | S2 生成 + S3 前置 | `brain-makeSomeGem` → `build_wave.py` → expressions 表 |
 | 阶段 5 | S3 预检（新增本地层） | `pool_diversity.py` + `quality_predict.py` |
-| 阶段 6 | S3 门禁 + 回测 | `wave_gate.py` → 五槽填槽 |
+| 阶段 6 | S3 门禁 + 回测 | `wave_gate.py` → 七槽填槽 |
 | 复盘 | S4-S6 | judge / 优化器 / `wq-backtest-monitor` + registry 回写 |
 
 ## 反模式清单（血泪汇总）
@@ -163,3 +198,5 @@ WAVE_LEDGER.md（单入口）→ 复盘回填波级文档 §7（预估 vs 实际
 | 同信号调权重变体 | 纪律明令禁止 | 阶段 4/5 BLOCK→Mode B |
 | 跳过预估直接烧配额 | 配额浪费于必死候选 | 阶段 5 强制零配额预检 |
 | 文档只写策略不写依据 | Wave 28 之前文档无法审计 | 模板〔必填〕节 + 淘汰原因表 |
+| 单字段阈值过严误杀组合潜力股 | IND 112 回测仅 3 个达标且全被拒 | 阶段 5 分层阈值（COMBO_CANDIDATE） |
+| 高 Sharpe 信号被 Turnover 误杀 | wpjvE8W5 S=2.61 但 T=0.79 被 HARD_REJECT | 阶段 5 判定顺序优化（相关性优先） |

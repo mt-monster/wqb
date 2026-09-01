@@ -22,12 +22,12 @@
 |---|---|---|
 | `<REGION>/region_kb` | 区域知识卡 ×9（EUR/IND/KOR/MEA/USA/GBR/HKG/ASI/GLB） | 每卡一页 JSON |
 | `KB/template_kb` | 通用模板 T-KB-01~10（含 2 个负模板），**已验证层** | 单键 |
-| `KB/community_tpl_kb` | 社区模板**候选库**（2026-08-25 从用户上传《Alpha 因子模板库整理（完整版）》docx 提炼） | 131 个 TPL / 18 大类 + 占位符约定表 |
+| `KB/community_tpl_kb` | 社区模板**候选库**（2026-08-25 从《完整版》docx 提炼 131 个；2026-08-31 合并《续集》增量） | 141 个 TPL / 19 大类 + 占位符约定表 + `ghost_operator_advisory` 幽灵算子警示表 |
 | `KB/kb_index` | 索引 + 读写协议 + 来源清单 | 单键 |
 
 合成桶 `KB` 与批次模拟器的 `BATCH` 桶同类：无区域上下文的全局知识挂合成桶。
 
-**community_tpl_kb（候选层）**：社区论坛馈赠的模板骨架，结构化字段 `{tpl_id, name, category, skeleton, params, example, usage, notes, status}`，全部 `status=candidate_unverified`（未经本工作区战役实证），占位符替换规则见键内 `placeholder_conventions`。与 template_kb 的关系：候选层 → 回测验证后把区域证据回写进该模板的 `validated`/`failed` 字段，≥2 区验证（或 1 区强证据）后按 T-KB-NN 晋升入 template_kb。
+**community_tpl_kb（候选层）**：社区论坛馈赠的模板骨架，结构化字段 `{tpl_id, name, category, skeleton, params, example, usage, notes, status}`，全部 `status=candidate_unverified`（未经本工作区战役实证），占位符替换规则见键内 `placeholder_conventions`（原帖 `<field/>` 尖括号风格 ≡ `{field}` 花括号风格）。键内 `ghost_operator_advisory` 登记幽灵算子→已验证等价映射（人读全文见 `docs/reference/community_tpl_library_sequel.md` §十八）：**取骨架前必须先查该表，含幽灵/未验证算子的骨架替换等价算子或先 `validate_expressions` 实测，否则整批 ERROR/CANCELLED**。与 template_kb 的关系：候选层 → 回测验证后把区域证据回写进该模板的 `validated`/`failed` 字段，≥2 区验证（或 1 区强证据）后按 T-KB-NN 晋升入 template_kb；长期全 failed 的候选按"模板动态管理闭环"（GLOBAL/region_kb.methodology）降级/剔除。
 
 ## 3. Schema
 
@@ -61,7 +61,7 @@ templates[] = {
 |---|---|
 | **S-PRE 开战役前（必读）** | `get_ledger_key(region, "region_kb")` + `get_ledger_key("KB", "template_kb")`：dead_patterns 命中的方向直接跳过；win_recipes 是配方扩展首选 |
 | **S2 生成先验注入（ra-pipeline 步 4）** | 组装 priors.json：region_kb.win_recipes + template_kb（validated 含本区）→ `wins`（≤6）；region_kb.dead_patterns + template_kb（failed 含本区）→ `dead_ends`（≤12）；DB 为空才用 region profile 静态 priors 兜底。community_tpl_kb 不进 priors |
-| **Mode B Step B1 找骨架** | 读 template_kb：优先 validated 含本区的模板；跨区移植看 failed 与 iron_law（T-KB-07 教训：GBR 赢配方 KOR 全灭）；已验证层无匹配时，退到候选层 `get_ledger_key("KB", "community_tpl_kb")` 按 category 检索骨架，占位符按 placeholder_conventions 替换 |
+| **Mode B Step B1 找骨架** | 读 template_kb：优先 validated 含本区的模板；跨区移植看 failed 与 iron_law（T-KB-07 教训：GBR 赢配方 KOR 全灭）；已验证层无匹配时，退到候选层 `get_ledger_key("KB", "community_tpl_kb")` 按 category 检索骨架，占位符按 placeholder_conventions 替换，**并先查键内 `ghost_operator_advisory` 做幽灵算子替换** |
 | **配额决策** | region_kb.open_threads 里 untried campaign 优先于已 exhausted 方向 |
 | **提交判定** | region_kb.notes 里的区域提交陷阱（如 IND 的 -rank 语法、本地 prod_corr 偏低） |
 

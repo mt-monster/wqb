@@ -1,4 +1,15 @@
 {
+  "review": {
+    "sharpe_min": 1.58,
+    "fitness_min": 1.0,
+    "two_year_sharpe_min": 1.0,
+    "margin_min": 0.0005,
+    "turnover_max": 0.7,
+    "turnover_min": 0.01
+  },
+  "near": {
+    "sharpe_min": 1.0
+  },
   "sharpe_min": 1.58,
   "fitness_min": 1.0,
   "turnover_max": 0.7,
@@ -9,9 +20,29 @@
   "sub_universe_sharpe_min": 1.0,
   "robust_sharpe_min": 1.0,
   "dataset_health": {
-    "coverage_min": 0.6,
-    "alpha_count_max": 200,
-    "field_count_min": 10
+    "_doc": "S0 两阶段口径（2026-09-01，实证依据：IND/TOP500/D1 体检 143 集实测分布 cov>=0.9:44 / 0.70-0.90:50 / <0.70:49，total_fields=13264）。阶段① 全局绝对底线=coverage_hard_min/field_count_hard_min（单源 src/wqb/config.py DATASET_HEALTH_FLOOR）；阶段② 区域自适应分位分带（tier_method=quantile）。战役放宽标准 cov>=0.6/alpha<=1500/fields>=10 对应 tier2 保底带，不再作唯一白名单线。",
+    "mode": "general",
+    "tier_method": "quantile",
+    "tier1_score_pct": 0.6,
+    "tier2_score_pct": 0.3,
+    "coverage_hard_min": 0.5,
+    "field_count_hard_min": 5,
+    "coverage_min": 0.8,
+    "field_count_min": 10,
+    "alpha_count_max": 1500,
+    "tier2_coverage_min": 0.6,
+    "tier2_field_count_min": 5,
+    "tier2_alpha_count_max": 1500,
+    "backfill_band_enable": true,
+    "backfill_band_cov_min": 0.5,
+    "backfill_band_cov_max": 0.8,
+    "backfill_band_alpha_count_max": 1500,
+    "backfill_band_value_score_min": 4,
+    "excluded_pyramids": [],
+    "_excluded_pyramids_doc": "指定排除的 pyramid（=category×region×delay）：命名 IND_D1_<category>（如 IND_D1_risk），也接受裸 category（如 risk，全 delay 生效）；命中者降 excluded 且不被保底带复活。",
+    "catalog_unreachable_categories": {
+      "risk": "risk68(5f/ac7104)/risk70(35f/ac3965)/risk71(4f/ac10894)/risk88(1f/ac1802)：字段数<10 或竞争>1500 结构性不可达，勿每波重查；risk70 字段数达标但竞争超标，仅保底带观察"
+    }
   },
   "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
   "ind_specific_adjustments": {

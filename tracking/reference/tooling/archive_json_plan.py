@@ -22,7 +22,6 @@ git 仓库体积与本地噪音持续膨胀。本工具提供"可复盘、可撤
 import argparse
 import os
 import shutil
-import sys
 import time
 from pathlib import Path
 

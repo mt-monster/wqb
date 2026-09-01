@@ -37,9 +37,20 @@ from pool_diversity import (  # noqa: E402  复用建议2工具的解析层
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# 原阈值（平台提交标准）
 SHARPE_GATE = 1.58
 FITNESS_GATE = 1.0
 SELF_CORR_GATE = 0.7
+
+# 新增：分层阈值（Wave 1 单字段候选池）
+SHARPE_COMBO_GATE = 1.0      # 组合候选池 Sharpe 下限
+FITNESS_COMBO_GATE = 0.8     # 组合候选池 Fitness 下限
+TURNOVER_COMBO_GATE = 0.4    # 组合候选池 Turnover 上限
+
+# 新增：硬拒绝线（直接丢弃）
+SHARPE_HARD_REJECT = 0.5
+FITNESS_HARD_REJECT = 0.3
+TURNOVER_HARD_REJECT = 0.6
 
 
 # ---------------- 先验学习 ----------------
@@ -250,21 +261,35 @@ def predict_all(candidates, region, conn):
             {'score': 0.0, 'against': None, 'field_overlap': 0.0, 'struct_sim': 0.0}, 0)
 
         reasons = []
+        # 硬拒绝线检查（仅 Sharpe/Fitness 过低时直接丢弃；Turnover 高可通过优化降低，不作为硬拒绝）
+        if p_sh < SHARPE_HARD_REJECT:
+            reasons.append(f"预估Sharpe {p_sh:.2f} < {SHARPE_HARD_REJECT}（硬拒绝）")
+        if p_fit < FITNESS_HARD_REJECT:
+            reasons.append(f"预估Fitness {p_fit:.2f} < {FITNESS_HARD_REJECT}（硬拒绝）")
+        
+        # 优选线检查（平台提交标准）
         if p_sh < SHARPE_GATE:
             reasons.append(f"预估Sharpe {p_sh:.2f} < {SHARPE_GATE}")
         if p_fit < FITNESS_GATE:
             reasons.append(f"预估Fitness {p_fit:.2f} < {FITNESS_GATE}")
+        
+        # 相关性检查
         if corr_best['score'] >= SELF_CORR_GATE:
             reasons.append(f"相关性代理分 {corr_best['score']:.2f} >= {SELF_CORR_GATE}（疑似撞 {corr_best['against']}）")
         if fam_sat >= 30:
             reasons.append(f"字段族饱和：存量同族 alpha {fam_sat} 个")
 
+        # 分层判定逻辑（注意判定顺序：相关性优先，避免高 Sharpe 信号被 Turnover 误杀）
         if reasons and any('相关性' in r or '饱和' in r for r in reasons):
-            verdict = 'EXPECTED_BLOCK'
-        elif reasons:
-            verdict = 'REVIEW'
+            verdict = 'EXPECTED_BLOCK'  # 相关性/饱和度超标（最高优先级）
+        elif reasons and any('硬拒绝' in r for r in reasons):
+            verdict = 'HARD_REJECT'  # 直接丢弃（Sharpe/Fitness 过低）
+        elif p_sh >= SHARPE_GATE and p_fit >= FITNESS_GATE:
+            verdict = 'DIRECT_SUBMIT'  # 优选线：单字段已达标
+        elif p_sh >= SHARPE_COMBO_GATE and p_fit >= FITNESS_COMBO_GATE:
+            verdict = 'COMBO_CANDIDATE'  # 候选池线：可作为组合腿
         else:
-            verdict = 'EXPECTED_PASS'
+            verdict = 'WEAK_SIGNAL'  # 弱信号，仅当组合池不足时考虑
 
         results.append({
             'expr': expr[:120],
@@ -313,13 +338,19 @@ def main():
     results, priors = predict_all(candidates, a.region, conn)
     conn.close()
 
-    n_pass = sum(1 for r in results if r['verdict'] == 'EXPECTED_PASS')
-    n_rev = sum(1 for r in results if r['verdict'] == 'REVIEW')
+    n_direct = sum(1 for r in results if r['verdict'] == 'DIRECT_SUBMIT')
+    n_combo = sum(1 for r in results if r['verdict'] == 'COMBO_CANDIDATE')
+    n_weak = sum(1 for r in results if r['verdict'] == 'WEAK_SIGNAL')
     n_blk = sum(1 for r in results if r['verdict'] == 'EXPECTED_BLOCK')
+    n_hard = sum(1 for r in results if r['verdict'] == 'HARD_REJECT')
     g = priors['global']
     print(f"[质量预估] 候选 {len(results)} 条 | 先验样本 {g[2]} 条（全局均值 "
           f"Sharpe={g[0]:.2f}, Fitness={g[1]:.2f}）")
-    print(f"[判定] EXPECTED_PASS={n_pass} REVIEW={n_rev} EXPECTED_BLOCK={n_blk}")
+    print(f"[分层判定] DIRECT_SUBMIT={n_direct} COMBO_CANDIDATE={n_combo} "
+          f"WEAK_SIGNAL={n_weak} EXPECTED_BLOCK={n_blk} HARD_REJECT={n_hard}")
+    print(f"[阈值] 优选线 S≥{SHARPE_GATE}/F≥{FITNESS_GATE} | "
+          f"候选池 S≥{SHARPE_COMBO_GATE}/F≥{FITNESS_COMBO_GATE} | "
+          f"硬拒绝 S<{SHARPE_HARD_REJECT}/F<{FITNESS_HARD_REJECT}")
     for i, r in enumerate(results, 1):
         print(f"\n{i}. [{r['verdict']}] {r['expr']}")
         print(f"   骨架={r['skeleton']} 字段={r['fields']}")
@@ -333,10 +364,25 @@ def main():
 
     if a.json:
         with open(a.json, 'w', encoding='utf-8') as fh:
-            json.dump({'summary': {'pass': n_pass, 'review': n_rev, 'block': n_blk},
+            json.dump({'summary': {
+                           'direct_submit': n_direct,
+                           'combo_candidate': n_combo,
+                           'weak_signal': n_weak,
+                           'expected_block': n_blk,
+                           'hard_reject': n_hard
+                       },
+                       'thresholds': {
+                           'sharpe_gate': SHARPE_GATE,
+                           'fitness_gate': FITNESS_GATE,
+                           'sharpe_combo_gate': SHARPE_COMBO_GATE,
+                           'fitness_combo_gate': FITNESS_COMBO_GATE,
+                           'sharpe_hard_reject': SHARPE_HARD_REJECT,
+                           'fitness_hard_reject': FITNESS_HARD_REJECT
+                       },
                        'candidates': results}, fh, ensure_ascii=False, indent=2)
         print(f"\n[done] 报告已落盘: {a.json}")
-    sys.exit(1 if n_blk else 0)
+    # 退出码：存在 EXPECTED_BLOCK 或 HARD_REJECT 时返回 1
+    sys.exit(1 if (n_blk or n_hard) else 0)
 
 
 if __name__ == '__main__':

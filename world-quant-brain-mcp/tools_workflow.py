@@ -75,7 +75,7 @@ def workflow_batch_track(
     region: str,
     wave: str,
     dataset: str,
-    concurrency: int = 5,
+    concurrency: int = 7,
     max_rounds: int = 3,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -85,7 +85,7 @@ def workflow_batch_track(
         region: 区域代码（如 KOR）
         wave: 波次号（如 36A）
         dataset: 数据集 ID
-        concurrency: 并发数（默认 5，五槽填槽）
+        concurrency: 并发数（默认 7，七槽填槽）
         max_rounds: 最大轮次
         dry_run: 是否干跑
 
@@ -111,6 +111,7 @@ def workflow_submit_alpha(
     tags: Optional[List[str]] = None,
     descriptions: Optional[str] = None,
     force: bool = False,
+    confirm_submit: bool = False,
     verify_timeout: int = 180,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -123,6 +124,7 @@ def workflow_submit_alpha(
         tags: 标签列表
         descriptions: 描述文本（三段式）
         force: 是否跳过本地预检
+        confirm_submit: 是否真正 POST submit（默认 False，仅预检+查状态，不提交）
         verify_timeout: 状态确认超时（秒）
         dry_run: 是否干跑
 
@@ -137,6 +139,7 @@ def workflow_submit_alpha(
         "tags": tags or [],
         "descriptions": descriptions,
         "force": force,
+        "confirm_submit": confirm_submit,
         "verify_timeout": verify_timeout,
     }, dry_run=dry_run)
     return result.to_dict()
@@ -149,6 +152,7 @@ def workflow_superalpha(
     selection: Optional[str] = None,
     combo: Optional[str] = None,
     neutralization: str = "SUBINDUSTRY",
+    confirm_submit: bool = False,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """构建并提交 SuperAlpha（superalpha 节点快捷方式）.
@@ -159,6 +163,7 @@ def workflow_superalpha(
         selection: selection 表达式（默认自动生成）
         combo: combo 表达式（默认自动生成）
         neutralization: 中性化方式（默认 SUBINDUSTRY）
+        confirm_submit: 是否真正提交（默认 False，仅建 simulation + 探针）
         dry_run: 是否干跑
 
     Returns:
@@ -171,6 +176,7 @@ def workflow_superalpha(
         "selection": selection,
         "combo": combo,
         "neutralization": neutralization,
+        "confirm_submit": confirm_submit,
     }, dry_run=dry_run)
     return result.to_dict()
 

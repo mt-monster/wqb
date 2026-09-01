@@ -77,7 +77,7 @@ class SchemaMixin:
                 expression_count INTEGER DEFAULT 0,
                 status VARCHAR(20) DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                completed_at TIMESTAMP,
+                -- completed_at 已废弃（从未回写），不再创建
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE(region_id, wave_number),
                 FOREIGN KEY (region_id) REFERENCES regions(id),
@@ -118,29 +118,11 @@ class SchemaMixin:
                 short_count INTEGER,
                 pnl BIGINT,
                 book_size BIGINT,
-                concentrated_weight DECIMAL(8,4),
-                ra_failed_count INTEGER,
                 ra_failed_checks JSON,
-                ppa_failed_count INTEGER,
-                ppa_failed_checks JSON,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (expression_id) REFERENCES expressions(id)
             );
-            CREATE TABLE IF NOT EXISTS diversity_potential (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                region_id INTEGER NOT NULL,
-                dataset_id INTEGER NOT NULL,
-                diversity_score DECIMAL(5,4),
-                recommended_rounds INTEGER,
-                field_categories JSON,
-                operator_buckets JSON,
-                parameter_space JSON,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(region_id, dataset_id),
-                FOREIGN KEY (region_id) REFERENCES regions(id),
-                FOREIGN KEY (dataset_id) REFERENCES datasets(id)
-            );
+            -- diversity_potential 已废弃（数据统一存入 ledger_kv），不再创建
             CREATE TABLE IF NOT EXISTS ledger_kv (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 region VARCHAR(50) NOT NULL,
@@ -161,14 +143,7 @@ class SchemaMixin:
                 updated_at TEXT,
                 UNIQUE(region, wave, dataset)
             );
-            CREATE TABLE IF NOT EXISTS workflow_configs (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                config_key VARCHAR(200) NOT NULL UNIQUE,
-                config_value JSON NOT NULL,
-                description TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            -- workflow_configs 已废弃（0 行，功能被 ledger_kv 替代），不再创建
             CREATE TABLE IF NOT EXISTS submission_ledger (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 alpha_id VARCHAR(50) NOT NULL,
@@ -176,7 +151,7 @@ class SchemaMixin:
                 submission_type VARCHAR(20),
                 status VARCHAR(20),
                 quota_used INTEGER DEFAULT 0,
-                quota_remaining INTEGER,
+                -- quota_remaining 已废弃（从未写入），不再创建
                 verdict JSON,
                 submitted_at TIMESTAMP,
                 verified_at TIMESTAMP,
@@ -246,15 +221,7 @@ class SchemaMixin:
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE(region, layer, entry_id)
             );
-            CREATE TABLE IF NOT EXISTS cross_region_lessons (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                lesson_id VARCHAR(100) NOT NULL UNIQUE,
-                family VARCHAR(200),
-                finding TEXT,
-                rule TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            -- cross_region_lessons 已废弃（数据迁移至 registry_empirical layer='cross_region'），不再创建
             CREATE TABLE IF NOT EXISTS campaign_state (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 region_id INTEGER NOT NULL,
@@ -285,10 +252,36 @@ class SchemaMixin:
             self._add_column("backtest_results", col, ddl)
         self._add_column("datasets", "data_type", "TEXT")
         self._add_column("datasets", "catalog_json", "TEXT")
-        self._add_column("diversity_potential", "payload_json", "TEXT")
+        # 索引：覆盖高频查询路径
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_expr_region_wave "
             "ON expressions(region, wave)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_backtest_results_alpha_id "
+            "ON backtest_results(alpha_id)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_backtest_results_region_wave "
+            "ON backtest_results(region, wave)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_submission_ledger_alpha_id "
+            "ON submission_ledger(alpha_id)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_wave_results_region "
+            "ON wave_results(region)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_alphas_platform_status "
+            "ON alphas(platform_status)"
+        )
+        # backtest_results 幂等：alpha_id 唯一约束（消除重复 INSERT）
+        # 注意：SQLite ON CONFLICT 需要非 partial UNIQUE INDEX
+        self.connection.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_backtest_results_alpha_unique "
+            "ON backtest_results(alpha_id)"
         )
         self.connection.commit()
 

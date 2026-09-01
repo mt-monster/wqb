@@ -1,2 +1,0 @@
-===== risk60 =====
-`rsk60_crowding` [cov=0.61, freq=daily, shape=spread]

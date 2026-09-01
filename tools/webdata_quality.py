@@ -371,6 +371,32 @@ def check_expr_against_inspect(expr, field_inspect_result):
                 f'分布形状={meta["distribution_shape"]}（稀疏事件）但未用 trade_when 门控 → 有效信息被稀释'
             )
 
+    # 硬性检查 6（P2-1 扩展，2026-08-31）: 窗口算子按字段 frequency 自动匹配
+    # 避免"月度数据用 5 天窗口"的错配（窗口应覆盖 ~1 年/2 年/4 年数据点）。
+    # P2-E 从仅 ts_backfill 扩展到全部窗口算子（ts_delta/ts_returns/ts_zscore/…）。
+    _FREQ_MIN_WINDOW = {'daily': 22, 'weekly': 52, 'monthly': 120, 'quarterly': 252}
+    _WINDOW_OPS = (
+        'ts_delta', 'ts_returns', 'ts_zscore', 'ts_decay_linear', 'ts_std_dev',
+        'ts_mean', 'ts_rank', 'ts_av_diff', 'ts_diff', 'ts_regression',
+        'ts_ir', 'ts_percentile', 'ts_skewness', 'ts_kurtosis', 'ts_max',
+        'ts_min', 'ts_arg_max', 'ts_arg_min', 'ts_product', 'ts_sum',
+        'ts_median', 'ts_corr', 'ts_covariance', 'ts_backfill',
+    )
+    freq = (meta.get('frequency') or '').lower()
+    if freq in _FREQ_MIN_WINDOW:
+        import re as _re
+        min_win = _FREQ_MIN_WINDOW[freq]
+        for _op in _WINDOW_OPS:
+            # 窗口 = 第一参数后的第一个数字参数（ts_xxx(field, N[, ...])）
+            for _m in _re.finditer(rf'{_op}\s*\([^,]+,\s*(\d+)', expr):
+                _w = int(_m.group(1))
+                if _w < min_win:
+                    violations.append(
+                        f'{_op} 窗口错配：{freq} 字段用 {_w} 天窗口 < 建议最小 {min_win} '
+                        f'（daily≥22/weekly≥52/monthly≥120/quarterly≥252，短窗只采样噪声）'
+                    )
+                    break  # 每算子只报一次
+
     return {'ok': len(violations) == 0, 'violations': violations}
 
 

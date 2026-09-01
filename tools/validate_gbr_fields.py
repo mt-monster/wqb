@@ -10,6 +10,10 @@ import sys
 from pathlib import Path
 from typing import List, Dict, Set
 
+# Windows 终端 GBK 兜底：强制 stdout/stderr 走 UTF-8
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 # 添加 MCP 目录到路径
 MCP_DIR = Path(__file__).parent.parent / "world-quant-brain-mcp"
 sys.path.insert(0, str(MCP_DIR))

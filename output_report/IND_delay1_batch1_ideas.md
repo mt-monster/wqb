@@ -1,5 +1,10 @@
 # IND / D1 / TOP500 — S1 字段理解与特征工程报告（批次 1）
 
+**Dataset**: behavioral_signals
+**Region**: IND
+**Delay**: 1
+
+
 **生成时间**: 2026-08-23 | **区域设置**: EQUITY / IND / TOP500 / delay=1
 **用户约束**: 每条表达式只用 1-2 个字段；禁 `trade_when` / `add` / `multiply`；
 prod_corr≥0.7 不提交；不同数据集策略间相关性 < 0.4。

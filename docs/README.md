@@ -1,7 +1,7 @@
 # WQB 知识库索引
 
 > 本目录是 WorldQuant BRAIN Alpha 挖掘项目的结构化知识库。
-> 最后整理：2026-08-09。维护规则：新增文档归入对应子目录，并更新本索引。
+> 最后整理：2026-08-31。维护规则：新增文档归入对应子目录，并更新本索引。
 
 ---
 
@@ -16,6 +16,7 @@ docs/
 │   └── region_template_kb.md                区域/模板知识库使用协议（内容在 DB ledger_kv）
 ├── reference/                             ← 参考速查类
 │   ├── operators_notes.md                   WQ BRAIN 全算子速查表（87条）
+│   ├── community_tpl_library_sequel.md      社区模板库续集手册（141 TPL + 幽灵算子映射表）
 │   ├── feature_engineering_sop.md           标准化特征工程流程 SOP（六阶段）
 │   └── feature_engineering_template.md      特征工程文档模板（波级六节式）
 ├── architecture/                          ← 架构与结构类
@@ -80,6 +81,11 @@ docs/
 - 幽灵算子清单（平台上不存在）：ts_entropy/ts_percentage/ts_skewness/ts_median 等 17 个
 
 **适用场景**：表达式编写时查算子签名、确认算子可用性、规划算子探索率。
+
+#### 3a. 社区模板库续集手册 `reference/community_tpl_library_sequel.md`
+**定位**：《Alpha模板手册·社区模板库篇（续集）》（用户上传 alpha模板.docx）的人读全文参考卡，机器可读候选层在 `KB/community_tpl_kb`（141 TPL/19 大类，2026-08-31 合并续集增量）。
+**内容**：17+2 个部分的模板骨架与参数速查表、**幽灵算子→已验证等价映射表**（§十八，入批前必查）、附加模板（IND 情感/速度加速度差分）、模板群动态管理方法论、与挖掘流程的集成点速查。
+**适用场景**：Mode B B1 / ra-pipeline 步 5 补骨架时查候选模板；含幽灵算子骨架替换等价算子后再入批。
 
 #### 3b. 特征工程流程与模板 `reference/feature_engineering_sop.md` + `reference/feature_engineering_template.md`
 **定位**：每波挖掘的特征工程执行规范（字段理解→筛选→预处理决策→表达式生成→质量预估→候选池优化六阶段）+ 波级文档模板。

@@ -147,20 +147,42 @@ def build_import_index(root):
     return index
 
 
-def is_reexported(rel, name, index):
-    """rel 文件的模块是否被其他文件 import 了 name（即 rel 在重导出 name）。
+def module_keys(rel):
+    """返回文件可能对应的所有模块名（全路径 + 各级后缀）。
 
-    同时匹配两种模块名：全路径 canon（src.wqb.config）与裸文件名（config）——
-    后者覆盖"以包目录为 cwd 运行"的隐式相对导入（如 world-quant-brain-mcp 内部
-    `from mcp_core import ...`）。
+    必须做**后缀全展开**而非只取 canon/base：
+      - src/ 布局下 src/wqb/expression/validator.py 的实际模块名是
+        `wqb.expression.validator`（src 是源根，不是包的一部分），只按仓库根算
+        canon 会得到 `src.wqb.expression.validator`，与消费者 `from wqb.expression
+        .validator import ...` 的 module 对不上 → re-export 校验失效。
+        曾因此把 validator.py 的 SHAPE_CLASSES 误判为可删（2026-09-01 复现）。
+      - 裸文件名覆盖"以包目录为 cwd 运行"的隐式导入（world-quant-brain-mcp 内部
+        `from mcp_core import ...`）。
+    后缀匹配偏保守（宁可不删也不错删），与原 base 匹配同向。
     """
     canon = rel[:-3].replace("\\", "/").replace("/", ".")
-    base = os.path.basename(rel)[:-3]
-    for key in (canon, base):
+    parts = canon.split(".")
+    return [".".join(parts[i:]) for i in range(len(parts))]
+
+
+def is_reexported(rel, name, index):
+    """rel 文件的模块是否被其他文件 import 了 name（即 rel 在重导出 name）。"""
+    for key in module_keys(rel):
         consumers = index.get(key, {}).get(name, set())
         if any(c != rel for c in consumers):
             return True
     return False
+
+
+# 结构性保护文件：这些文件的 import 即使静态分析"未使用"也不可删。
+#   - 门面重导出：对外 API 通过它暴露（brain_api.py）
+#   - 副作用注册：import 只为触发 MCP 工具注册（main.py 的 tools_*）
+#   - 整文件粘贴型：第三方/生成代码，改动需人工（labs_data_analysis_agent.py）
+DEFAULT_PROTECTED = {
+    "world-quant-brain-mcp/brain_api.py",
+    "world-quant-brain-mcp/main.py",
+    "world-quant-brain-mcp/labs_data_analysis_agent.py",
+}
 
 
 def rebuild_import_stmt(node, drop_names):
@@ -232,9 +254,11 @@ def main():
 
     dry_run = not args.apply
     candidates = collect_candidates(args.report, args.path, args.include_tests)
-    excludes = set(args.exclude)
-    if excludes:
-        candidates = [(rel, items) for rel, items in candidates if rel not in excludes]
+    excludes = set(args.exclude) | DEFAULT_PROTECTED
+    protected_hit = sorted(DEFAULT_PROTECTED & {rel for rel, _ in candidates})
+    candidates = [(rel, items) for rel, items in candidates if rel not in excludes]
+    if protected_hit:
+        print(f"[保护] 结构性保护文件已跳过（不可清理）: {', '.join(protected_hit)}")
     index = build_import_index(args.root)
 
     plan = []          # (rel, name, module, line, skip_reason)

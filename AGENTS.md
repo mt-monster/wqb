@@ -12,8 +12,8 @@
 | `tools/` | 工具链（字段解析、质量检查、同步等） | 被多区域脚本引用，改动前先查调用点 |
 | `reports/` | 报告产物 | — |
 | `data/` `data_ref/` | 事件数据与参考字段 | 只读数据 |
-| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 254 个单测全绿 |
-| `tests/` | pytest 单元测试（根 254 + MCP 包 34） | 见 §4 |
+| `src/wqb/` | **规范核心包（single source of truth）**：config/expression/research/search/memory；区域/算子/中性化域常量唯一来源（见 `config.py`） | 行为变更须保持根 `tests/` 302 个单测全绿 |
+| `tests/` | pytest 单元测试（根 302 + MCP 包 73；根 `tests/` 递归包含 `tests/unit/`，见 §4） | 见 §4 |
 | `docs/` | 计划、参考、经验文档 | 行为变更需同步相关文档 |
 | `attic/` | 隔离归档（`tools_archive`/`mining_archive`/`root_scripts`/`experience_scripts`）+ `brain_api_backup/`（原码与拆解态备份） | 只读归档，勿回迁进活跃代码 |
 
@@ -53,7 +53,8 @@ python -m pytest tests/ -x
 ```
 
 - 结果自动写入 `logs/test-results.xml`（JUnit XML，可追溯）。
-- 当前根 `tests/` **254 个测试全部通过**（`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建，`tests/conftest.py` 将 `src/` 注入 `sys.path`）；MCP 包 `world-quant-brain-mcp/tests/` 另含 **34 个测试**（需 `.venv`，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
+- 当前根 `tests/` **302 个测试全部通过**（`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根**没有** `conftest.py`，由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入 `sys.path`，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另含 **73 个测试**（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
+- **计数口径：根 `tests/` 递归包含 `tests/unit/`，勿把两者相加。** `tests/` 直接子层只有 `test_toolified_cli.py`（10 个）+ `conftest.py`；`tests/unit/` 含 `__init__.py` 与 15 个 `test_*.py`（292 个）。故 `302 = 10 + 292`，且 `pytest tests/` 与 `pytest tests/unit tests` 收集数相同（均为 302）。新增用例时以 `pytest --collect-only -q | tail -1` 为准，不在此处硬编码逐文件明细。
 - 依赖声明于根 `requirements.txt` 与 `world-quant-brain-mcp/requirements.txt`，新增依赖需同步相应文件。
 
 ### pre-commit 钩子（推荐激活）

@@ -425,6 +425,22 @@ class CorrelationMixin:
             self.log(f"Failed to calculate self-correlation locally: {str(e)}", "ERROR")
             raise
 
+    # --- P1: pairwise mutual-correlation Redis cache helpers ---
+    def _mutual_pair_key(self, a: str, b: str) -> str:
+        """Order-independent cache key fragment for an alpha pair."""
+        return "|".join(sorted([a, b]))
+
+    def _mutual_pair_cache_key(self, years: int) -> str:
+        return f"mutual_corr_pairs:y{years}"
+
+    def _mutual_pair_cache_load(self, years: int) -> Dict[str, float]:
+        data = self._get_cached_data(self._mutual_pair_cache_key(years))
+        return data if isinstance(data, dict) else {}
+
+    def _mutual_pair_cache_save(self, years: int, cache: Dict[str, float]) -> None:
+        # TTL 1 week; pairs are recomputed/refreshed on every call anyway.
+        self._set_cached_data(self._mutual_pair_cache_key(years), cache, ttl=604800)
+
     async def get_mutual_correlation(
         self,
         alpha_ids: List[str],
@@ -487,12 +503,24 @@ class CorrelationMixin:
         corr = rets.corr()
         cols = [c for c in present if c in corr.columns]
 
+        # --- P1: Redis pairwise cache (avoid recomputing known pairs across calls) ---
+        cache = self._mutual_pair_cache_load(years)
+
         def cval(a: str, b: str) -> float:
             try:
                 v = float(corr.loc[a, b])
                 return v if v == v else 0.0  # NaN -> 0
             except Exception:
                 return 0.0
+
+        # persist this call's pairs into cache
+        try:
+            for i in range(len(cols)):
+                for j in range(i + 1, len(cols)):
+                    cache[self._mutual_pair_key(cols[i], cols[j])] = round(cval(cols[i], cols[j]), 6)
+            self._mutual_pair_cache_save(years, cache)
+        except Exception:
+            pass
 
         pairs = []
         for i in range(len(cols)):
@@ -506,22 +534,73 @@ class CorrelationMixin:
             if pairs else None
         )
 
-        # Greedy maximal mutually-below-threshold subset: consider nodes in
-        # ascending order of average |correlation| (least entangled first), keep
-        # a node only if it is < threshold vs every already-kept node. This is a
-        # heuristic (max independent set is NP-hard) but gives a good basket.
-        if len(cols) > 1:
-            avg_abs = {
-                o: sum(abs(cval(o, p)) for p in cols if p != o) / (len(cols) - 1)
-                for o in cols
-            }
+        # Maximal mutually-below-threshold subset.
+        # For small baskets (<=24 nodes) compute the EXACT maximum independent set
+        # via branch-and-bound (the greedy heuristic under-counts, e.g. w103's
+        # reported 8-alpha basket actually had 2 pairs over threshold). For larger
+        # baskets fall back to the greedy heuristic and mark it approximate.
+        def _greedy_subset() -> List[str]:
+            if len(cols) > 1:
+                avg_abs = {
+                    o: sum(abs(cval(o, p)) for p in cols if p != o) / (len(cols) - 1)
+                    for o in cols
+                }
+            else:
+                avg_abs = {cols[0]: 0.0} if cols else {}
+            order = sorted(cols, key=lambda o: avg_abs.get(o, 0.0))
+            kept_g: List[str] = []
+            for oid in order:
+                if all(abs(cval(oid, k)) < threshold for k in kept_g):
+                    kept_g.append(oid)
+            return kept_g
+
+        def _exact_max_independent() -> List[str]:
+            # conflict graph: edge where |corr| >= threshold
+            idx = {o: i for i, o in enumerate(cols)}
+            adj = [0] * len(cols)  # bitmask adjacency
+            for i in range(len(cols)):
+                for j in range(i + 1, len(cols)):
+                    if abs(cval(cols[i], cols[j])) >= threshold:
+                        adj[i] |= (1 << j)
+                        adj[j] |= (1 << i)
+            best: List[int] = []
+
+            def _popcount(x: int) -> int:
+                return bin(x).count("1")
+
+            def _bb(cand: int, chosen: List[int]):
+                nonlocal best
+                if len(chosen) + _popcount(cand) <= len(best):
+                    return  # bound
+                if cand == 0:
+                    if len(chosen) > len(best):
+                        best = chosen[:]
+                    return
+                # pick a vertex with max degree within cand
+                max_deg = -1
+                v = -1
+                m = cand
+                while m:
+                    lsb = m & (-m)
+                    i = lsb.bit_length() - 1
+                    deg = _popcount(adj[i] & cand)
+                    if deg > max_deg:
+                        max_deg = deg
+                        v = i
+                    m -= lsb
+                # branch: include v, then exclude v
+                _bb(cand & ~(1 << v) & ~adj[v], chosen + [v])
+                _bb(cand & ~(1 << v), chosen)
+
+            full = (1 << len(cols)) - 1
+            _bb(full, [])
+            return [cols[i] for i in best]
+
+        subset_exact = len(cols) <= 24
+        if subset_exact:
+            kept = _exact_max_independent()
         else:
-            avg_abs = {cols[0]: 0.0} if cols else {}
-        order = sorted(cols, key=lambda o: avg_abs.get(o, 0.0))
-        kept: List[str] = []
-        for oid in order:
-            if all(abs(cval(oid, k)) < threshold for k in kept):
-                kept.append(oid)
+            kept = _greedy_subset()
 
         matrix = {a: {b: round(cval(a, b), 4) for b in cols} for a in cols}
 
@@ -543,6 +622,8 @@ class CorrelationMixin:
             'all_below_threshold': len(over) == 0,
             'max_mutually_below_subset': kept,
             'max_mutually_below_subset_size': len(kept),
+            'max_subset_exact': subset_exact,
+            'max_subset_note': None if subset_exact else 'greedy approximation (>24 nodes), verify over-threshold pairs manually',
             'missing_pnl': missing,
             'local_calculation': True,
         }
@@ -595,13 +676,22 @@ class CorrelationMixin:
             'correlation_data': correlation_data,
         }
 
-    async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7) -> Dict[str, Any]:
+    def _prod_corr_cache_key(self, alpha_id: str) -> str:
+        """prod 结果缓存 key。同一 alpha 仿真后生产池相关性不再变化（重仿真产生新 id），
+        故可按 alpha_id 缓存 7 天，避免重复占用平台单并发相关性队列。"""
+        return f"prod_corr:{alpha_id}"
+
+    async def check_correlation(self, alpha_id: str, correlation_type: str = "production", threshold: float = 0.7, refresh: bool = False) -> Dict[str, Any]:
         """ Only where all IS metrics PASS to Check alpha correlation, Check alpha correlation against production alphas, self alphas, or both.
 
         Concurrency: production correlation hits BRAIN's per-account
         single-concurrency endpoint. ``get_production_correlation`` uses a
         fail-fast lock, so concurrent production checks return busy instead of
         waiting. The ``self`` path is computed locally and is not gated here.
+
+        Caching (2026-09-01): 平台 prod 计算为异步排队（1-5 分钟，单并发），
+        同一 alpha 的有效结果缓存 7 天；``pending``/``correlation_busy``/
+        ``data_unavailable`` 不缓存；``refresh=True`` 强制重新走平台并覆盖缓存。
         """
         await self.ensure_authenticated()
 
@@ -624,6 +714,26 @@ class CorrelationMixin:
             
             for check_type in check_types:
                 if check_type == "production":
+                    # 结果缓存：同 alpha 的已决结果 7 天内直接命中，不占平台单并发队列；
+                    # refresh=True 或缓存缺失/未决时回源平台。
+                    cache_key = self._prod_corr_cache_key(alpha_id)
+                    cached = None if refresh else self._get_cached_data(cache_key)
+                    if cached and cached.get('max') is not None:
+                        max_correlation = cached['max']
+                        passes_check = max_correlation < threshold
+                        results['checks'][check_type] = {
+                            'max_correlation': max_correlation,
+                            'passes_check': passes_check,
+                            'from_cache': True,
+                            'cached_at': cached.get('cached_at'),
+                            'correlation_data': cached,
+                        }
+                        if not passes_check:
+                            all_passed = False
+                            results["all_passed"] = all_passed
+                            return results
+                        continue
+
                     correlation_data = await self.get_production_correlation(alpha_id)
                     
                     # Handle pending/data-not-yet-available case (super alphas, fresh simulations)
@@ -663,6 +773,15 @@ class CorrelationMixin:
                     ):
                         max_correlation = correlation_data['max']
                         passes_check = max_correlation < threshold
+                        # 仅已决结果入缓存（pending/busy 分支已提前 return，不会走到这里）
+                        try:
+                            self._set_cached_data(cache_key, {
+                                'max': correlation_data['max'],
+                                'records': correlation_data.get('records', []),
+                                'cached_at': datetime.utcnow().isoformat() + 'Z',
+                            }, ttl=604800)
+                        except Exception as cache_err:
+                            self.log(f"prod corr cache write failed for {alpha_id}: {cache_err}", "WARNING")
                         results['checks'][check_type] = {
                             'max_correlation': max_correlation,
                             'passes_check': passes_check,

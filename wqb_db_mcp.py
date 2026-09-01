@@ -20,6 +20,7 @@
 """
 import json
 import logging
+import re
 import sqlite3
 import sys
 from pathlib import Path
@@ -244,15 +245,36 @@ def get_campaigns(region: Optional[str] = None, status: Optional[str] = None) ->
 def get_cross_region_lessons() -> List[Dict[str, Any]]:
     """获取跨区域铁律（GLB emotion 死路 / anl15 封禁 / 非法 universe 档）。
 
+    数据来源：registry_empirical (layer='cross_region')。
+
     Returns:
         跨区教训列表
     """
     conn = _conn()
     c = conn.cursor()
-    c.execute("SELECT * FROM cross_region_lessons ORDER BY lesson_id")
-    rows = _rows_to_dicts(c.fetchall())
+    c.execute(
+        "SELECT entry_id as lesson_id, family, payload FROM registry_empirical "
+        "WHERE layer='cross_region' ORDER BY entry_id"
+    )
+    results = []
+    for row in c.fetchall():
+        d = _rows_to_dicts([row])[0]
+        payload = d.get("payload")
+        if isinstance(payload, str):
+            import json as _json
+            try:
+                payload = _json.loads(payload)
+            except Exception:
+                payload = {}
+        lesson = {
+            "lesson_id": d.get("lesson_id"),
+            "family": d.get("family"),
+            "finding": payload.get("finding", "") if isinstance(payload, dict) else "",
+            "rule": payload.get("rule", "") if isinstance(payload, dict) else "",
+        }
+        results.append(lesson)
     conn.close()
-    return rows
+    return results
 
 
 # ---------------- ledger 查询 ----------------
@@ -831,9 +853,98 @@ def harvest_multisim_results(
                 rows.append(row)
             upserted = store.upsert_backtest_rows(region, str(wave), rows)
 
-        return {"linked": linked, "upserted": upserted, "region": region, "wave": str(wave)}
+        # --- P2: cascade auto-write wave_results (avoid end-of-campaign backfill) ---
+        wave_result_action = None
+        if auto_upsert and alpha_list:
+            try:
+                wave_result_action = _cascade_wave_result(region, str(wave), alpha_list)
+            except Exception as e:
+                wave_result_action = f"skipped: {e}"
+
+        return {
+            "linked": linked,
+            "upserted": upserted,
+            "region": region,
+            "wave": str(wave),
+            "wave_result": wave_result_action,
+        }
     finally:
         store.close()
+
+
+def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
+    """收批后自动汇总写 wave_results（幂等）。
+
+    从 alpha 列表派生 candidates 与简要 verdict，只在能解析出 wave 数字时写入。
+    不覆盖人工已写的 focus/context/key_findings——仅填 candidates/verdict。
+    """
+    m = re.search(r"(\d+)", str(wave))
+    if not m:
+        return "skipped: wave has no numeric part"
+    wave_number = int(m.group(1))
+
+    # 汇总候选指标
+    cands = []
+    passed = 0
+    sharpes = []
+    for a in alpha_list:
+        aid = a.get("alpha_id")
+        if not aid:
+            continue
+        sh = a.get("sharpe")
+        fit = a.get("fitness")
+        ty = a.get("two_year_sharpe")
+        if isinstance(sh, (int, float)):
+            sharpes.append(sh)
+        ok = (
+            isinstance(sh, (int, float)) and sh >= 1.58
+            and isinstance(fit, (int, float)) and fit >= 1.0
+            and (ty is None or (isinstance(ty, (int, float)) and ty >= 1.58))
+        )
+        if ok:
+            passed += 1
+        cands.append({
+            "alpha_id": aid,
+            "sharpe": sh,
+            "fitness": fit,
+            "two_year_sharpe": ty,
+            "pass_hard_gate": ok,
+        })
+
+    total = len(cands)
+    best = max(sharpes) if sharpes else None
+    verdict = f"{passed}/{total} 过硬闸" + (f", 新高 {best:.2f}" if best else "")
+
+    # 读取现有记录，保留人工写的 focus/context/key_findings
+    conn = _conn()
+    c = conn.cursor()
+    c.execute("SELECT id FROM wave_results WHERE region=? AND wave_number=?", (region, wave_number))
+    exists = c.fetchone() is not None
+    conn.close()
+
+    cand_json = json.dumps(cands, ensure_ascii=False)
+    conn = _conn()
+    c = conn.cursor()
+    if exists:
+        # 只更新 candidates/verdict/updated_at，不动人工字段
+        c.execute(
+            "UPDATE wave_results SET candidates=?, verdict=?, updated_at=? WHERE region=? AND wave_number=?",
+            (cand_json, verdict, _now(), region, wave_number),
+        )
+        action = "updated"
+    else:
+        c.execute(
+            """INSERT INTO wave_results
+               (region, wave_number, focus, context, key_findings, candidates, batches,
+                verdict, status, source_file, archived, created_at, updated_at, full_payload)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (region, wave_number, None, None, None, cand_json, None, verdict,
+             "closed", None, 0, _now(), _now(), None),
+        )
+        action = "inserted"
+    conn.commit()
+    conn.close()
+    return action
 
 
 if __name__ == "__main__":

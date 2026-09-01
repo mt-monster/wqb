@@ -20,13 +20,38 @@ import subprocess
 import sys
 import time
 
-WQ_PY = r"D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe"
-TK = r"C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts"
-GEM_RUN = r"C:/Users/MENGTAO/.qoder-cn/skills/brain-makeSomeGem/scripts/headless_runner/run.py"
-GEM_CFG = r"C:/Users/MENGTAO/.qoder-cn/skills/brain-makeSomeGem/scripts/headless_runner/config.json"
-GEM_CWD = r"C:/Users/MENGTAO/.qoder-cn/skills/brain-makeSomeGem/scripts/headless_runner"
-CD = r"D:/coding/traeCN_project/wqb/tracking/USA"
-DB = r"D:/coding/traeCN_project/wqb/data/wqb.db"
+import os.path as _osp
+
+# ---- 路径自动解析（与 tools/wave_gate.py 的 WQ_TOOLKIT_DIR 模式对齐，勿硬编码）----
+_HOME = os.path.expanduser("~")
+_REPO_ROOT = _osp.dirname(_osp.dirname(_osp.dirname(_osp.abspath(__file__))))
+
+WQ_PY = os.environ.get(
+    "WQ_PY",
+    _osp.join(_REPO_ROOT, "world-quant-brain-mcp", ".venv", "Scripts", "python.exe"),
+)
+
+_TOOLKIT_CANDIDATES = [
+    os.environ.get("WQ_TOOLKIT_DIR"),
+    _osp.join(_HOME, ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts"),
+    _osp.join(_HOME, ".cursor", "skills", "wq-brain-campaign-toolkit", "scripts"),
+    _osp.join(_HOME, ".workbuddy", "skills", "wq-brain-campaign-toolkit", "scripts"),
+]
+TK = next((c for c in _TOOLKIT_CANDIDATES if c and _osp.isdir(_osp.join(c, "_lib"))), _TOOLKIT_CANDIDATES[1])
+
+_GEM_CANDIDATES = [
+    os.environ.get("WQ_GEM_DIR"),
+    _osp.join(_HOME, ".qoder-cn", "skills", "brain-makeSomeGem", "scripts", "headless_runner"),
+    _osp.join(_HOME, ".cursor", "skills", "brain-makeSomeGem", "scripts", "headless_runner"),
+    _osp.join(_HOME, ".workbuddy", "skills", "brain-makeSomeGem", "scripts", "headless_runner"),
+]
+_GEM_DIR = next((c for c in _GEM_CANDIDATES if c and _osp.isfile(_osp.join(c, "run.py"))), _GEM_CANDIDATES[1])
+GEM_RUN = _osp.join(_GEM_DIR, "run.py")
+GEM_CFG = _osp.join(_GEM_DIR, "config.json")
+GEM_CWD = _GEM_DIR
+
+CD = _osp.join(_REPO_ROOT, "tracking", "USA")
+DB = _osp.join(_REPO_ROOT, "data", "wqb.db")
 PRIORS = os.path.join(CD, "priors", "usa_priors.json")
 IDEAS_DIR = os.path.join(CD, "ideas_gen")
 CKPT = os.path.join(CD, "batch_dryrun_ckpt.json")

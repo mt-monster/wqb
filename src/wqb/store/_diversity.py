@@ -4,69 +4,28 @@ from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
-from ._common import _dumps, _loads, _now
+from ._common import _loads
 
 
 class DiversityMixin:
     """Diversity potential, ranking, checkpoint, methodology, review, idea methods."""
 
     def upsert_diversity(self, region: str, dataset: str, data: Dict[str, Any]) -> None:
-        ds_id = self._ensure_dataset(region, dataset)
-        rid = self._ensure_region(region)
-        now = _now()
-        cur = self.connection.cursor()
-        cur.execute(
-            "SELECT id FROM diversity_potential WHERE region_id=? AND dataset_id=?",
-            (rid, ds_id),
-        )
-        row = cur.fetchone()
-        payload = _dumps(data)
-        vals = (
-            data.get("diversity_score"),
-            data.get("recommended_rounds"),
-            _dumps(data.get("field_categories") or data.get("field_groups") or {}),
-            _dumps(data.get("operator_buckets") or {}),
-            _dumps(data.get("parameter_space") or {}),
-            payload,
-            now,
-        )
-        if row:
-            cur.execute(
-                """UPDATE diversity_potential SET diversity_score=?, recommended_rounds=?,
-                   field_categories=?, operator_buckets=?, parameter_space=?,
-                   payload_json=?, updated_at=? WHERE id=?""",
-                vals + (int(row[0]),),
-            )
-        else:
-            cur.execute(
-                """INSERT INTO diversity_potential
-                   (region_id, dataset_id, diversity_score, recommended_rounds,
-                    field_categories, operator_buckets, parameter_space,
-                    payload_json, created_at, updated_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                (rid, ds_id) + vals + (now,),
-            )
-        self.connection.commit()
+        """写入 diversity 分析结果。
+
+        数据统一存入 ledger_kv (key=diversity_{dataset})，
+        diversity_potential 表已废弃，不再写入。
+        """
         self.upsert_ledger(region, f"diversity_{dataset}", data)
 
     save_diversity_potential = upsert_diversity
 
     def get_diversity(self, region: str, dataset: str) -> Optional[Dict[str, Any]]:
+        """读取 diversity 分析结果（统一从 ledger_kv 获取）。"""
         cached = self.get_ledger(region, f"diversity_{dataset}")
         if isinstance(cached, dict):
             return cached
-        rid = self._ensure_region(region)
-        cur = self.connection.cursor()
-        cur.execute(
-            "SELECT d.payload_json FROM diversity_potential d "
-            "JOIN datasets s ON d.dataset_id=s.id "
-            "WHERE d.region_id=? AND s.name=?",
-            (rid, dataset),
-        )
-        row = cur.fetchone()
-        if not row:
-            return None
-        return _loads(row[0])
+        return None
 
     load_diversity_potential = get_diversity
 

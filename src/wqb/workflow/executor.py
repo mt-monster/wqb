@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 """Workflow 执行引擎.
 
-支持 dry-run、断点续跑、状态持久化到 DB。
+支持 dry-run；节点执行结果统一封装为 WorkflowResult。
+
+2026-08-31 精简：
+  - 移除伪 fallback（原 `use_fallback` 只返回 fallback_cli 字符串、从不真正执行，
+    且 fallback_cli 指向的 scripts/batch_simulator.py 等路径均不存在）——节点内部
+    已各自返回详细错误，fallback 属死代码。
+  - 移除 save_checkpoint/load_checkpoint（无调用方，且与节点内 upsert_ledger 重复）。
 """
+from __future__ import annotations
 
 import json
 import logging
@@ -27,7 +34,6 @@ class WorkflowResult:
     duration_sec: float = 0.0
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
     dry_run: bool = False
-    fallback_used: bool = False
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -40,7 +46,6 @@ class WorkflowResult:
             "duration_sec": self.duration_sec,
             "timestamp": self.timestamp,
             "dry_run": self.dry_run,
-            "fallback_used": self.fallback_used,
             "metadata": self.metadata,
         }
 
@@ -69,15 +74,13 @@ class WorkflowExecutor:
         node_name: str,
         params: Dict[str, Any],
         dry_run: bool = False,
-        use_fallback: bool = False,
     ) -> WorkflowResult:
         """执行 workflow 节点.
 
         Args:
             node_name: 节点名称
             params: 参数字典
-            dry_run: 是否干跑（不执行实际写操作）
-            use_fallback: 是否使用 fallback CLI
+            dry_run: 是否干跑（不执行实际写操作，仅验证参数与流程）
 
         Returns:
             WorkflowResult
@@ -108,18 +111,19 @@ class WorkflowExecutor:
                 duration_sec=time.time() - start_time,
             )
 
-        # 干跑模式：返回执行计划
+        # 干跑模式：返回执行计划（不调用节点函数）
         if dry_run:
             return WorkflowResult(
                 success=True,
                 node=node_name,
                 params=params,
                 output={
-                    "plan": f"Would execute {node_name} with params: {json.dumps(params, ensure_ascii=False)}",
-                    "fallback_cli": meta.fallback_cli,
+                    "plan": f"Would execute {node_name} with params: "
+                            f"{json.dumps(params, ensure_ascii=False)}",
                 },
                 duration_sec=time.time() - start_time,
                 dry_run=True,
+                metadata={"category": meta.category, "phase": meta.phase},
             )
 
         # 执行节点
@@ -144,19 +148,6 @@ class WorkflowExecutor:
 
         except Exception as e:
             logger.exception(f"Workflow node {node_name} failed")
-
-            # 尝试 fallback
-            if use_fallback and meta.fallback_cli:
-                return WorkflowResult(
-                    success=False,
-                    node=node_name,
-                    params=params,
-                    error=str(e),
-                    duration_sec=time.time() - start_time,
-                    fallback_used=True,
-                    metadata={"fallback_cli": meta.fallback_cli},
-                )
-
             return WorkflowResult(
                 success=False,
                 node=node_name,
@@ -194,23 +185,6 @@ class WorkflowExecutor:
                 break
 
         return results
-
-    def save_checkpoint(self, key: str, data: Dict[str, Any]) -> None:
-        """保存 checkpoint 到 DB."""
-        if self.store:
-            try:
-                self.store.upsert_ledger("WORKFLOW", f"ckpt_{key}", data)
-            except Exception as e:
-                logger.warning(f"Failed to save checkpoint: {e}")
-
-    def load_checkpoint(self, key: str) -> Optional[Dict[str, Any]]:
-        """从 DB 加载 checkpoint."""
-        if self.store:
-            try:
-                return self.store.get_ledger("WORKFLOW", f"ckpt_{key}")
-            except Exception as e:
-                logger.warning(f"Failed to load checkpoint: {e}")
-        return None
 
 
 # 便捷函数

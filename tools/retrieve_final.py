@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Final proper retrieval with PC check data."""
 import sys, os, json, asyncio
+
+# Windows 终端 GBK 兜底：强制 stdout/stderr 走 UTF-8
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 from pathlib import Path
 from datetime import datetime
 

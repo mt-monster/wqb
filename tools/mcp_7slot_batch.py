@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-mcp_5slot_batch.py — MCP 驱动的七槽并发回测脚本（MCP-SSE 客户端）
+mcp_7slot_batch.py — MCP 驱动的七槽并发回测脚本（MCP-SSE 客户端）
 
 提交入口边界（与 tools/submit_batch.py 互补，不合并）：
   - 本文件经 wq-brain-http MCP 调 create_multi_simulation（payload={alpha_expressions, **settings}）。

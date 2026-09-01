@@ -3,9 +3,8 @@ import os
 计算一组 alpha 的日频 PnL 两两相关系数, 用于验证"互不相关"。
 用法: python mine_corr.py id1 id2 id3 ...
 """
-import sys, json
+import sys
 import pandas as pd
-import numpy as np
 SKILL_DIR = os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts"))
 sys.path.insert(0, SKILL_DIR)
 import ace_lib

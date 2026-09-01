@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
+from .._common import infer_data_category, resolve_skill_dir, wq_py
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,7 @@ def run(
     store = ctx.get("store")
 
     if not data_category:
-        data_category = _infer_category(dataset_id)
+        data_category = infer_data_category(dataset_id)
 
     s1_key = f"s1_{dataset_id}_d{delay}"
 
@@ -81,7 +82,7 @@ def run(
             logger.warning(f"Failed to check existing S1 ledger: {e}")
 
     # Step 2: 定位 brain-data-feature-engineering skill
-    skill_root = _find_feature_engineering_skill()
+    skill_root = resolve_skill_dir("brain-data-feature-engineering")
     if not skill_root:
         result["steps"].append({
             "step": "find_skill",
@@ -165,37 +166,13 @@ def run(
 
 
 def _infer_category(dataset_id: str) -> str:
-    """从 dataset_id 推断数据类别."""
-    category_map = {
-        "analyst": "analyst",
-        "model": "model",
-        "news": "news",
-        "fundamental": "fundamental",
-        "pv": "pv",
-        "insider": "insider",
-        "option": "option",
-        "risk": "risk",
-        "other": "other",
-    }
-
-    dataset_lower = dataset_id.lower()
-    for key, value in category_map.items():
-        if key in dataset_lower:
-            return value
-
-    return "other"
+    """从 dataset_id 推断数据类别（向后兼容别名）。"""
+    return infer_data_category(dataset_id)
 
 
 def _find_feature_engineering_skill() -> Optional[str]:
-    """查找 brain-data-feature-engineering skill 根目录."""
-    for candidate in [
-        os.path.expanduser("~/.qoder-cn/skills/brain-data-feature-engineering"),
-        os.path.expanduser("~/.cursor/skills/brain-data-feature-engineering"),
-        os.path.expanduser("~/.workbuddy/skills/brain-data-feature-engineering"),
-    ]:
-        if os.path.exists(candidate):
-            return candidate
-    return None
+    """查找 brain-data-feature-engineering skill 根目录（向后兼容别名）。"""
+    return resolve_skill_dir("brain-data-feature-engineering")
 
 
 def _run_feature_engineering_pipeline(
@@ -218,8 +195,6 @@ def _run_feature_engineering_pipeline(
         "preprocessing": {},
     }
 
-    wq_py = os.environ.get("WQ_PY", "python")
-
     # 查找主脚本
     main_script = os.path.join(skill_root, "scripts", "feature_engineering.py")
     if not os.path.exists(main_script):
@@ -239,7 +214,7 @@ def _run_feature_engineering_pipeline(
 
     # 构建命令
     cmd = [
-        wq_py, main_script,
+        wq_py(), main_script,
         "--region", region,
         "--dataset", dataset_id,
         "--delay", str(delay),

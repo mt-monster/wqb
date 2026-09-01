@@ -56,9 +56,9 @@ except Exception:  # pragma: no cover - 工作区布局异常时降级
 @mcp.tool()
 
 async def create_simulation(
+    region: str,
+    universe: str,
     type: str = "REGULAR",
-    region: str = "USA",
-    universe: str = "TOP3000",
     delay: int = 1,
     decay: int = 4,
     neutralization: str = "SUBINDUSTRY",
@@ -84,8 +84,10 @@ async def create_simulation(
     if field type=VECTOR should deal with vec_ suffer vec_*(FIELD)
     Args:
         type: Simulation type ("REGULAR" or "SUPER")
-        region: Market region (e.g., "USA")
-        universe: Universe of stocks (e.g., "TOP3000")
+        region: Market region (e.g., "USA"). 必填——不设默认值，防止
+            MCP 默认值误用导致错误区域回测（与 batch_create_simulations
+            的 base_region 必填同约定）。
+        universe: Universe of stocks (e.g., "TOP3000"). 必填——不设默认值。
         delay: Data delay (0 or 1)
         decay: Decay value for the simulation
         neutralization: Neutralization method
@@ -109,9 +111,6 @@ async def create_simulation(
         # 参数确认日志：防止 MCP 默认值覆盖调用方传入的 region/universe
         logger.info(f"[create_simulation] region={region}, universe={universe}, delay={delay}, "
                     f"neutralization={neutralization}, decay={decay}, truncation={truncation}")
-        if region == "USA" and universe == "TOP3000":
-            logger.warning("[create_simulation] 使用默认 USA/TOP3000！"
-                           "如果期望其他区域，请检查 MCP 调用参数是否正确传递。")
 
         _err = _validate_region_settings(region, universe, neutralization)
         if _err:
@@ -171,9 +170,9 @@ async def create_simulation(
 
 async def create_multi_simulation(
     alpha_expressions: List[str],
+    region: str,
+    universe: str,
     instrument_type: str = "EQUITY",
-    region: str = "USA",
-    universe: str = "TOP3000",
     delay: int = 1,
     decay: int = 4,
     neutralization: str = "INDUSTRY",
@@ -202,8 +201,10 @@ async def create_multi_simulation(
     Args:
         alpha_expressions: List of alpha expressions/code strings (2-10 expressions required)
         instrument_type: Type of instruments (default: "EQUITY")
-        region: Market region (default: "USA")
-        universe: Universe of stocks (default: "TOP3000")
+        region: Market region (e.g., "USA"). 必填——不设默认值，防止
+            MCP 默认值误用导致整批在错误区域回测（2026-08-31 根治：
+            调用方传嵌套 settings 被静默丢弃后回退 USA/TOP3000 的事故）。
+        universe: Universe of stocks (e.g., "TOP3000"). 必填——不设默认值。
         delay: Data delay (default: 1)
         decay: Decay value (default: 4)
         neutralization: Neutralization method (default: "NONE")
@@ -233,9 +234,6 @@ async def create_multi_simulation(
         logger.info(f"[create_multi_simulation] region={region}, universe={universe}, delay={delay}, "
                     f"neutralization={neutralization}, decay={decay}, truncation={truncation}, "
                     f"expressions={len(alpha_expressions)}")
-        if region == "USA" and universe == "TOP3000":
-            logger.warning("[create_multi_simulation] 使用默认 USA/TOP3000！"
-                           "如果期望其他区域，请检查 MCP 调用参数是否正确传递。")
 
         _err = _validate_region_settings(region, universe, neutralization)
         if _err:

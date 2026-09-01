@@ -40,6 +40,14 @@ import sys
 import json
 import os
 
+# 可选: 数据库 verified 字段闸 (tools/lib/field_gate.py, 2026-08-31)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lib'))
+try:
+    import field_gate
+    _HAS_FIELD_GATE = True
+except Exception:
+    _HAS_FIELD_GATE = False
+
 # ---------- 算子签名: name -> (min_args, max_args) ----------
 SIGNATURES = {
     'add': (2, None), 'multiply': (2, None), 'subtract': (2, None),
@@ -358,7 +366,20 @@ def _walk(expr, errors, ctx, path='', in_vec=False):
         _walk(a, errors, ctx, loc + '>', in_vec=child_vec)
 
 
-def lint(expr, fields=None, min_cov=0.6, ds_map=None, max_ds=2):
+def _extract_field_tokens(expr):
+    """提取表达式里所有疑似字段的叶子 token（排除算子名/常量/命名参数）。"""
+    toks = set()
+    for t in re.findall(r'[a-zA-Z_][a-zA-Z0-9_]*', expr):
+        tl = t.lower()
+        if tl in SIGNATURES or tl in FORBIDDEN or tl in GROUP_FIELDS:
+            continue
+        if re.fullmatch(r'-?[0-9]+(\.[0-9]+)?', t):
+            continue
+        toks.add(t)
+    return toks
+
+
+def lint(expr, fields=None, min_cov=0.6, ds_map=None, max_ds=2, db_verify=None, db_context=None):
     errors = []
     if expr.count('(') != expr.count(')'):
         errors.append('[括号] 左右括号数量不匹配')
@@ -366,12 +387,32 @@ def lint(expr, fields=None, min_cov=0.6, ds_map=None, max_ds=2):
     _walk(expr.strip(), errors, ctx)
     if ds_map and len(ctx['used_ds']) > max_ds:
         errors.append(f'[MIX] 表达式跨 {len(ctx["used_ds"])} 个数据集: {sorted(ctx["used_ds"])} — 混合上限 {max_ds} 个 (当前口径, 保持信号可归因), 超限拦截; 若已授权放宽用 --max-datasets N')
+
+    # 数据库 verified 字段闸 (token-name 隐患拦截, 2026-08-31)
+    # db_verify = 区域名 (如 'IND'); 用 fields.verified=1 + external_fields 做本地校验
+    if db_verify and _HAS_FIELD_GATE:
+        toks = _extract_field_tokens(expr)
+        res = field_gate.check_expression_fields(toks, db_verify, db_context)
+        for f in res['unknown']:
+            errors.append(
+                f'[DB-VERIFY] 字段 "{f}" 在 {db_verify} 上下文未验证可用 '
+                f'(不在 fields.verified=1, 可能是 token-name 隐患/跨区未灌字段); '
+                f'先跑 tools/validate_fields_batch.py --region {db_verify} 或单字段探针确认')
+        for f in res['external']:
+            errors.append(
+                f'[DB-VERIFY] 字段 "{f}" 是 {db_verify} 的外部/跨区字段 (external_fields 有记录但未实测); '
+                f'先用单字段探针 rank({f}) 实测, 再把 external_fields.verified 置 1')
     return errors, sorted(ctx['used_ds'])
 
 
 def main():
     argv = sys.argv[1:]
     exprs, fields_path, scope, min_cov, max_ds = [], 'data/fields_gate', 'USA/TOP3000/D1', 0.6, 2
+    db_verify = None
+    if '--db-verify' in argv:
+        i = argv.index('--db-verify')
+        db_verify = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
     if '--file' in argv:
         i = argv.index('--file')
         with open(argv[i + 1], encoding='utf-8') as f:
@@ -407,9 +448,19 @@ def main():
     else:
         print(f'[门控] 字段白名单 {len(fields)} 个 (scope={scope}, 最低coverage={min_cov})')
 
+    # db_verify context: 由 scope 推出 (USA/TOP3000/D1 形式)
+    db_context = scope if db_verify else None
+    if db_verify:
+        if not _HAS_FIELD_GATE:
+            print('[警告] field_gate 库不可用, --db-verify 忽略')
+            db_verify = None
+        else:
+            nf = len(field_gate.load_verified_fields(db_verify, db_context))
+            print(f'[门控] DB-VERIFY 区域={db_verify} context={db_context} 已验证字段={nf} 个')
+
     bad = 0
     for i, e in enumerate(exprs, 1):
-        errs, used_ds = lint(e, fields, min_cov, ds_map, max_ds)
+        errs, used_ds = lint(e, fields, min_cov, ds_map, max_ds, db_verify, db_context)
         mix = f' [MIX {len(used_ds)}数据集:{"+".join(used_ds)}]' if len(used_ds) >= 2 else ''
         if errs:
             bad += 1

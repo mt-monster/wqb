@@ -20,7 +20,6 @@ class NodeMeta:
     phase: int  # 1-4，对应实施 Phase
     required_params: List[str] = field(default_factory=list)
     optional_params: List[str] = field(default_factory=list)
-    fallback_cli: Optional[str] = None  # 兼容的 CLI 命令模板
 
 
 class WorkflowRegistry:
@@ -96,12 +95,11 @@ class WorkflowRegistry:
                 batch_track.run,
                 NodeMeta(
                     name="batch_track",
-                    description="S3 批量回测与跟踪（替代 brain-simAlphasinBatch-and-track）",
+                    description="S3 批量回测与跟踪（等价包装 brain-simAlphasinBatch-and-track；并发纪律见 wqb-concurrency §8）",
                     category="batch",
                     phase=1,
                     required_params=["region", "wave", "dataset"],
                     optional_params=["concurrency", "max_rounds", "dry_run", "output_csv"],
-                    fallback_cli="python scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json --output-csv outputs/simulation_status.csv"
                 )
             )
         except ImportError as e:
@@ -114,12 +112,11 @@ class WorkflowRegistry:
                 submit_alpha.run,
                 NodeMeta(
                     name="submit_alpha",
-                    description="提交路由与状态确认（替代 worldquant-submit-alpha）",
+                    description="提交路由与状态确认（等价包装 worldquant-submit-alpha；403 盲区判定权威 = tools/submit_verdict.py）",
                     category="submit",
                     phase=1,
                     required_params=["alpha_id"],
-                    optional_params=["name", "color", "tags", "descriptions", "force", "verify_timeout"],
-                    fallback_cli="python tools/submit_verdict.py --alpha-id <ALPHA_ID> --with-quota"
+                    optional_params=["name", "color", "tags", "descriptions", "force", "confirm_submit", "verify_timeout"],
                 )
             )
         except ImportError as e:
@@ -133,12 +130,11 @@ class WorkflowRegistry:
                 superalpha.run,
                 NodeMeta(
                     name="superalpha",
-                    description="SuperAlpha 构建与提交（替代 wq-brain-superalpha）",
+                    description="SuperAlpha 构建与提交（等价包装 wq-brain-superalpha）",
                     category="superalpha",
                     phase=2,
                     required_params=["region", "components"],
-                    optional_params=["selection", "combo", "neutralization", "dry_run"],
-                    fallback_cli="python tools/super_build.py select|status|probe|submit ..."
+                    optional_params=["selection", "combo", "neutralization", "confirm_submit", "dry_run"],
                 )
             )
         except ImportError as e:
@@ -151,12 +147,11 @@ class WorkflowRegistry:
                 judge.run,
                 NodeMeta(
                     name="judge",
-                    description="Alpha 六步闸门判定（替代 brain-alpha-judge CLI）",
+                    description="Alpha 六步闸门判定（等价包装 brain-alpha-judge 评审参考，非提交判定权威；提交判定走 tools/submit_verdict.py）",
                     category="judge",
                     phase=2,
                     required_params=["alpha_id"],
                     optional_params=["trend_window_days", "llm_enabled", "confirm_submit"],
-                    fallback_cli="python scripts/judge_alpha.py --alpha-id <alpha_id>"
                 )
             )
         except ImportError as e:
@@ -170,12 +165,11 @@ class WorkflowRegistry:
                 gem.run,
                 NodeMeta(
                     name="gem",
-                    description="GEM 表达式生成（替代 brain-makeSomeGem headless_runner）",
+                    description="GEM 表达式生成（等价包装 brain-makeSomeGem headless_runner）",
                     category="gem",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
                     optional_params=["data_category", "instrument_type", "data_type", "priors_file", "detached"],
-                    fallback_cli="python run.py --config config.json --data-category <CATEGORY> --region <REGION> ..."
                 )
             )
         except ImportError as e:
@@ -193,7 +187,6 @@ class WorkflowRegistry:
                     phase=4,
                     required_params=["region", "stage"],
                     optional_params=["dataset", "wave", "subcommand", "extra_args"],
-                    fallback_cli="python <script>.py --campaign-dir tracking/<REGION> ..."
                 )
             )
         except ImportError as e:
@@ -206,12 +199,11 @@ class WorkflowRegistry:
                 feature_engineering.run,
                 NodeMeta(
                     name="feature_engineering",
-                    description="S1-S3 特征工程流程（字段理解→筛选→预处理决策）",
+                    description="S1-S3 特征工程流程（字段理解→筛选→预处理决策）[实验性节点，未接 MCP 暴露，勿依赖]",
                     category="feature_engineering",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
                     optional_params=["data_category", "force_regen"],
-                    fallback_cli="python scripts/feature_engineering.py --region <R> --dataset <DS> ..."
                 )
             )
         except ImportError as e:

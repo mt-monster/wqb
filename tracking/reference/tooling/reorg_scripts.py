@@ -4,7 +4,7 @@
 Reads tracking/_move_map.json (old_rel -> new_rel).
 Run with `plan` arg for dry-run diff preview.
 """
-import os, sys, json, glob
+import os, sys, json
 
 BASE = r"D:\coding\traeCN_project\wqb\tracking"
 WS = r"D:\coding\traeCN_project\wqb"

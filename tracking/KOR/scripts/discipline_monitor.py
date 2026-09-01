@@ -15,7 +15,7 @@
   python discipline_monitor.py record --wave 17A --batch-id <id> --exprs 8 --complete 8 --candidates 2
   python discipline_monitor.py report --waves 10
 """
-import argparse, collections, datetime, glob, json, os, re, sys
+import argparse, collections, datetime, glob, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

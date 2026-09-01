@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Generate tracking/MANIFEST.json (full index + logical unified names),
 zip large files into archive/large/ (cold backup), remove temp files."""
-import os, json, re, zipfile, shutil
+import os, json, re, zipfile
 
 BASE = r"D:\coding\traeCN_project\wqb\tracking"
 

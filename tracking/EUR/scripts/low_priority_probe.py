@@ -18,9 +18,7 @@ low_priority_probe.py - 通用低优先级探针生成器
 import argparse
 import json
 import os
-import sys
 from datetime import datetime
-from pathlib import Path
 
 # 结构重构三轨模板
 STRUCTURAL_VARIANTS = {

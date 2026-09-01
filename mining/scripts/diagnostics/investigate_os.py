@@ -1,6 +1,6 @@
 import os
 """Find all OS/submitted alphas in account + inspect 6XpMb0aG (the collision target)."""
-import sys, json
+import sys
 sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
 from ace_lib import start_session, get_simulation_result_json
 

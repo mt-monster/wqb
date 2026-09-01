@@ -7,7 +7,7 @@
   - 单条 simulation：status/alpha_id/error + 关键指标（sharpe/fitness/turnover，若可得）
 
 --watch 模式下按 interval 轮询直到全部 terminal 或超时（默认 60min），
-适合五槽填槽模式下盯一批在飞任务。
+适合七槽填槽模式下盯一批在飞任务。
 
 用法:
   python tools/batch_status.py --ids 3D0QTR5Dv4NjbjDYx1qyD6b

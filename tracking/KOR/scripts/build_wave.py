@@ -16,7 +16,7 @@
 输出:
   candidates/kor_wave<wave>_exprs.json
 """
-import argparse, collections, datetime, glob, json, os, re, sys
+import argparse, collections, datetime, glob, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)

@@ -124,6 +124,35 @@ def _extract_two_year_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
     return None
 
 
+def _extract_is_ladder_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
+    """提取 IS_LADDER_SHARPE（提交硬闸之一，2026-08-29 新增字段）。
+
+    优先取平台 checks 里已算好的 IS_LADDER_SHARPE 值（平台口径最可靠）；
+    缺失时回退 is.ladder.sharpe 最近两年均值（与 _extract_two_year_sharpe 同源结构）。
+
+    背景：omqEEgd2 提交被此闸拦截（1.46 < 1.58）——此前 DB 无字段可存，
+    无法从库内预判，与 prod_correlation 当年同一类问题（2026-08-29 修复）。
+    """
+    for c in (is_data.get("checks") or []):
+        if isinstance(c, dict) and c.get("name") == "IS_LADDER_SHARPE":
+            v = c.get("value")
+            if v is not None:
+                try:
+                    return float(v)
+                except (TypeError, ValueError):
+                    return None
+    # fallback：ladder 年度结构最近两年均值
+    ladder = is_data.get("ladder") or {}
+    if isinstance(ladder, dict):
+        sharpe_list = ladder.get("sharpe") or []
+        if isinstance(sharpe_list, list) and len(sharpe_list) >= 2:
+            recent = sharpe_list[-2:]
+            values = [s.get("value") for s in recent if isinstance(s, dict) and s.get("value") is not None]
+            if values:
+                return sum(values) / len(values)
+    return None
+
+
 async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
     """拉取 alpha 完整指标。"""
     try:
@@ -137,13 +166,23 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
         failed_checks = [c.get("name") for c in checks if c.get("result") == "FAIL"]
         return {
             "alpha_id": alpha_id,
+            # alphas.status 用本地语义（COMPLETE/UNSUBMITTED）；平台 status 另存 platform_status
             "status": data.get("status"),
+            "platform_status": data.get("status"),
+            "stage": data.get("stage"),              # IS | OS
+            "alpha_type": data.get("type"),          # REGULAR | SUPER
+            "date_submitted": data.get("dateSubmitted"),
             "sharpe": is_.get("sharpe") or m.get("sharpe"),
             "fitness": is_.get("fitness") or m.get("fitness"),
             "turnover": is_.get("turnover") or m.get("turnover"),
             "margin": is_.get("margin") or m.get("margin"),
             "two_year_sharpe": _extract_two_year_sharpe(is_),
+            "is_ladder_sharpe": _extract_is_ladder_sharpe(is_),
             "sub_universe_sharpe": is_.get("subUniverseSharpe") or m.get("subUniverseSharpe"),
+            # 提交硬闸决策字段（PROD/SELF 相关性）。此前从未提取 → alphas 两列恒 NULL（0/952）。
+            # 平台 IS 阶段未计算时为 None，属正常。
+            "prod_correlation": is_.get("prodCorrelation"),
+            "self_correlation": is_.get("selfCorrelation"),
             "checks": checks,
             "failed_checks": failed_checks,
             "expression": data.get("regular", {}).get("code") if isinstance(data.get("regular"), dict) else None,
@@ -270,8 +309,17 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "turnover": a.get("turnover"),
             "margin": a.get("margin"),
             "two_year_sharpe": a.get("two_year_sharpe"),
+            "is_ladder_sharpe": a.get("is_ladder_sharpe"),
             "sub_universe_sharpe": a.get("sub_universe_sharpe"),
             "failed_checks": a.get("failed_checks"),
+            # 透传 PROD/SELF 相关性 → campaign.upsert_backtest_rows 写入 alphas
+            "prod_correlation": a.get("prod_correlation"),
+            "self_correlation": a.get("self_correlation"),
+            # 平台状态/类型/提交时间（审计 P0-2 新增列）
+            "platform_status": a.get("platform_status"),
+            "stage": a.get("stage"),
+            "alpha_type": a.get("alpha_type"),
+            "date_submitted": a.get("date_submitted"),
             "universe": a.get("settings", {}).get("universe"),
             "delay": a.get("settings", {}).get("delay"),
             "neut": a.get("settings", {}).get("neutralization"),

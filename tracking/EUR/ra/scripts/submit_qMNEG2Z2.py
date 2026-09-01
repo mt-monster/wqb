@@ -6,7 +6,6 @@ Flow: POST /submit (201 accepted) -> GET /submit (200 final) -> wait async
 qMNEG2Z2: rev252*0.5 + rev252*vol_rank*0.5, EUR/TOP2500/D1/STATISTICAL
 IS: S 2.30 / F 1.27 / subU 1.51 / 2Y 2.36 (全部 PASS)
 """
-import json
 import sys
 import time
 from pathlib import Path

@@ -2,7 +2,6 @@
 """GBR Wave 14 批量回测脚本 - 使用正确的 GBR 设置"""
 import requests
 import json
-import time
 import os
 from datetime import datetime
 

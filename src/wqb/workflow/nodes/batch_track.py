@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
+from .._common import resolve_campaign_dir, resolve_toolkit_dir, wq_py
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ def run(
     region: str,
     wave: str,
     dataset: str,
-    concurrency: int = 5,
+    concurrency: int = 7,
     max_rounds: int = 3,
     dry_run: bool = False,
     output_csv: Optional[str] = None,
@@ -34,7 +35,7 @@ def run(
         region: 区域代码（如 KOR）
         wave: 波次号（如 36A）
         dataset: 数据集 ID
-        concurrency: 并发数（默认 5，五槽填槽）
+        concurrency: 并发数（默认 7，七槽填槽）
         max_rounds: 最大轮次
         dry_run: 是否干跑
         output_csv: 输出 CSV 路径（默认自动生成）
@@ -54,7 +55,7 @@ def run(
 
     # 解析 campaign-dir（优先级：参数 > 环境变量 > 自动探测）
     if not campaign_dir:
-        campaign_dir = _resolve_campaign_dir(region)
+        campaign_dir = resolve_campaign_dir(region)
     
     if not campaign_dir:
         return {
@@ -113,17 +114,7 @@ def run(
         }
 
     # 实际执行：调用 toolkit pipeline.py
-    toolkit_dir = os.environ.get("WQ_TOOLKIT_DIR")
-    if not toolkit_dir:
-        # 自动探测
-        for candidate in [
-            os.path.expanduser("~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts"),
-            os.path.expanduser("~/.cursor/skills/wq-brain-campaign-toolkit/scripts"),
-            os.path.expanduser("~/.workbuddy/skills/wq-brain-campaign-toolkit/scripts"),
-        ]:
-            if os.path.exists(candidate):
-                toolkit_dir = candidate
-                break
+    toolkit_dir = resolve_toolkit_dir()
 
     if not toolkit_dir or not os.path.exists(toolkit_dir):
         return {
@@ -145,9 +136,8 @@ def run(
         }
 
     # 构建命令
-    wq_py = os.environ.get("WQ_PY", "python")
     cmd = [
-        wq_py,
+        wq_py(),
         pipeline_script,
         "--campaign-dir", campaign_dir,
         "run",
@@ -158,9 +148,6 @@ def run(
         "--write-ledger",
     ]
 
-    if dry_run:
-        cmd.append("--dry-run")
-
     logger.info(f"Executing: {' '.join(cmd)}")
 
     # 执行
@@ -170,7 +157,7 @@ def run(
             capture_output=True,
             text=True,
             timeout=3600,  # 1 小时超时
-            cwd=os.path.dirname(toolkit_dir),
+            cwd=toolkit_dir,
         )
 
         success = result.returncode == 0
@@ -218,44 +205,4 @@ def run(
         }
 
 
-def _resolve_campaign_dir(region: str) -> Optional[str]:
-    """解析战役目录路径.
-
-    优先级：
-    1. WQB_CAMPAIGN_DIR 环境变量（直接指定完整路径）
-    2. WQB_WORKSPACE_ROOT 环境变量 + tracking/<region>
-    3. 自动探测：从当前文件向上查找 tracking/<region>
-    4. 当前工作目录 + tracking/<region>
-
-    Args:
-        region: 区域代码
-
-    Returns:
-        战役目录绝对路径，找不到返回 None
-    """
-    # 1. 直接环境变量
-    campaign_dir = os.environ.get("WQB_CAMPAIGN_DIR")
-    if campaign_dir and os.path.exists(campaign_dir):
-        return os.path.abspath(campaign_dir)
-
-    # 2. WQB_WORKSPACE_ROOT + tracking/<region>
-    workspace_root = os.environ.get("WQB_WORKSPACE_ROOT")
-    if workspace_root:
-        candidate = os.path.join(workspace_root, "tracking", region)
-        if os.path.exists(candidate):
-            return os.path.abspath(candidate)
-
-    # 3. 自动探测：从当前文件向上查找
-    current_file = os.path.abspath(__file__)
-    # 从 src/wqb/workflow/nodes/batch_track.py 向上 5 层到工作区根
-    workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_file)))))
-    candidate = os.path.join(workspace_root, "tracking", region)
-    if os.path.exists(candidate):
-        return os.path.abspath(candidate)
-
-    # 4. 当前工作目录
-    candidate = os.path.join(os.getcwd(), "tracking", region)
-    if os.path.exists(candidate):
-        return os.path.abspath(candidate)
-
-    return None
+# _resolve_campaign_dir 已迁至 _common.resolve_campaign_dir（单一事实源）
