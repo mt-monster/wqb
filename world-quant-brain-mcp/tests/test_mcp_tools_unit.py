@@ -1,6 +1,6 @@
 """MCP 工具层单元测试 (venv) — 拆分不变量 / 瘦身助手 / 表达式字段校验 (无网络)。
 
-- 53 工具注册数不变量 (防拆分丢工具)
+- 63 工具注册数不变量 (防拆分丢工具)
 - 单例 identity 跨 main/mcp_core/tools_* 一致
 - 响应瘦身助手 (_truncate/_unwrap_result/_is_error/_ra_bad/_slim_alpha)
 - _extract_field_candidates 算子关键字过滤
@@ -28,10 +28,10 @@ from mcp_core import (
 # ---------------------------------------------------------------------------
 
 def test_tool_registry_count_matches_expected():
-    """工具注册总数不变量（2026-08-29 更新：53→60，因新增 tools_workflow 等模块）。"""
+    """工具注册总数不变量（2026-09-02 更新：63，新增 tools_ops 5 工具 + preflight_expressions，删除 3 冗余工具）。"""
     import main  # noqa: F401 — 副作用注册全部 tools_*
     n = len(mcp_core.mcp._tool_manager._tools)
-    assert n >= 53, f"工具数 {n} < 53，可能丢了工具（拆分回归）"
+    assert n >= 63, f"工具数 {n} < 63，可能丢了工具（拆分回归）"
 
 
 def test_brain_client_singleton_identity():
@@ -44,9 +44,9 @@ def test_brain_client_singleton_identity():
 def test_each_tool_module_registers_at_least_one_tool():
     import importlib
     expected = {
-        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 7,
-        "tools_alpha": 8, "tools_data": 10, "tools_submit": 1, "tools_corr": 3,
-        "tools_forum": 4, "tools_spc": 4,
+        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 6,
+        "tools_alpha": 8, "tools_data": 10, "tools_submit": 0, "tools_corr": 3,
+        "tools_forum": 4, "tools_spc": 4, "tools_ops": 5,
     }
     for mod, n in expected.items():
         m = importlib.import_module(mod)
@@ -131,6 +131,29 @@ def test_extract_fields_pure_operator_expression():
 def test_extract_fields_reduce_operator_filtered():
     fields = tools_data._extract_field_candidates(["rank(reduce_ir(x, 5))"])
     assert fields == ["x"]
+
+
+def test_operator_filter_prefers_verified_json():
+    """第一层：verified.json 是权威过滤表（102 实时算子），不依赖 ~/.zcode catalog。"""
+    ops = tools_data._verified_operator_names()
+    # 工作区 data/operators_verified.json 存在且非空（S-PRE 审计快照）
+    assert len(ops) >= 80, f"verified.json 算子数异常: {len(ops)}"
+    # 新算子必须在过滤表（历史误判点）
+    for op in ("ts_corr", "ts_kurtosis", "ts_av_diff", "days_from_last_change", "if_else", "bucket"):
+        assert op in ops, f"{op} 不在 verified 算子表"
+
+
+def test_extract_fields_new_operators_not_misjudged():
+    """第一层回归：新算子不被误判为字段（2026-09-02 前 catalog 缺失时会误杀）。"""
+    exprs = [
+        "rank(ts_corr(a_field, b_field, 22))",
+        "multiply(-1, rank(ts_kurtosis(ts_delta(a_field, 5), 66)))",
+        "trade_when(days_from_last_change(g_field) < 5, rank(a_field), 0)",
+        "if_else(a_field > b_field, rank(a_field), multiply(-1, rank(b_field)))",
+    ]
+    fields = tools_data._extract_field_candidates(exprs)
+    # 只有真实字段，算子全被过滤
+    assert sorted(fields) == ["a_field", "b_field", "g_field"]
 
 
 def test_extract_fields_group_dimensions_excluded():
@@ -230,10 +253,16 @@ def test_validate_expressions_lookup_error_fails_open(monkeypatch):
             raise TimeoutError("simulated lookup timeout")
 
     monkeypatch.setattr(tools_data, "brain_client", _Boom())
+    # close 是内置字段直接放行不触发查询；用非内置字段触发 lookup error 路径
     v = asyncio.run(tools_data.validate_expressions(["rank(close)"]))
     assert v["valid"] is True
     assert v["unknown_fields"] == []
-    assert "warning" in v
+    assert "close" in v.get("builtin_fields", [])
+    # 非内置字段触发平台查询，超时应 fails-open 并带 warning
+    v2 = asyncio.run(tools_data.validate_expressions(["rank(custom_field_xyz)"]))
+    assert v2["valid"] is True
+    assert v2["unknown_fields"] == []
+    assert "warning" in v2
 
 
 def test_create_multi_simulation_accepts_dataset_fields_absent_from_dump(monkeypatch):
@@ -322,3 +351,33 @@ def test_batch_create_simulations_requires_base_region(monkeypatch):
     out = asyncio.run(tools_sim.batch_create_simulations(
         items=[{"expression": "rank(close)"}]))
     assert "error" in out and stub.payloads is None
+
+
+# ---------------------------------------------------------------------------
+# validate_expressions 三层解法回归（2026-09-02）
+# ---------------------------------------------------------------------------
+
+def test_validate_expressions_unknown_soft_grading(monkeypatch):
+    """第二层：dataset 前缀字段 unknown 分级为 soft（delay/区域差异），不硬拦。"""
+    stub = _StubClient({"close"})  # oth496_returns250 不在平台
+    monkeypatch.setattr(tools_data, "brain_client", stub)
+    v = asyncio.run(tools_data.validate_expressions(
+        ["rank(ts_backfill(oth496_returns250, 10))"], region="KOR", universe="TOP600", delay=1))
+    # soft 分级：valid 仍 True（不硬拦），但 unknown_soft 标注原因
+    assert v["valid"] is True
+    assert v["unknown_fields"] == []
+    assert len(v["unknown_soft"]) == 1
+    assert v["unknown_soft"][0]["field"] == "oth496_returns250"
+    assert "delay" in v["unknown_soft"][0]["reason"]
+
+
+def test_validate_expressions_builtin_fields_skip_lookup(monkeypatch):
+    """第二层：内置字段不触发平台查询，直接放行。"""
+    stub = _StubClient(set())  # 平台无任何字段
+    monkeypatch.setattr(tools_data, "brain_client", stub)
+    v = asyncio.run(tools_data.validate_expressions(
+        ["trade_when(volume > ts_mean(volume, 20), rank(close), 0)"]))
+    assert v["valid"] is True
+    assert v["unknown_fields"] == []
+    assert set(v["builtin_fields"]) == {"volume", "close"}
+    assert not stub.calls  # 内置字段未触发任何平台查询

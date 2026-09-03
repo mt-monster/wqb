@@ -2,11 +2,17 @@
 """campaign 节点：S1-S6 战役阶段执行.
 
 包装 wq-brain-campaign-toolkit 的各阶段脚本，消除 --campaign-dir 手工传递。
+
+2026-09-03 根治：subprocess.run → Popen 异步化，避免 MCP 客户端超时。
+子进程在后台运行，结果写入临时 JSON，调用方通过 task_file 轮询。
 """
 
+import json
 import logging
 import os
 import subprocess
+import threading
+import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -24,6 +30,7 @@ def run(
     wave: Optional[str] = None,
     subcommand: Optional[str] = None,
     extra_args: Optional[List[str]] = None,
+    calibrate: bool = False,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行战役阶段.
@@ -33,8 +40,9 @@ def run(
         stage: 阶段（S0/S1/S2/S3/S4/S5/S6）
         dataset: 数据集 ID（如需要）
         wave: 波次号（如需要）
-        subcommand: 子命令（如 ledger/registry/wave）
+        subcommand: 子命令（如 ledger/registry/wave/assemble-priors/diversity-extract）
         extra_args: 额外参数列表
+        calibrate: S0 专用——是否运行 calibrate 交互审批
         _context: 执行上下文
 
     Returns:
@@ -71,6 +79,9 @@ def run(
         "campaign_dir": campaign_dir,
     })
 
+    # 自动创建 config/settings.json（缺省时从 DB ledger 推导，P0 修复）
+    _ensure_campaign_config(campaign_dir, region, result)
+
     # 定位 toolkit
     toolkit_dir = resolve_toolkit_dir()
     if not toolkit_dir:
@@ -92,7 +103,41 @@ def run(
         "S6": "campaign.py",  # ledger/registry/wave
     }
 
-    script_name = script_map.get(stage)
+    # subcommand 路由：S6 的 ledger/registry/wave + S2 的 assemble-priors/diversity-extract
+    subcommand_script_map = {
+        "assemble-priors": "campaign.py",
+        "diversity-extract": "campaign.py",
+    }
+
+    # ── 缓存检查：calibrate / assemble-priors 结果缓存到 ledger（Dry-Run 2.0 优化） ──
+    if store and not ctx.get("dry_run"):
+        cache_key = None
+        if stage == "S0" and calibrate:
+            cache_key = f"s0_calibrate_{region}"
+        elif subcommand == "assemble-priors":
+            cache_key = f"priors_snapshot_{region}"
+
+        if cache_key:
+            try:
+                cached = store.get_ledger(region, cache_key)
+                if cached and cached.get("value"):
+                    result["steps"].append({
+                        "step": "cache_hit",
+                        "success": True,
+                        "cache_key": cache_key,
+                        "message": f"Using cached {cache_key} from ledger",
+                    })
+                    result["success"] = True
+                    result["cached"] = True
+                    result["cache_key"] = cache_key
+                    return result
+            except Exception as e:
+                logger.warning(f"Failed to check cache {cache_key}: {e}")
+
+    if subcommand and subcommand in subcommand_script_map:
+        script_name = subcommand_script_map[subcommand]
+    else:
+        script_name = script_map.get(stage)
     if not script_name:
         result["steps"].append({
             "step": "route_stage",
@@ -115,7 +160,10 @@ def run(
 
     # 添加 stage 特定参数
     if stage == "S0":
-        cmd.extend(["--region", region])
+        # score_datasets.py 只认 --campaign-dir，region 从 campaign-dir 推导
+        # 删除多余的 --region 参数（2026-09-03 修复 returncode 2 根因）
+        if calibrate:
+            cmd.append("--calibrate")
     elif stage == "S1":
         if dataset:
             cmd.extend(["--dataset", dataset])
@@ -189,6 +237,14 @@ def run(
         if wave:
             cmd.extend(["--wave", wave])
 
+    # subcommand 路由：assemble-priors / diversity-extract（走 campaign.py 子命令）
+    if subcommand in ("assemble-priors", "diversity-extract"):
+        cmd.append(subcommand)
+        if dataset:
+            cmd.extend(["--dataset", dataset])
+        if wave:
+            cmd.extend(["--wave", wave])
+
     # 添加额外参数
     if extra_args:
         cmd.extend(extra_args)
@@ -207,50 +263,136 @@ def run(
         result["note"] = "dry-run：命令已构建，未执行"
         return result
 
-    # 执行
-    try:
-        logger.info(f"Executing campaign {stage}: {' '.join(cmd)}")
+    # 2026-09-03 根治：异步执行 — Popen 启动子进程后立即返回，
+    # 后台线程等待完成并写入结果文件。避免 MCP 客户端超时（原 subprocess.run 阻塞 3600s）。
+    task_id = f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    task_dir = os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    os.makedirs(task_dir, exist_ok=True)
+    task_file = os.path.join(task_dir, f"{task_id}.json")
 
-        process_result = subprocess.run(
+    try:
+        logger.info(f"Executing campaign {stage} (async): {' '.join(cmd)}")
+
+        process = subprocess.Popen(
             cmd,
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=3600,
             cwd=toolkit_dir,
         )
 
-        success = process_result.returncode == 0
-        result["steps"].append({
-            "step": "execute",
-            "success": success,
-            "returncode": process_result.returncode,
-            "stdout_tail": process_result.stdout[-2000:] if process_result.stdout else "",
-            "stderr_tail": process_result.stderr[-2000:] if process_result.stderr else "",
-        })
-
-        result["success"] = success
-
-        # 保存到 DB
-        if store and success:
+        # 后台线程：等待进程完成并收集结果
+        def _wait_and_collect():
             try:
-                store.upsert_ledger("WORKFLOW", f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d')}", {
-                    "executed_at": datetime.now().isoformat(),
-                    "region": region,
-                    "stage": stage,
-                    "dataset": dataset,
-                    "wave": wave,
-                })
-            except Exception as e:
-                logger.warning(f"Failed to save campaign record: {e}")
+                stdout, stderr = process.communicate(timeout=3600)
+                success = process.returncode == 0
+                exec_result = {
+                    "task_id": task_id,
+                    "success": success,
+                    "returncode": process.returncode,
+                    "stdout_tail": stdout[-2000:] if stdout else "",
+                    "stderr_tail": stderr[-2000:] if stderr else "",
+                    "finished_at": datetime.now().isoformat(),
+                }
+                # 结构化摘要
+                summary = _extract_structured_summary(stdout or "", stage)
+                if summary:
+                    exec_result["structured_summary"] = summary
 
-    except subprocess.TimeoutExpired:
+                # S4 walls 诊断
+                if stage == "S4":
+                    walls = _extract_walls_summary(stdout or "")
+                    if walls:
+                        exec_result["walls"] = walls
+
+            except subprocess.TimeoutExpired:
+                exec_result = {
+                    "task_id": task_id,
+                    "success": False,
+                    "error": "Timeout after 3600s",
+                    "finished_at": datetime.now().isoformat(),
+                }
+            except Exception as e:
+                exec_result = {
+                    "task_id": task_id,
+                    "success": False,
+                    "error": str(e),
+                    "finished_at": datetime.now().isoformat(),
+                }
+
+            # 写入结果文件
+            try:
+                with open(task_file, "w", encoding="utf-8") as f:
+                    json.dump(exec_result, f, indent=2, ensure_ascii=False)
+            except Exception as e:
+                logger.error(f"Failed to write task result {task_file}: {e}")
+
+            # 保存到 DB
+            if store and exec_result.get("success"):
+                try:
+                    store.upsert_ledger("WORKFLOW", f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d')}", {
+                        "executed_at": datetime.now().isoformat(),
+                        "region": region,
+                        "stage": stage,
+                        "dataset": dataset,
+                        "wave": wave,
+                        "task_id": task_id,
+                    })
+                except Exception as e:
+                    logger.warning(f"Failed to save campaign record: {e}")
+
+            # 缓存 calibrate / assemble-priors 结果到 ledger
+            if store and exec_result.get("success"):
+                try:
+                    if stage == "S0" and calibrate:
+                        store.upsert_ledger(region, f"s0_calibrate_{region}", {
+                            "calibrated_at": datetime.now().isoformat(),
+                            "region": region,
+                            "stdout_tail": exec_result.get("stdout_tail", ""),
+                        })
+                    elif subcommand == "assemble-priors":
+                        store.upsert_ledger(region, f"priors_snapshot_{region}", {
+                            "assembled_at": datetime.now().isoformat(),
+                            "region": region,
+                            "stdout_tail": exec_result.get("stdout_tail", ""),
+                        })
+                except Exception as e:
+                    logger.warning(f"Failed to cache result: {e}")
+
+            # S4 walls 诊断入库
+            if store and exec_result.get("success") and stage == "S4":
+                try:
+                    walls_summary = exec_result.get("walls")
+                    if walls_summary:
+                        store.upsert_ledger(region, f"s4_walls_{region}_{wave or 'unknown'}", {
+                            "reviewed_at": datetime.now().isoformat(),
+                            "region": region,
+                            "wave": wave,
+                            "walls": walls_summary,
+                        })
+                except Exception as e:
+                    logger.warning(f"Failed to save walls summary: {e}")
+
+        bg_thread = threading.Thread(target=_wait_and_collect, daemon=True)
+        bg_thread.start()
+
         result["steps"].append({
             "step": "execute",
-            "success": False,
-            "error": "Timeout after 3600s",
+            "success": True,
+            "async": True,
+            "pid": process.pid,
+            "task_id": task_id,
+            "task_file": task_file,
+            "message": f"Campaign {stage} launched in background (pid={process.pid}). Poll {task_file} for result.",
         })
+        result["success"] = True
+        result["async"] = True
+        result["task_id"] = task_id
+        result["task_file"] = task_file
+        result["pid"] = process.pid
+
     except Exception as e:
-        logger.exception(f"Campaign {stage} execution failed")
+        logger.exception(f"Campaign {stage} launch failed")
         result["steps"].append({
             "step": "execute",
             "success": False,
@@ -398,3 +540,193 @@ def _run_quality_gate(
         result["warning"] = str(e)
 
     return result
+
+
+def _ensure_campaign_config(campaign_dir: str, region: str, result: Dict[str, Any]) -> None:
+    """自动创建 config/settings.json（缺省时从 DB ledger 推导，P0 修复）.
+
+    KOR 等早期战役目录缺 config/ 子目录，导致 S0/S2/S3 脚本无法读取 settings。
+    本函数在 validate_campaign_dir 通过后自动补建，从 DB ledger 推导 region/delay/universe。
+    """
+    config_dir = os.path.join(campaign_dir, "config")
+    settings_path = os.path.join(config_dir, "settings.json")
+
+    if os.path.exists(settings_path):
+        return  # 已存在，不覆盖
+
+    try:
+        os.makedirs(config_dir, exist_ok=True)
+
+        # 从 DB ledger 推导配置
+        import sqlite3
+        db_path = os.path.join(REPO_ROOT, "data", "wqb.db")
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+
+        # 读 s0_whitelist 获取 delay/universe（如有）
+        delay, universe = 1, "TOP3000"
+        c.execute("SELECT value FROM ledger_kv WHERE region=? AND key='s0_whitelist'", (region,))
+        row = c.fetchone()
+        if row:
+            try:
+                import json as _json
+                wl = _json.loads(row[0])
+                # 从 filter_criteria 或白名单推断
+                fc = wl.get("filter_criteria", {})
+                if isinstance(fc, dict):
+                    delay = fc.get("delay", delay)
+                    universe = fc.get("universe", universe)
+            except Exception:
+                pass
+
+        # 从 regions 表获取 universe_legal/delay_legal
+        c.execute("SELECT universe_legal, delay_legal FROM regions WHERE name=?", (region,))
+        row2 = c.fetchone()
+        if row2:
+            try:
+                import json as _json
+                ul = _json.loads(row2[0]) if row2[0] else []
+                dl = _json.loads(row2[1]) if row2[1] else []
+                if ul and universe not in ul:
+                    universe = ul[0]
+                if dl and delay not in dl:
+                    delay = dl[0]
+            except Exception:
+                pass
+
+        conn.close()
+
+        # 区域默认中性化（从 profile 或实证推导）
+        neut_map = {
+            "KOR": "STATISTICAL", "IND": "STATISTICAL", "MEA": "SUBINDUSTRY",
+            "USA": "SUBINDUSTRY", "EUR": "SUBINDUSTRY", "GBR": "SUBINDUSTRY",
+            "ASI": "SUBINDUSTRY", "HKG": "SUBINDUSTRY", "GLB": "SUBINDUSTRY",
+            "CHN": "SUBINDUSTRY", "TWN": "SUBINDUSTRY",
+        }
+        neutralization = neut_map.get(region, "SUBINDUSTRY")
+
+        settings = {
+            "_doc": f"{region} 战役仿真设置（自动创建，从 DB ledger 推导）。",
+            "instrumentType": "EQUITY",
+            "region": region,
+            "universe": universe,
+            "delay": delay,
+            "neutralization": neutralization,
+            "decay": 4,
+            "truncation": 0.08,
+            "pasteurization": "ON",
+            "unitHandling": "VERIFY",
+            "nanHandling": "OFF",
+            "maxTrade": "OFF",
+            "language": "FASTEXPR",
+            "visualization": False,
+            "startDate": "2013-01-01",
+            "endDate": "2023-12-31",
+        }
+
+        import json as _json
+        with open(settings_path, "w", encoding="utf-8") as f:
+            _json.dump(settings, f, indent=2, ensure_ascii=False)
+
+        result["steps"].append({
+            "step": "auto_create_config",
+            "success": True,
+            "settings_path": settings_path,
+            "region": region,
+            "universe": universe,
+            "delay": delay,
+            "neutralization": neutralization,
+        })
+        logger.info(f"Auto-created config/settings.json for {region}: universe={universe}, delay={delay}")
+
+    except Exception as e:
+        result["steps"].append({
+            "step": "auto_create_config",
+            "success": False,
+            "error": str(e),
+        })
+        logger.warning(f"Failed to auto-create config for {region}: {e}")
+
+
+def _extract_structured_summary(stdout: str, stage: str) -> Optional[Dict[str, Any]]:
+    """从 stdout 提取结构化摘要（Dry-Run 2.0 优化：减少 token 消耗）.
+
+    根据 stage 提取关键指标，替代纯文本截断。
+    """
+    if not stdout:
+        return None
+
+    summary: Dict[str, Any] = {}
+    lines = stdout.split("\n")
+
+    if stage == "S0":
+        # 提取白名单/排除集计数
+        whitelist_count = sum(1 for l in lines if "whitelist" in l.lower() or "白名单" in l)
+        excluded_count = sum(1 for l in lines if "excluded" in l.lower() or "排除" in l)
+        if whitelist_count or excluded_count:
+            summary["whitelist_mentions"] = whitelist_count
+            summary["excluded_mentions"] = excluded_count
+
+    elif stage == "S2":
+        # 提取表达式计数
+        import re
+        expr_match = re.search(r"(\d+)\s*(?:expressions?|表达式)", stdout, re.IGNORECASE)
+        if expr_match:
+            summary["expression_count"] = int(expr_match.group(1))
+
+    elif stage == "S3":
+        # 提取 COMPLETE/ERROR/CANCELLED 计数
+        complete_count = stdout.count("COMPLETE")
+        error_count = stdout.count("ERROR")
+        cancelled_count = stdout.count("CANCELLED")
+        if complete_count or error_count or cancelled_count:
+            summary["complete"] = complete_count
+            summary["error"] = error_count
+            summary["cancelled"] = cancelled_count
+
+    elif stage == "S4":
+        # 提取 walls 诊断关键词
+        walls_keywords = ["structural", "robust", "coverage", "turnover", "concentration"]
+        found_walls = [kw for kw in walls_keywords if kw in stdout.lower()]
+        if found_walls:
+            summary["walls_detected"] = found_walls
+
+    return summary if summary else None
+
+
+def _extract_walls_summary(stdout: str) -> Optional[Dict[str, Any]]:
+    """从 review_wave.py 输出提取 walls 诊断摘要（Dry-Run 2.0 优化）.
+
+    识别 structural/robust/coverage/turnover/concentration 等墙类型。
+    """
+    if not stdout:
+        return None
+
+    walls: Dict[str, Any] = {}
+    lower = stdout.lower()
+
+    # 检测各类墙
+    wall_types = {
+        "structural": ["structural", "结构"],
+        "robust": ["robust", "稳健"],
+        "coverage": ["coverage", "覆盖"],
+        "turnover": ["turnover", "换手"],
+        "concentration": ["concentration", "集中"],
+    }
+
+    for wall_name, keywords in wall_types.items():
+        for kw in keywords:
+            if kw in lower:
+                walls[wall_name] = True
+                break
+
+    # 提取 sharpe/fitness 数值（如有）
+    import re
+    sharpe_match = re.search(r"sharpe[=:]\s*([\d.]+)", lower)
+    if sharpe_match:
+        walls["sharpe"] = float(sharpe_match.group(1))
+    fitness_match = re.search(r"fitness[=:]\s*([\d.]+)", lower)
+    if fitness_match:
+        walls["fitness"] = float(fitness_match.group(1))
+
+    return walls if walls else None

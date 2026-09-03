@@ -6,6 +6,10 @@ WARNING（不挡模拟、不进 fail 列表），但 POST submit 时平台重新
 get_alpha_details 的 checks.fail=[] 会误判"可提交"。判定必须走提交层：
 GET /alphas/{id}/submit 的 403 检查列表（零成本，不消耗提交配额）。
 
+2026-09-03 修正：处女提交（404）时提交层视图不可用，判定完全依赖模拟层。
+模拟层 WARNING 中的 LOW_FITNESS/LOW_SHARPE/LOW_2Y_SHARPE 在提交层是硬闸 FAIL，
+必须本地拦截，不再放行。
+
 本工具输出双视图：
   1) 模拟层：get_alpha_details 的 checks fail/warning 逐条
   2) 提交层：GET /alphas/{id}/submit —— 200 无检查=可提交；403 带检查列表=BLOCKED 及原因
@@ -38,6 +42,10 @@ def _bootstrap():
         os.execv(py, [py] + sys.argv)
     mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
     sys.path.insert(0, mcp)
+
+
+# 提交层硬闸项：模拟层 WARNING 但提交层 FAIL 的检查名
+_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
 
 
 def _render_checks(checks):
@@ -114,12 +122,16 @@ async def main():
     #     print(f"  rolling  剩余: {q.get('rolling', {}).get('remaining', '?')}")
     #     print(f"  daily    剩余: {q.get('daily', {}).get('remaining', '?')}")
 
-    # 判定：模拟层无 FAIL，且提交层为 200，或处女提交 404（视图不可用，降级为模拟层判定）
+    # 判定：模拟层无 FAIL + 无提交层硬闸 WARNING，且提交层为 200 或处女提交 404
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
-    ok = not fails and (submit_status == 200 or prepost_unverifiable)
+    hard_gate_warns = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
+    ok = not fails and not hard_gate_warns and (submit_status == 200 or prepost_unverifiable)
     print(f"\nVERDICT: {'SUBMITTABLE' if ok else 'BLOCKED'}")
-    if not fails and prepost_unverifiable:
-        print("  判定依据: 模拟层无 FAIL + 处女提交 404（提交层降级为模拟层+双闸预检）")
+    if hard_gate_warns:
+        names = [c.get("name") for c in hard_gate_warns]
+        print(f"  原因: 模拟层 WARNING 含提交层硬闸项 {names}（提交时平台判 FAIL）")
+    elif not fails and prepost_unverifiable:
+        print("  判定依据: 模拟层无 FAIL/硬闸 WARNING + 处女提交 404（提交层降级为模拟层+双闸预检）")
     elif fails:
         print("  原因: 模拟层 checks 存在 FAIL，先优化再试")
     elif submit_status == 403:

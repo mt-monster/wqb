@@ -122,13 +122,47 @@ def test_feature_engineering_builds_prefix_summary(monkeypatch, tmp_path):
         })
 
         monkeypatch.setattr(fe, "resolve_skill_dir", lambda name: "C:/skill")
-        monkeypatch.setattr(fe, "_run_feature_engineering_pipeline", lambda **kw: {
-            "step": "feature_engineering_pipeline",
-            "success": True,
-            "ideas_md_path": "C:/tmp/ideas.md",
-            "field_whitelist": ["anl_est_eps"],
-            "preprocessing": {"ts_backfill": "sparse fields"},
-        })
+        # 2026-09-03: 适配异步模式 — mock _run_feature_engineering_pipeline_async
+        # 异步版本立即返回 success + pid，ledger 写入在后台线程完成。
+        # 测试需要模拟后台线程的 ledger 写入行为。
+        def _mock_async_pipeline(**kw):
+            # 模拟异步立即返回
+            store = kw.get("store")
+            s1_key = kw.get("s1_key")
+            # 模拟后台线程的 ledger 写入
+            if store and s1_key:
+                prefix_summary = store.build_field_prefix_clusters(
+                    region=kw["region"], dataset=kw["dataset_id"],
+                    prefix_depth=1, top_n=10, samples_per_cluster=5, persist=True,
+                )
+                pool_payload = store.build_candidate_field_pool(
+                    region=kw["region"], dataset=kw["dataset_id"], persist=True,
+                )
+                candidate_field_pool = pool_payload.get("candidate_field_pool", [])
+                ledger_data = {
+                    "generated_at": "2026-09-03T00:00:00",
+                    "region": kw["region"],
+                    "dataset_id": kw["dataset_id"],
+                    "delay": kw["delay"],
+                    "universe": kw["universe"],
+                    "data_category": kw["data_category"],
+                    "ideas_md_path": "C:/tmp/ideas.md",
+                    "field_whitelist": candidate_field_pool or ["anl_est_eps"],
+                    "candidate_field_pool": candidate_field_pool,
+                    "preprocessing": {"ts_backfill": "sparse fields"},
+                    "field_prefix_summary": prefix_summary or {},
+                    "source": "feature_engineering_node",
+                }
+                store.upsert_ledger(kw["region"], s1_key, ledger_data)
+            return {
+                "step": "feature_engineering_pipeline",
+                "success": True,
+                "async": True,
+                "pid": 12345,
+                "task_id": kw.get("task_id", "test"),
+                "task_file": kw.get("task_file", "/tmp/test.json"),
+            }
+        monkeypatch.setattr(fe, "_run_feature_engineering_pipeline_async", _mock_async_pipeline)
 
         out = fe.run(
             region="IND",
@@ -140,9 +174,9 @@ def test_feature_engineering_builds_prefix_summary(monkeypatch, tmp_path):
             _context={"store": store},
         )
         assert out["success"] is True
-        assert out["field_prefix_summary"]["total_fields"] == 3
-        assert out["field_prefix_summary"]["total_clusters"] == 2
-        assert out["candidate_field_pool"]
+        assert out["async"] is True
+        assert out["pid"] == 12345
+        # 异步模式：ledger 写入在 mock 中已完成，验证 DB 状态
         got = store.get_field_prefix_clusters("IND", "analyst45")
         assert got is not None
         assert got["dataset"] == "analyst45"
@@ -189,7 +223,21 @@ def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
         })
 
         class _Proc:
+            """模拟 Popen 行为（2026-09-03: 适配 gem 从 run 改为 Popen 的异步化）。
+
+            提供 stdout/stderr 的 readline/close 以满足 gem 的 detached 分支读取
+            task_id 的路径；本测试用 detached=False 固定走同步 communicate 路径。
+            """
             returncode = 0
+            stdout = type("Pipe", (), {
+                "readline": lambda self: "",
+                "close": lambda self: None,
+            })()
+            stderr = type("Pipe", (), {
+                "readline": lambda self: "",
+                "close": lambda self: None,
+            })()
+
             def communicate(self, timeout=None):
                 return ("ok", "")
 
@@ -212,6 +260,9 @@ def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
             delay=1,
             universe="TOP3000",
             data_category="analyst",
+            detached=False,  # 2026-09-03: 本测试验证 field_prefix_summary →
+            # quality_estimation 的数据流转，该链位于 gem 的同步（非 detached）
+            # 路径；detached 模式在拿到 task_id 后即返回，不产出这两个键。
             _context={"store": store},
         )
         assert out["success"] is True

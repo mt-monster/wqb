@@ -1,1 +1,0 @@
-(prod_correlation < 0.7) * (self_correlation < 0.7)

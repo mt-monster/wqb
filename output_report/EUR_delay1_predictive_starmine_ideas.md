@@ -1,5 +1,10 @@
 # EUR D1 predictive_starmine ideas (Wave68 — agent S1; GEM 402)
 
+**Dataset**: predictive_starmine
+**Region**: EUR
+**Delay**: 1
+
+
 Dataset: `predictive_starmine` MATRIX, cov≥0.85 only.
 Skip Wave21: ARM/RelVal **global rank**, P/IV rank, FY1 earnings surprise, EQ composite.
 Skip analyst revision % changes (prior ban). Skip low-coverage actuals.

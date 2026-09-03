@@ -29,6 +29,9 @@ _2Y_MIN = 1.58
 _PROD_MAX = 0.7
 _SELF_MAX = 0.7
 
+# Mode B 资格线（2026-09-01 明令，Dry-Run 2.0 优化：从 thresholds.json + ledger_kv 读取）
+_MODE_B_QUALIFICATION_DEFAULT = {"sharpe_min": 1.25, "fitness_min": 0.8}
+
 
 def _get_brain_client():
     """延迟导入 brain_client 单例（避免循环依赖与启动开销）."""
@@ -118,9 +121,12 @@ def run(
 
     client = _get_brain_client()
 
+    # 加载 Mode B 资格线（Dry-Run 2.0 优化：从 thresholds.json + ledger_kv 读取）
+    mode_b_qual = _load_mode_b_qualification(store, region="KOR")
+
     # ---- Gate 1: 平台硬检查（get_alpha_details → checks.fail 必须为空 + 数值硬闸） ----
     details = _run_async(client.get_alpha_details(alpha_id))
-    gate1 = _eval_platform_check(details)
+    gate1 = _eval_platform_check(details, mode_b_qual=mode_b_qual)
     result["gates"].append(gate1)
     if not gate1.get("pass"):
         result["verdict"] = "BLOCK"
@@ -175,8 +181,55 @@ def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
     return result
 
 
-def _eval_platform_check(details: Dict[str, Any]) -> Dict[str, Any]:
-    """评估平台硬检查：checks.fail 为空 + sharpe/fitness/2y 数值硬闸."""
+def _load_mode_b_qualification(store, region: str = "KOR") -> Dict[str, float]:
+    """从 thresholds.json + ledger_kv 加载 Mode B 资格线（Dry-Run 2.0 优化）.
+
+    优先级：ledger_kv > thresholds.json > 默认值。
+    """
+    # 1. 尝试从 ledger_kv 读取
+    if store:
+        try:
+            cached = store.get_ledger(region, "mode_b_qualification")
+            if cached and isinstance(cached, dict):
+                sharpe_min = cached.get("sharpe_min")
+                fitness_min = cached.get("fitness_min")
+                if sharpe_min is not None and fitness_min is not None:
+                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
+        except Exception as e:
+            logger.warning(f"Failed to load mode_b_qualification from ledger: {e}")
+
+    # 2. 尝试从 thresholds.json 读取
+    try:
+        import json
+        import os
+        thresholds_path = os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "..",
+            "tracking", region, "config", "thresholds.json"
+        )
+        thresholds_path = os.path.abspath(thresholds_path)
+        if os.path.exists(thresholds_path):
+            with open(thresholds_path, "r", encoding="utf-8") as f:
+                thresholds = json.load(f)
+            mbq = thresholds.get("mode_b_qualification", {})
+            if isinstance(mbq, dict):
+                sharpe_min = mbq.get("sharpe_min")
+                fitness_min = mbq.get("fitness_min")
+                if sharpe_min is not None and fitness_min is not None:
+                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
+    except Exception as e:
+        logger.warning(f"Failed to load mode_b_qualification from thresholds.json: {e}")
+
+    # 3. 返回默认值
+    return _MODE_B_QUALIFICATION_DEFAULT.copy()
+
+
+def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str, float]] = None) -> Dict[str, Any]:
+    """评估平台硬检查：checks.fail 为空 + sharpe/fitness/2y 数值硬闸.
+
+    Args:
+        details: get_alpha_details 返回结果
+        mode_b_qual: Mode B 资格线（sharpe_min/fitness_min），从 thresholds.json + ledger_kv 加载
+    """
     if not isinstance(details, dict) or details.get("__error__"):
         return {"gate": "platform_check", "pass": False, "unavailable": True,
                 "reason": f"get_alpha_details unavailable: {details.get('__error__', 'unknown')}"}
@@ -212,6 +265,18 @@ def _eval_platform_check(details: Dict[str, Any]) -> Dict[str, Any]:
     if two_year is not None and two_year < _2Y_MIN:
         reasons.append(f"2y_sharpe {two_year:.2f} < {_2Y_MIN}")
 
+    # Mode B 资格线检查（Dry-Run 2.0 优化）
+    mode_b_eligible = None
+    if mode_b_qual and sharpe is not None and fitness is not None:
+        mb_sharpe_min = mode_b_qual.get("sharpe_min", 1.25)
+        mb_fitness_min = mode_b_qual.get("fitness_min", 0.8)
+        mode_b_eligible = sharpe >= mb_sharpe_min and fitness >= mb_fitness_min
+        if not mode_b_eligible:
+            reasons.append(
+                f"Mode B 资格线未达: sharpe {sharpe:.2f} < {mb_sharpe_min} 或 "
+                f"fitness {fitness:.2f} < {mb_fitness_min}（整波判死，禁止 Mode B）"
+            )
+
     return {
         "gate": "platform_check",
         "pass": len(reasons) == 0,
@@ -219,6 +284,7 @@ def _eval_platform_check(details: Dict[str, Any]) -> Dict[str, Any]:
         "fitness": fitness,
         "two_year_sharpe": two_year,
         "fail_checks": fail_names,
+        "mode_b_eligible": mode_b_eligible,
         "reason": "; ".join(reasons) if reasons else None,
     }
 

@@ -85,7 +85,8 @@ def parse_candidates(a):
             rows = st.list_expressions(region, str(a.wave), dataset=a.dataset)
             if not rows:
                 rows = st.list_expressions(region, str(a.wave))
-            items = [r.get("expression") for r in rows if r.get("expression")]
+            # 2026-09-03 修复：--from-db 时保留 expressions.id，避免 gate_results.syntax.items[].id 是 1-N 序号
+            items = [{"id": r.get("id"), "expression": r.get("expression")} for r in rows if r.get("expression")]
         finally:
             st.close()
         if not items:
@@ -140,6 +141,10 @@ def main():
                     help="启用 GEM 候选池强制校验")
     ap.add_argument("--min-gem-ratio", type=float, default=0.8,
                     help="GEM 候选最小占比（默认 0.8）")
+    ap.add_argument("--s2-field-validate", action="store_true",
+                    help="启用 S1 字段候选池强制校验（防止跳过特征工程推荐）")
+    ap.add_argument("--s2-field-block", action="store_true",
+                    help="S1 字段校验失败时计入 FAIL（默认仅标注）")
     a = ap.parse_args()
 
     items = parse_candidates(a)
@@ -163,6 +168,36 @@ def main():
                 print(f"[gem  ] 非 GEM 候选: {len(gem_report['non_gem_candidates'])} 条")
         except Exception as e:
             print(f"[gem  ] GEM 校验失败（不阻断）: {e}")
+
+    # ---- 0.5) S1 字段候选池强制校验（2026-09-03 落地，防 wave=170 事故）----
+    s2_field_report = None
+    if a.s2_field_validate:
+        try:
+            tools_dir = os.path.dirname(os.path.abspath(__file__))
+            if tools_dir not in sys.path:
+                sys.path.insert(0, tools_dir)
+            from s2_field_validator import validate_wave_fields
+            wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
+            db_path = os.path.join(wqb_root, "data", "wqb.db")
+            # region 缺省时从 settings.json 读取（与 parse_candidates 对齐）
+            region = a.region
+            if not region:
+                settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
+                region = settings.get("region")
+            exprs_only = [e for _, e in items]
+            s2_field_report = validate_wave_fields(
+                region, str(tag), a.dataset, exprs_only, db_path
+            )
+            print(f"[s2fld] {s2_field_report['message']}")
+            if s2_field_report["extra"]:
+                print(f"[s2fld] 额外字段（非 S1 推荐）: {s2_field_report['extra'][:5]}")
+            if s2_field_report["forbidden"]:
+                print(f"[s2fld] 禁用字段命中: {s2_field_report['forbidden']}")
+            if not s2_field_report["pass"] and a.s2_field_block:
+                print(f"[s2fld] BLOCK 模式：计入 FAIL")
+        except Exception as e:
+            print(f"[s2fld] S1 字段校验失败（不阻断）: {e}")
+            s2_field_report = {"pass": True, "message": f"校验异常: {e}"}
 
     # ---- 1) 语法校验 ----
     validator = load_validator()
@@ -220,6 +255,8 @@ def main():
                    "items": syntax},
         "gate": gate_json or {"all_pass": False, "raw_tail": (r.stdout or "")[-2000:]},
     }
+    if s2_field_report:
+        report["s2_field_validation"] = s2_field_report
 
     # ---- 3) 六维多样性 + 质量预估（建议2/3 落地；仅对语法通过候选，避免噪声）----
     quality_block_ids = []
@@ -283,6 +320,60 @@ def main():
             report["quality_predict"] = {"error": str(e)}
             print(f"[qp   ] 质量预估阶段失败（不阻断门禁）: {e}")
 
+    # ---- 3.5) 参数变体聚类（2026-09-02 优化点⑤：同骨架同字段仅差参数的归一簇）----
+    # 背景：wave 146 三条全闸通过候选互相关 0.9933-0.9985（max_mutually_below_subset=1），
+    # Mode A 参数变体不构成多颗额度。此闸在回测前识别变体簇，每簇只留 1 条。
+    variant_clusters = {}
+    variant_warnings = []
+    if not a.skip_quality:
+        import re as _re
+        def _extract_skeleton(expr: str) -> str:
+            """提取表达式骨架：去掉数字参数，只留结构。"""
+            s = _re.sub(r'\d+\.?\d*', 'N', expr)
+            s = _re.sub(r'\s+', '', s)
+            return s
+        def _extract_fields(expr: str) -> frozenset:
+            """提取表达式中的字段名（vec_avg/vec_sum 包裹的或裸字段）。"""
+            fields = set()
+            for m in _re.finditer(r'vec_(?:avg|sum)\(([a-zA-Z_][\w]*)\)', expr):
+                fields.add(m.group(1))
+            _ops = {'rank','ts_delta','ts_mean','ts_zscore','ts_backfill','vec_avg','vec_sum',
+                    'divide','subtract','add','multiply','ts_decay_linear','group_neutralize',
+                    'ts_std_dev','abs','sign','log','max','min','if_else','ts_rank','scale',
+                    'group_rank','ts_sum','ts_av_diff','ts_delay','ts_corr','ts_covariance',
+                    'group_zscore','ts_regression','last_diff_value','kth_element','ts_arg_max',
+                    'ts_arg_min','ts_max','ts_min','ts_product','inverse','signed_power','tail',
+                    'trade_when','is_nan','nan_out','purify','densify','winsorize','zscore',
+                    'ts_count_nans','ts_median','ts_percentile','ts_step','ts_scale','reverse',
+                    'bucket','industry','sector','subindustry','market','country'}
+            for tok in _re.findall(r'\b[a-zA-Z_][a-zA-Z0-9_]{3,}\b', expr):
+                if tok.lower() not in _ops and not tok.isdigit():
+                    fields.add(tok)
+            return frozenset(fields)
+        passed_items = [(cid, e) for (cid, e), s in zip(items, syntax) if s["valid"]]
+        for cid, e in passed_items:
+            skel = _extract_skeleton(e)
+            fields = _extract_fields(e)
+            key = (skel, fields)
+            if key not in variant_clusters:
+                variant_clusters[key] = []
+            variant_clusters[key].append((cid, e))
+        for key, cluster in variant_clusters.items():
+            if len(cluster) > 1:
+                ids = [cid for cid, _ in cluster]
+                variant_warnings.append({
+                    "cluster_ids": ids,
+                    "count": len(cluster),
+                    "skeleton_preview": cluster[0][1][:80],
+                    "fields": sorted(key[1]),
+                })
+                print(f"[var  ] 参数变体簇 {ids}: {len(cluster)} 条同骨架同字段，建议只留 1 条")
+        if variant_warnings:
+            report["variant_clusters"] = variant_warnings
+            print(f"[var  ] 共发现 {len(variant_warnings)} 个参数变体簇（回测前建议每簇只留 1 条）")
+        else:
+            print(f"[var  ] 参数变体聚类 PASS（无同骨架同字段变体）")
+
     try:
         wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
         src = os.path.join(wqb_root, "src")
@@ -308,9 +399,22 @@ def main():
             if tools_dir not in sys.path:
                 sys.path.insert(0, tools_dir)
             from probe_batch_mode import ProbeBatchExecutor
-            executor = ProbeBatchExecutor(campaign, a.dataset, tag)
+            # gate 阶段只做探针分配标记（结构预判），不做真实回测
+            executor = ProbeBatchExecutor(
+                campaign, a.dataset, 0,  # wave=0 占位，gate 阶段不需要
+                datasets_extra=a.datasets or "",
+                dry_run=True)
             candidates_for_probe = [{"id": cid, "expression": e} for cid, e in items]
-            probe_report = executor.execute_probe_batch(candidates_for_probe)
+            # 只做探针分配，不执行回测
+            probe_candidates = executor.select_probe_candidates(candidates_for_probe, n=2)
+            probe_report = {
+                "status": "PROBE_ASSIGNED",
+                "probe_ids": [c.get("id") for c in probe_candidates],
+                "probe_count": len(probe_candidates),
+                "total_count": len(candidates_for_probe),
+                "decision_reason": "gate 阶段探针分配（回测判死走 probe_batch_mode.py）",
+                "saved_quota": 0,
+            }
             print(f"[probe] 探针批模式: {probe_report['status']}")
             print(f"[probe] 决策原因: {probe_report['decision_reason']}")
             if probe_report["saved_quota"] > 0:
@@ -322,6 +426,8 @@ def main():
     if a.quality_block and quality_block_ids:
         all_pass = False
     if gem_report and not gem_report["pass"]:
+        all_pass = False
+    if s2_field_report and not s2_field_report["pass"] and a.s2_field_block:
         all_pass = False
     if probe_report and probe_report["status"] == "PROBE_DEAD":
         all_pass = False
@@ -335,10 +441,14 @@ def main():
                    + (f"（拦截 {len(quality_block_ids)} 条{'计入 FAIL' if a.quality_block else ' 仅标注'}）"
                       if (qp.get('expected_block') or qp.get('hard_reject')) else ""))
     gem_note = f" GEM={gem_report['gem_ratio']:.0%}" if gem_report else ""
+    s2fld_note = ""
+    if s2_field_report:
+        cov = s2_field_report.get("coverage", 0)
+        s2fld_note = f" S1字段={cov:.0%}" + ("(BLOCK)" if not s2_field_report["pass"] and a.s2_field_block else "")
     probe_note = f" Probe={probe_report['status']}" if probe_report else ""
     print(f"[done ] 语法 {report['syntax']['passed']}/{report['syntax']['total']}, "
           f"gate all_pass={g.get('all_pass')} passed={g.get('passed')}/{g.get('total')}"
-          f"{qp_note}{gem_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
+          f"{qp_note}{gem_note}{s2fld_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
     if r.stderr:
         print(r.stderr[-800:])
     sys.exit(0 if all_pass else 1)

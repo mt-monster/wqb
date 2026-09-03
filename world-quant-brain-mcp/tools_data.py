@@ -198,15 +198,8 @@ async def recommend_datasets(
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
 
-@mcp.tool()
+# expand_nested_data removed (2026-09-02): 纯数据处理工具，不属于 MCP 层，移至 tools/ 目录。
 
-async def expand_nested_data(data: List[Dict[str, Any]], preserve_original: bool = True) -> List[Dict[str, Any]]:
-    """Flatten complex nested data structures into tabular format."""
-    try:
-        return await brain_client.expand_nested_data(data, preserve_original)
-    except Exception as e:
-        return [{"error": f"An unexpected error occurred: {str(e)}"}]
-        
 # --- Documentation Tool ---
 
 @mcp.tool()
@@ -223,13 +216,38 @@ async def get_documentation_page(page_id: str) -> Dict[str, Any]:
 _FIELD_RE = re.compile(r"[a-zA-Z_][a-zA-Z0-9_]*")
 
 
+def _verified_operator_names() -> set:
+    """从工作区 data/operators_verified.json 派生实时算子名（S-PRE 算子审计刷新）。
+
+    2026-09-02 落地：这是平台 get_operators 的实测快照（102 个），比硬编码清单
+    和 ~/.zcode catalog 都更权威——catalog 缺失/路径漂移时本层仍可独立工作。
+    返回 None 表示文件不可用（调用方降级）。
+    """
+    try:
+        import json as _json
+        # 工作区根 = 本文件上级目录（world-quant-brain-mcp/ 的父级）
+        root = Path(__file__).resolve().parent.parent
+        p = root / "data" / "operators_verified.json"
+        if not p.is_file():
+            return set()
+        d = _json.loads(p.read_text(encoding="utf-8"))
+        verified = d.get("verified") or []
+        return set(verified)
+    except Exception:
+        return set()
+
+
 def _catalog_operator_names() -> set:
-    """从 shared_libs/operators_catalog.py (8-11 平台 102 算子) 派生算子名 — 单一事实源。
+    """算子名过滤表（三层兜底）：verified.json > operators_catalog > 空集。
 
     2026-08-13 修复: 原手写清单缺 ts_returns/ts_ir 等 catalog 算子, 导致
-    validate_expressions 把它们误报为 unknown_fields (校验误杀)。catalog 不可用时
-    回退空集 (校验降级为纯手工别名层, 不崩溃)。
+    validate_expressions 把它们误报为 unknown_fields (校验误杀)。
+    2026-09-02 加固: 优先读 data/operators_verified.json（S-PRE 审计快照），
+    避免 ~/.zcode 路径漂移导致 catalog 不可用时静默降级为空集。
     """
+    verified = _verified_operator_names()
+    if verified:
+        return verified
     try:
         skills_libs = Path.home() / ".zcode" / "skills" / "shared_libs"
         if str(skills_libs) not in sys.path:
@@ -271,6 +289,16 @@ _OPERATOR_KEYWORDS = _catalog_operator_names() | {
     "sector", "industry", "subindustry", "country", "market", "exchange",
     "currency", "ticker", "cusip", "sedol", "isin",
 }
+
+# 平台内置字段（非 dataset 字段，search 可能查不到但表达式合法）
+# 2026-09-02：volume/close/open/high/low/returns/vwap/adv* 等是 PV 内置字段，
+# 任何 region/universe 都可用，不应进 unknown。
+_BUILTIN_FIELDS = {
+    "open", "high", "low", "close", "volume", "returns", "vwap",
+    "adv10", "adv20", "adv30", "adv40", "adv50", "adv60", "adv80", "adv120",
+    "sharesout", "market_cap", "enterprise_value",
+}
+
 
 def _extract_field_candidates(alpha_expressions) -> List[str]:
     candidates: set = set()
@@ -457,19 +485,46 @@ async def validate_expressions(
                 "unknown_fields": [],
                 "note": "No field identifiers found (pure operator expressions).",
             }
+
+        # 第二层：内置字段直接放行（平台 search 可能查不到但表达式合法）
+        builtin = [f for f in candidates if f in _BUILTIN_FIELDS]
+        to_verify = [f for f in candidates if f not in _BUILTIN_FIELDS]
+
         verified = await _verify_fields_exist(
-            candidates, region=region, universe=universe, delay=delay)
-        unknown = verified["unknown"]
+            to_verify, region=region, universe=universe, delay=delay) if to_verify else {
+                "known": [], "unknown": [], "skipped": False, "warning": None, "lookup_errors": []}
+
+        # 第二层：unknown 分级——区分「真不存在」vs「可能 D0/D1/区域差异」
+        # 经验规则：带数据集前缀（如 oth496_/rsk88_/anl45_）的字段若 unknown，
+        # 大概率是 delay/universe 不匹配，单独标注而非笼统 unknown。
+        unknown_hard: List[str] = []
+        unknown_soft: List[Dict[str, str]] = []
+        for f in verified["unknown"]:
+            if "_" in f and any(f.startswith(p) for p in ("oth", "rsk", "anl", "fnd", "pv", "news", "pca", "principal", "dl_", "model")):
+                unknown_soft.append({
+                    "field": f,
+                    "reason": "dataset-prefixed field not found at this region/universe/delay; "
+                              "check delay (D0 vs D1) or dataset availability",
+                })
+            else:
+                unknown_hard.append(f)
+
+        known_all = verified["known"] + builtin
         out = {
-            "valid": not unknown,
+            "valid": not unknown_hard,
             "region": region,
             "delay": delay,
             "universe": universe,
             "expressions": len(alpha_expressions),
             "fields_checked": candidates,
-            "unknown_fields": unknown,
-            "platform_field_count": len(verified["known"]),
+            "unknown_fields": unknown_hard,
+            "unknown_soft": unknown_soft,
+            "builtin_fields": builtin,
+            "platform_field_count": len(known_all),
         }
+        if unknown_soft:
+            out["note"] = (f"{len(unknown_soft)} dataset-prefixed field(s) not found — "
+                           "likely delay/universe mismatch, verify dataset availability before submission.")
         if verified.get("warning"):
             out["warning"] = verified["warning"]
             if verified.get("skipped"):
@@ -478,3 +533,120 @@ async def validate_expressions(
         return out
     except Exception as e:
         return {"error": f"An unexpected error occurred: {str(e)}"}
+
+
+@mcp.tool()
+async def preflight_expressions(
+    alpha_expressions: List[str],
+    region: str = "USA",
+    universe: str = "TOP3000",
+    delay: int = 1,
+    dataset_id: Optional[str] = None,
+    auto_fix_vector: bool = True,
+    agg: Optional[str] = None,
+) -> Dict[str, Any]:
+    """表达式一站式预检：字段校验 + VECTOR 自动修复（合并 validate_expressions + fix_vector_fields）.
+
+    在 create_simulation / create_multi_simulation 之前调用，一次完成：
+    1. 字段存在性校验（validate_expressions 逻辑）
+    2. VECTOR 字段自动包裹 vec_* 聚合（fix_vector_fields 逻辑，需 dataset_id）
+
+    Args:
+        alpha_expressions: 待检测的表达式列表
+        region: 区域代码
+        universe: 宇宙
+        delay: 延迟
+        dataset_id: 数据集 ID（VECTOR 修复必需；不提供则跳过修复）
+        auto_fix_vector: 是否自动修复 VECTOR 字段（默认 True）
+        agg: 强制指定聚合算子（如 "vec_sum"）；None 则自动选
+
+    Returns:
+        {valid, unknown_fields, fixed_expressions, vector_fields, any_changed, ...}
+    """
+    try:
+        # Step 1: 字段校验
+        candidates = _extract_field_candidates(alpha_expressions)
+        builtin = [f for f in candidates if f in _BUILTIN_FIELDS]
+        to_verify = [f for f in candidates if f not in _BUILTIN_FIELDS]
+
+        verified = await _verify_fields_exist(
+            to_verify, region=region, universe=universe, delay=delay) if to_verify else {
+                "known": [], "unknown": [], "skipped": False, "warning": None, "lookup_errors": []}
+
+        unknown_hard: List[str] = []
+        unknown_soft: List[Dict[str, str]] = []
+        for f in verified["unknown"]:
+            if "_" in f and any(f.startswith(p) for p in ("oth", "rsk", "anl", "fnd", "pv", "news", "pca", "principal", "dl_", "model")):
+                unknown_soft.append({
+                    "field": f,
+                    "reason": "dataset-prefixed field not found at this region/universe/delay",
+                })
+            else:
+                unknown_hard.append(f)
+
+        # Step 2: VECTOR 修复（可选，需 dataset_id）
+        fixed_expressions = list(alpha_expressions)
+        vector_fields: List[str] = []
+        any_changed = False
+        vector_fix_results = None
+
+        if auto_fix_vector and dataset_id:
+            try:
+                # 延迟导入 vector_wrap
+                import sys as _sys
+                from pathlib import Path as _Path
+                _REPO_TOOLS_LIB = _Path(__file__).resolve().parents[1] / "tools" / "lib"
+                if _REPO_TOOLS_LIB.is_dir() and str(_REPO_TOOLS_LIB) not in _sys.path:
+                    _sys.path.insert(0, str(_REPO_TOOLS_LIB))
+                from vector_wrap import wrap_naked_vectors
+
+                resp = await brain_client.get_datafields(
+                    "EQUITY", region, delay, universe, "false", dataset_id, "VECTOR", None, False)
+                fields = resp.get("results") if isinstance(resp, dict) else resp
+                if not isinstance(fields, list):
+                    fields = (resp or {}).get("fields", []) if isinstance(resp, dict) else []
+                vector_fields = [f.get("id") for f in fields
+                                 if isinstance(f, dict) and str(f.get("type", "")).upper() == "VECTOR" and f.get("id")]
+
+                if vector_fields:
+                    vector_fix_results = []
+                    for i, e in enumerate(alpha_expressions):
+                        fixed, wrapped = wrap_naked_vectors(e, vector_fields, agg=agg)
+                        changed = bool(wrapped)
+                        if changed:
+                            any_changed = True
+                            fixed_expressions[i] = fixed
+                        vector_fix_results.append({
+                            "original": e, "fixed": fixed,
+                            "wrapped_fields": wrapped, "changed": changed,
+                        })
+            except ImportError:
+                pass  # vector_wrap 不可用，跳过修复
+
+        known_all = verified["known"] + builtin
+        out = {
+            "valid": not unknown_hard,
+            "region": region,
+            "delay": delay,
+            "universe": universe,
+            "expressions": len(alpha_expressions),
+            "fields_checked": candidates,
+            "unknown_fields": unknown_hard,
+            "unknown_soft": unknown_soft,
+            "builtin_fields": builtin,
+            "platform_field_count": len(known_all),
+            "fixed_expressions": fixed_expressions,
+            "vector_fields": sorted(vector_fields),
+            "any_changed": any_changed,
+        }
+        if vector_fix_results:
+            out["vector_fix_results"] = vector_fix_results
+        if unknown_soft:
+            out["note"] = f"{len(unknown_soft)} dataset-prefixed field(s) not found — check delay/universe mismatch."
+        if verified.get("warning"):
+            out["warning"] = verified["warning"]
+            if verified.get("skipped"):
+                out["valid"] = True
+        return out
+    except Exception as e:
+        return {"error": f"preflight_expressions failed: {str(e)}"}

@@ -77,14 +77,14 @@
   "tier_method": "quantile",
   "tier1_score_pct": 0.6,
   "tier2_score_pct": 0.3,
-  "coverage_hard_min": 0.65,
+  "coverage_hard_min": 0.6,
   "field_count_hard_min": 10,
-  "coverage_min": 0.65,
+  "coverage_min": 0.6,
   "field_count_min": 10,
-  "alpha_count_max": 1000,
-  "tier2_coverage_min": 0.65,
+  "alpha_count_max": 1500,
+  "tier2_coverage_min": 0.6,
   "tier2_field_count_min": 10,
-  "tier2_alpha_count_max": 1000,
+  "tier2_alpha_count_max": 1500,
   "crowd_veto_enable": true,
   "crowd_band_enable": true,
   "crowd_band_alpha_count_min": 100,
@@ -98,17 +98,12 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 3,
   "category_weights": {
-   "model": 1.15,
-   "other": 1.0,
-   "analyst": 0.95,
-   "pv": 0.95,
-   "institutions": 0.95,
-   "news": 0.95
+   "model": 1.15
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 91,
-  "sweet_spot_ac_max": 318,
-  "_calibrated_at": "2026-08-18T19:03:00",
-  "_calibrated_from": "results/ 20 datasets 实测"
+  "sweet_spot_ac_min": 309,
+  "sweet_spot_ac_max": 309,
+  "_calibrated_at": "2026-09-03T18:51:45",
+  "_calibrated_from": "alpha_store 4 alphas/1 ds + results/ 扫描 → 共 1 datasets 实测"
  }
 }

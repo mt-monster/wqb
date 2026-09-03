@@ -1,82 +1,85 @@
 {
-  "_doc": "KOR 战役集中阈值配置（M15/M21）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
-  "review": {
-    "sharpe_min": 1.58,
-    "fitness_min": 1.0,
-    "two_year_sharpe_min": 1.6,
-    "margin_min": 0.0005,
-    "turnover_min": 0.05,
-    "turnover_max": 0.3,
-    "ra_failed_count_max": 0
+ "review": {
+  "sharpe_min": 1.58,
+  "fitness_min": 1.0,
+  "two_year_sharpe_min": 1.0,
+  "margin_min": 0.0005,
+  "turnover_max": 0.7,
+  "turnover_min": 0.01
+ },
+ "near": {
+  "sharpe_min": 1.0
+ },
+ "sharpe_min": 1.58,
+ "fitness_min": 1.0,
+ "turnover_max": 0.7,
+ "turnover_min": 0.01,
+ "self_corr_max": 0.7,
+ "prod_corr_max": 0.7,
+ "concentrated_weight_max": 0.5,
+ "sub_universe_sharpe_min": 1.0,
+ "robust_sharpe_min": 1.0,
+ "mode_b_qualification": {
+  "_doc": "2026-09-01 明令（wave97 误判触发）：整波最强候选必须同时满足 sharpe>=1.25 且 fitness>=0.8，才有资格进入 Mode B 组合增强或继续优化；未达资格线的波一律判死（dead_end 回写 + wave 台账 closed），禁止进 near_pool、禁止发增强波。判定对象=整波最高 sharpe 的候选。",
+  "sharpe_min": 1.25,
+  "fitness_min": 0.8
+ },
+ "dataset_health": {
+  "_doc": "S0 两阶段口径（同 GLOBAL/IND 2026-09-01 口径）：阶段① 全局绝对底线=coverage_hard_min/field_count_hard_min；阶段② 区域自适应分位分带（tier_method=quantile）。KOR 特化：MODEL 类别禁用（用户明令）；红榜族（chart_patterns/news_sentiment/ai_ml/credit_risk/glb_emotion）结构性排除。",
+  "mode": "general",
+  "tier_method": "quantile",
+  "tier1_score_pct": 0.6,
+  "tier2_score_pct": 0.3,
+  "coverage_hard_min": 0.5,
+  "field_count_hard_min": 5,
+  "coverage_min": 0.8,
+  "field_count_min": 10,
+  "alpha_count_max": 1500,
+  "tier2_coverage_min": 0.6,
+  "tier2_field_count_min": 5,
+  "tier2_alpha_count_max": 1500,
+  "backfill_band_enable": true,
+  "backfill_band_cov_min": 0.5,
+  "backfill_band_cov_max": 0.8,
+  "backfill_band_alpha_count_max": 1500,
+  "backfill_band_value_score_min": 4,
+  "excluded_pyramids": [],
+  "_excluded_pyramids_doc": "指定排除的 pyramid（=category×region×delay）：命名 KOR_D1_<category>；命中者降 excluded 且不被保底带复活。",
+  "category_weight_enable": true,
+  "category_weight_floor": 0.9,
+  "category_weight_cap": 1.15,
+  "pyramid_quota_enable": true,
+  "pyramid_quota_non_model_min": 2,
+  "category_weights": {
+   "analyst": 1.15,
+   "model": 1.15,
+   "sentiment": 0.9,
+   "fundamental": 0.9,
+   "news": 0.9,
+   "pv": 1.15,
+   "risk": 0.9,
+   "shortinterest": 0.9,
+   "other": 0.9
   },
-  "near": {
-    "sharpe_min": 1.2,
-    "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析。注意：整波最强候选若未达 mode_b_qualification 资格线，整波不得进 near_pool（wave97 误判教训）"
-  },
-  "mode_b_qualification": {
-    "_doc": "Mode B / 继续优化资格线（用户 2026-09-01 明令，硬闸）。整波最强候选必须同时满足 sharpe_min 与 fitness_min 才有资格进入 Mode B 组合增强或继续优化；否则整波判死：dead_end 回写 + wave 台账 closed，不进 near_pool、不发增强波。判定对象=整波最高 sharpe 的候选（单项短板型信号才可组合，整体平庸组合无意义——IND Operating-Margin 墙实证）。",
-    "sharpe_min": 1.25,
-    "fitness_min": 0.8,
-    "action_below": "dead_end"
-  },
-  "quick_scan": {
-    "red_2y_max": 0.6,
-    "red_sh_abs_min": 0.8,
-    "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖（pipeline_note_2y_wall 规则固化）"
-  },
-  "probe_scoring": {
-    "green_min": 2.0,
-    "yellow_min": 1.0,
-    "_formula": "potential = max|sharpe|*2 + mirror(neg sh<-0.5 +0.5) + margin(>5bp +0.3) + tvr(5-30% +0.2)",
-    "_decision": ">=green_min 绿灯深挖 / >=yellow_min 黄灯限2批 / 否则红灯判死"
-  },
-  "probe_scoring_v2": {
-    "_doc": "三灯 v2（2026-08-15）：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
-    "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
-    "green_min": 2.2,
-    "yellow_min": 1.2,
-    "w_sharpe": 1.2,
-    "w_fitness": 0.8,
-    "w_mirror": 0.5,
-    "w_margin": 0.3,
-    "w_tvr": 0.2,
-    "w_rn": 0.2,
-    "w_breadth": 0.2,
-    "cw_penalty": 0.4,
-    "breadth_bar": 0.5,
-    "rn_bar": 1.0,
-    "early_red_sh": 0.3,
-    "tvr_low": 5,
-    "tvr_high": 30,
-    "red_2y_sh_abs_min": 0.8,
-    "red_2y_max": 0.6,
-    "_notes": [
-      "margin/tvr/rn 在最强探针上联合评估（v1 是全池 OR，会拼出不存在的理想探针）",
-      "tvr 结构性墙：全部探针 tvr 同侧出界（multi_source_model 全低 / news_sentiment_transfer 全高实证）-> 绿灯封顶黄灯",
-      "2Y 红灯仅当平台返回 two_year_sharpe 时判定（v1 把 None 当 0 会误判）",
-      "Stage A 早停：max|sh|<early_red_sh 且无镜像 -> EARLY RED，不跑 Stage B（省 3 批）"
-    ]
-  },
-  "hard_gates": {
-    "prod_correlation_max": 0.7,
-    "self_correlation_max": 0.7,
-    "_note": "平台提交期硬闸，异步计算须以重检为准"
-  },
-  "dataset_health": {
-    "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。2026-09-01 REGULAR 战役放宽：cov>=0.6, alpha<=1500, fields>=10（用户指令）；Other/PriceVolume/Risk/ShortInterest 未点亮类可先不体检直接入白名单。",
-    "mode": "general",
-    "tier_method": "quantile",
-    "tier1_score_pct": 0.6,
-    "tier2_score_pct": 0.3,
-    "coverage_hard_min": 0.6,
-    "field_count_hard_min": 10,
-    "coverage_min": 0.6,
-    "field_count_min": 10,
-    "alpha_count_max": 1500,
-    "tier2_coverage_min": 0.6,
-    "tier2_field_count_min": 10,
-    "tier2_alpha_count_max": 1500,
-    "focus_categories": "Other,PriceVolume,Risk,ShortInterest",
-    "exclude_categories": "MODEL"
-  }
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 206,
+  "sweet_spot_ac_max": 67041,
+  "_calibrated_at": "2026-09-02T21:26:41",
+  "_calibrated_from": "alpha_store 207 alphas/12 ds + results/ 扫描 → 共 12 datasets 实测"
+ },
+ "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
+ "kor_specific_adjustments": {
+  "cw_gate": "FAIL",
+  "longcount_min": 80,
+  "longcount_verdict": "FAIL",
+  "prod_corr_early_warn": 0.7,
+  "fast_kill": "新数据集 8 探针无 |S|>=0.5 即判死回写，不扩批不换设置重试",
+  "note": "KOR profile gate_overrides 落地；TOP600 小宇宙放大 CW/longCount 问题"
+ },
+ "poll": {
+  "max_wait_minutes": 60,
+  "backoff_base_seconds": 20,
+  "backoff_max_seconds": 300,
+  "stalled_minutes": 60
+ }
 }

@@ -25,6 +25,15 @@
 | `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
 | `submit_batch.py` | 批量提交（`--spec` 支持逐批不同设置） | 31 个 `_submit_*.py` |
 
+## 探针编排（新数据集首探）
+
+| 工具 | 用途 | 取代 |
+|---|---|---|
+| `probe_batch_mode.py` | 2+6 探针批模式：L0（2 条）快速判死 → L1（6 条）信号确认，真实回测（入库→pipeline→DB 拉指标） | 手写 8 探针表达式 + 手动判定 |
+| `tiered_probe.py` | 三层探针编排器：L0 判死 → L1 确认 → L2 ModeA 变体自动升级；组合腿快腿轮换（fast_pool 多样性）；慢腿预处理轮换（raw/reverse/ts_decay_linear） | 手写 ModeA 变体波 |
+
+> `wave_gate.py --probe-mode` 只做门禁阶段探针分配标记（结构预判），真实回测判死走 `probe_batch_mode.py` / `tiered_probe.py`。
+
 ## SUPER alpha 流水线
 
 | 工具 | 用途 | 取代 |
@@ -47,6 +56,12 @@
 | `clean_unused_imports.py` | 清理未用 import：默认 `--dry-run` 列出；`--apply` 才删（**跨文件 re-export 校验**防 SHAPE_CLASSES 误删 + `.bak_imp` 备份 + ast.parse 校验）；可 `--report` 接 scan_deadcode 的 JSON | `tracking/_scratch/_clean_unused_imports.py` |
 
 > 三者均遵循 dead-code-cleanup skill 红线：**默认只读/dry-run，删除动作必须显式 `--apply`**。原稿已归档 `attic/tools_archive/_2026-08-28_*`。
+
+## MCP 体检
+
+| 工具 | 用途 |
+|---|---|
+| `mcp_ping.py` | MCP 服务连通性 + 调用时长测试：对 `.mcp.json` 全部服务做 stdio 握手（initialize/tools/list）+ 只读探针真实调用计时（wq-brain-http 3 个平台只读探针 / wqb-db 4 个 DB 查询）。`--service X` 单服务、`--full` 附全工具注册清单、`--timeout N` 握手超时。退出码 0=全过 / 1=有失败。零配额消耗（探针全部无副作用） |
 
 ## 纪律（AGENTS.md §9）
 

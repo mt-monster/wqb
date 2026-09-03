@@ -613,45 +613,8 @@ async def batch_create_simulations(
     except Exception as e:
         return {"error": f"Error in batch_create_simulations: {str(e)}"}
 
-@mcp.tool()
-
-async def get_multisimulation_children(multisimulation_location: str) -> Dict[str, Any]:
-    """Get the child simulation locations/status of a submitted multisimulation.
-
-    Use this after create_multi_simulation (async mode) to discover the individual
-    simulation URLs, then poll each child with lookINTO_SimError_message until done.
-
-    Args:
-        multisimulation_location: The multisimulation location returned by
-            create_multi_simulation (e.g. "/simulations/{id}" or full URL).
-    Returns:
-        Dict with children list, count, and per-child status/alpha when available.
-    """
-    try:
-        await brain_client.ensure_authenticated()
-        resp = await brain_client._request('GET', multisimulation_location)
-        if resp.status_code != 200:
-            return {"error": f"HTTP {resp.status_code}", "raw": brain_client._response_payload(resp)}
-        data = resp.json() if resp.text else {}
-        children = data.get('children', [])
-        out_children = []
-        for c in children:
-            if c.startswith('http'):
-                child_url = c
-            elif c.startswith('/'):
-                child_url = f"{brain_client.base_url}{c}"
-            else:
-                child_url = f"{brain_client.base_url}/simulations/{c}"
-            out_children.append({"location": c, "location_url": child_url})
-        return {
-            "success": True,
-            "multisimulation_id": multisimulation_location.split('/')[-1],
-            "child_count": len(out_children),
-            "children": out_children,
-            "note": "Poll each child location with lookINTO_SimError_message until status shows the alpha id."
-        }
-    except Exception as e:
-        return {"error": f"Error getting multisimulation children: {str(e)}"}
+# get_multisimulation_children removed (2026-09-02): 冗余，batch_status MCP 工具已覆盖。
+# 原实现仅返回 children location 列表，batch_status 返回完整状态+指标。
 
 
 @mcp.tool()

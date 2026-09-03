@@ -3,16 +3,20 @@
 
 封装特征工程 SOP 阶段1-3：字段理解 → 字段筛选 → 预处理决策。
 产出写入 ledger_kv s1_<dataset>_d<delay>，供 S2 自动注入。
+
+2026-09-03 根治：subprocess.run → Popen 异步化，避免 MCP 客户端超时。
 """
 
+import json
 import logging
 import os
 import subprocess
+import threading
 from datetime import datetime
 from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
-from .._common import infer_data_category, resolve_skill_dir, wq_py
+from .._common import REPO_ROOT, infer_data_category, resolve_skill_dir, wq_py
 
 logger = logging.getLogger(__name__)
 
@@ -120,116 +124,43 @@ def run(
         "skill_root": skill_root,
     })
 
-    # Step 3: 运行特征工程流程（阶段1-3）
+    # Step 3: 运行特征工程流程（阶段1-3）— 异步模式
+    task_id = f"fe_{region}_{dataset_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    task_dir = os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    os.makedirs(task_dir, exist_ok=True)
+    task_file = os.path.join(task_dir, f"{task_id}.json")
+
     try:
-        fe_result = _run_feature_engineering_pipeline(
+        fe_async_result = _run_feature_engineering_pipeline_async(
             skill_root=skill_root,
             region=region,
             dataset_id=dataset_id,
             delay=delay,
             universe=universe,
             data_category=data_category,
+            task_id=task_id,
+            task_file=task_file,
+            store=store,
+            s1_key=s1_key,
+            result=result,
         )
-        result["steps"].append(fe_result)
+        result["steps"].append(fe_async_result)
 
-        if not fe_result.get("success"):
+        if not fe_async_result.get("success"):
             result["steps"].append({
                 "step": "feature_engineering_failed",
                 "success": False,
-                "error": fe_result.get("error", "Unknown error"),
+                "error": fe_async_result.get("error", "Unknown error"),
             })
             return result
 
-        # Step 4: 写入 ledger（强制）
-        prefix_summary = None
-        candidate_field_pool = []
-        if store:
-            try:
-                prefix_summary = store.build_field_prefix_clusters(
-                    region=region,
-                    dataset=dataset_id,
-                    prefix_depth=1,
-                    top_n=10,
-                    samples_per_cluster=5,
-                    persist=True,
-                )
-                result["steps"].append({
-                    "step": "build_prefix_clusters",
-                    "success": True,
-                    "s1_prefix_key": f"s1_prefix_{dataset_id}",
-                    "total_fields": prefix_summary.get("total_fields"),
-                    "total_clusters": prefix_summary.get("total_clusters"),
-                })
-            except Exception as e:
-                logger.warning(f"Failed to build field prefix clusters: {e}")
-                result["steps"].append({
-                    "step": "build_prefix_clusters",
-                    "success": False,
-                    "error": str(e),
-                })
-
-            try:
-                pool_payload = store.build_candidate_field_pool(
-                    region=region,
-                    dataset=dataset_id,
-                    persist=True,
-                )
-                candidate_field_pool = pool_payload.get("candidate_field_pool", [])
-                result["steps"].append({
-                    "step": "build_candidate_field_pool",
-                    "success": True,
-                    "s2_field_pool_key": f"s2_field_pool_{dataset_id}",
-                    "pool_size": pool_payload.get("pool_size", 0),
-                })
-            except Exception as e:
-                logger.warning(f"Failed to build candidate field pool: {e}")
-                result["steps"].append({
-                    "step": "build_candidate_field_pool",
-                    "success": False,
-                    "error": str(e),
-                })
-
-        if store:
-            ledger_data = {
-                "generated_at": datetime.now().isoformat(),
-                "region": region,
-                "dataset_id": dataset_id,
-                "delay": delay,
-                "universe": universe,
-                "data_category": data_category,
-                "ideas_md_path": fe_result.get("ideas_md_path"),
-                "field_whitelist": candidate_field_pool or fe_result.get("field_whitelist", []),
-                "candidate_field_pool": candidate_field_pool,
-                "preprocessing": fe_result.get("preprocessing", {}),
-                "field_prefix_summary": prefix_summary or {},
-                "source": "feature_engineering_node",
-            }
-
-            try:
-                store.upsert_ledger(region, s1_key, ledger_data)
-                result["steps"].append({
-                    "step": "write_ledger",
-                    "success": True,
-                    "s1_key": s1_key,
-                    "field_whitelist_size": len(ledger_data["field_whitelist"]),
-                    "candidate_field_pool_size": len(candidate_field_pool),
-                })
-            except Exception as e:
-                logger.error(f"Failed to write S1 ledger: {e}")
-                result["steps"].append({
-                    "step": "write_ledger",
-                    "success": False,
-                    "error": str(e),
-                })
-                # 不阻止返回，但标记警告
-                result["warning"] = f"Ledger write failed: {e}"
-
+        # 异步模式：立即返回，结果通过 task_file 轮询
         result["success"] = True
-        result["ideas_md_path"] = fe_result.get("ideas_md_path")
-        result["field_whitelist"] = candidate_field_pool or fe_result.get("field_whitelist", [])
-        result["candidate_field_pool"] = candidate_field_pool
-        result["preprocessing"] = fe_result.get("preprocessing", {})
-        result["field_prefix_summary"] = prefix_summary or {}
+        result["async"] = True
+        result["task_id"] = task_id
+        result["task_file"] = task_file
+        result["pid"] = fe_async_result.get("pid")
+        result["message"] = f"Feature engineering launched in background. Poll {task_file} for result."
 
     except Exception as e:
         logger.exception("Feature engineering pipeline failed")
@@ -252,35 +183,39 @@ def _find_feature_engineering_skill() -> Optional[str]:
     return resolve_skill_dir("brain-data-feature-engineering")
 
 
-def _run_feature_engineering_pipeline(
+def _run_feature_engineering_pipeline_async(
     skill_root: str,
     region: str,
     dataset_id: str,
     delay: int,
     universe: str,
     data_category: str,
+    task_id: str,
+    task_file: str,
+    store: Any,
+    s1_key: str,
+    result: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """运行特征工程流水线（阶段1-3）.
+    """运行特征工程流水线（阶段1-3）— 异步模式.
 
-    调用 brain-data-feature-engineering 的脚本生成 ideas 和字段白名单。
+    Popen 启动子进程后立即返回，后台线程等待完成并写入结果文件。
     """
-    result = {
+    step_result = {
         "step": "feature_engineering_pipeline",
         "success": False,
-        "ideas_md_path": None,
-        "field_whitelist": [],
-        "preprocessing": {},
+        "async": True,
+        "task_id": task_id,
+        "task_file": task_file,
     }
 
     # 查找主脚本
     main_script = os.path.join(skill_root, "scripts", "feature_engineering.py")
     if not os.path.exists(main_script):
-        # 备用路径
         main_script = os.path.join(skill_root, "feature_engineering.py")
 
     if not os.path.exists(main_script):
-        result["error"] = f"Main script not found in {skill_root}"
-        return result
+        step_result["error"] = f"Main script not found in {skill_root}"
+        return step_result
 
     # 构建输出目录
     output_dir = os.path.join(skill_root, "output_report")
@@ -301,60 +236,124 @@ def _run_feature_engineering_pipeline(
     ]
 
     try:
-        logger.info(f"Running feature engineering: {' '.join(cmd)}")
+        logger.info(f"Running feature engineering (async): {' '.join(cmd)}")
 
-        proc = subprocess.run(
+        proc = subprocess.Popen(
             cmd,
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=1800,  # 30 分钟
             cwd=skill_root,
         )
 
-        result["stdout_tail"] = proc.stdout[-2000:] if proc.stdout else ""
-        result["stderr_tail"] = proc.stderr[-2000:] if proc.stderr else ""
+        step_result["pid"] = proc.pid
+        step_result["success"] = True
+        step_result["message"] = f"Feature engineering launched (pid={proc.pid})"
 
-        if proc.returncode != 0:
-            result["error"] = f"Script failed with returncode {proc.returncode}"
-            return result
+        # 后台线程：等待完成并收集结果
+        def _wait_and_collect():
+            fe_result = {
+                "task_id": task_id,
+                "success": False,
+                "ideas_md_path": None,
+                "field_whitelist": [],
+                "preprocessing": {},
+            }
+            try:
+                stdout, stderr = proc.communicate(timeout=1800)
+                fe_result["stdout_tail"] = stdout[-2000:] if stdout else ""
+                fe_result["stderr_tail"] = stderr[-2000:] if stderr else ""
+                fe_result["returncode"] = proc.returncode
 
-        # 检查产物
-        if not os.path.exists(ideas_path):
-            result["error"] = f"Ideas file not generated: {ideas_path}"
-            return result
+                if proc.returncode != 0:
+                    fe_result["error"] = f"Script failed with returncode {proc.returncode}"
+                elif not os.path.exists(ideas_path):
+                    fe_result["error"] = f"Ideas file not generated: {ideas_path}"
+                else:
+                    fe_result["success"] = True
+                    fe_result["ideas_md_path"] = ideas_path
 
-        result["success"] = True
-        result["ideas_md_path"] = ideas_path
+                    # 解析 ideas 文件提取字段白名单和预处理决策
+                    try:
+                        with open(ideas_path, "r", encoding="utf-8") as f:
+                            content = f.read()
+                        import re
+                        fields = re.findall(r'\b([a-z][a-z0-9_]*(?:_[a-z0-9]+)+)\b', content)
+                        stopwords = {"self", "true", "false", "none", "null", "return", "import", "from", "def", "class"}
+                        fe_result["field_whitelist"] = list(set(f for f in fields if f not in stopwords and len(f) > 3))[:50]
 
-        # 尝试解析 ideas 文件提取字段白名单和预处理决策
-        try:
-            with open(ideas_path, "r", encoding="utf-8") as f:
-                content = f.read()
+                        preprocessing = {}
+                        if "ts_backfill" in content:
+                            preprocessing["ts_backfill"] = "sparse fields"
+                        if "group_zscore" in content or "group_rank" in content:
+                            preprocessing["group_neutralize"] = "cross-sectional"
+                        if "vec_" in content:
+                            preprocessing["vector_wrap"] = "VECTOR fields"
+                        fe_result["preprocessing"] = preprocessing
+                    except Exception as e:
+                        logger.warning(f"Failed to parse ideas file: {e}")
 
-            # 简单解析：提取代码块中的字段名
-            import re
-            fields = re.findall(r'\b([a-z][a-z0-9_]*(?:_[a-z0-9]+)+)\b', content)
-            # 过滤常见非字段词
-            stopwords = {"self", "true", "false", "none", "null", "return", "import", "from", "def", "class"}
-            result["field_whitelist"] = list(set(f for f in fields if f not in stopwords and len(f) > 3))[:50]
+            except subprocess.TimeoutExpired:
+                fe_result["error"] = "Timeout after 1800s"
+            except Exception as e:
+                fe_result["error"] = str(e)
 
-            # 预处理决策从内容中提取（简化版）
-            preprocessing = {}
-            if "ts_backfill" in content:
-                preprocessing["ts_backfill"] = "sparse fields"
-            if "group_zscore" in content or "group_rank" in content:
-                preprocessing["group_neutralize"] = "cross-sectional"
-            if "vec_" in content:
-                preprocessing["vector_wrap"] = "VECTOR fields"
+            fe_result["finished_at"] = datetime.now().isoformat()
 
-            result["preprocessing"] = preprocessing
+            # 写入 ledger（在后台线程中完成）
+            if store and fe_result.get("success"):
+                try:
+                    prefix_summary = None
+                    candidate_field_pool = []
+                    try:
+                        prefix_summary = store.build_field_prefix_clusters(
+                            region=region, dataset=dataset_id,
+                            prefix_depth=1, top_n=10, samples_per_cluster=5, persist=True,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to build field prefix clusters: {e}")
 
-        except Exception as e:
-            logger.warning(f"Failed to parse ideas file: {e}")
+                    try:
+                        pool_payload = store.build_candidate_field_pool(
+                            region=region, dataset=dataset_id, persist=True,
+                        )
+                        candidate_field_pool = pool_payload.get("candidate_field_pool", [])
+                    except Exception as e:
+                        logger.warning(f"Failed to build candidate field pool: {e}")
 
-    except subprocess.TimeoutExpired:
-        result["error"] = "Timeout after 1800s"
+                    ledger_data = {
+                        "generated_at": datetime.now().isoformat(),
+                        "region": region,
+                        "dataset_id": dataset_id,
+                        "delay": delay,
+                        "universe": universe,
+                        "data_category": data_category,
+                        "ideas_md_path": fe_result.get("ideas_md_path"),
+                        "field_whitelist": candidate_field_pool or fe_result.get("field_whitelist", []),
+                        "candidate_field_pool": candidate_field_pool,
+                        "preprocessing": fe_result.get("preprocessing", {}),
+                        "field_prefix_summary": prefix_summary or {},
+                        "source": "feature_engineering_node",
+                    }
+                    store.upsert_ledger(region, s1_key, ledger_data)
+                    fe_result["ledger_written"] = True
+                    fe_result["field_whitelist_size"] = len(ledger_data["field_whitelist"])
+                    fe_result["candidate_field_pool_size"] = len(candidate_field_pool)
+                except Exception as e:
+                    logger.error(f"Failed to write S1 ledger: {e}")
+                    fe_result["ledger_error"] = str(e)
+
+            # 写入结果文件
+            try:
+                with open(task_file, "w", encoding="utf-8") as f:
+                    json.dump(fe_result, f, indent=2, ensure_ascii=False)
+            except Exception as e:
+                logger.error(f"Failed to write task result {task_file}: {e}")
+
+        bg_thread = threading.Thread(target=_wait_and_collect, daemon=True)
+        bg_thread.start()
+
     except Exception as e:
-        result["error"] = str(e)
+        step_result["error"] = str(e)
 
-    return result
+    return step_result

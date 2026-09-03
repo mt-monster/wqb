@@ -1,0 +1,158 @@
+{
+ "wins": [
+  {
+   "id": "慢 MODEL 残差 invert × 快 PV pattern invert 混合",
+   "what": "慢 MODEL 残差 invert × 快 PV pattern invert 混合",
+   "key": "add(multiply(0.4, invert_slow_model_residual), multiply(0.6, invert_fast_pv_pattern))",
+   "evidence": "registry EUR-Wj71Q12o-slow-fast-mix / EUR-WIN-SLOW-MODEL-X-FAST-PV",
+   "source": "region_kb"
+  },
+  {
+   "id": "三腿 invert 混合",
+   "what": "三腿 invert 混合",
+   "key": "0.30 invert(capacq industry residual) + 0.40 invert(v_reversal) + 0.30 invert(falling_wedge)",
+   "evidence": "registry EUR-WIN-SLOW-MODEL-X-FAST-PV-3LEG；78jdv6b1",
+   "source": "region_kb"
+  },
+  {
+   "id": "FCF 镜像稀释破 PROD 墙",
+   "what": "FCF 镜像稀释破 PROD 墙",
+   "key": "IS 强的镜像腿 + 与腿相关≈0 的稀释腿（见 prod_wall_breakthrough_sop.md）",
+   "evidence": "wave3b 镜像探针 1.91；prod 0.9013→0.6847 且 IS 不降反升",
+   "source": "region_kb"
+  },
+  {
+   "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV",
+   "what": "0.40 slow MODEL residual invert + 0.60 fast PV pattern invert",
+   "key": "cross-pyramid mix; follow SUBINDUSTRY decay4; do not clone FCF+gap",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "win",
+   "what": "win",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "EUR-Wj71Q12o-slow-fast-mix",
+   "what": "0.4 slow MODEL residual + 0.6 fast PV",
+   "key": "mix=0.4*slow_model_leg + 0.6*fast_pv_leg; neutralization=SUBINDUSTRY; decay=4; universe=TOP2500; delay=1",
+   "evidence": "",
+   "source": "registry_win"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "ai_factor_transfer _2 oscillators/money-flow",
+   "reason": "Wave70 56 exprs on unused _2 fields (anomaly/DPO/liq_2/PVO/ADL/CCI/BPO_2). Max S0.58 F0.16. Wave18 already killed base oscillators. Do not mix PV.",
+   "salvage": "none",
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AFT-OSC2-WEAK"
+  },
+  {
+   "family": "ai_equity_alpha analyst revision without vol/score",
+   "reason": "Wave38 slot4 analyst revision/forecast/target/opinion without vol/score max |S|0.57. Weak set, do not occupy another slot.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK"
+  },
+  {
+   "family": "ai_equity forensic+accrual mix dominant",
+   "reason": "0.6 forensic + 0.4 invert accruals S0.96 F0.58 2Y1.90 TVR8.3% but prod 0.8161. 2Y already passes; Mode A will not break prod. Leave forensic/accrual as dominant.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD"
+  },
+  {
+   "family": "ai_equity_alpha financial_statement_volatility_factor / alpha_score dominant legs",
+   "reason": "Do not use financial_statement_volatility_factor or alpha_score as the dominant (weight>=0.6) leg. Wrappers/group/ts_av_diff/SLOW-X-FAST mix still prod 0.78-0.83.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AIEQ-VOL-SCORE-PRODCORR"
+  },
+  {
+   "family": "ai_equity quality/opacity/unused liquidity/clarity x v_rev x wedge",
+   "reason": "Wave50 AIEQ unused VECTOR 3leg all missed cheap gate. Best asset_liquidity_score_2 S1.31. five_day 0.55. Do not grind.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK"
+  },
+  {
+   "family": "ai_equity_alpha",
+   "reason": "Wave51 0.30/0.40/0.30 × v_rev/wedge: max S1.09 failed cheap gate; pspat volume/trend also weak; competitive slot ERROR",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-AIEQ-W51-MOAT-UTIL-REPL-PSPAT-WEAK"
+  },
+  {
+   "family": "analyst39 EPS/margin/book residual x v_rev/wedge",
+   "reason": "Wave62 seven analyst39 slows (YoY EPS/FY-Q EPS/ex-XO/GM/book/TTM/prior-Q change) x v_rev/wedge. Max S0.88. Differentiated but far from cheap gate. Do not Mode A leftover overlapping GM/book fields.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-ANL39-EPS-GM-BOOK-WEAK"
+  },
+  {
+   "family": "analyst45 VECTOR trade-idea residual x v_rev/wedge",
+   "reason": "Wave61 seven analyst45 trade-idea slows (probability/jensen/exposure/age/count/rel-return/PnL) x v_rev/wedge. Max S0.71. Differentiated but far from cheap gate. Do not Mode A. Do not reuse leftover anl45 price/FX/time fields.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-ANL45-TRADE-IDEAS-WEAK"
+  },
+  {
+   "family": "analyst_revision",
+   "reason": "IS Sharpe/Fitness pass but prod_corr 0.86>=0.7. Dominant profit90d 90d estimate-change is crowded. Do not Mode A clone this skeleton; Mode B must change field/concept.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-ARH-PROFIT90D-GZSCORE-PROD"
+  },
+  {
+   "family": "analyst_revision surprise/primary residual",
+   "reason": "ts_av_diff/group_mean residual of surprise+primary killed IS vs wave34 surprise×primary S1.04. Best wpj5lVJp S0.48. Residual path on this pair is dead.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-ARH-SURPRISE-RESID-WEAK"
+  },
+  {
+   "family": "analyst_consensus surprise/estimate/target x v_rev/wedge",
+   "reason": "Wave63 seven consensus slows (EPS mean/std, EPS surprise, estimate count, rev/FCF/EBIT surprise, MATRIX target price) x v_rev/wedge. Max S0.97. Stop resid x PV template grinding.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-CONSENSUS-SURPRISE-TP-WEAK"
+  },
+  {
+   "family": "continuation_score chart-similarity composites",
+   "reason": "After composite round (bull-bear subtract, group_rank, ts_av_diff, ts_corr) max |sharpe| 0.44. Not worth another probe round.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "EUR-CONTINUATION-COMPOSITE-WEAK"
+  }
+ ],
+ "region_context": {
+  "tier": "达成后持续 Mode B 深挖区（81 波，70 死路，最惨烈试错区）",
+  "settings_proven": {
+   "universe": "TOP2500",
+   "delay": 1,
+   "neutralization_proven": [
+    "SUBINDUSTRY",
+    "INDUSTRY"
+   ],
+   "proven_combos": "Wj71Q12o: TOP2500 D1 SUBINDUSTRY decay4"
+  },
+  "key_notes": [
+   "本区 PROD 墙极厚：价值/分析师类全撞墙，唯一活路是镜像稀释与跨金字塔混合",
+   "fundamental86/risk59 等『EUR 0 字段』实为区域不提供（KOR 可用），换区查一遍再判死"
+  ]
+ },
+ "_meta": {
+  "region": "EUR",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

@@ -47,17 +47,36 @@ class _FakeProc:
 
 
 def _capture(monkeypatch, target_module, fn_name):
-    """用假的 subprocess.run 捕获 (cmd, kwargs)，返回 calls 列表。"""
-    import subprocess
-    calls = []
-    orig = subprocess.run
+    """用假的 subprocess.run/Popen 捕获 (cmd, kwargs)，返回 calls 列表。
 
-    def fake(cmd, **kwargs):
-        calls.append({"cmd": list(cmd), "cwd": kwargs.get("cwd")})
+    2026-09-03: 同时 patch subprocess.run 和 subprocess.Popen，
+    适配 campaign 节点从 run 改为 Popen 的异步化。
+    """
+    import subprocess
+    import threading
+    calls = []
+    orig_run = subprocess.run
+    orig_popen = subprocess.Popen
+
+    def fake_run(cmd, **kwargs):
+        calls.append({"cmd": list(cmd), "cwd": kwargs.get("cwd"), "method": "run"})
         return _FakeProc()
 
-    monkeypatch.setattr(subprocess, "run", fake)
-    return calls, orig
+    class _FakePopen:
+        """模拟 Popen 行为：立即返回，不实际执行。"""
+        def __init__(self, cmd, **kwargs):
+            calls.append({"cmd": list(cmd), "cwd": kwargs.get("cwd"), "method": "Popen"})
+            self.pid = 99999
+            self.returncode = 0
+            self.stdout = type('Pipe', (), {'readline': lambda self: b'', 'close': lambda self: None})()
+            self.stderr = type('Pipe', (), {'readline': lambda self: b'', 'close': lambda self: None})()
+
+        def communicate(self, timeout=None):
+            return ("alpha id = FAKEALPHA\n", "")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    monkeypatch.setattr(subprocess, "Popen", _FakePopen)
+    return calls, orig_run
 
 
 # ---------------------------------------------------------------------------

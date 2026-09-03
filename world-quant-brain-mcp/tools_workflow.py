@@ -225,6 +225,7 @@ def workflow_gem(
     universe: str,
     data_category: Optional[str] = None,
     priors_file: Optional[str] = None,
+    ideas_file: Optional[str] = None,
     detached: bool = True,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -237,6 +238,7 @@ def workflow_gem(
         universe: 宇宙（如 TOP3000）
         data_category: 数据类别
         priors_file: priors.json 路径
+        ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
         dry_run: 是否干跑
 
@@ -251,6 +253,7 @@ def workflow_gem(
         "universe": universe,
         "data_category": data_category,
         "priors_file": priors_file,
+        "ideas_file": ideas_file,
         "detached": detached,
     }, dry_run=dry_run)
     return result.to_dict()
@@ -264,6 +267,7 @@ def workflow_campaign(
     wave: Optional[str] = None,
     subcommand: Optional[str] = None,
     extra_args: Optional[List[str]] = None,
+    calibrate: bool = False,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """S1-S6 战役阶段执行（campaign 节点快捷方式）.
@@ -273,8 +277,9 @@ def workflow_campaign(
         stage: 阶段（S0/S1/S2/S3/S4/S5/S6）
         dataset: 数据集 ID
         wave: 波次号
-        subcommand: 子命令
+        subcommand: 子命令（assemble-priors/diversity-extract/ledger/registry/wave）
         extra_args: 额外参数
+        calibrate: S0 专用——是否运行 calibrate 交互审批
         dry_run: 是否干跑
 
     Returns:
@@ -288,5 +293,42 @@ def workflow_campaign(
         "wave": wave,
         "subcommand": subcommand,
         "extra_args": extra_args or [],
+        "calibrate": calibrate,
+    }, dry_run=dry_run)
+    return result.to_dict()
+
+
+@mcp.tool()
+def workflow_feature_engineering(
+    region: str,
+    dataset_id: str,
+    delay: int,
+    universe: str,
+    data_category: Optional[str] = None,
+    force_regen: bool = False,
+    dry_run: bool = False,
+) -> Dict[str, Any]:
+    """S1-S3 特征工程流程（feature_engineering 节点快捷方式）.
+
+    Args:
+        region: 区域代码
+        dataset_id: 数据集 ID
+        delay: 延迟（0 或 1）
+        universe: 宇宙（如 TOP3000）
+        data_category: 数据类别
+        force_regen: 是否强制重新生成（忽略已有 ledger）
+        dry_run: 是否干跑
+
+    Returns:
+        特征工程结果，含 s1_ledger_key 和 ideas_md_path
+    """
+    execute, _ = _get_workflow_executor()
+    result = execute("feature_engineering", {
+        "region": region,
+        "dataset_id": dataset_id,
+        "delay": delay,
+        "universe": universe,
+        "data_category": data_category,
+        "force_regen": force_regen,
     }, dry_run=dry_run)
     return result.to_dict()

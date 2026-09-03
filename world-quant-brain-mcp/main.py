@@ -23,6 +23,7 @@ import tools_corr      # noqa: F401,E402  相关性
 import tools_forum     # noqa: F401,E402  论坛/消息
 import tools_spc       # noqa: F401,E402  SPC
 import tools_workflow  # noqa: F401,E402  Workflow 引擎节点
+import tools_ops      # noqa: F401,E402  运维/审计（operator_audit/batch_status/submit_verdict/sa_probe/submit_batch）
 
 # --- Main entry point ---
 if __name__ == "__main__":

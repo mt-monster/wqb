@@ -27,6 +27,7 @@ def run(
     instrument_type: str = "EQUITY",
     data_type: str = "MATRIX",
     priors_file: Optional[str] = None,
+    ideas_file: Optional[str] = None,
     detached: bool = True,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
@@ -41,6 +42,7 @@ def run(
         instrument_type: 工具类型（默认 EQUITY）
         data_type: 数据类型（MATRIX 或 VECTOR）
         priors_file: priors.json 路径
+        ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
         _context: 执行上下文
 
@@ -95,17 +97,22 @@ def run(
     s1_ledger = None
     field_prefix_summary = None
     candidate_field_pool = []
+    # 显式 ideas_file 优先于 S1 ledger 自动注入
+    effective_ideas_file = ideas_file
     if store:
         try:
             s1_key = f"s1_{dataset_id}_d{delay}"
             s1_ledger = store.get_ledger(region, s1_key)
             if s1_ledger and s1_ledger.get("ideas_md_path"):
+                if not effective_ideas_file:
+                    effective_ideas_file = s1_ledger["ideas_md_path"]
                 result["steps"].append({
                     "step": "s1_ledger_check",
                     "success": True,
                     "s1_key": s1_key,
                     "ideas_md_path": s1_ledger["ideas_md_path"],
-                    "auto_inject": True,
+                    "auto_inject": not ideas_file,
+                    "override": bool(ideas_file),
                 })
         except Exception as e:
             logger.warning(f"Failed to check S1 ledger: {e}")
@@ -196,6 +203,9 @@ def run(
     if priors_file:
         cmd.extend(["--priors-file", priors_file])
 
+    if effective_ideas_file:
+        cmd.extend(["--ideas-file", effective_ideas_file])
+
     if detached:
         cmd.append("--detached")
 
@@ -217,17 +227,68 @@ def run(
             cwd=os.path.dirname(runner_script),
         )
 
-        # 等待完成（带超时）
-        stdout, stderr = process.communicate(timeout=1800)  # 30 分钟
+        if detached:
+            # detached 模式：读取 stdout 直到 task_id 出现，然后立即返回（不等待进程完成）
+            # 2026-09-03 修复：原实现 communicate(timeout=1800) 等待整个进程，导致 MCP 层超时
+            task_id = None
+            task_dir = None
+            pid = None
+            stdout_lines = []
+            stderr_lines = []
+            
+            # 读 stdout 直到看到 task_id（run.py detached 模式会打印 task_id 后立即退出）
+            import time
+            start = time.time()
+            while time.time() - start < 30:  # 最多等 30 秒
+                line = process.stdout.readline()
+                if not line:
+                    break
+                stdout_lines.append(line.rstrip())
+                if line.startswith("task_id="):
+                    task_id = line.strip().split("=", 1)[1]
+                elif line.startswith("task_dir="):
+                    task_dir = line.strip().split("=", 1)[1]
+                elif line.startswith("pid="):
+                    pid = line.strip().split("=", 1)[1]
+                if task_id and task_dir and pid:
+                    break
+            
+            # 关闭管道，让进程继续后台跑
+            process.stdout.close()
+            process.stderr.close()
+            
+            result["steps"].append({
+                "step": "execute",
+                "success": True,
+                "returncode": 0,
+                "stdout_tail": "\n".join(stdout_lines[-10:]),
+                "stderr_tail": "",
+                "detached": True,
+                "task_id": task_id,
+                "task_dir": task_dir,
+                "pid": pid,
+            })
+            
+            # detached 模式不检查产物（后台任务还在跑），直接返回 task_id 供轮询
+            result["success"] = True
+            result["detached"] = True
+            result["task_id"] = task_id
+            result["task_dir"] = task_dir
+            result["pid"] = pid
+            result["message"] = f"GEM detached task launched: {task_id}. Poll task_dir for final_expressions.json"
+            return result
+        else:
+            # 非 detached：等待完成（带超时）
+            stdout, stderr = process.communicate(timeout=1800)  # 30 分钟
 
-        success = process.returncode == 0
-        result["steps"].append({
-            "step": "execute",
-            "success": success,
-            "returncode": process.returncode,
-            "stdout_tail": stdout[-1000:] if stdout else "",
-            "stderr_tail": stderr[-1000:] if stderr else "",
-        })
+            success = process.returncode == 0
+            result["steps"].append({
+                "step": "execute",
+                "success": success,
+                "returncode": process.returncode,
+                "stdout_tail": stdout[-1000:] if stdout else "",
+                "stderr_tail": stderr[-1000:] if stderr else "",
+            })
 
         # Step 6: 检查产物
         final_expr_path = _find_final_expressions(gem_root, dataset_id, region, delay)

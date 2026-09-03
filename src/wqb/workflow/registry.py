@@ -169,7 +169,7 @@ class WorkflowRegistry:
                     category="gem",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
-                    optional_params=["data_category", "instrument_type", "data_type", "priors_file", "detached"],
+                    optional_params=["data_category", "instrument_type", "data_type", "priors_file", "ideas_file", "detached"],
                 )
             )
         except ImportError as e:
@@ -186,7 +186,7 @@ class WorkflowRegistry:
                     category="campaign",
                     phase=4,
                     required_params=["region", "stage"],
-                    optional_params=["dataset", "wave", "subcommand", "extra_args"],
+                    optional_params=["dataset", "wave", "subcommand", "extra_args", "calibrate"],
                 )
             )
         except ImportError as e:
@@ -199,7 +199,7 @@ class WorkflowRegistry:
                 feature_engineering.run,
                 NodeMeta(
                     name="feature_engineering",
-                    description="S1-S3 特征工程流程（字段理解→筛选→预处理决策）[实验性节点，未接 MCP 暴露，勿依赖]",
+                    description="S1-S3 特征工程流程（字段理解→筛选→预处理决策）",
                     category="feature_engineering",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],

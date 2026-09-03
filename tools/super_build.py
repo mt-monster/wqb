@@ -47,8 +47,19 @@ COMBO_TEMPLATE = (
     "innerCorr = self_corr(stats.returns, 500); "
     "ic = if_else(innerCorr == 1.0, nan, innerCorr); "
     "maxCorr = reduce_max(ic); "
-    "1 - maxCorr"
+    "w = 1 - maxCorr; "
+    "{expr}"
 )
+
+
+def combo_expr(power=1):
+    """combo 权重表达式：power=1 → `w`；power=3 → `w*w*w`；power=5 → `w*w*w*w*w`。
+    杠杆 3（幂次放大）：拉大权重离散度，把权重集中到最独立的成分，
+    实测 IND 由 0.7581 → 0.7539(3次方) → 0.7508(5次方)，免费压最后一截。"""
+    power = int(power or 1)
+    if power <= 1:
+        return "w"
+    return "*".join(["w"] * power)
 
 
 def _mcp_venv_python():
@@ -128,10 +139,12 @@ async def cmd_select(a):
         componentActivation="IS", unitHandling="VERIFY", nanHandling="ON",
     )
     selection = SELECTION_TEMPLATE.format(self_gate=a.self_gate)
+    combo = COMBO_TEMPLATE.format(expr=combo_expr(getattr(a, "combo_power", 1)))
     sim_data = SimulationData(type="SUPER", settings=settings, regular=None,
-                              combo=COMBO_TEMPLATE, selection=selection)
+                              combo=combo, selection=selection)
     print(f"[select] SUPER {a.region}/{a.universe}/d{a.delay}/decay{a.decay}/"
-          f"{a.neutralization} selectionLimit={a.selection_limit} self_gate={a.self_gate}")
+          f"{a.neutralization} selectionLimit={a.selection_limit} "
+          f"self_gate={a.self_gate} combo_power={getattr(a, 'combo_power', 1)}")
     result = await brain.create_simulation(sim_data)
     if "error" in result:
         print(f"[error] {result.get('error')} / {result.get('message')}")
@@ -238,6 +251,7 @@ async def cmd_submit(a):
 
 
 def main():
+    _bootstrap()   # 切换 MCP venv + 注入 sys.path（此前漏接，import brain_api 必失败）
     ap = argparse.ArgumentParser(description="SuperAlpha 组套流水线")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -249,6 +263,8 @@ def main():
     p.add_argument("--neutralization", default="SUBINDUSTRY",
                    help="中性化方案；★区域相关须逐区扫描（USA 最优 SUBINDUSTRY、IND 最优 STATISTICAL，结论不可迁移），勿照搬默认")
     p.add_argument("--truncation", type=float, default=0.08)
+    p.add_argument("--combo-power", type=int, default=1,
+                   help="combo 权重幂次（杠杆 3）：1/3/5，5 次方实测最优（免费压最后一截）")
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)
     p.add_argument("--json", dest="json_out", help="原始结果落盘")
@@ -276,4 +292,5 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    # main() 内部已 asyncio.run(a.fn(a))，此处勿再包 asyncio.run（此前双层导致 ValueError）
+    sys.exit(main())

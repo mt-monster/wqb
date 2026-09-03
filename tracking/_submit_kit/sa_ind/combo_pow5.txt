@@ -1,6 +1,0 @@
-stats = generate_stats(alpha);
-innerCorr = self_corr(stats.returns, 500);
-ic = if_else(innerCorr == 1.0, nan, innerCorr);
-maxCorr = reduce_max(ic);
-w = 1 - maxCorr;
-w * w * w * w * w

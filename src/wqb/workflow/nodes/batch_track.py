@@ -144,6 +144,7 @@ def run(
         "--dataset", dataset,
         "--wave", wave,
         "--max-rounds", str(max_rounds),
+        "--concurrency", str(concurrency),
         "--review",
         "--write-ledger",
     ]
@@ -172,6 +173,18 @@ def run(
             "expression_count": len(expressions),
             "output_csv": output_csv,
         }
+        # 结构化摘要（Dry-Run 2.0 优化：提取 COMPLETE/ERROR/CANCELLED 计数，减少 token 消耗）
+        stdout_text = result.stdout or ""
+        if stdout_text:
+            complete_count = stdout_text.count("COMPLETE")
+            error_count = stdout_text.count("ERROR")
+            cancelled_count = stdout_text.count("CANCELLED")
+            if complete_count or error_count or cancelled_count:
+                output["structured_summary"] = {
+                    "complete": complete_count,
+                    "error": error_count,
+                    "cancelled": cancelled_count,
+                }
 
         # 保存 checkpoint
         if store and success:

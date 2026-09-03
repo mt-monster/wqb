@@ -61,7 +61,8 @@ def _bootstrap():
     return mcp
 
 
-TERMINAL = {"DONE", "ERROR", "CANCELLED", "FAILED"}
+TERMINAL = {"DONE", "COMPLETE", "ERROR", "CANCELLED", "FAILED"}
+SUCCESS_STATUS = {"DONE", "COMPLETE"}
 
 
 def _shape_url(base, loc):
@@ -79,7 +80,12 @@ async def fetch_child_status(brain, child_loc: str) -> Dict[str, Any]:
         return {"error": f"HTTP {resp.status_code}", "location": child_loc}
     data = resp.json() if resp.text else {}
     err = brain._simulation_error_message(data)
+    status = (data.get("status") or "").upper()
+    # 平台对成功 child 会回显状态字符串（如 "COMPLETE"）当作 message，
+    # 不能当错误；已拿到 alpha 或状态为成功态则清空。
     if not data.get("alpha") and err == "Unknown error":
+        err = ""
+    if data.get("alpha") or status in SUCCESS_STATUS:
         err = ""
     return {
         "location": child_loc,
@@ -96,13 +102,56 @@ def _is_composite_expr(code: str) -> bool:
     return bool(fns & composite_ops)
 
 
-def _extract_two_year_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
+def _pick_checks(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """从 alpha 详情中提取 checks 列表。
+
+    平台返回的 checks 可能在顶层 data.checks 或嵌套 data.raw.checks（取决于端点）。
+    统一从这里取，避免上层重复判断。
+    """
+    # 1) 顶层 checks（fetch_alpha_details 已提取）
+    checks = data.get("checks")
+    if isinstance(checks, list) and checks:
+        return checks
+    # 2) raw.checks（部分端点嵌套在 raw 里）
+    raw = data.get("raw") or {}
+    checks = raw.get("checks")
+    if isinstance(checks, list) and checks:
+        return checks
+    # 3) raw.is.checks（再嵌套一层）
+    is_raw = raw.get("is") or {}
+    checks = is_raw.get("checks")
+    if isinstance(checks, list) and checks:
+        return checks
+    return []
+
+
+def _extract_check_value(checks: List[Dict[str, Any]], name: str) -> Optional[float]:
+    """从 checks 列表中提取指定硬闸的 value。"""
+    for c in checks:
+        if isinstance(c, dict) and c.get("name") == name:
+            v = c.get("value")
+            if v is not None:
+                try:
+                    return float(v)
+                except (TypeError, ValueError):
+                    return None
+    return None
+
+
+def _extract_two_year_sharpe(is_data: Dict[str, Any], checks: List[Dict[str, Any]] = None) -> Optional[float]:
     """提取 two_year_sharpe。
 
     修复 (2026-08-28): 复合表达式(含 add/subtract/multiply/divide)的
     twoYearSharpe 在 metrics 中可能缺失，需从 is.ladder.sharpe 抓最近两年均值。
     与 tools/parse_simresult.py._extract_two_year_sharpe 逻辑保持一致。
+
+    增强 (2026-09-02): 优先从 checks 里读 LOW_2Y_SHARPE 的 value（平台口径最可靠）。
     """
+    # 0) checks 里 LOW_2Y_SHARPE（平台已算好的值，最可靠）
+    if checks:
+        v = _extract_check_value(checks, "LOW_2Y_SHARPE")
+        if v is not None:
+            return v
     # 1) is.twoYearSharpe 直读
     tys = is_data.get("twoYearSharpe")
     if tys is not None:
@@ -124,7 +173,7 @@ def _extract_two_year_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
     return None
 
 
-def _extract_is_ladder_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
+def _extract_is_ladder_sharpe(is_data: Dict[str, Any], checks: List[Dict[str, Any]] = None) -> Optional[float]:
     """提取 IS_LADDER_SHARPE（提交硬闸之一，2026-08-29 新增字段）。
 
     优先取平台 checks 里已算好的 IS_LADDER_SHARPE 值（平台口径最可靠）；
@@ -133,6 +182,12 @@ def _extract_is_ladder_sharpe(is_data: Dict[str, Any]) -> Optional[float]:
     背景：omqEEgd2 提交被此闸拦截（1.46 < 1.58）——此前 DB 无字段可存，
     无法从库内预判，与 prod_correlation 当年同一类问题（2026-08-29 修复）。
     """
+    # 0) checks 参数传入（从 _pick_checks 统一提取）
+    if checks:
+        v = _extract_check_value(checks, "IS_LADDER_SHARPE")
+        if v is not None:
+            return v
+    # 1) is_data.checks 直读
     for c in (is_data.get("checks") or []):
         if isinstance(c, dict) and c.get("name") == "IS_LADDER_SHARPE":
             v = c.get("value")
@@ -162,8 +217,25 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
         data = resp.json() if resp.text else {}
         is_ = data.get("is") or {}
         m = is_.get("metrics") or {}
-        checks = data.get("checks") or []
+        # 统一从 _pick_checks 提取 checks（可能在顶层/raw/raw.is 三层嵌套）
+        data_with_raw = dict(data)
+        data_with_raw["raw"] = data  # 自引用，让 _pick_checks 能查到 raw.checks
+        checks = _pick_checks(data_with_raw)
         failed_checks = [c.get("name") for c in checks if c.get("result") == "FAIL"]
+        # 从 checks 提取全硬闸值（2026-09-02 优化点②：收割即带全闸画像）
+        two_year = _extract_two_year_sharpe(is_, checks)
+        is_ladder = _extract_is_ladder_sharpe(is_, checks)
+        sub_universe = is_.get("subUniverseSharpe") or m.get("subUniverseSharpe")
+        if sub_universe is None:
+            sub_universe = _extract_check_value(checks, "LOW_SUB_UNIVERSE_SHARPE")
+        prod_corr = is_.get("prodCorrelation")
+        if prod_corr is None:
+            prod_corr = _extract_check_value(checks, "PROD_CORRELATION")
+        self_corr = is_.get("selfCorrelation")
+        if self_corr is None:
+            self_corr = _extract_check_value(checks, "SELF_CORRELATION")
+        concentrated_weight = _extract_check_value(checks, "CONCENTRATED_WEIGHT")
+        cluster_test = _extract_check_value(checks, "CLUSTER_TEST")
         return {
             "alpha_id": alpha_id,
             # alphas.status 用本地语义（COMPLETE/UNSUBMITTED）；平台 status 另存 platform_status
@@ -176,13 +248,13 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
             "fitness": is_.get("fitness") or m.get("fitness"),
             "turnover": is_.get("turnover") or m.get("turnover"),
             "margin": is_.get("margin") or m.get("margin"),
-            "two_year_sharpe": _extract_two_year_sharpe(is_),
-            "is_ladder_sharpe": _extract_is_ladder_sharpe(is_),
-            "sub_universe_sharpe": is_.get("subUniverseSharpe") or m.get("subUniverseSharpe"),
-            # 提交硬闸决策字段（PROD/SELF 相关性）。此前从未提取 → alphas 两列恒 NULL（0/952）。
-            # 平台 IS 阶段未计算时为 None，属正常。
-            "prod_correlation": is_.get("prodCorrelation"),
-            "self_correlation": is_.get("selfCorrelation"),
+            "two_year_sharpe": two_year,
+            "is_ladder_sharpe": is_ladder,
+            "sub_universe_sharpe": sub_universe,
+            "prod_correlation": prod_corr,
+            "self_correlation": self_corr,
+            "concentrated_weight": concentrated_weight,
+            "cluster_test": cluster_test,
             "checks": checks,
             "failed_checks": failed_checks,
             "expression": data.get("regular", {}).get("code") if isinstance(data.get("regular"), dict) else None,
@@ -234,7 +306,8 @@ async def harvest_one_multisim(
     # 3. 过滤 terminal 状态的 children
     terminal_children = [c for c in child_results if (c.get("status") or "").upper() in TERMINAL]
     error_children = [c for c in child_results if c.get("error")]
-    done_children = [c for c in terminal_children if (c.get("status") or "").upper() == "DONE"]
+    done_children = [c for c in terminal_children
+                     if (c.get("status") or "").upper() in SUCCESS_STATUS]
 
     # 4. 拉取 alpha 详情（除非 ids_only）
     alpha_details = []
@@ -253,7 +326,7 @@ async def harvest_one_multisim(
             cloc = child["location"]
             # 重新拉取状态（可能已恢复）
             new_child = await fetch_child_status(brain, cloc)
-            if (new_child.get("status") or "").upper() == "DONE" and new_child.get("alpha_id"):
+            if (new_child.get("status") or "").upper() in SUCCESS_STATUS and new_child.get("alpha_id"):
                 details = await fetch_alpha_details(brain, new_child["alpha_id"])
                 details["child_location"] = cloc
                 details["retried"] = True
@@ -315,6 +388,9 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             # 透传 PROD/SELF 相关性 → campaign.upsert_backtest_rows 写入 alphas
             "prod_correlation": a.get("prod_correlation"),
             "self_correlation": a.get("self_correlation"),
+            # 2026-09-02 优化点②：全硬闸画像入库
+            "concentrated_weight": a.get("concentrated_weight"),
+            "cluster_test": a.get("cluster_test"),
             # 平台状态/类型/提交时间（审计 P0-2 新增列）
             "platform_status": a.get("platform_status"),
             "stage": a.get("stage"),
@@ -347,6 +423,7 @@ async def main():
     _bootstrap()
     from brain_api import BrainApiClient  # noqa: F402
     brain = BrainApiClient()
+    await brain.ensure_authenticated()
 
     # 收集 multisim ids
     msids = []
@@ -367,13 +444,20 @@ async def main():
         print(f"\n[harvest] {msid} ...")
         r = await harvest_one_multisim(brain, msid, ids_only=a.ids_only, retry_failed=a.retry_failed)
         results.append(r)
-        print(f"  children={r['child_count']} terminal={r['terminal_count']} "
-              f"done={r['done_count']} error={r['error_count']}")
+        print(f"  children={r.get('child_count', 0)} terminal={r.get('terminal_count', 0)} "
+              f"done={r.get('done_count', 0)} error={r.get('error_count', 0)}"
+              + (f" [err] {r['error']}" if r.get("error") else ""))
         if r.get("alphas"):
             for alpha in r["alphas"]:
                 mark = "✓" if not alpha.get("error") else "✗"
+                # 2026-09-02 优化点②：收割即显示全闸画像
+                tys = alpha.get('two_year_sharpe')
+                prod = alpha.get('prod_correlation')
+                tys_str = f"{tys:.2f}" if tys is not None else "N/A"
+                prod_str = f"{prod:.2f}" if prod is not None else "N/A"
                 print(f"    {mark} {alpha.get('alpha_id')}  sh={alpha.get('sharpe')} "
-                      f"fit={alpha.get('fitness')} to={alpha.get('turnover')}")
+                      f"fit={alpha.get('fitness')} to={alpha.get('turnover')} "
+                      f"2Y={tys_str} prod={prod_str}")
 
     # 关联 expressions 并 upsert
     if a.auto_upsert and a.wave and a.region:
@@ -393,8 +477,8 @@ async def main():
 
             # --- 触发 salvage_pool（全 RED 时自动分层） ---
             try:
-                # 导入 wqb_db_mcp 中的 salvage 函数
-                sys.path.insert(0, str(os.path.dirname(__file__)))
+                # 导入 wqb_db_mcp 中的 salvage 函数（模块在仓库根，非 tools/）
+                sys.path.insert(0, str(os.path.join(os.path.dirname(__file__), "..")))
                 from wqb_db_mcp import _salvage_to_pool, _get_ledger_raw
 
                 # 汇总所有 alphas 检查是否全 RED

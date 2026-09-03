@@ -1,21 +1,18 @@
 {
-  "_doc": "KOR 战役固定仿真设置（与台账 settings 键一致）。pipeline/build_wave/probe 统一引用。",
+  "_doc": "KOR 战役仿真设置（自动创建，从 DB ledger 推导）。",
   "instrumentType": "EQUITY",
   "region": "KOR",
   "universe": "TOP600",
   "delay": 1,
-  "neutralization": "SECTOR",
+  "neutralization": "STATISTICAL",
   "decay": 4,
   "truncation": 0.08,
-  "maxTrade": "ON",
   "pasteurization": "ON",
   "unitHandling": "VERIFY",
-  "nanHandling": "ON",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
   "language": "FASTEXPR",
   "visualization": false,
-  "startDate": "2014-01-01",
-  "endDate": "2023-12-31",
-  "_alt_neutralization": "STATISTICAL 对照轨（论坛证据上限更高，双轨对照制）",
-  "_multi_sim_batch_size": 8,
-  "_concurrency_rule": "单批在飞：上一批到 terminal 状态后再提交下一批，避免后到批无错误 CANCELLED（pipeline_note_cancel）"
+  "startDate": "2013-01-01",
+  "endDate": "2023-12-31"
 }

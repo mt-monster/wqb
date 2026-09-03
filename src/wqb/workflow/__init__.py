@@ -20,13 +20,14 @@ Usage:
 """
 
 from .registry import WorkflowRegistry, get_registry
-from .executor import WorkflowExecutor, execute
+from .executor import WorkflowExecutor, execute, execute_chain
 
 __all__ = [
     "WorkflowRegistry",
     "get_registry",
     "WorkflowExecutor",
     "execute",
+    "execute_chain",
 ]
 
 __version__ = "0.1.0"
