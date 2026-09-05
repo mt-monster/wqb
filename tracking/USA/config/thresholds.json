@@ -72,14 +72,19 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "other": 1.0,
+   "other": 1.15,
    "pv": 1.0,
    "model": 1.15
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 32,
+  "sweet_spot_ac_min": 8,
   "sweet_spot_ac_max": 77,
-  "_calibrated_at": "2026-08-27T02:08:11",
-  "_calibrated_from": "alpha_store 214 alphas/9 ds + results/ 扫描 → 共 13 datasets 实测"
+  "_calibrated_at": "2026-09-04T23:26:11",
+  "_calibrated_from": "alpha_store 217 alphas/9 ds + results/ 扫描 → 共 13 datasets 实测"
+ },
+ "mode_b_qualification": {
+  "sharpe_min": 1.0,
+  "fitness_min": 0.6,
+  "_doc": "饱和区（ac>10000）降门：单信号族弱，需组腿破 prod_corr 墙，组腿起点候选不需单腿高标准（2026-09-05 从 1.3/0.9 降到 1.0/0.6）"
  }
 }

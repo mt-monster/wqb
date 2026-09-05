@@ -1,74 +1,79 @@
 {
-  "_doc": "KOR 战役集中阈值配置（M15/M21）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
-  "review": {
-    "sharpe_min": 1.58,
-    "fitness_min": 1.0,
-    "two_year_sharpe_min": 1.6,
-    "margin_min": 0.0005,
-    "turnover_min": 0.05,
-    "turnover_max": 0.3,
-    "ra_failed_count_max": 0
-  },
-  "near": {
-    "sharpe_min": 1.2,
-    "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析"
-  },
-  "quick_scan": {
-    "red_2y_max": 0.6,
-    "red_sh_abs_min": 0.8,
-    "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖（pipeline_note_2y_wall 规则固化）"
-  },
-  "probe_scoring": {
-    "green_min": 2.0,
-    "yellow_min": 1.0,
-    "_formula": "potential = max|sharpe|*2 + mirror(neg sh<-0.5 +0.5) + margin(>5bp +0.3) + tvr(5-30% +0.2)",
-    "_decision": ">=green_min 绿灯深挖 / >=yellow_min 黄灯限2批 / 否则红灯判死"
-  },
-  "probe_scoring_v2": {
-    "_doc": "三灯 v2（2026-08-15）：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
-    "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
-    "green_min": 2.2,
-    "yellow_min": 1.2,
-    "w_sharpe": 1.2,
-    "w_fitness": 0.8,
-    "w_mirror": 0.5,
-    "w_margin": 0.3,
-    "w_tvr": 0.2,
-    "w_rn": 0.2,
-    "w_breadth": 0.2,
-    "cw_penalty": 0.4,
-    "breadth_bar": 0.5,
-    "rn_bar": 1.0,
-    "early_red_sh": 0.3,
-    "tvr_low": 5,
-    "tvr_high": 30,
-    "red_2y_sh_abs_min": 0.8,
-    "red_2y_max": 0.6,
-    "_notes": [
-      "margin/tvr/rn 在最强探针上联合评估（v1 是全池 OR，会拼出不存在的理想探针）",
-      "tvr 结构性墙：全部探针 tvr 同侧出界（multi_source_model 全低 / news_sentiment_transfer 全高实证）-> 绿灯封顶黄灯",
-      "2Y 红灯仅当平台返回 two_year_sharpe 时判定（v1 把 None 当 0 会误判）",
-      "Stage A 早停：max|sh|<early_red_sh 且无镜像 -> EARLY RED，不跑 Stage B（省 3 批）"
-    ]
-  },
-  "hard_gates": {
-    "prod_correlation_max": 0.7,
-    "self_correlation_max": 0.7,
-    "_note": "平台提交期硬闸，异步计算须以重检为准"
-  },
-  "dataset_health": {
-    "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。",
-    "mode": "general",
-    "tier_method": "quantile",
-    "tier1_score_pct": 0.6,
-    "tier2_score_pct": 0.3,
-    "coverage_hard_min": 0.7,
-    "field_count_hard_min": 5,
-    "coverage_min": 0.85,
-    "field_count_min": 10,
-    "alpha_count_max": 50,
-    "tier2_coverage_min": 0.85,
-    "tier2_field_count_min": 5,
-    "tier2_alpha_count_max": 200
-  }
+ "_doc": "KOR 战役集中阈值配置（M15/M21）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
+ "review": {
+  "sharpe_min": 1.58,
+  "fitness_min": 1.0,
+  "two_year_sharpe_min": 1.6,
+  "margin_min": 0.0005,
+  "turnover_min": 0.05,
+  "turnover_max": 0.3,
+  "ra_failed_count_max": 0
+ },
+ "near": {
+  "sharpe_min": 1.2,
+  "_note": "近门槛池：未过全门槛但 sharpe 高于此值，供增强方向分析"
+ },
+ "quick_scan": {
+  "red_2y_max": 0.6,
+  "red_sh_abs_min": 0.8,
+  "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖（pipeline_note_2y_wall 规则固化）"
+ },
+ "probe_scoring": {
+  "green_min": 2.0,
+  "yellow_min": 1.0,
+  "_formula": "potential = max|sharpe|*2 + mirror(neg sh<-0.5 +0.5) + margin(>5bp +0.3) + tvr(5-30% +0.2)",
+  "_decision": ">=green_min 绿灯深挖 / >=yellow_min 黄灯限2批 / 否则红灯判死"
+ },
+ "probe_scoring_v2": {
+  "_doc": "三灯 v2（2026-08-15）：联合评估最强探针 + 广度 + fitness/rn + CW 罚分 + tvr 结构性墙检出 + Stage A 早停。",
+  "_formula": "potential = 1.2*|sh_best| + 0.8*fit_best + 0.5*mirror + 0.3*margin_best + 0.2*tvr_best + 0.2*rn_best + 0.2*breadth_ratio - 0.4*cw_fail_best",
+  "green_min": 2.2,
+  "yellow_min": 1.2,
+  "w_sharpe": 1.2,
+  "w_fitness": 0.8,
+  "w_mirror": 0.5,
+  "w_margin": 0.3,
+  "w_tvr": 0.2,
+  "w_rn": 0.2,
+  "w_breadth": 0.2,
+  "cw_penalty": 0.4,
+  "breadth_bar": 0.5,
+  "rn_bar": 1.0,
+  "early_red_sh": 0.3,
+  "tvr_low": 5,
+  "tvr_high": 30,
+  "red_2y_sh_abs_min": 0.8,
+  "red_2y_max": 0.6,
+  "_notes": [
+   "margin/tvr/rn 在最强探针上联合评估（v1 是全池 OR，会拼出不存在的理想探针）",
+   "tvr 结构性墙：全部探针 tvr 同侧出界（multi_source_model 全低 / news_sentiment_transfer 全高实证）-> 绿灯封顶黄灯",
+   "2Y 红灯仅当平台返回 two_year_sharpe 时判定（v1 把 None 当 0 会误判）",
+   "Stage A 早停：max|sh|<early_red_sh 且无镜像 -> EARLY RED，不跑 Stage B（省 3 批）"
+  ]
+ },
+ "hard_gates": {
+  "prod_correlation_max": 0.7,
+  "self_correlation_max": 0.7,
+  "_note": "平台提交期硬闸，异步计算须以重检为准"
+ },
+ "dataset_health": {
+  "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。",
+  "mode": "general",
+  "tier_method": "quantile",
+  "tier1_score_pct": 0.6,
+  "tier2_score_pct": 0.3,
+  "coverage_hard_min": 0.7,
+  "field_count_hard_min": 5,
+  "coverage_min": 0.85,
+  "field_count_min": 10,
+  "alpha_count_max": 50,
+  "tier2_coverage_min": 0.85,
+  "tier2_field_count_min": 5,
+  "tier2_alpha_count_max": 200
+ },
+ "mode_b_qualification": {
+  "sharpe_min": 1.2,
+  "fitness_min": 0.8,
+  "_doc": "处女地区，维持默认"
+ }
 }

@@ -86,7 +86,9 @@ def parse_candidates(a):
             if not rows:
                 rows = st.list_expressions(region, str(a.wave))
             # 2026-09-03 修复：--from-db 时保留 expressions.id，避免 gate_results.syntax.items[].id 是 1-N 序号
-            items = [{"id": r.get("id"), "expression": r.get("expression")} for r in rows if r.get("expression")]
+            # 2026-09-03 修复2：排除 superseded 行（坏行/已提交候选不应再入门禁与回测）
+            items = [{"id": r.get("id"), "expression": r.get("expression")} for r in rows
+                     if r.get("expression") and r.get("status") != "superseded"]
         finally:
             st.close()
         if not items:
@@ -114,6 +116,140 @@ def parse_candidates(a):
     if not out:
         raise SystemExit("候选解析为空")
     return out
+
+
+# ---- 机制-形状一致性软闸（--template-family，WARN 不阻断）----
+import re as _re
+
+
+def _load_template_families_for_gate():
+    """加载 toolkit config/template_families.json（config 在 scripts 上一级）。"""
+    for d in _TOOLKIT_CANDIDATES:
+        if not d:
+            continue
+        for cand in (os.path.join(os.path.dirname(d), "config", "template_families.json"),
+                     os.path.join(d, "config", "template_families.json")):
+            if os.path.isfile(cand):
+                try:
+                    return json.load(open(cand, encoding="utf-8"))
+                except Exception:
+                    continue
+    return {}
+
+
+def _field_profile_map_for_gate(region, dataset):
+    """从 wqb.db 读 field_profile（注入 src/，与 parse_candidates 同模式）。"""
+    wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
+    src = os.path.join(wqb_root, "src")
+    if src not in sys.path:
+        sys.path.insert(0, src)
+    try:
+        from wqb.store import CampaignStore
+        st = CampaignStore(os.path.join(wqb_root, "data", "wqb.db"))
+        try:
+            return st.get_field_profile_map(region, dataset)
+        finally:
+            st.close()
+    except Exception:
+        return {}
+
+
+def _extract_fields_from_expr(expr, known_fields):
+    """从表达式提取引用的字段 id（在 known_fields 集合内）。"""
+    tokens = _re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr)
+    return [t for t in tokens if t in known_fields]
+
+
+def _match_premise(profile, premise, field_id):
+    """轻量版机制前提校验（与 implement_idea._field_matches_family 同逻辑，纯标准库）。"""
+    if not premise or not profile:
+        return True
+    forbidden = premise.get("forbidden_shape")
+    if forbidden and (profile.get("shape") or "unknown") in forbidden:
+        return False
+    shape_req = premise.get("shape_requirement") or {}
+    shapes = premise.get("shape") or shape_req.get("shape")
+    if shapes and (profile.get("shape") or "unknown") not in shapes:
+        return False
+    cov = profile.get("coverage")
+    cov_max = premise.get("coverage_max") or shape_req.get("coverage_max")
+    if cov_max is not None and cov is not None and float(cov) > float(cov_max):
+        return False
+    cov_min = premise.get("coverage_min") or shape_req.get("coverage_min")
+    if cov_min is not None and cov is not None and float(cov) < float(cov_min):
+        return False
+    if "integer" in premise or "integer" in shape_req:
+        want = bool(premise.get("integer", shape_req.get("integer")))
+        if bool(profile.get("integer")) != want:
+            return False
+    freqs = premise.get("freq") or shape_req.get("freq")
+    if freqs and (profile.get("freq") or "") not in freqs:
+        return False
+    dtypes = premise.get("data_type")
+    if dtypes:
+        ftype = (profile.get("data_type") or profile.get("type") or "").upper()
+        if ftype and ftype not in [str(d).upper() for d in dtypes]:
+            return False
+    sem = premise.get("semantic_requirement") or {}
+    patterns = sem.get("field_name_pattern") or []
+    if patterns and field_id:
+        fid = str(field_id).lower()
+        if not any(_re.search(p, fid, flags=_re.IGNORECASE) for p in patterns):
+            return False
+    return True
+
+
+def _family_shape_gate(items, a, campaign):
+    """机制-形状一致性软闸：校验候选字段形状+语义是否满足 --template-family 的 mechanism_premise。
+
+    WARN 不阻断。返回 {family, checked, mismatches: [{id, fields, shapes}], warn: bool}。
+    """
+    families = _load_template_families_for_gate().get("families") or []
+    family = next((f for f in families if f.get("family_id") == a.template_family), None)
+    if not family:
+        print(f"[famshape] warn: 族 '{a.template_family}' 未注册，跳过软闸")
+        return None
+    premise = family.get("mechanism_premise") or family.get("field_profile_match") or {}
+    if not premise:
+        print(f"[famshape] warn: 族 '{a.template_family}' 无 mechanism_premise，跳过软闸")
+        return None
+
+    region = a.region
+    if not region:
+        try:
+            settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
+            region = settings.get("region")
+        except Exception:
+            region = None
+    if not region:
+        print("[famshape] warn: 无 region，跳过软闸")
+        return None
+
+    prof_map = _field_profile_map_for_gate(region, a.dataset)
+    if not prof_map:
+        print(f"[famshape] warn: {region}/{a.dataset} 无 field_profile，跳过软闸")
+        return None
+    known = set(prof_map.keys())
+
+    mismatches = []
+    checked = 0
+    for cid, expr in items:
+        fields = _extract_fields_from_expr(expr, known)
+        if not fields:
+            continue
+        checked += 1
+        bad = [(f, (prof_map[f].get("shape") or "unknown")) for f in fields
+               if not _match_premise(prof_map[f], premise, f)]
+        if bad:
+            mismatches.append({"id": cid, "bad_fields": bad, "expr": expr[:80]})
+
+    warn = bool(mismatches)
+    print(f"[famshape] 族 '{a.template_family}' 机制-形状一致性: {checked} 候选校验, "
+          f"{len(mismatches)} 不匹配 => {'WARN' if warn else 'PASS'}")
+    for m in mismatches[:5]:
+        print(f"[famshape]   不匹配 id={m['id']}: {m['bad_fields']}")
+    return {"family": a.template_family, "checked": checked,
+            "mismatch_count": len(mismatches), "mismatches": mismatches, "warn": warn}
 
 
 def main():
@@ -145,6 +281,9 @@ def main():
                     help="启用 S1 字段候选池强制校验（防止跳过特征工程推荐）")
     ap.add_argument("--s2-field-block", action="store_true",
                     help="S1 字段校验失败时计入 FAIL（默认仅标注）")
+    ap.add_argument("--template-family", default=None,
+                    help="模板族 family_id（template_families.json）。指定时启用机制-形状一致性软闸："
+                         "校验候选字段形状+语义是否满足该族 mechanism_premise，不满足标 WARN（不阻断）")
     a = ap.parse_args()
 
     items = parse_candidates(a)
@@ -168,6 +307,11 @@ def main():
                 print(f"[gem  ] 非 GEM 候选: {len(gem_report['non_gem_candidates'])} 条")
         except Exception as e:
             print(f"[gem  ] GEM 校验失败（不阻断）: {e}")
+
+    # ---- 0.6) 机制-形状一致性软闸（--template-family 指定时启用，WARN 不阻断）----
+    family_shape_report = None
+    if a.template_family:
+        family_shape_report = _family_shape_gate(items, a, campaign)
 
     # ---- 0.5) S1 字段候选池强制校验（2026-09-03 落地，防 wave=170 事故）----
     s2_field_report = None
@@ -278,6 +422,78 @@ def main():
             else:
                 print(f"\n[div  ] 六维多样性 PASS（算子熵={div_report['operator_stats']['entropy']}, "
                       f"同质占比={div_report['structural_similarity']['homog_ratio']:.0%}）")
+            
+            # 2026-09-04 新增：算子类别覆盖检查（Logical/Group/Vector 至少 1 个）
+            import re as _re2
+            def _extract_all_operators(expr: str) -> set:
+                """提取表达式中所有算子（函数名）。"""
+                return set(_re2.findall(r"([a-z_]+)\(", expr))
+            
+            OP_CATEGORIES = {
+                "Logical": {"or", "and", "not", "is_nan", "less", "equal", "greater", "if_else", "not_equal", "less_equal", "greater_equal"},
+                "Group": {"group_mean", "group_rank", "group_backfill", "group_scale", "group_count", "group_zscore", "group_std_dev", "group_sum", "group_neutralize", "group_cartesian_product"},
+                "Vector": {"vec_min", "vec_count", "vec_sum", "vec_max", "vec_avg", "vec_stddev", "vec_range"},
+                "Time Series": {"ts_corr", "ts_zscore", "ts_returns", "ts_product", "ts_std_dev", "ts_backfill", "days_from_last_change", "last_diff_value", "ts_scale", "ts_step", "ts_sum", "ts_av_diff", "ts_kurtosis", "ts_mean", "ts_arg_max", "ts_rank", "ts_ir", "ts_delay", "ts_quantile", "ts_count_nans", "ts_covariance", "ts_decay_linear", "ts_arg_min", "ts_regression", "ts_max_diff", "kth_element", "hump", "ts_delta"},
+                "Cross Sectional": {"winsorize", "rank", "zscore", "scale", "normalize", "quantile"},
+                "Arithmetic": {"add", "multiply", "sign", "subtract", "pasteurize", "log", "max", "abs", "divide", "min", "signed_power", "inverse", "sqrt", "reverse", "power", "densify"},
+            }
+            
+            all_ops = set()
+            for e in passed_exprs:
+                all_ops.update(_extract_all_operators(e))
+            
+            category_coverage = {}
+            for cat, ops in OP_CATEGORIES.items():
+                covered = ops & all_ops
+                category_coverage[cat] = {"covered": len(covered), "total": len(ops), "ops": sorted(covered)}
+            
+            report["operator_category_coverage"] = category_coverage
+            
+            # 硬闸：Logical/Group/Vector 至少 1 个
+            logical_ok = category_coverage["Logical"]["covered"] >= 1
+            group_ok = category_coverage["Group"]["covered"] >= 1
+            vector_ok = category_coverage["Vector"]["covered"] >= 1
+            
+            # 2026-09-04 优化：MATRIX 数据集豁免 Vector 类别（无 VECTOR 字段可用）
+            dataset_data_type = None
+            try:
+                import sqlite3 as _sq2
+                wqb_root_tmp = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
+                conn_tmp = _sq2.connect(os.path.join(wqb_root_tmp, "data", "wqb.db"))
+                row_tmp = conn_tmp.execute(
+                    "SELECT data_type FROM datasets WHERE name=? LIMIT 1",
+                    (a.dataset,)
+                ).fetchone()
+                conn_tmp.close()
+                if row_tmp:
+                    dataset_data_type = row_tmp[0]
+            except Exception:
+                pass
+            
+            vector_required = dataset_data_type != "MATRIX"  # MATRIX 数据集豁免 Vector
+            vector_ok = category_coverage["Vector"]["covered"] >= 1 if vector_required else True
+            
+            if not (logical_ok and group_ok and vector_ok):
+                missing = []
+                if not logical_ok:
+                    missing.append("Logical")
+                if not group_ok:
+                    missing.append("Group")
+                if not vector_ok:
+                    missing.append("Vector")
+                report["operator_category_gate"] = {
+                    "pass": False,
+                    "missing": missing,
+                    "message": f"算子类别覆盖不足：缺 {', '.join(missing)} 类别（Logical/Group/Vector 至少各 1 个）"
+                }
+                print(f"[opcat] 算子类别覆盖 FAIL：缺 {', '.join(missing)} 类别")
+                print(f"        Logical: {category_coverage['Logical']['covered']}/{category_coverage['Logical']['total']}, "
+                      f"Group: {category_coverage['Group']['covered']}/{category_coverage['Group']['total']}, "
+                      f"Vector: {category_coverage['Vector']['covered']}/{category_coverage['Vector']['total']}")
+            else:
+                report["operator_category_gate"] = {"pass": True}
+                print(f"[opcat] 算子类别覆盖 PASS（Logical {category_coverage['Logical']['covered']}/11, "
+                      f"Group {category_coverage['Group']['covered']}/10, Vector {category_coverage['Vector']['covered']}/7）")
             wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
             settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
             qregion = a.region or settings.get("region")

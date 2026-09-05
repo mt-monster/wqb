@@ -1,20 +1,6 @@
 {
  "wins": [
   {
-   "id": "慢 MODEL 残差 invert × 快 PV pattern invert 混合",
-   "what": "慢 MODEL 残差 invert × 快 PV pattern invert 混合",
-   "key": "add(multiply(0.4, invert_slow_model_residual), multiply(0.6, invert_fast_pv_pattern))",
-   "evidence": "registry EUR-Wj71Q12o-slow-fast-mix / EUR-WIN-SLOW-MODEL-X-FAST-PV",
-   "source": "region_kb"
-  },
-  {
-   "id": "三腿 invert 混合",
-   "what": "三腿 invert 混合",
-   "key": "0.30 invert(capacq industry residual) + 0.40 invert(v_reversal) + 0.30 invert(falling_wedge)",
-   "evidence": "registry EUR-WIN-SLOW-MODEL-X-FAST-PV-3LEG；78jdv6b1",
-   "source": "region_kb"
-  },
-  {
    "id": "FCF 镜像稀释破 PROD 墙",
    "what": "FCF 镜像稀释破 PROD 墙",
    "key": "IS 强的镜像腿 + 与腿相关≈0 的稀释腿（见 prod_wall_breakthrough_sop.md）",
@@ -22,28 +8,75 @@
    "source": "region_kb"
   },
   {
-   "id": "EUR-WIN-SLOW-MODEL-X-FAST-PV",
-   "what": "0.40 slow MODEL residual invert + 0.60 fast PV pattern invert",
-   "key": "cross-pyramid mix; follow SUBINDUSTRY decay4; do not clone FCF+gap",
-   "evidence": "",
-   "source": "registry_win"
+   "id": "T-KB-01 慢×快跨周期混合",
+   "what": "T-KB-01 慢×快跨周期混合",
+   "key": "skeleton=rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD)))); iron_law=必须跨周期/跨数据源；同周期互混零增量",
+   "evidence": "慢 MODEL×快 PV，Wj71Q12o ACTIVE",
+   "source": "template_kb_validated"
   },
   {
-   "id": "win",
-   "what": "win",
-   "key": "",
-   "evidence": "",
-   "source": "registry_win"
+   "id": "T-KB-02 镜像反转翻案",
+   "what": "T-KB-02 镜像反转翻案",
+   "key": "skeleton=subtract(0, rank(x)) 或 scale(-rank(x)); iron_law=探针批 |sh|≥1.0 强负 → 下一批必做镜像反转，不是判死",
+   "evidence": "fcf_to_price sh -1.9 → 镜像 1.91",
+   "source": "template_kb_validated"
   },
   {
-   "id": "EUR-Wj71Q12o-slow-fast-mix",
-   "what": "0.4 slow MODEL residual + 0.6 fast PV",
-   "key": "mix=0.4*slow_model_leg + 0.6*fast_pv_leg; neutralization=SUBINDUSTRY; decay=4; universe=TOP2500; delay=1",
-   "evidence": "",
-   "source": "registry_win"
+   "id": "T-KB-04 镜像稀释破 PROD 墙",
+   "what": "T-KB-04 镜像稀释破 PROD 墙",
+   "key": "skeleton=强腿 + 独立稀释腿（腿间相关≈0）; iron_law=稀释腿必须与强腿零相关，否则无稀释效果",
+   "evidence": "FCF 镜像+gap 稀释 prod 0.90→0.68，IS 不降反升",
+   "source": "template_kb_validated"
+  },
+  {
+   "id": "Wj71Q12o",
+   "what": "Wj71Q12o",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  },
+  {
+   "id": "78jdv6b1",
+   "what": "78jdv6b1",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
   }
  ],
  "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "starmine 全家 16 死（STAR-*/STARHOLD-*，PROD 墙为主）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "multi_horizon 3 腿 25 死（价值/分析类 INVERT-RESID/CROWD/3LEG 全撞 PROD 或弱）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "news 情感族弱（news36/38/84/85）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "AIEQ analyst 族 10 死（弱信号或 PROD）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "ARH 修正族 PROD/WEAK（含 SIGNEDPOWER-COUNTRY-DECAY6 变体）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "MODEL×PV 双腿 BANNED（用户 2026-09-03 定案：predictive_starmine×pattern_scores 等一律不再组腿）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "同构双子星互挤 prod（E5vXYWgG 与 gJj1nxLM 同构，后者 ACTIVE 后其 prod 0.681→0.817 超 0.7：同波相似双腿候选只保留 1 颗）",
+   "source": "region_kb_dead_pattern"
+  },
   {
    "family": "ai_factor_transfer _2 oscillators/money-flow",
    "reason": "Wave70 56 exprs on unused _2 fields (anomaly/DPO/liq_2/PVO/ADL/CCI/BPO_2). Max S0.58 F0.16. Wave18 already killed base oscillators. Do not mix PV.",
@@ -78,71 +111,25 @@
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK"
-  },
-  {
-   "family": "ai_equity_alpha",
-   "reason": "Wave51 0.30/0.40/0.30 × v_rev/wedge: max S1.09 failed cheap gate; pspat volume/trend also weak; competitive slot ERROR",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AIEQ-W51-MOAT-UTIL-REPL-PSPAT-WEAK"
-  },
-  {
-   "family": "analyst39 EPS/margin/book residual x v_rev/wedge",
-   "reason": "Wave62 seven analyst39 slows (YoY EPS/FY-Q EPS/ex-XO/GM/book/TTM/prior-Q change) x v_rev/wedge. Max S0.88. Differentiated but far from cheap gate. Do not Mode A leftover overlapping GM/book fields.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-ANL39-EPS-GM-BOOK-WEAK"
-  },
-  {
-   "family": "analyst45 VECTOR trade-idea residual x v_rev/wedge",
-   "reason": "Wave61 seven analyst45 trade-idea slows (probability/jensen/exposure/age/count/rel-return/PnL) x v_rev/wedge. Max S0.71. Differentiated but far from cheap gate. Do not Mode A. Do not reuse leftover anl45 price/FX/time fields.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-ANL45-TRADE-IDEAS-WEAK"
-  },
-  {
-   "family": "analyst_revision",
-   "reason": "IS Sharpe/Fitness pass but prod_corr 0.86>=0.7. Dominant profit90d 90d estimate-change is crowded. Do not Mode A clone this skeleton; Mode B must change field/concept.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-ARH-PROFIT90D-GZSCORE-PROD"
-  },
-  {
-   "family": "analyst_revision surprise/primary residual",
-   "reason": "ts_av_diff/group_mean residual of surprise+primary killed IS vs wave34 surprise×primary S1.04. Best wpj5lVJp S0.48. Residual path on this pair is dead.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-ARH-SURPRISE-RESID-WEAK"
-  },
-  {
-   "family": "analyst_consensus surprise/estimate/target x v_rev/wedge",
-   "reason": "Wave63 seven consensus slows (EPS mean/std, EPS surprise, estimate count, rev/FCF/EBIT surprise, MATRIX target price) x v_rev/wedge. Max S0.97. Stop resid x PV template grinding.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-CONSENSUS-SURPRISE-TP-WEAK"
-  },
-  {
-   "family": "continuation_score chart-similarity composites",
-   "reason": "After composite round (bull-bear subtract, group_rank, ts_av_diff, ts_corr) max |sharpe| 0.44. Not worth another probe round.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-CONTINUATION-COMPOSITE-WEAK"
   }
  ],
  "region_context": {
-  "tier": "达成后持续 Mode B 深挖区（81 波，70 死路，最惨烈试错区）",
+  "tier": "达成后持续 Mode B 深挖区（82 波，79 死路+2 双子星死路，最惨烈试错区；wave112 首颗 ACTIVE）",
   "settings_proven": {
-   "universe": "TOP2500",
    "delay": 1,
    "neutralization_proven": [
     "SUBINDUSTRY",
     "INDUSTRY"
    ],
-   "proven_combos": "Wj71Q12o: TOP2500 D1 SUBINDUSTRY decay4"
+   "proven_combos": "Wj71Q12o: TOP2500 D1 SUBINDUSTRY decay4; gJj1nxLM: TOP2500 D1 SUBINDUSTRY decay4 ACTIVE 2026-09-03",
+   "universe": "TOP2500"
   },
   "key_notes": [
-   "本区 PROD 墙极厚：价值/分析师类全撞墙，唯一活路是镜像稀释与跨金字塔混合",
-   "fundamental86/risk59 等『EUR 0 字段』实为区域不提供（KOR 可用），换区查一遍再判死"
+   "本区 PROD 墙极厚：价值/分析师类全撞墙，唯一活路是镜像稀释与跨金字塔混合（跨类混合禁 pv×model 后需新证据）",
+   "fundamental86/risk59 等『EUR 0 字段』实为区域不提供（KOR 可用），换区查一遍再判死",
+   "2026-09-03 用户禁令：PV 与 MODEL 数据集不再组腿；wave112 gJj1nxLM 为最后一批已执行（ACTIVE 保留）",
+   "win_recipes 中 banned=true 条目仅供审计，assemble-priors 不得注入",
+   "（此条是注释，只能存文字）"
   ]
  },
  "_meta": {

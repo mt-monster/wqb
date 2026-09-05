@@ -1,0 +1,61 @@
+{
+ "wins": [
+  {
+   "id": "COUNTRY 分组三区域检查解法",
+   "what": "COUNTRY 分组三区域检查解法",
+   "key": "group_rank(ts_rank(...), country)",
+   "evidence": "retro §1；9qpQ0VQ2",
+   "source": "region_kb"
+  },
+  {
+   "id": "T-KB-08 量价背离（101 最强主题）",
+   "what": "T-KB-08 量价背离（101 最强主题）",
+   "key": "skeleton=reverse(ts_corr(rank(price), rank(volume), 5~10)); iron_law=适用于任何含 price+volume 的数据集",
+   "evidence": "9qpQ0VQ2 相关主题",
+   "source": "template_kb_validated"
+  },
+  {
+   "id": "9qpQ0VQ2",
+   "what": "9qpQ0VQ2",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "emotion 族 42 条 PROD 0.82-0.86（cross_region_lessons GLB-EMOTION-DEAD，任何区域不再挖）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "MODEL 金字塔无信号（model165 0.48 / model26 0.54）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "sentiment23 8/8 FAIL / sentiment26 APAC 负",
+   "source": "region_kb_dead_pattern"
+  }
+ ],
+ "region_context": {
+  "tier": "早期达成区",
+  "settings_proven": {
+   "universe": "TOP3000/MINVOL1M/MINVOL10M/TOPDIV3000",
+   "delay": 1
+  },
+  "key_notes": [
+   "GLB 数据须过三区域检查：AMER/EMEA/APAC 子宇宙各自达标"
+  ]
+ },
+ "_meta": {
+  "region": "GLB",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

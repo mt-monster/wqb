@@ -1,0 +1,41 @@
+{
+  "_doc": "GLB 战役仿真设置（2026-09-04 更新，基于 S-PRE 查表结果）。universe=TOP3000, delay=1, neutralization=SUBINDUSTRY。PPA 主题门：GLB/D1 Power Pool Aug`26 匹配。排除：emotion 系、anl15 精确表达式、techindi_model predicted_first_quantile_ten_day_return_*。",
+  "instrumentType": "EQUITY",
+  "region": "GLB",
+  "universe": "TOP3000",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2014-01-01",
+  "endDate": "2023-12-31",
+  "_multi_sim_batch_size": 8,
+  "_concurrency_rule": "七槽填槽模式：7 批 multisim 同提保持槽位常满，即收即补（wqb-concurrency §8）",
+  "_diversity_enhance": "auto",
+  "_diversity_weight": 0.3,
+  "_known_wall": "tech_chart_model first_quantile 系已被占用（prod 0.9989 墙）；emotion 系死路；anl15 精确表达式封禁",
+  "_ppa_theme": "GLB/D1 Power Pool Aug`26 匹配，可继续",
+  "_excluded_families": [
+    "emotion 信号族 (label 含 p0q2/p1q2/q4sp/ql4/y60w15/y60L)",
+    "anl15_* 裸字段 winsorize(ts_backfill(x,120),std=4) 长历史模板",
+    "techindi_model predicted_first_quantile_ten_day_return_*"
+  ],
+  "_current_wave": "01",
+  "_s0_whitelist": [
+    "intraday_pv_feats",
+    "pv30", 
+    "other455",
+    "news73",
+    "analyst_consensus",
+    "sentiment22",
+    "news31",
+    "ai_news_scores",
+    "news48"
+  ]
+}

@@ -100,7 +100,7 @@ def list_wave_results(region=None, status=None, archived=None):
     if archived is not None:
         sql += " AND archived=?"
         params.append(archived)
-    sql += " ORDER BY region, wave_number"
+    sql += " ORDER BY region, CAST(wave_number AS INTEGER)"
     c.execute(sql, params)
     rows = [dict(r) for r in c.fetchall()]
     conn.close()

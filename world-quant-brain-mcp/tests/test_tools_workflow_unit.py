@@ -320,6 +320,25 @@ def test_batch_track_output_csv_campaign_dir_default_none(monkeypatch):
     assert params["campaign_dir"] is None
 
 
+def test_batch_track_detached_default_true_and_passthrough(monkeypatch):
+    """2026-09-04 修复：detached 默认 True（后台模式避免 MCP 超时），且显式 False 可透传。"""
+    rec = _install_recorder(monkeypatch)
+    # 默认：detached=True
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78"
+    )
+    _, params, _ = rec.calls[0]
+    assert params["detached"] is True
+
+    # 显式 detached=False（同步旧模式）原样透传
+    rec2 = _install_recorder(monkeypatch)
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78", detached=False
+    )
+    _, params2, _ = rec2.calls[0]
+    assert params2["detached"] is False
+
+
 def test_gem_and_campaign_confirm_free_tools_shape(monkeypatch):
     """gem / campaign 不暴露 confirm_submit（无提交动作），字段各自透传。"""
     rec = _install_recorder(monkeypatch)

@@ -108,5 +108,10 @@
   "sweet_spot_ac_max": 686,
   "_calibrated_at": "2026-08-18T18:56:44",
   "_calibrated_from": "results/ 12 datasets 实测"
+ },
+ "mode_b_qualification": {
+  "sharpe_min": 1.2,
+  "fitness_min": 0.8,
+  "_doc": "处女地区，维持默认"
  }
 }

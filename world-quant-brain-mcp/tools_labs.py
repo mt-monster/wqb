@@ -4,6 +4,7 @@ from typing import Dict, List, Any
 from pathlib import Path
 
 from mcp_core import mcp, load_config
+from labs_functions import labs_client
 
 @mcp.tool()
 

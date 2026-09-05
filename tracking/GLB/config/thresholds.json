@@ -1,7 +1,7 @@
 {
- "_doc": "EUR 战役集中阈值配置（2026-08-18 从 GBR 复制改 region 参数 + 恢复宽截面多样性参数）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
+ "_doc": "GLB 战役集中阈值配置（2026-09-04 从 EUR 模板复制，调整 GLB 特定参数）。所有评审/快扫/硬闸统一引用本文件，禁止散落硬编码。",
  "diversity": {
-  "_doc": "EUR 宽截面（TOP2500）多样性参数。标准阈值：entropy<2.0/coverage<50%/similarity>70%。signal_floor 为信号证据闸：连续 min_batches 批 max|sharpe| < floor 即判信号天花板。",
+  "_doc": "GLB 宽截面（TOP3000）多样性参数。标准阈值：entropy<2.0/coverage<50%/similarity>70%。signal_floor 为信号证据闸：连续 min_batches 批 max|sharpe| < floor 即判信号天花板。",
   "narrow_cross_section": false,
   "entropy_min": 2.0,
   "coverage_min": 0.5,
@@ -22,7 +22,7 @@
   "ra_failed_count_max": 0,
   "rn_sharpe_min": 1.0,
   "rn_fitness_min": 0.6,
-  "_note": "用户硬闸：Sharpe>1.58 / Fitness>1 / 2Y>1.6 / Margin>5bp / TVR 5-30% / failed_checks 全空 / rn_sharpe>1.0 / rn_fitness>0.6（2026-08-18 用户授权放宽：FCF 镜像家族 rnf 0.61-0.62 为 EUR 近期结构天花板，rn_sharpe 1.34+ 已达标）"
+  "_note": "用户硬闸：Sharpe>1.58 / Fitness>1 / 2Y>1.6 / Margin>5bp / TVR 5-30% / failed_checks 全空 / rn_sharpe>1.0 / rn_fitness>0.6"
  },
  "near": {
   "sharpe_min": 1.2,
@@ -69,10 +69,10 @@
  "hard_gates": {
   "prod_correlation_max": 0.7,
   "self_correlation_max": 0.7,
-  "_note": "平台提交期硬闸。EUR OS 池当前为空（0 已提交），self-corr 无约束；prod_corr 是主要风险（反转族 0.95 墙）。"
+  "_note": "平台提交期硬闸。GLB OS 池当前为空（0 已提交），self-corr 无约束；prod_corr 是主要风险（tech_chart_model first_quantile 系已被占用）。"
  },
  "dataset_health": {
-  "_doc": "S0 数据集预筛（从 GBR 复制）。mode=general：alphaCount 仅 score 软罚 + crowd_veto/crowd_band 可选硬规则。硬地板：coverage_hard_min/field_count_hard_min。alpha_count_max=1000：>1000 才一票否决。",
+  "_doc": "S0 数据集预筛（放宽档：coverage ≥ 0.6 / alphaCount ≤ 1500 / fieldCount ≥ 10）。mode=general：alphaCount 仅 score 软罚 + crowd_veto/crowd_band 可选硬规则。硬地板：coverage_hard_min/field_count_hard_min。",
   "mode": "general",
   "tier_method": "quantile",
   "tier1_score_pct": 0.6,
@@ -91,24 +91,25 @@
   "crowd_band_cov_min": 0.7,
   "crowd_band_value_score_min": 4,
   "crowd_band_field_count_min": 10,
-  "_note": "EUR 已知：returns 反转拥挤（prod 0.95 墙），优先 alphaCount=0 零竞争数据集；ml_factor_proj 等 0-alpha 集若有新字段优先探。",
+  "_note": "GLB 已知：tech_chart_model first_quantile 系已被占用（prod 0.9989 墙），优先 alphaCount=0 零竞争数据集；emotion 系/techindi_model predicted_first_quantile_ten_day_return_*/anl15 精确表达式直接排除。",
   "category_weight_enable": true,
   "category_weight_floor": 0.9,
   "category_weight_cap": 1.15,
   "pyramid_quota_enable": true,
-  "pyramid_quota_non_model_min": 3,
+  "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "model": 1.15
+   "pv": 1.15,
+   "other": 1.15
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 309,
-  "sweet_spot_ac_max": 309,
-  "_calibrated_at": "2026-09-03T18:51:45",
-  "_calibrated_from": "alpha_store 4 alphas/1 ds + results/ 扫描 → 共 1 datasets 实测"
+  "sweet_spot_ac_min": 155,
+  "sweet_spot_ac_max": 1576,
+  "_calibrated_at": "2026-09-05T17:54:55",
+  "_calibrated_from": "alpha_store 2 alphas/2 ds + results/ 扫描 → 共 2 datasets 实测"
  },
  "mode_b_qualification": {
   "sharpe_min": 1.0,
   "fitness_min": 0.6,
-  "_doc": "PROD 墙极厚区（wave104-112 全灭史），降门槛避免整波误判死"
+  "_doc": "PROD 墙极厚区（tech_chart_model first_quantile 系被占用），降门槛避免整波误判死"
  }
 }

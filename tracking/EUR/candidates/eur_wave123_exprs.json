@@ -1,0 +1,10 @@
+[
+ "quantile(subtract(ts_backfill(max_similarity_breakaway_gap_upward, 66), ts_backfill(adaptive_similarity_upward_breakaway_gap_120, 66)), driver=\"gaussian\")",
+ "quantile(subtract(ts_backfill(mean_similarity_breakaway_gap_upward, 66), ts_backfill(adaptive_similarity_upward_breakaway_gap_120, 66)), driver=\"gaussian\")",
+ "quantile(subtract(ts_backfill(median_similarity_breakaway_gap_upward, 66), ts_backfill(adaptive_similarity_upward_breakaway_gap_120, 66)), driver=\"gaussian\")",
+ "quantile(subtract(ts_backfill(max_similarity_breakaway_gap_upward, 66), ts_backfill(avg_similarity_upward_breakaway_gap_120, 66)), driver=\"gaussian\")",
+ "quantile(add(multiply(0.4, ts_av_diff(ts_backfill(dynamic_similarity_reversal_v_bottom, 126), 20)), multiply(0.6, ts_av_diff(ts_backfill(avg_similarity_continuation_falling_wedge, 21), 10))), driver=\"gaussian\")",
+ "quantile(add(multiply(0.4, ts_av_diff(ts_backfill(dynamic_similarity_reversal_v_bottom_pattern, 126), 20)), multiply(0.6, ts_av_diff(ts_backfill(avg_similarity_continuation_falling_wedge, 21), 10))), driver=\"gaussian\")",
+ "if_else(ts_delta(max_similarity_breakaway_gap_upward, 5) > 0, rank(max_similarity_breakaway_gap_upward), rank(reverse(max_similarity_breakaway_gap_upward)))",
+ "group_zscore(ts_backfill(max_similarity_breakaway_gap_upward, 66), industry)"
+]

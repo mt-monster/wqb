@@ -1,0 +1,85 @@
+{
+ "review": {
+  "sharpe_min": 1.58,
+  "fitness_min": 1.0,
+  "two_year_sharpe_min": 1.0,
+  "margin_min": 0.0005,
+  "turnover_max": 0.7,
+  "turnover_min": 0.01
+ },
+ "near": {
+  "sharpe_min": 1.0
+ },
+ "sharpe_min": 1.58,
+ "fitness_min": 1.0,
+ "turnover_max": 0.7,
+ "turnover_min": 0.01,
+ "self_corr_max": 0.7,
+ "prod_corr_max": 0.7,
+ "concentrated_weight_max": 0.5,
+ "sub_universe_sharpe_min": 1.0,
+ "robust_sharpe_min": 1.0,
+ "mode_b_qualification": {
+  "_doc": "2026-09-01 明令（wave97 误判触发）：整波最强候选必须同时满足 sharpe>=1.25 且 fitness>=0.8，才有资格进入 Mode B 组合增强或继续优化；未达资格线的波一律判死（dead_end 回写 + wave 台账 closed），禁止进 near_pool、禁止发增强波。判定对象=整波最高 sharpe 的候选。",
+  "sharpe_min": 1.25,
+  "fitness_min": 0.8
+ },
+ "dataset_health": {
+  "_doc": "S0 两阶段口径（同 GLOBAL/IND 2026-09-01 口径）：阶段① 全局绝对底线=coverage_hard_min/field_count_hard_min；阶段② 区域自适应分位分带（tier_method=quantile）。KOR 特化：MODEL 类别禁用（用户明令）；红榜族（chart_patterns/news_sentiment/ai_ml/credit_risk/glb_emotion）结构性排除。",
+  "mode": "general",
+  "tier_method": "quantile",
+  "tier1_score_pct": 0.6,
+  "tier2_score_pct": 0.3,
+  "coverage_hard_min": 0.5,
+  "field_count_hard_min": 5,
+  "coverage_min": 0.8,
+  "field_count_min": 10,
+  "alpha_count_max": 1500,
+  "tier2_coverage_min": 0.6,
+  "tier2_field_count_min": 5,
+  "tier2_alpha_count_max": 1500,
+  "backfill_band_enable": true,
+  "backfill_band_cov_min": 0.5,
+  "backfill_band_cov_max": 0.8,
+  "backfill_band_alpha_count_max": 1500,
+  "backfill_band_value_score_min": 4,
+  "excluded_pyramids": [],
+  "_excluded_pyramids_doc": "指定排除的 pyramid（=category×region×delay）：命名 KOR_D1_<category>；命中者降 excluded 且不被保底带复活。",
+  "category_weight_enable": true,
+  "category_weight_floor": 0.9,
+  "category_weight_cap": 1.15,
+  "pyramid_quota_enable": true,
+  "pyramid_quota_non_model_min": 2,
+  "category_weights": {
+   "analyst": 1.15,
+   "model": 1.15,
+   "sentiment": 0.9,
+   "fundamental": 0.9,
+   "news": 0.9,
+   "pv": 1.15,
+   "risk": 0.9,
+   "shortinterest": 0.9,
+   "other": 0.9
+  },
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 206,
+  "sweet_spot_ac_max": 67041,
+  "_calibrated_at": "2026-09-02T21:26:41",
+  "_calibrated_from": "alpha_store 207 alphas/12 ds + results/ 扫描 → 共 12 datasets 实测"
+ },
+ "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
+ "kor_specific_adjustments": {
+  "cw_gate": "FAIL",
+  "longcount_min": 80,
+  "longcount_verdict": "FAIL",
+  "prod_corr_early_warn": 0.7,
+  "fast_kill": "新数据集 8 探针无 |S|>=0.5 即判死回写，不扩批不换设置重试",
+  "note": "KOR profile gate_overrides 落地；TOP600 小宇宙放大 CW/longCount 问题"
+ },
+ "poll": {
+  "max_wait_minutes": 60,
+  "backoff_base_seconds": 20,
+  "backoff_max_seconds": 300,
+  "stalled_minutes": 60
+ }
+}

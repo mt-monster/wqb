@@ -222,6 +222,24 @@ class SchemaMixin:
                 UNIQUE(region, layer, entry_id)
             );
             -- cross_region_lessons 已废弃（数据迁移至 registry_empirical layer='cross_region'），不再创建
+            CREATE TABLE IF NOT EXISTS field_profile (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dataset_id INTEGER NOT NULL,
+                field_name VARCHAR(200) NOT NULL,
+                shape VARCHAR(30),
+                coverage DECIMAL(5,4),
+                skew DECIMAL(8,3),
+                kurt DECIMAL(8,3),
+                integer INTEGER DEFAULT 0,
+                freq VARCHAR(20),
+                pos_ratio DECIMAL(5,4),
+                neg_ratio DECIMAL(5,4),
+                near_zero_ratio DECIMAL(5,4),
+                source VARCHAR(40),
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(dataset_id, field_name),
+                FOREIGN KEY (dataset_id) REFERENCES datasets(id)
+            );
             CREATE TABLE IF NOT EXISTS campaign_state (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 region_id INTEGER NOT NULL,
@@ -276,6 +294,10 @@ class SchemaMixin:
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_alphas_platform_status "
             "ON alphas(platform_status)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_field_profile_dataset "
+            "ON field_profile(dataset_id)"
         )
         # backtest_results 幂等：alpha_id 唯一约束（消除重复 INSERT）
         # 注意：SQLite ON CONFLICT 需要非 partial UNIQUE INDEX

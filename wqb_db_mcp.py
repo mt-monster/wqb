@@ -108,14 +108,17 @@ def list_wave_results(
 ) -> List[Dict[str, Any]]:
     """列出 wave 结果（可按 region/status/archived 过滤）。
 
+    ⚠️ wave 编号仅区域内唯一（各区域独立递增）。省略 region 会返回跨区域
+    混排列表，解读波号时须以 region 字段区分（如 KOR-w170 ≠ MEA-w170）。
+
     Args:
-        region: 区域过滤（可选）
+        region: 区域过滤（可选，跨区域查询强烈建议传）
         status: 状态过滤（open/closed，可选）
         archived: 是否归档（可选）
         limit: 返回数量上限
 
     Returns:
-        wave 结果列表（按 region, wave_number 排序）
+        wave 结果列表（按 region + 数值波号降序）
     """
     conn = _conn()
     c = conn.cursor()
@@ -130,7 +133,7 @@ def list_wave_results(
     if archived is not None:
         sql += " AND archived=?"
         params.append(1 if archived else 0)
-    sql += " ORDER BY region, wave_number DESC LIMIT ?"
+    sql += " ORDER BY region, CAST(wave_number AS INTEGER) DESC LIMIT ?"
     params.append(limit)
     c.execute(sql, params)
     rows = _rows_to_dicts(c.fetchall())
@@ -156,7 +159,7 @@ def get_latest_wave(region: str, status: Optional[str] = None) -> Dict[str, Any]
     if status:
         sql += " AND status=?"
         params.append(status)
-    sql += " ORDER BY wave_number DESC LIMIT 1"
+    sql += " ORDER BY CAST(wave_number AS INTEGER) DESC LIMIT 1"
     c.execute(sql, params)
     row = c.fetchone()
     conn.close()
@@ -424,6 +427,9 @@ def search_alphas_by_sharpe(
 ) -> List[Dict[str, Any]]:
     """按 sharpe 搜索 alpha（sharpe >= min_sharpe）。
 
+    ⚠️ alpha 跨区域独立编号，省略 region 的结果为跨区域混排榜单，
+    波号须配合返回的 region 字段解读。
+
     Args:
         region: 区域过滤（可选）
         min_sharpe: 最小 sharpe
@@ -473,7 +479,8 @@ def get_campaign_summary(region: str) -> Dict[str, Any]:
     wave_stats = dict(c.fetchone())
     # 最新 wave
     c.execute(
-        "SELECT wave_number, focus, status FROM wave_results WHERE region=? ORDER BY wave_number DESC LIMIT 1",
+        "SELECT wave_number, focus, status FROM wave_results WHERE region=? "
+        "ORDER BY CAST(wave_number AS INTEGER) DESC LIMIT 1",
         (region,),
     )
     latest_wave = c.fetchone()

@@ -80,7 +80,7 @@ class ProbeBatchExecutor:
     L0_DEAD_THRESHOLD = 0.3   # |S|<0.3 判死
     # Layer 1 判死阈值（KOR 加严）
     L1_DEAD_THRESHOLD = 0.5   # |S|<0.5 判死
-    # Mode B 资格线
+    # Mode B 资格线（2026-09-04 方案 B：默认单点模式，可被 thresholds.json 覆盖为分布模式）
     MODE_B_S = 1.25
     MODE_B_F = 0.8
 
@@ -93,6 +93,47 @@ class ProbeBatchExecutor:
         self.dry_run = dry_run
         self.toolkit_dir = _find_toolkit()
         self.mcp_py = _find_mcp_python()
+        # 2026-09-04 方案 B：从 thresholds.json 读区域化 Mode B 配置（含分布感知参数）
+        self._mode_b_cfg = self._load_mode_b_config()
+
+    def _load_mode_b_config(self) -> Dict[str, Any]:
+        """从 thresholds.json 读 mode_b_qualification 节（方案 B：支持分布感知）.
+
+        返回字段：
+          - mode: "point"（单点，默认）| "distribution"（分布感知）
+          - sharpe_min / fitness_min: 单点模式阈值
+          - sharpe_p75_min / fitness_p75_min: 分布模式 p75 分位阈值
+          - count_above_min: 分布模式至少 N 条过线（与 p75 二选一）
+        """
+        default = {
+            "mode": "point",
+            "sharpe_min": self.MODE_B_S,
+            "fitness_min": self.MODE_B_F,
+        }
+        try:
+            import json
+            thresholds_path = os.path.join(
+                self.campaign_dir, "config", "thresholds.json"
+            )
+            if not os.path.exists(thresholds_path):
+                return default
+            with open(thresholds_path, "r", encoding="utf-8") as f:
+                thresholds = json.load(f)
+            mbq = thresholds.get("mode_b_qualification", {})
+            if not isinstance(mbq, dict):
+                return default
+            # 合并配置（缺省回落默认）
+            cfg = default.copy()
+            cfg["mode"] = mbq.get("mode", "point")
+            cfg["sharpe_min"] = float(mbq.get("sharpe_min", self.MODE_B_S))
+            cfg["fitness_min"] = float(mbq.get("fitness_min", self.MODE_B_F))
+            if cfg["mode"] == "distribution":
+                cfg["sharpe_p75_min"] = float(mbq.get("sharpe_p75_min", cfg["sharpe_min"]))
+                cfg["fitness_p75_min"] = float(mbq.get("fitness_p75_min", cfg["fitness_min"]))
+                cfg["count_above_min"] = int(mbq.get("count_above_min", 2))
+            return cfg
+        except Exception:
+            return default
 
     # ---- 候选选择 ----
 
@@ -135,14 +176,54 @@ class ProbeBatchExecutor:
 
     def check_mode_b_eligible(self, results: List[Dict]
                                ) -> Tuple[bool, Optional[Dict]]:
-        """检查是否有候选过 Mode B 资格线。"""
-        best = None
+        """检查是否有候选过 Mode B 资格线（2026-09-04 方案 B：支持分布感知）.
+
+        单点模式（point，旧行为）：max(sharpe) >= S 且 max(fitness) >= F
+        分布模式（distribution）：
+          - sharpe_p75 >= X 且 fitness_p75 >= Y（前 25% 候选的分位值）
+          - 或 count(sharpe >= S 且 fitness >= F) >= N（至少 N 条过线）
+        """
+        cfg = self._mode_b_cfg
+        mode = cfg.get("mode", "point")
+
+        # 提取有效候选（sharpe/fitness 非空）
+        valid = []
         for r in results:
             s = abs(r.get("sharpe") or 0)
             f = r.get("fitness") or 0
-            if s >= self.MODE_B_S and f >= self.MODE_B_F:
-                if best is None or s > abs(best.get("sharpe") or 0):
-                    best = r
+            if s > 0 or f > 0:
+                valid.append({"sharpe": s, "fitness": f, "raw": r})
+
+        if not valid:
+            return (False, None)
+
+        if mode == "distribution":
+            # 分布感知模式
+            sharpes = sorted([v["sharpe"] for v in valid], reverse=True)
+            fitnesses = sorted([v["fitness"] for v in valid], reverse=True)
+            # p75 分位（前 25%）
+            p75_idx = max(0, int(len(sharpes) * 0.25) - 1)
+            sharpe_p75 = sharpes[p75_idx] if sharpes else 0
+            fitness_p75 = fitnesses[p75_idx] if fitnesses else 0
+            # count 过线条数
+            count_above = sum(
+                1 for v in valid
+                if v["sharpe"] >= cfg["sharpe_min"] and v["fitness"] >= cfg["fitness_min"]
+            )
+            # 判定：p75 达标 或 count 达标
+            p75_ok = (sharpe_p75 >= cfg.get("sharpe_p75_min", cfg["sharpe_min"])
+                      and fitness_p75 >= cfg.get("fitness_p75_min", cfg["fitness_min"]))
+            count_ok = count_above >= cfg.get("count_above_min", 2)
+            eligible = p75_ok or count_ok
+            best = max(valid, key=lambda v: v["sharpe"])["raw"] if eligible else None
+            return (eligible, best)
+
+        # 单点模式（旧行为）
+        best = None
+        for v in valid:
+            if v["sharpe"] >= cfg["sharpe_min"] and v["fitness"] >= cfg["fitness_min"]:
+                if best is None or v["sharpe"] > abs(best.get("sharpe") or 0):
+                    best = v["raw"]
         return (best is not None, best)
 
     # ---- 主执行流程 ----

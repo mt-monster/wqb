@@ -18,7 +18,8 @@ docs/
 │   ├── operators_notes.md                   WQ BRAIN 全算子速查表（87条）
 │   ├── community_tpl_library_sequel.md      社区模板库续集手册（141 TPL + 幽灵算子映射表）
 │   ├── feature_engineering_sop.md           标准化特征工程流程 SOP（六阶段）
-│   └── feature_engineering_template.md      特征工程文档模板（波级六节式）
+│   ├── feature_engineering_template.md      特征工程文档模板（波级六节式）
+│   └── campaign_kickoff_prompt.md           RA 战役启动提示词模板（区域无关，九步流水线+硬纪律+形状分流）
 ├── architecture/                          ← 架构与结构类
 │   └── project_structure_analysis.md        项目目录结构分析（含迁移状态）
 ├── tutorials/                             ← 教程课件类
@@ -91,6 +92,11 @@ docs/
 **定位**：每波挖掘的特征工程执行规范（字段理解→筛选→预处理决策→表达式生成→质量预估→候选池优化六阶段）+ 波级文档模板。
 **内容**：SOP 含逐阶段执行者/数据源/产出/通过标准/反模式，与 S0-S6 战役流水线映射；模板含〔必填〕节与量化证据表格（入选/淘汰字段、预处理决策、BLOCK 处理、复盘钩子）。
 **适用场景**：新波开始前复制模板到 `tracking/<REGION>/feature_engineering_wave<N>_<ds>.md` 填写；配套工具 `tools/pool_diversity.py`/`quality_predict.py`/`wave_gate.py`。
+
+#### 3c. RA 战役启动提示词模板 `reference/campaign_kickoff_prompt.md`
+**定位**：在某一 region 下开 REGULAR Alpha 挖掘战役的区域无关提示词模板（AI 可调用，含 YAML front-matter 变量 `$REGION`/`$DATASET`）。
+**内容**：一句话启动指令、7 条硬纪律（禁 PV×model 混/禁同信号加权调参/skill 链/Mode B 资格线/产物入 wqb.db 等）、九步流水线（S-PRE→S6 每步 MCP 调用+产物+失败分支）、循环与停止条件、区域 Profile 路由、反模式、Artifact 契约、字段画像与模板族（形状分流）集成点。
+**适用场景**：开新区域/新数据集战役时，把 `$REGION`/`$DATASET` 填入复用；与 `wq-brain-ra-pipeline` 九步 SOP 对齐。
 
 ### 三、架构与结构（architecture/）
 

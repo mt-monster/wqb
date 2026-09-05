@@ -1,0 +1,18 @@
+{
+  "_doc": "DEU 战役仿真设置（自动创建，从 DB ledger 推导）。",
+  "instrumentType": "EQUITY",
+  "region": "DEU",
+  "universe": "TOP500",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2013-01-01",
+  "endDate": "2023-12-31"
+}

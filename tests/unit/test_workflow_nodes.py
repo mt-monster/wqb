@@ -83,6 +83,17 @@ def _capture(monkeypatch, target_module, fn_name):
 # 公共 fixture：伪造 toolkit 目录，避免依赖用户机器的真实 skill 安装
 # ---------------------------------------------------------------------------
 
+@pytest.fixture(autouse=True)
+def _isolate_async_task_dir(tmp_path, monkeypatch):
+    """2026-09-04 根治：campaign/fe/batch_track 异步任务输出目录注入 tmp。
+
+    历史污染根因：campaign/fe 测试的真实 async 收尾线程把任务文件写到仓库
+    logs/_async_tasks（70 个 FAKEALPHA 桩），batch_track 测试写 src/logs——
+    全部为假成功/假任务。WQB_TASK_ROOT 注入后写盘指向 pytest tmp，回收即删。
+    """
+    monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+
+
 @pytest.fixture
 def fake_toolkit(tmp_path, monkeypatch):
     scripts = tmp_path / "wq-brain-campaign-toolkit" / "scripts"
@@ -435,6 +446,67 @@ def test_gem_dry_run_short_circuits(monkeypatch):
     assert calls == [], "dry_run 下 gem 不应触发 subprocess"
 
 
+def test_gem_ideas_format_invalid_blocked_before_popen(monkeypatch, tmp_path):
+    """ideas 文件缺 **Concept**/**Implementation Example** 块时，在 Popen 前拦截。
+
+    2026-09-03 新增：run_pipeline 在 BRAIN 登录+数据准备后才解析块结构，格式错误
+    会白烧一轮；gem 节点必须在 Popen 前用同规则预检并返回合规示例。
+    """
+    from wqb.workflow.nodes import gem as gm
+
+    bad_md = tmp_path / "bad_ideas.md"
+    bad_md.write_text("Dataset: analyst45\n1. some idea without concept blocks\n",
+                      encoding="utf-8")
+
+    monkeypatch.setattr(gm, "resolve_skill_dir", lambda name: "C:/gem")
+    monkeypatch.setattr(gm.os.path, "exists", lambda p: True)
+    popen_calls = []
+    monkeypatch.setattr(gm.subprocess, "Popen",
+                        lambda *a, **k: (popen_calls.append(a), None)[1])
+
+    out = gm.run(region="IND", dataset_id="analyst45", delay=1,
+                 universe="TOP3000", data_category="analyst",
+                 ideas_file=str(bad_md), detached=True)
+
+    assert out["success"] is False
+    assert popen_calls == [], "非法 ideas 文件不应触发 Popen"
+    last = out["steps"][-1]
+    assert last["step"] == "check_ideas_format" and last["success"] is False
+    assert last["blocks"] == 0
+    assert any("Concept" in e for e in last["errors"])
+    assert "sample" in last  # 附带合规示例供快速修正
+
+
+def test_gem_ideas_format_valid_blocks_parsed():
+    """_parse_ideas_blocks 与 run_pipeline.extract_template_blocks 同规则：
+    反引号模板与裸模板（tail 自身）均须提取；无 {variable} 占位符的块不计。"""
+    from wqb.workflow.nodes import gem as gm
+
+    good_md = (
+        "**Concept**: momentum with low-vol scaling\n"
+        "- **Implementation Example**: `rank(ts_delta({analyst}, 21))`\n"
+        "- **Rationale**: r1\n\n"
+        "**Concept**: no backticks tail template\n"
+        "- **Implementation Example**: rank(ts_mean({analyst}, 10))\n"
+        "- **Rationale**: r2\n"
+    )
+    blocks = gm._parse_ideas_blocks(good_md)
+    assert len(blocks) == 2
+    assert blocks[0]["template"] == "rank(ts_delta({analyst}, 21))"
+    assert blocks[1]["template"] == "rank(ts_mean({analyst}, 10))"
+    assert all("{" in b["template"] and "}" in b["template"] for b in blocks)
+
+    no_ph = (
+        "**Concept**: idea A\n"
+        "- **Implementation Example**: `rank(close)`\n"
+        "- **Rationale**: template without placeholder\n"
+    )
+    assert gm._parse_ideas_blocks(no_ph) == []
+
+    assert gm._parse_ideas_blocks("Dataset: analyst45\nno blocks here\n") == []
+
+
+
 def test_feature_engineering_dry_run_short_circuits(monkeypatch):
     """缺陷 A：feature_engineering 在 dry_run 下不 subprocess、不写库。"""
     from wqb.workflow.nodes import feature_engineering as fe
@@ -471,3 +543,153 @@ def test_campaign_s2_s3_dry_run_skips_preflight_and_quality_gate(monkeypatch, fa
         steps = {s["step"] for s in r["steps"]}
         assert "build_command" in steps
         assert "execute" not in steps
+
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-04 Mode B 资格线优化（方案 A/B/C）
+# ---------------------------------------------------------------------------
+
+def test_judge_extract_region_from_details():
+    """方案 A：_extract_region 从 get_alpha_details 返回提取 region。"""
+    from wqb.workflow.nodes import judge as jd
+
+    # settings.region 路径
+    details = {"result": {"settings": {"region": "EUR"}}}
+    assert jd._extract_region(details) == "EUR"
+
+    # 顶层 region 兑底
+    details = {"result": {"region": "ind"}}
+    assert jd._extract_region(details) == "IND"
+
+    # 无 region 返回 None
+    assert jd._extract_region({"result": {}}) is None
+    assert jd._extract_region({"__error__": "fail"}) is None
+
+
+def test_judge_load_mode_b_qualification_region_routing(tmp_path, monkeypatch):
+    """方案 A：_load_mode_b_qualification 按 region 读 thresholds.json。"""
+    from wqb.workflow.nodes import judge as jd
+    import json
+
+    # 构造 EUR thresholds.json
+    eur_dir = tmp_path / "tracking" / "EUR" / "config"
+    eur_dir.mkdir(parents=True)
+    (eur_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"sharpe_min": 1.0, "fitness_min": 0.6}
+    }), encoding="utf-8")
+
+    # 构造 KOR thresholds.json
+    kor_dir = tmp_path / "tracking" / "KOR" / "config"
+    kor_dir.mkdir(parents=True)
+    (kor_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"sharpe_min": 1.25, "fitness_min": 0.8}
+    }), encoding="utf-8")
+
+    # mock os.path.dirname 让 thresholds_path 指向 tmp_path
+    orig_join = os.path.join
+    def fake_join(*args):
+        if "tracking" in args:
+            # 重定向到 tmp_path
+            idx = args.index("tracking")
+            return orig_join(str(tmp_path), *args[idx:])
+        return orig_join(*args)
+    monkeypatch.setattr(os.path, "join", fake_join)
+
+    # EUR 读 EUR 的值
+    mbq_eur = jd._load_mode_b_qualification(None, region="EUR")
+    assert mbq_eur["sharpe_min"] == 1.0
+    assert mbq_eur["fitness_min"] == 0.6
+
+    # KOR 读 KOR 的值
+    mbq_kor = jd._load_mode_b_qualification(None, region="KOR")
+    assert mbq_kor["sharpe_min"] == 1.25
+    assert mbq_kor["fitness_min"] == 0.8
+
+
+def test_probe_batch_mode_b_distribution_mode(tmp_path):
+    """方案 B：check_mode_b_eligible 分布感知模式（p75 / count>=2）。"""
+    from tools.probe_batch_mode import ProbeBatchExecutor
+    import json
+
+    # 构造 campaign_dir + thresholds.json（分布模式）
+    campaign_dir = tmp_path / "campaign"
+    config_dir = campaign_dir / "config"
+    config_dir.mkdir(parents=True)
+    (config_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {
+            "mode": "distribution",
+            "sharpe_min": 1.0,
+            "fitness_min": 0.6,
+            "sharpe_p75_min": 0.9,
+            "fitness_p75_min": 0.5,
+            "count_above_min": 2,
+        }
+    }), encoding="utf-8")
+
+    executor = ProbeBatchExecutor(str(campaign_dir), "test_ds", 1, dry_run=True)
+
+    # 场景 1：p75 达标（4 条候选，前 25% = 第 1 条，sharpe 1.2 >= 0.9）
+    results = [
+        {"sharpe": 1.2, "fitness": 0.7},
+        {"sharpe": 0.8, "fitness": 0.5},
+        {"sharpe": 0.6, "fitness": 0.4},
+        {"sharpe": 0.4, "fitness": 0.3},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is True
+    assert best["sharpe"] == 1.2
+
+    # 场景 2：count 达标（2 条过线）
+    results = [
+        {"sharpe": 1.1, "fitness": 0.7},
+        {"sharpe": 1.05, "fitness": 0.65},
+        {"sharpe": 0.5, "fitness": 0.3},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is True
+
+    # 场景 3：p75 与 count 均不达标
+    results = [
+        {"sharpe": 0.8, "fitness": 0.5},
+        {"sharpe": 0.6, "fitness": 0.4},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is False
+    assert best is None
+
+
+def test_mode_b_adaptive_learn_threshold():
+    """方案 C：learn_mode_b_threshold 从 registry 样本学习阈值。"""
+    from wqb.workflow.mode_b_adaptive import learn_mode_b_threshold, _extract_samples, _fit_threshold
+
+    # 构造样本：5 胜 5 负
+    wins = [
+        {"payload": {"sharpe": 1.5, "fitness": 0.9}},
+        {"payload": {"sharpe": 1.3, "fitness": 0.85}},
+        {"payload": {"sharpe": 1.2, "fitness": 0.8}},
+        {"payload": {"sharpe": 1.1, "fitness": 0.75}},
+        {"payload": {"sharpe": 1.0, "fitness": 0.7}},
+    ]
+    dead_ends = [
+        {"payload": {"best_sharpe": 0.9, "best_fitness": 0.6}},
+        {"payload": {"best_sharpe": 0.8, "best_fitness": 0.55}},
+        {"payload": {"best_sharpe": 0.7, "best_fitness": 0.5}},
+        {"payload": {"best_sharpe": 0.6, "best_fitness": 0.45}},
+        {"payload": {"best_sharpe": 0.5, "best_fitness": 0.4}},
+    ]
+
+    samples = _extract_samples(wins, dead_ends)
+    assert len(samples) == 10
+    assert sum(1 for s in samples if s[2]) == 5  # 5 胜
+    assert sum(1 for s in samples if not s[2]) == 5  # 5 负
+
+    # 拟合阈值：成功率 >= 30% 的最小 sharpe
+    sharpe_threshold = _fit_threshold([(s[0], s[2]) for s in samples], target_rate=0.3)
+    assert sharpe_threshold is not None
+    assert 0.9 <= sharpe_threshold <= 1.5  # 应在胜负分界附近
+
+    # 样本不足返回 None
+    class _FakeStore:
+        connection = None
+    assert learn_mode_b_threshold(_FakeStore(), "EUR") is None

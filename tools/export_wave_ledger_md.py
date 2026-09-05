@@ -23,7 +23,8 @@ def fetch_waves(region):
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute(
-        "SELECT * FROM wave_results WHERE region=? ORDER BY wave_number",
+        "SELECT * FROM wave_results WHERE region=? "
+        "ORDER BY CAST(wave_number AS INTEGER)",
         (region,),
     )
     rows = [dict(r) for r in c.fetchall()]
@@ -117,6 +118,8 @@ def export_ledger_md(region, out_path=None):
     lines.append("> **用途**：每波回测的结论层。每波回收后追加一节；下一波开跑前**必须先读本台账「下一波决策」节**再设计批次。")
     lines.append("> **数据源**：`data/wqb.db` 的 `wave_results` 表（单轨 DB 模式，本文件为快照导出，勿手改）。")
     lines.append("> **机器伴生**：`ledger_kv` 表（判死清单/骨架登记/最佳候选，供门禁去重与脚本消费）。")
+    lines.append("> **编号语义**：wave 号为本区域独立递增、仅区域内唯一；跨区域引用/对比必须带区域前缀（如 KOR-w170）。")
+    lines.append("> **排序**：按数值波号升序（非字典序，波号 ≥100 后不受字符串排序干扰）。")
     lines.append("")
     lines.append("---")
     lines.append("")

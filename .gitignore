@@ -127,3 +127,14 @@ Claude/skills/**/parsetab.py
 !Claude/skills/*/data/**
 # 但 skill data 下的运行期快照仍然排除
 Claude/skills/*/data/*/final_expressions.json
+
+# Claude 安装器输出目录（目录名含空格，属本地安装产物，不入库）
+Claude outputs/
+
+# Claude 技能安装器本体（2026-09-05 19:38 外来工具产物，非本项目源码）
+# 注意：CLAUDE.md 与 start_mcp.bat 属项目自身文档/工具，不在此列，需正常提交
+INSTALLATION_GUIDE.md
+install_claude_skills.bat
+install_claude_skills.ps1
+install_now.py
+verify_claude_skills.py

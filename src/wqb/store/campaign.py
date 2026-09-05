@@ -14,6 +14,7 @@ CampaignStore inherits all mixins; public API is unchanged.
       ├── LedgerMixin          (_ledger.py)         upsert/get_ledger
       ├── ExpressionsMixin     (_expressions.py)    upsert/list/history_expressions
       ├── FieldCatalogMixin    (_field_catalog.py)  upsert/get_field_catalog
+      ├── FieldProfileMixin   (_field_profile.py)  upsert/get_field_profile
       ├── GateMixin            (_gate.py)           upsert/get_gate_result
       ├── BacktestMixin        (_backtest.py)       upsert_backtest_rows, record_submission
       ├── DiversityMixin       (_diversity.py)      diversity, ranking, checkpoint, rules, ideas
@@ -46,6 +47,7 @@ from ._schema import SchemaMixin
 from ._ledger import LedgerMixin
 from ._expressions import ExpressionsMixin
 from ._field_catalog import FieldCatalogMixin
+from ._field_profile import FieldProfileMixin
 from ._gate import GateMixin
 from ._backtest import BacktestMixin
 from ._diversity import DiversityMixin
@@ -58,6 +60,7 @@ class CampaignStore(
     LedgerMixin,
     ExpressionsMixin,
     FieldCatalogMixin,
+    FieldProfileMixin,
     GateMixin,
     BacktestMixin,
     DiversityMixin,
