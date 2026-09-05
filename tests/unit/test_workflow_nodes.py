@@ -9,6 +9,7 @@
   - 缺陷#4 superalpha confirm_submit 两分支 step 名不一致（super_build_submit vs submit）
 另覆盖 executor dry-run 在 executor 层拦截（节点函数不被调用）的纪律。
 """
+import json
 import os
 import sys
 from pathlib import Path
@@ -227,6 +228,128 @@ def test_campaign_stage_route_matrix(monkeypatch, fake_toolkit):
     assert [s["step"] for s in r["steps"]][-1] == "route_stage"
 
 
+# ---------------------------------------------------------------------------
+# 2026-09-06：异步子进程可观测性
+#   campaign_USA_S0_20260905_222757 挂满 3600s 被杀，任务记录里只剩一行
+#   "Timeout after 3600s"——stdout 全丢，无从判断卡在哪一步。这一组把
+#   "分阶段超时预算 / 超时保留输出 / stdin 断开 / 输出直写文件" 做成回归。
+# ---------------------------------------------------------------------------
+
+def test_campaign_stage_timeout_budgets():
+    """每阶段各有预算，不再一律 3600s；S0 --calibrate 是纯本地计算，预算最短。"""
+    assert cp._stage_timeout("S0") == 900
+    assert cp._stage_timeout("S0", calibrate=True) == 600
+    assert cp._stage_timeout("S3") == 3600
+    assert cp._stage_timeout("S6") == 600
+    assert cp._stage_timeout("S9") == cp._DEFAULT_TIMEOUT
+
+
+def test_campaign_stage_timeout_env_override(monkeypatch):
+    monkeypatch.setenv("WQB_CAMPAIGN_TIMEOUT", "42")
+    assert cp._stage_timeout("S3") == 42
+    assert cp._stage_timeout("S0", calibrate=True) == 42
+    # 非法值不得让节点崩，回退阶段默认
+    monkeypatch.setenv("WQB_CAMPAIGN_TIMEOUT", "not-a-number")
+    assert cp._stage_timeout("S3") == 3600
+
+
+def test_campaign_child_output_to_files_and_stdin_detached(monkeypatch, fake_toolkit):
+    """子进程输出必须直写文件（可实时 tail、超时后仍在盘上），stdin 必须断开。
+
+    stdin 不显式断开时子进程继承 MCP 服务进程的标准输入，一旦误读即永久阻塞。
+    """
+    import subprocess
+    seen = {}
+
+    class _RecordingPopen:
+        def __init__(self, cmd, **kwargs):
+            seen.update(kwargs)
+            seen["cmd"] = list(cmd)
+            self.pid = 1234
+            self.returncode = 0
+
+        def communicate(self, timeout=None):
+            seen["timeout"] = timeout
+            return (None, None)
+
+    monkeypatch.setattr(subprocess, "Popen", _RecordingPopen)
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S0", calibrate=True,
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True
+    assert seen["stdin"] is subprocess.DEVNULL
+    # 不再用 PIPE：给的是真实文件对象（有 fileno），从根上排除 PIPE 缓冲互锁
+    assert seen["stdout"] is not subprocess.PIPE
+    assert seen["stderr"] is not subprocess.PIPE
+    assert hasattr(seen["stdout"], "fileno") and hasattr(seen["stderr"], "fileno")
+    assert seen["env"]["PYTHONIOENCODING"] == "utf-8"
+    assert r["timeout_sec"] == cp._CALIBRATE_TIMEOUT
+    assert os.path.basename(r["stdout_log"]) == f"{r['task_id']}.out"
+    assert os.path.basename(r["stderr_log"]) == f"{r['task_id']}.err"
+
+
+def test_campaign_timeout_preserves_partial_child_output(monkeypatch, fake_toolkit):
+    """回归：超时被 kill 后，子进程已产出的输出必须留在任务记录里。
+
+    原实现在 TimeoutExpired 分支直接丢弃 communicate 的输出，于是
+    "整整一小时零 stdout" 既不能证明子进程没产出、也无法定位阻塞点。
+    """
+    import subprocess
+    import time as _time
+
+    class _HangingPopen:
+        def __init__(self, cmd, stdout=None, stderr=None, **kwargs):
+            # 模拟子进程跑到一半打了进度行然后卡死
+            stdout.write(b"[calibrate:progress] +0.0s start region=USA")
+            stdout.flush()
+            stderr.write(b"stderr breadcrumb")
+            stderr.flush()
+            self.pid = 4242
+            self.returncode = None
+            self._killed = False
+
+        def communicate(self, timeout=None):
+            if not self._killed:
+                raise subprocess.TimeoutExpired(cmd="score_datasets.py", timeout=timeout)
+            return (None, None)
+
+        def kill(self):
+            self._killed = True
+            self.returncode = -9
+
+    monkeypatch.setattr(subprocess, "Popen", _HangingPopen)
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S0", calibrate=True,
+               _context={"store": ex._store, "registry": ex.registry})
+    assert r["success"] is True  # 启动成功；失败结论在异步任务文件里
+
+    # 等收尾线程写出终态
+    task_file = r["task_file"]
+    rec = None
+    for _ in range(200):
+        try:
+            with open(task_file, encoding="utf-8") as f:
+                rec = json.load(f)
+        except (OSError, ValueError):
+            rec = None
+        if rec and rec.get("status") != "running" and "error" in rec:
+            break
+        _time.sleep(0.02)
+
+    assert rec is not None and "error" in rec, rec
+    assert str(cp._CALIBRATE_TIMEOUT) in rec["error"]
+    assert rec["partial_output"] is True
+    assert "[calibrate:progress]" in rec["stdout_tail"]
+    assert "stderr breadcrumb" in rec["stderr_tail"]
+    # 日志文件本身也要留档，便于事后复盘完整输出
+    assert os.path.exists(rec["stdout_log"]) and os.path.exists(rec["stderr_log"])
+
+
 def test_campaign_missing_dataset_skips_preflight_with_warning(monkeypatch, fake_toolkit):
     """无 dataset 时 preflight 应明确记 warning 并跳过（不是静默失效）。"""
     calls, _ = _capture(monkeypatch, cp, "run")
@@ -387,17 +510,24 @@ def test_executor_dry_run_passes_dry_run_kwarg(monkeypatch, tmp_path):
 
 
 def test_executor_propagates_node_failure_truthfully(monkeypatch, tmp_path):
-    """缺陷 C：executor 不再无条件 success=True，须透传节点真实 success/error。"""
+    """缺陷 C：executor 不再无条件 success=True，须透传节点真实 success/error。
+
+    失败源不要用「库里无表达式」：2026-09-05 起 batch_track 统一了 dry-run
+    语义（干跑回答「这条链能不能跑通」，不回答「现在有没有货」），无表达式
+    只记 warning 并继续验证链路，属预期成功。故改用真正的断链场景
+    ——campaign_dir 不存在——来检验 executor 是否如实传播失败。
+    """
     ex = WorkflowExecutor(db_path=str(tmp_path / "x.db"))
-    ex._store = _CaptureStore(expressions=[])
-    monkeypatch.setattr(bt, "resolve_campaign_dir", lambda region: str(tmp_path))
+    ex._store = _CaptureStore(expressions=["rank(close)"])
+    monkeypatch.setattr(bt, "resolve_campaign_dir",
+                        lambda region: str(tmp_path / "no_such_campaign"))
 
     r = ex.execute("batch_track",
                    {"region": "USA", "wave": "1", "dataset": "model219"},
                    dry_run=True)
 
     assert r.success is False
-    assert "No expressions" in r.error
+    assert "Campaign directory not found" in r.error
 
 
 def test_submit_alpha_dry_run_short_circuits(monkeypatch):

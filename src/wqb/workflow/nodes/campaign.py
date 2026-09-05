@@ -21,6 +21,53 @@ from .._common import REPO_ROOT, resolve_campaign_dir, resolve_toolkit_dir, reso
 
 logger = logging.getLogger(__name__)
 
+#: 每阶段子进程超时预算（秒）。2026-09-06 修复：此前一律 3600s ——
+#: S0 校准是纯本地计算（EUR/USA 实测 <1s），却能把整整一小时烧在"看不见的挂起"上。
+#: 预算按各阶段的实测量级给足余量：跑不完说明卡住了，早停早暴露。
+_STAGE_TIMEOUTS = {
+    "S0": 900,    # 评分走平台分页（EUR 实测 49s）；--calibrate 纯本地
+    "S1": 1800,   # scan_fields 全字段扫描（字段多的区域偏慢）
+    "S2": 900,    # build_wave 组波
+    "S3": 3600,   # pipeline 回测编排（七槽填槽，最长的一档）
+    "S4": 900,    # review_wave
+    "S5": 600,    # quota
+    "S6": 600,    # ledger/registry/wave 回写
+}
+_CALIBRATE_TIMEOUT = 600      # S0 --calibrate：脚本自身 300s 软超时，外层再留一倍兜底
+_DEFAULT_TIMEOUT = 3600
+_LOG_TAIL_CHARS = 2000
+_LOG_READ_CAP = 4 * 1024 * 1024  # 读回子进程日志的上限，防止异常刷屏撑爆内存
+
+
+def _stage_timeout(stage: str, calibrate: bool = False) -> int:
+    """按阶段返回子进程超时预算（WQB_CAMPAIGN_TIMEOUT 可全局覆盖）。"""
+    env = os.environ.get("WQB_CAMPAIGN_TIMEOUT")
+    if env:
+        try:
+            return max(1, int(float(env)))
+        except ValueError:
+            logger.warning(f"Invalid WQB_CAMPAIGN_TIMEOUT={env!r}, falling back to stage default")
+    if stage == "S0" and calibrate:
+        return _CALIBRATE_TIMEOUT
+    return _STAGE_TIMEOUTS.get(stage, _DEFAULT_TIMEOUT)
+
+
+def _read_log(path: str, tail: Optional[int] = None) -> str:
+    """读回子进程日志。子进程直写文件，因此超时被杀后输出依然留存。"""
+    try:
+        size = os.path.getsize(path)
+        with open(path, "rb") as f:
+            if size > _LOG_READ_CAP:
+                f.seek(size - _LOG_READ_CAP)
+            raw = f.read()
+    except OSError:
+        return ""
+    # 统一换行：原先走 text=True 时由 universal newlines 归一，改文件捕获后
+    # 需显式归一，否则 Windows 的 CRLF 会混进摘要提取与 ledger 里的 stdout_tail。
+    text = raw.decode("utf-8", "replace")
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return text[-tail:] if tail else text
+
 
 def _fail_step(result: Dict[str, Any], step: str, error: str) -> Dict[str, Any]:
     """记录失败步骤，并同步写顶层 success/error。
@@ -276,19 +323,44 @@ def run(
     os.makedirs(task_dir, exist_ok=True)
     task_file = os.path.join(task_dir, f"{task_id}.json")
 
-    try:
-        logger.info(f"Executing campaign {stage} (async): {' '.join(cmd)}")
+    # 2026-09-06 修复：子进程输出直写文件而非 PIPE。三个收益：
+    #   ① 运行中可实时 tail，不必等进程结束才知道跑到哪一步（此前挂起一小时零可见输出）；
+    #   ② 超时被 kill 后输出仍在盘上 —— 原实现在 TimeoutExpired 分支丢弃 communicate
+    #      的输出，"零 stdout" 于是既非证据也无从复盘；
+    #   ③ 从根上消除 PIPE 缓冲区写满导致的父子互锁。
+    stdout_log = os.path.join(task_dir, f"{task_id}.out")
+    stderr_log = os.path.join(task_dir, f"{task_id}.err")
+    timeout_sec = _stage_timeout(stage, calibrate=calibrate)
 
+    try:
+        logger.info(f"Executing campaign {stage} (async, timeout={timeout_sec}s): {' '.join(cmd)}")
+
+        # 子进程 stdout 编码固定 UTF-8：重定向到文件时 Python 默认走 locale 编码
+        # （本机 cp936），中文结论行会因编码不一致读成乱码。
+        child_env = dict(os.environ, PYTHONIOENCODING="utf-8")
         popen_kwargs: Dict[str, Any] = {
-            "stdout": subprocess.PIPE,
-            "stderr": subprocess.PIPE,
-            "text": True,
+            # stdin 显式断开：不继承 MCP 服务进程的 stdin，杜绝子进程误读标准输入永久阻塞
+            "stdin": subprocess.DEVNULL,
             "cwd": toolkit_dir,
+            "env": child_env,
         }
         if os.name == "nt":
             # 2026-09-04 修复：脱离父进程组——MCP 服务进程退出不带走后台子进程
             popen_kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
-        process = subprocess.Popen(cmd, **popen_kwargs)
+        out_f = err_f = None
+        try:
+            out_f = open(stdout_log, "wb")
+            err_f = open(stderr_log, "wb")
+            process = subprocess.Popen(cmd, stdout=out_f, stderr=err_f, **popen_kwargs)
+        finally:
+            # 父进程侧句柄用完即关（子进程已各自持有副本），避免 Windows 上占着文件；
+            # 开第二个文件或 Popen 失败时同样要收回已开的句柄
+            for fh in (out_f, err_f):
+                if fh is not None:
+                    try:
+                        fh.close()
+                    except OSError:
+                        pass
 
         # 2026-09-04 修复：主线程先写 running 占位——即使收尾线程随 MCP 进程退出被杀，
         # 轮询方也能读到 status=running 而非"任务文件不存在"（收尾线程完成时覆盖终态）。
@@ -299,6 +371,9 @@ def run(
                     "status": "running",
                     "pid": process.pid,
                     "started_at": datetime.now().isoformat(),
+                    "timeout_sec": timeout_sec,
+                    "stdout_log": stdout_log,
+                    "stderr_log": stderr_log,
                 }, f, indent=2, ensure_ascii=False)
         except Exception as e:
             logger.warning(f"Failed to write running placeholder {task_file}: {e}")
@@ -306,14 +381,21 @@ def run(
         # 后台线程：等待进程完成并收集结果
         def _wait_and_collect():
             try:
-                stdout, stderr = process.communicate(timeout=3600)
+                # stdout/stderr 已重定向到文件，communicate 只用于等待+回收；
+                # 返回值在真实路径下为 None，测试替身会给字符串，两者都兼容。
+                pipe_out, pipe_err = process.communicate(timeout=timeout_sec)
+                stdout = pipe_out if pipe_out else _read_log(stdout_log)
+                stderr = pipe_err if pipe_err else _read_log(stderr_log)
                 success = process.returncode == 0
                 exec_result = {
                     "task_id": task_id,
                     "success": success,
                     "returncode": process.returncode,
-                    "stdout_tail": stdout[-2000:] if stdout else "",
-                    "stderr_tail": stderr[-2000:] if stderr else "",
+                    "stdout_tail": stdout[-_LOG_TAIL_CHARS:] if stdout else "",
+                    "stderr_tail": stderr[-_LOG_TAIL_CHARS:] if stderr else "",
+                    "stdout_log": stdout_log,
+                    "stderr_log": stderr_log,
+                    "timeout_sec": timeout_sec,
                     "finished_at": datetime.now().isoformat(),
                 }
                 # 结构化摘要
@@ -334,10 +416,20 @@ def run(
                     process.communicate(timeout=30)
                 except Exception:
                     pass
+                # 2026-09-06 修复：保留被杀前已写盘的输出。原实现在这里什么都不留，
+                # 于是 campaign_USA_S0_20260905_222757 只剩一行 "Timeout after 3600s"，
+                # 既无法判断卡在哪一步、也无法证明子进程到底有没有产出。
                 exec_result = {
                     "task_id": task_id,
                     "success": False,
-                    "error": "Timeout after 3600s (process killed)",
+                    "error": f"Timeout after {timeout_sec}s (process killed)",
+                    "returncode": process.returncode,
+                    "partial_output": True,
+                    "stdout_tail": _read_log(stdout_log, _LOG_TAIL_CHARS),
+                    "stderr_tail": _read_log(stderr_log, _LOG_TAIL_CHARS),
+                    "stdout_log": stdout_log,
+                    "stderr_log": stderr_log,
+                    "timeout_sec": timeout_sec,
                     "finished_at": datetime.now().isoformat(),
                 }
             except Exception as e:
@@ -434,12 +526,20 @@ def run(
             "pid": process.pid,
             "task_id": task_id,
             "task_file": task_file,
-            "message": f"Campaign {stage} launched in background (pid={process.pid}). Poll {task_file} for result.",
+            "stdout_log": stdout_log,
+            "stderr_log": stderr_log,
+            "timeout_sec": timeout_sec,
+            "message": (f"Campaign {stage} launched in background (pid={process.pid}, "
+                        f"timeout={timeout_sec}s). Poll {task_file} for result; "
+                        f"tail {stdout_log} / {stderr_log} for live progress."),
         })
         result["success"] = True
         result["async"] = True
         result["task_id"] = task_id
         result["task_file"] = task_file
+        result["stdout_log"] = stdout_log
+        result["stderr_log"] = stderr_log
+        result["timeout_sec"] = timeout_sec
         result["pid"] = process.pid
 
     except Exception as e:
