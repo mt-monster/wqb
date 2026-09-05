@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "brain-forum-browse action ledger",
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "read_post_ids": { "type": "array", "items": { "type": "string" } },
+    "contributed_post_ids": { "type": "array", "items": { "type": "string" } },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "post_id": { "type": "string" },
+          "comment_id": { "type": "string" },
+          "at": { "type": "string" },
+          "l1": { "type": "string" }
+        }
+      }
+    },
+    "posts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "post_id": { "type": "string" },
+          "title": { "type": "string" },
+          "at": { "type": "string" }
+        }
+      }
+    },
+    "upvotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "comment_id": { "type": "string" },
+          "post_id": { "type": "string" },
+          "at": { "type": "string" }
+        }
+      }
+    },
+    "content_angles_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "angle_slug": { "type": "string" },
+          "at": { "type": "string" },
+          "post_id": { "type": "string" }
+        }
+      }
+    },
+    "past_contribution_snippets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": { "type": "string" },
+          "l1": { "type": "string" },
+          "post_id": { "type": "string" },
+          "claims": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "community_overlap_blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "post_id": { "type": "string" },
+          "overlap": { "type": "number" },
+          "reason": { "type": "string" },
+          "at": { "type": "string" }
+        }
+      }
+    },
+    "pinned_marked": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "post_id": { "type": "string" },
+          "reason": { "type": "string" },
+          "at": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -50,6 +50,37 @@ class WorkflowResult:
         }
 
 
+def _extract_error(output: Dict[str, Any]) -> Optional[str]:
+    """从节点输出提取失败原因。
+
+    2026-09-05 修复：campaign / superalpha / feature_engineering 等节点把
+    error 放进 result["steps"][-1]，顶层只写 success=False —— 旧实现只读顶层
+    error/reason/message，导致 WorkflowResult.error 为 None，execute_chain
+    静默中断且无可诊断信息（实测：`campaign success=False error=None`）。
+    现按「顶层 → steps 末个失败步 → 兜底」三级回捞。
+    """
+    for key in ("error", "reason", "message"):
+        value = output.get(key)
+        if value:
+            return str(value)
+
+    steps = output.get("steps")
+    if isinstance(steps, list):
+        for step in reversed(steps):
+            if not isinstance(step, dict) or step.get("success", True):
+                continue
+            for key in ("error", "reason", "message"):
+                value = step.get(key)
+                if value:
+                    name = step.get("step")
+                    return f"[{name}] {value}" if name else str(value)
+            name = step.get("step")
+            if name:
+                return f"Step failed: {name}"
+
+    return "Node reported success=False without an error message"
+
+
 class WorkflowExecutor:
     """Workflow 执行引擎."""
 
@@ -153,7 +184,7 @@ class WorkflowExecutor:
         if isinstance(output, dict):
             success = bool(output.get("success", True))
             if not success:
-                error = output.get("error") or output.get("reason") or output.get("message")
+                error = _extract_error(output)
 
         return WorkflowResult(
             success=success,

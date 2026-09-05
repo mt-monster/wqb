@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "brain-forum-browse per-run manifest",
+  "type": "object",
+  "properties": {
+    "run_id": { "type": "string" },
+    "started_at": { "type": "string" },
+    "session_l1": { "type": "string", "enum": ["commenter", "author", "linker"] },
+    "l2": { "type": "array", "items": { "type": "string" } },
+    "l3_signals": { "type": "array", "items": { "type": "string" } },
+    "gap_list": { "type": "array" },
+    "actions_planned": { "type": "array" },
+    "actions_executed": { "type": "array" }
+  }
+}

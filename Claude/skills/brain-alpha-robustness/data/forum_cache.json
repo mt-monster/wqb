@@ -1,0 +1,382 @@
+{
+  "built_at": "2026-08-31T06:19:34.242954+00:00",
+  "ttl_days": 7,
+  "bundles": [
+    {
+      "query": "过拟合 overfitting alpha",
+      "limit": 20,
+      "post_ids": [
+        "32862123512727",
+        "30192357731607",
+        "39592467967639",
+        "37011094497815",
+        "37595337103511",
+        "41482855055383",
+        "39568079717399",
+        "42018671130391",
+        "42967169090199"
+      ]
+    },
+    {
+      "query": "归因分析 yearly stats alpha sharpe",
+      "limit": 20,
+      "post_ids": [
+        "37113006630039",
+        "32120358827927",
+        "35961667328535",
+        "33369193826199",
+        "34092588057111",
+        "41483113042455",
+        "41393780043927",
+        "37306268304791"
+      ]
+    },
+    {
+      "query": "sub-universe 参数敏感 稳健性测试",
+      "limit": 15,
+      "post_ids": [
+        "34670122621207",
+        "36383377642391",
+        "31920180343703",
+        "41162636720919",
+        "31365517513495",
+        "35062818902423",
+        "34092588057111"
+      ]
+    },
+    {
+      "query": "robust test 年度 sharpe decay ratio",
+      "limit": 15,
+      "post_ids": [
+        "37388646548119",
+        "31920180343703",
+        "36436936293655",
+        "32024598760471",
+        "36672024628119",
+        "41285589721111"
+      ]
+    },
+    {
+      "query": "performance_comparison 厂字形 股票集中",
+      "limit": 10,
+      "post_ids": [
+        "41393780043927",
+        "40667155168791",
+        "33653260877463",
+        "36852480659479"
+      ]
+    }
+  ],
+  "posts": {
+    "34092588057111": {
+      "post_id": "34092588057111",
+      "title": "一键测试alpha稳健性Python代码",
+      "author": "JL98779",
+      "votes": 26,
+      "comments": 8,
+      "date": "2025-08-11T13:19:03Z",
+      "snippet": "Long/Short ratio、Sharpe std 测试",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/34092588057111-x"
+    },
+    "35062818902423": {
+      "post_id": "35062818902423",
+      "title": "如何优化Sub-universe Sharpe？",
+      "author": "XB37939",
+      "votes": 35,
+      "comments": 3,
+      "date": "2025-09-19T16:27:51Z",
+      "snippet": "Sub-universe test 子样本测试",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/35062818902423-x"
+    },
+    "31365517513495": {
+      "post_id": "31365517513495",
+      "title": "浅谈用hump操作符解决Sub-universe Sharpe",
+      "author": "YW79016",
+      "votes": 47,
+      "comments": 28,
+      "date": "2025-04-12T14:31:26Z",
+      "snippet": "hump 提高鲁棒性解决 sub-universe cutoff",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/31365517513495-x"
+    },
+    "31920180343703": {
+      "post_id": "31920180343703",
+      "title": "浅探对robust test结果的观测方法",
+      "author": "DZ31817",
+      "votes": 63,
+      "comments": 14,
+      "date": "2025-05-06T23:14:38Z",
+      "snippet": "robust test 不同环境观测、decay 离散取值",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/31920180343703-x"
+    },
+    "36383377642391": {
+      "post_id": "36383377642391",
+      "title": "ASI robust FAIL优化小技巧",
+      "author": "SZ83096",
+      "votes": 79,
+      "comments": 7,
+      "date": "2025-11-17T12:22:21Z",
+      "snippet": "robust 合格条件：收益保持率",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36383377642391-x"
+    },
+    "41162636720919": {
+      "post_id": "41162636720919",
+      "title": "提高MEA区Sub-universe Sharpe经验",
+      "author": "YZ54944",
+      "votes": 54,
+      "comments": 8,
+      "date": "2026-06-12T01:53:44Z",
+      "snippet": "signed_power 压缩极端值、ts_decay_linear 平滑",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/41162636720919-x"
+    },
+    "34670122621207": {
+      "post_id": "34670122621207",
+      "title": "MCP Workflow 自动化找alpha",
+      "author": "FF56620",
+      "votes": 107,
+      "comments": 24,
+      "date": "2025-09-03T16:17:17Z",
+      "snippet": "逐年一致性、分位单调性、D0/D1 交叉自检",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/34670122621207-x"
+    },
+    "41393780043927": {
+      "post_id": "41393780043927",
+      "title": "极端事件中因子表现的归因分析",
+      "author": "DA98440",
+      "votes": 16,
+      "comments": 0,
+      "date": "2026-06-22T10:13:45Z",
+      "snippet": "get_alpha_yearly_stats 归因、行业贡献分散度",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/41393780043927-x"
+    },
+    "41483113042455": {
+      "post_id": "41483113042455",
+      "title": "绩效归因实操：把 PnL 拆成 Alpha 和 Beta",
+      "author": "DA98440",
+      "votes": 16,
+      "comments": 0,
+      "date": "2026-06-25T14:36:57Z",
+      "snippet": "绩效归因：分离 Alpha 与 Beta",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/41483113042455-x"
+    },
+    "33369193826199": {
+      "post_id": "33369193826199",
+      "title": "排除厂或者缺失多年数据alpha的方法",
+      "author": "FZ60707",
+      "votes": 41,
+      "comments": 5,
+      "date": "2025-07-10T05:54:15Z",
+      "snippet": "check_alpha_sharpe_conditions yearly stats",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33369193826199-x"
+    },
+    "35961667328535": {
+      "post_id": "35961667328535",
+      "title": "[Risk Neutralized]获取alpha的Risk Neutralized表现",
+      "author": "JG21054",
+      "votes": 67,
+      "comments": 7,
+      "date": "2025-10-29T15:21:28Z",
+      "snippet": "get_yearly_sharpe 年度 Sharpe",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/35961667328535-x"
+    },
+    "37113006630039": {
+      "post_id": "37113006630039",
+      "title": "[OC2025]指标准入和多维度评分",
+      "author": "JX79797",
+      "votes": 98,
+      "comments": 12,
+      "date": "2025-12-18T08:01:20Z",
+      "snippet": "cv_sharpe = yearly std/mean",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37113006630039-x"
+    },
+    "32120358827927": {
+      "post_id": "32120358827927",
+      "title": "如何选择高质量alpha？Performance Comparison",
+      "author": "AL13375",
+      "votes": 77,
+      "comments": 7,
+      "date": "2025-05-15T08:29:24Z",
+      "snippet": "get_alpha_performance_comparisons",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32120358827927-x"
+    },
+    "37306268304791": {
+      "post_id": "37306268304791",
+      "title": "Osmosis competition 打分V2",
+      "author": "CC21336",
+      "votes": 10,
+      "comments": 3,
+      "date": "2025-12-28T20:49:05Z",
+      "snippet": "yearly_stats 驱动筛选",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37306268304791-x"
+    },
+    "42018671130391": {
+      "post_id": "42018671130391",
+      "title": "【经验分享】Alpha 过拟合的早期信号与应对策略",
+      "author": "LK39823",
+      "votes": 2,
+      "comments": 2,
+      "date": "2026-07-17T02:14:19Z",
+      "snippet": "过拟合的 3 个早期预警信号",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/42018671130391-x"
+    },
+    "41482855055383": {
+      "post_id": "41482855055383",
+      "title": "隐性过拟合：当你的 Alpha 在 IS 上完美却在 OS 上平庸",
+      "author": "DA98440",
+      "votes": 16,
+      "comments": 0,
+      "date": "2026-06-25T14:29:20Z",
+      "snippet": "隐性过拟合 ImplicitOverfitting",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/41482855055383-x"
+    },
+    "37011094497815": {
+      "post_id": "37011094497815",
+      "title": "ind的model数据集跑出来的alpha会不会容易过拟合",
+      "author": "DA98440",
+      "votes": 18,
+      "comments": 3,
+      "date": "2025-12-14T13:06:16Z",
+      "snippet": "ind model 数据集过拟合担忧",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37011094497815-x"
+    },
+    "37595337103511": {
+      "post_id": "37595337103511",
+      "title": "论AI过拟合的那些套路与对策",
+      "author": "LJ46725",
+      "votes": 17,
+      "comments": 14,
+      "date": "2026-01-11T13:37:32Z",
+      "snippet": "Margin 过拟合、股票集中过拟合（5-10 只股票）",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37595337103511-x"
+    },
+    "30192357731607": {
+      "post_id": "30192357731607",
+      "title": "【VF 0.9+顾问分享】新人常见误区之Under Fitting",
+      "author": "MH33574",
+      "votes": 43,
+      "comments": 18,
+      "date": "2025-02-24T12:31:26Z",
+      "snippet": "when you feels not right, it is not right",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/30192357731607-x"
+    },
+    "39592467967639": {
+      "post_id": "39592467967639",
+      "title": "研发alpha注意点",
+      "author": "HM97321",
+      "votes": 26,
+      "comments": 5,
+      "date": "2026-04-08T04:31:46Z",
+      "snippet": "防止过拟合：参数简化（5 个以上算子是过拟合征兆）、延迟",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/39592467967639-x"
+    },
+    "32862123512727": {
+      "post_id": "32862123512727",
+      "title": "如何提高Alpha质量（通俗版）",
+      "author": "YW26515",
+      "votes": 44,
+      "comments": 23,
+      "date": "2025-06-17T03:16:29Z",
+      "snippet": "过拟合与欠拟合辨析",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32862123512727-x"
+    },
+    "42967169090199": {
+      "post_id": "42967169090199",
+      "title": "过拟合长什么样？五个可以肉眼识别的危险信号",
+      "author": "DA98440",
+      "votes": 2,
+      "comments": 0,
+      "date": "2026-08-24T21:59:20Z",
+      "snippet": "检查项贴地飞过、换分组就死",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/42967169090199-x"
+    },
+    "39568079717399": {
+      "post_id": "39568079717399",
+      "title": "从CS视角看Alpha因子挖掘",
+      "author": "WC88994",
+      "votes": 6,
+      "comments": 0,
+      "date": "2026-04-07T11:49:30Z",
+      "snippet": "过度拟合的幻觉：嵌套十几层算子拟合历史噪声",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/39568079717399-x"
+    },
+    "36852480659479": {
+      "post_id": "36852480659479",
+      "title": "新手顾问的一点踩坑经验",
+      "author": "CC52425",
+      "votes": 1,
+      "comments": 1,
+      "date": "2025-12-08T08:09:16Z",
+      "snippet": "PerformanceComparison、pnl 厂型不能交",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36852480659479-x"
+    },
+    "40667155168791": {
+      "post_id": "40667155168791",
+      "title": "提交按钮绿了?先别急！alpha提交前的检查清单",
+      "author": "HL64570",
+      "votes": 4,
+      "comments": 0,
+      "date": "2026-05-22T15:26:39Z",
+      "snippet": "肉眼观察 pnl 曲线：厂字形、回撤、横盘",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/40667155168791-x"
+    },
+    "33653260877463": {
+      "post_id": "33653260877463",
+      "title": "新人第一次的vf更新",
+      "author": "HC14446",
+      "votes": 2,
+      "comments": 1,
+      "date": "2025-07-23T03:26:59Z",
+      "snippet": "PerformanceComparison 观察 sharpe/margin/fitness、pnl 不能像厂",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33653260877463-x"
+    },
+    "37388646548119": {
+      "post_id": "37388646548119",
+      "title": "一键 Robust Sharpe优化辅助",
+      "author": "JX79797",
+      "votes": 87,
+      "comments": 9,
+      "date": "2026-01-02T04:12:54Z",
+      "snippet": "LOW_ROBUST_UNIVERSE_SHARPE check",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/37388646548119-x"
+    },
+    "36436936293655": {
+      "post_id": "36436936293655",
+      "title": "关于IND地区Robust universe sharpe的改善方法",
+      "author": "ZX12447",
+      "votes": 41,
+      "comments": 11,
+      "date": "2025-11-19T09:37:56Z",
+      "snippet": "Robust universe sharpe 改善",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36436936293655-x"
+    },
+    "32024598760471": {
+      "post_id": "32024598760471",
+      "title": "关于robustness test的代码复现",
+      "author": "XC66172",
+      "votes": 32,
+      "comments": 1,
+      "date": "2025-05-11T13:34:28Z",
+      "snippet": "robustness test 代码复现",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/32024598760471-x"
+    },
+    "36672024628119": {
+      "post_id": "36672024628119",
+      "title": "IND地区Robust universe Sharpe优化及MCP全自动",
+      "author": "YL96878",
+      "votes": 29,
+      "comments": 9,
+      "date": "2025-11-30T13:56:47Z",
+      "snippet": "Robust universe Sharpe 0.7 到 1.0",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/36672024628119-x"
+    },
+    "41285589721111": {
+      "post_id": "41285589721111",
+      "title": "Alpha Decay 参数的含义",
+      "author": "DA98440",
+      "votes": 17,
+      "comments": 3,
+      "date": "2026-06-17T06:28:09Z",
+      "snippet": "decay 0-504 指数衰减",
+      "link": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/41285589721111-x"
+    }
+  }
+}

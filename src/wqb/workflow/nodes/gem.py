@@ -7,6 +7,7 @@
 import json
 import logging
 import os
+import re
 import subprocess
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -27,6 +28,7 @@ def run(
     instrument_type: str = "EQUITY",
     data_type: str = "MATRIX",
     priors_file: Optional[str] = None,
+    priors_from_db: bool = True,
     ideas_file: Optional[str] = None,
     detached: bool = True,
     _context: Optional[Dict[str, Any]] = None,
@@ -41,7 +43,11 @@ def run(
         data_category: 数据类别（如 analyst）
         instrument_type: 工具类型（默认 EQUITY）
         data_type: 数据类型（MATRIX 或 VECTOR）
-        priors_file: priors.json 路径
+        priors_file: priors.json 路径（显式指定时优先于 DB 快照）
+        priors_from_db: 是否从 DB ledger priors_snapshot_<region> 读取 priors
+            （默认 True，与 SOP「DB 为单一事实源」对齐；run.py fail-closed：
+            无快照即报错，不会静默无 priors 运行。仅当显式传 priors_file 或
+            本参数=False 时不走 DB 直读）
         ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
         _context: 执行上下文
@@ -68,30 +74,12 @@ def run(
         "success": False,
     }
 
-    # dry-run：构建到 headless_runner 命令即停，不 subprocess、不写库
-    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍执行 Popen + build_candidate_field_pool persist）。
-    if ctx.get("dry_run"):
-        result["success"] = True
-        result["dry_run"] = True
-        result["steps"].append({
-            "step": "dry_run",
-            "success": True,
-            "message": (
-                "Would run GEM: resolve brain-makeSomeGem → build headless_runner command "
-                "→ execute → check final_expressions → quality_estimation"
-            ),
-        })
-        result["plan"] = {
-            "region": region,
-            "dataset_id": dataset_id,
-            "delay": delay,
-            "universe": universe,
-            "data_category": data_category,
-            "instrument_type": instrument_type,
-            "data_type": data_type,
-            "detached": detached,
-        }
-        return result
+    # dry-run 统一口径（2026-09-05）：走完所有零成本前置——S1 ledger 读取、
+    # skill 目录/脚本/config 解析、命令构建、ideas 格式预检——到 Popen 前即停。
+    # 不 subprocess、不写库（build_candidate_field_pool 的 persist 亦跳过）。
+    # 此前只返回一句写死的 "Would run GEM: ..."，等于什么都没验证。
+    dry_run = bool(ctx.get("dry_run"))
+    result["dry_run"] = dry_run
 
     # Step 1: 检查 S1 ledger（自动注入 ideas-file）
     s1_ledger = None
@@ -136,7 +124,10 @@ def run(
         try:
             pool_payload = store.get_candidate_field_pool(region, dataset_id)
             if not pool_payload:
-                pool_payload = store.build_candidate_field_pool(region, dataset_id, persist=True)
+                # dry-run 下不落库：只算不写
+                pool_payload = store.build_candidate_field_pool(
+                    region, dataset_id, persist=not dry_run
+                )
             candidate_field_pool = (pool_payload or {}).get("candidate_field_pool", [])
             if candidate_field_pool:
                 result["steps"].append({
@@ -202,6 +193,10 @@ def run(
 
     if priors_file:
         cmd.extend(["--priors-file", priors_file])
+    elif priors_from_db:
+        # 2026-09-04 修复：默认走 DB 快照直读（SOP「DB 为单一事实源」），
+        # 修复 wave112 之前 GEM 命令无任何 priors 参数导致知识库模板未注入的断点
+        cmd.extend(["--priors-from-db", region])
 
     if effective_ideas_file:
         cmd.extend(["--ideas-file", effective_ideas_file])
@@ -214,6 +209,48 @@ def run(
         "success": True,
         "command": " ".join(cmd),
     })
+
+    # Step 4.5: ideas 文件格式预检（Popen 前零成本拦截）
+    # run_pipeline 在 BRAIN 登录与数据准备之后才解析 **Concept** 块，格式错误会白烧一轮
+    # 认证/拉数；这里用同一套块解析规则提前校验，不通过则不启动任何进程。
+    ideas_check = {"step": "check_ideas_format", "success": True}
+    if effective_ideas_file:
+        chk = _check_ideas_file(effective_ideas_file)
+        ideas_check.update({
+            "success": chk["ok"],
+            "ideas_file": effective_ideas_file,
+            "blocks": chk["blocks"],
+        })
+        if not chk["ok"]:
+            ideas_check["errors"] = chk["errors"]
+            ideas_check["sample"] = chk["sample"]
+            result["steps"].append(ideas_check)
+            return result
+    else:
+        ideas_check["message"] = "no ideas file (pipeline will auto-generate); pre-check skipped"
+    result["steps"].append(ideas_check)
+
+    # dry-run：命令已构建、前置已验，未执行
+    if dry_run:
+        result["success"] = True
+        result["note"] = "dry-run：命令已构建，未执行"
+        result["command"] = " ".join(cmd)
+        result["plan"] = {
+            "region": region,
+            "dataset_id": dataset_id,
+            "delay": delay,
+            "universe": universe,
+            "data_category": data_category,
+            "instrument_type": instrument_type,
+            "data_type": data_type,
+            "priors_from_db": priors_from_db and not priors_file,
+            "priors_file": priors_file,
+            "ideas_file": effective_ideas_file,
+            "gem_root": gem_root,
+            "runner_script": runner_script,
+            "detached": detached,
+        }
+        return result
 
     # Step 5: 执行
     try:
@@ -228,54 +265,94 @@ def run(
         )
 
         if detached:
-            # detached 模式：读取 stdout 直到 task_id 出现，然后立即返回（不等待进程完成）
-            # 2026-09-03 修复：原实现 communicate(timeout=1800) 等待整个进程，导致 MCP 层超时
-            task_id = None
-            task_dir = None
-            pid = None
-            stdout_lines = []
-            stderr_lines = []
-            
-            # 读 stdout 直到看到 task_id（run.py detached 模式会打印 task_id 后立即退出）
+            # detached 模式：轮询磁盘上新 task 的 meta.json，不依赖 stdout 文本握手。
+            # 2026-09-03 修复：原实现 communicate/readline 抓 stdout 的 task_id= 行，
+            # 受 MCP 客户端超时窗口与管道缓冲影响易挂死；run.py spawn 后台 child 后会把
+            # task_id/pid/日志路径先写入 <tasks_dir>/<task_id>/meta.json 再退出，磁盘轮询最稳。
             import time
+            tasks_dir = os.path.abspath(
+                os.path.join(os.path.dirname(runner_script), "..", "outputs", "tasks")
+            )
+            pre_existing = set(os.listdir(tasks_dir)) if os.path.isdir(tasks_dir) else set()
+
+            task_meta = None
+            task_dir = None
             start = time.time()
-            while time.time() - start < 30:  # 最多等 30 秒
-                line = process.stdout.readline()
-                if not line:
-                    break
-                stdout_lines.append(line.rstrip())
-                if line.startswith("task_id="):
-                    task_id = line.strip().split("=", 1)[1]
-                elif line.startswith("task_dir="):
-                    task_dir = line.strip().split("=", 1)[1]
-                elif line.startswith("pid="):
-                    pid = line.strip().split("=", 1)[1]
-                if task_id and task_dir and pid:
-                    break
-            
-            # 关闭管道，让进程继续后台跑
-            process.stdout.close()
-            process.stderr.close()
-            
+            deadline = start + 30  # 最多等 30 秒（与 MCP 客户端超时窗口对齐）
+            while time.time() < deadline:
+                if os.path.isdir(tasks_dir):
+                    for d in sorted(set(os.listdir(tasks_dir)) - pre_existing):
+                        meta_path = os.path.join(tasks_dir, d, "meta.json")
+                        if not os.path.isfile(meta_path):
+                            continue
+                        try:
+                            with open(meta_path, "r", encoding="utf-8") as mf:
+                                task_meta = json.load(mf)
+                            task_dir = os.path.join(tasks_dir, d)
+                            break
+                        except Exception:
+                            continue
+                    if task_meta:
+                        break
+                if process.poll() is not None:
+                    break  # 启动器已退出（meta.json 必在其退出前落盘）→ 成败已定
+                time.sleep(0.3)
+
+            process_stdout = ""
+            process_stderr = ""
+            if not task_meta:
+                try:
+                    process_stdout, process_stderr = process.communicate(timeout=5)
+                except Exception:
+                    try:
+                        process.kill()
+                    except Exception:
+                        pass
+
+            if task_meta:
+                result["steps"].append({
+                    "step": "execute",
+                    "success": True,
+                    "detached": True,
+                    "task_id": task_meta.get("task_id"),
+                    "task_dir": task_dir,
+                    "pid": task_meta.get("pid"),
+                    "stdout_log": task_meta.get("stdout_log"),
+                    "stderr_log": task_meta.get("stderr_log"),
+                })
+                result["success"] = True
+                result["detached"] = True
+                result["task_id"] = task_meta.get("task_id")
+                result["task_dir"] = task_dir
+                result["pid"] = task_meta.get("pid")
+                result["stdout_log"] = task_meta.get("stdout_log")
+                result["stderr_log"] = task_meta.get("stderr_log")
+                result["message"] = (
+                    f"GEM detached task launched: {task_meta.get('task_id')}. "
+                    f"Poll stdout_log / task_dir for final_expressions.json"
+                )
+                return result
+
+            # 未命中 meta.json：启动失败或超时，返回诊断信息
+            stdout_tail = (process_stdout or "")[-1000:]
+            stderr_tail = (process_stderr or "")[-1000:]
+            rc = process.returncode
+            if rc not in (None, 0):
+                error = f"detached launcher exited rc={rc} before writing meta.json"
+            elif rc is None:
+                error = "detached launcher still running but no meta.json within 30s"
+            else:
+                error = "detached launcher exited without writing meta.json (unexpected)"
             result["steps"].append({
                 "step": "execute",
-                "success": True,
-                "returncode": 0,
-                "stdout_tail": "\n".join(stdout_lines[-10:]),
-                "stderr_tail": "",
+                "success": False,
                 "detached": True,
-                "task_id": task_id,
-                "task_dir": task_dir,
-                "pid": pid,
+                "error": error,
+                "stdout_tail": stdout_tail,
+                "stderr_tail": stderr_tail,
+                "tasks_dir": tasks_dir,
             })
-            
-            # detached 模式不检查产物（后台任务还在跑），直接返回 task_id 供轮询
-            result["success"] = True
-            result["detached"] = True
-            result["task_id"] = task_id
-            result["task_dir"] = task_dir
-            result["pid"] = pid
-            result["message"] = f"GEM detached task launched: {task_id}. Poll task_dir for final_expressions.json"
+            result["message"] = error
             return result
         else:
             # 非 detached：等待完成（带超时）
@@ -364,6 +441,105 @@ def run(
             "error": str(e),
         })
 
+    return result
+
+
+def _parse_ideas_blocks(markdown_text: str) -> List[Dict[str, str]]:
+    """解析 ideas markdown 中的 **Concept** 块（与 run_pipeline.extract_template_blocks 同规则）.
+
+    有效块 = 以 **Concept** 开头、含 **Implementation Example** 行且模板含
+    {variable} 占位符（支持反引号包裹/同行/后续 3 行内三种模板位置）。
+    """
+    concept_re = re.compile(r"^\*\*Concept\*\*\s*:\s*(.*)\s*$")
+    impl_re = re.compile(r"\*\*Implementation Example\*\*\s*:\s*(.*)$", re.IGNORECASE)
+    backtick_re = re.compile(r"`([^`]*)`")
+    boundary_re = re.compile(r"^(?:-{3,}|#{1,6}\s+.*)\s*$")
+
+    lines = markdown_text.splitlines()
+    blocks: List[List[str]] = []
+    current: List[str] = []
+    for line in lines:
+        if concept_re.match(line.strip()):
+            if current:
+                blocks.append(current)
+            current = [line]
+            continue
+        if current and boundary_re.match(line.strip()):
+            blocks.append(current)
+            current = []
+            continue
+        if current:
+            current.append(line)
+    if current:
+        blocks.append(current)
+
+    out: List[Dict[str, str]] = []
+    for block_lines in blocks:
+        template: Optional[str] = None
+        impl_line_idx: Optional[int] = None
+        for i, raw in enumerate(block_lines):
+            m = impl_re.search(raw)
+            if not m:
+                continue
+            impl_line_idx = i
+            tail = (m.group(1) or "").strip()
+            bt = backtick_re.search(tail)
+            if bt:
+                template = bt.group(1).strip()
+                break
+            if tail and ("{" in tail and "}" in tail):
+                template = tail.strip().strip("`")
+                break
+            for j in range(i + 1, min(i + 4, len(block_lines))):
+                nxt = block_lines[j].strip()
+                if not nxt:
+                    continue
+                bt2 = backtick_re.search(nxt)
+                if bt2:
+                    template = bt2.group(1).strip()
+                    break
+                if "{" in nxt and "}" in nxt:
+                    template = nxt.strip().strip("`")
+                    break
+            break
+        if not template or "{" not in template or "}" not in template:
+            continue
+        idea_lines = [ln for k, ln in enumerate(block_lines) if k != impl_line_idx]
+        out.append({"template": template.strip(), "idea": "\n".join(idea_lines).strip()})
+    return out
+
+
+def _check_ideas_file(file_path: str) -> Dict[str, Any]:
+    """预检 ideas 文件是否含至少一个可实现的 **Concept** 块（run_pipeline 硬性要求）.
+
+    Returns:
+        预检结果（ok/blocks/errors/sample），失败时附合规示例供快速修正。
+    """
+    result: Dict[str, Any] = {"ok": True, "blocks": 0, "errors": []}
+    if not os.path.exists(file_path):
+        result["ok"] = False
+        result["errors"].append(f"ideas file not found: {file_path}")
+        return result
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = f.read()
+    except Exception as e:
+        result["ok"] = False
+        result["errors"].append(f"failed to read ideas file: {e}")
+        return result
+    blocks = _parse_ideas_blocks(text)
+    result["blocks"] = len(blocks)
+    if not blocks:
+        result["ok"] = False
+        result["errors"].append(
+            "no valid **Concept** block with **Implementation Example** found "
+            "(each must include a {variable} template)"
+        )
+        result["sample"] = (
+            "**Concept**: <signal idea>\n"
+            "- **Implementation Example**: `<operator({variable})>`\n"
+            "- **Rationale**: <why this might work>"
+        )
     return result
 
 

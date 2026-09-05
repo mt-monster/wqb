@@ -1,0 +1,6 @@
+# Secrets / local config
+.arxiv_llm.env
+.env
+
+# Local cache
+.arxiv_cache.json

@@ -1,0 +1,1012 @@
+{
+ "_doc": "算子语义模板库：每个算子绑定的经济语义（输入角色/含义/示例模板）。2026-08-18 新增，支撑'有经济含义的算子全覆盖'——覆盖的载体是有意义的信号模板，不是裸算子。模板用角色占位符 {role}，实例化时从当前字段池匹配经济角色字段填充。",
+ "_roles_doc": {
+  "price": "价格类（close/open/high/low/vwap 等）",
+  "volume": "成交量/额类（volume/turnover/amount 等）",
+  "returns": "收益率类（returns/ret/daily_return 等，或可由 price 派生）",
+  "volatility": "波动率类（volatility/std/realized_vol 等）",
+  "valuation": "估值类（pe/pb/ps/enterprise_value 等）",
+  "fundamental": "基本面类（earnings/sales/bookvalue/cashflow 等）",
+  "sentiment": "情绪/舆情类（news_sentiment/social_score 等）",
+  "analyst": "分析师预期类（estimate/revision/target 等）",
+  "signal_any": "任意有数值意义的信号字段（兜底角色）",
+  "group": "分组键（sector/industry/country/market_cap_bucket 等，用于 group_*）",
+  "window": "时间窗口整数（5/10/20/60/120/252 等）",
+  "scalar": "常数标量（0.5/2 等）"
+ },
+ "operators": {
+  "abs": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "绝对值：取信号强度（去方向）",
+   "template": "abs({signal_any})",
+   "min_fields": 1
+  },
+  "add": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "信号叠加：多信号等权复合",
+   "template": "add({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "and": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "逻辑与：多条件同时成立",
+   "template": "and({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "bucket": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "分桶：连续信号离散化",
+   "template": "bucket({signal_any})",
+   "min_fields": 1
+  },
+  "combo_a": {
+   "category": "meta",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "组合算子 A：多信号组合（COMBO scope）",
+   "template": "combo_a({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "days_from_last_change": {
+   "category": "meta",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "距上次变化天数：事件新鲜度",
+   "template": "days_from_last_change({signal_any})",
+   "min_fields": 1
+  },
+  "densify": {
+   "category": "transform",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "稠密化：稀疏信号转连续",
+   "template": "densify({signal_any})",
+   "min_fields": 1
+  },
+  "divide": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "信号除：比率（如相对估值/相对量）",
+   "template": "divide({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "equal": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件比较：equal，构造布尔掩码",
+   "template": "equal({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "generate_stats": {
+   "category": "meta",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "统计生成：信号描述统计",
+   "template": "generate_stats({signal_any})",
+   "min_fields": 1
+  },
+  "greater": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "大于比较：构造布尔条件",
+   "template": "greater({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "greater_equal": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件比较：greater_equal，构造布尔掩码",
+   "template": "greater_equal({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "group_backfill": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内回填：用组内统计填充缺失",
+   "template": "group_backfill({signal_any}, {group}, {window})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 group_backfill(x, group, d, std=4.0) ≥3参；d 用 {window} 占位符"
+  },
+  "group_cartesian_product": {
+   "category": "group",
+   "roles": [
+    "group"
+   ],
+   "meaning": "组笛卡尔积：组间组合特征",
+   "template": "group_cartesian_product({group}, {group})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 group_cartesian_product(g1, g2) 两 group；两占位符去重选不同分组键（sector/industry）"
+  },
+  "group_count": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内计数：组内有效样本数",
+   "template": "group_count({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_mean": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内均值：行业/风格平均水平（相对基准）",
+   "template": "group_mean({signal_any}, {signal_any}, {group})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 group_mean(x, weight, group) 3参；weight 用 signal_any 兜底，两占位符去重选不同字段"
+  },
+  "group_neutralize": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内中性化：剔除行业/风格暴露留纯 alpha",
+   "template": "group_neutralize({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_rank": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内相对强弱：剥离行业/市值组间效应破 CW 墙",
+   "template": "group_rank({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_scale": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内缩放：按组内幅度归一",
+   "template": "group_scale({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_std_dev": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内离散度：行业内部一致性/分歧",
+   "template": "group_std_dev({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_sum": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内求和：行业总量/资金流合计",
+   "template": "group_sum({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "group_zscore": {
+   "category": "group",
+   "roles": [
+    "signal_any",
+    "group"
+   ],
+   "meaning": "组内 z 分数：组内标准化偏离",
+   "template": "group_zscore({signal_any}, {group})",
+   "min_fields": 1
+  },
+  "hump": {
+   "category": "transform",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "hump 平滑：控换手的梯形平滑",
+   "template": "hump({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "if_else": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件分支：事件门控（条件成立取A否则B）",
+   "template": "if_else({signal_any}, {signal_any}, {signal_any})",
+   "min_fields": 3
+  },
+  "in": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件比较：in，构造布尔掩码",
+   "template": "in({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "inverse": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "倒数：反向指标（如估值倒数=收益率）",
+   "template": "inverse({signal_any})",
+   "min_fields": 1
+  },
+  "is_nan": {
+   "category": "conditional",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "缺失判断：数据可得性掩码",
+   "template": "is_nan({signal_any})",
+   "min_fields": 1
+  },
+  "kth_element": {
+   "category": "meta",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "第 k 大元素：分位点取值",
+   "template": "kth_element({signal_any}, {window}, {scalar})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 kth_element(x, d, k, ignore) 3参；d 用 {window}，k 用 {scalar}"
+  },
+  "last_diff_value": {
+   "category": "meta",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "上次变化幅度：事件强度",
+   "template": "last_diff_value({signal_any}, {window})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 last_diff_value(x, d) 2参；d 用 {window} 占位符"
+  },
+  "less": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "小于比较：构造布尔条件",
+   "template": "less({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "less_equal": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件比较：less_equal，构造布尔掩码",
+   "template": "less_equal({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "log": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "对数：压缩数量级差异（需正信号）",
+   "template": "log({signal_any})",
+   "min_fields": 1
+  },
+  "max": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "逐元素较大者：两信号取强",
+   "template": "max({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "min": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "逐元素较小者：两信号取弱",
+   "template": "min({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "multiply": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "信号乘：交互/门控（一信号调制另一信号）",
+   "template": "multiply({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "normalize": {
+   "category": "scale",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "归一化：标准化到单位尺度",
+   "template": "normalize({signal_any})",
+   "min_fields": 1
+  },
+  "not": {
+   "category": "conditional",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "逻辑非：条件取反",
+   "template": "not({signal_any})",
+   "min_fields": 1
+  },
+  "not_equal": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件比较：not_equal，构造布尔掩码",
+   "template": "not_equal({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "or": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "逻辑或：多条件任一成立",
+   "template": "or({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "pasteurize": {
+   "category": "scale",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "巴氏消毒：清洗异常值",
+   "template": "pasteurize({signal_any})",
+   "min_fields": 1
+  },
+  "power": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "幂变换：非线性放大/压缩",
+   "template": "power({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "quantile": {
+   "category": "rank",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "分位变换：转均匀分布分位",
+   "template": "quantile({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "rank": {
+   "category": "rank",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面排名，信号转相对强弱分位",
+   "template": "rank({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_avg": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面均值：市场平均水平",
+   "template": "reduce_avg({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_choose": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：choose（把序列/分布压成标量特征）",
+   "template": "reduce_choose({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_count": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：count（把序列/分布压成标量特征）",
+   "template": "reduce_count({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_ir": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面信息比率：信号均值/波动",
+   "template": "reduce_ir({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_kurtosis": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面峰度：分布肥尾程度",
+   "template": "reduce_kurtosis({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_max": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：max（把序列/分布压成标量特征）",
+   "template": "reduce_max({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_min": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：min（把序列/分布压成标量特征）",
+   "template": "reduce_min({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_norm": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：norm（把序列/分布压成标量特征）",
+   "template": "reduce_norm({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_percentage": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面占比：满足条件比例",
+   "template": "reduce_percentage({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_powersum": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：powersum（把序列/分布压成标量特征）",
+   "template": "reduce_powersum({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_range": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面极差：最大最小差",
+   "template": "reduce_range({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_skewness": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面偏度：分布不对称性",
+   "template": "reduce_skewness({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_stddev": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面标准差：市场分歧度",
+   "template": "reduce_stddev({signal_any})",
+   "min_fields": 1
+  },
+  "reduce_sum": {
+   "category": "reduce",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面归约：sum（把序列/分布压成标量特征）",
+   "template": "reduce_sum({signal_any})",
+   "min_fields": 1
+  },
+  "reverse": {
+   "category": "transform",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "反转：信号取反（反向逻辑）",
+   "template": "reverse({signal_any})",
+   "min_fields": 1
+  },
+  "scale": {
+   "category": "scale",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "缩放：按目标幅度调整权重",
+   "template": "scale({signal_any})",
+   "min_fields": 1
+  },
+  "self_corr": {
+   "category": "meta",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "自相关：与自身历史相关（控 self_corr 闸）",
+   "template": "self_corr({signal_any})",
+   "min_fields": 1
+  },
+  "sign": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "符号：取方向（±1）",
+   "template": "sign({signal_any})",
+   "min_fields": 1
+  },
+  "signed_power": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "保号幂变换：压缩尾部改形态，助过 MARGIN/Sharpe 墙",
+   "template": "signed_power({signal_any}, 0.5)",
+   "min_fields": 1
+  },
+  "sqrt": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "开方：压缩右尾（需非负信号）",
+   "template": "sqrt({signal_any})",
+   "min_fields": 1
+  },
+  "subtract": {
+   "category": "arithmetic",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "信号差：相对强弱/多空腿",
+   "template": "subtract({signal_any}, {signal_any})",
+   "min_fields": 2
+  },
+  "tail": {
+   "category": "transform",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "取尾部：只保留极端分位信号",
+   "template": "tail({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "trade_when": {
+   "category": "conditional",
+   "roles": [
+    "signal_any",
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "条件交易：满足条件才持仓（事件驱动）",
+   "template": "trade_when({signal_any}, {signal_any}, {signal_any})",
+   "min_fields": 3
+  },
+  "ts_arg_max": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "最大值位置：峰值出现的时间点",
+   "template": "ts_arg_max({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_arg_min": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序窗口统计：信号在过去 w 天的 arg_min",
+   "template": "ts_arg_min({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_av_diff": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "信号对均值的偏离：当前值减 w 天均值",
+   "template": "ts_av_diff({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_backfill": {
+   "category": "ts_fill",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序回填：用历史填充缺失，救低覆盖字段",
+   "template": "ts_backfill({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_corr": {
+   "category": "ts_window",
+   "roles": [
+    "price",
+    "volume",
+    "window"
+   ],
+   "meaning": "量价相关性：捕捉量价背离/共振",
+   "template": "ts_corr({price}, {volume}, {window})",
+   "min_fields": 2
+  },
+  "ts_count_nans": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "缺失计数：数据质量/事件稀疏度",
+   "template": "ts_count_nans({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_covariance": {
+   "category": "ts_window",
+   "roles": [
+    "price",
+    "volume",
+    "window"
+   ],
+   "meaning": "量价协方差：量价联动强度",
+   "template": "ts_covariance({price}, {volume}, {window})",
+   "min_fields": 2
+  },
+  "ts_decay_linear": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序窗口统计：信号在过去 w 天的 decay_linear",
+   "template": "ts_decay_linear({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_delay": {
+   "category": "ts_shift",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序滞后：取 w 天前值（避免前视/构造滞后特征）",
+   "template": "ts_delay({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_delta": {
+   "category": "ts_shift",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序差分：信号 w 天变化量（边际变化）",
+   "template": "ts_delta({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_ir": {
+   "category": "ts_shift",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "信息比率：信号均值/波动，风险调整后强度",
+   "template": "ts_ir({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_kurtosis": {
+   "category": "ts_window",
+   "roles": [
+    "returns",
+    "window"
+   ],
+   "meaning": "收益峰度：尾部极端风险/肥尾",
+   "template": "ts_kurtosis({returns}, {window})",
+   "min_fields": 1
+  },
+  "ts_max_diff": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "最大差：w 天内最大波动幅度",
+   "template": "ts_max_diff({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_mean": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序窗口统计：信号在过去 w 天的 mean",
+   "template": "ts_mean({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_product": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序连乘：复利累计（如累计收益）",
+   "template": "ts_product({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_quantile": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序分位：信号在历史分布的分位点",
+   "template": "ts_quantile({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_rank": {
+   "category": "ts_rank",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序排名：信号在 w 天内相对位置（动量/反转强度）",
+   "template": "ts_rank({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_regression": {
+   "category": "ts_window",
+   "roles": [
+    "returns",
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序回归残差/斜率：信号对收益的边际解释力",
+   "template": "ts_regression({returns}, {signal_any}, {window})",
+   "min_fields": 2
+  },
+  "ts_returns": {
+   "category": "ts_shift",
+   "roles": [
+    "price"
+   ],
+   "meaning": "区间收益率：价格动量/反转的基础量",
+   "template": "ts_returns({price}, {window})",
+   "min_fields": 1,
+   "_sig_note": "平台签名 ts_returns(x, d, mode=1) 2参；d 用 {window} 占位符"
+  },
+  "ts_scale": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序缩放：归一到历史区间",
+   "template": "ts_scale({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_std_dev": {
+   "category": "ts_window",
+   "roles": [
+    "returns",
+    "window"
+   ],
+   "meaning": "已实现波动率：w 天收益标准差",
+   "template": "ts_std_dev({returns}, {window})",
+   "min_fields": 1
+  },
+  "ts_step": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序窗口统计：信号在过去 w 天的 step",
+   "template": "ts_step({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_sum": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序求和：w 天累计量（如累计资金流）",
+   "template": "ts_sum({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "ts_target_tvr_decay": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "目标换手衰减：控 TVR 的指数衰减",
+   "template": "ts_target_tvr_decay({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "ts_target_tvr_hump": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "scalar"
+   ],
+   "meaning": "目标换手 hump：控 TVR 的 hump 平滑",
+   "template": "ts_target_tvr_hump({signal_any}, {scalar})",
+   "min_fields": 1
+  },
+  "ts_zscore": {
+   "category": "ts_window",
+   "roles": [
+    "signal_any",
+    "window"
+   ],
+   "meaning": "时序标准化偏离：均值回复/突破",
+   "template": "ts_zscore({signal_any}, {window})",
+   "min_fields": 1
+  },
+  "universe_size": {
+   "category": "meta",
+   "roles": [],
+   "meaning": "宇宙规模：当前 universe 股票数",
+   "template": "universe_size()",
+   "min_fields": 0
+  },
+  "vec_avg": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 均值：事件/数组字段聚合（先聚合再进常规算子）",
+   "template": "vec_avg({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_count": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 计数：事件频次",
+   "template": "vec_count({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_max": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 最大：最强事件信号",
+   "template": "vec_max({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_min": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 最小：最弱事件信号",
+   "template": "vec_min({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_range": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 极差：事件分布宽度",
+   "template": "vec_range({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_stddev": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 标准差：事件离散度",
+   "template": "vec_stddev({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "vec_sum": {
+   "category": "vector",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "VECTOR 求和：事件强度合计",
+   "template": "vec_sum({signal_any})",
+   "min_fields": 1,
+   "needs_vector": true
+  },
+  "winsorize": {
+   "category": "scale",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "缩尾：截断极端值抗离群",
+   "template": "winsorize({signal_any})",
+   "min_fields": 1
+  },
+  "zscore": {
+   "category": "rank",
+   "roles": [
+    "signal_any"
+   ],
+   "meaning": "横截面 z 分数：标准化偏离",
+   "template": "zscore({signal_any})",
+   "min_fields": 1
+  }
+ },
+ "_sig_calibrated_at": "2026-08-19"
+}

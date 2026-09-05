@@ -25,6 +25,17 @@ def _get_workflow_executor():
     return execute, get_registry
 
 
+def _get_chain_executor():
+    """延迟导入链式执行器."""
+    import sys
+    import os
+    src_path = os.path.join(os.path.dirname(__file__), "..", "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+    from wqb.workflow import execute_chain
+    return execute_chain
+
+
 @mcp.tool()
 def workflow_list_nodes() -> Dict[str, Any]:
     """列出所有可用的 workflow 节点及其元数据.
@@ -79,6 +90,7 @@ def workflow_batch_track(
     max_rounds: int = 3,
     output_csv: Optional[str] = None,
     campaign_dir: Optional[str] = None,
+    detached: bool = True,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """S3 批量回测跟踪（batch_track 节点快捷方式）.
@@ -91,10 +103,12 @@ def workflow_batch_track(
         max_rounds: 最大轮次
         output_csv: 输出 CSV 路径（默认自动生成）
         campaign_dir: 战役目录（默认自动解析）
+        detached: 是否后台执行（默认 True，立即返回 task_id/log_path，避免 MCP 客户端超时；
+                  False 为旧同步模式，subprocess.run 阻塞至完成或 1h 超时）
         dry_run: 是否干跑
 
     Returns:
-        批量回测结果
+        批量回测结果（detached=True 时含 task_id/stdout_log，供轮询）
     """
     execute, _ = _get_workflow_executor()
     result = execute("batch_track", {
@@ -105,6 +119,7 @@ def workflow_batch_track(
         "max_rounds": max_rounds,
         "output_csv": output_csv,
         "campaign_dir": campaign_dir,
+        "detached": detached,
     }, dry_run=dry_run)
     return result.to_dict()
 
@@ -192,16 +207,22 @@ def workflow_judge(
     alpha_id: str,
     trend_window_days: int = 365,
     llm_enabled: bool = True,
-    confirm_submit: bool = False,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
-    """Alpha 六步闸门判定（judge 节点快捷方式）.
+    """Alpha 六步闸门判定（judge 节点快捷方式）——**只判定，不提交**。
+
+    参考评审层，非提交判定权威。最终「是否可提交」以 `submit_verdict` 为准；
+    提交动作走 `workflow_submit_alpha` 且必须有用户明确确认（ra-pipeline 步 8）。
+    2026-09-05 移除了本工具的提交开关——它原先会绕过 submit_verdict、绕过
+    robustness 必经闸、绕过用户确认直接提交。
+
+    返回的 success 表示「判定是否跑完」；结论看 output.verdict
+    （READY / REVIEW / BLOCK）。
 
     Args:
         alpha_id: Alpha ID
         trend_window_days: trend score 窗口天数
         llm_enabled: 是否启用 LLM 决策层
-        confirm_submit: 是否确认提交
         dry_run: 是否干跑
 
     Returns:
@@ -212,7 +233,6 @@ def workflow_judge(
         "alpha_id": alpha_id,
         "trend_window_days": trend_window_days,
         "llm_enabled": llm_enabled,
-        "confirm_submit": confirm_submit,
     }, dry_run=dry_run)
     return result.to_dict()
 
@@ -224,20 +244,32 @@ def workflow_gem(
     delay: int,
     universe: str,
     data_category: Optional[str] = None,
+    instrument_type: str = "EQUITY",
+    data_type: str = "MATRIX",
     priors_file: Optional[str] = None,
+    priors_from_db: bool = True,
     ideas_file: Optional[str] = None,
     detached: bool = True,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """GEM 表达式生成（gem 节点快捷方式）.
 
+    2026-09-05 补齐：此前 MCP 层缺 data_type / instrument_type / priors_from_db，
+    而 ra-pipeline 步 3 明写「步 4 必须传对 data_type」——传不进去只能退回
+    workflow_execute("gem", ...)。现与 gem 节点签名一致。
+
     Args:
         region: 区域代码
         dataset_id: 数据集 ID
         delay: 延迟（0 或 1）
         universe: 宇宙（如 TOP3000）
-        data_category: 数据类别
-        priors_file: priors.json 路径
+        data_category: 数据类别（缺省时按平台 category 自动推断）
+        instrument_type: 工具类型（默认 EQUITY）
+        data_type: 数据类型 MATRIX / VECTOR——必须与 S1 get_datafields 确认的
+            字段类型一致，传错会导致整批表达式类型不匹配
+        priors_file: priors.json 路径（显式指定时优先于 DB 快照）
+        priors_from_db: 从 DB ledger priors_snapshot_<region> 直读 priors
+            （默认 True，与 SOP「DB 为单一事实源」对齐）
         ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
         dry_run: 是否干跑
@@ -252,7 +284,10 @@ def workflow_gem(
         "delay": delay,
         "universe": universe,
         "data_category": data_category,
+        "instrument_type": instrument_type,
+        "data_type": data_type,
         "priors_file": priors_file,
+        "priors_from_db": priors_from_db,
         "ideas_file": ideas_file,
         "detached": detached,
     }, dry_run=dry_run)
@@ -332,3 +367,48 @@ def workflow_feature_engineering(
         "force_regen": force_regen,
     }, dry_run=dry_run)
     return result.to_dict()
+
+
+@mcp.tool()
+def workflow_chain(
+    chain: List[Dict[str, Any]],
+    dry_run: bool = False,
+    stop_on_failure: bool = True,
+) -> Dict[str, Any]:
+    """按顺序执行一串 workflow 节点（execute_chain 的 MCP 入口）.
+
+    2026-09-05 新增：wqb.workflow.execute_chain 此前导出了却零调用方、也没有
+    MCP 暴露 —— 九步流水线本身就是一条链，却只能一个节点一个节点手工调。
+
+    典型用法（先干跑看命令，确认后再实跑）：
+
+        workflow_chain(chain=[
+            {"node": "campaign", "params": {"region": "KOR", "stage": "S0"}},
+            {"node": "feature_engineering", "params": {...}},
+            {"node": "gem", "params": {...}},
+        ], dry_run=True)
+
+    注意：链里不要放 confirm_submit=True 的 submit_alpha / superalpha ——
+    提交必须有用户明确确认（ra-pipeline 步 8），不走自动链。
+
+    Args:
+        chain: [{"node": "<节点名>", "params": {...}}, ...]
+        dry_run: 是否整链干跑（每个节点只构建计划/命令，不执行、不写库）
+        stop_on_failure: 某节点失败时是否中止后续（默认 True）
+
+    Returns:
+        {"success": 全链是否成功, "results": [每个节点的 WorkflowResult dict],
+         "executed": 实际执行节点数, "failed_at": 首个失败节点名或 None}
+    """
+    execute_chain = _get_chain_executor()
+    results = execute_chain(chain, dry_run=dry_run, stop_on_failure=stop_on_failure)
+    payload = [r.to_dict() for r in results]
+    failed_at = next((r["node"] for r in payload if not r["success"]), None)
+    return {
+        "success": failed_at is None,
+        "results": payload,
+        "executed": len(payload),
+        "requested": len(chain),
+        "failed_at": failed_at,
+        "dry_run": dry_run,
+    }

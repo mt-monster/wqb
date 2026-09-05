@@ -17,7 +17,8 @@ class NodeMeta:
     name: str
     description: str
     category: str  # batch / submit / superalpha / judge / gem / campaign
-    phase: int  # 1-4，对应实施 Phase
+    phase: int  # 实施 Phase：1=批量/提交，2=组合/判定，4=生成/战役/特征工程
+    #: 注：历史上没有 phase 3（该批节点已并入 phase 4），list_nodes(phase=3) 恒为空
     required_params: List[str] = field(default_factory=list)
     optional_params: List[str] = field(default_factory=list)
 
@@ -81,12 +82,19 @@ class WorkflowRegistry:
             return
         self._initialized = True
 
-        # 手动注册 Phase 1-4 的核心节点
+        # 手动注册核心节点（phase 1/2/4；无 phase 3，见 NodeMeta.phase 注释）
         # 避免动态导入的复杂性，显式注册更可靠
         self._register_core_nodes()
 
     def _register_core_nodes(self) -> None:
-        """注册核心节点（延迟导入避免循环依赖）."""
+        """注册核心节点（延迟导入避免循环依赖）.
+
+        约定（2026-09-05）：required_params / optional_params 必须与节点 run()
+        签名一致（`_context` 与 `dry_run` 除外——前者由 executor 注入，后者是
+        全节点统一的执行开关）。workflow_list_nodes 把这份元数据当 API 文档直接
+        暴露给 Agent，漂移即误导。回归由 tests/unit/test_skill_integrity.py
+        的 test_registry_meta_matches_node_signature 守护。
+        """
         # Phase 1: batch_track / submit_alpha
         try:
             from .nodes import batch_track
@@ -99,7 +107,8 @@ class WorkflowRegistry:
                     category="batch",
                     phase=1,
                     required_params=["region", "wave", "dataset"],
-                    optional_params=["concurrency", "max_rounds", "dry_run", "output_csv"],
+                    optional_params=["concurrency", "max_rounds", "output_csv",
+                                     "campaign_dir", "detached"],
                 )
             )
         except ImportError as e:
@@ -134,7 +143,7 @@ class WorkflowRegistry:
                     category="superalpha",
                     phase=2,
                     required_params=["region", "components"],
-                    optional_params=["selection", "combo", "neutralization", "confirm_submit", "dry_run"],
+                    optional_params=["selection", "combo", "neutralization", "confirm_submit"],
                 )
             )
         except ImportError as e:
@@ -147,11 +156,11 @@ class WorkflowRegistry:
                 judge.run,
                 NodeMeta(
                     name="judge",
-                    description="Alpha 六步闸门判定（等价包装 brain-alpha-judge 评审参考，非提交判定权威；提交判定走 tools/submit_verdict.py）",
+                    description="Alpha 六步闸门判定（等价包装 brain-alpha-judge 评审参考，非提交判定权威且不执行提交；提交判定走 submit_verdict，提交动作走 submit_alpha 节点）",
                     category="judge",
                     phase=2,
                     required_params=["alpha_id"],
-                    optional_params=["trend_window_days", "llm_enabled", "confirm_submit"],
+                    optional_params=["trend_window_days", "llm_enabled"],
                 )
             )
         except ImportError as e:
@@ -169,7 +178,8 @@ class WorkflowRegistry:
                     category="gem",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],
-                    optional_params=["data_category", "instrument_type", "data_type", "priors_file", "ideas_file", "detached"],
+                    optional_params=["data_category", "instrument_type", "data_type",
+                                     "priors_file", "priors_from_db", "ideas_file", "detached"],
                 )
             )
         except ImportError as e:

@@ -13,42 +13,22 @@
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import os
 import subprocess
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .._common import resolve_tools_dir, wq_py
+from .._common import (
+    get_brain_client as _get_brain_client,
+    resolve_tools_dir,
+    run_async as _run_async,
+    wq_py,
+)
 
 logger = logging.getLogger(__name__)
 
 _MIN_COMPONENTS = 10
-
-
-def _get_brain_client():
-    import sys
-    import os as _os
-    mcp_dir = _os.path.join(_os.path.dirname(__file__), "..", "..", "..", "..",
-                            "world-quant-brain-mcp")
-    mcp_dir = _os.path.abspath(mcp_dir)
-    if mcp_dir not in sys.path:
-        sys.path.insert(0, mcp_dir)
-    from brain_api import brain_client  # noqa
-    return brain_client
-
-
-def _run_async(coro):
-    try:
-        loop = asyncio.new_event_loop()
-        try:
-            return loop.run_until_complete(coro)
-        finally:
-            loop.close()
-    except Exception as e:
-        logger.warning(f"async brain call failed: {e}")
-        return {"__error__": str(e)}
 
 
 def run(
@@ -78,6 +58,8 @@ def run(
     """
     ctx = _context or {}
     store = ctx.get("store")
+    # dry-run 统一以 _context 为准（executor 注入），形参仅作直连调用的兼容入口
+    dry_run = bool(ctx.get("dry_run", dry_run))
 
     result: Dict[str, Any] = {
         "region": region,
@@ -102,12 +84,28 @@ def run(
         return result
 
     if dry_run:
-        result["steps"].append({
-            "step": "dry_run",
-            "success": True,
-            "message": "Would run super_build select/status/probe[/submit]",
-        })
         result["success"] = True
+        result["dry_run"] = True
+        result["note"] = "dry-run：调用计划已构建，未执行"
+        result["plan"] = {
+            "region": region,
+            "components": len(components),
+            "min_components": _MIN_COMPONENTS,
+            "universe": _default_universe(region),
+            "neutralization": neutralization,
+            "selection": selection,
+            "combo": combo,
+            "confirm_submit": confirm_submit,
+            "calls": (
+                ["super_build select", "super_build status", "super_build probe"]
+                + (["super_build submit"] if confirm_submit else [])
+            ),
+            "note": (
+                "confirm_submit=False：仅建 simulation + 探针，不提交"
+                if not confirm_submit else
+                "confirm_submit=True：会真实提交——必须已有用户明确确认"
+            ),
+        }
         return result
 
     # Step 2: select（创建 SUPER simulation）

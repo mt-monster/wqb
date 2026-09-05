@@ -1,0 +1,287 @@
+{
+  "schema_version": "1.0",
+  "description": "字段画像驱动的模板族配置：主分类轴=经济机制（保 concept-first），形状=field_profile_match 硬约束。GEM 生成时按机制选族，绑定字段前用 field_profile 过滤不兼容字段。",
+  "organizing_axes": {
+    "primary": "economic_mechanism",
+    "constraint": "field_profile_shape",
+    "aux": ["data_category", "decay_regime", "neutralization"]
+  },
+  "families": [
+    {
+      "family_id": "event_conviction_ratio",
+      "mechanism": "事件驱动-信念强度：流量相对存量的不寻常程度。谁在交易=知情内部人/机构；edge=信息公开但需一次除法（流量÷存量）才读出，市场未定价；衰减=申报周期（季度=66）。",
+      "economic_theme": ["T8_event", "T6_revision"],
+      "skeleton": "signal=divide({flow_field}, add({stock_field}, {eps})); accum=ts_sum(signal, {event_window}); ranked=group_rank(accum, {group}); core=winsorize(ranked, std={win_std}); alpha=tail(core, lower={q}, upper=1-{q}, newval=0.5)",
+      "placeholders": {
+        "flow_field": {"role": "主信号-流量", "bind": "field_id"},
+        "stock_field": {"role": "主信号-存量", "bind": "field_id"},
+        "group": {"role": "同业分组", "bind": ["industry", "sector", "subindustry"]},
+        "eps": {"role": "防除零(信号定义一部分)", "bind": "const", "default": 0.0001},
+        "event_window": {"role": "事件周期(须有经济含义)", "bind": "int", "domain": [44, 66, 88, 132], "meaning": "季度=66=申报周期/信息半衰期"},
+        "win_std": {"role": "压缩强度(与tail成对)", "bind": "float", "domain": [1.5, 2, 2.5], "default": 2},
+        "q": {"role": "掐中段边界(宽平台0.2-0.3)", "bind": "float", "domain": [0.2, 0.25, 0.3], "default": 0.25}
+      },
+      "field_profile_match": {
+        "shape": ["zero_inflated", "point_mass"],
+        "coverage_max": 0.5,
+        "data_category": ["insiders", "institutions", "shortinterest", "news"],
+        "data_type": ["VECTOR", "MATRIX"],
+        "note": "稀疏事件型专属；稠密 spread 字段禁用（tail 变纯砍信号）"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["zero_inflated", "point_mass"], "coverage_max": 0.5, "rationale": "信念强度=流量÷存量，需稀疏事件流（无事件日=0 是信息，nanHandling 制造并列质量由 tail 掐除）；稠密 spread 字段无事件结构，tail 变纯砍信号"},
+        "semantic_requirement": {"field_name_pattern": [], "rationale": "流量/存量字段对（如 valueeur/holdings），无量纲可组合即可"},
+        "data_category": ["insiders", "institutions", "shortinterest", "news"],
+        "data_type": ["VECTOR", "MATRIX"],
+        "vector_wrap": "vec_avg",
+        "forbidden_shape": ["spread", "ceiling"],
+        "forbidden_reason": "spread/ceiling 是稠密连续字段，无事件并列质量，ts_sum+tail 机制不成立",
+        "dataset_exclusion": "analyst 类数据集（分析师估计值非真实事件流，KOR analyst25 实证 16 个全 ra_failed）"
+      },
+      "forbidden_operators": ["ts_mean"],
+      "forbidden_reason": "ts_mean 只在非NaN日求均值，除掉事件频率信息（频率=机会型vs例行，CMP2012）",
+      "consistency_check": "反向腿(卖出侧)应显著弱于正向腿；若换数据集后双侧同强，疑似拟合",
+      "decay_regime": {"window_meaning": "申报周期/信息半衰期", "decay": 1, "turnover_band": "low"},
+      "neutralization": {"preferred": ["SLOW_AND_FAST", "FAST"], "group": "industry"},
+      "evidence": {"region": "DEU", "alpha_id": "xAjEkeOq", "sharpe": 1.68, "sub_universe": 1.03, "ra_failed": 0, "source": "logs/AlphaIdea_DEU_insider_conviction_xAjEkeOq.md"},
+      "status": "validated",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null, "note": "KOR 首批验证后回填"}
+    },
+    {
+      "family_id": "event_gated_signal",
+      "mechanism": "稀疏事件门控：信号只在事件发生时持仓（regime switch）。edge=事件本身携带信息，无事件期不暴露；衰减=事件新鲜度。",
+      "economic_theme": ["T12_conditional", "T8_event"],
+      "skeleton": "trade_when({event_cond}, {signal_expr}, {neutral_val})",
+      "placeholders": {
+        "event_cond": {"role": "事件条件", "bind": "expr", "example": "ts_count_nans({field}, 22) < 5"},
+        "signal_expr": {"role": "主信号", "bind": "field_id"},
+        "neutral_val": {"role": "中性值", "bind": "const", "domain": [-1, 0], "default": -1}
+      },
+      "field_profile_match": {
+        "shape": ["zero_inflated", "point_mass"],
+        "coverage_max": 0.6,
+        "data_category": ["news", "insiders", "institutions", "earnings", "shortinterest"],
+        "data_type": ["MATRIX", "VECTOR"],
+        "note": "稀疏事件字段；coverage 非100% 注意被动换仓污染 turnover"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["zero_inflated", "point_mass"], "coverage_max": 0.6, "rationale": "事件门控需稀疏事件（事件本身携带信息，无事件期不暴露）；coverage 非100% 注意被动换仓污染 turnover"},
+        "semantic_requirement": {"field_name_pattern": [], "rationale": "事件型字段（news/insiders/earnings）"},
+        "data_category": ["news", "insiders", "institutions", "earnings", "shortinterest"],
+        "data_type": ["MATRIX", "VECTOR"],
+        "vector_wrap": "vec_avg",
+        "forbidden_shape": ["spread"],
+        "forbidden_reason": "spread 稠密字段无事件期，trade_when 门控无意义"
+      },
+      "forbidden_operators": [],
+      "forbidden_reason": "",
+      "consistency_check": "事件期收益应显著高于非事件期；coverage 过低时注意 CONCENTRATED_WEIGHT",
+      "decay_regime": {"window_meaning": "事件新鲜度", "turnover_band": "medium"},
+      "neutralization": {"preferred": ["INDUSTRY", "SECTOR"]},
+      "evidence": {"source": "webdatascope-data-quality.md 规则14; brain-alpha-repair repair-order.md 稀疏事件门"},
+      "status": "candidate_unverified",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null}
+    },
+    {
+      "family_id": "continuous_spread_pair",
+      "mechanism": "连续字段相对价值/双rank去相关。edge=两连续字段互补（量纲可比）；衰减=中。",
+      "economic_theme": ["T10_relative", "T11_multi"],
+      "skeleton": "subtract(rank({spread_a}), rank({spread_b}))",
+      "placeholders": {
+        "spread_a": {"role": "主信号", "bind": "field_id"},
+        "spread_b": {"role": "辅助信号(互补)", "bind": "field_id"}
+      },
+      "field_profile_match": {
+        "shape": ["spread"],
+        "coverage_min": 0.7,
+        "data_type": ["MATRIX"],
+        "note": "稠密连续字段；稀疏/截尾字段禁用"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["spread"], "coverage_min": 0.7, "rationale": "双 rank 去相关需两连续字段（量纲可比、分布分散）；稀疏/截尾字段 rank 后失真"},
+        "semantic_requirement": {"field_name_pattern": [], "rationale": "两互补连续字段"},
+        "data_category": [],
+        "data_type": ["MATRIX"],
+        "forbidden_shape": ["zero_inflated", "point_mass", "ceiling"],
+        "forbidden_reason": "稀疏/截尾字段 rank 后大量并列，subtract 双 rank 差退化为噪声"
+      },
+      "forbidden_operators": ["trade_when"],
+      "forbidden_reason": "稠密数据无 nanHandling 并列质量，trade_when 是多余门控",
+      "consistency_check": "双腿相关<0.7，否则无分散红利（rank(add) 触发 CONCENTRATED_WEIGHT）",
+      "decay_regime": {"turnover_band": "medium"},
+      "neutralization": {"preferred": ["INDUSTRY", "SECTOR"]},
+      "evidence": {"source": "webdatascope-data-quality.md 规则14 spread+spread 双rank去相关"},
+      "status": "candidate_unverified",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null}
+    },
+    {
+      "family_id": "ceiling_suppress",
+      "mechanism": "截尾抑制：值接近上界的字段先 winsorize/rank 抑制极值再入组合。edge=截尾端不主导；衰减=慢。",
+      "economic_theme": ["T4_vol", "T10_relative"],
+      "skeleton": "winsorize(rank({ceiling_field}), std={win_std})",
+      "placeholders": {
+        "ceiling_field": {"role": "主信号-截尾字段", "bind": "field_id"},
+        "win_std": {"role": "压缩强度", "bind": "float", "domain": [2, 3, 4], "default": 2}
+      },
+      "field_profile_match": {
+        "shape": ["ceiling"],
+        "data_type": ["MATRIX"],
+        "note": "截尾字段（[0.9,1]占比>50%）；bounded 概率值跳过 winsorize 用 rank/quantile"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["ceiling"], "rationale": "截尾字段（值接近上界）需 winsorize/rank 抑制极值端主导；bounded 概率值跳过 winsorize 用 rank/quantile"},
+        "semantic_requirement": {"field_name_pattern": [], "rationale": "截尾字段"},
+        "data_category": [],
+        "data_type": ["MATRIX"],
+        "forbidden_shape": [],
+        "forbidden_reason": ""
+      },
+      "forbidden_operators": ["log", "inverse"],
+      "forbidden_reason": "bounded/截尾字段 log/inverse 有负值或爆炸风险",
+      "consistency_check": "截尾端不应主导持仓；高偏度需 rank/signed_power 抑制",
+      "decay_regime": {"turnover_band": "low"},
+      "neutralization": {"preferred": ["INDUSTRY", "SECTOR"]},
+      "evidence": {"source": "webdatascope-data-quality.md ceiling 形状; economic_template_library 自查清单2"},
+      "status": "candidate_unverified",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null}
+    },
+    {
+      "family_id": "discrete_score_bucket",
+      "mechanism": "离散评分/计数分层：integer 字段用 bucket/group_rank 离散分层降噪。edge=评分等级含排序信息；衰减=慢。",
+      "economic_theme": ["T9_consensus", "T10_relative"],
+      "skeleton": "group_rank({int_field}, {group})",
+      "placeholders": {
+        "int_field": {"role": "主信号-离散评分", "bind": "field_id"},
+        "group": {"role": "分组", "bind": ["industry", "sector", "subindustry"]}
+      },
+      "field_profile_match": {
+        "integer": true,
+        "shape": ["spread", "concentrated", "zero_inflated"],
+        "data_type": ["MATRIX"],
+        "note": "IntegerStatus=1 离散字段；禁 ts_delta（稀疏跳变→换手飙高）"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"integer": true, "shape": ["spread", "concentrated", "zero_inflated"], "rationale": "离散评分/计数含排序信息，bucket/group_rank 分层降噪；禁 ts_delta（稀疏跳变→换手飙高）"},
+        "semantic_requirement": {"field_name_pattern": ["score", "rating", "rank", "_cnt$"], "rationale": "评分/等级/计数字段"},
+        "data_category": [],
+        "data_type": ["MATRIX"],
+        "forbidden_shape": [],
+        "forbidden_reason": ""
+      },
+      "forbidden_operators": ["ts_delta"],
+      "forbidden_reason": "离散字段 ts_delta 产生稀疏跳变，换手飙高",
+      "consistency_check": "档位应单调（高评分对应高收益方向一致）",
+      "decay_regime": {"turnover_band": "low"},
+      "neutralization": {"preferred": ["INDUSTRY", "SUBINDUSTRY"]},
+      "evidence": {"source": "webdatascope-data-quality.md 规则 IntegerStatus=1; TPL bucket 离散分层"},
+      "status": "candidate_unverified",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null}
+    },
+    {
+      "family_id": "low_freq_backfill",
+      "mechanism": "低频字段回填：月度/季度字段先 ts_backfill 再入时序。edge=低频基本面信息；衰减=慢（窗口≥更新周期）。",
+      "economic_theme": ["T6_revision", "T2_momentum"],
+      "skeleton": "ts_backfill({low_freq_field}, {backfill_window})",
+      "placeholders": {
+        "low_freq_field": {"role": "主信号-低频字段", "bind": "field_id"},
+        "backfill_window": {"role": "回填窗口(≥更新周期)", "bind": "int", "domain": [63, 115, 120, 180, 252], "meaning": "季度≥63 月度≥21"}
+      },
+      "field_profile_match": {
+        "freq": ["monthly", "quarterly", "semi-annual"],
+        "data_type": ["MATRIX"],
+        "note": "低频字段；时序窗口≥更新周期，短窗只采样噪声"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"freq": ["monthly", "quarterly", "semi-annual"], "rationale": "低频字段（月/季/半年）需 ts_backfill 回填；时序窗口≥更新周期，短窗只采样噪声"},
+        "semantic_requirement": {"field_name_pattern": [], "rationale": "低频基本面字段"},
+        "data_category": [],
+        "data_type": ["MATRIX"],
+        "forbidden_shape": [],
+        "forbidden_reason": ""
+      },
+      "forbidden_operators": [],
+      "forbidden_reason": "",
+      "consistency_check": "回填后 coverage 应显著提升；注意早年失真（覆盖厂字形）",
+      "decay_regime": {"window_meaning": "更新周期", "turnover_band": "low"},
+      "neutralization": {"preferred": ["INDUSTRY", "SECTOR"]},
+      "evidence": {"source": "webdata_quality.py field_inspect 低频建议; TPL-803/806"},
+      "status": "candidate_unverified",
+      "pass_stats": {"waves": 0, "gate_pass_rate": null}
+    },
+    {
+      "family_id": "analyst_revision_breadth",
+      "mechanism": "分析师修正广度：下修/上调/新估计的分析师数量变化 → PEAD 漂移。谁在交易=分析师群体；edge=修正信息逐步被市场定价；衰减=月度（22d）。",
+      "economic_theme": ["T6_revision"],
+      "skeleton": "group_rank(ts_delta(vec_avg({cnt_field}), {window}), {group})",
+      "placeholders": {
+        "cnt_field": {"role": "主信号-修正计数字段", "bind": "field_id"},
+        "window": {"role": "修正观察窗", "bind": "int", "domain": [10, 22, 44], "default": 22},
+        "group": {"role": "同业分组", "bind": ["industry", "sector", "subindustry"]}
+      },
+      "field_profile_match": {
+        "shape": ["spread"],
+        "coverage_min": 0.3,
+        "data_category": ["analyst"],
+        "data_type": ["VECTOR"],
+        "note": "修正计数字段需每日稠密（spread）；稀疏=数据缺失而非无修正"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["spread"], "coverage_min": 0.3, "rationale": "修正计数需每日稠密（每天都有分析师活动），spread 形状说明计数连续有效；zero_inflated 的 cnt 说明长期无分析师覆盖，信号不可靠"},
+        "semantic_requirement": {"field_name_pattern": ["_cnt$", "_down_cnt$", "_up_cnt$", "_new_cnt$", "_even_cnt$"], "rationale": "必须是计数字段（cnt），代表修正广度（多少分析师在改估计）"},
+        "data_category": ["analyst"],
+        "data_type": ["VECTOR"],
+        "vector_wrap": "vec_avg",
+        "forbidden_shape": ["zero_inflated", "point_mass"],
+        "forbidden_reason": "zero_inflated 的 cnt 字段说明长期无分析师覆盖，修正信号不可靠"
+      },
+      "forbidden_operators": [],
+      "forbidden_reason": "",
+      "consistency_check": "down_cnt 与 up_cnt 应反向（下修多则跌、上调多则涨）；同向则疑似拟合",
+      "decay_regime": {"window_meaning": "修正周期（月度）", "turnover_band": "low"},
+      "neutralization": {"preferred": ["INDUSTRY", "SUBINDUSTRY"]},
+      "evidence": {"region": "KOR", "dataset": "analyst25", "alphas": ["om6eaqbJ(target_prc_up_cnt sh1.21/fit0.93)", "78ZVYjPx(eps_even_cnt sh1.27/fit0.95)", "58QVJlmN(recom_val_new_cnt sh1.12)", "kqV5ajpl(eps_new_cnt sh1.16)", "pwPgaj26(target_prc_down_cnt sh1.09)"], "note": "KOR analyst25 实证 6/8 Sharpe>1.0，INDUSTRY 中性化"},
+      "status": "validated",
+      "pass_stats": {"waves": 1, "gate_pass_rate": 0.75, "note": "KOR analyst25 2026-09-04 实证"}
+    },
+    {
+      "family_id": "target_price_premium",
+      "mechanism": "目标价相对溢价：分析师目标价 med/max/min 相对现价的溢价空间 → 看涨；目标价离散度 → 不确定性。谁在交易=分析师群体；edge=目标价是分析师最直接的多空信号；衰减=慢。",
+      "economic_theme": ["T6_revision", "T9_consensus"],
+      "skeleton": "group_rank(divide(vec_avg({target_field}), close), {group})",
+      "placeholders": {
+        "target_field": {"role": "主信号-目标价字段(med/max/min)", "bind": "field_id"},
+        "group": {"role": "同业分组", "bind": ["industry", "sector", "subindustry"]}
+      },
+      "field_profile_match": {
+        "shape": ["zero_inflated"],
+        "coverage_min": 0.5,
+        "data_category": ["analyst"],
+        "data_type": ["VECTOR"],
+        "note": "目标价多估计字段（max/med/min）zero_inflated 稀疏但有效"
+      },
+      "mechanism_premise": {
+        "shape_requirement": {"shape": ["zero_inflated"], "coverage_min": 0.5, "rationale": "目标价多估计（max/med/min）天然 zero_inflated（部分股票无分析师目标价），但有效——稀疏反映覆盖差异而非信号缺失；需 cov≥0.5 保证基本覆盖"},
+        "semantic_requirement": {"field_name_pattern": ["target_prc_med$", "target_prc_max$", "target_prc_min$", "target_price"], "rationale": "必须是目标价字段（target_prc 的 med/max/min 多估计）"},
+        "data_category": ["analyst"],
+        "data_type": ["VECTOR"],
+        "vector_wrap": "vec_avg",
+        "forbidden_shape": [],
+        "forbidden_reason": ""
+      },
+      "forbidden_operators": [],
+      "forbidden_reason": "",
+      "consistency_check": "med/max/min 三档应同向且 Sharpe 接近（目标价水平信号）；离散度 (max-min)/med 应弱于水平（KOR 实证 0.97 vs 1.4）",
+      "decay_regime": {"window_meaning": "目标价有效期（季度）", "turnover_band": "low"},
+      "neutralization": {"preferred": ["INDUSTRY", "SUBINDUSTRY"]},
+      "evidence": {"region": "KOR", "dataset": "analyst25", "alphas": ["9qVQlRG1(target_prc_max sh1.40/fit1.22/2Y2.13/ra_fail=1)", "j23Qagao(target_prc_med sh1.41/fit1.19/ra_fail=1)", "9qVQlRG9(target_prc_min sh1.30/fit1.01/ra_fail=1)", "mLgknM1p(ts_zscore(溢价) sh1.76/fit1.64/ra_fail=0 但 prod_corr 0.82 超标)"], "note": "KOR analyst25 实证，3 个 Sharpe≥1.3 且 ra_failed=1（仅 LOW_SHARPE 差 0.17 到 1.58），达 Mode B 资格线；Mode B 优化出 ts_zscore 变体 Sharpe 1.76/ra_failed=0 但 prod_corr 0.82 主题级撞车（组腿 eps_estimate 破 prod 0.62 但 Sharpe 稀释到 1.35）——target_prc 主题 prod_corr-Sharpe 不可兼得，KOR 判死（2026-09-04）"},
+      "status": "validated_prod_blocked",
+      "pass_stats": {"waves": 1, "gate_pass_rate": 0.75, "note": "KOR analyst25 2026-09-04 实证，近提交级但 prod_corr 0.82 墙；ts_zscore 机制有效可迁移非分析师主题"}
+    }
+  ],
+  "free_explore_family": {
+    "family_id": "free_explore",
+    "budget_cap": 0.2,
+    "note": "LLM 自由探索兜底族，占比≤20%，不受 field_profile_match 约束，保留 concept-first 创新",
+    "still_requires": ["economic_mechanism", "consistency_check"]
+  }
+}

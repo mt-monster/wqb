@@ -1,0 +1,202 @@
+[
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_current_assets_total), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_financial_services_investment_assets_total_quarterly), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_intangible_assets_total), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_investment_assets_total_insurance), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_non_current_assets_total_q), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_other_assets_total_quarterly), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_other_current_assets_total), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_reinsurance_assets_total_annual), add(vec_avg(annual_reinsurance_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_current_assets_total), add(vec_avg(debt_current_liabilities_total), 0.0001))"
+  },
+  {
+    "type": "REGULAR",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "MEA",
+      "universe": "TOP400",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "SECTOR",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "testPeriod": "P0Y0M0D",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "ON",
+      "language": "FASTEXPR",
+      "visualization": false
+    },
+    "regular": "divide(vec_avg(fundamental_financial_services_investment_assets_total_quarterly), add(vec_avg(debt_current_liabilities_total), 0.0001))"
+  }
+]

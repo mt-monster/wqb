@@ -41,10 +41,13 @@ def test_executor_missing_required_params():
 
 
 def test_executor_dry_run_returns_plan_without_executing(monkeypatch):
-    # 2026-09-01 契约更新：dry-run 会调用节点但注入 _context.dry_run=True，
-    # 节点须构建计划即停（无 subprocess/无写库副作用）。
-    # batch_track 节点不感知 dry_run → 走 subprocess；为保证测试无副作用，
-    # 此处用 campaign 节点（已实现 dry-run 感知）验证"命令构建即停"契约。
+    # 契约：dry-run 会调用节点但注入 _context.dry_run=True，节点须构建计划
+    # 即停（无 subprocess / 无写库 / 不建目录）。
+    # 2026-09-05 更正注释：原文写"batch_track 节点不感知 dry_run → 走 subprocess"
+    # 已过期 —— executor 自 2026-09-01 起按 inspect.signature 透传 dry_run，且
+    # 2026-09-05 起 7 个节点统一从 _context 读 dry_run。全节点的 dry-run 契约
+    # 由 tests/unit/test_skill_integrity.py 逐节点覆盖；此处保留 campaign 作为
+    # "命令构建即停"的代表用例。
     from wqb.workflow.nodes import campaign as camp
     calls = []
     orig = camp.run

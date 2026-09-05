@@ -13,7 +13,6 @@ S4 评审链单次封装：平台硬检查 → 相关性(prod/self) → 归因(�
 无凭据/网络失败时对应 gate 标记为 unavailable 并降级，不崩溃。
 """
 
-import asyncio
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -33,36 +32,11 @@ _SELF_MAX = 0.7
 _MODE_B_QUALIFICATION_DEFAULT = {"sharpe_min": 1.25, "fitness_min": 0.8}
 
 
-def _get_brain_client():
-    """延迟导入 brain_client 单例（避免循环依赖与启动开销）."""
-    import sys
-    import os
-    mcp_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "world-quant-brain-mcp")
-    mcp_dir = os.path.abspath(mcp_dir)
-    if mcp_dir not in sys.path:
-        sys.path.insert(0, mcp_dir)
-    from brain_api import brain_client  # noqa
-    return brain_client
-
-
-def _run_async(coro):
-    """在同步节点里执行异步 brain_client 方法（无事件循环时新建，有则用线程）。"""
-    try:
-        try:
-            asyncio.get_running_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            try:
-                return loop.run_until_complete(coro)
-            finally:
-                loop.close()
-        # 已在运行中的事件循环（如 MCP async 工具上下文）：用独立线程跑
-        import concurrent.futures
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            return pool.submit(lambda: asyncio.run(coro)).result()
-    except Exception as e:
-        logger.warning(f"async brain call failed: {e}")
-        return {"__error__": str(e)}
+from .._common import (
+    get_brain_client as _get_brain_client,
+    persist_workflow_record,
+    run_async as _run_async,
+)
 
 
 @require_mcp_tools("judge")
@@ -70,16 +44,24 @@ def run(
     alpha_id: str,
     trend_window_days: int = 365,
     llm_enabled: bool = True,
-    confirm_submit: bool = False,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """执行 Alpha 六步闸门判定（真实平台数据）.
+    """执行 Alpha 六步闸门判定（真实平台数据）——**只判定，不提交**。
+
+    2026-09-05 收口：删除「确认后直接提交」分支。brain-alpha-judge 已于
+    2026-08-31 自我弃用最终判定权，提交判定唯一权威 = tools/submit_verdict.py
+    （MCP: submit_verdict）。本节点原先的提交路径会绕过 submit_verdict、绕过
+    robustness 必经闸、绕过 ra-pipeline 步 8 的用户确认，属越权路径。提交一律走
+    submit_alpha 节点（MCP: workflow_submit_alpha），且需用户明确确认。
+
+    success 语义（2026-09-05 修正）：表示「判定是否跑完」，不是「结论好不好」。
+    此前按 verdict 是否 READY/REVIEW 取值，会让正常产出的 BLOCK 结论被
+    execute_chain 当作节点执行失败而停链。
 
     Args:
         alpha_id: Alpha ID
         trend_window_days: trend score 窗口天数
         llm_enabled: 是否启用 LLM 决策层（当前为规则层占位，无 LLM key 时自动跳过）
-        confirm_submit: 是否确认提交
         _context: 执行上下文
 
     Returns:
@@ -91,24 +73,44 @@ def run(
     # dry-run：构建到六步闸判定计划即停，不触碰 network / 不写库
     # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
     if ctx.get("dry_run"):
+        # 无子进程可构建 —— 干跑给出「会发哪些平台请求 + 用哪些阈值判」，
+        # 并顺带验证 brain_client 可导入（零网络）。
+        client_ok, client_err = True, None
+        try:
+            _get_brain_client()
+        except Exception as e:  # pragma: no cover - 环境相关
+            client_ok, client_err = False, str(e)
         return {
             "alpha_id": alpha_id,
             "success": True,
             "dry_run": True,
+            "note": "dry-run：请求计划已构建，未调用平台",
             "verdict": None,
             "gates": [],
             "steps": [{
-                "step": "dry_run",
-                "success": True,
-                "message": (
-                    "Would run six-gate judge: platform_check → correlation(prod/self) "
-                    "→ yearly_attribution → trend_score → final verdict"
-                ),
+                # 只反映「当前解释器」能否导入 brain_client；节点真实运行在 MCP venv 里，
+                # 干跑解释器缺依赖属提示而非阻断，故记 warning 不记 error。
+                "step": "resolve_client",
+                "success": client_ok,
+                "warning": client_err,
             }],
             "plan": {
                 "alpha_id": alpha_id,
                 "trend_window_days": trend_window_days,
-                "confirm_submit": confirm_submit,
+                "calls": [
+                    "get_alpha_details(alpha_id)",
+                    f"check_correlation(alpha_id, type=both, threshold={_PROD_MAX})",
+                    "get_alpha_yearly_stats(alpha_id)",
+                    f"value_factor_trendScore(alpha_id, window={trend_window_days}d)",
+                ],
+                "gates": [
+                    f"G1 平台硬检查 sharpe>={_SHARPE_MIN} fitness>={_FITNESS_MIN}（Mode B 资格线按区域覆盖）",
+                    f"G2 相关性 prod<{_PROD_MAX} self<{_SELF_MAX}",
+                    "G3 逐年归因（弱年/负年）",
+                    "G4 trend score（失败降级，不阻断）",
+                    "G5 综合判定 → READY / REVIEW / BLOCK",
+                ],
+                "note": "judge 不提交；最终判定走 submit_verdict，提交走 workflow_submit_alpha（需用户确认）",
             },
         }
 
@@ -121,16 +123,25 @@ def run(
 
     client = _get_brain_client()
 
-    # 加载 Mode B 资格线（Dry-Run 2.0 优化：从 thresholds.json + ledger_kv 读取）
-    mode_b_qual = _load_mode_b_qualification(store, region="KOR")
-
     # ---- Gate 1: 平台硬检查（get_alpha_details → checks.fail 必须为空 + 数值硬闸） ----
     details = _run_async(client.get_alpha_details(alpha_id))
+    if isinstance(details, dict) and details.get("__error__"):
+        # 取不到平台详情 = 判定没跑起来（真失败），区别于「跑完了但结论是 BLOCK」
+        result["reason"] = f"get_alpha_details failed: {details['__error__']}"
+        result["error"] = result["reason"]
+        return _finalize(result, store, alpha_id)
+
+    # 2026-09-04 方案 A 修复：region 从 alpha 详情取（原硬编码 region="KOR" 导致
+    # EUR/IND/USA 等区域的 judge 全读 KOR 的 1.25/0.8 资格线，区域特性错配）。
+    alpha_region = _extract_region(details) or "KOR"
+    mode_b_qual = _load_mode_b_qualification(store, region=alpha_region)
+
     gate1 = _eval_platform_check(details, mode_b_qual=mode_b_qual)
     result["gates"].append(gate1)
     if not gate1.get("pass"):
         result["verdict"] = "BLOCK"
         result["reason"] = gate1.get("reason", "Platform hard check failed")
+        result["success"] = True  # 判定跑完了，结论是 BLOCK
         return _finalize(result, store, alpha_id)
 
     # ---- Gate 2: 相关性闸（prod + self，逐个顺序避免限流） ----
@@ -143,6 +154,7 @@ def run(
         result["reason"] = f"prod_correlation {prod_corr:.3f} >= {_PROD_MAX}"
         result["mode_b_required"] = True
         result["mode_b_action"] = "换字段组合/换概念（禁止调权重）"
+        result["success"] = True  # 判定跑完了，结论是 BLOCK
         return _finalize(result, store, alpha_id)
 
     # ---- Gate 3: 归因（逐年稳健性，识别弱年/负年） ----
@@ -157,28 +169,47 @@ def run(
     # ---- Gate 5: 综合判定（规则层；LLM 层无 key 时跳过） ----
     final_verdict = _compute_final_verdict(result["gates"])
     result["verdict"] = final_verdict
-    result["success"] = final_verdict in ("READY", "REVIEW")
+    result["success"] = True  # 判定跑完即成功；结论看 verdict
 
-    # 确认提交
-    if confirm_submit and final_verdict == "READY":
-        submit = _run_async(client.submit_alpha(alpha_id))
-        result["submit"] = submit
+    # 提交路径已移除（2026-09-05）：judge 不是提交判定权威，也不执行提交。
+    # READY 只是评审参考——最终判定走 submit_verdict，提交走 workflow_submit_alpha
+    # 且必须有用户明确确认（ra-pipeline 步 8）。
+    result["next_step"] = (
+        "submit_verdict(alpha_id) 判定 → 用户确认 → workflow_submit_alpha"
+        if final_verdict == "READY" else "回步 7（S4）Mode B 改进"
+    )
 
     return _finalize(result, store, alpha_id)
 
 
 def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
-    """保存判定记录到台账并返回."""
-    if store:
-        try:
-            store.upsert_ledger("WORKFLOW", f"judge_{alpha_id}", {
-                "judged_at": datetime.now().isoformat(),
-                "verdict": result.get("verdict"),
-                "gates": result.get("gates"),
-            })
-        except Exception as e:
-            logger.warning(f"Failed to save judge record: {e}")
+    """保存判定记录到台账并返回（容错与告警由 persist_workflow_record 承担）。"""
+    persist_workflow_record(store, "judge", alpha_id, {
+        "judged_at": datetime.now().isoformat(),
+        "verdict": result.get("verdict"),
+        "gates": result.get("gates"),
+    })
     return result
+
+
+def _extract_region(details: Dict[str, Any]) -> Optional[str]:
+    """从 get_alpha_details 返回提取 region（2026-09-04 方案 A）.
+
+    brain_client 返回可能是 {"result": {...}} 或直接 {...}；region 在 settings.region。
+    """
+    if not isinstance(details, dict) or details.get("__error__"):
+        return None
+    d = details.get("result", details)
+    if not isinstance(d, dict):
+        return None
+    settings = d.get("settings", {})
+    if isinstance(settings, dict):
+        region = settings.get("region")
+        if region:
+            return str(region).upper()
+    # 兑底：顶层 region 字段
+    region = d.get("region")
+    return str(region).upper() if region else None
 
 
 def _load_mode_b_qualification(store, region: str = "KOR") -> Dict[str, float]:

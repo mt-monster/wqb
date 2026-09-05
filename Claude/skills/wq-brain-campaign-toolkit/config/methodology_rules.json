@@ -1,0 +1,310 @@
+{
+ "version": 1,
+ "updated_at": "2026-08-18T19:00:00",
+ "_note": "全局方法论规则库（L2 结构化层）：跨 region 共享，所有战役通用。trigger.region=\"*\" 或不设 region 的规则放这里；区域专属规则放 tracking/<REGION>/reference/methodology_rules.json。rules.json 给机器消费（build_wave/gate/pipeline 强制注入），docs/experience/*.md 给人看，两者同源。种子来自 2026-08-18 EUR 战役复盘（通用部分）。",
+ "rules": [
+  {
+   "rule_id": "prod_wall_dilution_v1",
+   "type": "strategy",
+   "trigger": {
+    "condition": "is_strong AND prod_corr > 0.7",
+    "region": "*",
+    "dataset_type": "value"
+   },
+   "action": {
+    "op": "gradient_dilute",
+    "params": {
+     "corr_threshold": 0.3,
+     "weight_step": 0.1,
+     "tool": "compute_mutual_correlation"
+    },
+    "message": "IS 强但 prod_corr>0.7 撞墙时：先用 compute_mutual_correlation 找 |corr|<0.3 的低相关分量，再梯度稀释（步长 0.1）定位 prod<0.7 甜点。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "wave": "wave6c",
+    "prod_curve": {
+     "fcf100": 0.9013,
+     "fcf080": 0.8686,
+     "fcf070": 0.8235,
+     "fcf050": 0.758,
+     "fcf042": 0.7013,
+     "fcf040": 0.6847
+    },
+    "breakthrough": "Wj71Q12o FCF0.40*gap0.60 prod=0.6847 ACTIVE/OS",
+    "note": "FCF 镜像与 pattern gap 镜像互相关 -0.02，是稀释分量；阈值恰在 FCF 0.40-0.42 之间"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  },
+  {
+   "rule_id": "rnf_dilution_tradeoff_v1",
+   "type": "diagnosis",
+   "trigger": {
+    "condition": "dilution_applied",
+    "region": "*"
+   },
+   "action": {
+    "op": "warn_rnf_drop",
+    "message": "rn_fitness 随稀释深度单调下降（实证：0.70/0.30=0.61 -> 0.50/0.50=0.51 -> 0.40/0.60=0.43）。稀释破 prod 墙时须同步评估 rnf 是否跌破用户闸（默认 0.6）；rnf 是用户闸非平台硬检查，平台提交不校验。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "rnf_curve": {
+     "w70": 0.61,
+     "w50": 0.51,
+     "w40": 0.43
+    },
+    "user_threshold": 0.6
+   },
+   "confidence": 0.8,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  },
+  {
+   "rule_id": "metrics_cache_2y_fallback_bug",
+   "type": "gate_override",
+   "trigger": {
+    "condition": "composite_cross_dataset",
+    "region": "*"
+   },
+   "action": {
+    "op": "fix_metrics_fallback",
+    "message": "metrics_cache 抓 two_year_sharpe 对跨 dataset 复合表达式 100% 失败（wave6/6b/6c 24 行全 None），因只从 is.checks 找 LOW_2Y_SHARPE。需 fallback 到 metrics.two_year_sharpe 字段（Wj71Q12o 实证 2.47）。已修复于 metrics_cache.py row_from_alpha。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "affected_waves": [
+     "wave6",
+     "wave6b",
+     "wave6c"
+    ],
+    "none_rate": 1.0,
+    "fix": "metrics_cache.py 加 fallback 链（已落地）"
+   },
+   "confidence": 0.95,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  },
+  {
+   "rule_id": "gate_cross_dataset_split_v1",
+   "type": "gate_override",
+   "trigger": {
+    "condition": "multi_dataset_whitelist",
+    "region": "*"
+   },
+   "action": {
+    "op": "merge_whitelist_before_gate",
+    "message": "跨 dataset 复合表达式被迫拆多次跑 gate（wave5 拆 2 次）。合并多 dataset 白名单后 check_one 可一次过（wave6 合并 3 dataset 后 8/8 过）。gate 前应先合并白名单。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "wave5_split": 2,
+    "wave6_merged_pass": "8/8"
+   },
+   "confidence": 0.75,
+   "status": "active",
+   "times_applied": 1,
+   "times_succeeded": 1,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  },
+  {
+   "rule_id": "settings_wave_lock_v1",
+   "type": "gate_override",
+   "trigger": {
+    "condition": "wave_launch",
+    "region": "*"
+   },
+   "action": {
+    "op": "assert_settings_snapshot",
+    "message": "settings.json 无波次锁/启动前校验：wave6b 14:58 启动读到 14:52 外部改的 universe=TOP800 致 8 条全崩。runner 启动必须快照 settings 并校验 universe 与战役基线一致（防外部并发改）。已落地于 pipeline.py settings_snapshot。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "incident": "wave6b TOP800 误跑",
+    "root_cause": "settings.json 被并行会话改，无启动前校验",
+    "fix": "pipeline.py settings_snapshot（已落地）"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-08-18T04:00:00",
+   "validated_at": "2026-08-18T04:00:00",
+   "source": "manual_retro"
+  },
+  {
+   "rule_id": "model_category_rich_v1",
+   "type": "field_whitelist",
+   "trigger": {
+    "region": "*",
+    "phase": "dataset_select"
+   },
+   "action": {
+    "op": "prefer_category",
+    "params": {
+     "category": "model",
+     "weight": 1.15
+    },
+    "message": "MODEL 是 IS 富矿但 EUR/D1/MODEL 已饱和（prod≥0.7）。权重上限 1.15，且必须开 pyramid_quota（tier1 至少 2 个非 MODEL）。纯 MODEL 七槽禁止。破 prod 墙用 0.40 慢 MODEL × 0.60 快 PV，不是再挖同金字塔字段。"
+   },
+   "evidence": {
+    "campaigns": [
+     "EUR",
+     "GBR"
+    ],
+    "eur": {
+     "model_n": 10,
+     "model_max": 2.54,
+     "model_avg": 1.46,
+     "strong_in_model": "4/4"
+    },
+    "gbr": {
+     "model_n": 4,
+     "model_max": 1.84,
+     "strong_in_model": "1/1"
+    },
+    "method": "score_datasets.py --calibrate 自动学习"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "created_at": "2026-08-18T19:00:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "zero_competition_no_signal_v1",
+   "type": "dead_end",
+   "trigger": {
+    "region": "*",
+    "phase": "dataset_select"
+   },
+   "action": {
+    "op": "demote_zero_competition",
+    "params": {
+     "ac_threshold": 50,
+     "crowd_score": 0.15
+    },
+    "message": "零竞争（alphaCount<50）不等于高价值——双战役实证零竞争集几乎全是伪白空间（无信号）：EUR news_sentiment_nlp ac=17→0.26、news_sentiment_dl ac=10→0.37 全场最弱；真正强信号集中在 ac 50-1000 甜区（mha91/aea183/si6_151/starmine686）。crowd_penalty 甜区反转：ac<50 降权 0.15，甜区满分 0.30。开启 crowd_sweet_spot_enable。"
+   },
+   "evidence": {
+    "campaigns": [
+     "EUR",
+     "GBR"
+    ],
+    "zero_comp_weak": [
+     "news_sentiment_nlp(ac17,0.26)",
+     "news_sentiment_dl(ac10,0.37)",
+     "ai_news_scores(ac0,0.58)"
+    ],
+    "sweet_spot_strong": [
+     "multi_horizon_alpha(ac91,2.54)",
+     "ai_equity_alpha(ac183,2.00)",
+     "shortinterest6(ac151,1.99)",
+     "predictive_starmine(ac686,1.84)"
+    ]
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "created_at": "2026-08-18T19:00:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "pyramid_quota_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "dataset_select"
+   },
+   "action": {
+    "op": "apply_pyramid_quota",
+    "params": {
+     "non_model_min": 2,
+     "weight_floor": 0.9,
+     "weight_cap": 1.15
+    },
+    "message": "S0 白名单至少 2 个非 MODEL（PV/NEWS/ANALYST/institutions）。category_weight 夹在 0.9–1.15。数字 src/wqb.config.MINING。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "waves": "35-40",
+    "finding": "14/23 tier1 为 model；pv 20 集 0 个进 tier1；近闸全 EUR/D1/MODEL prod≥0.82"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "created_at": "2026-08-24T02:00:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "win_replay_slow_fast_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_design"
+   },
+   "action": {
+    "op": "replay_win_mechanism",
+    "params": {
+     "slow_weight": 0.4,
+     "fast_weight": 0.6,
+     "min_slots": 1
+    },
+    "message": "有 win 则至少 1 槽按机制换腿：0.40 慢残差 × 0.60 正交金字塔快腿。禁止克隆 win 表达式。设置跟 win。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "example_id": "Wj71Q12o",
+    "prod_corr": 0.6847,
+    "pyramids": ["EUR/D1/PV", "EUR/D1/MODEL"]
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "created_at": "2026-08-24T02:00:00",
+   "times_applied": 1,
+   "times_succeeded": 1
+  },
+  {
+   "rule_id": "prod_first_skeleton_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "simulate"
+   },
+   "action": {
+    "op": "skeleton_then_expand",
+    "params": {
+     "skeletons_per_slot": 2,
+     "prod_max": 0.7
+    },
+    "message": "每槽先 1–2 条骨架查平台 prod_corr；≥0.7 停扩换腿。禁止先摊 8 条再查 prod。"
+   },
+   "evidence": {
+    "campaign": "EUR",
+    "waves": "35-40",
+    "finding": "每波 40 条测 IS，近闸再查 prod，39 条浪费在已知 MODEL 墙上"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "created_at": "2026-08-24T02:00:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  }
+ ]
+}

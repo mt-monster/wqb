@@ -1,0 +1,40 @@
+# 2026-09-05：根治 CRLF/LF churn。
+# 背景：审计时工作树里有 100+ 文件显示"整文件改动"，实为行尾翻转（HEAD 是 LF、
+# 磁盘被某工具写成 CRLF）。31 个 SKILL.md 里 25 个 CRLF、6 个 LF，混用还会让
+# frontmatter 解析与 diff 审阅变噪音。这里把仓内统一钉成 LF。
+#
+# 生效方式：本文件只约束"入库形态"，已有的 CRLF 工作副本需要跑一次
+#   git add --renormalize .
+# 再提交（会产生一次一次性的大 diff，之后不再churn）。
+
+* text=auto eol=lf
+
+# 明确列出主要文本类型，避免 text=auto 误判
+*.py      text eol=lf
+*.md      text eol=lf
+*.json    text eol=lf
+*.txt     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.toml    text eol=lf
+*.cfg     text eol=lf
+*.ini     text eol=lf
+*.sh      text eol=lf
+
+# 无扩展名的 shell 脚本：CRLF 会让 shebang 变成 "/bin/sh\r"，git 报
+# "cannot run tools/git-hooks/pre-commit: No such file or directory"
+tools/git-hooks/*  text eol=lf
+
+# Windows 专用脚本保持 CRLF，否则部分 cmd.exe 版本会解析异常
+*.bat     text eol=crlf
+*.ps1     text eol=crlf
+
+# 二进制与数据快照不做行尾处理
+*.db      binary
+*.pkl     binary
+*.png     binary
+*.jpg     binary
+*.docx    binary
+*.xlsx    binary
+*.pptx    binary
+*.pdf     binary

@@ -100,3 +100,30 @@ alpha模板.docx
 /findings.md
 /progress.md
 /task_plan.md
+
+# ===== 备份/冲突残留（2026-09-05 审计新增）=====
+# clean_unused_imports.py 异常中断会留下 *.bak_imp；手工日期备份是 *.bak_YYYYMMDD
+*.bak_imp
+*.bak_20*
+*.orig
+*.rej
+# 待用户确认删除的清理暂存区（device_bash 无删除权限时的落脚点）
+_to_delete/
+
+# ===== Skill 运行期产物（2026-09-05 审计新增）=====
+# Claude/skills/ 下只入 skill 源（SKILL.md / references / scripts / templates / configs 样例），
+# 运行产物一律本地保留：judge 判定快照、GEM 任务目录与 final_expressions、
+# 特征工程 ideas 报告、模板处理中间件、ace 调试日志。
+Claude/skills/*/outputs/
+Claude/skills/*/scripts/outputs/
+Claude/skills/*/output_report/
+Claude/skills/brain-inspectRawTemplate-create-Setting/processed_templates/
+Claude/skills/*/parsetab.py
+Claude/skills/**/parsetab.py
+
+# skill 自带的 data/ 是 skill 内容（judge 论坛语料、robustness 事件样例等），
+# 不受上面仓库级 `data/` 排除影响 —— 先放开目录再放开内容，否则父目录被排除时无法回收。
+!Claude/skills/*/data/
+!Claude/skills/*/data/**
+# 但 skill data 下的运行期快照仍然排除
+Claude/skills/*/data/*/final_expressions.json

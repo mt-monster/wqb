@@ -64,28 +64,11 @@ def run(
         "success": False,
     }
 
-    # dry-run：构建到特征工程流水线命令即停，不 subprocess、不写库
-    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实跑 pipeline + build_* persist）。
-    if ctx.get("dry_run"):
-        result["success"] = True
-        result["dry_run"] = True
-        result["steps"].append({
-            "step": "dry_run",
-            "success": True,
-            "message": (
-                "Would run feature engineering S1-S3: check S1 ledger → resolve "
-                "brain-data-feature-engineering → run pipeline → write s1_ledger"
-            ),
-        })
-        result["plan"] = {
-            "region": region,
-            "dataset_id": dataset_id,
-            "delay": delay,
-            "universe": universe,
-            "data_category": data_category,
-            "force_regen": force_regen,
-        }
-        return result
+    # dry-run 统一口径（2026-09-05）：走完所有零成本前置——S1 ledger 检查、
+    # skill 目录与主脚本解析、命令构建——到 Popen 前即停，不建目录、不写库。
+    # 此前只返回一句写死的 "Would run feature engineering ..."，等于什么都没验证。
+    dry_run = bool(ctx.get("dry_run"))
+    result["dry_run"] = dry_run
 
     # Step 1: 检查是否已有 S1 ledger（且不强制重新生成）
     if store and not force_regen:
@@ -126,8 +109,10 @@ def run(
 
     # Step 3: 运行特征工程流程（阶段1-3）— 异步模式
     task_id = f"fe_{region}_{dataset_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    task_dir = os.path.join(REPO_ROOT, "logs", "_async_tasks")
-    os.makedirs(task_dir, exist_ok=True)
+    # 2026-09-04 修复：任务目录支持 WQB_TASK_ROOT 注入（单测隔离，默认仓库 logs/_async_tasks）
+    task_dir = os.environ.get("WQB_TASK_ROOT") or os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    if not dry_run:
+        os.makedirs(task_dir, exist_ok=True)
     task_file = os.path.join(task_dir, f"{task_id}.json")
 
     try:
@@ -143,6 +128,7 @@ def run(
             store=store,
             s1_key=s1_key,
             result=result,
+            dry_run=dry_run,
         )
         result["steps"].append(fe_async_result)
 
@@ -152,6 +138,22 @@ def run(
                 "success": False,
                 "error": fe_async_result.get("error", "Unknown error"),
             })
+            return result
+
+        if dry_run:
+            result["success"] = True
+            result["note"] = "dry-run：命令已构建，未执行"
+            result["command"] = fe_async_result.get("command")
+            result["plan"] = {
+                "region": region,
+                "dataset_id": dataset_id,
+                "delay": delay,
+                "universe": universe,
+                "data_category": data_category,
+                "force_regen": force_regen,
+                "skill_root": skill_root,
+                "s1_key": s1_key,
+            }
             return result
 
         # 异步模式：立即返回，结果通过 task_file 轮询
@@ -195,6 +197,7 @@ def _run_feature_engineering_pipeline_async(
     store: Any,
     s1_key: str,
     result: Dict[str, Any],
+    dry_run: bool = False,
 ) -> Dict[str, Any]:
     """运行特征工程流水线（阶段1-3）— 异步模式.
 
@@ -217,9 +220,10 @@ def _run_feature_engineering_pipeline_async(
         step_result["error"] = f"Main script not found in {skill_root}"
         return step_result
 
-    # 构建输出目录
+    # 构建输出目录（dry-run 不建目录）
     output_dir = os.path.join(skill_root, "output_report")
-    os.makedirs(output_dir, exist_ok=True)
+    if not dry_run:
+        os.makedirs(output_dir, exist_ok=True)
 
     ideas_filename = f"{region}_delay{delay}_{dataset_id}_ideas.md"
     ideas_path = os.path.join(output_dir, ideas_filename)
@@ -235,20 +239,44 @@ def _run_feature_engineering_pipeline_async(
         "--output", ideas_path,
     ]
 
+    step_result["command"] = " ".join(cmd)
+    step_result["main_script"] = main_script
+    if dry_run:
+        step_result["success"] = True
+        step_result["dry_run"] = True
+        step_result["note"] = "dry-run：命令已构建，未执行"
+        return step_result
+
     try:
         logger.info(f"Running feature engineering (async): {' '.join(cmd)}")
 
-        proc = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=skill_root,
-        )
+        popen_kwargs: Dict[str, Any] = {
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "text": True,
+            "cwd": skill_root,
+        }
+        if os.name == "nt":
+            # 2026-09-04 修复：脱离父进程组——MCP 服务进程退出不带走后台子进程
+            popen_kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        proc = subprocess.Popen(cmd, **popen_kwargs)
 
         step_result["pid"] = proc.pid
         step_result["success"] = True
         step_result["message"] = f"Feature engineering launched (pid={proc.pid})"
+
+        # 2026-09-04 修复：主线程先写 running 占位——即使收尾线程随 MCP 进程退出被杀，
+        # 轮询方也能读到 status=running 而非"任务文件不存在"（收尾线程完成时覆盖终态）。
+        try:
+            with open(task_file, "w", encoding="utf-8") as f:
+                json.dump({
+                    "task_id": task_id,
+                    "status": "running",
+                    "pid": proc.pid,
+                    "started_at": datetime.now().isoformat(),
+                }, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            logger.warning(f"Failed to write running placeholder {task_file}: {e}")
 
         # 后台线程：等待完成并收集结果
         def _wait_and_collect():
@@ -294,19 +322,35 @@ def _run_feature_engineering_pipeline_async(
                         logger.warning(f"Failed to parse ideas file: {e}")
 
             except subprocess.TimeoutExpired:
-                fe_result["error"] = "Timeout after 1800s"
+                # 2026-09-04 修复：超时后 kill 子进程并回收——否则孤儿进程继续占平台槽位
+                try:
+                    proc.kill()
+                    proc.communicate(timeout=30)
+                except Exception:
+                    pass
+                fe_result["error"] = "Timeout after 1800s (process killed)"
             except Exception as e:
                 fe_result["error"] = str(e)
 
             fe_result["finished_at"] = datetime.now().isoformat()
 
+            # 2026-09-04 修复：收尾线程重建独立 sqlite 连接（复用主线程连接跨线程使用
+            # 会抛 sqlite3.ProgrammingError，fe ledger_error 实证）。闭包内用原参数名
+            # 重赋值会把 store 解析为局部变量并 UnboundLocalError，故用 thread_store。
+            thread_store = None
+            if store is not None and hasattr(store, "path"):
+                try:
+                    thread_store = store.__class__(store.path)
+                except Exception as e:
+                    logger.warning(f"Failed to reopen store in collector thread: {e}")
+
             # 写入 ledger（在后台线程中完成）
-            if store and fe_result.get("success"):
+            if thread_store and fe_result.get("success"):
                 try:
                     prefix_summary = None
                     candidate_field_pool = []
                     try:
-                        prefix_summary = store.build_field_prefix_clusters(
+                        prefix_summary = thread_store.build_field_prefix_clusters(
                             region=region, dataset=dataset_id,
                             prefix_depth=1, top_n=10, samples_per_cluster=5, persist=True,
                         )
@@ -314,7 +358,7 @@ def _run_feature_engineering_pipeline_async(
                         logger.warning(f"Failed to build field prefix clusters: {e}")
 
                     try:
-                        pool_payload = store.build_candidate_field_pool(
+                        pool_payload = thread_store.build_candidate_field_pool(
                             region=region, dataset=dataset_id, persist=True,
                         )
                         candidate_field_pool = pool_payload.get("candidate_field_pool", [])
@@ -335,7 +379,7 @@ def _run_feature_engineering_pipeline_async(
                         "field_prefix_summary": prefix_summary or {},
                         "source": "feature_engineering_node",
                     }
-                    store.upsert_ledger(region, s1_key, ledger_data)
+                    thread_store.upsert_ledger(region, s1_key, ledger_data)
                     fe_result["ledger_written"] = True
                     fe_result["field_whitelist_size"] = len(ledger_data["field_whitelist"])
                     fe_result["candidate_field_pool_size"] = len(candidate_field_pool)

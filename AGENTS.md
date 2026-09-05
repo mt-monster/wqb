@@ -7,7 +7,7 @@
 | 目录 | 职责 | 变更注意 |
 |---|---|---|
 | `world-quant-brain-mcp/` | MCP 服务（`wq-brain-http`）：`brain_api.py` 为门面（36 行），方法体 verbatim 拆至 `brain_mixin_transport/auth/simulation/spcread/correlation.py`；模型 `brain_api_models.py`、配置 `brain_config.py`；回测/提交/论坛工具在 `tools_*` | 运行中服务，改 `brain_mixin_*` 需回归 `world-quant-brain-mcp/tests/` |
-| `tracking/` | 区域战役追踪（KOR/USA/EUR/IND/GLB/DEU…）：candidates/results/reviews/scripts | `tracking/mining/` 为共享数据湖，勿改动/移动；`MANIFEST.json` 为全量索引 |
+| `tracking/` | 区域战役追踪（KOR/USA/EUR/IND/GLB/DEU…）：candidates/results/reviews/scripts | `tracking/mining/` 为共享数据湖，勿改动/移动；全量索引见 `tracking/reference/tooling/generate_manifest.py`（`MANIFEST.json` 当前未生成） |
 | `mining/` | 挖掘脚本与归档 | 改动影响战役 pipeline |
 | `tools/` | 工具链（字段解析、质量检查、同步等） | 被多区域脚本引用，改动前先查调用点 |
 | `reports/` | 报告产物 | — |
@@ -25,7 +25,7 @@
 - `world-quant-brain-mcp/brain_config.py` — 配置函数：`_resolve_config_path`/`_load_dotenv_into_environ`/`load_config`
 - `world-quant-brain-mcp/mcp_core.py` — MCP 工具注册与分发
 - `src/wqb/config.py` — **规范域常量**：区域/算子家族/中性化（数据源 `data/operators_verified.json`）；MCP 包与 `pipeline/`/`tools/gate.py` 共享引用
-- `tracking/MANIFEST.json` — 追踪目录全量索引
+- `tracking/reference/tooling/generate_manifest.py` — 追踪目录全量索引生成器（产出 `tracking/MANIFEST.json`，当前未生成；注意该脚本会顺带把 >500 KB 文件 zip 归档到 `tracking/archive/large/`）
 - `pytest.ini` — 测试配置（验证路由）
 - `world-quant-brain-mcp/Makefile` — Docker 部署入口（`make up` / `make down`）
 
@@ -37,7 +37,14 @@
 - 平台交互类改动（回测/提交/配额）先读 `docs/experience/` 经验文档，遵守并发与配额约束，避免 429。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
-## 3.5 Skills 回测标准路径（2026-09-02 v2.2）
+## 3.5 Skills 回测标准路径（2026-09-05 单源化）
+
+> **本节只放"入口与边界"。九步流水线的完整正文（每步目的/MCP 调用/产物/失败分支、
+> 区域 profile 路由、Artifact 契约、循环停止表、反模式）**唯一权威在**
+> [`Claude/skills/wq-brain-ra-pipeline/SKILL.md`](Claude/skills/wq-brain-ra-pipeline/SKILL.md)。
+> 2026-09-05 前本节逐字复制了那份 SOP，两边已开始漂移（本节记了 gate_results /
+> s4_walls / salvage_pool，SKILL.md 的 Artifact 契约表没有；本节写「brain-makeSomeGem
+> 强制调用」，SKILL.md 写「workflow_gem 强制调用」）。改流程只改 SKILL.md，不要再复制到这里。
 
 **唯一挖掘编排 SOP**：`wq-brain-ra-pipeline`（九步流水线 S-PRE→S6），三角分工：
 
@@ -47,85 +54,57 @@
 | `wq-brain-campaign-matrix` | where = 查表选区选集 |
 | `wq-brain-campaign-toolkit` | how = 战役目录内执行引擎 |
 
-**九步流水线**（每步含目的/MCP 调用/产物/失败分支，任一步 FAIL 就地回退，不允许跳过继续）：
+**九步骨架（只作索引，细节看 SKILL.md）**：
 
-1. **步 1（S-PRE）查表**：`wq-brain-campaign-matrix` 查表选区选集
-   - MCP：`get_campaign_summary` / `get_dead_ends` / `get_dead_datasets` / `get_cross_region_lessons` / `operator_audit` / `get_messages`
-   - 产物：universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号
+| 步 | 阶段 | 主入口 |
+|---|---|---|
+| 1 | S-PRE 查表 | `wq-brain-campaign-matrix` + `mcp__wqb-db__get_*` |
+| 2 | S0 数据集体检 | `workflow_campaign(stage="S0")` |
+| 3 | S1 字段扫描与理解 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` |
+| 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-makeSomeGem` headless_runner） |
+| 5 | S2→S3 门禁 | `check_batch` → `check_expr_against_inspect` → `wave_gate` |
+| 6 | S3 七槽回测 | `workflow_batch_track`（并发纪律权威 = `wqb-concurrency` §8） |
+| 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
+| 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（唯一权威）→ 用户确认 → `workflow_submit_alpha` |
+| 9 | S6 复盘回写 | `mcp__wqb-db__upsert_wave_result` / `upsert_registry_empirical` / `upsert_ledger_key` |
 
-2. **步 2（S0）数据集体检 + 金字塔配置**：`wq-brain-campaign-toolkit` 执行
-   - MCP：`workflow_campaign(stage="S0", calibrate=true, dry_run=true)` → `workflow_campaign(stage="S0", calibrate=true)` → `workflow_campaign(stage="S0")` → `get_ledger_key(key="s0_ranking")`
-   - 产物：ledger `s0_whitelist` / `s0_ranking` / `*_dead`
-   - 缓存：calibrate 结果缓存到 `s0_calibrate_{region}` ledger
+整链可用 `mcp__wq-brain-http__workflow_chain`（先 `dry_run=True` 看每步构建出的命令）。
+**但提交类节点不入自动链**：`workflow_submit_alpha` / `workflow_superalpha` 的
+`confirm_submit=True` 必须由用户在步 8 明确确认后单独调用。
 
-3. **步 3（S1）字段扫描 + 理解**：`wq-brain-campaign-toolkit` + `brain-data-feature-engineering`
-   - MCP：`workflow_campaign(stage="S1", dataset=$DS)` / `workflow_feature_engineering`（可选）/ `get_datafields`（字段分级风险筛查）
-   - 产物：fields 表 + ledger `s1_<ds>_d<delay>` + ideas.md 路径
+**几条不在 SKILL.md、属仓库工程约定的补充**：
 
-4. **步 4（S2）选波：概念优先生成**：`brain-makeSomeGem` 强制调用
-   - MCP：`workflow_campaign(stage="S6", subcommand="assemble-priors")` → `get_ledger_key(key="s1_${DS}_d${DELAY}")` → `workflow_gem(region, dataset_id, delay, universe, priors_file)` → `workflow_campaign(stage="S2", dataset=$DS, wave=$W)`
-   - 产物：expressions 表（status=gem/enhanced）+ ledger idea
-   - 缓存：assemble-priors 结果缓存到 `priors_snapshot_{region}` ledger
+- **判定与提交的权威划分**：提交判定唯一权威 = `tools/submit_verdict.py`（MCP `submit_verdict`）。
+  `brain-alpha-judge` / `workflow_judge` 是**参考评审层**，2026-09-05 起代码里已无提交路径。
+- **workflow 节点元数据**：`registry.py` 的 `required_params` / `optional_params` 必须与节点
+  `run()` 签名一致（`_context` / `dry_run` 除外）。`workflow_list_nodes` 把它当 API 文档
+  暴露给 Agent，漂移即误导。回归由 `tests/unit/test_skill_integrity.py` 守护。
+- **dry-run 契约**：全部 7 个节点统一「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，
+  不 subprocess、不写库、不建目录。干跑失败必须带得出 `error`（禁止 success=False + error=None）。
+- **skill 目录解析**：`_common._skill_roots()` 顺序为 `WQ_SKILLS_DIR` > Claude 安装位
+  （`%APPDATA%\Claude\skills` 等）> 历史 Agent 位（qoder-cn / cursor / workbuddy）>
+  仓库自带 `Claude/skills/`（兜底，保证 clone 即可用）。
+- **MCP 服务器命名**：只能是 `wq-brain-http` 与 `wqb-db` —— 所有 skill 调用的工具前缀是
+  `mcp__wq-brain-http__*` / `mcp__wqb-db__*`，改名即全线失配。`.mcp.json` 为准，
+  `mcp_config.json` 与安装脚本必须跟随。
 
-5. **步 5（S2→S3）门禁**：`wq-brain-campaign-toolkit` 执行
-   - MCP：`workflow_campaign(stage="S2", dataset=$DS, wave=$W)` / `preflight_expressions`（VECTOR auto_fix）
-   - 硬门：check_batch（多样性守卫）→ check_expr_against_inspect（体检硬门）→ wave_gate（5 闸预检）
-   - 产物：gate_results 表（all_pass / fail_reasons）
+### Skill layer 取值表
 
-6. **步 6（S3）七槽回测**：`brain-simAlphasinBatch-and-track` + `wq-brain-campaign-toolkit` + `wqb-concurrency`
-   - MCP：`workflow_batch_track(region, wave, dataset, concurrency=7)` / `batch_status(simulation_ids=[...])` / `create_multi_simulation`（7 批同提）/ `lookINTO_SimError_message`（统一轮询）/ `get_alpha_details`（逐 ID 拉详情）
-   - 产物：backtest_results 表 + wave_results 表 + checkpoint
-   - 结构化摘要：stdout_tail 精简为 structured_summary（COMPLETE/ERROR/CANCELLED 计数）
+`SKILL.md` frontmatter 的 `layer` 只表示"在挖掘链条上的位置"，不是优先级：
 
-7. **步 7（S4）诊断改进**：`brain-how-to-pass-AlphaTest` + `wq-brain-alpha-optimization-v1`
-   - MCP：`workflow_campaign(stage="S4", dataset=$DS, wave=$W)` / `get_alpha_details` / `check_correlation`
-   - 产物：walls 诊断 + 改进候选（Mode B/A 产出）
-   - 写入：ledger `s4_walls_{region}_{wave}`（walls 诊断入库）+ salvage_pool（快达标因子自动入池）
-
-8. **步 8（S4→S5）稳健闸与提交判定**：`brain-alpha-robustness` + `brain-alpha-judge` + `worldquant-submit-alpha`
-   - MCP：`submit_verdict(alpha_id)`（唯一权威）/ `workflow_judge`（可选参考）/ `workflow_submit_alpha`（用户确认后）
-   - 硬前置：Failed-count 资格门（Failed RA == 0）
-   - 提交判定链：① Failed-count 资格门 → ② `submit_verdict` 零成本判定（唯一权威）→ ③ `brain-alpha-judge`（可选参考层）→ ④ 用户确认 → ⑤ `workflow_submit_alpha`
-   - 产物：提交判定（SUBMITTABLE / BLOCKED / WAIT_THEME_ROTATION）
-
-9. **步 9（S6）复盘回写**：`wq-backtest-monitor` §14
-   - MCP：`upsert_wave_result(verdict=PASS|FAIL|PARTIAL)` / `upsert_registry_empirical`（dead_end / win / campaign）/ `upsert_ledger_key(key="s6_verdict_<wave>")`
-   - 产物：wave_results.verdict + registry_empirical 更新
-   - 闭环：S6 回写 → S-PRE 查表自动读取最新 dead_ends/wins/campaigns
-
-**循环与停止**（步 2 → 步 9 为一波）：
-
-| 条件 | 动作 |
-|---|---|
-| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-nextMove-analysis` |
-| 白名单被 dead_end 全覆盖 | 停止 |
-| 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-nextMove-analysis` 换区域 |
-| ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `mcp__wq-brain-http__sa_probe --region $REGION`） |
-| 配额耗尽 | 挂起提交，继续步 2 → 9 |
-| 用户要求持续日循环 | 每个 NY 日先 `brain-nextMove-analysis`，再从步 1 跑；日界 21:30 ET |
-
-**区域 Profile 路由**：九步骨架全区域共用，区域差异通过 profile 注入（`references/regions/<REGION>.md`），四个注入点：入口裁决（entry_verdict）/ 生成先验（priors）/ 闸门特化（gate_overrides）/ 循环策略（loop_policy）。
-
-**Artifact 契约**：战役产物只入 `data/wqb.db`，禁止 Write 战役 json/csv。
-
-| 阶段 | 入库 |
-|---|---|
-| S0 | ledger `s0_ranking` / `s0_whitelist` / `*_dead` |
-| S1 | ledger `s1_<ds>_d<delay>` + ideas.md 路径 |
-| S2 | `expressions` status=`gem`/`enhanced`；ledger idea |
-| S3 | `backtest_results` / `wave_results` / checkpoint |
-| S6 | `wave_results.verdict` + `registry_empirical` |
-
-**反模式**：
-- 再 invoke `brain-deepExplore` 或按其旧 S2-D/S2-M 必跑、停止闸 4 覆盖 RA
-- 手写 `_gate_waveNN.py` / `w*_batches.json` / 把 GEM `final_expressions.json` 当真相源
-- 手写 requests；跳过步 9；在本文件复写阈值；`combination(alpha(...))`
-- 七槽全裸探针；七槽全 MODEL + 固定 COUNTRY/decay6
-- 步 4 不跑 GEM，或 GEM 只产 `rank({field})` 却拿去填槽
-- submit_verdict READY 后自动 `workflow_submit_alpha`
-- 调用已废弃的 `glb_pipeline` / `gbr_pipeline` / `glb_alpha_machine`
-- 直接把 `brain-feature-implementation` 当主链入口（它在 GEM 内部）
-- 手写 PowerShell 命令替代 MCP 工具调用（能走 MCP 的步骤一律走 MCP）
+| layer | 含义 | 例 |
+|---|---|---|
+| `L-RA` | 唯一编排入口 | `wq-brain-ra-pipeline` |
+| `L-PRE` | 开战役前的查表选集 | `wq-brain-campaign-matrix` |
+| `L-TOOL` | 战役执行引擎（被编排调用） | `wq-brain-campaign-toolkit` |
+| `L0` | 战役外的态势/情报 | `brain-nextMove-analysis`、`brain-forum-browse`、`wq-brain-ppa-mining` |
+| `L1` | 数据集 / 字段研究（S0–S1） | `brain-alpha-research*`、`brain-*-exploration-*` |
+| `L2` | 表达式生成与语法校验（S2） | `brain-makeSomeGem`、`brain-feature-implementation`、`alpha-expression-verifier` |
+| `L3` | 批量回测与并发纪律（S3） | `brain-simAlphasinBatch-and-track`、`wqb-concurrency` |
+| `L4` | 诊断与改进（S4） | `wq-brain-alpha-optimization-v1`、`brain-alpha-robustness`、`brain-how-to-pass-AlphaTest` |
+| `L5` | 提交（S5） | `worldquant-submit-alpha`、`wq-brain-superalpha`、`brain-alpha-judge` |
+| `L6` | 监控与复盘（S6） | `wq-backtest-monitor` |
+| `L7` | 与挖掘无关的通用工具 | `planning-with-files`、`pull_BRAINSkill` |
 
 ## 3.x 单源核心与 brain_api 拆解约定（Direction A）
 

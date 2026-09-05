@@ -1,0 +1,33 @@
+{
+  "_comment": "服务器名必须是 wq-brain-http / wqb-db —— 所有 skill 调用的工具前缀是 mcp__wq-brain-http__* / mcp__wqb-db__*，改名即全线失配。与仓库根 .mcp.json 保持一致。",
+  "mcpServers": {
+    "wq-brain-http": {
+      "command": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe",
+      "args": [
+        "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      },
+      "description": "WorldQuant BRAIN MCP Server - Alpha Mining & Simulation Tools",
+      "alwaysAllow": [
+        "authenticate",
+        "get_user_profile",
+        "get_datasets",
+        "create_multi_simulation",
+        "check_correlation",
+        "submit_verdict"
+      ]
+    },
+    "wqb-db": {
+      "command": "D:/coding/traeCN_project/wqb/.venv/Scripts/python.exe",
+      "args": [
+        "D:/coding/traeCN_project/wqb/wqb_db_mcp.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      },
+      "description": "wqb.db 台账/战役结构化读写（ledger / expressions / wave_results / registry）"
+    }
+  }
+}

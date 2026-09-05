@@ -12,48 +12,33 @@
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+
+from .._common import (
+    get_brain_client as _get_brain_client,
+    persist_workflow_record,
+    run_async as _run_async,
+)
 
 logger = logging.getLogger(__name__)
 
 _POLL_INTERVAL_SEC = 5
 
 
-def _get_brain_client():
-    """延迟导入 brain_client 单例（避免循环依赖与启动开销）。"""
-    import sys
-    import os
-    mcp_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..",
-                           "world-quant-brain-mcp")
-    mcp_dir = os.path.abspath(mcp_dir)
-    if mcp_dir not in sys.path:
-        sys.path.insert(0, mcp_dir)
-    from brain_api import brain_client  # noqa
-    return brain_client
+def _client_ok():
+    """零网络地确认 brain_client 可导入（dry-run 用）。
 
-
-def _run_async(coro):
-    """在同步节点里执行异步 brain_client 方法（无事件循环时新建，有则用 thread）。"""
+    注意：只反映「当前解释器」能否导入，节点真实运行在 MCP venv 里；
+    这里失败通常是干跑用的解释器缺依赖，属提示而非阻断。
+    """
     try:
-        try:
-            asyncio.get_running_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            try:
-                return loop.run_until_complete(coro)
-            finally:
-                loop.close()
-        # 已在运行中的事件循环（如 MCP async 工具上下文）：用独立线程跑
-        import concurrent.futures
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            return pool.submit(lambda: asyncio.run(coro)).result()
-    except Exception as e:
-        logger.warning(f"async brain call failed: {e}")
-        return {"__error__": str(e)}
+        _get_brain_client()
+        return True, None
+    except Exception as e:  # pragma: no cover - 环境相关
+        return False, str(e)
 
 
 def run(
@@ -91,18 +76,17 @@ def run(
     # dry-run：构建到提交流程计划即停，不触碰 network / 不写库
     # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
     if ctx.get("dry_run"):
+        _dry_client_ok, _dry_client_err = _client_ok()
         return {
             "alpha_id": alpha_id,
             "success": True,
             "dry_run": True,
             "submitted": False,
+            "note": "dry-run：请求计划已构建，未调用平台",
             "steps": [{
-                "step": "dry_run",
-                "success": True,
-                "message": (
-                    "Would run submit flow: get_alpha_details → pre_submit_check → "
-                    f"[set_properties → submit → poll]（confirm_submit={confirm_submit}）"
-                ),
+                "step": "resolve_client",
+                "success": _dry_client_ok,
+                "warning": _dry_client_err,
             }],
             "plan": {
                 "alpha_id": alpha_id,
@@ -111,6 +95,20 @@ def run(
                 "tags": tags,
                 "confirm_submit": confirm_submit,
                 "force": force,
+                "verify_timeout": verify_timeout,
+                "calls": (
+                    ["get_alpha_details(alpha_id)", "pre_submit_check(alpha_id)"]
+                    + ([
+                        "set_alpha_properties(alpha_id, name/color/tags/descriptions)",
+                        "POST /alphas/{id}/submit",
+                        f"poll get_alpha_details until OS/ACTIVE (<= {verify_timeout}s)",
+                    ] if confirm_submit else [])
+                ),
+                "note": (
+                    "confirm_submit=False：仅预检与查状态，不会 POST submit"
+                    if not confirm_submit else
+                    "confirm_submit=True：会真实提交——必须已有用户明确确认"
+                ),
             },
         }
 
@@ -222,15 +220,11 @@ def _poll_status(client, alpha_id: str, timeout: int) -> Optional[str]:
 
 
 def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
-    """保存提交记录到台账并返回。"""
-    if store:
-        try:
-            store.upsert_ledger("WORKFLOW", f"submit_{alpha_id}", {
-                "submitted_at": datetime.now().isoformat(),
-                "submitted": result.get("submitted", False),
-                "final_status": result.get("final_status"),
-                "steps": result.get("steps"),
-            })
-        except Exception as e:
-            logger.warning(f"Failed to save submit record: {e}")
+    """保存提交记录到台账并返回（容错与告警由 persist_workflow_record 承担）。"""
+    persist_workflow_record(store, "submit", alpha_id, {
+        "submitted_at": datetime.now().isoformat(),
+        "submitted": result.get("submitted", False),
+        "final_status": result.get("final_status"),
+        "steps": result.get("steps"),
+    })
     return result

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "brain-forum-browse agent profile",
+  "type": "object",
+  "required": ["version", "curator", "l2", "write_locale"],
+  "properties": {
+    "version": { "type": "integer", "const": 2 },
+    "curator": { "type": "boolean", "const": true },
+    "preferred_host": {
+      "type": "string",
+      "enum": ["cursor", "claude_code", "kimi", "codex", "windsurf", "copilot", "generic"]
+    },
+    "l2": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "l2_params": {
+      "type": "object",
+      "properties": {
+        "region": { "type": ["string", "null"] },
+        "dataset": { "type": ["string", "null"] }
+      }
+    },
+    "write_locale": { "type": "string", "const": "zh-CN" },
+    "index_protocol_opt_in": { "type": "boolean" },
+    "upvoted_comment_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "role_history": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["at", "l1", "gap_type"],
+        "properties": {
+          "at": { "type": "string", "format": "date-time" },
+          "l1": { "type": "string", "enum": ["commenter", "author", "linker"] },
+          "gap_type": { "type": "string" }
+        }
+      }
+    }
+  }
+}

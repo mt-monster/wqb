@@ -22,6 +22,18 @@ from .._common import REPO_ROOT, resolve_campaign_dir, resolve_toolkit_dir, reso
 logger = logging.getLogger(__name__)
 
 
+def _fail_step(result: Dict[str, Any], step: str, error: str) -> Dict[str, Any]:
+    """记录失败步骤，并同步写顶层 success/error。
+
+    2026-09-05 修复：此前失败原因只进 result["steps"][-1]，顶层仅 success=False，
+    直连调用方（不经 executor）拿不到任何原因。现两处都写。
+    """
+    result["steps"].append({"step": step, "success": False, "error": error})
+    result["success"] = False
+    result["error"] = error
+    return result
+
+
 @require_mcp_tools("campaign")
 def run(
     region: str,
@@ -65,13 +77,15 @@ def run(
     }
 
     # 验证战役目录
-    if not campaign_dir or not os.path.exists(campaign_dir):
-        result["steps"].append({
-            "step": "validate_campaign_dir",
-            "success": False,
-            "error": f"Campaign directory not found: {campaign_dir}",
-        })
-        return result
+    if not campaign_dir:
+        return _fail_step(
+            result,
+            "validate_campaign_dir",
+            f"Cannot resolve campaign_dir for region={region}. "
+            "Set WQB_CAMPAIGN_DIR or WQB_WORKSPACE_ROOT, or create tracking/<region>/.",
+        )
+    if not os.path.exists(campaign_dir):
+        return _fail_step(result, "validate_campaign_dir", f"Campaign directory not found: {campaign_dir}")
 
     result["steps"].append({
         "step": "validate_campaign_dir",
@@ -85,12 +99,7 @@ def run(
     # 定位 toolkit
     toolkit_dir = resolve_toolkit_dir()
     if not toolkit_dir:
-        result["steps"].append({
-            "step": "find_toolkit",
-            "success": False,
-            "error": "wq-brain-campaign-toolkit not found",
-        })
-        return result
+        return _fail_step(result, "find_toolkit", "wq-brain-campaign-toolkit not found")
 
     # 根据 stage 路由到对应脚本
     script_map = {
@@ -139,21 +148,11 @@ def run(
     else:
         script_name = script_map.get(stage)
     if not script_name:
-        result["steps"].append({
-            "step": "route_stage",
-            "success": False,
-            "error": f"Unknown stage: {stage}",
-        })
-        return result
+        return _fail_step(result, "route_stage", f"Unknown stage: {stage}")
 
     script_path = os.path.join(toolkit_dir, script_name)
     if not os.path.exists(script_path):
-        result["steps"].append({
-            "step": "route_stage",
-            "success": False,
-            "error": f"Script not found: {script_path}",
-        })
-        return result
+        return _fail_step(result, "route_stage", f"Script not found: {script_path}")
 
     # 构建命令
     cmd = [wq_py(), script_path, "--campaign-dir", campaign_dir]
@@ -182,12 +181,15 @@ def run(
 
             # 预检 FAIL（前置产物缺失）则中止，禁止带着缺白名单的状态烧配额
             if not preflight_result.get("success", False):
+                error = preflight_result.get("error", "Preflight failed")
                 result["steps"].append({
                     "step": "preflight_block",
                     "success": False,
-                    "error": preflight_result.get("error", "Preflight failed"),
+                    "error": error,
                     "preflight": preflight_result,
                 })
+                result["success"] = False
+                result["error"] = error
                 return result
 
         if dataset:
@@ -210,12 +212,15 @@ def run(
 
             # 如果质量闸失败且要求 block，则中止
             if not quality_gate_result.get("success", False):
+                error = "Quality gate failed, blocking S3 execution"
                 result["steps"].append({
                     "step": "quality_gate_block",
                     "success": False,
-                    "error": "Quality gate failed, blocking S3 execution",
+                    "error": error,
                     "quality_gate": quality_gate_result,
                 })
+                result["success"] = False
+                result["error"] = error
                 return result
 
         # 质量闸通过，继续 pipeline.py
@@ -266,20 +271,37 @@ def run(
     # 2026-09-03 根治：异步执行 — Popen 启动子进程后立即返回，
     # 后台线程等待完成并写入结果文件。避免 MCP 客户端超时（原 subprocess.run 阻塞 3600s）。
     task_id = f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    task_dir = os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    # 2026-09-04 修复：任务目录支持 WQB_TASK_ROOT 注入（单测隔离，默认仓库 logs/_async_tasks）
+    task_dir = os.environ.get("WQB_TASK_ROOT") or os.path.join(REPO_ROOT, "logs", "_async_tasks")
     os.makedirs(task_dir, exist_ok=True)
     task_file = os.path.join(task_dir, f"{task_id}.json")
 
     try:
         logger.info(f"Executing campaign {stage} (async): {' '.join(cmd)}")
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=toolkit_dir,
-        )
+        popen_kwargs: Dict[str, Any] = {
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "text": True,
+            "cwd": toolkit_dir,
+        }
+        if os.name == "nt":
+            # 2026-09-04 修复：脱离父进程组——MCP 服务进程退出不带走后台子进程
+            popen_kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        process = subprocess.Popen(cmd, **popen_kwargs)
+
+        # 2026-09-04 修复：主线程先写 running 占位——即使收尾线程随 MCP 进程退出被杀，
+        # 轮询方也能读到 status=running 而非"任务文件不存在"（收尾线程完成时覆盖终态）。
+        try:
+            with open(task_file, "w", encoding="utf-8") as f:
+                json.dump({
+                    "task_id": task_id,
+                    "status": "running",
+                    "pid": process.pid,
+                    "started_at": datetime.now().isoformat(),
+                }, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            logger.warning(f"Failed to write running placeholder {task_file}: {e}")
 
         # 后台线程：等待进程完成并收集结果
         def _wait_and_collect():
@@ -306,10 +328,16 @@ def run(
                         exec_result["walls"] = walls
 
             except subprocess.TimeoutExpired:
+                # 2026-09-04 修复：超时后 kill 子进程并回收——否则孤儿进程继续占平台槽位
+                try:
+                    process.kill()
+                    process.communicate(timeout=30)
+                except Exception:
+                    pass
                 exec_result = {
                     "task_id": task_id,
                     "success": False,
-                    "error": "Timeout after 3600s",
+                    "error": "Timeout after 3600s (process killed)",
                     "finished_at": datetime.now().isoformat(),
                 }
             except Exception as e:
@@ -327,10 +355,20 @@ def run(
             except Exception as e:
                 logger.error(f"Failed to write task result {task_file}: {e}")
 
-            # 保存到 DB
-            if store and exec_result.get("success"):
+            # 2026-09-04 修复：收尾线程重建独立 sqlite 连接（复用主线程连接跨线程使用
+            # 会抛 sqlite3.ProgrammingError，fe ledger_error 实证）。闭包内用原参数名
+            # 重赋值会把 store 解析为局部变量并 UnboundLocalError，故用 thread_store。
+            thread_store = None
+            if store is not None and hasattr(store, "path"):
                 try:
-                    store.upsert_ledger("WORKFLOW", f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d')}", {
+                    thread_store = store.__class__(store.path)
+                except Exception as e:
+                    logger.warning(f"Failed to reopen store in collector thread: {e}")
+
+            # 保存到 DB
+            if thread_store and exec_result.get("success"):
+                try:
+                    thread_store.upsert_ledger("WORKFLOW", f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d')}", {
                         "executed_at": datetime.now().isoformat(),
                         "region": region,
                         "stage": stage,
@@ -342,16 +380,16 @@ def run(
                     logger.warning(f"Failed to save campaign record: {e}")
 
             # 缓存 calibrate / assemble-priors 结果到 ledger
-            if store and exec_result.get("success"):
+            if thread_store and exec_result.get("success"):
                 try:
                     if stage == "S0" and calibrate:
-                        store.upsert_ledger(region, f"s0_calibrate_{region}", {
+                        thread_store.upsert_ledger(region, f"s0_calibrate_{region}", {
                             "calibrated_at": datetime.now().isoformat(),
                             "region": region,
                             "stdout_tail": exec_result.get("stdout_tail", ""),
                         })
                     elif subcommand == "assemble-priors":
-                        store.upsert_ledger(region, f"priors_snapshot_{region}", {
+                        thread_store.upsert_ledger(region, f"priors_snapshot_{region}", {
                             "assembled_at": datetime.now().isoformat(),
                             "region": region,
                             "stdout_tail": exec_result.get("stdout_tail", ""),
@@ -359,12 +397,25 @@ def run(
                 except Exception as e:
                     logger.warning(f"Failed to cache result: {e}")
 
+            # 2026-09-04 方案 C：S6 回写后自动学习 Mode B 资格线（证据驱动自适应）
+            if thread_store and exec_result.get("success") and stage == "S6":
+                try:
+                    from ..mode_b_adaptive import update_mode_b_qualification
+                    mbq_update = update_mode_b_qualification(thread_store, region, dry_run=False)
+                    if mbq_update.get("updated"):
+                        logger.info(
+                            f"Mode B qualification auto-updated for {region}: "
+                            f"{mbq_update.get('old')} -> {mbq_update.get('new')}"
+                        )
+                except Exception as e:
+                    logger.warning(f"Failed to auto-update mode_b_qualification: {e}")
+
             # S4 walls 诊断入库
-            if store and exec_result.get("success") and stage == "S4":
+            if thread_store and exec_result.get("success") and stage == "S4":
                 try:
                     walls_summary = exec_result.get("walls")
                     if walls_summary:
-                        store.upsert_ledger(region, f"s4_walls_{region}_{wave or 'unknown'}", {
+                        thread_store.upsert_ledger(region, f"s4_walls_{region}_{wave or 'unknown'}", {
                             "reviewed_at": datetime.now().isoformat(),
                             "region": region,
                             "wave": wave,

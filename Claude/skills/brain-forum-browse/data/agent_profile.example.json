@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "curator": true,
+  "preferred_host": "cursor",
+  "l2": ["PPAC", "correlation"],
+  "l2_params": { "region": "USA", "dataset": null },
+  "write_locale": "zh-CN",
+  "index_protocol_opt_in": false,
+  "upvoted_comment_ids": [],
+  "role_history": []
+}
