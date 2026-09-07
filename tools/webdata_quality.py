@@ -342,14 +342,16 @@ def check_expr_against_inspect(expr, field_inspect_result):
             )
 
     # 硬性检查 2: 高偏度字段必须含 rank/winsorize/signed_power
-    if abs(meta['skewness']) > 2:
+    # 2026-09-07：降级体检包（gen_inspect_from_db）skewness/kurtosis 为 None
+    # （DB fields 表无形状统计），None 时跳过对应闸，不做 abs(None) 崩溃
+    if meta.get('skewness') is not None and abs(meta['skewness']) > 2:
         if not any(op in expr for op in ('rank', 'winsorize', 'signed_power')):
             violations.append(
                 f'偏度|{meta["skewness"]:.2f}|>2 但表达式未含 rank/winsorize/signed_power → 极值未抑制'
             )
 
     # 硬性检查 3: 厚尾字段必须含 rank/winsorize
-    if meta['kurtosis'] > 8:
+    if meta.get('kurtosis') is not None and meta['kurtosis'] > 8:
         if 'rank' not in expr and 'winsorize' not in expr:
             violations.append(
                 f'峰度{meta["kurtosis"]:.1f}>8 但表达式未含 rank/winsorize → 厚尾未处理'
@@ -813,8 +815,15 @@ def main():
         target_ds = args.fields.split(',') if args.fields else []
         if not target_ds:
             # 无 --fields 时导出所有有体检数据的数据集
-            target_ds = [n.rsplit('_', 2)[0] for n in dsl
-                         if f'_{args.region}_' in n and f'_Delay{args.delay}' in n]
+            # 2026-09-07 修复：dataSetList.json 的条目形如
+            # `analyst11_USA_TOP3000_Delay1`（四段）。原写法 rsplit('_', 2)[0]
+            # 只切掉 universe/delay，留下 `analyst11_USA`，下面又拼一次 region
+            # → startswith('analyst11_USA_USA_') 永远匹配不上 → candidates 空 →
+            # continue → 导出 0 字段。--export-expr 自诞生起就没产出过有效数据
+            # （现存两份体检包 fields 均为 {}，体检硬门因此一直无米下锅）。
+            target_ds = sorted({n.rsplit('_', 3)[0] for n in dsl
+                                if f'_{args.region}_' in n
+                                and f'_Delay{args.delay}' in n})
         for ds_name in target_ds:
             candidates = [n for n in dsl if n.startswith(f'{ds_name}_{args.region}_') and f'_Delay{args.delay}' in n]
             if not candidates:
