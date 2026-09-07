@@ -1,7 +1,0 @@
-{
-  "region": "USA",
-  "dataset_id": "acquisition_model",
-  "universe": "TOP3000",
-  "delay": 1,
-  "filter_sharpe": true
-}

@@ -1,7 +1,0 @@
-{
-  "region": "USA",
-  "universe": "TOP3000",
-  "delay": 1,
-  "dataset_id": "shortinterest3",
-  "filter_sharpe": true
-}

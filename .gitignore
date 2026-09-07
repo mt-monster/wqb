@@ -138,3 +138,12 @@ install_claude_skills.bat
 install_claude_skills.ps1
 install_now.py
 verify_claude_skills.py
+
+# ===== 根目录一次性探测产物（2026-09-08 新增）=====
+# scratch_*.json：区域探测/互相关排查的临时输出（kor/hkg/ind/wNN 系列），用完即弃。
+# 保留在磁盘便于回溯，但不入库。
+/scratch_*.json
+/scratch_*.txt
+# 根目录 cache/ results/：临时回写与 checkpoint 落盘（非战役持久化目录）
+/cache/
+/results/

@@ -1,7 +1,0 @@
-{
-    "dataset_id": "news76",
-    "region": "USA",
-    "delay": 1,
-    "universe": "TOP3000",
-    "instrument_type": "EQUITY"
-}

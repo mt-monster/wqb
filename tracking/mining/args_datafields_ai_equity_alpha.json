@@ -1,7 +1,0 @@
-{
-  "region": "USA",
-  "universe": "TOP3000",
-  "delay": 1,
-  "dataset_id": "ai_equity_alpha",
-  "filter_sharpe": true
-}
