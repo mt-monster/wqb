@@ -146,14 +146,44 @@ P1-1 prod-first 前移改造 → P1-2 IND 决策 → P1-4 HKG 启动
 
 ---
 
-## 5. 待用户确认的执行项
+## 5. 第一轮执行记录（2026-09-07 21:55，commit 59406fe）
 
-以下动作涉及 DB 写入或 git 变更，**默认不执行**，等确认：
+1. ✅ **已执行** 修改 SKILL.md（D1/D2/D3 三处文档修复）+ 附录工具名映射表 22 项
+2. ✅ **已执行** 裁决孤儿积压：18 个废弃波 dropped、50 条无效表达式清出（w164 波保留 34 条有效）；备份 `data/wqb.db.bak_orphan_fix_20260907`
+3. ✅ **已执行** 148 体检包 `git add`（全量敏感扫描通过，2 处命中为字段名误命中：`max_token_length`/`tradesecrets`）
+4. ✅ **已执行** wave 键约定统一：`wave_gate.py --wave` 改字符串、`ensure_schema` 增 wave-key-check + wave-ttl-check、3 项回归测试
+5. ✅ **已执行** P1-1 PROD 饱和闸前移：`tools/prod_saturation_gate.py` 三态闸 + wave_gate 集成（IND 实测 5 个饱和字段识别正确）
+6. ✅ **已执行** P1-3 GLB Phase 0：七节点 dry-run 6/7 success；CLI 干跑 `s2_intraday_pv_feats_d1` 40/40 PASS——**字符串波号首次走完门禁全链并落库**
+7. ✅ **已执行** P2-1 波次 TTL：超 7 天 stale WARN（310 波/4458 条积压可见）
+8. 测试终态：**481 passed**（478 基线 + 3 新增）；sync_skills 同步后漂移测试转绿
 
-1. ✅/❌ 修改 SKILL.md（D1/D2/D3 三处文档修复）？
-2. ✅/❌ 裁决 6100 条孤儿积压（需要逐波给 dropped/补 gate 的裁决表）？
-3. ✅/❌ `git add` 148 个体检包（先抽查确认无敏感信息）？
-4. ✅/❌ wave 键约定统一改造（动 gate 写入逻辑，需加回归测试）？
+---
+
+## 6. 追加执行（2026-09-07 22:30，commit 22f107f）
+
+**P1-4 HKG 阻塞解除（降级方案）**：WebDataScope zip 虽无 HKG 包，但 DB fields 表自带 HKG coverage（25648 字段）→ 新增 `tools/gen_inspect_from_db.py` 生成 **172 个降级体检包**（coverage-only，skew/kurt 置 None 自动跳过对应闸）；修复 `webdata_quality.py` 的 `abs(None)` 崩溃。端到端验证：低覆盖 0.27 字段裸用 FAIL、加 ts_backfill 转 PASS。HKG 体检硬门从 0 包 → 172 数据集可用（完整形状统计仍需 WebDataScope HKG 包，到位后 `gen_field_inspect_packs.py --region HKG` 会覆盖降级版）。
+
+**P0-2c REGATE 波补门禁（13 波全部落库）**：2/13 全闸 PASS（USA reg_mf01、KOR 146）；11 波 FAIL 属正常拦截——**PROD 饱和闸首战告捷**：IND wallbreak 6/8 条命中饱和字段被拦（`residualized_return_india_top500_equity` 等正是"94 达标 0 可提交"的元凶字段），MEA w100 拦 2 条。wave-key-check WARN 从 217 波/4357 条 → **208 波/3988 条**（剩余为 KEEP 态 ws2 存量波，属正式战役推进节奏，不机械刷）。
+
+## 7. P1-2 IND 转向决策依据（供拍板）
+
+| 指标 | 数值 | 含义 |
+|---|---|---|
+| S≥1.58 总量 | 104 条 | 产量最高区域 |
+| prod_corr 实测撞墙 | 9 条 | 撞墙率 36%（9/29 已测） |
+| **prod_corr 未测（NULL）** | **75 条** | 主体为 model135 字段族（mdl135_d3/d5_isr/icc），**不是撞墙是未测** |
+| dataset 归属 | 84 条挂 `_unknown`（dataset_id=41 桶） | 历史灌库时未解析数据集归属 |
+
+**结论修正**：IND 并非"94 达标全灭"——75 条从未做过 prod 相关性检查。建议路径：① 先对这 75 条跑相关性预检（`corr_precheck.py` 或 submit_verdict 链），把"未知"变成"已知"；② model135 已测 2/2 撞墙，该字段族饱和闸已生效自动拦；③ 真正自由（prod<0.7）的仅 3 条 + model 族 5 条——**IND 的正确动作是"补相关性测试"而非"停手"**，测试后仍全灭再停。
+
+1. ✅ **已执行** 修改 SKILL.md（D1/D2/D3 三处文档修复）+ 附录工具名映射表 22 项
+2. ✅ **已执行** 裁决孤儿积压：18 个废弃波 dropped、50 条无效表达式清出（w164 波保留 34 条有效）；备份 `data/wqb.db.bak_orphan_fix_20260907`
+3. ✅ **已执行** 148 体检包 `git add`（全量敏感扫描通过，2 处命中为字段名误命中：`max_token_length`/`tradesecrets`）
+4. ✅ **已执行** wave 键约定统一：`wave_gate.py --wave` 改字符串、`ensure_schema` 增 wave-key-check（实测暴露 217 波/4357 条断链）+ wave-ttl-check（310 波/4458 条 stale 可见）、3 项回归测试
+5. ✅ **已执行** P1-1 PROD 饱和闸前移：`tools/prod_saturation_gate.py` 三态闸 + wave_gate 集成（IND 实测 5 个饱和字段识别正确）
+6. ✅ **已执行** P1-3 GLB Phase 0：七节点 dry-run 6/7 success（superalpha 空组件为预期业务拦截）；CLI 干跑 `s2_intraday_pv_feats_d1` 40/40 PASS——**字符串波号首次走完门禁全链并落库**
+7. ⚠️ **P1-4 HKG 阻塞**：当前 WebDataScope zip 无 HKG 数据包（9 区域组合：ASI/CHN/EUR/GLB/JPN/KOR/USA，无 HKG）——需先下载 HKG WebDataScope 包，工具链 `gen_field_inspect_packs.py --region HKG` 已就绪
+8. 测试终态：**481 passed**（478 基线 + 3 新增 wave-key 契约测试）；sync_skills 同步后漂移测试转绿
 
 ---
 
