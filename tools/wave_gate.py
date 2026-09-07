@@ -66,6 +66,23 @@ def load_validator():
     return mod.ExpressionValidator()
 
 
+def load_arity_checker():
+    """加载 wqb.expression.op_arity.check_expression（算子元数 + 命名参数闸）。
+
+    本文件在仓库 tools/ 下，src/ 必然相邻；取不到即视为 checkout 损坏，
+    调用方标 ARITY_UNKNOWN 并计 FAIL——静默放过才是最坏结果。
+    """
+    src = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+    if os.path.isdir(src) and src not in sys.path:
+        sys.path.insert(0, src)
+    try:
+        from wqb.expression.op_arity import check_expression as _chk
+    except Exception as exc:  # pragma: no cover - 仅在 checkout 损坏时触发
+        print(f"[arity] 模块不可达: {exc}")
+        return None
+    return _chk
+
+
 def parse_candidates(a):
     """候选解析 → [(id_or_index, expr)]；兼容 DB / JSON / txt / 单条。"""
     if getattr(a, "from_db", False):
@@ -252,13 +269,27 @@ def _family_shape_gate(items, a, campaign):
             "mismatch_count": len(mismatches), "mismatches": mismatches, "warn": warn}
 
 
+def _settings_region(campaign_dir):
+    """从战役目录的 config/settings.json 读 region（--region 缺省时的兜底）。"""
+    try:
+        with open(os.path.join(campaign_dir, "config", "settings.json"),
+                  encoding="utf-8") as f:
+            return json.load(f).get("region")
+    except Exception:
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser(description="每波门禁编排器：语法 + 5 闸 + 多样性")
     ap.add_argument("--campaign-dir", required=True, help="战役根目录 (如 tracking/KOR)")
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--datasets", default="",
                     help="逗号分隔额外数据集，与 --dataset 合并白名单（跨金字塔 mix）")
-    ap.add_argument("--wave", type=int, default=0, help="波号")
+    ap.add_argument("--wave", default="0",
+                    help="波号（字符串，支持 '97' / 's2_pattern_scores_d1' 等；"
+                         "与 toolkit pipeline/gate 及 waves.wave_number 同型。"
+                         "2026-09-07 P0-3：原 type=int 导致字符串波号无法进门禁——"
+                         "ws2_* 波 gate_rows=0 断链的根因）")
     ap.add_argument("--from-db", action="store_true", help="从 expressions 表读候选（推荐）")
     ap.add_argument("--region", default=None, help="区域（缺省读 settings.json）")
     ap.add_argument("--candidates", help="兼容：候选 JSON")
@@ -288,7 +319,7 @@ def main():
 
     items = parse_candidates(a)
     campaign = a.campaign_dir.rstrip("/\\")
-    tag = a.wave or int(__import__("time").time())
+    tag = str(a.wave) if a.wave and a.wave != "0" else str(int(__import__("time").time()))
 
     # ---- 0) GEM 候选池校验（可选）----
     gem_report = None
@@ -343,15 +374,25 @@ def main():
             print(f"[s2fld] S1 字段校验失败（不阻断）: {e}")
             s2_field_report = {"pass": True, "message": f"校验异常: {e}"}
 
-    # ---- 1) 语法校验 ----
+    # ---- 1) 语法校验（PLY 括号/字段 + 算子元数/命名参数）----
+    # 2026-09-07：hump(x, 0.005) 曾以"语法 8/8 PASS"过闸，平台回
+    # "Invalid number of inputs : 2, should be exactly 1 input(s)." 并 CANCEL 整批
+    # 8 条 multisim。PLY verifier 只查括号平衡与字段存在性，查不出"命名参数被当
+    # 位置参数传"，故此处并联 op_arity（catalog 驱动，见 src/wqb/expression/op_arity.py）。
     validator = load_validator()
+    arity_check = load_arity_checker()
     syntax = []
     for cid, e in items:
         r = validator.check_expression(e)
-        ok = bool(r.get("valid"))
-        syntax.append({"id": cid, "valid": ok,
-                       "errors": r.get("errors") if not ok else []})
-        print(f"[syntax] {cid}: {'PASS' if ok else 'FAIL ' + str(r.get('errors'))[:160]}")
+        errors = list(r.get("errors") or []) if not r.get("valid") else []
+        if arity_check is not None:
+            errors.extend(arity_check(e))
+        else:
+            errors.append("[ARITY_UNKNOWN] op_arity 不可达（设 WQB_ROOT 指向工作区），"
+                          "算子元数/命名参数未校验")
+        ok = not errors
+        syntax.append({"id": cid, "valid": ok, "errors": errors})
+        print(f"[syntax] {cid}: {'PASS' if ok else 'FAIL ' + str(errors)[:240]}")
 
     # ---- 2) 5 闸 + 多样性（权威实现：toolkit gate.py，从 DB 或 stdin 表达式）----
     gate_py = find_script(_TOOLKIT_CANDIDATES, "gate.py")
@@ -401,6 +442,52 @@ def main():
     }
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
+
+    # ---- 2.5) 体检→表达式硬门（2026-09-06 接线）----
+    # ra-pipeline 步 5 把它写成"回测前必过"，但此前整条可执行路径上零调用方。
+    # 有体检包就逐条校验并计入 FAIL；没有体检包不阻断，但把"本闸未生效"打出来 ——
+    # 静默通过才是最坏的结果（低覆盖/厚尾/稀疏事件的预处理约束会一路裸奔到仿真）。
+    inspect_report = None
+    try:
+        tools_dir = os.path.dirname(os.path.abspath(__file__))
+        if tools_dir not in sys.path:
+            sys.path.insert(0, tools_dir)
+        import field_inspect_gate as fig_mod
+        passed_exprs = [e for (cid, e), s in zip(items, syntax) if s["valid"]]
+        if passed_exprs:
+            # region 必须走 settings.json 兜底：--region 默认 None（见其 help
+            # "缺省读 settings.json"），直接用 a.region 会传空串进来，
+            # 于是体检包路径拼成 field_inspect__<ds>.json，明明有包也报"未生效"。
+            _region = a.region or _settings_region(campaign) or ""
+            inspect_report = fig_mod.check_expressions(
+                passed_exprs, region=_region, dataset=a.dataset
+            )
+            print("\n" + fig_mod.format_report(inspect_report))
+            report["field_inspect"] = inspect_report
+    except Exception as e:
+        print(f"[inspect] 体检硬门执行异常（不阻断）: {e}")
+        report["field_inspect"] = {"status": "error", "error": str(e)}
+
+    # ---- 2.6) PROD 饱和闸（2026-09-07 P1-1 前移接线）----
+    # 审计实证：全库可提交库存仅 MEA 3 颗，prod 饱和是全局第一瓶颈。
+    # 此闸在 S3 回测前拦截饱和字段/饱和数据集（enforced 态违规计入 FAIL；
+    # 无历史数据区域不阻断，但报告"未生效"）。
+    prod_sat_report = None
+    try:
+        tools_dir = os.path.dirname(os.path.abspath(__file__))
+        if tools_dir not in sys.path:
+            sys.path.insert(0, tools_dir)
+        import prod_saturation_gate as psg
+        _region = a.region or _settings_region(campaign) or ""
+        if _region:
+            prod_sat_report = psg.check_wave(
+                [e for _, e in items], region=_region, dataset=a.dataset
+            )
+            print("\n" + psg.format_report(prod_sat_report))
+            report["prod_saturation"] = prod_sat_report
+    except Exception as e:
+        print(f"[prod-sat] PROD 饱和闸执行异常（不阻断）: {e}")
+        report["prod_saturation"] = {"status": "error", "error": str(e)}
 
     # ---- 3) 六维多样性 + 质量预估（建议2/3 落地；仅对语法通过候选，避免噪声）----
     quality_block_ids = []
@@ -648,6 +735,16 @@ def main():
     if probe_report and probe_report["status"] == "PROBE_DEAD":
         all_pass = False
         print(f"[done ] 探针批判死数据集，整波拦截")
+    # 体检硬门违规硬阻断（有体检数据才可能出现 violations；无数据不阻断）
+    if inspect_report and inspect_report.get("violations"):
+        all_pass = False
+        print(f"[done ] 体检硬门拦截 {len(inspect_report['violations'])} 条违规候选")
+    # PROD 饱和闸硬阻断（enforced 态才可能 FAIL；unavailable 不阻断）
+    if prod_sat_report and prod_sat_report.get("status") == "enforced" and not prod_sat_report.get("passed", True):
+        all_pass = False
+        n_v = len(prod_sat_report.get("violations") or [])
+        print(f"[done ] PROD 饱和闸拦截：{n_v} 条命中饱和字段"
+              + ("；当前数据集整判饱和" if prod_sat_report.get("current_dataset_saturated") else ""))
     g = gate_json or {}
     qp = report.get("quality_predict") or {}
     qp_note = ""

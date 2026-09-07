@@ -76,7 +76,18 @@ mcp__wqb-db__get_campaign_summary  region=$REGION
 mcp__wqb-db__get_dead_ends         region=$REGION
 mcp__wqb-db__get_dead_datasets     region=$REGION
 mcp__wqb-db__get_cross_region_lessons
+# 实测产出率（2026-09-06 新增）：选区/选集的最硬先验，开波前必看
+mcp__wqb-db__get_mining_yield                              # 全区排名
+mcp__wqb-db__get_mining_yield  region=$REGION  by_dataset=true   # 本区按数据集拆
 ```
+
+**产出率读法（两个比率含义不同，别混）**：
+- `conversion` = 已回测 / 已生成 —— 低 = **流水线**问题（S2→S3 断链，生成远超回测吞吐）。修管道，别换区。
+- `yield_rate` = 达标 / 已回测 —— 低 = **标的**问题（这个区/集本身不出货）。换区/换集，别加生成量。
+
+2026-09-06 实测基线：IND 35.7% / MEA 19.9% / KOR 4.2% / EUR 2.0% / USA 1.4% / GBR 0%（180 条回测零达标）。
+`yield_rate` 连续为 0 且样本 ≥100 的区，不要再投槽位；`conversion < 10%` 的区先清积压再开新波
+（EUR 4.4%、USA 7.1% 都是积压堆库的典型）。
 
 详细口径见 [wq-brain-campaign-matrix](../wq-brain-campaign-matrix/SKILL.md)。
 
@@ -182,8 +193,13 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 
 **生成→回测双硬门（orchestrator 迁移，回测前必过）**：
 1. **多样性守卫 check_batch**：每批表达式提交前通过 `wqb.expression.validator.check_batch(...)`：≥3 dual-field、≥2 outer wrappers、≥2 windows、≥2 group variables、≥2 shape signatures；混入非对称 shape（`op1(A)-op2(B)` / `A-op2(B)` / `rank(A) vs group_rank(B,g)`）；轮转 13 范式 P1-P13（含 5 论坛范式 + 12 非对称变体）。
-2. **体检→表达式硬门 check_expr_against_inspect**：函数在 `tools/webdata_quality.py`（不在 `wqb.expression.validator` 里）。字段体检结果按数据集分文件落在 `tracking/mining/field_inspect_<region 小写>_<dataset>.json`（由 `tools/webdata_quality.py --export-expr <path>` 生成；缺文件先跑一次生成）。对每条表达式调用 `check_expr_against_inspect(expr, result)`。5 条硬门：低覆盖(cr<0.4)必须含 `ts_backfill`；高偏度(|skew|>2)必须含 `rank`/`winsorize`/`signed_power`；厚尾(kurt>8)必须含 `rank`/`winsorize`；单边恒正/负不能直接用原始水平；稀疏事件(zero_inflated/point_mass)必须用 `trade_when`。任一 `ok=False` 拒绝，修复后重验。
-3. 流程：`check_batch → check_expr_against_inspect → 下方 wave_gate → 步 6 create_multi_simulation`。
+2. **体检→表达式硬门（2026-09-06 已接线，不必手工调）**：`tools/wave_gate.py` 内置调用 `tools/field_inspect_gate.py`，逐条比对字段体检结果，违规计入 FAIL 硬阻断。5 条硬门：低覆盖(cr<0.4)必须含 `ts_backfill`；高偏度(|skew|>2)必须含 `rank`/`winsorize`/`signed_power`；厚尾(kurt>8)必须含 `rank`/`winsorize`；单边恒正/负不能直接用原始水平；稀疏事件(zero_inflated/point_mass)必须用 `trade_when`。
+   - 体检包路径 `tracking/mining/field_inspect_<region 小写>_<dataset>.json`，由 `python tools/webdata_quality.py --zip <WebDataScope数据包> --export-expr <path>` 生成。
+   - **缺体检包时本闸不生效**，wave_gate 会打印 `[inspect] 体检硬门未生效` 并给出生成命令 —— 看到这行就说明这一波的预处理约束没人把关（低覆盖/厚尾/稀疏事件会一路裸奔到仿真）。**现状（2026-09-07 核实）：`tracking/mining/` 有 148 个体检包、146 个 `fields` 非空**（USA 102 / EUR 19 / CHN 11 / GLB 6 / ASI 5 / JPN 2 / KOR 1），可用 `ls tracking/mining/field_inspect_*.json` 先查；缺哪个区域/数据集就现生成。注意历史版本曾误记"全仓库暂无可用体检包"——那是只看了 git 跟踪视角（当时仅 2 个空包入库），磁盘实况以 ls 为准。
+   - 单独自查：`python tools/field_inspect_gate.py --region USA --dataset model267 --exprs-file <txt>`。
+3. 流程：`check_batch（多样性，toolkit gate.py 闸6 实跑）→ wave_gate（语法 + 5 闸 + 体检硬门）→ 步 6 create_multi_simulation`。
+   - **脚本归属（2026-09-07 校正）**：`wave_gate.py` / `preflight_wave.py` / `field_inspect_gate.py` 在**仓库根 `tools/`**；`gate.py` / `pipeline.py` / `build_wave.py` / `score_datasets.py` / `assemble_priors.py` 在 **toolkit `scripts/`**（`Claude/skills/wq-brain-campaign-toolkit/scripts/`）。调用时别找错目录。`--wave` 参数全链路为**字符串**（支持 `97` 与 `s2_xxx_d1` 两种形态；wave_gate 曾因 `type=int` 导致字符串波号无法进门禁，2026-09-07 已修复）。
+   - 注：第 1 点的 `wqb.expression.validator.check_batch` 是**方法论口径**；可执行路径上实跑的是 toolkit `gate.py:check_batch_diversity`（契约式自学习闸 + 收益来源多样性 + 家族天花板）。两者判据不同，不要以为调了前者就过了闸。
 
 ```
 mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  wave=$W
@@ -206,8 +222,16 @@ S3 入口也可走 [brain-simAlphasinBatch-and-track](../brain-simAlphasinBatch-
 5. 表达式从 `mcp__wqb-db__list_expressions` 取。`mcp__wq-brain-http__submit_verdict` 判定 SUBMITTABLE 见步 8，禁止自动提交 alpha。
 
 ```
-# concurrency 默认 7（七槽填槽），429 时降至 ≤5
-mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=$W  dataset=$DS  concurrency=7
+# 七槽填槽由 pipeline.py 内部锁定 n_slots=min(7, 批数)，不从外部传
+# （2026-09-06：曾往命令里拼 --concurrency 7，而 pipeline.py 根本没这个参数，
+#  argparse exit=2 + detached 不看退出码 = S3 每次"启动成功"却从未真跑过。
+#  concurrency 形参现仅作计划元数据，传非 7 会收到 warning。）
+mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=$W  dataset=$DS
+
+# 后台任务状态（batch_track 异步返回 task_id 后用它跟踪，不要 shell 翻日志）
+mcp__wq-brain-http__workflow_task_status  task_id="<上一步返回的 task_id>"
+mcp__wq-brain-http__workflow_task_status  prefix="batch_track"      # 列最近任务
+
 # 批次状态查询（单次，非轮询）
 mcp__wq-brain-http__batch_status  simulation_ids=["<id1>", "<id2>"]
 ```
@@ -291,7 +315,15 @@ mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
 ]
 ```
 
-干跑会逐节点把真实命令构建出来（不 subprocess、不写库），`failed_at` 指出首个断点。
+干跑会逐节点把真实命令构建出来（不 subprocess、不写库）并**校验命令能否被目标脚本的
+argparse 接受**，`failed_at` 指出首个断点。
+
+**异步 join（2026-09-06）**：`workflow_chain` 默认 `join_async=True` —— gem / batch_track /
+campaign / feature_engineering 都是"启动即返回"，链会等上一步的后台任务到终态再走下一步，
+任务失败即按该步失败中止。此前没有这个机制，实跑时下游节点必然读到上游还没落库的空结果，
+链只在干跑下"看着通"。要"只发起不等待"就传 `join_async=false`，然后自己用
+`workflow_task_status` 跟踪；单步等待上限 `join_timeout_sec`（默认 1800s）。
+
 **提交类节点不入链**：`submit_alpha` / `superalpha` 的 `confirm_submit=True` 必须在步 8
 经用户明确确认后单独调用，禁止塞进自动链。
 
@@ -304,6 +336,7 @@ mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
 | 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-nextMove-analysis` |
 | 白名单被 dead_end 全覆盖 | 停止 |
 | 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-nextMove-analysis` 换区域 |
+| **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（默认 floor=0.5 / min_batches=2），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `mcp__wq-brain-http__sa_probe --region $REGION`） |
 | 配额耗尽 | 挂起提交，继续步 2 → 9。 |
 | 用户要求持续日循环 | 每个 NY 日先 `brain-nextMove-analysis`，再从步 1 跑；日界 21:30 ET |
@@ -360,3 +393,35 @@ PPA 日循环停止闸：submit-ready ≥4（ET 日历日 REGULAR 4/日配额保
 - 调用已废弃的 `glb_pipeline` / `gbr_pipeline` / `glb_alpha_machine`。
 - 直接把 `brain-feature-implementation` 当主链入口（它在 GEM 内部）。
 - 手写 PowerShell 命令替代 MCP 工具调用（能走 MCP 的步骤一律走 MCP）。
+
+---
+
+## 附录：工具名映射表（2026-09-07 P2-2）
+
+MCP 工具调用名 = `mcp__<server>__<注册名>`。注册名与所在模块不同名不同处，查表调用，勿凭记忆猜：
+
+| 逻辑名（文中惯称） | MCP 调用名 | 实际定义处 |
+|---|---|---|
+| workflow 战役 | `mcp__wq-brain-http__workflow_campaign` | world-quant-brain-mcp/tools_workflow.py |
+| workflow 特征工程 | `mcp__wq-brain-http__workflow_feature_engineering` | tools_workflow.py |
+| workflow GEM | `mcp__wq-brain-http__workflow_gem` | tools_workflow.py |
+| workflow 批量跟踪 | `mcp__wq-brain-http__workflow_batch_track` | tools_workflow.py |
+| workflow 链 | `mcp__wq-brain-http__workflow_chain` | tools_workflow.py |
+| workflow 执行 | `mcp__wq-brain-http__workflow_execute` | tools_workflow.py |
+| workflow SuperAlpha | `mcp__wq-brain-http__workflow_superalpha` | tools_workflow.py |
+| workflow 提交 | `mcp__wq-brain-http__workflow_submit_alpha` | tools_workflow.py |
+| workflow 判定（参考层） | `mcp__wq-brain-http__workflow_judge` | tools_workflow.py |
+| 节点清单 | `mcp__wq-brain-http__workflow_list_nodes` | tools_workflow.py |
+| 任务状态 | `mcp__wq-brain-http__workflow_task_status` | tools_workflow.py |
+| 提交判定（唯一权威） | `mcp__wq-brain-http__submit_verdict` | tools_ops.py |
+| 批量提交 | `mcp__wq-brain-http__submit_batch` | tools_ops.py（非 workflow 族） |
+| SA 探针 | `mcp__wq-brain-http__sa_probe` | tools_ops.py（非 workflow 族） |
+| 表达式预检 | `mcp__wq-brain-http__preflight_expressions` | tools_data.py（非 workflow 族） |
+| 回测收割 | `mcp__wq-brain-http__harvest_multisim_alphas` | tools_sim.py |
+| 直写表达式 | `mcp__wqb-db__upsert_expressions` | wqb_db_mcp.py |
+| 直写门禁结果 | `mcp__wqb-db__upsert_gate_result` | wqb_db_mcp.py |
+| 直写回测行 | `mcp__wqb-db__upsert_backtest_rows` | wqb_db_mcp.py |
+| 直写字段目录 | `mcp__wqb-db__upsert_field_catalog` | wqb_db_mcp.py |
+| 直写 ledger | `mcp__wqb-db__upsert_ledger_key` | wqb_db_mcp.py |
+
+> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。统计口径：`wq-brain-http` 服务器共 68 个工具（tools_workflow 11 个，其余分布在 account/alpha/config/corr/data/forum/labs/ops/sim/spc）；`wqb-db` 服务器 32 个。

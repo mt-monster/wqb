@@ -305,6 +305,98 @@ class SchemaMixin:
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_backtest_results_alpha_unique "
             "ON backtest_results(alpha_id)"
         )
+        # 2026-09-07 P0-3：wave 键一致性校验（WARN 不阻断）。
+        # 根因：gate_results.wave 与 waves.wave_number 同为 TEXT，但历史写入方
+        # 混用 int 波号与 's2_xxx_d1' 字符串波号；tools/wave_gate.py 曾用
+        # type=int 只接受整数波号，字符串波号的波无法进门禁 → gate_rows=0
+        # 静默断链（ws2_* 波 6100 条积压的直接根因）。
+        # 此校验在 ensure_schema 尾部执行：发现"有表达式但 gate_results 无记录"
+        # 的活跃波即打 WARN，让断链在启动时可见。
+        try:
+            cur = self.connection.cursor()
+            cur.execute(
+                """
+                SELECT w.wave_number, r.name, COUNT(e.id) AS ec
+                FROM waves w
+                JOIN regions r ON r.id = w.region_id
+                LEFT JOIN expressions e ON e.wave_id = w.id
+                LEFT JOIN gate_results g
+                       ON g.region = r.name AND g.wave = w.wave_number
+                WHERE w.status IN ('pending', 'gated')
+                  AND g.id IS NULL
+                GROUP BY w.id
+                HAVING ec > 0
+                ORDER BY ec DESC
+                LIMIT 5
+                """
+            )
+            orphans = cur.fetchall()
+            if orphans:
+                total_cur = self.connection.cursor()
+                total_cur.execute(
+                    """
+                    SELECT COUNT(*), COALESCE(SUM(ec), 0) FROM (
+                        SELECT w.id, COUNT(e.id) AS ec
+                        FROM waves w
+                        LEFT JOIN expressions e ON e.wave_id = w.id
+                        LEFT JOIN gate_results g
+                               ON g.region = (SELECT name FROM regions WHERE id = w.region_id)
+                              AND g.wave = w.wave_number
+                        WHERE w.status IN ('pending', 'gated') AND g.id IS NULL
+                        GROUP BY w.id HAVING ec > 0
+                    )
+                    """
+                )
+                tot = total_cur.fetchone()
+                names = ", ".join(f"{r[1]}/{r[0]}({r[2]}条)" for r in orphans)
+                print(
+                    f"[wave-key-check] WARN: {tot[0]} 个活跃波（{tot[1]} 条表达式）"
+                    f"无 gate_results 记录（门禁断链或未执行）。Top: {names}。"
+                    f"修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号）"
+                )
+        except Exception as exc:  # pragma: no cover - 校验自身不阻断启动
+            print(f"[wave-key-check] 校验异常（忽略）: {exc}")
+        # 2026-09-07 P2-1：波次 TTL 回收检查（WARN 不阻断）。
+        # pending/gated 波超 7 天无更新即视为 stale —— 历史教训：08-25 生成的
+        # ws2_* 波因无 TTL 兜底无声积压 6100 条表达式，污染 pending 池统计。
+        # stale 波不自动改状态（数据主权在人），只打 WARN 提示裁决：
+        #   补门禁 tools/wave_gate.py --wave <wave_number> 或人工标 dropped。
+        try:
+            cur2 = self.connection.cursor()
+            cur2.execute(
+                """
+                SELECT wave_number,
+                       (SELECT name FROM regions WHERE id = region_id) AS region,
+                       expression_count,
+                       updated_at
+                FROM waves
+                WHERE status IN ('pending', 'gated')
+                  AND updated_at < datetime('now', '-7 days')
+                ORDER BY updated_at
+                LIMIT 5
+                """
+            )
+            stale = cur2.fetchall()
+            if stale:
+                cur3 = self.connection.cursor()
+                cur3.execute(
+                    """
+                    SELECT COUNT(*), COALESCE(SUM(expression_count), 0)
+                    FROM waves
+                    WHERE status IN ('pending', 'gated')
+                      AND updated_at < datetime('now', '-7 days')
+                    """
+                )
+                tot = cur3.fetchone()
+                names = ", ".join(f"{r[1]}/{r[0]}({r[2]}条,{r[3][:10]})" for r in stale)
+                print(
+                    f"[wave-ttl-check] WARN: {tot[0]} 个 pending/gated 波超 7 天未动"
+                    f"（约 {tot[1]} 条表达式积压）。Top: {names}。"
+                    f"裁决入口: 补门禁 tools/wave_gate.py --wave <wave_number>，"
+                    f"或废弃波标 status='dropped'（勿留死库存）"
+                )
+        except Exception as exc:  # pragma: no cover
+            print(f"[wave-ttl-check] 校验异常（忽略）: {exc}")
         self.connection.commit()
 
     # -- helpers -----------------------------------------------------------

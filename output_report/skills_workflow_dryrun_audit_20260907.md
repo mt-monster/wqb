@@ -1,0 +1,160 @@
+# Skills & Workflow Dry-Run 审计报告 + 改进方案
+
+- **日期**: 2026-09-07（会话续于 09-02 00:30）
+- **范围**: `Claude/skills/wq-brain-ra-pipeline`（v2.1）为主的 skills 链 + `src/wqb/workflow/` 引擎 + `world-quant-brain-mcp` 68 工具 + `data/wqb.db` 运行时数据
+- **方法**: 静态交叉引用核对（SKILL.md ↔ scripts ↔ MCP 注册名 ↔ DB 实数据）+ 关键节点实跑验证（field_inspect_gate、pytest 478 passed、SQL 直查）
+- **用户三问**: ① 逻辑是否自恰？② 调用点是否连贯？③ 对有效挖掘因子是否高效？
+
+---
+
+## 0. 结论总览（先答三问）
+
+| 问题 | 结论 | 一句话 |
+|---|---|---|
+| ① 逻辑自恰 | **基本自洽，2 处文档级失实** | SKILL.md 步5"无体检包"描述错误（实际 146 包可用）；工具名/路径有局部漂移 |
+| ② 调用点连贯 | **链路完整，但存在一条实证断链** | S2→S3：`ws2_*` 波 6100 条表达式入库后从未走门禁/回测（gate_rows=0） |
+| ③ 挖掘效率 | **结构性低效，瓶颈清晰** | 全库可提交库存仅 **MEA 3 颗**；prod 饱和是全局第一瓶颈；三目标区域战役均未真正起量 |
+
+**总体判断**: skills 骨架（九步链、七槽回测、门禁五闸、submit_verdict 唯一判定）设计是自洽且现代的；问题集中在**"文档与磁盘现实脱节"**和**"波次状态机没有回收/推进兜底"**两点，导致大量生成物无声积压——挖矿机完好，但传送带卡了。
+
+---
+
+## 1. 逻辑自洽性审计
+
+### 1.1 通过项（验证过，无需动）
+
+| 检查项 | 结果 |
+|---|---|
+| MCP 工具引用无悬空 | SKILL.md 引用的 11 个 `workflow_*` 工具 + `submit_verdict` 全部真实注册于 `tools_workflow.py` / `tools_ops.py` |
+| 脚本存在性 | `score_datasets.py`、`pipeline.py`、`campaign.py`、`build_wave.py`、`assemble_priors.py`（toolkit/scripts/）、`wave_gate.py`、`preflight_wave.py`、`field_inspect_gate.py`（tools/）全部存在 |
+| 体检硬门真实生效 | 实跑 `check_expressions(['rank(ern3_all_delay_1_pre_reptime)'], region='ASI', dataset='earnings3')` → 正确产出覆盖率/zero_inflated 两条 violation；无包数据集正确返回 `unavailable` 而非伪装通过 |
+| executor dry_run 链 | #62 修复后 `inspect.signature` 透传 + `_context` 注入有效（有回归测试覆盖） |
+| 判定链单头 | judge 已降参考层，`submit_verdict.py` + Failed-count 资格门为唯一权威，无双头冲突 |
+| 测试基线 | 全量 pytest **478 passed**，无红 |
+
+### 1.2 失实/漂移项（P1 文档修复）
+
+**D1. SKILL.md 步5 体检包描述失实（最重要）**
+- SKILL.md 称："现状：全仓库暂无可用体检包（现存两份 USA 文件 fields 为空）"
+- 磁盘事实：`tracking/mining/field_inspect_*.json` 共 **148 个，146 个非空**（USA 102 / EUR 19 / CHN 11 / GLB 6 / ASI 5 / JPN 2 / KOR 1）
+- **根因诊断**：这 146 个全是 git 未跟踪新文件，git 视角下只有 2 个被追踪的 USA 文件且恰好 fields 为空——撰写者只看了 git 视角。属"文档与未提交产物脱进"的典型病例。
+- 影响：任何照 SKILL.md 行事的后续 agent 会**跳过体检硬门**（以为没包），白白放走一个已接线可用的质量闸。
+
+**D2. 脚本路径引用错位**
+- SKILL.md 将 `wave_gate.py` / `preflight_wave.py` 归在 toolkit/scripts/ 下引用，实际在根 `tools/`。
+
+**D3. MCP 工具模块归属描述漂移**
+- `submit_batch`（实为 tools_ops）、`sa_probe`（tools_ops）、`preflight_expressions`（tools_data）在 SKILL.md 部分段落被描述为 workflow 族工具。调用名本身有效（MCP 注册名=工具名），但"11 个 workflow 工具"的清单口径有水分，易误导后续 agent 数错工具。
+
+---
+
+## 2. 调用点连贯性审计
+
+### 2.1 静态链路：完整 ✅
+
+九步骨架每一步的消费者/生产者契约（Artifact 契约表 + "由谁写"列）核对通过；`workflow_chain` 异步 join（`join_async=True`）等上游落库后再续跑，无竞态路径。
+
+### 2.2 运行时断链：S2→S3 传送带卡死（P0 数据问题）
+
+**实证**（`data/wqb.db` 直查）：
+
+| 波次 | wave_number | status | 表达式数 | gate_results 行数 |
+|---|---|---|---|---|
+| id=146 | s2_multifactor_return_pred_d1 | pending | 0 | **0** |
+| id=147 | s2_pattern_scores_d1 | pending | 142 | **0** |
+| id=169 | s2_option_horizon_decomp_d1 | pending | 69 | **0** |
+| id=211 | s2_analyst_consensus_d1 | pending | 54 | **0** |
+| id=277 | s2_insider_feats_d1 | pending | 16 | **0** |
+
+- 全库积压：**pending 3448 + gated 2652 ≈ 6100 条**（占全库表达式 60%+），主体是 2026-08-25~26 生成的 USA `ws2_*` 波（2083 条）与 EUR 波（2229 条）。
+- **键不匹配根因**：`gate_results.wave` 存的是整数 `wave_number`（36/38/39…）或 `mcp_direct_*` 字符串，而 `ws2_*` 波的 `wave_number` 形如 `s2_pattern_scores_d1` → `LEFT JOIN` 永远 NULL，门禁记录查不到、也从未执行。
+- 连带问题：USA pending 表达式字段 `short_term_price_volume_based_return_5d` 在 fields 表 exact/like 均 **0 命中**——疑似废弃脚本产物（token 隐患实证，与 USA 字段字典 known issue 一致）。
+- **波次状态机缺兜底**：wave 生成后既无 TTL 过期回收、也无"pending 超 N 天告警"，S2 产出就这样无声堆着。
+
+**影响**: 这 6100 条不是资产是**负债**——它们污染 pending 池统计、干扰多样性闸的批次计数、让"还有多少候选"这类决策全部失真。
+
+---
+
+## 3. 挖掘效率审计（对"有效挖因子"的回答）
+
+### 3.1 全局第一瓶颈：prod 饱和
+
+可提交库存口径（sharpe≥1.58 & UNSUBMITTED & prod_corr<0.7 & self_corr<0.7）全库盘点：
+
+| 区域 | 可提交颗数 |
+|---|---|
+| MEA | **3** |
+| USA / GLB / EUR / KOR / IND / ASI / CHN / JPN | **0** |
+
+近 7 天回测达标率（|S|≥1.58）：IND 94/195（48%，最高）、KOR 14/313、EUR 5/149、GLB 0/16。
+**IND 是最典型样本**：Sharpe 产量极高，但 83 条达标 UNSUBMITTED 中 prod&self<0.7 的数量 = 0——**挖得越多，prod_corr 撞墙越狠**，纯粹的"高频挖矿、零库存产出"模式。
+
+### 3.2 三目标区域战役现状（提示词均未兑现）
+
+| 区域 | 近 10 天回测 | 状态 |
+|---|---|---|
+| GLB | 16 条 | 71 pending 未起量；42 颗 PASS_CHEAP 候选已被 PROD_CORR 全灭（0.82–0.86） |
+| USA | 0 条 | 提示词未执行；2083 历史 pending 未清 |
+| HKG | 0 条 | expressions 表 0 行——probe-only 从未启动（符合两阶段设计，但连 Phase 0 都没跑） |
+
+### 3.3 效率结论
+
+当前体系"生成能力 >> 过闸能力"。症结不在 GEM 生成或七槽回测（产能充足），而在：
+1. **prod_corr 闸前移不足**——饱和族字段在 S2 生成层未被排除，浪费到 S3 回测才暴露；
+2. **积压不清理**——6100 条死库存让一切"还剩多少候选"的判断失真；
+3. **区域资源配置错位**——把回测配额花在 IND（48% 达标但 0 可提交）而非 prod 低饱和的新字段族。
+
+---
+
+## 4. 改进方案（按优先级 / ROI 排序）
+
+### P0 — 立即执行（零配额消耗，纯本地）
+
+| # | 改进项 | 动作 | 预期收益 |
+|---|---|---|---|
+| P0-1 | **修正 SKILL.md 步5 失实描述** | 改为"146 个非空体检包位于 tracking/mining/，gate 已接线可用"；同时校正 D2 路径（wave_gate/preflight_wave 在 tools/）与 D3 工具归属 | 后续 agent 不再跳过体检硬门 |
+| P0-2 | **裁决 ws2_* 孤儿波** | 逐波判定：废弃 → `status=dropped`；仍有效 → 补跑 wave_gate。USA 2083 条中字段 0 命中的直接标 dropped | pending 池从 6100 → 真实规模，统计恢复可信 |
+| P0-3 | **统一 wave 键约定** | 约定 `gate_results.wave` 与 `waves.wave_number` 同型（建议全字符串）；加启动时一致性校验（对不齐即 WARN） | 杜绝"门禁静默丢失"这一类 bug |
+| P0-4 | **体检包纳入 git** | `git add tracking/mining/field_inspect_*.json`（148 个，纯 JSON 无敏感信息，先抽查 2–3 个确认） | 消除"git 视角 vs 磁盘视角"再次脱节 |
+
+### P1 — 本周内（低配额，probe 先行）
+
+| # | 改进项 | 动作 | 预期收益 |
+|---|---|---|---|
+| P1-1 | **prod-first 闸前移到 S2 生成层** | GEM 生成时即查询 `search_alphas_by_sharpe(region, 1.58)` 排除饱和族字段（USA 提示词已有此设计，推广为骨架默认；IND 尤其急需） | 回测配额不再浪费在必死表达式上，IND 类"48% 达标 0 提交"直接止血 |
+| P1-2 | **IND 停手或转向** | IND 现有 94 达标全灭于 prod/CW——要么暂停 IND 回测，要么只跑与存量 IS 相关性低的新字段族（event/earnings 细分） | 释放并发槽给 GLB/HKG |
+| P1-3 | **GLB 突围按提示词 Phase 0 落地** | 先跑 P0.1 引擎 dry_run 验收（零副作用）→ P0.2 CLI 干跑看 gate 通过率 → ≤8 探针实跑拿转化率，转化率>0 才铺量 | 避免在 42 颗全灭的旧字段族上重复消耗 |
+| P1-4 | **HKG 启动前先建体检包** | probe-only 第一动作 = 为候选数据集生成 field_inspect（现在 HKG 0 包），再走两阶段 A/B | 覆盖 HKG"档位未实测"风险 |
+
+### P2 — 卫生项（顺手做）
+
+| # | 改进项 | 动作 |
+|---|---|---|
+| P2-1 | 波次 TTL 回收 | wave 状态机加"pending 超 7 天 → 标 stale + 告警"，杜绝无声积压 |
+| P2-2 | 工具名映射表 | 在 SKILL.md 附录维护"逻辑名 ↔ MCP 注册名 ↔ 模块"三列映射，防再漂移 |
+| P2-3 | 孤儿表达式字段核验 | 对 pending 池全部字段跑一次 fields 表存在性核验（复用 USA token 核验逻辑），不存在即标 dropped |
+
+### 建议执行顺序
+
+```
+P0-1 → P0-2 → P0-4 → P0-3   （一轮本地清理，半天内完成，零配额）
+        ↓
+P1-3 GLB Phase 0 dry-run（验证链路修复后真实转化率）
+        ↓
+P1-1 prod-first 前移改造 → P1-2 IND 决策 → P1-4 HKG 启动
+```
+
+---
+
+## 5. 待用户确认的执行项
+
+以下动作涉及 DB 写入或 git 变更，**默认不执行**，等确认：
+
+1. ✅/❌ 修改 SKILL.md（D1/D2/D3 三处文档修复）？
+2. ✅/❌ 裁决 6100 条孤儿积压（需要逐波给 dropped/补 gate 的裁决表）？
+3. ✅/❌ `git add` 148 个体检包（先抽查确认无敏感信息）？
+4. ✅/❌ wave 键约定统一改造（动 gate 写入逻辑，需加回归测试）？
+
+---
+
+*审计方法备注：本报告全部结论基于 2026-09-07 的磁盘/DB 实时状态（pytest 478 passed 基线、wqb.db 09-07 P0-P2 修复后版本），关键断言均附可复现 SQL/命令于会话记录中。*
