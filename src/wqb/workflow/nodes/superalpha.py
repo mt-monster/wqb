@@ -106,6 +106,14 @@ def run(
                 "confirm_submit=True：会真实提交——必须已有用户明确确认"
             ),
         }
+        # 收尾步骤入账：steps 必须能体现「干跑到此为止」，否则调用方/审计
+        # 无法区分「探针跑完就停」与「探针跑完却漏了后续」两种截然不同的状态。
+        result["steps"].append({
+            "step": "dry_run",
+            "success": True,
+            "skipped": True,
+            "note": "dry-run：调用计划已构建，未执行 select/status/probe/submit",
+        })
         return result
 
     # Step 2: select（创建 SUPER simulation）

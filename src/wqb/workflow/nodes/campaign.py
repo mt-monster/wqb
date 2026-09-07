@@ -10,6 +10,7 @@
 import json
 import logging
 import os
+import sqlite3
 import subprocess
 import threading
 import time
@@ -17,7 +18,18 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
-from .._common import REPO_ROOT, resolve_campaign_dir, resolve_toolkit_dir, resolve_tools_dir, wq_py
+from .._common import (
+    REPO_ROOT,
+    resolve_campaign_dir,
+    resolve_toolkit_dir,
+    resolve_tools_dir,
+    validate_argv,
+    wq_py,
+)
+
+#: 走 campaign.py 子命令路由的 subcommand（不由 stage 分支自行 append，
+#: 否则 S6 + assemble-priors 会被拼两次）
+_SUBCOMMAND_ROUTED = ("assemble-priors", "diversity-extract")
 
 logger = logging.getLogger(__name__)
 
@@ -214,6 +226,15 @@ def run(
         if dataset:
             cmd.extend(["--dataset", dataset])
     elif stage == "S2":
+        # 信号天花板闸：纯 DB 判定、零配额，故 dry-run 也走 —— 干跑就该回答
+        # "这个区还值不值得继续开波"。
+        floor_result = _run_signal_floor_gate(region, dataset, campaign_dir)
+        result["steps"].append(floor_result)
+        if not floor_result.get("success", True):
+            result["success"] = False
+            result["error"] = floor_result.get("error")
+            return result
+
         # S2 前强制前置条件预检（S0/S1 产物门禁）。
         # dry-run 下跳过预检子进程（零副作用），仅构建 build_wave 命令。
         if not ctx.get("dry_run"):
@@ -245,6 +266,14 @@ def run(
             cmd.extend(["--wave", wave])
         cmd.append("--from-db")
     elif stage == "S3":
+        # 信号天花板闸（同 S2：纯 DB 判定，dry-run 也走）
+        floor_result = _run_signal_floor_gate(region, dataset, campaign_dir)
+        result["steps"].append(floor_result)
+        if not floor_result.get("success", True):
+            result["success"] = False
+            result["error"] = floor_result.get("error")
+            return result
+
         # S3 前强制质量闸（特征工程 SOP 阶段6）。
         # dry-run 下跳过质量闸子进程（零副作用），仅构建 pipeline run 命令。
         if not ctx.get("dry_run"):
@@ -284,13 +313,19 @@ def run(
     elif stage == "S5":
         cmd.append("quota")
     elif stage == "S6":
-        if subcommand:
+        # 2026-09-06 修复：此处原本无条件 append(subcommand)，下面的 subcommand
+        # 路由块又 append 一次 —— ra-pipeline 步 4 的
+        # `workflow_campaign(stage="S6", subcommand="assemble-priors")`
+        # 实际生成 `campaign.py ... assemble-priors assemble-priors`。
+        # 现在 assemble-priors / diversity-extract 统一交给下面的路由块处理，
+        # 本分支只处理 S6 自有子命令（ledger / registry / wave）。
+        if subcommand and subcommand not in _SUBCOMMAND_ROUTED:
             cmd.append(subcommand)
-        if wave:
+        if wave and subcommand not in _SUBCOMMAND_ROUTED:
             cmd.extend(["--wave", wave])
 
     # subcommand 路由：assemble-priors / diversity-extract（走 campaign.py 子命令）
-    if subcommand in ("assemble-priors", "diversity-extract"):
+    if subcommand in _SUBCOMMAND_ROUTED:
         cmd.append(subcommand)
         if dataset:
             cmd.extend(["--dataset", dataset])
@@ -300,6 +335,21 @@ def run(
     # 添加额外参数
     if extra_args:
         cmd.extend(extra_args)
+
+    # argv 契约校验：命令必须能被目标脚本的 argparse 接受。
+    # 干跑与实跑都走 —— 干跑时这是本节点最有价值的一次检查
+    # （本次审计正是靠它暴露了 assemble-priors 的重复 append）。
+    argv_ok, argv_error = validate_argv(cmd)
+    if not argv_ok:
+        result["steps"].append({
+            "step": "validate_argv",
+            "success": False,
+            "error": argv_error,
+            "command": " ".join(cmd),
+        })
+        result["success"] = False
+        result["error"] = argv_error
+        return result
 
     result["steps"].append({
         "step": "build_command",
@@ -690,6 +740,119 @@ def _run_quality_gate(
         # 质量闸失败不阻止执行，只记录警告
         result["warning"] = str(e)
 
+    return result
+
+
+def _run_signal_floor_gate(
+    region: str,
+    dataset: Optional[str],
+    campaign_dir: str,
+) -> Dict[str, Any]:
+    """区域信号天花板闸（S2/S3 前置，2026-09-06 接线）.
+
+    背景：`tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`
+    早就写好了参数与语义——"连续 min_batches 批 max|sharpe| < floor 即判信号
+    天花板，停止生成/增强并转区域决策"——实现也在
+    `wqb.expression._enhancer.signal_evidence_gate()`，但**没有任何调用方**：
+    不在 toolkit 脚本里、不在节点里、也没有 skill 引用，配置项从头到尾没人读。
+
+    代价是实测出来的：GBR 按自己的配置该在第 2 批停，实际跑了 180 条回测、
+    max|sharpe|=1.04、avg=0.41、达标 0 条。本函数把这道闸接进真正的执行路径。
+
+    判定只用已落库的回测结果（零平台调用、零配额）。`enabled: false` 或
+    缺 `signal_floor` 配置时放行。
+    """
+    result: Dict[str, Any] = {"step": "signal_floor_gate", "success": True}
+
+    thresholds_path = os.path.join(campaign_dir, "config", "thresholds.json")
+    try:
+        with open(thresholds_path, "r", encoding="utf-8") as f:
+            thresholds = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        result["skipped"] = "no thresholds.json"
+        return result
+
+    cfg = (thresholds.get("diversity") or {}).get("signal_floor") or {}
+    if not cfg or cfg.get("enabled") is False:
+        result["skipped"] = "signal_floor not configured or disabled"
+        return result
+
+    floor = float(cfg.get("max_sharpe_floor", 0.5))
+    min_batches = int(cfg.get("min_batches", 2))
+
+    # 取该 region（有 dataset 则再限定 dataset）最近若干波的回测结果。
+    # 每个 wave 记为一"批"，与 signal_evidence_gate 的 batch_idx 语义对齐。
+    # 口径：thresholds.json 说的是"**连续** min_batches 批"，不是全历史。
+    # 取全历史会让闸永不触发 —— GBR 跑了 20 批、全局 max|sharpe|=1.04 > floor 0.5，
+    # 哪怕最近 10 批全是 0.3 也照样判 ok。所以只看最近 min_batches 个波次。
+    db_path = os.path.join(REPO_ROOT, "data", "wqb.db")
+    rows: List[Dict[str, Any]] = []
+    recent_waves: List[str] = []
+    try:
+        conn = sqlite3.connect(db_path)
+        try:
+            where = "region=? AND sharpe IS NOT NULL"
+            params: List[Any] = [region]
+            if dataset:
+                where += " AND dataset=?"
+                params.append(dataset)
+
+            # 最近 min_batches 个波次（按该波最后一条回测的时间排序）
+            recent_waves = [
+                str(w) for (w,) in conn.execute(
+                    f"SELECT wave FROM backtest_results WHERE {where} AND wave IS NOT NULL "
+                    f"GROUP BY wave ORDER BY MAX(id) DESC LIMIT ?",
+                    params + [min_batches],
+                )
+            ]
+            if recent_waves:
+                placeholders = ",".join("?" * len(recent_waves))
+                query_params = params + recent_waves
+                for sharpe, wave_id in conn.execute(
+                    f"SELECT sharpe, wave FROM backtest_results "
+                    f"WHERE {where} AND wave IN ({placeholders})",
+                    query_params,
+                ):
+                    rows.append({"sharpe": sharpe, "batch_idx": wave_id})
+        finally:
+            conn.close()
+    except Exception as e:  # DB 不可读不阻断，只记录
+        result["warning"] = f"signal_floor gate could not read DB: {e}"
+        return result
+
+    if not rows:
+        result["skipped"] = "no backtest evidence yet"
+        return result
+
+    result["window"] = {"recent_waves": recent_waves, "results": len(rows)}
+
+    # 证据不足以构成"连续 N 批"时不判死（新区域/新数据集应当有试探空间）
+    if len(recent_waves) < min_batches:
+        result["skipped"] = (
+            f"evidence only spans {len(recent_waves)} batch(es), "
+            f"need {min_batches} to judge a ceiling"
+        )
+        return result
+
+    try:
+        # 走 diversity_enhancer 门面而非 _enhancer 私有模块：后者被 _metrics
+        # 在模块底部反向 import，直接进 _enhancer 会撞循环导入。
+        from wqb.expression.diversity_enhancer import signal_evidence_gate
+    except ImportError as e:
+        result["warning"] = f"signal_evidence_gate unavailable: {e}"
+        return result
+
+    verdict = signal_evidence_gate(rows, max_sharpe_floor=floor, min_batches=min_batches)
+    result["verdict"] = verdict
+    result["scope"] = f"{region}/{dataset}" if dataset else region
+    if not verdict.get("passed", True):
+        result["success"] = False
+        result["error"] = (
+            f"信号天花板闸拦截（{result['scope']}）：{verdict.get('message')}。"
+            f"继续生成/回测只会重复烧槽位——请换 universe / 换数据集 / 换区域，"
+            f"或在 {thresholds_path} 里把 diversity.signal_floor.enabled 设为 false "
+            f"并在台账记录理由。"
+        )
     return result
 
 

@@ -28,19 +28,6 @@ logger = logging.getLogger(__name__)
 _POLL_INTERVAL_SEC = 5
 
 
-def _client_ok():
-    """零网络地确认 brain_client 可导入（dry-run 用）。
-
-    注意：只反映「当前解释器」能否导入，节点真实运行在 MCP venv 里；
-    这里失败通常是干跑用的解释器缺依赖，属提示而非阻断。
-    """
-    try:
-        _get_brain_client()
-        return True, None
-    except Exception as e:  # pragma: no cover - 环境相关
-        return False, str(e)
-
-
 def run(
     alpha_id: str,
     name: Optional[str] = None,
@@ -74,9 +61,10 @@ def run(
         tags = ["PowerPoolSelected"]
 
     # dry-run：构建到提交流程计划即停，不触碰 network / 不写库
-    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
+    # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等；
+    #   2026-09-05 再修：连 brain_client 的解析都不做——解析本身会 import 依赖、
+    #   可能建立连接，与「干跑零副作用」契约冲突，且会让调用方误以为已连通）。
     if ctx.get("dry_run"):
-        _dry_client_ok, _dry_client_err = _client_ok()
         return {
             "alpha_id": alpha_id,
             "success": True,
@@ -84,9 +72,10 @@ def run(
             "submitted": False,
             "note": "dry-run：请求计划已构建，未调用平台",
             "steps": [{
-                "step": "resolve_client",
-                "success": _dry_client_ok,
-                "warning": _dry_client_err,
+                "step": "plan_only",
+                "success": True,
+                "skipped": True,
+                "note": "dry-run 不解析 brain_client，避免触碰网络与子进程",
             }],
             "plan": {
                 "alpha_id": alpha_id,

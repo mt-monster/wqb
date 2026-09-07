@@ -16,7 +16,13 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 from ..mcp_check import require_mcp_tools
-from .._common import REPO_ROOT, infer_data_category, resolve_skill_dir, wq_py
+from .._common import (
+    REPO_ROOT,
+    infer_data_category,
+    resolve_skill_dir,
+    validate_argv,
+    wq_py,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -241,6 +247,14 @@ def _run_feature_engineering_pipeline_async(
 
     step_result["command"] = " ".join(cmd)
     step_result["main_script"] = main_script
+
+    # argv 契约校验（2026-09-06）：干跑与实跑都走
+    argv_ok, argv_error = validate_argv(cmd)
+    if not argv_ok:
+        step_result["success"] = False
+        step_result["error"] = argv_error
+        return step_result
+
     if dry_run:
         step_result["success"] = True
         step_result["dry_run"] = True

@@ -202,13 +202,26 @@ class WorkflowExecutor:
         chain: List[Dict[str, Any]],
         dry_run: bool = False,
         stop_on_failure: bool = True,
+        join_async: bool = True,
+        join_timeout_sec: float = 1800.0,
     ) -> List[WorkflowResult]:
         """执行节点链.
+
+        2026-09-06：补 async join。gem / batch_track / campaign /
+        feature_engineering 都是"启动即返回"，而本方法此前只是顺序调用，
+        节点之间既不传数据、也不等待 —— 于是文档里那条
+        `campaign → feature_engineering → gem` 一旦实跑，就是上游后台任务
+        刚起步、下游立刻读到空库。链只在 dry-run 下"看着通"。
+
+        现在：某步返回 task_id 时，默认阻塞等它到终态再走下一步，任务失败
+        即按该步失败处理。dry_run 下不 join（没有真任务）。
 
         Args:
             chain: [{"node": "name", "params": {...}}, ...]
             dry_run: 是否干跑
             stop_on_failure: 失败时是否停止
+            join_async: 异步节点是否等待完成后再进入下一步（默认 True）
+            join_timeout_sec: 单步等待上限，超时按失败处理
 
         Returns:
             List[WorkflowResult]
@@ -219,6 +232,10 @@ class WorkflowExecutor:
             params = step.get("params", {})
 
             result = self.execute(node, params, dry_run=dry_run)
+
+            if result.success and join_async and not dry_run:
+                self._join_async(result, join_timeout_sec)
+
             results.append(result)
 
             if not result.success and stop_on_failure:
@@ -226,6 +243,57 @@ class WorkflowExecutor:
                 break
 
         return results
+
+    @staticmethod
+    def _extract_task_id(output: Any) -> Optional[str]:
+        """从节点输出里找后台任务 id（顶层或 steps 里）。"""
+        if not isinstance(output, dict):
+            return None
+        task_id = output.get("task_id")
+        if task_id:
+            return str(task_id)
+        steps = output.get("steps")
+        if isinstance(steps, list):
+            for step in steps:
+                if isinstance(step, dict) and step.get("task_id"):
+                    return str(step["task_id"])
+        return None
+
+    def _join_async(self, result: WorkflowResult, timeout_sec: float) -> None:
+        """等待某步的后台任务到终态，把结论并回 WorkflowResult（原地修改）。"""
+        task_id = self._extract_task_id(result.output)
+        if not task_id:
+            return
+
+        try:
+            from .tasks import wait_for_task
+        except ImportError as e:  # pragma: no cover
+            logger.warning(f"async join unavailable: {e}")
+            return
+
+        logger.info(f"[chain] joining async task {task_id} (node={result.node})")
+        task = wait_for_task(task_id, timeout_sec=timeout_sec)
+        result.metadata["async_task"] = {
+            "task_id": task_id,
+            "status": task.get("status"),
+            "timed_out": task.get("timed_out", False),
+        }
+
+        if task.get("timed_out"):
+            result.success = False
+            result.error = (
+                f"后台任务 {task_id} 在 {timeout_sec:.0f}s 内未结束"
+                f"（当前状态 {task.get('status')}）；"
+                f"用 workflow_task_status(task_id=\"{task_id}\") 继续跟踪"
+            )
+        elif task.get("status") == "failed":
+            result.success = False
+            tail = (task.get("stderr_tail") or "").strip()[-400:]
+            result.error = (
+                f"后台任务 {task_id} 失败"
+                + (f"：{task.get('error')}" if task.get("error") else "")
+                + (f"；stderr: {tail}" if tail else "")
+            )
 
 
 # 便捷函数

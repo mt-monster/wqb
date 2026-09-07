@@ -73,13 +73,10 @@ def run(
     # dry-run：构建到六步闸判定计划即停，不触碰 network / 不写库
     # （2026-09-01 缺陷 A 修复：此前 dry_run 仍真实调用 get_alpha_details 等）。
     if ctx.get("dry_run"):
-        # 无子进程可构建 —— 干跑给出「会发哪些平台请求 + 用哪些阈值判」，
-        # 并顺带验证 brain_client 可导入（零网络）。
-        client_ok, client_err = True, None
-        try:
-            _get_brain_client()
-        except Exception as e:  # pragma: no cover - 环境相关
-            client_ok, client_err = False, str(e)
+        # 无子进程可构建 —— 干跑只给出「会发哪些平台请求 + 用哪些阈值判」。
+        # 2026-09-05 修复：不再尝试解析 brain_client。解析动作会 import 依赖、
+        # 可能建立连接，与「干跑零副作用」契约冲突；其成功与否也只反映干跑用的
+        # 解释器（通常是根 venv），对节点真实运行的 MCP venv 没有参考价值。
         return {
             "alpha_id": alpha_id,
             "success": True,
@@ -88,11 +85,10 @@ def run(
             "verdict": None,
             "gates": [],
             "steps": [{
-                # 只反映「当前解释器」能否导入 brain_client；节点真实运行在 MCP venv 里，
-                # 干跑解释器缺依赖属提示而非阻断，故记 warning 不记 error。
-                "step": "resolve_client",
-                "success": client_ok,
-                "warning": client_err,
+                "step": "plan_only",
+                "success": True,
+                "skipped": True,
+                "note": "dry-run 不解析 brain_client，避免触碰网络与子进程",
             }],
             "plan": {
                 "alpha_id": alpha_id,

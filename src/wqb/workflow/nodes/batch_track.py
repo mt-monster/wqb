@@ -13,7 +13,14 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
-from .._common import REPO_ROOT, resolve_campaign_dir, resolve_toolkit_dir, wq_py
+from .._common import (
+    REPO_ROOT,
+    detached_launch_failed,
+    resolve_campaign_dir,
+    resolve_toolkit_dir,
+    validate_argv,
+    wq_py,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +136,11 @@ def run(
         }
 
     # 构建命令
+    # 2026-09-06 修复：删除 `--concurrency` —— pipeline.py run 从未声明该参数，
+    # argparse 直接 exit=2（"unrecognized arguments: --concurrency 7"），而
+    # detached 分支不看退出码，于是 S3 每次都"启动成功"却从未真正跑过。
+    # 槽位数由 pipeline.py 内部锁定为 n_slots=min(7, n_total)，与 wqb-concurrency
+    # §8 七槽填槽一致，无需也无法从外部传入；concurrency 形参保留为计划元数据。
     cmd = [
         wq_py(),
         pipeline_script,
@@ -137,12 +149,30 @@ def run(
         "--dataset", dataset,
         "--wave", wave,
         "--max-rounds", str(max_rounds),
-        "--concurrency", str(concurrency),
         "--review",
         "--write-ledger",
     ]
 
-    # 干跑：命令已构建，到此为止（不 Popen、不写库、不产生任务目录）
+    # argv 契约校验：构建出来的命令必须能被 pipeline.py 的 argparse 接受。
+    # 干跑与实跑都走，干跑时它就是本节点最有价值的那次检查。
+    argv_ok, argv_error = validate_argv(cmd)
+    if not argv_ok:
+        return {
+            "success": False,
+            "error": argv_error,
+            "command": " ".join(cmd),
+            "region": region,
+            "wave": wave,
+            "dataset": dataset,
+        }
+
+    if concurrency != 7:
+        warnings.append(
+            f"concurrency={concurrency} 仅记录于计划；pipeline.py 内部锁定 "
+            "n_slots=min(7, 批数)，不接受外部覆盖（wqb-concurrency §8）"
+        )
+
+    # 干跑：命令已构建并通过 argv 校验，到此为止（不 Popen、不写库、不产生任务目录）
     if dry_run:
         return {
             "success": True,
@@ -162,7 +192,14 @@ def run(
                 "detached": detached,
             },
             "warnings": warnings,
-            "message": f"Would execute batch track for {len(expressions)} expressions",
+            # 表达式为 0 时把结论写进 message 而不是只塞进 warnings：
+            # 链式干跑读的是 success/error，warnings 会被整条链忽略掉。
+            "message": (
+                f"Would execute batch track for {len(expressions)} expressions"
+                if expressions else
+                f"链路可跑通，但 {region}/{wave}/{dataset} 库里 0 条表达式 —— "
+                f"实跑会立即失败，先跑 S2 生成/选波"
+            ),
         }
 
     logger.info(f"Executing: {' '.join(cmd)}")
@@ -222,6 +259,31 @@ def run(
             }
             with open(meta_path, "w", encoding="utf-8") as mf:
                 json.dump(meta, mf, ensure_ascii=False, indent=1)
+
+            # 2026-09-06 新增：存活握手。detached 不看退出码是"启动即死"被吞成
+            # success=True 的根因（本次审计 P0：argparse exit=2 被静默 13 天）。
+            # 跑得起来的任务此刻仍在运行；跑不起来的已把原因写进 stderr。
+            launch_error = detached_launch_failed(proc, stderr_log)
+            if launch_error:
+                out_f.close()
+                err_f.close()
+                meta["failed_at_launch"] = launch_error
+                try:
+                    with open(meta_path, "w", encoding="utf-8") as mf:
+                        json.dump(meta, mf, ensure_ascii=False, indent=1)
+                except OSError:
+                    pass
+                return {
+                    "success": False,
+                    "error": f"batch_track 后台任务启动失败：{launch_error}",
+                    "task_id": task_id,
+                    "task_dir": task_dir,
+                    "stderr_log": stderr_log,
+                    "command": " ".join(cmd),
+                    "region": region,
+                    "wave": wave,
+                    "dataset": dataset,
+                }
 
             return {
                 "success": True,

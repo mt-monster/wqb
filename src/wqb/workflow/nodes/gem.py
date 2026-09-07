@@ -13,7 +13,13 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
-from .._common import infer_data_category, resolve_skill_dir, wq_py
+from .._common import (
+    detached_launch_failed,
+    infer_data_category,
+    resolve_skill_dir,
+    validate_argv,
+    wq_py,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -203,6 +209,20 @@ def run(
 
     if detached:
         cmd.append("--detached")
+
+    # argv 契约校验（2026-09-06）：headless_runner/run.py 的 argparse 必须接受本命令。
+    # 干跑与实跑都走，避免"命令构建成功 → Popen → 秒退"被吞成 success。
+    argv_ok, argv_error = validate_argv(cmd)
+    if not argv_ok:
+        result["steps"].append({
+            "step": "validate_argv",
+            "success": False,
+            "error": argv_error,
+            "command": " ".join(cmd),
+        })
+        result["success"] = False
+        result["error"] = argv_error
+        return result
 
     result["steps"].append({
         "step": "build_command",
