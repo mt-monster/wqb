@@ -52,13 +52,18 @@ else:
 
 def history_hashes(ctx, exclude_path=None, exclude_waves=None):
     seen = set()
+    # 2026-09-06：DB 读失败原为 `except Exception: pass` —— 静默 fail-open。
+    # 「全量切库」后战役目录已基本不再写 <region>_wave*_exprs.json / candidates/*.json，
+    # 文件语料只剩历史残留，DB 一旦读不到，去重就退化成"几乎什么都不认识"，
+    # 而调用方看到的仍是一个正常的 n_dup 数字。现在必须喊出来。
     try:
         st = get_store(ctx)
         for e in st.history_expressions(ctx.region, exclude_waves=exclude_waves):
             seen.add(norm_expr(e))
         st.close()
-    except Exception:
-        pass
+    except Exception as _e:
+        print(f"[dedup][WARN] 读 DB 历史表达式失败：{_e}；"
+              f"本波去重将只依赖文件语料（切库后已近乎为空），重复率会被严重低估")
     excl = os.path.normcase(os.path.abspath(exclude_path)) if exclude_path else None
     files = glob.glob(ctx.path(f"{ctx.prefix}_wave*_exprs.json")) + \
         glob.glob(ctx.path("candidates", "*.json"))

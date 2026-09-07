@@ -2,8 +2,13 @@
 """workflow_* MCP 工具单测：confirm_submit 透传不变量（无网络）.
 
 背景：tools_workflow 是 `wqb.workflow` 节点到 MCP 的薄包装层。confirm_submit 是
-submit_alpha / superalpha / judge 三个节点上的敏感决策开关（默认 False = 不提交），
+submit_alpha / superalpha 两个节点上的敏感决策开关（默认 False = 不提交），
 一旦在包装层被吞掉或默认值被翻转，就会出现"以为没提交其实提交了"的事故。
+
+2026-09-06 更新：judge 已退出提交节点集合。按 AGENTS.md §3.5「判定与提交的权威
+划分」，提交判定唯一权威是 `tools/submit_verdict.py`，`workflow_judge` 是参考评审
+层、代码里已无提交路径，因此不再暴露 confirm_submit —— 本文件原先仍断言它有该参数，
+是测试滞后于已落地的契约变更（实测 7 个用例因此长期红着）。
 
 本文件只验证包装层契约，不打网络：
   - confirm_submit 显式传入时原样落到 executor 收到的 params（bool 类型不丢失）
@@ -32,7 +37,8 @@ import tools_workflow
 from wqb.workflow import executor as wf_executor
 from wqb.workflow.executor import WorkflowExecutor, WorkflowResult
 
-CONFIRM_NODES = ("workflow_submit_alpha", "workflow_superalpha", "workflow_judge")
+#: 真正带提交开关的节点。judge 不在其中（见文件头 2026-09-06 说明）。
+CONFIRM_NODES = ("workflow_submit_alpha", "workflow_superalpha")
 
 
 # ---------------------------------------------------------------------------
@@ -116,7 +122,6 @@ def test_confirm_submit_declared_in_registry_optional_params():
     node_of_tool = {
         "workflow_submit_alpha": "submit_alpha",
         "workflow_superalpha": "superalpha",
-        "workflow_judge": "judge",
     }
     for tool, node in node_of_tool.items():
         meta = reg.get_meta(node)
@@ -229,10 +234,24 @@ def test_superalpha_confirm_submit_defaults_false(monkeypatch):
     assert out["params"]["confirm_submit"] is False
 
 
-def test_judge_confirm_submit_true_passthrough(monkeypatch):
+def test_judge_does_not_expose_confirm_submit():
+    """judge 是评审层，不得带提交开关（AGENTS.md §3.5 判定与提交的权威划分）。
+
+    回归意义：一旦有人"顺手"把 confirm_submit 加回 judge，提交路径就又多了一个
+    绕过 submit_verdict 的入口。
+    """
+    sig = inspect.signature(tools_workflow.workflow_judge)
+    assert "confirm_submit" not in sig.parameters
+
+    _, get_registry = tools_workflow._get_workflow_executor()
+    meta = get_registry().get_meta("judge")
+    assert "confirm_submit" not in meta.optional_params
+
+
+def test_judge_params_passthrough(monkeypatch):
     rec = _install_recorder(monkeypatch)
     tools_workflow.workflow_judge(
-        alpha_id="a7", trend_window_days=180, llm_enabled=False, confirm_submit=True
+        alpha_id="a7", trend_window_days=180, llm_enabled=False
     )
 
     node, params, kwargs = rec.calls[0]
@@ -241,16 +260,14 @@ def test_judge_confirm_submit_true_passthrough(monkeypatch):
         "alpha_id": "a7",
         "trend_window_days": 180,
         "llm_enabled": False,
-        "confirm_submit": True,
     }
     assert kwargs == {"dry_run": False}
 
 
-def test_judge_confirm_submit_defaults_false(monkeypatch):
+def test_judge_defaults(monkeypatch):
     rec = _install_recorder(monkeypatch)
     tools_workflow.workflow_judge(alpha_id="a7")
     _, params, _ = rec.calls[0]
-    assert params["confirm_submit"] is False
     assert params["trend_window_days"] == 365
     assert params["llm_enabled"] is True
 
@@ -258,7 +275,7 @@ def test_judge_confirm_submit_defaults_false(monkeypatch):
 def test_confirm_submit_bool_type_not_coerced(monkeypatch):
     """显式传入的 bool 必须保持 bool 身份，不被转成 int/str。"""
     rec = _install_recorder(monkeypatch)
-    tools_workflow.workflow_judge(alpha_id="a1", confirm_submit=True)
+    tools_workflow.workflow_submit_alpha(alpha_id="a1", confirm_submit=True)
     val = rec.calls[0][1]["confirm_submit"]
     assert type(val) is bool and val is True
 
@@ -375,8 +392,11 @@ def test_workflow_list_nodes_shape(monkeypatch):
     for item in out["nodes"]:
         assert set(item) == {"name", "description", "category", "phase",
                              "required_params", "optional_params"}
-        if item["name"] in {"submit_alpha", "superalpha", "judge"}:
+        # judge 不带提交开关（AGENTS.md §3.5），只有两个真正的提交节点带
+        if item["name"] in {"submit_alpha", "superalpha"}:
             assert "confirm_submit" in item["optional_params"]
+        if item["name"] == "judge":
+            assert "confirm_submit" not in item["optional_params"]
 
 
 def test_workflow_result_to_dict_carries_confirm_submit(monkeypatch):
@@ -392,6 +412,6 @@ def test_workflow_result_to_dict_carries_confirm_submit(monkeypatch):
 def test_stub_does_not_touch_real_executor(monkeypatch):
     """回归保护：打桩后真实执行器单例不被创建（确保测试无副作用）。"""
     _install_recorder(monkeypatch)
-    tools_workflow.workflow_judge(alpha_id="a1", confirm_submit=False)
+    tools_workflow.workflow_judge(alpha_id="a1")
     assert wf_executor._default_executor is None
     assert isinstance(WorkflowExecutor, type)

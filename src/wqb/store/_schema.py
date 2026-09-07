@@ -266,6 +266,9 @@ class SchemaMixin:
             ("dataset", "TEXT"),
             ("code", "TEXT"),
             ("payload_json", "TEXT"),
+            # 2026-09-08：风险中性化后的 sharpe。它是 Expected Exposure 声明的验证器——
+            # 若它 <= 0 而 raw sharpe 达标，说明这条 alpha 就是那个因子暴露本身。
+            ("risk_neutralized_sharpe", "DECIMAL(8,4)"),
         ):
             self._add_column("backtest_results", col, ddl)
         self._add_column("datasets", "data_type", "TEXT")

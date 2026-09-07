@@ -172,7 +172,13 @@ supported_functions = {
     'ts_skewness': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'ts_max_diff': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'kth_element': {'min_args': 3, 'max_args': 3, 'arg_types': ['expression', 'number', 'number']},
-    'hump': {'min_args': 1, 'max_args': 2, 'arg_types': ['expression', 'number'], 'param_names': ['x', 'hump']},
+    # 2026-09-07 事故修复：漏标 keyword_only 导致 hump(x, 0.005) 通过本地闸，平台回
+    # "Invalid number of inputs : 2, should be exactly 1 input(s)." 并 CANCEL 整批 8 条
+    # multisim。catalog 签名 hump(x, hump = 0.01) 的 = 即命名参数标记，只能写 hump=0.005。
+    # 注：本表是手写的，与平台 catalog 存在漂移（bucket/rank/quantile/scale/normalize/
+    # combo_a/group_backfill/reduce_* 同样漏标）；权威签名以 wqb.expression.op_arity
+    # （从 get_operators 的 definition 串自动推导）为准，闸门已并联该模块。
+    'hump': {'min_args': 1, 'max_args': 2, 'arg_types': ['expression', 'number'], 'param_names': ['x', 'hump'], 'keyword_only': True},
     'ts_median': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'ts_delta': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     # Platform: ts_poly_regression(y, x, d, k=1) and k must be keyword if provided

@@ -164,6 +164,12 @@
    "regex": "add\\s*\\(\\s*multiply\\s*\\(\\s*rank\\s*\\(.*add\\s*\\(\\s*multiply\\s*\\(\\s*rank",
    "rule": "add(multiply(rank(x),a),add(multiply(rank(y),b),multiply(rank(z),c))) 嵌套三腿 add 高度疑似整批 CANCELLED（KOR record_poison bisect 实证）；三腿混合改写 add(add(a,b),c) 左结合",
    "severity": "block"
+  },
+  {
+   "name": "weighted_signal_mix",
+   "regex": "\\d*\\.?\\d+\\s*\\*\\s*(?:rank|zscore|ts_rank|group_rank|normalize|scale)\\s*\\([^)]*\\).{0,200}?\\d*\\.?\\d+\\s*\\*\\s*(?:rank|zscore|ts_rank|group_rank|normalize|scale)\\s*\\(",
+   "rule": "≥2 个「系数*rank(...)」加权腿 = 混信号调参，CLAUDE.md 明令禁止（防过拟合，尤其警惕 add(A,B) 模式）。实测 ASI 243 条表达式里 91 条（37.4%）是这个形状，且多为同骨架的权重微调三连（0.4/0.3 → 0.5/0.25 → 0.34/0.33），典型参数过拟合。改法：拆成单腿 atom alpha 分别验证，或改用非线性组合（trade_when 事件门控 / group 分组 / bucket 分桶），不要靠调权重凑指标。",
+   "severity": "block"
   }
  ],
  "_poison_note": "severity=block 时 gate 闸5 拦截。区域特有的新增毒模式放战役 reference/<region>_generation_constraints.json 的 poison_patterns，勿写进本文件。",

@@ -44,6 +44,7 @@ def _extract_fields(expr: str) -> Set[str]:
 def _get_s1_main_candidates(db_path: str, region: str, dataset: str) -> List[str]:
     """从 ledger_kv 读取 S1 特征工程推荐的 main_candidates。"""
     conn = sqlite3.connect(db_path)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     # S1 ledger key 格式: s1_<dataset>_d<delay>
     # 先尝试 delay=1（KOR 默认）
@@ -107,6 +108,7 @@ def validate_wave_fields(
     # 检查禁用字段（从 S1 ledger 的 risk_notes 或显式 forbidden 读取）
     forbidden: List[str] = []
     conn = sqlite3.connect(db_path)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     for delay in [1, 0]:
         key = f"s1_{dataset}_d{delay}"
@@ -164,6 +166,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(args.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     cur.execute(
         "SELECT expression FROM expressions WHERE region=? AND wave=? AND dataset=?",

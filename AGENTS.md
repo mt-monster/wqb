@@ -62,7 +62,7 @@
 | 2 | S0 数据集体检 | `workflow_campaign(stage="S0")` |
 | 3 | S1 字段扫描与理解 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` |
 | 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-makeSomeGem` headless_runner） |
-| 5 | S2→S3 门禁 | `check_batch` → `check_expr_against_inspect` → `wave_gate` |
+| 5 | S2→S3 门禁 | `wave_gate`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
 | 6 | S3 七槽回测 | `workflow_batch_track`（并发纪律权威 = `wqb-concurrency` §8） |
 | 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
 | 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（唯一权威）→ 用户确认 → `workflow_submit_alpha` |
@@ -81,9 +81,30 @@
   暴露给 Agent，漂移即误导。回归由 `tests/unit/test_skill_integrity.py` 守护。
 - **dry-run 契约**：全部 7 个节点统一「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，
   不 subprocess、不写库、不建目录。干跑失败必须带得出 `error`（禁止 success=False + error=None）。
+- **argv 契约校验（2026-09-06）**：凡是拼子进程命令的节点，构建完必须过
+  `_common.validate_argv(cmd)` —— 它静态解析目标脚本（含其本地 import 的辅助模块）的
+  `add_argument` / `add_parser`，逮住"脚本压根没声明过的 --flag / 子命令"。
+  起因：`batch_track` 给 `pipeline.py run` 拼了个不存在的 `--concurrency 7`，
+  argparse exit=2，而 detached 分支不看退出码 → S3 每次都"启动成功"却从未真跑过，
+  证据在 `stderr.log` 里躺了 13 天。目标脚本自身零 `add_argument`（纯派发器）时放行。
+- **detached 存活握手（2026-09-06）**：后台启动后必须过 `_common.detached_launch_failed()`
+  —— 秒退或 stderr 非空即判失败并回传原因。detached 的代价就是没人看退出码，
+  「启动即死」不能再被吞成 `success=True`。
+- **异步任务查询**：后台任务一律用 `mcp__wq-brain-http__workflow_task_status`
+  （`wqb.workflow.tasks`），它同时认两套布局（campaign/fe 的 `<id>.json` 与
+  gem/batch_track 的 `<id>/meta.json`）。不要 shell 出去翻 `logs/_async_tasks/`。
+  `workflow_chain` 默认 `join_async=True`，异步节点会等到终态再进下一步 ——
+  否则下游必然读到上游还没落库的空结果。
 - **skill 目录解析**：`_common._skill_roots()` 顺序为 `WQ_SKILLS_DIR` > Claude 安装位
   （`%APPDATA%\Claude\skills` 等）> 历史 Agent 位（qoder-cn / cursor / workbuddy）>
-  仓库自带 `Claude/skills/`（兜底，保证 clone 即可用）。
+  仓库自带 `Claude/skills/`（兜底，保证 clone 即可用）。落到历史 Agent 位会打 WARNING：
+  那些是独立物理拷贝，`~/.workbuddy/skills` 实测是含已废止 skill 的旧副本。
+- **skill 单向同步（2026-09-06）**：仓库 `Claude/skills/` 是源，安装位是派生物。
+  改 skill 只改仓库副本，然后 `python tools/sync_skills.py`；`--check` 模式由
+  `tests/unit/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护。
+  历史教训：安装位曾落后仓库两周（makeSomeGem 停在 08-22、仓库已 09-05），
+  Agent 读旧 SOP、测试读新文，两边各自自洽，只有运行时才炸。
+  `install_now.py` 的 `if target.exists(): skip` 是这次陈旧的根因，勿再用它做更新。
 - **MCP 服务器命名**：只能是 `wq-brain-http` 与 `wqb-db` —— 所有 skill 调用的工具前缀是
   `mcp__wq-brain-http__*` / `mcp__wqb-db__*`，改名即全线失配。`.mcp.json` 为准，
   `mcp_config.json` 与安装脚本必须跟随。

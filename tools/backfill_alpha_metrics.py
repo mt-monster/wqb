@@ -24,6 +24,7 @@ def with_retry(fn, max_retry=8, wait=10):
 def backfill(col, from_payload):
     def run():
         conn = sqlite3.connect(DB, timeout=10)
+        conn.execute("PRAGMA foreign_keys=ON")
         cur = conn.cursor()
         if from_payload:
             src = "json_extract(b.payload_json, '$.%s')" % col
@@ -61,6 +62,7 @@ for col in ["sharpe", "fitness", "turnover", "margin"]:
 
 # 验证
 conn = sqlite3.connect(DB, timeout=10)
+conn.execute("PRAGMA foreign_keys=ON")
 r = conn.execute(
     """SELECT COUNT(*),
     SUM(CASE WHEN two_year_sharpe IS NOT NULL THEN 1 ELSE 0 END),

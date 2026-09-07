@@ -272,7 +272,13 @@ def assemble_priors_dict(ctx):
             de.append(d)
         de = de[:MAX_DEADENDS]
 
-    return {
+    # 2026-09-08：库存实证的条件过闸率。由 tools/build_gate_prior_from_inventory.py
+    # 写入 region_kb.gate_priors（样本源是账户已回测的历史 alpha，万级，
+    # 比 registry_empirical 的百级大两个数量级），由 economic_priors.compact_priors_text
+    # 渲染进 GEM prompt。缺失时不注入，不报错。
+    gate_priors = kb.get("gate_priors") if isinstance(kb, dict) else None
+
+    payload = {
         "wins": wins,
         "dead_ends": de,
         "region_context": _build_region_context(kb),
@@ -284,9 +290,13 @@ def assemble_priors_dict(ctx):
                         "registry_empirical:win",
                         "registry_empirical:dead_end",
                         "ledger_kv:KB/template_kb",
+                        "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
                         "profile_fallback (仅 DB KB 空时)"],
         },
     }
+    if gate_priors:
+        payload["gate_priors"] = gate_priors
+    return payload
 
 
 def _build_region_context(kb: dict) -> dict:

@@ -57,6 +57,7 @@ def write_wave_result(
         full_payload: 完整 wave JSON（dict，可选，MD 快照导出用）
     """
     conn = sqlite3.connect(str(DB))
+    conn.execute("PRAGMA foreign_keys=ON")
     c = conn.cursor()
     c.execute(
         """
@@ -87,6 +88,7 @@ def write_wave_result(
 def list_wave_results(region=None, status=None, archived=None):
     """列出 wave 结果（可按 region/status/archived 过滤）。"""
     conn = sqlite3.connect(str(DB))
+    conn.execute("PRAGMA foreign_keys=ON")
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     sql = "SELECT * FROM wave_results WHERE 1=1"

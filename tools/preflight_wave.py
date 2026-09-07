@@ -97,6 +97,7 @@ def check_dead_end(dataset, region):
     try:
         import sqlite3
         conn = sqlite3.connect(os.path.join(_wqb_root(), "data", "wqb.db"))
+        conn.execute("PRAGMA foreign_keys=ON")
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute(

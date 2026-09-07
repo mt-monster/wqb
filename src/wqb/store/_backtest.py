@@ -58,9 +58,10 @@ class BacktestMixin:
                 """INSERT INTO backtest_results
                    (expression_id, alpha_id, status, sharpe, fitness, turnover,
                     margin, returns, drawdown, two_year_sharpe, sub_universe_sharpe,
+                    risk_neutralized_sharpe,
                     long_count, short_count, pnl, book_size, ra_failed_checks,
                     region, wave, dataset, code, payload_json, created_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                    ON CONFLICT(alpha_id) DO UPDATE SET
                     expression_id=excluded.expression_id, status=excluded.status,
                     sharpe=excluded.sharpe, fitness=excluded.fitness,
@@ -68,6 +69,7 @@ class BacktestMixin:
                     returns=excluded.returns, drawdown=excluded.drawdown,
                     two_year_sharpe=excluded.two_year_sharpe,
                     sub_universe_sharpe=excluded.sub_universe_sharpe,
+                    risk_neutralized_sharpe=excluded.risk_neutralized_sharpe,
                     long_count=excluded.long_count, short_count=excluded.short_count,
                     pnl=excluded.pnl, book_size=excluded.book_size,
                     ra_failed_checks=excluded.ra_failed_checks,
@@ -79,6 +81,9 @@ class BacktestMixin:
                     r.get("sharpe"), r.get("fitness"), turnover, margin,
                     r.get("returns"), r.get("drawdown"),
                     r.get("two_year_sharpe"), r.get("sub_universe_sharpe"),
+                    # 2026-09-08 提为一等公民：risk_neutralized_sharpe <= 0 而 sharpe 达标，
+                    # 说明这条 alpha 就是它自己声称的那个因子暴露，不是暴露之上的超额。
+                    r.get("risk_neutralized_sharpe"),
                     r.get("long_count"), r.get("short_count"),
                     r.get("pnl"), r.get("book_size"),
                     _dumps(failed) if failed else None,

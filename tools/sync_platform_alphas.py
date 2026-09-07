@@ -191,6 +191,7 @@ def main():
 
     # 本地现有记录
     con = sqlite3.connect(str(DB))
+    con.execute("PRAGMA foreign_keys=ON")
     cur = con.cursor()
     cur.execute("SELECT id, name FROM regions")
     reg2id = {n: i for i, n in cur.fetchall()}
@@ -300,6 +301,7 @@ def main():
     bak = backup_db()
     print(f"\n[backup] {bak}")
     con = sqlite3.connect(str(DB))
+    con.execute("PRAGMA foreign_keys=ON")
     cur = con.cursor()
     now_iso = datetime.now().isoformat(timespec="seconds")
 
@@ -345,6 +347,7 @@ def main():
 
     # 复核
     con = sqlite3.connect(str(DB))
+    con.execute("PRAGMA foreign_keys=ON")
     cur = con.cursor()
     cur.execute("SELECT platform_status, COUNT(*) FROM alphas GROUP BY platform_status")
     print("[复核] platform_status 分布:", cur.fetchall())

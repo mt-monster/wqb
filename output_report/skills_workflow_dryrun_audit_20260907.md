@@ -174,7 +174,28 @@ P1-1 prod-first 前移改造 → P1-2 IND 决策 → P1-4 HKG 启动
 | **prod_corr 未测（NULL）** | **75 条** | 主体为 model135 字段族（mdl135_d3/d5_isr/icc），**不是撞墙是未测** |
 | dataset 归属 | 84 条挂 `_unknown`（dataset_id=41 桶） | 历史灌库时未解析数据集归属 |
 
-**结论修正**：IND 并非"94 达标全灭"——75 条从未做过 prod 相关性检查。建议路径：① 先对这 75 条跑相关性预检（`corr_precheck.py` 或 submit_verdict 链），把"未知"变成"已知"；② model135 已测 2/2 撞墙，该字段族饱和闸已生效自动拦；③ 真正自由（prod<0.7）的仅 3 条 + model 族 5 条——**IND 的正确动作是"补相关性测试"而非"停手"**，测试后仍全灭再停。
+### 7.1 未测 75 条风险定级（2026-09-02 本地分析）
+
+用字段画像交叉对照（已测 29 条的 wall/pass 字段命中）定级：**LOW 30 / MED 40 / HIGH 5**。
+- HIGH 5：命中确认饱和字段（`mdl135_d04_icc` ×4、`mdl238_global_rank` ×1）——预计直接撞墙。
+- MED 40：model135 族 42 条（族内已测 2 撞墙/1 通过）+ `oth315_execution_timestamp` mixed（2 撞墙/1 通过）+ 表达式截断 13 条（DB 存储不完整）。
+- LOW 30：全干净字段（`change_6m_rating_revision` 18 / `residualized_return_india_top500_equity` 14 / `alternative_market_cap_usd` 11）。
+- 附注：已测通过 20 条**全部已 ACTIVE**（含 kqjpwYez pc=0.700 贴线、residualized 字段已被 5 条 ACTIVE 占用）；`WjPjXARx` 实为 SUPER 占位记录非 REGULAR。
+
+### 7.2 真实平台补测（2026-09-07 启动）
+
+**通道确认**：`world-quant-brain-mcp/.env` 凭证可用，`BrainApiClient.check_correlation(alpha_id, "production")` 真实平台调用，30s/条出结果，7 天缓存。
+
+**Probe 结果（3 条 LOW 组）**：
+| alpha | Sharpe | PC | 判定 |
+|---|---|---|---|
+| 3qlKQ1qX | 3.61 | 0.8736 | WALL |
+| Xg7ZZlNa | 3.52 | 0.8577 | WALL |
+| gJjNlRMJ | 3.26 | 0.8245 | WALL |
+
+**3/3 全部撞墙，包括字段画像最干净的 LOW 组**（分别代表 analyst_14d+residualized / 纯 residualized / risk88 市值三个不同方向）→ IND 撞墙是**结构级/信号级饱和**，不是字段级问题。全量 75 条补测已启动（checkpoint 断点续跑，预计 45–90 分钟），完成后"未知"全部变"已知"，据实决策停手/转向。
+
+**工具沉淀**：`tools/backfill_prod_corr.py`（checkpoint 续跑 + busy/pending 重试 + --risk 分组 + --apply-db 写回门控）。
 
 1. ✅ **已执行** 修改 SKILL.md（D1/D2/D3 三处文档修复）+ 附录工具名映射表 22 项
 2. ✅ **已执行** 裁决孤儿积压：18 个废弃波 dropped、50 条无效表达式清出（w164 波保留 34 条有效）；备份 `data/wqb.db.bak_orphan_fix_20260907`

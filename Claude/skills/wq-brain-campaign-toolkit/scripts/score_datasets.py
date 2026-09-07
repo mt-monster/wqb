@@ -14,18 +14,21 @@
 """
 import argparse
 import datetime
+import faulthandler
 import json
 import math
 import os
 import re
 import sys
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_credentials,
                          load_json, load_platform_constraints)
 from _lib.api import Api
 from _lib.ledger import LedgerStore, make_ledger_store, today
-from _lib.wqb_store import load_ranking, save_ranking, load_catalog, save_catalog
+from _lib.wqb_store import (load_ranking, save_ranking, load_catalog, save_catalog,
+                            get_store)
 import metrics_cache
 import scan_fields
 
@@ -421,21 +424,90 @@ def _infer_ds_from_fname(fname, ds_field):
     return ds_field
 
 
-def _build_field2ds(ctx, valid_ds):
+# ---------------- 校准可观测性（进度日志 + 软超时 + 挂起栈快照） ----------------
+#
+# 2026-09-06：campaign_USA_S0_20260905_222757 被 3600s 异步闸杀掉且任务记录里
+# stdout 为空 —— 无法定位卡在哪一帧。本节把"静默一小时"改成"每步有日志、
+# 到点自己收尾、真挂起时自动打栈"，让同类故障 5 分钟内可归因。
+#
+# 约定：进度日志一律走 stderr，stdout 只保留既有结论格式（workflow 侧
+# _extract_structured_summary 解析 stdout，不能被进度行污染）。
+
+CALIBRATE_TIMEOUT_DEFAULT = 300  # 秒；实测 EUR 0.5s / USA 0.9s，300s 已是 300 倍余量
+
+
+def _clog(msg, t0=None):
+    """校准进度日志（stderr + 立即 flush，管道/文件重定向下也实时可见）。"""
+    el = "" if t0 is None else "+%.1fs " % (time.time() - t0)
+    print("[calibrate:progress] %s%s" % (el, msg), file=sys.stderr, flush=True)
+
+
+class _Deadline:
+    """校准软超时：到点优雅收尾（返回部分结果并标记），而不是无声跑满外层闸门。
+
+    budget<=0 视为不限时（保留手工无限跑的口子）。expired() 只在阶段/循环边界
+    调用，因此收尾点一定处在一致状态，不会写出半截产物。
+    """
+
+    def __init__(self, budget):
+        self.budget = float(budget or 0)
+        self.t0 = time.time()
+        self.hit_at = None
+
+    def elapsed(self):
+        return time.time() - self.t0
+
+    def expired(self, where):
+        if self.budget <= 0:
+            return False
+        if self.elapsed() > self.budget:
+            if self.hit_at is None:
+                self.hit_at = where
+                _clog("软超时 %gs 触发于 %s —— 提前收尾，不写 thresholds"
+                      % (self.budget, where), self.t0)
+            return True
+        return False
+
+
+def _build_field2ds(ctx, valid_ds, deadline=None):
     """从本战役 typed catalog 建 field -> set(dataset) 反查表（仅纳入 ranking 内合法 dataset）。
-    用于校准器兜底识别无 dataset 键的 ad-hoc 结果文件。catalog 缺失的 dataset 自动跳过。"""
+    用于校准器兜底识别无 dataset 键的 ad-hoc 结果文件。catalog 缺失的 dataset 自动跳过。
+
+    2026-09-06：原实现每个 dataset 走一次 load_catalog，而 load_catalog 内部
+    新建 CampaignStore（= 新 sqlite 连接 + 整套 ensure_schema DDL）再关闭 ——
+    USA 294 个 dataset 就是 294 次建连+DDL。改为全程复用单连接（实测 USA
+    19396 字段 0.44s → 0.1s 量级），并按 dataset 计数打进度。
+    """
     field2ds = {}
-    for ds in valid_ds:
-        try:
-            cat = load_catalog(ctx, ds)
-        except Exception:
-            cat = None
-        if not cat:
-            continue
-        for f in cat.get("fields", []):
-            fid = f.get("id")
-            if fid:
-                field2ds.setdefault(fid, set()).add(ds)
+    total = len(valid_ds)
+    try:
+        store = get_store(ctx)
+    except Exception as e:  # 拿不到 store 时退回逐次 load_catalog（保持旧行为可用）
+        _clog("get_store 失败(%s)，回退逐 dataset load_catalog" % e)
+        store = None
+    try:
+        for i, ds in enumerate(sorted(valid_ds), 1):
+            if deadline is not None and deadline.expired("_build_field2ds[%d/%d]" % (i, total)):
+                break
+            try:
+                cat = (store.get_field_catalog(ctx.region, ds) if store is not None
+                       else load_catalog(ctx, ds))
+            except Exception:
+                cat = None
+            if not cat:
+                continue
+            for f in cat.get("fields", []):
+                fid = f.get("id")
+                if fid:
+                    field2ds.setdefault(fid, set()).add(ds)
+            if i % 50 == 0 or i == total:
+                _clog("_build_field2ds %d/%d datasets -> %d fields" % (i, total, len(field2ds)))
+    finally:
+        if store is not None:
+            try:
+                store.close()
+            except Exception:
+                pass
     return field2ds
 
 
@@ -473,7 +545,7 @@ def _infer_alpha_dataset(expr, field2ds, valid_ds):
     return None
 
 
-def _collect_from_alpha_store(ctx, valid_ds, field2ds):
+def _collect_from_alpha_store(ctx, valid_ds, field2ds, deadline=None):
     """从 DB alpha 存储采集实测回测（校准主源）。
 
     背景（USA 2026-08-27 实证）：results/*.json 扫描只命中 4 个数据集——
@@ -484,7 +556,6 @@ def _collect_from_alpha_store(ctx, valid_ds, field2ds):
     是唯一可靠的实测源。dataset 用字段反查重归类（不信假名/excluded 状态——excluded 只代表拥挤，不代表没信号）。
     返回 dataset -> [sharpe,...]；采集失败/无数据返回 {}（调用方回退 results/ 扫描）。
     """
-    from _lib.wqb_store import get_store
     try:
         store = get_store(ctx)
         try:
@@ -494,10 +565,15 @@ def _collect_from_alpha_store(ctx, valid_ds, field2ds):
                 store.close()
             except Exception:
                 pass
-    except Exception:
+    except Exception as e:
+        _clog("alpha 存储采集失败(%s)，回退 results/ 扫描" % e)
         return {}
+    _clog("alpha 存储取回 %d 行，开始字段反查归类" % len(rows))
     ds_sh = {}
-    for r in rows:
+    for i, r in enumerate(rows, 1):
+        if deadline is not None and deadline.expired("_collect_from_alpha_store[%d/%d]"
+                                                     % (i, len(rows))):
+            break
         sh = r.get("sharpe")
         if not isinstance(sh, (int, float)):
             continue
@@ -507,7 +583,8 @@ def _collect_from_alpha_store(ctx, valid_ds, field2ds):
     return ds_sh
 
 
-def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
+def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False,
+                            timeout_sec=None):
     """通用能力：扫描本战役 results/ 实测回测，自动校准 dataset_health 的筛选权重。
 
     任何 region 跑过回测后即可用——从"哪个 category / 哪个拥挤度区间真出强信号"反向学习，
@@ -518,9 +595,34 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
       category_weight_floor/cap 与 pyramid_quota_enable（防 MODEL 权重抹掉 PV/NEWS）
       crowd_sweet_spot_enable=True + sweet_spot_ac_min/max（按强信号集 ac 分布学习甜区）
     返回校准报告 dict。
+
+    timeout_sec：软超时预算（秒，默认 CALIBRATE_TIMEOUT_DEFAULT；<=0 关闭）。
+    到点在阶段/循环边界收尾并返回 calibrated=False + timed_out=True —— 宁可这次不校准，
+    也不拿半截样本改写 thresholds。同时挂 faulthandler 看门狗：若真卡死在某一帧，
+    超预算后每 timeout_sec 秒往 stderr 打一次全线程栈，直接给出阻塞点。
     """
     import glob
+    if timeout_sec is None:
+        timeout_sec = float(os.environ.get("WQB_CALIBRATE_TIMEOUT",
+                                           CALIBRATE_TIMEOUT_DEFAULT))
+    deadline = _Deadline(timeout_sec)
+    t0 = deadline.t0
+    watchdog = timeout_sec and timeout_sec > 0
+    if watchdog:
+        # 软超时只在边界生效；若卡在某次调用内部出不来，这里保证仍有栈可看。
+        faulthandler.dump_traceback_later(max(30.0, float(timeout_sec)),
+                                          repeat=True, file=sys.stderr)
+    try:
+        return _calibrate_dataset_health_inner(
+            ctx, strong_bar, weak_bar, dry_run, deadline, t0, glob)
+    finally:
+        if watchdog:
+            faulthandler.cancel_dump_traceback_later()
+
+
+def _calibrate_dataset_health_inner(ctx, strong_bar, weak_bar, dry_run, deadline, t0, glob):
     rdir = ctx.path("results")
+    _clog("start region=%s budget=%gs" % (ctx.region, deadline.budget), t0)
     # dataset -> (category, ac) 映射（来自现有 ranking；无 ranking 则无法可靠校准，退化为空）
     cat_map = {}
     ac_map = {}
@@ -539,12 +641,16 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
                 valid_cats.add(r.get("category"))
     # field -> dataset 反查表（从本战役 typed catalog 建；USA 实测 17097 字段零歧义）。
     # 用于兜底识别无 dataset 键的 ad-hoc 结果（USA 早期 results 命名不规范、结构非标准契约）。
-    field2ds = _build_field2ds(ctx, valid_ds)
+    _clog("ranking 加载完成：%d datasets / %d categories" % (len(valid_ds), len(valid_cats)), t0)
+    field2ds = _build_field2ds(ctx, valid_ds, deadline)
+    _clog("field2ds 完成：%d fields" % len(field2ds), t0)
 
     # 主源：从 DB alpha 存储采集实测（list_alphas_by_region 直接带 sharpe，USA 214 条全可靠）。
     # results/ 扫描只命中 4 个数据集（checkpoint 跳过/expressions sharpe NULL/recovered_ds 假名），
     # alpha 存储才是唯一够到真实回测的源。
-    alpha_store_sh = _collect_from_alpha_store(ctx, valid_ds, field2ds)
+    alpha_store_sh = _collect_from_alpha_store(ctx, valid_ds, field2ds, deadline)
+    _clog("alpha 存储归类完成：%d datasets / %d alphas"
+          % (len(alpha_store_sh), sum(len(v) for v in alpha_store_sh.values())), t0)
 
     def _resolve_ds(fn, ds_field, rows):
         """三级定位 dataset：①显式 dataset 键 ②文件名正则 ③field 反查 catalog。"""
@@ -587,7 +693,11 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
 
     # 聚合 dataset -> best_sh（只采纳 ranking 里真实存在的 dataset，过滤复合名/文件名误推断）
     ds_best = {}
-    for fp in sorted(glob.glob(os.path.join(rdir, "*.json"))):
+    res_files = sorted(glob.glob(os.path.join(rdir, "*.json")))
+    _clog("results/ 扫描开始：%d 个文件" % len(res_files), t0)
+    for i, fp in enumerate(res_files, 1):
+        if deadline.expired("results_scan[%d/%d]" % (i, len(res_files))):
+            break
         fn = os.path.basename(fp)
         if "checkpoint" in fn or fn.startswith("_"):
             continue
@@ -610,6 +720,7 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
             continue
         cur = ds_best.setdefault(ds, {"best_sh": 0.0})
         cur["best_sh"] = max(cur["best_sh"], max(shs))
+    _clog("results/ 扫描完成：命中 %d datasets" % len(ds_best), t0)
     # 合并 alpha 存储主源（与 results/ 扫描取并集，同一 dataset 取更大 best_sh）
     for ds, shs in alpha_store_sh.items():
         if not shs:
@@ -659,7 +770,20 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
         "sweet_spot": {"ac_min": sp_min, "ac_max": sp_max,
                        "strong_signal_acs": strong_acs},
         "strong_bar": strong_bar, "weak_bar": weak_bar,
+        "elapsed_sec": round(deadline.elapsed(), 2),
+        "timeout_budget_sec": deadline.budget,
     }
+    # 软超时：宁可这次不校准，也不拿半截样本改写 thresholds（部分 dataset 的
+    # category/甜区会被系统性低估，写回即污染后续所有 S0 选集）。
+    if deadline.hit_at:
+        report["calibrated"] = False
+        report["timed_out"] = True
+        report["timed_out_at"] = deadline.hit_at
+        report["skip_reason"] = ("校准超过 %gs 预算（卡在 %s），已提前收尾且未写回 thresholds；"
+                                 "stderr 的 [calibrate:progress] 行与 faulthandler 栈可定位阻塞点"
+                                 % (deadline.budget, deadline.hit_at))
+        _clog("timed_out -> 不写 thresholds", t0)
+        return report
     # 通用能力护栏：实测数据集为 0（results 非标准契约/无匹配）时不写回 thresholds，
     # 避免空的 category_weights/默认甜区污染该区域配置（USA 早期 results 命名不规范曾触发）。
     if not ds_best:
@@ -668,6 +792,7 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
                                  "文件名可推断出 ranking 内的 dataset id）；请先按 campaign toolkit 标准跑回测")
         return report
     report["calibrated"] = True
+    _clog("计算完成：%d datasets 实测" % len(ds_best), t0)
     if dry_run:
         report["dry_run"] = True
         return report  # 只采集+计算，不写 thresholds
@@ -688,14 +813,20 @@ def calibrate_dataset_health(ctx, strong_bar=1.5, weak_bar=1.0, dry_run=False):
     dh["_calibrated_from"] = (f"alpha_store {sum(len(v) for v in alpha_store_sh.values())} alphas/"
                               f"{len(alpha_store_sh)} ds + results/ 扫描 → 共 {len(ds_best)} datasets 实测")
     atomic_write(th_path, th)
+    _clog("thresholds.json 已写回", t0)
     return report
 
 
-def cmd_calibrate(ctx, dry_run=False):
-    r = calibrate_dataset_health(ctx, dry_run=dry_run)
+def cmd_calibrate(ctx, dry_run=False, timeout_sec=None):
+    r = calibrate_dataset_health(ctx, dry_run=dry_run, timeout_sec=timeout_sec)
     tag = "[dry-run] " if dry_run else ""
     print(f"{tag}[calibrate] region={r['region']} 实测数据集={r['datasets_observed']} "
-          f"(alpha_store: {r.get('alpha_store_alphas', 0)} alphas/{r.get('alpha_store_datasets', 0)} ds)")
+          f"(alpha_store: {r.get('alpha_store_alphas', 0)} alphas/{r.get('alpha_store_datasets', 0)} ds) "
+          f"用时={r.get('elapsed_sec', 0)}s")
+    if r.get("timed_out"):
+        # 非 0 退出：让 workflow 侧记为失败，避免把"没校准"缓存成 s0_calibrate_<region> 假成功
+        print(f"  [超时] {r.get('skip_reason')}")
+        sys.exit(3)
     if not r.get("calibrated"):
         print(f"  [跳过] {r.get('skip_reason')}")
         return
@@ -912,10 +1043,14 @@ def main():
                     help="从本战役实测回测（alpha 存储主源 + results/）自动校准筛选权重（category 加权 + 拥挤甜区），写回 thresholds")
     ap.add_argument("--dry-run", action="store_true",
                     help="配合 --calibrate：只采集+计算+打印校准结果，不写 thresholds.json")
+    ap.add_argument("--calibrate-timeout", type=float, default=None, metavar="SEC",
+                    help=f"配合 --calibrate：软超时预算秒数（默认 {CALIBRATE_TIMEOUT_DEFAULT}，"
+                         "亦可用 WQB_CALIBRATE_TIMEOUT 环境变量；0=不限时）。"
+                         "到点在阶段边界收尾、不写 thresholds 并以 rc=3 退出")
     a = ap.parse_args()
     ctx = CampaignContext(a.campaign_dir)
     if a.calibrate:
-        cmd_calibrate(ctx, dry_run=a.dry_run)
+        cmd_calibrate(ctx, dry_run=a.dry_run, timeout_sec=a.calibrate_timeout)
     elif a.probe_plan:
         cmd_probe_plan(ctx, a)
     elif a.probe_score or a.from_json:

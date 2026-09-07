@@ -126,12 +126,15 @@ async def main():
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
     hard_gate_warns = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
     ok = not fails and not hard_gate_warns and (submit_status == 200 or prepost_unverifiable)
-    print(f"\nVERDICT: {'SUBMITTABLE' if ok else 'BLOCKED'}")
+    # 2026-09-08：处女提交 404 时提交层无信息，不能报 SUBMITTABLE（假阳性已三次复现）
+    verdict = "UNVERIFIABLE" if (ok and prepost_unverifiable) else ("SUBMITTABLE" if ok else "BLOCKED")
+    print(f"\nVERDICT: {verdict}")
     if hard_gate_warns:
         names = [c.get("name") for c in hard_gate_warns]
         print(f"  原因: 模拟层 WARNING 含提交层硬闸项 {names}（提交时平台判 FAIL）")
     elif not fails and prepost_unverifiable:
-        print("  判定依据: 模拟层无 FAIL/硬闸 WARNING + 处女提交 404（提交层降级为模拟层+双闸预检）")
+        print("  判定依据: 模拟层无 FAIL/硬闸 WARNING，但提交层 404（处女提交）无法验证。")
+        print("  提交前必须另跑 check_correlation(alpha_id, refresh=True) 确认 all_passed。")
     elif fails:
         print("  原因: 模拟层 checks 存在 FAIL，先优化再试")
     elif submit_status == 403:

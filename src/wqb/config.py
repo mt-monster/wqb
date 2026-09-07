@@ -266,9 +266,47 @@ _STATE = _load_operators_state()
 
 VERIFIED_SAFE_OPERATORS: List[str] = list(_STATE.get("verified", []))
 
+#: 常驻幽灵算子种子（2026-09-06 从代码固化，不再依赖审计产物）。
+#:
+#: 为什么必须写在代码里：operator_audit 的 library = verified ∪ ghost，两者都读
+#: operators_verified.json —— 一旦某次审计把 ghost 写空，library 就退化成 verified，
+#: 下一次 `ghost = library - live` 恒为空集，黑名单再也回不来。这是个自擦除棘轮。
+#: 2026-09-04 的审计（probe_mode=submit-then-cancel，只探平台已有的 102 个算子、
+#: total_not_found=0）正是这样把 17 个幽灵清成 0 的，GHOST_OPERATORS 随之塌到
+#: 只剩硬编码的 neutralize，ensure_safe_for_dispatch 形同虚设。
+#:
+#: 这些名字在论坛帖与旧笔记里满天飞，但平台上不存在；"平台没有" 不会因为某次
+#: 探针没去探它就变成 "平台有了"。审计可以往这个集合里 **增补**，但不能删减 ——
+#: 唯一的移除路径是它出现在 verified 里（下方求差集），即平台真的上线了该算子。
+#: 替换映射表见 docs/reference/community_tpl_library_sequel.md §十八。
+KNOWN_GHOST_SEED: Set[str] = {
+    "group_median",
+    "group_normalize",
+    "group_percentage",
+    "group_vector_proj",
+    "s_log_1p",
+    "sigmoid",
+    "tanh",
+    "ts_co_kurtosis",
+    "ts_decay_exp_window",
+    "ts_delta_limit",
+    "ts_entropy",
+    "ts_median",
+    "ts_min_max_cps",
+    "ts_min_max_diff",
+    "ts_partial_corr",
+    "ts_percentage",
+    "ts_skewness",
+}
+
 # 2026-09-01 兼容：operators_verified.json 的幽灵键存在两代 schema
 # （旧 known_ghosts / 新 ghost，operator-audit 工具已切新键），双读防漂移。
-GHOST_OPERATORS: Set[str] = set(_STATE.get("known_ghosts", [])) | set(_STATE.get("ghost", [])) | {"neutralize"}
+GHOST_OPERATORS: Set[str] = (
+    KNOWN_GHOST_SEED
+    | set(_STATE.get("known_ghosts", []))
+    | set(_STATE.get("ghost", []))
+    | {"neutralize"}
+)
 
 # Sanity guard: verified and ghost sets must stay disjoint.
 GHOST_OPERATORS -= set(VERIFIED_SAFE_OPERATORS)

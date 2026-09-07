@@ -529,6 +529,100 @@ def get_region_overview() -> List[Dict[str, Any]]:
     return [get_campaign_summary(r) for r in regions]
 
 
+@mcp.tool()
+def get_mining_yield(
+    region: Optional[str] = None,
+    by_dataset: bool = False,
+    sharpe_min: float = 1.58,
+    fitness_min: float = 1.0,
+) -> Dict[str, Any]:
+    """实测挖掘产出率：生成→回测转化率 + 回测→达标率（2026-09-06 新增）。
+
+    为什么需要它（2026-09-06 审计结论）：区域间达标率相差 25 倍
+    （IND 35.7% vs USA 1.4%），而槽位分配完全没吃这个反馈 —— USA 的生成量
+    是 IND 的 3 倍。选区靠 S0 评分与人工判断，"这个区历史上到底出不出货"
+    这个最硬的先验此前在库里躺着没人查。
+
+    口径：
+      - expressions：该 region（可选 dataset）下的表达式总数
+      - backtested：backtest_results 行数
+      - conversion：backtested / expressions —— 低说明 S2→S3 断链（生成远超回测吞吐）
+      - passed：|sharpe| >= sharpe_min 且 fitness >= fitness_min
+      - yield_rate：passed / backtested —— 低说明这个区/集本身不出货
+
+    两个比率含义不同，不要混：conversion 是**流水线**问题，yield_rate 是
+    **标的**问题。conversion 低 → 修管道；yield_rate 低 → 换区/换集。
+
+    Args:
+        region: 限定区域；省略则返回全部区域
+        by_dataset: True 时按 region×dataset 拆分（用于选集）
+        sharpe_min / fitness_min: 达标口径，默认平台 RA 硬阈值
+
+    Returns:
+        {"rows": [...], "totals": {...}, "criteria": {...}}
+        rows 按 yield_rate 降序，无回测记录的排在最后。
+    """
+    conn = _conn()
+    c = conn.cursor()
+
+    group_cols = "region, dataset" if by_dataset else "region"
+    params: List[Any] = []
+    where = "region IS NOT NULL"
+    if region:
+        where += " AND region=?"
+        params.append(region)
+
+    c.execute(
+        f"SELECT {group_cols}, COUNT(*) n FROM expressions "
+        f"WHERE {where} GROUP BY {group_cols}",
+        params,
+    )
+    expr_counts = {tuple(r)[:-1]: r[-1] for r in c.fetchall()}
+
+    c.execute(
+        f"SELECT {group_cols}, COUNT(*) n, "
+        f"SUM(CASE WHEN ABS(COALESCE(sharpe,0))>=? AND COALESCE(fitness,0)>=? "
+        f"THEN 1 ELSE 0 END) passed "
+        f"FROM backtest_results WHERE {where} GROUP BY {group_cols}",
+        [sharpe_min, fitness_min] + params,
+    )
+    bt_counts = {tuple(r)[:-2]: (r[-2], r[-1] or 0) for r in c.fetchall()}
+    conn.close()
+
+    rows = []
+    for key in sorted(set(expr_counts) | set(bt_counts)):
+        n_expr = expr_counts.get(key, 0)
+        n_bt, n_pass = bt_counts.get(key, (0, 0))
+        row: Dict[str, Any] = {"region": key[0]}
+        if by_dataset:
+            row["dataset"] = key[1] if len(key) > 1 else None
+        row.update({
+            "expressions": n_expr,
+            "backtested": n_bt,
+            "conversion": round(n_bt / n_expr, 4) if n_expr else None,
+            "passed": n_pass,
+            "yield_rate": round(n_pass / n_bt, 4) if n_bt else None,
+        })
+        rows.append(row)
+
+    rows.sort(key=lambda r: (r["yield_rate"] is None, -(r["yield_rate"] or 0)))
+
+    tot_expr = sum(r["expressions"] for r in rows)
+    tot_bt = sum(r["backtested"] for r in rows)
+    tot_pass = sum(r["passed"] for r in rows)
+    return {
+        "rows": rows,
+        "totals": {
+            "expressions": tot_expr,
+            "backtested": tot_bt,
+            "conversion": round(tot_bt / tot_expr, 4) if tot_expr else None,
+            "passed": tot_pass,
+            "yield_rate": round(tot_pass / tot_bt, 4) if tot_bt else None,
+        },
+        "criteria": {"sharpe_min": sharpe_min, "fitness_min": fitness_min},
+    }
+
+
 # ---------------- 写工具（upsert，幂等） ----------------
 
 import datetime

@@ -247,8 +247,24 @@ async def submit_verdict(alpha_id: str) -> Dict[str, Any]:
         hard_gate_warns = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
         ok = not fails and not hard_gate_warns and (submit_status == 200 or prepost_unverifiable)
 
+        # 2026-09-08：处女提交（404）时提交层没有任何信息，此前一律报 SUBMITTABLE，
+        # 造成假阳性（IND qMja95Q2 判 SUBMITTABLE 实测 prod 0.7354；MEA Jj7ee6nO/omqEE1pn 同）。
+        # 这种情况只能说明「模拟层无阻塞」，不能说明可提交 —— 单列 UNVERIFIABLE，
+        # 迫使调用方另跑 check_correlation(refresh=True) 看 all_passed 才作准。
+        if ok and prepost_unverifiable:
+            verdict = "UNVERIFIABLE"
+        elif ok:
+            verdict = "SUBMITTABLE"
+        else:
+            verdict = "BLOCKED"
+
         return {
-            "verdict": "SUBMITTABLE" if ok else "BLOCKED",
+            "verdict": verdict,
+            "verdict_note": (
+                "提交层返回 404（处女提交），无法验证。模拟层无 FAIL/硬闸 WARNING，"
+                "但 PROD_CORRELATION / SELF_CORRELATION 未经平台确认；"
+                "提交前必须另跑 check_correlation(alpha_id, refresh=True) 并确认 all_passed。"
+            ) if verdict == "UNVERIFIABLE" else None,
             "alpha_id": alpha_id,
             "alpha_status": status,
             "sim_fails": fails,

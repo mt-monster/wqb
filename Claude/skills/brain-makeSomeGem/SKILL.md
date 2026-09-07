@@ -34,6 +34,17 @@ allowed-tools:
 3. GEM 管道只消费 priors 的 `wins`（≤6）与 `dead_ends`（≤12）两个键（`economic_priors.py`），其余键会被忽略。
 4. 只用标准时间窗口 1/5/22/66/252/504/1008/1260；其他窗口必须给出解释或实测证据。
 5. 取骨架前必查 `KB/community_tpl_kb` 的 `ghost_operator_advisory`，先做幽灵算子替换再进批，否则整批 ERROR/CANCELLED。
+6. **复杂度预算（2026-09-08）**：默认 2–5 个算子，8 个概念里至少 3 个 ≤4 算子。
+   依据 859 条过闸样本——算子数 p25=3 / 中位数 5 / p90=12，**46% 的过闸者只有 ≤4 个算子**。
+   第二腿之后每加一腿都必须点名它修的是哪个闸（`sub_universe_sharpe` / `2Y_sharpe` /
+   `concentrated_weight`），"信号更强"不算理由。
+7. **多样性按语义维度判，不按算子类别（2026-09-08 修订）**：要求 ≥3 个不同 Expected Exposure、
+   ≥3 个字段族、≥2 个分组轴、≥2 个时间尺度。旧规则强制"每波 ≥1 个 Logical 算子"已废除——
+   `if_else` 在过闸者中仅占 5.1%，`trade_when`/`bucket`/`ts_corr`/`ts_kurtosis` 未进前 22，
+   而 `group_rank` 占 32.0%、`vec_avg` 12.6%。算子多样性应是语义多样性的结果，不是目标。
+   Logical 类算子只在**事件型数据集**（有真实事件时点）才合适。
+8. **Expected Exposure 声明会被验证（2026-09-08）**：回测后以 `risk_neutralized_sharpe` 核对。
+   它 ≈0 或为负而 raw sharpe 高 ⇒ 该概念**就是**那个暴露本身，判 `dead_end` 且禁止调参。
 
 ## 标准调用（推荐）
 

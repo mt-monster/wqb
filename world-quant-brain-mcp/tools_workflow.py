@@ -374,6 +374,8 @@ def workflow_chain(
     chain: List[Dict[str, Any]],
     dry_run: bool = False,
     stop_on_failure: bool = True,
+    join_async: bool = True,
+    join_timeout_sec: float = 1800.0,
 ) -> Dict[str, Any]:
     """按顺序执行一串 workflow 节点（execute_chain 的 MCP 入口）.
 
@@ -391,17 +393,29 @@ def workflow_chain(
     注意：链里不要放 confirm_submit=True 的 submit_alpha / superalpha ——
     提交必须有用户明确确认（ra-pipeline 步 8），不走自动链。
 
+    2026-09-06：`join_async` 默认开启 —— gem / batch_track / campaign /
+    feature_engineering 都是"启动即返回"，不等就是下游读空库。要"只发起不等待"
+    才传 join_async=False，并自行用 `workflow_task_status` 跟踪。
+
     Args:
         chain: [{"node": "<节点名>", "params": {...}}, ...]
         dry_run: 是否整链干跑（每个节点只构建计划/命令，不执行、不写库）
         stop_on_failure: 某节点失败时是否中止后续（默认 True）
+        join_async: 异步节点是否等到终态再进下一步（默认 True；dry_run 下无效）
+        join_timeout_sec: 单步等待上限，超时按该步失败处理（默认 1800s）
 
     Returns:
         {"success": 全链是否成功, "results": [每个节点的 WorkflowResult dict],
          "executed": 实际执行节点数, "failed_at": 首个失败节点名或 None}
     """
     execute_chain = _get_chain_executor()
-    results = execute_chain(chain, dry_run=dry_run, stop_on_failure=stop_on_failure)
+    results = execute_chain(
+        chain,
+        dry_run=dry_run,
+        stop_on_failure=stop_on_failure,
+        join_async=join_async,
+        join_timeout_sec=join_timeout_sec,
+    )
     payload = [r.to_dict() for r in results]
     failed_at = next((r["node"] for r in payload if not r["success"]), None)
     return {
@@ -411,4 +425,68 @@ def workflow_chain(
         "requested": len(chain),
         "failed_at": failed_at,
         "dry_run": dry_run,
+    }
+
+
+def _get_task_api():
+    """延迟导入异步任务查询接口."""
+    import sys
+    import os
+    src_path = os.path.join(os.path.dirname(__file__), "..", "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+    from wqb.workflow import tasks
+    return tasks
+
+
+@mcp.tool()
+def workflow_task_status(
+    task_id: Optional[str] = None,
+    prefix: Optional[str] = None,
+    limit: int = 20,
+    tail_lines: int = 2000,
+) -> Dict[str, Any]:
+    """查询 workflow 异步后台任务的状态（2026-09-06 新增）.
+
+    背景：`workflow_gem` / `workflow_batch_track` / `workflow_campaign` /
+    `workflow_feature_engineering` 都是异步启动 —— 返回 task_id 就走人。此前
+    MCP 侧没有任何配套查询工具，Agent 只能 shell 出去翻
+    `logs/_async_tasks/`（还分两套互不兼容的布局），与 AGENTS.md §5
+    「结构化数据读写优先走 MCP」冲突。
+
+    典型用法：
+        workflow_task_status(task_id="batch_track_KOR_36A_20260906_120000")
+        workflow_task_status(prefix="campaign_EUR", limit=10)   # 列最近任务
+        workflow_task_status()                                   # 列全部最近任务
+
+    Args:
+        task_id: 查单个任务；给了就忽略 prefix/limit
+        prefix: 只列 task_id 以此开头的任务（如 "gem_KOR" / "batch_track"）
+        limit: 列表模式最多返回条数（默认 20）
+        tail_lines: 单任务模式附带的 stdout/stderr 尾字符数（默认 2000）
+
+    Returns:
+        单任务：{found, task: {task_id, status, stdout_tail, stderr_tail, ...}}
+        列表：  {tasks: [...], count}
+        status ∈ running / succeeded / failed / unknown
+    """
+    tasks = _get_task_api()
+
+    if task_id:
+        task = tasks.get_task(task_id, tail_lines=tail_lines)
+        if task is None:
+            return {
+                "found": False,
+                "task_id": task_id,
+                "error": f"未找到任务 {task_id}；用 prefix 列出可用任务",
+                "task_root": tasks.task_root(),
+            }
+        return {"found": True, "task": task}
+
+    listed = tasks.list_tasks(prefix=prefix, limit=limit)
+    return {
+        "tasks": listed,
+        "count": len(listed),
+        "task_root": tasks.task_root(),
+        "prefix": prefix,
     }

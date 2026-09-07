@@ -206,6 +206,7 @@ def main():
         print(f"已备份: {bak}")
 
     conn = sqlite3.connect(a.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     conn.row_factory = sqlite3.Row
     print(f"迁移 {'(DRY RUN)' if a.dry_run else ''}: {a.db}")
     print("=" * 60)

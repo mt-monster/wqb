@@ -24,10 +24,34 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SKILLS_DIR = REPO_ROOT / "Claude" / "skills"
 MCP_DIR = REPO_ROOT / "world-quant-brain-mcp"
 
 sys.path.insert(0, str(REPO_ROOT / "src"))
+
+
+def _resolve_skills_dir() -> Path:
+    """定位 Agent 真正加载的那份 skill 目录。
+
+    2026-09-06 修复：此前硬编码 `REPO_ROOT / "Claude" / "skills"`，而 Claude Code
+    实际从 `~/.claude/skills` 加载（`~/.qoder-cn/skills` 是指向它的 junction）。
+    仓库副本在场时这里校验的是另一份拷贝，两边一漂移就守了个寂寞；仓库副本不在
+    场时（本次审计发现的 247 文件误删）更是整体 skip。
+
+    现复用 `wqb.workflow._common._skill_roots()` —— 与 campaign / gem 节点定位
+    skill 用的是同一套解析顺序，测的就是运行时会加载的那一份。
+    """
+    try:
+        from wqb.workflow._common import _skill_roots
+        for root in _skill_roots():
+            candidate = Path(root)
+            if candidate.is_dir() and any(candidate.glob("*/SKILL.md")):
+                return candidate
+    except Exception:  # pragma: no cover - 解析失败回落仓库副本
+        pass
+    return REPO_ROOT / "Claude" / "skills"
+
+
+SKILLS_DIR = _resolve_skills_dir()
 
 
 # ---------------------------------------------------------------------------
@@ -35,9 +59,24 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 # ---------------------------------------------------------------------------
 
 def _skill_dirs():
+    """列出 skill 目录；目录缺失时返回空列表。
+
+    2026-09-06 修复：原实现在此调 `pytest.skip()`，而本函数被用在模块级
+    `@pytest.mark.parametrize(...)` 里 —— collection 期的模块级 skip 不是跳过，
+    是 `ERROR + Interrupted`，整场 323 个用例一个都跑不了（实测）。
+    返回空列表则参数化自然产出零用例，其余测试照常执行。
+    """
     if not SKILLS_DIR.is_dir():
-        pytest.skip(f"skills dir not present: {SKILLS_DIR}")
+        return []
     return sorted(d for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
+
+
+def test_skills_dir_is_discoverable():
+    """守护解析本身：一份都找不到就是安装/误删事故，不该静默跳过。"""
+    assert _skill_dirs(), (
+        f"未在 {SKILLS_DIR} 找到任何 skill 目录。检查 skill 是否被误删"
+        "（git restore Claude/skills）或安装位是否变更（WQ_SKILLS_DIR）。"
+    )
 
 
 def _read(path: Path) -> str:

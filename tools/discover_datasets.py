@@ -51,6 +51,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(args.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     rid = cur.execute("SELECT id FROM regions WHERE name=?", (args.region,)).fetchone()
     if not rid:

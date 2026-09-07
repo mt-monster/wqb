@@ -26,7 +26,9 @@ PLATFORM_FIELDS = {
 
 
 def _connect(db_path=None):
-    return sqlite3.connect(db_path or DB)
+    conn = sqlite3.connect(db_path or DB)
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
 
 
 def load_verified_fields(region, context_prefix=None, db_path=None):

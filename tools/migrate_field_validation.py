@@ -119,6 +119,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(args.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     actions = migrate(conn, dry_run=args.dry_run)
     for a in actions:
         print(a)

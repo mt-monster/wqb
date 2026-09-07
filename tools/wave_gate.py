@@ -559,28 +559,60 @@ def main():
             
             vector_required = dataset_data_type != "MATRIX"  # MATRIX 数据集豁免 Vector
             vector_ok = category_coverage["Vector"]["covered"] >= 1 if vector_required else True
-            
-            if not (logical_ok and group_ok and vector_ok):
-                missing = []
-                if not logical_ok:
-                    missing.append("Logical")
-                if not group_ok:
-                    missing.append("Group")
-                if not vector_ok:
-                    missing.append("Vector")
+
+            # 2026-09-08：Logical 由硬闸降为条件闸。
+            # 依据 859 条过闸样本——if_else 出现率仅 5.1%，trade_when/bucket 未进前 22；
+            # 而 group_rank 32.0% / vec_avg 12.6%。强制 Logical 等于强制一槽落在低过闸率区。
+            # 只有事件型数据集（有明确事件时点）才把 Logical 缺失判 FAIL，其余出 WARNING。
+            logical_required = False
+            try:
+                from operator_coverage import is_event_type_dataset  # toolkit _lib
+                _field_names = None
+                try:
+                    conn_f = _sq2.connect(os.path.join(wqb_root_tmp, "data", "wqb.db"))
+                    _field_names = [r[0] for r in conn_f.execute(
+                        "SELECT f.field_name FROM fields f JOIN datasets d ON d.id=f.dataset_id "
+                        "WHERE d.name=?", (a.dataset,)).fetchall()]
+                    conn_f.close()
+                except Exception:
+                    pass
+                logical_required = bool(is_event_type_dataset(
+                    dataset_name=a.dataset, field_names=_field_names))
+            except Exception:
+                logical_required = False  # 判不准就不升闸（代价不对称：误升会压垮 sharpe）
+
+            hard_missing = []
+            if not group_ok:
+                hard_missing.append("Group")
+            if not vector_ok:
+                hard_missing.append("Vector")
+            if logical_required and not logical_ok:
+                hard_missing.append("Logical")
+
+            if hard_missing:
                 report["operator_category_gate"] = {
                     "pass": False,
-                    "missing": missing,
-                    "message": f"算子类别覆盖不足：缺 {', '.join(missing)} 类别（Logical/Group/Vector 至少各 1 个）"
+                    "missing": hard_missing,
+                    "logical_required": logical_required,
+                    "message": f"算子类别覆盖不足：缺 {', '.join(hard_missing)} 类别"
+                                f"（Group/Vector 必须；Logical 仅事件型数据集必须）"
                 }
-                print(f"[opcat] 算子类别覆盖 FAIL：缺 {', '.join(missing)} 类别")
-                print(f"        Logical: {category_coverage['Logical']['covered']}/{category_coverage['Logical']['total']}, "
+                print(f"[opcat] 算子类别覆盖 FAIL：缺 {', '.join(hard_missing)} 类别")
+                print(f"        Logical: {category_coverage['Logical']['covered']}/{category_coverage['Logical']['total']}"
+                      f"{'（事件型数据集，必须）' if logical_required else '（非事件型，不强制）'}, "
                       f"Group: {category_coverage['Group']['covered']}/{category_coverage['Group']['total']}, "
                       f"Vector: {category_coverage['Vector']['covered']}/{category_coverage['Vector']['total']}")
             else:
-                report["operator_category_gate"] = {"pass": True}
+                warns = []
+                if not logical_ok and not logical_required:
+                    warns.append("Logical")
+                report["operator_category_gate"] = {"pass": True, "warnings": warns,
+                                                   "logical_required": logical_required}
                 print(f"[opcat] 算子类别覆盖 PASS（Logical {category_coverage['Logical']['covered']}/11, "
                       f"Group {category_coverage['Group']['covered']}/10, Vector {category_coverage['Vector']['covered']}/7）")
+                if warns:
+                    print(f"[opcat] WARNING：本波无 Logical 类算子。非事件型数据集不强制"
+                          f"（if_else 在 859 条过闸样本中仅占 5.1%），仅提示。")
             wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
             settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
             qregion = a.region or settings.get("region")

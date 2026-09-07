@@ -685,6 +685,12 @@ def main() -> int:
                         i += 1
 
                 dataset_id = parsed.get("--datasetid")
+                # 2026-09-06 修复：dataset_id 由 LLM 写的 ideas.md 二次提取而来，
+                # 可能带 markdown 反引号/引号（USA wave30 实测 `intraday_pv_feats`），
+                # 导致 _build_datafields_df 查不到字段而整个管线失败。EUR 同一数据集
+                # 因 LLM 恰好未加反引号而侥幸通过——是 LLM 格式随机性触发的非确定性失败。
+                if dataset_id:
+                    dataset_id = dataset_id.strip().strip("`").strip("'").strip('"').strip()
                 region = parsed.get("--region", "EUR")
                 delay = int(parsed.get("--delay", "1"))
                 universe = parsed.get("--universe", "TOP3000")

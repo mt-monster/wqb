@@ -13,7 +13,7 @@ import os
 from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional, Set
 
-from wqb.config import GHOST_OPERATORS, VERIFIED_SAFE_OPERATORS
+from wqb.config import GHOST_OPERATORS, KNOWN_GHOST_SEED, VERIFIED_SAFE_OPERATORS
 from wqb.expression.grammar import extract_identifiers
 
 
@@ -22,8 +22,15 @@ class GhostOperatorError(ValueError):
 
 
 def _operator_library() -> Set[str]:
-    """Declared operator library: verified catalog ops + declared ghosts."""
-    return set(VERIFIED_SAFE_OPERATORS) | GHOST_OPERATORS
+    """Declared operator library: verified catalog ops + declared ghosts.
+
+    ``KNOWN_GHOST_SEED`` is folded in explicitly so the library can never
+    shrink to just ``verified``. Without it the audit is a self-erasing
+    ratchet: ``ghost = library - live`` where ``library = verified | ghost``
+    means one empty ghost list makes every later audit produce an empty
+    ghost list too (2026-09-04 regression, see wqb.config).
+    """
+    return set(VERIFIED_SAFE_OPERATORS) | GHOST_OPERATORS | KNOWN_GHOST_SEED
 
 
 def get_ghost_operators() -> Set[str]:

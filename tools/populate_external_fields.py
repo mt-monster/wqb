@@ -49,6 +49,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(args.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
 
     # 本区域 fields 表已有字段

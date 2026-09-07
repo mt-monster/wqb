@@ -5,6 +5,10 @@
     add(x,0)/multiply(x,1)/power(x,1) 等恒等或恒常量形式）、裸字段表达式（整式单一字段 ID）、
     元数据字段（periodend/periodtype/fyearend/periodnum/analyststart/curfperiod/curperiod）作信号腿
 闸1 语法：import alpha-expression-verifier 直调（WQ_VALIDATOR_DIR 优先；缺失标 SYNTAX_UNKNOWN 报警）
+    + 算子元数/命名参数（wqb.expression.op_arity，catalog 驱动；缺失标 ARITY_UNKNOWN 报警）。
+    2026-09-07 事故：hump(x, 0.005) 以"语法 8/8 PASS"过闸，平台回 "Invalid number of
+    inputs : 2, should be exactly 1 input(s)." 并 CANCEL 整批 8 条 multisim——PLY verifier
+    只查括号与字段，查不出"命名参数被当位置参数传"（hump(x, hump=0.01) 的 = 即命名标记）。
 闸2 字段白名单：--dataset 自动派生 reference/<region>_<ds>_fields.json（typed catalog 优先）
     或 <region>_<ds>_field_whitelist.json（legacy 兼容）
 闸3 类型：catalog 有字段级 type 时数据驱动判定 VECTOR 包裹（fn_spans 解析，不再正则猜）；
@@ -54,18 +58,23 @@ except Exception:  # 模块缺失时降级为"无 KB 可用"
 # P1-2 (2026-08-31): 家族天花板预检——复用 src/wqb/expression/validator.py 的
 # check_family_ceiling（主导腿信号族占比 ≥2/3 拦截，wave94/95/98/104 实证 SELF≥0.9）。
 # 工作区根目录可达时动态导入，不可达则降级跳过（保持 toolkit 独立性）。
-def _load_family_ceiling():
-    """尝试导入工作区 validator.check_family_ceiling，不可达返回 None。"""
-    # 候选路径：环境变量 > 常见相对位置（toolkit scripts -> 工作区根）
+def _workspace_src_dirs():
+    """工作区 src/ 候选路径：环境变量 > toolkit scripts 的相对位置。"""
     cands = []
-    env_root = os.environ.get("WQB_WORKSPACE_ROOT")
-    if env_root:
-        cands.append(env_root)
+    for env in ("WQB_WORKSPACE_ROOT", "WQB_ROOT", "WQ_PROJECT_ROOT"):
+        root = os.environ.get(env)
+        if root:
+            cands.append(root)
     # toolkit scripts 目录 -> ../../../../../ -> 工作区根（Qoder skills 布局）
     here = os.path.dirname(os.path.abspath(__file__))
     cands.append(os.path.normpath(os.path.join(here, "..", "..", "..", "..", "..")))
-    for root in cands:
-        src = os.path.join(root, "src")
+    cands.append(r"D:\coding\traeCN_project\wqb")
+    return [os.path.join(root, "src") for root in cands]
+
+
+def _load_family_ceiling():
+    """尝试导入工作区 validator.check_family_ceiling，不可达返回 None。"""
+    for src in _workspace_src_dirs():
         if os.path.isfile(os.path.join(src, "wqb", "expression", "validator.py")):
             if src not in sys.path:
                 sys.path.insert(0, src)
@@ -77,6 +86,28 @@ def _load_family_ceiling():
     return None
 
 _check_family_ceiling = _load_family_ceiling()
+
+
+def _load_arity_check():
+    """闸1 的算子元数/命名参数检查（catalog 驱动）；不可达返回 None。
+
+    2026-09-07 事故根因：verifier 的 PLY 签名表是手写的，hump 漏标 keyword_only，
+    于是 hump(x, 0.005) 一路绿灯烧掉整批 multisim。op_arity 改从平台 catalog 的
+    definition 串自动推导签名（``name = <字面量>`` 即命名参数），杜绝手写漏标。
+    """
+    for src in _workspace_src_dirs():
+        if os.path.isfile(os.path.join(src, "wqb", "expression", "op_arity.py")):
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            try:
+                from wqb.expression.op_arity import check_expression as _chk
+                return _chk
+            except Exception:
+                return None
+    return None
+
+
+_arity_check = _load_arity_check()
 
 
 def _find_tools_lib():
@@ -255,6 +286,15 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
                 issues.append(f"[SYNTAX] {r.get('errors')}")
         except Exception as e:
             issues.append(f"[SYNTAX] verifier error: {e}")
+    # 闸1b 算子元数 + 命名参数（verifier 的手写签名表查不出，见模块头事故记录）
+    if _arity_check is None:
+        issues.append("[ARITY_UNKNOWN] op_arity 不可达（设 WQB_WORKSPACE_ROOT 指向工作区），"
+                      "算子元数/命名参数未校验")
+    else:
+        try:
+            issues.extend(_arity_check(expr))
+        except Exception as e:
+            issues.append(f"[ARITY] op_arity error: {e}")
     idents = set(re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr))
     # 命名参数名（std=4 / cat= 等）不是字段也不是算子——排除避免误报（winsorize std 实证）
     kw_args = set(re.findall(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*=", expr))

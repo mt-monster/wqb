@@ -1,0 +1,20 @@
+{
+  "category": "model",
+  "wins": [
+    {
+      "id": "EUR-Wj71Q12o-slow-fast-mix",
+      "what": "0.4 slow MODEL residual + 0.6 fast PV",
+      "key": "add(0.4*rank(slow_leg), 0.6*rank(fast_pv_leg)); neutralization=SUBINDUSTRY; decay=4"
+    }
+  ],
+  "dead_ends": [
+    {
+      "family": "estrev_invert",
+      "reason": "prod_corr wall ~0.95"
+    },
+    {
+      "family": "news85_dnn_sentiment",
+      "reason": "max |S| 0.32, mirror symmetric"
+    }
+  ]
+}

@@ -181,6 +181,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(args.db)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
 
     universe, delay = get_region_config(cur, args.region)

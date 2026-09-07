@@ -57,6 +57,7 @@ async def main():
 
     # 写库
     conn = sqlite3.connect(DB, timeout=15)
+    conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     ts = datetime.now().isoformat(timespec="seconds")
     n = 0

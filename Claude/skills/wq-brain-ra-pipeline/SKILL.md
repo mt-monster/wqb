@@ -68,6 +68,23 @@ $REGION = "KOR"        # 唯一输入
 **先读区域 profile**：`Read references/regions/<REGION>.md`，按 front-matter 渲染本区专属 SOP（后续各步标注"profile"处按其覆盖执行）；`entry_verdict: frozen` 则按该区 profile 的入口裁决处理，不继续步 2。
 
 **开工前置（每次新战役/新会话必做）**：
+- **库存盘点（2026-09-08 新增，先于一切新挖）**：账户已有三万条以上已回测 IS alpha，
+  其中约 11% 通过 IS 硬闸。**先清库存，再开新挖**——实证是数量级差异：
+  2026-09-07 会话前半段跨四区 170 次新回测产出 0 条可提交 RA，后半段一次库存扫描产出 20 条。
+
+  ```powershell
+  # 1) 枚举 + 资格门复算 + 写回过闸率先验（供步 4 GEM 消费）
+  python tools/build_gate_prior_from_inventory.py --regions all `
+      --emit-candidates cache/candidates.json --write-priors
+  # 2) 去参数网格 + OS 撞车预筛 + 篮内正交 + 平台复核
+  python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/basket.json
+  ```
+
+  只有当候选池不足以覆盖目标金字塔时，才进入步 2 开新挖。
+  两条硬约束：① `compute_mutual_correlation` 本地算 PnL、不占平台相关性配额，
+  必须先用它去同族冗余与 OS 撞车，再进限流队列；
+  ② 篮子敲定以 `GET /alphas/{id}` 的 detail 端点 `is.checks` 无 `result==FAIL` 为准，
+  `submit_verdict` 在处女提交（404）时只返回 `UNVERIFIABLE`，不构成可提交依据。
 - **算子审计（ghost-op guard）**：调 `mcp__wq-brain-http__operator_audit`（无 expressions 参数）拉取平台实时算子列表，与 catalog 对比。幽灵算子清单与替换表见 `docs/reference/operators_notes.md`；论坛帖引用这些名字时先替换再进批。
 - **PPA 主题匹配门禁**：调 `mcp__wq-brain-http__get_messages`（limit=30）扫描 `type=="ANNOUNCEMENT"` 标题含 "Power Pool" 的公告，解析当期主题的 region/delay/universe/中性化集合/禁止数据集/有效时间。PPA 提交必须**精确匹配**主题；不在当期主题的达标候选标 YELLOW + WAIT_THEME_ROTATION。RA 常规提交不受主题限制。
 
@@ -265,6 +282,13 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  
 按需：`brain-calculate-alpha-selfcorrQuick`（本地快筛）/ `brain-explain-alphas`（按需归因：Mode B 换概念前查概念重叠，非每候选必经）。
 `brain-alpha-repair` 只作配方查表。
 
+- **风险中性化硬规则（2026-09-08 新增）**：收割后必看 `risk_neutralized_sharpe`。
+  `risk_neutralized_sharpe <= 0` 且 `sharpe >= 1.58` ⇒ 该 alpha **就是它自己声称的那个因子暴露**，
+  不是暴露之上的超额——直接记 `dead_end`，**禁止继续调参**（调参只会让暴露更纯）。
+  实证：HKG w4 七条里六条 `risk_neutralized_sharpe` 在 −0.33 ~ −0.57，raw sharpe 却非零；
+  而 w3 的 `O0roWEM7`（risk_neutralized 0.96 ≈ raw 1.17）是约 150 次回测中唯一的真信号特征。
+  该值已入 `backtest_results.risk_neutralized_sharpe`，步 9 需与 GEM 声明的 `Expected Exposure`
+  比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
 - **prod 验证排队调度**：多候选时走串行泳道（本地检查全批先跑、prod 队列恒保持 1 在飞、等待期插本地活），细则见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md) §7（含 7 天结果缓存与 `refresh` 终验）。
 

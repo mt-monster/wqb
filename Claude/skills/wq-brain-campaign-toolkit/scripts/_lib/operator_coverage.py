@@ -50,8 +50,58 @@ OP_CATEGORIES = {
     "Arithmetic": {"add", "multiply", "sign", "subtract", "pasteurize", "log", "max", "abs", "divide", "min", "signed_power", "inverse", "sqrt", "reverse", "power", "densify"},
 }
 
-# 类别覆盖硬闸：每波必须覆盖的类别（Logical/Group/Vector 至少各 1 个）
-_CATEGORY_GATE_REQUIRED = {"Logical", "Group", "Vector"}
+# 类别覆盖闸（2026-09-08 按实证过闸率重划分）
+#
+# 依据：7608 条历史 IS/REGULAR alpha 中 859 条通过 IS 硬闸（failed_ra_count==0），
+# 统计其算子出现率——
+#   group_rank 32.0% / vec_avg 12.6%  → Group / Vector 本就常见，强制无害
+#   if_else     5.1%                  → Logical 在过闸者中罕见
+#   trade_when / bucket / ts_corr / ts_kurtosis 未进前 22
+# 强制每波必带 Logical，等于强制至少一槽落在低过闸率结构区。
+# 实证后果：KOR w173 / IND w136 报 "缺 Logical" FAIL 后被迫加 trade_when，sharpe 塌陷；
+#          HKG w4 的 if_else 条 sharpe 0.00、bucket 条 0.05 且丢一座金字塔。
+#
+# 结论：Group / Vector 保持硬闸；Logical 降为条件闸——只有事件型数据集才要求。
+_CATEGORY_GATE_REQUIRED = {"Group", "Vector"}
+_CATEGORY_GATE_CONDITIONAL = {"Logical"}
+
+# 事件型数据集判定所需的字段名线索（供 is_event_type_dataset 使用）
+_EVENT_FIELD_HINTS = (
+    "days_from", "days_since", "days_to", "announcement", "announce",
+    "event", "report_date", "earnings_date", "filing", "disclos",
+    "transaction_date", "insider", "guidance", "split", "dividend_date",
+)
+
+
+def is_event_type_dataset(dataset_name=None, field_names=None, ledger_hint=None):
+    """判定数据集是否为「事件型」——只有事件型才把 Logical 类别升为 FAIL。
+
+    动机：`trade_when` / `if_else` 的经济学含义是「事件发生时才持仓」。
+    对有明确事件时点的数据集（财报日、公告、内部人交易、评级变动）这是对的；
+    对连续型面板（借贷利率、估值水平、模型分）它只是噪声门，实测会压垮 sharpe。
+
+    参数任一可为 None；调用方能提供多少信息就传多少。
+      dataset_name : 数据集 id / name
+      field_names  : 该数据集的字段名列表（S1 catalog）
+      ledger_hint  : s1_<ds> ledger 里显式标注的 {"event_type": bool} 覆盖值
+
+    返回 True 时，Logical 类别缺失判 FAIL；返回 False 时只出 WARNING。
+    """
+    # 显式 ledger 标注优先，永远压过启发式
+    if isinstance(ledger_hint, dict) and "event_type" in ledger_hint:
+        return bool(ledger_hint["event_type"])
+
+    # TODO(human): 在此实现「什么样的数据集算事件型」的判定规则。
+    # 可用材料：dataset_name（字符串）与 field_names（字段名列表，可能为 None）。
+    # _EVENT_FIELD_HINTS 提供了一组事件型字段名线索可直接用。
+    # 需要权衡的点：
+    #   - 命中几个线索字段才算事件型？一个就够，还是要占比阈值？
+    #   - 是否也按 dataset_name 前缀判定（如 anl* 评级变动、insd* 内部人交易算事件型；
+    #     pv* / model* 连续面板不算）？
+    #   - 判不准时倾向哪边？判成 True 会误伤（强制 Logical 压垮 sharpe），
+    #     判成 False 只是少一道闸（降级为 WARNING），代价不对称。
+    # 返回 bool。
+    return False
 
 
 def _ensure_src_path(hint_dir=None):
