@@ -1,0 +1,50 @@
+{
+ "wins": [],
+ "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "【跨区教训，非本区实证】KOR 新闻情绪三连死，但死因是 TOP600 稀疏事件 CW 墙（持仓 6-33 只）。CHN market_news_sent coverage 0.9974 / news_sentiment_enriched 0.8873，覆盖不构成问题 —— 该死路不可直接搬运，须实测。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "【跨区教训】GROUP 标签陷阱（KOR-PV30）：整数行业分类码禁止包 rank/ts_* 当信号；只能作 group_* 的分组维，且必须 densify() 包裹（MATRIX 数值标签直传 group 参数会报 Incompatible unit Unit[Group:1] vs Unit[]）。other715 全 18 字段属此类。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "【跨区教训】低 userCount 是必要条件不是充分条件（HKG fund_holdings_panel: uc18/字段级 uc0-4 极干净，信号天花板仍只有 0.56）。冷门 != 有信号。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "【跨区教训】risk_neutralized_sharpe <= 0 且 sharpe >= 1.58 ⇒ 该 alpha 就是它自己声称的因子暴露，不是暴露之上的超额，直接判 dead_end，禁止继续调参。",
+   "source": "region_kb_dead_pattern"
+  }
+ ],
+ "region_context": {
+  "tier": "处女区（0 波 / 0 死路），目标：点亮 CHN/D1/OTHER 金字塔（倍率 1.9，全平台 OTHER 最高）",
+  "settings_proven": {
+   "universe": "TOP2000U",
+   "delay": 1,
+   "neutralization_default": "SUBINDUSTRY",
+   "note": "TOP2000U 是 CHN 唯一合法档；CHN 无 COUNTRY 中性化（get_platform_setting_options 确认）"
+  },
+  "key_notes": [
+   "CHN/D1/OTHER 15 个数据集全部倍率 1.9，是全平台 OTHER 最高档。",
+   "当期 PPA 主题 OTHER/D1 Power Pool Sept'26（8/31-9/27）覆盖 KOR/JPN/CHN/AMR/TWN/HKG —— CHN/D1 命中，PPA 无 prod_corr 硬闸。",
+   "平台自身提示：高 Dataset Value Score 的数据集 prod correlation 更低。market_news_sent VS=10 / news_sentiment_enriched VS=9 是全 CHN OTHER 最高两档且 alphaCount=0。"
+  ]
+ },
+ "_meta": {
+  "region": "CHN",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ }
+}

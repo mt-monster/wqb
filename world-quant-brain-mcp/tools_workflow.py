@@ -91,6 +91,7 @@ def workflow_batch_track(
     output_csv: Optional[str] = None,
     campaign_dir: Optional[str] = None,
     detached: bool = True,
+    submit: bool = True,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """S3 批量回测跟踪（batch_track 节点快捷方式）.
@@ -105,6 +106,11 @@ def workflow_batch_track(
         campaign_dir: 战役目录（默认自动解析）
         detached: 是否后台执行（默认 True，立即返回 task_id/log_path，避免 MCP 客户端超时；
                   False 为旧同步模式，subprocess.run 阻塞至完成或 1h 超时）
+        submit: 是否真正提交回测（默认 True）。False 只跑 gate 出计划、不发 simulation。
+                这里的"提交"是提交 **回测**（simulation），不是提交 alpha ——
+                提交 alpha 走 workflow_submit_alpha 且需用户确认（ra-pipeline 步 8）。
+                2026-09-08 前本工具从不传 --submit，pipeline 只出计划就退出，
+                backtest_results 永远 0 行。
         dry_run: 是否干跑
 
     Returns:
@@ -120,6 +126,7 @@ def workflow_batch_track(
         "output_csv": output_csv,
         "campaign_dir": campaign_dir,
         "detached": detached,
+        "submit": submit,
     }, dry_run=dry_run)
     return result.to_dict()
 

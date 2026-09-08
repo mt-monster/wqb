@@ -1,0 +1,241 @@
+{
+ "wins": [
+  {
+   "id": "oth36 日本卖空披露 · 持仓时序动量",
+   "what": "oth36 日本卖空披露 · 持仓时序动量",
+   "key": "rank(ts_rank(ts_delta(ts_backfill(vec_avg(oth36_short_pos_in_shares), 200), 66), 250))",
+   "evidence": "ACTIVE，failed_ra_count=0。risk_neutralized 1.71 ≈ raw 1.72 ⇒ 真特质 alpha 不是风格暴露。margin 11.85bp 是本项目见过最高之一，且换手仅 9.65% ⇒ 成本压力极小。",
+   "source": "region_kb"
+  },
+  {
+   "id": "qMNMbeGj",
+   "what": "qMNMbeGj",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  },
+  {
+   "id": "rKjY5vGj",
+   "what": "rKjY5vGj",
+   "key": "ACTIVE alpha (详见 region_kb)",
+   "source": "region_kb_active"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "model30 star_eps_surprise 天花板 1.49（去掉 liquidity filter 后）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "oth36 同骨架换字段 = 自撞：库存 6 条（1YpZ0YQW/O0G8g0aJ/N1bV8MZL/gJ8ZLJE0/6XpKNxkp/QPGK6e85）与 ACTIVE qMNMbeGj 本地互相关 0.9596-0.9998，全部触 SELF_CORRELATION 硬闸。short_pos_in_shares / in_trading_units / ratio_to_shares 三个字段本质是同一量的不同单位，换字段不产生新信号。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "oth335_combined_all_region_linear（leWpEJW2, S=2.82）与 qMNMbeGj 结构独立（互相关仅 0.0373）但 prod 0.8218 撞墙，2026-09-08 实测。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "oth36 卖空披露 · 非动量骨架",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-OTH36-NEW-SKELETON-WEAK"
+  }
+ ],
+ "region_context": {
+  "tier": "探针区（进行中，15 波 max w26）",
+  "settings_proven": {
+   "universe": "MINVOL1M（qMNMbeGj 实证）/ MINVOL10M（rKjY5vGj 实证）/ TOP500 / ILLIQUID_MINVOL1M",
+   "delay": 1,
+   "neutralization_proven": [
+    "MARKET（qMNMbeGj）",
+    "INDUSTRY（rKjY5vGj）"
+   ],
+   "proven_combos": "qMNMbeGj: MINVOL1M + MARKET + decay4 + trunc0.08；rKjY5vGj: MINVOL10M + INDUSTRY + decay6 + trunc0.05"
+  },
+  "key_notes": [
+   "含 COUNTRY 中性化（三区域检查可用）",
+   "oth36 coverage 仅 0.2748（稀疏披露：只有存在可报告卖空持仓的股票才出现）。qMNMbeGj 用 ts_backfill(200) 解决，longCount 366 且 CONCENTRATED_WEIGHT PASS —— 说明填充是这个数据集的必备前置。注意跨区铁律 SPARSE-EVENT-TWO-WALLS：低 coverage 同时有 CW 墙与 turnover 墙两个风险，此处 CW 已由 backfill 解决、turnover 9.65% 天然健康。",
+   "HKG 台账结论『区域特有披露数据是强+干净的唯一来源』在此得到第三个佐证（前两个：IND transaction_cost、KOR insiders5）。oth36 是日本卖空监管披露。"
+  ]
+ },
+ "_meta": {
+  "region": "ASI",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)"
+  ]
+ },
+ "gate_priors": {
+  "sample_size": 1000,
+  "pass_rate": 0.013,
+  "by_neutralization": {
+   "INDUSTRY": {
+    "rate": 0.0102,
+    "n": 394
+   },
+   "MARKET": {
+    "rate": 0.016,
+    "n": 188
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.0,
+    "n": 178
+   },
+   "SLOW": {
+    "rate": 0.0492,
+    "n": 61
+   },
+   "SECTOR": {
+    "rate": 0.0179,
+    "n": 168
+   }
+  },
+  "by_universe": {
+   "MINVOL1M": {
+    "rate": 0.0135,
+    "n": 741
+   },
+   "ILLIQUID_MINVOL1M": {
+    "rate": 0.0,
+    "n": 99
+   },
+   "MINVOL10M": {
+    "rate": 0.0462,
+    "n": 65
+   },
+   "TOP500": {
+    "rate": 0.0,
+    "n": 95
+   }
+  },
+  "by_operator_count": {
+   "<=4": {
+    "rate": 0.0065,
+    "n": 620
+   },
+   "5-8": {
+    "rate": 0.0241,
+    "n": 332
+   },
+   ">8": {
+    "rate": 0.0208,
+    "n": 48
+   }
+  },
+  "by_decay": {
+   "1": {
+    "rate": 0.0,
+    "n": 35
+   },
+   "0": {
+    "rate": 0.0,
+    "n": 35
+   },
+   "2": {
+    "rate": 0.025,
+    "n": 40
+   },
+   "3": {
+    "rate": 0.0,
+    "n": 24
+   },
+   "4": {
+    "rate": 0.0147,
+    "n": 408
+   },
+   "5": {
+    "rate": 0.0,
+    "n": 16
+   },
+   "6": {
+    "rate": 0.0151,
+    "n": 199
+   },
+   "20": {
+    "rate": 0.0,
+    "n": 73
+   },
+   "10": {
+    "rate": 0.0312,
+    "n": 96
+   },
+   "8": {
+    "rate": 0.0,
+    "n": 53
+   }
+  },
+  "by_field_family": {
+   "mdl": {
+    "rate": 0.0,
+    "n": 194
+   },
+   "oth": {
+    "rate": 0.0686,
+    "n": 102
+   },
+   "imb": {
+    "rate": 0.0698,
+    "n": 43
+   },
+   "star": {
+    "rate": 0.0,
+    "n": 130
+   },
+   "qfl": {
+    "rate": 0.0,
+    "n": 49
+   },
+   "img": {
+    "rate": 0.0248,
+    "n": 121
+   },
+   "ask": {
+    "rate": 0.0,
+    "n": 15
+   },
+   "avg": {
+    "rate": 0.0,
+    "n": 69
+   },
+   "fnd": {
+    "rate": 0.0,
+    "n": 27
+   },
+   "price": {
+    "rate": 0.0,
+    "n": 28
+   },
+   "rsk": {
+    "rate": 0.0,
+    "n": 90
+   },
+   "asc": {
+    "rate": 0.0,
+    "n": 23
+   }
+  },
+  "avoid": [
+   "neutralization=INDUSTRY(1%, n=394)",
+   "neutralization=MARKET(2%, n=188)",
+   "neutralization=SUBINDUSTRY(0%, n=178)",
+   "neutralization=SECTOR(2%, n=168)",
+   "field_family=mdl(0%, n=194)",
+   "field_family=star(0%, n=130)",
+   "field_family=qfl(0%, n=49)",
+   "field_family=avg(0%, n=69)",
+   "field_family=rsk(0%, n=90)",
+   "universe=MINVOL1M(1%, n=741)",
+   "universe=ILLIQUID_MINVOL1M(0%, n=99)",
+   "universe=TOP500(0%, n=95)"
+  ],
+  "generated_at": "2026-09-07T18:04:03.496887+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ }
+}

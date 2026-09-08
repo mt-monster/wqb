@@ -20,6 +20,7 @@ from .._common import (
     REPO_ROOT,
     infer_data_category,
     resolve_skill_dir,
+    unbuffered_env,
     validate_argv,
     wq_py,
 )
@@ -235,8 +236,10 @@ def _run_feature_engineering_pipeline_async(
     ideas_path = os.path.join(output_dir, ideas_filename)
 
     # 构建命令
+    # 2026-09-08：解释器加 `-u`（与 batch_track 同源修复）。收尾线程只在进程结束后
+    # communicate 一次；不加无缓冲，超时被 kill 时管道里的内容就全丢了，事后无从复盘。
     cmd = [
-        wq_py(), main_script,
+        wq_py(), "-u", main_script,
         "--region", region,
         "--dataset", dataset_id,
         "--delay", str(delay),
@@ -269,6 +272,8 @@ def _run_feature_engineering_pipeline_async(
             "stderr": subprocess.PIPE,
             "text": True,
             "cwd": skill_root,
+            # 无缓冲 + BRAIN 凭证改名桥（详见 _common.unbuffered_env）
+            "env": unbuffered_env(),
         }
         if os.name == "nt":
             # 2026-09-04 修复：脱离父进程组——MCP 服务进程退出不带走后台子进程

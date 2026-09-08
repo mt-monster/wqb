@@ -201,7 +201,7 @@ def main():
         else:
             print(f"[wave_results] wave{out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
-    except Exception as e:
+    except (Exception, SystemExit) as e:  # SystemExit 不继承 Exception，同 pipeline.py 处注释
         print(f"[wave_results] 入库异常（不阻断）: {e}")
 
     # ---- L4 算子覆盖回写（③c，region 无关）：每算子本波最佳 sharpe 沉淀到覆盖台账 ----

@@ -356,6 +356,28 @@ def test_batch_track_detached_default_true_and_passthrough(monkeypatch):
     assert params2["detached"] is False
 
 
+def test_batch_track_submit_default_true_and_passthrough(monkeypatch):
+    """2026-09-08 修复：submit 默认 True。
+
+    此前 MCP 层不暴露、节点也不拼 `--submit`，pipeline 只打一行计划就 rc=0
+    退出 —— 工具返回 success=True 而 backtest_results 永远 0 行。
+    注意这是提交**回测**(simulation)，不是提交 alpha。
+    """
+    rec = _install_recorder(monkeypatch)
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78"
+    )
+    _, params, _ = rec.calls[0]
+    assert params["submit"] is True
+
+    rec2 = _install_recorder(monkeypatch)
+    tools_workflow.workflow_batch_track(
+        region="KOR", wave="36A", dataset="fundamental78", submit=False
+    )
+    _, params2, _ = rec2.calls[0]
+    assert params2["submit"] is False
+
+
 def test_gem_and_campaign_confirm_free_tools_shape(monkeypatch):
     """gem / campaign 不暴露 confirm_submit（无提交动作），字段各自透传。"""
     rec = _install_recorder(monkeypatch)

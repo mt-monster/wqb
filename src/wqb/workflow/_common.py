@@ -431,17 +431,39 @@ def script_arg_contract(script_path: str) -> Optional[Tuple[Set[str], Set[str]]]
     return options, subcommands
 
 
+def _script_index(cmd: Sequence[str]) -> Optional[int]:
+    """定位 cmd 里的目标脚本下标，跳过解释器自身的开关。
+
+    2026-09-08：detached 子进程改用 `python -u script.py ...` 之后，
+    `cmd[1]` 不再是脚本 —— 旧实现会把 `-u` 当成脚本路径去读，`_read_text`
+    读不到就 fail-open，于是 argv 契约校验被静默关掉（正是它当初要根治的
+    那类"加固层自己哑掉"的故障）。这里显式跳过前导解释器开关。
+    """
+    for i in range(1, len(cmd)):
+        token = cmd[i]
+        if token.startswith("-") and len(token) > 1:
+            # `-m mod` / `-X opt` 带值；其余（-u/-B/-E/-s…）是纯开关
+            continue
+        return i
+    return None
+
+
 def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
     """校验已构建的命令行能否被目标脚本的 argparse 接受。
 
-    cmd 形如 [python, script.py, ...args]。返回 (ok, error)；无法静态校验
-    时返回 (True, None)。只检查"脚本压根没有声明过的 --flag / 子命令"这类
-    确定性错误，不做类型或必填校验（那是脚本自己的事）。
+    cmd 形如 [python, script.py, ...args]（解释器与脚本之间允许 `-u` 这类
+    开关）。返回 (ok, error)；无法静态校验时返回 (True, None)。只检查"脚本
+    压根没有声明过的 --flag / 子命令"这类确定性错误，不做类型或必填校验
+    （那是脚本自己的事）。
     """
     if len(cmd) < 2:
         return True, None
 
-    contract = script_arg_contract(cmd[1])
+    idx = _script_index(cmd)
+    if idx is None:
+        return True, None
+
+    contract = script_arg_contract(cmd[idx])
     if contract is None:
         return True, None
     options, subcommands = contract
@@ -451,7 +473,7 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
     seen_subcommand = not subcommands  # 无子命令的脚本不做子命令校验
     expect_value = False
 
-    for token in cmd[2:]:
+    for token in cmd[idx + 1:]:
         if token.startswith("-") and len(token) > 1:
             expect_value = False
             flag = token.split("=", 1)[0]
@@ -475,7 +497,7 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
         if unknown_subcommands:
             parts.append(f"未声明的子命令 {unknown_subcommands}")
         return False, (
-            f"{os.path.basename(cmd[1])} 的 argparse 不接受该命令："
+            f"{os.path.basename(cmd[idx])} 的 argparse 不接受该命令："
             + "；".join(parts)
             + f"（脚本已声明 {len(options)} 个选项"
             + (f"、子命令 {sorted(subcommands)}" if subcommands else "")
@@ -530,3 +552,166 @@ def detached_launch_failed(
     if tail:
         return f"子进程 stderr 非空（疑似启动失败）：{tail}"
     return None
+
+
+# ---------------------------------------------------------------------------
+# detached 子进程可观测性与"真跑过没有"断言（2026-09-08 新增）
+# ---------------------------------------------------------------------------
+#
+# 背景（CHN/chn_w1_other_ppa 实测）：batch_track 拼命令时漏了 `--submit`，
+# toolkit pipeline.py 只打一行 `[plan] gate 过 8 式；加 --submit 提交` 就
+# rc=0 正常退出。三层保护同时失效：
+#   ① argv 契约校验只逮"多了不认识的参数"，逮不到"少了必需的参数"；
+#   ② 存活握手看的是 rc 与 stderr —— 计划模式两者都干净；
+#   ③ 子进程没用 `-u`，stdout 被块缓冲，观察时两个日志都是 0 字节。
+# 于是节点返回 success=True，而 backtest_results 一行没落。
+#
+# 根治分两半：启动侧强制无缓冲（下面的 unbuffered_env + 节点里的 `-u`），
+# 终态侧补一条后置断言（batch_track_no_submit_error）。
+
+
+def unbuffered_env(extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
+    """给 detached 子进程用的环境：无缓冲输出 + BRAIN 凭证改名桥。
+
+    无缓冲与命令行 `-u` 双保险 —— `-u` 管直接启动的那个解释器，
+    PYTHONUNBUFFERED 连它再 spawn 出来的子进程一起管住。日志实时落盘是
+    detached 模式唯一的可观测手段；缓冲住就等于没有。
+
+    凭证桥见 with_brain_credentials（只改名，不落盘、不打印）。
+    """
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    with_brain_credentials(env)
+    if extra:
+        env.update(extra)
+    return env
+
+
+#: MCP 侧凭证的环境变量名（brain_config._load_dotenv_into_environ 从
+#: world-quant-brain-mcp/.env 装入）→ toolkit 侧 load_credentials() 认的名字。
+_CREDENTIAL_BRIDGE = (("CREDENTIALS_EMAIL", "WQ_USERNAME"),
+                      ("CREDENTIALS_PASSWORD", "WQ_PASSWORD"))
+
+
+def _mcp_dotenv_values(keys: Sequence[str]) -> Dict[str, str]:
+    """从 world-quant-brain-mcp/.env 取指定键（只读，不落盘、不记日志）。"""
+    path = REPO_ROOT / "world-quant-brain-mcp" / ".env"
+    found: Dict[str, str] = {}
+    text = _read_text(str(path))
+    if not text:
+        return found
+    wanted = set(keys)
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k = k.strip()
+        if k in wanted:
+            found[k] = v.strip().strip('"').strip("'")
+    return found
+
+
+def with_brain_credentials(env: Dict[str, str]) -> Dict[str, str]:
+    """把 BRAIN 凭证按 toolkit 认的名字补进子进程环境（原地修改并返回）。
+
+    2026-09-08：补上 `--submit` 后，pipeline.py 第一次真的走到
+    `stage_submit_poll` → `load_credentials()`，当场 FileNotFoundError
+    (`~/.brain_mcp_config.json`) —— 因为两边各叫各的名字：
+
+      - MCP 侧：`world-quant-brain-mcp/.env` 的 CREDENTIALS_EMAIL / _PASSWORD
+        （brain_config.load_config 装入 os.environ）；
+      - toolkit 侧：`WQ_USERNAME` / `WQ_PASSWORD` → `BRAIN_CREDENTIALS` →
+        `~/.brain_credentials` → `MCP_CONFIG_FILE`（_lib/common.py:load_credentials）。
+
+    这里只做改名（外加 .env 兜底读取）：不写文件、不打印、不入库，凭证只活在
+    子进程的环境里。已显式设过 WQ_USERNAME/WQ_PASSWORD 的一律不覆盖。
+    """
+    if env.get("WQ_USERNAME") and env.get("WQ_PASSWORD"):
+        return env
+
+    missing = [src for src, _ in _CREDENTIAL_BRIDGE if not env.get(src)]
+    if missing:
+        env_file = _mcp_dotenv_values(missing)
+        for key, value in env_file.items():
+            if value:
+                env.setdefault(key, value)
+
+    for src, dst in _CREDENTIAL_BRIDGE:
+        value = env.get(src)
+        if value and not env.get(dst):
+            env[dst] = value
+    return env
+
+
+def resolve_db_path() -> str:
+    """当前生效的战役库路径（WQB_DB_PATH 优先，与 store.default_db_path 同口径）。"""
+    return os.environ.get("WQB_DB_PATH") or str(_DB_PATH)
+
+
+def backtest_row_count(region: str, wave: str) -> Optional[int]:
+    """某 region/wave 当前的 backtest_results 行数；无法判定时返回 None。
+
+    只读：库文件不存在、表缺失、并发锁住等一律返回 None，由调用方按
+    "无法判定"放行 —— 断言层不该自己变成新的故障点。
+    """
+    path = resolve_db_path()
+    if not os.path.isfile(path):
+        return None
+    try:
+        conn = sqlite3.connect(path, timeout=5)
+        try:
+            row = conn.execute(
+                "SELECT COUNT(*) FROM backtest_results WHERE region=? AND wave=?",
+                (region, str(wave)),
+            ).fetchone()
+            return int(row[0]) if row else None
+        finally:
+            conn.close()
+    except Exception:
+        return None
+
+
+#: pipeline.py 在 `not a.submit` 分支打印的计划行（scripts/pipeline.py main 末尾）。
+#: 命中即铁证：这次运行只做了计划，一条回测都没提交。
+_PLAN_ONLY_MARKER = "加 --submit 提交"
+
+
+def batch_track_no_submit_error(
+    stdout_text: str,
+    rows_before: Optional[int],
+    rows_after: Optional[int],
+) -> Optional[str]:
+    """batch_track 终态断言：`任务跑完了` ≠ `提交过回测`。返回失败原因或 None。
+
+    三级判据，按证据强度从强到弱：
+      ① stdout 里有 pipeline 的计划行 —— 铁证，它自己说了没提交；
+      ② stdout 全空 —— 什么都没发生（或缓冲丢了），无从证明跑过；
+      ③ 回测行数没涨 **且** 该 wave 至今 0 行 —— 全链从未落过任何回测。
+
+    ③ 特意不写成"行数没涨就判失败"：pipeline 的 review 阶段带 checkpoint，
+    同一波重跑会打印 `[review] 已完成（checkpoint），跳过` 并合法地零新增。
+    那种情况下 wave 已有行，说明回测确实跑过，不该误判成失败。
+    """
+    text = stdout_text or ""
+    if _PLAN_ONLY_MARKER in text:
+        return (
+            "pipeline 未提交任何回测，检查 --submit："
+            "stdout 出现计划行（pipeline 只跑了 gate 就退出，未进 submit 阶段）"
+        )
+    if not text.strip():
+        return (
+            "pipeline 未提交任何回测，检查 --submit："
+            "任务已终止但 stdout 全空 —— 无从证明它跑过 submit 阶段"
+            "（子进程未用 -u/PYTHONUNBUFFERED 时缓冲内容会随进程退出丢失）"
+        )
+    if rows_before is None or rows_after is None:
+        return None  # 读不到库，无法判定 —— 放行
+    if rows_after > rows_before:
+        return None
+    if rows_after > 0:
+        return None  # 该波已有回测行（checkpoint 重跑合法跳过 review）
+    return (
+        "pipeline 未提交任何回测，检查 --submit："
+        f"backtest_results 该波仍为 0 行（运行前 {rows_before}，运行后 {rows_after}）"
+    )

@@ -15,9 +15,12 @@ from typing import Any, Dict, List, Optional
 from ..mcp_check import require_mcp_tools
 from .._common import (
     REPO_ROOT,
+    backtest_row_count,
+    batch_track_no_submit_error,
     detached_launch_failed,
     resolve_campaign_dir,
     resolve_toolkit_dir,
+    unbuffered_env,
     validate_argv,
     wq_py,
 )
@@ -36,6 +39,7 @@ def run(
     output_csv: Optional[str] = None,
     campaign_dir: Optional[str] = None,
     detached: bool = True,
+    submit: bool = True,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行批量回测跟踪.
@@ -50,6 +54,9 @@ def run(
         output_csv: 输出 CSV 路径（默认自动生成）
         campaign_dir: 战役目录（可选，默认自动解析）
         detached: 是否后台执行（默认 True，避免 MCP 客户端超时；False 为旧同步模式）
+        submit: 是否真正提交回测（默认 True）。False 只跑 gate + 计划，不发 simulation。
+                注意：这里的"提交"是提交 **回测**（simulation），不是提交 alpha ——
+                提交 alpha 走 submit_alpha 节点且需用户确认（ra-pipeline 步 8）。
         _context: 执行上下文（由 executor 注入）
 
     Returns:
@@ -141,8 +148,20 @@ def run(
     # detached 分支不看退出码，于是 S3 每次都"启动成功"却从未真正跑过。
     # 槽位数由 pipeline.py 内部锁定为 n_slots=min(7, n_total)，与 wqb-concurrency
     # §8 七槽填槽一致，无需也无法从外部传入；concurrency 形参保留为计划元数据。
+    #
+    # 2026-09-08 修复（本节点第二次"启动成功但什么都没干"）：
+    #   ① 补 `--submit`。缺它时 pipeline.py 走 `if not a.submit` 分支，打一行
+    #      `[plan] gate 过 N 式；加 --submit 提交` 就 rc=0 退出 —— gate 跑了、
+    #      回测一条没发。实测 CHN/chn_w1_other_ppa：backtest_results 0 行、
+    #      ckpt batches 空、进程 rc=0。注意此处的"提交"是提交**回测**
+    #      (simulation)，不是提交 alpha；提交 alpha 走 submit_alpha 且需用户
+    #      确认（ra-pipeline 步 8），所以这不违反提交纪律。
+    #   ② 解释器加 `-u`。detached 的 stdout 重定向到文件，Python 默认块缓冲，
+    #      进程退出时未满的缓冲直接丢 —— 观察到的就是两个 0 字节日志，外部
+    #      完全看不出发生过什么。
     cmd = [
         wq_py(),
+        "-u",
         pipeline_script,
         "--campaign-dir", campaign_dir,
         "run",
@@ -152,6 +171,8 @@ def run(
         "--review",
         "--write-ledger",
     ]
+    if submit:
+        cmd.append("--submit")
 
     # argv 契约校验：构建出来的命令必须能被 pipeline.py 的 argparse 接受。
     # 干跑与实跑都走，干跑时它就是本节点最有价值的那次检查。
@@ -190,6 +211,7 @@ def run(
                 "campaign_dir": campaign_dir,
                 "toolkit_dir": toolkit_dir,
                 "detached": detached,
+                "submit": submit,
             },
             "warnings": warnings,
             # 表达式为 0 时把结论写进 message 而不是只塞进 warnings：
@@ -203,6 +225,10 @@ def run(
         }
 
     logger.info(f"Executing: {' '.join(cmd)}")
+
+    # 实跑前记下该波的回测行数基线：detached 写进 meta.json 供终态断言比对，
+    # 同步模式跑完当场比对。读不到库时为 None（断言侧按"无法判定"放行）。
+    rows_before = backtest_row_count(region, wave)
 
     # 2026-09-04 修复：detached 后台模式（默认），避免 MCP 客户端同步等待超时。
     # 原实现 subprocess.run(timeout=3600) 同步阻塞 1 小时，MCP 客户端默认超时远小于此
@@ -231,6 +257,9 @@ def run(
                 "stdout": out_f,
                 "stderr": err_f,
                 "cwd": toolkit_dir,
+                # `-u` 管住直接启动的解释器，PYTHONUNBUFFERED 连它 spawn 的
+                # 子进程一起管住 —— 日志实时落盘是 detached 唯一的可观测手段
+                "env": unbuffered_env(),
             }
             if os.name == "nt":
                 # Windows：脱离父进程组，避免 MCP 进程退出时子进程被终止
@@ -256,6 +285,11 @@ def run(
                 "stdout_log": stdout_log,
                 "stderr_log": stderr_log,
                 "started_at": datetime.now().isoformat(),
+                # 2026-09-08：终态断言的基线。`submit` 键的存在本身就是
+                # "这个任务需要跑后置断言"的标记（老任务目录没有它，行为不变），
+                # 断言实现见 tasks._assert_batch_track_submitted。
+                "submit": bool(submit),
+                "backtest_rows_before": rows_before,
             }
             with open(meta_path, "w", encoding="utf-8") as mf:
                 json.dump(meta, mf, ensure_ascii=False, indent=1)
@@ -322,9 +356,24 @@ def run(
             text=True,
             timeout=3600,  # 1 小时超时
             cwd=toolkit_dir,
+            env=unbuffered_env(),
         )
 
         success = result.returncode == 0
+        stdout_text = result.stdout or ""
+
+        # 2026-09-08：rc=0 不等于跑过 submit。缺 --submit 时 pipeline 只打计划行
+        # 就正常退出 —— 同步路径同样要过这道断言，否则又是一次"成功地什么都没干"。
+        # submit=False 是"只出计划"的合法用法，此时 pipeline 必然打印计划行、
+        # 也必然不落回测行 —— 断言只对 submit=True 生效。
+        assert_error = None
+        if success and submit:
+            assert_error = batch_track_no_submit_error(
+                stdout_text, rows_before, backtest_row_count(region, wave),
+            )
+            if assert_error:
+                success = False
+
         output = {
             "success": success,
             "returncode": result.returncode,
@@ -335,9 +384,12 @@ def run(
             "dataset": dataset,
             "expression_count": len(expressions),
             "output_csv": output_csv,
+            "submit": submit,
+            "backtest_rows_before": rows_before,
         }
+        if assert_error:
+            output["error"] = assert_error
         # 结构化摘要（Dry-Run 2.0 优化：提取 COMPLETE/ERROR/CANCELLED 计数，减少 token 消耗）
-        stdout_text = result.stdout or ""
         if stdout_text:
             complete_count = stdout_text.count("COMPLETE")
             error_count = stdout_text.count("ERROR")

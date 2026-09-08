@@ -633,7 +633,11 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         else:
             print(f"[wave_results] wave{out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
-    except Exception as e:
+    except (Exception, SystemExit) as e:
+        # SystemExit 不继承 Exception，而 _lib/wave_results.upsert 的契约校验
+        # （wave_number / status / verdict 三态）用的正是 raise SystemExit。只写
+        # except Exception 会让「不阻断」名不副实——2026-09-08 实测回测落库后
+        # pipeline 静默死在这里，review checkpoint 不落、台账不写、下游全断。
         print(f"[wave_results] 自动入库异常（不阻断）: {e}")
     print(f"[review] total={len(rows)} candidates={len(candidates)} near={len(near)}")
     if write_ledger:

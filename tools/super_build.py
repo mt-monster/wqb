@@ -38,9 +38,9 @@ REGION_HINT = {"USA": "the US equity market", "KOR": "the Korean equity market",
 
 SELECTION_TEMPLATE = (
     "(1 + 0 * (prod_correlation > 0)) * "
-    "(0.7 - prod_correlation) * "
+    "({prod_ceiling} - prod_correlation) * "
     "(self_correlation < {self_gate}) * "
-    "(turnover > 0.01) * (turnover < 0.5)"
+    "(turnover > {turnover_min}) * (turnover < {turnover_max})"
 )
 COMBO_TEMPLATE = (
     "stats = generate_stats(alpha); "
@@ -138,7 +138,10 @@ async def cmd_select(a):
         selectionHandling="POSITIVE", selectionLimit=a.selection_limit,
         componentActivation="IS", unitHandling="VERIFY", nanHandling="ON",
     )
-    selection = SELECTION_TEMPLATE.format(self_gate=a.self_gate)
+    selection = SELECTION_TEMPLATE.format(self_gate=a.self_gate,
+                                          turnover_min=getattr(a, "turnover_min", 0.01),
+                                          turnover_max=getattr(a, "turnover_max", 0.5),
+                                          prod_ceiling=getattr(a, "prod_ceiling", 0.7))
     combo = COMBO_TEMPLATE.format(expr=combo_expr(getattr(a, "combo_power", 1)))
     sim_data = SimulationData(type="SUPER", settings=settings, regular=None,
                               combo=combo, selection=selection)
@@ -267,6 +270,12 @@ def main():
                    help="combo 权重幂次（杠杆 3）：1/3/5，5 次方实测最优（免费压最后一截）")
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)
+    p.add_argument("--turnover-min", type=float, default=0.01,
+                   help="selection turnover 下限")
+    p.add_argument("--turnover-max", type=float, default=0.5,
+                   help="selection turnover 上限（池内成分 turnover 最高 0.5495 时需调至 0.6）")
+    p.add_argument("--prod-ceiling", type=float, default=0.7,
+                   help="selection 评分项 prod 上限；池内存在 prod>0.7 成分被 POSITIVE 剔除致不足 10 颗时调至 1.0（超标成分降权参与而非出局）")
     p.add_argument("--json", dest="json_out", help="原始结果落盘")
     p.set_defaults(fn=cmd_select)
 
@@ -284,6 +293,8 @@ def main():
     p.add_argument("--region", default="USA", help="用于生成描述模板的英文市场名")
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)
+    p.add_argument("--neutralization", default="SUBINDUSTRY",
+                   help="描述模板用的中性化方案名（与 select 时的实际参数一致）")
     p.add_argument("--skip-precheck", action="store_true", help="跳过提交层前置判定")
     p.set_defaults(fn=cmd_submit)
 

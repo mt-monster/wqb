@@ -211,16 +211,23 @@ class WaveResultsStore:
             dom = max(wall_count, key=wall_count.get)
             findings.append(f"主墙: {dom} ({wall_count[dom]}/{len(near or [])} near)")
 
-        # ---- verdict: 自动生成 ----
+        # ---- verdict: 自动生成（严格三态枚举，同 upsert 的 VERDICT_OK）----
+        # 2026-09-08 修复：此前这里生成 "GREEN: N 候选达标" 式描述性文字，被 upsert
+        # 的三态校验 raise SystemExit 打死；SystemExit 不继承 Exception，调用方那句
+        # 「不阻断」的 except Exception 抓不住，于是每次回测成功后整条 pipeline 当场
+        # 退出（[review]/[ledger]/[done] 全不打印，review checkpoint 也不落）。
+        # 现改为写枚举值，原描述性文字降为 key_findings 首条——这正是 upsert 报错
+        # 信息自己给的建议。
         n_cand = len(cand_list)
         n_near = len(near or [])
         n_total = len(rows or [])
         if n_cand > 0:
-            verdict = f"GREEN: {n_cand} 候选达标"
+            verdict, verdict_note = "PASS", f"GREEN: {n_cand} 候选达标"
         elif n_near > 0:
-            verdict = f"YELLOW: 0 候选, {n_near} near"
+            verdict, verdict_note = "PARTIAL", f"YELLOW: 0 候选, {n_near} near"
         else:
-            verdict = f"RED: {n_total} 全灭"
+            verdict, verdict_note = "FAIL", f"RED: {n_total} 全灭"
+        findings.insert(0, verdict_note)
 
         # ---- batches: multisim 信息 ----
         batch_list = []

@@ -66,9 +66,12 @@ def test_batch_status_shape_url():
 def test_super_build_templates_and_descriptions():
     from super_build import (COMBO_TEMPLATE, SELECTION_TEMPLATE,
                              build_combo_description, build_selection_description)
-    sel = SELECTION_TEMPLATE.format(self_gate=0.55)
+    # 2026-09-08: selection 参数化新增 prod_ceiling/turnover 区间（--prod-ceiling 等）
+    sel = SELECTION_TEMPLATE.format(self_gate=0.55, prod_ceiling=1.0,
+                                    turnover_min=0.01, turnover_max=0.5)
     assert "self_correlation < 0.55" in sel
     assert "(1 + 0 * (prod_correlation > 0))" in sel  # USA no-op 门控保留
+    assert "turnover < 0.5" in sel
     assert "self_corr(stats.returns, 500)" in COMBO_TEMPLATE
     # 平台硬门槛：两个 description 各 ≥100 英文词（2026-08-28 起 selection 加 neutralization 参数）
     assert len(build_selection_description("USA", 10, 0.55, "SUBINDUSTRY").split()) >= 100

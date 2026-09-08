@@ -17,6 +17,7 @@ from .._common import (
     detached_launch_failed,
     infer_data_category,
     resolve_skill_dir,
+    unbuffered_env,
     validate_argv,
     wq_py,
 )
@@ -184,8 +185,13 @@ def run(
     })
 
     # Step 4: 构建命令
+    # 2026-09-08：解释器加 `-u`（与 batch_track 同源修复）。run.py 在 --detached
+    # 下会再 spawn 一个后台 child 并把它的 stdout 重定向到日志文件；Python 默认
+    # 块缓冲，进程退出时未满的缓冲直接丢 —— 表现为任务日志 0 字节，外部完全看不出
+    # 发生过什么。`-u` 管住启动器，Popen 的 PYTHONUNBUFFERED 管住它的孙子进程。
     cmd = [
         wq_py(),
+        "-u",
         runner_script,
         "--config", config_file,
         "--data-category", data_category,
@@ -282,6 +288,9 @@ def run(
             stderr=subprocess.PIPE,
             text=True,
             cwd=os.path.dirname(runner_script),
+            # PYTHONUNBUFFERED 传给 run.py 及其 spawn 的后台 child —— 后者的
+            # stdout_log 才是长跑任务唯一的可观测手段
+            env=unbuffered_env(),
         )
 
         if detached:

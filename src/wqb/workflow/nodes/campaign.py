@@ -23,6 +23,7 @@ from .._common import (
     resolve_campaign_dir,
     resolve_toolkit_dir,
     resolve_tools_dir,
+    unbuffered_env,
     validate_argv,
     wq_py,
 )
@@ -214,7 +215,10 @@ def run(
         return _fail_step(result, "route_stage", f"Script not found: {script_path}")
 
     # 构建命令
-    cmd = [wq_py(), script_path, "--campaign-dir", campaign_dir]
+    # 2026-09-08：解释器加 `-u`（与 batch_track 同源修复）。子进程 stdout 重定向到
+    # <task_id>.out，Python 默认块缓冲 —— 长跑阶段（S3 最长 3600s）运行中 tail 不到
+    # 任何东西，进程被超时 kill 时未满的缓冲还会整段丢失。
+    cmd = [wq_py(), "-u", script_path, "--campaign-dir", campaign_dir]
 
     # 添加 stage 特定参数
     if stage == "S0":
@@ -387,7 +391,10 @@ def run(
 
         # 子进程 stdout 编码固定 UTF-8：重定向到文件时 Python 默认走 locale 编码
         # （本机 cp936），中文结论行会因编码不一致读成乱码。
-        child_env = dict(os.environ, PYTHONIOENCODING="utf-8")
+        # PYTHONUNBUFFERED 由 unbuffered_env 注入（连子进程再 spawn 的进程一起管住），
+        # 它同时把 BRAIN 凭证桥接成 toolkit 认的 WQ_USERNAME/WQ_PASSWORD ——
+        # S3 路由到 pipeline.py，那条链要登录平台。
+        child_env = unbuffered_env({"PYTHONIOENCODING": "utf-8"})
         popen_kwargs: Dict[str, Any] = {
             # stdin 显式断开：不继承 MCP 服务进程的 stdin，杜绝子进程误读标准输入永久阻塞
             "stdin": subprocess.DEVNULL,

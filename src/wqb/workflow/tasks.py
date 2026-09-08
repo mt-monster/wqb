@@ -107,6 +107,37 @@ def _from_flat(path: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     return out
 
 
+def _assert_batch_track_submitted(
+    meta: Dict[str, Any], stdout_log: str
+) -> Optional[str]:
+    """batch_track 终态后置断言：跑完了 ≠ 提交过回测。返回失败原因或 None。
+
+    2026-09-08 新增。实测 CHN/chn_w1_other_ppa：节点漏拼 `--submit`，
+    pipeline.py 打一行 `[plan] …加 --submit 提交` 就 rc=0 退出，stderr 干净，
+    于是这里把它判成 succeeded —— 而 backtest_results 一行没落、ckpt batches
+    为空。退出码与 stderr 在"计划模式"下都是无信息的，唯一能证伪的是
+    stdout 的计划行与库里的回测行数。
+
+    只对 batch_track 且 submit=True 的任务生效：meta 里 `submit` 键的存在
+    即标记（老任务目录没有它，行为保持不变）。
+    """
+    if "submit" not in meta:
+        return None
+    if not meta.get("submit"):
+        return None  # 只出计划的合法用法：必然有计划行、必然零新增
+    region, wave = meta.get("region"), meta.get("wave")
+    if not region or not wave:
+        return None
+
+    from ._common import backtest_row_count, batch_track_no_submit_error
+
+    # 独立读一段 stdout：list_tasks 会传 tail_lines=0，不能拿调用方的尾巴当依据
+    text = _tail(stdout_log, 4000)
+    return batch_track_no_submit_error(
+        text, meta.get("backtest_rows_before"), backtest_row_count(region, wave),
+    )
+
+
 def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     """gem / batch_track 布局：<task_id>/meta.json + stdout.log / stderr.log"""
     meta = _read_json(os.path.join(task_dir, "meta.json")) or {}
@@ -115,6 +146,7 @@ def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     stderr_tail = _tail(stderr_log, tail_lines)
 
     alive = _pid_alive(meta.get("pid"))
+    error = meta.get("failed_at_launch")
     if meta.get("failed_at_launch"):
         status = "failed"
     elif alive is True:
@@ -125,6 +157,12 @@ def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     else:
         status = "unknown"
 
+    if status == "succeeded":
+        assert_error = _assert_batch_track_submitted(meta, stdout_log)
+        if assert_error:
+            status = "failed"
+            error = assert_error
+
     return {
         "task_id": task_id,
         "layout": "dir",
@@ -133,7 +171,7 @@ def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
         "pid": meta.get("pid"),
         "pid_alive": alive,
         "started_at": meta.get("started_at"),
-        "error": meta.get("failed_at_launch"),
+        "error": error,
         "cmd": " ".join(meta.get("cmd", [])) if isinstance(meta.get("cmd"), list) else meta.get("cmd"),
         "stdout_tail": _tail(stdout_log, tail_lines),
         "stderr_tail": stderr_tail,

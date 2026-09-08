@@ -1,0 +1,18 @@
+{
+  "_doc": "CHN 战役仿真设置（处女区，2026-09-08 建仓）。TOP2000U 是 CHN 唯一合法档；CHN 无 COUNTRY 中性化。",
+  "instrumentType": "EQUITY",
+  "region": "CHN",
+  "universe": "TOP2000U",
+  "delay": 1,
+  "neutralization": "SUBINDUSTRY",
+  "decay": 4,
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "testPeriod": "P0Y0M0D",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "_multi_sim_batch_size": 8
+}

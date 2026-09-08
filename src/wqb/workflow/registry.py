@@ -108,7 +108,7 @@ class WorkflowRegistry:
                     phase=1,
                     required_params=["region", "wave", "dataset"],
                     optional_params=["concurrency", "max_rounds", "output_csv",
-                                     "campaign_dir", "detached"],
+                                     "campaign_dir", "detached", "submit"],
                 )
             )
         except ImportError as e:

@@ -22,7 +22,9 @@
   python tools/wave_gate.py --campaign-dir tracking/KOR --dataset model219 \
       --expr "rank(close)" --wave 98
 
-退出码: 0=语法+5 闸全 PASS, 1=存在 FAIL
+退出码: 0=PASS（语法+5 闸全过）, 1=FAIL（闸门不过，表达式不合格）,
+        2=ERROR（gate.py 子进程崩溃/未给出结论 —— 环境问题，不是表达式问题；
+          stderr 原文已透传到 [gate ] stderr| 行，自愈命令通常就在里面）
 运行环境: 与 gate.py 一致，纯标准库，任意 Python 3.10+ 均可。
 """
 import argparse
@@ -56,6 +58,89 @@ def find_script(candidates, name):
     raise FileNotFoundError(
         f"未找到 {name}：设 WQ_TOOLKIT_DIR/WQ_VALIDATOR_DIR 指定（已搜 "
         f"{', '.join(c for c in candidates if c)}）")
+
+
+# ---- gate.py 子进程终态判定（ERROR / FAIL / PASS 三分）----
+# 历史缺陷（2026-09-08 修复）：gate.py 崩溃时 stdout 无 JSON，旧实现把它记成
+# all_pass=None 再一路落到 FAIL 分支，使用者看到的是"表达式不合格"，而真实原因
+# （如缺 typed catalog）只有单独手跑 gate.py 才看得到。现在无结论 = ERROR。
+_GATE_ERR_TAIL = 4000  # stderr 截尾上限：FileNotFoundError 的自愈命令在 traceback 末尾，800 会把它切掉
+_GATE_OUT_TAIL = 800   # stdout 只做背景，真正的原因在 stderr
+
+
+def parse_gate_payload(stdout):
+    """从 gate.py 的 stdout 取结论 JSON（payload 恒为最后一次打印，indent=1）。
+
+    返回 dict（含 bool all_pass）或 None。None 表示 gate.py 没有给出结论，
+    调用方必须按 ERROR 处理，不得当成 all_pass=False。
+    """
+    text = stdout or ""
+    starts, off = [], 0
+    for line in text.splitlines(keepends=True):
+        starts.append(off)
+        off += len(line)
+    for i in reversed(starts):
+        if text[i:i + 1] != "{":
+            continue
+        try:
+            obj = json.loads(text[i:].strip())
+        except Exception:
+            continue
+        if isinstance(obj, dict) and isinstance(obj.get("all_pass"), bool):
+            return obj
+    return None
+
+
+def _echo_block(text, prefix, limit):
+    """把子进程输出原样透传（截尾但不静默丢弃）。"""
+    s = (text or "").rstrip()
+    if not s:
+        return False
+    if len(s) > limit:
+        print(f"{prefix} ...(前 {len(s) - limit} 字符省略)")
+        s = s[-limit:]
+    for line in s.splitlines():
+        print(f"{prefix} {line}")
+    return True
+
+
+def gate_error_exit(cmd, r, reason):
+    """gate.py 未给出结论 -> ERROR 终态，措辞与"闸门不过"的 FAIL 严格区分。
+
+    透传 stderr 原文（gate.py 的异常消息里通常已带自愈命令，如
+    `scan_fields.py --campaign-dir <dir> --dataset <ds>`），并以退出码 2 结束
+    （FAIL 仍为 1），让上游 pipeline 能区分"环境坏了"与"这批表达式不合格"。
+    """
+    print()
+    print(f"[gate ] ERROR: {reason}")
+    # stdout 先打（多是 store 启动 WARN 之类的背景噪声），stderr 后打 ——
+    # 真正的原因要紧挨着 [done ] 行，别被噪声挤到上面去。
+    _echo_block(r.stdout, "[gate ] stdout|", _GATE_OUT_TAIL)
+    if not _echo_block(r.stderr, "[gate ] stderr|", _GATE_ERR_TAIL):
+        print("[gate ] stderr| (空)")
+    print(f"[gate ] 复现命令: {subprocess.list2cmdline(cmd)}")
+    print("[done ] ERROR: 门禁未跑完 —— gate.py 异常退出，不是闸门不过。"
+          "本波未产出门禁结论，也未写 gate_results；按上面 stderr 修复环境后重跑。")
+    sys.exit(2)
+
+
+def gate_fail_reasons(payload):
+    """从 gate.py 结论里摘出失败的子闸，供 FAIL 行给出可读原因。"""
+    reasons = []
+    total, passed = payload.get("total"), payload.get("passed")
+    if isinstance(total, int) and isinstance(passed, int) and passed < total:
+        reasons.append(f"静态闸 1-5 拦截 {total - passed}/{total} 条")
+    for key, label in (("diversity_gate", "批级多样性闸"),
+                       ("sanity_gates", "数据质量闸"),
+                       ("priors_gate", "知识闸")):
+        sub = payload.get(key)
+        if isinstance(sub, dict) and sub.get("pass") is False:
+            n = len(sub.get("issues") or [])
+            reasons.append(label + (f"（{n} 项）" if n else ""))
+    blocked = (payload.get("gate0") or {}).get("blocked") or []
+    if blocked:
+        reasons.append(f"闸0 语义反模式（{len(blocked)} 条）")
+    return reasons
 
 
 def load_validator():
@@ -425,20 +510,28 @@ def main():
         cmd.append("--fix")
     print(f"\n[gate ] {os.path.basename(gate_py)} --from-db --wave {tag}")
     r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    gate_json = None
-    try:
-        start, end = r.stdout.find("{"), r.stdout.rfind("}")
-        if start >= 0 and end > start:
-            gate_json = json.loads(r.stdout[start:end + 1])
-    except Exception:
-        gate_json = None
+    gate_json = parse_gate_payload(r.stdout)
+    # 三分终态：无结论 = ERROR（环境/实现坏了），有结论才谈 PASS/FAIL（表达式合不合格）。
+    if gate_json is None:
+        gate_error_exit(  # 不返回：内部 sys.exit(2)
+            cmd, r, f"gate.py 退出码 {r.returncode}，stdout 未给出结论 JSON")
+    if r.stderr and r.stderr.strip():  # gate.py 未崩但有告警（如入库异常）—— 同样不静默丢弃
+        print("[gate ] WARN: gate.py 有 stderr 输出（不阻断）")
+        _echo_block(r.stderr, "[gate ] stderr|", _GATE_ERR_TAIL)
+    gate_pass = bool(gate_json["all_pass"])
+    if gate_pass != (r.returncode == 0):  # gate.py 契约：exit 0 <=> all_pass=True
+        print(f"[gate ] WARN: gate.py 退出码 {r.returncode} 与 all_pass={gate_pass} 不一致，以 all_pass 为准")
+    if not gate_pass:
+        reasons = gate_fail_reasons(gate_json)
+        print("[gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）"
+              + ("；" + "、".join(reasons) if reasons else ""))
 
     report = {
         "wave": a.wave, "dataset": a.dataset, "campaign_dir": campaign,
         "gate_exit": r.returncode,
         "syntax": {"total": len(syntax), "passed": sum(1 for s in syntax if s["valid"]),
                    "items": syntax},
-        "gate": gate_json or {"all_pass": False, "raw_tail": (r.stdout or "")[-2000:]},
+        "gate": gate_json,
     }
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
@@ -757,7 +850,7 @@ def main():
         except Exception as e:
             print(f"[probe] 探针批模式失败（不阻断）: {e}")
 
-    all_pass = all(s["valid"] for s in syntax) and r.returncode == 0
+    all_pass = all(s["valid"] for s in syntax) and gate_pass
     if a.quality_block and quality_block_ids:
         all_pass = False
     if gem_report and not gem_report["pass"]:
@@ -777,7 +870,7 @@ def main():
         n_v = len(prod_sat_report.get("violations") or [])
         print(f"[done ] PROD 饱和闸拦截：{n_v} 条命中饱和字段"
               + ("；当前数据集整判饱和" if prod_sat_report.get("current_dataset_saturated") else ""))
-    g = gate_json or {}
+    g = gate_json  # ERROR 已在调用处退出，此处 all_pass 必为 bool（不再有 None 终态）
     qp = report.get("quality_predict") or {}
     qp_note = ""
     if isinstance(qp, dict) and "error" not in qp and qp:
@@ -792,10 +885,8 @@ def main():
         s2fld_note = f" S1字段={cov:.0%}" + ("(BLOCK)" if not s2_field_report["pass"] and a.s2_field_block else "")
     probe_note = f" Probe={probe_report['status']}" if probe_report else ""
     print(f"[done ] 语法 {report['syntax']['passed']}/{report['syntax']['total']}, "
-          f"gate all_pass={g.get('all_pass')} passed={g.get('passed')}/{g.get('total')}"
+          f"gate all_pass={str(g['all_pass']).lower()} passed={g.get('passed')}/{g.get('total')}"
           f"{qp_note}{gem_note}{s2fld_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
-    if r.stderr:
-        print(r.stderr[-800:])
     sys.exit(0 if all_pass else 1)
 
 if __name__ == "__main__":

@@ -433,3 +433,267 @@ def _parse_pack_name(path: Path):
     stem = path.stem[len("field_inspect_"):]
     region, _, dataset = stem.partition("_")
     return region, dataset
+
+
+# ---------------------------------------------------------------------------
+# 9. batch_track 漏 --submit（2026-09-08 P0：节点"启动成功"但一条回测都没发）
+# ---------------------------------------------------------------------------
+#
+# 实测 CHN/chn_w1_other_ppa：节点拼的命令没有 `--submit`，pipeline.py 走
+# `if not a.submit` 分支打一行 `[plan] gate 过 8 式；加 --submit 提交` 就
+# rc=0 退出。stderr 干净、进程正常退出、任务被判 succeeded，而
+# backtest_results 0 行、ckpt batches 为空。另因子进程没用 `-u`，stdout 被
+# 块缓冲，观察时两个日志都是 0 字节 —— 外部完全看不出发生过什么。
+
+
+def _batch_track_dry_run_command(**overrides):
+    from wqb.workflow import execute
+
+    params = {"region": "KOR", "wave": "_t", "dataset": "_t"}
+    params.update(overrides)
+    result = execute("batch_track", params, dry_run=True)
+    return (result.output or {}).get("command", "")
+
+
+def test_batch_track_command_has_submit_flag():
+    """缺 --submit 时 pipeline 只出计划就退出，回测一条不发。"""
+    command = _batch_track_dry_run_command()
+    if not command:
+        pytest.skip("toolkit 未安装，无命令可查")
+    assert "--submit" in command, (
+        "batch_track 必须传 --submit —— 这是提交**回测**(simulation)，"
+        "不是提交 alpha（提交 alpha 走 submit_alpha 且需用户确认）"
+    )
+
+
+def test_batch_track_command_is_unbuffered():
+    """detached 的 stdout 重定向到文件；不加 -u 就是块缓冲，退出即丢日志。"""
+    command = _batch_track_dry_run_command()
+    if not command:
+        pytest.skip("toolkit 未安装，无命令可查")
+    assert " -u " in f" {command} ", f"解释器缺 -u：{command}"
+
+
+def test_batch_track_submit_false_omits_flag():
+    """submit=False 是"只出计划"的合法用法，必须能显式关掉。"""
+    command = _batch_track_dry_run_command(submit=False)
+    if not command:
+        pytest.skip("toolkit 未安装，无命令可查")
+    assert "--submit" not in command
+
+
+def test_validate_argv_still_enforces_behind_interpreter_flags(tmp_path):
+    """加 -u 之后 argv 校验不能被静默关掉。
+
+    旧实现把 cmd[1] 当脚本；命令变成 `python -u script.py …` 后它会去读
+    "-u"，读不到就 fail-open —— 等于 2026-09-06 补的那道闸自己哑了。
+    """
+    from wqb.workflow._common import validate_argv
+
+    script = tmp_path / "fake.py"
+    script.write_text(
+        "import argparse\n"
+        "ap = argparse.ArgumentParser()\n"
+        "ap.add_argument('--dataset')\n",
+        encoding="utf-8",
+    )
+    ok, _ = validate_argv(["python", "-u", str(script), "--dataset", "d"])
+    assert ok, "合法命令不应被 -u 影响"
+
+    ok, err = validate_argv(["python", "-u", str(script), "--concurrency", "7"])
+    assert not ok and "--concurrency" in err, "-u 之后校验必须照样生效"
+
+
+def test_no_submit_error_catches_plan_only_stdout():
+    """铁证级判据：pipeline 自己打印的计划行。"""
+    from wqb.workflow._common import batch_track_no_submit_error
+
+    err = batch_track_no_submit_error(
+        "[gate] total=8 passed=8\n[plan] gate 过 8 式；加 --submit 提交（七槽填槽 + 配额闸）\n",
+        0, 0,
+    )
+    assert err and "--submit" in err
+
+
+def test_no_submit_error_catches_empty_stdout():
+    """块缓冲丢日志的那种"什么都没发生"。"""
+    from wqb.workflow._common import batch_track_no_submit_error
+
+    assert batch_track_no_submit_error("", 0, 0)
+    assert batch_track_no_submit_error("   \n", None, None)
+
+
+def test_no_submit_error_catches_zero_rows_wave():
+    from wqb.workflow._common import batch_track_no_submit_error
+
+    err = batch_track_no_submit_error("[slot] 七槽填槽\n[done] checkpoint: x\n", 0, 0)
+    assert err and "0 行" in err
+
+
+def test_no_submit_error_allows_checkpoint_resume():
+    """同波重跑：review 阶段 checkpoint 跳过，零新增但已有回测行 —— 合法。
+
+    断言特意不写成"行数没涨就判失败"，否则每次续跑都会被误判成失败。
+    """
+    from wqb.workflow._common import batch_track_no_submit_error
+
+    stdout = "[review] 已完成（checkpoint），跳过\n[done] checkpoint: x\n"
+    assert batch_track_no_submit_error(stdout, 8, 8) is None
+    assert batch_track_no_submit_error(stdout, 0, 8) is None      # 本次新增
+    assert batch_track_no_submit_error(stdout, None, None) is None  # 读不到库→放行
+
+
+def _seed_backtest_db(path: Path, rows: int, region: str, wave: str) -> None:
+    import sqlite3
+
+    conn = sqlite3.connect(str(path))
+    conn.execute(
+        "CREATE TABLE backtest_results (id INTEGER PRIMARY KEY, region TEXT, wave TEXT)"
+    )
+    conn.executemany(
+        "INSERT INTO backtest_results (region, wave) VALUES (?, ?)",
+        [(region, wave)] * rows,
+    )
+    conn.commit()
+    conn.close()
+
+
+def _write_batch_track_task(root: Path, task_id: str, meta: dict, stdout: str) -> None:
+    d = root / task_id
+    d.mkdir(parents=True)
+    (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+    (d / "stdout.log").write_text(stdout, encoding="utf-8")
+    (d / "stderr.log").write_text("", encoding="utf-8")
+
+
+def test_task_status_marks_plan_only_batch_track_failed(tmp_path, monkeypatch):
+    """终态断言：rc=0 + stderr 干净 ≠ 成功。此前它就被判成 succeeded。"""
+    monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+    db = tmp_path / "wqb.db"
+    _seed_backtest_db(db, 0, "CHN", "chn_w1_other_ppa")
+    monkeypatch.setenv("WQB_DB_PATH", str(db))
+
+    from wqb.workflow import tasks
+
+    monkeypatch.setattr(tasks, "_pid_alive", lambda pid: False)
+    _write_batch_track_task(
+        tmp_path / "tasks", "batch_track_CHN_x",
+        {"task_id": "batch_track_CHN_x", "pid": 4242, "region": "CHN",
+         "wave": "chn_w1_other_ppa", "submit": True, "backtest_rows_before": 0},
+        "[gate] total=8 passed=8\n[plan] gate 过 8 式；加 --submit 提交\n",
+    )
+
+    task = tasks.get_task("batch_track_CHN_x")
+    assert task["status"] == "failed", task
+    assert "--submit" in (task["error"] or "")
+
+
+def test_task_status_keeps_real_run_succeeded(tmp_path, monkeypatch):
+    """真跑过（有回测行 + 正常尾声）不能被断言误伤。"""
+    monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+    db = tmp_path / "wqb.db"
+    _seed_backtest_db(db, 8, "CHN", "chn_w1_other_ppa")
+    monkeypatch.setenv("WQB_DB_PATH", str(db))
+
+    from wqb.workflow import tasks
+
+    monkeypatch.setattr(tasks, "_pid_alive", lambda pid: False)
+    _write_batch_track_task(
+        tmp_path / "tasks", "batch_track_CHN_ok",
+        {"task_id": "batch_track_CHN_ok", "pid": 4242, "region": "CHN",
+         "wave": "chn_w1_other_ppa", "submit": True, "backtest_rows_before": 0},
+        "[slot] 七槽填槽：总 1 批\n[db] backtest_results +8/8\n[done] checkpoint: x\n",
+    )
+
+    assert tasks.get_task("batch_track_CHN_ok")["status"] == "succeeded"
+
+
+def test_task_status_ignores_tasks_without_submit_marker(tmp_path, monkeypatch):
+    """老任务目录（无 submit 键）行为不变，不被新断言追溯判失败。"""
+    monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+    from wqb.workflow import tasks
+
+    monkeypatch.setattr(tasks, "_pid_alive", lambda pid: False)
+    _write_batch_track_task(
+        tmp_path / "tasks", "batch_track_KOR_old",
+        {"task_id": "batch_track_KOR_old", "pid": 1, "region": "KOR", "wave": "36A"},
+        "",
+    )
+    assert tasks.get_task("batch_track_KOR_old")["status"] == "succeeded"
+
+
+# ---------------------------------------------------------------------------
+# 10. 四个异步节点的 detached 输出必须无缓冲（2026-09-08，batch_track 修复推广）
+# ---------------------------------------------------------------------------
+#
+# detached 把 stdout 重定向到文件时 Python 默认块缓冲：进程退出时未满的缓冲直接
+# 丢，任务日志是 0 字节，外部完全看不出发生过什么（CHN/chn_w1_other_ppa 实测）。
+# `-u` 管住直接启动的解释器，PYTHONUNBUFFERED 连它再 spawn 的进程一起管住 ——
+# gem 的 run.py 与 campaign 的 pipeline.py 都会再起后台 child，缺一不可。
+
+
+def _node_dry_run_commands(node, params):
+    """干跑取节点构建出的命令（顶层 command 或 steps 里的）。"""
+    from wqb.workflow import execute
+
+    result = execute(node, params, dry_run=True)
+    out = result.output or {}
+    commands = [out["command"]] if out.get("command") else []
+    for step in out.get("steps") or []:
+        if isinstance(step, dict) and step.get("command"):
+            commands.append(step["command"])
+    return commands
+
+
+@pytest.mark.parametrize("node,params", [
+    ("batch_track", {"region": "KOR", "wave": "_t", "dataset": "_t"}),
+    ("campaign", {"region": "KOR", "stage": "S0"}),
+    ("feature_engineering", {"region": "KOR", "dataset_id": "fundamental78",
+                             "delay": 1, "universe": "TOP3000"}),
+    ("gem", {"region": "KOR", "dataset_id": "fundamental78", "delay": 1,
+             "universe": "TOP3000", "data_category": "fundamental"}),
+])
+def test_async_node_commands_are_unbuffered(node, params):
+    commands = _node_dry_run_commands(node, params)
+    if not commands:
+        pytest.skip(f"{node}: skill/toolkit 未安装或战役目录缺失，无命令可查")
+    for command in commands:
+        assert " -u " in f" {command} ", f"{node} 解释器缺 -u：{command}"
+
+
+def test_unbuffered_env_sets_pythonunbuffered():
+    from wqb.workflow._common import unbuffered_env
+
+    env = unbuffered_env()
+    assert env["PYTHONUNBUFFERED"] == "1"
+    # extra 覆盖不能把 PYTHONUNBUFFERED 顶掉（campaign 传 PYTHONIOENCODING）
+    env2 = unbuffered_env({"PYTHONIOENCODING": "utf-8"})
+    assert env2["PYTHONUNBUFFERED"] == "1"
+    assert env2["PYTHONIOENCODING"] == "utf-8"
+
+
+def test_unbuffered_env_does_not_mutate_parent_environ(monkeypatch):
+    """凭证桥只能活在子进程环境里，绝不能污染 MCP 进程自身。"""
+    import os
+
+    from wqb.workflow._common import unbuffered_env
+
+    monkeypatch.delenv("WQ_USERNAME", raising=False)
+    monkeypatch.delenv("PYTHONUNBUFFERED", raising=False)
+    unbuffered_env()
+    assert "PYTHONUNBUFFERED" not in os.environ
+    assert "WQ_USERNAME" not in os.environ
+
+
+def test_credential_bridge_renames_without_overriding(monkeypatch):
+    """CREDENTIALS_* → WQ_*；已显式设过的 WQ_* 不被覆盖。"""
+    from wqb.workflow._common import with_brain_credentials
+
+    env = {"CREDENTIALS_EMAIL": "a@b.c", "CREDENTIALS_PASSWORD": "pw"}
+    assert with_brain_credentials(env)["WQ_USERNAME"] == "a@b.c"
+    assert env["WQ_PASSWORD"] == "pw"
+
+    explicit = {"WQ_USERNAME": "keep", "WQ_PASSWORD": "keep-pw",
+                "CREDENTIALS_EMAIL": "other@b.c", "CREDENTIALS_PASSWORD": "other"}
+    out = with_brain_credentials(explicit)
+    assert out["WQ_USERNAME"] == "keep" and out["WQ_PASSWORD"] == "keep-pw"

@@ -84,6 +84,18 @@ def _capture(monkeypatch, target_module, fn_name):
 # 公共 fixture：伪造 toolkit 目录，避免依赖用户机器的真实 skill 安装
 # ---------------------------------------------------------------------------
 
+def _script_of(cmd):
+    """从命令里取脚本路径。
+
+    2026-09-08 起三个异步节点都在解释器后插了 `-u`（detached 日志实时落盘），
+    脚本不再固定在 cmd[1] —— 取第一个非选项 token，别把位置当契约。
+    """
+    for token in cmd[1:]:
+        if not token.startswith("-"):
+            return token
+    raise AssertionError(f"命令里找不到脚本：{cmd}")
+
+
 @pytest.fixture(autouse=True)
 def _isolate_async_task_dir(tmp_path, monkeypatch):
     """2026-09-04 根治：campaign/fe/batch_track 异步任务输出目录注入 tmp。
@@ -128,8 +140,10 @@ def test_batch_track_cwd_is_toolkit_scripts_dir(monkeypatch, fake_toolkit):
     cmd, cwd = calls[0]["cmd"], calls[0]["cwd"]
     scripts = str(fake_toolkit)
     assert cwd == scripts, f"cwd 应为 scripts/ 目录，实际 {cwd}"
-    assert cmd[1] == os.path.join(scripts, "pipeline.py"), "脚本应取 scripts/pipeline.py"
-    assert scripts not in " ".join(cmd[2:]), "命令不应再重复 toolkit 路径"
+    script = _script_of(cmd)
+    assert script == os.path.join(scripts, "pipeline.py"), "脚本应取 scripts/pipeline.py"
+    tail = cmd[cmd.index(script) + 1:]
+    assert scripts not in " ".join(tail), "命令不应再重复 toolkit 路径"
 
 
 def test_batch_track_missing_toolkit_reports_clear_error(monkeypatch, tmp_path):
@@ -176,7 +190,7 @@ def test_campaign_preflight_uses_absolute_script_path(monkeypatch, fake_toolkit)
     assert r["success"] is True, r["steps"]
     preflight = [c for c in calls if "preflight_wave.py" in " ".join(c["cmd"])]
     assert preflight, "S2 必须真实执行 preflight 子进程（门禁不能静默跳过）"
-    script_path = preflight[0]["cmd"][1]
+    script_path = _script_of(preflight[0]["cmd"])
     assert script_path == os.path.join(str(_common.REPO_ROOT), "tools",
                                        "preflight_wave.py"), f"preflight 路径错误: {script_path}"
     assert os.path.isfile(script_path), f"preflight 脚本不存在: {script_path}"
@@ -197,7 +211,7 @@ def test_campaign_quality_gate_uses_absolute_script_path(monkeypatch, fake_toolk
     assert r["success"] is True, r["steps"]
     gate = [c for c in calls if "wave_gate.py" in " ".join(c["cmd"])]
     assert gate, "S3 必须真实执行质量闸子进程"
-    script_path = gate[0]["cmd"][1]
+    script_path = _script_of(gate[0]["cmd"])
     assert script_path == os.path.join(str(_common.REPO_ROOT), "tools", "wave_gate.py"), \
         f"quality_gate 路径错误: {script_path}"
     assert gate[0]["cwd"] == str(_common.REPO_ROOT), "quality_gate cwd 应为仓库根"
@@ -219,7 +233,7 @@ def test_campaign_stage_route_matrix(monkeypatch, fake_toolkit):
                    _context={"store": ex._store, "registry": ex.registry})
         assert r["success"] is True, f"{stage}: {r['steps']}"
         # 最后一条调用应是主 stage 脚本
-        assert os.path.basename(calls[-1]["cmd"][1]) == script, (stage, calls[-1]["cmd"])
+        assert os.path.basename(_script_of(calls[-1]["cmd"])) == script,             (stage, calls[-1]["cmd"])
 
     calls.clear()
     r = cp.run(region="USA", stage="S9",
