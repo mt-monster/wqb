@@ -8,13 +8,16 @@ from pathlib import Path
 
 import pytest
 
-SKILLS_LIBS = Path.home() / ".zcode" / "skills" / "shared_libs"
+# 2026-09-08: ~/.zcode/skills 已随 zcode 宿主弃用清入回收站，
+# shared_libs 真相源回收至仓库 attic/zcode_shared_libs_20260908（git 归档位）。
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+SKILLS_LIBS = _REPO_ROOT / "attic" / "zcode_shared_libs_20260908"
 if str(SKILLS_LIBS) not in sys.path:
     sys.path.insert(0, str(SKILLS_LIBS))
 
 pytestmark = pytest.mark.skipif(
     not (SKILLS_LIBS / "thresholds.py").exists(),
-    reason="shared_libs/thresholds.py 不存在 (skills 未注册)",
+    reason="attic/zcode_shared_libs_20260908/thresholds.py 不存在",
 )
 
 import thresholds as t  # noqa: E402

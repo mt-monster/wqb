@@ -528,8 +528,8 @@ def analyze_expression(expression: str, rubric: List[Dict[str, Any]]) -> Dict[st
     return heuristics
 
 
-# 配额类检查：平台返回但只反映提交配额状态，不应作为质量 BLOCK 触发回优化。
-QUOTA_CHECK_NAMES = {"REGULAR_SUBMISSION", "SUPER_SUBMISSION"}
+# 配额类检查：平台返回但只反映 48h 滚动配额状态，不应作为质量 BLOCK 触发回优化。
+QUOTA_CHECK_NAMES = {"REGULAR_SUBMISSION"}
 
 # 内部硬闸（src/wqb/config.py GATES_INTERNAL 口径）：数值层面显式校验，
 # 不信任平台 WARNING 口径——模拟层 WARNING 的 LOW_FITNESS/LOW_2Y_SHARPE 提交时会翻 FAIL。

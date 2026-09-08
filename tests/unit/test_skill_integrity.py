@@ -119,6 +119,9 @@ def _registered_mcp_tools() -> set:
 #: 文档里作为「已移除，不要依赖」的反面教材出现的工具名，不参与存在性校验。
 DEPRECATED_TOOL_MENTIONS = {
     "mcp__wq-brain-http__get_submission_quota",
+    # brain-alpha-judge SKILL.md 里作为「提交语义反面教材」提及（201≠成功），
+    # 提交走 submit_verdict → workflow_submit_alpha 链，不经此工具。
+    "mcp__wq-brain-http__submit_alpha",
 }
 #: 前缀通配写法（allowed-tools 里的 mcp__wq-brain-http__* 之类），不是具体工具。
 _WILDCARD = re.compile(r"^mcp__[a-z-]+__$")

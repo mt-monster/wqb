@@ -182,20 +182,24 @@ P1-1 prod-first 前移改造 → P1-2 IND 决策 → P1-4 HKG 启动
 - LOW 30：全干净字段（`change_6m_rating_revision` 18 / `residualized_return_india_top500_equity` 14 / `alternative_market_cap_usd` 11）。
 - 附注：已测通过 20 条**全部已 ACTIVE**（含 kqjpwYez pc=0.700 贴线、residualized 字段已被 5 条 ACTIVE 占用）；`WjPjXARx` 实为 SUPER 占位记录非 REGULAR。
 
-### 7.2 真实平台补测（2026-09-07 启动）
+### 7.2 真实平台补测（2026-09-07 启动，2026-09-08 完成）
 
 **通道确认**：`world-quant-brain-mcp/.env` 凭证可用，`BrainApiClient.check_correlation(alpha_id, "production")` 真实平台调用，30s/条出结果，7 天缓存。
 
-**Probe 结果（3 条 LOW 组）**：
-| alpha | Sharpe | PC | 判定 |
-|---|---|---|---|
-| 3qlKQ1qX | 3.61 | 0.8736 | WALL |
-| Xg7ZZlNa | 3.52 | 0.8577 | WALL |
-| gJjNlRMJ | 3.26 | 0.8245 | WALL |
+**全量终态（75 条全部已决，0 pending）**：
 
-**3/3 全部撞墙，包括字段画像最干净的 LOW 组**（分别代表 analyst_14d+residualized / 纯 residualized / risk88 市值三个不同方向）→ IND 撞墙是**结构级/信号级饱和**，不是字段级问题。全量 75 条补测已启动（checkpoint 断点续跑，预计 45–90 分钟），完成后"未知"全部变"已知"，据实决策停手/转向。
+| 判定 | 数量 | 说明 |
+|---|---|---|
+| WALL（PC≥0.7） | **67** | 撞墙率 89%（67/75），PC 范围 0.7117–0.9958 |
+| PASS（PC<0.7） | **8** | 其中 1 条为 SUPER 占位（WjPjXARx），**真实可提交 7 条** |
 
-**工具沉淀**：`tools/backfill_prod_corr.py`（checkpoint 续跑 + busy/pending 重试 + --risk 分组 + --apply-db 写回门控）。
+**7 条真实可提交候选（已写回 DB）**：mLjnnzKE (S=2.90, PC=0.5951)、xAj77zlg (S=2.75, PC=0.6860)、vRj7arVw (S=2.59, PC=0.4616)、blj0mgPK (S=2.54, PC=0.5892)、1Yw33mO6 (S=2.26, PC=0.5496)、1Yw36X56 (S=2.08, PC=0.3638)、xAj7LMXb (S=1.72, PC=0.5427)。
+
+**IND 104 条 S≥1.58 终局**：104 已测 = 76 WALL + 28 PASS（20 ACTIVE + 7 可提交未提交 + 1 SUPER 占位）。
+
+**结论（P1-2 决策）**：IND 并非全灭——**7 条真实可提交候选浮出水面**，且 PC 余量充足（最低 0.3638）。但撞墙率 89% 证实主流方向（model135/analyst/residualized/market cap）已信号级饱和。**决策建议：① 7 条候选走 submit_verdict 判定链后择优提交；② 新挖方向避开饱和字段族，向已 ACTIVE 的冷门数据集（pv106/transaction_cost/anl9/oth696/fnd86/mdl177）靠拢**。
+
+**工具沉淀**：`tools/backfill_prod_corr.py`（checkpoint 续跑 + busy/pending 重试 + --risk 分组 + --apply-db 写回门控）；DB 备份 `wqb.db.bak_backfillpc_20260908_134616`。
 
 1. ✅ **已执行** 修改 SKILL.md（D1/D2/D3 三处文档修复）+ 附录工具名映射表 22 项
 2. ✅ **已执行** 裁决孤儿积压：18 个废弃波 dropped、50 条无效表达式清出（w164 波保留 34 条有效）；备份 `data/wqb.db.bak_orphan_fix_20260907`
