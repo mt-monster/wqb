@@ -2,7 +2,7 @@
   "_source": "mcp__wq-brain-http__get_operators (live BRAIN platform)",
   "_fetched_at": "2026-09-07",
   "_note": "刷新方式：python tools/refresh_operator_catalog.py <get_operators 输出.json>",
-  "count": 102,
+  "count": 103,
   "results": [
     {
       "name": "add",
@@ -783,6 +783,18 @@
       "definition": "quantile(x, driver = gaussian, sigma = 1.0)",
       "description": "Ranks and shifts a vector of Alpha values, then applies a chosen statistical distribution (gaussian, cauchy, or uniform) to reduce outliers. The sigma parameter controls the scale of the output.",
       "documentation": "/operators/quantile",
+      "level": "ALL"
+    },
+    {
+      "name": "vector_neut",
+      "category": "Vector",
+      "scope": [
+        "COMBO",
+        "REGULAR"
+      ],
+      "definition": "vector_neut(a, b)",
+      "description": "Vector orthogonalization: removes the component of vector a in the direction of vector b, i.e., a - (a·b)b. Used to neutralize exposure to a specific factor or direction (e.g., market cap, sector).",
+      "documentation": null,
       "level": "ALL"
     },
     {

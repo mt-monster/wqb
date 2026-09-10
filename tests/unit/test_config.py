@@ -328,8 +328,10 @@ def test_ghost_operators_contains_neutralize():
     assert "neutralize" in GHOST_OPERATORS  # 平台无此表达式算子 (catalog 权威)
 
 
-def test_verified_safe_has_102_catalog_ops():
-    assert len(VERIFIED_SAFE_OPERATORS) == 102
+def test_verified_safe_has_103_catalog_ops():
+    # 平台权威算子全集。2026-09-07 刷新 get_operators 时由 102 → 103
+    # （新增 vector_neut），依据 docs/reference/operators_catalog.json。
+    assert len(VERIFIED_SAFE_OPERATORS) == 103
 
 
 def test_verified_and_ghost_disjoint():

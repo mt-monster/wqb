@@ -18,7 +18,7 @@
     catalog definition ──parse──> OpSignature(positional / named / variadic)
     表达式 ──scan 调用点──> 逐个 call site 比对 ──> 违规即 FAIL
 
-签名推导规则（从 102 条 live definition 实证得出）：
+签名推导规则（从 live catalog 的 definition 实证得出）：
 
 * 无 ``=`` 的形参          → 位置参数（必填），如 ``ts_mean(x, d)`` 的 x、d
 * ``name = <字面量>``      → **命名参数**（named-only），如 ``hump(x, hump=0.01)``、

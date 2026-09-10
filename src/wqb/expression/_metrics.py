@@ -22,7 +22,7 @@ class OperatorQuotaManager:
       原 OPERATOR_CATEGORIES 是手写 50 算子小池，漏掉 55 个真实可用算子、
       混入 exp/range/vec_norm 3 个幽灵算子，导致 coverage_rate 分母失真、
       配额被幽灵算子污染、欠用建议永远照不见池外盲区。
-      现改为以平台权威全集 VERIFIED_SAFE_OPERATORS（102）为唯一分母动态构建，
+      现改为以平台权威全集 VERIFIED_SAFE_OPERATORS（103）为唯一分母动态构建，
       剔除幽灵、补全漏网；新增 reduce_*/special 两类，配额键同步。
     """
 
@@ -64,7 +64,7 @@ class OperatorQuotaManager:
 
     @classmethod
     def _verified_operators(cls):
-        """平台权威真实算子全集（102）。优先取 config.VERIFIED_SAFE_OPERATORS。"""
+        """平台权威真实算子全集（103）。优先取 config.VERIFIED_SAFE_OPERATORS。"""
         try:
             from wqb.config import VERIFIED_SAFE_OPERATORS
             ops = set(VERIFIED_SAFE_OPERATORS)
@@ -88,7 +88,7 @@ class OperatorQuotaManager:
 
     @classmethod
     def all_verified_operators(cls):
-        """coverage_rate 的权威分母：平台真实可用算子全集（102）。"""
+        """coverage_rate 的权威分母：平台真实可用算子全集（103）。"""
         return cls._verified_operators()
 
     def __init__(self, quotas: Optional[Dict[str, float]] = None):
@@ -218,7 +218,7 @@ class DiversityMonitor:
         # 字符串唯一率（旧 novelty 语义，兼容保留）
         expr_uniqueness = len(set(expressions)) / len(expressions) if expressions else 0
 
-        # 计算覆盖率：分母用平台权威真实算子全集（102），而非 categories 小池。
+        # 计算覆盖率：分母用平台权威真实算子全集（103），而非 categories 小池。
         all_possible_ops = OperatorQuotaManager.all_verified_operators()
         if not all_possible_ops:  # config 不可用兜底：退回 categories 并集
             for ops in OperatorQuotaManager.OPERATOR_CATEGORIES.values():
