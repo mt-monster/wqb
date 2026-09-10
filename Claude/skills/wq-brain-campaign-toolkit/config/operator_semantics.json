@@ -989,6 +989,17 @@
    "min_fields": 1,
    "needs_vector": true
   },
+  "vector_neut": {
+   "category": "vector",
+   "roles": [
+    "signal_any",
+    "signal_any"
+   ],
+   "meaning": "向量正交化：剔除信号在指定方向上的暴露（如市值中性化）",
+   "template": "vector_neut({signal_any}, {signal_any})",
+   "min_fields": 2,
+   "_sig_note": "平台签名 vector_neut(a, b) 2参；a=原始信号，b=要剥离的方向（如 cap/市值字段）"
+  },
   "winsorize": {
    "category": "scale",
    "roles": [

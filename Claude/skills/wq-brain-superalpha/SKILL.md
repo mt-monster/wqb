@@ -138,5 +138,5 @@ combo:     1 - maxCorr
 
 ## 相关 skill
 - `worldquant-submit-alpha`：单颗 REGULAR 的提交与硬闸门细节（静默丢弃、翻转延迟、PROD/SELF<0.7）。
-- `brain-how-to-pass-AlphaTest`：各 IS 闸门阈值（Fitness/Sharpe/Turnover/Self-Corr/PROD_CORR）。
+- `brain-how-to-pass-alpha-test`：各 IS 闸门阈值（Fitness/Sharpe/Turnover/Self-Corr/PROD_CORR）。
 - `alpha-expression-verifier`：提交前本地校验 selection/combo 表达式语法。

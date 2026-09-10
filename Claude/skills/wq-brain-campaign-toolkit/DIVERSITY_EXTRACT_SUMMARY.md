@@ -106,7 +106,7 @@ $PY $TK/diversity_extract.py --campaign-dir $CD --dataset $DS --skip-audit --ski
 在 `wq-brain-ra-pipeline` 的 S2 阶段后新增 S2-D 阶段：
 
 ```
-S2: brain-makeSomeGem ──→ *_idea_*.json + final_expressions.json
+S2: brain-make-some-gem ──→ *_idea_*.json + final_expressions.json
     ↓
 S2-D: diversity_extract.py (单数据集多样性榨取)
     ├─ Step 1: 数据集深度审计 (字段分类+算子树分桶+参数空间映射)
@@ -114,7 +114,7 @@ S2-D: diversity_extract.py (单数据集多样性榨取)
     ├─ Step 3: PPAC 矩阵计算 (基于回测结果)
     └─ Step 4: 多样性榨取效果评估 (结构多样性+PPAC关联)
     ↓
-S3: brain-simAlphasinBatch-and-track (批量回测)
+S3: brain-sim-alphas-in-batch-and-track (批量回测)
 ```
 
 ### 决策点
@@ -125,7 +125,7 @@ S3: brain-simAlphasinBatch-and-track (批量回测)
 
 ## 后续优化方向（已落地）
 
-1. **集成 brain-calculate-alpha-selfcorrQuick**：已实现真实 PPAC 计算，通过 `RealPPACCalculator` 类集成 `brain-calculate-alpha-selfcorrQuick` 进行真实 PPAC 计算。
+1. **集成 brain-calculate-alpha-selfcorr-quick**：已实现真实 PPAC 计算，通过 `RealPPACCalculator` 类集成 `brain-calculate-alpha-selfcorr-quick` 进行真实 PPAC 计算。
 
 2. **优化字段分类**：已实现基于字段描述和实际数据分布的增强字段分类，通过 `EnhancedFieldClassifier` 类进行更精准的分类。
 
@@ -135,7 +135,7 @@ S3: brain-simAlphasinBatch-and-track (批量回测)
 
 ### 使用方法
 
-#### 1. 集成 brain-calculate-alpha-selfcorrQuick
+#### 1. 集成 brain-calculate-alpha-selfcorr-quick
 
 ```bash
 # 自动使用真实 PPAC 计算（无需额外参数）

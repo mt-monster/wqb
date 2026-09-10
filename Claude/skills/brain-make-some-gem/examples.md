@@ -1,4 +1,4 @@
-# brain-makeSomeGem Examples
+# brain-make-some-gem Examples
 
 ## Trigger Examples
 

@@ -5,7 +5,7 @@ import os
 """
 import sys
 import pandas as pd
-SKILL_DIR = os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts"))
+SKILL_DIR = os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-sim-alphas-in-batch-and-track", "scripts"))
 sys.path.insert(0, SKILL_DIR)
 import ace_lib
 

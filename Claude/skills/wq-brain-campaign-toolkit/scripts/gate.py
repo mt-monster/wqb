@@ -846,8 +846,11 @@ def main():
             rows = st.list_expressions(ctx.region, str(a.wave), dataset=a.dataset)
             if not rows:
                 rows = st.list_expressions(ctx.region, str(a.wave))
+            # 2026-09-09 D12：同时排除 dropped（纪律废弃终态），与 superseded 同级。
+            # 此前只排 superseded，Agent dropped 的 vec_* 类型不兼容骨架（11637）
+            # 仍进 gate，一条 [TYPE] FAIL 拖垮整波 all_pass。
             exprs = [r["expression"] for r in rows
-                     if r.get("expression") and r.get("status") != "superseded"]
+                     if r.get("expression") and r.get("status") not in ("superseded", "dropped")]
         finally:
             st.close()
         if not exprs:

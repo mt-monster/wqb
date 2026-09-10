@@ -1,4 +1,4 @@
-# brain-makeSomeGem 无 UI 独立运行说明
+# brain-make-some-gem 无 UI 独立运行说明
 
 这个目录用于**不经过 Web UI**，直接运行“直接来点Alpha”对应的流水线。
 
@@ -34,7 +34,7 @@ $env:MOONSHOT_API_KEY="your_moonshot_key"
 ## 3) 运行
 
 ```powershell
-Set-Location ".cursor\skills\brain-makeSomeGem\scripts\headless_runner"
+Set-Location ".cursor\skills\brain-make-some-gem\scripts\headless_runner"
 C:/Python313/python.exe run.py --config config.json --data-category analyst --region EUR --delay 1 --dataset-id analyst4 --universe TOP2500 --instrument-type EQUITY --data-type VECTOR
 ```
 

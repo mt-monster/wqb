@@ -49,6 +49,9 @@ def _skill_roots() -> tuple:
         if base:
             roots.append(os.path.join(base, *parts))
     roots.append(os.path.expanduser("~/.claude/skills"))
+    # Claude Code / Codex 两个主流宿主位（2026-09-10 审计补：codex 曾不在链上，
+    # 导致 `tools/sync_skills.py` 永远不会把仓库推到 ~/.codex/skills，长期分叉）
+    roots.append(os.path.expanduser("~/.codex/skills"))
 
     # 历史 Agent 安装位
     roots.append(os.path.expanduser("~/.qoder-cn/skills"))
@@ -163,7 +166,7 @@ _SKILL_INTEGRITY_PROBES = {
     # 2026-09-08：venv 内 cnhkmcp/untracked/skills 下有一份 1443 行的旧 GEM 引擎，
     # 无 economic_priors.py，且 run_pipeline.py 用 strict parse_args() 不认 --priors-file。
     # 若解析命中那份，整条概念优先链路会静默退化成"无经济学先验"生成。
-    "brain-makeSomeGem": [
+    "brain-make-some-gem": [
         ("scripts/trailSomeAlphas/economic_priors.py",
          "缺 economic_priors.py —— 这是旧版 GEM 引擎拷贝，概念优先先验(wins/dead_ends/"
          "gate_priors)不会进入 prompt，生成质量会静默劣化"),
@@ -188,7 +191,7 @@ def _warn_if_incomplete(skill_dir: str, skill_name: str) -> None:
 
 
 def resolve_skill_dir(skill_name: str) -> Optional[str]:
-    """定位 skill 根目录（如 brain-makeSomeGem）。返回绝对路径或 None。"""
+    """定位 skill 根目录（如 brain-make-some-gem）。返回绝对路径或 None。"""
     for root in _skill_roots():
         candidate = os.path.join(root, skill_name)
         if os.path.isdir(candidate):

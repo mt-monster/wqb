@@ -116,7 +116,7 @@ python tools/dynamic_recipe_weighter.py --region IND --max-recipes 5 --min-weigh
 
 ### 修改文件
 
-**文件**：`C:\Users\MENGTAO\.qoder-cn\skills\brain-makeSomeGem\scripts\trailSomeAlphas\skeletons.py`
+**文件**：`C:\Users\MENGTAO\.qoder-cn\skills\brain-make-some-gem\scripts\trailSomeAlphas\skeletons.py`
 
 **修改点**：
 1. `build_skeleton_prompt()` 函数添加 3 个参数：

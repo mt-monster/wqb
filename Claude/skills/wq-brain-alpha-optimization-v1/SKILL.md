@@ -161,9 +161,9 @@ Mode B/A 产出满足指标门槛的候选后，必须先通过本节四项检�
 
 ## 衔接协议
 
-- **上游**：`brain-how-to-pass-AlphaTest`（失败项定位与阈值判定；S4 判定 FAIL 且达 mode_b_qualification
-  的候选**强制回流**本 skill Mode B，非可选）← S3 `brain-simAlphasinBatch-and-track`（`simulation_status.csv` 候选池）。
-- **下游**：`brain-calculate-alpha-selfcorrQuick`（本地快筛 self-corr/PPAC）→ `brain-explain-alphas`（收益来源归因）→ **brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `tools/submit_verdict.py`（提交层权威判定；brain-alpha-judge 仅作参考评审，verdict 不构成提交依据）。
+- **上游**：`brain-how-to-pass-alpha-test`（失败项定位与阈值判定；S4 判定 FAIL 且达 mode_b_qualification
+  的候选**强制回流**本 skill Mode B，非可选）← S3 `brain-sim-alphas-in-batch-and-track`（`simulation_status.csv` 候选池）。
+- **下游**：`brain-calculate-alpha-selfcorr-quick`（本地快筛 self-corr/PPAC）→ `brain-explain-alphas`（收益来源归因）→ **brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `tools/submit_verdict.py`（提交层权威判定；brain-alpha-judge 仅作参考评审，verdict 不构成提交依据）。
 
 ## 渐进式文档
 

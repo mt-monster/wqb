@@ -2,6 +2,7 @@
 name: brain-alpha-research-hypothesis-first
 layer: L1
 description: "饱和数据集（≥1 万 alpha）的假设优先挖掘工作流。当模板采样空间已被挖尽、需要用可证伪假设驱动（hypothesis-first）而非模板遍历的方式挖掘时使用。触发词：饱和数据集 / 假设优先 / hypothesis-first / 模板挖尽。"
+last_verified: 2026-09-10
 allowed-tools:
   - Read
   - Bash

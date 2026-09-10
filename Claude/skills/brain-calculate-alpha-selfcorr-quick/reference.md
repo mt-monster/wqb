@@ -23,7 +23,7 @@ Calculates self-correlation and PPAC (Power Pool Alpha Correlation) for WorldQua
 
 Example:
 ```bash
-python .qoder/skills/brain-calculate-alpha-selfcorrQuick/scripts/skill.py --start-date 01-10 --end-date 01-11 --region IND
+python .qoder/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py --start-date 01-10 --end-date 01-11 --region IND
 ```
 
 ## Implementation Details

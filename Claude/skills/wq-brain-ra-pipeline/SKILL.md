@@ -63,7 +63,7 @@ $REGION = "KOR"        # 唯一输入
 
 ### 步 1（S-PRE）查表
 
-目的：region 先验，避免重复已判死路径。可选并行：`brain-nextMove-analysis`（日报，不产出配置）、`brain-forum-browse`。
+目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）、`brain-forum-browse`。
 
 **先读区域 profile**：`Read references/regions/<REGION>.md`，按 front-matter 渲染本区专属 SOP（后续各步标注"profile"处按其覆盖执行）；`entry_verdict: frozen` 则按该区 profile 的入口裁决处理，不继续步 2。
 
@@ -110,12 +110,25 @@ mcp__wqb-db__get_mining_yield  region=$REGION  by_dataset=true   # 本区按数�
 
 * **产物**：universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号。
 
-* **失败分支**：registry 全空 = 新区域，进步 2 并在步 9 写 campaign；`get_dead_datasets` 已覆盖全部候选则停止，转 `brain-nextMove-analysis` 选新区域。
+* **失败分支**：registry 全空 = 新区域，进步 2 并在步 9 写 campaign；`get_dead_datasets` 已覆盖全部候选则停止，转 `brain-next-move-analysis` 选新区域。
 
 ### 步 2（S0）数据集体检 + 金字塔配置
 
 调 `mcp__wq-brain-http__workflow_campaign`（stage="S0"）。无战役目录的跨区试探才用本目录 `scripts/dataset_health_check.py`。
 锁白名单后必须 `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {...})`。`recommend_datasets` 不能替代体检。
+
+**选集增强（2026-09-09 新增，`tools/campaign_intel.py s0-select`）**：S0 评分前先用它做三方交叉——
+`recommend_datasets`（平台真实点塔状态，非本地推断）× `get_mining_yield`（本区历史产出率先验）
+× `get_dead_datasets`（台账判死清单）。产出「未点亮塔 × 高产出 × 未判死」候选清单，
+判死（ledger_dead 或 yield=0@足够样本）自动沉底。它把 S0 从「本地 alphaCount 推断饱和」
+升级为「平台 pyramid 端点实测点亮」，直接服务主攻未点亮塔目标：
+
+```
+python tools/campaign_intel.py s0-select --region $REGION --delay $DELAY --universe $UNIVERSE --top-n 15
+```
+
+输出 `hist_yield_rate`（历史产出率，None=处女地无历史）与 `hist_backtested`（样本量）；
+`yield=0 且 bt≥8` 的集已被实证判死，不要再投槽位。
 
 硬约束：
 
@@ -224,13 +237,24 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 
 VECTOR 用 `mcp__wq-brain-http__preflight_expressions`（auto_fix_vector=true）；repair 批加 `--skip-diversity-gate`。
 
+**幽灵算子硬闸（2026-09-09 新增，`tools/campaign_intel.py ghost-audit`）**：GEM 产物入库后、
+wave_gate 前跑它——检测表达式是否含平台不认的幽灵算子（sigmoid/ts_entropy/ts_skewness 等）。
+幽灵算子会触发整批 CANCELLED 连坐（批内一条坏式 ERROR 取消全部兄弟任务），必须在 dispatch 前拦下：
+
+```
+python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选表达式.txt>
+```
+
+退出码 1 = 有幽灵算子（违规式隔离到独立小批或换已验证等价算子，映射表见 `KB/community_tpl_kb` 的
+`ghost_operator_advisory`）。纯本地检测，零配额。
+
 - **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
 ### 步 6（S3）七槽回测
 
 并发唯一来源 [wqb-concurrency](../wqb-concurrency/SKILL.md) §8。
-S3 入口也可走 [brain-simAlphasinBatch-and-track](../brain-simAlphasinBatch-and-track/SKILL.md) 或 toolkit，填槽内容仍以本步为准。
-设置展开需要时用 [brain-inspectRawTemplate-create-Setting](../brain-inspectRawTemplate-create-Setting/SKILL.md)（`--from-db`），不是第三条生成器。
+S3 入口也可走 [brain-sim-alphas-in-batch-and-track](../brain-sim-alphas-in-batch-and-track/SKILL.md) 或 toolkit，填槽内容仍以本步为准。
+设置展开需要时用 [brain-inspect-raw-template-create-setting](../brain-inspect-raw-template-create-setting/SKILL.md)（`--from-db`），不是第三条生成器。
 
 1. 空槽补组合批，不用裸探针凑数。
 2. 弱探针最多 1 槽；已有近闸字段时为 0。
@@ -251,6 +275,12 @@ mcp__wq-brain-http__workflow_task_status  prefix="batch_track"      # 列最近�
 
 # 批次状态查询（单次，非轮询）
 mcp__wq-brain-http__batch_status  simulation_ids=["<id1>", "<id2>"]
+
+# 收批压缩（2026-09-09 新增）：一键收 multisim 全部 alpha 详情（并行拉取），
+# 替代「get_multisimulation_children + lookINTO×N + get_alpha_details×N」的 18 次调用链，
+# 压成 2 次（本工具 + wqb-db harvest_multisim_results 入库）。手动补收/审计某批时用：
+mcp__wq-brain-http__harvest_multisim_alphas  multisimulation_location="/simulations/<id>"
+mcp__wqb-db__harvest_multisim_results  region=$REGION  wave=$W  alphas=<上一步返回的 alphas 列表>
 ```
 
 * **失败分支**：整批 CANCELLED 则回步 5；429 则降并发、批大小 ≤5。
@@ -277,10 +307,28 @@ mcp__wq-brain-http__batch_status  simulation_ids=["<id1>", "<id2>"]
 mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  wave=$W
 ```
 
-阈值不达标见 [brain-how-to-pass-AlphaTest](../brain-how-to-pass-AlphaTest/SKILL.md)。
+阈值不达标见 [brain-how-to-pass-alpha-test](../brain-how-to-pass-alpha-test/SKILL.md)。
 用 [wq-brain-alpha-optimization-v1](../wq-brain-alpha-optimization-v1/SKILL.md)（Mode B 70% / Mode A 30%）。
-按需：`brain-calculate-alpha-selfcorrQuick`（本地快筛）/ `brain-explain-alphas`（按需归因：Mode B 换概念前查概念重叠，非每候选必经）。
+按需：`brain-calculate-alpha-selfcorr-quick`（本地快筛）/ `brain-explain-alphas`（按需归因：Mode B 换概念前查概念重叠，非每候选必经）。
 `brain-alpha-repair` 只作配方查表。
+
+**S4 预筛压缩（2026-09-09 新增，`tools/campaign_intel.py s4-prescreen`）**：S3 收批后、进 S4 评审链前，
+先批量拉指标分层 READY/REVIEW/REJECT——REJECT（全灭）直接判死不进 S4 链，只对 READY/REVIEW 走完整
+selfcorrQuick→check_self_correlation→compute_mutual_correlation→check_correlation→robustness→judge 链。
+评审效率提升约 8 倍（8 条候选从 8 次逐条评审压到 1 次预筛 + 仅存活者进链）：
+
+```
+python tools/campaign_intel.py s4-prescreen --ids-file <本波 alpha_id 清单.txt>
+```
+
+**卡闸辅助腿检索（Mode B 组合增强）**：主信号卡某闸时，从 salvage 池找跨数据集正交辅助腿，
+替代人工翻历史波次：
+
+```
+mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boost_tvr|boost_sharpe>  exclude_dataset=<主信号数据集>  min_sharpe=1.0
+```
+
+卡 2Y 闸用 `boost_2y`、卡 CW/子宇宙用 `boost_cw`、卡 tvr 用 `boost_tvr`、信号弱用 `boost_sharpe`。
 
 - **风险中性化硬规则（2026-09-08 新增）**：收割后必看 `risk_neutralized_sharpe`。
   `risk_neutralized_sharpe <= 0` 且 `sharpe >= 1.58` ⇒ 该 alpha **就是它自己声称的那个因子暴露**，
@@ -323,6 +371,25 @@ mcp__wqb-db__upsert_ledger_key  region=$REGION  key="s6_verdict_<wave>"  ...
 ```
 
 OS ACTIVE / 全闸 PASS 必须 `add-win`（mix 比例、中性化、decay、快/慢腿）。
+
+**点塔进度回写（2026-09-09 新增，`tools/campaign_intel.py pyramid`）**：每波 S6 必调，
+把本区点塔进度（各 catalog 已点亮/未点亮/还差几颗）嵌入 `wave_result.key_findings`，
+让下一波 S0 选集直接消费平台真实塔状态（而非本地推断）：
+
+```
+python tools/campaign_intel.py pyramid --region $REGION --delay $DELAY
+# 输出末尾的 [key_findings] 单行直接拷进 upsert_wave_result 的 key_findings 列表
+```
+
+**提交多样性监控（防同质化降权）**：每提交 3-5 颗后调一次，若多样性评分下降则切换目标塔：
+
+```
+mcp__wq-brain-http__value_factor_trendScore  start_date=<本季初>  end_date=<今天>
+```
+
+**提交后 IS→OS 衰减归因（可选，反哺 IS 阈值校准）**：提交后 T+1 调
+`mcp__wq-brain-http__performance_comparison alpha_id=<ID>`，把 IS→OS 衰减写进 wave_result，
+验证「提交时 IS 指标是否虚高」。
 - **prod 饱和反馈 S0**：若本波候选全部被 `prod_corr >= 0.7` 卡死（submit_verdict BLOCKED 原因含 PROD_CORRELATION），除 `add-dead-end` 外须在 ledger `submit_ready_blocked` 追加该数据集/信号族饱和记录；下一轮 S0（步 2）体检读取，把该数据集按拥挤处理（即使平台 alphaCount≤50 也降优先级），避免重复撞墙。
 
 ---
@@ -357,13 +424,13 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 
 | 条件 | 动作 |
 |---|---|
-| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-nextMove-analysis` |
+| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis` |
 | 白名单被 dead_end 全覆盖 | 停止 |
-| 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-nextMove-analysis` 换区域 |
+| 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
 | **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（默认 floor=0.5 / min_batches=2），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `mcp__wq-brain-http__sa_probe --region $REGION`） |
 | 配额耗尽 | 挂起提交，继续步 2 → 9。 |
-| 用户要求持续日循环 | 每个 NY 日先 `brain-nextMove-analysis`，再从步 1 跑；日界 21:30 ET |
+| 用户要求持续日循环 | 每个 NY 日先 `brain-next-move-analysis`，再从步 1 跑；日界 21:30 ET |
 
 可选外壳：`scripts/ralph_daily_loop.py` / `ralph_runner.py`（状态模板 `templates/daily_state.template.json`）。循环体仍是上面九步，不是第二套 SOP。
 

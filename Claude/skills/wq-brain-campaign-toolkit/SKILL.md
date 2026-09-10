@@ -49,11 +49,11 @@ allowed-tools:
 
 ## 衔接协议（上游 / 输入 / 输出 / 下游）
 
-- **上游**：`wq-brain-ra-pipeline`（编排器）；`brain-simAlphasinBatch-and-track`（S3 入口，经 subprocess 调用本引擎——唯一运行时调用方）；`wq-brain-campaign-matrix`（S-PRE 配置包 → 映射为 `--campaign-dir` 与 settings/thresholds 参数）；`wq-backtest-monitor`（S6 §14 经 `campaign.py ledger` 幂等回写）。
+- **上游**：`wq-brain-ra-pipeline`（编排器）；`brain-sim-alphas-in-batch-and-track`（S3 入口，经 subprocess 调用本引擎——唯一运行时调用方）；`wq-brain-campaign-matrix`（S-PRE 配置包 → 映射为 `--campaign-dir` 与 settings/thresholds 参数）；`wq-backtest-monitor`（S6 §14 经 `campaign.py ledger` 幂等回写）。
 - **本 skill 角色**：L-TOOL 引擎层 = how；S1–S6 各阶段战役脚本的唯一权威实现，方法论层 skill 一律指向此处、禁止复制 scripts/ 逻辑。
 - **输入**：战役目录 `tracking/<REGION>/`（`config/settings.json` + `config/thresholds.json` + `reference/` typed catalog）+ 子命令（`--campaign-dir` 铁律见 §4）；并发纪律引用 `wqb-concurrency` §8 七槽填槽。
 - **输出（入库总原则：DB 为唯一战役真相源；禁止 Agent Write 战役 json/csv）**：S1 经 `campaign.py ledger set "s1_<ds>_d<delay>"` / `mcp__wqb-db__upsert_ledger_key`；`score_datasets.py` → ledger `s0_ranking`；白名单 `s0_whitelist`；`scan_fields.py` → `fields` 表；`diversity_extract.py` → `diversity_potential` + expressions；`build_wave.py --from-db` + `gate.py --from-db` → `expressions` / `gate_results`；`pipeline.py` → `backtest_results` + ledger `ckpt_w<W>` + `wave_results`；`review_wave.py` → ledger `review_<tag>`；`methodology_rules` 区域计数 → ledger_kv（全局规则仍用 toolkit `config/methodology_rules.json`）。静态配置 `settings.json`/`thresholds.json`/`platform_constraints.json` 仍为文件。
-- **下游**：`brain-simAlphasinBatch-and-track`（S3 编排入口）；S4 诊断族（`brain-how-to-pass-AlphaTest`/`wq-brain-alpha-optimization-v1`/`brain-alpha-robustness`）消费 review/ranking 产物；`wq-backtest-monitor`（S6）经本引擎回写台账反哺 S-PRE。
+- **下游**：`brain-sim-alphas-in-batch-and-track`（S3 编排入口）；S4 诊断族（`brain-how-to-pass-alpha-test`/`wq-brain-alpha-optimization-v1`/`brain-alpha-robustness`）消费 review/ranking 产物；`wq-backtest-monitor`（S6）经本引擎回写台账反哺 S-PRE。
 
 ## 2. 运行环境
 所有 Python 命令使用 MCP venv：`$WQ_PY`。脚本为纯标准库实现；仅 gate 闸1 需 import alpha-expression-verifier（经 `WQ_VALIDATOR_DIR` 探测）。

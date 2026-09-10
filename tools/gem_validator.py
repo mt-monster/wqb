@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """gem_validator.py - GEM 候选池强制校验。
 
-确保 S2 候选池来自 brain-makeSomeGem 管道，而非手写。
+确保 S2 候选池来自 brain-make-some-gem 管道，而非手写。
 
 用法:
     python tools/gem_validator.py --candidates candidates.json --wave 129

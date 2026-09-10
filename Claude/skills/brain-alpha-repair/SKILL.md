@@ -2,6 +2,7 @@
 name: brain-alpha-repair
 layer: L4
 description: "修复或演化弱候选 alpha：在保持多样性与可追溯性的前提下降 turnover、提覆盖、降相关性，或从反复失败的搜索轨迹中恢复。触发词：候选修复 / 降换手 / 提覆盖 / 降相关 / 失败轨迹恢复。"
+last_verified: 2026-09-10
 allowed-tools:
   - Read
   - Bash

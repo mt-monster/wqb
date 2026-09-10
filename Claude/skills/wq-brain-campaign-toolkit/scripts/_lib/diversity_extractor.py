@@ -4,11 +4,11 @@
 功能：
 1. 数据集深度审计（字段分类 + 算子树分桶 + 参数空间映射）
 2. 分轮次多样性生成（L1 字段多样性 / L2 算子结构多样性 / L3 参数空间多样性）
-3. PPAC 矩阵计算（基于回测结果，集成 brain-calculate-alpha-selfcorrQuick）
+3. PPAC 矩阵计算（基于回测结果，集成 brain-calculate-alpha-selfcorr-quick）
 4. 多样性榨取效果评估（结构多样性 + PPAC 关联）
 
 优化：
-1. 集成 brain-calculate-alpha-selfcorrQuick：真实 PPAC 计算
+1. 集成 brain-calculate-alpha-selfcorr-quick：真实 PPAC 计算
 2. 优化字段分类：基于字段描述和实际数据分布进行更精准的分类
 3. 增强参数空间映射：基于历史回测结果动态调整参数空间
 4. 集成到 wq-brain-ra-pipeline 编排器：实现自动化榨取
@@ -51,23 +51,23 @@ from .common import (CampaignContext, atomic_write, bucket_key, expr_fields,
 
 
 # ---------------------------------------------------------------------------
-# 优化 1: 集成 brain-calculate-alpha-selfcorrQuick
+# 优化 1: 集成 brain-calculate-alpha-selfcorr-quick
 # ---------------------------------------------------------------------------
 
 class RealPPACCalculator:
-    """真实 PPAC 计算器（集成 brain-calculate-alpha-selfcorrQuick）"""
+    """真实 PPAC 计算器（集成 brain-calculate-alpha-selfcorr-quick）"""
     
     def __init__(self, ctx: CampaignContext):
         self.ctx = ctx
         self.selfcorr_script = self._find_selfcorr_script()
         
     def _find_selfcorr_script(self) -> Optional[str]:
-        """查找 brain-calculate-alpha-selfcorrQuick 脚本"""
-        # 查找 brain-calculate-alpha-selfcorrQuick 脚本
+        """查找 brain-calculate-alpha-selfcorr-quick 脚本"""
+        # 查找 brain-calculate-alpha-selfcorr-quick 脚本
         possible_paths = [
-            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorrQuick", "scripts", "calculate_selfcorr.py"),
-            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorrQuick", "scripts", "selfcorr.py"),
-            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorrQuick", "scripts", "main.py"),
+            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorr-quick", "scripts", "calculate_selfcorr.py"),
+            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorr-quick", "scripts", "selfcorr.py"),
+            os.path.join(_project_root, "skills", "brain-calculate-alpha-selfcorr-quick", "scripts", "main.py"),
         ]
         
         for path in possible_paths:
@@ -77,7 +77,7 @@ class RealPPACCalculator:
         return None
     
     def compute_real_ppac(self, expr1: str, expr2: str) -> float:
-        """计算真实 PPAC（使用 brain-calculate-alpha-selfcorrQuick）"""
+        """计算真实 PPAC（使用 brain-calculate-alpha-selfcorr-quick）"""
         if not self.selfcorr_script:
             # 如果找不到脚本，回退到估算
             return self._estimate_ppac(expr1, expr2)

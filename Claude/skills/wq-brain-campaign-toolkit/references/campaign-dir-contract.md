@@ -45,7 +45,7 @@ tracking/<REGION>/                 # 区域大写，如 KOR / USA / EUR
 | near | sharpe_min（近门槛池下限，供增强方向分析） | review_wave, build_wave |
 | quick_scan | red_2y_max / red_sh_abs_min（快扫红灯早判） | 人工快扫 |
 | probe_scoring_v2 | 12 参数（见 probe-scoring-v2.md） | score_datasets |
-| hard_gates | prod_correlation_max 0.7 / self_correlation_max 0.7 | 提交前参照（权威定义见 brain-how-to-pass-AlphaTest） |
+| hard_gates | prod_correlation_max 0.7 / self_correlation_max 0.7 | 提交前参照（权威定义见 brain-how-to-pass-alpha-test） |
 | dataset_health | v3.1：mode(general/ppa) + tier_method(quantile/threshold) + 分位参数 tier1_score_pct/tier2_score_pct + 硬地板 coverage_hard_min(0.65)/field_count_hard_min(5) + 保底带 backfill_band_*/probe_exception_*；threshold 回退法沿用 coverage_min/alpha_count_max/field_count_min/tier2_* | score_datasets |
 | poll（可选） | init_interval 20 / backoff_factor 1.5 / max_interval 120 / stall_minutes 60 / timeout_minutes 360 | pipeline, poller |
 | submit_quota（可选） | limit 4（REGULAR 日上限；SUPER 1/日由提交层单独把关） | pipeline quota（ET 日历日 4/1 口径，00:00 ET 重置） |

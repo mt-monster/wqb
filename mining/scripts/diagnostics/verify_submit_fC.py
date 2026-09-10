@@ -1,7 +1,7 @@
 import os
 """Verify fC (mL5d17Z9) full RA checks, then submit to platform."""
 import sys
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-sim-alphas-in-batch-and-track", "scripts")))
 from ace_lib import start_session, get_check_submission, submit_alpha, get_simulation_result_json
 
 s = start_session()

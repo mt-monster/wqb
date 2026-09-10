@@ -14,7 +14,7 @@ TERMINAL = {COMPLETE, ERROR, CANCELLED}。COMPLETE → 自动拉全量 child alp
 ## 单批在飞规则（已废弃，2026-08-16 起由填槽模式取代；2026-08-25 更新为七槽）
 ~~串行提交循环：上一批到 TERMINAL 才提下一批。根因：平台对同账号并发 multisim 会让后到批无错误信息地 CANCELLED~~。
 **纠正（2026-08-16）**：当时 CANCELLED 的真根因是**批内坏表达式 ERROR 连坐取消兄弟批**（KOR 批X实证本身也是级联现象），并非平台禁止并发 multisim。四重门禁（tools/expr_lint.py）后实证：5 批 multisim 同提全部被接受且同步 COMPLETE，连续 2 波 80 条 0 连坐。**新铁律：每轮 7 批×8 条同提（2026-08-25 更新 5→7）、统一轮询、即收即补保持槽位常满**，SOP 全文见 `wqb-concurrency` SKILL.md §8。batch_size 仍读 settings `_multi_sim_batch_size`（默认 8）。**pipeline.py 已改造为七槽填槽并发实现（2026-08-21 起，2026-08-25 更新 5→7）**：`stage_submit_poll` 用 ThreadPoolExecutor 并行提交+轮询 N 批（N=min(5, 批数)），支持单轮（默认）与多轮即收即补（`--max-rounds>1`）两种模式。
-战役目录外的一次性临时批跑不在此列（可用 brain-simAlphasinBatch-and-track 多批并发）。
+战役目录外的一次性临时批跑不在此列（可用 brain-sim-alphas-in-batch-and-track 多批并发）。
 
 ## 429 指数退避
 api_call 包装：HTTP 429 时 sleep 5s 起、×2 倍增、最多 5 次重试；非 429 直接抛。

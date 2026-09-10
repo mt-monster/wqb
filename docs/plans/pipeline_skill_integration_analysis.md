@@ -4,11 +4,11 @@
 
 ```
 brain-deepExplore (编排入口)
-    ├── brain-nextMove-analysis (每日诊断)
-    ├── brain-makeSomeGem (生成候选表达式)
-    ├── brain-inspectRawTemplate-create-Setting (设置扩展)
+    ├── brain-next-move-analysis (每日诊断)
+    ├── brain-make-some-gem (生成候选表达式)
+    ├── brain-inspect-raw-template-create-setting (设置扩展)
     ├── brain-enhance-template (模板增强)
-    └── brain-simAlphasinBatch-and-track (批量回测+追踪)
+    └── brain-sim-alphas-in-batch-and-track (批量回测+追踪)
 ```
 
 ## 集成目标
@@ -22,7 +22,7 @@ brain-deepExplore (编排入口)
 
 ## 方案对比
 
-### 方案 A：嵌入 brain-simAlphasinBatch-and-track（推荐）
+### 方案 A：嵌入 brain-sim-alphas-in-batch-and-track（推荐）
 
 **位置**：在 `batch_simulator.py` 提交前插入多样性增强阶段
 
@@ -57,7 +57,7 @@ def submit_with_diversity(exprs, **kwargs):
 
 ### 方案 B：新建 brain-diversity-enhancer skill
 
-**位置**：在 `brain-enhance-template` 和 `brain-simAlphasinBatch-and-track` 之间插入新 skill
+**位置**：在 `brain-enhance-template` 和 `brain-sim-alphas-in-batch-and-track` 之间插入新 skill
 
 **优点**：
 - ✅ 符合 skills 单一职责原则
@@ -75,7 +75,7 @@ brain-deepExplore 编排:
     ...
     ├── brain-enhance-template (模板增强)
     ├── brain-diversity-enhancer (新增：多样性增强)  <-- 插入点
-    └── brain-simAlphasinBatch-and-track (批量回测)
+    └── brain-sim-alphas-in-batch-and-track (批量回测)
 ```
 
 ---
@@ -110,21 +110,21 @@ brain-deepExplore 编排:
 
 ---
 
-## 推荐方案：方案 A（嵌入 brain-simAlphasinBatch-and-track）
+## 推荐方案：方案 A（嵌入 brain-sim-alphas-in-batch-and-track）
 
 ### 理由
 
 1. **最小侵入**：只修改一个文件 `batch_simulator.py`
 2. **最大复用**：直接使用现有 skill 的 MCP 调用、CSV 追踪、断点续跑
 3. **最自然的位置**：提交前最后一步，确保增强后的表达式被提交
-4. **符合用户习惯**：用户已经熟悉 `brain-simAlphasinBatch-and-track` 的使用
+4. **符合用户习惯**：用户已经熟悉 `brain-sim-alphas-in-batch-and-track` 的使用
 
 ### 具体实现步骤
 
 #### 步骤 1：创建多样性增强模块
 
 ```python
-# .qoder/skills/brain-simAlphasinBatch-and-track/scripts/diversity_enhancer.py
+# .qoder/skills/brain-sim-alphas-in-batch-and-track/scripts/diversity_enhancer.py
 
 import sys
 from pathlib import Path
@@ -250,7 +250,7 @@ python scripts/batch_simulator.py ... --enhance-diversity never
 
 ```python
 # run_batch_with_diversity.py
-"""桥接脚本：在调用 brain-simAlphasinBatch-and-track 前执行多样性增强"""
+"""桥接脚本：在调用 brain-sim-alphas-in-batch-and-track 前执行多样性增强"""
 
 import sys
 import json
@@ -309,7 +309,7 @@ def main():
             f.write(expr + "\n")
     
     print(f"[output] 已写入 {args.output}")
-    print(f"[next] 请使用 brain-simAlphasinBatch-and-track 提交:")
+    print(f"[next] 请使用 brain-sim-alphas-in-batch-and-track 提交:")
     print(f"  python scripts/batch_simulator.py --alpha-json {args.output} ...")
 
 
@@ -323,7 +323,7 @@ if __name__ == "__main__":
 python run_batch_with_diversity.py --input tracking/GBR/candidates/gbr_model106_batch8.txt --output tracking/GBR/candidates/gbr_model106_batch8_enhanced.txt --mode auto
 
 # 2. 使用现有 skill 提交
-Set-Location ".qoder/skills/brain-simAlphasinBatch-and-track"
+Set-Location ".qoder/skills/brain-sim-alphas-in-batch-and-track"
 python scripts/batch_simulator.py --alpha-json ../../../tracking/GBR/candidates/gbr_model106_batch8_enhanced.txt ...
 ```
 

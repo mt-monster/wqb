@@ -113,6 +113,20 @@ def _template_kb(ctx):
     return kb if isinstance(kb, dict) else {}
 
 
+def _operator_principle_kb(ctx):
+    """读 KB/operator_principle_kb（字段特性×算子原理映射表）。
+
+    2026-09-10 新增：把「字段特性 → 算子第一性原理 → 骨架」结构化映射注入 GEM，
+    让模板生成从「字段套壳」升级为「经济信号工程」。缺失时静默返回空（不阻断 priors 组装）。
+    """
+    st = get_store(ctx)
+    try:
+        kb = st.get_ledger("KB", "operator_principle_kb")
+    finally:
+        st.close()
+    return kb if isinstance(kb, dict) else {}
+
+
 def _registry_layer(ctx, layer):
     rs = RegistryStore(ctx.region)
     out = []
@@ -296,7 +310,46 @@ def assemble_priors_dict(ctx):
     }
     if gate_priors:
         payload["gate_priors"] = gate_priors
+
+    # 2026-09-10 新增：skeleton_field_matrix（字段特性×算子原理 → 骨架有效性矩阵）。
+    # GEM 的 economic_priors.compact_priors_text 已支持渲染该键（effective/dead/orthogonal_hints），
+    # 但 assemble_priors 此前未组装——本注入补上「建而不用」的断链（operator_principle_kb → GEM 自动消费）。
+    opkb = _operator_principle_kb(ctx)
+    if opkb:
+        payload["skeleton_field_matrix"] = _build_skeleton_field_matrix(opkb)
+        payload["_meta"]["sources"].append("ledger_kv:KB/operator_principle_kb (字段特性×算子原理)")
     return payload
+
+
+def _build_skeleton_field_matrix(opkb: dict) -> dict:
+    """把 operator_principle_kb 转化为 GEM 已支持的 skeleton_field_matrix。
+
+    区域级全 trait 注入（priors 文件区域共享，非单数据集）：effective 取全部 field_traits 的
+    skeleton_hints（GEM 按当前数据集字段自取），dead 取全局禁区 + 各 trait 禁用算子，
+    orthogonal_hints 给原理层约束（防伪多样性 + 实证偏好）。
+    """
+    traits = (opkb.get("field_traits") or {})
+    effective, dead = [], []
+    for tid, tr in traits.items():
+        if not isinstance(tr, dict):
+            continue
+        for sk in (tr.get("skeleton_hints") or [])[:2]:
+            effective.append({
+                "skeleton": sk,
+                "field_family": tid,
+                "preferred_principles": tr.get("preferred_principles"),
+                "empirical": tr.get("empirical_note"),
+            })
+        for fo in (tr.get("forbidden_operators") or []):
+            dead.append({"family": tid, "reason": f"禁用算子 {fo}（{tr.get('name')}）"})
+    # 全局禁区（判死证据 + 混信号纪律）
+    dead.append({"family": "global", "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"})
+    hints = [
+        "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+        "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+        "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize",
+    ]
+    return {"effective": effective[:6], "dead": dead[:12], "orthogonal_hints": hints}
 
 
 def _build_region_context(kb: dict) -> dict:

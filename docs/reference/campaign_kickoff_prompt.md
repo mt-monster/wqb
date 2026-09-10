@@ -54,7 +54,7 @@ variables:
 |---|---|---|
 | D1 | **禁止 PV×model 数据集混** | 同一表达式不能同时用 PV 数据集字段 + model 数据集字段。辅助腿只能用同数据集内部字段或非 PV 正交主题。 |
 | D2 | **禁止同信号加权调参** | 组合权重仅单次设置（0.5/0.5 或 0.6/0.4 或 0.7/0.3），禁止权重网格扫描。同信号不达标换字段组合/换概念（Mode B 想法层），不调权重。 |
-| D3 | **ra-pipeline 严格走 skill 链** | S2 候选池必须调 `brain-makeSomeGem`（headless_runner + priors，注入 region_kb 论坛模板），禁止手写候选池替代；S4 评审走完整链：selfcorrQuick → check_self_correlation → compute_mutual_correlation → check_correlation → 归因（get_alpha_yearly_stats + brain-explain-alphas）→ brain-alpha-robustness → brain-alpha-judge；Mode B/A 优化须走 `wq-brain-alpha-optimization-v1`，不得裸扫参数。 |
+| D3 | **ra-pipeline 严格走 skill 链** | S2 候选池必须调 `brain-make-some-gem`（headless_runner + priors，注入 region_kb 论坛模板），禁止手写候选池替代；S4 评审走完整链：selfcorrQuick → check_self_correlation → compute_mutual_correlation → check_correlation → 归因（get_alpha_yearly_stats + brain-explain-alphas）→ brain-alpha-robustness → brain-alpha-judge；Mode B/A 优化须走 `wq-brain-alpha-optimization-v1`，不得裸扫参数。 |
 | D4 | **Mode B 资格线** | 整波最强候选 `sharpe≥1.25 且 fitness≥0.8` 才进 Mode B 组合增强/继续优化；未达判死（dead_end 回写 + wave 台账 closed），禁止进 near_pool、禁止发增强波。 |
 | D5 | **拉指标一律 MCP 直调** | `get_alpha_details`（单 ID 一次调用；批量逐 ID 连续调用），禁临时 Python 脚本（`logs/_tmp_*.py`）调 brain_api 拉指标。 |
 | D6 | **产物只入 wqb.db** | 读：`get_wave_result`/`get_ledger_key`/`list_expressions`/`get_field_catalog`；写：`upsert_wave_result`/`upsert_ledger_key`/`upsert_registry_empirical`/`upsert_expressions`/`upsert_field_catalog`/`upsert_gate_result`/`upsert_backtest_rows`（幂等）。 |
@@ -82,7 +82,7 @@ variables:
 - **画像消费**（若 field_profile 已回填）：读 `get_field_catalog` + field_profile 形状/语义，供 S2 模板族 mechanism_premise 双校验
 - **失败分支**：字段数 <10 退回步 2 白名单外；VECTOR 比例用 get_datafields 确认，步 4 传对 data_type
 
-### 步 4（S2）选波：概念优先生成（`brain-makeSomeGem` 强制调用）
+### 步 4（S2）选波：概念优先生成（`brain-make-some-gem` 强制调用）
 - **MCP**：`workflow_campaign(stage="S6", subcommand="assemble-priors")` → `get_ledger_key(key="s1_${DS}_d${DELAY}")` → `workflow_gem(region=$REGION, dataset_id=$DS, delay=$DELAY, universe=$UNIVERSE, priors_file=...)` → `workflow_campaign(stage="S2", dataset=$DS, wave=$W)`
 - **概念优先**：机制→1-2 个具体字段 id→一条 Implementation Example，禁止"每个字段套 rank"；必须带 priors_file（win/dead_end JSON，可省——GEM 经 load_priors(region) 从 DB 快照直读）
 - **硬约束**：① 先读 win 层（region_kb.win_recipes），有胜绩则本波至少 2 槽按机制换腿；② 有信号 |Sharpe|≥1.0/PASS_CHEAP/registry 标明有 IS 但卡 prod，复合后 |S|<0.5 不再入选；③ 七槽（Token-Bucket C≈7）：≥2 跨金字塔、≥1 win 换腿、弱探针最多 1 槽；④ 时间窗口只用 1/5/22/66/252/504/1008/1260 标准窗口，其他须给经济含义；⑤ 禁止 add(A,B) 混信号；⑥ 字段角色区分（主信号/辅助信号/group/bucket）；⑦ 金字塔点亮（一个金字塔需 3 颗，均匀点塔）
@@ -120,12 +120,12 @@ variables:
 
 | 条件 | 动作 |
 |---|---|
-| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-nextMove-analysis` |
+| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis` |
 | 白名单被 dead_end 全覆盖 | 停止 |
-| 连续 3 波 gate 通过率=0（gate_results.all_pass 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-nextMove-analysis` 换区域 |
+| 连续 3 波 gate 通过率=0（gate_results.all_pass 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `sa_probe --region $REGION`） |
 | 配额耗尽 | 挂起提交，继续步 2 → 9 |
-| 用户要求持续日循环 | 每个 NY 日先 `brain-nextMove-analysis`，再从步 1 跑；日界 21:30 ET |
+| 用户要求持续日循环 | 每个 NY 日先 `brain-next-move-analysis`，再从步 1 跑；日界 21:30 ET |
 
 ---
 

@@ -175,7 +175,7 @@ empirical_anchor:                 # 实证锚点（可选，S6 回写刷新）
 - **定位**：TOP400 全区判死（9 数据集全 exhausted），不建议再入。
 - **entry\_verdict: frozen**。
 - **流程变体**：
-  - **步 1 入口即拒绝**：registry 全 exhausted → 直接返回"MEA 已冻结"结论 + 转 `brain-nextMove-analysis` 选新区；
+  - **步 1 入口即拒绝**：registry 全 exhausted → 直接返回"MEA 已冻结"结论 + 转 `brain-next-move-analysis` 选新区；
   - 唯一例外：用户显式强制 → 降级 `probe-only`，只允许白名单外新集探针 1 波，且事先声明配额成本。
 
 ### 5.9 GLB — 跨区铁律区

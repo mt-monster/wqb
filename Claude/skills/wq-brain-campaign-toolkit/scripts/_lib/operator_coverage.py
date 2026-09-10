@@ -658,10 +658,49 @@ def load_semantics():
     return {}
 
 
+# 2026-09-09 D11 修复：日历/事件哑字段黑名单——这些字段 coverage 恒为 1.0
+# 但零 alpha（iso_week_number 是年内周数、month_indicator_code 是月份码、
+# market_regime_*phase 是离散市场状态标签、*_event_*_flag/type_code 是事件哑变量）。
+# 它们不命中任何 ROLE_KW 关键词 → 兜底 signal_any → 角色池按 coverage 降序排最前
+# → _resolve_role 兜底任意信号字段时优先选中，被注入 group_mean/ts_arg_min 等骨架，
+# 烧回测配额在已知零 alpha 字段上（EUR global_seasonal_model wave 实测 4/12 骨架中招）。
+# 与 D9 同根：coverage ≠ alpha。命中黑名单的字段不打任何信号角色（返回空列表），
+# 使其不进 signal_any 兜底池；它们仍可作 group 分组键（若命中 group 关键词）。
+_CALENDAR_EVENT_DUMMY = (
+    "iso_week", "week_number", "month_indicator", "day_of_week", "day_of_month",
+    "quarter_indicator", "year_indicator", "trading_day", "is_month_end", "is_quarter_end",
+    "market_regime_2phase", "market_regime_4phase", "_event_type_code",
+    "_event_update_flag", "_event_confirmation_level", "_event_transcript_flag",
+    # 2026-09-09 D11 补充：quarter/period 边界哑字段（实测 quarter_end_start_flag
+    # coverage=1.0 alphaCount=1，与 iso_week_number 同类零 alpha 日历标签）
+    "quarter_end_start_flag", "quarter_end", "quarter_start", "period_end_flag",
+    "month_end_flag", "year_end_flag", "_start_flag", "_end_flag",
+)
+
+
 def field_roles(fid, desc=""):
-    """给单个字段打经济角色标签（可多个）。返回角色列表，兜底 signal_any。"""
+    """给单个字段打经济角色标签（可多个）。返回角色列表，兜底 signal_any。
+
+    D11：命中日历/事件哑字段黑名单的字段返回空列表（不进 signal_any 兜底池），
+    避免被当作数值信号注入骨架。"""
     txt = (str(fid) + " " + str(desc or "")).lower()
+    if any(k in txt for k in _CALENDAR_EVENT_DUMMY):
+        # 仍允许它作 group 分组键（离散标签天然适合 grouping），但不作信号字段
+        if any(k in txt for k in ROLE_KW.get("group", [])):
+            return ["group"]
+        return []
     hits = [role for role, kws in ROLE_KW.items() if any(k in txt for k in kws)]
+    # 2026-09-09 D13 修复：confidence_bucket*/prob_bucket*/predicted_bucket* 是
+    # 模型置信度/概率分桶的【数值信号】（Unit[]，连续值），不是 group 分组键
+    # （Unit[Group:1]，离散标签）。它们名字含 _bucket 被 ROLE_KW[group] 误标 →
+    # group_cartesian_product/group_count 把它们当分组键 → 平台报
+    # "Incompatible unit ... expected Unit[Group:1], found Unit[]"（EUR wave157 实测
+    # 2 批 ERROR 整批取消）。bucket 只有在不带 confidence/prob/predicted 前缀时才是分组键。
+    fid_l = str(fid).lower()
+    if "group" in hits and ("bucket" in fid_l) and fid_l.startswith(
+            ("confidence_bucket", "prob_bucket", "predicted_bucket", "pv_", "pvdaily",
+             "pvweekly", "daily_pricevol", "funda_")):
+        hits.remove("group")
     return hits or ["signal_any"]
 
 
@@ -710,12 +749,32 @@ def dataset_role_pool(ctx, dataset=None):
         if str(f.get("type", "")).upper() == "VECTOR":
             has_vector = True
         cov = f.get("coverage", 0) or 0
-        flds.append((fid, cov, f.get("description", "")))
+        # 2026-09-09 D11 根本修复：读 alphaCount/userCount 作质量先验。
+        # 日历/事件哑字段（iso_week_number/trading_weekday_code/quarter_end_start_flag…）
+        # coverage 恒 1.0 但 alphaCount=0 且 userCount≤1（零 alpha 实证），黑名单关键词
+        # 永远追不完。改用「alphaCount>0 或 userCount>1」作信号字段入场券，从源头挡住。
+        try:
+            ac = int(f.get("alphaCount") or 0)
+        except (TypeError, ValueError):
+            ac = 0
+        try:
+            uc = int(f.get("userCount") or 0)
+        except (TypeError, ValueError):
+            uc = 0
+        flds.append((fid, cov, f.get("description", ""), ac, uc))
         all_fields.append(fid)
-    # 按 coverage 降序填充角色池
-    flds.sort(key=lambda x: -x[1])
-    for fid, cov, desc in flds:
-        for role in field_roles(fid, desc):
+
+    # 按质量先验降序填充角色池：alphaCount 主、userCount 辅、coverage 微调（与 D9 同源）。
+    # 修复前按 coverage 降序 → 日历哑字段 cov=1.0 排最前，被优先注入骨架。
+    import math as _math
+    flds.sort(key=lambda t: -(_math.log1p(t[3]) + 0.5 * _math.log1p(t[4]) + 0.1 * t[1]))
+    for fid, cov, desc, ac, uc in flds:
+        roles = field_roles(fid, desc)
+        # D11：signal_any 兜底池只收有 alpha 证据的字段（alphaCount>0 或 userCount>1）；
+        # 无证据字段保留其专属角色（若有），但不进 signal_any 兜底池被随机兜底选中。
+        for role in roles:
+            if role == "signal_any" and not (ac > 0 or uc > 1):
+                continue
             role_pool.setdefault(role, []).append(fid)
     return role_pool, has_vector, all_fields
 

@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-09-05
-name: brain-makeSomeGem
+name: brain-make-some-gem
 description: "S2 概念优先的 GEM alpha 表达式生成器（headless_runner）。当需要为某个 region/dataset/delay/universe 组合生成候选 alpha 表达式、跑 GEM、补候选池、按 priors 做增强变体扩展时使用。触发词：生成表达式 / 跑 GEM / makeSomeGem / 选波生成 / 概念优先生成 / final_expressions。编排入口是 wq-brain-ra-pipeline 步 4，标准调用走 mcp__wq-brain-http__workflow_gem，本 skill 描述其后端引擎与产物契约。"
 layer: L2
 allowed-tools:
@@ -10,7 +10,7 @@ allowed-tools:
   - mcp__wqb-db__*
 ---
 
-# brain-makeSomeGem（S2 表达式生成引擎）
+# brain-make-some-gem（S2 表达式生成引擎）
 
 ## 定位声明
 

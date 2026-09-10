@@ -22,7 +22,7 @@ WorldQuant Brain 的「并发模拟数」是**服务端硬性上限 C**，与本
 本地在飞回测数 = min(本地工作线程数, C)。超过 C 的提交会拿到 `429`，白白浪费重试。
 
 ## 衔接协议
-- **上游**：S3 `brain-simAlphasinBatch-and-track`（及其执行后端 `wq-brain-campaign-toolkit` pipeline.py）——七槽填槽执行时以本 skill §8 为并发纪律唯一权威。
+- **上游**：S3 `brain-sim-alphas-in-batch-and-track`（及其执行后端 `wq-brain-campaign-toolkit` pipeline.py）——七槽填槽执行时以本 skill §8 为并发纪律唯一权威。
 - **本 skill 角色**：横向纪律层（L3）——并发上限 C 测定、在飞数锁定、429 风暴与孤儿模拟防治；非流水线阶段，被 S3–S5 执行环节按需引用。
 - **下游**：纪律落回调用方执行参数（批大小/并发数/批间隔），不产出独立工件。
 

@@ -45,7 +45,7 @@
 
 ### 修改文件
 
-**`C:\Users\MENGTAO\.qoder-cn\skills\brain-makeSomeGem\scripts\trailSomeAlphas\skeletons.py`**（+61 行）
+**`C:\Users\MENGTAO\.qoder-cn\skills\brain-make-some-gem\scripts\trailSomeAlphas\skeletons.py`**（+61 行）
 
 ### 集成内容
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""diversity_enhancer.py - 多样性增强模块（嵌入 brain-simAlphasinBatch-and-track）
+"""diversity_enhancer.py - 多样性增强模块（嵌入 brain-sim-alphas-in-batch-and-track）
 
 在 batch_simulator.py 提交前自动分析并增强表达式多样性。
 """

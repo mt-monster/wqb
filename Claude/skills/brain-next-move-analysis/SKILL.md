@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-08-25
-name: brain-nextMove-analysis
+name: brain-next-move-analysis
 description: "为 WorldQuant BRAIN 顾问生成综合日报。 覆盖平台更新、比赛进展、alpha 表现（IS/OS）、金字塔分析与可执行建议。 当用户要求\"日报\"、\"早报\"、\"状态检查\"或 \"daily report\"、\"morning update\" 时使用。"
 layer: L0
 allowed-tools:

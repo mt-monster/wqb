@@ -93,7 +93,7 @@
 
 | 项 | 内容 |
 |---|---|
-| 执行者 | `brain-makeSomeGem` skill（S2，headless_runner 入口） |
+| 执行者 | `brain-make-some-gem` skill（S2，headless_runner 入口） |
 | 输入 | ledger 注入的 ideas/字段白名单 + `--priors-file`（win/dead_end JSON，RA 战役必带） |
 | 产出 | `final_expressions.json` → expressions 表（经 `build_alpha_list.py`） |
 | 通过标准 | 概念优先（机制→字段）、每条 1-2 字段、骨架配额达标；字段绑定必须受 `s1_<dataset>_d<delay>.field_whitelist` 约束 |
@@ -191,7 +191,7 @@ WAVE_LEDGER.md（单入口）→ 复盘回填波级文档 §7（预估 vs 实际
 |---|---|---|
 | 前置白名单 | S0 体检 | `score_datasets.py`、ledger `s0_whitelist` |
 | 阶段 1-3 | S1 字段理解 | `brain-data-feature-engineering` → ledger `s1_<ds>_d<delay>` + `s1_prefix_<ds>` |
-| 阶段 4 | S2 生成 + S3 前置 | `brain-makeSomeGem` + ledger `s2_field_pool_<ds>` → `build_wave.py` → expressions 表 |
+| 阶段 4 | S2 生成 + S3 前置 | `brain-make-some-gem` + ledger `s2_field_pool_<ds>` → `build_wave.py` → expressions 表 |
 | 阶段 5 | S3 预检（新增本地层） | `pool_diversity.py` + `quality_predict.py` |
 | 阶段 6 | S3 门禁 + 回测 | `wave_gate.py` → 七槽填槽 |
 | 复盘 | S4-S6 | judge / 优化器 / `wq-backtest-monitor` + registry 回写 |

@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-08-22
-name: pull_BRAINSkill
+name: pull-brain-skills
 description: "从 ZIP URL（首选）、Git 仓库或本地目录导入有效的 agent skill。包含 SKILL.md / skill.md 文件（不区分大小写）的文件夹视为有效 skill。"
 layer: L7
 allowed-tools:
@@ -22,26 +22,26 @@ allowed-tools:
 ## 使用方法
 
 1. **定位脚本**：
-   - 项目路径：`.qoder-cn/skills/pull_BRAINSkill/scripts/pull_skills.py`
-   - 全局路径（Windows）：`~/.qoder-cn/skills/pull_BRAINSkill/scripts/pull_skills.py`
+   - 项目路径：`.qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py`
+   - 全局路径（Windows）：`~/.qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py`
 
 2. **运行脚本**：提供 ZIP URL（推荐）、Git URL 或本地路径。
 
 ### 示例 1：通过 ZIP 拉取（首选推荐）
 该方法更快，且在受限网络环境中表现最好。为此，你需要先把仓库地址解析为 ZIP 文件 URL：在仓库 URL 后追加 `/archive/refs/heads/main.zip`。例如，仓库地址为 `https://github.com/GitRepoAuthorName/RepoName` 时，ZIP URL 即为 `https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip`。
 ```bash
-python ".qoder-cn/skills/pull_BRAINSkill/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip" --overwrite
+python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip" --overwrite
 ```
 
 ### 示例 2：通过 Git 拉取
 当你需要特定分支或已配置好 git 时使用。
 ```bash
-python ".qoder-cn/skills/pull_BRAINSkill/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git"
+python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git"
 ```
 
 ### 示例 3：从本地目录导入
 ```bash
-python ".qoder-cn/skills/pull_BRAINSkill/scripts/pull_skills.py" "C:/Downloads/my-skills-repo"
+python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "C:/Downloads/my-skills-repo"
 ```
 
 选项：

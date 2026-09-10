@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """gem 节点：GEM 表达式生成.
 
-替代 brain-makeSomeGem 的 headless_runner PowerShell 命令模板。
+替代 brain-make-some-gem 的 headless_runner PowerShell 命令模板。
 """
 
 import json
@@ -16,6 +16,7 @@ from ..mcp_check import require_mcp_tools
 from .._common import (
     detached_launch_failed,
     infer_data_category,
+    resolve_db_path,
     resolve_skill_dir,
     unbuffered_env,
     validate_argv,
@@ -148,12 +149,12 @@ def run(
             logger.warning(f"Failed to check candidate field pool: {e}")
 
     # Step 2: 定位 GEM runner
-    gem_root = resolve_skill_dir("brain-makeSomeGem")
+    gem_root = resolve_skill_dir("brain-make-some-gem")
     if not gem_root:
         result["steps"].append({
             "step": "find_gem_root",
             "success": False,
-            "error": "brain-makeSomeGem skill not found",
+            "error": "brain-make-some-gem skill not found",
         })
         return result
 
@@ -209,6 +210,12 @@ def run(
         # 2026-09-04 修复：默认走 DB 快照直读（SOP「DB 为单一事实源」），
         # 修复 wave112 之前 GEM 命令无任何 priors 参数导致知识库模板未注入的断点
         cmd.extend(["--priors-from-db", region])
+        # 2026-09-09 修复：显式传 --db-path 绝对路径。headless_runner/run.py 的
+        # _materialize_priors_from_db 在 build_command() 内被调，而 build_command
+        # 在 os.chdir(trailSomeAlphas) 之后还会再调一次 —— 那时 cwd 向上 8 级
+        # 找不到 data/wqb.db，且 unbuffered_env 不设 WQB_WORKSPACE/WQB_DB_PATH，
+        # _find_wqb_db 探测链全灭 → SystemExit fail-closed。传绝对路径后第一级命中。
+        cmd.extend(["--db-path", resolve_db_path()])
 
     if effective_ideas_file:
         cmd.extend(["--ideas-file", effective_ideas_file])
@@ -249,7 +256,7 @@ def run(
         })
         if not chk["ok"]:
             ideas_check["errors"] = chk["errors"]
-            ideas_check["sample"] = chk["sample"]
+            ideas_check["sample"] = chk.get("sample", "")
             result["steps"].append(ideas_check)
             return result
     else:
@@ -578,8 +585,8 @@ def _infer_category(dataset_id: str) -> str:
 
 
 def _find_gem_root() -> Optional[str]:
-    """查找 brain-makeSomeGem skill 根目录（向后兼容别名）。"""
-    return resolve_skill_dir("brain-makeSomeGem")
+    """查找 brain-make-some-gem skill 根目录（向后兼容别名）。"""
+    return resolve_skill_dir("brain-make-some-gem")
 
 
 def _find_final_expressions(gem_root: str, dataset_id: str, region: str, delay: int) -> Optional[str]:

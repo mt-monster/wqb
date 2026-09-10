@@ -4,7 +4,7 @@
 背景：此前没有任何测试扫描 SKILL.md —— tests/unit/test_skills.py 名字像，
 实测的却是 operator_audit / validator。于是这一类问题只能靠人眼审计：
 
-  - brain-makeSomeGem 目录存在但缺 SKILL.md（Agent 根本加载不到）
+  - brain-make-some-gem 目录存在但缺 SKILL.md（Agent 根本加载不到）
   - SKILL.md 里引用 src/wqb/expression/paradigms.py，而该模块已被删除
   - SKILL.md 里写 mcp__wq-brain-http__<tool>，而 MCP 侧根本没注册该工具
   - registry NodeMeta 的 optional_params 与节点 run() 签名漂移

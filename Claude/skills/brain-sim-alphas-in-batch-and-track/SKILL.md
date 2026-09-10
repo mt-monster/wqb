@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-08-23
-name: brain-simAlphasinBatch-and-track
+name: brain-sim-alphas-in-batch-and-track
 description: "WorldQuant BRAIN alpha 批量提交与跟踪（JSON 输入 → CSV 续跑）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
 layer: L3
 allowed-tools:
@@ -28,12 +28,12 @@ allowed-tools:
 
 - **编排器（`wq-brain-ra-pipeline`）S3 入口 = 本 skill**。本 skill 是批量跟踪与战役执行的单一入口。
 - **执行后端 = `wq-brain-campaign-toolkit`**（引擎实现层，本 skill 通过 subprocess 调用其脚本）。两 skill 是"入口/引擎"关系，不重复实现。
-- **独立 skill，不依赖 `brain-makeSomeGem`**——只要输入符合 `alpha_list.json` 格式即可。
+- **独立 skill，不依赖 `brain-make-some-gem`**——只要输入符合 `alpha_list.json` 格式即可。
 
 ## 衔接协议
-- **上游**：S3 前置 `brain-inspectRawTemplate-create-Setting`（产出 `settings_candidates.json` + `alpha_list.json`，并默认写 **expressions 表**）；或用户直接提供的合规 `alpha_list.json`。**表达式输入默认读库**：引擎 `pipeline.py --from-db` 默认启用（文件模式已废弃），从 **expressions 表**（`data/wqb.db`，结构化真相源）按 region+wave 取表达式；`alpha_list.json`/`--file` 仅为兼容输入与排障。
+- **上游**：S3 前置 `brain-inspect-raw-template-create-setting`（产出 `settings_candidates.json` + `alpha_list.json`，并默认写 **expressions 表**）；或用户直接提供的合规 `alpha_list.json`。**表达式输入默认读库**：引擎 `pipeline.py --from-db` 默认启用（文件模式已废弃），从 **expressions 表**（`data/wqb.db`，结构化真相源）按 region+wave 取表达式；`alpha_list.json`/`--file` 仅为兼容输入与排障。
 - **本 skill 角色**：S3 批量回测与战役执行单一入口。**并发纪律（七槽填槽 SOP、C≈7 Token-Bucket 锁定在飞数）的唯一权威定义在 `wqb-concurrency` 技能（§8）**，本 skill 只引用不重复实现。
-- **下游**：回测结果双写 **backtest_results 表**（`mcp__wqb-db__*` 可查）；`simulation_status.csv`（+ 战役目录 `results/`）为排障兼容产物，交 S4 链首步 `brain-how-to-pass-AlphaTest` 做失败项定位与阈值判定（查历史回测优先读库）。
+- **下游**：回测结果双写 **backtest_results 表**（`mcp__wqb-db__*` 可查）；`simulation_status.csv`（+ 战役目录 `results/`）为排障兼容产物，交 S4 链首步 `brain-how-to-pass-alpha-test` 做失败项定位与阈值判定（查历史回测优先读库）。
 
 ## 运行环境
 
@@ -81,7 +81,7 @@ mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])
 
 ```powershell
 # 在本 skill 所在目录运行（<skills_root> 按实际安装根替换，通常为 ~/.qoder-cn/skills）
-Set-Location "<skills_root>/brain-simAlphasinBatch-and-track"
+Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"
 python scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json --output-csv outputs/simulation_status.csv --batch-size 3 --concurrency 2 --detached
 # ⚠️ 上面的 --concurrency 2 / --batch-size 3 只适用于「非编排的跨区临时批」（保守试探）。
 # 战役目录内的正式 wave 一律走七槽填槽 concurrency=7（唯一权威 wqb-concurrency §8），

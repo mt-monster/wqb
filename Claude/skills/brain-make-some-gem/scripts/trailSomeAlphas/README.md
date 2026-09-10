@@ -28,7 +28,7 @@ Optional:
 
 ## Run
 
-From this folder (`.qoder/skills/brain-makeSomeGem/scripts/trailSomeAlphas`):
+From this folder (`.qoder/skills/brain-make-some-gem/scripts/trailSomeAlphas`):
 
 ### Pipeline mode
 - Generate ideas + implement expressions:

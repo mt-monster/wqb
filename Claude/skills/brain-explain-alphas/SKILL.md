@@ -52,6 +52,6 @@ allowed-tools:
 向量数据在每个交易日对每只工具记录多条事件（如新闻）。它需要聚合（如 `vec_mean`、`vec_sum`）才能变成可被其他算子使用的矩阵值。
 
 ## 衔接协议
-- **上游**：`brain-calculate-alpha-selfcorrQuick`（相关性快筛后的候选）。
+- **上游**：`brain-calculate-alpha-selfcorr-quick`（相关性快筛后的候选）。
 - **本 skill 角色**：S4 **按需**工具（2026-09-01 精简：从每候选必经改为按需调用）——两个触发场景：① Mode B 换概念前查与既有 book 的概念重叠；② 提交前对战略级候选做收益来源确认。日常近闸候选不必逐条归因。
 - **下游**：**brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `brain-alpha-judge`（S5 参考）。

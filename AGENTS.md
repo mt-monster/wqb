@@ -43,7 +43,7 @@
 > 区域 profile 路由、Artifact 契约、循环停止表、反模式）**唯一权威在**
 > [`Claude/skills/wq-brain-ra-pipeline/SKILL.md`](Claude/skills/wq-brain-ra-pipeline/SKILL.md)。
 > 2026-09-05 前本节逐字复制了那份 SOP，两边已开始漂移（本节记了 gate_results /
-> s4_walls / salvage_pool，SKILL.md 的 Artifact 契约表没有；本节写「brain-makeSomeGem
+> s4_walls / salvage_pool，SKILL.md 的 Artifact 契约表没有；本节写「brain-make-some-gem
 > 强制调用」，SKILL.md 写「workflow_gem 强制调用」）。改流程只改 SKILL.md，不要再复制到这里。
 
 **唯一挖掘编排 SOP**：`wq-brain-ra-pipeline`（九步流水线 S-PRE→S6），三角分工：
@@ -61,7 +61,7 @@
 | 1 | S-PRE 查表 | `wq-brain-campaign-matrix` + `mcp__wqb-db__get_*` |
 | 2 | S0 数据集体检 | `workflow_campaign(stage="S0")` |
 | 3 | S1 字段扫描与理解 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` |
-| 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-makeSomeGem` headless_runner） |
+| 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-make-some-gem` headless_runner） |
 | 5 | S2→S3 门禁 | `wave_gate`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
 | 6 | S3 七槽回测 | `workflow_batch_track`（并发纪律权威 = `wqb-concurrency` §8） |
 | 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
@@ -96,15 +96,20 @@
   `workflow_chain` 默认 `join_async=True`，异步节点会等到终态再进下一步 ——
   否则下游必然读到上游还没落库的空结果。
 - **skill 目录解析**：`_common._skill_roots()` 顺序为 `WQ_SKILLS_DIR` > Claude 安装位
-  （`%APPDATA%\Claude\skills` 等）> 历史 Agent 位（qoder-cn / cursor / workbuddy）>
-  仓库自带 `Claude/skills/`（兜底，保证 clone 即可用）。落到历史 Agent 位会打 WARNING：
-  那些是独立物理拷贝，`~/.workbuddy/skills` 实测是含已废止 skill 的旧副本。
-- **skill 单向同步（2026-09-06）**：仓库 `Claude/skills/` 是源，安装位是派生物。
-  改 skill 只改仓库副本，然后 `python tools/sync_skills.py`；`--check` 模式由
-  `tests/unit/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护。
-  历史教训：安装位曾落后仓库两周（makeSomeGem 停在 08-22、仓库已 09-05），
-  Agent 读旧 SOP、测试读新文，两边各自自洽，只有运行时才炸。
-  `install_now.py` 的 `if target.exists(): skip` 是这次陈旧的根因，勿再用它做更新。
+  （`%APPDATA%\Claude\skills` 等）> `~/.claude/skills` > `~/.codex/skills` > 历史 Agent 位
+  （qoder-cn / cursor / workbuddy）> 仓库自带 `Claude/skills/`（兜底，保证 clone 即可用）。
+  落到历史 Agent 位会打 WARNING：那些是独立物理拷贝。
+- **skill 多目标单向同步（2026-09-10 起）**：仓库 `Claude/skills/` 是源，**全部安装位**是派生物。
+  改 skill 只改仓库副本，然后 `python tools/sync_skills.py`（自动枚举全部已存在的安装位：
+  claude / codex / qoder-cn / cursor / workbuddy，逐个同步 + 逐个校验）；`--check` 模式由
+  `tests/unit/test_audit_fixes.py::test_sync_skills_reports_no_drift` 守护（多目标断言）。
+  历史教训：① 安装位曾落后仓库两周（make-some-gem 停在 08-22、仓库已 09-05）；
+  ② 2026-09-10 审计发现旧版脚本只同步**首个**目标（`resolve_install_root()`），致使
+  `~/.codex`、`~/.workbuddy` 反复分叉（ra-pipeline 落后 67 行，缺 09-09 的
+  `campaign_intel s0-select` 选集与 `ghost-audit` 幽灵算子硬闸）—— 故改为多目标。
+  失效安装器（`install_now.py` / `install_claude_skills.*` / `verify_claude_skills.py` /
+  `install_skills_direct.py` / `INSTALLATION_GUIDE.md`）已归档 `attic/install_legacy_20260910/`，
+  勿再用它们做更新（`if target.exists(): skip` 永不更新）。
 - **MCP 服务器命名**：只能是 `wq-brain-http` 与 `wqb-db` —— 所有 skill 调用的工具前缀是
   `mcp__wq-brain-http__*` / `mcp__wqb-db__*`，改名即全线失配。`.mcp.json` 为准，
   `mcp_config.json` 与安装脚本必须跟随。
@@ -118,14 +123,49 @@
 | `L-RA` | 唯一编排入口 | `wq-brain-ra-pipeline` |
 | `L-PRE` | 开战役前的查表选集 | `wq-brain-campaign-matrix` |
 | `L-TOOL` | 战役执行引擎（被编排调用） | `wq-brain-campaign-toolkit` |
-| `L0` | 战役外的态势/情报 | `brain-nextMove-analysis`、`brain-forum-browse`、`wq-brain-ppa-mining` |
+| `L0` | 战役外的态势/情报 | `brain-next-move-analysis`、`brain-forum-browse`、`wq-brain-ppa-mining` |
 | `L1` | 数据集 / 字段研究（S0–S1） | `brain-alpha-research*`、`brain-*-exploration-*` |
-| `L2` | 表达式生成与语法校验（S2） | `brain-makeSomeGem`、`brain-feature-implementation`、`alpha-expression-verifier` |
-| `L3` | 批量回测与并发纪律（S3） | `brain-simAlphasinBatch-and-track`、`wqb-concurrency` |
-| `L4` | 诊断与改进（S4） | `wq-brain-alpha-optimization-v1`、`brain-alpha-robustness`、`brain-how-to-pass-AlphaTest` |
+| `L2` | 表达式生成与语法校验（S2） | `brain-make-some-gem`、`brain-feature-implementation`、`alpha-expression-verifier` |
+| `L3` | 批量回测与并发纪律（S3） | `brain-sim-alphas-in-batch-and-track`、`wqb-concurrency` |
+| `L4` | 诊断与改进（S4） | `wq-brain-alpha-optimization-v1`、`brain-alpha-robustness`、`brain-how-to-pass-alpha-test` |
 | `L5` | 提交（S5） | `worldquant-submit-alpha`、`wq-brain-superalpha`、`brain-alpha-judge` |
 | `L6` | 监控与复盘（S6） | `wq-backtest-monitor` |
-| `L7` | 与挖掘无关的通用工具 | `planning-with-files`、`pull_BRAINSkill` |
+| `L7` | 与挖掘无关的通用工具 | `planning-with-files`、`pull-brain-skills` |
+
+### SKILL.md frontmatter 契约（2026-09-10 审计固化）
+
+**必需字段**：`name`（== 目录名）、`layer`、`description`、`last_verified`。
+**可选字段**：`version`、`user-invocable`、`allowed-tools`、`agent_created`、`hooks`。
+
+- `layer` = 挖掘链条位置（见上表），**不是**版本号；内容版本一律用独立 `version` 字段
+  （如 `wq-brain-ra-pipeline: version "2.2"` + `layer: L-RA`）。
+- `last_verified` = 最近一次对照平台核实内容正确的日期（`YYYY-MM-DD`）；改正文后应更新。
+  2026-09-10 审计已补齐全部 32 个 skill 的该字段（此前 8 个缺失）。
+- 守护：`tests/unit/test_skill_integrity.py` 校验 `name` 与目录名一致、frontmatter 完整。
+
+### Skill 命名规范（2026-09-10 审计固化）
+
+- 目录名与 frontmatter `name` **一律纯 kebab-case**（小写字母 + 连字符），禁止驼峰与下划线。
+  2026-09-10 已把 7 个历史命名统一：
+  `brain-makeSomeGem→brain-make-some-gem`、`brain-simAlphasinBatch-and-track→brain-sim-alphas-in-batch-and-track`、
+  `brain-calculate-alpha-selfcorrQuick→brain-calculate-alpha-selfcorr-quick`、
+  `brain-how-to-pass-AlphaTest→brain-how-to-pass-alpha-test`、
+  `brain-inspectRawTemplate-create-Setting→brain-inspect-raw-template-create-setting`、
+  `brain-nextMove-analysis→brain-next-move-analysis`、`pull_BRAINSkill→pull-brain-skills`。
+- 前缀语义：`brain-*` = 业务/知识技能；`wq-brain-*` = 流程编排；`wqb-*` = 横切工具（并发等）。
+  **新建 skill 必须遵守。**
+
+### 按需调用的知识型 skill（不进自动化 call chain）
+
+以下 skill 不参与 pipeline 自动编排，由 agent 按触发条件按需调用；此处登记触发场景，
+避免"存在但无人知何时用"：
+
+| skill | layer | 触发场景 |
+|---|---|---|
+| `alpha-template-labs-data-analysis` | L0 | 设计 Python alpha **前**做 BRAIN Labs 原始数据分析（USA/TOP3000/D1 MATRIX 覆盖/缺失/频率/离群/相关性） |
+| `brain-alpha-repair` | L4 | 弱候选修复/演化（降 turnover、提覆盖、降相关、失败轨迹恢复）。**配方已上移 `wq-brain-alpha-optimization-v1`**，本 skill 仅保留入口与边界声明 |
+| `brain-datafield-exploration-general` | L1 | 评估单个新 datafield（覆盖率 / 非零值 / 更新频率 / 分布形态） |
+| `brain-explain-alphas` | L4 | 解释某个 alpha 表达式 / 字段 / 算子协作 |
 
 ## 3.x 单源核心与 brain_api 拆解约定（Direction A）
 

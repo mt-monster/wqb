@@ -2,7 +2,7 @@ import os
 """Verify pairwise correlation + gate status of the 6 OS alphas to confirm a 3-unrelated gate-passing set."""
 import sys
 import pandas as pd
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-sim-alphas-in-batch-and-track", "scripts")))
 from ace_lib import start_session, get_alpha_daily_pnl, get_check_submission
 
 s = start_session()

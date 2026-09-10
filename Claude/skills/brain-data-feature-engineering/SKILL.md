@@ -141,7 +141,7 @@ allowed-tools:
 
 将报告写入 `./output_report/region_delay_datasetID_ideas.md`，格式如下：
 
-> **产物去向（S1→S2 契约）**：本 ideas markdown 是 S2 `brain-makeSomeGem` 的法定输入——经其 `run.py --ideas-file <本文件路径>` 注入后，流水线跳过内部嵌套 S1 重新生成，直接沿用本报告的字段白名单与预处理决策实现表达式；编排器（`wq-brain-ra-pipeline`）在步 4 调用时必须传该参数，否则本 skill 的独立调用成果不会被消费。
+> **产物去向（S1→S2 契约）**：本 ideas markdown 是 S2 `brain-make-some-gem` 的法定输入——经其 `run.py --ideas-file <本文件路径>` 注入后，流水线跳过内部嵌套 S1 重新生成，直接沿用本报告的字段白名单与预处理决策实现表达式；编排器（`wq-brain-ra-pipeline`）在步 4 调用时必须传该参数，否则本 skill 的独立调用成果不会被消费。
 
 1. **数据集理解**
    - 数据集描述与特征
@@ -232,7 +232,7 @@ mcp__wqb-db__upsert_ledger_key(
 
 - key 命名 `s1_<dataset>_d<delay>`（不可用 `_` 前缀，会被 ledger schema 守卫拒绝）；同 (region, dataset, delay) 重跑自动覆盖（upsert 幂等）。
 - 战役目录内也可用 toolkit CLI：`campaign.py --campaign-dir <CD> ledger set "s1_<ds>_d<delay>" '<json>'`。
-- **S1⇄S2 统一逻辑链（状态机，两个写方、一个记录）**：本 skill（`source="standalone"`）与 S2 自含模式（`brain-makeSomeGem` 内嵌 S1，跑完由 S2 会话回写 `source="s2_nested"`，schema 完全一致）是同一逻辑步骤的两条物理路径，**都收敛到同一 ledger key**。S2 启动判定：`get_ledger_key(region, "s1_<ds>_d<delay>")` 命中且 `ideas_md_path` 可读 → `--ideas-file` 注入（内嵌 S1 不再执行）；未命中 → S2 自含跑并回写。由此：同一 (region, dataset, delay) 的内嵌 S1 至多跑一次，字段白名单/预处理决策以该 ledger 记录为唯一口径，S3 五闸校验与 S6 回写闭环均读此记录，不再存在第二条未入库的决策通道。
+- **S1⇄S2 统一逻辑链（状态机，两个写方、一个记录）**：本 skill（`source="standalone"`）与 S2 自含模式（`brain-make-some-gem` 内嵌 S1，跑完由 S2 会话回写 `source="s2_nested"`，schema 完全一致）是同一逻辑步骤的两条物理路径，**都收敛到同一 ledger key**。S2 启动判定：`get_ledger_key(region, "s1_<ds>_d<delay>")` 命中且 `ideas_md_path` 可读 → `--ideas-file` 注入（内嵌 S1 不再执行）；未命中 → S2 自含跑并回写。由此：同一 (region, dataset, delay) 的内嵌 S1 至多跑一次，字段白名单/预处理决策以该 ledger 记录为唯一口径，S3 五闸校验与 S6 回写闭环均读此记录，不再存在第二条未入库的决策通道。
 - S0 换数据集/换 delay 时，对应 ledger key 由后续 S1 覆盖，无需删除。
 
 ## 核心分析原则

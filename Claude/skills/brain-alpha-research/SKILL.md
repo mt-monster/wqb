@@ -2,6 +2,7 @@
 name: brain-alpha-research
 layer: L1
 description: "研究数据集、字段、类别、universe、仿真设置与最新 alpha 挖掘方法，在不牺牲严谨性或平台兼容性的前提下扩展可搜索机会集。当任务是数据集发现、字段选择、设置空间扩展、类别映射，或把最新论文与平台/论坛指引整合进挖掘工作流时使用。"
+last_verified: 2026-09-10
 allowed-tools:
   - Read
   - Bash

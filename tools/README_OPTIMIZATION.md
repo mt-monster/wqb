@@ -93,7 +93,7 @@ python tools/mcp_7slot_batch.py \
 
 ### 5. GEM 强制校验（gem_validator.py）
 
-**功能**：确保 S2 候选池来自 brain-makeSomeGem 管道
+**功能**：确保 S2 候选池来自 brain-make-some-gem 管道
 
 **校验规则**：
 - GEM 候选占比 ≥80%

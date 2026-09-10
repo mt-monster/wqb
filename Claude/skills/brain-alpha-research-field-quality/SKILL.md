@@ -2,6 +2,7 @@
 name: brain-alpha-research-field-quality
 layer: L1
 description: "字段质量先验与 WebDataScope 数据包质量预筛：按 alphaCount/userCount 排序字段种子、数据包零成本预筛、区域切换预筛门禁。当任务涉及字段质量先验、数据包预筛或基于质量指标的字段/数据集选择时使用。触发词：字段质量 / 质量先验 / WebDataScope / 数据包预筛。"
+last_verified: 2026-09-10
 allowed-tools:
   - Read
   - Bash

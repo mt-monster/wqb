@@ -1,20 +1,43 @@
 # -*- coding: utf-8 -*-
-"""diversity_enhancer.py - 多样性增强模块（嵌入 brain-simAlphasinBatch-and-track）
+"""diversity_enhancer.py - 多样性增强模块（嵌入 brain-sim-alphas-in-batch-and-track）
 
 在 batch_simulator.py 提交前自动分析并增强表达式多样性。
 """
+import os
 import sys
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 
-# 添加项目根目录到路径（向上查找直到找到 src/wqb 目录）
-SCRIPT_DIR = Path(__file__).resolve().parent
-_project_root = SCRIPT_DIR
-for _ in range(8):
-    if (_project_root / "src" / "wqb").is_dir():
-        break
-    _project_root = _project_root.parent
-sys.path.insert(0, str(_project_root / "src"))
+
+def _resolve_workspace_src():
+    """解析工作区 src/ 目录（wqb 规范核心包所在）。
+
+    2026-09-09 修复：原实现只从 __file__ 向上找 8 层，但 skill 安装在
+    ``%USERPROFILE%\\.claude\\skills\\`` 时与工作区（如 ``D:\\coding\\...\\wqb``）
+    根本不在同一棵目录树，向上永远找不到 src/wqb，导致 ImportError 并静默降级
+    （build_wave 每波 diversity_enhanced=false，多样性增强维度完全未生效）。
+    现改为与 gate.py 的 _workspace_src_dirs() 同源策略：
+    环境变量 > 向上推导 > 仓库自带 Claude/skills 兄弟位置。
+    """
+    cands = []
+    for env in ("WQB_WORKSPACE_ROOT", "WQB_ROOT", "WQ_PROJECT_ROOT"):
+        root = os.environ.get(env)
+        if root:
+            cands.append(Path(root) / "src")
+    here = Path(__file__).resolve().parent
+    p = here
+    for _ in range(8):
+        cands.append(p / "src")
+        p = p.parent
+    for c in cands:
+        if (c / "wqb").is_dir():
+            return str(c)
+    return None
+
+
+_SRC = _resolve_workspace_src()
+if _SRC and _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
 
 try:
     from wqb.expression.diversity_enhancer import (
@@ -23,6 +46,9 @@ try:
     DIVERSITY_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] 多样性增强系统不可用: {e}")
+    if not _SRC:
+        print("[WARN]   原因：未能解析工作区 src/（wqb 包）。skill 安装位与工作区"
+              "不同树时需设 WQB_WORKSPACE_ROOT 指向工作区根。")
     DIVERSITY_AVAILABLE = False
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """batch_track 节点：S3 批量回测与跟踪.
 
-替代 brain-simAlphasinBatch-and-track 的 PowerShell 命令模板。
+替代 brain-sim-alphas-in-batch-and-track 的 PowerShell 命令模板。
 """
 
 import json
@@ -40,6 +40,8 @@ def run(
     campaign_dir: Optional[str] = None,
     detached: bool = True,
     submit: bool = True,
+    skip_diversity_gate: bool = False,
+    datasets_extra: Optional[str] = None,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行批量回测跟踪.
@@ -173,6 +175,16 @@ def run(
     ]
     if submit:
         cmd.append("--submit")
+    # 2026-09-09：探针批/单信号验证波可跳过批级结构多样性闸（闸6）。
+    # 探针目的是早期判死单信号机制（2-3 条同族表达式），强制 12 算子覆盖
+    # 会逼探针波塞进无关骨架，背离探针本意。仅 skip_diversity_gate=True 时透传。
+    if skip_diversity_gate:
+        cmd.append("--skip-diversity-gate")
+    # 2026-09-09：跨金字塔慢×快表达式（如 insiders5×pv106 辅助腿）需要合并多个
+    # dataset 的 typed catalog 才能过闸2 字段白名单（gate.py merge_whitelists）。
+    # 逗号分隔，与 pipeline.py --datasets 契约一致。
+    if datasets_extra:
+        cmd += ["--datasets", datasets_extra]
 
     # argv 契约校验：构建出来的命令必须能被 pipeline.py 的 argparse 接受。
     # 干跑与实跑都走，干跑时它就是本节点最有价值的那次检查。

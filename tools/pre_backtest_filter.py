@@ -118,7 +118,7 @@ def check_self_corr_fast(exprs, ctx, region, threshold=0.7):
     """自相关快筛：与 region 已有 alpha 的 self_corr >= threshold → FAIL。
     
     注：这里只做 DB 层快筛（已有 alpha 的 self_correlation 字段），
-    不做实时 PnL 计算（那是 brain-calculate-alpha-selfcorrQuick 的职责）。
+    不做实时 PnL 计算（那是 brain-calculate-alpha-selfcorr-quick 的职责）。
     """
     try:
         from _lib.wqb_store import get_store

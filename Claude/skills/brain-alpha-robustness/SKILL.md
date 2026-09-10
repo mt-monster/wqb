@@ -1,6 +1,7 @@
 ---
 name: brain-alpha-robustness
 description: "提交前稳健性验证：汇集论坛实证的归因与反过拟合技术，跨年度与子宇宙做 PnL 归因分析，拒绝高 Sharpe 来自噪声拟合、股票集中或单年行情的候选。当任务涉及提交前验证、OS 表现不佳的事后复盘，或用户提到过拟合/稳健性/子宇宙/逐年统计/PnL 归因/衰减比/参数稳定性时使用。"
+last_verified: 2026-09-10
 layer: L4
 allowed-tools:
   - Read

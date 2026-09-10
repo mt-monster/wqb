@@ -1,4 +1,4 @@
-# brain-simAlphasinBatch-and-track 使用说明
+# brain-sim-alphas-in-batch-and-track 使用说明
 
 这个目录用于批量提交 WorldQuant BRAIN alpha simulation，并支持基于 CSV 的断点续传。
 

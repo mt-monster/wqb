@@ -93,7 +93,7 @@ S2 启动时自动注入，禁止绕过。〉
 
 ### 4.3 生成方式
 
-- 工具：`brain-makeSomeGem`（带 `--priors-file`：win/dead_end）
+- 工具：`brain-make-some-gem`（带 `--priors-file`：win/dead_end）
 - 目标数量：{8-24} 条
 - 去重：`build_wave.py` 全历史去重（防配额浪费）
 

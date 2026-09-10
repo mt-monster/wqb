@@ -47,7 +47,7 @@ MEA TOP400 小宇宙，9 个数据集 campaign 状态**全部 exhausted**——�
 
 1. `get_campaigns(MEA)` 全部 exhausted 且 `get_dead_datasets(MEA)` 覆盖全部候选 → **不进步 2**；
 2. 直接向用户报告："MEA 已全区判死冻结（9/9 exhausted），建议转区"；
-3. 调 `brain-nextMove-analysis` 产出选区建议（ASI/GBR/HKG 等 probe-only 区优先）。
+3. 调 `brain-next-move-analysis` 产出选区建议（ASI/GBR/HKG 等 probe-only 区优先）。
 
 ### 唯一后门：用户显式强制 → 降级 probe-only
 

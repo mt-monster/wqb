@@ -1,4 +1,4 @@
-# brain-simAlphasinBatch-and-track Reference
+# brain-sim-alphas-in-batch-and-track Reference
 
 ## Suggested Folder Layout
 - `configs/`: 凭证配置与模板
@@ -16,7 +16,7 @@
 
 ## Run Template
 ```powershell
-Set-Location ".qoder/skills/brain-simAlphasinBatch-and-track"
+Set-Location ".qoder/skills/brain-sim-alphas-in-batch-and-track"
 python scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json --output-csv outputs/simulation_status.csv --batch-size 3 --concurrency 2 --detached
 ```
 

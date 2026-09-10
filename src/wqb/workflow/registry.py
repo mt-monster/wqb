@@ -103,12 +103,13 @@ class WorkflowRegistry:
                 batch_track.run,
                 NodeMeta(
                     name="batch_track",
-                    description="S3 批量回测与跟踪（等价包装 brain-simAlphasinBatch-and-track；并发纪律见 wqb-concurrency §8）",
+                    description="S3 批量回测与跟踪（等价包装 brain-sim-alphas-in-batch-and-track；并发纪律见 wqb-concurrency §8）",
                     category="batch",
                     phase=1,
                     required_params=["region", "wave", "dataset"],
                     optional_params=["concurrency", "max_rounds", "output_csv",
-                                     "campaign_dir", "detached", "submit"],
+                                     "campaign_dir", "detached", "submit",
+                                     "skip_diversity_gate", "datasets_extra"],
                 )
             )
         except ImportError as e:
@@ -174,7 +175,7 @@ class WorkflowRegistry:
                 gem.run,
                 NodeMeta(
                     name="gem",
-                    description="GEM 表达式生成（等价包装 brain-makeSomeGem headless_runner）",
+                    description="GEM 表达式生成（等价包装 brain-make-some-gem headless_runner）",
                     category="gem",
                     phase=4,
                     required_params=["region", "dataset_id", "delay", "universe"],

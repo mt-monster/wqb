@@ -352,7 +352,7 @@ def auto_pick_artifacts(
     skill_root = Path(__file__).resolve().parents[1]
     data_root = (
         skill_root.parent
-        / "brain-makeSomeGem"
+        / "brain-make-some-gem"
         / "scripts"
         / "trailSomeAlphas"
         / "skills"
@@ -391,14 +391,14 @@ def auto_pick_artifacts(
     if set_default_downstream:
         default_alpha_list = (
             skill_root.parent
-            / "brain-inspectRawTemplate-create-Setting"
+            / "brain-inspect-raw-template-create-setting"
             / "processed_templates"
             / latest_idea.stem
             / "alpha_list.json"
         ).resolve()
         default_sim_csv = (
             skill_root.parent
-            / "brain-simAlphasinBatch-and-track"
+            / "brain-sim-alphas-in-batch-and-track"
             / "outputs"
             / "simulation_status.csv"
         ).resolve()

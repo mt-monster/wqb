@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-08-22
-name: brain-how-to-pass-AlphaTest
+name: brain-how-to-pass-alpha-test
 description: "提供 WorldQuant BRAIN alpha 提交测试的详细要求、阈值与改进建议。 涵盖 Fitness、Sharpe、Turnover、Weight、Sub-universe 与 Self-Correlation 测试。 当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用 （submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
 layer: L4
 allowed-tools:
@@ -99,7 +99,7 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
 - **ATOM 原则**：避免混合数据集，以受益于放宽的 "ATOM" 提交标准（近 2 年 Sharpe / Last 2Y Sharpe）。
 
 ## 衔接协议
-- **上游**：S3 `brain-simAlphasinBatch-and-track`（回测结果优先查 **backtest_results 表**（`mcp__wqb-db__*` 查询工具，结构化真相源）；`simulation_status.csv` 候选池为排障兼容回退）。
+- **上游**：S3 `brain-sim-alphas-in-batch-and-track`（回测结果优先查 **backtest_results 表**（`mcp__wqb-db__*` 查询工具，结构化真相源）；`simulation_status.csv` 候选池为排障兼容回退）。
 - **本 skill 角色**：S4 链首步——失败项定位与阈值判定。
 - **FAIL 回流纪律（2026-09-02，区域无关，强制）**：判定 FAIL 后候选不得直接丢弃/只留 near_pool，按资格线分流：
   1. 对照区域 `thresholds.json` 的 `mode_b_qualification`（缺省 sharpe≥1.25 且 fitness≥0.8）：**达标 → 强制进
@@ -107,4 +107,4 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
      消费 salvage_pool 补强腿）；**未达标 → 判死**（dead_end 回写 + wave 台账 closed，勿送 near_pool / 勿发增强波）。
   2. 快达标因子（S≥1.0 且 prod corr<0.5）已由 S4 `review_wave.py --write-ledger` 自动幂等写入台账
      `salvage_pool`（对齐 `_salvage_to_pool` entry 结构，带 boost_dims 卡点标注），**无需人工手写入池**。
-- **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorrQuick` → `brain-explain-alphas`。
+- **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorr-quick` → `brain-explain-alphas`。

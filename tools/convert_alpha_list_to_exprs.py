@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """convert_alpha_list_to_exprs.py - 将 S2' 的 alpha_list.json 转换为 S3 pipeline 的输入格式
 
-S2' 输出格式（brain-inspectRawTemplate-create-Setting）：
+S2' 输出格式（brain-inspect-raw-template-create-setting）：
 [
   {
     "type": "REGULAR",

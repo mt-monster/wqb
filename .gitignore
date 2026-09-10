@@ -117,7 +117,7 @@ _to_delete/
 Claude/skills/*/outputs/
 Claude/skills/*/scripts/outputs/
 Claude/skills/*/output_report/
-Claude/skills/brain-inspectRawTemplate-create-Setting/processed_templates/
+Claude/skills/brain-inspect-raw-template-create-setting/processed_templates/
 Claude/skills/*/parsetab.py
 Claude/skills/**/parsetab.py
 

@@ -1,9 +1,9 @@
-# brain-makeSomeGem Reference
+# brain-make-some-gem Reference
 
 ## Folder Layout
 
 ```text
-brain-makeSomeGem/
+brain-make-some-gem/
 ├── SKILL.md
 ├── reference.md
 └── scripts/

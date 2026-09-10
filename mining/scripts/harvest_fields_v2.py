@@ -3,7 +3,7 @@ import os
 then identify USA-valid, non-saturated candidates for the 4th alpha."""
 import sys, re, json, time, os
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-sim-alphas-in-batch-and-track", "scripts")))
 from ace_lib import start_session, brain_api_url
 
 s = start_session()

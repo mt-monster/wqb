@@ -83,7 +83,7 @@ unique_contribution:
   one_liner: "一句话描述（中文）"
   hypothesis: "待验证 | 已有 E1 …"
   suggested_next: "用户若感兴趣，可 …"
-  handoff_skill: brain-makeSomeGem | none
+  handoff_skill: brain-make-some-gem | none
   priority: now | later | maybe
   overlaps_contribution: true | false
 ```

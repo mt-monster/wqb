@@ -8,7 +8,7 @@
 
 ### 调用链
 ```
-brain-simAlphasinBatch-and-track (Skill)
+brain-sim-alphas-in-batch-and-track (Skill)
     ↓ 触发
 wq-brain-campaign-toolkit/scripts/pipeline.py (执行引擎)
     ↓ 调用
@@ -19,7 +19,7 @@ BrainApiClient.create_multi_simulation() (平台 API)
 
 | 环节 | 类型 | 职责 | 关键文件 |
 |------|------|------|----------|
-| **brain-simAlphasinBatch-and-track** | Skill 定义 | 提供批量回测的方法论文档、参数模板、最佳实践 | `.qoder-cn/skills/brain-simAlphasinBatch-and-track/SKILL.md` |
+| **brain-sim-alphas-in-batch-and-track** | Skill 定义 | 提供批量回测的方法论文档、参数模板、最佳实践 | `.qoder-cn/skills/brain-sim-alphas-in-batch-and-track/SKILL.md` |
 | **wq-brain-campaign-toolkit** | 执行引擎 | 实际执行批量回测、断点续跑、结果收集 | `wq-brain-campaign-toolkit/scripts/pipeline.py` |
 | **pipeline.py** | CLI 入口 | 解析命令行参数、调度回测任务、写入 CSV/DB | `pipeline.py run --dataset <DS> --wave <N>` |
 | **BrainApiClient** | API 客户端 | 与 BRAIN 平台通信、429 退避、并发控制 | `world-quant-brain-mcp/brain_mixin_simulation.py` |
@@ -66,7 +66,7 @@ result = executor.execute("batch_track", {
 
 ### 调用链
 ```
-brain-makeSomeGem (Skill)
+brain-make-some-gem (Skill)
     ↓ 触发
 trailSomeAlphas/skills/brain-feature-implementation (执行)
     ↓ 生成
@@ -79,7 +79,7 @@ tools/pool_diversity.py + tools/quality_predict.py
 
 | 环节 | 文件 | 说明 |
 |------|------|------|
-| Skill 定义 | `brain-makeSomeGem/SKILL.md` | 概念优先：机制→具体字段→一条模板 |
+| Skill 定义 | `brain-make-some-gem/SKILL.md` | 概念优先：机制→具体字段→一条模板 |
 | 执行器 | `run.py --config config.json` | headless_runner 模式 |
 | 产物 | `final_expressions.json` | 生成的 alpha 表达式列表 |
 | 质量预估 | `tools/quality_predict.py` | 零配额预检，三态判定 |

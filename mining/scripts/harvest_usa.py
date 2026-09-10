@@ -1,6 +1,6 @@
 import os
 import sys, re, time
-sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-simAlphasinBatch-and-track", "scripts")))
+sys.path.insert(0, os.environ.get("WQ_ACE_LIB", os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "brain-sim-alphas-in-batch-and-track", "scripts")))
 from ace_lib import start_session
 
 s = start_session()

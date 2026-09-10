@@ -1,6 +1,6 @@
 ---
 last_verified: 2026-08-22
-name: brain-calculate-alpha-selfcorrQuick
+name: brain-calculate-alpha-selfcorr-quick
 description: "在本地计算 WorldQuant BRAIN alpha 的自相关与 PPAC（Power Pool Alpha Correlation），比通过 MCP 查询平台快得多。 当用户需要计算 alpha 相关性、核对 PPAC 时使用。"
 layer: L4
 allowed-tools:
@@ -28,10 +28,10 @@ allowed-tools:
 
 示例：
 ```bash
-python .qoder-cn/skills/brain-calculate-alpha-selfcorrQuick/scripts/skill.py --start-date 01-10 --end-date 01-11 --region IND
+python .qoder-cn/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py --start-date 01-10 --end-date 01-11 --region IND
 ```
 
-请确保已安装 `.qoder-cn/skills/brain-calculate-alpha-selfcorrQuick/scripts/requirements.txt` 中的依赖。
+请确保已安装 `.qoder-cn/skills/brain-calculate-alpha-selfcorr-quick/scripts/requirements.txt` 中的依赖。
 
 ## 衔接协议
 - **上游**：`wq-brain-alpha-optimization-v1`（Mode B/A 优化产出的候选）。

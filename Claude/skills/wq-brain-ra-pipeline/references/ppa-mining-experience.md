@@ -3,7 +3,7 @@
 本文件吸收原 `wq-brain-ppa-mining` 的实证经验。唯一编排入口是 `wq-brain-ra-pipeline`。
 禁止调用 `glb_pipeline` / `gbr_pipeline`，禁止再把本文件当独立 Skill 触发。
 
-生成候选只走 `brain-makeSomeGem` → `brain-inspectRawTemplate-create-Setting` → `brain-simAlphasinBatch-and-track`。
+生成候选只走 `brain-make-some-gem` → `brain-inspect-raw-template-create-setting` → `brain-sim-alphas-in-batch-and-track`。
 
 # PPA 挖掘经验细则
 

@@ -284,11 +284,14 @@ def test_chain_extracts_task_id_from_nested_steps():
 # ---------------------------------------------------------------------------
 
 def test_sync_skills_reports_no_drift():
-    """仓库 Claude/skills 与 Agent 实际加载的安装位必须一致。
+    """仓库 Claude/skills 与**全部** Agent 安装位必须一致。
 
-    2026-09-06 实测：安装位的 brain-makeSomeGem 停在 2026-08-22、仓库已是
+    2026-09-06 实测：安装位的 brain-make-some-gem 停在 2026-08-22、仓库已是
     09-05；ra-pipeline 的体检包路径仓库已修正而安装位仍是旧文。Agent 读旧
     SOP、测试读新文，两边各自"自洽"，只有运行时才炸。
+
+    2026-09-10 审计：此前只校验首个安装位（`resolve_install_root()`），
+    导致 ~/.codex、~/.workbuddy 等宿主分叉无人察觉。现改为校验全部安装位。
     """
     sync = REPO_ROOT / "tools" / "sync_skills.py"
     if not sync.is_file():
@@ -299,17 +302,24 @@ def test_sync_skills_reports_no_drift():
 
     if not sync_skills.SOURCE.is_dir():
         pytest.skip("仓库 Claude/skills 不在场")
-    target = sync_skills.resolve_install_root()
-    if target is None:
+    targets = sync_skills.resolve_install_roots()
+    if not targets:
         pytest.skip("本机未找到 skill 安装位")
 
-    only_source, changed, _only_target = sync_skills.diff_tree(
-        sync_skills.SOURCE, target
-    )
-    assert not (only_source or changed), (
-        f"skill 安装位与仓库漂移：缺 {[str(p) for p in only_source[:5]]}，"
-        f"陈旧 {[str(p) for p in changed[:5]]}。"
-        f"跑 `python tools/sync_skills.py` 同步。"
+    drifted = []
+    for target in targets:
+        only_source, changed, _only_target = sync_skills.diff_tree(
+            sync_skills.SOURCE, target
+        )
+        if only_source or changed:
+            drifted.append((target, only_source[:3], changed[:3]))
+    assert not drifted, (
+        "以下 skill 安装位与仓库漂移："
+        + "；".join(
+            f"{t}（缺 {[str(p) for p in src]}，陈旧 {[str(p) for p in chg]}）"
+            for t, src, chg in drifted
+        )
+        + " 跑 `python tools/sync_skills.py` 同步。"
     )
 
 

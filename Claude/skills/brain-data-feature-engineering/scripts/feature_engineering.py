@@ -8,7 +8,7 @@
         --universe <U> --category <C> --output <ideas_md_path>
 
 产出：结构化 feature-engineering ideas markdown（字段画像 + 预处理决策 + 8 问特征概念
-+ 字段白名单），供 S2 brain-makeSomeGem 消费。
++ 字段白名单），供 S2 brain-make-some-gem 消费。
 
 数据源：brain_api.brain_client.get_datafields（真实平台数据）。无凭据/无网络/无字段时
 打印清晰错误到 stderr 并退出非零，节点据此上报失败（而非空文件误判成功）。
@@ -147,10 +147,72 @@ def _classify_field_type(fid: str, ftype: str, desc: str) -> tuple:
 # 报告生成
 # ---------------------------------------------------------------------------
 
+def _int_metric(field: Dict[str, Any], key: str) -> int:
+    """读取字段的整数型平台指标（alphaCount/userCount），缺失或非数值返回 0。"""
+    v = field.get(key)
+    try:
+        return int(v) if v is not None else 0
+    except (TypeError, ValueError):
+        return 0
+
+
+def _quality_score(field: Dict[str, Any]) -> float:
+    """2026-09-09 D9 修复：字段质量先验评分。
+
+    修复前 _pick 只按 coverage 排序，导致 8 个 Concept 全部围绕 coverage=1.0 的
+    trivial 字段（如 iso_week_number 日历字段，零 alpha）。
+
+    评分信号（按 brain-alpha-research-field-quality 的字段质量先验思想）：
+    - alphaCount：平台已挖 alpha 数，是「该字段被验证有 alpha」的最强证据。
+      取 log1p 压缩动态范围（alphaCount 可从 0 到数千）。
+    - userCount：使用该字段的用户数，辅助信号（防止单用户自嗨）。
+    - coverage：数据完整性门槛，仅作 tie-breaker，不作主排序键。
+
+    alphaCount=0 不等于没 alpha（可能是处女地），但 alphaCount>0 是正面证据；
+    在没有任何其他信息时，优先选已被验证的字段比赌处女地期望收益更高
+    （EUR wave155 实证：6 个 alphaCount=0 字段 Sharpe 全部 ≤0.20）。
+    """
+    import math
+    ac = _int_metric(field, "alphaCount")
+    uc = _int_metric(field, "userCount")
+    cov = _coverage(field) or 0.0
+    # 主信号：log1p(alphaCount)；辅助：log1p(userCount) 权重减半；coverage 仅微调
+    return math.log1p(ac) + 0.5 * math.log1p(uc) + 0.1 * cov
+
+
 def _pick(fields: List[Dict[str, Any]], n: int) -> List[Dict[str, Any]]:
-    """优先覆盖率高的字段取前 n 个，用于生成代表性特征概念（避免 8 问全量爆炸）。"""
-    return sorted(fields, key=lambda f: _coverage(f) if _coverage(f) is not None else -1,
-                  reverse=True)[:n]
+    """按字段质量先验（alphaCount 主、userCount 辅、coverage 微调）取前 n 个。"""
+    return sorted(fields, key=_quality_score, reverse=True)[:n]
+
+
+def _pick_diverse(fields: List[Dict[str, Any]], n: int) -> List[Dict[str, Any]]:
+    """2026-09-09 D9 修复：按质量先验选字段，但保证字段族多样性。
+
+    修复前 8 个 Concept 全部用 top[0]/top[1] 两个字段（同族），造成伪多样性。
+    本函数按「字段名第一个下划线前缀」分族，每族先取质量最高者，再按质量
+    跨族轮转，直到凑满 n 个。这样 8 个 Concept 能覆盖尽可能多的不同字段族。
+    """
+    ranked = sorted(fields, key=_quality_score, reverse=True)
+    seen_prefix: set = set()
+    picked: List[Dict[str, Any]] = []
+    # 第一遍：每族取质量最高者
+    for f in ranked:
+        fid = _field_id(f)
+        prefix = fid.split("_", 1)[0] if "_" in fid else fid
+        if prefix in seen_prefix:
+            continue
+        seen_prefix.add(prefix)
+        picked.append(f)
+        if len(picked) >= n:
+            return picked
+    # 第二遍：族不够时按质量补齐
+    for f in ranked:
+        if f in picked:
+            continue
+        picked.append(f)
+        if len(picked) >= n:
+            return picked
+    return picked
 
 
 def _fields_used(sel: List[Dict[str, Any]]) -> str:
@@ -265,32 +327,56 @@ def _render_report(region: str, dataset_id: str, delay: int, universe: str,
     # ------------------------------------------------------------------
     a("## GEM 兼容模板（Concept Blocks）")
     a("")
-    a("> 以下 Concept 块供 S2 `brain-makeSomeGem` 直接消费（`--ideas-file` 注入）。")
+    a("> 以下 Concept 块供 S2 `brain-make-some-gem` 直接消费（`--ideas-file` 注入）。")
     a("> 占位符 `{field_id}` 为字段白名单中的真实字段 id，run_pipeline 可解析绑定。")
     a("")
     if top:
-        f1 = _field_id(top[0])
-        f2 = _field_id(top[1]) if len(top) > 1 else f1
-        # 8 问框架 → 8 个可解析模板（覆盖 ts_mean/ts_delta/zscore/multiply/rank 等核心算子）
-        gem_templates = [
-            (f"{f1} 长期水平稳定（Q1）", f"rank(ts_mean({{{f1}}}, 66))",
+        # 2026-09-09 D9 修复：8 个 Concept 改用 _pick_diverse 选 8 个不同族字段，
+        # 每个 Concept 绑定一个不同的主字段（修复前全部围绕 top[0]/top[1] 两字段，
+        # 在 global_seasonal_model 上退化为 8 个 iso_week_number 日历模板）。
+        diverse = _pick_diverse(fields, 8)
+        # 为每个 Concept 选一个配对字段（质量次高的不同族字段），用于 Q4/Q5 交互
+        def _partner(exclude_id: str) -> str:
+            for f in diverse:
+                pf = _field_id(f)
+                if pf != exclude_id:
+                    return pf
+            return exclude_id
+
+        # 8 问框架 → 8 个可解析模板，每个绑定一个不同族的主字段。
+        # 占位符必须是单花括号 {%s}（2026-09-09 D10 修复）：implement_idea.py
+        # 用 Python str.format 渲染模板，{{x}} 是 format 的字面转义、字段永不
+        # 替换 → 表达式残留花括号被 validator 拒 → expression_list=0。
+        op_specs = [
+            ("长期水平稳定（Q1）", "rank(ts_mean({%s}, 66))",
              "ts_mean 度量字段长期水平，rank 截面归一化"),
-            (f"{f1} 变化动量（Q2）", f"rank(ts_delta({{{f1}}}, 21))",
+            ("变化动量（Q2）", "rank(ts_delta({%s}, 21))",
              "ts_delta 捕捉 21 日变化率，rank 截面归一化"),
-            (f"{f1} 截面离群（Q3）", f"rank(zscore({{{f1}}}))",
+            ("截面离群（Q3）", "rank(zscore({%s}))",
              "zscore 识别截面离群，rank 归一化"),
-            (f"{f1} × {f2} 交互（Q4）", f"rank(multiply(ts_zscore({{{f1}}}, 66), ts_zscore({{{f2}}}, 66)))",
+            ("交互（Q4）", None,  # 特殊处理：双字段
              "两字段各自 ts_zscore 中性化后 multiply 合成"),
-            (f"{f1} 结构占比（Q5）", f"rank(divide({{{f1}}}, {{{f2}}}))",
+            ("结构占比（Q5）", None,  # 特殊处理：双字段
              "divide 构造比例关系，rank 截面归一化"),
-            (f"{f1} 累积衰减（Q6）", f"rank(ts_decay_linear({{{f1}}}, 21))",
+            ("累积衰减（Q6）", "rank(ts_decay_linear({%s}, 21))",
              "ts_decay_linear 累积记忆衰减，rank 归一化"),
-            (f"{f1} 截面相对定位（Q7）", f"group_rank(ts_backfill({{{f1}}}, 66), industry)",
+            ("截面相对定位（Q7）", "group_rank(ts_backfill({%s}, 66), industry)",
              "ts_backfill 稀疏回填 + group_rank 行业内相对定位"),
-            (f"{f1} 本质直取（Q8）", f"rank({{{f1}}})",
+            ("本质直取（Q8）", "rank({%s})",
              "第一性原理直取原始字段，rank 截面归一化"),
         ]
-        for name, tpl, mechanism in gem_templates:
+        for i, (label, tpl_fmt, mechanism) in enumerate(op_specs):
+            f1 = _field_id(diverse[i]) if i < len(diverse) else _field_id(diverse[0])
+            f2 = _partner(f1)
+            if tpl_fmt is None:
+                # Q4 交互 / Q5 结构：双字段模板
+                if "Q4" in label:
+                    tpl = f"rank(multiply(ts_zscore({{{f1}}}, 66), ts_zscore({{{f2}}}, 66)))"
+                else:
+                    tpl = f"rank(divide({{{f1}}}, {{{f2}}}))"
+            else:
+                tpl = tpl_fmt % f1
+            name = f"{f1} {label}"
             a(f"**Concept**: {name}")
             a(f"- **Mechanism**: {mechanism}")
             a(f"- **Fields Used**: `{f1}`, `{f2}`")
