@@ -32,6 +32,10 @@ import os
 import re
 import sys
 
+#: 技能根解析单源（同目录 skill_roots.py；顺序见其模块头，2026-09-11 收敛）
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from skill_roots import candidate_paths_under_skill  # noqa: E402
+
 
 def _warn(msg: str) -> None:
     """统一告警出口（模块内不使用 logging 以保持无副作用）。"""
@@ -983,25 +987,25 @@ def _extract_priors_section(md_text: str) -> str:
 def load_region_priors(region: str) -> str:
     """按优先级探测 region profile 并提取 priors 段。
 
-    探测顺序：
+    探测顺序（2026-09-11 审计补齐主安装位与仓库副本）：
       1. $WQ_RA_PIPELINE_DIR/references/regions/<REGION>.md
-      2. ~/.trae-cn/skills/wq-brain-ra-pipeline/references/regions/<REGION>.md
-      3. ~/.qoder-cn/skills/wq-brain-ra-pipeline/references/regions/<REGION>.md
+      2. ~/.claude/skills/wq-brain-ra-pipeline/references/regions/<REGION>.md
+      3. ~/.codex/skills/...（同上）
+      4. 历史位 ~/.trae-cn/skills、~/.qoder-cn/skills
+      5. 仓库自带 <repo>/Claude/skills/wq-brain-ra-pipeline/references/regions/<REGION>.md
     找不到返回空字符串（不报错，P2 为增强项非硬依赖）。
     """
     region = (region or "").strip().upper()
     if not region:
         return ""
 
-    home = os.path.expanduser("~")
+    home = os.path.expanduser("~")  # noqa: F841  (保留：下方 env 覆盖与路径拼接仍用 home)
     candidates = []
     env_dir = os.environ.get("WQ_RA_PIPELINE_DIR", "").strip()
     if env_dir:
         candidates.append(os.path.join(env_dir, "references", "regions", f"{region}.md"))
-    candidates.append(os.path.join(
-        home, ".trae-cn", "skills", "wq-brain-ra-pipeline", "references", "regions", f"{region}.md"))
-    candidates.append(os.path.join(
-        home, ".qoder-cn", "skills", "wq-brain-ra-pipeline", "references", "regions", f"{region}.md"))
+    candidates.extend(candidate_paths_under_skill(
+        "wq-brain-ra-pipeline", "references", "regions", f"{region}.md"))
 
     for path in candidates:
         try:

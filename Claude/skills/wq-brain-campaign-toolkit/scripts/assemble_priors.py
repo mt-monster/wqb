@@ -28,20 +28,19 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import CampaignContext, add_campaign_arg, atomic_write
 from _lib.wqb_store import get_store
 from _lib.registry import RegistryStore
+from _lib.skill_roots import candidate_paths_under_skill
 
 MAX_WINS = 6
 MAX_DEADENDS = 12
 
-# profile 探测路径（与 skeletons.load_region_priors 同序：env → .trae-cn → .qoder-cn）
+# profile 探测路径（顺序由 _lib/skill_roots.py 单源维护；2026-09-11 收敛，此前只探历史位）
 def _profile_path(region):
     candidates = []
     env_dir = os.environ.get("WQ_RA_PIPELINE_DIR")
     if env_dir:
         candidates.append(os.path.join(env_dir, "references", "regions", f"{region.upper()}.md"))
-    for home in (os.path.expanduser("~"),):
-        for d in (os.path.join(home, ".trae-cn", "skills", "wq-brain-ra-pipeline"),
-                  os.path.join(home, ".qoder-cn", "skills", "wq-brain-ra-pipeline")):
-            candidates.append(os.path.join(d, "references", "regions", f"{region.upper()}.md"))
+    candidates.extend(candidate_paths_under_skill(
+        "wq-brain-ra-pipeline", "references", "regions", f"{region.upper()}.md"))
     for p in candidates:
         if os.path.exists(p):
             return p

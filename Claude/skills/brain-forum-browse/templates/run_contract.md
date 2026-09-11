@@ -13,7 +13,7 @@
 ## Minimum contribution checklist（explore 每轮）
 
 - [ ] ≥1 evidence-backed comment **or** new post with **unique personal detail** (not parroting thread)
-- [ ] unique_contribution documented — see [unique-contribution.md](../references/unique-contribution.md)
+- [ ] unique_contribution documented — see [contribution-and-diversity.md](../references/contribution-and-diversity.md)
 - [ ] **or** user-approved comment + upvote combo
 - [ ] Each draft: adversarial_review_status: pass + evidence_sources[]
 - [ ] Curator upvote considered when merited (explore) / mandatory when qualified (contribute)

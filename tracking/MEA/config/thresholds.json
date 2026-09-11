@@ -60,6 +60,14 @@
   "limit": 4,
   "_note": "ET 日历日配额（REGULAR 4/日 + SUPER 1/日，00:00 ET 重置；2026-09-01 定案，旧 48h 滚动口径废止）。enabled 默认 false（2026-08-26 用户指令关闭提交配额闸）"
  },
+ "diversity": {
+  "_doc": "MEA 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "signal_floor": {
+   "max_sharpe_floor": 1.2,
+   "min_batches": 2,
+   "_evidence": "实证回填 2026-09-11：47 波每波 max|sharpe| 的 p25=1.26 → floor=1.2（旧 0.5）。规则：只上调、不下调；仅当样本≥8 波。"
+  }
+ },
  "dataset_health": {
   "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。",
   "mode": "general",

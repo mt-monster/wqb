@@ -18,7 +18,7 @@ allowed-tools:
 
 # BRAIN Alpha 稳健性（Robustness）
 
-## 衔接协议（七阶段流水线定位）
+## 衔接协议（九步流水线定位）
 
 - **上游**：S4 链——`brain-explain-alphas`（收益来源归因后的候选）。
 - **本 skill 角色**：**S4→S5 必经闸**（过拟合/稳健性审计；INDEX.md 2026-08-22 起列入流水线）。Phase C 的 PASS/CONDITIONAL/REJECT 三态即闸门判定。

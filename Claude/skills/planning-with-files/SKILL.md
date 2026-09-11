@@ -32,7 +32,7 @@ hooks:
   Stop:
     - hooks:
         - type: command
-          command: ".qoder-cn/skills/planning-with-files/scripts/check-complete.sh"
+          command: "<SKILL_ROOT>/planning-with-files/scripts/check-complete.sh"
 ---
 
 # 文件化规划（Planning with Files）
@@ -43,12 +43,12 @@ hooks:
 
 使用本 skill 时：
 
-- **模板** 存放在 skill 目录 `.qoder-cn/skills/planning-with-files/templates/`
+- **模板** 存放在 skill 目录 `<SKILL_ROOT>/planning-with-files/templates/`
 - **你的规划文件**（`task_plan.md`、`findings.md`、`progress.md`）应创建在**你的项目目录**——即你当前工作的文件夹中
 
 | 位置 | 存放内容 |
 |----------|-----------------|
-| Skill 目录（`.qoder-cn/skills/planning-with-files/`） | 模板、脚本、参考文档 |
+| Skill 目录（`<SKILL_ROOT>/planning-with-files/`） | 模板、脚本、参考文档 |
 | 你的项目目录 | `task_plan.md`、`findings.md`、`progress.md` |
 
 这样可以确保规划文件与你的代码放在一起，而不是埋在 skill 安装目录里。

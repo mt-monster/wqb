@@ -267,6 +267,7 @@ _DRY_RUN_CASES = {
     "judge": {"alpha_id": "_TEST_"},
     "gem": {"region": "KOR", "dataset_id": "_test", "delay": 1, "universe": "TOP3000"},
     "campaign": {"region": "KOR", "stage": "S0"},
+    "wave_gate": {"region": "KOR", "dataset": "analyst4", "wave": "97"},
     "feature_engineering": {
         "region": "KOR", "dataset_id": "_test", "delay": 1, "universe": "TOP3000",
     },

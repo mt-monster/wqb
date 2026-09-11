@@ -21,7 +21,7 @@
 | 3  | 相关性矩阵 `compute_mutual_correlation`（候选集内两两）               | 彼此 < 0.5                                   |
 | 4  | 硬闸核查 `get_alpha_details` is.checks + 本地 self/PPAC        | PROD<0.7 / SELF<0.5 / LOW\_2Y>1.58 / CW 必过 |
 | 5  | IS 检查通过后 `set_alpha_properties` 设属性                      | —                                          |
-| 6  | 写入 submit\_ready 池（战役台账 mea\_d1\_campaign\_state.json 等） | —                                          |
+| 6  | 写入 `submit_ready` 池（`ledger_kv` 表，经 `mcp__wqb-db__upsert_ledger_key` 或 `campaign.py ledger submit-ready`；**不再写战役 state json**——历史 `mea_d1_campaign_state.json` 口径已废弃） | —                                          |
 
 注：`submit_alpha` 返回 201 + success:false 是工具 bug，不算失败；以 OS pool ACTIVE 为准。
 
@@ -57,7 +57,7 @@
 | 已有战役目录 tracking/<REGION>/                      | `score_datasets.py --campaign-dir tracking/<REGION>`（权威，v3.1 分位 tier）       |
 | 无战役目录（跨区试探）                                    | `dataset_health_check.py --region R --delay D --universe U`（固定阈值，仅试探）       |
 | generate 白名单                                   | tier1 + `tier_note=pyramid_quota` 上提的非 MODEL（配额后仍无非 MODEL 不得退回纯 MODEL 七槽） |
-| 白名单排序                                          | 先按金字塔配给（每波 ≥2 槽非 MODEL），再 score desc；**禁止** pyramidMultiplier desc 把 PV 整座挤出 |
+| 白名单排序                                          | 先按金字塔配给（每波 ≥2 槽非 MODEL），再 score desc；**禁止** pyramidMultiplier desc 把 PV 整座挤出（**例外**：`mode=ppa` 的 PPA 排序见 `wq-brain-ppa-mining §1.0`，那里以 pyramidMultiplier desc 为主） |
 | 硬地板                                            | cov<0.65 或 usableFields<5 → excluded（mode 无关）                               |
 | 回填带（cov 0.65–0.85 & ac≤50 & valueScore≥6）      | tier2 保底，生成必须 `ts_backfill(66/120)` 包裹                                      |
 | 探针例外（cov≥0.9 & ac=0 & valueScore≥6 & fields<5） | tier2，仅 Stage-A 探针 1 批早停                                                    |
@@ -121,7 +121,7 @@
 | 条件                                             | 动作                                               |
 | ---------------------------------------------- | ------------------------------------------------ |
 | Regular Alpha：OS ACTIVE ≥10（用户目标 N 时按 N） | **停**，可转 SuperAlpha |
-| PPA 日循环：submit-ready ≥ 4（ET 日历日 REGULAR 4/日配额保守占用） | **停** |
+| PPA 日循环：submit-ready ≥ 4 | **停**。PPA 走**独立配额 `POWER_POOL_SUBMISSION` 1/ET 日**，与 `REGULAR_SUBMISSION` 4/日 **并行、不互占**；当天应先提 PPA 那一颗 |
 | 配额有槽（REGULAR\_SUBMISSION remaining>0）且**用户确认** | POST submit（worldquant-submit-alpha）             |
 | `submit_alpha` 201 + success:false             | 不算失败，查 OS pool ACTIVE                            |
 | 同数据集同腿兄弟                                       | 相关性 0.82–1.0，提交前 `compute_mutual_correlation` 核查 |

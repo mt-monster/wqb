@@ -49,7 +49,7 @@ WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统
 工作区自动探测：`WQB_WORKSPACE` 环境变量 > 向上查找含 `world-quant-brain-mcp/` 或 `tracking/` 的目录 > 脚本上级目录。
 
 ```bash
-SK=~/.qoder-cn/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py
+SK=<SKILL_ROOT>/wq-brain-ppa-mining/scripts/dataset_health_check.py
 
 # 数据集级体检（首选，秒级返回）
 python "$SK" --region EUR --delay 1 --universe TOP1200
@@ -78,6 +78,11 @@ python "$SK" --region HKG --universe TOP800 --min-cov 0.9 --max-alphas 20 --top 
 **一票否决**：`coverage < 0.7` 或 `alphaCount > 1000` 的数据集直接排除，不做任何回测。
 
 排序优先级：`pyramidMultiplier` 降序 → `alphaCount` 升序 → `coverage` 降序。
+
+> **适用域（2026-09-11 明确，消除跨 skill 冲突）**：本排序**仅适用于 PPA mode**（`dataset_health.mode=ppa`）。
+> RA / general 战役的白名单排序以 `wq-brain-ra-pipeline` 决策表 **D4** 为准——那里明令"先按金字塔配给
+> （每波 ≥2 槽非 MODEL），再 score desc"，并**禁止** `pyramidMultiplier` 降序（会把 PV 等整座金字塔挤出白名单）。
+> 二者不矛盾：PPA 求点塔倍率，RA 求金字塔配给均衡。
 `alphaCount == 0` 的数据集是零竞争白空间，优先级最高。
 
 **血的教训（2026-08-05 EUR 战役）**：32 次回测全部消耗在 model30（cov 0.713 但 **alphaCount 4202**）、pv20（cov 0.69 / 倍率仅 1.1）、news21（**cov 0.53**）、insiders12（**cov 0.20**）四个数据集上，无一满足门槛，sharpe 天花板 0.72，零候选。而同期该区域有 **19 个** cov≥0.85 且 alphaCount≤50 的数据集从未被触碰，其中 7 个 alphaCount=0。**失败的是选择，不是区域。** 若此门槛前置执行，那 32 次回测可完全避免。

@@ -1,6 +1,6 @@
 # 运行模式与 Run Contract（modes & contract）
 
-> 合并自 run-modes.md / run-contract.md / auto-send-e1.md（2026-08-18 精简）。
+> 合并自 modes-and-contract.md / modes-and-contract.md / auto-send-e1.md（2026-08-18 精简）。
 
 ## 1. 三种模式
 

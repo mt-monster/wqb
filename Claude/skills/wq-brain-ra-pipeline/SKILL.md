@@ -39,6 +39,7 @@ $REGION = "KOR"        # 唯一输入
 阈值不复写，引用 `src/wqb/config.py` 的 `GATES`。
 
 阶段决策见 [references/decision-table.md](references/decision-table.md)。优先级：用户显式指令 > 决策表 > 本正文。
+提示词模板（开新区 / 续波 / 发批 / 单条修复 / 日循环，以"可过闸 REGULAR alpha"为目标）见 [references/ra-campaign-prompt.md](references/ra-campaign-prompt.md)。
 
 ---
 
@@ -48,7 +49,11 @@ $REGION = "KOR"        # 唯一输入
 
 ### 区域 Profile 路由（2026-08-25 落地）
 
-九步骨架全区域共用，**区域差异通过 profile 注入**：`references/regions/<REGION>.md` 每区一份（USA/EUR/KOR/IND/ASI/GBR/HKG/MEA/GLB/CHN/TWN），YAML front-matter 声明静态配置/数据集红黑榜/priors/闸门覆盖/循环策略，正文写明变体理由。
+九步骨架全区域共用，**区域差异通过 profile 注入**：`references/regions/<REGION>.md` 每区一份，YAML front-matter 声明静态配置/数据集红黑榜/priors/闸门覆盖/循环策略，正文写明变体理由。
+
+现有 **12 个** profile：`ASI` `CHN` `DEU` `EUR` `GBR` `GLB` `HKG` `IND` `KOR` `MEA` `TWN` `USA`。
+**区域的权威清单是 `src/wqb/config.py::REGIONS`（14 个）**，profile / 战役目录 / 区域清单三者的对齐表见 [`INDEX.md §区域清单`](../INDEX.md)——任何区域的增删都要同步那张表。
+未被 profile 覆盖的是 `AMR`、`JPN`（`config.REGIONS` 有该区，但**本工作区未启用**：无 profile、无战役目录）。
 
 四个注入点：
 
@@ -59,7 +64,7 @@ $REGION = "KOR"        # 唯一输入
 | 闸门特化 | `gate_overrides`（CW / longCount / prod_corr 阈值） | 步 5、步 7、步 8 |
 | 循环策略 | `loop_policy`（探针上限、快判死、停止条件） | 步 2、步 6、循环表 |
 
-规则：profile 与骨架正文冲突时**profile 优先**（它是区域实证结晶）；profile 缺字段回落骨架默认；profile 未覆盖的 region 走通用处女地模板（参照 ASI profile）；`frozen` 区域（当前仅 MEA）步 1 即拒，唯一后门见该区 profile。
+规则：profile 与骨架正文冲突时**profile 优先**（它是区域实证结晶）；profile 缺字段回落骨架默认；profile 未覆盖的 region（**当前仅 `AMR` / `JPN`**）走通用处女地模板（参照 ASI profile），**且开新区前必须先补 profile + `tracking/<R>/config/`**（DEU 曾被这条漏掉，见 `references/regions/DEU.md` 开头注）；`frozen` 区域（当前仅 MEA）步 1 即拒，唯一后门见该区 profile。
 
 ### 步 1（S-PRE）查表
 
@@ -186,7 +191,9 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 ```
 # assemble-priors 从 DB KB（region_kb win/dead + template_kb + profile 静态先验）确定性组装
 # 并落 <campaign>/priors/<region>_priors.json（含 sha256），取代手写 get_ledger_key 三读
-mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S6"  subcommand="assemble-priors"
+# 阶段标 S2（priors 是 S2 上游产物，Artifact 契约表亦记在 S2）；路由实际按 subcommand
+# 走 campaign.py，与 stage 无关——不要把这里的 stage 当成"属于 S6"。
+mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  subcommand="assemble-priors"
 ```
 
 assemble-priors 内部映射（供核对，勿手写）：
@@ -204,7 +211,7 @@ $DELAY    = (settings.json).delay
 $UNIVERSE = (settings.json).universe
 $DTYPE    = (catalog).data_type
 # 确定性组装 priors 并写 DB 快照（priors_snapshot_<region>）——DB 为单一事实源
-mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S6"  subcommand="assemble-priors"
+mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  subcommand="assemble-priors"
 mcp__wqb-db__get_ledger_key  region=$REGION  key="s1_${DS}_d${DELAY}"
 # GEM 生成（ideas_file 可从 S1 ledger 自动注入，也可显式传入覆盖）
 mcp__wq-brain-http__workflow_gem  region=$REGION  dataset_id=$DS  delay=$DELAY  universe=$UNIVERSE  priors_file="<priors_path>"
@@ -225,17 +232,27 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 1. **多样性守卫 check_batch**：每批表达式提交前通过 `wqb.expression.validator.check_batch(...)`：≥3 dual-field、≥2 outer wrappers、≥2 windows、≥2 group variables、≥2 shape signatures；混入非对称 shape（`op1(A)-op2(B)` / `A-op2(B)` / `rank(A) vs group_rank(B,g)`）；轮转 13 范式 P1-P13（含 5 论坛范式 + 12 非对称变体）。
 2. **体检→表达式硬门（2026-09-06 已接线，不必手工调）**：`tools/wave_gate.py` 内置调用 `tools/field_inspect_gate.py`，逐条比对字段体检结果，违规计入 FAIL 硬阻断。5 条硬门：低覆盖(cr<0.4)必须含 `ts_backfill`；高偏度(|skew|>2)必须含 `rank`/`winsorize`/`signed_power`；厚尾(kurt>8)必须含 `rank`/`winsorize`；单边恒正/负不能直接用原始水平；稀疏事件(zero_inflated/point_mass)必须用 `trade_when`。
    - 体检包路径 `tracking/mining/field_inspect_<region 小写>_<dataset>.json`，由 `python tools/webdata_quality.py --zip <WebDataScope数据包> --export-expr <path>` 生成。
-   - **缺体检包时本闸不生效**，wave_gate 会打印 `[inspect] 体检硬门未生效` 并给出生成命令 —— 看到这行就说明这一波的预处理约束没人把关（低覆盖/厚尾/稀疏事件会一路裸奔到仿真）。**现状（2026-09-07 核实）：`tracking/mining/` 有 148 个体检包、146 个 `fields` 非空**（USA 102 / EUR 19 / CHN 11 / GLB 6 / ASI 5 / JPN 2 / KOR 1），可用 `ls tracking/mining/field_inspect_*.json` 先查；缺哪个区域/数据集就现生成。注意历史版本曾误记"全仓库暂无可用体检包"——那是只看了 git 跟踪视角（当时仅 2 个空包入库），磁盘实况以 ls 为准。
+   - **缺体检包时本闸不生效**，wave_gate 会打印 `[inspect] 体检硬门未生效` 并给出生成命令 —— 看到这行就说明这一波的预处理约束没人把关（低覆盖/厚尾/稀疏事件会一路裸奔到仿真）。**现状（2026-09-11 实测）：`tracking/mining/` 有 320 个体检包、318 个 `fields` 非空**（HKG 172 / USA 104 / EUR 19 / CHN 11 / GLB 6 / ASI 5 / JPN 2 / KOR 1；DEU / IND / GBR / MEA / TWN 为 0），可用 `ls tracking/mining/field_inspect_*.json` 先查；缺哪个区域/数据集就现生成。注意历史版本曾误记"全仓库暂无可用体检包"——那是只看了 git 跟踪视角（当时仅 2 个空包入库），磁盘实况以 ls 为准。
    - 单独自查：`python tools/field_inspect_gate.py --region USA --dataset model267 --exprs-file <txt>`。
-3. 流程：`check_batch（多样性，toolkit gate.py 闸6 实跑）→ wave_gate（语法 + 5 闸 + 体检硬门）→ 步 6 create_multi_simulation`。
+3. 流程：`check_batch（gate.py 闸6 批级多样性）→ wave_gate（闸1–5 + 闸7/8 数据质量 + 体检硬门）→ 步 6 create_multi_simulation`（闸编号唯一基准见 `Claude/skills/INDEX.md §gate.py 闸编号`）。
    - **脚本归属（2026-09-07 校正）**：`wave_gate.py` / `preflight_wave.py` / `field_inspect_gate.py` 在**仓库根 `tools/`**；`gate.py` / `pipeline.py` / `build_wave.py` / `score_datasets.py` / `assemble_priors.py` 在 **toolkit `scripts/`**（`Claude/skills/wq-brain-campaign-toolkit/scripts/`）。调用时别找错目录。`--wave` 参数全链路为**字符串**（支持 `97` 与 `s2_xxx_d1` 两种形态；wave_gate 曾因 `type=int` 导致字符串波号无法进门禁，2026-09-07 已修复）。
    - 注：第 1 点的 `wqb.expression.validator.check_batch` 是**方法论口径**；可执行路径上实跑的是 toolkit `gate.py:check_batch_diversity`（契约式自学习闸 + 收益来源多样性 + 家族天花板）。两者判据不同，不要以为调了前者就过了闸。
 
-```
+**本步既有 MCP 节点也有 CLI**（2026-09-11 起）：`workflow_execute(node="wave_gate", params={region,dataset,wave,...})`
+（遵守 dry-run 契约 + argv 契约校验）；等价 CLI 走仓根 `tools/`。两者同一实现，节点只是把 CLI 包成可入链的一步。
+注意 `workflow_campaign(stage="S2")` 只路由到 `build_wave.py`＝**选波**（步 4 已调），**不要拿它代替本步门禁**。
+
+```powershell
+# ① 幽灵算子硬闸（纯本地、零配额，先拦——含幽灵算子会整批 CANCELLED 连坐）
+python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选表达式.txt>
+# ② 每波门禁（语法 + gate.py 5 闸 + 体检硬门 + 多样性），一键落盘 gate_results
+python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $W --from-db
+#    候选不在库时： --exprs-file <候选表达式.txt> ；单条自查： --expr <表达式>
+# ③ 仅当需要重建波次时才回选波（等价 workflow_campaign stage="S2" → build_wave.py）
 mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  wave=$W
 ```
 
-VECTOR 用 `mcp__wq-brain-http__preflight_expressions`（auto_fix_vector=true）；repair 批加 `--skip-diversity-gate`。
+VECTOR 用 `mcp__wq-brain-http__preflight_expressions`（auto_fix_vector=true）；repair 批给 `wave_gate.py` 加 `--skip-diversity-gate`。
 
 **幽灵算子硬闸（2026-09-09 新增，`tools/campaign_intel.py ghost-audit`）**：GEM 产物入库后、
 wave_gate 前跑它——检测表达式是否含平台不认的幽灵算子（sigmoid/ts_entropy/ts_skewness 等）。
@@ -396,7 +413,7 @@ mcp__wq-brain-http__value_factor_trendScore  start_date=<本季初>  end_date=<�
 
 ## 整链执行（可选）
 
-九步可以整条交给 `mcp__wq-brain-http__workflow_chain`，**先干跑再实跑**：
+九步中**步 2/3/4/5/6 有 workflow 节点**（registry 注册 8 个：`campaign` / `feature_engineering` / `gem` / `batch_track` / `wave_gate` / `judge` / `submit_alpha` / `superalpha`）。步 1 查表、步 7 S4 评审、步 8 提交判定、步 9 复盘回写**无节点**，需按对应章节单独执行（2026-09-11 审计纠正：旧文称"九步可以整条交给 workflow_chain"，与 registry 实际能力不符；同批新增 `wave_gate` 节点，使步 5 门禁首次可入链）。链式调用先干跑再实跑：
 
 ```
 mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
@@ -427,7 +444,7 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 | 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis` |
 | 白名单被 dead_end 全覆盖 | 停止 |
 | 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
-| **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（默认 floor=0.5 / min_batches=2），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
+| **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（`max_sharpe_floor` 缺省 0.5 / `min_batches` 缺省 2；**语义注意**：`max_sharpe_floor` 的 0.5 兜底只在"有 `signal_floor` 节但缺该字段"时生效——整节缺失或 `enabled:false` 时该闸**静默放行**。2026-09-11 审计已为全部 11 个区域补齐该节），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `mcp__wq-brain-http__sa_probe --region $REGION`） |
 | 配额耗尽 | 挂起提交，继续步 2 → 9。 |
 | 用户要求持续日循环 | 每个 NY 日先 `brain-next-move-analysis`，再从步 1 跑；日界 21:30 ET |
@@ -448,7 +465,7 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 
 仅当 `get_messages` 当前 Power Pool 主题匹配 region/delay/universe 时挖 PPA；不匹配则挖 RA。
 经验细则 [references/ppa-mining-experience.md](references/ppa-mining-experience.md)。
-PPA 日循环停止闸：submit-ready ≥4（ET 日历日 REGULAR 4/日配额保守占用）。PPA 提交仍须用户确认。
+PPA 日循环停止闸：submit-ready ≥4。**配额是三条并行通道**：`REGULAR_SUBMISSION` 4/日 + `SUPER` 1/日 + **PPA 独立的 `POWER_POOL_SUBMISSION` 1/日**（均 00:00 ET 重置）——PPA 那颗**不占** REGULAR 额度，故日循环应**当天优先提 PPA 那一颗**。PPA 提交仍须用户确认。
 不要把 `wq-brain-ppa-mining` 当编排器调用。
 
 ---
@@ -515,4 +532,4 @@ MCP 工具调用名 = `mcp__<server>__<注册名>`。注册名与所在模块不
 | 直写字段目录 | `mcp__wqb-db__upsert_field_catalog` | wqb_db_mcp.py |
 | 直写 ledger | `mcp__wqb-db__upsert_ledger_key` | wqb_db_mcp.py |
 
-> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。统计口径：`wq-brain-http` 服务器共 68 个工具（tools_workflow 11 个，其余分布在 account/alpha/config/corr/data/forum/labs/ops/sim/spc）；`wqb-db` 服务器 32 个。
+> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。统计口径：`wq-brain-http` 服务器共 68 个工具（tools_workflow 11 个，其余分布在 account/alpha/config/corr/data/forum/labs/ops/sim/spc）；`wqb-db` 服务器 33 个。

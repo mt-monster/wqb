@@ -81,12 +81,14 @@ def test_executor_workflow_result_to_dict_shape():
 # registry
 # ---------------------------------------------------------------------------
 
-def test_registry_lists_all_seven_nodes():
+def test_registry_lists_all_core_nodes():
     r = get_registry()
     nodes = r.list_nodes()
     assert set(nodes) == {
         "batch_track", "submit_alpha", "superalpha", "judge", "gem",
         "campaign", "feature_engineering",
+        # 2026-09-11 新增：ra-pipeline 步 5 门禁入 MCP（此前步 5 无节点，整链断在步 4）
+        "wave_gate",
     }
 
 

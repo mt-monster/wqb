@@ -24,6 +24,24 @@
   "sharpe_min": 1.25,
   "fitness_min": 0.8
  },
+ "diversity": {
+  "_doc": "DEU 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "signal_floor": {
+   "max_sharpe_floor": 0.5,
+   "min_batches": 2,
+   "_evidence": "样本 0 波 < 8，沿用标准 floor=0.5（不动）"
+  }
+ },
+ "quick_scan": {
+  "red_2y_max": 0.6,
+  "red_sh_abs_min": 0.8,
+  "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖（2026-09-11 补齐，与 GLB/USA/EUR 口径一致）"
+ },
+ "hard_gates": {
+  "prod_correlation_max": 0.7,
+  "self_correlation_max": 0.7,
+  "_note": "平台提交期硬闸，与顶层 prod_corr_max/self_corr_max 同值（2026-09-11 补齐以消除两版 schema 差异）。本区**故意不带 probe_scoring_v2**：那会改变 S0 评分行为，需单独实证后再引入。"
+ },
  "dataset_health": {
   "_doc": "S0 两阶段口径（同 GLOBAL/IND 2026-09-01 口径）：阶段① 全局绝对底线=coverage_hard_min/field_count_hard_min；阶段② 区域自适应分位分带（tier_method=quantile）。KOR 特化：MODEL 类别禁用（用户明令）；红榜族（chart_patterns/news_sentiment/ai_ml/credit_risk/glb_emotion）结构性排除。",
   "mode": "general",

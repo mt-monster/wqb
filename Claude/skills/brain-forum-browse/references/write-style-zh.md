@@ -1,8 +1,10 @@
 # Write Style (简体中文)
 
+> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录的实际文件为准。
+
 All `create_forum_post` and `create_forum_comment` content **must be Simplified Chinese**.
 
-**Forbidden:** 空话、重复他人、重复自己过往 snippet；见 [unique-contribution.md](unique-contribution.md).
+**Forbidden:** 空话、重复他人、重复自己过往 snippet；见 [contribution-and-diversity.md](contribution-and-diversity.md).
 
 **Hard rule — evidence-backed only:** Every factual claim, metric, recommendation, or causal statement must trace to ≥1 evidence tier (E1 personal experience, E2 MCP data, E3 named paper). See [evidence-and-review.md](evidence-and-review.md).
 
@@ -91,7 +93,7 @@ Agent 仍须目视检查：无裸露 Markdown 标记、标签闭合、证据 tag
 
 - 实操向、克制、不吹嘘 VF/名次
 - 不伪造 submission 记录 — 数字只来自 E1/E2
-- 跟官方公告：只写 uncovered points（见 content-diversity.md）
+- 跟官方公告：只写 uncovered points（见 contribution-and-diversity.md）
 - 外部论文须点名或 arXiv ID（E3），禁止模糊引用
 
 ## Evidence citation (Run Contract)
@@ -122,7 +124,7 @@ Default **`upfront_batch`**: full Chinese drafts live in **Run Contract** (Phase
 
 Legacy **`per_item`**: only if user explicitly asks for step-by-step confirm.
 
-Never end Recon with an action menu — see [run-contract.md](run-contract.md).
+Never end Recon with an action menu — see [modes-and-contract.md](modes-and-contract.md).
 
 ## MCP mapping
 

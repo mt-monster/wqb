@@ -94,4 +94,4 @@ Per-run 快照入 `outputs/runs/<run_id>/`。
 
 **Evidence vs judge corpus：** judge `forum_corpus/` = 风格/rubric 参考，**不是** live 主张的 E2 证据；E2 必须 MCP `read_*`/`search_*`；E1 必须 `get_user_alphas`/P0–P5。Forum writes 用 [evidence-and-review.md](evidence-and-review.md)。
 
-**Corpus path：** `.qoder-cn/skills/brain-alpha-judge/data/forum_corpus/`。不复制进 brain-forum-browse。发现流：live MCP read → 人工筛选 → 加入 judge corpus + index.json。
+**Corpus path：** `<SKILL_ROOT>/brain-alpha-judge/data/forum_corpus/`。不复制进 brain-forum-browse。发现流：live MCP read → 人工筛选 → 加入 judge corpus + index.json。

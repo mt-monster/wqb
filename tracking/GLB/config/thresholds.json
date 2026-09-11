@@ -9,7 +9,8 @@
   "signal_single_point_max": 0.6,
   "signal_floor": {
    "max_sharpe_floor": 0.5,
-   "min_batches": 2
+   "min_batches": 2,
+   "_evidence": "样本 0 波 < 8，沿用标准 floor=0.5（不动）"
   }
  },
  "review": {

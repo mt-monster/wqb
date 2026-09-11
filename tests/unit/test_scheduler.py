@@ -79,7 +79,11 @@ def test_plan_arms_have_required_fields(scheduler):
 def test_plan_non_usa_region(scheduler):
     plan = scheduler.plan("2026-04-22", region="KOR", budget=50)
     assert plan["region"] == "KOR"
-    assert plan["universe"] == "TOP3000"  # we pass it explicitly
+    # 未显式传 universe → 取区域默认。KOR 默认档 = TOP600，四重佐证：
+    # src/wqb/config.py::REGIONS["KOR"].default_universe、tracking/KOR/config/settings.json、
+    # references/regions/KOR.md 的 static.universe、decision-table.md「KOR TOP600」。
+    # 2026-09-11 修正：旧断言写 TOP3000，是 KOR 档位被纠正前遗留的过期预期。
+    assert plan["universe"] == "TOP600"
 
 
 # ---------------------------------------------------------------------------

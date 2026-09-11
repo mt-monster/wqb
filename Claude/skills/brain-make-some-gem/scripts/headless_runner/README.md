@@ -34,8 +34,9 @@ $env:MOONSHOT_API_KEY="your_moonshot_key"
 ## 3) 运行
 
 ```powershell
-Set-Location ".cursor\skills\brain-make-some-gem\scripts\headless_runner"
-C:/Python313/python.exe run.py --config config.json --data-category analyst --region EUR --delay 1 --dataset-id analyst4 --universe TOP2500 --instrument-type EQUITY --data-type VECTOR
+# <SKILL_ROOT> = 技能库根目录。真相源 = 仓库 Claude/skills；各宿主安装位同名（见 INDEX.md）
+Set-Location "<SKILL_ROOT>\brain-make-some-gem\scripts\headless_runner"
+$WQ_PY run.py --config config.json --data-category analyst --region EUR --delay 1 --dataset-id analyst4 --universe TOP2500 --instrument-type EQUITY --data-type VECTOR
 ```
 
 常用可选参数：

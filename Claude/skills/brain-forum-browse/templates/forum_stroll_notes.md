@@ -11,7 +11,7 @@
 
 ## 贡献计划（必填 — **每轮必贡献，不可跳过**）
 
-_浏览后定稿；不可留空。须 **独特个人增量** + evidence；禁止复述他人空话。见 [unique-contribution.md](../references/unique-contribution.md)._
+_浏览后定稿；不可留空。须 **独特个人增量** + evidence；禁止复述他人空话。见 [contribution-and-diversity.md](../references/contribution-and-diversity.md)._
 
 | 动作 | post_id | L1 | 独特增量（一句）| E1 来源（含 AI 对话?）| 证据就绪 |
 |------|---------|-----|----------------|----------------------|----------|
@@ -54,7 +54,7 @@ _（emergent 模式或 purposeful 逛中的新发现 — 支撑上方贡献计�
 
 ## 延伸想法（Follow-on impulses — 可选，不自动执行）
 
-_高质量帖/评/公告触发的研究、探索或 skill handoff 提案；**不替代**上方贡献计划。每轮 0–3 条，无则写「本轮无延伸」。格式见 [follow-on-impulses.md](../references/follow-on-impulses.md)。_
+_高质量帖/评/公告触发的研究、探索或 skill handoff 提案；**不替代**上方贡献计划。每轮 0–3 条，无则写「本轮无延伸」。格式见 [contribution-and-diversity.md](../references/contribution-and-diversity.md)。_
 
 | id | spark (E2 post/公告) | one_liner | hypothesis | handoff_skill | priority |
 |----|----------------------|-----------|------------|---------------|----------|

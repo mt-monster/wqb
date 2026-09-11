@@ -56,6 +56,14 @@
   "self_correlation_max": 0.7,
   "_note": "平台提交期硬闸，异步计算须以重检为准"
  },
+ "diversity": {
+  "_doc": "HKG 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "signal_floor": {
+   "max_sharpe_floor": 0.5,
+   "min_batches": 2,
+   "_evidence": "样本 2 波 < 8，沿用标准 floor=0.5（不动）"
+  }
+ },
  "dataset_health": {
   "_doc": "S0 数据集预筛（2026-08-15 P0-P4 重构，与 toolkit score_datasets.py 对齐）。mode=general：alphaCount 仅 score 软罚；mode=ppa：alphaCount<=alpha_count_max 硬闸。tier_method=quantile：score 分位分带；threshold=固定阈值回退。硬地板：coverage_hard_min/field_count_hard_min。",
   "mode": "general",

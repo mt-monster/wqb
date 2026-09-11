@@ -69,6 +69,7 @@ except Exception as exc:
 from economic_priors import compact_priors_text, concept_first_rules, load_priors
 
 import skeletons  # 同目录骨架库（P0: skeleton mode 填槽协议）
+from skill_roots import candidate_paths_under_skill  # 技能根单源（同目录）
 
 # 复用工作区 tools/lib 下的 vector_wrap（单一权威源）。
 # 生成端兜底：LLM 未必遵守 prompt 里的 vec_* 指示，落盘前自动裹上聚合。
@@ -1692,7 +1693,8 @@ def _wqb_campaign_store():
 def _load_template_families() -> dict:
     """加载 toolkit config/template_families.json（字段画像驱动模板族）。
 
-    定位顺序：WQ_TOOLKIT_DIR 覆盖 → ~/.qoder-cn/skills → ~/.cursor/skills → ~/.workbuddy/skills。
+    定位顺序：WQ_TOOLKIT_DIR 覆盖 → `skill_roots()`（技能根单源：env → ~/.claude →
+    ~/.codex → 历史位 → 仓库自带 Claude/skills，见同目录 skill_roots.py 模块头）。
     返回 {'families': [...], 'free_explore_family': {...}}；找不到返回 {}。
     """
     candidates = []
@@ -1701,10 +1703,8 @@ def _load_template_families() -> dict:
         # WQ_TOOLKIT_DIR 指向 scripts/，config 在其上一级
         candidates.append(os.path.join(os.path.dirname(env), "config", "template_families.json"))
         candidates.append(os.path.join(env, "config", "template_families.json"))
-    for root in (os.path.expanduser("~/.qoder-cn/skills"),
-                 os.path.expanduser("~/.cursor/skills"),
-                 os.path.expanduser("~/.workbuddy/skills")):
-        candidates.append(os.path.join(root, "wq-brain-campaign-toolkit", "config", "template_families.json"))
+    candidates.extend(candidate_paths_under_skill(
+        "wq-brain-campaign-toolkit", "config", "template_families.json"))
     for path in candidates:
         try:
             if os.path.isfile(path):
@@ -2257,6 +2257,27 @@ def main():
     allowed_suffixes = build_allowed_suffixes_from_ids(bind_ids, max_suffixes=300) if bind_ids else []
     dataset_code = detect_dataset_code(dataset_ids) if dataset_ids else None
 
+    # --- 字段画像注入（2026-09-11）：供 implement_idea 孤字段增强的稀疏事件门控 ---
+    # 从 DB 读 field_profile_map（webdatascope 体检回填，含 shape/coverage），
+    # 写临时 JSON 传 --field-profile。画像缺失时跳过（孤字段增强降级为不加门控）。
+    orphan_fp_path = None
+    try:
+        _store = _wqb_campaign_store()
+        try:
+            _profile_map = _store.get_field_profile_map(args.region, dataset_id)
+        finally:
+            try:
+                _store.close()
+            except Exception:
+                pass
+        if _profile_map:
+            orphan_fp_path = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder / "orphan_field_profile.json"
+            orphan_fp_path.write_text(json.dumps(_profile_map, ensure_ascii=False, indent=1), encoding="utf-8")
+            print(f"[orphan] field_profile 注入: {len(_profile_map)} 字段画像（稀疏事件门控用）", flush=True)
+    except Exception as exc:
+        print(f"[orphan] warn: 读取 field_profile 失败（{exc}），孤字段增强不加门控", flush=True)
+        orphan_fp_path = None
+
     if args.pipeline_mode == "skeleton":
         # ---- SKELETON MODE: 直写 idea JSON + final_expressions + meta，绕过模板展开 ----
         if skeleton_result is None:
@@ -2360,6 +2381,9 @@ def main():
                 cmd += ["--field-whitelist", str(whitelist_path)]
             if family_fp_path is not None and family_fm_path is not None:
                 cmd += ["--field-profile", family_fp_path, "--family-match", family_fm_path]
+            elif orphan_fp_path is not None:
+                # 孤字段增强画像注入（无 family_match 时独立传 field_profile，供稀疏事件门控）
+                cmd += ["--field-profile", str(orphan_fp_path)]
             run_script(cmd, cwd=FEATURE_IMPLEMENTATION_SCRIPTS)
 
         merge_script = FEATURE_IMPLEMENTATION_SCRIPTS / "merge_expression_list.py"

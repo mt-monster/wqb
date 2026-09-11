@@ -26,7 +26,7 @@ _(Draft phase — see personal-perspective.md)_
 - community overlap:
 - personal uniqueness:
 
-## Follow-on impulses（可选 — 见 follow-on-impulses.md）
+## Follow-on impulses（可选 — 见 contribution-and-diversity.md）
 
 | id | spark | one_liner | handoff_skill | priority |
 |----|-------|-----------|---------------|----------|

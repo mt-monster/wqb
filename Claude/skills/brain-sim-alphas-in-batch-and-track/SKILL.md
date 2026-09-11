@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-08-23
 name: brain-sim-alphas-in-batch-and-track
-description: "WorldQuant BRAIN alpha 批量提交与跟踪（JSON 输入 → CSV 续跑）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
+description: "WorldQuant BRAIN alpha 批量提交与跟踪（表达式默认读库 `--from-db`；文件/CSV 仅断点续跑兼容）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
 layer: L3
 allowed-tools:
   - Read
@@ -13,7 +13,11 @@ allowed-tools:
 
 ## 持久化铁律（DB 单轨）
 
-战役产物只写入 `data/wqb.db`（经 `wqb.store` / `mcp__wqb-db__*`）。**禁止**把 `final_expressions.json` / `alpha_list.json` / `candidates/*.json` / `cache/*batches*.json` / `results/*.csv` 当交接真相源；Agent 禁止 Write 这些文件。静态配置与凭证除外。
+战役产物只写入 `data/wqb.db`（经 `wqb.store` / `mcp__wqb-db__*`）。**禁止**把 `final_expressions.json` / `alpha_list.json` / `candidates/*.json` / `cache/*batches*.json` / `results/*.csv` 当**交接真相源**；Agent 禁止 Write 这些文件。静态配置与凭证除外。
+
+> **`simulation_status.csv` 的定位（2026-09-11 澄清）**：它是**断点续跑的进度缓存**（记录哪些 multisim 已提交/回收），
+> 不是交接真相源——下游 S4 一律优先读 `backtest_results` 表，CSV 缺失不阻塞。上文的"禁止"针对的是
+> "拿 CSV 当跨阶段交接依据"，不针对引擎自己续跑时读写该文件；二者不矛盾。
 
 
 
@@ -28,7 +32,7 @@ allowed-tools:
 
 - **编排器（`wq-brain-ra-pipeline`）S3 入口 = 本 skill**。本 skill 是批量跟踪与战役执行的单一入口。
 - **执行后端 = `wq-brain-campaign-toolkit`**（引擎实现层，本 skill 通过 subprocess 调用其脚本）。两 skill 是"入口/引擎"关系，不重复实现。
-- **独立 skill，不依赖 `brain-make-some-gem`**——只要输入符合 `alpha_list.json` 格式即可。
+- **独立 skill，不依赖 `brain-make-some-gem`**——只要表达式已入 `expressions` 表（默认 `--from-db`）或符合 `alpha_list.json` 兼容格式即可。
 
 ## 衔接协议
 - **上游**：S3 前置 `brain-inspect-raw-template-create-setting`（产出 `settings_candidates.json` + `alpha_list.json`，并默认写 **expressions 表**）；或用户直接提供的合规 `alpha_list.json`。**表达式输入默认读库**：引擎 `pipeline.py --from-db` 默认启用（文件模式已废弃），从 **expressions 表**（`data/wqb.db`，结构化真相源）按 region+wave 取表达式；`alpha_list.json`/`--file` 仅为兼容输入与排障。
@@ -45,8 +49,9 @@ PowerShell 中用 `;` 链命令（不要用 `&&`）；路径检查用 `Test-Path
 
 | 类型 | 默认路径 | 说明 |
 |---|---|---|
-| alpha 输入 | `data/alpha_list.json`（兼容根目录 `alpha_list.json`） | 待回测的表达式+设置列表 |
-| 状态输出 | `outputs/simulation_status.csv`（用户可指定） | 续跑的唯一真相源（文件级） |
+| alpha 输入（默认） | `data/wqb.db` → **expressions 表**（`pipeline.py --from-db`，默认启用） | 按 region+wave 取待回测表达式；库为结构化真相源 |
+| alpha 输入（兼容） | `data/alpha_list.json`（兼容根目录 `alpha_list.json`） | **已废弃**的文件模式，仅排障/兼容用 |
+| 状态输出 | `outputs/simulation_status.csv`（用户可指定） | **断点续跑的进度缓存**（非真相源），下游查结果请读 `backtest_results` |
 | 多样性报告 | `outputs/diversity_report.json`（开启增强时生成） | 增强前后指标+动作记录 |
 | **回测结果（结构化真相源）** | `data/wqb.db` → **backtest_results 表**（pipeline.py 双写） | 引擎脚本直写；库为跨阶段查询接口，CSV/JSON 仅为排障兼容 |
 | **波级台账** | `data/wqb.db` → wave_results / ledger_kv 表（`--write-ledger` 时） | 正式回写走 toolkit 幂等 CLI；会话内轻量回写可用 `mcp__wqb-db__upsert_wave_result` / `upsert_ledger_key` |
@@ -80,7 +85,7 @@ mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])
 **兼容模式**（旧 PowerShell 链，逐步淘汰）：
 
 ```powershell
-# 在本 skill 所在目录运行（<skills_root> 按实际安装根替换，通常为 ~/.qoder-cn/skills）
+# 在本 skill 所在目录运行（<SKILL_ROOT> 按实际安装根替换；真相源 = 仓库 Claude/skills，各宿主安装位同名）
 Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"
 python scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json --output-csv outputs/simulation_status.csv --batch-size 3 --concurrency 2 --detached
 # ⚠️ 上面的 --concurrency 2 / --batch-size 3 只适用于「非编排的跨区临时批」（保守试探）。

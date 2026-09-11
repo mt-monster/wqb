@@ -1,6 +1,6 @@
 # 独特贡献与多样性（contribution & diversity）
 
-> 合并自 unique-contribution.md / content-diversity.md / personal-perspective.md / follow-on-impulses.md（2026-08-18 精简）。
+> 合并自 contribution-and-diversity.md / contribution-and-diversity.md / personal-perspective.md / contribution-and-diversity.md（2026-08-18 精简）。
 
 ## 1. 独特贡献（每逛必贡献）
 

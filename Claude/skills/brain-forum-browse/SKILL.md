@@ -39,7 +39,7 @@ allowed-tools:
 | **贡献 / 填空白 / 跟评 / 发帖** | **contribute** | 完整 Recon → gap → 更严 write 计划 + 必 curator → Phase 7.5 → Run Contract → 同意执行 → write |
 | **逛为主，可能回一句** | **hybrid**（已弃用别名） | **等同 explore** — 同样必贡献；仅用户话术不同 |
 
-详见 [run-modes.md](references/modes-and-contract.md)。
+详见 [modes-and-contract.md](references/modes-and-contract.md)。
 
 **禁止所有模式：** 浏览完后「你想先做哪一项？」菜单。
 
@@ -58,7 +58,7 @@ MCP 环境是否提供论坛写工具？
          中注明豁免原因。
 ```
 
-每次写操作必须包含**独特的个人价值** — 见 [unique-contribution.md](references/contribution-and-diversity.md)。
+每次写操作必须包含**独特的个人价值** — 见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
 
 1. **≥1 个有证据支撑的写操作** — 评论 **或** 新帖，每条论断都必须追溯到 E1/E2/E3
 2. **明确的用户批准计划**，含评论 + curator 点赞组合（当点赞是主要动作时，若帖子值得仍优先评论）
@@ -74,7 +74,7 @@ MCP 环境是否提供论坛写工具？
 > **环境适配（2026-08）**：当前 MCP 服务器为 `wq-brain-http`（服务名 `brain-platform-mcp`，工具前缀 `mcp__wq-brain-http__*`，**HTTP 端点 `http://localhost:8876/mcp`**，2026-08-17 实测可用）。论坛访问用此 8876 端点；备选 stdio 为 `wq-brain-stdio`（`python main.py` + `MCP_TRANSPORT=stdio`）。
 > wq-brain-http 只实现**只读**论坛工具（搜索 / 读帖 / 术语表 / 消息 / 活动），**未实现**发帖、跟评、
 > 点赞等写工具。执行时按下表映射；写工具不可用时**降级为只读浏览**并在 session_plan 记录，
-> 绝不改用浏览器或静态语料冒充。工具映射详见 [mcp-forum-tools.md](references/mcp-tools-and-search.md)。
+> 绝不改用浏览器或静态语料冒充。工具映射详见 [mcp-tools-and-search.md](references/mcp-tools-and-search.md)。
 
 | 要做的事 | 必须用的 MCP（wq-brain-http） | 禁止 |
 |----------|--------------|------|
@@ -100,7 +100,7 @@ MCP 环境是否提供论坛写工具？
 
 MCP 服务器：**wq-brain-http**（`mcp__wq-brain-http__*`，**HTTP 端点 `http://localhost:8876/mcp`**，2026-08-17 实测可用、返回真实论坛数据）。备选 stdio：`wq-brain-stdio`（`python main.py` + `MCP_TRANSPORT=stdio`）。默认中文话题 ID：**`12913416465431`**。
 
-**运行时不要探测或列举 MCP 工具** — 直接使用 [mcp-forum-tools.md](references/mcp-tools-and-search.md) 中的确切工具名。凭据来自 MCP 服务器配置；仅在认证失败时才传 `email`/`password`。
+**运行时不要探测或列举 MCP 工具** — 直接使用 [mcp-tools-and-search.md](references/mcp-tools-and-search.md) 中的确切工具名。凭据来自 MCP 服务器配置；仅在认证失败时才传 `email`/`password`。
 
 **反面模式：** 不进行 web fetch / Playwright / 手动输入论坛 URL；不编造 post_id/标题/评论；不用 `brain-alpha-judge` 语料冒充实时论坛；不用 `delete_forum_*`；除非用户明确转向 alpha 研究，否则不用模拟工具。
 
@@ -108,7 +108,7 @@ MCP 服务器：**wq-brain-http**（`mcp__wq-brain-http__*`，**HTTP 端点 `htt
 
 ## Search 工具箱（多种方法，按情况选用）
 
-平台提供 **多种 MCP 搜索/浏览方式**，Agent **按场景自行选择**（不必每次 slow）。菜单与选型见 [forum-search-strategy.md](references/mcp-tools-and-search.md).
+平台提供 **多种 MCP 搜索/浏览方式**，Agent **按场景自行选择**（不必每次 slow）。菜单与选型见 [mcp-tools-and-search.md](references/mcp-tools-and-search.md).
 
 | 工具（wq-brain-http） | 典型场景 |
 |------|----------|
@@ -134,7 +134,7 @@ MCP 服务器：**wq-brain-http**（`mcp__wq-brain-http__*`，**HTTP 端点 `htt
 
 **已安装但超出范围**（除非用户要求，否则不要调用）：`delete_forum_comment`、`delete_forum_vote`、模拟/数据集/alpha 相关工具。
 
-完整参数：[mcp-forum-tools.md](references/mcp-tools-and-search.md) · 搜索协议：[forum-search-strategy.md](references/mcp-tools-and-search.md)。
+完整参数：[mcp-tools-and-search.md](references/mcp-tools-and-search.md) · 搜索协议：[mcp-tools-and-search.md](references/mcp-tools-and-search.md)。
 
 ## 首次运行前
 
@@ -162,7 +162,7 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 
 ## 硬性规则
 
-- **每轮必贡献（不可协商）**：每次会话**必须**以 ≥1 个论坛写操作结束 — 不允许只浏览就退出。每次写操作都要加入**独特的个人内容**（你的指标、sim/调试故事、视角）— **不是**复读楼主/热评，**不是**空洞的「感谢分享/+1」。E1 在具体且属实的前提下可包含**宿主 AI 对话历史**（P4）。仅在有 E2 + 你的索引理由时才可用 linker 兜底。见 [unique-contribution.md](references/contribution-and-diversity.md) 及上文「最低贡献标准」。**豁免条件**：见上文「贡献义务决策树」（MCP 无写工具时自动豁免，须记录原因）。
+- **每轮必贡献（不可协商）**：每次会话**必须**以 ≥1 个论坛写操作结束 — 不允许只浏览就退出。每次写操作都要加入**独特的个人内容**（你的指标、sim/调试故事、视角）— **不是**复读楼主/热评，**不是**空洞的「感谢分享/+1」。E1 在具体且属实的前提下可包含**宿主 AI 对话历史**（P4）。仅在有 E2 + 你的索引理由时才可用 linker 兜底。见 [contribution-and-diversity.md](references/contribution-and-diversity.md) 及上文「最低贡献标准」。**豁免条件**：见上文「贡献义务决策树」（MCP 无写工具时自动豁免，须记录原因）。
 - **仅限有证据支撑的写操作**：每条评论/帖子论断必须追溯到 ≥1 个来源 — **E1** 个人经验（P0–P5 记忆、sim/提交事实）、**E2** MCP 平台/论坛数据、或 **E3** 具名的外部论文（arXiv ID 或标题+作者）。**禁止：** 臆测、无依据的猜测、虚构的 VF/排名/提交记录、「我觉得可能」、含糊的「研究表明」。见 [evidence-and-review.md](references/evidence-and-review.md)。
 - **对抗性审查子代理（Adversarial review subagent）**：标准路径 — 每份草稿之后、Contract 之前。仅在 auto-send E1 时**跳过**（由 A1–A8 检查清单替代）。见 [evidence-and-review.md](references/evidence-and-review.md)、[auto-send-e1.md](references/modes-and-contract.md)。
 - **MCP 优先**：Phase 2–9 中凡涉及平台/论坛信息的步骤，**一律先调 MCP**；本地文件只存 MCP 结果摘要，不能代替 MCP 读取。
@@ -171,15 +171,15 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 - **Role Pick / Draft / Act 前重读**：在草稿、Run Contract 和执行前，重读 `session_plan.md` + `forum_findings.md`（contribute）或 `forum_stroll_notes.md`（explore）的前 30 行。
 - **论坛写操作只用中文**。不得虚构 VF、排名或提交记录。
 - **论坛提交格式 = HTML**：笔记/Contract 中可用 Markdown 起草；MCP 写操作前，**`create_forum_comment.body` / `create_forum_post.details` 必须是论坛原生 HTML**，而不是原始 Markdown。见 [write-style-zh.md](references/write-style-zh.md)。
-- **运行模式默认 explore**：「逛论坛」= 带强制贡献的 stroll（有目的或涌现式 emergent）— [run-modes.md](references/modes-and-contract.md)。
+- **运行模式默认 explore**：「逛论坛」= 带强制贡献的 stroll（有目的或涌现式 emergent）— [modes-and-contract.md](references/modes-and-contract.md)。
 - **Run Contract 闸门**：标准路径 — 计划中的写操作需要 Contract + `同意执行`。**例外：** [auto-send-e1.md](references/modes-and-contract.md) — **恰好 1** 次仅含 E1 的事实性写操作、零推断 → 检查清单后直接写。
 - **自动执行**：合同同意后跑完 write，不逐项菜单.
 - **Curator**：**contribute** — 符合条件时 Contract 中必须含 ≥1 次点赞；**explore** — 值得时推荐 ≥1 次点赞（计划时写入 Contract）。
-- **多样性闸门**：社区相似度（Community Similarity）+ 个人独特性（Personal Uniqueness）— 见 [content-diversity.md](references/contribution-and-diversity.md)、[personal-perspective.md](references/contribution-and-diversity.md)。
+- **多样性闸门**：社区相似度（Community Similarity）+ 个人独特性（Personal Uniqueness）— 见 [contribution-and-diversity.md](references/contribution-and-diversity.md)、[personal-perspective.md](references/contribution-and-diversity.md)。
 - **harvest 时外部记忆只读** — 只写回 skill 工作区。见 [external-memory-sources.md](references/workspace-and-memory.md)。
-- **Search 工具箱**：论坛搜索有多种 MCP 工具 — Agent 按 [forum-search-strategy.md](references/mcp-tools-and-search.md) **自行选型**；不必每次 slow，也不要只知道 fast。
+- **Search 工具箱**：论坛搜索有多种 MCP 工具 — Agent 按 [mcp-tools-and-search.md](references/mcp-tools-and-search.md) **自行选型**；不必每次 slow，也不要只知道 fast。
 - **alpha-judge 边界**：rubric/语料只读；judge 绝不调用实时论坛。见 [merge-with-alpha-judge.md](references/workspace-and-memory.md)。
-- **后续灵感（追加）**：完成必选论坛贡献后，记录 0–3 条由阅读引发的**可选**研究/探索/技能交接想法（技术帖、公告、主题）。**不自动执行**；不是浏览后菜单；未验证的假设保持**待验证**状态且不进入论坛草稿。见 [follow-on-impulses.md](references/contribution-and-diversity.md)。
+- **后续灵感（追加）**：完成必选论坛贡献后，记录 0–3 条由阅读引发的**可选**研究/探索/技能交接想法（技术帖、公告、主题）。**不自动执行**；不是浏览后菜单；未验证的假设保持**待验证**状态且不进入论坛草稿。见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
 
 ## Pipeline（随 run_mode 裁剪）
 
@@ -198,7 +198,7 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 | 6–9 | auto-send 或 **Contract 同意后** execute | 全执行 |
 
 模板：[forum_stroll_notes.md](templates/forum_stroll_notes.md)、[run_contract.md](templates/run_contract.md)。  
-详情：[run-modes.md](references/modes-and-contract.md)、[mcp-by-phase.md](references/mcp-by-phase.md)。
+详情：[modes-and-contract.md](references/modes-and-contract.md)、[mcp-by-phase.md](references/mcp-by-phase.md)。
 
 **Scout 不是角色** — 它是 contribute 模式中的 scan/gap 工作。每个会话 **L1**；explore 浏览在 Contract 时从浏览发现中挑选 L1。
 

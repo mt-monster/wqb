@@ -62,7 +62,7 @@
 | 2 | S0 数据集体检 | `workflow_campaign(stage="S0")` |
 | 3 | S1 字段扫描与理解 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` |
 | 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-make-some-gem` headless_runner） |
-| 5 | S2→S3 门禁 | `wave_gate`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
+| 5 | S2→S3 门禁 | `workflow_execute(node="wave_gate")`（2026-09-11 起有节点）或 CLI `tools/wave_gate.py`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
 | 6 | S3 七槽回测 | `workflow_batch_track`（并发纪律权威 = `wqb-concurrency` §8） |
 | 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
 | 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（唯一权威）→ 用户确认 → `workflow_submit_alpha` |
@@ -216,7 +216,7 @@ git config core.hooksPath tools/git-hooks
 
 | 场景 | 工具（替代的一次性脚本） |
 |---|---|
-| 每波门禁（语法+5 闸+多样性，一键落盘） | `tools/wave_gate.py --campaign-dir … --dataset … --wave N --candidates <json>`（替代 `tracking/<R>/scripts/_gate_waveNN.py`） |
+| 每波门禁（gate.py 8 闸 + 体检硬门，一键落盘） | `tools/wave_gate.py --campaign-dir … --dataset … --wave N --candidates <json>`（替代 `tracking/<R>/scripts/_gate_waveNN.py`） |
 | 批次/子任务状态查询+轮询 | `tools/batch_status.py --ids … [--watch]`（替代 `tracking/_scratch/check_*batch*.py`） |
 | SA 组件池探针（≥10 ACTIVE 硬前置） | `tools/sa_probe.py --region …`（替代 `probe_*sa*.py`） |
 | 提交层判定（403 盲区） | `tools/submit_verdict.py --alpha-id …`（替代手写 GET /alphas/{id}/submit） |
@@ -226,5 +226,28 @@ git config core.hooksPath tools/git-hooks
 执行约定：
 1. 网络工具一律用 MCP venv（`$WQ_PY` 或 `world-quant-brain-mcp/.venv`）运行，工具已内置自动切换；
    不手写 requests 脚本（429 事故根因之一），统一走 `BrainApiClient`（自带 429 退避）。
-2. skill 依赖路径用 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或自动搜索 `.qoder-cn`/`.workbuddy`/`.cursor`，禁止硬编码 `C:\Users\...` 绝对路径。
+2. skill 依赖路径用 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或 `skill_roots()`（自动搜索顺序：`~/.claude` → `~/.codex` → 历史位 `.trae-cn`/`.qoder-cn`/`.cursor`/`.workbuddy` → 仓库 `Claude/skills` 兜底），禁止硬编码 `C:\Users\...` 绝对路径。
 3. 一次性排障探针（`_inspect_*`/`probe_payment*` 等探索类）仍可写 `tracking/_scratch/`，但结论落地后归档 `attic/`，不留在活跃目录累积。
+
+## 7. 提交纪律（2026-09-11 固化）
+
+工作区长期存在**多条并行工作流**（战役脚本 / skills 治理 / MCP 改动 / tracking 数据湖），
+一次 `git status` 常见 40+ 修改、20+ 未跟踪。踩过的坑：把 A 工作流的半成品混进 B 的提交。
+
+**提交前流程（强制）**：
+
+1. `git status --porcelain` 全量分类，按**主题**切分，**禁止 `git add -A`** / `git add .`。
+2. 用**显式路径清单**暂存；跨工作流时优先 `git add -p` 逐块挑选。
+3. 只提交"自洽且可验证"的改动：跑 `pytest tests/ -x`；改 skills 后加跑
+   `python tools/sync_skills.py --check`（多目标零漂移）。
+4. 提交信息写清**范围与验证证据**（例：`chore(skills): … ；验证 pytest 531 passed + sync 4/4 OK`）。
+5. 提交前扫硬编码密钥/凭据（`sk-*`、`api_key=`、`password=`、私钥块）；`.env` / `config.json`
+   一律不在版本控制内（`.gitignore` 已覆盖，勿 `-f` 强提）。
+
+**并行写入者的注意**：本机可能同时有其他 Agent/会话在改同一棵树（实测发生过
+`assemble_priors.py` 被并发改写、`sync_skills.py` 报"已同步 0 个文件"而文件实际已在位）。
+因此：① 被漂移断言拦下时**先重跑 `sync_skills.py` 再提交**，不要改测试去迁就；
+② 追加共享文件（记忆日志、台账）必须**先读尾部再追加**，禁止整文件覆写。
+
+**归档而非删除**：一次性脚本、旧版本、废弃 skill 一律移入 `attic/<主题>_<YYYYMMDD>/`，
+保留可回溯性；安装位孤儿用 `python tools/sync_skills.py --prune-orphans [--apply]`。

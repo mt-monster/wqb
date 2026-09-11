@@ -37,7 +37,13 @@ tracking/<REGION>/                 # 区域大写，如 KOR / USA / EUR
 - `_` 前缀键为本地约定，不会进提交 payload（pipeline 自动剔除）。
 - region/universe 合法档位先查 wq-brain-campaign-matrix 的 registry 或 mcp__wq-brain-http__get_platform_setting_options，勿外推（TOP1500 等非法档教训）。
 
-## thresholds.json 六节（+2 可选节）
+## thresholds.json：六节 + 可选节（区域可扁平化）
+
+> **两版 schema 并存（2026-09-11 核实）**：上表六节是**规范形态**，但 KOR / IND / DEU 实为
+> **扁平形态**——`sharpe_min` / `fitness_min` / `prod_corr_max` / `self_corr_max` / `turnover_min|max` /
+> `sub_universe_sharpe_min` / `robust_sharpe_min` / `concentrated_weight_max` 直接写在顶层，
+> **没有** `quick_scan` / `probe_scoring_v2` / `hard_gates` 三节。读阈值时必须**两版都兼容**
+> （缺节回落默认），不要假定 `hard_gates.sharpe_min` 一定存在。
 
 | 节 | 关键字段 | 消费方 |
 |---|---|---|
@@ -47,8 +53,12 @@ tracking/<REGION>/                 # 区域大写，如 KOR / USA / EUR
 | probe_scoring_v2 | 12 参数（见 probe-scoring-v2.md） | score_datasets |
 | hard_gates | prod_correlation_max 0.7 / self_correlation_max 0.7 | 提交前参照（权威定义见 brain-how-to-pass-alpha-test） |
 | dataset_health | v3.1：mode(general/ppa) + tier_method(quantile/threshold) + 分位参数 tier1_score_pct/tier2_score_pct + 硬地板 coverage_hard_min(0.65)/field_count_hard_min(5) + 保底带 backfill_band_*/probe_exception_*；threshold 回退法沿用 coverage_min/alpha_count_max/field_count_min/tier2_* | score_datasets |
+| diversity | `signal_floor{max_sharpe_floor, min_batches, enabled}`（**唯一有消费方的子键**）+ 历史遗留的 entropy_min/similarity_max/narrow_cross_section（当前无消费者） | `src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate`（步 2/3 前置） |
 | poll（可选） | init_interval 20 / backoff_factor 1.5 / max_interval 120 / stall_minutes 60 / timeout_minutes 360 | pipeline, poller |
-| submit_quota（可选） | limit 4（REGULAR 日上限；SUPER 1/日由提交层单独把关） | pipeline quota（ET 日历日 4/1 口径，00:00 ET 重置） |
+| submit_quota（可选） | limit 4（REGULAR 日上限）。**配额是三条并行通道**：`REGULAR_SUBMISSION` 4/日 + `SUPER` 1/日 + **PPA 独立的 `POWER_POOL_SUBMISSION` 1/日**；均 00:00 ET 重置。部分区域 `enabled:false`（用户指令关闭闸，2026-08-26） | pipeline quota |
+
+> `diversity.signal_floor` 语义（易误读）：整节缺失或 `enabled:false` → 该闸**静默放行**；
+> `max_sharpe_floor` 的 0.5 兜底只在"有节但缺该字段"时生效。11 个区域已于 2026-09-11 全部补齐。
 
 ## reference/ 约定
 - typed catalog schema：数据集级 `{dataset, region, universe, delay, data_type, type_distribution, field_count, fetched_at}`；字段级 `{id, type, coverage, userCount, alphaCount, description[:120]}`。data_type 由字段 type 众数推断。

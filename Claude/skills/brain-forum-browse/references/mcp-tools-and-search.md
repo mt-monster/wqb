@@ -1,6 +1,6 @@
 # MCP 工具与搜索策略（tools & search）
 
-> 合并自 mcp-forum-tools.md / forum-search-strategy.md（2026-08-18 精简）。按阶段工具映射见 [mcp-by-phase.md](mcp-by-phase.md)。
+> 合并自 mcp-tools-and-search.md / mcp-tools-and-search.md（2026-08-18 精简）。按阶段工具映射见 [mcp-by-phase.md](mcp-by-phase.md)。
 
 ## 1. 服务器与铁律
 

@@ -1,11 +1,17 @@
-# gate 6 闸判定细则（5 闸 + 闸6 批级多样性） + build_wave 选波规则
+# gate.py 闸门判定细则（8 闸 + 可选闸0；本文覆盖闸1–6，闸7/8 见 SKILL.md §7）
 
-## gate.py：提交前 6 道闸（不过闸不烧配额）
+> **闸编号唯一基准 = `gate.py` 模块头**（`8 闸 + 可选闸0`）：
+> 闸1 语法（含 1b 算子元数）· 闸2 字段白名单 · 闸3 VECTOR 类型 · 闸4 不可访问算子/quantile 元数 ·
+> 闸5 毒模式 · 闸6 批级多样性 · 闸7 longCount（`--sanity-longcount`）· 闸8 EVENT 类型（`--sanity-event-type`）；
+> 闸0 语义反模式（`--gate0`，默认关闭）。文档里"5 闸"一律指闸1–5，"体检硬门"另属 `tools/field_inspect_gate.py`，
+> 与闸7/8 不同源，勿混谈。
+
+## gate.py：提交前 8 道闸（不过闸不烧配额）
 
 缓存：`cache/gate_cache.json`，key = sha1(dataset + "\n" + expr)，幂等命中跳过。
 
 ### 闸1 语法
-import alpha-expression-verifier 的 `ExpressionValidator` 直调（不是子进程）。路径解析顺序：`WQ_VALIDATOR_DIR` 环境变量 → 自动探测 `~/.qoder-cn/skills/alpha-expression-verifier/scripts` 等已知位置。**verifier 缺失时结果标 SYNTAX_UNKNOWN 显式报警，绝不静默放过。**
+import alpha-expression-verifier 的 `ExpressionValidator` 直调（不是子进程）。路径解析顺序：`WQ_VALIDATOR_DIR` 环境变量 → 自动探测已知安装位（`~/.claude/skills` → `~/.codex/skills` → `~/.qoder-cn/skills` → `~/.cursor/skills` → `~/.workbuddy/skills` → 仓库 `Claude/skills`，与 `_common._skill_roots()` 一致）。**verifier 缺失时结果标 SYNTAX_UNKNOWN 显式报警，绝不静默放过。**
 
 ### 闸2 字段白名单
 - 按 dataset 自动派生路径：catalog（`<region>_<ds>_fields.json`）优先 → legacy whitelist（`<region>_<ds>_field_whitelist.json`）兜底 → 都没有则报错并引导先跑 scan_fields。

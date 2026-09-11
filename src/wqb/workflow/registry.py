@@ -220,6 +220,25 @@ class WorkflowRegistry:
         except ImportError as e:
             logger.warning(f"Failed to register feature_engineering: {e}")
 
+        # Phase 4: wave_gate（ra-pipeline 步 5 门禁；2026-09-11 新增，此前步 5 无节点）
+        try:
+            from .nodes import wave_gate
+            self.register(
+                "wave_gate",
+                wave_gate.run,
+                NodeMeta(
+                    name="wave_gate",
+                    description="S2→S3 门禁（语法 + gate.py 8 闸 + 体检硬门 + 多样性，落盘 gate_results）",
+                    category="gate",
+                    phase=4,
+                    required_params=["region", "dataset", "wave"],
+                    optional_params=["exprs_file", "candidates", "expr", "from_db",
+                                     "skip_diversity_gate", "fix", "campaign_dir"],
+                )
+            )
+        except ImportError as e:
+            logger.warning(f"Failed to register wave_gate: {e}")
+
 
 def get_registry() -> WorkflowRegistry:
     """获取注册中心单例."""

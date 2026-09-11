@@ -14,7 +14,7 @@
 - [ ] **Mandatory write planned** — unique detail identified (not parroting thread)
 - [ ] unique_contribution checklist in stroll notes
 - [ ] **Skip upfront:** formal gap recon (Phases 2–5), mandatory Role Pick
-- [ ] **Auto-send E1?** [auto-send-e1.md](../references/auto-send-e1.md) A1–A8 → certification → **direct write** **OR**
+- [ ] **Auto-send E1?** [auto-send-e1.md](../SKILL.md) A1–A8 → certification → **direct write** **OR**
 - [ ] Phase 7.5 + **Phase 1.5: Run Contract** → **wait 同意执行**
 - [ ] Phase 6–9: Execute
 - [ ] Chat report: stroll findings + contribution outcome

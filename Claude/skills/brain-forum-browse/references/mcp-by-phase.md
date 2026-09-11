@@ -1,5 +1,7 @@
 # MCP by Phase
 
+> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录的实际文件为准。
+
 
 
 **Default policy: 平台 + 论坛 = 全部 MCP.** Server: `wq-brain-http` (工具前缀 `mcp__wq-brain-http__*`).  
@@ -8,14 +10,14 @@ Do not list tools at runtime — call names below directly.
 
 If MCP fails → stop and report; **no browser / no static corpus fallback**.
 
-> **环境适配（2026-08）**：读/搜工具已按 [mcp-forum-tools.md](mcp-forum-tools.md) 映射到 wq-brain-http
+> **环境适配（2026-08）**：读/搜工具已按 [mcp-tools-and-search.md](mcp-tools-and-search.md) 映射到 wq-brain-http
 > 实际工具（`search_forum_posts` / `read_forum_post` / `get_glossary_terms`）。写工具
 > （`create_forum_comment` / `create_forum_post` / `upvote_forum_comment`）在 wq-brain-http **未实现**，
 > Phase 9 执行时降级为只读浏览并在 session_plan 记录。
 
 
 
-Cross-ref: [mcp-forum-tools.md](mcp-forum-tools.md) for args, examples, fallbacks.
+Cross-ref: [mcp-tools-and-search.md](mcp-tools-and-search.md) for args, examples, fallbacks.
 
 
 
@@ -93,7 +95,7 @@ Skip only if MCP auth fails; log reason in session_plan — do not fabricate alp
 
 
 
-When `run_mode=explore` (default per [run-modes.md](run-modes.md)):
+When `run_mode=explore` (default per [modes-and-contract.md](modes-and-contract.md)):
 
 
 
@@ -109,7 +111,7 @@ When `run_mode=explore` (default per [run-modes.md](run-modes.md)):
 
 | Deliverable | Write `outputs/runs/<run_id>/forum_stroll_notes.md` (template: [forum_stroll_notes.md](../templates/forum_stroll_notes.md)) — **contribution plan required** |
 
-| Phase 7.5 | **Standard path** — adversarial review. **Skipped** if [auto-send-e1.md](auto-send-e1.md) A1–A8 pass |
+| Phase 7.5 | **Standard path** — adversarial review. **Skipped** if [auto-send-e1.md](../SKILL.md) A1–A8 pass |
 
 | Phase 1.5 | **Standard path** — Run Contract → **同意执行**. **Skipped** for qualified auto-send E1 |
 
@@ -127,7 +129,7 @@ When `run_mode=explore` (default per [run-modes.md](run-modes.md)):
 
 
 
-**Do not skip:** MCP for platform/forum facts; mandatory contribution; Phase 6–9 execute. **May skip 7.5 + 1.5** only per [auto-send-e1.md](auto-send-e1.md).
+**Do not skip:** MCP for platform/forum facts; mandatory contribution; Phase 6–9 execute. **May skip 7.5 + 1.5** only per [auto-send-e1.md](../SKILL.md).
 
 
 
@@ -173,7 +175,7 @@ Write: `outputs/runs/<run_id>/scan_<ts>.json`, update findings + skip_registry f
 
 
 
-See [official-scan.md](official-scan.md).
+See `official-scan.md`.
 
 
 
@@ -197,7 +199,7 @@ Then **filter locally**: `skip_registry`, `action_ledger.read_post_ids` / `contr
 
 
 
-See [forum-as-registry.md](forum-as-registry.md).
+See `forum-as-registry.md`.
 
 
 
@@ -209,7 +211,7 @@ See [forum-as-registry.md](forum-as-registry.md).
 
 
 
-Per [forum-search-strategy.md](forum-search-strategy.md) — **agent picks tools**:
+Per [mcp-tools-and-search.md](mcp-tools-and-search.md) — **agent picks tools**:
 
 
 
@@ -227,7 +229,7 @@ Per [forum-search-strategy.md](forum-search-strategy.md) — **agent picks tools
 
 
 
-Score locally per [gap-detection.md](gap-detection.md).
+Score locally per [recon-and-gap.md](recon-and-gap.md).
 
 
 
@@ -239,7 +241,7 @@ Score locally per [gap-detection.md](gap-detection.md).
 
 
 
-**No MCP.** Logic only → write `session_l1` to session_plan. See [role-matrix.md](role-matrix.md).
+**No MCP.** Logic only → write `session_l1` to session_plan. See [recon-and-gap.md](recon-and-gap.md).
 
 
 
@@ -267,7 +269,7 @@ When **any** planned write (contribute recon **or** explore stroll — **every e
 
 
 
-See [run-contract.md](run-contract.md).
+See [modes-and-contract.md](modes-and-contract.md).
 
 
 
@@ -348,7 +350,7 @@ See [evidence-and-review.md](evidence-and-review.md).
 
 
 
-Outcomes: ALLOW / WARN / BLOCK_POST — see [saturation-check.md](saturation-check.md).
+Outcomes: ALLOW / WARN / BLOCK_POST — see [contribution-and-diversity.md](contribution-and-diversity.md).
 
 
 
@@ -382,7 +384,7 @@ If diversity adjustments change factual claims → re-run Phase 7.5 adversarial 
 
 
 
-Run diversity checks per [content-diversity.md](content-diversity.md). Adjust drafts in Run Contract if needed; do **not** re-prompt user item-by-item.
+Run diversity checks per [contribution-and-diversity.md](contribution-and-diversity.md). Adjust drafts in Run Contract if needed; do **not** re-prompt user item-by-item.
 
 
 
@@ -412,7 +414,7 @@ See [write-style-zh.md](write-style-zh.md).
 
 Then update local files: ledger, `forum_memory.md`, `agent_profile.role_history`.
 
-**Follow-on impulses (optional):** After writes complete, finalize 0–3 research/exploration proposals in stroll notes or findings — not in Run Contract; do not auto-invoke other skills. See [follow-on-impulses.md](follow-on-impulses.md).
+**Follow-on impulses (optional):** After writes complete, finalize 0–3 research/exploration proposals in stroll notes or findings — not in Run Contract; do not auto-invoke other skills. See [contribution-and-diversity.md](contribution-and-diversity.md).
 
 
 

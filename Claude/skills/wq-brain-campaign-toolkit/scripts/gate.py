@@ -44,6 +44,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_json,
                          load_platform_constraints, read_exprs_any, skeleton, expr_fields)
 from _lib.ledger import LedgerStore, make_ledger_store
+from _lib.skill_roots import skill_roots as _skill_roots
 from _lib import rules as rules_mod
 
 # 知识闸（KB-aware）：复用 assemble_priors 的读取能力，保证 gate 永远对照结构化 KB。
@@ -136,12 +137,14 @@ _VALIDATOR = None
 
 
 def _validator_dirs():
-    home = os.path.expanduser("~")
-    return [
-        os.environ.get("WQ_VALIDATOR_DIR"),
-        os.path.join(home, ".workbuddy", "skills", "alpha-expression-verifier", "scripts"),
-        os.path.join(home, ".qoder-cn", "skills", "alpha-expression-verifier", "scripts"),
-    ]
+    """verifier 候选目录（顺序由 `_lib/skill_roots.py` 单源维护，2026-09-11 收敛）。
+
+    历史：此处曾内联 3 个历史安装位、漏了主安装位 `~/.claude/skills` 与仓库副本。
+    """
+    dirs = [os.environ.get("WQ_VALIDATOR_DIR")]
+    dirs += [os.path.join(root, "alpha-expression-verifier", "scripts")
+             for root in _skill_roots()]
+    return dirs
 
 
 def get_validator():

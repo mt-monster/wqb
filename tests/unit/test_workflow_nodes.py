@@ -837,3 +837,55 @@ def test_mode_b_adaptive_learn_threshold():
     class _FakeStore:
         connection = None
     assert learn_mode_b_threshold(_FakeStore(), "EUR") is None
+
+
+# ---------------------------------------------------------------------------
+# wave_gate 节点（2026-09-11 新增：ra-pipeline 步 5 门禁入 MCP）
+# ---------------------------------------------------------------------------
+
+def test_wave_gate_dry_run_builds_command_without_subprocess(monkeypatch):
+    """dry-run 契约：构建命令 + 过 argv 契约校验，但不 subprocess。"""
+    from wqb.workflow.nodes import wave_gate as wg
+    import subprocess
+
+    calls = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
+    monkeypatch.setattr(wg, "resolve_campaign_dir", lambda r: "tracking/KOR")
+
+    out = wg.run(region="KOR", dataset="analyst4", wave="97",
+                 _context={"dry_run": True})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert calls == [], "dry-run 下 wave_gate 不应 subprocess"
+    assert "--from-db" in out["cmd"], "默认应从 expressions 表读候选"
+    assert "--wave" in out["cmd"] and "97" in out["cmd"]
+    # argv 契约校验必须真的跑过（脚本存在 → 可静态解析 argparse）
+    assert any(s.get("step") == "validate_argv" and s.get("success") for s in out["steps"])
+
+
+def test_wave_gate_requires_candidate_source_when_not_from_db(monkeypatch):
+    """from_db=False 且不给任何候选来源 → 在零成本前置就失败，不 subprocess。"""
+    from wqb.workflow.nodes import wave_gate as wg
+    import subprocess
+
+    calls = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
+    monkeypatch.setattr(wg, "resolve_campaign_dir", lambda r: "tracking/KOR")
+
+    out = wg.run(region="KOR", dataset="analyst4", wave="97", from_db=False)
+    assert out["success"] is False
+    assert "exprs_file" in out["error"], out["error"]
+    assert calls == []
+
+
+def test_wave_gate_registered_with_matching_signature():
+    """registry 元数据必须与节点 run() 签名一致（workflow_list_nodes 当 API 文档用）。"""
+    import inspect
+    from wqb.workflow.registry import get_registry
+    from wqb.workflow.nodes import wave_gate as wg
+
+    meta = get_registry().get_meta("wave_gate")
+    assert meta is not None, "wave_gate 未注册"
+    sig = set(inspect.signature(wg.run).parameters) - {"_context", "dry_run"}
+    declared = set(meta.required_params) | set(meta.optional_params)
+    assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"

@@ -54,7 +54,7 @@
 
 ```bash
 PY=$WQ_PY
-TK=C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts
+TK=$WQ_TOOLKIT_DIR
 CD=<CAMPAIGN_DIR>  # 如 tracking/USA
 
 # 完整流程（审计 → 生成 → PPAC → 评估）
@@ -118,7 +118,7 @@ S3: brain-sim-alphas-in-batch-and-track (批量回测)
 
 ```bash
 PY=$WQ_PY
-TK=C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts
+TK=$WQ_TOOLKIT_DIR
 CD=<CAMPAIGN_DIR>  # 如 tracking/USA
 
 $PY $TK/test_diversity_extract.py --campaign-dir $CD --dataset <ds> --rounds 3 --size 8

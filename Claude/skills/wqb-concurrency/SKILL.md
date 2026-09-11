@@ -97,7 +97,7 @@ self._sub_sem = threading.Semaphore(C)   # C = 实测上限
 0. **台账同步门（执行层硬门）**：提交任何新波批次前，必须先运行 toolkit 的 `check_ledger_sync.py` 校验台账一致性：
    ```powershell
    $WQ_PY `
-     ../.qoder-cn/skills/wq-brain-campaign-toolkit/scripts/check_ledger_sync.py `
+     "$WQ_TOOLKIT_DIR/check_ledger_sync.py" `
      --campaign-dir tracking/<REGION>
    ```
    返回 0 方可继续；返回 1 需先修复不同步项。配合时序规则：**创建批次文件时同步在台账登记批次表（标在飞，multisim id 提交后回填）**，回收后补结论——这样新批在飞期间门禁也能自洽 PASS。

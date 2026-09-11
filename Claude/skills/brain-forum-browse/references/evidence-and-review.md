@@ -1,6 +1,8 @@
 # Evidence-Backed Writes + Adversarial Review
 
-**Hard requirement for forum writes** — with one **narrow exception**: [auto-send-e1.md](auto-send-e1.md) (E1-only, zero inference, **exactly 1 write** — skips Phase 7.5 subagent and Run Contract; uses checklist instead).
+> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录的实际文件为准。
+
+**Hard requirement for forum writes** — with one **narrow exception**: [auto-send-e1.md](../SKILL.md) (E1-only, zero inference, **exactly 1 write** — skips Phase 7.5 subagent and Run Contract; uses checklist instead).
 
 **Standard path (default):** every explore stroll (mandatory contribution), contribute, hybrid — E1/E2/E3 + Phase 7.5 + Run Contract.
 
@@ -23,7 +25,7 @@
 - Vague research: 「研究表明」「有论文指出」without naming the paper
 - Forum paraphrase without MCP read: quoting or summarizing a thread not fetched this run
 - Memory-only alpha facts when `get_user_alphas` was available and not called
-- **Parroting** thread/comment without ≥1 unique personal detail — see [unique-contribution.md](unique-contribution.md)
+- **Parroting** thread/comment without ≥1 unique personal detail — see [contribution-and-diversity.md](contribution-and-diversity.md)
 - Citing AI chat for metrics **not actually discussed** in that session
 
 ### Inline evidence tags (drafting)
@@ -42,7 +44,7 @@ Tags are stripped or softened in final Run Contract Chinese body; `evidence_sour
 
 ## Adversarial review (standard path — mandatory per draft)
 
-**When:** After each comment/post draft, **before** Run Contract or execute — **unless** [auto-send-e1.md](auto-send-e1.md) A1–A8 all pass (checklist only, no subagent).
+**When:** After each comment/post draft, **before** Run Contract or execute — **unless** [auto-send-e1.md](../SKILL.md) A1–A8 all pass (checklist only, no subagent).
 
 **Who:** Main agent launches a **subagent** (`Task` tool, `subagent_type: generalPurpose` or `explore`).
 
@@ -72,7 +74,7 @@ Give the subagent this rubric:
 | Forum appropriateness | 吹嘘、营销、空洞表扬、与楼主问题无关 |
 | MCP alignment | Draft contradicts or invents content from cited post_id |
 | Submit format | Body/details contain raw Markdown (`**`, `` ``` ``, `# `) instead of HTML |
-| **No unique contribution** | Draft adds no personal detail beyond OP/top comments; empty praise; duplicates ledger snippets — see [unique-contribution.md](unique-contribution.md) |
+| **No unique contribution** | Draft adds no personal detail beyond OP/top comments; empty praise; duplicates ledger snippets — see [contribution-and-diversity.md](contribution-and-diversity.md) |
 
 ### Subagent output format
 
@@ -89,7 +91,7 @@ Give the subagent this rubric:
 ### Main agent obligations
 
 - **REVISE** → fix every listed issue or delete the claim; re-run adversarial review if structure or metrics changed materially
-- **Cannot skip** review to meet quota or deadline — **except** qualified auto-send E1 per [auto-send-e1.md](auto-send-e1.md)
+- **Cannot skip** review to meet quota or deadline — **except** qualified auto-send E1 per [auto-send-e1.md](../SKILL.md)
 - **Cannot** present Run Contract drafts to user until all planned comment/post drafts show `adversarial_review_status: pass`
 - Upvote-only actions: no adversarial review on vote targets, but upvote **reason** must cite E2 (MCP read of comment quality)
 
@@ -105,10 +107,10 @@ Give the subagent this rubric:
 | Run Contract 同意执行 | Only PASS drafts with evidence_sources[] |
 | Phase 9 execute | Body must match PASS draft in contract |
 
-See [write-style-zh.md](write-style-zh.md), [run-contract.md](run-contract.md), [mcp-by-phase.md](mcp-by-phase.md).
+See [write-style-zh.md](write-style-zh.md), [modes-and-contract.md](modes-and-contract.md), [mcp-by-phase.md](mcp-by-phase.md).
 
 ### brain-alpha-judge boundary
 
-- Judge rubric (read-only) informs **quality bar** — see [merge-with-alpha-judge.md](merge-with-alpha-judge.md)
+- Judge rubric (read-only) informs **quality bar** — see `merge-with-alpha-judge.md`
 - Judge static corpus is **not** E2 evidence for live claims; use MCP reads
 - Pre-submit alpha review → `brain-alpha-judge`; forum writes → this skill + evidence tiers

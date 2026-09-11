@@ -21,7 +21,7 @@ allowed-tools:
 
 ## 定位（一句话）
 
-七阶段流水线（S0–S6）**之前的查表层**：输入 `region + 意图`，输出**预解析配置包**，让后续 skill 拿现成参数执行；战役结束后把实证结论**回写** registry。本 skill 只做查表与回写，**不执行任何挖掘动作**——执行仍由现有 25 个其他 skill 完成，零改动、零第二实现。
+挖掘流水线（阶段 S0–S6；编排为九步，见 `wq-brain-ra-pipeline`）**之前的查表层**：输入 `region + 意图`，输出**预解析配置包**，让后续 skill 拿现成参数执行；战役结束后把实证结论**回写** registry。本 skill 只做查表与回写，**不执行任何挖掘动作**——执行仍由既有 31 个其他 skill 完成，零改动、零第二实现。
 
 ## 衔接协议
 
@@ -87,7 +87,7 @@ region=KOR  universe=TOP600  delay=1  neutralization=STATISTICAL(或数据集 do
 按 `wq-brain-ra-pipeline` 九步 SOP 把配置包交给 MCP 化链：步 2 S0 体检（`mcp__wq-brain-http__workflow_campaign` stage="S0"）→ 步 3 S1 字段扫描（`workflow_campaign` stage="S1" + `workflow_feature_engineering`）→ 步 4 S2 选波（`workflow_gem` + `workflow_campaign` stage="S2"）→ 步 5 门禁（`workflow_campaign` stage="S2" + `preflight_expressions`）→ 步 6 S3 七槽回测（`workflow_batch_track`）→ 步 7 S4 诊断（`workflow_campaign` stage="S4"）→ 步 8 提交判定（`submit_verdict` + 用户确认后 `workflow_submit_alpha`）→ 步 9 S6 复盘回写（`upsert_wave_result` / `upsert_registry_empirical`）。
 
 ### 4. 回写（强制，战役结束或关键发现时）
-写 `data/wqb.db` 的 `registry_empirical` 表（**禁止再编辑 `attic/json_archive/registry/` 归档 JSON**），**一律走 toolkit `campaign.py registry` 幂等 CLI**（`C:\Users\MENGTAO\.qoder-cn\skills\wq-brain-campaign-toolkit\scripts\campaign.py`，相对工作区根可写 `tracking/<REGION>` 战役目录）。命令模板（**先 `--dry-run` 试跑，无误后去掉重跑**；INSERT OR REPLACE 幂等，重复跑无副作用）：
+写 `data/wqb.db` 的 `registry_empirical` 表（**禁止再编辑 `attic/json_archive/registry/` 归档 JSON**），**一律走 toolkit `campaign.py registry` 幂等 CLI**（`$WQ_TOOLKIT_DIR/campaign.py`，相对工作区根可写 `tracking/<REGION>` 战役目录；**禁止写死 `C:\Users\...` 绝对路径**）。命令模板（**先 `--dry-run` 试跑，无误后去掉重跑**；INSERT OR REPLACE 幂等，重复跑无副作用）：
 
 ```bash
 # 新死路 → layer=dead_end（payload 含 reason 带数据 / rule 下次怎么办 / dead_at 自动补当天 / salvage）
@@ -115,13 +115,13 @@ $WQ_PY campaign.py --campaign-dir tracking/<REGION> registry get --layer dead_en
 回写要求与回测 checkpoint 同级纪律：**只记有跨会话价值的结论，不记过程性噪声**。
 
 ### 5. 扩区
-需要新开区域（EUR/ASI/GLB/CHN）时：从 `fresh_datasets_7region.json` 复制该区 summary 到 assets 层，static 层用 `mcp__wq-brain-http__get_platform_setting_options` 实测合法档位（**禁止照抄 USA 档位**），empirical 层初始化为空 + 该区已知死路。
+需要新开区域时：从 `research-data/fresh_datasets_7region.json` 复制该区 summary 到 assets 层，static 层用 `mcp__wq-brain-http__get_platform_setting_options` 实测合法档位（**禁止照抄 USA 档位**），empirical 层初始化为空 + 该区已知死路；**同时必须补 `wq-brain-ra-pipeline/references/regions/<R>.md` profile**，并把该区登记进 `Claude/skills/INDEX.md §区域清单`（三处缺一即漂移）。
 
 ## 硬规则
 
 1. **registry 是唯一事实源**：记忆/分析报告中的区域结论若与 registry 冲突，以更新 registry 为准，不允许两边各自演化。
 2. **死路 rule 优先于用户直觉**：命中 `dead_ends` 的族要在配置包里显式排除并引用 rule 出处（如 KOR-VALUE-QUALITY-SEEDS），即使用户点名也要先提示实证依据。
-3. **静态层档位不外推**：某区域合法 universe 档只对该区域有效；JPN 不是合法区域。
+3. **静态层档位不外推**：某区域合法 universe 档只对该区域有效。区域的权威清单是 `src/wqb/config.py::REGIONS`（14 个：AMR/ASI/CHN/DEU/EUR/GBR/GLB/HKG/IND/JPN/KOR/MEA/TWN/USA）；其中 **AMR / JPN 本工作区未启用**（无 profile、无战役目录），profile 覆盖情况以 `Claude/skills/INDEX.md §区域清单` 为准。**禁止**凭记忆断言某区"非法"——一律回代码常量核对。
 4. **幂等写**：registry 写库一律走 `campaign.py registry` 幂等 CLI（INSERT OR REPLACE + 必填字段校验 + 单事务，UNIQUE(region, layer, entry_id) 保证可重复跑），禁止散装 SQL 直改与改归档 JSON。
 
 ## registry 与战役台账的边界

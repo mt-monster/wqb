@@ -138,7 +138,7 @@ agent_created: true
 ### 14.2 命令模板
 
 ```powershell
-# $WQ_PY 见 INDEX.md；$WQ_TOOLKIT_DIR = ~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts
+# $WQ_PY 见 INDEX.md；$WQ_TOOLKIT_DIR = <仓库 Claude/skills>/wq-brain-campaign-toolkit/scripts（安装位同名，勿写死宿主绝对路径）
 $CD = "tracking/$REGION"
 & $WQ_PY $WQ_TOOLKIT_DIR/campaign.py --campaign-dir $CD wave upsert --wave $W --verdict PARTIAL --extra @notes.json
 & $WQ_PY $WQ_TOOLKIT_DIR/campaign.py --campaign-dir $CD registry add-dead-end --extra @dead.json

@@ -1,6 +1,6 @@
 # 侦察与缺口（recon & gap）
 
-> 合并自 official-scan.md / forum-as-registry.md / gap-workflow.md / gap-detection.md / saturation-check.md / l2-search-tokens.md / l3-signal-patterns.md / role-matrix.md / index-post-protocol.md（2026-08-18 精简）。MCP 工具细节见 [mcp-tools-and-search.md](mcp-tools-and-search.md)。
+> 合并自 official-scan.md / forum-as-registry.md / gap-workflow.md / recon-and-gap.md / contribution-and-diversity.md / l2-search-tokens.md / l3-signal-patterns.md / recon-and-gap.md / index-post-protocol.md（2026-08-18 精简）。MCP 工具细节见 [mcp-tools-and-search.md](mcp-tools-and-search.md)。
 
 ## 1. Official Scan（Phase 2）
 

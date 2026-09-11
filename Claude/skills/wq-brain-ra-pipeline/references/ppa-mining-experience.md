@@ -32,7 +32,7 @@ WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统
 工作区自动探测：`WQB_WORKSPACE` 环境变量 > 向上查找含 `world-quant-brain-mcp/` 或 `tracking/` 的目录 > 脚本上级目录。
 
 ```bash
-SK=$env:USERPROFILE/.qoder-cn/skills/wq-brain-ra-pipeline/scripts/dataset_health_check.py
+SK=<SKILL_ROOT>/wq-brain-ra-pipeline/scripts/dataset_health_check.py
 
 # 数据集级体检（首选，秒级返回）
 python "$SK" --region EUR --delay 1 --universe TOP1200

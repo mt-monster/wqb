@@ -34,7 +34,7 @@
 
 ```bash
 PY=$WQ_PY
-TK=C:/Users/MENGTAO/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts
+TK=$WQ_TOOLKIT_DIR
 CD=<CAMPAIGN_DIR>  # 如 tracking/USA
 DS=<dataset>       # 如 fundamental6
 

@@ -33,8 +33,18 @@ allowed-tools:
 
 ## 硬前置（必读，否则必败）
 1. **组件数量**：SUPER alpha 要求 **≥10 颗同一 region 的、已 ACTIVE 的 REGULAR alpha** 作为成分。
-   - 平台在创建时即校验数量，不足 10 颗会直接报错（如 "At least 10 component alphas"）。
-   - KOR 现状：book 内大量 UNSUBMITTED 空壳草稿、**0 ACTIVE** → 必须先挖并提交 ≥10 颗 REGULAR KOR 使其 ACTIVE，才能组 SA。
+   - **★ 校验时机实测修正（2026-09-11）**：平台**不在创建时**校验。`POST /simulations`
+     （type=SUPER）会**正常返回 201 + Location**，错误是**异步**出现在**模拟结果**里：
+     `GET /simulations/{id}` → `{"status":"ERROR", "message":"At least 10 component alphas are
+     required for Super Alpha.", "location":{"property":"combo"}}`。
+     → **201 ≠ SA 合法**；必须轮询模拟结果才能判定，勿把 201 当作通过。
+   - **判定入口（零成本）**：先数本区 ACTIVE REGULAR 数（`GET /users/self/alphas?status=ACTIVE`
+     翻页，按 `settings.region` + `type=='REGULAR'` 过滤）。<10 直接用此结论回复用户，
+     不必发起模拟（省一个 sim 槽）。
+   - 现状（2026-09-11 实测）：USA 133 / MEA 19 / IND 18 / KOR 13 / **EUR 7** / HKG 4 / GBR 4 /
+     ASI 2 / GLB 1（ACTIVE REGULAR 计数）。**EUR 仅 7 颗，差 3 颗**，故当前无法组 EUR SA。
+   - KOR 历史教训：book 内大量 UNSUBMITTED 空壳草稿、**0 ACTIVE** → 必须先挖并提交 ≥10 颗
+     REGULAR KOR 使其 ACTIVE，才能组 SA（现已达 13 颗且已组 2 颗 SA）。
 2. **描述长度与写入方式（实测 400 坑，2026-08-28）**：selection/combo 描述**各需 ≥100 英文字**。
    但 `set_alpha_properties`（MCP 工具与 brain_api 方法均是）**对 SUPER alpha 必返 400**——它无条件在 payload
    带 `regular` 字段，SUPER 无 regular 组件被平台拒绝。**正确写法：裸 PATCH 最小 payload**：

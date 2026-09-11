@@ -1,201 +1,51 @@
-# Skill 调用链文档
+# Skill 调用链（薄索引）
 
-本文档明确 WorldQuant BRAIN Alpha 挖掘工作区中关键 Skill 的调用链与依赖关系，避免"对 Skill 链理解不足"导致的执行偏差。
+> **本文件只做索引，不承载流程正文。** 权威来源：
+> - 挖掘流程（when / what / 怎么挖、九步 SOP、每步输入输出与失败分支）→
+>   [`Claude/skills/wq-brain-ra-pipeline/SKILL.md`](../../Claude/skills/wq-brain-ra-pipeline/SKILL.md)
+> - 项目规约（Shell 引号 / 工具化 / skill 契约 / 命名 / 运行环境）→ [`AGENTS.md`](../../AGENTS.md)
+> - 分层、阶段表、闸门阶梯、命名例外 → [`Claude/skills/INDEX.md`](../../Claude/skills/INDEX.md)
+>
+> **2026-09-11 重写**：此前本文件逐条复制了调用链正文，已与代码/流程实质漂移——阶段标签把 GEM 标成
+> S4、把提交判定标成 S6；仍把 `brain-alpha-judge` 当提交判定权威（其已于 2026-08-31 自我弃用）；
+> 引用不存在的 MCP 名 `mcp__wq-brain-http__submit_alpha`；写死 `.qoder-cn` 安装位路径；示例给出
+> `concurrency: 7`（`pipeline.py` 根本没有该参数）。**改流程只改 `wq-brain-ra-pipeline/SKILL.md`。**
 
----
+## 阶段 → 入口 → 执行体（唯一对照表）
 
-## 1. 批量回测与跟踪链（S3 阶段）
+| 步 | 阶段 | 入口（MCP / CLI） | 执行体 / 后端 | 产物（真相源） |
+|---|---|---|---|---|
+| 1 | S-PRE 查表 | `wq-brain-campaign-matrix` + `mcp__wqb-db__get_*` | —（只查表，不执行） | 配置包（参数，不落盘） |
+| 2 | S0 体检 | `mcp__wq-brain-http__workflow_campaign(stage="S0")` | toolkit `score_datasets.py` | ledger `s0_ranking` / `s0_whitelist` |
+| 3 | S1 字段 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` | toolkit `scan_fields.py` | `fields` 表 + ledger `s1_<ds>_d<delay>` |
+| 4 | S2 生成 | `workflow_gem`（强制）；priors 用 `workflow_campaign(subcommand="assemble-priors")` | `brain-make-some-gem` headless_runner；toolkit `assemble_priors.py` | `expressions`(status=gem) + `priors_snapshot_<region>` |
+| 5 | S2→S3 门禁 | `workflow_execute(node="wave_gate")`（2026-09-11 新增节点）或 CLI：`tools/campaign_intel.py ghost-audit` + `tools/wave_gate.py` | `tools/wave_gate.py`（内含 `field_inspect_gate.py`）+ toolkit `gate.py` | `gate_results` |
+| 6 | S3 七槽回测 | `workflow_batch_track` | toolkit `pipeline.py` → `BrainApiClient.create_multi_simulation` | `backtest_results` / `wave_results` / checkpoint |
+| 7 | S4 诊断 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` | toolkit `review_wave.py` | ledger `s4_walls_*` + `salvage_pool` |
+| 8 | S4→S5 判定 | `mcp__wq-brain-http__submit_verdict`（**唯一权威**）→ 用户确认 → `workflow_submit_alpha` | `tools/submit_verdict.py` | `submit_ready` 池 |
+| 9 | S6 回写 | `mcp__wqb-db__upsert_wave_result` / `upsert_registry_empirical` / `upsert_ledger_key` | toolkit `campaign.py`（ledger / registry / wave） | `wave_results` + `registry_empirical` |
 
-### 调用链
-```
-brain-sim-alphas-in-batch-and-track (Skill)
-    ↓ 触发
-wq-brain-campaign-toolkit/scripts/pipeline.py (执行引擎)
-    ↓ 调用
-BrainApiClient.create_multi_simulation() (平台 API)
-```
+## 易错点（2026-09-11 逐项核对过）
 
-### 各环节职责
+- **步 5 没有 workflow 节点**；`workflow_campaign(stage="S2")` 只路由到 `build_wave.py`＝**选波**（步 4 已调），
+  不能拿它代替门禁。门禁必须走仓根 `tools/` CLI。
+- **`workflow_chain` 覆盖步 2/3/4/5/6**。registry 实注 8 个节点：`campaign` / `feature_engineering` /
+  `gem` / `batch_track` / `wave_gate` / `judge` / `submit_alpha` / `superalpha`；步 1/7/8/9 无节点。
+- **提交类与评审节点禁止入自动链**：`submit_alpha` / `superalpha` 须用户确认后单独调用；
+  `judge` 自 2026-08-31 起仅为**参考层**（PPA 人工核对清单 + trend score），不构成提交依据。
+- 提交 MCP 工具名是 **`workflow_submit_alpha`**（不存在名为 `submit_alpha` 的 MCP 工具；
+  直连 DB 侧的批量提交工具是 `submit_batch`）。
+- 并发纪律唯一权威 = `wqb-concurrency §8`；`pipeline.py` **没有 `--concurrency` 参数**，
+  n_slots 由内部锁定 `min(7, 批数)`，把 `concurrency: 7` 拼进命令只会得到 warning / argparse 拒绝。
+- 表达式输入默认 **`--from-db`**（读 `expressions` 表）；`alpha_list.json` / `simulation_status.csv`
+  仅作排障与断点续跑兼容，**不是**交接真相源（战场产物只入 `data/wqb.db`）。
+- 依赖/路径：`WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或自动搜索安装位；**禁止**写死 `C:\Users\...` 或 `.qoder-cn/skills/...` 绝对路径（见 `AGENTS.md §6`）。
 
-| 环节 | 类型 | 职责 | 关键文件 |
-|------|------|------|----------|
-| **brain-sim-alphas-in-batch-and-track** | Skill 定义 | 提供批量回测的方法论文档、参数模板、最佳实践 | `.qoder-cn/skills/brain-sim-alphas-in-batch-and-track/SKILL.md` |
-| **wq-brain-campaign-toolkit** | 执行引擎 | 实际执行批量回测、断点续跑、结果收集 | `wq-brain-campaign-toolkit/scripts/pipeline.py` |
-| **pipeline.py** | CLI 入口 | 解析命令行参数、调度回测任务、写入 CSV/DB | `pipeline.py run --dataset <DS> --wave <N>` |
-| **BrainApiClient** | API 客户端 | 与 BRAIN 平台通信、429 退避、并发控制 | `world-quant-brain-mcp/brain_mixin_simulation.py` |
+## 环境变量
 
-### 正确调用方式
-
-**❌ 错误：手写脚本调用平台 API**
-```python
-# 禁止！绕过 MCP 工具，无 429 退避，易触发平台限制
-import requests
-response = requests.post("https://api.worldquantbrain.com/simulations", ...)
-```
-
-**✅ 正确：通过 Workflow 节点或 MCP 工具**
-```python
-# 方式 1：Workflow 节点（推荐）
-from wqb.workflow import get_executor
-executor = get_executor()
-result = executor.execute("batch_track", {
-    "region": "KOR",
-    "wave": "36A",
-    "dataset": "model219",
-    "concurrency": 7,  # 七槽填槽
-})
-
-# 方式 2：MCP 工具（结构化数据）
-# 使用 mcp__wq-brain-http__batch_create_simulations
-# 使用 mcp__wqb-db__upsert_backtest_rows
-```
-
-### 关键参数说明
-
-| 参数 | 来源 | 说明 |
-|------|------|------|
-| `campaign_dir` | 自动解析或环境变量 | 战役目录，优先级：参数 > `WQB_CAMPAIGN_DIR` > 自动探测 |
-| `concurrency` | 默认 7 | 并发数，七槽填槽模式（见 wqb-concurrency §8） |
-| `max_rounds` | 默认 3 | 最大轮次，断点续跑关键 |
-| `--review` | 固定添加 | 自动评审 |
-| `--write-ledger` | 固定添加 | 结果写 ledger |
+见 [`INDEX.md §运行环境铁律`](../../Claude/skills/INDEX.md)（`$WQ_PY` / `$WQ_TOOLKIT_DIR` / `$WQ_VALIDATOR_DIR`
+与凭证链）。换机器只改该处定义。
 
 ---
 
-## 2. GEM 表达式生成链（S4 阶段）
-
-### 调用链
-```
-brain-make-some-gem (Skill)
-    ↓ 触发
-trailSomeAlphas/skills/brain-feature-implementation (执行)
-    ↓ 生成
-final_expressions.json (产物)
-    ↓ 质量预估（自动）
-tools/pool_diversity.py + tools/quality_predict.py
-```
-
-### 关键环节
-
-| 环节 | 文件 | 说明 |
-|------|------|------|
-| Skill 定义 | `brain-make-some-gem/SKILL.md` | 概念优先：机制→具体字段→一条模板 |
-| 执行器 | `run.py --config config.json` | headless_runner 模式 |
-| 产物 | `final_expressions.json` | 生成的 alpha 表达式列表 |
-| 质量预估 | `tools/quality_predict.py` | 零配额预检，三态判定 |
-
-### Workflow 节点集成
-
-```python
-# gem 节点自动完成：生成 → 质量预估 → Mode B 标记
-result = executor.execute("gem", {
-    "region": "KOR",
-    "dataset_id": "model219",
-    "delay": 1,
-    "universe": "TOP3000",
-    "data_category": "analyst",
-})
-# 返回包含：
-# - expression_count: 生成表达式数量
-# - quality_estimation: 质量预估结果
-# - mode_b_required: 是否需要 Mode B（EXPECTED_BLOCK > 0）
-```
-
----
-
-## 3. 特征工程链（S1-S3 阶段）
-
-### 调用链
-```
-feature_engineering (Workflow 节点)
-    ↓ S1: 字段理解
-scan_fields.py + 字段分类
-    ↓ S2: 字段筛选
-build_wave.py + 多样性审计
-    ↓ S3: 预处理决策
-ledger s1_<dataset>_d<delay> 写入
-    ↓ 自动注入
-S2 执行时 --ideas-file 自动传入
-```
-
-### 关键产物
-
-| 产物 | 位置 | 说明 |
-|------|------|------|
-| S1 ledger | `ledger_kv s1_<dataset>_d<delay>` | 字段理解与预处理决策 |
-| 字段目录 | `field_catalog` 表 | 字段类型/覆盖率/更新频率 |
-| 波次配置 | `wave_config` | 候选池配置 |
-
----
-
-## 4. 提交判定链（S6 阶段）
-
-### 调用链
-```
-brain-alpha-judge (Skill)
-    ↓ 六步闸门
-1. 平台硬检查 → 2. PPA 闸门 → 3. Trend Score → 4. 相关性 → 5. LLM 决策 → 6. 提交确认
-    ↓ 通过
-worldquant-submit-alpha (Skill)
-    ↓ 提交
-mcp__wq-brain-http__submit_alpha
-```
-
-### 关键闸门
-
-| 闸门 | 条件 | 动作 |
-|------|------|------|
-| PPA 闸门 | prod_corr ≥ 0.7 | **BLOCK + Mode B**（换字段组合） |
-| 自相关 | self_corr ≥ 0.7 | BLOCK |
-| Trend Score | < 阈值 | BLOCK |
-| LLM 决策 | 低价值 | BLOCK |
-
----
-
-## 5. 常见误区与纠正
-
-### 误区 1：手写脚本调用平台 API
-**症状**：写 `logs/_tmp_*.py` 调用 `requests.post()` 提交 alpha
-**纠正**：使用 `mcp__wq-brain-http__submit_alpha` 或 `worldquant-submit-alpha` skill
-
-### 误区 2：忽略 campaign_dir 解析
-**症状**：`Campaign directory not found` 错误
-**纠正**：设置 `WQB_CAMPAIGN_DIR` 环境变量，或让节点自动解析
-
-### 误区 3：跳过质量预估直接回测
-**症状**：大量 EXPECTED_BLOCK 候选进入回测，浪费配额
-**纠正**：使用 `campaign` 节点（自动质量闸），或手动调用 `wave_gate.py --quality-block`
-
-### 误区 4：prod_corr ≥ 0.7 仍强行提交
-**症状**：提交被拒或标记为低价值
-**纠正**：judge 节点自动 BLOCK，回 Mode B 换字段组合
-
----
-
-## 6. 快速参考：何时用哪个工具
-
-| 场景 | 推荐工具 | 备选 |
-|------|----------|------|
-| 批量回测 | `workflow_batch_track` | `pipeline.py run` |
-| 生成表达式 | `workflow_gem` | `run.py --config` |
-| 质量预估 | `tools/quality_predict.py` | `workflow_gem`（自动） |
-| 提交判定 | `workflow_judge` | `brain-alpha-judge` skill |
-| 特征工程 | `workflow_feature_engineering` | `scan_fields.py` |
-| 提交 alpha | `mcp__wq-brain-http__submit_alpha` | `worldquant-submit-alpha` skill |
-| 查 alpha 指标 | `mcp__wq-brain-http__get_alpha_details` | 禁止手写脚本 |
-
----
-
-## 7. 环境变量速查
-
-| 变量 | 用途 | 示例 |
-|------|------|------|
-| `WQB_WORKSPACE_ROOT` | 工作区根路径 | `d:\coding\traeCN_project\wqb` |
-| `WQB_CAMPAIGN_DIR` | 战役目录（覆盖自动解析） | `d:\coding\traeCN_project\wqb\tracking\KOR` |
-| `WQ_TOOLKIT_DIR` | toolkit 脚本目录 | `~/.qoder-cn/skills/wq-brain-campaign-toolkit/scripts` |
-| `WQ_PY` | Python 解释器路径 | `python` 或 `C:\Python39\python.exe` |
-
----
-
-*文档版本：2026-08-27*
-*关联规约：AGENTS.md §5（Shell 命令规约）、§6（一次性脚本工具化纪律）*
+*文档版本：2026-09-11（取代 2026-08-27 版）。关联规约：`AGENTS.md §5/§6`、`INDEX.md`。*

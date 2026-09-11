@@ -20,6 +20,8 @@
     python tools/sync_skills.py --dry-run   # 打印将要执行的动作，不写盘
     python tools/sync_skills.py             # 同步全部安装位
     python tools/sync_skills.py --target ~/.codex/skills --target ~/.cursor/skills
+    python tools/sync_skills.py --prune-orphans            # 只列出安装位孤儿（仓库没有的顶层条目）
+    python tools/sync_skills.py --prune-orphans --apply    # 归档孤儿到 attic/sync_orphans_<date>/
 
 方向是单向的：**仓库是源，安装位是派生物**。安装位的本地修改会被覆盖，
 要改 skill 请改仓库副本再同步。
@@ -97,6 +99,78 @@ def resolve_install_root() -> Optional[Path]:
     return roots[0] if roots else None
 
 
+#: 孤儿清理白名单：这些顶层条目不参与 prune。
+#: 判据：① 非 WQ 全局技能（由 WorkBuddy / 其他项目独立维护，本仓库无源）
+#:       ② 2026-09-10 审计 P2-1 已裁决"不处置"的废弃 skill。
+#: 以 "." 开头的条目（WorkBuddy 迁移标记等）由代码统一放行，无需在此登记。
+PROTECTED_ORPHANS = {
+    "code-optimization", "dead-code-cleanup", "gold-analysis", "jin10-news",
+    "brain-enhance-template",  # 已废止，裁决保留原位（P2-1）
+}
+
+
+def prune_orphans(target: Path, apply: bool = False) -> List[str]:
+    """列出（并可选归档）安装位里"仓库根本没有的顶层条目"。
+
+    只增不删是安全默认（历史产物不该被静默清掉），但长期会堆积改名前的旧
+    skill 目录与一次性脚本 —— 2026-09-11 审计手工清了 21 项，说明缺口真实存在。
+    故提供显式入口：默认**只打印**，`--apply` 才移入
+    `<repo>/attic/sync_orphans_<YYYYMMDD>/<host>/`（移动而非删除，可回滚）。
+
+    判据是"顶层条目在仓库完全不存在"，而非"子文件有差异"：后者
+    （如 `brain-forum-browse/data/agent_profile.json`、GEM 的 `data/*_idea_*.json`）
+    是运行时产物，属正常，**不得**当孤儿清理。
+    """
+    if not target.is_dir():
+        return []
+    src_top = {p.name for p in SOURCE.iterdir()}
+    orphans = [
+        entry.name for entry in sorted(target.iterdir(), key=lambda p: p.name)
+        if entry.name not in src_top
+        and entry.name not in PROTECTED_ORPHANS
+        and not entry.name.startswith(".")
+        and "migration" not in entry.name.lower()   # WorkBuddy 迁移标记（_bm_skillid_migration.json 等）
+    ]
+    if not orphans or not apply:
+        return orphans
+
+    import datetime
+    host = target.resolve().parent.name or "target"
+    stamp = datetime.date.today().strftime("%Y%m%d")
+    dest_root = REPO_ROOT / "attic" / f"sync_orphans_{stamp}" / host
+    links: List[str] = []
+    for name in orphans:
+        src = target / name
+        # 悬空链接：symlink 与 Windows directory junction 都会「lexists 但 exists==False」。
+        # 二者内容都不在本机（目标已删），跨盘 shutil.move 必失败（跟随悬空 reparse point）。
+        # 故只记录 target 再摘除链接本身；symlink 用 unlink，junction 用 rmdir。
+        if os.path.lexists(src) and not os.path.exists(src):
+            try:
+                tgt = os.readlink(src)
+            except OSError:
+                tgt = "<unresolvable>"
+            links.append(f"{name}\t-> {tgt}")
+            try:
+                os.unlink(src)
+            except OSError:
+                try:
+                    os.rmdir(src)
+                except OSError as e:
+                    print(f"    [warn] 无法移除悬空链接 {name}: {e}")
+            continue
+        dest = dest_root / name
+        if dest.exists():
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(src), str(dest))
+    if links:
+        dest_root.mkdir(parents=True, exist_ok=True)
+        with open(dest_root / "dangling_symlinks.txt", "w", encoding="utf-8", newline="") as f:
+            f.write("# 已删除的悬空符号链接（内容不在本机，仅留 target 备查）\n")
+            f.write("\n".join(links) + "\n")
+    return orphans
+
+
 def _read_normalized(path: Path) -> Optional[bytes]:
     """读文件并归一化换行符。
 
@@ -131,6 +205,22 @@ def diff_tree(source: Path, target: Path) -> Tuple[List[Path], List[Path], List[
     return only_source, changed, only_target
 
 
+#: 运行时产物判据（安装位有、仓库没有，但**属正常**，不参与孤儿清理也不该刷屏）
+RUNTIME_PARTS = {"data", "outputs", "output_report", "logs", "__pycache__"}
+RUNTIME_SUFFIXES = (".log", ".csv", ".pyc", ".pyo")
+RUNTIME_NAMES = {"agent_profile.json", "loop_state.json", "parsetab.py"}
+
+
+def _is_runtime_artifact(rel: Path) -> bool:
+    if any(part in RUNTIME_PARTS for part in rel.parts):
+        return True
+    if rel.suffix in RUNTIME_SUFFIXES:
+        return True
+    if ".bak_" in rel.name or rel.name in RUNTIME_NAMES:
+        return True
+    return False
+
+
 def sync(source: Path, target: Path, dry_run: bool) -> int:
     only_source, changed, only_target = diff_tree(source, target)
     actions = 0
@@ -147,9 +237,15 @@ def sync(source: Path, target: Path, dry_run: bool) -> int:
 
     # 安装位多出来的文件只报告不删除：可能是本地产物（outputs 已在忽略表里，
     # 但历史遗留的其他文件不该被本工具静默清掉）。按顶层条目去重，避免刷屏。
-    # 注意：**改名前的旧 skill 目录** 会在此列成 ONLY-AT-INSTALL，需手工清理。
-    for top in sorted({(rel.parts[0] if rel.parts else rel.as_posix()) for rel in only_target}):
+    # 2026-09-11：把"运行时产物"（GEM 的 data/*_idea_*.json、ace.log 等）与
+    # "真孤儿"（改名前的旧 skill 目录、一次性脚本）**分开报**，否则前者会把
+    # 后者淹掉，读者以为一切正常。
+    runtime = {rel for rel in only_target if _is_runtime_artifact(rel)}
+    real_orphans = [rel for rel in only_target if rel not in runtime]
+    for top in sorted({(rel.parts[0] if rel.parts else rel.as_posix()) for rel in real_orphans}):
         print(f"  ONLY-AT-INSTALL {top}（未删除，如确认是废弃 skill/产物请手工清理）")
+    if runtime:
+        print(f"  [runtime] {len(runtime)} 个运行时产物（正常，不计入孤儿）")
 
     return actions
 
@@ -172,6 +268,11 @@ def main() -> int:
                     help="打印将要执行的动作，不写盘")
     ap.add_argument("--target", action="append", default=None,
                     help="显式指定安装位（可重复；默认自动枚举全部已存在安装位）")
+    ap.add_argument("--prune-orphans", action="store_true",
+                    help="列出安装位里仓库不存在的顶层条目（旧 skill 目录 / 一次性脚本）；"
+                         "默认只打印，配 --apply 才归档（移动，非删除）")
+    ap.add_argument("--apply", action="store_true",
+                    help="配合 --prune-orphans：实际执行归档（默认 dry-run）")
     a = ap.parse_args()
 
     if not SOURCE.is_dir():
@@ -211,6 +312,23 @@ def main() -> int:
         total += sync(SOURCE, t, dry_run=a.dry_run)
     verb = "将同步" if a.dry_run else "已同步"
     print(f"\n[sync_skills] {verb} {total} 个文件（{len(targets)} 个安装位）")
+
+    if a.prune_orphans:
+        print("\n[sync_skills] 孤儿扫描（安装位有、仓库没有的**顶层条目**；"
+              "子文件差异与 . 开头条目不算）")
+        total_orphans = 0
+        for t in targets:
+            names = prune_orphans(t, apply=a.apply)
+            total_orphans += len(names)
+            flag = "" if names else "  (无)"
+            print(f"  {t}{flag}")
+            for n in names:
+                print(f"    - {n}")
+        if total_orphans and not a.apply:
+            print(f"\n[sync_skills] 待归档 {total_orphans} 项 —— 加 --apply 执行"
+                  f"（移入 attic/sync_orphans_<date>/<host>/，可回滚）")
+        else:
+            print(f"\n[sync_skills] {'已归档' if a.apply else '无需清理'} {total_orphans} 项")
     return 0
 
 

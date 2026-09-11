@@ -21,38 +21,37 @@ allowed-tools:
 
 ## 使用方法
 
-1. **定位脚本**：
-   - 项目路径：`.qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py`
-   - 全局路径（Windows）：`~/.qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py`
+1. **定位脚本**：`<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py`
+   （`<SKILL_ROOT>` = 技能库根目录；本仓库真相源是 `Claude/skills/`，各宿主安装位由 `tools/sync_skills.py` 同步，见 `INDEX.md`）
 
 2. **运行脚本**：提供 ZIP URL（推荐）、Git URL 或本地路径。
 
 ### 示例 1：通过 ZIP 拉取（首选推荐）
 该方法更快，且在受限网络环境中表现最好。为此，你需要先把仓库地址解析为 ZIP 文件 URL：在仓库 URL 后追加 `/archive/refs/heads/main.zip`。例如，仓库地址为 `https://github.com/GitRepoAuthorName/RepoName` 时，ZIP URL 即为 `https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip`。
 ```bash
-python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip" --overwrite
+python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip" --overwrite
 ```
 
 ### 示例 2：通过 Git 拉取
 当你需要特定分支或已配置好 git 时使用。
 ```bash
-python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git"
+python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git"
 ```
 
 ### 示例 3：从本地目录导入
 ```bash
-python ".qoder-cn/skills/pull-brain-skills/scripts/pull_skills.py" "C:/Downloads/my-skills-repo"
+python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "C:/Downloads/my-skills-repo"
 ```
 
 选项：
-- `--dest <path>`：skill 的目标安装目录（默认：当前项目下的 `.qoder-cn/skills`；`~/.qoder-cn/skills` 为另一个可选安装根）。
+- `--dest <path>`：skill 的目标安装目录。默认 = 仓库真相源 `Claude/skills/`（导入后须跑 `tools/sync_skills.py` 推送到各安装位）；也可指定某个安装位根目录。
 - `--branch <branch>`：指定要检出的分支。
 - `--overwrite`：覆盖同名已存在的 skill 文件夹。
 
 ## 行为
 - 浅克隆仓库（`--depth 1`）到临时目录。
 - 扫描顶层文件夹中的 `SKILL.md` / `skill.md`（不区分大小写）。
-- 将有效的 skill 文件夹复制到目标 `.qoder-cn/skills` 目录。
+- 将有效的 skill 文件夹复制到 `--dest` 指定的目录（默认仓库 `Claude/skills/`）。
 
 ## 注意事项
 - 路径使用正斜杠以保证兼容性。
