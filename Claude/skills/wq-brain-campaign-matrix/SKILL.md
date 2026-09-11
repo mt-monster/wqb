@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: wq-brain-campaign-matrix
 description: "WorldQuant BRAIN alpha 挖掘的\"区域×数据集\"战役矩阵。当用户要在某区域挖 alpha / 开战役 / campaign / 查区域配置 / 看哪些数据集还没挖 / 走 region×dataset 效率工作流， 或任何新挖掘战役开始时（S0 之前）使用。把区域静态配置（合法 universe 档位、默认 neutralization、EVENT 字段规则）、数据集资产（清单 + PPA 预筛）与实证台账 （dead-ends / wins / campaign 状态）解析为预解析配置包，原样派发 S0–S6 skill 链 并把结果回写 registry。"
 layer: L-PRE
@@ -32,7 +32,7 @@ allowed-tools:
 
 ## 数据文件（唯一 registry，单轨 SQLite）
 
-**数据库**：`D:\coding\traeCN_project\wqb\data\wqb.db`
+**数据库**：`data/wqb.db`（仓库根相对路径，各安装位/换机通用；禁止硬编码绝对路径）
 
 | 表 | 内容 |
 |---|---|
@@ -84,7 +84,7 @@ region=KOR  universe=TOP600  delay=1  neutralization=STATISTICAL(或数据集 do
 配置包**不替代** `wq-brain-ppa-mining §1.0` 的实时体检（cov≥0.85/alphaCount≤50/fields≥10）——矩阵存的是快照结论，PPA 候选集仍须逐集过体检。
 
 ### 3. 派发（不改下游）
-按 `wq-brain-ra-pipeline` 九步 SOP 把配置包交给 MCP 化链：步 2 S0 体检（`mcp__wq-brain-http__workflow_campaign` stage="S0"）→ 步 3 S1 字段扫描（`workflow_campaign` stage="S1" + `workflow_feature_engineering`）→ 步 4 S2 选波（`workflow_gem` + `workflow_campaign` stage="S2"）→ 步 5 门禁（`workflow_campaign` stage="S2" + `preflight_expressions`）→ 步 6 S3 七槽回测（`workflow_batch_track`）→ 步 7 S4 诊断（`workflow_campaign` stage="S4"）→ 步 8 提交判定（`submit_verdict` + 用户确认后 `workflow_submit_alpha`）→ 步 9 S6 复盘回写（`upsert_wave_result` / `upsert_registry_empirical`）。
+按 `wq-brain-ra-pipeline` 九步 SOP 把配置包交给 MCP 化链：步 2 S0 体检（`mcp__wq-brain-http__workflow_campaign` stage="S0"）→ 步 3 S1 字段扫描（`workflow_campaign` stage="S1" + `workflow_feature_engineering`）→ 步 4 S2 选波（`workflow_gem` + `workflow_campaign` stage="S2"）→ 步 5 门禁（**`workflow_execute` node="wave_gate"**，2026-09-11 起入 MCP；CLI 兜底 `tools/campaign_intel.py ghost-audit` + `tools/wave_gate.py`。**勿用** `workflow_campaign` stage="S2" 当门禁——那是选波，09-11 审计定性）→ 步 6 S3 七槽回测（`workflow_batch_track`）→ 步 7 S4 诊断（`workflow_campaign` stage="S4"）→ 步 8 提交判定（`submit_verdict` + 用户确认后 `workflow_submit_alpha`）→ 步 9 S6 复盘回写（`upsert_wave_result` / `upsert_registry_empirical`）。
 
 ### 4. 回写（强制，战役结束或关键发现时）
 写 `data/wqb.db` 的 `registry_empirical` 表（**禁止再编辑 `attic/json_archive/registry/` 归档 JSON**），**一律走 toolkit `campaign.py registry` 幂等 CLI**（`$WQ_TOOLKIT_DIR/campaign.py`，相对工作区根可写 `tracking/<REGION>` 战役目录；**禁止写死 `C:\Users\...` 绝对路径**）。命令模板（**先 `--dry-run` 试跑，无误后去掉重跑**；INSERT OR REPLACE 幂等，重复跑无副作用）：

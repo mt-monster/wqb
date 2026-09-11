@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-feature-implementation
 description: "根据 idea Markdown 文档实现 WorldQuant Brain 特征：下载数据集并生成文档中定义的 alpha 表达式 （alpha expressions / dataset download / expression generation）。 当用户提供 idea 文档、要求生成 alpha 表达式或下载数据集时使用。"
 layer: L2

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-01
+last_verified: 2026-09-12
 name: worldquant-submit-alpha
 description: "通过 API 将 WorldQuant Brain alpha 真正提交（submit）到平台（不只是模拟 simulate）。 当用户对某个 WQ alpha id 说\"提交 alpha / submit / 上平台 / 落地\"时使用。覆盖关键坑： POST /alphas/{id}/submit 返回 201/200 但 status 因 regular.description 过短而永不翻转， 以及正确的嵌套 description PATCH 写法；并说明约 2 分钟的状态翻转延迟与轮询方法。★2026-09-01 新增「点塔优先提交规则」：提交前按金字塔点亮价值优选（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 的 alpha 不计；差 1-2 颗的塔一次提交即点亮，0 亮区域的单颗提交不算点亮）。"
 layer: L5
@@ -183,7 +183,7 @@ for _ in range(36):   # 最多 3 分钟
 ## 验证清单
 - `mcp__wq-brain-http__get_alpha_details` 返回 `status=ACTIVE`（或 SUBMITTED→ACTIVE）、
   `dateSubmitted` 非空 → 成功。
-- 所有硬闸门此前已 PASS（ProdCorr<0.7、SelfCorr<0.7、LOW_SUB_UNIVERSE_SHARPE>=0.9 等）。
+- 所有硬闸门此前已 PASS（平台硬线：ProdCorr<0.7、SelfCorr<0.7；内部从严线：LOW_SUB_UNIVERSE_SHARPE≥0.9——平台判据是公式 `≥0.75×sqrt(子域/全域)×sharpe`，见 `brain-how-to-pass-alpha-test`）。
   WARNING（描述长度/格式/主题）不挡提交，但描述过短会导致上面的静默丢弃。
 
 ## SuperAlpha（type=SUPER）提交
@@ -213,6 +213,15 @@ for _ in range(36):   # 最多 3 分钟
   或本地 DB `alphas.date_submitted`（注意是 EDT 时区 `-04:00`）按当前 ET 日过滤。
 - 可复用：`tracking/_submit_kit/_quota_now2.py`（activities 尾部 + 实时 alpha + DB ledger 三方核对）。
 
+### ★ PPA 通道（POWER_POOL_SUBMISSION，1/ET 日，2026-09-12 补全）
+
+PPA 是**独立日配额**（`POWER_POOL_SUBMISSION` limit=1/ET 日），与 REGULAR 4/日、SUPER 1/日**并行不互占**——每天先提 PPA 那颗是既定纪律。但它有两条关键约束（2026-09-12 从 `brain-alpha-robustness` 上浮，此前散落导致通道长期零使用）：
+
+1. **MCP `submit_alpha` 不是 PPA 感知的**：它内置常规 RA 闸（实测 Sharpe>1.3 / Fitness>0.75 / Margin>15bp），对合法 PPA 照拦（打 `PowerPoolSelected` 标签重试仍拦）。即**自动化通道无法放行 Sharpe<1.3 的合法 PPA**。
+2. **合法 PPA（Sharpe≥1.0 / 算子≤8 / 字段≤3 / PC<0.5）必须走平台 web UI 提交**，且仅在**当期活跃 Power Pool 主题窗口**内（主题轮动看平台右上角铃铛；`MATCHES_THEMES`=PASS 才受理）。非活跃区域提交报 "does not match any Power Pool Theme"。
+
+提交流程：提交前本地 `brain-calculate-alpha-selfcorr-quick` 算 PPAC（≤0.5 才走 PPA 通道）→ web UI 手动提交 → 回写 submission_ledger（submission_type=`PPA`）。
+
 
 ## 工具化纪律（tools/ 通用工具，勿再写一次性脚本）
 
@@ -227,4 +236,4 @@ for _ in range(36):   # 最多 3 分钟
 & $WQ_PY tools/submit_batch.py --spec <spec.json> --dry-run
 ```
 
-配额口径：ET 日历日 **REGULAR 4/日 + SUPER 1/日**（00:00 ET=12:00 GMT+8 重置）；旧 48h 滚动口径已废止。剩余额度从 submit 响应 `REGULAR_SUBMISSION`/`SUPER_SUBMISSION` check 的 `value/limit` 读（value 从 0 起计数，limit=4/1）。
+配额口径：ET 日历日 **REGULAR 4/日 + SUPER 1/日 + PPA 1/日（`POWER_POOL_SUBMISSION` 独立配额）**（00:00 ET=12:00 GMT+8 重置）；旧 48h 滚动口径已废止。剩余额度从 submit 响应 `REGULAR_SUBMISSION`/`SUPER_SUBMISSION` check 的 `value/limit` 读（value 从 0 起计数，limit=4/1）；PPA 不走本工具链（见上节）。

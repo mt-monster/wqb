@@ -3,7 +3,7 @@ name: planning-with-files
 layer: L7
 version: "2.1.0"
 description: 实现 Manus 风格的文件化规划，用于复杂任务。创建 task_plan.md、findings.md 与 progress.md。当开始复杂的多步任务、研究项目或任何需要 >5 次工具调用的任务时使用。
-last_verified: 2026-09-10
+last_verified: 2026-09-12
 user-invocable: true
 allowed-tools:
   - Read

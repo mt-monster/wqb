@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-datafield-exploration-general
 description: "提供 6 种经过验证的方法来评估 WorldQuant BRAIN 平台上的新数据字段（datafield）。 涵盖覆盖率（coverage）、非零值、更新频率、取值范围、中心趋势与分布形态的评测方法。 当用户想了解某个具体 datafield 时使用（如\"这个字段是什么？\"\"它多久更新一次？\"）。"
 layer: L1

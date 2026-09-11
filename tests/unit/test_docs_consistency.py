@@ -372,3 +372,102 @@ def test_sync_tool_keeps_safe_default_and_exposes_prune():
     src = _read(SYNC_TOOL)
     assert "--prune-orphans" in src, "sync_skills.py 未提供 --prune-orphans（孤儿清理入口）"
     assert "--apply" in src, "sync_skills.py 的 prune 应默认 dry-run、--apply 才写盘"
+
+
+# ---------------------------------------------------------------------------
+# 10. last_verified 新鲜度（2026-09-12 新增：内容改了元数据没改 = 漂移）
+# ---------------------------------------------------------------------------
+
+#: 容差：last_verified 允许落后最后一次提交至多 2 天（同日多轮编辑不计漂移）
+LV_GRACE_DAYS = 2
+
+
+def _skill_md_files() -> list[Path]:
+    return sorted(p for p in SKILLS_DIR.glob("*/SKILL.md"))
+
+
+def _last_commit_date(path: Path) -> str | None:
+    import subprocess
+    r = subprocess.run(["git", "log", "-1", "--format=%cs", "--", path.as_posix()],
+                       capture_output=True, text=True)
+    return r.stdout.strip() or None
+
+
+@pytest.mark.parametrize("path", _skill_md_files(), ids=lambda p: p.parent.name)
+def test_last_verified_not_older_than_last_commit(path: Path):
+    text = _read(path)
+    m = re.search(r"^last_verified:\s*(\d{4}-\d{2}-\d{2})", text, re.M)
+    assert m, f"{path.parent.name} 缺 last_verified"
+    lv = m.group(1)
+    cd = _last_commit_date(path)
+    if not cd:
+        pytest.skip("无 git 提交历史")
+    assert lv >= cd, (
+        f"{path.parent.name}: last_verified={lv} 落后最后一次内容提交（{cd}）——"
+        f"内容已变而元数据未复核。修法：复核内容后更新 frontmatter last_verified，不要放宽本断言")
+
+
+# ---------------------------------------------------------------------------
+# 11. 工具/节点计数只能引用 INDEX 基准段（2026-09-12 新增：根治 66/68/7 节点口径分裂）
+# ---------------------------------------------------------------------------
+
+#: 命中即检查的计数写法（工具数 / 节点数）；行内必须同时引用 INDEX 基准段才放行
+BARE_COUNT = re.compile(
+    r"\b(?:66|68)\s*(?:个)?\s*工具|\b(?:32|33)\s*(?:个)?\s*工具|[7７]\s*个节点|七个节点|7 个 workflow 节点")
+COUNT_REF_MARKS = ("INDEX", "唯一基准", "测试守护", "计数基准段")
+
+
+def test_no_bare_tool_or_node_counts_outside_index():
+    bad = []
+    for p in SKILLS_DIR.rglob("*.md"):
+        if "_unpacked" in p.as_posix() or p == INDEX_MD:
+            continue
+        for i, line in enumerate(_read(p).splitlines(), 1):
+            if BARE_COUNT.search(line) and not any(k in line for k in COUNT_REF_MARKS):
+                bad.append(f"{p.relative_to(REPO_ROOT).as_posix()}:{i}: {line.strip()[:90]}")
+    assert not bad, (
+        "skill 文档裸写工具/节点计数（口径唯一基准 = INDEX.md「MCP 工具/节点计数基准段」）：\n"
+        + "\n".join(bad[:8]))
+
+
+def test_mcp_tool_counts_match_index():
+    """INDEX 基准段的 68 必须等于 tools_*.py 装饰器实数——注册变了测试即红。"""
+    tools_dir = REPO_ROOT / "world-quant-brain-mcp"
+    per_module = {}
+    for p in sorted(tools_dir.glob("tools_*.py")):
+        n = len(re.findall(r"^@mcp\.tool", _read(p), re.M))
+        per_module[p.stem] = n
+    total = sum(per_module.values())
+    idx = _read(INDEX_MD)
+    assert f"**{total} 个工具**" in idx, (
+        f"INDEX 基准段写 {total} 个工具？实测装饰器合计 {total}（{per_module}）——同步 INDEX")
+    for mod, n in per_module.items():
+        assert f"`{mod}` {n}" in idx, f"INDEX 基准段缺 {mod} 的计数 {n}"
+    assert "**8 个**" in idx, "INDEX 基准段缺 workflow 节点数 8"
+
+
+def test_ppa_mining_and_ra_pipeline_reference_count_baseline():
+    """曾经的 66/32 与 68/33 分裂点，必须已改为引用基准段。"""
+    for f in (SKILLS_DIR / "wq-brain-ppa-mining" / "SKILL.md", RA_PIPELINE / "SKILL.md"):
+        t = _read(f)
+        assert "INDEX.md" in t and "计数基准" in t, f"{f.parent.name} 未引用计数基准段"
+        assert "66 工具" not in t and "32 工具" not in t
+
+
+# ---------------------------------------------------------------------------
+# 12. 禁止工作区绝对路径（2026-09-12 新增：换机即断）
+# ---------------------------------------------------------------------------
+
+def test_no_workspace_absolute_path_in_skills_and_docs():
+    bad = []
+    pat = re.compile(r"[A-Za-z]:[\\/]+coding[\\/]+traeCN_project")
+    for base in (SKILLS_DIR, REPO_ROOT / "docs"):
+        for p in base.rglob("*.md"):
+            if "_unpacked" in p.as_posix():
+                continue
+            if "docs/plans" in p.as_posix().replace("\\", "/"):
+                continue  # docs/plans/ 是历史计划归档（只读记录，记载当时的绝对路径属正常）
+            for i, line in enumerate(_read(p).splitlines(), 1):
+                if pat.search(line):
+                    bad.append(f"{p.relative_to(REPO_ROOT).as_posix()}:{i}: {line.strip()[:90]}")
+    assert not bad, "出现工作区绝对路径（应改仓库根相对路径）：\n" + "\n".join(bad[:8])

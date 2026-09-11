@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "2.2"
-last_verified: 2026-09-02
+last_verified: 2026-09-12
 ---
 
 # WQ BRAIN RA Pipeline（唯一挖掘编排 SOP）
@@ -444,7 +444,7 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 | 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis` |
 | 白名单被 dead_end 全覆盖 | 停止 |
 | 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
-| **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（`max_sharpe_floor` 缺省 0.5 / `min_batches` 缺省 2；**语义注意**：`max_sharpe_floor` 的 0.5 兜底只在"有 `signal_floor` 节但缺该字段"时生效——整节缺失或 `enabled:false` 时该闸**静默放行**。2026-09-11 审计已为全部 11 个区域补齐该节），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
+| **信号天花板闸自动拦截**（2026-09-06 接线） | `workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波。参数在 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`（`max_sharpe_floor` 缺省 0.5 / `min_batches` 缺省 2；**语义注意**：`max_sharpe_floor` 的 0.5 兜底只在"有 `signal_floor` 节但缺该字段"时生效——整节缺失或 `enabled:false` 时该闸**静默放行**。2026-09-11 审计已为全部 11 个区域补齐该节，并按实证回填（规则：每波 max\|sharpe\| 的 p25、**只上调不下调**、样本≥8 波）：**IND=1.2 / USA=0.9 / MEA=1.2**，其余区域维持 0.5（样本不足）——对高信号区 0.5 形同虚设（USA 曾 0/13 波、MEA 0/47 波低于 0.5）），纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `mcp__wq-brain-http__sa_probe --region $REGION`） |
 | 配额耗尽 | 挂起提交，继续步 2 → 9。 |
 | 用户要求持续日循环 | 每个 NY 日先 `brain-next-move-analysis`，再从步 1 跑；日界 21:30 ET |
@@ -532,4 +532,4 @@ MCP 工具调用名 = `mcp__<server>__<注册名>`。注册名与所在模块不
 | 直写字段目录 | `mcp__wqb-db__upsert_field_catalog` | wqb_db_mcp.py |
 | 直写 ledger | `mcp__wqb-db__upsert_ledger_key` | wqb_db_mcp.py |
 
-> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。统计口径：`wq-brain-http` 服务器共 68 个工具（tools_workflow 11 个，其余分布在 account/alpha/config/corr/data/forum/labs/ops/sim/spc）；`wqb-db` 服务器 33 个。
+> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。工具/节点计数**唯一基准 = `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」**（当前 wq-brain-http 68 / wqb-db 33 / workflow 节点 8，测试守护），本表不另维护数字。

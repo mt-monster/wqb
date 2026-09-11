@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-dataset-exploration-general
 description: "提供对 WorldQuant BRAIN 整个数据集进行深入挖掘分析的综合工作流。 包括数据集选择、字段分类（field categorization）、详细描述生成与跨平台调研等步骤。 当用户想\"审计某个数据集\"、\"对字段分类\"或\"探索新数据集\"时使用。"
 layer: L1

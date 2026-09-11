@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: pull-brain-skills
 description: "从 ZIP URL（首选）、Git 仓库或本地目录导入有效的 agent skill。包含 SKILL.md / skill.md 文件（不区分大小写）的文件夹视为有效 skill。"
 layer: L7

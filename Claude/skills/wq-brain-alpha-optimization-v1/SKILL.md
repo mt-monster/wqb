@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式优化器。Mode B（想法层，70% 精力）：改信号概念/ 字段组合，从 arXiv 引入概念，5 步改进工作流。Mode A（参数层，30% 精力）：冻结核心想法， 在严格 8 候选批中调 decay/窗口/中性化/truncation，含本地校验与低相关提交规则。 当用户要求改进或优化某个 BRAIN alpha ID、修复失败的提交测试、把 PROD 相关性压到 0.7 以下、 或通过包括 IS_LADDER_SHARPE 在内的全部检查时使用。"
 layer: L4

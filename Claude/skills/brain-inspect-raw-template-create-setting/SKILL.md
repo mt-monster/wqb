@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-inspect-raw-template-create-setting
 description: "本 skill 仅用于检查原始 BRAIN 模板（raw template），与增强模板无关，不要用于增强模板 （do not use for enhanced templates）。 读取 BRAIN 模板/idea JSON（template/idea/expression_list，如 fundamental28_GLB_1_idea_<timestamp>.json），通过 ace_lib.get_instrument_type_region_delay 获取有效的模拟设置选项，解析 region/delay/universe/neutralization，并使用 ace_lib.generate_alpha 构建 Alpha 列表 JSON（每个表达式一个 Alpha）。 当用户要求检查模板文件、附加设置、创建 alpha 列表或验证设置时使用 （inspect template / create alpha list / validate settings）。"
 layer: L3

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: alpha-expression-verifier
 description: "校验 alpha 表达式的语法（不关心字段是否存在）。当需要检查 alpha 表达式字符串的语法是否合法、函数参数是否正确、括号是否匹配时使用。仅限语法层面；战役级预检（字段/类型/毒化）见 wq-brain-campaign-toolkit。"
 layer: L2

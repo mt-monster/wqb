@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-24
+last_verified: 2026-09-12
 name: wq-brain-campaign-toolkit
 description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
 layer: L-TOOL
@@ -31,7 +31,7 @@ allowed-tools:
 | 工具 | 职责 |
 |------|------|
 | `campaign.py` | 战役 CLI 入口（registry/ledger 幂等写 + 子命令分发） |
-| `gate.py` | 5 闸预检（语法/字段白名单/VECTOR 包裹等） |
+| `gate.py` | 闸1–5 预检（闸编号唯一基准见 `INDEX.md`「gate.py 闸编号」） |
 | `pipeline.py` | 战役编排（checkpoint 断点续跑/七槽填槽） |
 | `scan_fields.py` | typed catalog 字段扫描 |
 | `metrics_cache.py` | 指标缓存（避免重复拉取） |
@@ -61,7 +61,7 @@ allowed-tools:
 ## 3. 战役目录契约
 `tracking/<REGION>/` 必须含：
 - `config/settings.json`：仿真设置（region/universe/delay/neutralization/decay/truncation/maxTrade/pasteurization...）+ `_multi_sim_batch_size` + `_concurrency_rule`
-- `config/thresholds.json`：规范形态为六节（review / near / quick_scan / probe_scoring_v2 / hard_gates / dataset_health）+ 可选节（`diversity` / poll / submit_quota）。**KOR / IND / DEU 实为扁平形态**（`sharpe_min` 等写顶层，无 quick_scan / probe_scoring_v2 / hard_gates）——读阈值必须两版兼容。完整 schema 与两版对照 → [references/campaign-dir-contract.md](references/campaign-dir-contract.md)
+- `config/thresholds.json`：规范形态为六节（review / near / quick_scan / probe_scoring_v2 / hard_gates / dataset_health）+ 可选节（`diversity` / poll / submit_quota）。**KOR / IND / DEU 现为混合形态**（2026-09-12 更新：顶层扁平键 `sharpe_min` 等保留；`quick_scan`/`hard_gates` 已于 2026-09-11 补齐；`probe_scoring_v2` 仍缺——**刻意**，补齐会改 S0 评分行为，需单独实证后再引入）——读阈值必须两版兼容。完整 schema 与两版对照 → [references/campaign-dir-contract.md](references/campaign-dir-contract.md)
 - `reference/`：typed catalog（`<region>_<dataset>_fields.json`）与 `<region>_generation_constraints.json`
 - 完整 schema 与目录布局 → [references/campaign-dir-contract.md](references/campaign-dir-contract.md)
 
@@ -204,7 +204,7 @@ mcp__wqb-db__get_region_overview()
 
 | 场景 | 用这个 |
 |---|---|
-| 每波门禁（语法 + 5 闸 + 多样性，一键落盘） | `tools/wave_gate.py`（内部会调本 toolkit 的 `gate.py`） |
+| 每波门禁（语法 + 闸1–5 + 闸7/8 + 体检硬门，一键落盘） | `tools/wave_gate.py`（内部会调本 toolkit 的 `gate.py`；2026-09-11 起亦有 MCP 节点 `workflow_execute` node="wave_gate"） |
 | 批次状态查询/轮询 | `tools/batch_status.py` |
 | 提交层判定（403 盲区） | `tools/submit_verdict.py` |
 | 批量提交 | `tools/submit_batch.py` |

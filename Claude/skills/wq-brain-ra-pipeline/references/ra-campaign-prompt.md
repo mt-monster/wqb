@@ -51,7 +51,8 @@ last_verified: 2026-09-11
    （≥50 只做方向验证 / 10–49 进池但须实测 prod_corr / 0–9 优先且占预算 ≥50%）。
 步4 S2 生成：`assemble-priors`（subcommand，stage 标 S2）→ `workflow_gem`（**强制**，带 priors）；
    七槽配给：≥2 跨金字塔、≥1 按 win 机制换腿、弱探针 ≤1。禁止"每字段套 rank"。
-步5 门禁（**不在 MCP**）：`tools/campaign_intel.py ghost-audit` → `tools/wave_gate.py --campaign-dir … --dataset … --wave … --from-db`
+步5 门禁（**MCP 优先**）：`workflow_execute` node="wave_gate"（2026-09-11 起入 MCP，dry-run 先行）→
+   CLI 兜底 `tools/campaign_intel.py ghost-audit` → `tools/wave_gate.py --campaign-dir … --dataset … --wave … --from-db`
    （闸1–5 + 闸7/8 + 体检硬门）→ `gate_results` 入库。语法 FAIL 必先修；多样性 FAIL 回步4 补骨架。
 步6 S3 七槽回测：`workflow_batch_track`（n_slots 内部 = min(7,批数)；**禁止**拼 `--concurrency`）；
    prod-first：每槽先 1–2 条骨架查 prod_corr，≥0.7 停扩换腿。

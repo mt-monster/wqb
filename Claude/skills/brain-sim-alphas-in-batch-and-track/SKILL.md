@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-23
+last_verified: 2026-09-12
 name: brain-sim-alphas-in-batch-and-track
 description: "WorldQuant BRAIN alpha 批量提交与跟踪（表达式默认读库 `--from-db`；文件/CSV 仅断点续跑兼容）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
 layer: L3
@@ -82,6 +82,9 @@ mcp__wq-brain-http__workflow_batch_track(
 mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])
 ```
 
+> **边界说明（2026-09-12）**：MCP 节点的 `concurrency` 参数是节点内部参数（映射七槽填槽）；
+> CLI 层**禁止**给 `pipeline.py run` 拼接 `--concurrency`（argparse 未声明，会被 `validate_argv` 拦截）——两者不是一回事。
+
 **兼容模式**（旧 PowerShell 链，逐步淘汰）：
 
 ```powershell
@@ -151,7 +154,7 @@ ad-hoc 批量路径使用本 skill 自带 `scripts/diversity_enhancer.py`；战�
 | S1 | 字段扫描（typed catalog） | `scan_fields.py` | `reference/<region>_<dataset>_fields.json` |
 | S1 | 数据集评分+探针计划 | `score_datasets.py` | `reference/<region>_dataset_ranking.json`（mode/tier/tier_note） |
 | S2 | 候选生成（去重/分桶/骨架配给）+ 多样性增强 | `build_wave.py`（`--enhance-diversity auto/always/never`） | `candidates/*.json` + `candidates/<region>_wave<wave>_diversity_report.json` |
-| S2 | 5 闸预检（语法/字段白名单/VECTOR 包裹/不可访问算子/毒模式） | `gate.py` | 闸门报告 |
+| S2 | 闸1–5 预检（语法/字段白名单/VECTOR 包裹/不可访问算子/毒模式；闸编号基准见 INDEX） | `gate.py` | 闸门报告 |
 | S3 | 七槽填槽模式（7 批 multisim 同提、统一轮询、即收即补；并发纪律权威定义见 **`wqb-concurrency`** §8；**填槽内容**（组合优先 vs 弱探针）硬约束见 **`wq-brain-ra-pipeline` 步 4/步 6**，本表不复写；pipeline.py 2026-08-21 代码落地，支持 `--max-rounds` 多轮） | `pipeline.py`（七槽模式） | checkpoint JSON + alpha id |
 | S3 | 挂起熔断/退避/配额闸（机制沿用） | `pipeline.py`（内部 poller） | STALLED 检测、ET 日历日配额闸 |
 | S4 | 评审墙诊断 | `review_wave.py` | `reviews/<region>_review_<wave>.json`（walls + 候选/near） |

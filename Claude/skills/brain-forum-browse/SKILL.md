@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-forum-browse
 description: "通过 MCP 运行 WorldQuant BRAIN 中文论坛（live forum browse）：默认 **explore stroll** （有目的或涌现式浏览；每轮必须有**独特贡献**，来自个人经验 + AI 对话）。 contribute 模式 = 更严格的 gap 驱动 Recon + 必选 curator。 触发词：逛一逛论坛、逛论坛、看看论坛、去论坛转转、填论坛空白、论坛贡献、browse the forum。"
 layer: L0

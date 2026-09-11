@@ -34,14 +34,14 @@
 
 **战役产物持久化铁律（2026-08-24 全量切库）**：Agent 持久化只走 `mcp__wqb-db__*` 或 `campaign.py` / toolkit 脚本的 `--from-db`；**禁止** `Write` / `Copy-Item` 战役 json/csv（`candidates/*.json`、`cache/w*_batches.json`、`cache/gate_wave*.json`、`results/*.csv`、`reviews/*.json`、`final_expressions.json` 当真相源）。静态配置（`settings.json`/`thresholds.json`/`platform_constraints.json`）与凭证、CLI 临时 `@file.json`、BRAIN 原始 CSV 仍用文件。
 
-**`$WQ_PY` 定义（本机单一事实源）：**
+**`$WQ_PY` 定义（本机单一事实源）：**路径 = `<repo>/world-quant-brain-mcp/.venv/Scripts/python.exe`（`<repo>` = 工作区根；**禁止硬编码绝对盘符路径**，换机即断）。
 ```bash
-# bash / sh
-export WQ_PY="D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe"
+# bash / sh（在仓库根执行）
+export WQ_PY="$PWD/world-quant-brain-mcp/.venv/Scripts/python.exe"
 ```
 ```powershell
-# PowerShell
-$WQ_PY = "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe"
+# PowerShell（在仓库根执行）
+$WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 ```
 
 换机器或换 venv 路径时，**只改此处定义**，全体 skill 文档内的 `$WQ_PY` 引用自动生效。各 skill 正文中出现的 `$WQ_PY` 一律按本定义解析。
@@ -181,6 +181,19 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 
 > 另有一道**独立的**"体检硬门"（`tools/field_inspect_gate.py`，由 `tools/wave_gate.py` 内置调用），
 > 判据是 WebDataScope 字段体检包（低覆盖/高偏度/厚尾/单边/稀疏事件），**与闸7/8 不同源**，勿混谈。
+
+### MCP 工具/节点计数（唯一基准，2026-09-12 核定）
+
+其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护）：
+
+- `wq-brain-http` 服务器：**68 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
+  `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
+  `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 11（合计 68）。
+  由 `tests/unit/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护（装饰器数变了测试即红）。
+- `wqb-db` 服务器：**33 个工具**（外部包；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
+- workflow 节点：**8 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate`）。权威 = `src/wqb/workflow/registry.py`，
+  `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
 
 ## 分工声明（防触发歧义）
 

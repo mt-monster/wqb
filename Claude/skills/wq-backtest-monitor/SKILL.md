@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-24
+last_verified: 2026-09-12
 name: wq-backtest-monitor
 description: "WorldQuant BRAIN PPA alpha 挖掘任务的\"监控 / 盘点 / 效率分析\"框架。当用户要求 \"盯回测任务 / 看任务情况 / 盘点挖掘任务 / 查历史回测 / 从 python 进程角度分析 / 回测效率如何 / 哪些 alpha 可提交\"等任何监控 WQ 挖掘的场合触发。提供：机器级 Python 进程第一视角枚举与分类、逐任务并发模型+进度、回测效率结论、**逐候选提交核查 (四关审计)**、**在飞任务 ETA 预期完成时间**、提交验证四关层级、并发令牌桶模型、监控盲区分类。"
 layer: L6

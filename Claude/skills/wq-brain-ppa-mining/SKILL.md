@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: wq-brain-ppa-mining
 description: "WorldQuant Brain 平台未点亮金字塔数据集 PPA (Power Pool Alpha) 挖掘的完整工作流。以「平台实时体检硬门槛」(coverage≥0.85 / alphaCount≤50 / fieldCount≥10) 为开战役前置条件，整合 WebDataScope 数据集级/字段级 meta-analysis，把“凭经验猜参数”升级为“读数据定参数”，覆盖数据集选择、中性化选择、字段预处理、时间窗口选择、低竞争白空间发现与闸门检查。触发场景：用户提到 WQ Brain、WorldQuant、PPA、Power Pool Alpha、alpha 挖掘、未点亮数据集; 用户要求在 WQ Brain 平台上找可提交的 alpha; 用户问\"怎么选数据集/字段/中性化/时间窗口\"或\"哪些数据集竞争少\"; 用户要开新战役 / 换区域 / 问某数据集能不能打 → 必须先执行 §1.0 平台实时体检; 出现\"某数据集平台没数据/字段为 0/数据包过期\"的判断 → 先按 §1.3 排除跨区域误推荐"
 layer: L0
@@ -233,13 +233,16 @@ scale(rank(ts_zscore(subtract(
 8. `subtract()` 支持 `filter=true`；`divide()` **不支持** filter=true。
 9. `ts_regression(A,B,n).residual` 语法无效。
 
-## 6. 闸门检查体系
+## 6. 闸门检查体系（口径 = INDEX「闸门阶梯」两线三层，2026-09-12 对齐）
 
-### 廉价闸门（PC 等待前）
-- Sharpe ≥ 1.58；Fitness ≥ 1.00；TVR ∈ [5%, 20%]；Margin > 5bp；Returns > 5%；平台检查无 FAIL。
+### ① IS 廉价闸（PC 等待前）
+- 平台硬线：Sharpe ≥ 1.58；Fitness ≥ 1.00；TVR ∈ [1%, 70%]；Margin > 5bp；Returns > 5%；平台检查无 FAIL。
+- 内部严线（研究仿真阶段即执行，省配额）：TVR ∈ [5%, 20%]；SELF_CORR < 0.50。
+  （2026-09-12 更正：旧文把这两项写成"硬闸门"，实为 INDEX 内部严线口径——两线三层以 INDEX 为唯一基准。）
 
-### 硬闸门（PC 等待后）
-- PROD_CORRELATION < 0.70（用户绝对红线）；SELF_CORRELATION < 0.50；复校廉价闸门。
+### ② PC 等待 → ③ 硬闸（PC 等待后）
+- PROD_CORRELATION < 0.70（用户绝对红线）；SELF_CORRELATION < 0.70（平台硬线）；复校廉价闸门。
+- **PPA 附加**：PPAC ≤ 0.5（Power Pool 通道相关性口径，与 SELF/PROD 不同源；本地快算见 `brain-calculate-alpha-selfcorr-quick`，提交路径限制见 `worldquant-submit-alpha`「PPA 通道」节）。
 
 ## 7. 增强版挖掘流程（数据驱动）
 
@@ -293,7 +296,7 @@ scale(rank(ts_zscore(subtract(
 - `hump(x, hump=0.01)` 必须命名参数。
 - 429 限流：短退避重试（wait=min(20+attempt*8, 45)s，最多 ~40 次）。
 - 孤儿模拟占槽：`TaskStop` 制造孤儿，只能等其自行释放。
-- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：66 工具（另有 wqb-db 台账服务器 32 工具），含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎：7 个节点快捷方式 + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`）。连接需用户在连接器页 Trust。
+- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：68 工具（另有 wqb-db 台账服务器 33 工具）——**计数唯一基准与统计口径见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，勿在他处裸写数字**，含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎：**8 个节点**快捷方式 campaign/feature_engineering/gem/batch_track/judge/submit_alpha/superalpha/**wave_gate** + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`）。连接需用户在连接器页 Trust。
 
 ### 9.1 data-sets / data-fields 实测约束（2026-08-05 验证，勿重复踩坑）
 

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-05
+last_verified: 2026-09-12
 name: brain-make-some-gem
 description: "S2 概念优先的 GEM alpha 表达式生成器（headless_runner）。当需要为某个 region/dataset/delay/universe 组合生成候选 alpha 表达式、跑 GEM、补候选池、按 priors 做增强变体扩展时使用。触发词：生成表达式 / 跑 GEM / makeSomeGem / 选波生成 / 概念优先生成 / final_expressions。编排入口是 wq-brain-ra-pipeline 步 4，标准调用走 mcp__wq-brain-http__workflow_gem，本 skill 描述其后端引擎与产物契约。"
 layer: L2
@@ -25,7 +25,7 @@ allowed-tools:
 |---|---|
 | **上游** | 步 3（S1）`s1_<ds>_d<delay>` ledger 的 ideas.md；`assemble-priors` 落的 `priors_snapshot_<region>` |
 | **本 skill** | 概念优先生成候选表达式 → `final_expressions.json` |
-| **下游** | 步 5（S2→S3）门禁：`check_batch` 多样性守卫 → `check_expr_against_inspect` 体检硬门 → `wave_gate` 5 闸预检 |
+| **下游** | 步 5（S2→S3）门禁：`check_batch` 多样性守卫 → `check_expr_against_inspect` 体检硬门 → `wave_gate` 闸1–5 预检（闸编号基准见 INDEX） |
 
 ## 概念优先铁律（与 ra-pipeline 步 4 硬约束同源，此处不复写阈值）
 

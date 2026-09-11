@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: brain-data-feature-engineering
 description: "自动分析 BRAIN 数据集字段，为 alpha 创作生成特征工程思路。 输入：数据类别、延迟、区域参数；输出：含深度特征工程建议的 markdown 文档。 本 skill 基于数据集与字段信息自主分析，提出有意义的概念特征。"
 layer: L1

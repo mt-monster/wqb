@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-01
+last_verified: 2026-09-12
 name: brain-alpha-judge
 description: "（参考层·非提交判定）评估 WorldQuant BRAIN alpha（Regular 或 PPA / Power Pool）的提交参考价值：综合平台硬检查、PPA 主题/相关性门控，以及内置的高价值中文论坛 Markdown 语料库。当用户想在提交前做额外质量审查、评估 alpha 是否值得提交、核对 PPA 主题匹配，或在明确确认后提交时使用。★2026-09-01 新增「点塔优选排序」：多个 READY 候选时按金字塔点亮价值排序（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 不计；差 ≤2 颗塔优先；0 亮区域单颗不算点亮；MEA 本季度不提交）。Before submitting a Regular or PPA alpha, when doing quality review or deciding if an alpha is worth submitting"
 layer: L5

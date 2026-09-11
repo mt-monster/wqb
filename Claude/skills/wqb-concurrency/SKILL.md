@@ -1,7 +1,7 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-12
 name: wqb-concurrency
-description: "WorldQuant Brain 并发挖掘调优。触发词：并发调优/429 风暴/CONCURRENT_SIMULATION_LIMIT_EXCEEDED/ 回测大量 429/提交成功数极低/调线程数/调并发/调信号量/战役 pipeline 批量回测提交/ 最大化回测吞吐/槽位利用率。 核心方法：测定服务端并发上限 C，并把本地在飞数锁到 C，避免 429 风暴与孤儿模拟占槽； 含七槽填槽模式 SOP（7 批 multisim 同提保持槽位常满，每次挖掘必须执行）。 含台账闭环：每波结论写 WAVE_LEDGER.md/ledger.json，下一波设计强制以台账决策节为输入。"
+description: "WorldQuant Brain 并发挖掘调优。触发词：并发调优/429 风暴/CONCURRENT_SIMULATION_LIMIT_EXCEEDED/ 回测大量 429/提交成功数极低/调线程数/调并发/调信号量/战役 pipeline 批量回测提交/ 最大化回测吞吐/槽位利用率。 核心方法：测定服务端并发上限 C，并把本地在飞数锁到 C，避免 429 风暴与孤儿模拟占槽； 含七槽填槽模式 SOP（7 批 multisim 同提保持槽位常满，每次挖掘必须执行）。 含台账闭环：每波结论经 `campaign.py wave`/`ledger` 幂等 CLI 写入 DB（wave_results/ledger_kv），下一波设计强制以台账决策为输入。"
 layer: L3
 allowed-tools:
   - Read
@@ -104,8 +104,8 @@ self._sub_sem = threading.Semaphore(C)   # C = 实测上限
 1. **提交前门禁**：每批表达式先过 gate 闸预检（见 `wq-brain-campaign-toolkit` `gate.py`）或等价的 expr_lint 工具，确认算子签名/字段白名单+coverage/单位语义合规，杜绝批内 ERROR 连坐。
 2. **7 批同提**：`mcp__wq-brain-http__create_multi_simulation`（`validate_fields=false` 避免预检超时、异步模式）每轮同时提交 7 批 × 8 条；**禁止串行"提交→等完→再提"**（槽位利用率仅 ~14%）。
 3. **统一轮询**：`mcp__wq-brain-http__lookINTO_SimError_message` 批量查 7 个 multisim 状态 → 取 children → alpha id → `mcp__wq-brain-http__get_alpha_details` 逐 ID 拉完整详情（含 checks 数组）做闸门筛选。**不用 `get_user_alphas`**：它按时间排序拉摘要列表，无法保证目标 ID 全在里面且可能不含完整 checks。
-4. **写波结论（台账，强制阻断）**：每波回收筛选后立即追加一节到 `tracking/<REGION>/WAVE_LEDGER.md`（批次表/闸门结论/结构性发现/判死证据/多样性快照），同步更新 `tracking/<REGION>/ledger.json`（判死清单/骨架登记/最佳候选）。**台账唯一写入入口是这两个文件**：禁止把波结论写进 `runs/` 散件 txt 替代台账（散件只作批次表达式/原始证据）；未写台账不得提交下一波。判死与结构性墙当场写入，不等周期。每 10 波做一次全量多样性评估（算子/字段探索率、骨架与风格多样性、预处理分布、收益归因、失效风险）独立成章，并据此优化 skills。
+4. **写波结论（台账，强制阻断；2026-09-12 对齐 DB 单轨）**：每波回收筛选后立即把结论写入 DB——波级走 `campaign.py --campaign-dir tracking/<REGION> wave upsert`（`wave_results` 表），台账键走 `campaign.py ledger set` 或 `mcp__wqb-db__upsert_ledger_key`（`ledger_kv` 表）；内容含批次表/闸门结论/结构性发现/判死证据/多样性快照。**DB（`data/wqb.db`）是台账唯一事实源**；`WAVE_LEDGER.md` / `ledger.json` 是**生成快照**（`tools/export_wave_ledger_md.py` 导出、历史兼容），勿手改、勿当写入入口。禁止把波结论写进 `runs/` 散件 txt（散件只作批次表达式/原始证据）；未写台账不得提交下一波。判死与结构性墙当场写入，不等周期。每 10 波做一次全量多样性评估（算子/字段探索率、骨架与风格多样性、预处理分布、收益归因、失效风险）独立成节，并据此优化 skills。
 5. **即收即补**：任一批 COMPLETE 立即回收筛选，空槽当轮补新批，保持 7 槽常满；单轮吞吐 ×7。
-6. **台账驱动选波（强制输入）**：下一波批次设计前必须先读 `WAVE_LEDGER.md` 最新「下一波决策」节与 `ledger.json` 的 `wave*_directives`/`exhausted_skeletons`/判死清单；禁止凭上轮对话记忆选波，禁止重发已饱和骨架或判死数据集的表达式。批间差异化（不同数据集/字段族/decay/中性化）以台账多样性快照中的补盲项为准。
+6. **台账驱动选波（强制输入）**：下一波批次设计前必须先读 DB 台账——`campaign.py ledger get` / `wave get`、`mcp__wqb-db__get_latest_wave` / `get_wave_result` / `get_ledger_key`（判死清单/`exhausted_skeletons`/「下一波决策」节）；`WAVE_LEDGER.md` 快照仅作人工速览。禁止凭上轮对话记忆选波，禁止重发已饱和骨架或判死数据集的表达式。批间差异化（不同数据集/字段族/decay/中性化）以台账多样性快照中的补盲项为准。
 
 **注意**：提交配额（ET 日历日 REGULAR 4/日 + SUPER 1/日）与回测并行槽位是两个独立机制；本模式兼容第 1 节演进注记的令牌桶模型（7 批 multisim 仅耗 7 令牌、瞬时 ≤7 安全包络内）。
