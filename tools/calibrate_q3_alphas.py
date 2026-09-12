@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Q3 校准：把平台 Q3 OS alpha 完整信息回填本地 alphas 表（幂等 upsert）。"""
 import json
-import os
 import shutil
 import sqlite3
 from datetime import datetime

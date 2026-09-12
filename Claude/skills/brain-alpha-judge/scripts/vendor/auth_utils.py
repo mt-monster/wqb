@@ -5,7 +5,6 @@ import base64
 import io
 import sys
 import time
-from typing import Optional
 from urllib.parse import urljoin
 
 import requests

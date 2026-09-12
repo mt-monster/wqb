@@ -14,7 +14,6 @@ CLI 由 campaign.py registry 转发；查表走 wqb-db-mcp（只读），写库�
 import argparse
 import datetime
 import json
-import os
 import sys
 
 from .common import load_json

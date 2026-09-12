@@ -24,7 +24,6 @@ import argparse
 import json
 import os
 import sqlite3
-import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(REPO_ROOT, "data", "wqb.db")

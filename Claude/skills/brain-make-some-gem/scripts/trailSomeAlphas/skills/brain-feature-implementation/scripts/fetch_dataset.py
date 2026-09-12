@@ -1,7 +1,6 @@
 import json
 import os
 import argparse
-import pandas as pd
 from pathlib import Path
 import sys
 

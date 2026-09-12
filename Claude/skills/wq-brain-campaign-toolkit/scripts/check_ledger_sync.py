@@ -27,7 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import CampaignContext, load_json
-from _lib.ledger import LedgerStore, make_ledger_store
+from _lib.ledger import make_ledger_store
 
 
 def parse_args():
@@ -198,7 +198,6 @@ def main():
     # 7. 悬空波对账（2026-09-01 G4）：backtest_results 有结果但 wave_results 无 verdict
     #    的波次 = 复盘中断/会话崩溃残留，列入补写清单（无人值守恢复入口）。
     try:
-        import sqlite3 as _sq
         from _lib.wqb_store import get_store as _gs
         _st = _gs(ctx)
         try:

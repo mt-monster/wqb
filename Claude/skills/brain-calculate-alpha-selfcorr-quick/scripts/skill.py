@@ -17,11 +17,10 @@ import numpy as np
 from tqdm import tqdm
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import json
 import os
 import argparse
 from datetime import datetime
-from typing import Optional, Tuple, Dict, List, Union
+from typing import Optional, Tuple, Dict, List
 from requests import Response
 
 # Default parameters

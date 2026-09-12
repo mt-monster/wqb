@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_credentials,
                          load_json, load_platform_constraints)
 from _lib.api import Api
-from _lib.ledger import LedgerStore, make_ledger_store, today
+from _lib.ledger import make_ledger_store, today
 from _lib.wqb_store import (load_ranking, save_ranking, load_catalog, save_catalog,
                             get_store)
 import metrics_cache

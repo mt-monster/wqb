@@ -1,7 +1,6 @@
 import requests
 import xml.etree.ElementTree as ET
 import os
-import sys
 import argparse
 import time
 import hashlib

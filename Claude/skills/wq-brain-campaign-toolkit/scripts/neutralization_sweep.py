@@ -23,7 +23,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _lib.common import CampaignContext, add_campaign_arg, atomic_write, load_json, read_exprs_any
+from _lib.common import CampaignContext, add_campaign_arg, atomic_write, read_exprs_any
 
 DEFAULT_NEUTRALIZATIONS = ["SUBINDUSTRY", "SECTOR", "MARKET", "STATISTICAL"]
 TOP_N = 4  # 每变体取 top-N 表达式（4 档 × 4 条 = 16 条 = 2 批）

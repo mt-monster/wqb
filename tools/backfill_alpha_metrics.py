@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """回填 alphas 缺失指标（2Y/sharpe/fitness/turnover/margin），逐列短事务防锁。"""
 import sqlite3
-import sys
 import time
 from datetime import datetime
 

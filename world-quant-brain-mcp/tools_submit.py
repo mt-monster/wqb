@@ -2,7 +2,6 @@
 
 2026-09-02: submit_alpha 原生工具已删除，提交统一走 workflow_submit_alpha（workflow 引擎）。
 """
-from mcp_core import mcp, brain_client
 
 # submit_alpha MCP tool removed (2026-09-02): 冗余，统一走 workflow_submit_alpha。
 # 原实现含本地预检 + POST /alphas/{id}/submit，与 workflow_submit_alpha 功能完全重叠。

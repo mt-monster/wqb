@@ -47,7 +47,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 BASE_URL = "https://api.worldquantbrain.com"

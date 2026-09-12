@@ -21,7 +21,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import CampaignContext, add_campaign_arg, atomic_write
-from _lib.ledger import LedgerStore, make_ledger_store, today
+from _lib.ledger import make_ledger_store, today
 from _lib import rules as rules_mod
 from _lib.wqb_store import get_store
 import metrics_cache

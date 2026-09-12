@@ -58,7 +58,7 @@ def _extract_region(alpha_data: dict) -> str:
 
 # 多样性增强模块（2026-08-17 嵌入）
 try:
-    from diversity_enhancer import enhance_if_needed, get_diversity_report
+    from diversity_enhancer import enhance_if_needed
     DIVERSITY_AVAILABLE = True
 except ImportError:
     DIVERSITY_AVAILABLE = False

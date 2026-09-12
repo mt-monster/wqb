@@ -3,8 +3,6 @@
 
 将 tools/ 下的 CLI 工具包装为 MCP 工具，消除 PowerShell 手写命令。
 """
-import asyncio
-import json
 import logging
 import os
 import sys
@@ -47,13 +45,7 @@ async def operator_audit(
         模式2: {safe: bool, violations: [{expression, ghost_ops}]}
     """
     try:
-        from wqb.expression.operator_audit import (
-            operator_audit as _audit,
-            ensure_safe_for_dispatch,
-            get_ghost_operators,
-            get_verified_operators,
-            GhostOperatorError,
-        )
+        from wqb.expression.operator_audit import operator_audit as _audit, get_ghost_operators
 
         if expressions:
             # 模式 2：表达式幽灵算子检测

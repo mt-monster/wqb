@@ -20,12 +20,9 @@
   # -> [("mws85_sentiment", "mdl41_numericvalue"), ...]  # 排除同族对
 """
 import csv
-import glob
-import json
 import os
 import re
 import sys
-from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import CampaignContext, expr_fields, load_json, load_platform_constraints

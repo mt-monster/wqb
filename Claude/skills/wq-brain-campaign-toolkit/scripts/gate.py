@@ -43,7 +43,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_json,
                          load_platform_constraints, read_exprs_any, skeleton, expr_fields)
-from _lib.ledger import LedgerStore, make_ledger_store
+from _lib.ledger import make_ledger_store
 from _lib.skill_roots import skill_roots as _skill_roots
 from _lib import rules as rules_mod
 

@@ -7,9 +7,8 @@
 import asyncio
 import json
 import sys
-import time
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'world-quant-brain-mcp'))
