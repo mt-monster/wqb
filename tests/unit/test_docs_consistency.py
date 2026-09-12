@@ -239,8 +239,10 @@ def test_no_hardcoded_user_path_in_skills_python():
 
 
 #: 四处"技能根解析"调用点（N1 回归锚点）：必须走单源 helper，不得再内联搜索链
+# 2026-09-13 更新：run_pipeline.py 于 09-12 模块化拆分时把解析逻辑下沉到
+# pipeline_paths.py（run_pipeline 本体已无内联搜索链），锚点随之迁移。
 ROOT_RESOLVERS = [
-    SKILLS_DIR / "brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
+    SKILLS_DIR / "brain-make-some-gem/scripts/trailSomeAlphas/pipeline_paths.py",
     SKILLS_DIR / "brain-make-some-gem/scripts/trailSomeAlphas/skeletons.py",
     SKILLS_DIR / "wq-brain-campaign-toolkit/scripts/assemble_priors.py",
     SKILLS_DIR / "wq-brain-campaign-toolkit/scripts/gate.py",
@@ -443,7 +445,7 @@ def test_mcp_tool_counts_match_index():
         f"INDEX 基准段写 {total} 个工具？实测装饰器合计 {total}（{per_module}）——同步 INDEX")
     for mod, n in per_module.items():
         assert f"`{mod}` {n}" in idx, f"INDEX 基准段缺 {mod} 的计数 {n}"
-    assert "**8 个**" in idx, "INDEX 基准段缺 workflow 节点数 8"
+    assert "**9 个**" in idx, "INDEX 基准段缺 workflow 节点数 9"
 
 
 def test_ppa_mining_and_ra_pipeline_reference_count_baseline():
@@ -471,3 +473,49 @@ def test_no_workspace_absolute_path_in_skills_and_docs():
                 if pat.search(line):
                     bad.append(f"{p.relative_to(REPO_ROOT).as_posix()}:{i}: {line.strip()[:90]}")
     assert not bad, "出现工作区绝对路径（应改仓库根相对路径）：\n" + "\n".join(bad[:8])
+
+# ---------------------------------------------------------------------------
+# 13. 算子三表一致性 + feature-implementation 正本/副本 parity（2026-09-12 全量精读 P0）
+# ---------------------------------------------------------------------------
+
+def _load_json(path: Path):
+    return json.loads(_read(path))
+
+
+def test_operator_configs_consistent():
+    """known_ops 唯一真值 = operators_verified.verified；semantics 未验证项必须显式标注。"""
+    ov = _load_json(REPO_ROOT / "data" / "operators_verified.json")
+    verified = set(ov["verified"])
+    pc = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "platform_constraints.json")
+    sem = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "operator_semantics.json")
+    assert set(pc["known_ops"]) == verified, (
+        "platform_constraints.known_ops 与 operators_verified.verified 不一致——"
+        "known_ops 唯一真值是 verified（平台 get_operators 实测），先对账再改")
+    unverified = {k for k, v in sem["operators"].items()
+                  if isinstance(v, dict) and str(v.get("_status", "")).startswith("unverified")}
+    assert set(sem["operators"]) - unverified == verified, (
+        f"operator_semantics 与 verified 漂移："
+        f"多={sorted(set(sem['operators']) - verified - unverified)} "
+        f"少={sorted(verified - set(sem['operators']))}")
+    ghosts = pc.get("ghost_ops")
+    assert isinstance(ghosts, list) and len(ghosts) >= 10, (
+        "platform_constraints 缺 ghost_ops（权威=ledger KB/community_tpl_kb.ghost_operator_advisory）")
+
+
+def test_feature_impl_vendored_matches_canonical():
+    """gem 内嵌副本与正本必须逐文件一致（2026-09-12 已回灌同步；分叉即红）。"""
+    import hashlib
+    vend = SKILLS_DIR / "brain-make-some-gem" / "scripts" / "trailSomeAlphas" / "skills" / "brain-feature-implementation" / "scripts"
+    canon = SKILLS_DIR / "brain-feature-implementation" / "scripts"
+    assert vend.is_dir() and canon.is_dir()
+    vfiles = {p.name for p in vend.glob("*.py")}
+    cfiles = {p.name for p in canon.glob("*.py")}
+    assert vfiles == cfiles, f"两侧文件集合不一致：仅副本={sorted(vfiles-cfiles)} 仅正本={sorted(cfiles-vfiles)}"
+    bad = []
+    for name in sorted(vfiles):
+        hv = hashlib.md5((vend / name).read_bytes()).hexdigest()
+        hc = hashlib.md5((canon / name).read_bytes()).hexdigest()
+        if hv != hc:
+            bad.append(name)
+    assert not bad, f"gem 内嵌副本与正本分叉（禁止第二实现）：{bad}——以 gem 运行版为准回灌正本后提交"
+

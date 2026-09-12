@@ -147,3 +147,7 @@ verify_claude_skills.py
 # 根目录 cache/ results/：临时回写与 checkpoint 落盘（非战役持久化目录）
 /cache/
 /results/
+# 根目录一次性验证脚本（MCP 环境验证，硬编码绝对路径，无长期价值）
+/verify_mcp*.py
+# Linux venv（scp 部署到 Linux 服务器的虚拟环境副本，Windows 上无运行价值且污染 git status）
+world-quant-brain-mcp/.venv_linux/
