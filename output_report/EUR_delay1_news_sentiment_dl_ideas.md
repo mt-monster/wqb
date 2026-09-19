@@ -1,5 +1,10 @@
 # news_sentiment_dl Feature Engineering Analysis Report
 
+**Dataset**: news_sentiment_dl
+**Region**: EUR
+**Delay**: 1
+
+
 - **Dataset**: `news_sentiment_dl`
 - **Category**: `other`
 - **Region**: `EUR`

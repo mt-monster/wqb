@@ -1,0 +1,3601 @@
+{
+ "summary": {
+  "groups": 358,
+  "by_class_groups": {
+   "A_gateable": 278,
+   "C_no_dataset": 73,
+   "B_no_catalog": 7
+  },
+  "by_class_exprs": {
+   "A_gateable": 4905,
+   "C_no_dataset": 733,
+   "B_no_catalog": 53
+  }
+ },
+ "plan": [
+  {
+   "region": "JPN",
+   "wave": "s2_intraday_pv_feats_d1",
+   "dataset": "intraday_pv_feats",
+   "n": 517,
+   "status": {
+    "gem": 517
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_multifactor_return_pred_d1",
+   "dataset": "multifactor_return_pred",
+   "n": 336,
+   "status": {
+    "pending": 336
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_pattern_scores_d1",
+   "dataset": "pattern_scores",
+   "n": 179,
+   "status": {
+    "gem": 179
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_insider_feats_d1",
+   "dataset": "insider_feats",
+   "n": 158,
+   "status": {
+    "pending": 158
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_other571_d1",
+   "dataset": "other571",
+   "n": 140,
+   "status": {
+    "gem": 140
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "CHN",
+   "wave": "s2_china_stock_funda_d1",
+   "dataset": "china_stock_funda",
+   "n": 128,
+   "status": {
+    "gem": 128
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_analyst_consensus_d1",
+   "dataset": "analyst_consensus",
+   "n": 126,
+   "status": {
+    "gem": 126
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_intraday_pv_feats_d1",
+   "dataset": "intraday_pv_feats",
+   "n": 122,
+   "status": {
+    "gem": 122
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_model30_d1",
+   "dataset": "model30",
+   "n": 122,
+   "status": {
+    "gem": 122
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_predictive_starmine_d1",
+   "dataset": "predictive_starmine",
+   "n": 81,
+   "status": {
+    "gem": 81
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_acquisition_model_d1",
+   "dataset": "acquisition_model",
+   "n": 71,
+   "status": {
+    "gem": 71
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_ai_news_scores_d1",
+   "dataset": "ai_news_scores",
+   "n": 66,
+   "status": {
+    "gem": 66
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_analyst10_d1",
+   "dataset": "analyst10",
+   "n": 65,
+   "status": {
+    "gem": 65
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "20",
+   "dataset": "multifactor_return_pred",
+   "n": 56,
+   "status": {
+    "pending": 8,
+    "selected": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave1",
+   "dataset": "",
+   "n": 49,
+   "status": {
+    "pending": 49
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "probe_ai_news_scores",
+   "dataset": "ai_news_scores",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "probe_earningscall_embed",
+   "dataset": "earningscall_embed",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "probe_finnews_nlp_scores",
+   "dataset": "finnews_nlp_scores",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "probe_news_sentiment_dl",
+   "dataset": "news_sentiment_dl",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "probe_news_sentiment_nlp",
+   "dataset": "news_sentiment_nlp",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_news84_d1",
+   "dataset": "news84",
+   "n": 48,
+   "status": {
+    "pending": 48
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "18",
+   "dataset": "multifactor_return_pred",
+   "n": 41,
+   "status": {
+    "pending": 16,
+    "selected": 25
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_finnews_nlp_scores_d1",
+   "dataset": "finnews_nlp_scores",
+   "n": 39,
+   "status": {
+    "pending": 39
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_nlp_news_scores_d1",
+   "dataset": "nlp_news_scores",
+   "n": 39,
+   "status": {
+    "pending": 39
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_continuation_score_d1",
+   "dataset": "continuation_score",
+   "n": 37,
+   "status": {
+    "gem": 37
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "2",
+   "dataset": "pv_tech_indicators",
+   "n": 37,
+   "status": {
+    "pending": 37
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_ml_factor_proj_d1",
+   "dataset": "ml_factor_proj",
+   "n": 37,
+   "status": {
+    "pending": 37
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "s2_pv96_d1",
+   "dataset": "pv96",
+   "n": 31,
+   "status": {
+    "pending": 31
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave14_msm_pv",
+   "dataset": "",
+   "n": 29,
+   "status": {
+    "pending": 29
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_twitter_sentiment_l2_d1",
+   "dataset": "twitter_sentiment_l2",
+   "n": 29,
+   "status": {
+    "pending": 29
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "opt_analyst93_d1",
+   "dataset": "analyst93",
+   "n": 28,
+   "status": {
+    "gated": 28
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave16_cnn",
+   "dataset": "",
+   "n": 25,
+   "status": {
+    "pending": 25
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_pv106_d1",
+   "dataset": "pv106",
+   "n": 25,
+   "status": {
+    "gem": 25
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave2v2",
+   "dataset": "",
+   "n": 24,
+   "status": {
+    "pending": 24
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave6",
+   "dataset": "",
+   "n": 24,
+   "status": {
+    "pending": 24
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "21",
+   "dataset": "multifactor_return_pred",
+   "n": 24,
+   "status": {
+    "pending": 24
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_chart_model_alpha_d1",
+   "dataset": "chart_model_alpha",
+   "n": 24,
+   "status": {
+    "pending": 24
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GLB",
+   "wave": "03",
+   "dataset": "news73",
+   "n": 23,
+   "status": {
+    "pending": 23
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GLB",
+   "wave": "04",
+   "dataset": "analyst_consensus",
+   "n": 23,
+   "status": {
+    "pending": 23
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "19",
+   "dataset": "multifactor_return_pred",
+   "n": 23,
+   "status": {
+    "pending": 8,
+    "selected": 15
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_dl_riskfree_returns_d1",
+   "dataset": "dl_riskfree_returns",
+   "n": 22,
+   "status": {
+    "gem": 22
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_other315_d1",
+   "dataset": "other315",
+   "n": 21,
+   "status": {
+    "gem": 21
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_analyst_earnings_ibes_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 21,
+   "status": {
+    "pending": 21
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_expected_move_d1",
+   "dataset": "expected_move",
+   "n": 21,
+   "status": {
+    "pending": 21
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_price_signal_dl_d1",
+   "dataset": "price_signal_dl",
+   "n": 21,
+   "status": {
+    "pending": 21
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave26_rev",
+   "dataset": "",
+   "n": 20,
+   "status": {
+    "pending": 20
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_price_signal_dl_d1",
+   "dataset": "price_signal_dl",
+   "n": 20,
+   "status": {
+    "gem": 20
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave23_cnn",
+   "dataset": "",
+   "n": 18,
+   "status": {
+    "pending": 18
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave25_cnn",
+   "dataset": "",
+   "n": 18,
+   "status": {
+    "pending": 18
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_news_sentiment_dl_d1",
+   "dataset": "news_sentiment_dl",
+   "n": 18,
+   "status": {
+    "gem": 18
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_analyst_earnings_ibes_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 17,
+   "status": {
+    "gem": 17
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "1",
+   "dataset": "pv_tech_indicators",
+   "n": 17,
+   "status": {
+    "pending": 17
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave12_aea",
+   "dataset": "",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave13_msm",
+   "dataset": "",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1_w9",
+   "dataset": "fundamental94",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave7",
+   "dataset": "",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "D01",
+   "dataset": "",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "23",
+   "dataset": "analyst_consensus",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "W1",
+   "dataset": "",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_chart_cnn_alpha_d1",
+   "dataset": "chart_cnn_alpha",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_forum_sentiment_d1",
+   "dataset": "forum_sentiment",
+   "n": 16,
+   "status": {
+    "pending": 16
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_news38_d1",
+   "dataset": "news38",
+   "n": 15,
+   "status": {
+    "gem": 15
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave15_msm_neut",
+   "dataset": "",
+   "n": 14,
+   "status": {
+    "pending": 14
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave17_cnn",
+   "dataset": "",
+   "n": 14,
+   "status": {
+    "pending": 14
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave22_cnn",
+   "dataset": "",
+   "n": 14,
+   "status": {
+    "pending": 14
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model36_d1",
+   "dataset": "model36",
+   "n": 14,
+   "status": {
+    "gem": 14
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_analyst16_d1",
+   "dataset": "analyst16",
+   "n": 14,
+   "status": {
+    "gem": 8,
+    "pending": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave19_cnn",
+   "dataset": "",
+   "n": 13,
+   "status": {
+    "pending": 13
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave20_cnn",
+   "dataset": "",
+   "n": 13,
+   "status": {
+    "pending": 13
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave21_cnn",
+   "dataset": "",
+   "n": 13,
+   "status": {
+    "pending": 13
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_risk70_d1",
+   "dataset": "risk70",
+   "n": 13,
+   "status": {
+    "gem": 13
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_other496_d1",
+   "dataset": "other496",
+   "n": 13,
+   "status": {
+    "gem": 13
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave24_cnn",
+   "dataset": "",
+   "n": 12,
+   "status": {
+    "pending": 12
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r92_d1",
+   "dataset": "other455",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r93_d1",
+   "dataset": "other455",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r94_d1",
+   "dataset": "shortinterest3",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r95_d1",
+   "dataset": "shortinterest3",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model16_d1",
+   "dataset": "model16",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_other553_d1",
+   "dataset": "other553",
+   "n": 12,
+   "status": {
+    "gem": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave14A",
+   "dataset": "",
+   "n": 12,
+   "status": {
+    "pending": 12
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_news_sentiment_nlp_d1",
+   "dataset": "news_sentiment_nlp",
+   "n": 12,
+   "status": {
+    "pending": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_pv_tech_indicators_d1",
+   "dataset": "pv_tech_indicators",
+   "n": 12,
+   "status": {
+    "pending": 12
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_model28_d1",
+   "dataset": "model28",
+   "n": 11,
+   "status": {
+    "pending": 11
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_boundary_push_r76_d1",
+   "dataset": "model25_model216",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_grtransform_r83_d1",
+   "dataset": "grtransform",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_r17_d1",
+   "dataset": "model216",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_r17b_d1",
+   "dataset": "model216",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model28_formula_r79_d1",
+   "dataset": "model28",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_starmine_r14_d1",
+   "dataset": "predictive_starmine",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_starmine_r15_d1",
+   "dataset": "predictive_starmine",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_starmine_r16_d1",
+   "dataset": "predictive_starmine",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_model106_d1",
+   "dataset": "model106",
+   "n": 10,
+   "status": {
+    "pending": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_analyst4_d1_w7",
+   "dataset": "analyst4",
+   "n": 10,
+   "status": {
+    "pending": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1_w3",
+   "dataset": "fundamental94",
+   "n": 10,
+   "status": {
+    "pending": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model144_d1",
+   "dataset": "model144",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_analyst44_d1",
+   "dataset": "analyst44",
+   "n": 10,
+   "status": {
+    "gem": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w1",
+   "dataset": "analyst7",
+   "n": 10,
+   "status": {
+    "pending": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "w70",
+   "dataset": "fundamental72",
+   "n": 10,
+   "status": {
+    "pending": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "54",
+   "dataset": "sentiment21",
+   "n": 10,
+   "status": {
+    "selected": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "55",
+   "dataset": "sentiment21",
+   "n": 10,
+   "status": {
+    "selected": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "57",
+   "dataset": "shortinterest3",
+   "n": 10,
+   "status": {
+    "selected": 10
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "CHN",
+   "wave": "s2_news_sentiment_enriched_d1",
+   "dataset": "news_sentiment_enriched",
+   "n": 9,
+   "status": {
+    "gem": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_insider_trx_matrix_d1",
+   "dataset": "insider_trx_matrix",
+   "n": 9,
+   "status": {
+    "gem": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "43",
+   "dataset": "pv29",
+   "n": 9,
+   "status": {
+    "selected": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_model238_d1",
+   "dataset": "model238",
+   "n": 9,
+   "status": {
+    "pending": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_model36_d1",
+   "dataset": "model36",
+   "n": 9,
+   "status": {
+    "pending": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_news104_d1",
+   "dataset": "news104",
+   "n": 9,
+   "status": {
+    "pending": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "151",
+   "dataset": "earnings3",
+   "n": 9,
+   "status": {
+    "selected": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1_w4",
+   "dataset": "fundamental94",
+   "n": 9,
+   "status": {
+    "pending": 9
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "D03",
+   "dataset": "",
+   "n": 9,
+   "status": {
+    "pending": 9
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "(none)",
+   "wave": "None",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "ASI",
+   "wave": "asi_wave18_cnn",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "CHN",
+   "wave": "s2_`market_news_sent`_d1",
+   "dataset": "`market_news_sent`",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "DEU",
+   "wave": "ctr_fund_holdings_panel_d1",
+   "dataset": "fund_holdings_panel",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "ctr_other455_d1",
+   "dataset": "other455",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_aei_starmine_hybrid_r23_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_aei_starmine_hybrid_r24_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_aei_starmine_hybrid_r25_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_aei_starmine_hybrid_r26_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_aei_starmine_hybrid_r28_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_afsignals_probe_r91_d1",
+   "dataset": "analyst_factor_signals",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r18_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r19_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r20_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r21_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r22_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r27_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r29_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_analyst_earnings_ibes_r30_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_dlr_d1",
+   "dataset": "dl_riskfree_returns",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_dlriskfree_hybrid_r66_d1",
+   "dataset": "dl_riskfree_returns",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_dlriskfree_probe_r64_d1",
+   "dataset": "dl_riskfree_returns",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_fhp_grformula_r86_d1",
+   "dataset": "fund_holdings_panel",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_fhp_starmine_hybrid_r32_d1",
+   "dataset": "fund_holdings_panel",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_fhp_starmine_r48_d1",
+   "dataset": "fund_holdings_panel",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_si3_r35_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r34_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r38_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r46_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r47_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r51_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r59_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_institutions6_probe_r63_d1",
+   "dataset": "institutions6",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_lean_le89_r89_d1",
+   "dataset": "lean_le89",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_m216_grtransform_r84_d1",
+   "dataset": "model216",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_aei_hybrid_r31_d1",
+   "dataset": "model216",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_d1",
+   "dataset": "model216",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_revive_r72_d1",
+   "dataset": "model216",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model216_revive_r73_d1",
+   "dataset": "model216",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model238_hybrid_r53_d1",
+   "dataset": "model238",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model238_hybrid_r56_d1",
+   "dataset": "model238",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model238_hybrid_r57_d1",
+   "dataset": "model238",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model238_probe_r49_d1",
+   "dataset": "model238",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model250_hybrid_r62_d1",
+   "dataset": "model250",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model250_hybrid_r65_d1",
+   "dataset": "model250",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model250_probe_r61_d1",
+   "dataset": "model250",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model25_hybrid_r68_d1",
+   "dataset": "model25",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model25_hybrid_r69_d1",
+   "dataset": "model25",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model25_hybrid_r71_d1",
+   "dataset": "model25",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model25_probe_r67_d1",
+   "dataset": "model25",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model25_squeeze2_r81_d1",
+   "dataset": "model25",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_hybrid_r41_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_hybrid_r42_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_hybrid_r43_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_layers_r40_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_news_hybrid_r45_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_probe_r39_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model264_seeds_r44_d1",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model28_drift66_r82_d1",
+   "dataset": "model28",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model28_probe_r78_d1",
+   "dataset": "model28",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model36_probe_r80_d1",
+   "dataset": "model36",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_model53_probe_r50_d1",
+   "dataset": "model53",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_news20_probe_r60_d1",
+   "dataset": "news20",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_other250_probe_r75_d1",
+   "dataset": "other250",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_other455_cross_r88_d1",
+   "dataset": "other455",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_other455_formula_r85_d1",
+   "dataset": "other455",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_pattern_scores_probe_r55_d1",
+   "dataset": "pattern_scores",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_sentiment27_formula_r87_d1",
+   "dataset": "sentiment27",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_sentiment27_probe_r77_d1",
+   "dataset": "sentiment27",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_sentiment27_spine_r90_d1",
+   "dataset": "sentiment27",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_si3_cwfix2_r70_d1",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_si3_cwfix_r36_d1",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_si3_insider_starmine_hybrid_r33_d1",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_si3_subfam_r74_d1",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r96_d1",
+   "dataset": "risk60",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r98_d1",
+   "dataset": "analyst47",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "123",
+   "dataset": "pattern_scores",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "190",
+   "dataset": "analyst11",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "190",
+   "dataset": "pv37",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "191",
+   "dataset": "model264",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "191",
+   "dataset": "risk62",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "49C",
+   "dataset": "multi_horizon_alpha",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "D01",
+   "dataset": "news85",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_chart_cnn_alpha_d1",
+   "dataset": "chart_cnn_alpha",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_model193_d1",
+   "dataset": "model193",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_other567_d1",
+   "dataset": "other567",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_shortinterest6_d1",
+   "dataset": "shortinterest6",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "57G",
+   "dataset": "pv47",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "57S",
+   "dataset": "model250",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "132",
+   "dataset": "analyst45",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "139",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "140",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "141",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "142",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "143",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "144",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "145",
+   "dataset": "model135",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "150",
+   "dataset": "insiders1",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "152",
+   "dataset": "institutions6",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "153",
+   "dataset": "pv106",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "156",
+   "dataset": "model32",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "157",
+   "dataset": "model252",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "158",
+   "dataset": "model252",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "159",
+   "dataset": "model252",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "160",
+   "dataset": "model252",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "D02",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_earnings3_d1_w6",
+   "dataset": "earnings3",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental86_d1_w11",
+   "dataset": "fundamental86",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1",
+   "dataset": "fundamental94",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1_sector",
+   "dataset": "fundamental94",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental94_d1_w5",
+   "dataset": "fundamental94",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_institutions6_d1_w10",
+   "dataset": "institutions6",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model28_d1_w8",
+   "dataset": "model28",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model28_fundamental94_d1_w12",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "JPN",
+   "wave": "3",
+   "dataset": "multi_source_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "JPN",
+   "wave": "4",
+   "dataset": "multi_source_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "155",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "168",
+   "dataset": "other496",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "169",
+   "dataset": "analyst16",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "172",
+   "dataset": "insiders5",
+   "n": 8,
+   "status": {
+    "gated": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "182",
+   "dataset": "EUR",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave11",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave12",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16O",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16P",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16Q",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16R",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16S",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16T",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_wave16U",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_fundamental21_d1",
+   "dataset": "fundamental21",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_fundamental93_d1",
+   "dataset": "fundamental93",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_pv30_d1",
+   "dataset": "pv30",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_risk88_d1",
+   "dataset": "risk88",
+   "n": 8,
+   "status": {
+    "gem": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "D02",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w10",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w14",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w15",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w2",
+   "dataset": "fundamental72+analyst7",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w8",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w9",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave09a",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave10a",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave11a",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave12a",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave13a",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave13b",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave14A_clean",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave14B",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave15A",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave15B",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_wave15C",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_waveD02",
+   "dataset": "",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "13",
+   "dataset": "multifactor_return_pred",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "24",
+   "dataset": "pv_tech_indicators",
+   "n": 8,
+   "status": {
+    "pending": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "56",
+   "dataset": "news46",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "58",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "59",
+   "dataset": "shortinterest3",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "60",
+   "dataset": "intraday_pv_feats",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "62",
+   "dataset": "analyst_consensus",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "63",
+   "dataset": "chart_return_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "64",
+   "dataset": "event_return_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "65",
+   "dataset": "event_return_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "66",
+   "dataset": "event_return_model",
+   "n": 8,
+   "status": {
+    "selected": 8
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "ASI",
+   "wave": "s2_other36_d1",
+   "dataset": "other36",
+   "n": 7,
+   "status": {
+    "gem": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_insider_starmine_r58_d1",
+   "dataset": "insider_agg_matrix",
+   "n": 7,
+   "status": {
+    "gem": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r97_d1",
+   "dataset": "risk60",
+   "n": 7,
+   "status": {
+    "gem": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_sentiment27_d1",
+   "dataset": "sentiment27",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_shortinterest3_d1",
+   "dataset": "shortinterest3",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_fundamental86_d1",
+   "dataset": "fundamental86",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "W70",
+   "dataset": "fundamental72",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_waveD01",
+   "dataset": "",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_ai_factor_transfer_d1",
+   "dataset": "ai_factor_transfer",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_global_seasonal_model_d1",
+   "dataset": "global_seasonal_model",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_model238_d1",
+   "dataset": "model238",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_multi_source_model_d1",
+   "dataset": "multi_source_model",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_news81_d1",
+   "dataset": "news81",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_news97_d1",
+   "dataset": "news97",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_news_sentiment_transfer_d1",
+   "dataset": "news_sentiment_transfer",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_other580_d1",
+   "dataset": "other580",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_other623_d1",
+   "dataset": "other623",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_other635_d1",
+   "dataset": "other635",
+   "n": 7,
+   "status": {
+    "pending": 7
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "CHN",
+   "wave": "s2_other545_d1",
+   "dataset": "other545",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r100_d1",
+   "dataset": "sentiment7",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r99_d1",
+   "dataset": "fundamental22",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "192",
+   "dataset": "model264",
+   "n": 6,
+   "status": {
+    "gated": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "D03",
+   "dataset": "news85",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_risk72_d1",
+   "dataset": "risk72",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_dl_riskfree_returns_d1",
+   "dataset": "dl_riskfree_returns",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "133",
+   "dataset": "analyst45",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "155",
+   "dataset": "model32",
+   "n": 6,
+   "status": {
+    "selected": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "D01",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "D03",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_analyst45_d1",
+   "dataset": "analyst45",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_analyst_factor_signals_w16",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_ml_factor_proj_d1",
+   "dataset": "ml_factor_proj",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_fundamental86_d1",
+   "dataset": "fundamental86",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "s2_news50_d1",
+   "dataset": "news50",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w11",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w3",
+   "dataset": "analyst7",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w7",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "mea_waveD03",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "w71",
+   "dataset": "",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "USA",
+   "wave": "15b",
+   "dataset": "multifactor_return_pred",
+   "n": 6,
+   "status": {
+    "pending": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "61",
+   "dataset": "other596",
+   "n": 6,
+   "status": {
+    "selected": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "s2_option9_d1",
+   "dataset": "option9",
+   "n": 6,
+   "status": {
+    "gem": 6
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r101_d1",
+   "dataset": "sentiment7",
+   "n": 5,
+   "status": {
+    "gem": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "163",
+   "dataset": "global_seasonal_model",
+   "n": 5,
+   "status": {
+    "selected": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "20",
+   "dataset": "",
+   "n": 5,
+   "status": {
+    "selected": 5
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_pv29_d1",
+   "dataset": "pv29",
+   "n": 5,
+   "status": {
+    "pending": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "134",
+   "dataset": "analyst45",
+   "n": 5,
+   "status": {
+    "gem": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "162",
+   "dataset": "model252",
+   "n": 5,
+   "status": {
+    "selected": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "w105",
+   "dataset": "fundamental6",
+   "n": 5,
+   "status": {
+    "pending": 5
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_hybrid_setvar_r37_d1",
+   "dataset": "analyst_earnings_ibes",
+   "n": 4,
+   "status": {
+    "gem": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "unlabeled_analyst93_1789243710",
+   "dataset": "analyst93",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "unlabeled_analyst93_1789243758",
+   "dataset": "analyst93",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "unlabeled_analyst93_1789243775",
+   "dataset": "analyst93",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "unlabeled_analyst93_1789243792",
+   "dataset": "analyst93",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "unlabeled_analyst93_1789243808",
+   "dataset": "analyst93",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "D02",
+   "dataset": "news85",
+   "n": 4,
+   "status": {
+    "pending": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "EUR",
+   "wave": "s2_ai_equity_alpha_d1",
+   "dataset": "ai_equity_alpha",
+   "n": 4,
+   "status": {
+    "gem": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GBR",
+   "wave": "s2_gbr_slowfast_d1",
+   "dataset": "model307",
+   "n": 4,
+   "status": {
+    "gem": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model50_d1",
+   "dataset": "model50",
+   "n": 4,
+   "status": {
+    "gem": 4
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "163",
+   "dataset": "",
+   "n": 4,
+   "status": {
+    "gated": 4
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "EUR",
+   "wave": "49A",
+   "dataset": "multi_horizon_alpha",
+   "n": 3,
+   "status": {
+    "pending": 3
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "161",
+   "dataset": "model252",
+   "n": 3,
+   "status": {
+    "selected": 3
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w12",
+   "dataset": "",
+   "n": 3,
+   "status": {
+    "pending": 3
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_tower_sprint_r102_d1",
+   "dataset": "sentiment7",
+   "n": 2,
+   "status": {
+    "gem": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "DEU",
+   "wave": "smx_deu_d1",
+   "dataset": "other455",
+   "n": 2,
+   "status": {
+    "gated": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GLB",
+   "wave": "1",
+   "dataset": "other455",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "GLB",
+   "wave": "1",
+   "dataset": "pv30",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "135",
+   "dataset": "analyst45",
+   "n": 2,
+   "status": {
+    "gem": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_model138_verify_w15",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "IND",
+   "wave": "s2_neutralization_d1_w13",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "149",
+   "dataset": "fundamental94",
+   "n": 2,
+   "status": {
+    "gem": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "153",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "gated": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "154",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "gated": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "181",
+   "dataset": "insiders5",
+   "n": 2,
+   "status": {
+    "gem": 2
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "99",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "selected": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "kor_waveD01",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "MEA",
+   "wave": "camp20260827_w13",
+   "dataset": "",
+   "n": 2,
+   "status": {
+    "pending": 2
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "DEU",
+   "wave": "s2_fhp_r13_d1",
+   "dataset": "fund_holdings_panel",
+   "n": 1,
+   "status": {
+    "gem": 1
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "JPN",
+   "wave": "s2_probe",
+   "dataset": "news_sentiment_nlp",
+   "n": 1,
+   "status": {
+    "gated": 1
+   },
+   "class": "B_no_catalog"
+  },
+  {
+   "region": "KOR",
+   "wave": "150",
+   "dataset": "fundamental94",
+   "n": 1,
+   "status": {
+    "gem": 1
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "151",
+   "dataset": "fundamental94",
+   "n": 1,
+   "status": {
+    "gem": 1
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "KOR",
+   "wave": "152",
+   "dataset": "",
+   "n": 1,
+   "status": {
+    "gated": 1
+   },
+   "class": "C_no_dataset"
+  },
+  {
+   "region": "KOR",
+   "wave": "164",
+   "dataset": "risk88",
+   "n": 1,
+   "status": {
+    "gated": 1
+   },
+   "class": "A_gateable"
+  },
+  {
+   "region": "USA",
+   "wave": "11d",
+   "dataset": "multifactor_return_pred",
+   "n": 1,
+   "status": {
+    "pending": 1
+   },
+   "class": "A_gateable"
+  }
+ ]
+}

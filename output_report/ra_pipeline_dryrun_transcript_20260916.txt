@@ -1,0 +1,112 @@
+##############################################################################
+# RA 九步流水线 DRY-RUN  |  region=IND  |  只读演练，不写库不触平台
+##############################################################################
+
+==============================================================================
+步 1  S-PRE 查表（region 先验 / 库存盘点 / 算子审计 / PPA 主题）
+==============================================================================
+【输入】
+  profile 文件                 IND.md exists=True
+  entry_verdict              active
+  signal_floor(thresholds.json) {'max_sharpe_floor': 1.2, 'min_batches': 2, '_evidence': '实证回填 2026-09-11：29 波每波 max|sharpe| 的 p25=1.27 → floor=1.2（旧 0.5）。规则：只上调、不下调；仅当样本≥8 波。'}
+  stop_rules(thresholds.json) null → 回落 STOP_RULES_DEFAULTS(enabled=True)
+  backtest_results 样本        267
+  yield_rate(达标/回测)          34.1%  （标的健康）
+  conversion(回测/生成)          18.3%  （★S2→S3 断链）
+  expressions pending+gated  479
+  expressions 未消费积压(含 gem/selected) 849
+【处理】判定：conversion 低=流水线问题(修管道) / yield 低=标的问题(换区换集)
+【输出】universe/delay/中性化/排除集/排除族/波号（未落盘）
+【价值判定】库存盘点优先：积压 479 条 > 新挖产出，应先清库存
+
+==============================================================================
+步 2  S0 数据集体检 + 金字塔配置
+==============================================================================
+【输入】候选数据集；ledger s0_ranking / s0_whitelist
+  ledger s0_ranking          ★缺失
+  ledger s0_whitelist        存在(703B)
+  ledger region_kb           存在(2716B)
+  ledger stop_rules_override ★缺失
+【处理】停止规则闸 A/B + 信号天花板闸（纯 DB，零配额）
+  最近 3 波                     wave97(maxS=2.04,达标=1), wave96(maxS=1.28,达标=0), wave95(maxS=1.05,达标=0)
+  规则B 近3波全FAIL               False  → 放行
+【输出】白名单(≥2 非 MODEL) / category_weight 0.9-1.15 / 排除集
+【价值判定】 s0_whitelist 已沉淀
+
+==============================================================================
+步 3  S1 字段扫描 + 理解
+==============================================================================
+  typed catalog 份数           21
+  catalog 总字节                323438
+【处理】get_datafields 后按 users 分级：≥50 只做方向验证；10-49 提交前实测 prod_corr；0-9 优先
+【输出】fields 表 + ledger s1_<ds>_d<delay>
+【价值判定】字段分级规避 prod_corr 是高价值（本区 catalog 21 份可复用）
+
+==============================================================================
+步 4  S2 概念优先生成（GEM）
+==============================================================================
+  expressions status=gem     370
+  priors_snapshot 台账         存在(4906B, 小写键)
+【处理】assemble-priors(wins≤6/dead_ends≤12) → GEM 概念优先 → build_wave 去重分桶
+【输出】expressions(status=gem) + ledger idea
+【价值判定】概念优先+先验注入=高价值；但 gem 未消费 370 条说明生成>消化
+
+==============================================================================
+步 5  S2→S3 门禁（幽灵算子 → 语法/5闸/体检/多样性）
+==============================================================================
+【输入】候选表达式（gated=309 / gem=370）
+  体检包数量(全区任意集)               0
+  体检包覆盖数据集                   无
+  白名单数据集数                    0
+  白名单∩体检包                    ★空——体检硬门对白名单全部不生效
+【处理】ghost-audit → check_batch 多样性 → wave_gate(闸1-5+7/8+体检硬门)
+【输出】gate_results(all_pass / fail_reasons)
+  体检硬门是否生效                   ★不生效（白名单集无体检包——低覆盖/厚尾/稀疏事件裸奔）
+
+==============================================================================
+步 6  S3 七槽回测
+==============================================================================
+【输入】gate_results 通过批次；settings(neutralization/decay)
+【处理】七槽填槽 n_slots=min(7,批数)；prod-first 每槽先查骨架 prod_corr
+【输出】backtest_results / wave_results / checkpoint
+  积压判定                       未消费积压=849 vs backtested=190
+  是否断链                       ★是（积压 > 2× 已回测）
+
+==============================================================================
+步 7  S4 诊断改进（接入 src/wqb/diagnostics）
+==============================================================================
+【输入】本波 alpha_id + 指标（sharpe/fitness/2y/margin/tvr/walls）
+  wave=wave97  n=9 maxS=2.04
+     fail-fast verdict       RETRY_FIXABLE  hits=['weight_concentration_high']
+     过拟合 verdict             PASS  hits={}
+  wave=wave96  n=8 maxS=1.28
+     fail-fast verdict       STOP_STRUCTURAL  hits=['subuniverse_repeat_fail', 'weight_concentration_high']
+     过拟合 verdict             PASS  hits={}
+  wave=wave95  n=8 maxS=1.05
+     fail-fast verdict       STOP_STRUCTURAL  hits=['pnl_backhalf_decay', 'fitness_persistent_miss', 'subuniverse_repeat_fail']
+     过拟合 verdict             PASS  hits={}
+【处理】s4-prescreen 分层 → 存活者走 selfcorr/prod/robustness 链
+【输出】READY/REVIEW/REJECT 分层 + ledger s4_walls_<region>_<wave> + salvage_pool
+【价值判定】预筛压缩(8×) + fail-fast/过拟合机器判定 = 高价值
+
+==============================================================================
+步 8  S4→S5 稳健闸与提交判定
+==============================================================================
+【输入】候选 alpha_id；is.checks
+  ProdCorr 下限示例(y=.95,k=.85) 0.643 → 仍需实测
+【处理】Failed-count 资格门 → submit_verdict → (可选) judge 参考
+【输出】SUBMITTABLE / NOT_READY + 失败项
+【价值判定】submit_verdict 为唯一权威=高价值；judge 三态仅参考=低价值(可精简为清单)
+
+==============================================================================
+步 9  S6 复盘回写
+==============================================================================
+  wave_results 总条数           98
+  最近 5 条（wave_number|verdict） 149=PARTIAL, 3=FAIL, 2=FAIL, 148=FAIL, 147=FAIL
+【处理】upsert_wave_result + registry_empirical + seal_dead_end + pyramid 进度
+【输出】wave_results.verdict / region_kb 刷新 / ledger s6_verdict_<wave>
+【价值判定】自动刷新 region_kb 使下一波先验自动变新 = 最高价值闭环
+
+##############################################################################
+# DRY-RUN 结束（未写库、未触平台）
+##############################################################################

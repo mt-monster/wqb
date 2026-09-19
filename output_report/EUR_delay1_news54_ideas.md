@@ -122,91 +122,118 @@
 - group_zscore / group_rank：对 VECTOR/GROUP 字段先截面聚合再中性化
 - vec_ 向量包装：40 个 VECTOR 字段需用 vec_* 算子读取
 
-## 特征概念（8 问框架，模板化）
+## 特征概念（信号优先重写版 2026-09-11）
 
-### Q1 稳定性/不变量
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：ts_mean / ts_std_dev 度量字段的长期水平与稳定性
+> 本数据集为 S&P Capital IQ 公司事件流。真正有信号价值的字段仅三类：
+> ① `mws54_factor`（事件数值：股息金额/拆股比例，coverage 0.91，唯一数值信号）
+> ② 事件标志 `mws54_eventerinfo_cancelledflag` / `mws54_eventcallbasicinfo_postponedflag`（取消/推迟=利空冲击）
+> ③ 事件密度（vec_count 事件计数，公司事件活跃度）
+> 时间戳字段（announcement/entry/relevant time）本身不是信号，禁止直接包装。
+> 全部 VECTOR 字段必须先 vec_* 聚合；稀疏事件流必须 trade_when/ts_backfill 门控防空窗抖动。
 
-### Q2 变化
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：ts_delta / ts_scale 捕捉变化率与动量
+### 核心信号概念（聚焦 mws54_factor + event_flag + 事件密度）
 
-### Q3 异常
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：zscore / ts_rank 识别截面与时间序列上的离群
+**Concept**: 事件数值因子强度（mws54_factor 水平）
+- **Mechanism**: 事件数值（股息/拆股比例）截面相对定位，高事件数值=强公司行动信号
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `trade_when(vec_count({mws54_factor}) > 0, rank(ts_backfill(vec_avg({mws54_factor}), 66)), NaN)`
+- **Direction**: High → long
 
-### Q4 交互
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：两字段 add/multiply 合成新含义，注意先各自中性化
+**Concept**: 事件数值因子变化（mws54_factor 动量）
+- **Mechanism**: 事件数值的时间序列变化，捕捉公司行动升级/降级
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `trade_when(vec_count({mws54_factor}) > 0, rank(ts_delta(ts_backfill(vec_avg({mws54_factor}), 66), 21)), NaN)`
+- **Direction**: High → long
 
-### Q5 结构
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：字段占比 / 比例关系（如 components 型字段）
+**Concept**: 事件取消冲击（cancelledflag 利空）
+- **Mechanism**: 事件取消=利空，取消比例高=负面信号，反向取号
+- **Fields Used**: `mws54_eventerinfo_cancelledflag`
+- **Implementation Example**: `trade_when(vec_count({mws54_eventerinfo_cancelledflag}) > 0, subtract(0, rank(ts_mean(vec_avg({mws54_eventerinfo_cancelledflag}), 22))), NaN)`
+- **Direction**: Low（高取消） → short
 
-### Q6 累积
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：ts_sum / ts_decay_linear 累积与衰减记忆
+**Concept**: 事件推迟冲击（postponedflag 利空）
+- **Mechanism**: 事件推迟=不确定性利空，推迟标志反向
+- **Fields Used**: `mws54_eventcallbasicinfo_postponedflag`
+- **Implementation Example**: `trade_when(vec_count({mws54_eventcallbasicinfo_postponedflag}) > 0, subtract(0, rank(ts_mean(vec_avg({mws54_eventcallbasicinfo_postponedflag}), 22))), NaN)`
+- **Direction**: Low（高推迟） → short
 
-### Q7 相对
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：rank / group_rank 相对定位与归一化
+**Concept**: 事件密度活跃度（vec_count 计数）
+- **Mechanism**: 单位时间事件数量=公司事件活跃度，高密度=高关注
+- **Fields Used**: `mws54_keydevelopments_headline`
+- **Implementation Example**: `rank(ts_sum(vec_count({mws54_keydevelopments_headline}), 22))`
+- **Direction**: High → long
 
-### Q8 本质
-- **使用字段**：`event_announcement_time`, `event_entry_time`
-- **建议**：第一性原理直取原始字段，剥离过拟合包装
+**Concept**: 未来事件预期强度（future_event 前瞻）
+- **Mechanism**: 未来事件数值因子=前瞻公司行动预期
+- **Fields Used**: `mws54_factor`, `future_event_relevant_time_utc`
+- **Implementation Example**: `trade_when(vec_count({mws54_factor}) > 0, group_rank(ts_backfill(vec_avg({mws54_factor}), 66), industry), NaN)`
+- **Direction**: High → long
+
+**Concept**: 事件数值因子行业相对（group_rank 中性化）
+- **Mechanism**: 事件数值在行业内相对定位，剥离行业事件密度差异
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `trade_when(vec_count({mws54_factor}) > 0, group_rank(ts_backfill(vec_avg({mws54_factor}), 66), subindustry), NaN)`
+- **Direction**: High → long
+
+**Concept**: 事件数值因子 zscore 离群（截面异常）
+- **Mechanism**: 事件数值截面 zscore 识别异常大的公司行动
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `trade_when(vec_count({mws54_factor}) > 0, rank(zscore(ts_backfill(vec_avg({mws54_factor}), 66))), NaN)`
+- **Direction**: High → long
 
 ## GEM 兼容模板（Concept Blocks）
 
 > 以下 Concept 块供 S2 `brain-makeSomeGem` 直接消费（`--ideas-file` 注入）。
 > 占位符 `{field_id}` 为字段白名单中的真实字段 id，run_pipeline 可解析绑定。
+> 2026-09-11：模板统一为单占位符形式（每模板 1 个 `{field}`），配合 GEM 孤字段
+> 多样性展开（wrapper×窗口几何变体），避免同字段多占位符被 same_field_combo 拦截。
 
-**Concept**: event_announcement_time 长期水平稳定（Q1）
-- **Mechanism**: ts_mean 度量字段长期水平，rank 截面归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(ts_mean({event_announcement_time}, 66))`
+**Concept**: 事件数值因子强度（mws54_factor 水平）
+- **Mechanism**: 事件数值（股息/拆股比例）截面相对定位，高事件数值=强公司行动信号
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `rank(ts_backfill(vec_avg({mws54_factor}), 66))`
 - **Direction**: High → long
 
-**Concept**: event_announcement_time 变化动量（Q2）
-- **Mechanism**: ts_delta 捕捉 21 日变化率，rank 截面归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(ts_delta({event_announcement_time}, 21))`
+**Concept**: 事件数值因子变化（mws54_factor 动量）
+- **Mechanism**: 事件数值的时间序列变化，捕捉公司行动升级/降级
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `rank(ts_delta(vec_avg({mws54_factor}), 21))`
 - **Direction**: High → long
 
-**Concept**: event_announcement_time 截面离群（Q3）
-- **Mechanism**: zscore 识别截面离群，rank 归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(zscore({event_announcement_time}))`
+**Concept**: 事件取消冲击（cancelledflag 利空）
+- **Mechanism**: 事件取消=利空，取消比例高=负面信号，反向取号
+- **Fields Used**: `mws54_eventerinfo_cancelledflag`
+- **Implementation Example**: `subtract(0, rank(ts_mean(vec_avg({mws54_eventerinfo_cancelledflag}), 22)))`
+- **Direction**: Low（高取消） → short
+
+**Concept**: 事件推迟冲击（postponedflag 利空）
+- **Mechanism**: 事件推迟=不确定性利空，推迟标志反向
+- **Fields Used**: `mws54_eventcallbasicinfo_postponedflag`
+- **Implementation Example**: `subtract(0, rank(ts_mean(vec_avg({mws54_eventcallbasicinfo_postponedflag}), 22)))`
+- **Direction**: Low（高推迟） → short
+
+**Concept**: 事件密度活跃度（vec_count 计数）
+- **Mechanism**: 单位时间事件数量=公司事件活跃度，高密度=高关注
+- **Fields Used**: `mws54_keydevelopments_headline`
+- **Implementation Example**: `rank(ts_sum(vec_count({mws54_keydevelopments_headline}), 22))`
 - **Direction**: High → long
 
-**Concept**: event_announcement_time × event_entry_time 交互（Q4）
-- **Mechanism**: 两字段各自 ts_zscore 中性化后 multiply 合成
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(multiply(ts_zscore({event_announcement_time}, 66), ts_zscore({event_entry_time}, 66)))`
+**Concept**: 未来事件预期强度（future_event 前瞻）
+- **Mechanism**: 未来事件数值因子=前瞻公司行动预期
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `group_rank(ts_backfill(vec_avg({mws54_factor}), 66), industry)`
 - **Direction**: High → long
 
-**Concept**: event_announcement_time 结构占比（Q5）
-- **Mechanism**: divide 构造比例关系，rank 截面归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(divide({event_announcement_time}, {event_entry_time}))`
+**Concept**: 事件数值因子行业相对（group_rank 中性化）
+- **Mechanism**: 事件数值在行业内相对定位，剥离行业事件密度差异
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `group_rank(ts_backfill(vec_avg({mws54_factor}), 66), subindustry)`
 - **Direction**: High → long
 
-**Concept**: event_announcement_time 累积衰减（Q6）
-- **Mechanism**: ts_decay_linear 累积记忆衰减，rank 归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank(ts_decay_linear({event_announcement_time}, 21))`
-- **Direction**: High → long
-
-**Concept**: event_announcement_time 截面相对定位（Q7）
-- **Mechanism**: ts_backfill 稀疏回填 + group_rank 行业内相对定位
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `group_rank(ts_backfill({event_announcement_time}, 66), industry)`
-- **Direction**: High → long
-
-**Concept**: event_announcement_time 本质直取（Q8）
-- **Mechanism**: 第一性原理直取原始字段，rank 截面归一化
-- **Fields Used**: `event_announcement_time`, `event_entry_time`
-- **Implementation Example**: `rank({event_announcement_time})`
+**Concept**: 事件数值因子 zscore 离群（截面异常）
+- **Mechanism**: 事件数值截面 zscore 识别异常大的公司行动
+- **Fields Used**: `mws54_factor`
+- **Implementation Example**: `rank(zscore(vec_avg({mws54_factor})))`
 - **Direction**: High → long
 
 ## 字段白名单（Field Whitelist）

@@ -29,8 +29,9 @@
 
 - **步 5 没有 workflow 节点**；`workflow_campaign(stage="S2")` 只路由到 `build_wave.py`＝**选波**（步 4 已调），
   不能拿它代替门禁。门禁必须走仓根 `tools/` CLI。
-- **`workflow_chain` 覆盖步 2/3/4/5/6**。registry 实注 8 个节点：`campaign` / `feature_engineering` /
-  `gem` / `batch_track` / `wave_gate` / `judge` / `submit_alpha` / `superalpha`；步 1/7/8/9 无节点。
+- **`workflow_chain` 覆盖步 2/3/4/5/6**。registry 实注 9 个节点：`campaign` / `feature_engineering` /
+  `gem` / `batch_track` / `judge` / `submit_alpha` / `superalpha` / `wave_gate` /
+  `hypothesis_round`；步 1/7/8/9 无节点。
 - **提交类与评审节点禁止入自动链**：`submit_alpha` / `superalpha` 须用户确认后单独调用；
   `judge` 自 2026-08-31 起仅为**参考层**（PPA 人工核对清单 + trend score），不构成提交依据。
 - 提交 MCP 工具名是 **`workflow_submit_alpha`**（不存在名为 `submit_alpha` 的 MCP 工具；

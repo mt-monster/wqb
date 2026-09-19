@@ -1,3 +1,5 @@
+> **文件定性（2026-09-12）**：本文件是某账号 7 个 REGULAR alpha 的**算子使用统计转储**，**不是幽灵算子清单**。幽灵算子权威清单 = `data/wqb.db` ledger `KB/community_tpl_kb.ghost_operator_advisory`（10 ghost + unverified_community_ops + forbidden_regular 三清单），静态快照在 `Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json.ghost_ops`。历史文档指向本文件「幽灵算子段」的引用一律按此改写。
+
 统计了7个REGULAR Alpha（每天前4个），在你可用的运算符中，共有14种运算符被使用，69种运算符未被使用。
 '-'有两种含义分别是substract和revers, 此处统一为substrac
 
