@@ -151,3 +151,8 @@ verify_claude_skills.py
 /verify_mcp*.py
 # Linux venv（scp 部署到 Linux 服务器的虚拟环境副本，Windows 上无运行价值且污染 git status）
 world-quant-brain-mcp/.venv_linux/
+
+# ===== tracking 运行时账本（2026-09-19 新增）=====
+# tracking/hypotheses/ledger.jsonl 由 hypothesis_round 节点持续追加写入，属运行时产物，
+# 每次运行都会变更、不应入库。已 git rm --cached 取消跟踪，这里忽略整个目录。
+tracking/hypotheses/
