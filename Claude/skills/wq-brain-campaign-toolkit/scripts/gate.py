@@ -1190,4 +1190,5 @@ def main():
 
 
 if __name__ == "__main__":
+    import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
     main()

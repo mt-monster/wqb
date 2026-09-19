@@ -391,6 +391,19 @@ def item_expr(item):
     return ""
 
 
+_SIM_SETTING_KEYS = ("decay", "neutralization", "truncation", "universe", "delay", "pasteurization",
+                     "nanHandling", "unitHandling", "maxTrade", "region", "instrumentType", "language",
+                     "visualization", "testPeriod", "startDate", "endDate")
+
+
+def _sim_settings_only(settings):
+    """从 expressions.settings_json 里只取平台仿真设置键（note/status_change/来源标签等一律剔除）。"""
+    if not isinstance(settings, dict):
+        return None
+    ov = {k: v for k, v in settings.items() if k in _SIM_SETTING_KEYS and v is not None}
+    return ov or None
+
+
 def item_settings(item):
     """提取 per-item settings（场景3：N 表达式×各自设置）；无则返回 None。"""
     if isinstance(item, dict) and isinstance(item.get("settings"), dict):
@@ -1004,6 +1017,11 @@ def main():
     p.add_argument("--submit", action="store_true")
     p.add_argument("--review", action="store_true")
     p.add_argument("--write-ledger", action="store_true")
+    p.add_argument("--prod-first", action="store_true",
+                   help="评审后自动跑 tools/campaign_intel.py prod-first（每信号族最强 1 条探 prod；"
+                        "SOP 步 5b：新族第二波前必查）")
+    p.add_argument("--prod-first-top-k", type=int, default=2)
+    p.add_argument("--prod-first-min-sharpe", type=float, default=1.0)
     p.add_argument("--neutralization", default=None,
                    help="覆盖 settings.neutralization（中性化 A/B 实验用；MARKET/SUBINDUSTRY/SECTOR）")
     p.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
@@ -1159,7 +1177,14 @@ def _cmd_main(a, ctx):
                             break
             finally:
                 st.close()
-            exprs = [e["expression"] for e in expressions_data if e.get("expression")]
+            # 2026-09-19：DB 行的 settings（expressions.settings_json）只保留仿真设置键并作为
+            # per-item override 带入提交（此前被丢弃 → w177 decay=12 变体静默跑成基线，平台回同一 alpha）。
+            exprs = []
+            for e in expressions_data:
+                if not e.get("expression"):
+                    continue
+                ov = _sim_settings_only(e.get("settings"))
+                exprs.append({"expr": e["expression"], "settings": ov} if ov else e["expression"])
             print(f"[db] 从数据库读取 {len(exprs)} 个表达式: {ctx.region}/{a.wave}")
             if not exprs:
                 print(f"[error] 数据库中没有找到 wave={a.wave} 的表达式")
@@ -1206,9 +1231,42 @@ def _cmd_main(a, ctx):
                       isolate_errors=not getattr(a, "no_isolate_errors", False))
     if a.review:
         stage_review(ctx, ck, a.write_ledger, a.checkpoint_dir)
+    if getattr(a, "prod_first", False):
+        stage_prod_first(ctx, a)
     print(f"[done] checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
     return 0
 
 
+def stage_prod_first(ctx, a):
+    """2026-09-19 SOP 步 5b 自动化：收批评审后立刻对本波每个信号族最强 1 条探 prod（子进程调
+    tools/campaign_intel.py prod-first，同一 venv）。prod ≥ 0.7 的族在台账 prod_first_<wave> 标 STOP，
+    下一波不得再投该族变体（IND intraday_pv_feats 3 波 24 条全 IS 过才发现 prod 0.79-0.92 的教训）。"""
+    import subprocess
+    repo = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
+    for cand in (os.environ.get("WQB_ROOT"), repo, r"D:\coding\traeCN_project\wqb"):
+        if cand and os.path.isfile(os.path.join(cand, "tools", "campaign_intel.py")):
+            repo = cand
+            break
+    tool = os.path.join(repo, "tools", "campaign_intel.py")
+    if not os.path.isfile(tool):
+        print("[prod-first] tools/campaign_intel.py 不存在，跳过")
+        return
+    out_json = os.path.join(repo, "logs", f"prod_first_{ctx.region}_{a.wave}.json")
+    cmd = [sys.executable, tool, "prod-first", "--region", ctx.region, "--wave", str(a.wave),
+           "--top-k", str(a.prod_first_top_k), "--min-sharpe", str(a.prod_first_min_sharpe),
+           "--write-ledger", "--json", out_json]
+    print(f"[prod-first] 收批后族级 prod 探针：{' '.join(cmd[2:])}")
+    try:
+        r = subprocess.run(cmd, cwd=repo, capture_output=True, text=True, timeout=3600)
+        for line in (r.stdout or "").splitlines():
+            if line.startswith(("=== prod-first", "  ", "[prod-first]", "[ledger]", "[out]")):
+                print(line)
+        if r.returncode not in (0, 3):
+            print(f"[prod-first] 退出码 {r.returncode}: {(r.stderr or '')[-300:]}")
+    except Exception as e:
+        print(f"[prod-first] 执行异常（不阻断）: {e}")
+
+
 if __name__ == "__main__":
+    import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
     main()

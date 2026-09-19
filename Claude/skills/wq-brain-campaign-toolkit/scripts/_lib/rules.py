@@ -439,12 +439,21 @@ def validate_rules(ctx, new_rows, wave_meta=None):
             if dead and cur_uni and str(dead).upper() == str(cur_uni).upper():
                 report["validated"] += 1
                 if max_sharpe is not None and max_sharpe >= 1.0:
-                    r["confidence"] = round(r.get("confidence", 0.8) * 0.7, 3)
-                    r["status"] = "contested"
-                    r.setdefault("contest_evidence", []).append(
-                        {"at": _now(), "max_sharpe": max_sharpe, "universe": cur_uni})
-                    report["falsified"].append(r["rule_id"])
-                    changed_rule = r
+                    # 2026-09-19：已 contested 的规则不再逐波重复"证伪"（IND 三条 universe 规则每波刷 3 行、
+                    # confidence 反复 ×0.7 衰到 0）；只追加证据，不改状态、不计入 falsified 报告。
+                    if r.get("status") == "contested":
+                        ev = r.setdefault("contest_evidence", [])
+                        if len(ev) < 20:
+                            ev.append({"at": _now(), "max_sharpe": max_sharpe, "universe": cur_uni})
+                        report.setdefault("already_contested", []).append(r["rule_id"])
+                        changed_rule = r
+                    else:
+                        r["confidence"] = round(r.get("confidence", 0.8) * 0.7, 3)
+                        r["status"] = "contested"
+                        r.setdefault("contest_evidence", []).append(
+                            {"at": _now(), "max_sharpe": max_sharpe, "universe": cur_uni})
+                        report["falsified"].append(r["rule_id"])
+                        changed_rule = r
                 else:
                     r["times_succeeded"] = r.get("times_succeeded", 0) + 1
                     r["confidence"] = min(1.0, round(r.get("confidence", 0.8) + 0.05, 3))
