@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-19
 name: wq-brain-campaign-matrix
 description: "WorldQuant BRAIN alpha 挖掘的\"区域×数据集\"战役矩阵。当用户要在某区域挖 alpha / 开战役 / campaign / 查区域配置 / 看哪些数据集还没挖 / 走 region×dataset 效率工作流， 或任何新挖掘战役开始时（S0 之前）使用。把区域静态配置（合法 universe 档位、默认 neutralization、EVENT 字段规则）、数据集资产（清单 + PPA 预筛）与实证台账 （dead-ends / wins / campaign 状态）解析为预解析配置包，原样派发 S0–S6 skill 链 并把结果回写 registry。"
 layer: L-PRE

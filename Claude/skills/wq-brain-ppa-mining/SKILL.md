@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-19
 name: wq-brain-ppa-mining
 description: "WorldQuant Brain 平台未点亮金字塔数据集 PPA (Power Pool Alpha) 挖掘的完整工作流。以「平台实时体检硬门槛」(coverage≥0.85 / alphaCount≤50 / fieldCount≥10) 为开战役前置条件，整合 WebDataScope 数据集级/字段级 meta-analysis，把“凭经验猜参数”升级为“读数据定参数”，覆盖数据集选择、中性化选择、字段预处理、时间窗口选择、低竞争白空间发现与闸门检查。触发场景：用户提到 WQ Brain、WorldQuant、PPA、Power Pool Alpha、alpha 挖掘、未点亮数据集; 用户要求在 WQ Brain 平台上找可提交的 alpha; 用户问\"怎么选数据集/字段/中性化/时间窗口\"或\"哪些数据集竞争少\"; 用户要开新战役 / 换区域 / 问某数据集能不能打 → 必须先执行 §1.0 平台实时体检; 出现\"某数据集平台没数据/字段为 0/数据包过期\"的判断 → 先按 §1.3 排除跨区域误推荐"
 layer: L0

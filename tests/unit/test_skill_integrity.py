@@ -122,6 +122,10 @@ DEPRECATED_TOOL_MENTIONS = {
     # brain-alpha-judge SKILL.md 里作为「提交语义反面教材」提及（201≠成功），
     # 提交走 submit_verdict → workflow_submit_alpha 链，不经此工具。
     "mcp__wq-brain-http__submit_alpha",
+    # wqb_db_mcp.py 重构：原公开工具 harvest_multisim_results 降级为内部 helper，
+    # 其职责由新增的 @mcp.tool workflow_auto_harvest（auto_link/upsert/report）承接。
+    # ra-pipeline SKILL.md 仍按旧名引用，属文档滞后；公开接口名以 workflow_auto_harvest 为准。
+    "mcp__wqb-db__harvest_multisim_results",
 }
 #: 前缀通配写法（allowed-tools 里的 mcp__wq-brain-http__* 之类），不是具体工具。
 _WILDCARD = re.compile(r"^mcp__[a-z-]+__$")
@@ -269,9 +273,41 @@ _DRY_RUN_CASES = {
     "campaign": {"region": "KOR", "stage": "S0"},
     "wave_gate": {"region": "KOR", "dataset": "analyst4", "wave": "97"},
     "hypothesis_round": {"dataset_id": "_test"},
+    # 2026-09-15 补：structural_reconstruct 节点（Phase 2）注册后未同步用例表。
+    # detect 为纯本地检测 action，dry-run 零副作用安全。
+    "structural_reconstruct": {"action": "detect", "expression": "add(rank(a), rank(b))"},
     "feature_engineering": {
         "region": "KOR", "dataset_id": "_test", "delay": 1, "universe": "TOP3000",
     },
+    # 2026-09-17：step_metrics 节点已整体下线（归档 attic/step_metrics_20260917/），
+    # 不再注册，故从本用例表移除；替代方案 tools/step_funnel.py。
+    # 2026-09-16 新增：inventory_scan 节点（Phase 4）自动化库存盘点。
+    # 纯本地脚本调用，dry-run 零副作用安全。
+    "inventory_scan": {"region": "KOR", "target": 20},
+    # 2026-09-16 新增：field_understanding 节点（Phase 4）自动化字段理解。
+    # 纯本地 DB 读写，dry-run 零副作用安全。
+    "field_understanding": {"region": "KOR", "dataset": "_test"},
+    # 2026-09-16 新增：gem_wave 节点（Phase 4）合并选波到 GEM 生成。
+    # 纯本地 DB 读写，dry-run 零副作用安全。
+    "gem_wave": {"region": "KOR", "dataset_id": "_test", "delay": 1, "universe": "TOP3000"},
+    # 2026-09-16 新增：unified_gate 节点（Phase 4）合并重复门禁检查。
+    # 纯本地脚本调用，dry-run 零副作用安全。
+    "unified_gate": {"region": "KOR", "dataset": "_test", "wave": "_test"},
+    # 2026-09-16 新增：auto_harvest 节点（Phase 4）自动化收批。
+    # 纯本地 DB 读写，dry-run 零副作用安全。
+    "auto_harvest": {"region": "KOR", "wave": "_test"},
+    # 2026-09-16 新增：auto_review 节点（Phase 4）自动化评审。
+    # 纯本地 DB 读写，dry-run 零副作用安全。
+    "auto_review": {"region": "KOR", "wave": "_test"},
+    # 2026-09-16 新增：auto_pyramid 节点（Phase 4）自动化点塔进度回写。
+    # 纯本地脚本调用，dry-run 零副作用安全。
+    "auto_pyramid": {"region": "KOR", "wave": "_test"},
+    # 2026-09-17 新增：modeb_improve 节点（Phase 4）Mode B 想法层改进。
+    # 纯本地 DB 读写，dry-run 零副作用安全。
+    "modeb_improve": {"region": "KOR", "dataset": "_test", "base_field": "_test"},
+    # 2026-09-18 新增：alpha_booster 节点（Phase 4）通用 Alpha 短板提升。
+    # 纯本地 DB 读写，dry-run 零副作用安全（forum_refresh 在干跑下不发起网络请求）。
+    "alpha_booster": {"region": "KOR", "wave": "_test"},
 }
 
 

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-11
+last_verified: 2026-09-19
 name: wq-brain-superalpha
 description: "通过 selection + combo 工作流（type=SUPER）构建并提交 WorldQuant BRAIN SuperAlpha。 触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 组合多个 alpha；或单区域需把 ≥10 个 REGULAR 组件合成一颗 SUPER alpha，并保持 prod_correlation < 0.7、 self_correlation < 0.7。覆盖 SUBINDUSTRY 杠杆、`(1 + 0 * (prod_correlation > 0))` no-op 门控、score = (0.7 - prod_correlation)、self_correlation < 0.55 硬闸、 `mcp__wq-brain-http__workflow_submit_alpha(confirm_submit=True, force=True)` 两次调用判定、以及 ≥10 颗 ACTIVE REGULAR 组件前置条件。"
 layer: L5
