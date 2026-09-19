@@ -6,6 +6,8 @@ import re
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 
+logger = logging.getLogger(__name__)
+
 def _resolve_config_path(for_write: bool = False) -> str:
     """
     Resolve the configuration file path.

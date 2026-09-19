@@ -79,6 +79,14 @@
 - **workflow 节点元数据**：`registry.py` 的 `required_params` / `optional_params` 必须与节点
   `run()` 签名一致（`_context` / `dry_run` 除外）。`workflow_list_nodes` 把它当 API 文档
   暴露给 Agent，漂移即误导。回归由 `tests/unit/test_skill_integrity.py` 守护。
+- **新增/修改 workflow 节点 → 四处必须同步（2026-09-18 固化）**：注册信息散在四处，
+  漏一处测试即红：① `src/wqb/workflow/registry.py`（register + NodeMeta，与 run() 签名逐字一致）
+  ② `tests/unit/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
+  ③ `tests/unit/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
+  ④ `Claude/skills/INDEX.md` workflow 节点计数。
+  **一次跑完全部检查**：`python tools/audit_node_registration.py`（`--node X` 单节点自检；
+  退出码 1 = 有漂移并列出全部缺口）。战例：`alpha_booster` 只做了 ①，②③ 漏同步 +
+  NodeMeta 漏 `forum_refresh` → 3 个测试红；`gem` 的 meta 漏 `batch_size` 同被逮到。
 - **dry-run 契约**：全部 7 个节点统一「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，
   不 subprocess、不写库、不建目录。干跑失败必须带得出 `error`（禁止 success=False + error=None）。
 - **argv 契约校验（2026-09-06）**：凡是拼子进程命令的节点，构建完必须过
@@ -182,9 +190,27 @@
 python -m pytest tests/ -x
 ```
 
+### 失败诊断纪律（2026-09-18 固化）
+
+面对一批测试失败时，按这个顺序处理——**这套顺序是实测出来的，跳过任一步都会走偏**：
+
+1. **先取完整 traceback**（`--tb=long` / `--tb=short`），不要只看 `-q` 的汇总行。
+2. **按根因聚类**，不逐条修。7 个失败往往只是 3–4 个根因。
+3. **对行为可疑的失败做端到端最小复现**。★ 最关键的一步：
+   2026-09-18 若按"测试期望过时"改掉 `test_auto_coverage_never_injects_no_contract_expressions`，
+   就会把 `build_wave.py` 族类配额**静默截断开波**这个真实生产 bug 永久埋掉
+   （实测 `--from-db` 下 `--size 3/6/12` 全部只选出 2 条）。复现命令比断言更有说服力。
+4. **区分「测试期望过时」与「代码回归」**：前者改测试，后者改代码。判据是复现结果——
+   若复现出**与断言不同的真实行为**，先假设代码有问题。
+5. **环境/数据类失败先查状态文件**。带 checkpoint/续跑的脚本常见"状态文件陈旧掩盖真实漂移"
+   （战例：`normalize_ledger_whitelist.py` 报「已完成，跳过」，加 `--fresh` 才真正重写）。
+6. **修复后给回归中的"新失败"定性**：全量回归时冒出的新失败，先确认是不是自己引入的
+   （`git stash` 对照 / 检查是否 env 相关），再决定修还是记。
+7. **沉淀固化**：同一类漂移出现第二次，就写工具或写测试把它机械拦住，不要靠人记。
+
 - 结果自动写入 `logs/test-results.xml`（JUnit XML，可追溯）。
-- 当前根 `tests/` **313 个测试全部通过**（`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根**没有** `conftest.py`，由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入 `sys.path`，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另含 **79 个测试**（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
-- **计数口径：根 `tests/` 递归包含 `tests/unit/`，勿把两者相加。** `tests/` 直接子层只有 `test_toolified_cli.py`（10 个）+ `conftest.py`；`tests/unit/` 含 `__init__.py` 与 15 个 `test_*.py`（303 个）。故 `313 = 10 + 303`，且 `pytest tests/` 与 `pytest tests/unit tests` 收集数相同（均为 313）。新增用例时以 `pytest --collect-only -q | tail -1` 为准，不在此处硬编码逐文件明细。
+- 当前根 `tests/` **1201 个测试全部通过**（2026-09-18 实测；`src/wqb` 包于 2026-08-16 按 `docs/plans/2026-08-02-wqb-src-reconstruction.md` 重建；仓库根**没有** `conftest.py`，由 `tests/conftest.py` 同时把 `src/` 与 `world-quant-brain-mcp/` 注入 `sys.path`，`tests/unit/` 继承之）。MCP 包 `world-quant-brain-mcp/tests/` 另含 **79 个测试**（需 `.venv`；其 `conftest.py` 只注入 MCP 目录，验证 `brain_api` 拆解不变量与工具注册）。pre-commit 钩子仅跑根 `tests/`，MCP 包测试需单独在 `.venv` 跑。
+- **计数口径：根 `tests/` 递归包含 `tests/unit/`，勿把两者相加。** `tests/` 直接子层只有 `test_toolified_cli.py` + `conftest.py`，其余在 `tests/unit/`。故 `pytest tests/` 与 `pytest tests/unit tests` 收集数相同。**新增用例时以 `pytest --collect-only -q | tail -1` 为准，不在此处硬编码逐文件明细**（此处的总数随用例增删会漂，只作量级参考）。
 - 依赖声明于根 `requirements.txt` 与 `world-quant-brain-mcp/requirements.txt`，新增依赖需同步相应文件。
 
 ### pre-commit 钩子（推荐激活）

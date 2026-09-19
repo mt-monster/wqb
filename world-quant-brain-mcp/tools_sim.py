@@ -12,11 +12,12 @@ _REGION_UNIVERSE_MAP: Dict[str, List[str]] = {
     "USA": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200"],
     "EUR": ["TOP2500", "TOPCS1600", "TOP1200", "TOP800", "TOP400", "ILLIQUID_MINVOL1M"],
     "CHN": ["TOP2000U", "TOP1000", "TOP500"],
-    "ASI": ["TOP2000", "TOP1000", "TOP500"],
+    "ASI": ["MINVOL1M", "MINVOL10M", "ILLIQUID_MINVOL1M", "TOP500"],  # 平台实测 2026-09-16 get_platform_setting_options；对齐 src/wqb/config.py（原 TOP2000/TOP1000 为错误映射）
     "GLB": ["MINVOL10M", "TOPDIV3000", "TOP3000", "TOP2000"],
-    "JPN": ["TOP2000", "TOP1000", "TOP500"],
+    "JPN": ["TOP1600", "TOP1200"],  # 平台实测 2026-09-15：仅此两档（原 TOP2000/TOP1000/TOP500 无效）
     "KOR": ["TOP600"],  # 平台实证：KOR/D1 唯一可用 universe 是 TOP600
-    "AMR": ["TOP2000", "TOP1000", "TOP500"],
+    "AMR": ["TOP600"],  # 平台实测 2026-09-19 get_platform_setting_options：AMR D0/D1 仅 TOP600（原 TOP2000/1000/500 为错误映射）
+    "ALL": ["LARGE", "MEDIUM", "SMALL"],  # 平台 2026-09-19 新增区域 ALL（D1；139 集全部 0 users；COUNTRY 不在其中性化列表）
     "TWN": ["TOP1000", "TOP500"],
     "GBR": ["TOP700", "TOP350"],
     "DEU": ["TOP500", "TOP300"],
@@ -32,15 +33,62 @@ _VALID_NEUTRALIZATIONS: List[str] = [
 ]
 
 
+# ── 平台实测覆盖（2026-09-19）：静态表只是种子。首次校验时用 get_platform_setting_options
+#    （OPTIONS /simulations，客户端有 1 天缓存）把 region→universe / neutralization 合并进来，
+#    避免再出现 AMR 档位错、ALL 缺、JPN 档位错这类"硬编码落后于平台"的事故。失败即静默用静态表。
+_PLATFORM_MAP_LOADED = False
+_PLATFORM_REGION_NEUT: Dict[str, List[str]] = {}
+
+
+async def refresh_region_map_from_platform(force: bool = False) -> Dict[str, Any]:
+    """把平台 setting options 合并进 _REGION_UNIVERSE_MAP / _VALID_NEUTRALIZATIONS（幂等）。"""
+    global _PLATFORM_MAP_LOADED
+    if _PLATFORM_MAP_LOADED and not force:
+        return {"loaded": True, "regions": sorted(_REGION_UNIVERSE_MAP)}
+    try:
+        opts = await brain_client.get_platform_setting_options()
+        rows = (opts or {}).get("instrument_options") or []
+        merged = 0
+        for r in rows:
+            if str(r.get("InstrumentType", "EQUITY")).upper() != "EQUITY":
+                continue
+            region = r.get("Region")
+            if not region:
+                continue
+            univ = [u for u in (r.get("Universe") or []) if u]
+            cur = _REGION_UNIVERSE_MAP.setdefault(region, [])
+            for u in univ:
+                if u not in cur:
+                    cur.append(u)
+                    merged += 1
+            for n in (r.get("Neutralization") or []):
+                if n not in _VALID_NEUTRALIZATIONS:
+                    _VALID_NEUTRALIZATIONS.append(n)
+                _PLATFORM_REGION_NEUT.setdefault(region, [])
+                if n not in _PLATFORM_REGION_NEUT[region]:
+                    _PLATFORM_REGION_NEUT[region].append(n)
+        _PLATFORM_MAP_LOADED = True
+        logger.info(f"[region-map] platform merge ok: +{merged} universes, regions={sorted(_REGION_UNIVERSE_MAP)}")
+        return {"loaded": True, "merged": merged, "regions": sorted(_REGION_UNIVERSE_MAP)}
+    except Exception as e:  # 平台不可达/未登录：保留静态表
+        logger.warning(f"[region-map] platform merge skipped: {e}")
+        return {"loaded": False, "error": str(e), "regions": sorted(_REGION_UNIVERSE_MAP)}
+
+
 def _validate_region_settings(region: str, universe: str, neutralization: str) -> Optional[Dict[str, Any]]:
-    """校验 region/universe/neutralization 组合合法性。返回 None=合法，dict=错误。"""
+    """校验 region/universe/neutralization 组合合法性。返回 None=合法，dict=错误。
+    静态表 + 平台合并表（refresh_region_map_from_platform）二者取并集。"""
     if region not in _REGION_UNIVERSE_MAP:
-        return {"error": f"Unknown region '{region}'. Valid: {sorted(_REGION_UNIVERSE_MAP.keys())}"}
+        return {"error": f"Unknown region '{region}'. Valid: {sorted(_REGION_UNIVERSE_MAP.keys())}"
+                         + ("" if _PLATFORM_MAP_LOADED else "（平台档位表未加载：先调 get_platform_setting_options 或检查登录）")}
     valid_universes = _REGION_UNIVERSE_MAP[region]
     if universe not in valid_universes:
         return {"error": f"universe '{universe}' not valid for region '{region}'. Valid: {valid_universes}"}
     if neutralization not in _VALID_NEUTRALIZATIONS:
         return {"error": f"Unknown neutralization '{neutralization}'. Valid: {_VALID_NEUTRALIZATIONS}"}
+    region_neut = _PLATFORM_REGION_NEUT.get(region)
+    if region_neut and neutralization not in region_neut:
+        return {"error": f"neutralization '{neutralization}' not offered by platform for region '{region}'. Valid: {region_neut}"}
     return None
 
 
@@ -282,6 +330,7 @@ async def create_simulation(
         logger.info(f"[create_simulation] region={region}, universe={universe}, delay={delay}, "
                     f"neutralization={neutralization}, decay={decay}, truncation={truncation}")
 
+        await refresh_region_map_from_platform()
         _err = _validate_region_settings(region, universe, neutralization)
         if _err:
             return _err
@@ -405,6 +454,7 @@ async def create_multi_simulation(
                     f"neutralization={neutralization}, decay={decay}, truncation={truncation}, "
                     f"expressions={len(alpha_expressions)}")
 
+        await refresh_region_map_from_platform()
         _err = _validate_region_settings(region, universe, neutralization)
         if _err:
             return _err
@@ -567,6 +617,7 @@ async def batch_create_simulations(
         if not base_region:
             return {"error": "base_region 必填（防 MCP 默认值误用：不设 USA/TOP3000 默认）"}
 
+        await refresh_region_map_from_platform()
         _err = _validate_region_settings(base_region, base_universe or "", base_neutralization)
         if _err:
             return _err

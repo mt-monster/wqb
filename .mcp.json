@@ -6,7 +6,10 @@
         "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
       ],
       "env": {
-        "MCP_TRANSPORT": "stdio"
+        "MCP_TRANSPORT": "stdio",
+        "WQB_ASI_UNIVERSE_FIX": "20260916",
+        "WQ_TOOLKIT_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/wq-brain-campaign-toolkit/scripts",
+        "WQ_VALIDATOR_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/alpha-expression-verifier/scripts"
       }
     },
     "wqb-db": {

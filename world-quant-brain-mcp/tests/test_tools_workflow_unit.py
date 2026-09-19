@@ -408,7 +408,22 @@ def test_workflow_list_nodes_shape(monkeypatch):
 
     assert rec.calls == []
     assert out["count"] == len(out["nodes"])
-    assert out["count"] == 7
+    # 2026-09-15：wave_gate(09-11) / hypothesis_round(09-12) / structural_reconstruct(Phase 2)
+    # 2026-09-16：新增 step_metrics(phase 4, metrics) → 注册后节点数 7→11
+    # 2026-09-16/17：再补齐一批（此前 import 失败被 logger.warning 吞掉，故 count 偏低）——
+    #   gem_wave / unified_gate / auto_harvest / auto_review / auto_pyramid /
+    #   inventory_scan / field_understanding → 11→18
+    # 2026-09-17：step_metrics 整体下线（归档 attic/step_metrics_20260917/）→ 18→17
+    # 断言要点：数目与 nodes 列表一致即可；若新增/移除节点，请同步本行并注明来源。
+    expected_nodes = {
+        "auto_harvest", "auto_pyramid", "auto_review", "batch_track", "campaign",
+        "feature_engineering", "field_understanding", "gem", "gem_wave",
+        "hypothesis_round", "inventory_scan", "judge",
+        "structural_reconstruct", "submit_alpha", "superalpha", "unified_gate",
+        "wave_gate",
+    }
+    assert out["count"] == len(expected_nodes)
+    assert {n["name"] for n in out["nodes"]} == expected_nodes
     names = {n["name"] for n in out["nodes"]}
     assert {"submit_alpha", "superalpha", "judge"} <= names
     for item in out["nodes"]:

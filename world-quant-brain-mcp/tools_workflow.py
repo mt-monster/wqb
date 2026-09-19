@@ -69,7 +69,8 @@ def workflow_execute(
     """执行指定 workflow 节点.
 
     Args:
-        node: 节点名称（batch_track/submit_alpha/superalpha/judge/gem/campaign）
+        node: 节点名称（campaign / feature_engineering / gem / batch_track / wave_gate / hypothesis_round /
+              judge / submit_alpha / superalpha；完整清单见 workflow_list_nodes）
         params: 节点参数字典（按节点要求）
         dry_run: 是否干跑（不实际执行，仅验证参数与流程）
 
@@ -92,7 +93,9 @@ def workflow_batch_track(
     campaign_dir: Optional[str] = None,
     detached: bool = True,
     submit: bool = True,
+    skip_diversity_gate: bool = False,
     dry_run: bool = False,
+    datasets_extra: Optional[str] = None,
 ) -> Dict[str, Any]:
     """S3 批量回测跟踪（batch_track 节点快捷方式）.
 
@@ -111,6 +114,9 @@ def workflow_batch_track(
                 提交 alpha 走 workflow_submit_alpha 且需用户确认（ra-pipeline 步 8）。
                 2026-09-08 前本工具从不传 --submit，pipeline 只出计划就退出，
                 backtest_results 永远 0 行。
+        skip_diversity_gate: 探针批/单信号验证波跳过批级结构多样性闸（闸6）。
+                探针目的是早期判死单信号机制（2-3 条同族表达式），强制 12 算子
+                覆盖会逼探针波塞进无关骨架，背离探针本意。默认 False。
         dry_run: 是否干跑
 
     Returns:
@@ -127,6 +133,8 @@ def workflow_batch_track(
         "campaign_dir": campaign_dir,
         "detached": detached,
         "submit": submit,
+        "skip_diversity_gate": skip_diversity_gate,
+        "datasets_extra": datasets_extra,
     }, dry_run=dry_run)
     return result.to_dict()
 
@@ -257,6 +265,8 @@ def workflow_gem(
     priors_from_db: bool = True,
     ideas_file: Optional[str] = None,
     detached: bool = True,
+    launch_only: bool = False,
+    pipeline_mode: Optional[str] = None,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """GEM 表达式生成（gem 节点快捷方式）.
@@ -279,6 +289,12 @@ def workflow_gem(
             （默认 True，与 SOP「DB 为单一事实源」对齐）
         ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
+        launch_only: 只启动不等待（2026-09-12 P1）：Popen 后立即返回，
+            不等 meta.json 握手，彻底规避 MCP 客户端超时。Agent 后续用
+            workflow_task_status(prefix="gem_") 轮询任务状态。
+        pipeline_mode: single / phased / skeleton（2026-09-15 ②）。None = 由
+            headless_runner 按 config.json `pipeline_mode` 解析，缺省 phased；
+            skeleton = 代码组装骨架、语法构造保证（不消费 ideas 文件）。
         dry_run: 是否干跑
 
     Returns:
@@ -297,6 +313,8 @@ def workflow_gem(
         "priors_from_db": priors_from_db,
         "ideas_file": ideas_file,
         "detached": detached,
+        "launch_only": launch_only,
+        "pipeline_mode": pipeline_mode,
     }, dry_run=dry_run)
     return result.to_dict()
 
@@ -433,6 +451,111 @@ def workflow_chain(
         "failed_at": failed_at,
         "dry_run": dry_run,
     }
+
+
+@mcp.tool()
+def workflow_structural_reconstruct(
+    action: str,
+    base_signal: Optional[str] = None,
+    conflict_signal: Optional[str] = None,
+    strategy: Optional[str] = None,
+    region: Optional[str] = None,
+    wave: Optional[int] = None,
+    variant_id: Optional[str] = None,
+    original_expr: Optional[str] = None,
+    variant_expr: Optional[str] = None,
+    alpha_id: Optional[str] = None,
+    metrics: Optional[Dict[str, Any]] = None,
+    status: Optional[str] = None,
+    expression: Optional[str] = None,
+    dry_run: bool = False,
+) -> Dict[str, Any]:
+    """结构重构变体生成与效果追踪（structural_reconstruct 节点快捷方式）.
+
+    针对「修订信号 vs 短期反转」等 sharpe 与 fitness/2Y 结构性权衡问题，
+    提供四种合规重构方案：几何重构 / 中性化轴切换 / 时间尺度解耦 / 正交化。
+
+    合规约束（记忆 7c2651ad）：
+      - 禁止 add(A,B) 混信号调参
+      - 禁止权重网格扫描
+      - 允许：换字段组合、换信号概念、换算子几何、换分组轴、单信号结构化
+
+    Args:
+        action: 操作类型
+            - "generate": 生成结构重构变体（需 base_signal + conflict_signal）
+            - "detect": 检测表达式是否存在结构性冲突（需 expression）
+            - "record": 记录变体回测结果（需 region/wave/variant_id/original_expr/variant_expr/strategy）
+            - "report": 生成对比报告（需 region + wave）
+            - "stats": 获取策略统计（可选 region）
+        base_signal: 基础信号表达式（如 "rank(anl45_est_revision)"）
+        conflict_signal: 冲突信号表达式（如 "rank(ts_delta(close, 5))"）
+        strategy: 重构策略过滤（geometric/neutralization/temporal/orthogonal/conditional）
+        region: 区域代码
+        wave: 波次号
+        variant_id: 变体唯一标识
+        original_expr: 原始表达式
+        variant_expr: 变体表达式
+        alpha_id: 平台 alpha id
+        metrics: 回测指标字典（sharpe/fitness/turnover/two_year_sharpe 等）
+        status: 状态（pending/complete/failed/cancelled）
+        expression: 待检测表达式（detect 模式）
+        dry_run: 是否干跑
+
+    Returns:
+        操作结果，含 success/output/error
+
+    示例:
+        # 1. 检测结构性冲突
+        workflow_structural_reconstruct(
+            action="detect",
+            expression="add(multiply(0.6, rank(revision)), multiply(0.4, rank(reversal)))"
+        )
+
+        # 2. 生成重构变体
+        workflow_structural_reconstruct(
+            action="generate",
+            base_signal="rank(anl45_est_revision)",
+            conflict_signal="rank(ts_delta(close, 5))",
+            region="DEU"
+        )
+
+        # 3. 记录回测结果
+        workflow_structural_reconstruct(
+            action="record",
+            region="DEU",
+            wave=95,
+            variant_id="geo_spread_rank",
+            original_expr="add(rank(A), rank(B))",
+            variant_expr="subtract(rank(A), rank(B))",
+            strategy="geometric",
+            alpha_id="abc123",
+            metrics={"sharpe": 1.45, "fitness": 0.92, "turnover": 0.15}
+        )
+
+        # 4. 生成对比报告
+        workflow_structural_reconstruct(
+            action="report",
+            region="DEU",
+            wave=95
+        )
+    """
+    execute, _ = _get_workflow_executor()
+    result = execute("structural_reconstruct", {
+        "action": action,
+        "base_signal": base_signal,
+        "conflict_signal": conflict_signal,
+        "strategy": strategy,
+        "region": region,
+        "wave": wave,
+        "variant_id": variant_id,
+        "original_expr": original_expr,
+        "variant_expr": variant_expr,
+        "alpha_id": alpha_id,
+        "metrics": metrics,
+        "status": status,
+        "expression": expression,
+    }, dry_run=dry_run)
+    return result.to_dict()
 
 
 def _get_task_api():

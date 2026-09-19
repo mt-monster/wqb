@@ -36,9 +36,10 @@ def test_tool_registry_count_matches_expected():
 
 def test_brain_client_singleton_identity():
     import main  # noqa: F401
-    import tools_submit
     assert tools_data.brain_client is mcp_core.brain_client
-    assert tools_submit.brain_client is mcp_core.brain_client
+    # tools_submit 的 submit_alpha/get_submission_quota 已于 2026-08/09 删除
+    # （统一走 workflow_submit_alpha），模块内已无 brain_client 引用——单例校验
+    # 只对仍持有 client 的模块生效。
 
 
 def test_each_tool_module_registers_at_least_one_tool():
