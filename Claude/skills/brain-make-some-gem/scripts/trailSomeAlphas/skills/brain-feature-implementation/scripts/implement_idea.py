@@ -278,6 +278,103 @@ def filter_ids_by_family(ids, field_profile_map: dict | None, family_match: dict
     return kept, len(ids) - len(kept)
 
 
+# ---------------------------------------------------------------------------
+# 孤字段多样性展开（2026-09-11）：单字段模板组合产出枯竭时，对该字段做
+# 「外层归一化 wrapper × 标准窗口」几何变体。这是骨架几何多样性（合规），
+# 不是权重扫描 / 混信号调参（违规）。只在单字段模板且产出 < ORPHAN_MIN 时触发。
+# ---------------------------------------------------------------------------
+
+# 外层归一化 wrapper（截面/时序/组内，几何含义各异）
+_ORPHAN_WRAPPERS = ("rank", "ts_zscore", "group_rank", "ts_rank")
+# 标准经济窗口（快 22 / 中 66 / 慢 252；1/5 过短噪声大不用于孤字段展开）
+_ORPHAN_WINDOWS = (22, 66, 252)
+# 组内 wrapper 默认分组轴（EUR win 实证 subindustry；industry 兜底）
+_ORPHAN_GROUP_AXES = ("subindustry", "industry")
+_ORPHAN_MIN = 3  # 组合产出少于此数才触发孤字段展开
+_ORPHAN_CAP = 12  # 孤字段展开变体上限（防过度膨胀）
+
+# 无语义字段黑名单（2026-09-11）：时间戳/日期/元数据/文本字段不触发孤字段展开。
+# 这些字段本身不是信号（“事件何时发生”≠“事件预示什么”），对它们做 wrapper×窗口
+# 展开只会量产无经济含义的表达式（rank(时间戳) 正是要避免的反模式）。
+_ORPHAN_NOSEMANTIC_RE = re.compile(
+    r"(_time|_time_utc|_utc|time$|date|timestamp|headline|situation|"
+    r"periodend|periodtype|fyearend|periodnum|reportdate|"
+    r"fiscalquarter|fiscalyear|calendarmonth|calendaryear|fullyearflag)",
+    re.IGNORECASE,
+)
+
+
+def _orphan_field_diversify(template: str, field_id: str, known_fields: set,
+                            lint_enabled: bool, cap: int = _ORPHAN_CAP,
+                            field_profile: dict | None = None) -> list:
+    """对孤字段做单字段几何变体展开。返回 [("orphan", expr), ...]。
+
+    策略：保留模板对字段的「读取方式」（VECTOR 字段的 vec_avg / ts_backfill 等
+    预处理），只替换最外层归一化 wrapper 与窗口。若模板本身已是复杂多算子形式，
+    则退化为对该字段施加标准 wrapper×窗口的基础几何变体（保证产出多样且合规）。
+    时间戳/日期/元数据/文本字段（无语义）直接返回空，不展开。
+
+    稀疏事件门控（2026-09-11，体检硬门 field_inspect_gate 对齐）：
+    - shape ∈ {zero_inflated, point_mass}（稀疏事件）→ 变体裹
+      trade_when(vec_count(field) > 0, <variant>, NaN)，防空窗稀释有效信息。
+    - coverage < 0.4（低覆盖）→ 字段读取层裹 ts_backfill(..., 66)，防 CONCENTRATED_WEIGHT。
+    画像缺失时不加门控（向后兼容）。
+    """
+    fid = str(field_id)
+    if _ORPHAN_NOSEMANTIC_RE.search(fid):
+        return []  # 无语义字段不展开
+    is_vector = "vec_" in template  # 模板用 vec_* 读取 → 字段为 VECTOR，变体保留 vec_avg
+
+    # 字段读取层：低覆盖补 ts_backfill（体检硬门：cov<0.4 必须含 ts_backfill）
+    profile = field_profile or {}
+    cov = profile.get("coverage")
+    shape = (profile.get("shape") or "").lower()
+    need_backfill = (cov is not None and float(cov) < 0.4)
+    need_trade_when = shape in ("zero_inflated", "point_mass")
+
+    if is_vector:
+        read_expr = f"vec_avg({fid})"
+    else:
+        read_expr = fid
+    if need_backfill:
+        read_expr = f"ts_backfill({read_expr}, 66)"
+    base = read_expr
+
+    variants: list[str] = []
+    for w in _ORPHAN_WRAPPERS:
+        for win in _ORPHAN_WINDOWS:
+            if w == "rank":
+                # 截面 rank 不需要窗口；用 ts_mean 给慢变量平滑
+                variants.append(f"rank(ts_mean({base}, {win}))")
+            elif w == "ts_zscore":
+                variants.append(f"ts_zscore({base}, {win})")
+            elif w == "ts_rank":
+                variants.append(f"ts_rank({base}, {win})")
+            elif w == "group_rank":
+                for g in _ORPHAN_GROUP_AXES:
+                    variants.append(f"group_rank(ts_mean({base}, {win}), {g})")
+
+    # 稀疏事件门控：zero_inflated/point_mass 裹 trade_when（体检硬门：稀疏事件必须 trade_when）
+    if need_trade_when:
+        gate = f"vec_count({fid}) > 0" if is_vector else f"({fid}) == ({fid})"
+        variants = [f"trade_when({gate}, {v}, NaN)" for v in variants]
+
+    results: list = []
+    seen = set()
+    for expr in variants:
+        if expr in seen:
+            continue
+        if lint_enabled:
+            issues = semantic_lint(expr, known_fields)
+            if issues:
+                continue
+        seen.add(expr)
+        results.append(("orphan", expr))
+        if len(results) >= cap:
+            break
+    return results
+
+
 def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bool = True,
                               field_whitelist: set | None = None,
                               field_profile_map: dict | None = None,
@@ -293,6 +390,7 @@ def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bo
     - For each primary candidate, pick the closest-looking candidates for other metrics
       (by common prefix length), but DO NOT require the same base.
     - Combine candidates (capped) and render expressions.
+    - 孤字段增强：单字段模板组合产出 < _ORPHAN_MIN 时，对该字段做 wrapper×窗口几何变体。
     """
 
     metrics = extract_keys_from_template(template)
@@ -343,7 +441,10 @@ def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bo
         if not candidates_by_metric.get(m):
             return []
 
-    MAX_PRIMARY_CANDIDATES = 8
+    # 2026-09-12：组合上限按占位符数量动态化。
+    # 单占位符模板无组合爆炸风险（每个主候选 1:1 产出），放宽主候选池提升产出量；
+    # 多占位符模板笛卡尔积为 primary × secondary^(n-1)，保持保守上限。
+    MAX_PRIMARY_CANDIDATES = 16 if len(metrics) == 1 else 8
     MAX_SECONDARY_CHOICES = 3
     MAX_EXPRESSIONS = max(1, int(max_expressions))
 
@@ -394,6 +495,38 @@ def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bo
 
     if lint_stats:
         print(f"[lint] blocked: {lint_stats}", file=sys.stderr)
+
+    # 孤字段增强（2026-09-11）：单字段模板且组合产出枯竭时，对该字段做几何变体展开。
+    # 触发条件：① 模板只有 1 个占位符；② 该占位符只匹配 1 个字段（孤字段，无法组合）；
+    # ③ 组合产出 < _ORPHAN_MIN。满足则对字段做 wrapper×窗口变体，补足候选池。
+    if len(metrics) == 1 and len(results) < _ORPHAN_MIN:
+        sole_metric = metrics[0]
+        sole_cands = candidates_by_metric.get(sole_metric) or []
+        if len(sole_cands) == 1:
+            orphan_field = sole_cands[0]
+            # 传入该字段的体检画像（shape/coverage），供稀疏事件门控判定
+            orphan_profile = (field_profile_map or {}).get(orphan_field) or {}
+            before = len(results)
+            existing = {e for _, e in results}
+            for tag, expr in _orphan_field_diversify(
+                template, orphan_field, known_fields, lint_enabled,
+                field_profile=orphan_profile,
+            ):
+                if expr in existing:
+                    continue
+                if lint_enabled:
+                    issues = semantic_lint(expr, known_fields)
+                    if issues:
+                        continue
+                existing.add(expr)
+                results.append((tag, expr))
+                if len(results) >= MAX_EXPRESSIONS:
+                    break
+            added = len(results) - before
+            if added:
+                print(f"[orphan] 孤字段 '{orphan_field}' 几何变体展开: +{added} 条 "
+                      f"(wrapper×窗口, 组合产出仅 {before} 条)", file=sys.stderr)
+
     return results
 
 def main():

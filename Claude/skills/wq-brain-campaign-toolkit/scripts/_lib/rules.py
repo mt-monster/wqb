@@ -673,6 +673,177 @@ def reconcile_contract_landing(ctx, region, ops_counter, skel_counter):
     }
 
 
+# ---------------- fail-fast：无效努力信号 + 可修复/结构性失败判定 ----------------
+#
+# 来源：CSDN 2402_87488142「WorldQuant BRAIN 实战笔记(1)：一个月研究复盘」
+# （3000+ 回测 / 36 提交的实证复盘）+ 本仓 wave 复盘经验固化。
+# 纪律：本函数只做**诊断**，不产生提交/拦截动作；判停建议由 recommend_next_wave
+# 以推荐形式给出，是否执行仍由研究者决定（研究成功 ≠ 提交成功）。
+#
+# "无效努力"七信号（机器映射）：
+#   sharpe_plateau_0.7_0.9     全波最高 sharpe 落在 [0.7, 0.9]（平台门槛下方一档）
+#   pnl_backhalf_decay         远期段衰减（2Y 墙 或 two_year_sharpe < 0.7×sharpe）
+#   window_invariant           换变体结果无本质变化（多数行共享同一"硬墙"组合）
+#   fitness_persistent_miss    Fitness 始终不达标（FITNESS 墙占比过高）
+#   subuniverse_repeat_fail    Sub-universe 反复失败
+#   weight_concentration_high  Weight concentration 偏高（CONCENTRATED_WEIGHT）
+#   similarity_over            过线后 Self-correlation / prod_corr 爆表
+#
+# 可修复 vs 结构性：
+#   结构性 = 命中 pnl_backhalf_decay / window_invariant / similarity_over，
+#            或信号整体太弱（max_sharpe < weak_sharpe），或命中 >= min_signals_to_stop 项
+#   可修复 = 只卡参数层墙（2Y/MARGIN/TVR/CW/FITNESS）且无上述结构性信号
+#            -> 杠杆：decay / neutralization / gate / 换历史位置表达
+
+FAIL_FAST_SIGNALS = (
+    ("sharpe_plateau_0.7_0.9", "Sharpe 卡在 0.7-0.9 上不去"),
+    ("pnl_backhalf_decay", "PnL 前半段好看、后半段明显衰减"),
+    ("window_invariant", "换窗口/换变体后结果几乎无本质变化"),
+    ("fitness_persistent_miss", "Fitness 始终不达标"),
+    ("subuniverse_repeat_fail", "Sub-universe 反复失败"),
+    ("weight_concentration_high", "Weight concentration 偏高"),
+    ("similarity_over", "过线后 Similarity / prod_corr 爆表"),
+)
+
+# 结构性信号（无法靠参数救）：远期衰减 / 变体不变 / 相似度墙
+_STRUCTURAL_SIGNALS = frozenset({"pnl_backhalf_decay", "window_invariant", "similarity_over"})
+# 参数层墙（可由 decay / neutralization / gate 调整）
+_PARAMETRIC_WALLS = frozenset({"2Y", "MARGIN", "TVR", "CW", "FITNESS"})
+# 硬墙（信号层，参数无法救）——window_invariant 只在这些墙上判定
+_HARD_WALLS = frozenset({"SHARPE", "FITNESS", "SELF_CORRELATION", "LOW_SUB_UNIVERSE_SHARPE"})
+
+FAIL_FAST_THRESHOLDS = {
+    "plateau_low": 0.7,
+    "plateau_high": 0.9,
+    "weak_sharpe": 1.0,
+    "pnl_decay_ratio": 0.7,
+    "dominant_wall_share": 0.8,
+    "wall_share": 0.5,
+    "subuniverse_share": 0.34,
+    "concentration_share": 0.4,
+    "min_signals_to_stop": 2,
+}
+
+
+def _clean_walls(r):
+    """剔除未知/中性墙（*_UNKNOWN、NO_DATA、RA_OTHER），避免误判。"""
+    return [w for w in (r.get("walls") or [])
+            if not (str(w).endswith("_UNKNOWN") or str(w) in ("NO_DATA", "RA_OTHER"))]
+
+
+def classify_failure(rows, wave_meta=None, thresh=None):
+    """诊断一波回测的失败性质：可修复（RETRY_FIXABLE）还是结构性（STOP_STRUCTURAL）。
+
+    rows: metrics dict 列表（sharpe/fitness/two_year_sharpe/margin_bp/turnover_pct/
+          prod_corr/walls；walls 可由 review_wave.walls() 预填）。
+    wave_meta: {"region","universe","dataset"}（仅回填，不参与判定）。
+    thresh: 覆盖 FAIL_FAST_THRESHOLDS 的阈值 dict。
+
+    返回：
+      {"signals": {key: 命中行数}, "hits": [key...], "verdict": "...",
+       "fixable": [...], "structural": [...], "n_rows": n, "max_sharpe": x,
+       "message": "...", "rule_id": None}
+    """
+    meta = wave_meta or {}
+    t = dict(FAIL_FAST_THRESHOLDS)
+    if thresh:
+        t.update(thresh)
+    rows = [r for r in (rows or []) if isinstance(r, dict)]
+    labels = dict(FAIL_FAST_SIGNALS)
+    out = {"signals": {k: 0 for k, _ in FAIL_FAST_SIGNALS}, "hits": [],
+           "verdict": "INCONCLUSIVE", "fixable": [], "structural": [],
+           "n_rows": len(rows), "max_sharpe": None, "wave_meta": meta,
+           "message": "", "rule_id": None}
+    if not rows:
+        out["message"] = "无回测行，无法判定失败性质"
+        return out
+
+    n = len(rows)
+    sharpes = [_f(r, "sharpe") for r in rows]
+    sharpes = [s for s in sharpes if s is not None]
+    max_sharpe = max(sharpes) if sharpes else None
+    out["max_sharpe"] = max_sharpe
+    sig = out["signals"]
+
+    # 1) Sharpe 平台期
+    if max_sharpe is not None and t["plateau_low"] <= max_sharpe <= t["plateau_high"]:
+        sig["sharpe_plateau_0.7_0.9"] = 1
+
+    # 2) 远期段衰减
+    decay_n = 0
+    for r in rows:
+        sh, ty = _f(r, "sharpe"), _f(r, "two_year_sharpe")
+        if "2Y" in _clean_walls(r):
+            decay_n += 1
+        elif sh is not None and ty is not None and sh > 0 and ty < t["pnl_decay_ratio"] * sh:
+            decay_n += 1
+    if decay_n >= max(1, int(t["wall_share"] * n)):
+        sig["pnl_backhalf_decay"] = decay_n
+
+    # 3) 变体不变性（多数行共享同一"硬墙"组合）
+    hard = []
+    for r in rows:
+        hm = tuple(sorted(w for w in _clean_walls(r) if w in _HARD_WALLS))
+        if hm:
+            hard.append(hm)
+    if len(hard) >= 3:
+        from collections import Counter
+        _, cnt = Counter(hard).most_common(1)[0]
+        if cnt / n >= t["dominant_wall_share"]:
+            sig["window_invariant"] = cnt
+
+    # 4) Fitness 持续不达标
+    fit_n = sum(1 for r in rows if "FITNESS" in _clean_walls(r))
+    if fit_n >= max(1, int(t["wall_share"] * n)):
+        sig["fitness_persistent_miss"] = fit_n
+
+    # 5) Sub-universe 反复失败
+    su_n = sum(1 for r in rows if any("SUB_UNIVERSE" in str(w) for w in _clean_walls(r)))
+    if su_n >= max(1, int(t["subuniverse_share"] * n)):
+        sig["subuniverse_repeat_fail"] = su_n
+
+    # 6) 权重集中度偏高
+    cw_n = sum(1 for r in rows
+               if any(w == "CW" or "CONCENTRATED" in str(w) for w in _clean_walls(r)))
+    if cw_n >= max(1, int(t["concentration_share"] * n)):
+        sig["weight_concentration_high"] = cw_n
+
+    # 7) 相似度爆表（Self-correlation 墙 或 prod_corr > 0.7）
+    sim_n = 0
+    for r in rows:
+        pc = _f(r, "prod_corr", "prodCorrelation", "prod_correlation")
+        if any("SELF_CORR" in str(w) for w in _clean_walls(r)) or (pc is not None and pc > 0.7):
+            sim_n += 1
+    if sim_n >= 1:
+        sig["similarity_over"] = sim_n
+
+    out["hits"] = [k for k, _ in FAIL_FAST_SIGNALS if sig[k] > 0]
+    out["structural"] = [k for k in out["hits"] if k in _STRUCTURAL_SIGNALS]
+    out["fixable"] = [k for k in out["hits"] if k not in _STRUCTURAL_SIGNALS]
+
+    if out["structural"]:
+        out["verdict"] = "STOP_STRUCTURAL"
+    elif max_sharpe is not None and max_sharpe < t["weak_sharpe"]:
+        out["verdict"] = "STOP_STRUCTURAL"
+    elif len(out["hits"]) >= t["min_signals_to_stop"]:
+        out["verdict"] = "STOP_STRUCTURAL"
+    elif out["hits"]:
+        out["verdict"] = "RETRY_FIXABLE"
+    else:
+        out["verdict"] = "INCONCLUSIVE"
+
+    hit_txt = "、".join(labels[k] for k in out["hits"]) or "无"
+    if out["verdict"] == "STOP_STRUCTURAL":
+        out["message"] = (f"命中无效努力信号 {len(out['hits'])} 项（{hit_txt}）：结构性失败，"
+                          f"继续微调只是烧预算，建议停止本家族并换字段/数据集方向")
+    elif out["verdict"] == "RETRY_FIXABLE":
+        out["message"] = (f"仅命中参数层信号 {len(out['hits'])} 项（{hit_txt}）：可修复，"
+                          f"杠杆 = decay / neutralization / gate / 换历史位置表达")
+    else:
+        out["message"] = f"未命中无效努力信号（全波 max sharpe={max_sharpe}）"
+    return out
+
+
 # ---------------- P1：verdict 自动推荐（规则 -> 下波方向） ----------------
 
 def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
@@ -721,6 +892,13 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
     strat_rules = store.query(rule_type="strategy", region=region)
     diag_rules = store.query(rule_type="diagnosis", region=region)
     uni_rules = store.query(rule_type="universe_lever", region=region)
+
+    # ---- fail-fast 失败性质判定（无效努力七信号 + 结构性/可修复）----
+    ff = classify_failure(rows, meta)
+    for _rr in (diag_rules + store.query(rule_type="dead_end", region=region)):
+        if (_rr.get("action") or {}).get("op") in ("classify_failure_nature", "fail_fast_stop"):
+            ff["rule_id"] = _rr["rule_id"]
+            break
 
     # universe 判死规则：当前 universe 命中判死 -> 最高优先级换 universe
     cur_uni = meta.get("universe")
@@ -801,6 +979,26 @@ def recommend_next_wave(ctx, rows, near=None, wave_meta=None):
             "action_hint": "提交前查 prod_corr + PPA 主题匹配",
             "source_rule": None,
         })
+
+    # ---- fail-fast 落地：可修复 -> 新增参数层推荐；结构性 -> 富化既有结构层推荐 ----
+    # 结构性刻意**不新增条目**，而是富化既有「结构层重构」推荐：
+    # 二者结论同向，避免并列条目与既有优先级断言冲突。
+    if ff["verdict"] == "RETRY_FIXABLE":
+        recs.append({
+            "direction": "可修复失败：参数层轻量调整",
+            "rationale": ff["message"],
+            "priority": 65,
+            "action_hint": "改 decay / 换 neutralization 档位 / 加 gate / 换历史位置表达（本波属参数层失败，非结构性）",
+            "source_rule": ff["rule_id"],
+            "fail_fast_signals": ff["hits"],
+        })
+    elif ff["verdict"] == "STOP_STRUCTURAL":
+        for r in recs:
+            if "结构层重构" in r["direction"]:
+                r["fail_fast_signals"] = ff["hits"]
+                r["action_hint"] = (f"{r['action_hint']}；fail-fast 命中 {len(ff['hits'])} 项："
+                                    + "、".join(ff["hits"]))
+                break
 
     # 按优先级降序
     recs.sort(key=lambda x: -x["priority"])

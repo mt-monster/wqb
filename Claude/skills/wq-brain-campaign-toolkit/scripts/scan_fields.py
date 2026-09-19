@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import (CampaignContext, add_campaign_arg, load_credentials)
 from _lib.api import Api
 from _lib.wqb_store import save_catalog
+from _lib.field_catalog_cache import get_cache_manager
 
 PAGE = 50
 
@@ -137,9 +138,29 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--zero-comp", action="store_true", help="只保留 userCount==0 的零竞争字段")
     ap.add_argument("--stdout", action="store_true", help="只打印不落盘")
+    ap.add_argument("--force-refresh", action="store_true", help="强制刷新缓存")
+    ap.add_argument("--cache-ttl", type=int, default=86400, help="缓存有效期（秒），默认 24 小时")
     a = ap.parse_args()
     ctx = CampaignContext(a.campaign_dir)
 
+    # 初始化缓存管理器
+    cache_manager = get_cache_manager(ctx, a.cache_ttl)
+    
+    # 1. 检查缓存（除非强制刷新）
+    if not a.force_refresh:
+        cached = cache_manager.get_cached_catalog(a.dataset)
+        if cached:
+            print(f"[cache] 使用缓存的字段目录（{len(cached.get('fields', []))} 个字段，"
+                  f"缓存时间: {cached.get('cache_metadata', {}).get('cached_at', 'unknown')})")
+            if a.stdout:
+                print(json.dumps(cached, ensure_ascii=False, indent=1))
+            else:
+                save_catalog(ctx, cached)  # 确保 DB 同步
+                print(f"catalog -> db fields/{ctx.region}/{a.dataset} ({cached['field_count']}) [cached]")
+            return
+
+    # 2. 缓存未命中或强制刷新，执行平台扫描
+    print(f"[cache] 缓存未命中或强制刷新，从平台扫描 {a.dataset}...")
     e, pw = load_credentials()
     api = Api()
     api.login(e, pw)
@@ -147,13 +168,18 @@ def main():
     if a.zero_comp:
         raw = [f for f in raw if (f.get("userCount") or 0) == 0]
     cat = build_catalog(ctx.settings, a.dataset, raw)
+    
     print(f"dataset={a.dataset} fields={cat['field_count']} data_type={cat['data_type']} "
           f"types={cat['type_distribution']}", file=sys.stderr)
+    
     if a.stdout:
         print(json.dumps(cat, ensure_ascii=False, indent=1))
         return
+    
+    # 3. 保存到缓存和 DB
     save_catalog(ctx, cat)
-    print(f"catalog -> db fields/{ctx.region}/{a.dataset} ({cat['field_count']})")
+    cache_manager.save_catalog_cache(a.dataset, cat)
+    print(f"catalog -> db fields/{ctx.region}/{a.dataset} ({cat['field_count']}) [fresh]")
 
 
 if __name__ == "__main__":

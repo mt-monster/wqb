@@ -20,6 +20,16 @@ user-invocable: true
 
 # Brain Alpha Judge（Alpha 判定器）
 
+## 三职能（2026-08-31 判定权移交后**存活的全部价值**，先读这节）
+
+1. **PPA 主题/相关性人工核对清单**（下方「PPA 附加闸门」节）；
+2. **value-factor trend score**（diversity_score=S_A×S_P×S_H + 假设投影，防挤同一金字塔）；
+3. **点塔优选排序**（多 READY 候选时 A/B/C 档，见下方专节）。
+
+除以上三项外本 skill 无提交判定职能；READY/REVIEW/BLOCK 三态仅作参考。
+
+### 历史定位（判定权已移交）
+
 > **⚠️ 弃用声明（2026-08-31）**：提交判定唯一权威已迁移至 `tools/submit_verdict.py`（403 盲区唯一权威，见 `wq-brain-ra-pipeline` 步 8）——**不要再用本 skill 做"是否提交"的最终判定**。本 skill 仅保留两类参考价值：① PPA 主题匹配/相关性门控的**人工核对清单**；② value-factor trend score（防挤同一金字塔）的**参考评分**。需要最终提交判定时直接跑 `& $WQ_PY tools/submit_verdict.py --alpha-id <ID> --with-quota`。本 skill 的 READY/REVIEW/BLOCK 三态输出仅作评审参考，不构成提交依据。
 >
 > **⚠️ 处女提交盲区（2026-09-01 实证，RR7OWQKd）**：`tools/submit_verdict.py` 的提交层 GET 视图依赖"POST 之后才存在"的提交记录——**从未 POST 过的 alpha，GET /submit 返 404**，旧版工具会一律误判 BLOCKED（假阴性）。已修复：`UNSUBMITTED + 404` → PREPOST 降级为"模拟层 + 双闸预检"判定。另两个配套实证：① POST 201 = 异步受理，~40s 内翻 OS/ACTIVE（用 get_alpha_details 轮询确认，勿依赖 POST 返回值）；② 受理后再次 POST 得到的 403 是"已提交"拒绝，**不是硬闸失败**。
@@ -85,7 +95,7 @@ V1 当前包含 20 篇打包进本 skill 的已收录中文语料条目：
 - **主题（Theme）**：通过 `mcp__wq-brain-http__get_messages` 获取当前 Power Pool 主题。若区域/数据集不匹配，判定结果不能为 `READY`（应返回 `WAIT_THEME_ROTATION`）。
 - **标签（Tags）**：计划提交的标签必须包含 `PowerPoolSelected`；颜色为 GREEN。
 - **硬指标**：Sharpe ≥ 1.58、Fitness ≥ 1.0、TVR 5–20%、**LOW_2Y_SHARPE 严格 > 1.58**、CONCENTRATED_WEIGHT 必须通过。`mcp__wq-brain-http__get_alpha_details` 返回 WARNING 不算通过。
-- **相关性**：PROD < 0.7，SELF < 0.5。优先在 `mcp__wq-brain-http__*` 上使用本地 `mcp__wq-brain-http__check_self_correlation` / `mcp__wq-brain-http__compute_mutual_correlation`（不占用平台相关性配额）。同数据集同腿兄弟 alpha（corr 0.82–1.0）→ 返回 `BLOCK`，建议更换数据集。
+- **相关性**：PROD < 0.7（平台硬线）；SELF < 0.5（内部严线/PPAC 口径，两线三层见 `INDEX.md`——2026-09-12 标注，勿再当平台硬闸）。优先在 `mcp__wq-brain-http__*` 上使用本地 `mcp__wq-brain-http__check_self_correlation` / `mcp__wq-brain-http__compute_mutual_correlation`（不占用平台相关性配额）。同数据集同腿兄弟 alpha（corr 0.82–1.0）→ 返回 `BLOCK`，建议更换数据集。
 - **CW 配方**：`rank(add(...))` 通常 FAIL；优先 `add(multiply(rank(...), w1), multiply(rank(...), w2))` 并配合 `ts_backfill`。
 - **提交语义**：MCP `mcp__wq-brain-http__submit_alpha` 将 HTTP 201 视为失败是工具 bug。确认 OS 池中 `status=ACTIVE`。若该 MCP 工具不感知 PPA，不要通过 MCP 自动提交 PPA —— 停下并询问用户。
 

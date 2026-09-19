@@ -1,7 +1,7 @@
 {
   "_doc": "平台级约束单一事实源（跨 region 共享，2026-08-15 自 tracking/KOR 抽象）。区域级实测数据（operator_stats/skeleton_quota/dataset_ranking/typed catalog）放战役目录 reference/，不进本文件。",
-  "version": "1.0",
-  "updated_at": "2026-09-09T01:12:13",
+  "version": "1.4",
+  "updated_at": "2026-09-19T20:00:00",
   "inaccessible_ops": [
     "ts_min",
     "ts_max"
@@ -9,6 +9,18 @@
   "_inaccessible_note": "语法合法但回测 ERROR 并级联整批 CANCELLED（KOR 批X实证）。判定必须对表达式全部 idents 做（而非 ops_used——KOR 历史死代码教训：ts_min/ts_max 不在 KNOWN_OPS 里，对 ops_used 判定永远漏检）。",
   "quantile_arity": 1,
   "_quantile_note": "alpha-expression-verifier 签名表允许 quantile 1-3 参（语法事实，不要改 validator）；战役纪律仅 1 参，由 gate 闸4 在本层加严（括号深度数逗号）。",
+  "window_whitelist": [
+    1,
+    5,
+    22,
+    66,
+    252,
+    504,
+    1008,
+    1260
+  ],
+  "window_whitelist_enforce": false,
+  "_window_whitelist_note": "标准时间窗口白名单（2026-09-17 新增，此前只写在 SOP 散文里、零机械守护）。gate 闸9 对非白名单窗口记 [WINDOW] **warning（不阻断）** —— 因为 SOP 允许'给出解释或实测证据'后用。实测加规则前全库 23% 用非白名单窗口，Top 恰为 20/10/120/60，与 _lib/operator_coverage.py::_DEFAULT_WINDOWS 的旧默认值完全吻合（该默认值已同轮对齐白名单）。同源常量在 src/wqb/config.py::STANDARD_WINDOWS，由 tests/unit/test_window_whitelist_p4.py 守护两边一致。2026-09-17 追补：当日新语料违规率 **26.5%**（散文约束无效）→ 新增 `window_whitelist_enforce` 开关（true 时闸9 升为 block）；同时对齐了两处模板根因（run_pipeline.py 的 20→22、skeletons.py 的 250→252 / 63→66）。",
   "known_ops": [
     "abs",
     "add",
@@ -16,12 +28,9 @@
     "bucket",
     "combo_a",
     "days_from_last_change",
-    "delay",
-    "delta",
     "densify",
     "divide",
     "equal",
-    "exp",
     "generate_stats",
     "greater",
     "greater_equal",
@@ -55,7 +64,6 @@
     "pasteurize",
     "power",
     "quantile",
-    "range",
     "rank",
     "reduce_avg",
     "reduce_choose",
@@ -111,14 +119,14 @@
     "vec_count",
     "vec_max",
     "vec_min",
-    "vec_norm",
     "vec_range",
     "vec_stddev",
     "vec_sum",
+    "vector_neut",
     "winsorize",
     "zscore"
   ],
-  "_known_ops_note": "探索率分母；可用平台 get_operators 刷新后回写本文件（保持单一事实源）。 [2026-08-17 补录 vec_range/vec_stddev: 平台 get_operators 确认 REGULAR scope 可用] [2026-08-19 全量刷新到平台 102 算子（get_operators 实时）+ 保留 delay/delta/exp/range 历史别名防误报字段；含 COMBO-only(reduce_*/combo_a/self_corr/generate_stats)与 SELECTION-only(in/universe_size)——known_ops 作用是闸2 识别算子防误报字段，不可访问的由闸4 inaccessible_ops 拦，scope 由平台回测决定]",
+  "_known_ops_note": "探索率分母；唯一真值 = data/operators_verified.json 的 verified（平台 get_operators 实测）。2026-09-12 对账：移除旧快照残留 delay,delta,exp,range,vec_norm（verify 于 09-08 平台刷新不含之，用时先 get_operators 复核）。",
   "vector_only_ops": [
     "vec_avg",
     "vec_max",
@@ -137,6 +145,14 @@
     "country",
     "exchange"
   ],
+  "region_invalid_group_fields": {
+    "JPN": [
+      "sector",
+      "subindustry",
+      "industry"
+    ]
+  },
+  "_region_invalid_group_note": "2026-09-19：区域不可用的 group 字段（profile 硬事实）。JPN 2026-09-15 实测 sector/subindustry/industry 报 'Invalid data field'（POST 可接受、执行必 ERROR 并连坐整批 CANCELLED）。闸2 按 region 判 FAIL；GEM 侧 pipeline_pregate 同源丢弃。新增区域在此登记，不要写死在代码里。",
   "price_volume_fields": [
     "open",
     "high",
@@ -172,6 +188,13 @@
       "severity": "block"
     },
     {
+      "name": "weighted_signal_mix_structural",
+      "_structural": true,
+      "regex": "(?!)",
+      "rule": "【结构判定，非正则】任一 add( 的顶层实参 ≥2 个以「系数*」开头 = 加权混合（含嵌套与镜像腿）。2026-09-17 实测：既有 weighted_signal_mix 正则要求两条腿都紧跟 (rank|zscore|ts_rank|group_rank|normalize|scale)，而真实语料主流镜像腿 subtract(0, rank(x)) 使 81% 漏网（抽 220 条真闸只 block 19%）。本条由 gate.check_one 的括号平衡扫描实施，regex 占位永假。等权 add(rank(a),rank(b)) 与单腿缩放 0.5*rank(a) 不拦。",
+      "severity": "block"
+    },
+    {
       "name": "weighted_leg_mix_func_prefix",
       "regex": "add\\s*\\(\\s*multiply\\s*\\(\\s*\\d*\\.\\d+\\s*,",
       "rule": "add(multiply(<权重>, <腿A>), multiply(<权重>, <腿B>)) 函数式加权混两条独立信号腿 = 混信号调参，用户 2026-09-09 定案全局禁止（防过拟合，尤其警惕 add(A,B) 模式）。既有 weighted_signal_mix 只认 `0.4 * rank(x)` 星号中缀写法，而 GEM 与实际表达式一律用 multiply() 函数式，导致该纪律长期漏网（EUR wave132/143/144 实测 4 例违规式全数通过闸5）。合规替代：①单信号结构 ts_scale/subtract(rank(A), rank(B)) ②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。不得靠调混合权重或增删腿数修不达标的信号。 本条匹配【权重在前】：add(multiply(0.4, ...), multiply(0.6, ...))。",
@@ -184,6 +207,7 @@
       "severity": "block"
     }
   ],
+  "_weighted_mix_note": "2026-09-16 回滚记录：v1.1 曾将两条 func 式加权混腿毒模式窄化为仅拦非 {0.4,0.6} 权重（Agent 误读任务书硬约束#5 字面）。用户当日重申『警惕 add(A,B) 模式』全局禁令后，v1.2 恢复 v1.0 全量拦截语义。结论：任何对用户定案纪律的放宽必须先经用户明确确认；任务书含混表述不构成例外。2026-09-17 v1.3 加固：新增 weighted_signal_mix_structural（gate.check_one 括号平衡结构判定，见 _structural 标记）堵住正则版 81% 的镜像腿漏网；四条正则保留为辅助层。",
   "_poison_note": "severity=block 时 gate 闸5 拦截。区域特有的新增毒模式放战役 reference/<region>_generation_constraints.json 的 poison_patterns，勿写进本文件。",
   "skeleton_classes": [
     "event_gated",
@@ -295,5 +319,39 @@
       "uncertainty"
     ]
   },
-  "_field_family_note": "三族关键词（pick_fields 采样用）。2026-08-27 补 NLP/情绪词根：sentiment/polarity/vader/afinn→level，variance/mad/dispersion/readability→quality，trend/growth→change。此前 NLP 数据集（finnews_nlp/news_sentiment_nlp/mmp_nlp_sentiment）字段几乎全落默认 level 桶，三族均衡失效。"
+  "_field_family_note": "三族关键词（pick_fields 采样用）。2026-08-27 补 NLP/情绪词根：sentiment/polarity/vader/afinn→level，variance/mad/dispersion/readability→quality，trend/growth→change。此前 NLP 数据集（finnews_nlp/news_sentiment_nlp/mmp_nlp_sentiment）字段几乎全落默认 level 桶，三族均衡失效。",
+  "ghost_ops": [
+    "group_normalize",
+    "sigmoid",
+    "ts_decay_exp_window",
+    "ts_entropy",
+    "ts_max",
+    "ts_median",
+    "ts_min",
+    "ts_min_max_cps",
+    "ts_percentage",
+    "ts_skewness"
+  ],
+  "_ghost_source": "权威 = data/wqb.db ledger KB/community_tpl_kb.ghost_operator_advisory（updated_at=2026-08-31）；另有 unverified_community_ops=14 个、forbidden_regular=2 个，全文见 KB。docs/reference/operators_notes.md 是算子使用统计转储，不是清单。",
+  "region_invalid_fields": {
+    "JPN": [
+      "close",
+      "open",
+      "high",
+      "low",
+      "volume",
+      "returns",
+      "vwap",
+      "cap",
+      "sharesout",
+      "adv20",
+      "adv60",
+      "adv120"
+    ]
+  },
+  "_region_invalid_fields_note": "2026-09-19 实证：JPN/TOP1600/D1 无 pv1 数据集，基础量价字段全部 'Invalid data field close'（2Jja8EaWz59v8IfKuZfRmZ2）。闸2b 按 region 判 FAIL；GEM pipeline_pregate.region_invalid_fields 同源丢弃。",
+  "region_vector_ts_forbidden": [
+    "JPN"
+  ],
+  "_region_vector_ts_note": "2026-09-19 实证：JPN 下 ts_*(…vec_*(…)) 必 ERROR 'Invalid data field close'（VECTOR 日频对齐依赖 pv1；rank(vec_avg(f)) 可 COMPLETE=O0NKlYVb）。闸2b 判 FAIL；GEM pregate has_ts_over_vec 同源丢弃。"
 }

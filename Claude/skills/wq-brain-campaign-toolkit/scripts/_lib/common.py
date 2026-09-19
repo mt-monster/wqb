@@ -10,7 +10,6 @@
 import json
 import os
 import re
-import sys
 
 _LIB = os.path.dirname(os.path.abspath(__file__))           # scripts/_lib
 SCRIPTS_DIR = os.path.dirname(_LIB)                          # scripts
@@ -55,7 +54,19 @@ def load_platform_constraints():
 # ---------------- 凭证链 ----------------
 
 def load_credentials():
-    """WQ_USERNAME/WQ_PASSWORD → BRAIN_CREDENTIALS(路径) → ~/.brain_credentials → MCP_CONFIG_FILE。"""
+    """CREDENTIALS_EMAIL/CREDENTIALS_PASSWORD → WQ_USERNAME/WQ_PASSWORD → BRAIN_CREDENTIALS(路径) → ~/.brain_credentials → MCP_CONFIG_FILE。
+
+    2026-09-12 修复：最前面补 CREDENTIALS_EMAIL/CREDENTIALS_PASSWORD 直读。
+    MCP 侧（world-quant-brain-mcp/.env）与 toolkit 侧凭据命名长期不一致，
+    虽然 workflow 节点通过 unbuffered_env() 做了改名桥，但任何绕过该桥的
+    直接调用（临时脚本、手动 CLI、其他 skill）都会因找不到 WQ_USERNAME 而
+    FileNotFoundError。现在 toolkit 自己认 CREDENTIALS_*，与 MCP 侧对齐。
+    """
+    # 第一优先级：CREDENTIALS_EMAIL/CREDENTIALS_PASSWORD（MCP 侧标准命名）
+    u, p = os.environ.get("CREDENTIALS_EMAIL"), os.environ.get("CREDENTIALS_PASSWORD")
+    if u and p:
+        return u, p
+    # 第二优先级：WQ_USERNAME/WQ_PASSWORD（toolkit 传统命名，workflow 桥接后注入）
     u, p = os.environ.get("WQ_USERNAME"), os.environ.get("WQ_PASSWORD")
     if u and p:
         return u, p

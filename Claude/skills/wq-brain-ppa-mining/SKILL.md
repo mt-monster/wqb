@@ -112,7 +112,7 @@ python "$SK" --region HKG --universe TOP800 --min-cov 0.9 --max-alphas 20 --top 
 - AI/ML 因子库：ai_factor_transfer / ai_equity_alpha / ml_factor_proj 三连判死，天花板 0.86
 - 信用风险：quant_factor_lib / model313 双判死
 - 行为金融/论坛：behavioral_signals / equity_forum_data 全灭
-- 跨区：GLB emotion 42 候选全被 PROD 0.82-0.86 挡掉 → 任何区域 emotion 族红灯
+- 跨区：GLB emotion 42 候选全被 PROD 0.82-0.86 挡掉 → 任何区域 emotion 族红灯（完整实证唯一版：`brain-alpha-repair` §2d）
 
 ### 1.1 OS/IS Sharpe 徽章（选数据集）
 - 颜色规则：`sr < 0` 红、`sr > 均值` 绿、否则黄、缺失灰；显示 `sharpe(count)`。
@@ -296,7 +296,7 @@ scale(rank(ts_zscore(subtract(
 - `hump(x, hump=0.01)` 必须命名参数。
 - 429 限流：短退避重试（wait=min(20+attempt*8, 45)s，最多 ~40 次）。
 - 孤儿模拟占槽：`TaskStop` 制造孤儿，只能等其自行释放。
-- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：68 工具（另有 wqb-db 台账服务器 33 工具）——**计数唯一基准与统计口径见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，勿在他处裸写数字**，含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎：**8 个节点**快捷方式 campaign/feature_engineering/gem/batch_track/judge/submit_alpha/superalpha/**wave_gate** + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`）。连接需用户在连接器页 Trust。
+- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：68 工具（另有 wqb-db 台账服务器 36 工具）——**计数唯一基准与统计口径见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，勿在他处裸写数字**，含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎：**9 个节点**快捷方式 campaign/feature_engineering/gem/batch_track/judge/submit_alpha/superalpha/wave_gate/**hypothesis_round** + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`）。连接需用户在连接器页 Trust。
 
 ### 9.1 data-sets / data-fields 实测约束（2026-08-05 验证，勿重复踩坑）
 

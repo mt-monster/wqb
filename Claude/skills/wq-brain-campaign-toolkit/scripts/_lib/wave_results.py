@@ -155,6 +155,46 @@ class WaveResultsStore:
             return None
         return int(m.group(1))
 
+    def _resolve_wave_conflict(self, wave_num, wave_str):
+        """冲突消解：同号已被其它波占用时，复用本波旧号或顺延 max+1。
+
+        2026-09-13 修复（wave 覆盖事故）：s2_<dataset>_d<delay> 型波名不含独立波序号，
+        "s2_other455_d1" 与 "s2_fund_holdings_panel_d1" 都会被 parse 成首数字 2，
+        同区第二个 s2 波 INSERT OR REPLACE 会直接顶掉第一个（实测 DEU 09-13：
+        other455 的 wave2 被 fund_holdings 覆盖）。规则：
+        - full_payload.wave == wave_str 的记录已存在 → 复用其编号（重跑幂等）；
+        - 否则 parsed 编号被占用 → 返回 max(wave_number)+1；
+        - 无冲突 → 原样返回。
+        """
+        conn = self._conn()
+        try:
+            rows = conn.execute(
+                "SELECT wave_number, full_payload FROM wave_results WHERE region=?",
+                (self.region,),
+            ).fetchall()
+        finally:
+            conn.close()
+        mine = None
+        used = set()
+        for r in rows:
+            try:
+                wn = int(r["wave_number"])
+            except (TypeError, ValueError):
+                continue
+            used.add(wn)
+            fp = r["full_payload"]
+            if fp:
+                try:
+                    if json.loads(fp).get("wave") == wave_str:
+                        mine = wn
+                except (TypeError, ValueError):
+                    pass
+        if mine is not None:
+            return mine
+        if wave_num in used:
+            return max(used) + 1
+        return wave_num
+
     def auto_upsert_from_review(self, wave_str, rows, candidates, near,
                                 settings=None, multisim_ids=None, dry_run=False):
         """pipeline stage_review 自动入库：从评审 rows 生成 wave_results 记录。
@@ -165,6 +205,8 @@ class WaveResultsStore:
         wave_num = self.parse_wave_number(wave_str)
         if wave_num is None:
             return {"skipped": True, "reason": f"无法解析 wave 号: {wave_str!r}"}
+        # 2026-09-13：同号冲突消解（s2_ 型波名首数字恒为 2，防 REPLACE 覆盖他波）
+        wave_num = self._resolve_wave_conflict(wave_num, wave_str)
 
         # ---- focus: 从 settings 提取数据集信息 ----
         ds = (settings or {}).get("dataset", "")

@@ -71,6 +71,12 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
   | `add(0.6*rank(subtract(U14,D14)), 0.4*(-rank(ts_mean(RES,10))))`（A 项瞬时） | WARNING | 提交 FAIL |
   | `add(0.6*rank(ts_mean(subtract(U14,D14),10)), 0.4*(-rank(ts_mean(RES,10))))`（A 项平滑） | **PASS** | 提交成功（3.70/3.19） |
   | `rank(ts_mean(subtract(U30,D30),10))`（单信号平滑） | **PASS** | 已 ACTIVE |
+
+  > ⚠ **表中前三行的 `add(0.6*rank(...), 0.4*rank(...))` 加权混合为 2026-09-01 历史实测**
+  > （当时闸5 仅拦星号中缀、未覆盖 `multiply()` 函数式）。**自 2026-09-13「路线 A」起该形态已被闸5
+  > 全量 block**，不得再照抄。本表可继承的结论只有一条：**时间平滑治 CW**——
+  > 落地请取第四行的合规单信号平滑形（`ts_mean` / `ts_decay_linear`），或改用
+  > `subtract(rank(短窗), rank(长窗))` 等结构交互。
 - **参数层全无效（别再试）**：换 neutralization（MARKET/SECTOR/INDUSTRY/SUBINDUSTRY 四档）仍 WARNING；
   truncation 0.08→0.02/0.01 仍 WARNING；末端再套 `rank(...)` **反而变 FAIL**；`scale(x, 1)` 语法错（scale 只收 1 输入）。
 - **结论**：事件/计数类字段（分析师评级变动、新闻计数、财报事件等）构造时**默认加时间平滑**

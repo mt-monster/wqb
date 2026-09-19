@@ -34,7 +34,7 @@
 | sharpe 0.8–1.5、至少一维过闸（tv/2y/fit）、同数据集变体耗尽（3+ 次） | mix amplify（跨数据集混合）      | 白名单存在正交经济维度互补数据集                                 |
 | sharpe < 0.8                                    | 放弃该数据集，换白名单下一个           | —                                                |
 | 撞 prod-corr 墙                                   | 换白名单**不同数据集** regenerate | 勿磨同腿变体                                           |
-| CW 失败                                           | backfill + 线性混合增强        | 不要 `rank(add(...))` 结构                           |
+| CW 失败                                           | backfill + **结构交互**补腿      | 禁加权混合（闸5）；补腿用 `ts_corr`/`divide`/`subtract(rank,rank)`/`if_else`/`group_zscore`。亦不要 `rank(add(...))` 结构 |
 
 ## D3. 混合（mix amplify）构造规则
 
@@ -44,7 +44,9 @@
 | 主动触发          | 单数据集 alpha 过廉价闸但 Sharpe 接近区（1.58–2.0）→ 主动混合；MEA 区域已提交 alpha 倾向跨数据集，优先组合 |
 | 补救触发          | sharpe 0.8–1.5、至少一维过闸、同数据集变体耗尽（3+ 次）→ 混合 |
 | 基础信号维度补全      | 情绪/动量 → 补基本面（EPS revision、估值）或微观结构；技术评级 → 补空头兴趣、机构持仓、分析师修正；微观结构 → 补情绪、基本面  |
-| 加法优先          | 跨金字塔用 win 配比 `add(0.40*慢MODEL, 0.60*快PV)`（`MINING.slow_fast_mix`）；同金字塔才用等权 `add(rank(A), rank(B))` |
+| **组合形态（铁律）**  | **禁止任何加权混合**：`0.4*rank(A) + 0.6*rank(B)`、`add(multiply(0.4,A), multiply(0.6,B))` 两种写法**均**被 gate 闸5 block（毒模式 `weighted_signal_mix` / `weighted_leg_mix_func_prefix/suffix`）。2026-09-13「路线 A」定案、2026-09-16 用户重申全局禁令，不得放宽。跨金字塔组合只能走**结构交互**（见下行） |
+| **允许的组合形态**    | 仅 5 类结构交互：①`ts_corr(慢, 快, n)` 共振腿 ②`divide(A, B)` 比值/价差 ③`subtract(rank(A), rank(B))` 排序差 ④`if_else` / `trade_when` 条件门控 ⑤`group_zscore` / `group_rank` 分组。或走 SuperAlpha combo（步 8）。**不允许**用调权重/增删腿数的方式修不达标的信号 |
+| 已废止参数           | ~~`MINING.slow_fast_mix`（0.40/0.60 慢快配比）~~ 已废止，**不得用于生成表达式**（仅 2026-09-13 前的历史配方，见 D11） |
 | 乘法仅限          | 两个基础信号都强（>1.0）才用 `multiply(rank(A), rank(B))`（margin 脆）                    |
 | 数据集数          | 2–5 个（>5 边际收益 < 复杂度成本）                                                     |
 | 中性化           | 混合信号必须 `group_zscore(..., industry/subindustry)` 包裹                        |
@@ -91,7 +93,7 @@
 | 优先 `returns` 反转而非 `close`；IS\_LADDER\_SHARPE 必须 strictly > 1.58                                                                                              |
 | `hump` 已废弃禁用；`divide` 无 filter 参数；`ts_regression(A,B,n).residual` 非法                                                                                         |
 | `subtract(..., filter=true)` 可用                                                                                                                              |
-| CONCENTRATED\_WEIGHT：避免 `rank(add(...))`，用线性混合 `add(multiply(rank(ts_delta(ts_backfill(F,66),66)),0.5), multiply(rank(ts_delta(ts_backfill(F,66),22)),0.5))` |
+| CONCENTRATED\_WEIGHT：避免 `rank(add(...))`，**亦禁用任何加权混合**。合规改法按优先级：①**时间平滑**（同一字段多窗口取均值/衰减）`ts_decay_linear(ts_backfill(F,66), 66)` 或 `ts_mean(ts_backfill(F,120), 120)`；②**换算子几何** `group_rank(F, subindustry)` / `group_zscore(F, sector)` / `ts_quantile`；③**单信号结构** `subtract(rank(慢), rank(快))`；④换字段或换信号概念。~~`add(multiply(rank(...),0.5), multiply(rank(...),0.5))`~~ 线性混合**已被闸5 block**，不得使用 |
 | 字段名**逐一经 get\_datafields 验证**再入批（虚构字段名 = 整批 CANCELLED 连坐）                                                                                                    |
 
 ## D7. S2-D 多样性榨取决策
@@ -143,6 +145,8 @@
 
 > 背景：KOR wave96–103 连续 8 波单字段探针（`rank(x)`/`ts_zscore` 水平值）全灭（6 数据集 64 条探针 0 达标）；
 > 唯一出 RA 的路径是 wave91c 复杂跨数据集混合模板（慢变量×短周期快变量加权混合 → 2 RA ACTIVE）。
+> ⚠ **此为历史配方**：其中"加权混合"形态自 2026-09-13「路线 A」起**已废止**（闸5 block）。
+> 可继承的只有其**跨数据集补腿意图**；落地必须改写成结构交互（`ts_corr`/`divide`/条件/分组），**不可照抄权重式**。
 > wave104 站在已验证配方上做复杂模板扩展，首批即命中 2 条过全部廉价闸+IS 硬闸。
 
 | 场景 | 动作 |
@@ -151,10 +155,10 @@
 | 区域 registry 已有 win 配方（`registry_empirical` layer=win） | **70% 精力做配方家族扩展**（复杂经济学模板），不继续探针新数据集；先拉 ACTIVE alpha 的表达式+settings 作基线 |
 | 完全空白数据集（无 win 无历史） | 探针批仅限 1 批 8 条早停；三灯判定后要么判死要么转复杂模板，**不做第二轮探针** |
 | 探针连续 2–3 波全灭 | 停探针，回查台账 wins 层找配方；无 win 则换区域或查论坛模板 |
-| 配方家族扩展设计（换腿/加腿/门控） | **设计前先估算与母配方的相关性**：主导腿（占权重 ≥2/3 的字段）不变 → SELF 相关必然 ≥0.9，结构性死路，不做 |
+| 配方家族扩展设计（换腿/加腿/门控） | **设计前先估算与母配方的相关性**：主导字段（提供绝大部分信号暴露的那条腿）不变 → SELF 相关必然 ≥0.9，结构性死路，不做 |
 | 真正差异化扩展 | 必须换主导信号源（换慢腿族 + 换快腿族同换）；单换一条腿 = 母配方的高相关变体（KOR 实证：B3/B4 sh 1.80/1.82 达标但与 88lr21xo SELF 0.93/0.98 → 双判死） |
 | 同族扩展判死回写 | dead_end rule 写明“家族扩展天花板”，salvage 记录 NEAR 候选（如 A4 confidence 1.34）备 Mode A 参数收敛 |
-| 复杂模板的经济学骨架（已验证有效模式） | ①慢变量×快变量加权混合（2:1 / 1:3）②`ts_corr(慢,快,20)` 共振腿（因子协同确认）③`if_else(rank(快)>0.5, ...)` 动量门控 ④`group_zscore(慢, sector)` 行业相对强度 |
+| 复杂模板的经济学骨架（**合规版**，全部过闸5） | ①~~慢变量×快变量加权混合（2:1 / 1:3）~~ **已废止**（闸5 block）→ 以 `ts_corr(慢, 快, 20)` 共振腿替代 ②`divide(慢, 快)` 比值·价差腿 ③`if_else(rank(快)>0.5, ...)` 动量门控 ④`group_zscore(慢, sector)` 行业相对强度 ⑤`trade_when(事件, 腿, -1)` 事件门控 |
 
 ## D12. 镜像方向探针（强负信号 = 方向写反，不是无信号；EUR wave3b + KOR wave34A 实证，2026-08）
 

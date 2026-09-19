@@ -18,6 +18,9 @@
       全链路：评审 + 回写台账
   恢复：重跑同一 --wave 自动从 checkpoint 续跑；--fresh 强制全新。
   --dry-run：不提交、checkpoint 写到 --checkpoint-dir（默认战役 results/；测试可指临时目录）。
+  设置层先验（2026-09-15）：装载 settings 后按 region_kb.gate_priors 实测过闸率改写 decay/neutralization
+  （--set / --neutralization 钉住的维度不动；--no-settings-prior 关闭）；--review 收批后自动刷新 region_kb。
+  退出码：0 正常；2 中止/前置不满足（此前恒 0，detached 启动器把中止当成功）。
 """
 import argparse
 import concurrent.futures
@@ -28,12 +31,13 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_credentials,
-                         load_json, read_exprs_file, read_expr_items)
+from _lib.common import CampaignContext, add_campaign_arg, atomic_write, load_credentials, load_json, read_expr_items
 from _lib.api import Api, api_call
 from _lib.poller import TERMINAL, poll_config, poll_until_terminal
-from _lib.ledger import LedgerStore, make_ledger_store, today
+from _lib.ledger import make_ledger_store, today
 from _lib import rules as rules_mod
+from _lib import region_kb as region_kb_mod
+from _lib import slots as slots_mod
 import gate as gate_mod
 import metrics_cache
 import review_wave as review_mod
@@ -410,12 +414,18 @@ def submit_batch(api, settings, exprs):
 
 
 def _submit_single_batch(api, settings, batch, bi, n_batches):
-    """提交单批并返回 (bi, msid, error)。供 ThreadPool 并行调用。"""
+    """提交单批并返回 (bi, msid, error, slot_token)。供 ThreadPool 并行调用。
+
+    2026-09-19：提交前先拿账户级槽位 token（_lib/slots，跨进程仲裁，cap 缺省 7；
+    WQB_GLOBAL_SLOTS=0 关闭），提交失败即释放；成功则由轮询侧 terminal 后释放。"""
+    token = slots_mod.acquire(label=f"pending-b{bi}")
     try:
         msid = submit_batch(api, settings, batch)
-        return bi, msid, None
+        slots_mod.relabel(token, msid)
+        return bi, msid, None, token
     except Exception as e:
-        return bi, None, str(e)[:200]
+        slots_mod.release(token)
+        return bi, None, str(e)[:200], None
 
 
 def _resolve_batch_items(ck, batch):
@@ -446,16 +456,116 @@ def _harvest_batch_alphas(api, detail):
 
 
 def _harvest_batch_errors(api, detail):
-    """从 ERROR 的 multisim detail 提取子模拟错误。"""
+    """从 ERROR 的 multisim detail 提取子模拟错误。
+
+    2026-09-19 补：同时带回子模拟的表达式（`regular`）与状态，供 `_isolate_error_batch`
+    区分「真正报错的坏式」与「被连坐 CANCELLED 的无辜兄弟」。平台的错误正文在
+    `message`（如 "Invalid data field close." / "At least one of buckets/range is required."），
+    旧字段名 `error` 一并兼容。
+    """
     errs = []
-    for c in detail.get("children", []):
+    for idx, c in enumerate(detail.get("children", [])):
         try:
             sim = json.load(api_call(api, "get", "/simulations/" + c))
-            if sim.get("error"):
-                errs.append({"child": c, "error": str(sim["error"])[:120]})
+            msg = sim.get("message") or sim.get("error")
+            st = sim.get("status")
+            if msg or st in ("ERROR", "CANCELLED"):
+                errs.append({
+                    "child": c,
+                    "idx": idx,                      # 子模拟在 multisim children 里的序号 = 提交顺序
+                    "status": st,
+                    "error": str(msg or st)[:160],
+                    "expr": item_expr(sim.get("regular") or sim.get("expression") or ""),
+                })
         except Exception:
             pass
     return errs
+
+
+#: 连坐隔离：被平台判为「坏式」的子模拟状态（CANCELLED 是无辜兄弟，不算坏式）
+_CULPRIT_STATUSES = ("ERROR",)
+
+
+def _isolate_error_batch(batch_exprs, errs):
+    """把 ERROR 批拆成 (culprits, survivors)。
+
+    2026-09-19（JPN w7/w8 实证：一条 `bucket()` 缺 range / 一个平台不认的字段，
+    整批 8 条连坐 CANCELLED，10 批丢 8 批 64 条）。平台 multisim 语义：任一子模拟
+    ERROR → 同批其余子模拟 CANCELLED。此前 SOP 只写成人工协议（"隔离不确定算子到
+    独立小批次"），pipeline 自身不处理 → 每个坏式吃掉 7 条无辜表达式。
+
+    规则：
+      - culprit = 子模拟状态在 _CULPRIT_STATUSES 且能按表达式原文匹配回本批的条目；
+      - survivors = 本批其余表达式（含 CANCELLED 与匹配失败者），保持原序；
+      - 若一条 culprit 都匹配不到（如平台没回 `regular`），无法定位坏式 → 返回 ([], [])
+        由调用方按"整批失败"处理，不盲目重发（重发只会再连坐一次）。
+    返回: (culprits: [{"expr","error"}], survivors: [expr])
+    """
+    by_expr = {}
+    by_idx = {}
+    for e in errs or []:
+        if e.get("status") not in _CULPRIT_STATUSES:
+            continue
+        ex = (e.get("expr") or "").strip()
+        if ex:
+            by_expr[ex] = e.get("error") or e.get("status")
+        elif e.get("idx") is not None:
+            by_idx[int(e["idx"])] = e.get("error") or e.get("status")
+    # 2026-09-19 实测（JPN isotest2）：子模拟 GET 不回 `regular`，只能按 **children 顺序 = 提交顺序**
+    # 映射；仅当 errs 覆盖了整批（子模拟数 == 本批表达式数）才可信，否则不猜。
+    if by_idx and len(errs or []) == len(batch_exprs):
+        for i, e in enumerate(batch_exprs):
+            if i in by_idx:
+                by_expr.setdefault(item_expr(e).strip(), by_idx[i])
+    if not by_expr:
+        return [], []
+    culprits, survivors = [], []
+    for e in batch_exprs:
+        ex = item_expr(e).strip()
+        if ex in by_expr:
+            culprits.append({"expr": ex, "error": by_expr[ex]})
+        else:
+            survivors.append(e)
+    if not culprits:
+        return [], []
+    return culprits, survivors
+
+
+def _mark_culprits_in_db(ctx, wave, culprits):
+    """坏式回写 expressions.status='fail'（reason=平台错误正文），让 build_wave/去重不再重选。
+    失败不阻断（库只是审计面，不影响本波继续）。"""
+    if not culprits:
+        return 0
+    try:
+        st = _get_store(ctx)
+    except Exception as e:  # pragma: no cover - 环境缺库
+        print(f"[isolate] 坏式回写跳过（无 store）: {e}")
+        return 0
+    n = 0
+    try:
+        rows = st.list_expressions(ctx.region, str(wave))
+        id_by_expr = {}
+        for r in rows:
+            ex = (r.get("expression") or "").strip()
+            if ex and r.get("id") is not None:
+                id_by_expr.setdefault(ex, int(r["id"]))
+        for c in culprits:
+            eid = id_by_expr.get(c["expr"])
+            if eid is None:
+                continue
+            try:
+                res = st.set_expression_status(
+                    ctx.region, str(wave), "fail", ids=[eid],
+                    reason=f"platform ERROR: {c['error'][:120]}")
+                n += int(res.get("n_updated") or 0)
+            except Exception as e:
+                print(f"[isolate] 坏式 id={eid} 回写失败: {e}")
+    finally:
+        try:
+            st.close()
+        except Exception:
+            pass
+    return n
 
 
 def _update_ck_batch(ck, bi, batch, msid, status, detail, api):
@@ -474,16 +584,30 @@ def _update_ck_batch(ck, bi, batch, msid, status, detail, api):
     return rec
 
 
-def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round_idx):
-    """执行单轮七槽填槽：并行提交+轮询 round_batches，返回 (completed, failed, results)。"""
+def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round_idx,
+               pending_batches=None, isolate_errors=True):
+    """执行单轮七槽填槽（事件驱动即收即补，2026-09-17 P0 优化）。
+
+    此前：两个独立 ThreadPoolExecutor（提交+轮询），全部完成后才返回进下一轮。
+    问题：早完成的槽位空闲等待（如 1 批 5 分钟 COMPLETE，其余 6 批 15 分钟，
+    该槽位空闲 10 分钟）。
+
+    现改为：提交阶段不变（几秒完成）；轮询阶段每完成一批立即回收并补新批，
+    保持槽位常满。pending_batches 为待补批次队列（引用传递，函数内会 pop）。
+
+    2026-09-19 连坐隔离（isolate_errors，默认开）：某批 ERROR 时解析子模拟错误，
+    定位坏式 → 坏式回写 expressions.status='fail' → 其余无辜表达式作为「重发批」
+    **优先于** pending 队列在下一个空槽重发；重发批再 ERROR 不再重发（防死循环）。
+    """
     n_batches = len(round_batches)
     if n_batches == 0:
         return 0, 0, {}
 
-    print(f"[round{round_idx}] 七槽填槽：{n_batches} 批分 {n_slots} 槽并行")
+    print(f"[round{round_idx}] 七槽填槽（即收即补）：{n_batches} 批分 {n_slots} 槽并行")
 
-    # ---- Phase 1: 并行提交 ----
+    # ---- Phase 1: 并行提交（不变，几秒完成）----
     submit_results = {}
+    _slot_tokens = {}   # bi -> 账户级槽位 token（terminal 后释放）
     with concurrent.futures.ThreadPoolExecutor(max_workers=n_slots) as pool:
         futures = {
             pool.submit(_submit_single_batch, api, ctx.settings,
@@ -491,8 +615,10 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
             for bi, batch in enumerate(round_batches, 1)
         }
         for fut in concurrent.futures.as_completed(futures):
-            bi, msid, err = fut.result()
+            bi, msid, err, _tok = fut.result()
             submit_results[bi] = (msid, err)
+            if _tok:
+                _slot_tokens[bi] = _tok
             if err:
                 print(f"[submit] round{round_idx} batch{bi}/{n_batches} 失败: {err}")
                 ck["batches"].append({"exprs": round_batches[bi-1], "status": "SUBMIT_FAIL", "error": err})
@@ -509,34 +635,117 @@ def _run_round(api, ctx, ck, round_batches, n_slots, pcfg, checkpoint_dir, round
         print(f"[round{round_idx}] 无成功提交批次")
         return 0, 0, {}
 
-    # ---- Phase 2: 并行轮询 ----
-    print(f"[poll] round{round_idx} 并行轮询 {len(running)} 个 multisim...")
+    # ---- Phase 2: 事件驱动轮询+即收即补（P0 核心改动）----
+    print(f"[poll] round{round_idx} 事件驱动轮询 {len(running)} 个 multisim（即收即补）...")
     poll_results = {}
+    _pending = pending_batches if pending_batches is not None else []
+    _next_bi = n_batches + 1  # 补新批时的批次编号
+    # 连坐隔离：重发队列优先于 pending；_retry_origin 记录哪些批次编号是重发批（只重发一次）
+    _retry_queue = []
+    _retry_origin = {}
+    # 批次编号 → 该批表达式（round_batches 只存 ≤ n_batches 的首轮批；补批/重发批也要能反查）
+    _batch_by_bi = {bi: round_batches[bi - 1] for bi in range(1, n_batches + 1)}
+    isolated_total = 0
+    resubmitted_total = 0
+
+    def _refill(pool, futures):
+        """槽位空出时补一批：重发批优先，其次 pending。返回是否补了。"""
+        nonlocal _next_bi, resubmitted_total
+        origin = None
+        if _retry_queue:
+            new_batch, origin = _retry_queue.pop(0)
+        elif _pending:
+            new_batch = _pending.pop(0)
+        else:
+            return False
+        new_bi = _next_bi
+        _next_bi += 1
+        _tok = slots_mod.acquire(label=f"pending-b{new_bi}")
+        try:
+            new_msid = submit_batch(api, ctx.settings, _resolve_batch_items(ck, new_batch))
+            slots_mod.relabel(_tok, new_msid)
+            _slot_tokens[new_bi] = _tok
+            running[new_bi] = new_msid
+            _batch_by_bi[new_bi] = new_batch
+            entry = {
+                "exprs": new_batch, "multisim": new_msid, "status": "RUNNING",
+                "submitted_at": datetime.datetime.now().isoformat(timespec="seconds"),
+            }
+            if origin:
+                entry["retry_of"] = origin
+                _retry_origin[new_bi] = origin
+                resubmitted_total += 1
+            ck["batches"].append(entry)
+            new_fut = pool.submit(_poll_single_batch, api, new_msid, pcfg, new_bi)
+            futures[new_fut] = new_bi
+            tag = f"连坐重发(源 {origin})" if origin else "即收即补"
+            print(f"[poll] round{round_idx} {tag}：batch{new_bi} multisim={new_msid} n={len(new_batch)}（槽位常满）")
+        except Exception as e:
+            slots_mod.release(_tok)
+            print(f"[poll] round{round_idx} 即收即补失败: {e}")
+            ck["batches"].append({"exprs": new_batch, "status": "SUBMIT_FAIL", "error": str(e)[:200],
+                                  **({"retry_of": origin} if origin else {})})
+        ckpt_save(ctx, ck, checkpoint_dir)
+        return True
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=n_slots) as pool:
+        # 初始提交所有 running 批次
         futures = {
             pool.submit(_poll_single_batch, api, msid, pcfg, bi): bi
             for bi, msid in running.items()
         }
-        for fut in concurrent.futures.as_completed(futures):
-            bi, status, detail = fut.result()
-            poll_results[bi] = (status, detail)
-            rec = _update_ck_batch(ck, bi, round_batches[bi-1], running[bi], status, detail, api)
-            if status == "COMPLETE":
-                print(f"[poll] round{round_idx} batch{bi} {running[bi]} COMPLETE alphas={len(rec.get('alphas', []))}")
-            elif status == "ERROR":
-                print(f"[poll] round{round_idx} batch{bi} {running[bi]} ERROR（{len(rec.get('errors', []))} 个子模拟错误）")
-            else:
-                print(f"[poll] round{round_idx} batch{bi} {running[bi]} -> {status}")
-            ckpt_save(ctx, ck, checkpoint_dir)
+        # 事件驱动：每完成一个 future 立即处理并补新批
+        while futures:
+            # 等待任意一个 future 完成（不等待全部）
+            done, _ = concurrent.futures.wait(
+                futures.keys(), return_when=concurrent.futures.FIRST_COMPLETED
+            )
+            for fut in done:
+                bi = futures.pop(fut)
+                status, detail = fut.result()[1], fut.result()[2]
+                poll_results[bi] = (status, detail)
+                slots_mod.release(_slot_tokens.pop(bi, None))   # terminal：释放账户级槽位
+                batch_exprs = _batch_by_bi.get(bi, [])
+                rec = _update_ck_batch(ck, bi, batch_exprs, running.get(bi, ""), status, detail, api)
+                if status == "COMPLETE":
+                    print(f"[poll] round{round_idx} batch{bi} {running.get(bi, '')} COMPLETE alphas={len(rec.get('alphas', []))}")
+                elif status == "ERROR":
+                    errs = rec.get("errors", [])
+                    n_bad = sum(1 for e in errs if e.get("status") in _CULPRIT_STATUSES)
+                    print(f"[poll] round{round_idx} batch{bi} {running.get(bi, '')} ERROR"
+                          f"（{n_bad} 个子模拟报错，{len(errs) - n_bad} 个连坐 CANCELLED）")
+                    # ---- 连坐隔离：定位坏式 → 回写 fail → 无辜兄弟重发一次 ----
+                    if isolate_errors and bi not in _retry_origin:
+                        culprits, survivors = _isolate_error_batch(batch_exprs, errs)
+                        if culprits:
+                            rec["isolated_culprits"] = culprits
+                            isolated_total += len(culprits)
+                            for c in culprits:
+                                print(f"[isolate] 坏式: {c['expr'][:90]} <- {c['error'][:80]}")
+                            _mark_culprits_in_db(ctx, ck.get("wave"), culprits)
+                            if survivors:
+                                _retry_queue.append((survivors, running.get(bi, "")))
+                                print(f"[isolate] {len(survivors)} 条无辜表达式排入重发队列（源 {running.get(bi, '')}）")
+                        else:
+                            print("[isolate] 无法从子模拟定位坏式（平台未回表达式），本批按整批失败处理，不重发")
+                    elif isolate_errors:
+                        print(f"[isolate] batch{bi} 是重发批（源 {_retry_origin[bi]}）再次 ERROR，不再重发")
+                else:
+                    print(f"[poll] round{round_idx} batch{bi} {running.get(bi, '')} -> {status}")
+                ckpt_save(ctx, ck, checkpoint_dir)
+
+                # 即收即补：槽位空出，立即补新批（重发批优先）
+                _refill(pool, futures)
 
     completed = sum(1 for s, _ in poll_results.values() if s == "COMPLETE")
     failed = sum(1 for s, _ in poll_results.values() if s in ("ERROR", "CANCELLED", "STALLED", "TIMEOUT"))
-    print(f"[round{round_idx}] 回收：COMPLETE={completed} FAIL={failed} 利用率={len(running)}/{n_slots}")
+    extra = f" 隔离坏式={isolated_total} 重发批={resubmitted_total}" if isolate_errors else ""
+    print(f"[round{round_idx}] 回收：COMPLETE={completed} FAIL={failed} 补新批={_next_bi - n_batches - 1}{extra}")
     return completed, failed, poll_results
 
 
 def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
-                      max_rounds=1, serial=False):
+                      max_rounds=1, serial=False, isolate_errors=True):
     """七槽填槽多轮即收即补：max_rounds 轮，每轮并行提交 N 批、统一轮询、空槽补新批。
     serial=True 时每轮仅提 1 批并等其 terminal（单批在飞纪律，防平台并发取消）。"""
     api = Api(); api.login(*load_credentials())
@@ -582,8 +791,10 @@ def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
         pending_batches = pending_batches[len(round_batches):]
         n_use = min(n_slots, len(round_batches))
 
+        # P0 优化：传入 pending_batches 引用，_run_round 内部即收即补
         completed, failed, _ = _run_round(
-            api, ctx, ck, round_batches, n_use, pcfg, checkpoint_dir, round_idx
+            api, ctx, ck, round_batches, n_use, pcfg, checkpoint_dir, round_idx,
+            pending_batches=pending_batches, isolate_errors=isolate_errors
         )
         total_completed += completed
         total_failed += failed
@@ -597,6 +808,23 @@ def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
     print(f"[slot] 多轮汇总：{round_idx} 轮，COMPLETE={total_completed} FAIL={total_failed} 总批={n_total}")
 
 
+
+def _submit_ready_list(d):
+    """取台账 submit_ready 的可追加列表。历史形态两种：list（pipeline 原生）与 dict
+    （select_ra_basket / 人工写入：{valid:[...], blocked:[...], updated, basket_mutual_corr}，
+    IND/MEA/DEU 实存）。dict 形态追加进 valid，缺 valid 则建；其它类型重建为 list。
+    2026-09-19 IND w182 首个候选落台账时 'dict' object has no attribute 'append' 实证。"""
+    sr = d.get("submit_ready")
+    if isinstance(sr, list):
+        return sr
+    if isinstance(sr, dict):
+        v = sr.get("valid")
+        if not isinstance(v, list):
+            v = sr["valid"] = []
+        return v
+    d["submit_ready"] = []
+    return d["submit_ready"]
+
 def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     if ck["stages"].get("review", {}).get("done"):
         print("[review] 已完成（checkpoint），跳过")
@@ -607,19 +835,64 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         return
     t = ctx.thresh("review")
     rows = metrics_cache.fetch_rows(ctx, alphas)
+    # 2026-09-17 优化：无候选时跳过 walls 诊断（对判死波次无价值）。
+    # 先快速检查是否有任何候选可能（max|sharpe| >= near 阈值），无则直接入库并返回。
+    _near_thresh = ctx.thresh("near")["sharpe_min"]
+    _has_potential = any(
+        r.get("sharpe") and abs(r["sharpe"]) >= _near_thresh for r in rows
+    )
+    if not _has_potential:
+        # 全灭波次：直接入库 backtest_results + wave_results，跳过 walls 诊断
+        st = _get_store(ctx)
+        try:
+            n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
+            print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}，全灭快速入库）")
+        finally:
+            st.close()
+        try:
+            from _lib.wave_results import WaveResultsStore
+            wr = WaveResultsStore(ctx.region)
+            ms_ids = [b.get("multisim") for b in ck.get("batches", []) if b.get("multisim")]
+            wr.auto_upsert_from_review(
+                ck["wave"], rows, [], [],
+                settings=ctx.settings, multisim_ids=ms_ids)
+        except (Exception, SystemExit) as e:
+            print(f"[wave_results] 自动入库异常（不阻断）: {e}")
+        try:
+            region_kb_mod.refresh_after_wave(
+                ctx, ck["wave"], rows, [], [], verdict="FAIL", dataset=ck.get("dataset"))
+        except (Exception, SystemExit) as e:
+            print(f"[region_kb] 刷新异常（不阻断）: {e}")
+        print(f"[review] total={len(rows)} candidates=0 near=0（全灭快速通道）")
+        ck["stages"]["review"] = {"done": True, "candidates": 0, "near": 0}
+        ckpt_save(ctx, ck, checkpoint_dir)
+        return
     # ---- 回测结果入 backtest_results（必须成功；库为唯一持久化）----
     st = _get_store(ctx)
     try:
-        n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows)
+        n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
         print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}）")
     finally:
         st.close()
     candidates = [r for r in rows if review_mod.passes(r, t)]
     near = []
+    t_near = ctx.thresh("near")
+    n_structural = 0
     for r in rows:
-        if r not in candidates and r.get("sharpe") and r["sharpe"] > ctx.thresh("near")["sharpe_min"]:
+        if r in candidates or not r.get("sharpe"):
+            continue
+        if r["sharpe"] > t_near["sharpe_min"]:
             r["walls"] = review_mod.walls(r, t)
+            # 2026-09-19：robust/limit 过低的"结构性死信号"不入 near（与 review_wave.is_near 同口径），
+            # 否则全灭波被记成 PARTIAL，停止规则 B 永不触发
+            if review_mod.structurally_dead(r, t_near):
+                r["walls"].append("ROBUST_STRUCTURAL")
+                n_structural += 1
+                continue
             near.append(r)
+    if n_structural:
+        print(f"[near] {n_structural} 条 sharpe 过线但 robust/limit < {t_near.get('robust_min_ratio', 0.5)}"
+              "（结构性死信号），不入 near 池")
     # ---- wave_results 自动入库（波次结论 + near 池，替代 review JSON 文件）----
     try:
         from _lib.wave_results import WaveResultsStore
@@ -639,12 +912,22 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         # except Exception 会让「不阻断」名不副实——2026-09-08 实测回测落库后
         # pipeline 静默死在这里，review checkpoint 不落、台账不写、下游全断。
         print(f"[wave_results] 自动入库异常（不阻断）: {e}")
+    # ---- region_kb 波后自动刷新（2026-09-15 ③）：recent_waves + gate_priors_local + updated_at ----
+    # 此前回路只写 wave_results，不回 KB：GBR 三波关闭后 region_kb.updated_at 仍停在 09-12，
+    # 下一波 S2 先验（assemble-priors 读 region_kb）与 S3 设置先验读到的都是旧知识。
+    try:
+        _verdict = "PASS" if candidates else ("PARTIAL" if near else "FAIL")
+        region_kb_mod.refresh_after_wave(
+            ctx, ck["wave"], rows, candidates, near,
+            verdict=_verdict, dataset=ck.get("dataset"))
+    except (Exception, SystemExit) as e:
+        print(f"[region_kb] 刷新异常（不阻断）: {e}")
     print(f"[review] total={len(rows)} candidates={len(candidates)} near={len(near)}")
     if write_ledger:
         store = make_ledger_store(ctx)
 
         def mut(d):
-            sr = d.setdefault("submit_ready", [])
+            sr = _submit_ready_list(d)
             for c in candidates:
                 if not any((x.get("id") if isinstance(x, dict) else x) == c["id"] for x in sr):
                     sr.append({"id": c["id"], "note": f"pipeline {ck['wave']} 全门槛过",
@@ -684,6 +967,15 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
 def main():
     ap = argparse.ArgumentParser(description="战役端到端编排器")
     add_campaign_arg(ap)
+    # 2026-09-12 修复（方案B）：--from-db / --no-from-db 提升为顶层全局参数。
+    # 根因：二者原是 run 子命令局部参数，argparse subparsers 只认"子命令之后"的
+    # 局部 flag —— 一旦被放到 run 之前（extra_args 误排 / 手写命令），顶层解析器
+    # 不认识即抛 unrecognized arguments，且 detached 模式下被吞成 success。
+    # 提升到顶层后，run 前后位置均合法；子命令侧用 SUPPRESS 避免默认值覆盖顶层。
+    ap.add_argument("--from-db", action="store_true", default=True,
+                    help="从数据库读取表达式（默认启用；顶层全局参数，run 前后均可）")
+    ap.add_argument("--no-from-db", action="store_true", default=False,
+                    help="禁用数据库模式，改用 --file（场景3 per-item settings 输入走此路）")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def _sub_campaign_arg(sp):
@@ -698,9 +990,13 @@ def main():
     p = sub.add_parser("run")
     _sub_campaign_arg(p)
     p.add_argument("--file", help="表达式文件路径（JSON 格式，已废弃，请使用 --from-db）")
-    p.add_argument("--from-db", action="store_true", default=True, help="从数据库读取表达式（默认启用）")
-    p.add_argument("--no-from-db", action="store_true",
-                   help="禁用数据库模式，改用 --file（场景3 per-item settings 输入走此路）")
+    # --from-db / --no-from-db 已提升为顶层参数（见上）。此处用 SUPPRESS 保留子命令
+    # 位置的兼容性（老命令 `run --from-db` 仍合法），SUPPRESS 使未显式传时不产出
+    # 属性、不覆盖顶层已解析的值；显式传时与顶层同 dest，正常生效。
+    p.add_argument("--from-db", action="store_true", default=argparse.SUPPRESS,
+                   help="从数据库读取表达式（默认启用；同顶层全局参数）")
+    p.add_argument("--no-from-db", action="store_true", default=argparse.SUPPRESS,
+                   help="禁用数据库模式，改用 --file（同顶层全局参数）")
     p.add_argument("--dataset", required=True)
     p.add_argument("--datasets", default="",
                    help="逗号分隔额外数据集，与 --dataset 合并白名单（跨金字塔 mix，与 gate.py --datasets 同语义）")
@@ -715,9 +1011,11 @@ def main():
     p.add_argument("--max-batches", type=int, default=99)
     p.add_argument("--max-rounds", type=int, default=1,
                    help="七槽填槽最大轮次（默认 1=单轮全提全收；>1 启用多轮即收即补）")
+    p.add_argument("--no-isolate-errors", action="store_true",
+                   help="关闭连坐隔离（默认开：ERROR 批解析坏式→回写 fail→无辜兄弟重发一次）")
     p.add_argument("--serial", action="store_true",
                    help="串行提交：一次只提 1 批，terminal 后再提下一批（单批在飞纪律，防多批并行被平台 CANCELLED）")
-    p.add_argument("--batch-type", default="explore", choices=["explore", "repair"],
+    p.add_argument("--batch-type", default="explore", choices=["explore", "repair", "probe"],
                    help="批次类型：explore=探索批（默认，受闸6 约束）；repair=修复/设置变体批（豁免）")
     p.add_argument("--skip-diversity-gate", action="store_true",
                    help="跳过闸6 批级多样性强制（逃生阀，需在台账记录原因）")
@@ -727,8 +1025,20 @@ def main():
     p.add_argument("--fresh", action="store_true")
     p.add_argument("--dry-run", action="store_true", help="不提交，仅走 gate+编排框架")
     p.add_argument("--checkpoint-dir", default=None, help="checkpoint 重定向（测试用临时目录）")
+    p.add_argument("--no-settings-prior", action="store_true",
+                   help="不按 region_kb.gate_priors 实测过闸率改写 decay/neutralization（默认启用；"
+                        "显式 --set/--neutralization 的维度本就不会被改）")
     a = ap.parse_args()
     ctx = CampaignContext(a.campaign_dir)
+    rc = _cmd_main(a, ctx)
+    if rc:
+        # 2026-09-15 ⑥：中止路径一律非零退出。此前所有 `return` 都是 rc=0，
+        # detached 启动器/节点只看退出码 → "启动成功"却什么都没跑（S2-COMPLIANCE 中止实证）。
+        sys.exit(rc)
+
+
+def _cmd_main(a, ctx):
+    """run/quota 主体；返回退出码（0=正常，2=中止/前置不满足）。"""
 
     if a.cmd == "quota":
         api = Api(); api.login(*load_credentials())
@@ -738,9 +1048,11 @@ def main():
             print(f"[dry-run] limit={qc['limit']}（REGULAR 日上限；SUPER 1/日由提交层单独把关）")
             print(f"[dry-run] ET 日={res['et_day']} 当日已提交={res['used']}")
         print(json.dumps(res, ensure_ascii=False, indent=1))
-        return
+        return 0
 
     ck = ckpt_load(ctx, a.wave, fresh=a.fresh, checkpoint_dir=a.checkpoint_dir)
+    if getattr(a, "dataset", None):
+        ck["dataset"] = a.dataset  # region_kb.recent_waves 需要数据集归属
     if a.neutralization:
         ctx.settings["neutralization"] = a.neutralization
         print(f"[neut] 覆盖 neutralization={a.neutralization}（本轮 wave={a.wave}）")
@@ -778,6 +1090,18 @@ def main():
                     ctx.settings[k] = v
         print(f"[set] 覆盖 settings.{k}={ctx.settings[k]!r}（本轮 wave={a.wave}）")
 
+    # ---- 设置层先验（2026-09-15 ①）：region_kb.gate_priors 的 decay/neutralization 实测过闸率 ----
+    # 此前这两个维度只被渲染成文本进 GEM prompt（LLM 改不了仿真设置），S3 永远用 settings.json
+    # 固定值。现按证据改写本轮设置；显式 --set / --neutralization 钉住的维度不动。
+    if not a.no_settings_prior:
+        _pinned = {kv.partition("=")[0] for kv in a.set if kv.partition("=")[0]}
+        if a.neutralization:
+            _pinned.add("neutralization")
+        try:
+            region_kb_mod.apply_settings_prior(ctx, pinned=_pinned, cfg=ctx.thresh("settings_prior"))
+        except Exception as _e:
+            print(f"[settings-prior] 异常（不阻断）: {_e}")
+
     # ---- L3 规则硬门 1：universe 杠杆判死校验（OPT-2 修复）----
     intended_uni = ctx.settings.get("universe")
     uni_ok, uni_msgs = rules_mod.check_universe_lever(ctx, intended_uni)
@@ -785,7 +1109,7 @@ def main():
         print(m)
     if not uni_ok and not a.force:
         print(f"[rules] universe={intended_uni} 命中判死规则，中止（--force 强行继续）")
-        return
+        return 2
 
     # ---- L3 规则硬门 2：settings 快照防呆（settings_wave_lock_v1）----
     # 启动时快照实际生效的 universe/neutralization 进 checkpoint，防外部并发改导致误跑
@@ -805,23 +1129,16 @@ def main():
                                    {"region": ctx.region, "universe": intended_uni}):
         print(f"[rules][strategy:{r['rule_id']}] {r.get('action', {}).get('message', '')}")
 
-    # ---- S2 合规硬闸：特征工程文档校验（2026-08-26 新增）----
-    # 防止跳过 brain-data-feature-engineering skill 直接手写候选池
-    # 2026-09-01 dry-run 豁免：dry-run 不提交不烧配额，目的就是检查编排，
-    # 缺合规记录时降级 WARN 继续展示计划，不要求 --force（force 语义是"强行烧配额"）。
+    # ---- S2 合规记录：仅提示，不再中止（2026-09-15 ⑥ 降级）----
+    # 2026-08-26 起这里是硬闸：没有 s2_compliance_w<wave>（特征工程文档路径）就 return，
+    # 且退出码 0。审计实证：它只检查"有条 ledger 指向一份文档"，不验内容；而文档本身是
+    # 确定性模板渲染（8 问框架），对表达式质量零贡献；Mode B 手工批还得 --force 绕过。
+    # 真正保障闸 2/3 的是 typed catalog（下方 stage_gate 缺目录会 FAIL），不是这条记录。
     s2_compliance_ok, s2_msg = _check_s2_compliance(ctx, a.wave)
-    if not s2_compliance_ok:
-        print(f"[S2-COMPLIANCE] {s2_msg}")
-        if a.dry_run:
-            print("[S2-COMPLIANCE] dry-run 模式：降级 WARN 继续（不提交、不烧配额；正式 run 仍需合规或 --force）")
-        else:
-            print("[S2-COMPLIANCE] 中止：必须先完成特征工程 skill 并记录文档路径")
-            print("[S2-COMPLIANCE] 逃生阀：--force 强行继续（需在台账记录原因）")
-            if not a.force:
-                return
-            print("[S2-COMPLIANCE] --force 已启用，强行继续（请确保已补录台账）")
+    if s2_compliance_ok:
+        print(f"[S2-COMPLIANCE] 记录存在: {s2_msg}")
     else:
-        print(f"[S2-COMPLIANCE] 通过: {s2_msg}")
+        print(f"[S2-COMPLIANCE] 无合规记录（仅提示，不阻断）: {s2_msg}")
 
     # 读取表达式（默认从数据库；--no-from-db + --file 仅兼容 per-item settings）
     if a.from_db and not a.no_from_db:
@@ -848,16 +1165,16 @@ def main():
                 print(f"[error] 数据库中没有找到 wave={a.wave} 的表达式")
                 print("[hint] 请先 GEM/build_wave --from-db 写入 expressions")
                 print("[hint] 也可用 mcp__wqb-db__list_wave_results 查现有 wave 编号")
-                return
+                return 2
         except Exception as e:
             print(f"[error] 从数据库读取失败: {e}")
             print("[hint] 请确保 data/wqb.db 可用（WQB_ROOT / WQB_DB_PATH）")
-            return
+            return 2
     else:
         print("[warning] 文件模式仅用于 per-item settings 兼容")
         if not a.file:
             print("[error] --no-from-db 需要 --file")
-            return
+            return 2
         exprs = read_expr_items(a.file)
     n_ov = sum(1 for it in exprs if item_settings(it))
     if n_ov:
@@ -873,22 +1190,24 @@ def main():
         checkpoint_dir=a.checkpoint_dir, datasets_extra=a.datasets)
     if not ok_batch:
         print("[gate] 批级闸未过，中止（--skip-diversity-gate 逃生，或补充多样性槽位后重跑）")
-        return
+        return 2
     if a.dry_run:
         batch_size = ctx.batch_size()
         n_batches = (len(passed) + batch_size - 1) // batch_size
         n_slots = min(7, n_batches)
         print(f"[dry-run] gate 过 {len(passed)} 式，将分 {n_batches} 批（batch={batch_size}，"
               f"七槽填槽 n_slots={n_slots}）；未提交。checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
-        return
+        return 0
     if not a.submit:
         print(f"[plan] gate 过 {len(passed)} 式；加 --submit 提交（七槽填槽 + 配额闸）")
-        return
+        return 0
     stage_submit_poll(ctx, ck, passed, a.max_batches, a.force, a.checkpoint_dir,
-                      max_rounds=a.max_rounds, serial=a.serial)
+                      max_rounds=a.max_rounds, serial=a.serial,
+                      isolate_errors=not getattr(a, "no_isolate_errors", False))
     if a.review:
         stage_review(ctx, ck, a.write_ledger, a.checkpoint_dir)
     print(f"[done] checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
+    return 0
 
 
 if __name__ == "__main__":

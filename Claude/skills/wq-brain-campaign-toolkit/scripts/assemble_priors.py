@@ -309,6 +309,20 @@ def assemble_priors_dict(ctx):
     }
     if gate_priors:
         payload["gate_priors"] = gate_priors
+        # 2026-09-15 ①分流：decay / neutralization 属仿真设置层，GEM prompt 只渲染
+        # operator-count / field-family（economic_priors.compact_priors_text）。设置层推荐
+        # 在此显式落成 settings_prior（只读快照），真正的改写发生在 pipeline.py run
+        # （_lib/region_kb.apply_settings_prior），显式 --set 钉住的维度不动。
+        try:
+            from _lib.region_kb import settings_prior_recommendations
+            recs = settings_prior_recommendations(ctx, ctx.thresh("settings_prior"))
+            if recs:
+                payload["settings_prior"] = {
+                    "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+                    "recommendations": recs,
+                }
+        except Exception:
+            pass
 
     # 2026-09-10 新增：skeleton_field_matrix（字段特性×算子原理 → 骨架有效性矩阵）。
     # GEM 的 economic_priors.compact_priors_text 已支持渲染该键（effective/dead/orthogonal_hints），

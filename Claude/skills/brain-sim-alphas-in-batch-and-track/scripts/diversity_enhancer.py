@@ -14,9 +14,7 @@ PROJECT_ROOT = SKILL_ROOT.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 try:
-    from wqb.expression.diversity_enhancer import (
-        analyze_diversity, enhance_expressions, DiversityMonitor
-    )
+    from wqb.expression.diversity_enhancer import analyze_diversity, enhance_expressions
     DIVERSITY_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] 多样性增强系统不可用: {e}")

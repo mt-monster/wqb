@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-15
 name: brain-data-feature-engineering
 description: "自动分析 BRAIN 数据集字段，为 alpha 创作生成特征工程思路。 输入：数据类别、延迟、区域参数；输出：含深度特征工程建议的 markdown 文档。 本 skill 基于数据集与字段信息自主分析，提出有意义的概念特征。"
 layer: L1
@@ -19,6 +19,14 @@ allowed-tools:
 
 
 
+
+
+> **2026-09-15 定位修正**：`scripts/feature_engineering.py`（`workflow_feature_engineering` 节点）是**确定性模板渲染**
+> （字段画像表 + 固定 8 问框架 + `rank(ts_mean({f},66))` 式模板），不调 LLM。它产出的 ideas 文档
+> **不再被 GEM 自动当作概念输入**（S1 ledger `source=feature_engineering_node/standalone*` 一律跳过注入，
+> 见 brain-make-some-gem ②）；本 skill 在流水线里的有效产物是 typed catalog、字段质量先验、前缀簇与
+> `s2_field_pool`（跨主体簇轮转采样，`builder_version=2`）。需要真正的"字段理解"请由 Agent 按本 SKILL 正文人工完成并写入
+> `s1_<ds>_d<delay>`（source 标 manual），GEM 才会注入。
 
 # BRAIN 数据特征工程工作流
 
@@ -82,6 +90,8 @@ allowed-tools:
 - **关键问题**：这些字段暗示了哪些关系？
 
 **B. 问题驱动的特征生成（内部过程）**
+
+> 概念分类学映射（dfe 8 问 ↔ GEM 概念位 ↔ hypothesis 12 类）见 [`wq-brain-ra-pipeline/references/concept-taxonomy-map.md`](../wq-brain-ra-pipeline/references/concept-taxonomy-map.md)。
 本 skill 向自己提出以下问题并生成特征概念：
 
 1. **"什么是不变的？"** → 寻找不变量

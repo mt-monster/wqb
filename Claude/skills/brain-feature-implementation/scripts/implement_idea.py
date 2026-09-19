@@ -101,7 +101,284 @@ def _common_prefix_len(a: str, b: str) -> int:
         i += 1
     return i
 
-def match_single_horizon_auto(df, template):
+
+# ---------------------------------------------------------------------------
+# 轻量语义 lint（P1a：落盘前拦截恒等式 / 裸字段 / 元数据腿；与 gate.py 闸0 同规则）
+# ---------------------------------------------------------------------------
+
+_METADATA_SUFFIX_RE = re.compile(
+    r"(periodend|periodtype|fyearend|periodnum|analyststart|"
+    r"curfperiod|curperiod|fiscalend|reportdate)",
+    re.IGNORECASE,
+)
+_NOOP_SECOND = {
+    "add": {0.0},
+    "subtract": {0.0},
+    "multiply": {0.0, 1.0},
+    "divide": {1.0},
+    "power": {0.0, 1.0},
+}
+_BARE_FIELD_RE = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
+_NONFIELD_TOKENS = {
+    "returns", "close", "open", "high", "low", "volume", "vwap",
+    "subindustry", "industry", "sector", "market", "country",
+}
+
+
+def _split_top_args(s: str) -> list:
+    """按顶层逗号切分函数参数（嵌套括号不切）。"""
+    args, depth, cur = [], 0, []
+    for ch in s:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            args.append("".join(cur).strip())
+            cur = []
+        else:
+            cur.append(ch)
+    tail = "".join(cur).strip()
+    if tail:
+        args.append(tail)
+    return args
+
+
+def _iter_fn_calls(expr: str):
+    """遍历表达式中所有 fn(...) 调用的 (fn_name, args_str)。"""
+    for m in re.finditer(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", expr):
+        fn = m.group(1)
+        depth = 1
+        i = m.end()
+        while i < len(expr) and depth > 0:
+            if expr[i] == "(":
+                depth += 1
+            elif expr[i] == ")":
+                depth -= 1
+            i += 1
+        yield fn, expr[m.end():i - 1]
+
+
+def _is_number(s: str):
+    try:
+        return float(s)
+    except (ValueError, TypeError):
+        return None
+
+
+def semantic_lint(expr: str, known_fields: set | None = None) -> list:
+    """生成端闸0：恒等式 / 裸字段 / 元数据腿。返回 issue 列表（空=通过）。"""
+    issues = []
+
+    if _BARE_FIELD_RE.match(expr.strip()):
+        token = expr.strip()
+        if token not in _NONFIELD_TOKENS:
+            issues.append(f"BARE_FIELD:{token}")
+
+    for fn, args_str in _iter_fn_calls(expr):
+        args = _split_top_args(args_str)
+        if len(args) < 2:
+            continue
+        if fn in ("subtract", "divide") and args[0] == args[1]:
+            issues.append(f"IDENTITY:{fn}({args[0]},{args[1]})")
+        elif fn in _NOOP_SECOND:
+            v = _is_number(args[1])
+            if v is not None and v in _NOOP_SECOND[fn]:
+                issues.append(f"NOOP:{fn}({args[0]},{args[1]})")
+
+    if known_fields:
+        for token in re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr):
+            if token in known_fields and _METADATA_SUFFIX_RE.search(token):
+                issues.append(f"META_FIELD:{token}")
+
+    return issues
+
+
+def _field_matches_family(profile: dict, family_match: dict, field_id: str | None = None) -> bool:
+    """判断单字段画像是否满足模板族的机制前提（mechanism_premise）/ field_profile_match 硬约束。
+
+    family_match 支持的键（全部为可选，缺省不约束）：
+      shape: [str, ...]          分布形状白名单（zero_inflated/point_mass/spread/ceiling/concentrated）
+      forbidden_shape: [str, ...] 分布形状黑名单（命中即拒，mechanism_premise 新增）
+      coverage_max: float        覆盖率上限（稀疏事件型用）
+      coverage_min: float        覆盖率下限（稠密连续型用）
+      integer: bool              是否离散字段（IntegerStatus）
+      freq: [str, ...]           更新频率白名单（monthly/quarterly/...）
+      data_type: [str, ...]      数据类型白名单（MATRIX/VECTOR）—— 由调用方按字段 type 注入 profile['data_type']
+      semantic_requirement: {field_name_pattern: [regex, ...]}  字段名语义正则（命中其一即通过；空=不约束）
+
+    family_match 可以是 field_profile_match 或 mechanism_premise（调用方择一传入）。
+    field_id 用于 semantic_requirement 的字段名正则匹配（无则不校验语义）。
+    """
+    if not family_match:
+        return True
+    if not profile:
+        # 无画像数据时不做硬过滤（降级为不约束），避免把无画像字段全排掉
+        return True
+
+    # 形状黑名单（mechanism_premise.forbidden_shape）：命中即拒，优先于白名单
+    forbidden = family_match.get("forbidden_shape")
+    if forbidden and (profile.get("shape") or "unknown") in forbidden:
+        return False
+
+    # shape_requirement 嵌套（mechanism_premise.shape_requirement）→ 展开合并到顶层判断
+    shape_req = family_match.get("shape_requirement") or {}
+    shapes = family_match.get("shape") or shape_req.get("shape")
+    if shapes:
+        if (profile.get("shape") or "unknown") not in shapes:
+            return False
+
+    cov = profile.get("coverage")
+    cov_max = family_match.get("coverage_max") or shape_req.get("coverage_max")
+    if cov_max is not None and cov is not None:
+        if float(cov) > float(cov_max):
+            return False
+    cov_min = family_match.get("coverage_min") or shape_req.get("coverage_min")
+    if cov_min is not None and cov is not None:
+        if float(cov) < float(cov_min):
+            return False
+
+    if "integer" in family_match or "integer" in shape_req:
+        want_int = bool(family_match.get("integer", shape_req.get("integer")))
+        if bool(profile.get("integer")) != want_int:
+            return False
+
+    freqs = family_match.get("freq") or shape_req.get("freq")
+    if freqs:
+        if (profile.get("freq") or "") not in freqs:
+            return False
+
+    dtypes = family_match.get("data_type")
+    if dtypes:
+        ftype = (profile.get("data_type") or profile.get("type") or "").upper()
+        if ftype and ftype not in [str(d).upper() for d in dtypes]:
+            return False
+
+    # 字段名语义正则（mechanism_premise.semantic_requirement.field_name_pattern）
+    sem = family_match.get("semantic_requirement") or {}
+    patterns = sem.get("field_name_pattern") or []
+    if patterns and field_id:
+        fid = str(field_id).lower()
+        if not any(re.search(p, fid, flags=re.IGNORECASE) for p in patterns):
+            return False
+
+    return True
+
+
+def filter_ids_by_family(ids, field_profile_map: dict | None, family_match: dict | None):
+    """按模板族机制前提过滤绑定池。返回 (kept_ids, dropped_count)。
+
+    field_profile_map: {field_id: profile}；family_match: 模板族的 field_profile_match 或 mechanism_premise。
+    任一缺省 → 不过滤（向后兼容）。
+    """
+    if not field_profile_map or not family_match:
+        return list(ids), 0
+    kept = [fid for fid in ids
+            if _field_matches_family(field_profile_map.get(fid) or {}, family_match, field_id=fid)]
+    return kept, len(ids) - len(kept)
+
+
+# ---------------------------------------------------------------------------
+# 孤字段多样性展开（2026-09-11）：单字段模板组合产出枯竭时，对该字段做
+# 「外层归一化 wrapper × 标准窗口」几何变体。这是骨架几何多样性（合规），
+# 不是权重扫描 / 混信号调参（违规）。只在单字段模板且产出 < ORPHAN_MIN 时触发。
+# ---------------------------------------------------------------------------
+
+# 外层归一化 wrapper（截面/时序/组内，几何含义各异）
+_ORPHAN_WRAPPERS = ("rank", "ts_zscore", "group_rank", "ts_rank")
+# 标准经济窗口（快 22 / 中 66 / 慢 252；1/5 过短噪声大不用于孤字段展开）
+_ORPHAN_WINDOWS = (22, 66, 252)
+# 组内 wrapper 默认分组轴（EUR win 实证 subindustry；industry 兜底）
+_ORPHAN_GROUP_AXES = ("subindustry", "industry")
+_ORPHAN_MIN = 3  # 组合产出少于此数才触发孤字段展开
+_ORPHAN_CAP = 12  # 孤字段展开变体上限（防过度膨胀）
+
+# 无语义字段黑名单（2026-09-11）：时间戳/日期/元数据/文本字段不触发孤字段展开。
+# 这些字段本身不是信号（“事件何时发生”≠“事件预示什么”），对它们做 wrapper×窗口
+# 展开只会量产无经济含义的表达式（rank(时间戳) 正是要避免的反模式）。
+_ORPHAN_NOSEMANTIC_RE = re.compile(
+    r"(_time|_time_utc|_utc|time$|date|timestamp|headline|situation|"
+    r"periodend|periodtype|fyearend|periodnum|reportdate|"
+    r"fiscalquarter|fiscalyear|calendarmonth|calendaryear|fullyearflag)",
+    re.IGNORECASE,
+)
+
+
+def _orphan_field_diversify(template: str, field_id: str, known_fields: set,
+                            lint_enabled: bool, cap: int = _ORPHAN_CAP,
+                            field_profile: dict | None = None) -> list:
+    """对孤字段做单字段几何变体展开。返回 [("orphan", expr), ...]。
+
+    策略：保留模板对字段的「读取方式」（VECTOR 字段的 vec_avg / ts_backfill 等
+    预处理），只替换最外层归一化 wrapper 与窗口。若模板本身已是复杂多算子形式，
+    则退化为对该字段施加标准 wrapper×窗口的基础几何变体（保证产出多样且合规）。
+    时间戳/日期/元数据/文本字段（无语义）直接返回空，不展开。
+
+    稀疏事件门控（2026-09-11，体检硬门 field_inspect_gate 对齐）：
+    - shape ∈ {zero_inflated, point_mass}（稀疏事件）→ 变体裹
+      trade_when(vec_count(field) > 0, <variant>, NaN)，防空窗稀释有效信息。
+    - coverage < 0.4（低覆盖）→ 字段读取层裹 ts_backfill(..., 66)，防 CONCENTRATED_WEIGHT。
+    画像缺失时不加门控（向后兼容）。
+    """
+    fid = str(field_id)
+    if _ORPHAN_NOSEMANTIC_RE.search(fid):
+        return []  # 无语义字段不展开
+    is_vector = "vec_" in template  # 模板用 vec_* 读取 → 字段为 VECTOR，变体保留 vec_avg
+
+    # 字段读取层：低覆盖补 ts_backfill（体检硬门：cov<0.4 必须含 ts_backfill）
+    profile = field_profile or {}
+    cov = profile.get("coverage")
+    shape = (profile.get("shape") or "").lower()
+    need_backfill = (cov is not None and float(cov) < 0.4)
+    need_trade_when = shape in ("zero_inflated", "point_mass")
+
+    if is_vector:
+        read_expr = f"vec_avg({fid})"
+    else:
+        read_expr = fid
+    if need_backfill:
+        read_expr = f"ts_backfill({read_expr}, 66)"
+    base = read_expr
+
+    variants: list[str] = []
+    for w in _ORPHAN_WRAPPERS:
+        for win in _ORPHAN_WINDOWS:
+            if w == "rank":
+                # 截面 rank 不需要窗口；用 ts_mean 给慢变量平滑
+                variants.append(f"rank(ts_mean({base}, {win}))")
+            elif w == "ts_zscore":
+                variants.append(f"ts_zscore({base}, {win})")
+            elif w == "ts_rank":
+                variants.append(f"ts_rank({base}, {win})")
+            elif w == "group_rank":
+                for g in _ORPHAN_GROUP_AXES:
+                    variants.append(f"group_rank(ts_mean({base}, {win}), {g})")
+
+    # 稀疏事件门控：zero_inflated/point_mass 裹 trade_when（体检硬门：稀疏事件必须 trade_when）
+    if need_trade_when:
+        gate = f"vec_count({fid}) > 0" if is_vector else f"({fid}) == ({fid})"
+        variants = [f"trade_when({gate}, {v}, NaN)" for v in variants]
+
+    results: list = []
+    seen = set()
+    for expr in variants:
+        if expr in seen:
+            continue
+        if lint_enabled:
+            issues = semantic_lint(expr, known_fields)
+            if issues:
+                continue
+        seen.add(expr)
+        results.append(("orphan", expr))
+        if len(results) >= cap:
+            break
+    return results
+
+
+def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bool = True,
+                              field_whitelist: set | None = None,
+                              field_profile_map: dict | None = None,
+                              family_match: dict | None = None):
     """Generate expressions from a template by matching each {variable} to dataset field ids.
 
     Previous behavior required all variables to share an identical "base prefix".
@@ -113,6 +390,7 @@ def match_single_horizon_auto(df, template):
     - For each primary candidate, pick the closest-looking candidates for other metrics
       (by common prefix length), but DO NOT require the same base.
     - Combine candidates (capped) and render expressions.
+    - 孤字段增强：单字段模板组合产出 < _ORPHAN_MIN 时，对该字段做 wrapper×窗口几何变体。
     """
 
     metrics = extract_keys_from_template(template)
@@ -124,11 +402,30 @@ def match_single_horizon_auto(df, template):
     primary = metrics[0]
 
     ids = df["id"].dropna().astype(str).tolist()
+    if field_whitelist:
+        before = len(ids)
+        ids = [fid for fid in ids if fid in field_whitelist]
+        print(f"[whitelist] 绑定池收窄: {before} -> {len(ids)} 字段", file=sys.stderr)
+        if not ids:
+            print("[whitelist] warn: 白名单与数据集字段零交集，本模板无候选", file=sys.stderr)
+            return []
 
-    # Build candidates per metric
+    # 字段画像硬约束（模板族 field_profile_match）：形状/覆盖/离散/频率分流。
+    # 默认不启用（无 profile/family 时不过滤），向后兼容。
+    if field_profile_map and family_match:
+        before = len(ids)
+        ids, dropped = filter_ids_by_family(ids, field_profile_map, family_match)
+        print(f"[family] 画像过滤: {before} -> {len(ids)} 字段（剔除 {dropped} 个画像不兼容）", file=sys.stderr)
+        if not ids:
+            print("[family] warn: 画像过滤后绑定池为空，本模板无候选", file=sys.stderr)
+            return []
+
+    # Build candidates per metric. Exact field-id match wins: that is the
+    # economic binding from a concept-first idea. Fuzzy suffix match is fallback.
     candidates_by_metric: dict[str, list[str]] = {}
     for m in metrics:
-        cands = [fid for fid in ids if _matches_metric(fid, m)]
+        exact = [fid for fid in ids if fid.lower() == str(m).lower()]
+        cands = exact if exact else [fid for fid in ids if _matches_metric(fid, m)]
         # de-dup while preserving order
         seen = set()
         uniq = []
@@ -144,12 +441,20 @@ def match_single_horizon_auto(df, template):
         if not candidates_by_metric.get(m):
             return []
 
-    MAX_PRIMARY_CANDIDATES = 30
-    MAX_SECONDARY_CHOICES = 8
-    MAX_EXPRESSIONS = 5000
+    # 2026-09-12：组合上限按占位符数量动态化。
+    # 单占位符模板无组合爆炸风险（每个主候选 1:1 产出），放宽主候选池提升产出量；
+    # 多占位符模板笛卡尔积为 primary × secondary^(n-1)，保持保守上限。
+    MAX_PRIMARY_CANDIDATES = 16 if len(metrics) == 1 else 8
+    MAX_SECONDARY_CHOICES = 3
+    MAX_EXPRESSIONS = max(1, int(max_expressions))
 
     results = []
     seen_expr = set()
+    known_fields = set(ids)
+    lint_stats: dict[str, int] = {}
+
+    def _bump(rule: str) -> None:
+        lint_stats[rule] = lint_stats.get(rule, 0) + 1
 
     primary_candidates = candidates_by_metric[primary][:MAX_PRIMARY_CANDIDATES]
     for primary_id in primary_candidates:
@@ -164,6 +469,10 @@ def match_single_horizon_auto(df, template):
         metric_order = metrics
         pools = [chosen_by_metric[m] for m in metric_order]
         for combo in itertools.product(*pools):
+            # 同一字段填入 2+ 占位符 → 构造上即退化（subtract(x,x)/divide(x,x) 温床），源头跳过
+            if len(set(combo)) < len(combo):
+                _bump("same_field_combo")
+                continue
             field_map = dict(zip(metric_order, combo))
             try:
                 expr = template.format(**field_map)
@@ -171,10 +480,52 @@ def match_single_horizon_auto(df, template):
                 continue
             if expr in seen_expr:
                 continue
+            if lint_enabled:
+                issues = semantic_lint(expr, known_fields)
+                if issues:
+                    for issue in issues:
+                        _bump(issue.split(":", 1)[0].lower())
+                    continue
             seen_expr.add(expr)
             results.append(("flex", expr))
             if len(results) >= MAX_EXPRESSIONS:
+                if lint_stats:
+                    print(f"[lint] blocked: {lint_stats}", file=sys.stderr)
                 return results
+
+    if lint_stats:
+        print(f"[lint] blocked: {lint_stats}", file=sys.stderr)
+
+    # 孤字段增强（2026-09-11）：单字段模板且组合产出枯竭时，对该字段做几何变体展开。
+    # 触发条件：① 模板只有 1 个占位符；② 该占位符只匹配 1 个字段（孤字段，无法组合）；
+    # ③ 组合产出 < _ORPHAN_MIN。满足则对字段做 wrapper×窗口变体，补足候选池。
+    if len(metrics) == 1 and len(results) < _ORPHAN_MIN:
+        sole_metric = metrics[0]
+        sole_cands = candidates_by_metric.get(sole_metric) or []
+        if len(sole_cands) == 1:
+            orphan_field = sole_cands[0]
+            # 传入该字段的体检画像（shape/coverage），供稀疏事件门控判定
+            orphan_profile = (field_profile_map or {}).get(orphan_field) or {}
+            before = len(results)
+            existing = {e for _, e in results}
+            for tag, expr in _orphan_field_diversify(
+                template, orphan_field, known_fields, lint_enabled,
+                field_profile=orphan_profile,
+            ):
+                if expr in existing:
+                    continue
+                if lint_enabled:
+                    issues = semantic_lint(expr, known_fields)
+                    if issues:
+                        continue
+                existing.add(expr)
+                results.append((tag, expr))
+                if len(results) >= MAX_EXPRESSIONS:
+                    break
+            added = len(results) - before
+            if added:
+                print(f"[orphan] 孤字段 '{orphan_field}' 几何变体展开: +{added} 条 "
+                      f"(wrapper×窗口, 组合产出仅 {before} 条)", file=sys.stderr)
 
     return results
 
@@ -187,12 +538,79 @@ def main():
         default="",
         help="Optional natural-language description of what this template represents.",
     )
-    
+    parser.add_argument(
+        "--max-expressions",
+        type=int,
+        default=24,
+        help="Cap combinatorial expansion per template (default 24). Exact field-id matches stay 1:1.",
+    )
+    parser.add_argument(
+        "--no-lint",
+        action="store_true",
+        help="Disable semantic lint (identity/bare-field/metadata-leg blocking). Lint is ON by default.",
+    )
+    parser.add_argument(
+        "--field-whitelist",
+        default=None,
+        help="Path to a JSON array of allowed field ids (S1 field_whitelist). "
+             "When provided, the binding pool is narrowed to these ids.",
+    )
+    parser.add_argument(
+        "--field-profile",
+        default=None,
+        help="Path to a JSON object mapping field_id -> profile (shape/coverage/integer/freq/...). "
+             "Used together with --family-match for profile-driven binding pool filtering.",
+    )
+    parser.add_argument(
+        "--family-match",
+        default=None,
+        help="Path to a JSON object of template-family field_profile_match conditions "
+             "(shape/coverage_max/coverage_min/integer/freq/data_type). "
+             "When provided with --field-profile, binding pool is filtered by profile.",
+    )
+
     args = parser.parse_args()
-    
+
+    whitelist_set = None
+    if args.field_whitelist:
+        try:
+            wl_raw = json.loads(Path(args.field_whitelist).read_text(encoding="utf-8"))
+            if isinstance(wl_raw, list):
+                whitelist_set = {str(x).strip() for x in wl_raw if str(x).strip()}
+                print(f"[whitelist] loaded {len(whitelist_set)} ids from {args.field_whitelist}", file=sys.stderr)
+        except Exception as exc:
+            print(f"[whitelist] warn: 读取失败，忽略白名单: {exc}", file=sys.stderr)
+            whitelist_set = None
+
+    field_profile_map = None
+    if args.field_profile:
+        try:
+            fp_raw = json.loads(Path(args.field_profile).read_text(encoding="utf-8"))
+            if isinstance(fp_raw, dict):
+                field_profile_map = fp_raw
+                print(f"[family] loaded {len(field_profile_map)} field profiles from {args.field_profile}", file=sys.stderr)
+        except Exception as exc:
+            print(f"[family] warn: 画像读取失败，忽略画像过滤: {exc}", file=sys.stderr)
+            field_profile_map = None
+
+    family_match = None
+    if args.family_match:
+        try:
+            fm_raw = json.loads(Path(args.family_match).read_text(encoding="utf-8"))
+            if isinstance(fm_raw, dict):
+                family_match = fm_raw
+                print(f"[family] loaded family_match: {list(fm_raw.keys())}", file=sys.stderr)
+        except Exception as exc:
+            print(f"[family] warn: family_match 读取失败，忽略: {exc}", file=sys.stderr)
+            family_match = None
+
     df, dataset_dir = load_data(args.dataset)
-    
-    results = match_single_horizon_auto(df, args.template)
+
+    results = match_single_horizon_auto(
+        df, args.template, max_expressions=args.max_expressions,
+        lint_enabled=not args.no_lint, field_whitelist=whitelist_set,
+        field_profile_map=field_profile_map, family_match=family_match,
+    )
         
     # Output
     expression_list = []

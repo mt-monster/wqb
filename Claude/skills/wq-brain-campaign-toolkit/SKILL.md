@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-15
 name: wq-brain-campaign-toolkit
 description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
 layer: L-TOOL
@@ -105,9 +105,9 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | scan_fields.py | typed catalog 字段扫描 | --dataset / --limit / --zero-comp | campaign-dir-contract |
 | score_datasets.py | 数据集评分 / 探针计划 / 三灯评分 | --probe-plan / --probe-score / --stage | probe-scoring-v2 |
 | gate.py | **8 闸 + 可选闸0**：闸1 语法(含算子元数)/闸2 白名单/闸3 类型/闸4 不可访问算子/闸5 毒模式/闸6 批级多样性/闸7 longCount(`--sanity-longcount`)/闸8 EVENT(`--sanity-event-type`)，+sha1 缓存（--fix 自动裹 vec_*） | --dataset / --file / --expr / --fix / --sanity-longcount / --sanity-event-type / --sanity-all / --gate0 | gate-rules |
-| build_wave.py | 选波后处理（去重/分桶/配给/near；**不生成**表达式，`--file` 来自 makeSomeGem）+ 多样性增强（默认开启） | --file / --wave / --size / --enhance-diversity always\|auto\|never | gate-rules |
-| pipeline.py | 端到端编排 + 配额闸 | run / quota；--submit / --dry-run | poll-and-quota |
-| review_wave.py | walls 诊断 + 台账回写 | --multisim / --alphas / --write-ledger | gate-rules |
+| build_wave.py | 选波后处理（去重/分桶/配给/near；**不生成**表达式，`--file` 来自 makeSomeGem）+ 多样性增强（默认开启）+ **选波权威化**（2026-09-12：picked 写 selected 的同一事务里，本波落选且仍为 gem/pending/enhanced 的行归档 superseded，dropped/selected/gated 与已回测行不碰；要重选同波先用 `mcp__wqb-db__set_expression_status` 改回 gem） | --file / --wave / --size / --enhance-diversity always\|auto\|never / --auto-coverage auto\|always\|never（never = 契约签发/注入/自愈三处全关） | gate-rules |
+| pipeline.py | 端到端编排 + 配额闸；**装载 settings 后按 `region_kb.gate_priors` 实测过闸率改写 decay/neutralization（settings prior，2026-09-15 ①）**；收批后自动刷新 `region_kb`（③）；中止路径 rc=2（⑥） | run / quota；--submit / --dry-run / --no-settings-prior；--set K=V 钉住维度 | poll-and-quota |
+| review_wave.py | walls 诊断 + 台账回写；`rn_sharpe ≤ review.rn_sharpe_min`（缺省 0）判 `RN_EXPOSURE` 墙、不进候选（⑦） | --multisim / --alphas / --write-ledger | gate-rules |
 | metrics_cache.py | 指标读穿缓存 | --multisim= / --refresh | poll-and-quota |
 | diversity_audit.py | 多样性审计（latest+history） | --no-ledger | ledger-schema |
 | diversity_extract.py | 单数据集多样性榨取（L1/L2/L3 三轮） | --dataset / --rounds / --size / --max-ppac | gate-rules |
@@ -117,8 +117,38 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | budget_planner.py | **预算规划器（#3）**：七槽填槽建议 + ET 日提交额度 + READY 候选提交排序 | --submit-plan / --json | — |
 | campaign_mutex.py | **多战役互斥（#7）**：波号 CAS 分配 / 槽位预算 TTL 仲裁 / 提交额度共享账本 | status / alloc-wave / take-slots / quota-reserve | — |
 | campaign.py ledger | 台账统一 CLI | keys/get/set/mark-dead/add-wave/set-verdict/submit-ready/backup | ledger-schema |
-| campaign.py registry | registry 实证层统一 CLI（幂等写+结构校验） | add-dead-end/add-win/upsert-campaign/add-orphan/list/get；--dry-run/--extra/@file.json | ledger-schema |
+| campaign.py registry | registry 实证层统一 CLI（幂等写+结构校验） | add-dead-end/add-win/upsert-campaign/add-orphan/list/get；--dry-run/--extra/@file.json。⚠ **必填参数**：`add-dead-end` 需 `--id --family --reason --rule`；`add-win` 需 `--id --what --key` —— 只给 `--extra @file.json` 会 argparse 报错（错误字段名在 extra 里也只当附加，不替代必填） | ledger-schema |
 | campaign.py wave | wave_results 台账统一 CLI（幂等写+一键导入） | upsert/import/get/list；--finding 可重复；--dry-run | ledger-schema |
+
+## 6.x S0 评分机制增强（2026-09-14，P0–P6）
+
+`score_datasets.py` 评分 = `(0.4·cov + crowd_penalty(ac) + 0.2·breadth + 0.1·valueScore + empirical_prior) × category_weight[0.9~1.15]`；分位分层 tier1≥P60 / tier2≥P30。**新参数默认 OFF/中性**（`empirical_weight=0.0`、饱和项需 `saturated_datasets` 台账才生效），无台账时行为与旧版逐条一致；区域经 `thresholds.json` 的 `dataset_health` 节 opt-in。canonical 默认见 `src/wqb/config.py` 的 `DATASET_HEALTH_SCORING`。
+
+| 项 | 机制 | 开关（dataset_health） | 数据源台账 |
+|---|---|---|---|
+| P0 经验强度先验 | `score()` 叠加 `empirical_prior`=`empirical_weight`·clamp(ceiling_ratio)，把目标从「干净+低拥挤」拉向「过闸概率」 | `empirical_weight`(0=关) / `empirical_prior_neutral` | `dataset_empirical_prior` |
+| P2 饱和再验证降级 | 命中集自动降 `excluded` 且不被保底带复活 | `saturation_demotion_enable` | `saturated_datasets` |
+| P3 universe 一致性守卫 | `s0_ranking`/`s0_whitelist`.universe ≠ `settings.universe` → `[WARN]`，提示重生成+白名单复核 | 常开 | 读 `settings.json`.universe |
+| P5 饱和拍平 model | `_region_saturated` 时 model 类 `category_weight` 封顶 1.0 | `flatten_model_when_saturated` | 由 `saturated_datasets` 非空推导 |
+| P6 calibrate token 去重 | `_expr_fields` 去重 + 剔除 group 变量关键字，根治甜区污染 | 常开（calibrate 内） | — |
+
+**信号分 vs 点塔分（P5 拆分）**：`s0_ranking.ranking[].score`=信号强度榜（哪个集能出好 alpha）；`pyramid_view`=点塔战略榜（哪个集点亮金字塔，pyr_value 驱动）。两榜语义分离：选集先看信号分定候选，再用点塔分排提交优先级，勿相加或混排。
+
+**新增台账键**（`make_ledger_store(ctx)` 读写，均 region-scoped）：
+
+- `dataset_empirical_prior` — calibrate 产出：`{region, gate_sharpe, updated, priors:{ds:{best_sharpe, ceiling_ratio, observations}}}`，`ceiling_ratio`=best_sharpe/gate_sharpe。
+- `saturated_datasets` — prod 饱和事实：`{datasets:{ds:{reason}}}`；score 据此降级，P5 据此拍平 model。
+- `seat_model`（campaign_intel `s0-select` 读）— `{seats:{ds:est_seats}, seats_per_dataset_default:2}`；同族高互相关只算 1 座位。
+- `s0_whitelist.candidates[].override`（P4）— 手工捞回自动判死/排除集时须写 `{reason, auto_tier, auto_excluded_by}`。
+
+## 6.y 接线修复落地（2026-09-15，审计 ①③⑥⑦）
+
+| 项 | 机制 | 开关 / 台账 |
+|---|---|---|
+| ① settings prior | `_lib/region_kb.py::apply_settings_prior`：读 `region_kb.gate_priors`（缺则 `gate_priors_local`）的 `by_decay` / `by_neutralization`，格子样本 ≥`min_n`(30) 且过闸率 ≥ 当前设置 ×`min_lift`(2.0) 才改写；显式 `--set`/`--neutralization` 钉住的维度不动。GEM prompt 只再渲染 operator-count / field-family（`economic_priors.py`），设置维度不进 prompt。 | `thresholds.json` `settings_prior{enabled,min_n,min_lift,dims}`；CLI `--no-settings-prior` |
+| ③ region_kb 波后刷新 | `stage_review` 写完 wave_results 后 `refresh_after_wave`：`recent_waves`（近 20 波）+ `gate_priors_local`（本地 backtest_results 重算 by_neutralization/op_count/field_family，无 decay）+ `updated_at`。定向 upsert，不整区重写。 | 常开（异常不阻断） |
+| ⑥ S2-COMPLIANCE 降级 | `s2_compliance_w<wave>` 缺失只打印 `[S2-COMPLIANCE] 无合规记录（仅提示，不阻断）`，不再 `--force`；`s2_compliance_mark.py` / `campaign.py s2-mark` 保留为可选标记。`pipeline.py` 全部中止路径 `sys.exit(2)`。 | — |
+| ⑦ rn 墙 / 停止规则 / verdict 枚举 | `review_wave.rn_exposure()` 进 `walls()`/`passes()`；停止规则由节点层 `campaign.py::_run_stop_rules_gate` 按 DB 判定（区 backtested≥100 且 passed=0；最近 3 closed 波全 FAIL），ledger `stop_rules_override{reason,until}` 放行；`mcp__wqb-db__upsert_wave_result` 归一/拒绝非枚举 verdict。 | `thresholds.review.rn_sharpe_min`；`thresholds.diversity.stop_rules{enabled,yield_min_backtests,consecutive_fail_waves}` |
 
 ## 7. 闸 7-8：数据质量预检（2026-08-25 落地）
 
@@ -130,6 +160,16 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | 闸 8 EVENT 类型 | 字段 `type==EVENT` 但表达式未使用 `ts_event_*` 算子 | FAIL（EVENT 字段禁 ts_* 通用时序算子，铁律） | `--sanity-event-type` |
 
 `--sanity-all` = 闸 7+8 全开；输出 JSON 新增 `sanity_gates` 字段。CW（持仓集中度）为回测后动态指标，**不进静态闸**，在步 7 评审与 KOR 等区域 profile 的 `cw_gate` 覆盖中处理。
+
+## 7.x fail-fast：失败性质判定（2026-09-13 落地）
+
+步 7 评审除 walls 诊断外，先判定**失败性质**再决定是否继续投入（机器实现 `_lib/rules.py::classify_failure`，接入 `recommend_next_wave`）：
+
+- **无效努力七信号**：Sharpe 卡 0.7–0.9 / PnL 后半段衰减 / 换变体无本质变化 / Fitness 始终不达标 / Sub-universe 反复失败 / Weight concentration 偏高 / 过线后 Similarity 爆表。**命中 ≥2 项 → 结构性，止损换方向**。
+- **可修复**：仅卡参数层墙（2Y/MARGIN/TVR/CW/FITNESS）→ 新增「可修复失败」推荐（priority 65），杠杆 = decay / neutralization / gate / 换历史位置表达。
+- **结构性**：命中远期衰减/变体不变/相似度墙，或信号太弱（`max_sharpe<1.0`）→ 富化既有「结构层重构」推荐，停止该家族。
+
+判据全文（含阈值表与反向纪律）见 [`docs/experience/fail_fast_rules.md`](docs/experience/fail_fast_rules.md)；规则条目 `failure_nature_classifier_v1` / `no_effort_seven_signals_v1` 在 `config/methodology_rules.json`。纪律：**AI/自动化只做研究效率（整理/统计/打标/复盘），不自动提交、不刷规则**。
 
 ## 8. 纪律
 1. **原子写**（tmp+os.replace）；台账一律走 `make_ledger_store(ctx)` 工厂（默认 SQLite 后端 `SqliteLedgerStore`，存 `data/wqb.db` 的 `ledger_kv` 表；旧 JSON 后端 `LedgerStore` 保留但已弃用）。双遍重放 + 幂等 mutation，禁止 record_*.py 式直改。
@@ -146,6 +186,26 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
    5. 弱探针最多 1 槽，且仅当本波尚无近闸字段。反模式：七槽同时打 7 个未证明信号的新数据集裸探针；七槽全纯 MODEL。
    6. 跨集 gate 白名单失败 → 合并 catalog 再过闸；仍失败则拆成慢腿批 + 快腿批同波对照，不停挖。
    `type=strategy` 规则会在 `build_wave`/`pipeline` 打印 `[rules][strategy:…]`。
+
+8. **新增/修改 workflow 节点 → 四处必须同步**（2026-09-18 固化）：
+   workflow 节点住在 `src/wqb/workflow/`，但**注册信息散在四处**，漏一处测试即红：
+
+   | # | 位置 | 要改什么 |
+   |---|---|---|
+   | ① | `src/wqb/workflow/registry.py` | `register()` 调用 + `NodeMeta`；**`required_params`/`optional_params` 必须与 `run()` 签名逐字一致**（唯一例外 `_context` / `dry_run`） |
+   | ② | `tests/unit/test_workflow.py` | `test_registry_lists_all_core_nodes` 的期望节点集合（加节点则加一条 + 注释写日期与阶段） |
+   | ③ | `tests/unit/test_skill_integrity.py` | `_DRY_RUN_CASES` 干跑用例表（参数须零副作用） |
+   | ④ | `Claude/skills/INDEX.md` | workflow 节点计数（`test_docs_consistency.py` 机械守护） |
+
+   **一次跑完全部检查**，不要"改一处跑一次测试"：
+   ```bash
+   python tools/audit_node_registration.py            # 列出四处全部缺口，退出码 1 = 有漂移
+   python tools/audit_node_registration.py --node X   # 新增节点后单节点自检
+   ```
+   干跑契约：节点必须「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，不 subprocess、
+   不写库、不建目录；干跑失败必须**带得出 `error`**（禁止 `success=False` + `error=None`）。
+   ★ 战例：`alpha_booster` 只做了 ①，②③ 漏同步 + NodeMeta 漏 `forum_refresh` → 3 个测试红；
+   `gem` 的 meta 漏 `batch_size` 同样被 ① 的签名比对逮到。
 
 ## 9. 台账落盘（单轨 DB 模式）
 

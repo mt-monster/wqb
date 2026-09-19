@@ -275,7 +275,7 @@ r2 = await client._request('GET', f'{client.base_url}/alphas/{aid}/submit')  # 2
   **方法**：新战役开打前，对 2–3 个候选区域各跑一次 §1.0 体检，比完倍率再定区域，不要凭习惯选区。
 - **ASI**：model110 经 mcp__wq-brain-http__get_datafields 取到 8 个 ASI 字段。
 - **GBR**（TOP700/D1, 2026-08-11 实测）：**唯一可用金矿 = predictive_starmine**（model 类别 1.9×, 94% 覆盖）。
-  成功案例 vRNk56mz: `add(0.5*rank(ts_delta(ts_backfill(ep_yield_pct_smest_fy1_3,66),66)), 0.5*rank(ts_delta(ts_backfill(ep_yield_pct_smest_fy1_3,66),22)))` → Sh1.80/菲1.20/2Y1.82 已 ACTIVE。
+  **成功案例 vRNk56mz**（⚠ 2026-08 历史配方，形态已废止）: `add(0.5*rank(ts_delta(ts_backfill(ep_yield_pct_smest_fy1_3,66),66)), 0.5*rank(ts_delta(ts_backfill(ep_yield_pct_smest_fy1_3,66),22)))` → Sh1.80/菲1.20/2Y1.82 已 ACTIVE。**该 `add(0.5*rank(..), 0.5*rank(..))` 加权混合自 2026-09-13「路线 A」起已被闸5 block，不得照抄**；可继承的只有「同字段多窗口时间平滑」意图——落地改用 `ts_decay_linear(ts_backfill(F,66), 66)` 单腿，或 `subtract(rank(短窗), rank(长窗))` 结构交互。
   **覆盖率 0% 死数据集（勿浪费配额）**：option1、macro27、earnings_sent_matrix、techindi_model、news81 —— GBR 根本不提供，不是字段问题。
   **结构性弱数据**：news18（71-97% 覆盖但 INDUSTRY 中性化下 Sharpe<0.7 被中和）、institutions6（100% 覆盖但 INDUSTRY 下信号消失）、insider_agg_matrix（turnover ~1.6 结构性爆炸）。
   **正交死结**：starmine fy1 系 2Y 全达标(1.7-1.9) 但互相关 0.82-1.0；fy2/ARM 主腿正交但 2Y 不达标(0.12-1.23)；唯一正交+2Y强的 returns 结构卡 CW。GBR 当期数据源凑不出 3 个正交达标因子——结论是数据源限制而非流程问题。

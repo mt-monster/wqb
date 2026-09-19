@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-08-22
+last_verified: 2026-09-11
 name: wq-brain-superalpha
 description: "通过 selection + combo 工作流（type=SUPER）构建并提交 WorldQuant BRAIN SuperAlpha。 触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 组合多个 alpha；或单区域需把 ≥10 个 REGULAR 组件合成一颗 SUPER alpha，并保持 prod_correlation < 0.7、 self_correlation < 0.7。覆盖 SUBINDUSTRY 杠杆、`(1 + 0 * (prod_correlation > 0))` no-op 门控、score = (0.7 - prod_correlation)、self_correlation < 0.55 硬闸、 `mcp__wq-brain-http__workflow_submit_alpha(confirm_submit=True, force=True)` 两次调用判定、以及 ≥10 颗 ACTIVE REGULAR 组件前置条件。"
 layer: L5
@@ -43,6 +43,15 @@ allowed-tools:
      不必发起模拟（省一个 sim 槽）。
    - 现状（2026-09-11 实测）：USA 133 / MEA 19 / IND 18 / KOR 13 / **EUR 7** / HKG 4 / GBR 4 /
      ASI 2 / GLB 1（ACTIVE REGULAR 计数）。**EUR 仅 7 颗，差 3 颗**，故当前无法组 EUR SA。
+   - **★ MEA 通道已关闭（2026-09-11 复测确认）**：`POST /simulations` 带 `region=MEA` 直接
+     **400** `{"settings":{"region":["Region MEA is not available."]}}`。既有 2 颗 MEA SA
+     （78jYpn0Z / 3qlYKAaO）是关闭前的存量，**不能再新增**——别在 MEA 上浪费探测。
+   - 各区实测瓶颈（2026-09-11，均零成本探测）：
+     * **USA**：SUBINDUSTRY 才过子宇宙闸（STATISTICAL 必挂 `LOW_SUB_UNIVERSE_SHARPE`），
+       但同 nu 同评分会撞克隆 KPGvRMg1 → SELF 0.93；decay 60 降到 0.83，decay 300 虽再降
+       SELF 却摧毁子宇宙（0.47）→ **decay 窗口双向挤压，无共同可行点**。
+     * **IND**：区域专属闸 `LOW_ROBUST_UNIVERSE_SHARPE`（IND 独有，其他区无此闸）。
+     * **KOR**：SELF 可用 decay≥300 解决，PROD 0.78 是成分池结构性地板。
    - KOR 历史教训：book 内大量 UNSUBMITTED 空壳草稿、**0 ACTIVE** → 必须先挖并提交 ≥10 颗
      REGULAR KOR 使其 ACTIVE，才能组 SA（现已达 13 颗且已组 2 颗 SA）。
 2. **描述长度与写入方式（实测 400 坑，2026-08-28）**：selection/combo 描述**各需 ≥100 英文字**。
@@ -95,6 +104,57 @@ combo:     1 - maxCorr
   - 换成 **SUBINDUSTRY** 后降到 **0.6944**（<0.7，过闸）。
 - 对**单颗 REGULAR alpha**，SUBINDUSTRY 无效（KOR 种子实测：prod-corr 几乎不变，且 sharpe/fitness 反而跌破 LOW 闸）。
   SUBINDUSTRY 只在 **SA 组合层面（10+ 去中心化成分）** 才降 prod-corr。
+
+## ★★ 篮宽与 decay 的交互（2026-09-11 USA 12 结构实测，优先于上表阅读）
+**篮宽（selectionLimit 相对有效池大小）决定双闸的走向，decay 的作用方向随之改变：**
+
+| 篮 | SELF | PROD | decay 效应 |
+|---|---|---|---|
+| **窄篮**（limit 10，远小于有效池） | **高**（USA 0.83–0.93） | 低（多在 SELF 失败后未揭露） | decay↑ → **SELF↓** |
+| **宽篮**（limit ≥ 有效池，如 1000） | **过闸 ✅** | **高**（USA 0.85–0.91） | decay↑ → **PROD↑**（3→0.85, 10→0.87, 60→0.91） |
+
+- **宽篮是解 SELF 的杠杆**：宽混合信号 ≠ book 中任何单颗 alpha（USA V8/V9/V11/V12 SELF 全过）。
+- **★ 修正旧规律**：早期「decay 越大双降」来自 **top-10 窄篮**实验（09-10 USA 7 档），
+  **不可迁移到宽篮**——宽篮下 decay 与 PROD 是**正相关**。
+  正确记法：**decay 对 SELF 恒为负向杠杆；对 PROD 的方向取决于篮宽（窄篮↓ / 宽篮↑）**。
+- **selectionLimit 超过有效池后无效**：USA limit 1000 与 50 指标逐位相同（sh3.06/fit3.62/to0.0783），
+  因为有效篮子由 `self_correlation < X` 门决定，调 limit 是空转。想改篮宽要改**门**，不是改 limit。
+
+## ★ PROD 已结构性饱和（2026-09-11 跨区实测）
+| 区域 | PROD 地板 | 结论 |
+|---|---|---|
+| USA | **0.85–0.91**（宽篮） | 存量池饱和，调参无解 |
+| KOR | **0.78** | 存量池饱和，调参无解 |
+- **统一出路：注入低 prod 新血 REGULAR**（prod<0.55 级别），把成分池的 prod 分布整体左移。
+  新血到位后，用「宽篮 + SUBINDUSTRY + 低 decay（3–10）」这套已过 SELF 的配置直接重提。
+
+## ★ decay 是压 SA「SELF 闸」的有效杠杆（2026-09-11 KOR 实测曲线，窄篮口径）
+同池同配方（仅改 decay，selection 评分 `(1.0-self_correlation)`，nu=SECTOR）：
+
+| decay | SELF_CORRELATION | sharpe | fitness | turnover |
+|---|---|---|---|---|
+| 12 | 0.8160 ❌ | 3.13 | 4.07 | 0.086 |
+| 40 | 0.7740 ❌ | 2.73 | 3.39 | 0.048 |
+| 100 | 0.7294 ❌ | 2.38 | 2.82 | 0.033 |
+| 200 | 0.7021 ❌ | 2.16 | 2.49 | 0.027 |
+| **300** | **过闸 ✅** | 2.07 | 2.36 | 0.026 |
+
+- decay 单调压 SELF（平滑信号→与 book 中高频成分去相关），指标同步下降但平滑可预期。
+- **用法**：SELF 差 0.05–0.12 时，按上表斜率先把 decay 拉到 200–300 试探；turnover 会向
+  LOW_TURNOVER 闸（SUPER 0.02）逼近，须同时盯。
+- **但 PROD 不吃这一套**：decay=300 时 PROD=0.7821、混合评分 `(1.0-self)*(1.0-prod)` decay=250
+  时 PROD=0.7832 —— **PROD 地板由成分池决定，与评分/decay 无关**。
+  快速探测成分池 prod 分布：selection 加硬门 `(prod_correlation < 0.6)`，若报
+  "At least 10 component alphas" 即说明合格成分不足 10 颗（KOR 13 颗实测如此）。
+
+## ★ SUPER 提交判定陷阱：GET /submit 200 可能是 PENDING 假阳性
+- `POST /submit` → 201 后，`GET /alphas/{id}/submit` 可能返回 **200** 但 SELF/PROD 仍是 PENDING
+  （平台未算完）——**这不是过闸**。KOR 实测：GET 200 后 10 分钟仍 UNSUBMITTED，二次 POST 才吐出
+  `SELF_CORRELATION 0.7021 FAIL`。
+- **正确判据**：二次 `POST /submit`，且校验四项 SUPER 专属闸
+  （`SELF_CORRELATION` / `PROD_CORRELATION` / `SUPER_SUBMISSION` / `NON_SELF_SUPER_ALPHA`）
+  **全部出值（非 PENDING）且 PASS** 才算过。`NON_SELF_SUPER_ALPHA` 就是「同策略 SA 自残」闸。
+- 被阻的 SUPER 提交同样**零配额成本**（status 保持 UNSUBMITTED、SUPER_SUBMISSION 不计数）。
 
 ## 零成本双闸探针（提交前必做）
 提交前用以下探针确认，零成本（不消耗配额）：

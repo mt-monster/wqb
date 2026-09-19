@@ -71,7 +71,12 @@ MCP 环境是否提供论坛写工具？
 
 **本 skill 的默认执行方式 = 全部走 MCP。** 只要涉及 BRAIN 平台或中文论坛，就必须调用 `wq-brain-http` 工具 — **没有**「先凭记忆/网页/静态语料凑合」的备选路径。
 
-> **环境适配（2026-08）**：当前 MCP 服务器为 `wq-brain-http`（服务名 `brain-platform-mcp`，工具前缀 `mcp__wq-brain-http__*`，**HTTP 端点 `http://localhost:8876/mcp`**，2026-08-17 实测可用）。论坛访问用此 8876 端点；备选 stdio 为 `wq-brain-stdio`（`python main.py` + `MCP_TRANSPORT=stdio`）。
+> **环境适配（2026-08）**：当前 MCP 服务器为 `wq-brain-http`（服务名 `brain-platform-mcp`，工具前缀 `mcp__wq-brain-http__*`，**HTTP 端点 `http://localhost:8876/mcp`**，2026-08-17 实测可用）。
+> **服务没起 = 论坛工具"不存在"（2026-09-13 排障结论）**：宿主连不上 8876 时，
+> `search_forum_posts`/`read_forum_post` 在工具表里完全搜不到，极易被误判为"未实现"。
+> 排查顺序：① `python tools/start_wq_mcp.py --check` → 未运行则去掉 `--check` 启动；
+> ② 确认服务端 `MCP_PORT=8876`（服务端默认 8000，与宿主配置不一致）；
+> ③ 仍不可用才按「MCP 不可用」流程报告。**重启宿主会话**后工具才会重新被发现。。论坛访问用此 8876 端点；备选 stdio 为 `wq-brain-stdio`（`python main.py` + `MCP_TRANSPORT=stdio`）。
 > wq-brain-http 只实现**只读**论坛工具（搜索 / 读帖 / 术语表 / 消息 / 活动），**未实现**发帖、跟评、
 > 点赞等写工具。执行时按下表映射；写工具不可用时**降级为只读浏览**并在 session_plan 记录，
 > 绝不改用浏览器或静态语料冒充。工具映射详见 [mcp-tools-and-search.md](references/mcp-tools-and-search.md)。

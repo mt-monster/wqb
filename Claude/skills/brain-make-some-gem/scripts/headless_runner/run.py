@@ -4,13 +4,17 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import uuid
 from pathlib import Path
 
-import pandas as pd
-import requests
+# 2026-09-12：pandas / requests 改为函数内延迟导入 —— `--detached` 快路径只需
+# stdlib 即可写出 meta.json 并 spawn child；模块级重 import 会把"启动握手"暴露在
+# 冷加载/AV 扫描耗时之下（本机 venv python 为两段式启动，实测出现过 20-30s+ 的
+# 启动 stall，直接把 30s 握手窗口吃穿 → 误报 "no meta.json within 30s"）。
+# pandas 使用点：_build_datafields_df；requests 使用点：_patched_call_moonshot。
 
 
 def _is_pid_running(pid: int | None) -> bool:
@@ -132,6 +136,22 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
     stderr_log = task_dir / "stderr.log"
     meta_file = task_dir / "meta.json"
 
+    # 优化：在 spawn 子进程之前先写入初始 meta.json，让外部能立即感知任务已创建
+    # 避免 30s 超时窗口内完全无反馈的静默期
+    initial_meta = {
+        "task_id": task_id,
+        "pid": None,  # 尚未 spawn，先标记为 None
+        "status": "initializing",
+        "started_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "mode": mode,
+        "command": cmd,
+        "cwd": str(cwd),
+        "stdout_log": str(stdout_log),
+        "stderr_log": str(stderr_log),
+    }
+    meta_file.write_text(json.dumps(initial_meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[GEM-INIT] task_dir created, meta.json initialized: {task_dir}")
+
     popen_kwargs: dict = {}
     if os.name == "nt":
         popen_kwargs["creationflags"] = (
@@ -160,6 +180,7 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
             **popen_kwargs,
         )
 
+    # 更新 meta.json：写入 pid 并将状态从 initializing 翻转为 running
     meta = {
         "task_id": task_id,
         "pid": proc.pid,
@@ -172,6 +193,7 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
         "stderr_log": str(stderr_log),
     }
     meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[GEM-LAUNCH] detached process spawned, pid={proc.pid}, meta.json updated")
     return proc.pid, task_dir
 
 
@@ -234,6 +256,8 @@ def _build_datafields_df(
     dataset_id: str | None,
     data_type: str | None = None,
 ):
+    import pandas as pd  # 延迟导入（见文件头注释）
+
     def _get_json(url: str, retries: int = 8, sleep_seconds: float = 2.0):
         for attempt in range(retries):
             resp = session.get(url)
@@ -407,7 +431,7 @@ def build_command(python_exe: str, pipeline_script: Path, args: argparse.Namespa
     if bool(args.no_operators_in_prompt):
         cmd.append("--no-operators-in-prompt")
 
-    if args.pipeline_mode and args.pipeline_mode != "single":
+    if args.pipeline_mode:
         cmd.extend(["--pipeline-mode", str(args.pipeline_mode)])
 
     if args.model_for_structure:
@@ -481,7 +505,10 @@ def main() -> int:
     parser.add_argument("--moonshot-base-url", default=None, help="Optional Moonshot base url")
     parser.add_argument("--moonshot-retries", type=int, default=None, help="Optional Moonshot retries")
     parser.add_argument("--moonshot-retry-backoff", type=float, default=None, help="Optional Moonshot retry backoff")
-    parser.add_argument("--pipeline-mode", default="single", choices=["single", "phased"], help="Pipeline mode: single (default) or phased")
+    parser.add_argument("--pipeline-mode", default=None, choices=["single", "phased", "skeleton"],
+                        help="Pipeline mode: single / phased / skeleton. Unset → config.json "
+                             "`pipeline_mode` → default 'phased' (2026-09-15: was 'single'; "
+                             "'skeleton' was not reachable from here at all).")
     parser.add_argument("--model-for-structure", default=None, help="Model for Phase 1 (structure parse)")
     parser.add_argument("--model-for-mapping", default=None, help="Model for Phase 2 (field mapping)")
     parser.add_argument("--model-for-report", default=None, help="Model for Phase 3 (report generation)")
@@ -507,6 +534,20 @@ def main() -> int:
 
     if args.priors_file and args.priors_from_db:
         parser.error("--priors-file 与 --priors-from-db 互斥，只能给一个")
+
+    # 2026-09-12（P1 观测性）：worker 存活宣告 + 心跳。
+    # meta 的 pid 是两段式启动的 wrapper（wrapper→real），这里补 worker 真身；
+    # 首行日志确保 detached 任务日志至少有"已启动"证据，杜绝零输出僵死盲区。
+    print(
+        f"[GEM-WORKER] started pid={os.getpid()} region={args.region} "
+        f"dataset={args.dataset_id} delay={args.delay}",
+        flush=True,
+    )
+    _update_meta_fields({
+        "worker_pid": os.getpid(),
+        "worker_started_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+    })
+    _start_heartbeat_thread()
 
     base_dir = here.parent
     tasks_dir = Path(args.tasks_dir)
@@ -558,8 +599,15 @@ def main() -> int:
         args.moonshot_model = str(cfg["moonshot_model"]).strip()
 
     # Load phase-specific config (Solution A+B+C+D)
-    if not args.pipeline_mode or args.pipeline_mode == "single":
-        args.pipeline_mode = str(cfg.get("pipeline_mode", "single")).strip()
+    # 2026-09-15 ②：CLI 显式值 > config.json `pipeline_mode` > 'phased'。
+    # 旧逻辑把未传与显式 single 混为一谈且缺省 single（一次性 LLM 直出表达式），
+    # 与 SKILL.md「phased 默认」不符，也是 quantile 多参/加权混合/幻觉字段反复被闸门
+    # 拦下的生成侧根因之一。
+    if not args.pipeline_mode:
+        args.pipeline_mode = str(cfg.get("pipeline_mode", "") or "").strip() or "phased"
+    if args.pipeline_mode not in ("single", "phased", "skeleton"):
+        print(f"ERROR: invalid pipeline_mode {args.pipeline_mode!r} (config.json?)")
+        return 2
     if not args.model_for_structure:
         args.model_for_structure = str(cfg.get("model_for_structure", "")).strip() or None
     if not args.model_for_mapping:
@@ -734,6 +782,8 @@ def main() -> int:
         rp.run_script = _patched_run_script
 
         def _patched_call_moonshot(api_key: str, model: str, system_prompt: str, user_prompt: str, timeout_s: int = 900):
+            import requests  # 延迟导入（见文件头注释）
+
             base_url = os.environ.get("MOONSHOT_BASE_URL", "https://api.moonshot.cn/v1")
             url = f"{base_url.rstrip('/')}/chat/completions"
             headers = {
@@ -891,12 +941,45 @@ def main() -> int:
         return 1
 
 
+_HEARTBEAT_STOP = threading.Event()
+
+
+def _update_meta_fields(updates: dict) -> None:
+    """就地更新 meta.json 字段（GEM_META_FILE 环境变量传入；无则静默跳过）。"""
+    meta_path = os.environ.get("GEM_META_FILE")
+    if not meta_path:
+        return
+    try:
+        with open(meta_path, encoding="utf-8") as f:
+            m = json.load(f)
+        m.update(updates)
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(m, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass  # 观测字段更新失败不影响主流程
+
+
+def _start_heartbeat_thread() -> None:
+    """worker 心跳线程：每 30s 刷新 meta.heartbeat_at（daemon，随进程退出消亡）。"""
+    if not os.environ.get("GEM_META_FILE"):
+        return
+
+    def _beat():
+        while not _HEARTBEAT_STOP.wait(30):
+            _update_meta_fields({"heartbeat_at": dt.datetime.now(dt.timezone.utc).isoformat()})
+
+    threading.Thread(target=_beat, daemon=True, name="gem-heartbeat").start()
+
+
 def _write_meta_status(status: str, error: str | None = None) -> None:
     """detached 子进程出口回写 meta.json 状态（GEM_META_FILE 环境变量传入）。
+
+    2026-09-12：先停心跳线程再写终态，避免终态被心跳的回写覆盖。
 
     修复假僵尸：detached 子进程正常退出后把 running 翻成 completed/failed，
     避免 meta 停留在 running 造成状态失真。非 detached 模式（无环境变量）静默跳过。
     """
+    _HEARTBEAT_STOP.set()  # 先停心跳线程，避免终态被并发回写覆盖
     meta_path = os.environ.get("GEM_META_FILE")
     if not meta_path:
         return

@@ -110,6 +110,13 @@ def category_weight(ds, h):
     if isinstance(cat, dict):
         cat = cat.get("id")
     raw = float(weights.get(cat, 1.0))
+    # P5（2026-09-14）：饱和区拍平 model 权重。model 类是「强信号但点塔价值低
+    # (pyr_value=0) 且最易被生产池近同款吸收」的方向；区域进入饱和态（_region_saturated，
+    # 由 saturated_datasets 台账驱动）时不再 ×1.15 助推，把排序交给 P0 经验强度项，
+    # 避免高覆盖饱和 model 集（EUR predictive_starmine/multi_horizon/model28）继续霸占 tier1。
+    if (h.get("_region_saturated") and str(cat).lower() == "model"
+            and h.get("flatten_model_when_saturated", True)):
+        raw = min(raw, 1.0)
     lo = float(h.get("category_weight_floor") or 0.9)
     hi = float(h.get("category_weight_cap") or 1.15)
     raw = max(raw, lo)
@@ -117,10 +124,42 @@ def category_weight(ds, h):
     return raw
 
 
-def score(ds, fc, h=None):
-    """连续评分：cov 0.4 + 低拥挤 0.3（P5 分段罚）+ 广度 0.2 + valueScore 0.1，再乘 category 加权（O8）。
+def empirical_prior(ds_id, emp, h):
+    """P0（2026-09-14）：数据集经验强度先验项 ∈ [0, w]。
+
+    来源 = ledger `dataset_empirical_prior.priors`（calibrate 写入）：该数据集历史回测的
+    「最佳 Sharpe / 区域 gate sharpe」天花板比 ceiling_ratio∈[0,1]。把评分目标从
+    「数据干净 + 低拥挤」拉向「能过闸的概率」——根治 EUR 的目标错配：唯一真信号
+    continuation_score 靠高覆盖进 tier1 后被生产池饱和归零，而冷/正交的 other296
+    （补偿三件套的理想画像）实测天花板仅 S0.79 仍被选中打磨。
+
+    默认关闭（empirical_weight=0.0）→ 各区域行为与旧版逐条一致；区域在
+    thresholds.json dataset_health 显式 opt-in（EUR=0.4）。无历史 → 中性值
+    empirical_prior_neutral（不奖不罚处女地，EUR 取 0.45 轻度折价，依据本区
+    calibrate 实证「ac<50 零竞争多是伪白空间」）。
+    """
+    w = float(h.get("empirical_weight", 0.0) or 0.0)
+    if w <= 0:
+        return 0.0
+    neutral = float(h.get("empirical_prior_neutral", 0.5))
+    rec = (emp or {}).get(ds_id)
+    if not isinstance(rec, dict):
+        return w * neutral
+    ratio = rec.get("ceiling_ratio")
+    if ratio is None:
+        bs = rec.get("best_sharpe")
+        gate = float(h.get("_gate_sharpe", 1.58) or 1.58)
+        ratio = (bs / gate) if isinstance(bs, (int, float)) and gate > 0 else None
+    if ratio is None:
+        return w * neutral
+    return w * max(0.0, min(1.0, float(ratio)))
+
+
+def score(ds, fc, h=None, emp=None):
+    """连续评分：cov 0.4 + 低拥挤 0.3（P5 分段罚）+ 广度 0.2 + valueScore 0.1
+    + 经验强度先验（P0，opt-in），再乘 category 加权（O8）。
     alphaCount 拥挤度只在 score 里软罚（P1）；tier 硬闸见 tier_threshold/assign_quantile_tiers。
-    h 为 dataset_health 配置（None 时全默认，行为与旧版一致）。"""
+    h 为 dataset_health 配置（None 时全默认，行为与旧版一致）；emp 为 dataset_empirical_prior.priors。"""
     h = h or {}
     cov = ds.get("coverage") or 0
     ac = ds.get("alphaCount") or 0
@@ -129,7 +168,8 @@ def score(ds, fc, h=None):
     base = (0.40 * cov
             + crowd_penalty(ac, h)
             + 0.20 * breadth
-            + 0.10 * (min(vs, 10) / 10.0 if vs is not None else 0.5))  # 缺失取中性 0.5
+            + 0.10 * (min(vs, 10) / 10.0 if vs is not None else 0.5)  # 缺失取中性 0.5
+            + empirical_prior(ds.get("id"), emp, h))  # P0：经验强度先验（默认 0）
     return base * category_weight(ds, h)
 
 
@@ -175,8 +215,8 @@ def crowd_band(r, h):
 def apply_floor_tiers(rows, h):
     """O2/O4/O6 保底带统一接线（quantile/threshold 两法共用）：只升不降，附 tier_note 溯源。"""
     for r in rows:
-        if r.get("tier") != "excluded":
-            continue
+        if r.get("tier") != "excluded" or r.get("saturated"):
+            continue  # P2：prod 饱和降级项不得被保底带复活（saturation_demotion 优先）
         if not r.get("hard_excluded") and backfill_band(r, h):
             r["tier"], r["tier_note"] = "tier2", "backfill_band"
         elif not r.get("hard_excluded") and crowd_band(r, h):
@@ -284,13 +324,114 @@ def apply_pyramid_exclusion(rows, h, region, delay):
     return n
 
 
+def apply_saturation_demotion(rows, saturated, h):
+    """P2（2026-09-14）：prod 饱和再验证触发器。命中 saturated_datasets 台账的数据集
+    降 excluded（附 tier_note=saturated + saturated=True 防保底带复活）。
+
+    背景：EUR continuation_score 一族曾是 tier1 富矿，但竞争者提交近同款后我方候选
+    连带被生产池封锁（le8Y68K2 一夜 prod 0.6929→0.9932，全族归零）。静态评分看不见
+    这种「昨天还能打、今天已饱和」的动态，只能靠台账把最新饱和事实喂回 S0 选集。
+    须在 apply_floor_tiers 之前执行（saturation 优先于保底带）。
+    saturated 结构：{dataset_id: {reason,prod_corr,updated,...}} 或 {dataset_id: true}。
+    无台账（saturated 为空）时零影响 → 各区域行为与旧版一致。
+    """
+    if not saturated or not h.get("saturation_demotion_enable", True):
+        return 0
+    n = 0
+    for r in rows:
+        did = r.get("id")
+        if did not in saturated:
+            continue
+        rec = saturated.get(did)
+        r["saturated"] = True  # 打标以便审计（即便已 excluded）
+        if r.get("tier") == "excluded":
+            continue
+        r["tier"] = "excluded"
+        note = "saturated"
+        if isinstance(rec, dict) and rec.get("reason"):
+            note = "saturated:%s" % str(rec["reason"])[:40]
+        r["tier_note"] = note
+        n += 1
+    return n
+
+
+def _check_universe_consistency(ctx, ledger):
+    """P3（2026-09-14）：universe 一致性守卫（非致命，仅 stderr 告警）。
+
+    score 在 ctx.settings.universe 下取数生成 s0_ranking；但台账里可能残留旧 universe
+    的排名/白名单。EUR 实测漂移：s0_ranking 于 TOP2500 生成（generated 2026-09-14 早），
+    settings/白名单/实跑当日切到 TOPCS1600 —— 同一数据集的 coverage/alphaCount 跨 universe
+    取值不同，分位线与硬闸判据全部错位，拿旧排名做白名单即失去可比性。这里交叉核对
+    「当前 settings.universe」vs「台账 s0_ranking / s0_whitelist 锁定的 universe」，不一致即告警。
+    返回 True=一致（无台账也算一致）；False=检出漂移。
+    """
+    cur = str(ctx.settings.get("universe") or "").strip().upper()
+    if not cur:
+        return True
+    ok = True
+
+    # ---- s0_ranking：顶层 universe（10 区实测统一，零漂移）----
+    rec = ledger.get("s0_ranking")
+    if isinstance(rec, dict):
+        u = str(rec.get("universe") or "").strip().upper()
+        if u and u != cur:
+            print("[WARN] universe 不一致：当前 settings=%s，但 %s(%s) 锁定 %s —— "
+                  "coverage/alphaCount 跨 universe 不可比，分位线与硬闸判据会错位。"
+                  "本次 score 会以 %s 重生成排名覆盖旧值；白名单需据新 universe 复核重建。"
+                  % (cur, "台账排名", "s0_ranking", u, cur), file=sys.stderr)
+            ok = False
+
+    # ---- s0_whitelist：走容错归一（2026-09-17 P0-4）----
+    # 旧实现读 `rec.get("universe") or (rec.get("settings") or {}).get("universe")`，
+    # 实测 DEU/JPN/MEA/USA/GLB 的白名单**未记录 universe** → `if u and u != cur`
+    # 短路 → 守卫在这些区**静默跳过**（而 JPN 恰是双 universe 档 TOP1600/TOP1200，
+    # 最需要这道守卫）。现在：解析不到 universe 时输出 WARN，不再假装"一致"。
+    wl_raw = ledger.get("s0_whitelist")
+    try:
+        _root = None
+        try:
+            from _lib.region_gates import resolve_workspace_root
+            _root = resolve_workspace_root(getattr(ctx, "dir", None))
+        except Exception:
+            _root = None
+        _src = os.path.join(_root, "src") if _root else None
+        if _src and os.path.isdir(os.path.join(_src, "wqb")) and _src not in sys.path:
+            sys.path.insert(0, _src)
+        from wqb.ledger_whitelist import normalize as _norm_wl
+        wl = _norm_wl(wl_raw)
+    except Exception as e:
+        print(f"[WARN] s0_whitelist 归一不可用（{type(e).__name__}: {e}）——"
+              f"universe 漂移无法核对白名单侧", file=sys.stderr)
+        return ok
+
+    u = str(wl.get("universe") or "").strip().upper()
+    if not u:
+        print(f"[WARN] s0_whitelist 未记录 universe（schema={wl.get('schema')}）——"
+              f"无法核对白名单是否锁定在当前 settings.universe={cur} 下，"
+              f"P3 守卫对该区**不生效**；请把 universe 写进白名单台账。", file=sys.stderr)
+        return ok
+    if u != cur:
+        print("[WARN] universe 不一致：当前 settings=%s，但 %s(%s) 锁定 %s —— "
+              "coverage/alphaCount 跨 universe 不可比，分位线与硬闸判据会错位。"
+              "本次 score 会以 %s 重生成排名覆盖旧值；白名单需据新 universe 复核重建。"
+              % (cur, "白名单", "s0_whitelist", u, cur), file=sys.stderr)
+        ok = False
+    return ok
+
+
 def cmd_score(ctx):
     e, pw = load_credentials()
     api = Api(); api.login(e, pw)
     dss = fetch_all_datasets(api, ctx.settings)
     ledger = make_ledger_store(ctx).load()
     dead = {k[:-5] for k in ledger if k.endswith("_dead")}
-    h = ctx.thresh("dataset_health")
+    h = dict(ctx.thresh("dataset_health"))  # 复制：下面注入运行时派生键，勿污染 ctx.thresholds
+    # P2/P0/P3/P5（2026-09-14）：从台账加载运行时上下文（皆缺省安全 → 无台账时与旧版一致）
+    saturated = (ledger.get("saturated_datasets") or {}).get("datasets") or {}
+    emp = (ledger.get("dataset_empirical_prior") or {}).get("priors") or {}
+    _check_universe_consistency(ctx, ledger)  # P3：universe 漂移告警（非致命）
+    h["_gate_sharpe"] = float((ctx.thresh("review") or {}).get("sharpe_min", 1.58) or 1.58)
+    h["_region_saturated"] = bool(saturated)  # P5：区域饱和态 → 拍平 model 权重
     mode = h.get("mode", "general")            # P1：general|ppa
     method = h.get("tier_method", "quantile")  # P2：quantile|threshold
     _region_lc = str(ctx.region).lower()
@@ -301,7 +442,7 @@ def cmd_score(ctx):
         cov = ds.get("coverage") or 0
         fc, fc_src = usable_fields(ctx, did, ds.get("fieldCount") or 0)  # P3
         rows.append({
-            "id": did, "score": round(score(ds, fc, h), 4),
+            "id": did, "score": round(score(ds, fc, h, emp), 4),  # P0：emp 经验强度先验
             "coverage": ds.get("coverage"), "fieldCount": ds.get("fieldCount"),
             "usableFieldCount": fc, "fieldCount_src": fc_src,
             "alphaCount": ds.get("alphaCount"), "userCount": ds.get("userCount"),
@@ -330,6 +471,7 @@ def cmd_score(ctx):
                      + (f" & alphaCount<={h.get('tier2_alpha_count_max',200)}" if mode == "ppa" else "")
                      + f"；mode={mode}")
     apply_pyramid_exclusion(rows, h, ctx.region, ctx.settings.get("delay", 1))  # O9：指定 pyramid 排除（保底带前执行防复活）
+    n_sat = apply_saturation_demotion(rows, saturated, h)  # P2：prod 饱和再验证（保底带前执行防复活）
     apply_floor_tiers(rows, h)  # O2/O4 保底带（两法共用，只升不降）——须在写盘/统计前
     n_quota = apply_pyramid_quota(rows, h)
     n_pyx = sum(1 for r in rows if r.get("tier_note") == "excluded_pyramid")
@@ -346,8 +488,15 @@ def cmd_score(ctx):
         "total": len(rows), "dead_excluded": len(dead),
         "mode": mode, "tier_method": method,
         "excluded_pyramids": h.get("excluded_pyramids") or [],
+        "empirical_weight": float(h.get("empirical_weight", 0.0) or 0.0),  # P0
+        "region_saturated": bool(saturated),                              # P5/P2
+        "saturated_demoted": n_sat,                                       # P2
         "score_formula": ("0.4*cov + crowd_penalty(alphaCount)[分段: <=50→0.30, 500→0.15, >=5000→0.02] "
-                          "+ 0.2*min(log1p(fc)/log1p(1000),1) + 0.1*valueScore/10"),
+                          "+ 0.2*min(log1p(fc)/log1p(1000),1) + 0.1*valueScore/10"
+                          + (f" + {h.get('empirical_weight')}*empirical_prior[天花板比 best/gate]"
+                             if float(h.get("empirical_weight", 0.0) or 0.0) > 0 else "")
+                          + ") × category_weight[0.9~1.15]"
+                          + ("（P5 饱和区 model 拍平<=1.0）" if bool(saturated) else "")),
         "tier_rule": tier_rule + ("；保底带（O2/O4/O6，tier_note 溯源）：backfill_band(0.65<=cov<0.85 "
                                    "& alphaCount<=50 & valueScore>=6)→tier2[生成须 ts_backfill(66/120)]；"
                                    "probe_exception(cov>=0.9 & alphaCount==0 & valueScore>=6 & 字段<硬地板)→"
@@ -363,7 +512,8 @@ def cmd_score(ctx):
     n_band = sum(1 for r in rows if r.get("tier_note"))
     print(f"datasets={len(rows)} alive_ranked={len(alive)} (tier1={n1} tier2={n2} floor_band={n_band}"
           f"{f' pyramid_quota={n_quota}' if n_quota else ''}"
-          f"{f' pyramid_excluded={n_pyx}' if n_pyx else ''}) "
+          f"{f' pyramid_excluded={n_pyx}' if n_pyx else ''}"
+          f"{f' saturated_demoted={n_sat}' if n_sat else ''}) "
           f"dead_skipped={len(dead)} mode={mode} method={method}")
     print(f"{'rank':>4} {'score':>7} {'tier':>5}  {'id':28s} cov/fields/alphas")
     for i, r in enumerate(alive[:20], 1):
@@ -521,11 +671,35 @@ _OPS_TOKENS = {
     "and", "or", "not", "ts_arg_max", "hump", "last_diff_value",
 }
 
+# P6（2026-09-14）：分组/中性化变量关键字（group_neutralize/group_rank 的第二参）。
+# 它们不是 datafield，但会在本区 catalog 中唯一属于某 dataset（如 subindustry/industry/sector
+# → pv1），若当字段参与投票会把 alpha 误归到该 dataset（EUR pv1 甜区污染根因）。
+_GROUP_VAR_TOKENS = frozenset({
+    "subindustry", "industry", "sector", "market", "country", "none",
+    "statistical", "fast", "slow", "crowding", "reversion_and_momentum",
+    "slow_and_fast", "bucket", "range", "neutralization", "delay",
+})
+
 
 def _expr_fields(expr):
-    """从 alpha 表达式提取字段 token（剔除算子与纯数字）。"""
-    return [t for t in re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr or "")
-            if t not in _OPS_TOKENS and not t.replace("_", "").isdigit()]
+    """从 alpha 表达式提取字段 token（剔除算子、分组变量关键字与纯数字，并去重）。
+
+    P6（2026-09-14）：去重 + 剔除 group 变量关键字。根因：原实现返回**未去重**的 token
+    列表，且 group_neutralize(x, subindustry) 里的 `subindustry` 被当成字段参与投票。
+    EUR _sweet_spot_audit 记录的 pv1 污染 bug（Xgojww1X 两次用 subindustry → 误归 pv1 →
+    甜区上限被 pv1 ac=340680 污染）即此缺陷。去重后同字段重复出现只投一票，分组关键字
+    不再参与 dataset 反查，甜区/category 权重校准恢复干净。
+    """
+    seen, seen_set = [], set()
+    for t in re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr or ""):
+        if t in _OPS_TOKENS or t.replace("_", "").isdigit():
+            continue
+        tl = t.lower()
+        if tl in _GROUP_VAR_TOKENS or tl in seen_set:
+            continue
+        seen_set.add(tl)
+        seen.append(t)
+    return seen
 
 
 def _infer_alpha_dataset(expr, field2ds, valid_ds):
@@ -814,6 +988,29 @@ def _calibrate_dataset_health_inner(ctx, strong_bar, weak_bar, dry_run, deadline
                               f"{len(alpha_store_sh)} ds + results/ 扫描 → 共 {len(ds_best)} datasets 实测")
     atomic_write(th_path, th)
     _clog("thresholds.json 已写回", t0)
+    # P0（2026-09-14）：per-dataset 实测天花板写 ledger dataset_empirical_prior，供下次
+    # cmd_score 的经验强度先验项消费（把 S0 选集目标从「数据干净」拉向「能过闸概率」）。
+    # 只在非 dry-run 且校准成功时写（与 thresholds 同生命周期）；写失败不致命（score 侧取中性）。
+    gate = float((ctx.thresh("review") or {}).get("sharpe_min", 1.58) or 1.58)
+    prior = {}
+    for ds_id, cur in ds_best.items():
+        bs = cur.get("best_sh")
+        if not isinstance(bs, (int, float)):
+            continue
+        prior[ds_id] = {
+            "best_sharpe": round(float(bs), 4),
+            "ceiling_ratio": round(max(0.0, min(1.0, float(bs) / gate)), 4) if gate > 0 else None,
+            "observations": len(alpha_store_sh.get(ds_id, [])) or None,
+        }
+    if prior:
+        try:
+            make_ledger_store(ctx).set_key("dataset_empirical_prior", {
+                "region": ctx.region, "gate_sharpe": gate,
+                "updated": datetime.datetime.now().isoformat(timespec="seconds"),
+                "priors": prior})
+            _clog("dataset_empirical_prior 已写 ledger：%d datasets" % len(prior), t0)
+        except Exception as e2:
+            _clog("dataset_empirical_prior 写入失败(%s)" % e2, t0)
     return report
 
 

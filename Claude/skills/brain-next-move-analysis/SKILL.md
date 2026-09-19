@@ -31,7 +31,7 @@ allowed-tools:
 ## 1. 平台更新
 - **消息**：检查 `mcp__wq-brain-http__get_messages` 获取公告。
 - **排行榜**：检查 `mcp__wq-brain-http__get_leaderboard` 获取排名变化。
-- **多样性**：检查 `mcp__wq-brain-http__value_factor_trendScore` 获取多样性趋势。
+- **多样性**：检查 `mcp__wq-brain-http__value_factor_trendScore` 获取多样性趋势（注册名含大写 S——2026-09-12 曾误"改正"为小写导致引用失效，勿再改）。
 
 ## 2. 比赛进展
 - **进行中的比赛**：`mcp__wq-brain-http__get_user_competitions`。
@@ -53,7 +53,9 @@ allowed-tools:
 ## 5.5 区域饱和度检测（2026-08-25 落地）
 **可选并行情报层**：本段查询失败不阻塞日报其余部分（失败时标注"区域饱和度：数据不可用"并跳过）。
 
-对全部区域（USA/EUR/KOR/IND/ASI/GBR/HKG/GLB/CHN/TWN；MEA 为 frozen，仅报告冻结状态不做饱和度计算）执行：
+**首选执行方式（2026-09-12 单源化）**：`python tools/region_status.py`（本地 DB 驱动，零平台请求；输出区域状态表与建议动作，本节下述判据即其实现口径）。手动查询仍可按下列口径执行：
+
+对全部区域（USA/EUR/KOR/IND/ASI/GBR/HKG/GLB/CHN/TWN；MEA 冻结状态读 region profile 的 `entry_verdict`，不做饱和度计算）执行：
 
 - **PROD 饱和度**：`mcp__wqb-db__search_alphas_by_sharpe(region, min_sharpe=1.58)` 统计已达标 alpha 数。若 ≥10 且风格同质（同族/同算子家族集中）→ 标记 `prod_saturation: likely`，建议转向正交方向或减少该区域配额投入。
 - **战役 exhaustion**：`mcp__wqb-db__get_campaigns(region)` 统计 `exhausted / in_progress / untried` 分布。若数据集全部 exhausted → 建议冻结转区（参照 MEA 先例）。

@@ -198,163 +198,16 @@ def resolve_windows(freq: str, dataset_id: str = "",
 _EPS_SMALL = "0.0001"
 _EPS_VOL = "0.001"
 
-SKELETONS = [
-    {
-        "id": "cs_rel.rank_diff",
-        "family": "cs_rel",
-        "n_fields": 2,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "rank({x}) - rank({y})",
-        "description": "两字段截面 rank 差（相对强弱/预期修正差）",
-    },
-    {
-        "id": "cs_rel.group_rank",
-        "family": "cs_rel",
-        "n_fields": 1,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "group_rank({x}, subindustry)",
-        "description": "行业中性化截面 rank（剔除行业 beta）",
-    },
-    {
-        "id": "ts_chg.delta",
-        "family": "ts_chg",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(ts_delta({x}, {W}))",
-        "description": "字段 {W} 日变化量的截面 rank（边际变化/修正方向）",
-    },
-    {
-        "id": "ts_chg.rel_chg",
-        "family": "ts_chg",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank({x} / (ts_mean({x}, {W}) + " + _EPS_SMALL + ") - 1)",
-        "description": "相对自身 {W} 日均值的偏离（均值回归/上修幅度）",
-    },
-    {
-        "id": "anomaly.zscore",
-        "family": "anomaly",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(ts_zscore({x}, {W}))",
-        "description": "字段 {W} 日 z-score 的截面 rank（异常冲击检测）",
-    },
-    {
-        "id": "anomaly.manual_z",
-        "family": "anomaly",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(({x} - ts_mean({x}, {W})) / (ts_std_dev({x}, {W}) + " + _EPS_SMALL + "))",
-        "description": "手写 z-score（ts_zscore 不存在时的等价替代）",
-    },
-    {
-        "id": "decay.linear",
-        "family": "decay",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(decay_linear({x}, {W}))",
-        "description": "{W} 日线性衰减加权（近期信息权重更高，降噪）",
-    },
-    {
-        "id": "interact.weighted_mix",
-        "family": "interact",
-        "n_fields": 2,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": None,  # 特殊组装：{w} * rank({x}) + {1-w} * rank({y})
-        "description": "双字段 rank 加权合成（多源信息互补，w∈{0.3..0.7}）",
-    },
-    {
-        "id": "vol_adj.sharpe_like",
-        "family": "vol_adj",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank({x}) / (ts_std_dev(returns, {W}) + " + _EPS_VOL + ")",
-        "description": "截面 rank 除以波动率（低风险调整，类 Sharpe 加权）",
-    },
-    {
-        "id": "group_neut.industry",
-        "family": "group_neut",
-        "n_fields": 1,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "group_neutralize({x}, subindustry)",
-        "description": "行业中性化（剔除行业均值，保留截面相对强弱）",
-    },
-    {
-        "id": "group_zscore.industry",
-        "family": "group_zscore",
-        "n_fields": 1,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "group_zscore({x}, subindustry)",
-        "description": "行业内 z-score（剔除行业 beta，保留组内相对位置）",
-    },
-    {
-        "id": "ts_corr.price_volume",
-        "family": "ts_corr",
-        "n_fields": 2,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "ts_corr(rank({x}), rank({y}), {W})",
-        "description": "两字段 {W} 日 rank 相关（量价协同/背离检测）",
-    },
-    {
-        "id": "event_gate.trade_when",
-        "family": "event_gate",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "trade_when(greater(ts_count({x}, {W}), 0), rank({x}), 0)",
-        "description": "事件门控（窗口内有数据才交易 rank({x})，无事件则空仓）",
-    },
-    {
-        "id": "conditional.if_else",
-        "family": "conditional",
-        "n_fields": 2,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "if_else(greater({x}, 0), rank({x}), rank({y}))",
-        "description": "条件组合（{x} 为正时取 rank({x})，否则取 rank({y})）",
-    },
-    {
-        "id": "momentum_peak.arg_max",
-        "family": "momentum_peak",
-        "n_fields": 1,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(ts_arg_max({x}, {W}))",
-        "description": "{W} 日内峰值位置 rank（峰值越近尾部=趋势仍在强化）",
-    },
-    {
-        "id": "outlier.winsorize",
-        "family": "outlier",
-        "n_fields": 1,
-        "needs_window": False,
-        "sign_allowed": True,
-        "template": "rank(winsorize({x}, std=4))",
-        "description": "4-sigma 截尾后 rank（压制极端值主导，稳健化）",
-    },
-    {
-        "id": "ts_regression.beta",
-        "family": "ts_regression",
-        "n_fields": 2,
-        "needs_window": True,
-        "sign_allowed": True,
-        "template": "rank(ts_regression({y}, {x}, {W}))",
-        "description": "{y} 对 {x} 的 {W} 日回归敏感度 rank（弹性/联动检测）",
-    },
-]
 
-INTERACT_WEIGHTS = [0.3, 0.4, 0.5, 0.6, 0.7]
+# ---------------------------------------------------------------------------
+# 骨架库（从 skeletons_data_base / skeletons_data_decouple 导入）
+# ---------------------------------------------------------------------------
+
+from skeletons_data_base import SKELETONS as _BASE_SKELETONS
+from skeletons_data_decouple import SKELETONS as _DECOUPLING_SKELETONS
+
+SKELETONS = _BASE_SKELETONS + _DECOUPLING_SKELETONS
+
 
 SKELETONS_BY_ID = {s["id"]: s for s in SKELETONS}
 
@@ -362,23 +215,26 @@ SKELETONS_BY_ID = {s["id"]: s for s in SKELETONS}
 def render_skeleton(skel_id: str, field_x: str, field_y: str | None = None,
                     window: int | None = None, sign: int = 1,
                     weight: float | None = None) -> str:
-    """按骨架模板组装表达式。sign=-1 → (-1) * (expr)。"""
+    """按骨架模板组装表达式。sign=-1 → (-1) * (expr)。
+
+    weight 参数保留仅为签名兼容（interact.weighted_mix 已于 2026-09-12 退役）。
+    """
     skel = SKELETONS_BY_ID.get(skel_id)
     if skel is None:
         raise ValueError(f"unknown skeleton id: {skel_id}")
 
-    if skel["family"] == "interact":
-        w = weight if weight is not None else 0.5
-        expr = f"{w} * rank({field_x}) + {round(1 - w, 4)} * rank({field_y})"
-    else:
-        expr = skel["template"].replace("{x}", field_x)
-        if "{y}" in expr:
-            if not field_y:
-                raise ValueError(f"{skel_id} needs field_y")
-            expr = expr.replace("{y}", field_y)
-        if "{W}" in expr:
-            w = window if window is not None else 10
-            expr = expr.replace("{W}", str(w))
+    expr = skel["template"].replace("{x}", field_x)
+    if "{y}" in expr:
+        if not field_y:
+            raise ValueError(f"{skel_id} needs field_y")
+        expr = expr.replace("{y}", field_y)
+    if "{W}" in expr:
+        w = window if window is not None else 10
+        expr = expr.replace("{W}", str(w))
+    if "{W2}" in expr:
+        # 慢窗 = 3×主窗（快慢比标准 1:3；2026-09-13 为 trend_cons 族引入）
+        w2 = (window if window is not None else 10) * 3
+        expr = expr.replace("{W2}", str(w2))
 
     if sign == -1:
         if not skel["sign_allowed"]:
@@ -397,6 +253,18 @@ _KNOWN_NONFIELD_TOKENS = {
     "returns", "close", "open", "high", "low", "volume", "vwap",
     "subindustry", "industry", "sector", "market", "country",
 }
+
+# 幻觉字段闸的非字段白名单（2026-09-12）：分组轴 / 命名参数 / 关键字。
+# 这些标识符在表达式里合法出现但不是数据字段，校验时豁免。
+_NONFIELD_KEYWORDS = _KNOWN_NONFIELD_TOKENS | {
+    "exchange", "bucket", "range", "driver", "gaussian", "linear",
+    "true", "false", "none", "on", "off", "verify", "nan",
+    "cap", "rank",  # bucket(rank(cap)) / range 参数片段
+}
+
+# 命名参数豁免正则（2026-09-13）：`driver=` / `std=` / `target_tvr=` 等参数名
+# 不应参与幻觉字段判定；`(?!=)` 负向前瞻避免误伤比较符 `==`。
+_NAMED_PARAM_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\s*=(?!=)")
 
 
 def split_top_args(s: str) -> list:
@@ -516,6 +384,29 @@ def semantic_lint_expr(expr: str, known_fields: set | None = None) -> list:
         for token in re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr):
             if token in known_fields and _METADATA_SUFFIX_RE.search(token):
                 issues.append(f"META_FIELD:{token}")
+
+        # HALLUCINATED_FIELD：幻觉字段闸（2026-09-12，根因 pv98 字段拼接幻觉 0/63）。
+        # 表达式里不作为 fn( 调用名出现的标识符，若不在 known_fields、
+        # 非分组轴/关键字白名单、非纯数字，即判为幻觉字段（拼接/捏造）拒绝。
+        # 起因：LLM 把 open_price/close_price 两字段拼成 open_price_close_price_...
+        # 假 token，不在 known_fields 里，META_FIELD 检查（只看在库字段）完全漏网。
+        op_names = {fn for fn, _ in _iter_fn_calls(expr)}
+        # 2026-09-13 修复：先豁免命名参数（driver="gaussian" / std=4 / target_tvr=0.15 /
+        # lower=… 等），否则参数名会被误判为幻觉字段——所有带命名参数的骨架
+        # （winsorize / tail / ts_target_tvr_hump / ts_quantile）产物会被自身 lint 拦掉。
+        scan_expr = _NAMED_PARAM_RE.sub(" ", expr)
+        for token in re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", scan_expr):
+            if token in op_names:
+                continue  # 算子调用名（rank/divide/subtract/...）
+            if token in known_fields:
+                continue  # 真实数据字段
+            if token.lower() in _NONFIELD_KEYWORDS:
+                continue  # 分组轴 / 命名参数 / 关键字
+            if _is_number(token) is not None:
+                continue  # 纯数字（窗口/权重/阈值）
+            if len(token) <= 2:
+                continue  # 单/双字母（x/y 等占位，防御）
+            issues.append(f"HALLUCINATED_FIELD:{token}")
 
     return issues
 
@@ -643,19 +534,18 @@ def assign_slots(slots: list, signal_fields: set, max_per_family_field: int = 2,
         sign = s.get("sign", 1)
         sign = -1 if sign in (-1, "-1") else 1
 
-        weight = s.get("weight")
-        if skel["family"] == "interact":
-            try:
-                weight = float(weight)
-            except (TypeError, ValueError):
-                weight = 0.5
-            weight = min(INTERACT_WEIGHTS, key=lambda w: abs(w - weight))
-        else:
-            weight = None
+        # interact.weighted_mix 退役（2026-09-12）：混合权重不再消费，meta 保留 None 兼容。
+        weight = None
 
         # family 配额：同 family 同主字段 ≤ max_per_family_field 个 window 变体
         key = (skel["family"], fx)
         if fam_field_count.get(key, 0) >= max_per_family_field:
+            dropped["family_quota"] += 1
+            continue
+
+        # 2026-09-17 经济学机制去重：同 mechanism + 同字段组合只留 1 条（防参数变体簇）
+        mech_key = (skel.get("mechanism") or skel["family"], fx, fy)
+        if fam_field_count.get(mech_key, 0) >= 1:
             dropped["family_quota"] += 1
             continue
 
@@ -671,6 +561,7 @@ def assign_slots(slots: list, signal_fields: set, max_per_family_field: int = 2,
             continue
 
         fam_field_count[key] = fam_field_count.get(key, 0) + 1
+        fam_field_count[mech_key] = fam_field_count.get(mech_key, 0) + 1
         candidates.append((expr, {
             "expr": expr,
             "family": skel["family"],
@@ -705,7 +596,10 @@ def build_skeleton_prompt(dataset_id: str, region: str, delay: int,
                           window_pool: dict | None = None,
                           enable_econ_kb: bool = True,
                           enable_field_scoring: bool = True,
-                          enable_market_regime: bool = True) -> tuple:
+                          enable_market_regime: bool = True,
+                          skeleton_stats: dict | None = None,
+                          max_per_family: int | None = None,
+                          econ_option_cap: int | None = None) -> tuple:
     """构建填槽协议 prompt。返回 (system_prompt, user_prompt)。
 
     Args:
@@ -714,14 +608,88 @@ def build_skeleton_prompt(dataset_id: str, region: str, delay: int,
         enable_econ_kb: 启用经济机制知识库
         enable_field_scoring: 启用字段质量评分
         enable_market_regime: 启用市场状态适配
+        skeleton_stats: 骨架级实测统计 {skeleton_id: {n, pass, pass_rate,
+            best_sharpe, avg_sharpe}}（2026-09-13 新增）。有样本（n≥5）的骨架
+            按过闸率排序置顶并标注 [MEASURED ...]；无数据骨架保持原序。
+            None/{} 时行为与旧版一致。
     """
+    # 族类配额默认值（2026-09-17 优化：防 econ_option 垄断）
+    if max_per_family is None:
+        # 默认每族最多 n_slots/6 条（保证至少 6 族覆盖）
+        max_per_family = max(2, n_slots // 6)
+    if econ_option_cap is None:
+        # econ_option 族默认 cap 为 n_slots/8（94/144 骨架占比过高，需压制）
+        econ_option_cap = max(1, n_slots // 8)
+
+    # 性能反馈闭环（2026-09-17 优化）：根据 skeleton_stats 动态调整族类配额
+    # 高性能族（pass_rate > 0.5 且 avg_sharpe > 1.5）配额 +1；低性能族（pass_rate < 0.2）配额 -1
+    stats = skeleton_stats or {}
+    family_perf: dict = {}
+    for skel_id, st in stats.items():
+        skel = SKELETONS_BY_ID.get(skel_id)
+        if not skel:
+            continue
+        fam = skel["family"]
+        n = st.get("n") or 0
+        if n < 5:  # 样本不足，不参与性能反馈
+            continue
+        pass_rate = float(st.get("pass_rate") or 0.0)
+        avg_sharpe = float(st.get("avg_sharpe") or 0.0)
+        if fam not in family_perf:
+            family_perf[fam] = {"pass_rates": [], "sharpes": []}
+        family_perf[fam]["pass_rates"].append(pass_rate)
+        family_perf[fam]["sharpes"].append(avg_sharpe)
+
+    # 计算族类平均性能
+    family_adjustment: dict = {}
+    for fam, perf in family_perf.items():
+        avg_pass = sum(perf["pass_rates"]) / len(perf["pass_rates"])
+        avg_sharpe = sum(perf["sharpes"]) / len(perf["sharpes"])
+        if avg_pass > 0.5 and avg_sharpe > 1.5:
+            family_adjustment[fam] = 1  # 高性能族 +1
+        elif avg_pass < 0.2:
+            family_adjustment[fam] = -1  # 低性能族 -1
+        else:
+            family_adjustment[fam] = 0
+
+    # 应用性能调整到配额
+    adjusted_max_per_family = max_per_family
+    adjusted_econ_option_cap = econ_option_cap
+    if family_adjustment:
+        # 高性能族配额 +1，低性能族配额 -1（最低为 1）
+        for fam, adj in family_adjustment.items():
+            if fam == "econ_option":
+                adjusted_econ_option_cap = max(1, econ_option_cap + adj)
+            else:
+                adjusted_max_per_family = max(1, max_per_family + adj)
+
+    # 骨架排序（2026-09-13）：有实测统计（n≥MIN_STATS_N）的按过闸率降序置顶并标注；
+    # 无数据骨架保持原序（sorted 稳定）。数据来自 run_pipeline._load_skeleton_stats。
+    MIN_STATS_N = 5
+    stats = skeleton_stats or {}
+
+    def _stats_key(s):
+        st = stats.get(s["id"]) or {}
+        n = st.get("n") or 0
+        if n >= MIN_STATS_N:
+            return (1, float(st.get("pass_rate") or 0.0), float(st.get("avg_sharpe") or 0.0))
+        return (0, 0.0, 0.0)
+
+    ordered = sorted(SKELETONS, key=_stats_key, reverse=True)
     skel_lines = []
-    for s in SKELETONS:
+    for s in ordered:
         win = "W required" if s["needs_window"] else "no window"
         nf = "2 fields (field, field2)" if s["n_fields"] == 2 else "1 field"
+        st = stats.get(s["id"]) or {}
+        tag = ""
+        if (st.get("n") or 0) >= MIN_STATS_N:
+            tag = (f"  [MEASURED n={st['n']} pass={st.get('pass', 0)}/{st['n']}"
+                   f" best={st.get('best_sharpe')}]")
+        elif st.get("n"):
+            tag = f"  [MEASURED-low-n n={st['n']}]"
         skel_lines.append(
-            f"- skeleton_id=\"{s['id']}\" | family={s['family']} | {nf} | {win}\n"
-            f"  shape: {s['template'] or '{w}*rank(x) + (1-w)*rank(y)'}\n"
+            f"- skeleton_id=\"{s['id']}\" | family={s['family']} | {nf} | {win}{tag}\n"
+            f"  shape: {s['template']}\n"
             f"  meaning: {s['description']}"
         )
     skel_block = "\n".join(skel_lines)
@@ -899,7 +867,6 @@ Return ONLY a JSON array. Each element:
   "window": <int, required for families: {win_families_str}>,
   "sign": <1 or -1>,
   "field2": "<second field id, required for: {two_field_ids_str}>",
-  "weight": <0.3-0.7, only for interact.weighted_mix>,
   "rationale": "<ONE sentence: the economic hypothesis, e.g. 'analysts revising gross-margin upward signal improving profitability'>"
 }}
 
@@ -908,11 +875,14 @@ Return ONLY a JSON array. Each element:
 - NEVER pick a field marked [VECTOR-需vec_avg聚合] as "field": VECTOR fields need vec_avg()/vec_sum() aggregation first — these skeletons cannot host them directly.
 - Fields marked [同簇N] (N≥5) share a crowded prefix cluster: select at most 2 of them in total.
 - "window" MUST be one of the values listed for that field's frequency domain.
-- "field2" for interact.weighted_mix may come from SIGNAL or SCALE lists.
+- "field2" may come from SIGNAL or SCALE lists (two-field skeletons only).
 - Do not produce two entries that differ ONLY by window for the same (family, field) more than twice.
 - Diversify across families: aim for coverage of at least 4 different families.
+- FAMILY QUOTA: each family may contribute AT MOST {adjusted_max_per_family} entries. econ_option family is capped at {adjusted_econ_option_cap} entries (it has 94/144 skeletons and tends to dominate). Prioritize under-represented families (nonlinear/time_agg/group_decouple/spread_residual) for prod-wall decoupling. Performance feedback: high-pass-rate families get +1 quota, low-pass-rate families get -1 quota.
+- 2026-09-17 新增经济学概念骨架（econ_vol_surface / econ_sentiment / econ_option）：这些骨架带经济学机制描述，优先选择与你假设匹配的机制，而不是裸 rank/ts_zscore。
 - sign=-1 means you hypothesize the effect is REVERSED (e.g. high X → low future returns). State this in rationale.
 - PRIORITIZE fields marked [HIGH-QUALITY] or [RECOMMENDED].
+- Skeletons tagged [MEASURED ...] have real backtest samples in this region: prefer high pass counts; [MEASURED-low-n] is informational only. Untagged skeletons have no data yet — judge them on economics alone.
 """
 
     # 添加经济机制知识库
@@ -938,7 +908,7 @@ Return ONLY a JSON array. Each element:
 ## SIGNAL fields (use these as "field")
 {sig_block}
 
-## SCALE fields (auxiliary; only allowed as "field2" in interact.weighted_mix)
+## SCALE fields (auxiliary; allowed as "field2" in two-field skeletons)
 {scale_block}
 
 Produce {n_slots} slot entries as a single JSON array. Cover at least 4 skeleton families. Prioritize fields whose description suggests economically interpretable quantities (margins, revisions, growth, leverage, valuation ratios) over raw levels."""

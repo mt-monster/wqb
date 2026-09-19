@@ -10,8 +10,8 @@
 产出：结构化 feature-engineering ideas markdown（字段画像 + 预处理决策 + 8 问特征概念
 + 字段白名单），供 S2 brain-make-some-gem 消费。
 
-数据源：brain_api.brain_client.get_datafields（真实平台数据）。无凭据/无网络/无字段时
-打印清晰错误到 stderr 并退出非零，节点据此上报失败（而非空文件误判成功）。
+数据源：wqb.db field catalog（DB 优先，零网络零配额）→ brain_api.get_datafields（API 兜底，
+带超时保护）。无凭据/无网络/无字段时打印清晰错误到 stderr 并退出非零。
 
 退出码：0 = 成功写入 ideas 文件；1 = 参数错误；2 = 平台数据获取失败。
 """
@@ -19,7 +19,9 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import json
 import os
+import sqlite3
 import sys
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -57,21 +59,102 @@ def _load_brain_client():
 
 
 # ---------------------------------------------------------------------------
+# wqb.db field catalog 本地查询（DB 优先，零网络零配额）
+# ---------------------------------------------------------------------------
+
+def _find_wqb_db() -> Optional[str]:
+    """探测 wqb.db 路径：WQB_DB_PATH > 常见候选路径。"""
+    env = os.environ.get("WQB_DB_PATH")
+    if env and os.path.isfile(env):
+        return env
+    # 从 sys.executable 推导工作区根（MCP venv → repo root）
+    exe = sys.executable
+    # .../world-quant-brain-mcp/.venv/Scripts/python.exe → repo root
+    parts = os.path.normpath(exe).split(os.sep)
+    for i, p in enumerate(parts):
+        if p == "world-quant-brain-mcp":
+            root = os.sep.join(parts[:i])
+            cand = os.path.join(root, "data", "wqb.db")
+            if os.path.isfile(cand):
+                return cand
+            break
+    # WQB_WORKSPACE 环境变量
+    ws = os.environ.get("WQB_WORKSPACE") or os.environ.get("WQB_ROOT")
+    if ws:
+        cand = os.path.join(ws, "data", "wqb.db")
+        if os.path.isfile(cand):
+            return cand
+    # 硬编码兜底
+    for root in [r"D:\coding\traeCN_project\wqb"]:
+        cand = os.path.join(root, "data", "wqb.db")
+        if os.path.isfile(cand):
+            return cand
+    return None
+
+
+def _fetch_fields_from_db(region: str, dataset_id: str) -> Optional[List[Dict[str, Any]]]:
+    """从 wqb.db ledger_kv 读 field catalog（scan_fields 产物）。
+
+    返回与 get_datafields 兼容的字段 dict 列表，无 catalog 时返回 None。
+    """
+    db_path = _find_wqb_db()
+    if not db_path:
+        return None
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT value FROM ledger_kv WHERE region=? AND key=?",
+            (region, f"catalog_{dataset_id}"),
+        )
+        row = cur.fetchone()
+        conn.close()
+        if not row:
+            return None
+        val = row["value"]
+        if isinstance(val, str):
+            val = json.loads(val)
+        if not isinstance(val, dict):
+            return None
+        fields = val.get("fields")
+        if not fields or not isinstance(fields, list):
+            return None
+        # 确保每个字段都有 id/type/coverage/alphaCount/userCount/description
+        out = []
+        for f in fields:
+            if isinstance(f, dict) and (f.get("id") or f.get("name")):
+                out.append(f)
+        return out if out else None
+    except Exception:
+        return None
+
+
+# ---------------------------------------------------------------------------
 # 字段数据访问
 # ---------------------------------------------------------------------------
 
-async def _fetch_fields(brain, region: str, dataset_id: str, delay: int,
-                        universe: str) -> List[Dict[str, Any]]:
-    raw = await brain.get_datafields(
-        instrument_type="EQUITY",
-        region=region,
-        delay=delay,
-        universe=universe,
-        theme="false",
-        dataset_id=dataset_id,
-        data_type="",
-        search=None,
-        filter_sharpe=False,  # 特征工程阶段不因 sharpe<0 过滤，保留全字段画像
+#: API 调用超时（秒）。GBR 卡死教训：get_datafields 内部 Redis 锁最多等 600s，
+#: 加分页重试可能无限挂起。FE 阶段字段数少（一般 <100），120s 足够。
+_API_TIMEOUT = int(os.environ.get("FE_API_TIMEOUT", "120"))
+
+
+async def _fetch_fields_api(brain, region: str, dataset_id: str, delay: int,
+                            universe: str) -> List[Dict[str, Any]]:
+    """从平台 API 拉取字段（带超时保护）。"""
+    raw = await asyncio.wait_for(
+        brain.get_datafields(
+            instrument_type="EQUITY",
+            region=region,
+            delay=delay,
+            universe=universe,
+            theme="false",
+            dataset_id=dataset_id,
+            data_type="",
+            search=None,
+            filter_sharpe=False,  # 特征工程阶段不因 sharpe<0 过滤，保留全字段画像
+        ),
+        timeout=_API_TIMEOUT,
     )
     if not isinstance(raw, dict):
         raise RuntimeError(f"get_datafields returned non-dict: {type(raw)}")
@@ -79,6 +162,33 @@ async def _fetch_fields(brain, region: str, dataset_id: str, delay: int,
     if isinstance(results, dict):  # 容错：某些版本嵌套 {results: {...}}
         results = results.get("results", [])
     return [f for f in results if isinstance(f, dict)]
+
+
+async def _fetch_fields(brain, region: str, dataset_id: str, delay: int,
+                        universe: str) -> List[Dict[str, Any]]:
+    """DB 优先 → API 兜底的字段获取。
+
+    2026-09-12：GBR/institutions6 FE 进程卡死 16min（get_datafields Redis 锁 +
+    分页重试链无外层超时）。改为先查 wqb.db catalog（S1 scan_fields 已落库），
+    无 catalog 时才走平台 API（带 _API_TIMEOUT 超时保护）。
+    """
+    # 1. DB 优先（零网络零配额）
+    db_fields = _fetch_fields_from_db(region, dataset_id)
+    if db_fields:
+        print(
+            f"feature_engineering: using DB catalog "
+            f"({len(db_fields)} fields, region={region}, dataset={dataset_id})",
+            file=sys.stderr,
+        )
+        return db_fields
+
+    # 2. API 兜底（带超时）
+    print(
+        f"feature_engineering: no DB catalog, calling API "
+        f"(timeout={_API_TIMEOUT}s, region={region}, dataset={dataset_id})",
+        file=sys.stderr,
+    )
+    return await _fetch_fields_api(brain, region, dataset_id, delay, universe)
 
 
 def _fstr(field: Dict[str, Any], key: str, default: str = "") -> str:

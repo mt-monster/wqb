@@ -260,6 +260,25 @@ def legacy_strip_naked(expr, fields, vec_wrap_ops):
     return sorted({f for f in fields if re.search(r"\b" + re.escape(f) + r"\b", stripped)})
 
 
+
+def _ts_over_vec(expr: str) -> bool:
+    """任一 ts_* 调用的括号体内出现 vec_*(（JPN 2026-09-19 实证必 ERROR）。"""
+    if "vec_" not in expr or "ts_" not in expr:
+        return False
+    for m in re.finditer(r"\bts_[a-z_]+\s*\(", expr):
+        depth, i = 0, m.end() - 1
+        while i < len(expr):
+            if expr[i] == "(":
+                depth += 1
+            elif expr[i] == ")":
+                depth -= 1
+                if depth == 0:
+                    break
+            i += 1
+        if "vec_" in expr[m.end():i]:
+            return True
+    return False
+
 def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     verified, data_type, field_types, banned = wl
     known_ops = set(pc["known_ops"])
@@ -277,6 +296,9 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
             fixed_expr = new_expr
             expr = new_expr
     issues = []
+    # 非阻断告警通道（2026-09-17）：SOP 里"须给出解释即可放行"的规则（如非标准窗口）
+    # 不应进 `issues`（那会直接判 FAIL），但也不能静默 —— 单独收集，由调用方展示。
+    warnings = []
     # 闸1 语法
     v = get_validator()
     if v is None:
@@ -307,6 +329,25 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     unknown = sorted(fields - verified)
     if unknown:
         issues.append(f"[FIELD] 未验证字段: {unknown}")
+    # 闸2b 区域非法 group 字段（2026-09-19，JPN wave7/8 实证：sector/subindustry/industry 在 JPN
+    # 是 'Invalid data field'，POST 可接受、执行必 ERROR 并连坐整批 CANCELLED）。
+    # 名单在 platform_constraints.json `region_invalid_group_fields`，region 由 main() 注入 pc["_region"]。
+    _bad_groups = set((pc.get("region_invalid_group_fields") or {}).get(str(pc.get("_region") or "").upper(), []))
+    if _bad_groups:
+        hit = sorted((idents - kw_args) & _bad_groups)
+        if hit:
+            issues.append(f"[FIELD] 区域 {pc.get('_region')} 不支持的 group 字段: {hit}"
+                          "（平台 Invalid data field，整批连坐）")
+    # 闸2b-2 区域不可用普通字段 + VECTOR 上套 ts_*（2026-09-19，JPN 无 pv1 实证；名单/开关在
+    # platform_constraints.json `region_invalid_fields` / `region_vector_ts_forbidden`）。
+    _reg = str(pc.get("_region") or "").upper()
+    _bad_fields = set((pc.get("region_invalid_fields") or {}).get(_reg, []))
+    if _bad_fields:
+        hit = sorted((idents - kw_args) & _bad_fields)
+        if hit:
+            issues.append(f"[FIELD] 区域 {_reg} 无该基础字段: {hit}（平台 Invalid data field，整批连坐）")
+    if _reg in {str(r).upper() for r in (pc.get("region_vector_ts_forbidden") or [])} and _ts_over_vec(expr):
+        issues.append(f"[FIELD] 区域 {_reg} 禁止 ts_*(…vec_*(…)) 组合（平台 Invalid data field close，整批连坐）")
     # 闸3 类型：按字段 type 判定（跨集 mix 时 data_type 不能代表全部腿）
     used_vec = [f for f in fields if field_types.get(f) == "VECTOR"]
     if used_vec or data_type == "VECTOR":
@@ -345,15 +386,132 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
         if re.search(bp["pattern"], expr):
             issues.append(f"[BANNED] {bp.get('reason', bp['pattern'])}")
     # 闸5 毒模式
+    # 2026-09-17 结构判定加固：weighted_signal_mix 正则要求两条腿都紧跟
+    # (rank|zscore|ts_rank|group_rank|normalize|scale)，而真实语料主流是
+    # subtract(0, rank(x)) 这类镜像腿 → 实测 81% 漏网（抽 220 条真闸只 block 19%）。
+    # 遂补一个**形状无关**的结构判定：任何 add( 的顶层实参中 ≥2 个以「系数*」开头
+    # 即判加权混合（含嵌套，如 quantile(add(multiply(0.7,X), multiply(0.3,Y)))）。
+    # 等权 add(rank(a), rank(b)) 不拦（无系数）；单腿系数缩放 0.5*rank(a) 不拦（<2 条腿）。
+    structural_mix = _detect_weighted_mix_structural(expr)
+    structural_only = False
     for pp in poison_patterns:
         if pp.get("severity", "block") != "block":
             continue
+        if pp.get("_structural") and pp["name"] == "weighted_signal_mix_structural":
+            # 结构判定的命中在循环外统一追加（见下），此处只标记存在性
+            structural_only = True
+            continue
         if re.search(pp["regex"], expr):
             issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
-    out = {"fields": sorted(fields), "issues": issues, "pass": not issues}
+    if structural_mix:
+        for pp in poison_patterns:
+            if pp.get("name") == "weighted_signal_mix_structural":
+                issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+                break
+        else:
+            # 配置缺失时兜底（配置是单一事实源，但判定器不应因此静默失效）
+            issues.append(
+                "[POISON:weighted_signal_mix_structural] "
+                "任一 add( 顶层实参 ≥2 个以「系数*」开头 = 加权混合，"
+                "用户 2026-09-13 路线 A 全局禁止（防过拟合）。"
+            )
+    # 闸9 窗口白名单（2026-09-17 新增，默认 warning 不阻断）
+    # 依据：SOP 两处（ra-pipeline 步 4 / brain-make-some-gem）都要求"只用标准窗口
+    # 1/5/22/66/252/504/1008/1260；其他窗口须给出解释或实测证据"，但**此前只写在散文里、
+    # 零机械守护**；实测全库 23% 用了非白名单窗口（Top 恰为 20/10/120/60）——
+    # 与 `_lib/operator_coverage.py::_DEFAULT_WINDOWS` 的旧默认值完全吻合。
+    # SOP 允许"给出解释后用"，故**默认**记 warning 不阻断；
+    # `window_whitelist_enforce=true` 时升为 block（2026-09-17 补：实测当日新语料
+    # 违规率 26.5%，散文约束无效，需可选硬门）。
+    wl_raw = pc.get("window_whitelist") or []
+    if wl_raw:
+        allowed = {int(w) for w in wl_raw}
+        off = sorted({w for w in expression_windows(expr) if w not in allowed})
+        if off:
+            msg = (f"[WINDOW] 非标准窗口 {off}（白名单 {sorted(allowed)}）；"
+                   f"SOP 要求给出解释或实测证据")
+            if pc.get("window_whitelist_enforce"):
+                issues.append(msg + " ［enforce 模式：window_whitelist_enforce=true］")
+            else:
+                warnings.append(msg)
+    out = {"fields": sorted(fields), "issues": issues,
+           "warnings": warnings, "pass": not issues}
     if fixed_expr is not None:
         out["fixed_expr"] = fixed_expr
     return out
+
+
+#: 引号内内容（如 bucket 的 range="0,1,0.1"）不参与窗口识别
+_QUOTED_RE = re.compile(r'"[^"]*"|\'[^\']*\'')
+#: 窗口候选：裸整数且后接 `,` 或 `)`；排除 `std=4` 这类命名参数与 `0.5` 这类小数
+_WINDOW_TOKEN_RE = re.compile(r"(?<![=\w.])(\d{1,4})(?=\s*[,)])")
+
+#: 加权混合结构判定：「实参以 系数* 开头」的系数形态（含负号/整数/小数）
+_COEF_PREFIX_RE = re.compile(r"^\s*-?\d*\.?\d+\s*\*")
+#: add( 出现位置（用于括号平衡扫描所有 add 实参，含嵌套）
+_ADD_OPEN_RE = re.compile(r"\badd\s*\(")
+
+
+def _top_level_args(expr, start):
+    """从 `add(` 的左括号后开始，括号平衡地切分顶层实参列表。
+
+    start 指向左括号**之后**第一个字符。返回 (args, end)；
+    括号不平衡时返回 (None, start)——宁可漏判不可误伤。
+    """
+    depth = 1
+    i = start
+    args, cur = [], []
+    n = len(expr)
+    while i < n and depth > 0:
+        ch = expr[i]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                break
+        elif ch == "," and depth == 1:
+            args.append("".join(cur))
+            cur = []
+            i += 1
+            continue
+        cur.append(ch)
+        i += 1
+    if depth != 0:
+        return None, start  # 不平衡：放弃（语法层会另报）
+    args.append("".join(cur))
+    return args, i
+
+
+def _detect_weighted_mix_structural(expr):
+    """闸5 结构判定：任一 ``add(...)`` 的顶层实参中 ≥2 个以「系数*」开头。
+
+    形状无关（星号中缀 / multiply 函数式 / 镜像腿 subtract(0, rank(x)) 均命中），
+    覆盖正则 weighted_signal_mix 实测 81% 的漏网形态（含嵌套 add）。
+    等权 add(rank(a), rank(b)) 与单腿缩放 0.5*rank(a) 不算（<2 条系数腿）。
+    """
+    for m in _ADD_OPEN_RE.finditer(expr):
+        args, _ = _top_level_args(expr, m.end())
+        if not args or len(args) < 2:
+            continue
+        if sum(1 for a in args if _COEF_PREFIX_RE.match(a)) >= 2:
+            return True
+    return False
+
+
+def expression_windows(expr, lo=2, hi=2000):
+    """提取表达式里的**窗口类整数**（ts_*/group_*/bucket 的窗口位）。
+
+    判定：裸整数（前不接 `=`、`.`、字母）且后接 `,` 或 `)`，取值在 [lo, hi]。
+    刻意**不**按算子白名单区分"窗口位"——FASTEXPR 里 `ts_corr(a,b,20)` 与
+    `ts_decay_linear(x,66)` 的窗口都在末位，形状一致，无需枚举算子。
+    引号串（bucket range）先剔除，避免 `range="0,1,0.1"` 里的 `1` 被误判。
+    """
+    if not expr:
+        return []
+    s = _QUOTED_RE.sub('""', expr)
+    return [int(m.group(1)) for m in _WINDOW_TOKEN_RE.finditer(s)
+            if lo <= int(m.group(1)) <= hi]
 
 
 def cache_key(dataset, expr):
@@ -383,6 +541,46 @@ def _extract_exposure_from_idea(idea_text):
     raw = m.group(1).strip().strip('`').strip()
     # 标准化：小写、去空格、去标点
     return re.sub(r"[^a-z0-9_]", "", raw.lower().replace(" ", "_")) or None
+
+
+def _persist_exposure_map(ctx, exp_map):
+    """把 expression → expected_exposure 回写 `expressions.expected_exposure`（2026-09-17 新增）。
+
+    ## 为什么
+    `_load_exposure_map()` 在**闸6 的伪多样性检查**里算出了这份映射，然后**用完即丢**。
+    后果：GEM `SKILL.md` 规则 7（按语义维度判多样性：≥3 个 Expected Exposure）与
+    规则 8（用 `risk_neutralized_sharpe` 验证 Exposure 声明）**没有可度量的输入** ——
+    验证侧数据早已落库，缺的是**声明侧**。
+
+    ## 行为
+    - **尽力而为**：任何异常都吞掉并返回 0，绝不影响门禁判定；
+    - 只写**非空** exposure，且不覆盖已有非空值（避免用推断值污染人工标注）；
+    - 返回成功更新的行数。
+    """
+    if not exp_map:
+        return 0
+    try:
+        from _lib.wqb_store import get_store
+        st = get_store(ctx)
+        try:
+            cur = st.connection.cursor()
+            n = 0
+            for expr, exposure in exp_map.items():
+                if not expr or not exposure:
+                    continue
+                cur.execute(
+                    "UPDATE expressions SET expected_exposure=?, updated_at=datetime('now') "
+                    "WHERE region=? AND expression=? "
+                    "AND (expected_exposure IS NULL OR expected_exposure='')",
+                    (str(exposure), ctx.region, expr),
+                )
+                n += cur.rowcount
+            st.connection.commit()
+            return n
+        finally:
+            st.close()
+    except Exception:
+        return 0
 
 
 def _load_exposure_map(ctx, dataset, delay=1):
@@ -542,6 +740,10 @@ def check_batch_diversity(exprs, ctx, batch_type="explore", skip=False, dataset=
     if dataset:
         exp_map = _load_exposure_map(ctx, dataset, delay=delay)
         if exp_map:
+            # 2026-09-17：顺带把这份映射落库（此前算完即丢 → GEM 规则 7/8 无法度量）
+            persisted = _persist_exposure_map(ctx, exp_map)
+            if persisted:
+                print(f"[DIVERSITY] expected_exposure 回写 {persisted} 条")
             # 提取字段族（字段前缀，如 starmine_/fnd72_/oth455_）
             def _field_family(e):
                 fields = expr_fields(e, known_ops=None, min_len=6)
@@ -869,6 +1071,7 @@ def main():
     ds_all = [a.dataset] + [x for x in extra if x != a.dataset]
     wl = merge_whitelists(ctx, ds_all) if len(ds_all) > 1 else load_whitelist(ctx, a.dataset)
     pc = load_platform_constraints()
+    pc["_region"] = ctx.region  # 闸2b 区域非法 group 字段判定用（2026-09-19）
     poison = list(pc.get("poison_patterns", []))
     cons_path = ctx.constraints_path()
     if os.path.exists(cons_path):  # 区域特有 poison 追加（平台级勿复制进区域文件）

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-15
 name: brain-make-some-gem
 description: "S2 概念优先的 GEM alpha 表达式生成器（headless_runner）。当需要为某个 region/dataset/delay/universe 组合生成候选 alpha 表达式、跑 GEM、补候选池、按 priors 做增强变体扩展时使用。触发词：生成表达式 / 跑 GEM / makeSomeGem / 选波生成 / 概念优先生成 / final_expressions。编排入口是 wq-brain-ra-pipeline 步 4，标准调用走 mcp__wq-brain-http__workflow_gem，本 skill 描述其后端引擎与产物契约。"
 layer: L2
@@ -26,6 +26,19 @@ allowed-tools:
 | **上游** | 步 3（S1）`s1_<ds>_d<delay>` ledger 的 ideas.md；`assemble-priors` 落的 `priors_snapshot_<region>` |
 | **本 skill** | 概念优先生成候选表达式 → `final_expressions.json` |
 | **下游** | 步 5（S2→S3）门禁：`check_batch` 多样性守卫 → `check_expr_against_inspect` 体检硬门 → `wave_gate` 闸1–5 预检（闸编号基准见 INDEX） |
+
+## 两种生成模式的定位（2026-09-12 补）
+
+| 模式 | 触发 | 模板来源 | 表达式由谁产出 |
+|---|---|---|---|
+| **family mode**（`--pipeline-mode phased`，默认） | 常规七槽生成 | `wq-brain-campaign-toolkit/config/template_families.json` 8 个 mechanism 族（skeleton 表达式串 + placeholders + forbidden_operators） | LLM 按 priors 概念绑定时相对自由，经 implement_idea 展开占位符 |
+| **skeleton mode**（`--pipeline-mode skeleton`） | 字段语义分层后可机械配槽（P0 协议） | `trailSomeAlphas/skeletons.py` 代码骨架（field layering → WINDOW_DOMAINS → 骨架组装） | **代码组装**（LLM 只输出结构化 JSON，语法合法性构造保证） |
+
+选择规则：字段可分层（signal/metadata/scale 清晰）→ skeleton mode；需要族级经济机制叙事（mechanism_premise / field_profile_match）→ family mode。
+**2026-09-15 ②**：`workflow_gem` / gem 节点新增 `pipeline_mode`（single/phased/skeleton）透传；headless runner 缺省从 `single` 改为 `phased`
+（与本表一致），`skeleton` 从节点层可达。S1 ledger `source ∈ {feature_engineering_node, standalone, standalone_v2}` 的模板渲染文档
+**不再自动注入** `--ideas-file`（注入后本管线零 LLM 调用、整波退化为模板展开）；显式 `ideas_file` 仍可覆盖。落盘前 `pipeline_pregate.py`
+把 `quantile(x, driver="gaussian")` 无损归一为 `quantile(x)`、丢弃加权混合毒模式（规则同 toolkit `platform_constraints.json`）。社区模板（`KB/community_tpl_kb`，经 `tools/kb_templates.py --emit-ideas` 导出）只作为两者的 ideas 供给源，入批前必须过 ghost advisory。
 
 ## 概念优先铁律（与 ra-pipeline 步 4 硬约束同源，此处不复写阈值）
 

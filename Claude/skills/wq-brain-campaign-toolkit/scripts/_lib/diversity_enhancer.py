@@ -40,9 +40,7 @@ if _SRC and _SRC not in sys.path:
     sys.path.insert(0, _SRC)
 
 try:
-    from wqb.expression.diversity_enhancer import (
-        analyze_diversity, enhance_expressions, DiversityMonitor
-    )
+    from wqb.expression.diversity_enhancer import analyze_diversity, enhance_expressions
     DIVERSITY_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] 多样性增强系统不可用: {e}")

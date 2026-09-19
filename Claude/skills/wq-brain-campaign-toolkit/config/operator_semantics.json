@@ -1019,5 +1019,6 @@
    "min_fields": 1
   }
  },
- "_sig_calibrated_at": "2026-08-19"
+ "_sig_calibrated_at": "2026-08-19",
+ "_alignment_note": "2026-09-12 与 data/operators_verified.json 对账：verified 与 operators 完全一致的 103 个；标注 _status=unverified 的 [] 个待平台复核。"
 }

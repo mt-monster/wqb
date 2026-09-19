@@ -45,11 +45,21 @@ allowed-tools:
 
 此步与 §1 的 `alphaCount` 先验互补。
 
+> ⚠ **数据包区域覆盖边界（2026-09-17 实测，先看这条再决定能不能预筛）**：
+> 本地 `research-data/WebData_20260219_V0.10.9.zip`（36.9 MB）**只覆盖 7 个区域**——
+> **ASI / CHN / EUR / GLB / JPN / KOR / USA**（9 个 `region×delay` 组合，160 条数据集、去重 125 个数据集名）。
+> **DEU / IND / GBR / MEA / TWN 等区域在该包内没有任何条目** → 对这此区域跑预筛只会得到空结果，
+> **不是脚本问题，也不是"忘了跑"**。同源限制也影响体检包生成（`tools/gen_field_inspect_packs.py` 读同一 ZIP）。
+> 判定顺序：先确认目标区域在包内 → 在则按本步预筛 → **不在则改走平台侧**（`workflow_campaign(stage="S0")`
+> 的 `recommend_datasets` + `get_datafields`）或先更新 WebDataScope 导出包，并在台账记录"数据包不覆盖"作为免预筛理由。
+
 ### 3. 区域切换预筛门禁（2026-08-05 用户强制纪律）
 
 **每次切换区域回测前，必须先执行** `python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region <目标区域> --delay 1`（从 wqb-share-03/ 目录，Windows 用 python 非 python3），读取区域级中性化排名/数据集甜点区/⚠退化标记/universe 体检覆盖后，才允许在该区域提交批次。
 
-未预筛不切区域（已记录：EUR 2026-08-05 已跑，REVERSION_AND_MOMENTUM 最优 0.668；历史违规：USA/GBR subagent 启动时未先跑，不再追究）。
+未预筛不切区域（已记录：EUR 2026-08-05 已跑，REVERSION_AND_MOMENTUM 最优 0.668；历史违规：USA/GBR subagent 启动时未先跑）。
+
+**机器门禁（2026-09-12 新增）**：预筛跑完后登记 `python tools/prescreen_gate.py --region <R> --record --summary '<json>'`；此后任何会话切区前查门 `python tools/prescreen_gate.py --region <R>`（exit 0=PASS / 1=BLOCK，判据=ledger `prescreen_<R>` 键或战役目录 reference 产物）。当前为工具级门禁，节点内嵌接线（workflow_campaign 前置）待 `nodes/campaign.py` 并行改动落定后跟进。
 
 ## 验证清单
 

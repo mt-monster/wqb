@@ -123,7 +123,7 @@ user-invocable: true
 且 Mode B 常规想法级改进（Step B1–B5）2–3 轮仍被结构性闸门卡死时，才允许进入组合腿救援。
 **未达资格线的弱信号候选一律判死（dead_end 回写 + wave 台账 closed），禁止救援**（弱信号组合成功率极低）。
 
-救援不是重写主信号：保留强主腿 + 从 salvage_pool 取补强辅助腿做正交组合。
+救援不是重写主信号：保留强主腿 + 从 salvage_pool 取补强辅助腿做合规正交改造（形态见下方构造纪律，禁用加权混合）。
 
 **弹药查询**（卡点 → boost_dim 映射，`mcp__wqb-db__get_salvage_pool`）：
 - 卡 LOW_2Y_SHARPE / 2Y 墙 → `boost_dim="boost_2y"`
@@ -133,17 +133,23 @@ user-invocable: true
 - 卡 PROD/self correlation ≥0.7 → `exclude_dataset=<主信号数据集>`，优先跨数据集正交腿
 - 通用过滤：`min_sharpe=0.5`（池内快达标因子下限）
 
-**构造纪律**：
+**构造纪律（路线 A，2026-09-13 修订：禁加权混合）**：
 1. 主腿（本 alpha 核心字段/概念）冻结，辅助腿 ≤2 条，**必须取自 salvage_pool 返回条目**（禁止凭空另造腿）。
-2. 组合用线性 add（各腿先 rank）；权重仅结构化单次设置（0.5/0.5 起步，最多 0.6/0.4），**禁止权重网格扫描**
-   （同信号加权调参禁令延伸：同数据集同概念腿 + 调权 = 违规）。
-3. 每条候选溯源标记 `combo_rescue_from_<本alpha_id>_with_<salvage_id>`，写入迭代日志。
+2. **禁止一切加权混合**（`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`
+   均被 gate 闸5 block；同理禁权重网格扫描）。仅允许两种合规形态：
+   a) **结构交互式**（首选）：辅助腿作为参照/暴露方向/条件/分组轴/协动对象改造主腿信号——六大形态族
+      （F1 参照系 / F2 正交化 / F3 条件门控 / F4 分组重组 / F5 协同背离 / F6 调节稳健）与卡点映射见
+      [references/structural-interaction-forms.md](references/structural-interaction-forms.md)
+      （算子已过 live 白名单核验）；成品须能用一句话说清“单一经济信号”。
+   b) **SuperAlpha combo**（组件级）：本区已有 ≥10 颗 ACTIVE REGULAR 时，走
+      `wq-brain-superalpha` 的 selection+combo（平台机制，不做表达式层加权），合成目标 prod_corr < 0.7。
+3. 每条候选溯源标记 `combo_rescue_from_<本alpha_id>_with_<salvage_id>_<形态>`，写入迭代日志。
 4. 验证走 Mode A 批纪律：8 候选严格批 → 本地校验 → multiSim。
 
 **验证与兜底**：
 - 过闸（全 checks PASS + prod corr <0.7）→ 按标准下游链推进（selfcorrQuick → explain-alphas →
   robustness → judge/verdict），不直接提交。
-- 池内无匹配（返回空 / 全同数据集）或组合 1–2 轮仍 FAIL → 判死（dead_end 回写），
+- 池内无匹配（返回空 / 全同数据集）或组合 1–2 轮仍 FAIL → 判死（dead_end 回写，回写前先走 `mcp__wqb-db__seal_dead_end` 沉降残值再封存），
   禁止无限烧配额；残余线索写 ledger salvage 字段留痕。
 
 **弹药来源说明**：salvage_pool 由 S4 `review_wave.py --write-ledger` 自动幂等写入

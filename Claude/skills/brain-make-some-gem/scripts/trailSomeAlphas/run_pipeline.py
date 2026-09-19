@@ -1,749 +1,140 @@
+# -*- coding: utf-8 -*-
+"""GEM 管线编排入口（concept-first / phased / skeleton 三模式）。
+
+2026-09-12 模块化拆分：原 2642 行单文件收敛为 9 个同目录子模块：
+  pipeline_paths.py        环境引导与共享依赖（路径常量/sys.path/ace_lib/validator/vector_wrap）
+  pipeline_data.py         凭据与会话、DataFrame 工具、字段后缀候选与元数据块
+  pipeline_placeholders.py 占位符三级匹配/压缩/归一化（防字段名拼接幻觉）
+  pipeline_operators.py    平台算子过滤与默认算子池
+  pipeline_prompts.py      single/phased 模式的 prompt 构建
+  pipeline_reports.py      ideas markdown 读写（渲染/落盘/Concept 块解析）
+  pipeline_llm.py          Moonshot LLM 调用（SSE 流式）
+  pipeline_io.py           子进程/CSV/文件工具
+  pipeline_kb.py           DB 存储与模板族绑定
+本文件保留：编排（main）、skeleton/phased 执行器，以及对外兼容名字。
+
+！！兼容性约束（勿破坏）：headless_runner/run.py 依赖以下模块级名字，并会在运行
+时替换它们以拦截调用：rp.ace_lib / rp.start_brain_session / rp.run_script /
+rp.call_moonshot（另引用 rp.main / rp.FEATURE_IMPLEMENTATION_DIR）。因此：
+  1. 这些名字必须继续存在于本模块命名空间（由下方 re-export 提供）；
+  2. 本模块（含 run_skeleton_generation / run_phased_pipeline / main）调用它们时
+     必须用裸名（模块全局查找），不得改为 pipeline_*.xxx() 形式，否则 patch 失效。
+"""
 import argparse
 import datetime as dt
 import json
 import os
 import re
-import shutil
-import subprocess
 import sys
-import csv
-import time
 from pathlib import Path
 
-import requests
 
+# --- 环境引导（必须最先执行：sys.path / UTF-8 stdout / ace_lib 等）---
+import pipeline_paths  # noqa: F401
+from pipeline_paths import FEATURE_ENGINEERING_DIR, FEATURE_IMPLEMENTATION_DIR, FEATURE_IMPLEMENTATION_SCRIPTS, ace_lib, ExpressionValidator, wrap_naked_vectors
+from pipeline_data import build_allowed_metric_suffixes, build_allowed_suffixes_from_ids, build_field_summary, detect_dataset_code, ensure_metadata_block, load_brain_credentials_from_env_or_args, pick_first_present_column, read_text_optional, start_brain_session
+from pipeline_llm import call_moonshot  # noqa: F401  （run.py patch 点，需 rp 全局调用）
+from pipeline_io import (  # noqa: F401
+    delete_path_if_exists,
+    load_dataset_ids_from_csv,
+    run_script,  # run.py patch 点，需 rp 全局调用
+    safe_dataset_id,
+)
+from pipeline_kb import _prepare_family_binding, _wqb_campaign_store
+from pipeline_operators import (  # noqa: F401
+    DEFAULT_OPERATORS,
+    _vector_ratio_from_datafields_df,
+    filter_operators_df,
+)
+from pipeline_placeholders import normalize_template_placeholders
+from pipeline_prompts import batch_fields_by_dataset, build_compact_operator_summary, build_phased_prompts, build_prompt
+from pipeline_reports import _ensure_expected_exposure, extract_template_blocks, render_phased_ideas_md, render_skeleton_ideas_md, save_ideas_report
 
-# ---------------- expected_exposure 兜底（2026-09-01） ----------------
-# LLM 生成 idea 时有时漏写 **Expected Exposure** 行（实测 520 条仅 14% 覆盖），
-# gate.py 的收益来源多样性闸读不到标签就降级 WARN、形同虚设。
-# 此函数对缺失项按 Concept/Mechanism 关键词推断标签并显式追加该行。
-
-_EXPOSURE_KEYWORDS = [
-    ("momentum", ["momentum", "trend", "drift", "continuation", "post-earnings", "pead"]),
-    ("reversal", ["reversal", "overreaction", "mean-revert", "mean revert", "short-term reversal"]),
-    ("value", ["value", "underval", "book-to-market", "earnings yield", "cheap"]),
-    ("quality", ["quality", "profitab", "roa", "roe", "accrual", "earnings quality"]),
-    ("growth", ["growth", "expansion", "revision up", "upgrade"]),
-    ("lowvol", ["low vol", "lowvol", "defensive", "stability", "stable"]),
-    ("liquidity", ["liquidity", "amihud", "turnover cost", "tradability"]),
-    ("sentiment", ["sentiment", "news tone", "crowd", "attention", "buzz", "panic", "fear"]),
-    ("flow", ["ownership", "institutional", "holdings", "insider", "buyback", "flow"]),
-    ("risk", ["risk", "volatility", "tail", "drawdown", "distress", "default"]),
-]
-
-
-def _ensure_expected_exposure(idea_text: str) -> str:
-    """idea 文本缺 **Expected Exposure** 行时按关键词推断并追加。已有则原样返回。"""
-    if not idea_text:
-        return idea_text
-    if re.search(r"\*\*Expected Exposure\*\*\s*:", idea_text, re.IGNORECASE):
-        return idea_text
-    tl = idea_text.lower()
-    for label, kws in _EXPOSURE_KEYWORDS:
-        if any(k in tl for k in kws):
-            return idea_text.rstrip() + f"\n- **Expected Exposure** (inferred): {label}\n"
-    return idea_text.rstrip() + "\n- **Expected Exposure** (inferred): other\n"
-
-# Ensure UTF-8 stdout on Windows to avoid UnicodeEncodeError
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:
-    pass
-
-BASE_DIR = Path(__file__).resolve().parent
-SKILLS_DIR = BASE_DIR / "skills"
-FEATURE_ENGINEERING_DIR = SKILLS_DIR / "brain-data-feature-engineering"
-FEATURE_IMPLEMENTATION_DIR = SKILLS_DIR / "brain-feature-implementation"
-FEATURE_IMPLEMENTATION_SCRIPTS = FEATURE_IMPLEMENTATION_DIR / "scripts"
-
-sys.path.insert(0, str(FEATURE_IMPLEMENTATION_SCRIPTS))
-try:
-    import ace_lib  # type: ignore
-except Exception as exc:
-    raise SystemExit(f"Failed to import ace_lib from {FEATURE_IMPLEMENTATION_SCRIPTS}: {exc}")
-try:
-    from validator import ExpressionValidator  # type: ignore
-except Exception as exc:
-    raise SystemExit(f"Failed to import ExpressionValidator from {FEATURE_IMPLEMENTATION_SCRIPTS}: {exc}")
-
-from economic_priors import compact_priors_text, concept_first_rules, load_priors
+from economic_priors import load_priors
 
 import skeletons  # 同目录骨架库（P0: skeleton mode 填槽协议）
-from skill_roots import candidate_paths_under_skill  # 技能根单源（同目录）
-
-# 复用工作区 tools/lib 下的 vector_wrap（单一权威源）。
-# 生成端兜底：LLM 未必遵守 prompt 里的 vec_* 指示，落盘前自动裹上聚合。
-def _find_tools_lib() -> Path | None:
-    env = os.environ.get("WQB_TOOLS_LIB")
-    if env and (Path(env) / "vector_wrap.py").is_file():
-        return Path(env)
-    # 从常见工作区根向上/已知位置探测 vector_wrap.py
-    candidates = [
-        Path(os.environ.get("WQB_ROOT", "")) / "tools" / "lib" if os.environ.get("WQB_ROOT") else None,
-        Path("D:/coding/traeCN_project/wqb/tools/lib"),
-    ]
-    for c in candidates:
-        if c and (c / "vector_wrap.py").is_file():
-            return c
-    return None
 
 
-_REPO_TOOLS_LIB = _find_tools_lib()
-if _REPO_TOOLS_LIB and str(_REPO_TOOLS_LIB) not in sys.path:
-    sys.path.insert(0, str(_REPO_TOOLS_LIB))
-try:
-    from vector_wrap import wrap_naked_vectors  # type: ignore
-except Exception:
-    wrap_naked_vectors = None
+def _load_skeleton_stats(region: str) -> dict:
+    """聚合骨架级实测统计（只读、幂等；2026-09-13 新增）。
 
-def load_brain_credentials(config_path: Path) -> tuple[str, str]:
-    if not config_path.exists():
-        raise FileNotFoundError(f"Config not found: {config_path}")
-    with config_path.open("r", encoding="utf-8") as f:
-        data = json.load(f)
-    creds = data.get("BRAIN_CREDENTIALS", {})
-    email = creds.get("email")
-    password = creds.get("password")
-    if not email or not password:
-        raise ValueError("BRAIN_CREDENTIALS missing in config.json")
-    return email, password
-
-def load_brain_credentials_from_env_or_args(username: str | None, password: str | None, config_path: Path) -> tuple[str, str]:
-    env_user = os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL")
-    env_pass = os.environ.get("BRAIN_PASSWORD")
-    final_user = username or env_user
-    final_pass = password or env_pass
-    if final_user and final_pass:
-        return final_user, final_pass
-    return load_brain_credentials(config_path)
-
-def start_brain_session(email: str, password: str):
-    ace_lib.get_credentials = lambda: (email, password)
-    return ace_lib.start_session()
-
-def pick_first_present_column(df, candidates):
-    for c in candidates:
-        if c in df.columns:
-            return c
-    # also try case-insensitive
-    lower_map = {col.lower(): col for col in df.columns}
-    for c in candidates:
-        if c.lower() in lower_map:
-            return lower_map[c.lower()]
-    return None
-
-
-DEFAULT_OPERATORS = [
-    {"name": "rank", "category": "section", "description": "rank(field) — cross-sectional percentile rank"},
-    {"name": "ts_rank", "category": "section", "description": "ts_rank(field, window) — time-series percentile rank"},
-    {"name": "zscore", "category": "section", "description": "zscore(field) — cross-sectional z-score"},
-    {"name": "ts_zscore", "category": "section", "description": "ts_zscore(field, window) — time-series z-score"},
-    {"name": "delta", "category": "momentum", "description": "delta(field) — first difference"},
-    {"name": "ts_delta", "category": "momentum", "description": "ts_delta(field, window) — field[t] - field[t-window]"},
-    {"name": "ts_sum", "category": "aggregation", "description": "ts_sum(field, window) — cumulative sum over N bars"},
-    {"name": "ts_mean", "category": "aggregation", "description": "ts_mean(field, window) — moving average"},
-    {"name": "ts_stddev", "category": "aggregation", "description": "ts_stddev(field, window) — moving std dev"},
-    {"name": "ts_max", "category": "aggregation", "description": "ts_max(field, window) — max over N bars"},
-    {"name": "ts_min", "category": "aggregation", "description": "ts_min(field, window) — min over N bars"},
-    {"name": "decay_linear", "category": "momentum", "description": "decay_linear(field, window) — linearly decaying sum"},
-    {"name": "signed_power", "category": "section", "description": "signed_power(field, power) — monotonic rank-preserving"},
-    {"name": "abs", "category": "section", "description": "abs(field) — absolute value"},
-    {"name": "sign", "category": "section", "description": "sign(field) — +1/-1/0"},
-    {"name": "log", "category": "section", "description": "log(field) — natural log"},
-    {"name": "sqrt", "category": "section", "description": "sqrt(field) — square root"},
-    {"name": "pow", "category": "section", "description": "pow(field, p) — field^p"},
-    {"name": "min", "category": "section", "description": "min(field1, field2) — element-wise min"},
-    {"name": "max", "category": "section", "description": "max(field1, field2) — element-wise max"},
-    {"name": "mean", "category": "section", "description": "mean(field1, field2) — element-wise mean"},
-    {"name": "scale", "category": "section", "description": "scale(field) — rescale so sum of abs values = 1"},
-    {"name": "trimscale", "category": "section", "description": "trimscale(field) — trimmed scale"},
-    {"name": "add", "category": "section", "description": "add(field1, field2) — element-wise sum"},
-    {"name": "subtract", "category": "section", "description": "subtract(field1, field2) — element-wise difference"},
-    {"name": "group_zscore", "category": "neutralization", "description": "group_zscore(field, group_field)"},
-    {"name": "group_neutralize", "category": "neutralization", "description": "group_neutralize(field, group_field)"},
-    {"name": "ts_backfill", "category": "aggregation", "description": "ts_backfill(field, window) — fill gaps backward"},
-    {"name": "ts_regression", "category": "momentum", "description": "ts_regression(field, target, window) — beta"},
-    {"name": "product", "category": "section", "description": "product(field1, field2) — element-wise product"},
-    {"name": "covariance", "category": "momentum", "description": "covariance(field1, field2, window)"},
-    {"name": "correlation", "category": "momentum", "description": "correlation(field1, field2, window)"},
-    {"name": "delay", "category": "momentum", "description": "delay(field, bars) — lag by N bars"},
-    {"name": "ts_minmax", "category": "aggregation", "description": "ts_minmax(field, window) — normalize to [0,1]"},
-    {"name": "ts_count", "category": "aggregation", "description": "ts_count(field, window) — count non-null"},
-    {"name": "group_sum", "category": "aggregation", "description": "group_sum(field, group_field)"},
-    {"name": "group_rank", "category": "aggregation", "description": "group_rank(field, group_field)"},
-]
-
-
-def select_dataset(datasets_df, data_category: str, dataset_id: str | None):
-    if dataset_id:
-        return dataset_id, None, None, datasets_df
-
-    category_col = pick_first_present_column(
-        datasets_df,
-        ["category", "data_category", "dataCategory", "category_name", "dataCategory_name"],
-    )
-
-    filtered = datasets_df
-    if category_col:
-        filtered = datasets_df[datasets_df[category_col].astype(str).str.lower() == data_category.lower()]
-
-    if filtered.empty:
-        filtered = datasets_df
-
-    id_col = pick_first_present_column(filtered, ["id", "dataset_id", "datasetId"])
-    name_col = pick_first_present_column(filtered, ["name", "dataset_name", "datasetName"])
-    desc_col = pick_first_present_column(filtered, ["description", "desc", "dataset_description"])
-
-    if not id_col:
-        raise ValueError("Unable to locate dataset id column from dataset list")
-
-    row = filtered.iloc[0]
-    return row[id_col], row.get(name_col) if name_col else None, row.get(desc_col) if desc_col else None, datasets_df
-
-
-def build_field_summary(fields_df, max_fields: int | None = None):
-    id_col = pick_first_present_column(fields_df, ["id", "field_id", "fieldId"])
-    desc_col = pick_first_present_column(fields_df, ["description", "desc"])
-
-    total = int(fields_df.shape[0])
-    cov_col = pick_first_present_column(fields_df, ["coverage", "Coverage"])
-    type_col = pick_first_present_column(fields_df, ["type", "dataType", "data_type"])
-    if max_fields is None:
-        # Default: pass ALL fields to the prompt.
-        subset = fields_df
-    else:
-        n = min(int(max_fields), total)
-        if n < total and cov_col:
-            # Truncation path: keep highest-coverage fields instead of arbitrary head().
-            def _cov_key(v):
-                try:
-                    return float(v)
-                except (TypeError, ValueError):
-                    return -1.0
-            subset = fields_df.assign(
-                _cov_rank=fields_df[cov_col].map(_cov_key)
-            ).sort_values("_cov_rank", ascending=False, kind="stable").head(n).drop(columns=["_cov_rank"])
-        else:
-            subset = fields_df.head(n)
-
-    rows = []
-    for _, row in subset.iterrows():
-        desc = row.get(desc_col)
-        # Collapse embedded newlines/whitespace so one field renders as one prompt line.
-        desc = re.sub(r"\s+", " ", str(desc)).strip() if desc is not None else ""
-        item = {
-            "id": row.get(id_col),
-            "description": desc,
-        }
-        if cov_col:
-            item["coverage"] = row.get(cov_col)
-        if type_col:
-            item["type"] = row.get(type_col)
-        rows.append(item)
-    return rows, fields_df.shape[0]
-
-
-def read_text_optional(path: Path) -> str:
+    数据链：idea ledger（s2_*_idea）的 skeleton_metas（expr→skeleton_id 归因）
+           × expressions/backtest_results（expr→sharpe/fitness 指标）
+           → per-skeleton {n, pass, pass_rate, best_sharpe, avg_sharpe}。
+    历史产物无归因（skeleton_metas 为 2026-09-13 起埋点）时返回 {}，
+    消费端（build_skeleton_prompt）自动降级为默认顺序。
+    """
+    import sqlite3
+    root = os.environ.get("WQB_ROOT") or r"D:\coding\traeCN_project\wqb"
+    db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
+    if not os.path.isfile(db):
+        return {}
+    conn = sqlite3.connect(db)
+    conn.row_factory = sqlite3.Row
     try:
-        return path.read_text(encoding="utf-8")
-    except Exception:
-        return ""
-
-
-def build_allowed_metric_suffixes(fields_df, max_suffixes: int = 300) -> list[str]:
-    """Derive a practical list of placeholder candidates from dataset field ids.
-
-    `implement_idea.py` matches `{variable}` by searching for that substring in the
-    field id and then using the *base* (everything before first occurrence) to
-    align the other variables. In practice, good placeholders tend to be the
-    trailing 2-5 underscore-joined tokens.
-    """
-
-    id_col = pick_first_present_column(fields_df, ["id", "field_id", "fieldId"])
-    if not id_col:
-        return []
-
-    field_ids = fields_df[id_col].dropna().astype(str).tolist()
-    dataset_code = detect_dataset_code(field_ids)
-
-    counts: dict[str, int] = {}
-    for raw in field_ids:
-        parts = [p for p in str(raw).split("_") if p]
-        if len(parts) < 2:
-            continue
-
-        # Collect suffix candidates from the tail.
-        # Prefer multi-token names, but allow single-token suffixes when they're
-        # specific enough (e.g., "inventories").
-        # IMPORTANT: never allow the "suffix" to equal the full id (that would
-        # encourage the LLM to emit {full_field_id}, violating the suffix-only rule).
-        for n in range(1, min(6, len(parts))):
-                suffix = "_".join(parts[-n:])
-                # Filter out overly-generic / numeric suffixes
-                if suffix.replace("_", "").isdigit():
-                    continue
-                if dataset_code and suffix.lower().startswith(dataset_code.lower() + "_"):
-                    continue
-                if n == 1 and len(suffix) < 8:
-                    continue
-                if len(suffix) < 6:
-                    continue
-                counts[suffix] = counts.get(suffix, 0) + 1
-
-    # Prefer suffixes that show up multiple times and have underscores
-    ranked = sorted(
-        counts.items(),
-        key=lambda kv: (kv[1], kv[0].count("_"), len(kv[0])),
-        reverse=True,
-    )
-
-    suffixes: list[str] = []
-    for suffix, _ in ranked:
-        if suffix not in suffixes:
-            suffixes.append(suffix)
-        if len(suffixes) >= max_suffixes:
-            break
-    return suffixes
-
-
-def build_allowed_suffixes_from_ids(dataset_ids: list[str], max_suffixes: int = 300) -> list[str]:
-    """Build suffix candidates from downloaded dataset ids.
-
-    This is used to normalize/validate templates for `implement_idea.py`.
-    """
-
-    counts: dict[str, int] = {}
-    for raw in dataset_ids:
-        parts = [p for p in str(raw).split("_") if p]
-        if len(parts) < 2:
-            continue
-        for n in range(1, 6):
-            if len(parts) >= n:
-                suffix = "_".join(parts[-n:])
-                if suffix.replace("_", "").isdigit():
-                    continue
-                if n == 1 and len(suffix) < 8:
-                    continue
-                if len(suffix) < 6:
-                    continue
-                counts[suffix] = counts.get(suffix, 0) + 1
-
-    ranked = sorted(
-        counts.items(),
-        key=lambda kv: (kv[1], kv[0].count("_"), len(kv[0])),
-        reverse=True,
-    )
-
-    suffixes: list[str] = []
-    for suffix, _ in ranked:
-        if suffix not in suffixes:
-            suffixes.append(suffix)
-        if len(suffixes) >= max_suffixes:
-            break
-    return suffixes
-
-
-def detect_dataset_code(dataset_ids: list[str]) -> str | None:
-    if not dataset_ids:
-        return None
-    counts: dict[str, int] = {}
-    for fid in dataset_ids:
-        tok = (str(fid).split("_", 1)[0] or "").strip()
-        if tok:
-            counts[tok] = counts.get(tok, 0) + 1
-    if not counts:
-        return None
-    return max(counts.items(), key=lambda kv: kv[1])[0]
-
-def ensure_metadata_block(markdown_text: str, dataset_id: str, region: str, delay: int) -> str:
-    """Ensure the ideas markdown contains the metadata block used by the pipeline."""
-
-    has_dataset = re.search(r"^\*\*Dataset\*\*:\s*\S+", markdown_text, flags=re.MULTILINE) is not None
-    has_region = re.search(r"^\*\*Region\*\*:\s*\S+", markdown_text, flags=re.MULTILINE) is not None
-    has_delay = re.search(r"^\*\*Delay\*\*:\s*\d+", markdown_text, flags=re.MULTILINE) is not None
-    if has_dataset and has_region and has_delay:
-        return markdown_text
-
-    block = [
-        "",
-        f"**Dataset**: {dataset_id}",
-        f"**Region**: {region}",
-        f"**Delay**: {delay}",
-        "",
-    ]
-
-    lines = markdown_text.splitlines()
-    insert_at = 0
-    for i, line in enumerate(lines[:10]):
-        if line.strip():
-            insert_at = i + 1
-            break
-    new_lines = lines[:insert_at] + block + lines[insert_at:]
-    return "\n".join(new_lines).lstrip("\n")
-
-def compress_to_known_suffix(var: str, allowed_suffixes: list[str]) -> str | None:
-    v = var.lower()
-    for sfx in sorted(allowed_suffixes, key=len, reverse=True):
-        if v.endswith(sfx.lower()):
-            return sfx
-    return None
-
-def placeholder_is_reasonably_matchable(var: str, dataset_ids: list[str]) -> bool:
-    """Heuristic check that a placeholder is likely to match real ids.
-
-    We avoid treating very short tokens as valid unless they match a token boundary.
-    """
-
-    v = var
-    if len(v) <= 3:
-        pat = re.compile(rf"(^|_){re.escape(v)}(_|$)", flags=re.IGNORECASE)
-        return any(pat.search(str(fid)) for fid in dataset_ids)
-    return any(v in str(fid) for fid in dataset_ids)
-
-
-def validate_placeholders_strict(template: str, dataset_ids: list[str]) -> tuple[str, bool, list[str]]:
-    """Strict validation: reject placeholders that are clearly hallucinated composite names.
-
-    A placeholder is invalid if:
-    - It does not match any field id (exact, suffix, or substring)
-    - It looks like a composite of multiple field names (e.g. 'mean_similarity_max_similarity_...')
-
-    A placeholder is valid if:
-    - Exact match with a field id
-    - Suffix match with one or more field ids (implement_idea.py will expand combinations)
-    - Substring match with a field id (fuzzy match)
-
-    Returns (template, is_valid, invalid_placeholders).
-    """
-    vars_in_template = re.findall(r"\{([A-Za-z0-9_]+)\}", template)
-    if not vars_in_template:
-        return template, False, []
-
-    invalid: list[str] = []
-    ds_set = set(dataset_ids)
-
-    for var in vars_in_template:
-        # Exact match is always valid
-        if var in ds_set:
-            continue
-        # Suffix match is valid (implement_idea.py will expand to all matching fields)
-        if any(fid.endswith(var) for fid in dataset_ids):
-            continue
-        # Substring match is valid (fuzzy)
-        if any(var in fid for fid in dataset_ids):
-            continue
-        # No match at all - this is a hallucinated field name
-        invalid.append(var)
-
-    return template, len(invalid) == 0, invalid
-
-def normalize_template_placeholders(
-    template: str,
-    dataset_ids: list[str],
-    allowed_suffixes: list[str],
-    dataset_code: str | None,
-) -> tuple[str, bool]:
-    """Normalize placeholders to suffix-only form, without dataset-specific aliasing.
-
-    - Strips dataset code prefix (e.g. fnd72_*) when present.
-    - Compresses placeholders to the longest known suffix.
-    - Returns (normalized_template, is_valid).
-    """
-
-    vars_in_template = re.findall(r"\{([A-Za-z0-9_]+)\}", template)
-    if not vars_in_template:
-        return template, False
-
-    mapping: dict[str, str] = {}
-    for var in set(vars_in_template):
-        new_var = var
-        if dataset_code and new_var.lower().startswith(dataset_code.lower() + "_"):
-            new_var = new_var[len(dataset_code) + 1 :]
-
-        compressed = compress_to_known_suffix(new_var, allowed_suffixes)
-        if compressed:
-            new_var = compressed
-
-        mapping[var] = new_var
-
-    normalized = template
-    for src, dst in mapping.items():
-        normalized = normalized.replace("{" + src + "}", "{" + dst + "}")
-
-    # Validate: every placeholder should look matchable in real ids.
-    vars_after = re.findall(r"\{([A-Za-z0-9_]+)\}", normalized)
-    ok = all(placeholder_is_reasonably_matchable(v, dataset_ids) for v in vars_after)
-    
-    # Strict validation: reject composite/hallucinated field names
-    if ok:
-        _, strict_ok, invalid = validate_placeholders_strict(normalized, dataset_ids)
-        if not strict_ok:
-            print(f"[validate] strict check failed, invalid placeholders: {invalid}", file=sys.stderr)
-            ok = False
-    
-    return normalized, ok
-
-def format_operators_for_prompt(allowed_operators, desc_limit: int = 160) -> str:
-    """概念模式 system prompt 的算子块紧凑序列化。
-
-    旧实现直接 f-string Python repr：单引号、description 内 \\\\r\\\\n 字面量、
-    恒为 REGULAR 的 scope 字段，全是噪声。新格式每行一个 JSON 对象：
-    name/category/definition（用法语法全保留）+ description（去换行、截 160 字符）。
-    """
-    if not allowed_operators:
-        return '"allowed_operators": []'
-    lines = []
-    for op in allowed_operators:
-        if not isinstance(op, dict):
-            lines.append(json.dumps(op, ensure_ascii=False))
-            continue
-        entry = {"name": op.get("name"), "category": op.get("category")}
-        definition = re.sub(r"\s+", " ", str(op.get("definition") or "")).strip()
-        if definition:
-            entry["definition"] = definition
-        desc = re.sub(r"\s+", " ", str(op.get("description") or "")).strip()
-        if len(desc) > desc_limit:
-            desc = desc[:desc_limit].rstrip() + "…"
-        if desc:
-            entry["description"] = desc
-        lines.append(json.dumps(entry, ensure_ascii=False))
-    return '"allowed_operators": [\n' + ",\n".join(lines) + "\n]"
-
-
-def build_prompt(
-    dataset_id: str,
-    dataset_name: str | None,
-    dataset_description: str | None,
-    data_category: str,
-    region: str,
-    delay: int,
-    universe: str,
-    data_type: str,
-    fields_summary: list[dict],
-    field_count: int,
-    feature_engineering_skill_md: str,
-    feature_implementation_skill_md: str,
-    allowed_metric_suffixes: list[str],
-    allowed_operators,
-    priors: dict | None = None,
-    region_priors: str = "",
-    require_ops: list[str] | None = None,
-    require_count: int = 2,
-    data_profile: dict | None = None,
-):
-    # Concept-first: do NOT dump full SKILL.md (that caused field×operator wrapping).
-    # Keep the 8-question checklist as a short reminder, then force mechanism → fields.
-    priors = priors or {}
-    fe_hint = ""
-    if feature_engineering_skill_md:
-        fe_hint = (
-            "Use the 8 questions from feature-engineering as a checklist only: "
-            "invariant / change / anomaly / interaction / structure / accumulation / relative / essence. "
-            "Do not copy the skill file. Each answer must be a priced mechanism."
-        )
-    prompt_lines = [
-            concept_first_rules(data_profile),
-            fe_hint,
-            compact_priors_text(priors, data_category),
-            "",
-            format_operators_for_prompt(allowed_operators),
-            '"allowed_placeholders": ' + json.dumps(allowed_metric_suffixes, ensure_ascii=False),
-            "",
-        ]
-
-    if str(data_type).upper() == "VECTOR":
-        prompt_lines.append(
-            "since all the following the data is vector type data, before you do any process, you should choose a vector operator to generate its statistical feature to use, the data cannot be directly use. for example, if datafieldA and datafieldB are vector type data, you can use vec_avg(datafieldA) -  vec_avg(datafieldB), where vec_avg() operator is used to generate the average of the data on a certain date. similarly, vector type operator can only be used on the vector type operator directly and cannot be nested, for example vec_avg(vec_sum(datafield)) is a false use."
-        )
-        vector_ops: list[str] = []
-        if isinstance(allowed_operators, list):
-            for op in allowed_operators:
-                if not isinstance(op, dict):
-                    continue
-                category = str(op.get("category") or "").strip().lower()
-                name = str(op.get("name") or "").strip()
-                if category == "vector" and name:
-                    vector_ops.append(name)
-
-        if vector_ops:
-            vector_ops = sorted(set(vector_ops), key=lambda x: x.lower())
-        else:
-            vector_ops = ["vec_avg", "vec_sum", "vec_max", "vec_min", "vec_std", "vec_count"]
-
-        prompt_lines.append("the available vector operators are: " + ", ".join(vector_ops))
-
-    if region_priors:
-        prompt_lines.extend(
-            [
-                f"REGION PRIORS (empirical knowledge from prior campaigns in {region} - treat as strong hints for directionality and field selection):",
-                region_priors,
-                "",
-            ]
-        )
-
-    prompt_lines.extend(
-        [
-            "CRITICAL OUTPUT RULES (to ensure implement_idea.py can generate expressions):",
-            "- Every Implementation Example MUST be a Python format template using {variable}.",
-            "- Every {variable} MUST come from the allowed_placeholders list provided in user content.",
-            "- When you implement ideas, ONLY use operators from allowed_operators provided.",
-            "- Do NOT include dataset codes/prefixes/horizons in {variable} (suffix-only).",
-            "- If you show raw field ids in tables, use backticks `like_this`, NOT {braces}.",
-            "- Include these metadata lines verbatim somewhere near the top:",
-            "  **Dataset**: <dataset_id>",
-            "  **Region**: <region>",
-            "  **Delay**: <delay>",
-            "",
-            "MANDATORY SECTION STRUCTURE (for downstream parsing):",
-            "Your output MUST contain these exact section headers in this order:",
-            "  ## 字段（Fields）",
-            "  - A markdown table listing ALL fields you reference: | Field ID | Type | Coverage | Role |",
-            "  - Role must be one of: 主信号 / 辅助信号 / group/bucket / 禁用",
-            "  ## 特征（Features）",
-            "  - Preprocessing decisions: ts_backfill / group_zscore / group_rank / vec_* / rank / winsorize",
-            "  ## 建议（Implementation Examples）",
-            "  - A consolidated list of ALL Implementation Example templates from your Concepts below",
-            "  - Format: `- {concept_name}: \\`template_with_{placeholder}\\``",
-            "  ## 字段白名单（Field Whitelist）",
-            "  - A fenced code block (```) containing ONLY the field ids you actually use, one per line",
-            "  ## Concepts",
-            "  - Your concept blocks with **Concept** / **Mechanism** / **Fields** / **Implementation Example** / **Direction** / **Expected Exposure**",
-            "",
-            "OPERATOR SYNTAX RULES (platform parser is strict):",
-            "- bucket() MUST use named parameter: bucket(expr, range=\"start,end,step\") or bucket(expr, buckets=\"t1,t2,...\").",
-            "  NEVER use positional string like bucket(expr, \"0.3,0.7\") — platform rejects with 'must be an expression'.",
-            "  Correct: bucket(rank(cap), range=\"0,1,0.1\")  → 10 buckets (0-0.1, 0.1-0.2, ..., 0.9-1.0)",
-            "  Correct: bucket(rank(cap), buckets=\"0.3,0.7\") → 3 buckets (<0.3, 0.3-0.7, >0.7)",
-            "  Wrong:   bucket(rank(cap), \"0.3,0.7\")        → parse ERROR",
-            "- trade_when(x, y, z): x=condition, y=alpha_when_true, z=alpha_when_false (all three required).",
-            "- group_neutralize(x, group): group must be a field like industry/sector/subindustry or bucket(...) output.",
-        ]
-    )
-    if require_ops:
-        prompt_lines.append(
-            f"OPERATOR DIVERSITY NUDGE (best-effort): prefer at least {require_count} of the ideas "
-            f"to include an Implementation Example using one of these operators: "
-            f"{', '.join(require_ops)}. NOTE: this is a soft nudge only — the authoritative "
-            f"structural diversity guarantee is the build_wave contract skeleton injection "
-            f"(layer ②), which deterministically injects these operators regardless of GEM output."
-        )
-
-    system_prompt = "\n".join(prompt_lines)
-
-    # --- user prompt: compact JSON header + one plain-text line per field ---
-    # (previously a pretty-printed JSON array of per-field objects; the repeated
-    # keys/indentation cost ~2x the payload on wide catalogs like model25's 554 fields)
-    field_types = {
-        str(f.get("type")).strip()
-        for f in fields_summary
-        if f.get("type") not in (None, "")
-    }
-    uniform_type = next(iter(field_types)) if len(field_types) == 1 else None
-
-    format_note = "fields are listed one per line after this JSON header as: field_id :: description [cov=x.xx"
-    if uniform_type:
-        format_note += f"]; all fields type={uniform_type}"
-    else:
-        format_note += " type=...]"
-    if len(fields_summary) < field_count:
-        format_note += (
-            f"; catalog truncated to top {len(fields_summary)} of {field_count} fields by coverage"
-        )
-
-    user_header = {
-        "instructions": {
-            "output_format": "Markdown Concept blocks only (no SKILL dump, no code fences around the whole report).",
-            "implementation_examples": (
-                "Each Implementation Example must be a template with {variable} placeholders. "
-                "CRITICAL: Placeholders must be EXACT field ids from the field list below. "
-                "Do NOT combine multiple field names into one placeholder (e.g. do NOT create "
-                "'mean_similarity_max_similarity_...' from 'mean_similarity' + 'max_similarity'). "
-                "If you need multiple fields, use separate placeholders: {field1}, {field2}. "
-                "Bind placeholders to the distinctive suffix of the 2–3 fields named in **Fields**. "
-                "Do not emit a generic {score}/{value}/{field} that matches the whole catalog."
-            ),
-            "no_code_fences": True,
-            "do_not_invent_placeholders": True,
-            "min_multi_field_concepts": 3,
-        },
-        "dataset_context": {
-            "dataset_id": dataset_id,
-            "dataset_name": dataset_name,
-            "dataset_description": dataset_description,
-            "category": data_category,
-            "region": region,
-            "delay": delay,
-            "universe": universe,
-            "field_count": field_count,
-        },
-        "field_format": format_note,
-    }
-
-    field_lines: list[str] = []
-    for f in fields_summary:
-        fid = str(f.get("id") or "").strip()
-        desc = str(f.get("description") or "").strip()
-        line = f"{fid} :: {desc}" if desc else fid
-        meta: list[str] = []
-        cov = f.get("coverage")
-        if cov is not None:
+        # 1) 归因：s2_*_idea ledger 的 skeleton_metas（expr → skeleton_id）
+        expr_to_skel = {}
+        rows = conn.execute(
+            "SELECT value FROM ledger_kv WHERE region=? AND key LIKE 's2\\_%\\_idea' ESCAPE '\\'",
+            (region,),
+        ).fetchall()
+        for r in rows:
             try:
-                meta.append(f"cov={float(cov):.2f}")
-            except (TypeError, ValueError):
-                meta.append(f"cov={cov}")
-        if not uniform_type and f.get("type") not in (None, ""):
-            meta.append(f"type={f.get('type')}")
-        if meta:
-            line += "  [" + " ".join(meta) + "]"
-        field_lines.append(line)
-
-    user_prompt = json.dumps(user_header, ensure_ascii=False) + "\n\n" + "\n".join(field_lines)
-    return system_prompt, user_prompt
-
-
-def render_skeleton_ideas_md(dataset_id: str, region: str, delay: int,
-                             layers: dict, metas: list, dropped: dict) -> str:
-    """把填槽结果渲染为 ideas.md（Concept 块自 slots 渲染，保持元数据头/ledger 契约）。"""
-    lines = [
-        f"**Dataset**: {dataset_id}",
-        f"**Region**: {region}",
-        f"**Delay**: {delay}",
-        "",
-        "# Skeleton-mode ideas (operator-topology constrained)",
-        "",
-        f"Field layering: signal={len(layers['signal'])}, scale={len(layers['scale'])}, "
-        f"metadata={len(layers['metadata'])} (excluded), date={len(layers['date'])} (excluded).",
-        "",
-        "## Signal fields used",
-        "",
-    ]
-    used = sorted({m["field"] for m in metas} | {m["field2"] for m in metas if m.get("field2")})
-    for fid in used:
-        lines.append(f"- `{fid}`")
-    lines += ["", "## Concepts", ""]
-    by_family: dict[str, list] = {}
-    for m in metas:
-        by_family.setdefault(m["family"], []).append(m)
-    for fam, items in sorted(by_family.items()):
-        lines.append(f"### family: {fam}")
-        lines.append("")
-        for i, m in enumerate(items, 1):
-            lines.append(f"**Concept {fam}.{i}**")
-            lines.append("")
-            lines.append(f"- skeleton: `{m['skeleton_id']}` window={m['window']} sign={m['sign']}")
-            lines.append(f"- rationale: {m['rationale'] or '(none)'}")
-            lines.append("")
-            lines.append("**Implementation Example**")
-            lines.append("")
-            lines.append(f"`{m['expr']}`")
-            lines.append("")
-    lines += [
-        "## Slot-drop statistics",
-        "",
-        f"```json\n{json.dumps(dropped, ensure_ascii=False, indent=2)}\n```",
-        "",
-    ]
-    return "\n".join(lines)
+                d = json.loads(r["value"])
+            except (json.JSONDecodeError, TypeError):
+                continue
+            for m in (d.get("skeleton_metas") or []):
+                if not isinstance(m, dict):
+                    continue
+                e = str(m.get("expr") or "").strip()
+                sid = str(m.get("skeleton_id") or "").strip()
+                if e and sid:
+                    expr_to_skel[e] = sid
+        if not expr_to_skel:
+            return {}
+        # 2) 指标：backtest_results.code 兜底 + expressions 表覆盖（同 key 取 expressions 值）
+        metrics = {}
+        for r in conn.execute(
+            "SELECT code, sharpe, fitness FROM backtest_results WHERE region=?",
+            (region,),
+        ):
+            e = str(r["code"] or "").strip()
+            if e and e not in metrics:
+                metrics[e] = {"sharpe": r["sharpe"], "fitness": r["fitness"]}
+        for r in conn.execute(
+            "SELECT expression, sharpe, fitness FROM expressions WHERE region=?",
+            (region,),
+        ):
+            e = str(r["expression"] or "").strip()
+            if e:
+                metrics[e] = {"sharpe": r["sharpe"], "fitness": r["fitness"]}
+        # 3) 聚合（只统计有 sharpe 的已回测表达式）
+        agg = {}
+        for e, sid in expr_to_skel.items():
+            m = metrics.get(e)
+            if not m or not isinstance(m.get("sharpe"), (int, float)):
+                continue
+            s = agg.setdefault(sid, {"n": 0, "pass": 0, "best_sharpe": None, "sum_sharpe": 0.0})
+            sh = float(m["sharpe"])
+            fit = m.get("fitness")
+            s["n"] += 1
+            if sh >= 1.58 and isinstance(fit, (int, float)) and fit >= 1.0:
+                s["pass"] += 1
+            s["sum_sharpe"] += sh
+            if s["best_sharpe"] is None or sh > s["best_sharpe"]:
+                s["best_sharpe"] = sh
+        out = {}
+        for sid, s in agg.items():
+            out[sid] = {
+                "n": s["n"],
+                "pass": s["pass"],
+                "pass_rate": round(s["pass"] / s["n"], 4),
+                "best_sharpe": round(s["best_sharpe"], 3),
+                "avg_sharpe": round(s["sum_sharpe"] / s["n"], 3),
+            }
+        return out
+    finally:
+        conn.close()
 
 
 def run_skeleton_generation(
@@ -800,11 +191,27 @@ def run_skeleton_generation(
     if priors:
         print(f"[skeleton] region priors loaded for {region} ({len(priors)} chars)", flush=True)
 
+    # 骨架实测统计（2026-09-13）：区域级 DB 聚合（n/pass_rate/best_sharpe），
+    # 供 prompt 按实测胜率排序标注；与 --no-region-priors 联动（关先验=关一切注入）。
+    skeleton_stats = None
+    if use_priors:
+        try:
+            skeleton_stats = _load_skeleton_stats(region)
+            if skeleton_stats:
+                _tot = sum(s.get("n", 0) for s in skeleton_stats.values())
+                print(f"[skeleton] 实测骨架统计: {len(skeleton_stats)} 个骨架有回测样本（{_tot} 条）", flush=True)
+            else:
+                print("[skeleton] 实测骨架统计: 暂无（自 2026-09-13 起随波次积累）", flush=True)
+        except Exception as exc:
+            print(f"[skeleton] warn: 骨架实测统计不可用（{exc}），按默认顺序", flush=True)
+            skeleton_stats = None
+
     system_prompt, user_prompt = skeletons.build_skeleton_prompt(
         dataset_id=dataset_id, region=region, delay=delay,
         field_layers=layers, descriptions=descriptions,
         n_slots=n_slots, region_priors=priors,
         window_pool=window_pool,
+        skeleton_stats=skeleton_stats,
     )
 
     slots: list = []
@@ -846,175 +253,7 @@ def run_skeleton_generation(
     }
 
 
-def build_compact_operator_summary(allowed_operators, max_ops: int | None = None) -> str:
-    """Build a compact operator reference — SOLUTION C (算子模块化拆分).
 
-    Instead of full operator definitions with lengthy descriptions, produce a
-    terse table: `name | category | 1-line-signature`. This keeps the prompt
-    focused on the *actionable* operator interface without drowning the model
-    in prose that causes attention dispersion.
-
-    Full operator details remain available to implement_idea.py at runtime;
-    the LLM only needs the summary to select operators.
-    """
-    if not allowed_operators:
-        return "(no operators specified)"
-    ops = allowed_operators[:max_ops] if max_ops else allowed_operators
-    lines = ["Operator | Category | Usage", "---------|----------|------"]
-    for op in ops:
-        name = str(op.get("name", ""))
-        cat = str(op.get("category", ""))
-        # Compact signature: try description first, then definition
-        desc = str(op.get("description") or op.get("definition") or "")
-        # Truncate long descriptions to 80 chars
-        desc = desc[:80] + ("…" if len(desc) > 80 else "")
-        lines.append(f"{name} | {cat} | {desc}")
-    return "\n".join(lines)
-
-
-def batch_fields_by_dataset(fields_df, max_batch: int = 100) -> list[tuple[str, list[dict]]]:
-    """Split fields into dataset-grouped batches — SOLUTION B (字段分层定义).
-
-    Fields from the same dataset share a prefix token (e.g. 'starmine_', 'fnd72_').
-    Grouping by dataset prefix ensures each batch has coherent semantics and
-    avoids attention dilution across unrelated datasets.
-
-    Returns list of (group_key, fields_subset) where group_key is the detected
-    dataset code or 'mixed' for ungroupable fields.
-    """
-    id_col = pick_first_present_column(fields_df, ["id", "field_id", "fieldId"])
-    desc_col = pick_first_present_column(fields_df, ["description", "desc"])
-    if not id_col:
-        return [("mixed", [])]
-
-    # Detect prefix for each field
-    groups: dict[str, list[dict]] = {}
-    for _, row in fields_df.iterrows():
-        fid = str(row.get(id_col) or "")
-        prefix = fid.split("_", 1)[0] if "_" in fid else "mixed"
-        if prefix not in groups:
-            groups[prefix] = []
-        groups[prefix].append({
-            "id": row.get(id_col),
-            "description": row.get(desc_col),
-        })
-
-    # Convert to list, cap batch size
-    result = []
-    for prefix in sorted(groups.keys()):
-        items = groups[prefix]
-        if len(items) > max_batch:
-            # Further split large batches
-            for i in range(0, len(items), max_batch):
-                result.append((f"{prefix}_part{ i // max_batch}", items[i:i+max_batch]))
-        else:
-            result.append((prefix, items))
-    return result
-
-
-def build_phased_prompts(
-    dataset_id: str,
-    dataset_name: str | None,
-    dataset_description: str | None,
-    data_category: str,
-    region: str,
-    delay: int,
-    universe: str,
-    data_type: str,
-    fields_by_batch: list[tuple[str, list[dict]]],
-    allowed_operators: list[dict],
-    allowed_metric_suffixes: list[str],
-    phase: str = "mapping",  # "structure" | "mapping" | "report"
-    structure_result: str | None = None,
-    batch_key: str | None = None,
-    batch_fields: list[dict] | None = None,
-    mapping_results: str | None = None,
-    priors: dict | None = None,
-):
-    """Build phase-specific prompts — SOLUTION A (分片流水线).
-
-    Phase 1 (structure): operator logic + dataset context → JSON operator map
-    Phase 2 (mapping): batch fields + structure JSON → field→operator combos
-    Phase 3 (report): all mapping results → ideas markdown
-
-    Each phase has a focused, small prompt that avoids the 50-min reasoning trap.
-    """
-    compact_ops = build_compact_operator_summary(allowed_operators)
-
-    if phase == "structure":
-        # Phase 1: Build operator→category reference (small prompt, no fields)
-        system_prompt = (
-            "You are a WorldQuant BRAIN alpha expression architect.\n"
-            "Task: Given the available operators below, produce a JSON object mapping\n"
-            "each operator name to its category and a 10-word usage hint.\n"
-            "Output ONLY valid JSON, no markdown fences.\n"
-            "Format: {\"operator_name\": {\"category\": \"...\", \"hint\": \"...\"}, ...}"
-        )
-        user_content = {
-            "dataset_id": dataset_id,
-            "region": region,
-            "delay": delay,
-            "universe": universe,
-            "operators_summary": compact_ops,
-        }
-        return system_prompt, json.dumps(user_content, ensure_ascii=False, indent=2)
-
-    elif phase == "mapping":
-        # Phase 2: Map fields to operators (medium prompt, one batch of fields)
-        batch_fields_json = json.dumps(batch_fields or [], ensure_ascii=False)
-        structure_json = structure_result or "{}"
-        system_prompt = (
-            "You generate WorldQuant BRAIN CONCEPTS, not per-field operator wraps.\n"
-            "Read the field batch as a story. Propose 3-6 mechanisms that need 2-3 fields each.\n"
-            "Rules:\n"
-            "1. Each item is a mechanism (disagreement / residual / change-vs-level / intensity).\n"
-            "2. Use ONLY operators from the operator map.\n"
-            "3. Placeholders are distinctive suffixes of the named fields, not generic {score}.\n"
-            "4. Output JSON array: [{\"mechanism\": \"...\", \"field_ids\": [\"...\"], "
-            "\"templates\": [\"ops({var})\", ...], \"why\": \"...\"}, ...]\n"
-            "5. No standalone rank({x}) / ts_zscore({x}, N). No markdown fences."
-        )
-        user_content = {
-            "operator_map": structure_json,
-            "fields_batch": batch_fields_json,
-            "batch_key": batch_key,
-            "allowed_suffixes": allowed_metric_suffixes[:50],
-            "region": region,
-            "delay": delay,
-            "priors": compact_priors_text(priors or {}, data_category),
-        }
-        return system_prompt, json.dumps(user_content, ensure_ascii=False, indent=2)
-
-    elif phase == "report":
-        # Phase 3: Generate ideas markdown from mapping results (medium prompt, aggregated results)
-        mapping_json = mapping_results or "[]"
-        system_prompt = (
-            "You are writing an ideas report for WorldQuant BRAIN Regular Alphas.\n"
-            "Keep only mechanisms with a priced story. Drop lone rank/ts_zscore wraps.\n"
-            "For each mapping item, produce:\n"
-            "  **Concept**: <mechanism name>\n"
-            "  - **Mechanism**: <who vs who / what surprise>\n"
-            "  - **Fields**: `id1`, `id2`\n"
-            "  - **Implementation Example**: `<operator_template({variable})>`\n"
-            "  - **Direction**: ...\n"
-            "  - **Why not crowded**: ...\n"
-            "Output valid markdown. Include metadata:\n"
-            "  **Dataset**: {dataset_id}\n"
-            "  **Region**: {region}\n"
-            "  **Delay**: {delay}"
-        )
-        user_content = {
-            "dataset_id": dataset_id,
-            "region": region,
-            "delay": delay,
-            "universe": universe,
-            "data_category": data_category,
-            "mapping_results": mapping_json,
-            "allowed_suffixes": allowed_metric_suffixes[:30],
-        }
-        return system_prompt, json.dumps(user_content, ensure_ascii=False, indent=2)
-
-    raise ValueError(f"Unknown phase: {phase}")
 
 
 def run_phased_pipeline(
@@ -1035,6 +274,7 @@ def run_phased_pipeline(
     allowed_metric_suffixes: list[str],
     timeout_s: int = 300,
     priors: dict | None = None,
+    batch_size: int = 50,
 ) -> str:
     """Execute the 3-phase pipeline — SOLUTION A orchestrator.
 
@@ -1052,8 +292,10 @@ def run_phased_pipeline(
     structure_json = call_moonshot(api_key, model_structure, sys_prompt, user_prompt, timeout_s=timeout_s)
 
     # ---- Phase 2: Field Mapping (batched) ----
-    print("[phased] Phase 2/3: Field mapping...", flush=True)
-    batches = batch_fields_by_dataset(fields_df, max_batch=50)
+    print(f"[phased] Phase 2/3: Field mapping (batch_size={batch_size})...", flush=True)
+    # 2026-09-18 ③：batch_size 从硬编码 50 改为参数透传（gem.py 节点默认 100），
+    # 防拆散同族字段（如订单流 bid_*/ask_* 跨批导致跨族机制无法设计）。
+    batches = batch_fields_by_dataset(fields_df, max_batch=batch_size)
     all_mapping_results: list[dict] = []
 
     for idx, (batch_key, batch_fields) in enumerate(batches):
@@ -1077,718 +319,48 @@ def run_phased_pipeline(
                 all_mapping_results.extend(parsed)
             else:
                 all_mapping_results.append(parsed)
-        except (json.JSONDecodeError, Exception) as exc:
+        except Exception as exc:
             print(f"[phased]   Warning: batch {batch_key} mapping failed: {exc}", file=sys.stderr)
 
-    mapping_json = json.dumps(all_mapping_results, ensure_ascii=False, indent=2)
     print(f"[phased]   Total mapping entries: {len(all_mapping_results)}", flush=True)
 
-    # ---- Phase 3: Report Generation ----
-    print("[phased] Phase 3/3: Report generation...", flush=True)
-    sys_prompt, user_prompt = build_phased_prompts(
-        dataset_id, dataset_name, dataset_description, data_category,
-        region, delay, universe, data_type, [],
-        allowed_operators, allowed_metric_suffixes,
-        phase="report",
-        mapping_results=mapping_json,
-        priors=priors,
-    )
-    report = call_moonshot(api_key, model_report, sys_prompt, user_prompt, timeout_s=timeout_s)
+    # ---- Phase 3: Deterministic render（2026-09-13：确定性直译，替代 LLM 重写）----
+    # JSON → markdown 直译：消除最后一段自由文本（字段名拼接幻觉面归零）；
+    # 占位符合法性由下游归一化兜底；Phase 2 无模板时渲染为空 → 下游 fail fast。
+    print("[phased] Phase 3/3: Deterministic render (no LLM call)...", flush=True)
+    report = render_phased_ideas_md(all_mapping_results, dataset_id, region, delay)
+    n_blocks = report.count("**Concept**:")
+    print(f"[phased]   rendered {n_blocks} concept blocks", flush=True)
+    if model_report:
+        print(f"[phased]   note: model_report={model_report} is unused in deterministic mode", flush=True)
     print("[phased] Done.", flush=True)
     return report
-    if datafields_df is None or getattr(datafields_df, "empty", True):
-        return 0.0
-    dtype_col = pick_first_present_column(datafields_df, ["type", "dataType", "data_type"])
-    if not dtype_col:
-        return 0.0
-    counts = datafields_df[dtype_col].astype(str).value_counts().to_dict()
-    vector_count = counts.get("VECTOR", 0)
-    total = sum(counts.values())
-    return (vector_count / total) if total else 0.0
 
 
-def _vector_ratio_from_datafields_df(datafields_df) -> float:
-    if datafields_df is None or getattr(datafields_df, "empty", True):
-        return 0.0
-    dtype_col = pick_first_present_column(datafields_df, ["type", "dataType", "data_type"])
-    if not dtype_col:
-        return 0.0
-    counts = datafields_df[dtype_col].astype(str).value_counts().to_dict()
-    vector_count = counts.get("VECTOR", 0)
-    total = sum(counts.values())
-    return (vector_count / total) if total else 0.0
+def _normalize_template_pairs(block_pairs, dataset_ids, allowed_suffixes, dataset_code):
+    """占位符归一化 + 严格校验：返回 (normalized_pairs, rejected_templates)。
 
-
-def filter_operators_df(operators_df, keep_vector: bool):
-    """Apply user-confirmed operator filters.
-
-    Rules:
-    - Keep only scope == REGULAR
-    - Keep category == Group (2026-09-06: 原先整类剥离，与 prompt 要求冲突)
-    - Keep category == Vector only if keep_vector is True
-    - Drop only the ghost operator `neutralize` (2026-09-06: 原正则误伤 scale/normalize/group_*)
+    2026-09-12 新增（字段名拼接幻觉可观测性 + 反馈重试支撑）：
+    rejected_templates 收集被拒模板（占位符无法匹配真实字段），原实现静默 continue，
+    导致“整波因模板全被拒而失败”不可诊断、也无从反馈给 LLM 重生成。
     """
-
-    df = operators_df.copy()
-
-    name_col = pick_first_present_column(df, ["name", "operator", "op", "id"])
-    scope_col = pick_first_present_column(df, ["scope", "scopes"])
-    category_col = pick_first_present_column(df, ["category", "group", "type"])
-    desc_col = pick_first_present_column(df, ["description", "desc", "help", "doc", "documentation"])
-    definition_col = pick_first_present_column(df, ["definition", "syntax"])
-
-    if scope_col:
-        df = df[df[scope_col].astype(str).str.upper() == "REGULAR"]
-
-    if category_col:
-        # 2026-09-06 修复：不再整类剥离 Group 算子。
-        # 原因：prompt（L602/L618/L1350/L2497-99）硬性要求「至少 1 个 concept 使用
-        # group_zscore / group_rank / group_neutralize / group_mean」，但此处把
-        # category=="group" 整类删掉，导致 allowed_operators 与 prompt 自相矛盾——
-        # 模型（EUR wave124 实测）耗费大量推理在这个冲突上并最终放弃 group 算子。
-        # group_* 全部在平台 live 102 算子内（operator_audit 已验证）。
-        if not keep_vector:
-            df = df[df[category_col].astype(str).str.lower() != "vector"]
-
-    if name_col:
-        # 2026-09-03 修复：放开 rank/zscore（BRAIN 标准算子，多样性必需）
-        # 原 banned 正则过严，把 rank/ts_zscore/group_rank 当中性化算子禁掉，
-        # 导致 GEM 被迫全部用 quantile(..., driver="gaussian") 包裹，骨架单一。
-        # 保留 neutral/normal/scal 过滤（防止中性化算子滥用）。
-        # 2026-09-06 修复：原正则按子串杀 neutral|normal|scal，误伤三类已验证算子：
-        #   scale / ts_scale / group_scale（跨区铁律 SCALE-NEG-RANK-ROBUST-SYNTAX
-        #     明确推荐 scale(-rank(x)) 过 robust 闸，实测 1.01 vs reverse 写法 0.90）
-        #   normalize / group_normalize、group_neutralize
-        # 真正必须禁的只有裸 neutralize —— 它是平台幽灵算子（operator_audit ghost）。
-        banned = re.compile(r"^neutralize$", flags=re.IGNORECASE)
-        df = df[~df[name_col].astype(str).str.contains(banned, na=False)]
-
-        # de-dup by operator name
-        df = df.drop_duplicates(subset=[name_col]).reset_index(drop=True)
-
-    cols = [c for c in [name_col, category_col, scope_col, desc_col, definition_col] if c]
-    allowed = []
-    for _, row in df.iterrows():
-        item = {
-            "name": row.get(name_col) if name_col else None,
-            "category": row.get(category_col) if category_col else None,
-            "scope": row.get(scope_col) if scope_col else None,
-            "description": row.get(desc_col) if desc_col else None,
-            "definition": row.get(definition_col) if definition_col else None,
-        }
-        # drop None keys to keep prompt compact
-        allowed.append({k: v for k, v in item.items() if v is not None})
-
-    return df, allowed, cols
-
-def call_moonshot(api_key: str, model: str, system_prompt: str, user_prompt: str, timeout_s: int = 900):
-    base_url = os.environ.get("MOONSHOT_BASE_URL", "https://api.moonshot.cn/v1")
-    url = f"{base_url.rstrip('/')}/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-    }
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-
-        # Default to streaming so the user can observe model progress.
-        "stream": True,
-    }
-
-    retries = int(os.environ.get("MOONSHOT_RETRIES", "2"))
-    backoff_s = float(os.environ.get("MOONSHOT_RETRY_BACKOFF", "2"))
-
-    def _stream_sse_and_collect(resp: requests.Response) -> str:
-        """Read OpenAI-compatible SSE stream and print deltas live.
-
-        Still returns the full accumulated assistant content so existing callers
-        (which expect a string) keep working.
-        """
-
-        content_parts: list[str] = []
-        thinking_parts: list[str] = []
-        thinking = False
-
-        # Ensure requests doesn't try to decode as bytes.
-        for raw_line in resp.iter_lines(decode_unicode=True):
-            if not raw_line:
+    normalized_pairs: list[tuple[str, str]] = []
+    rejected_templates: list[str] = []
+    for item in block_pairs:
+        t = str(item.get("template") or "").strip()
+        idea_text = str(item.get("idea") or "").strip()
+        if not t:
+            continue
+        if dataset_ids and allowed_suffixes:
+            normalized_t, ok = normalize_template_placeholders(t, dataset_ids, allowed_suffixes, dataset_code)
+            if not ok:
+                rejected_templates.append(t)
                 continue
-            line = raw_line.strip()
-            if not line.startswith("data:"):
-                continue
-            data_str = line[5:].strip()
-            if data_str == "[DONE]":
-                break
-
-            try:
-                event = json.loads(data_str)
-            except Exception:
-                continue
-
-            choices = event.get("choices") or []
-            if not choices:
-                continue
-            choice0 = choices[0] if isinstance(choices[0], dict) else None
-            if not choice0:
-                continue
-
-            delta = choice0.get("delta") or {}
-            if not isinstance(delta, dict):
-                delta = {}
-
-            # Moonshot/Kimi exposes reasoning tokens as `reasoning_content`.
-            reasoning = delta.get("reasoning_content")
-            if reasoning:
-                if not thinking:
-                    thinking = True
-                    print("=============开始思考=============", flush=True)
-                thinking_parts.append(str(reasoning))
-                print(str(reasoning), end="", flush=True)
-
-            piece = delta.get("content")
-            if piece:
-                if thinking:
-                    thinking = False
-                    print("\n=============思考结束=============", flush=True)
-                content_parts.append(str(piece))
-                print(str(piece), end="", flush=True)
-
-            finish_reason = choice0.get("finish_reason")
-            if finish_reason:
-                break
-
-        # If the stream ended while still "thinking", close the marker cleanly.
-        if thinking:
-            print("\n=============思考结束=============", flush=True)
-
-        return "".join(content_parts)
-
-    last_exc: Exception | None = None
-    for attempt in range(retries + 1):
-        try:
-            resp = requests.post(url, headers=headers, json=payload, timeout=timeout_s, stream=True)
-            resp.encoding = "utf-8"
-            if resp.status_code >= 300:
-                raise RuntimeError(f"Moonshot API error {resp.status_code}: {resp.text}")
-
-            # Prefer SSE streaming when available.
-            ctype = (resp.headers.get("Content-Type") or "").lower()
-            if "text/event-stream" in ctype or payload.get("stream"):
-                return _stream_sse_and_collect(resp)
-
-            data = resp.json()
-            break
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
-            last_exc = exc
-            if attempt >= retries:
-                raise
-            time.sleep(backoff_s * (2**attempt))
-        except requests.exceptions.RequestException as exc:
-            # Other request-layer issues: retry a bit, but don't loop forever.
-            last_exc = exc
-            if attempt >= retries:
-                raise
-            time.sleep(backoff_s * (2**attempt))
-    else:
-        raise last_exc or RuntimeError("Moonshot request failed")
-
-    try:
-        return data["choices"][0]["message"]["content"]
-    except Exception as exc:
-        raise RuntimeError(f"Unexpected Moonshot response: {data}") from exc
-def _ensure_mandatory_sections(content: str, dataset_id: str, region: str, delay: int) -> str:
-    """Ensure the ideas markdown contains all mandatory sections for downstream parsing.
-
-    Required sections (checked by regex, auto-appended if missing):
-      - ## 字段（Fields）
-      - ## 特征（Features）
-      - ## 建议（Implementation Examples）
-      - ## 字段白名单（Field Whitelist）
-      - ## Concepts
-    """
-    if not content:
-        return content
-
-    # Check for mandatory sections (allow both Chinese and English headers)
-    has_fields = re.search(r"^##\s+字段|^##\s+Fields", content, flags=re.MULTILINE | re.IGNORECASE)
-    has_features = re.search(r"^##\s+特征|^##\s+Features", content, flags=re.MULTILINE | re.IGNORECASE)
-    has_examples = re.search(r"^##\s+建议|^##\s+Implementation", content, flags=re.MULTILINE | re.IGNORECASE)
-    has_whitelist = re.search(r"^##\s+字段白名单|^##\s+Field Whitelist", content, flags=re.MULTILINE | re.IGNORECASE)
-    has_concepts = re.search(r"^##\s+Concepts|^##\s+概念", content, flags=re.MULTILINE | re.IGNORECASE)
-
-    missing = []
-    if not has_fields:
-        missing.append("字段（Fields）")
-    if not has_features:
-        missing.append("特征（Features）")
-    if not has_examples:
-        missing.append("建议（Implementation Examples）")
-    if not has_whitelist:
-        missing.append("字段白名单（Field Whitelist）")
-    if not has_concepts:
-        missing.append("Concepts")
-
-    if not missing:
-        return content
-
-    # Auto-append missing sections with sensible defaults
-    lines = [content.rstrip(), ""]
-    lines.append("---")
-    lines.append("")
-    lines.append("## Auto-appended mandatory sections (GEM 生成端兜底)")
-    lines.append("")
-
-    if not has_fields:
-        lines.extend([
-            "## 字段（Fields）",
-            "",
-            "| Field ID | Type | Coverage | Role |",
-            "|---|---|---|---|",
-            f"| (auto-generated from {dataset_id}) | MATRIX | N/A | 主信号 |",
-            "",
-        ])
-
-    if not has_features:
-        lines.extend([
-            "## 特征（Features）",
-            "",
-            "- ts_backfill：对低覆盖率稀疏字段做时间序列回填",
-            "- group_zscore / group_rank：截面中性化（cross-sectional）",
-            "- rank / winsorize：防厚尾与极值",
-            "",
-        ])
-
-    if not has_examples:
-        # Extract existing Implementation Examples from Concepts
-        examples = re.findall(r"\*\*Implementation Example\*\*[:\s]*`([^`]+)`", content)
-        if not examples:
-            examples = re.findall(r"Implementation Example[:\s]*`([^`]+)`", content, flags=re.IGNORECASE)
-        lines.extend([
-            "## 建议（Implementation Examples）",
-            "",
-        ])
-        if examples:
-            for i, ex in enumerate(examples[:10], 1):
-                lines.append(f"- concept_{i}: `{ex}`")
+            normalized_pairs.append((normalized_t, idea_text))
         else:
-            lines.append("- (no Implementation Examples found in Concepts)")
-        lines.append("")
-
-    if not has_whitelist:
-        # Extract field ids from backticks in the whole document
-        field_ids = re.findall(r"`([a-z][a-z0-9_]{3,})`", content)
-        field_ids = sorted(set(f for f in field_ids if not f.startswith(("rank", "ts_", "vec_", "group_", "add", "sub", "mul", "div"))))
-        lines.extend([
-            "## 字段白名单（Field Whitelist）",
-            "",
-            "```",
-        ])
-        lines.extend(field_ids[:50])  # cap at 50
-        lines.extend([
-            "```",
-            "",
-        ])
-
-    if not has_concepts:
-        lines.extend([
-            "## Concepts",
-            "",
-            "(Concept blocks were not found in the original output; see above sections for extracted fields and templates.)",
-            "",
-        ])
-
-    print(f"[sections] auto-appended missing mandatory sections: {', '.join(missing)}", flush=True)
-    return "\n".join(lines)
-
-
-def save_ideas_report(content: str, region: str, delay: int, dataset_id: str) -> Path:
-    # Ensure mandatory sections before saving
-    content = _ensure_mandatory_sections(content, dataset_id, region, delay)
-    output_dir = FEATURE_ENGINEERING_DIR / "output_report"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    filename = f"{region}_delay{delay}_{dataset_id}_ideas.md"
-    output_path = output_dir / filename
-    output_path.write_text(content, encoding="utf-8")
-    return output_path
-
-def extract_templates(markdown_text: str) -> list[str]:
-    """Extract implementation templates from idea markdown.
-
-    For pipeline robustness, this function returns ONLY the template strings.
-    The recommended, higher-fidelity parser is `extract_template_blocks()`,
-    which returns both template + idea text per **Concept** block.
-    """
-
-    blocks = extract_template_blocks(markdown_text)
-    templates = [b["template"] for b in blocks if b.get("template")]
-    return sorted(set(t.strip() for t in templates if t and t.strip()))
-
-
-def extract_table_template_blocks(markdown_text: str) -> list[dict[str, str]]:
-    """Fallback parser for markdown tables that contain a `{placeholder}` template.
-
-    Accepts both column orders:
-      | ID | `template` | rationale |
-      | # | Idea | `template` |
-    """
-    row_re = re.compile(r"^\|\s*(?:\d+\s*)?\|\s*`([^`]+)`\s*\|\s*(.*?)\s*\|?\s*$")
-    out: list[dict[str, str]] = []
-    seen: set[str] = set()
-
-    def _add(template: str, rationale: str) -> None:
-        template = template.strip()
-        if "{" not in template or "}" not in template or template in seen:
-            return
-        seen.add(template)
-        idea = f"**Concept**: {rationale}\n- **Implementation Example**: `{template}`"
-        out.append({"template": template, "idea": idea})
-
-    for line in markdown_text.splitlines():
-        stripped = line.strip()
-        if not stripped.startswith("|") or stripped.startswith("|---"):
-            continue
-        matched = row_re.match(stripped)
-        if matched:
-            _add(matched.group(1).strip(), matched.group(2).strip().strip("|").strip())
-            continue
-        cells = [c.strip() for c in stripped.strip("|").split("|")]
-        if len(cells) < 2:
-            continue
-        template = None
-        other: list[str] = []
-        for cell in cells:
-            bt = re.search(r"`([^`]+)`", cell)
-            if bt and "{" in bt.group(1) and "}" in bt.group(1) and template is None:
-                template = bt.group(1).strip()
-            else:
-                other.append(re.sub(r"`+", "", cell).strip())
-        if template:
-            rationale = " ".join(x for x in other if x and x != "---" and not x.isdigit())
-            _add(template, rationale)
-    return out
-
-
-def extract_named_template_blocks(markdown_text: str) -> list[dict[str, str]]:
-    """Fallback for LLM headings: - **Template**: `expr` plus nearby Rationale."""
-    named_re = re.compile(r"\*\*Template\*\*\s*:\s*`([^`]+)`", flags=re.IGNORECASE)
-    rationale_re = re.compile(r"\*\*Rationale\*\*\s*:\s*(.*)$", flags=re.IGNORECASE)
-    heading_re = re.compile(r"^#{2,6}\s+(.*)$")
-    out: list[dict[str, str]] = []
-    current_heading = ""
-    pending_template: str | None = None
-    pending_rationale = ""
-    pending_heading = ""
-
-    def _flush() -> None:
-        nonlocal pending_template, pending_rationale, pending_heading
-        if pending_template and "{" in pending_template and "}" in pending_template:
-            idea = f"**Concept**: {pending_heading or pending_rationale}\n{pending_rationale}".strip()
-            out.append({"template": pending_template.strip(), "idea": idea})
-        pending_template = None
-        pending_rationale = ""
-        pending_heading = ""
-
-    for line in markdown_text.splitlines():
-        stripped = line.strip()
-        hm = heading_re.match(stripped)
-        if hm:
-            _flush()
-            current_heading = hm.group(1).strip()
-            continue
-        tm = named_re.search(stripped)
-        if tm:
-            _flush()
-            pending_template = tm.group(1).strip()
-            pending_heading = current_heading
-            continue
-        rm = rationale_re.search(stripped)
-        if rm and pending_template:
-            pending_rationale = (rm.group(1) or "").strip()
-    _flush()
-    return out
-
-
-def extract_template_blocks(markdown_text: str) -> list[dict[str, str]]:
-    """Parse **Concept** blocks and extract {template, idea}.
-
-    A "block" is a section that starts with a line like:
-      **Concept**: ...
-    and contains a line like:
-      - **Implementation Example**: `...`
-
-    Output:
-      [{"template": <string>, "idea": <string>}, ...]
-
-    Notes:
-    - `template` is taken from inside backticks when present; otherwise uses the
-      remainder of the line after ':'.
-    - `idea` is the rest of the block text (including the concept line and
-      bullets) excluding the implementation example line.
-    """
-
-    concept_re = re.compile(r"^\*\*Concept\*\*\s*:\s*(.*)\s*$")
-    impl_re = re.compile(r"\*\*Implementation Example\*\*\s*:\s*(.*)$", flags=re.IGNORECASE)
-    backtick_re = re.compile(r"`([^`]*)`")
-    boundary_re = re.compile(r"^(?:-{3,}|#{1,6}\s+.*)\s*$")
-
-    lines = markdown_text.splitlines()
-    blocks: list[list[str]] = []
-    current: list[str] = []
-
-    def _flush():
-        nonlocal current
-        if current:
-            # Trim leading/trailing blank lines in block.
-            while current and not current[0].strip():
-                current.pop(0)
-            while current and not current[-1].strip():
-                current.pop()
-            if current:
-                blocks.append(current)
-        current = []
-
-    for line in lines:
-        if concept_re.match(line.strip()):
-            _flush()
-            current = [line]
-            continue
-
-        # If we are inside a concept block and hit a section boundary (e.g. '---', '### Q2'),
-        # close the block so unrelated headings don't get included in the idea text.
-        if current and boundary_re.match(line.strip()):
-            _flush()
-            continue
-
-        if current:
-            current.append(line)
-
-    _flush()
-
-    out: list[dict[str, str]] = []
-    for block_lines in blocks:
-        template: str | None = None
-        impl_line_idx: int | None = None
-
-        # Find the implementation example line (or its continuation).
-        for i, raw in enumerate(block_lines):
-            m = impl_re.search(raw)
-            if not m:
-                continue
-
-            impl_line_idx = i
-            tail = (m.group(1) or "").strip()
-
-            # Case 1: template is in backticks on the same line.
-            bt = backtick_re.search(tail)
-            if bt:
-                template = bt.group(1).strip()
-                break
-
-            # Case 2: tail itself is the template.
-            if tail and ("{" in tail and "}" in tail):
-                template = tail.strip().strip("`")
-                break
-
-            # Case 3: template is on the next non-empty line, often in backticks.
-            for j in range(i + 1, min(i + 4, len(block_lines))):
-                nxt = block_lines[j].strip()
-                if not nxt:
-                    continue
-                bt2 = backtick_re.search(nxt)
-                if bt2:
-                    template = bt2.group(1).strip()
-                    break
-                if "{" in nxt and "}" in nxt:
-                    template = nxt.strip().strip("`")
-                    break
-            break
-
-        if not template or "{" not in template or "}" not in template:
-            continue
-
-        # idea = all block text except the implementation example line itself.
-        idea_lines: list[str] = []
-        for i, raw in enumerate(block_lines):
-            if impl_line_idx is not None and i == impl_line_idx:
-                continue
-            idea_lines.append(raw)
-
-        idea = "\n".join(idea_lines).strip()
-        out.append({"template": template.strip(), "idea": idea})
-
-    if not out:
-        out = extract_table_template_blocks(markdown_text)
-    if not out:
-        out = extract_named_template_blocks(markdown_text)
-
-    return out
-
-def load_dataset_ids_from_csv(dataset_csv_path: Path) -> list[str]:
-    if not dataset_csv_path.exists():
-        return []
-    ids: list[str] = []
-    with dataset_csv_path.open("r", encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        if "id" not in (reader.fieldnames or []):
-            return []
-        for row in reader:
-            v = (row.get("id") or "").strip()
-            if v:
-                ids.append(v)
-    return ids
-
-def safe_dataset_id(dataset_id: str) -> str:
-    return "".join([c for c in dataset_id if c.isalnum() or c in ("-", "_")])
-
-def run_script(args_list: list[str], cwd: Path):
-    result = subprocess.run(args_list, cwd=cwd, capture_output=True, text=True)
-    if result.returncode != 0:
-        raise RuntimeError(
-            "Command failed: "
-            + " ".join(args_list)
-            + f"\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-        )
-    return result.stdout
-
-
-def delete_path_if_exists(path: Path):
-    """Best-effort delete a file or directory."""
-
-    try:
-        if not path.exists():
-            return
-        if path.is_dir():
-            shutil.rmtree(path, ignore_errors=True)
-        else:
-            path.unlink(missing_ok=True)
-    except Exception:
-        # Best-effort cleanup only; rerun should still proceed.
-        return
-
-def _wqb_campaign_store():
-    """Locate CampaignStore from skill scripts (workspace src/)."""
-    roots = [
-        os.environ.get("WQB_ROOT"),
-        os.environ.get("WQ_PROJECT_ROOT"),
-        r"D:\coding\traeCN_project\wqb",
-    ]
-    for root in roots:
-        if not root:
-            continue
-        src = os.path.join(root, "src")
-        if os.path.isdir(os.path.join(src, "wqb")):
-            if src not in sys.path:
-                sys.path.insert(0, src)
-            from wqb.store import CampaignStore
-            db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
-            return CampaignStore(db)
-    raise ImportError("wqb.store not found; set WQB_ROOT")
-
-
-def _load_template_families() -> dict:
-    """加载 toolkit config/template_families.json（字段画像驱动模板族）。
-
-    定位顺序：WQ_TOOLKIT_DIR 覆盖 → `skill_roots()`（技能根单源：env → ~/.claude →
-    ~/.codex → 历史位 → 仓库自带 Claude/skills，见同目录 skill_roots.py 模块头）。
-    返回 {'families': [...], 'free_explore_family': {...}}；找不到返回 {}。
-    """
-    candidates = []
-    env = os.environ.get("WQ_TOOLKIT_DIR")
-    if env:
-        # WQ_TOOLKIT_DIR 指向 scripts/，config 在其上一级
-        candidates.append(os.path.join(os.path.dirname(env), "config", "template_families.json"))
-        candidates.append(os.path.join(env, "config", "template_families.json"))
-    candidates.extend(candidate_paths_under_skill(
-        "wq-brain-campaign-toolkit", "config", "template_families.json"))
-    for path in candidates:
-        try:
-            if os.path.isfile(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    return json.load(f)
-        except Exception:
-            continue
-    return {}
-
-
-def _check_family_dataset_fit(family: dict, data_category: str) -> tuple:
-    """机制⇄数据类别匹配门：数据集类别是否在族的 mechanism_premise.data_category 内。
-
-    返回 (fit: bool, reason: str)。data_category 为空（未约束）→ 通过。
-    这是烧配额前的拦截门：analyst 数据集不该进 event_conviction 族（KOR 实证全 fail）。
-    """
-    premise = family.get("mechanism_premise") or {}
-    allowed = premise.get("data_category") or (family.get("field_profile_match") or {}).get("data_category") or []
-    if not allowed:
-        return True, ""
-    dc = (data_category or "").strip().lower()
-    allowed_l = [str(c).lower() for c in allowed]
-    if dc and dc not in allowed_l:
-        exclusion = premise.get("dataset_exclusion") or ""
-        reason = (f"数据集类别 '{data_category}' 不在族 '{family.get('family_id')}' 的适用类别 {allowed}"
-                  f"（机制前提不匹配）" + (f"；{exclusion}" if exclusion else ""))
-        return False, reason
-    return True, ""
-
-
-def _prepare_family_binding(region: str, dataset_id: str, family_id: str,
-                            out_dir: Path, data_category: str | None = None) -> tuple:
-    """为模板族生成准备画像过滤输入（field_profile + family_match JSON 文件）。
-
-    流程：① 机制⇄数据类别匹配门（不匹配返回 ('BLOCKED', reason)）；② 读 field_profile；
-    ③ 优先取 mechanism_premise 作为 family_match（含 forbidden_shape + semantic_requirement），
-    fallback 到 field_profile_match；④ 各写一个 JSON 文件供 implement_idea.py 消费。
-    返回 (field_profile_path, family_match_path)；('BLOCKED', reason) 表示机制不匹配应拦截；
-    (None, None) 表示跳过画像过滤（降级）。
-    """
-    families_cfg = _load_template_families()
-    families = families_cfg.get("families") or []
-    family = next((f for f in families if f.get("family_id") == family_id), None)
-    if not family:
-        print(f"[family] warn: template family '{family_id}' 未在 template_families.json 注册，跳过画像过滤", flush=True)
-        return None, None
-
-    # 机制⇄数据类别匹配门（烧配额前拦截）
-    if data_category:
-        fit, reason = _check_family_dataset_fit(family, data_category)
-        if not fit:
-            print(f"[family] BLOCKED: {reason}", flush=True)
-            return "BLOCKED", reason
-
-    # 优先 mechanism_premise（含 forbidden_shape + semantic_requirement），fallback field_profile_match
-    family_match = family.get("mechanism_premise") or family.get("field_profile_match") or {}
-    if not family_match:
-        print(f"[family] warn: family '{family_id}' 无 mechanism_premise/field_profile_match，跳过画像过滤", flush=True)
-        return None, None
-
-    try:
-        store = _wqb_campaign_store()
-        try:
-            profile_map = store.get_field_profile_map(region, dataset_id)
-        finally:
-            try:
-                store.close()
-            except Exception:
-                pass
-    except Exception as exc:
-        print(f"[family] warn: 读取 field_profile 失败（{exc}），跳过画像过滤", flush=True)
-        return None, None
-    if not profile_map:
-        print(f"[family] warn: {region}/{dataset_id} 无 field_profile（先跑 tools/field_profile_backfill.py），跳过画像过滤", flush=True)
-        return None, None
-
-    out_dir.mkdir(parents=True, exist_ok=True)
-    fp_path = out_dir / "family_field_profile.json"
-    fm_path = out_dir / "family_match.json"
-    fp_path.write_text(json.dumps(profile_map, ensure_ascii=False, indent=1), encoding="utf-8")
-    fm_path.write_text(json.dumps(family_match, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"[family] 模板族 '{family_id}' 画像过滤就绪: {len(profile_map)} 字段画像, "
-          f"match={list(family_match.keys())}", flush=True)
-    return str(fp_path), str(fm_path)
+            # No dataset ids to validate against; pass through.
+            normalized_pairs.append((t, idea_text))
+    return normalized_pairs, rejected_templates
 
 
 def main():
@@ -1946,7 +518,16 @@ def main():
     except Exception as exc:
         print(f"[s1] ledger 自查不可用（{exc}），按无记录处理", flush=True)
 
-    if s1_record and not args.ideas_file and not args.regen_ideas and args.pipeline_mode != "skeleton":
+    _tpl_sources = ("feature_engineering_node", "standalone", "standalone_v2")
+    _s1_src = str((s1_record or {}).get("source") or "").strip()
+    _s1_is_template = any(_s1_src == t or _s1_src.startswith(t + " ") or _s1_src.startswith(t + "(")
+                          for t in _tpl_sources)
+    if s1_record and _s1_is_template and not args.ideas_file:
+        # 2026-09-15 ②：模板渲染文档（feature_engineering.py，无 LLM）不再自动注入，
+        # 否则本管线一行 LLM 都不调、整波退化为 8 个模板的占位符展开。
+        print(f"[s1] ledger {s1_key} 命中但 source={_s1_src!r} 是模板渲染文档，"
+              f"不注入 --ideas-file，改走概念优先自含生成", flush=True)
+    elif s1_record and not args.ideas_file and not args.regen_ideas and args.pipeline_mode != "skeleton":
         _p = str(s1_record.get("ideas_md_path") or "").strip()
         if _p and Path(_p).exists():
             args.ideas_file = _p
@@ -1979,6 +560,7 @@ def main():
 
     ideas_path = None
     skeleton_result = None  # skeleton 模式的产物（expressions/metas/dropped/layers）
+    single_shot_prompts = None  # single-shot 最近一次 (system, user) prompt（反馈重试用）
     if args.ideas_file:
         ideas_path = Path(args.ideas_file).resolve()
         if not ideas_path.exists():
@@ -2093,6 +675,7 @@ def main():
                 allowed_metric_suffixes=allowed_metric_suffixes,
                 timeout_s=300,
                 priors=priors,
+                batch_size=args.batch_size,
             )
         else:
             # ---- SINGLE-SHOT MODE (default, original behavior) ----
@@ -2159,8 +742,10 @@ def main():
                     data_profile=_data_profile,
                 )
 
+                last_system_prompt, last_user_prompt = system_prompt, user_prompt
                 try:
                     report = call_moonshot(api_key, args.moonshot_model, system_prompt, user_prompt)
+                    single_shot_prompts = (last_system_prompt, last_user_prompt)
                     break
                 except Exception as exc:
                     err_msg = str(exc).lower()
@@ -2237,6 +822,25 @@ def main():
     whitelist_path = None
     if s1_record and dataset_ids:
         raw_wl = s1_record.get("field_whitelist")
+        if _s1_is_template:
+            # 2026-09-15 ②/⑤：模板渲染 S1 记录的 field_whitelist 是文档白名单块的**前 30 行（字母序）**
+            # ——GBR intraday_pv_feats 实测 30 条全是 *_ask_price_*。不再拿它收窄绑定池；
+            # 改用 store 的跨簇候选池 s2_field_pool_<ds>（builder_version>=2），没有就用全目录。
+            raw_wl = None
+            try:
+                _st2 = _wqb_campaign_store()
+                try:
+                    _pool = _st2.get_ledger(args.region, f"s2_field_pool_{args.dataset_id}")
+                finally:
+                    _st2.close()
+                if isinstance(_pool, dict) and int(_pool.get("builder_version") or 0) >= 2:
+                    raw_wl = _pool.get("candidate_field_pool")
+                    print(f"[s1] 模板渲染记录：改用跨簇候选池 s2_field_pool_{args.dataset_id}"
+                          f"（{len(raw_wl or [])} 字段，覆盖 {_pool.get('clusters_covered')} 簇）作绑定白名单", flush=True)
+                else:
+                    print("[s1] 模板渲染记录：无版本化候选池，绑定池 = 全目录字段", flush=True)
+            except Exception as _exc:
+                print(f"[s1] 候选池读取异常（{_exc}），绑定池 = 全目录字段", flush=True)
         wl_ids = [str(x).strip() for x in raw_wl if str(x).strip()] if isinstance(raw_wl, list) else []
         if wl_ids:
             ds_set = set(dataset_ids)
@@ -2291,6 +895,9 @@ def main():
             "idea": (f"skeleton-mode slot filling: {len(exprs)} expressions, "
                      f"dropped={skeleton_result['dropped']}"),
             "expression_list": exprs,
+            # 骨架归因持久化（2026-09-13）：供 _load_skeleton_stats 聚合实测胜率；
+            # expr 已与最终表达式对齐（vec 包裹/wrapper 替换后的映射见 meta 同步逻辑）。
+            "skeleton_metas": skeleton_result["metas"],
         }
         idea_json_path = data_dir / f"{dataset_folder}_idea_{ts_tag}.json"
         idea_json_path.write_text(json.dumps(idea_payload_sk, ensure_ascii=False, indent=4), encoding="utf-8")
@@ -2308,21 +915,60 @@ def main():
         if not block_pairs:
             raise ValueError("No **Concept** blocks with **Implementation Example** found in the ideas file.")
 
-        normalized_pairs: list[tuple[str, str]] = []
-        for item in block_pairs:
-            t = str(item.get("template") or "").strip()
-            idea_text = str(item.get("idea") or "").strip()
-            if not t:
-                continue
+        normalized_pairs, rejected_templates = _normalize_template_pairs(
+            block_pairs, dataset_ids, allowed_suffixes, dataset_code)
 
-            if dataset_ids and allowed_suffixes:
-                normalized_t, ok = normalize_template_placeholders(t, dataset_ids, allowed_suffixes, dataset_code)
-                if not ok:
-                    continue
-                normalized_pairs.append((normalized_t, idea_text))
-            else:
-                # No dataset ids to validate against; pass through.
-                normalized_pairs.append((t, idea_text))
+        # 字段名拼接幻觉可观测性（2026-09-12）：被拒模板不再静默丢弃。
+        if rejected_templates:
+            print(f"[validate] 丢弃 {len(rejected_templates)}/{len(block_pairs)} 个模板"
+                  f"（占位符无法匹配真实字段，疑似字段名拼接幻觉）:", flush=True)
+            for _t in rejected_templates[:8]:
+                print(f"[validate]   - {_t}", flush=True)
+
+        # S1 概念字段 ⊄ field_whitelist 显式告警（2026-09-13）：白名单收窄绑定池会把
+        # 不在池内的概念字段静默丢弃（GLB fundamental23 实测：8 个概念字段只有 2 个
+        # 在池内，整波退化为 2 字段的孤字段增强）。此处对“模板占位符是真实数据集
+        # 字段、但不在生效白名单”的情况告警，暴露 S1 概念与候选池的口径分叉。
+        if whitelist_path is not None and block_pairs:
+            _ds_set = set(dataset_ids or [])
+            _wl_set = set(bind_ids or [])
+            _outside = sorted({
+                ph for item in block_pairs
+                for ph in re.findall(r"\{([A-Za-z0-9_]+)\}", str(item.get("template") or ""))
+                if ph in _ds_set and ph not in _wl_set
+            })
+            if _outside:
+                print(
+                    f"[s1] warn: {len(_outside)} 个概念模板字段不在 field_whitelist 绑定池"
+                    f"（相关模板将无候选/降级模糊匹配）: {_outside[:8]}",
+                    flush=True,
+                )
+
+        # 生成-校验反馈闭环（2026-09-12）：全部模板被拒时，带拒绝清单重生成一次。
+        # 仅 single-shot 自含生成路径适用（--ideas-file / skeleton / phased 不重置）。
+        if not normalized_pairs and rejected_templates and single_shot_prompts is not None:
+            print("[feedback-retry] 全部模板被拒，带错误清单重生成一次...", flush=True)
+            fb_sys, fb_user = single_shot_prompts
+            fb_user = fb_user + (
+                "\n\n---\n\nCRITICAL REPAIR (automated validator REJECTED your previous report):\n"
+                f"{len(rejected_templates)} of your Implementation Example templates used placeholders "
+                "that match NO real field id (typical cause: concatenating two field names into ONE placeholder).\n"
+                "Rejected templates:\n"
+                + "\n".join(f"  - {_t}" for _t in rejected_templates[:10])
+                + "\nRULES: every {placeholder} MUST be an EXACT suffix from allowed_placeholders. "
+                "If a concept needs two fields, use TWO separate placeholders. "
+                "Rewrite the FULL report (with metadata + all mandatory sections) using valid templates only."
+            )
+            report = call_moonshot(api_key, args.moonshot_model, fb_sys, fb_user)
+            ideas_path = save_ideas_report(report, args.region, args.delay, args.dataset_id)
+            ideas_text = ideas_path.read_text(encoding="utf-8")
+            ideas_text = ensure_metadata_block(ideas_text, dataset_id=args.dataset_id, region=args.region, delay=args.delay)
+            ideas_path.write_text(ideas_text, encoding="utf-8")
+            block_pairs = extract_template_blocks(ideas_text)
+            normalized_pairs, rejected_templates = _normalize_template_pairs(
+                block_pairs, dataset_ids, allowed_suffixes, dataset_code)
+            print(f"[feedback-retry] 重生成后有效模板 {len(normalized_pairs)}/{len(block_pairs)}"
+                  f"（仍被拒 {len(rejected_templates)}）", flush=True)
 
         if not normalized_pairs:
             raise ValueError("No valid templates remain after normalization/validation.")
@@ -2501,7 +1147,13 @@ def main():
                     
                     # 验证新表达式
                     if validator.check_expression(new_expr).get("valid"):
+                        old_expr = valid_expressions[idx]
                         valid_expressions[idx] = new_expr
+                        # 2026-09-12 修复：同步改写 expr_map，保证 skeleton meta 对齐
+                        # 不因 wrapper 替换而失配（原实现只改列表，meta 仍指向旧表达式）。
+                        for _k, _v in list(expr_map.items()):
+                            if _v == old_expr:
+                                expr_map[_k] = new_expr
                         replaced += 1
                         print(f"[skeleton-diversity] 替换 #{idx}: {most_common_wrapper} -> {wrapper_name}", flush=True)
                 
@@ -2524,14 +1176,14 @@ def main():
                     return f"vec_avg({f})" if _is_vec else f
 
                 _shapes = {
-                    "ts_arg_max": "quantile(-ts_arg_max(ts_backfill({s}, 66), 20))",
-                    "ts_arg_min": "quantile(ts_arg_min(ts_backfill({s}, 66), 20))",
-                    "ts_av_diff": "quantile(ts_av_diff(ts_backfill({s}, 66), 20))",
+                    "ts_arg_max": "quantile(-ts_arg_max(ts_backfill({s}, 66), 22))",
+                    "ts_arg_min": "quantile(ts_arg_min(ts_backfill({s}, 66), 22))",
+                    "ts_av_diff": "quantile(ts_av_diff(ts_backfill({s}, 66), 22))",
                     "group_rank": "group_rank(ts_backfill({s}, 66), sector)",
                     "group_zscore": "group_zscore(ts_backfill({s}, 66), sector)",
                     "group_neutralize": "group_neutralize(ts_backfill({s}, 66), sector)",
                     "group_mean": "group_mean(ts_backfill({s}, 66), sector)",
-                    "group_backfill": "group_backfill({s}, sector, 20)",
+                    "group_backfill": "group_backfill({s}, sector, 22)",
                 }
                 _tops = _pool_ids[:2]
                 _added = []
@@ -2558,6 +1210,37 @@ def main():
                 else:
                     print(f"[require-ops] warn: 无法合成合规补注表达式"
                           f"（命中 {hits}/{args.require_count}，候选字段 {len(_pool_ids)}）")
+
+        # ---- 生成侧预闸（2026-09-15 ②）：quantile 默认 driver 无损归一化 + 毒模式丢弃 ----
+        # 闸门统计里最高频的两类 FAIL（[ARITY] quantile 312 次 / [POISON] 加权混合 74 次）
+        # 全是生成侧产物；在这里拦下，闸 4/5 只作兜底。
+        try:
+            from pipeline_pregate import (pregate as _pregate, normalize_quantile as _norm_q,
+                                          normalize_named_only as _norm_named,
+                                          normalize_bucket as _norm_bucket,
+                                          normalize_windows as _norm_win)
+            valid_expressions, _pg = _pregate(valid_expressions, region=args.region)
+            # 同步 expr_map（skeleton meta 对齐）：被归一化改写的表达式更新映射，被丢弃的移除
+            # （2026-09-19：与 pregate 内部同序应用全部无损归一化，否则映射对不上被误删）
+            def _same_norm(_v):
+                _v, _ = _norm_q(_v)
+                _v, _ = _norm_named(_v)
+                _v, _, _ = _norm_bucket(_v)
+                _v, _, _ = _norm_win(_v)
+                return _v
+            _kept_set = set(valid_expressions)
+            for _k, _v in list(expr_map.items()):
+                _v2 = _same_norm(_v)
+                if _v2 in _kept_set:
+                    expr_map[_k] = _v2
+                else:
+                    expr_map.pop(_k, None)
+            print(f"[pregate] in={_pg['in']} kept={_pg['kept']} "
+                  f"quantile_normalized={_pg['quantile_normalized']} poison_dropped={_pg['poison_dropped']} "
+                  f"named_arg={_pg['named_arg_normalized']} bucket_fixed/dropped={_pg['bucket_range_added']}/{_pg['bucket_dropped']} "
+                  f"invalid_group_dropped={_pg['invalid_group_dropped']} windows_normalized={_pg['windows_normalized']}", flush=True)
+        except Exception as _exc:
+            print(f"[pregate] warn: 预闸异常，按原样落盘（闸门仍兜底）: {_exc}", flush=True)
 
         final_path.write_text(json.dumps(valid_expressions, ensure_ascii=False, indent=4), encoding="utf-8")
         print(f"Filtered invalid expressions: {invalid_count}")

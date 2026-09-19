@@ -35,7 +35,7 @@ CATEGORY_PRIMITIVES = {
         "continuation vs reversal: short-horizon pattern vs longer mean",
         "intraday vs overnight: session-specific pressure",
         "volume-conditioned return: price move that happened on unusual volume",
-        "this is the fast leg in a 0.4*slow + 0.6*fast mix",
+        "fast+slow interaction must be ONE coherent signal (ratio / ts_corr / conditional), never a weighted sum of two legs",
     ],
     "fundamental": [
         "accrual / cash gap: earnings quality, not the earnings level",
@@ -182,10 +182,11 @@ def compact_priors_text(priors: dict[str, Any], category: str | None) -> str:
             + (f" (n={n} historical backtests)" if n else "")
             + " — these are measured, not guessed. Prefer the high-rate cells:"
         )
-        for label, key in (("neutralization", "by_neutralization"),
-                           ("universe", "by_universe"),
-                           ("operator-count", "by_operator_count"),
-                           ("decay", "by_decay"),
+        # 2026-09-15 ①分流：只注入表达式层能作用的维度（算子数 / 字段族）。
+        # neutralization / universe / decay 是仿真设置，LLM 写表达式改不了它们——此前把
+        # decay=14 28% vs decay=4 3.9% 塞进 prompt，S3 照样按 settings.json 的 decay4 跑。
+        # 这些维度现由 toolkit pipeline.py 的 settings prior（_lib/region_kb.py）直接改写设置。
+        for label, key in (("operator-count", "by_operator_count"),
                            ("field family", "by_field_family")):
             cells = gp.get(key) or {}
             if not cells:
@@ -200,7 +201,8 @@ def compact_priors_text(priors: dict[str, Any], category: str | None) -> str:
                     parts.append(f"{name}={v}")
             if parts:
                 lines.append(f"- {label}: " + " | ".join(parts))
-        if avoid := gp.get("avoid"):
+        avoid = [a for a in (gp.get("avoid") or []) if str(a).startswith("field_family=")]
+        if avoid:
             lines.append(f"- AVOID (measured near-zero pass rate): {', '.join(avoid[:8])}")
     return "\n".join(lines)
 
@@ -252,6 +254,11 @@ FORBIDDEN:
 - placeholders that are only the last token of every field
 - inventing field ids
 - emitting multiple concepts with the SAME Expected Exposure + same field family (this is pseudo-diversity; backtest will show high correlation)
+- weighted sums/mixes of two independent signal legs in ANY form: 0.4*rank(A)+0.6*rank(B),
+  add(multiply(0.4, rank(A)), multiply(0.6, rank(B))), or weight-grid variants (0.3/0.7 -> 0.4/0.6).
+  This is mix-weight tuning (overfit-prone) and is BLOCKED downstream. Express multi-field evidence
+  through ONE coherent signal instead: ratio, subtract(a, b), ts_corr, if_else, or group ops.
+- increasing/decreasing leg count to chase metrics
 
 COMPLEXITY BUDGET (empirical, measured on 859 alphas that PASS the IS hard gates,
 drawn from 7608 historical backtests on this account, 2026-09-08):
@@ -273,8 +280,9 @@ drawn from 7608 historical backtests on this account, 2026-09-08):
 
 REQUIRED (at least 8 concepts, of which at least 2 are multi-field):
 - disagreement / residual / change-vs-level / intensity-weighted
-- If a win recipe is provided, emit 1 concept that follows that mix shape
-  using THIS dataset's fields as one leg (still {placeholder} syntax)
+- If a win recipe is provided, emit 1 concept that copies its MECHANISM
+  with THIS dataset's fields (still {placeholder} syntax). Never combine
+  independent legs by weighted addition — see FORBIDDEN.
 - At least 3 DISTINCT Expected Exposure values across the 8 concepts (e.g. 3 value + 3 momentum + 2 quality, NOT 8 value)
 
 SKELETON DIVERSITY (2026-09-03 新增硬约束，防止全部用 quantile 包裹):

@@ -1,7 +1,6 @@
 import json
 import os
 import argparse
-import pandas as pd
 from pathlib import Path
 import sys
 
@@ -32,6 +31,12 @@ def main():
     parser.add_argument("--delay", type=int, default=1, help="Delay (default: 1)")
     parser.add_argument("--universe", default="TOP3000", help="Universe (default: TOP3000)")
     parser.add_argument("--instrument-type", default="EQUITY", dest="instrument_type", help="Instrument Type (default: EQUITY)")
+    parser.add_argument(
+        "--data-type",
+        default="MATRIX",
+        choices=["MATRIX", "VECTOR"],
+        help="Data type to request from BRAIN datafields (MATRIX or VECTOR). Default: MATRIX",
+    )
 
     args = parser.parse_args()
 
@@ -53,13 +58,16 @@ def main():
     if not config:
         sys.exit(1)
 
-    # Extract credentials
-    creds = config.get("BRAIN_CREDENTIALS", {})
-    email = creds.get("email")
-    password = creds.get("password")
+    # Extract credentials (env override -> config)
+    email = os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL")
+    password = os.environ.get("BRAIN_PASSWORD")
+    if not email or not password:
+        creds = config.get("BRAIN_CREDENTIALS", {})
+        email = email or creds.get("email")
+        password = password or creds.get("password")
 
     if not email or not password:
-        print("Error: BRAIN_CREDENTIALS (email/password) not found in config.json")
+        print("Error: BRAIN credentials missing. Set BRAIN_USERNAME/BRAIN_PASSWORD or config.json")
         sys.exit(1)
 
     # Override ace_lib.get_credentials to use our config values
@@ -79,29 +87,32 @@ def main():
             region=args.region, 
             delay=args.delay,
             universe=args.universe,
-            instrument_type=args.instrument_type
+            instrument_type=args.instrument_type,
+            data_type=args.data_type,
         )
 
         if df is None or df.empty:
-            print("Warning: No data found or empty response.")
-        else:
-            # Construct a safe filename and folder name
-            safe_dataset_id = "".join([c for c in args.datasetid if c.isalnum() or c in ('-','_')])
-            folder_name = f"{safe_dataset_id}_{args.region}_delay{args.delay}"
-            dataset_folder = data_dir / folder_name
-            dataset_folder.mkdir(parents=True, exist_ok=True)
-            
-            filename = f"{folder_name}.csv"
-            output_path = dataset_folder / filename
-            
-            print(f"Saving {len(df)} records to {output_path}...")
-            df.to_csv(output_path, index=False)
-            print("Success.")
+            print("Error: No data found or empty response.")
+            sys.exit(1)
+
+        # Construct a safe filename and folder name
+        safe_dataset_id = "".join([c for c in args.datasetid if c.isalnum() or c in ('-','_')])
+        folder_name = f"{safe_dataset_id}_{args.region}_delay{args.delay}"
+        dataset_folder = data_dir / folder_name
+        dataset_folder.mkdir(parents=True, exist_ok=True)
+
+        filename = f"{folder_name}.csv"
+        output_path = dataset_folder / filename
+
+        print(f"Saving {len(df)} records to {output_path}...")
+        df.to_csv(output_path, index=False)
+        print("Success.")
 
     except Exception as e:
         print(f"An error occurred during execution: {e}")
         import traceback
         traceback.print_exc()
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

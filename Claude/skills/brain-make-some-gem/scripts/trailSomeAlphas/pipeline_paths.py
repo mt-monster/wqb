@@ -39,6 +39,12 @@ for _p in _cand("brain-feature-implementation", "scripts"):
     if (_p if isinstance(_p, Path) else Path(_p)).is_dir():
         sys.path.insert(0, str(_p))
         FEATURE_IMPLEMENTATION_SCRIPTS = Path(_p)
+        # 2026-09-13 修复（GEM 入库静默丢失事故）：DIR 原先不随 SCRIPTS 重解析，
+        # 造成 implement/merge 产物写主安装位、而 run_pipeline 的 final_path
+        # 检查相对位（B）→ 1015 分支落 else，validate/vector-fix/DB 入库全被
+        # 跳过（DEU 三次 GEM 的 merge 产物被静默丢弃，靠手工抢救入库）。
+        # DIR 恒 = SCRIPTS.parent，与实际执行位置同源。
+        FEATURE_IMPLEMENTATION_DIR = FEATURE_IMPLEMENTATION_SCRIPTS.parent
         break
 
 sys.path.insert(0, str(FEATURE_IMPLEMENTATION_SCRIPTS))

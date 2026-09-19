@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-08-18T19:00:00",
+ "updated_at": "2026-09-13T03:25:00",
  "_note": "全局方法论规则库（L2 结构化层）：跨 region 共享，所有战役通用。trigger.region=\"*\" 或不设 region 的规则放这里；区域专属规则放 tracking/<REGION>/reference/methodology_rules.json。rules.json 给机器消费（build_wave/gate/pipeline 强制注入），docs/experience/*.md 给人看，两者同源。种子来自 2026-08-18 EUR 战役复盘（通用部分）。",
  "rules": [
   {
@@ -303,6 +303,61 @@
    "confidence": 0.85,
    "status": "active",
    "created_at": "2026-08-24T02:00:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "failure_nature_classifier_v1",
+   "type": "diagnosis",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_review"
+   },
+   "action": {
+    "op": "classify_failure_nature",
+    "params": {
+     "impl": "wq-brain-campaign-toolkit/scripts/_lib/rules.py::classify_failure",
+     "structural_signals": ["pnl_backhalf_decay", "window_invariant", "similarity_over"],
+     "fixable_levers": ["decay", "neutralization", "gate", "historical_position"]
+    },
+    "message": "波末先判定失败性质再决定是否继续投入：只差一点 / PnL 稳定且权重未失控 / 换手合理 / Sub-universe 非硬伤 -> 可修复，参数层轻量调（decay / neutralization / 加 gate / 换历史位置表达）；换变体无本质变化、远期段衰减、结果依赖单一 regime、过线后 Similarity 过高 -> 结构性，停止该家族并换字段/数据集方向。实现 = classify_failure()，已接入 recommend_next_wave（可修复 -> priority 65 新增推荐，结构性 -> 富化既有结构层推荐）。"
+   },
+   "evidence": {
+    "source": "external_retro_csdn",
+    "post": "2402_87488142/162386453（3000+ 回测 / 36 提交的软工学生一个月复盘）",
+    "internal": "本仓 prod_first_skeleton_v1 实证：每波 40 条测 IS、近闸再查 prod，39 条浪费在已知 MODEL 墙上——正是'卡同一堵墙反复微调'的结构性失败"
+   },
+   "confidence": 0.8,
+   "status": "active",
+   "created_at": "2026-09-13T03:25:00",
+   "times_applied": 0,
+   "times_succeeded": 0
+  },
+  {
+   "rule_id": "no_effort_seven_signals_v1",
+   "type": "dead_end",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_review"
+   },
+   "action": {
+    "op": "fail_fast_stop",
+    "params": {
+     "impl": "wq-brain-campaign-toolkit/scripts/_lib/rules.py::classify_failure",
+     "signals": ["sharpe_plateau_0.7_0.9", "pnl_backhalf_decay", "window_invariant", "fitness_persistent_miss", "subuniverse_repeat_fail", "weight_concentration_high", "similarity_over"],
+     "min_signals_to_stop": 2,
+     "thresholds": "见 rules.py FAIL_FAST_THRESHOLDS，可按区域用 thresh 参数覆写"
+    },
+    "message": "'无效努力'七信号：① Sharpe 卡在 0.7-0.9 上不去 ② PnL 前半段好看后半段衰减 ③ 换窗口结果无本质变化 ④ Fitness 始终不达标 ⑤ Sub-universe 反复失败 ⑥ Weight concentration 偏高 ⑦ 好不容易过线 Similarity 又爆表。命中 >= 2 项即判结构性、应止损换方向——此时'再调一下也许就过了'只是在消耗模拟次数。"
+   },
+   "evidence": {
+    "source": "external_retro_csdn",
+    "post": "2402_87488142/162386453",
+    "note": "作者 3000+ 回测 / 36 提交后结论：决定研究效率的不是回测次数，是研究判断；确认一个方向不值得继续，本身就是有价值的研究成果"
+   },
+   "confidence": 0.75,
+   "status": "active",
+   "created_at": "2026-09-13T03:25:00",
    "times_applied": 0,
    "times_succeeded": 0
   }

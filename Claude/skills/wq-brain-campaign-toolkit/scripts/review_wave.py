@@ -53,7 +53,61 @@ def walls(r, t):
         w.append("TVR")
     for fc in r.get("failed_checks") or []:
         w.append("CW" if "CONCENTRATED" in fc else fc)
+    if rn_exposure(r, t):
+        w.append("RN_EXPOSURE")
     return w or ["RA_OTHER"]
+
+
+def rn_exposure(r, t):
+    """风险中性化硬规则（2026-09-08 定案，2026-09-15 ⑦ 接线进 walls/passes）：
+
+    `risk_neutralized_sharpe <= rn_sharpe_min`（默认 0）且 raw sharpe 达标 ⇒ 该 alpha 就是它
+    声称的那个风险因子暴露本身，不是暴露之上的超额；判 RN_EXPOSURE 墙、不进候选、禁止调参。
+    HKG w4 实证：7 条里 6 条 rn ∈ [-0.57, -0.33] 而 raw 非零。rn 缺失（None）不算败。
+    阈值：thresholds.review.rn_sharpe_min（缺省 0.0）。
+    """
+    rn = r.get("rn_sharpe")
+    if rn is None:
+        return False
+    try:
+        rn = float(rn)
+    except (TypeError, ValueError):
+        return False
+    return rn <= float(t.get("rn_sharpe_min", 0.0) or 0.0)
+
+
+def robust_ratio(r):
+    """robust-universe sharpe / 平台 limit（limit 缺失按 1.0）。指标缺失返回 None。"""
+    v = r.get("robust_sharpe")
+    if v is None:
+        return None
+    try:
+        lim = float(r.get("robust_limit") or 1.0) or 1.0
+        return float(v) / lim
+    except (TypeError, ValueError):
+        return None
+
+
+def structurally_dead(r, t_near):
+    """结构性死信号（2026-09-19）：raw sharpe 像样但 robust universe 只有 limit 的一小截。
+
+    IND w170-175 实证：sentiment21 raw 1.76 / robust 0.24（limit 1.0）、news79 / institutions6
+    同型——信号全部来自非流动股，任何构造/调参都拉不回 robust（profile：结构性墙调参无解）。
+    这类行此前按 sharpe>near.sharpe_min 入 near 池，把"全灭"波伪装成 PARTIAL，停止规则 B
+    （连续 3 波 FAIL）永不触发，槽位持续烧在死集上。
+    判据：robust_ratio < near.robust_min_ratio（缺省 0.5）；robust 指标缺失不判死。
+    """
+    ratio = robust_ratio(r)
+    if ratio is None:
+        return False
+    return ratio < float(t_near.get("robust_min_ratio", 0.5))
+
+
+def is_near(r, t_near):
+    """near 池判据：sharpe 过 near.sharpe_min 且不是结构性死信号。"""
+    if r.get("sharpe") is None or r["sharpe"] <= t_near["sharpe_min"]:
+        return False
+    return not structurally_dead(r, t_near)
 
 
 def passes(r, t):
@@ -63,7 +117,8 @@ def passes(r, t):
             and (r.get("margin_bp") or 0) > t["margin_min"] * 10000
             and r.get("turnover_pct") is not None
             and t["turnover_min"] * 100 < r["turnover_pct"] < t["turnover_max"] * 100
-            and not r.get("failed_checks"))
+            and not r.get("failed_checks")
+            and not rn_exposure(r, t))
 
 
 def combo_candidate(r, t):
@@ -146,11 +201,21 @@ def main():
     for r in rows:
         r["walls"] = [] if r in candidates else walls(r, t)
     near = []
+    t_near = ctx.thresh("near")
+    n_structural = 0
     for r in rows:
         if r in candidates or r.get("sharpe") is None:
             continue
-        if r["sharpe"] > ctx.thresh("near")["sharpe_min"]:
+        if r["sharpe"] > t_near["sharpe_min"] and structurally_dead(r, t_near):
+            n_structural += 1
+            if "ROBUST_STRUCTURAL" not in r["walls"]:
+                r["walls"].append("ROBUST_STRUCTURAL")
+            continue
+        if is_near(r, t_near):
             near.append(r)
+    if n_structural:
+        print(f"[near] {n_structural} 条 sharpe 过线但 robust/limit < "
+              f"{t_near.get('robust_min_ratio', 0.5)}（结构性死信号），不入 near 池")
 
     print(f"{'id':10s} {'sh':>6} {'fit':>5} {'2y':>5} {'mg_bp':>7} {'tvr%':>6} {'rn':>5} walls")
     for r in rows:

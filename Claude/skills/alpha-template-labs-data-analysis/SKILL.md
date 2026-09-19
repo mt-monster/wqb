@@ -26,7 +26,7 @@ allowed-tools:
 1. 只拉 MATRIX 字段（无需 Labs 登录）：
 
 ```python
-mcp__wqb-mcp__get_datafields(
+mcp__wq-brain-http__get_datafields(
     dataset_id="<dataset_id>",
     region="USA",
     universe="TOP3000",
@@ -39,14 +39,14 @@ mcp__wqb-mcp__get_datafields(
 2. 仅当确实需要新 Labs 会话（且配额告警后已获批准）时，登录并取活的 WorkSpaces URL：
 
 ```python
-mcp__wqb-mcp__authenticate_brainlabs()
+mcp__wq-brain-http__authenticate_brainlabs()
 # -> {workspaces_url, labs_url, token, ...}; 打开 workspaces_url
 ```
 
 3. 生成可粘贴的 Labs 脚本（至多两个 MATRIX 字段）：
 
 ```python
-mcp__wqb-mcp__emit_labs_script(
+mcp__wq-brain-http__emit_labs_script(
     dataset_id="<dataset_id>",
     fields=["<field_a>", "<field_b>"],
     region="USA", universe="TOP3000", delay=1,
@@ -58,7 +58,7 @@ mcp__wqb-mcp__emit_labs_script(
 5. 摄取返回的 Labs JSON（传 JSON 字符串或文件路径）：
 
 ```python
-mcp__wqb-mcp__ingest_labs_result(result_json="<labs_json_or_path>")
+mcp__wq-brain-http__ingest_labs_result(result_json="<labs_json_or_path>")
 ```
 
 6. 对每个字段分类数据形状与下游 Python 适用性。
@@ -67,7 +67,7 @@ mcp__wqb-mcp__ingest_labs_result(result_json="<labs_json_or_path>")
 
 ### CLI 专用步骤（MCP 无对应）
 
-用 `rtk python3 world-quant-brain-mcp/labs_data_analysis_agent.py ...` 执行：
+用 `rtk python3 world-quant-brain-mcp/labs_data_analysis_agent.py ...` 执行（`rtk` = 本机沙箱代理运行器；无 rtk 环境直接用 `$WQ_PY` 等价执行）：
 
 - `emit-notebook-exec` — 把脚本包成单行 `exec(...)` 供 WorkSpaces 远程 notebook 粘贴（避免单元格类型/缩进损坏）。
 - `emit-summary-cell` — 下载/剪贴板无法回传本机时，在 Labs 内生成紧凑摘要。

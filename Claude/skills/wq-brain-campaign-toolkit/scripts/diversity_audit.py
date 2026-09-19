@@ -42,9 +42,8 @@ INJECTION_EXPIRY_BATCHES = 10
 INJECTION_EXEMPT = ["repair"]
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _lib.common import (CampaignContext, add_campaign_arg, load_json,
-                         load_platform_constraints, read_exprs_file, skeleton)
-from _lib.ledger import LedgerStore, make_ledger_store
+from _lib.common import CampaignContext, add_campaign_arg, load_platform_constraints, read_exprs_file, skeleton
+from _lib.ledger import make_ledger_store
 from _lib import rules as rules_mod
 
 

@@ -43,20 +43,20 @@ def main():
         
     all_expressions = []
     
-    # Find all idea files, tolerating both naming conventions:
-    #   new: {dataset}_{region}_{delay}_idea_{ts}.json   (implement_idea.py)
-    #   old: idea_{ts}.json
-    json_files = sorted(set(dataset_dir.glob("*_idea_*.json")) | set(dataset_dir.glob("idea_*.json")))
-
+    # Find all idea json files (supports idea_*.json and *_idea_*.json)
+    json_files = list(dataset_dir.glob("idea_*.json")) + list(dataset_dir.glob("*_idea_*.json"))
+    # de-dup in case both patterns match the same file
+    json_files = sorted({jf.resolve(): jf for jf in json_files}.values(), key=lambda p: p.name)
+    
     if not json_files:
-        print(f"No *_idea_*.json files found in {dataset_dir}", file=sys.stderr)
+        print(f"No idea_*.json files found in {dataset_dir}", file=sys.stderr)
         sys.exit(0)
         
     print(f"Found {len(json_files)} idea files. Merging...")
     
     for jf in json_files:
         try:
-            with open(jf, 'r') as f:
+            with open(jf, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 exprs = data.get("expression_list", [])
                 if exprs:
@@ -79,7 +79,7 @@ def main():
     output_path = dataset_dir / args.output
     
     try:
-        with open(output_path, 'w') as f:
+        with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(unique_expressions, f, indent=4)
         print(f"\nSuccessfully merged {len(unique_expressions)} unique expressions.")
         print(f"Output saved to: {output_path}")

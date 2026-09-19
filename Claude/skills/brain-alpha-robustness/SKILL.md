@@ -114,8 +114,7 @@ allowed-tools:
 
 候选通过 robustness 审计后、进入提交环节前，必须确认以下 PPA 规则：
 
-1. **MCP `submit_alpha` 工具不是 PPA 感知的**。它内置常规 RA 闸门（实测 Sharpe>1.3 / Fitness>0.75 / Margin>15bp），对合法 PPA 也照拦，且打 `PowerPoolSelected` 标签后重试仍拦（不看标签）。即 MCP 自动提交通道无法放行任何 Sharpe<1.3 的 PPA。
-2. **PPA 提交路径**：合法 PPA（Sharpe≥1.0/算子≤8/字段≤3/PC<0.5）须走**平台 web UI** 提交，且仅在**当期活跃 Power Pool 主题窗口**内（见 wq-brain-ra-pipeline 步 1 PPA 主题匹配门禁）。非活跃区域提交报 "does not match any Power Pool Theme"。主题轮动通知看平台右上角铃铛。
+1. **PPA 提交路径（2026-09-12 上移单源）**：MCP `submit_alpha` 非 PPA 感知（内置常规 RA 闸门照拦合法 PPA，打标签重试无效）→ 合法 PPA（Sharpe≥1.0/算子≤8/字段≤3/PC<0.5）**只能走平台 web UI**、且仅在当期活跃 Power Pool 主题窗口内。**完整约束、配额语义与台账回写动作的唯一权威 = `worldquant-submit-alpha`「PPA 通道」节**——本节保留结论仅为评审时快速否决，不再重复维护细节。
 3. **RA 常规提交**不受主题限制，但达标 alpha 可能无 RA 通道可选（平台强制走 PPA 通道）。
 4. **PPA 描述三段是硬性要求**（idea / 数据字段 / 操作符），建议用 ChatGPT 生成（61 赞帖最佳实践）。提交前用 `set_alpha_properties` 预置描述 + tags=["PowerPoolSelected"] + color=GREEN。
 5. **幽灵提交识别**：台账记 ACTIVE 但平台 `GET /alphas/{id}` 返回 HTTP 404 → 从未真正落地（静默丢弃但台账未更新）。处理：修正台账为 PHANTOM，标注"表达式本地已丢失，无法重新提交"。已实证案例：`pwKvRLqg`。

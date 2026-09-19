@@ -38,19 +38,26 @@ allowed-tools:
 ```
 `anchor_only: true` 的字段**禁止**用作主信号。
 
-### 3. 构建 `data/hypothesis_catalog/<dataset>_hypotheses.yaml`（假设目录）
+### 3. 构建 `data/hypothesis_catalog/<dataset>_hypotheses.json`（假设目录）
 
-≥20 条可证伪假设，每条：
-```yaml
-- id: H_overreaction_earnings
-  class: over_reaction
-  minimal_expression: "rank(ts_zscore(returns, 20))"
-  ablation_no_gate: "rank(ts_zscore(returns, 20))"   # 同结构但去掉事件门控
-  control_constant: "rank(ts_zscore(volume, 20))"     # 常数/对照组
-  variant: "rank(ts_zscore(returns, 20)) * sign(...)"
+≥20 条可证伪假设，每条（**字段名以 `src/wqb/research/hypothesis_miner.py::_REQUIRED_FIELDS` 为唯一权威**：
+`hypothesis_id / hypothesis_class / description / minimal_expression / ablation_no_gate /
+control_constant / variant / expected_direction`；2026-09-12 更正：旧文示例用 YAML 与 `id`/`class` 字段名，
+与 `load_catalog`（仅支持 JSON、必填字段如上）不符，是示例未对齐代码）：
+```json
+{"hypotheses": [{
+  "hypothesis_id": "H_overreaction_earnings",
+  "hypothesis_class": "over_reaction",
+  "description": "财报后过度反应在 20 日窗口内回归",
+  "minimal_expression": "rank(ts_zscore(returns, 20))",
+  "ablation_no_gate": "rank(ts_zscore(returns, 20))",
+  "control_constant": "rank(ts_zscore(volume, 20))",
+  "variant": "rank(ts_zscore(returns, 20)) * sign(...)",
+  "expected_direction": "negative"
+}]}
 ```
 
-假设类别（12 类）：`over_reaction / under_reaction / dispersion / event_conditional / propagation / information_asymmetry / cross_dataset / horizon_spread / regime / residual / slow_diffusion / urgency`。
+假设类别（12 类；与 dfe 8 问/GEM 概念位的映射见 ra-pipeline references/concept-taxonomy-map.md）：`over_reaction / under_reaction / dispersion / event_conditional / propagation / information_asymmetry / cross_dataset / horizon_spread / regime / residual / slow_diffusion / urgency`。
 
 ### 4. 派发 — `run_hypothesis_round`
 
@@ -69,6 +76,12 @@ allowed-tools:
 ### 6. 台账
 
 跨会话知识累积到 `data/hypothesis_ledger/<session>.jsonl`。对假设类别的元学习取代逐臂 bandit 后验。
+
+## 与 workflow 引擎的衔接（2026-09-12 新增）
+
+- **MCP 节点**：`workflow_execute` node="hypothesis_round"（必填 `dataset_id`；可选 `catalog_path/max_hypotheses/region/delay/save_ledger`）。dry-run 校验 catalog 并返回 4×N 表达式计划；实跑纯本地构建、不触平台。
+- **ra-pipeline 步 2 路由条件**：目标 dataset 平台 alphaCount≥1 万，或该数据集连续 2 波模板全灭（gate 通过率=0）→ 强制切本工作流，不再做模板遍历。
+- **台账**：假设目录文件为构建输入；轮次结果经 `save_ledger=True` 落 `tracking/hypotheses/ledger.jsonl`（JSONL 文件态，DB 化待后续）。
 
 ## 与其他 skill 的关系
 

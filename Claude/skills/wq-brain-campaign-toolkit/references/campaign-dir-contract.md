@@ -57,10 +57,30 @@ tracking/<REGION>/                 # 区域大写，如 KOR / USA / EUR
 | poll（可选） | init_interval 20 / backoff_factor 1.5 / max_interval 120 / stall_minutes 60 / timeout_minutes 360 | pipeline, poller |
 | submit_quota（可选） | limit 4（REGULAR 日上限）。**配额是三条并行通道**：`REGULAR_SUBMISSION` 4/日 + `SUPER` 1/日 + **PPA 独立的 `POWER_POOL_SUBMISSION` 1/日**；均 00:00 ET 重置。部分区域 `enabled:false`（用户指令关闭闸，2026-08-26） | pipeline quota |
 
-> `diversity.signal_floor` 语义（易误读）：整节缺失或 `enabled:false` → 该闸**静默放行**；
-> `max_sharpe_floor` 的 0.5 兜底只在"有节但缺该字段"时生效。11 个区域已于 2026-09-11 全部补齐。
+> `diversity.signal_floor` 语义（2026-09-17 改版，易误读）：**整节缺失 → fail-closed**，
+> 回落默认 `max_sharpe_floor=0.5 / min_batches=2` 继续判定并输出 `warning`；
+> `thresholds.json` 不可读时同理（回落默认而非跳过）。
+> **只有显式 `enabled:false` 才放行**。改版前是"整节缺失即静默放行"，与停止闸使命
+> 矛盾（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。
+> 11 个区域已于 2026-09-11 全部补齐配置，故该改版对现有区域通常只影响告警文案。
 
 ## reference/ 约定
 - typed catalog schema：数据集级 `{dataset, region, universe, delay, data_type, type_distribution, field_count, fetched_at}`；字段级 `{id, type, coverage, userCount, alphaCount, description[:120]}`。data_type 由字段 type 众数推断。
 - legacy whitelist（`verified_fields` 列表 + cov 简写）仍被 gate 兼容读取；新战役一律用 scan_fields 落 catalog。
 - `<region>_generation_constraints.json`：`operator_stats{used,unused,rare}`（diversity_audit 实测回填）、`injection_rules{force_explore_ops, cap_ops, skeleton_quota}`、`poison_patterns[]`（**仅区域特有**；平台级见 toolkit config/platform_constraints.json）。
+
+
+## 可选节补充（2026-09-15）
+
+```jsonc
+"settings_prior": {            // pipeline.py run：按 region_kb.gate_priors 改写 decay/neutralization
+  "enabled": true, "min_n": 30, "min_lift": 2.0, "dims": ["decay", "neutralization"]
+},
+"diversity": {
+  "stop_rules": {              // workflow_campaign S2/S3 前置停止规则（DB 判定）
+    "enabled": true, "yield_min_backtests": 100, "consecutive_fail_waves": 3
+  }
+},
+"review": { "rn_sharpe_min": 0.0 }   // risk_neutralized_sharpe ≤ 此值 → RN_EXPOSURE 墙
+```
+缺节即取上述缺省；ledger `stop_rules_override{reason,until}` 可按用户指令放行停止规则。

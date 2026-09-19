@@ -1219,11 +1219,29 @@ def get_datasets(
     if theme is not None and str(theme).upper() != "ALL":
         theme_str = "true" if theme else "false"
         url += f"&theme={theme_str}"
-    result = s.get(url)
-    _check_rate_limit(result)
-    datasets_df = pd.DataFrame(result.json()["results"])
-    datasets_df = expand_dict_columns(datasets_df)
-    return datasets_df
+    last_error = None
+    for attempt in range(6):
+        result = s.get(url)
+        _check_rate_limit(result)
+        if result.status_code == 429:
+            time.sleep(min(2 ** attempt, 30))
+            continue
+        try:
+            payload = result.json()
+        except Exception:
+            last_error = f"non-json status={result.status_code} body={str(result.text)[:240]}"
+            time.sleep(min(2 ** attempt, 15))
+            continue
+        if isinstance(payload, dict) and "results" in payload:
+            datasets_df = pd.DataFrame(payload.get("results") or [])
+            datasets_df = expand_dict_columns(datasets_df)
+            return datasets_df
+        last_error = (
+            f"status={result.status_code} "
+            f"keys={list(payload)[:8] if isinstance(payload, dict) else type(payload).__name__}"
+        )
+        time.sleep(min(2 ** attempt, 15))
+    raise RuntimeError(f"get_datasets failed after retries: {last_error}")
 
 
 def get_datafields(

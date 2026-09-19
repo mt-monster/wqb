@@ -2,7 +2,7 @@
 
 > 本文件是全部 WQ/BRAIN skill 的架构基准：分层定位、挖掘流水线入口规则、闸门阶梯、权威版本声明。
 > 修改任何 skill 前先读本文件；新增 skill 必须归入下述某层并更新本索引。
-> **last_verified: 2026-09-11**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
+> **last_verified: 2026-09-15**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
 > 现行审计：`output_report/skills_multi_copy_audit_20260910.md`（多副本治理 P0/P1/P2）；
 > 工具使用率见 `reports/toolkit_usage_review_2026-08-31.md`（更早审计已归档 `attic/`）。
 
@@ -62,7 +62,7 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 | GLB | ✓ | ✓ | `active` |
 | HKG | ✓ | ✓ | `probe-only` |
 | IND | ✓ | ✓ | `active` |
-| JPN | ✗ 未建 | ✗ | —（`config.REGIONS` 有；**本工作区未启用**，无 profile/战役目录） |
+| JPN | ✓（2026-09-15 补） | ✓ | `active` |
 | KOR | ✓ | ✓ | `active` |
 | MEA | ✓ | ✓ | `frozen`（步 1 即拒；唯一后门见该区 profile） |
 | TWN | ✓ | ✗ | `probe-only` |
@@ -70,7 +70,7 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 
 规则（与 `wq-brain-ra-pipeline` 步 1 一致）：
 - **有 profile 的区**按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略执行。
-- **无 profile 的区**（AMR / JPN）走"处女地模板"（参照 ASI profile）；开新区前必须先补 profile + `tracking/<R>/config/`。
+- **无 profile 的区**（AMR）走"处女地模板"（参照 ASI profile）；开新区前必须先补 profile + `tracking/<R>/config/`。
 - `frozen` 区（MEA）步 1 直接拒绝，不进入步 2。
 - 新增/删除区域时必须同步四处：`src/wqb/config.py::REGIONS`、本表、profile 文件、战役目录。
 
@@ -186,14 +186,50 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 
 其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护）：
 
-- `wq-brain-http` 服务器：**68 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
+- `wq-brain-http` 服务器：**69 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
   `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
-  `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 11（合计 68）。
+  `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 69）。
   由 `tests/unit/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护（装饰器数变了测试即红）。
-- `wqb-db` 服务器：**33 个工具**（外部包；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
-- workflow 节点：**8 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
-  `submit_alpha` / `superalpha` / `wave_gate`）。权威 = `src/wqb/workflow/registry.py`，
+- `wqb-db` 服务器：**45 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由
+  `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
+  2026-09-15 起含 `set_expression_status`（批量改状态，只传 id/状态过滤，不回传表达式正文）。
+  2026-09-16 起含 `workflow_inventory_scan` / `workflow_field_understanding` / `workflow_gem_wave` /
+  `workflow_unified_gate` / `workflow_auto_harvest` / `workflow_auto_review` / `workflow_auto_pyramid`。
+  ⚠ **2026-09-18 新增 2 个（43→45）**：`persist_correlation`（相关性检查结果直落 `alphas`，
+  NULL-only / [0,1] 校验 / source 溯源）、`get_alpha_corr_metrics`（本地库筛选相关性，
+  **零平台配额**）。配套：alphas 表 +9 列（sub_universe_sharpe / returns / drawdown / long_count /
+  short_count / concentrated_weight / cluster_test / prod_corr_source / corr_checked_at），
+  `CampaignStore.persist_correlation` 为唯一落库入口。
+  ⚠ **2026-09-17 移除 6 个（49→43）**：`record_step_metrics` / `get_step_metrics` /
+  `compute_wave_summary` / `compute_campaign_summary` / `get_step_gain_report` /
+  `workflow_step_metrics` —— step-metrics 子系统整体下线（归档 `attic/step_metrics_20260917/`），
+  替代方案 `tools/step_funnel.py`（只读步级漏斗）。
+- workflow 节点：**19 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `structural_reconstruct` / `inventory_scan` / `field_understanding` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
+  ⚠ 2026-09-17：`step_metrics` 节点已下线（18→17）；`modeb_improve` 节点上线（17→18）。
+  ⚠ 2026-09-18：`alpha_booster` 节点上线（18→19，通用 Alpha 短板提升，S4 增强）。
+
+## 2026-09-19 挖掘流程优化落地（RA×10 战役复盘，细节见 wq-brain-ra-pipeline 各步）
+
+- ① **连坐隔离**：`pipeline.py` ERROR 批解析子模拟 → 坏式回写 `expressions.status='fail'` → 无辜兄弟重发一次（`--no-isolate-errors` 关）。
+- ② **账户级槽位仲裁**：`_lib/slots.py`（`logs/_slots/` token 文件，`WQB_GLOBAL_SLOTS` 缺省 7，陈旧自动回收），多流水线同跑不再超 C≈7。
+- ③ **prod-first 探针**：`tools/campaign_intel.py prod-first --region R --wave W` 收批后族级串行探 prod，STOP 族不扩变体；结果入 `alphas.prod_correlation` + ledger `prod_first_<wave>`。
+- ④ **near 池剔除结构性死信号**：`review_wave.is_near/structurally_dead`（robust/limit < `near.robust_min_ratio` 缺省 0.5）；metrics 行新增 `robust_sharpe/robust_limit/sub_universe_sharpe`；停止规则 B 因此真正可触发。
+- ⑤ **产出率严格口径**：`get_mining_yield(strict=True)` 默认 `yield_rate=ra_clean/backtested`，另给 `prod_clean/prod_blocked/prod_wall_ratio`；`s0-select` 同源，并新增跨区负先验 / 字段数守卫 / maxS 列。
+- ⑥ **GEM 生成侧预闸扩展**：`hump` 命名参数、`bucket` 缺 range 补/丢、区域非法 group 字段（`platform_constraints.json` `region_invalid_group_fields`）、非标窗口别名归一、同骨架换字段封顶（`WQB_GEM_MAX_PER_SKELETON` 缺省 12）。
+- ⑦ **闸门**：`gate.py` 闸 2b 区域非法 group 字段 FAIL；validator `bucket()` 必带 range/buckets。
+- ⑧ **台账修复**：pipeline 收批写 `backtest_results.dataset`（此前恒 NULL，928 行）；`tools/backfill_backtest_dataset.py` 只填空回填历史；`build_wave` 波号残留（全 dropped）时回退源池。
+
+## 2026-09-15 接线修复（审计落地，细节见各 skill）
+
+- ① 设置层先验：`region_kb.gate_priors` 的 decay/neutralization 由 toolkit `pipeline.py run` 直接改写设置（`_lib/region_kb.py`），GEM prompt 只再注入 operator-count / field-family。
+- ② GEM：节点/MCP 透传 `pipeline_mode`（runner 缺省 phased，skeleton 可达）；S1 模板渲染文档不再自动注入；落盘前 `pipeline_pregate.py` 归一 `quantile` 默认 driver、丢弃加权混合毒模式。
+- ③ 台账：`expressions.dataset`/`backtest_results.dataset` 污染已回填（`tools/backfill_expression_dataset.py`）；pipeline 收批后自动刷新 `region_kb`（recent_waves / gate_priors_local / updated_at）。
+- ④ `workflow_campaign(stage="S4")` 先解析本波 alpha_id 再拼 `review_wave.py --alphas`。
+- ⑤ `s2_field_pool` 跨主体簇轮转采样，`builder_version` 版本化缓存。
+- ⑥ S2-COMPLIANCE 降级为提示；`pipeline.py` 中止路径 rc=2。
+- ⑦ `RN_EXPOSURE` 墙进 `review_wave.walls()/passes()`；停止规则 SQL 化（`campaign` 节点 S2/S3 前置，`stop_rules_override` 台账放行）；`wave_results.verdict` 写入强制枚举。
 
 ## 分工声明（防触发歧义）
 
@@ -302,3 +338,10 @@ python tools/sync_skills.py --check            # 仓库与全部安装位零漂�
 - `get_submission_quota` MCP 工具已于 2026-08-25 移除，**不要依赖它**；其旧返回的 `hours_until_release` 语义本身也有 bug。
 - 剩余额度从 submit 响应的 `REGULAR_SUBMISSION` / `SUPER_SUBMISSION` check 的 `value/limit` 读（value 从 0 起计数，limit=4/1）；硬闸 FAIL 的提交**不消耗**配额（status 保持 UNSUBMITTED）。
 - 判断"今天 ET 日已用几颗"：拉 `/users/self/activities/submissions`（按日聚合）或本地 DB `alphas.date_submitted`（EDT `-04:00`）按当前 ET 日过滤。
+
+## 2026-09-19 平台区域硬事实（当日实测，优先级高于任何旧记）
+
+- `get_platform_setting_options` 现含区域 **ALL**（D1，LARGE/MEDIUM/SMALL）与 **AMR**（TOP600）。**ALL 不能跑 REGULAR**（平台 400 "Region ALL is not available for simulation type REGULAR"）；AMR 只有 sentiment7 + univ1，无 pv1。两者都不是 RA 挖掘区。
+- **JPN/TOP1600/D1 无 pv1**（close/adv20/returns 全部 Invalid data field），且 `ts_*(vec_*(VECTOR))` 必 ERROR；GEM 预闸与闸 2b 已按 `region_invalid_fields` / `vector_ts_forbidden` 处理。
+- **IND robust 闸 = 流动性子集重跑 Sharpe ≥ 1.0**（官方 India Alphas 页）；日内反转族（尾盘一小时、价量相关）IS 4–6 但 prod 0.79–1.0 撞墙；破 robust 墙的配方是自归一化（ts_zscore / 相对 252 日均值偏离）+ 市值十分位 group_rank + decay 7–10（pwRJmvP3 ACTIVE 实证）。
+- **prod 竞速**：prod 0.60–0.70 的候选必须当天提交（pv103 一小时内被外部同款堵成 1.0）。

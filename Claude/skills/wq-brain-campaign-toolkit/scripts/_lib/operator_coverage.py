@@ -645,7 +645,12 @@ _ROLE_FALLBACK = {
 }
 
 # 默认时间窗口候选（实例化 window 占位符）
-_DEFAULT_WINDOWS = [20, 60, 120, 5, 10, 252]
+# 2026-09-17 对齐：原值为 [20, 60, 120, 5, 10, 252]，其中 20/60/120/10 **不在** SOP 白名单内
+# （SOP 两处要求只用 1/5/22/66/252/504/1008/1260）。实测全库 23% 的非白名单窗口 Top
+# 恰为 20/10/120/60 —— 即**本默认值就是污染源**。现改为白名单内的常用代表，
+# 顺序按全库实测使用频次（66 > 22 > 5 > 252）。同源白名单见
+# platform_constraints.json::window_whitelist 与 src/wqb/config.py::STANDARD_WINDOWS。
+_DEFAULT_WINDOWS = [66, 22, 5, 252]
 
 
 def load_semantics():

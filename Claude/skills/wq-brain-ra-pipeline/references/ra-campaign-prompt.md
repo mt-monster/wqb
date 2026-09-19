@@ -46,7 +46,7 @@ last_verified: 2026-09-11
    → 产出 universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号。产出率读法：conversion 低=管道问题，yield_rate 低=标的问題。
 步2 S0 体检：`tools/campaign_intel.py s0-select`（recommend_datasets × mining_yield × dead_datasets 三方交叉）
    → 硬约束：白名单 ≥2 个非 MODEL；category_weight ∈ 0.9–1.15；`*_dead` 仍排除；锁 `s0_whitelist`。
-   → 前置：信号天花板闸（`diversity.signal_floor`，11 区已配）会自动拦"连续 N 波 max|S| < floor"。
+   → 前置：信号天花板闸（唯一权威位置 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`；**13/13 区已配**，2026-09-17 复核）会自动拦"连续 N 波 max|S| < floor"；缺节为 fail-closed（回落默认，仅 `enabled:false` 放行）。
 步3 S1 字段：`workflow_campaign(stage="S1")` + `workflow_feature_engineering`；按 `users` 分级
    （≥50 只做方向验证 / 10–49 进池但须实测 prod_corr / 0–9 优先且占预算 ≥50%）。
 步4 S2 生成：`assemble-priors`（subcommand，stage 标 S2）→ `workflow_gem`（**强制**，带 priors）；

@@ -5,6 +5,10 @@
 
 本模块实现了一个能够检测字符串表达式格式是否正确的系统，基于PLY(Python Lex-Yacc)
 构建词法分析器和语法分析器，识别表达式中的操作符、函数和字段，并验证其格式正确性。
+
+【命名辨析 2026-09-12】本文件是**完整语法校验引擎**（签名/词法/语法，1377 行）；
+src/wqb/expression/validator.py 只做形状分类与批级多样性闸（check_batch），不做语法。
+两者同名不同物，跨处引用前先核对角色。
 """
 
 import re
@@ -601,6 +605,16 @@ class ExpressionValidator:
             return self._validate_winsorize(args, is_in_group_arg)
 
         errors = []
+
+        # 2026-09-19 事故修复（JPN wave7）：`bucket(rank(x))` 不带 range=/buckets= 通过本地闸，
+        # 平台回 'At least one of "buckets", "range" is required.' → ERROR 并连坐整批 CANCELLED。
+        # 平台签名：bucket(x, range="start,end,step") 或 bucket(x, buckets="b1,b2,...")，二者必有其一。
+        if function_name == 'bucket':
+            has_kw = any(isinstance(a, dict) and a.get('type') == 'named'
+                         and a.get('name') in ('range', 'buckets') for a in args)
+            if not has_kw:
+                errors.append('函数 bucket 必须带命名参数 range="start,end,step" 或 buckets="..."'
+                              '（平台报 At least one of "buckets", "range" is required.）')
 
         # Keyword-only enforcement for optional parameters.
         # If enabled, only the required leading arguments can be positional.

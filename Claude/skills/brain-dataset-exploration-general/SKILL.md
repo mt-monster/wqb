@@ -51,7 +51,7 @@ allowed-tools:
 2. **Alpha 思路**：基于数据集特征头脑风暴 alpha 概念。
 
 ## 关键：Region → Universe 映射（用于 `get_datasets`）
-`get_datasets` **严格按照该区域的有效 universe 过滤**。传错 universe 会**静默返回空结果**（假阴性——数据其实存在，但你却会得出"没有数据"的结论）。务必按区域使用正确的 universe：
+`get_datasets` **严格按照该区域的有效 universe 过滤**（下表数字为 **2026-08 平台快照**，用时以 `get_platform_setting_options` 实时复核为准）。传错 universe 会**静默返回空结果**（假阴性——数据其实存在，但你却会得出"没有数据"的结论）。务必按区域使用正确的 universe：
 
 | 区域 | 有效 universe（get_datasets） | 备注 |
 |---|---|---|

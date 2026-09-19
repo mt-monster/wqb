@@ -24,7 +24,13 @@ from _lib.api import Api
 
 
 def row_from_alpha(aid, a):
-    """从 GET /alphas/{id} 响应提取指标行（margin*10000、turnover*100 单位换算）。"""
+    """从 GET /alphas/{id} 响应提取指标行（margin*10000、turnover*100 单位换算）。
+
+    2026-09-13 修复（表达式截断事故）：`code` 曾截断为 [:110] 仅作展示，但
+    pipeline.stage_review → save_backtest_results 会把该 code 写回 expressions 表，
+    导致 backtested 行表达式被截断、且与 gem 原行失联（SELECT expression 匹配不上，
+    新建截断行）。现保留全文；展示端如需短串自行切片。
+    """
     i = a.get("is") or {}
     rn = i.get("riskNeutralized") or {}
     checks = i.get("checks") or []
@@ -37,12 +43,27 @@ def row_from_alpha(aid, a):
     if isinstance(two_y, dict):  # 平台偶发返回 {value:..} 嵌套
         two_y = two_y.get("value")
     failed = [c["name"] for c in checks if c.get("result") == "FAIL"]
+    # 2026-09-19：robust / sub-universe 维度入行（IND w170-175 实证：8 条 near 全死在
+    # LOW_ROBUST_UNIVERSE_SHARPE（limit 1.0，实测 0.24），而 near 池只看 sharpe，导致
+    # "结构性死信号"被当成 near、停止规则 B 永不触发）。value/limit 取自 checks，
+    # 缺项时回落 is.robust_universe_sharpe / is.sub_universe_sharpe。
+    def _chk(name):
+        c = next((c for c in checks if c.get("name") == name), None)
+        if not c:
+            return None, None
+        return c.get("value"), c.get("limit")
+    robust_v, robust_lim = _chk("LOW_ROBUST_UNIVERSE_SHARPE")
+    if robust_v is None:
+        robust_v = i.get("robust_universe_sharpe") or i.get("robustUniverseSharpe")
+    sub_v, sub_lim = _chk("LOW_SUB_UNIVERSE_SHARPE")
+    if sub_v is None:
+        sub_v = i.get("sub_universe_sharpe") or i.get("subUniverseSharpe")
     code = a.get("regular")
     if isinstance(code, dict):
         code = code.get("code", "")
     return {
         "id": aid,
-        "code": str(code or "")[:110],
+        "code": str(code or ""),
         "neut": (a.get("settings") or {}).get("neutralization"),
         "sharpe": i.get("sharpe"),
         "fitness": i.get("fitness"),
@@ -51,6 +72,10 @@ def row_from_alpha(aid, a):
         "turnover_pct": round(i["turnover"] * 100, 2) if i.get("turnover") is not None else None,
         "rn_sharpe": rn.get("sharpe"),
         "rn_fitness": rn.get("fitness"),
+        "robust_sharpe": robust_v,
+        "robust_limit": robust_lim,
+        "sub_universe_sharpe": sub_v,
+        "sub_universe_limit": sub_lim,
         "failed_checks": failed,
         "cached_at": datetime.datetime.now().isoformat(timespec="seconds"),
     }

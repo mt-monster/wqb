@@ -27,7 +27,7 @@ allowed-tools:
 
 - **上游**：`wq-brain-ra-pipeline`（S-PRE 查表决策）或用户直给 `region + 意图`（REGULAR 挖矿 / SA 组合 / PPA / 复盘）。
 - **数据通道（单轨 DB）**：读全走 `mcp__wqb-db__*`（`get_region_config` / `get_dead_ends` / `get_campaigns` / `get_cross_region_lessons`）；回写走 `campaign.py registry` 幂等 CLI 或会话内 `mcp__wqb-db__upsert_registry_empirical`，禁止散装 SQL。
-- **输出**：预解析配置包（region/universe/delay/中性化/候选数据集等**参数**，非落盘产物；下游以参数注入，不产生中间文件）。**配置包必须包含 PROD 饱和风险标注（2026-08-23 新增，强制）**：查询 `mcp__wqb-db__get_dead_ends(region)` 中 PROD_CORRELATION 类死路，若候选数据集/信号族与已知饱和族重叠，标注 `prod_risk: high` 并附具体死路条目；同时查询 `mcp__wqb-db__search_alphas_by_sharpe(region, min_sharpe=1.58)` 获取该区域已达标 alpha 数量，≥10 且风格同质则标注 `prod_saturation: likely`。此标注供 S2 生成表达式时参考——若信号族 PROD 风险高，优先选择正交方向而非同族变体。
+- **输出**：预解析配置包（region/universe/delay/中性化/候选数据集等**参数**，非落盘产物；下游以参数注入，不产生中间文件）。**配置包必须包含 PROD 饱和风险标注（2026-08-23 新增，强制）**：查询 `mcp__wqb-db__get_dead_ends(region)` 中 PROD_CORRELATION 类死路，若候选数据集/信号族与已知饱和族重叠，标注 `prod_risk: high` 并附具体死路条目；同时查询 `mcp__wqb-db__search_alphas_by_sharpe(region, min_sharpe=1.58)` 获取该区域已达标 alpha 数量，≥10 且风格同质则标注 `prod_saturation: likely`（区域级饱和/投入-产出的**统一计算入口 = `tools/region_status.py`**，2026-09-12 起 next-move §5.5 与本标注共用其口径，勿另写第三份实现）。此标注供 S2 生成表达式时参考——若信号族 PROD 风险高，优先选择正交方向而非同族变体。
 - **下游**：S0 健康检查（`wq-brain-ppa-mining` §1.0 硬门槛方法论 + `wq-brain-campaign-toolkit` `score_datasets.py` 执行；配置包映射为 `--campaign-dir` 与 settings/thresholds）；S6→S-PRE 闭环另一端——`wq-backtest-monitor` §14 回写 registry_empirical 后本 skill 查表自动读取最新 dead_ends/wins/campaigns。
 
 ## 数据文件（唯一 registry，单轨 SQLite）

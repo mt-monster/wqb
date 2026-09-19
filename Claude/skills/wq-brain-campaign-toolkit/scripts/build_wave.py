@@ -10,6 +10,10 @@
     限制 linear_mix 占比（默认 ≤50%），强制事件门控/group/ratio 骨架进入候选（直击 CW 墙根因）
   - near-miss 加权：wave_results 表 near 池 + 台账 near_pool 的字段，候选优先
   - 波内字段去重：同一字段在单波出现次数上限
+  - 选波权威化（2026-09-12）：picked 写 selected 的同一事务里，本波落选且仍为
+    gem/pending/enhanced 的行归档 superseded（settings_json.status_change 记
+    "not picked by build_wave <ts>"）；dropped/selected/gated 与已回测行不碰
+  - --auto-coverage never = 契约签发 / 注入 / ④ 自愈三处全关（此前只关签发）
 
 用法:
   python build_wave.py --campaign-dir <DIR> --file candidates/new_exprs.json --wave 01A [--size 48] [--per-bucket 8]
@@ -30,6 +34,7 @@ from _lib.common import (CampaignContext, add_campaign_arg, bucket_key,
                          expr_fields, load_json, load_platform_constraints, norm_expr,
                          read_exprs_file, skeleton)
 from _lib.ledger import make_ledger_store
+from _lib import region_gates as rg
 from _lib import rules as rules_mod
 from _lib.wqb_store import get_store
 
@@ -400,6 +405,10 @@ def load_family_map(exprs_path=None, meta_file=None):
 def main():
     ap = argparse.ArgumentParser(description="战役统一选波器")
     add_campaign_arg(ap)
+    ap.add_argument("--gate-mode", default=os.environ.get("WQB_GATE_MODE", rg.MODE_WARN),
+                    choices=rg.MODE_CHOICES,
+                    help="开波前区域闸模式（2026-09-17 P0-1 下沉）："
+                         "off / warn(默认，只告警) / enforce(命中即阻断)")
     ap.add_argument("--file", default=None, help="兼容：表达式 JSON（已废弃，请 --from-db）")
     ap.add_argument("--from-db", action="store_true", help="从 expressions 表读 GEM/上游候选")
     ap.add_argument("--dataset", default=None, help="数据集（--from-db 时用于定位 GEM 源）")
@@ -421,6 +430,17 @@ def main():
     # 2026-09-09：ctx 就绪后补一次工作区 src 解析，救回模块级导入失败的多样性增强
     # （skill 安装位与工作区不同树时 __file__ 向上推导必然失败）。
     _retry_diversity_import(a.campaign_dir)
+
+    # ---- 开波前区域闸（2026-09-17 P0-1 下沉到 toolkit 入口）----
+    # 背景：signal_floor / stop_rules / backlog 三道闸原本只在 workflow 的 S2/S3
+    # 节点生效，直调本脚本时完全不触发（实证 JPN 2026-09-16：闸判定为拦截，
+    # 该区却照跑完整波 gem=1640/回测=0）。下沉到开波唯一入口，使绕过成本 > 遵守成本。
+    # 默认 warn（灰度，只告警不阻断）；enforce 下命中即 SystemExit(2)。
+    _gate_report = rg.run_region_gates(a.campaign_dir, ctx.region, mode=a.gate_mode,
+                                       dataset=a.dataset)
+    if not _gate_report.get("ok", True):
+        raise SystemExit(2)
+
     # 算子名单（平台约束单一事实源）：字段重复上限只统计真字段，算子 token 不占额度
     known_ops = set(load_platform_constraints().get("known_ops", []))
 
@@ -436,15 +456,23 @@ def main():
         st = get_store(ctx)
         try:
             rows = st.list_expressions(ctx.region, str(a.wave), dataset=a.dataset)
-            if not rows and a.dataset:
-                delay = ctx.settings.get("delay", 1)
-                src_wave = f"s2_{a.dataset}_d{delay}"
-                rows = st.list_expressions(ctx.region, src_wave, dataset=a.dataset)
             # 2026-09-09 D11 修复：候选读取同时排除 dropped 与 superseded。
             # 此前只排 superseded，Agent 手动 dropped 的零 alpha 骨架（iso_week_number
             # 等日历哑字段）会被重选回 selected，纪律废弃形同虚设。
-            exprs = [r["expression"] for r in rows
-                     if r.get("expression") and r.get("status") not in ("superseded", "dropped")]
+            _usable = lambda rs: [r["expression"] for r in rs
+                                  if r.get("expression") and r.get("status") not in ("superseded", "dropped")]
+            exprs = _usable(rows)
+            # 2026-09-19 修复：波号"看似有行"但全是 dropped/superseded 残留（IND wave168 实证：
+            # 上一次选波的 8 条被 dropped 后重建同波号，list_expressions 非空 → 不回退到
+            # s2_<ds>_d<delay> 源池 → 报"db 无候选"）。回退条件改为"无可用候选"而非"无行"。
+            if not exprs and a.dataset:
+                delay = ctx.settings.get("delay", 1)
+                src_wave = f"s2_{a.dataset}_d{delay}"
+                if rows:
+                    print(f"[build_wave] wave={a.wave} 仅有 {len(rows)} 条 dropped/superseded 残留，"
+                          f"回退到源池 {src_wave}")
+                rows = st.list_expressions(ctx.region, src_wave, dataset=a.dataset)
+                exprs = _usable(rows)
         finally:
             st.close()
         if not exprs and a.file:
@@ -480,8 +508,16 @@ def main():
     # 注入活跃契约的实例化因子（2026-08-25 ②：骨架优先，按当前数据集实例化）
     # 修复双重失效：(a) 锚点字段表达式跨数据集撞 FIELD 闸；(b) 固定表达式被历史去重杀死。
     # 优先级：骨架（template+roles，用当前 --dataset 的 catalog 角色池实例化）> legacy expr。
+    # 2026-09-12 GBR wave57 修复：--auto-coverage never 此前只关了上面的"签发"，本段注入与
+    # 下方 ④ 自愈照跑 —— group_backfill(x, sector, 20) / group_cartesian_product(sector, sector)
+    # / group_count(...) 等契约因子无视开关进池，其中若干把 MATRIX 字段当 group 用，平台报
+    # unit 错误并整批取消 multisim。never 现在同时关闭签发 / 注入 / 自愈三处（与 --help 一致）。
+    if a.auto_coverage == "never":
+        print("[coverage] --auto-coverage never：跳过契约因子注入与 ④ 自愈补齐"
+              "（有活跃契约时闸6 需自行处理）")
     try:
-        act = rules_mod.get_active_contract(ctx, batch_type="explore")
+        act = (None if a.auto_coverage == "never"
+               else rules_mod.get_active_contract(ctx, batch_type="explore"))
         if act:
             ft = act.get("factor_templates") or {}
             cov_exprs = []
@@ -624,7 +660,20 @@ def main():
     bucket_sizes = {k: len(v) for k, v in sorted(buckets.items())}  # 抽样前记录桶规模
 
     picked, field_count, lm_count = [], collections.Counter(), 0
-    # 轮转分桶抽样：每桶最多 per-bucket；linear_mix 骨架受配额约束
+    # 2026-09-17 族类配额：每族最多 max_per_family 条，econ_option 族 cap 为 econ_option_cap
+    # 2026-09-18 修复：配额**只对有 family 标签的表达式生效**。
+    #   原实现把无标签的表达式一律归为 "unknown" 并套用 max_per_family，
+    #   而 `--from-db` 路径没有 final_expressions_meta.json → family_map 恒为空
+    #   → 全波候选都进 "unknown" → 波被静默截断到 min(size, max(2, size//6)) 条
+    #   （实测 --size 3/6/12 全部只选出 2 条）。族配额的语义是"限制**已知族**过度集中"，
+    #   不是给"未标注"设上限；无标签时该维度无信息，应退回已有的
+    #   字段重复上限（--max-field-repeat）+ 算子树分桶（bucket_key）来控多样性。
+    #   开关 WQB_FAMILY_CAP_UNKNOWN=1 可恢复旧行为（灰度/回滚用）。
+    _cap_unknown = os.environ.get("WQB_FAMILY_CAP_UNKNOWN", "0") == "1"
+    family_count = collections.Counter()
+    max_per_family = max(2, a.size // 6)  # 默认每族最多 size/6 条
+    econ_option_cap = max(1, a.size // 8)  # econ_option 族 cap 为 size/8
+    # 轮转分桶抽样：每桶最多 per-bucket；linear_mix 骨架受配额约束；族类配额约束
     progress = True
     while progress and len(picked) < a.size:
         progress = False
@@ -638,8 +687,20 @@ def main():
                 if sum(1 for f in expr_fields(e, known_ops) if field_count[f] >= a.max_field_repeat) > 0:
                     lst.pop(0)  # 字段超限，弃此式看下一式
                     continue
+                # 族类配额检查（2026-09-17；无标签默认不受限，见上方修复说明）
+                fam = family_map.get(norm_expr(e))
+                if fam or _cap_unknown:
+                    fam_key = fam or "unknown"
+                    fam_cap = econ_option_cap if fam_key == "econ_option" else max_per_family
+                    if family_count[fam_key] >= fam_cap:
+                        lst.pop(0)  # 族类配额已满，弃此式看下一式
+                        continue
+                else:
+                    fam_key = None
                 lst.pop(0)
                 picked.append(e)
+                if fam_key is not None:
+                    family_count[fam_key] += 1
                 for f in expr_fields(e, known_ops):
                     field_count[f] += 1
                 if sk == "linear_mix":
@@ -696,9 +757,11 @@ def main():
 
     # ④ 多样性自愈（2026-08-25）：选波结果若命中契约 required 算子数不足，
     # 用骨架按当前数据集实例化补齐（限一轮补注），保证落库波结构性过闸6，
-    # 不依赖调用方记得传 ideas 文件或 gate 后回环。
+    # 不依赖调用方记得传 ideas 文件或 gate 后回环。--auto-coverage never 时同样关闭
+    # （自愈补齐的也是契约骨架实例化因子，与上方注入同源）。
     try:
-        _act = rules_mod.get_active_contract(ctx, batch_type="explore")
+        _act = (None if a.auto_coverage == "never"
+                else rules_mod.get_active_contract(ctx, batch_type="explore"))
         if _act:
             _req = set(_act.get("required_operators") or [])
             _need = (_act.get("per_batch_min_operators") or 2)
@@ -796,18 +859,34 @@ def main():
     }
     st = get_store(ctx)
     try:
-        st.upsert_expressions(
-            ctx.region, str(a.wave),
-            [{"expression": e, "status": "selected", "dataset": a.dataset} for e in picked],
-            dataset=a.dataset, status="selected",
-        )
+        # 2026-09-12 GBR wave57：选波结果权威化 —— picked 写 selected 的同一事务里，把本波
+        # 落选且仍处待选态（gem/pending/enhanced）的行归档为 superseded；dropped/selected/
+        # gated 与已回测行（alpha_id 非空）不碰。此前落选行原样留在波里，pipeline/gate 按波
+        # 读表达式时分不清本波真正的选集，Agent 只能靠 upsert_expressions 回传全量正文改状态。
+        # 要重选同一波：先用 mcp__wqb-db__set_expression_status 把 superseded 行改回 gem。
+        try:
+            st.upsert_expressions(
+                ctx.region, str(a.wave),
+                [{"expression": e, "status": "selected", "dataset": a.dataset} for e in picked],
+                dataset=a.dataset, status="selected", commit=False,
+            )
+            n_superseded = st.supersede_unpicked(
+                ctx.region, str(a.wave), picked,
+                reason=f"not picked by build_wave {meta['created_at']}", commit=False,
+            )
+            st.connection.commit()
+        except Exception:
+            st.connection.rollback()
+            raise
+        meta["superseded"] = n_superseded
         if diversity_report:
             st.upsert_ledger(ctx.region, f"diversity_report_w{a.wave}", diversity_report)
         st.upsert_ledger(ctx.region, f"wave_meta_{a.wave}", meta)
     finally:
         st.close()
     print(json.dumps(meta, ensure_ascii=False, indent=1))
-    print(f"wave -> db expressions/{ctx.region}/{a.wave} n={len(picked)}")
+    print(f"wave -> db expressions/{ctx.region}/{a.wave} n={len(picked)} "
+          f"superseded={n_superseded}")
 
 
 if __name__ == "__main__":
