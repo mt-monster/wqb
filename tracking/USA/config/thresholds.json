@@ -45,7 +45,7 @@
   "_note": "平台提交期硬闸，异步计算须以重检为准"
  },
  "diversity": {
-  "_doc": "USA 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "_doc": "USA 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：2026-09-17 起改为 **fail-closed** —— 整节缺失时回落默认 floor=0.5/min_batches=2 继续判定并输出 warning（旧行为是静默放行，GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）；仅显式 enabled:false 才放行。",
   "signal_floor": {
    "max_sharpe_floor": 0.9,
    "min_batches": 2,
@@ -82,13 +82,17 @@
   "category_weights": {
    "other": 1.15,
    "pv": 1.0,
-   "model": 1.15
+   "model": 1.15,
+   "news": 1.0,
+   "earnings": 1.15,
+   "fundamental": 1.15,
+   "institutions": 1.15
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 8,
-  "sweet_spot_ac_max": 77,
-  "_calibrated_at": "2026-09-04T23:26:11",
-  "_calibrated_from": "alpha_store 217 alphas/9 ds + results/ 扫描 → 共 13 datasets 实测"
+  "sweet_spot_ac_min": 44,
+  "sweet_spot_ac_max": 2271,
+  "_calibrated_at": "2026-09-17T23:37:18",
+  "_calibrated_from": "alpha_store 730 alphas/29 ds + results/ 扫描 → 共 30 datasets 实测"
  },
  "mode_b_qualification": {
   "sharpe_min": 1.0,

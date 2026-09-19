@@ -25,7 +25,7 @@
   "fitness_min": 0.8
  },
  "diversity": {
-  "_doc": "DEU 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "_doc": "DEU 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：2026-09-17 起改为 **fail-closed** —— 整节缺失时回落默认 floor=0.5/min_batches=2 继续判定并输出 warning（旧行为是静默放行，GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）；仅显式 enabled:false 才放行。",
   "signal_floor": {
    "max_sharpe_floor": 0.5,
    "min_batches": 2,
@@ -69,21 +69,20 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "analyst": 1.15,
+   "other": 1.0,
+   "institutions": 1.0,
+   "analyst": 1.0,
    "model": 1.15,
-   "sentiment": 0.9,
-   "fundamental": 0.9,
    "news": 0.9,
-   "pv": 1.15,
-   "risk": 0.9,
-   "shortinterest": 0.9,
-   "other": 0.9
+   "pv": 0.9,
+   "insiders": 0.9,
+   "shortinterest": 0.9
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 206,
-  "sweet_spot_ac_max": 67041,
-  "_calibrated_at": "2026-09-02T21:26:41",
-  "_calibrated_from": "alpha_store 207 alphas/12 ds + results/ 扫描 → 共 12 datasets 实测"
+  "sweet_spot_ac_min": 79,
+  "sweet_spot_ac_max": 374,
+  "_calibrated_at": "2026-09-15T22:24:17",
+  "_calibrated_from": "alpha_store 989 alphas/23 ds + results/ 扫描 → 共 23 datasets 实测"
  },
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "kor_specific_adjustments": {

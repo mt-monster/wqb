@@ -1,6 +1,6 @@
 {
   "GBR": {
-    "universe": ["TOP700", "TOP1000"],
+    "universe": ["TOP700"],
     "neutralization": ["SUBINDUSTRY", "SECTOR"],
     "strong_datasets": ["starmine"],
     "weak_datasets": ["model264", "model36", "other455"],
@@ -15,12 +15,12 @@
     "probe_size": 3,
     "settings_priority": [
       {"universe": "TOP700", "neutralization": "SUBINDUSTRY"},
-      {"universe": "TOP1000", "neutralization": "SUBINDUSTRY"},
       {"universe": "TOP700", "neutralization": "SECTOR"}
     ]
   },
   "USA": {
-    "universe": ["TOP3000", "TOP1000", "TOP500"],
+    "universe": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200",
+                 "ILLIQUID_MINVOL1M", "TOPSP500"],
     "neutralization": ["SUBINDUSTRY", "SECTOR", "MARKET"],
     "strong_datasets": ["starmine"],
     "weak_datasets": ["ml_factor_proj"],
@@ -34,6 +34,7 @@
     "probe_size": 4,
     "settings_priority": [
       {"universe": "TOP3000", "neutralization": "SUBINDUSTRY"},
+      {"universe": "TOP2000", "neutralization": "SUBINDUSTRY"},
       {"universe": "TOP1000", "neutralization": "SUBINDUSTRY"},
       {"universe": "TOP3000", "neutralization": "SECTOR"},
       {"universe": "TOP3000", "neutralization": "MARKET"},
@@ -55,6 +56,18 @@
       {"universe": "TOP600", "neutralization": "SECTOR"}
     ]
   },
+  "JPN": {
+    "universe": ["TOP1600", "TOP1200"],
+    "neutralization": ["MARKET", "STATISTICAL", "NONE"],
+    "strong_datasets": [],
+    "weak_datasets": [],
+    "probe_size": 3,
+    "settings_priority": [
+      {"universe": "TOP1600", "neutralization": "MARKET"},
+      {"universe": "TOP1600", "neutralization": "STATISTICAL"}
+    ],
+    "_note": "2026-09-15 平台实测：universe 仅 TOP1600/TOP1200；中性化 SUBINDUSTRY/SECTOR 报 Invalid data field（JPN 无分类字段），可用 NONE/MARKET/STATISTICAL，静态档取 MARKET。"
+  },
   "MEA": {
     "universe": ["TOP400", "TOP300"],
     "neutralization": ["SUBINDUSTRY", "SECTOR", "INDUSTRY", "MARKET", "COUNTRY"],
@@ -67,6 +80,7 @@
       {"universe": "TOP300", "neutralization": "SUBINDUSTRY"},
       {"universe": "TOP400", "neutralization": "MARKET"},
       {"universe": "TOP400", "neutralization": "COUNTRY"}
-    ]
+    ],
+    "_note": "平台 get_platform_setting_options 未列出 MEA，需确认是否仍可用"
   }
 }

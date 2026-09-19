@@ -1,0 +1,18 @@
+{
+  "_doc": "AMR 战役仿真设置（2026-09-16 创建）。平台实测：universe 仅 TOP600；中性化 7 选（NONE/STATISTICAL/MARKET/SECTOR/INDUSTRY/SUBINDUSTRY/COUNTRY），静态档取 MARKET。",
+  "instrumentType": "EQUITY",
+  "region": "AMR",
+  "universe": "TOP600",
+  "delay": 1,
+  "neutralization": "MARKET",
+  "decay": 4,
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2013-01-01",
+  "endDate": "2023-12-31"
+}

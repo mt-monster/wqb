@@ -1,0 +1,227 @@
+{
+ "wins": [],
+ "dead_ends": [
+  {
+   "family": "analyst93 跨字段/跨集复合结构（ts_corr / trade_when / multiply / divide / bucket / group / subtract）",
+   "reason": ">24 种复合结构全数弱化或否定：ts_corr 0.46 / trade_when 1.06（CW 恶化）/ multiply ≤0.08 / divide 0.79 / bucket 分桶中性化 1.24（低于主腿 1.28）/ group_rank×bucket 0.80 / group_zscore×bucket 0.76 / subtract 价差 0.47（新增于 wave108）。单字段平滑（ts_mean/ts_decay_linear）与 group_rank 组内（1.24-1.28）为唯一有效形态。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-AN93-CROSS-COMPOSITE-DEAD"
+  },
+  {
+   "family": "anl93 recprofitabilityprev_{analyst,estimator}_profitability2 平滑系（1.24-1.30 亲代与全部变体）",
+   "reason": "prod_corr 实测三强全部 ≥0.7：gJQdpNoK=0.8038 / 9qVmQjKq=0.7598 / xAYWX9An=0.7576（2026-09-13）。族级生产饱和（其他区顾问已大量提交该族），即使 sharpe 达 1.58 也无法提交。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-AN93-PROD-SATURATED"
+  },
+  {
+   "family": "analyst93 relative_profitability 系列（recprofitabilityprev × analyst/estimator × relative_profitability1-4）",
+   "reason": "wave108 实测 7 形态全弱：smooth rp2 0.44 / est rp2 0.26 / rp2 0.19 / zscore rp2 0.19 / rp1 0.18 / rp3 -0.01 / rp4 -0.16（全部远低于主腿 1.28）。relative 后缀无独立信号价值。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-AN93-RELATIVE-DEAD"
+  },
+  {
+   "family": "analyst93 × fund_holdings_panel 跨集结构交互（salvage 救援）",
+   "reason": "救援批 2 条全 FAIL：ts_corr 协同 0.46（CW fail）；trade_when 门控 1.06（较主腿 1.28 弱化，且引入 CW 警告 0.25>0.1）。跨集辅助腿无增益且引入 CW 结构问题。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-CROSSSET-RESCUE-DEAD"
+  },
+  {
+   "family": "news18 全字段情绪/新闻类",
+   "reason": "fast_kill：8 探针 max|S|=0.09（全部 |S|<0.5），含情绪系(ssc/sse/qcm/composite)、影响系(nip)、新奇度系——DEU 的 Ravenpack 新闻数据无信号（tvr 0.11-1.14 且无 sharpe）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-NEWS18-ALLDEAD"
+  },
+  {
+   "family": "DEU D0 日内快信号（pattern_scores/pv29/pv30/other455）",
+   "reason": "DEU D0 快信号路径在数据集层不可行：凡依赖历史计算的字段(形态相似度/行业分类/关系/残差)在 D0 都不可用。D0 仅适合当天到达的稀疏事件/新闻/日内量价原始字段，且需先 get_datafields(delay=0) 实测字段存在性再生成。DEU 回 D1 或转他区。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-W104-D0-DATASET-EMPTY-DEAD"
+  }
+ ],
+ "region_context": {},
+ "_meta": {
+  "region": "DEU",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "avoid": [
+   "neutralization=INDUSTRY(0%, n=202)",
+   "neutralization=SECTOR(0%, n=83)",
+   "neutralization=MARKET(0%, n=40)",
+   "neutralization=SUBINDUSTRY(0%, n=72)",
+   "field_family=mdl(0%, n=290)",
+   "universe=TOP500(0%, n=418)"
+  ],
+  "by_decay": {
+   "0": {
+    "n": 20,
+    "rate": 0
+   },
+   "12": {
+    "n": 39,
+    "rate": 0
+   },
+   "4": {
+    "n": 106,
+    "rate": 0
+   },
+   "6": {
+    "n": 104,
+    "rate": 0
+   },
+   "8": {
+    "n": 149,
+    "rate": 0
+   }
+  },
+  "by_field_family": {
+   "mdl": {
+    "n": 290,
+    "rate": 0
+   },
+   "star": {
+    "n": 16,
+    "rate": 0
+   }
+  },
+  "by_neutralization": {
+   "INDUSTRY": {
+    "n": 202,
+    "rate": 0
+   },
+   "MARKET": {
+    "n": 40,
+    "rate": 0
+   },
+   "NONE": {
+    "n": 21,
+    "rate": 0
+   },
+   "SECTOR": {
+    "n": 83,
+    "rate": 0
+   },
+   "SUBINDUSTRY": {
+    "n": 72,
+    "rate": 0
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "n": 68,
+    "rate": 0
+   },
+   "<=4": {
+    "n": 168,
+    "rate": 0
+   },
+   ">8": {
+    "n": 182,
+    "rate": 0
+   }
+  },
+  "by_universe": {
+   "TOP500": {
+    "n": 418,
+    "rate": 0
+   }
+  },
+  "generated_at": "2026-09-11T18:35:03.116635+00:00",
+  "pass_rate": 0,
+  "sample_size": 418,
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
+  ]
+ }
+}

@@ -61,7 +61,7 @@
   "_note": "ET 日历日配额（REGULAR 4/日 + SUPER 1/日，00:00 ET 重置；2026-09-01 定案，旧 48h 滚动口径废止）。enabled 默认 false（2026-08-26 用户指令关闭提交配额闸）"
  },
  "diversity": {
-  "_doc": "MEA 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "_doc": "MEA 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：2026-09-17 起改为 **fail-closed** —— 整节缺失时回落默认 floor=0.5/min_batches=2 继续判定并输出 warning（旧行为是静默放行，GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）；仅显式 enabled:false 才放行。",
   "signal_floor": {
    "max_sharpe_floor": 1.2,
    "min_batches": 2,
@@ -81,7 +81,24 @@
   "alpha_count_max": 50,
   "tier2_coverage_min": 0.85,
   "tier2_field_count_min": 5,
-  "tier2_alpha_count_max": 200
+  "tier2_alpha_count_max": 200,
+  "category_weight_enable": true,
+  "category_weight_floor": 0.9,
+  "category_weight_cap": 1.15,
+  "pyramid_quota_enable": true,
+  "pyramid_quota_non_model_min": 2,
+  "category_weights": {
+   "model": 1.15,
+   "analyst": 1.15,
+   "pv": 1.15,
+   "fundamental": 1.15,
+   "earnings": 1.0
+  },
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 2092,
+  "sweet_spot_ac_max": 22618,
+  "_calibrated_at": "2026-09-15T21:26:38",
+  "_calibrated_from": "alpha_store 464 alphas/7 ds + results/ 扫描 → 共 8 datasets 实测"
  },
  "mode_b_qualification": {
   "sharpe_min": 1.2,

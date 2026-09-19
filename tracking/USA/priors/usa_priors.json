@@ -15,6 +15,13 @@
    "source": "registry_win"
   },
   {
+   "id": "USA-OHD-IVSKEW30D-DECAY-RECIPE",
+   "what": "ts_decay_linear smoothing dramatically improves IV skew: tvr 0.33->0.07, sharpe 1.31->1.45, fitness 0.45->0.84. decay=5 optimal. 30d maturity only. subindustry best neutralization.",
+   "key": "decay=5, group_rank(subindustry), 30d maturity, no winsorize/zscore improvement",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
    "id": "USA-SA-KPGvRMg1",
    "what": "SuperAlpha KPGvRMg1 (name=0.6944) ACTIVE",
    "key": "SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr；prod_correlation 在 selection 可用、combo 不可用",
@@ -34,15 +41,19 @@
    "key": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), multiply(0.3, rank(ts_backfill(event_5d_single_quantile_pred, 66)))))",
    "evidence": "",
    "source": "registry_win"
-  },
-  {
-   "id": "KPGvRMg1 (SUPER)",
-   "what": "KPGvRMg1 (SUPER)",
-   "key": "ACTIVE alpha (详见 region_kb)",
-   "source": "region_kb_active"
   }
  ],
  "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "value/quality book 145 ACTIVE 已饱和（USA-VALUE-PRODCORR）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "SA 组件池彼此相关 ~0.9（USA-SA-SECOND）",
+   "source": "region_kb_dead_pattern"
+  },
   {
    "family": "acquisition_model percentile",
    "reason": "4 个候选全部失败：3 个全负 Sharpe（-0.02/-0.03/-0.12），1 个 Sharpe 0.95 但低于 1.58 门槛。百分位排名类信号在 USA/TOP3000 高效市场无预测能力，与 pattern_scores/pv_tech_indicators 死路模式一致。",
@@ -56,6 +67,13 @@
    "salvage": "cross-region variants (prv2 ASI, prv23 EUR) untested; may work in other regions",
    "source": "registry_dead_end",
    "_entry_id": "USA-AI-NEWS-SCORES-DEAD"
+  },
+  {
+   "family": "continuation_score ascending_channel similarity delta",
+   "reason": "Ascending channel similarity 5d delta reversed has sharpe ceiling ~1.36 but fitness ceiling ~0.42. Fitness too low for platform gate 1.0.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-CS-ASC-CHANNEL-DELTA-DEAD"
   },
   {
    "family": "earningscall_embed embedding components",
@@ -72,11 +90,25 @@
    "_entry_id": "USA-EVENT-SENTIMENT-SIGNALS-DEAD"
   },
   {
+   "family": "GEM quantile wrapper on USA datasets",
+   "reason": "GEM auto-generated expressions with quantile() wrapper are structurally too simple for USA/D1/TOP3000. 4 datasets 264 backtests, max|sh|=1.22, 0 candidates. Platform gate sharpe>=1.58 requires much stronger signals.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-GEM-QUANTILE-WRAPPER-DEAD"
+  },
+  {
    "family": "insider_feats buy_sell_ratio",
    "reason": "All 4 probes |S|<0.5: buy_sell_ratio_all_250d sh0.32, all_20d sh0.15, top5_60d sh-0.06, tx_count_ratio_250d sh0.24. Insider trading signals too weak in USA/TOP3000.",
    "salvage": "May work as dilution component for high-sharpe signals from other datasets, but not worth dedicated waves.",
    "source": "registry_dead_end",
    "_entry_id": "USA-INSIDER-FEATS-DEAD"
+  },
+  {
+   "family": "insider_conviction",
+   "reason": "USA 内部人数据更拥挤（userCount 124-282）或 USA 定价效率高，DEU 机制没复现",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-INSIDERS1-DEU-CONVICTION-WEAK"
   },
   {
    "family": "model",
@@ -91,41 +123,6 @@
    "salvage": "focus on quantile5 mix and event_x_confidence families",
    "source": "registry_dead_end",
    "_entry_id": "USA-MFP-REGRESSION-DIFF-DEAD"
-  },
-  {
-   "family": "multifactor_return_pred sibling",
-   "reason": "同数据集同腿兄弟 alpha（表达式相似度 > 0.99）不能同时提交。78jz9X5b 与 GrlGJnPJ 表达式几乎相同（只差 long_term 权重 0.48 vs 0.46），平台检测到 self_corr=0.9981 且 Sharpe 差距 < 10%（2.00 vs 2.02），拒绝提交。",
-   "salvage": "换字段组合（如 analyst_conf, liquidity_risk）或换数据集",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-MFP-SIBLING-CONFLICT"
-  },
-  {
-   "family": "ml_factor_proj all signal families",
-   "reason": "All promising signal families PROD saturated: analyst_coverage×LTG prod=0.92, liquidity_risk prod=0.93. Dataset has 1068 fields but core signals (analyst, liquidity, short_interest, bankruptcy) all overlap with existing PROD alphas.",
-   "salvage": "May work in other regions (EUR/ASI) where PROD coverage is thinner; or as dilution leg (not primary signal) in cross-dataset combos",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-ML-FACTOR-PROJ-PROD-SATURATED"
-  },
-  {
-   "family": "news_sentiment_dl word sentiment",
-   "reason": "news_sentiment_dl VECTOR word-level sentiment in USA/TOP3000/D1: 10 probes max sh 0.63, far below 1.58 gate; ts_mean smoothing trades signal for turnover",
-   "salvage": "none identified; dataset exhausted for single-field probes",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-NEWS-SENTIMENT-DL-DEAD"
-  },
-  {
-   "family": "option_chart_model core signals (pcg + predicted_stock_return)",
-   "reason": "put_call_parity_gap_3_thvu prod_corr=0.8386 (bare) / 0.7533 (multiply hybrid) / 0.7844 (diluted); predicted_stock_return_50d_image prod_corr=0.782. Both core signal families are PROD-saturated. 0.2-0.3 weight probability dilution insufficient to bring prod_corr < 0.7.",
-   "salvage": "option_chart_model may still yield value via exotic field combinations (e.g., atm_iv_skew × volume interactions) but core directional signals are PROD-saturated. Consider other datasets first.",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-OPTION-CHART-MODEL-PROD-SATURATED"
-  },
-  {
-   "family": "pattern_scores",
-   "reason": "pattern_scores 数据集信号质量非常差，8 个候选全部失败（Sharpe: 0.16 到 0.41, Fitness: 0.02 到 0.10）",
-   "salvage": "可尝试其他图表模式相关的数据集（如 chart_cnn_alpha, chart_return_model 等）",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-PATTERN-SCORES-DEAD"
   }
  ],
  "region_context": {
@@ -147,7 +144,182 @@
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "sample_size": 991,
+  "pass_rate": 0.1171,
+  "by_neutralization": {
+   "MARKET": {
+    "rate": 0.1208,
+    "n": 447
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.1004,
+    "n": 508
+   }
+  },
+  "by_universe": {
+   "TOP3000": {
+    "rate": 0.1138,
+    "n": 984
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "rate": 0.201,
+    "n": 209
+   },
+   "<=4": {
+    "rate": 0.0879,
+    "n": 762
+   },
+   ">8": {
+    "rate": 0.35,
+    "n": 20
+   }
+  },
+  "by_decay": {
+   "5": {
+    "rate": 0.1296,
+    "n": 463
+   },
+   "0": {
+    "rate": 0.0942,
+    "n": 499
+   },
+   "6": {
+    "rate": 0.3889,
+    "n": 18
+   }
+  },
+  "by_field_family": {
+   "fnd": {
+    "rate": 0.0937,
+    "n": 619
+   },
+   "mdl": {
+    "rate": 0.1454,
+    "n": 282
+   },
+   "annual": {
+    "rate": 0.25,
+    "n": 20
+   }
+  },
+  "avoid": [],
+  "generated_at": "2026-09-07T18:10:36.201701+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 5,
+    "current_rate": 0.1296,
+    "current_n": 463,
+    "recommended": 5,
+    "rate": 0.1296,
+    "n": 463,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "SUBINDUSTRY",
+    "current_rate": 0.1004,
+    "current_n": 508,
+    "recommended": "MARKET",
+    "rate": 0.1208,
+    "n": 447,
+    "lift": 1.2,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

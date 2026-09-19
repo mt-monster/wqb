@@ -8,6 +8,13 @@
    "source": "region_kb"
   },
   {
+   "id": "GLB-AINEWS-TS-DELTA-DECORRELATION-WIN",
+   "what": "情绪**水平**信号（positive-negative average/max-median）是 RavenPack 经典拥挤区（prod 0.70-0.76 撞墙）；转为情绪**变化率**（ts_delta(净情绪, 5)）后 prod 降至 0.56-0.57 正交。变化率剥离了被反复套利的情绪水平暴露，只保留边际信息增量。",
+   "key": "3 候选（vRkGN8Nd/xAYGj9Gl/Vk6z7q5J）prod 0.559-0.568/self 0.0/2Y 2.29-2.49/turnover 0.60/无CW/PPA全过。",
+   "evidence": "3 候选（vRkGN8Nd/xAYGj9Gl/Vk6z7q5J）prod 0.559-0.568/self 0.0/2Y 2.29-2.49/turnover 0.60/无CW/PPA全过。",
+   "source": "registry_win"
+  },
+  {
    "id": "T-KB-08 量价背离（101 最强主题）",
    "what": "T-KB-08 量价背离（101 最强主题）",
    "key": "skeleton=reverse(ts_corr(rank(price), rank(volume), 5~10)); iron_law=适用于任何含 price+volume 的数据集",
@@ -36,6 +43,34 @@
    "family": "region_kb",
    "reason": "sentiment23 8/8 FAIL / sentiment26 APAC 负",
    "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "ai_news_scores 情绪变化率族（ts_delta 净情绪）",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-AINEWS-TS-DELTA-STRENGTH-WALL"
+  },
+  {
+   "family": "pv98 日内反转/量价微观结构族",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-PV98-INTRADAY-REVERSAL-TURNOVER-WALL"
+  },
+  {
+   "family": "intraday_pv_feats corr_*_with_slippage 族",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-W02-INTRADAY-PV-TURNOVER-WALL"
+  },
+  {
+   "family": "other455 competitor_n2v_pca 族",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GLB-W03-OTHER455-NO-SIGNAL"
   }
  ],
  "region_context": {
@@ -55,7 +90,235 @@
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "sample_size": 1000,
+  "pass_rate": 0.235,
+  "by_neutralization": {
+   "STATISTICAL": {
+    "rate": 0.7763,
+    "n": 76
+   },
+   "COUNTRY": {
+    "rate": 0.2158,
+    "n": 658
+   },
+   "MARKET": {
+    "rate": 0.0411,
+    "n": 73
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.0,
+    "n": 53
+   },
+   "INDUSTRY": {
+    "rate": 0.0,
+    "n": 30
+   },
+   "FAST": {
+    "rate": 0.4429,
+    "n": 70
+   },
+   "SLOW": {
+    "rate": 0.0,
+    "n": 35
+   }
+  },
+  "by_universe": {
+   "MINVOL1M": {
+    "rate": 0.2289,
+    "n": 712
+   },
+   "TOP3000": {
+    "rate": 0.0,
+    "n": 25
+   },
+   "TOPDIV3000": {
+    "rate": 0.2748,
+    "n": 262
+   }
+  },
+  "by_operator_count": {
+   "<=4": {
+    "rate": 0.2428,
+    "n": 906
+   },
+   "5-8": {
+    "rate": 0.1538,
+    "n": 91
+   }
+  },
+  "by_decay": {
+   "2": {
+    "rate": 0.9091,
+    "n": 22
+   },
+   "3": {
+    "rate": 0.2412,
+    "n": 257
+   },
+   "5": {
+    "rate": 0.5778,
+    "n": 45
+   },
+   "6": {
+    "rate": 0.1806,
+    "n": 216
+   },
+   "8": {
+    "rate": 0.2857,
+    "n": 35
+   },
+   "0": {
+    "rate": 0.2454,
+    "n": 216
+   },
+   "10": {
+    "rate": 0.125,
+    "n": 88
+   },
+   "4": {
+    "rate": 0.0,
+    "n": 15
+   },
+   "16": {
+    "rate": 0.0,
+    "n": 39
+   }
+  },
+  "by_field_family": {
+   "probability": {
+    "rate": 0.6452,
+    "n": 248
+   },
+   "quantile": {
+    "rate": 0.4516,
+    "n": 31
+   },
+   "max": {
+    "rate": 0.0294,
+    "n": 34
+   },
+   "mean": {
+    "rate": 0.0553,
+    "n": 235
+   },
+   "predicted": {
+    "rate": 0.1844,
+    "n": 179
+   },
+   "section": {
+    "rate": 0.0,
+    "n": 20
+   },
+   "oth": {
+    "rate": 0.0,
+    "n": 18
+   },
+   "img": {
+    "rate": 0.1538,
+    "n": 39
+   },
+   "analyst": {
+    "rate": 0.0,
+    "n": 44
+   },
+   "anl": {
+    "rate": 0.0,
+    "n": 108
+   }
+  },
+  "avoid": [
+   "neutralization=SUBINDUSTRY(0%, n=53)",
+   "neutralization=INDUSTRY(0%, n=30)",
+   "neutralization=SLOW(0%, n=35)",
+   "field_family=analyst(0%, n=44)",
+   "field_family=anl(0%, n=108)"
+  ],
+  "generated_at": "2026-09-11T17:04:52.332640+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

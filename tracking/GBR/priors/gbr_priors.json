@@ -44,11 +44,55 @@
  ],
  "dead_ends": [
   {
+   "family": "region_kb",
+   "reason": "starmine value 配方移植 KOR 全灭（0.32-0.60）——配方跨区移植不保真",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "delay0 设置展开判死：所有字段 delay1 限定（_p5_d1 后缀与 quantile_label 类在 delay0 下 unknown variable），GBR-DELAY0-INFEASIBLE",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "analyst7 revision-momentum 衰减（wave54）：est_*_raisednum-lowerednum/num 机制有效但 2014-2017 sharpe 2.86-3.55 → 2022-2023 0.66-0.88，2Y 0.79 生命周期末期，GBR-ANALYST7-REVISION-DECAYED",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "fundamental6 质量/价值族规模暴露（wave55）：fnd6_*_atq/revt 裸 rank/group_rank 全是规模因子暴露（rn -0.25~-0.73）非超额，最强 oancf-oiadp/atq 0.37 距闸 76%，GBR-FUNDAMENTAL6-CEILING",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "news18 事件门控无信号（wave56）：trade_when + vec_avg 门控（relevance/ber/similarity_days/analyst_change × nip/qcm/ssc）全灭，最强 novelty 门控 0.42/2Y 0.12，GBR-NEWS18-EVENTGATE-DEAD",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "pv29/pv30 纯聚类分组轴无信号字段（2026-09-12 字段核查）：Zura 聚类 + PCA factor loadings，全 GROUP/MATRIX 簇标签，无量价信号，pv 跨集混合路径在 GBR 客观上不成立",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "analyst7_revision_momentum",
+   "reason": "analyst7 revision-momentum (est_*_raisednum - est_*_lowerednum / num) 机制有效但严重衰减：d5OYVodX (est_12m_ebt) IS sharpe 1.2/rn 1.07 机制成立，但 yearly stats 2014-2017 sharpe 2.86-3.55 → 2022-2023 仅 0.66-0.88，2Y 0.79 是拥挤化/信号生命周期末期证据，不满足稳健性；未达 Mode B 资格线 (1.2<1.25, 0.79<0.8)",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-ANALYST7-REVISION-DECAYED"
+  },
+  {
    "family": "analyst9",
    "reason": "ledger analyst9_dead 标记判死",
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "GBR-ANALYST9-DEAD"
+  },
+  {
+   "family": "settings_variation",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-DELAY0-INFEASIBLE"
   },
   {
    "family": "dl_riskfree_label",
@@ -58,84 +102,256 @@
    "_entry_id": "GBR-DLRISKFREE-LABEL-DEAD"
   },
   {
+   "family": "fundamental6_quality_value",
+   "reason": "fundamental6 基本面质量/价值族全灭：33 条回测 0 达硬闸，最强 akLevrVw（oancf-oiadp/atq）sharpe 0.37/2Y 1.08/rn 0.33 距 1.58 差 76%；裸 rank/group_rank(fnd6_*_atq/revt) 全是规模因子暴露（rn -0.25~-0.73）非超额；ts_zscore(atq/revt,66) 0.68-0.72 但 2Y 0.1-0.18 不稳健",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "GBR-FUNDAMENTAL6-CEILING"
+  },
+  {
    "family": "fund_holdings_panel",
    "reason": "ledger fund_holdings_panel_dead 标记判死",
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "GBR-FUNDHOLDINGS-DEAD"
-  },
-  {
-   "family": "credit_reverse",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-M28-REVERSE-CEILING"
-  },
-  {
-   "family": "model106_rank",
-   "reason": "wave31 model106 10 条 GEM 全 FAIL（含 T-KB-01 慢×快混合/ts_regression 复合结构），max sharpe 0.38；TOP700 排名类信号结构性偏弱（与 model238 同型）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-MDL106-CEILING"
-  },
-  {
-   "family": "model238_rank",
-   "reason": "wave29 model238 9 条 GEM 多结构全 FAIL，IS 天花板 0.68（TOP700 排名类信号结构性偏弱）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-MDL238-RANK-CEILING"
-  },
-  {
-   "family": "model53",
-   "reason": "ledger model53_dead 标记判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-MODEL53-DEAD"
-  },
-  {
-   "family": "news17",
-   "reason": "ledger news17_dead 标记判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-NEWS17-DEAD"
-  },
-  {
-   "family": "news18",
-   "reason": "wave36 8 条 GEM 复合结构全 FAIL（max sh 0.40，max|S| 0.53）；ts_backfill(66) 结构全部 resource 超限（去掉 backfill 才能跑）；ts_corr 机制从 sentiment27 换腿不泛化（np7Nd37M sh 0.06）；与 ppa-mining-experience 记录一致（news18 GBR 结构性弱数据，INDUSTRY 中性化下 Sharpe<0.7 被中和）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-NEWS18-STRUCTURAL-WEAK"
-  },
-  {
-   "family": "news20",
-   "reason": "ledger news20_dead 标记判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-NEWS20-DEAD"
-  },
-  {
-   "family": "prod_saturated",
-   "reason": "predictive_starmine（GrlqxwKx 四向价值）/ analyst_earnings_ibes（vRNk56mz ep_yield delta66）/ pattern_scores（A1G7o1EE）/ other455×model264（WjAV89jG）已各 1 颗 ACTIVE，同族变体 PROD 饱和，禁生成同族新表达式",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-PROD-SATURATED"
-  },
-  {
-   "family": "shortinterest3",
-   "reason": "wave37-39 共 22 条实证：镜像 4/4 精确反转确认 squeeze 反向机制，但信号 IS/2Y 分裂天花板——乘积族（mktval×rate）IS 1.04/2Y 0.29，比值族（vol/rate）IS 0.80/2Y 1.52，两组均不达闸（1.58/1.6）且无重叠；Mode A 差分/zscore/窗口变体全部衰减（基线 1.04 最优）；ts_corr 换腿方向不稳定；判死（复合双腿混合未验证，留口子）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-SI3-MIRROR-CEILING"
   }
  ],
+ "region_context": {
+  "tier": "达成区（4 ACTIVE，目标完成）；2026-09-12 扩挖战役四波全 FAIL，区域各角度穷尽，建议暂停",
+  "settings_proven": {
+   "delay": "1",
+   "universe": "TOP700"
+  },
+  "key_notes": [
+   "win 配方换区必须重新走 1 批验证，不直接扩展",
+   "delay0 设置展开已验证不可行（wave53 全 ERROR）",
+   "GBR 强信号族（value/revision/pv/quality/news/shortinterest）全部 PROD 饱和或衰减——四波 66 条新回测 + 全角度字段核查实证（2026-09-12）",
+   "GBR 未点亮金字塔的处女数据集空间已穷尽：16/16 塔未点亮但所有未触碰 category 的数据集 coverage 全 0（无数据），仅有的 analyst7/fundamental6 两可行探针全判死",
+   "pv29/pv30 是纯统计聚类/PCA 分组数据集（非量价），只能作分组轴不能作信号腿"
+  ]
+ },
  "_meta": {
   "region": "GBR",
   "sources": [
-   "ledger_kv:region_kb",
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "avoid": [
+   "neutralization=MARKET(0%, n=145)",
+   "neutralization=NONE(0%, n=50)",
+   "neutralization=SECTOR(0%, n=33)",
+   "field_family=mdl(0%, n=132)",
+   "field_family=trading(2%, n=57)",
+   "field_family=nws(0%, n=50)",
+   "field_family=transaction(0%, n=75)"
+  ],
+  "by_decay": {
+   "0": {
+    "n": 43,
+    "rate": 0
+   },
+   "10": {
+    "n": 25,
+    "rate": 0.08
+   },
+   "12": {
+    "n": 361,
+    "rate": 0.0222
+   },
+   "14": {
+    "n": 46,
+    "rate": 0.2826
+   },
+   "4": {
+    "n": 408,
+    "rate": 0.0392
+   },
+   "6": {
+    "n": 30,
+    "rate": 0.1333
+   },
+   "8": {
+    "n": 59,
+    "rate": 0.0169
+   }
+  },
+  "by_field_family": {
+   "anl": {
+    "n": 16,
+    "rate": 0
+   },
+   "breakaway": {
+    "n": 43,
+    "rate": 0.0465
+   },
+   "closing": {
+    "n": 23,
+    "rate": 0
+   },
+   "ep": {
+    "n": 231,
+    "rate": 0.1255
+   },
+   "forward": {
+    "n": 26,
+    "rate": 0
+   },
+   "mdl": {
+    "n": 132,
+    "rate": 0
+   },
+   "nws": {
+    "n": 50,
+    "rate": 0
+   },
+   "oth": {
+    "n": 193,
+    "rate": 0.1088
+   },
+   "snl": {
+    "n": 25,
+    "rate": 0
+   },
+   "trading": {
+    "n": 57,
+    "rate": 0.0175
+   },
+   "transaction": {
+    "n": 75,
+    "rate": 0
+   }
+  },
+  "by_neutralization": {
+   "INDUSTRY": {
+    "n": 400,
+    "rate": 0.0725
+   },
+   "MARKET": {
+    "n": 145,
+    "rate": 0
+   },
+   "NONE": {
+    "n": 50,
+    "rate": 0
+   },
+   "SECTOR": {
+    "n": 33,
+    "rate": 0
+   },
+   "SUBINDUSTRY": {
+    "n": 361,
+    "rate": 0.0665
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "n": 318,
+    "rate": 0.0786
+   },
+   "<=4": {
+    "n": 436,
+    "rate": 0.0046
+   },
+   ">8": {
+    "n": 246,
+    "rate": 0.1057
+   }
+  },
+  "by_universe": {
+   "TOP700": {
+    "n": 1000,
+    "rate": 0.053
+   }
+  },
+  "generated_at": "2026-09-11T19:36:08.361671+00:00",
+  "pass_rate": 0.053,
+  "sample_size": 1000,
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

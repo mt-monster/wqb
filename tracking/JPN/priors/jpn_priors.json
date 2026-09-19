@@ -1,0 +1,96 @@
+{
+ "wins": [],
+ "dead_ends": [],
+ "region_context": {},
+ "_meta": {
+  "region": "JPN",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
+  ]
+ }
+}

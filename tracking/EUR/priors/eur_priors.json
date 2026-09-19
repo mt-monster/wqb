@@ -1,137 +1,111 @@
 {
  "wins": [
   {
-   "id": "FCF 镜像稀释破 PROD 墙",
-   "what": "FCF 镜像稀释破 PROD 墙",
-   "key": "IS 强的镜像腿 + 与腿相关≈0 的稀释腿（见 prod_wall_breakthrough_sop.md）",
-   "evidence": "wave3b 镜像探针 1.91；prod 0.9013→0.6847 且 IS 不降反升",
+   "id": "win_blRaArVZ_topcs1600_ps_fcf_insider_bucket",
+   "what": "win_blRaArVZ_topcs1600_ps_fcf_insider_bucket",
+   "key": "rank(group_neutralize(subtract(rank(ts_backfill(predicted_surprise_pct_f12m_earnings_5,22)), rank(long_term_free_cash_flow_to_price_2)), bucket(rank(ts_backfill(ts_sum(total_top_buy_transaction_count,77),66)), range=\"0,1,0.1\")))",
+   "evidence": "blRaArVZ OS ACTIVE: sharpe1.95/fitness1.43/prod0.6483/self0.344/failed_ra_count=0",
    "source": "region_kb"
   },
   {
-   "id": "T-KB-01 慢×快跨周期混合",
-   "what": "T-KB-01 慢×快跨周期混合",
-   "key": "skeleton=rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD)))); iron_law=必须跨周期/跨数据源；同周期互混零增量",
-   "evidence": "慢 MODEL×快 PV，Wj71Q12o ACTIVE",
-   "source": "template_kb_validated"
+   "id": "win_slow_model_fast_pv_0406",
+   "what": "win_slow_model_fast_pv_0406",
+   "key": "0.40*rank(慢MODEL残差) + 0.60*rank(快PV)",
+   "evidence": "EUR 平台级验证配方（Wj71Q12o/Wj7g2gAx/78jdv6b1 家族 OS ACTIVE）",
+   "source": "region_kb"
   },
   {
-   "id": "T-KB-02 镜像反转翻案",
-   "what": "T-KB-02 镜像反转翻案",
-   "key": "skeleton=subtract(0, rank(x)) 或 scale(-rank(x)); iron_law=探针批 |sh|≥1.0 强负 → 下一批必做镜像反转，不是判死",
-   "evidence": "fcf_to_price sh -1.9 → 镜像 1.91",
-   "source": "template_kb_validated"
+   "id": "win_predicted_surprise5_fcf_insider_dilute",
+   "what": "win_predicted_surprise5_fcf_insider_dilute",
+   "key": "rank(group_neutralize(subtract(rank(ps5), rank(fcf)), bucket(rank(insider_dir))))",
+   "evidence": "wave163 prod 干净路径 RRV6EOod prod0.663/sharpe1.57",
+   "source": "region_kb"
   },
   {
-   "id": "T-KB-04 镜像稀释破 PROD 墙",
-   "what": "T-KB-04 镜像稀释破 PROD 墙",
-   "key": "skeleton=强腿 + 独立稀释腿（腿间相关≈0）; iron_law=稀释腿必须与强腿零相关，否则无稀释效果",
-   "evidence": "FCF 镜像+gap 稀释 prod 0.90→0.68，IS 不降反升",
-   "source": "template_kb_validated"
+   "id": "win_ps_continuation_fcf2_3leg_bucket",
+   "what": "win_ps_continuation_fcf2_3leg_bucket",
+   "key": "rank(group_neutralize(subtract(subtract(rank(ts_backfill(ps,22)), rank(ts_zscore(gap_up_sibling,22))), rank(ts_backfill(trailing_fcf_sibling,66))), bucket(rank(ts_backfill(ts_sum(insider_count,77),66)), range=\"0,1,0.1\")))",
+   "evidence": "2026-09-14 wave174-180 实测：le8Y68K2 S2.07/F1.46 prod0.6929 self0.6423；E5vMJG5P S2.02/F1.41 prod0.6996；QP3Aemnw S1.99/F1.37 prod0.6977；1YxRVxZR S1.91/F1.31 prod0.6825；pwPkONwo S1.84/F1.23 prod0.6818；failed_ra=0、IS_LADDER/CW PASS；同族互相关 0.79-0.998 只能取 1 颗。破墙关键=换 ps 腿+姊妹字段替代饱和组合。",
+   "source": "region_kb"
   },
   {
-   "id": "Wj71Q12o",
-   "what": "Wj71Q12o",
-   "key": "ACTIVE alpha (详见 region_kb)",
-   "source": "region_kb_active"
+   "id": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+   "what": "EUR-CS1600-SURPRISE-FCF-INSIDER-WIN",
+   "key": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
+   "evidence": "sharpe1.95/fitness1.43/prod0.6483/self0.344/sub1.19/robust1.39/2Y2.04/risk_neut1.08/failed_ra_count=0全硬闸通过,OS ACTIVE",
+   "source": "registry_win"
   },
   {
-   "id": "78jdv6b1",
-   "what": "78jdv6b1",
-   "key": "ACTIVE alpha (详见 region_kb)",
-   "source": "region_kb_active"
+   "id": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
+   "what": "EUR-W167-EBITDA4-USDTOPDIRECT-WIN",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
   }
  ],
  "dead_ends": [
   {
    "family": "region_kb",
-   "reason": "starmine 全家 16 死（STAR-*/STARHOLD-*，PROD 墙为主）",
+   "reason": "news54/news塔: mws54_factor semi-annual+单边恒正+稀疏,信号天花板0.40",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "multi_horizon 3 腿 25 死（价值/分析类 INVERT-RESID/CROWD/3LEG 全撞 PROD 或弱）",
+   "reason": "news_sentiment_nlp/other塔: 情绪信号弱,max0.39",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "news 情感族弱（news36/38/84/85）",
+   "reason": "analyst45/analyst塔: 分析师想法表现弱,max0.32",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "AIEQ analyst 族 10 死（弱信号或 PROD）",
+   "reason": "insider买入信号族(total_buy/total_top_buy/mean_buy/mean_top_buy): prod_corr0.75-0.78撞墙,insider族拥挤",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "ARH 修正族 PROD/WEAK（含 SIGNEDPOWER-COUNTRY-DECAY6 变体）",
+   "reason": "纯信号族(动量/低波/量价/质量/institutions持仓): max0.62太弱",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "MODEL×PV 双腿 BANNED（用户 2026-09-03 定案：predictive_starmine×pattern_scores 等一律不再组腿）",
+   "reason": "model193慢残差: EUR/TOPCS1600覆盖仅0.26,持仓45-99只,信号天花板0.42",
    "source": "region_kb_dead_pattern"
   },
   {
    "family": "region_kb",
-   "reason": "同构双子星互挤 prod（E5vXYWgG 与 gJj1nxLM 同构，后者 ACTIVE 后其 prod 0.681→0.817 超 0.7：同波相似双腿候选只保留 1 颗）",
+   "reason": "predicted_surprise-价值-insider族: 唯一达硬闸结构但self_corr同族撞车,只能1颗",
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_factor_transfer _2 oscillators/money-flow",
-   "reason": "Wave70 56 exprs on unused _2 fields (anomaly/DPO/liq_2/PVO/ADL/CCI/BPO_2). Max S0.58 F0.16. Wave18 already killed base oscillators. Do not mix PV.",
-   "salvage": "none",
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AFT-OSC2-WEAK"
+   "family": "region_kb",
+   "reason": "2026-09-14 wave175: 三腿结构中换 FCF2 腿（short_term_trailing_fcf 1.24 / long_term_time_weighted_earnings_yield_3 1.46）强度崩塌——FCF2 是强度来源不可替换；快腿 ts_mean 预处理杀信号（0.37）",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_equity_alpha analyst revision without vol/score",
-   "reason": "Wave38 slot4 analyst revision/forecast/target/opinion without vol/score max |S|0.57. Weak set, do not occupy another slot.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AIEQ-ANALYST-REV-NOSCORE-WEAK"
+   "family": "region_kb",
+   "reason": "2026-09-14 wave177: predictive_starmine 字段无 delay=0 覆盖（平台 unknown variable）——该数据集仅 d1，delay0 对照不可行",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_equity forensic+accrual mix dominant",
-   "reason": "0.6 forensic + 0.4 invert accruals S0.96 F0.58 2Y1.90 TVR8.3% but prod 0.8161. 2Y already passes; Mode A will not break prod. Leave forensic/accrual as dominant.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AIEQ-FORENSIC-ACCRUAL-MIX-PROD"
+   "family": "region_kb",
+   "reason": "2026-09-14 wave179: 2腿族(ps+fast+bucket,无FCF2) 换掉 median_gap 后强度塌方（best 0.80）——FCF2 与 median_upward_gap_continuation_score 是强度双支点，缺一不可",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_equity_alpha financial_statement_volatility_factor / alpha_score dominant legs",
-   "reason": "Do not use financial_statement_volatility_factor or alpha_score as the dominant (weight>=0.6) leg. Wrappers/group/ts_av_diff/SLOW-X-FAST mix still prod 0.78-0.83.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AIEQ-VOL-SCORE-PRODCORR"
+   "family": "region_kb",
+   "reason": "2026-09-14 wave183: ILLIQUID_MINVOL1M 宇宙强度塌方（S1.17-1.23）+ 独有 LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE 硬闸，设置探索杠杆判死",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_equity quality/opacity/unused liquidity/clarity x v_rev x wedge",
-   "reason": "Wave50 AIEQ unused VECTOR 3leg all missed cheap gate. Best asset_liquidity_score_2 S1.31. five_day 0.55. Do not grind.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "EUR-AIEQ-W50-QOC-LIQ-CLARITY-WEAK"
+   "family": "region_kb",
+   "reason": "2026-09-14 wave184: ts_rank 外层杀信号（0.60）；mid_term_growth 变体无强度；growth_flow lift 1.64 卡 SUB_UNIVERSE；yield lift 1.41 不达；ts_decay 外层=指标不变",
+   "source": "region_kb_dead_pattern"
   }
  ],
- "region_context": {
-  "tier": "达成后持续 Mode B 深挖区（82 波，79 死路+2 双子星死路，最惨烈试错区；wave112 首颗 ACTIVE）",
-  "settings_proven": {
-   "delay": 1,
-   "neutralization_proven": [
-    "SUBINDUSTRY",
-    "INDUSTRY"
-   ],
-   "proven_combos": "Wj71Q12o: TOP2500 D1 SUBINDUSTRY decay4; gJj1nxLM: TOP2500 D1 SUBINDUSTRY decay4 ACTIVE 2026-09-03",
-   "universe": "TOP2500"
-  },
-  "key_notes": [
-   "本区 PROD 墙极厚：价值/分析师类全撞墙，唯一活路是镜像稀释与跨金字塔混合（跨类混合禁 pv×model 后需新证据）",
-   "fundamental86/risk59 等『EUR 0 字段』实为区域不提供（KOR 可用），换区查一遍再判死",
-   "2026-09-03 用户禁令：PV 与 MODEL 数据集不再组腿；wave112 gJj1nxLM 为最后一批已执行（ACTIVE 保留）",
-   "win_recipes 中 banned=true 条目仅供审计，assemble-priors 不得注入",
-   "（此条是注释，只能存文字）"
-  ]
- },
+ "region_context": {},
  "_meta": {
   "region": "EUR",
   "sources": [
@@ -139,7 +113,88 @@
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

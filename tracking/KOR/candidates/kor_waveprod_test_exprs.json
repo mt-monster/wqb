@@ -1,0 +1,106 @@
+{
+ "meta": {
+  "multidim": true,
+  "summary": {
+   "total": 20,
+   "structure": {
+    "event_gated": 2,
+    "ratio_pair": 4,
+    "single_raw": 5,
+    "ratio_adjusted": 1,
+    "linear_2leg": 1,
+    "single_preprocessed": 1,
+    "linear_3plus": 3,
+    "group_relative": 3
+   },
+   "mechanism": {
+    "event_gated": 2,
+    "spread_pair": 2,
+    "momentum": 2,
+    "mean_reversion": 1,
+    "volume_price": 1,
+    "volatility_premium": 1,
+    "liquidity_premium": 2,
+    "multi_horizon": 4,
+    "confidence_weighted": 1,
+    "ceiling_suppress": 1,
+    "discrete_score": 2,
+    "free_explore": 1
+   },
+   "construction_chain": {
+    "('raw',)": 13,
+    "('delta',)": 2,
+    "('correlation',)": 2,
+    "('volatility',)": 1,
+    "('transform',)": 1,
+    "('delta', 'vector_agg')": 1
+   },
+   "field_match": {
+    "unknown": 20
+   },
+   "structure_share": {
+    "event_gated": 0.1,
+    "ratio_pair": 0.2,
+    "single_raw": 0.25,
+    "ratio_adjusted": 0.05,
+    "linear_2leg": 0.05,
+    "single_preprocessed": 0.05,
+    "linear_3plus": 0.15,
+    "group_relative": 0.15
+   },
+   "mechanism_share": {
+    "event_gated": 0.1,
+    "spread_pair": 0.1,
+    "momentum": 0.1,
+    "mean_reversion": 0.05,
+    "volume_price": 0.05,
+    "volatility_premium": 0.05,
+    "liquidity_premium": 0.1,
+    "multi_horizon": 0.2,
+    "confidence_weighted": 0.05,
+    "ceiling_suppress": 0.05,
+    "discrete_score": 0.1,
+    "free_explore": 0.05
+   }
+  },
+  "quota_violations": [
+   "structure.ratio_pair 超配 20% > 10%",
+   "structure.single_raw 超配 25% > 5%",
+   "structure.single_preprocessed 超配 5% > 3%",
+   "mechanism.liquidity_premium 超配 10% > 5%",
+   "mechanism.multi_horizon 超配 20% > 5%",
+   "mechanism.ceiling_suppress 超配 5% > 3%",
+   "mechanism.discrete_score 超配 10% > 3%",
+   "mechanism.free_explore 超配 5% > 2%"
+  ],
+  "quota_passed": false,
+  "wave": "prod_test",
+  "source": "logs/test_candidates_comprehensive.json",
+  "created_at": "2026-09-09T00:15:56",
+  "input": 51,
+  "duplicates_dropped": 0,
+  "selected": 20
+ },
+ "expressions": [
+  "trade_when(eps_estimate_4wk_change > 0, rank(eps_estimate_4wk_change), 0)",
+  "trade_when(x, greater(slope, threshold), 0)",
+  "subtract(rank(eps_estimate_4wk_change), rank(close))",
+  "subtract(rank(prob_q5_bucket4), rank(prob_q2_bucket0))",
+  "rank(ts_delta(field, 5))",
+  "multiply(sign(ts_delta(volume, 1)), reverse(ts_delta(close, 1)))",
+  "reverse(ts_corr(rank(close), rank(volume), 10))",
+  "ts_corr(rank(price), rank(volume), 5)",
+  "divide(rank(signal), add(ts_std_dev(signal, 22), 0.1))",
+  "divide(abs(returns), volume)",
+  "add(multiply(rank(eps_estimate_4wk_change), 0.4), multiply(rank(close), 0.6))",
+  "multiply(rank(prob_high), rank(confidence))",
+  "winsorize(rank(ceiling_field), std=2)",
+  "add(multiply(rank(A), 0.3), add(multiply(rank(B), 0.3), multiply(rank(C), 0.4)))",
+  "add(add(multiply(rank(F_40d), 0.33), multiply(rank(F_60d), 0.34)), multiply(rank(F_100d), 0.33))",
+  "add(multiply(rank(A), w1), add(multiply(rank(B), w2), multiply(rank(C), w3)))",
+  "group_rank(ts_delta(vec_avg(eps_cnt), 22), industry)",
+  "group_rank(F, sector)",
+  "group_neutralize(F, industry)",
+  "rank(divide(abs(returns), volume))"
+ ]
+}

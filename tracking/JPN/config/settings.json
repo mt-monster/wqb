@@ -1,0 +1,18 @@
+{
+  "_doc": "JPN 战役仿真设置（2026-09-15 创建）。平台实测：universe 仅 TOP1600/TOP1200；中性化 SUBINDUSTRY/SECTOR 报 Invalid data field（JPN 无分类字段），可用 NONE/MARKET/STATISTICAL，静态档取 MARKET。",
+  "instrumentType": "EQUITY",
+  "region": "JPN",
+  "universe": "TOP1600",
+  "delay": 1,
+  "neutralization": "MARKET",
+  "decay": 4,
+  "truncation": 0.08,
+  "pasteurization": "ON",
+  "unitHandling": "VERIFY",
+  "nanHandling": "OFF",
+  "maxTrade": "OFF",
+  "language": "FASTEXPR",
+  "visualization": false,
+  "startDate": "2013-01-01",
+  "endDate": "2023-12-31"
+}

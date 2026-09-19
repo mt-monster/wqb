@@ -84,12 +84,28 @@ def atomic_write_json(path, obj):
 
 
 def load_whitelist():
+    """读 USA 白名单数据集清单（2026-09-17 P0-4：改用容错归一）。
+
+    旧实现硬取 `json.loads(row[0])["whitelist"]`，只对 `whitelist[]` 形态有效；
+    契约归一迁移后该键改为 `datasets[]`，硬取会 KeyError。改用
+    `wqb.ledger_whitelist.normalize`，迁移前后两种形态都能读。
+    """
+    import sys as _sys
+    _root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    _src = os.path.join(_root, "src")
+    if os.path.isdir(_src) and _src not in _sys.path:
+        _sys.path.insert(0, _src)
+    from wqb.ledger_whitelist import normalize
+
     db = sqlite3.connect(DB)
     try:
         row = db.execute("SELECT value FROM ledger_kv WHERE region='USA' AND key='s0_whitelist'").fetchone()
-        return json.loads(row[0])["whitelist"]
     finally:
         db.close()
+    rec = normalize(row[0] if row else None)
+    if not rec.get("ok"):
+        raise SystemExit(f"[batch_dryrun_driver] USA s0_whitelist 无法解析：{rec.get('reason')}")
+    return rec["datasets"]
 
 
 def load_checkpoint():

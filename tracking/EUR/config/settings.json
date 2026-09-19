@@ -2,7 +2,7 @@
   "_doc": "EUR 战役固定仿真设置（2026-08-18 新开，平台 get_platform_setting_options 实测档位）。pipeline/build_wave/probe 统一引用。wave6 起用户要求 universe 参考 TOP700，EUR 合法档位最接近为 TOP800（2026-08-18）。",
   "instrumentType": "EQUITY",
   "region": "EUR",
-  "universe": "TOP2500",
+  "universe": "TOPCS1600",
   "delay": 1,
   "neutralization": "SUBINDUSTRY",
   "decay": 4,
@@ -21,6 +21,12 @@
   "_diversity_enhance": "auto",
   "_diversity_weight": 0.3,
   "_known_wall": "returns 反转家族 prod_corr 0.95 不可破（2026-08-12 实证）；优先 alphaCount=0 零竞争数据集",
+  "_universe_switch": {
+    "from": "TOP2500",
+    "to": "TOPCS1600",
+    "when": "2026-09-14",
+    "why": "① TOP2500 命中判死规则 auto_universe_collapse_TOP2500_2026-09-09（5 条全负 max sharpe 0.22，pipeline 直接中止）；② TOPCS1600 是 wave166-168 唯一过 IS_LADDER 的 win 宇宙（blRaArVZ 走通硬闸链）。翻案须带实测证据并先解除判死规则。"
+  },
   "_universe_restored": {
     "from": "TOP800",
     "to": "TOP2500",

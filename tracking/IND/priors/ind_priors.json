@@ -1,20 +1,6 @@
 {
  "wins": [
   {
-   "id": "中性化最优依赖信号族（w131）",
-   "what": "中性化最优档位因信号族而异，非全局常量",
-   "key": "双PV/组合腿族 MARKET>SUBIND（SUBIND 吃掉组合 S 增益 1.70→1.0x）；动量族 SUBIND>MARKET（robust +0.10，S −0.2~0.3）；decay 4→10 全面小升（S/F/rob 各 +0.02~0.05）",
-   "evidence": "wave131 轮 12-14: A1l8YdVX vs LL7Y6JR2 / E5lPbJLm vs LL7Y6v9a",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170"
-  },
-  {
-   "id": "winsorize 必须关键字传参（w131）",
-   "what": "winsorize(x, 4) 位置参数平台报错导致 multisim 全批连坐 CANCELLED",
-   "key": "winsorize(x, std=4) 关键字形式；validate_expressions 把 std= 误报为 unknown field 属工具侧误报，勿改回位置参数",
-   "evidence": "wave131 轮 12 首发全批 CANCELLED，改关键字后成功",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170"
-  },
-  {
    "id": "mdl177 长窗结构（天然强 2Y）",
    "what": "mdl177 长窗结构（天然强 2Y）",
    "key": "rank(ts_rank(ts_backfill(F, 66), 250)) 负权重混合",
@@ -59,43 +45,33 @@
  ],
  "dead_ends": [
   {
-   "family": "pv106 双PV流动性族（w131 复挖）",
-   "reason": "wave131 轮 1-9: robust_universe_sharpe 结构天花板 0.85 vs 闸 1.0，三闸互斥（提 S 需混 pp 腿→prod 爆 0.744；提 robust 需 SUBIND→S 塌 1.0x）；Mode B 4 轮达上限",
-   "salvage": "无；IND robust 闸对该族是普遍结构墙",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
-   "_entry_id": "IND-PV106-DUALPV-ROBUST-WALL-W131"
+   "family": "region_kb",
+   "reason": "PROD 饱和：model238 / revmag-analyst 修正类",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "quant_factor_lib CASSIE 信用风险族",
-   "reason": "wave131: prod_corr 0.84-0.92 全族爆 0.7 闸（信用风险与生产 book 高重叠），最强 S 达标但无法提交",
-   "salvage": "仅当生产 book 轮动后可重测；勿再投入同族变体",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
-   "_entry_id": "IND-CASSIE-CREDIT-PROD-SAT"
+   "family": "region_kb",
+   "reason": "robust 墙：model216",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "model170 earnings_momentum / price_position",
-   "reason": "wave131 轮 11-14: price_position 动量 S1.57 但 prod 0.7956 爆闸（52周动量经典因子）；earnings_momentum prod 0.67 白空间但 robust 天花板 0.91 三闸互斥，Mode B 4 轮达上限判死",
-   "salvage": "em+0.25pp SUBIND/d10 待生产 book 轮动后重试",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
-   "_entry_id": "IND-MDL170-EM-TRIGATE-DEAD"
+   "family": "region_kb",
+   "reason": "稀疏事件：news29 / fundamental1-governance",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "pv70 关系网络（bbgnews/relations）",
-   "reason": "wave131 轮 15: 8/8 全零信号（S=0.00 tvr=0.00 longCount=0），数据区域错配——字段描述标注 APAC ex-Japan/ASI 系，IND 无实际数据；cov=1.0 是快照统一值，不可信",
-   "salvage": "无；同族 ai_news_scores 同判（105 字段全 USA/ASI/EUR 变体无 IND）",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
-   "_entry_id": "IND-PV70-REGION-MISMATCH"
+   "family": "region_kb",
+   "reason": "区域错配：pv70（数据内容与区域不匹配）",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "news_sentiment_nlp 情绪极性/可读性/分歧族",
-   "reason": "wave131 轮 16-17: 情绪极性（vader/textblob/SWN 双向）+可读性（flesch/gunning fog）全部近零；唯一信号=情绪分歧族 -variance S0.73-0.79 但 2Y 结构性全负（因子衰减）+ CONCENTRATED_WEIGHT 0.50 结构 fail（新闻稀疏 2014 权重集中不可修），Mode B 2 周期判死",
-   "salvage": "无；头条级 NLP 情绪在 IND 无预测力",
-   "source": "ledger_kv:ckpt_w131_s4_acq_m170",
-   "_entry_id": "IND-NSN-HEADLINE-DEAD"
+   "family": "region_kb",
+   "reason": "analyst base 族死：SUE / anl39 epscol / ttmq",
+   "source": "region_kb_dead_pattern"
   },
   {
    "family": "acquisition_model",
-   "reason": "wave83 8/8 弱负向（S=-0.42~-0.50 统一方向，fit=-0.22~-0.29，robust=-0.20~-0.22），turnover 0.02 静态持仓；2Y 转正 +0.22~+0.36 但幅度不足以反转（|S|≤0.5 反转后远不到 1.58 闸）；wave131 轮 10 复挖确认：8/8 方向 100% 偏负（rumor fade 机制：并购溢价传闻被提前消化，公告后回落），最强 text_factor 翻转 S=-1.25 仍不足", 
+   "reason": "wave83 8/8 弱负向（S=-0.42~-0.50 统一方向，fit=-0.22~-0.29，robust=-0.20~-0.22），turnover 0.02 静态持仓；2Y 转正 +0.22~+0.36 但幅度不足以反转（|S|≤0.5 反转后远不到 1.58 闸）",
    "salvage": "无；acquisition_likelihood 与未来收益相关过弱，不抢救",
    "source": "registry_dead_end",
    "_entry_id": "IND-ACQMODEL-WEAK-NEG"
@@ -106,6 +82,13 @@
    "salvage": "Combine with fundamental data as auxiliary signal only",
    "source": "registry_dead_end",
    "_entry_id": "IND-AI-NEWS-DEAD"
+  },
+  {
+   "family": "analyst45 net_market_exposure",
+   "reason": "wave131-135 共 22 式：净敞口机制信号真实（S 1.17-1.33, F最高1.11, 2Y最高1.79）但 robust_universe_sharpe 全变体横盘 0.36-0.60（窗口63-252/group_zscore/rank/scale/neutralize/decay_linear/vec_sum/跨集混合均无效），距1.0闸差0.4+不可达；与 fnd94/model216 同型结构性墙",
+   "salvage": "j2jKKKAO(S=1.27 F=1.11 2Y=1.41)与vRjXEb6d(S=1.29 F=1.01)可作未来跨集低相关混合的主腿储备或PPA路径",
+   "source": "registry_dead_end",
+   "_entry_id": "IND-ANALYST45-ROBUST-WALL"
   },
   {
    "family": "analyst consensus surprise/stddev/coverage",
@@ -134,48 +117,6 @@
    "salvage": "fundamental86 earnings_score 单独使用（qMj7b6nO robust=1.12）但 IS 失败（S=1.45, F=0.37），不适合 REGULAR 提交",
    "source": "registry_dead_end",
    "_entry_id": "IND-CROSS-DS-EARNINGS-DEAD"
-  },
-  {
-   "family": "cross_dataset_volatility",
-   "reason": "fnd94 margin + mdl28 volatility 组合失败：volatility 腿稀释 IS 表现（S 1.44-1.57 vs 纯 margin 1.42-1.49），robust 未突破（0.16-0.50 vs 纯 margin 0.53-0.68）。8 条变体全部 LOW_SHARPE+LOW_ROBUST。",
-   "salvage": "model28 volatility 单独使用（Jj78wA6l S=0.71）或与其他区域数据集组合",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-CROSS-DS-VOLATILITY-DEAD"
-  },
-  {
-   "family": "earnings3 calendar",
-   "reason": "8/8 子任务 404（平台清理），主任务 ERROR。earnings3 是纯事件计时数据集（无方向性），单独排序必死，必须组合 fundamental/analyst 才能点亮金字塔。与 MEA earnings3 判死结论一致。",
-   "salvage": "可尝试：1) 组合 fundamental94 margin + earnings3 门控 2) 财报后 PEAD 漂移（ts_decay_linear）3) 盘后公告门控（ern3_pre_reptime>1600）",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-EARNINGS3-CALENDAR-DEAD"
-  },
-  {
-   "family": "model29 EBITDA SmartEstimate surprise",
-   "reason": "wave112 6unique全完成：EBITDA surprise信号有真实alpha（S 1.22-1.50，F 0.82-1.13，2Y 1.58-2.17极强）但robust死墙0.32-0.49，与predicted_surprise（0.20-0.62）互证IND surprise类信号robust结构性死墙",
-   "salvage": "88lE06Yv S=1.50 F=1.13 2Y=2.17是EBITDA surprise族最高记录，若未来有robust突破配方可再审",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-EBITDA-SURPRISE-ROBUST-WALL"
-  },
-  {
-   "family": "fundamental17 annual tax/leverage",
-   "reason": "年度数据频率太低，信号衰减严重。8 条表达式全灭，max S=0.71（omqaeMWv ptmgnpct）。税务（ataxpd/ataxrate）、杠杆（atotltd/atotd）、利息覆盖（aintcov）、债务服务（adebteps）方向全部失败。",
-   "salvage": "fundamental17 可作为辅助过滤条件（如排除高杠杆股），但不适合作为主信号源。",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-FND17-ANNUAL-DEAD"
-  },
-  {
-   "family": "fundamental23 annual balance sheet",
-   "reason": "39 字段全为年度资产负债表科目（仅 1 VECTOR 元数据），年度频率与 fnd17 同构；水平信号（fnd17 死因）与结构变化信号（本波）双双无定价，判定为频率层判死——IND 年度基本面科目族整体枯竭",
-   "salvage": "无；字段量纲不一致（retained_earnings_liabilities=CSShare）连组合修复成本都高",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-FND23-ANNUAL-BS-DEAD"
-  },
-  {
-   "family": "fundamental44 accounting quality",
-   "reason": "8/8 全灭，最高 Sharpe 1.32 (fnd44_mscore)，但 robust_universe_sharpe 0.73 <1，CONCENTRATED_WEIGHT 警告普遍。会计质量信号在 IND TOP500 有效但不够强，与 model192 CDS 因子判死互证 IND 基本面质量类信号枯竭。",
-   "salvage": "可尝试：1) 换 universe（TOP1000/TOP2000）2) 换 neutralization（INDUSTRY）3) 组合其他类别信号（pv + fundamental）",
-   "source": "registry_dead_end",
-   "_entry_id": "IND-FND44-ACCOUNTING-QUALITY-DEAD"
   }
  ],
  "region_context": {
@@ -195,30 +136,6 @@
    "提交前必跑 tools/submit_verdict.py 取平台判定（本地 prod_corr 系统性偏低）"
   ]
  },
- "skeleton_field_matrix": {
-  "effective": [],
-  "dead": [
-   {
-    "skeleton": "任意骨架",
-    "field_family": "财报日历",
-    "reason": "wave30 实证: 上述字段在 ts_rank/ts_zscore 结构下信号全崩, 最强 sharpe 远低于 1.58 门槛",
-    "source": "registry_dead_end"
-   },
-   {
-    "skeleton": "任意骨架",
-    "field_family": "价量",
-    "reason": "fnd94 margin + mdl28 volatility 组合失败：volatility 腿稀释 IS 表现（S 1.44-1.57 vs 纯 margi",
-    "source": "registry_dead_end"
-   },
-   {
-    "skeleton": "任意骨架",
-    "field_family": "质量比率",
-    "reason": "wave112 6unique全完成：EBITDA surprise信号有真实alpha（S 1.22-1.50，F 0.82-1.13，2Y 1.58-2.1",
-    "source": "registry_dead_end"
-   }
-  ],
-  "orthogonal_hints": []
- },
  "_meta": {
   "region": "IND",
   "sources": [
@@ -226,8 +143,236 @@
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "skeleton_field_matrix (P3 正交调度)",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "sample_size": 967,
+  "pass_rate": 0.2006,
+  "by_neutralization": {
+   "STATISTICAL": {
+    "rate": 0.2122,
+    "n": 490
+   },
+   "MARKET": {
+    "rate": 0.3065,
+    "n": 62
+   },
+   "INDUSTRY": {
+    "rate": 0.0238,
+    "n": 42
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.1024,
+    "n": 127
+   },
+   "SECTOR": {
+    "rate": 0.3353,
+    "n": 170
+   },
+   "NONE": {
+    "rate": 0.0,
+    "n": 71
+   }
+  },
+  "by_universe": {
+   "TOP500": {
+    "rate": 0.2006,
+    "n": 967
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "rate": 0.2703,
+    "n": 296
+   },
+   ">8": {
+    "rate": 0.1912,
+    "n": 387
+   },
+   "<=4": {
+    "rate": 0.1408,
+    "n": 284
+   }
+  },
+  "by_decay": {
+   "6": {
+    "rate": 0.2426,
+    "n": 169
+   },
+   "8": {
+    "rate": 0.1582,
+    "n": 158
+   },
+   "4": {
+    "rate": 0.1946,
+    "n": 514
+   },
+   "5": {
+    "rate": 0.4737,
+    "n": 19
+   },
+   "3": {
+    "rate": 0.1731,
+    "n": 52
+   },
+   "10": {
+    "rate": 0.0,
+    "n": 18
+   }
+  },
+  "by_field_family": {
+   "analyst": {
+    "rate": 0.3556,
+    "n": 90
+   },
+   "mdl": {
+    "rate": 0.3346,
+    "n": 269
+   },
+   "residualized": {
+    "rate": 0.2143,
+    "n": 42
+   },
+   "fnd": {
+    "rate": 0.0342,
+    "n": 146
+   },
+   "anl": {
+    "rate": 0.1069,
+    "n": 131
+   },
+   "alternative": {
+    "rate": 0.0556,
+    "n": 18
+   },
+   "qfl": {
+    "rate": 0.2044,
+    "n": 137
+   },
+   "defensiveness": {
+    "rate": 0.0,
+    "n": 19
+   },
+   "transaction": {
+    "rate": 0.0455,
+    "n": 22
+   }
+  },
+  "avoid": [
+   "neutralization=NONE(0%, n=71)"
+  ],
+  "generated_at": "2026-09-18T14:46:19.975110+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.1946,
+    "current_n": 514,
+    "recommended": 6,
+    "rate": 0.2426,
+    "n": 169,
+    "lift": 1.25,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "STATISTICAL",
+    "current_rate": 0.2122,
+    "current_n": 490,
+    "recommended": "SECTOR",
+    "rate": 0.3353,
+    "n": 170,
+    "lift": 1.58,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

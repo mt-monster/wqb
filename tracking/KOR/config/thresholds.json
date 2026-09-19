@@ -20,9 +20,26 @@
  "sub_universe_sharpe_min": 1.0,
  "robust_sharpe_min": 1.0,
  "mode_b_qualification": {
-  "_doc": "2026-09-01 明令（wave97 误判触发）：整波最强候选必须同时满足 sharpe>=1.25 且 fitness>=0.8，才有资格进入 Mode B 组合增强或继续优化；未达资格线的波一律判死（dead_end 回写 + wave 台账 closed），禁止进 near_pool、禁止发增强波。判定对象=整波最高 sharpe 的候选。",
-  "sharpe_min": 1.25,
-  "fitness_min": 0.8
+  "$ref": "GLOBAL/mode_b_qualification",
+  "_doc": "2026-09-09 升级为全局权威引用：主闸/旁路/判死线/纪律全部以 ledger_kv GLOBAL/mode_b_qualification 为准。本区无单字段覆盖（主闸 1.25/0.8 与全局一致）。历史：2026-09-01 明令（wave97 误判触发）硬编码 1.25/0.8，2026-09-09 扩展为「主闸+5 旁路+判死线」结构并上收全局。",
+  "_overrides": {}
+ },
+ "diversity": {
+  "_doc": "KOR 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：2026-09-17 起改为 **fail-closed** —— 整节缺失时回落默认 floor=0.5/min_batches=2 继续判定并输出 warning（旧行为是静默放行，GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）；仅显式 enabled:false 才放行。",
+  "signal_floor": {
+   "max_sharpe_floor": 0.5,
+   "min_batches": 2
+  }
+ },
+ "quick_scan": {
+  "red_2y_max": 0.6,
+  "red_sh_abs_min": 0.8,
+  "_note": "快扫红灯：批A最强式 max|sh|>=red_sh_abs_min 但 two_year_sharpe<red_2y_max 即判死不深挖（2026-09-11 补齐，与 GLB/USA/EUR 口径一致）"
+ },
+ "hard_gates": {
+  "prod_correlation_max": 0.7,
+  "self_correlation_max": 0.7,
+  "_note": "平台提交期硬闸，与顶层 prod_corr_max/self_corr_max 同值（2026-09-11 补齐以消除两版 schema 差异）。本区**故意不带 probe_scoring_v2**：那会改变 S0 评分行为，需单独实证后再引入。"
  },
  "dataset_health": {
   "_doc": "S0 两阶段口径（同 GLOBAL/IND 2026-09-01 口径）：阶段① 全局绝对底线=coverage_hard_min/field_count_hard_min；阶段② 区域自适应分位分带（tier_method=quantile）。KOR 特化：MODEL 类别禁用（用户明令）；红榜族（chart_patterns/news_sentiment/ai_ml/credit_risk/glb_emotion）结构性排除。",
@@ -52,20 +69,21 @@
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
    "analyst": 1.15,
+   "fundamental": 1.0,
+   "other": 1.15,
+   "insiders": 0.9,
+   "pv": 1.0,
    "model": 1.15,
    "sentiment": 0.9,
-   "fundamental": 0.9,
    "news": 0.9,
-   "pv": 1.15,
    "risk": 0.9,
-   "shortinterest": 0.9,
-   "other": 0.9
+   "shortinterest": 0.9
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 206,
-  "sweet_spot_ac_max": 67041,
-  "_calibrated_at": "2026-09-02T21:26:41",
-  "_calibrated_from": "alpha_store 207 alphas/12 ds + results/ 扫描 → 共 12 datasets 实测"
+  "sweet_spot_ac_min": 24,
+  "sweet_spot_ac_max": 9873,
+  "_calibrated_at": "2026-09-15T21:26:06",
+  "_calibrated_from": "alpha_store 288 alphas/21 ds + results/ 扫描 → 共 21 datasets 实测"
  },
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "kor_specific_adjustments": {

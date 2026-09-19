@@ -20,7 +20,7 @@
  "sub_universe_sharpe_min": 1.0,
  "robust_sharpe_min": 1.0,
  "diversity": {
-  "_doc": "IND 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：缺此配置时该闸**静默放行**（GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）。",
+  "_doc": "IND 信号证据闸（2026-09-11 审计补齐，与 EUR/GBR/GLB 对齐）：连续 min_batches 批 max|sharpe| < max_sharpe_floor 即判信号天花板，停止生成/增强并转区域决策。仅 signal_floor 有消费方（src/wqb/workflow/nodes/campaign.py::_run_signal_floor_gate）。注意：2026-09-17 起改为 **fail-closed** —— 整节缺失时回落默认 floor=0.5/min_batches=2 继续判定并输出 warning（旧行为是静默放行，GBR 曾因此跑满 180 条回测、max|sharpe|=1.04、达标 0 条）；仅显式 enabled:false 才放行。",
   "signal_floor": {
    "max_sharpe_floor": 1.2,
    "min_batches": 2,
@@ -60,7 +60,26 @@
   "_excluded_pyramids_doc": "指定排除的 pyramid（=category×region×delay）：命名 IND_D1_<category>（如 IND_D1_risk），也接受裸 category（如 risk，全 delay 生效）；命中者降 excluded 且不被保底带复活。",
   "catalog_unreachable_categories": {
    "risk": "risk68(5f/ac7104)/risk70(35f/ac3965)/risk71(4f/ac10894)/risk88(1f/ac1802)：字段数<10 或竞争>1500 结构性不可达，勿每波重查；risk70 字段数达标但竞争超标，仅保底带观察"
-  }
+  },
+  "category_weight_enable": true,
+  "category_weight_floor": 0.9,
+  "category_weight_cap": 1.15,
+  "pyramid_quota_enable": true,
+  "pyramid_quota_non_model_min": 2,
+  "category_weights": {
+   "pv": 1.15,
+   "model": 1.15,
+   "analyst": 1.15,
+   "risk": 1.15,
+   "institutions": 0.9,
+   "insiders": 0.9,
+   "fundamental": 1.15
+  },
+  "crowd_sweet_spot_enable": true,
+  "sweet_spot_ac_min": 929,
+  "sweet_spot_ac_max": 289053,
+  "_calibrated_at": "2026-09-18T23:20:36",
+  "_calibrated_from": "alpha_store 268 alphas/21 ds + results/ 扫描 → 共 21 datasets 实测"
  },
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "ind_specific_adjustments": {
