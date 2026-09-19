@@ -89,6 +89,30 @@ def test_registry_lists_all_core_nodes():
         "campaign", "feature_engineering",
         # 2026-09-11 新增：ra-pipeline 步 5 门禁入 MCP（此前步 5 无节点，整链断在步 4）
         "wave_gate",
+        # 2026-09-12 新增：假设优先实验轮次（饱和数据集路由，ra-pipeline 步 2 分支）
+        "hypothesis_round",
+        # Phase 2：结构重构变体生成与效果追踪（2026-09-15 补录进测试基准）
+        "structural_reconstruct",
+        # 2026-09-17：step_metrics 已整体下线（归档 attic/step_metrics_20260917/），
+        # 不再注册；替代方案 tools/step_funnel.py。故此处移除 "step_metrics"。
+        # Phase 4：自动化库存盘点（2026-09-16 新增，S-PRE 增强）
+        "inventory_scan",
+        # Phase 4：自动化字段理解（2026-09-16 新增，S1 增强）
+        "field_understanding",
+        # Phase 4：合并选波到 GEM 生成（2026-09-16 新增，S2 增强）
+        "gem_wave",
+        # Phase 4：合并重复门禁检查（2026-09-16 新增，S2→S3 增强）
+        "unified_gate",
+        # Phase 4：自动化收批（2026-09-16 新增，S3 增强）
+        "auto_harvest",
+        # Phase 4：自动化评审（2026-09-16 新增，S4 增强）
+        "auto_review",
+        # Phase 4：自动化点塔进度回写（2026-09-16 新增，S6 增强）
+        "auto_pyramid",
+        # Phase 4：Mode B 想法层改进（2026-09-17 新增，S4 增强）
+        "modeb_improve",
+        # Phase 4：通用 Alpha 短板提升（2026-09-18 新增，S4 增强）
+        "alpha_booster",
     }
 
 
@@ -195,6 +219,24 @@ def test_feature_engineering_builds_prefix_summary(monkeypatch, tmp_path):
         store.close()
 
 
+def test_s1_concept_fields_merge_into_whitelist():
+    """2026-09-13 S1↔S2 接力：概念字段必须并进白名单，不被候选池截断。"""
+    from wqb.workflow.nodes import feature_engineering as fe
+
+    text = (
+        "# report\n"
+        "**Concept**: a\n"
+        "- **Implementation Example**: `rank(ts_mean({fnd_x}, 66))`\n"
+        "**Concept**: b\n"
+        "- **Implementation Example**: `rank(divide({acc_y}, {fnd_x}))`\n"
+    )
+    assert fe._extract_concept_fields(text) == ["fnd_x", "acc_y"]
+
+    merged = fe._merge_field_whitelist(["fnd_x", "acc_y"], ["fnd_x", "pool_z"])
+    assert merged == ["fnd_x", "acc_y", "pool_z"]
+    assert fe._merge_field_whitelist([], []) == []
+
+
 def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
     from wqb.store import CampaignStore
     from wqb.workflow.nodes import gem
@@ -276,6 +318,51 @@ def test_gem_consumes_field_prefix_summary(monkeypatch, tmp_path):
         assert out["quality_estimation"]["details"]["field_prefix_summary"]["total_fields"] == 3
 
         monkeypatch.setattr(gem.json, "load", orig_json_load)
+    finally:
+        store.close()
+
+
+def test_gem_launch_only_does_not_pipe_child_output(monkeypatch, tmp_path):
+    """2026-09-12：launch_only 立即 return 后 Popen 对象被回收，若 stdout/stderr 是
+    PIPE，读端随之关闭，launcher 第一次 print 即 BrokenPipe、死在写 meta.json 之前
+    （GBR wave57 实测 4 个 launcher 3 个无声退出）。必须落到 tasks_dir 下的启动日志。"""
+    from wqb.store import CampaignStore
+    from wqb.workflow.nodes import gem
+
+    store = CampaignStore(str(tmp_path / "camp.db"))
+    try:
+        store.upsert_field_catalog("GBR", {
+            "dataset": "other335", "region": "GBR", "data_type": "MATRIX",
+            "fields": [{"id": "oth335_mind", "type": "MATRIX", "coverage": 0.9}],
+        })
+        monkeypatch.setattr(gem, "resolve_skill_dir", lambda name: str(tmp_path / "gem"))
+        (tmp_path / "gem" / "scripts" / "headless_runner").mkdir(parents=True)
+        (tmp_path / "gem" / "scripts" / "headless_runner" / "run.py").write_text("# stub\n")
+        (tmp_path / "gem" / "scripts" / "headless_runner" / "config.json").write_text("{}")
+        monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+
+        popen_kwargs = {}
+
+        class _Proc:
+            pid = 4242
+
+        def fake_popen(cmd, **kwargs):
+            popen_kwargs.update(kwargs)
+            return _Proc()
+
+        monkeypatch.setattr(gem.subprocess, "Popen", fake_popen)
+
+        out = gem.run(region="GBR", dataset_id="other335", delay=1, universe="TOP700",
+                      data_category="other", detached=True, launch_only=True,
+                      _context={"store": store})
+
+        assert out["success"] is True, out["steps"]
+        assert out["launch_only"] is True and out["pid"] == 4242
+        assert popen_kwargs.get("stdout") is not gem.subprocess.PIPE
+        assert popen_kwargs.get("stderr") is not gem.subprocess.PIPE
+        assert popen_kwargs.get("stdin") is gem.subprocess.DEVNULL
+        assert os.path.isfile(out["launch_log"]), out
+        assert os.path.dirname(out["launch_log"]) == out["tasks_dir"]
     finally:
         store.close()
 

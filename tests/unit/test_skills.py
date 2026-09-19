@@ -194,3 +194,78 @@ def test_classify_shape_shape_signature_length():
 def test_shape_classes_constant():
     assert "S1" in SHAPE_CLASSES
     assert "S9" in SHAPE_CLASSES
+
+# ===========================================================================
+# FASTEXPR forms that used to fail closed at the tokenizer (2026-09-12):
+# unary minus / negative literals, name=value kwargs, infix comparisons.
+# ===========================================================================
+
+_FASTEXPR_FORMS = [
+    "-rank(ts_sum(pv47_spret, 5))",
+    "multiply(-1, rank(x))",
+    "trade_when(cond, alpha, -1)",
+    'group_rank(x, bucket(rank(y), range="0,1,0.25"))',
+    "trade_when(ts_count_nans(x, 5) < 5, rank(x), -1)",
+    "0 < scale_down(close) && scale_down(close) < 0.25",
+]
+
+
+def test_ghost_gate_passes_valid_fastexpr_forms():
+    """The dispatch hard gate must not fail closed on valid platform syntax."""
+    ensure_safe_for_dispatch(_FASTEXPR_FORMS)
+
+
+@pytest.mark.parametrize("expr", [
+    "-rank(ts_entropy(x, 5))",
+    "trade_when(ts_entropy(x, 5) < 5, rank(x), -1)",
+    'group_rank(tanh(x), bucket(rank(y), range="0,1,0.25"))',
+])
+def test_ghost_gate_still_catches_ghosts_inside_new_forms(expr):
+    with pytest.raises(GhostOperatorError):
+        ensure_safe_for_dispatch([expr])
+
+
+def test_fields_of_ignores_literals_and_kwarg_names():
+    from wqb.expression.grammar import parse_expression
+    from wqb.expression.validator import _fields_of
+
+    assert _fields_of(parse_expression("-rank(ts_sum(pv47_spret, 5))")) == {"pv47_spret"}
+    assert _fields_of(parse_expression("multiply(-1, rank(x))")) == {"x"}
+    assert _fields_of(parse_expression("trade_when(cond, alpha, -1)")) == {"cond", "alpha"}
+    fields = _fields_of(parse_expression('group_rank(x, bucket(rank(y), range="0,1,0.25"))'))
+    assert fields == {"x", "y"}
+    fields = _fields_of(parse_expression("trade_when(ts_count_nans(x, 5) < 5, rank(x), -1)"))
+    assert fields == {"x"}
+
+
+def test_shape_classification_handles_new_forms_without_error():
+    for expr in _FASTEXPR_FORMS:
+        sig = _shape_signature(expr)
+        assert len(sig) == 5
+        assert sig[0] != "INVALID"
+        assert classify_shape(expr) in SHAPE_CLASSES
+    # A signed combiner still exposes its operand families through the AST.
+    assert classify_shape("subtract(rank(close), rank(volume))") == "S1"
+    assert classify_shape("subtract(rank(close), -1)") == "S5"
+
+
+def test_check_batch_accepts_new_forms():
+    ok, reason, details = check_batch(_FASTEXPR_FORMS)
+    assert isinstance(ok, bool)
+    assert details["total"] == len(_FASTEXPR_FORMS)
+    for row in details["per_expression"]:
+        assert row["shape_signature"][0] != "INVALID"
+
+
+def test_shape_helpers_look_through_prefix_minus():
+    """A sign flip is not shape diversity: -rank(x) has the shape of rank(x)."""
+    from wqb.expression.grammar import parse_expression
+    from wqb.expression.validator import _outer_wrapper
+
+    assert _outer_wrapper(parse_expression("-rank(close)")) == "rank"
+    assert classify_shape("-subtract(rank(close), rank(volume))") == "S1"
+    assert classify_shape("subtract(-rank(close), rank(volume))") == "S1"
+    assert _shape_signature("-rank(close)") == _shape_signature("rank(close)")
+    ok, reason, details = check_batch(["rank(close)", "-rank(close)", "rank(volume)", "-rank(volume)"])
+    assert ok is False
+    assert details["gates"]["outer_wrappers"]["passed"] is False

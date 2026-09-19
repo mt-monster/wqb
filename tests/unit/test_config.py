@@ -308,6 +308,9 @@ def test_mining_policy_caps_category_weight_and_requires_quota():
     mix = MINING["slow_fast_mix"]
     assert mix["slow_weight"] + mix["fast_weight"] == pytest.approx(1.0)
     assert mix["fast_weight"] > mix["slow_weight"]
+    # 2026-09-13「路线 A」起加权混合形态废止，该键降级为历史归档；
+    # 闸5 毒模式 weighted_signal_mix / weighted_leg_mix_func_* 全量拦截，禁止用于生成。
+    assert MINING["_slow_fast_mix_status"].startswith("deprecated")
     assert MINING["follow_win_settings"] is True
     assert CONCURRENCY["slots"] == 7
 

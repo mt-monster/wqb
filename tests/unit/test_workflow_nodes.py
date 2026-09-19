@@ -119,6 +119,15 @@ def fake_toolkit(tmp_path, monkeypatch):
                                                                          encoding="utf-8")
     monkeypatch.setenv("WQ_TOOLKIT_DIR", str(scripts))
     monkeypatch.delenv("WQ_PY", raising=False)
+    # 2026-09-15：backlog_gate / stop_rules_gate / signal_floor_gate 会读真库
+    #（data/wqb.db），单测必须隔离——否则 USA 等区的真实积压数据会让
+    # S2/S3 命令拼装类测试被闸拦截（与被测行为无关的环境污染）。
+    monkeypatch.setenv("WQB_DISABLE_BACKLOG_GATE", "1")
+    # 2026-09-17：补齐三闸隔离——stop_rules 读真库 wave_results/backtest_results、
+    # signal_floor 读真库最近批次 sharpe（USA 真实近 2 批 max=0.88 会触发天花板
+    # 判定）。此前只有 backlog 有 kill switch，另两道闸"靠无证据跳过侥幸不爆"。
+    monkeypatch.setenv("WQB_DISABLE_STOP_RULES_GATE", "1")
+    monkeypatch.setenv("WQB_DISABLE_SIGNAL_FLOOR_GATE", "1")
     return scripts
 
 
@@ -377,6 +386,78 @@ def test_campaign_missing_dataset_skips_preflight_with_warning(monkeypatch, fake
     pf = next(s for s in r["steps"] if s["step"] == "preflight")
     assert "skip preflight" in pf.get("warning", "")
     assert not [c for c in calls if "preflight_wave.py" in " ".join(c["cmd"])]
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-12：S2 命令拼装——build_wave.py 本体没有 `build-wave` 子命令
+# ---------------------------------------------------------------------------
+
+def test_campaign_s2_command_has_no_stray_build_wave_token(monkeypatch, fake_toolkit):
+    """S2 直调 build_wave.py 时只能拼 --dataset/--wave/--from-db，不得夹带分发器
+    入口名 `build-wave`（多余位置参数 → argparse rc=2，此前干跑还放行）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2", dataset="model219", wave="1",
+               extra_args=["--size", "16"],
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    cmd = calls[-1]["cmd"]
+    assert os.path.basename(_script_of(cmd)) == "build_wave.py"
+    assert "build-wave" not in cmd, cmd
+    assert "--from-db" in cmd and "--size" in cmd
+    assert cmd[cmd.index("--wave") + 1] == "1"
+
+
+def test_campaign_s2_assemble_priors_routes_clean_to_campaign_py(monkeypatch, fake_toolkit):
+    """stage=S2 + subcommand=assemble-priors 必须走 campaign.py 且不夹带
+    build_wave 参数（此前拼出 `campaign.py build-wave --from-db assemble-priors`）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2", subcommand="assemble-priors",
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    cmd = calls[-1]["cmd"]
+    assert os.path.basename(_script_of(cmd)) == "campaign.py"
+    tail = cmd[cmd.index("--campaign-dir") + 2:]
+    assert tail == ["assemble-priors"], cmd
+
+
+def test_validate_argv_rejects_stray_positional_for_flag_only_script(tmp_path):
+    """validate_argv 对"没有位置参数概念"的脚本要逮住多余的位置参数，
+    且能识别 store_true 选项后面跟着的孤立 token；有位置参数/子命令的脚本放行。"""
+    flag_only = tmp_path / "flag_only.py"
+    flag_only.write_text(
+        "import argparse\n"
+        "ap = argparse.ArgumentParser()\n"
+        "ap.add_argument('--wave', required=True)\n"
+        "ap.add_argument('--from-db', action='store_true')\n",
+        encoding="utf-8",
+    )
+    ok, err = _common.validate_argv(["python", "-u", str(flag_only),
+                                     "--wave", "1", "build-wave", "--from-db"])
+    assert ok is False and "build-wave" in err
+    ok, err = _common.validate_argv(["python", "-u", str(flag_only),
+                                     "--from-db", "build-wave", "--wave", "1"])
+    assert ok is False and "build-wave" in err
+    assert _common.validate_argv(["python", "-u", str(flag_only),
+                                  "--wave", "1", "--from-db"]) == (True, None)
+
+    with_positional = tmp_path / "with_positional.py"
+    with_positional.write_text(
+        "import argparse\n"
+        "ap = argparse.ArgumentParser()\n"
+        "ap.add_argument('candidates')\n"
+        "ap.add_argument('--target', type=int)\n",
+        encoding="utf-8",
+    )
+    assert _common.validate_argv(["python", str(with_positional),
+                                  "cands.json", "--target", "20"]) == (True, None)
 
 
 # ---------------------------------------------------------------------------
@@ -889,3 +970,66 @@ def test_wave_gate_registered_with_matching_signature():
     sig = set(inspect.signature(wg.run).parameters) - {"_context", "dry_run"}
     declared = set(meta.required_params) | set(meta.optional_params)
     assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"
+
+# ---------------------------------------------------------------------------
+# hypothesis_round 节点（2026-09-12 新增：饱和数据集假设优先轮次构建）
+# ---------------------------------------------------------------------------
+
+def test_hypothesis_round_dry_run_builds_plan_without_side_effects(tmp_path, monkeypatch):
+    """dry-run 契约：catalog 校验 + 计划构建，不触平台不写库。"""
+    import json
+    from wqb.workflow.nodes import hypothesis_round as hr
+
+    catalog = tmp_path / "ds_hypotheses.json"
+    catalog.write_text(json.dumps({"hypotheses": [
+        {"hypothesis_id": f"H{i}", "hypothesis_class": "over_reaction",
+         "description": "test", "expected_direction": "positive",
+         "minimal_expression": "rank(close)", "ablation_no_gate": "rank(close)",
+         "control_constant": "rank(volume)", "variant": "rank(close)*1"}
+        for i in range(3)
+    ]}), encoding="utf-8")
+
+    out = hr.run(dataset_id="ds", catalog_path=str(catalog), max_hypotheses=2,
+                 region="KOR", _context={"dry_run": True})
+    assert out["success"] is True and out["dry_run"] is True
+    assert out["plan"]["selected"] == 2
+    assert out["plan"]["total_expressions"] == 8
+    assert out["plan"]["hypothesis_ids"] == ["H0", "H1"]
+    assert not (tmp_path / "ledger.jsonl").exists()
+
+
+def test_hypothesis_round_missing_catalog_fails_clean(monkeypatch):
+    from wqb.workflow.nodes import hypothesis_round as hr
+    monkeypatch.setattr(hr, "_CATALOG_DIR", "definitely_not_here")
+    out = hr.run(dataset_id="nope", _context={"dry_run": True})
+    assert out["success"] is False and "假设目录不存在" in out["error"]
+
+
+def test_hypothesis_round_real_run_builds_four_expressions(tmp_path):
+    import json
+    from wqb.workflow.nodes import hypothesis_round as hr
+    catalog = tmp_path / "ds_hypotheses.json"
+    catalog.write_text(json.dumps({"hypotheses": [
+        {"hypothesis_id": "H0", "hypothesis_class": "dispersion",
+         "description": "test", "expected_direction": "positive",
+         "minimal_expression": "rank(x)", "ablation_no_gate": "rank(x)",
+         "control_constant": "rank(v)", "variant": "rank(x)*sign(y)"}
+    ]}), encoding="utf-8")
+    out = hr.run(dataset_id="ds", catalog_path=str(catalog), save_ledger=True,
+                 session_id="t1", region="IND")
+    assert out["success"] is True and out["dry_run"] is False
+    exps = out["experiments"]["H0"]["expressions"]
+    assert len(exps) == 4
+    assert out["ledger_path"] and Path(out["ledger_path"]).exists()
+
+
+def test_hypothesis_round_registered_with_matching_signature():
+    import inspect
+    from wqb.workflow.registry import get_registry
+    from wqb.workflow.nodes import hypothesis_round as hr
+    meta = get_registry().get_meta("hypothesis_round")
+    assert meta is not None, "hypothesis_round 未注册"
+    sig = set(inspect.signature(hr.run).parameters) - {"_context", "dry_run"}
+    declared = set(meta.required_params) | set(meta.optional_params)
+    assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"
+

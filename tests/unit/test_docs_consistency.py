@@ -92,7 +92,44 @@ def test_contract_documents_both_thresholds_schemas():
 
 def test_contract_has_diversity_signal_floor_semantics():
     contract = _read(TOOLKIT_SKILL.parent / "references" / "campaign-dir-contract.md")
-    assert "静默放行" in contract, "contract 未说明 signal_floor 缺配置时的放行语义"
+    # 2026-09-17 #8：语义由"整节缺失→静默放行"改为 fail-closed（回落默认+告警）。
+    assert "fail-closed" in contract, "contract 未说明 signal_floor 缺配置时的 fail-closed 语义"
+    assert "enabled:false" in contract, "contract 未说明唯一的放行开关（显式 enabled:false）"
+
+
+def test_signal_floor_docs_state_authoritative_location_and_real_region_count():
+    """2026-09-17 P2-12：文档须写明①权威位置 ②真实的 13/13 覆盖数。
+
+    起因：正文曾记「11 区已配」（漏计 AMR/GLB），并把 `thresholds.json` 与
+    references/regions/*.md 的 profile 混为一谈。数目必须与磁盘实况一致。
+    """
+    import glob as _glob
+    import json as _json
+
+    # ① 磁盘实况：从配置反推，而不是在测试里硬写数字
+    paths = sorted(
+        _glob.glob(str(REPO_ROOT / "tracking" / "*" / "config" / "thresholds.json"))
+    )
+    configured = []
+    for p in paths:
+        try:
+            d = _json.loads(open(p, encoding="utf-8").read())
+        except Exception:
+            continue
+        if (d.get("diversity") or {}).get("signal_floor") is not None:
+            configured.append(Path(p).parts[-3])
+    assert len(configured) == len(paths) > 0, (
+        f"signal_floor 覆盖不完整：{len(configured)}/{len(paths)}"
+    )
+
+    # ② 文档口径须与实况一致
+    skill = _read(RA_PIPELINE / "SKILL.md")
+    assert "diversity.signal_floor" in skill
+    assert "唯一权威位置" in skill, "未写明 signal_floor 的权威位置"
+    assert f"{len(configured)}/{len(configured)} 区域均已配该节" in skill, (
+        f"文档未记录真实的区域覆盖数 {len(configured)}/{len(configured)}"
+    )
+    assert "11 个区域" not in skill, "仍残留过期的「11 个区域」表述"
 
 
 # ---------------------------------------------------------------------------
@@ -415,7 +452,7 @@ def test_last_verified_not_older_than_last_commit(path: Path):
 
 #: 命中即检查的计数写法（工具数 / 节点数）；行内必须同时引用 INDEX 基准段才放行
 BARE_COUNT = re.compile(
-    r"\b(?:66|68)\s*(?:个)?\s*工具|\b(?:32|33)\s*(?:个)?\s*工具|[7７]\s*个节点|七个节点|7 个 workflow 节点")
+    r"\b(?:66|68)\s*(?:个)?\s*工具|\b(?:3[2-9])\s*(?:个)?\s*工具|[7７]\s*个节点|七个节点|7 个 workflow 节点")
 COUNT_REF_MARKS = ("INDEX", "唯一基准", "测试守护", "计数基准段")
 
 
@@ -445,7 +482,72 @@ def test_mcp_tool_counts_match_index():
         f"INDEX 基准段写 {total} 个工具？实测装饰器合计 {total}（{per_module}）——同步 INDEX")
     for mod, n in per_module.items():
         assert f"`{mod}` {n}" in idx, f"INDEX 基准段缺 {mod} 的计数 {n}"
-    assert "**9 个**" in idx, "INDEX 基准段缺 workflow 节点数 9"
+    # workflow 节点数：改为**从 registry 实算**（2026-09-17）。
+    # 此前写死 `assert "**18 个**" in idx` —— 那只是在断言"INDEX 里出现过 18 这个串"，
+    # 节点增删时 INDEX 不改也照样通过（裸数字不守护必漂，与本函数下方 wqb-db 的那条教训同源）。
+    # 现在和 wqb-db 一样机械对齐实数。
+    sys.path.insert(0, str(REPO_ROOT / "src"))
+    from wqb.workflow.registry import get_registry
+    _reg = get_registry()
+    n_nodes = len(_reg.list_nodes()) if hasattr(_reg, "list_nodes") else len(_reg._nodes)
+    assert f"- workflow 节点：**{n_nodes} 个**" in idx, (
+        f"INDEX 基准段 workflow 节点数与 registry 实数 {n_nodes} 不符——同步 INDEX")
+    # wqb-db 同样机械守护（2026-09-15：此前只靠人工改数，region_rotation/seal_dead_end
+    # 落地后基准仍写 33、实数已是 35——裸数字不守护必漂）
+    n_db = len(re.findall(r"^@mcp\.tool", _read(REPO_ROOT / "wqb_db_mcp.py"), re.M))
+    assert f"`wqb-db` 服务器：**{n_db} 个工具**" in idx, (
+        f"INDEX 基准段 wqb-db 计数与 wqb_db_mcp.py 装饰器实数 {n_db} 不符——同步 INDEX")
+
+
+def test_node_registration_audit_is_clean():
+    """workflow 节点「四处同步」审计必须干净（2026-09-18 固化）。
+
+    背景：`alpha_booster` 只注册了 registry，另三处漏同步 → 3 个测试红；
+    `gem` 的 NodeMeta 漏 `batch_size` 也属同一类漂移。四个位置本身各有测试守护，
+    但它们**分散在三个文件**，失败时看到的是零散的红，不是"你漏了哪几处"。
+
+    本测试直接调 `tools/audit_node_registration.py` 的审计逻辑，把四处做成一张对照表：
+    registry / test_workflow 期望集合 / _DRY_RUN_CASES / INDEX 计数。
+    这样"加节点漏同步"会在这里一次性暴露，而不是在三个文件里各红一条。
+
+    失败时跑：`python tools/audit_node_registration.py`（会列出全部缺口与修复方向）。
+    """
+    import importlib.util
+
+    tool = REPO_ROOT / "tools" / "audit_node_registration.py"
+    assert tool.exists(), "审计工具缺失：tools/audit_node_registration.py"
+    spec = importlib.util.spec_from_file_location("_audit_node_reg", tool)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    reg = mod._load_registry()
+    nodes = set(reg.list_nodes())
+    problems = []
+
+    tw = mod._parse_test_workflow_nodes()
+    if nodes - tw:
+        problems.append(f"test_workflow 期望集合缺 {sorted(nodes - tw)}")
+    if tw - nodes:
+        problems.append(f"test_workflow 期望集合多 {sorted(tw - nodes)}（registry 已无此节点）")
+
+    dr = mod._parse_dry_run_cases()
+    if nodes - dr:
+        problems.append(f"_DRY_RUN_CASES 缺 {sorted(nodes - dr)}")
+    if dr - nodes:
+        problems.append(f"_DRY_RUN_CASES 多 {sorted(dr - nodes)}")
+
+    drift = mod._signature_drift(reg)
+    if drift:
+        problems.append(f"NodeMeta 与 run() 签名漂移：{drift}")
+
+    idx_count = mod._parse_index_node_count()
+    if idx_count != len(nodes):
+        problems.append(f"INDEX 记 {idx_count} 个，registry 实为 {len(nodes)} 个")
+
+    assert not problems, (
+        "workflow 节点四处不同步（跑 `python tools/audit_node_registration.py` 看修复方向）：\n  - "
+        + "\n  - ".join(problems)
+    )
 
 
 def test_ppa_mining_and_ra_pipeline_reference_count_baseline():
@@ -518,4 +620,52 @@ def test_feature_impl_vendored_matches_canonical():
         if hv != hc:
             bad.append(name)
     assert not bad, f"gem 内嵌副本与正本分叉（禁止第二实现）：{bad}——以 gem 运行版为准回灌正本后提交"
+
+# ---------------------------------------------------------------------------
+# 14. 模板族的算子合法性（2026-09-13 落地论坛「一阶变换族」）
+# ---------------------------------------------------------------------------
+
+_OP_CALL = re.compile(r"([a-z_][a-z_0-9]*)\s*\(")
+
+
+def test_template_families_only_use_verified_operators():
+    """每个族的 skeleton / skeleton_variants 只能用 verified 算子。
+
+    动机：论坛高赞模板帖常引用幽灵算子（ts_entropy / ts_decay_exp_window 等），
+    直接抄进族里会让整批回测静默失败。本测试把「算子真值」焊死在族的定义上。
+    """
+    ov = _load_json(REPO_ROOT / "data" / "operators_verified.json")
+    verified = set(ov["verified"])
+    pc = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "platform_constraints.json")
+    banned = set(pc.get("ghost_ops") or []) | set(pc.get("inaccessible_ops") or [])
+
+    cfg = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "template_families.json")
+    offenders = {}
+    for fam in cfg["families"]:
+        exprs = [str(fam.get("skeleton") or "")]
+        exprs += [v.get("expr", "") for v in (fam.get("skeleton_variants") or []) if isinstance(v, dict)]
+        bad = set()
+        for e in exprs:
+            for op in _OP_CALL.findall(e):
+                if op not in verified or op in banned:
+                    bad.add(op)
+        if bad:
+            offenders[fam.get("family_id")] = sorted(bad)
+    assert not offenders, (
+        f"模板族使用了非 verified 算子（幽灵/不可访问或未登记）：{offenders}——"
+        f"算子真值 = data/operators_verified.json 的 verified")
+
+
+def test_first_order_transform_family_landed():
+    """论坛「一阶变换族」必须存在且 9 条变体齐全（原帖称 10 条但正文实列 9 条）。"""
+    cfg = _load_json(SKILLS_DIR / "wq-brain-campaign-toolkit" / "config" / "template_families.json")
+    fam = next((f for f in cfg["families"] if f.get("family_id") == "first_order_transform"), None)
+    assert fam is not None, "first_order_transform 族缺失"
+    variants = fam.get("skeleton_variants") or []
+    assert len(variants) == 9, f"变体数应为 9，实际 {len(variants)}"
+    names = [v["name"] for v in variants]
+    assert names == ["slope", "growth_rate", "ar_slope", "squared_momentum", "decay_momentum",
+                     "rank_reversal", "log_smooth", "signed_power", "delta_stack"]
+    assert fam["status"] == "candidate_unverified"
+    assert set(fam["forbidden_operators"]) >= {"ts_entropy", "ts_decay_exp_window", "ts_skewness"}
 

@@ -372,16 +372,30 @@ def test_get_mining_yield_separates_conversion_from_yield():
 
     out = mod.get_mining_yield()
     assert "rows" in out and "totals" in out
+    assert out["criteria"]["strict"] is True
     for row in out["rows"]:
         assert {"region", "expressions", "backtested", "conversion",
-                "passed", "yield_rate"} <= set(row)
+                "passed", "yield_rate", "ra_clean", "prod_clean", "prod_blocked",
+                "yield_rate_loose"} <= set(row)
         # 两个比率是不同的量：conversion 看流水线，yield_rate 看标的
+        # 2026-09-19 严格口径：yield_rate = ra_clean/backtested（RA 硬闸全过），
+        # 旧的 passed/backtested 保留为 yield_rate_loose；ra_clean ≤ passed 恒成立
         if row["backtested"]:
             assert row["yield_rate"] == pytest.approx(
+                row["ra_clean"] / row["backtested"], abs=1e-4
+            )
+            assert row["yield_rate_loose"] == pytest.approx(
                 row["passed"] / row["backtested"], abs=1e-4
             )
+            assert row["ra_clean"] <= row["passed"]
+            assert row["prod_clean"] + row["prod_blocked"] <= row["ra_clean"]
         else:
             assert row["yield_rate"] is None
+    # strict=False 回到旧口径
+    loose = mod.get_mining_yield(strict=False)
+    for row in loose["rows"]:
+        if row["backtested"]:
+            assert row["yield_rate"] == pytest.approx(row["passed"] / row["backtested"], abs=1e-4)
     # 无回测记录的排最后，便于选区时直接读第一行
     seen_none = False
     for row in out["rows"]:
