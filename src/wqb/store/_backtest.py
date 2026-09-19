@@ -20,129 +20,142 @@ class BacktestMixin:
         now = _now()
         rid = self._ensure_region(region)
         ds_id = self._ensure_dataset(region, dataset or "_unknown")
-        for r in rows:
-            code = r.get("code") or r.get("expression") or r.get("expr") or ""
-            alpha_id = r.get("id") or r.get("alpha_id")
-            expr_id = None
-            if code:
-                cur.execute(
-                    "SELECT id FROM expressions WHERE wave_id=? AND expression=?",
-                    (wave_id, code),
-                )
-                erow = cur.fetchone()
-                if erow:
-                    expr_id = int(erow[0])
-                else:
-                    self.upsert_expressions(
-                        region, str(wave),
-                        [{"expression": code, "alpha_id": alpha_id, "status": "backtested"}],
-                        dataset=dataset,
-                    )
+        # 批量事务：BEGIN ... COMMIT 包裹全部写入，减少 fsync
+        cur.execute("BEGIN")
+        try:
+            for r in rows:
+                code = r.get("code") or r.get("expression") or r.get("expr") or ""
+                alpha_id = r.get("id") or r.get("alpha_id")
+                expr_id = None
+                if code:
                     cur.execute(
                         "SELECT id FROM expressions WHERE wave_id=? AND expression=?",
                         (wave_id, code),
                     )
                     erow = cur.fetchone()
-                    expr_id = int(erow[0]) if erow else None
-            if expr_id is None:
-                continue
-            margin = r.get("margin")
-            if margin is None and r.get("margin_bp") is not None:
-                margin = r["margin_bp"] / 10000.0
-            turnover = r.get("turnover")
-            if turnover is None and r.get("turnover_pct") is not None:
-                turnover = r["turnover_pct"] / 100.0
-            failed = r.get("failed_checks") or r.get("ra_failed_checks") or []
-            payload = _dumps(r)
-            cur.execute(
-                """INSERT INTO backtest_results
-                   (expression_id, alpha_id, status, sharpe, fitness, turnover,
-                    margin, returns, drawdown, two_year_sharpe, sub_universe_sharpe,
-                    risk_neutralized_sharpe,
-                    long_count, short_count, pnl, book_size, ra_failed_checks,
-                    region, wave, dataset, code, payload_json, created_at)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                   ON CONFLICT(alpha_id) DO UPDATE SET
-                    expression_id=excluded.expression_id, status=excluded.status,
-                    sharpe=excluded.sharpe, fitness=excluded.fitness,
-                    turnover=excluded.turnover, margin=excluded.margin,
-                    returns=excluded.returns, drawdown=excluded.drawdown,
-                    two_year_sharpe=excluded.two_year_sharpe,
-                    sub_universe_sharpe=excluded.sub_universe_sharpe,
-                    risk_neutralized_sharpe=excluded.risk_neutralized_sharpe,
-                    long_count=excluded.long_count, short_count=excluded.short_count,
-                    pnl=excluded.pnl, book_size=excluded.book_size,
-                    ra_failed_checks=excluded.ra_failed_checks,
-                    region=excluded.region, wave=excluded.wave, dataset=excluded.dataset,
-                    code=excluded.code, payload_json=excluded.payload_json,
-                    created_at=excluded.created_at""",
-                (
-                    expr_id, alpha_id, r.get("status") or "COMPLETE",
-                    r.get("sharpe"), r.get("fitness"), turnover, margin,
-                    r.get("returns"), r.get("drawdown"),
-                    r.get("two_year_sharpe"), r.get("sub_universe_sharpe"),
-                    # 2026-09-08 提为一等公民：risk_neutralized_sharpe <= 0 而 sharpe 达标，
-                    # 说明这条 alpha 就是它自己声称的那个因子暴露，不是暴露之上的超额。
-                    r.get("risk_neutralized_sharpe"),
-                    r.get("long_count"), r.get("short_count"),
-                    r.get("pnl"), r.get("book_size"),
-                    _dumps(failed) if failed else None,
-                    region, str(wave), dataset, code, payload, now,
-                ),
-            )
-            if alpha_id:
-                cur.execute("SELECT id FROM alphas WHERE alpha_id=?", (alpha_id,))
-                arow = cur.fetchone()
-                aval = (
-                    code or "",
-                    rid, ds_id,
-                    r.get("universe"), r.get("delay"),
-                    r.get("neut") or r.get("neutralization"),
-                    r.get("sharpe"), r.get("fitness"), margin, turnover,
-                    r.get("two_year_sharpe"),
-                    r.get("status") or "UNSUBMITTED",
-                    r.get("prod_corr") or r.get("prod_correlation"),
-                    r.get("self_corr") or r.get("self_correlation"),
-                    r.get("is_ladder_sharpe"),   # 2026-08-29 新增：提交硬闸之一
-                    # 平台侧状态（审计 P0-2 新增列）：alphas.status 保留本地语义，
-                    # platform_status 存平台 status，二者同名不同义，勿混用。
-                    r.get("platform_status"),
-                    r.get("stage"),              # IS | OS
-                    r.get("alpha_type"),         # REGULAR | SUPER
-                    r.get("date_submitted"),
-                    now,
-                )
-                if arow:
-                    cur.execute(
-                        """UPDATE alphas SET expression=?, region_id=?, dataset_id=?,
-                           universe=?, delay=?, neutralization=?, sharpe=?, fitness=?,
-                           margin=?, turnover=?, two_year_sharpe=?, status=?,
-                           prod_correlation=?, self_correlation=?, is_ladder_sharpe=?,
-                           platform_status=?, stage=?, alpha_type=?, date_submitted=?,
-                           updated_at=?
-                           WHERE id=?""",
-                        aval + (int(arow[0]),),
-                    )
-                else:
-                    cur.execute(
-                        """INSERT INTO alphas
-                           (alpha_id, expression, region_id, dataset_id, universe,
-                            delay, neutralization, sharpe, fitness, margin, turnover,
-                            two_year_sharpe, status, prod_correlation, self_correlation,
-                            is_ladder_sharpe, platform_status, stage, alpha_type,
-                            date_submitted, created_at, updated_at)
-                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                        (alpha_id,) + aval + (now,),
-                    )
-            # 回填 expressions 表的指标列（修复三表不一致根因）
-            if alpha_id and r.get("sharpe") is not None:
+                    if erow:
+                        expr_id = int(erow[0])
+                    else:
+                        self.upsert_expressions(
+                            region, str(wave),
+                            [{"expression": code, "alpha_id": alpha_id, "status": "backtested"}],
+                            dataset=dataset,
+                        )
+                        cur.execute(
+                            "SELECT id FROM expressions WHERE wave_id=? AND expression=?",
+                            (wave_id, code),
+                        )
+                        erow = cur.fetchone()
+                        expr_id = int(erow[0]) if erow else None
+                if expr_id is None:
+                    continue
+                margin = r.get("margin")
+                if margin is None and r.get("margin_bp") is not None:
+                    margin = r["margin_bp"] / 10000.0
+                turnover = r.get("turnover")
+                if turnover is None and r.get("turnover_pct") is not None:
+                    turnover = r["turnover_pct"] / 100.0
+                failed = r.get("failed_checks") or r.get("ra_failed_checks") or []
+                payload = _dumps(r)
                 cur.execute(
-                    """UPDATE expressions SET sharpe=?, fitness=?, margin=?, turnover=?,
-                       updated_at=? WHERE alpha_id=?""",
-                    (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
+                    """INSERT INTO backtest_results
+                       (expression_id, alpha_id, status, sharpe, fitness, turnover,
+                        margin, returns, drawdown, two_year_sharpe, sub_universe_sharpe,
+                        risk_neutralized_sharpe,
+                        long_count, short_count, pnl, book_size, ra_failed_checks,
+                        region, wave, dataset, code, payload_json, created_at)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                       ON CONFLICT(alpha_id) DO UPDATE SET
+                        expression_id=excluded.expression_id, status=excluded.status,
+                        sharpe=excluded.sharpe, fitness=excluded.fitness,
+                        turnover=excluded.turnover, margin=excluded.margin,
+                        returns=excluded.returns, drawdown=excluded.drawdown,
+                        two_year_sharpe=excluded.two_year_sharpe,
+                        sub_universe_sharpe=excluded.sub_universe_sharpe,
+                        risk_neutralized_sharpe=excluded.risk_neutralized_sharpe,
+                        long_count=excluded.long_count, short_count=excluded.short_count,
+                        pnl=excluded.pnl, book_size=excluded.book_size,
+                        ra_failed_checks=excluded.ra_failed_checks,
+                        region=excluded.region, wave=excluded.wave, dataset=excluded.dataset,
+                        code=excluded.code, payload_json=excluded.payload_json,
+                        created_at=excluded.created_at""",
+                    (
+                        expr_id, alpha_id, r.get("status") or "COMPLETE",
+                        r.get("sharpe"), r.get("fitness"), turnover, margin,
+                        r.get("returns"), r.get("drawdown"),
+                        r.get("two_year_sharpe"), r.get("sub_universe_sharpe"),
+                        r.get("risk_neutralized_sharpe"),
+                        r.get("long_count"), r.get("short_count"),
+                        r.get("pnl"), r.get("book_size"),
+                        _dumps(failed) if failed else None,
+                        region, str(wave), dataset, code, payload, now,
+                    ),
                 )
-            n += 1
-        self.connection.commit()
+                if alpha_id:
+                    cur.execute("SELECT id FROM alphas WHERE alpha_id=?", (alpha_id,))
+                    arow = cur.fetchone()
+                    aval = (
+                        code or "",
+                        rid, ds_id,
+                        r.get("universe"), r.get("delay"),
+                        r.get("neut") or r.get("neutralization"),
+                        r.get("sharpe"), r.get("fitness"), margin, turnover,
+                        r.get("two_year_sharpe"),
+                        r.get("status") or "UNSUBMITTED",
+                        r.get("prod_corr") or r.get("prod_correlation"),
+                        r.get("self_corr") or r.get("self_correlation"),
+                        r.get("is_ladder_sharpe"),
+                        r.get("platform_status"),
+                        r.get("stage"),
+                        r.get("alpha_type"),
+                        r.get("date_submitted"),
+                        # ---- 2026-09-18：回测指标全量落库（设计文档 §2.2）----
+                        r.get("sub_universe_sharpe"),
+                        r.get("returns"),
+                        r.get("drawdown"),
+                        r.get("long_count"),
+                        r.get("short_count"),
+                        r.get("concentrated_weight"),
+                        r.get("cluster_test"),
+                        now,
+                    )
+                    if arow:
+                        cur.execute(
+                            """UPDATE alphas SET expression=?, region_id=?, dataset_id=?,
+                               universe=?, delay=?, neutralization=?, sharpe=?, fitness=?,
+                               margin=?, turnover=?, two_year_sharpe=?, status=?,
+                               prod_correlation=?, self_correlation=?, is_ladder_sharpe=?,
+                               platform_status=?, stage=?, alpha_type=?, date_submitted=?,
+                               sub_universe_sharpe=?, returns=?, drawdown=?,
+                               long_count=?, short_count=?, concentrated_weight=?,
+                               cluster_test=?, updated_at=?
+                               WHERE id=?""",
+                            aval + (int(arow[0]),),
+                        )
+                    else:
+                        cur.execute(
+                            """INSERT INTO alphas
+                               (alpha_id, expression, region_id, dataset_id, universe,
+                                delay, neutralization, sharpe, fitness, margin, turnover,
+                                two_year_sharpe, status, prod_correlation, self_correlation,
+                                is_ladder_sharpe, platform_status, stage, alpha_type,
+                                date_submitted, sub_universe_sharpe, returns, drawdown,
+                                long_count, short_count, concentrated_weight, cluster_test,
+                                created_at, updated_at)
+                               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                            (alpha_id,) + aval + (now,),
+                        )
+                if alpha_id and r.get("sharpe") is not None:
+                    cur.execute(
+                        """UPDATE expressions SET sharpe=?, fitness=?, margin=?, turnover=?,
+                           updated_at=? WHERE alpha_id=?""",
+                        (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
+                    )
+                n += 1
+            self.connection.commit()
+        except Exception:
+            self.connection.rollback()
+            raise
         return n
 
     def record_submission(
@@ -261,6 +274,90 @@ class BacktestMixin:
         return aid
 
     save_backtest_results = upsert_backtest_rows
+
+    def persist_correlation(
+        self,
+        alpha_id: str,
+        prod: Optional[float] = None,
+        self_: Optional[float] = None,
+        source: str = "triage_local",
+        overwrite: bool = False,
+    ) -> Dict[str, Any]:
+        """把相关性检查结果落库到 alphas 表（2026-09-18，设计文档 §2.4）。
+
+        动机：`check_correlation` 的返回值此前只进内存 / triage checkpoint，
+        复盘/查询时必须重打平台 API（占单并发队列）。本方法提供「检查即落库」。
+
+        契约：
+          - alpha 不存在 → {"skipped": "not_found"}
+          - overwrite=False（默认）→ 只填 NULL 列，已有值不动（保留平台权威值）
+          - overwrite=True → 覆盖（用于平台权威值修正本地估算值）
+          - 值非 [0,1] 区间 → 该值被忽略（防空值/异常污染），全部无有效值则 skipped
+          - 写入时同步更新 prod_corr_source / corr_checked_at
+        幂等：同值重复调用零变化。
+
+        source 取值：platform_sync（平台权威）> manual > triage_local（本地抽测）。
+        注意 triage_local **高可信、低不可信**：对近期提交的孪生体失明会低估。
+        """
+        if not alpha_id:
+            return {"skipped": "no_alpha_id"}
+
+        def _valid(v: Any) -> Optional[float]:
+            if v is None:
+                return None
+            try:
+                fv = float(v)
+            except (TypeError, ValueError):
+                return None
+            if fv < 0.0 or fv > 1.0:
+                return None
+            return fv
+
+        p = _valid(prod)
+        s = _valid(self_)
+        if p is None and s is None:
+            return {"skipped": "no_valid_value", "alpha_id": alpha_id}
+
+        cur = self.connection.cursor()
+        cur.execute(
+            "SELECT id, prod_correlation, self_correlation FROM alphas WHERE alpha_id=?",
+            (alpha_id,),
+        )
+        row = cur.fetchone()
+        if not row:
+            return {"skipped": "not_found", "alpha_id": alpha_id}
+
+        cur_prod = _valid(row[1])
+        cur_self = _valid(row[2])
+        new_prod = p if (p is not None and (overwrite or cur_prod is None)) else None
+        new_self = s if (s is not None and (overwrite or cur_self is None)) else None
+        if new_prod is None and new_self is None:
+            return {"skipped": "already_set", "alpha_id": alpha_id}
+
+        now = _now()
+        sets, vals = [], []
+        if new_prod is not None:
+            sets.append("prod_correlation=?")
+            vals.append(new_prod)
+        if new_self is not None:
+            sets.append("self_correlation=?")
+            vals.append(new_self)
+        sets.append("prod_corr_source=?")
+        vals.append(source)
+        sets.append("corr_checked_at=?")
+        vals.append(now)
+        sets.append("updated_at=?")
+        vals.append(now)
+        vals.append(int(row[0]))
+        cur.execute(f"UPDATE alphas SET {', '.join(sets)} WHERE id=?", vals)
+        self.connection.commit()
+        return {
+            "alpha_id": alpha_id,
+            "prod_correlation": new_prod,
+            "self_correlation": new_self,
+            "source": source,
+            "checked_at": now,
+        }
 
     def list_backtest_rows(self, region: str, wave: str) -> List[Dict[str, Any]]:
         cur = self.connection.cursor()

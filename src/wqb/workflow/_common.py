@@ -434,6 +434,54 @@ def script_arg_contract(script_path: str) -> Optional[Tuple[Set[str], Set[str]]]
     return options, subcommands
 
 
+#: add_argument 里的 store_true / store_false / count / help / version 这类不吃值的 action
+_NOVALUE_ACTION_RE = re.compile(
+    r"""action\s*=\s*(["'])(store_true|store_false|count|help|version)\1"""
+)
+#: `add_argument("name", ...)` 首个引号串不带 `-` 即位置参数
+_POSITIONAL_STRING_RE = re.compile(r"""^\s*(["'])([A-Za-z_][\w-]*)\1""")
+
+
+def script_positional_contract(script_path: str) -> Optional[Tuple[bool, Set[str]]]:
+    """静态解析脚本能否接受"多余的位置参数"，返回 (拒绝任何位置参数?, 不吃值的选项集合)。
+
+    2026-09-12 新增。`validate_argv` 原本只逮未声明的 --flag / 子命令，
+    对 `build_wave.py --wave W build-wave --from-db` 这种多出来的位置参数
+    （campaign 节点把分发器入口名 `build-wave` 拼给了 build_wave.py 本体）
+    静默放行，干跑"通过"、实跑 argparse rc=2。
+
+    判定原则仍是"宁可漏报不可误报"：脚本（含本地 import 的辅助模块）只要声明过
+    任何位置参数、子命令或 `nargs`，就返回 (False, ...) 放弃位置参数校验；只有
+    完全没有位置参数概念的脚本才返回 (True, ...)。第二项列出不吃值的选项，
+    供调用方区分"跟在选项后面的值"与"孤立的位置参数"。读不到/无 add_argument
+    返回 None（无法校验）。
+    """
+    text = _read_text(script_path)
+    if text is None:
+        return None
+    own_chunks = [m.group(1) for m in _ADD_ARGUMENT_RE.finditer(text)]
+    if not own_chunks:
+        return None
+    if _ADD_PARSER_RE.search(text):
+        return False, set()
+    # 位置参数/nargs 只看脚本自身：辅助模块（如 _lib/ledger.py）自带的 CLI 位置参数
+    # 不属于导入方的契约，算进来会让 build_wave.py 这类脚本永远无法校验。
+    strict = not any("nargs" in ch or _POSITIONAL_STRING_RE.match(ch) for ch in own_chunks)
+    # 不吃值的选项则连同本地 import 的共享辅助函数一起收（与 script_arg_contract 同口径）
+    base_dir = os.path.dirname(os.path.abspath(script_path))
+    all_chunks = list(own_chunks)
+    for path in _local_module_files(text, base_dir):
+        extra = _read_text(path)
+        if extra:
+            all_chunks.extend(m.group(1) for m in _ADD_ARGUMENT_RE.finditer(extra))
+    novalue: Set[str] = set()
+    for chunk in all_chunks:
+        if _NOVALUE_ACTION_RE.search(chunk):
+            for om in _OPTION_STRING_RE.finditer(chunk):
+                novalue.add(om.group(2))
+    return strict, novalue
+
+
 def _script_index(cmd: Sequence[str]) -> Optional[int]:
     """定位 cmd 里的目标脚本下标，跳过解释器自身的开关。
 
@@ -470,9 +518,13 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
     if contract is None:
         return True, None
     options, subcommands = contract
+    # 多余位置参数校验（2026-09-12）：仅对"完全没有位置参数概念"的脚本启用
+    positional_contract = script_positional_contract(cmd[idx])
+    strict_positional, novalue_flags = positional_contract or (False, set())
 
     unknown_flags: List[str] = []
     unknown_subcommands: List[str] = []
+    stray_positionals: List[str] = []
     seen_subcommand = not subcommands  # 无子命令的脚本不做子命令校验
     expect_value = False
 
@@ -482,7 +534,8 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
             flag = token.split("=", 1)[0]
             if flag not in options and flag not in unknown_flags:
                 unknown_flags.append(flag)
-            expect_value = "=" not in token
+            # store_true 这类不吃值的选项后面若跟了非选项 token，那就是孤立的位置参数
+            expect_value = "=" not in token and flag not in novalue_flags
             continue
         # 位置参数：第一个非选项 token 视为子命令（仅当脚本声明了子命令）
         if expect_value:
@@ -492,13 +545,17 @@ def validate_argv(cmd: Sequence[str]) -> Tuple[bool, Optional[str]]:
             seen_subcommand = True
             if token not in subcommands:
                 unknown_subcommands.append(token)
+        elif strict_positional and not subcommands:
+            stray_positionals.append(token)
 
-    if unknown_flags or unknown_subcommands:
+    if unknown_flags or unknown_subcommands or stray_positionals:
         parts = []
         if unknown_flags:
             parts.append(f"未声明的参数 {unknown_flags}")
         if unknown_subcommands:
             parts.append(f"未声明的子命令 {unknown_subcommands}")
+        if stray_positionals:
+            parts.append(f"脚本不接受位置参数，却收到 {stray_positionals}")
         return False, (
             f"{os.path.basename(cmd[idx])} 的 argparse 不接受该命令："
             + "；".join(parts)

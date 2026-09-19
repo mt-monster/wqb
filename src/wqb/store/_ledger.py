@@ -17,25 +17,13 @@ class LedgerMixin:
         payload = _dumps(value)
         now = _now()
         cur.execute(
-            "SELECT id FROM ledger_kv WHERE region=? AND key=?",
-            (region, key),
+            "INSERT INTO ledger_kv (region, key, value, created_at, updated_at) "
+            "VALUES (?,?,?,?,?) "
+            "ON CONFLICT(region, key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at",
+            (region, key, payload, now, now),
         )
-        row = cur.fetchone()
-        if row:
-            cur.execute(
-                "UPDATE ledger_kv SET value=?, updated_at=? WHERE region=? AND key=?",
-                (payload, now, region, key),
-            )
-            action = "updated"
-        else:
-            cur.execute(
-                "INSERT INTO ledger_kv (region, key, value, created_at, updated_at) "
-                "VALUES (?,?,?,?,?)",
-                (region, key, payload, now, now),
-            )
-            action = "inserted"
         self.connection.commit()
-        return {"action": action, "region": region, "key": key}
+        return {"action": "upserted", "region": region, "key": key}
 
     def get_ledger(self, region: str, key: str) -> Any:
         cur = self.connection.cursor()

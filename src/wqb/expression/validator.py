@@ -1,5 +1,9 @@
 """wqb.expression.validator — batch diversity gates and shape classification.
 
+【命名辨析 2026-09-12】本模块只做**形状分类与批级多样性闸**（check_batch/classify_shape）；
+完整表达式**语法校验**在 alpha-expression-verifier skill 的 validator.py（PLY 引擎，1377 行）。
+两者同名不同物，跨处引用前先核对角色。
+
 ``check_batch`` enforces the diversity gates before a batch may be
 dispatched to ``create_multi_simulation``:
 
@@ -15,7 +19,7 @@ import re
 from typing import Dict, List, Set, Tuple
 
 from wqb.config import GHOST_OPERATORS, SHAPE_CLASSES, get_operator_family
-from wqb.expression.grammar import Node, ParseError, parse_expression, extract_identifiers
+from wqb.expression.grammar import Node, ParseError, parse_expression
 
 # Binary combiners whose two operands form a "shape".
 _BINARY_COMBINERS = {"subtract", "divide", "add", "multiply", "max", "min"}
@@ -42,18 +46,24 @@ def _fields_of(node: Node) -> Set[str]:
         n = stack.pop()
         if n.is_call:
             stack.extend(n.args)
-        else:
+        elif n.kind == "ident":  # number / string literals are never fields
             name = n.name.lower()
             if name in _NON_FIELD_NAMES:
-                continue
-            if re.fullmatch(r"\d+(?:\.\d+)?", name):
                 continue
             if not _is_operator(name):
                 out.add(name)
     return out
 
 
+def _strip_sign(node: Node) -> Node:
+    """Look through a prefix minus: ``-rank(x)`` has the shape of ``rank(x)``."""
+    while node.kind == "unary":
+        node = node.args[0]
+    return node
+
+
 def _outer_wrapper(node: Node) -> str:
+    node = _strip_sign(node)
     return node.name if node.is_call else ""
 
 
@@ -74,6 +84,7 @@ def _window_bucket(expr: str) -> str:
 
 def _arg_family(arg: Node) -> str:
     """Family of the pre-op wrapping an operand (NONE for raw fields)."""
+    arg = _strip_sign(arg)
     if arg.is_call:
         return get_operator_family(arg.name)
     return "NONE"
@@ -82,7 +93,7 @@ def _arg_family(arg: Node) -> str:
 def _shape_signature(expr: str) -> Tuple[str, str, str, str, str]:
     """5-tuple: (top_op, combiner, fam_a, fam_b, window_bucket)."""
     try:
-        root = parse_expression(expr)
+        root = _strip_sign(parse_expression(expr))
     except ParseError:
         return ("INVALID", "", "NONE", "NONE", "none")
     top = root.name if root.is_call else ""
@@ -101,7 +112,7 @@ def classify_shape(expr: str) -> str:
     S9: anything else.
     """
     try:
-        root = parse_expression(expr)
+        root = _strip_sign(parse_expression(expr))
     except ParseError:
         return "S9"
     if root.is_call and root.name in _BINARY_COMBINERS and len(root.args) >= 2:
@@ -244,9 +255,10 @@ def _jaccard(a: Set[str], b: Set[str]) -> float:
 def _fields_fallback(expr: str) -> Set[str]:
     """字段提取 fallback：正则直接提取标识符后过滤算子。
 
-    parse_expression/extract_identifiers 都依赖 _tokenize，不支持数字参数
-    （ts_delta(close, 10) 的 10）和特殊字符（winsorize(close, std=4) 的 =）。
-    本函数用正则直接提取所有标识符，容错任意参数形式。
+    parse_expression 已支持数字/字符串字面量、kwargs（std=4）、一元负号与中缀
+    比较/逻辑/算术运算符；仍不支持括号分组 ``(a + b) * c``、三元 ``?:`` 与
+    ``;`` 多语句。本函数用正则直接提取所有标识符，容错这些剩余形式
+    （代价：kwarg 名与字符串内容也会被当作标识符）。
     """
     idents = re.findall(r"[A-Za-z_][A-Za-z0-9_]*", expr)
     return {i.lower() for i in idents

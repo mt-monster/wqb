@@ -9,11 +9,13 @@ import logging
 import os
 import re
 import subprocess
+import sqlite3
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
 from .._common import (
+    REPO_ROOT,
     detached_launch_failed,
     infer_data_category,
     resolve_db_path,
@@ -24,6 +26,17 @@ from .._common import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+#: S1 ledger `source` 属于确定性模板渲染（brain-data-feature-engineering/scripts/
+#: feature_engineering.py，无 LLM）的取值；这类文档不作为 GEM 的 ideas 输入。
+TEMPLATE_IDEAS_SOURCES = ("feature_engineering_node", "standalone", "standalone_v2")
+
+
+def is_template_ideas_source(source: Optional[str]) -> bool:
+    src = str(source or "").strip()
+    return any(src == t or src.startswith(t + " ") or src.startswith(t + "(")
+               for t in TEMPLATE_IDEAS_SOURCES)
 
 
 @require_mcp_tools("gem")
@@ -39,6 +52,11 @@ def run(
     priors_from_db: bool = True,
     ideas_file: Optional[str] = None,
     detached: bool = True,
+    launch_only: bool = False,
+    pipeline_mode: Optional[str] = "phased",
+    batch_size: int = 100,
+    require_operators: Optional[str] = None,
+    require_count: int = 2,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行 GEM 表达式生成.
@@ -58,6 +76,17 @@ def run(
             本参数=False 时不走 DB 直读）
         ideas_file: ideas.md 路径（显式指定，覆盖 S1 ledger 自动注入）
         detached: 是否后台执行
+        launch_only: 只启动不等待（2026-09-12 P1）：Popen 后立即返回，
+            不等 meta.json 握手，彻底规避 MCP 客户端超时。Agent 后续用
+            workflow_task_status(prefix="gem_") 轮询任务状态。
+        pipeline_mode: GEM 生成模式 single / phased / skeleton（2026-09-18 ③）。
+            默认 "phased"（三阶段分批：structure→mapping→render），解决全量大字段集
+            （如订单流 198 字段）single-shot 模式 LLM 生成超时（9+ 分钟）的问题。
+            "single" = 一次性 LLM 调用（旧默认，仅小字段集 <50 适用）；
+            "skeleton" = 骨架枚举 + LLM 填槽（语法构造保证）。
+        batch_size: phased 模式下每批字段数（默认 100）。
+            198 字段订单流实测：batch_size=50 拆散同族字段（bid_* / ask_* 跨批），
+            跨族机制（如 ask-bid 价差）无法在同一批内设计；100 让同族字段同批。
         _context: 执行上下文
 
     Returns:
@@ -100,16 +129,55 @@ def run(
             s1_key = f"s1_{dataset_id}_d{delay}"
             s1_ledger = store.get_ledger(region, s1_key)
             if s1_ledger and s1_ledger.get("ideas_md_path"):
-                if not effective_ideas_file:
-                    effective_ideas_file = s1_ledger["ideas_md_path"]
-                result["steps"].append({
-                    "step": "s1_ledger_check",
-                    "success": True,
-                    "s1_key": s1_key,
-                    "ideas_md_path": s1_ledger["ideas_md_path"],
-                    "auto_inject": not ideas_file,
-                    "override": bool(ideas_file),
-                })
+                # 2026-09-15 审计缺陷 A：ledger 里可能残留历史 Agent 安装位/旧命名的
+                # ideas_md_path（如 .qoder-cn\...\brain-makeSomeGem\...）——2026-09-10
+                # skill 多目标同步改名后这些物理拷贝/旧目录已不存在或已分叉，注入后
+                # GEM 在 check_ideas_format（文件不存在/格式不符）或实跑时断裂。
+                # 注入前先验存在性：失效路径视为"无 ideas"，改走概念优先自含生成
+                # （显式 ideas_file 不受影响——那是用户当轮给的真实路径）。
+                _ledger_ideas_path = s1_ledger["ideas_md_path"]
+                _ledger_ideas_exists = os.path.exists(_ledger_ideas_path)
+                if not _ledger_ideas_exists and not ideas_file:
+                    result["steps"].append({
+                        "step": "s1_ledger_check",
+                        "success": True,
+                        "s1_key": s1_key,
+                        "ideas_md_path": _ledger_ideas_path,
+                        "auto_inject": False,
+                        "skipped_reason": (
+                            "ledger 记录的 ideas_md_path 文件已不存在（历史安装位残留），"
+                            "视为无 ideas：GEM 走概念优先自含生成；如需重生成请跑 "
+                            "workflow_feature_engineering(force_regen=true) 或显式传 ideas_file"
+                        ),
+                    })
+                elif is_template_ideas_source(s1_ledger.get("source")) and not effective_ideas_file:
+                    # 2026-09-15 ②：确定性模板文档（feature_engineering.py 8 问框架渲染）
+                    # 不再自动注入——注入后 GEM 一行 LLM 都不调，整波退化为
+                    # `rank(ts_mean({f},66))` 式模板展开（GBR intraday_pv_feats 实证）。
+                    # （若该路径同时已失效，上面第一个分支已按"无 ideas"处理。）
+                    result["steps"].append({
+                        "step": "s1_ledger_check",
+                        "success": True,
+                        "s1_key": s1_key,
+                        "ideas_md_path": s1_ledger["ideas_md_path"],
+                        "auto_inject": False,
+                        "skipped_reason": f"source={s1_ledger.get('source')!r} 是模板渲染文档，"
+                                          "GEM 改走概念优先自含生成（显式 ideas_file 可覆盖）",
+                    })
+                else:
+                    if not effective_ideas_file:
+                        # 路径已失效但用户没给显式 ideas_file：同样视为无 ideas，
+                        # 不注入死路径（否则 check_ideas_format 必挂）。
+                        if _ledger_ideas_exists or ideas_file:
+                            effective_ideas_file = s1_ledger["ideas_md_path"]
+                    result["steps"].append({
+                        "step": "s1_ledger_check",
+                        "success": True,
+                        "s1_key": s1_key,
+                        "ideas_md_path": s1_ledger["ideas_md_path"],
+                        "auto_inject": not ideas_file,
+                        "override": bool(ideas_file),
+                    })
         except Exception as e:
             logger.warning(f"Failed to check S1 ledger: {e}")
 
@@ -220,8 +288,47 @@ def run(
     if effective_ideas_file:
         cmd.extend(["--ideas-file", effective_ideas_file])
 
+    # 2026-09-18 ③：pipeline_mode 默认 phased（三阶段分批），解决全量大字段集
+    # single-shot 模式 LLM 生成超时问题。显式传 None 才走 headless_runner 的
+    # config.json 解析链（config.json `pipeline_mode` → 缺省 phased）。
+    if pipeline_mode:
+        _mode = str(pipeline_mode).strip().lower()
+        if _mode not in ("single", "phased", "skeleton"):
+            result["steps"].append({
+                "step": "validate_pipeline_mode", "success": False,
+                "error": f"pipeline_mode 必须是 single/phased/skeleton，收到 {pipeline_mode!r}",
+            })
+            result["success"] = False
+            result["error"] = f"invalid pipeline_mode: {pipeline_mode!r}"
+            return result
+        cmd.extend(["--pipeline-mode", _mode])
+        if _mode == "skeleton" and effective_ideas_file:
+            # skeleton 模式自产 ideas，不消费 ideas 文件（run_pipeline.py 同口径）
+            cmd = [c for i, c in enumerate(cmd)
+                   if not (c == "--ideas-file" or (i > 0 and cmd[i - 1] == "--ideas-file"))]
+        elif _mode == "phased" and batch_size:
+            # phased 模式：透传 batch_size（默认 100，防拆散同族字段）
+            cmd.extend(["--batch-size", str(int(batch_size))])
+
     if detached:
         cmd.append("--detached")
+
+    # 2026-09-17 #6：多样性强制（此前 headless_runner 有这两个参数、但本节点**从未透传**，
+    # 等于"要求了多样性却没人下指令"。run.py 的 --require-operators 是
+    # "comma operators for diversity mandate"，--require-count 是"最少几条用到它们"。
+    if require_operators:
+        cmd.extend(["--require-operators", str(require_operators)])
+        cmd.extend(["--require-count", str(require_count)])
+
+    # P0 修复（2026-09-12）：统一 gem 任务根目录到 logs/_async_tasks，
+    # 与 batch_track / campaign / feature_engineering 一致，使
+    # workflow_task_status 能发现 gem 任务。原实现解析到
+    # headless_runner/outputs/tasks（该目录从不存在），导致 90s 超时误杀。
+    tasks_dir = os.path.abspath(
+        os.environ.get("WQB_TASK_ROOT") or os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    )
+    os.makedirs(tasks_dir, exist_ok=True)
+    cmd.extend(["--tasks-dir", tasks_dir])
 
     # argv 契约校验（2026-09-06）：headless_runner/run.py 的 argparse 必须接受本命令。
     # 干跑与实跑都走，避免"命令构建成功 → Popen → 秒退"被吞成 success。
@@ -289,32 +396,101 @@ def run(
     try:
         logger.info(f"Executing GEM: {' '.join(cmd)}")
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=os.path.dirname(runner_script),
-            # PYTHONUNBUFFERED 传给 run.py 及其 spawn 的后台 child —— 后者的
-            # stdout_log 才是长跑任务唯一的可观测手段
-            env=unbuffered_env(),
-        )
-
         if detached:
+            # P1 修复（2026-09-12）：launch_only 模式 —— Popen 后立即返回，
+            # 不等 meta.json 握手。MCP 客户端超时通常 30-60s，而 gem 启动链
+            # （venv 两段式 + import + 写 meta）可能 20-30s+，90s 握手窗口
+            # 仍可能撞客户端超时。launch_only=True 时 1s 内返回，Agent 用
+            # workflow_task_status 轮询后续状态。
+            if launch_only:
+                # 2026-09-12 修复(2)：launch_only 不能用 stdout/stderr=PIPE —— 本函数
+                # 立即 return，Popen 对象随之被回收、管道读端关闭，launcher 第一次
+                # print 就撞 BrokenPipe，死在写 meta.json 之前（GBR wave57 实测：
+                # 4 个 launcher 3 个无声退出、0 个 task 目录）。改为落到 tasks_dir 下
+                # 的启动日志，子进程继承文件句柄，父进程关掉自己那份即可。
+                import time
+                os.makedirs(tasks_dir, exist_ok=True)
+                stamp = time.strftime("%Y%m%d_%H%M%S")
+                launch_log = os.path.join(
+                    tasks_dir, f"gem_launch_{region}_{dataset_id}_{stamp}.log"
+                )
+                with open(launch_log, "a", encoding="utf-8") as log_fh:
+                    process = subprocess.Popen(
+                        cmd,
+                        stdout=log_fh,
+                        stderr=subprocess.STDOUT,
+                        stdin=subprocess.DEVNULL,
+                        cwd=os.path.dirname(runner_script),
+                        env=unbuffered_env(),
+                    )
+                result["steps"].append({
+                    "step": "execute",
+                    "success": True,
+                    "detached": True,
+                    "launch_only": True,
+                    "pid": process.pid,
+                    "tasks_dir": tasks_dir,
+                    "launch_log": launch_log,
+                    "command": " ".join(cmd),
+                })
+                result["success"] = True
+                result["detached"] = True
+                result["launch_only"] = True
+                result["pid"] = process.pid
+                result["tasks_dir"] = tasks_dir
+                result["launch_log"] = launch_log
+                result["message"] = (
+                    f"GEM launch_only task started: pid={process.pid}. "
+                    f"Launcher output -> {launch_log}; "
+                    f"poll workflow_task_status(prefix='gem_') for status."
+                )
+                return result
+
             # detached 模式：轮询磁盘上新 task 的 meta.json，不依赖 stdout 文本握手。
             # 2026-09-03 修复：原实现 communicate/readline 抓 stdout 的 task_id= 行，
             # 受 MCP 客户端超时窗口与管道缓冲影响易挂死；run.py spawn 后台 child 后会把
             # task_id/pid/日志路径先写入 <tasks_dir>/<task_id>/meta.json 再退出，磁盘轮询最稳。
+            # 2026-09-12 修复：pre_existing 快照必须在 Popen 之前拍 —— 原实现先启动再取
+            # 快照，若 launcher 抢先建出 task 目录，该目录被并入快照而永远识别不到 →
+            # 即使任务已启动也必然等满超时并误杀。
             import time
-            tasks_dir = os.path.abspath(
-                os.path.join(os.path.dirname(runner_script), "..", "outputs", "tasks")
-            )
             pre_existing = set(os.listdir(tasks_dir)) if os.path.isdir(tasks_dir) else set()
 
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=os.path.dirname(runner_script),
+                # PYTHONUNBUFFERED 传给 run.py 及其 spawn 的后台 child —— 后者的
+                # stdout_log 才是长跑任务唯一的可观测手段
+                env=unbuffered_env(),
+            )
+        else:
+            # 2026-09-12 修复(2)：P1 编辑把 Popen 挪进了 detached 分支，非 detached
+            # 路径下 `process` 从未赋值 → communicate 处 UnboundLocalError
+            # （test_gem_consumes_field_prefix_summary 复现）。恢复同步模式的启动。
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=os.path.dirname(runner_script),
+                env=unbuffered_env(),
+            )
+
+        if detached:
             task_meta = None
             task_dir = None
             start = time.time()
-            deadline = start + 30  # 最多等 30 秒（与 MCP 客户端超时窗口对齐）
+            # 2026-09-12：30s 太紧 —— 本机 venv python 为两段式启动（wrapper→real），
+            # 冷加载/AV 扫描可将 "import → 写 meta" 拉长到 20-30s+；默认放宽到 90s，
+            # 可用环境变量 GEM_META_TIMEOUT_SEC 覆盖。
+            deadline_sec = float(os.environ.get("GEM_META_TIMEOUT_SEC", "90"))
+            deadline = start + deadline_sec
+            heartbeat_interval = 5  # 每 5 秒输出一次心跳
+            last_heartbeat = start
+            logger.info(f"[GEM-START] waiting for meta.json, timeout={deadline_sec:.0f}s, tasks_dir={tasks_dir}")
             while time.time() < deadline:
                 if os.path.isdir(tasks_dir):
                     for d in sorted(set(os.listdir(tasks_dir)) - pre_existing):
@@ -332,6 +508,12 @@ def run(
                         break
                 if process.poll() is not None:
                     break  # 启动器已退出（meta.json 必在其退出前落盘）→ 成败已定
+                # 心跳日志：每 5 秒输出一次等待状态
+                elapsed = time.time() - start
+                if time.time() - last_heartbeat >= heartbeat_interval:
+                    new_dirs = set(os.listdir(tasks_dir)) - pre_existing if os.path.isdir(tasks_dir) else set()
+                    logger.info(f"[GEM-WAIT] {elapsed:.0f}s elapsed, still initializing... (new_task_dirs={len(new_dirs)})")
+                    last_heartbeat = time.time()
                 time.sleep(0.3)
 
             process_stdout = ""
@@ -340,12 +522,52 @@ def run(
                 try:
                     process_stdout, process_stderr = process.communicate(timeout=5)
                 except Exception:
-                    try:
-                        process.kill()
-                    except Exception:
-                        pass
+                    # 2026-09-12：整树收尸。本机 venv python 为两段式启动
+                    # （wrapper→real，meta.pid 只是 wrapper），只 kill() 直接子进程会
+                    # 留下仍在慢启动的孤儿；Windows 用 taskkill /F /T 收整棵树。
+                    killed = False
+                    if os.name == "nt":
+                        try:
+                            subprocess.run(
+                                ["taskkill", "/F", "/T", "/PID", str(process.pid)],
+                                capture_output=True,
+                                timeout=15,
+                            )
+                            killed = True
+                        except Exception:
+                            killed = False
+                    if not killed:
+                        try:
+                            process.kill()
+                        except Exception:
+                            pass
+                # 终扫：meta 若在等待窗口之后才落盘，标记 killed_by_watchdog，
+                # 杜绝"被收尸的进程 meta 永久停留 running"的假状态
+                if os.path.isdir(tasks_dir):
+                    for d in sorted(set(os.listdir(tasks_dir)) - pre_existing):
+                        late_meta_path = os.path.join(tasks_dir, d, "meta.json")
+                        if not os.path.isfile(late_meta_path):
+                            continue
+                        try:
+                            with open(late_meta_path, "r", encoding="utf-8") as mf:
+                                late_meta = json.load(mf)
+                            late_meta["status"] = "killed_by_watchdog"
+                            late_meta["error"] = "meta arrived after timeout window; launcher tree killed"
+                            with open(late_meta_path, "w", encoding="utf-8") as mf:
+                                json.dump(late_meta, mf, ensure_ascii=False, indent=2)
+                            logger.warning(f"[GEM-KILL] late meta marked killed_by_watchdog: {late_meta_path}")
+                        except Exception:
+                            pass
+                        break
 
             if task_meta:
+                # 收尸：launcher 写完 meta 后即将退出；短超时 drain 管道，
+                # 避免其后续 print 撞上已关闭的管道（BrokenPipe → 误翻状态）
+                try:
+                    if process.poll() is None:
+                        process.communicate(timeout=10)
+                except Exception:
+                    pass
                 result["steps"].append({
                     "step": "execute",
                     "success": True,
@@ -373,10 +595,22 @@ def run(
             stdout_tail = (process_stdout or "")[-1000:]
             stderr_tail = (process_stderr or "")[-1000:]
             rc = process.returncode
+            new_dirs_now = (
+                set(os.listdir(tasks_dir)) - pre_existing if os.path.isdir(tasks_dir) else set()
+            )
             if rc not in (None, 0):
                 error = f"detached launcher exited rc={rc} before writing meta.json"
             elif rc is None:
-                error = "detached launcher still running but no meta.json within 30s"
+                if new_dirs_now:
+                    error = (
+                        f"detached launcher running; task dir appeared "
+                        f"but meta.json not ready within {deadline_sec:.0f}s (slow startup?)"
+                    )
+                else:
+                    error = (
+                        f"detached launcher still running but no meta.json within "
+                        f"{deadline_sec:.0f}s"
+                    )
             else:
                 error = "detached launcher exited without writing meta.json (unexpected)"
             result["steps"].append({
@@ -421,6 +655,13 @@ def run(
             result["expression_count"] = len(expressions)
             result["field_prefix_summary"] = field_prefix_summary or {}
             result["candidate_field_pool"] = candidate_field_pool
+            # 2026-09-17 #1：把本次生成的表达式标注来源（source）。
+            # 此前**全链路无人写 source** → 全库 89.8% 为 NULL、GEM 产出不可辨识
+            # （按 source 过滤只能看到一个月前的语料），也无法做 phased/skeleton 的 A/B。
+            # 这里用 final_expressions.json 里**确切的表达式串**回写（不是按 id 区间猜）。
+            result["source_labeled"] = _label_source(
+                expressions, region, pipeline_mode,
+            )
 
             # Step 7: 质量预估（特征工程 SOP 阶段5，强制）
             quality_result = _run_quality_estimation(
@@ -587,6 +828,49 @@ def _infer_category(dataset_id: str) -> str:
 def _find_gem_root() -> Optional[str]:
     """查找 brain-make-some-gem skill 根目录（向后兼容别名）。"""
     return resolve_skill_dir("brain-make-some-gem")
+
+
+def _label_source(expressions: Any, region: str, pipeline_mode: Optional[str]) -> int:
+    """把本次 GEM 产出的 `expressions.source` 标注为具体生成模式（best-effort）。
+
+    标签取值：`gem_<mode>`（`gem_phased` / `gem_skeleton` / `gem_single`），
+    mode 未知时退化为 `gem`。
+
+    **只标 NULL/空** —— 不覆盖上游已写入的更具体来源（人工标注优先）。
+    任何异常都吞掉并返回 0：本函数是**可观测性增强**，不得影响生成主流程。
+    """
+    try:
+        items = []
+        for e in (expressions or []):
+            if isinstance(e, str):
+                if e.strip():
+                    items.append(e.strip())
+            elif isinstance(e, dict):
+                v = (e.get("expression") or e.get("expr") or "").strip()
+                if v:
+                    items.append(v)
+        if not items:
+            return 0
+        label = "gem"
+        if pipeline_mode and str(pipeline_mode).strip():
+            label = f"gem_{str(pipeline_mode).strip().lower()}"
+        conn = sqlite3.connect(resolve_db_path())
+        try:
+            cur = conn.cursor()
+            n = 0
+            for expr in items:
+                cur.execute(
+                    "UPDATE expressions SET source=?, updated_at=datetime('now') "
+                    "WHERE region=? AND expression=? AND (source IS NULL OR source='')",
+                    (label, region, expr),
+                )
+                n += cur.rowcount
+            conn.commit()
+            return n
+        finally:
+            conn.close()
+    except Exception:
+        return 0
 
 
 def _find_final_expressions(gem_root: str, dataset_id: str, region: str, delay: int) -> Optional[str]:

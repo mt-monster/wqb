@@ -57,6 +57,25 @@ DATASET_HEALTH_FLOOR: Dict[str, float] = {
     "field_count_hard_min": 5,   # 低于此字段数无组合空间，任何区域不放行
 }
 
+# S0 评分目标对齐默认（2026-09-14 白名单机制 review 落地，P0/P2/P5）。
+# 背景：原评分只优化「数据干净 + 低拥挤」，在 EUR 这种空 OS 池 + prod 极厚的饱和区
+# 跑偏——它选出的冷门正交集（other296 天花板 S0.79）过不了 1.58 硬闸，而唯一真信号
+# （continuation 族）又被生产池近同款吸收归零。以下默认全部 OFF/中性，保证未 opt-in
+# 的区域逐条行为不变；区域在 tracking/<REGION>/config/thresholds.json 的 dataset_health
+# 显式开启（EUR 已 opt-in）。toolkit score_datasets.py 消费，此处为唯一规范默认值来源。
+DATASET_HEALTH_SCORING: Dict[str, object] = {
+    # P0 经验强度先验：score 加 w×天花板比(best_sharpe/gate_sharpe)，把目标拉向「能过闸概率」。
+    #   数据源 = calibrate 写入的 ledger dataset_empirical_prior.priors。0.0=关闭（旧行为）。
+    "empirical_weight": 0.0,
+    "empirical_prior_neutral": 0.5,   # 无历史数据时的中性先验（不奖不罚处女地）
+    # P5 饱和区拍平 model 权重：区域进入饱和态（saturated_datasets 台账非空）时，
+    #   model 类不再 ×category_weight 助推（拍平至 <=1.0），把排序交给 P0 经验项。
+    "flatten_model_when_saturated": True,
+    # P2 prod 饱和再验证：命中 saturated_datasets 台账的数据集自动降 excluded（防保底带复活）。
+    #   仅在台账存在时生效，无台账零影响。
+    "saturation_demotion_enable": True,
+}
+
 REGIONS: Dict[str, dict] = {
     "USA": {
         "universes": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200",
@@ -96,12 +115,12 @@ REGIONS: Dict[str, dict] = {
         "default_universe": "TOP3000",
     },
     "JPN": {
-        "universes": ["TOP2000", "TOP1000", "TOP500"],
+        "universes": ["TOP1600", "TOP1200"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
         "categories": list(PLATFORM_CATEGORIES),
-        "default_universe": "TOP2000",
-        "_note": "平台 get_platform_setting_options 未列出，需确认是否仍可用",
+        "default_universe": "TOP1600",
+        "_note": "平台 get_platform_setting_options 实测（2026-09-15）：仅 TOP1600/TOP1200；delay 0/1 均可用。",
     },
     "KOR": {
         "universes": ["TOP600"],
@@ -420,6 +439,8 @@ CONCURRENCY: Dict[str, object] = {
 # 根因：S0 的 category_weight + pyramidMultiplier 把 MODEL 打到 tier1，
 # PV/NEWS 整座金字塔被挤出 generate 池；六波纯 MODEL 近闸全撞 prod≥0.7。
 # 唯一 OS ACTIVE（Wj71Q12o）是 0.40 慢 MODEL × 0.60 快 PV，双金字塔。
+# ⚠ 该「加权混合」形态自 2026-09-13「路线 A」起已废止（gate 闸5 block）：可继承的
+#   只有其跨数据集补腿意图，落地须改写为结构交互（ts_corr / divide / 条件 / 分组）。
 # skills / toolkit / tracking thresholds 一律引用本节，禁止各写一套数字。
 # ---------------------------------------------------------------------------
 
@@ -432,9 +453,22 @@ MINING: Dict[str, object] = {
     "win_replay_slots_min": 1,
     "weak_probe_slots_max": 1,
     "prod_first_skeletons_per_slot": 2,
+    # ⚠ 历史参数，已废止：仅存作相关性估算/历史归档，**禁止用于生成表达式**
+    #    （闸5 毒模式 weighted_signal_mix / weighted_leg_mix_func_* 全量拦截）
     "slow_fast_mix": {"slow_weight": 0.40, "fast_weight": 0.60},
+    "_slow_fast_mix_status": "deprecated_20260913_route_a",
     "follow_win_settings": True,
 }
+
+#: 标准时间窗口白名单（2026-09-17 新增）。
+#: SOP 两处（`wq-brain-ra-pipeline` 步 4 / `brain-make-some-gem`）都要求"只用标准窗口；
+#: 其他窗口须给出解释或实测证据"，但此前**只写在散文里、零机械守护** ——
+#: 实测全库 23% 用了非白名单窗口，Top 恰为 20/10/120/60，与 toolkit
+#: `_lib/operator_coverage.py::_DEFAULT_WINDOWS` 的旧默认值 `[20,60,120,5,10,252]`
+#: 完全吻合（该默认值已同轮对齐，见其注释）。
+#: 本常量与 `wq-brain-campaign-toolkit/config/platform_constraints.json::window_whitelist`
+#: 同源，由 `tests/unit/test_window_whitelist_p4.py` 守护两边一致。
+STANDARD_WINDOWS: List[int] = [1, 5, 22, 66, 252, 504, 1008, 1260]
 
 
 def gate_thresholds(stage: str = "internal") -> Dict[str, object]:

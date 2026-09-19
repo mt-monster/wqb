@@ -68,6 +68,9 @@ def run(
     store = ctx.get("store")
     # dry-run 统一以 _context 为准（executor 注入），形参仅作直连调用的兼容入口
     dry_run = bool(ctx.get("dry_run", dry_run))
+    # 2026-09-15：wave 归一化为 str。MCP/调用方可能传 int（如 wave=150），
+    # 下游 startswith/拼接期望 str，int 会触发 'int' object has no attribute 'startswith'。
+    wave = str(wave)
     warnings: List[str] = []
 
     # 生成输出路径

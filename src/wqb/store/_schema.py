@@ -258,6 +258,18 @@ class SchemaMixin:
             ("wave", "TEXT"),
             ("dataset", "TEXT"),
             ("settings_json", "TEXT"),
+            # ---- 2026-09-17：GEM 生成链路修复所需的四个列 ----
+            # bucket/skeleton/selected：gem_wave 节点一直在写这三列，但列从未存在 →
+            #   该节点每次运行都在写回处 OperationalError，"生成期去重/分桶/骨架配给"
+            #   三项能力算完即丢弃、从未生效（实测复现）。补列后才能真正落库。
+            ("bucket", "TEXT"),
+            ("skeleton", "TEXT"),
+            ("selected", "INTEGER DEFAULT 0"),
+            # expected_exposure：GEM SKILL.md 规则 7（按语义维度判多样性）与规则 8
+            #   （用 risk_neutralized_sharpe 验证 Exposure 声明）的**声明侧**输入。
+            #   此前 gate.py::_extract_exposure_from_idea 在生成期提取后直接丢弃，
+            #   导致这两条规则无法被度量。验证侧（risk_neutralized_sharpe）早已落库。
+            ("expected_exposure", "TEXT"),
         ):
             self._add_column("expressions", col, ddl)
         for col, ddl in (
@@ -271,12 +283,51 @@ class SchemaMixin:
             ("risk_neutralized_sharpe", "DECIMAL(8,4)"),
         ):
             self._add_column("backtest_results", col, ddl)
+        # ---- 2026-09-18：回测指标全量落库（prod/self 相关性等）----
+        # 背景：实测 alphas 4211 行中 prod_correlation 仅 270 有值（6.4%）、
+        #   self_correlation 仅 103（2.4%），根因是三条平行写入路径未接上
+        #   （详见 docs/prod_corr_persistence_design_20260918.md §1.3）。
+        #   此处补齐「查询/复盘需要但 alphas 缺失」的维度，使回测完成即可本地查全，
+        #   避免每次复盘都打平台 API（相关性检查占平台单并发队列）。
+        #   全部可空，不破坏既有数据。
+        for col, ddl in (
+            # sub_universe_sharpe：平台子宇宙稳健性，LOW_SUB_UNIVERSE_SHARPE 闸的原始值
+            ("sub_universe_sharpe", "DECIMAL(8,4)"),
+            ("returns", "DECIMAL(8,4)"),
+            ("drawdown", "DECIMAL(8,4)"),
+            ("long_count", "INTEGER"),
+            ("short_count", "INTEGER"),
+            # CW 闸：离散计数信号未平滑时会触发，查询时用于剔除
+            ("concentrated_weight", "DECIMAL(6,4)"),
+            ("cluster_test", "DECIMAL(6,4)"),
+            # 相关性溯源：区分"平台同步"与"本地抽测"两个来源。
+            #   platform_sync = sync_platform_alphas，平台权威
+            #   triage_local  = 本地 OS PnL 池抽测，对近期新提交孪生体失明会低估
+            #   manual        = 人工确认
+            # 二者数值不可混判，查询时应按 source 分流（见设计文档 §2.4）。
+            ("prod_corr_source", "TEXT"),
+            ("corr_checked_at", "TIMESTAMP"),
+        ):
+            self._add_column("alphas", col, ddl)
+        # 索引：按相关性筛候选是高频查询路径（prod<=0.7 / self<=0.7 双闸预筛）
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_alphas_prod_corr "
+            "ON alphas(prod_correlation)"
+        )
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_alphas_self_corr "
+            "ON alphas(self_correlation)"
+        )
         self._add_column("datasets", "data_type", "TEXT")
         self._add_column("datasets", "catalog_json", "TEXT")
         # 索引：覆盖高频查询路径
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_expr_region_wave "
             "ON expressions(region, wave)"
+        )
+        # 2026-09-17：骨架维度索引 —— 生成期/入批前的同族去重按骨架签名分组
+        self.connection.execute(
+            "CREATE INDEX IF NOT EXISTS idx_expr_skeleton ON expressions(skeleton)"
         )
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_backtest_results_alpha_id "
@@ -315,6 +366,14 @@ class SchemaMixin:
         # 静默断链（ws2_* 波 6100 条积压的直接根因）。
         # 此校验在 ensure_schema 尾部执行：发现"有表达式但 gate_results 无记录"
         # 的活跃波即打 WARN，让断链在启动时可见。
+        # 2026-09-19：WQB_STARTUP_CHECKS = always（缺省，库级契约：每次 ensure_schema 都校验）
+        #   / once（每进程只打一次；CLI 工具在入口 setdefault 为 once，避免一次运行刷 10+ 遍）/ 0（关闭）。
+        import os as _os
+        _mode = _os.environ.get("WQB_STARTUP_CHECKS", "always")
+        _g = globals()
+        if _mode == "0" or (_mode == "once" and _g.get("_STARTUP_CHECKS_DONE")):
+            return
+        _g["_STARTUP_CHECKS_DONE"] = True
         try:
             cur = self.connection.cursor()
             cur.execute(

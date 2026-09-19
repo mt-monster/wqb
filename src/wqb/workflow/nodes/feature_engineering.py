@@ -10,10 +10,11 @@
 import json
 import logging
 import os
+import re
 import subprocess
 import threading
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
 from .._common import (
@@ -82,19 +83,32 @@ def run(
         try:
             existing = store.get_ledger(region, s1_key)
             if existing and existing.get("ideas_md_path"):
+                # 2026-09-15 审计缺陷 A：ledger 里的 ideas_md_path 可能指向历史
+                # Agent 安装位（.qoder-cn/.cursor/.workbuddy）或 2026-09-10 改名前的
+                # brain-makeSomeGem 旧目录——这些物理位置已不存在。此时不能当
+                # "已有产物"跳过重生成（那会把死路径继续下传给 gem），应视为无
+                # 产物，走正常重生成流程。
+                if os.path.exists(existing["ideas_md_path"]):
+                    result["steps"].append({
+                        "step": "check_existing",
+                        "success": True,
+                        "message": "S1 ledger exists, skipping regeneration",
+                        "s1_key": s1_key,
+                        "ideas_md_path": existing["ideas_md_path"],
+                    })
+                    result["success"] = True
+                    result["ideas_md_path"] = existing["ideas_md_path"]
+                    result["field_whitelist"] = existing.get("field_whitelist", [])
+                    result["preprocessing"] = existing.get("preprocessing", {})
+                    result["skipped"] = True
+                    return result
                 result["steps"].append({
                     "step": "check_existing",
                     "success": True,
-                    "message": "S1 ledger exists, skipping regeneration",
+                    "message": "ledger ideas_md_path 已失效（历史安装位残留），重新生成",
                     "s1_key": s1_key,
-                    "ideas_md_path": existing["ideas_md_path"],
+                    "stale_ideas_md_path": existing["ideas_md_path"],
                 })
-                result["success"] = True
-                result["ideas_md_path"] = existing["ideas_md_path"]
-                result["field_whitelist"] = existing.get("field_whitelist", [])
-                result["preprocessing"] = existing.get("preprocessing", {})
-                result["skipped"] = True
-                return result
         except Exception as e:
             logger.warning(f"Failed to check existing S1 ledger: {e}")
 
@@ -190,6 +204,41 @@ def _infer_category(dataset_id: str) -> str:
 def _find_feature_engineering_skill() -> Optional[str]:
     """查找 brain-data-feature-engineering skill 根目录（向后兼容别名）。"""
     return resolve_skill_dir("brain-data-feature-engineering")
+
+
+def _extract_concept_fields(ideas_text: str) -> List[str]:
+    """从 ideas markdown 的 **Implementation Example** 行抽取 {field} 占位符字段。
+
+    2026-09-13 S1↔S2 接力修复：GEM 实际绑定的是这些字段（而非报告全文词表）；
+    泛型 {variable} 占位符也会被抽出，由调用方与字段目录求交集过滤。
+    """
+    fields: List[str] = []
+    for line in (ideas_text or "").splitlines():
+        if "Implementation Example" not in line:
+            continue
+        for token in re.findall(r"\{([A-Za-z0-9_]+)\}", line):
+            if token and token not in fields:
+                fields.append(token)
+    return fields
+
+
+def _merge_field_whitelist(
+    concept_fields: List[str],
+    candidate_field_pool: List[str],
+    fallback: Optional[List[str]] = None,
+) -> List[str]:
+    """并集白名单：概念字段 ∪ 候选池 ∪（兜底词表），保持顺序去重。
+
+    概念字段优先——它们是 GEM 概念模板的绑定对象，缺一即在白名单收窄阶段
+    静默丢概念（GLB fundamental23 实测：旧实现直接用候选池覆盖概念字段，
+    8 个概念仅 2 个字段幸存）；fallback（报告全文正则词表）噪声大，仅当
+    前两者皆空时由调用方传入。
+    """
+    merged: List[str] = []
+    for name in list(concept_fields or []) + list(candidate_field_pool or []) + list(fallback or []):
+        if name and name not in merged:
+            merged.append(name)
+    return merged
 
 
 def _run_feature_engineering_pipeline_async(
@@ -324,10 +373,13 @@ def _run_feature_engineering_pipeline_async(
                     try:
                         with open(ideas_path, "r", encoding="utf-8") as f:
                             content = f.read()
-                        import re
                         fields = re.findall(r'\b([a-z][a-z0-9_]*(?:_[a-z0-9]+)+)\b', content)
                         stopwords = {"self", "true", "false", "none", "null", "return", "import", "from", "def", "class"}
                         fe_result["field_whitelist"] = list(set(f for f in fields if f not in stopwords and len(f) > 3))[:50]
+
+                        # 2026-09-13：Concept 块的结构化字段 = GEM 实际绑定对象，
+                        # 与候选池并集后进白名单（防概念字段被池截断静默丢弃）。
+                        fe_result["concept_fields"] = _extract_concept_fields(content)
 
                         preprocessing = {}
                         if "ts_backfill" in content:
@@ -384,6 +436,31 @@ def _run_feature_engineering_pipeline_async(
                     except Exception as e:
                         logger.warning(f"Failed to build candidate field pool: {e}")
 
+                    # 2026-09-13 S1↔S2 口径统一：概念字段 ∩ 字段目录（防陈旧/幻觉
+                    # 字段），再与质量候选池并集——旧实现直接用候选池覆盖概念字段，
+                    # GEM 侧白名单收窄会把不在池内的概念字段静默丢弃。
+                    concept_fields = list(fe_result.get("concept_fields") or [])
+                    cat_ids = set()
+                    try:
+                        catalog = thread_store.get_field_catalog(region, dataset_id)
+                        for f in (catalog or {}).get("fields") or []:
+                            fid = f.get("id") or f.get("name") or f.get("field_name")
+                            if fid:
+                                cat_ids.add(fid)
+                    except Exception as e:
+                        logger.warning(f"Failed to load field catalog for whitelist merge: {e}")
+                    if cat_ids:
+                        concept_fields = [f for f in concept_fields if f in cat_ids]
+                    rescued = [f for f in concept_fields if f not in candidate_field_pool]
+                    if rescued:
+                        logger.info(
+                            "S1 concept fields outside candidate pool rescued into whitelist: %s",
+                            rescued,
+                        )
+                    whitelist = _merge_field_whitelist(concept_fields, candidate_field_pool)
+                    if not whitelist:
+                        whitelist = fe_result.get("field_whitelist", [])
+
                     ledger_data = {
                         "generated_at": datetime.now().isoformat(),
                         "region": region,
@@ -392,16 +469,18 @@ def _run_feature_engineering_pipeline_async(
                         "universe": universe,
                         "data_category": data_category,
                         "ideas_md_path": fe_result.get("ideas_md_path"),
-                        "field_whitelist": candidate_field_pool or fe_result.get("field_whitelist", []),
+                        "field_whitelist": whitelist,
                         "candidate_field_pool": candidate_field_pool,
+                        "concept_fields": concept_fields,
                         "preprocessing": fe_result.get("preprocessing", {}),
                         "field_prefix_summary": prefix_summary or {},
                         "source": "feature_engineering_node",
                     }
                     thread_store.upsert_ledger(region, s1_key, ledger_data)
                     fe_result["ledger_written"] = True
-                    fe_result["field_whitelist_size"] = len(ledger_data["field_whitelist"])
+                    fe_result["field_whitelist_size"] = len(whitelist)
                     fe_result["candidate_field_pool_size"] = len(candidate_field_pool)
+                    fe_result["concept_fields_outside_pool"] = rescued
                 except Exception as e:
                     logger.error(f"Failed to write S1 ledger: {e}")
                     fe_result["ledger_error"] = str(e)

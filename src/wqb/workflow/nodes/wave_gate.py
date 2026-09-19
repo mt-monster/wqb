@@ -37,6 +37,7 @@ def run(
     skip_diversity_gate: bool = False,
     fix: bool = False,
     campaign_dir: Optional[str] = None,
+    inspect_mode: Optional[str] = None,
     dry_run: bool = False,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
@@ -53,6 +54,9 @@ def run(
         skip_diversity_gate: 跳过闸6 多样性（repair 批逃生阀，须在台账记因）
         fix: VECTOR 数据集自动裹 `vec_*` 后再检测（透传 toolkit gate.py）
         campaign_dir: 战役目录（可选，默认按 region 解析）
+        inspect_mode: 体检硬门**缺包**时行为 `off|warn|enforce`（缺省读
+            `WQB_INSPECT_MODE`，再兜底 `warn`）。开新数据集/新区域建议传 `enforce`
+            —— 缺体检包即整波 fail-closed，避免低覆盖/厚尾/稀疏事件预处理约束裸奔。
         dry_run: 干跑（由 executor 经 _context 注入）
         _context: 执行上下文（由 executor 注入）
 
@@ -113,6 +117,8 @@ def run(
         cmd.append("--skip-diversity-gate")
     if fix:
         cmd.append("--fix")
+    if inspect_mode:
+        cmd += ["--inspect-mode", str(inspect_mode)]
 
     # ---- 零成本前置 4：argv 契约校验（逮住脚本没声明过的 --flag / 子命令）----
     ok, err = validate_argv(cmd)
@@ -152,10 +158,21 @@ def run(
     if proc.stderr:
         result["stderr_tail"] = (proc.stderr or "")[-2000:]
     result["success"] = proc.returncode == 0
-    if not result["success"]:
-        # 体检硬门未生效是可诊断的常见告警，单列出来便于 Agent 提示用户
-        tail = result.get("stdout_tail") or ""
-        if "体检硬门未生效" in tail:
-            result["warning"] = "本波体检硬门未生效（缺 field_inspect 包）——预处理约束无人把关"
+    result["inspect_mode"] = str(inspect_mode or os.environ.get("WQB_INSPECT_MODE") or "warn")
+    # 体检硬门状态自报（2026-09-17 P1-1）：未生效 / fail-closed 拦截都单列出来，
+    # 便于 Agent 直接提示用户「先补体检包」而不是让约束静默裸奔。
+    _tail = (result.get("stdout_tail") or "") + (result.get("stderr_tail") or "")
+    if "体检硬门未生效" in _tail:
+        result["inspect_status"] = "unavailable"
+        result["warning"] = (
+            "本波体检硬门未生效（缺 field_inspect 包）——预处理约束无人把关。"
+            "开新数据集前先生成：python tools/gen_field_inspect_packs.py "
+            "--region <REGION> --delay <D>"
+        )
+    elif "体检硬门 fail-closed 拦截" in _tail:
+        result["inspect_status"] = "enforced_block"
+        result["warning"] = "本波被体检 fail-closed 拦截（缺体检包，inspect-mode=enforce）"
+    elif result["success"]:
+        result["inspect_status"] = "ok"
     result["steps"].append({"step": "run_wave_gate", "success": result["success"]})
     return result

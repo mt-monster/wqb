@@ -8,8 +8,6 @@
 """
 import json
 import logging
-import math
-import os
 from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
@@ -206,40 +204,22 @@ def update_mode_b_qualification(
 
 
 def _load_current_threshold(store, region: str) -> Dict[str, float]:
-    """读当前阈值（ledger_kv > thresholds.json > 默认）."""
-    # 1. ledger_kv
-    if store:
-        try:
-            cached = store.get_ledger(region, "mode_b_qualification")
-            if cached and isinstance(cached, dict):
-                sharpe_min = cached.get("sharpe_min")
-                fitness_min = cached.get("fitness_min")
-                if sharpe_min is not None and fitness_min is not None:
-                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
-        except Exception:
-            pass
+    """读当前主闸阈值（2026-09-09 起委托 mode_b_config 统一加载器）.
 
-    # 2. thresholds.json
+    统一加载器解析顺序：区域 ledger（自适应上次写入）> 全局权威 > 区域
+    thresholds.json $ref/_overrides > 默认。自适应学习只学主闸 sharpe/fitness，
+    不触碰旁路/判死线（那些在全局权威里，区域 ledger 只存主闸覆盖）。
+    """
     try:
-        thresholds_path = os.path.join(
-            os.path.dirname(__file__), "..", "..", "..",
-            "tracking", region, "config", "thresholds.json"
-        )
-        thresholds_path = os.path.abspath(thresholds_path)
-        if os.path.exists(thresholds_path):
-            with open(thresholds_path, "r", encoding="utf-8") as f:
-                thresholds = json.load(f)
-            mbq = thresholds.get("mode_b_qualification", {})
-            if isinstance(mbq, dict):
-                sharpe_min = mbq.get("sharpe_min")
-                fitness_min = mbq.get("fitness_min")
-                if sharpe_min is not None and fitness_min is not None:
-                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
+        from .mode_b_config import load_mode_b_config
+        cfg = load_mode_b_config(store, region=region)
+        main = cfg.get("main_gate") or {}
+        return {
+            "sharpe_min": float(main.get("sharpe_min", 1.25)),
+            "fitness_min": float(main.get("fitness_min", 0.8)),
+        }
     except Exception:
-        pass
-
-    # 3. 默认
-    return {"sharpe_min": 1.25, "fitness_min": 0.8}
+        return {"sharpe_min": 1.25, "fitness_min": 0.8}
 
 
 # 避免循环导入

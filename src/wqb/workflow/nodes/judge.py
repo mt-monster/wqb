@@ -18,6 +18,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
+from ..mode_b_config import evaluate_mode_b as _evaluate_mode_b
+from ..mode_b_config import load_mode_b_config as _load_mode_b_config
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +29,6 @@ _FITNESS_MIN = 1.0
 _2Y_MIN = 1.58
 _PROD_MAX = 0.7
 _SELF_MAX = 0.7
-
-# Mode B 资格线（2026-09-01 明令，Dry-Run 2.0 优化：从 thresholds.json + ledger_kv 读取）
-_MODE_B_QUALIFICATION_DEFAULT = {"sharpe_min": 1.25, "fitness_min": 0.8}
 
 
 from .._common import (
@@ -131,8 +130,10 @@ def run(
     # EUR/IND/USA 等区域的 judge 全读 KOR 的 1.25/0.8 资格线，区域特性错配）。
     alpha_region = _extract_region(details) or "KOR"
     mode_b_qual = _load_mode_b_qualification(store, region=alpha_region)
+    # 2026-09-09：同时加载完整配置（含旁路/判死线）供 _eval_platform_check 判定
+    mode_b_cfg = _load_mode_b_config(store, region=alpha_region)
 
-    gate1 = _eval_platform_check(details, mode_b_qual=mode_b_qual)
+    gate1 = _eval_platform_check(details, mode_b_qual=mode_b_qual, mode_b_cfg=mode_b_cfg)
     result["gates"].append(gate1)
     if not gate1.get("pass"):
         result["verdict"] = "BLOCK"
@@ -175,7 +176,50 @@ def run(
         if final_verdict == "READY" else "回步 7（S4）Mode B 改进"
     )
 
+    # ---- 2026-09-17 P3：三态 → 逐闸清单（附加字段，不改既有返回契约）----
+    # 动机：`verdict` 是**聚合结论**，极易被读成提交裁决；本节点其实只是参考层
+    # （权威 = submit_verdict）。故额外给出逐闸**清单**，让调用方据事实自行判断。
+    # 特别地：`unavailable`（降级/取不到数）此前与"通过"在聚合结论里无法区分 ——
+    # 例如 correlation 降级时 `pass=True`，可静默凑出 READY。清单把降级显式列出。
+    result["checklist"] = build_checklist(result["gates"])
+    result["degraded_gates"] = [
+        g.get("gate") for g in result["gates"] if g.get("unavailable")
+    ]
+    if result["degraded_gates"]:
+        result["warning"] = (
+            f"以下闸未取到数（降级，结论未包含其判定）："
+            f"{'、'.join(str(x) for x in result['degraded_gates'])}；"
+            f"verdict={final_verdict} 不足以作为提交依据，请以 submit_verdict 为准"
+        )
+
     return _finalize(result, store, alpha_id)
+
+
+def build_checklist(gates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """把 gate 结构摊平为**逐闸清单**（事实清单，非聚合裁决）。
+
+    只保留标量字段（int/float/str/bool/None），跳过嵌套结构，避免清单臃肿；
+    `gate` / `pass` / `unavailable` 三个键固定在最前，便于逐行比对。
+
+    与 `_compute_final_verdict` 的分工：后者给聚合结论，本函数给事实底座。
+    调用方（含 Agent）应**优先读清单**，`verdict` 仅作摘要。
+    """
+    out: List[Dict[str, Any]] = []
+    for g in gates or []:
+        if not isinstance(g, dict):
+            continue
+        row: Dict[str, Any] = {
+            "gate": g.get("gate"),
+            "pass": bool(g.get("pass", False)),
+            "unavailable": bool(g.get("unavailable", False)),
+        }
+        for k, v in g.items():
+            if k in ("gate", "pass", "unavailable"):
+                continue
+            if isinstance(v, (int, float, str, bool, type(None))):
+                row[k] = v
+        out.append(row)
+    return out
 
 
 def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
@@ -184,6 +228,9 @@ def _finalize(result: Dict[str, Any], store, alpha_id: str) -> Dict[str, Any]:
         "judged_at": datetime.now().isoformat(),
         "verdict": result.get("verdict"),
         "gates": result.get("gates"),
+        # 2026-09-17 P3：清单与降级闸一并落台账，便于事后复核"当时的结论有没有缺闸"
+        "checklist": result.get("checklist"),
+        "degraded_gates": result.get("degraded_gates"),
     })
     return result
 
@@ -209,53 +256,29 @@ def _extract_region(details: Dict[str, Any]) -> Optional[str]:
 
 
 def _load_mode_b_qualification(store, region: str = "KOR") -> Dict[str, float]:
-    """从 thresholds.json + ledger_kv 加载 Mode B 资格线（Dry-Run 2.0 优化）.
+    """加载 Mode B 主闸资格线（sharpe_min/fitness_min）。
 
-    优先级：ledger_kv > thresholds.json > 默认值。
+    2026-09-09 起委托统一加载器 mode_b_config.load_mode_b_config（解析 $ref /
+    全局权威 / 区域覆盖 / 自适应学习区域 ledger）。本函数只返回主闸双标量，
+    保持与既有调用点/测试的返回契约兼容；旁路与判死线由 _eval_platform_check
+    经 evaluate_mode_b 单独取。
     """
-    # 1. 尝试从 ledger_kv 读取
-    if store:
-        try:
-            cached = store.get_ledger(region, "mode_b_qualification")
-            if cached and isinstance(cached, dict):
-                sharpe_min = cached.get("sharpe_min")
-                fitness_min = cached.get("fitness_min")
-                if sharpe_min is not None and fitness_min is not None:
-                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
-        except Exception as e:
-            logger.warning(f"Failed to load mode_b_qualification from ledger: {e}")
-
-    # 2. 尝试从 thresholds.json 读取
-    try:
-        import json
-        import os
-        thresholds_path = os.path.join(
-            os.path.dirname(__file__), "..", "..", "..", "..",
-            "tracking", region, "config", "thresholds.json"
-        )
-        thresholds_path = os.path.abspath(thresholds_path)
-        if os.path.exists(thresholds_path):
-            with open(thresholds_path, "r", encoding="utf-8") as f:
-                thresholds = json.load(f)
-            mbq = thresholds.get("mode_b_qualification", {})
-            if isinstance(mbq, dict):
-                sharpe_min = mbq.get("sharpe_min")
-                fitness_min = mbq.get("fitness_min")
-                if sharpe_min is not None and fitness_min is not None:
-                    return {"sharpe_min": float(sharpe_min), "fitness_min": float(fitness_min)}
-    except Exception as e:
-        logger.warning(f"Failed to load mode_b_qualification from thresholds.json: {e}")
-
-    # 3. 返回默认值
-    return _MODE_B_QUALIFICATION_DEFAULT.copy()
+    cfg = _load_mode_b_config(store, region=region)
+    main = cfg.get("main_gate") or {}
+    return {
+        "sharpe_min": float(main.get("sharpe_min", 1.25)),
+        "fitness_min": float(main.get("fitness_min", 0.8)),
+    }
 
 
-def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str, float]] = None) -> Dict[str, Any]:
+def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str, float]] = None,
+                         mode_b_cfg: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """评估平台硬检查：checks.fail 为空 + sharpe/fitness/2y 数值硬闸.
 
     Args:
         details: get_alpha_details 返回结果
-        mode_b_qual: Mode B 资格线（sharpe_min/fitness_min），从 thresholds.json + ledger_kv 加载
+        mode_b_qual: Mode B 主闸双标量（sharpe_min/fitness_min），兼容旧调用
+        mode_b_cfg: 完整 Mode B 配置（主闸+旁路+判死线），优先于 mode_b_qual
     """
     if not isinstance(details, dict) or details.get("__error__"):
         return {"gate": "platform_check", "pass": False, "unavailable": True,
@@ -269,6 +292,10 @@ def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str
     sharpe = metrics.get("sharpe")
     fitness = metrics.get("fitness")
     two_year = metrics.get("two_year_sharpe") or metrics.get("twoYearSharpe")
+    # 旁路判定用的补充指标（2026-09-09 主闸+旁路结构）
+    margin = metrics.get("margin")
+    turnover = metrics.get("turnover")
+    returns = metrics.get("returns")
 
     # checks.fail 列表
     checks = isd.get("checks") if isinstance(isd, dict) else None
@@ -292,17 +319,33 @@ def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str
     if two_year is not None and two_year < _2Y_MIN:
         reasons.append(f"2y_sharpe {two_year:.2f} < {_2Y_MIN}")
 
-    # Mode B 资格线检查（Dry-Run 2.0 优化）
+    # Mode B 资格判定（2026-09-09 主闸+旁路结构，委托 mode_b_config.evaluate_mode_b）
+    # mode_b_qual 为 _load_mode_b_qualification 返回的主闸双标量（兼容旧调用）；
+    # 完整配置（含旁路/判死线）由调用方 run() 经 _load_mode_b_config 提供，
+    # 这里从 mode_b_qual 重建最小 cfg 兜底，保证单测直调本函数也能跑。
     mode_b_eligible = None
+    mode_b_verdict = None
+    mode_b_bypass = None
+    mode_b_action = None
     if mode_b_qual and sharpe is not None and fitness is not None:
-        mb_sharpe_min = mode_b_qual.get("sharpe_min", 1.25)
-        mb_fitness_min = mode_b_qual.get("fitness_min", 0.8)
-        mode_b_eligible = sharpe >= mb_sharpe_min and fitness >= mb_fitness_min
+        # 优先用完整配置（含旁路）；缺省从主闸双标量重建最小 cfg（旁路走默认）
+        if mode_b_cfg:
+            cfg = mode_b_cfg
+        else:
+            mb_sharpe_min = mode_b_qual.get("sharpe_min", 1.25)
+            mb_fitness_min = mode_b_qual.get("fitness_min", 0.8)
+            cfg = {"main_gate": {"sharpe_min": mb_sharpe_min, "fitness_min": mb_fitness_min}}
+        verdict = _evaluate_mode_b(
+            cfg,
+            sharpe=sharpe, fitness=fitness, two_year_sharpe=two_year,
+            margin=margin, turnover=turnover, returns=returns,
+        )
+        mode_b_eligible = verdict["eligible"]
+        mode_b_verdict = verdict["verdict"]
+        mode_b_bypass = verdict.get("bypass")
+        mode_b_action = verdict.get("mode_b_action")
         if not mode_b_eligible:
-            reasons.append(
-                f"Mode B 资格线未达: sharpe {sharpe:.2f} < {mb_sharpe_min} 或 "
-                f"fitness {fitness:.2f} < {mb_fitness_min}（整波判死，禁止 Mode B）"
-            )
+            reasons.append(verdict["reason"])
 
     return {
         "gate": "platform_check",
@@ -312,6 +355,9 @@ def _eval_platform_check(details: Dict[str, Any], mode_b_qual: Optional[Dict[str
         "two_year_sharpe": two_year,
         "fail_checks": fail_names,
         "mode_b_eligible": mode_b_eligible,
+        "mode_b_verdict": mode_b_verdict,
+        "mode_b_bypass": mode_b_bypass,
+        "mode_b_action": mode_b_action,
         "reason": "; ".join(reasons) if reasons else None,
     }
 
