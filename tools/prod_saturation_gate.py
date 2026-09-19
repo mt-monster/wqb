@@ -140,13 +140,32 @@ def check_wave(
 
     # ---- 字段级饱和统计 ----
     field_hits: Counter = Counter()
+    field_prod_hits: Counter = Counter()   # 该字段 alpha 中 prod_corr >= prod_wall 的条数
+    field_prod_known: Counter = Counter()  # 该字段 alpha 中 prod_corr 已知的条数
     for r in rows:
         expr = r.get("expression") or ""
+        pc = r.get("prod_correlation")
         for f in set(extract_fields(expr)):
             field_hits[f] += 1
-    saturated_fields = {
-        f for f, n in field_hits.items() if n >= cfg["field_hit_max"]
-    }
+            if pc is not None:
+                field_prod_known[f] += 1
+                if float(pc) >= cfg["prod_wall"]:
+                    field_prod_hits[f] += 1
+    # 2026-09-19 修正：只数"本账户 IS 过闸 alpha 出现次数"会把修复循环里的同字段变体误判饱和
+    # （IND mean_flash_estimate_eps prod 0.58 却被判饱和拦下 w179）。饱和必须有 prod 撞墙证据：
+    # 出现 >= field_hit_max 且 (已知 prod 的条数中 >= 50% 撞墙，且撞墙 >= min_prod_hits)；
+    # 完全没有 prod 信息的字段只记 candidate（报告里列出，不判 FAIL）。
+    min_prod_hits = int(cfg.get("min_prod_hits", 2))
+    saturated_fields = set()
+    saturation_candidates = set()
+    for f, n in field_hits.items():
+        if n < cfg["field_hit_max"]:
+            continue
+        known, walls = field_prod_known[f], field_prod_hits[f]
+        if known == 0:
+            saturation_candidates.add(f)
+        elif walls >= min_prod_hits and walls / known >= 0.5:
+            saturated_fields.add(f)
 
     # ---- 数据集级饱和统计 ----
     ds_counter: Counter = Counter()
@@ -203,6 +222,7 @@ def check_wave(
         "n_history": len(rows),
         "n_checked": n_checked,
         "saturated_fields": sorted(saturated_fields),
+        "saturation_candidates_no_prod": sorted(saturation_candidates),
         "saturated_dataset_ids": sorted(saturated_dataset_ids),
         "current_dataset_saturated": cur_ds_saturated,
         "violations": violations,
@@ -268,4 +288,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
     main()

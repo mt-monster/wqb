@@ -388,6 +388,12 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             # 透传 PROD/SELF 相关性 → campaign.upsert_backtest_rows 写入 alphas
             "prod_correlation": a.get("prod_correlation"),
             "self_correlation": a.get("self_correlation"),
+            # 2026-09-18（设计文档 §2.2 改动#5）：补齐与 MCP 路径一致的全指标
+            "risk_neutralized_sharpe": a.get("risk_neutralized_sharpe"),
+            "returns": a.get("returns"),
+            "drawdown": a.get("drawdown"),
+            "long_count": a.get("long_count"),
+            "short_count": a.get("short_count"),
             # 2026-09-02 优化点②：全硬闸画像入库
             "concentrated_weight": a.get("concentrated_weight"),
             "cluster_test": a.get("cluster_test"),
@@ -474,6 +480,24 @@ async def main():
                     rows = _to_backtest_rows(r["alphas"])
                     n = store.upsert_backtest_rows(a.region, str(a.wave), rows)
                     print(f"  [upsert] {n} rows → backtest_results (region={a.region} wave={a.wave})")
+                    # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
+                    # upsert_backtest_rows 已把 prod/self 写入 alphas（仅当列原为 NULL），
+                    # 这里补写 source=platform_sync + corr_checked_at，使复盘可区分
+                    # 平台权威值与本地 triage 抽测值。
+                    for row in rows:
+                        if row.get("alpha_id") and (
+                            row.get("prod_correlation") is not None
+                            or row.get("self_correlation") is not None
+                        ):
+                            try:
+                                store.persist_correlation(
+                                    alpha_id=row["alpha_id"],
+                                    prod=row.get("prod_correlation"),
+                                    self_=row.get("self_correlation"),
+                                    source="platform_sync",
+                                )
+                            except Exception:
+                                pass
 
             # --- 触发 salvage_pool（全 RED 时自动分层） ---
             try:

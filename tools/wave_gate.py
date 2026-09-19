@@ -189,8 +189,11 @@ def parse_candidates(a):
                 rows = st.list_expressions(region, str(a.wave))
             # 2026-09-03 修复：--from-db 时保留 expressions.id，避免 gate_results.syntax.items[].id 是 1-N 序号
             # 2026-09-03 修复2：排除 superseded 行（坏行/已提交候选不应再入门禁与回测）
+            # 2026-09-09 D12 修复：同时排除 dropped（纪律废弃终态）。此前只排 superseded，
+            # Agent dropped 的零 alpha 骨架（含 vec_* 类型不兼容的 11637）仍入门禁，
+            # 一条 [TYPE] FAIL 拖垮整波 all_pass。
             items = [{"id": r.get("id"), "expression": r.get("expression")} for r in rows
-                     if r.get("expression") and r.get("status") != "superseded"]
+                     if r.get("expression") and r.get("status") not in ("superseded", "dropped")]
         finally:
             st.close()
         if not items:
@@ -364,6 +367,50 @@ def _settings_region(campaign_dir):
         return None
 
 
+#: 体检硬门缺包时的合法行为。warn = 灰度默认（告警放行），enforce = fail-closed 整波拦截。
+INSPECT_MODES = ("off", "warn", "enforce")
+DEFAULT_INSPECT_MODE = "warn"
+
+
+def resolve_inspect_mode(cli_value=None, env=None):
+    """解析体检硬门缺包策略，优先级：CLI > 环境变量 `WQB_INSPECT_MODE` > 默认 warn。
+
+    2026-09-17 P1-1：此前缺包**恒静默放行**，导致「无体检包」与「体检通过」在输出上
+    无法区分（历史三连复发）。抽出本函数使策略可单测，并支持 CLI 强制 fail-closed。
+    非法取值一律回落默认（不让拼错的 mode 意外关掉把关）。
+    """
+    env = os.environ if env is None else env
+    raw = cli_value or env.get("WQB_INSPECT_MODE") or DEFAULT_INSPECT_MODE
+    mode = str(raw).strip().lower()
+    return mode if mode in INSPECT_MODES else DEFAULT_INSPECT_MODE
+
+
+def _load_region_gates():
+    """加载 toolkit 的 `_lib/region_gates`（2026-09-17 P0-1：开波闸下沉到本入口）。
+
+    wave_gate 是 S2→S3 的实际门禁入口，但原先不跑 signal_floor / stop_rules /
+    backlog 三道区域闸 —— 直调它会绕过它们。优先用 WQ_TOOLKIT_DIR（已安装位），
+    回落仓库自带 `Claude/skills/.../scripts` 源。
+    """
+    cands = []
+    env = os.environ.get("WQ_TOOLKIT_DIR")
+    if env:
+        cands.append(env)
+    repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    cands.append(os.path.join(repo, "Claude", "skills",
+                              "wq-brain-campaign-toolkit", "scripts"))
+    for d in cands:
+        if os.path.isfile(os.path.join(d, "_lib", "region_gates.py")):
+            if d not in sys.path:
+                sys.path.insert(0, d)
+            try:
+                from _lib import region_gates as rg
+                return rg
+            except Exception:
+                continue
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser(description="每波门禁编排器：语法 + 5 闸 + 多样性")
     ap.add_argument("--campaign-dir", required=True, help="战役根目录 (如 tracking/KOR)")
@@ -377,13 +424,21 @@ def main():
                          "ws2_* 波 gate_rows=0 断链的根因）")
     ap.add_argument("--from-db", action="store_true", help="从 expressions 表读候选（推荐）")
     ap.add_argument("--region", default=None, help="区域（缺省读 settings.json）")
+    ap.add_argument("--gate-mode", default=None, choices=("off", "warn", "enforce"),
+                    help="开波前区域闸模式（2026-09-17 P0-1）：off / warn(默认，只告警) / "
+                         "enforce(命中即退出码 2）。缺省读环境变量 WQB_GATE_MODE")
     ap.add_argument("--candidates", help="兼容：候选 JSON")
     ap.add_argument("--exprs-file", help="每行一条表达式的 txt")
     ap.add_argument("--expr", help="单条表达式")
     ap.add_argument("--skip-diversity-gate", action="store_true", help="透传 toolkit gate.py（repair 批等）")
-    ap.add_argument("--batch-type", default="explore", help="透传 toolkit gate.py（explore/repair...）")
+    ap.add_argument("--batch-type", default="explore", choices=("explore", "repair", "probe"),
+                    help="repair/probe 批不做 qp 质量预估标注（2026-09-19：修复批实测 S2.1 却被预估 0.65 BLOCK，纯噪音）")
     ap.add_argument("--no-cache", action="store_true")
     ap.add_argument("--fix", action="store_true", help="透传：VECTOR 数据集自动裹 vec_* 后检测")
+    ap.add_argument("--inspect-mode", default=None, choices=("off", "warn", "enforce"),
+                    help="体检硬门「缺包」时的行为（缺省读环境变量 WQB_INSPECT_MODE，兜底 warn）："
+                         "off=跳过不报 / warn=告警但放行（灰度默认）/ "
+                         "enforce=fail-closed，缺包即整波拦截（开新数据集前建议 enforce）")
     ap.add_argument("--skip-quality", action="store_true", help="跳过质量预估+六维多样性阶段")
     ap.add_argument("--quality-block", action="store_true",
                     help="EXPECTED_BLOCK 候选计入 FAIL（默认仅标注；回测配额闸门建议开启）")
@@ -405,6 +460,35 @@ def main():
     items = parse_candidates(a)
     campaign = a.campaign_dir.rstrip("/\\")
     tag = str(a.wave) if a.wave and a.wave != "0" else str(int(__import__("time").time()))
+
+    # 体检硬门缺包策略（2026-09-17 P1-1：由"恒静默放行"升级为可选 fail-closed）
+    _inspect_mode = resolve_inspect_mode(a.inspect_mode)
+
+    # ---- 开波前区域闸（2026-09-17 P0-1 下沉）----
+    # signal_floor / stop_rules / backlog 三道闸原先只在 workflow 的 S2/S3 节点生效；
+    # 直调本脚本会绕过它们（实证 JPN 2026-09-16）。默认 warn（灰度）只告警不阻断。
+    _rg = _load_region_gates()
+    if _rg is None:
+        print("[wave_gate] [region-gates] ★未找到 toolkit region_gates，本次跳过开波闸"
+              "（设 WQ_TOOLKIT_DIR 可解）", file=sys.stderr)
+    else:
+        _region_for_gates = a.region
+        if not _region_for_gates:
+            try:
+                with open(os.path.join(campaign, "config", "settings.json"),
+                          encoding="utf-8") as f:
+                    _region_for_gates = (json.load(f) or {}).get("region")
+            except Exception:
+                _region_for_gates = None
+        if not _region_for_gates:
+            _region_for_gates = os.path.basename(campaign).upper()
+        _mode = a.gate_mode or os.environ.get("WQB_GATE_MODE", _rg.MODE_WARN)
+        _rep = _rg.run_region_gates(campaign, _region_for_gates, mode=_mode,
+                                    dataset=a.dataset)
+        if not _rep.get("ok", True):
+            print(f"[wave_gate] ★★ 开波被阻断（gate-mode=enforce，命中 "
+                  f"{'、'.join(_rep.get('hits') or [])}）", file=sys.stderr)
+            sys.exit(2)
 
     # ---- 0) GEM 候选池校验（可选）----
     gem_report = None
@@ -536,30 +620,51 @@ def main():
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
 
-    # ---- 2.5) 体检→表达式硬门（2026-09-06 接线）----
+    # ---- 2.5) 体检→表达式硬门（2026-09-06 接线；2026-09-17 补 fail-closed 档）----
     # ra-pipeline 步 5 把它写成"回测前必过"，但此前整条可执行路径上零调用方。
-    # 有体检包就逐条校验并计入 FAIL；没有体检包不阻断，但把"本闸未生效"打出来 ——
+    # 有体检包就逐条校验并计入 FAIL；没有体检包按 --inspect-mode 处理：
+    #   warn（灰度默认）= 告警但放行；enforce = 缺包即整波拦截（fail-closed）。
     # 静默通过才是最坏的结果（低覆盖/厚尾/稀疏事件的预处理约束会一路裸奔到仿真）。
     inspect_report = None
-    try:
-        tools_dir = os.path.dirname(os.path.abspath(__file__))
-        if tools_dir not in sys.path:
-            sys.path.insert(0, tools_dir)
-        import field_inspect_gate as fig_mod
-        passed_exprs = [e for (cid, e), s in zip(items, syntax) if s["valid"]]
-        if passed_exprs:
-            # region 必须走 settings.json 兜底：--region 默认 None（见其 help
-            # "缺省读 settings.json"），直接用 a.region 会传空串进来，
-            # 于是体检包路径拼成 field_inspect__<ds>.json，明明有包也报"未生效"。
-            _region = a.region or _settings_region(campaign) or ""
-            inspect_report = fig_mod.check_expressions(
-                passed_exprs, region=_region, dataset=a.dataset
-            )
-            print("\n" + fig_mod.format_report(inspect_report))
-            report["field_inspect"] = inspect_report
-    except Exception as e:
-        print(f"[inspect] 体检硬门执行异常（不阻断）: {e}")
-        report["field_inspect"] = {"status": "error", "error": str(e)}
+    inspect_unavailable = False
+    if _inspect_mode == "off":
+        print("[inspect] 体检硬门已按 --inspect-mode=off 显式跳过（无把关）")
+        report["field_inspect"] = {"status": "skipped", "reason": "inspect-mode=off"}
+    else:
+        try:
+            tools_dir = os.path.dirname(os.path.abspath(__file__))
+            if tools_dir not in sys.path:
+                sys.path.insert(0, tools_dir)
+            import field_inspect_gate as fig_mod
+            passed_exprs = [e for (cid, e), s in zip(items, syntax) if s["valid"]]
+            if passed_exprs:
+                # region 必须走 settings.json 兜底：--region 默认 None（见其 help
+                # "缺省读 settings.json"），直接用 a.region 会传空串进来，
+                # 于是体检包路径拼成 field_inspect__<ds>.json，明明有包也报"未生效"。
+                _region = a.region or _settings_region(campaign) or ""
+                inspect_report = fig_mod.check_expressions(
+                    passed_exprs, region=_region, dataset=a.dataset
+                )
+                print("\n" + fig_mod.format_report(inspect_report))
+                report["field_inspect"] = inspect_report
+                inspect_unavailable = inspect_report.get("status") == "unavailable"
+            else:
+                # 无有效候选 → 本闸无从校验，按"未生效"处理（enforce 下会拦截，合理）
+                inspect_unavailable = True
+        except Exception as e:
+            print(f"[inspect] 体检硬门执行异常（不阻断）: {e}")
+            report["field_inspect"] = {"status": "error", "error": str(e)}
+            inspect_unavailable = True
+
+    if inspect_unavailable and _inspect_mode == "enforce":
+        print(
+            "[inspect] ★★ fail-closed：本数据集无可用体检包（或体检执行异常），"
+            "按 --inspect-mode=enforce 拦截整波，候选未回测。\n"
+            "          生成体检包：python tools/gen_field_inspect_packs.py "
+            "--region <REGION> --delay <D>\n"
+            "          确认无包可生成时临时降级：--inspect-mode warn",
+            file=sys.stderr,
+        )
 
     # ---- 2.6) PROD 饱和闸（2026-09-07 P1-1 前移接线）----
     # 审计实证：全库可提交库存仅 MEA 3 颗，prod 饱和是全局第一瓶颈。
@@ -584,6 +689,9 @@ def main():
 
     # ---- 3) 六维多样性 + 质量预估（建议2/3 落地；仅对语法通过候选，避免噪声）----
     quality_block_ids = []
+    if getattr(a, "batch_type", "explore") in ("repair", "probe") and not a.skip_quality:
+        print(f"[qp   ] batch_type={a.batch_type}：跳过质量预估标注（修复/探针批以实测为准）")
+        a.skip_quality = True
     if not a.skip_quality:
         try:
             tools_dir = os.path.dirname(os.path.abspath(__file__))
@@ -593,15 +701,24 @@ def main():
             import quality_predict as qp_mod
             import sqlite3 as _sq
             passed_exprs = [e for (cid, e), s in zip(items, syntax) if s["valid"]]
-            div_report = pd_mod.assess(passed_exprs, region=a.region)
-            report["diversity"] = div_report
-            if div_report["issues"]:
-                print("\n[div  ] 六维多样性风险:")
-                for it in div_report["issues"]:
-                    print(f"        - {it}")
+            # 2026-09-13：pool_diversity 已重写为多维标签体系（skeleton_tags），旧 assess
+            # 接口被移除 —— 此处降级跳过六维展示（不阻断门禁），保留新版可用的兼容路径。
+            _assess = getattr(pd_mod, "assess", None) or getattr(pd_mod, "assess_multidimensional", None)
+            if _assess is None:
+                print("\n[div  ] pool_diversity.assess 不存在（新版已重写），六维报告跳过")
+                report["diversity"] = {"skipped": True, "reason": "assess removed in pooled rewrite"}
             else:
-                print(f"\n[div  ] 六维多样性 PASS（算子熵={div_report['operator_stats']['entropy']}, "
-                      f"同质占比={div_report['structural_similarity']['homog_ratio']:.0%}）")
+                div_report = _assess(passed_exprs, region=a.region)
+                report["diversity"] = div_report
+                if div_report.get("issues"):
+                    print("\n[div  ] 六维多样性风险:")
+                    for it in div_report["issues"]:
+                        print(f"        - {it}")
+                elif div_report.get("operator_stats"):
+                    print(f"\n[div  ] 六维多样性 PASS（算子熵={div_report['operator_stats']['entropy']}, "
+                          f"同质占比={div_report['structural_similarity']['homog_ratio']:.0%}）")
+                else:
+                    print("\n[div  ] 新版多样性报告（格式已更新）")
             
             # 2026-09-04 新增：算子类别覆盖检查（Logical/Group/Vector 至少 1 个）
             import re as _re2
@@ -864,6 +981,10 @@ def main():
     if inspect_report and inspect_report.get("violations"):
         all_pass = False
         print(f"[done ] 体检硬门拦截 {len(inspect_report['violations'])} 条违规候选")
+    # 体检包缺失 + enforce → fail-closed 整波拦截（2026-09-17 P1-1）
+    if inspect_unavailable and _inspect_mode == "enforce":
+        all_pass = False
+        print("[done ] 体检硬门 fail-closed 拦截：缺体检包（inspect-mode=enforce）")
     # PROD 饱和闸硬阻断（enforced 态才可能 FAIL；unavailable 不阻断）
     if prod_sat_report and prod_sat_report.get("status") == "enforced" and not prod_sat_report.get("passed", True):
         all_pass = False
@@ -890,4 +1011,5 @@ def main():
     sys.exit(0 if all_pass else 1)
 
 if __name__ == "__main__":
+    import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
     main()

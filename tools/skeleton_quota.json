@@ -1,0 +1,48 @@
+{
+  "schema_version": "2.0",
+  "description": "多维骨架配额配置（经济学构造链感知）",
+  "dimensions": {
+    "structure": {
+      "linear_2leg": {"cap": 0.25, "min": 0.10, "description": "双腿线性组合"},
+      "linear_3plus": {"cap": 0.15, "min": 0.05, "description": "三腿以上线性组合"},
+      "group_relative": {"cap": 0.15, "min": 0.10, "description": "行业/截面相对强度"},
+      "group_bucket": {"cap": 0.05, "min": 0.02, "description": "离散评分分层"},
+      "ratio_pair": {"cap": 0.10, "min": 0.05, "description": "双字段比率/差值"},
+      "ratio_adjusted": {"cap": 0.05, "min": 0.02, "description": "波动率/流动性调整比率"},
+      "event_gated": {"cap": 0.10, "min": 0.05, "description": "事件门控/条件交易"},
+      "event_freshness": {"cap": 0.05, "min": 0.02, "description": "信息新鲜度"},
+      "single_raw": {"cap": 0.05, "min": 0.02, "description": "原始字段直接读取"},
+      "single_preprocessed": {"cap": 0.03, "min": 0.01, "description": "预处理后单字段"},
+      "single_aggregated": {"cap": 0.02, "min": 0.01, "description": "VECTOR聚合后单字段"}
+    },
+    "mechanism": {
+      "analyst_revision": {"cap": 0.15, "min": 0.05, "description": "分析师修正广度"},
+      "target_price": {"cap": 0.10, "min": 0.03, "description": "目标价相对溢价"},
+      "event_conviction": {"cap": 0.10, "min": 0.03, "description": "事件驱动-信念强度"},
+      "event_gated": {"cap": 0.10, "min": 0.03, "description": "稀疏事件门控"},
+      "spread_pair": {"cap": 0.10, "min": 0.03, "description": "连续字段相对价值"},
+      "momentum": {"cap": 0.10, "min": 0.03, "description": "动量/信息扩散"},
+      "mean_reversion": {"cap": 0.05, "min": 0.02, "description": "均值回归/短期反转"},
+      "volume_price": {"cap": 0.05, "min": 0.02, "description": "量价背离"},
+      "volatility_premium": {"cap": 0.05, "min": 0.02, "description": "波动率风险溢价"},
+      "liquidity_premium": {"cap": 0.05, "min": 0.02, "description": "流动性溢价"},
+      "multi_horizon": {"cap": 0.05, "min": 0.02, "description": "多期限共识"},
+      "confidence_weighted": {"cap": 0.05, "min": 0.02, "description": "置信度加权"},
+      "ceiling_suppress": {"cap": 0.03, "min": 0.01, "description": "截尾抑制"},
+      "discrete_score": {"cap": 0.03, "min": 0.01, "description": "离散评分分层"},
+      "low_freq_backfill": {"cap": 0.02, "min": 0.01, "description": "低频字段回填"},
+      "free_explore": {"cap": 0.02, "min": 0.01, "description": "自由探索兜底"}
+    }
+  },
+  "field_match_enforcement": {
+    "enabled": true,
+    "warn_threshold": 0.3,
+    "block_threshold": 0.5,
+    "description": "字段形状与机制匹配校验：warn>30%告警，block>50%阻断"
+  },
+  "construction_chain_diversity": {
+    "enabled": true,
+    "min_unique_chains": 5,
+    "description": "构造链多样性：至少5种不同构造链"
+  }
+}

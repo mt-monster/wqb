@@ -55,8 +55,25 @@ def classify(verdict):
     if m:
         n_pass = int(m.group(1))
         return ("PASS" if n_pass > 0 else "FAIL"), f"过硬闸计数 {m.group(1)}/{m.group(2)}"
+    # 2026-09-15 ⑦ 扩展：MCP upsert_wave_result 此前不校验枚举，Agent 写入了
+    # "PASS_READY_x2：…" / "PARTIAL_BREAKTHROUGH：…" / "CLOSED_DEAD_END_DATASET：…" /
+    # "GATE_BLOCKED_SATURATION：…" 这类"枚举前缀 + 冒号 + 描述"的形态（全库 ~40 行）。
+    # 前缀本身就是作者给的枚举，按前缀归一；描述搬进 key_findings。
+    if up.startswith("PASS"):
+        return "PASS", "PASS 前缀"
+    if up.startswith("PARTIAL"):
+        return "PARTIAL", "PARTIAL 前缀"
+    if up.startswith("CLOSED_ACCEPTED"):
+        # "接受天花板"关闭：有近闸/已贡献但本波无全过候选 → PARTIAL（EUR wave163 实证）
+        return "PARTIAL", "CLOSED_ACCEPTED 前缀"
+    if up.startswith(("FAIL", "CLOSED_DEAD_END", "GATE_BLOCKED", "PROBE_WEAK")):
+        return "FAIL", "FAIL/CLOSED_DEAD_END/GATE_BLOCKED/PROBE_WEAK 前缀"
     if "GATE_FAIL" in up or "FAIL" in up or "全灭" in v:
         return "FAIL", "FAIL/全灭 关键词"
+    if "近闸突破" in v:
+        return "PARTIAL", "近闸突破 关键词"
+    if any(k in v for k in ("判死", "天花板", "无法破", "结构性上限", "无挖掘价值")):
+        return "FAIL", "判死/天花板/无法破 关键词"
     return None, "无匹配规则（需人工判定）"
 
 

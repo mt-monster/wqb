@@ -385,6 +385,15 @@ def check_expr_against_inspect(expr, field_inspect_result):
         'ts_median', 'ts_corr', 'ts_covariance', 'ts_backfill',
     )
     freq = (meta.get('frequency') or '').lower()
+    # 2026-09-19：流量/事件/日内类 daily 字段（资金流、换手、成交、日内特征、新闻计数…）本质是短期信号，
+    # 5 日窗是标准用法（IND intraday_pv_feats 5 日实测 S 4.4；CHN pv27 资金流 5 日），不能按"daily≥22"一刀切。
+    # 只有水平/慢变量类 daily 字段才要求 ≥22。字段名命中下列词根即视为流量/事件类，daily 最小窗降为 5。
+    _FLOW_HINTS = ('flow', 'inflow', 'outflow', 'volume', 'turnover', 'trade', 'return', 'ret_',
+                   'count', 'news', 'event', 'session_', 'intraday', 'corr_', 'momentum', 'skew_', 'std_',
+                   'imbalance', 'order', 'bid', 'ask', 'vwap', 'twap')
+    _fname = str(field_inspect_result.get('field') or meta.get('field') or meta.get('name') or '').lower()
+    if freq == 'daily' and any(h in _fname for h in _FLOW_HINTS):
+        _FREQ_MIN_WINDOW = dict(_FREQ_MIN_WINDOW, daily=5)
     if freq in _FREQ_MIN_WINDOW:
         import re as _re
         min_win = _FREQ_MIN_WINDOW[freq]

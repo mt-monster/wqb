@@ -29,10 +29,17 @@ import argparse
 import json
 import os
 import sys
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from probe_batch_mode import ProbeBatchExecutor, _wqb_store, _find_toolkit, _find_mcp_python
+from probe_batch_mode import ProbeBatchExecutor
+
+# Mode B 全算子覆盖框架（2026-09-11 新增）
+try:
+    from wqb.modeb import OperatorUsageTracker, generate_modeb_variants
+    _MODEB_AVAILABLE = True
+except ImportError:
+    _MODEB_AVAILABLE = False
 
 
 class TieredProbeOrchestrator:
@@ -61,7 +68,8 @@ class TieredProbeOrchestrator:
                  decay: int = 4,
                  l0_only: bool = False,
                  skip_l0: bool = False,
-                 dry_run: bool = False):
+                 dry_run: bool = False,
+                 region: str = "KOR"):
         self.campaign_dir = campaign_dir
         self.dataset = dataset
         self.wave = wave
@@ -73,6 +81,7 @@ class TieredProbeOrchestrator:
         self.l0_only = l0_only
         self.skip_l0 = skip_l0
         self.dry_run = dry_run
+        self.region = region  # Mode B 全算子覆盖框架需要
         self.executor = ProbeBatchExecutor(
             campaign_dir, dataset, wave,
             datasets_extra=datasets_extra, dry_run=dry_run)
@@ -247,7 +256,58 @@ class TieredProbeOrchestrator:
     # ---- ModeA 变体生成 ----
 
     def _generate_modea_variants(self, best: Dict) -> List[Dict]:
-        """基于最强候选生成 ModeA 变体（8 条）。
+        """基于最强候选生成 ModeA 变体（V2 全算子覆盖版）。
+
+        变体维度：
+        - 40% 基于问题诊断的算子
+        - 30% 基于字段类型的算子
+        - 20% 基于历史胜率的算子
+        - 10% 全算子轮换的新算子
+
+        禁止：同信号加权调参（0.4/0.6 改 0.3/0.7）
+        """
+        # 使用全算子覆盖框架（如可用）
+        if _MODEB_AVAILABLE:
+            try:
+                # 初始化追踪器（持久化到 campaign_dir）
+                tracker_path = os.path.join(
+                    self.campaign_dir, "cache", "modeb_operator_stats.json"
+                )
+                tracker = OperatorUsageTracker(persist_path=tracker_path)
+
+                # 生成全算子覆盖变体
+                variants = generate_modeb_variants(
+                    best=best,
+                    tracker=tracker,
+                    max_variants=self.L2_COUNT * 3,  # 生成更多候选
+                    wave_number=self.wave,
+                    region=self.region,
+                )
+
+                # 转换为 tiered_probe 格式
+                result = []
+                for v in variants[:self.L2_COUNT]:
+                    result.append({
+                        "id": v["id"],
+                        "expression": v["expression"],
+                        "neutralization": self.neutralization,
+                        "decay": self.decay,
+                        "note": v.get("note", f"{v['operator']} {v['transform']}"),
+                        "operator": v["operator"],
+                        "transform": v["transform"],
+                    })
+
+                if result:
+                    print(f"[ModeB-V2] 生成 {len(result)} 条全算子覆盖变体")
+                    return result
+            except Exception as e:
+                print(f"[ModeB-V2] 全算子覆盖生成失败，回退到 V1: {e}")
+
+        # V1 回退：固定 8 条变体
+        return self._generate_modea_variants_v1(best)
+
+    def _generate_modea_variants_v1(self, best: Dict) -> List[Dict]:
+        """基于最强候选生成 ModeA 变体（V1 固定版，回退用）。
 
         变体维度：中性化 × decay × truncation × 结构
         禁止：同信号加权调参（0.4/0.6 改 0.3/0.7）
@@ -291,7 +351,6 @@ class TieredProbeOrchestrator:
             idx += 1
 
         # 结构变体：ts_decay_linear 包裹慢腿
-        # 尝试从表达式中提取慢腿字段
         slow_field = self._extract_slow_field(base_expr)
         if slow_field:
             wrapped = base_expr.replace(

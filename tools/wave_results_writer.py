@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""wave_results_writer.py - wave 结果台账入库工具（单轨 DB 模式）。
+"""wave_results_writer.py - wave 结果台账入库工具（单轨 DB 模式，DirectDBWriter 优化版）。
 
 替代手写 wave<N>_results.json，直接写入 wave_results 表。
+2026-09-12 优化：集成 DirectDBWriter，WAL 模式 + 单条 SQL upsert，消除逐条 commit。
 
 用法：
   from tools.wave_results_writer import write_wave_result
@@ -19,11 +20,18 @@
   )
 """
 import json
-import sqlite3
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DB = ROOT / "data" / "wqb.db"
+
+# 添加 tools 目录到路径（DirectDBWriter 导入）
+_TOOLS_DIR = Path(__file__).resolve().parent
+if str(_TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_DIR))
+
+from mcp_batch_writer import DirectDBWriter  # noqa: E402
 
 
 def write_wave_result(
@@ -40,7 +48,7 @@ def write_wave_result(
     archived=0,
     full_payload=None,
 ):
-    """写入 wave 结果台账到 wave_results 表（幂等，INSERT OR REPLACE）。
+    """写入 wave 结果台账到 wave_results 表（幂等，DirectDBWriter 优化版）。
 
     参数：
         region: 区域（MEA/USA/KOR/ASI/EUR/GBR/HKG/IND/GLB/DEU）
@@ -56,37 +64,30 @@ def write_wave_result(
         archived: 是否已归档（0/1）
         full_payload: 完整 wave JSON（dict，可选，MD 快照导出用）
     """
-    conn = sqlite3.connect(str(DB))
-    conn.execute("PRAGMA foreign_keys=ON")
-    c = conn.cursor()
-    c.execute(
-        """
-        INSERT OR REPLACE INTO wave_results
-        (region, wave_number, focus, context, key_findings, candidates, batches, verdict, status, source_file, archived, full_payload, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """,
-        (
-            region,
-            wave_number,
-            focus,
-            context,
-            json.dumps(key_findings or [], ensure_ascii=False),
-            json.dumps(candidates or [], ensure_ascii=False),
-            json.dumps(batches or [], ensure_ascii=False),
-            verdict,
-            status,
-            source_file,
-            archived,
-            json.dumps(full_payload, ensure_ascii=False) if full_payload else None,
-        ),
-    )
-    conn.commit()
-    conn.close()
-    print(f"[OK] wave_results: {region} wave{wave_number} status={status}")
+    with DirectDBWriter(str(DB)) as writer:
+        result = writer.upsert_wave_result(
+            region=region,
+            wave_number=wave_number,
+            focus=focus,
+            context=context,
+            key_findings=key_findings,
+            candidates=candidates,
+            batches=batches,
+            verdict=verdict,
+            status=status,
+            source_file=source_file,
+            full_payload=full_payload,
+        )
+    if "error" in result:
+        print(f"[ERROR] wave_results: {result['error']}")
+        return result
+    print(f"[OK] wave_results: {region} wave{wave_number} status={status} ({result.get('action', 'upserted')})")
+    return result
 
 
 def list_wave_results(region=None, status=None, archived=None):
     """列出 wave 结果（可按 region/status/archived 过滤）。"""
+    import sqlite3
     conn = sqlite3.connect(str(DB))
     conn.execute("PRAGMA foreign_keys=ON")
     conn.row_factory = sqlite3.Row

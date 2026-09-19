@@ -30,10 +30,46 @@ import sqlite3
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pool_diversity import (  # noqa: E402  复用建议2工具的解析层
-    extract_ops, extract_fields, classify_skeleton, field_family,
-    jaccard_multiset,
-)
+try:
+    from pool_diversity import (  # noqa: E402  复用建议2工具的解析层
+        extract_ops, extract_fields, classify_skeleton, field_family,
+        jaccard_multiset,
+    )
+except ImportError:
+    # 2026-09-13 兼容层：pool_diversity 已重写为多维标签体系（skeleton_tags），
+    # 移除了本工具消费的旧接口符号（classify_skeleton/field_family/jaccard_multiset）。
+    # 此处内联恢复原实现（取自 1837e29 版本），待本工具迁移到
+    # skeleton_tags.batch_extract_tags 后删除。
+    from pool_diversity import extract_ops, extract_fields, GROUP_OPS  # noqa: E402
+
+    def classify_skeleton(expr):
+        """骨架分类：数 add 下的 multiply 腿数。"""
+        ops = extract_ops(expr)
+        if 'trade_when' in ops or 'if_else' in ops:
+            return 'event_gated'
+        has_group = any(o in GROUP_OPS for o in ops)
+        n_mult = ops.count('multiply')
+        n_add = ops.count('add')
+        if n_add >= 1:
+            legs = n_mult if n_mult >= 2 else 2
+            if legs >= 3:
+                return 'linear_mix_3plus'
+            return 'linear_mix_2leg'
+        if has_group and len(extract_fields(expr)) >= 1:
+            return 'single_field_group'
+        return 'single_field'
+
+    def field_family(field):
+        """字段族：下划线首段；短字段取前 6 字符。"""
+        if '_' in field:
+            return field.split('_')[0]
+        return field[:6]
+
+    def jaccard_multiset(a, b):
+        ca, cb = collections.Counter(a), collections.Counter(b)
+        inter = sum((ca & cb).values())
+        union = sum((ca | cb).values())
+        return inter / union if union else 1.0
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -66,18 +102,26 @@ def _dataset_id_to_name(conn):
 
 
 def load_history(conn, region=None):
-    """从 alphas + backtest_results 加载历史回测样本。"""
+    """从 backtest_results + expressions 加载历史回测样本（2026-09-17 P0 优化）。
+
+    此前用 alphas 表（幸存者偏差：只含 ACTIVE/UNSUBMITTED 的 alpha，已过初筛），
+    导致先验均值偏高且对新数据集不适用（方向准确率仅 41%，系统性低估 59%）。
+    现改用 backtest_results（全量回测，含成功和失败），消除幸存者偏差。
+    """
     cur = conn.cursor()
     id2name = _dataset_id_to_name(conn)
+    # backtest_results.code 存表达式文本；dataset 存数据集名
     cur.execute(
-        "SELECT expression, dataset_id, sharpe, fitness, self_correlation "
-        "FROM alphas WHERE sharpe IS NOT NULL AND fitness IS NOT NULL"
+        "SELECT b.code, b.dataset, b.sharpe, b.fitness, NULL as self_corr "
+        "FROM backtest_results b "
+        "WHERE b.sharpe IS NOT NULL AND b.fitness IS NOT NULL "
+        "AND b.code IS NOT NULL AND b.code != ''"
     )
     samples = []
     for expr, ds, sh, fit, sc in cur.fetchall():
         if not expr:
             continue
-        ds_name = id2name.get(ds, str(ds) if ds else None)
+        ds_name = ds if ds else id2name.get(ds, str(ds) if ds else None)
         samples.append({
             'expr': expr, 'dataset': ds_name,
             'sharpe': sh, 'fitness': fit, 'self_corr': sc,

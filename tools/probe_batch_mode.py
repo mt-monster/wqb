@@ -31,6 +31,8 @@ from typing import Dict, List, Any, Tuple, Optional
 # 添加 tools 目录到路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from mcp_batch_writer import DirectDBWriter  # noqa: E402
+
 # toolkit scripts 目录解析（与 wave_gate.py 同一模式）
 _TOOLKIT_CANDIDATES = [
     os.environ.get("WQ_TOOLKIT_DIR"),
@@ -97,21 +99,54 @@ class ProbeBatchExecutor:
         self._mode_b_cfg = self._load_mode_b_config()
 
     def _load_mode_b_config(self) -> Dict[str, Any]:
-        """从 thresholds.json 读 mode_b_qualification 节（方案 B：支持分布感知）.
+        """加载 Mode B 配置（2026-09-09 起主闸委托 mode_b_config 统一加载器）.
+
+        主闸 sharpe_min/fitness_min 从 mode_b_config.load_mode_b_config 取（解析
+        $ref / 全局权威 / 区域覆盖 / 自适应学习区域 ledger），不再直接读区域文件
+        的硬编码字段（区域文件已改为 $ref 引用全局）。
+        distribution 模式的 p75/count 字段仍从区域 thresholds.json 读（该模式为
+        区域实验特性，未上收全局）。
 
         返回字段：
           - mode: "point"（单点，默认）| "distribution"（分布感知）
-          - sharpe_min / fitness_min: 单点模式阈值
+          - sharpe_min / fitness_min: 单点模式阈值（主闸，来自统一加载器）
           - sharpe_p75_min / fitness_p75_min: 分布模式 p75 分位阈值
           - count_above_min: 分布模式至少 N 条过线（与 p75 二选一）
         """
+        # 主闸：委托统一加载器（含 $ref 解析与全局兜底）
+        main = {"sharpe_min": self.MODE_B_S, "fitness_min": self.MODE_B_F}
+        try:
+            repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            src = os.path.join(repo_root, "src")
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            from wqb.workflow.mode_b_config import load_mode_b_config
+            region = self._resolve_region()
+            store = None
+            try:
+                store = _wqb_store()
+            except Exception:
+                store = None
+            try:
+                cfg_full = load_mode_b_config(store, region=region)
+                mg = cfg_full.get("main_gate") or {}
+                main["sharpe_min"] = float(mg.get("sharpe_min", self.MODE_B_S))
+                main["fitness_min"] = float(mg.get("fitness_min", self.MODE_B_F))
+            finally:
+                if store is not None:
+                    try:
+                        store.close()
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
         default = {
             "mode": "point",
-            "sharpe_min": self.MODE_B_S,
-            "fitness_min": self.MODE_B_F,
+            "sharpe_min": main["sharpe_min"],
+            "fitness_min": main["fitness_min"],
         }
         try:
-            import json
             thresholds_path = os.path.join(
                 self.campaign_dir, "config", "thresholds.json"
             )
@@ -122,11 +157,10 @@ class ProbeBatchExecutor:
             mbq = thresholds.get("mode_b_qualification", {})
             if not isinstance(mbq, dict):
                 return default
-            # 合并配置（缺省回落默认）
+            # 合并配置：主闸以统一加载器为准（不被区域旧硬编码覆盖），
+            # 仅 distribution 模式字段从区域文件读
             cfg = default.copy()
             cfg["mode"] = mbq.get("mode", "point")
-            cfg["sharpe_min"] = float(mbq.get("sharpe_min", self.MODE_B_S))
-            cfg["fitness_min"] = float(mbq.get("fitness_min", self.MODE_B_F))
             if cfg["mode"] == "distribution":
                 cfg["sharpe_p75_min"] = float(mbq.get("sharpe_p75_min", cfg["sharpe_min"]))
                 cfg["fitness_p75_min"] = float(mbq.get("fitness_p75_min", cfg["fitness_min"]))
@@ -365,22 +399,26 @@ class ProbeBatchExecutor:
         return self._fetch_results(wave_str)
 
     def _upsert_exprs(self, exprs: List[str], wave: str):
-        """表达式入库（走 CampaignStore）。"""
-        st = _wqb_store()
-        try:
-            region = self._resolve_region()
-            items = [{"expression": e, "status": "gated"} for e in exprs]
-            r = st.upsert_expressions(region, wave, items,
-                                      dataset=self.dataset)
+        """表达式入库（走 DirectDBWriter，WAL 优化版）。"""
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        db_path = os.path.join(repo_root, "data", "wqb.db")
+        region = self._resolve_region()
+        items = [{"expression": e, "status": "gated"} for e in exprs]
+        with DirectDBWriter(db_path) as writer:
+            r = writer.upsert_expressions(region, wave, items, dataset=self.dataset)
+        if "error" in r:
+            print(f"[db][ERROR] 入库失败: {r['error']}")
+        else:
             print(f"[db] 入库 {r.get('n')} 条 wave={wave}")
-        finally:
-            st.close()
 
     def _fetch_results(self, wave: str) -> List[Dict]:
-        """从 DB 拉回测结果（backtest_results 表）。"""
+        """从 DB 拉回测结果（backtest_results 表，DirectDBWriter 只读）。"""
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        db_path = os.path.join(repo_root, "data", "wqb.db")
+        region = self._resolve_region()
+        # 读操作仍走 CampaignStore（DirectDBWriter 未实现 list_backtest_rows）
         st = _wqb_store()
         try:
-            region = self._resolve_region()
             rows = st.list_backtest_rows(region, wave)
             results = []
             for r in rows:
