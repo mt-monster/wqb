@@ -24,7 +24,7 @@
 | `<wqb>/.workbuddy/skills/_unpacked_brain`（35 个，混合体） | 已归档 `attic/skills_archive/2026-08-23-pre-consolidation/proj-workbuddy-skills/` |
 | `world-quant-brain-mcp/.venv/.../cnhkmcp/untracked/skills`（20 个，含已废弃 `brain-improve-alpha-performance`） | 第三方包内僵尸副本，**禁止调用**，随包升级自行消失 |
 
-`tools/gate.py` / `tools/wave_gate.py` 的解析顺序为 `WQ_VALIDATOR_DIR`/`WQ_TOOLKIT_DIR` →
+`tools/wave_gate.py` 的解析顺序为 `WQ_VALIDATOR_DIR`/`WQ_TOOLKIT_DIR` →
 `~/.claude/skills` → `~/.codex/skills` → `~/.qoder-cn/skills` → `~/.cursor/skills` →
 `~/.workbuddy/skills` → 仓库 `Claude/skills`（兜底），与 `src/wqb/workflow/_common.py::_skill_roots()` 保持一致。
 

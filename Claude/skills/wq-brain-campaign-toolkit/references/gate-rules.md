@@ -22,7 +22,7 @@ import alpha-expression-verifier 的 `ExpressionValidator` 直调（不是子进
 - MATRIX 数据集禁 vec_*（报 `[TYPE]`）。
 - 无字段级 type（legacy 白名单）时退 strip 启发式（抹掉 vec_*(...) 区间后再查裸字段）。
 
-**自动修复（`--fix`）**：VECTOR 数据集下加 `--fix` 会把裸用的 VECTOR 字段自动裹上 vec_* 聚合后再检测，幂等（已裹的不重复裹），报告含 `fixed_expr` 字段。聚合算子按字段语义选（字段名含 count/sum/num/vol/qty/amount/total → `vec_sum`，其余默认 `vec_avg`）。`--fix` 会改写表达式，故**禁用缓存**以免缓存键（原始表达式）与修复后结果不一致造成污染。修复器为工作区单一权威源 `tools/lib/vector_wrap.py` 的 `wrap_naked_vectors()`，被本 gate、工作区 `tools/gate.py`、MCP `fix_vector_fields` 工具、makeSomeGem 生成端四处复用。注意 `--fix` 只裹聚合不改信号逻辑，重要候选建议人工复核 `fixed_expr` 的 avg/sum 选择。
+**自动修复（`--fix`）**：VECTOR 数据集下加 `--fix` 会把裸用的 VECTOR 字段自动裹上 vec_* 聚合后再检测，幂等（已裹的不重复裹），报告含 `fixed_expr` 字段。聚合算子按字段语义选（字段名含 count/sum/num/vol/qty/amount/total → `vec_sum`，其余默认 `vec_avg`）。`--fix` 会改写表达式，故**禁用缓存**以免缓存键（原始表达式）与修复后结果不一致造成污染。修复器为工作区单一权威源 `tools/lib/vector_wrap.py` 的 `wrap_naked_vectors()`，被本 gate、MCP `fix_vector_fields` 工具、makeSomeGem 生成端三处复用。注意 `--fix` 只裹聚合不改信号逻辑，重要候选建议人工复核 `fixed_expr` 的 avg/sum 选择。
 
 ### 闸4 不可访问算子 + quantile arity + banned_patterns
 - `ts_min/ts_max`：平台不可访问（语法合法但回测 ERROR 级联整批 CANCELLED）。**必须对表达式全部 idents 判定**——它们不在 KNOWN_OPS 里，对 ops_used 判定是死代码（KOR 历史教训）。

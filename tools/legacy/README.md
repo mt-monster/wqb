@@ -12,7 +12,9 @@
 > 注意：`submit_batch.py`（refs=106）、`submit_verdict.py`（refs=60）等高频脚本**不得归档**，
 > 它们由 skills 与 `src/wqb` 直接依赖。
 
-## 当前归档清单（2026-09-20，13 个文件）
+## 当前归档清单（2026-09-20，14 个文件）
+
+### A. 零引用一次性脚本（13 个）
 
 | 文件 | 类型 | 归档理由 |
 |---|---|---|
@@ -29,6 +31,12 @@
 | `triage_salvage_neut.py` | 一次性分诊 | refs=0，中性化抢救已跑完 |
 | `triage_salvage_top300.py` | 一次性分诊 | refs=0，TOP300 抢救已跑完 |
 | `triage_softdelete_batch1.py` | 一次性分诊 | refs=0，软删批 1 已跑完 |
+
+### B. 遗留重复实现（1 个）
+
+| 文件 | 类型 | 归档理由 |
+|---|---|---|
+| `gate.py` | 遗留通用闸门（16KB） | 被 toolkit 的 `gate.py`（58KB，8 闸权威）取代；**代码零引用**——`tools/wave_gate.py:567` 经 `_TOOLKIT_CANDIDATES` 加载 toolkit 版，`unified_gate.py:134` 调 `tools/wave_gate.py`，全库无 .py 调用本文件。详见 `AGENTS.md §8.1` |
 
 ## 恢复方式
 

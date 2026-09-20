@@ -24,7 +24,7 @@
 - `world-quant-brain-mcp/brain_api_models.py` — 纯数据模型（Pydantic）：`AuthCredentials`/`SimulationSettings`/`SimulationData`
 - `world-quant-brain-mcp/brain_config.py` — 配置函数：`_resolve_config_path`/`_load_dotenv_into_environ`/`load_config`
 - `world-quant-brain-mcp/mcp_core.py` — MCP 工具注册与分发
-- `src/wqb/config.py` — **规范域常量**：区域/算子家族/中性化（数据源 `data/operators_verified.json`）；MCP 包与 `pipeline/`/`tools/gate.py` 共享引用
+- `src/wqb/config.py` — **规范域常量**：区域/算子家族/中性化（数据源 `data/operators_verified.json`）；MCP 包与 `pipeline/`/toolkit scripts 共享引用
 - `tracking/reference/tooling/generate_manifest.py` — 追踪目录全量索引生成器（产出 `tracking/MANIFEST.json`，当前未生成；注意该脚本会顺带把 >500 KB 文件 zip 归档到 `tracking/archive/large/`）
 - `pytest.ini` — 测试配置（验证路由）
 - `world-quant-brain-mcp/Makefile` — Docker 部署入口（`make up` / `make down`）
@@ -177,7 +177,7 @@
 
 ## 3.x 单源核心与 brain_api 拆解约定（Direction A）
 
-- **`src/wqb` 为唯一规范核心**（single source of truth）：区域/算子/中性化等域常量只在此定义；MCP 包与 `pipeline/`/`tools/gate.py` 共享引用，新增域知识只写 `src/wqb`，勿在 `world-quant-brain-mcp/` 重复硬编码。
+- **`src/wqb` 为唯一规范核心**（single source of truth）：区域/算子/中性化等域常量只在此定义；MCP 包与 `pipeline/`/toolkit scripts 共享引用，新增域知识只写 `src/wqb`，勿在 `world-quant-brain-mcp/` 重复硬编码。
 - **`brain_api` 为稳定 API 客户端，方法逻辑不重写**：`BrainApiClient` 仅继承 5 个 mixin（`TransportMixin`/`AuthMixin`/`SimulationMixin`/`SpcDataMixin`/`CorrelationMixin`），方法体 verbatim 迁移；扩展新端点时**新增 mixin 方法**，勿改动既有方法实现。
 - **原码备份（勿依赖 git 之外的临时副本）**：原始 4074 行整文件 `attic/brain_api_backup/original/brain_api.py`；拆解后 7 文件 `attic/brain_api_backup/current_refactored/`（brain_api.py + brain_config.py + brain_api_models.py + 5×brain_mixin_*.py）。
 - labs 特性 `labs_data_analysis_agent.py` 由 `labs_functions.emit_labs_script` 经 `read_text()` 整文件读入后粘贴进 BRAIN Labs，**不可拆分**。
@@ -284,19 +284,36 @@ git config core.hooksPath tools/git-hooks
 
 ## 8. 结构维护约定（2026-09-20 结构审计固化）
 
-### 8.1 gate 门禁实现分布（**已知重复，勿再新增第五份**）
+### 8.1 gate 门禁分层（**2026-09-20 修正：是分层流水线，不是四份重复实现**）
 
-| 文件 | 规模 | 角色 | 被谁 import |
-|---|---|---|---|
-| `tools/wave_gate.py` | 1015 行 / 17 def | 每波门禁 CLI 权威实现（§6 指定） | 测试 |
-| `tools/gate.py` | 392 行 / 15 def | campaign-toolkit 侧实现，与 wave_gate 语义重叠 | `Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py`、`_lib/region_gates.py` |
-| `src/wqb/workflow/nodes/wave_gate.py` | 178 行 | workflow 节点封装 | `workflow/registry.py` |
-| `src/wqb/workflow/nodes/unified_gate.py` | 185 行 | workflow 统一门禁节点 | workflow 节点表 |
+> **更正**：本节初版误记为"gate 逻辑四重实现、语义重叠"。实测调用链后确认是
+> **单一权威 + 包装分层**，并发现 `tools/gate.py` 是代码零引用的遗留文件（已归档）。
+> 教训：判定"重复实现"前**必须先读调用链**（`find_script` / `_TOOLKIT_CANDIDATES` 的解析目标），
+> 不能只看文件名相同就下结论。
 
-**收敛前置条件（未满足前不要合并）**：`test_gate_region_invalid_group_fields`、
-`test_wave_gate_terminal_states`、`test_inspect_mode_failclosed_p1p1`、`test_jpn_no_pv1_rules`、
-`test_gem_provenance_p1p2p3` 等 6 个测试直接 `import gate` / `import wave_gate`。
-合并需先迁移这些测试的 import 与断言口径，属独立重构任务，不可夹带在清理提交里。
+```
+unified_gate.py（节点：幽灵算子硬闸 + 转发 wave_gate）
+nodes/wave_gate.py（节点：dry-run 契约 + subprocess 包装）
+        └─→ tools/wave_gate.py（每波门禁编排器 CLI —— 唯一入口）
+                ├─→ toolkit gate.py           （8 闸，经 _TOOLKIT_CANDIDATES，权威实现）
+                ├─→ validator.py              （语法，WQ_VALIDATOR_DIR）
+                ├─→ wqb.expression.op_arity   （算子元数/命名参数，src/）
+                ├─→ _lib/region_gates.py      （区域三道闸：signal_floor/stop_rules/backlog）
+                ├─→ field_inspect_gate.py     （体检硬门）
+                └─→ pool_diversity.py         （六维多样性）
+tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档）
+```
+
+| 文件 | 角色 | 关键事实（实测） |
+|---|---|---|
+| `tools/wave_gate.py` | 每波门禁**编排器 CLI**（唯一入口） | §6 指定工具；`gate_py = find_script(_TOOLKIT_CANDIDATES, "gate.py")`（第 567 行） |
+| `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py` | **8 闸权威实现**（58KB） | 被 wave_gate 子进程调用；测试注入该目录后 `import gate` |
+| `src/wqb/workflow/nodes/wave_gate.py` | workflow 节点（包装） | subprocess 调 `tools/wave_gate.py`，带 dry-run 契约 |
+| `src/wqb/workflow/nodes/unified_gate.py` | workflow 节点（超集） | = `campaign_intel ghost-audit` + 转发 `tools/wave_gate.py`（第 134 行） |
+| `tools/legacy/gate.py` | **遗留**（16KB，2026-09-20 归档） | 代码零引用；曾 `from src.wqb.config import OP_FAMILIES` |
+
+**纪律**：不要新增 gate 实现。要加闸门 → 改 toolkit `gate.py`（8 闸权威）；
+要新入口 → 包一层 workflow 节点转发 `tools/wave_gate.py`。
 
 ### 8.2 双 MCP 系统分工（**不要合并，职责不同**）
 
@@ -318,15 +335,35 @@ git config core.hooksPath tools/git-hooks
 - **运行时缓存不入库**：`tracking/hypotheses/`（hypothesis_round 账本）已
   `git rm --cached` + gitignore，磁盘保留。
 
-### 8.4 已知但未处理的结构性问题（**记录在册，勿遗忘**）
+### 8.4 结构性问题台账（**2026-09-20 状态**）
 
-1. **`world-quant-brain-mcp/config/info_data.bin`（15M）仍在版本库**：被
-   `brain_mixin_transport.py:105` 运行时读取（缺失时优雅降级、关闭 sharpe 过滤），
-   但**全库无再生脚本**。故**不得** gitignore / de-track——否则全新 clone 会静默降级。
-   若要移出 VCS，必须先补一个再生脚本并验证降级路径。
-2. **`src/wqb/` 78 模块未打包**：`pyproject.toml` 明写 `py-modules = []`（脚本集合模型，
-   靠 sys.path 注入）。这是刻意的，但 IDE 跳转/依赖解析偏弱；若要改成正式包需同步改
-   `src/wqb/**` 的相对导入与所有脚本的 `sys.path` 注入。
-3. **文档三分**：`AGENTS.md`（治理规约，权威）、`CLAUDE.md`（宿主入口，指向 AGENTS.md）、
-   `README.md`（项目概述）。三者定位如上，新增约定一律进 `AGENTS.md`，勿在三处各写一份。
+1. **`world-quant-brain-mcp/config/info_data.bin`（15M）** —— **非问题，无需处理**
+   （2026-09-20 核验）。**更正**：初版审计误记"已入库"，实测 `git ls-files` 为空——
+   它被**根 `.gitignore:16` 的 `*.bin`** 规则忽略，**从未进版本控制**，是本地运行时缓存
+   （源自 WebDataScope 插件的 `data/oth/info_data.bin`，见
+   `brain-alpha-research/references/webdatascope-data-quality.md`）。
+   `brain_mixin_transport.py:105` 读取它、缺失时优雅降级（关闭 sharpe 过滤）。无需动作。
+2. **`src/wqb/` 78 模块未打包** —— **决策已记录，维持现状**：`pyproject.toml` 明写
+   `py-modules = []`（脚本集合模型），`tests/conftest.py` 亦注明"sys.path.insert 是既定导入机制，
+   非权宜之计"。**不改为正式包**：改动面大（需同步 `src/wqb/**` 相对导入 + 所有脚本 sys.path 注入），
+   收益仅 IDE 跳转。新脚本导入 `wqb.*` 时**照抄 conftest 的 `sys.path.insert` 模式**。
+3. **文档三分** —— **已处理（2026-09-20）**：`AGENTS.md`（治理规约，权威）、
+   `CLAUDE.md`（Claude Code 宿主常驻上下文：alpha 挖掘准则）、`README.md`（项目概述 + 上手）。
+   已在 README 顶部「文档分工」与 CLAUDE.md 头部声明三者定位。
+   *更正*：初版把 CLAUDE.md 写成"宿主入口、指向 AGENTS.md"——实际它承载挖掘准则、不指向 AGENTS.md。
+4. **`tracking/_scratch/` 临时区** —— **已清空（2026-09-20）**，日后仍按 §6 第 3/4 条使用。
+
+### 8.5 审计纠错记录（2026-09-20，**方法论教训**）
+
+本轮结构审计初版有 **3 处结论失实**，全部源于"未精确核验就下结论"：
+
+| 初版结论（错） | 实测事实 | 根因 |
+|---|---|---|
+| gate 是"四份重复实现" | 是**分层流水线**（1 权威 + 包装 + 1 遗留） | 只看文件名相同，未读调用链（`_TOOLKIT_CANDIDATES`） |
+| `CLAUDE.md` 是"宿主入口，指向 AGENTS.md" | 它承载 **alpha 挖掘准则**，不指向 AGENTS.md | 未读文件内容 |
+| `info_data.bin` "15M 已入库" | **从未入库**（根 `.gitignore` `*.bin`） | 未跑 `git ls-files` / `git check-ignore` |
+
+**铁律（写入 §4 失败诊断纪律的同源要求）**：结构性结论（"重复实现"/"已入库"/"无人引用"）
+必须先用**机器级证据**核验再落笔——`git ls-files`、`git check-ignore`、调用链 grep、
+真解析器抽样。这与项目既有"任何违规率/覆盖率数字必须先用真闸校验"是同一条纪律。
 
