@@ -254,6 +254,10 @@ git config core.hooksPath tools/git-hooks
    不手写 requests 脚本（429 事故根因之一），统一走 `BrainApiClient`（自带 429 退避）。
 2. skill 依赖路径用 `WQ_VALIDATOR_DIR` / `WQ_TOOLKIT_DIR` 或 `skill_roots()`（自动搜索顺序：`~/.claude` → `~/.codex` → 历史位 `.trae-cn`/`.qoder-cn`/`.cursor`/`.workbuddy` → 仓库 `Claude/skills` 兜底），禁止硬编码 `C:\Users\...` 绝对路径。
 3. 一次性排障探针（`_inspect_*`/`probe_payment*` 等探索类）仍可写 `tracking/_scratch/`，但结论落地后归档 `attic/`，不留在活跃目录累积。
+4. **已跑完的一次性脚本移入 `tools/legacy/`（2026-09-20 落地）**：判据为"类型一次性
+   （`backfill_*`/`migrate_*`/`triage_*`/`submit_<alpha_id>*`）+ 全库 refs=0"，用
+   `git mv` 移动（保留历史，**不是删除**），索引见 `tools/legacy/README.md`。
+   `tracking/_scratch/` 同理，属临时区，用完清空（2026-09-20 已清空 31 个文件）。
 
 ## 7. 提交纪律（2026-09-11 固化）
 
@@ -277,3 +281,52 @@ git config core.hooksPath tools/git-hooks
 
 **归档而非删除**：一次性脚本、旧版本、废弃 skill 一律移入 `attic/<主题>_<YYYYMMDD>/`，
 保留可回溯性；安装位孤儿用 `python tools/sync_skills.py --prune-orphans [--apply]`。
+
+## 8. 结构维护约定（2026-09-20 结构审计固化）
+
+### 8.1 gate 门禁实现分布（**已知重复，勿再新增第五份**）
+
+| 文件 | 规模 | 角色 | 被谁 import |
+|---|---|---|---|
+| `tools/wave_gate.py` | 1015 行 / 17 def | 每波门禁 CLI 权威实现（§6 指定） | 测试 |
+| `tools/gate.py` | 392 行 / 15 def | campaign-toolkit 侧实现，与 wave_gate 语义重叠 | `Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py`、`_lib/region_gates.py` |
+| `src/wqb/workflow/nodes/wave_gate.py` | 178 行 | workflow 节点封装 | `workflow/registry.py` |
+| `src/wqb/workflow/nodes/unified_gate.py` | 185 行 | workflow 统一门禁节点 | workflow 节点表 |
+
+**收敛前置条件（未满足前不要合并）**：`test_gate_region_invalid_group_fields`、
+`test_wave_gate_terminal_states`、`test_inspect_mode_failclosed_p1p1`、`test_jpn_no_pv1_rules`、
+`test_gem_provenance_p1p2p3` 等 6 个测试直接 `import gate` / `import wave_gate`。
+合并需先迁移这些测试的 import 与断言口径，属独立重构任务，不可夹带在清理提交里。
+
+### 8.2 双 MCP 系统分工（**不要合并，职责不同**）
+
+- `world-quant-brain-mcp/`（完整包，`main.py` 入口）= **WQ 平台 API 前端**：仿真 / 相关性 / 提交 /
+  论坛 / labs / SP C 读取，server 名 `wq-brain-http`。
+- 根 `wqb_db_mcp.py`（2224 行）= **本地 DB 后端**：`data/wqb.db` 台账 / expressions /
+  wave_results / registry 读写，server 名 `wqb-db`。
+- 两者是**上游/下游关系**，不是重复实现；命名前缀 `mcp__wq-brain-http__*` /
+  `mcp__wqb-db__*` 与工具前缀强绑定，改名即全线失配。
+
+### 8.3 配置文件权威源
+
+- **MCP 配置**：根 `.mcp.json` 是**唯一权威源**；`mcp_config.json` 是镜像
+  （供 Claude Desktop 等客户端读取），env 必须同步。`test_mcp_server_names_are_consistent`
+  只校验两边 server 名集合一致（不校验 env），故镜像漂移不会被测试发现——**改 `.mcp.json`
+  必须手动同步镜像**。
+- **DB 备份**：`data/` 已整体 gitignore，只保留 live 库 + **最新 1 份**备份；
+  旧备份用完走回收站（2026-09-20 已回收 326MB）。
+- **运行时缓存不入库**：`tracking/hypotheses/`（hypothesis_round 账本）已
+  `git rm --cached` + gitignore，磁盘保留。
+
+### 8.4 已知但未处理的结构性问题（**记录在册，勿遗忘**）
+
+1. **`world-quant-brain-mcp/config/info_data.bin`（15M）仍在版本库**：被
+   `brain_mixin_transport.py:105` 运行时读取（缺失时优雅降级、关闭 sharpe 过滤），
+   但**全库无再生脚本**。故**不得** gitignore / de-track——否则全新 clone 会静默降级。
+   若要移出 VCS，必须先补一个再生脚本并验证降级路径。
+2. **`src/wqb/` 78 模块未打包**：`pyproject.toml` 明写 `py-modules = []`（脚本集合模型，
+   靠 sys.path 注入）。这是刻意的，但 IDE 跳转/依赖解析偏弱；若要改成正式包需同步改
+   `src/wqb/**` 的相对导入与所有脚本的 `sys.path` 注入。
+3. **文档三分**：`AGENTS.md`（治理规约，权威）、`CLAUDE.md`（宿主入口，指向 AGENTS.md）、
+   `README.md`（项目概述）。三者定位如上，新增约定一律进 `AGENTS.md`，勿在三处各写一份。
+

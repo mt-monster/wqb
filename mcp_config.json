@@ -1,5 +1,5 @@
 {
-  "_comment": "服务器名必须是 wq-brain-http / wqb-db —— 所有 skill 调用的工具前缀是 mcp__wq-brain-http__* / mcp__wqb-db__*，改名即全线失配。与仓库根 .mcp.json 保持一致。",
+  "_comment": "服务器名必须是 wq-brain-http / wqb-db —— 所有 skill 调用的工具前缀是 mcp__wq-brain-http__* / mcp__wqb-db__*，改名即全线失配。本文件是根 .mcp.json 的镜像（供 Claude Desktop 等客户端读取）；.mcp.json 为权威源，env 必须同步。test_mcp_server_names_are_consistent 校验两边 server 名集合一致。2026-09-20 同步：补齐 WQB_ASI_UNIVERSE_FIX / WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR。",
   "mcpServers": {
     "wq-brain-http": {
       "command": "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe",
@@ -7,7 +7,10 @@
         "D:/coding/traeCN_project/wqb/world-quant-brain-mcp/main.py"
       ],
       "env": {
-        "MCP_TRANSPORT": "stdio"
+        "MCP_TRANSPORT": "stdio",
+        "WQB_ASI_UNIVERSE_FIX": "20260916",
+        "WQ_TOOLKIT_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/wq-brain-campaign-toolkit/scripts",
+        "WQ_VALIDATOR_DIR": "D:/coding/traeCN_project/wqb/Claude/skills/alpha-expression-verifier/scripts"
       },
       "description": "WorldQuant BRAIN MCP Server - Alpha Mining & Simulation Tools",
       "alwaysAllow": [
