@@ -352,6 +352,15 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
    已在 README 顶部「文档分工」与 CLAUDE.md 头部声明三者定位。
    *更正*：初版把 CLAUDE.md 写成"宿主入口、指向 AGENTS.md"——实际它承载挖掘准则、不指向 AGENTS.md。
 4. **`tracking/_scratch/` 临时区** —— **已清空（2026-09-20）**，日后仍按 §6 第 3/4 条使用。
+5. **代码级结构债与优化项** —— 见独立报告 `reports/code_structure_survey_20260925.md`
+   （2026-09-25 全库梳理产出，含 `tools/` 文档覆盖率 38%、僵尸测试、默认 zip 路径缺失、
+   WebDataScope/info_data.bin 冗余、Skill 嵌套副本等 11 项，按优先级 P1–P11 排序）。
+   **台账不再重复列举**，避免两处漂移。
+6. **`data/`、`logs/` 无保留策略** —— **已确认的复发问题**：2026-09-20 清到 390M/29M 后，
+   5 天内回涨到 **1.4G / 211M**（2026-09-25 再清到 472M / 46M）。
+   保留政策沿用「`data/` 留 live `wqb.db` + **最新一份**完整备份；`logs/` 保留 `_async_tasks`、
+   `_dblock`、`_slots` 三个运行时状态目录（并发会话 MCP 进程在读写，删了会破坏在跑流水线）」。
+   待落地：`tools/retention.py`（dry-run 默认）——见报告的 P3。
 
 ### 8.5 审计纠错记录（2026-09-20，**方法论教训**）
 
@@ -366,4 +375,33 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 **铁律（写入 §4 失败诊断纪律的同源要求）**：结构性结论（"重复实现"/"已入库"/"无人引用"）
 必须先用**机器级证据**核验再落笔——`git ls-files`、`git check-ignore`、调用链 grep、
 真解析器抽样。这与项目既有"任何违规率/覆盖率数字必须先用真闸校验"是同一条纪律。
+
+#### 第二轮（2026-09-25）：引用分析的两个新坑
+
+再做一次全库"零引用"扫描时又踩两个坑，都是**会直接导致误删代码的那种**：
+
+| 坑 | 错在哪 | 正确做法 |
+|---|---|---|
+| **子串 grep 高估引用** | `tools/pipeline_integration.py` 被 grep 到，但命中处是 `diversity_extract.py` 里的 **ledger key 字符串** `pipeline_integration_{dataset}`，不是 import；`docs` 里那条还是指向根本不存在的 `test_pipeline_integration.py` | 用**token 级计数**，命中后再人工判别，别把 grep 数字直接当结论 |
+| **dotted token 漏票** | 首跑把 `src/wqb/research/selection_contract.py` 判成零引用——因为 `from wqb.research.selection_contract import …` 被整体当成一个 token，**切分后才有 `selection_contract`** | token 同时索引**按 `.` / `/` 切分后的各段**，否则 dotted import 全被误判为死代码 |
+
+**最关键的一条**：**`refs=0` ≠ 死代码**。`tools/*.py` 绝大多数是**命令行工具**，天然
+不被任何模块 import（`field_axis.py`、`combo_precheck.py`、`discover_datasets.py`…）。
+必须**再看有无 `__main__` / argparse 入口**：有 → 是"未登记的 CLI 工具"（文档缺口，不能删）；
+无 → 才是真死代码。本轮按此把疑似项从 22 个收敛到 **6 个**。
+
+#### 全套件在本地全跑会红 —— 不是回归（2026-09-25 实测）
+
+`pytest tests/ -q` 全量出现 25–34 个失败，但**每个失败文件单独跑都全绿**
+（`test_build_wave_selection.py` 22/22、`test_db_write_guards.py` 14/14）。
+根因两条：
+
+1. **共享状态争用**：`logs/_slots`、`logs/_dblock`、`logs/_async_tasks` 是**进程级**共享状态，
+   运行中的 MCP 服务与 pytest 抢同一把锁；
+2. **沙箱 safe-delete 守卫**：守卫会截获对 `logs/_dblock/dbwrite.lock.json` 的删除，
+   把守卫文本混进 subprocess stdout → `assert 'xxx' in out` 型断言失败，
+   失败文本里能看到 `[safe-delete][SAFE_DELETE_BULK_CONFIRM_REQUIRED]`。
+
+**判价顺序**：先看失败文件单独跑绿不绿 → 绿就不是回归。**别急于 revert**。
+pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR 重定向）。
 
