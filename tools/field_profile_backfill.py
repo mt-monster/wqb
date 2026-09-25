@@ -7,13 +7,13 @@
 
 用法:
     # 回填指定 region 的全部数据集（zip 内覆盖到的）
-    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9.zip --region KOR
+    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9 --region KOR
 
     # 只回填指定数据集
-    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9.zip --region KOR --datasets analyst25
+    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9 --region KOR --datasets analyst25
 
     # dry-run：只打印不落库
-    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9.zip --region KOR --dry-run
+    python tools/field_profile_backfill.py --zip research-data/WebData_20260219_V0.10.9 --region KOR --dry-run
 """
 import argparse
 import json
@@ -27,8 +27,10 @@ from typing import Any, Dict, List, Optional
 _TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_ROOT = os.path.dirname(_TOOLS_DIR)
 sys.path.insert(0, _TOOLS_DIR)
+sys.path.insert(0, os.path.join(_TOOLS_DIR, "lib"))
 sys.path.insert(0, os.path.join(_REPO_ROOT, "src"))
 
+from pack_reader import open_pack  # noqa: E402  zip 与已解压目录通吃
 from webdata_quality import (  # noqa: E402
     load_bin,
     parse_yearly_distribution,
@@ -119,7 +121,7 @@ def backfill(
 ) -> Dict[str, Any]:
     from wqb.store.campaign import CampaignStore
 
-    zf = zipfile.ZipFile(zip_path)
+    zf = open_pack(zip_path)  # zip 与已解压目录通吃
     names = set(zf.namelist())
     bin_names = [n for n in names if n.startswith("data/") and n.endswith(".bin")
                  and not n.endswith("dataSetList.json")]
@@ -194,7 +196,8 @@ def main():
     zip_path = args.zip
     if not os.path.isabs(zip_path):
         zip_path = os.path.join(_REPO_ROOT, zip_path)
-    if not os.path.isfile(zip_path):
+    # 2026-09-25：数据包可以是 zip 文件，也可以是已解压目录（pack_reader 两者通吃）
+    if not (os.path.isfile(zip_path) or os.path.isdir(zip_path)):
         print(f"ERROR: zip not found: {zip_path}", file=sys.stderr)
         sys.exit(1)
 

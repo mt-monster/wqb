@@ -21,9 +21,12 @@ import sys
 import zipfile
 from typing import Dict, List, Any
 
-# 添加 tools 目录到路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# 添加 tools 目录与 tools/lib 到路径
+_TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _TOOLS_DIR)
+sys.path.insert(0, os.path.join(_TOOLS_DIR, "lib"))
 
+from pack_reader import open_pack  # zip 与已解压目录通吃
 from webdata_quality import load_bin, field_inspect, classify_distribution, parse_yearly_distribution
 
 
@@ -39,7 +42,7 @@ class S0EnhancedScreener:
         
     def _load_data(self):
         """加载 WebDataScope 数据包"""
-        with zipfile.ZipFile(self.zip_path) as zf:
+        with open_pack(self.zip_path) as zf:
             self.info = load_bin(zf, 'data/oth/info_data.bin')
             try:
                 self.osis = load_bin(zf, 'data/oth/osis_data.bin')
@@ -183,7 +186,7 @@ class S0EnhancedScreener:
             
         fname = candidates[0]
         try:
-            with zipfile.ZipFile(self.zip_path) as zf:
+            with open_pack(self.zip_path) as zf:
                 ds_data = load_bin(zf, f'data/{fname}.bin')
         except KeyError:
             return {"pass": False, "reason": "field_bin_not_found",

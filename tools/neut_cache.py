@@ -12,7 +12,7 @@ vs 均值 0.437）。每次新区域战役强制先跑 webdata_quality.py 读区
 用法:
   # 从 WebDataScope 数据包回填缓存（每区域战役启动时跑一次）
   python tools/neut_cache.py --rebuild --region USA --delay 1 \
-      --zip WebData_20260219_V0.10.9.zip
+      --zip research-data/WebData_20260219_V0.10.9
 
   # 发批前查表：某数据集最优 3 个中性化
   python tools/neut_cache.py --region USA --delay 1 --dataset model135 --top 3
@@ -26,6 +26,9 @@ import sqlite3
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# pack_reader 在 tools/lib/，不在上面这条路径里，必须显式注入，
+# 否则 rebuild() 里 `from pack_reader import open_pack` 会 ModuleNotFoundError。
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "wqb.db")
 
@@ -55,9 +58,9 @@ def _conn(db_path):
 
 def rebuild(region, delay, zip_path, dry_run=False, db_path=DB_PATH):
     """从 WebDataScope 数据包回填 (region, delay) 全量 数据集×中性化 缓存。"""
-    import zipfile
+    from pack_reader import open_pack  # zip 与已解压目录通吃
     from webdata_quality import load_bin  # 复用现有 msgpack 解压
-    with zipfile.ZipFile(zip_path) as zf:
+    with open_pack(zip_path) as zf:
         info = load_bin(zf, 'data/oth/info_data.bin')
     key = f"{region}_{delay}"
     if key not in info:

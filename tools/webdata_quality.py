@@ -2,8 +2,8 @@
 """WebDataScope 数据包 → 数据集/字段/中性化/预处理全景分析。
 
 用法:
-    python3 tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1
-    python3 tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 \
+    python3 tools/webdata_quality.py --zip research-data/WebData_20260219_V0.10.9 --region USA --delay 1
+    python3 tools/webdata_quality.py --zip research-data/WebData_20260219_V0.10.9 --region USA --delay 1 \
         --fields analyst11 --json-out tracking/reference/quality_analyst11.json
 
 功能:
@@ -18,9 +18,15 @@
 
 依赖: pip install msgpack
 """
-import argparse, json, re, zipfile, zlib
+import argparse, json, os, re, sys, zipfile, zlib
 
 import msgpack
+
+# tools/lib（pack_reader）不在默认路径，显式注入
+_TOOLS_LIB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib")
+if _TOOLS_LIB not in sys.path:
+    sys.path.insert(0, _TOOLS_LIB)
+from pack_reader import open_pack  # zip 与已解压目录通吃
 
 # 中位数分位段 → 分布形状判定
 DIST_SHAPE_RULES = [
@@ -28,7 +34,8 @@ DIST_SHAPE_RULES = [
 ]
 
 
-def load_bin(zf: zipfile.ZipFile, name: str):
+def load_bin(zf, name: str):
+    """读包内某个 msgpack+zlib 的 .bin（zf 可以是 ZipFile 或 DirArchive）。"""
     return msgpack.unpackb(zlib.decompress(zf.read(name)), strict_map_key=False)
 
 
@@ -597,7 +604,7 @@ def main():
     args = ap.parse_args()
 
     key = f"{args.region}_{args.delay}"
-    with zipfile.ZipFile(args.zip) as zf:
+    with open_pack(args.zip) as zf:
         info = load_bin(zf, 'data/oth/info_data.bin')
         try:
             osis = load_bin(zf, 'data/oth/osis_data.bin')
@@ -742,7 +749,7 @@ def main():
                 continue
             fname = candidates[0]
             try:
-                with zipfile.ZipFile(args.zip) as zf:
+                with open_pack(args.zip) as zf:
                     ds_data = load_bin(zf, f'data/{fname}.bin')
             except KeyError:
                 print(f'### {ds_name}: {fname}.bin 不存在 (仅 dataSetList 列出但缺 bin)')
@@ -839,7 +846,7 @@ def main():
                 continue
             fname = candidates[0]
             try:
-                with zipfile.ZipFile(args.zip) as zf:
+                with open_pack(args.zip) as zf:
                     ds_data = load_bin(zf, f'data/{fname}.bin')
             except KeyError:
                 continue

@@ -33,7 +33,16 @@ import zipfile
 from typing import Dict, List, Tuple
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_ZIP = os.path.join(REPO_ROOT, "research-data", "WebData_20260219_V0.10.9.zip")
+_TOOLS_LIB = os.path.join(REPO_ROOT, "tools", "lib")
+if _TOOLS_LIB not in sys.path:
+    sys.path.insert(0, _TOOLS_LIB)
+from pack_reader import open_pack  # 同时支持 zip 文件与已解压目录
+
+#: 默认数据包。2026-09-25 修正：仓库里**只有解压后的目录**
+#: `research-data/WebData_20260219_V0.10.9/`（163 个文件），不存在同名 .zip，
+#: 旧默认值永远打不开（「体检包本地不可达」反复出现的根因）。
+#: 经 `pack_reader.open_pack` 后 zip 与目录都能读，故此处指向实际存在的目录。
+DEFAULT_ZIP = os.path.join(REPO_ROOT, "research-data", "WebData_20260219_V0.10.9")
 OUT_DIR = os.path.join(REPO_ROOT, "tracking", "mining")
 WEBDATA = os.path.join(REPO_ROOT, "tools", "webdata_quality.py")
 
@@ -43,7 +52,7 @@ KEEP_KEYS = ("field", "metadata", "advices")
 
 def available_combos(zip_path: str) -> List[Tuple[str, int]]:
     """数据包里存在的 (region, delay) 组合。"""
-    with zipfile.ZipFile(zip_path) as zf:
+    with open_pack(zip_path) as zf:
         dsl = json.loads(zf.read("data/dataSetList.json"))
     combos = set()
     for name in dsl:
@@ -122,7 +131,7 @@ def main() -> int:
     ap.add_argument("--py", default=sys.executable)
     a = ap.parse_args()
 
-    if not os.path.isfile(a.zip):
+    if not (os.path.isfile(a.zip) or os.path.isdir(a.zip)):
         print(f"[packs] 数据包不存在：{a.zip}", file=sys.stderr)
         return 2
 
