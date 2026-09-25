@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
-"""
-GBR 区域批次隔离测试脚本
+"""GBR 区域批次隔离测试脚本
 用于小批次测试新字段，确认无误后再加入大批次
+
+⚠️ 本文件是**手动 CLI 校验脚本**，不是 pytest 用例：
+  1) `pytest.ini` 的 testpaths 不含 tools/，它**从不被自动收集**；
+  2) 它 `from main import brain_client`，并被 `tools/gbr_pre_submit_check.py:25`
+     **以子进程方式调用**，文件名带 `test_` 前缀是历史命名，不可重命名
+     （重命名会直接打断 gbr_pre_submit_check 链路）；
+  3) 方法会真回头测云平台，不适合进 CI。
+故显式 `__test__ = False`：即便日后有人把 tools/ 加进 testpaths，pytest 也不会收集它。
 """
+__test__ = False
 
 import asyncio
 import json

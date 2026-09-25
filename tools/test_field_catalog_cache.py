@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""test_field_catalog_cache.py - S1 字段扫描缓存功能测试。
+"""test_field_catalog_cache.py - S1 字段扫描缓存功能**手动校验脚本**。
 
 测试缓存的各个环节：
 1. 缓存未命中时的平台扫描
@@ -8,9 +8,16 @@
 4. 缓存 TTL 机制
 5. 批量预热功能
 
-用法:
-  python test_field_catalog_cache.py --campaign-dir tracking/EUR --dataset ai_equity_alpha
+用法（另有完整说明见 docs/S1_FIELD_CATALOG_CACHE_GUIDE.md）:
+  python tools/test_field_catalog_cache.py --campaign-dir tracking/EUR --dataset ai_equity_alpha
+
+⚠️ 本文件是**手动 CLI 脚本**，不是 pytest 用例：
+  1) `pytest.ini` 的 testpaths 不含 tools/，它**从不被自动收集**；
+  2) 下面的 `test_*` 函数带 `ctx`/`dataset` 形参，pytest 会当成缺 fixture 而报错；
+  3) 非 dry-run 分支会**真的打平台 API**（`Api`/`load_creds`），放进 CI 危险。
+故显式 `__test__ = False`：即便日后有人把 tools/ 加进 testpaths，也不会被收集。
 """
+__test__ = False
 
 import argparse
 import datetime
