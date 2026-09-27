@@ -1,4 +1,4 @@
-# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑，2026-09-27）
+# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑 → N30 修复与第五轮探针，2026-09-27）
 
 > **对象**：`Claude/skills/wq-brain-ra-pipeline/SKILL.md`（v2.2，last_verified 2026-09-19）定义的唯一挖掘编排 SOP（S-PRE→S6 九步），以及它调用的 workflow 节点、`tools/`、toolkit 脚本与 MCP 函数。
 > **代码基线**：`c393bca`（2026-09-25）。
@@ -6,7 +6,8 @@
 > **附件**（同名目录 `reports/ra_pipeline_stage_review_20260927/`）：`dryrun_transcript.txt`（完整演练实录）、`reproduce.sh` + `run_dryrun.py` / `seed_db.py` / `sbx_guard.py`（一条命令复现）。
 > **第二轮（同日更新，见 §14，首读建议从 §14.0 开始）**：按审阅意见先修两个 P0（N1 / N2），再在**真实环境**复跑九步。真实环境 = 真实仓库工作树 + 两个 MCP server 经 stdio 真实启动 + `tracking/KOR` 真实历史经 MCP 导入，并用修复前的原始代码做对照。复跑暴露了 P0-2 的两处残缺（N16 / N17，已一并修复），另记新发现 N18–N27。附件 `realenv/`：`run_realenv.py`、`reproduce_realenv.sh`、`realenv_transcript_p0.txt`（第二轮实录）。
 > **第三轮（同日更新，见 §14.8）**：按审阅意见修复四个 P1（R18–R21），用修复后的代码在真实环境把九步完整再跑一遍，每一步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定，数字取自本次运行）。首跑又暴露 R19 / R21 的两处残缺（N28 / N29，已一并修复）。实录 `realenv/realenv_transcript_r18_r21.txt`。
-> **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1，未修）。随后按审阅意见定下 CLI 开波闸灰度截止日：2026-10-11 及以前 warn，2026-10-12 起缺省 enforce（§14.9.7）。实录 `realenv/realenv_transcript.txt`。
+> **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1；第五轮已修，§14.10）。随后按审阅意见定下 CLI 开波闸灰度截止日：2026-10-11 及以前 warn，2026-10-12 起缺省 enforce（§14.9.7）。实录 `realenv/realenv_transcript.txt`。
+> **第五轮（同日更新，见 §14.10）**：按审阅意见修 N30。盘点全部 wave_results 写入方后，同一根因有四处：收批级联、toolkit 评审写入（主路径）、点塔回写、两个 verdict 归一器。四处全部改走写入契约，波号一律原字符串，约定写进 AGENTS.md §8.6。真实环境探针修复前 / 后对照 9/9 ✅，含"修复后的代码接手修复前的库"。新记 N31（P2，需定）：SOP 的手动补收入口在 MCP 层不存在。实录 `realenv/realenv_transcript_n30.txt`。
 
 **证据等级**（全文每条判断都标注来源，避免"推测记账"）：
 
@@ -37,11 +38,11 @@
 | 6 | S3 七槽回测 | `workflow_batch_track` → pipeline.py | 七槽填槽、设置先验、连坐隔离、argv/存活握手 | **保留** | SOP 指定入口 `batch_track` **不跑**停止/天花板/积压三闸（✅ 已修，§14.9） |
 | 7 | S4 诊断 | `workflow_campaign(S4)` → review_wave | RN_EXPOSURE / ROBUST_STRUCTURAL 墙、预筛、salvage | **保留深化** | RN_EXPOSURE 行仍进 near/salvage 池（✅ 已修，§14.9；仓库真实数据里无触发样本） |
 | 8 | S4→S5 判定 | Failed-count → `submit_verdict` → 用户确认 | 否决权威 + 人工确认门 | **保留，修正定位** | `src/wqb/config.py` 有一份与生产口径相反的 Failed-count 实现（✅ 已收敛为唯一实现，§14.9）；`submit_verdict` 对新候选只能给 UNVERIFIABLE |
-| 9 | S6 复盘 | `step_funnel` + `upsert_wave_result` + pyramid | verdict→停止规则 B、region_kb 刷新、判死封存 | **保留** | **P0：只补写 key_findings 会把 verdict 清成 NULL → 停止规则 B 静默失效（全链复现）**（✅ 已修，§14.1；第二轮新增 N20 ✅ 已修，§14.8；N22 ✅ 已修，§14.9；第四轮新记 N30：收批级联绕过写入契约、波号被截成数字，§14.9） |
+| 9 | S6 复盘 | `step_funnel` + `upsert_wave_result` + pyramid | verdict→停止规则 B、region_kb 刷新、判死封存 | **保留** | **P0：只补写 key_findings 会把 verdict 清成 NULL → 停止规则 B 静默失效（全链复现）**（✅ 已修，§14.1；第二轮新增 N20 ✅ 已修，§14.8；N22 ✅ 已修，§14.9；第四轮新记 N30 ✅ 已修（连同评审写入 / 点塔回写同一根因），§14.10） |
 
 **总评**：九步骨架本身没有多余的"步"——每一步都承载着至少一个有实证的判别机制。本轮发现的问题集中在**步与步之间的接缝**（写入口契约、快照/文件双载体、节点 vs CLI 两条执行路径语义不一）和**展示层噪声**，而不是"缺步骤"或"步骤无用"。真正该**去除**的是少数已被证明无效或误导的子项（死代码缓存、分叉实现、只打印不判定的伪硬闸），真正该**深化**的是把 SOP 文字规则变成机器可执行的约束（users 分级、区域闸 enforce、verdict 写入契约）。
 
-### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9）
+### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9；N31 为第五轮新增，详见 §14.10）
 
 | # | 级别 | 发现 | 证据 |
 |---|---|---|---|
@@ -69,7 +70,8 @@
 | N22–N27 | P2–P3 | 规则 B 窗口按 updated_at（第三轮建议升 P1，§14.8.4；✅ R22 已修，§14.9）；`.mcp.json` 不可移植；孤儿节点 / 工具面缺陷；argv 只校验分发层；fail-open 与静默降级；质量预估刻度失准等 | 〔真〕§14.5 |
 | N28 | **P1** ✅已修（§14.8） | `gate.py` 找工作区 `src/` 的解析没随 R19 收敛：`.mcp.json` 原样 env 下 op_arity 不可达，**每条表达式都记 `[ARITY_UNKNOWN]`，静态闸全拦**；仓库自带 4 条单测常红即此因 | 〔真〕§14.8 |
 | N29 | P2 ✅已修（§14.8） | R21 逐条回写把"闸门环境缺失"（`[*_UNKNOWN]`）写成 `fail`；这类结论还会进逐条缓存，环境修好后仍被复用 | 〔真〕§14.8 |
-| N30 | **P1** 未修 | 收批级联 `wqb_db_mcp._cascade_wave_result`（`harvest_multisim_results` 调用，SOP 步 6 的手动补收入口）绕过 P0-1 写入契约：用 `int(re.search(r"(\d+)", wave))` 取波号（`s2_<ds>_d1` → **2**、`91c` → 91），直接 UPDATE 覆盖已有 verdict（含人写的枚举值）或 INSERT 一条 closed 行 | 〔码〕§14.9.4 |
+| N30 | **P1** ✅已修（§14.10） | 收批级联 `wqb_db_mcp._cascade_wave_result`（`harvest_multisim_results` 调用，SOP 步 6 的手动补收入口）绕过 P0-1 写入契约：用 `int(re.search(r"(\d+)", wave))` 取波号（`s2_<ds>_d1` → **2**、`91c` → 91），直接 UPDATE 覆盖已有 verdict（含人写的枚举值）或 INSERT 一条 closed 行。修复时查出同一根因还有 toolkit 评审写入（主路径：首个数字入库、冲突顺延 max+1、INSERT OR REPLACE 重置 `created_at`）与点塔回写，一并修复 | 〔码〕§14.9.4；〔真〕§14.10 |
+| N31 | P2 未修（需定） | SOP 步 6 的手动补收入口 `mcp__wqb-db__harvest_multisim_results` 在 MCP 层不存在（726a350 降级为内部函数，SOP 未改）：按 SOP 调用得 `Unknown tool`；`workflow_auto_harvest` 不接收平台 alpha 列表、不写 wave_results | 〔真〕§14.10 |
 
 ### 0.3 09-16/17 建议的落地复核（代码核验）
 
@@ -743,7 +745,7 @@
 2. **验证中顺手修的两处**（都是本批修复让测试"走得更远"才暴露）：
    - `tools/probe_batch_mode.py::_wqb_store()` 写死 `<repo>/data/wqb.db`、不认 `WQB_DB_PATH`（R19 的漏网）。R12 让 `test_probe_batch_mode_b_distribution_mode` 找得到 toolkit 之后，这条单测会在默认路径上初始化 CampaignStore——在用户本机就是生产库（建表 / 迁移）。改为 `CampaignStore()`（走 `default_db_path()`，`WQB_DB_PATH` 优先），单测指到临时库。
    - S4 的 `_resolve_wave_alpha_ids` 纯读却用 `sqlite3.connect`，缺库时悄悄建空库（dry-run 也走这条路）。改为只读打开，与 R5 的开波闸共用 `connect_db_readonly`。
-3. **新记 N30（P1，未修）**：wqb-db 收批级联绕过写入契约、把字符串波号截成数字（§14.9.4）。
+3. **新记 N30（P1）**：wqb-db 收批级联绕过写入契约、把字符串波号截成数字（§14.9.4）。✅ 已修，见 §14.10。
 4. **回归**：根测试 1239 passed / 13 failed / 15 skipped，失败集合是上一批（17 条）的真子集，没有新增失败。转绿 4 条：N12 的 3 条（R12）+ `test_sync_skills_reports_no_drift`（同步 skills 后）。MCP 包 78 / 5，失败集合与 HEAD 相同（§14.9.6）。
 
 #### 14.9.1 修复内容
@@ -790,12 +792,12 @@
 
 | # | 级别 | 发现 | 证据 |
 |---|---|---|---|
-| N30 | **P1** 未修 | **收批级联绕过写入契约。** `harvest_multisim_results`（ra-pipeline SKILL.md:405 的手动补收入口）收批后调 `_cascade_wave_result`：<br>• 波号用 `int(re.search(r"(\d+)", wave))` 取：`s2_<ds>_d1` → **2**、`91c` → 91。于是 GEM 标签波的收批结果写进"第 2 波"那一行；该行不存在时 INSERT 一条 closed 行，按 R22 它以"现在"为开始时刻进入规则 B 窗口。<br>• verdict 写成 `"N/M 过硬闸, 新高 X"`，直接 UPDATE（覆盖已有 verdict，包括人按判定表写的枚举值），不经 P0-1 契约的归一与合并。<br>• 两个归一器对这种写法不一致：停止闸的 `_normalize_verdict` 给 `3/8 过硬闸` 判 PARTIAL，写入契约的 `normalize_verdict` 判 PASS（`0/8` 两边都是 FAIL）。对规则 B 的结论相同，但同一文本两种枚举。<br>建议：级联改走契约写入口，波号保留原字符串；verdict 用 `verdict_from_counts`（R20）得到枚举值，且只在该波没有 verdict 时填写 | 〔码〕`wqb_db_mcp.py:1454-1525`（`_cascade_wave_result`），调用点 `:1389`；〔码〕两个归一器的实测输出 |
+| N30 | **P1** ✅ 已修（§14.10） | **收批级联绕过写入契约。** `harvest_multisim_results`（ra-pipeline SKILL.md:405 的手动补收入口）收批后调 `_cascade_wave_result`：<br>• 波号用 `int(re.search(r"(\d+)", wave))` 取：`s2_<ds>_d1` → **2**、`91c` → 91。于是 GEM 标签波的收批结果写进"第 2 波"那一行；该行不存在时 INSERT 一条 closed 行，按 R22 它以"现在"为开始时刻进入规则 B 窗口。<br>• verdict 写成 `"N/M 过硬闸, 新高 X"`，直接 UPDATE（覆盖已有 verdict，包括人按判定表写的枚举值），不经 P0-1 契约的归一与合并。<br>• 两个归一器对这种写法不一致：停止闸的 `_normalize_verdict` 给 `3/8 过硬闸` 判 PARTIAL，写入契约的 `normalize_verdict` 判 PASS（`0/8` 两边都是 FAIL）。对规则 B 的结论相同，但同一文本两种枚举。<br>建议：级联改走契约写入口，波号保留原字符串；verdict 用 `verdict_from_counts`（R20）得到枚举值，且只在该波没有 verdict 时填写 | 〔码〕`wqb_db_mcp.py:1454-1525`（`_cascade_wave_result`），调用点 `:1389`；〔码〕两个归一器的实测输出 |
 | R22 的边界 | 说明 | 库里从未出现过的旧波（无 `waves` 行、也无旧结论行）第一次补记时，`created_at` 就是"现在"，仍会进窗口。库里没有它的真实开始时刻，只能靠补记方带上（后续可给 `upsert_wave_result` 加 `started_at`）。本演练的 91c 在导入时已有结论行，不受影响 | 〔码〕`_recent_closed_waves` |
 | R19 漏网 | P2 | `campaign._ensure_campaign_config` 仍写死 `<repo>/data/wqb.db`，不认 `WQB_DB_PATH`。本批没有测试走到它，未改 | 〔码〕`campaign.py` `_ensure_campaign_config` |
 | N11 残留 | P2 | 仍有 49 个文件含 `traeCN_project` 硬编码路径，典型如 `modeb_improve.py` 的 `DB = r'D:\coding\traeCN_project\wqb\data\wqb.db'`、GEM 脚本、`_lib/slots.py`、`tools/campaign_intel.py`、`.mcp.json` | 〔码〕grep |
 | 干跑副作用 | P3 | `probe_batch_mode.py --dry-run` 仍把结果写进战役目录 `cache/`（gitignored，所以 Probe 与 `git status` 都看不见） | 〔真〕第四轮步 5 ⑥ |
-| 仍待办 | — | P1：R6（`[opcat]` 降为 INFO）、R8（提交判定定位）、N30。R5 里"CLI warn 灰度写明截止日期"一项已定：2026-10-11 截止（§14.9.7）。其余 P2 / P3 见 §13 / §14.7 | — |
+| 仍待办 | — | P1：R6（`[opcat]` 降为 INFO）、R8（提交判定定位）。N30 已修（§14.10）。R5 里"CLI warn 灰度写明截止日期"一项已定：2026-10-11 截止（§14.9.7）。其余 P2 / P3 见 §13 / §14.7 | — |
 
 #### 14.9.5 价值评估的修订（第二批）
 
@@ -834,7 +836,7 @@
 | 问题 | 证据 | 取舍 |
 |---|---|---|
 | 为什么要截止，不能一直 warn | 〔史〕2026-09-17 USA：最近 2 批 max\|sharpe\| 0.88 低于天花板 0.9，近 7 天 582 次回测 0 达标，warn 只告警，照样烧槽位；只能靠战役提示词要求 USA 手动加 `--gate-mode enforce`（`tracking/USA/campaign_prompt_usa_regular_20.md:216-222`）。R5 之后 SOP 的 workflow 入口都已拦截，CLI 的 warn 是剩下的唯一绕行口 | 灰度必须有终点 |
-| 为什么不今天就切 | 09-27 闸的输入语义大改：verdict 写入契约（P0-1）、逐条回写（R7 / R21）、规则 B 窗口（R22）。生产库里还有旧数据：R7 之前 FAIL 候选也记 `gated`，会抬高积压；N30 会把收批结果写到错的波上 | 先在新语义下观察真实命中 |
+| 为什么不今天就切 | 09-27 闸的输入语义大改：verdict 写入契约（P0-1）、逐条回写（R7 / R21）、规则 B 窗口（R22）。生产库里还有旧数据：R7 之前 FAIL 候选也记 `gated`，会抬高积压；N30 会把收批结果写到错的波上（✅ 已修，§14.10；修复前写下的脏行按 §14.10.4 审计） | 先在新语义下观察真实命中 |
 | 观察多久 | 挖掘按周末集中：带日期的 50 个波文件里 29 个在周六（周五 9、周三 6、周二 4、周一 2，周四和周日 0）；08-01 以来 57 个提交有 33 个在周末；KOR 在 W34 一周跑了 38 波。一个活跃周末就是几十次开波判定 | 按周末计，取两个完整周末：10-03/04、10-10/11（约两周） |
 | 切在哪天 | 周一在数据里最闲（50 个波文件中 2 个，57 个提交中 3 个） | 10-12（周一）切换：当天波及面最小；若误拦，下个周末前有整整一周处理 |
 
@@ -847,7 +849,7 @@
 
 **切换前建议核对（10-11 前）**：
 1. 翻看灰度期的命中行（`[region-gates] ★ 命中 … 仅告警不阻断（…2026-10-12 起同样命中将阻断开波）`；workflow 异步任务的输出在 `logs/_async_tasks/*.out`），逐区确认是真命中。KOR 的规则 B 与团队事后结论一致，属真命中。
-2. 最好先修 N30：否则收批级联可能把结果写到错的波上，再经规则 B 变成误拦或误放。
+2. ~~最好先修 N30~~ N30 已修（§14.10）。切换前在生产库跑一遍 §14.10.4 的只读审计查询，把修复前写下的幽灵行 / 被改写的结论清掉，否则它们仍在规则 B 的窗口里，可能误拦或误放。
 3. 看各区积压占比：R7 之前的旧 `gated` 行会抬高它（workflow 入口本来就按它拦截，CLI 切换不新增这类风险）。
 4. 发现误拦就修闸，或把 `WARN_SUNSET` 往后挪（一处常量）；不要全局设 `WQB_GATE_MODE=warn`，那等于取消截止日。
 
@@ -863,6 +865,124 @@
 - `python tools/sync_skills.py`：同步了两份 SKILL.md（toolkit 脚本在排查时已同步），`--check` 通过。
 - MCP venv 由 uv 创建，里面没有 pip，按等价命令 `uv pip install --python world-quant-brain-mcp/.venv/bin/python -r world-quant-brain-mcp/requirements.txt` 执行：11 项全部已满足（含 ply 3.11），`uv pip check` 无冲突。
 - 本机（Windows）拉取 main 后同样要各跑一次：`python tools/sync_skills.py`，以及 `world-quant-brain-mcp\.venv\Scripts\python.exe -m pip install -r world-quant-brain-mcp\requirements.txt`（venv 若由 uv 创建，改用 `uv pip install --python <venv 的 python> -r …`）。
+
+### 14.10 N30 修复与第五轮真实环境探针（2026-09-27）
+
+> 审阅意见："修复 N30"。实录 `realenv/realenv_transcript_n30.txt`，复现 `realenv/reproduce_realenv_n30.sh`（附录 A）。
+> 方法：同一份导入后的 KOR 真实历史，N30 修复前的提交（`3ea1931`，git archive 副本）与本工作树各跑一遍同一调用序列。收批、评审、只补 focus、点塔回写、停止规则 B 都用各自代码树里的真实代码。验证清单 ✅ / ❌ 判修复后，并列修复前的实测。
+
+#### 14.10.0 一页结论
+
+1. **根因不止收批级联。** 修的时候先盘点"谁在写 wave_results"（grep 全部 INSERT / UPDATE / REPLACE）。除契约本身和两个一次性迁移工具（`tools/migrate_*`，人工复核用）外，自动写入方有三个，全都绕过 P0-1 写入契约：
+   - 收批级联（N30a，即原记录的 N30）；
+   - toolkit 评审写入（N30b）：pipeline stage_review 与 review_wave.py 每波都走，是主路径，影响面比 N30a 大得多；
+   - auto_pyramid 点塔回写（N30d）。
+
+   另有两个 verdict 归一器口径不一（N30c）。四处全部改走契约，约定写进 AGENTS.md §8.6。
+2. **真实环境 9/9 ✅。** 输入是 KOR 最近一波 ml_factor_proj（wave94）的 9 条真实指标，按 GEM 标签波号 `s2_ml_factor_proj_d1` 收批。
+   - **修复前**：
+     - 收批写进 `'2'`；评审写进 `'105'`，那是另一个真实 KOR 波，只是库里还没有它的结论行。于是停止规则 B 的窗口成了 `['105', '2', '97']`，**同一波占了三格中的两格**。
+     - 补收 94 把人按 PROD 相关判的 FAIL 改成了 `2/9 过硬闸, 新高 1.83`：停止闸读作 PARTIAL，契约读作 PASS，总之不再是 FAIL。补收 91c 则改写了第 91 波。
+     - 重评重置 `created_at`。只补 focus 把结论行整行冲成 open、verdict 清空。点塔回写两次都报成功，实际写入 0 条。
+   - **修复后**：
+     - 收批、评审、salvage、点塔一律按 `s2_ml_factor_proj_d1` 写，与 `backtest_results` 同键。
+     - 评审（PARTIAL）覆盖收批的暂定结论（PASS）。已有结论和显式 open 的行，收批不碰。
+     - 窗口是 `['s2_ml_factor_proj_d1', '97', '96']`。
+   - **升级路径**：修复后的代码接手修复前留下的库。
+     - 旧评审写的数字键行 `105` 被自动认领，id 与 `created_at` 保留。
+     - 旧收批级联新写或改写的行（`2` / `94` / `91`）没有 `full_payload.wave`，认不出属于哪一波，要人工处理。§14.10.4 给了只读审计查询。
+3. **新记 N31（P2，未修，需定）：SOP 步 6 的手动补收入口在 MCP 层不存在。**
+   - ra-pipeline SKILL.md:405 写的是 `mcp__wqb-db__harvest_multisim_results`。726a350（09-19）把它降级为内部函数，SOP 没改；`test_skill_integrity` 把这条过期引用列进了白名单。按 SOP 调用得到 `Unknown tool`。
+   - 替代工具 `workflow_auto_harvest` 只按 multisim_id 读库里已有的回测行，不接收平台 alpha 列表，也不写 wave_results。
+   - 推论：N30a 的级联自 09-19 起在生产上没有 MCP 入口，生产库里的级联脏行只可能来自此前。
+4. **回归。**
+   - 根测试 1279 passed / 13 failed / 15 skipped：失败集合与 §14.9.6 相同，新增 34 条全过。
+   - MCP 包 78 / 5，失败集合与 HEAD 相同。
+   - 新用例在修复前的代码上 25/31 失败；另 6 条是两个归一器本来就一致的输入。
+
+#### 14.10.1 修复内容
+
+| 项 | 改动 | 文件 |
+|---|---|---|
+| N30a 收批级联 | • 波号用原字符串（此前 `int(首个数字)`）；改走契约的合并式 upsert（此前直写 UPDATE / INSERT）；salvage_pool 同样记原波号。<br>• **结论归属**：只改自己写的行，即 `source_file=harvest:auto`、仍是 closed、verdict 仍是它上次写的值。评审 / 人工 / S6 的 verdict 和显式 open 的行不动；结案却没有 verdict 的旧空壳行可以补。<br>• **暂定 verdict 按 R20 判定表**：≥1 条过硬闸 → PASS；否则 ≥1 条 sharpe 过该区 near 线 → PARTIAL；否则 FAIL。FAIL 只在没有一条过 near 线时给：各区 near 线（1.0 / 1.2）都不高于评审线（1.58，USA 1.25），评审必然也判 FAIL，所以级联的 FAIL 不会误停区。PASS / PARTIAL 是暂定值，评审覆盖。<br>• 同一波多次收批按 alpha_id 合并后重算（此前只看最后一批）。返回值说明本波行怎么处理的（inserted / updated / kept + 原因） | `wqb_db_mcp.py` |
+| N30b 评审写入（toolkit） | • 原字符串波号（此前首个数字，冲突再顺延 max+1）。<br>• 走契约合并写入（此前 INSERT OR REPLACE 整行重建：未传的列被清空，`created_at` 每次重置）。<br>• 评审自己的 findings 行（`GREEN:` / `YELLOW:` / `RED:` / `best sharpe=` / `主墙:` / `[harvest]`）整组替换，其他来源（`[pyramid]`、人工）保留。<br>• CLI `--wave` 收字符串；`--status` 缺省改为"不给"：带 verdict 即结案，否则已有行保持原状态、新行 open。此前缺省 open，合并写入下只补 focus 就会把结案波改回 open，规则 B 从此看不到它。<br>• CLI 输出写入后的行状态和本次实际写入的列。建表语句与主库一致（波号 TEXT、带 `created_at`） | toolkit `_lib/wave_results.py`、`review_wave.py`、`pipeline.py`、SKILL.md §9 |
+| N30c 归一器 | 停止闸 `_normalize_verdict` 委托契约的 `normalize_verdict`，删掉自有的两条正则。在 29 条真实 verdict 原文（全部区域的 wave 结果文件，加修复前收批写进库的原文）上，此前 8 条两边结论不同：6 条 RED / 全灭类停止闸判 UNKNOWN、契约判 FAIL；2 条 `N/M 过硬闸` 停止闸判 PARTIAL、契约判 PASS。现在 0 条 | `src/wqb/workflow/nodes/campaign.py` |
+| N30d 点塔回写 | 走契约，只写 key_findings。写入内容改为 campaign_intel 的 `[key_findings]` 单行（此前写的是整个进度 dict 的 repr，含 2000 字输出尾巴）；自己的 `[pyramid]` 行整行替换（此前每跑一次追加一条）。<br>以下三种情况如实报 `embedded=False`、节点 success=False，不写库（此前一律报 `embedded=True`）：没有该行、没有 `[key_findings]` 单行、契约拒写。<br>顺手修：步骤按名字取，`auto_embed=False` 时不再 IndexError | `src/wqb/workflow/nodes/auto_pyramid.py` |
+| 旧行认领 | 契约新增 `adopt_legacy_row`：本波还没有原字符串键的行、但有 `full_payload.wave` 等于原字符串的旧数字键行时，把它改回原字符串键（id / `created_at` / 内容保留）。两行并存时不动，留给人工。评审写入与收批级联在同一事务里、写之前调用 | `src/wqb/wave_results_contract.py` |
+| 表结构 | CampaignStore 迁移时给没有 `created_at` 的旧 wave_results 表补列（旧版 toolkit 建的表没有这一列） | `src/wqb/store/_schema.py` |
+| 约定 | wave_results 只经写入契约写；波号一律原字符串；结论归属；归一只有一张表 | AGENTS.md §8.6 |
+| 测试 | `tests/unit/test_n30_wave_results_writers.py` 31 条：级联 ×9（原字符串键、不串到数字相同的波、多批合并重算、near 线判 FAIL、不覆盖评审 / 人工 / open、补空壳行、认领旧行、两行并存不动、与 backtest_results 同键）；评审写入 ×5（认领旧行、重评保留 `created_at` 与外来 findings、覆盖暂定结论、CLI 字符串波号、`--status` 缺省）；R22 联动 ×1（重评旧 s2 波不解除规则 B）；点塔 ×3；归一对照 ×12；表结构 ×1。<br>`test_stop_rules_verdict_p0p3.py` 判定表对齐契约，+3 条。<br>修复前的代码上 25/31 失败（6 条是两边本来一致的归一输入） | |
+| 演练脚本 | `realenv/run_realenv_n30.py`（复用 run_realenv 的 stdio 起服、真实历史导入、脱敏）+ `reproduce_realenv_n30.sh` | |
+
+#### 14.10.2 真实环境：修复前 vs 修复后（同一份导入后真实库、同一调用序列）
+
+| 步 | 修复前（`3ea1931`） | 修复后 |
+|---|---|---|
+| ⓪ 按 SOP 调 `mcp__wqb-db__harvest_multisim_results` | `Unknown tool`（两棵树相同，N31） | 同左；①–③ 改为在各自代码树里直接调用该函数（与原 MCP 工具同一函数体） |
+| ① 收批 `s2_ml_factor_proj_d1`（9 条） | wave_results 新增 `'2'`（closed，`2/9 过硬闸, 新高 1.83`）；回测行在 `s2_…`，salvage_pool 记 `'2'` | `s2_…`：暂定 PASS（2/9 过硬闸，6 条过 near 线 1.0，source `harvest:auto`）；回测行与 salvage_pool 同键 |
+| ② 补收 94（人写 RED → 导入为 FAIL） | verdict 被改成 `2/9 过硬闸, 新高 1.83` | kept（已有结论），不变 |
+| ③ 补收 91c（导入为 open） | 写进 `'91'`：第 91 波被写上 91c 的 10 条候选和 `3/10 过硬闸, 新高 1.91` | kept（显式 open 的行），91 / 91c 都不变 |
+| ④ 评审（review_wave.py 真跑） | 写进 `'105'`（顺延 max+1，撞上另一个真实 KOR 波）；`s2_…` 本身没有结论行 | `s2_…`：PASS（暂定）→ PARTIAL（评审，source `pipeline:auto`），`[harvest]` 摘要被评审行替换 |
+| ⑤ 隔两秒重评 | `created_at` 16:21:35 → 16:21:37（整行重建） | 不变 |
+| ⑥ 规则 B（评审后） | 窗口 `['105', '2', '97']` → PARTIAL / PARTIAL / FAIL：同一波占两格 | `['s2_…', '97', '96']` → PARTIAL / FAIL / FAIL |
+| ⑦ 只补 focus（CLI） | `--wave s2_…` exit 2（只收整数）；改用 `--wave 105` 后整行冲成 open、verdict 空、findings 空 | updated（本次写入：focus），closed / PARTIAL 不变 |
+| ⑧ 点塔回写 ×2 | 两次都报 success / embedded=True，实际写入 0 条（没有原字符串键的行） | `[pyramid]` 行 1 条，重跑不重复，结论不变 |
+| ⑨ 规则 B（最后） | `['2', '97', '96']`：代表这一波的是幽灵行 `'2'`，verdict 是自由文本 | 同 ⑥ |
+| 升级：修复后的代码接手修复前 ⑥ 时的库 | — | `'105'` 被认领为 `s2_…`（`created_at` 原样保留）；`'2'` / `'94'` / `'91'` 仍需人工处理，窗口 `['s2_…', '2', '97']` |
+| 两个归一器（29 条真实原文） | 8 条不同 | 0 条 |
+
+说明：
+- 评审的指标读穿缓存只含历史文件里有的字段（没有 margin），评审判据要求 margin，所以这批在评审里 0 条达标、8 条 near，结论是 PARTIAL。这是真实评审代码对这份输入的结论，不代表当时平台上的评审结果。
+- 点塔查询要登录平台，探针只把这一个子进程换成标明是替身的固定输出；节点代码和库都是真的。
+- 本轮没有复现"一波两格"导致误拦 / 误放：KOR 最近两个真实 closed 波（97 / 96）都是 FAIL，而这批的结论是 PARTIAL。但窗口成员错了本身就意味着：同一波连续 FAIL 时，一次实验会被记成两次。
+
+#### 14.10.3 新发现与残留
+
+| # | 级别 | 发现 | 建议 |
+|---|---|---|---|
+| N31 | P2 未修（需定） | 见 §14.10.0 第 3 条。平台 alpha 列表入库并级联结论这一步，目前没有 MCP 入口；主路径（toolkit pipeline 自己收批入库）不受影响 | 二选一：① 重新把 `harvest_multisim_results` 注册为 MCP 工具（现在它经契约写入，拍平 / 相关性透传都在）；② 改 SOP 与 `test_skill_integrity` 白名单，指向可用的入口。726a350 是有意降级，由你定 |
+| 旧数据 | 需人工 | 修复只管以后的写入。生产库里修复前写下的数字键行、自由文本 verdict 仍在：旧评审行下次写同一波时会自动认领；旧级联行不会 | 跑 §14.10.4 的只读审计查询，逐行处理 |
+| 测试隔离 | P3（既有） | `test_wave_verdict_contract.py` 的 module 级 fixture 把安装位 toolkit 插到 `sys.path[0]` 且不还原。之后同进程里的 `import gate` 会拿到安装位那份，`test_p1_fixes_20260927.py::test_gate_resolves_workspace_without_env` 随之失败（修复前后相同）。全量按字母序跑不触发 | fixture 用 `monkeypatch.syspath_prepend` 并在结束时清理 `_lib` / `gate` 模块 |
+| 真实库依赖 | P3（既有） | 带 `skipif(无 data/wqb.db)` 的用例（如 `test_real_db_all_regions_normalizable`）在收集时判定；测试自己造出的空库（WorkflowExecutor 的 store，§14.9.6）若留在 `data/`，下一轮这些用例会对着空库跑并失败 | 跑全量前清掉 `data/wqb.db`，或让这些用例认一个真实库的标记 |
+
+#### 14.10.4 生产库审计（只读）
+
+```sql
+-- ① 旧版评审写下的数字键行：full_payload.wave 记着原字符串、键却不同。
+--    修复后的评审 / 收批下次写同一波时自动改回原字符串键；也可以现在按 wave 列人工改键。
+SELECT region, wave_number, json_extract(full_payload, '$.wave') AS wave, verdict, status
+FROM wave_results
+WHERE json_extract(full_payload, '$.wave') IS NOT NULL
+  AND CAST(json_extract(full_payload, '$.wave') AS TEXT) != CAST(wave_number AS TEXT);
+
+-- ② verdict 不是枚举的行（主要是旧收批级联的 "N/M 过硬闸, 新高 X"），以及候选实际属于哪一波。
+--    candidates_in_waves 与 wave_number 不同 → 幽灵行或被别的波串写；相同 → 该波的结论被级联覆盖，按原始记录恢复。
+SELECT wr.region, wr.wave_number, wr.verdict, wr.status, wr.source_file,
+       (SELECT GROUP_CONCAT(DISTINCT br.wave) FROM json_each(COALESCE(wr.candidates, '[]')) c
+          JOIN backtest_results br ON br.alpha_id = json_extract(c.value, '$.alpha_id')) AS candidates_in_waves
+FROM wave_results wr
+WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
+```
+
+在修复前代码跑完的演练库上，这两条查出了本轮全部受害行：`105`（① 类，认领后消失）；`2`（候选属于 `s2_ml_factor_proj_d1`，幽灵行）；`91`（候选属于 `91c`，被串写）；`94`（结论被覆盖）。
+
+#### 14.10.5 回归与同步
+
+- **根测试**：1279 passed / 13 failed / 15 skipped。失败集合与 §14.9.6 的 13 条相同。
+  - 同一环境下 HEAD（`3ea1931`）17 failed：多出的 4 条是"安装位 toolkit 与仓库一致"类用例。安装位已同步成本批版本，HEAD 的仓库副本自然对不上。
+  - 收集数 1273 → 1307，差值正好是新增的 34 条。
+- **MCP 包**：78 / 5，失败集合与 HEAD 相同。HEAD 那一遍多出的 `test_retry_wait_exponential_backoff_no_header` 是抖动越界（9.0016 > 9.0），与本批无关。
+- **技能同步**：改了 toolkit 的 `_lib/wave_results.py`、`review_wave.py`、`pipeline.py` 与 SKILL.md。容器内已同步，`--check` 通过；本机拉取后要再跑一次 `python tools/sync_skills.py`。
+- **pyflakes**：改动文件的告警与 HEAD 相同。`auto_pyramid.py` 里两个未用的 import 是既有的。
+- **第五轮共跑 6 遍**：
+  - 第 1 遍按 SOP 经 MCP 调收批得 `Unknown tool`（N31），清单 5/7。据此改为在各自代码树里直接调用该函数，并补上点塔回写（N30d）与"评审后 / 最后"两次规则 B 判定。
+  - 第 2 遍 8/8。
+  - 第 3–5 遍逐项收紧：
+    - CLI 与评审 focus 缺省把 `wave` 前缀直接拼在字符串波号上（`waves2_…`），改了；
+    - 旧行认领挪进契约，收批级联也调用；
+    - 加升级路径；
+    - 审计查询覆盖被改写的行（不只 `source_file` 为空的新行）。
+  - 第 6 遍即附件实录，9/9。
 
 ---
 
@@ -914,6 +1034,21 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 
 第四轮共跑 4 遍，经过见 §14.9.6。第 4 遍在 §14.9.7 之后：步 5 的 wave_gate 显式 `--gate-mode warn`，步 2 打印 CLI 的缺省模式；除这两处与时间戳 / 字典键序外，与第 3 遍逐行相同（DB Δ 与验证清单一致）。
 
+**第五轮（N30 修复后的专项探针）**：
+
+```bash
+bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh
+# 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N30 修复前的提交，默认 3ea1931>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
+```
+
+脚本复用 `run_realenv.py` 的 stdio 起服、真实历史导入与脱敏；修复前的对照树是 `PRE_FIX_REV` 的 git archive 副本。动作与保护：
+- 两棵树的 `data/wqb.db`（wqb-db server 写死该路径，N26）在演练期间换成导入快照的副本，结束（含异常退出）后移回；
+- 战役目录用 `$REALENV_SCRATCH/n30/<tree>/tracking/KOR`（config 拷自原件），不写 `tracking/KOR`；
+- 评审的指标读穿缓存预置为输入的 9 行（每个 id 都有），点塔查询换成标明是替身的固定输出：两处都是为了不登录平台，脚本不读 `.env`；
+- 末尾打印验证清单（含升级路径）与本轮新发现。
+
+第五轮共跑 6 遍，经过见 §14.10.5。
+
 ## 附录 B：证据索引（主要 `文件:行`）
 
 | 发现 | 位置 |
@@ -947,4 +1082,5 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 | N27 | `tools/wave_gate.py`（质量预估段）；`src/wqb/workflow/nodes/gem.py`（`check_config` 先于命令构建）；`review_wave.py:30-44,113-121` |
 | N28 | `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py`（`_workspace_src_dirs` / `_load_arity_check` / `_find_tools_lib` / `_resolve_workspace_deps`；修复前的"上溯 5 级"与硬编码盘符）；`build_wave.py:141-168`（09-09 修过的同类问题）；`tests/unit/test_window_whitelist_p4.py`、`test_gem_provenance_p1p2p3.py` |
 | N29 | `tools/wave_gate.py`（`_write_back_gate_status` / `_env_unknown_only` / `gate_fail_reasons`）；`gate.py`（`ENV_UNKNOWN_TAGS` / `env_unknown`、逐条缓存写入） |
-| N30 | `wqb_db_mcp.py:1389`（`harvest_multisim_results` 调用点）、`:1454-1525`（`_cascade_wave_result`）；`src/wqb/workflow/nodes/campaign.py`（`_normalize_verdict`）vs `src/wqb/wave_results_contract.py`（`normalize_verdict`）；ra-pipeline SKILL.md:405 |
+| N30 | `wqb_db_mcp.py:1389`（`harvest_multisim_results` 调用点）、`:1454-1525`（`_cascade_wave_result`）；`src/wqb/workflow/nodes/campaign.py`（`_normalize_verdict`）vs `src/wqb/wave_results_contract.py`（`normalize_verdict`）；ra-pipeline SKILL.md:405。<br>修复后：`wqb_db_mcp.py:1458-1505`（`HARVEST_SOURCE` / `_region_near_line` / `_cascade_wave_result`）；`src/wqb/wave_results_contract.py:222`（`adopt_legacy_row`）；toolkit `_lib/wave_results.py:36`（`REVIEW_FINDING_PREFIXES`）、`:111`（`upsert`）、`:213`（`auto_upsert_from_review`）；`campaign.py:1104`（`_normalize_verdict` 委托契约）；`auto_pyramid.py:158`（`_embed_pyramid`）；`src/wqb/store/_schema.py`（补 `created_at` 列）；`tests/unit/test_n30_wave_results_writers.py`；`realenv/realenv_transcript_n30.txt` |
+| N31 | `wqb_db_mcp.py:1247`（`harvest_multisim_results` 无 `@mcp.tool()`，726a350 起）、`:2136`（`workflow_auto_harvest` → `src/wqb/workflow/nodes/auto_harvest.py:110` 按 multisim_id 读回测行）；ra-pipeline SKILL.md:403-405、:691；`tests/unit/test_skill_integrity.py:125-128`（白名单）；`realenv/realenv_transcript_n30.txt` 步 ⓪ |
