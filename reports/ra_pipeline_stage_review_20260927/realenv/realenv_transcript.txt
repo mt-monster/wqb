@@ -5,17 +5,17 @@
   .mcp.json wq-brain-http: command=D:/coding/traeCN_project/wqb/world-quant-brain-mcp/.venv/Scripts/python.exe  exists_on_this_host=False
   .mcp.json wqb-db: command=D:/coding/traeCN_project/wqb/.venv/Scripts/python.exe  exists_on_this_host=False
   → 本机翻译：command=<repo>/world-quant-brain-mcp/.venv/bin/python（Python 3.12.3），路径前缀 D:/coding/traeCN_project/wqb → <repo>
-  git HEAD: 8921a3a docs(reports): P1 修复后真实环境第三轮复跑九步（逐阶段输入/处理/输出/价值判定，2026-09-27）
-  工作树未提交改动（= 本轮 P1 第二批修复 R22 / R5 / R12 / R4 / R3）: ['Claude/skills/wq-brain-campaign-toolkit/SKILL.md', 'Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py', 'Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py', 'Claude/skills/wq-brain-ra-pipeline/SKILL.md', 'reports/ra_pipeline_stage_review_20260927/realenv/realenv_transcript.txt -> reports/ra_pipeline_stage_review_20260927/realenv/realenv_transcript_r18_r21.txt', 'reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh', 'reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py', 'src/wqb/config.py', 'src/wqb/workflow/_common.py', 'src/wqb/workflow/nodes/batch_track.py', 'src/wqb/workflow/nodes/campaign.py', 'src/wqb/workflow/nodes/gem.py', 'tests/unit/test_p1_batch2_20260927.py', 'tests/unit/test_r3_failed_count_single_source.py', 'tests/unit/test_workflow_nodes.py', 'tools/build_gate_prior_from_inventory.py', 'tools/pre_backtest_filter.py', 'tools/probe_batch_mode.py', 'tools/skill_paths.py', 'tools/wave_gate.py', 'world-quant-brain-mcp/mcp_core.py', 'world-quant-brain-mcp/requirements.txt', 'world-quant-brain-mcp/tests/test_mcp_tools_unit.py']
+  git HEAD: 2a96574 docs(reports): P1 第二批修复后真实环境第四轮复跑九步（§14.9，2026-09-27）
+  工作树未提交改动（= 本轮 P1 第二批修复 R22 / R5 / R12 / R4 / R3）: ['AGENTS.md', 'Claude/skills/wq-brain-campaign-toolkit/SKILL.md', 'Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_gates.py', 'Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py', 'Claude/skills/wq-brain-ra-pipeline/SKILL.md', 'reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py', 'tests/conftest.py', 'tests/unit/test_region_gates_p0p1.py', 'tools/wave_gate.py']
   world-quant-brain-mcp/.env 存在? False （只判存在，不读取）
   data/wqb.db 本轮开始前存在? False 
   [wqb-db] tools=45  私有名工具=['_flatten_platform_alpha']  无 dry_run 参数的 workflow_*=['workflow_inventory_scan', 'workflow_field_understanding', 'workflow_gem_wave', 'workflow_unified_gate', 'workflow_auto_harvest', 'workflow_auto_review', 'workflow_auto_pyramid']
   [wq-brain-http] tools=69  私有名工具=[]  无 dry_run 参数的 workflow_*=['workflow_list_nodes', 'workflow_task_status']
   [wqb-db] 启动 stderr 告警: []
-  [wq-brain-http] 启动 stderr 告警: ["[WARNING] OS/IS Sharpe data file not found at <repo>/world-quant-brain-mcp/config/info_data.bin, sharpe filtering disabled", "[INFO] Redis not available (ConnectionError), caching disabled (optional)", "2026-09-27 14:31:34,646 - WARNING - operators_catalog 不可用 (No module named 'operators_catalog') — 字段预检算子过滤降级", "[WARNING] No BRAIN credentials found in config. Authentication will fail until credentials are provided."]
+  [wq-brain-http] 启动 stderr 告警: ["[WARNING] OS/IS Sharpe data file not found at <repo>/world-quant-brain-mcp/config/info_data.bin, sharpe filtering disabled", "[INFO] Redis not available (ConnectionError), caching disabled (optional)", "2026-09-27 15:37:32,473 - WARNING - operators_catalog 不可用 (No module named 'operators_catalog') — 字段预检算子过滤降级", "[WARNING] No BRAIN credentials found in config. Authentication will fail until credentials are provided."]
 
 --- 空库首调：先调只读工具（_conn 直连，不建 schema）
-[wqb-db] get_campaign_summary(region=KOR)  → isError=True  0.03s
+[wqb-db] get_campaign_summary(region=KOR)  → isError=True  0.04s
     out: Error executing tool get_campaign_summary: no such table: wave_results
     side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db", "<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
     data/wqb.db 此刻存在? True  表数: 0
@@ -121,25 +121,25 @@
     out: {"region": "KOR", "waves": {"total": 30, "closed": 6}, "latest_wave": {"wave_number": "104", "focus": "wave104_mix", "status": "open"}, "dead_ends": 12, "submit_ready": 0}
     side-effects: DB Δ=无 | git 新脏文件=无
 [wqb-db] get_dead_ends(region=KOR)  → isError=False  0.02s
-    out: [{"id": 4, "region": "KOR", "layer": "dead_end", "entry_id": "KOR-ACQ-MODEL-DEAD", "family": "acquisition_model 收购概率", "payload": {"family": "acquisition_model 收购概率", "reason": "wave70 10/10 FAIL：收购概率类信号（global/industry/region_percentile_acquisition_likelihood）sharpe 天花板 0.27，2y 全负（-0.65~-1.34），NLP 文本因子 0.12，复合信号 -0.03~0.13 无正交增益", "salvage": "model170 隐含估值/市价比率（9qXgWY79 sharpe 0.64/2y 0.37 全场唯一 2y 为正），CW 结构性集中需先解决集中度"}, "dead_at": null, "created_at": "2026-09-27T14:32:09", "updated_at": "2026-0 …(+4841 chars)
+    out: [{"id": 4, "region": "KOR", "layer": "dead_end", "entry_id": "KOR-ACQ-MODEL-DEAD", "family": "acquisition_model 收购概率", "payload": {"family": "acquisition_model 收购概率", "reason": "wave70 10/10 FAIL：收购概率类信号（global/industry/region_percentile_acquisition_likelihood）sharpe 天花板 0.27，2y 全负（-0.65~-1.34），NLP 文本因子 0.12，复合信号 -0.03~0.13 无正交增益", "salvage": "model170 隐含估值/市价比率（9qXgWY79 sharpe 0.64/2y 0.37 全场唯一 2y 为正），CW 结构性集中需先解决集中度"}, "dead_at": null, "created_at": "2026-09-27T15:38:07", "updated_at": "2026-0 …(+4841 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wqb-db] get_mining_yield(region=KOR, strict=true)  → isError=False  0.02s
     out: {"rows": [{"region": "KOR", "expressions": 247, "backtested": 247, "conversion": 1.0, "passed": 5, "ra_clean": 5, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.0202, "yield_rate_loose": 0.0202, "prod_wall_ratio": null}], "totals": {"expressions": 247, "backtested": 247, "conversion": 1.0, "passed": 5, "ra_clean": 5, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.0202, "yield_rate_loose": 0.0202}, "criteria": {"sharpe_min": 1.58, "fitness_min": 1.0, "strict": true, "prod_max": 0.7, "yield_rate_def": "ra_clean/backtested（sharpe/fitness 达标且 ra_failed_checks 为空）"}}
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] get_mining_yield(region=KOR, by_dataset=true)  → isError=False  0.02s
+[wqb-db] get_mining_yield(region=KOR, by_dataset=true)  → isError=False  0.03s
     out: {"rows": [{"region": "KOR", "dataset": "ml_factor_proj", "expressions": 39, "backtested": 39, "conversion": 1.0, "passed": 5, "ra_clean": 5, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.1282, "yield_rate_loose": 0.1282, "prod_wall_ratio": null}, {"region": "KOR", "dataset": "_mixed", "expressions": 40, "backtested": 40, "conversion": 1.0, "passed": 0, "ra_clean": 0, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.0, "yield_rate_loose": 0.0, "prod_wall_ratio": null}, {"region": "KOR", "dataset": "_unknown", "expressions": 90, "backtested": 90, "conversion": 1.0, "passed": 0, "ra_clean": 0, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.0, "yield_rate_loose": 0.0, "prod_wall_ratio": null}, {"region": "KOR", "dataset": "model219", "expressions": 6, "backtested": 6, "conversion": 1.0, "passed": 0, "ra_clean": 0, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.0, "yield_ra …(+863 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wqb-db] get_dead_datasets(region=KOR)  → isError=False  0.02s
     out: []
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] list_wave_results(region=KOR, status=closed, limit=5)  → isError=False  0.03s
-    out: [{"id": 26, "region": "KOR", "wave_number": "97", "focus": "盈余质量/前瞻估值族首波: surp 盈余惊喜变化 / fwdroe 前瞻ROE / fcfp 前瞻估值 / EPS增长×ROA双信号 / 现金流质量-增长 252d 协同 / 行业ROE-前瞻ROE 协同; 避开评级修正饱和族(PROD 相关风险), 水平字段配 ts_delta(63) 压 TVR", "context": null, "key_findings": ["原 verdict（写入时归一）: RED (判死): 0 可提交。model219 盈余质量/前瞻估值族不入 book; 不继续投入该方向。", "model219 盈余质量/前瞻估值族全灭 (0/6): 所有结构 sharpe 绝对值<0.5。KOR TOP600 慢变基本面因子(盈余惊喜/前瞻ROE/估值比变化)定价效率高无 alpha; 与评级修正族(有效)对比, 分析师预期变化类信息才是 KOR 有效面。TVR 全部 6-12% 低换手说明信号本身无预测力而非执行问题。"], "candidates": null, "batches": null, "verdict": "FAIL", "status": "closed", "source_file": "<repo>/tracking/KOR/candidates/wave97_results.json", "archived": 0, "created_at": "2026-09-27T14:32:03", "updated …(+3169 chars)
+[wqb-db] list_wave_results(region=KOR, status=closed, limit=5)  → isError=False  0.02s
+    out: [{"id": 26, "region": "KOR", "wave_number": "97", "focus": "盈余质量/前瞻估值族首波: surp 盈余惊喜变化 / fwdroe 前瞻ROE / fcfp 前瞻估值 / EPS增长×ROA双信号 / 现金流质量-增长 252d 协同 / 行业ROE-前瞻ROE 协同; 避开评级修正饱和族(PROD 相关风险), 水平字段配 ts_delta(63) 压 TVR", "context": null, "key_findings": ["原 verdict（写入时归一）: RED (判死): 0 可提交。model219 盈余质量/前瞻估值族不入 book; 不继续投入该方向。", "model219 盈余质量/前瞻估值族全灭 (0/6): 所有结构 sharpe 绝对值<0.5。KOR TOP600 慢变基本面因子(盈余惊喜/前瞻ROE/估值比变化)定价效率高无 alpha; 与评级修正族(有效)对比, 分析师预期变化类信息才是 KOR 有效面。TVR 全部 6-12% 低换手说明信号本身无预测力而非执行问题。"], "candidates": null, "batches": null, "verdict": "FAIL", "status": "closed", "source_file": "<repo>/tracking/KOR/candidates/wave97_results.json", "archived": 0, "created_at": "2026-09-27T15:38:01", "updated …(+3169 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_execute(inventory_scan, dry_run)(node=inventory_scan, params={"region": "KOR", "target": 20}, dry_run=true)  → isError=False  0.04s
+[wq-brain-http] workflow_execute(inventory_scan, dry_run)(node=inventory_scan, params={"region": "KOR", "target": 20}, dry_run=true)  → isError=False  0.05s
     out: {"success": true, "node": "inventory_scan", "params": {"region": "KOR", "target": 20}, "output": {"region": "KOR", "target": 20, "regions": ["all"], "success": true, "steps": [{"step": "build_gate_prior", "command": "<repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/build_gate_prior_from_inventory.py --regions all --emit-candidates cache/candidates.json --write-priors", "success": true}, {"step": "select_ra_basket", "command": "<repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/ba …(+241 chars)
     side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
-[wqb-db] wqb-db workflow_inventory_scan（无 dry_run 参数 → 真跑）(region=KOR, target=20)  → isError=False  0.62s
-    out: {"success": false, "node": "inventory_scan", "params": {"region": "KOR", "target": 20, "regions": null}, "output": {"region": "KOR", "target": 20, "regions": ["all"], "success": false, "steps": [{"step": "build_gate_prior", "command": "<repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/build_gate_prior_from_inventory.py --regions all --emit-candidates cache/candidates.json --write-priors", "success": true, "returncode": 1, "stdout_tail": "", "stderr_tail": "line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<repo>/t …(+854 chars)
+[wqb-db] wqb-db workflow_inventory_scan（无 dry_run 参数 → 真跑）(region=KOR, target=20)  → isError=False  0.91s
+    out: {"success": false, "node": "inventory_scan", "params": {"region": "KOR", "target": 20, "regions": null}, "output": {"region": "KOR", "target": 20, "regions": ["all"], "success": false, "steps": [{"step": "build_gate_prior", "command": "<repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/build_gate_prior_from_inventory.py --regions all --emit-candidates cache/candidates.json --write-priors", "success": true, "returncode": 1, "stdout_tail": "", "stderr_tail": "line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<repo>/t …(+855 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wq-brain-http] recommend_datasets(region=KOR, delay=1, universe=TOP600, top_n=5)  → isError=False  0.03s
     out: {"error": "An unexpected error occurred: Authentication credentials not found in config. Please authenticate first."}
@@ -155,29 +155,30 @@
 步 2 · S0 数据集体检 + 白名单
 ==============================================================================================================
 [wq-brain-http] workflow_campaign(region=KOR, stage=S0, calibrate=true, dry_run=true)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "subcommand": null, "extra_args": [], "calibrate": true}, "output": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py --campaign-dir <repo>/tracking/KOR --calibrate"}], "success": true, "dry_run": true, "note": "dry-run：命令已构建，未执行"}, "error": null, "duration_sec": 0.002451181411743164, "timestamp": "2026-09-27T14:32: …(+78 chars)
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "subcommand": null, "extra_args": [], "calibrate": true}, "output": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py --campaign-dir <repo>/tracking/KOR --calibrate"}], "success": true, "dry_run": true, "note": "dry-run：命令已构建，未执行"}, "error": null, "duration_sec": 0.0028581619262695312, "timestamp": "2026-09-27T15:38 …(+79 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wq-brain-http] workflow_campaign(region=KOR, stage=S0, dry_run=true)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "subcommand": null, "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py --campaign-dir <repo>/tracking/KOR"}], "success": true, "dry_run": true, "note": "dry-run：命令已构建，未执行"}, "error": null, "duration_sec": 0.002658367156982422, "timestamp": "2026-09-27T14:32:10.544355", …(+67 chars)
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "subcommand": null, "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S0", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py --campaign-dir <repo>/tracking/KOR"}], "success": true, "dry_run": true, "note": "dry-run：命令已构建，未执行"}, "error": null, "duration_sec": 0.0027348995208740234, "timestamp": "2026-09-27T15:38:08.981094" …(+68 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
 --- 开波前区域四闸（toolkit _lib/region_gates，warn 模式；真实 tracking/KOR；env 不带任何根目录变量）
-$ <repo>/world-quant-brain-mcp/.venv/bin/python -c import sys,json; sys.path.insert(0,'.'); from _lib import region_gates as rg; r=rg.run_region_gates(r'<repo>/tracking/KOR', 'KOR', mode='warn', dataset='ml_factor_proj'); print('RESULT', json.dumps({'ok': r.get('ok'), 'gates': {n: (x or {}).get('success') for n, x in (r.get('results') or {}).items()}, 'hits': {n: (x or {}).get('hits') for n, x in (r.get('results') or {}).items() if (x or {}).get('hits')}}, ensure_ascii=False))
+$ <repo>/world-quant-brain-mcp/.venv/bin/python -c import sys,json; sys.path.insert(0,'.'); from _lib import region_gates as rg; r=rg.run_region_gates(r'<repo>/tracking/KOR', 'KOR', mode='warn', dataset='ml_factor_proj'); print('RESULT', json.dumps({'ok': r.get('ok'), 'gates': {n: (x or {}).get('success') for n, x in (r.get('results') or {}).items()}, 'hits': {n: (x or {}).get('hits') for n, x in (r.get('results') or {}).items() if (x or {}).get('hits')}, 'cli_default': list(rg.resolve_mode(None)) if hasattr(rg, 'resolve_mode') else None}, ensure_ascii=False))
   | [region-gates] catalog      放行
   | [region-gates] signal_floor 放行
   | [region-gates] stop_rules   命中 — 停止规则拦截（KOR）：B: 最近 3 个 closed 波 verdict 全 FAIL。继续开波只会重复烧槽位——换区域/换 universe/换数据集；确需继续（用户显式指令）请写台账 mcp__wqb-db__upsert_ledger_key(region='KOR', key='stop_rules_override', value={'reason': '<用户指令与理由>', 'until': 
   | [region-gates]                evidence: backtested=243
   | [region-gates] backlog      放行
   | [region-gates]                evidence: total=247, backtested=247, pending_gated=0, gem=0, selected=0, unconsumed=0, conversion=1.0, pending_gated_ratio=0.0, unconsumed_ratio=0.0
-  | [region-gates] ★ 命中 stop_rules，但 gate-mode=warn（灰度）→ 仅告警不阻断。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。
-  | RESULT {"ok": true, "gates": {"catalog": true, "signal_floor": true, "stop_rules": false, "backlog": true}, "hits": {"stop_rules": ["B: 最近 3 个 closed 波 verdict 全 FAIL"]}}
+  | [region-gates] ★ 命中 stop_rules，但 gate-mode=warn（灰度）→ 仅告警不阻断（缺省灰度期至 2026-10-11，2026-10-12 起同样命中将阻断开波）。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。
+  | RESULT {"ok": true, "gates": {"catalog": true, "signal_floor": true, "stop_rules": false, "backlog": true}, "hits": {"stop_rules": ["B: 最近 3 个 closed 波 verdict 全 FAIL"]}, "cli_default": ["warn", "按日期缺省；灰度期至 2026-10-11，2026-10-12 起缺省 enforce
   => exit=0 | DB Δ=无 | git 新脏文件=无
+  CLI 入口（build_wave / wave_gate）不带 --gate-mode 时：warn（按日期缺省；灰度期至 2026-10-11，2026-10-12 起缺省 enforce）
 
   ┌─ 【阶段小结 · 步 2 · S0 数据集体检 + 白名单】
   │ 输入：战役目录 tracking/KOR（settings / thresholds）；库（s0_whitelist 等 ledger、wave_results、expressions）
   │ 处理：S0 calibrate / score 命令构建（干跑；真跑要调平台）；toolkit region_gates 四闸（catalog / signal_floor / stop_rules / backlog，warn 模式）
-  │ 输出变化：命令构建 success=True/True；四闸 {'catalog': True, 'signal_floor': True, 'stop_rules': False, 'backlog': True}，命中 {'stop_rules': ['B: 最近 3 个 closed 波 verdict 全 FAIL']}；warn 模式下 ok=True
-  └ 价值判定：★★★ 保留深化：停止规则 B 在真实历史上命中 95/96/97 连续判死，与团队事后结论一致；toolkit CLI 侧仍是 warn 灰度 = 看得见、拦不住（转 enforce 的截止日期未定）；SOP 的 workflow 入口（campaign S2/S3、batch_track）已 enforce（R5，见步 6）；S0 的平台打分部分本环境不可演练
+  │ 输出变化：命令构建 success=True/True；四闸 {'catalog': True, 'signal_floor': True, 'stop_rules': False, 'backlog': True}，命中 {'stop_rules': ['B: 最近 3 个 closed 波 verdict 全 FAIL']}；warn 模式下 ok=True；CLI 缺省 gate-mode=warn
+  └ 价值判定：★★★ 保留深化：停止规则 B 在真实历史上命中 95/96/97 连续判死，与团队事后结论一致；toolkit CLI 侧缺省 warn（按日期缺省；灰度期至 2026-10-11，2026-10-12 起缺省 enforce；R5 收尾）；SOP 的 workflow 入口（campaign S2/S3、batch_track）一律 enforce（R5，见步 6）；S0 的平台打分部分本环境不可演练
 
 ==============================================================================================================
 步 3 · S1 字段扫描 + 理解（dataset=ml_factor_proj，真实字段目录）
@@ -186,18 +187,18 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python -c import sys,json; sys.path.ins
     out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S1", "dataset": "ml_factor_proj", "wave": null, "subcommand": null, "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S1", "dataset": "ml_factor_proj", "wave": null, "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/scan_fields.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj"}], "success": tr …(+214 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wq-brain-http] workflow_feature_engineering(region=KOR, dataset_id=ml_factor_proj, delay=1, universe=TOP600, dry_run=true)  → isError=False  0.03s
-    out: {"success": true, "node": "feature_engineering", "params": {"region": "KOR", "dataset_id": "ml_factor_proj", "delay": 1, "universe": "TOP600", "data_category": null, "force_regen": false}, "output": {"region": "KOR", "dataset_id": "ml_factor_proj", "delay": 1, "universe": "TOP600", "data_category": "other", "s1_key": "s1_ml_factor_proj_d1", "steps": [{"step": "find_skill", "success": true, "skill_root": "~/.claude/skills/brain-data-feature-engineering"}, {"step": "feature_engineering_pipeline", "success": true, "async": true, "task_id": "fe_KOR_ml_factor_proj_20260927_143210", "task_file": "<repo>/logs/_async_tasks/fe_KOR_ml_factor_proj_20260927_143210.json", "command": "<repo> …(+1304 chars)
+    out: {"success": true, "node": "feature_engineering", "params": {"region": "KOR", "dataset_id": "ml_factor_proj", "delay": 1, "universe": "TOP600", "data_category": null, "force_regen": false}, "output": {"region": "KOR", "dataset_id": "ml_factor_proj", "delay": 1, "universe": "TOP600", "data_category": "other", "s1_key": "s1_ml_factor_proj_d1", "steps": [{"step": "find_skill", "success": true, "skill_root": "~/.claude/skills/brain-data-feature-engineering"}, {"step": "feature_engineering_pipeline", "success": true, "async": true, "task_id": "fe_KOR_ml_factor_proj_20260927_153809", "task_file": "<repo>/logs/_async_tasks/fe_KOR_ml_factor_proj_20260927_153809.json", "command": "<repo> …(+1303 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] get_field_catalog(region=KOR, dataset=ml_factor_proj)  → isError=False  0.03s
+[wqb-db] get_field_catalog(region=KOR, dataset=ml_factor_proj)  → isError=False  0.04s
     out: {"dataset": "ml_factor_proj", "region": "KOR", "universe": "TOP600", "delay": 1, "data_type": "MATRIX", "type_distribution": {"MATRIX": 333}, "field_count": 333, "fetched_at": "2026-08-22T20:17:02", "fields": [{"id": "change_12m_alpha", "type": "MATRIX", "coverage": 1.0, "userCount": 2, "alphaCount": 2, "description": "Change in 12-month alpha, measuring the difference in excess return over a benc …(+74815 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wqb-db] build_field_prefix_clusters(region=KOR, dataset=ml_factor_proj)  → isError=False  0.03s
     out: {"region": "KOR", "dataset": "ml_factor_proj", "prefix_depth": 1, "total_fields": 333, "total_clusters": 3, "top_clusters": [{"prefix": "change", "count": 253, "coverage_mean": 1.0, "coverage_median": 1.0, "high_coverage_count": 253, "vector_count": 0, "sample_fields": ["change_12m_alpha", "change_1m_active_return", "change_1y_accounts_receivable_to_sales", "change_1y_cashflow_to_price", "change_1y_eps_growth"], "risk_flags": []}, {"prefix": "log", "count": 40, "coverage_mean": 1.0, "coverage_median": 1.0, "high_coverage_count": 40, "vector_count": 0, "sample_fields": ["log_variance_global_feature_0", "log_variance_global_feature_1", "log_variance_global_feature_10", "log_variance_global_fea …(+449 chars)
     side-effects: DB Δ={"ledger_kv": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
-[wq-brain-http] workflow_execute(field_understanding, dry_run)(node=field_understanding, params={"region": "KOR", "dataset": "ml_factor_proj"}, dry_run=true)  → isError=False  0.02s
+[wq-brain-http] workflow_execute(field_understanding, dry_run)(node=field_understanding, params={"region": "KOR", "dataset": "ml_factor_proj"}, dry_run=true)  → isError=False  0.03s
     out: {"success": true, "node": "field_understanding", "params": {"region": "KOR", "dataset": "ml_factor_proj"}, "output": {"region": "KOR", "dataset": "ml_factor_proj", "delay": 1, "success": true, "steps": [{"step": "analyze_field_features", "success": true, "description": "分析字段覆盖率、非零值、更新频率、取值范围、中心趋势、分布形态"}, {"step": "generate_understanding_report", "success": true, "description": "生成字段理解报告"}, {"step": "auto_classify_fields", "success": true, "description": "自动分类字段为主信号/辅助信号/group/bucket"}, {"step":  …(+286 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] wqb-db workflow_field_understanding（真跑）(region=KOR, dataset=ml_factor_proj)  → isError=False  0.02s
+[wqb-db] wqb-db workflow_field_understanding（真跑）(region=KOR, dataset=ml_factor_proj)  → isError=False  0.03s
     out: {"success": false, "node": "field_understanding", "params": {"region": "KOR", "dataset": "ml_factor_proj", "delay": 1, "auto_classify": true, "identify_high_value": true}, "output": {"region": "KOR", "dataset": "ml_factor_proj", "delay": 1, "success": false, "steps": [{"step": "analyze_field_features", "success": true, "description": "分析字段覆盖率、非零值、更新频率、取值范围、中心趋势、分布形态"}, {"step": "generate_understanding_report", "success": true, "description": "生成字段理解报告"}, {"step": "auto_classify_fields", "success": true, "description": "自动分类字段为主信号/辅助信号/group/bucket"}, {"step": "identify_high_value_fields", "success": true, "description": "识别高价值字段"}], "error": "Field understanding failed: no such table: field_ …(+226 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
@@ -220,11 +221,11 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/Claude/skills/wq-brain-ca
 
 --- 4.1 assemble-priors 真跑（server 与子进程 env = .mcp.json 原样，不含 WQB_WORKSPACE）—— 第二轮在此崩溃 rc=1（N19b）
 [wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1758 chars)
-    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143210.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143210.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143210.out"]
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1755 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153809.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153809.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153809.out"]
     任务终态: {"status": "succeeded", "returncode": 0, "error": null}
     stdout_tail: [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波 …(+638 chars)
-    DB 快照: 存在 updated_at=2026-09-27T14:32:10 wins=5 dead_ends=12
+    DB 快照: 存在 updated_at=2026-09-27T15:38:09 wins=5 dead_ends=12
 
 --- 4.2 GEM 干跑 —— 快照缺失时（演练脚本先删掉 4.1 写的快照）
     steps: ['field_prefix_summary_check', 'candidate_field_pool_check', 'priors_snapshot_check', 'check_config']
@@ -233,37 +234,37 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/Claude/skills/wq-brain-ca
 
 --- 4.3 assemble-priors 真跑（KOR 此刻命中停止规则 B；assemble-priors 零配额、不开波，按 N16 豁免开波闸）
 [wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1758 chars)
-    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143212.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143212.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143212.out"]
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1754 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153810.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153810.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153810.out"]
     任务终态: {"status": "succeeded", "returncode": 0, "error": null}
     stdout_tail: [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波 …(+638 chars)
-    快照 updated_at=2026-09-27T14:32:12 wins=5 dead_ends=12 sha256=7656e3b831a41562…
+    快照 updated_at=2026-09-27T15:38:10 wins=5 dead_ends=12 sha256=7656e3b831a41562…
     与仓库已入库 priors 对照：wins 重合 5/6，dead_ends 12/12
     被重写的已入库文件: tracking/KOR/priors/kor_priors.json | 106 +++++++++++++++++-------------------
  1 file changed, 50 insertions(+), 56 deletions(-)
 
 --- 4.4 GEM 干跑 —— 快照新鲜
-    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 14:32:12"}
+    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 15:38:10"}
 
 --- 4.5 模拟 S6 回写：region_kb 追加一条新 win（经 MCP upsert_ledger_key）→ GEM 干跑应提示过期
 [wqb-db] upsert_ledger_key(region=KOR, key=region_kb, value={"win_recipes": [{"name": "评级修正×SH 跨数据集跨周期混合", "key": "rank(add(multiply(2, rank …(+827 chars))  → isError=False  0.03s
     out: {"action": "updated", "region": "KOR", "key": "region_kb"}
     side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
-    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 14:32:12", "stale_sources": ["KOR/region_kb@2026-09-27 14:32:14"], "warning": "priors 快照 priors_snapshot_kor（2026-09-27 14:32:12）早于其 KB 源 KOR/region_kb@2026-09-27 14:32:14：S6 回写后没重组 priors，本次 GEM 会用旧先验。先跑 workflow_campaign(region='KOR', stage='S2', subcommand='assemble-priors')（默认带 --snapshot-ledger）"}
+    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 15:38:10", "stale_sources": ["KOR/region_kb@2026-09-27 15:38:12"], "warning": "priors 快照 priors_snapshot_kor（2026-09-27 15:38:10）早于其 KB 源 KOR/region_kb@2026-09-27 15:38:12：S6 回写后没重组 priors，本次 GEM 会用旧先验。先跑 workflow_campaign(region='KOR', stage='S2', subcommand='assemble-priors')（默认带 --snapshot-ledger）"}
 
 --- 4.5b 模拟 S6 判死封存（registry dead_end，S6 最常见的回写）：wave97 真实结论 model219 判死
-[wqb-db] seal_dead_end(region=KOR, entry_id=KOR-MODEL219-DEAD, family=model219 盈余质量/前瞻估值族, reason=wave97 0/6：model219 盈余质量/前瞻估值族不入 book（真实 verdict 原文）, wave_numbers=[97])  → isError=False  0.03s
+[wqb-db] seal_dead_end(region=KOR, entry_id=KOR-MODEL219-DEAD, family=model219 盈余质量/前瞻估值族, reason=wave97 0/6：model219 盈余质量/前瞻估值族不入 book（真实 verdict 原文）, wave_numbers=[97])  → isError=False  0.04s
     out: {"entry_id": "KOR-MODEL219-DEAD", "status": "success", "action": "inserted", "waves_scanned": [], "candidates_scanned": 0, "salvaged_count": 0, "salvage_ids": [], "total_in_pool": 0}
     side-effects: DB Δ={"registry_empirical": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
-    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 14:32:12", "stale_sources": ["KOR/region_kb@2026-09-27 14:32:14", "KOR/registry_empirical(win,dead_end)@2026-09-27 14:32:15"], "warning": "priors 快照 priors_snapshot_kor（2026-09-27 14:32:12）早于其 KB 源 KOR/region_kb@2026-09-27 14:32:14, KOR/registry_empirical(win,dead_end)@2026-09-27 14:32:15：S6 回写后没重组 priors，本次 GEM 会用旧先验。先跑 workflow_campaign(region='KOR', stage='S2', subcommand='assemble-priors')（默认带 --snapshot-ledger）"}
+    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 15:38:10", "stale_sources": ["KOR/region_kb@2026-09-27 15:38:12", "KOR/registry_empirical(win,dead_end)@2026-09-27 15:38:13"], "warning": "priors 快照 priors_snapshot_kor（2026-09-27 15:38:10）早于其 KB 源 KOR/region_kb@2026-09-27 15:38:12, KOR/registry_empirical(win,dead_end)@2026-09-27 15:38:13：S6 回写后没重组 priors，本次 GEM 会用旧先验。先跑 workflow_campaign(region='KOR', stage='S2', subcommand='assemble-priors')（默认带 --snapshot-ledger）"}
 
 --- 4.6 按告警重组快照 → GEM 干跑恢复安静；新 win / 新 dead_end 是否进快照（R18：新登记优先 + 截断可见）
 [wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1756 chars)
-    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143215.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143215.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143215.out"]
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1755 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153814.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153814.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153814.out"]
     任务终态: {"status": "succeeded", "returncode": 0, "error": null}
     stdout_tail: [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波 …(+698 chars)
-    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 14:32:15"}
+    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 15:38:14"}
     快照含新 win? True
     registry dead_end 13 条 → 快照 dead_ends 12 条（MAX_DEADENDS=12；R18：按登记先后倒序取，名额外的记入快照 truncated）
     新封存的 KOR-MODEL219-DEAD 进快照? True（第 1 位）；快照 truncated = {'dead_ends': ['KOR-ACQ-MODEL-DEAD']}
@@ -295,17 +296,17 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/campaign_intel.py g
   | === 幽灵算子审计 39 条表达式 (KOR/D1) ===
   | PASS：无幽灵算子
   => exit=0 | DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_execute(wave_gate, dry_run)(node=wave_gate, params={"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "/tmp …(+123 chars), dry_run=true)  → isError=False  0.03s
-    out: {"success": true, "node": "wave_gate", "params": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "<scratch>/realenv_mlfp_exprs.txt", "from_db": false}, "output": {"node": "wave_gate", "success": true, "dry_run": true, "region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "steps": [{"step": "find_wave_gate", "success": true}, {"step": "resolve_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "validate_argv", "success": true}, {"step": "dry_run", "su …(+869 chars)
+[wq-brain-http] workflow_execute(wave_gate, dry_run)(node=wave_gate, params={"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "/tmp …(+123 chars), dry_run=true)  → isError=False  0.04s
+    out: {"success": true, "node": "wave_gate", "params": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "<scratch>/realenv_mlfp_exprs.txt", "from_db": false}, "output": {"node": "wave_gate", "success": true, "dry_run": true, "region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "steps": [{"step": "find_wave_gate", "success": true}, {"step": "resolve_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "validate_argv", "success": true}, {"step": "dry_run", "su …(+870 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] wqb-db workflow_unified_gate（真跑；wqb-db 的 env 无 WQ_TOOLKIT_DIR）(region=KOR, dataset=ml_factor_proj, wave=g1, exprs_file=<scratchpad>/rea …(+27 chars), from_db=false)  → isError=False  0.20s
-    out: {"success": false, "node": "unified_gate", "params": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "<scratch>/realenv_mlfp_exprs.txt", "from_db": false, "skip_diversity_gate": false}, "output": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "success": false, "steps": [{"step": "ghost_operator_gate", "success": true, "description": "幽灵算子硬闸", "returncode": 0, "stdout_tail": "=== 幽灵算子审计 39 条表达式 (KOR/D1) ===\nPASS：无幽灵算子\n", "stderr_tail": ""}, {"step": "diversity_gate", "success": true, "description": "多样性守卫"}, {"step": "field_inspect_gate", "success": true, "description": "体检→表达式硬门"}, {"step": "unified_gate_check", "success": true, "description": "8 闸预检（合并重复闸门）", "returncode": 1, "stdout_tail": "", "stderr_tail": "need --from-db / --candidates / --exprs-file / --expr 之一\n"}] …(+258 chars)
+[wqb-db] wqb-db workflow_unified_gate（真跑；wqb-db 的 env 无 WQ_TOOLKIT_DIR）(region=KOR, dataset=ml_factor_proj, wave=g1, exprs_file=<scratchpad>/rea …(+27 chars), from_db=false)  → isError=False  0.23s
+    out: {"success": false, "node": "unified_gate", "params": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "exprs_file": "<scratch>/realenv_mlfp_exprs.txt", "from_db": false, "skip_diversity_gate": false}, "output": {"region": "KOR", "dataset": "ml_factor_proj", "wave": "g1", "success": false, "steps": [{"step": "ghost_operator_gate", "success": true, "description": "幽灵算子硬闸", "returncode": 0, "stdout_tail": "=== 幽灵算子审计 39 条表达式 (KOR/D1) ===\nPASS：无幽灵算子\n", "stderr_tail": ""}, {"step": "diversity_gate", "success": true, "description": "多样性守卫"}, {"step": "field_inspect_gate", "success": true, "description": "体检→表达式硬门"}, {"step": "unified_gate_check", "success": true, "description": "8 闸预检（合并重复闸门）", "returncode": 1, "stdout_tail": "", "stderr_tail": "need --from-db / --candidates / --exprs-file / --expr 之一\n"}] …(+257 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
 --- ① wave_gate.py 真跑：env = .mcp.json 的 wq-brain-http 原样（无 WQB_ROOT / WQB_WORKSPACE / WQB_DB_PATH）；只声明 --dataset（漏声明跨集 mix 的第二腿 multi_source_model）
   （第二轮同一调用：候选被写进仓库根下名为 D:\coding\traeCN_project\wqb 的杂散库，gate.py 读真库找不到候选 → exit 2（N19a））
-$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --wave g2 --exprs-file <scratch>/realenv_mlfp_exprs.txt
-  => exit=1 | DB Δ={"ledger_kv": 3, "gate_results": 1, "expressions": 39, "waves": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --gate-mode warn --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --wave g2 --exprs-file <scratch>/realenv_mlfp_exprs.txt
+  => exit=1 | DB Δ={"expressions": 39, "waves": 1, "ledger_kv": 3, "gate_results": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
   | [done ] 语法 39/39, gate all_pass=false passed=20/39 质量预估 D/C/W/B/H=0/0/0/39/0（拦截 39 条 仅标注） => FAIL
   | [gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）；静态闸 1-5 拦截 19/39 条、批级多样性闸（3 项）
   | [state] 逐条状态回写：gated 20 / fail 19（FAIL 候选不再计入积压）
@@ -314,16 +315,17 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --camp
 
 --- ② 补声明 --datasets 重跑（agent 看到 FIELD 失败后的自然动作；走默认缓存）
   （第二轮同一调用：gate.cached=39/39，结论不变、仍拦 19 条（N21））
-$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --wave g3b --exprs-file <scratch>/realenv_mlfp_exprs.txt
-  => exit=1 | DB Δ={"ledger_kv": 1, "gate_results": 1, "expressions": 39, "waves": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --gate-mode warn --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --wave g3b --exprs-file <scratch>/realenv_mlfp_exprs.txt
+  => exit=1 | DB Δ={"expressions": 39, "waves": 1, "ledger_kv": 1, "gate_results": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
   | [done ] 语法 39/39, gate all_pass=false passed=39/39 质量预估 D/C/W/B/H=0/0/0/39/0（拦截 39 条 仅标注） => FAIL
   | [state] 逐条状态回写：gated 39 / fail 0（FAIL 候选不再计入积压）
   | gate.cached=0 / total=39（R21：缓存键含闸门签名 = 数据集集合 / 合并白名单 / 字段类型 / banned / poison / 平台约束）
 
 --- ③ --datasets + --no-cache —— 两腿白名单的真实判定（对照组）；以下为完整门禁输出
-$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g3 --exprs-file <scratch>/realenv_mlfp_exprs.txt
-  => exit=1 | DB Δ={"ledger_kv": 1, "gate_results": 1, "expressions": 39, "waves": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --gate-mode warn --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g3 --exprs-file <scratch>/realenv_mlfp_exprs.txt
+  => exit=1 | DB Δ={"expressions": 39, "waves": 1, "ledger_kv": 1, "gate_results": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
   （省略逐条 [syntax] PASS 与逐条 [qp] 行，见下方汇总表）
+  | [region-gates] gate-mode=warn（--gate-mode 显式指定；灰度期至 2026-10-11，2026-10-12 起缺省 enforce）
   | [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号）
   | [region-gates] catalog      放行
   | [region-gates] signal_floor 放行
@@ -331,7 +333,7 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --camp
   | [region-gates]                evidence: backtested=243
   | [region-gates] backlog      放行
   | [region-gates]                evidence: total=325, backtested=247, pending_gated=59, gem=0, selected=0, unconsumed=59, conversion=0.76, pending_gated_ratio=0.1815, unconsumed_ratio=0.1815
-  | [region-gates] ★ 命中 stop_rules，但 gate-mode=warn（灰度）→ 仅告警不阻断。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。
+  | [region-gates] ★ 命中 stop_rules，但 gate-mode=warn（灰度）→ 仅告警不阻断（缺省灰度期至 2026-10-11，2026-10-12 起同样命中将阻断开波）。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。
   | [gate ] gate.py --from-db --wave g3
   | [gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）；批级多样性闸（3 项）
   | [state] 逐条状态回写：gated 39 / fail 0（FAIL 候选不再计入积压）
@@ -366,16 +368,16 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --camp
   可对照 39 条；实测过廉价闸（S>1.58 & F>=1.0）5 条，其预估标签：[(21, 'BLOCK', 0.88, 1.91, '78jQ29rL'), (22, 'BLOCK', 0.88, 1.77, '88lr21xo'), (23, 'BLOCK', 0.88, 1.83, 'A1lb2KpR'), (31, 'BLOCK', 0.81, 1.83, 'A1labdPw'), (32, 'BLOCK', 0.88, 1.76, 'pwjzEg6b')]
   预估 sharpe 区间 [0.72, 0.88]，实测 sharpe 区间 [-0.12, 1.91]，预估↔实测 Pearson = 0.603
   gate_results: [('KOR', 'g2', 'ml_factor_proj', 0), ('KOR', 'g3b', 'ml_factor_proj', 0), ('KOR', 'g3', 'ml_factor_proj', 0)]
-[wq-brain-http] operator_audit(expressions=["rank(change_3m_revision_fy2_eps)", "rank(change_three_month_revision_fy1_eps)" …(+215 chars), region=KOR, delay=1, universe=TOP600)  → isError=False  0.02s
+[wq-brain-http] operator_audit(expressions=["rank(change_3m_revision_fy2_eps)", "rank(change_three_month_revision_fy1_eps)" …(+215 chars), region=KOR, delay=1, universe=TOP600)  → isError=False  0.03s
     out: {"safe": true, "total_expressions": 6, "violations": [], "ghost_operators": ["group_median", "group_normalize", "group_percentage", "group_vector_proj", "neutralize", "s_log_1p", "sigmoid", "tanh", "ts_co_kurtosis", "ts_decay_exp_window", "ts_delta_limit", "ts_entropy", "ts_median", "ts_min_max_cps", "ts_min_max_diff", "ts_partial_corr", "ts_percentage", "ts_skewness"]}
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] validate_expressions(alpha_expressions=["rank(change_3m_revision_fy2_eps)", "rank(change_three_month_revision_fy1_eps)" …(+36 chars), region=KOR, universe=TOP600, delay=1)  → isError=False  0.02s
+[wq-brain-http] validate_expressions(alpha_expressions=["rank(change_3m_revision_fy2_eps)", "rank(change_three_month_revision_fy1_eps)" …(+36 chars), region=KOR, universe=TOP600, delay=1)  → isError=False  0.03s
     out: {"valid": true, "region": "KOR", "delay": 1, "universe": "TOP600", "expressions": 3, "fields_checked": ["change_3m_revision_fy2_eps", "change_6m_rating_revision", "change_three_month_revision_fy1_eps"], "unknown_fields": [], "unknown_soft": [], "builtin_fields": [], "platform_field_count": 0, "warning": "Field pre-check skipped or incomplete: change_3m_revision_fy2_eps: Authentication credentials  …(+337 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
 --- ④ R12：env 去掉 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR（= wqb-db server 的 env 形态），同 ③ 的参数重跑 wave_gate
   （第三轮及以前：tools/ 下 CLI 只搜 ~/.qoder-cn / ~/.cursor / ~/.workbuddy，不含 ~/.claude、~/.codex 与仓库兜底（N12））
-$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g4 --exprs-file <scratch>/realenv_mlfp_exprs.txt
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --gate-mode warn --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g4 --exprs-file <scratch>/realenv_mlfp_exprs.txt
   => exit=1 | DB Δ=无 | git 新脏文件=无
   | [done ] 语法 39/39, gate all_pass=false passed=39/39 质量预估 D/C/W/B/H=0/0/0/39/0（拦截 39 条 仅标注） => FAIL
   | [state] 逐条状态回写：gated 39 / fail 0（FAIL 候选不再计入积压）
@@ -383,7 +385,7 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --camp
 
 --- ⑤ R12：verifier 缺 ply（假 verifier：import 即打印提示并 exit 1，与真实缺 ply 的行为一致）
   （修复前：wave_gate 随之 exit 1——与'表达式不合格'同一个退出码，调用方分不清）
-$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g5 --exprs-file <scratch>/realenv_mlfp_exprs.txt
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/wave_gate.py --gate-mode warn --campaign-dir <repo>/tracking/KOR --dataset ml_factor_proj --datasets multi_source_model --no-cache --wave g5 --exprs-file <scratch>/realenv_mlfp_exprs.txt
   => exit=2 | DB Δ=无 | git 新脏文件=无
   | [done ] ERROR: 门禁环境缺失 —— alpha-expression-verifier 加载失败（<scratch>/fake_verifier；通常是缺 ply：pip install -r world-quant-brain-mcp/requirements.txt）：SystemExit(1)。本波未产出门禁结论、也未写 gate_results，不是表达式问题；修好环境后重跑。
 
@@ -409,10 +411,10 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/probe_batch_mode.py
 ==============================================================================================================
 步 6 · S3 七槽回测（前置三闸 on 真实历史）
 ==============================================================================================================
-[wq-brain-http] workflow_batch_track(region=KOR, wave=g2, dataset=ml_factor_proj, dry_run=true)  → isError=False  0.03s
+[wq-brain-http] workflow_batch_track(region=KOR, wave=g2, dataset=ml_factor_proj, dry_run=true)  → isError=False  0.05s
     out: {"success": false, "node": "batch_track", "params": {"region": "KOR", "wave": "g2", "dataset": "ml_factor_proj", "concurrency": 7, "max_rounds": 3, "output_csv": null, "campaign_dir": null, "detached": true, "submit": true, "skip_diversity_gate": false, "datasets_extra": null}, "output": {"success": false, "error": "停止规则拦截（KOR）：B: 最近 3 个 closed 波 verdict 全 FAIL。继续开波只会重复烧槽位——换区域/换 universe/换数据集；确需继续（用户显式指令）请写台账 mcp__wqb-db__upsert_ledger_key(region='KOR', key='stop_rules_override', value={'reason': '<用户指令与理由>', 'until': 'YYYY-MM-DD'})，或在 <repo>/tracking/KOR/config/thresholds.json 的 dive …(+1788 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_campaign(region=KOR, stage=S3, dataset=ml_factor_proj, wave=g2, dry_run=true)  → isError=False  0.02s
+[wq-brain-http] workflow_campaign(region=KOR, stage=S3, dataset=ml_factor_proj, wave=g2, dry_run=true)  → isError=False  0.04s
     out: {"success": false, "node": "campaign", "params": {"region": "KOR", "stage": "S3", "dataset": "ml_factor_proj", "wave": "g2", "subcommand": null, "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S3", "dataset": "ml_factor_proj", "wave": "g2", "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "signal_floor_gate", "success": true, "window": {"recent_waves": ["94", "91c"], "results": 19}, "verdict": {"passed": true, "max_sharpe": 1.91, "batches_observed": 2, "verdict": "ok", "message": "max|sharpe|=1.91（2 批）未触顶，可继续"}, "scope": "KOR/ml_factor_proj"}, {"step": "stop_rules_gate", "success": false, "evidence": {"backtested": 243, "passed": 5, "recent_closed_waves": ["97", "96", "95"], "recent_closed_verdicts": ["FAIL", "FAIL", "FAIL"], "recent_closed_verdicts_raw": ["FAIL", "FAIL", "FAIL"]}, "hits": ["B: 最近 3 个 closed 波 verdict 全 FAIL"], "error": "停止规则拦截（KOR）：B: 最近 3 个 closed 波 verdict 全 FAIL。继续开波只会重复烧槽位——换区域/换 universe/换数据集；确需继续（用户显式指令）请写台账 mcp__wqb-db__upsert_ledger_key(region='KOR', key='stop_rules_override', value={'reason': '<用户指令与理由>', 'until': 'YYYY-MM-DD'})，或在 <repo>/tracking/KOR/config/thresholds.json 的 diversity.stop_rules 调阈值。"}], "success": false, "error": "停止规则拦截（KOR）：B: 最近 3 个 closed 波 verdict 全 FAIL。继续开波只会重复烧槽位——换区域/换 univ …(+702 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
@@ -425,23 +427,23 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/probe_batch_mode.py
 ==============================================================================================================
 步 7 · S4 诊断改进（真实回测行上的墙诊断 / salvage）
 ==============================================================================================================
-[wq-brain-http] workflow_campaign(region=KOR, stage=S4, dataset=ml_factor_proj, wave=94, dry_run=true)  → isError=False  0.02s
+[wq-brain-http] workflow_campaign(region=KOR, stage=S4, dataset=ml_factor_proj, wave=94, dry_run=true)  → isError=False  0.03s
     out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S4", "dataset": "ml_factor_proj", "wave": "94", "subcommand": null, "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S4", "dataset": "ml_factor_proj", "wave": "94", "campaign_dir": "<repo>/tracking/KOR", "steps": [{"step": "validate_campaign_dir", "success": true, "campaign_dir": "<repo>/tracking/KOR"}, {"step": "resolve_s4_alphas", "success": true, "wave": "94", "alpha_count": 9}, {"step": "build_command", "success": true, "command": "<repo>/world-quant-brain-mcp/.venv/bin/python -u <repo>/Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py --cam …(+383 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 [wqb-db] list_alphas_by_wave(region=KOR, wave_number=94)  → isError=False  0.03s
-    out: [{"id": 159, "alpha_id": "O07kzLk7", "expression": "rank(change_3m_revision_fy2_eps)", "region_id": 1, "dataset_id": 4, "universe": null, "delay": null, "neutralization": null, "sharpe": 0.41, "fitness": 0.15, "margin": null, "turnover": 0.0828, "two_year_sharpe": -0.57, "status": "UNSUBMITTED", "prod_correlation": null, "self_correlation": null, "platform_status": null, "stage": null, "alpha_type": null, "date_submitted": null, "is_ladder_sharpe": null, "created_at": "2026-09-27T14:31:54", "upd …(+31836 chars)
+    out: [{"id": 159, "alpha_id": "O07kzLk7", "expression": "rank(change_3m_revision_fy2_eps)", "region_id": 1, "dataset_id": 4, "universe": null, "delay": null, "neutralization": null, "sharpe": 0.41, "fitness": 0.15, "margin": null, "turnover": 0.0828, "two_year_sharpe": -0.57, "status": "UNSUBMITTED", "prod_correlation": null, "self_correlation": null, "platform_status": null, "stage": null, "alpha_type": null, "date_submitted": null, "is_ladder_sharpe": null, "created_at": "2026-09-27T15:37:52", "upd …(+31836 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] search_alphas_by_sharpe(region=KOR, min_sharpe=1.2, limit=8)  → isError=False  0.02s
-    out: [{"id": 179, "alpha_id": "78jQ29rL", "expression": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))", "region_id": 1, "dataset_id": 4, "universe": null, "delay": null, "neutralization": null, "sharpe": 1.91, "fitness": 1.24, "margin": null, "turnover": 0.2079, "two_year_sharpe": 2.43, "status": "UNSUBMITTED", "prod_correlation": null, "self_correlation": null, "platform_status": null, "stage": null, "alpha_type": null, "date_submitted": null, "is_ladder_sharpe": null, "created_at": "2026-09-27T14:31:56", "updated_at": "2026-09-27T14:31:56", "sub_universe_sharpe": 1.78, "returns": null, "drawdown": null, "long_count": null, "short_count": null, "concentrated_weight": null, "cluster_test": null, "prod_corr_source": null, "corr_checked_at": null, "region": "KOR"}, {"id": 181, "alpha_id": "A1lb2KpR", "expression": "rank(add(rank(change_6m …(+5846 chars)
+[wqb-db] search_alphas_by_sharpe(region=KOR, min_sharpe=1.2, limit=8)  → isError=False  0.04s
+    out: [{"id": 179, "alpha_id": "78jQ29rL", "expression": "rank(add(rank(change_6m_rating_revision), multiply(2, rank(short_horizon_hedge3_quantile1_5d_pred))))", "region_id": 1, "dataset_id": 4, "universe": null, "delay": null, "neutralization": null, "sharpe": 1.91, "fitness": 1.24, "margin": null, "turnover": 0.2079, "two_year_sharpe": 2.43, "status": "UNSUBMITTED", "prod_correlation": null, "self_correlation": null, "platform_status": null, "stage": null, "alpha_type": null, "date_submitted": null, "is_ladder_sharpe": null, "created_at": "2026-09-27T15:37:54", "updated_at": "2026-09-27T15:37:54", "sub_universe_sharpe": 1.78, "returns": null, "drawdown": null, "long_count": null, "short_count": null, "concentrated_weight": null, "cluster_test": null, "prod_corr_source": null, "corr_checked_at": null, "region": "KOR"}, {"id": 181, "alpha_id": "A1lb2KpR", "expression": "rank(add(rank(change_6m …(+5846 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wqb-db] backfill_salvage_pool_batch(region=KOR, candidates_dir=<repo>/tracking/KOR/candidates)  → isError=False  0.03s
+[wqb-db] backfill_salvage_pool_batch(region=KOR, candidates_dir=<repo>/tracking/KOR/candidates)  → isError=False  0.04s
     out: {"processed": 34, "success": 6, "skipped": 28, "errors": 0, "details": [{"file": "wave100_results.json", "status": "success", "reason": "all RED (red=8), salvaged to pool"}, {"file": "wave101_results.json", "status": "success", "reason": "all RED (red=8), salvaged to pool"}, {"file": "wave102_results.json", "status": "success", "reason": "all RED (red=8), salvaged to pool"}, {"file": "wave103_results.json", "status": "success", "reason": "all RED (red=8), salvaged to pool"}, {"file": "wave104_results.json", "status": "success", "reason": "all RED (red=6), salvaged to pool"}, {"file": "wave75b_results.json", "status": "skipped", "reason": "not all RED (red=0, total=0)"}, {"file": "wave76_resu …(+2682 chars)
     side-effects: DB Δ={"ledger_kv": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-wal"]
-[wqb-db] get_salvage_pool(region=KOR)  → isError=False  0.02s
-    out: {"entries": [{"alpha_id": "Wj7X3WbN", "expression": "", "dataset": null, "wave": 104, "sharpe": 1.35, "fitness": 0.76, "two_year_sharpe": 2.26, "sub_universe_sharpe": null, "turnover": 0.198, "boost_dims": ["boost_2y", "boost_tvr", "boost_sharpe"], "salvaged_at": "2026-09-27T14:32:19"}, {"alpha_id": "xAjzVm3q", "expression": "", "dataset": null, "wave": 104, "sharpe": 1.34, "fitness": 0.88, "two_year_sharpe": 1.38, "sub_universe_sharpe": null, "turnover": 0.129, "boost_dims": ["boost_2y", "boost …(+5778 chars)
+[wqb-db] get_salvage_pool(region=KOR)  → isError=False  0.03s
+    out: {"entries": [{"alpha_id": "Wj7X3WbN", "expression": "", "dataset": null, "wave": 104, "sharpe": 1.35, "fitness": 0.76, "two_year_sharpe": 2.26, "sub_universe_sharpe": null, "turnover": 0.198, "boost_dims": ["boost_2y", "boost_tvr", "boost_sharpe"], "salvaged_at": "2026-09-27T15:38:18"}, {"alpha_id": "xAjzVm3q", "expression": "", "dataset": null, "wave": 104, "sharpe": 1.34, "fitness": 0.88, "two_year_sharpe": 1.38, "sub_universe_sharpe": null, "turnover": 0.129, "boost_dims": ["boost_2y", "boost …(+5778 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_execute(auto_review, dry_run)(node=auto_review, params={"region": "KOR", "wave": "94", "dataset": "ml_factor_proj"}, dry_run=true)  → isError=False  0.02s
-    out: {"success": true, "node": "auto_review", "params": {"region": "KOR", "wave": "94", "dataset": "ml_factor_proj"}, "output": {"region": "KOR", "wave": "94", "dataset": "ml_factor_proj", "success": true, "steps": [{"step": "auto_prescreen", "success": true, "description": "自动 S4 预筛"}, {"step": "auto_walls", "success": true, "description": "自动 walls 诊断"}, {"step": "auto_salvage", "success": true, "description": "自动卡闸辅助腿检索"}, {"step": "auto_report", "success": true, "description": "自动生成评审报告"}], "dry_ …(+207 chars)
+[wq-brain-http] workflow_execute(auto_review, dry_run)(node=auto_review, params={"region": "KOR", "wave": "94", "dataset": "ml_factor_proj"}, dry_run=true)  → isError=False  0.03s
+    out: {"success": true, "node": "auto_review", "params": {"region": "KOR", "wave": "94", "dataset": "ml_factor_proj"}, "output": {"region": "KOR", "wave": "94", "dataset": "ml_factor_proj", "success": true, "steps": [{"step": "auto_prescreen", "success": true, "description": "自动 S4 预筛"}, {"step": "auto_walls", "success": true, "description": "自动 walls 诊断"}, {"step": "auto_salvage", "success": true, "description": "自动卡闸辅助腿检索"}, {"step": "auto_report", "success": true, "description": "自动生成评审报告"}], "dry_ …(+208 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
 --- review_wave 判定（真实 thresholds.json × 真实回测行，wave 91/91b/91c/94 sharpe 前 6）
@@ -479,13 +481,13 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/r4_near_probe.py <repo
 [wq-brain-http] submit_verdict(alpha_id=88lr21xo)  → isError=False  0.03s
     out: {"error": "submit_verdict failed: Authentication credentials not found in config. Please authenticate first."}
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_judge(alpha_id=88lr21xo, dry_run=true)  → isError=False  0.02s
-    out: {"success": true, "node": "judge", "params": {"alpha_id": "88lr21xo", "trend_window_days": 365, "llm_enabled": true}, "output": {"alpha_id": "88lr21xo", "success": true, "dry_run": true, "note": "dry-run：请求计划已构建，未调用平台", "verdict": null, "gates": [], "steps": [{"step": "plan_only", "success": true, "skipped": true, "note": "dry-run 不解析 brain_client，避免触碰网络与子进程"}], "plan": {"alpha_id": "88lr21xo", "trend_window_days": 365, "calls": ["get_alpha_details(alpha_id)", "check_correlation(alpha_id, type=b …(+523 chars)
+[wq-brain-http] workflow_judge(alpha_id=88lr21xo, dry_run=true)  → isError=False  0.03s
+    out: {"success": true, "node": "judge", "params": {"alpha_id": "88lr21xo", "trend_window_days": 365, "llm_enabled": true}, "output": {"alpha_id": "88lr21xo", "success": true, "dry_run": true, "note": "dry-run：请求计划已构建，未调用平台", "verdict": null, "gates": [], "steps": [{"step": "plan_only", "success": true, "skipped": true, "note": "dry-run 不解析 brain_client，避免触碰网络与子进程"}], "plan": {"alpha_id": "88lr21xo", "trend_window_days": 365, "calls": ["get_alpha_details(alpha_id)", "check_correlation(alpha_id, type=b …(+522 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_submit_alpha（未确认，干跑）(alpha_id=78jQ29rL, dry_run=true)  → isError=False  0.02s
+[wq-brain-http] workflow_submit_alpha（未确认，干跑）(alpha_id=78jQ29rL, dry_run=true)  → isError=False  0.03s
     out: {"success": true, "node": "submit_alpha", "params": {"alpha_id": "78jQ29rL", "name": null, "color": "GREEN", "tags": null, "descriptions": null, "force": false, "confirm_submit": false, "verify_timeout": 180}, "output": {"alpha_id": "78jQ29rL", "success": true, "dry_run": true, "submitted": false, "note": "dry-run：请求计划已构建，未调用平台", "steps": [{"step": "plan_only", "success": true, "skipped": true, "note": "dry-run 不解析 brain_client，避免触碰网络与子进程"}], "plan": {"alpha_id": "78jQ29rL", "name": null, "color …(+397 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_submit_alpha（confirm_submit=True，干跑）(alpha_id=78jQ29rL, confirm_submit=true, dry_run=true)  → isError=False  0.02s
+[wq-brain-http] workflow_submit_alpha（confirm_submit=True，干跑）(alpha_id=78jQ29rL, confirm_submit=true, dry_run=true)  → isError=False  0.03s
     out: {"success": true, "node": "submit_alpha", "params": {"alpha_id": "78jQ29rL", "name": null, "color": "GREEN", "tags": null, "descriptions": null, "force": false, "confirm_submit": true, "verify_timeout": 180}, "output": {"alpha_id": "78jQ29rL", "success": true, "dry_run": true, "submitted": false, "note": "dry-run：请求计划已构建，未调用平台", "steps": [{"step": "plan_only", "success": true, "skipped": true, "note": "dry-run 不解析 brain_client，避免触碰网络与子进程"}], "plan": {"alpha_id": "78jQ29rL", "name": null, "color" …(+533 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
@@ -526,11 +528,11 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/r3_failed_count.py rep
   最近 3 个 closed 波（按 updated_at = 第三轮及以前停止规则 B 的取法）: [('97', 'FAIL'), ('96', 'FAIL'), ('95', 'FAIL')]
 
 --- [修复后] P0-1 ① 字符串波号 s2_ml_factor_proj_d1 经 MCP 写 verdict（SKILL 步 4/9 的波号形态）
-[wqb-db] upsert_wave_result(region=KOR, wave_number=s2_ml_factor_proj_d1, verdict=FAIL, key_findings=["probe"])  → isError=False  0.02s
+[wqb-db] upsert_wave_result(region=KOR, wave_number=s2_ml_factor_proj_d1, verdict=FAIL, key_findings=["probe"])  → isError=False  0.03s
     out: {"action": "inserted", "region": "KOR", "wave_number": "s2_ml_factor_proj_d1", "verdict": "FAIL", "status": "closed", "updated_fields": ["key_findings", "status", "verdict"]}
     side-effects: DB Δ={"wave_results": 1} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
-[wqb-db] get_wave_result(region=KOR, wave_number=s2_ml_factor_proj_d1)  → isError=False  0.02s
-    out: {"id": 31, "region": "KOR", "wave_number": "s2_ml_factor_proj_d1", "focus": null, "context": null, "key_findings": ["probe"], "candidates": null, "batches": null, "verdict": "FAIL", "status": "closed", "source_file": null, "archived": 0, "created_at": "2026-09-27T14:32:22", "updated_at": "2026-09-27 …(+33 chars)
+[wqb-db] get_wave_result(region=KOR, wave_number=s2_ml_factor_proj_d1)  → isError=False  0.03s
+    out: {"id": 31, "region": "KOR", "wave_number": "s2_ml_factor_proj_d1", "focus": null, "context": null, "key_findings": ["probe"], "candidates": null, "batches": null, "verdict": "FAIL", "status": "closed", "source_file": null, "archived": 0, "created_at": "2026-09-27T15:38:22", "updated_at": "2026-09-27 …(+33 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
 --- [修复后] P0-1 ② 停止规则 B：真实历史下最近 3 个 closed 波 → 下一波 S2（build_wave）干跑
@@ -544,7 +546,7 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/r3_failed_count.py rep
     同一下一波 S2 干跑: success=False  stop_rules: success=False hits=['B: 最近 3 个 closed 波 verdict 全 FAIL'] verdicts=['FAIL', 'FAIL', 'FAIL'] warning=None
 
 --- [修复后] P0-1 ④ 新波只写 key_findings（缺 verdict、默认 closed）
-[wqb-db] upsert_wave_result(region=KOR, wave_number=p0_hollow, key_findings=["探针全灭"])  → isError=False  0.02s
+[wqb-db] upsert_wave_result(region=KOR, wave_number=p0_hollow, key_findings=["探针全灭"])  → isError=False  0.03s
     out: {"error": "wave p0_hollow 结案（status='closed'）必须带 verdict（PASS/FAIL/PARTIAL）；只补写其它字段时请一并给出 verdict，结论未定请传 status='open'", "region": "KOR", "wave_number": "p0_hollow"}
     side-effects: DB Δ=无 | git 新脏文件=无
     p0_hollow 行: []
@@ -555,19 +557,19 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/r3_failed_count.py rep
 
 --- [修复后] P0-2 ② 真跑 assemble-priors（先 SOP 的 S2 写法；被拦则退 S6 写法）
 [wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.03s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1758 chars)
-    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143222.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143222.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_143222.out"]
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<repo>/tracking/K …(+1754 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153822.err", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153822.json", "<repo>/logs/_async_tasks/campaign_KOR_S2_20260927_153822.out"]
     任务终态: {"status": "succeeded", "returncode": 0, "error": null}
     stdout_tail: [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波 …(+698 chars)
-    DB 快照 priors_snapshot_kor: 存在 updated_at=2026-09-27T14:32:22 wins=6
+    DB 快照 priors_snapshot_kor: 存在 updated_at=2026-09-27T15:38:22 wins=6
 
 --- [修复后] P0-2 ③ GEM 干跑（默认 --priors-from-db）：快照状态是否可见
     steps: ['field_prefix_summary_check', 'candidate_field_pool_check', 'priors_snapshot_check', 'check_config']
-    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 14:32:22"}
+    priors_snapshot_check: {"step": "priors_snapshot_check", "success": true, "snapshot_key": "priors_snapshot_kor", "snapshot_updated_at": "2026-09-27 15:38:22"}
     干跑结论: {"success": false, "error": null}
 
 --- 残留（N22）：按导入时拒绝信息里的判定表建议补记 91c —— R20 给 91c 的建议 = PASS/high（提交成功 / ✅ / N GREEN（≥1 条达标））
-[wqb-db] upsert_wave_result(region=KOR, wave_number=91c, verdict=PASS, key_findings=["补记：2 RA 提交成功（88lr21xo + A1lb2KpR ACTIVE）"])  → isError=False  0.03s
+[wqb-db] upsert_wave_result(region=KOR, wave_number=91c, verdict=PASS, key_findings=["补记：2 RA 提交成功（88lr21xo + A1lb2KpR ACTIVE）"])  → isError=False  0.04s
     out: {"action": "updated", "region": "KOR", "wave_number": "91c", "verdict": "PASS", "status": "closed", "updated_fields": ["key_findings", "status", "verdict"]}
     side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db-shm", "<repo>/data/wqb.db-wal"]
   旧取法（按 updated_at）的最近 3 个 closed 波: [('91c', 'PASS'), ('97', 'FAIL'), ('s2_ml_factor_proj_d1', 'FAIL')]
@@ -578,13 +580,13 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/r3_failed_count.py rep
 --- S6 其余动作
 $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/step_funnel.py --region KOR
   |   表达式级计数：n/a（该区 gate_results 是 pipeline 式 schema，无 passed/total）
-  |   时间窗：2026-09-27T14:32:17 → 2026-09-27T14:32:18
+  |   时间窗：2026-09-27T15:38:15 → 2026-09-27T15:38:16
   | 
   | [S3 回测] backtest_results
   |   回测行 = 247，其中有 sharpe = 243
   |   过廉价闸(S>1.58 & F>=1.0) = 5，最佳 sharpe = 1.9100
   |   按状态：COMPLETE=247
-  |   时间窗：2026-09-27T14:31:35 → 2026-09-27T14:32:03
+  |   时间窗：2026-09-27T15:37:33 → 2026-09-27T15:38:01
   | 
   | [S4→S5 提交就绪] ledger
   |   submit_ready = n/a，submit_ready_blocked = n/a
@@ -603,7 +605,7 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/step_funnel.py --re
   | 
   | [口径局限] 各步取的是各自表的存量，时间窗不一 → 链上数值可能不单调；仅用于定位'哪一跳掉得最狠'，不作精确转化率引用。
   => exit=0 | DB Δ=无 | git 新脏文件=无
-[wq-brain-http] workflow_execute(auto_pyramid, dry_run)(node=auto_pyramid, params={"region": "KOR", "wave": "97"}, dry_run=true)  → isError=False  0.03s
+[wq-brain-http] workflow_execute(auto_pyramid, dry_run)(node=auto_pyramid, params={"region": "KOR", "wave": "97"}, dry_run=true)  → isError=False  0.04s
     out: {"success": true, "node": "auto_pyramid", "params": {"region": "KOR", "wave": "97"}, "output": {"region": "KOR", "wave": "97", "delay": 1, "success": true, "steps": [{"step": "auto_query_pyramid", "success": true, "description": "自动查询点塔进度"}, {"step": "auto_embed", "success": true, "description": "自动嵌入 wave_result.key_findings"}, {"step": "auto_report", "success": true, "description": "自动生成点塔报告"}], …(+219 chars)
     side-effects: DB Δ=无 | git 新脏文件=无
 
@@ -657,7 +659,7 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/step_funnel.py --re
     success=False  stop_rules: success=False hits=['B: 最近 3 个 closed 波 verdict 全 FAIL'] verdicts=['FAIL', 'FAIL', 'FAIL'] warning=None
 
 --- [修复前] P0-1 ③ 按步 9 只补写点塔进度到 key_findings（不带 verdict）—— wave 97
-[base:wqb-db] upsert_wave_result(region=KOR, wave_number=97, key_findings=["[pyramid] ANALYST 2/3 · MODEL 1/3（步 9 点塔进度）"])  → isError=False  0.02s
+[base:wqb-db] upsert_wave_result(region=KOR, wave_number=97, key_findings=["[pyramid] ANALYST 2/3 · MODEL 1/3（步 9 点塔进度）"])  → isError=False  0.10s
     out: {"action": "updated", "region": "KOR", "wave_number": 97}
     side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<base>/data/wqb.db-shm", "<base>/data/wqb.db-wal"]
     行现状: [('97', None, 'closed', '["[pyramid] ANALYST 2/3 · MODEL 1/3（步 9 点塔进度）"]')]
@@ -674,9 +676,9 @@ $ <repo>/world-quant-brain-mcp/.venv/bin/python <repo>/tools/step_funnel.py --re
     stage=S6: success=True  cmd尾=--dataset ml_factor_proj --wave p0  argv错误=None  拦截=None
 
 --- [修复前] P0-2 ② 真跑 assemble-priors（先 SOP 的 S2 写法；被拦则退 S6 写法）
-[base:wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.01s
-    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<base> …(+3376 chars)
-    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<base>/logs/_async_tasks/campaign_KOR_S2_20260927_143226.err", "<base>/logs/_async_tasks/campaign_KOR_S2_20260927_143226.json", "<base>/logs/_async_tasks/campaign_KOR_S2_20260927_143226.out"]
+[base:wq-brain-http] workflow_campaign(S2, assemble-priors, 真跑)(region=KOR, stage=S2, subcommand=assemble-priors, dry_run=false)  → isError=False  0.02s
+    out: {"success": true, "node": "campaign", "params": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "subcommand": "assemble-priors", "extra_args": [], "calibrate": false}, "output": {"region": "KOR", "stage": "S2", "dataset": null, "wave": null, "campaign_dir": "<base> …(+3371 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无 | 新/改文件=["<base>/logs/_async_tasks/campaign_KOR_S2_20260927_153827.err", "<base>/logs/_async_tasks/campaign_KOR_S2_20260927_153827.json", "<base>/logs/_async_tasks/campaign_KOR_S2_20260927_153827.out"]
     任务终态: {"status": "succeeded", "returncode": 0, "error": null}
     stdout_tail: [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波（247 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/96(12条), KOR/75b(10条), KOR/76(10条), KOR/76b(10条), KOR/77(10条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号） [wave-key-check] WARN: 25 个活跃波 …(+372 chars)
     DB 快照 priors_snapshot_kor: 不存在
@@ -729,6 +731,6 @@ P1 验证清单 —— 第一批（R18–R21）对照第二轮实录 realenv_tra
       本轮：  仓库布局 wqb.config 3/1；镜像布局 mcp_core frozen copy 3/1；wqb.config 3/1（修复前副本实测：mcp_core 3 vs wqb.config 0）
 
 [REAL-ENV DRY-RUN END]
-  仓库已入库文件是否被改动（应只剩本轮修复 + 报告）: ['Claude/skills/wq-brain-campaign-toolkit/SKILL.md', 'Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py', 'Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py', 'Claude/skills/wq-brain-ra-pipeline/SKILL.md', 'reports/ra_pipeline_stage_review_20260927/realenv/realenv_transcript.txt -> reports/ra_pipeline_stage_review_20260927/realenv/realenv_transcript_r18_r21.txt', 'reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh', 'reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py', 'src/wqb/config.py', 'src/wqb/workflow/_common.py', 'src/wqb/workflow/nodes/batch_track.py', 'src/wqb/workflow/nodes/campaign.py', 'src/wqb/workflow/nodes/gem.py', 'tests/unit/test_p1_batch2_20260927.py', 'tests/unit/test_r3_failed_count_single_source.py', 'tests/unit/test_workflow_nodes.py', 'tools/build_gate_prior_from_inventory.py', 'tools/pre_backtest_filter.py', 'tools/probe_batch_mode.py', 'tools/skill_paths.py', 'tools/wave_gate.py', 'world-quant-brain-mcp/mcp_core.py', 'world-quant-brain-mcp/requirements.txt', 'world-quant-brain-mcp/tests/test_mcp_tools_unit.py']
+  仓库已入库文件是否被改动（应只剩本轮修复 + 报告）: ['AGENTS.md', 'Claude/skills/wq-brain-campaign-toolkit/SKILL.md', 'Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_gates.py', 'Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py', 'Claude/skills/wq-brain-ra-pipeline/SKILL.md', 'reports/ra_pipeline_stage_review_20260927.md', 'reports/ra_pipeline_stage_review_20260927/realenv/run_realenv.py', 'tests/conftest.py', 'tests/unit/test_region_gates_p0p1.py', 'tools/wave_gate.py']
 
 [清理] 演练库已移到 <scratch>/wqb.db.realenv；原 data/wqb.db 已移回；tracking/KOR/priors/ 已复原

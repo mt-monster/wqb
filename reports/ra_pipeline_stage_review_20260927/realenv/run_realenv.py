@@ -783,20 +783,24 @@ async def _main_body(DB):
                               f"r=rg.run_region_gates(r'{CAMPAIGN}', '{R}', mode='warn', dataset='{DS}'); "
                               "print('RESULT', json.dumps({'ok': r.get('ok'), 'gates': {n: (x or {}).get('success') "
                               "for n, x in (r.get('results') or {}).items()}, 'hits': {n: (x or {}).get('hits') "
-                              "for n, x in (r.get('results') or {}).items() if (x or {}).get('hits')}}, ensure_ascii=False))"],
+                              "for n, x in (r.get('results') or {}).items() if (x or {}).get('hits')}, "
+                              "'cli_default': list(rg.resolve_mode(None)) if hasattr(rg, 'resolve_mode') else None}, "
+                              "ensure_ascii=False))"],
                     cwd=TOOLKIT, tail=8)
         try:
             rg_res = json.loads(line_of(prg.stdout, r"^RESULT ").split(" ", 1)[1])
         except Exception:
             rg_res = {}
+        cli_default = rg_res.get("cli_default") or ["?", "toolkit 缺 resolve_mode"]
+        print(f"  CLI 入口（build_wave / wave_gate）不带 --gate-mode 时：{cli_default[0]}（{cli_default[1]}）")
         STAGE("步 2 · S0 数据集体检 + 白名单",
               "战役目录 tracking/KOR（settings / thresholds）；库（s0_whitelist 等 ledger、wave_results、expressions）",
               "S0 calibrate / score 命令构建（干跑；真跑要调平台）；toolkit region_gates 四闸（catalog / signal_floor / stop_rules / backlog，warn 模式）",
               f"命令构建 success={node_out(s0c).get('success')}/{node_out(s0s).get('success')}；四闸 {rg_res.get('gates')}，命中 {rg_res.get('hits')}；"
-              f"warn 模式下 ok={rg_res.get('ok')}",
+              f"warn 模式下 ok={rg_res.get('ok')}；CLI 缺省 gate-mode={cli_default[0]}",
               "★★★ 保留深化：停止规则 B 在真实历史上命中 95/96/97 连续判死，与团队事后结论一致；"
-              "toolkit CLI 侧仍是 warn 灰度 = 看得见、拦不住（转 enforce 的截止日期未定）；SOP 的 workflow 入口"
-              "（campaign S2/S3、batch_track）已 enforce（R5，见步 6）；S0 的平台打分部分本环境不可演练")
+              f"toolkit CLI 侧缺省 {cli_default[0]}（{cli_default[1]}；R5 收尾）；SOP 的 workflow 入口"
+              "（campaign S2/S3、batch_track）一律 enforce（R5，见步 6）；S0 的平台打分部分本环境不可演练")
 
         # ------------------------------------------------------------------ 步 3
         H1(f"步 3 · S1 字段扫描 + 理解（dataset={DS}，真实字段目录）")
@@ -937,10 +941,13 @@ async def _main_body(DB):
             rj = q(db, "SELECT report_json FROM gate_results WHERE region=? AND wave=?", R, wv)
             return json.loads(rj[0][0]) if rj else {}
 
+        # 步 5 各次 wave_gate 显式 --gate-mode warn：这里看的是表达式门禁本身；开波闸的拦截在步 2 / 6 / 9 单独演示。
+        # 不写的话 2026-10-12（toolkit region_gates.WARN_SUNSET 次日）起缺省 enforce，KOR 命中规则 B，
+        # ①–⑤ 会全部停在开波闸，演练不可复现。
         H2("① wave_gate.py 真跑：env = .mcp.json 的 wq-brain-http 原样（无 WQB_ROOT / WQB_WORKSPACE / WQB_DB_PATH）；"
            "只声明 --dataset（漏声明跨集 mix 的第二腿 multi_source_model）")
         print("  （第二轮同一调用：候选被写进仓库根下名为 D:\\coding\\traeCN_project\\wqb 的杂散库，gate.py 读真库找不到候选 → exit 2（N19a））")
-        p1, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+        p1, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--gate-mode", "warn", "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
                     "--wave", "g2", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
         for pat in (r"^\[done \]", r"静态闸 1-5 拦截|^\[gate \] (FAIL|PASS|ERROR)", r"^\[state\]"):
             print("  | " + rel(line_of(p1.stdout, pat) or f"（无匹配 {pat} 的行）")[:230])
@@ -964,7 +971,7 @@ async def _main_body(DB):
 
         H2("② 补声明 --datasets 重跑（agent 看到 FIELD 失败后的自然动作；走默认缓存）")
         print("  （第二轮同一调用：gate.cached=39/39，结论不变、仍拦 19 条（N21））")
-        p2, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+        p2, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--gate-mode", "warn", "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
                     "--datasets", DS2, "--wave", "g3b", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
         for pat in (r"^\[done \]", r"^\[state\]"):
             print("  | " + rel(line_of(p2.stdout, pat) or f"（无匹配 {pat} 的行）")[:230])
@@ -973,7 +980,7 @@ async def _main_body(DB):
               f"字段类型 / banned / poison / 平台约束）")
 
         H2("③ --datasets + --no-cache —— 两腿白名单的真实判定（对照组）；以下为完整门禁输出")
-        p3, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+        p3, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--gate-mode", "warn", "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
                     "--datasets", DS2, "--no-cache", "--wave", "g3", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
         glines = p3.stdout.splitlines()
         keep = [ln for ln in glines if not re.match(r"\[syntax\] \d+: PASS|\[qp +\] \w+ \d+:", ln) and ln.strip()]
@@ -1068,7 +1075,7 @@ async def _main_body(DB):
         env_r12["WQB_DB_PATH"] = str(probe_db)
         H2("④ R12：env 去掉 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR（= wqb-db server 的 env 形态），同 ③ 的参数重跑 wave_gate")
         print("  （第三轮及以前：tools/ 下 CLI 只搜 ~/.qoder-cn / ~/.cursor / ~/.workbuddy，不含 ~/.claude、~/.codex 与仓库兜底（N12））")
-        p4, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+        p4, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--gate-mode", "warn", "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
                     "--datasets", DS2, "--no-cache", "--wave", "g4", "--exprs-file", str(ef_all)],
                    env_extra=env_r12, env_drop=_ROOT_VARS + no_dirs, tail=0)
         for pat in (r"^\[done \]", r"^\[state\]"):
@@ -1082,7 +1089,7 @@ async def _main_body(DB):
         fake = SCRATCH / "fake_verifier"
         fake.mkdir(exist_ok=True)
         (fake / "validator.py").write_text('import sys\nprint("错误: 需要安装PLY库。")\nsys.exit(1)\n', encoding="utf-8")
-        p5, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+        p5, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--gate-mode", "warn", "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
                     "--datasets", DS2, "--no-cache", "--wave", "g5", "--exprs-file", str(ef_all)],
                    env_extra={**env_r12, "WQ_VALIDATOR_DIR": str(fake)}, env_drop=_ROOT_VARS + no_dirs, tail=0)
         print("  | " + rel(line_of(p5.stdout, r"门禁环境缺失|^\[done \]") or "（无 [done ] 行）")[:230])

@@ -6,7 +6,7 @@
 > **附件**（同名目录 `reports/ra_pipeline_stage_review_20260927/`）：`dryrun_transcript.txt`（完整演练实录）、`reproduce.sh` + `run_dryrun.py` / `seed_db.py` / `sbx_guard.py`（一条命令复现）。
 > **第二轮（同日更新，见 §14，首读建议从 §14.0 开始）**：按审阅意见先修两个 P0（N1 / N2），再在**真实环境**复跑九步。真实环境 = 真实仓库工作树 + 两个 MCP server 经 stdio 真实启动 + `tracking/KOR` 真实历史经 MCP 导入，并用修复前的原始代码做对照。复跑暴露了 P0-2 的两处残缺（N16 / N17，已一并修复），另记新发现 N18–N27。附件 `realenv/`：`run_realenv.py`、`reproduce_realenv.sh`、`realenv_transcript_p0.txt`（第二轮实录）。
 > **第三轮（同日更新，见 §14.8）**：按审阅意见修复四个 P1（R18–R21），用修复后的代码在真实环境把九步完整再跑一遍，每一步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定，数字取自本次运行）。首跑又暴露 R19 / R21 的两处残缺（N28 / N29，已一并修复）。实录 `realenv/realenv_transcript_r18_r21.txt`。
-> **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1，未修）。实录 `realenv/realenv_transcript.txt`。
+> **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1，未修）。随后按审阅意见定下 CLI 开波闸灰度截止日：2026-10-11 及以前 warn，2026-10-12 起缺省 enforce（§14.9.7）。实录 `realenv/realenv_transcript.txt`。
 
 **证据等级**（全文每条判断都标注来源，避免"推测记账"）：
 
@@ -49,7 +49,7 @@
 | N2 | **P0** ✅已修（§14.1） | `workflow_campaign(subcommand="assemble-priors")` 拼出的命令**不带 `--snapshot-ledger`**，只重写 priors 文件；GEM 默认 `--priors-from-db` **只读 DB 快照** `priors_snapshot_<r>`（缺快照 fail-closed）。SOP 宣称的"S6 回写后下一次 S2 先验自动变新"在指定路径上不成立：新区直接失败，老区静默沿用旧快照 | 〔码〕`campaign.py:444-450`、`assemble_priors.py:474-507`、`headless_runner/run.py:346-371`、SKILL.md:269/281-286；〔沙〕实录 步 4 (b)(c) |
 | N3 | P1 ✅已修（§14.9） | Failed-count 资格门有三份实现：`mcp_core.py`（17 项 + WITH_RATIO，非 PASS/PENDING 计失败，**正确**）、`build_gate_prior_from_inventory.py`（同口径副本）、`src/wqb/config.py::compute_webdata_failed_counts`（8 项、只数 FAIL、含不存在的 `HIGH_DRAWDOWN/LOW_SELFCORR/LOW_PNL`）。第三份仅被单测引用，但它位于 AGENTS.md 规定的"唯一事实源"模块，是照规范 `from wqb.config import …` 就会踩中的陷阱。同一组 checks：生产口径 `failed_ra=3`，config 口径 `0` | 〔码〕`config.py:351-383` vs `mcp_core.py:78-95,153-156`；〔沙〕实录 步 8 |
 | N4 | P1 ✅已修（§14.9；真实数据无触发样本） | review_wave 的 near 池只排除 `ROBUST_STRUCTURAL`，**不排除 `RN_EXPOSURE`** → 被判"就是暴露本身、禁止调参"的行仍进 near_pool / salvage_pool，可被 Mode A/B 取用 | 〔码〕`review_wave.py:203-215, 297-317`；〔沙〕RN=-0.2 行 `walls=['RN_EXPOSURE'] near=True` |
-| N5 | P1 ✅已修（§14.9；CLI 侧 warn 灰度的截止日期未定） | 三道零配额开波闸（signal_floor / stop_rules / backlog）只在 `workflow_campaign(stage=S2/S3)` 里 enforce；SOP 步 6 指定的 `workflow_batch_track` 一道都不跑；CLI 入口（build_wave / wave_gate）默认 warn。"发批直接走步 5"的快捷入口全程无 enforce | 〔码〕`batch_track.py:66-225`、`region_gates.py:18-21`；〔沙〕batch_track 干跑 steps 无闸，campaign S3 干跑有三闸 |
+| N5 | P1 ✅已修（§14.9；CLI 侧灰度 2026-10-11 截止、次日起缺省 enforce，§14.9.7） | 三道零配额开波闸（signal_floor / stop_rules / backlog）只在 `workflow_campaign(stage=S2/S3)` 里 enforce；SOP 步 6 指定的 `workflow_batch_track` 一道都不跑；CLI 入口（build_wave / wave_gate）默认 warn。"发批直接走步 5"的快捷入口全程无 enforce | 〔码〕`batch_track.py:66-225`、`region_gates.py:18-21`；〔沙〕batch_track 干跑 steps 无闸，campaign S3 干跑有三闸 |
 | N6 | P1 | `tools/wave_gate.py` 的若干"闸"只打印不判定：`[opcat]` 自称硬闸、打印"FAIL：缺 Group"，质量预估对每条打印 `HARD_REJECT`，但二者都不进 `all_pass` —— 最终 `=> PASS`、exit 0 | 〔码〕`wave_gate.py:749-822, 970-993`；〔沙〕实录 步 5 ⑦ |
 | N7 | P1 ✅已修（§14.8） | `--exprs-file` 候选在门禁**之前**以 `status='gated'` 入库，门禁 FAIL 后不回写 → `gated` 同时表示"送过闸"与"过了闸"，积压闸与漏斗把 FAIL 候选计为未消费积压 | 〔码〕`wave_gate.py:572-588`；〔沙〕w5/w6/w7 FAIL 后 19 条仍为 `gated` |
 | N8 | P1 | `submit_verdict` 对处女提交（新候选的常态，提交层 404）只能返回 `UNVERIFIABLE`；SOP"是否提交的最终判定以本步为准"对新候选无法给出放行结论——它是**否决权威**，放行依据实际是模拟层 checks + 平台 prod 相关性 + 用户确认 | 〔码〕`tools_ops.py:236-251`、`tools/submit_verdict.py:125-130`；〔推〕判定表 |
@@ -472,7 +472,7 @@
 |---|---|---|
 | R3 ✅已实施（§14.9） | Failed-count 单一实现（N3） | 把 `mcp_core._RA_CHECK_NAMES/_PPA_CHECK_NAMES/_ra_bad` 迁入 `src/wqb/config.py` 作为唯一事实源，mcp_core 与 build_gate_prior 引用它；删除现有分叉实现并改 `test_config.py` |
 | R4 ✅已实施（§14.9；另覆盖组合候选与 pipeline 的 review 阶段） | near 池排除 RN_EXPOSURE（N4） | `review_wave.py` near 循环里 `if "RN_EXPOSURE" in r["walls"]: continue`；+单测 |
-| R5 ✅已实施（§14.9；CLI warn 灰度的截止日期属策略决定，未设） | 区域闸语义统一（N5） | `batch_track` 节点接入 `run_region_gates`（与 campaign S3 同为 enforce）；CLI 的 warn 灰度写明截止日期；SOP"快捷入口"注明必须过区域闸 |
+| R5 ✅已实施（§14.9；CLI warn 灰度 2026-10-11 截止、次日起缺省 enforce，§14.9.7） | 区域闸语义统一（N5） | `batch_track` 节点接入 `run_region_gates`（与 campaign S3 同为 enforce）；CLI 的 warn 灰度写明截止日期；SOP"快捷入口"注明必须过区域闸 |
 | R6 | 去掉门禁展示层噪声（N6） | `[opcat]` 与质量预估改为 INFO（不再出现 FAIL / HARD_REJECT 字样），或真正接入 `all_pass`；质量预估默认关闭，需要时 `--quality` 开 |
 | R7 ✅已实施（随 R21，§14.8） | 候选状态语义（N7） | `--exprs-file` 先入 `pending`，按 gate.py 逐条结论回写 `gated`/`fail` |
 | R8 | 提交判定定位（N8） | SKILL.md 步 8 改写：submit_verdict = 否决权威；新候选放行 = 模拟层全过 + 平台 prod < 0.7 + 用户确认 |
@@ -778,7 +778,7 @@
 
 | 步 | 输入（真实） | 处理 | 输出变化（第四轮实测） | 价值判定 |
 |---|---|---|---|---|
-| 2 S0 | 同第三轮 | 同第三轮 | 同第三轮：四闸中 stop_rules 命中 B，warn 模式下 ok=True | ★★★ 不变。toolkit CLI 侧仍是 warn 灰度（转 enforce 的截止日期未定，属策略决定）；SOP 的 workflow 入口已 enforce（R5） |
+| 2 S0 | 同第三轮 | 同第三轮 + 打印 CLI 的缺省模式 | 同第三轮：四闸中 stop_rules 命中 B，warn 模式下 ok=True；CLI 缺省 warn（灰度期至 2026-10-11） | ★★★ 不变。toolkit CLI 侧缺省 warn，2026-10-12 起缺省 enforce（§14.9.7）；SOP 的 workflow 入口一律 enforce（R5） |
 | 5 S2→S3 | 39 条真实表达式（含 5 条实测过闸者，其中 2 条 ACTIVE 原式）；两份字段目录 | ① ② ③ 同第三轮；R12 探针 ④ 无 `WQ_*` 目录变量、⑤ 假 verifier 缺 ply、⑥ probe_batch_mode 干跑（写入均指到库副本） | ①–③ 与第三轮一致（20/39 → 39/39 → 39/39，积压 27%）；④ 39/39、环境缺失 0；⑤ exit 2；⑥ exit 0 | 静态闸 ★★★；R12 后门禁不再依赖 `WQ_*` 变量，环境问题与表达式问题退出码分开 |
 | 6 S3 | 门禁后的 g2；规则 B 命中 | batch_track 干跑 vs campaign S3 干跑 | 两者同被停止规则拦下；batch_track 仍带回命令 | ★★ 保留；N5 已修 |
 | 7 S4 | wave 94；thresholds；candidates；R4 探针：119 条带 rn_sharpe 的真实评审行 | 同第三轮 + near / combo 判据新旧对照 | 同第三轮（N26 / N27 仍在）；R4 无触发样本 | ★★★ 墙诊断保留；R4 防御性 |
@@ -795,7 +795,7 @@
 | R19 漏网 | P2 | `campaign._ensure_campaign_config` 仍写死 `<repo>/data/wqb.db`，不认 `WQB_DB_PATH`。本批没有测试走到它，未改 | 〔码〕`campaign.py` `_ensure_campaign_config` |
 | N11 残留 | P2 | 仍有 49 个文件含 `traeCN_project` 硬编码路径，典型如 `modeb_improve.py` 的 `DB = r'D:\coding\traeCN_project\wqb\data\wqb.db'`、GEM 脚本、`_lib/slots.py`、`tools/campaign_intel.py`、`.mcp.json` | 〔码〕grep |
 | 干跑副作用 | P3 | `probe_batch_mode.py --dry-run` 仍把结果写进战役目录 `cache/`（gitignored，所以 Probe 与 `git status` 都看不见） | 〔真〕第四轮步 5 ⑥ |
-| 仍待办 | — | P1：R6（`[opcat]` 降为 INFO）、R8（提交判定定位）、N30。R5 里"CLI warn 灰度写明截止日期"一项属策略决定，需要你定日期。其余 P2 / P3 见 §13 / §14.7 | — |
+| 仍待办 | — | P1：R6（`[opcat]` 降为 INFO）、R8（提交判定定位）、N30。R5 里"CLI warn 灰度写明截止日期"一项已定：2026-10-11 截止（§14.9.7）。其余 P2 / P3 见 §13 / §14.7 | — |
 
 #### 14.9.5 价值评估的修订（第二批）
 
@@ -818,10 +818,51 @@
 - **单测隔离**：`test_workflow_nodes.py` 在修复前会在默认路径建库（S4 解析建空库；probe 用例建全 schema 库）。在用户本机，默认路径就是生产库。本批后用审计钩子跟踪全量用例对默认库的 `sqlite3.connect`：**库不存在时以读写方式打开它的只剩一处**——`WorkflowExecutor` 自身的 store（既有行为，`test_audit_fixes` 等用例经 `wqb.workflow.execute()` 触发）；其余读写连接都发生在库已存在之后，其中生产代码的几处（gem 快照检查、toolkit `region_gates`）先判 `isfile`，wqb-db 的 `_conn` 即已知的 N26。
 - **pyflakes**：改动文件的告警与 HEAD 相同（既有的未用 import / 无占位 f-string）。
 - **技能同步**：改了 toolkit 的 `review_wave.py` / `pipeline.py` 与两份 SKILL.md，本机需要再跑一次 `python tools/sync_skills.py`（容器内已同步，`--check` 通过）。
-- **第四轮共跑 3 遍**：
+- **第四轮共跑 4 遍**：
   - 第 1 遍发现 R4 在真实数据上无触发样本（清单改为三态，并如实打印原因），probe_batch_mode 干跑往 `cache/` 写文件（演练改为自清理），另有一处路径未脱敏（sanitize 增加 `~` 规则）；
   - 第 2 遍各项结论与第 3 遍一致；
-  - 第 3 遍只改了步 2 的判定文字，即附件实录。第 2、3 遍去掉时间戳后比对，DB Δ 与清单逐行相同。
+  - 第 3 遍只改了步 2 的判定文字。第 2、3 遍去掉时间戳后比对，DB Δ 与清单逐行相同。附件实录是 §14.9.7 之后又跑的一遍（第 4 遍）。
+
+#### 14.9.7 R5 收尾：CLI 开波闸灰度截止日
+
+> 审阅意见："按最佳方案定日期"。R5 的第三项（CLI 的 warn 灰度写明截止日期）此前留给人定，现定案并落进代码。
+
+**结论**：toolkit CLI（`build_wave.py`、`tools/wave_gate.py`）的开波闸缺省模式 **2026-10-11 及以前 warn，2026-10-12 起 enforce**（按本机日期）。workflow 节点（campaign S2/S3、batch_track）不受影响，一直是拦截。
+
+**依据**：
+
+| 问题 | 证据 | 取舍 |
+|---|---|---|
+| 为什么要截止，不能一直 warn | 〔史〕2026-09-17 USA：最近 2 批 max\|sharpe\| 0.88 低于天花板 0.9，近 7 天 582 次回测 0 达标，warn 只告警，照样烧槽位；只能靠战役提示词要求 USA 手动加 `--gate-mode enforce`（`tracking/USA/campaign_prompt_usa_regular_20.md:216-222`）。R5 之后 SOP 的 workflow 入口都已拦截，CLI 的 warn 是剩下的唯一绕行口 | 灰度必须有终点 |
+| 为什么不今天就切 | 09-27 闸的输入语义大改：verdict 写入契约（P0-1）、逐条回写（R7 / R21）、规则 B 窗口（R22）。生产库里还有旧数据：R7 之前 FAIL 候选也记 `gated`，会抬高积压；N30 会把收批结果写到错的波上 | 先在新语义下观察真实命中 |
+| 观察多久 | 挖掘按周末集中：带日期的 50 个波文件里 29 个在周六（周五 9、周三 6、周二 4、周一 2，周四和周日 0）；08-01 以来 57 个提交有 33 个在周末；KOR 在 W34 一周跑了 38 波。一个活跃周末就是几十次开波判定 | 按周末计，取两个完整周末：10-03/04、10-10/11（约两周） |
+| 切在哪天 | 周一在数据里最闲（50 个波文件中 2 个，57 个提交中 3 个） | 10-12（周一）切换：当天波及面最小；若误拦，下个周末前有整整一周处理 |
+
+**机制**（单一事实源 toolkit `_lib/region_gates.py`）：
+- `WARN_SUNSET = 2026-10-11`，`default_mode()` 按日期给缺省；`resolve_mode()` 的顺序是 `--gate-mode` > `WQB_GATE_MODE` > 按日期缺省。两个 CLI 都走它（旧版安装位缺 `resolve_mode` 时 wave_gate 沿用旧缺省并提示同步）。
+- 每次运行第一行打印 `gate-mode=…（来源；灰度期至 2026-10-11，2026-10-12 起缺省 enforce）`；灰度期内的命中行写明"2026-10-12 起同样命中将阻断开波"。
+- 过期后 `--gate-mode warn` / `WQB_GATE_MODE=warn` 可临时回退，并打印"本次是显式回退"；放行停波区域应写台账 `stop_rules_override` 留痕。`WQB_GATE_MODE` 拼错会被忽略并点名，不会降级成 warn；程序调用传入非法 mode 时同样取按日期缺省（此前回落 warn，过期后等于 fail-open）。
+- enforce 拦截仍是 exit 2，与 R12 的"门禁环境缺失"同码，含义都是"本波没有门禁结论，不是表达式问题"。
+- 文档：两份 SKILL.md（toolkit 调用约定第 7 条、ra-pipeline 快捷入口）与 AGENTS.md §8.1.1。改期只改常量这一处并同步这三处与单测。
+
+**切换前建议核对（10-11 前）**：
+1. 翻看灰度期的命中行（`[region-gates] ★ 命中 … 仅告警不阻断（…2026-10-12 起同样命中将阻断开波）`；workflow 异步任务的输出在 `logs/_async_tasks/*.out`），逐区确认是真命中。KOR 的规则 B 与团队事后结论一致，属真命中。
+2. 最好先修 N30：否则收批级联可能把结果写到错的波上，再经规则 B 变成误拦或误放。
+3. 看各区积压占比：R7 之前的旧 `gated` 行会抬高它（workflow 入口本来就按它拦截，CLI 切换不新增这类风险）。
+4. 发现误拦就修闸，或把 `WARN_SUNSET` 往后挪（一处常量）；不要全局设 `WQB_GATE_MODE=warn`，那等于取消截止日。
+
+**时间炸弹排查**：把"今天"模拟成 2026-10-12（常量不动，`_today()` 临时返回该日，安装位同步后跑全量单测），暴露出 5 条悄悄依赖 warn 缺省的用例：`test_build_wave_selection` ×3、`test_wave_gate_missing_ply_exits_2`（开波闸先 exit 2，拿不到"门禁环境缺失"）、非法 mode 回落用例。处理：`tests/conftest.py` 加 autouse 固定 `WQB_GATE_MODE=warn`（单测结论不随日历变），非法 mode 用例改为注入日期。复查：模拟 10-12 与今天各跑一遍全量，失败集合都与基线相同。
+
+**测试**：`tests/unit/test_region_gates_p0p1.py` 新增 6 条：截止日与按日期缺省、解析优先级（含拼错不降级）、过期后缺省与非法 mode 都拦截、输出含来源与倒计时，以及 build_wave / wave_gate 两个 CLI 在进程内走解析器（10-12 缺省 enforce，`--gate-mode warn` 与 `WQB_GATE_MODE=warn` 各自生效）。两条 CLI 用例在改动前的代码上均失败（已回退验证）。
+
+**演练脚本**：步 5 的五次 wave_gate 显式 `--gate-mode warn`（这一步看表达式门禁本身；开波闸拦截在步 2 / 6 / 9 演示），否则 10-12 起 KOR 命中规则 B，①–⑤ 会全停在开波闸，演练不可复现；步 2 打印 CLI 的缺省模式与倒计时。
+
+**回归**：根测试 1245 passed / 13 failed / 15 skipped（新增 6 条），失败集合与 §14.9.6 相同；把"今天"模拟成 2026-10-12 再跑全量，失败集合仍相同。MCP 包 78 / 5，失败集合与 HEAD 相同。
+
+**环境动作（云端容器内）**：
+- `python tools/sync_skills.py`：同步了两份 SKILL.md（toolkit 脚本在排查时已同步），`--check` 通过。
+- MCP venv 由 uv 创建，里面没有 pip，按等价命令 `uv pip install --python world-quant-brain-mcp/.venv/bin/python -r world-quant-brain-mcp/requirements.txt` 执行：11 项全部已满足（含 ply 3.11），`uv pip check` 无冲突。
+- 本机（Windows）拉取 main 后同样要各跑一次：`python tools/sync_skills.py`，以及 `world-quant-brain-mcp\.venv\Scripts\python.exe -m pip install -r world-quant-brain-mcp\requirements.txt`（venv 若由 uv 创建，改用 `uv pip install --python <venv 的 python> -r …`）。
 
 ---
 
@@ -871,7 +912,7 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 - 步 6（R5）、步 7（R4：读仓库内全部带 `rn_sharpe` 的评审文件）、步 8（R3：mcp_core 两种布局；设了 `BASE_DIR` 时再跑修复前副本）、步 9（R22：旧取法与实际窗口并列）；
 - 验证清单三态，第二批对照第三轮实录 `realenv_transcript_r18_r21.txt`。
 
-第四轮共跑 3 遍，经过见 §14.9.6。
+第四轮共跑 4 遍，经过见 §14.9.6。第 4 遍在 §14.9.7 之后：步 5 的 wave_gate 显式 `--gate-mode warn`，步 2 打印 CLI 的缺省模式；除这两处与时间戳 / 字典键序外，与第 3 遍逐行相同（DB Δ 与验证清单一致）。
 
 ## 附录 B：证据索引（主要 `文件:行`）
 
