@@ -1,4 +1,4 @@
-# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑 → N30 修复与第五轮探针，2026-09-27）
+# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑 → N30 修复与第五轮探针 → N31 修复与第六轮探针，2026-09-27）
 
 > **对象**：`Claude/skills/wq-brain-ra-pipeline/SKILL.md`（v2.2，last_verified 2026-09-19）定义的唯一挖掘编排 SOP（S-PRE→S6 九步），以及它调用的 workflow 节点、`tools/`、toolkit 脚本与 MCP 函数。
 > **代码基线**：`c393bca`（2026-09-25）。
@@ -8,6 +8,7 @@
 > **第三轮（同日更新，见 §14.8）**：按审阅意见修复四个 P1（R18–R21），用修复后的代码在真实环境把九步完整再跑一遍，每一步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定，数字取自本次运行）。首跑又暴露 R19 / R21 的两处残缺（N28 / N29，已一并修复）。实录 `realenv/realenv_transcript_r18_r21.txt`。
 > **第四轮（同日更新，见 §14.9）**：按审阅意见修 P1 第二批 R22 / R5 / R12 / R4 / R3，第四轮真实环境复跑，末尾验证清单 8 ✅ + 1 ➖（R4：真实数据无触发样本，靠单测）。验证中顺手修了两处"本批修复让测试走得更远才暴露"的问题，新记 N30（P1；第五轮已修，§14.10）。随后按审阅意见定下 CLI 开波闸灰度截止日：2026-10-11 及以前 warn，2026-10-12 起缺省 enforce（§14.9.7）。实录 `realenv/realenv_transcript.txt`。
 > **第五轮（同日更新，见 §14.10）**：按审阅意见修 N30。盘点全部 wave_results 写入方后，同一根因有四处：收批级联、toolkit 评审写入（主路径）、点塔回写、两个 verdict 归一器。四处全部改走写入契约，波号一律原字符串，约定写进 AGENTS.md §8.6。真实环境探针修复前 / 后对照 9/9 ✅，含"修复后的代码接手修复前的库"。新记 N31（P2，需定）：SOP 的手动补收入口在 MCP 层不存在。实录 `realenv/realenv_transcript_n30.txt`。
+> **第六轮（同日更新，见 §14.11）**：按审阅意见修 N31。根因是 726a350 把新函数插进了 `@mcp.tool()` 与 `harvest_multisim_results` 之间，装饰器错挂到私有函数上，不是有意降级。装饰器已复位；声称承接它、实际从没能用的 `workflow_auto_harvest` 改好（带 alphas 时调同一实现入库，不带时只读出报告）；加了私有函数不得注册的守护。真实环境照 SOP 原文调用 5/5 ✅。新记 N32（P2）：`workflow_auto_review` 同样没在真实表结构上跑过。实录 `realenv/realenv_transcript_n31.txt`。
 
 **证据等级**（全文每条判断都标注来源，避免"推测记账"）：
 
@@ -42,7 +43,7 @@
 
 **总评**：九步骨架本身没有多余的"步"——每一步都承载着至少一个有实证的判别机制。本轮发现的问题集中在**步与步之间的接缝**（写入口契约、快照/文件双载体、节点 vs CLI 两条执行路径语义不一）和**展示层噪声**，而不是"缺步骤"或"步骤无用"。真正该**去除**的是少数已被证明无效或误导的子项（死代码缓存、分叉实现、只打印不判定的伪硬闸），真正该**深化**的是把 SOP 文字规则变成机器可执行的约束（users 分级、区域闸 enforce、verdict 写入契约）。
 
-### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9；N31 为第五轮新增，详见 §14.10）
+### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9；N31 为第五轮新增，详见 §14.10；N32 为第六轮新增，详见 §14.11）
 
 | # | 级别 | 发现 | 证据 |
 |---|---|---|---|
@@ -71,7 +72,8 @@
 | N28 | **P1** ✅已修（§14.8） | `gate.py` 找工作区 `src/` 的解析没随 R19 收敛：`.mcp.json` 原样 env 下 op_arity 不可达，**每条表达式都记 `[ARITY_UNKNOWN]`，静态闸全拦**；仓库自带 4 条单测常红即此因 | 〔真〕§14.8 |
 | N29 | P2 ✅已修（§14.8） | R21 逐条回写把"闸门环境缺失"（`[*_UNKNOWN]`）写成 `fail`；这类结论还会进逐条缓存，环境修好后仍被复用 | 〔真〕§14.8 |
 | N30 | **P1** ✅已修（§14.10） | 收批级联 `wqb_db_mcp._cascade_wave_result`（`harvest_multisim_results` 调用，SOP 步 6 的手动补收入口）绕过 P0-1 写入契约：用 `int(re.search(r"(\d+)", wave))` 取波号（`s2_<ds>_d1` → **2**、`91c` → 91），直接 UPDATE 覆盖已有 verdict（含人写的枚举值）或 INSERT 一条 closed 行。修复时查出同一根因还有 toolkit 评审写入（主路径：首个数字入库、冲突顺延 max+1、INSERT OR REPLACE 重置 `created_at`）与点塔回写，一并修复 | 〔码〕§14.9.4；〔真〕§14.10 |
-| N31 | P2 未修（需定） | SOP 步 6 的手动补收入口 `mcp__wqb-db__harvest_multisim_results` 在 MCP 层不存在（726a350 降级为内部函数，SOP 未改）：按 SOP 调用得 `Unknown tool`；`workflow_auto_harvest` 不接收平台 alpha 列表、不写 wave_results | 〔真〕§14.10 |
+| N31 | P2 ✅已修（§14.11） | SOP 步 6 的手动补收入口 `mcp__wqb-db__harvest_multisim_results` 在 MCP 层不存在：按 SOP 调用得 `Unknown tool`。根因是 726a350 把 `_flatten_platform_alpha` 插进了它与 `@mcp.tool()` 之间，装饰器错挂到私有函数上（提交说明称"降级"）；声称承接的 `workflow_auto_harvest` 按不存在的列读写，从没能用 | 〔真〕§14.10、§14.11 |
+| N32 | P2 未修 | `workflow_auto_review`（auto_review 节点）没在真实表结构上跑过：指标为空（NULL）的行在 walls 诊断处 `TypeError`，写入目标表 `review_results` 不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响 | 〔真〕§14.11 |
 
 ### 0.3 09-16/17 建议的落地复核（代码核验）
 
@@ -891,7 +893,7 @@
    - **升级路径**：修复后的代码接手修复前留下的库。
      - 旧评审写的数字键行 `105` 被自动认领，id 与 `created_at` 保留。
      - 旧收批级联新写或改写的行（`2` / `94` / `91`）没有 `full_payload.wave`，认不出属于哪一波，要人工处理。§14.10.4 给了只读审计查询。
-3. **新记 N31（P2，未修，需定）：SOP 步 6 的手动补收入口在 MCP 层不存在。**
+3. **新记 N31（P2）：SOP 步 6 的手动补收入口在 MCP 层不存在。** ✅ 已修，见 §14.11（根因是装饰器错挂，不是有意降级）。
    - ra-pipeline SKILL.md:405 写的是 `mcp__wqb-db__harvest_multisim_results`。726a350（09-19）把它降级为内部函数，SOP 没改；`test_skill_integrity` 把这条过期引用列进了白名单。按 SOP 调用得到 `Unknown tool`。
    - 替代工具 `workflow_auto_harvest` 只按 multisim_id 读库里已有的回测行，不接收平台 alpha 列表，也不写 wave_results。
    - 推论：N30a 的级联自 09-19 起在生产上没有 MCP 入口，生产库里的级联脏行只可能来自此前。
@@ -940,7 +942,7 @@
 
 | # | 级别 | 发现 | 建议 |
 |---|---|---|---|
-| N31 | P2 未修（需定） | 见 §14.10.0 第 3 条。平台 alpha 列表入库并级联结论这一步，目前没有 MCP 入口；主路径（toolkit pipeline 自己收批入库）不受影响 | 二选一：① 重新把 `harvest_multisim_results` 注册为 MCP 工具（现在它经契约写入，拍平 / 相关性透传都在）；② 改 SOP 与 `test_skill_integrity` 白名单，指向可用的入口。726a350 是有意降级，由你定 |
+| N31 | P2 ✅ 已修（§14.11） | 见 §14.10.0 第 3 条。平台 alpha 列表入库并级联结论这一步，目前没有 MCP 入口；主路径（toolkit pipeline 自己收批入库）不受影响 | 二选一：① 重新把 `harvest_multisim_results` 注册为 MCP 工具（现在它经契约写入，拍平 / 相关性透传都在）；② 改 SOP 与 `test_skill_integrity` 白名单，指向可用的入口。726a350 是有意降级，由你定 |
 | 旧数据 | 需人工 | 修复只管以后的写入。生产库里修复前写下的数字键行、自由文本 verdict 仍在：旧评审行下次写同一波时会自动认领；旧级联行不会 | 跑 §14.10.4 的只读审计查询，逐行处理 |
 | 测试隔离 | P3（既有） | `test_wave_verdict_contract.py` 的 module 级 fixture 把安装位 toolkit 插到 `sys.path[0]` 且不还原。之后同进程里的 `import gate` 会拿到安装位那份，`test_p1_fixes_20260927.py::test_gate_resolves_workspace_without_env` 随之失败（修复前后相同）。全量按字母序跑不触发 | fixture 用 `monkeypatch.syspath_prepend` 并在结束时清理 `_lib` / `gate` 模块 |
 | 真实库依赖 | P3（既有） | 带 `skipif(无 data/wqb.db)` 的用例（如 `test_real_db_all_regions_normalizable`）在收集时判定；测试自己造出的空库（WorkflowExecutor 的 store，§14.9.6）若留在 `data/`，下一轮这些用例会对着空库跑并失败 | 跑全量前清掉 `data/wqb.db`，或让这些用例认一个真实库的标记 |
@@ -983,6 +985,73 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
     - 加升级路径；
     - 审计查询覆盖被改写的行（不只 `source_file` 为空的新行）。
   - 第 6 遍即附件实录，9/9。
+
+### 14.11 N31 修复与第六轮真实环境探针（2026-09-27）
+
+> 审阅意见："按最佳方案修复 N31"。实录 `realenv/realenv_transcript_n31.txt`，复现 `realenv/reproduce_realenv_n31.sh`（附录 A）。
+> 方法：两棵树各起一个 wqb-db server（stdio，`.mcp.json` 原样），一棵是修复前的 main（`9ca1cc8`，git archive 副本），一棵是本工作树，都用同一份导入后的 KOR 真实历史。**收批入库照各自代码树里 SOP 的原文调用**。输入是 `harvest_multisim_alphas` 的返回形态（`mcp_core._slim_alpha`：指标嵌在 metrics、checks 分桶），由 KOR 真实 wave94 的 9 条指标与 `tracking/KOR/config/settings.json` 组装，alpha_id 加前缀 `n31_`。
+
+#### 14.11.0 一页结论
+
+1. **根因是装饰器错挂，不是"降级"。**
+   - 726a350（09-19）的父提交里，`@mcp.tool()` 直接装饰 `harvest_multisim_results`。726a350 把新写的 `_flatten_platform_alpha` 插在两者之间，装饰器从此挂到私有函数上：私有函数成了公开工具，SOP 写的收批入库工具从 MCP 层消失。
+   - 同一提交给它加的拍平逻辑，是为了"接受 `harvest_multisim_alphas` 的原样输出"。这只有在它仍是 MCP 工具时才说得通。
+   - 提交说明把这写成"降级为内部 helper，职责由 `workflow_auto_harvest` 承接"；c2bf180 又把 SOP 那条引用列进了测试的"已移除工具"白名单。
+2. **声称承接它的 `workflow_auto_harvest` 从来没能用。** 节点按不存在的列读写：`backtest_results` 没有 multisim_id / expression / failed_checks / universe / delay / neut / updated_at。三种调用方式全部报错：
+   - 默认参数 → no column named expression；
+   - 带 multisim_id → no such column；
+   - `auto_upsert=False` → 按下标取步骤，IndexError。
+
+   它也不接收平台 alpha 列表：修复前传 `alphas` 会被 FastMCP 静默忽略。
+3. **方案：复位根因，让每个名字都说到做到，只留一份实现。**
+   - `@mcp.tool()` 挪回 `harvest_multisim_results`，`_flatten_platform_alpha` 退出工具表，总数仍是 45。SOP、上游 `harvest_multisim_alphas` 的工具说明、toolkit 文档写的都是这个名字，原文即重新成立。
+   - `workflow_auto_harvest` 带 `alphas` 时调同一个实现入库，再出报告，它的 `auto_link` / `auto_upsert` 从此名副其实；不带时只读出报告。节点改为只读，按真实表结构取数。
+   - 没选"只改 SOP 指向 `workflow_auto_harvest`"：它不能入库，改文档只是换一个坏入口。也没选"只恢复注册"：那会留下一个坏掉的公开工具。
+4. **真实环境 5/5 ✅**：
+   - 修复前：照 SOP 原文调用得 `Unknown tool`，`workflow_auto_harvest` 对真实波 94 报错，工具表里有 `_flatten_platform_alpha`。
+   - 修复后：照 SOP 原文入库 9 条，逐项与输入一致（sharpe / fitness / turnover / 2Y / sub / 中性化 / 批次标记），同时级联出 wave_results 暂定结论和 salvage 条目。只读报告不改库（DB Δ 无）。
+5. **回归**：根测试 1285 passed / 13 failed / 15 skipped，失败集合与修复前的 main 相同。MCP 包 78 / 5。新用例在修复前的代码上 7/7 失败。
+6. **新记 N32（P2，未修）**：`workflow_auto_review`（auto_review 节点）同样没在真实表结构上跑过。指标为空（NULL）的行在 walls 诊断处直接 `TypeError`，写入目标表 `review_results` 也不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响。
+
+#### 14.11.1 修复内容
+
+| 项 | 改动 | 文件 |
+|---|---|---|
+| 入口复位 | `@mcp.tool()` 从 `_flatten_platform_alpha` 挪回 `harvest_multisim_results`；私有函数的说明里记下这次错挂 | `wqb_db_mcp.py` |
+| 入库更稳 | `alphas` 也接受 `harvest_multisim_alphas` 的整个返回值与 JSON 字符串（此前只认 list，传整个返回值会静默入库 0 条）；新增 `multisim_id`（缺省取返回值里的 `multisimulation_id`）写进每条回测行的 payload；没有可用条目时返回 warning | `wqb_db_mcp.py` |
+| `workflow_auto_harvest` | 新增 `alphas` / `dataset`：给了就先经 `harvest_multisim_results` 入库，再出报告，返回里附 `ingest`；入库异常如实返回，不出报告 | `wqb_db_mcp.py` |
+| auto_harvest 节点 | 改为只读：只读方式打开库；按真实列取数；关联诊断用 LEFT JOIN expressions；按 multisim_id 过滤走 payload；`auto_upsert` 步骤写明本节点不写库；步骤按名字取；指标为空的行（ERROR）不再让报告崩溃。registry 说明同步 | `src/wqb/workflow/nodes/auto_harvest.py`、`registry.py` |
+| 守护 | 删掉白名单里的 `mcp__wqb-db__harvest_multisim_results`，SOP 引用重新受存在性校验；新增 `test_no_private_function_is_an_mcp_tool`：下划线开头的函数不得是工具，726a350 当时就会被它拦下 | `tests/unit/test_skill_integrity.py` |
+| 测试 | `tests/unit/test_n31_harvest_entry.py` 5 条，全部经 FastMCP `list_tools` / `call_tool`：注册表与 SOP 引用对得上、平台返回形态原样入库（整个返回值与列表两种写法、幂等）、无效输入给 warning、`workflow_auto_harvest` 入库 + 报告、只读报告在真实表结构上可用且一个字节不改（含 `auto_upsert=False` 与 multisim_id 过滤） | |
+| 文档 | ra-pipeline SKILL.md 步 6（可传整个返回值；附只读核对调用）、toolkit SKILL.md、INDEX.md（数量不变，记这次复位）、`docs/skills_pipeline_optimization.md` 示例、AGENTS.md §8.2（工具注册三条规矩） | |
+| 演练脚本 | `realenv/run_realenv_n31.py` + `reproduce_realenv_n31.sh` | |
+
+#### 14.11.2 真实环境：修复前 vs 修复后
+
+| 步 | 修复前（main `9ca1cc8`） | 修复后 |
+|---|---|---|
+| ⓪ 工具表 | 45 个；没有 `harvest_multisim_results`；私有函数 `_flatten_platform_alpha` 在表里 | 45 个；`harvest_multisim_results` 在表里；没有私有函数工具；`workflow_auto_harvest` 多了 `alphas` / `dataset` |
+| ① 照 SOP 原文收批入库 | 按当时的 SOP 传 alphas 列表 → `Unknown tool: harvest_multisim_results` | 按现在的 SOP 传整个返回值 → upserted 9，multisim_id=n31probe；`s2_ml_factor_proj_d1` 暂定 PASS（2/9 过硬闸，6 条过 near 线 1.0）；salvage 条目 9 |
+| 入库内容 | 0 行 | 9 行逐项与输入一致（sharpe / fitness / turnover / 2Y / sub / 中性化 STATISTICAL / 批次标记） |
+| ② 只读报告（真实波 94，9 条回测行） | `no column named expression` | success，报告 9 条、2 条过闸、平均 sharpe 1.35；DB Δ 无 |
+| ③ `workflow_auto_harvest` 带 alphas | `alphas` 被静默忽略 → `No backtest results found` | success：ingest upserted 9（关联 9），再出报告 |
+
+#### 14.11.3 残留
+
+| # | 级别 | 发现 | 建议 |
+|---|---|---|---|
+| N32 | P2 未修 | `workflow_auto_review`：turnover 为 NULL 的回测行在 `bt.get("turnover", 0) > 0.7` 处 `TypeError: '>' not supported between 'NoneType' and 'float'`（`.get` 的缺省值只在键不存在时生效，库里读出来的是 None）；写入目标 `review_results` 表不存在。与 auto_harvest 同一批（09-16 起的 Phase 4 自动化节点）没在真实表结构上跑过，单测只覆盖 dry-run | 按 auto_harvest 的做法：先在真实表结构上跑通，写入要么落到真实存在的表（经 CampaignStore），要么改为只读报告；补非 dry-run 的用例 |
+| 口径待核 | P3 | `CampaignStore.upsert_backtest_rows` 往 `ra_failed_checks` 列写的是 `failed_checks or ra_failed_checks`。平台行两者都有时，存的是全部 FAIL 项，而不是平台预计算的 RA 子集。本轮冒烟测试里，嵌套 `ra.ra_failed_checks=[PROD_CORRELATION]`、`checks.fail=[LOW_2Y_SHARPE]` 时存成了后者。该列有下游读者（toolkit `region_kb`、`tools/campaign_intel.py`），影响未评估 | 核对下游是否把这一列当"RA 失败项"计数，再决定优先取哪一个 |
+| N26 | 既有 | wqb-db 写死 `<repo>/data/wqb.db`，而 auto_harvest 节点按 `resolve_db_path()` 读。生产 env 下两者是同一个文件；若给 server 单独设了 `WQB_DB_PATH`，`workflow_auto_harvest` 会写一个库、读另一个库 | 随 N26 一并收敛 |
+
+#### 14.11.4 回归与同步
+
+- **根测试**：1285 passed / 13 failed / 15 skipped。失败集合与修复前的 main（§14.10.5 的 13 条）逐条相同；新增 6 条全过。
+- **MCP 包**：78 / 5，失败集合相同。
+- **新用例在修复前代码上的表现**：把两份测试文件放进 `9ca1cc8` 的 archive 跑，N31 的 5 条与 `test_skill_integrity` 里的 2 条（私有函数工具、SOP 引用未注册）全部失败。
+- **技能同步**：改了两份 SKILL.md 与 INDEX.md，容器内已同步，`--check` 通过；本机拉取后再跑一次 `python tools/sync_skills.py`。
+- **pyflakes**：改动文件无告警。
+- **第六轮共跑 2 遍**：第 1 遍脚本读 wave94 的键名写错（该文件的行在 `candidates` 下），输入 0 条，直接崩了；修正后第 2 遍即附件实录，5/5。
 
 ---
 
@@ -1049,6 +1118,15 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh
 
 第五轮共跑 6 遍，经过见 §14.10.5。
 
+**第六轮（N31 修复后的专项探针）**：
+
+```bash
+bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n31.sh
+# 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N31 修复前的提交，默认 9ca1cc8>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
+```
+
+两棵树各起一个 wqb-db server（stdio，`.mcp.json` 原样），照各自 SOP 原文调收批入库；输入是 `harvest_multisim_alphas` 的返回形态，由 KOR 真实 wave94 指标组装。两棵树的 `data/wqb.db` 演练期间换成导入快照的副本，结束后移回。第六轮共跑 2 遍，经过见 §14.11.4。
+
 ## 附录 B：证据索引（主要 `文件:行`）
 
 | 发现 | 位置 |
@@ -1083,4 +1161,5 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n30.sh
 | N28 | `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py`（`_workspace_src_dirs` / `_load_arity_check` / `_find_tools_lib` / `_resolve_workspace_deps`；修复前的"上溯 5 级"与硬编码盘符）；`build_wave.py:141-168`（09-09 修过的同类问题）；`tests/unit/test_window_whitelist_p4.py`、`test_gem_provenance_p1p2p3.py` |
 | N29 | `tools/wave_gate.py`（`_write_back_gate_status` / `_env_unknown_only` / `gate_fail_reasons`）；`gate.py`（`ENV_UNKNOWN_TAGS` / `env_unknown`、逐条缓存写入） |
 | N30 | `wqb_db_mcp.py:1389`（`harvest_multisim_results` 调用点）、`:1454-1525`（`_cascade_wave_result`）；`src/wqb/workflow/nodes/campaign.py`（`_normalize_verdict`）vs `src/wqb/wave_results_contract.py`（`normalize_verdict`）；ra-pipeline SKILL.md:405。<br>修复后：`wqb_db_mcp.py:1458-1505`（`HARVEST_SOURCE` / `_region_near_line` / `_cascade_wave_result`）；`src/wqb/wave_results_contract.py:222`（`adopt_legacy_row`）；toolkit `_lib/wave_results.py:36`（`REVIEW_FINDING_PREFIXES`）、`:111`（`upsert`）、`:213`（`auto_upsert_from_review`）；`campaign.py:1104`（`_normalize_verdict` 委托契约）；`auto_pyramid.py:158`（`_embed_pyramid`）；`src/wqb/store/_schema.py`（补 `created_at` 列）；`tests/unit/test_n30_wave_results_writers.py`；`realenv/realenv_transcript_n30.txt` |
-| N31 | `wqb_db_mcp.py:1247`（`harvest_multisim_results` 无 `@mcp.tool()`，726a350 起）、`:2136`（`workflow_auto_harvest` → `src/wqb/workflow/nodes/auto_harvest.py:110` 按 multisim_id 读回测行）；ra-pipeline SKILL.md:403-405、:691；`tests/unit/test_skill_integrity.py:125-128`（白名单）；`realenv/realenv_transcript_n30.txt` 步 ⓪ |
+| N31 | `wqb_db_mcp.py:1247`（`harvest_multisim_results` 无 `@mcp.tool()`，726a350 起）、`:2136`（`workflow_auto_harvest` → `src/wqb/workflow/nodes/auto_harvest.py:110` 按 multisim_id 读回测行）；ra-pipeline SKILL.md:403-405、:691；`tests/unit/test_skill_integrity.py:125-128`（白名单）；`realenv/realenv_transcript_n30.txt` 步 ⓪。<br>修复后：`wqb_db_mcp.py:1174`（`_flatten_platform_alpha` 不再是工具）、`:1251-1252`（`@mcp.tool()` 回到 `harvest_multisim_results`）、`:2162`（`workflow_auto_harvest` 带 alphas 时委托入库）；`src/wqb/workflow/nodes/auto_harvest.py`（只读报告）；`tests/unit/test_skill_integrity.py:120`（白名单条目删除）、`:211`（`test_no_private_function_is_an_mcp_tool`）；`tests/unit/test_n31_harvest_entry.py`；`realenv/realenv_transcript_n31.txt` |
+| N32 | `src/wqb/workflow/nodes/auto_review.py:176`（`INSERT OR REPLACE INTO review_results`，该表不存在）、`:217`（`bt.get("turnover", 0) > 0.7`，实测崩在这里）、`:211` / `:249` / `:282`（`bt.get("sharpe", 0) >= 1.58`，同一写法）；`tests/unit/test_skill_integrity.py:314`（只有 dry-run 用例） |
