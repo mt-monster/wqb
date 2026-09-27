@@ -103,9 +103,16 @@ def _platform_category(dataset_id: str) -> Optional[str]:
 
     快照缺记录（如 model50 在 IND 仅存 category=NULL 行）时返回 None，
     由调用方回退前缀推断。
+
+    2026-09-27 R19：走 resolve_db_path()（此前用模块常量、不认 WQB_DB_PATH），并以只读
+    URI 打开——`sqlite3.connect` 遇到不存在的文件会建空库，任一 GEM 干跑 / 单测都会在
+    默认路径留下 0 字节 data/wqb.db。
     """
+    db = resolve_db_path()
+    if not os.path.isfile(db):
+        return None
     try:
-        conn = sqlite3.connect(_DB_PATH)
+        conn = sqlite3.connect(Path(db).resolve().as_uri() + "?mode=ro", uri=True)
         try:
             row = conn.execute(
                 "SELECT category FROM datasets WHERE name=? "
@@ -638,9 +645,14 @@ def unbuffered_env(extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
     detached 模式唯一的可观测手段；缓冲住就等于没有。
 
     凭证桥见 with_brain_credentials（只改名，不落盘、不打印）。
+
+    2026-09-27 R19：缺省注入 WQB_WORKSPACE=REPO_ROOT（不覆盖已有值）——toolkit 若是
+    安装位拷贝（~/.claude/skills/...），它从自身位置上溯找不到工作区；有了它，子进程
+    与本节点读写的是同一个库（toolkit `_lib/wqb_store.resolve_db_path`）。
     """
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
+    env.setdefault("WQB_WORKSPACE", str(REPO_ROOT))
     with_brain_credentials(env)
     if extra:
         env.update(extra)

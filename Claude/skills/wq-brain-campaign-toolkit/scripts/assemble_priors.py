@@ -127,9 +127,11 @@ def _operator_principle_kb(ctx):
 
 
 def _registry_layer(ctx, layer):
-    rs = RegistryStore(ctx.region)
+    # 2026-09-27：库路径与 get_store(ctx) 同一解析（R19，此前 RegistryStore 走独立的硬编码默认）；
+    # 按登记先后倒序（R18，此前字母序 + [:MAX] 截断 → 新封存的死路 ID 排在后面就永远进不了 GEM）。
+    rs = RegistryStore(ctx.region, ctx=ctx)
     out = []
-    for r in rs.list(layer=layer):
+    for r in rs.list(layer=layer, newest_first=True):
         p = r["payload"] if isinstance(r["payload"], dict) else json.loads(r["payload"])
         out.append((r, p))
     return out
@@ -233,6 +235,9 @@ def assemble_priors_dict(ctx):
             "id": a, "what": a, "key": "ACTIVE alpha (详见 region_kb)",
             "source": "region_kb_active",
         })
+    truncated = {}
+    if len(wins) > MAX_WINS:
+        truncated["wins"] = [w.get("id") for w in wins[MAX_WINS:]]
     wins = wins[:MAX_WINS]
     if not wins:
         fb = _profile_fallback(ctx.region)
@@ -275,6 +280,8 @@ def assemble_priors_dict(ctx):
             continue
         dseen.add(fam)
         de.append({"family": fam, "reason": f, "source": "template_kb_failed"})
+    if len(de) > MAX_DEADENDS:
+        truncated["dead_ends"] = [d.get("_entry_id") or d.get("family") for d in de[MAX_DEADENDS:]]
     de = de[:MAX_DEADENDS]
     if not de:
         fb = _profile_fallback(ctx.region)
@@ -307,6 +314,9 @@ def assemble_priors_dict(ctx):
                         "profile_fallback (仅 DB KB 空时)"],
         },
     }
+    if truncated:
+        # 名额外被截掉的条目（registry 层已按新登记优先排序）——让截断可见，而非静默丢弃
+        payload["_meta"]["truncated"] = truncated
     if gate_priors:
         payload["gate_priors"] = gate_priors
         # 2026-09-15 ①分流：decay / neutralization 属仿真设置层，GEM prompt 只渲染
@@ -450,6 +460,8 @@ def restore_from_db(ctx):
         "dead_ends": snap.get("dead_ends", []),
         "_meta": {"region": ctx.region, "sources": snap.get("sources", [])},
     }
+    if snap.get("truncated"):
+        payload["_meta"]["truncated"] = snap["truncated"]
     path = priors_path(ctx)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     atomic_write(path, payload, encoding="utf-8", indent=1)
@@ -494,6 +506,9 @@ def main():
     print(f"wrote {path}")
     print(f"wins={len(payload['wins'])} dead_ends={len(payload['dead_ends'])} "
           f"sha256={sha}")
+    for kind, ids in (payload.get("_meta", {}).get("truncated") or {}).items():
+        print(f"truncated {kind}: 名额外 {len(ids)} 条未注入（新登记优先保留）："
+              f"{', '.join(map(str, ids[:5]))}{' …' if len(ids) > 5 else ''}")
     if a.snapshot_ledger:
         st = get_store(ctx)
         try:
@@ -503,6 +518,7 @@ def main():
                 "wins": payload["wins"],
                 "dead_ends": payload["dead_ends"],
                 "sources": payload.get("_meta", {}).get("sources", []),
+                "truncated": payload.get("_meta", {}).get("truncated", {}),
             })
             print(f"snapshot(full) -> ledger key priors_snapshot_{ctx.prefix} "
                   f"(wins={len(payload['wins'])} dead_ends={len(payload['dead_ends'])})")

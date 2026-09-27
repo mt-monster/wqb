@@ -372,8 +372,10 @@ def run(
         # 2026-09-09 修复：显式传 --db-path 绝对路径。headless_runner/run.py 的
         # _materialize_priors_from_db 在 build_command() 内被调，而 build_command
         # 在 os.chdir(trailSomeAlphas) 之后还会再调一次 —— 那时 cwd 向上 8 级
-        # 找不到 data/wqb.db，且 unbuffered_env 不设 WQB_WORKSPACE/WQB_DB_PATH，
+        # 找不到 data/wqb.db，且（当时）unbuffered_env 不设 WQB_WORKSPACE/WQB_DB_PATH，
         # _find_wqb_db 探测链全灭 → SystemExit fail-closed。传绝对路径后第一级命中。
+        # 2026-09-27 R19 起 unbuffered_env 缺省注入 WQB_WORKSPACE；显式 --db-path 仍保留
+        # （第一级命中，且与本节点 resolve_db_path() 同一个库，不依赖子进程 env）。
         cmd.extend(["--db-path", resolve_db_path()])
 
     if effective_ideas_file:

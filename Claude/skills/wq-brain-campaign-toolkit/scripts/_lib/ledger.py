@@ -99,19 +99,20 @@ class SqliteLedgerStore:
       - backup_now() 导出该区域全部 kv 为 JSON 快照
     """
 
-    def __init__(self, region, db_path=None, backup=True):
+    def __init__(self, region, db_path=None, backup=True, ctx=None):
         self.region = region
-        self.db_path = db_path or self._default_db_path()
+        self.db_path = db_path or self._default_db_path(ctx)
         self.backup = backup
         self._ensure_table()
 
     @staticmethod
-    def _default_db_path():
-        # toolkit 根 -> wqb 工作区根 -> data/wqb.db
-        here = os.path.dirname(os.path.abspath(__file__))  # scripts/_lib
-        # 工作区根 = 环境变量 WQB_WORKSPACE 或默认
-        ws = os.environ.get("WQB_WORKSPACE", r"D:\coding\traeCN_project\wqb")
-        return os.path.join(ws, "data", "wqb.db")
+    def _default_db_path(ctx=None):
+        # 2026-09-27 R19：与 get_store 同一解析（_lib/wqb_store.resolve_db_path）。此前只认
+        # WQB_WORKSPACE，否则落硬编码 D:\coding\traeCN_project\wqb——仓库不在该路径时
+        # RegistryStore 直接 "unable to open database file"，而同一进程的 get_store 按战役
+        # 目录找到了正确的库：一次 assemble-priors 两套解析。有 ctx 的调用方请传 ctx。
+        from .wqb_store import resolve_db_path
+        return resolve_db_path(ctx)
 
     def _conn(self):
         import sqlite3
@@ -221,7 +222,7 @@ def make_ledger_store(ctx, backend=None):
     backend = backend or os.environ.get("WQB_LEDGER_BACKEND", "sqlite")
     if backend == "json":
         return LedgerStore(ctx.ledger_path)
-    return SqliteLedgerStore(ctx.region)
+    return SqliteLedgerStore(ctx.region, ctx=ctx)
 
 
 # ---------------- CLI（由 campaign.py ledger 转发） ----------------

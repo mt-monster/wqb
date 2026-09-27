@@ -69,6 +69,52 @@ def normalize_verdict(verdict: Any) -> Tuple[Optional[str], str]:
     return None, "无匹配"
 
 
+#: verdict 判定表（2026-09-27 R20）——与 toolkit `_lib/wave_results.auto_upsert_from_review`
+#: 及 `pipeline.py` 波后自动判定是同一条规则（GREEN / YELLOW / RED 三灯即由此而来）。
+VERDICT_TABLE = ("PASS = 本波 ≥1 条候选达标（过全部评审闸 / GREEN；已提交的必然达标）；"
+                 "PARTIAL = 0 条达标但 ≥1 条进 near 池（YELLOW）；"
+                 "FAIL = 0 达标且 0 near（RED / 全灭）")
+
+
+def verdict_from_counts(n_pass: int, n_near: int = 0) -> str:
+    """按判定表由逐条事实定 verdict——批量导入 / 事后补记用它，而不是从自由文本猜。"""
+    if int(n_pass or 0) > 0:
+        return "PASS"
+    if int(n_near or 0) > 0:
+        return "PARTIAL"
+    return "FAIL"
+
+
+def suggest_verdict(verdict: Any) -> Optional[Dict[str, str]]:
+    """normalize_verdict 认不出的自由文本 → 按判定表给出**建议**（只进拒绝信息，绝不自动写入）。
+
+    写入路径保持保守，但拒绝时告诉写入方"按判定表这条大概率是什么、依据是哪几个字"，
+    省掉一轮来回。KOR 真实历史 30 条 verdict 原文里有 24 条被拒（no_submit / 无提交(…) /
+    FULL_RED / 8/8 RED / 2 GREEN + 6 RED / ✅ 2 RA 提交成功），每条都能得到建议（2026-09-27 R20）。
+    返回 {"verdict", "confidence": high|medium|low, "rule"}；认不出返回 None。
+    """
+    v = str(verdict or "").strip()
+    if not v:
+        return None
+    up = v.upper()
+
+    def hit(enum, confidence, rule):
+        return {"verdict": enum, "confidence": confidence, "rule": rule}
+
+    if re.search(r"提交成功|✅", v) or re.search(r"(?<!\d)[1-9]\d*\s*GREEN", up):
+        return hit("PASS", "high", "提交成功 / ✅ / N GREEN（≥1 条达标）")
+    all_red = re.search(r"(\d+)\s*/\s*(\d+)\s*RED", up)
+    if "FULL_RED" in up or "全灭" in v or (all_red and all_red.group(1) == all_red.group(2)):
+        return hit("FAIL", "high", "全灭 / FULL_RED / N/N RED（0 达标且 0 near）")
+    if re.search(r"NEAR|YELLOW", up) or re.search(r"近闸|基线|突破|破闸|黄灯", v):
+        return hit("PARTIAL", "medium", "NEAR / 近闸 / 新基线 / 突破 / 黄灯（0 达标但有 near）")
+    if re.search(r"判死|天花板|无法破|结构性上限|无挖掘价值", v) or "FAIL" in up:
+        return hit("FAIL", "medium", "判死 / 天花板 / FAIL")
+    if re.search(r"无提交|0\s*可提交", v) or "NO_SUBMIT" in up:
+        return hit("FAIL", "low", "无提交 / no_submit——若本波有 near 候选应为 PARTIAL")
+    return None
+
+
 def _as_list(raw: Any) -> List[Any]:
     """库里 JSON 列 → list（非 list 包一层，损坏按原文保留一条）。"""
     if raw is None or raw == "":
@@ -110,8 +156,15 @@ def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
     if "verdict" in provided:
         norm, _rule = normalize_verdict(provided["verdict"])
         if norm is None:
-            return {"error": f"verdict 必须是 PASS/FAIL/PARTIAL（或带该前缀），收到 "
-                             f"{provided['verdict']!r}；描述性结论请放 key_findings", **base}
+            msg = (f"verdict 必须是 PASS/FAIL/PARTIAL（或带该前缀），收到 {provided['verdict']!r}；"
+                   f"描述性结论请放 key_findings。判定表：{VERDICT_TABLE}")
+            suggestion = suggest_verdict(provided["verdict"])
+            if suggestion is None:
+                return {"error": msg, **base}
+            return {"error": msg + (f"。按判定表建议 verdict='{suggestion['verdict']}'"
+                                    f"（依据：{suggestion['rule']}；置信 {suggestion['confidence']}）"
+                                    "，未自动采用——确认后显式传入"),
+                    "suggestion": suggestion, **base}
         raw = str(provided["verdict"]).strip()
         if norm != raw:
             verdict_note = f"原 verdict（写入时归一）: {raw}"

@@ -59,23 +59,27 @@ except Exception:  # 模块缺失时降级为"无 KB 可用"
 # P1-2 (2026-08-31): 家族天花板预检——复用 src/wqb/expression/validator.py 的
 # check_family_ceiling（主导腿信号族占比 ≥2/3 拦截，wave94/95/98/104 实证 SELF≥0.9）。
 # 工作区根目录可达时动态导入，不可达则降级跳过（保持 toolkit 独立性）。
-def _workspace_src_dirs():
-    """工作区 src/ 候选路径：环境变量 > toolkit scripts 的相对位置。"""
-    cands = []
-    for env in ("WQB_WORKSPACE_ROOT", "WQB_ROOT", "WQ_PROJECT_ROOT"):
-        root = os.environ.get(env)
-        if root:
-            cands.append(root)
-    # toolkit scripts 目录 -> ../../../../../ -> 工作区根（Qoder skills 布局）
-    here = os.path.dirname(os.path.abspath(__file__))
-    cands.append(os.path.normpath(os.path.join(here, "..", "..", "..", "..", "..")))
-    cands.append(r"D:\coding\traeCN_project\wqb")
-    return [os.path.join(root, "src") for root in cands]
+def _workspace_src_dirs(campaign_dir=None):
+    """工作区 src/ 候选路径——与 `_lib/wqb_store` 同一套工作区解析（2026-09-27 R19 补充）。
+
+    此前：WQB_WORKSPACE_ROOT / WQB_ROOT / WQ_PROJECT_ROOT > 本目录上溯 5 级 > 硬编码盘符。
+    "上溯 5 级"在仓库内布局落到仓库的上一级（build_wave 2026-09-09 修过的同一 off-by-one），
+    .mcp.json 原样 env 又不含这三个变量（节点注入的是 WQB_WORKSPACE）——op_arity 不可达，
+    每条表达式都记 [ARITY_UNKNOWN]，静态闸 39/39 全拦（KOR 真实环境复现；第二轮演练补了
+    WQB_ROOT 而没暴露）。现：WQB_WORKSPACE_ROOT（本脚本历史变量名，保留兼容）> 战役目录上溯
+    > WQB_WORKSPACE > WQB_ROOT > WQ_PROJECT_ROOT > toolkit 自身上溯 > cwd 上溯 > 历史盘符（仅当真实存在）。
+    """
+    from _lib.wqb_store import _workspace_roots
+    roots = []
+    for r in [os.environ.get("WQB_WORKSPACE_ROOT")] + _workspace_roots(campaign_dir):
+        if r and r not in roots:
+            roots.append(r)
+    return [os.path.join(root, "src") for root in roots]
 
 
-def _load_family_ceiling():
+def _load_family_ceiling(campaign_dir=None):
     """尝试导入工作区 validator.check_family_ceiling，不可达返回 None。"""
-    for src in _workspace_src_dirs():
+    for src in _workspace_src_dirs(campaign_dir):
         if os.path.isfile(os.path.join(src, "wqb", "expression", "validator.py")):
             if src not in sys.path:
                 sys.path.insert(0, src)
@@ -89,14 +93,14 @@ def _load_family_ceiling():
 _check_family_ceiling = _load_family_ceiling()
 
 
-def _load_arity_check():
+def _load_arity_check(campaign_dir=None):
     """闸1 的算子元数/命名参数检查（catalog 驱动）；不可达返回 None。
 
     2026-09-07 事故根因：verifier 的 PLY 签名表是手写的，hump 漏标 keyword_only，
     于是 hump(x, 0.005) 一路绿灯烧掉整批 multisim。op_arity 改从平台 catalog 的
     definition 串自动推导签名（``name = <字面量>`` 即命名参数），杜绝手写漏标。
     """
-    for src in _workspace_src_dirs():
+    for src in _workspace_src_dirs(campaign_dir):
         if os.path.isfile(os.path.join(src, "wqb", "expression", "op_arity.py")):
             if src not in sys.path:
                 sys.path.insert(0, src)
@@ -111,27 +115,51 @@ def _load_arity_check():
 _arity_check = _load_arity_check()
 
 
-def _find_tools_lib():
+def _find_tools_lib(campaign_dir=None):
+    """工作区 tools/lib（vector_wrap 单一权威源）：WQB_TOOLS_LIB > 与 src/ 同一套工作区候选。"""
     env = os.environ.get("WQB_TOOLS_LIB")
     if env and os.path.isfile(os.path.join(env, "vector_wrap.py")):
         return env
-    cands = [
-        os.path.join(os.environ["WQB_ROOT"], "tools", "lib") if os.environ.get("WQB_ROOT") else None,
-        r"D:\coding\traeCN_project\wqb\tools\lib",
-    ]
-    for c in cands:
-        if c and os.path.isfile(os.path.join(c, "vector_wrap.py")):
+    for src in _workspace_src_dirs(campaign_dir):
+        c = os.path.join(os.path.dirname(src), "tools", "lib")
+        if os.path.isfile(os.path.join(c, "vector_wrap.py")):
             return c
     return None
 
 
-_TOOLS_LIB = _find_tools_lib()
-if _TOOLS_LIB and _TOOLS_LIB not in sys.path:
-    sys.path.insert(0, _TOOLS_LIB)
-try:
-    from vector_wrap import wrap_naked_vectors
-except Exception:
-    wrap_naked_vectors = None
+def _load_vector_wrap(campaign_dir=None):
+    lib = _find_tools_lib(campaign_dir)
+    if not lib:
+        return None
+    if lib not in sys.path:
+        sys.path.insert(0, lib)
+    try:
+        from vector_wrap import wrap_naked_vectors as _wrap
+        return _wrap
+    except Exception:
+        return None
+
+
+wrap_naked_vectors = _load_vector_wrap()
+
+#: 闸门环境缺失（verifier / op_arity 不可达）的逐条标记：说明"没校验"，不是表达式本身的缺陷。
+#: 带这些标记的结论不进逐条缓存（环境修好后必须重判）；wave_gate 回写时不据此判 fail。
+ENV_UNKNOWN_TAGS = ("[SYNTAX_UNKNOWN]", "[ARITY_UNKNOWN]")
+
+
+def env_unknown(issues):
+    return any(str(i).startswith(ENV_UNKNOWN_TAGS) for i in (issues or []))
+
+
+def _resolve_workspace_deps(campaign_dir):
+    """模块加载时还不知道战役目录；那时没解析到的工作区依赖，按战役目录上溯再解析一次。"""
+    global _arity_check, _check_family_ceiling, wrap_naked_vectors
+    if _arity_check is None:
+        _arity_check = _load_arity_check(campaign_dir)
+    if _check_family_ceiling is None:
+        _check_family_ceiling = _load_family_ceiling(campaign_dir)
+    if wrap_naked_vectors is None:
+        wrap_naked_vectors = _load_vector_wrap(campaign_dir)
 
 _VALIDATOR = None
 
@@ -313,7 +341,7 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
             issues.append(f"[SYNTAX] verifier error: {e}")
     # 闸1b 算子元数 + 命名参数（verifier 的手写签名表查不出，见模块头事故记录）
     if _arity_check is None:
-        issues.append("[ARITY_UNKNOWN] op_arity 不可达（设 WQB_WORKSPACE_ROOT 指向工作区），"
+        issues.append("[ARITY_UNKNOWN] op_arity 不可达（设 WQB_WORKSPACE 指向工作区根），"
                       "算子元数/命名参数未校验")
     else:
         try:
@@ -514,8 +542,33 @@ def expression_windows(expr, lo=2, hi=2000):
             if lo <= int(m.group(1)) <= hi]
 
 
-def cache_key(dataset, expr):
-    return hashlib.sha1(f"{dataset}\n{expr}".encode()).hexdigest()
+def _canon(obj):
+    """JSON 规范化（set→有序 list、dict 键排序），保证同一输入在不同进程得到同一指纹。"""
+    if isinstance(obj, dict):
+        return {str(k): _canon(v) for k, v in sorted(obj.items(), key=lambda kv: str(kv[0]))}
+    if isinstance(obj, (set, frozenset)):
+        return sorted((_canon(v) for v in obj), key=lambda v: json.dumps(v, sort_keys=True, default=str))
+    if isinstance(obj, (list, tuple)):
+        return [_canon(v) for v in obj]
+    return obj
+
+
+def gate_signature(ds_all, wl, poison, pc):
+    """闸 1-5 逐条判定的全部外部输入指纹：数据集集合 + 合并白名单（字段 / 类型 / banned）
+    + 毒模式 + 平台约束（含区域）。任一变化都必须让逐条缓存失效（2026-09-27 R21）。"""
+    ids, dtype, fts, banned = wl
+    blob = json.dumps(_canon({"datasets": sorted(set(ds_all)), "ids": ids, "dtype": dtype,
+                              "field_types": fts or {}, "banned": banned or [],
+                              "poison": poison, "pc": pc}),
+                      ensure_ascii=False, sort_keys=True, default=str)
+    return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:16]
+
+
+def cache_key(dataset, expr, sig=""):
+    # 2026-09-27 R21：键纳入 sig（gate_signature）。此前只有 (主 dataset, 表达式)：漏声明
+    # --datasets 第二腿时的 [FIELD] 失败被缓存，补声明重跑 cached=39/39、结论不变——
+    # KOR 唯一出过 ACTIVE 的跨集配方（评级修正 × multi_source_model）被持续拦截（真实复现）。
+    return hashlib.sha1(f"{dataset}\n{sig}\n{expr}".encode()).hexdigest()
 
 
 def batch_digest(exprs):
@@ -1041,6 +1094,7 @@ def main():
                     help="知识闸硬约束：priors 缺失或波命中 dead_end family 时 FAIL（默认仅 WARN）")
     a = ap.parse_args()
     ctx = CampaignContext(a.campaign_dir)
+    _resolve_workspace_deps(a.campaign_dir)
 
     if a.from_db:
         if not a.wave:
@@ -1077,6 +1131,8 @@ def main():
     if os.path.exists(cons_path):  # 区域特有 poison 追加（平台级勿复制进区域文件）
         poison += load_json(cons_path).get("poison_patterns", [])
 
+    sig = gate_signature(ds_all, wl, poison, pc)
+
     # --fix 会改写表达式，缓存键与原始表达式不一致，禁用缓存以免污染
     use_cache = not a.no_cache and not a.fix
     cache = {}
@@ -1096,17 +1152,19 @@ def main():
     dirty = False
     report, all_pass = [], True
     for i, e in enumerate(exprs, 1):
-        ck = cache_key(a.dataset, e)
-        if use_cache and ck in cache:
+        ck = cache_key(a.dataset, e, sig)
+        if use_cache and ck in cache and not env_unknown(cache[ck].get("issues")):
             item = dict(cache[ck])
             item["index"] = i
             item["cached"] = True
         else:
             item = check_one(e, wl, a.dataset, poison, pc, fix=a.fix)
             item["index"] = i
-            if use_cache:
+            # 闸门环境缺失时的结论（[*_UNKNOWN]）不入缓存：环境修好后必须重判，而不是继续拿缓存的 FAIL
+            if use_cache and not env_unknown(item["issues"]):
                 cache[ck] = {k: item[k] for k in ("fields", "issues", "pass")}
                 dirty = True
+        item["expr"] = e  # 原式（入库口径）：调用方据此按式回写逐条结论，不依赖 index 顺序
         all_pass = all_pass and item["pass"]
         report.append(item)
     if dirty and use_cache:

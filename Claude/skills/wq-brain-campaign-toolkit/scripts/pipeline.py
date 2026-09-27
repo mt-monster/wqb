@@ -864,7 +864,7 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
             st.close()
         try:
             from _lib.wave_results import WaveResultsStore
-            wr = WaveResultsStore(ctx.region)
+            wr = WaveResultsStore(ctx.region, ctx=ctx)
             ms_ids = [b.get("multisim") for b in ck.get("batches", []) if b.get("multisim")]
             wr.auto_upsert_from_review(
                 ck["wave"], rows, [], [],
@@ -909,7 +909,7 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     # ---- wave_results 自动入库（波次结论 + near 池，替代 review JSON 文件）----
     try:
         from _lib.wave_results import WaveResultsStore
-        wr = WaveResultsStore(ctx.region)
+        wr = WaveResultsStore(ctx.region, ctx=ctx)
         ms_ids = [b.get("multisim") for b in ck.get("batches", []) if b.get("multisim")]
         out_wr = wr.auto_upsert_from_review(
             ck["wave"], rows, candidates, near,

@@ -33,9 +33,9 @@ def today():
 
 
 class WaveResultsStore:
-    def __init__(self, region, db_path=None):
+    def __init__(self, region, db_path=None, ctx=None):
         self.region = region
-        self.db_path = db_path or SqliteLedgerStore._default_db_path()
+        self.db_path = db_path or SqliteLedgerStore._default_db_path(ctx)
         self._ensure_table()
 
     def _conn(self):
@@ -351,7 +351,7 @@ def cli_main(ctx, argv):
     region = a.region or ctx.region
 
     if a.cmd == "list":
-        rows = WaveResultsStore(region).list(a.status)
+        rows = WaveResultsStore(region, ctx=ctx).list(a.status)
         print(f"region={region} waves={len(rows)}"
               + (f" status={a.status}" if a.status else ""))
         for r in rows:
@@ -360,7 +360,7 @@ def cli_main(ctx, argv):
         return 0
 
     if a.cmd == "get":
-        row = WaveResultsStore(region).get(a.wave)
+        row = WaveResultsStore(region, ctx=ctx).get(a.wave)
         if not row:
             print(f"MISSING: {region}/wave{a.wave}", file=sys.stderr)
             return 1
@@ -376,7 +376,7 @@ def cli_main(ctx, argv):
               f"  src={row['source_file']}")
         return 0
 
-    store = WaveResultsStore(region)
+    store = WaveResultsStore(region, ctx=ctx)
     if a.cmd == "upsert":
         def _arr(v):
             if not v:

@@ -31,6 +31,7 @@ import argparse
 import importlib
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -58,6 +59,111 @@ def find_script(candidates, name):
     raise FileNotFoundError(
         f"未找到 {name}：设 WQ_TOOLKIT_DIR/WQ_VALIDATOR_DIR 指定（已搜 "
         f"{', '.join(c for c in candidates if c)}）")
+
+
+# ---- 工作区根 / 战役库路径（2026-09-27 R19 收敛为一处）----
+# 此前 7 处各写 `WQB_ROOT or WQ_PROJECT_ROOT or <作者本机盘符路径>`：仓库不在该盘符时，
+# --exprs-file 候选被写进 cwd 下一个以该盘符路径命名的杂散目录（.gitignore 的 data/ 规则把它
+# 吞掉，git status 看不见），gate.py 读真库找不到候选 → exit 2 "门禁未跑完"。
+# 这 7 处还都不认 WQB_DB_PATH，而 toolkit gate.py（经 get_store）认。
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _wqb_root(campaign_dir=None):
+    """工作区根。顺序与 toolkit `_lib/wqb_store._workspace_roots` 一致：
+    战役目录上溯（src/wqb 或 data/wqb.db 标记）> WQB_WORKSPACE > WQB_ROOT > WQ_PROJECT_ROOT
+    > 本文件所在仓库。"""
+    if campaign_dir:
+        p = os.path.abspath(campaign_dir)
+        for _ in range(8):
+            if (os.path.isdir(os.path.join(p, "src", "wqb"))
+                    or os.path.exists(os.path.join(p, "data", "wqb.db"))):
+                return p
+            parent = os.path.dirname(p)
+            if parent == p:
+                break
+            p = parent
+    return (os.environ.get("WQB_WORKSPACE") or os.environ.get("WQB_ROOT")
+            or os.environ.get("WQ_PROJECT_ROOT") or _REPO_ROOT)
+
+
+def _wqb_db_path(campaign_dir=None):
+    """战役库路径：WQB_DB_PATH 优先（与 toolkit gate.py 同口径），否则 <工作区>/data/wqb.db。"""
+    return os.environ.get("WQB_DB_PATH") or os.path.join(_wqb_root(campaign_dir), "data", "wqb.db")
+
+
+def _campaign_store_cls(campaign_dir=None):
+    """让 wqb 包可导入并返回 CampaignStore：优先工作区 src/，否则本仓库 src/。"""
+    for root in (_wqb_root(campaign_dir), _REPO_ROOT):
+        src = os.path.join(root, "src")
+        if os.path.isdir(os.path.join(src, "wqb")):
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            break
+    from wqb.store import CampaignStore
+    return CampaignStore
+
+
+def _write_back_gate_status(campaign, region, wave, gate_json, seeded):
+    """--exprs-file / --candidates / --expr 入库的候选：按 gate.py 逐条结论回写 status。
+
+    2026-09-27 R7/R21：此前候选在门禁**之前**以 gated 入库、结论出来后不回写 ——
+    gated 同时表示"送过闸"与"过了闸"，FAIL 候选照样计入积压闸的 pending+gated
+    （KOR 真实复现：三次重跑门禁留下 117 条 gated，积压 32% 越过 30% 上限拦下下一波）。
+    现在：入库为 pending → 静态闸 1-5 逐条 PASS → gated；FAIL → fail（与 pipeline 坏式
+    回写同一状态：build_wave / 去重不再重选；reason 记闸门原因，重跑门禁通过会改回 gated）。
+    只因闸门环境缺失而 FAIL 的（issues 全是 [SYNTAX_UNKNOWN]/[ARITY_UNKNOWN]）保持 pending：
+    那是"没校验"，不是"式子坏"——同日真实环境复现过 op_arity 不可达时 39/39 全记 fail。
+    只动本批入库的式子；批级闸（多样性 / 知识闸）不改逐条状态。
+    """
+    verdicts = {}
+    for it in (gate_json.get("report") or []):
+        e = str(it.get("expr") or "").strip()
+        if e:
+            verdicts[e] = it
+    if not verdicts:
+        print("[state] gate.py 未回传逐条结论（toolkit 旧版？），候选保持 pending")
+        return None
+    CampaignStore = _campaign_store_cls(campaign)
+    st = CampaignStore(_wqb_db_path(campaign))
+    n_gated = n_fail = n_unverified = 0
+    try:
+        ids = {}
+        for row in st.list_expressions(region, str(wave)):
+            ex = str(row.get("expression") or "").strip()
+            if ex and row.get("id") is not None:
+                ids.setdefault(ex, int(row["id"]))
+        passed = []
+        for e in dict.fromkeys(x.strip() for x in seeded):
+            it, eid = verdicts.get(e), ids.get(e)
+            if it is None or eid is None:
+                continue
+            if it.get("pass"):
+                passed.append(eid)
+            elif _env_unknown_only(it.get("issues")):
+                n_unverified += 1
+            else:
+                reason = ("gate FAIL: " + "；".join(map(str, it.get("issues") or [])))[:200]
+                res = st.set_expression_status(region, str(wave), "fail", ids=[eid], reason=reason)
+                n_fail += int(res.get("n_updated") or 0)
+        if passed:
+            res = st.set_expression_status(region, str(wave), "gated", ids=passed,
+                                           reason="gate PASS（静态闸 1-5）")
+            n_gated += int(res.get("n_updated") or 0)
+    finally:
+        st.close()
+    print(f"[state] 逐条状态回写：gated {n_gated} / fail {n_fail}（FAIL 候选不再计入积压）"
+          + (f" / 未判定 {n_unverified}（闸门环境缺失，保持 pending）" if n_unverified else ""))
+    return {"gated": n_gated, "fail": n_fail, "unverified": n_unverified}
+
+
+#: gate.py 的"闸门环境缺失"逐条标记（与 toolkit gate.ENV_UNKNOWN_TAGS 一致）：没校验，不是式子坏
+_ENV_UNKNOWN = re.compile(r"^\[(SYNTAX|ARITY)_UNKNOWN\]")
+
+
+def _env_unknown_only(issues):
+    issues = [str(x) for x in (issues or [])]
+    return bool(issues) and all(_ENV_UNKNOWN.match(x) for x in issues)
 
 
 # ---- gate.py 子进程终态判定（ERROR / FAIL / PASS 三分）----
@@ -140,6 +246,11 @@ def gate_fail_reasons(payload):
     blocked = (payload.get("gate0") or {}).get("blocked") or []
     if blocked:
         reasons.append(f"闸0 语义反模式（{len(blocked)} 条）")
+    env_only = [it for it in (payload.get("report") or [])
+                if not it.get("pass") and _env_unknown_only(it.get("issues"))]
+    if env_only:
+        reasons.append(f"其中 {len(env_only)} 条仅因闸门环境缺失（verifier / op_arity 不可达）判 FAIL、"
+                       "不是表达式问题——设 WQB_WORKSPACE 指向工作区根 / WQ_VALIDATOR_DIR 后重跑")
     return reasons
 
 
@@ -173,12 +284,8 @@ def parse_candidates(a):
     if getattr(a, "from_db", False):
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         # tools/wave_gate.py 不在 toolkit scripts 下，直接 import wqb.store
-        wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-        src = os.path.join(wqb_root, "src")
-        if src not in sys.path:
-            sys.path.insert(0, src)
-        from wqb.store import CampaignStore
-        st = CampaignStore(os.path.join(wqb_root, "data", "wqb.db"))
+        CampaignStore = _campaign_store_cls(a.campaign_dir)
+        st = CampaignStore(_wqb_db_path(a.campaign_dir))
         try:
             region = a.region
             if not region:
@@ -242,15 +349,11 @@ def _load_template_families_for_gate():
     return {}
 
 
-def _field_profile_map_for_gate(region, dataset):
+def _field_profile_map_for_gate(region, dataset, campaign_dir=None):
     """从 wqb.db 读 field_profile（注入 src/，与 parse_candidates 同模式）。"""
-    wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-    src = os.path.join(wqb_root, "src")
-    if src not in sys.path:
-        sys.path.insert(0, src)
     try:
-        from wqb.store import CampaignStore
-        st = CampaignStore(os.path.join(wqb_root, "data", "wqb.db"))
+        CampaignStore = _campaign_store_cls(campaign_dir)
+        st = CampaignStore(_wqb_db_path(campaign_dir))
         try:
             return st.get_field_profile_map(region, dataset)
         finally:
@@ -330,7 +433,7 @@ def _family_shape_gate(items, a, campaign):
         print("[famshape] warn: 无 region，跳过软闸")
         return None
 
-    prof_map = _field_profile_map_for_gate(region, a.dataset)
+    prof_map = _field_profile_map_for_gate(region, a.dataset, campaign)
     if not prof_map:
         print(f"[famshape] warn: {region}/{a.dataset} 无 field_profile，跳过软闸")
         return None
@@ -521,8 +624,7 @@ def main():
             if tools_dir not in sys.path:
                 sys.path.insert(0, tools_dir)
             from s2_field_validator import validate_wave_fields
-            wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-            db_path = os.path.join(wqb_root, "data", "wqb.db")
+            db_path = _wqb_db_path(campaign)
             # region 缺省时从 settings.json 读取（与 parse_candidates 对齐）
             region = a.region
             if not region:
@@ -569,22 +671,21 @@ def main():
            "--wave", str(tag), "--batch-type", a.batch_type]
     if a.datasets:
         cmd.extend(["--datasets", a.datasets])
+    seeded = None  # 本脚本代为入库的候选（仅这些由本脚本回写逐条状态）
     if a.from_db or (not a.candidates and not a.exprs_file and not a.expr):
         cmd.append("--from-db")
     else:
         # 兼容旧入口：把解析后的表达式 upsert 再 --from-db，避免写 cache json
-        wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-        src = os.path.join(wqb_root, "src")
-        if src not in sys.path:
-            sys.path.insert(0, src)
-        from wqb.store import CampaignStore
+        CampaignStore = _campaign_store_cls(campaign)
         settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
         region = a.region or settings.get("region")
-        st = CampaignStore(os.path.join(wqb_root, "data", "wqb.db"))
+        st = CampaignStore(_wqb_db_path(campaign))
         try:
-            st.upsert_expressions(region, str(tag), [e for _, e in items], dataset=a.dataset, status="gated")
+            # 2026-09-27 R7：先入 pending，门禁逐条结论出来后再回写 gated / fail（见 _write_back_gate_status）
+            st.upsert_expressions(region, str(tag), [e for _, e in items], dataset=a.dataset, status="pending")
         finally:
             st.close()
+        seeded = (region, [e for _, e in items])
         cmd.append("--from-db")
     if a.skip_diversity_gate:
         cmd.append("--skip-diversity-gate")
@@ -610,6 +711,10 @@ def main():
         print("[gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）"
               + ("；" + "、".join(reasons) if reasons else ""))
 
+    state_writeback = None
+    if seeded:
+        state_writeback = _write_back_gate_status(campaign, seeded[0], tag, gate_json, seeded[1])
+
     report = {
         "wave": a.wave, "dataset": a.dataset, "campaign_dir": campaign,
         "gate_exit": r.returncode,
@@ -617,6 +722,8 @@ def main():
                    "items": syntax},
         "gate": gate_json,
     }
+    if state_writeback is not None:
+        report["state_writeback"] = state_writeback
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
 
@@ -755,8 +862,7 @@ def main():
             dataset_data_type = None
             try:
                 import sqlite3 as _sq2
-                wqb_root_tmp = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-                conn_tmp = _sq2.connect(os.path.join(wqb_root_tmp, "data", "wqb.db"))
+                conn_tmp = _sq2.connect(_wqb_db_path(campaign))
                 row_tmp = conn_tmp.execute(
                     "SELECT data_type FROM datasets WHERE name=? LIMIT 1",
                     (a.dataset,)
@@ -779,7 +885,7 @@ def main():
                 from operator_coverage import is_event_type_dataset  # toolkit _lib
                 _field_names = None
                 try:
-                    conn_f = _sq2.connect(os.path.join(wqb_root_tmp, "data", "wqb.db"))
+                    conn_f = _sq2.connect(_wqb_db_path(campaign))
                     _field_names = [r[0] for r in conn_f.execute(
                         "SELECT f.field_name FROM fields f JOIN datasets d ON d.id=f.dataset_id "
                         "WHERE d.name=?", (a.dataset,)).fetchall()]
@@ -823,10 +929,9 @@ def main():
                 if warns:
                     print(f"[opcat] WARNING：本波无 Logical 类算子。非事件型数据集不强制"
                           f"（if_else 在 859 条过闸样本中仅占 5.1%），仅提示。")
-            wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
             settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
             qregion = a.region or settings.get("region")
-            qconn = _sq.connect(os.path.join(wqb_root, "data", "wqb.db"))
+            qconn = _sq.connect(_wqb_db_path(campaign))
             try:
                 q_results, _ = qp_mod.predict_all([(e, a.dataset) for e in passed_exprs], qregion, qconn)
             finally:
@@ -920,14 +1025,10 @@ def main():
             print(f"[var  ] 参数变体聚类 PASS（无同骨架同字段变体）")
 
     try:
-        wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-        src = os.path.join(wqb_root, "src")
-        if src not in sys.path:
-            sys.path.insert(0, src)
-        from wqb.store import CampaignStore
+        CampaignStore = _campaign_store_cls(campaign)
         settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
         region = a.region or settings.get("region")
-        st = CampaignStore(os.path.join(wqb_root, "data", "wqb.db"))
+        st = CampaignStore(_wqb_db_path(campaign))
         try:
             st.upsert_gate_result(region, str(tag), a.dataset, report)
         finally:

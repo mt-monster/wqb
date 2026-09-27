@@ -86,7 +86,10 @@ class WorkflowExecutor:
 
     def __init__(self, db_path: Optional[str] = None):
         self.registry = get_registry()
-        self.db_path = db_path or "data/wqb.db"
+        # 2026-09-27 R19：缺省走 resolve_db_path()（WQB_DB_PATH > <仓库>/data/wqb.db）。此前是相对
+        # 路径 "data/wqb.db"——换一个 cwd 调任意节点就在该 cwd 下新建空库（第一轮 N11 实证）。
+        from ._common import resolve_db_path
+        self.db_path = db_path or resolve_db_path()
         self._store = None
 
     @property

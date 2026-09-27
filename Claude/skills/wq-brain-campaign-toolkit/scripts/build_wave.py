@@ -343,7 +343,7 @@ def near_fields(ctx):
     # wave_results 表 near 池（替代 reviews/*.json）
     try:
         from _lib.wave_results import WaveResultsStore
-        wr = WaveResultsStore(ctx.region)
+        wr = WaveResultsStore(ctx.region, ctx=ctx)
         for row in wr.list():
             full = wr.get(row["wave_number"])
             if not full or not full.get("full_payload"):

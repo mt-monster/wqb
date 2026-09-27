@@ -256,7 +256,7 @@ def main():
     # ---- wave_results 表入库（DB 为主，JSON 仅排障留痕） ----
     try:
         from _lib.wave_results import WaveResultsStore
-        wr = WaveResultsStore(ctx.region)
+        wr = WaveResultsStore(ctx.region, ctx=ctx)
         ms_ids = [a.multisim] if a.multisim else []
         out_wr = wr.auto_upsert_from_review(
             tag, rows, candidates, near,

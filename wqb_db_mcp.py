@@ -834,7 +834,9 @@ def upsert_wave_result(
 
     Returns:
         {"action": "inserted"|"updated"|"noop", "region", "wave_number", "verdict", "status",
-         "updated_fields"}；status=closed 却没有 verdict、或 verdict 无法辨认时返回 {"error": ...} 且不写库
+         "updated_fields"}；status=closed 却没有 verdict、或 verdict 无法辨认时返回 {"error": ...} 且不写库。
+        verdict 无法辨认时另附 "suggestion"（按判定表 PASS=≥1 达标 / PARTIAL=0 达标有 near /
+        FAIL=0 达标 0 near 给出的建议值与依据）——不会自动采用，确认后显式传入
     """
     conn = _conn()
     try:

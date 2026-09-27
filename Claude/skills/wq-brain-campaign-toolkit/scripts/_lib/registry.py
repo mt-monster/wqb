@@ -33,9 +33,9 @@ def today():
 
 
 class RegistryStore:
-    def __init__(self, region, db_path=None):
+    def __init__(self, region, db_path=None, ctx=None):
         self.region = region
-        self.db_path = db_path or SqliteLedgerStore._default_db_path()
+        self.db_path = db_path or SqliteLedgerStore._default_db_path(ctx)
         self._ensure_table()
 
     def _conn(self):
@@ -93,14 +93,21 @@ class RegistryStore:
         return {"region": self.region, "layer": layer, "entry_id": entry_id,
                 "family": family, "dead_at": dead_at, "payload": p}
 
-    def list(self, layer=None):
-        sql = ("SELECT region, layer, entry_id, family, dead_at, payload "
+    def list(self, layer=None, newest_first=False):
+        """列出条目。默认按 entry_id 字母序（CLI 展示用）。
+
+        newest_first=True：按登记先后倒序——id 自增即登记顺序（本类的 INSERT OR REPLACE
+        重写视为新登记；wqb-db MCP 的 UPDATE 保留原 id）。供需要截断的消费方用：
+        2026-09-27 R18 前 assemble-priors 按字母序截前 6/12 条，新封存的死路 ID 只要
+        排在后面就永远进不了 GEM（KOR 已入库 priors 的 12 条死路全是 KOR-A*）。
+        """
+        sql = ("SELECT id, region, layer, entry_id, family, dead_at, payload, updated_at "
                "FROM registry_empirical WHERE region=?")
         args = [self.region]
         if layer:
             sql += " AND layer=?"
             args.append(layer)
-        sql += " ORDER BY layer, entry_id"
+        sql += " ORDER BY layer, id DESC" if newest_first else " ORDER BY layer, entry_id"
         conn = self._conn()
         rows = conn.execute(sql, args).fetchall()
         conn.close()
@@ -197,7 +204,7 @@ def cli_main(ctx, argv):
     region = a.region or ctx.region
 
     if a.cmd == "list":
-        store = RegistryStore(region)
+        store = RegistryStore(region, ctx=ctx)
         rows = store.list(a.layer)
         print(f"region={region} entries={len(rows)}"
               + (f" layer={a.layer}" if a.layer else ""))
@@ -206,7 +213,7 @@ def cli_main(ctx, argv):
         return 0
 
     if a.cmd == "get":
-        store = RegistryStore(region)
+        store = RegistryStore(region, ctx=ctx)
         row = store.get(a.layer, a.id)
         if not row:
             print(f"MISSING: {region}/{a.layer}/{a.id}", file=sys.stderr)
@@ -216,7 +223,7 @@ def cli_main(ctx, argv):
         print(json.dumps(json.loads(row["payload"]), ensure_ascii=False, indent=1))
         return 0
 
-    store = RegistryStore(region)
+    store = RegistryStore(region, ctx=ctx)
     if a.cmd == "add-dead-end":
         named = {"id": a.id, "family": a.family, "reason": a.reason, "rule": a.rule}
         if a.salvage:

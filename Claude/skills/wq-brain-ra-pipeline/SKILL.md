@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "2.2"
-last_verified: 2026-09-19
+last_verified: 2026-09-27
 ---
 
 # WQ BRAIN RA Pipeline（唯一挖掘编排 SOP）
@@ -557,6 +557,19 @@ decay 仍以 `tools/build_gate_prior_from_inventory.py --write-priors` 的 `gate
 **写入是合并语义（2026-09-27）**：行已存在时只覆盖本次传入的字段，只补写 `key_findings` 不会再清空 verdict
 （此前会，停止规则 B 随之失效）；`status='closed'`（新行缺省即 closed）必须带 verdict，结论未定传 `status='open'`；
 `wave_number` 可传字符串（如 `s2_<ds>_d1`）。
+
+**verdict 判定表（2026-09-27；与 `pipeline.py --review` 自动判定的 GREEN/YELLOW/RED 同一规则）**——
+按本波逐条事实判，不要写描述性文字（"无提交(…)"、"FULL_RED"、"✅ 提交成功" 一律会被拒）：
+
+| verdict | 判据 |
+|---|---|
+| PASS | ≥1 条候选达标（过全部评审闸 / GREEN；已提交的必然达标） |
+| PARTIAL | 0 条达标，但 ≥1 条进 near 池（YELLOW：接近闸门，可沿 Mode A/B 继续） |
+| FAIL | 0 达标且 0 near（RED / 全灭 / 判死） |
+
+被拒时返回里的 `suggestion` 是按此表对原文的**建议**（带依据与置信度，low 置信通常是"无提交"
+——有 near 候选就该是 PARTIAL），不会自动采用：核对后显式传 `verdict=<枚举>`，原文放进 `key_findings`。
+补记旧波同理——注意补记会刷新该波 `updated_at`，停止规则 B 的"最近 3 个 closed 波"会随之变化。
 
 ```
 mcp__wqb-db__upsert_wave_result  region=$REGION  wave=$W  verdict=<PASS|FAIL|PARTIAL>  ...
