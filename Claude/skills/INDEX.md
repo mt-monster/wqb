@@ -195,6 +195,8 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   2026-09-15 起含 `set_expression_status`（批量改状态，只传 id/状态过滤，不回传表达式正文）。
   2026-09-16 起含 `workflow_inventory_scan` / `workflow_field_understanding` / `workflow_gem_wave` /
   `workflow_unified_gate` / `workflow_auto_harvest` / `workflow_auto_review` / `workflow_auto_pyramid`。
+  2026-09-27（N31）：`harvest_multisim_results` 复位为工具——09-19 起 `@mcp.tool()` 错挂在私有函数
+  `_flatten_platform_alpha` 上（该函数随之退出工具表，总数不变）；`workflow_auto_harvest` 带 `alphas` 时同样入库。
   ⚠ **2026-09-18 新增 2 个（43→45）**：`persist_correlation`（相关性检查结果直落 `alphas`，
   NULL-only / [0,1] 校验 / source 溯源）、`get_alpha_corr_metrics`（本地库筛选相关性，
   **零平台配额**）。配套：alphas 表 +9 列（sub_universe_sharpe / returns / drawdown / long_count /

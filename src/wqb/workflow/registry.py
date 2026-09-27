@@ -367,7 +367,8 @@ class WorkflowRegistry:
                 auto_harvest.run,
                 NodeMeta(
                     name="auto_harvest",
-                    description="自动化收批（S3 增强）：自动收批 multisim 结果 + 自动关联 expressions + 自动写回 backtest_results + 自动生成收批报告",
+                    description="收批核对（S3 增强，只读）：读本波 / 该批（multisim_id）回测行 + 关联诊断 + 收批报告；"
+                                "平台结果入库走 wqb-db harvest_multisim_results，或 workflow_auto_harvest 带 alphas（先入库再出报告）",
                     category="harvest",
                     phase=4,
                     required_params=["region", "wave"],

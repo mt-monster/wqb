@@ -402,7 +402,10 @@ mcp__wq-brain-http__batch_status  simulation_ids=["<id1>", "<id2>"]
 # 替代「get_multisimulation_children + lookINTO×N + get_alpha_details×N」的 18 次调用链，
 # 压成 2 次（本工具 + wqb-db harvest_multisim_results 入库）。手动补收/审计某批时用：
 mcp__wq-brain-http__harvest_multisim_alphas  multisimulation_location="/simulations/<id>"
-mcp__wqb-db__harvest_multisim_results  region=$REGION  wave=$W  alphas=<上一步返回的 alphas 列表>
+mcp__wqb-db__harvest_multisim_results  region=$REGION  wave=$W  alphas=<上一步的整个返回值（或其 alphas 列表）>
+# 入库即级联本波 wave_results 暂定结论（评审会覆盖）与 salvage_pool；multisim_id 取自返回值，写进每条回测行。
+# 只核对已入库的某批（只读报告：条数 / 关联 / 过闸率）：
+mcp__wqb-db__workflow_auto_harvest  region=$REGION  wave=$W  multisim_id=<id>
 ```
 
 * **失败分支**：整批 CANCELLED 则回步 5；429 则降并发、批大小 ≤5。

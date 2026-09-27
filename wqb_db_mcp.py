@@ -1171,9 +1171,13 @@ def get_gate_result(region: str, wave: str, dataset: str) -> Dict[str, Any]:
         store.close()
 
 
-@mcp.tool()
 def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
-    """把平台 harvest_multisim_alphas / get_alpha_details 的嵌套 alpha 拍平成扁平 dict（幂等：已扁平的原样返回）。"""
+    """把平台 harvest_multisim_alphas / get_alpha_details 的嵌套 alpha 拍平成扁平 dict（幂等：已扁平的原样返回）。
+
+    内部函数，不是 MCP 工具。2026-09-19（726a350）把本函数插进了 `harvest_multisim_results` 与它的
+    `@mcp.tool()` 之间，装饰器从此挂在本函数上：私有函数成了公开工具，SOP 步 6 的收批入口却从 MCP
+    层消失（N31，2026-09-27 复位；`test_no_private_function_is_an_mcp_tool` 守护）。
+    """
     out = dict(a)
     out.setdefault("alpha_id", a.get("alpha_id") or a.get("id"))
     out.setdefault("expression", a.get("expression") or a.get("code"))
@@ -1244,6 +1248,7 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
     return out
 
 
+@mcp.tool()
 def harvest_multisim_results(
     region: str,
     wave: str,
@@ -1251,31 +1256,46 @@ def harvest_multisim_results(
     auto_link: bool = True,
     auto_upsert: bool = True,
     dataset: Optional[str] = None,
+    multisim_id: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """收批 multisim 结果：关联 expressions 并写回 backtest_rows（幂等）。
+    """收批入库：把平台 multisim 结果写进 backtest_results，并级联本波 wave_results 与 salvage_pool（幂等）。
 
-    接收已从 BRAIN 平台拉取的 alpha 详情列表，负责：
-      1. 按 alpha_id / expression 关联 expressions 表中的 expression_id
-      2. 转换为 backtest_rows 格式
-      3. 写回 backtest_results 表（幂等 upsert）
+    SOP 步 6 手动补收的第二步（第一步是 wq-brain-http `harvest_multisim_alphas`）。负责：
+      1. 拍平平台嵌套结构（metrics / ra / checks / settings）
+      2. 按 alpha_id / expression 关联 expressions 表中的 expression_id
+      3. 经 CampaignStore 写 backtest_results（幂等 upsert；相关性标 platform_sync）
+      4. 级联本波 wave_results 暂定结论（写入契约，按原波号）与 salvage_pool
 
-    网络拉取请使用 tools/harvest_multisim.py 或 wq-brain-http 的
-    get_multisimulation_children + get_alpha_details。
+    `workflow_auto_harvest(alphas=…)` 是同一实现，另附收批报告。
 
     Args:
         region: 区域（如 GBR/USA/KOR）
-        wave: 波次编号
-        alphas: alpha 详情列表，每项含 alpha_id/sharpe/fitness/turnover 等
+        wave: 波次号（原字符串，如 97 / s2_<ds>_d1）
+        alphas: `harvest_multisim_alphas` 返回的 alphas 列表（嵌套结构原样传）；也可以直接传它的整个返回值
         auto_link: 是否自动关联 expressions 表（默认 True）
         auto_upsert: 是否自动写回 backtest_results（默认 True）
+        dataset: 数据集（缺省取本波表达式的 dataset）
+        multisim_id: multisim id（缺省取整个返回值里的 multisimulation_id）；写进每条回测行，
+            `workflow_auto_harvest(multisim_id=…)` 据此按批出报告
 
     Returns:
-        {"linked": n, "upserted": n, "region": ..., "wave": ..., "wave_result": "..."}
+        {"linked": n, "upserted": n, "region": ..., "wave": ..., "multisim_id": ..., "wave_result": "..."}
         wave_result 说明本波 wave_results 行的处理（按原波号字符串写入）：没有行时新建并给暂定
         verdict（PASS / PARTIAL / FAIL，按判定表；评审会覆盖）；已有评审 / 人工结论时 "kept"、不覆盖。
+        没有可用条目时多一个 warning（此前静默返回 0）。
     """
     store = _store()
     try:
+        # 2026-09-27 N31：也接受 harvest_multisim_alphas 的整个返回值与 JSON 字符串——此前只认 list，
+        # 把整个返回值传进来会静默入库 0 条。
+        if isinstance(alphas, str):
+            try:
+                alphas = json.loads(alphas)
+            except ValueError:
+                alphas = None
+        if isinstance(alphas, dict) and isinstance(alphas.get("alphas"), list):
+            multisim_id = multisim_id or alphas.get("multisimulation_id")
+            alphas = alphas["alphas"]
         alpha_list = alphas if isinstance(alphas, list) else []
         # 2026-09-19：接受 wq-brain-http harvest_multisim_alphas 的原样输出（嵌套 metrics/ra/settings/checks），
         # 拍平为本函数期望的扁平键；此前嵌套结构进来 ra_failed_checks/dataset/2Y/robust 全部静默丢失。
@@ -1330,6 +1350,7 @@ def harvest_multisim_results(
 
                 row = {
                     "alpha_id": a.get("alpha_id"),
+                    "multisim_id": multisim_id or a.get("multisim_id"),   # 进 payload_json，按批出报告用
                     "code": a.get("expression") or a.get("code"),
                     "status": "COMPLETE" if not a.get("error") else "ERROR",
                     "sharpe": a.get("sharpe"),
@@ -1392,13 +1413,18 @@ def harvest_multisim_results(
             except Exception as e:
                 wave_result_action = f"skipped: {e}"
 
-        return {
+        out = {
             "linked": linked,
             "upserted": upserted,
             "region": region,
             "wave": str(wave),
+            "multisim_id": multisim_id,
             "wave_result": wave_result_action,
         }
+        if not alpha_list:
+            out["warning"] = ("alphas 里没有可用条目：要传 harvest_multisim_alphas 返回的 alphas 列表"
+                              "（或它的整个返回值），每项是 dict")
+        return out
     finally:
         store.close()
 
@@ -2140,22 +2166,39 @@ def workflow_auto_harvest(
     auto_link: bool = True,
     auto_upsert: bool = True,
     auto_report: bool = True,
+    alphas: Any = None,
+    dataset: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """自动化收批 workflow 节点（auto_harvest 节点快捷方式）.
+    """自动化收批：平台结果入库（给 alphas 时）+ 收批核对报告（auto_harvest 节点）.
+
+    给 alphas（wq-brain-http `harvest_multisim_alphas` 返回的 alphas 列表或整个返回值，嵌套结构原样传）时，
+    先经 `harvest_multisim_results` 入库（同一实现：拍平 → 关联 expressions → 写 backtest_results →
+    级联本波 wave_results 暂定结论 → salvage_pool；auto_link / auto_upsert 就是这一步的开关），
+    再由 auto_harvest 节点对本波（给了 multisim_id 时只取该批）出报告。不给 alphas 只出报告，只读。
 
     Args:
         region: 区域代码
-        wave: 波次号
-        multisim_id: multisim ID（可选）
-        auto_link: 是否自动关联 expressions（默认 True）
-        auto_upsert: 是否自动写回 backtest_results（默认 True）
-        auto_report: 是否自动生成收批报告（默认 True）
+        wave: 波次号（原字符串）
+        multisim_id: multisim ID（可选）：入库时写进每条回测行；出报告时只取这一批
+        auto_link: 入库时是否关联 expressions（默认 True）；报告里给出关联诊断
+        auto_upsert: 入库时是否写回 backtest_results（默认 True）
+        auto_report: 是否生成收批报告（默认 True）
+        alphas: 平台结果（可选；不给则只对库里已有的回测行出报告）
+        dataset: 入库时的数据集（缺省取本波表达式的 dataset）
 
     Returns:
-        执行结果字典
+        节点结果（success / steps / error …）；给了 alphas 时多一个 ingest（harvest_multisim_results 的返回）
     """
     from wqb.workflow import execute
-    
+
+    ingest = None
+    if alphas is not None:
+        try:
+            ingest = harvest_multisim_results(region, wave, alphas, auto_link=auto_link, auto_upsert=auto_upsert,
+                                              dataset=dataset, multisim_id=multisim_id)
+        except Exception as e:  # 入库失败：不出报告，如实返回
+            return {"success": False, "node": "auto_harvest", "error": f"收批入库失败: {e}"}
+        multisim_id = ingest.get("multisim_id") or multisim_id
     result = execute("auto_harvest", {
         "region": region,
         "wave": wave,
@@ -2163,8 +2206,10 @@ def workflow_auto_harvest(
         "auto_link": auto_link,
         "auto_upsert": auto_upsert,
         "auto_report": auto_report,
-    })
-    return result.to_dict()
+    }).to_dict()
+    if ingest is not None:
+        result["ingest"] = ingest
+    return result
 
 
 @mcp.tool()

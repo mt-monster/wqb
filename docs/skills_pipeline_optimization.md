@@ -219,14 +219,16 @@ mcp__wqb-db__workflow_unified_gate(
 ### 自动化收批
 
 ```python
-# 通过 MCP 工具调用
+# 通过 MCP 工具调用（2026-09-27 N31 起可用）
 mcp__wqb-db__workflow_auto_harvest(
     region="KOR",
     wave="54",
+    alphas=<mcp__wq-brain-http__harvest_multisim_alphas 的返回值>,  # 给了才入库（同 harvest_multisim_results）
     auto_link=True,
     auto_upsert=True,
     auto_report=True
 )
+# 不给 alphas：只对库里本波（或 multisim_id 那一批）的回测行出报告，只读
 ```
 
 ### 自动化评审

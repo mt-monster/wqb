@@ -337,6 +337,9 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
   wave_results / registry 读写，server 名 `wqb-db`。
 - 两者是**上游/下游关系**，不是重复实现；命名前缀 `mcp__wq-brain-http__*` /
   `mcp__wqb-db__*` 与工具前缀强绑定，改名即全线失配。
+- **工具注册**：新函数不要插在某个 `@mcp.tool()` 与它原本装饰的函数之间（2026-09-19 就这样把
+  `harvest_multisim_results` 挤出了工具表，N31）；下划线开头的函数不得是工具；SKILL.md 引用的工具必须已注册。
+  三条都由 `tests/unit/test_skill_integrity.py` 守护，"已移除工具"白名单只收真正下线的工具。
 
 ### 8.3 配置文件权威源
 

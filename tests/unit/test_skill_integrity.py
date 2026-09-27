@@ -122,10 +122,9 @@ DEPRECATED_TOOL_MENTIONS = {
     # brain-alpha-judge SKILL.md 里作为「提交语义反面教材」提及（201≠成功），
     # 提交走 submit_verdict → workflow_submit_alpha 链，不经此工具。
     "mcp__wq-brain-http__submit_alpha",
-    # wqb_db_mcp.py 重构：原公开工具 harvest_multisim_results 降级为内部 helper，
-    # 其职责由新增的 @mcp.tool workflow_auto_harvest（auto_link/upsert/report）承接。
-    # ra-pipeline SKILL.md 仍按旧名引用，属文档滞后；公开接口名以 workflow_auto_harvest 为准。
-    "mcp__wqb-db__harvest_multisim_results",
+    # 2026-09-27 N31：此前这里还有 mcp__wqb-db__harvest_multisim_results（注释称"降级为内部 helper"）。
+    # 实为 726a350 把 _flatten_platform_alpha 插进了它与 @mcp.tool() 之间、装饰器错挂；已复位注册，
+    # 白名单条目随之删除——SOP 引用它时重新受存在性校验。
 }
 #: 前缀通配写法（allowed-tools 里的 mcp__wq-brain-http__* 之类），不是具体工具。
 _WILDCARD = re.compile(r"^mcp__[a-z-]+__$")
@@ -206,6 +205,20 @@ def test_skill_mcp_tool_references_are_registered():
     assert not unknown, (
         f"SKILL.md 引用了未注册的 MCP 工具：{unknown}。"
         "要么在 MCP 侧注册，要么改文档；已移除的工具加进 DEPRECATED_TOOL_MENTIONS。"
+    )
+
+
+def test_no_private_function_is_an_mcp_tool():
+    """下划线开头的函数不得挂 @mcp.tool()。
+
+    2026-09-27 N31：726a350 把 `_flatten_platform_alpha` 插进了 `harvest_multisim_results` 与它的
+    `@mcp.tool()` 之间——装饰器改挂到私有函数上，私有函数成了公开工具，SOP 步 6 的收批入口从 MCP
+    层消失；测试随后把那条 SOP 引用列进白名单，问题被当成"降级"放过了八天。
+    """
+    private = sorted(t for t in _registered_mcp_tools() if t.split("__", 2)[2].startswith("_"))
+    assert not private, (
+        f"私有函数被注册成了 MCP 工具：{private}。多半是新函数插进了某个 @mcp.tool() 与原来被装饰的函数之间——"
+        "把装饰器挪回原函数。"
     )
 
 

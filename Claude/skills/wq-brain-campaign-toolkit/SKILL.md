@@ -323,6 +323,6 @@ mcp__wqb-db__get_region_overview()
   用于 SOP 步 1 跨区先验（IND flash 一致预期修正在 USA/GLB/HKG 全 ≤0.64 的结论，10 分钟得出）。
 - `expressions.settings_json` 里的仿真键（decay/neutralization/universe/truncation/…）现在会作为 per-item override 随批提交
   （EUR w207 实证 COUNTRY 中性化与 TOP2500 变体生效）；非仿真键（note/status_change）自动剔除。同一波内表达式文本必须不同。
-- `wqb-db harvest_multisim_results` 直接接受 `harvest_multisim_alphas` 的嵌套输出（metrics/ra/checks/settings 自动拍平），并自动补 `dataset`。
+- `wqb-db harvest_multisim_results` 直接接受 `harvest_multisim_alphas` 的嵌套输出（metrics/ra/checks/settings 自动拍平），并自动补 `dataset`；整个返回值也可以直接传（multisim_id 随之写进回测行，`workflow_auto_harvest multisim_id=…` 可按批出只读报告）。2026-09-19～27 它不在 MCP 工具表里（装饰器错挂，N31），期间按 SOP 调用会 Unknown tool。
 - `tools/prod_saturation_gate.py`：字段"饱和"需要 prod 撞墙证据（已知 prod 中 ≥50% 且 ≥2 条 ≥0.7）；仅凭本账户 IS 过闸次数不再判饱和。
 - 启动期 `[wave-key-check]/[wave-ttl-check]` 每进程只打一次（`WQB_STARTUP_CHECKS=0` 关闭）；已 contested 的规则不再逐波重复证伪。
