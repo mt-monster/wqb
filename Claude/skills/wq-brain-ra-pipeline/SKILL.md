@@ -663,6 +663,7 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 
 **发批 / 回测批次**（用户已给表达式列表）：直接走步 5，跳过 S0–S2。未给列表则从步 2 走完整链。
 快捷入口同样要过三道开波闸：步 6 的 `workflow_batch_track` 自己会跑（2026-09-27 起），区域命中停止规则时不会发批。
+直接调 CLI（toolkit `build_wave.py`、`tools/wave_gate.py`）时，开波闸缺省 2026-10-11 及以前只告警，**2026-10-12 起拦截**（exit 2）。要放行停波区域写台账 `stop_rules_override`，不要靠 `--gate-mode warn` 绕过。
 
 **一键战役 / auto campaign**：步 1 matrix 后 步 2 体检（不可跳过）则配置包写回 `settings.json` 后 步 3。matrix 失败即停。默认先干跑看 gate 通过率，确认后再提回测。用户说「自动提交回测」可跳过二次确认；**提交 alpha 仍要步 8 用户确认**。
 

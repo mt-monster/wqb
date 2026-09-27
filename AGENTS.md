@@ -315,6 +315,20 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 **纪律**：不要新增 gate 实现。要加闸门 → 改 toolkit `gate.py`（8 闸权威）；
 要新入口 → 包一层 workflow 节点转发 `tools/wave_gate.py`。
 
+#### 8.1.1 开波区域闸的模式（2026-09-27 定案）
+
+- **两条执行路径**：workflow 节点（`campaign` S2/S3、`batch_track`）一律拦截，只有测试 / 沙箱隔离用的
+  `WQB_DISABLE_{SIGNAL_FLOOR,STOP_RULES,BACKLOG}_GATE` 开关；toolkit CLI（`build_wave.py`、`tools/wave_gate.py`）
+  按 gate-mode 走。
+- **CLI 的 gate-mode**：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省。**2026-10-11 及以前 warn，
+  2026-10-12 起 enforce。** 唯一事实源是 toolkit `_lib/region_gates.WARN_SUNSET`；改期只改这一处，并同步两份
+  SKILL.md、本节与 `tests/unit/test_region_gates_p0p1.py`。依据见报告 §14.9.7。
+- **放行**：停波区域要继续开波，写台账 `stop_rules_override` 留痕。`--gate-mode warn` / `WQB_GATE_MODE=warn`
+  只作临时回退；非法取值被忽略，不会降级成 warn。
+- **退出码**：enforce 拦截 exit 2，与"门禁环境缺失"同码，含义都是"本波没有门禁结论，不是表达式问题"。
+- **单测**：结论不能随日历变。`tests/conftest.py` 统一固定 `WQB_GATE_MODE=warn`；要测 enforce 或按日期缺省的用例
+  自己 setenv / delenv，或 monkeypatch `region_gates._today`。
+
 ### 8.2 双 MCP 系统分工（**不要合并，职责不同**）
 
 - `world-quant-brain-mcp/`（完整包，`main.py` 入口）= **WQ 平台 API 前端**：仿真 / 相关性 / 提交 /

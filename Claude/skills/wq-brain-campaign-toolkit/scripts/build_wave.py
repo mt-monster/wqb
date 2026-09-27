@@ -405,10 +405,9 @@ def load_family_map(exprs_path=None, meta_file=None):
 def main():
     ap = argparse.ArgumentParser(description="战役统一选波器")
     add_campaign_arg(ap)
-    ap.add_argument("--gate-mode", default=os.environ.get("WQB_GATE_MODE", rg.MODE_WARN),
-                    choices=rg.MODE_CHOICES,
-                    help="开波前区域闸模式（2026-09-17 P0-1 下沉）："
-                         "off / warn(默认，只告警) / enforce(命中即阻断)")
+    ap.add_argument("--gate-mode", default=None, choices=rg.MODE_CHOICES,
+                    help="开波前区域闸模式（2026-09-17 P0-1 下沉）：off / warn(只告警) / enforce(命中即阻断)。"
+                         "缺省先看 WQB_GATE_MODE，再按日期：灰度期（至 _lib/region_gates.WARN_SUNSET）warn，之后 enforce")
     ap.add_argument("--file", default=None, help="兼容：表达式 JSON（已废弃，请 --from-db）")
     ap.add_argument("--from-db", action="store_true", help="从 expressions 表读 GEM/上游候选")
     ap.add_argument("--dataset", default=None, help="数据集（--from-db 时用于定位 GEM 源）")
@@ -435,9 +434,11 @@ def main():
     # 背景：signal_floor / stop_rules / backlog 三道闸原本只在 workflow 的 S2/S3
     # 节点生效，直调本脚本时完全不触发（实证 JPN 2026-09-16：闸判定为拦截，
     # 该区却照跑完整波 gem=1640/回测=0）。下沉到开波唯一入口，使绕过成本 > 遵守成本。
-    # 默认 warn（灰度，只告警不阻断）；enforce 下命中即 SystemExit(2)。
-    _gate_report = rg.run_region_gates(a.campaign_dir, ctx.region, mode=a.gate_mode,
-                                       dataset=a.dataset)
+    # 模式：--gate-mode > WQB_GATE_MODE > 按日期的缺省（灰度期 warn，2026-10-12 起 enforce）；
+    # enforce 下命中即 SystemExit(2)。
+    _mode, _mode_note = rg.resolve_mode(a.gate_mode)
+    _gate_report = rg.run_region_gates(a.campaign_dir, ctx.region, mode=_mode,
+                                       dataset=a.dataset, mode_note=_mode_note)
     if not _gate_report.get("ok", True):
         raise SystemExit(2)
 

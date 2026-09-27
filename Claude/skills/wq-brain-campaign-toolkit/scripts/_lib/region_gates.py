@@ -17,11 +17,17 @@
 
 模式（`--gate-mode` / 环境变量 `WQB_GATE_MODE`）：
   off      不检查（等价旧行为）
-  warn     **默认**：跑全部闸并打印，命中只警告不阻断（灰度阶段，避免全池停摆）
+  warn     跑全部闸并打印，命中只警告不阻断（灰度）
   enforce  任一闸命中即返回 ok=False，由调用方以非零退出码阻断开波
+
+缺省（2026-09-27 定案，见 `WARN_SUNSET`）：灰度期内 warn，**2026-10-12 起 enforce**。
+解析顺序 `--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省（`resolve_mode`）；过期后仍可用
+`--gate-mode warn` / `WQB_GATE_MODE=warn` 临时回退，放行停波区域请走台账 override 留痕。
+workflow 节点（campaign S2/S3、batch_track）不走这里的模式，一律拦截。
 
 逃生口：环境变量 `WQB_DISABLE_REGION_GATES=1` 直接跳过（单测隔离用）。
 """
+import datetime
 import json
 import os
 import sys
@@ -30,6 +36,52 @@ MODE_OFF = "off"
 MODE_WARN = "warn"
 MODE_ENFORCE = "enforce"
 MODE_CHOICES = (MODE_OFF, MODE_WARN, MODE_ENFORCE)
+
+#: CLI 入口（build_wave.py / tools/wave_gate.py）缺省 warn 灰度的最后一天（含当天，按本机日期），
+#: 次日起缺省 enforce。依据（报告 §14.9.7）：
+#:   * 灰度自 2026-09-17 起；09-27 闸的输入语义大改（verdict 写入契约、逐条回写、规则 B 窗口），
+#:     要在新语义下看真实命中；
+#:   * 挖掘按周末集中（带日期的 50 个波文件里 29 个在周六），观察期按两个完整周末计：10-03/04、10-10/11；
+#:   * 10-12 是周一（全周最闲），切换当天波及面最小，下个周末前有时间处理误拦。
+#: 改期只改这一处，并同步两份 SKILL.md、AGENTS.md §8.1 与单测。
+WARN_SUNSET = datetime.date(2026, 10, 11)
+
+
+def _today():
+    """本机当天日期。单测 monkeypatch 这个函数，结果不随日历漂移。"""
+    return datetime.date.today()
+
+
+def default_mode(today=None):
+    """按日期的缺省模式：灰度期（<= WARN_SUNSET）warn，之后 enforce。"""
+    return MODE_WARN if (today or _today()) <= WARN_SUNSET else MODE_ENFORCE
+
+
+def _sunset_note(today=None):
+    flip = WARN_SUNSET + datetime.timedelta(days=1)
+    if default_mode(today) == MODE_WARN:
+        return f"灰度期至 {WARN_SUNSET.isoformat()}，{flip.isoformat()} 起缺省 enforce"
+    return f"灰度期已于 {WARN_SUNSET.isoformat()} 结束，现缺省 enforce"
+
+
+def resolve_mode(cli_mode=None, env=None, today=None):
+    """CLI 入口的模式解析：显式 `--gate-mode` > 环境变量 `WQB_GATE_MODE` > 按日期的缺省。
+
+    返回 (mode, note)。note 说明来源和灰度倒计时，由 run_region_gates 打在第一行。
+    `WQB_GATE_MODE` 取值非法时忽略并在 note 里点名——不静默降级成 warn。
+    """
+    env = os.environ if env is None else env
+    tail = _sunset_note(today)
+    if cli_mode:
+        return cli_mode, f"--gate-mode 显式指定；{tail}"
+    raw = (env.get("WQB_GATE_MODE") or "").strip()
+    if raw in MODE_CHOICES:
+        return raw, f"环境变量 WQB_GATE_MODE；{tail}"
+    note = f"按日期缺省；{tail}"
+    if raw:
+        note = f"WQB_GATE_MODE={raw!r} 不是 off/warn/enforce，已忽略；" + note
+    return default_mode(today), note
+
 
 #: 闸清单（顺序即执行顺序：catalog 前置 → 天花板 → 停止规则 → 积压）
 GATE_NAMES = ("catalog", "signal_floor", "stop_rules", "backlog")
@@ -75,20 +127,23 @@ def load_gates(campaign_dir):
     return C, None
 
 
-def run_region_gates(campaign_dir, region, mode=MODE_WARN, dataset=None, out=None):
+def run_region_gates(campaign_dir, region, mode=None, dataset=None, out=None, mode_note=None):
     """跑四道区域闸（catalog 前置 + signal_floor/stop_rules/backlog），打印结论。
 
     返回 dict：{"mode", "region", "ok", "skipped_reason", "results": {name: result}}
     `ok=False` 仅当 mode==enforce 且至少一道闸命中（success=False）。
     mode==off 或 WQB_DISABLE_REGION_GATES=1 时不做任何检查，ok=True。
+    mode 缺省或非法时取按日期的缺省（`default_mode`）：灰度期过后不能因为传错值就退回 warn。
+    mode_note（CLI 入口传 `resolve_mode` 的说明）打在第一行，让每次开波都看得见灰度倒计时。
     """
     stream = out if out is not None else sys.stdout
+    if mode not in MODE_CHOICES:
+        mode = default_mode()
     report = {"mode": mode, "region": region, "ok": True,
               "skipped_reason": None, "results": {}}
+    if mode_note:
+        print(f"[region-gates] gate-mode={mode}（{mode_note}）", file=stream)
 
-    if mode not in MODE_CHOICES:
-        report["mode"] = MODE_WARN
-        mode = MODE_WARN
     if mode == MODE_OFF:
         report["skipped_reason"] = "gate-mode=off"
         return report
@@ -147,10 +202,16 @@ def run_region_gates(campaign_dir, region, mode=MODE_WARN, dataset=None, out=Non
         if mode == MODE_ENFORCE:
             report["ok"] = False
             print(f"[region-gates] ★★ 开波被阻断（enforce）：{'、'.join(hits)} 命中。"
-                  f"按闸提示消化积压/补 catalog/换区，或用 ledger override 显式放行留痕。", file=stream)
+                  f"按闸提示消化积压/补 catalog/换区，或用 ledger override 显式放行留痕；"
+                  f"确需临时回退灰度：--gate-mode warn 或 WQB_GATE_MODE=warn。", file=stream)
         else:
-            print(f"[region-gates] ★ 命中 {'、'.join(hits)}，但 gate-mode=warn（灰度）→ 仅告警不阻断。"
-                  f"确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。", file=stream)
+            if default_mode() == MODE_WARN:
+                when = (f"缺省灰度期至 {WARN_SUNSET.isoformat()}，"
+                        f"{(WARN_SUNSET + datetime.timedelta(days=1)).isoformat()} 起同样命中将阻断开波")
+            else:
+                when = f"缺省已是 enforce（灰度期于 {WARN_SUNSET.isoformat()} 结束），本次是显式回退"
+            print(f"[region-gates] ★ 命中 {'、'.join(hits)}，但 gate-mode=warn（灰度）→ 仅告警不阻断"
+                  f"（{when}）。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。", file=stream)
     else:
         print("[region-gates] 四道闸全部放行。", file=stream)
     return report

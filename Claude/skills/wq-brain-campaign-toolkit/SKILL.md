@@ -72,6 +72,7 @@ allowed-tools:
 4. verifier 走 `WQ_VALIDATOR_DIR`（缺省自动探测 alpha-expression-verifier skill 的 scripts/）。
 5. 平台级约束只有一份：`config/platform_constraints.json`；区域 ranking/catalog/rules 计数入库。
 6. **Agent 持久化只走 `mcp__wqb-db__*` 或本引擎 CLI；禁止 Write/Copy 战役 json/csv。** `build_wave`/`gate`/`wave_gate`/`pipeline` 走 `--from-db`。
+7. **开波区域闸的模式**（`build_wave.py` / `tools/wave_gate.py` 开波前跑 catalog / signal_floor / stop_rules / backlog）：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省——**2026-10-11 及以前 warn（灰度，只告警），2026-10-12 起 enforce（命中即 exit 2：本波不产出门禁结论，不是表达式问题）**。日期唯一事实源 `_lib/region_gates.WARN_SUNSET`，每次运行第一行打印模式来源与倒计时。放行停波区域写台账 `stop_rules_override` 留痕；`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退。workflow 节点（campaign S2/S3、batch_track）不看这个模式，一律拦截。
 
 ## 5. 快速开始（典型流程）
 ```bash

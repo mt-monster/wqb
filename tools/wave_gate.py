@@ -542,8 +542,9 @@ def main():
     ap.add_argument("--from-db", action="store_true", help="从 expressions 表读候选（推荐）")
     ap.add_argument("--region", default=None, help="区域（缺省读 settings.json）")
     ap.add_argument("--gate-mode", default=None, choices=("off", "warn", "enforce"),
-                    help="开波前区域闸模式（2026-09-17 P0-1）：off / warn(默认，只告警) / "
-                         "enforce(命中即退出码 2）。缺省读环境变量 WQB_GATE_MODE")
+                    help="开波前区域闸模式（2026-09-17 P0-1）：off / warn(只告警) / "
+                         "enforce(命中即退出码 2）。缺省先看 WQB_GATE_MODE，再按日期："
+                         "灰度期（至 toolkit _lib/region_gates.WARN_SUNSET）warn，之后 enforce")
     ap.add_argument("--candidates", help="兼容：候选 JSON")
     ap.add_argument("--exprs-file", help="每行一条表达式的 txt")
     ap.add_argument("--expr", help="单条表达式")
@@ -583,7 +584,8 @@ def main():
 
     # ---- 开波前区域闸（2026-09-17 P0-1 下沉）----
     # signal_floor / stop_rules / backlog 三道闸原先只在 workflow 的 S2/S3 节点生效；
-    # 直调本脚本会绕过它们（实证 JPN 2026-09-16）。默认 warn（灰度）只告警不阻断。
+    # 直调本脚本会绕过它们（实证 JPN 2026-09-16）。模式由 toolkit region_gates.resolve_mode 定：
+    # --gate-mode > WQB_GATE_MODE > 按日期的缺省（灰度期 warn，2026-10-12 起 enforce）。
     _rg = _load_region_gates()
     if _rg is None:
         print("[wave_gate] [region-gates] ★未找到 toolkit region_gates，本次跳过开波闸"
@@ -599,9 +601,17 @@ def main():
                 _region_for_gates = None
         if not _region_for_gates:
             _region_for_gates = os.path.basename(campaign).upper()
-        _mode = a.gate_mode or os.environ.get("WQB_GATE_MODE", _rg.MODE_WARN)
-        _rep = _rg.run_region_gates(campaign, _region_for_gates, mode=_mode,
-                                    dataset=a.dataset)
+        _resolve = getattr(_rg, "resolve_mode", None)
+        if _resolve is not None:
+            _mode, _mode_note = _resolve(a.gate_mode)
+            _rep = _rg.run_region_gates(campaign, _region_for_gates, mode=_mode,
+                                        dataset=a.dataset, mode_note=_mode_note)
+        else:  # 安装位的 toolkit 早于 2026-09-27（没有灰度截止日）：沿用旧缺省，并提示同步
+            print("[wave_gate] [region-gates] ★toolkit 安装位过旧（缺 resolve_mode），沿用旧缺省 warn；"
+                  "请跑 python tools/sync_skills.py", file=sys.stderr)
+            _mode = a.gate_mode or os.environ.get("WQB_GATE_MODE", _rg.MODE_WARN)
+            _rep = _rg.run_region_gates(campaign, _region_for_gates, mode=_mode,
+                                        dataset=a.dataset)
         if not _rep.get("ok", True):
             print(f"[wave_gate] ★★ 开波被阻断（gate-mode=enforce，命中 "
                   f"{'、'.join(_rep.get('hits') or [])}）", file=sys.stderr)
