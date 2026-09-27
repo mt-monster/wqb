@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# RA 九步流水线 · 真实环境 dry-run 复现（2026-09-27，P0 修复后）
+# RA 九步流水线 · 真实环境 dry-run 复现（2026-09-27；第三轮 = P0 + P1（R18–R21）修复后）
+#
+# 两个 MCP server 与所有子进程的 env = .mcp.json 原样（不补任何工作区根变量）；每步打印【阶段小结】，
+# 末尾打印 P1 验证清单（对照同目录 realenv_transcript_p0.txt = 第二轮实录）。
 #
 # 前提：
 #   * MCP venv：world-quant-brain-mcp/.venv（Python 3.12），按 world-quant-brain-mcp/requirements.txt 安装，外加 ply
@@ -11,6 +14,7 @@
 #   * tracking/KOR/priors/ 有未提交改动时拒跑；真实 assemble-priors 会重写该目录，结束后 git checkout 复原
 #   * logs/_async_tasks/ 新增 campaign 异步任务文件（gitignored）
 #   * 演练中 wave_gate 在仓库根造出的杂散目录 "D:\coding\traeCN_project\wqb" 会被检测并删除
+#     （R19 之后不再出现；检测保留，作为回归护栏）
 set -euo pipefail
 REPO=$(git rev-parse --show-toplevel)
 PY="$REPO/world-quant-brain-mcp/.venv/bin/python"

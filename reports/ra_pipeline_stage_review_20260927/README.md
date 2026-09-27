@@ -1,6 +1,6 @@
 # RA 九步流水线 dry-run —— 附件
 
-主报告：[`../ra_pipeline_stage_review_20260927.md`](../ra_pipeline_stage_review_20260927.md)（第一轮 §12，第二轮 §14）
+主报告：[`../ra_pipeline_stage_review_20260927.md`](../ra_pipeline_stage_review_20260927.md)（第一轮 §12，第二轮 §14，第三轮 §14.8）
 
 ## 第一轮：沙箱
 
@@ -14,13 +14,14 @@
 
 以上脚本只在临时工作目录里的仓库副本上运行，不读写真实仓库与生产库 `data/wqb.db`，不访问平台。
 
-## 第二轮：P0 修复后的真实环境复跑（`realenv/`）
+## 第二轮 / 第三轮：P0、P1 修复后的真实环境复跑（`realenv/`）
 
 | 文件 | 作用 |
 |---|---|
-| `realenv/run_realenv.py` | 按 `.mcp.json` 翻译成本机路径，经 stdio 真实启动 `wqb-db` 与 `wq-brain-http`；把 `tracking/KOR` 的真实历史经 MCP 写工具导入；九步逐阶段演练；另起修复前原始副本的两个 server 做 P0 对照 |
+| `realenv/run_realenv.py` | • 按 `.mcp.json` 翻译成本机路径，经 stdio 真实启动 `wqb-db` 与 `wq-brain-http`（env 原样）。<br>• 把 `tracking/KOR` 的真实历史经 MCP 写工具导入。<br>• 九步逐阶段演练，每步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定）。<br>• 另起修复前原始副本的两个 server 做 P0 对照。<br>• 末尾打印 P1 验证清单 |
 | `realenv/reproduce_realenv.sh` | 一条命令复现（可选环境变量：`REALENV_SCRATCH`、`PRE_FIX_REV`、`REALENV_ALLOW_DB_SWAP`） |
-| `realenv/realenv_transcript.txt` | 最终一遍的完整实录（路径已脱敏为 `<repo>` / `<scratch>` / `<base>`） |
+| `realenv/realenv_transcript.txt` | 第三轮（P1 修复后）最终一遍的完整实录（路径已脱敏为 `<repo>` / `<scratch>` / `<base>`） |
+| `realenv/realenv_transcript_p0.txt` | 第二轮（P0 修复后、P1 修复前）实录，供同名步骤逐行对照 |
 
 这一轮**会**在真实仓库里运行，保护措施如下：
 - `data/wqb.db` 演练期间临时移开，结束（含异常退出）后移回；超过 5MB 的库需要显式设 `REALENV_ALLOW_DB_SWAP=1` 才会动。

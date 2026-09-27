@@ -1,10 +1,11 @@
-# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑，2026-09-27）
+# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑，2026-09-27）
 
 > **对象**：`Claude/skills/wq-brain-ra-pipeline/SKILL.md`（v2.2，last_verified 2026-09-19）定义的唯一挖掘编排 SOP（S-PRE→S6 九步），以及它调用的 workflow 节点、`tools/`、toolkit 脚本与 MCP 函数。
 > **代码基线**：`c393bca`（2026-09-25）。
 > **前序审计**：`output_report/ra_pipeline_stage_audit_20260916.md`（v2）、`…_v3.md`、`ra_pipeline_remediation_plan_20260917.md`。本报告**不是增量补丁**：九步按"输入 / 处理 / 输出 / 价值"重新完整展开，并对前序结论逐条做代码级复核。
 > **附件**（同名目录 `reports/ra_pipeline_stage_review_20260927/`）：`dryrun_transcript.txt`（完整演练实录）、`reproduce.sh` + `run_dryrun.py` / `seed_db.py` / `sbx_guard.py`（一条命令复现）。
-> **第二轮（同日更新，见 §14，首读建议从 §14.0 开始）**：按审阅意见先修两个 P0（N1 / N2），再在**真实环境**复跑九步。真实环境 = 真实仓库工作树 + 两个 MCP server 经 stdio 真实启动 + `tracking/KOR` 真实历史经 MCP 导入，并用修复前的原始代码做对照。复跑暴露了 P0-2 的两处残缺（N16 / N17，已一并修复），另记新发现 N18–N27。附件 `realenv/`：`run_realenv.py`、`reproduce_realenv.sh`、`realenv_transcript.txt`。
+> **第二轮（同日更新，见 §14，首读建议从 §14.0 开始）**：按审阅意见先修两个 P0（N1 / N2），再在**真实环境**复跑九步。真实环境 = 真实仓库工作树 + 两个 MCP server 经 stdio 真实启动 + `tracking/KOR` 真实历史经 MCP 导入，并用修复前的原始代码做对照。复跑暴露了 P0-2 的两处残缺（N16 / N17，已一并修复），另记新发现 N18–N27。附件 `realenv/`：`run_realenv.py`、`reproduce_realenv.sh`、`realenv_transcript_p0.txt`（第二轮实录）。
+> **第三轮（同日更新，见 §14.8）**：按审阅意见修复四个 P1（R18–R21），用修复后的代码在真实环境把九步完整再跑一遍，每一步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定，数字取自本次运行）。首跑又暴露 R19 / R21 的两处残缺（N28 / N29，已一并修复）。实录 `realenv/realenv_transcript.txt`。
 
 **证据等级**（全文每条判断都标注来源，避免"推测记账"）：
 
@@ -29,17 +30,17 @@
 | 1 | S-PRE 查表 | profile + `get_mining_yield` + 库存盘点 | 先清库存再新挖；conversion/yield 区分"管道问题 vs 标的问题" | **保留深化** | `inventory_scan` 节点未入 SOP；`latest_wave` 对字符串波号排序失效 |
 | 2 | S0 体检选集 | `workflow_campaign(S0)` + `s0-select` | 平台真实点塔 × 严格产出率 × 判死；座位可达性 | **保留深化** | dry-run 会写 `settings.json`；节点缓存是死代码 |
 | 3 | S1 字段 | `workflow_campaign(S1)` → typed catalog | 类型/覆盖元数据是闸 2/3/8 与 catalog 前置闸的数据源 | **保留** | **Python 3.11 下 S1 恒判"缺 dataset"**；users 分级无工具实现 |
-| 4 | S2 生成 | assemble-priors → `workflow_gem` → build_wave | 概念优先 + 生成侧预闸 + 骨架配给 | **保留深化** | **P0：节点路径不写 priors 快照，GEM 只读快照 → S6→S2 回流断开**（✅ 已修，§14.1；第二轮新增 N18 截断问题） |
-| 5 | S2→S3 门禁 | ghost-audit → `wave_gate` | 零配额拦截整批连坐（语法/元数/字段/VECTOR/毒模式/体检） | **保留，精简展示层** | `[opcat]`/质量预估打印 FAIL 却不参与判定；FAIL 候选仍记 `gated`；体检规则 1/5 耦合 |
+| 4 | S2 生成 | assemble-priors → `workflow_gem` → build_wave | 概念优先 + 生成侧预闸 + 骨架配给 | **保留深化** | **P0：节点路径不写 priors 快照，GEM 只读快照 → S6→S2 回流断开**（✅ 已修，§14.1；第二轮新增的 N18 截断问题 ✅ 已修，§14.8） |
+| 5 | S2→S3 门禁 | ghost-audit → `wave_gate` | 零配额拦截整批连坐（语法/元数/字段/VECTOR/毒模式/体检） | **保留，精简展示层** | `[opcat]`/质量预估打印 FAIL 却不参与判定；FAIL 候选仍记 `gated`（✅ 已修，§14.8）；体检规则 1/5 耦合 |
 | 5b | prod-first 探针 | `campaign_intel prod-first` | 把 prod 墙判断前移到扩批之前 | **保留** | 网络依赖，未演练 |
 | 6 | S3 七槽回测 | `workflow_batch_track` → pipeline.py | 七槽填槽、设置先验、连坐隔离、argv/存活握手 | **保留** | SOP 指定入口 `batch_track` **不跑**停止/天花板/积压三闸 |
 | 7 | S4 诊断 | `workflow_campaign(S4)` → review_wave | RN_EXPOSURE / ROBUST_STRUCTURAL 墙、预筛、salvage | **保留深化** | RN_EXPOSURE 行仍进 near/salvage 池 |
 | 8 | S4→S5 判定 | Failed-count → `submit_verdict` → 用户确认 | 否决权威 + 人工确认门 | **保留，修正定位** | `src/wqb/config.py` 有一份与生产口径相反的 Failed-count 实现；`submit_verdict` 对新候选只能给 UNVERIFIABLE |
-| 9 | S6 复盘 | `step_funnel` + `upsert_wave_result` + pyramid | verdict→停止规则 B、region_kb 刷新、判死封存 | **保留** | **P0：只补写 key_findings 会把 verdict 清成 NULL → 停止规则 B 静默失效（全链复现）**（✅ 已修，§14.1；第二轮新增 N20 / N22） |
+| 9 | S6 复盘 | `step_funnel` + `upsert_wave_result` + pyramid | verdict→停止规则 B、region_kb 刷新、判死封存 | **保留** | **P0：只补写 key_findings 会把 verdict 清成 NULL → 停止规则 B 静默失效（全链复现）**（✅ 已修，§14.1；第二轮新增 N20 ✅ 已修 / N22 待修，§14.8） |
 
 **总评**：九步骨架本身没有多余的"步"——每一步都承载着至少一个有实证的判别机制。本轮发现的问题集中在**步与步之间的接缝**（写入口契约、快照/文件双载体、节点 vs CLI 两条执行路径语义不一）和**展示层噪声**，而不是"缺步骤"或"步骤无用"。真正该**去除**的是少数已被证明无效或误导的子项（死代码缓存、分叉实现、只打印不判定的伪硬闸），真正该**深化**的是把 SOP 文字规则变成机器可执行的约束（users 分级、区域闸 enforce、verdict 写入契约）。
 
-### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5）
+### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8）
 
 | # | 级别 | 发现 | 证据 |
 |---|---|---|---|
@@ -49,7 +50,7 @@
 | N4 | P1 | review_wave 的 near 池只排除 `ROBUST_STRUCTURAL`，**不排除 `RN_EXPOSURE`** → 被判"就是暴露本身、禁止调参"的行仍进 near_pool / salvage_pool，可被 Mode A/B 取用 | 〔码〕`review_wave.py:203-215, 297-317`；〔沙〕RN=-0.2 行 `walls=['RN_EXPOSURE'] near=True` |
 | N5 | P1 | 三道零配额开波闸（signal_floor / stop_rules / backlog）只在 `workflow_campaign(stage=S2/S3)` 里 enforce；SOP 步 6 指定的 `workflow_batch_track` 一道都不跑；CLI 入口（build_wave / wave_gate）默认 warn。"发批直接走步 5"的快捷入口全程无 enforce | 〔码〕`batch_track.py:66-225`、`region_gates.py:18-21`；〔沙〕batch_track 干跑 steps 无闸，campaign S3 干跑有三闸 |
 | N6 | P1 | `tools/wave_gate.py` 的若干"闸"只打印不判定：`[opcat]` 自称硬闸、打印"FAIL：缺 Group"，质量预估对每条打印 `HARD_REJECT`，但二者都不进 `all_pass` —— 最终 `=> PASS`、exit 0 | 〔码〕`wave_gate.py:749-822, 970-993`；〔沙〕实录 步 5 ⑦ |
-| N7 | P1 | `--exprs-file` 候选在门禁**之前**以 `status='gated'` 入库，门禁 FAIL 后不回写 → `gated` 同时表示"送过闸"与"过了闸"，积压闸与漏斗把 FAIL 候选计为未消费积压 | 〔码〕`wave_gate.py:572-588`；〔沙〕w5/w6/w7 FAIL 后 19 条仍为 `gated` |
+| N7 | P1 ✅已修（§14.8） | `--exprs-file` 候选在门禁**之前**以 `status='gated'` 入库，门禁 FAIL 后不回写 → `gated` 同时表示"送过闸"与"过了闸"，积压闸与漏斗把 FAIL 候选计为未消费积压 | 〔码〕`wave_gate.py:572-588`；〔沙〕w5/w6/w7 FAIL 后 19 条仍为 `gated` |
 | N8 | P1 | `submit_verdict` 对处女提交（新候选的常态，提交层 404）只能返回 `UNVERIFIABLE`；SOP"是否提交的最终判定以本步为准"对新候选无法给出放行结论——它是**否决权威**，放行依据实际是模拟层 checks + 平台 prod 相关性 + 用户确认 | 〔码〕`tools_ops.py:236-251`、`tools/submit_verdict.py:125-130`；〔推〕判定表 |
 | N9 | P2 | `campaign` 节点 S1 必填校验把 `locals().get(p)` 写在列表推导式里：Python 3.11 推导式有独立作用域 → **传了 dataset 也判缺失**。`pyproject.toml` 声明 `>=3.11`；仓库自带 `test_campaign_stage_route_matrix` 在 3.11 下即红（3.12 起因 PEP 709 内联推导式才"碰巧"可用） | 〔码〕`campaign.py:161-170`；〔沙〕实录 步 3 + pytest 复现 |
 | N10 | P2 | dry-run 契约（AGENTS.md:90"不 subprocess、不写库、不建目录"）两处破口：`campaign` 节点在 dry-run 前调用 `_ensure_campaign_config`，缺 `settings.json` 时写入一份硬编码默认值（universe=TOP3000/decay=4/SUBINDUSTRY）；`gem` 节点在 dry-run 返回前 `makedirs(logs/_async_tasks)` | 〔码〕`campaign.py:179,1410-1528`、`gem.py:327-331`；〔沙〕AMR 干跑生成 `settings.json`；gem 干跑 FS +2 |
@@ -60,11 +61,13 @@
 | N15 | P3 | 其它小项：`campaign` 节点 calibrate / assemble-priors 的 ledger 缓存命中条件 `cached.get('value')` 永不成立（死代码）；MCP `upsert_wave_result/get_wave_result` 的 `wave_number: int` 与表结构 TEXT 冲突（✅ 随 P0-1 已修）；`get_campaign_summary.latest_wave` 用 `CAST(wave_number AS INTEGER)` 排序；`submit_alpha` 节点默认给所有提交（含 RA）打 `PowerPoolSelected` 标签；VECTOR 未包裹的报错文案写成 `[EVENT]` | 各节，〔码〕+〔沙〕 |
 | N16 | **P1** ✅已修 | S2 开波闸连 assemble-priors 一起拦：区域一停，知识回流即断 | 〔真〕§14.5 |
 | N17 | **P1** ✅已修 | P0-2 初版的快照新鲜度检查漏看 registry，且把 UTC / 本地两种时钟混比 | 〔真〕§14.5 |
-| N18 | **P1** | priors 截断按 entry_id 字母序：新封存的死路进不了 GEM | 〔真〕+〔史〕§14.5 |
-| N19 | **P1** | `D:\` 默认路径：wave_gate 把候选写进仓库根的杂散库（git 不可见）；assemble-priors 崩溃；干跑 / 单测在默认路径建空库 | 〔真〕§14.5 |
-| N20 | **P1** | verdict 写入契约只认得 30 条真实历史写法中的 6 条；唯一的 PASS 波不被识别 | 〔真〕§14.5 |
-| N21 | **P1** | gate 缓存键不含 `--datasets`：漏声明第二腿后补声明仍拿到缓存的 FIELD 失败，跨集赢家被拦 | 〔真〕§14.5 |
-| N22–N27 | P2–P3 | 规则 B 窗口按 updated_at；`.mcp.json` 不可移植；孤儿节点 / 工具面缺陷；argv 只校验分发层；fail-open 与静默降级；质量预估刻度失准等 | 〔真〕§14.5 |
+| N18 | **P1** ✅已修（§14.8） | priors 截断按 entry_id 字母序：新封存的死路进不了 GEM | 〔真〕+〔史〕§14.5 |
+| N19 | **P1** ✅已修（§14.8） | `D:\` 默认路径：wave_gate 把候选写进仓库根的杂散库（git 不可见）；assemble-priors 崩溃；干跑 / 单测在默认路径建空库 | 〔真〕§14.5 |
+| N20 | **P1** ✅已修（§14.8） | verdict 写入契约只认得 30 条真实历史写法中的 6 条；唯一的 PASS 波不被识别 | 〔真〕§14.5 |
+| N21 | **P1** ✅已修（§14.8） | gate 缓存键不含 `--datasets`：漏声明第二腿后补声明仍拿到缓存的 FIELD 失败，跨集赢家被拦 | 〔真〕§14.5 |
+| N22–N27 | P2–P3 | 规则 B 窗口按 updated_at（第三轮建议升 P1，§14.8.4）；`.mcp.json` 不可移植；孤儿节点 / 工具面缺陷；argv 只校验分发层；fail-open 与静默降级；质量预估刻度失准等 | 〔真〕§14.5 |
+| N28 | **P1** ✅已修（§14.8） | `gate.py` 找工作区 `src/` 的解析没随 R19 收敛：`.mcp.json` 原样 env 下 op_arity 不可达，**每条表达式都记 `[ARITY_UNKNOWN]`，静态闸全拦**；仓库自带 4 条单测常红即此因 | 〔真〕§14.8 |
+| N29 | P2 ✅已修（§14.8） | R21 逐条回写把"闸门环境缺失"（`[*_UNKNOWN]`）写成 `fail`；这类结论还会进逐条缓存，环境修好后仍被复用 | 〔真〕§14.8 |
 
 ### 0.3 09-16/17 建议的落地复核（代码核验）
 
@@ -255,7 +258,7 @@
 | 质量预估 `quality_predict` | ✂ 默认关闭 | 09-17 已判定预估不准并降为"仅标注"（`campaign.py:845-853` 注释）；〔沙〕对每条表达式给出同一个 0.27/0.16 并打印 `HARD_REJECT`，最终仍 PASS——纯噪声，还和 FAIL 语义冲突 |
 | `[opcat]` 算子类别覆盖 | ✂ 改为 INFO 或接入判定（N6） | 〔码〕注释写"硬闸"，但不在 `all_pass` 计算里（`wave_gate.py:970-993`）；〔沙〕w8 打印"FAIL：缺 Group 类别"，最终 `=> PASS` exit 0 |
 | 六维多样性 / 参数变体簇 | ★ 展示 | 保留为 INFO |
-| `--exprs-file` 候选状态（N7） | ✂ 需修 | 〔沙〕w5/w6/w7 门禁 FAIL 后 19 条候选仍为 `gated`；积压闸把 `gated` 计入 pending+gated 与 unconsumed |
+| `--exprs-file` 候选状态（N7） | ✂ 需修 → ✅ 已修（R7 随 R21，§14.8） | 〔沙〕w5/w6/w7 门禁 FAIL 后 19 条候选仍为 `gated`；积压闸把 `gated` 计入 pending+gated 与 unconsumed。〔真〕第三轮：先入 `pending`，按逐条结论回写 `gated` / `fail` |
 | 工具解析与依赖（N12） | ✂ 需修 | 〔沙〕未设 `WQ_TOOLKIT_DIR` 时 `FileNotFoundError`（MCP 路径因 `.mcp.json` 设了 env 不受影响）；未装 `ply` 时 exit 1 而非 exit 2 |
 | 其它 | 小 | VECTOR 未包裹的报错写成 `[EVENT] 事件型字段必须经 vec_* 聚合`；验证器在其 scripts 目录生成 `parsetab.py`（已 gitignore）；`wave_gate.py` 头部 docstring 仍写"结果落盘 `cache/gate_wave*.json`"，实际已只入库 |
 
@@ -469,7 +472,7 @@
 | R4 | near 池排除 RN_EXPOSURE（N4） | `review_wave.py` near 循环里 `if "RN_EXPOSURE" in r["walls"]: continue`；+单测 |
 | R5 | 区域闸语义统一（N5） | `batch_track` 节点接入 `run_region_gates`（与 campaign S3 同为 enforce）；CLI 的 warn 灰度写明截止日期；SOP"快捷入口"注明必须过区域闸 |
 | R6 | 去掉门禁展示层噪声（N6） | `[opcat]` 与质量预估改为 INFO（不再出现 FAIL / HARD_REJECT 字样），或真正接入 `all_pass`；质量预估默认关闭，需要时 `--quality` 开 |
-| R7 | 候选状态语义（N7） | `--exprs-file` 先入 `pending`，按 gate.py 逐条结论回写 `gated`/`fail` |
+| R7 ✅已实施（随 R21，§14.8） | 候选状态语义（N7） | `--exprs-file` 先入 `pending`，按 gate.py 逐条结论回写 `gated`/`fail` |
 | R8 | 提交判定定位（N8） | SKILL.md 步 8 改写：submit_verdict = 否决权威；新候选放行 = 模拟层全过 + 平台 prod < 0.7 + 用户确认 |
 
 ### 13.3 P2 / P3（可移植性与治理）
@@ -478,7 +481,7 @@
 |---|---|
 | R9 | `campaign.py:161-170` 改显式 dict（N9） |
 | R10 | `_ensure_campaign_config` 与 gem 的 `makedirs` 移到 dry-run 判定之后；把 §12 的 Probe 做成"干跑零副作用"单测（N10） |
-| R11 | 全部 DB 路径改走 `resolve_db_path()`；`WorkflowExecutor` 默认用它；删除 3 处 `D:\` 硬编码（N11）——第二轮实证后升为 P1，见 R19 |
+| R11 ✅已实施（作为 R19，§14.8） | 全部 DB 路径改走 `resolve_db_path()`；`WorkflowExecutor` 默认用它；删除 3 处 `D:\` 硬编码（N11）——第二轮实证后升为 P1，见 R19 |
 | R12 | `wave_gate.py` 的解析改用 `skill_roots()`；requirements 增加 `ply`；缺依赖 / 缺脚本时 exit 2（N12） |
 | R13 | 删除 campaign 节点缓存死代码（N15） |
 | R14 | 9 个孤儿节点逐一定去留：接入 SOP（写清与既有步骤的替代关系）或下线；SKILL.md 的节点计数改为引用 INDEX（N13） |
@@ -509,7 +512,7 @@
 2. **真实环境又暴露 P0-2 的两处残缺，已一并修复。**
    - **N16**：KOR 真实历史命中停止规则 B，SOP 步 4 的 `stage="S2"` 写法被开波闸拦下。知识回流恰好在"区域该停、该换向"时断掉，而 GEM 的过期告警指向的正是这条被拦的命令。
    - **N17**：初版新鲜度检查漏看了 S6 最常见的回写（registry 判死封存 / 登记 win），还把 UTC 与本地两种时钟混在一起比较。
-3. **第二轮新发现 N18–N27**，应先处理的四条（P1）：
+3. **第二轮新发现 N18–N27**，应先处理的四条（P1；✅ 第三轮已全部修复并复跑验证，见 §14.8）：
    - **N18**：priors 截断按 entry_id 字母序。新判死结论进不了 GEM；已入库的 KOR priors 12 条死路全是 `KOR-A*`。
    - **N19**：`D:\` 默认路径在真实环境里把候选静默写进仓库根下一个 git 看不见的杂散库。
    - **N20**：verdict 写入契约只认得 30 条真实历史写法里的 6 条。
@@ -621,16 +624,105 @@
 
 | # | 建议 | 对应 | 优先级 |
 |---|---|---|---|
-| R18 | assemble-priors 截断前按时效排序（`dead_at` / `updated_at` 倒序，新结论优先），并在 `_meta` 里记录被截的条数与 id；或先按 family 去重再截 | N18 | P1 |
-| R19 | DB 路径收敛（R11 升为 P1）：<br>• wave_gate / `_lib/ledger` / `_lib/registry` / `_common._platform_category` 统一改走 `resolve_db_path()`，删除 `D:\` 默认值；<br>• 只读路径用 `sqlite3.connect("file:…?mode=ro", uri=True)`，缺库时不新建；<br>• campaign / gem 节点给子进程注入 `WQB_WORKSPACE` / `WQB_ROOT` = REPO_ROOT | N19 | P1 |
-| R20 | verdict：<br>• SKILL 步 9 给出判定表：有提交 = PASS；有近闸或新基线 = PARTIAL；其余 = FAIL；<br>• 契约拒绝时在错误信息里附上 `classify` 的建议值（不自动采用）；<br>• 历史结果文件导入走同一判定表 | N20 | P1 |
-| R21 | gate.py 缓存键纳入合并后的数据集集合与白名单 / poison 版本（最简做法：`--datasets` 非空时禁用缓存）；同时落实 R7（FAIL 候选回写，不再留 `gated`） | N21、N7 | P1 |
-| R22 | 规则 B 的窗口按结案时刻（`created_at`，或新增 `closed_at`）取最近 K 个，而不是按 `updated_at` | N22 | P2 |
+| R18 ✅已实施（§14.8） | assemble-priors 截断前按时效排序（`dead_at` / `updated_at` 倒序，新结论优先），并在 `_meta` 里记录被截的条数与 id；或先按 family 去重再截 | N18 | P1 |
+| R19 ✅已实施（§14.8，含 N28 补充） | DB 路径收敛（R11 升为 P1）：<br>• wave_gate / `_lib/ledger` / `_lib/registry` / `_common._platform_category` 统一改走 `resolve_db_path()`，删除 `D:\` 默认值；<br>• 只读路径用 `sqlite3.connect("file:…?mode=ro", uri=True)`，缺库时不新建；<br>• campaign / gem 节点给子进程注入 `WQB_WORKSPACE` / `WQB_ROOT` = REPO_ROOT | N19 | P1 |
+| R20 ✅已实施（§14.8；建议值改用判定表规则而非 `classify`，理由见 §14.8.1） | verdict：<br>• SKILL 步 9 给出判定表：有提交 = PASS；有近闸或新基线 = PARTIAL；其余 = FAIL；<br>• 契约拒绝时在错误信息里附上 `classify` 的建议值（不自动采用）；<br>• 历史结果文件导入走同一判定表 | N20 | P1 |
+| R21 ✅已实施（§14.8，含 N29 补充） | gate.py 缓存键纳入合并后的数据集集合与白名单 / poison 版本（最简做法：`--datasets` 非空时禁用缓存）；同时落实 R7（FAIL 候选回写，不再留 `gated`） | N21、N7 | P1 |
+| R22 | 规则 B 的窗口按结案时刻（`created_at`，或新增 `closed_at`）取最近 K 个，而不是按 `updated_at` | N22 | P2 → **建议升 P1**（§14.8.4） |
 | R23 | 用 `start_mcp_server.py`（已按 `__file__` 推导路径）按本机生成 `.mcp.json`，仓库只留模板 | N23 | P2 |
 | R24 | 孤儿节点与工具面：<br>• unified_gate 把 `exprs_file` 传给 wave_gate（或下线）；<br>• field_understanding 改读 `fields` / catalog（或下线）；<br>• wqb-db 的 `workflow_*` 补 `dry_run`；<br>• 撤掉 `_flatten_platform_alpha` 的 `@mcp.tool()` | N24 | P2 |
 | R25 | `validate_argv` 对 `campaign.py <子命令>` 下钻到子脚本的 argparse 校验 | N25 | P2 |
 | R26 | • 字段预检未完成时返回 `valid: null`（unverified），而不是 `valid: true`；<br>• operators_catalog 回退到已入库的 `docs/reference/operators_catalog.json`；<br>• 只读工具遇到缺表时报"库未初始化"；<br>• salvage 回填拒收没有表达式的条目 | N26 | P2 |
 | R27 | • 质量预估去掉 BLOCK 标签（或按真实回测重新标定后再给标签）；<br>• GEM 干跑把 `check_config` 移到命令构建之后，缺配置只告警；<br>• review_wave 的 `passes()` 与 `walls()` 统一缺失值口径 | N27 | P3 |
+
+### 14.8 P1（R18–R21）修复与第三轮真实环境复跑
+
+> 审阅意见："继续修复 R18–R21 这四个 P1"，并重申第一轮的要求：逐阶段说明输入、输出与处理过程，给出价值评估，对完整流程做一次 dry-run，逐步展示每一阶段的输入输出变化与价值判断。本节是第三轮的全部结果。
+> 复现命令同第二轮（附录 A）。实录 `realenv/realenv_transcript.txt` 是第三轮；第二轮实录改名为 `realenv/realenv_transcript_p0.txt`，两份同名步骤可逐行对照。
+> 方法与第二轮只有一处不同：两个 server 与所有子进程的 env 一律用 `.mcp.json` 原样。第二轮给主 server 补了 `WQB_WORKSPACE`、给 wave_gate 补了 `WQB_ROOT`；R19 之后不再需要，这本身就是验证。
+
+#### 14.8.0 一页结论
+
+1. **四个 P1 全部修复**，并与第二轮同一调用序列逐条对照（§14.8.2）：
+   - **R18**：wave97 的判死结论 `KOR-MODEL219-DEAD` 进了 GEM 快照（排第 1 位）。名额外被截掉的条目（`KOR-ACQ-MODEL-DEAD`，最早登记的那条）写进快照的 `truncated`，assemble-priors 输出里也会打印。
+   - **R19**：按 `.mcp.json` 原样 env 运行，assemble-priors 从 rc=1 变成 rc=0；wave_gate 不再造杂散库，候选写进真库。
+   - **R20**：真实历史里被拒的 24 条 verdict 写法，拒绝信息全部附上判定表建议（high 5 / medium 11 / low 8）。91c 的"✅ 2 RA 提交成功"得到 PASS/high。
+   - **R21**：补声明 `--datasets` 后缓存不再命中（cached 从 39 降到 0），放行从 20/39 变成 39/39，与 `--no-cache` 对照组一致。门禁后逐条回写 gated 20 / fail 19。三次门禁后的积压从 117/364 = 32%（越过 30% 上限）降到 98/364 = 27%。
+2. **第三轮首跑又暴露两处残缺，已一并修复**：
+   - **N28**（R19 的残缺）：`gate.py` 查找工作区 `src/` 的逻辑没有随 R19 收敛。`.mcp.json` 原样 env 下 op_arity 不可达，首跑三次门禁的 117 条全部记为 `[ARITY_UNKNOWN]`，静态闸 0/39。修复后，仓库自带的 4 条常红单测转绿。
+   - **N29**（R21 回写的副作用）：上面这 117 条被逐条回写成了 `fail`，把"没校验"记成了"式子坏"；而且这类结论还会进缓存。
+3. **N22 从"被积压闸意外挡住"变成完全暴露。** 第二轮末尾，下一波 S2 被拦下，靠的是 N7 虚高的积压（32%）。修掉 N7 后，积压 27% 不再拦截。此时按 R20 的建议补记旧波 91c=PASS，规则 B 的窗口变成 `[91c PASS, 97, s2_…]`，**KOR 的停波被解除，下一波 S2 放行**。R20 让补记更容易，R22 应随之升为 P1（§14.8.4）。
+4. **回归**：根测试 1137 passed / 17 failed（基线 1096 / 21）。失败集合是基线的真子集，没有新增失败；转绿的 4 条正是 N28。MCP 包 77 / 5，与修复前一致。
+
+#### 14.8.1 修复内容
+
+| 项 | 改动 | 文件 |
+|---|---|---|
+| R18 新登记优先 + 截断可见 | • `RegistryStore.list(newest_first=True)` 按登记先后（id 自增）倒序；默认的字母序保留给 CLI 展示。<br>• assemble-priors 截断前记下名额外的条目，写入 `_meta.truncated` 与快照的 `truncated`。<br>• CLI 打印 `truncated dead_ends: 名额外 N 条未注入（新登记优先保留）`；`restore_from_db` 保留该字段 | `_lib/registry.py`、`assemble_priors.py` |
+| R19 库路径收敛 | toolkit 新增 `wqb_store.resolve_db_path(ctx)`，优先级：`WQB_DB_PATH` > 战役目录上溯 > `WQB_WORKSPACE` > `WQB_ROOT` > `WQ_PROJECT_ROOT` > toolkit 自身上溯 > cwd 上溯 > 历史盘符（仅当它真实存在）。<br>`_lib/ledger`、`_lib/registry`、`_lib/wave_results` 与 `get_store` 共用这一解析（此前同一次 assemble-priors 会读两个库）；build_wave / pipeline / review_wave / assemble_priors 改为传 ctx | `_lib/wqb_store.py`、`_lib/ledger.py`、`_lib/registry.py`、`_lib/wave_results.py`、`assemble_priors.py`、`build_wave.py`、`pipeline.py`、`review_wave.py` |
+| | `tools/wave_gate.py` 里 7 处 `WQB_ROOT or WQ_PROJECT_ROOT or D:\…` 收敛为 `_wqb_root()` / `_wqb_db_path()`：战役目录上溯优先，并认 `WQB_DB_PATH` | `tools/wave_gate.py` |
+| | • `_common._platform_category` 改走 `resolve_db_path()`，以只读 URI 打开（缺库时不再建空库）。<br>• `unbuffered_env` 缺省注入 `WQB_WORKSPACE=REPO_ROOT`（不覆盖已有值）。<br>• `WorkflowExecutor` 的默认库路径改为绝对路径 | `src/wqb/workflow/_common.py`、`executor.py` |
+| | **N28 补充**：`gate.py` 的 `_workspace_src_dirs` / `_find_tools_lib` 改用同一套工作区候选（历史变量 `WQB_WORKSPACE_ROOT` 保留为最高优先）；`main()` 拿到战役目录后，再解析一次模块加载时没找到的依赖（op_arity、家族天花板、vector_wrap） | `gate.py` |
+| R20 判定表 + 拒绝建议 | • 契约新增 `VERDICT_TABLE`、`verdict_from_counts`、`suggest_verdict`。<br>• 被拒时，错误信息附上判定表与建议（依据 + 置信度），返回体带 `suggestion`。**不自动采用、不写库。**<br>• SKILL 步 9 写入判定表与补记注意事项。<br>建议值用判定表规则，没有照搬 §14.7 所写的 `classify`：`classify` 的关键词规则把 87 / 88 / 90（NEAR、IS 1.79 突破）判成 FAIL，按判定表应是 PARTIAL。<br>"历史结果导入走同一判定表"只提供了 `verdict_from_counts`，**没有改写任何导入工具**：本演练的导入策略仍是"被拒即以 open 落库" | `src/wqb/wave_results_contract.py`、`wqb_db_mcp.py`（docstring）、SKILL.md |
+| R21 缓存键 + 逐条回写 | `gate.py` 的缓存键改为 sha1(主 dataset, 闸门签名, 表达式)。签名覆盖数据集集合、合并白名单、字段类型、banned、poison 与平台约束；报告逐条带原式 `expr` | `gate.py` |
+| | wave_gate 的 `--exprs-file` 先以 `pending` 入库，再按逐条结论回写 `gated` / `fail`（reason 记闸门原因）；报告新增 `state_writeback` | `tools/wave_gate.py` |
+| | **N29 补充**：只因闸门环境缺失而判 FAIL 的条目保持 `pending`，FAIL 行点明"不是表达式问题"；gate.py 不缓存 `[*_UNKNOWN]` 结论 | `tools/wave_gate.py`、`gate.py` |
+| 演练脚本 | 每步打印【阶段小结】；server 与子进程的 env 改为 `.mcp.json` 原样；末尾输出 P1 验证清单，与第二轮同名步骤对照 | `realenv/run_realenv.py` |
+| 测试 | `tests/unit/test_p1_fixes_20260927.py` 共 16 条：R18 ×3、R19 ×8（含 N28 ×2）、R20 ×3、R21 ×2（含 N29）。其中两条端到端：<br>• wave_gate 配桩 gate.py 回写 gated / fail / pending；<br>• toolkit 按"安装位拷贝"布局真跑 gate.py：无 env 时 `[ARITY_UNKNOWN]` 且不入缓存，有 `WQB_WORKSPACE` 时放行并入缓存 | |
+
+#### 14.8.2 第二轮 vs 第三轮（同一份导入后真实库、同一调用序列）
+
+| 场景 | 第二轮（P0 修复后） | 第三轮（P1 修复后） | 对应 |
+|---|---|---|---|
+| 4.1 assemble-priors，`.mcp.json` 原样 env | 崩溃 rc=1（`_lib/registry` → `_lib/ledger` 默认走 `D:\`） | rc=0，快照写入 | R19 |
+| 4.6 `seal_dead_end(KOR-MODEL219-DEAD)` 后重组快照 | 13 条按字母序截成 12 条，新死路**进不了**快照；截断没有记录 | 进快照（第 1 位）；`truncated={'dead_ends': ['KOR-ACQ-MODEL-DEAD']}`，assemble-priors 打印截断行 | R18 |
+| 导入时被拒的 24 条 verdict | 拒绝信息只有"必须是 PASS/FAIL/PARTIAL" | 全部附判定表建议：FAIL/low 8、PARTIAL/medium 10、FAIL/medium 1、PASS/high 2、FAIL/high 3 | R20 |
+| 步 5 ①：wave_gate 只声明主集（`.mcp.json` env） | 候选写进仓库根的杂散库，gate.py exit 2 | 写进真库。放行 20/39；FIELD 拦下 19 条（实测均值 1.29，含全部 5 条赢家）。回写 gated 20 / fail 19；没有杂散目录 | R19、R7 |
+| 步 5 ②：补声明 `--datasets`（默认缓存） | cached 39/39，放行 20/39 | cached 0/39，放行 39/39 | R21 |
+| 步 5 ③：`--no-cache` 对照组 | 39/39 | 39/39 | — |
+| 三次门禁后的状态与积压 | 117 条全记 `gated`（其中 38 条是 FIELD 失败）；积压 117/364 = 32% > 30% | gated 98 / fail 19；积压 98/364 = 27% | R7 |
+| 步 9：按建议补记 91c=PASS 后的下一波 S2 | 规则 B 放行，但被积压闸拦下（32%） | 规则 B 与积压闸都放行 → **S2 success=True** | N22 暴露（§14.8.4） |
+
+#### 14.8.3 逐阶段：输入 → 处理 → 输出变化 → 价值判定（第三轮）
+
+与实录中每步末尾的【阶段小结】一一对应；数字全部取自该次运行。
+
+| 步 | 输入（真实） | 处理 | 输出变化（第三轮实测） | 价值判定 |
+|---|---|---|---|---|
+| 0 环境基线 | `.mcp.json` 的两个 server；工作树；默认库路径为空 | 路径翻译后经 stdio 启动（env = `.mcp.json` 原样）；列工具；读启动 stderr | wqb-db 45 个工具 / wq-brain-http 69 个；启动告警 4 条；空库上先调只读工具 → `no such table`，并在默认路径留下空库 | 演练前提，不评星。N23 / N24 / N26 仍在（P2） |
+| 导入 | 38 个结果文件（335 行、30 条 verdict 原文）；priors；两份字段目录 | 逐行 `upsert_backtest_rows`；verdict 走写入契约，被拒则以 open 落库；KB 反推 | 247/335 行入库。verdict：6 条 closed/FAIL；24 条被拒，全部附建议；8 个文件没有 verdict | ★★★ 契约 + 建议：不替人猜结论，也不让人卡在"该写什么" |
+| 1 S-PRE | 导入后的 KOR 库 | summary / dead_ends / mining_yield（strict、by_dataset）/ dead_datasets / wave_results；inventory_scan；recommend_datasets | 严格 yield 5/247 = 0.0202。按数据集只有 `ml_factor_proj`（5/39）有产出，其余 5 个为 0。30 波 / 6 closed / 12 dead_ends。inventory_scan 真跑与 recommend_datasets 因无凭据失败 | ★★★ 保留深化：按数据集的 yield 一步定位唯一产出集，S0 选集应直接引用；inventory_scan 未入 SOP（N13） |
+| 2 S0 | 战役目录 + 库 | S0 calibrate / score 命令构建（干跑）；区域四闸（warn） | 命令构建成功。catalog / signal_floor / backlog 放行，stop_rules 命中 B（95/96/97）；warn 模式下 ok=True | ★★★ 停止规则 B 的判断与团队事后结论一致；warn 灰度看得见、拦不住（R5 待办） |
+| 3 S1 | `ml_factor_proj` 的 333 字段目录 | S1 / FE 干跑；typed catalog；前缀聚类；field_understanding | 全部 MATRIX；前缀簇 3 个（change 253 / log 40 / mean 40）；field_understanding 真跑 → `no such table: field_catalog` | ★★ typed catalog 保留；field_understanding ✂ 下线候选（N24） |
+| 4 S2 | region_kb（3 条 win，含演练追加的 1 条）+ registry（dead_end 13 / win 3，含新封存的 1 条）+ template_kb | assemble-priors 真跑 3 次；GEM 干跑 5 次；模拟 S6 回写；pregate 预闸 39 条 | • 4.1 rc=0。<br>• GEM 快照检查依次为：缺失 → 新鲜 → 过期（region_kb）→ 过期（region_kb + registry）→ 新鲜。<br>• 4.6 快照含新 win 与 KOR-MODEL219-DEAD，截断 1 条且可见。<br>• pregate 39 → 39（1 处窗口归一） | ★★★ 保留深化：S6→S2 回流闭环，R18 后新判死结论能进 GEM；GEM 真跑仍需 `config.json`（N27） |
+| 5 S2→S3 | 39 条真实表达式（含 5 条实测过闸者，其中 2 条是 ACTIVE 原式）；两份字段目录 | ghost-audit → wave_gate 的三种调用（§14.8.2） | ① 20/39，回写 gated 20 / fail 19；② cached 0、39/39；③ 39/39；积压 27%；质量预估 39/39 BLOCK；`[opcat] FAIL` 仍只打印 | 静态闸 ★★★；逐条回写修正了 gated 的语义；质量预估 ✗（R27）；`[opcat]` ✂（R6）；体检硬门缺包、未生效 |
+| 6 S3 | 门禁后的 g2；规则 B 命中 | batch_track 干跑 vs campaign S3 干跑 | batch_track 的命令含 `--submit`、没有区域闸，success；campaign S3 被规则 B 拦下 | ★★ 保留；N5 仍在（R5，P1 待办） |
+| 7 S4 | wave 94；thresholds；candidates | S4 干跑；按波 / 按 sharpe 检索；salvage 回填；review_wave 判定函数 | 解析出 9 个 alpha；salvage 处理 34 个文件、6 个成功，池内 24 条全都没有表达式；5/6 条 walls 只有 MARGIN_UNKNOWN，却 passes=False | ★★★ 墙诊断保留；N26 / N27 / N4 待办 |
+| 8 S4→S5 | 88lr21xo / 78jQ29rL；无凭据 | submit_ready；submit_verdict；judge / submit_alpha 干跑 | submit_ready=[]；submit_verdict 无凭据时 fail-closed；submit_alpha 干跑 submitted=False（确认与否都不触平台） | ★★★ 否决链与确认门保留；N3 / N8 待办 |
+| 9 S6 | wave_results（6 closed / 24 open）；规则 B 窗口 97/96/95；91c 的建议 PASS/high | P0-1 回放；assemble-priors + GEM 检查；按建议补记 91c；step_funnel；auto_pyramid | • 只补 key_findings 后 verdict 保持 FAIL，规则 B 仍拦；空壳结案被拒。<br>• 补记 91c 后窗口为 `[91c PASS, 97, s2_…]` → 规则 B 放行，下一波 S2 success=True（积压 27%）。<br>• 漏斗瓶颈："回测完成 → 过廉价闸"，保留率 0.0206 | ★★★ P0-1 契约有效；N22 完全暴露，R22 建议升 P1 |
+| 附 A | 19 个节点 × `workflow_execute(dry_run=True)` | 经 MCP 全量扫描 | 17/19 成功且零副作用；失败的是 gem（缺 config.json）与 hypothesis_round（测试参数下没有假设目录） | 干跑契约在真实服务上成立 |
+
+#### 14.8.4 第三轮新发现与残留
+
+| # | 级别 | 发现 | 证据 |
+|---|---|---|---|
+| N28 | **P1** ✅已修 | **gate.py 查找工作区 `src/` 的逻辑没有随 R19 收敛。** 该目录提供 op_arity 元数检查、家族天花板与 vector_wrap。原先的候选顺序是 `WQB_WORKSPACE_ROOT / WQB_ROOT / WQ_PROJECT_ROOT` > "本目录上溯 5 级" > 硬编码 `D:\`：<br>• "上溯 5 级"在仓库内布局落到仓库的上一级。build_wave 在 09-09 修过同一个 off-by-one，gate.py 没有跟进。<br>• `.mcp.json` 不设这三个变量；节点注入的是 `WQB_WORKSPACE`，gate.py 又不认。<br>结果是 op_arity 不可达，**每条表达式都记 `[ARITY_UNKNOWN]` 并判 FAIL**。第三轮首跑的三次门禁，117 条全部如此，静态闸 0/39。<br>用户本机的仓库恰好在 `D:\…`，所以碰巧正确；worktree、第二份克隆或其它机器上必现。第二轮演练给 wave_gate 补了 `WQB_ROOT`，因此没暴露。<br>仓库自带的 `test_window_whitelist_p4` 3 条与 `test_gem_provenance_p1p2p3::test_window_warning_does_not_block` 常红，就是这个原因：HEAD 上 `check_one` 返回 `[ARITY_UNKNOWN]`，修复后转绿 | 〔真〕第三轮首跑步 5：`passed=0/39`，拦截理由 `{'ARITY_UNKNOWN': 39, 'FIELD': 19}`。〔码〕`gate.py` 的 `_workspace_src_dirs` |
+| N29 | P2 ✅已修 | **R21 的逐条回写把环境问题记成表达式问题。** 上面 117 条被写成 `fail`（reason 为 "gate FAIL: [ARITY_UNKNOWN] …"），build_wave / 去重从此不再重选它们。这些结论还进了逐条缓存，环境修好后仍会被复用 | 〔真〕首跑 `[state] 逐条状态回写：gated 0 / fail 39`。〔码〕gate.py 的缓存写入原本无条件 |
+| N22 | P2 → **建议升 P1** | **规则 B 的窗口问题完全暴露。** 第二轮末尾下一波 S2 被积压闸拦下，而那份积压来自 N7（FAIL 候选也记 gated）。修掉 N7 后积压 27%，不再拦截。此时按 R20 的建议补记旧波 91c=PASS（91c 早于 92–97），窗口变成 `[91c PASS, 97, s2_…]`，KOR 停波被解除，下一波 S2 放行。<br>R20 让"补记旧波"更容易（SKILL 步 9 已提示补记会改变窗口），R22 应随之升为 P1 | 〔真〕步 9 |
+| 仍待办 | — | P1：R3（Failed-count 单一实现）、R4（near 池排除 RN_EXPOSURE）、R5（batch_track 接区域闸）、R6（`[opcat]` 降为 INFO）、R8（提交判定定位），以及建议升级的 R22。其余 P2 / P3 见 §13 / §14.7 | — |
+
+#### 14.8.5 回归与同步
+
+- **根测试**：1137 passed / 17 failed / 21 skipped（基线 1096 / 21）。失败集合是基线的真子集，没有新增失败；转绿的 4 条就是 N28。新增的 16 条 P1 用例已计入。
+- **MCP 包**：77 / 5，与修复前一致。
+- **pyflakes**：改动文件的告警与 HEAD 逐条相同，都是既有的未用变量 / 无占位 f-string。
+- **技能同步**：`tools/sync_skills.py --check` 报 281 个文件 MISSING，因为本容器的 `~/.claude/skills` 不是用户的安装位（基线状态）。toolkit 的 `gate.py`、`assemble_priors.py`、`_lib/*` 都是技能源码，**需要在本机跑 `python tools/sync_skills.py` 同步到安装位后才生效**。
+- **SKILL 元数据**：`wq-brain-ra-pipeline/SKILL.md` 的 `last_verified` 已随步 9 的改动更新为 2026-09-27（`test_last_verified_not_older_than_last_commit` 的要求）。
+- **第三轮共跑 3 遍**：
+  - 第 1 遍暴露 N28 / N29；
+  - 第 2 遍（修复后）四项全部达标；
+  - 第 3 遍把积压改为"三次门禁后按库统计"，即附件实录。
+  - 第 2、3 遍去掉时间戳后比对，差异只剩毫秒与字典键序。
 
 ---
 
@@ -666,6 +758,15 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 
 第 2 遍与第 9 遍的关键行逐条比对（去掉时间戳后）完全一致：导入统计、verdict 覆盖率、规则 B 输入、修复前 / 后 P0 回放各行、快照存在性、GEM 检查步。
 
+**第三轮（P1 修复后）**：命令同上。脚本版本已更新：
+- 每步打印【阶段小结】（输入 / 处理 / 输出变化 / 价值判定）；
+- server 与子进程一律用 `.mcp.json` 原样 env；
+- 末尾打印 P1 验证清单，逐项对照第二轮实录 `realenv_transcript_p0.txt`。
+
+附 B 仍以 `PRE_FIX_REV`（默认 `d1c7d78`，P0 修复前）为对照。修复前代码离开 `WQB_WORKSPACE` 时 assemble-priors 会崩溃（N19b），所以附 B 的修复前 server 仍补这一个变量，让 P0 对照只反映 P0。
+
+第三轮共跑 3 遍，经过见 §14.8.5。
+
 ## 附录 B：证据索引（主要 `文件:行`）
 
 | 发现 | 位置 |
@@ -697,3 +798,5 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv.sh
 | N25 | `src/wqb/workflow/_common.py`（`validate_argv`）；`Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py:60-90` |
 | N26 | `world-quant-brain-mcp/tools_data.py:240-259`；`docs/reference/operators_catalog.json`；`wqb_db_mcp.py:53-61`（`_conn` 不建 schema） |
 | N27 | `tools/wave_gate.py`（质量预估段）；`src/wqb/workflow/nodes/gem.py`（`check_config` 先于命令构建）；`review_wave.py:30-44,113-121` |
+| N28 | `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py`（`_workspace_src_dirs` / `_load_arity_check` / `_find_tools_lib` / `_resolve_workspace_deps`；修复前的"上溯 5 级"与硬编码盘符）；`build_wave.py:141-168`（09-09 修过的同类问题）；`tests/unit/test_window_whitelist_p4.py`、`test_gem_provenance_p1p2p3.py` |
+| N29 | `tools/wave_gate.py`（`_write_back_gate_status` / `_env_unknown_only` / `gate_fail_reasons`）；`gate.py`（`ENV_UNKNOWN_TAGS` / `env_unknown`、逐条缓存写入） |

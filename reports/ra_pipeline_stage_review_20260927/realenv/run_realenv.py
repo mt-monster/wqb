@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
-"""RA 九步流水线 · 真实环境 dry-run（2026-09-27，两个 P0 修复之后）
+"""RA 九步流水线 · 真实环境 dry-run（2026-09-27；第三轮 = P0 + P1（R18–R21）修复之后）
+
+每一步末尾打印【阶段小结】：输入 / 处理 / 输出变化 / 价值判定。其中的数字全部取自本次运行的
+实际输出；判定栏的星级沿用报告 §1 的评判口径，并随本次数据给出结论（与预期不符时如实打印）。
+
+对照关系：
+  * P0 修复前后 → 附 B（BASE_DIR = 修复前原始副本，默认 d1c7d78）；
+  * P1（R18–R21）修复前后 → 与同目录 realenv_transcript_p0.txt（P0 修复后、P1 修复前的第二轮实录）
+    同名步骤逐行对照；本脚本对 P1 相关探针的步骤编号与第二轮保持一致（4.1 / 4.6 / 5 ①②③ / 导入表）。
+  * 两个 MCP server 与所有子进程的 env = .mcp.json 原样（第二轮主 server 需补 WQB_WORKSPACE 才能跑通
+    assemble-priors，即 N19(b)；R19 后不再补——这本身就是 R19 的验证）。
 
 与第一轮沙箱演练（../run_dryrun.py）的区别：
   * 真实仓库工作树（非 git archive 副本），真实默认库路径 <repo>/data/wqb.db（演练期间把原库临时移到
@@ -53,6 +63,14 @@ def H1(t):
 
 def H2(t):
     print(f"\n--- {t}", flush=True)
+
+
+def STAGE(title, inputs, process, outputs, verdict):
+    """阶段小结：输入 / 处理 / 输出变化 / 价值判定（数字取自本次运行）。"""
+    print(f"\n  ┌─ 【阶段小结 · {title}】", flush=True)
+    for tag, text in (("输入", inputs), ("处理", process), ("输出变化", outputs)):
+        print(f"  │ {tag}：{text}")
+    print(f"  └ 价值判定：{verdict}", flush=True)
 
 
 def dump(obj, n=600):
@@ -193,7 +211,18 @@ async def wait_task(http, task_id, timeout=180):
     return {"status": "timeout"}
 
 
-def sh(argv, env_extra=None, cwd=None, tail=30, root=ROOT, db=None, env_drop=()):
+#: 工作区根 / 库路径类变量。演练 shell 自身若带着它们会掩盖 R19 的路径解析——子进程一律剔除，
+#: 需要时再由 env_extra 显式给出（本轮不给：子进程 env = .mcp.json 原样）。
+_ROOT_VARS = ("WQB_ROOT", "WQ_PROJECT_ROOT", "WQB_WORKSPACE", "WQB_DB_PATH")
+
+
+def mcp_env(which):
+    """.mcp.json 里该 server 的 env 原样（Windows 路径翻译成本机）。"""
+    cfg = json.load(open(ROOT / ".mcp.json", encoding="utf-8"))["mcpServers"][which]
+    return {k: v.replace(WIN_PREFIX, str(ROOT)) for k, v in (cfg.get("env") or {}).items()}
+
+
+def sh(argv, env_extra=None, cwd=None, tail=30, root=ROOT, db=None, env_drop=_ROOT_VARS):
     env = {k: v for k, v in os.environ.items() if k not in env_drop}
     env.update(env_extra or {})
     with Probe(root, db or (Path(root) / "data" / "wqb.db")) as pr:
@@ -229,6 +258,20 @@ def step_of(x, name):
 def snapshot(db):
     rows = q(db, "SELECT value, updated_at FROM ledger_kv WHERE region=? AND key='priors_snapshot_kor'", R)
     return (json.loads(rows[0][0]), rows[0][1]) if rows else (None, None)
+
+
+def snap_state(gem):
+    """GEM 干跑 priors_snapshot_check 的三态：缺失 / 过期(源) / 新鲜。"""
+    sc = step_of(gem, "priors_snapshot_check") or {}
+    if not sc:
+        return "无检查步"
+    if sc.get("stale_sources"):
+        return "过期(" + "+".join(s.split("@")[0].split("/", 1)[-1] for s in sc["stale_sources"]) + ")"
+    return "缺失" if sc.get("warning") else "新鲜"
+
+
+def line_of(text, pat):
+    return next((ln for ln in (text or "").splitlines() if re.search(pat, ln)), "")
 
 
 # ----------------------------------------------------------------------------- 真实历史 → MCP 导入
@@ -281,8 +324,8 @@ def _wave_sort(path):
 
 async def import_history(db_srv, root):
     files = sorted(glob.glob(str(root / "tracking" / R / "candidates" / "wave*_result*.json")), key=_wave_sort)
-    stats = {"files": len(files), "rows_in": 0, "rows_written": 0, "rows_no_expr": 0, "verdict": {}}
-    table = []
+    stats = {"files": len(files), "rows_in": 0, "rows_written": 0, "rows_no_expr": 0, "verdict": {}, "suggestion": {}}
+    table, suggestions = [], {}
     for f in files:
         d = json.load(open(f, encoding="utf-8"))
         wave, ds = _wave_key(f), _dataset_of(d)
@@ -294,8 +337,9 @@ async def import_history(db_srv, root):
             got, err, _ = await db_srv.call("upsert_backtest_rows", quiet=True, region=R, wave=wave, rows=with_expr, dataset=ds)
             stats["rows_written"] += (got or {}).get("n", 0) if isinstance(got, dict) else 0
         raw_v = d.get("verdict")
+        sug = None
         if raw_v is None:
-            outcome = "无 verdict → 不写 wave_results"
+            outcome_key = outcome = "无 verdict → 不写 wave_results"
         else:
             findings = [str(x) for x in (d.get("key_insight"), d.get("conclusion")) if x][:2]
             got, err, _ = await db_srv.call(
@@ -303,19 +347,30 @@ async def import_history(db_srv, root):
                 focus=str(d.get("focus") or d.get("tag") or ds)[:200], key_findings=findings,
                 source_file=rel(f))
             if isinstance(got, dict) and got.get("action"):
-                outcome = f"closed/{got.get('verdict')}"
+                outcome_key, outcome = "closed", f"closed/{got.get('verdict')}"
             else:
-                # 契约拒绝（无法归一）→ 按导入策略以 open 状态落库（open 波不参与停止规则 B），原文进 key_findings
+                # 契约拒绝（无法归一）→ 按导入策略以 open 状态落库（open 波不参与停止规则 B），原文进 key_findings。
+                # R20：拒绝信息附判定表建议（只展示、不自动采用——与契约一致）
+                sug = got.get("suggestion") if isinstance(got, dict) else None
                 got2, _, _ = await db_srv.call(
                     "upsert_wave_result", quiet=True, region=R, wave_number=wave, status="open",
                     focus=str(d.get("focus") or d.get("tag") or ds)[:200],
                     key_findings=[f"原 verdict（未能归一，导入为 open）: {raw_v}"] + findings, source_file=rel(f))
-                outcome = "REJECTED→open" if isinstance(got2, dict) and got2.get("action") else f"REJECTED ({dump(got2, 80)})"
+                ok2 = isinstance(got2, dict) and got2.get("action")
+                outcome_key = "REJECTED→open" if ok2 else "REJECTED"
+                outcome = outcome_key if ok2 else f"REJECTED ({dump(got2, 80)})"
+                if sug:
+                    outcome += f"（建议 {sug['verdict']}/{sug['confidence']}）"
+                    suggestions[wave] = sug
+                    k = f"{sug['verdict']}/{sug['confidence']}"
+                    stats["suggestion"][k] = stats["suggestion"].get(k, 0) + 1
+                else:
+                    stats["suggestion"]["无建议"] = stats["suggestion"].get("无建议", 0) + 1
             # 让 updated_at 严格递增（停止规则 B 按 datetime(updated_at) 秒级排序取"最近 3 个"）
             await asyncio.sleep(1.05)
-        stats["verdict"][outcome.split(" ")[0].split("/")[0]] = stats["verdict"].get(outcome.split(" ")[0].split("/")[0], 0) + 1
+        stats["verdict"][outcome_key.split(" ")[0]] = stats["verdict"].get(outcome_key.split(" ")[0], 0) + 1
         table.append((os.path.basename(f), wave, ds, len(rows), len(with_expr), str(raw_v)[:46], outcome))
-    return stats, table
+    return stats, table, suggestions
 
 
 def verdict_coverage(root):
@@ -323,7 +378,7 @@ def verdict_coverage(root):
     for sub in ("src", "tools"):
         if str(root / sub) not in sys.path:
             sys.path.insert(0, str(root / sub))
-    from wqb.wave_results_contract import normalize_verdict
+    from wqb.wave_results_contract import normalize_verdict, suggest_verdict
     from migrate_wave_verdict_enum import classify
     rows = []
     for f in sorted(glob.glob(str(root / "tracking" / R / "candidates" / "wave*_result*.json")), key=_wave_sort):
@@ -331,7 +386,9 @@ def verdict_coverage(root):
         if v is None:
             continue
         c_enum, c_rule = classify(str(v))
-        rows.append((_wave_key(f), str(v), normalize_verdict(v)[0], c_enum, c_rule))
+        n_enum = normalize_verdict(v)[0]
+        sug = suggest_verdict(v) if n_enum is None else None   # 契约只在拒绝时给建议（R20）
+        rows.append((_wave_key(f), str(v), n_enum, c_enum, c_rule, sug))
     return rows
 
 
@@ -346,7 +403,7 @@ async def import_kb(db_srv, root):
         "notes": ctx.get("key_notes") or ctx.get("notes") or [],
         "dead_patterns": [],
     }
-    out = {"region_kb": await db_srv.call("upsert_ledger_key", quiet=True, region=R, key="region_kb", value=kb)}
+    await db_srv.call("upsert_ledger_key", quiet=True, region=R, key="region_kb", value=kb)
     n_win = n_dead = 0
     for w in pri["wins"]:
         if w.get("source") == "registry_win":
@@ -393,23 +450,40 @@ async def run_assemble(http, stage, label):
     return o, st
 
 
+def _rule_b(x):
+    sr = step_of(x, "stop_rules_gate") or {}
+    return {"S2_success": node_out(x).get("success"), "rule_B_blocks": sr.get("success") is False,
+            "window": (sr.get("evidence") or {}).get("recent_closed_verdicts")}
+
+
 async def p0_replay(tag, db_srv, http, root, db, wave_fail):
+    """返回关键结论（供阶段小结 / 附 B 对照），打印逐条实录。"""
+    res = {}
     H2(f"[{tag}] P0-1 ① 字符串波号 s2_{DS}_d1 经 MCP 写 verdict（SKILL 步 4/9 的波号形态）")
-    await db_srv.call("upsert_wave_result", region=R, wave_number=f"s2_{DS}_d1", verdict="FAIL", key_findings=["probe"], n=300)
+    w1, e1, _ = await db_srv.call("upsert_wave_result", region=R, wave_number=f"s2_{DS}_d1", verdict="FAIL",
+                                  key_findings=["probe"], n=300)
     await db_srv.call("get_wave_result", region=R, wave_number=f"s2_{DS}_d1", n=300)
+    res["str_wave"] = "参数校验拒绝" if e1 else (w1.get("action") if isinstance(w1, dict) else str(w1)[:40])
     H2(f"[{tag}] P0-1 ② 停止规则 B：真实历史下最近 3 个 closed 波 → 下一波 S2（build_wave）干跑")
     g, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage="S2", dataset=DS, wave="p0_next", dry_run=True)
     print("    " + _gate_line(g))
+    res["before_update"] = _rule_b(g)
     H2(f"[{tag}] P0-1 ③ 按步 9 只补写点塔进度到 key_findings（不带 verdict）—— wave {wave_fail}")
     await db_srv.call("upsert_wave_result", region=R, wave_number=wave_fail,
                       key_findings=["[pyramid] ANALYST 2/3 · MODEL 1/3（步 9 点塔进度）"], n=300)
-    print("    行现状:", q(db, "SELECT wave_number, verdict, status, substr(key_findings,1,60) FROM wave_results "
-                         "WHERE region=? AND wave_number=?", R, str(wave_fail)))
+    row = q(db, "SELECT wave_number, verdict, status, substr(key_findings,1,60) FROM wave_results "
+                "WHERE region=? AND wave_number=?", R, str(wave_fail))
+    print("    行现状:", row)
+    res["verdict_after_kf_only"] = row[0][1] if row else None
     g2, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage="S2", dataset=DS, wave="p0_next", dry_run=True)
     print("    同一下一波 S2 干跑: " + _gate_line(g2))
+    res["after_update"] = _rule_b(g2)
     H2(f"[{tag}] P0-1 ④ 新波只写 key_findings（缺 verdict、默认 closed）")
-    await db_srv.call("upsert_wave_result", region=R, wave_number="p0_hollow", key_findings=["探针全灭"], n=300)
-    print("    p0_hollow 行:", q(db, "SELECT wave_number, verdict, status FROM wave_results WHERE region=? AND wave_number='p0_hollow'", R))
+    hw, he, _ = await db_srv.call("upsert_wave_result", region=R, wave_number="p0_hollow", key_findings=["探针全灭"], n=300)
+    hollow = q(db, "SELECT wave_number, verdict, status FROM wave_results WHERE region=? AND wave_number='p0_hollow'", R)
+    print("    p0_hollow 行:", hollow)
+    res["hollow"] = ("参数校验拒绝" if he else "契约拒绝" if isinstance(hw, dict) and hw.get("error") else "写入") + \
+                    f"，行={hollow}"
 
     # P0-2：两次回放都从"无快照"起步（演练脚本直接删键，对称对照）
     c = sqlite3.connect(str(db))
@@ -417,14 +491,17 @@ async def p0_replay(tag, db_srv, http, root, db, wave_fail):
     c.commit()
     c.close()
     H2(f"[{tag}] P0-2 ① assemble-priors 干跑命令：SKILL ra-pipeline 步 4 写法 stage=S2 / gem SKILL 写法 stage=S6（均带 dataset/wave）")
+    tails = {}
     for stage in ("S2", "S6"):
         x, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage=stage, subcommand="assemble-priors",
                                   dataset=DS, wave="p0", dry_run=True)
         bc, va = step_of(x, "build_command"), step_of(x, "validate_argv")
+        tails[stage] = ' '.join((bc or {}).get('command', '').split()[-2:]) if bc else None
         print(f"    stage={stage}: success={node_out(x).get('success')}  "
               f"cmd尾={' '.join((bc or {}).get('command', '').split()[-4:]) if bc else None}  "
               f"argv错误={dump((va or {}).get('error'), 120) if va else None}  "
               f"拦截={dump(node_out(x).get('error'), 110) if not bc and not va else None}")
+    res["assemble_cmd_tail"] = tails
     H2(f"[{tag}] P0-2 ② 真跑 assemble-priors（先 SOP 的 S2 写法；被拦则退 S6 写法）")
     o, st = await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
     if not o.get("task_id"):
@@ -432,12 +509,15 @@ async def p0_replay(tag, db_srv, http, root, db, wave_fail):
         o, st = await run_assemble(http, "S6", "workflow_campaign(S6, assemble-priors, 真跑)")
     sv, ts = snapshot(db)
     print("    DB 快照 priors_snapshot_kor:", f"存在 updated_at={ts} wins={len(sv['wins'])}" if sv else "不存在")
+    res["assemble_rc"], res["snapshot"] = st.get("returncode"), bool(sv)
     subprocess.run(["git", "-C", str(root), "checkout", "--", f"tracking/{R}/priors/"], capture_output=True)
     H2(f"[{tag}] P0-2 ③ GEM 干跑（默认 --priors-from-db）：快照状态是否可见")
     gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
     print("    steps:", [s.get("step") for s in node_out(gem).get("steps", [])])
     print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check") or "（无此步）", 400))
     print("    干跑结论:", dump({"success": node_out(gem).get("success"), "error": node_out(gem).get("error")}, 260))
+    res["gem_snapshot_check"] = step_of(gem, "priors_snapshot_check") is not None
+    return res
 
 
 # ============================================================================= 主流程
@@ -450,7 +530,7 @@ async def main():
     print(f"  → 本机翻译：command={rel(PY)}（{subprocess.run([PY, '-V'], capture_output=True, text=True).stdout.strip()}），"
           f"路径前缀 {WIN_PREFIX} → <repo>")
     print("  git HEAD:", subprocess.run(["git", "-C", str(ROOT), "log", "--oneline", "-1"], capture_output=True, text=True).stdout.strip())
-    print("  工作树未提交改动（= 本轮 P0 修复）:", sorted(git_dirty(ROOT)))
+    print("  工作树未提交改动（= 本轮 P1 修复 R18–R21）:", sorted(git_dirty(ROOT)))
     print("  world-quant-brain-mcp/.env 存在?", (ROOT / "world-quant-brain-mcp" / ".env").exists(), "（只判存在，不读取）")
     dirty_priors = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain", "--", f"tracking/{R}/priors/"],
                                   capture_output=True, text=True).stdout.strip()
@@ -481,37 +561,62 @@ async def main():
 
 
 async def _main_body(DB):
-    http_env = {"WQB_WORKSPACE": str(ROOT)}
+    HTTP_ENV = mcp_env("wq-brain-http")   # .mcp.json 原样：MCP_TRANSPORT / WQB_ASI_UNIVERSE_FIX / WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR
+    TOOLKIT = ROOT / "Claude" / "skills" / "wq-brain-campaign-toolkit" / "scripts"
+    CAMPAIGN = ROOT / "tracking" / R
+    V = {}                                 # 本次运行的关键结论：阶段小结 + 末尾 P1 验证清单
     async with contextlib.AsyncExitStack() as stack:
+        # 两个 server 的 env 都是 .mcp.json 原样（第二轮主 server 另补了 WQB_WORKSPACE，本轮不补）
         db_srv = await stack.enter_async_context(open_server("wqb-db", ROOT, "wqb-db", DB))
-        http = await stack.enter_async_context(open_server("wq-brain-http", ROOT, "wq-brain-http", DB, extra_env=http_env))
+        http = await stack.enter_async_context(open_server("wq-brain-http", ROOT, "wq-brain-http", DB))
+        n_tools, n_warn = {}, {}
         for s in (db_srv, http):
             tools = (await s.s.list_tools()).tools
             names = [t.name for t in tools]
+            n_tools[s.name] = len(tools)
             print(f"  [{s.name}] tools={len(tools)}  私有名工具={[n for n in names if n.startswith('_')]}  "
                   f"无 dry_run 参数的 workflow_*={[t.name for t in tools if t.name.startswith('workflow_') and 'dry_run' not in (t.inputSchema or {}).get('properties', {})]}")
         await asyncio.sleep(0.5)
         for name in ("wqb-db", "wq-brain-http"):
             txt = (SCRATCH / f"{name}.stderr").read_text(encoding="utf-8", errors="replace")
             warn = [ln for ln in txt.splitlines() if re.search(r"WARN|不可用|not found|No BRAIN|Error", ln)]
+            n_warn[name] = len(warn)
             print(f"  [{name}] 启动 stderr 告警: {dump([rel(w)[:150] for w in warn], 900)}")
 
         H2("空库首调：先调只读工具（_conn 直连，不建 schema）")
-        await db_srv.call("get_campaign_summary", region=R, n=300)
-        print("    data/wqb.db 此刻存在?", DB.exists(), " 表数:", len(db_counts(DB)))
+        first, first_err, _ = await db_srv.call("get_campaign_summary", region=R, n=300)
+        n_tab0 = len(db_counts(DB))
+        print("    data/wqb.db 此刻存在?", DB.exists(), " 表数:", n_tab0)
+        STAGE("步 0 · 真实环境基线（演练前提，不是 SOP 步骤）",
+              ".mcp.json 的两个 server（command 是 Windows 绝对路径）；仓库工作树；默认库路径 data/wqb.db 为空",
+              "路径翻译成本机后经 stdio 启动两个 server（env = .mcp.json 原样，不补任何根目录变量）；列工具；读启动 stderr；空库上先调只读工具",
+              f"wqb-db {n_tools.get('wqb-db')} 个工具 / wq-brain-http {n_tools.get('wq-brain-http')} 个；启动告警 {sum(n_warn.values())} 条；"
+              f"空库首调 isError={first_err}（{dump(first, 70)}），默认路径留下 {n_tab0} 表的空库文件",
+              "环境事实，不评星。N23（.mcp.json 不可移植）/ N24（工具面）/ N26（空库首调即建空库）仍在，属 P2，不在本轮 R18–R21 范围")
 
         # ------------------------------------------------------------------ 导入
         H1("导入 · tracking/KOR 真实历史 → 经 wqb-db MCP 写工具落库（导入本身即契约实测）")
-        stats, table = await import_history(db_srv, ROOT)
-        print(f"  {'file':28s} {'wave':8s} {'dataset':16s} rows expr  verdict 原文 → 契约结果")
+        stats, table, SUGG = await import_history(db_srv, ROOT)
+        print(f"  {'file':28s} {'wave':8s} {'dataset':16s} rows expr  verdict 原文 → 契约结果（R20：被拒时附判定表建议，不自动采用）")
         for fn, wave, ds, nr, ne, rv, oc in table:
             print(f"  {fn:28s} {wave:8s} {ds[:16]:16s} {nr:>4} {ne:>4}  {rv!r:50s} → {oc}")
-        print("  汇总:", dump(stats, 600))
-        H2("verdict 原文覆盖率：写入契约 normalize_verdict（MCP 实际使用）vs tools/migrate_wave_verdict_enum.classify")
+        print("  汇总:", dump(stats, 700))
+        H2("verdict 原文覆盖率：写入契约 normalize_verdict + 被拒时的判定表建议 suggest_verdict（R20） vs 迁移工具 classify")
         cov = verdict_coverage(ROOT)
-        for wave, raw, n_enum, c_enum, c_rule in cov:
-            print(f"  {wave:6s} 契约={str(n_enum):7s} classify={str(c_enum):7s} ({c_rule[:18]:18s})  {raw[:60]!r}")
-        print(f"  可归一：契约 {sum(1 for r in cov if r[2])}/{len(cov)}，classify {sum(1 for r in cov if r[3])}/{len(cov)}")
+        for wave, raw, n_enum, c_enum, c_rule, sug in cov:
+            s = f"{sug['verdict']}/{sug['confidence']}" if sug else "-"
+            print(f"  {wave:6s} 契约={str(n_enum):7s} 建议={s:14s} classify={str(c_enum):7s} ({c_rule[:16]:16s})  {raw[:56]!r}")
+        n_norm = sum(1 for r in cov if r[2])
+        n_rej = len(cov) - n_norm
+        n_sug = sum(1 for r in cov if r[5])
+        by_conf = {}
+        for r in cov:
+            if r[5]:
+                by_conf[r[5]["confidence"]] = by_conf.get(r[5]["confidence"], 0) + 1
+        disagree = [(r[0], r[5]["verdict"], r[3]) for r in cov if r[5] and r[3] and r[5]["verdict"] != r[3]]
+        print(f"  可归一：契约 {n_norm}/{len(cov)}；被拒 {n_rej} 条中附建议 {n_sug} 条 {by_conf}；"
+              f"classify {sum(1 for r in cov if r[3])}/{len(cov)}")
+        print(f"  建议与 classify 都给出结论但不一致（wave, 建议, classify）：{disagree}")
         pri, kbstat = await import_kb(db_srv, ROOT)
         print("  KB 反推（来自 tracking/KOR/priors/kor_priors.json）:", dump(kbstat, 500))
         for ds_ in (DS, DS2):
@@ -527,68 +632,112 @@ async def _main_body(DB):
         _s.backup(_d)
         _d.close()
         _s.close()
+        V["R20"] = {"rejected": n_rej, "with_suggestion": n_sug, "by_conf": by_conf, "91c": SUGG.get("91c")}
+        STAGE("导入（演练前提；同时是 P0-1 写入契约 + R20 在真实写法上的实测）",
+              f"{stats['files']} 个 wave*_result*.json（{stats['rows_in']} 行逐 alpha 指标、{len(cov)} 条波级 verdict 原文）；"
+              f"priors/kor_priors.json；字段目录 {DS} / {DS2}",
+              "upsert_backtest_rows 逐行入库；verdict 走 upsert_wave_result（契约）——被拒则按导入策略以 open 落库（open 不进规则 B）；"
+              "KB 反推 region_kb + registry",
+              f"入库 {stats['rows_written']}/{stats['rows_in']} 行（{stats['rows_no_expr']} 行在历史文件里本就没有表达式）；"
+              f"verdict {dump(stats['verdict'], 120)}；被拒时的建议 {dump(stats['suggestion'], 160)}",
+              f"契约仍保守：{n_norm}/{len(cov)} 条可直接归一，其余拒绝、不写 closed。R20 后被拒的 {n_rej} 条中 {n_sug} 条附判定表建议"
+              f" {by_conf}，与 classify 分歧 {len(disagree)} 条。★★★ 保留：拒绝 + 建议 = 不替人猜结论，也不让人卡在'该写什么'")
 
         # ------------------------------------------------------------------ 步 1
         H1("步 1 · S-PRE 查表（区域先验 / 库存 / 产出率）")
-        await db_srv.call("get_campaign_summary", region=R, n=700)
+        summ, _, _ = await db_srv.call("get_campaign_summary", region=R, n=700)
         await db_srv.call("get_dead_ends", region=R, n=500)
-        await db_srv.call("get_mining_yield", region=R, strict=True, n=700)
-        await db_srv.call("get_mining_yield", region=R, by_dataset=True, n=900)
+        y_all, _, _ = await db_srv.call("get_mining_yield", region=R, strict=True, n=700)
+        y_ds, _, _ = await db_srv.call("get_mining_yield", region=R, by_dataset=True, n=900)
         await db_srv.call("get_dead_datasets", region=R, n=400)
         await db_srv.call("list_wave_results", region=R, status="closed", limit=5, n=700)
         await http.call("workflow_execute", label="workflow_execute(inventory_scan, dry_run)", node="inventory_scan",
                         params={"region": R, "target": 20}, dry_run=True, n=600)
-        await db_srv.call("workflow_inventory_scan", label="wqb-db workflow_inventory_scan（无 dry_run 参数 → 真跑）",
-                          region=R, target=20, n=600)
-        await http.call("recommend_datasets", region=R, delay=1, universe="TOP600", top_n=5, n=400)
+        inv, _, _ = await db_srv.call("workflow_inventory_scan", label="wqb-db workflow_inventory_scan（无 dry_run 参数 → 真跑）",
+                                      region=R, target=20, n=600)
+        rec, _, _ = await http.call("recommend_datasets", region=R, delay=1, universe="TOP600", top_n=5, n=400)
+        tot = y_all.get("totals", {}) if isinstance(y_all, dict) else {}
+        producing = [(r.get("dataset"), f"{r.get('ra_clean')}/{r.get('backtested')}") for r in
+                     (y_ds.get("rows", []) if isinstance(y_ds, dict) else []) if r.get("ra_clean")]
+        zero_ds = sum(1 for r in (y_ds.get("rows", []) if isinstance(y_ds, dict) else []) if not r.get("ra_clean"))
+        sw = summ.get("waves", {}) if isinstance(summ, dict) else {}
+        STAGE("步 1 · S-PRE 查表",
+              "导入后的 KOR 库（wave_results / backtest_results / registry）；references/regions/KOR.md（profile，本演练不读）",
+              "get_campaign_summary / get_dead_ends / get_mining_yield(strict, by_dataset) / get_dead_datasets / list_wave_results；"
+              "inventory_scan（干跑 + wqb-db 真跑）；recommend_datasets（平台）",
+              f"严格 yield {tot.get('ra_clean')}/{tot.get('backtested')} = {tot.get('yield_rate')}；按数据集有产出的只有 {producing}，"
+              f"其余 {zero_ds} 个为 0；summary 波 {sw.get('total')} / closed {sw.get('closed')} / dead_ends {summ.get('dead_ends') if isinstance(summ, dict) else None}；"
+              f"inventory_scan 真跑 success={node_out(inv).get('success')}；recommend_datasets → {dump(rec, 60)}",
+              "★★★ 保留深化：按数据集的 yield 一步指出唯一产出集（与 wave91c 的 2 条 ACTIVE 吻合），S0 选集应直接引用它；"
+              "inventory_scan 节点未入 SOP（N13）、wqb-db 同名工具没有 dry_run（N24）；平台类查询无凭据时 fail-closed")
 
         # ------------------------------------------------------------------ 步 2
         H1("步 2 · S0 数据集体检 + 白名单")
-        await http.call("workflow_campaign", region=R, stage="S0", calibrate=True, dry_run=True, n=800)
-        await http.call("workflow_campaign", region=R, stage="S0", dry_run=True, n=800)
-        H2("开波前区域四闸（toolkit _lib/region_gates，warn 模式；真实 tracking/KOR）")
-        sh([PY, "-c", "import sys,json; sys.path.insert(0,'.'); from _lib import region_gates as rg; "
-                      f"r=rg.run_region_gates(r'{ROOT / 'tracking' / R}', '{R}', mode='warn', dataset='{DS}'); "
-                      "print('RESULT', json.dumps({'ok': r.get('ok'), 'skipped_reason': r.get('skipped_reason'), "
-                      "'results': {n: {k: v for k, v in (x or {}).items() if k in ('success','hits','error','warning')} "
-                      "for n, x in (r.get('results') or {}).items()}}, ensure_ascii=False)[:1400])"],
-           cwd=ROOT / "Claude" / "skills" / "wq-brain-campaign-toolkit" / "scripts", env_extra={"WQB_WORKSPACE": str(ROOT)}, tail=8)
+        s0c, _, _ = await http.call("workflow_campaign", region=R, stage="S0", calibrate=True, dry_run=True, n=800)
+        s0s, _, _ = await http.call("workflow_campaign", region=R, stage="S0", dry_run=True, n=800)
+        H2("开波前区域四闸（toolkit _lib/region_gates，warn 模式；真实 tracking/KOR；env 不带任何根目录变量）")
+        prg, _ = sh([PY, "-c", "import sys,json; sys.path.insert(0,'.'); from _lib import region_gates as rg; "
+                              f"r=rg.run_region_gates(r'{CAMPAIGN}', '{R}', mode='warn', dataset='{DS}'); "
+                              "print('RESULT', json.dumps({'ok': r.get('ok'), 'gates': {n: (x or {}).get('success') "
+                              "for n, x in (r.get('results') or {}).items()}, 'hits': {n: (x or {}).get('hits') "
+                              "for n, x in (r.get('results') or {}).items() if (x or {}).get('hits')}}, ensure_ascii=False))"],
+                    cwd=TOOLKIT, tail=8)
+        try:
+            rg_res = json.loads(line_of(prg.stdout, r"^RESULT ").split(" ", 1)[1])
+        except Exception:
+            rg_res = {}
+        STAGE("步 2 · S0 数据集体检 + 白名单",
+              "战役目录 tracking/KOR（settings / thresholds）；库（s0_whitelist 等 ledger、wave_results、expressions）",
+              "S0 calibrate / score 命令构建（干跑；真跑要调平台）；toolkit region_gates 四闸（catalog / signal_floor / stop_rules / backlog，warn 模式）",
+              f"命令构建 success={node_out(s0c).get('success')}/{node_out(s0s).get('success')}；四闸 {rg_res.get('gates')}，命中 {rg_res.get('hits')}；"
+              f"warn 模式下 ok={rg_res.get('ok')}",
+              "★★★ 保留深化：停止规则 B 在真实历史上命中 95/96/97 连续判死，与团队事后结论一致；"
+              "warn 灰度 = 看得见、拦不住（N5 / R5 待办）；S0 的平台打分部分本环境不可演练")
 
         # ------------------------------------------------------------------ 步 3
         H1(f"步 3 · S1 字段扫描 + 理解（dataset={DS}，真实字段目录）")
-        await http.call("workflow_campaign", region=R, stage="S1", dataset=DS, dry_run=True, n=700)
+        s1, _, _ = await http.call("workflow_campaign", region=R, stage="S1", dataset=DS, dry_run=True, n=700)
         await http.call("workflow_feature_engineering", region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True, n=700)
-        await db_srv.call("get_field_catalog", region=R, dataset=DS, n=400)
-        await db_srv.call("build_field_prefix_clusters", region=R, dataset=DS, n=700)
+        cat3, _, _ = await db_srv.call("get_field_catalog", region=R, dataset=DS, n=400)
+        clu, _, _ = await db_srv.call("build_field_prefix_clusters", region=R, dataset=DS, n=700)
         await http.call("workflow_execute", label="workflow_execute(field_understanding, dry_run)", node="field_understanding",
                         params={"region": R, "dataset": DS}, dry_run=True, n=500)
-        await db_srv.call("workflow_field_understanding", label="wqb-db workflow_field_understanding（真跑）",
-                          region=R, dataset=DS, n=700)
+        fu, _, _ = await db_srv.call("workflow_field_understanding", label="wqb-db workflow_field_understanding（真跑）",
+                                     region=R, dataset=DS, n=700)
+        cat3 = cat3 if isinstance(cat3, dict) else {}
+        clu = clu if isinstance(clu, dict) else {}
+        STAGE("步 3 · S1 字段扫描 + 理解",
+              f"字段目录 {DS}（{cat3.get('field_count')} 字段，经导入入库）",
+              "S1 scan_fields 命令构建（干跑）；FE 干跑；typed catalog 读取；前缀聚类；field_understanding（干跑 + wqb-db 真跑）",
+              f"S1 success={node_out(s1).get('success')}；类型分布 {cat3.get('type_distribution')}；前缀簇 {clu.get('total_clusters')} 个 "
+              f"{[(c.get('prefix'), c.get('count')) for c in (clu.get('top_clusters') or [])[:3]]}；"
+              f"field_understanding 真跑 → {dump(node_out(fu).get('error'), 80)}",
+              "★★ 保留 typed catalog（闸 2/3/8 与 catalog 前置闸的数据源）；field_understanding 读写不存在的表（N24）→ ✂ 下线候选；"
+              "FE 移出主链（§13.4）")
 
         # ------------------------------------------------------------------ 步 4
         H1("步 4 · S2 概念优先生成（priors 快照闭环 → GEM → 预闸）")
         H2("4.0 修复前节点在带 dataset/wave 调用时拼出的 argv —— 静态 validate_argv 放行，实跑呢？（--print 不写文件）")
-        sh([PY, str(ROOT / "Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py"), "--campaign-dir",
-            str(ROOT / "tracking" / R), "assemble-priors", "--dataset", DS, "--wave", "w_next", "--print"],
-           env_extra={"WQB_WORKSPACE": str(ROOT)}, cwd=ROOT / "Claude/skills/wq-brain-campaign-toolkit/scripts", tail=3)
-        H2("4.1 assemble-priors 在 .mcp.json 原样 env（不含 WQB_WORKSPACE）下真跑 —— 本机路径可移植性")
-        async with open_server("wq-brain-http(.mcp.json 原样 env)", ROOT, "wq-brain-http", DB,
-                               errlog_name="wq-brain-http.nows.stderr") as http_plain:
-            await run_assemble(http_plain, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
+        sh([PY, str(TOOLKIT / "campaign.py"), "--campaign-dir", str(CAMPAIGN), "assemble-priors", "--dataset", DS,
+            "--wave", "w_next", "--print"], cwd=TOOLKIT, tail=3)
+        H2("4.1 assemble-priors 真跑（server 与子进程 env = .mcp.json 原样，不含 WQB_WORKSPACE）—— 第二轮在此崩溃 rc=1（N19b）")
+        _, st41 = await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
         sv, ts = snapshot(DB)
-        print("    DB 快照:", f"存在 updated_at={ts}" if sv else "不存在")
+        print("    DB 快照:", f"存在 updated_at={ts} wins={len(sv['wins'])} dead_ends={len(sv['dead_ends'])}" if sv else "不存在")
+        V["4.1"] = {"rc": st41.get("returncode"), "status": st41.get("status"), "snapshot": bool(sv)}
         subprocess.run(["git", "-C", str(ROOT), "checkout", "--", f"tracking/{R}/priors/"], capture_output=True)
         c = sqlite3.connect(str(DB))
         c.execute("DELETE FROM ledger_kv WHERE region=? AND key IN ('priors_snapshot_kor', 'assemble_priors_cache_KOR')", (R,))
         c.commit()
         c.close()
-        H2("4.2 GEM 干跑 —— 快照缺失时")
+        H2("4.2 GEM 干跑 —— 快照缺失时（演练脚本先删掉 4.1 写的快照）")
         gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
         print("    steps:", [s.get("step") for s in node_out(gem).get("steps", [])])
         print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check"), 400))
         print("    干跑结论:", dump({"success": node_out(gem).get("success"), "error": node_out(gem).get("error")}, 300))
-        H2("4.3 assemble-priors 真跑（WQB_WORKSPACE=<repo>，等价于用户本机 D:\\ 默认路径恰好正确的情形；KOR 此刻命中停止规则 B）")
-        await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
+        states = [snap_state(gem)]
+        H2("4.3 assemble-priors 真跑（KOR 此刻命中停止规则 B；assemble-priors 零配额、不开波，按 N16 豁免开波闸）")
+        _, st43 = await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
         sv, ts = snapshot(DB)
         if sv:
             print(f"    快照 updated_at={ts} wins={len(sv['wins'])} dead_ends={len(sv['dead_ends'])} sha256={str(sv.get('sha256', ''))[:16]}…")
@@ -603,6 +752,7 @@ async def _main_body(DB):
         H2("4.4 GEM 干跑 —— 快照新鲜")
         gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
         print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check"), 300))
+        states.append(snap_state(gem))
         H2("4.5 模拟 S6 回写：region_kb 追加一条新 win（经 MCP upsert_ledger_key）→ GEM 干跑应提示过期")
         await asyncio.sleep(1.1)
         kb_now, _, _ = await db_srv.call("get_ledger_key", quiet=True, region=R, key="region_kb")
@@ -612,22 +762,33 @@ async def _main_body(DB):
         await db_srv.call("upsert_ledger_key", region=R, key="region_kb", value=kb_val, n=200)
         gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
         print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check"), 500))
+        states.append(snap_state(gem))
         H2("4.5b 模拟 S6 判死封存（registry dead_end，S6 最常见的回写）：wave97 真实结论 model219 判死")
         await asyncio.sleep(1.1)
         await db_srv.call("seal_dead_end", region=R, entry_id="KOR-MODEL219-DEAD", family="model219 盈余质量/前瞻估值族",
                           reason="wave97 0/6：model219 盈余质量/前瞻估值族不入 book（真实 verdict 原文）", wave_numbers=[97], n=300)
         gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
         print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check"), 600))
-        H2("4.6 按告警重组快照 → GEM 干跑恢复安静；新 win / 新 dead_end 是否进快照")
-        await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
+        states.append(snap_state(gem))
+        H2("4.6 按告警重组快照 → GEM 干跑恢复安静；新 win / 新 dead_end 是否进快照（R18：新登记优先 + 截断可见）")
+        _, st46 = await run_assemble(http, "S2", "workflow_campaign(S2, assemble-priors, 真跑)")
         gem, _, _ = await http.call("workflow_gem", quiet=True, region=R, dataset_id=DS, delay=1, universe="TOP600", dry_run=True)
         print("    priors_snapshot_check:", dump(step_of(gem, "priors_snapshot_check"), 300))
+        states.append(snap_state(gem))
         sv, ts = snapshot(DB)
-        print("    快照含新 win?", bool(sv) and any("realenv-demo" in str(w.get("id", "")) for w in sv["wins"]))
+        new_win = bool(sv) and any("realenv-demo" in str(w.get("id", "")) for w in sv["wins"])
+        print("    快照含新 win?", new_win)
         n_dead = q(DB, "SELECT COUNT(*) FROM registry_empirical WHERE region=? AND layer='dead_end'", R)[0][0]
         snap_dead = [d.get("_entry_id") for d in (sv or {}).get("dead_ends", [])]
-        print(f"    registry dead_end {n_dead} 条 → 快照 dead_ends {len(snap_dead)} 条（MAX_DEADENDS=12，按 entry_id 字母序截断）；"
-              f"新封存的 KOR-MODEL219-DEAD 进快照? {'KOR-MODEL219-DEAD' in snap_dead}；快照末条={snap_dead[-1:]}")
+        trunc = (sv or {}).get("truncated") or {}
+        in_snap = "KOR-MODEL219-DEAD" in snap_dead
+        print(f"    registry dead_end {n_dead} 条 → 快照 dead_ends {len(snap_dead)} 条（MAX_DEADENDS=12；R18：按登记先后倒序取，"
+              f"名额外的记入快照 truncated）")
+        pos = snap_dead.index("KOR-MODEL219-DEAD") + 1 if in_snap else None
+        print(f"    新封存的 KOR-MODEL219-DEAD 进快照? {in_snap}{f'（第 {pos} 位）' if pos else ''}；快照 truncated = {trunc}")
+        print(f"    assemble-priors stdout 的截断提示: {rel(line_of(st46.get('stdout_tail'), r'truncated')) or '（无）'}")
+        V["R18"] = {"in_snapshot": in_snap, "registry_dead": n_dead, "snap_dead": len(snap_dead), "truncated": trunc,
+                    "new_win": new_win}
         subprocess.run(["git", "-C", str(ROOT), "checkout", "--", f"tracking/{R}/priors/"], capture_output=True)
         H2("4.7 GEM 干跑止步于 check_config / gem_wave 干跑")
         cc = step_of(gem, "check_config") or {}
@@ -639,84 +800,113 @@ async def _main_body(DB):
         ef_all = SCRATCH / "realenv_mlfp_exprs.txt"
         ef_all.write_text("\n".join(real_exprs) + "\n", encoding="utf-8")
         pregate_dir = ROOT / "Claude" / "skills" / "brain-make-some-gem" / "scripts" / "trailSomeAlphas"
-        sh([PY, "-c", "import sys; sys.path.insert(0,'.'); import pipeline_pregate as pg; "
-                      f"ex=[l.strip() for l in open(r'{ef_all}',encoding='utf-8') if l.strip()]; logs=[]; "
-                      f"k=pg.pregate(list(ex), log=lambda *a: logs.append(' '.join(map(str,a))), region='{R}'); "
-                      "print('in', len(ex), 'kept', len(k) if isinstance(k, list) else k); [print('log', l[:180]) for l in logs[:14]]"],
-           cwd=pregate_dir, tail=18)
+        ppg, _ = sh([PY, "-c", "import sys; sys.path.insert(0,'.'); import pipeline_pregate as pg; "
+                              f"ex=[l.strip() for l in open(r'{ef_all}',encoding='utf-8') if l.strip()]; logs=[]; "
+                              f"kept, rep = pg.pregate(list(ex), log=lambda *a: logs.append(' '.join(map(str,a))), region='{R}'); "
+                              "print('PREGATE in', len(ex), 'kept', len(kept)); [print('log', l[:180]) for l in logs[:14]]"],
+                    cwd=pregate_dir, tail=18)
+        mpg = re.search(r"PREGATE in (\d+) kept (\d+)", ppg.stdout)
+        pg_io = f"{mpg.group(1)}→{mpg.group(2)}" if mpg else "?"
+        n_kb_wins = len((kb_val or {}).get("win_recipes", []))
+        n_reg = dict(q(DB, "SELECT layer, COUNT(*) FROM registry_empirical WHERE region=? GROUP BY layer", R))
+        STAGE("步 4 · S2 概念优先生成",
+              f"DB 侧 KB：region_kb（{n_kb_wins} 条 win_recipes，含 4.5 追加 1 条）+ registry_empirical {n_reg}（含 4.5b 新封存 1 条）"
+              f" + KB/template_kb；GEM 默认 --priors-from-db（只读 DB 快照）",
+              "assemble-priors 经 campaign 节点真跑 3 次（写 priors 文件 + DB 快照）；GEM 干跑 5 次看快照检查；模拟 S6 回写 region_kb / seal_dead_end；"
+              f"pregate 预闸 {len(real_exprs)} 条真实式",
+              f"4.1（.mcp.json 原样 env）rc={V['4.1']['rc']}；GEM 快照检查依次 {states}；4.6 快照 wins {len((sv or {}).get('wins', []))} / "
+              f"dead_ends {len(snap_dead)}：新 win 进快照={new_win}，KOR-MODEL219-DEAD 进快照={in_snap}，truncated={trunc}；pregate {pg_io}",
+              ("★★★ 保留深化：S6→S2 知识回流在真实链路上闭环（P0-2 + N16/N17）" +
+               ("；R18 后新判死结论能进 GEM、被截条目可见" if in_snap and trunc else "；⚠ R18 预期未达成（见上）") +
+               "；GEM 真跑仍需 headless_runner/config.json（N27：干跑止步 check_config）；pregate 零配额 ★★★"))
 
         # ------------------------------------------------------------------ 步 5
         H1("步 5 · S2→S3 门禁（ghost-audit → wave_gate：语法/8 闸/体检硬门/多样性）")
         print(f"  候选 = 库内 {DS} 真实历史表达式 {len(real_exprs)} 条（{rel(ef_all)}）")
-        sh([PY, str(ROOT / "tools" / "campaign_intel.py"), "ghost-audit", "--region", R, "--exprs-file", str(ef_all)], tail=10)
+        pga, _ = sh([PY, str(ROOT / "tools" / "campaign_intel.py"), "ghost-audit", "--region", R, "--exprs-file", str(ef_all)], tail=10)
         await http.call("workflow_execute", label="workflow_execute(wave_gate, dry_run)", node="wave_gate",
                         params={"region": R, "dataset": DS, "wave": "g1", "exprs_file": str(ef_all), "from_db": False}, dry_run=True, n=600)
         await db_srv.call("workflow_unified_gate", label="wqb-db workflow_unified_gate（真跑；wqb-db 的 env 无 WQ_TOOLKIT_DIR）",
                           region=R, dataset=DS, wave="g1", exprs_file=str(ef_all), from_db=False, n=900)
-        gate_env = {k: v for k, v in (http_env | {"WQ_TOOLKIT_DIR": str(ROOT / "Claude/skills/wq-brain-campaign-toolkit/scripts"),
-                                                  "WQ_VALIDATOR_DIR": str(ROOT / "Claude/skills/alpha-expression-verifier/scripts")}).items()}
-        H2("tools/wave_gate.py 真跑 ①：env = .mcp.json 的 wq-brain-http（有 WQ_TOOLKIT_DIR/WQ_VALIDATOR_DIR，无 WQB_ROOT）")
-        before = dict(q(DB, "SELECT status, COUNT(*) FROM expressions WHERE region=? GROUP BY status", R))
-        sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(ROOT / "tracking" / R), "--dataset", DS,
-            "--wave", "g2", "--exprs-file", str(ef_all)], env_extra=gate_env, tail=8,
-           env_drop=("WQB_ROOT", "WQ_PROJECT_ROOT"))
-        after = dict(q(DB, "SELECT status, COUNT(*) FROM expressions WHERE region=? GROUP BY status", R))
-        print(f"  真库 expressions 状态分布 前={before} 后={after}")
+
+        def gate_json(wv):
+            rj = q(DB, "SELECT report_json FROM gate_results WHERE region=? AND wave=?", R, wv)
+            return json.loads(rj[0][0]) if rj else {}
+
+        H2("① wave_gate.py 真跑：env = .mcp.json 的 wq-brain-http 原样（无 WQB_ROOT / WQB_WORKSPACE / WQB_DB_PATH）；"
+           "只声明 --dataset（漏声明跨集 mix 的第二腿 multi_source_model）")
+        print("  （第二轮同一调用：候选被写进仓库根下名为 D:\\coding\\traeCN_project\\wqb 的杂散库，gate.py 读真库找不到候选 → exit 2（N19a））")
+        p1, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--wave", "g2", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
+        for pat in (r"^\[done \]", r"静态闸 1-5 拦截|^\[gate \] (FAIL|PASS|ERROR)", r"^\[state\]"):
+            print("  | " + rel(line_of(p1.stdout, pat) or f"（无匹配 {pat} 的行）")[:230])
         # 只认"仓库根下名字字面就是 D:\\coding\\...\\wqb 的子目录"（仅 POSIX 可能出现）。
         # 切勿写成 `ROOT / "D:\\…"`：Windows 上右侧是绝对路径，拼出来就是仓库本身。
         stray_name = WIN_PREFIX.replace("/", "\\")
         stray = ROOT / stray_name
-        if os.name != "nt" and stray_name in os.listdir(ROOT) and stray.resolve().parent == ROOT:
+        stray_found = os.name != "nt" and stray_name in os.listdir(ROOT) and stray.resolve().parent == ROOT
+        if stray_found:
             sdb = stray / "data" / "wqb.db"
             rows = q(sdb, "SELECT wave, status, COUNT(*) FROM expressions GROUP BY wave, status") if sdb.exists() else []
             print(f"  ★ 仓库根下出现杂散目录 {rel(stray)!r}（git 视其为 ignored：`git status` 看不见）；其中库 expressions={rows}")
             shutil.rmtree(stray)
             print("    已删除（演练自身造成的污染）")
-        H2("tools/wave_gate.py 真跑 ②：补 WQB_ROOT=<repo>（等价用户本机 D:\\ 默认恰好正确）")
-        H2("  ②a 只声明 --dataset（漏声明跨数据集 mix 的第二腿 multi_source_model）")
-        gpa, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(ROOT / "tracking" / R), "--dataset", DS,
-                     "--wave", "g3a", "--exprs-file", str(ef_all)], env_extra=gate_env | {"WQB_ROOT": str(ROOT)}, tail=0)
-        print("  | " + next((ln for ln in gpa.stdout.splitlines() if ln.startswith("[done ]")), "?")[:230])
-        print("  | " + next((ln for ln in gpa.stdout.splitlines() if "静态闸 1-5 拦截" in ln), "（无静态闸拦截行）")[:230])
-        H2("  ②b 补声明 --datasets 重跑（agent 看到 FIELD 失败后的自然动作；走默认缓存）")
-        gpb, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(ROOT / "tracking" / R), "--dataset", DS,
-                     "--datasets", DS2, "--wave", "g3b", "--exprs-file", str(ef_all)],
-                    env_extra=gate_env | {"WQB_ROOT": str(ROOT)}, tail=0)
-        print("  | " + next((ln for ln in gpb.stdout.splitlines() if ln.startswith("[done ]")), "?")[:230])
-        rb = q(DB, "SELECT report_json FROM gate_results WHERE region=? AND wave='g3b'", R)
-        if rb:
-            gb = json.loads(rb[0][0]).get("gate") or {}
-            print(f"  | gate.cached={gb.get('cached')} / total={gb.get('total')}（缓存键 = sha1(主 dataset + 表达式)，不含 --datasets）")
-        H2("  ②c 声明 --datasets 且 --no-cache —— 两腿白名单的真实判定；以下为完整门禁输出")
-        gp, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(ROOT / "tracking" / R), "--dataset", DS,
-                    "--datasets", DS2, "--no-cache", "--wave", "g3", "--exprs-file", str(ef_all)],
-                   env_extra=gate_env | {"WQB_ROOT": str(ROOT)}, tail=0)
-        glines = gp.stdout.splitlines()
+        else:
+            print("  仓库根下无杂散目录（R19：wave_gate 与 toolkit 同一套库路径解析）")
+        g2_real = q(DB, "SELECT status, COUNT(*) FROM expressions WHERE region=? AND wave='g2' GROUP BY status", R)
+        print(f"  真库 g2 逐条状态: {g2_real}")
+        V["R19"] = {"assemble_rc": V["4.1"]["rc"], "gate1_exit": p1.returncode, "stray": stray_found,
+                    "g2_in_real_db": sum(n for _, n in g2_real)}
+
+        H2("② 补声明 --datasets 重跑（agent 看到 FIELD 失败后的自然动作；走默认缓存）")
+        print("  （第二轮同一调用：gate.cached=39/39，结论不变、仍拦 19 条（N21））")
+        p2, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--datasets", DS2, "--wave", "g3b", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
+        for pat in (r"^\[done \]", r"^\[state\]"):
+            print("  | " + rel(line_of(p2.stdout, pat) or f"（无匹配 {pat} 的行）")[:230])
+        gb = gate_json("g3b").get("gate") or {}
+        print(f"  | gate.cached={gb.get('cached')} / total={gb.get('total')}（R21：缓存键含闸门签名 = 数据集集合 / 合并白名单 / "
+              f"字段类型 / banned / poison / 平台约束）")
+
+        H2("③ --datasets + --no-cache —— 两腿白名单的真实判定（对照组）；以下为完整门禁输出")
+        p3, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--datasets", DS2, "--no-cache", "--wave", "g3", "--exprs-file", str(ef_all)], env_extra=HTTP_ENV, tail=0)
+        glines = p3.stdout.splitlines()
         keep = [ln for ln in glines if not re.match(r"\[syntax\] \d+: PASS|\[qp +\] \w+ \d+:", ln) and ln.strip()]
         print("  （省略逐条 [syntax] PASS 与逐条 [qp] 行，见下方汇总表）")
-        for ln in keep[-45:]:
+        for ln in keep[-46:]:
             print("  | " + rel(ln)[:230])
+        print("  ③ 逐条回写行: " + (line_of(p3.stdout, r"^\[state\]") or "（无）"))
+        dist = q(DB, "SELECT wave, status, COUNT(*) FROM expressions WHERE region=? AND wave IN ('g2','g3b','g3') "
+                     "GROUP BY wave, status ORDER BY wave, status", R)
+        print("  门禁三波逐条状态（R7/R21 回写）:", dist)
         print("  真库 expressions 状态分布:", dict(q(DB, "SELECT status, COUNT(*) FROM expressions WHERE region=? GROUP BY status", R)))
+        # 三次门禁之后的区级积压（积压闸口径：pending+gated / 全部表达式；阈值 30%）
+        n_pg, n_all = q(DB, "SELECT SUM(status IN ('pending','gated')), COUNT(*) FROM expressions WHERE region=?", R)[0]
+        backlog = f"{n_pg}/{n_all} = {n_pg / n_all:.0%}（阈值 30%）" if n_all else "?"
+        print(f"  三次门禁后区级积压（pending+gated）: {backlog}")
         H2("门禁逐条结论 × 真实回测（同一批 39 条的历史实测：闸拦下的是不是好信号？）")
-        for wv in ("g3a", "g3b", "g3"):
-            rj = q(DB, "SELECT report_json FROM gate_results WHERE region=? AND wave=?", R, wv)
-            if not rj:
+        per_wave = {}
+        for wv in ("g2", "g3b", "g3"):
+            items = (gate_json(wv).get("gate") or {}).get("report") or []
+            if not items:
                 print(f"  {wv}: 无 gate_results")
                 continue
-            items = (json.loads(rj[0][0]).get("gate") or {}).get("report") or []
             exprs_g = [ln.strip() for ln in ef_all.read_text(encoding="utf-8").splitlines() if ln.strip()]
             blk, ok = [], []
             tags = {}
             for it in items:
-                e = exprs_g[it["index"] - 1]
+                e = it.get("expr") or exprs_g[it["index"] - 1]
                 s = q(DB, "SELECT MAX(sharpe) FROM backtest_results WHERE region=? AND code=?", R, e)[0][0]
                 (ok if it.get("pass") else blk).append(s)
                 for iss in it.get("issues") or []:
                     m = re.match(r"\[([\w-]+)\]", iss)
                     tags[m.group(1) if m else iss[:20]] = tags.get(m.group(1) if m else iss[:20], 0) + 1
             mean = lambda xs: round(sum(x for x in xs if x is not None) / max(1, len([x for x in xs if x is not None])), 2)  # noqa: E731
-            print(f"  {wv}: 放行 {len(ok)} 条（实测 sharpe 均值 {mean(ok)}，最高 {max([x for x in ok if x is not None] or [None])}）；"
-                  f"拦截 {len(blk)} 条（均值 {mean(blk)}，最高 {max([x for x in blk if x is not None] or [None])}）；拦截理由 {tags}")
+            top = lambda xs: max([x for x in xs if x is not None] or [None])  # noqa: E731
+            per_wave[wv] = {"pass": len(ok), "blocked": len(blk), "blk_mean": mean(blk), "blk_max": top(blk), "tags": tags}
+            print(f"  {wv}: 放行 {len(ok)} 条（实测 sharpe 均值 {mean(ok)}，最高 {top(ok)}）；"
+                  f"拦截 {len(blk)} 条（均值 {mean(blk)}，最高 {top(blk)}）；拦截理由 {tags}")
         H2("质量预估 vs 真实回测（同一批 39 条的历史实测；判断预估闸的校准度）")
         exprs_in = [ln.strip() for ln in ef_all.read_text(encoding="utf-8").splitlines() if ln.strip()]
         pred = {}
@@ -731,6 +921,7 @@ async def _main_body(DB):
             if i in pred and act[0] is not None:
                 rows_cmp.append((i, pred[i], act))
         real_pass = [r for r in rows_cmp if r[2][0] > 1.58 and (r[2][1] or 0) >= 1.0]
+        n_block = sum(1 for v in pred.values() if v[0] == "BLOCK")
         print(f"  可对照 {len(rows_cmp)} 条；实测过廉价闸（S>1.58 & F>=1.0）{len(real_pass)} 条，其预估标签："
               f"{[(r[0], r[1][0], r[1][1], r[2][0], r[2][2]) for r in real_pass]}")
         if rows_cmp:
@@ -746,61 +937,144 @@ async def _main_body(DB):
         print("  gate_results:", q(DB, "SELECT region, wave, dataset, all_pass FROM gate_results"))
         await http.call("operator_audit", expressions=real_exprs[:6], region=R, delay=1, universe="TOP600", n=600)
         await http.call("validate_expressions", alpha_expressions=real_exprs[:3], region=R, universe="TOP600", delay=1, n=400)
+        w1 = per_wave.get("g2", {})
+        wb = per_wave.get("g3b", {})
+        w3 = per_wave.get("g3", {})
+        g2_state = dict((s, n) for w, s, n in dist if w == "g2")
+        # 闸门环境缺失（verifier / op_arity 不可达）的逐条标记数——本轮首跑曾 39/39 全是 [ARITY_UNKNOWN]
+        n_env_unknown = sum(v["tags"].get(t, 0) for v in per_wave.values() for t in ("ARITY_UNKNOWN", "SYNTAX_UNKNOWN"))
+        V["R19"]["env_unknown"] = n_env_unknown
+        all_pass_g3 = w3.get("pass") == len(real_exprs)
+        V["R21"] = {"cached": gb.get("cached"), "total": gb.get("total"), "pass_g3b": wb.get("pass"), "pass_g3": w3.get("pass"),
+                    "g2_state": g2_state, "backlog": backlog}
+        cache_ok = gb.get("cached") == 0 and wb.get("pass") == w3.get("pass") and (w3.get("pass") or 0) > 0
+        STAGE("步 5 · S2→S3 门禁",
+              f"{len(real_exprs)} 条 {DS} 真实历史表达式（含 {len(real_pass)} 条实测过廉价闸者，其中 88lr21xo / A1lb2KpR 是 ACTIVE 原式）；"
+              f"两份字段目录；子进程 env = .mcp.json 原样",
+              "ghost-audit → wave_gate.py（语法 → gate.py 静态闸 1-5 逐条 → 批级多样性 / 体检硬门 / prod-sat / opcat / 质量预估），"
+              "三种调用：① 只声明主集  ② 补声明第二腿、走缓存  ③ 补声明 + --no-cache（对照组）",
+              f"① exit={p1.returncode}：放行 {w1.get('pass')}/{len(real_exprs)}，拦 {w1.get('blocked')}（{w1.get('tags')}，被拦者实测均值 "
+              f"{w1.get('blk_mean')}、最高 {w1.get('blk_max')}），逐条回写 {g2_state}，杂散目录={stray_found}；"
+              f"② cached={gb.get('cached')}/{gb.get('total')}，放行 {wb.get('pass')}；③ 放行 {w3.get('pass')}；"
+              f"门禁后积压（pending+gated）{backlog}；闸门环境缺失标记 {n_env_unknown} 条；质量预估 BLOCK {n_block}/{len(pred)}",
+              (("静态闸 ★★★：两腿都声明时 39/39 放行、含全部实测赢家" if all_pass_g3
+                else f"⚠ 两腿都声明时仍只放行 {w3.get('pass')}/{len(real_exprs)}（见上方拦截理由）") +
+               ("，补声明后缓存不再掩盖结论（R21）" if cache_ok else "，⚠ 补声明后缓存结论与对照组不一致") +
+               "；逐条回写让 gated 只表示'过了闸'，FAIL 候选记 fail、不再计入积压（R7）"
+               "；漏声明第二腿仍会拦下赢家——FIELD 报错应点名字段所属的已知数据集（建议）"
+               f"；质量预估 ✗（{n_block}/{len(pred)} BLOCK 含全部实测赢家，R27 未做）；[opcat] 只打印不判定 ✂（R6 未做）；体检硬门缺包未生效"))
 
         # ------------------------------------------------------------------ 步 6
         H1("步 6 · S3 七槽回测（前置三闸 on 真实历史）")
-        await http.call("workflow_batch_track", region=R, wave="g2", dataset=DS, dry_run=True, n=600)
-        await http.call("workflow_campaign", region=R, stage="S3", dataset=DS, wave="g2", dry_run=True, n=1400)
+        bt, _, _ = await http.call("workflow_batch_track", region=R, wave="g2", dataset=DS, dry_run=True, n=600)
+        s3, _, _ = await http.call("workflow_campaign", region=R, stage="S3", dataset=DS, wave="g2", dry_run=True, n=1400)
+        bt_cmd = str(node_out(bt).get("command") or "")
+        bt_gates = [s.get("step") for s in node_out(bt).get("steps", []) if "gate" in str(s.get("step"))]
+        s3_gates = {s.get("step"): s.get("success") for s in node_out(s3).get("steps", []) if str(s.get("step", "")).endswith("_gate")}
+        STAGE("步 6 · S3 七槽回测",
+              f"门禁后的 g2（逐条状态 {g2_state}）；区域状态（停止规则 B 命中）",
+              "SOP 指定入口 workflow_batch_track 干跑 vs workflow_campaign(S3) 干跑（后者先跑 signal_floor / stop_rules / backlog 三闸）",
+              f"batch_track success={node_out(bt).get('success')}、命令含 --submit={'--submit' in bt_cmd}、区域闸步 {bt_gates}；"
+              f"campaign S3 success={node_out(s3).get('success')}，闸 {s3_gates}",
+              "★★ 保留（七槽 / 设置先验 / 连坐隔离 / argv 握手都有实证）；N5 仍在：SOP 指定入口在规则 B 命中的区域照样发批"
+              " → R5 仍是 P1 待办（不在本轮范围）")
 
         # ------------------------------------------------------------------ 步 7
         H1("步 7 · S4 诊断改进（真实回测行上的墙诊断 / salvage）")
-        await http.call("workflow_campaign", region=R, stage="S4", dataset=DS, wave="94", dry_run=True, n=700)
+        s4, _, _ = await http.call("workflow_campaign", region=R, stage="S4", dataset=DS, wave="94", dry_run=True, n=700)
         await db_srv.call("list_alphas_by_wave", region=R, wave_number="94", n=500)
         await db_srv.call("search_alphas_by_sharpe", region=R, min_sharpe=1.2, limit=8, n=900)
-        await db_srv.call("backfill_salvage_pool_batch", region=R, candidates_dir=str(ROOT / "tracking" / R / "candidates"), n=700)
-        await db_srv.call("get_salvage_pool", region=R, n=500)
+        sb, _, _ = await db_srv.call("backfill_salvage_pool_batch", region=R, candidates_dir=str(CAMPAIGN / "candidates"), n=700)
+        sp, _, _ = await db_srv.call("get_salvage_pool", region=R, n=500)
         await http.call("workflow_execute", label="workflow_execute(auto_review, dry_run)", node="auto_review",
                         params={"region": R, "wave": "94", "dataset": DS}, dry_run=True, n=500)
         H2("review_wave 判定（真实 thresholds.json × 真实回测行，wave 91/91b/91c/94 sharpe 前 6）")
-        sh([PY, "-c", "import sys,json,sqlite3; sys.path.insert(0,'.'); import review_wave as rw; "
-                      f"t=json.load(open(r'{ROOT / 'tracking' / R / 'config' / 'thresholds.json'}',encoding='utf-8')); "
-                      "tr=t['review']; tn=dict(t.get('near') or {}); "
-                      f"c=sqlite3.connect(r'{DB}'); "
-                      "rows=c.execute(\"SELECT alpha_id,wave,sharpe,fitness,two_year_sharpe,sub_universe_sharpe,turnover FROM backtest_results "
-                      f"WHERE region='{R}' AND wave IN ('91','91b','91c','94') ORDER BY sharpe DESC LIMIT 6\").fetchall(); "
-                      "[print(a,w,'S=%s F=%s 2Y=%s sub=%s'%(s,f,y,sb),'passes=',rw.passes({'sharpe':s,'fitness':f,'two_year_sharpe':y,"
-                      "'sub_universe_sharpe':sb,'turnover_pct':(tv or 0)*100,'margin_bp':None,'failed_checks':[]},tr),"
-                      "'walls=',rw.walls({'sharpe':s,'fitness':f,'two_year_sharpe':y,'sub_universe_sharpe':sb,'turnover_pct':(tv or 0)*100,"
-                      "'margin_bp':None,'failed_checks':[]},tr)) for a,w,s,f,y,sb,tv in rows]"],
-           cwd=ROOT / "Claude" / "skills" / "wq-brain-campaign-toolkit" / "scripts", tail=10)
+        prw, _ = sh([PY, "-c", "import sys,json,sqlite3; sys.path.insert(0,'.'); import review_wave as rw; "
+                              f"t=json.load(open(r'{CAMPAIGN / 'config' / 'thresholds.json'}',encoding='utf-8')); "
+                              "tr=t['review']; tn=dict(t.get('near') or {}); "
+                              f"c=sqlite3.connect(r'{DB}'); "
+                              "rows=c.execute(\"SELECT alpha_id,wave,sharpe,fitness,two_year_sharpe,sub_universe_sharpe,turnover FROM backtest_results "
+                              f"WHERE region='{R}' AND wave IN ('91','91b','91c','94') ORDER BY sharpe DESC LIMIT 6\").fetchall(); "
+                              "[print(a,w,'S=%s F=%s 2Y=%s sub=%s'%(s,f,y,sb),'passes=',rw.passes({'sharpe':s,'fitness':f,'two_year_sharpe':y,"
+                              "'sub_universe_sharpe':sb,'turnover_pct':(tv or 0)*100,'margin_bp':None,'failed_checks':[]},tr),"
+                              "'walls=',rw.walls({'sharpe':s,'fitness':f,'two_year_sharpe':y,'sub_universe_sharpe':sb,'turnover_pct':(tv or 0)*100,"
+                              "'margin_bp':None,'failed_checks':[]},tr)) for a,w,s,f,y,sb,tv in rows]"],
+                    cwd=TOOLKIT, tail=10)
+        rs4 = step_of(s4, "resolve_s4_alphas") or {}
+        entries = sp.get("entries", []) if isinstance(sp, dict) else []
+        n_noexpr = sum(1 for e in entries if not e.get("expression"))
+        rw_lines = [ln for ln in prw.stdout.splitlines() if "passes=" in ln]
+        n_mu = sum(1 for ln in rw_lines if "passes= False" in ln and "walls= ['MARGIN_UNKNOWN']" in ln)
+        sb = sb if isinstance(sb, dict) else {}
+        STAGE("步 7 · S4 诊断改进",
+              "wave 94 的回测行；91/91b/91c/94 sharpe 前 6；tracking/KOR/config/thresholds.json；candidates 目录",
+              "S4 review_wave 命令构建（干跑）；按波列 alpha / 按 sharpe 检索；salvage 批量回填；auto_review 干跑；"
+              "review_wave.passes() / walls() 判定函数直调",
+              f"S4 解析 alpha {rs4.get('alpha_count')} 条；salvage 回填 processed={sb.get('processed')} success={sb.get('success')} "
+              f"skipped={sb.get('skipped')}，池内 {len(entries)} 条中无表达式 {n_noexpr} 条；"
+              f"review_wave：{n_mu}/{len(rw_lines)} 条 walls 只有 MARGIN_UNKNOWN 却 passes=False",
+              "★★★ 保留墙诊断（RN_EXPOSURE / ROBUST_STRUCTURAL 有实证）；salvage 收无表达式条目（N26）、passes/walls 缺失值口径不一（N27）"
+              "——P2/P3 待办；near 池不排除 RN_EXPOSURE（N4 / R4）仍待修")
 
         # ------------------------------------------------------------------ 步 8
         H1("步 8 · S4→S5 稳健闸与提交判定")
-        await db_srv.call("get_submit_ready", region=R, n=600)
-        await http.call("submit_verdict", alpha_id="88lr21xo", n=500)
+        srd, _, _ = await db_srv.call("get_submit_ready", region=R, n=600)
+        sv8, _, _ = await http.call("submit_verdict", alpha_id="88lr21xo", n=500)
         await http.call("workflow_judge", alpha_id="88lr21xo", dry_run=True, n=500)
-        await http.call("workflow_submit_alpha", label="workflow_submit_alpha（未确认，干跑）", alpha_id="78jQ29rL", dry_run=True, n=500)
-        await http.call("workflow_submit_alpha", label="workflow_submit_alpha（confirm_submit=True，干跑）", alpha_id="78jQ29rL",
-                        confirm_submit=True, dry_run=True, n=500)
+        sa1, _, _ = await http.call("workflow_submit_alpha", label="workflow_submit_alpha（未确认，干跑）", alpha_id="78jQ29rL",
+                                    dry_run=True, n=500)
+        sa2, _, _ = await http.call("workflow_submit_alpha", label="workflow_submit_alpha（confirm_submit=True，干跑）",
+                                    alpha_id="78jQ29rL", confirm_submit=True, dry_run=True, n=500)
+        STAGE("步 8 · S4→S5 稳健闸与提交判定",
+              "88lr21xo（ACTIVE 原式）/ 78jQ29rL（同族实测 1.91）；平台凭据：无",
+              "get_submit_ready；submit_verdict（平台侧否决权威）；judge / submit_alpha 干跑（未确认 / confirm_submit=True）",
+              f"submit_ready={srd}；submit_verdict → {dump(sv8, 80)}；submit_alpha 干跑 submitted="
+              f"{node_out(sa1).get('submitted')}/{node_out(sa2).get('submitted')}（只给请求计划、不触平台）",
+              "★★★ 保留：否决链在无凭据时 fail-closed、不会误放行；用户确认门在干跑下同样不触平台；"
+              "Failed-count 三份实现（N3）与 submit_verdict 定位（N8）属 P1 收敛项，不在本轮范围")
 
         # ------------------------------------------------------------------ 步 9
         H1("步 9 · S6 复盘回写（P0-1 契约 on 真实历史 + 停止闸闭环）")
         closed = q(DB, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
                        "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
+        n_closed, n_open = (q(DB, "SELECT SUM(status='closed'), SUM(status='open') FROM wave_results WHERE region=?", R)[0])
         print("  最近 3 个 closed 波（停止规则 B 的输入）:", closed)
         wave_fail = closed[0][0] if closed else "97"
-        await p0_replay("修复后", db_srv, http, ROOT, DB, wave_fail)
-        H2("残留：规则 B 的窗口按 updated_at 取 —— 按拒绝提示把 91c（'✅ 2 RA 提交成功'，导入时被拒→open）补记为 PASS")
-        await db_srv.call("upsert_wave_result", region=R, wave_number="91c", verdict="PASS",
+        after = await p0_replay("修复后", db_srv, http, ROOT, DB, wave_fail)
+        s91c = SUGG.get("91c")
+        H2("残留（N22）：按导入时拒绝信息里的判定表建议补记 91c —— "
+           + (f"R20 给 91c 的建议 = {s91c['verdict']}/{s91c['confidence']}（{s91c['rule']}）" if s91c else "91c 导入时无建议，按原文补记 PASS"))
+        await db_srv.call("upsert_wave_result", region=R, wave_number="91c", verdict=(s91c or {}).get("verdict", "PASS"),
                           key_findings=["补记：2 RA 提交成功（88lr21xo + A1lb2KpR ACTIVE）"], n=260)
-        print("  最近 3 个 closed 波（按 updated_at）:", q(DB, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND "
-                                                "status='closed' ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R))
-        g3, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage="S2", dataset=DS, wave="p0_next", dry_run=True)
-        print("  下一波 S2 干跑: " + _gate_line(g3))
+        win = q(DB, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
+                    "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
+        print("  最近 3 个 closed 波（按 updated_at）:", win)
+        g9, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage="S2", dataset=DS, wave="p0_next", dry_run=True)
+        print("  下一波 S2 干跑: " + _gate_line(g9))
+        bl = step_of(g9, "backlog_gate") or {}
+        print("  同一干跑的积压闸:", dump({"success": bl.get("success"), "error": bl.get("error"),
+                                          "pending_gated": (bl.get("evidence") or {}).get("pending_gated"),
+                                          "total": (bl.get("evidence") or {}).get("total"),
+                                          "pending_gated_ratio": (bl.get("evidence") or {}).get("pending_gated_ratio")}, 400))
+        rb9 = _rule_b(g9)
         H2("S6 其余动作")
-        sh([PY, str(ROOT / "tools" / "step_funnel.py"), "--region", R], env_extra={"WQB_DB_PATH": str(DB)}, tail=25)
+        pf, _ = sh([PY, str(ROOT / "tools" / "step_funnel.py"), "--region", R], tail=25)
         await http.call("workflow_execute", label="workflow_execute(auto_pyramid, dry_run)", node="auto_pyramid",
                         params={"region": R, "wave": wave_fail}, dry_run=True, n=400)
+        n22 = not rb9["rule_B_blocks"] and bool(win) and win[0][0] == "91c"
+        funnel_v = line_of(pf.stdout, r"\(空\)=|FAIL=").strip()
+        STAGE("步 9 · S6 复盘回写",
+              f"wave_results（closed {n_closed} / open {n_open}）；规则 B 窗口 {closed}；导入时 R20 给 91c 的建议 "
+              f"{(s91c or {}).get('verdict')}/{(s91c or {}).get('confidence')}",
+              "P0-1 回放（字符串波号 / 只补 key_findings / 空壳结案）→ assemble-priors + GEM 快照检查 → 按建议补记 91c → step_funnel → auto_pyramid 干跑",
+              f"字符串波号 {after['str_wave']}；只补 key_findings 后 verdict={after['verdict_after_kf_only']}、规则 B 仍拦截="
+              f"{after['after_update']['rule_B_blocks']}；空壳结案 {after['hollow']}；补记 91c 后窗口 {win} → 规则 B 拦截="
+              f"{rb9['rule_B_blocks']}，下一波 S2 success={rb9['S2_success']}（积压闸 success={bl.get('success')}，"
+              f"pending+gated 占比 {(bl.get('evidence') or {}).get('pending_gated_ratio')}）；"
+              f"step_funnel verdict 分布 {funnel_v}",
+              ("★★★ 保留：P0-1 契约在真实链路上守住规则 B 的输入" +
+               ("；N22 实证：补记一个旧波（91c 在 92–97 之前）就把它顶进'最近 3 个'、解除区域停波——R20 让补记变容易，"
+                "建议 R22（窗口按结案时刻）随之上调为 P1" if n22 else "；补记旧波未改变规则 B 判定")))
 
         H1("附 A · 19 个 workflow 节点经 MCP workflow_execute(dry_run=True) 全量扫描（仓库 _DRY_RUN_CASES 参数）")
         import ast
@@ -810,22 +1084,30 @@ async def _main_body(DB):
             if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "_DRY_RUN_CASES" for t in node.targets):
                 cases = eval(compile(ast.Expression(node.value), "cases", "eval"), {})
         print(f"  {'node':24s} {'ok':6s} side-effects / error")
+        n_ok, fails, dirty_nodes = 0, [], []
         for node, params in sorted(cases.items()):
             out, err, pr = await http.call("workflow_execute", quiet=True, node=node, params=params, dry_run=True)
             ok = out.get("success") if isinstance(out, dict) else None
             e = (out.get("error") if isinstance(out, dict) else str(out)) or ""
+            n_ok += bool(ok)
+            if not ok:
+                fails.append(node)
+            if pr.db_delta or pr.git_new:
+                dirty_nodes.append(node)
             print(f"  {node:24s} {str(ok):6s} {pr.summary()[:150]}  {dump(rel(str(e)), 110) if e else ''}")
         print("  wq-brain-http workflow_list_nodes:", dump((await http.call("workflow_list_nodes", quiet=True))[0], 200))
+        print(f"  小结：{n_ok}/{len(cases)} 成功；失败 {fails}；有 DB / git 副作用的节点 {dirty_nodes or '无'}")
 
     # ---------------------------------------------------------------------- 修复前对照
+    before = None
     if BASE_DIR:
-        H1("附 B · 修复前对照：导入后快照（同一份真实历史）复制到 git archive 原始副本，起修复前的两个 server 重放 P0 序列")
+        H1("附 B · P0 修复前对照：导入后快照（同一份真实历史）复制到 git archive 原始副本，起修复前的两个 server 重放 P0 序列")
         bdb = BASE_DIR / "data" / "wqb.db"
         bdb.parent.mkdir(exist_ok=True)
         for suffix in ("", "-wal", "-shm"):
             if Path(str(bdb) + suffix).exists():
                 Path(str(bdb) + suffix).unlink()
-        # 用"导入后快照"起步：同一份真实历史，不带步 1–9 的演练写入（门禁重跑留下的 gated、91c 补记等）
+        # 用"导入后快照"起步：同一份真实历史，不带步 1–9 的演练写入（门禁重跑留下的逐条状态、91c 补记等）
         src_c = sqlite3.connect(str(SCRATCH / "wqb.db.imported"))
         dst = sqlite3.connect(str(bdb))
         src_c.backup(dst)
@@ -835,16 +1117,55 @@ async def _main_body(DB):
         async with contextlib.AsyncExitStack() as stack:
             bdb_srv = await stack.enter_async_context(open_server("base:wqb-db", BASE_DIR, "wqb-db", bdb,
                                                                   errlog_name="base.wqb-db.stderr"))
+            # 修复前代码的 assemble-priors 离开 WQB_WORKSPACE 会崩（N19b）——为了让 P0 对照只反映 P0，这里给它补上
             bhttp = await stack.enter_async_context(open_server("base:wq-brain-http", BASE_DIR, "wq-brain-http", bdb,
                                                                 extra_env={"WQB_WORKSPACE": str(BASE_DIR)},
                                                                 errlog_name="base.wq-brain-http.stderr"))
-            closed = q(bdb, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
-                            "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
-            print("  base 最近 3 个 closed 波:", closed)
-            await p0_replay("修复前", bdb_srv, bhttp, BASE_DIR, bdb, closed[0][0] if closed else "97")
+            closed_b = q(bdb, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
+                              "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
+            print("  base 最近 3 个 closed 波:", closed_b)
+            before = await p0_replay("修复前", bdb_srv, bhttp, BASE_DIR, bdb, closed_b[0][0] if closed_b else "97")
+        H2("P0 修复前 / 修复后（同一份导入后真实库、同一 MCP 调用序列）")
+        for k, label in (("str_wave", "写字符串波号 s2_<ds>_d1"),
+                         ("before_update", "补写前：下一波 S2 干跑"),
+                         ("verdict_after_kf_only", "只补 key_findings 后该波 verdict"),
+                         ("after_update", "补写后：同一下一波 S2 干跑"),
+                         ("hollow", "新波只写 key_findings（缺 verdict）"),
+                         ("assemble_cmd_tail", "assemble-priors 干跑命令尾（S2 / S6）"),
+                         ("snapshot", "assemble-priors 真跑后 DB 快照存在"),
+                         ("gem_snapshot_check", "GEM 干跑有快照检查步")):
+            print(f"  {label:30s} 修复前 {dump(before.get(k), 110):60s} │ 修复后 {dump(after.get(k), 110)}")
+
+    H1("P1（R18–R21）验证清单 —— 与第二轮实录 realenv_transcript_p0.txt 的同名步骤对照")
+    r18, r19, r20, r21 = V.get("R18", {}), V.get("R19", {}), V.get("R20", {}), V.get("R21", {})
+    checks = [
+        ("R18 priors 截断：新登记优先 + 截断可见",
+         "4.6：registry dead_end 13 → 快照 12，KOR-MODEL219-DEAD 进快照 False，截断无记录",
+         f"4.6：registry dead_end {r18.get('registry_dead')} → 快照 {r18.get('snap_dead')}，KOR-MODEL219-DEAD 进快照 "
+         f"{r18.get('in_snapshot')}，truncated={r18.get('truncated')}",
+         bool(r18.get("in_snapshot")) and bool(r18.get("truncated"))),
+        ("R19 库路径收敛（.mcp.json 原样 env）",
+         "4.1 assemble-priors rc=1；① 候选写进杂散库、gate.py exit 2",
+         f"4.1 rc={r19.get('assemble_rc')}；① exit={r19.get('gate1_exit')}，真库 g2 {r19.get('g2_in_real_db')} 条，杂散目录={r19.get('stray')}，"
+         f"闸门环境缺失标记 {r19.get('env_unknown')} 条（本轮首跑修 gate.py 前为 117 条 [ARITY_UNKNOWN]）",
+         r19.get("assemble_rc") == 0 and not r19.get("stray") and r19.get("g2_in_real_db", 0) > 0
+         and r19.get("gate1_exit") in (0, 1) and r19.get("env_unknown") == 0),
+        ("R20 verdict 判定表 + 拒绝时给建议",
+         "导入时 24 条被拒，均无任何建议",
+         f"被拒 {r20.get('rejected')} 条中 {r20.get('with_suggestion')} 条附建议 {r20.get('by_conf')}；91c → {r20.get('91c')}",
+         r20.get("with_suggestion") == r20.get("rejected") and (r20.get("91c") or {}).get("verdict") == "PASS"),
+        ("R21 gate 缓存键 + 逐条状态回写（含 R7）",
+         "② cached=39/39、放行 20/39；三次门禁 117 条全记 gated（含 38 条 FIELD 失败），积压 117/364 = 32% 越过 30% 上限",
+         f"② cached={r21.get('cached')}/{r21.get('total')}、放行 {r21.get('pass_g3b')}（对照组 {r21.get('pass_g3')}）；"
+         f"g2 回写 {r21.get('g2_state')}；三次门禁后积压 {r21.get('backlog')}",
+         r21.get("cached") == 0 and r21.get("pass_g3b") == r21.get("pass_g3") and (r21.get("pass_g3") or 0) > 0
+         and {"gated", "fail"} <= set(r21.get("g2_state") or {})),
+    ]
+    for name, prev, now, ok in checks:
+        print(f"  {'✅' if ok else '❌'} {name}\n      第二轮：{prev}\n      本轮：  {now}")
 
     print("\n[REAL-ENV DRY-RUN END]")
-    print("  仓库已入库文件是否被改动（应只剩本轮 P0 修复 + 报告）:", sorted(git_dirty(ROOT)))
+    print("  仓库已入库文件是否被改动（应只剩本轮修复 + 报告）:", sorted(git_dirty(ROOT)))
 
 
 if __name__ == "__main__":
