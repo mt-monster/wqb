@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# RA 九步流水线 · 真实环境 dry-run 复现（2026-09-27；第三轮 = P0 + P1（R18–R21）修复后）
+# RA 九步流水线 · 真实环境 dry-run 复现（2026-09-27；第四轮 = P0 + P1 两批（R18–R21 / R22·R5·R12·R4·R3）修复后）
 #
 # 两个 MCP server 与所有子进程的 env = .mcp.json 原样（不补任何工作区根变量）；每步打印【阶段小结】，
-# 末尾打印 P1 验证清单（对照同目录 realenv_transcript_p0.txt = 第二轮实录）。
+# 末尾打印 P1 验证清单（第一批对照同目录 realenv_transcript_p0.txt = 第二轮实录，
+# 第二批对照 realenv_transcript_r18_r21.txt = 第三轮实录）。
 #
 # 前提：
-#   * MCP venv：world-quant-brain-mcp/.venv（Python 3.12），按 world-quant-brain-mcp/requirements.txt 安装，外加 ply
-#     （wave_gate 语法闸依赖；requirements 未声明，见报告 N12）
+#   * MCP venv：world-quant-brain-mcp/.venv（Python 3.12），按 world-quant-brain-mcp/requirements.txt 安装
+#     （wave_gate 语法闸依赖的 ply 已随 R12 写进 requirements；此前需另装，见报告 N12）
 #   * 无需 BRAIN 凭据；脚本从不读取 world-quant-brain-mcp/.env
 # 副作用与保护（run_realenv.py 内实现）：
 #   * <repo>/data/wqb.db 演练期间临时移到 $REALENV_SCRATCH，结束（含异常）后移回；
@@ -15,6 +16,7 @@
 #   * logs/_async_tasks/ 新增 campaign 异步任务文件（gitignored）
 #   * 演练中 wave_gate 在仓库根造出的杂散目录 "D:\coding\traeCN_project\wqb" 会被检测并删除
 #     （R19 之后不再出现；检测保留，作为回归护栏）
+#   * 步 5 的 R12 探针（④⑤⑥）把写入指到 $REALENV_SCRATCH/wqb.db.r12probe（演练库的副本），不改变步 6–9 的区域状态
 set -euo pipefail
 REPO=$(git rev-parse --show-toplevel)
 PY="$REPO/world-quant-brain-mcp/.venv/bin/python"

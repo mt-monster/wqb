@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-"""RA 九步流水线 · 真实环境 dry-run（2026-09-27；第三轮 = P0 + P1（R18–R21）修复之后）
+"""RA 九步流水线 · 真实环境 dry-run（2026-09-27；第四轮 = P0 + P1 两批（R18–R21 / R22·R5·R12·R4·R3）修复之后）
 
 每一步末尾打印【阶段小结】：输入 / 处理 / 输出变化 / 价值判定。其中的数字全部取自本次运行的
 实际输出；判定栏的星级沿用报告 §1 的评判口径，并随本次数据给出结论（与预期不符时如实打印）。
 
 对照关系：
   * P0 修复前后 → 附 B（BASE_DIR = 修复前原始副本，默认 d1c7d78）；
-  * P1（R18–R21）修复前后 → 与同目录 realenv_transcript_p0.txt（P0 修复后、P1 修复前的第二轮实录）
-    同名步骤逐行对照；本脚本对 P1 相关探针的步骤编号与第二轮保持一致（4.1 / 4.6 / 5 ①②③ / 导入表）。
+  * P1 第一批（R18–R21）修复前后 → 与同目录 realenv_transcript_p0.txt（P0 修复后、P1 修复前的第二轮实录）
+    同名步骤逐行对照；本脚本对 P1 相关探针的步骤编号与第二轮保持一致（4.1 / 4.6 / 5 ①②③ / 导入表）；
+  * P1 第二批（R22 / R5 / R12 / R4 / R3）修复前后 → 与同目录 realenv_transcript_r18_r21.txt（第三轮实录）
+    的步 5–9 / 附 A 对照；新增探针：5 ④⑤⑥（R12）、6（R5）、7 R4、8 R3、9 窗口（R22）。
   * 两个 MCP server 与所有子进程的 env = .mcp.json 原样（第二轮主 server 需补 WQB_WORKSPACE 才能跑通
     assemble-priors，即 N19(b)；R19 后不再补——这本身就是 R19 的验证）。
 
@@ -428,6 +430,105 @@ def load_catalog(ds):
     return d, p
 
 
+# ----------------------------------------------------------------------------- P1 第二批探针（子进程脚本）
+#: R4：仓库里全部带 rn_sharpe 的真实评审行（review_wave 自己的行格式；KOR 历史没有 rn 字段），按各区
+#: thresholds 判 near / 组合候选（二者合起来就是 salvage 池的来源）。"修复前" = 同一行去掉 rn_sharpe：
+#: R4 之前 rn_exposure 只进 passes()/walls()，near 池与 combo_candidate 看不到它。
+R4_PROBE = r'''
+import glob, json, os, sys
+sys.path.insert(0, os.getcwd())          # cwd = toolkit scripts/（脚本本身在 SCRATCH）
+import review_wave as rw
+
+root = sys.argv[1]
+
+
+def rows_of(o):
+    if isinstance(o, dict):
+        if "rn_sharpe" in o and o.get("sharpe") is not None:
+            yield o
+        for v in o.values():
+            yield from rows_of(v)
+    elif isinstance(o, list):
+        for v in o:
+            yield from rows_of(v)
+
+
+out, seen = {}, {}
+for f in sorted(glob.glob(os.path.join(root, "tracking", "*", "reviews", "*.json"))):
+    reg = f.replace("\\", "/").split("/")[-3]
+    tf = os.path.join(root, "tracking", reg, "config", "thresholds.json")
+    if not os.path.isfile(tf):
+        continue
+    th = json.load(open(tf, encoding="utf-8"))
+    t, tn = th["review"], th["near"]
+    try:
+        data = json.load(open(f, encoding="utf-8"))
+    except ValueError:
+        continue
+    s = out.setdefault(reg, {"rows": 0, "rn_exposure": 0, "rn_max_sharpe": None, "near_min": tn["sharpe_min"],
+                             "combo_min": t.get("combo_sharpe_min", 1.0), "near_old": 0, "near_new": 0,
+                             "combo_old": 0, "combo_new": 0, "excluded": 0, "leak": 0, "examples": []})
+    for r in rows_of(data):
+        key = str(r.get("id") or r.get("alpha_id") or json.dumps(r, sort_keys=True))
+        if key in seen.setdefault(reg, set()):
+            continue
+        seen[reg].add(key)
+        s["rows"] += 1
+        rn = rw.rn_exposure(r, t)
+        s["rn_exposure"] += rn
+        if rn:
+            s["rn_max_sharpe"] = max(r["sharpe"], s["rn_max_sharpe"] if s["rn_max_sharpe"] is not None else r["sharpe"])
+        if rw.passes(r, t):
+            continue
+        old = dict(r, rn_sharpe=None)
+        near_old = rw.is_near(old, tn)
+        near_new = rw.is_near(r, tn) and rw.near_block_wall(r, t, tn) is None     # = review_wave.main 的 near 循环
+        combo_old, combo_new = rw.combo_candidate(old, t), rw.combo_candidate(r, t)
+        s["near_old"] += near_old
+        s["near_new"] += near_new
+        s["combo_old"] += combo_old
+        s["combo_new"] += combo_new
+        if (near_old or combo_old) and not (near_new or combo_new):
+            s["excluded"] += 1
+            if len(s["examples"]) < 3:
+                s["examples"].append([key, r.get("sharpe"), r.get("rn_sharpe")])
+        if (near_new or combo_new) and rn:
+            s["leak"] += 1
+print("R4JSON " + json.dumps(out, ensure_ascii=False))
+'''
+
+#: R3：mcp_core 的失败计数到底用哪份实现。repo = 仓库布局；docker = 屏蔽整个 wqb 包（镜像只打包
+#: world-quant-brain-mcp/、没有 src/），走冻结副本。同一组 N3 checks 两种布局必须同数，且等于 wqb.config。
+R3_PROBE = r'''
+import json, os, sys
+sys.path.insert(0, os.getcwd())          # cwd = world-quant-brain-mcp/（脚本本身在 SCRATCH）
+mode = sys.argv[1]
+if mode == "docker":
+    sys.modules["wqb"] = None
+import mcp_core as m
+N3 = [{"name": "LOW_2Y_SHARPE", "result": "WARNING", "value": 0.9, "limit": 1.0},
+      {"name": "IS_LADDER_SHARPE", "result": "WARNING", "value": 1.1, "limit": 1.2},
+      {"name": "LOW_SUB_UNIVERSE_SHARPE", "result": "FAIL", "value": 0.4, "limit": 0.6}]
+_, _, _, ra = m._slim_checks(N3)
+res = {"mode": mode, "source": getattr(m, "FAILED_COUNT_SOURCE", "（无此属性：修复前）"),
+       "failed_ra": ra["failed_ra_count"], "failed_ppa": ra["failed_ppa_count"], "ra_failed": ra.get("ra_failed_checks")}
+if mode == "repo":
+    from wqb.config import compute_webdata_failed_counts
+    c = compute_webdata_failed_counts(N3)
+    res["wqb_config"] = {"failed_ra": c["failed_ra"], "failed_ppa": c["failed_ppa"]}
+print("R3JSON " + json.dumps(res, ensure_ascii=False))
+'''
+
+
+def run_probe(name, code, args, cwd, marker, env_extra=None):
+    """把探针脚本写到 SCRATCH 再执行（打印同 sh()）；返回 (进程, 解析出的 JSON 或 None)。"""
+    path = SCRATCH / f"{name}.py"
+    path.write_text(code, encoding="utf-8")
+    p, _ = sh([PY, str(path)] + [str(a) for a in args], env_extra=env_extra, cwd=cwd, tail=4)
+    line = line_of(p.stdout, "^" + marker + " ")
+    return p, (json.loads(line[len(marker) + 1:]) if line else None)
+
+
 # ----------------------------------------------------------------------------- P0 回放（修复后 / 修复前各跑一遍）
 def _gate_line(x):
     o = node_out(x)
@@ -452,8 +553,10 @@ async def run_assemble(http, stage, label):
 
 def _rule_b(x):
     sr = step_of(x, "stop_rules_gate") or {}
+    ev = sr.get("evidence") or {}
     return {"S2_success": node_out(x).get("success"), "rule_B_blocks": sr.get("success") is False,
-            "window": (sr.get("evidence") or {}).get("recent_closed_verdicts")}
+            "window": ev.get("recent_closed_verdicts"),
+            "waves": ev.get("recent_closed_waves")}   # R22 起闸自己报窗口里是哪几个波（修复前的代码无此字段）
 
 
 async def p0_replay(tag, db_srv, http, root, db, wave_fail):
@@ -530,7 +633,7 @@ async def main():
     print(f"  → 本机翻译：command={rel(PY)}（{subprocess.run([PY, '-V'], capture_output=True, text=True).stdout.strip()}），"
           f"路径前缀 {WIN_PREFIX} → <repo>")
     print("  git HEAD:", subprocess.run(["git", "-C", str(ROOT), "log", "--oneline", "-1"], capture_output=True, text=True).stdout.strip())
-    print("  工作树未提交改动（= 本轮 P1 修复 R18–R21）:", sorted(git_dirty(ROOT)))
+    print("  工作树未提交改动（= 本轮 P1 第二批修复 R22 / R5 / R12 / R4 / R3）:", sorted(git_dirty(ROOT)))
     print("  world-quant-brain-mcp/.env 存在?", (ROOT / "world-quant-brain-mcp" / ".env").exists(), "（只判存在，不读取）")
     dirty_priors = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain", "--", f"tracking/{R}/priors/"],
                                   capture_output=True, text=True).stdout.strip()
@@ -592,7 +695,7 @@ async def _main_body(DB):
               "路径翻译成本机后经 stdio 启动两个 server（env = .mcp.json 原样，不补任何根目录变量）；列工具；读启动 stderr；空库上先调只读工具",
               f"wqb-db {n_tools.get('wqb-db')} 个工具 / wq-brain-http {n_tools.get('wq-brain-http')} 个；启动告警 {sum(n_warn.values())} 条；"
               f"空库首调 isError={first_err}（{dump(first, 70)}），默认路径留下 {n_tab0} 表的空库文件",
-              "环境事实，不评星。N23（.mcp.json 不可移植）/ N24（工具面）/ N26（空库首调即建空库）仍在，属 P2，不在本轮 R18–R21 范围")
+              "环境事实，不评星。N23（.mcp.json 不可移植）/ N24（工具面）/ N26（空库首调即建空库）仍在，属 P2，不在本轮范围")
 
         # ------------------------------------------------------------------ 导入
         H1("导入 · tracking/KOR 真实历史 → 经 wqb-db MCP 写工具落库（导入本身即契约实测）")
@@ -692,7 +795,8 @@ async def _main_body(DB):
               f"命令构建 success={node_out(s0c).get('success')}/{node_out(s0s).get('success')}；四闸 {rg_res.get('gates')}，命中 {rg_res.get('hits')}；"
               f"warn 模式下 ok={rg_res.get('ok')}",
               "★★★ 保留深化：停止规则 B 在真实历史上命中 95/96/97 连续判死，与团队事后结论一致；"
-              "warn 灰度 = 看得见、拦不住（N5 / R5 待办）；S0 的平台打分部分本环境不可演练")
+              "toolkit CLI 侧仍是 warn 灰度 = 看得见、拦不住（转 enforce 的截止日期未定）；SOP 的 workflow 入口"
+              "（campaign S2/S3、batch_track）已 enforce（R5，见步 6）；S0 的平台打分部分本环境不可演练")
 
         # ------------------------------------------------------------------ 步 3
         H1(f"步 3 · S1 字段扫描 + 理解（dataset={DS}，真实字段目录）")
@@ -829,8 +933,8 @@ async def _main_body(DB):
         await db_srv.call("workflow_unified_gate", label="wqb-db workflow_unified_gate（真跑；wqb-db 的 env 无 WQ_TOOLKIT_DIR）",
                           region=R, dataset=DS, wave="g1", exprs_file=str(ef_all), from_db=False, n=900)
 
-        def gate_json(wv):
-            rj = q(DB, "SELECT report_json FROM gate_results WHERE region=? AND wave=?", R, wv)
+        def gate_json(wv, db=DB):
+            rj = q(db, "SELECT report_json FROM gate_results WHERE region=? AND wave=?", R, wv)
             return json.loads(rj[0][0]) if rj else {}
 
         H2("① wave_gate.py 真跑：env = .mcp.json 的 wq-brain-http 原样（无 WQB_ROOT / WQB_WORKSPACE / WQB_DB_PATH）；"
@@ -948,18 +1052,78 @@ async def _main_body(DB):
         V["R21"] = {"cached": gb.get("cached"), "total": gb.get("total"), "pass_g3b": wb.get("pass"), "pass_g3": w3.get("pass"),
                     "g2_state": g2_state, "backlog": backlog}
         cache_ok = gb.get("cached") == 0 and wb.get("pass") == w3.get("pass") and (w3.get("pass") or 0) > 0
+
+        # R12：tools/ 下 CLI 自己找 skill 脚本（skill_paths）+ 门禁环境缺失 exit 2。三次调用的写入都指到演练库的
+        # 副本（WQB_DB_PATH），不改变步 6–9 的区域状态（否则多出的 gated 行会把积压推过 30%）。
+        probe_db = SCRATCH / "wqb.db.r12probe"
+        for suffix in ("", "-wal", "-shm"):
+            if Path(str(probe_db) + suffix).exists():
+                Path(str(probe_db) + suffix).unlink()
+        src_c, dst_c = sqlite3.connect(str(DB)), sqlite3.connect(str(probe_db))
+        src_c.backup(dst_c)
+        src_c.close()
+        dst_c.close()
+        no_dirs = ("WQ_TOOLKIT_DIR", "WQ_VALIDATOR_DIR")
+        env_r12 = {k: v for k, v in HTTP_ENV.items() if k not in no_dirs}
+        env_r12["WQB_DB_PATH"] = str(probe_db)
+        H2("④ R12：env 去掉 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR（= wqb-db server 的 env 形态），同 ③ 的参数重跑 wave_gate")
+        print("  （第三轮及以前：tools/ 下 CLI 只搜 ~/.qoder-cn / ~/.cursor / ~/.workbuddy，不含 ~/.claude、~/.codex 与仓库兜底（N12））")
+        p4, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--datasets", DS2, "--no-cache", "--wave", "g4", "--exprs-file", str(ef_all)],
+                   env_extra=env_r12, env_drop=_ROOT_VARS + no_dirs, tail=0)
+        for pat in (r"^\[done \]", r"^\[state\]"):
+            print("  | " + rel(line_of(p4.stdout, pat) or f"（无匹配 {pat} 的行）")[:230])
+        items4 =(gate_json("g4", probe_db).get("gate") or {}).get("report") or []
+        pass4 = sum(1 for it in items4 if it.get("pass"))
+        n4_unknown = len(re.findall(r"\[(?:ARITY|SYNTAX)_UNKNOWN\]", p4.stdout))
+        print(f"  放行 {pass4}/{len(items4)}（③ 对照组 {w3.get('pass')}）；闸门环境缺失标记 {n4_unknown} 条")
+        H2("⑤ R12：verifier 缺 ply（假 verifier：import 即打印提示并 exit 1，与真实缺 ply 的行为一致）")
+        print("  （修复前：wave_gate 随之 exit 1——与'表达式不合格'同一个退出码，调用方分不清）")
+        fake = SCRATCH / "fake_verifier"
+        fake.mkdir(exist_ok=True)
+        (fake / "validator.py").write_text('import sys\nprint("错误: 需要安装PLY库。")\nsys.exit(1)\n', encoding="utf-8")
+        p5, _ = sh([PY, str(ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--datasets", DS2, "--no-cache", "--wave", "g5", "--exprs-file", str(ef_all)],
+                   env_extra={**env_r12, "WQ_VALIDATOR_DIR": str(fake)}, env_drop=_ROOT_VARS + no_dirs, tail=0)
+        print("  | " + rel(line_of(p5.stdout, r"门禁环境缺失|^\[done \]") or "（无 [done ] 行）")[:230])
+        H2("⑥ R12：probe_batch_mode.py --dry-run（同 ④ 的 env：无 WQ_TOOLKIT_DIR；库指到副本）")
+        cand = SCRATCH / "realenv_probe_candidates.json"
+        cand.write_text(json.dumps([{"id": i, "expression": e} for i, e in enumerate(real_exprs[:8], 1)], ensure_ascii=False),
+                        encoding="utf-8")
+        cache_dir_existed = (CAMPAIGN / "cache").is_dir()
+        p6, _ = sh([PY, str(ROOT / "tools" / "probe_batch_mode.py"), "--campaign-dir", str(CAMPAIGN), "--dataset", DS,
+                    "--wave", "999", "--candidates", str(cand), "--dry-run"],
+                   env_extra=env_r12, env_drop=_ROOT_VARS + no_dirs, tail=8)
+        # --dry-run 仍把结果写进战役 cache/（gitignored，Probe 看不到）——演练自己造的，删掉
+        probe_cache = CAMPAIGN / "cache" / f"probe_wave999_{DS}.json"
+        if probe_cache.exists():
+            probe_cache.unlink()
+            if not cache_dir_existed and not any(probe_cache.parent.iterdir()):
+                probe_cache.parent.rmdir()
+            print(f"  （干跑仍写了 {rel(probe_cache)}（tracking/.gitignore 忽略 cache/）；演练自身产物，已删除）")
+        V["R12"] = {"gate_exit": p4.returncode, "gate_pass": f"{pass4}/{len(items4)}", "gate_pass_n": pass4,
+                    "ref_pass": w3.get("pass"), "gate_unknown": n4_unknown,
+                    "fake_exit": p5.returncode, "fake_msg": "门禁环境缺失" in p5.stdout,
+                    "probe_exit": p6.returncode, "probe_dry": "DRY_RUN" in p6.stdout}
+        r12_ok = (p4.returncode in (0, 1) and n4_unknown == 0 and pass4 == w3.get("pass") and p5.returncode == 2
+                  and V["R12"]["fake_msg"] and p6.returncode == 0 and V["R12"]["probe_dry"])
         STAGE("步 5 · S2→S3 门禁",
               f"{len(real_exprs)} 条 {DS} 真实历史表达式（含 {len(real_pass)} 条实测过廉价闸者，其中 88lr21xo / A1lb2KpR 是 ACTIVE 原式）；"
               f"两份字段目录；子进程 env = .mcp.json 原样",
               "ghost-audit → wave_gate.py（语法 → gate.py 静态闸 1-5 逐条 → 批级多样性 / 体检硬门 / prod-sat / opcat / 质量预估），"
-              "三种调用：① 只声明主集  ② 补声明第二腿、走缓存  ③ 补声明 + --no-cache（对照组）",
+              "三种调用：① 只声明主集  ② 补声明第二腿、走缓存  ③ 补声明 + --no-cache（对照组）；"
+              "R12 探针（写入指到库副本）：④ env 去掉 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR  ⑤ 假 verifier 缺 ply  ⑥ probe_batch_mode 干跑",
               f"① exit={p1.returncode}：放行 {w1.get('pass')}/{len(real_exprs)}，拦 {w1.get('blocked')}（{w1.get('tags')}，被拦者实测均值 "
               f"{w1.get('blk_mean')}、最高 {w1.get('blk_max')}），逐条回写 {g2_state}，杂散目录={stray_found}；"
               f"② cached={gb.get('cached')}/{gb.get('total')}，放行 {wb.get('pass')}；③ 放行 {w3.get('pass')}；"
-              f"门禁后积压（pending+gated）{backlog}；闸门环境缺失标记 {n_env_unknown} 条；质量预估 BLOCK {n_block}/{len(pred)}",
+              f"门禁后积压（pending+gated）{backlog}；闸门环境缺失标记 {n_env_unknown} 条；质量预估 BLOCK {n_block}/{len(pred)}；"
+              f"④ exit={p4.returncode}、放行 {pass4}/{len(items4)}、环境缺失标记 {n4_unknown}；⑤ exit={p5.returncode}；"
+              f"⑥ exit={p6.returncode}（DRY_RUN={V['R12']['probe_dry']}）",
               (("静态闸 ★★★：两腿都声明时 39/39 放行、含全部实测赢家" if all_pass_g3
                 else f"⚠ 两腿都声明时仍只放行 {w3.get('pass')}/{len(real_exprs)}（见上方拦截理由）") +
                ("，补声明后缓存不再掩盖结论（R21）" if cache_ok else "，⚠ 补声明后缓存结论与对照组不一致") +
+               ("；不带 WQ_* 目录变量也找得到 toolkit / verifier、缺 ply 报 ERROR(2) 而非 FAIL(1)（R12）" if r12_ok
+                else "；⚠ R12 预期未达成（见 ④⑤⑥）") +
                "；逐条回写让 gated 只表示'过了闸'，FAIL 候选记 fail、不再计入积压（R7）"
                "；漏声明第二腿仍会拦下赢家——FIELD 报错应点名字段所属的已知数据集（建议）"
                f"；质量预估 ✗（{n_block}/{len(pred)} BLOCK 含全部实测赢家，R27 未做）；[opcat] 只打印不判定 ✂（R6 未做）；体检硬门缺包未生效"))
@@ -968,16 +1132,22 @@ async def _main_body(DB):
         H1("步 6 · S3 七槽回测（前置三闸 on 真实历史）")
         bt, _, _ = await http.call("workflow_batch_track", region=R, wave="g2", dataset=DS, dry_run=True, n=600)
         s3, _, _ = await http.call("workflow_campaign", region=R, stage="S3", dataset=DS, wave="g2", dry_run=True, n=1400)
-        bt_cmd = str(node_out(bt).get("command") or "")
-        bt_gates = [s.get("step") for s in node_out(bt).get("steps", []) if "gate" in str(s.get("step"))]
+        bt_o = node_out(bt)
+        bt_cmd = str(bt_o.get("command") or "")
+        bt_gates = {s.get("step"): s.get("success") for s in bt_o.get("steps", []) if str(s.get("step", "")).endswith("_gate")}
         s3_gates = {s.get("step"): s.get("success") for s in node_out(s3).get("steps", []) if str(s.get("step", "")).endswith("_gate")}
+        V["R5"] = {"bt_success": bt_o.get("success"), "bt_gates": bt_gates, "bt_error": bt_o.get("error"),
+                   "bt_has_cmd": "--submit" in bt_cmd, "same_as_s3": bt_gates == s3_gates}
+        r5_ok = bt_o.get("success") is False and bt_gates.get("stop_rules_gate") is False and "--submit" in bt_cmd
         STAGE("步 6 · S3 七槽回测",
               f"门禁后的 g2（逐条状态 {g2_state}）；区域状态（停止规则 B 命中）",
-              "SOP 指定入口 workflow_batch_track 干跑 vs workflow_campaign(S3) 干跑（后者先跑 signal_floor / stop_rules / backlog 三闸）",
-              f"batch_track success={node_out(bt).get('success')}、命令含 --submit={'--submit' in bt_cmd}、区域闸步 {bt_gates}；"
-              f"campaign S3 success={node_out(s3).get('success')}，闸 {s3_gates}",
-              "★★ 保留（七槽 / 设置先验 / 连坐隔离 / argv 握手都有实证）；N5 仍在：SOP 指定入口在规则 B 命中的区域照样发批"
-              " → R5 仍是 P1 待办（不在本轮范围）")
+              "SOP 指定入口 workflow_batch_track 干跑 vs workflow_campaign(S3) 干跑（R5 后两者共用 run_open_wave_gates："
+              "signal_floor / stop_rules / backlog，首个拦截即停）",
+              f"batch_track success={bt_o.get('success')}、闸 {bt_gates}、error={dump(bt_o.get('error'), 70)}、"
+              f"仍带回将要执行的命令（含 --submit={'--submit' in bt_cmd}）；campaign S3 success={node_out(s3).get('success')}，闸 {s3_gates}",
+              "★★ 保留（七槽 / 设置先验 / 连坐隔离 / argv 握手都有实证）；" +
+              ("N5 已修（R5）：SOP 指定入口与 S3 同过三闸，规则 B 命中的区域干跑即拦截、不再照样发批" if r5_ok
+               else "⚠ R5 预期未达成：batch_track 未被区域闸拦截"))
 
         # ------------------------------------------------------------------ 步 7
         H1("步 7 · S4 诊断改进（真实回测行上的墙诊断 / salvage）")
@@ -1000,6 +1170,25 @@ async def _main_body(DB):
                               "'walls=',rw.walls({'sharpe':s,'fitness':f,'two_year_sharpe':y,'sub_universe_sharpe':sb,'turnover_pct':(tv or 0)*100,"
                               "'margin_bp':None,'failed_checks':[]},tr)) for a,w,s,f,y,sb,tv in rows]"],
                     cwd=TOOLKIT, tail=10)
+        H2("R4：near / 组合候选（= salvage 池来源）排除 RN_EXPOSURE —— 仓库内全部带 rn_sharpe 的真实评审行（KOR 历史无 rn 字段）")
+        print("  （修复前 = 同一行去掉 rn_sharpe：R4 之前 rn_exposure 只进 passes()/walls()，near 池与 combo_candidate 看不到它）")
+        _, r4 = run_probe("r4_near_probe", R4_PROBE, [ROOT], TOOLKIT, "R4JSON")
+        r4 = r4 or {}
+        r4 = {reg: s for reg, s in r4.items() if s["rows"]}
+        for reg, s in sorted(r4.items()):
+            print(f"  {reg}: 评审行 {s['rows']}（RN_EXPOSURE {s['rn_exposure']}，其 raw sharpe 最高 {s['rn_max_sharpe']}；"
+                  f"near 线 {s['near_min']} / 组合线 {s['combo_min']}）；near {s['near_old']} → {s['near_new']}，"
+                  f"组合候选 {s['combo_old']} → {s['combo_new']}；被挡出 near/salvage {s['excluded']} 条 例 {s['examples']}；"
+                  f"新池内仍有 RN_EXPOSURE {s['leak']} 条")
+        r4_tot = {k: sum(s[k] for s in r4.values()) for k in ("rows", "rn_exposure", "excluded", "leak")}
+        rn_max = max((s["rn_max_sharpe"] for s in r4.values() if s["rn_max_sharpe"] is not None), default=None)
+        V["R4"] = dict(r4_tot, regions=sorted(r4), rn_max_sharpe=rn_max)
+        # 三态：True = 真实数据上看到被挡出的行；False = 新池里还有 RN_EXPOSURE；None = 真实数据无触发样本（只能靠单测）
+        r4_ok = False if r4_tot["leak"] else (True if r4_tot["excluded"] else None)
+        V["R4"]["ok"] = r4_ok
+        if r4_ok is None:
+            print(f"  → 仓库真实数据里没有 R4 的触发样本：{r4_tot['rn_exposure']} 条 RN_EXPOSURE 行 raw sharpe 最高 {rn_max}，"
+                  f"全部在 near / 组合线之下，修复前后池子一致；R4 的效果只能由单测（构造行）验证")
         rs4 = step_of(s4, "resolve_s4_alphas") or {}
         entries = sp.get("entries", []) if isinstance(sp, dict) else []
         n_noexpr = sum(1 for e in entries if not e.get("expression"))
@@ -1007,14 +1196,20 @@ async def _main_body(DB):
         n_mu = sum(1 for ln in rw_lines if "passes= False" in ln and "walls= ['MARGIN_UNKNOWN']" in ln)
         sb = sb if isinstance(sb, dict) else {}
         STAGE("步 7 · S4 诊断改进",
-              "wave 94 的回测行；91/91b/91c/94 sharpe 前 6；tracking/KOR/config/thresholds.json；candidates 目录",
+              "wave 94 的回测行；91/91b/91c/94 sharpe 前 6；tracking/KOR/config/thresholds.json；candidates 目录；"
+              f"R4 探针：{'/'.join(sorted(r4))} 评审文件里带 rn_sharpe 的 {r4_tot['rows']} 条真实行",
               "S4 review_wave 命令构建（干跑）；按波列 alpha / 按 sharpe 检索；salvage 批量回填；auto_review 干跑；"
-              "review_wave.passes() / walls() 判定函数直调",
+              "review_wave.passes() / walls() 判定函数直调；R4：review_wave 的 near / combo 判据新旧对照",
               f"S4 解析 alpha {rs4.get('alpha_count')} 条；salvage 回填 processed={sb.get('processed')} success={sb.get('success')} "
               f"skipped={sb.get('skipped')}，池内 {len(entries)} 条中无表达式 {n_noexpr} 条；"
-              f"review_wave：{n_mu}/{len(rw_lines)} 条 walls 只有 MARGIN_UNKNOWN 却 passes=False",
+              f"review_wave：{n_mu}/{len(rw_lines)} 条 walls 只有 MARGIN_UNKNOWN 却 passes=False；"
+              f"R4：RN_EXPOSURE {r4_tot['rn_exposure']} 条（raw sharpe 最高 {rn_max}）中 {r4_tot['excluded']} 条此前会进 near/salvage、"
+              f"现被挡出；新池内残留 {r4_tot['leak']} 条",
               "★★★ 保留墙诊断（RN_EXPOSURE / ROBUST_STRUCTURAL 有实证）；salvage 收无表达式条目（N26）、passes/walls 缺失值口径不一（N27）"
-              "——P2/P3 待办；near 池不排除 RN_EXPOSURE（N4 / R4）仍待修")
+              "——P2/P3 待办；" + {True: "N4 已修（R4）：真实行里 RN_EXPOSURE 不再进 near / salvage / 组合候选",
+                                  False: "⚠ R4 预期未达成：新池里仍有 RN_EXPOSURE 行",
+                                  None: "R4 为防御性修复：真实数据无触发样本（RN_EXPOSURE 行都在 near / 组合线之下），"
+                                        "新池无残留、效果由单测守"}[r4_ok])
 
         # ------------------------------------------------------------------ 步 8
         H1("步 8 · S4→S5 稳健闸与提交判定")
@@ -1025,20 +1220,47 @@ async def _main_body(DB):
                                     dry_run=True, n=500)
         sa2, _, _ = await http.call("workflow_submit_alpha", label="workflow_submit_alpha（confirm_submit=True，干跑）",
                                     alpha_id="78jQ29rL", confirm_submit=True, dry_run=True, n=500)
+        H2("R3：RA / PPA 资格门失败计数（submit 判定的输入）只剩 wqb.config 一份——同一组 N3 checks，仓库布局 vs 镜像布局")
+        print("  （N3 checks = LOW_2Y_SHARPE WARNING / IS_LADDER_SHARPE WARNING / LOW_SUB_UNIVERSE_SHARPE FAIL；生产口径 failed_ra=3）")
+        mcp_dir = ROOT / "world-quant-brain-mcp"
+        _, r3_repo = run_probe("r3_failed_count", R3_PROBE, ["repo"], mcp_dir, "R3JSON")
+        print("  仓库布局 →", dump(r3_repo, 400))
+        _, r3_docker = run_probe("r3_failed_count", R3_PROBE, ["docker"], mcp_dir, "R3JSON")
+        print("  镜像布局 →", dump(r3_docker, 400))
+        r3_repo, r3_docker = r3_repo or {}, r3_docker or {}
+        r3_before = None
+        if BASE_DIR:
+            print("  修复前（BASE_DIR 原始副本：mcp_core 内联一份、wqb.config 另一份）:")
+            _, r3_before = run_probe("r3_failed_count", R3_PROBE, ["repo"], BASE_DIR / "world-quant-brain-mcp", "R3JSON",
+                                     env_extra={"PYTHONPATH": str(BASE_DIR / "src")})
+            print("  修复前 →", dump(r3_before, 400))
+        V["R3"] = {"repo": r3_repo, "docker": r3_docker, "before": r3_before}
+        counts = {(d.get("failed_ra"), d.get("failed_ppa")) for d in (r3_repo, r3_docker, r3_repo.get("wqb_config") or {})}
+        r3_ok = (r3_repo.get("source") == "wqb.config" and r3_docker.get("source") == "mcp_core frozen copy"
+                 and counts == {(3, 1)})
         STAGE("步 8 · S4→S5 稳健闸与提交判定",
-              "88lr21xo（ACTIVE 原式）/ 78jQ29rL（同族实测 1.91）；平台凭据：无",
-              "get_submit_ready；submit_verdict（平台侧否决权威）；judge / submit_alpha 干跑（未确认 / confirm_submit=True）",
+              "88lr21xo（ACTIVE 原式）/ 78jQ29rL（同族实测 1.91）；平台凭据：无；R3 探针：N3 那组 checks",
+              "get_submit_ready；submit_verdict（平台侧否决权威）；judge / submit_alpha 干跑（未确认 / confirm_submit=True）；"
+              "R3：mcp_core._slim_checks 在仓库布局 / 镜像布局（屏蔽 wqb 包）各算一次，并与 wqb.config 对照",
               f"submit_ready={srd}；submit_verdict → {dump(sv8, 80)}；submit_alpha 干跑 submitted="
-              f"{node_out(sa1).get('submitted')}/{node_out(sa2).get('submitted')}（只给请求计划、不触平台）",
-              "★★★ 保留：否决链在无凭据时 fail-closed、不会误放行；用户确认门在干跑下同样不触平台；"
-              "Failed-count 三份实现（N3）与 submit_verdict 定位（N8）属 P1 收敛项，不在本轮范围")
+              f"{node_out(sa1).get('submitted')}/{node_out(sa2).get('submitted')}（只给请求计划、不触平台）；"
+              f"R3：仓库布局 source={r3_repo.get('source')} failed_ra/ppa={r3_repo.get('failed_ra')}/{r3_repo.get('failed_ppa')}，"
+              f"镜像布局 source={r3_docker.get('source')} {r3_docker.get('failed_ra')}/{r3_docker.get('failed_ppa')}，"
+              f"wqb.config {(r3_repo.get('wqb_config') or {}).get('failed_ra')}/{(r3_repo.get('wqb_config') or {}).get('failed_ppa')}"
+              + (f"；修复前 mcp_core {r3_before.get('failed_ra')}/{r3_before.get('failed_ppa')} vs wqb.config "
+                 f"{(r3_before.get('wqb_config') or {}).get('failed_ra')}/{(r3_before.get('wqb_config') or {}).get('failed_ppa')}"
+                 if r3_before else ""),
+              "★★★ 保留：否决链在无凭据时 fail-closed、不会误放行；用户确认门在干跑下同样不触平台；" +
+              ("N3 已修（R3）：失败计数只剩 wqb.config 一份，镜像里的冻结副本与它同数（单测逐项守一致）" if r3_ok
+               else "⚠ R3 预期未达成（见上方两种布局的输出）") +
+              "；submit_verdict 定位（N8）仍是 P1 待办")
 
         # ------------------------------------------------------------------ 步 9
         H1("步 9 · S6 复盘回写（P0-1 契约 on 真实历史 + 停止闸闭环）")
         closed = q(DB, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
                        "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
         n_closed, n_open = (q(DB, "SELECT SUM(status='closed'), SUM(status='open') FROM wave_results WHERE region=?", R)[0])
-        print("  最近 3 个 closed 波（停止规则 B 的输入）:", closed)
+        print("  最近 3 个 closed 波（按 updated_at = 第三轮及以前停止规则 B 的取法）:", closed)
         wave_fail = closed[0][0] if closed else "97"
         after = await p0_replay("修复后", db_srv, http, ROOT, DB, wave_fail)
         s91c = SUGG.get("91c")
@@ -1048,33 +1270,42 @@ async def _main_body(DB):
                           key_findings=["补记：2 RA 提交成功（88lr21xo + A1lb2KpR ACTIVE）"], n=260)
         win = q(DB, "SELECT wave_number, verdict FROM wave_results WHERE region=? AND status='closed' "
                     "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT 3", R)
-        print("  最近 3 个 closed 波（按 updated_at）:", win)
+        print("  旧取法（按 updated_at）的最近 3 个 closed 波:", win)
         g9, _, _ = await http.call("workflow_campaign", quiet=True, region=R, stage="S2", dataset=DS, wave="p0_next", dry_run=True)
+        rb9 = _rule_b(g9)
+        print(f"  停止规则 B 实际窗口（R22：按波的开始时刻 = waves.created_at，无表达式的波用结论行 created_at）: "
+              f"{rb9['waves']} → {rb9['window']}")
         print("  下一波 S2 干跑: " + _gate_line(g9))
         bl = step_of(g9, "backlog_gate") or {}
-        print("  同一干跑的积压闸:", dump({"success": bl.get("success"), "error": bl.get("error"),
-                                          "pending_gated": (bl.get("evidence") or {}).get("pending_gated"),
-                                          "total": (bl.get("evidence") or {}).get("total"),
-                                          "pending_gated_ratio": (bl.get("evidence") or {}).get("pending_gated_ratio")}, 400))
-        rb9 = _rule_b(g9)
+        if bl:
+            print("  同一干跑的积压闸:", dump({"success": bl.get("success"), "error": bl.get("error"),
+                                              "pending_gated": (bl.get("evidence") or {}).get("pending_gated"),
+                                              "total": (bl.get("evidence") or {}).get("total"),
+                                              "pending_gated_ratio": (bl.get("evidence") or {}).get("pending_gated_ratio")}, 400))
+        else:
+            print("  同一干跑的积压闸：未执行（三道开波闸首个拦截即停，停止规则已拦）")
+        bl_txt = (f"积压闸 success={bl.get('success')}，pending+gated 占比 {(bl.get('evidence') or {}).get('pending_gated_ratio')}"
+                  if bl else "积压闸未执行：停止规则先拦")
         H2("S6 其余动作")
         pf, _ = sh([PY, str(ROOT / "tools" / "step_funnel.py"), "--region", R], tail=25)
         await http.call("workflow_execute", label="workflow_execute(auto_pyramid, dry_run)", node="auto_pyramid",
                         params={"region": R, "wave": wave_fail}, dry_run=True, n=400)
-        n22 = not rb9["rule_B_blocks"] and bool(win) and win[0][0] == "91c"
+        r22_ok = bool(rb9["rule_B_blocks"]) and "91c" not in (rb9["waves"] or []) and bool(win) and win[0][0] == "91c"
+        V["R22"] = {"old_order": [w for w, _ in win], "gate_window": rb9["waves"], "blocks": rb9["rule_B_blocks"],
+                    "S2_success": rb9["S2_success"]}
         funnel_v = line_of(pf.stdout, r"\(空\)=|FAIL=").strip()
         STAGE("步 9 · S6 复盘回写",
-              f"wave_results（closed {n_closed} / open {n_open}）；规则 B 窗口 {closed}；导入时 R20 给 91c 的建议 "
+              f"wave_results（closed {n_closed} / open {n_open}）；按 updated_at 的最近 3 个 closed 波 {closed}；导入时 R20 给 91c 的建议 "
               f"{(s91c or {}).get('verdict')}/{(s91c or {}).get('confidence')}",
               "P0-1 回放（字符串波号 / 只补 key_findings / 空壳结案）→ assemble-priors + GEM 快照检查 → 按建议补记 91c → step_funnel → auto_pyramid 干跑",
               f"字符串波号 {after['str_wave']}；只补 key_findings 后 verdict={after['verdict_after_kf_only']}、规则 B 仍拦截="
-              f"{after['after_update']['rule_B_blocks']}；空壳结案 {after['hollow']}；补记 91c 后窗口 {win} → 规则 B 拦截="
-              f"{rb9['rule_B_blocks']}，下一波 S2 success={rb9['S2_success']}（积压闸 success={bl.get('success')}，"
-              f"pending+gated 占比 {(bl.get('evidence') or {}).get('pending_gated_ratio')}）；"
+              f"{after['after_update']['rule_B_blocks']}；空壳结案 {after['hollow']}；补记 91c 后：旧取法（按 updated_at）"
+              f"{[w for w, _ in win]}，规则 B 实际窗口（R22）{rb9['waves']} → 拦截={rb9['rule_B_blocks']}，"
+              f"下一波 S2 success={rb9['S2_success']}（{bl_txt}）；"
               f"step_funnel verdict 分布 {funnel_v}",
               ("★★★ 保留：P0-1 契约在真实链路上守住规则 B 的输入" +
-               ("；N22 实证：补记一个旧波（91c 在 92–97 之前）就把它顶进'最近 3 个'、解除区域停波——R20 让补记变容易，"
-                "建议 R22（窗口按结案时刻）随之上调为 P1" if n22 else "；补记旧波未改变规则 B 判定")))
+               ("；N22 已修（R22）：窗口按波的开始时刻取，补记旧波 91c 不再挤进'最近 3 个'，区域停波维持" if r22_ok
+                else "；⚠ R22 预期未达成（见上方两种窗口）")))
 
         H1("附 A · 19 个 workflow 节点经 MCP workflow_execute(dry_run=True) 全量扫描（仓库 _DRY_RUN_CASES 参数）")
         import ast
@@ -1084,7 +1315,7 @@ async def _main_body(DB):
             if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "_DRY_RUN_CASES" for t in node.targets):
                 cases = eval(compile(ast.Expression(node.value), "cases", "eval"), {})
         print(f"  {'node':24s} {'ok':6s} side-effects / error")
-        n_ok, fails, dirty_nodes = 0, [], []
+        n_ok, fails, silent, dirty_nodes, errs = 0, [], [], [], {}
         for node, params in sorted(cases.items()):
             out, err, pr = await http.call("workflow_execute", quiet=True, node=node, params=params, dry_run=True)
             ok = out.get("success") if isinstance(out, dict) else None
@@ -1092,11 +1323,17 @@ async def _main_body(DB):
             n_ok += bool(ok)
             if not ok:
                 fails.append(node)
+                errs[node] = e
+                if not e:
+                    silent.append(node)
             if pr.db_delta or pr.git_new:
                 dirty_nodes.append(node)
             print(f"  {node:24s} {str(ok):6s} {pr.summary()[:150]}  {dump(rel(str(e)), 110) if e else ''}")
         print("  wq-brain-http workflow_list_nodes:", dump((await http.call("workflow_list_nodes", quiet=True))[0], 200))
-        print(f"  小结：{n_ok}/{len(cases)} 成功；失败 {fails}；有 DB / git 副作用的节点 {dirty_nodes or '无'}")
+        V["A"] = {"n_ok": n_ok, "n": len(cases), "fails": fails, "silent": silent, "dirty": dirty_nodes,
+                  "batch_track_error": errs.get("batch_track")}
+        print(f"  小结：{n_ok}/{len(cases)} 成功；失败 {fails}（其中无 error 的静默失败 {silent or '无'}）；"
+              f"有 DB / git 副作用的节点 {dirty_nodes or '无'}")
 
     # ---------------------------------------------------------------------- 修复前对照
     before = None
@@ -1136,8 +1373,11 @@ async def _main_body(DB):
                          ("gem_snapshot_check", "GEM 干跑有快照检查步")):
             print(f"  {label:30s} 修复前 {dump(before.get(k), 110):60s} │ 修复后 {dump(after.get(k), 110)}")
 
-    H1("P1（R18–R21）验证清单 —— 与第二轮实录 realenv_transcript_p0.txt 的同名步骤对照")
+    H1("P1 验证清单 —— 第一批（R18–R21）对照第二轮实录 realenv_transcript_p0.txt；"
+       "第二批（R22 / R5 / R12 / R4 / R3）对照第三轮实录 realenv_transcript_r18_r21.txt")
     r18, r19, r20, r21 = V.get("R18", {}), V.get("R19", {}), V.get("R20", {}), V.get("R21", {})
+    r22, r5, r12, r4, r3, va = (V.get(k) or {} for k in ("R22", "R5", "R12", "R4", "R3", "A"))
+    r3r, r3d, r3b = r3.get("repo") or {}, r3.get("docker") or {}, r3.get("before") or {}
     checks = [
         ("R18 priors 截断：新登记优先 + 截断可见",
          "4.6：registry dead_end 13 → 快照 12，KOR-MODEL219-DEAD 进快照 False，截断无记录",
@@ -1160,9 +1400,45 @@ async def _main_body(DB):
          f"g2 回写 {r21.get('g2_state')}；三次门禁后积压 {r21.get('backlog')}",
          r21.get("cached") == 0 and r21.get("pass_g3b") == r21.get("pass_g3") and (r21.get("pass_g3") or 0) > 0
          and {"gated", "fail"} <= set(r21.get("g2_state") or {})),
+        ("R22 停止规则 B 窗口按波的开始时刻",
+         "步 9：补记 91c 后按 updated_at 取窗口 [91c PASS, 97 FAIL, s2_ml_factor_proj_d1 FAIL] → 规则 B 解除、下一波 S2 success=True（N22）",
+         f"步 9：补记 91c 后旧取法 {r22.get('old_order')}；实际窗口 {r22.get('gate_window')} → 规则 B 拦截={r22.get('blocks')}，"
+         f"下一波 S2 success={r22.get('S2_success')}",
+         r22.get("blocks") is True and "91c" not in (r22.get("gate_window") or [])
+         and (r22.get("old_order") or [None])[0] == "91c"),
+        ("R5 batch_track 过三道开波闸",
+         "步 6：batch_track 干跑 success=True、区域闸步 []——规则 B 命中的区域照样发批（N5）；附 A batch_track True",
+         f"步 6：batch_track success={r5.get('bt_success')}、闸 {r5.get('bt_gates')}（与 S3 同一结果={r5.get('same_as_s3')}）、"
+         f"仍带回命令={r5.get('bt_has_cmd')}；附 A 失败 {va.get('fails')}，静默失败 {va.get('silent') or '无'}",
+         r5.get("bt_success") is False and (r5.get("bt_gates") or {}).get("stop_rules_gate") is False
+         and bool(r5.get("bt_has_cmd")) and "batch_track" in (va.get("fails") or []) and not va.get("silent")),
+        ("R12 tools/ 下 CLI 的 skill 解析 + 门禁环境缺失 exit 2",
+         "tools/ 下 CLI 只搜 ~/.qoder-cn / ~/.cursor / ~/.workbuddy（本机单测 3 个 N12 用例红）；verifier 缺 ply → exit 1（与'表达式不合格'同码）",
+         f"④ 无 WQ_* 目录变量：exit={r12.get('gate_exit')}、放行 {r12.get('gate_pass')}（对照组 {r12.get('ref_pass')}）、"
+         f"环境缺失标记 {r12.get('gate_unknown')}；⑤ 假 verifier exit={r12.get('fake_exit')}（门禁环境缺失={r12.get('fake_msg')}）；"
+         f"⑥ probe_batch_mode exit={r12.get('probe_exit')}（DRY_RUN={r12.get('probe_dry')}）",
+         r12.get("gate_exit") in (0, 1) and r12.get("gate_unknown") == 0 and r12.get("gate_pass_n") == r12.get("ref_pass")
+         and r12.get("fake_exit") == 2 and bool(r12.get("fake_msg")) and r12.get("probe_exit") == 0 and bool(r12.get("probe_dry"))),
+        ("R4 near / salvage 池排除 RN_EXPOSURE",
+         "near 池只排除 ROBUST_STRUCTURAL；RN_EXPOSURE 行照样进 near / salvage / 组合候选（N4；第三轮未实测条数）",
+         f"{'/'.join(r4.get('regions') or [])} 真实评审行 {r4.get('rows')} 条（RN_EXPOSURE {r4.get('rn_exposure')}，"
+         f"raw sharpe 最高 {r4.get('rn_max_sharpe')}）：此前会进 near/salvage、现被挡出 {r4.get('excluded')} 条；"
+         f"新池内残留 {r4.get('leak')} 条" + ("——真实数据无触发样本，效果由单测守" if r4.get("ok") is None else ""),
+         r4.get("ok")),
+        ("R3 Failed-count 单一实现",
+         "三份实现（mcp_core / wqb.config / build_gate_prior）；同一组 N3 checks：mcp_core failed_ra=3、wqb.config 0（N3）",
+         f"仓库布局 {r3r.get('source')} {r3r.get('failed_ra')}/{r3r.get('failed_ppa')}；镜像布局 {r3d.get('source')} "
+         f"{r3d.get('failed_ra')}/{r3d.get('failed_ppa')}；wqb.config {(r3r.get('wqb_config') or {}).get('failed_ra')}/"
+         f"{(r3r.get('wqb_config') or {}).get('failed_ppa')}" +
+         (f"（修复前副本实测：mcp_core {r3b.get('failed_ra')} vs wqb.config {(r3b.get('wqb_config') or {}).get('failed_ra')}）" if r3b else ""),
+         r3r.get("source") == "wqb.config" and r3d.get("source") == "mcp_core frozen copy"
+         and {(r3r.get("failed_ra"), r3r.get("failed_ppa")), (r3d.get("failed_ra"), r3d.get("failed_ppa")),
+              ((r3r.get("wqb_config") or {}).get("failed_ra"), (r3r.get("wqb_config") or {}).get("failed_ppa"))} == {(3, 1)}),
     ]
+    print("  （✅ 真实环境验证通过 / ❌ 与预期不符 / ➖ 真实数据无触发样本、无从验证，靠单测）")
     for name, prev, now, ok in checks:
-        print(f"  {'✅' if ok else '❌'} {name}\n      第二轮：{prev}\n      本轮：  {now}")
+        mark = "➖" if ok is None else ("✅" if ok else "❌")
+        print(f"  {mark} {name}\n      修复前：{prev}\n      本轮：  {now}")
 
     print("\n[REAL-ENV DRY-RUN END]")
     print("  仓库已入库文件是否被改动（应只剩本轮修复 + 报告）:", sorted(git_dirty(ROOT)))
