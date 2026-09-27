@@ -17,6 +17,15 @@ from pathlib import Path
 # pandas 使用点：_build_datafields_df；requests 使用点：_patched_call_moonshot。
 
 
+class _MoonshotNonRetryable(RuntimeError):
+    """LLM 通道的**不可重试**错误（401/402/403）。
+
+    存在理由：`except Exception` 的通用重试会把 402 Insufficient Balance 重试 3 次、
+    再被外层"no meta.json within 90s"吞掉，真因完全不可见（2026-09-26 实测）。
+    本类在重试循环里被显式放行，让带绕行指引的错误直达调用方。
+"""
+
+
 def _is_pid_running(pid: int | None) -> bool:
     if not isinstance(pid, int) or pid <= 0:
         return False
@@ -110,9 +119,128 @@ def _print_task_status(tasks_dir: Path, task_id: str, tail_lines: int) -> int:
     return 0
 
 
+def _safe_console_write(text: str, stream=None) -> None:
+    """写控制台（默认 sys.stdout），编码不支持的字符降级替换。
+
+    2026-09-25：日志里常见 emoji/箭头，而 Windows 终端默认 cp936 —— 直接 write
+    会抛 UnicodeEncodeError，把"看实时输出"变成"把整波生成带崩"。
+    降级时用**目标流自己声明的 encoding**，否则替换出来的 '?' 与流的码页不匹配。
+    """
+    sink = stream if stream is not None else sys.stdout
+    try:
+        sink.write(text)
+    except UnicodeEncodeError:
+        enc = getattr(sink, "encoding", None) or "utf-8"
+        try:
+            sink.write(str(text).encode(enc, "replace").decode(enc, "replace"))
+        except Exception:
+            pass
+    except Exception:
+        pass
+    try:
+        sink.flush()
+    except Exception:
+        pass
+
+
+def _task_terminal(task_dir: Path) -> bool:
+    """meta.json 是否已进入终态（供 --watch 收尾退出；读不到就当作仍在跑）。"""
+    try:
+        meta = json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return str(meta.get("status") or "").lower() not in ("", "running", "initializing", "pending")
+
+
+class _ConsoleFileTee:
+    """stdout/stderr 双写：控制台（人看）+ UTF-8 日志文件（机器看）。
+
+    --detached --console 下由子进程安装。文件侧仍是 stdout.log/stderr.log，
+    所以 --status / --watch / workflow_task_status 与下游闸门全部不变。
+    """
+
+    def __init__(self, console, log_path: str | None):
+        self._console = console
+        self._log = (open(log_path, "a", encoding="utf-8", errors="replace", buffering=1)
+                     if log_path else None)
+
+    @property
+    def encoding(self) -> str:
+        return getattr(self._console, "encoding", None) or "utf-8"
+
+    def write(self, text: str) -> int:
+        _safe_console_write(str(text), self._console)
+        if self._log is not None:
+            try:
+                self._log.write(text)
+            except Exception:
+                pass
+        return len(str(text))
+
+    def flush(self) -> None:
+        for sink in (self._console, self._log):
+            try:
+                if sink is not None:
+                    sink.flush()
+            except Exception:
+                pass
+
+    def isatty(self) -> bool:
+        return False
+
+    def close(self) -> None:
+        self.flush()
+        if self._log is not None:
+            try:
+                self._log.close()
+            except Exception:
+                self._log = None
+
+
+def _install_log_tee() -> None:
+    """--detached --console 子进程入口：把 stdout/stderr 换成控制台 + 文件双写。
+
+    仅当 GEM_LOG_FILE 存在时生效（非 console 模式的 stdout 已经是日志文件句柄，
+    再套一层 tee 反而会把同一份内容写两遍）。
+    """
+    log_file = os.environ.get("GEM_LOG_FILE")
+    if not log_file:
+        return
+    sys.stdout = _ConsoleFileTee(sys.__stdout__, log_file)
+    sys.stderr = _ConsoleFileTee(sys.__stderr__, os.environ.get("GEM_ERR_FILE") or log_file)
+
+
+def _watch_task(tasks_dir: Path, task_id: str, from_start: bool = False,
+                poll_s: float = 0.5) -> int:
+    """持续跟随在飞任务的 stdout.log（tail -f）；meta 进终态后自动收尾。
+
+    与 --status 的分工：--status = 一次性快照（供轮询），--watch = 人盯着看。
+    Ctrl+C 只退出跟随，不动任务进程。
+    """
+    task_dir = (tasks_dir / task_id).resolve()
+    stdout_log = task_dir / "stdout.log"
+    if not stdout_log.exists():
+        print(f"ERROR: task log not found: {stdout_log}")
+        return 1
+    print(f"[GEM-WATCH] {task_id}  {stdout_log}  (Ctrl+C 退出跟随，不影响任务)")
+    with stdout_log.open("r", encoding="utf-8", errors="replace") as fh:
+        if not from_start:
+            fh.seek(0, os.SEEK_END)
+        while True:
+            line = fh.readline()
+            if line:
+                _safe_console_write(line)
+                continue
+            if _task_terminal(task_dir):
+                break
+            time.sleep(poll_s)
+    print("[GEM-WATCH] 任务已终态，停止跟随")
+    return 0
+
+
 def _build_detached_child_cmd(script_path: Path, raw_argv: list[str]) -> list[str]:
-    value_flags = {"--task-id", "--tasks-dir", "--status", "--tail-lines"}
-    bool_flags = {"--detached"}
+    value_flags = {"--task-id", "--tasks-dir", "--status", "--tail-lines", "--watch"}
+    bool_flags = {"--detached", "--console", "--from-start"}
     filtered: list[str] = []
     i = 0
     while i < len(raw_argv):
@@ -128,7 +256,8 @@ def _build_detached_child_cmd(script_path: Path, raw_argv: list[str]) -> list[st
     return [sys.executable, str(script_path)] + filtered
 
 
-def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, mode: str) -> tuple[int, Path]:
+def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, mode: str,
+                     console: bool = False) -> tuple[int, Path]:
     task_dir = (tasks_dir / task_id).resolve()
     task_dir.mkdir(parents=True, exist_ok=True)
 
@@ -153,32 +282,46 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
     print(f"[GEM-INIT] task_dir created, meta.json initialized: {task_dir}")
 
     popen_kwargs: dict = {}
-    if os.name == "nt":
-        popen_kwargs["creationflags"] = (
-            getattr(subprocess, "DETACHED_PROCESS", 0)
-            | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
-            | getattr(subprocess, "CREATE_NO_WINDOW", 0)
-        )
-    else:
-        popen_kwargs["start_new_session"] = True
 
     # 通过环境变量把 meta 路径传给子进程，子进程 main() 出口回写状态（修复假僵尸）
     child_env = os.environ.copy()
     child_env["GEM_META_FILE"] = str(meta_file)
 
-    with stdout_log.open("a", encoding="utf-8") as out, stderr_log.open("a", encoding="utf-8") as err:
-        proc = subprocess.Popen(
-            cmd,
-            cwd=str(cwd),
-            stdout=out,
-            stderr=err,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            bufsize=1,
-            env=child_env,
-            **popen_kwargs,
-        )
+    if console and os.name == "nt":
+        # 2026-09-25 --console：起一个真实控制台窗口，stdout 交还给它 ——
+        # DETACHED_PROCESS|CREATE_NO_WINDOW 是这条链路唯一"看不见过程"的地方。
+        # 日志不能丢（--status/workflow_task_status/闸门都读它），所以改由子进程内
+        # _ConsoleFileTee 双写：控制台 + 同一份 stdout.log。
+        popen_kwargs["creationflags"] = getattr(subprocess, "CREATE_NEW_CONSOLE", 0)
+        child_env["GEM_LOG_FILE"] = str(stdout_log)
+        child_env["GEM_ERR_FILE"] = str(stderr_log)
+        child_env.setdefault("PYTHONUNBUFFERED", "1")
+        proc = subprocess.Popen(cmd, cwd=str(cwd), env=child_env, **popen_kwargs)
+    else:
+        if console:
+            print("[GEM-LAUNCH] NOTE: --console 仅 Windows 生效，已按无窗口 detached 启动")
+        if os.name == "nt":
+            popen_kwargs["creationflags"] = (
+                getattr(subprocess, "DETACHED_PROCESS", 0)
+                | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+                | getattr(subprocess, "CREATE_NO_WINDOW", 0)
+            )
+        else:
+            popen_kwargs["start_new_session"] = True
+
+        with stdout_log.open("a", encoding="utf-8") as out, stderr_log.open("a", encoding="utf-8") as err:
+            proc = subprocess.Popen(
+                cmd,
+                cwd=str(cwd),
+                stdout=out,
+                stderr=err,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                bufsize=1,
+                env=child_env,
+                **popen_kwargs,
+            )
 
     # 更新 meta.json：写入 pid 并将状态从 initializing 翻转为 running
     meta = {
@@ -193,7 +336,8 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
         "stderr_log": str(stderr_log),
     }
     meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[GEM-LAUNCH] detached process spawned, pid={proc.pid}, meta.json updated")
+    print(f"[GEM-LAUNCH] detached process spawned, pid={proc.pid}, meta.json updated"
+          + (" (console window)" if console else ""))
     return proc.pid, task_dir
 
 
@@ -357,7 +501,9 @@ def _materialize_priors_from_db(region: str, db_path: str | None) -> str:
 
     db = _find_wqb_db(db_path)
     key = f"priors_snapshot_{region.strip().lower()}"
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(db, timeout=60)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=60000")  # 规范口径（2026-09-20 L1，无 src 依赖内联版）
     try:
         row = conn.execute(
             "SELECT value FROM ledger_kv WHERE region=? AND key=?",
@@ -467,8 +613,14 @@ def build_command(python_exe: str, pipeline_script: Path, args: argparse.Namespa
 
 
 def main() -> int:
+    # --detached --console 的子进程靠这一行把输出接回日志文件（无 GEM_LOG_FILE 时空操作）。
+    # 放在最前：连 argparse 报错、priors 互斥检查这类早退路径也能落进 stdout.log。
+    _install_log_tee()
+
     pre_parser = argparse.ArgumentParser(add_help=False)
     pre_parser.add_argument("--status", default=None)
+    pre_parser.add_argument("--watch", default=None)
+    pre_parser.add_argument("--from-start", action="store_true")
     pre_parser.add_argument("--tasks-dir", default="../outputs/tasks")
     pre_parser.add_argument("--tail-lines", type=int, default=40)
     pre_args, _ = pre_parser.parse_known_args()
@@ -487,6 +639,13 @@ def main() -> int:
             tail_lines=pre_args.tail_lines,
         )
 
+    if pre_args.watch and str(pre_args.watch).strip():
+        return _watch_task(
+            tasks_dir=pre_tasks_dir,
+            task_id=str(pre_args.watch).strip(),
+            from_start=bool(pre_args.from_start),
+        )
+
     parser = argparse.ArgumentParser(description="Headless launcher for direct alpha pipeline")
     parser.add_argument("--config", default="config.json", help="Path to config JSON (default: config.json)")
     parser.add_argument("--data-category", required=True, help="Dataset category, e.g. analyst")
@@ -495,7 +654,7 @@ def main() -> int:
     parser.add_argument("--dataset-id", required=True, help="Dataset id, e.g. analyst4")
     parser.add_argument("--universe", default="TOP3000", help="Universe (default: TOP3000)")
     parser.add_argument("--instrument-type", default="EQUITY", help="Instrument type (default: EQUITY)")
-    parser.add_argument("--data-type", default="MATRIX", choices=["MATRIX", "VECTOR"], help="Data type (default: MATRIX)")
+    parser.add_argument("--data-type", default="MATRIX", choices=["MATRIX", "VECTOR", "GROUP"], help="Data type (default: MATRIX; GROUP for grouping axes)")
     parser.add_argument("--moonshot-model", default=None, help="Moonshot model (default from config)")
     parser.add_argument("--ideas-file", default=None, help="Optional ideas markdown path")
     parser.add_argument("--regen-ideas", action="store_true", help="Force regenerate ideas markdown")
@@ -525,6 +684,9 @@ def main() -> int:
     parser.add_argument("--require-count", type=int, default=2,
                         help="Min expressions using require-operators (forwarded, default 2)")
     parser.add_argument("--detached", action="store_true", help="Launch this run in background and return immediately")
+    parser.add_argument("--console", action="store_true",
+                        help="配 --detached：另起一个真实控制台窗口实时滚动生成过程（Windows）；"
+                             "stdout.log 仍双写，--status/--watch 照常可用")
     parser.add_argument("--task-id", default=None, help="Optional task id for detached mode")
     parser.add_argument("--tasks-dir", default="../outputs/tasks", help="Task directory root for detached mode")
     parser.add_argument("--status", default=None, help="Show detached task status by task id and exit")
@@ -561,17 +723,21 @@ def main() -> int:
         child_cmd = _build_detached_child_cmd(Path(__file__).resolve(), sys.argv[1:])
         mode = f"{args.region}_{args.dataset_id}_delay{args.delay}"
         try:
-            pid, task_dir = _launch_detached(cmd=child_cmd, cwd=here, task_id=task_id, tasks_dir=tasks_dir, mode=mode)
+            pid, task_dir = _launch_detached(cmd=child_cmd, cwd=here, task_id=task_id,
+                                             tasks_dir=tasks_dir, mode=mode,
+                                             console=bool(args.console))
         except Exception as exc:
             print(f"ERROR: failed to launch detached process: {exc}")
             return 2
 
-        print("Detached task launched.")
+        print("Detached task launched." + (" (console window opened)" if args.console else ""))
         print(f"task_id={task_id}")
         print(f"pid={pid}")
         print(f"task_dir={task_dir}")
         print(f"stdout_log={task_dir / 'stdout.log'}")
         print(f"stderr_log={task_dir / 'stderr.log'}")
+        print(f"watch_cmd={sys.executable} {Path(__file__).resolve()} --watch {task_id} "
+              f"--tasks-dir {tasks_dir}")
         return 0
 
     pipeline_script = base_dir / "trailSomeAlphas" / "run_pipeline.py"
@@ -771,7 +937,10 @@ def main() -> int:
 
                 safe_dataset_id = "".join([c for c in dataset_id if c.isalnum() or c in ("-", "_")])
                 folder_name = f"{safe_dataset_id}_{region}_delay{delay}"
-                dataset_folder = rp.FEATURE_IMPLEMENTATION_DIR / "data" / folder_name
+                # 2026-09-25 目标 A：数据根读 WQB_GEM_DATA_ROOT（run_pipeline 已注入 env），
+                # 未设置回退 rp.FEATURE_IMPLEMENTATION_DIR/data（旧行为）
+                _data_root = Path(os.environ.get("WQB_GEM_DATA_ROOT") or (rp.FEATURE_IMPLEMENTATION_DIR / "data"))
+                dataset_folder = _data_root / folder_name
                 dataset_folder.mkdir(parents=True, exist_ok=True)
                 output_path = dataset_folder / f"{folder_name}.csv"
                 df.to_csv(output_path, index=False)
@@ -814,6 +983,17 @@ def main() -> int:
                         timeout=(30, timeout_s),
                     )
                     if resp.status_code >= 300:
+                        # 2026-09-26：401/402/403 是凭据/余额问题，重试无意义且会掩盖真因
+                        #（实测 402 Insufficient Balance 重试耗尽后，外层只报误导性的
+                        #  "no meta.json within 90s"，排障极难）。立即抛出并给出可执行绕行。
+                        if resp.status_code in (401, 402, 403):
+                            raise _MoonshotNonRetryable(
+                                f"LLM 通道不可用（HTTP {resp.status_code}，不可重试）：{resp.text[:300]}\n"
+                                "  → 402=余额不足 / 401=鉴权失败 / 403=无权限。\n"
+                                "  绕行（已验证）：手写 ideas md，用 --ideas-file 跑本 runner 即可完全跳过 LLM；\n"
+                                "  或在 config.json 更换 moonshot_base_url / moonshot_model / moonshot_api_key。\n"
+                                "  ★ dry_run 只验证命令构建，验证不了 LLM 可达性 —— 别被 dry-run 的 OK 骗了。"
+                            )
                         raise RuntimeError(f"Moonshot API error {resp.status_code}: {resp.text[:500]}")
 
                     content_parts = []
@@ -877,6 +1057,8 @@ def main() -> int:
                     if not final_content.strip():
                         raise RuntimeError("Moonshot stream ended without content")
                     return final_content
+                except _MoonshotNonRetryable:
+                    raise          # 凭据/余额类错误：重试无意义，直接向上抛（带绕行指引）
                 except Exception as exc:
                     last_exc = exc
                     if attempt >= retries:
@@ -930,7 +1112,9 @@ def main() -> int:
             sys.argv = old_argv
 
         dataset_folder = f"{args.dataset_id}_{args.region}_delay{args.delay}"
-        final_path = base_dir / "trailSomeAlphas" / "skills" / "brain-feature-implementation" / "data" / dataset_folder / "final_expressions.json"
+        # 2026-09-25 目标 A：打印路径从 rp.GEM_DATA_ROOT 读（与 run_pipeline 实际写入位一致），
+        # 不再硬编码 trailSomeAlphas/skills/.../data 深嵌套旧位
+        final_path = Path(rp.GEM_DATA_ROOT) / dataset_folder / "final_expressions.json"
         print("\nPipeline finished successfully.")
         print(f"Expected result file: {final_path}")
         return 0

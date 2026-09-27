@@ -15,12 +15,13 @@ import sqlite3
 import subprocess
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
 from .._common import (
     REPO_ROOT,
+    resolve_async_tasks_root,
     resolve_campaign_dir,
     resolve_db_path,
     resolve_toolkit_dir,
@@ -30,11 +31,12 @@ from .._common import (
     wq_py,
 )
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 #: 走 campaign.py 子命令路由的 subcommand——**subcommand 优先于 stage**（见 run() 内
 #: `if subcommand and subcommand in subcommand_script_map`）。因此传什么 stage 都能路由到
 #: campaign.py，stage 只决定超时预算。约定：assemble-priors 属 S2（priors 是 S2 上游产物）、
 #: diversity-extract 属 S2、ledger/registry/wave 属 S6；不要因 stage 分支再 append 一次。
-_SUBCOMMAND_ROUTED = ("assemble-priors", "diversity-extract")
+_SUBCOMMAND_ROUTED = ("assemble-priors", "diversity-extract", "dataset-experience")
 
 logger = logging.getLogger(__name__)
 
@@ -198,6 +200,7 @@ def run(
     subcommand_script_map = {
         "assemble-priors": "campaign.py",
         "diversity-extract": "campaign.py",
+        "dataset-experience": "campaign.py",
     }
 
     # ── 缓存检查：calibrate / assemble-priors 结果缓存到 ledger（Dry-Run 2.0 优化） ──
@@ -343,6 +346,9 @@ def run(
             if wave:
                 cmd.extend(["--wave", wave])
             cmd.append("--from-db")
+            # size is capacity, never an implicit exact-count contract.
+            # Reviewed experiments opt in via --selection-contract-key (identities)
+            # or explicit --expected-count (legacy count-only guard).
     elif stage == "S3":
         # 信号天花板闸（同 S2：纯 DB 判定，dry-run 也走）
         floor_result = _run_signal_floor_gate(region, dataset, campaign_dir)
@@ -486,7 +492,7 @@ def run(
     # 后台线程等待完成并写入结果文件。避免 MCP 客户端超时（原 subprocess.run 阻塞 3600s）。
     task_id = f"campaign_{region}_{stage}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     # 2026-09-04 修复：任务目录支持 WQB_TASK_ROOT 注入（单测隔离，默认仓库 logs/_async_tasks）
-    task_dir = os.environ.get("WQB_TASK_ROOT") or os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    task_dir = os.path.abspath(resolve_async_tasks_root())
     os.makedirs(task_dir, exist_ok=True)
     task_file = os.path.join(task_dir, f"{task_id}.json")
 
@@ -535,11 +541,14 @@ def run(
         # 2026-09-04 修复：主线程先写 running 占位——即使收尾线程随 MCP 进程退出被杀，
         # 轮询方也能读到 status=running 而非"任务文件不存在"（收尾线程完成时覆盖终态）。
         try:
+            from ..process_identity import process_identity
             with open(task_file, "w", encoding="utf-8") as f:
                 json.dump({
                     "task_id": task_id,
                     "status": "running",
                     "pid": process.pid,
+                    "cmd": cmd,
+                    "process_identity": process_identity(process.pid),
                     "started_at": datetime.now().isoformat(),
                     "timeout_sec": timeout_sec,
                     "stdout_log": stdout_log,
@@ -909,7 +918,7 @@ def _resolve_wave_alpha_ids(region: str, wave: str, dataset: Optional[str]):
     hit = str(wave)
     recent: List[str] = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         try:
             rows = conn.execute(
                 "SELECT DISTINCT alpha_id FROM backtest_results WHERE region=? AND wave=? "
@@ -941,14 +950,20 @@ def _resolve_wave_alpha_ids(region: str, wave: str, dataset: Optional[str]):
 STOP_RULES_DEFAULTS = {
     "enabled": True,
     "yield_min_backtests": 100,     # 区级：回测 ≥N 且达标 0 → 停区
-    "consecutive_fail_waves": 3,    # 区级：最近 K 个 closed 波 verdict 全 FAIL → 停区
+    "consecutive_fail_waves": 3,    # 规则 B1：同轴最近 K 个 closed 波连续可计数 FAIL → 熔断该轴（旧口径=全区最近 K 波全 FAIL）
     "sharpe_min": 1.58,
     "fitness_min": 1.0,
     # ---- 2026-09-17 加固（P0-3 停止闸输入完整性）----
     # verdict 已归一化（见 _normalize_verdict）：自由文本 `0/8 过硬闸` 现算 FAIL，
     # 空值算 UNKNOWN。以下两项控制更严/更保守的可选口径，默认不改变既有拦截面。
-    "strict_no_pass": False,        # True → 最近 K 个 closed 波"无任何 PASS"即停区（严于全 FAIL）
+    "strict_no_pass": False,        # True → 最近 K 个 closed 波"无任何 PASS"即停区（严于全 FAIL；两条路径均生效）
     "unknown_warn": True,           # verdict 空/不可识别 → 输出 WARN，但不当作"通过"也不据此拦截
+    # ---- 2026-09-23 按轴计数（axis_scope=True 且 schema 齐备时生效，否则回落旧口径）----
+    "axis_scope": True,             # 规则 B 按轴(region×dataset)计数；False=旧全区口径
+    "axis_window": 8,               # B2 聚合窗口：最近 M 个 closed 波（B1 同窗口内取该轴序列）
+    "distinct_fail_axes": 4,        # B2：窗口内 ≥D 个不同轴全 FAIL 且无 PASS → 停区
+    "exempt_dead_end_waves": True,  # 产出新 dead_end 的 FAIL 波不计数
+    "exempt_zero_cost_waves": True, # 零配额 FAIL（有 gate_results 无 backtest）不计数
 }
 
 
@@ -1006,7 +1021,7 @@ def _run_backlog_gate(
 
     db_path = resolve_db_path()
     try:
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         try:
             row = conn.execute(
                 "SELECT value FROM ledger_kv WHERE region=? AND key='backlog_gate_override'",
@@ -1136,16 +1151,238 @@ def _normalize_verdict(raw: Any) -> str:
     return "UNKNOWN"
 
 
+def _parse_dt_loose(value: Any) -> Optional[datetime]:
+    """容错解析台账时间戳（'YYYY-MM-DD[ HH:MM:SS[.fff]]' / ISO T 分隔），失败返回 None。"""
+    if not value:
+        return None
+    s = str(value).strip().replace("T", " ").rstrip("Z")
+    for fmt in ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def _stop_rules_schema_supports_axis(conn) -> bool:
+    """探测库 schema 是否支持规则 B 按轴计数（2026-09-23）。
+
+    需要：wave_results 带 wave_number/verdict/status/created_at/updated_at；
+    backtest_results 带 wave/dataset/sharpe；expressions（wave/dataset）、
+    gate_results（wave）、registry_empirical（layer/payload/created_at）表齐备。
+    缺任一项 → False，调用方回落旧口径（保守原则：零配额/dead_end 豁免需正面
+    证据，拿不到证据保持旧行为——旧测试夹具即依赖此回落）。
+    """
+    def _cols(table: str) -> set:
+        try:
+            return {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
+        except Exception:
+            return set()
+
+    def _has(table: str) -> bool:
+        return conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
+        ).fetchone() is not None
+
+    if not {"region", "wave_number", "verdict", "status",
+            "created_at", "updated_at"} <= _cols("wave_results"):
+        return False
+    if not {"region", "wave", "dataset", "sharpe"} <= _cols("backtest_results"):
+        return False
+    if not _has("expressions") or not {"region", "wave", "dataset"} <= _cols("expressions"):
+        return False
+    if not _has("gate_results") or not {"region", "wave"} <= _cols("gate_results"):
+        return False
+    if not _has("registry_empirical") or not {
+            "region", "layer", "payload", "created_at"} <= _cols("registry_empirical"):
+        return False
+    return True
+
+
+def _axis_wave_metadata(conn, region: str, wave_number: Any) -> Dict[str, Any]:
+    """单波按轴元数据：axis(dataset) / n_backtests / max_abs_sharpe / zero_cost。
+
+    axis 取值序：backtest_results(wave=波号) → expressions(wave=波号) → None。
+    zero_cost = 该波无任何回测且 gate_results 有该波记录（过了 gate 但从未回测）。
+    波号对齐：wave_results.wave_number 与 backtest_results.wave / expressions.wave /
+    gate_results.wave 都是 TEXT，比较一律走 str()。
+    """
+    wave = str(wave_number)
+    n_bt, max_abs = conn.execute(
+        "SELECT COUNT(*), MAX(ABS(sharpe)) FROM backtest_results WHERE region=? AND wave=?",
+        (region, wave),
+    ).fetchone()
+    axis = None
+    for table in ("backtest_results", "expressions"):
+        row = conn.execute(
+            f"SELECT dataset FROM {table} WHERE region=? AND wave=? "
+            f"AND dataset IS NOT NULL AND dataset != '' LIMIT 1",
+            (region, wave),
+        ).fetchone()
+        if row:
+            axis = row[0]
+            break
+    zero_cost = False
+    if int(n_bt or 0) == 0:
+        zero_cost = conn.execute(
+            "SELECT 1 FROM gate_results WHERE region=? AND wave=? LIMIT 1", (region, wave)
+        ).fetchone() is not None
+    return {
+        "axis": axis,
+        "n_backtests": int(n_bt or 0),
+        "max_abs_sharpe": float(max_abs) if max_abs is not None else None,
+        "zero_cost": zero_cost,
+    }
+
+
+def _dead_end_productive(
+    wave_number: Any,
+    wave_created: Any,
+    wave_updated: Any,
+    dead_rows: List[Any],
+) -> bool:
+    """该波是否产出新 dead_end（2026-09-23 豁免口径）。
+
+    registry_empirical(layer='dead_end') 中 payload 提及该波号（如 `"wave": 216`），
+    或 created_at 落在 [波 created_at, 波 updated_at + 2 天] 窗口内。
+    """
+    wn = str(wave_number)
+    created = _parse_dt_loose(wave_created)
+    updated = _parse_dt_loose(wave_updated) or created
+    deadline = (updated + timedelta(days=2)) if updated else None
+    for _id, payload, de_created in dead_rows:
+        if wn and payload and wn in str(payload):
+            return True
+        de_dt = _parse_dt_loose(de_created)
+        if de_dt and created and deadline and created <= de_dt <= deadline:
+            return True
+    return False
+
+
+def _wall_routing_hint(waves: List[Dict[str, Any]], floor: float) -> Optional[str]:
+    """撞墙型 FAIL（max|sharpe| ≥ floor）的路由提示：信号存在但结构性不可提交。"""
+    wall = [w for w in waves
+            if w.get("max_abs_sharpe") is not None and w["max_abs_sharpe"] >= floor]
+    if not wall:
+        return None
+    detail = "/".join(f"{w['wave']}({w['max_abs_sharpe']:.2f})" for w in wall[:5])
+    return (f"撞墙型 FAIL：波 {detail} max|sharpe| ≥ floor {floor}——"
+            f"信号存在但结构性不可提交：优先 prod-first 探针/换 universe/换池，而非停区")
+
+
+def _evaluate_stop_rules_axis(
+    conn,
+    region: str,
+    dataset: Optional[str],
+    cfg: Dict[str, Any],
+    floor: float,
+):
+    """按轴口径（axis_scope=True）的规则 B：B1 同轴熔断 + B2 区级多轴停（2026-09-23）。
+
+    取最近 axis_window 个 closed 波（verdict 已归一），逐波补元数据并分类：
+      可计数 FAIL = verdict==FAIL 且非 zero_cost（开关）且非 dead_end_productive（开关）；
+      豁免 FAIL 不计数也不打断连续性；非 FAIL（PASS/PARTIAL/UNKNOWN）打断连续失败。
+      signal_class（wall / signal_absent / unknown）仅作 evidence 标注——信号缺席
+      （max|sharpe| < floor）的拦截归 signal_floor 闸，与本闸正交分工。
+
+    返回 (hits, waves)：hits 为拦截文案（含撞墙路由提示）；waves 为每波证据（最近在前）。
+    """
+    window = max(1, int(cfg.get("axis_window") or 8))
+    k = int(cfg["consecutive_fail_waves"])
+    d_axes = max(1, int(cfg.get("distinct_fail_axes") or 4))
+    rows = conn.execute(
+        "SELECT wave_number, verdict, created_at, updated_at FROM wave_results "
+        "WHERE region=? AND status='closed' "
+        "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT ?",
+        (region, window),
+    ).fetchall()
+    dead_rows = conn.execute(
+        "SELECT id, payload, created_at FROM registry_empirical "
+        "WHERE region=? AND layer='dead_end'",
+        (region,),
+    ).fetchall()
+    waves: List[Dict[str, Any]] = []
+    for wave_number, raw_verdict, created_at, updated_at in rows:
+        meta = _axis_wave_metadata(conn, region, wave_number)
+        verdict = _normalize_verdict(raw_verdict)
+        zero_cost = bool(meta["zero_cost"]) and bool(cfg.get("exempt_zero_cost_waves", True))
+        productive = False
+        if cfg.get("exempt_dead_end_waves", True):
+            productive = _dead_end_productive(wave_number, created_at, updated_at, dead_rows)
+        countable = verdict == "FAIL" and not zero_cost and not productive
+        # 信号分类（evidence 标注用，与 signal_floor 闸正交）：FAIL 波一律标注——
+        # wall（信号存在但结构性不可提交）/ signal_absent（信号缺席，拦截归 signal_floor
+        # 闸）/ unknown（无回测 sharpe 证据）；非 FAIL 波不标注。
+        if verdict == "FAIL" and meta["max_abs_sharpe"] is not None:
+            signal_class = "wall" if meta["max_abs_sharpe"] >= floor else "signal_absent"
+        elif verdict == "FAIL":
+            signal_class = "unknown"
+        else:
+            signal_class = None
+        waves.append({
+            "wave": str(wave_number),
+            "verdict": verdict,
+            "verdict_raw": None if raw_verdict is None else str(raw_verdict),
+            "axis": meta["axis"],
+            "n_backtests": meta["n_backtests"],
+            "max_abs_sharpe": meta["max_abs_sharpe"],
+            "zero_cost": zero_cost,
+            "dead_end_productive": productive,
+            "countable_fail": countable,
+            "signal_class": signal_class,
+        })
+
+    hits: List[str] = []
+    # B1 同轴熔断：仅当开波带 dataset（开波未定轴不判——不能因上一波的轴死了就拦新轴）
+    if dataset:
+        streak = 0
+        involved: List[Dict[str, Any]] = []
+        for w in waves:
+            if w["axis"] != dataset:
+                continue
+            if w["countable_fail"]:
+                streak += 1
+                involved.append(w)
+            elif w["verdict"] == "FAIL":
+                continue  # 豁免 FAIL（零配额/dead_end）：不计数也不打断连续性
+            else:
+                break  # 非 FAIL（PASS/PARTIAL/UNKNOWN）打断连续失败
+        if streak >= k:
+            seq = "/".join(w["wave"] for w in involved[:k])
+            hits.append(f"B: 轴 {dataset} 连续 {k} 波 FAIL（换数据集/换轴）——{seq}")
+            hint = _wall_routing_hint(involved, floor)
+            if hint:
+                hits.append(hint)
+    # B2 区级多轴停：窗口内无任何 PASS 且 ≥D 个不同轴全部 FAIL（多轴探索已证伪）
+    if not any(w["verdict"] == "PASS" for w in waves):
+        groups: Dict[Any, List[Dict[str, Any]]] = {}
+        for w in waves:
+            groups.setdefault(w["axis"], []).append(w)
+        qualifying = []
+        for axis, members in groups.items():
+            if (all(m["verdict"] == "FAIL" for m in members)
+                    and any(m["countable_fail"] for m in members)):
+                qualifying.append((axis, [m for m in members if m["countable_fail"]]))
+        if len(qualifying) >= d_axes:
+            names = ", ".join(str(a) for a, _ in qualifying)
+            hits.append(f"B: 窗口内 {len(qualifying)} 个不同轴全部 FAIL（{names}），"
+                        f"多轴探索已证伪")
+            hint = _wall_routing_hint([m for _, ms in qualifying for m in ms], floor)
+            if hint:
+                hits.append(hint)
+    return hits, waves
+
+
 def _run_stop_rules_gate(
     region: str,
     dataset: Optional[str],
     campaign_dir: str,
 ) -> Dict[str, Any]:
-    """区域停止规则（2026-09-15 ⑦ SQL 化；S2/S3 前置，零配额）。
+    """区域停止规则（2026-09-15 ⑦ SQL 化；2026-09-23 按轴改版；S2/S3 前置，零配额）。
 
     ra-pipeline「循环与停止」表里两条规则此前只是 prose，从未被任何代码判定：
       A. yield=0 且样本 ≥100 的区不要再投槽位（GBR 0/327 本应触发）
-      B. 连续 3 波全 FAIL → 暂停该区
+      B. 连续失败停区（旧口径：最近 K 个 closed 波 verdict 全 FAIL）
     现按库判定。用户显式覆盖：ledger `stop_rules_override`
     {"reason": "...", "until": "YYYY-MM-DD"(可选)} —— 命中即放行并记录覆盖原因
     （SOP：用户指令优先，但要在台账留痕）。
@@ -1153,7 +1390,20 @@ def _run_stop_rules_gate(
     2026-09-17 加固（P0-3）：规则 B 的输入先经 `_normalize_verdict` 归一 ——
     自由文本 `0/N 过硬闸` 归 FAIL，空值归 UNKNOWN。UNKNOWN 既不当作"通过"
     （会 WARN 提示补写），也不据此拦截（避免因台账缺写误停区域）。
-    可选更严口径 `strict_no_pass=True`：最近 K 波"无任何 PASS"即停。
+    可选更严口径 `strict_no_pass=True`：最近 K 波"无任何 PASS"即停（两条路径均生效）。
+
+    2026-09-23 按轴改版（axis_scope=True 且 schema 齐备时；否则完全回落旧口径）：
+    轴 = region×dataset。连续失败计数器按轴作用域，换数据集/换轴即清零：
+      B1 同轴熔断——开波带 dataset 时，该轴最近 closed 波序列中连续可计数 FAIL
+        ≥ consecutive_fail_waves(K) → 拦截（换数据集/换轴）；
+      B2 区级多轴停——最近 axis_window 个 closed 波窗口内无任何 PASS，且全部成员
+        为 FAIL 的不同轴数 ≥ distinct_fail_axes(D) → 停区（多轴探索已证伪）。
+    可计数 FAIL = verdict==FAIL 且非 UNKNOWN 且非零配额 FAIL（gate_results 有记录
+    但 backtest_results 无记录，开关 exempt_zero_cost_waves）且非有信息产出的 FAIL
+    （registry_empirical 新增 dead_end 提及该波，开关 exempt_dead_end_waves）。
+    撞墙型 FAIL（波内 max|sharpe| ≥ floor）计数但附路由提示（优先 prod-first
+    探针/换 universe/换池，而非停区）；信号缺席的拦截归 signal_floor 闸，与本闸
+    正交（本闸只在 evidence 标注 signal_absent/wall）。
     """
     result: Dict[str, Any] = {"step": "stop_rules_gate", "success": True}
     # 测试/沙箱隔离口：WQB_DISABLE_STOP_RULES_GATE=1 时跳过（与 backlog 闸的
@@ -1164,6 +1414,7 @@ def _run_stop_rules_gate(
         return result
     cfg = dict(STOP_RULES_DEFAULTS)
     thresholds_path = os.path.join(campaign_dir, "config", "thresholds.json")
+    thresholds: Dict[str, Any] = {}
     try:
         with open(thresholds_path, "r", encoding="utf-8") as f:
             thresholds = json.load(f)
@@ -1173,10 +1424,17 @@ def _run_stop_rules_gate(
     if cfg.get("enabled") is False:
         result["skipped"] = "stop_rules disabled in thresholds.json"
         return result
+    # 撞墙提示用的 sharpe floor：与 signal_floor 闸同源（diversity.signal_floor.
+    # max_sharpe_floor，缺省 0.5）。信号缺席的拦截归 signal_floor 闸，本闸只标注。
+    floor = float(((thresholds.get("diversity") or {}).get("signal_floor") or {}).get(
+        "max_sharpe_floor", 0.5))
 
     db_path = resolve_db_path()
+    axis_ready = False       # schema 齐备且 axis_scope=True → 按轴口径；否则旧口径
+    axis_hits: List[str] = []
+    waves: List[Dict[str, Any]] = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         try:
             # 覆盖键
             row = conn.execute(
@@ -1199,11 +1457,18 @@ def _run_stop_rules_gate(
                 (float(cfg["sharpe_min"]), float(cfg["fitness_min"]), region),
             ).fetchone()
             passed = int(passed or 0)
-            # B. 最近 K 个 closed 波的 verdict（原样取出，归一化统一在下方做）
             k = int(cfg["consecutive_fail_waves"])
-            raw_verdicts = [v for (v,) in conn.execute(
-                "SELECT verdict FROM wave_results WHERE region=? AND status='closed' "
-                "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT ?", (region, k))]
+            # B. 最近 closed 波 verdict（原样取出，归一化统一在下方做）——
+            #    按轴口径（schema 齐备且 axis_scope=True）取 axis_window 窗口并逐波
+            #    补元数据；否则回落旧口径只取最近 K 个。
+            axis_ready = bool(cfg.get("axis_scope", True)) and _stop_rules_schema_supports_axis(conn)
+            if axis_ready:
+                axis_hits, waves = _evaluate_stop_rules_axis(conn, region, dataset, cfg, floor)
+                raw_verdicts = [w["verdict_raw"] for w in waves[:k]]
+            else:
+                raw_verdicts = [v for (v,) in conn.execute(
+                    "SELECT verdict FROM wave_results WHERE region=? AND status='closed' "
+                    "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT ?", (region, k))]
         finally:
             conn.close()
     except Exception as e:
@@ -1211,18 +1476,26 @@ def _run_stop_rules_gate(
         return result
 
     # 2026-09-17 加固：先归一化 verdict 再判定（自由文本/空值不再静默漏判）
-    verdicts = [_normalize_verdict(v) for v in raw_verdicts]
+    if axis_ready:
+        verdicts = [w["verdict"] for w in waves[:k]]
+    else:
+        verdicts = [_normalize_verdict(v) for v in raw_verdicts]
     result["evidence"] = {
         "backtested": int(bt or 0),
         "passed": passed,
         "recent_closed_verdicts": verdicts,
         "recent_closed_verdicts_raw": [None if v is None else str(v) for v in raw_verdicts],
     }
+    if axis_ready:
+        result["evidence"]["axis_scope"] = True
+        result["evidence"]["wave_details"] = waves
     hits = []
     if int(bt or 0) >= int(cfg["yield_min_backtests"]) and passed == 0:
         hits.append(f"A: {region} 已回测 {bt} 条、达标 0（≥{cfg['yield_min_backtests']} 样本零产出）")
+    hits.extend(axis_hits)
     # B：归一化后判定。
-    #   默认口径 = 全 FAIL（与原语义一致，只是现在能识别 `0/N 过硬闸` 等自由文本形态）。
+    #   按轴口径：B1 同轴熔断 / B2 区级多轴停（见 _evaluate_stop_rules_axis）。
+    #   旧口径 = 全 FAIL（与原语义一致，只是现在能识别 `0/N 过硬闸` 等自由文本形态）。
     #   UNKNOWN（空/不可识别）出现时**不**据此拦截，只 WARN —— 既不把"没写"当"通过"，
     #   也不因台账缺写误停区域。
     unknowns = [v for v in verdicts if v == "UNKNOWN"]
@@ -1230,7 +1503,7 @@ def _run_stop_rules_gate(
         if cfg.get("strict_no_pass"):
             if not any(v == "PASS" for v in verdicts):
                 hits.append(f"B: 最近 {k} 个 closed 波无任何 PASS（{'/'.join(verdicts)}）")
-        elif all(v == "FAIL" for v in verdicts):
+        elif not axis_ready and all(v == "FAIL" for v in verdicts):
             hits.append(f"B: 最近 {k} 个 closed 波 verdict 全 FAIL")
     if unknowns and cfg.get("unknown_warn", True):
         result["warning"] = (
@@ -1340,7 +1613,7 @@ def _run_signal_floor_gate(
     rows: List[Dict[str, Any]] = []
     recent_waves: List[str] = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         try:
             where = "region=? AND sharpe IS NOT NULL"
             params: List[Any] = [region]
@@ -1425,7 +1698,7 @@ def _ensure_campaign_config(campaign_dir: str, region: str, result: Dict[str, An
         # 从 DB ledger 推导配置
         import sqlite3
         db_path = os.path.join(REPO_ROOT, "data", "wqb.db")
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         c = conn.cursor()
 
         # 读 s0_whitelist 获取 delay/universe（2026-09-17 P0-4 修复）

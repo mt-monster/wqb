@@ -29,6 +29,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import add_campaign_arg, CampaignContext
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 STATE_ORDER = ["untried", "has_signal", "near_gate", "active", "saturated",
                "dead_local", "dead_xregion", "os_decay"]
 
@@ -60,7 +61,7 @@ def _norm_family(f):
 
 def load_families(db):
     """族级状态聚合。返回 {(region, family): state_dict}。"""
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     con.row_factory = sqlite3.Row
     fams = {}
     # 1. registry win / dead

@@ -149,3 +149,203 @@ def test_real_db_no_schema_drift():
         f"检测到白名单契约漂移：{drifted}。请跑 "
         f"`python tools/normalize_ledger_whitelist.py --apply --db-backup` 归一。"
     )
+
+
+# --------------------------------------------------------------------- 4
+# 写路径的结构性防护（2026-09-26 根因修复）
+# ---------------------------------------------------------------------
+# 上面 `test_real_db_no_schema_drift` 只能**事后抓**漂移；HKG 那次漂移的成因是
+# `upsert_ledger_key(mode="replace")` 把 s0_whitelist 整值覆写成
+# `{'datasets','generated_at','note'}`（缺 `_schema_from`/`_legacy`）。
+# 现在把不变量前移到写路径：契约 key 的 dict 值落库前强制归一。
+# 这几条测试守住那个防护本身（否则它可能被重构掉，漂移又会静默复发）。
+
+_LEDGER_DDL = """
+CREATE TABLE ledger_kv (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    region VARCHAR(50) NOT NULL,
+    key VARCHAR(200) NOT NULL,
+    value JSON NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(region, key)
+);
+"""
+
+_DRIFTED = {"datasets": ["model238", "analyst94"],
+            "generated_at": "2026-09-25 18:02:44",
+            "note": "probe-only 基线波"}
+
+
+def _mcp_mod(tmp_path, monkeypatch):
+    """临时库 + reload 后的 wqb_db_mcp 模块（沿用 test_cascade_wave_number_no_clobber 的写法）。"""
+    import importlib
+    import sys as _sys
+    from pathlib import Path as _Path
+
+    repo = _Path(__file__).resolve().parents[2]
+    db = tmp_path / "t.db"
+    con = sqlite3.connect(str(db))
+    con.executescript(_LEDGER_DDL)
+    con.commit()
+    con.close()
+    if str(repo) not in _sys.path:
+        _sys.path.insert(0, str(repo))
+    import wqb_db_mcp
+    mod = importlib.reload(wqb_db_mcp)
+    mod.DB_PATH = db
+    return mod, db
+
+
+def _read_key(db, region, key):
+    con = sqlite3.connect(str(db))
+    try:
+        row = con.execute(
+            "SELECT value FROM ledger_kv WHERE region=? AND key=?", (region, key)).fetchone()
+    finally:
+        con.close()
+    return json.loads(row[0]) if row else None
+
+
+def test_upsert_canonicalizes_drifted_s0_whitelist(tmp_path, monkeypatch):
+    """契约 key 的 raw 形态经 upsert 落库后必须是契约形态 + 可回滚。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    res = mod.upsert_ledger_key("HKG", "s0_whitelist", dict(_DRIFTED))
+    assert res.get("error") is None, res
+
+    stored = _read_key(db, "HKG", "s0_whitelist")
+    assert "datasets" in stored and "_schema_from" in stored, f"未归一：{stored}"
+    assert stored["datasets"] == _DRIFTED["datasets"], "数据集内容被改动"
+    assert isinstance(stored.get("_legacy"), str), (
+        "_legacy 必须是原始 JSON 字符串（与 normalize_ledger_whitelist.py 落库形态一致，且可回滚）"
+    )
+    assert json.loads(stored["_legacy"]) == _DRIFTED, "_legacy 未能还原原值（回滚链断裂）"
+    # 写路径归一后，契约测试的口径也必须通过
+    assert "datasets" in stored and "_schema_from" in stored
+
+
+def test_upsert_is_idempotent_on_canonical_s0_whitelist(tmp_path, monkeypatch):
+    """已合规的值必须**原样**落库（幂等：不重复包一层 _legacy、不改 _schema_from）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    canonical = {"datasets": ["a1"], "generated_at": None,
+                 "_legacy": '{"datasets": ["a1"]}', "_schema_from": "datasets"}
+    mod.upsert_ledger_key("HKG", "s0_whitelist", dict(canonical))
+    assert _read_key(db, "HKG", "s0_whitelist") == canonical
+
+
+def test_upsert_does_not_touch_other_keys(tmp_path, monkeypatch):
+    """防护不得越界：非契约 key 原样落库（否则会污染 submit_ready 之类的自由结构）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    payload = {"alpha_id": "aaaa1111", "status": "READY", "note": "任意结构"}
+    mod.upsert_ledger_key("HKG", "submit_ready", dict(payload))
+    assert _read_key(db, "HKG", "submit_ready") == payload
+
+
+def test_upsert_merge_on_s0_whitelist_stays_canonical(tmp_path, monkeypatch):
+    """merge 模式合并后仍须是契约形态（否则 merge 会绕过防护）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    mod.upsert_ledger_key("HKG", "s0_whitelist", dict(_DRIFTED))
+    mod.upsert_ledger_key("HKG", "s0_whitelist", {"note": "追加说明"}, mode="merge")
+    stored = _read_key(db, "HKG", "s0_whitelist")
+    assert "datasets" in stored and "_schema_from" in stored, f"merge 后不再合规：{stored}"
+    assert stored["datasets"] == _DRIFTED["datasets"]
+
+
+# --------------------------------------------------------------------- 4
+# 写路径的结构性防护（2026-09-26 根因修复）
+# ---------------------------------------------------------------------
+# 上面 `test_real_db_no_schema_drift` 只能**事后抓**漂移；HKG 那次漂移的成因是
+# `upsert_ledger_key(mode="replace")` 把 s0_whitelist 整值覆写成
+# `{'datasets','generated_at','note'}`（缺 `_schema_from`/`_legacy`）。
+# 现在把不变量前移到写路径：契约 key 的 dict 值落库前强制归一。
+# 这几条测试守住那个防护本身（否则它可能被重构掉，漂移又会静默复发）。
+
+_LEDGER_DDL = """
+CREATE TABLE ledger_kv (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    region VARCHAR(50) NOT NULL,
+    key VARCHAR(200) NOT NULL,
+    value JSON NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(region, key)
+);
+"""
+
+_DRIFTED = {"datasets": ["model238", "analyst94"],
+            "generated_at": "2026-09-25 18:02:44",
+            "note": "probe-only 基线波"}
+
+
+def _mcp_mod(tmp_path, monkeypatch):
+    """临时库 + reload 后的 wqb_db_mcp 模块（沿用 test_cascade_wave_number_no_clobber 的写法）。"""
+    import importlib
+    import sys as _sys
+    from pathlib import Path as _Path
+
+    repo = _Path(__file__).resolve().parents[2]
+    db = tmp_path / "t.db"
+    con = sqlite3.connect(str(db))
+    con.executescript(_LEDGER_DDL)
+    con.commit()
+    con.close()
+    if str(repo) not in _sys.path:
+        _sys.path.insert(0, str(repo))
+    import wqb_db_mcp
+    mod = importlib.reload(wqb_db_mcp)
+    mod.DB_PATH = db
+    return mod, db
+
+
+def _read_key(db, region, key):
+    con = sqlite3.connect(str(db))
+    try:
+        row = con.execute(
+            "SELECT value FROM ledger_kv WHERE region=? AND key=?", (region, key)).fetchone()
+    finally:
+        con.close()
+    return json.loads(row[0]) if row else None
+
+
+def test_upsert_canonicalizes_drifted_s0_whitelist(tmp_path, monkeypatch):
+    """契约 key 的 raw 形态经 upsert 落库后必须是契约形态 + 可回滚。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    res = mod.upsert_ledger_key("HKG", "s0_whitelist", dict(_DRIFTED))
+    assert res.get("error") is None, res
+
+    stored = _read_key(db, "HKG", "s0_whitelist")
+    assert "datasets" in stored and "_schema_from" in stored, f"未归一：{stored}"
+    assert stored["datasets"] == _DRIFTED["datasets"], "数据集内容被改动"
+    assert isinstance(stored.get("_legacy"), str), (
+        "_legacy 必须是原始 JSON 字符串（与 normalize_ledger_whitelist.py 落库形态一致，且可回滚）"
+    )
+    assert json.loads(stored["_legacy"]) == _DRIFTED, "_legacy 未能还原原值（回滚链断裂）"
+    # 写路径归一后，契约测试的口径也必须通过
+    assert "datasets" in stored and "_schema_from" in stored
+
+
+def test_upsert_is_idempotent_on_canonical_s0_whitelist(tmp_path, monkeypatch):
+    """已合规的值必须**原样**落库（幂等：不重复包一层 _legacy、不改 _schema_from）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    canonical = {"datasets": ["a1"], "generated_at": None,
+                 "_legacy": '{"datasets": ["a1"]}', "_schema_from": "datasets"}
+    mod.upsert_ledger_key("HKG", "s0_whitelist", dict(canonical))
+    assert _read_key(db, "HKG", "s0_whitelist") == canonical
+
+
+def test_upsert_does_not_touch_other_keys(tmp_path, monkeypatch):
+    """防护不得越界：非契约 key 原样落库（否则会污染 submit_ready 之类的自由结构）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    payload = {"alpha_id": "aaaa1111", "status": "READY", "note": "任意结构"}
+    mod.upsert_ledger_key("HKG", "submit_ready", dict(payload))
+    assert _read_key(db, "HKG", "submit_ready") == payload
+
+
+def test_upsert_merge_on_s0_whitelist_stays_canonical(tmp_path, monkeypatch):
+    """merge 模式合并后仍须是契约形态（否则 merge 会绕过防护）。"""
+    mod, db = _mcp_mod(tmp_path, monkeypatch)
+    mod.upsert_ledger_key("HKG", "s0_whitelist", dict(_DRIFTED))
+    mod.upsert_ledger_key("HKG", "s0_whitelist", {"note": "追加说明"}, mode="merge")
+    stored = _read_key(db, "HKG", "s0_whitelist")
+    assert "datasets" in stored and "_schema_from" in stored, f"merge 后不再合规：{stored}"
+    assert stored["datasets"] == _DRIFTED["datasets"]

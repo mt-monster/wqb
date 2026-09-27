@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 def _json_dumps(obj: Any) -> str:
     return json.dumps(obj, ensure_ascii=False, sort_keys=True)
@@ -45,7 +46,7 @@ class IdeaStore:
             db_path = str(root / "data" / "ideas.db")
         self.db_path = db_path
         Path(db_path).parent.mkdir(parents=True, exist_ok=True)
-        self.connection: Optional[sqlite3.Connection] = sqlite3.connect(db_path)
+        self.connection: Optional[sqlite3.Connection] = db_connect(db_path)
         self._init_tables()
 
     def _init_tables(self) -> None:

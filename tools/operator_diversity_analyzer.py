@@ -15,6 +15,9 @@ import sqlite3
 import sys
 from typing import Any, Dict, List
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 平台全部可用算子（从 pool_diversity.py 复制）
@@ -78,7 +81,7 @@ def get_op_category(op: str) -> str:
 def load_expressions_from_db(region: str, wave: int = None, dataset: str = None) -> List[str]:
     """从 DB 加载表达式."""
     db_path = os.path.join(PROJECT_ROOT, 'data', 'wqb.db')
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     cur = conn.cursor()
     
     sql = "SELECT expression FROM expressions WHERE region=?"

@@ -8,6 +8,20 @@
    "source": "region_kb"
   },
   {
+   "id": "intraday_pv_feats 收盘前 30 分钟反转 / 价量相关反转（GLB→ASI 迁移，raw 达标但撞 ASI 结构闸）",
+   "what": "intraday_pv_feats 收盘前 30 分钟反转 / 价量相关反转（GLB→ASI 迁移，raw 达标但撞 ASI 结构闸）",
+   "key": "-group_zscore(ts_decay_linear({corr_last_trade_price_with_volume | mean_last_trade_price_return_30m_pre_close_2}, 5), country)",
+   "evidence": "2026-09-20 probe_preclose_asi + probe_robustfix_asi 共 15 条。raw S/F/CW/turnover/sub 全过；未过的是 ASI 专属结构闸：LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO（robust/main 需≥0.9，实测 0.69-0.83）+ LOW_ROBUST_UNIVERSE_RETURNS（收益保持率需≥0.9）；corr 族另撞 LOW_ASI_JPN_SHARPE（JPN 子域需≥1.0，实测 0.38-0.71）；preclose 族 2Y 1.37<1.58。",
+   "source": "region_kb"
+  },
+  {
+   "id": "ASI 结构模板 · 关注度×尾盘量占比门控（robust/prod 双墙通用解，2026-09-21 双数据集实证）",
+   "what": "ASI 结构模板 · 关注度×尾盘量占比门控（robust/prod 双墙通用解，2026-09-21 双数据集实证）",
+   "key": "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume,22))) > 0.5, rank(ts_mean(normalized_news_article_count,22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(X,4), country)), 0.5), or(V < 0.3, N < 0.2))；单关注门控版 trade_when(N>0.5, ..., N<0.4)",
+   "evidence": "同一基信号未门控：ipv 尾盘反转 robust 0.81/prod 0.815；dl 20d 预测 robust 0.82/prod 0.83 —— 门控后 robust ≥0.9、prod 降至 0.51-0.67。补集子域（低关注/低量占比/大盘）信号全灭（0.06-1.09）说明 ASI 的可用收益集中在『高关注×高尾盘成交占比×中小市值』子域，门控把主宇宙收敛到该子域后 robust 宇宙保持率自然≥0.9。cap/adv20 硬裁剪（0.2-0.6）与 ×rank(adv20) 加权均无效（0.72-0.82）。",
+   "source": "region_kb"
+  },
+  {
    "id": "qMNMbeGj",
    "what": "qMNMbeGj",
    "key": "ACTIVE alpha (详见 region_kb)",
@@ -37,15 +51,67 @@
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "oth36 卖空披露 · 非动量骨架",
-   "reason": "",
+   "family": "region_kb",
+   "reason": "2026-09-20 robust 修复对照（9 条）：换宇宙 MINVOL10M/TOP500、trade_when(rank(adv20)>0.5) 门控、×rank(adv20) 加权均**不破** ROBUST 比率墙（0.69→0.71-0.83），说明平台 robust 宇宙不是简单流动性子集；corr 族 JPN 子域 0.38-0.62 恒不达 1.0（换宇宙/门控无效）→ corr 族在 ASI 需换字段族或做 JPN 特化。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "TOP500 宇宙下 preclose 30m 反转信号消失（S0.48），且 corr 族 sub_universe 0.61<0.81 → 小宇宙不适合日内微观结构信号；MINVOL1M 为本族唯一可用宇宙。",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "acquisition_model 并购目标概率 + sentiment23 Inferess 情绪 作主腿",
+   "reason": "ASI 两集不作主腿；与「news/sentiment 类 ASI 6 集全灭」先验一致（现 8 集）。",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "ASI-OTH36-NEW-SKELETON-WEAK"
+   "_entry_id": "ASI-ACQM-SNT23-PRIMARY-WEAK-20260921"
+  },
+  {
+   "family": "analyst10 分析师修订/创新分/SmartEstimate 变化（pretax/sales FY1-FY2）",
+   "reason": "ASI 分析师修订类不作主腿（单原子天花板 1.34 < ladder 1.58，GEM 模板 0.75）；可作慢变量门控腿。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-ANALYST10-REVISION-WEAK-20260921"
+  },
+  {
+   "family": "dl_riskfree_returns 20d 预测 × 波动率/证券借贷费 门控（非关注门控）",
+   "reason": "ASI 只有「关注度（新闻量）∩尾盘量占比」门控能同时过 robust 与 JPN；其它子域门控不再试。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-DL-ALT-GATES-ROBUST-WALL-20260921"
+  },
+  {
+   "family": "institutions6 机构持仓流/广度 + news_sentiment_transfer 情绪水平 作主腿",
+   "reason": "ASI 两集均不作主腿；news_sentiment_transfer 的 normalized_news_article_count 仅作关注度门控腿（已实证有效），institutions6 机构占比仅作慢变量门控腿。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-INST6-NST-PRIMARY-WEAK-20260921"
+  },
+  {
+   "family": "intraday_pv_feats corr_last_trade_price_with_volume 价量相关反转（country zscore/rank 系）",
+   "reason": "ASI 不再投 corr_*_with_volume/slippage 反转族的独立主腿；仅可作条件/分组辅助腿。GLB 同族（gJboYLRl 排队中）不受影响（GLB 无 JPN 闸、robust 用绝对值）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-IPV-CORR-REVERSAL-JPN-ROBUST-WALL-20260921"
+  },
+  {
+   "family": "intraday_pv_feats 日内动量/反转/滑点/量比机制",
+   "reason": "ASI 日内动量机制不作主腿；与既有 ACTIVE 的尾盘反转机制（preclose30m × 关注门控）不同，本机制全灭",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-IPV-INTRADAY-MOMENTUM-WEAK-20260924"
+  },
+  {
+   "family": "intraday_pv_feats 非反转机制（盘口失衡/偏度/峰度/开盘收益/TWAP-VWAP/价差/滑点/量钟/整数价/量偏度/日内区间/加速度/深度）",
+   "reason": "ASI 不再对 intraday_pv_feats 非反转维度做独立主腿探针；量/价偏度（1.2x）只可作条件腿或 signed_power 调制腿。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "ASI-IPV-NONREVERSAL-MECHANISMS-WEAK-20260921"
   }
  ],
  "region_context": {
-  "tier": "探针区（进行中，15 波 max w26）",
+  "tier": "RA×10 战役区（2026-09-20 起，主攻 intraday_pv_feats/PV 塔；16 塔全未点亮）",
   "settings_proven": {
    "universe": "MINVOL1M（qMNMbeGj 实证）/ MINVOL10M（rKjY5vGj 实证）/ TOP500 / ILLIQUID_MINVOL1M",
    "delay": 1,
@@ -53,12 +119,14 @@
     "MARKET（qMNMbeGj）",
     "INDUSTRY（rKjY5vGj）"
    ],
-   "proven_combos": "qMNMbeGj: MINVOL1M + MARKET + decay4 + trunc0.08；rKjY5vGj: MINVOL10M + INDUSTRY + decay6 + trunc0.05"
+   "proven_combos": "qMNMbeGj: MINVOL1M + MARKET + decay4 + trunc0.08；rKjY5vGj: MINVOL10M + INDUSTRY + decay6 + trunc0.05；2026-09-20 xr-probe：intraday_pv_feats 尾盘/价量反转在 MINVOL1M + SECTOR + decay6 raw S 1.98-2.30（MINVOL10M/TOP500 信号减半：0.88/0.48 与 1.86/1.97）"
   },
   "key_notes": [
    "含 COUNTRY 中性化（三区域检查可用）",
    "oth36 coverage 仅 0.2748（稀疏披露：只有存在可报告卖空持仓的股票才出现）。qMNMbeGj 用 ts_backfill(200) 解决，longCount 366 且 CONCENTRATED_WEIGHT PASS —— 说明填充是这个数据集的必备前置。注意跨区铁律 SPARSE-EVENT-TWO-WALLS：低 coverage 同时有 CW 墙与 turnover 墙两个风险，此处 CW 已由 backfill 解决、turnover 9.65% 天然健康。",
-   "HKG 台账结论『区域特有披露数据是强+干净的唯一来源』在此得到第三个佐证（前两个：IND transaction_cost、KOR insiders5）。oth36 是日本卖空监管披露。"
+   "HKG 台账结论『区域特有披露数据是强+干净的唯一来源』在此得到第三个佐证（前两个：IND transaction_cost、KOR insiders5）。oth36 是日本卖空监管披露。",
+   "2026-09-20 ASI 平台检查清单（RA）：LOW_SHARPE 1.58 / LOW_FITNESS 1.0 / LOW_2Y_SHARPE 1.58 / LOW_SUB_UNIVERSE_SHARPE（limit≈0.4×sharpe? 实测 0.81 vs S1.97）/ LOW_ASI_JPN_SHARPE 1.0 / LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO 0.9×S / LOW_ROBUST_UNIVERSE_RETURNS 0.9×returns / CONCENTRATED_WEIGHT / CLUSTER_TEST 1.58 / HIGH_TURNOVER。ASI 是本项目唯一同时带 JPN 子域闸 + robust 比率闸的区域。",
+   "2026-09-21 判死汇总：ipv 非反转机制(16 原子≤1.26)/其它日内窗口/补集子域；analyst10(探针+GEM)；institutions6、news_sentiment_transfer、acquisition_model、sentiment23 作主腿全弱；predictive_starmine 预测意外族撞 JPN 墙(0.16-0.58)，仅 SmartEstimate 收益率(value) JPN 过但 robust 0.80-0.88（liquidity 裁剪无效）。"
   ]
  },
  "_meta": {
@@ -69,173 +137,293 @@
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
-   "profile_fallback (仅 DB KB 空时)"
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
   ]
  },
  "gate_priors": {
   "sample_size": 1000,
-  "pass_rate": 0.013,
+  "pass_rate": 0.019,
   "by_neutralization": {
+   "SECTOR": {
+    "rate": 0.0259,
+    "n": 348
+   },
    "INDUSTRY": {
-    "rate": 0.0102,
-    "n": 394
+    "rate": 0.0132,
+    "n": 303
    },
    "MARKET": {
-    "rate": 0.016,
-    "n": 188
+    "rate": 0.0195,
+    "n": 154
    },
    "SUBINDUSTRY": {
     "rate": 0.0,
-    "n": 178
+    "n": 121
    },
    "SLOW": {
-    "rate": 0.0492,
-    "n": 61
-   },
-   "SECTOR": {
-    "rate": 0.0179,
-    "n": 168
+    "rate": 0.0484,
+    "n": 62
    }
   },
   "by_universe": {
    "MINVOL1M": {
-    "rate": 0.0135,
-    "n": 741
+    "rate": 0.0198,
+    "n": 808
    },
    "ILLIQUID_MINVOL1M": {
     "rate": 0.0,
-    "n": 99
+    "n": 48
    },
    "MINVOL10M": {
-    "rate": 0.0462,
-    "n": 65
+    "rate": 0.0484,
+    "n": 62
    },
    "TOP500": {
     "rate": 0.0,
-    "n": 95
+    "n": 82
    }
   },
   "by_operator_count": {
-   "<=4": {
-    "rate": 0.0065,
-    "n": 620
-   },
    "5-8": {
-    "rate": 0.0241,
-    "n": 332
+    "rate": 0.0227,
+    "n": 352
+   },
+   "<=4": {
+    "rate": 0.0127,
+    "n": 550
    },
    ">8": {
-    "rate": 0.0208,
-    "n": 48
+    "rate": 0.0408,
+    "n": 98
    }
   },
   "by_decay": {
+   "12": {
+    "rate": 0.0238,
+    "n": 126
+   },
    "1": {
     "rate": 0.0,
-    "n": 35
+    "n": 25
    },
    "0": {
     "rate": 0.0,
-    "n": 35
+    "n": 24
    },
    "2": {
-    "rate": 0.025,
-    "n": 40
+    "rate": 0.0303,
+    "n": 33
    },
    "3": {
     "rate": 0.0,
-    "n": 24
+    "n": 21
    },
    "4": {
-    "rate": 0.0147,
-    "n": 408
-   },
-   "5": {
-    "rate": 0.0,
-    "n": 16
+    "rate": 0.0198,
+    "n": 303
    },
    "6": {
-    "rate": 0.0151,
-    "n": 199
+    "rate": 0.0126,
+    "n": 239
    },
    "20": {
     "rate": 0.0,
-    "n": 73
+    "n": 46
    },
    "10": {
-    "rate": 0.0312,
-    "n": 96
+    "rate": 0.0472,
+    "n": 106
    },
    "8": {
-    "rate": 0.0,
-    "n": 53
+    "rate": 0.0182,
+    "n": 55
    }
   },
   "by_field_family": {
-   "mdl": {
-    "rate": 0.0,
-    "n": 194
-   },
-   "oth": {
-    "rate": 0.0686,
-    "n": 102
-   },
-   "imb": {
-    "rate": 0.0698,
-    "n": 43
-   },
-   "star": {
-    "rate": 0.0,
-    "n": 130
-   },
-   "qfl": {
-    "rate": 0.0,
-    "n": 49
-   },
-   "img": {
-    "rate": 0.0248,
-    "n": 121
-   },
-   "ask": {
-    "rate": 0.0,
-    "n": 15
-   },
-   "avg": {
-    "rate": 0.0,
-    "n": 69
-   },
-   "fnd": {
-    "rate": 0.0,
-    "n": 27
-   },
-   "price": {
-    "rate": 0.0,
-    "n": 28
+   "normalized": {
+    "rate": 0.05,
+    "n": 20
    },
    "rsk": {
     "rate": 0.0,
-    "n": 90
+    "n": 82
+   },
+   "mdl": {
+    "rate": 0.0,
+    "n": 113
+   },
+   "oth": {
+    "rate": 0.0833,
+    "n": 84
+   },
+   "imb": {
+    "rate": 0.0732,
+    "n": 41
+   },
+   "mean": {
+    "rate": 0.051,
+    "n": 98
+   },
+   "star": {
+    "rate": 0.0,
+    "n": 123
+   },
+   "qfl": {
+    "rate": 0.0,
+    "n": 40
+   },
+   "img": {
+    "rate": 0.0256,
+    "n": 117
+   },
+   "avg": {
+    "rate": 0.0,
+    "n": 56
+   },
+   "ep": {
+    "rate": 0.0,
+    "n": 16
+   },
+   "corr": {
+    "rate": 0.0,
+    "n": 22
+   },
+   "fnd": {
+    "rate": 0.0,
+    "n": 26
+   },
+   "price": {
+    "rate": 0.0,
+    "n": 27
    },
    "asc": {
     "rate": 0.0,
-    "n": 23
+    "n": 22
    }
   },
   "avoid": [
-   "neutralization=INDUSTRY(1%, n=394)",
-   "neutralization=MARKET(2%, n=188)",
-   "neutralization=SUBINDUSTRY(0%, n=178)",
-   "neutralization=SECTOR(2%, n=168)",
-   "field_family=mdl(0%, n=194)",
-   "field_family=star(0%, n=130)",
-   "field_family=qfl(0%, n=49)",
-   "field_family=avg(0%, n=69)",
-   "field_family=rsk(0%, n=90)",
-   "universe=MINVOL1M(1%, n=741)",
-   "universe=ILLIQUID_MINVOL1M(0%, n=99)",
-   "universe=TOP500(0%, n=95)"
+   "neutralization=INDUSTRY(1%, n=303)",
+   "neutralization=MARKET(2%, n=154)",
+   "neutralization=SUBINDUSTRY(0%, n=121)",
+   "field_family=rsk(0%, n=82)",
+   "field_family=mdl(0%, n=113)",
+   "field_family=star(0%, n=123)",
+   "field_family=qfl(0%, n=40)",
+   "field_family=avg(0%, n=56)",
+   "universe=MINVOL1M(2%, n=808)",
+   "universe=ILLIQUID_MINVOL1M(0%, n=48)",
+   "universe=TOP500(0%, n=82)"
   ],
-  "generated_at": "2026-09-07T18:04:03.496887+00:00",
+  "generated_at": "2026-09-24T05:53:23.557235+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 6,
+    "current_rate": 0.0126,
+    "current_n": 239,
+    "recommended": 10,
+    "rate": 0.0472,
+    "n": 106,
+    "lift": 2.36,
+    "source": "gate_priors",
+    "apply": true
+   },
+   {
+    "dim": "neutralization",
+    "current": "SECTOR",
+    "current_rate": 0.0259,
+    "current_n": 348,
+    "recommended": "SLOW",
+    "rate": 0.0484,
+    "n": 62,
+    "lift": 1.87,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
+  ]
  }
 }

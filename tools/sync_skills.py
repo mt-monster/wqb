@@ -206,14 +206,30 @@ def diff_tree(source: Path, target: Path) -> Tuple[List[Path], List[Path], List[
 
 
 #: 运行时产物判据（安装位有、仓库没有，但**属正常**，不参与孤儿清理也不该刷屏）
-RUNTIME_PARTS = {"data", "outputs", "output_report", "logs", "__pycache__"}
+# 2026-09-25 目标 C：裸 "data" 段豁免过宽——任何含 data 的路径段都被吞，会掩盖真孤儿。
+# 收窄为「带上下文的已知产物位置」：仅当 data 段出现在已知产物目录下才豁免。
+RUNTIME_PARTS = {"outputs", "output_report", "logs", "__pycache__"}
 RUNTIME_SUFFIXES = (".log", ".csv", ".pyc", ".pyo")
 RUNTIME_NAMES = {"agent_profile.json", "loop_state.json", "parsetab.py"}
 
+#: 已知产物位置（相邻两段路径模式）：GEM 数据产物 / FE 报告位 / GEM 备用产物位。
+#: 目标 A 迁移后 GEM 新产物落仓库 data/gem_runs（不在安装位），安装位只剩历史残留，
+#: 仍豁免但会被识别为已知模式；其他 skill 下出现的 data/ 段不再被误吞。
+RUNTIME_PATH_PATTERNS = (
+    ("brain-feature-implementation", "data"),
+    ("headless_runner", "outputs"),
+    ("brain-data-feature-engineering", "output_report"),
+)
+
 
 def _is_runtime_artifact(rel: Path) -> bool:
-    if any(part in RUNTIME_PARTS for part in rel.parts):
+    parts = rel.parts
+    if any(part in RUNTIME_PARTS for part in parts):
         return True
+    # 带上下文的已知产物位置：相邻两段匹配已知模式
+    for i in range(len(parts) - 1):
+        if (parts[i], parts[i + 1]) in RUNTIME_PATH_PATTERNS:
+            return True
     if rel.suffix in RUNTIME_SUFFIXES:
         return True
     if ".bak_" in rel.name or rel.name in RUNTIME_NAMES:

@@ -28,6 +28,7 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import add_campaign_arg, CampaignContext
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 SLOTS_TOTAL = 7
 GLOBAL = "GLOBAL"
 
@@ -84,7 +85,7 @@ def _prune_expired(holders, ttl_min):
 
 def allocate_wave(ctx, db):
     """CAS 分配 region 下一个波号。返回 (new_wave, conflict_warning)。"""
-    con = sqlite3.connect(db, timeout=10)
+    con = db_connect(db, timeout=10)
     try:
         key = "wave_alloc"
         row = _get(con, ctx.region, key)
@@ -136,7 +137,7 @@ def allocate_wave(ctx, db):
 
 def acquire_slots(ctx, db, n, ttl_min, owner_tag=None):
     """占用全局回测槽位预算。返回 (ok, remaining, warning)。"""
-    con = sqlite3.connect(db, timeout=10)
+    con = db_connect(db, timeout=10)
     try:
         row = _get(con, GLOBAL, "slot_holders")
         holders = []
@@ -163,7 +164,7 @@ def acquire_slots(ctx, db, n, ttl_min, owner_tag=None):
 
 def quota_reserve(ctx, db):
     """ET 日提交额度占用标记（soft：超限只告警不阻断）。返回 (ok, used_today, warning)。"""
-    con = sqlite3.connect(db, timeout=10)
+    con = db_connect(db, timeout=10)
     try:
         et_day = (_et_now() - timedelta(hours=4)).strftime("%Y-%m-%d")
         key = "quota_reserve"
@@ -190,7 +191,7 @@ def quota_reserve(ctx, db):
 
 
 def status(ctx, db):
-    con = sqlite3.connect(db, timeout=10)
+    con = db_connect(db, timeout=10)
     try:
         row = _get(con, GLOBAL, "slot_holders")
         holders = json.loads(row[0]).get("holders", []) if row else []

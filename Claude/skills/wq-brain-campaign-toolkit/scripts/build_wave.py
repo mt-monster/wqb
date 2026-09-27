@@ -402,6 +402,26 @@ def load_family_map(exprs_path=None, meta_file=None):
     return {}
 
 
+def _load_tools_module(campaign_dir, mod_name):
+    """惰性加载 <workspace>/tools 下的模块（quality_predict / prod_saturation_gate）。
+
+    2026-09-25 优化落地（P1/P4）：选波端引入 qp 质量预估与 prod 饱和降权。
+    模块不可用返回 None → 调用方降级为原行为，不阻断选波。
+    """
+    import importlib as _il
+
+    root = _workspace_root_from_campaign(campaign_dir)
+    tools_dir = os.path.join(root, "tools")
+    if not os.path.isdir(tools_dir):
+        return None
+    if tools_dir not in sys.path:
+        sys.path.insert(0, tools_dir)
+    try:
+        return _il.import_module(mod_name)
+    except Exception:
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser(description="战役统一选波器")
     add_campaign_arg(ap)
@@ -414,18 +434,51 @@ def main():
     ap.add_argument("--dataset", default=None, help="数据集（--from-db 时用于定位 GEM 源）")
     ap.add_argument("--wave", required=True)
     ap.add_argument("--size", type=int, default=48)
+    ap.add_argument("--expected-count", type=int, default=None,
+                    help="预定机制精确条数；与实际选中数不一致时拒绝落库")
+    ap.add_argument("--source-wave", default=None,
+                    help="显式从此源池重建；不优先读取目标波旧选集")
+    ap.add_argument("--selection-contract-key", default=None,
+                    help="DB ledger机制/对照清单；按source_id及原式精确核验，条数由清单推导")
     ap.add_argument("--per-bucket", type=int, default=8)
     ap.add_argument("--meta-file", default=None,
                     help="final_expressions_meta.json 路径（family 标签分桶）；缺省在 --file 同目录自动探测")
     ap.add_argument("--max-field-repeat", type=int, default=3)
+    ap.add_argument("--qp-mode", default="rank", choices=["off", "rank", "hard"],
+                    help="qp 质量预估（2026-09-25 P4）：off=不启用；rank=按预估 Sharpe 排序（默认）；"
+                         "hard=HARD_REJECT/EXPECTED_BLOCK 不入波（--qp-keep 留校准探针）")
+    ap.add_argument("--qp-keep", type=int, default=2,
+                    help="qp-mode=hard 时保留的高预估探针数（校准 qp 用，默认 2）")
+    ap.add_argument("--prod-risk-order", default="on", choices=["on", "off"],
+                    help="prod 饱和字段降权（2026-09-25 P1）：命中历史撞墙字段的表达式排后（默认 on）")
     ap.add_argument("--enhance-diversity", default="always", choices=["auto", "always", "never"],
                     help="多样性增强模式：always=强制增强（默认），auto=不足时增强，never=禁用")
-    ap.add_argument("--auto-coverage", default="auto", choices=["auto", "always", "never"],
-                    help="算子全覆盖：auto=无活跃契约时自动签发并注入（默认）；"
-                         "always=每波强制重签；never=禁用（不签发不注入）")
+    ap.add_argument("--auto-coverage", default="never", choices=["auto", "always", "never"],
+                    help="算子全覆盖：never=禁用（默认，2026-09-24 P1 强度优先改默认）；"
+                         "auto=无活跃契约时自动签发并注入；always=每波强制重签。"
+                         "背景：diversity-heal 会注入 group_cartesian_product(sector,sector) 等"
+                         "degenerate 式凑闸6（5 次命中），烧配额在无意义式上；"
+                         "never 同时关闭签发/注入/自愈三处，把多样性交给字段族不重复"
+                         "（--max-field-repeat）与算子树分桶（bucket_key）来控。")
     ap.add_argument("--coverage-per-wave", type=int, default=12,
                     help="自动签发时本波覆盖的欠用算子数（默认 12）")
+    ap.add_argument("--max-size-auto", action="store_true",
+                    help="2026-09-25 P2：生成上限公式化。size = min(--size, Σest_seats × 2)，"
+                         "est_seats 读 campaign_intel s0-select 的座位可达性估计；"
+                         "无估计时回落 --size。避免同骨架参数变体堆失控（GBR 7264 条积压实证）")
+    ap.add_argument("--backlog-check", action="store_true", default=True,
+                    help="2026-09-25 P2：积压清理硬门（默认开）。"
+                         "SELECT status,COUNT(*) FROM expressions WHERE region=? AND status='gem' "
+                         "> 2× 本波 size 时，本波结束优先把积压纳入下一波（--from-db 重取），"
+                         "禁止无脑新建表达式堆库。--no-backlog-check 可关闭")
+    ap.add_argument("--no-backlog-check", dest="backlog_check", action="store_false",
+                    help="关闭积压清理硬门（默认开）")
     a = ap.parse_args()
+    if a.size <= 0 or (a.expected_count is not None and a.expected_count <= 0):
+        ap.error("size and expected-count must be positive")
+    if a.selection_contract_key and (a.file or a.enhance_diversity != "never"
+                                    or a.auto_coverage != "never"):
+        ap.error("selection-contract requires DB input, --enhance-diversity never --auto-coverage never")
     ctx = CampaignContext(a.campaign_dir)
     # 2026-09-09：ctx 就绪后补一次工作区 src 解析，救回模块级导入失败的多样性增强
     # （skill 安装位与工作区不同树时 __file__ 向上推导必然失败）。
@@ -441,8 +494,60 @@ def main():
     if not _gate_report.get("ok", True):
         raise SystemExit(2)
 
+    # 2026-09-25 P2：积压清理硬门（默认开）。gem 状态积压 > 2× 本波 size 时，
+    # 本波结束优先把积压纳入下一波（--from-db 重取），禁止无脑新建表达式堆库。
+    # 实证：GBR 7264 条 gem 状态积压、ASI 3738、EUR 3515、GLB 2704。
+    if a.backlog_check:
+        try:
+            import sqlite3 as _sq
+            import os as _os
+            _wqb_root = _os.environ.get("WQB_ROOT") or _os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
+            _db = _os.path.join(_wqb_root, "data", "wqb.db")
+            _c = _sq.connect(_db)
+            _n_gem = _c.execute(
+                "SELECT COUNT(*) FROM expressions WHERE region=? AND status='gem'",
+                (ctx.region,)).fetchone()[0]
+            _c.close()
+            _threshold = 2 * (a.size or 48)
+            if _n_gem > _threshold:
+                print(f"[build_wave] ★ 积压清理硬门命中：{ctx.region} gem 状态积压 {_n_gem} 条 "
+                      f"> 2×size({_threshold})。本波结束优先把积压纳入下一波（--from-db 重取），"
+                      f"禁止无脑新建表达式堆库。--no-backlog-check 可关闭。", file=sys.stderr)
+                if a.gate_mode == "enforce":
+                    raise SystemExit(2)
+        except Exception as _e:
+            print(f"[build_wave] 积压清理硬门检查异常（不阻断）: {_e}", file=sys.stderr)
+
+    # 2026-09-25 P2：生成上限公式化（--max-size-auto）。size = min(--size, Σest_seats × 2)。
+    # est_seats 读 campaign_intel s0-select 的座位可达性估计；无估计时回落 --size。
+    if a.max_size_auto:
+        try:
+            import subprocess as _sp
+            _tools_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      "..", "..", "..", "tools")
+            _out = _sp.run(
+                [sys.executable, os.path.join(_tools_dir, "campaign_intel.py"),
+                 "s0-select", "--region", ctx.region, "--json"],
+                capture_output=True, text=True, timeout=30)
+            if _out.returncode == 0:
+                _sel = json.loads(_out.stdout or "{}")
+                _seats = _sel.get("est_seats") or []
+                _total_seats = sum(int(s) for s in _seats if s) if _seats else None
+                if _total_seats:
+                    _auto_size = min(a.size, _total_seats * 2)
+                    if _auto_size < a.size:
+                        print(f"[build_wave] 生成上限公式化：size {a.size} → {_auto_size} "
+                              f"（Σest_seats={_total_seats} × 2）", file=sys.stderr)
+                        a.size = _auto_size
+        except Exception as _e:
+            print(f"[build_wave] 生成上限公式化异常（回落 --size）: {_e}", file=sys.stderr)
+
     # 算子名单（平台约束单一事实源）：字段重复上限只统计真字段，算子 token 不占额度
-    known_ops = set(load_platform_constraints().get("known_ops", []))
+    platform_constraints = load_platform_constraints()
+    known_ops = (set(platform_constraints.get("known_ops", []))
+                 | set(platform_constraints.get("group_identifiers", [])))
+    # industry/subindustry are grouping axes, not repeated signal fields.
+    # Counting them silently capped a 12-question plan at eight expressions.
 
     quota = {"linear_mix": 0.5}
     cons_path = ctx.constraints_path()
@@ -451,11 +556,30 @@ def main():
         quota = {k.split("(")[0]: v for k, v in quota.items()}
     lm_cap = quota.get("linear_mix", 0.5)
 
-    exprs = []
+    exprs, source_rows, required = [], [], []
+    exclusion_reasons = {}
     if a.from_db or not a.file:
         st = get_store(ctx)
         try:
-            rows = st.list_expressions(ctx.region, str(a.wave), dataset=a.dataset)
+            if a.selection_contract_key:
+                from wqb.research.selection_contract import bind_selection_contract
+                contract = st.get_ledger(ctx.region, a.selection_contract_key)
+                if not isinstance(contract, dict):
+                    raise SystemExit("[selection-contract] missing or invalid ledger value")
+                contract_rows = [dict(r) for r in st.connection.execute(
+                    "SELECT * FROM expressions WHERE region=? AND wave=?",
+                    (ctx.region, str(contract.get("source_wave", ""))),
+                ).fetchall()]
+                try:
+                    required = bind_selection_contract(
+                        contract, contract_rows, region=ctx.region, dataset=a.dataset,
+                        wave=str(a.wave), delay=ctx.settings.get("delay", 1),
+                        source_wave=a.source_wave, capacity=a.size, expected_count=a.expected_count)
+                except ValueError as exc:
+                    raise SystemExit(str(exc)) from exc
+                a.source_wave = contract["source_wave"]
+                a.expected_count = len(required)
+            rows = st.list_expressions(ctx.region, a.source_wave or str(a.wave), dataset=a.dataset)
             # 2026-09-09 D11 修复：候选读取同时排除 dropped 与 superseded。
             # 此前只排 superseded，Agent 手动 dropped 的零 alpha 骨架（iso_week_number
             # 等日历哑字段）会被重选回 selected，纪律废弃形同虚设。
@@ -465,7 +589,7 @@ def main():
             # 2026-09-19 修复：波号"看似有行"但全是 dropped/superseded 残留（IND wave168 实证：
             # 上一次选波的 8 条被 dropped 后重建同波号，list_expressions 非空 → 不回退到
             # s2_<ds>_d<delay> 源池 → 报"db 无候选"）。回退条件改为"无可用候选"而非"无行"。
-            if not exprs and a.dataset:
+            if not exprs and a.dataset and not a.source_wave:
                 delay = ctx.settings.get("delay", 1)
                 src_wave = f"s2_{a.dataset}_d{delay}"
                 if rows:
@@ -473,6 +597,12 @@ def main():
                           f"回退到源池 {src_wave}")
                 rows = st.list_expressions(ctx.region, src_wave, dataset=a.dataset)
                 exprs = _usable(rows)
+            source_rows = contract_rows if required else rows
+            if required:
+                exprs = [item["expression"] for item in required]
+                wanted = {item["source_id"] for item in required}
+                exclusion_reasons.update({r["expression"]: "outside_reviewed_plan"
+                                          for r in source_rows if r["id"] not in wanted})
         finally:
             st.close()
         if not exprs and a.file:
@@ -628,6 +758,7 @@ def main():
                 blocked += [e for e in exprs if e not in kept]
                 exprs = kept
         if blocked:
+            exclusion_reasons.update({e: "dead_end_rule" for e in blocked})
             print(f"[rules][dead_end] 排除 {len(blocked)}/{before} 条命中判死规则的表达式")
     # 策略规则提示（不拦截，仅提示当前上下文可用策略）
     for r in rules_mod.apply_rules(ctx, "strategy",
@@ -635,17 +766,83 @@ def main():
         print(f"[rules][strategy:{r['rule_id']}] {r.get('action', {}).get('message', '')}")
 
     delay = ctx.settings.get("delay", 1)
-    src_wave = f"s2_{a.dataset}_d{delay}" if a.dataset else None
+    src_wave = a.source_wave or (f"s2_{a.dataset}_d{delay}" if a.dataset else None)
     hist = history_hashes(
         ctx, exclude_path=a.file,
         exclude_waves=[str(a.wave)] + ([src_wave] if src_wave else []),
     )
     deduped = [e for e in exprs if norm_expr(e) not in hist]
     n_dup = len(exprs) - len(deduped)
+    exclusion_reasons.update({e: "history_duplicate" for e in exprs if norm_expr(e) in hist})
 
     nf = near_fields(ctx)
-    # near-miss 加权：含 near 字段者优先，其余保持原序
-    deduped.sort(key=lambda e: 0 if expr_fields(e, known_ops) & nf else 1)
+
+    # ---- 2026-09-25 优化落地（P1/P4）：prod 饱和降权 + qp 质量预估排序/硬筛 ----
+    # P1：命中“历史 prod 撞墙字段”（prod_saturation_gate 饱和字段）的表达式排后——
+    #   同域饱和族新变体默认撞墙（PRODCORR-SATURATION-UNIVERSAL），先测冷门族。
+    # P4：qp 预估排序（rank）或硬筛（hard，留 --qp-keep 条校准探针）；
+    #   qp 模块不可用时降级为原行为（仅 near-miss 排序）。
+    sat_fields = set()
+    if a.prod_risk_order != "off" and deduped:
+        psg = _load_tools_module(a.campaign_dir, "prod_saturation_gate")
+        if psg is not None:
+            try:
+                _db = os.environ.get("WQB_DB_PATH") or os.path.join(
+                    _workspace_root_from_campaign(a.campaign_dir), "data", "wqb.db")
+                _rep = psg.check_wave(list(deduped), ctx.region, a.dataset, db_path=_db)
+                sat_fields = set(_rep.get("saturated_fields") or [])
+                if sat_fields:
+                    _shown = sorted(sat_fields)[:12]
+                    print(f"[prod-risk] 饱和字段降权（排后）: {_shown}"
+                          f"{'...' if len(sat_fields) > 12 else ''}")
+            except Exception as ex:
+                print(f"[prod-risk] 饱和统计失败（不阻断）: {ex}")
+
+    qp_est = {}
+    if a.qp_mode != "off" and deduped:
+        qp_mod = _load_tools_module(a.campaign_dir, "quality_predict")
+        if qp_mod is not None:
+            try:
+                _db = os.environ.get("WQB_DB_PATH") or os.path.join(
+                    _workspace_root_from_campaign(a.campaign_dir), "data", "wqb.db")
+                qconn = qp_mod.db_connect(_db)
+                try:
+                    q_results, _ = qp_mod.predict_all(
+                        [(e, a.dataset) for e in deduped], ctx.region, qconn)
+                finally:
+                    try:
+                        qconn.close()
+                    except Exception:
+                        pass
+                for e, res in zip(deduped, q_results):
+                    qp_est[e] = res
+                if a.qp_mode == "hard":
+                    _bad_v = ("HARD_REJECT", "EXPECTED_BLOCK")
+                    bad = [e for e in deduped if qp_est[e].get("verdict") in _bad_v]
+                    good = [e for e in deduped if qp_est[e].get("verdict") not in _bad_v]
+                    bad.sort(key=lambda e: -(qp_est[e].get("pred_sharpe") or -9.0))
+                    keep_n = max(0, a.qp_keep)
+                    keep, drop = bad[:keep_n], bad[keep_n:]
+                    for e in drop:
+                        exclusion_reasons[e] = "qp_hard_reject"
+                    deduped = good + keep
+                    print(f"[qp] hard 筛：HARD_REJECT/EXPECTED_BLOCK {len(drop)} 条出局，"
+                          f"保留校准探针 {len(keep)} 条（--qp-keep {keep_n}）")
+                _vc = {}
+                for r in qp_est.values():
+                    _vc[r.get("verdict")] = _vc.get(r.get("verdict"), 0) + 1
+                print(f"[qp] 质量预估 {len(qp_est)} 条: {_vc}")
+            except Exception as ex:
+                print(f"[qp] 质量预估不可用（降级为原行为）: {ex}")
+        else:
+            print("[qp] quality_predict 模块不可用（降级为原行为）")
+
+    # 单一稳定排序，键优先级从左到右：near-miss > 非饱和 > 高预估
+    deduped.sort(key=lambda e: (
+        0 if expr_fields(e, known_ops) & nf else 1,
+        1 if (sat_fields & set(expr_fields(e, known_ops))) else 0,
+        -(qp_est[e].get("pred_sharpe") or -9.0) if e in qp_est else 0.0,
+    ))
 
     # P3: family 标签（skeleton mode meta）增强分桶；无标签式回落算子树 bucket_key
     family_map = load_family_map(a.file, a.meta_file)
@@ -660,6 +857,7 @@ def main():
     bucket_sizes = {k: len(v) for k, v in sorted(buckets.items())}  # 抽样前记录桶规模
 
     picked, field_count, lm_count = [], collections.Counter(), 0
+    selection_rejections = collections.Counter()
     # 2026-09-17 族类配额：每族最多 max_per_family 条，econ_option 族 cap 为 econ_option_cap
     # 2026-09-18 修复：配额**只对有 family 标签的表达式生效**。
     #   原实现把无标签的表达式一律归为 "unknown" 并套用 max_per_family，
@@ -683,8 +881,12 @@ def main():
                 e = lst[0]
                 sk = skeleton(e)
                 if sk == "linear_mix" and lm_count >= max(1, int(a.size * lm_cap)):
+                    exclusion_reasons[e] = "linear_mix_cap"
+                    selection_rejections["linear_mix_cap"] += len(lst)
                     break  # 该桶剩余留到下轮（linear_mix 已满配额）
                 if sum(1 for f in expr_fields(e, known_ops) if field_count[f] >= a.max_field_repeat) > 0:
+                    exclusion_reasons[e] = "max_field_repeat"
+                    selection_rejections["max_field_repeat"] += 1
                     lst.pop(0)  # 字段超限，弃此式看下一式
                     continue
                 # 族类配额检查（2026-09-17；无标签默认不受限，见上方修复说明）
@@ -693,6 +895,8 @@ def main():
                     fam_key = fam or "unknown"
                     fam_cap = econ_option_cap if fam_key == "econ_option" else max_per_family
                     if family_count[fam_key] >= fam_cap:
+                        exclusion_reasons[e] = "family_cap"
+                        selection_rejections["family_cap"] += 1
                         lst.pop(0)  # 族类配额已满，弃此式看下一式
                         continue
                 else:
@@ -837,6 +1041,19 @@ def main():
     except Exception as _he:
         print(f"[diversity-heal] 跳过：{_he}")
 
+    if required and set(picked) != {item["expression"] for item in required}:
+        missing = [{**item, "reason": exclusion_reasons.get(item["expression"], "capacity_or_selection")}
+                   for item in required if item["expression"] not in picked]
+        raise SystemExit("[selection-contract] required identities not selected: "
+                         + json.dumps(missing, ensure_ascii=False) + "; no wave expressions written")
+    if a.expected_count is not None and len(picked) != a.expected_count:
+        raise SystemExit("[selection-count] expected=" + str(a.expected_count)
+                         + " selected=" + str(len(picked))
+                         + " source=" + str(a.source_wave or a.wave)
+                         + " candidates=" + str(len(deduped))
+                         + " rejected=" + json.dumps(dict(selection_rejections), ensure_ascii=False)
+                         + "; no wave expressions written; revise source/constraints explicitly")
+
     # 波指纹：绑定到当前 GEM priors 文件 sha256（KB 状态可回溯；缺失记 None）
     try:
         _psha = _priors_sha(ctx) if _priors_sha else None
@@ -848,6 +1065,19 @@ def main():
         "created_at": datetime.datetime.now().isoformat(timespec="seconds"),
         "priors_sha": _psha,
         "input": len(exprs), "duplicates_dropped": n_dup, "selected": len(picked),
+        "requested_size": a.size, "expected_count": a.expected_count,
+        "source_wave": a.source_wave, "selection_rejections": dict(selection_rejections),
+        "selection_mode": "reviewed_plan" if required else ("exact_count" if a.expected_count else "capacity"),
+        "selection_contract_key": a.selection_contract_key,
+        "selection_required": required,
+        "selection_audit": [
+            {"source_id": r["id"], "expression": r["expression"], "source_status": r.get("status"),
+             "decision": "selected" if r["expression"] in picked else "deferred",
+             "reason": "reviewed_plan" if required and r["expression"] in picked
+                       else "selected" if r["expression"] in picked
+                       else exclusion_reasons.get(r["expression"], "capacity_or_selection")}
+            for r in source_rows],
+        "selection_shortfall": max(0, a.size - len(picked)),
         "coverage_injected": cov_injected,
         "coverage_signed": cov_signed,
         "buckets": bucket_sizes,
@@ -865,11 +1095,39 @@ def main():
         # 读表达式时分不清本波真正的选集，Agent 只能靠 upsert_expressions 回传全量正文改状态。
         # 要重选同一波：先用 mcp__wqb-db__set_expression_status 把 superseded 行改回 gem。
         try:
+            # Source-pool rebuild must not silently revive archived or simulated
+            # target rows. Status changes remain explicit and auditable.
+            target_rows = st.connection.execute(
+                "SELECT expression,status,alpha_id FROM expressions WHERE region=? AND wave=?",
+                (ctx.region, str(a.wave)),
+            ).fetchall()
+            picked_set = set(picked)
+            if required:
+                extras = [dict(r) for r in target_rows if r["expression"] not in picked_set
+                          and (r["status"] in ("selected", "gated") or r["alpha_id"])]
+                if extras:
+                    raise ValueError("[selection-state] target contains active expressions outside plan: "
+                                     + json.dumps(extras, ensure_ascii=False))
+            protected = [dict(r) for r in target_rows if r["expression"] in picked_set
+                         and (r["alpha_id"] or r["status"] in ("superseded", "dropped"))]
+            if protected:
+                raise ValueError("[selection-state] selected source overlaps protected target rows; "
+                                 "explicitly reconcile status or use a new wave: "
+                                 + json.dumps(protected, ensure_ascii=False))
             st.upsert_expressions(
                 ctx.region, str(a.wave),
                 [{"expression": e, "status": "selected", "dataset": a.dataset} for e in picked],
                 dataset=a.dataset, status="selected", commit=False,
             )
+            persisted = st.connection.execute(
+                "SELECT expression FROM expressions WHERE region=? AND wave=? "
+                "AND status='selected' AND (alpha_id IS NULL OR alpha_id='')",
+                (ctx.region, str(a.wave)),
+            ).fetchall()
+            missing = picked_set - {r[0] for r in persisted}
+            if missing:
+                raise ValueError("[selection-state] DB did not persist selected expressions: "
+                                 + json.dumps(sorted(missing), ensure_ascii=False))
             n_superseded = st.supersede_unpicked(
                 ctx.region, str(a.wave), picked,
                 reason=f"not picked by build_wave {meta['created_at']}", commit=False,
@@ -891,4 +1149,7 @@ def main():
 
 if __name__ == "__main__":
     import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
-    main()
+    # L3 写库互斥（2026-09-20）：build_wave 写 expressions/waves，与 wave_gate/pipeline 排队
+    from _lib.dblock import write_lock as _wlock
+    with _wlock(tag="dbwrite_build_wave", ttl_sec=600, wait_timeout=120):
+        main()

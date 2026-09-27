@@ -20,6 +20,11 @@
           python tools/super_build.py probe --alpha-id KPGvRMg1
   submit  设置属性（内置 ≥100 英文描述）+ 两次 submit 判定
           python tools/super_build.py submit --alpha-id KPGvRMg1 --name 0.6944
+          ★ 2026-09-25 起 submit 内置 **prod 闸**（默认开启）：提交前轮询
+          GET /alphas/{id}/correlations/prod，max ≥ 0.7 一律拒绝（用户铁律，即使平台
+          result=PASS 也不提交）；probe 超时同样 fail-closed。确要豁免须显式
+          --allow-prod-above-07。相关参数：--prod-gate（阈值，默认 0.7）、
+          --probe-timeout（轮询窗口秒数，默认 900）。
 
 退出码: 0=成功（select 已创建 / probe 双闸过 / submit 已受理）, 1=失败
 运行环境: 使用 MCP venv（`$WQ_PY` 或 world-quant-brain-mcp/.venv），依赖 brain_api。
@@ -60,6 +65,60 @@ def combo_expr(power=1):
     if power <= 1:
         return "w"
     return "*".join(["w"] * power)
+
+
+# ------------------------------------------------------- prod 闸（2026-09-25）
+async def _probe_prod_max(brain, alpha_id, timeout_s=900.0, interval_s=15.0,
+                          log=print):
+    """轮询 GET /alphas/{id}/correlations/prod，返回 (max, attempts)。
+
+    - 端点**始终秒回 200**；**空体 = 平台仍在算**（SUPER 未提交时可能 >30min）。
+    - 非空返回 `{records, max, min}`，`max` 即判定值（2026-09-22 实测法）。
+    - 超时未出数返回 (None, attempts) —— 调用方按 fail-closed 处理。
+    """
+    import time
+    deadline = time.monotonic() + float(timeout_s)
+    attempts = 0
+    while True:
+        attempts += 1
+        r = await brain._request(
+            "GET", f"{brain.base_url}/alphas/{alpha_id}/correlations/prod")
+        try:
+            j = r.json()
+        except Exception:
+            j = None
+        if j and (j.get("max") is not None or j.get("records")):
+            try:
+                return float(j.get("max")), attempts
+            except (TypeError, ValueError):
+                pass
+        if time.monotonic() >= deadline:
+            return None, attempts
+        if attempts == 1:
+            log(f"[prod-gate] 平台计算中（空体），每 {interval_s:g}s 轮询一次，"
+                f"窗口 {timeout_s:g}s ...")
+        await asyncio.sleep(interval_s)
+
+
+def _prod_gate_verdict(prod_max, threshold=0.7):
+    """纯函数：prod 闸判定。返回 (allowed: bool, reason: str)。
+
+    规则（用户铁律 2026-09-25）：**prod ≥ 0.7 不得提交**——即使平台提交层对 SUPER
+    回带 value>limit 且 result=PASS（GLB 0.8094 / KOR 0.8571 PASS 实证）也不提交。
+    probe 未出数（超时/无数据）按 fail-closed 处理；两类拒绝都可用
+    `--allow-prod-above-07` 显式豁免。
+
+    >>> _prod_gate_verdict(0.8571)
+    (False, ...)
+    >>> _prod_gate_verdict(0.6999)
+    (True, ...)
+    """
+    if prod_max is None:
+        return False, "probe 未出数（平台仍在算或超时）→ fail-closed 拒绝提交"
+    if prod_max >= threshold:
+        return False, (f"probe prod max={prod_max} ≥ 阈值 {threshold} "
+                       f"→ 用户铁律 prod≥0.7 不得提交（即使平台可能判 PASS）")
+    return True, f"probe prod max={prod_max} < 阈值 {threshold} → 过闸"
 
 
 def _mcp_venv_python():
@@ -211,10 +270,26 @@ async def cmd_submit(a):
     brain = BrainApiClient()
     await brain.ensure_authenticated()
 
-    # 1) 提交层前置判定（零成本 GET，模拟 WARNING 升级 FAIL 的盲区拦截）
+    # 0) ★ prod 闸（2026-09-25 落地，默认强制）：提交前先拿 prod 真值，
+    #    max ≥ 阈值（或 probe 超时）一律不提交、不写属性、不发任何 POST。
+    if getattr(a, "allow_prod_above_07", False):
+        print("[prod-gate] --allow-prod-above-07 显式豁免，跳过 probe 闸")
+    else:
+        print(f"[prod-gate] 轮询 correlations/prod（间隔 15s，窗口 {a.probe_timeout}s）...")
+        prod_max, attempts = await _probe_prod_max(
+            brain, a.alpha_id, timeout_s=a.probe_timeout)
+        allowed, reason = _prod_gate_verdict(prod_max, getattr(a, "prod_gate", 0.7))
+        print(f"[prod-gate] attempts={attempts} max={prod_max} → {reason}")
+        if not allowed:
+            print("  如确要提交（平台 result 可能 PASS），显式加 --allow-prod-above-07；"
+                  "或稍后重跑等平台算完")
+            return 1
+
+    # 1) 详情必拉（region 覆盖与命名都依赖它；★ 2026-09-25 修：--skip-precheck 时
+    #    d 未定义 → UnboundLocalError。原实现把 get_alpha_details 藏在 precheck 分支内）
+    d = await brain.get_alpha_details(a.alpha_id)
+    details_is = d.get("is") or {}
     if not a.skip_precheck:
-        d = await brain.get_alpha_details(a.alpha_id)
-        details_is = d.get("is") or {}
         if any(c.get("result") == "FAIL" for c in (details_is.get("checks") or [])):
             print(f"[precheck] 模拟层 checks 存在 FAIL，拒绝提交（先优化）")
             return 1
@@ -224,13 +299,26 @@ async def cmd_submit(a):
             return 1
         print(f"[precheck] 提交层 OK（HTTP {resp.status_code}）")
 
-    # 2) 设置属性：name + 两个 ≥100 英文 description
+    # 2) 设置属性：name（缺省按规范生成）+ 两个 ≥100 英文 description
+    #    2026-09-20 规范：name 不再强制传 PROD 数值（那是提交时快照，会过期骗人）。
+    #    规范格式 <REGION>_S_<N>comp_<seq>，见 docs/alpha_properties_spec.md
+    #    ★ 2026-09-22 修：--region 默认 "USA" 会把非 USA 的 SA 命名成 USA_S_*（实测 KOR SA 被
+    #      命名为 USA_S_10comp_01）。故 name 与 description 一律**以 alpha 详情的真实 region 为准**。
+    if d.get("settings") and (d.get("settings") or {}).get("region"):
+        a.region = (d.get("settings") or {}).get("region")
+    name = a.name
+    if not name:
+        # ★ 2026-09-24 修：原先调用 build_name(..., seq=1) → 恒为 `_01`，**同区同 selectionLimit 的
+        #   多颗 SA 会重名**（GLB 一次就造出 A1NQ57NW/P02MbxA7/kqoJ62bz 三颗同名候选）。
+        #   平台既成约定（12 颗 SUPER 全部如此）+ finalize_props._super_name 均用 alpha_id 尾码。
+        ncomp = a.selection_limit or 10
+        name = f"{a.region or 'GLB'}_S_{ncomp}comp_{str(a.alpha_id)[-6:]}"
     sel_desc = build_selection_description(a.region, a.selection_limit or 10, a.self_gate or 0.55, a.neutralization)
     combo_desc = build_combo_description(a.region)
-    await brain.set_alpha_properties(a.alpha_id, name=a.name,
+    await brain.set_alpha_properties(a.alpha_id, name=name,
                                      selection_description=sel_desc,
                                      combo_description=combo_desc)
-    print(f"[props] name={a.name} 描述已设置（selection {len(sel_desc.split())} 词 / "
+    print(f"[props] name={name} 描述已设置（selection {len(sel_desc.split())} 词 / "
           f"combo {len(combo_desc.split())} 词）")
 
     # 3) 两次 submit 判定（skill 实测：第一次 201 异步，第二次回带 PROD/SELF verdict）
@@ -287,15 +375,24 @@ def main():
     p.add_argument("--alpha-id", required=True)
     p.set_defaults(fn=cmd_probe)
 
-    p = sub.add_parser("submit", help="设置属性 + 两次 submit 判定")
+    p = sub.add_parser("submit", help="设置属性 + 两次 submit 判定（内置 prod 闸）")
     p.add_argument("--alpha-id", required=True)
-    p.add_argument("--name", required=True, help="命名约定：PROD 最大值，如 0.6944")
+    p.add_argument("--name", required=False,
+                   help="（可选）名称。缺省按规范生成 <REGION>_S_<N>comp_<seq>；"
+                        "不推荐再传 PROD 数值（快照会过期），见 docs/alpha_properties_spec.md")
     p.add_argument("--region", default="USA", help="用于生成描述模板的英文市场名")
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)
     p.add_argument("--neutralization", default="SUBINDUSTRY",
                    help="描述模板用的中性化方案名（与 select 时的实际参数一致）")
     p.add_argument("--skip-precheck", action="store_true", help="跳过提交层前置判定")
+    # ★ 2026-09-25 prod 闸（用户铁律：prod≥0.7 不得提交，平台 PASS 也不提）
+    p.add_argument("--prod-gate", type=float, default=0.7,
+                   help="prod 闸阈值（默认 0.7）；probe max ≥ 该值即拒绝提交")
+    p.add_argument("--probe-timeout", type=float, default=900,
+                   help="probe 轮询窗口秒数（默认 900s）；超时未出数按 fail-closed 拒绝")
+    p.add_argument("--allow-prod-above-07", action="store_true",
+                   help="显式豁免 prod 闸（含 value≥阈值 与 probe 超时两种情形）")
     p.set_defaults(fn=cmd_submit)
 
     a = ap.parse_args()

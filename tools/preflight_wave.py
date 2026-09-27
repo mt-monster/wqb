@@ -34,6 +34,9 @@ import os
 import subprocess
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 DEFAULT_TTL_DAYS = 14
 
 
@@ -96,7 +99,7 @@ def check_dead_end(dataset, region):
     """查 registry_empirical dead_end 层，命中返回死路条目摘要；未命中/查不到返回 None。"""
     try:
         import sqlite3
-        conn = sqlite3.connect(os.path.join(_wqb_root(), "data", "wqb.db"))
+        conn = db_connect(os.path.join(_wqb_root(), "data", "wqb.db"))
         conn.execute("PRAGMA foreign_keys=ON")
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()

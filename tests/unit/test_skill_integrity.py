@@ -284,9 +284,8 @@ _DRY_RUN_CASES = {
     # 2026-09-16 新增：inventory_scan 节点（Phase 4）自动化库存盘点。
     # 纯本地脚本调用，dry-run 零副作用安全。
     "inventory_scan": {"region": "KOR", "target": 20},
-    # 2026-09-16 新增：field_understanding 节点（Phase 4）自动化字段理解。
-    # 纯本地 DB 读写，dry-run 零副作用安全。
-    "field_understanding": {"region": "KOR", "dataset": "_test"},
+    # 2026-09-26 P2.1：field_understanding 已删除（重复的第三套 S1 实现），
+    # 故从本用例表移除；S1 字段理解走 feature_engineering 节点。
     # 2026-09-16 新增：gem_wave 节点（Phase 4）合并选波到 GEM 生成。
     # 纯本地 DB 读写，dry-run 零副作用安全。
     "gem_wave": {"region": "KOR", "dataset_id": "_test", "delay": 1, "universe": "TOP3000"},

@@ -29,6 +29,9 @@ import os
 import sqlite3
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
     from pool_diversity import (  # noqa: E402  复用建议2工具的解析层
@@ -262,7 +265,7 @@ def load_stock(conn, region):
 # ---------------- 主流程 ----------------
 
 def load_from_db(region, wave, dataset=None):
-    conn = sqlite3.connect(os.path.join(PROJECT_ROOT, 'data', 'wqb.db'))
+    conn = db_connect(os.path.join(PROJECT_ROOT, 'data', 'wqb.db'))
     cur = conn.cursor()
     sql = "SELECT expression, dataset FROM expressions WHERE region=? AND wave=?"
     params = [region, str(wave)]
@@ -361,7 +364,7 @@ def main():
     ap.add_argument('--json', help='结构化报告落盘路径')
     a = ap.parse_args()
 
-    conn = sqlite3.connect(os.path.join(PROJECT_ROOT, 'data', 'wqb.db'))
+    conn = db_connect(os.path.join(PROJECT_ROOT, 'data', 'wqb.db'))
     if a.file:
         with open(a.file, encoding='utf-8') as fh:
             candidates = [(ln.strip(), None) for ln in fh

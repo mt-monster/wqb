@@ -34,8 +34,8 @@ def main():
     parser.add_argument(
         "--data-type",
         default="MATRIX",
-        choices=["MATRIX", "VECTOR"],
-        help="Data type to request from BRAIN datafields (MATRIX or VECTOR). Default: MATRIX",
+        choices=["MATRIX", "VECTOR", "GROUP"],
+        help="Data type to request from BRAIN datafields (MATRIX, VECTOR or GROUP). Default: MATRIX",
     )
 
     args = parser.parse_args()
@@ -44,7 +44,8 @@ def main():
     # User requested: robust and no absolute paths hardcoded
     workspace_dir = script_dir.parent
     config_path = workspace_dir / "config.json"
-    data_dir = workspace_dir / "data"
+    # 2026-09-25 目标 A：数据根读 WQB_GEM_DATA_ROOT（run_pipeline 注入），未设置回退旧位
+    data_dir = Path(os.environ.get("WQB_GEM_DATA_ROOT") or (workspace_dir / "data"))
 
     # Ensure data directory exists
     data_dir.mkdir(parents=True, exist_ok=True)

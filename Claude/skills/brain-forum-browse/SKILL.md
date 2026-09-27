@@ -18,6 +18,14 @@ allowed-tools:
 
 # Brain Forum Browse
 
+## 职责边界
+
+- **本 skill 负责**：论坛浏览与经验回收（有写工具时按 gap 驱动贡献）
+- **本 skill 不做**：**不做 alpha 提交前审查**（那是 `tools/submit_verdict.py` 的职责，judge 也只是参考层）；不改 alpha、不回测
+- **上游 / 下游**：上游 = 中文论坛；下游 = 方法沉淀（供 L1 研究消费）
+
+
+
 ## 何时使用（选择本 skill）
 
 **当用户说出类似以下内容时自动启用：**

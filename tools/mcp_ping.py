@@ -12,14 +12,17 @@
   python tools/mcp_ping.py                          # 全部服务 + 默认探针
   python tools/mcp_ping.py --service wqb-db         # 单服务
   python tools/mcp_ping.py --full                   # 含全工具注册完整性检查
-  python tools/mcp_ping.py --timeout 30             # 握手超时（秒）
-输出：人读表格 + 退出码（0=全部通过，1=有失败，2=配置错误）
+  python tools/mcp_ping.py --timeout 30             # 每次请求等待上限（秒）
+输出：人读表格或完整 JSON；0=通过，1=失败，2=参数错误或显式调用超时。
+显式调用超时携带 outcome_unknown / retry_safe=false；先查任务及 DB，禁止自动重发。
 """
 import argparse
 import json
 import os
+import queue
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -42,6 +45,15 @@ PROBES = {
 }
 
 
+class McpCallTimeout(TimeoutError):
+    """No response is not proof that a dispatched tool did not execute."""
+
+    def __init__(self, method, request_id, tool=None):
+        self.method, self.request_id, self.tool = method, request_id, tool
+        self.outcome_unknown = method == "tools/call"
+        super().__init__(f"等待 {method} 响应超时；连接不可复用，先核对任务/数据库再决定重试")
+
+
 class McpStdioClient:
     """极简 MCP stdio 客户端：JSON-RPC over 子进程 stdin/stdout。"""
 
@@ -49,6 +61,7 @@ class McpStdioClient:
         self.timeout = timeout
         self.proc = None
         self._id = 0
+        self._timed_out = False
         full_env = {**os.environ, **(env or {})}
         self.proc = subprocess.Popen(
             [command] + list(args),
@@ -58,27 +71,42 @@ class McpStdioClient:
         )
 
     def _send(self, method, params=None, timeout=None):
+        if self._timed_out:
+            raise RuntimeError("MCP connection timed out; reconcile the previous request before retrying")
         self._id += 1
         req = {"jsonrpc": "2.0", "id": self._id, "method": method,
                "params": params or {}}
-        self.proc.stdin.write((json.dumps(req) + "\n").encode("utf-8"))
-        self.proc.stdin.flush()
-        deadline = time.time() + (timeout or self.timeout)
-        # 逐行读 stdout 找到匹配 id 的响应（服务可能插发 notification，跳过）
-        while time.time() < deadline:
-            line = self.proc.stdout.readline()
-            if not line:
-                raise ConnectionError("stdout 关闭（服务进程退出）")
-            line = line.strip()
-            if not line:
-                continue
+        replies = queue.Queue(maxsize=1)
+
+        def exchange():
+            # Pipe write/flush and readline can both block. Bound the entire
+            # exchange from the caller; a timed-out connection is never reused.
             try:
-                resp = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if resp.get("id") == self._id:
-                return resp
-        raise TimeoutError(f"等待 {method} 响应超时")
+                self.proc.stdin.write((json.dumps(req) + "\n").encode("utf-8"))
+                self.proc.stdin.flush()
+                while True:
+                    line = self.proc.stdout.readline()
+                    if not line:
+                        raise ConnectionError("stdout 关闭（服务进程退出）")
+                    try:
+                        resp = json.loads(line)
+                    except (ValueError, UnicodeError):
+                        continue
+                    if isinstance(resp, dict) and resp.get("id") == req["id"]:
+                        replies.put((True, resp))
+                        return
+            except Exception as exc:
+                replies.put((False, exc))
+
+        threading.Thread(target=exchange, daemon=True, name="mcp-exchange").start()
+        try:
+            ok, value = replies.get(timeout=self.timeout if timeout is None else timeout)
+        except queue.Empty:
+            self._timed_out = True
+            raise McpCallTimeout(method, req["id"], (params or {}).get("name")) from None
+        if not ok:
+            raise value
+        return value
 
     def initialize(self):
         """MCP initialize 握手（protocolVersion 用 2024-11-05，兼容主流实现）。"""
@@ -127,6 +155,7 @@ class McpStdioClient:
                     self.proc.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     self.proc.kill()
+                    self.proc.wait(timeout=5)
         except Exception:
             pass
 
@@ -139,12 +168,66 @@ def load_services():
     return cfg.get("mcpServers", {})
 
 
+def run_calls(spec, calls, timeout=30):
+    """Execute explicit MCP calls over one connection; return full results."""
+    client = McpStdioClient(spec["command"], spec.get("args", []), spec.get("env"), timeout)
+    try:
+        client.initialize()
+        registered = {item["name"] for item in client.list_tools()}
+        if any(call["tool"] not in registered for call in calls):
+            raise ValueError("Unregistered tool in call list")
+        failed = False
+        for call in calls:
+            response = client._send("tools/call", {
+                "name": call["tool"], "arguments": call.get("args", {})})
+            result = response.get("result", {})
+            failed = failed or "error" in response or bool(result.get("isError"))
+            print(json.dumps({"tool": call["tool"], "result": result,
+                              **({"error": response["error"]} if "error" in response else {})},
+                             ensure_ascii=False), flush=True)
+        return 1 if failed else 0
+    except McpCallTimeout as exc:
+        print(json.dumps({"error": str(exc), "method": exc.method,
+                          "tool": exc.tool, "request_id": exc.request_id,
+                          "outcome_unknown": exc.outcome_unknown,
+                          "retry_safe": False}, ensure_ascii=False), flush=True)
+        return 2
+    finally:
+        client.close()
+
+
 def main():
     ap = argparse.ArgumentParser(description="MCP 连通性与调用时长测试")
     ap.add_argument("--service", help="只测指定服务（缺省全部）")
     ap.add_argument("--full", action="store_true", help="附全工具注册完整性检查（tools/list 全量）")
     ap.add_argument("--timeout", type=int, default=30, help="握手/调用超时秒数（默认 30）")
+    call_group = ap.add_mutually_exclusive_group()
+    call_group.add_argument("--call", help="调用单个工具，完整 JSON 结果写 stdout；须指定 --service")
+    call_group.add_argument("--calls-file", help="UTF-8 JSON 列表 [{tool,args}]；复用同一 MCP 连接")
+    ap.add_argument("--args-file", help="--call 的 UTF-8 JSON 参数对象（缺省 {}）")
     a = ap.parse_args()
+
+    calls = None
+    if a.call or a.calls_file:
+        if not a.service:
+            ap.error("调用工具必须指定 --service")
+        try:
+            if a.calls_file:
+                if a.args_file:
+                    ap.error("--args-file 仅能与 --call 搭配")
+                calls = json.loads(Path(a.calls_file).read_text(encoding="utf-8-sig"))
+            else:
+                args = json.loads(Path(a.args_file).read_text(encoding="utf-8-sig")) if a.args_file else {}
+                calls = [{"tool": a.call, "args": args}]
+            if not isinstance(calls, list) or not calls or any(
+                not isinstance(c, dict) or not isinstance(c.get("tool"), str)
+                or not isinstance(c.get("args", {}), dict) for c in calls
+            ):
+                raise ValueError("Expected a nonempty list of {tool: string, args: object}")
+        except (OSError, ValueError) as exc:
+            ap.error(str(exc))
+    elif a.args_file:
+        ap.error("--args-file 需要 --call")
 
     services = load_services()
     if a.service:
@@ -152,6 +235,13 @@ def main():
             print(f"[error] 服务 {a.service} 不在 .mcp.json（可用: {sorted(services)}）")
             sys.exit(2)
         services = {a.service: services[a.service]}
+
+    if calls is not None:
+        try:
+            sys.exit(run_calls(services[a.service], calls, a.timeout))
+        except Exception as exc:
+            print(json.dumps({"error": str(exc)}, ensure_ascii=False))
+            sys.exit(1)
 
     all_ok = True
     summary = []

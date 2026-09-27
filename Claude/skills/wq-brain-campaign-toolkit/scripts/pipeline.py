@@ -295,7 +295,10 @@ def ckpt_save(ctx, ck, checkpoint_dir=None):
         return
     st = _get_store(ctx)
     try:
-        st.upsert_checkpoint(ctx.region, str(ck["wave"]), ck)
+        # L3 写库互斥（2026-09-20）：checkpoint 写 ledger_kv，与其他写者排队（短锁）
+        from _lib.dblock import write_lock as _wlock
+        with _wlock(tag="dbwrite_ckpt", ttl_sec=120, wait_timeout=60):
+            st.upsert_checkpoint(ctx.region, str(ck["wave"]), ck)
     finally:
         st.close()
 
@@ -858,7 +861,10 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         # 全灭波次：直接入库 backtest_results + wave_results，跳过 walls 诊断
         st = _get_store(ctx)
         try:
-            n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
+            # L3 写库互斥（2026-09-20）：收批批量入库排队（短锁）
+            from _lib.dblock import write_lock as _wlock
+            with _wlock(tag="dbwrite_pipeline_save", ttl_sec=300, wait_timeout=120):
+                n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
             print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}，全灭快速入库）")
         finally:
             st.close()
@@ -883,7 +889,10 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     # ---- 回测结果入 backtest_results（必须成功；库为唯一持久化）----
     st = _get_store(ctx)
     try:
-        n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
+        # L3 写库互斥（2026-09-20）：收批批量入库排队（短锁）
+        from _lib.dblock import write_lock as _wlock
+        with _wlock(tag="dbwrite_pipeline_save", ttl_sec=300, wait_timeout=120):
+            n_saved = st.save_backtest_results(ctx.region, ck["wave"], rows, dataset=ck.get("dataset"))
         print(f"[db] backtest_results +{n_saved}/{len(rows)}（wave={ck['wave']}）")
     finally:
         st.close()

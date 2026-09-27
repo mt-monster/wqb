@@ -11,6 +11,14 @@ allowed-tools:
 
 # BRAIN Alpha 研究 — 新闻/情绪（News/Sentiment）
 
+## 职责边界
+
+- **本 skill 负责**：news / sentiment **家族专用**：字段 5 家族分类、6 桶配对框架、Tier A 组合选集
+- **本 skill 不做**：不覆盖非 news/sentiment 数据集（→ 通用 L1：dataset-exploration / datafield-exploration）；不回测
+- **上游 / 下游**：上游 = 新闻/情绪数据集；下游 = S1 字段选择
+
+
+
 ## 触发场景
 
 本 skill 适用于：新闻/情绪数据集研究、字段分类、6 桶配对框架、Tier A 数据集组合选集。

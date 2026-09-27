@@ -139,6 +139,25 @@ async def main():
         print("  原因: 模拟层 checks 存在 FAIL，先优化再试")
     elif submit_status == 403:
         print("  原因: 提交层 403，见上检查列表（模拟层 WARNING 已升级）")
+
+    # --- 队列状态升级（2026-09-20）---
+    # 本工具是提交判定的唯一权威；出 SUBMITTABLE 时把待提交队列里该条
+    # 从 IS_ONLY 升级为 SUBMIT_LAYER_VERIFIED 并刷新 verified_at，
+    # 使队列可信度与判定权威一致。容错：绝不影响判定结果与退出码。
+    if verdict == "SUBMITTABLE":
+        try:
+            sys.path.insert(0, os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
+            from wqb.store.submit_queue import mark_verified
+            n = mark_verified(a.alpha_id, rec={
+                "sharpe": is_.get("sharpe"), "fitness": is_.get("fitness"),
+                "turnover": is_.get("turnover"),
+            })
+            print(f"  [queue] 已升级 SUBMIT_LAYER_VERIFIED（{n} 条）" if n
+                  else "  [queue] 队列中无此条，跳过升级")
+        except Exception as e:  # noqa: BLE001
+            print(f"  [queue] 升级跳过：{e}")
+
     sys.exit(0 if ok else 1)
 
 

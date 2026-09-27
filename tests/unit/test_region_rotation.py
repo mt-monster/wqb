@@ -358,7 +358,8 @@ def test_recommend_carries_target_into_next_region():
     allm = _all_metrics()
     rec = recommend_rotation("EUR", allm, target=20)
     assert rec["carry_target"] == 20
-    assert "20" in rec["next_action"]
+    # 2026-09-25 P4：转入区有 8 颗未提交可行存量时，承接目标 = max(0, target - feasible) = 12
+    assert "12" in rec["next_action"]
 
 
 def test_recommend_all_saturated_fallback():

@@ -108,7 +108,10 @@ async def batch_status(
     """
     try:
         await brain_client.ensure_authenticated()
-        TERMINAL = {"DONE", "ERROR", "CANCELLED", "FAILED"}
+        # 2026-09-21 根治：子任务成功终态为 COMPLETE（与 toolkit poller 一致）；此前集合漏 COMPLETE，
+        # 已完成批永远 terminal=0 / all_ok=False，且 "COMPLETE" 字面量被计成 errors。
+        TERMINAL = {"COMPLETE", "DONE", "WARNING", "ERROR", "CANCELLED", "FAILED", "FAIL"}  # WARNING=已完成但带告警（单位不兼容等），亦为终态；FAIL=平台子模拟裸状态字面量（2026-09-21 ASI psd 批实证：父 ERROR、子全 FAIL，旧集合永远 0/8 terminal）
+        OK_STATUSES = {"COMPLETE", "DONE"}
 
         def _shape_url(loc):
             if loc.startswith("http"):
@@ -124,6 +127,8 @@ async def batch_status(
             data = resp.json() if resp.text else {}
             err = brain_client._simulation_error_message(data)
             if not data.get("alpha") and err == "Unknown error":
+                err = ""
+            if (data.get("status") or "").upper() in OK_STATUSES and (err or "").strip().upper() in OK_STATUSES:
                 err = ""
             is_ = data.get("is") or {}
             m = is_.get("metrics") or {}

@@ -10,13 +10,59 @@
     writer.flush()  # 可选：强制 flush 本地队列
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
+import re
 import logging
 import time
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize_verdict_for_write(raw):
+    """落库前把 `wave_results.verdict` 归一到 PASS/FAIL/PARTIAL；归一不了返回 None。
+
+    权威规则 = `wqb.workflow.nodes.campaign._normalize_verdict`（停止规则 B 的读取方）；
+    其未覆盖的**前缀形态**（GREEN/YELLOW/RED/PASS_READY/CLOSED_ACCEPTED/…）由本函数补齐，
+    与 `wqb_db_mcp._normalize_wave_verdict`（MCP 入口，会拒绝无法辨认的值）保持同一契约。
+
+    缘由：`DirectDBWriter.upsert_wave_result` 此前**直存原始值**（绕过 MCP 的校验），
+    导致 80+ 行描述性 verdict 入库（`8/8 过硬闸, 新高 3.58`、`0/8 过硬闸, 新高 0.92`，GBR 居多），
+    停止规则与漏斗统计读到不可判定值。
+    """
+    s = str(raw or "").strip()
+    if not s:
+        return None
+    # 1) 权威规则优先（保证与停止规则读取方同答）
+    try:
+        from wqb.workflow.nodes.campaign import _normalize_verdict
+        v = _normalize_verdict(s)
+        if v in ("PASS", "FAIL", "PARTIAL"):
+            return v
+    except Exception:
+        pass
+    # 2) 补齐权威规则未覆盖的前缀/计数形态
+    up = s.upper()
+    if up in ("PASS", "FAIL", "PARTIAL"):
+        return up
+    if re.match(r"^0\s*/\s*\d+\s*过硬闸", s):
+        return "FAIL"
+    m = re.search(r"(\d+)\s*/\s*(\d+)\s*过硬闸", s)
+    if m:
+        return "PARTIAL" if int(m.group(1)) > 0 else "FAIL"
+    for pref, val in (("GREEN", "PASS"), ("PASS", "PASS"), ("YELLOW", "PARTIAL"),
+                      ("PARTIAL", "PARTIAL"), ("CLOSED_ACCEPTED", "PARTIAL"),
+                      ("RED", "FAIL"), ("FAIL", "FAIL"), ("CLOSED_DEAD_END", "FAIL"),
+                      ("GATE_BLOCKED", "FAIL"), ("PROBE_WAIT", "FAIL"), ("PROBE_WEAK", "FAIL")):
+        if up.startswith(pref):
+            return val
+    if "全灭" in s or "GATE_FAIL" in up:
+        return "FAIL"
+    return None
 
 
 def _normalize_wave(wave: Any, *, dataset: Optional[str] = None,
@@ -233,7 +279,7 @@ class DirectDBWriter(MCPBatchWriter):
     def _get_conn(self):
         if self._conn is None:
             import sqlite3
-            self._conn = sqlite3.connect(self.db_path, timeout=30.0)
+            self._conn = db_connect(self.db_path, timeout=30.0)
             self._conn.row_factory = sqlite3.Row
             self._conn.execute("PRAGMA foreign_keys=ON")
             self._conn.execute("PRAGMA journal_mode=WAL")
@@ -265,6 +311,12 @@ class DirectDBWriter(MCPBatchWriter):
             cand = json.dumps(kwargs.get("candidates"), ensure_ascii=False) if kwargs.get("candidates") is not None else None
             bat = json.dumps(kwargs.get("batches"), ensure_ascii=False) if kwargs.get("batches") is not None else None
             fp = json.dumps(kwargs.get("full_payload"), ensure_ascii=False) if kwargs.get("full_payload") is not None else None
+            _v = _normalize_verdict_for_write(kwargs.get("verdict"))
+            if kwargs.get("verdict") is not None and _v is None:
+                return {"error": ("verdict 必须是 PASS/FAIL/PARTIAL（或可辨认的前缀/"
+                                  "`N/M 过硬闸` 计数）；描述性结论请放 key_findings。"
+                                  f" 收到 {kwargs.get('verdict')!r}"),
+                        "region": region, "wave_number": wave_number}
             cur.execute(
                 "INSERT INTO wave_results "
                 "(region, wave_number, focus, context, key_findings, candidates, batches, verdict, status, source_file, archived, created_at, updated_at, full_payload) "
@@ -276,7 +328,7 @@ class DirectDBWriter(MCPBatchWriter):
                 "full_payload=excluded.full_payload",
                 (
                     region, str(wave_number), kwargs.get("focus"), kwargs.get("context"),
-                    kf, cand, bat, kwargs.get("verdict"), kwargs.get("status", "closed"),
+                    kf, cand, bat, _v, kwargs.get("status", "closed"),
                     kwargs.get("source_file"), now, now, fp,
                 ),
             )

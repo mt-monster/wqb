@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-26
 name: brain-how-to-pass-alpha-test
 description: "提供 WorldQuant BRAIN alpha 提交测试的详细要求、阈值与改进建议。 涵盖 Fitness、Sharpe、Turnover、Weight、Sub-universe 与 Self-Correlation 测试。 当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用 （submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
 layer: L4
@@ -16,6 +16,14 @@ allowed-tools:
 
 
 # BRAIN Alpha 提交测试：要求与改进建议
+
+## 职责边界
+
+- **本 skill 负责**：**只读**查阈值与解释「为什么不过闸」：Fitness/Sharpe/Turnover/Weight/Sub-universe/Self-Correlation 的门限与改进方向
+- **本 skill 不做**：**不产生新表达式、不回测、不改候选** —— 需要动手改 → 转 `wq-brain-alpha-optimization-v1`。判据：**是否产生新表达式**
+- **上游 / 下游**：上游 = 失败的候选指标；下游 = 改进（optimization-v1）
+
+
 
 本 skill 提供通过 alpha 提交测试的关键要求与专家建议。
 完整细节、阈值与社区策略请阅读 [reference.md](reference.md)。
@@ -96,7 +104,11 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
 
 ### 改进建议
 - 提交多样化的 idea。
-- 使用 `mcp__wq-brain-http__check_correlation` 工具。
+- 取相关性的可靠方式：**先本地快筛**（`brain-calculate-alpha-selfcorr-quick`），再对平台值
+  **直接 15s 间隔长窗口轮询 `GET /alphas/{id}/correlations/prod`**（恒秒回 200，**空体 = 仍在算**，
+  非空取 `max`）。
+  ⚠ `mcp__wq-brain-http__check_correlation` 是同一 GET 的**阻塞式轮询且依赖 Redis（本环境不可用）→ 易「等死」**，
+  且**不要高频 `refresh=true`**（会加长平台队列）。库内 prod 值会严重过期，提交前必须实测。
 - 对负相关 alpha 做变换。
 
 ## 通用建议
@@ -114,3 +126,7 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
   2. 快达标因子（S≥1.0 且 prod corr<0.5）已由 S4 `review_wave.py --write-ledger` 自动幂等写入台账
      `salvage_pool`（对齐 `_salvage_to_pool` entry 结构，带 boost_dims 卡点标注），**无需人工手写入池**。
 - **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorr-quick` → `brain-explain-alphas`。
+
+## LOW_2Y_SHARPE / IS_LADDER 破闸
+
+先 `get_alpha_yearly_stats` 诊断逐年形态，再按 设置轴 → 表达式轴 → 机制轴 三级修；末两年符号反转且三轴代表变体都不过 = 家族判死。完整手册（论坛实证 + 文献 + KOR risk71 反例）：[references/two-year-sharpe-playbook.md](references/two-year-sharpe-playbook.md)。

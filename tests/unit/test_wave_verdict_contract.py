@@ -186,7 +186,7 @@ def test_toolkit_copies_in_sync(rel):
 @pytest.mark.parametrize("verdict,expect", [
     ("0/8 过硬闸, 新高 0.02", "FAIL"),      # DB 实存（EUR/wave104）
     ("GATE_FAIL", "FAIL"),                  # DB 实存（EUR/wave124）
-    ("3/8 过硬闸", "PASS"),
+    ("3/8 过硬闸", "PARTIAL"),   # 2026-09-26 对齐 campaign（N>0 → PARTIAL）
     ("GREEN: 2 候选达标", "PASS"),
     ("YELLOW: 0 候选, 3 near", "PARTIAL"),
     ("RED: 5 全灭", "FAIL"),

@@ -24,6 +24,14 @@ user-invocable: true
 
 # brain-inspect-raw-template-create-setting
 
+## 职责边界
+
+- **本 skill 负责**：原始模板与仿真设置的**创建/合法性核对**：产出**设置计划**（universe/中性化/decay/truncation/maxTrade）
+- **本 skill 不做**：**不写 `settings.json` 真相源、不发起回测、不改表达式** —— 执行在 `brain-sim-alphas-in-batch-and-track`
+- **上游 / 下游**：上游 = 原始模板/创建设置需求；下游 = S3 批量回测
+
+
+
 **运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`，即工作区根下 `world-quant-brain-mcp/.venv`）。不要使用系统 Python。
 
 本 skill 面向 **稳定、可重复的运行**。

@@ -290,7 +290,7 @@ r2 = await client._request('GET', f'{client.base_url}/alphas/{aid}/submit')  # 2
 - `hump(x, hump=0.01)` 必须命名参数。
 - 429 限流：短退避重试（wait=min(20+attempt*8, 45)s，最多 ~40 次）。
 - 孤儿模拟占槽：`TaskStop` 制造孤儿，只能等其自行释放。
-- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：49 工具，含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options`。连接需用户在连接器页 Trust。
+- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：**工具计数唯一基准见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，此处不裸写**（2026-09-26 审计：本行曾裸写 49 的过时计数，已删），含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options`。连接需用户在连接器页 Trust。
 - **提交语义（2026-08-11 实测确认，勿再踩坑）**：
   - `POST /alphas/{id}/submit` → **201** = 受理成功（不是 200；旧原生 MCP submit_alpha 只认 200 会误报，已删除，统一走 `mcp__wq-brain-http__workflow_submit_alpha`）。
   - `GET /alphas/{id}/submit` → **200** = 最终成功 / **403** = 拒绝（body 含 FAIL checks）/ **404** = 提交记录已清。

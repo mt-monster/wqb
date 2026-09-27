@@ -22,12 +22,15 @@ import os
 import sqlite3
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 def _load_kb(db_path: str) -> dict:
     if not os.path.exists(db_path):
         print(f"[kb_templates] DB 不存在：{db_path}", file=sys.stderr)
         sys.exit(1)
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     try:
         row = conn.execute(
             "SELECT value FROM ledger_kv WHERE region='KB' AND key='community_tpl_kb'"

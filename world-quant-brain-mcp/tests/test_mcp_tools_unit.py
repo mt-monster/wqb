@@ -105,6 +105,36 @@ def test_slim_alpha_keeps_core_keys():
     assert "extra_noise" not in slim
 
 
+def test_slim_alpha_exposes_os_segment():
+    """OS（样本外）段必须透出（2026-09-20 修复：此前只取 is 段，
+    已提交 alpha 的样本外表现通过 MCP 完全不可见）。"""
+    slim = _slim_alpha({
+        "id": "abc", "stage": "OS", "status": "ACTIVE",
+        "regular": {"code": "rank(close)"},
+        "is": {"sharpe": 1.66, "fitness": 1.08},
+        "os": {"startDate": "2023-01-21", "sharpe": 0.4, "fitness": 0.13,
+               "turnover": 0.0705, "returns": 0.0125, "drawdown": 0.0368,
+               "margin": 0.000356, "sharpe60": -1.83, "sharpe125": -0.69,
+               "osISSharpeRatio": 0.24,
+               # 大字典/噪声不应进 os 透出
+               "checks": [{"name": "LOW_SHARPE", "result": "PASS"}]},
+    })
+    assert slim["metrics"]["sharpe"] == 1.66
+    os_seg = slim["os"]
+    assert os_seg["sharpe"] == 0.4 and os_seg["fitness"] == 0.13
+    assert os_seg["osISSharpeRatio"] == 0.24 and os_seg["startDate"] == "2023-01-21"
+    assert "checks" not in os_seg
+
+
+def test_slim_alpha_os_start_date_only():
+    """近期提交：os 段只有 startDate（平台未积累样本）——保留该键，不报错。"""
+    slim = _slim_alpha({"id": "x", "stage": "OS", "status": "ACTIVE",
+                        "is": {"sharpe": 2.26}, "os": {"startDate": "2024-01-01"}})
+    assert slim["os"] == {"startDate": "2024-01-01"}
+    # 无 os 段（未提交 alpha）→ 键被省略（过滤 None）
+    assert "os" not in _slim_alpha({"id": "y", "is": {"sharpe": 1.0}})
+
+
 # ---------------------------------------------------------------------------
 # _extract_field_candidates (tools_data)
 # ---------------------------------------------------------------------------

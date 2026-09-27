@@ -45,21 +45,35 @@ class AuthMixin:
                 'Authorization': f'Basic {encoded_credentials}'
             }
             
-            # Use a direct thread call with timeout, no nested locks
-            try:
-                response = await asyncio.wait_for(
-                    asyncio.to_thread(
-                        self.session.request,
-                        'POST',
-                        'https://api.worldquantbrain.com/authentication',
-                        headers=headers,
-                        timeout=self._default_timeout_seconds,
-                    ),
-                    timeout=auth_timeout
-                )
-            except asyncio.TimeoutError:
-                self.log(f"❌ Authentication request timed out after {auth_timeout}s", "ERROR")
-                raise TimeoutError(f"Authentication timed out after {auth_timeout}s")
+            # Use a direct thread call with timeout, no nested locks.
+            # 2026-09-21 根治：认证 POST 遇传输层瞬断（SSL EOF / 连接复位 / 读超时）此前直接
+            # 抛 requests.SSLError，整条 xr-probe / harvest / submit_queue 命令在还没发请求前就
+            # 崩掉（当天实测 4 次）。瞬断按 2s/4s 退避重试 3 次，非瞬断异常原样抛出。
+            import requests as _rq
+            _transient = (_rq.exceptions.SSLError, _rq.exceptions.ConnectionError,
+                          _rq.exceptions.Timeout, _rq.exceptions.ChunkedEncodingError)
+            response = None
+            for _attempt in range(3):
+                try:
+                    response = await asyncio.wait_for(
+                        asyncio.to_thread(
+                            self.session.request,
+                            'POST',
+                            'https://api.worldquantbrain.com/authentication',
+                            headers=headers,
+                            timeout=self._default_timeout_seconds,
+                        ),
+                        timeout=auth_timeout
+                    )
+                    break
+                except asyncio.TimeoutError:
+                    self.log(f"❌ Authentication request timed out after {auth_timeout}s", "ERROR")
+                    raise TimeoutError(f"Authentication timed out after {auth_timeout}s")
+                except _transient as e:
+                    if _attempt == 2:
+                        raise
+                    self.log(f"⚠ Authentication transport error ({type(e).__name__}), retry {_attempt + 1}/2", "WARNING")
+                    await asyncio.sleep(2 * (_attempt + 1))
 
             # Check for successful authentication (status code 201)
             if response.status_code == 201:

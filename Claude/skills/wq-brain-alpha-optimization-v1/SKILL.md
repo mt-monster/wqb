@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-26
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式优化器。Mode B（想法层，70% 精力）：改信号概念/ 字段组合，从 arXiv 引入概念，5 步改进工作流。Mode A（参数层，30% 精力）：冻结核心想法， 在严格 8 候选批中调 decay/窗口/中性化/truncation，含本地校验与低相关提交规则。 当用户要求改进或优化某个 BRAIN alpha ID、修复失败的提交测试、把 PROD 相关性压到 0.7 以下、 或通过包括 IS_LADDER_SHARPE 在内的全部检查时使用。"
 layer: L4
@@ -21,6 +21,14 @@ user-invocable: true
 **运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
 
 # WQ BRAIN Alpha Optimization V1（两模式）
+
+## 职责边界
+
+- **本 skill 负责**：**动手改**现有 alpha：Mode B 想法层（70%，换信号概念/字段组合）→ Mode A 参数层（30%，调 decay/窗口/中性化/truncation），**会产生新变体并回测**
+- **本 skill 不做**：不做最终提交判定（`tools/submit_verdict.py`）；不负责只读的阈值查询（→ `brain-how-to-pass-alpha-test`）
+- **上游 / 下游**：上游 = 卡住的候选；下游 = S5 提交判定
+
+
 
 > **模式调度（原 improve-alpha-performance 已并入本 skill 并彻底移除（目录已删），2026-08-15）**：
 > - **Mode B 想法层（默认入口，70% 精力）**：信号概念/字段组合需要改变时使用——换概念、换字段、arXiv 引入新金融概念。
@@ -49,7 +57,8 @@ user-invocable: true
 - 对照平台算子库校验；不存在的算子换成等价构造（如自写动量公式）。
 
 ### Step B4: 仿真对比（10–20 min）
-- `create_multiSim`（2–8 条）跑变体；multi 失败退并行单仿。
+- `mcp__wq-brain-http__create_multi_simulation`（2–8 条）跑变体；multi 失败退并行单仿。
+  （2026-09-26 审计：旧文写的 `create_multiSim` **不是真实工具名**，真实注册名为 `create_multi_simulation`。）
 - 按 Fitness/Sharpe 排名；检查 sub-universe 与逐年一致性；负信号可翻转。
 
 ### Step B5: 验证迭代（5–10 min）
@@ -73,7 +82,7 @@ user-invocable: true
 4. 平台 `operatorCount` 是最终裁判：任何算子数超过 8 的候选无效。
 5. Stage A 阶段禁止纯微调，只能做结构化升级。
 6. 任何零 FAIL 项的候选必须立即走提交相关性（correlation）检查。
-7. `create_multiSim` 结束后，立即以 UTF-8 追加模式把本批结果写入指定的文本文件。
+7. `mcp__wq-brain-http__create_multi_simulation` 结束后，立即以 UTF-8 追加模式把本批结果写入指定的文本文件。
 8. 校验或仿真失败时只修精确的报错点；不得为通过而删除核心逻辑来简化表达式。
 
 ### 必需工作流
@@ -83,7 +92,7 @@ user-invocable: true
 3. 先规划 8 个角色，再在主题配额与常用算子限制内编写表达式。
 4. 校验前先对照本地算子库做算子预检。
 5. 运行本地表达式校验并修复至全部通过。
-6. 用 `create_multiSim` 回测这 8 个已校验的表达式。
+6. 用 `mcp__wq-brain-http__create_multi_simulation` 回测这 8 个已校验的表达式。
 7. 若批量输出被截断，逐条补取缺失详情。
 8. 回测后立即把 8 条结果追加到目标结果文件。
 9. 下一轮前诊断负信号翻转、`operatorCount` 溢出、FAIL 原因与相关性。

@@ -17,6 +17,7 @@ import sqlite3
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REQUIRED_TABLES = [
     "trajectories",
     "trajectory_steps",
@@ -48,7 +49,7 @@ class SimulationDB:
 
     def __init__(self, path: str):
         self.path = path
-        self.connection: Optional[sqlite3.Connection] = sqlite3.connect(path)
+        self.connection: Optional[sqlite3.Connection] = db_connect(path)
 
     # -- lifecycle ---------------------------------------------------------
 

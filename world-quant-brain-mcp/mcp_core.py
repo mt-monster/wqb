@@ -187,6 +187,7 @@ def _slim_alpha(a):
     if not isinstance(a, dict):
         return a
     isd = a.get("is") or {}
+    osd = a.get("os") or {}
     inv = isd.get("investabilityConstrained") or {}
     rn = isd.get("riskNeutralized") or {}
     checks, pyramids, extracted, ra = _slim_checks(isd.get("checks"))
@@ -205,6 +206,16 @@ def _slim_alpha(a):
             metrics["investability_fitness"] = inv.get("fitness")
     if rn.get("sharpe") is not None:
         metrics["risk_neutralized_sharpe"] = rn.get("sharpe")
+    # OS（样本外）段（2026-09-20 补）：此前只取 is 段，导致已提交 alpha 的样本外
+    # 表现通过 MCP 完全不可见（实测 124 个 USA alpha 的 os 段含 sharpe/fitness/
+    # turnover/returns/drawdown/margin/sharpe60-500/preCloseSharpe/osISSharpeRatio）。
+    # 只透出扁平标量，结构与大字典（checks 等）不进 metrics。
+    os_metrics = {k: osd.get(k) for k in ("startDate", "sharpe", "fitness", "turnover",
+                                          "returns", "drawdown", "margin", "sharpe60",
+                                          "sharpe125", "sharpe250", "sharpe500",
+                                          "preCloseSharpe", "osISSharpeRatio",
+                                          "preCloseSharpeRatio")
+                  if osd.get(k) is not None}
     reg = a.get("regular")
     code = reg.get("code") if isinstance(reg, dict) else reg
     out = {
@@ -215,6 +226,7 @@ def _slim_alpha(a):
         "dateSubmitted": a.get("dateSubmitted"),
         "settings": a.get("settings"),
         "metrics": metrics or None,
+        "os": os_metrics or None,   # 样本外表现；近期提交可能只有 startDate（平台未积累）
         "ra": ra,                 # precomputed Failed RA / Failed PPA (WebDataScope getAlphaCheckStates) — read this instead of recounting checks
         "checks": checks,
         "pyramids": pyramids,

@@ -7,11 +7,14 @@ from statistics import median
 from typing import Any, Dict, List, Optional
 
 from ._common import _dumps, _loads, _now
+from wqb.config import is_pseudo_alpha  # 伪 alpha 黑名单（生成侧剔除，单源）
 
 #: S2 候选字段池构建算法版本。缓存 payload 的 builder_version 与之不符即视为过期重建——
 #: 2026-09-13 把"前缀簇采样"改成"质量排序"后，已落库的旧池（如 GBR intraday_pv_feats：
 #: 30 条全是 ask_price 族）永不失效，GEM 一直吃旧池。
-POOL_BUILDER_VERSION = 2
+#: 2026-09-25 v3：经济学归类池（campaign.py build_economic_field_pool）成为首选，
+#: 旧 cross_cluster 池回退——两个 builder 必须写同一常量，否则缓存永不命中。
+POOL_BUILDER_VERSION = 3
 
 #: 常见统计/时窗前缀（intraday_pv_feats 这类"统计量_主体_时窗"命名的数据集，首 token 是
 #: mean/max/corr… 这种统计量而非主体；主体 token 才是经济含义所在）。
@@ -238,7 +241,8 @@ class FieldCatalogMixin:
         clusters_covered = 0
         catalog = self.get_field_catalog(region, dataset)
         if catalog and catalog.get("fields"):
-            fields = [f for f in catalog["fields"] if self._field_name(f)]
+            fields = [f for f in catalog["fields"] if self._field_name(f)
+                              and not is_pseudo_alpha(self._field_name(f))]  # 剔除 riskfree/beta/基准伪 alpha
             use_quality = (
                 rank_by_quality if rank_by_quality is not None
                 else self._has_quality_signals(fields)

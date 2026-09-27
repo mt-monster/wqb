@@ -18,6 +18,17 @@ allowed-tools:
 
 # wq-brain-campaign-toolkit（战役引擎层）
 
+## 职责边界
+
+- **本 skill 负责**：战役目录内的执行引擎：gate / pipeline / wave / probe / ledging / scan_fields / review / diversity
+- **本 skill 不做**：不做区域选择（campaign-matrix）、不做最终提交判定（submit_verdict）、不直接提交 alpha
+- **上游 / 下游**：上游 = 战役目录 + 子命令；下游 = `data/wqb.db` 各表（**wave_results / registry_empirical / ledger_kv 的唯一正式写入方**）
+
+
+S6 新增 `campaign.py dataset-experience --dataset <id> --delay 1`：调用规范核心生成字段级
+Markdown 经验，保留人工复盘段。方法与 S-PRE/S1/S2 复用契约见
+[brain-dataset-mining-experience](../brain-dataset-mining-experience/SKILL.md)。
+
 ## 1. 定位
 - 本 skill 是**战役脚本的唯一权威实现**（引擎层，可运行脚本）。其他 skill 只写"何时用/怎么判"（方法论层）并指向这里，禁止在别处复制本 scripts/ 的逻辑。
 - 从 `tracking/KOR` 战役工具栈抽象而来（2026-08-15，KOR 战役 15+ 轮实证）；KOR 目录脚本保留为区域历史实现。
@@ -42,6 +53,23 @@ allowed-tools:
 | `campaign_mutex.py` | 多战役互斥（波号/槽位/额度仲裁） |
 
 **辅助工具（中使用率）**：`review_wave.py` / `score_datasets.py` / `harvest.py` / `build_wave.py` / `diversity_audit.py` / `check_ledger_sync.py`。
+
+**选波数量与状态契约（2026-09-24）**：固定机制批用 `build_wave.py --expected-count N`，
+数量不符时返回 `selection-count` 与排除原因，不写本波表达式或 wave_meta；
+`--source-wave` 显式指定 GEM 来源，重建时不再优先读残缺目标波。
+选中项若已回测、dropped 或 superseded，返回 `selection-state` 并回滚选集事务；
+落库后验证每个 picked 的状态与 alpha_id。该检查保证本次 picked，不会自动清理旧 selected/gated。
+`--size` 在CLI与workflow S2中都只表示容量，不会自动补expected-count。
+预定机制/对照实验优先 `--selection-contract-key`：按DB清单推导数量，并核验source_id、
+原式、dataset/region/delay/source_wave及状态；同条数错表达式也会失败。
+`wave_meta.selection_audit`记录来源项的选中/延后及原因；未选不等于机制失败。
+清单格式与复用流程见[选波实验清单](references/selection-plan.md)。
+
+**异步恢复**：任务查询核对进程创建时间与可执行文件；PID 身份不符或无法核实时返回 unknown。
+以明确退出码/成功标记优先判终态；旧目录任务缺终态时仍保留历史日志推断，不能代替 DB 收批核验。
+MCP 桥接超时返回 `outcome_unknown`、`retry_safe=false`，先查任务及 DB，禁止盲目重发模拟。
+救援池 `exclude_dataset` 依据同区域同 alpha_id 的回测/表达式来源排除；未知来源不作跨集腿，
+多集候选按来源全集排除。数据集不同只证明来源不同，不证明 Prod/Self 相关性合格。
 
 **内部使用工具（工作区零引用但被本目录 import / CLI 分发，必须保留）**：`assemble_priors.py`（被 build_wave/gate import + `campaign.py assemble-priors`）/ `signal_classifier.py` / `composition_validator.py` / `diversity_extract.py`（`campaign.py diversity-extract`）/ `s2_compliance_mark.py`（`campaign.py s2-mark`）/ `neutralization_sweep.py`（pipeline 兼容其产物）。**勿删**。
 
@@ -79,6 +107,7 @@ PY=$WQ_PY
 TK=$WQ_TOOLKIT_DIR
 CD=<CAMPAIGN_DIR>   # 如 tracking/KOR
 # 评分前先校准（实测反学 category 权重+拥挤甜区）：先 dry-run 人工审、确认无异常再 apply
+
 # 详见 references/probe-scoring-v2.md「评分前必做：calibrate 自学习校准」
 $PY $TK/score_datasets.py --campaign-dir $CD --calibrate --dry-run   # 审：甜区 ac 是否异常巨大 / strong_acs 是否空
 $PY $TK/score_datasets.py --campaign-dir $CD --calibrate             # 确认无异常后才写 thresholds
@@ -148,7 +177,7 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | ① settings prior | `_lib/region_kb.py::apply_settings_prior`：读 `region_kb.gate_priors`（缺则 `gate_priors_local`）的 `by_decay` / `by_neutralization`，格子样本 ≥`min_n`(30) 且过闸率 ≥ 当前设置 ×`min_lift`(2.0) 才改写；显式 `--set`/`--neutralization` 钉住的维度不动。GEM prompt 只再渲染 operator-count / field-family（`economic_priors.py`），设置维度不进 prompt。 | `thresholds.json` `settings_prior{enabled,min_n,min_lift,dims}`；CLI `--no-settings-prior` |
 | ③ region_kb 波后刷新 | `stage_review` 写完 wave_results 后 `refresh_after_wave`：`recent_waves`（近 20 波）+ `gate_priors_local`（本地 backtest_results 重算 by_neutralization/op_count/field_family，无 decay）+ `updated_at`。定向 upsert，不整区重写。 | 常开（异常不阻断） |
 | ⑥ S2-COMPLIANCE 降级 | `s2_compliance_w<wave>` 缺失只打印 `[S2-COMPLIANCE] 无合规记录（仅提示，不阻断）`，不再 `--force`；`s2_compliance_mark.py` / `campaign.py s2-mark` 保留为可选标记。`pipeline.py` 全部中止路径 `sys.exit(2)`。 | — |
-| ⑦ rn 墙 / 停止规则 / verdict 枚举 | `review_wave.rn_exposure()` 进 `walls()`/`passes()`；停止规则由节点层 `campaign.py::_run_stop_rules_gate` 按 DB 判定（区 backtested≥100 且 passed=0；最近 3 closed 波全 FAIL），ledger `stop_rules_override{reason,until}` 放行；`mcp__wqb-db__upsert_wave_result` 归一/拒绝非枚举 verdict。 | `thresholds.review.rn_sharpe_min`；`thresholds.diversity.stop_rules{enabled,yield_min_backtests,consecutive_fail_waves}` |
+| ⑦ rn 墙 / 停止规则 / verdict 枚举 | `review_wave.rn_exposure()` 进 `walls()`/`passes()`；停止规则由节点层 `campaign.py::_run_stop_rules_gate` 按 DB 判定（区 backtested≥100 且 passed=0；2026-09-23 起规则 B 按轴：B1 同轴连续 K 波可计数 FAIL 熔断 / B2 窗口内 ≥D 个不同轴全 FAIL 且无 PASS 停区，零配额与 dead_end 产出波豁免；schema 不齐或 axis_scope:false 回落旧口径"最近 3 closed 波全 FAIL"），ledger `stop_rules_override{reason,until}` 放行；`mcp__wqb-db__upsert_wave_result` 归一/拒绝非枚举 verdict。 | `thresholds.review.rn_sharpe_min`；`thresholds.diversity.stop_rules{enabled,yield_min_backtests,consecutive_fail_waves,axis_scope,axis_window,distinct_fail_axes,exempt_zero_cost_waves,exempt_dead_end_waves}` |
 
 ## 7. 闸 7-8：数据质量预检（2026-08-25 落地）
 

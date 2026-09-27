@@ -68,10 +68,10 @@ SATURATION_THRESHOLDS: Dict[str, float] = {
 #: 轮转目标排序权重（对 0-1 归一化特征加权；越大越优先作为转入区）。
 ROTATION_WEIGHTS: Dict[str, float] = {
     "yield": 0.30,          # 历史产出率（passed/backtested）
-    "headroom": 0.20,       # 1 - exhausted_pct（战役未穷尽余量）
+    "headroom": 0.15,       # 1 - exhausted_pct（战役未穷尽余量）
     "prod_ok": 0.15,        # 1 - prod_wall_ratio（生产池不同质；未测→中性 0.5）
-    "feasible": 0.20,       # 未提交可行存量（对数缩放，见 _feat_feasible）
-    "untried": 0.10,        # 未开采战役数（对数缩放）
+    "feasible": 0.30,       # 未提交可行存量（对数缩放，见 _feat_feasible）★ 2026-09-25 P4：0.20 → 0.30（它是最硬先验）
+    "untried": 0.05,        # 未开采战役数（对数缩放）
     "priority": 0.05,       # config.REGION_PRIORITY 平台优先级（次要 tiebreaker）
 }
 
@@ -480,11 +480,19 @@ def recommend_rotation(current_region: str,
         next_action = (f"谨慎转 {to_region}（先 P0.3 探针验可行集），并升级 "
                        f"brain-next-move-analysis 评估平台级 prod 墙")
     else:
+        feasible = pick.get('feasible_unsubmitted') or 0
         reason = (f"{current_region} 饱和（{'; '.join(cur_sat['reasons'][:2])}）→ "
                   f"转 {to_region}（score={pick['score']}, yield={pick['yield_rate']}, "
-                  f"未提交可行存量={pick['feasible_unsubmitted']}, verdict={pick['verdict']}）")
-        next_action = (f"在 {to_region} 重启 Phase 1（S-PRE→S6），承接目标 "
-                       f"{target if target is not None else 'N'} 颗过闸；先跑步 1 查表 + P0.3 探针")
+                  f"未提交可行存量={feasible}, verdict={pick['verdict']}）")
+        # 2026-09-25 P4：S-PRE 前置回切 —— 转入区有足够未提交可行存量时，
+        # 优先清库存而非开新挖（实证：清库存产出率 ≈ 20× 开新挖）。
+        if feasible >= 5:
+            next_action = (f"★ 优先清 {to_region} 库存（{feasible} 颗未提交可行存量已实测 prod）→ "
+                           f"submit_verdict + 用户确认提交；清完库存后再承接目标 "
+                           f"{max(0, (target or 0) - feasible) if target else 'N'} 颗过闸的新挖。")
+        else:
+            next_action = (f"在 {to_region} 重启 Phase 1（S-PRE→S6），承接目标 "
+                           f"{target if target is not None else 'N'} 颗过闸；先跑步 1 查表 + P0.3 探针")
 
     return {
         "should_rotate": True, "from_region": current_region, "to_region": to_region,

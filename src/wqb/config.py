@@ -78,16 +78,20 @@ DATASET_HEALTH_SCORING: Dict[str, object] = {
 
 REGIONS: Dict[str, dict] = {
     "USA": {
-        "universes": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200",
-                      "ILLIQUID_MINVOL1M", "TOPSP500"],
+        # ILLIQUID_MINVOL1M 已从平台档位表移除（2026-09-22 get_platform_setting_options 实测）。
+        "universes": ["TOP3000", "TOP2000", "TOP1000", "TOP500", "TOP200", "TOPSP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
         "categories": list(PLATFORM_CATEGORIES),
         "default_universe": "TOP3000",
     },
     "EUR": {
-        "universes": ["TOP2500", "TOPCS1600", "TOP1200", "TOP800", "TOP400",
-                      "ILLIQUID_MINVOL1M"],
+        # 2026-09-22 实测：simulations 对 ILLIQUID_MINVOL1M 返回
+        # "Universe ILLIQUID_MINVOL1M is not available."，故从档位表删除（旧值会误导选池）。
+        "universes": ["TOP2500", "TOPCS1600", "TOP1200", "TOP800", "TOP400"],
+        "_note": "EUR/D1 universe 档位以 get_platform_setting_options 为准（TOP2500/TOPCS1600/"\
+                 "TOP1200/TOP800/TOP400）；实测 IS 强度集中在 TOP2500，换窄档塔陷（见 ledger "\
+                 "EUR/universe_prod_isolation_probe_20260922）。",
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1, 0],
         "categories": list(PLATFORM_CATEGORIES),
@@ -101,7 +105,8 @@ REGIONS: Dict[str, dict] = {
         "default_universe": "TOP2000U",
     },
     "ASI": {
-        "universes": ["MINVOL1M", "MINVOL10M", "ILLIQUID_MINVOL1M", "TOP500"],
+        # 平台 ASI/D1 仅提供 MINVOL1M/MINVOL10M/TOP500（2026-09-22 实测）。
+        "universes": ["MINVOL1M", "MINVOL10M", "TOP500"],
         "neutralizations": list(_USA_NEUTRALIZATIONS),
         "delays": [1],
         "categories": list(PLATFORM_CATEGORIES),
@@ -131,12 +136,15 @@ REGIONS: Dict[str, dict] = {
         "default_universe": "TOP600",
     },
     "AMR": {
-        "universes": ["TOP2000", "TOP1000", "TOP500"],
-        "neutralizations": list(_USA_NEUTRALIZATIONS),
+        # 2026-09-22 get_platform_setting_options：AMR EQUITY D0/D1 均仅 TOP600。
+        "universes": ["TOP600"],
+        "neutralizations": ["NONE", "STATISTICAL", "MARKET", "SECTOR", "INDUSTRY",
+                            "SUBINDUSTRY", "COUNTRY"],
         "delays": [1, 0],
         "categories": list(PLATFORM_CATEGORIES),
-        "default_universe": "TOP2000",
-        "_note": "平台 get_platform_setting_options 未列出，需确认是否仍可用",
+        "default_universe": "TOP600",
+        "_note": "平台 get_platform_setting_options 实测（2026-09-22）：仅 TOP600；"
+                 "neutralization 集合比 USA 少（无 CROWDING/FAST/SLOW 等）。",
     },
     "TWN": {
         "universes": ["TOP1000", "TOP500"],
@@ -469,6 +477,42 @@ MINING: Dict[str, object] = {
 #: 本常量与 `wq-brain-campaign-toolkit/config/platform_constraints.json::window_whitelist`
 #: 同源，由 `tests/unit/test_window_whitelist_p4.py` 守护两边一致。
 STANDARD_WINDOWS: List[int] = [1, 5, 22, 66, 252, 504, 1008, 1260]
+
+
+# ---------------------------------------------------------------------------
+# 伪 alpha 字段黑名单（2026-09-26 落地，P1.2 / 评估去污染）
+#
+# 实证依据（2026-09-26 字段分类→GEM 收益评估）：`dl_riskfree_returns`（无风险
+# 收益率）这类字段做信号本质是做多/做空无风险利率——sharpe 虚高（实测 avg 4.16）
+# 但无 alpha 价值，prod_corr 必爆。同类的基准收益 / raw beta / 市场指数同理：
+# 它们是 beta/carry，不是选股能力。用于评估时会把机制收益污染成正收益，
+# 用于生成时会产出过不了 prod 墙的废品。
+#
+# 用法（单源，勿在他处复写）：
+#   - 评估侧：tools/field_pool_ab.py 剔除命中字段/数据集后再对比
+#   - 生成侧：GEM 字段池构建时剔除（防污染候选池）
+# 匹配口径：大小写不敏感的子串命中（字段名或数据集 id）。
+# ---------------------------------------------------------------------------
+
+#: 伪 alpha 字段/数据集关键词（命中即视为非选股 alpha，评估剔除 + 生成拒绝）。
+PSEUDO_ALPHA_PATTERNS: List[str] = [
+    "riskfree", "risk_free", "risk_free_rate", "rf_rate", "_rf_", "rf_",
+    "benchmark", "market_return", "market_ret", "mkt_return", "mkt_ret",
+    "index_return", "index_ret", "index_price",
+    "beta", "raw_beta",
+]
+
+
+def is_pseudo_alpha(name: str) -> bool:
+    """字段名/数据集 id 是否属伪 alpha（riskfree/beta/基准收益类）。
+
+    大小写不敏感子串匹配 PSEUDO_ALPHA_PATTERNS。评估/生成两侧共用。
+    """
+    if not name:
+        return False
+    low = str(name).lower()
+    return any(p in low for p in PSEUDO_ALPHA_PATTERNS)
+
 
 
 def gate_thresholds(stage: str = "internal") -> Dict[str, object]:

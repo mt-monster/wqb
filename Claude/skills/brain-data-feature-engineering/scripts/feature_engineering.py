@@ -101,7 +101,9 @@ def _fetch_fields_from_db(region: str, dataset_id: str) -> Optional[List[Dict[st
     if not db_path:
         return None
     try:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(db_path, timeout=60)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA busy_timeout=60000")  # 规范口径（2026-09-20 L1，无 src 依赖内联版）
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute(

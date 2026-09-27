@@ -17,6 +17,14 @@ allowed-tools:
 
 # Alpha 表达式解释工作流
 
+## 职责边界
+
+- **本 skill 负责**：收益来源归因与机制解释（按需：Mode B 换概念前先查概念重叠）
+- **本 skill 不做**：不改表达式、不回测、不判提交；**不是每候选必经**（按需调用）
+- **上游 / 下游**：上游 = 具体 alpha；下游 = optimization-v1 Mode B
+
+
+
 本手册提供分析并解释 WorldQuant BRAIN alpha 表达式的工作流。
 完整详细工作流与示例见 [reference.md](reference.md)。
 

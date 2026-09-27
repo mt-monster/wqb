@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import add_campaign_arg, CampaignContext, load_credentials
 from _lib.api import Api
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 SLOTS = 7           # Token-Bucket 突发容量
 DAILY_REGULAR = 4   # ET 日历日
 
@@ -79,7 +80,7 @@ def quota_status():
 def slot_plan(ctx, db):
     """填槽建议：近闸波（有 sharpe>=1.3 未达标）优先、弱探针最多 1 槽。"""
     import sqlite3
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     con.row_factory = sqlite3.Row
     # 每波最新最强信号
     rows = con.execute(
@@ -112,7 +113,7 @@ def submit_plan(ctx, db):
     本 planner 的排序是 DB 侧 proxy，最终点塔确认走 submit_verdict。
     """
     import sqlite3
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     con.row_factory = sqlite3.Row
     row = con.execute(
         "SELECT value FROM ledger_kv WHERE region=? AND key='submit_ready'", (ctx.region,)

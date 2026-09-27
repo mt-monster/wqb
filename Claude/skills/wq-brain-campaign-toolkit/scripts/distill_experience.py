@@ -24,6 +24,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import add_campaign_arg, CampaignContext
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 MIN_REGIONS_FOR_LESSON = 2   # 跨区铁律门槛
 MIN_DEAD_FOR_RED = 3         # 区域红灯族门槛
 MIN_WIN_FOR_PROMOTION = 3    # 晋升门槛（单区次数）或跨区 >=2 区
@@ -58,7 +59,7 @@ def _norm_family(f):
 
 
 def load_registry(db):
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     con.row_factory = sqlite3.Row
     wins, deads = [], []
     for r in con.execute(
@@ -159,7 +160,7 @@ ALL_REGIONS = ["USA", "EUR", "KOR", "IND", "ASI", "GBR", "HKG", "GLB", "CHN", "T
 
 def apply_lessons(db, lessons):
     """写 cross_region_lessons（幂等，lesson_id 去重）。"""
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     n_new = 0
     for l in lessons:
         existing = con.execute(
@@ -187,7 +188,7 @@ def apply_lessons(db, lessons):
 
 def write_ledger(ctx, db, key, value):
     """写入 ledger_kv（蒸馏结论的机器可读缓存，S0a/选波消费）。"""
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     now = datetime.now().isoformat(timespec="seconds")
     con.execute(
         "INSERT OR REPLACE INTO ledger_kv (region, key, value, updated_at) VALUES (?,?,?,?)",

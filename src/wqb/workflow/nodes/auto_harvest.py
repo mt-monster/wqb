@@ -23,6 +23,7 @@ from .._common import (
     wq_py,
 )
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 
@@ -100,7 +101,7 @@ def run(
     try:
         # 从 DB 读取 multisim 结果
         db_path = resolve_db_path()
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
 

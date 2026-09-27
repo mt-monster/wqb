@@ -8,7 +8,7 @@ User prompt:
 你必须严格按照 @Skill-ImproveTheme-V1.md 中的规则工作，使用 worldquant-brain-platform mcp 工具。
 对 JPN alpha id 为 LLbaqEqa 的表达式进行优化。
 region=JPN, delay=1，目标是所有指标都 PASS，prod correlation < 0.7，IS_LADDER_SHARPE 也要通过。
-在使用 create_multiSim 完成回撤验证后，必须立即将本轮 8 个 Alpha 的核心结果追加写入 LLbaqEqa_optimization_results.txt。
+在使用 `create_multi_simulation` 完成回撤验证后，必须立即将本轮 8 个 Alpha 的核心结果追加写入 LLbaqEqa_optimization_results.txt。
 ```
 
 Expected behavior:

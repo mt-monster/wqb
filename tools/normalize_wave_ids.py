@@ -43,6 +43,9 @@ if SRC_DIR not in sys.path:
 
 from wqb.wave_id import normalize_wave_id, wave_kind  # noqa: E402
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 STATE_PATH = os.path.join(REPO_ROOT, "logs", "_state_normalize_wave_ids.json")
 TABLES = ("expressions", "backtest_results")
 
@@ -111,7 +114,7 @@ def main() -> int:
         return 2
 
     state = load_state(a.fresh)
-    conn = sqlite3.connect(db)
+    conn = db_connect(db)
     try:
         todo = scan(conn)
         if a.region:

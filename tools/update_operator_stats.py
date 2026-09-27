@@ -11,6 +11,9 @@ import sqlite3
 from collections import Counter
 from pathlib import Path
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 def extract_operators(expr: str) -> list:
     """提取表达式中所有算子（函数名）。"""
@@ -24,7 +27,7 @@ def update_operator_stats(campaign_dir: str):
     
     # 读 region_kb
     db_path = campaign_path.parent.parent / "data" / "wqb.db"
-    conn = sqlite3.connect(str(db_path))
+    conn = db_connect(str(db_path))
     conn.row_factory = sqlite3.Row
     
     # 统计最近 10 波的算子使用频率

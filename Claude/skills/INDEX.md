@@ -2,7 +2,7 @@
 
 > 本文件是全部 WQ/BRAIN skill 的架构基准：分层定位、挖掘流水线入口规则、闸门阶梯、权威版本声明。
 > 修改任何 skill 前先读本文件；新增 skill 必须归入下述某层并更新本索引。
-> **last_verified: 2026-09-15**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
+> **last_verified: 2026-09-26**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
 > 现行审计：`output_report/skills_multi_copy_audit_20260910.md`（多副本治理 P0/P1/P2）；
 > 工具使用率见 `reports/toolkit_usage_review_2026-08-31.md`（更早审计已归档 `attic/`）。
 
@@ -98,7 +98,7 @@ L4  诊断优化     brain-how-to-pass-alpha-test
                  · brain-alpha-robustness（S4→S5 必经闸）
                  · brain-alpha-repair（弱候选修复配方；改进入口仍为 optimization-v1）
 L5  过闸提交     brain-alpha-judge · worldquant-submit-alpha · wq-brain-superalpha
-L6  监控复盘     wq-backtest-monitor
+L6  监控复盘     wq-backtest-monitor · brain-dataset-mining-experience（字段/机制经验沉淀与复用）
 L7  元技能       pull-brain-skills · planning-with-files
 ```
 
@@ -142,7 +142,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | S3 | **七槽填槽模式（wqb-concurrency §8，2026-08-25 更新 5→7，pipeline.py 代码 N=min(7,批数)）**：四重门禁后 7 批 multisim 同提、统一轮询、即收即补；pipeline.py `stage_submit_poll` 已改造为 ThreadPoolExecutor 并行实现（N=min(7, 批数)），支持单轮（默认）与多轮即收即补（`--max-rounds>1`），单批在飞串行已彻底废弃 |
 | S4 | review_wave.py（walls 诊断）/ score_datasets.py --probe-score（三灯） |
 | S5 | pipeline.py quota（ET 日历日配额闸）<br>**配额是两条独立通道**：`REGULAR_SUBMISSION` 4/日 + `SUPER` 1/日；**PPA 另有独立 `POWER_POOL_SUBMISSION` 1/日**（与 REGULAR 并行、不占其额度）。三者均 00:00 ET 重置。日循环应先提 PPA 那一颗 |
-| S6 | diversity_audit.py / campaign.py ledger |
+| S6 | diversity_audit.py / campaign.py ledger / campaign.py dataset-experience（逐数据集中文经验） |
 
 > **健康检查判据分层（设计意图，勿混用）**：S0 体检（ppa-mining §1.0：cov≥0.85 / α≤50 / f≥10）= 开战役**前置硬门槛**（不过不挖）；S1 评分（score_datasets.py 默认线：cov≥0.7 / f≥5 / α≤1000）= 数据集 **tier 分层与白名单筛选**（不过仅降级处理）。S0 严格、S1 宽松，两层判据并存是有意设计。
 
@@ -182,6 +182,15 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 > 另有一道**独立的**"体检硬门"（`tools/field_inspect_gate.py`，由 `tools/wave_gate.py` 内置调用），
 > 判据是 WebDataScope 字段体检包（低覆盖/高偏度/厚尾/单边/稀疏事件），**与闸7/8 不同源**，勿混谈。
 
+### wave_gate.py 内置闸（非 gate.py 闸编号）
+
+| 闸 | 判据 | 开关 | 落地 |
+|---|---|---|---|
+| 开波区域闸 | signal_floor / stop_rules / backlog 三道闸 | `--gate-mode {off,warn,enforce}` | 2026-09-17 P0-1 |
+| 体检硬门 | 低覆盖/高偏度/厚尾/单边/稀疏事件 | `--inspect-mode {off,warn,enforce}` | 2026-09-06 接线 |
+| PROD 饱和闸 | 字段热度 + 数据集占比 | 常开 | 2026-09-07 P1-1 |
+| **闸 PF** | **骨架级死路预检（prod-first 前置）** | `--prod-family-gate`（默认开）/ `--no-prod-family-gate` | **2026-09-25 P2** |
+
 ### MCP 工具/节点计数（唯一基准，2026-09-12 核定）
 
 其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护）：
@@ -190,11 +199,13 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
   `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 69）。
   由 `tests/unit/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护（装饰器数变了测试即红）。
-- `wqb-db` 服务器：**45 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由
+- `wqb-db` 服务器：**44 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由
   `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
   2026-09-15 起含 `set_expression_status`（批量改状态，只传 id/状态过滤，不回传表达式正文）。
-  2026-09-16 起含 `workflow_inventory_scan` / `workflow_field_understanding` / `workflow_gem_wave` /
+  2026-09-16 起含 `workflow_inventory_scan` / `workflow_gem_wave` /
   `workflow_unified_gate` / `workflow_auto_harvest` / `workflow_auto_review` / `workflow_auto_pyramid`。
+  ⚠ **2026-09-26 P2.1 移除 1 个（45→44）**：`workflow_field_understanding` ——
+  field_understanding 节点删除（重复的第三套 S1 实现），S1 字段理解走 `feature_engineering`。
   ⚠ **2026-09-18 新增 2 个（43→45）**：`persist_correlation`（相关性检查结果直落 `alphas`，
   NULL-only / [0,1] 校验 / source 溯源）、`get_alpha_corr_metrics`（本地库筛选相关性，
   **零平台配额**）。配套：alphas 表 +9 列（sub_universe_sharpe / returns / drawdown / long_count /
@@ -204,11 +215,13 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   `compute_wave_summary` / `compute_campaign_summary` / `get_step_gain_report` /
   `workflow_step_metrics` —— step-metrics 子系统整体下线（归档 `attic/step_metrics_20260917/`），
   替代方案 `tools/step_funnel.py`（只读步级漏斗）。
-- workflow 节点：**19 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
-  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `structural_reconstruct` / `inventory_scan` / `field_understanding` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
+- workflow 节点：**18 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
   ⚠ 2026-09-17：`step_metrics` 节点已下线（18→17）；`modeb_improve` 节点上线（17→18）。
   ⚠ 2026-09-18：`alpha_booster` 节点上线（18→19，通用 Alpha 短板提升，S4 增强）。
+  ⚠ 2026-09-26 P2.1：`field_understanding` 节点删除（19→18，重复的第三套 S1 实现）；
+  同批修复 `auto_pyramid`/`auto_review`/`alpha_booster`/`modeb_improve` 假 dry-run（诚实构建命令/计划）。
 
 ## 2026-09-19 挖掘流程优化落地（RA×10 战役复盘，细节见 wq-brain-ra-pipeline 各步）
 
@@ -244,13 +257,27 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 
 ## 权威版本声明（嵌套副本勿直接调用）
 
-| 副本位置 | 权威版本 |
-|---|---|
-| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering（520 行旧版，无合法 frontmatter） | 顶层 brain-data-feature-engineering |
-| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation | 顶层 brain-feature-implementation |
-| tracking/KOR/scripts\ 下 9 个新链脚本（gate/build_wave/kor_pipeline/score_datasets/review_wave/metrics_cache/scan_fields/diversity_audit/kor_ledger，区域历史实现） | wq-brain-campaign-toolkit/scripts/（战役脚本唯一权威实现，2026-08-15 起） |
+| 副本位置 | 权威版本 | 引擎**实际**用哪份（2026-09-26 实测） |
+|---|---|---|
+| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering（模板子集；**故意无 SKILL.md**） | 顶层 brain-data-feature-engineering | 顶层/安装位（内嵌因缺 SKILL.md 被解析探针跳过） |
+| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation（`scripts/` 为硬依赖；`SKILL.md` 为自动同步副本） | 顶层 brain-feature-implementation | 顶层/安装位；`SKILL.md` 由 `tools/sync_gem_embedded_skill.py` 同步并由测试守护 |
+| tracking/KOR/scripts\ 下 9 个新链脚本（gate/build_wave/kor_pipeline/score_datasets/review_wave/metrics_cache/scan_fields/diversity_audit/kor_ledger，区域历史实现） | wq-brain-campaign-toolkit/scripts/（战役脚本唯一权威实现，2026-08-15 起） | — |
 
-嵌套副本是 headless runner 的运行时依赖（`FEATURE_IMPLEMENTATION_DIR` 约定），**不删除、不修改**；新调用一律走顶层权威版。
+**GEM 内嵌副本的真实角色（2026-09-26 审计重写，旧文请勿再沿用）**：
+`pipeline_paths.py::_resolve_skill_dir()` 的解析顺序是 **环境变量（`WQB_FI_SKILL_DIR` / `WQB_DFE_SKILL_DIR`）
+> `skill_roots` 候选（主安装位优先，仓库 `Claude/skills/` 兜底）> 内嵌 legacy 兜底**。
+实测二者都解析到 `~/.claude/skills/...`，即**内嵌副本平时不生效**。
+
+⚠ 旧文称"嵌套副本是运行时依赖，不删除、不修改"——**该结论已被实测推翻**，且它掩盖了一个真缺陷：
+内嵌 dfe 目录**连 SKILL.md 都没有**，而 `read_text_optional()` 失败返回**空串**，
+导致顶层 322 行的字段工程文档**从未进入 LLM prompt** 且完全静默（现已修）。
+故纪律改为：
+
+- 内嵌 `scripts/`（`ace_lib` / `validator`）**是**硬依赖，**不删除、不修改**；
+- 内嵌 `brain-feature-implementation/SKILL.md` **必须与顶层逐字一致**（它进 LLM prompt），
+  由 `tests/unit/test_gem_skill_paths.py` 守护，修复入口 `tools/sync_gem_embedded_skill.py --apply`；
+- 内嵌 dfe **不得**出现 `SKILL.md`（出现即会让解析改选内嵌位、再次静默屏蔽顶层文档，测试会红）；
+- GEM 产物（`*_ideas.md`）写 `GEM_REPORT_ROOT`（= 仓库 `data/gem_runs/output_report/`），**不再写进 skill 树**。
 
 ## 并发口径（演进注记）
 
@@ -307,6 +334,32 @@ agent_created: true              # 可选，仅模型创建的技能标注
 禁止出现 `when_to_use` / `trigger_when` / `title` 等非标字段。
 权威契约见 `AGENTS.md §SKILL.md frontmatter 契约`。
 
+### 正文必备段：`## 职责边界`（2026-09-26 新增，**新 skill 缺此段不予合入**）
+
+frontmatter 只说"我是谁"，**职责边界**才说清"我不管什么、该找谁"。2026-09-26 审计实测
+**边界声明覆盖率仅 39%（13/33）**，是选错 skill / 重复实现的主因。所有 SKILL.md 正文必须在
+H1 标题之后紧跟该段，格式为**三条**：
+
+```markdown
+## 职责边界
+
+- **本 skill 负责**：<产物 / 动作>
+- **本 skill 不做**：<明确排除>（遇到 → 转 <skill 或工具>）
+- **上游 / 下游**：上游 = <谁给我>；下游 = <我给谁>
+```
+
+由 `tests/unit/test_skill_boundaries.py` 机械守护（缺段 / 缺条目即红）。
+
+**两条硬裁定（写入边界段时须遵守）**：
+
+1. **skill 不得改写权威常量**。`src/wqb/config.py` 的 `REGIONS` / `REGION_PRIORITY` /
+   `GATES` / `CONCURRENCY` / `PARADIGMS` / `SHAPE_CLASSES` 是唯一权威；skill 只能**引用**，
+   **禁止**用"修正为…" / "撤回…" / "实测推翻…"等口吻改写。若 skill 的实证观测与常量冲突，
+   **保留观测但显式标注冲突并裁定以 config 为准**（样板见 `brain-alpha-research` §12(a)）。
+2. **同一产物只能有一个主写方**。DB 表 / 产物文件若被多个 skill 提及，边界段必须写明
+   「唯一正式写入方 = X；Y 仅在 <场景> 作逃生阀」（样板见 `wq-backtest-monitor` 与
+   `brain-sim-alphas-in-batch-and-track` 对 `wave_results` 的约定）。
+
 > `<SKILL_ROOT>` 表示技能库根目录。**真相源 = 仓库 `Claude/skills/`**，各宿主安装位由
 > `tools/sync_skills.py` 同步（见文首）。脚本入口一律经 `$WQ_TOOLKIT_DIR` / `$WQ_VALIDATOR_DIR`
 > 引用，禁止在 SKILL.md 中写出含用户名的绝对路径。
@@ -318,12 +371,15 @@ agent_created: true              # 可选，仅模型创建的技能标注
 
 ```bash
 pytest tests/unit/test_skill_integrity.py -q   # name==目录名、frontmatter 完整、registry 元数据与节点签名一致
+pytest tests/unit/test_skill_boundaries.py -q  # 2026-09-26 新增：职责边界段存在且完整、L5 执行权互斥已声明
 python tools/sync_skills.py --check            # 仓库与全部安装位零漂移
 ```
 
 校验内容：
 - 每个 `SKILL.md` 存在且 frontmatter 完整（`name`/`layer`/`description`/`last_verified`）。
 - `name` 与目录名一致；`layer` 在合法分层列表中。
+- **每个 `SKILL.md` 正文含 `## 职责边界` 段，且具备「本 skill 负责 / 不做 / 上游·下游」三条**
+  （2026-09-26 新增；`test_skill_boundaries.py` 守护，缺段即红）。
 - `tools/workflow` 节点元数据的 `required_params/optional_params` 与节点 `run()` 签名一致。
 - `allowed-tools` 为 YAML 列表格式。
 - 无已废弃路径引用（`.workbuddy/skills/` / `.qoder/skills/` / `.cursor/skills/`）。

@@ -18,6 +18,14 @@ agent_created: true
 
 # WQ Brain 并发挖掘调优
 
+## 职责边界
+
+- **本 skill 负责**：并发调优与槽位口径：Token-Bucket C≈7、七槽填槽、429 退避、吞吐基准
+- **本 skill 不做**：不发起回测本身（那是 sim-alphas / toolkit）、不改表达式、不提交
+- **上游 / 下游**：被 `brain-sim-alphas-in-batch-and-track` 与 `wq-brain-campaign-toolkit` 调用
+
+
+
 WorldQuant Brain 的「并发模拟数」是**服务端硬性上限 C**，与本地开多少线程无关。
 本地在飞回测数 = min(本地工作线程数, C)。超过 C 的提交会拿到 `429`，白白浪费重试。
 

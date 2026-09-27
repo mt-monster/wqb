@@ -49,7 +49,10 @@ def _bootstrap():
     return mcp
 
 
-TERMINAL = {"DONE", "ERROR", "CANCELLED", "FAILED"}
+# 2026-09-21 根治：平台 multisim 子任务终态是 COMPLETE（poller.py 早已如此），本工具原集合
+# 漏了它 → COMPLETE 子任务永远算"未终态"，--watch 永不退出、all_ok 永假；且 COMPLETE 被当 error 计数。
+TERMINAL = {"COMPLETE", "DONE", "WARNING", "ERROR", "CANCELLED", "FAILED", "FAIL"}  # WARNING=已完成但带告警（单位不兼容等），亦为终态；FAIL=平台子模拟裸状态字面量（2026-09-21 ASI psd 批实证：父 ERROR、子全 FAIL，旧集合永远 0/8 terminal）
+OK_STATUSES = {"COMPLETE", "DONE"}
 
 
 def _shape_url(base, loc):
@@ -60,15 +63,37 @@ def _shape_url(base, loc):
     return f"{base}/simulations/{loc}"
 
 
+async def _get_authed(brain, url):
+    """GET，带一次 401 自动重认证（2026-09-21 根治：本工具直接用 brain._request，
+    新进程无 JWT 时每条都 HTTP 401，--watch 永远等不到 terminal）。"""
+    ensure = getattr(brain, "ensure_authenticated", None)
+    if callable(ensure):
+        try:
+            await ensure()
+        except Exception:
+            pass
+    resp = await brain._request("GET", url)
+    if getattr(resp, "status_code", None) == 401 and callable(ensure):
+        try:
+            brain._auth_validated_until = 0.0
+        except Exception:
+            pass
+        await ensure()
+        resp = await brain._request("GET", url)
+    return resp
+
+
 async def fetch_one(brain, loc_full):
     """GET 单条 simulation location → {status, alpha, error, metrics}。"""
-    resp = await brain._request("GET", loc_full)
+    resp = await _get_authed(brain, loc_full)
     if resp.status_code != 200:
         return {"error": f"HTTP {resp.status_code}", "status_code": resp.status_code}
     data = resp.json() if resp.text else {}
     err = brain._simulation_error_message(data)
     if not data.get("alpha") and err == "Unknown error":
         err = ""
+    if (data.get("status") or "").upper() in OK_STATUSES and err.strip().upper() in OK_STATUSES:
+        err = ""  # 成功终态的 status 字面量不是错误
     is_ = data.get("is") or {}
     m = is_.get("metrics") or {}
     return {
@@ -85,7 +110,7 @@ async def fetch_batch(brain, batch_id):
     """fetch one batch (multisim or single) → summary dict。"""
     base = brain.base_url
     loc = _shape_url(base, batch_id)
-    resp = await brain._request("GET", loc)
+    resp = await _get_authed(brain, loc)
     if resp.status_code != 200:
         return {"batch_id": batch_id, "error": f"HTTP {resp.status_code}"}
     data = resp.json() if resp.text else {}
@@ -148,6 +173,57 @@ async def run_once(brain, ids):
     return batches, not bad
 
 
+# --watch 连续网络瞬断容忍次数：超过才放弃（每次间隔 interval 秒）
+MAX_CONSECUTIVE_NET_FAIL = 10
+# 视为"瞬断可重试"的异常：transport 层 raise 的内建 ConnectionError（OSError 子类）、
+# 超时、以及 httpx 传输异常（按类名判定，避免硬依赖 httpx）
+_TRANSIENT_EXC_NAMES = ("ConnectError", "ReadTimeout", "ConnectTimeout", "WriteTimeout",
+                        "PoolTimeout", "RemoteProtocolError", "ReadError", "NetworkError",
+                        "TransportError", "TimeoutException")
+
+
+def _is_transient(exc):
+    if isinstance(exc, (ConnectionError, TimeoutError, OSError)):
+        return True
+    return type(exc).__name__ in _TRANSIENT_EXC_NAMES
+
+
+async def watch_loop(brain, ids, watch, interval, max_waits, sleep=None,
+                     max_net_fail=MAX_CONSECUTIVE_NET_FAIL):
+    """轮询直到全部 terminal / 超时；网络瞬断只计一次失败、不终止轮询。
+
+    2026-09-21 根治：一次 `ConnectionError: Failed to connect …`（transport 层重试
+    耗尽后抛出）曾直接炸掉整个 --watch（ASI mech_screen 批：两个 multisim 已
+    COMPLETE，watcher 却带着 0 收成退出，下游 harvest 收到 0 条）。瞬断只在
+    连续 max_net_fail 次后才放弃；--watch 未开启时保持原语义（直接抛出）。
+    """
+    sleep = sleep or asyncio.sleep
+    all_ok = False
+    final = None
+    t0 = time.time()
+    net_fail = 0
+    rounds = 1 if not watch else max_waits
+    for round_no in range(rounds):
+        try:
+            final, all_ok = await run_once(brain, ids)
+            net_fail = 0
+        except Exception as e:  # noqa: BLE001 - 只放行瞬断类
+            if not watch or not _is_transient(e):
+                raise
+            net_fail += 1
+            all_ok = False
+            print(f"\n[watch] 网络瞬断 {net_fail}/{max_net_fail}（{type(e).__name__}: {str(e)[:120]}）"
+                  f"—— 继续轮询", flush=True)
+            if net_fail >= max_net_fail:
+                raise
+        if not watch or all_ok:
+            break
+        print(f"\n[watch] round {round_no}/{max_waits} 耗时 {time.time() - t0:.0f}s，"
+              f"{interval:.0f}s 后再查（Ctrl+C 退出）", flush=True)
+        await sleep(interval)
+    return final, all_ok
+
+
 async def main():
     ap = argparse.ArgumentParser(description="回测批次/子任务状态查询与轮询")
     ap.add_argument("--ids", nargs="+", required=True, help="simulation/multisim id（可多个）")
@@ -162,16 +238,8 @@ async def main():
     brain = BrainApiClient()
 
     ids = [i.replace(f"{brain.base_url}/simulations/", "") for i in a.ids]
-    all_ok = True
-    final = None
-    t0 = time.time()
-    for round_no in range(1 if not a.watch else a.max_waits):
-        final, all_ok = await run_once(brain, ids)
-        if not a.watch or all_ok:
-            break
-        print(f"\n[watch] round {round_no}/{a.max_waits} 耗时 {time.time() - t0:.0f}s，"
-              f"{a.interval:.0f}s 后再查（Ctrl+C 退出）")
-        await asyncio.sleep(a.interval)
+    final, all_ok = await watch_loop(brain, ids, watch=a.watch, interval=a.interval,
+                                     max_waits=a.max_waits)
 
     if a.json_out:
         os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)

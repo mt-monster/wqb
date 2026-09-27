@@ -210,6 +210,77 @@ def test_backtest_rows_and_alphas(store):
     assert abs(rows[0]["margin"] - 0.0012) < 1e-9
 
 
+def test_upsert_alpha_os_metrics_roundtrip(store):
+    """OS（样本外）指标落库：新列存在、写入可读、只填 NULL 不覆盖。"""
+    store.upsert_alpha_from_platform({
+        "alpha_id": "osA1", "region": "USA", "expression": "rank(close)",
+        "sharpe": 1.66, "fitness": 1.08, "platform_status": "ACTIVE",
+        "stage": "OS", "date_submitted": "2025-03-24T03:02:50-04:00",
+    })
+    r = store.upsert_alpha_os_metrics("osA1", {
+        "startDate": "2023-01-21", "sharpe": 0.4, "fitness": 0.13,
+        "turnover": 0.0705, "osISSharpeRatio": 0.24,
+    })
+    assert r["action"] == "updated"
+    a = store.get_alpha_by_id("osA1")
+    assert a["os_sharpe"] == 0.4 and a["os_fitness"] == 0.13
+    assert a["os_is_sharpe_ratio"] == 0.24
+    assert a["os_start_date"] == "2023-01-21"
+    assert a["os_synced_at"] is not None
+
+    # 非 overwrite：已有值不被覆盖
+    store.upsert_alpha_os_metrics("osA1", {"sharpe": 9.9, "osISSharpeRatio": 9.9})
+    assert store.get_alpha_by_id("osA1")["os_sharpe"] == 0.4
+    # overwrite=True：覆盖
+    store.upsert_alpha_os_metrics("osA1", {"sharpe": 9.9}, overwrite=True)
+    assert store.get_alpha_by_id("osA1")["os_sharpe"] == 9.9
+
+
+def test_upsert_alpha_os_metrics_no_metrics_records_start_date(store):
+    """近期提交常见：os 段只有 startDate —— 记窗口起点，不算失败。"""
+    store.upsert_alpha_from_platform({
+        "alpha_id": "osA2", "region": "IND", "expression": "rank(x)",
+        "platform_status": "ACTIVE", "stage": "OS",
+    })
+    r = store.upsert_alpha_os_metrics("osA2", {"startDate": "2024-01-01"})
+    assert r["action"] == "start_date_only" and r["skipped"] == "no_metrics"
+    a = store.get_alpha_by_id("osA2")
+    assert a["os_start_date"] == "2024-01-01" and a["os_sharpe"] is None
+
+
+def test_upsert_alpha_os_metrics_inserts_skeleton_when_missing(store):
+    """漏记 alpha（本地无行）时按 region 建骨架行，不丢数据。"""
+    r = store.upsert_alpha_os_metrics(
+        "osA3", {"startDate": "2023-01-21", "sharpe": 1.1},
+        region="DEU",
+        submitted_info={"platform_status": "ACTIVE", "stage": "OS",
+                        "alpha_type": "REGULAR", "date_submitted": "2026-09-14T00:00:00-04:00"},
+    )
+    assert r["action"] == "inserted_skeleton"
+    a = store.get_alpha_by_id("osA3")
+    assert a["region"] == "DEU" and a["os_sharpe"] == 1.1
+    assert a["platform_status"] == "ACTIVE" and a["date_submitted"] is not None
+    # 无 region 且不存在 → not_found
+    assert store.upsert_alpha_os_metrics("nope", {"sharpe": 1.0})["skipped"] == "not_found"
+
+
+def test_os_decay_baseline_aggregates(store):
+    """OS 衰减基线：IS/OS 均值、衰减比、非正比例。"""
+    for i, (is_sh, os_sh, ratio) in enumerate([(1.5, 0.5, 0.33), (1.5, -0.2, -0.13),
+                                               (2.0, 1.8, 0.9)]):
+        aid = f"b{i}"
+        store.upsert_alpha_from_platform({
+            "alpha_id": aid, "region": "USA", "expression": "rank(close)",
+            "sharpe": is_sh, "platform_status": "ACTIVE", "stage": "OS",
+        })
+        store.upsert_alpha_os_metrics(aid, {"sharpe": os_sh, "osISSharpeRatio": ratio})
+    b = store.os_decay_baseline(None)
+    assert b["n"] == 3
+    assert b["above_gate_1_58"] == 1 and b["above_one"] == 1
+    assert b["non_positive"] == 1 and b["non_positive_pct"] == pytest.approx(33.33, abs=0.1)
+    assert store.os_decay_baseline("KOR")["n"] == 0
+
+
 def test_checkpoint_and_ranking(store):
     store.upsert_checkpoint("EUR", "38", {"wave": "38", "batches": []})
     ck = store.get_checkpoint("EUR", "38")

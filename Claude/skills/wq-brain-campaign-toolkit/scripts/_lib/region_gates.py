@@ -26,6 +26,7 @@ import json
 import os
 import sys
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 MODE_OFF = "off"
 MODE_WARN = "warn"
 MODE_ENFORCE = "enforce"
@@ -231,7 +232,7 @@ def _region_whitelist_datasets(campaign_dir, region):
     if db_path and os.path.isfile(db_path):
         try:
             import sqlite3
-            conn = sqlite3.connect(db_path)
+            conn = db_connect(db_path)
             try:
                 row = conn.execute(
                     "SELECT value FROM ledger_kv WHERE region=? AND key='s0_whitelist'",

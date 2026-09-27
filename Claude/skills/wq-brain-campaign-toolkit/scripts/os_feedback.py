@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _lib.common import add_campaign_arg, CampaignContext, load_credentials
 from _lib.api import Api
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 DECAY_WARN_RATIO = 0.5   # OS sharpe < 提交时 50% → 衰减警报
 DECAY_DEAD_RATIO = 0.25  # OS sharpe < 提交时 25% → 建议降权/判死
 
@@ -84,7 +85,7 @@ def fetch_os_alphas():
 
 def analyze(os_alphas, db):
     """对比 IS/OS，输出逐条衰减 + 族级归纳。"""
-    con = sqlite3.connect(db)
+    con = db_connect(db)
     con.row_factory = sqlite3.Row
     rows = []
     for a in os_alphas:
@@ -143,7 +144,7 @@ def main():
         "rows": rows,
     }
     if a.apply:
-        con = sqlite3.connect(db)
+        con = db_connect(db)
         con.execute(
             "INSERT OR REPLACE INTO ledger_kv (region, key, value, updated_at) VALUES (?,?,?,?)",
             ("GLOBAL", "os_feedback_latest", json.dumps(payload, ensure_ascii=False),

@@ -118,6 +118,199 @@
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
   ]
  },
+ "gate_priors": {
+  "sample_size": 1000,
+  "pass_rate": 0.17,
+  "by_neutralization": {
+   "SECTOR": {
+    "rate": 0.2,
+    "n": 25
+   },
+   "INDUSTRY": {
+    "rate": 0.058,
+    "n": 207
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.236,
+    "n": 572
+   },
+   "STATISTICAL": {
+    "rate": 0.1519,
+    "n": 79
+   },
+   "COUNTRY": {
+    "rate": 0.0217,
+    "n": 46
+   },
+   "REVERSION_AND_MOMENTUM": {
+    "rate": 0.16,
+    "n": 25
+   },
+   "CROWDING": {
+    "rate": 0.0,
+    "n": 18
+   }
+  },
+  "by_universe": {
+   "TOPCS1600": {
+    "rate": 0.0678,
+    "n": 295
+   },
+   "TOP2500": {
+    "rate": 0.2222,
+    "n": 675
+   },
+   "TOP1200": {
+    "rate": 0.0,
+    "n": 24
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "rate": 0.1927,
+    "n": 384
+   },
+   "<=4": {
+    "rate": 0.1128,
+    "n": 266
+   },
+   ">8": {
+    "rate": 0.1886,
+    "n": 350
+   }
+  },
+  "by_decay": {
+   "4": {
+    "rate": 0.2572,
+    "n": 587
+   },
+   "2": {
+    "rate": 0.1556,
+    "n": 45
+   },
+   "6": {
+    "rate": 0.0541,
+    "n": 74
+   },
+   "0": {
+    "rate": 0.087,
+    "n": 23
+   },
+   "8": {
+    "rate": 0.0625,
+    "n": 80
+   },
+   "5": {
+    "rate": 0.0,
+    "n": 111
+   },
+   "3": {
+    "rate": 0.05,
+    "n": 20
+   },
+   "16": {
+    "rate": 0.0,
+    "n": 15
+   }
+  },
+  "by_field_family": {
+   "relative": {
+    "rate": 0.0,
+    "n": 32
+   },
+   "anl": {
+    "rate": 0.0,
+    "n": 32
+   },
+   "mdl": {
+    "rate": 0.0079,
+    "n": 126
+   },
+   "?": {
+    "rate": 0.1746,
+    "n": 63
+   },
+   "long": {
+    "rate": 0.4972,
+    "n": 179
+   },
+   "quantile": {
+    "rate": 0.3846,
+    "n": 39
+   },
+   "fnd": {
+    "rate": 0.0182,
+    "n": 55
+   },
+   "predicted": {
+    "rate": 0.3559,
+    "n": 59
+   },
+   "rsk": {
+    "rate": 0.0118,
+    "n": 85
+   },
+   "cfg": {
+    "rate": 0.0,
+    "n": 133
+   },
+   "probability": {
+    "rate": 0.2,
+    "n": 30
+   },
+   "mid": {
+    "rate": 0.0,
+    "n": 17
+   },
+   "surprise": {
+    "rate": 0.3396,
+    "n": 53
+   },
+   "star": {
+    "rate": 0.0526,
+    "n": 38
+   }
+  },
+  "avoid": [
+   "field_family=relative(0%, n=32)",
+   "field_family=anl(0%, n=32)",
+   "field_family=mdl(1%, n=126)",
+   "field_family=fnd(2%, n=55)",
+   "field_family=rsk(1%, n=85)",
+   "field_family=cfg(0%, n=133)"
+  ],
+  "generated_at": "2026-09-22T12:31:48.403080+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.2572,
+    "current_n": 587,
+    "recommended": 4,
+    "rate": 0.2572,
+    "n": 587,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "SUBINDUSTRY",
+    "current_rate": 0.236,
+    "current_n": 572,
+    "recommended": "SUBINDUSTRY",
+    "rate": 0.236,
+    "n": 572,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
  "skeleton_field_matrix": {
   "effective": [
    {

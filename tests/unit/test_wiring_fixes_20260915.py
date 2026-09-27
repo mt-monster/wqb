@@ -303,7 +303,7 @@ def test_normalize_wave_verdict_rules(monkeypatch, tmp_path):
     assert f("PARTIAL_BREAKTHROUGH：首个候选")[0] == "PARTIAL"
     assert f("CLOSED_DEAD_END_DATASET：判死")[0] == "FAIL"
     assert f("GATE_BLOCKED_SATURATION")[0] == "FAIL"
-    assert f("0/8 过硬闸, 新高 0.99")[0] == "FAIL" and f("3/4 过硬闸, 新高 1.98")[0] == "PASS"
+    assert f("0/8 过硬闸, 新高 0.99")[0] == "FAIL" and f("3/4 过硬闸, 新高 1.98")[0] == "PARTIAL"
     assert f("RED: 14 全灭")[0] == "FAIL" and f("YELLOW: 0 候选, 1 near")[0] == "PARTIAL"
     assert f("机制确认但天花板明确")[0] is None
 

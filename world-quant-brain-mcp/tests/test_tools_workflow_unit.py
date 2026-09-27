@@ -414,11 +414,12 @@ def test_workflow_list_nodes_shape(monkeypatch):
     #   gem_wave / unified_gate / auto_harvest / auto_review / auto_pyramid /
     #   inventory_scan / field_understanding → 11→18
     # 2026-09-17：step_metrics 整体下线（归档 attic/step_metrics_20260917/）→ 18→17
+    # 2026-09-20：alpha_booster / modeb_improve 注册（此前未同步本表）→ 17→19
     # 断言要点：数目与 nodes 列表一致即可；若新增/移除节点，请同步本行并注明来源。
     expected_nodes = {
-        "auto_harvest", "auto_pyramid", "auto_review", "batch_track", "campaign",
-        "feature_engineering", "field_understanding", "gem", "gem_wave",
-        "hypothesis_round", "inventory_scan", "judge",
+        "alpha_booster", "auto_harvest", "auto_pyramid", "auto_review", "batch_track",
+        "campaign", "feature_engineering", "field_understanding", "gem", "gem_wave",
+        "hypothesis_round", "inventory_scan", "judge", "modeb_improve",
         "structural_reconstruct", "submit_alpha", "superalpha", "unified_gate",
         "wave_gate",
     }

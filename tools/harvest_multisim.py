@@ -105,19 +105,29 @@ def _is_composite_expr(code: str) -> bool:
 def _pick_checks(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """从 alpha 详情中提取 checks 列表。
 
-    平台返回的 checks 可能在顶层 data.checks 或嵌套 data.raw.checks（取决于端点）。
-    统一从这里取，避免上层重复判断。
+    平台返回的 checks 可能在多个位置，依端点不同而异。**2026-09-19 实测更正**：
+    真实位置是**顶层 `is.checks`**（alpha 详情顶层键含 `is`，checks 在其内），
+    而非 `data.checks` / `data.raw.checks` / `data.raw.is.checks`。
+    此前的路径全部落空 → 本函数恒返回 `[]` → 所有 checks 派生列采集不到
+    （实测：`alphas.cluster_test` 0/4,926、`concentrated_weight` 0/4,926，
+    而直接读 `is.*` 的列正常：`two_year_sharpe` 86.1%）。
+    证据：IND/QPGbAOn5 的 `is.checks` 含 `{name: CLUSTER_TEST, result: PASS, limit: 1, value: 2.59}`。
     """
-    # 1) 顶层 checks（fetch_alpha_details 已提取）
+    # 1) 顶层 is.checks（2026-09-19 实测的真实位置，放最前）
+    is_top = data.get("is") or {}
+    checks = is_top.get("checks")
+    if isinstance(checks, list) and checks:
+        return checks
+    # 2) 顶层 checks（部分瘦身端点会平铺出来）
     checks = data.get("checks")
     if isinstance(checks, list) and checks:
         return checks
-    # 2) raw.checks（部分端点嵌套在 raw 里）
+    # 3) raw.checks（历史端点嵌套）
     raw = data.get("raw") or {}
     checks = raw.get("checks")
     if isinstance(checks, list) and checks:
         return checks
-    # 3) raw.is.checks（再嵌套一层）
+    # 4) raw.is.checks（再嵌套一层）
     is_raw = raw.get("is") or {}
     checks = is_raw.get("checks")
     if isinstance(checks, list) and checks:
@@ -418,6 +428,8 @@ async def main():
     ap.add_argument("--region", help="区域（用于关联 expressions 与 upsert）")
     ap.add_argument("--ids-only", action="store_true", help="只拉 alpha IDs，不拉详情")
     ap.add_argument("--auto-upsert", action="store_true", help="自动写回 backtest_rows")
+    ap.add_argument("--no-queue", action="store_true",
+                    help="关闭「过闸候选自动入队 submit_ready」（默认开启，随 --auto-upsert）")
     ap.add_argument("--retry-failed", action="store_true", help="重试失败的 children")
     ap.add_argument("--json", dest="json_out", help="结果落盘 JSON 路径")
     a = ap.parse_args()
@@ -469,9 +481,12 @@ async def main():
     if a.auto_upsert and a.wave and a.region:
         sys.path.insert(0, str(os.path.join(os.path.dirname(__file__), "..", "src")))
         from wqb.store import CampaignStore
+        # L3 写库互斥（2026-09-20）：收批批量 upsert 排队（短锁，只包写库段）
+        from wqb.db_write_lock import write_lock as _wlock
         db_path = os.path.join(os.path.dirname(__file__), "..", "data", "wqb.db")
         store = CampaignStore(db_path)
         try:
+          with _wlock(tag="dbwrite_harvest", ttl_sec=600, wait_timeout=120):
             for r in results:
                 if r.get("alphas"):
                     # 关联 expression_id
@@ -480,6 +495,21 @@ async def main():
                     rows = _to_backtest_rows(r["alphas"])
                     n = store.upsert_backtest_rows(a.region, str(a.wave), rows)
                     print(f"  [upsert] {n} rows → backtest_results (region={a.region} wave={a.wave})")
+
+                    # --- 自动入队：把本轮过闸候选写入 submit_ready（2026-09-20）---
+                    # 解决"回测找到可提交项但不当天提交就遗忘"。阈值用提交层口径，
+                    # 未过闸者会被标 DEAD 自动排除，故可直接全量喂入。
+                    if not a.no_queue:
+                        try:
+                            sys.path.insert(0, str(os.path.join(
+                                os.path.dirname(__file__), "..", "src")))
+                            from wqb.store.submit_queue import enqueue_from_alphas
+                            nq = enqueue_from_alphas(
+                                region=a.region, min_sharpe=1.58, min_fitness=1.0,
+                                note=f"auto-enqueue wave={a.wave}")
+                            print(f"  [queue] {nq} 条过闸候选 → submit_ready")
+                        except Exception as e:  # 队列记账失败绝不阻断收批
+                            print(f"  [queue] 入队跳过：{e}")
                     # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
                     # upsert_backtest_rows 已把 prod/self 写入 alphas（仅当列原为 NULL），
                     # 这里补写 source=platform_sync + corr_checked_at，使复盘可区分

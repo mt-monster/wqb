@@ -50,11 +50,18 @@ mcp = FastMCP(
 
 
 def _conn():
-    """获取数据库连接（row_factory=Row，WAL 模式，批量优化）。"""
-    conn = sqlite3.connect(str(DB_PATH), timeout=30.0)
+    """获取数据库连接（row_factory=Row，WAL 模式，批量优化）。
+
+    本文件在 ``wqb.db_conn.DIRECT_CONNECT_WHITELIST`` 中（MCP server 自管连接），
+    但按 §「自管连接（配置同规范）」要求，PRAGMA 口径必须与 ``wqb.db_conn.connect``
+    一致：WAL + ``busy_timeout=60000``（2026-09-20 补）+ foreign_keys=ON
+    + synchronous=NORMAL。timeout 同为 60s。
+    """
+    conn = sqlite3.connect(str(DB_PATH), timeout=60.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys=ON")
     conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=60000")
     conn.execute("PRAGMA synchronous=NORMAL")
     conn.execute("PRAGMA cache_size=-64000")  # 64MB page cache
     return conn
@@ -398,7 +405,7 @@ def get_alpha_by_id(alpha_id: str) -> Dict[str, Any]:
 
 @mcp.tool()
 def list_alphas_by_wave(region: str, wave_number: int) -> List[Dict[str, Any]]:
-    """列出某 wave 的全部 alpha。
+    """列出 backtest_results 明确归属于某 wave 的 alpha。
 
     Args:
         region: 区域
@@ -409,13 +416,15 @@ def list_alphas_by_wave(region: str, wave_number: int) -> List[Dict[str, Any]]:
     """
     conn = _conn()
     c = conn.cursor()
-    # 先通过 regions 表查 region_id，再联合 waves 查数据
+    # 同一区域/数据集可有多波；只联 dataset 会把旧回测贴成新波结果。
+    # 实际波次来源以 backtest_results 为准，不从 dataset 或选集推断。
     c.execute(
-        "SELECT a.*, r.name AS region, w.wave_number "
-        "FROM alphas a "
+        "SELECT DISTINCT a.*, r.name AS region, b.wave AS wave_number "
+        "FROM backtest_results b "
+        "JOIN alphas a ON a.alpha_id = b.alpha_id "
         "JOIN regions r ON a.region_id = r.id "
-        "JOIN waves w ON a.region_id = w.region_id AND a.dataset_id = w.dataset_id "
-        "WHERE r.name=? AND w.wave_number=?",
+        "WHERE r.name=? AND b.region=r.name AND b.wave=? "
+        "ORDER BY a.alpha_id",
         (region, str(wave_number)),
     )
     rows = _rows_to_dicts(c.fetchall())
@@ -754,26 +763,114 @@ def _now() -> str:
     return datetime.datetime.now().isoformat(timespec="seconds")
 
 
+def _deep_merge(base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+    """递归合并 dict：override 覆盖标量，双方均为 dict 时递归合并（供 upsert_ledger_key merge 模式）。"""
+    out = dict(base)
+    for k, v in override.items():
+        if isinstance(v, dict) and isinstance(out.get(k), dict):
+            out[k] = _deep_merge(out[k], v)
+        else:
+            out[k] = v
+    return out
+
+
+#: 有**契约形态**的台账 key：落库前强制归一到契约，防 `replace` 覆写再造成 schema 漂移。
+#: 2026-09-26 根因修复：HKG/`s0_whitelist` 被整值覆写成
+#: `{'datasets','generated_at','note'}`（缺 `_schema_from`/`_legacy`）→
+#: `test_ledger_whitelist_schema_p0p4::test_real_db_no_schema_drift` 变红。
+#: 此前只有"事后归一脚本 + 测试抓漂移"，现在把不变量前移到**写路径**（结构性防护）。
+#: ⚠ 本块必须位于 `@mcp.tool()` **之前**（装饰器后只能紧跟 def/class，插在中间是语法错误）。
+_CANONICAL_LEDGER_KEYS = frozenset({"s0_whitelist"})
+
+
+def _canonicalize_ledger_value(key: str, value: Any) -> Any:
+    """对契约 key 的 dict 值强制归一到 `wqb.ledger_whitelist` 契约形态（**幂等**）。
+
+    - 已合规（同时含 `datasets` + `_schema_from`）→ 原样返回，不产生任何改动；
+    - 非契约 key / 非 dict → 原样返回；
+    - 归一不可解析（`normalize` 报 not ok）或 `wqb` 包不可导入 → 原样返回（**不阻断写入**，
+      宁可留下可被测试抓到的漂移，也不让工具链因归一失败而写不进去）。
+
+    `_legacy` 存**原始 JSON 字符串**，与 `tools/normalize_ledger_whitelist.py` 落库形态一致
+    （统一为 str 才能与其余区域比对，且可反序列化回滚）。
+    """
+    if key not in _CANONICAL_LEDGER_KEYS or not isinstance(value, dict):
+        return value
+    if "datasets" in value and "_schema_from" in value:
+        return value
+    try:
+        from wqb.ledger_whitelist import normalize, to_canonical  # 局部导入：保持模块导入轻量
+    except Exception:
+        return value
+    rec = normalize(value)
+    if not rec.get("ok"):
+        return value
+    return to_canonical(rec, keep_legacy=json.dumps(value, ensure_ascii=False))
+
+
 @mcp.tool()
-def upsert_ledger_key(region: str, key: str, value: Any) -> Dict[str, Any]:
+def upsert_ledger_key(region: str, key: str, value: Any, mode: str = "replace") -> Dict[str, Any]:
     """写台账单个 key（幂等 upsert）。
 
     用于 submit_ready / wave<N>_verdict / last_submission / *_dead 等台账键的写入。
     value 为任意 JSON 可序列化对象（list/dict/str/int）。
 
+    mode（2026-09-25 防覆写增强）：
+      - "replace"（默认，旧行为）：整值覆盖。
+      - "append"：仅当已有值为 list（或键不存在）时，把 value（非 list 自动包装为单元素列表）
+        追加到已有列表尾部；已有值非 list 时拒绝写入返回 error，避免静默覆写。
+      - "merge"：仅当已有值与 value 均为 dict（或键不存在）时递归合并（新值覆盖标量，嵌套 dict 递归）；
+        已有值非 dict 时拒绝写入返回 error。
+    共享台账 key 的增量写入一律用 append/merge（历史覆写事故：2026-09-25 s0_whitelist 被整值覆盖）。
+
     Args:
         region: 区域
         key: 台账 key
         value: 任意 JSON 值
+        mode: replace / append / merge
 
     Returns:
-        {"action": "inserted"|"updated", "region": ..., "key": ...}
+        {"action": "inserted"|"updated", "region": ..., "key": ..., "mode": ...}
     """
+    if mode not in ("replace", "append", "merge"):
+        return {"error": f"invalid mode: {mode!r} (expected replace|append|merge)"}
     conn = _conn()
     c = conn.cursor()
-    payload = json.dumps(value, ensure_ascii=False)
-    c.execute("SELECT id FROM ledger_kv WHERE region=? AND key=?", (region, key))
+    c.execute("SELECT id, value FROM ledger_kv WHERE region=? AND key=?", (region, key))
     row = c.fetchone()
+    existing: Any = None
+    if row:
+        try:
+            existing = json.loads(row[1])
+        except Exception:
+            existing = None
+    extra: Dict[str, Any] = {"mode": mode}
+    if mode == "append":
+        items = value if isinstance(value, list) else [value]
+        if row and not isinstance(existing, list):
+            conn.close()
+            return {"error": f"append refused: existing value for {region}/{key} is "
+                             f"{type(existing).__name__}, not list"}
+        merged = (existing or []) + items
+        payload = json.dumps(merged, ensure_ascii=False)
+        extra.update({"appended_n": len(items), "total_n": len(merged)})
+    elif mode == "merge":
+        if not isinstance(value, dict):
+            conn.close()
+            return {"error": f"merge refused: value must be dict, got {type(value).__name__}"}
+        if row and not isinstance(existing, dict):
+            conn.close()
+            return {"error": f"merge refused: existing value for {region}/{key} is "
+                             f"{type(existing).__name__}, not dict"}
+        merged_dict = _deep_merge(existing or {}, value)
+        merged_dict = _canonicalize_ledger_value(key, merged_dict)
+        payload = json.dumps(merged_dict, ensure_ascii=False)
+        extra.update({"merged_keys": len(value)})
+    else:
+        canon = _canonicalize_ledger_value(key, value)
+        if canon is not value:
+            extra["canonicalized"] = True  # 契约 key 被自动归一，留痕便于排障
+        payload = json.dumps(canon, ensure_ascii=False)
     if row:
         c.execute(
             "UPDATE ledger_kv SET value=?, updated_at=? WHERE region=? AND key=?",
@@ -788,7 +885,7 @@ def upsert_ledger_key(region: str, key: str, value: Any) -> Dict[str, Any]:
         action = "inserted"
     conn.commit()
     conn.close()
-    return {"action": action, "region": region, "key": key}
+    return {"action": action, "region": region, "key": key, **extra}
 
 
 _WAVE_VERDICT_OK = ("PASS", "FAIL", "PARTIAL")
@@ -810,7 +907,10 @@ def _normalize_wave_verdict(verdict):
         return "FAIL", "前缀"
     m = re.search(r"(\d+)\s*/\s*(\d+)\s*过硬闸", v)
     if m:
-        return ("PASS" if int(m.group(1)) > 0 else "FAIL"), "过硬闸计数"
+        # 2026-09-26 对齐：唯一权威 = `wqb.workflow.nodes.campaign._normalize_verdict`
+        #（停止规则 B 的读取方）→ N>0 一律 PARTIAL（含 8/8，保守字符串语义归一）。
+        # 旧实现 N>0 → PASS，与读取方分歧（实测 32/72 行）。
+        return ("PARTIAL" if int(m.group(1)) > 0 else "FAIL"), "过硬闸计数"
     if "全灭" in v or "GATE_FAIL" in up:
         return "FAIL", "关键词"
     return None, "无匹配"
@@ -1005,10 +1105,15 @@ def set_expression_status(
     2026-09-12 GBR wave57 实测：用 upsert_expressions 改 43 条状态要原样回传全部表达式，
     服务端 3 ms、MCP 侧却吐 3-4k token——成本在载荷不在库。改状态一律用本工具。
 
+    状态语义（2026-09-25 补 deferred）：pending/gem/enhanced/selected/gated 均会被
+    pipeline/batch_track 派发回测（gated 不是延后态！）；**真正的延后用 `deferred`**
+    （load_wave_expressions 默认不派发，改回 selected/gated 即恢复）；
+    superseded/dropped 为终态（已回测行只允许改向这两个）。
+
     Args:
         region: 区域
         wave: 波次（与 expressions.wave 同口径，字符串）
-        to_status: 目标状态（pending/gem/enhanced/selected/gated/superseded/dropped …）
+        to_status: 目标状态（pending/gem/enhanced/selected/gated/deferred/superseded/dropped …）
         ids: 表达式 id 列表（list_expressions 返回的 id）；与 from_status 至少给一个，同给取交集
         from_status: 只改当前处于该状态的行
         reason: 变更原因，连同 from/to/at 合并进 settings_json.status_change（不清空其他设置键）
@@ -1141,6 +1246,28 @@ def persist_correlation(
         store.close()
 
 
+def _parse_corr_checked_at(raw: Any):
+    """解析 corr_checked_at（兼容 'YYYY-MM-DDTHH:MM:SS' 与 'YYYY-MM-DD HH:MM:SS' 及带时区后缀）。"""
+    if not raw:
+        return None
+    txt = str(raw).strip()
+    try:
+        dt = datetime.datetime.fromisoformat(txt.replace(" ", "T", 1) if "T" not in txt else txt)
+    except ValueError:
+        dt = None
+        for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S"):
+            try:
+                dt = datetime.datetime.strptime(txt, fmt)
+                break
+            except ValueError:
+                continue
+    if dt is None:
+        return None
+    if dt.tzinfo is not None:
+        dt = dt.astimezone().replace(tzinfo=None)
+    return dt
+
+
 @mcp.tool()
 def get_alpha_corr_metrics(
     region: Optional[str] = None,
@@ -1148,8 +1275,14 @@ def get_alpha_corr_metrics(
     max_self: Optional[float] = None,
     source: Optional[str] = None,
     limit: int = 50,
+    stale_after_hours: float = 48.0,
 ) -> List[Dict[str, Any]]:
     """本地查询相关性指标（免打平台）。用于提交前候选筛选。
+
+    ⚠ 保鲜期语义（2026-09-25）：本地 prod/self 值会随平台 prod 池变动快速漂移
+    （实测 2-3 天可从 0.58 漂到 0.98）。每行附带 corr_age_hours 与 corr_stale
+    （超 stale_after_hours 或缺 corr_checked_at 即为 stale）；**stale 值只可作排序参考，
+    提交前必须 check_correlation(refresh=True) 当场终验**，不得据 stale 值下结论。
 
     Args:
         region: 区域过滤（可选）
@@ -1157,9 +1290,11 @@ def get_alpha_corr_metrics(
         max_self: self_correlation 上界（如 0.7）
         source: prod_corr_source 过滤（platform_sync / manual / triage_local）
         limit: 返回条数上限（默认 50）
+        stale_after_hours: 保鲜期小时数（默认 48）
 
     Returns:
-        按 prod_correlation 升序的 alpha 指标列表（本地库直接读，零配额）
+        按 prod_correlation 升序的 alpha 指标列表（含 corr_age_hours / corr_stale），
+        本地库直接读，零配额
     """
     conn = _conn()
     try:
@@ -1186,7 +1321,20 @@ def get_alpha_corr_metrics(
         params.append(int(limit))
         cur = conn.execute(sql, params)
         cols = [d[0] for d in cur.description]
-        return [dict(zip(cols, row)) for row in cur.fetchall()]
+        now = datetime.datetime.now()
+        rows: List[Dict[str, Any]] = []
+        for row in cur.fetchall():
+            d = dict(zip(cols, row))
+            checked = _parse_corr_checked_at(d.get("corr_checked_at"))
+            if checked is None:
+                d["corr_age_hours"] = None
+                d["corr_stale"] = True
+            else:
+                age_h = (now - checked).total_seconds() / 3600.0
+                d["corr_age_hours"] = round(age_h, 1)
+                d["corr_stale"] = age_h > float(stale_after_hours)
+            rows.append(d)
+        return rows
     finally:
         conn.close()
 
@@ -1217,7 +1365,6 @@ def get_gate_result(region: str, wave: str, dataset: str) -> Dict[str, Any]:
         store.close()
 
 
-@mcp.tool()
 def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
     """把平台 harvest_multisim_alphas / get_alpha_details 的嵌套 alpha 拍平成扁平 dict（幂等：已扁平的原样返回）。"""
     out = dict(a)
@@ -1290,6 +1437,7 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
     return out
 
 
+@mcp.tool()
 def harvest_multisim_results(
     region: str,
     wave: str,
@@ -1472,13 +1620,19 @@ def get_salvage_pool(
         {"entries": [...], "total": n, "filters": {...}}
     """
     pool = _get_ledger_raw(region, "salvage_pool") or {"entries": []}
-    entries = pool.get("entries", [])
+    from wqb.research.salvage_provenance import resolve_salvage_entries
+    conn = _conn()
+    try:
+        entries = resolve_salvage_entries(conn, region, pool.get("entries", []))
+    finally:
+        conn.close()
+    unknown_provenance = sum(not e["datasets"] for e in entries)
 
-    # 过滤
+    # 来源未知不能作为跨集正交证据；多数据集因子按全集排除。
     if boost_dim:
         entries = [e for e in entries if boost_dim in e.get("boost_dims", [])]
     if exclude_dataset:
-        entries = [e for e in entries if e.get("dataset") != exclude_dataset]
+        entries = [e for e in entries if e["datasets"] and exclude_dataset not in e["datasets"]]
     if min_sharpe is not None:
         entries = [e for e in entries if isinstance(e.get("sharpe"), (int, float)) and e["sharpe"] >= min_sharpe]
 
@@ -1494,7 +1648,55 @@ def get_salvage_pool(
             "min_sharpe": min_sharpe,
         },
         "pool_updated_at": pool.get("updated_at"),
+        "unknown_provenance": unknown_provenance,
+        "excluded_unknown_provenance": unknown_provenance if exclude_dataset else 0,
     }
+
+
+def _resolve_wave_number(conn, region: str, wave: str) -> Optional[int]:
+    """把波名映射到 wave_results.wave_number，与 toolkit `_lib/wave_results.py`
+    `_resolve_wave_conflict` 同一规则（2026-09-21 根治 MCP 收批路径的"波覆盖事故"）。
+
+    此前本路径只取波名首段数字：`s2_ipv_preclose_volgate2_d1` → 2，
+    `probe_analyst10_revision_d1` → 10，于是 ASI 历史 wave2/wave10 的 verdict 与
+    candidates 被今天的手工波一次次顶掉（实测 ASI/2 从 FAIL 变成 "0/16 过硬闸"）。
+    规则：
+      1. 纯数字波名 → 原样；
+      2. 已有记录 full_payload.wave == 波名 → 复用其编号（重复收批幂等）；
+      3. 解析编号已被其它波占用 → max(wave_number)+1；
+      4. 否则用解析编号。
+    """
+    ws = str(wave).strip()
+    if re.fullmatch(r"\d+", ws):
+        return int(ws)
+    m = re.search(r"(\d+)", ws)
+    if not m:
+        return None
+    parsed = int(m.group(1))
+    rows = conn.execute(
+        "SELECT wave_number, full_payload FROM wave_results WHERE region=?", (region,)
+    ).fetchall()
+    used = set()
+    mine = None
+    for r in rows:
+        wn_raw = r[0] if not hasattr(r, "keys") else r["wave_number"]
+        fp = r[1] if not hasattr(r, "keys") else r["full_payload"]
+        try:
+            wn = int(wn_raw)
+        except (TypeError, ValueError):
+            continue
+        used.add(wn)
+        if fp:
+            try:
+                if json.loads(fp).get("wave") == ws:
+                    mine = wn
+            except (TypeError, ValueError):
+                pass
+    if mine is not None:
+        return mine
+    if parsed in used:
+        return max(used) + 1
+    return parsed
 
 
 def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
@@ -1502,11 +1704,15 @@ def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
 
     从 alpha 列表派生 candidates 与简要 verdict，只在能解析出 wave 数字时写入。
     不覆盖人工已写的 focus/context/key_findings——仅填 candidates/verdict。
+    波名→编号映射走 `_resolve_wave_number`（同名波复用、异名波不互相覆盖）。
     """
-    m = re.search(r"(\d+)", str(wave))
-    if not m:
+    conn = _conn()
+    try:
+        wave_number = _resolve_wave_number(conn, region, wave)
+    finally:
+        conn.close()
+    if wave_number is None:
         return "skipped: wave has no numeric part"
-    wave_number = int(m.group(1))
 
     # 汇总候选指标
     cands = []
@@ -1550,11 +1756,14 @@ def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
     cand_json = json.dumps(cands, ensure_ascii=False)
     conn = _conn()
     c = conn.cursor()
+    # full_payload 至少记录波名，供 _resolve_wave_number 下次复用同一编号
+    payload_min = json.dumps({"wave": str(wave), "source": "harvest_cascade"}, ensure_ascii=False)
     if exists:
-        # 只更新 candidates/verdict/updated_at，不动人工字段
+        # 只更新 candidates/verdict/updated_at，不动人工字段；full_payload 为空时补波名
         c.execute(
-            "UPDATE wave_results SET candidates=?, verdict=?, updated_at=? WHERE region=? AND wave_number=?",
-            (cand_json, verdict, _now(), region, wave_number),
+            "UPDATE wave_results SET candidates=?, verdict=?, updated_at=?, "
+            "full_payload=COALESCE(full_payload, ?) WHERE region=? AND wave_number=?",
+            (cand_json, verdict, _now(), payload_min, region, wave_number),
         )
         action = "updated"
     else:
@@ -1564,7 +1773,7 @@ def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
                 verdict, status, source_file, archived, created_at, updated_at, full_payload)
                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (region, wave_number, None, None, None, cand_json, None, verdict,
-             "closed", None, 0, _now(), _now(), None),
+             "closed", None, 0, _now(), _now(), payload_min),
         )
         action = "inserted"
     conn.commit()
@@ -1739,13 +1948,16 @@ def backfill_salvage_pool(
     except Exception as e:
         return {"status": "error", "reason": f"failed to read file: {e}"}
 
-    # 推断 wave_number
+    # 推断 wave_number（与收批级联同规则：同名复用、异名不覆盖）
     if wave_number is None:
         wave_str = data.get("wave", "")
-        m = re.search(r"(\d+)", str(wave_str))
-        if not m:
+        conn0 = _conn()
+        try:
+            wave_number = _resolve_wave_number(conn0, region, wave_str)
+        finally:
+            conn0.close()
+        if wave_number is None:
             return {"status": "error", "reason": f"cannot infer wave number from: {wave_str}"}
-        wave_number = int(m.group(1))
 
     # 提取候选列表
     results = data.get("results", []) or data.get("verdicts", [])
@@ -1995,38 +2207,6 @@ def workflow_inventory_scan(
         "region": region,
         "target": target,
         "regions": regions,
-    })
-    return result.to_dict()
-
-
-@mcp.tool()
-def workflow_field_understanding(
-    region: str,
-    dataset: str,
-    delay: int = 1,
-    auto_classify: bool = True,
-    identify_high_value: bool = True,
-) -> Dict[str, Any]:
-    """自动化字段理解 workflow 节点（field_understanding 节点快捷方式）.
-
-    Args:
-        region: 区域代码
-        dataset: 数据集 ID
-        delay: 延迟（默认 1）
-        auto_classify: 是否自动分类字段（默认 True）
-        identify_high_value: 是否识别高价值字段（默认 True）
-
-    Returns:
-        执行结果字典
-    """
-    from wqb.workflow import execute
-    
-    result = execute("field_understanding", {
-        "region": region,
-        "dataset": dataset,
-        "delay": delay,
-        "auto_classify": auto_classify,
-        "identify_high_value": identify_high_value,
     })
     return result.to_dict()
 

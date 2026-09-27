@@ -34,6 +34,9 @@ workflow_gem 调用。
         --expr "rank(mdl32_x)"
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import argparse
 import json
@@ -190,7 +193,7 @@ def check_wave(
     if dataset:
         import sqlite3
         try:
-            con = sqlite3.connect(db_path or os.path.join(REPO_ROOT, "data", "wqb.db"))
+            con = db_connect(db_path or os.path.join(REPO_ROOT, "data", "wqb.db"))
             did = con.execute(
                 "SELECT id FROM datasets WHERE name=? LIMIT 1", (dataset,)
             ).fetchone()

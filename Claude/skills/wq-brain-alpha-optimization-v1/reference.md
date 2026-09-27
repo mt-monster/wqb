@@ -51,7 +51,7 @@ Use WorldQuant BRAIN platform tools when available:
 
 - `mcp__wq-brain-http__get_platform_setting_options`
 - `mcp__wq-brain-http__get_alpha_details`
-- `create_multiSim` or the platform-equivalent multi-simulation tool
+- `mcp__wq-brain-http__create_multi_simulation`（真实注册名；旧文写的 `create_multiSim` 不存在）
 - `mcp__wq-brain-http__get_user_alphas`
 - `mcp__wq-brain-http__get_alpha_details`（返回 is.checks 提交检查项）
 - `get_SimError_detail` or the platform-equivalent simulation error tool
@@ -310,7 +310,7 @@ Required behavior:
 
 ### Step 5: Multi-Simulation
 
-Run the 8 validated expressions through `create_multiSim` or the active multi-simulation tool.
+Run the 8 validated expressions through `mcp__wq-brain-http__create_multi_simulation`.
 
 If the response is truncated:
 

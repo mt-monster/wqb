@@ -45,6 +45,9 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "world-quant-brain-mcp"))
 DB = REPO_ROOT / "data" / "wqb.db"
@@ -223,7 +226,7 @@ def summarize(records: list) -> dict:
 
 def write_priors(region: str, gate_priors: dict, db_path: Path):
     """把 gate_priors 并入 ledger region_kb（不覆盖其余键）。"""
-    con = sqlite3.connect(str(db_path))
+    con = db_connect(str(db_path))
     try:
         row = con.execute(
             "SELECT value FROM ledger_kv WHERE region=? AND key='region_kb'", (region,)

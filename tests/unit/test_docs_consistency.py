@@ -450,10 +450,26 @@ def test_last_verified_not_older_than_last_commit(path: Path):
 # 11. 工具/节点计数只能引用 INDEX 基准段（2026-09-12 新增：根治 66/68/7 节点口径分裂）
 # ---------------------------------------------------------------------------
 
-#: 命中即检查的计数写法（工具数 / 节点数）；行内必须同时引用 INDEX 基准段才放行
+#: 命中即违规的「MCP 工具数 / workflow 节点数」裸写。
+#:
+#: 2026-09-26 审计修复两处洞（此前的实现形同虚设）：
+#:   ① 旧版是**值黑名单**（只认 66|68 / 3[2-9] / 7 个节点）→ 换成任何别的错数（如 49、9）即漏网，
+#:      是"打地鼠"，永远补不全；
+#:   ② 旧版有 `COUNT_REF_MARKS` **关键字豁免**：行内只要出现「INDEX / 唯一基准 / 测试守护 / 计数基准段」
+#:      就整行放行。于是 ra-pipeline「…68 / wqb-db 36 / workflow 节点 9，测试守护」与
+#:      ppa-mining「68 工具…勿在他处裸写数字」这两条**过时计数**，靠提一句基准名就逃过守护
+#:      ——正确写法是**只引用基准段、不写数字**，提名字不是免罪符。
+#: 现改为「语境约束」：只有出现在 MCP / 服务器 / workflow 语境里的计数才算 MCP 口径违规，
+#: 从而不误伤 toolkit 自身脚本数（如「核心 5 工具」「9 工具 + 闸6 回归」）。
 BARE_COUNT = re.compile(
-    r"\b(?:66|68)\s*(?:个)?\s*工具|\b(?:3[2-9])\s*(?:个)?\s*工具|[7７]\s*个节点|七个节点|7 个 workflow 节点")
-COUNT_REF_MARKS = ("INDEX", "唯一基准", "测试守护", "计数基准段")
+    r"(?:MCP|mcp__|服务器)[^\n]{0,60}?\b\d+\s*(?:个)?\s*工具"
+    r"|\b\d+\s*(?:个)?\s*工具[^\n]{0,60}?(?:MCP|mcp__|服务器)"
+    r"|\bworkflow[^\n]{0,40}?\b\d+\s*个\s*节点"
+    # 「workflow 节点 9」数字在后的写法：只允许分隔符，避免把行尾年份（2026）误当计数
+    r"|\bworkflow\s*节点\s*[:：]?\s*\**\s*\d+"
+    r"|\b\d+\s*个\s*workflow\s*节点"
+)
+
 
 
 def test_no_bare_tool_or_node_counts_outside_index():
@@ -462,11 +478,43 @@ def test_no_bare_tool_or_node_counts_outside_index():
         if "_unpacked" in p.as_posix() or p == INDEX_MD:
             continue
         for i, line in enumerate(_read(p).splitlines(), 1):
-            if BARE_COUNT.search(line) and not any(k in line for k in COUNT_REF_MARKS):
+            if BARE_COUNT.search(line):
                 bad.append(f"{p.relative_to(REPO_ROOT).as_posix()}:{i}: {line.strip()[:90]}")
     assert not bad, (
-        "skill 文档裸写工具/节点计数（口径唯一基准 = INDEX.md「MCP 工具/节点计数基准段」）：\n"
-        + "\n".join(bad[:8]))
+        "skill 文档裸写 MCP 工具数/workflow 节点数（口径唯一基准 = INDEX.md"
+        "「MCP 工具/节点计数基准段」，正确写法是只引用该段、不写数字；"
+        "提一句「见 INDEX」并不豁免）：\n" + "\n".join(bad[:8]))
+
+
+#: BARE_COUNT 的正反例**真实样本**（2026-09-26 审计固化）。
+#: 正向样本全是当时**真的逃过了守护**的历史写法——后者（旧 ra-pipeline:763 / 旧 ppa-mining:299）
+#: 靠行内提一句「测试守护 / 唯一基准」触发了已删除的关键字豁免。
+#: 反向样本是 toolkit 自身脚本数与正确引用写法，用于证明规则没有过度收网。
+_BARE_COUNT_OFFENDERS = (
+    "（当前 wq-brain-http 68 / wqb-db 36 / workflow 节点 9，测试守护），本表不另维护数字。",
+    "MCP（lavender1203 fork）：68 工具（另有 wqb-db 台账服务器 36 工具）——勿在他处裸写数字。",
+    "MCP（lavender1203 fork，端口 8876）：49 工具，含 `mcp__wq-brain-http__get_datasets`。",
+    "（workflow 引擎：**9 个节点**快捷方式 campaign/feature_engineering/gem）",
+)
+_BARE_COUNT_ALLOWED = (
+    "新任务一律用核心 5 工具，不要调用这些；如需回溯旧逻辑去 attic 取。",       # toolkit 脚本数
+    "假战役目录自动建于系统临时目录，47 项断言覆盖 9 工具 + 闸6 回归）。",        # toolkit 测试覆盖
+    "计数唯一基准 = `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，本表不另维护数字。",
+    "8. **新增/修改 workflow 节点 → 四处必须同步**（2026-09-18 固化）：",       # 行尾年份不是计数
+)
+
+
+def test_bare_count_guard_is_not_vacuous():
+    """守住 BARE_COUNT 本身：必须逮住历史违规样本，且不误伤合法写法。
+
+    2026-09-26 审计发现该守护**形同虚设**（值黑名单 + 关键字豁免）：
+    两条过时计数（68/36/9、49）长期逃逸且测试全绿。此测试防止规则再退化为空转——
+    只断言"当前文档干净"是不够的，一个永不命中的正则同样让上面那条测试永远绿。
+    """
+    missed = [s for s in _BARE_COUNT_OFFENDERS if not BARE_COUNT.search(s)]
+    assert not missed, ("BARE_COUNT 漏掉已知违规写法（守护正在失效）：\n" + "\n".join(missed))
+    over = [s for s in _BARE_COUNT_ALLOWED if BARE_COUNT.search(s)]
+    assert not over, ("BARE_COUNT 误伤合法写法（规则收网过紧）：\n" + "\n".join(over))
 
 
 def test_mcp_tool_counts_match_index():

@@ -18,7 +18,15 @@
 """
 import re
 
-VEC_WRAP_OPS = ("vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm")
+# 2026-09-20 修复：此前缺 vec_stddev/vec_range 等平台合法聚合算子，导致
+# `vec_stddev(f)` 被当成裸用字段二次包裹成 `vec_stddev(vec_avg(f))`（非法：vec_stddev
+# 只接受 VECTOR 输入）。GLB news31/other699 概念式（分歧度 = vec_stddev）实证命中。
+# 名单与 platform_constraints.json `vector_only_ops` 对齐并补齐平台文档全集。
+VEC_WRAP_OPS = (
+    "vec_avg", "vec_max", "vec_min", "vec_sum", "vec_count", "vec_norm",
+    "vec_stddev", "vec_range", "vec_ir", "vec_kurtosis", "vec_skewness",
+    "vec_percentage", "vec_powersum", "vec_choose",
+)
 
 # 计数/求和语义 -> vec_sum；否则 vec_avg
 _SUM_HINTS = ("count", "sum", "num", "vol", "qty", "amount", "total")

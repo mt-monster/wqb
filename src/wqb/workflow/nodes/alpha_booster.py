@@ -34,6 +34,7 @@ from typing import Any, Dict, List, Optional
 
 from .._common import resolve_db_path
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 
@@ -188,16 +189,36 @@ def run(
         "variants_inserted": 0,
     }
 
-    # dry-run 模式
+    # dry-run 模式：走完零成本前置——构建真实请求计划（judge/submit_alpha 同模式）→ 到此为止。
+    # 不 subprocess、不写库、不发起论坛网络请求（禁止假 dry-run：不构建计划却报 success）。
     if ctx.get("dry_run"):
+        result["plan"] = {
+            "region": region, "wave": wave, "dataset": dataset, "alpha_id": alpha_id,
+            "calls": [
+                "SELECT * FROM backtest_results WHERE region=? [AND wave=?] [AND alpha_id=?]",
+                "_diagnose_shortfalls(bt) → 2y_sharpe/sub_universe_sharpe/turnover_high/turnover_low/fitness",
+                "forum_refresh ? _refresh_library_from_forum(walls)（24h 缓存，干跑不发网络请求）",
+                "_generate_variants(diagnosed, max_variants_per_alpha, forum_updates)",
+                "auto_insert ? _insert_variants(...) into expressions (status=pending)",
+            ],
+            "booster_dimensions": list(BOOSTER_LIBRARY.keys()),
+            "operator_counts": {k: len(v["operators"]) for k, v in BOOSTER_LIBRARY.items()},
+            "max_variants_per_alpha": max_variants_per_alpha,
+            "auto_insert": auto_insert,
+            "forum_refresh": forum_refresh,
+        }
+        result["steps"].append({
+            "step": "build_plan", "success": True,
+            "booster_dimensions": list(BOOSTER_LIBRARY.keys()),
+        })
         result["success"] = True
         result["dry_run"] = True
-        result["message"] = "dry-run：Alpha booster 流程已构建，未执行"
+        result["note"] = "dry-run：请求计划已构建，未写库、未发网络请求"
         return result
 
     try:
         db_path = resolve_db_path()
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
 
