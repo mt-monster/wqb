@@ -28,7 +28,11 @@ from wqb.workflow.nodes import campaign as C
     ("PASS", "PASS"),
     ("0/6 过硬闸, 新高 0.31", "FAIL"),      # 实测 EUR 形态：0 条过硬闸 = 全被硬闸拦下
     ("0/8 过硬闸, 新高 0.43", "FAIL"),
-    ("3/8 过硬闸, 新高 2.10", "PARTIAL"),    # 有通过但未全过
+    # 2026-09-27 N30：与写入契约同一张表（此前这里判 PARTIAL、写入契约判 PASS）；规则 B 只看是否 FAIL
+    ("3/8 过硬闸, 新高 2.10", "PASS"),
+    ("GREEN: 2 候选达标", "PASS"),           # 历史写法，此前只能给 UNKNOWN
+    ("YELLOW: 0 候选, 3 near", "PARTIAL"),
+    ("RED: 5 全灭", "FAIL"),
     ("过硬闸情况未知", "UNKNOWN"),
     ("", "UNKNOWN"),
     (None, "UNKNOWN"),

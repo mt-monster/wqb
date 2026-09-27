@@ -217,3 +217,27 @@ def upsert_wave_result(conn, region: str, wave_number: Any, now: str,
 
     return {"action": action, **base, "verdict": final_verdict, "status": final_status,
             "updated_fields": sorted(provided)}
+
+
+def adopt_legacy_row(conn, region: str, wave_number: Any) -> Optional[str]:
+    """把旧版按数字入库、`full_payload.wave` 记着原字符串的那一行改回原字符串键（2026-09-27 N30）。
+
+    旧版 toolkit 评审写入按"波号里第一个数字"入库（`s2_<ds>_d1` → 2，冲突顺延 max+1），原字符串
+    只留在 full_payload.wave。本波还没有以原字符串为键的行时，把那一行改名（id / created_at /
+    全部内容保留），返回旧键；没有可认领的行返回 None。两行并存（旧数字行 + 原字符串行）时不动，
+    留给人工处理。写入方在同一事务里、写之前调用。
+    """
+    wave = "" if wave_number is None else str(wave_number).strip()
+    if not wave or conn.execute("SELECT 1 FROM wave_results WHERE region=? AND wave_number=?",
+                                (region, wave)).fetchone():
+        return None
+    for rid, old_key, payload in conn.execute(
+            "SELECT id, wave_number, full_payload FROM wave_results WHERE region=?", (region,)).fetchall():
+        try:
+            old_wave = json.loads(payload).get("wave") if payload else None
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if old_wave is not None and str(old_wave).strip() == wave and str(old_key) != wave:
+            conn.execute("UPDATE wave_results SET wave_number=? WHERE id=?", (wave, rid))
+            return str(old_key)
+    return None

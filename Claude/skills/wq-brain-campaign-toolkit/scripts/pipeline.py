@@ -917,7 +917,7 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
         if out_wr.get("skipped"):
             print(f"[wave_results] 跳过: {out_wr.get('reason')}")
         else:
-            print(f"[wave_results] wave{out_wr['wave_number']} -> {out_wr['status']} "
+            print(f"[wave_results] wave={out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
     except (Exception, SystemExit) as e:
         # SystemExit 不继承 Exception，而 _lib/wave_results.upsert 的契约校验

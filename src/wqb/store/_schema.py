@@ -320,6 +320,9 @@ class SchemaMixin:
         )
         self._add_column("datasets", "data_type", "TEXT")
         self._add_column("datasets", "catalog_json", "TEXT")
+        # 2026-09-27 N30：toolkit `_lib/wave_results` 旧版建表语句没有 created_at。该表若由它先建，
+        # 写入契约（插入 created_at）与停止规则 B 的窗口（读 created_at）都会出错。只补列，可空。
+        self._add_column("wave_results", "created_at", "TIMESTAMP")
         # 索引：覆盖高频查询路径
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_expr_region_wave "

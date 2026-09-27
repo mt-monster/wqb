@@ -243,9 +243,12 @@ multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCEL
 # 一键导入现成 wave<N>_results.json 入库（幂等，重复跑无副作用；默认 status=closed）
 $WQ_PY campaign.py --campaign-dir tracking/<REGION> wave import --file results/wave63_results.json
 
-# 手填/更新 wave 结论（--finding 可重复多条；--candidates/--batches 用 @file.json 数组；upsert 为整行覆盖）
+# 手填/更新 wave 结论（--finding 可重复多条；--candidates/--batches 用 @file.json 数组）
+# 2026-09-27 起与 wqb-db 的 upsert_wave_result 同一写入契约：合并写入（只改本次给出的字段，
+# created_at 不变）；--wave 用波号原字符串（63 / s2_<ds>_d1），--verdict 只收 PASS/FAIL/PARTIAL；
+# 不给 --status 时：带 --verdict 即结案，否则已有波保持原状态、新波 open（只补 focus 不会把结案波改回 open）
 $WQ_PY campaign.py --campaign-dir tracking/<REGION> wave upsert --wave 63 \
-    --focus "..." --context "..." --verdict "..." --status closed \
+    --focus "..." --context "..." --verdict FAIL --status closed \
     --finding "..." --finding "..."
 
 # 写后立即验证（同一入口，无需另写查询脚本）

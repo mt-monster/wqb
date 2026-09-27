@@ -292,7 +292,7 @@ def main():
         if out_wr.get("skipped"):
             print(f"[wave_results] 跳过: {out_wr.get('reason')}")
         else:
-            print(f"[wave_results] wave{out_wr['wave_number']} -> {out_wr['status']} "
+            print(f"[wave_results] wave={out_wr['wave_number']} -> {out_wr['status']} "
                   f"(findings={out_wr['key_findings_n']} candidates={out_wr['candidates_n']})")
     except (Exception, SystemExit) as e:  # SystemExit 不继承 Exception，同 pipeline.py 处注释
         print(f"[wave_results] 入库异常（不阻断）: {e}")

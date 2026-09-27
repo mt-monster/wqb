@@ -26,7 +26,7 @@ import re
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from mcp.server.fastmcp import FastMCP
 
@@ -1270,7 +1270,9 @@ def harvest_multisim_results(
         auto_upsert: 是否自动写回 backtest_results（默认 True）
 
     Returns:
-        {"linked": n, "upserted": n, "region": ..., "wave": ...}
+        {"linked": n, "upserted": n, "region": ..., "wave": ..., "wave_result": "..."}
+        wave_result 说明本波 wave_results 行的处理（按原波号字符串写入）：没有行时新建并给暂定
+        verdict（PASS / PARTIAL / FAIL，按判定表；评审会覆盖）；已有评审 / 人工结论时 "kept"、不覆盖。
     """
     store = _store()
     try:
@@ -1451,93 +1453,156 @@ def get_salvage_pool(
     }
 
 
-def _cascade_wave_result(region: str, wave: str, alpha_list: list) -> str:
-    """收批后自动汇总写 wave_results（幂等）。
+#: 收批级联写的 wave_results 行的来源标记。级联只改自己写的结论：评审（`pipeline:auto`）、
+#: 人工 / S6 写下的 verdict 一律不动（2026-09-27 N30）。
+HARVEST_SOURCE = "harvest:auto"
+#: 级联的"过硬闸"（与历史自由文本 `N/M 过硬闸` 同口径）：S≥1.58、F≥1.0、2Y≥1.58（2Y 缺失不判）
+_HARD_GATE = (1.58, 1.0, 1.58)
+#: 区域配置里读不到 near 线时的兜底：各区 near.sharpe_min 的最小值（宁可少判 FAIL，不误停区）
+_NEAR_LINE_FALLBACK = 1.0
 
-    从 alpha 列表派生 candidates 与简要 verdict，只在能解析出 wave 数字时写入。
-    不覆盖人工已写的 focus/context/key_findings——仅填 candidates/verdict。
+
+def _num(x: Any) -> bool:
+    return isinstance(x, (int, float)) and not isinstance(x, bool)
+
+
+def _json_value(raw: Any) -> Any:
+    if isinstance(raw, (bytes, bytearray)):
+        raw = raw.decode("utf-8")
+    if isinstance(raw, str):
+        try:
+            return json.loads(raw)
+        except (TypeError, ValueError):
+            return raw
+    return raw
+
+
+def _region_near_line(region: str) -> Tuple[float, str]:
+    """该区 near 线（战役目录 config/thresholds.json 的 near.sharpe_min）与出处。"""
+    try:
+        from wqb.workflow._common import resolve_campaign_dir
+        cdir = resolve_campaign_dir(region)
+    except Exception:
+        cdir = None
+    path = Path(cdir) if cdir else ROOT / "tracking" / region
+    try:
+        near = json.loads((path / "config" / "thresholds.json").read_text(encoding="utf-8")).get("near")
+        if isinstance(near, dict) and near.get("sharpe_min") is not None:
+            return float(near["sharpe_min"]), f"{region} thresholds.json near.sharpe_min"
+    except (OSError, ValueError, TypeError):
+        pass
+    return _NEAR_LINE_FALLBACK, "缺区域 near 配置，取各区最低 near 线"
+
+
+def _harvest_candidate(a: dict) -> dict:
+    sh, fit, ty = a.get("sharpe"), a.get("fitness"), a.get("two_year_sharpe")
+    ok = (_num(sh) and sh >= _HARD_GATE[0] and _num(fit) and fit >= _HARD_GATE[1]
+          and (ty is None or (_num(ty) and ty >= _HARD_GATE[2])))
+    return {"alpha_id": a["alpha_id"], "sharpe": sh, "fitness": fit,
+            "two_year_sharpe": ty, "pass_hard_gate": bool(ok)}
+
+
+def _cascade_wave_result(region: str, wave: Any, alpha_list: list) -> str:
+    """收批后把本波的候选汇总与暂定结论写进 wave_results（2026-09-27 N30 重写）。
+
+    - **波号用原字符串**，与 backtest_results / expressions 同一个键。此前取 `int(首个数字)`：
+      `s2_<ds>_d1` 写进"第 2 波"、`91c` 写进第 91 波，该行不存在时还新插一条 closed 行。
+    - **走写入契约**（`wqb.wave_results_contract`：合并式 upsert、结案必带枚举 verdict），不再直写 SQL。
+    - **结论归属**：只改自己写的行（source_file=harvest:auto、仍为 closed、verdict 仍是它上次写的值）；
+      评审 / 人工 / S6 写下的 verdict、显式 open 的行一律不动。结案却空 verdict 的旧行可补。
+    - **暂定结论按判定表**（R20 `verdict_from_counts`）：≥1 条过硬闸 → PASS；否则 ≥1 条 sharpe 过该区
+      near 线 → PARTIAL；否则 FAIL。只有"没有一条过 near 线"才给 FAIL——各区评审线都不低于 near 线，
+      评审必然也判 FAIL，所以级联的 FAIL 不会误停区；PASS / PARTIAL 是暂定值，评审会覆盖。
+    - 同一波多次收批：候选按 alpha_id 合并后重算（此前只看最后一批，后一批全灭会把前一批的 PASS 改成 FAIL）。
+    - 旧版评审按数字入库的本波行（full_payload.wave 记着原字符串）先改回原字符串键（契约 `adopt_legacy_row`），
+      再按上面的归属规则处理——否则会另起一行，旧行成为停止规则 B 窗口里的幽灵波。
     """
-    m = re.search(r"(\d+)", str(wave))
-    if not m:
-        return "skipped: wave has no numeric part"
-    wave_number = int(m.group(1))
+    wave_id = str(wave if wave is not None else "").strip()
+    batch = {a["alpha_id"]: _harvest_candidate(a)
+             for a in (alpha_list or []) if isinstance(a, dict) and a.get("alpha_id")}
+    if not wave_id or not batch:
+        return "skipped: " + ("empty wave" if not wave_id else "no alpha_id in batch")
 
-    # 汇总候选指标
-    cands = []
-    passed = 0
-    sharpes = []
-    for a in alpha_list:
-        aid = a.get("alpha_id")
-        if not aid:
-            continue
-        sh = a.get("sharpe")
-        fit = a.get("fitness")
-        ty = a.get("two_year_sharpe")
-        if isinstance(sh, (int, float)):
-            sharpes.append(sh)
-        ok = (
-            isinstance(sh, (int, float)) and sh >= 1.58
-            and isinstance(fit, (int, float)) and fit >= 1.0
-            and (ty is None or (isinstance(ty, (int, float)) and ty >= 1.58))
-        )
-        if ok:
-            passed += 1
-        cands.append({
-            "alpha_id": aid,
-            "sharpe": sh,
-            "fitness": fit,
-            "two_year_sharpe": ty,
-            "pass_hard_gate": ok,
-        })
-
-    total = len(cands)
-    best = max(sharpes) if sharpes else None
-    verdict = f"{passed}/{total} 过硬闸" + (f", 新高 {best:.2f}" if best else "")
-
-    # 读取现有记录，保留人工写的 focus/context/key_findings
     conn = _conn()
-    c = conn.cursor()
-    c.execute("SELECT id FROM wave_results WHERE region=? AND wave_number=?", (region, wave_number))
-    exists = c.fetchone() is not None
-    conn.close()
-
-    cand_json = json.dumps(cands, ensure_ascii=False)
-    conn = _conn()
-    c = conn.cursor()
-    if exists:
-        # 只更新 candidates/verdict/updated_at，不动人工字段
-        c.execute(
-            "UPDATE wave_results SET candidates=?, verdict=?, updated_at=? WHERE region=? AND wave_number=?",
-            (cand_json, verdict, _now(), region, wave_number),
-        )
-        action = "updated"
-    else:
-        c.execute(
-            """INSERT INTO wave_results
-               (region, wave_number, focus, context, key_findings, candidates, batches,
-                verdict, status, source_file, archived, created_at, updated_at, full_payload)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (region, wave_number, None, None, None, cand_json, None, verdict,
-             "closed", None, 0, _now(), _now(), None),
-        )
-        action = "inserted"
-    conn.commit()
-    conn.close()
+    try:
+        # 旧版评审按数字入库的本波行先改回原字符串键，否则这里会另起一行、旧行成为规则 B 窗口里的幽灵波
+        legacy = _wave_contract.adopt_legacy_row(conn, region, wave_id)
+        row = conn.execute(
+            "SELECT verdict, status, source_file, candidates, key_findings, full_payload "
+            "FROM wave_results WHERE region=? AND wave_number=?", (region, wave_id)).fetchone()
+        payload = _json_value(row[5]) if row else None
+        payload = dict(payload) if isinstance(payload, dict) else {}
+        last = payload.get("harvest") if isinstance(payload.get("harvest"), dict) else {}
+        owned = hollow = False
+        if row is not None:
+            verdict_now = str(row[0] or "").strip()
+            owned = (row[2] == HARVEST_SOURCE and row[1] == "closed"
+                     and verdict_now == str(last.get("verdict") or ""))
+            hollow = row[1] == "closed" and not verdict_now
+        if row is not None and not (owned or hollow):
+            if row[1] != "closed":
+                action = f"kept: wave {wave_id} 是显式 {row[1]} 的行（结论未定），收批不补结论"
+            elif row[2] == HARVEST_SOURCE:
+                action = (f"kept: wave {wave_id} 的 verdict 已被改写为 {row[0]}"
+                          f"（收批上次写的是 {last.get('verdict')}），收批不覆盖")
+            else:
+                action = f"kept: wave {wave_id} 已有结论 verdict={row[0]}（来源 {row[2] or '人工/S6'}），收批不覆盖"
+            if legacy is not None:
+                conn.commit()        # 结论不归级联管，但旧数字键改回原字符串照样落库
+        else:
+            old = _json_value(row[3]) if row is not None else None
+            old = old if isinstance(old, list) else []
+            keep_other = [c for c in old if not (isinstance(c, dict) and c.get("alpha_id"))]
+            merged = {c["alpha_id"]: c for c in old if isinstance(c, dict) and c.get("alpha_id")}
+            merged.update(batch)
+            cands = list(merged.values())
+            near_line, near_src = _region_near_line(region)
+            n_pass = sum(1 for c in cands if c.get("pass_hard_gate"))
+            n_near = sum(1 for c in cands if not c.get("pass_hard_gate")
+                         and _num(c.get("sharpe")) and c["sharpe"] > near_line)
+            verdict = _wave_contract.verdict_from_counts(n_pass, n_near)
+            sharpes = [c["sharpe"] for c in cands if _num(c.get("sharpe"))]
+            best = max(sharpes) if sharpes else None
+            line = (f"[harvest] {n_pass}/{len(cands)} 过硬闸（S≥1.58 & F≥1.0 & 2Y≥1.58），"
+                    f"{n_near} 条 sharpe 过 near 线 {near_line}"
+                    + (f"，最高 sharpe {best:.2f}" if best is not None else "")
+                    + f" → 暂定 {verdict}（评审结论会覆盖）")
+            findings = _json_value(row[4]) if row is not None else None
+            findings = [f for f in (findings if isinstance(findings, list) else [])
+                        if not str(f).startswith("[harvest]")]
+            payload.setdefault("wave", wave_id)
+            payload["harvest"] = {"verdict": verdict, "n_total": len(cands), "n_pass": n_pass,
+                                  "n_near": n_near, "near_line": near_line, "near_line_source": near_src,
+                                  "best_sharpe": best, "updated_at": _now()}
+            res = _wave_contract.upsert_wave_result(
+                conn, region, wave_id, _now(), candidates=keep_other + cands,
+                key_findings=[line] + findings, verdict=verdict, status="closed",
+                source_file=HARVEST_SOURCE, full_payload=payload)
+            if "error" in res:
+                action = f"skipped: {res['error']}"
+            else:
+                conn.commit()
+                action = (f"{res['action']}: wave {wave_id} 暂定 verdict={verdict}"
+                          f"（{n_pass}/{len(cands)} 过硬闸，{n_near} 条过 near 线 {near_line}）")
+        if legacy is not None and not action.startswith("skipped"):
+            action += f"；旧行 wave_number={legacy} 已改回 {wave_id!r}"
+    finally:
+        conn.close()
 
     # --- salvage 分层：每波收取 FAIL 达辅料线者入 salvage_pool ---
     # 2026-09-13 放宽：原实现仅“全 RED 波”（passed==0）触发，而“>10 种结构判死”
     # 场景横跨多波，部分过闸波里的失败候选会散落未收。现每波均收取（幂等 by
     # alpha_id、零配额成本）。辅料线独立于 mode_b_qualification（收集宽、动用严）。
-    if total > 0:
-        try:
-            _salvage_to_pool(region, wave_number, alpha_list)
-        except Exception:
-            pass  # salvage 失败不阻塞主流程
+    # 与结论归属无关：结论不归级联管的波照样收。
+    try:
+        _salvage_to_pool(region, wave_id, alpha_list)
+    except Exception:
+        pass  # salvage 失败不阻塞主流程
 
     return action
 
 
-def _salvage_to_pool(region: str, wave_number: int, alpha_list: list) -> None:
+def _salvage_to_pool(region: str, wave_number: Any, alpha_list: list) -> None:
     """波次收敛自动分层：FAIL 候选达【辅料线】者写入 salvage_pool ledger key（幂等）。
 
     收集宽 / 动用严（2026-09-13 定案）：

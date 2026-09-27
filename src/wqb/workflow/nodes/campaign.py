@@ -19,6 +19,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..mcp_check import require_mcp_tools
+from ...wave_results_contract import normalize_verdict as _contract_normalize_verdict
 from .._common import (
     REPO_ROOT,
     connect_db_readonly,
@@ -942,7 +943,7 @@ STOP_RULES_DEFAULTS = {
     "sharpe_min": 1.58,
     "fitness_min": 1.0,
     # ---- 2026-09-17 加固（P0-3 停止闸输入完整性）----
-    # verdict 已归一化（见 _normalize_verdict）：自由文本 `0/8 过硬闸` 现算 FAIL，
+    # verdict 已归一化（见 _normalize_verdict，与写入契约同一张表）：自由文本 `0/8 过硬闸` 算 FAIL，
     # 空值算 UNKNOWN。以下两项控制更严/更保守的可选口径，默认不改变既有拦截面。
     "strict_no_pass": False,        # True → 最近 K 个 closed 波"无任何 PASS"即停区（严于全 FAIL）
     "unknown_warn": True,           # verdict 空/不可识别 → 输出 WARN，但不当作"通过"也不据此拦截
@@ -1100,11 +1101,6 @@ def _run_backlog_gate(
     return result
 
 
-#: 自由文本 verdict 形态：`0/8 过硬闸, 新高 0.43`（早期波次的写入格式）
-_VERDICT_ZERO_RE = re.compile(r"^\s*0\s*/\s*\d+\s*过硬闸")
-_VERDICT_N_OF_M_RE = re.compile(r"^\s*(\d+)\s*/\s*\d+\s*过硬闸")
-
-
 def _normalize_verdict(raw: Any) -> str:
     """把 `wave_results.verdict` 归一到 PASS|FAIL|PARTIAL|UNKNOWN（2026-09-17 P0-3）.
 
@@ -1113,24 +1109,14 @@ def _normalize_verdict(raw: Any) -> str:
     旧规则 B 用 `all(v == "FAIL")` 判定，上述形态一律静默"不算 FAIL" → **停止闸失效**；
     JPN wave1 的 `verdict=None` 同理（`str(None or "")=""`）。
 
-    语义澄清（避免与 IS 达标混淆）：`N/M 过硬闸` 中的 N 是**通过提交层硬闸**的条数，
-    与 IS 的 sharpe/fitness 达标数**不是一回事** —— 实测 IND wave143 `verdict=FAIL`
-    仍有 6 条 sharpe>1.58&fitness>1.0 的回测。故本函数只做**字符串语义归一**，
-    不去 join 回测结果反推达标数（且 `backtest_results.wave` 在 DEU 写的是数据集名，
-    join 不可靠）。
+    2026-09-27 N30：归一规则只有一份——`wqb.wave_results_contract.normalize_verdict`（写入时用的
+    同一张表）。此前这里另有一套：`3/8 过硬闸` 判 PARTIAL，写入契约判 PASS，同一文本两种枚举；
+    也认不出 `GREEN:` / `RED:` / `全灭` 等写入契约早已归一的历史写法（只能给 UNKNOWN）。
+    契约认不出的仍给 UNKNOWN：规则 B 只告警、不据此拦截。只做字符串语义归一，不 join 回测结果
+    反推达标数（`backtest_results.wave` 在 DEU 写的是数据集名，join 不可靠）。
     """
-    s = str(raw or "").strip()
-    if not s:
-        return "UNKNOWN"
-    up = s.upper()
-    if up in ("PASS", "FAIL", "PARTIAL"):
-        return up
-    if _VERDICT_ZERO_RE.match(s):
-        return "FAIL"          # 0 条过硬闸 = 全数被硬闸拦下
-    m = _VERDICT_N_OF_M_RE.match(s)
-    if m:
-        return "PARTIAL" if int(m.group(1)) > 0 else "FAIL"
-    return "UNKNOWN"
+    norm, _rule = _contract_normalize_verdict(raw)
+    return norm or "UNKNOWN"
 
 
 def _recent_closed_waves(conn: sqlite3.Connection, region: str, k: int) -> List[Tuple[str, Any]]:
@@ -1142,8 +1128,9 @@ def _recent_closed_waves(conn: sqlite3.Connection, region: str, k: int) -> List[
     2026-09-27 R22（审计 N22）：此前按 `COALESCE(updated_at, created_at)` 排序——给任何旧波补记
     结论、补写 findings 都会把它顶进"最近 k 个"。KOR 真实复现：按 R20 的建议给旧波 91c 补记 PASS
     （91c 早于 92–97），窗口变成 [91c PASS, 97, …]，区域停波被解除、下一波放行。
-    `wave_results.created_at` 只作兜底：toolkit `WaveResultsStore.upsert` 是 INSERT OR REPLACE，
-    每写一次就重置它。两种时钟（本地 `T` / UTC 空格）先经 `local_ts` 统一；同一秒内按波号数字部分
+    `wave_results.created_at` 只作兜底：旧版 toolkit `WaveResultsStore.upsert` 是 INSERT OR REPLACE，
+    每写一次就重置它（N30 起改走写入契约的合并写入、保留 created_at，但库里已被重置过的旧行还在）；
+    波号也曾按首个数字入库、与 waves 对不上（N30 起按原字符串）。两种时钟（本地 `T` / UTC 空格）先经 `local_ts` 统一；同一秒内按波号数字部分
     再按原串倒序。库里没有 waves / regions 表（最小库）时只按 `wave_results.created_at`。
     """
     tables = {name for (name,) in conn.execute(

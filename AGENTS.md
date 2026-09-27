@@ -419,3 +419,20 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 **判价顺序**：先看失败文件单独跑绿不绿 → 绿就不是回归。**别急于 revert**。
 pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR 重定向）。
 
+
+### 8.6 wave_results 写入单入口（2026-09-27 P0-1 / N30 固化）
+
+`wave_results` 是停止规则 B（`campaign._run_stop_rules_gate`）的唯一输入，写错一行就是误停区或误放行。
+
+- **只经写入契约写**：`src/wqb/wave_results_contract.upsert_wave_result`（合并式：只写传入的列；结案必带
+  PASS/FAIL/PARTIAL；`created_at` 首写后不变）。现有写入方全部走它：wqb-db `upsert_wave_result`、
+  `tools/mcp_batch_writer` 直写兜底、收批级联 `wqb_db_mcp._cascade_wave_result`、toolkit `_lib/wave_results`
+  （review_wave / pipeline / `campaign.py wave upsert`）、`auto_pyramid` 点塔回写。**新增写入方禁止直写 SQL /
+  `INSERT OR REPLACE`**（一次性迁移工具 `tools/migrate_*` 除外，须人工复核）。
+- **波号一律原字符串**：`97`、`91c`、`s2_<ds>_d1` 原样入库，与 `backtest_results.wave` / `waves.wave_number`
+  同键。禁止"取第一个数字"之类的派生（N30：`s2_<ds>_d1` 被写进第 2 波，评审顺延出的 105 撞上另一个真实波）。
+- **结论归属**：评审（`source_file=pipeline:auto`）覆盖收批级联的暂定结论（`harvest:auto`）；级联不覆盖评审 /
+  人工结论，不动显式 open 的行。各写入方只替换自己前缀的 key_findings 行（`[harvest]`、评审的
+  `GREEN:`/`YELLOW:`/`RED:` 等、`[pyramid]`），其余保留。
+- **verdict 归一只有一张表**：`wave_results_contract.normalize_verdict`；停止闸的 `_normalize_verdict` 委托它，
+  不另写规则。
