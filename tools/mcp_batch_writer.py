@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 logger = logging.getLogger(__name__)
 
@@ -129,18 +129,18 @@ class MCPBatchWriter:
     def upsert_wave_result(
         self,
         region: str,
-        wave_number: int,
+        wave_number: Union[int, str],
         focus: Optional[str] = None,
         context: Optional[str] = None,
         key_findings: Optional[Any] = None,
         candidates: Optional[Any] = None,
         batches: Optional[Any] = None,
         verdict: Optional[str] = None,
-        status: str = "closed",
+        status: Optional[str] = None,
         source_file: Optional[str] = None,
         full_payload: Optional[Any] = None,
     ) -> Dict[str, Any]:
-        """写 wave 结果（带重试）。"""
+        """写 wave 结果（带重试）。合并语义与 status 缺省规则见 src/wqb/wave_results_contract.py。"""
         return self._execute_with_retry(
             "upsert_wave_result",
             region=region,
@@ -230,6 +230,12 @@ class DirectDBWriter(MCPBatchWriter):
             self._store = CampaignStore(self.db_path)
         return self._store
 
+    def _wave_contract(self):
+        """wave_results 写入契约模块（与 wqb_db_mcp.upsert_wave_result 同一实现）。"""
+        self._get_store()  # 确保 src/ 在 sys.path 上（缺失时同样抛 RuntimeError，不降级）
+        from wqb import wave_results_contract
+        return wave_results_contract
+
     def _get_conn(self):
         if self._conn is None:
             import sqlite3
@@ -259,29 +265,16 @@ class DirectDBWriter(MCPBatchWriter):
             return {"action": "upserted", "region": region, "key": key}
 
         elif tool_name == "upsert_wave_result":
-            region = kwargs["region"]
-            wave_number = kwargs["wave_number"]
-            kf = json.dumps(kwargs.get("key_findings"), ensure_ascii=False) if kwargs.get("key_findings") is not None else None
-            cand = json.dumps(kwargs.get("candidates"), ensure_ascii=False) if kwargs.get("candidates") is not None else None
-            bat = json.dumps(kwargs.get("batches"), ensure_ascii=False) if kwargs.get("batches") is not None else None
-            fp = json.dumps(kwargs.get("full_payload"), ensure_ascii=False) if kwargs.get("full_payload") is not None else None
-            cur.execute(
-                "INSERT INTO wave_results "
-                "(region, wave_number, focus, context, key_findings, candidates, batches, verdict, status, source_file, archived, created_at, updated_at, full_payload) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,0,?,?,?) "
-                "ON CONFLICT(region, wave_number) DO UPDATE SET "
-                "focus=excluded.focus, context=excluded.context, key_findings=excluded.key_findings, "
-                "candidates=excluded.candidates, batches=excluded.batches, verdict=excluded.verdict, "
-                "status=excluded.status, source_file=excluded.source_file, updated_at=excluded.updated_at, "
-                "full_payload=excluded.full_payload",
-                (
-                    region, str(wave_number), kwargs.get("focus"), kwargs.get("context"),
-                    kf, cand, bat, kwargs.get("verdict"), kwargs.get("status", "closed"),
-                    kwargs.get("source_file"), now, now, fp,
-                ),
-            )
-            conn.commit()
-            return {"action": "upserted", "region": region, "wave_number": wave_number}
+            # 2026-09-27 P0-1：与 MCP 工具 upsert_wave_result 同一契约（合并式 upsert +
+            # 结案必带 verdict），唯一实现在 src/wqb/wave_results_contract.py。此前这里
+            # ON CONFLICT 全列覆盖，只补写 key_findings 同样会把已有 verdict 清空。
+            contract = self._wave_contract()
+            fields = {k: kwargs.get(k) for k in contract.FIELDS}
+            result = contract.upsert_wave_result(
+                conn, kwargs["region"], kwargs["wave_number"], now, **fields)
+            if "error" not in result:
+                conn.commit()
+            return result
 
         elif tool_name == "upsert_backtest_rows":
             # 2026-09-18 修复（设计文档 §2.2 改动#4）：

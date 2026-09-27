@@ -279,11 +279,14 @@ $DELAY    = (settings.json).delay
 $UNIVERSE = (settings.json).universe
 $DTYPE    = (catalog).data_type
 # 确定性组装 priors 并写 DB 快照（priors_snapshot_<region>）——DB 为单一事实源
+# （节点 2026-09-27 起默认追加 --snapshot-ledger；此前只重写文件，GEM 读到的仍是旧快照。
+#  同日起 assemble-priors 不再过 S2 开波闸——区域命中停止规则时照样能把 S6 新结论刷进快照）
 mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  subcommand="assemble-priors"
 mcp__wqb-db__get_ledger_key  region=$REGION  key="s1_${DS}_d${DELAY}"
 # GEM 生成。pipeline_mode: phased（缺省）/ skeleton（代码组装、语法构造保证）/ single（一次性 LLM，不推荐）
 mcp__wq-brain-http__workflow_gem  region=$REGION  dataset_id=$DS  delay=$DELAY  universe=$UNIVERSE  data_type=$DTYPE  pipeline_mode="phased"
-# 注：priors_file 已可省略——GEM 经 load_priors(region) 从 DB 快照直读，文件仅降级兜底
+# 注：priors_file 已可省略——GEM 经 load_priors(region) 从 DB 快照直读，文件仅降级兜底；
+#     workflow_gem（含干跑）的 priors_snapshot_check 步在快照缺失或早于 region_kb 等 KB 源时告警
 mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  wave=$W
 ```
 
@@ -551,6 +554,9 @@ decay 仍以 `tools/build_gate_prior_from_inventory.py --write-priors` 的 `gate
 下一波步 4 assemble-priors / 步 6 settings prior 读到的因此总是最新。**手动部分**（win / dead_end / seal / pyramid）仍按下文执行。
 `wave_results.verdict` 只接受 PASS / FAIL / PARTIAL：`mcp__wqb-db__upsert_wave_result` 会把 `FAIL_xxx：…` / `CLOSED_DEAD_END_…` 这类
 前缀形态归一到枚举并把原文搬进 `key_findings[0]`，无法辨认的直接拒绝——描述性结论请写 `key_findings`。
+**写入是合并语义（2026-09-27）**：行已存在时只覆盖本次传入的字段，只补写 `key_findings` 不会再清空 verdict
+（此前会，停止规则 B 随之失效）；`status='closed'`（新行缺省即 closed）必须带 verdict，结论未定传 `status='open'`；
+`wave_number` 可传字符串（如 `s2_<ds>_d1`）。
 
 ```
 mcp__wqb-db__upsert_wave_result  region=$REGION  wave=$W  verdict=<PASS|FAIL|PARTIAL>  ...
@@ -575,7 +581,8 @@ OS ACTIVE / 全闸 PASS 必须 `add-win`（mix 比例、中性化、decay、快/
 
 ```
 python tools/campaign_intel.py pyramid --region $REGION --delay $DELAY
-# 输出末尾的 [key_findings] 单行直接拷进 upsert_wave_result 的 key_findings 列表
+# 输出末尾的 [key_findings] 单行与本波其它 key_findings 一起，在写 verdict 的同一次 upsert_wave_result 里传入
+# （key_findings 整列替换；事后单独补写时要带上原有条目）
 ```
 
 **提交多样性监控（防同质化降权）**：每提交 3-5 颗后调一次，若多样性评分下降则切换目标塔：

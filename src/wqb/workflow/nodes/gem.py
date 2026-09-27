@@ -10,7 +10,7 @@ import os
 import re
 import subprocess
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
@@ -37,6 +37,90 @@ def is_template_ideas_source(source: Optional[str]) -> bool:
     src = str(source or "").strip()
     return any(src == t or src.startswith(t + " ") or src.startswith(t + "(")
                for t in TEMPLATE_IDEAS_SOURCES)
+
+
+#: priors 快照的 ledger 源（assemble_priors.py 读这三个键；另读 registry_empirical 的
+#: win / dead_end 层，见下）。任一比快照新 = 快照已过期。
+_PRIORS_SOURCES = (("{region}", "region_kb"), ("KB", "template_kb"), ("KB", "operator_principle_kb"))
+
+
+def _ledger_ts(value: Any) -> str:
+    """时间戳统一成本地时间 `YYYY-MM-DD HH:MM:SS` 便于比较。
+
+    写入方两种口径：Python `datetime.now().isoformat()`（本地时间、`T` 分隔：
+    CampaignStore / wqb-db MCP / _lib/region_kb）与 SQLite `datetime('now')` /
+    `CURRENT_TIMESTAMP`（UTC、空格分隔：toolkit _lib/ledger、_lib/registry）。
+    空格分隔的按 UTC 换算成本地时间——否则东八区上刚写的 registry 行看起来比快照早 8 小时。
+    """
+    s = str(value or "").strip()
+    if not s or "T" in s:
+        return s.replace("T", " ")[:19]
+    try:
+        utc = datetime.strptime(s[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return s[:19]
+    return utc.astimezone().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _priors_snapshot_freshness(region: str) -> Dict[str, Any]:
+    """GEM 读的 priors 快照是否落后于它的 KB 源（2026-09-27 P0-2）。
+
+    GEM 默认 `--priors-from-db`，只读 ledger `priors_snapshot_<region>`；快照只由
+    `campaign.py assemble-priors --snapshot-ledger` 写。S6 回写 / pipeline 波后刷新
+    region_kb / 判死封存（registry dead_end）/ 登记 win 之后若没重组，GEM 会静默沿用旧先验
+    ——这里把它变成可见告警。时间戳口径见 `_ledger_ts`。只读、零配额，不阻断
+    （缺快照时 GEM 自身会 fail-closed）。
+    """
+    step: Dict[str, Any] = {"step": "priors_snapshot_check", "success": True}
+    r = str(region or "").strip().upper()
+    key = f"priors_snapshot_{r.lower()}"
+    step["snapshot_key"] = key
+    db = resolve_db_path()
+    if not os.path.isfile(db):
+        step["warning"] = f"战役库不存在（{db}），无法检查 priors 快照 {key}"
+        return step
+    try:
+        conn = sqlite3.connect(db)
+        try:
+            snap = conn.execute(
+                "SELECT updated_at FROM ledger_kv WHERE region=? AND key=?", (r, key)
+            ).fetchone()
+            sources = []
+            for src_region, src_key in _PRIORS_SOURCES:
+                src_region = src_region.format(region=r)
+                row = conn.execute(
+                    "SELECT updated_at FROM ledger_kv WHERE region=? AND key=?",
+                    (src_region, src_key),
+                ).fetchone()
+                if row:
+                    sources.append((f"{src_region}/{src_key}", _ledger_ts(row[0])))
+            # registry_empirical：两类写入方时钟不同，SQL 的 MAX 按字符串比会错，逐行归一后取最大
+            try:
+                reg = [_ledger_ts(v) for (v,) in conn.execute(
+                    "SELECT updated_at FROM registry_empirical "
+                    "WHERE region=? AND layer IN ('win', 'dead_end') AND updated_at IS NOT NULL", (r,))]
+            except sqlite3.OperationalError:  # 老库无该表
+                reg = []
+            if reg:
+                sources.append((f"{r}/registry_empirical(win,dead_end)", max(reg)))
+        finally:
+            conn.close()
+    except sqlite3.Error as e:
+        step["warning"] = f"priors 快照检查读库失败：{e}"
+        return step
+    fix = (f"先跑 workflow_campaign(region='{r}', stage='S2', subcommand='assemble-priors')"
+           f"（默认带 --snapshot-ledger）")
+    if not snap:
+        step["warning"] = f"DB 无 {r}/{key}：GEM（--priors-from-db）启动后会 fail-closed。{fix}"
+        return step
+    snap_ts = _ledger_ts(snap[0])
+    step["snapshot_updated_at"] = snap_ts
+    stale = [f"{name}@{ts}" for name, ts in sources if ts > snap_ts]
+    if stale:
+        step["stale_sources"] = stale
+        step["warning"] = (f"priors 快照 {key}（{snap_ts}）早于其 KB 源 {', '.join(stale)}："
+                           f"S6 回写后没重组 priors，本次 GEM 会用旧先验。{fix}")
+    return step
 
 
 @require_mcp_tools("gem")
@@ -215,6 +299,13 @@ def run(
                 })
         except Exception as e:
             logger.warning(f"Failed to check candidate field pool: {e}")
+
+    # Step 1.5：priors 快照新鲜度（零成本只读，干跑也走；只告警不阻断）
+    if priors_from_db and not priors_file:
+        snap_step = _priors_snapshot_freshness(region)
+        result["steps"].append(snap_step)
+        if snap_step.get("warning"):
+            result.setdefault("warnings", []).append(snap_step["warning"])
 
     # Step 2: 定位 GEM runner
     gem_root = resolve_skill_dir("brain-make-some-gem")

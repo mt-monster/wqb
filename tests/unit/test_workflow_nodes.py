@@ -425,7 +425,9 @@ def test_campaign_s2_assemble_priors_routes_clean_to_campaign_py(monkeypatch, fa
     cmd = calls[-1]["cmd"]
     assert os.path.basename(_script_of(cmd)) == "campaign.py"
     tail = cmd[cmd.index("--campaign-dir") + 2:]
-    assert tail == ["assemble-priors"], cmd
+    # 2026-09-27 P0-2：assemble-priors 必须带 --snapshot-ledger（GEM 只读 DB 快照），
+    # 且不拼 assemble_priors.py 不认的 --dataset/--wave。
+    assert tail == ["assemble-priors", "--snapshot-ledger"], cmd
 
 
 def test_validate_argv_rejects_stray_positional_for_flag_only_script(tmp_path):

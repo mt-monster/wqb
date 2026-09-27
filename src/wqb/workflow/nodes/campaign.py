@@ -281,6 +281,19 @@ def run(
                     extra_args.pop(ttl_idx)  # 移除参数名
                 except (ValueError, IndexError):
                     pass
+    elif stage == "S2" and subcommand == "assemble-priors":
+        # 2026-09-27（P0-2 真实环境演练补充）：assemble-priors 只把 DB 里的 KB 组装成
+        # priors 文件 + 快照，零配额、不开波，不走下面的三道开波闸与 S0/S1 产物预检。
+        # 此前它们同样拦截 assemble-priors：KOR 真实历史（最近 3 个 closed 波全 FAIL）
+        # 命中停止规则 B 后，S6 回写的新 dead_ends 再也进不了快照，GEM 的快照过期告警
+        # 指向的恰是这条被拦的命令；而 gem SKILL 的 stage="S6" 写法不经闸，两条路径不一致。
+        # diversity-extract 会生成候选（同 build_wave），仍走闸。
+        result["steps"].append({
+            "step": "region_gates",
+            "success": True,
+            "skipped": True,
+            "reason": "assemble-priors 为本地 KB→priors 组装（零配额、不开波），不受开波闸约束",
+        })
     elif stage == "S2":
         # 信号天花板闸：纯 DB 判定、零配额，故 dry-run 也走 —— 干跑就该回答
         # "这个区还值不值得继续开波"。
@@ -444,10 +457,19 @@ def run(
     # subcommand 路由：assemble-priors / diversity-extract（走 campaign.py 子命令）
     if subcommand in _SUBCOMMAND_ROUTED:
         cmd.append(subcommand)
-        if dataset:
-            cmd.extend(["--dataset", dataset])
-        if wave:
-            cmd.extend(["--wave", wave])
+        if subcommand == "assemble-priors":
+            # 2026-09-27 P0-2：GEM 默认 `--priors-from-db`，只读 DB 快照 priors_snapshot_<region>；
+            # 快照只有 `--snapshot-ledger` 才会写。此前本节点不带它 —— 按 SOP 步 4 调用只重写
+            # priors 文件，S6 回写的 region_kb 进不了下一波 GEM（新区快照缺失则 GEM fail-closed）。
+            # priors 是区域级产物：assemble_priors.py 不认 --dataset/--wave。拼上后干跑照样放行
+            # （validate_argv 只校验到 campaign.py 分发层），实跑才 exit 2 "unrecognized arguments"。
+            if "--snapshot-ledger" not in (extra_args or []):
+                cmd.append("--snapshot-ledger")
+        else:
+            if dataset:
+                cmd.extend(["--dataset", dataset])
+            if wave:
+                cmd.extend(["--wave", wave])
 
     # 添加额外参数
     if extra_args:

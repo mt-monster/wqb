@@ -26,7 +26,7 @@ import re
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from mcp.server.fastmcp import FastMCP
 
@@ -38,6 +38,7 @@ if str(SRC) not in sys.path:
 DB_PATH = ROOT / "data" / "wqb.db"
 
 from wqb.store import CampaignStore  # noqa: E402
+from wqb import wave_results_contract as _wave_contract  # noqa: E402
 
 
 def _store() -> CampaignStore:
@@ -79,16 +80,17 @@ def _parse_json_fields(row, fields):
 # ---------------- wave_results 查询 ----------------
 
 @mcp.tool()
-def get_wave_result(region: str, wave_number: int) -> Dict[str, Any]:
+def get_wave_result(region: str, wave_number: Union[int, str]) -> Dict[str, Any]:
     """获取单个 wave 结果台账。
 
     Args:
         region: 区域（MEA/USA/KOR/ASI/EUR/GBR/HKG/IND/GLB/DEU）
-        wave_number: 波次编号
+        wave_number: 波次编号（整数或字符串，如 97 / "s2_analyst44_d1"；表内按字符串存）
 
     Returns:
         wave 结果 dict（含 key_findings/candidates/batches/verdict/full_payload）
     """
+    wave_number = str(wave_number).strip()
     conn = _conn()
     c = conn.cursor()
     c.execute(
@@ -791,112 +793,62 @@ def upsert_ledger_key(region: str, key: str, value: Any) -> Dict[str, Any]:
     return {"action": action, "region": region, "key": key}
 
 
-_WAVE_VERDICT_OK = ("PASS", "FAIL", "PARTIAL")
-
-
-def _normalize_wave_verdict(verdict):
-    """自由文本 verdict → 枚举（与 tools/migrate_wave_verdict_enum.classify 同规则）。返回 (枚举|None, 规则)。"""
-    v = str(verdict or "").strip()
-    if not v:
-        return None, "空"
-    up = v.upper()
-    if up in _WAVE_VERDICT_OK:
-        return up, "枚举"
-    if up.startswith("GREEN") or up.startswith("PASS"):
-        return "PASS", "前缀"
-    if up.startswith(("YELLOW", "PARTIAL", "CLOSED_ACCEPTED")):
-        return "PARTIAL", "前缀"
-    if up.startswith(("RED", "FAIL", "CLOSED_DEAD_END", "GATE_BLOCKED", "PROBE_WEAK")):
-        return "FAIL", "前缀"
-    m = re.search(r"(\d+)\s*/\s*(\d+)\s*过硬闸", v)
-    if m:
-        return ("PASS" if int(m.group(1)) > 0 else "FAIL"), "过硬闸计数"
-    if "全灭" in v or "GATE_FAIL" in up:
-        return "FAIL", "关键词"
-    return None, "无匹配"
+# verdict 枚举与归一规则的唯一实现在 src/wqb/wave_results_contract.py（2026-09-27 起），
+# 这里保留旧名供既有调用与测试引用。
+_WAVE_VERDICT_OK = _wave_contract.VERDICT_OK
+_normalize_wave_verdict = _wave_contract.normalize_verdict
 
 
 @mcp.tool()
 def upsert_wave_result(
     region: str,
-    wave_number: int,
+    wave_number: Union[int, str],
     focus: Optional[str] = None,
     context: Optional[str] = None,
     key_findings: Optional[Any] = None,
     candidates: Optional[Any] = None,
     batches: Optional[Any] = None,
     verdict: Optional[str] = None,
-    status: str = "closed",
+    status: Optional[str] = None,
     source_file: Optional[str] = None,
     full_payload: Optional[Any] = None,
 ) -> Dict[str, Any]:
-    """同步 wave 结果到 wave_results 表（幂等 upsert，按 region+wave_number）。
+    """同步 wave 结果到 wave_results 表（按 region+wave_number 合并式 upsert）。
 
-    key_findings/candidates/batches/full_payload 传 JSON 可序列化对象，自动序列化。
+    合并语义（2026-09-27）：行已存在时只覆盖本次传入的字段，没传的字段保持原值——
+    只补写 key_findings 不会再把已有 verdict 清空（此前会，停止规则 B 因此失效）。
+    key_findings/candidates/batches/full_payload 一旦传入即整列替换，传 JSON 可序列化对象。
 
     Args:
         region: 区域
-        wave_number: 波次编号
+        wave_number: 波次编号（整数或字符串，如 97 / "s2_analyst44_d1"）
         focus: 本波焦点
         context: 背景上下文
-        key_findings: 关键发现 list
+        key_findings: 关键发现 list（整列替换；要追加请把原有条目一并传入）
         candidates: 候选 list
         batches: 批次 list
-        verdict: 结论
-        status: 状态（open/closed，默认 closed）
+        verdict: 结论 PASS/FAIL/PARTIAL（可辨认的前缀/计数形态自动归一，原文进 key_findings 首条）
+        status: open/closed。缺省：新行 closed；已有行写了 verdict 则 closed，否则保持原状态
         source_file: 源文件路径
         full_payload: 完整 payload dict
 
     Returns:
-        {"action": "inserted"|"updated", "region": ..., "wave_number": ...}
+        {"action": "inserted"|"updated"|"noop", "region", "wave_number", "verdict", "status",
+         "updated_fields"}；status=closed 却没有 verdict、或 verdict 无法辨认时返回 {"error": ...} 且不写库
     """
-    # 2026-09-15 ⑦：verdict 强制三态枚举。此前本入口不校验，Agent 写入了 ~40 行
-    # "PASS_READY_x2：…" / "CLOSED_DEAD_END_DATASET：…" 式自由文本，`WHERE verdict='FAIL'`
-    # 类机械判定（连续 FAIL 停止规则等）对它们全部失明。前缀可辨的归一到枚举、原文
-    # 搬进 key_findings 首条；无法辨认的直接拒绝（与 _lib/wave_results.upsert 同契约）。
-    if verdict is not None:
-        norm, note = _normalize_wave_verdict(verdict)
-        if norm is None:
-            return {"error": f"verdict 必须是 PASS/FAIL/PARTIAL（或带该前缀），收到 {verdict!r}；"
-                             f"描述性结论请放 key_findings", "region": region, "wave_number": wave_number}
-        if norm != str(verdict).strip():
-            kf_list = list(key_findings) if isinstance(key_findings, list) else (
-                [key_findings] if key_findings else [])
-            kf_list.insert(0, f"原 verdict（写入时归一）: {str(verdict).strip()}")
-            key_findings = kf_list
-        verdict = norm
     conn = _conn()
-    c = conn.cursor()
-    kf = json.dumps(key_findings, ensure_ascii=False) if key_findings is not None else None
-    cand = json.dumps(candidates, ensure_ascii=False) if candidates is not None else None
-    bat = json.dumps(batches, ensure_ascii=False) if batches is not None else None
-    fp = json.dumps(full_payload, ensure_ascii=False) if full_payload is not None else None
-    c.execute(
-        "SELECT id FROM wave_results WHERE region=? AND wave_number=?",
-        (region, wave_number),
-    )
-    row = c.fetchone()
-    if row:
-        c.execute(
-            """UPDATE wave_results SET focus=?, context=?, key_findings=?, candidates=?,
-               batches=?, verdict=?, status=?, source_file=?, full_payload=?, updated_at=?
-               WHERE region=? AND wave_number=?""",
-            (focus, context, kf, cand, bat, verdict, status, source_file, fp, _now(), region, wave_number),
+    try:
+        result = _wave_contract.upsert_wave_result(
+            conn, region, wave_number, _now(),
+            focus=focus, context=context, key_findings=key_findings,
+            candidates=candidates, batches=batches, verdict=verdict, status=status,
+            source_file=source_file, full_payload=full_payload,
         )
-        action = "updated"
-    else:
-        c.execute(
-            """INSERT INTO wave_results
-               (region, wave_number, focus, context, key_findings, candidates, batches,
-                verdict, status, source_file, archived, created_at, updated_at, full_payload)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (region, wave_number, focus, context, kf, cand, bat, verdict, status,
-             source_file, 0, _now(), _now(), fp),
-        )
-        action = "inserted"
-    conn.commit()
-    conn.close()
-    return {"action": action, "region": region, "wave_number": wave_number}
+        if "error" not in result:
+            conn.commit()
+        return result
+    finally:
+        conn.close()
 
 
 @mcp.tool()
