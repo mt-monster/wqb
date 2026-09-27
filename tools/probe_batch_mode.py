@@ -33,16 +33,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from mcp_batch_writer import DirectDBWriter  # noqa: E402
 
-# toolkit scripts 目录解析（与 wave_gate.py 同一模式）
-_TOOLKIT_CANDIDATES = [
-    os.environ.get("WQ_TOOLKIT_DIR"),
-    os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills",
-                 "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".cursor", "skills",
-                 "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".workbuddy", "skills",
-                 "wq-brain-campaign-toolkit", "scripts"),
-]
+# toolkit scripts 目录解析：tools/skill_paths（与 wave_gate / workflow 节点同一顺序，2026-09-27 R12）
+from skill_paths import skill_script_dirs  # noqa: E402
+
+_TOOLKIT_CANDIDATES = skill_script_dirs("wq-brain-campaign-toolkit", "WQ_TOOLKIT_DIR")
 
 
 def _find_toolkit() -> str:
@@ -71,8 +65,8 @@ def _wqb_store():
     if src not in sys.path:
         sys.path.insert(0, src)
     from wqb.store import CampaignStore
-    db_path = os.path.join(repo_root, "data", "wqb.db")
-    return CampaignStore(db_path)
+    # 不传路径 = store.default_db_path()：WQB_DB_PATH 优先，否则 <repo>/data/wqb.db（R19 同口径）
+    return CampaignStore()
 
 
 class ProbeBatchExecutor:

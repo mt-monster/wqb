@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Set
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -345,42 +345,75 @@ def is_news_dataset(name: str, category: Optional[str] = None) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# WebDataScope gate accounting
+# WebDataScope gate accounting（RA / PPA 资格门失败计数）—— 唯一实现
 # ---------------------------------------------------------------------------
+# 口径 = WebDataScope-0.10.20 src/scripts/background.js::getAlphaCheckStates（平台插件）：
+#   * 一项 check 计入失败 ⇔ result 既不是 PASS 也不是 PENDING（WARNING / ERROR 都算）；
+#   * RA 计下列 18 项（IS_LADDER_SHARPE 对 ATOM 豁免但仍计；.WITH_RATIO 变体 2026-09-08 补入——
+#     平台同样以 FAIL 拦 REGULAR 提交，漏计时 23 条"零硬闸失败"候选里误放 3 条）；
+#   * PPA 计下列 7 项，外加 LOW_SHARPE 的 value < 1。
+#
+# 2026-09-27 R3（审计 N3）：此前本模块另有一份口径相反的分叉实现——8 项、只数 FAIL、
+# 含平台不存在的 HIGH_DRAWDOWN / LOW_SELFCORR / LOW_PNL，同一组 checks 生产口径
+# failed_ra=3、这里给 0；而 AGENTS.md 把本模块定为唯一事实源，照规范引用就会踩中。
+# 现 world-quant-brain-mcp/mcp_core.py（`_slim_checks`）与 tools/build_gate_prior_from_inventory.py
+# 都引用这里；mcp_core 另留一份 Docker 镜像（只打包 MCP 目录、没有 src/）用的冻结副本，
+# 与本段的一致性由 tests/unit/test_r3_failed_count_single_source.py 断言。
 
-RA_CHECK_NAMES: List[str] = [
-    "LOW_FITNESS",
-    "LOW_SHARPE",
-    "HIGH_TURNOVER",
-    "LOW_TURNOVER",
-    "CONCENTRATED_WEIGHT",
-    "HIGH_DRAWDOWN",
-    "LOW_SELFCORR",
-    "LOW_PNL",
-]
+#: 2 年 sharpe 读数所在的两个 check（值即 two_year_sharpe）
+RA_2Y_NAMES = ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
 
-PPA_CHECK_NAMES: List[str] = ["LOW_SHARPE", "LOW_FITNESS"]
+RA_CHECK_NAMES: FrozenSet[str] = frozenset([
+    "HIGH_TURNOVER", "LOW_TURNOVER", "LOW_FITNESS", "LOW_RETURNS", "LOW_SHARPE",
+    "LOW_GLB_AMER_SHARPE", "LOW_GLB_APAC_SHARPE", "LOW_GLB_EMEA_SHARPE", "LOW_ASI_JPN_SHARPE",
+    "IS_LADDER_SHARPE",
+    "LOW_2Y_SHARPE", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE", "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+    "LOW_ROBUST_UNIVERSE_RETURNS", "CONCENTRATED_WEIGHT",
+    "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO",
+])
+
+PPA_CHECK_NAMES: FrozenSet[str] = frozenset([
+    "LOW_TURNOVER", "HIGH_TURNOVER", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
+    "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO", "LOW_ROBUST_UNIVERSE_RETURNS",
+    "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+])
 
 
-def compute_webdata_failed_counts(checks: List[dict]) -> dict:
-    """Classify WebDataScope quality checks into RA vs PPA failures.
+def check_counts_as_failed(result: Any) -> bool:
+    """WebDataScope 口径：result 既非 PASS 也非 PENDING 即计入失败（WARNING / ERROR / 缺失都算）。"""
+    return result != "PASS" and result != "PENDING"
 
-    Returns ``{"failed_ra": int, "failed_ppa": int, "details": [...]}``.
-    A LOW_SHARPE failure with value < 1 counts as a PPA failure.
+
+def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, Any]:
+    """按 WebDataScope 口径统计 alpha ``is.checks`` 的 RA / PPA 资格门失败项。
+
+    返回 ``{"failed_ra", "failed_ppa", "ra_failed_names", "ppa_failed_names", "details"}``：
+    两个计数、按 checks 原顺序的失败项名，以及计入任一失败的 check 原文（details）。
+    非 dict 的条目跳过。
     """
-    failed_ra = 0
-    failed_ppa = 0
+    failed_ra = failed_ppa = 0
+    ra_names: List[str] = []
+    ppa_names: List[str] = []
     details: List[dict] = []
-    for check in checks:
-        name = check.get("name", "")
-        if check.get("result") != "FAIL":
+    for check in checks or []:
+        if not isinstance(check, dict):
             continue
-        details.append({k: v for k, v in check.items()})
-        if name in RA_CHECK_NAMES:
+        name, res, val = check.get("name"), check.get("result"), check.get("value")
+        bad = check_counts_as_failed(res)
+        ra_hit = name in RA_CHECK_NAMES and bad
+        ppa_hit = (name in PPA_CHECK_NAMES and bad) or (
+            name == "LOW_SHARPE" and isinstance(val, (int, float)) and val < 1)
+        if ra_hit:
             failed_ra += 1
-        if name == "LOW_SHARPE" and check.get("value", 1.0) < 1:
+            ra_names.append(name)
+        if ppa_hit:
             failed_ppa += 1
-    return {"failed_ra": failed_ra, "failed_ppa": failed_ppa, "details": details}
+            ppa_names.append(name)
+        if ra_hit or ppa_hit:
+            details.append(dict(check))
+    return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
+            "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details}
 
 
 # ---------------------------------------------------------------------------

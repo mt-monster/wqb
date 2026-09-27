@@ -16,11 +16,13 @@ import subprocess
 import threading
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..mcp_check import require_mcp_tools
 from .._common import (
     REPO_ROOT,
+    connect_db_readonly,
+    local_ts,
     resolve_campaign_dir,
     resolve_db_path,
     resolve_toolkit_dir,
@@ -295,27 +297,13 @@ def run(
             "reason": "assemble-priors 为本地 KB→priors 组装（零配额、不开波），不受开波闸约束",
         })
     elif stage == "S2":
-        # 信号天花板闸：纯 DB 判定、零配额，故 dry-run 也走 —— 干跑就该回答
-        # "这个区还值不值得继续开波"。
-        floor_result = _run_signal_floor_gate(region, dataset, campaign_dir)
-        result["steps"].append(floor_result)
-        if not floor_result.get("success", True):
+        # 三道开波闸（信号天花板 / 停止规则 2026-09-15 ⑦ / 积压 2026-09-15 行动 3）：
+        # 纯 DB 判定、零配额，干跑也走 —— 干跑就该回答"这个区还值不值得继续开波"。
+        gate_steps, gate_error = run_open_wave_gates(region, dataset, campaign_dir)
+        result["steps"].extend(gate_steps)
+        if gate_error:
             result["success"] = False
-            result["error"] = floor_result.get("error")
-            return result
-        # 停止规则（2026-09-15 ⑦）：yield=0@≥100 / 连续 3 波 FAIL，同样零配额、干跑也走
-        stop_result = _run_stop_rules_gate(region, dataset, campaign_dir)
-        result["steps"].append(stop_result)
-        if not stop_result.get("success", True):
-            result["success"] = False
-            result["error"] = stop_result.get("error")
-            return result
-        # 积压闸（2026-09-15 行动 3）：conversion/积压比前置判定，零配额，干跑也走
-        backlog_result = _run_backlog_gate(region, dataset, campaign_dir)
-        result["steps"].append(backlog_result)
-        if not backlog_result.get("success", True):
-            result["success"] = False
-            result["error"] = backlog_result.get("error")
+            result["error"] = gate_error
             return result
 
         # S2 前强制前置条件预检（S0/S1 产物门禁）。
@@ -357,25 +345,12 @@ def run(
                 cmd.extend(["--wave", wave])
             cmd.append("--from-db")
     elif stage == "S3":
-        # 信号天花板闸（同 S2：纯 DB 判定，dry-run 也走）
-        floor_result = _run_signal_floor_gate(region, dataset, campaign_dir)
-        result["steps"].append(floor_result)
-        if not floor_result.get("success", True):
+        # 三道开波闸（同 S2：纯 DB 判定，dry-run 也走）
+        gate_steps, gate_error = run_open_wave_gates(region, dataset, campaign_dir)
+        result["steps"].extend(gate_steps)
+        if gate_error:
             result["success"] = False
-            result["error"] = floor_result.get("error")
-            return result
-        stop_result = _run_stop_rules_gate(region, dataset, campaign_dir)
-        result["steps"].append(stop_result)
-        if not stop_result.get("success", True):
-            result["success"] = False
-            result["error"] = stop_result.get("error")
-            return result
-        # 积压闸（同 S2：conversion/积压比前置判定，零配额，干跑也走）
-        backlog_result = _run_backlog_gate(region, dataset, campaign_dir)
-        result["steps"].append(backlog_result)
-        if not backlog_result.get("success", True):
-            result["success"] = False
-            result["error"] = backlog_result.get("error")
+            result["error"] = gate_error
             return result
 
         # S3 前强制质量闸（特征工程 SOP 阶段6）。
@@ -931,7 +906,7 @@ def _resolve_wave_alpha_ids(region: str, wave: str, dataset: Optional[str]):
     hit = str(wave)
     recent: List[str] = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = connect_db_readonly(db_path)   # 纯读：库不存在时不建空库（dry-run 同走此路）
         try:
             rows = conn.execute(
                 "SELECT DISTINCT alpha_id FROM backtest_results WHERE region=? AND wave=? "
@@ -1028,7 +1003,7 @@ def _run_backlog_gate(
 
     db_path = resolve_db_path()
     try:
-        conn = sqlite3.connect(db_path)
+        conn = connect_db_readonly(db_path)
         try:
             row = conn.execute(
                 "SELECT value FROM ledger_kv WHERE region=? AND key='backlog_gate_override'",
@@ -1158,6 +1133,41 @@ def _normalize_verdict(raw: Any) -> str:
     return "UNKNOWN"
 
 
+def _recent_closed_waves(conn: sqlite3.Connection, region: str, k: int) -> List[Tuple[str, Any]]:
+    """停止规则 B 的窗口：按**波的开始时刻**取最近 k 个 closed 波，返回 [(wave_number, verdict)]（新→旧）。
+
+    开始时刻 = 该波首次入库表达式的时间（`waves.created_at`，一波一行、此后不再改写）；
+    没有表达式的波（探针 / 纯结论行）退到 `wave_results.created_at`。
+
+    2026-09-27 R22（审计 N22）：此前按 `COALESCE(updated_at, created_at)` 排序——给任何旧波补记
+    结论、补写 findings 都会把它顶进"最近 k 个"。KOR 真实复现：按 R20 的建议给旧波 91c 补记 PASS
+    （91c 早于 92–97），窗口变成 [91c PASS, 97, …]，区域停波被解除、下一波放行。
+    `wave_results.created_at` 只作兜底：toolkit `WaveResultsStore.upsert` 是 INSERT OR REPLACE，
+    每写一次就重置它。两种时钟（本地 `T` / UTC 空格）先经 `local_ts` 统一；同一秒内按波号数字部分
+    再按原串倒序。库里没有 waves / regions 表（最小库）时只按 `wave_results.created_at`。
+    """
+    tables = {name for (name,) in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('waves', 'regions')")}
+    if tables == {"waves", "regions"}:
+        sql = ("SELECT wr.wave_number, wr.verdict, wr.created_at, "
+               "(SELECT MIN(w.created_at) FROM waves w JOIN regions r ON r.id = w.region_id "
+               " WHERE r.name = wr.region AND w.wave_number = wr.wave_number) "
+               "FROM wave_results wr WHERE wr.region=? AND wr.status='closed'")
+    else:
+        sql = ("SELECT wave_number, verdict, created_at, NULL "
+               "FROM wave_results WHERE region=? AND status='closed'")
+    rows = conn.execute(sql, (region,)).fetchall()
+
+    def started(row):
+        wave, _verdict, wr_created, wave_created = row
+        m = re.search(r"\d+", str(wave))
+        return (local_ts(wave_created) or local_ts(wr_created),
+                int(m.group()) if m else -1, str(wave))
+
+    rows.sort(key=started, reverse=True)
+    return [(str(r[0]), r[1]) for r in rows[:k]]
+
+
 def _run_stop_rules_gate(
     region: str,
     dataset: Optional[str],
@@ -1176,6 +1186,8 @@ def _run_stop_rules_gate(
     自由文本 `0/N 过硬闸` 归 FAIL，空值归 UNKNOWN。UNKNOWN 既不当作"通过"
     （会 WARN 提示补写），也不据此拦截（避免因台账缺写误停区域）。
     可选更严口径 `strict_no_pass=True`：最近 K 波"无任何 PASS"即停。
+    2026-09-27 R22：规则 B 的"最近 K 波"按波的开始时刻取，补记旧波不再改变窗口
+    （见 `_recent_closed_waves`）；证据里的 `recent_closed_waves` 列出窗口内的波号。
     """
     result: Dict[str, Any] = {"step": "stop_rules_gate", "success": True}
     # 测试/沙箱隔离口：WQB_DISABLE_STOP_RULES_GATE=1 时跳过（与 backlog 闸的
@@ -1198,7 +1210,7 @@ def _run_stop_rules_gate(
 
     db_path = resolve_db_path()
     try:
-        conn = sqlite3.connect(db_path)
+        conn = connect_db_readonly(db_path)
         try:
             # 覆盖键
             row = conn.execute(
@@ -1221,11 +1233,11 @@ def _run_stop_rules_gate(
                 (float(cfg["sharpe_min"]), float(cfg["fitness_min"]), region),
             ).fetchone()
             passed = int(passed or 0)
-            # B. 最近 K 个 closed 波的 verdict（原样取出，归一化统一在下方做）
+            # B. 最近 K 个 closed 波的 verdict（按波的开始时刻取窗口，见 _recent_closed_waves；
+            # verdict 原样取出，归一化统一在下方做）
             k = int(cfg["consecutive_fail_waves"])
-            raw_verdicts = [v for (v,) in conn.execute(
-                "SELECT verdict FROM wave_results WHERE region=? AND status='closed' "
-                "ORDER BY datetime(COALESCE(updated_at, created_at)) DESC LIMIT ?", (region, k))]
+            window = _recent_closed_waves(conn, region, k)
+            raw_verdicts = [v for _w, v in window]
         finally:
             conn.close()
     except Exception as e:
@@ -1237,6 +1249,7 @@ def _run_stop_rules_gate(
     result["evidence"] = {
         "backtested": int(bt or 0),
         "passed": passed,
+        "recent_closed_waves": [w for w, _v in window],
         "recent_closed_verdicts": verdicts,
         "recent_closed_verdicts_raw": [None if v is None else str(v) for v in raw_verdicts],
     }
@@ -1362,7 +1375,7 @@ def _run_signal_floor_gate(
     rows: List[Dict[str, Any]] = []
     recent_waves: List[str] = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = connect_db_readonly(db_path)
         try:
             where = "region=? AND sharpe IS NOT NULL"
             params: List[Any] = [region]
@@ -1427,6 +1440,26 @@ def _run_signal_floor_gate(
             f"并在台账记录理由。"
         )
     return result
+
+
+def run_open_wave_gates(
+    region: str,
+    dataset: Optional[str],
+    campaign_dir: str,
+) -> Tuple[List[Dict[str, Any]], Optional[str]]:
+    """三道开波闸：信号天花板 → 停止规则 → 积压，任一拦截即停。返回 (各闸结果, 拦截原因 | None)。
+
+    全部是只读 DB 判定、零配额，干跑也走——干跑就该回答"这个区还值不值得开波 / 发批"。
+    campaign 节点的 S2 / S3 与 batch_track 节点（2026-09-27 R5）共用本函数；toolkit 的
+    `_lib/region_gates` 逐个调用同样三个闸函数。
+    """
+    steps: List[Dict[str, Any]] = []
+    for gate in (_run_signal_floor_gate, _run_stop_rules_gate, _run_backlog_gate):
+        res = gate(region, dataset, campaign_dir)
+        steps.append(res)
+        if not res.get("success", True):
+            return steps, res.get("error") or f"{res.get('step', gate.__name__)} 拦截"
+    return steps, None
 
 
 def _ensure_campaign_config(campaign_dir: str, region: str, result: Dict[str, Any]) -> None:

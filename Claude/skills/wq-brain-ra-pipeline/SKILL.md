@@ -387,6 +387,8 @@ S3 入口也可走 [brain-sim-alphas-in-batch-and-track](../brain-sim-alphas-in-
 # （2026-09-06：曾往命令里拼 --concurrency 7，而 pipeline.py 根本没这个参数，
 #  argparse exit=2 + detached 不看退出码 = S3 每次"启动成功"却从未真跑过。
 #  concurrency 形参现仅作计划元数据，传非 7 会收到 warning。）
+# 2026-09-27 起与 workflow_campaign(stage="S3") 一样先过三道开波闸（信号天花板 / 停止规则 / 积压，
+#  只读 DB、干跑也走）；被拦时 success=false、error 给出原因与覆盖方法（台账 stop_rules_override 等）。
 mcp__wq-brain-http__workflow_batch_track  region=$REGION  wave=$W  dataset=$DS
 
 # 后台任务状态（batch_track 异步返回 task_id 后用它跟踪，不要 shell 翻日志）
@@ -440,7 +442,8 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  
 `review_wave.py --alphas … --tag <wave> --write-ledger`；解析不到即 FAIL（干跑也 FAIL）并列出该区最近波次。
 （2026-09-15 ④ 修复：此前只传 `--tag`，实跑必 `need --multisim or --alphas` rc=2 而干跑报 success。）
 评审里 `risk_neutralized_sharpe ≤ rn_sharpe_min`（默认 0）现直接判 `RN_EXPOSURE` 墙、不进候选（`walls()`/`passes()` 已接线，
-阈值在 `thresholds.review.rn_sharpe_min`）。
+阈值在 `thresholds.review.rn_sharpe_min`）；2026-09-27 起也不进 near / salvage 池、不作组合腿
+（此前照样被 Mode A/B 取来调参，还会把全灭波记成 PARTIAL）。
 
 阈值不达标见 [brain-how-to-pass-alpha-test](../brain-how-to-pass-alpha-test/SKILL.md)。
 用 [wq-brain-alpha-optimization-v1](../wq-brain-alpha-optimization-v1/SKILL.md)（Mode B 70% / Mode A 30%）。
@@ -569,7 +572,9 @@ decay 仍以 `tools/build_gate_prior_from_inventory.py --write-priors` 的 `gate
 
 被拒时返回里的 `suggestion` 是按此表对原文的**建议**（带依据与置信度，low 置信通常是"无提交"
 ——有 near 候选就该是 PARTIAL），不会自动采用：核对后显式传 `verdict=<枚举>`，原文放进 `key_findings`。
-补记旧波同理——注意补记会刷新该波 `updated_at`，停止规则 B 的"最近 3 个 closed 波"会随之变化。
+补记旧波同理。停止规则 B 的"最近 3 个 closed 波"按**波的开始时刻**（该波首次入库表达式的时间）取，
+补记结论 / 补写 findings 不会把旧波顶进窗口（2026-09-27 起；此前按 `updated_at`，补记旧波 PASS 会解除区域停波）。
+闸结果的 `evidence.recent_closed_waves` 列出窗口内的波号。
 
 ```
 mcp__wqb-db__upsert_wave_result  region=$REGION  wave=$W  verdict=<PASS|FAIL|PARTIAL>  ...
@@ -657,6 +662,7 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 ## 快捷入口
 
 **发批 / 回测批次**（用户已给表达式列表）：直接走步 5，跳过 S0–S2。未给列表则从步 2 走完整链。
+快捷入口同样要过三道开波闸：步 6 的 `workflow_batch_track` 自己会跑（2026-09-27 起），区域命中停止规则时不会发批。
 
 **一键战役 / auto campaign**：步 1 matrix 后 步 2 体检（不可跳过）则配置包写回 `settings.json` 后 步 3。matrix 失败即停。默认先干跑看 gate 通过率，确认后再提回测。用户说「自动提交回测」可跳过二次确认；**提交 alpha 仍要步 8 用户确认**。
 

@@ -3,7 +3,7 @@
 持有: FastMCP 实例 (mcp) + 响应瘦身辅助 (_slim_*) + 健康检查路由 + save_config。
 工具模块 (tools_*.py) 统一 `from mcp_core import mcp, brain_client, ...`。
 """
-import json, re, os, logging
+import json, re, os, sys, logging
 from datetime import datetime, timezone
 from typing import Dict, Any
 
@@ -72,31 +72,61 @@ async def health_check(context: Context):
 # {"error": ...} payload it returns the input unchanged.
 # ============================================================================
 
-_RA_2Y_NAMES = ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
+# ── WebDataScope RA / PPA 资格门失败计数 ──────────────────────────────────────────
+# 唯一实现在 src/wqb/config.py（2026-09-27 R3：此前这里、tools/build_gate_prior_from_inventory.py
+# 与 wqb.config 各有一份，wqb.config 那份口径还是反的）。仓库布局下直接引用它；Docker 镜像
+# 只打包本目录、没有 src/，回落到下面的冻结副本——副本与 wqb.config 的一致性由根
+# tests/unit/test_r3_failed_count_single_source.py 逐项断言，改口径只改 wqb.config 再同步副本。
+_WQB_SRC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+if os.path.isdir(os.path.join(_WQB_SRC, "wqb")) and _WQB_SRC not in sys.path:
+    sys.path.insert(0, _WQB_SRC)
+try:
+    from wqb.config import (RA_2Y_NAMES as _RA_2Y_NAMES, RA_CHECK_NAMES as _RA_CHECK_NAMES,
+                            PPA_CHECK_NAMES as _PPA_CHECK_NAMES, check_counts_as_failed as _ra_bad,
+                            compute_webdata_failed_counts as _failed_counts)
+    FAILED_COUNT_SOURCE = "wqb.config"
+except ImportError:  # Docker 镜像：冻结副本（WebDataScope-0.10.20 background.js::getAlphaCheckStates）
+    FAILED_COUNT_SOURCE = "mcp_core frozen copy"
+    _RA_2Y_NAMES = ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
+    _RA_CHECK_NAMES = frozenset([
+        "HIGH_TURNOVER", "LOW_TURNOVER", "LOW_FITNESS", "LOW_RETURNS", "LOW_SHARPE",
+        "LOW_GLB_AMER_SHARPE", "LOW_GLB_APAC_SHARPE", "LOW_GLB_EMEA_SHARPE", "LOW_ASI_JPN_SHARPE",
+        "IS_LADDER_SHARPE",
+        "LOW_2Y_SHARPE", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
+        "LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE", "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+        "LOW_ROBUST_UNIVERSE_RETURNS", "CONCENTRATED_WEIGHT",
+        "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO",
+    ])
+    _PPA_CHECK_NAMES = frozenset([
+        "LOW_TURNOVER", "HIGH_TURNOVER", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
+        "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO", "LOW_ROBUST_UNIVERSE_RETURNS",
+        "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
+    ])
 
-# WebDataScope-0.10.20/src/scripts/background.js :: getAlphaCheckStates — canonical RA / PPA check names.
-_RA_CHECK_NAMES = frozenset([
-    "HIGH_TURNOVER", "LOW_TURNOVER", "LOW_FITNESS", "LOW_RETURNS", "LOW_SHARPE",
-    "LOW_GLB_AMER_SHARPE", "LOW_GLB_APAC_SHARPE", "LOW_GLB_EMEA_SHARPE", "LOW_ASI_JPN_SHARPE",
-    "IS_LADDER_SHARPE",  # ATOM-exempt but still counted in the RA gate
-    "LOW_2Y_SHARPE", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
-    "LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE", "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
-    "LOW_ROBUST_UNIVERSE_RETURNS", "CONCENTRATED_WEIGHT",
-    # 2026-09-08：补 .WITH_RATIO 变体。此前它只列在 _PPA_CHECK_NAMES 里，
-    # 但平台同样以 FAIL 拦截 REGULAR 提交 —— 实测 23 条本地判「零硬闸失败」的候选中
-    # 误放 3 条（ASI YPvLNjnW value=2.43 limit=2.44；CHN 1Ypvp1O6 value=0.52 limit=0.89）。
-    "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO",
-])
-_PPA_CHECK_NAMES = frozenset([
-    "LOW_TURNOVER", "HIGH_TURNOVER", "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
-    "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO", "LOW_ROBUST_UNIVERSE_RETURNS",
-    "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
-])
+    def _ra_bad(result):
+        return result != "PASS" and result != "PENDING"
 
-
-def _ra_bad(result):
-    # WebDataScope rule: a check counts as failing the RA/PPA gate iff result != "PASS" and result != "PENDING"
-    return result != "PASS" and result != "PENDING"
+    def _failed_counts(checks):
+        failed_ra = failed_ppa = 0
+        ra_names, ppa_names, details = [], [], []
+        for check in checks or []:
+            if not isinstance(check, dict):
+                continue
+            name, res, val = check.get("name"), check.get("result"), check.get("value")
+            bad = _ra_bad(res)
+            ra_hit = name in _RA_CHECK_NAMES and bad
+            ppa_hit = (name in _PPA_CHECK_NAMES and bad) or (
+                name == "LOW_SHARPE" and isinstance(val, (int, float)) and val < 1)
+            if ra_hit:
+                failed_ra += 1
+                ra_names.append(name)
+            if ppa_hit:
+                failed_ppa += 1
+                ppa_names.append(name)
+            if ra_hit or ppa_hit:
+                details.append(dict(check))
+        return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
+                "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details}
 
 
 def _truncate(s, n=160):
@@ -129,10 +159,6 @@ def _slim_checks(checks):
     extracted = {}
     rename = {"LOW_ROBUST_UNIVERSE_SHARPE": "robust_universe_sharpe",
               "LOW_SUB_UNIVERSE_SHARPE": "sub_universe_sharpe"}
-    failed_ra = 0
-    failed_ppa = 0
-    ra_failed_names = []
-    ppa_failed_names = []
     for c in checks or []:
         if not isinstance(c, dict):
             continue
@@ -149,13 +175,6 @@ def _slim_checks(checks):
             extracted["two_year_sharpe"] = val
             if c.get("year") is not None:
                 extracted["two_year_ladder_window"] = c.get("year")
-        # --- RA / PPA failure counting (verbatim port of background.js getAlphaCheckStates) ---
-        if name in _RA_CHECK_NAMES and _ra_bad(res):
-            failed_ra += 1
-            ra_failed_names.append(name)
-        if (name in _PPA_CHECK_NAMES and _ra_bad(res)) or (name == "LOW_SHARPE" and isinstance(val, (int, float)) and val < 1):
-            failed_ppa += 1
-            ppa_failed_names.append(name)
         # --- buckets ---
         if res == "FAIL":
             out["fail"].append({k: c.get(k) for k in ("name", "value", "limit", "year", "message", "date")
@@ -169,6 +188,10 @@ def _slim_checks(checks):
             out["pass"].append(name)
         else:
             out["pass"].append(f"{name}:{res}")
+    # RA / PPA 失败计数：WebDataScope getAlphaCheckStates 口径，唯一实现见 wqb.config（R3）
+    fc = _failed_counts(checks)
+    failed_ra, failed_ppa = fc["failed_ra"], fc["failed_ppa"]
+    ra_failed_names, ppa_failed_names = fc["ra_failed_names"], fc["ppa_failed_names"]
     ra = {"failed_ra_count": failed_ra, "failed_ppa_count": failed_ppa,
           "ra_failed": failed_ra > 0, "ppa_failed": failed_ppa > 0}
     if ra_failed_names:

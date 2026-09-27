@@ -110,6 +110,32 @@ def is_near(r, t_near):
     return not structurally_dead(r, t_near)
 
 
+def near_block_wall(r, t, t_near):
+    """near / salvage 池的排除判据：返回应补上的墙名，None 表示可以入池。
+
+    - ROBUST_STRUCTURAL：robust/limit 过低的结构性死信号（2026-09-19）；
+    - RN_EXPOSURE：风险中性化后 sharpe ≤ rn_sharpe_min，信号就是风险因子暴露本身、SOP 判
+      "禁止调参"。2026-09-27 R4（审计 N4）：此前它只拦了 passes()，没拦 near / salvage，
+      照样被 Mode A/B 取来调参；还会把本该全灭的波记成 PARTIAL，停止规则 B 不触发。
+    review_wave 与 pipeline 的 review 阶段共用本判据。
+    """
+    if structurally_dead(r, t_near):
+        return "ROBUST_STRUCTURAL"
+    if rn_exposure(r, t):
+        return "RN_EXPOSURE"
+    return None
+
+
+def report_near_exclusions(excluded, t, t_near):
+    """打印被 near_block_wall 挡在 near 池外的行数（excluded: {墙名: 条数}）。"""
+    if excluded.get("ROBUST_STRUCTURAL"):
+        print(f"[near] {excluded['ROBUST_STRUCTURAL']} 条 sharpe 过线但 robust/limit < "
+              f"{t_near.get('robust_min_ratio', 0.5)}（结构性死信号），不入 near 池")
+    if excluded.get("RN_EXPOSURE"):
+        print(f"[near] {excluded['RN_EXPOSURE']} 条 sharpe 过线但风险中性化 sharpe ≤ "
+              f"{t.get('rn_sharpe_min', 0.0) or 0.0}（RN_EXPOSURE：就是风险暴露本身），不入 near / salvage 池")
+
+
 def passes(r, t):
     return (r.get("sharpe") is not None and r["sharpe"] > t["sharpe_min"]
             and (r.get("fitness") or 0) > t["fitness_min"]
@@ -132,6 +158,8 @@ def combo_candidate(r, t):
     if r.get("sharpe") is None:
         return False
     if r["sharpe"] <= t.get("combo_sharpe_min", 1.0):
+        return False
+    if rn_exposure(r, t):  # 就是风险暴露本身，不作组合腿（R4：combo 候选会进 salvage_pool）
         return False
     pc = r.get("prod_corr")
     if pc is not None and pc >= t.get("combo_prod_corr_max", 0.5):
@@ -202,20 +230,20 @@ def main():
         r["walls"] = [] if r in candidates else walls(r, t)
     near = []
     t_near = ctx.thresh("near")
-    n_structural = 0
+    excluded = {}
     for r in rows:
         if r in candidates or r.get("sharpe") is None:
             continue
-        if r["sharpe"] > t_near["sharpe_min"] and structurally_dead(r, t_near):
-            n_structural += 1
-            if "ROBUST_STRUCTURAL" not in r["walls"]:
-                r["walls"].append("ROBUST_STRUCTURAL")
-            continue
+        if r["sharpe"] > t_near["sharpe_min"]:
+            blocked = near_block_wall(r, t, t_near)
+            if blocked:
+                excluded[blocked] = excluded.get(blocked, 0) + 1
+                if blocked not in r["walls"]:
+                    r["walls"].append(blocked)
+                continue
         if is_near(r, t_near):
             near.append(r)
-    if n_structural:
-        print(f"[near] {n_structural} 条 sharpe 过线但 robust/limit < "
-              f"{t_near.get('robust_min_ratio', 0.5)}（结构性死信号），不入 near 池")
+    report_near_exclusions(excluded, t, t_near)
 
     print(f"{'id':10s} {'sh':>6} {'fit':>5} {'2y':>5} {'mg_bp':>7} {'tvr%':>6} {'rn':>5} walls")
     for r in rows:

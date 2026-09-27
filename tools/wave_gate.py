@@ -35,21 +35,17 @@ import re
 import subprocess
 import sys
 
-# ---- skill 目录自动解析（与 gate.py 的 WQ_VALIDATOR_DIR 模式对齐）----
-# 权威套为 ~/.qoder-cn/skills（2026-08-23 单源化），~/.cursor/skills 为 Cursor 联接安装位，
-# ~/.workbuddy/skills 仅作跨 Agent 回退。
-_TOOLKIT_CANDIDATES = [
-    os.environ.get("WQ_TOOLKIT_DIR"),
-    os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".cursor", "skills", "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "wq-brain-campaign-toolkit", "scripts"),
-]
-_VALIDATOR_CANDIDATES = [
-    os.environ.get("WQ_VALIDATOR_DIR"),
-    os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "alpha-expression-verifier", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".cursor", "skills", "alpha-expression-verifier", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "alpha-expression-verifier", "scripts"),
-]
+# ---- skill 目录自动解析 ----
+# 2026-09-27 R12：改走 tools/skill_paths（WQ_*_DIR > ~/.claude > ~/.codex > 历史 Agent 位 >
+# 仓库自带 Claude/skills，与 workflow 节点同一顺序）。此前只认 WQ_*_DIR 与 qoder-cn / cursor /
+# workbuddy 三个历史位，CLI 直跑与未设 env 的宿主找不到 verifier / gate.py。
+_TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _TOOLS_DIR not in sys.path:
+    sys.path.insert(0, _TOOLS_DIR)
+from skill_paths import skill_script_dirs  # noqa: E402
+
+_TOOLKIT_CANDIDATES = skill_script_dirs("wq-brain-campaign-toolkit", "WQ_TOOLKIT_DIR")
+_VALIDATOR_CANDIDATES = skill_script_dirs("alpha-expression-verifier", "WQ_VALIDATOR_DIR")
 
 
 def find_script(candidates, name):
@@ -254,11 +250,29 @@ def gate_fail_reasons(payload):
     return reasons
 
 
+def env_error_exit(reason):
+    """门禁环境缺失（verifier / ply / toolkit gate.py）→ ERROR 终态，退出码 2（闸门不过的 FAIL 为 1）。
+
+    2026-09-27 R12（审计 N12）：此前缺 ply 时 verifier 在 import 阶段 sys.exit(1)，缺 verifier /
+    gate.py 时 FileNotFoundError 未捕获（Python 同样 exit 1）——上游把"环境坏了"读成"这批表达式不合格"。
+    """
+    print(f"[done ] ERROR: 门禁环境缺失 —— {reason}。本波未产出门禁结论、也未写 gate_results，"
+          "不是表达式问题；修好环境后重跑。")
+    sys.exit(2)
+
+
 def load_validator():
     """动态加载 alpha-expression-verifier 的 ExpressionValidator（直调，免子进程）。"""
-    dir_ = os.path.dirname(find_script(_VALIDATOR_CANDIDATES, "validator.py"))
+    try:
+        dir_ = os.path.dirname(find_script(_VALIDATOR_CANDIDATES, "validator.py"))
+    except FileNotFoundError as e:
+        env_error_exit(str(e))
     sys.path.insert(0, dir_)
-    mod = importlib.import_module("validator")
+    try:
+        mod = importlib.import_module("validator")
+    except (ImportError, SystemExit) as e:  # verifier 缺 ply 时在 import 阶段 sys.exit(1)
+        env_error_exit(f"alpha-expression-verifier 加载失败（{dir_}；通常是缺 ply："
+                       f"pip install -r world-quant-brain-mcp/requirements.txt）：{e!r}")
     return mod.ExpressionValidator()
 
 
@@ -659,14 +673,17 @@ def main():
         if arity_check is not None:
             errors.extend(arity_check(e))
         else:
-            errors.append("[ARITY_UNKNOWN] op_arity 不可达（设 WQB_ROOT 指向工作区），"
+            errors.append("[ARITY_UNKNOWN] op_arity 不可达（本仓库 src/wqb/expression/op_arity.py 导入失败，见上方 [arity] 行），"
                           "算子元数/命名参数未校验")
         ok = not errors
         syntax.append({"id": cid, "valid": ok, "errors": errors})
         print(f"[syntax] {cid}: {'PASS' if ok else 'FAIL ' + str(errors)[:240]}")
 
     # ---- 2) 5 闸 + 多样性（权威实现：toolkit gate.py，从 DB 或 stdin 表达式）----
-    gate_py = find_script(_TOOLKIT_CANDIDATES, "gate.py")
+    try:
+        gate_py = find_script(_TOOLKIT_CANDIDATES, "gate.py")
+    except FileNotFoundError as e:
+        env_error_exit(str(e))
     cmd = [sys.executable, gate_py, "--campaign-dir", campaign, "--dataset", a.dataset,
            "--wave", str(tag), "--batch-type", a.batch_type]
     if a.datasets:

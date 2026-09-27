@@ -593,6 +593,9 @@ def test_executor_dry_run_passes_dry_run_kwarg(monkeypatch, tmp_path):
     ex = WorkflowExecutor(db_path=str(tmp_path / "x.db"))
     ex._store = _CaptureStore(expressions=["rank(close)", "rank(volume)"])
     monkeypatch.setattr(bt, "resolve_campaign_dir", lambda region: str(tmp_path))
+    # 2026-09-27 R5：batch_track 现在先过三道开波闸（读 WQB_DB_PATH / 默认库）。本用例测的是
+    # dry_run 透传，与区域状态无关——指向不存在的库（只读打开失败即告警放行），不读本机真库。
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "no_such.db"))
     calls = []
     monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
 
@@ -834,10 +837,13 @@ def test_judge_load_mode_b_qualification_region_routing(tmp_path, monkeypatch):
     assert mbq_kor["fitness_min"] == 0.8
 
 
-def test_probe_batch_mode_b_distribution_mode(tmp_path):
+def test_probe_batch_mode_b_distribution_mode(tmp_path, monkeypatch):
     """方案 B：check_mode_b_eligible 分布感知模式（p75 / count>=2）。"""
     from tools.probe_batch_mode import ProbeBatchExecutor
     import json
+
+    # 构造器会打开 CampaignStore 读自适应 Mode B 配置：指到临时库，别碰仓库 data/wqb.db
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "wqb.db"))
 
     # 构造 campaign_dir + thresholds.json（分布模式）
     campaign_dir = tmp_path / "campaign"

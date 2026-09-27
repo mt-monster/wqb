@@ -8,3 +8,5 @@ msgpack>=1.0.0,<2.0.0
 python-dotenv>=1.0.0,<2.0.0
 mcp>=1.25.0,<2.0.0
 email-validator>=2.0.0,<3.0.0
+# alpha-expression-verifier（门禁语法闸，tools/wave_gate.py 与 toolkit gate.py 都依赖）
+ply>=3.11,<4.0

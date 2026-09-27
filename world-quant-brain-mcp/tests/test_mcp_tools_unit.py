@@ -98,6 +98,19 @@ def test_ra_bad_tristate():
     assert _ra_bad("PENDING") is False
 
 
+def test_failed_count_source_is_wqb_config_in_repo_layout():
+    # 2026-09-27 R3：RA/PPA 失败计数唯一实现在 src/wqb/config.py；仓库布局下 mcp_core 直接引用它，
+    # 只打包 MCP 目录的 Docker 镜像（没有 src/）才用冻结副本（副本一致性由根 tests 断言）。
+    import os
+    has_src = os.path.isdir(os.path.join(os.path.dirname(os.path.abspath(mcp_core.__file__)),
+                                         "..", "src", "wqb"))
+    assert mcp_core.FAILED_COUNT_SOURCE == ("wqb.config" if has_src else "mcp_core frozen copy")
+    ra = mcp_core._slim_checks([{"name": "LOW_2Y_SHARPE", "result": "WARNING", "value": 0.9},
+                                {"name": "LOW_SHARPE", "result": "PASS", "value": 0.8}])[3]
+    assert ra["failed_ra_count"] == 1 and ra["ra_failed_checks"] == ["LOW_2Y_SHARPE"]
+    assert ra["failed_ppa_count"] == 1 and ra["ppa_failed_checks"] == ["LOW_SHARPE"]
+
+
 def test_slim_alpha_keeps_core_keys():
     slim = _slim_alpha({"id": "abc", "name": "n", "color": "GREEN", "tags": ["t"],
                         "extra_noise": {"big": "x" * 5000}})

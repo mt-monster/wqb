@@ -24,6 +24,7 @@ from .._common import (
     validate_argv,
     wq_py,
 )
+from .campaign import run_open_wave_gates
 
 logger = logging.getLogger(__name__)
 
@@ -208,6 +209,26 @@ def run(
             "n_slots=min(7, 批数)，不接受外部覆盖（wqb-concurrency §8）"
         )
 
+    # 三道开波闸（2026-09-27 R5，审计 N5）：SOP 步 6 指定的 S3 入口此前一道都不跑——KOR 真实
+    # 环境复现：停止规则 B 命中（最近 3 个 closed 波全 FAIL）时本节点照样发批（命令带 --submit），
+    # 只有 workflow_campaign(stage="S3") 会拦。现与 campaign S2/S3 共用同一组闸：只读 DB、零配额，
+    # 干跑也走。放在命令构建之后：环境类错误（toolkit / argv）先报，被拦时仍带回将要执行的命令。
+    # 用户显式覆盖走台账 stop_rules_override / backlog_gate_override，或 thresholds.json 的开关。
+    gate_steps, gate_error = run_open_wave_gates(region, dataset, campaign_dir)
+    if gate_error:
+        return {
+            "success": False,
+            "error": gate_error,
+            "dry_run": dry_run,
+            "steps": gate_steps,
+            "command": " ".join(cmd),
+            "region": region,
+            "wave": wave,
+            "dataset": dataset,
+            "campaign_dir": campaign_dir,
+            "warnings": warnings,
+        }
+
     # 干跑：命令已构建并通过 argv 校验，到此为止（不 Popen、不写库、不产生任务目录）
     if dry_run:
         return {
@@ -215,6 +236,7 @@ def run(
             "dry_run": True,
             "note": "dry-run：命令已构建，未执行",
             "command": " ".join(cmd),
+            "steps": gate_steps,
             "plan": {
                 "region": region,
                 "wave": wave,
@@ -337,6 +359,7 @@ def run(
             return {
                 "success": True,
                 "detached": True,
+                "steps": gate_steps,
                 "task_id": task_id,
                 "task_dir": task_dir,
                 "pid": proc.pid,
@@ -391,6 +414,7 @@ def run(
 
         output = {
             "success": success,
+            "steps": gate_steps,
             "returncode": result.returncode,
             "stdout": result.stdout[-2000:] if result.stdout else "",  # 截断
             "stderr": result.stderr[-2000:] if result.stderr else "",

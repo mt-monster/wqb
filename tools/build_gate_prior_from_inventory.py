@@ -47,6 +47,12 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "world-quant-brain-mcp"))
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+# RA 资格门口径（check 名集合 + 失败判定）唯一实现在 wqb.config（2026-09-27 R3）；
+# 此前本文件复制了一份 mcp_core 的名单，靠注释"保持一致"。
+from wqb.config import RA_2Y_NAMES, RA_CHECK_NAMES  # noqa: E402
+from wqb.config import check_counts_as_failed as ra_bad  # noqa: E402
 DB = REPO_ROOT / "data" / "wqb.db"
 
 PAGE = 100
@@ -56,20 +62,6 @@ DEFAULT_REGIONS = ["HKG", "CHN", "GBR", "ASI", "KOR", "IND", "GLB", "EUR", "USA"
 
 #: 平台已禁区域——既不新挖也不提交存量（见 ledger MEA/region_disabled）
 BANNED_REGIONS = {"MEA"}
-
-#: RA 资格门计数的 check 名集合。与 world-quant-brain-mcp/mcp_core.py::_RA_CHECK_NAMES
-#: 保持一致；`.WITH_RATIO` 变体是 2026-09-08 补入的（平台以 FAIL 拦 REGULAR 提交）。
-RA_CHECK_NAMES = frozenset([
-    "HIGH_TURNOVER", "LOW_TURNOVER", "LOW_FITNESS", "LOW_RETURNS", "LOW_SHARPE",
-    "LOW_GLB_AMER_SHARPE", "LOW_GLB_APAC_SHARPE", "LOW_GLB_EMEA_SHARPE",
-    "LOW_ASI_JPN_SHARPE", "IS_LADDER_SHARPE", "LOW_2Y_SHARPE",
-    "LOW_SUB_UNIVERSE_SHARPE", "LOW_ROBUST_UNIVERSE_SHARPE",
-    "LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO",
-    "LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE",
-    "LOW_INVESTABILITY_CONSTRAINED_SHARPE",
-    "LOW_ROBUST_UNIVERSE_RETURNS", "CONCENTRATED_WEIGHT",
-])
-RA_2Y_NAMES = ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
 
 OP_CALL_RE = re.compile(r"\b([a-z][a-z0-9_]{2,})\s*\(")
 FIELD_TOKEN_RE = re.compile(r"\b([a-z][a-z0-9_]{3,})\b")
@@ -87,11 +79,6 @@ not_equal less_equal greater_equal max min days_from_last_change last_diff_value
 industry sector subindustry market country exchange std range rettype driver
 returns close open high low volume vwap cap adv20 sharesout
 """.split())
-
-
-def ra_bad(result) -> bool:
-    """WebDataScope 口径：result 既非 PASS 也非 PENDING 即计入失败（WARNING/ERROR 都算）。"""
-    return result != "PASS" and result != "PENDING"
 
 
 def screen_checks(alpha: dict):

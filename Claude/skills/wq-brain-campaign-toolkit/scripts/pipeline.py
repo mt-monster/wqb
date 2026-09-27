@@ -890,22 +890,22 @@ def stage_review(ctx, ck, write_ledger, checkpoint_dir=None, out=None):
     candidates = [r for r in rows if review_mod.passes(r, t)]
     near = []
     t_near = ctx.thresh("near")
-    n_structural = 0
+    excluded = {}
     for r in rows:
         if r in candidates or not r.get("sharpe"):
             continue
         if r["sharpe"] > t_near["sharpe_min"]:
             r["walls"] = review_mod.walls(r, t)
-            # 2026-09-19：robust/limit 过低的"结构性死信号"不入 near（与 review_wave.is_near 同口径），
-            # 否则全灭波被记成 PARTIAL，停止规则 B 永不触发
-            if review_mod.structurally_dead(r, t_near):
-                r["walls"].append("ROBUST_STRUCTURAL")
-                n_structural += 1
+            # 结构性死信号（2026-09-19）与 RN_EXPOSURE（2026-09-27 R4）不入 near：与 review_wave
+            # 同一判据，否则全灭波被记成 PARTIAL，停止规则 B 永不触发
+            blocked = review_mod.near_block_wall(r, t, t_near)
+            if blocked:
+                if blocked not in r["walls"]:
+                    r["walls"].append(blocked)
+                excluded[blocked] = excluded.get(blocked, 0) + 1
                 continue
             near.append(r)
-    if n_structural:
-        print(f"[near] {n_structural} 条 sharpe 过线但 robust/limit < {t_near.get('robust_min_ratio', 0.5)}"
-              "（结构性死信号），不入 near 池")
+    review_mod.report_near_exclusions(excluded, t, t_near)
     # ---- wave_results 自动入库（波次结论 + near 池，替代 review JSON 文件）----
     try:
         from _lib.wave_results import WaveResultsStore

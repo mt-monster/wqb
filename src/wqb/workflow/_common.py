@@ -15,6 +15,7 @@ import logging
 import os
 import re
 import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -719,6 +720,35 @@ def with_brain_credentials(env: Dict[str, str]) -> Dict[str, str]:
 def resolve_db_path() -> str:
     """当前生效的战役库路径（WQB_DB_PATH 优先，与 store.default_db_path 同口径）。"""
     return os.environ.get("WQB_DB_PATH") or str(_DB_PATH)
+
+
+def connect_db_readonly(path: Optional[str] = None, timeout: float = 5.0) -> sqlite3.Connection:
+    """只读打开战役库（`mode=ro` URI）。
+
+    库文件不存在时抛 `sqlite3.OperationalError`，而不是像 `sqlite3.connect` 那样悄悄建一个
+    空库——开波闸等纯读路径（含 dry-run，契约"不写库"）用它（2026-09-27 R5）。
+    """
+    db = path or resolve_db_path()
+    return sqlite3.connect(Path(db).resolve().as_uri() + "?mode=ro", uri=True, timeout=timeout)
+
+
+def local_ts(value: Any) -> str:
+    """库内时间戳统一成本地时间 `YYYY-MM-DD HH:MM:SS`，便于跨写入方比较先后。
+
+    写入方两种口径并存：Python `datetime.now().isoformat()`（本地时间、`T` 分隔：CampaignStore /
+    wqb-db MCP / _lib/region_kb）与 SQLite `datetime('now')` / `CURRENT_TIMESTAMP`（UTC、空格分隔：
+    toolkit _lib/ledger、_lib/registry、_lib/wave_results）。空格分隔的按 UTC 换算成本地时间——
+    否则东八区上刚写的行看起来早 8 小时。无法解析的截断原样返回，空值返回 ""。
+    2026-09-27：由 gem 节点的快照新鲜度检查（N17）提升为公共函数，停止规则 B 的窗口（R22）复用。
+    """
+    s = str(value or "").strip()
+    if not s or "T" in s:
+        return s.replace("T", " ")[:19]
+    try:
+        utc = datetime.strptime(s[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return s[:19]
+    return utc.astimezone().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def backtest_row_count(region: str, wave: str) -> Optional[int]:

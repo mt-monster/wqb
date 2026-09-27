@@ -17,13 +17,12 @@ import os
 import re
 import sys
 
-# 解析 toolkit scripts 目录注入 sys.path（与 tools/wave_gate.py 同一模式，勿硬编码）
-_TOOLKIT_CANDIDATES = [
-    os.environ.get("WQ_TOOLKIT_DIR"),
-    os.path.join(os.path.expanduser("~"), ".qoder-cn", "skills", "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".cursor", "skills", "wq-brain-campaign-toolkit", "scripts"),
-    os.path.join(os.path.expanduser("~"), ".workbuddy", "skills", "wq-brain-campaign-toolkit", "scripts"),
-]
+# 解析 toolkit scripts 目录注入 sys.path：tools/skill_paths（与 wave_gate / workflow 节点同一顺序，
+# 2026-09-27 R12），勿硬编码
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from skill_paths import skill_script_dirs  # noqa: E402
+
+_TOOLKIT_CANDIDATES = skill_script_dirs("wq-brain-campaign-toolkit", "WQ_TOOLKIT_DIR")
 for _cand in _TOOLKIT_CANDIDATES:
     if _cand and os.path.isdir(os.path.join(_cand, "_lib")):
         if _cand not in sys.path:

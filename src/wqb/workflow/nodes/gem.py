@@ -10,7 +10,7 @@ import os
 import re
 import subprocess
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ..mcp_check import require_mcp_tools
@@ -18,6 +18,7 @@ from .._common import (
     REPO_ROOT,
     detached_launch_failed,
     infer_data_category,
+    local_ts,
     resolve_db_path,
     resolve_skill_dir,
     unbuffered_env,
@@ -44,22 +45,8 @@ def is_template_ideas_source(source: Optional[str]) -> bool:
 _PRIORS_SOURCES = (("{region}", "region_kb"), ("KB", "template_kb"), ("KB", "operator_principle_kb"))
 
 
-def _ledger_ts(value: Any) -> str:
-    """时间戳统一成本地时间 `YYYY-MM-DD HH:MM:SS` 便于比较。
-
-    写入方两种口径：Python `datetime.now().isoformat()`（本地时间、`T` 分隔：
-    CampaignStore / wqb-db MCP / _lib/region_kb）与 SQLite `datetime('now')` /
-    `CURRENT_TIMESTAMP`（UTC、空格分隔：toolkit _lib/ledger、_lib/registry）。
-    空格分隔的按 UTC 换算成本地时间——否则东八区上刚写的 registry 行看起来比快照早 8 小时。
-    """
-    s = str(value or "").strip()
-    if not s or "T" in s:
-        return s.replace("T", " ")[:19]
-    try:
-        utc = datetime.strptime(s[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-    except ValueError:
-        return s[:19]
-    return utc.astimezone().strftime("%Y-%m-%d %H:%M:%S")
+#: 时间戳统一成本地时间便于比较（两种写入口径见 `_common.local_ts`；2026-09-27 提升为公共函数）
+_ledger_ts = local_ts
 
 
 def _priors_snapshot_freshness(region: str) -> Dict[str, Any]:

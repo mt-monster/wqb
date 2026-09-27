@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-27
 name: wq-brain-campaign-toolkit
 description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
 layer: L-TOOL
@@ -107,7 +107,7 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | gate.py | **8 闸 + 可选闸0**：闸1 语法(含算子元数)/闸2 白名单/闸3 类型/闸4 不可访问算子/闸5 毒模式/闸6 批级多样性/闸7 longCount(`--sanity-longcount`)/闸8 EVENT(`--sanity-event-type`)，+sha1 缓存（--fix 自动裹 vec_*） | --dataset / --file / --expr / --fix / --sanity-longcount / --sanity-event-type / --sanity-all / --gate0 | gate-rules |
 | build_wave.py | 选波后处理（去重/分桶/配给/near；**不生成**表达式，`--file` 来自 makeSomeGem）+ 多样性增强（默认开启）+ **选波权威化**（2026-09-12：picked 写 selected 的同一事务里，本波落选且仍为 gem/pending/enhanced 的行归档 superseded，dropped/selected/gated 与已回测行不碰；要重选同波先用 `mcp__wqb-db__set_expression_status` 改回 gem） | --file / --wave / --size / --enhance-diversity always\|auto\|never / --auto-coverage auto\|always\|never（never = 契约签发/注入/自愈三处全关） | gate-rules |
 | pipeline.py | 端到端编排 + 配额闸；**装载 settings 后按 `region_kb.gate_priors` 实测过闸率改写 decay/neutralization（settings prior，2026-09-15 ①）**；收批后自动刷新 `region_kb`（③）；中止路径 rc=2（⑥） | run / quota；--submit / --dry-run / --no-settings-prior；--set K=V 钉住维度 | poll-and-quota |
-| review_wave.py | walls 诊断 + 台账回写；`rn_sharpe ≤ review.rn_sharpe_min`（缺省 0）判 `RN_EXPOSURE` 墙、不进候选（⑦） | --multisim / --alphas / --write-ledger | gate-rules |
+| review_wave.py | walls 诊断 + 台账回写；`rn_sharpe ≤ review.rn_sharpe_min`（缺省 0）判 `RN_EXPOSURE` 墙、不进候选（⑦），也不进 near / salvage 池与组合候选（2026-09-27，与 pipeline review 阶段同一判据 `near_block_wall`） | --multisim / --alphas / --write-ledger | gate-rules |
 | metrics_cache.py | 指标读穿缓存 | --multisim= / --refresh | poll-and-quota |
 | diversity_audit.py | 多样性审计（latest+history） | --no-ledger | ledger-schema |
 | diversity_extract.py | 单数据集多样性榨取（L1/L2/L3 三轮） | --dataset / --rounds / --size / --max-ppac | gate-rules |
