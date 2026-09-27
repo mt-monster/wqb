@@ -1,0 +1,695 @@
+# RA 九步流水线 · 沙箱 dry-run 实录（2026-09-27）
+# 环境：git archive HEAD(c393bca) 副本 <SBX> + 合成种子库（region=KOR, dataset=syn_analyst，全部为虚构夹具）
+# 约束：进程内封网（socket.connect 拦截）+ 默认拦截子进程；仅标注“沙箱内实跑”的本地脚本临时放开。
+# 真实仓库与生产库 data/wqb.db 未被读写；本容器无生产库、MCP 服务未连通。
+
+
+====================================================================================================
+步 1 · S-PRE 查表（区域先验 / 库存 / 产出率）
+====================================================================================================
+
+--- 输入：区域 profile（references/regions/KOR.md front-matter）
+  entry_verdict: active
+  universe_default: TOP600
+  neutralization_default: STATISTICAL
+  fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死回写，不扩批（小宇宙烧不起配额）"
+
+--- 处理：get_campaign_summary / get_dead_ends / get_mining_yield(strict)（wqb-db MCP 函数，直调沙箱库）
+  DB_PATH used by wqb_db_mcp: data/wqb.db
+  campaign_summary: {
+ "region": "KOR",
+ "waves": {
+  "total": 3,
+  "closed": 3
+ },
+ "latest_wave": {
+  "wave_number": "w1",
+  "focus": null,
+  "status": "closed"
+ },
+ "dead_ends": 0,
+ "submit_ready": 0
+}
+  dead_ends: 0
+  mining_yield(strict): {
+ "rows": [
+  {
+   "region": "KOR",
+   "expressions": 300,
+   "backtested": 120,
+   "conversion": 0.4,
+   "passed": 5,
+   "ra_clean": 3,
+   "prod_clean": 0,
+   "prod_blocked": 0,
+   "yield_rate": 0.025,
+   "yield_rate_loose": 0.0417,
+   "prod_wall_ratio": null
+  }
+ ],
+ "totals": {
+  "expressions": 300,
+  "backtested": 120,
+  "conversion": 0.4,
+  "passed": 5,
+  "ra_clean": 3,
+  "prod_clean": 0,
+  "prod_blocked": 0,
+  "yield_rate": 0.025,
+  "yield_rate_loose": 0.0417
+ },
+ "criteria": {
+  "sharpe_min": 1.58,
+  "fitness_min": 1.0,
+  "strict": true,
+  "prod_max": 0.7,
+  "yield_rate_def": "ra_clean/backtested（sharpe/fitness 达标且 ra_failed_checks 为空）"
+ }
+}
+  mining_yield(by_dataset): {
+ "rows": [
+  {
+   "region": "KOR",
+   "dataset": "syn_analyst",
+   "expressions": 300,
+   "backtested": 120,
+   "conversion": 0.4,
+   "passed": 5,
+   "ra_clean": 3,
+   "prod_clean": 0,
+   "prod_blocked": 0,
+   "yield_rate": 0.025,
+   "yield_rate_loose": 0.0417,
+   "prod_wall_ratio": null
+  }
+ ],
+ "totals": {
+  "expressions": 300,
+  "backtested": 120,
+  "conversion": 0.4,
+  "passed": 5,
+  "ra_clean": 3,
+  "prod_clean": 0,
+  "prod_blocked": 0,
+  "yield_rate": 0.025,
+  "yield_rate_loose": 0.0417
+ },
+ "criteria": {
+  "sharpe_min": 1.58,
+  "fitness_min": 1.0,
+  "strict": true,
+  "prod_max": 0.7,
+...(+86 chars)
+   零副作用
+
+--- 处理：库存盘点节点 inventory_scan（dry-run）
+[wave-key-check] WARN: 4 个活跃波（300 条表达式）无 gate_results 记录（门禁断链或未执行）。Top: KOR/w4(180条), KOR/w1(40条), KOR/w2(40条), KOR/w3(40条)。修复入口: tools/wave_gate.py --wave <wave_number>（已支持字符串波号）   （启动自检告警，后续重复行已省略）
+[node] inventory_scan  dry_run=True  success=True  error=None
+       steps=[('build_gate_prior', True), ('select_ra_basket', True)]
+       零副作用
+
+--- 处理：s0-select 三方交叉 / build_gate_prior_from_inventory / select_ra_basket
+  以上三者都要打平台端点（recommend_datasets / GET /users/self/alphas / GET /alphas/{id}），沙箱断网 → 不执行，仅在报告中做静态推演。
+
+====================================================================================================
+步 2 · S0 数据集体检 + 白名单（campaign 节点 S0 / region gates / 缓存）
+====================================================================================================
+
+--- 处理：campaign(stage=S0, calibrate=true) 与 campaign(stage=S0) 干跑
+[node] campaign S0 calibrate  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('build_command', True)]
+       零副作用
+[node] campaign S0 score  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('build_command', True)]
+       零副作用
+
+--- 核查：campaign 节点 S0-calibrate / assemble-priors 的 ledger 缓存命中条件
+  节点自己写入的缓存值 keys=['calibrated_at', 'region', 'stdout_tail']；命中条件 cached.get('value') -> None
+  => 命中分支永远不成立（get_ledger 返回的是 payload 本体，不含 'value' 键）：缓存是死代码。
+
+--- 核查：_ensure_campaign_config 在 dry-run 下是否写盘（临时移走 AMR 的 settings.json）
+[node] campaign S0 (AMR, 缺 settings.json)  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('auto_create_config', True), ('build_command', True)]
+       副作用: FS +1/~0/-0
+       FS added=['tracking/AMR/config/settings.json'] changed=[]
+  settings.json 在 dry-run 后存在? True
+  自动生成内容: {   "_doc": "AMR 战役仿真设置（自动创建，从 DB ledger 推导）。",   "instrumentType": "EQUITY",   "region": "AMR",   "universe": "TOP3000",   "delay": 1,   "neutralization": "SUBINDUSTRY",   "decay": 4,   "truncation": 0.08,   "pasteurization": "ON",   "unitHandling": "VERIFY",
+
+--- 处理：开波前区域四闸（toolkit _lib/region_gates.run_region_gates，warn 模式）
+[region-gates] catalog      命中 — catalog 前置闸命中（KOR（白名单 2 集））：1/2 个数据集无 typed catalog → 这些集的波在门禁必崩或积压成无门禁死库存。先跑 scan_fields.py --campaign-dir <SBX>/tracking/KOR --dataset <缺集>
+[region-gates] signal_floor 放行
+[region-gates] stop_rules   放行
+[region-gates]                evidence: backtested=120
+[region-gates] backlog      放行
+[region-gates]                evidence: total=300, backtested=120, pending_gated=30, gem=150, selected=0, unconsumed=180, conversion=0.4, pending_gated_ratio=0.1, unconsumed_ratio=0.6
+[region-gates]                WARN: [灰度·未拦截] 未消费积压=180/300（60%，其中 gem=150 selected=0 pending+gated=30）> 30%：连最早期积压（gem/selected）也未被回测消化
+[region-gates] ★ 命中 catalog，但 gate-mode=warn（灰度）→ 仅告警不阻断。确认无误后改 --gate-mode enforce 或设 WQB_GATE_MODE=enforce。
+  ok: True  hits: ['catalog']   零副作用
+
+====================================================================================================
+步 3 · S1 字段扫描 + 理解
+====================================================================================================
+[node] campaign S1（缺 dataset）  dry_run=True  success=False  error='stage=S1 缺少必填参数: dataset。（S1=字段扫描需 dataset；S2 的 dataset 可选——build_wave 可从库重取）'
+       steps=[('validate_stage_params', False)]
+       零副作用
+[node] campaign S1  dry_run=True  success=False  error='stage=S1 缺少必填参数: dataset。（S1=字段扫描需 dataset；S2 的 dataset 可选——build_wave 可从库重取）'
+       steps=[('validate_stage_params', False)]
+       零副作用
+[node] feature_engineering  dry_run=True  success=True  error=None
+       steps=[('check_existing', True), ('find_skill', True), ('feature_engineering_pipeline', True)]
+       cmd/plan= python -u <SBX>/Claude/skills/brain-data-feature-engineering/scripts/feature_engineering.py --region KOR --dataset syn_analyst --delay 1 --universe TOP600 --category analyst --output <SBX>/Claude/skills/brain-data-feature-engineering/output_report/KOR_delay1_syn
+       零副作用
+[node] field_understanding  dry_run=True  success=True  error=None
+       steps=[('analyze_field_features', True), ('generate_understanding_report', True), ('auto_classify_fields', True), ('identify_high_value_fields', True)]
+       零副作用
+
+--- SOP 规则演示：字段 users 分级（SKILL.md 步 3；无对应工具，按规则对种子 catalog 手算）
+  syn_eps_rev_dn     users=  5  → 0-9 优先池
+  syn_eps_rev_up     users=  3  → 0-9 优先池
+  syn_est_vec        users=  0  → 0-9 优先池
+  syn_num_est        users= 60  → ≥50 仅方向验证
+  syn_rec_mean       users= 15  → 10-49 进池·提交前实测 prod
+  syn_surprise_evt   users=  1  → 0-9 优先池
+  syn_tgt_px_gap     users=  2  → 0-9 优先池
+
+====================================================================================================
+步 4 · S2 概念优先生成（priors → GEM → 预闸 → 选波）
+====================================================================================================
+[node] campaign assemble-priors  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('signal_floor_gate', True), ('stop_rules_gate', True), ('backlog_gate', True), ('build_command', True)]
+       零副作用
+
+--- 沙箱内实跑 assemble_priors.py（纯本地 DB→文件，展示 S6 知识如何流入 S2）
+  (a) 仅设 WQB_DB_PATH/WQB_ROOT —— toolkit _lib/ledger 的 RegistryStore 不认这两个变量：
+$ /usr/local/bin/python3 Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/KOR assemble-priors
+  |     conn = sqlite3.connect(self.db_path)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | sqlite3.OperationalError: unable to open database file
+  => exit=1  零副作用
+  (b) 补 WQB_WORKSPACE（该模块专用的根目录变量），按 campaign 节点拼出的原样命令跑（不带 --snapshot-ledger）：
+$ /usr/local/bin/python3 Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/KOR assemble-priors
+  | wrote <SBX>/tracking/KOR/priors/kor_priors.json
+  | wins=1 dead_ends=1 sha256=fa536817a6dcfca3534cb73c23fa949e3743869fc5dc757d6b4c12cfe7ccc31c
+  | generated_at=2026-09-27T10:51:33 (timestamp 仅显示，不写入文件以保证 sha 确定性)
+  => exit=0  副作用: FS +0/~1/-0
+     FS added=[] changed=['tracking/KOR/priors/kor_priors.json']
+  priors 文件是否被本次重写: True
+  DB 快照 priors_snapshot_kor 存在?（GEM 默认只读它）: False
+  (c) 同命令追加 --snapshot-ledger：
+$ /usr/local/bin/python3 Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/KOR assemble-priors --snapshot-ledger
+  | wins=1 dead_ends=1 sha256=fa536817a6dcfca3534cb73c23fa949e3743869fc5dc757d6b4c12cfe7ccc31c
+  | snapshot(full) -> ledger key priors_snapshot_kor (wins=1 dead_ends=1)
+  | generated_at=2026-09-27T10:51:33 (timestamp 仅显示，不写入文件以保证 sha 确定性)
+  => exit=0  副作用: FS +0/~1/-0; DB changed {'ledger_kv': (5, 6)}
+     FS added=[] changed=['tracking/KOR/priors/kor_priors.json']
+  DB 快照 priors_snapshot_kor 存在?: True
+  重写后的 priors wins: [
+ {
+  "id": "rev_breadth_fixture",
+  "what": "rev_breadth_fixture",
+  "key": "group_rank(ts_delta(syn_eps_rev_up,22),subindustry)",
+  "evidence": "synthetic fixture",
+  "source": "region_kb"
+ }
+]
+  重写后的 priors dead_ends: [
+ {
+  "family": "region_kb",
+  "reason": "news_emotion 3 连死 (fixture)",
+  "source": "region_kb_dead_pattern"
+ }
+]
+[node] gem  dry_run=True  success=True  error=None
+       steps=[('s1_ledger_check', True), ('candidate_field_pool_check', True), ('check_config', True), ('build_command', True), ('check_ideas_format', True)]
+       cmd/plan= python -u <SBX>/Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py --config <SBX>/Claude/skills/brain-make-some-gem/scripts/headless_runner/config.json --data-category analyst --region KOR --delay 1 --dataset-id syn_analyst --universe TOP600 --inst
+       副作用: FS +2/~0/-0
+       FS added=['logs/', 'logs/_async_tasks/'] changed=[]
+[node] gem_wave  dry_run=True  success=True  error=None
+       steps=[('gem_generate', True), ('auto_dedup', True), ('auto_bucket', True), ('auto_skeleton', True), ('auto_select', True)]
+       零副作用
+
+--- 生成侧预闸 pipeline_pregate.pregate（GEM 落盘前；纯函数实跑）
+  输入 6 条 → (['quantile(syn_eps_rev_up)', 'hump(rank(syn_rec_mean), hump=0.01)', 'bucket(rank(syn_num_est), range="0,1,0.1")', 'ts_mean(syn_eps_rev_up, 22)', 'ts_mean(syn_eps_rev_up, 37)'], {'in': 6, 'kept': 5, 'quantile_normalized': 1, 'poison_dropped': 1, 'poison_source': '<SBX>/Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json', 'named_arg_normalized': 1, 'bucket_range_added': 1, 'bucket_dropped': 0, 'invalid_group_dropped': 0, 'invalid_field_dropped': 0, 'vector_ts_dropped': 0, 'windows_normalized': 1, 'nonstandard_windows': {37: 1}, 'skeleton_capped': 0, 'skeletons': 4, 'max_per_skeleton': 12})
+   log: [pregate] quantile 默认 driver 归一化 1 处（quantile(x, driver="gaussian") → quantile(x)，语义不变）
+   log: [pregate] hump 位置参数 → 命名参数 1 处（hump(x, k) → hump(x, hump=k)）
+   log: [pregate] bucket 缺 range：rank 输入补 range="0,1,0.1" 1 处，非 rank 输入丢弃 0 条
+   log: [pregate] 非标窗口归一到标准窗 1 处（{20: 22, 21: 22, 60: 66, 63: 66, 65: 66, 250: 252, 255: 252, 500: 504, 1000: 1008, 1250: 1260}）
+   log: [pregate] warn: 仍含非标准窗口（CLAUDE.md 要求给出经济含义或实测证据）: {37: 1}
+   log: [pregate] 毒模式丢弃 1 条（规则源 <SBX>/Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json）:
+   log: [pregate]   - [weighted_leg_mix_func_prefix] add(multiply(0.4, rank(syn_eps_rev_up)), multiply(0.6, rank(syn_rec_mean)))
+   零副作用
+[node] campaign S2 选波（build_wave）  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('signal_floor_gate', True), ('stop_rules_gate', True), ('backlog_gate', True), ('build_command', True)]
+       零副作用
+
+====================================================================================================
+步 5 · S2→S3 门禁（ghost-audit → wave_gate：语法/8 闸/体检硬门/多样性）
+====================================================================================================
+  候选（10 条，每条故意覆盖一类闸）:
+   e01_ok_group_rank          group_rank(ts_delta(syn_eps_rev_up, 22), subindustry)
+   e02_ok_backfill_rank       rank(ts_backfill(syn_tgt_px_gap, 66))
+   e03_inspect_violation      ts_zscore(syn_tgt_px_gap, 66)
+   e04_ok_event_trade_when    trade_when(syn_surprise_evt > 0, rank(syn_eps_rev_dn), -1)
+   e05_ghost_ts_entropy       rank(ts_entropy(syn_rec_mean, 22))
+   e06_vector_unwrapped       rank(ts_mean(syn_est_vec, 22))
+   e07_inaccessible_ts_min    rank(ts_min(syn_eps_rev_up, 5))
+   e08_weighted_mix           add(multiply(0.4, rank(syn_eps_rev_up)), multiply(0.6, rank(syn_rec_mean)))
+   e09_unknown_field          rank(syn_fake_field)
+   e10_hump_positional        hump(rank(syn_rec_mean), 0.01)
+
+--- ① 幽灵算子硬闸（沙箱内实跑 campaign_intel.py ghost-audit）
+$ /usr/local/bin/python3 tools/campaign_intel.py ghost-audit --region KOR --exprs-file ../out/w5_candidates.txt
+  | === 幽灵算子审计 10 条表达式 (KOR/D1) ===
+  | FAIL：1 条含幽灵算子（dispatch 前硬闸拦截）
+  |   rank(ts_entropy(syn_rec_mean, 22))
+  |     ghost_ops: ['ts_entropy']
+  => exit=1  零副作用
+
+--- ② wave_gate 节点干跑（argv 契约）
+[node] wave_gate  dry_run=True  success=True  error=None
+       steps=[('find_wave_gate', True), ('resolve_campaign_dir', True), ('validate_argv', True), ('dry_run', True)]
+       cmd/plan= python；-u；<SBX>/tools/wave_gate.py；--campaign-dir；<SBX>/tracking/KOR；--region；KOR；--dataset；syn_analyst；--wave；w5；--exprs-file；<SBX>/../out/w5_candidates.txt
+       零副作用
+[node] unified_gate  dry_run=True  success=True  error=None
+       steps=[('ghost_operator_gate', True), ('diversity_gate', True), ('field_inspect_gate', True), ('unified_gate_check', True)]
+       零副作用
+
+--- ③ tools/wave_gate.py 实跑 —— 不设 WQ_TOOLKIT_DIR（fresh clone / 仅 ~/.claude 安装位的情形）
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w5 --exprs-file ../out/w5_candidates.txt
+  |     validator = load_validator()
+  |                 ^^^^^^^^^^^^^^^^
+  |   File "<SBX>/tools/wave_gate.py", line 148, in load_validator
+  |     dir_ = os.path.dirname(find_script(_VALIDATOR_CANDIDATES, "validator.py"))
+  |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "<SBX>/tools/wave_gate.py", line 58, in find_script
+  |     raise FileNotFoundError(
+  | FileNotFoundError: 未找到 validator.py：设 WQ_TOOLKIT_DIR/WQ_VALIDATOR_DIR 指定（已搜 <SANDBOX>/home/.qoder-cn/skills/alpha-expression-verifier/scripts, /tmp/claude-0/-h
+  => exit=1  零副作用
+
+--- ④a tools/wave_gate.py 实跑 —— 设 WQ_TOOLKIT_DIR / WQ_VALIDATOR_DIR，但环境未装 PLY（requirements 未声明）
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w5 --exprs-file ../out/w5_candidates.txt
+  | [region-gates]                WARN: [灰度·未拦截] 未消费积压=180/300（60%，其中 gem=150 selected=0 pending+gated=30）> 30%：连最早期积压（gem/selected）也未被回测消化
+  | [region-gates] 四道闸全部放行。
+  | 错误: 需要安装PLY库。请运行 'pip install ply' 来安装。
+  => exit=1  零副作用
+
+--- ④b 同上 + 沙箱本地装好 PLY（与生产 MCP venv 等价的依赖面）
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w5 --exprs-file ../out/w5_candidates.txt
+  | [region-gates] catalog      放行
+  | [region-gates] signal_floor 放行
+  | [region-gates] stop_rules   放行
+  | [region-gates]                evidence: backtested=120
+  | [region-gates] backlog      放行
+  | [region-gates]                evidence: total=300, backtested=120, pending_gated=30, gem=150, selected=0, unconsumed=180, conversion=0.4, pending_gated_ratio=0.1, unconsumed_ratio=0.6
+  | [region-gates]                WARN: [灰度·未拦截] 未消费积压=180/300（60%，其中 gem=150 selected=0 pending+gated=30）> 30%：连最早期积压（gem/selected）也未被回测消化
+  | [region-gates] 四道闸全部放行。
+  | [syntax] 1: PASS
+  | [syntax] 2: PASS
+  | [syntax] 3: PASS
+  | [syntax] 4: PASS
+  | [syntax] 5: PASS
+  | [syntax] 6: PASS
+  | [syntax] 7: PASS
+  | [syntax] 8: PASS
+  | [syntax] 9: PASS
+  | [syntax] 10: FAIL ["函数 hump 的第2个参数必须使用命名参数 'hump='", '[ARITY] hump 只接受 1 个位置参数，实际 2 个（平台报 "Invalid number of inputs : 2, should be exactly 1 input(s)."）；多出的参数是命名参数，应写作 hump=0.01\u3000签名: hump(x, hump = 0.01)']
+  |
+  | [gate ] gate.py --from-db --wave w5
+  | [gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）；静态闸 1-5 拦截 6/10 条、批级多样性闸（1 项）
+  |
+  | [inspect] 体检硬门 partial：校验 6/9 条，违规 2 条
+  |           FAIL syn_tgt_px_gap: 覆盖率0.35<0.4 但表达式未含 ts_backfill/group_backfill → 必然 CONCENTRATED_WEIGHT; 偏度|3.10|>2 但表达式未含 rank/winsorize/signed_power → 极值未抑制; 峰度12.0>8 但表达式未含 rank/winsorize → 厚尾未处理
+  |                ts_zscore(syn_tgt_px_gap, 66)
+  |           FAIL syn_surprise_evt: 覆盖率0.30<0.4 但表达式未含 ts_backfill/group_backfill → 必然 CONCENTRATED_WEIGHT
+  |                trade_when(syn_surprise_evt > 0, rank(syn_eps_rev_dn), -1)
+  |           4 个字段无体检记录，这些字段上的预处理约束未被校验：['syn_eps_rev_dn', 'syn_est_vec', 'syn_fake_field', 'syn_rec_mean']
+  |
+  | [prod-sat] 状态=enforced PASS（10 条校验，0 个历史饱和字段，当前波零命中）
+  |
+  | [div  ] 六维多样性风险:
+  |         - [MECHANISM-ENTROPY] 机制熵 1.88 < 2.0，机制多样性不足
+  |         - [QUOTA] 8 项配额超限: ['structure.event_gated 超配 11% > 10%', 'structure.single_raw 超配 33% > 5%', 'structure.single_preprocessed 超配 33% > 3%']
+  | [opcat] 算子类别覆盖 PASS（Logical 0/11, Group 1/10, Vector 0/7）
+  | [opcat] WARNING：本波无 Logical 类算子。非事件型数据集不强制（if_else 在 859 条过闸样本中仅占 5.1%），仅提示。
+  | [qp   ] HARD_REJECT 1: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 2: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 3: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 4: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 5: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 6: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 7: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 8: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 9: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] 质量预估: DIRECT=0 COMBO=0 WEAK=0 BLOCK=0 HARD=9（仅标注）
+  | [var  ] 参数变体聚类 PASS（无同骨架同字段变体）
+  |
+  | [out  ] db gate_results/KOR/w5/syn_analyst
+  | [done ] 体检硬门拦截 2 条违规候选
+  | [done ] 语法 9/10, gate all_pass=false passed=4/10 质量预估 D/C/W/B/H=0/0/0/0/9（拦截 9 条 仅标注） => FAIL
+  => exit=1  副作用: FS +1/~0/-0; DB changed {'expressions': (300, 310), 'gate_results': (0, 1), 'ledger_kv': (6, 9), 'sqlite_sequence': (9, 10), 'waves': (4, 5)}
+     FS added=['Claude/skills/alpha-expression-verifier/scripts/parsetab.py'] changed=[]
+  expressions 状态分布 前={'backtested': 120, 'gated': 30, 'gem': 150} 后={'backtested': 120, 'gated': 40, 'gem': 150}
+  gate_results 行: [('KOR', 'w5', 'syn_analyst', 0)]
+
+--- ⑤ 干净子集（e01/e02/e04）再跑一次，看 PASS 路径与 [opcat] 行为
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w6 --exprs-file ../out/w6_clean.txt
+  | [region-gates] catalog      放行
+  | [region-gates] signal_floor 放行
+  | [region-gates] stop_rules   放行
+  | [region-gates]                evidence: backtested=120
+  | [region-gates] backlog      放行
+  | [region-gates]                evidence: total=310, backtested=120, pending_gated=40, gem=150, selected=0, unconsumed=190, conversion=0.3871, pending_gated_ratio=0.129, unconsumed_ratio=0.6129
+  | [region-gates]                WARN: [灰度·未拦截] 未消费积压=190/310（61%，其中 gem=150 selected=0 pending+gated=40）> 30%：连最早期积压（gem/selected）也未被回测消化
+  | [region-gates] 四道闸全部放行。
+  | [syntax] 1: PASS
+  | [syntax] 2: PASS
+  | [syntax] 3: PASS
+  |
+  | [gate ] gate.py --from-db --wave w6
+  | [gate ] FAIL: 闸门不过（gate.py 正常返回 all_pass=false）；批级多样性闸（2 项）
+  |
+  | [inspect] 体检硬门 partial：校验 2/3 条，违规 1 条
+  |           FAIL syn_surprise_evt: 覆盖率0.30<0.4 但表达式未含 ts_backfill/group_backfill → 必然 CONCENTRATED_WEIGHT
+  |                trade_when(syn_surprise_evt > 0, rank(syn_eps_rev_dn), -1)
+  |           1 个字段无体检记录，这些字段上的预处理约束未被校验：['syn_eps_rev_dn']
+  |
+  | [prod-sat] 状态=enforced PASS（3 条校验，0 个历史饱和字段，当前波零命中）
+  |
+  | [div  ] 六维多样性风险:
+  |         - [MECHANISM-ENTROPY] 机制熵 1.58 < 2.0，机制多样性不足
+  |         - [CHAIN-DIVERSITY] 构造链仅 3 种 < 5，构造链多样性不足
+  |         - [QUOTA] 6 项配额超限: ['structure.event_gated 超配 33% > 10%', 'structure.single_raw 超配 33% > 5%', 'structure.single_preprocessed 超配 33% > 3%']
+  | [opcat] 算子类别覆盖 FAIL：缺 Group 类别
+  |         Logical: 0/11（非事件型，不强制）, Group: 0/10, Vector: 0/7
+  | [qp   ] HARD_REJECT 1: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 2: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 3: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] 质量预估: DIRECT=0 COMBO=0 WEAK=0 BLOCK=0 HARD=3（仅标注）
+  | [var  ] 参数变体聚类 PASS（无同骨架同字段变体）
+  |
+  | [out  ] db gate_results/KOR/w6/syn_analyst
+  | [done ] 体检硬门拦截 1 条违规候选
+  | [done ] 语法 3/3, gate all_pass=false passed=3/3 质量预估 D/C/W/B/H=0/0/0/0/3（拦截 3 条 仅标注） => FAIL
+  => exit=1  副作用: DB changed {'expressions': (310, 313), 'gate_results': (1, 2), 'ledger_kv': (9, 10), 'waves': (5, 6)}
+
+--- ⑥ 体检硬门单独验证：e02(合规) + e03(低覆盖/厚尾未处理) + 普通式，跳过闸6 以隔离变量
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w7 --exprs-file ../out/w7_inspect.txt --skip-diversity-gate --skip-quality
+  | [region-gates] catalog      放行
+  | [region-gates] signal_floor 放行
+  | [region-gates] stop_rules   放行
+  | [region-gates]                evidence: backtested=120
+  | [region-gates] backlog      放行
+  | [region-gates]                evidence: total=313, backtested=120, pending_gated=43, gem=150, selected=0, unconsumed=193, conversion=0.3834, pending_gated_ratio=0.1374, unconsumed_ratio=0.6166
+  | [region-gates]                WARN: [灰度·未拦截] 未消费积压=193/313（62%，其中 gem=150 selected=0 pending+gated=43）> 30%：连最早期积压（gem/selected）也未被回测消化
+  | [region-gates] 四道闸全部放行。
+  | [syntax] 1: PASS
+  | [syntax] 2: PASS
+  | [syntax] 3: PASS
+  |
+  | [gate ] gate.py --from-db --wave w7
+  |
+  | [inspect] 体检硬门 partial：校验 2/3 条，违规 1 条
+  |           FAIL syn_tgt_px_gap: 覆盖率0.35<0.4 但表达式未含 ts_backfill/group_backfill → 必然 CONCENTRATED_WEIGHT; 偏度|3.10|>2 但表达式未含 rank/winsorize/signed_power → 极值未抑制; 峰度12.0>8 但表达式未含 rank/winsorize → 厚尾未处理
+  |                ts_zscore(syn_tgt_px_gap, 66)
+  |           1 个字段无体检记录，这些字段上的预处理约束未被校验：['syn_eps_rev_dn']
+  |
+  | [prod-sat] 状态=enforced PASS（3 条校验，0 个历史饱和字段，当前波零命中）
+  |
+  | [out  ] db gate_results/KOR/w7/syn_analyst
+  | [done ] 体检硬门拦截 1 条违规候选
+  | [done ] 语法 3/3, gate all_pass=true passed=3/3 => FAIL
+  => exit=1  副作用: DB changed {'expressions': (313, 316), 'gate_results': (2, 3), 'ledger_kv': (10, 11), 'waves': (6, 7)}
+
+--- ⑦ [opcat] 语义验证：全合规、无 group_* 算子的批（跳过闸6，保留质量/多样性展示段）
+$ /usr/local/bin/python3 tools/wave_gate.py --campaign-dir tracking/KOR --dataset syn_analyst --wave w8 --exprs-file ../out/w8_opcat.txt --skip-diversity-gate
+  | [region-gates] backlog      放行
+  | [region-gates]                evidence: total=316, backtested=120, pending_gated=46, gem=150, selected=0, unconsumed=196, conversion=0.3797, pending_gated_ratio=0.1456, unconsumed_ratio=0.6203
+  | [region-gates]                WARN: [灰度·未拦截] 未消费积压=196/316（62%，其中 gem=150 selected=0 pending+gated=46）> 30%：连最早期积压（gem/selected）也未被回测消化
+  | [region-gates] 四道闸全部放行。
+  | [syntax] 1: PASS
+  | [syntax] 2: PASS
+  | [syntax] 3: PASS
+  |
+  | [gate ] gate.py --from-db --wave w8
+  |
+  | [inspect] 体检硬门 partial：校验 2/3 条，违规 0 条
+  |           1 个字段无体检记录，这些字段上的预处理约束未被校验：['syn_eps_rev_dn']
+  |
+  | [prod-sat] 状态=enforced PASS（3 条校验，0 个历史饱和字段，当前波零命中）
+  |
+  | [div  ] 六维多样性风险:
+  |         - [STRUCTURE-ENTROPY] 结构熵 0.92 < 1.5，结构多样性不足
+  |         - [MECHANISM-ENTROPY] 机制熵 1.58 < 2.0，机制多样性不足
+  |         - [CHAIN-DIVERSITY] 构造链仅 3 种 < 5，构造链多样性不足
+  |         - [QUOTA] 5 项配额超限: ['structure.single_raw 超配 33% > 5%', 'structure.single_preprocessed 超配 67% > 3%', 'mechanism.momentum 超配 33% > 10%']
+  | [opcat] 算子类别覆盖 FAIL：缺 Group 类别
+  |         Logical: 0/11（非事件型，不强制）, Group: 0/10, Vector: 0/7
+  | [qp   ] HARD_REJECT 1: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 2: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] HARD_REJECT 3: 预估Sharpe 0.27 < 0.5（硬拒绝）; 预估Fitness 0.16 < 0.3（硬拒绝）; 预估Sharpe 0.27 < 1.58; 预估Fitness 0.16 < 1.0
+  | [qp   ] 质量预估: DIRECT=0 COMBO=0 WEAK=0 BLOCK=0 HARD=3（仅标注）
+  | [var  ] 参数变体聚类 PASS（无同骨架同字段变体）
+  |
+  | [out  ] db gate_results/KOR/w8/syn_analyst
+  | [done ] 语法 3/3, gate all_pass=true passed=3/3 质量预估 D/C/W/B/H=0/0/0/0/3（拦截 3 条 仅标注） => PASS
+  => exit=0  副作用: DB changed {'expressions': (316, 319), 'gate_results': (3, 4), 'ledger_kv': (11, 12), 'waves': (7, 8)}
+  w5..w8 候选在 expressions 中的状态: [('w5', 'gated', 10), ('w6', 'gated', 3), ('w7', 'gated', 3), ('w8', 'gated', 3)]
+
+====================================================================================================
+步 6 · S3 七槽回测（batch_track / campaign S3 前置闸）
+====================================================================================================
+[node] batch_track  dry_run=True  success=True  error=None
+       cmd/plan= python -u <SBX>/Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py --campaign-dir <SBX>/tracking/KOR run --dataset syn_analyst --wave w4 --max-rounds 3 --review --write-ledger --submit
+       零副作用
+[node] campaign S3（前置三闸 enforce）  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('signal_floor_gate', True), ('stop_rules_gate', True), ('backlog_gate', True), ('build_command', True)]
+       零副作用
+  积压证据（backlog gate evidence）:
+   {
+ "step": "backlog_gate",
+ "success": true,
+ "evidence": {
+  "total": 319,
+  "backtested": 120,
+  "pending_gated": 49,
+  "gem": 150,
+  "selected": 0,
+  "unconsumed": 199,
+  "conversion": 0.3762,
+  "pending_gated_ratio": 0.1536,
+  "unconsumed_ratio": 0.6238,
+  "unconsumed_enforced": false
+ },
+ "warnings": [
+  "[灰度·未拦截] 未消费积压=199/319（62%，其中 gem=150 selected=0 pending+gated=49）> 30%：连最早期积压（gem/selected）也未被回测消化"
+ ]
+}
+
+====================================================================================================
+步 7 · S4 诊断改进（review_wave 墙诊断 / auto_review / booster）
+====================================================================================================
+[node] campaign S4 (wave=w1)  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('resolve_s4_alphas', True), ('build_command', True)]
+       零副作用
+[node] campaign S4 (wave=w9 不存在)  dry_run=True  success=False  error='no backtest alphas for KOR/w9'
+       steps=[('validate_campaign_dir', True), ('resolve_s4_alphas', False)]
+       零副作用
+
+--- review_wave 判定函数实跑（种子 w1 最强 5 条）
+  SYNw1039 S=1.935 F=1.161 2Y=1.548 RN=0.968 failed=['LOW_2Y_SHARPE'] → passes=False walls=['LOW_2Y_SHARPE'] near=True
+  SYNw1038 S=1.87 F=1.122 2Y=1.496 RN=0.935 failed=['LOW_2Y_SHARPE'] → passes=False walls=['LOW_2Y_SHARPE'] near=True
+  SYNw1037 S=1.805 F=1.083 2Y=1.444 RN=-0.2 failed=[] → passes=False walls=['RN_EXPOSURE'] near=True
+  SYNw1036 S=1.74 F=1.044 2Y=1.392 RN=0.87 failed=[] → passes=True walls=['RA_OTHER'] near=True
+  SYNw1035 S=1.675 F=1.005 2Y=1.34 RN=0.838 failed=[] → passes=True walls=['RA_OTHER'] near=True
+[node] auto_review  dry_run=True  success=True  error=None
+       steps=[('auto_prescreen', True), ('auto_walls', True), ('auto_salvage', True), ('auto_report', True)]
+       零副作用
+[node] alpha_booster  dry_run=True  success=True  error=None
+       零副作用
+[node] modeb_improve  dry_run=True  success=True  error=None
+       零副作用
+  s4-prescreen / prod-first / check_correlation 需平台 → 沙箱不执行。
+
+====================================================================================================
+步 8 · S4→S5 稳健闸与提交判定（Failed-count 资格门 / submit_verdict / 用户确认）
+====================================================================================================
+  合成 is.checks: [('LOW_SHARPE', 'PASS'), ('LOW_FITNESS', 'PASS'), ('LOW_2Y_SHARPE', 'WARNING'), ('IS_LADDER_SHARPE', 'WARNING'), ('LOW_SUB_UNIVERSE_SHARPE', 'FAIL'), ('CONCENTRATED_WEIGHT', 'PASS')]
+  生产口径 mcp_core._slim_checks → {
+ "failed_ra_count": 3,
+ "failed_ppa_count": 1,
+ "ra_failed": true,
+ "ppa_failed": true,
+ "ra_failed_checks": [
+  "LOW_2Y_SHARPE",
+  "IS_LADDER_SHARPE",
+  "LOW_SUB_UNIVERSE_SHARPE"
+ ],
+ "ppa_failed_checks": [
+  "LOW_SUB_UNIVERSE_SHARPE"
+ ]
+}
+  src/wqb/config.compute_webdata_failed_counts → {
+ "failed_ra": 0,
+ "failed_ppa": 0,
+ "details": [
+  {
+   "name": "LOW_SUB_UNIVERSE_SHARPE",
+   "result": "FAIL",
+   "value": 0.52,
+   "limit": 0.89
+  }
+ ]
+}
+
+--- submit_verdict 判定表（网络依赖 → 按 tools_ops.py:236-251 源码静态推演）
+  sim_fail=False hard_warn=False submit=404 → UNVERIFIABLE
+  sim_fail=False hard_warn=False submit=200 → SUBMITTABLE
+  sim_fail=False hard_warn=True  submit=404 → BLOCKED
+  sim_fail=False hard_warn=False submit=403 → BLOCKED
+[node] judge  dry_run=True  success=True  error=None
+       steps=[('plan_only', True)]
+       cmd/plan= {'alpha_id': 'SYNw1039', 'trend_window_days': 365, 'calls': ['get_alpha_details(alpha_id)', 'check_correlation(alpha_id, type=both, threshold=0.7)', 'get_alpha_yearly_stats(alpha_id)', 'value_factor_trendScore(alpha_id, window=365d)'], 'gates': ['G1 平台硬检查 sharpe>=1.58 fitness>=1.0（Mode B 资格线按区域覆盖）', 'G2 相关性 prod<0.7 self<0.7', 'G3 逐年归因（弱年/负年）', 'G4 trend score（失败降级，不阻断）', 'G5 综合判定 → READY / REVIEW / BLOCK'], 'note':
+       零副作用
+[node] submit_alpha（未确认）  dry_run=True  success=True  error=None
+       steps=[('plan_only', True)]
+       cmd/plan= {'alpha_id': 'SYNw1039', 'name': None, 'color': 'GREEN', 'tags': ['PowerPoolSelected'], 'confirm_submit': False, 'force': False, 'verify_timeout': 180, 'calls': ['get_alpha_details(alpha_id)', 'pre_submit_check(alpha_id)'], 'note': 'confirm_submit=False：仅预检与查状态，不会 POST submit'}
+       零副作用
+[node] submit_alpha（confirm_submit=True，干跑）  dry_run=True  success=True  error=None
+       steps=[('plan_only', True)]
+       cmd/plan= {'alpha_id': 'SYNw1039', 'name': None, 'color': 'GREEN', 'tags': ['PowerPoolSelected'], 'confirm_submit': True, 'force': False, 'verify_timeout': 180, 'calls': ['get_alpha_details(alpha_id)', 'pre_submit_check(alpha_id)', 'set_alpha_properties(alpha_id, name/color/tags/descriptions)', 'POST /alphas/{id}/submit', 'poll get_alpha_details until OS/ACTIVE (<= 180s)'], 'note': 'confirm_submit=True：会真实提交——必须已有用户明确确认'}
+       零副作用
+
+====================================================================================================
+步 9 · S6 复盘回写（step_funnel / upsert_wave_result / 停止闸闭环）
+====================================================================================================
+
+--- step_funnel.py 实跑（只读推导）
+$ /usr/local/bin/python3 tools/step_funnel.py --region KOR
+  | ==========================================================================
+  | 步级漏斗（S2→S6）· KOR / 全区   —— 只读推导，数据源=既有表+ledger
+  | ==========================================================================
+  |
+  | [S2 生成池] expressions
+  |   总表达式 = 319
+  |   未消化(unconsumed = gem+selected+pending+gated) = 199  (0.6238)
+  |   按状态：backtested=120, gated=49, gem=150
+  |   时间窗：2026-09-27T10:51:32 → 2026-09-27T10:51:36
+  |
+  | [S2→S3 门禁] gate_results
+  |   门禁次数(批次粒度) = 4，通过 = 0，通过率 = 0.0000
+  |   表达式级计数：n/a（该区 gate_results 是 pipeline 式 schema，无 passed/total）
+  |   时间窗：2026-09-27T10:51:34 → 2026-09-27T10:51:36
+  |
+  | [S3 回测] backtest_results
+  |   回测行 = 120，其中有 sharpe = 120
+  |   过廉价闸(S>1.58 & F>=1.0) = 5，最佳 sharpe = 1.9350
+  |   按状态：COMPLETE=120
+  |   时间窗：2026-09-27T10:51:32 → 2026-09-27T10:51:32
+  |
+  | [S4→S5 提交就绪] ledger
+  |   submit_ready = n/a，submit_ready_blocked = n/a
+  |
+  | [S6 复盘] wave_results.verdict
+  |   FAIL=2, PARTIAL=1
+  |
+  | [漏斗转化链]  口径：gate_results 的 report_json 未含表达式级计数（pipeline 式 schema），该跳为 n/a；请以 gate_checks/gate_passed（批次粒度）参考
+  |   S2 生成            319
+  |   S2→S3 门禁放行       n/a
+  |   S3 回测完成          120
+  |   S3 过廉价闸          5
+  |   S4→S5 就绪         n/a
+  |
+  | [瓶颈定位] 掉得最狠的一跳 = S3 回测完成 → S3 过廉价闸（保留率 0.0417）
+  |
+  | [口径局限] 各步取的是各自表的存量，时间窗不一 → 链上数值可能不单调；仅用于定位'哪一跳掉得最狠'，不作精确转化率引用。
+  => exit=0  零副作用
+
+--- 回写 w4 verdict=FAIL → 停止规则 B 是否对下一波生效
+  upsert_wave_result: {'action': 'inserted', 'region': 'KOR', 'wave_number': 'w4'}
+  stop_rules_gate → {
+ "success": false,
+ "hits": [
+  "B: 最近 3 个 closed 波 verdict 全 FAIL"
+ ],
+ "warning": null,
+ "evidence": {
+  "backtested": 120,
+  "passed": 5,
+  "recent_closed_verdicts": [
+   "FAIL",
+   "FAIL",
+   "FAIL"
+  ],
+  "recent_closed_verdicts_raw": [
+   "FAIL",
+   "FAIL",
+   "FAIL"
+  ]
+ }
+}
+[node] 下一波 campaign S2（应被规则 B 拦截）  dry_run=True  success=False  error="停止规则拦截（KOR）：B: 最近 3 个 closed 波 verdict 全 FAIL。继续开波只会重复烧槽位——换区域/换 universe/换数据集；确需继续（用户显式指令）请写台账 mcp__wqb-db__upsert_ledger_key(region='KOR', key='stop_rules_override', value={'reason': '<用户指令与理由>', 'until': 'YYYY-MM-DD'})，或在 <SBX>/tracking/KOR/config/thresholds.json 的 diversity.stop_rules 调阈值。"
+       steps=[('validate_campaign_dir', True), ('signal_floor_gate', True), ('stop_rules_gate', False)]
+       零副作用
+
+--- 只补写 key_findings（例如按步 9 把点塔进度追加进 key_findings），不带 verdict
+  upsert_wave_result: {'action': 'updated', 'region': 'KOR', 'wave_number': 'w4'}
+  w4 行现状: [('w4', None, 'closed', '["[pyramid] ANALYST 2/3 (fixture)"]')]
+  stop_rules_gate → {
+ "success": true,
+ "hits": null,
+ "warning": "1/3 个最近 closed 波 verdict 为空或不可识别（1 个）——规则 B 本次不据此拦截；请回写 verdict（探针/全灭波也应写 FAIL，勿留空壳 closed 记录）。",
+ "evidence": {
+  "backtested": 120,
+  "passed": 5,
+  "recent_closed_verdicts": [
+   "UNKNOWN",
+   "FAIL",
+   "FAIL"
+  ],
+  "recent_closed_verdicts_raw": [
+   null,
+   "FAIL",
+   "FAIL"
+  ]
+ }
+}
+[node] 下一波 campaign S2（规则 B 是否仍拦截）  dry_run=True  success=True  error=None
+       steps=[('validate_campaign_dir', True), ('signal_floor_gate', True), ('stop_rules_gate', True), ('backlog_gate', True), ('build_command', True)]
+       零副作用
+[node] auto_pyramid  dry_run=True  success=True  error=None
+       steps=[('auto_query_pyramid', True), ('auto_embed', True), ('auto_report', True)]
+       零副作用
+
+--- wave_number 类型契约（MCP 签名 vs 表结构，静态核对）
+  upsert_wave_result 签名: wave_number: int
+  get_wave_result 签名: wave_number: int
+  表结构: [(2, 'wave_number', 'TEXT', 1, None, 0)]
+
+====================================================================================================
+附：19 个 workflow 节点 dry-run 契约全量扫描（仓库自带 _DRY_RUN_CASES 参数）
+====================================================================================================
+  node                     ok    side-effects                             error / fs
+  alpha_booster            True  零副作用
+  auto_harvest             True  零副作用
+  auto_pyramid             True  零副作用
+  auto_review              True  零副作用
+  batch_track              True  零副作用
+  campaign                 True  零副作用
+  feature_engineering      True  零副作用
+  field_understanding      True  零副作用
+  gem                      True  零副作用
+  gem_wave                 True  零副作用
+  hypothesis_round         False 零副作用                                     假设目录不存在：<SANDBOX>/w
+  inventory_scan           True  零副作用
+  judge                    True  零副作用
+  modeb_improve            True  零副作用
+  structural_reconstruct   True  零副作用
+  submit_alpha             True  零副作用
+  superalpha               True  零副作用
+  unified_gate             True  零副作用
+  wave_gate                True  零副作用
+
+--- WorkflowExecutor.store 相对路径核查：换一个 cwd 调同一节点
+  cwd= ../elsewhere  生成的库文件: ['data/wqb.db', 'data/wqb.db-shm', 'data/wqb.db-wal']
+
+[DRY-RUN END] 全程：真实仓库未改动；网络尝试次数 = 0 ；被拦截的子进程尝试 = 0
