@@ -80,7 +80,9 @@ $REGION = "KOR"        # 唯一输入
 `reports/dataset_experience/<region>_<dataset>_campain.md`。仅在 region/delay/universe 与证据范围一致时继承结论；
 S1 用字段级失败边界选字段，S2 机制文档引用相关 wave/alpha 并说明新假设。文件不存在则以 DB 查表结果为准。
 
-目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）、`brain-forum-browse`。
+目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）。
+**论坛默认不查**（选区已有 registry/yield 先验，避免 token 黑洞）；仅当「判死区复开评估」时用
+`tools/forum_recon.py`（recon 模式，只读）取证翻案线索。
 
 **先读区域 profile**：`Read references/regions/<REGION>.md`，按 front-matter 渲染本区专属 SOP（后续各步标注"profile"处按其覆盖执行）；`entry_verdict: frozen` 则按该区 profile 的入口裁决处理，不继续步 2。
 
@@ -407,6 +409,11 @@ S4遇到指标上升但未达增强资格时，按同一[选波实验清单](../
 落库核验selected与无alpha_id；受保护状态或计划外旧selected/gated导致回滚，先核对再显式处理。
 
 * **失败分支**：GEM 未入库则按超时恢复清单查任务，确认失败才回退，不要手写；候选不足则 enhance / 扩组合，仍不足换数据集。
+* **机制枯竭/同质化（2026-09-28 新增）**：GEM 产出同骨架触封顶、或 win 配方无腿可换时，
+  先 `python tools/forum_recon.py --question "<具体机制问题>" --context region=$REGION,dataset=$DS --out kb`
+  （或等价节点 `mcp__wq-brain-http__workflow_execute` node="forum_recon"，P4 已节点化）
+  回补 `KB/community_tpl_kb.forum_recon_entries`（模板须先过 `ghost_operator_advisory` 替换）再重跑 GEM；
+  **额度以查出有效文章为标准**（自适应扩展关键词，命中即收束，安全上限防失控），同问题 7 天缓存不重复查。
 
 ### 步 5（S2→S3）门禁
 
@@ -455,7 +462,7 @@ python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选
 退出码 1 = 有幽灵算子（违规式隔离到独立小批或换已验证等价算子，映射表见 `KB/community_tpl_kb` 的
 `ghost_operator_advisory`）。纯本地检测，零配额。
 
-- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
+- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
 ### 步 5b：新信号族的 prod-first 探针（2026-09-19 实证后升为硬门）
 
@@ -616,10 +623,26 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
 
 卡 2Y 闸用 `boost_2y`、卡 CW/子宇宙用 `boost_cw`、卡 tvr 用 `boost_tvr`、信号弱用 `boost_sharpe`。
 
-**组合形态合规（路线 A，2026-09-13 定案）**：取到辅助腿后**禁止任何加权混合**
-（`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))` 均被 gate 闸5 block）——
-仅允许结构交互（ts_corr / ratio / 价差 / 条件 / 分组）或 SuperAlpha combo；
+**组合形态合规（路线 A，2026-09-13 定案；2026-09-28 加严）**：取到辅助腿后**禁止任何加权混合**——
+**包含「等权」相加**：`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`、
+**以及 `add(rank(A), rank(B))` / `add(group_rank(A,g), group_rank(B,g))`** 全部违规。
+等权即 0.5A+0.5B，属同一违规族；**任何含混表述都不构成本例外的例外**。
+也不得靠增删腿数或扫描混合权重去修不达标的信号。
+仅允许：① 单信号结构（`ts_scale`、`subtract(rank(A),rank(B))` 视作**单一价差信号**，须有经济含义而非拼腿）
+② 换算子几何（`group_rank`/`group_zscore`/`ts_quantile`/`bucket`）③ 换字段组合或换信号概念（Mode B 想法层）
+④ 事件门控（`trade_when`/`if_else`）⑤ SuperAlpha combo。
 构造细则见 [wq-brain-alpha-optimization-v1](../wq-brain-alpha-optimization-v1/SKILL.md)「组合腿救援」构造纪律。
+
+> ⚠ **事故记录（2026-09-28，勿重演）**：本文档旧版写「`0.5*rank(A)+0.5*rank(B)` 均被 gate 闸5 block」，
+> 但**实现层是假的**——闸5 的 `_detect_weighted_mix_structural` 只拦「实参以 系数* 开头」的腿，
+> **明文豁免等权 `add(rank(a),rank(b))`**。结果 KOR wave189/190 有 **7 条**
+> `add(group_rank(腿A), group_rank(腿B))`（含 S=2.11 / F=1.80 / 2Y=1.89 的漂亮结果）全部漏过闸5，
+> 属混信号调参，**已全部作废**。
+> 修复：新增闸5 毒模式 `equal_weight_leg_add`（结构判定，`_detect_equal_weight_leg_add`），
+> 登记于 `platform_constraints.json` v1.5（单一事实源），回归测试
+> `tests/unit/test_gate_equal_weight_leg_add.py`（16 条：7 违规必拦 / 7 合规必放 / config 文档断言 / DB 作废断言）。
+> **放行形态**（勿误伤）：`add(abs(x),0.01)`（1 腿 + epsilon 标量）、`add(ts_mean(x,22),ts_mean(x,66))`（同形态仅窗口差异＝单信号多窗平滑）。
+> **纪律提醒**：门禁通过 ≠ 合规。闸是兜底，不是许可证；判合规要看「是否两条独立信号腿相加」这一条本质，而不是看它是否命中正则。
 
 - **风险中性化硬规则（2026-09-08 新增；2026-09-15 ⑦ 已接线进 `review_wave.walls()/passes()`，墙名 `RN_EXPOSURE`）**：收割后必看 `risk_neutralized_sharpe`。
   `risk_neutralized_sharpe <= 0` 且 `sharpe >= 1.58` ⇒ 该 alpha **就是它自己声称的那个因子暴露**，
@@ -629,6 +652,10 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
   该值已入 `backtest_results.risk_neutralized_sharpe`，步 9 需与 GEM 声明的 `Expected Exposure`
   比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
+- **卡闸找武器（2026-09-28 新增）**：Mode B 常规改进 2–3 轮仍卡墙（prod/2Y/CW/tvr/robust）且未到判死时，
+  跑 `tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`
+  （每波 ≤1 次；**额度以查出有效文章为标准**）；命中的配方/手法入 idea 池供 Mode B Step B3 使用，
+  并写 ledger `forum_recon_<qkey>` 留痕。
 - **prod 验证排队调度**：多候选时走串行泳道（本地检查全批先跑、prod 队列恒保持 1 在飞、等待期插本地活），细则见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md) §7（含 7 天结果缓存与 `refresh` 终验）。
 
 ### 步 8（S4→S5）稳健闸与提交判定
@@ -754,8 +781,14 @@ mcp__wqb-db__upsert_registry_empirical  region=$REGION  ...
 mcp__wqb-db__upsert_ledger_key  region=$REGION  key="s6_verdict_<wave>"  ...   # ⚠ 已废弃（2026-09-28 去重）：结论唯一真相源 = wave_results.verdict，不再双写 ledger
 ```
 
-**判死封存（2026-09-13 新增：先沉降、再封存）**：任何 `dead_end` 回写前先调
-`seal_dead_end`——把该 idea 涉及波次的失败候选沉降入 salvage_pool（收集宽），
+**判死封存（2026-09-13 新增：先沉降、再封存）**
+
+**前置软核对（2026-09-28 新增，判死回写前必看）**：判死前跑 `tools/forum_recon.py --question "<数据集/信号族> 有无解法" --out negative`；
+`found=false`（负结果已入 `forum_recon_negative_<qkey>`）即为 decision-table D2「论坛无解」的取证；
+`found=true` → 该帖配方转 salvage/Mode B 武器，**不得直接判死**。核对结果记入 `dead_end.payload.forum_recon`
+（软提示起步：无记录不拦写入，但缺失须在 key_findings 说明）。
+
+**回写操作**：任何 `dead_end` 回写前先调 `seal_dead_end`——把该 idea 涉及波次的失败候选沉降入 salvage_pool（收集宽），
 并把残值列表回填 `dead_end.salvage`（原 schema 预留字段，此前恒 null）。
 救援动用仍守各区 `mode_b_qualification` 资格线（动用严），本工具不改动用侧：
 

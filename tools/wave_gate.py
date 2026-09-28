@@ -430,10 +430,19 @@ def _semantic_gate(a, campaign, items):
                 "blocked_field_count": 0, "removed": [], "items": items}
 
     blocked = {b["field"] if isinstance(b, dict) else b for b in (sem.get("blocked_fields") or [])}
-    # 非信号字段的宽匹配：台账黑名单 + 名称模式双保险（防台账过期 / 漏网）
-    _BAD_PAT = _re.compile(r"currency(_code)?|cur_code|_ras\d*$|fx_|exrate|exchange_rate|"
-                           r"country|iso_|region_code|exchange_code|ticker|sedol|cusip|isin|gvkey|"
-                           r"_code$|_id$|_flag$|^is_|_date$|_dt$")
+    # 非信号字段的宽匹配：台账黑名单 + 名称模式双保险（防台账过期 / 漏网）。
+    #
+    # ⚠ 2026-09-28 收紧：原模式含 `is_` / `_flag$` / `_code$` 等**未锚定子串**，会把
+    # `oth466_is_ebit_oper_q`（**Income Statement** EBIT，users=248）这类字段当布尔标志误杀
+    # —— 实测 other466 上误杀 39/177（22%），且被杀的恰是 users 最高的利润表核心字段。
+    # 歧义缩写（is = Income Statement）与「技术分析 indicator」不能靠名字/裸名词判，
+    # 故此处只保留**无歧义强标识符**；标志位由 `s1_semantic_<ds>` 的描述文判定结果承担
+    # （见 tools/field_semantic_classify.py 的 NON_SIGNAL_DESC_PATTERNS）。
+    _BAD_PAT = _re.compile(
+        r"currency_code|cur_code|_ras\d*$|exrate|exchange_rate|^fx_|_fx_|_fx$|"
+        r"gvkey|cusip|isin|sedol|ticker|iso_country|country_code|exchange_code|region_code|"
+        r"fiscal_year_end|report_date|period_end|_date$|_dt$|"
+        r"_share_class_|shares_outstanding_class")
     removed, keep = [], []
     for cid, e in items:
         fields = [f for f in _re.findall(r"\b[a-z][a-z0-9_]{4,}\b", e or "")]

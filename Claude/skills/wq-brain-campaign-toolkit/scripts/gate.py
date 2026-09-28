@@ -421,16 +421,34 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     # 即判加权混合（含嵌套，如 quantile(add(multiply(0.7,X), multiply(0.3,Y)))）。
     # 等权 add(rank(a), rank(b)) 不拦（无系数）；单腿系数缩放 0.5*rank(a) 不拦（<2 条腿）。
     structural_mix = _detect_weighted_mix_structural(expr)
+    # 2026-09-28 补充：「等权」加两条独立信号腿同样违规（既有判定明文豁免等权 → 实测漏网）。
+    # 详见 _detect_equal_weight_leg_add 文档；KOR wave189/190 实证 7 条漏网已作废。
+    _non_field = known_ops | group_ids | driver_args | kw_args
+    structural_equal_leg = _detect_equal_weight_leg_add(expr, _non_field)
     structural_only = False
     for pp in poison_patterns:
         if pp.get("severity", "block") != "block":
             continue
-        if pp.get("_structural") and pp["name"] == "weighted_signal_mix_structural":
+        if pp.get("_structural") and pp["name"] in (
+                "weighted_signal_mix_structural", "equal_weight_leg_add"):
             # 结构判定的命中在循环外统一追加（见下），此处只标记存在性
             structural_only = True
             continue
         if re.search(pp["regex"], expr):
             issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+    if structural_equal_leg:
+        for pp in poison_patterns:
+            if pp.get("name") == "equal_weight_leg_add":
+                issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+                break
+        else:
+            issues.append(
+                "[POISON:equal_weight_leg_add] add() 等权相加两条独立信号腿 = 混信号调参，"
+                "全局禁止（无论 add(multiply(0.4,...)) 还是 0.4A+0.6B）。"
+                "合规替代：①单信号结构 ts_scale / subtract(rank(A), rank(B))（价差，需有经济含义）"
+                "②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B）。"
+                "不得靠增删腿数或调权重修不达标信号。"
+            )
     if structural_mix:
         for pp in poison_patterns:
             if pp.get("name") == "weighted_signal_mix_structural":
@@ -523,6 +541,58 @@ def _detect_weighted_mix_structural(expr):
         if not args or len(args) < 2:
             continue
         if sum(1 for a in args if _COEF_PREFIX_RE.match(a)) >= 2:
+            return True
+    return False
+
+
+#: 纯数值实参（epsilon / 常数）：不是信号腿
+_NUM_ONLY_RE = re.compile(r"^\s*[-+]?\d*\.?\d+\s*$")
+_IDENT_TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_INT_TOKEN_RE = re.compile(r"\b\d+\b")
+
+
+def _is_signal_leg(arg, non_field):
+    """实参是否为「信号腿」：至少引用一个数据字段（非算子/非分组标签/非参数名），且非纯常数。
+
+    `add(abs(x), 0.01)` 里的 `0.01` 是 epsilon 标量 → 不算腿（该形态全局在用，必须放行）。
+    """
+    a = (arg or "").strip()
+    if not a or _NUM_ONLY_RE.match(a):
+        return False
+    for tok in _IDENT_TOKEN_RE.findall(a):
+        if tok not in non_field and not tok.startswith(
+                ("ts_", "group_", "vec_", "reduce_", "bucket_", "quantile_")):
+            return True
+    return False
+
+
+def _normalize_numbers(s):
+    """把窗口/常数归一成 N，用于判断两条腿是否只是「同形态不同窗口」。"""
+    return _INT_TOKEN_RE.sub("N", re.sub(r"\s+", "", s or ""))
+
+
+def _detect_equal_weight_leg_add(expr, non_field):
+    """闸5 结构判定（2026-09-28 新增）：「等权」加两条**独立信号腿**同样违规。
+
+    背景：既有 `_detect_weighted_mix_structural` 只拦「实参以 系数* 开头」的腿，
+    **明文豁免等权 add(rank(a), rank(b))**。而全局纪律是「不得把两条独立信号腿
+    加权相加，无论写成 add(multiply(0.4,...)) 还是 0.4A+0.6B」——等权即 0.5A+0.5B，
+    属同一违规族。实证代价：KOR wave189/190 共 7 条 `add(group_rank(腿A), group_rank(腿B))`
+    （含 S=2.11/F=1.80/2Y=1.89 的漂亮结果）全部通过闸5 → 已全部作废。
+
+    判定：某 `add(` 的顶层实参中 ≥2 个是信号腿，且这些腿**形态不同**
+    （归一化数字后仍不相等 —— 仅窗口不同的同形态叠加视为单信号多窗平滑，放行）。
+    `add(abs(x), 0.01)`（1 条腿 + 标量）、`add(ts_mean(x,22), ts_mean(x,66))`
+    （同形态不同窗）均放行。
+    """
+    for m in _ADD_OPEN_RE.finditer(expr):
+        args, _ = _top_level_args(expr, m.end())
+        if not args or len(args) < 2:
+            continue
+        legs = [a for a in args if _is_signal_leg(a, non_field)]
+        if len(legs) < 2:
+            continue
+        if len({_normalize_numbers(a) for a in legs}) >= 2:
             return True
     return False
 

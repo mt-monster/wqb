@@ -14,6 +14,7 @@
 | `quality_predict.py` | 候选池质量预估（回测前）：三层先验预估 Sharpe/Fitness + 本地结构代理预估 SELF_CORR 风险，输出 EXPECTED_PASS/REVIEW/EXPECTED_BLOCK；`--status UNSUBMITTED` 直筛存量池，已被 `wave_gate.py` 集成调用 | 手写相关性/质量预判脚本 |
 | `legacy/gate.py` | **遗留归档**：通用提交前闸门（5 闸 + 批级多样性）。**权威实现是 skill toolkit 的 `gate.py`**；本文件代码零引用（`wave_gate.py` 走 `_TOOLKIT_CANDIDATES` 加载 toolkit 版），2026-09-20 归档至 `tools/legacy/` | — |
 | `legacy/backfill_backtest_dataset.py` | **一次性回填已跑完**（`backtest_results.dataset` 只填空），2026-09-28 按 §6.4 归档至 `tools/legacy/`（三维引用全 0） | — |
+| `forum_recon.py` | **问题驱动论坛只读检索（recon，2026-09-28）**：单问题 → 有效文章 → 入库（`KB/community_tpl_kb.forum_recon_entries` 或 ledger `forum_recon_<qkey>`；无解落 `forum_recon_negative_*` 作「论坛无解」判死证据）。额度以查出有效文章为标准（自适应扩关键词，命中即收束）；同问题 7 天缓存；抓取核心复用 `forum_research.py`（不重复 HTTP 实现）；`--dry-run` 零副作用；退出码 0=有货 / 2=无解 | 手写论坛抓取、每次现搜不落库 |
 | `expr_lint.py` | 算子签名/字段白名单快速门禁（非战役场景） | — |
 | `corr_precheck.py` | 相关性墙预判（设计阶段字段重叠检查） | — |
 

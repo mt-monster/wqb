@@ -436,6 +436,25 @@ class WorkflowRegistry:
         except ImportError as e:
             logger.warning(f"Failed to register alpha_booster: {e}")
 
+        # Phase 2: forum_recon（论坛问题驱动只读检索，2026-09-28 P4 节点化）
+        try:
+            from .nodes import forum_recon
+            self.register(
+                "forum_recon",
+                forum_recon.run,
+                NodeMeta(
+                    name="forum_recon",
+                    description="论坛 recon（问题驱动只读检索）：单问题→有效文章→入 KB/ledger（含负结果）；额度以查出有效文章为标准；包装 tools/forum_recon.py",
+                    category="research",
+                    phase=2,
+                    required_params=["question"],
+                    optional_params=["context", "out", "limit", "max_search_rounds",
+                                     "queries", "timeout_sec"],
+                )
+            )
+        except ImportError as e:
+            logger.warning(f"Failed to register forum_recon: {e}")
+
 
 def get_registry() -> WorkflowRegistry:
     """获取注册中心单例."""

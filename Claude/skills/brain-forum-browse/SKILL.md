@@ -20,7 +20,7 @@ allowed-tools:
 
 ## 职责边界
 
-- **本 skill 负责**：论坛浏览与经验回收（有写工具时按 gap 驱动贡献）
+- **本 skill 负责**：论坛浏览与经验回收（有写工具时按 gap 驱动贡献）；**recon 模式（2026-09-28）**= 回测流水线的问题驱动只读检索（经 `tools/forum_recon.py` 执行），产出必入库（含负结果）
 - **本 skill 不做**：**不做 alpha 提交前审查**（那是 `tools/submit_verdict.py` 的职责，judge 也只是参考层）；不改 alpha、不回测
 - **上游 / 下游**：上游 = 中文论坛；下游 = 方法沉淀（供 L1 研究消费）
 
@@ -46,6 +46,7 @@ allowed-tools:
 | **逛一逛 / 看看 / 转转**（默认） | **explore** | stroll → **必贡献** → **auto-send E1?** 或 7.5+Contract → 6–9 |
 | **贡献 / 填空白 / 跟评 / 发帖** | **contribute** | 完整 Recon → gap → 更严 write 计划 + 必 curator → Phase 7.5 → Run Contract → 同意执行 → write |
 | **逛为主，可能回一句** | **hybrid**（已弃用别名） | **等同 explore** — 同样必贡献；仅用户话术不同 |
+| **流水线按需检索**（S2 机制枯竭 / 闸6 回补 / S4 卡闸 / 判死核对） | **recon** | 经 `tools/forum_recon.py` 执行（问题驱动只读）：搜 → 读 → 结构化摘录入 `KB/community_tpl_kb` / ledger（含负结果）；**免贡献义务 / Run Contract / 工作区记忆栈**；额度以查出有效文章为标准；不触发逛论坛流程 |
 
 详见 [modes-and-contract.md](references/modes-and-contract.md)。
 
@@ -230,6 +231,9 @@ Perspective Card 必须用 ≥2 层标签标注 `memory_sources[]`。详情：[f
 ## 配额
 
 见 [quotas-and-cooldown.md](references/quotas-and-cooldown.md)。优先评论而非发帖；每次运行最多计划 3 个写操作。
+**recon 模式额度口径（2026-09-28）**：与写操作配额无关，**以能查出有效文章为标准**——搜不到就继续扩展
+关键词变体（自适应），命中目标篇数即收束；`tools/forum_recon.py --max-search-rounds` 仅是防失控安全上限；
+同问题 7 天缓存回放（含负结果），不重复 live 查。
 
 ## 写作风格
 

@@ -90,25 +90,25 @@
    "source": "region_kb_dead_pattern"
   },
   {
+   "family": "risk70 MFM2 风格因子载荷（momentum/ltrevrsl/btop/resvol/profit/growth/leverage/earnvar/season/beta/invsqlty/anlystsn/shortint/dsrt/srisk/market）",
+   "reason": "risk70 是风险模型**因子载荷**数据集：载荷本身就是模型要中性化掉的暴露，不是超额收益来源。114 条（闸 SEM 从 207 剔到 118、实回测 114）best S=0.87，0 达标 0 near。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-RISK70-FACTOR-LOADING-NO-ALPHA"
+  },
+  {
+   "family": "fundamental17 慢(毛利率水平)×快(EV/EBITDA 趋势)价差结构",
+   "reason": "慢×快价差结构（subtract(group_rank(慢腿), group_rank(快腿))）在 KOR/TOP600/D1/STATISTICAL 下稳定把 S 1.23→1.30、F 0.89→0.94、2Y 1.33→1.87，但 **S 天花板锁在 ~1.30**，跨不过 Mode B 资格线 1.25→提交线 1.58。二轮精调 8 条（窗口 22/66/252、轴 industry/subindustry、ts_decay 平滑、去掉离散度分母）全部落在 S=1.11–1.30，无一突破。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "KOR-FND17-SLOWFAST-SPREAD-CEILING"
+  },
+  {
    "family": "signal_family: 原始会计比率字段族（margins/turnover/leverage/dividend 水平与差分）",
    "reason": "原始会计比率（gross/operating/net margin、asset/inventory/receivable turnover、debt-to-*、payout ratio）在 KOR/TOP600/D1/STATISTICAL 下单腿与差分结构均无稳定正信号；与 KOR 既有 fnd86/fnd89/fnd93/fnd94 全弱结论同向。",
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "KOR-FND17-RAW-ACCOUNTING-WEAK"
-  },
-  {
-   "family": "fundamental17 EV/EBITDA 水平+趋势背离（group_rank/ts_zscore 族）",
-   "reason": "fundamental17 原始会计字段族天花板 S=1.23/F=0.89（差 Mode B 资格线 S1.25/F0.8 仅 0.02），168 条全测 0 达标；|S|>=0.5 有 48 条但主墙恒为 SHARPE（IS 信号强度不足），非 prod/2Y 墙。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-FND17-EV2EBITDA-DIVERGENCE-CEILING"
-  },
-  {
-   "family": "risk71 MFM2 residual return reversal (asia/exjapan minvol1m)",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD"
   }
  ],
  "region_context": {
@@ -153,6 +153,8 @@
     "wpjJK60l"
    ],
    "dead_ends": [
+    "KOR-FND17-EV2EBITDA-DIVERGENCE-CEILING",
+    "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD",
     "KOR-W182-FND93-ACCRUALS-NOSIGNAL-DEAD",
     "KOR-INSIDERS5-CEILING-20260909",
     "KOR-PV106-COST-DISPERSION-COVERAGE-DEAD",

@@ -35,14 +35,42 @@ from wqb.db_conn import connect as db_connect  # 规范工厂（禁裸 sqlite3.c
 
 
 # 非信号字段：标识符 / 分类码 / 标签 / 汇率换算 / 计数口径 —— 无论覆盖多高都不得当信号输入
+#
+# ⚠ 2026-09-28 修复（重要）：原规则里 `is_` / `_flag$` 用**未锚定的名字子串**匹配，
+# 结果把 `oth466_is_ebit_oper_q`（**Income Statement** EBIT，users=248）这类字段当
+# 「布尔标志位」误杀 —— other466 上 39/177（22%）被误判，且被杀的恰是 users 最高的
+# 利润表核心字段。教训：**缩写歧义（is = Income Statement vs is_ 标志）不能靠名字判，
+# 必须看描述文**。故标志位/分类码改由 `desc` 判定；名字规则只保留无歧义的强标识符。
 NON_SIGNAL_PATTERNS = [
-    (r"currency(_code)?|cur_code|_ras\d*$", "货币/报表币种代码"),
-    (r"fx_|exrate|exchange_rate", "汇率（叉乘多为恒等式）"),
-    (r"^fnd17_\d+_(usdtorep|reptoprc|repto|ustorep)", "汇率换算（同上）"),
-    (r"country|iso_|region_code|exchange_code|ticker|sedol|cusip|isin|gvkey", "标识符/国别交易所代码"),
-    (r"_code$|_id$|^id$|_flag$|is_", "分类码/标志位"),
+    (r"currency_code|cur_code", "货币/报表币种代码"),
+    (r"^fnd17_\d+_(usdtorep|reptoprc|repto|ustorep)", "汇率换算（叉乘多为恒等式）"),
+    (r"exrate|exchange_rate", "汇率（叉乘多为恒等式）"),
+    (r"^fx_|_fx_|_fx$", "汇率（叉乘多为恒等式）"),
+    (r"gvkey|cusip|isin|sedol|ticker|iso_country|country_code|exchange_code|region_code",
+     "标识符/国别交易所代码"),
     (r"fiscal_year_end|report_date|period_end|_date$|_dt$", "日期/期间口径"),
-    (r"shares_outstanding_class|_class_", "股份类别标签"),
+    (r"shares_outstanding_class|_share_class_", "股份类别标签"),
+]
+
+# 描述文驱动的非信号判定：布尔标志 / 分类标签 / 纯代码（名字规则无法可靠识别时用）
+#
+# ⚠ 2026-09-28 第二次修复：初版用裸 `\bindicator\b` / `\bflag\b` / `whether`，
+# 把「技术分析指标」也误杀 —— model109 的 Bollinger Bands / Negative Volume Index /
+# **Altman Z-score** / Chaikin Money Flow / Money Flow Index / Stochastic Oscillator
+# 描述里都含 "indicator"，51/539 被误判为布尔标志。
+# 正解：**必须出现显式布尔措辞**（"indicator denoting whether"、"equals 1"、
+# "dummy variable"、"1 if ... 0 otherwise"），仅出现 indicator/flag 名词不算。
+NON_SIGNAL_DESC_PATTERNS = [
+    (r"indicator\s+(?:denoting|indicating|that indicates|for)\s+whether|"
+     r"flag\s+(?:showing|denoting|indicating|that indicates)\s+whether|"
+     r"denotes?\s+whether|"
+     r"whether\s+[^.]{0,80}?\b(?:equals?|is)\s+1\b|"
+     r"\bdummy\s+variable\b|\bindicator\s+variable\b|\bbinary\s+(?:variable|flag)\b|"
+     r"\b1\s+if\b[^.]{0,80}?\b0\s+otherwise\b",
+     "布尔标志/指示变量（描述文判定）"),
+    (r"three[- ]letter\s+iso\s+(?:currency|country)\s+code|\biso\s+(?:currency|country)\s+code\b|"
+     r"compustat\s+global\s+company\s+identifier|\bcompany\s+identifier\b",
+     "分类码/标识符（描述文判定）"),
 ]
 
 # 经济大类（按描述关键词命中，顺序 = 优先级）
@@ -65,6 +93,10 @@ def classify(desc: str, name: str):
     n = (name or "").lower()
     for pat, why in NON_SIGNAL_PATTERNS:
         if re.search(pat, n):
+            return None, f"非信号：{why}"
+    # 描述文驱动的标志位/分类码判定（名字规则无法可靠区分 is=Income Statement 等歧义缩写）
+    for pat, why in NON_SIGNAL_DESC_PATTERNS:
+        if re.search(pat, d):
             return None, f"非信号：{why}"
     for cat, pat, label in ECON_CATEGORIES:
         if re.search(pat, d):

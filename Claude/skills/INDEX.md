@@ -217,13 +217,15 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   `compute_wave_summary` / `compute_campaign_summary` / `get_step_gain_report` /
   `workflow_step_metrics` —— step-metrics 子系统整体下线（归档 `attic/step_metrics_20260917/`），
   替代方案 `tools/step_funnel.py`（只读步级漏斗）。
-- workflow 节点：**18 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
-  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
+- workflow 节点：**19 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
   ⚠ 2026-09-17：`step_metrics` 节点已下线（18→17）；`modeb_improve` 节点上线（17→18）。
   ⚠ 2026-09-18：`alpha_booster` 节点上线（18→19，通用 Alpha 短板提升，S4 增强）。
   ⚠ 2026-09-26 P2.1：`field_understanding` 节点删除（19→18，重复的第三套 S1 实现）；
   同批修复 `auto_pyramid`/`auto_review`/`alpha_booster`/`modeb_improve` 假 dry-run（诚实构建命令/计划）。
+  ⚠ 2026-09-28 P4：`forum_recon` 节点上线（18→19，论坛问题驱动只读检索；额度=以查出有效文章为标准），
+  由 ra-pipeline 步 4/5/7/9 的 recon 触发点经 `workflow_execute` 调用。
 
 ## 2026-09-19 挖掘流程优化落地（RA×10 战役复盘，细节见 wq-brain-ra-pipeline 各步）
 

@@ -50,7 +50,7 @@ allowed-tools:
 - `status=fresh`（< 7 天）→ **完全跳过实时搜索**；加载缓存的技术台账进入 Phase B。这是常态路径（约 7 天中 6 天）。
 - `status=stale` / `empty` → 执行下方增量刷新。
 
-**Step A.1 — 增量刷新（仅在过期时）**。不要重拉全部 ≥30 帖。只取比 `cache.built_at` 新的帖子：
+**Step A.1 — 增量刷新（仅在过期时）**。不要重拉全部 ≥30 帖。刷新统一走 `tools/forum_cache_builder.py --ensure`（过期才刷）；**问题驱动的单点检索用 `tools/forum_recon.py`（2026-09-28 统一入口），不在此重复实现**。只取比 `cache.built_at` 新的帖子：
 1. 本会话尚未认证时先经 MCP `authenticate`。
 2. 对 5 个关键词包各调 `search_forum_posts`，但按 `post_id` 去重合并进现有缓存，每个关键词包保留最高赞帖。目标 ≥30 条独立帖子，偏向 ≥20 赞：
    - `"过拟合 overfitting alpha"` — 10–20 条

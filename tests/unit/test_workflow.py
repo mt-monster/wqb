@@ -91,6 +91,8 @@ def test_registry_lists_all_core_nodes():
         "wave_gate",
         # 2026-09-12 新增：假设优先实验轮次（饱和数据集路由，ra-pipeline 步 2 分支）
         "hypothesis_round",
+        # 2026-09-28 P4：论坛 recon 检索节点（ra-pipeline 步 4/5/7/9 触发点，只读取数）
+        "forum_recon",
         # Phase 2：结构重构变体生成与效果追踪（2026-09-15 补录进测试基准）
         "structural_reconstruct",
         # 2026-09-17：step_metrics 已整体下线（归档 attic/step_metrics_20260917/），
