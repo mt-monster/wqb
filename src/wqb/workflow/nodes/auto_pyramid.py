@@ -24,6 +24,7 @@ from .._common import (
     wq_py,
 )
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 #: 本节点写进 key_findings 的行的前缀（重跑时整行替换；评审重跑与收批级联都保留它）
@@ -84,10 +85,42 @@ def run(
         })
 
     # 如果是 dry-run，到此为止
+    # dry-run：走完零成本前置——构建真实命令（campaign_intel.py pyramid）→ 到此为止。
+    # 不 subprocess、不写库（禁止假 dry-run：不构建命令却报 success）。
     if ctx.get("dry_run"):
+        tools_dir = resolve_tools_dir()
+        py = wq_py()
+        script = os.path.join(tools_dir, "campaign_intel.py")
+        pyramid_cmd = [
+            py, script, "pyramid",
+            "--region", region,
+            "--delay", str(delay),
+        ]
+        if not os.path.exists(script):
+            result["steps"].append({
+                "step": "find_campaign_intel", "success": False,
+                "error": f"campaign_intel.py not found: {script}",
+            })
+            result["error"] = f"campaign_intel.py not found: {script}"
+            return result
+        result["command"] = " ".join(pyramid_cmd)
+        result["plan"] = {
+            "region": region, "wave": wave, "delay": delay,
+            "auto_embed": auto_embed, "auto_report": auto_report,
+            "tool": script,
+            "steps": [
+                "1. campaign_intel.py pyramid --region --delay 查询点塔进度快照",
+                "2. 解析 stdout 尾部 [key_findings] 单行",
+                "3. (auto_embed) 嵌入 wave_results.key_findings",
+                "4. (auto_report) 生成点塔报告",
+            ],
+        }
+        result["steps"].append({
+            "step": "build_command", "success": True, "command": " ".join(pyramid_cmd),
+        })
         result["success"] = True
         result["dry_run"] = True
-        result["note"] = "dry-run：自动化点塔进度回写流程已构建，未执行"
+        result["note"] = "dry-run：命令已构建，未执行"
         return result
 
     # 执行自动化点塔进度回写
@@ -131,7 +164,6 @@ def run(
             _step(result, "auto_embed").update(embed)
             if not embed["embedded"]:
                 result["error"] = f"点塔进度未嵌入 wave_results：{embed.get('error') or embed.get('note')}"
-
         # 步骤 3：自动生成点塔报告
         if auto_report:
             report = _generate_pyramid_report(pyramid_progress)
@@ -170,7 +202,7 @@ def _embed_pyramid(region: str, wave: str, key_findings_line: str) -> Dict[str, 
         return {"embedded": False, "success": False,
                 "note": "campaign_intel pyramid 输出里没有 [key_findings] 单行"}
     wave_id = str(wave).strip()
-    conn = sqlite3.connect(resolve_db_path())
+    conn = db_connect(resolve_db_path())
     try:
         row = conn.execute("SELECT key_findings FROM wave_results WHERE region=? AND wave_number=?",
                            (region, wave_id)).fetchone()

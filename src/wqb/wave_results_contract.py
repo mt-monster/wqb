@@ -63,7 +63,12 @@ def normalize_verdict(verdict: Any) -> Tuple[Optional[str], str]:
         return "FAIL", "前缀"
     m = re.search(r"(\d+)\s*/\s*(\d+)\s*过硬闸", v)
     if m:
-        return ("PASS" if int(m.group(1)) > 0 else "FAIL"), "过硬闸计数"
+        # 2026-09-27 合并修正：唯一权威 = `wqb.workflow.nodes.campaign._normalize_verdict`
+        #（停止规则 B 的读取方）→ N>0 一律 PARTIAL（含 8/8，保守字符串语义——无法从
+        # 字符串确认其他闸门全过）。此前迁自旧版 wqb_db_mcp 的 N>0 → PASS 与读取方
+        # 分歧（2026-09-26 实测 32/72 行不一致），且守护测试 test_wave_verdict_enum
+        # 断言 PARTIAL。
+        return ("PARTIAL" if int(m.group(1)) > 0 else "FAIL"), "过硬闸计数"
     if "全灭" in v or "GATE_FAIL" in up:
         return "FAIL", "关键词"
     return None, "无匹配"

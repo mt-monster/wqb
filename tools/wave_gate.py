@@ -34,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 # ---- skill 目录自动解析 ----
 # 2026-09-27 R12：改走 tools/skill_paths（WQ_*_DIR > ~/.claude > ~/.codex > 历史 Agent 位 >
@@ -376,6 +377,119 @@ def _field_profile_map_for_gate(region, dataset, campaign_dir=None):
         return {}
 
 
+def _semantic_gate(a, campaign, items):
+    """闸 SEM：字段语义归类硬门（2026-09-28）。
+
+    读 ledger `s1_semantic_<dataset>`（由 tools/field_semantic_classify.py 产出），
+    把命中 `blocked_fields`（货币代码 / 汇率换算 / 标识符 / 分类码 / 日期口径）
+    的表达式**直接剔出候选**——这类表达式语法全对但语义为恒等式或字符串比较，
+    语法闸与 gate.py 都拦不住，只能靠回测烧配额。
+
+    返回 dict：{region, dataset, ledger_missing, blocked_field_count,
+                removed: [(cid, expr, hit)], items: 幸存的 [(cid, expr)]}
+    """
+    import re as _re
+    region = a.region
+    if not region:
+        try:
+            with open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8") as f:
+                region = (json.load(f) or {}).get("region")
+        except Exception:
+            region = None
+    if not region:
+        region = os.path.basename(str(campaign)).upper()
+    dataset = a.dataset
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+    from wqb.db_conn import connect as _dbconn  # 规范工厂（禁裸 sqlite3.connect）
+    conn = _dbconn(readonly=True)
+    try:
+        row = conn.execute(
+            "SELECT value FROM ledger_kv WHERE region=? AND key=?",
+            (region, f"s1_semantic_{dataset}"),
+        ).fetchone()
+    except Exception as e:
+        # ⚠ 读不到台账（库不可达 / 缺表 / 库被换）**等同于未做归类**，按缺台账 fail-closed。
+        # 2026-09-28：此前这里被上层 `except Exception` 吞成「闸 SEM 异常（不阻断）」，
+        # 等于给了「换个空库就能绕过」的口子——与 fail-closed 契约相悖。
+        print(f"[sem  ] 台账不可读（按缺台账处理）: {e}", file=sys.stderr)
+        return {"region": region, "dataset": dataset, "ledger_missing": True,
+                "blocked_field_count": 0, "removed": [], "items": items}
+    finally:
+        conn.close()
+
+    if row is None:
+        return {"region": region, "dataset": dataset, "ledger_missing": True,
+                "blocked_field_count": 0, "removed": [], "items": items}
+
+    try:
+        sem = json.loads(row[0])
+    except Exception as e:
+        print(f"[sem  ] s1_semantic_{dataset} 解析失败（按缺台账处理）: {e}", file=sys.stderr)
+        return {"region": region, "dataset": dataset, "ledger_missing": True,
+                "blocked_field_count": 0, "removed": [], "items": items}
+
+    blocked = {b["field"] if isinstance(b, dict) else b for b in (sem.get("blocked_fields") or [])}
+    # 非信号字段的宽匹配：台账黑名单 + 名称模式双保险（防台账过期 / 漏网）。
+    #
+    # ⚠ 2026-09-28 收紧：原模式含 `is_` / `_flag$` / `_code$` 等**未锚定子串**，会把
+    # `oth466_is_ebit_oper_q`（**Income Statement** EBIT，users=248）这类字段当布尔标志误杀
+    # —— 实测 other466 上误杀 39/177（22%），且被杀的恰是 users 最高的利润表核心字段。
+    # 歧义缩写（is = Income Statement）与「技术分析 indicator」不能靠名字/裸名词判，
+    # 故此处只保留**无歧义强标识符**；标志位由 `s1_semantic_<ds>` 的描述文判定结果承担
+    # （见 tools/field_semantic_classify.py 的 NON_SIGNAL_DESC_PATTERNS）。
+    _BAD_PAT = _re.compile(
+        r"currency_code|cur_code|_ras\d*$|exrate|exchange_rate|^fx_|_fx_|_fx$|"
+        r"gvkey|cusip|isin|sedol|ticker|iso_country|country_code|exchange_code|region_code|"
+        r"fiscal_year_end|report_date|period_end|_date$|_dt$|"
+        r"_share_class_|shares_outstanding_class")
+    removed, keep = [], []
+    for cid, e in items:
+        fields = [f for f in _re.findall(r"\b[a-z][a-z0-9_]{4,}\b", e or "")]
+        hit = [f for f in fields if f in blocked or _BAD_PAT.search(f)]
+        if hit:
+            removed.append((cid, e, hit[:3]))
+        else:
+            keep.append((cid, e))
+
+    print(f"[sem  ] 闸 SEM: 台账命中，黑名单 {len(blocked)} 字段；"
+          f"候选 {len(items)} -> 剔除 {len(removed)} -> 幸存 {len(keep)}"
+          + (f"（剔除率 {100*len(removed)/max(1,len(items)):.1f}%）" if items else ""))
+    for cid, e, hit in removed[:8]:
+        print(f"[sem  ]   ✗ {cid}: 非信号字段 {hit} :: {str(e)[:90]}")
+    if len(removed) > 8:
+        print(f"[sem  ]   … 另有 {len(removed)-8} 条同类剔除")
+
+    # ---- 落库：命中的表达式标 dropped（2026-09-28）----
+    # 只在内存里剔除**不够**：gate.py / pipeline.py 都是按 DB 的 expressions.status 取数，
+    # 不落库的话这 172 条语义垃圾照样会被 gate.py 判定、被 pipeline.py 发批。
+    # 仅 --from-db 路径的 id 才是真实 expressions.id（--exprs-file 是 1..N 序号）。
+    dropped_n = 0
+    if getattr(a, "from_db", False) and removed:
+        ids = [cid for cid, _, _ in removed if isinstance(cid, int)]
+        if ids:
+            dbp = _wqb_db_path(campaign)
+            conn = _dbconn()
+            try:
+                ph = ",".join("?" * len(ids))
+                cur = conn.execute(
+                    f"UPDATE expressions SET status='dropped', updated_at=? "
+                    f"WHERE id IN ({ph}) AND region=?",
+                    (__import__("datetime").datetime.now().isoformat(timespec="seconds"), *ids, region),
+                )
+                conn.commit()
+                dropped_n = cur.rowcount
+            except Exception as e:
+                print(f"[sem  ] ⚠ 落库标 dropped 失败（内存剔除仍生效）: {e}", file=sys.stderr)
+            finally:
+                conn.close()
+            print(f"[sem  ] 已落库标 dropped {dropped_n} 条（防下游按 DB status 取回）")
+
+    return {"region": region, "dataset": dataset, "ledger_missing": False,
+            "blocked_field_count": len(blocked), "removed": removed, "items": keep,
+            "dropped_in_db": dropped_n}
+
+
 def _extract_fields_from_expr(expr, known_fields):
     """从表达式提取引用的字段 id（在 known_fields 集合内）。"""
     tokens = _re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", expr)
@@ -528,6 +642,257 @@ def _load_region_gates():
     return None
 
 
+# ---- 闸 PF：信号族死路预检闸（2026-09-25 P2 落地，gate.py 闸9 已占用窗口白名单）----
+# 背景：F2 闸门凭证断档（2055 UNSUBMITTED 中 90.5% 的 prod_corr 未测）；
+# IND intraday_pv_feats 连投 3 波 24 条（S 4.4-6.5 全 IS 过）后才查 prod=0.79-0.92 整族报废。
+# SOP "任何新信号族在投入第二波之前必须先 prod-first 探针" 此前无代码级把关。
+# 本闸把 prod-first 从「S4 收批后必调」前移到「七槽开批前硬门」，判据：
+#   - 同表达式字段族 = 已确认 prod 撞墙死路（基于 DB 中同字段集的实测 prod_corr）→ FAIL 拦截
+#   - 同表达式字段族 = 已知 prod 干净（prod<0.7）  → PASS（家族已探明，可扩批）
+#   - 新信号族（无任何 prod 记录）                  → WARN（建议先 prod-first 探针再扩批）
+# 判据是"表达式中字段集精确匹配"，独立于闸 2.6 的字段热度 / 数据集占比判据。
+
+_PF_OPS_GATE = set("""
+rank add multiply subtract divide group_rank group_zscore group_neutralize group_mean group_sum
+group_count group_scale group_std_dev group_backfill ts_mean ts_delta ts_zscore ts_rank ts_backfill
+ts_decay_linear ts_std_dev ts_sum ts_max ts_min ts_corr ts_covariance ts_regression ts_av_diff
+ts_arg_max ts_arg_min ts_product ts_quantile ts_count_nans ts_scale ts_step ts_returns ts_ir
+ts_delay ts_kurtosis ts_max_diff vec_avg vec_sum vec_max vec_min vec_stddev vec_count vec_range
+winsorize scale normalize signed_power quantile power reverse zscore abs log sign sqrt inverse
+densify pasteurize hump kth_element trade_when if_else bucket greater less equal and or not is_nan
+not_equal less_equal greater_equal max min days_from_last_change last_diff_value vector_neut tail
+industry sector subindustry market country exchange std range rettype driver buckets
+true false nan cap close open high low volume vwap returns adv20 sharesout free_float split dividend
+""".split())
+
+
+_OPS_PATTERN = re.compile(r"\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(")
+
+
+def _extract_ops(expr):
+    """提取表达式里所有函数调用名（小写）。"""
+    return [m.group(1).lower() for m in _OPS_PATTERN.finditer((expr or "").lower())]
+
+
+def _pf_family(expr, n_ops=2):
+    """信号族指纹 = 前 n_ops 个函数调用名 join（保留算子结构）。
+
+    判据：对 mdl135_d01_icc 的实证 —— 同字段在「+ vec_avg」骨架下 prod=0.76-0.82（死路），
+    在「+ vec_avg × ts_zscore」骨架下 prod=0.46-0.57（干净）。所以**骨架比字段更准**。
+    取前 n_ops=2 个算子做族指纹，平衡宽（易匹配）与窄（精准）的粒度。
+    """
+    ops = _extract_ops(expr)
+    return "→".join(ops[:n_ops]) if ops else "?"
+
+
+def _load_prod_wall_families(region, n_ops=2):
+    """读 alphas 表 + ledger_kv，按信号族指纹（骨架前缀）分组。
+
+    2026-09-25 P1 增强：除 alphas 表（全库 prod 覆盖率仅 4.4%）外，还读 ledger_kv
+    里 `prod_family_<region>_<skeleton>` 键（由 campaign_intel.py prod-first 探针
+    自动回写），让闸 PF 下次跑时能直接消费最新证据，不再只依赖 alphas 表的稀疏记录。
+
+    墙家族 = 同骨架至少有 1 条 prod_corr >= 0.7 的实测记录；
+    干净家族 = 有 >=1 条 prod_corr < 0.7 的记录。
+    """
+    try:
+        # 2026-09-27：勿硬编码本机路径（P1 R19 守护 test_wave_gate_db_path_never_hardcoded）；
+        # 复用统一解析：src 注入走 _campaign_store_cls（工作区 src 优先），库路径走 _wqb_db_path。
+        CampaignStore = _campaign_store_cls()
+        st = CampaignStore(_wqb_db_path())
+        try:
+            rows = st.list_alphas_by_region(region)  # 字段含 alpha_id/expression/prod_correlation/corr_checked_at
+        finally:
+            st.close()
+    except Exception:
+        return {}
+    fams = {}
+    for r in rows:
+        fam = _pf_family(r.get("expression") or "", n_ops)
+        if not fam or fam == "?":
+            continue
+        pc = r.get("prod_correlation")
+        if pc is None:
+            continue
+        pc = float(pc)
+        cur = fams.setdefault(fam, {"prod_corr": pc, "prod_max": pc, "n": 0, "n_wall": 0,
+                                    "examples": []})
+        cur["n"] += 1
+        # 2026-09-28 max/min 双记（此前只留 min=最干净，把"族里出现过 ≥0.7 撞墙"误标成干净，
+        # 注释却写"取最严格"）。死路判据看 min（全族皆墙才 enforced），混合证据看 max（WARN+加深）。
+        cur["prod_corr"] = min(cur["prod_corr"], pc)
+        cur["prod_max"] = max(cur.get("prod_max", pc), pc)
+        if pc >= 0.7:
+            cur["n_wall"] += 1
+        if len(cur["examples"]) < 3:
+            cur["examples"].append(r.get("expression", "")[:60])
+
+    if n_ops != 2:
+        # 3 算子粒度只用 alphas 行（ledger 键固定是 2 算子骨架名，无法反推）
+        return fams
+
+    # 2026-09-25 P1：合并 ledger_kv 里 prod-first 探针回写的骨架指纹（覆盖率补偿）
+    try:
+        import sqlite3 as _sq
+        _db = os.path.join(wqb_root, "data", "wqb.db")
+        _c = _sq.connect(_db)
+        _c.row_factory = _sq.Row
+        _prefix = f"prod_family_{region}_"
+        for _r in _c.execute(
+                "SELECT key, value FROM ledger_kv WHERE region=? AND key LIKE ?",
+                (region, _prefix + "%")):
+            try:
+                _fam = _r["key"][len(_prefix):]
+                _v = json.loads(_r["value"] or "{}")
+                _pc = _v.get("prod_corr")
+                if _pc is None or not _fam:
+                    continue
+                _pc = float(_pc)
+                _cur = fams.setdefault(_fam, {"prod_corr": _pc, "prod_max": _pc, "n": 0,
+                                             "n_wall": 0, "examples": []})
+                _cur["n"] += 1
+                _cur["prod_corr"] = min(_cur["prod_corr"], _pc)
+                _cur["prod_max"] = max(_cur.get("prod_max", _pc), _pc)
+                if _pc >= 0.7:
+                    _cur["n_wall"] += 1
+                if _v.get("alpha_id") and len(_cur["examples"]) < 3:
+                    _cur["examples"].append(_v["alpha_id"])
+            except Exception:
+                continue
+        _c.close()
+    except Exception:
+        pass
+    return fams
+
+
+def check_prod_family_gate(exprs, region, dataset, min_confidence_n=3):
+    """闸 PF：骨架级死路预检（prod-first 前置）。
+
+    判据（基于 mdl135_d01_icc 实证：骨架比字段更准）：
+      同骨架前缀（前 2 个算子）= 已确认 prod>=0.7 死路  → 拦截（fail-closed）
+      同骨架前缀 = 已探明 prod<0.7 干净                    → 通过（该骨架已探明）
+      新骨架前缀（无任何 prod 记录）                        → WARN（建议先 prod-first 探针）
+
+    2026-09-25 P5 增强（粒度自适应 + 置信度）：
+      - 区隔离：骨架指纹按 region 分库存储（ledger_kv `prod_family_<region>_*`），
+        避免跨区误判（rank→ts_backfill 在 KOR 干净 prod=0.54、在 IND 死路 prod=0.725）。
+      - 低置信度：骨架指纹 n < min_confidence_n（缺省 3）只 WARN 不 enforced，
+        避免小样本误伤（如 n=1 的 rank→group_zscore 在 KOR prod=0.763）。
+      - 粒度自适应：若某骨架前缀在本区有混合记录（干净 + 死路），自动加深到前 3 算子。
+
+    Returns report dict（供落 gate_results 与打印）：
+      status   = pass / warn / enforced(有家族死路)
+      violations = 命中已死路家族的表达式明细
+      unknown_families = 未探明的骨架指纹列表（建议 prod-first）
+      passed = not violations
+    """
+    fams = _load_prod_wall_families(region)
+
+    # 2026-09-25 P5：低置信度（n < min_confidence_n）只 WARN 不 enforced
+    dead_fams = {f: v for f, v in fams.items()
+                 if v["prod_corr"] >= 0.7 and v["n"] >= min_confidence_n}
+    dead_fams_low_conf = {f: v for f, v in fams.items()
+                          if v["prod_corr"] >= 0.7 and v["n"] < min_confidence_n}
+    # 2026-09-28：mixed = 同骨架既有 ≥0.7 撞墙记录又有干净记录（2 算子粒度过粗）。
+    # 此前这类族被 min() 归进 ok（GLB 实测 group_zscore→ts_decay_linear 37 条、
+    # max 0.9929 仍判"干净"），死路证据被吞。现单列 MIXED：不 enforced（避免误伤
+    # 干净变体），但也不算干净——走 3 算子加深判定，加深后仍混合 → WARN + 建议探针。
+    mixed_fams = {f: v for f, v in fams.items()
+                  if v.get("prod_max", v["prod_corr"]) >= 0.7 > v["prod_corr"]}
+    ok_fams = {f: v for f, v in fams.items()
+               if v.get("prod_max", v["prod_corr"]) < 0.7}
+    unknown_fams = set()
+
+    fams3 = None  # 懒加载：仅遇 MIXED 族才建 3 算子粒度索引
+
+    def _fams3_index():
+        nonlocal fams3
+        if fams3 is None:
+            fams3 = _load_prod_wall_families(region, n_ops=3)
+        return fams3
+
+    violations = []
+    expr_status = []  # per-expr for diagnostics
+    for i, expr in enumerate(exprs):
+        fam = _pf_family(expr)
+        if fam in dead_fams:
+            prod_v = fams[fam]["prod_corr"]
+            violations.append({"index": i, "family": fam, "prod_corr": prod_v,
+                               "reason": f"骨架指纹 '{fam}' 已确认 prod_corr={prod_v:.3f} ≥ 0.7 死路"
+                                         f"（族级 STOP，先换正交概念或新骨架）",
+                               "expr": expr[:100]})
+            expr_status.append({"index": i, "verdict": "DEAD", "family": fam})
+        elif fam in dead_fams_low_conf:
+            # 低置信度死路：只 WARN 不 enforced（避免小样本误伤）
+            prod_v = dead_fams_low_conf[fam]["prod_corr"]
+            expr_status.append({"index": i, "verdict": "WARN_LOW_CONF",
+                                "family": fam, "prod_corr": prod_v,
+                                "n": dead_fams_low_conf[fam]["n"]})
+            unknown_fams.add(fam)
+        elif fam in mixed_fams:
+            # MIXED：3 算子粒度加深再判一次（ledger 只存 2 算子键，加深索引只用 alphas 行）
+            fam3 = _pf_family(expr, 3)
+            f3 = _fams3_index().get(fam3)
+            if f3 and f3["prod_corr"] >= 0.7 and f3["n"] >= min_confidence_n:
+                violations.append({"index": i, "family": fam3, "granularity": 3,
+                                   "prod_corr": f3["prod_corr"],
+                                   "reason": f"骨架指纹 '{fam}' 证据混合，加深到 '{fam3}' 后确认 "
+                                             f"prod_corr={f3['prod_corr']:.3f} ≥ 0.7 死路",
+                                   "expr": expr[:100]})
+                expr_status.append({"index": i, "verdict": "DEAD", "family": fam3,
+                                    "granularity": 3})
+            elif f3 and f3.get("prod_max", f3["prod_corr"]) < 0.7:
+                expr_status.append({"index": i, "verdict": "OK_DEEP", "family": fam3,
+                                    "granularity": 3, "prod_corr": f3["prod_corr"]})
+            else:
+                unknown_fams.add(fam3 or fam)
+                expr_status.append({"index": i, "verdict": "WARN_MIXED", "family": fam,
+                                    "deep_family": fam3,
+                                    "prod_min": mixed_fams[fam]["prod_corr"],
+                                    "prod_max": mixed_fams[fam].get("prod_max"),
+                                    "n_wall": mixed_fams[fam].get("n_wall", 0)})
+        elif fam in ok_fams:
+            expr_status.append({"index": i, "verdict": "OK", "family": fam,
+                                "prod_corr": ok_fams[fam]["prod_corr"]})
+        else:
+            unknown_fams.add(fam)
+            expr_status.append({"index": i, "verdict": "UNKNOWN", "family": fam})
+
+    status = "enforced" if violations else ("warn" if unknown_fams else "pass")
+    report = {"status": status, "n_checked": len(exprs),
+              "n_history_families": len(fams),
+              "n_dead_families": len(dead_fams), "n_ok_families": len(ok_fams),
+              "n_mixed_families": len(mixed_fams),
+              "n_low_conf_dead_families": len(dead_fams_low_conf),
+              "n_unknown_families": len(unknown_fams),
+              "dead_families_sample": sorted(dead_fams)[:15],
+              "mixed_families_sample": sorted(mixed_fams)[:15],
+              "ok_families_sample": sorted(ok_fams)[:15],
+              "unknown_families_sample": sorted(unknown_fams)[:15],
+              "violations": violations, "expr_status": expr_status,
+              "passed": not violations}
+    if violations:
+        report["message"] = (f"{len(violations)}/{len(exprs)} 条表达式命中已死路骨架指纹"
+                             f"（{len(dead_fams)} 个骨架已确认死路，n≥{min_confidence_n}）—— 闸 PF 拦截")
+    elif unknown_fams:
+        report["message"] = (f"PASS；{len(unknown_fams)}/{len(exprs)}"
+                             f" 条表达式骨架指纹未探明或低置信度或证据混合，建议先 prod-first 探针"
+                             + (f"（mixed 族 {len(mixed_fams)} 个）" if mixed_fams else ""))
+    else:
+        report["message"] = f"PASS（{len(exprs)} 条全部命中已探明干净骨架）"
+    return report
+
+
+def format_prod_family_report(report):
+    lines = [f"[prod-family] 状态={report['status']} {report['message']}"]
+    if report.get("dead_families_sample"):
+        lines.append(f"[prod-family] 已死路骨架样本: {report['dead_families_sample'][:5]}"
+                     + (f" 等 {report.get('n_dead_families', 0)} 个" if report.get("n_dead_families", 0) > 5 else ""))
+    for v in report.get("violations", [])[:5]:
+        lines.append(f"[prod-family]   命中 #{v['index']}: prod={v['prod_corr']:.3f} {v['family']} | {v['expr']}")
+    return "\n".join(lines)
+
+
 def main():
     ap = argparse.ArgumentParser(description="每波门禁编排器：语法 + 5 闸 + 多样性")
     ap.add_argument("--campaign-dir", required=True, help="战役根目录 (如 tracking/KOR)")
@@ -549,6 +914,15 @@ def main():
     ap.add_argument("--exprs-file", help="每行一条表达式的 txt")
     ap.add_argument("--expr", help="单条表达式")
     ap.add_argument("--skip-diversity-gate", action="store_true", help="透传 toolkit gate.py（repair 批等）")
+    ap.add_argument("--skip-semantic-gate", action="store_true",
+                    help="跳过闸 SEM（字段语义归类硬门）。默认**强制开启**：缺 s1_semantic_<dataset> "
+                         "台账即 exit 2，命中非信号字段（货币代码/汇率/标识符/分类码）的表达式直接剔出候选。"
+                         "仅在已确认该数据集无需语义归类时显式使用（会打印醒目告警）。")
+    ap.add_argument("--semantic-gate", dest="semantic_gate", default=None,
+                    choices=("off", "warn", "enforce"),
+                    help="闸 SEM 模式（缺省读环境变量 WQB_SEM_MODE，兜底 enforce）："
+                         "off=跳过（= --skip-semantic-gate）/ warn=缺台账仅告警 / "
+                         "enforce=缺台账 exit 2 + 黑名单字段剔出候选。")
     ap.add_argument("--batch-type", default="explore", choices=("explore", "repair", "probe"),
                     help="repair/probe 批不做 qp 质量预估标注（2026-09-19：修复批实测 S2.1 却被预估 0.65 BLOCK，纯噪音）")
     ap.add_argument("--no-cache", action="store_true")
@@ -557,6 +931,12 @@ def main():
                     help="体检硬门「缺包」时的行为（缺省读环境变量 WQB_INSPECT_MODE，兜底 warn）："
                          "off=跳过不报 / warn=告警但放行（灰度默认）/ "
                          "enforce=fail-closed，缺包即整波拦截（开新数据集前建议 enforce）")
+    ap.add_argument("--prod-family-gate", dest="prod_family_gate", action="store_true",
+                    default=True,
+                    help="闸 PF：信号族死路预检（2026-09-25，零配额，纯静态）。命中已死路信号族拦截，"
+                         "新信号族 WARN 建议 prod-first 探针；--no-prod-family-gate 可关闭")
+    ap.add_argument("--no-prod-family-gate", dest="prod_family_gate", action="store_false",
+                    help="关闭闸 PF（默认开；enforced 态违规仍会拦截）")
     ap.add_argument("--skip-quality", action="store_true", help="跳过质量预估+六维多样性阶段")
     ap.add_argument("--quality-block", action="store_true",
                     help="EXPECTED_BLOCK 候选计入 FAIL（默认仅标注；回测配额闸门建议开启）")
@@ -668,6 +1048,46 @@ def main():
         except Exception as e:
             print(f"[s2fld] S1 字段校验失败（不阻断）: {e}")
             s2_field_report = {"pass": True, "message": f"校验异常: {e}"}
+
+    # ---- 0.2) 闸 SEM：字段语义归类硬门（2026-09-28 落地，fail-closed）----
+    # 起因：KOR/fundamental17 首波跳过了「字段经济含义归类」直接进 GEM，
+    # 348 条产物里 49.4% 落在货币代码 / 汇率叉乘这类**非信号字段**上
+    # （三角套汇恒等式、字符串分类码）—— 语法全对、语义全废，语法闸与 gate.py
+    # 都拦不住，只能靠回测烧配额。typed catalog（类型/覆盖/users）不回答
+    # 「这字段能不能当信号」，必须由 s1_semantic_<ds> 台账回答。
+    # 契约：
+    #   缺台账  -> 默认 fail-closed exit 2（并打印生成命令），--skip-semantic-gate 放行并告警
+    #   有台账  -> 命中 blocked_fields 的表达式**直接剔出候选**（不进语法闸、不进回测）
+    # 产物来源：python tools/field_semantic_classify.py --region <R> --dataset <DS> --write-ledger
+    # 模式解析：CLI > 环境变量 WQB_SEM_MODE > 缺省 enforce（与 WQB_INSPECT_MODE / WQB_GATE_MODE 同构）
+    _sem_mode = (os.environ.get("WQB_SEM_MODE") or "enforce").strip().lower()
+    if a.skip_semantic_gate or a.semantic_gate == "off":
+        _sem_mode = "off"
+    elif a.semantic_gate in ("warn", "enforce"):
+        _sem_mode = a.semantic_gate
+    if _sem_mode == "off":
+        print("[sem  ] ⚠ 闸 SEM 已关闭（--skip-semantic-gate / WQB_SEM_MODE=off）："
+              "非信号字段（货币代码/汇率/标识符）不会被拦截，语义废产物可能进回测烧配额。")
+    sem_report = None
+    if _sem_mode != "off":
+        try:
+            sem_report = _semantic_gate(a, campaign, items)
+            items = sem_report["items"]  # 已剔除黑名单命中项
+            if sem_report["ledger_missing"]:
+                print("[sem  ] %s 缺 s1_semantic_%s 台账。" % (
+                    "★★ 闸 SEM 阻断：" if _sem_mode == "enforce" else "[warn] 闸 SEM 告警：", a.dataset),
+                    file=sys.stderr)
+                print("[sem  ]    修复：python tools/field_semantic_classify.py --region %s "
+                      "--dataset %s --write-ledger" % (sem_report["region"], a.dataset), file=sys.stderr)
+                if _sem_mode == "enforce":
+                    print("[sem  ]    确需放行加 --skip-semantic-gate / --semantic-gate warn "
+                          "（会打印醒目告警并在 gate_results 留痕）。", file=sys.stderr)
+                    sys.exit(2)
+        except SystemExit:
+            raise
+        except Exception as e:
+            print(f"[sem  ] 闸 SEM 异常（不阻断）: {e}")
+            sem_report = None
 
     # ---- 1) 语法校验（PLY 括号/字段 + 算子元数/命名参数）----
     # 2026-09-07：hump(x, 0.005) 曾以"语法 8/8 PASS"过闸，平台回
@@ -790,6 +1210,27 @@ def main():
             report["field_inspect"] = {"status": "error", "error": str(e)}
             inspect_unavailable = True
 
+    # 2026-09-28 默认闸定调（新数据集首波 fail-closed）：用户未显式给 --inspect-mode、
+    # 也无 WQB_INSPECT_MODE 时，缺包行为自适应——新数据集首波（本区该集 0 回测）缺包
+    # → 升为 enforce（预处理约束不能裸奔到仿真）；熟集缺包 → 维持灰度 warn。
+    if inspect_unavailable and _inspect_mode != "off" and a.inspect_mode is None \
+            and not os.environ.get("WQB_INSPECT_MODE"):
+        try:
+            import sqlite3 as _sq9
+            _region9 = a.region or _settings_region(campaign) or ""
+            _c9 = _sq9.connect(_wqb_db_path(campaign))
+            try:
+                _n9 = _c9.execute(
+                    "SELECT COUNT(*) FROM backtest_results WHERE region=? AND dataset=?",
+                    (_region9, a.dataset)).fetchone()[0]
+            finally:
+                _c9.close()
+            if int(_n9 or 0) == 0:
+                _inspect_mode = "enforce"
+                print("[inspect] 新数据集首波缺体检包（本区该集 0 回测）→ 自动升为 enforce（fail-closed）")
+        except Exception:
+            pass  # 查不到库时维持灰度，不因环境问题拦波
+
     if inspect_unavailable and _inspect_mode == "enforce":
         print(
             "[inspect] ★★ fail-closed：本数据集无可用体检包（或体检执行异常），"
@@ -820,6 +1261,25 @@ def main():
     except Exception as e:
         print(f"[prod-sat] PROD 饱和闸执行异常（不阻断）: {e}")
         report["prod_saturation"] = {"status": "error", "error": str(e)}
+
+    # ---- 2.7) 闸 PF：信号族死路预检（2026-09-25 P2 落地）----
+    # 判据（独立于闸 2.6 的字段热度/数据集占比）：
+    #   同表达式字段集 = 已确认 prod>=0.7 死路  → 拦截
+    #   同表达式字段集 = 已探明 prod<0.7 干净   → 通过（家族已探明）
+    #   新信号族（无任何 prod 记录）            → WARN（建议 prod-first 探针）
+    # 判据精确性：表达式字段集与 alphas 表中实测字段集精确匹配，避免字段热力交叉。
+    pf_report = None
+    try:
+        _region = a.region or _settings_region(campaign) or ""
+        if _region:
+            pf_report = check_prod_family_gate(
+                [e for _, e in items], region=_region, dataset=a.dataset
+            )
+            print("\n" + format_prod_family_report(pf_report))
+            report["prod_family"] = pf_report
+    except Exception as e:
+        print(f"[prod-family] 闸 PF 执行异常（不阻断）: {e}")
+        report["prod_family"] = {"status": "error", "error": str(e)}
 
     # ---- 3) 六维多样性 + 质量预估（建议2/3 落地；仅对语法通过候选，避免噪声）----
     quality_block_ids = []
@@ -940,7 +1400,7 @@ def main():
                     "message": f"算子类别覆盖不足：缺 {', '.join(hard_missing)} 类别"
                                 f"（Group/Vector 必须；Logical 仅事件型数据集必须）"
                 }
-                print(f"[opcat] 算子类别覆盖 FAIL：缺 {', '.join(hard_missing)} 类别")
+                print(f"[opcat][INFO] 算子类别覆盖不足（提示性，不计入 FAIL）：缺 {', '.join(hard_missing)} 类别")
                 print(f"        Logical: {category_coverage['Logical']['covered']}/{category_coverage['Logical']['total']}"
                       f"{'（事件型数据集，必须）' if logical_required else '（非事件型，不强制）'}, "
                       f"Group: {category_coverage['Group']['covered']}/{category_coverage['Group']['total']}, "
@@ -983,16 +1443,18 @@ def main():
                     qp_summary["hard_reject"] += 1
                     quality_block_ids.append(cid)
                     qp_summary["blocked"].append({"id": cid, "reasons": qr["reasons"], "verdict": v})
-                    print(f"[qp   ] HARD_REJECT {cid}: {'; '.join(qr['reasons'])}")
+                    print(f"[qp   ][INFO] ADVISORY_HARD {cid}: {'; '.join(qr['reasons'])}（建议性标注，不判 FAIL）")
                 else:  # EXPECTED_BLOCK
                     qp_summary["expected_block"] += 1
                     quality_block_ids.append(cid)
                     qp_summary["blocked"].append({"id": cid, "reasons": qr["reasons"], "verdict": v})
-                    print(f"[qp   ] BLOCK {cid}: {'; '.join(qr['reasons'])}")
+                    print(f"[qp   ][INFO] ADVISORY {cid}: {'; '.join(qr['reasons'])}（建议性标注，不判 FAIL）")
             report["quality_predict"] = qp_summary
-            print(f"[qp   ] 质量预估: DIRECT={qp_summary['direct_submit']} COMBO={qp_summary['combo_candidate']} "
-                  f"WEAK={qp_summary['weak_signal']} BLOCK={qp_summary['expected_block']} "
-                  f"HARD={qp_summary['hard_reject']}" + ("（计入 FAIL）" if a.quality_block else "（仅标注）"))
+            print(f"[qp   ] 质量预估（INFO 建议层，2026-09-28 降级——实测把真实过闸者/ACTIVE 原式也判 BLOCK）: "
+                  f"DIRECT={qp_summary['direct_submit']} COMBO={qp_summary['combo_candidate']} "
+                  f"WEAK={qp_summary['weak_signal']} ADV_BLOCK={qp_summary['expected_block']} "
+                  f"ADV_HARD={qp_summary['hard_reject']}"
+                  + ("（--quality-block：计入 FAIL）" if a.quality_block else "（仅标注）"))
         except Exception as e:
             report["quality_predict"] = {"error": str(e)}
             print(f"[qp   ] 质量预估阶段失败（不阻断门禁）: {e}")
@@ -1051,18 +1513,31 @@ def main():
         else:
             print(f"[var  ] 参数变体聚类 PASS（无同骨架同字段变体）")
 
-    try:
-        CampaignStore = _campaign_store_cls(campaign)
-        settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
-        region = a.region or settings.get("region")
-        st = CampaignStore(_wqb_db_path(campaign))
+    def _persist_gate_report(final_all_pass=None):
+        """落 gate_results。final_all_pass 非 None 时写 final verdict。
+
+        2026-09-28 修：`store.upsert_gate_result` 取的是 `report.get("all_pass")`，
+        而本函数内 all_pass 是在**这次写库之后**才算出来的 → DB 列恒为 0，
+        与 report_json 里的真实判定打架。停止规则 C（`gate_results.all_pass 全 0`
+        → 判区域信号族死）会因此误杀。故末尾用真实 verdict 再 upsert 一次覆盖。
+        """
         try:
-            st.upsert_gate_result(region, str(tag), a.dataset, report)
-        finally:
-            st.close()
-        print(f"\n[out  ] db gate_results/{region}/{tag}/{a.dataset}")
-    except Exception as e:
-        print(f"[out  ] gate 入库失败: {e}")
+            _store = _campaign_store_cls(campaign)
+            _settings = json.load(open(os.path.join(campaign, "config", "settings.json"), encoding="utf-8"))
+            _region = a.region or _settings.get("region")
+            if final_all_pass is not None:
+                report["all_pass"] = bool(final_all_pass)
+            _st = _store(_wqb_db_path(campaign))
+            try:
+                _st.upsert_gate_result(_region, str(tag), a.dataset, report)
+            finally:
+                _st.close()
+            print(f"\n[out  ] db gate_results/{_region}/{tag}/{a.dataset}"
+                  + (f" all_pass={report['all_pass']}" if final_all_pass is not None else ""))
+        except Exception as e:
+            print(f"[out  ] gate 入库失败: {e}")
+
+    _persist_gate_report()
 
     # ---- 4) 探针批模式（可选）----
     probe_report = None
@@ -1119,6 +1594,11 @@ def main():
         n_v = len(prod_sat_report.get("violations") or [])
         print(f"[done ] PROD 饱和闸拦截：{n_v} 条命中饱和字段"
               + ("；当前数据集整判饱和" if prod_sat_report.get("current_dataset_saturated") else ""))
+    # 闸 PF 硬阻断：命中已死路信号族 → 整波拦截
+    if pf_report and pf_report.get("status") == "enforced" and pf_report.get("violations"):
+        all_pass = False
+        n_v = len(pf_report.get("violations") or [])
+        print(f"[done ] 闸 PF 拦截：{n_v} 条命中已死路信号族（prod_corr ≥0.7 已实测死路）")
     g = gate_json  # ERROR 已在调用处退出，此处 all_pass 必为 bool（不再有 None 终态）
     qp = report.get("quality_predict") or {}
     qp_note = ""
@@ -1136,8 +1616,16 @@ def main():
     print(f"[done ] 语法 {report['syntax']['passed']}/{report['syntax']['total']}, "
           f"gate all_pass={str(g['all_pass']).lower()} passed={g.get('passed')}/{g.get('total')}"
           f"{qp_note}{gem_note}{s2fld_note}{probe_note} => {'PASS' if all_pass else 'FAIL'}")
+    # 用**最终 verdict** 覆盖写一次（首次落库时 all_pass 尚未算出，见 _persist_gate_report 注释）
+    _persist_gate_report(final_all_pass=all_pass)
     sys.exit(0 if all_pass else 1)
 
 if __name__ == "__main__":
     import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
-    main()
+    # L3 写库互斥（2026-09-20）：门禁写 gate_results/expressions，与 build_wave/pipeline/harvest 排队
+    _src = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+    from wqb.db_write_lock import write_lock as _wlock
+    with _wlock(tag="dbwrite_wave_gate", ttl_sec=1200, wait_timeout=120):
+        main()

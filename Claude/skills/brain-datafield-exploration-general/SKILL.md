@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: brain-datafield-exploration-general
 description: "提供 6 种经过验证的方法来评估 WorldQuant BRAIN 平台上的新数据字段（datafield）。 涵盖覆盖率（coverage）、非零值、更新频率、取值范围、中心趋势与分布形态的评测方法。 当用户想了解某个具体 datafield 时使用（如\"这个字段是什么？\"\"它多久更新一次？\"）。"
 layer: L1
@@ -18,6 +18,14 @@ allowed-tools:
 **运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
 
 # 评估新数据字段的 6 种方法
+
+## 职责边界
+
+- **本 skill 负责**：**单字段级**评测（覆盖/非零/更新频率/取值范围/中心趋势/分布形态）
+- **本 skill 不做**：不选数据集（上游已定）；不做特征工程决策；不生成表达式
+- **上游 / 下游**：上游 = 数据集探索；下游 = 特征工程决策 / S1 字段白名单
+
+
 
 本 skill 提供 6 种方法，用于快速评估 WorldQuant BRAIN 平台上的新数据字段（datafield）。
 完整指南与详细示例见 [reference.md](reference.md)。

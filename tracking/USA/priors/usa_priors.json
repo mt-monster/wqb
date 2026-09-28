@@ -69,6 +69,13 @@
    "_entry_id": "USA-AI-NEWS-SCORES-DEAD"
   },
   {
+   "family": "analyst44 BEst revision breadth / dispersion / forward E-P z-score",
+   "reason": "Bloomberg BEst cold fields (users 2-27): 4wk up-down breadth ratios for EPS/sales/EBIT/net/DPS |S|<=0.59, eps_chg_pct 0.49 (tvr 0.67), dispersion 0.28. Only forward E/P z-score rank(ts_zscore(divide(ts_backfill(vec_avg(anl44_best_eps),22),close),252)) reached S1.54/F1.10/2Y1.67/tvr0.07 (O0Nw1J5Y, LOW_SHARPE warn only) but PROD 0.9289 with ~2.9k production alphas >0.7 -> valuation-momentum is fully saturated in USA.",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL"
+  },
+  {
    "family": "continuation_score ascending_channel similarity delta",
    "reason": "Ascending channel similarity 5d delta reversed has sharpe ceiling ~1.36 but fitness ceiling ~0.42. Fitness too low for platform gate 1.0.",
    "salvage": null,
@@ -111,18 +118,11 @@
    "_entry_id": "USA-INSIDERS1-DEU-CONVICTION-WEAK"
   },
   {
-   "family": "model",
-   "reason": "fitness 天花板 0.95-1.00，sub 天花板 0.52（SECTOR），无法同时达标。最佳候选 GrlGJnPJ sh2.02/fit1.01/sub0.91 已提交 ACTIVE，但后续变体无法突破。option_quantile5_r20_pred 字段 sub 特性差（天花板 0.52）。",
-   "salvage": "已提交 GrlGJnPJ ACTIVE，无需进一步挖掘",
+   "family": "intraday_pv_feats 价量相关反转 / 尾盘 30m 反转（含关注/量占比门控与慢化变体）",
+   "reason": "USA 不再投 ipv 反转族（fitness 墙 <1.0 结构性）。",
+   "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "USA-MFP-FITNESS-SUB-CEILING"
-  },
-  {
-   "family": "multifactor_return_pred regression difference",
-   "reason": "60d-120d regression difference all negative sharpe (max -0.33, min -1.33)",
-   "salvage": "focus on quantile5 mix and event_x_confidence families",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-MFP-REGRESSION-DIFF-DEAD"
+   "_entry_id": "USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921"
   }
  ],
  "region_context": {
@@ -150,60 +150,60 @@
   ]
  },
  "gate_priors": {
-  "sample_size": 991,
-  "pass_rate": 0.1171,
+  "sample_size": 985,
+  "pass_rate": 0.1168,
   "by_neutralization": {
    "MARKET": {
-    "rate": 0.1208,
-    "n": 447
+    "rate": 0.1174,
+    "n": 443
    },
    "SUBINDUSTRY": {
-    "rate": 0.1004,
-    "n": 508
+    "rate": 0.099,
+    "n": 505
    }
   },
   "by_universe": {
    "TOP3000": {
-    "rate": 0.1138,
-    "n": 984
+    "rate": 0.1126,
+    "n": 977
    }
   },
   "by_operator_count": {
    "5-8": {
-    "rate": 0.201,
-    "n": 209
+    "rate": 0.1934,
+    "n": 212
    },
    "<=4": {
-    "rate": 0.0879,
-    "n": 762
+    "rate": 0.0882,
+    "n": 748
    },
    ">8": {
-    "rate": 0.35,
-    "n": 20
+    "rate": 0.32,
+    "n": 25
    }
   },
   "by_decay": {
    "5": {
-    "rate": 0.1296,
-    "n": 463
+    "rate": 0.125,
+    "n": 464
    },
    "0": {
-    "rate": 0.0942,
-    "n": 499
+    "rate": 0.0976,
+    "n": 492
    },
    "6": {
-    "rate": 0.3889,
-    "n": 18
+    "rate": 0.4118,
+    "n": 17
    }
   },
   "by_field_family": {
    "fnd": {
-    "rate": 0.0937,
-    "n": 619
+    "rate": 0.0872,
+    "n": 608
    },
    "mdl": {
-    "rate": 0.1454,
-    "n": 282
+    "rate": 0.148,
+    "n": 277
    },
    "annual": {
     "rate": 0.25,
@@ -211,7 +211,7 @@
    }
   },
   "avoid": [],
-  "generated_at": "2026-09-07T18:10:36.201701+00:00",
+  "generated_at": "2026-09-18T14:51:44.377985+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
  },
  "settings_prior": {
@@ -220,11 +220,11 @@
    {
     "dim": "decay",
     "current": 5,
-    "current_rate": 0.1296,
-    "current_n": 463,
+    "current_rate": 0.125,
+    "current_n": 464,
     "recommended": 5,
-    "rate": 0.1296,
-    "n": 463,
+    "rate": 0.125,
+    "n": 464,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false
@@ -232,12 +232,12 @@
    {
     "dim": "neutralization",
     "current": "SUBINDUSTRY",
-    "current_rate": 0.1004,
-    "current_n": 508,
+    "current_rate": 0.099,
+    "current_n": 505,
     "recommended": "MARKET",
-    "rate": 0.1208,
-    "n": 447,
-    "lift": 1.2,
+    "rate": 0.1174,
+    "n": 443,
+    "lift": 1.19,
     "source": "gate_priors",
     "apply": false
    }

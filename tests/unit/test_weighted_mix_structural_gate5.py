@@ -76,6 +76,9 @@ MUST_BLOCK_STRUCTURAL = [
 MUST_BLOCK_ANY = [
     # GEM 8 月真实产出形态：函数式 multiply 权重（func_prefix 拦）
     "quantile(add(multiply(0.7, rank(fnd6_xyz)), multiply(0.3, rank(fnd7_abc))))",
+    # 2026-09-28 政策变更：等权 add 两条独立信号腿同属违规族（原有豁免已取消）
+    "add(rank(close), rank(returns))",
+    "add(group_rank(close, industry), group_rank(returns, sector))",
 ]
 
 
@@ -97,10 +100,13 @@ def test_functional_forms_blocked_by_any_poison(gate, poison, expr):
 # ---------------------------------------------------------------------------
 
 MUST_PASS = [
-    "add(rank(close), rank(returns))",                     # 等权（无系数）
+    # ⚠ 2026-09-28 政策变更：`add(rank(close), rank(returns))` 原列于此（等权豁免），
+    # 但用户 2026-09-28 定案「不得把两条独立信号腿加权相加，无论 add(multiply(0.4,…))
+    # 还是 0.4A+0.6B；等权即 0.5A+0.5B，属同一违规族，任何含混表述不构成例外」。
+    # 该式已移入 MUST_BLOCK_ANY（见下方），此处不再放行。
     "rank(0.5*multiply(close, returns))",                  # 单腿系数缩放（非 add 上下文）
     "multiply(0.5, rank(close))",                          # 函数式单腿缩放
-    "divide(flow, add(stock, 0.0001))",                    # 分母 eps 保护
+    "divide(flow, add(stock, 0.0001))",                    # 分母 eps 保护（1 腿 + 标量）
     # 五类结构交互（用户定案唯一放行的组合形态，2026-09-16 直调实测全 PASS）
     "ts_corr(rank(fnd6_x), rank(fnd7_y), 66)",
     "group_zscore(ts_delta(fnd6_x, 22), subindustry)",
@@ -108,6 +114,8 @@ MUST_PASS = [
     "if_else(greater(ts_mean(fnd6_x, 5), 0), rank(fnd7_y), -1)",
     # 单系数腿 + 常数偏移（只有 1 个系数腿）
     "add(0.5*rank(close), 5)",
+    # 同形态仅窗口差异 = 单信号多窗平滑（不构成两条独立信号腿）
+    "add(ts_mean(close, 22), ts_mean(close, 66))",
 ]
 
 

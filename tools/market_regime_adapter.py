@@ -5,6 +5,9 @@
 基于波动率、趋势强度、市场情绪等指标判断市场状态.
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import os
@@ -111,7 +114,7 @@ class MarketRegimeAdapter:
     def _calculate_volatility(self, region: str, days: int) -> float:
         """计算市场波动率."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             
             # 从市场数据表查询（如有）
@@ -136,7 +139,7 @@ class MarketRegimeAdapter:
     def _calculate_trend_strength(self, region: str, days: int) -> float:
         """计算趋势强度."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             
             cursor.execute("""

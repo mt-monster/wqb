@@ -421,16 +421,34 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     # 即判加权混合（含嵌套，如 quantile(add(multiply(0.7,X), multiply(0.3,Y)))）。
     # 等权 add(rank(a), rank(b)) 不拦（无系数）；单腿系数缩放 0.5*rank(a) 不拦（<2 条腿）。
     structural_mix = _detect_weighted_mix_structural(expr)
+    # 2026-09-28 补充：「等权」加两条独立信号腿同样违规（既有判定明文豁免等权 → 实测漏网）。
+    # 详见 _detect_equal_weight_leg_add 文档；KOR wave189/190 实证 7 条漏网已作废。
+    _non_field = known_ops | group_ids | driver_args | kw_args
+    structural_equal_leg = _detect_equal_weight_leg_add(expr, _non_field)
     structural_only = False
     for pp in poison_patterns:
         if pp.get("severity", "block") != "block":
             continue
-        if pp.get("_structural") and pp["name"] == "weighted_signal_mix_structural":
+        if pp.get("_structural") and pp["name"] in (
+                "weighted_signal_mix_structural", "equal_weight_leg_add"):
             # 结构判定的命中在循环外统一追加（见下），此处只标记存在性
             structural_only = True
             continue
         if re.search(pp["regex"], expr):
             issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+    if structural_equal_leg:
+        for pp in poison_patterns:
+            if pp.get("name") == "equal_weight_leg_add":
+                issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+                break
+        else:
+            issues.append(
+                "[POISON:equal_weight_leg_add] add() 等权相加两条独立信号腿 = 混信号调参，"
+                "全局禁止（无论 add(multiply(0.4,...)) 还是 0.4A+0.6B）。"
+                "合规替代：①单信号结构 ts_scale / subtract(rank(A), rank(B))（价差，需有经济含义）"
+                "②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B）。"
+                "不得靠增删腿数或调权重修不达标信号。"
+            )
     if structural_mix:
         for pp in poison_patterns:
             if pp.get("name") == "weighted_signal_mix_structural":
@@ -523,6 +541,58 @@ def _detect_weighted_mix_structural(expr):
         if not args or len(args) < 2:
             continue
         if sum(1 for a in args if _COEF_PREFIX_RE.match(a)) >= 2:
+            return True
+    return False
+
+
+#: 纯数值实参（epsilon / 常数）：不是信号腿
+_NUM_ONLY_RE = re.compile(r"^\s*[-+]?\d*\.?\d+\s*$")
+_IDENT_TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_INT_TOKEN_RE = re.compile(r"\b\d+\b")
+
+
+def _is_signal_leg(arg, non_field):
+    """实参是否为「信号腿」：至少引用一个数据字段（非算子/非分组标签/非参数名），且非纯常数。
+
+    `add(abs(x), 0.01)` 里的 `0.01` 是 epsilon 标量 → 不算腿（该形态全局在用，必须放行）。
+    """
+    a = (arg or "").strip()
+    if not a or _NUM_ONLY_RE.match(a):
+        return False
+    for tok in _IDENT_TOKEN_RE.findall(a):
+        if tok not in non_field and not tok.startswith(
+                ("ts_", "group_", "vec_", "reduce_", "bucket_", "quantile_")):
+            return True
+    return False
+
+
+def _normalize_numbers(s):
+    """把窗口/常数归一成 N，用于判断两条腿是否只是「同形态不同窗口」。"""
+    return _INT_TOKEN_RE.sub("N", re.sub(r"\s+", "", s or ""))
+
+
+def _detect_equal_weight_leg_add(expr, non_field):
+    """闸5 结构判定（2026-09-28 新增）：「等权」加两条**独立信号腿**同样违规。
+
+    背景：既有 `_detect_weighted_mix_structural` 只拦「实参以 系数* 开头」的腿，
+    **明文豁免等权 add(rank(a), rank(b))**。而全局纪律是「不得把两条独立信号腿
+    加权相加，无论写成 add(multiply(0.4,...)) 还是 0.4A+0.6B」——等权即 0.5A+0.5B，
+    属同一违规族。实证代价：KOR wave189/190 共 7 条 `add(group_rank(腿A), group_rank(腿B))`
+    （含 S=2.11/F=1.80/2Y=1.89 的漂亮结果）全部通过闸5 → 已全部作废。
+
+    判定：某 `add(` 的顶层实参中 ≥2 个是信号腿，且这些腿**形态不同**
+    （归一化数字后仍不相等 —— 仅窗口不同的同形态叠加视为单信号多窗平滑，放行）。
+    `add(abs(x), 0.01)`（1 条腿 + 标量）、`add(ts_mean(x,22), ts_mean(x,66))`
+    （同形态不同窗）均放行。
+    """
+    for m in _ADD_OPEN_RE.finditer(expr):
+        args, _ = _top_level_args(expr, m.end())
+        if not args or len(args) < 2:
+            continue
+        legs = [a for a in args if _is_signal_leg(a, non_field)]
+        if len(legs) < 2:
+            continue
+        if len({_normalize_numbers(a) for a in legs}) >= 2:
             return True
     return False
 
@@ -767,21 +837,44 @@ def check_batch_diversity(exprs, ctx, batch_type="explore", skip=False, dataset=
             ops_present = set(_op_call.findall(e)) & req_ops
             return {(op, f) for op in ops_present for f in _leaf(e)}
 
-        per_expr = [_expr_combos(e) for e in exprs]
-        combos = set().union(*per_expr) if per_expr else set()
-        op_hits = len(combos)
-        need = inj.get("per_batch_min_operators", 2)
-        if op_hits < need:
+        # 2026-09-24 P1 强度优先：闸 6 从「跨族算子组合」改为「字段族不重复」。
+        # 原实现要求每批 ≥2 个互异 (算子,字段) 组合使用 required 算子，
+        # 导致 build_wave 的 diversity-heal 注入 group_cartesian_product(sector,sector)
+        # 等 degenerate 式凑数（5 次命中），烧配额在无意义式上。
+        # 现改为：只查「同一字段族不重复」（用 _lib.common.expr_fields 提取字段集合，
+        # 同一字段集合的表达式最多 max_field_repeat 条），多样性交给字段族不重复
+        # 与算子树分桶（bucket_key）来控，不再强制跨族算子组合。
+        # 字段族不重复检查（2026-09-24 P1）：同一字段集合的表达式最多 max_field_repeat 条
+        _max_field_repeat = int(os.environ.get("WQB_MAX_FIELD_REPEAT", "3"))
+        _field_counter = collections.Counter()
+        _field_duplicates = []
+        for e in exprs:
+            fields = frozenset(expr_fields(e, known_ops=None, min_len=6))
+            _field_counter[fields] += 1
+            if _field_counter[fields] > _max_field_repeat:
+                _field_duplicates.append({
+                    "fields": sorted(fields),
+                    "count": _field_counter[fields],
+                    "limit": _max_field_repeat,
+                })
+        if _field_duplicates:
             issues.append(
-                f"[DIVERSITY] 注入算子(字段组合)达标 {op_hits}/{need}：每批至少 {need} 个"
-                f"互异 (算子,字段) 组合使用 {sorted(req_ops)} 之一"
-                f"（契约 issued_at={inj.get('issued_at')}）")
+                f"[DIVERSITY-FIELD] 字段族重复超限：{len(_field_duplicates)} 个字段族"
+                f"出现次数 > {_max_field_repeat}（同一字段集合的表达式过多，"
+                f"回测必高相关；请换字段组合或换信号概念）"
+            )
+            for dup in _field_duplicates[:5]:  # 只留前 5 个示例
+                print(f"[DIVERSITY-FIELD] 字段族 {dup['fields']} 出现 {dup['count']} 次"
+                      f"（上限 {_max_field_repeat}）")
         # 可选冗余粗筛（无需收益数据）：两条表达式的 (算子,字段) 组合集完全相同
         #   = 结构性近重复信号，建议保留其一避免浪费配额（非阻断 WARN）。
-        _sig_counter = collections.Counter(frozenset(c) for c in per_expr)
+        # 2026-09-24 P1：per_expr 已随「跨族算子组合」检查一起移除，
+        # 结构性近重复信号改用字段集合判定（同一字段集合出现 >1 次即 WARN）。
+        _field_sets = [frozenset(expr_fields(e, known_ops=None, min_len=6)) for e in exprs]
+        _sig_counter = collections.Counter(_field_sets)
         for _s, _c in _sig_counter.items():
             if _c > 1 and _s:
-                print(f"[DIVERSITY-WARN] 结构性近重复信号（{_c} 条共享组合集 "
+                print(f"[DIVERSITY-WARN] 结构性近重复信号（{_c} 条共享字段集合 "
                       f"{sorted(_s)}）——建议保留其一，避免浪费配额")
     skel_counts = collections.Counter(skeleton(e) for e in exprs)
     for name, quota in (inj.get("skeleton_quota") or {}).items():

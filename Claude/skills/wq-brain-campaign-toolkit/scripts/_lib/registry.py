@@ -11,6 +11,9 @@
 layer 约定：dead_end / win / campaign / orphan（schema.sql §17 registry_empirical）。
 CLI 由 campaign.py registry 转发；查表走 wqb-db-mcp（只读），写库走本入口。
 """
+import sys as _sys_m, os as _os_m
+_sys_m.path.insert(0, str(_os_m.path.dirname(_os_m.path.abspath(__file__))))  # _lib 可导入
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import datetime
 import json
@@ -40,7 +43,7 @@ class RegistryStore:
 
     def _conn(self):
         import sqlite3
-        conn = sqlite3.connect(self.db_path)
+        conn = db_connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 

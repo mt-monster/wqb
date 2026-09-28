@@ -13,6 +13,9 @@
   python tools/populate_external_fields.py --region IND
   python tools/populate_external_fields.py --region IND --dry-run
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import json
 import re
@@ -48,7 +51,7 @@ def main():
     ap.add_argument("--db", default=DB)
     args = ap.parse_args()
 
-    conn = sqlite3.connect(args.db)
+    conn = db_connect(args.db)
     conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
 

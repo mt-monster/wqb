@@ -81,18 +81,22 @@
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
    "other": 1.15,
-   "pv": 1.0,
+   "pv": 1.15,
    "model": 1.15,
-   "news": 1.0,
    "earnings": 1.15,
+   "shortinterest": 1.0,
+   "sentiment": 1.0,
    "fundamental": 1.15,
-   "institutions": 1.15
+   "institutions": 1.15,
+   "analyst": 1.15,
+   "option": 1.0,
+   "news": 1.0
   },
   "crowd_sweet_spot_enable": true,
   "sweet_spot_ac_min": 44,
-  "sweet_spot_ac_max": 2271,
-  "_calibrated_at": "2026-09-17T23:37:18",
-  "_calibrated_from": "alpha_store 730 alphas/29 ds + results/ 扫描 → 共 30 datasets 实测"
+  "sweet_spot_ac_max": 2107769,
+  "_calibrated_at": "2026-09-28T14:57:03",
+  "_calibrated_from": "alpha_store 871 alphas/39 ds + results/ 扫描 → 共 40 datasets 实测"
  },
  "mode_b_qualification": {
   "sharpe_min": 1.0,

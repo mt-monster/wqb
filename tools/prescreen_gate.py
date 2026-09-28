@@ -27,6 +27,9 @@ import sqlite3
 import sys
 from datetime import datetime, timezone
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(REPO, "data", "wqb.db")
 
@@ -34,7 +37,7 @@ DB = os.path.join(REPO, "data", "wqb.db")
 def _ledger_has_prescreen(region: str) -> bool:
     if not os.path.exists(DB):
         return False
-    conn = sqlite3.connect(DB)
+    conn = db_connect(DB)
     try:
         row = conn.execute(
             "SELECT value FROM ledger_kv WHERE region=? AND key=?",
@@ -45,7 +48,7 @@ def _ledger_has_prescreen(region: str) -> bool:
 
 
 def _record(region: str, source: str, summary: dict) -> str:
-    conn = sqlite3.connect(DB)
+    conn = db_connect(DB)
     try:
         conn.execute(
             "INSERT OR REPLACE INTO ledger_kv (region, key, value, updated_at) "

@@ -293,7 +293,15 @@ def test_eur_universes_aligned_with_platform():
     assert "TOPCS1600" in REGIONS["EUR"]["universes"]
     assert "TOP800" in REGIONS["EUR"]["universes"]
     assert "TOP400" in REGIONS["EUR"]["universes"]
-    assert "ILLIQUID_MINVOL1M" in REGIONS["EUR"]["universes"]
+    # 2026-09-22 平台实测：simulations 对 ILLIQUID_MINVOL1M 返回
+    # "Universe ILLIQUID_MINVOL1M is not available."，且 get_platform_setting_options
+    # 的 EUR/D1 档位只有 TOP2500/TOPCS1600/TOP1200/TOP800/TOP400。
+    # 旧断言把这个不存在的档位写成了「与平台对齐」，会把选池/换档实验直接带偏
+    # （本仓踩过：首批 universe 探针因它吃了 400）。此处锁死负向断言，
+    # 要改回去必须先拿到平台侧新证据。
+    assert "ILLIQUID_MINVOL1M" not in REGIONS["EUR"]["universes"]
+    assert "ILLIQUID_MINVOL1M" not in REGIONS["USA"]["universes"]
+    assert "ILLIQUID_MINVOL1M" not in REGIONS["ASI"]["universes"]
 
 
 def test_mining_policy_caps_category_weight_and_requires_quota():

@@ -2,7 +2,7 @@
 name: brain-alpha-repair
 layer: L4
 description: "修复或演化弱候选 alpha：在保持多样性与可追溯性的前提下降 turnover、提覆盖、降相关性，或从反复失败的搜索轨迹中恢复。触发词：候选修复 / 降换手 / 提覆盖 / 降相关 / 失败轨迹恢复。"
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 allowed-tools:
   - Read
   - Bash
@@ -14,6 +14,14 @@ allowed-tools:
 > 本文件只保留**不适合放进通用工作流的补充实证与执行纪律**：WebDataScope failed-count 作为修复成功判据、GLB emotion 族降相关失败的完整实证（§2d）、USA REGULAR 的 universe 默认约定、trajectory 可追溯性要求。
 
 # BRAIN Alpha 修复
+
+## 职责边界
+
+- **本 skill 负责**：弱候选的**修复配方查表**：降换手、提覆盖、降相关、失败轨迹恢复
+- **本 skill 不做**：**改进入口仍是 `wq-brain-alpha-optimization-v1`** —— 本 skill 只作配方参考，不直接执行改进；不提交
+- **上游 / 下游**：上游 = 弱候选；下游 = optimization-v1
+
+
 
 ## 触发场景
 

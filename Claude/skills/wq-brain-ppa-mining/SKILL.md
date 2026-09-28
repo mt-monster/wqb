@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 name: wq-brain-ppa-mining
 description: "WorldQuant Brain 平台未点亮金字塔数据集 PPA (Power Pool Alpha) 挖掘的完整工作流。以「平台实时体检硬门槛」(coverage≥0.85 / alphaCount≤50 / fieldCount≥10) 为开战役前置条件，整合 WebDataScope 数据集级/字段级 meta-analysis，把“凭经验猜参数”升级为“读数据定参数”，覆盖数据集选择、中性化选择、字段预处理、时间窗口选择、低竞争白空间发现与闸门检查。触发场景：用户提到 WQ Brain、WorldQuant、PPA、Power Pool Alpha、alpha 挖掘、未点亮数据集; 用户要求在 WQ Brain 平台上找可提交的 alpha; 用户问\"怎么选数据集/字段/中性化/时间窗口\"或\"哪些数据集竞争少\"; 用户要开新战役 / 换区域 / 问某数据集能不能打 → 必须先执行 §1.0 平台实时体检; 出现\"某数据集平台没数据/字段为 0/数据包过期\"的判断 → 先按 §1.3 排除跨区域误推荐"
 layer: L0
@@ -16,6 +16,13 @@ allowed-tools:
 
 
 # WQ Brain PPA Alpha 挖掘方法论 (WebDataScope 增强版)
+
+## 职责边界
+
+- **本 skill 负责**：PPA 主题匹配核查 + S0 体检**三硬门槛方法论**（cov≥0.85 / alphaCount≤50 / fieldCount≥10）
+- **本 skill 不做**：**不作编排器**——PPA 挖掘的编排走 `wq-brain-ra-pipeline` 的 PPA 分支；不产出配置包；不提交
+- **上游 / 下游**：上游 = 平台 Power Pool 公告 + 本地快照；下游 = S0 体检（执行 = toolkit `score_datasets.py`）
+
 
 ## 0. 总纲：数据驱动，而非经验驱动
 
@@ -52,6 +59,7 @@ WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统
 SK=<SKILL_ROOT>/wq-brain-ppa-mining/scripts/dataset_health_check.py
 
 # 数据集级体检（首选，秒级返回）
+
 python "$SK" --region EUR --delay 1 --universe TOP1200
 
 # 字段级下钻（确认某数据集的字段覆盖分布）
@@ -296,7 +304,7 @@ scale(rank(ts_zscore(subtract(
 - `hump(x, hump=0.01)` 必须命名参数。
 - 429 限流：短退避重试（wait=min(20+attempt*8, 45)s，最多 ~40 次）。
 - 孤儿模拟占槽：`TaskStop` 制造孤儿，只能等其自行释放。
-- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：68 工具（另有 wqb-db 台账服务器 36 工具）——**计数唯一基准与统计口径见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」，勿在他处裸写数字**，含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎：**9 个节点**快捷方式 campaign/feature_engineering/gem/batch_track/judge/submit_alpha/superalpha/wave_gate/**hypothesis_round** + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`）。连接需用户在连接器页 Trust。
+- MCP（lavender1203 fork，Streamable HTTP，端口 8876）：**工具与 workflow 节点的计数唯一基准与统计口径见 `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」——此处不裸写数字**（2026-09-26 审计：本行曾裸写 68/36/9 的过时计数，已删），含 `mcp__wq-brain-http__get_datasets` / `mcp__wq-brain-http__get_datafields` / `mcp__wq-brain-http__create_multi_simulation` / `mcp__wq-brain-http__get_user_alphas`（count 上限 10000）/ `mcp__wq-brain-http__get_platform_setting_options` / `mcp__wq-brain-http__operator_audit` / `mcp__wq-brain-http__submit_verdict` / `mcp__wq-brain-http__workflow_*`（workflow 引擎快捷方式 campaign/feature_engineering/gem/batch_track/judge/submit_alpha/superalpha/wave_gate/**hypothesis_round** + `workflow_list_nodes` / `workflow_execute` / `workflow_chain`；**节点总数见 INDEX 基准段，此处不裸写**）。连接需用户在连接器页 Trust。
 
 ### 9.1 data-sets / data-fields 实测约束（2026-08-05 验证，勿重复踩坑）
 

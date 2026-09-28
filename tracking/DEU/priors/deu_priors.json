@@ -1,6 +1,70 @@
 {
- "wins": [],
+ "wins": [
+  {
+   "id": "DEU-AEI-STARMINE-HYBRID-WIN",
+   "what": "主辅机制显式：starmine E14/PS12E/D14 三腿（S/F 载体）+ aei group_rank 位置（2y 载体）+ zscore 反转腿（ts_zscore 归一化短反转，同时抬 S/2y；窗口 5 或 group 化最稳）",
+   "key": "hybrid 配方（starmine 修订/惊喜腿 × aei 位置/反转腿）：883Y3bAW 2.17/1.24/2y2.09 ra_failed=0；883Y3bqW 1.93/1.18/2y2.03 ra_failed=0；prod 0.4666/0.4723；与旗舰 883Yzbqo corr 0.6929(<0.7 可共存)",
+   "evidence": "hybrid 配方（starmine 修订/惊喜腿 × aei 位置/反转腿）：883Y3bAW 2.17/1.24/2y2.09 ra_failed=0；883Y3bqW 1.93/1.18/2y2.03 ra_failed=0；prod 0.4666/0.4723；与旗舰 883Yzbqo corr 0.6929(<0.7 可共存)",
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-DLRISKFREE-WIN",
+   "what": "DEU-DLRISKFREE-WIN",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-INSIDER-DSLOT-WIN",
+   "what": "DEU-INSIDER-DSLOT-WIN",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-M238-FULLGATE-WIN",
+   "what": "DEU-M238-FULLGATE-WIN",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-M264-STARMINE-HYBRID-WIN",
+   "what": "ML 方向预测腿（mdl264_amihud_class 三档趋势）× 分析师修订腿；关键配方件：D90 修订腿（ebitda_90d_3）ts_mean 5→22 平滑——2y 1.57→2.11",
+   "key": "model264(amihud_class 流动性方向) × starmine(修订%×E14/D14/PS12E) hybrid：0mR6PRo6 1.94/1.45/2y2.11 ra_failed=0 全闸；prod 0.6075；与 883Y3bAW corr 0.5997 独立可共存",
+   "evidence": "model264(amihud_class 流动性方向) × starmine(修订%×E14/D14/PS12E) hybrid：0mR6PRo6 1.94/1.45/2y2.11 ra_failed=0 全闸；prod 0.6075；与 883Y3bAW corr 0.5997 独立可共存",
+   "source": "registry_win"
+  },
+  {
+   "id": "DEU-SI3-REVIVAL-WIN",
+   "what": "DEU-SI3-REVIVAL-WIN",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  }
+ ],
  "dead_ends": [
+  {
+   "family": "field_level_fail",
+   "reason": "这 4 个 insider 交易字段在 DEU 暂不投入（可能为平台侧字段数据问题）；如需复用先单独探针验证。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-A2-SPARSE-INTRADAY-FIELDS-FAIL"
+  },
+  {
+   "family": "analyst_earnings_ibes 反转/低波/量价/换手方向",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-AEI-NONMOMENTUM-DEAD"
+  },
+  {
+   "family": "analyst_earnings_ibes 纯位置线（52周位置+zscore 反转）",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-AEI-PUREPOSITION-F-CEIL"
+  },
   {
    "family": "analyst93 跨字段/跨集复合结构（ts_corr / trade_when / multiply / divide / bucket / group / subtract）",
    "reason": ">24 种复合结构全数弱化或否定：ts_corr 0.46 / trade_when 1.06（CW 恶化）/ multiply ≤0.08 / divide 0.79 / bucket 分桶中性化 1.24（低于主腿 1.28）/ group_rank×bucket 0.80 / group_zscore×bucket 0.76 / subtract 价差 0.47（新增于 wave108）。单字段平滑（ts_mean/ts_decay_linear）与 group_rank 组内（1.24-1.28）为唯一有效形态。",
@@ -30,18 +94,39 @@
    "_entry_id": "DEU-CROSSSET-RESCUE-DEAD"
   },
   {
-   "family": "news18 全字段情绪/新闻类",
-   "reason": "fast_kill：8 探针 max|S|=0.09（全部 |S|<0.5），含情绪系(ssc/sse/qcm/composite)、影响系(nip)、新奇度系——DEU 的 Ravenpack 新闻数据无信号（tvr 0.11-1.14 且无 sharpe）。",
+   "family": "residual_cov_under_05",
+   "reason": "",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "DEU-NEWS18-ALLDEAD"
+   "_entry_id": "DEU-D-RESIDUAL-SETS-DEAD-20260916"
   },
   {
-   "family": "DEU D0 日内快信号（pattern_scores/pv29/pv30/other455）",
-   "reason": "DEU D0 快信号路径在数据集层不可行：凡依赖历史计算的字段(形态相似度/行业分类/关系/残差)在 D0 都不可用。D0 仅适合当天到达的稀疏事件/新闻/日内量价原始字段，且需先 get_datafields(delay=0) 实测字段存在性再生成。DEU 回 D1 或转他区。",
+   "family": "delay0",
+   "reason": "",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "DEU-W104-D0-DATASET-EMPTY-DEAD"
+   "_entry_id": "DEU-DELAY0-BLOCKED"
+  },
+  {
+   "family": "coverage_empty_in_region",
+   "reason": "DEU 下 option1/pv20/fundamental17 不再进白名单，除非平台侧字段供给恢复（先 get_datafields 看 coverage>0）",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-EMPTY-COVERAGE-S0-PICKS-20260919"
+  },
+  {
+   "family": "fund_holdings_panel",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-FHP-ALLGATE-CLOSED"
+  },
+  {
+   "family": "fundamental6 (accrual/growth/leverage/margin composites)",
+   "reason": "DEU 不再投 fundamental6 单/双字段基本面比率方向；低频年度基本面在 DEU TOP500 D1 无截面信号",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "DEU-FUNDAMENTAL6-PROBE-DEAD-20260923"
   }
  ],
  "region_context": {},
@@ -58,92 +143,155 @@
   ]
  },
  "gate_priors": {
-  "avoid": [
-   "neutralization=INDUSTRY(0%, n=202)",
-   "neutralization=SECTOR(0%, n=83)",
-   "neutralization=MARKET(0%, n=40)",
-   "neutralization=SUBINDUSTRY(0%, n=72)",
-   "field_family=mdl(0%, n=290)",
-   "universe=TOP500(0%, n=418)"
-  ],
-  "by_decay": {
-   "0": {
-    "n": 20,
-    "rate": 0
-   },
-   "12": {
-    "n": 39,
-    "rate": 0
-   },
-   "4": {
-    "n": 106,
-    "rate": 0
-   },
-   "6": {
-    "n": 104,
-    "rate": 0
-   },
-   "8": {
-    "n": 149,
-    "rate": 0
-   }
-  },
-  "by_field_family": {
-   "mdl": {
-    "n": 290,
-    "rate": 0
-   },
-   "star": {
-    "n": 16,
-    "rate": 0
-   }
-  },
+  "sample_size": 1000,
+  "pass_rate": 0.079,
   "by_neutralization": {
-   "INDUSTRY": {
-    "n": 202,
-    "rate": 0
-   },
-   "MARKET": {
-    "n": 40,
-    "rate": 0
+   "SUBINDUSTRY": {
+    "rate": 0.0983,
+    "n": 804
    },
    "NONE": {
-    "n": 21,
-    "rate": 0
+    "rate": 0.0,
+    "n": 28
+   },
+   "STATISTICAL": {
+    "rate": 0.0,
+    "n": 22
+   },
+   "INDUSTRY": {
+    "rate": 0.0,
+    "n": 100
    },
    "SECTOR": {
-    "n": 83,
-    "rate": 0
-   },
-   "SUBINDUSTRY": {
-    "n": 72,
-    "rate": 0
-   }
-  },
-  "by_operator_count": {
-   "5-8": {
-    "n": 68,
-    "rate": 0
-   },
-   "<=4": {
-    "n": 168,
-    "rate": 0
-   },
-   ">8": {
-    "n": 182,
-    "rate": 0
+    "rate": 0.0,
+    "n": 37
    }
   },
   "by_universe": {
    "TOP500": {
-    "n": 418,
-    "rate": 0
+    "rate": 0.079,
+    "n": 1000
    }
   },
-  "generated_at": "2026-09-11T18:35:03.116635+00:00",
-  "pass_rate": 0,
-  "sample_size": 418,
+  "by_operator_count": {
+   ">8": {
+    "rate": 0.1232,
+    "n": 609
+   },
+   "<=4": {
+    "rate": 0.0,
+    "n": 253
+   },
+   "5-8": {
+    "rate": 0.029,
+    "n": 138
+   }
+  },
+  "by_decay": {
+   "4": {
+    "rate": 0.0969,
+    "n": 815
+   },
+   "8": {
+    "rate": 0.0,
+    "n": 96
+   },
+   "0": {
+    "rate": 0.0,
+    "n": 28
+   },
+   "6": {
+    "rate": 0.0,
+    "n": 44
+   }
+  },
+  "by_field_family": {
+   "oth": {
+    "rate": 0.0822,
+    "n": 73
+   },
+   "mdl": {
+    "rate": 0.0652,
+    "n": 353
+   },
+   "mean": {
+    "rate": 0.0746,
+    "n": 201
+   },
+   "directional": {
+    "rate": 0.0317,
+    "n": 63
+   },
+   "quantile": {
+    "rate": 0.25,
+    "n": 16
+   },
+   "rsk": {
+    "rate": 0.1765,
+    "n": 17
+   },
+   "snl": {
+    "rate": 0.1667,
+    "n": 18
+   },
+   "snt": {
+    "rate": 0.0,
+    "n": 26
+   },
+   "stable": {
+    "rate": 0.0,
+    "n": 22
+   },
+   "anl": {
+    "rate": 0.0,
+    "n": 36
+   },
+   "eur": {
+    "rate": 0.0,
+    "n": 21
+   },
+   "closing": {
+    "rate": 0.0,
+    "n": 51
+   }
+  },
+  "avoid": [
+   "neutralization=INDUSTRY(0%, n=100)",
+   "neutralization=SECTOR(0%, n=37)",
+   "field_family=anl(0%, n=36)",
+   "field_family=closing(0%, n=51)"
+  ],
+  "generated_at": "2026-09-19T15:19:00.915103+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.0969,
+    "current_n": 815,
+    "recommended": 4,
+    "rate": 0.0969,
+    "n": 815,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "SUBINDUSTRY",
+    "current_rate": 0.0983,
+    "current_n": 804,
+    "recommended": "SUBINDUSTRY",
+    "rate": 0.0983,
+    "n": 804,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
  },
  "skeleton_field_matrix": {
   "effective": [

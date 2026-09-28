@@ -1,0 +1,727 @@
+{
+ "dataset": "model238",
+ "region": "HKG",
+ "universe": "TOP800",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 44
+ },
+ "field_type_distribution": {
+  "signal": 44
+ },
+ "field_count": 44,
+ "fetched_at": "2026-09-26T01:35:12",
+ "fields": [
+  {
+   "id": "country_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Normalized (0–100) float value for the stock’s Smart Holdings score within its country",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "country_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 5,
+   "alphaCount": 5,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its country",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_change_in_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9677,
+   "userCount": 11,
+   "alphaCount": 14,
+   "description": "Normalized (float, 0–100) global rank of the Change Component, representing recent changes (momentum) in ownership signa",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_change_in_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalized (0-100) score of the recent change momentum for the stock globally",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_institutional_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 7,
+   "alphaCount": 10,
+   "description": "Normalized (0–100) float percentile rank of the stock’s Smart Holdings score globally. Higher value = higher likelihood ",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_institutional_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 8,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership at global level",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_peer_investment_concentration_rank",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalized (0–100) float value measuring global peer crowding/risk, where higher values indicate higher global instituti",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_peer_investment_concentration_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Normalized (0-100) peer ownership score for the stock at the global level",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_screening_factor_alignment_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 6,
+   "alphaCount": 6,
+   "description": "Normalized (0–100) float value indicating the stock's style-fit or screening component, globally, adjusted for peer char",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "global_screening_factor_alignment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 4,
+   "description": "Normalized (0-100) score of the stock’s style-fit (screening component) globally, adjusted for peer ownership",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.9606,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized (0–100) float value representing the stock’s Smart Holdings score within its industry",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "industry_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its industry",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_country_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 2,
+   "alphaCount": 3,
+   "description": "Country rank (1–100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within that cou",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_country_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 25,
+   "alphaCount": 34,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its country according to the Sm",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_change_rank",
+   "type": "MATRIX",
+   "coverage": 0.9677,
+   "userCount": 3,
+   "alphaCount": 31,
+   "description": "Global rank (1–100) for the momentum or recent change component, representing the degree of recent increase in instituti",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_change_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 12,
+   "description": "Rank (1–100) measuring recent changes or momentum in institutional ownership for the stock, globally",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_owner_rank",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Global rank (1–100) of peer crowding/capacity risk. 100 = highest global institutional ownership (most crowded), 1 = low",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_owner_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 8,
+   "alphaCount": 13,
+   "description": "Peer ownership score of the stock globally, ranked 1-100 where 100 indicates highest peer ownership and liquidity risk",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Global rank (1–100) of Smart Holdings model score. Higher ranks imply greater probability of global institutional owners",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 32,
+   "alphaCount": 57,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock across the global universe according t",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_screening_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Global rank (1–100) of the stock’s style-fit or screening component, adjusted for peer characteristics. Higher values re",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_global_screening_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 23,
+   "alphaCount": 36,
+   "description": "Peers-adjusted screening (style fit) score for a stock, ranked 1-100 at the global level, indicating how well its charac",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_industry_rank",
+   "type": "MATRIX",
+   "coverage": 0.9606,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Industry rank (1–100) of Smart Holdings score. Higher rank means higher probability of institutional ownership within th",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_industry_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 9,
+   "alphaCount": 30,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its industry according to the S",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_change_rank",
+   "type": "MATRIX",
+   "coverage": 0.9677,
+   "userCount": 7,
+   "alphaCount": 9,
+   "description": "Regional rank (1–100) indicating the strength of recent change or momentum in institutional ownership within the region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_change_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 11,
+   "alphaCount": 13,
+   "description": "Rank (1-100) of recent changes or momentum in ownership signals for the stock within its region, reflecting directional ",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_owner_rank",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 1,
+   "alphaCount": 1,
+   "description": "Regional rank (1–100) of peer crowding. 100 = highest regional institutional ownership (most crowded), 1 = lowest. Highl",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_owner_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Peer ownership score of the stock within its region, ranked 1-100 where 100 indicates highest peer ownership and liquidi",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 5,
+   "alphaCount": 6,
+   "description": "Regional rank (1–100) of Smart Holdings score. Higher rank = higher likelihood of institutional ownership within the reg",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 15,
+   "alphaCount": 16,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its region according to the Sma",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_screening_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 7,
+   "alphaCount": 7,
+   "description": "Regional rank (1–100) of the stock’s style-fit or screening component, peer-adjusted. Higher rank suggests stronger regi",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_region_screening_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 14,
+   "alphaCount": 21,
+   "description": "Peers-adjusted screening (style fit) score for a stock, ranked 1-100 within its region, indicating how well its characte",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_sector_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Sector rank (1–100) of Smart Holdings score. Higher values represent higher expected institutional ownership in that sec",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "mdl238_sector_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 27,
+   "alphaCount": 32,
+   "description": "Rank (1–100) representing the likelihood of institutional ownership for the stock within its sector according to the Sma",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_change_in_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.9677,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Normalized (float, 0–100) regional rank of the Change Component, representing momentum in institutional ownership signal",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_change_in_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalized (0-100) score of the recent change momentum for the stock in its region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_institutional_preference_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Normalized (0–100) float value for the stock’s Smart Holdings score within its region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_institutional_preference_rank_d1",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 5,
+   "alphaCount": 7,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_peer_investment_concentration_rank",
+   "type": "MATRIX",
+   "coverage": 0.9678,
+   "userCount": 0,
+   "alphaCount": 0,
+   "description": "Normalized (0–100) float value measuring regional peer crowding. High values mean higher institutional ownership regiona",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_peer_investment_concentration_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 2,
+   "alphaCount": 2,
+   "description": "Normalized (0-100) peer ownership score for the stock in its region",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_screening_factor_alignment_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 3,
+   "alphaCount": 4,
+   "description": "Normalized (0–100) float value indicating the stock's style-fit or screening component within the region, adjusted for p",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "regional_screening_factor_alignment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 4,
+   "alphaCount": 4,
+   "description": "Normalized (0-100) score of the stock’s style-fit (screening component) in its region, adjusted for peer ownership",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_investment_rank",
+   "type": "MATRIX",
+   "coverage": 0.968,
+   "userCount": 3,
+   "alphaCount": 3,
+   "description": "Normalized (0–100) float value reflecting the stock’s Smart Holdings score within its sector",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  },
+  {
+   "id": "sector_relative_investment_rank_d1",
+   "type": "MATRIX",
+   "coverage": 1.0,
+   "userCount": 10,
+   "alphaCount": 13,
+   "description": "Normalized (0-100) score of the stock's likelihood of institutional ownership within its sector",
+   "field_type": "signal",
+   "recommended_operators": [
+    "rank",
+    "ts_delta",
+    "ts_mean",
+    "ts_zscore",
+    "group_zscore"
+   ]
+  }
+ ],
+ "cache_metadata": {
+  "cached_at": "2026-09-26T01:35:12",
+  "ttl_seconds": 86400,
+  "source": "platform_api"
+ },
+ "exported_from_db_at": "2026-09-26T01:57:57"
+}

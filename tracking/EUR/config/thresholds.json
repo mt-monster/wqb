@@ -98,25 +98,28 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 3,
   "category_weights": {
-   "other": 1.0,
-   "model": 1.15,
    "news": 1.15,
-   "risk": 1.0,
-   "pv": 1.15,
    "analyst": 0.9,
-   "institutions": 0.9
+   "other": 1.0,
+   "sentiment": 0.9,
+   "fundamental": 0.9,
+   "risk": 1.0,
+   "institutions": 0.9,
+   "insiders": 0.9,
+   "pv": 1.15,
+   "model": 1.15
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 205,
-  "sweet_spot_ac_max": 561,
+  "sweet_spot_ac_min": 14,
+  "sweet_spot_ac_max": 246,
   "empirical_weight": 0.4,
   "empirical_prior_neutral": 0.45,
   "flatten_model_when_saturated": true,
   "saturation_demotion_enable": true,
   "_p0_p2_p5_note": "2026-09-14 白名单机制 review opt-in（canonical 默认见 src/wqb/config.py DATASET_HEALTH_SCORING）：P0 empirical_weight=0.4 经验强度先验（数据源 ledger dataset_empirical_prior，由 calibrate 写入；无历史取中性 0.45 轻度折价，依据本区 ac<50 零竞争多伪白空间实证）；P5 flatten_model_when_saturated 区域饱和态（saturated_datasets 台账非空）时 model 不再 ×1.15 助推；P2 saturation_demotion_enable 命中 saturated_datasets 台账自动降 excluded。未 opt-in 区默认 OFF 不受影响。",
   "_sweet_spot_audit": "2026-09-14 人工审：校准器原始输出 ac=$318-340680$，上限被 pv1（ac=340680）污染。根因=Xgojww1X（sharpe1.80）表达式两次使用群组变量 subindustry；subindustry/industry/sector 在本区 catalog 中唯一属于 pv1，重复计票致该 alpha 被误归 pv1 → pv1 进入强信号集。人工修正上限回 561（与 2026-09-10 校准值一致，剔除污染点）。toolkit 候选缺陷：_expr_fields 未去重 token（P6 2026-09-14 已修：去重 + 剔除 subindustry/industry/sector 等分组变量关键字，下次 calibrate 起甜区不再被污染）。",
-  "_calibrated_at": "2026-09-14T21:22:24",
-  "_calibrated_from": "alpha_store 301 alphas/25 ds + results/ 扫描 → 共 25 datasets 实测"
+  "_calibrated_at": "2026-09-24T19:28:01",
+  "_calibrated_from": "alpha_store 476 alphas/43 ds + results/ 扫描 → 共 43 datasets 实测"
  },
  "mode_b_qualification": {
   "$ref": "GLOBAL/mode_b_qualification",

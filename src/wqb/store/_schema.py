@@ -309,6 +309,36 @@ class SchemaMixin:
             ("corr_checked_at", "TIMESTAMP"),
         ):
             self._add_column("alphas", col, ddl)
+        # ---- 2026-09-20：OS（样本外）表现落库 ----
+        # 背景：平台 alpha 对象的 `os` 段此前从未落库，MCP `get_alpha_details`
+        #   的 _slim_alpha() 也只取 `is` 段 —— 导致「已提交 alpha 的样本外表现」
+        #   在本地完全不可查，每次都要绕过 MCP 直连平台 API。
+        #   实测（228 个 OS alpha / 124 个含 OS 指标）：IS sharpe 均值 1.53 →
+        #   OS 0.55（osISSharpeRatio 均值 0.358）、22% 的 alpha OS<=0。
+        #   该组字段是「IS 指标虚高程度」的实证基线，反哺步 7 IS 阈值校准。
+        #   全部可空，不破坏既有数据。
+        for col, ddl in (
+            # os_startDate：OS 窗口起点（当前平台统一 2023-01-21）
+            ("os_start_date", "TEXT"),
+            ("os_sharpe", "DECIMAL(8,4)"),
+            ("os_fitness", "DECIMAL(8,4)"),
+            ("os_turnover", "DECIMAL(8,4)"),
+            ("os_returns", "DECIMAL(8,4)"),
+            ("os_drawdown", "DECIMAL(8,4)"),
+            ("os_margin", "DECIMAL(8,4)"),
+            # 分窗口 OS sharpe（平台 os 段原生提供）
+            ("os_sharpe60", "DECIMAL(8,4)"),
+            ("os_sharpe125", "DECIMAL(8,4)"),
+            ("os_sharpe250", "DECIMAL(8,4)"),
+            ("os_sharpe500", "DECIMAL(8,4)"),
+            ("os_preclose_sharpe", "DECIMAL(8,4)"),
+            # 核心衰减比：OS sharpe / IS sharpe（平台原生 osISSharpeRatio）
+            ("os_is_sharpe_ratio", "DECIMAL(8,4)"),
+            ("os_preclose_sharpe_ratio", "DECIMAL(8,4)"),
+            # 溯源：何时从平台同步的 OS 数据
+            ("os_synced_at", "TIMESTAMP"),
+        ):
+            self._add_column("alphas", col, ddl)
         # 索引：按相关性筛候选是高频查询路径（prod<=0.7 / self<=0.7 双闸预筛）
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_alphas_prod_corr "

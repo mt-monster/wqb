@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: brain-explain-alphas
 description: "提供分析并解释 WorldQuant BRAIN alpha 表达式的逐步工作流。 当用户要求解释某个具体 alpha 表达式、某个 datafield 的作用、或算子如何协同工作时使用。 包括数据字段查询（data field lookup）、算子分析与外部调研等步骤。"
 layer: L4
@@ -16,6 +16,14 @@ allowed-tools:
 
 
 # Alpha 表达式解释工作流
+
+## 职责边界
+
+- **本 skill 负责**：收益来源归因与机制解释（按需：Mode B 换概念前先查概念重叠）
+- **本 skill 不做**：不改表达式、不回测、不判提交；**不是每候选必经**（按需调用）
+- **上游 / 下游**：上游 = 具体 alpha；下游 = optimization-v1 Mode B
+
+
 
 本手册提供分析并解释 WorldQuant BRAIN alpha 表达式的工作流。
 完整详细工作流与示例见 [reference.md](reference.md)。

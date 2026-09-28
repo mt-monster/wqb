@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: alpha-expression-verifier
 description: "校验 alpha 表达式的语法（不关心字段是否存在）。当需要检查 alpha 表达式字符串的语法是否合法、函数参数是否正确、括号是否匹配时使用。仅限语法层面；战役级预检（字段/类型/毒化）见 wq-brain-campaign-toolkit。"
 layer: L2
@@ -17,6 +17,14 @@ allowed-tools:
 
 # 表达式校验器（Expression Verifier）
 
+## 职责边界
+
+- **本 skill 负责**：**纯语法层**校验：括号匹配、算子元数、函数参数合法性
+- **本 skill 不做**：不做战役层字段校验与 8 闸门禁（`wq-brain-campaign-toolkit/scripts/gate.py`）；不生成表达式、不回测；**不判定该字段在平台是否可用**
+- **上游 / 下游**：上游 = 表达式文本；下游 = 人工核对或 GEM 生成侧预检
+
+
+
 本 skill 使用项目自带的 `ExpressionValidator` 校验数学/逻辑表达式的语法。
 
 它执行以下检查：
@@ -26,6 +34,8 @@ allowed-tools:
 4. **括号匹配（Parenthesis Matching）**。
 
 **注意**：本 skill **不**校验表达式中引用的数据字段（变量）在数据库中是否存在，只检查它们是否以合法标识符形式使用。
+
+`densify()` 允许以字段标识符输入原生 GROUP 分组轴（例如客户网络簇）；本层无法仅凭字段名确认平台类型。其输出仍是分组键，不能交给 `rank()` 等数值信号参数使用；字段存在性和平台类型须继续过战役门禁。
 
 ## 使用方法
 

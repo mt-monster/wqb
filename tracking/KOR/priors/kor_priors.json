@@ -15,135 +15,119 @@
    "source": "region_kb"
   },
   {
-   "id": "win",
-   "what": "win",
+   "id": "target_prc 溢价 ts_zscore（近提交级但 prod 墙，待主题轮换）",
+   "what": "target_prc 溢价 ts_zscore（近提交级但 prod 墙，待主题轮换）",
+   "key": "group_rank(ts_zscore(divide(vec_avg(anl25_target_prc_med), close), 66), industry)",
+   "evidence": "mLgknM1p（KOR analyst25，2026-09-04）；ra_failed=0 全 checks PASS",
+   "source": "region_kb"
+  },
+  {
+   "id": "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
+   "what": "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
    "key": "",
-   "evidence": "ZY0R0mL8 S=1.59/F=1.25/2Y=1.17/SU=1.49/CLUSTER=1.17/TO=0.0959/prod=0.6003/self=0.084，submit_verdict=SUBMITTABLE；同族 kqVxVol8 1.60/1.25/2Y=1.04、e79l96JJ 1.59/1.24/2Y=1.08（三者互相关 0.99 为同一颗）",
-   "source": "registry_win"
-  },
-  {
-   "id": "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
-   "what": "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
-   "key": "慢变量 2y 金矿(评级修正 2.14) × 短周期低相关信号(SH) 混合三闸全过: 评级2+SH1 → 1.77/1.40/2y 2.52; 评级1+SH3 → 1.83/1.14/2y 2.34。与同周期慢信号(LT)混合全灭",
    "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "KOR-W113-PVDOM-SECTOR-WIN",
-   "what": "wave113 grp_sec wpjJK60l: gvm(1x)+pv20(2x) blend wrapped group_neutralize(sector) -> PROD 0.6993 PASS, submitted ACTIVE (5th KOR RA)",
-   "key": "value_mom slow axis + price_volume_quantile1_20d_pred fast leg + expression-level group_neutralize(sector); sector strip is the only proven PROD-wall exit for this crowded blend space",
-   "evidence": "",
+   "id": "KOR-REV1-COMBO-WIN",
+   "what": "fnd94正向profitability族信号为负（做多高capex/销售比、低净利率的股票），取反后做多'净利率−capex/销售'获得正Sharpe",
+   "key": "WjP12jqO(REV1单信号 S1.29/F0.89/prod0.6731) + 883bmjLm(REV1+pv106组合 S1.36/F0.84/prod0.6596/self0.136/SUBMITTABLE)",
+   "evidence": "WjP12jqO(REV1单信号 S1.29/F0.89/prod0.6731) + 883bmjLm(REV1+pv106组合 S1.36/F0.84/prod0.6596/self0.136/SUBMITTABLE)",
    "source": "registry_win"
   },
   {
-   "id": "T-KB-01 慢×快跨周期混合",
-   "what": "T-KB-01 慢×快跨周期混合",
-   "key": "skeleton=rank(add(multiply(w_s, rank(SLOW_FIELD)), multiply(w_f, rank(FAST_FIELD)))); iron_law=必须跨周期/跨数据源；同周期互混零增量",
-   "evidence": "评级修正×SH，sh 1.77-1.83/2y 2.34-2.52",
-   "source": "template_kb_validated"
+   "id": "KOR-COMBO-LEG-CONSTRAINT",
+   "what": "KOR-COMBO-LEG-CONSTRAINT",
+   "key": "WjP12jqO(fnd94单信号 S1.29/F0.89/prod0.67) + WjPEg2zd(analyst+pv组合 S1.78/F1.64/prod0.73) + 88lr21xo(analyst+model组合 S1.77/F1.40/prod0.57 ACTIVE)",
+   "evidence": "WjP12jqO(fnd94单信号 S1.29/F0.89/prod0.67) + WjPEg2zd(analyst+pv组合 S1.78/F1.64/prod0.73) + 88lr21xo(analyst+model组合 S1.77/F1.40/prod0.57 ACTIVE)",
+   "source": "registry_win"
   }
  ],
  "dead_ends": [
   {
-   "family": "acquisition_model 收购概率",
-   "reason": "wave70 10/10 FAIL：收购概率类信号（global/industry/region_percentile_acquisition_likelihood）sharpe 天花板 0.27，2y 全负（-0.65~-1.34），NLP 文本因子 0.12，复合信号 -0.03~0.13 无正交增益",
-   "salvage": "model170 隐含估值/市价比率（9qXgWY79 sharpe 0.64/2y 0.37 全场唯一 2y 为正），CW 结构性集中需先解决集中度",
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ACQ-MODEL-DEAD"
+   "family": "region_kb",
+   "reason": "value/quality 与评级修正在本区 book 已饱和（KOR-VALUE-QUALITY-SEEDS / KOR-MLPROJ-RATING-SH-SATURATED prod 0.897-0.929）",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_factor_transfer technical clones",
-   "reason": "wave126 8/8 RED max abs sh 0.86 (13w price change momentum clone); uc0 white-space fields carry no independent signal, classical indicators are price/volume clones",
-   "salvage": "none",
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-AI-FACTOR-TRANSFER-DEAD"
+   "family": "region_kb",
+   "reason": "稀疏事件流 CW 墙：论坛/行为/AI equity 三族 CW 0.85-1.0 结构性 FAIL",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_equity_alpha probe",
-   "reason": "wave101 8探针5方向全灭: 最高0.51(H3盈余修正强度60d zscore), 全批<=0.51; CONCENTRATED_WEIGHT 1.0 结构性FAIL普遍(2019-03-04事件日集中), TVR 77-79%高超限",
-   "salvage": "保留 alpha_excess_return_forecast/analyst_earnings_revision_intensity 线索, 若未来有非事件日聚合方法可再探",
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-AIEQUITY-PROBE-DEAD"
+   "family": "region_kb",
+   "reason": "情感族全灭（news_sentiment_transfer / news79）",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "ai_factor_transfer",
-   "reason": "wave96 首探 6/6 COMPLETE 全 RED: 最佳 A3 BB position 1.02 但 2y -0.78 investability 0.24 双 FAIL; 资金流/动量/量异常相关全部 <1.0; AI 转移技术指标在 KOR TOP600 信号弱",
-   "salvage": "无; 数据集整体无信号",
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-AI_FACTOR_TRANSFER-DEAD"
+   "family": "region_kb",
+   "reason": "图表形态三连死（chart_cnn / continuation / pattern_scores 首探）",
+   "source": "region_kb_dead_pattern"
   },
   {
-   "family": "mode_a_parameter_tuning",
-   "reason": "",
+   "family": "region_kb",
+   "reason": "模型预测类二次动量是噪声；MSM 5d 组合族 fitness 天花板 0.99 / 2y 1.24",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "配方家族扩展天花板：主导腿不变时 SELF ≥0.9 可设计前预判（wave104/E10 四次实证）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "other455 三连死（group cluster / network embedding / revision cluster）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "target_prc 主题 prod_corr 墙：V4 ts_zscore(溢价) Sharpe1.76 但 prod_corr 0.82（被单条 target_prc 生产 alpha 顶到 0.8-0.9）；换算子(ts_delta/ts_rank/quantile) 0.80-0.83 全撞；组腿(eps_estimate) prod 0.62 破墙但 Sharpe 稀释到 1.35——prod_corr 与 Sharpe 不可兼得，主题级拥挤判死（2026-09-04 实证）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "eps 修正广度 prod_corr 0.76（eps_even_cnt 78ZVYjPx，与多条分析师 alpha 相关 0.6-0.8 共 135 条）——分析师主题整体拥挤",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "risk70 MFM2 风格因子载荷（momentum/ltrevrsl/btop/resvol/profit/growth/leverage/earnvar/season/beta/invsqlty/anlystsn/shortint/dsrt/srisk/market）",
+   "reason": "risk70 是风险模型**因子载荷**数据集：载荷本身就是模型要中性化掉的暴露，不是超额收益来源。114 条（闸 SEM 从 207 剔到 118、实回测 114）best S=0.87，0 达标 0 near。",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL10-MODEA-AGGRESSIVE-OVERFIT"
+   "_entry_id": "KOR-RISK70-FACTOR-LOADING-NO-ALPHA"
   },
   {
-   "family": "neglected_firm_premium",
-   "reason": "",
+   "family": "fundamental17 慢(毛利率水平)×快(EV/EBITDA 趋势)价差结构",
+   "reason": "慢×快价差结构（subtract(group_rank(慢腿), group_rank(快腿))）在 KOR/TOP600/D1/STATISTICAL 下稳定把 S 1.23→1.30、F 0.89→0.94、2Y 1.33→1.87，但 **S 天花板锁在 ~1.30**，跨不过 Mode B 资格线 1.25→提交线 1.58。二轮精调 8 条（窗口 22/66/252、轴 industry/subindustry、ts_decay 平滑、去掉离散度分母）全部落在 S=1.11–1.30，无一突破。",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL10-NUMS-NEGLECTED-PREMIUM"
+   "_entry_id": "KOR-FND17-SLOWFAST-SPREAD-CEILING"
   },
   {
-   "family": "analyst10 revise_value 修正幅度族",
-   "reason": "wave97 裸信号 rank(pre_revise_value_fy1) sharpe 0.67 为族最优（7/10年正、prod 0.34、self 0.02 全绿），但 sharpe<1.58 + CW 0.39 + 2Y 0.35 三墙；wave98 Mode B 线性组合 8/8 全部退化（辅助腿稀释）；wave99 Mode A 参数层 decay/trunc/neut 全无效（CW 0.39 纹丝不动，STATISTICAL 崩至 0.28）；族天花板 sharpe 0.67 无法突破",
-   "salvage": "ts_backfill5 包裹 CW 0.10 接近过闸（但 sharpe 0.52 退化），如需低 CW 变体可考虑；wave97 4号 sal_innovation_score_fq1 2Y 1.37 但 2022 单年依赖，稳健性不足",
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL10-REVISE-VALUE-CEILING"
-  },
-  {
-   "family": "prod_correlation_wall",
-   "reason": "",
+   "family": "signal_family: 原始会计比率字段族（margins/turnover/leverage/dividend 水平与差分）",
+   "reason": "原始会计比率（gross/operating/net margin、asset/inventory/receivable turnover、debt-to-*、payout ratio）在 KOR/TOP600/D1/STATISTICAL 下单腿与差分结构均无稳定正信号；与 KOR 既有 fnd86/fnd89/fnd93/fnd94 全弱结论同向。",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL10-TSRANK252-PRODWALL"
-  },
-  {
-   "family": "analyst",
-   "reason": "Do not reinvest in analyst16 raw event fields in KOR; only revisit if combined with ts_backfill+trade_when AND a fundamentally stronger underlying (e.g. cross-dataset confirmation).",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL16-EVENTSPARSE-WEAK"
-  },
-  {
-   "family": "analyst-eps-revision",
-   "reason": "Do not submit any KOR eps_estimate revision momentum variant (prod>=0.7 invariant). Recipe kept for leg-swap research: industry grouping +0.10S vs sector, ts_decay_linear(22) +0.07S, backfill5+decay22. Re-open only with non-IBES revision source as main leg.",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ANL44-EPSREVISION-PRODWALL"
-  },
-  {
-   "family": "analyst_consensus.eps_revision",
-   "reason": "KOR/TOP600/d1/SECTOR 下 EPS 一致预期 4 周修正比率（4w_prior/当期）无稳定方向信号，与 USA 区实证相反",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ANLCONS-EPSRATIO-DEAD"
-  },
-  {
-   "family": "analyst_consensus.grossmargin",
-   "reason": "KOR/TOP600/d1/SECTOR 下 analyst_consensus 的 grossmargin 一致预期水平与意外值族信号近零（慢变近常数），主口径与 tribes 口径互乘无增量",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "KOR-ANLCONS-GROSSMARGIN-DEAD"
+   "_entry_id": "KOR-FND17-RAW-ACCOUNTING-WEAK"
   }
  ],
  "region_context": {
   "tier": "主力区（进行中，目标 10 ACTIVE）",
   "settings_proven": {
-   "universe": "TOP600",
    "delay": 1,
    "neutralization_default": "STATISTICAL",
    "neutralization_proven": [
     "STATISTICAL",
     "SECTOR"
    ],
-   "proven_combos": "wpjJK60l: 设置层 STATISTICAL + 表达式层 group_neutralize(sector)"
+   "proven_combos": "wpjJK60l: 设置层 STATISTICAL + 表达式层 group_neutralize(sector)",
+   "universe": "TOP600"
   },
   "key_notes": [
    "TOP600 慢变基本面定价效率高：只有『预期变化类』信号有效，价值水平类全撞 PROD",
-   "win 配方扩展优先级高于盲探新数据集（产出率高一个数量级）"
+   "win 配方扩展优先级高于盲探新数据集（产出率高一个数量级）",
+   "target_prc 主题 prod_corr-Sharpe 权衡困境：信号强(1.76)但主题拥挤(0.82)，组腿破 prod(0.62)必稀释 Sharpe(1.35)——分析师主题在 KOR 生产池已高度覆盖，转向非分析师主题（pv/model/fundamental/other）",
+   "ts_zscore 机制（时序相对位置 > 绝对水平）有效：V4 把 target_prc_med/close 从 1.41 提到 1.76，该机制可迁移到非分析师主题"
   ]
  },
  "_meta": {
@@ -153,7 +137,374 @@
    "registry_empirical:win",
    "registry_empirical:dead_end",
    "ledger_kv:KB/template_kb",
-   "profile_fallback (仅 DB KB 空时)"
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ],
+  "truncated": {
+   "wins": [
+    "KOR-ANL10-SMARTEST-SP-TSRANK-INDGROUP",
+    "KOR-W113-PVDOM-SECTOR-WIN",
+    "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
+    "T-KB-01 慢×快跨周期混合",
+    "T-KB-02 镜像反转翻案",
+    "88lr21xo",
+    "A1lb2KpR",
+    "wpjJK60l"
+   ],
+   "dead_ends": [
+    "KOR-FND17-EV2EBITDA-DIVERGENCE-CEILING",
+    "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD",
+    "KOR-W182-FND93-ACCRUALS-NOSIGNAL-DEAD",
+    "KOR-INSIDERS5-CEILING-20260909",
+    "KOR-PV106-COST-DISPERSION-COVERAGE-DEAD",
+    "KOR-EPS-REVISION-SPREAD-PROD-FLOOR-0723",
+    "KOR-OTH496-AFTERCONS-MODEA-CEILING",
+    "KOR-ANL10-INNOVATION-DEAD",
+    "KOR-OTH553-ANALYST-VALUE-DEAD",
+    "KOR-ANL16-MODEA-CEILING",
+    "KOR-ANL44-ANALYST-DEAD",
+    "KOR-ANALYST44-WEAK-SIGNAL",
+    "KOR-PV30-NO-SIGNAL",
+    "KOR-OTHER553-ABSOLUTE-DEAD",
+    "KOR-RISK88-SEMI-ANALYST-CEILING",
+    "KOR-PV106-LIQUIDITY-WEAK",
+    "KOR-ANALYST16-EST-PCT-DEAD",
+    "KOR-FND21-ESG-DEAD",
+    "KOR-NEWS38-SENTIMENT-DEAD",
+    "KOR-NEWS54-NO-SIGNAL",
+    "KOR-FND86-WEAK-SIGNAL",
+    "KOR-FND93-ACCRUALS-DEAD",
+    "KOR-SUBINDUSTRY-PROD-SATURATED",
+    "KOR-FND94-FORWARD-PROFITABILITY",
+    "KOR-ANL10-TSRANK252-PRODWALL",
+    "KOR-ANL10-NUMS-NEGLECTED-PREMIUM",
+    "KOR-ANL10-MODEA-AGGRESSIVE-OVERFIT",
+    "KOR-FND21-ESG-WEAK",
+    "KOR-ANL44-EPSREVISION-PRODWALL",
+    "KOR-NEWS50-EVENTSCORE-WEAK",
+    "KOR-PV106-LIQUIDITY-BELOW-LINE",
+    "KOR-NEWS38-HEADLINETONE-DEAD",
+    "KOR-FND86-SCORE-WEAK",
+    "KOR-FND93-TAXACCRUAL-WEAK",
+    "KOR-ANL16-EVENTSPARSE-WEAK",
+    "KOR-ANLCONS-GROSSMARGIN-DEAD",
+    "KOR-ANLCONS-EPSRATIO-DEAD",
+    "KOR-PV30-LABEL-TRAP",
+    "KOR-OTH496-RETURN-WEAK",
+    "KOR-RSK88-STYLOAD-WEAK",
+    "KOR-OTH496-TIMESTAMP-TRAP",
+    "KOR-OTH553-REV-SPARSE",
+    "KOR-INSIDER-PROD-SATURATED",
+    "KOR-FUNDAMENTAL89-ACCRUALS-DEAD",
+    "KOR-ANL10-REVISE-VALUE-CEILING",
+    "KOR-WAVE96-UNLIT-BARE-SIGNAL-DEAD",
+    "KOR-NEWS-SENTIMENT-TRANSFER-DEAD",
+    "KOR-ML-FACTOR-PROJ-DEAD",
+    "KOR-PRICE-SIGNAL-DL-DEAD",
+    "KOR-MODEL313-DEAD",
+    "KOR-QUANT-FACTOR-LIB-DEAD",
+    "KOR-AI-FACTOR-TRANSFER-DEAD",
+    "KOR-FUND-HOLDINGS-PANEL-DEAD",
+    "KOR-HEDGE3-Q4Q5-WHITESPACE-DEAD",
+    "KOR-NEWS79-SENTIMENT-DEAD",
+    "KOR-SHORTINTEREST3-DEAD",
+    "KOR-CONTINUATION-SCORE-DEAD",
+    "KOR-PVDOM-SECTOR-VARIANTS-SATURATED",
+    "KOR-WAVE104-FAMILY-CORR-DEAD",
+    "KOR-PATTERN-SCORES-PROBE-DEAD",
+    "KOR-CONTINUATION-SCORE-PROBE-DEAD",
+    "KOR-AIEQUITY-PROBE-DEAD",
+    "KOR-PREDSTARMINE-REVSCORE-DEAD",
+    "KOR-PREDSTARMINE-REVCNT-DEAD",
+    "KOR-PREDSTARMINE-VALUE-DEAD",
+    "KOR-OTHER455-REVISION-CLUSTER-DEAD",
+    "KOR-E10-CLUSTER-SH-DEAD",
+    "KOR-MODEL219-QUALITY-DEAD",
+    "KOR-AI_FACTOR_TRANSFER-DEAD",
+    "KOR-PRICE_SIGNAL_DL-DEAD",
+    "KOR-MLPROJ-RATING-SH-SATURATED",
+    "KOR-OTHER455-GROUP-CLUSTER-DEAD",
+    "KOR-OTHER455-NETWORK-EMBEDDING-DEAD",
+    "KOR-MSM-5D-COMBO-DEAD",
+    "KOR-FORUM-DEAD",
+    "KOR-BEHAVIORAL-DEAD",
+    "KOR-ACQ-MODEL-DEAD",
+    "KOR-VALUE-QUALITY-SEEDS",
+    "T-KB-01 慢×快跨周期混合",
+    "T-KB-06 多期限共识加权",
+    "T-KB-07 四向价值结构",
+    "T-KB-09 【负模板】单字段裸探针",
+    "T-KB-10 【负模板】稀疏事件流"
+   ]
+  }
+ },
+ "gate_priors": {
+  "sample_size": 989,
+  "pass_rate": 0.095,
+  "by_neutralization": {
+   "SECTOR": {
+    "rate": 0.0872,
+    "n": 642
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.0164,
+    "n": 61
+   },
+   "INDUSTRY": {
+    "rate": 0.1154,
+    "n": 52
+   },
+   "STATISTICAL": {
+    "rate": 0.1463,
+    "n": 205
+   },
+   "MARKET": {
+    "rate": 0.0,
+    "n": 27
+   }
+  },
+  "by_universe": {
+   "TOP600": {
+    "rate": 0.095,
+    "n": 989
+   }
+  },
+  "by_operator_count": {
+   "<=4": {
+    "rate": 0.1434,
+    "n": 258
+   },
+   "5-8": {
+    "rate": 0.0888,
+    "n": 394
+   },
+   ">8": {
+    "rate": 0.0653,
+    "n": 337
+   }
+  },
+  "by_decay": {
+   "14": {
+    "rate": 0.3333,
+    "n": 21
+   },
+   "10": {
+    "rate": 0.0612,
+    "n": 98
+   },
+   "6": {
+    "rate": 0.1105,
+    "n": 181
+   },
+   "4": {
+    "rate": 0.1407,
+    "n": 327
+   },
+   "12": {
+    "rate": 0.0075,
+    "n": 134
+   },
+   "8": {
+    "rate": 0.0656,
+    "n": 122
+   },
+   "2": {
+    "rate": 0.0,
+    "n": 26
+   },
+   "16": {
+    "rate": 0.125,
+    "n": 48
+   },
+   "0": {
+    "rate": 0.0,
+    "n": 18
+   }
+  },
+  "by_field_family": {
+   "probability": {
+    "rate": 0.5909,
+    "n": 22
+   },
+   "buy": {
+    "rate": 0.0,
+    "n": 91
+   },
+   "short": {
+    "rate": 0.2381,
+    "n": 21
+   },
+   "anl": {
+    "rate": 0.0563,
+    "n": 160
+   },
+   "eps": {
+    "rate": 0.2273,
+    "n": 44
+   },
+   "pv": {
+    "rate": 0.0,
+    "n": 48
+   },
+   "recent": {
+    "rate": 0.0,
+    "n": 70
+   },
+   "cnn": {
+    "rate": 0.05,
+    "n": 160
+   },
+   "oth": {
+    "rate": 0.0,
+    "n": 20
+   },
+   "change": {
+    "rate": 0.3889,
+    "n": 18
+   },
+   "global": {
+    "rate": 0.381,
+    "n": 42
+   },
+   "fnd": {
+    "rate": 0.0,
+    "n": 24
+   },
+   "bid": {
+    "rate": 0.0,
+    "n": 70
+   },
+   "mdl": {
+    "rate": 0.0,
+    "n": 22
+   },
+   "slippage": {
+    "rate": 0.0,
+    "n": 15
+   },
+   "normalized": {
+    "rate": 0.0,
+    "n": 52
+   }
+  },
+  "avoid": [
+   "neutralization=SUBINDUSTRY(2%, n=61)",
+   "field_family=buy(0%, n=91)",
+   "field_family=pv(0%, n=48)",
+   "field_family=recent(0%, n=70)",
+   "field_family=bid(0%, n=70)",
+   "field_family=normalized(0%, n=52)"
+  ],
+  "generated_at": "2026-09-27T17:51:41.515087+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.1407,
+    "current_n": 327,
+    "recommended": 4,
+    "rate": 0.1407,
+    "n": 327,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "STATISTICAL",
+    "current_rate": 0.1463,
+    "current_n": 205,
+    "recommended": "STATISTICAL",
+    "rate": 0.1463,
+    "n": 205,
+    "lift": 1.0,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
   ]
  }
 }

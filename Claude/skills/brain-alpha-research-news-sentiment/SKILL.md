@@ -2,7 +2,7 @@
 name: brain-alpha-research-news-sentiment
 layer: L1
 description: "新闻/情绪类数据集研究：字段 5 家族分类、6 桶配对框架、Tier A 数据集组合。当任务涉及 news/sentiment 数据集挖掘、字段分类、6 桶框架或 Tier A 组合选集时使用。触发词：新闻数据集 / 情绪数据集 / 5 家族 / 6 桶 / Tier A。"
-last_verified: 2026-09-10
+last_verified: 2026-09-28
 allowed-tools:
   - Read
   - Bash
@@ -10,6 +10,14 @@ allowed-tools:
 ---
 
 # BRAIN Alpha 研究 — 新闻/情绪（News/Sentiment）
+
+## 职责边界
+
+- **本 skill 负责**：news / sentiment **家族专用**：字段 5 家族分类、6 桶配对框架、Tier A 组合选集
+- **本 skill 不做**：不覆盖非 news/sentiment 数据集（→ 通用 L1：dataset-exploration / datafield-exploration）；不回测
+- **上游 / 下游**：上游 = 新闻/情绪数据集；下游 = S1 字段选择
+
+
 
 ## 触发场景
 

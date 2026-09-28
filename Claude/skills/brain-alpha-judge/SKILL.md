@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 name: brain-alpha-judge
 description: "（参考层·非提交判定）评估 WorldQuant BRAIN alpha（Regular 或 PPA / Power Pool）的提交参考价值：综合平台硬检查、PPA 主题/相关性门控，以及内置的高价值中文论坛 Markdown 语料库。当用户想在提交前做额外质量审查、评估 alpha 是否值得提交、核对 PPA 主题匹配，或在明确确认后提交时使用。★2026-09-01 新增「点塔优选排序」：多个 READY 候选时按金字塔点亮价值排序（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 不计；差 ≤2 颗塔优先；0 亮区域单颗不算点亮；MEA 本季度不提交）。Before submitting a Regular or PPA alpha, when doing quality review or deciding if an alpha is worth submitting"
 layer: L5
@@ -20,6 +20,14 @@ user-invocable: true
 
 # Brain Alpha Judge（Alpha 判定器）
 
+## 职责边界
+
+- **本 skill 负责**：S5 **参考核对层**：① PPA 主题/相关性门控人工核对清单 ② value-factor trend score ③ 点塔优选排序（多 READY 候选时）
+- **本 skill 不做**：**不作「是否提交」的最终判定、不执行提交** —— 判定唯一权威 = `tools/submit_verdict.py`；执行 = `worldquant-submit-alpha`（REGULAR）/ `wq-brain-superalpha`（SUPER）；与 `brain-alpha-robustness` 不重叠（候选先过 robustness 闸再进本评审）
+- **上游 / 下游**：上游 = S4 达标候选；下游 = 提交判定与执行
+
+
+
 ## 三职能（2026-08-31 判定权移交后**存活的全部价值**，先读这节）
 
 1. **PPA 主题/相关性人工核对清单**（下方「PPA 附加闸门」节）；
@@ -30,7 +38,10 @@ user-invocable: true
 
 ### 历史定位（判定权已移交）
 
-> **⚠️ 弃用声明（2026-08-31）**：提交判定唯一权威已迁移至 `tools/submit_verdict.py`（403 盲区唯一权威，见 `wq-brain-ra-pipeline` 步 8）——**不要再用本 skill 做"是否提交"的最终判定**。本 skill 仅保留两类参考价值：① PPA 主题匹配/相关性门控的**人工核对清单**；② value-factor trend score（防挤同一金字塔）的**参考评分**。需要最终提交判定时直接跑 `& $WQ_PY tools/submit_verdict.py --alpha-id <ID> --with-quota`。本 skill 的 READY/REVIEW/BLOCK 三态输出仅作评审参考，不构成提交依据。
+> **⚠️ 弃用声明（2026-08-31）**：提交判定唯一权威已迁移至 `tools/submit_verdict.py`（403 盲区唯一权威，见 `wq-brain-ra-pipeline` 步 8）——**不要再用本 skill 做"是否提交"的最终判定**。本 skill 仅保留两类参考价值：① PPA 主题匹配/相关性门控的**人工核对清单**；② value-factor trend score（防挤同一金字塔）的**参考评分**。需要最终提交判定时直接跑 `& $WQ_PY tools/submit_verdict.py --alpha-id <ID>`（`--with-quota` 已废弃、传入无效果）。
+⚠ **提交层真闸只有 `POST /alphas/{id}/submit`**：`submit_verdict.py` 的提交层视图走的是 `GET /alphas/{id}/submit`，
+而该 GET **恒返回 404**（2026-09-26 实测，对已 ACTIVE 的 alpha 同样 404）→ 其 403 分支是死代码，处女候选只会得到
+`UNVERIFIABLE`。**唯一真闸 = 确认后 POST，按其 200/201/403 三态判定**（403 零成本且回带全量 checks 与真因）。本 skill 的 READY/REVIEW/BLOCK 三态输出仅作评审参考，不构成提交依据。
 >
 > **⚠️ 处女提交盲区（2026-09-01 实证，RR7OWQKd）**：`tools/submit_verdict.py` 的提交层 GET 视图依赖"POST 之后才存在"的提交记录——**从未 POST 过的 alpha，GET /submit 返 404**，旧版工具会一律误判 BLOCKED（假阴性）。已修复：`UNSUBMITTED + 404` → PREPOST 降级为"模拟层 + 双闸预检"判定。另两个配套实证：① POST 201 = 异步受理，~40s 内翻 OS/ACTIVE（用 get_alpha_details 轮询确认，勿依赖 POST 返回值）；② 受理后再次 POST 得到的 403 是"已提交"拒绝，**不是硬闸失败**。
 
@@ -97,7 +108,11 @@ V1 当前包含 20 篇打包进本 skill 的已收录中文语料条目：
 - **硬指标**：Sharpe ≥ 1.58、Fitness ≥ 1.0、TVR 5–20%、**LOW_2Y_SHARPE 严格 > 1.58**、CONCENTRATED_WEIGHT 必须通过。`mcp__wq-brain-http__get_alpha_details` 返回 WARNING 不算通过。
 - **相关性**：PROD < 0.7（平台硬线）；SELF < 0.5（内部严线/PPAC 口径，两线三层见 `INDEX.md`——2026-09-12 标注，勿再当平台硬闸）。优先在 `mcp__wq-brain-http__*` 上使用本地 `mcp__wq-brain-http__check_self_correlation` / `mcp__wq-brain-http__compute_mutual_correlation`（不占用平台相关性配额）。同数据集同腿兄弟 alpha（corr 0.82–1.0）→ 返回 `BLOCK`，建议更换数据集。
 - **CW 配方**：`rank(add(...))` 通常 FAIL；优先 `add(multiply(rank(...), w1), multiply(rank(...), w2))` 并配合 `ts_backfill`。
-- **提交语义**：MCP `mcp__wq-brain-http__submit_alpha` 将 HTTP 201 视为失败是工具 bug。确认 OS 池中 `status=ACTIVE`。若该 MCP 工具不感知 PPA，不要通过 MCP 自动提交 PPA —— 停下并询问用户。
+- **提交语义**（2026-09-26 实测重写）：**不存在** `mcp__wq-brain-http__submit_alpha` 这个工具，真实入口是
+  `mcp__wq-brain-http__workflow_submit_alpha`（`tools_workflow.py`）/ `submit_batch`（`tools_ops.py`）。
+  另：`POST /alphas/{id}/submit` 返回 **HTTP 201「Accepted (async)」不是失败、也不是 bug**，而是**异步受理**
+  （客户端只等 60s 就放弃）；此时须等 4 分钟后**补发**，再确认 `status=ACTIVE` 才算成功。判据只认 `ACTIVE`。
+  若工具不感知 PPA，不要通过 MCP 自动提交 PPA —— 停下并询问用户。
 
 若 `platform_submit_ok=false` **或**任一 PPA 附加闸门失败，LLM 判定结果不能为 `READY`。
 
@@ -228,7 +243,7 @@ LLM 配置示例：
 
 ## 提交路由（统一由 submit_verdict.py 判定，本 skill 只给参考）
 
-- `submit_verdict.py --with-quota` 返回 READY 且用户确认后：
+- `submit_verdict.py` 返回 READY 且用户确认后：
   - type=REGULAR / PPA 单颗 → `worldquant-submit-alpha`（真实提交 API；覆盖 description PATCH 与状态翻转坑）。
   - type=SUPER（≥10 个 ACTIVE REGULAR 组件合成）→ `wq-brain-superalpha`（neutralization 逐区扫描 + selection/combo 工作流）。
 - 参考层 BLOCK 信号（prod_corr≥0.7、同数据集同腿兄弟 corr 0.82–1.0）→ 回 `wq-brain-alpha-optimization-v1` Mode B（见其「prod_corr 反馈循环」节），不提交。
@@ -243,7 +258,7 @@ LLM 配置示例：
    - 点亮 = 该 catalog（区域×延迟×类别，`pyramids[].name`）下**近 90 天提交的 ACTIVE ≥3 颗**（窗口外老 alpha 不计数）；
    - **跨 ≥3 个 catalog 的 alpha 不计点塔**（平台 `pyramidThemes.effective`：1塔→1、2塔→2、3塔→0）；
    - **0 亮区域的单颗提交 ≠ 点亮**（要凑 3 颗同类；单颗只是打地基）。
-2. **候选点塔价值分级**（先算每塔当前颗数，用 `tracking/_submit_kit/_tower_map.py` 或 `tools/submit_verdict.py`）：
+2. **候选点塔价值分级**（先算每塔当前颗数，用 `python tools/campaign_intel.py pyramid --region <R> --delay <D>` 或 `tools/submit_verdict.py`）：
    - A 档：落「差 ≤2 颗」塔（现状 ≥2/3）→ **一次提交即点亮**，最优先；
    - B 档：落「差 2 颗」塔（现状 1/3）；
    - C 档：落 0/3 塔（0 亮区域打地基，如 GLB/HKG/DEU/ASI/GBR 全域 0 亮时）。
@@ -253,7 +268,8 @@ LLM 配置示例：
 5. 候选将点亮哪座塔：未提交 alpha 的 `pyramids` 恒为空 → 用 `alphas.dataset_id → datasets.category`
    拼塔名；缺失时表达式字段反查 `fields` 表（多数票）；仍 UNKNOWN 按该区域未亮类别保守判断。
    权威字段归属用 `GET /data-fields/{field}?region=&universe=&delay=`（列表接口带 search 返回 Invalid query，不可用）。
-6. 提交后复核：`_tower_map.py` 重跑确认目标塔颗数 +1 且 ≥3（点亮成立）。
+6. 提交后复核：重跑 `python tools/campaign_intel.py pyramid --region <R> --delay <D>` 确认目标塔颗数 +1 且 ≥3（点亮成立）。
+   （2026-09-26 审计：旧文档指向的 `tracking/_submit_kit/_tower_map.py` 目录不存在，已改为真实工具。）
 
 ## 提交语义（2026-08-11 GBR 战役已验证）
 

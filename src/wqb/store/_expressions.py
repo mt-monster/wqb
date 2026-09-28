@@ -307,7 +307,10 @@ class ExpressionsMixin:
             # + dropped（2026-09-09 D12：纪律废弃终态）。此前只排 superseded，
             # pipeline.py S3 回测无 status 过滤 → Agent dropped 的零 alpha 骨架
             # （iso_week_number 日历哑字段）照样烧回测配额。
-            sql += " AND status NOT IN ('superseded', 'dropped')"
+            # + deferred（2026-09-25：显式延后态——此前 8 探针裁剪把余 32 条置
+            # gated 仍被 batch_track 全量派发，'gated' 不是延后语义；真正的延后
+            # 用 deferred，改回 selected/gated 即恢复参与）。
+            sql += " AND status NOT IN ('superseded', 'dropped', 'deferred')"
         sql += " ORDER BY id"
         cur = self.connection.cursor()
         cur.execute(sql, params)

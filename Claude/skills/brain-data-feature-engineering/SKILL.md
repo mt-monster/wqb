@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 name: brain-data-feature-engineering
 description: "自动分析 BRAIN 数据集字段，为 alpha 创作生成特征工程思路。 输入：数据类别、延迟、区域参数；输出：含深度特征工程建议的 markdown 文档。 本 skill 基于数据集与字段信息自主分析，提出有意义的概念特征。"
 layer: L1
@@ -29,6 +29,14 @@ allowed-tools:
 > `s1_<ds>_d<delay>`（source 标 manual），GEM 才会注入。
 
 # BRAIN 数据特征工程工作流
+
+## 职责边界
+
+- **本 skill 负责**：字段 → 特征工程决策：预处理方式（backfill/winsorize/rank/zscore/ts_event_*）、产出 ideas 与机制说明
+- **本 skill 不做**：**不生成最终 alpha 表达式**（那是 L2 `brain-make-some-gem`）；不回测；不改 DB 结构化台账
+- **上游 / 下游**：上游 = S1 字段白名单；下游 = S2 生成
+
+
 
 **目的**：将 BRAIN 数据集字段自动转化为深入、有意义的特征工程思路。
 

@@ -37,7 +37,8 @@ def run(
     Args:
         region: 区域代码
         target: 目标候选数（默认 20）
-        regions: 要盘点的区域列表（默认 all）
+        regions: 要盘点的区域列表（**默认本区 [region]**；
+            ⚠ 不要传 "all" —— 实测 `--regions all` 并发必 SSL EOF，需逐区串行（2026-09-26 默认值收紧））
         _context: 执行上下文
 
     Returns:
@@ -47,7 +48,7 @@ def run(
     result = {
         "region": region,
         "target": target,
-        "regions": regions or ["all"],
+        "regions": regions or [region],
         "success": False,
         "steps": [],
     }
@@ -60,10 +61,14 @@ def run(
     step1_cmd = [
         py,
         os.path.join(tools_dir, "build_gate_prior_from_inventory.py"),
-        "--regions", ",".join(regions or ["all"]),
+        "--regions", ",".join(regions or [region]),
         "--emit-candidates", "cache/candidates.json",
         "--write-priors",
     ]
+
+    if "all" in (regions or []):
+        result["warning"] = ("regions 含 'all'：实测 --regions all 并发必 SSL EOF；"
+                             "建议逐区串行调用本节点（每次一个 region）")
 
     result["steps"].append({
         "step": "build_gate_prior",

@@ -3,7 +3,7 @@ name: planning-with-files
 layer: L7
 version: "2.1.0"
 description: 实现 Manus 风格的文件化规划，用于复杂任务。创建 task_plan.md、findings.md 与 progress.md。当开始复杂的多步任务、研究项目或任何需要 >5 次工具调用的任务时使用。
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 user-invocable: true
 allowed-tools:
   - Read
@@ -36,6 +36,14 @@ hooks:
 ---
 
 # 文件化规划（Planning with Files）
+
+## 职责边界
+
+- **本 skill 负责**：复杂任务的**文件化规划**：task_plan.md / findings.md / progress.md 三件套
+- **本 skill 不做**：**不涉及任何 WQ 平台调用、不读写 `data/wqb.db`、不改 skill**；不是挖掘链的一环
+- **上游 / 下游**：通用元技能，与 WQ 技能链仅共用运行环境约定（`$WQ_PY`）
+
+
 
 像 Manus 一样工作：使用持久化的 markdown 文件作为你的"磁盘上的工作记忆"。
 

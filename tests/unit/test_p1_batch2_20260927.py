@@ -144,7 +144,7 @@ def test_rule_b_window_minimal_db_without_waves_table(tmp_path, gates_on):
 def test_batch_track_dry_run_blocked_by_stop_rules(tmp_path, gates_on):
     gates_on.setenv("WQB_DB_PATH", str(_minimal_db(tmp_path, ["FAIL", "FAIL", "FAIL"])))
     out = bt.run(region="TESTREG", wave="w1", dataset="ds1", campaign_dir=str(_campaign(tmp_path)),
-                 _context={"dry_run": True})
+                 submit=True, _context={"dry_run": True})   # 显式 submit=True（2026-09-26 起节点默认 False：不入自动链）
     assert out["success"] is False and "停止规则拦截" in out["error"]
     assert [s["step"] for s in out["steps"]] == ["signal_floor_gate", "stop_rules_gate"]
     assert "--submit" in out["command"]                               # 被拦时仍带回将要执行的命令
@@ -227,7 +227,8 @@ def test_wave_gate_missing_ply_exits_2(tmp_path):
     env = {k: v for k, v in os.environ.items() if k not in ("WQB_ROOT", "WQ_PROJECT_ROOT", "WQB_WORKSPACE")}
     env.update({"WQ_VALIDATOR_DIR": str(fake), "WQB_DB_PATH": str(db), "PYTHONIOENCODING": "utf-8"})
     r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(camp),
-                        "--dataset", "stubds", "--wave", "g1", "--exprs-file", str(ef), "--inspect-mode", "off"],
+                        "--dataset", "stubds", "--wave", "g1", "--exprs-file", str(ef), "--inspect-mode", "off",
+                        "--skip-semantic-gate"],   # 隔离闸 SEM（本用例测 verifier 缺 ply 的 exit 2 路径）
                        capture_output=True, text=True, encoding="utf-8", errors="replace", env=env,
                        cwd=str(tmp_path), timeout=300)
     assert r.returncode == 2, r.stdout[-2000:] + r.stderr[-2000:]    # 此前 exit 1 = 被读成"表达式不合格"

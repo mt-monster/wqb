@@ -25,6 +25,9 @@ import re
 import sqlite3
 from typing import Dict, List, Set
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 def _extract_fields(expr: str) -> Set[str]:
     """从表达式中提取字段名（与 wave_gate.py 的 _extract_fields 逻辑对齐）。"""
@@ -61,7 +64,7 @@ def _get_s1_field_pool(db_path: str, region: str, dataset: str):
     Returns:
         (pool, s1_key, s1_record)；未命中时 (空列表, None, {})。
     """
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     conn.execute("PRAGMA foreign_keys=ON")
     try:
         cur = conn.cursor()
@@ -182,7 +185,7 @@ def main():
     ap.add_argument("--db", default="data/wqb.db")
     args = ap.parse_args()
 
-    conn = sqlite3.connect(args.db)
+    conn = db_connect(args.db)
     conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     cur.execute(

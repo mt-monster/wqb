@@ -232,7 +232,8 @@ def test_wave_gate_exprs_file_writes_back_gated_and_fail(tmp_path, clean_env):
     env.update({"WQ_TOOLKIT_DIR": str(toolkit), "WQ_VALIDATOR_DIR": str(validator),
                 "WQB_DB_PATH": str(db), "PYTHONIOENCODING": "utf-8"})
     r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "wave_gate.py"), "--campaign-dir", str(camp),
-                        "--dataset", "stubds", "--wave", "g1", "--exprs-file", str(ef), "--inspect-mode", "off"],
+                        "--dataset", "stubds", "--wave", "g1", "--exprs-file", str(ef), "--inspect-mode", "off",
+                        "--skip-semantic-gate"],   # 隔离闸 SEM（本用例专测 R21 逐条状态回写）
                        capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, cwd=str(cwd),
                        timeout=300)
     assert r.returncode == 1, r.stdout + r.stderr                        # FAIL 终态（不是 exit 2 的 ERROR）

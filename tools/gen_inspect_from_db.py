@@ -25,6 +25,9 @@ import json
 import os
 import sqlite3
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(REPO_ROOT, "data", "wqb.db")
 OUT_DIR = os.path.join(REPO_ROOT, "tracking", "mining")
@@ -83,7 +86,7 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = db_connect(DB_PATH)
     if a.dataset:
         datasets = [a.dataset]
     else:

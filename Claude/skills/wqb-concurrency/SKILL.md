@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: wqb-concurrency
 description: "WorldQuant Brain 并发挖掘调优。触发词：并发调优/429 风暴/CONCURRENT_SIMULATION_LIMIT_EXCEEDED/ 回测大量 429/提交成功数极低/调线程数/调并发/调信号量/战役 pipeline 批量回测提交/ 最大化回测吞吐/槽位利用率。 核心方法：测定服务端并发上限 C，并把本地在飞数锁到 C，避免 429 风暴与孤儿模拟占槽； 含七槽填槽模式 SOP（7 批 multisim 同提保持槽位常满，每次挖掘必须执行）。 含台账闭环：每波结论经 `campaign.py wave`/`ledger` 幂等 CLI 写入 DB（wave_results/ledger_kv），下一波设计强制以台账决策为输入。"
 layer: L3
@@ -17,6 +17,14 @@ agent_created: true
 
 
 # WQ Brain 并发挖掘调优
+
+## 职责边界
+
+- **本 skill 负责**：并发调优与槽位口径：Token-Bucket C≈7、七槽填槽、429 退避、吞吐基准
+- **本 skill 不做**：不发起回测本身（那是 sim-alphas / toolkit）、不改表达式、不提交
+- **上游 / 下游**：被 `brain-sim-alphas-in-batch-and-track` 与 `wq-brain-campaign-toolkit` 调用
+
+
 
 WorldQuant Brain 的「并发模拟数」是**服务端硬性上限 C**，与本地开多少线程无关。
 本地在飞回测数 = min(本地工作线程数, C)。超过 C 的提交会拿到 `429`，白白浪费重试。

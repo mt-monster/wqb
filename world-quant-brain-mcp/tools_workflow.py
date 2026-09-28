@@ -6,6 +6,8 @@
 
 import json
 import logging
+import os
+import sys
 from typing import Any, Dict, List, Optional
 
 from mcp_core import mcp
@@ -266,6 +268,7 @@ def workflow_gem(
     ideas_file: Optional[str] = None,
     detached: bool = True,
     launch_only: bool = False,
+    console: bool = False,
     pipeline_mode: Optional[str] = None,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
@@ -295,6 +298,11 @@ def workflow_gem(
         pipeline_mode: single / phased / skeleton（2026-09-15 ②）。None = 由
             headless_runner 按 config.json `pipeline_mode` 解析，缺省 phased；
             skeleton = 代码组装骨架、语法构造保证（不消费 ideas 文件）。
+        console: 配 detached=True（2026-09-25）：在后台任务之外再弹一个真实
+            控制台窗口实时滚动生成过程（仅 Windows）。detached 路径把 stdout
+            重定向到文件且 CREATE_NO_WINDOW，从 MCP 看永远只能 tail 日志；
+            置 True 后 stdout.log 仍双写，轮询/闸门不受影响。代价：任务寿命绑
+            在该窗口上（关窗口 = 杀任务，phased 无断点 = 整波丢弃）。
         dry_run: 是否干跑
 
     Returns:
@@ -314,6 +322,7 @@ def workflow_gem(
         "ideas_file": ideas_file,
         "detached": detached,
         "launch_only": launch_only,
+        "console": console,
         "pipeline_mode": pipeline_mode,
     }, dry_run=dry_run)
     return result.to_dict()
@@ -434,8 +443,39 @@ def workflow_chain(
          "executed": 实际执行节点数, "failed_at": 首个失败节点名或 None}
     """
     execute_chain = _get_chain_executor()
+
+    # 2026-09-25 P3：chain 规范化 —— 若链里有 gem 且 batch_track 但中间没有 wave_gate，
+    # 自动插入 wave_gate 节点（fail-safe）。避免 agent 走自动链时跳过闸 PF/门禁，
+    # 导致 prod-first 前置失效（闸 PF 已落地到 wave_gate，但 wave_gate 不在默认链）。
+    normalized = []
+    for i, step in enumerate(chain):
+        normalized.append(step)
+        if (step.get("node") == "gem" and i + 1 < len(chain)
+                and chain[i + 1].get("node") == "batch_track"
+                and not any(s.get("node") == "wave_gate" for s in chain[i + 1:])):
+            # 从 gem 步继承 region/dataset/wave（wave 用 gem 的 wave 或占位）
+            p = step.get("params") or {}
+            normalized.append({
+                "node": "wave_gate",
+                "params": {
+                    "region": p.get("region"),
+                    "dataset": p.get("dataset_id") or p.get("dataset"),
+                    "wave": p.get("wave") or "auto",
+                    # 2026-09-27：此前硬编码 "warn"，导致 WQB_INSPECT_MODE / 显式传参
+                    # 对自动插入的这道闸完全无效（设了 env 也不生效）。现改为：
+                    # 显式传入 > 环境变量 WQB_INSPECT_MODE > 兜底 warn。
+                    "inspect_mode": (p.get("inspect_mode")
+                                     or os.environ.get("WQB_INSPECT_MODE")
+                                     or "warn"),
+                    "prod_family_gate": True,
+                },
+            })
+    if len(normalized) != len(chain):
+        print(f"[workflow_chain] 已自动插入 wave_gate 节点（gem → wave_gate → batch_track）",
+              file=sys.stderr)
+
     results = execute_chain(
-        chain,
+        normalized,
         dry_run=dry_run,
         stop_on_failure=stop_on_failure,
         join_async=join_async,
@@ -447,7 +487,8 @@ def workflow_chain(
         "success": failed_at is None,
         "results": payload,
         "executed": len(payload),
-        "requested": len(chain),
+        "requested": len(normalized),
+        "original_requested": len(chain),
         "failed_at": failed_at,
         "dry_run": dry_run,
     }

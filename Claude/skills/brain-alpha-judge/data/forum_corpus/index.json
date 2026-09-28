@@ -3,6 +3,28 @@
   "locale": "zh-cn",
   "posts": [
     {
+      "title": "Cluster Alpha Research",
+      "author": "KJ42842",
+      "source_url": "https://support.worldquantbrain.com/hc/en-us/community/posts/43562853669655-Cluster-Alpha-Research",
+      "source_post_id": "43562853669655",
+      "source_query": "cluster alpha research",
+      "post_date": "2026-09-17T15:02:03Z",
+      "post_votes": 108,
+      "total_comments": 0,
+      "selected_comments": 0,
+      "topic_tags": [
+        "cluster-alpha",
+        "industry-rotation",
+        "group-ops",
+        "neutralization",
+        "cluster-test",
+        "literature-review"
+      ],
+      "evidence_strength": "strong",
+      "crawled_at": "2026-09-19T18:40:00+08:00",
+      "admission_reason": "High community signal (108 votes, 0 comments, published 2026-09-17) and literature-anchored (14 cited papers incl. Moskowitz-Grinblatt 1999, Moskowitz-Ooi-Pedersen 2012, Daniel-Moskowitz 2016). Explicitly documents the CLUSTER_TEST classification, its 1.58 / 1.0 region thresholds, and the construction rules distinguishing cluster-building from within-group ops."
+    },
+    {
       "title": "SAC 比赛第十经验分享 回馈社区经验分享",
       "author": "JJ47083",
       "source_url": "https://support.worldquantbrain.com/hc/zh-cn/community/posts/33745762241175-SAC-比赛第十经验分享-回馈社区",

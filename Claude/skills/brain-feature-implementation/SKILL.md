@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: brain-feature-implementation
 description: "根据 idea Markdown 文档实现 WorldQuant Brain 特征：下载数据集并生成文档中定义的 alpha 表达式 （alpha expressions / dataset download / expression generation）。 当用户提供 idea 文档、要求生成 alpha 表达式或下载数据集时使用。"
 layer: L2
@@ -17,8 +17,18 @@ allowed-tools:
 
 # Brain 特征实现（Brain Feature Implementation）
 
+## 职责边界
+
+- **本 skill 负责**：idea Markdown → 可执行的 alpha 表达式实现（含数据集下载与模板渲染）
+- **本 skill 不做**：**不得作为独立主链入口** —— 本 skill 被内嵌在 `brain-make-some-gem` 引擎（`scripts/trailSomeAlphas/`）内供其调用，主链入口是 `brain-make-some-gem`（ra-pipeline 已把「直接把 FI 当主链入口」列为反模式）
+- **上游 / 下游**：上游 = ideas 文档；下游 = GEM 引擎内部（产物 `final_expressions.json` **不是真相源**，真相源是 DB `expressions` 表）
+
+
+
 ## 描述
 本 skill 将 WorldQuant Brain idea 文档（Markdown）自动转换为可执行的 Alpha 表达式，并为每种独立的 idea 模式处理数据集下载和代码生成。
+同名占位符可在条件与信号中重复出现，只绑定一次；不同占位符仍禁止退化为同一字段的恒等式。
+下载支持 MATRIX/VECTOR/GROUP；GROUP 是分组轴，单个 GROUP 占位符只保留概念原式，不自动扩展 rank(label) 或 ts_delta(label) 等数值变体。
 
 ## 工作范围
 *   本 skill 通过 `scripts/` 下的 Python 脚本操作本地 CSV 文件与 Brain 下载接口。

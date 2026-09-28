@@ -20,6 +20,7 @@ from ..mcp_check import require_mcp_tools
 from .._common import (
     REPO_ROOT,
     infer_data_category,
+    resolve_async_tasks_root,
     resolve_skill_dir,
     unbuffered_env,
     validate_argv,
@@ -131,7 +132,7 @@ def run(
     # Step 3: 运行特征工程流程（阶段1-3）— 异步模式
     task_id = f"fe_{region}_{dataset_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     # 2026-09-04 修复：任务目录支持 WQB_TASK_ROOT 注入（单测隔离，默认仓库 logs/_async_tasks）
-    task_dir = os.environ.get("WQB_TASK_ROOT") or os.path.join(REPO_ROOT, "logs", "_async_tasks")
+    task_dir = os.path.abspath(resolve_async_tasks_root())
     if not dry_run:
         os.makedirs(task_dir, exist_ok=True)
     task_file = os.path.join(task_dir, f"{task_id}.json")
@@ -281,7 +282,8 @@ def _run_feature_engineering_pipeline_async(
     if not dry_run:
         os.makedirs(output_dir, exist_ok=True)
 
-    ideas_filename = f"{region}_delay{delay}_{dataset_id}_ideas.md"
+    # 2026-09-25 目标 B：文件名加 fe_ 前缀，与 GEM 兜底自生成的 gem_ 前缀区分来源
+    ideas_filename = f"fe_{region}_delay{delay}_{dataset_id}_ideas.md"
     ideas_path = os.path.join(output_dir, ideas_filename)
 
     # 构建命令
@@ -319,6 +321,8 @@ def _run_feature_engineering_pipeline_async(
         popen_kwargs: Dict[str, Any] = {
             "stdout": subprocess.PIPE,
             "stderr": subprocess.PIPE,
+            # 2026-09-21：MCP 服务 stdin（宿主异步管道）不可继承，否则子解释器启动即挂死
+            "stdin": subprocess.DEVNULL,
             "text": True,
             "cwd": skill_root,
             # 无缓冲 + BRAIN 凭证改名桥（详见 _common.unbuffered_env）

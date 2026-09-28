@@ -2,7 +2,7 @@
 name: brain-alpha-research-hypothesis-first
 layer: L1
 description: "饱和数据集（≥1 万 alpha）的假设优先挖掘工作流。当模板采样空间已被挖尽、需要用可证伪假设驱动（hypothesis-first）而非模板遍历的方式挖掘时使用。触发词：饱和数据集 / 假设优先 / hypothesis-first / 模板挖尽。"
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 allowed-tools:
   - Read
   - Bash
@@ -10,6 +10,14 @@ allowed-tools:
 ---
 
 # BRAIN Alpha 研究 — 假设优先（Hypothesis-First）
+
+## 职责边界
+
+- **本 skill 负责**：**饱和数据集**（α≥1 万或连续 2 波模板全灭）的假设驱动路径：可证伪假设 → 主假设/消融/对照/变体
+- **本 skill 不做**：不饱和数据集不走此路（走常规模板遍历）；**假设目录为空时不强行路由**（需先有假设生成器）
+- **上游 / 下游**：上游 = 字段扫描产出的假设目录；下游 = S2 表达式生成
+
+
 
 ## 触发场景
 

@@ -701,11 +701,30 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
     try:
         await brain_client.ensure_authenticated()
 
-        # Step 1: 拿 children
-        resp = await brain_client._request('GET', multisimulation_location)
-        if resp.status_code != 200:
-            return {"error": f"HTTP {resp.status_code}", "raw": brain_client._response_payload(resp)}
-        data = resp.json() if resp.text else {}
+        async def _get_with_retry(url: str, attempts: int = 3):
+            """GET 带瞬断重试（2026-09-21 根治：收批阶段 8 路并行 GET 遇 SSL EOF/连接瞬断时，
+            单条失败被吞成 error 行、code 为空 → 入库时静默跳过（ASI aea2 波 8 条只落 1 条）。
+            非 200/异常按 2s·4s 退避重试；最终仍失败才返回 None。"""
+            last = None
+            for i in range(attempts):
+                try:
+                    r = await brain_client._request('GET', url)
+                    if r.status_code == 200:
+                        return r
+                    last = f"HTTP {r.status_code}"
+                    if r.status_code in (401, 403, 404):
+                        break
+                except Exception as e:  # noqa: BLE001
+                    last = str(e)[:200]
+                if i < attempts - 1:
+                    await asyncio.sleep(2 * (i + 1))
+            return None if last is None else last
+
+        # Step 1: 拿 children（同样带瞬断重试）
+        resp = await _get_with_retry(multisimulation_location)
+        if not hasattr(resp, "status_code"):
+            return {"error": str(resp) if resp else "no response"}
+        data = resp.json() if getattr(resp, "text", "x") else {}
         children = data.get('children', [])
         if not children:
             return {"error": "No children found (multisim may still be processing)"}
@@ -723,13 +742,15 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
         async def _fetch_child_sim(url: str) -> Dict[str, Any]:
             """拉单个 child sim，提取 alpha_id 和 status。"""
             try:
-                r = await brain_client._request('GET', url)
-                if r.status_code != 200:
-                    return {"location": url, "error": f"HTTP {r.status_code}"}
+                r = await _get_with_retry(url)
+                if not hasattr(r, "status_code"):
+                    return {"location": url, "error": str(r) if r else "no response"}
                 sim = r.json()
                 alpha_id = sim.get("alpha")
                 status = sim.get("status", "UNKNOWN")
                 expr = sim.get("regular", "")
+                if isinstance(expr, dict):  # 平台偶尔返回 {code: ...} 结构，统一成字符串供入库匹配
+                    expr = expr.get("code", "") or ""
                 return {
                     "location": url,
                     "alpha_id": alpha_id,
@@ -763,14 +784,12 @@ async def harvest_multisim_alphas(multisimulation_location: str) -> Dict[str, An
                     "error": sim_info.get("error", "No alpha_id"),
                 }
             try:
-                r = await brain_client._request(
-                    'GET', f"{brain_client.base_url}/alphas/{alpha_id}"
-                )
-                if r.status_code != 200:
+                r = await _get_with_retry(f"{brain_client.base_url}/alphas/{alpha_id}")
+                if not hasattr(r, "status_code"):
                     return {
                         "alpha_id": alpha_id,
                         "expression": sim_info.get("expression", ""),
-                        "error": f"HTTP {r.status_code}",
+                        "error": str(r) if r else "no response",
                     }
                 detail = r.json()
                 slim = _slim_alpha(detail)

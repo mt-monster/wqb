@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: brain-inspect-raw-template-create-setting
 description: "本 skill 仅用于检查原始 BRAIN 模板（raw template），与增强模板无关，不要用于增强模板 （do not use for enhanced templates）。 读取 BRAIN 模板/idea JSON（template/idea/expression_list，如 fundamental28_GLB_1_idea_<timestamp>.json），通过 ace_lib.get_instrument_type_region_delay 获取有效的模拟设置选项，解析 region/delay/universe/neutralization，并使用 ace_lib.generate_alpha 构建 Alpha 列表 JSON（每个表达式一个 Alpha）。 当用户要求检查模板文件、附加设置、创建 alpha 列表或验证设置时使用 （inspect template / create alpha list / validate settings）。"
 layer: L3
@@ -23,6 +23,14 @@ user-invocable: true
 > **职责说明（2026-09-01 精简）**：人工设置决策环节已删除（由 pipeline 参数覆盖：`--neutralization` A/B 实验、`--set key=value` 任意 settings 覆盖、profile `settings_proven` 已验证设置跟 win 走）。**本 skill 现仅两个职能**：① 解析 idea JSON → `build_alpha_list.py` 直写 expressions 表（S2→S3 的 DB 入库通道）；② 新区域合法设置选项快照（sim_options_snapshot）。
 
 # brain-inspect-raw-template-create-setting
+
+## 职责边界
+
+- **本 skill 负责**：原始模板与仿真设置的**创建/合法性核对**：产出**设置计划**（universe/中性化/decay/truncation/maxTrade）
+- **本 skill 不做**：**不写 `settings.json` 真相源、不发起回测、不改表达式** —— 执行在 `brain-sim-alphas-in-batch-and-track`
+- **上游 / 下游**：上游 = 原始模板/创建设置需求；下游 = S3 批量回测
+
+
 
 **运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`，即工作区根下 `world-quant-brain-mcp/.venv`）。不要使用系统 Python。
 

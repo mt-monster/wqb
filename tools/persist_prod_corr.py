@@ -21,6 +21,9 @@
   python tools/persist_prod_corr.py --state 其他.json
   python tools/persist_prod_corr.py --apply --source platform_sync --overwrite
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import json
 import os
@@ -101,7 +104,7 @@ def main():
             continue
         to_fill.append((aid, prod, self_, key))
 
-    conn = sqlite3.connect(a.db)
+    conn = db_connect(a.db)
     conn.row_factory = sqlite3.Row
     _ensure_columns(conn)
     updated, already, missing = [], 0, []

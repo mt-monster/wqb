@@ -278,7 +278,11 @@ supported_functions = {
     's_log_1p': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     'reverse': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},  # -x
     'power': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'expression']},  # power(x, y)
-    'densify': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
+    # densify(group)：平台语义=把稀疏分组键压成连续可用桶（输入/输出都是分组键）。
+    # 2026-09-20 修正：原 arg_types=['expression'] 使 densify(bucket(...)) 被判 Unit[Group:1] 不兼容，
+    # 而论坛验证过的 ASI robust 配方 group_cartesian_product(country, densify(bucket(rank(cap), range=...)))
+    # 平台可跑——本地闸误拦。
+    'densify': {'min_args': 1, 'max_args': 1, 'arg_types': ['category']},
     'floor': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     # Appended missing operators
     'arc_cos': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression'], 'param_names': ['x']},
@@ -745,8 +749,16 @@ class ExpressionValidator:
                 errors.append(f"无效的字段名: {arg.value}")
         elif expected_type == 'category':
             if not function_name.startswith('group_'):
-                # 非group函数的category参数必须是category类型且在valid_categories中
-                if arg.node_type != 'category':
+                # 非group函数的category参数必须是category类型且在valid_categories中；
+                # 派生分组键（bucket/group_cartesian_product/densify 产物）同样合法（2026-09-20）
+                if self._is_derived_category(arg):
+                    pass
+                elif function_name == 'densify' and arg.node_type == 'field':
+                    # Dataset GROUP fields are parsed as ordinary identifiers.
+                    # This syntax-only layer has no catalog; field existence and
+                    # data types remain the campaign gate's responsibility.
+                    pass
+                elif arg.node_type != 'category':
                     errors.append(f"参数 {arg_index+1} 应该是一个类别，但得到 {arg.node_type}")
                 elif arg.value not in valid_categories:
                     errors.append(f"无效的类别: {arg.value}")
@@ -815,7 +827,7 @@ class ExpressionValidator:
 
         derived = False
         if node.node_type == 'function':
-            if node.value in {'bucket', 'group_cartesian_product'}:
+            if node.value in {'bucket', 'group_cartesian_product', 'densify'}:
                 derived = True
             else:
                 function_info = supported_functions.get(node.value, {})

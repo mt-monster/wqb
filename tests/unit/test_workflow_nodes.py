@@ -409,6 +409,16 @@ def test_campaign_s2_command_has_no_stray_build_wave_token(monkeypatch, fake_too
     assert "build-wave" not in cmd, cmd
     assert "--from-db" in cmd and "--size" in cmd
     assert cmd[cmd.index("--wave") + 1] == "1"
+    assert "--expected-count" not in cmd  # capacity is not a reviewed plan
+
+    calls.clear()
+    r = cp.run(region="USA", stage="S2", dataset="model219", wave="1",
+               extra_args=["--size", "16", "--expected-count", "12"],
+               _context={"store": ex._store, "registry": ex.registry})
+    assert r["success"] is True
+    cmd = calls[-1]["cmd"]
+    assert cmd.count("--expected-count") == 1
+    assert cmd[cmd.index("--expected-count") + 1] == "12"
 
 
 def test_campaign_s2_assemble_priors_routes_clean_to_campaign_py(monkeypatch, fake_toolkit):
@@ -1040,4 +1050,3 @@ def test_hypothesis_round_registered_with_matching_signature():
     sig = set(inspect.signature(hr.run).parameters) - {"_context", "dry_run"}
     declared = set(meta.required_params) | set(meta.optional_params)
     assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"
-

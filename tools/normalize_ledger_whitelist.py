@@ -30,6 +30,9 @@
     python tools/normalize_ledger_whitelist.py --apply         # 真正写库
     python tools/normalize_ledger_whitelist.py --apply --fresh  # 忽略续跑状态
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import json
 import os
@@ -92,7 +95,7 @@ def main():
 
     state = load_state(a.fresh)
     done = set(state["done"])
-    conn = sqlite3.connect(a.db)
+    conn = db_connect(a.db)
     conn.row_factory = sqlite3.Row
 
     sql = f"SELECT region, value FROM ledger_kv WHERE key='{KEY}'"

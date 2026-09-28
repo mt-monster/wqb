@@ -8,6 +8,9 @@
   python tools/discover_datasets.py --region HKG --universe TOP800 --delay 1
   python tools/discover_datasets.py --region GLB --universe MINVOL10M --delay 1 --dry-run
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import json
 import os
@@ -50,7 +53,7 @@ def main():
     ap.add_argument("--sleep", type=float, default=1.0)
     args = ap.parse_args()
 
-    conn = sqlite3.connect(args.db)
+    conn = db_connect(args.db)
     conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
     rid = cur.execute("SELECT id FROM regions WHERE name=?", (args.region,)).fetchone()

@@ -29,6 +29,9 @@ import os
 import sqlite3
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DB = os.path.join(REPO, "data", "wqb.db")
 
@@ -42,7 +45,7 @@ _METRIC_COLS = (
 
 
 def _conn(db):
-    c = sqlite3.connect(db, timeout=30.0)
+    c = db_connect(db, timeout=30.0)
     c.row_factory = sqlite3.Row
     c.execute("PRAGMA journal_mode=WAL")
     return c

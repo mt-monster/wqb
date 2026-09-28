@@ -9,10 +9,17 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "2.2"
-last_verified: 2026-09-27
+last_verified: 2026-09-28
 ---
 
 # WQ BRAIN RA Pipeline（唯一挖掘编排 SOP）
+
+## 职责边界
+
+- **本 skill 负责**：九步（S-PRE→S6）编排与阶段决策：何时挖、在哪挖、走哪条分支
+- **本 skill 不做**：不亲自动手——不产表达式（L2）、不发批（L3）、不判提交（提交层唯一权威 = `tools/submit_verdict.py`）
+- **上游 / 下游**：上游 = 用户意图 + 区域 profile；下游 = 各步对应的 L0–L6 skill
+
 
 `brain-deepExplore` 已废止并入本文件。不要再读、再 invoke 那份 skill。
 
@@ -31,6 +38,7 @@ PPA 主题核查可查 `wq-brain-ppa-mining`，编排仍走本 SOP 的 PPA 分�
 
 ```powershell
 # $WQ_PY 定义见 INDEX.md「运行环境铁律」，本文件只引用不复制
+
 $REGION = "KOR"        # 唯一输入
 ```
 
@@ -51,9 +59,9 @@ $REGION = "KOR"        # 唯一输入
 
 九步骨架全区域共用，**区域差异通过 profile 注入**：`references/regions/<REGION>.md` 每区一份，YAML front-matter 声明静态配置/数据集红黑榜/priors/闸门覆盖/循环策略，正文写明变体理由。
 
-现有 **12 个** profile：`ASI` `CHN` `DEU` `EUR` `GBR` `GLB` `HKG` `IND` `KOR` `MEA` `TWN` `USA`。
+现有 **13 个** profile：`ASI` `CHN` `DEU` `EUR` `GBR` `GLB` `HKG` `IND` `JPN` `KOR` `MEA` `TWN` `USA`（实际文件数 `ls references/regions/*.md` 为准；JPN 已于 2026-09-15 补齐）。
 **区域的权威清单是 `src/wqb/config.py::REGIONS`（14 个）**，profile / 战役目录 / 区域清单三者的对齐表见 [`INDEX.md §区域清单`](../INDEX.md)——任何区域的增删都要同步那张表。
-未被 profile 覆盖的是 `AMR`、`JPN`（`config.REGIONS` 有该区，但**本工作区未启用**：无 profile、无战役目录）。
+未被 profile 覆盖的**只有 `AMR`**（`config.REGIONS` 有该区，但**本工作区未启用**：无 profile、无战役目录）。
 
 四个注入点：
 
@@ -64,11 +72,17 @@ $REGION = "KOR"        # 唯一输入
 | 闸门特化 | `gate_overrides`（CW / longCount / prod_corr 阈值） | 步 5、步 7、步 8 |
 | 循环策略 | `loop_policy`（探针上限、快判死、停止条件） | 步 2、步 6、循环表 |
 
-规则：profile 与骨架正文冲突时**profile 优先**（它是区域实证结晶）；profile 缺字段回落骨架默认；profile 未覆盖的 region（**当前仅 `AMR` / `JPN`**）走通用处女地模板（参照 ASI profile），**且开新区前必须先补 profile + `tracking/<R>/config/`**（DEU 曾被这条漏掉，见 `references/regions/DEU.md` 开头注）；`frozen` 区域（当前仅 MEA）步 1 即拒，唯一后门见该区 profile。
+规则：profile 与骨架正文冲突时**profile 优先**（它是区域实证结晶）；profile 缺字段回落骨架默认；profile 未覆盖的 region（**当前仅 `AMR`**）走通用处女地模板（参照 ASI profile），**且开新区前必须先补 profile + `tracking/<R>/config/`**（DEU 曾被这条漏掉，见 `references/regions/DEU.md` 开头注）；`frozen` 区域（当前仅 MEA）步 1 即拒，唯一后门见该区 profile。
 
 ### 步 1（S-PRE）查表
 
-目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）、`brain-forum-browse`。
+查表时读取 [brain-dataset-mining-experience](../brain-dataset-mining-experience/SKILL.md) 维护的
+`reports/dataset_experience/<region>_<dataset>_campain.md`。仅在 region/delay/universe 与证据范围一致时继承结论；
+S1 用字段级失败边界选字段，S2 机制文档引用相关 wave/alpha 并说明新假设。文件不存在则以 DB 查表结果为准。
+
+目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）。
+**论坛默认不查**（选区已有 registry/yield 先验，避免 token 黑洞）；仅当「判死区复开评估」时用
+`tools/forum_recon.py`（recon 模式，只读）取证翻案线索。
 
 **先读区域 profile**：`Read references/regions/<REGION>.md`，按 front-matter 渲染本区专属 SOP（后续各步标注"profile"处按其覆盖执行）；`entry_verdict: frozen` 则按该区 profile 的入口裁决处理，不继续步 2。
 
@@ -90,7 +104,7 @@ $REGION = "KOR"        # 唯一输入
   必须先用它去同族冗余与 OS 撞车，再进限流队列；
   ② 篮子敲定以 `GET /alphas/{id}` 的 detail 端点 `is.checks` 无 `result==FAIL` 为准，
   `submit_verdict` 在处女提交（404）时只返回 `UNVERIFIABLE`，不构成可提交依据。
-- **PPA 主题匹配门禁**：调 `mcp__wq-brain-http__get_messages`（limit=30）扫描 `type=="ANNOUNCEMENT"` 标题含 "Power Pool" 的公告，解析当期主题的 region/delay/universe/中性化集合/禁止数据集/有效时间。PPA 提交必须**精确匹配**主题；不在当期主题的达标候选标 YELLOW + WAIT_THEME_ROTATION。RA 常规提交不受主题限制。
+- **PPA 主题匹配门禁**：调 `mcp__wq-brain-http__get_messages`（limit=30）扫描 `type=="ANNOUNCEMENT"` 标题含 "Power Pool" 的公告，解析当期主题的 region/delay/universe/中性化集合/禁止数据集/有效时间。PPA 提交必须**精确匹配**主题；不在当期主题的达标候选标 YELLOW + WAIT_THEME_ROTATION。RA 常规提交不受主题限制。⚠ **每次 S-PRE 必须实时重扫，禁止复用 settings 快照**（实证：GLB/D1 Liquid Aug`26 主题 2026-09-27 到期，而 settings `_ppa_theme` 仍写"匹配，可继续"）；新主题的准入条件会变（如 2026-09-28 起的 All regions/D1 Oct`26 要求单数据集 + PV 或 fundamental）。
 
 ```
 mcp__wqb-db__get_campaign_summary  region=$REGION
@@ -100,6 +114,28 @@ mcp__wqb-db__get_dead_datasets     region=$REGION
 mcp__wqb-db__get_mining_yield                              # 全区排名
 mcp__wqb-db__get_mining_yield  region=$REGION  by_dataset=true   # 本区按数据集拆
 ```
+
+**⚠ 跨区死路检查（2026-09-28 新增，必做，勿只用区域 scoped 查询）**
+
+上面三条都是 **`region=$REGION` 作用域**，会**系统性漏掉已在别的区判死的数据集**。
+实证代价：KOR 选 risk70 做主攻集，跑完 114 条回测（best S=0.87 / 0 near）才发现
+`IND-RISK70-NO-SIGNAL` 与 `GLB-RISK70-STYLE-HF-MINVOL1M-FASTKILL` 早已存在 —— risk70 是
+**跨三区独立复现的死族**，本可在 S0 前零成本排除。
+
+```bash
+# 不限 region 的跨区死路检索（对每个候选数据集执行）
+python - <<'PY'
+import sqlite3
+for ds in ["<候选集1>", "<候选集2>"]:
+    rows = sqlite3.connect("file:data/wqb.db?mode=ro", uri=True).execute(
+        "SELECT region, entry_id FROM registry_empirical "
+        "WHERE layer='dead_end' AND (entry_id LIKE ? OR payload LIKE ?)", (f"%{ds}%", f"%{ds}%")).fetchall()
+    print(ds, "->", rows or "无跨区死路")
+PY
+```
+或直接读 `campaign_intel s0-select` 输出里的 **`[跨区弱:REG:maxS@bt]`** 负先验标记
+（同集在其它区 ≥16 条回测且 max|S|<1.0 即视为弱）。**跨区死族一律不进白名单**，
+不论本区评分多高 —— 三区独立复现的负先验强度远高于单区 S0 分数。
 
 **产出率读法（两个比率含义不同，别混）**：
 - `conversion` = 已回测 / 已生成 —— 低 = **流水线**问题（S2→S3 断链，生成远超回测吞吐）。修管道，别换区。
@@ -120,7 +156,7 @@ mcp__wqb-db__get_mining_yield  region=$REGION  by_dataset=true   # 本区按数�
 
 ### 步 2（S0）数据集体检 + 金字塔配置
 
-调 `mcp__wq-brain-http__workflow_campaign`（stage="S0"）。无战役目录的跨区试探才用本目录 `scripts/dataset_health_check.py`。
+调 `mcp__wq-brain-http__workflow_campaign`（stage="S0"）。无战役目录的跨区试探用 `tools/campaign_intel.py s0-select` / `xr-probe`（原 `scripts/dataset_health_check.py` 已归档 `attic/ra_pipeline_shell_20260928/`：零运行痕迹，且固定阈值口径已被 s0-select 三方交叉取代）。
 锁白名单后必须 `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {...})`。`recommend_datasets` 不能替代体检。
 
 **⚠ 开区硬前置：体检包必须先落地（2026-09-17 P1-1，治「三连复发」）**：锁白名单后、进步 3 generate **之前**，
@@ -212,7 +248,13 @@ mcp__wqb-db__get_ledger_key  region=$REGION  key=s0_ranking
 
 ### 步 3（S1）字段扫描 + 理解
 
-必做 typed catalog。**深度字段理解用 `mcp__wq-brain-http__workflow_feature_engineering`（⚠ 2026-09-17 P3-11 收口：按需 / 仅人读参考 / 禁注入 GEM）**——独立调用，ideas 回写 `s1_<ds>_d<delay>`，`source=standalone`。深查可前置 dataset/datafield exploration。
+必做 typed catalog。**深度字段理解用 `mcp__wq-brain-http__workflow_feature_engineering`（⚠ 2026-09-17 P3-11 收口：按需 / 仅人读参考 / 禁注入 GEM）**——独立调用，ideas 回写 `s1_<ds>_d<delay>`，`source=standalone`。
+
+**S1 三件套（INDEX 规定的 L1 链，2026-09-26 审计补入边——此前本步只用泛词"dataset/datafield exploration"指代，未挂 skill，导致这一步的知识无人加载）**：
+深查或字段质量存疑时按需加载 [brain-dataset-exploration-general](../brain-dataset-exploration-general/SKILL.md)（数据集级）
+→ [brain-datafield-exploration-general](../brain-datafield-exploration-general/SKILL.md)（单字段 6 法）
+→ [brain-data-feature-engineering](../brain-data-feature-engineering/SKILL.md)（字段→特征工程决策）。
+⚠ 该层是**两条已验证铁律的唯一落点**，本步必须执行，勿只读文档：① 白名单数据集过 S1 **字段级覆盖审计**（`catalog_<ds>` coverage>0），覆盖为空写 `<ds>_dead` 防复用——`recommend_datasets` **不校验区域覆盖率**，只信它会选到空集；② 新字段先 `create_multi_simulation(validate_fields=true)` **验活幽灵字段**（DB 里有记录但平台报 `Attempted to use unknown variable`，提交层直接 COMPILE_ERROR）。
 
 > ⚠ **为何是"按需 + 禁注入"（2026-09-15 ② 实证，GBR intraday_pv_feats）**：该节点产出的是**确定性模板渲染**
 > （8 问框架 + `rank(ts_mean({f},66))`），**不含 LLM 推理**。把它当 ideas 喂给 GEM，会让 GEM
@@ -229,10 +271,57 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 - **字段分级风险筛查（prod-corr 规避，orchestrator 迁移）**：`mcp__wq-brain-http__get_datafields` 后按 `users` 分级——`users ≥ 50` 只做信号方向验证不投入候选打磨（prod_corr 必超）；`users 10-49` 进候选池、提交前必须实测 prod_corr；`users 0-9` 优先候选池（理论 prod_corr≈0）。冷门字段（users≤9）占批次预算 ≥50%；已确认超标的字段族（如 GLB techindi `predicted_first_quantile_ten_day_return_*`）不再投任何变体。完整规避画像见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md)。
 - **失败分支**：字段数 <10 则退回步 2 白名单外。VECTOR 比例用 `get_datafields` 确认，步 4 必须传对 `data_type`。
 
+#### 步 3 强制环节：字段语义归类（闸 SEM，2026-09-28 落地，GEM 之前必做，代码 fail-closed）
+
+> **起因（KOR/fundamental17 首波实证）**：typed catalog 只回答「字段是什么类型、覆盖多少、多少人在用」，
+> **不回答「这字段能不能当信号」**。跳过语义归类直接进 GEM 的代价：348 条产物里 **49.4%** 落在
+> 货币代码 / 汇率叉乘这类**非信号字段**上（`add(add(not_equal(货币码A, 货币码B)))` 字符串比较、
+> `divide(multiply(usdtorep, reptoprc), fx_rate)` 三角套汇恒等式）——**语法全对、语义全废**，
+> 语法闸与 `gate.py` 都拦不住，只能靠回测烧配额。**黑名单字段仅占全部字段 9.9%（37/373），
+> 却吃掉 49.4% 的生成预算**（组合爆炸：currency_code_ras1/2/3 × exrate_1/2/3 被叉乘枚举）。
+
+**必做**（本地、零配额、秒级）：
+
+```
+python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-ledger
+#   产出 ledger `s1_semantic_<ds>`：signal_fields / blocked_fields / by_category
+#   建议同步把语义干净的字段重排回 GEM 字段池（冷门优先 + 覆盖优先），覆盖自动池：
+#   → 写 ledger `s2_field_pool_<ds>`（GEM 的 economic_field_pool_check 会读它）
+```
+
+**归类口径**（`tools/field_semantic_classify.py` 内可改）：非信号黑名单 = 货币/报表币种代码、汇率换算（叉乘多为恒等式）、
+标识符（country/iso/ticker/cusip/isin/gvkey）、分类码与标志位（`_code`/`_id`/`_flag`/`is_`）、日期期间口径、
+股份类别标签。信号字段按经济大类分桶：valuation / profitability / growth / cash_quality / leverage_solvency /
+efficiency / liquidity_risk / size_level / per_share / dividend。
+
+**双重 fail-closed（代码保证，不靠记忆）**：
+
+| 位置 | 行为 |
+|---|---|
+| 步 5 `tools/wave_gate.py` 闸 SEM | 缺 `s1_semantic_<ds>` 台账 → **exit 2 整波阻断**并打印生成命令；命中黑名单字段的表达式**直接剔出候选**（不进语法闸、不进回测） |
+| 步 4 GEM `economic_field_pool_check` | 读 `s2_field_pool_<ds>` 注入字段池；该池须由上一步语义归类产出，不得沿用未过滤的自动池 |
+| 回归测试 | `tests/unit/test_semantic_gate_failclosed.py`（6 条）：判定逻辑走纯单测（import `_semantic_gate`）+ 2 条 CLI 契约冒烟（缺台账 exit 2 / skip 才放行）。**删闸即红** |
+
+模式解析与仓库既有闸同构（CLI > env > 缺省 `enforce`）：
+`--semantic-gate {off,warn,enforce}` / `WQB_SEM_MODE`（同 `WQB_INSPECT_MODE`、`WQB_GATE_MODE`）。
+`off` = `--skip-semantic-gate`，是**唯一逃生口**，必须显式传且会打印醒目告警；
+`warn` = 缺台账仅告警（**黑名单剔除仍生效**）；`enforce` = 缺台账 exit 2 + 剔除。
+⚠ 缺省就是 `enforce`——想绕过必须显式传参，不能靠"忘了跑归类"蒙混过关。
+
+> ⚠ **产物是「字段池」，不是 ideas** —— 严禁把本步结果当 `ideas.md` 注入 GEM
+> （同 P3-11：确定性模板渲染会让 GEM 退化为「每字段套 rank」）。本步约束的是**哪些字段可用**，
+> 不是**怎么组合**。
+
 ### 步 4（S2）选波：概念优先生成
 
 **生成器 = `mcp__wq-brain-http__workflow_gem`，强制调用**
 `build-wave` 只去重 / 分桶 / 骨架配给，不产表达式。增强需求走 GEM 生成策略（增强 = 对已有 idea 的变体扩展，经 priors/ideas 注入实现）。
+
+引擎实现与用法（CLI 参数、priors、**LLM 不可用时的旁路**）见 [brain-make-some-gem](../brain-make-some-gem/SKILL.md)
+（2026-09-26 审计补入边：本步此前只写 MCP 节点名，未挂 skill，读 SOP 的 Agent 不会去加载那份 CLI 说明）。
+⚠ **GEM 依赖 LLM，而 LLM 通道可能因**余额不足**返回 `402 Insufficient Balance`**——此时报错表现是误导性的
+「no meta.json within 90s」，**且干跑（dry_run）只验证命令构建、验证不了 LLM 可达性，会显示 OK 的假绿**。
+绕行（已验证）：手写 ideas md → `--ideas-file` 跑 `headless_runner/run.py`，完全跳过 LLM。
 
 **可选** `mcp__wq-brain-http__workflow_campaign`（subcommand="diversity-extract"）做方向参考，**不替代** GEM，不强制先行。
 
@@ -305,7 +394,26 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 消费 `methodology_rules`（build-wave 配给，不替代 GEM）。该 `$DS` 本区域从未跑过 GEM 则必须先跑 GEM。
 未验证 DB 有表达式，不得声称步 4 成功。
 
+**按实验问题选波（2026-09-24）**：8条不是固定上限。普通探索的 `--size N` 仅为容量，
+workflow不再隐式补精确数量；预定实验则先把“机制＋基线/反证对照”清单写入DB ledger，
+调用 `extra_args=["--selection-contract-key","selection_w<W>","--size","<容量>",
+"--enhance-diversity","never","--auto-coverage","never"]`。条数由清单推导，
+容量不足必须显式扩容或分波；不得补参数变体凑数。清单格式、身份检查与延后项审计见
+[选波实验清单](../wq-brain-campaign-toolkit/references/selection-plan.md)。
+重建用清单内 `source_wave` 明确GEM源；逐项核验source_id、原式、来源及状态，缺机制或被配额挡住即失败。
+旧调用可显式 `--expected-count N` 保留数量检查，但它不证明机制覆盖。
+`wave_meta`保留选中/延后项及原因；未选、未回测不能写成dead_end。S4/S6依据配对证据决定：
+有新增机制或对照缺口时扩展，强候选再做有理由的参数敏感性，重复弱变体降低优先级而非永久删除。
+每轮报告“计划/选中/门禁通过/实际完成”与尚未覆盖的问题；单轮优劣只是后续验证线索。
+S4遇到指标上升但未达增强资格时，按同一[选波实验清单](../wq-brain-campaign-toolkit/references/selection-plan.md)的“研究线索与最小纠错复验”规则继续核查；研究留存与Mode B/near资格分开，平台单位警告未解决的对照不得用于机制归因。
+落库核验selected与无alpha_id；受保护状态或计划外旧selected/gated导致回滚，先核对再显式处理。
+
 * **失败分支**：GEM 未入库则按超时恢复清单查任务，确认失败才回退，不要手写；候选不足则 enhance / 扩组合，仍不足换数据集。
+* **机制枯竭/同质化（2026-09-28 新增）**：GEM 产出同骨架触封顶、或 win 配方无腿可换时，
+  先 `python tools/forum_recon.py --question "<具体机制问题>" --context region=$REGION,dataset=$DS --out kb`
+  （或等价节点 `mcp__wq-brain-http__workflow_execute` node="forum_recon"，P4 已节点化）
+  回补 `KB/community_tpl_kb.forum_recon_entries`（模板须先过 `ghost_operator_advisory` 替换）再重跑 GEM；
+  **额度以查出有效文章为标准**（自适应扩展关键词，命中即收束，安全上限防失控），同问题 7 天缓存不重复查。
 
 ### 步 5（S2→S3）门禁
 
@@ -354,13 +462,21 @@ python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选
 退出码 1 = 有幽灵算子（违规式隔离到独立小批或换已验证等价算子，映射表见 `KB/community_tpl_kb` 的
 `ghost_operator_advisory`）。纯本地检测，零配额。
 
-- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
+- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
 ### 步 5b：新信号族的 prod-first 探针（2026-09-19 实证后升为硬门）
 
 **任何新信号族在投入第二波之前，必须先用 1–2 条骨架查 `check_correlation(production)`**（`tools/campaign_intel.py prod-first --region R --wave W --top-k 2 --write-ledger --json <out.json>`，`--json` 需要文件路径）。
 实证：IND intraday_pv_feats 价量相关反转连投 3 波 24 条（S 4.4–6.5 全 IS 过）后才查 prod = 0.79–0.92，整族报废；pv103 尾盘反转 8 条同理。
 判定：家族首探 prod ≥ 0.7 → 记 dead_end 换机制，不做任何去相关变体（bucket/门控/平滑实证都破不了 prod 墙）；0.60–0.70 → 直接进步 8。
+
+**闸 PF（2026-09-25 落地）：prod-first 前置硬门已产品化到 `tools/wave_gate.py`**（`--prod-family-gate` 默认开，`--no-prod-family-gate` 关）。
+- 判据：**骨架级指纹**（前 2 个算子调用名，如 `rank→ts_backfill`）；
+- 同骨架指纹已确认 prod≥0.7 死路 → **闸 PF enforced 拦截整波**（fail-closed）；
+- 同骨架指纹已探明 prod<0.7 干净 → PASS（该骨架已探明，可扩批）；
+- 新骨架指纹（无任何 prod 记录）→ WARN（建议先 prod-first 探针再扩批）；
+- 骨架比字段更准（实证：`mdl135_d01_icc` 同字段在 `+vec_avg` 骨架下 prod=0.76-0.82 死路，在 `+vec_avg×ts_zscore` 骨架下 prod=0.46-0.57 干净）；
+- 零配额、纯本地（读 `alphas` 表），与闸 2.6 `prod_saturation_gate`（字段热度/数据集占比）互补。
 
 ### 步 6（S3）七槽回测
 
@@ -370,7 +486,10 @@ S3 入口也可走 [brain-sim-alphas-in-batch-and-track](../brain-sim-alphas-in-
 
 1. 空槽补组合批，不用裸探针凑数。
 2. 弱探针最多 1 槽；已有近闸字段时为 0。
-3. 设置跟 win：EUR 实证 `SUBINDUSTRY` + `decay4`。可另探 `ILLIQUID_MINVOL1M` / `TOPCS1600` / `delay0`。
+3. 设置跟 win：EUR 实证 `SUBINDUSTRY` + `decay4`。可另探 `TOPCS1600` / `delay0` 等本区合法档。
+   ⚠ `ILLIQUID_MINVOL1M` 对 USA/ASI/EUR 已被平台**永久停提**（2026-09-14 公告），不得再作对照探针档。
+   ⚠ 平台 2026-09-21 起支持 `simulationMode: QUICK/FULL`（QUICK 无 visualization/correlation/theme 检查、**不可提交**）：
+   探针批可考虑 QUICK 降本提速，正式波与近闸候选用 FULL（含全部 checks）。
    **设置层先验（2026-09-15 ①，默认开）**：`pipeline.py run` 装载 settings 后读 `region_kb.gate_priors`
    （缺则 `gate_priors_local`），`by_decay` / `by_neutralization` 里样本 ≥30 且过闸率 ≥ 当前设置 ×2 的格子
    自动改写本波设置并打印 `[settings-prior] decay 4→14：当前 3.9%(n=408) vs 实测 28.3%(n=46) lift×7.2`；
@@ -450,6 +569,7 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S4"  dataset=$DS  
 
 阈值不达标见 [brain-how-to-pass-alpha-test](../brain-how-to-pass-alpha-test/SKILL.md)。
 用 [wq-brain-alpha-optimization-v1](../wq-brain-alpha-optimization-v1/SKILL.md)（Mode B 70% / Mode A 30%）。
+**未编排增强节点去留（2026-09-28 登记）**：`workflow_execute(node="alpha_booster")`（通用短板提升：2Y/sub_universe/turnover 变体）与 `node="modeb_improve"`（Mode B 四阶段：条件化/残差/交互/时间结构）作为**按需机械变体生成器**保留——与 optimization-v1 的分工：后者是人审驱动的改进入口，这两个是批量变体器，仅当 S4 需要成批变体时调用（产出入库后仍走本步全部闸）；`structural_reconstruct` 实测仅 1 行产出，降为实验性、不再主动推荐。
 按需：`brain-calculate-alpha-selfcorr-quick`（本地快筛）/ `brain-explain-alphas`（按需归因：Mode B 换概念前查概念重叠，非每候选必经）。
 `brain-alpha-repair` 只作配方查表。
 
@@ -480,6 +600,20 @@ selfcorrQuick→check_self_correlation→compute_mutual_correlation→check_corr
 python tools/campaign_intel.py s4-prescreen --ids-file <本波 alpha_id 清单.txt>
 ```
 
+**IS→OS 衰减校准（2026-09-20 接线，`src/wqb/research/os_decay.py`）**：`review_wave.py` 评审时
+自动读 DB 的 OS 衰减基线（`alphas.os_*` 字段，由 `tools/sync_platform_alphas.py` 同步平台 OS 池），
+给每行追加 `os_calibration`（预期 OS 水位 + 存活率），评审表多一列 `expOS`，并写进 review payload。
+基线不可读/样本不足（<30）时 fail-open，评审照常。
+
+**语义边界（实测决定，别误用）**：IS sharpe 与 OS sharpe 的 **Spearman 秩相关仅 +0.086**，
+IS 各桶的 OS>0 存活率平坦（70-80%）——所以本校准**不抬高 IS 阈值**（那不会提升 OS 存活率），
+只给「这颗值不值得占配额」的期望值参考：`expOS = IS sharpe × 0.358`（USA 124 例实测衰减比）。
+折算值**不是单候选排序依据**（代码在 `caveat` 字段里已写明）。历史存活率约 78%，OS 过 1.58 仅 11%。
+
+```
+python tools/sync_platform_alphas.py --baseline     # 查看/刷新基线
+```
+
 **卡闸辅助腿检索（Mode B 组合增强）**：主信号卡某闸时，从 salvage 池找跨数据集正交辅助腿，
 替代人工翻历史波次：
 
@@ -489,10 +623,26 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
 
 卡 2Y 闸用 `boost_2y`、卡 CW/子宇宙用 `boost_cw`、卡 tvr 用 `boost_tvr`、信号弱用 `boost_sharpe`。
 
-**组合形态合规（路线 A，2026-09-13 定案）**：取到辅助腿后**禁止任何加权混合**
-（`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))` 均被 gate 闸5 block）——
-仅允许结构交互（ts_corr / ratio / 价差 / 条件 / 分组）或 SuperAlpha combo；
+**组合形态合规（路线 A，2026-09-13 定案；2026-09-28 加严）**：取到辅助腿后**禁止任何加权混合**——
+**包含「等权」相加**：`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`、
+**以及 `add(rank(A), rank(B))` / `add(group_rank(A,g), group_rank(B,g))`** 全部违规。
+等权即 0.5A+0.5B，属同一违规族；**任何含混表述都不构成本例外的例外**。
+也不得靠增删腿数或扫描混合权重去修不达标的信号。
+仅允许：① 单信号结构（`ts_scale`、`subtract(rank(A),rank(B))` 视作**单一价差信号**，须有经济含义而非拼腿）
+② 换算子几何（`group_rank`/`group_zscore`/`ts_quantile`/`bucket`）③ 换字段组合或换信号概念（Mode B 想法层）
+④ 事件门控（`trade_when`/`if_else`）⑤ SuperAlpha combo。
 构造细则见 [wq-brain-alpha-optimization-v1](../wq-brain-alpha-optimization-v1/SKILL.md)「组合腿救援」构造纪律。
+
+> ⚠ **事故记录（2026-09-28，勿重演）**：本文档旧版写「`0.5*rank(A)+0.5*rank(B)` 均被 gate 闸5 block」，
+> 但**实现层是假的**——闸5 的 `_detect_weighted_mix_structural` 只拦「实参以 系数* 开头」的腿，
+> **明文豁免等权 `add(rank(a),rank(b))`**。结果 KOR wave189/190 有 **7 条**
+> `add(group_rank(腿A), group_rank(腿B))`（含 S=2.11 / F=1.80 / 2Y=1.89 的漂亮结果）全部漏过闸5，
+> 属混信号调参，**已全部作废**。
+> 修复：新增闸5 毒模式 `equal_weight_leg_add`（结构判定，`_detect_equal_weight_leg_add`），
+> 登记于 `platform_constraints.json` v1.5（单一事实源），回归测试
+> `tests/unit/test_gate_equal_weight_leg_add.py`（16 条：7 违规必拦 / 7 合规必放 / config 文档断言 / DB 作废断言）。
+> **放行形态**（勿误伤）：`add(abs(x),0.01)`（1 腿 + epsilon 标量）、`add(ts_mean(x,22),ts_mean(x,66))`（同形态仅窗口差异＝单信号多窗平滑）。
+> **纪律提醒**：门禁通过 ≠ 合规。闸是兜底，不是许可证；判合规要看「是否两条独立信号腿相加」这一条本质，而不是看它是否命中正则。
 
 - **风险中性化硬规则（2026-09-08 新增；2026-09-15 ⑦ 已接线进 `review_wave.walls()/passes()`，墙名 `RN_EXPOSURE`）**：收割后必看 `risk_neutralized_sharpe`。
   `risk_neutralized_sharpe <= 0` 且 `sharpe >= 1.58` ⇒ 该 alpha **就是它自己声称的那个因子暴露**，
@@ -502,6 +652,10 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
   该值已入 `backtest_results.risk_neutralized_sharpe`，步 9 需与 GEM 声明的 `Expected Exposure`
   比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
+- **卡闸找武器（2026-09-28 新增）**：Mode B 常规改进 2–3 轮仍卡墙（prod/2Y/CW/tvr/robust）且未到判死时，
+  跑 `tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`
+  （每波 ≤1 次；**额度以查出有效文章为标准**）；命中的配方/手法入 idea 池供 Mode B Step B3 使用，
+  并写 ledger `forum_recon_<qkey>` 留痕。
 - **prod 验证排队调度**：多候选时走串行泳道（本地检查全批先跑、prod 队列恒保持 1 在飞、等待期插本地活），细则见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md) §7（含 7 天结果缓存与 `refresh` 终验）。
 
 ### 步 8（S4→S5）稳健闸与提交判定
@@ -514,7 +668,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
 
 S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（反过拟合/稳健性闸）。
 
-**提交判定链（顺序执行；最终提交判定唯一权威 = 第 2 步 submit_verdict）**：
+**提交判定链（顺序执行）**：模拟层（IS checks + 资格门）以 `submit_verdict` 为准；**提交层判据源头 = POST `/alphas/{id}/submit`**（2026-09-27 修正，见第 2 步 ⚠）。
 
 1. **Failed-count 资格门（研究侧硬前置）**：进入提交流程前，从 `is.checks` 计算 WebDataScope failed counts（规则见 [references/webdatascope-failed-gates.md](references/webdatascope-failed-gates.md)）。REGULAR 要求 `Failed RA == 0`；PPA 要求 `Failed PPA == 0`。比只看 `result=="FAIL"` 严格（WARNING/ERROR 也计数）。枚举每个 counted item 的 name/limit/value；非零 → 回步 7 修复，不进入提交。
 
@@ -522,14 +676,56 @@ S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（�
 mcp__wq-brain-http__submit_verdict  alpha_id=<ALPHA_ID>
 ```
 
-2. **submit_verdict 零成本判定（提交层权威）**：`mcp__wq-brain-http__submit_verdict` 给出模拟层 checks + GET `/alphas/{id}/submit` 双视图（403 盲区唯一权威），确认无 FAIL 且提交层 200。**是否提交的最终判定以本步为准。**
+2. **submit_verdict 零成本判定（否决权威，2026-09-28 R8 定案）**：`mcp__wq-brain-http__submit_verdict` 给出模拟层 checks（另含 `GET /alphas/{id}/submit` 提交层视图）+ **WebDataScope Failed RA/PPA 计数**（口径源 `src/wqb.config`）。**它是否决权威**：报 `BLOCKED` 即不提交；报可放行时仍需满足「模拟层全过 + `Failed RA/PPA==0` + **平台 prod<0.7**（另跑 `check_correlation(refresh=True)`）+ **用户确认**」才算放行。⚠ GET `/alphas/{id}/submit` **平台恒返 404**（ACTIVE 者也 404）→ 该视图是**死端点**，旧称"403 盲区唯一权威"作废；**真闸只有用户确认后的 POST submit**（四态响应见下）。已提交/ACTIVE 返回 `ALREADY_SUBMITTED`，不得重复 POST。
+
+   ⚠ **2026-09-27 修正：提交层唯一权威不是 submit_verdict。** 实测 `GET /alphas/{id}/submit`
+   **恒返回 404 + 空体**（对已 ACTIVE 的 alpha 同样 404）→ 其提交层视图永远读不到信息，
+   **处女候选恒返回 `UNVERIFIABLE`**。因此：**`UNVERIFIABLE` ≠ 不可提交**，据此判死会误杀候选。
+   **可靠判据 = 直接 POST `/alphas/{id}/submit`**：明确失败会**同步回带 403 + 全量提交层 checks**
+   （含真实 PROD/SELF 值），且**零成本、不扣配额**（2026-09-27 GBR 三次实证：3 次 403 全部由 POST 取得 verdict）。
 
 **submit_verdict 判定 SUBMITTABLE 只报告、等用户确认**。确认前禁止 `mcp__wq-brain-http__workflow_submit_alpha` / `mcp__wq-brain-http__submit_batch`。
 pipeline `--submit` = 提交回测，不是提交 alpha。
 
-* **失败分支**：`PASS_CHEAP` 则可提交；PROD/SELF 不过 则回步 7；配额耗尽按 ET 日历日（00:00 ET 重置）等待。
+**执行提交**：REGULAR 走 [worldquant-submit-alpha](../worldquant-submit-alpha/SKILL.md)，SUPER 走 [wq-brain-superalpha](../wq-brain-superalpha/SKILL.md)
+（2026-09-26 审计补入边：本步此前只写 MCP 工具名，未挂执行 skill，读 SOP 的 Agent 不会加载提交层的坑位清单）。
+
+⚠ **提交响应有 4 种形态，只有第 ① 种是「已知通过」，②③ 是「异步受理、结果未知」——必须补发**（2026-09-26 实证：3 颗候选因只轮询不补发而悬空 >24h）：
+
+| # | 响应 | 含义 | 正确处置 |
+|---|---|---|---|
+| ① | `success:true` + 200「IS checks passed」 | 明确通过 | 轮询至 `status=ACTIVE` |
+| ② | `success:true` + 201「Accepted (async); IS checks still computing」 | **异步受理** | 等 4 分钟；仍 `UNSUBMITTED` → **re-POST 补发**，再轮询 |
+| ③ | `success:false` + 200「Non-JSON submit response」+ **空体** | **异步受理、结果未知** | 同 ②：**必须补发**，不得当成失败 |
+| ④ | `success:false` + 403 + failing IS checks | 明确失败 | **零成本**，响应带回真实 PROD/SELF 值，据此判死或回步 7 |
+
+判据只认轮询到的 `status=ACTIVE`；**「轮询查询失败」≠「提交失败」**。
+客户端 `_poll_submit_until_resolved` 只给 **60 秒**窗口（6×10s），超时即返回 ②。
+**2026-09-28 起补发已工具化**：`submit_alpha` 节点 Step 4 内置四态处置——响应形态 ②/③ 且轮询未翻
+`ACTIVE` 时自动 **re-POST 补发一次**（幂等）再轮询（步骤 `async_resubmit` / `verify_after_resubmit`）；
+补发后仍 `UNSUBMITTED` 才记 `ASYNC_STUCK`（节点返回 `async_stuck=true`）并知会用户。
+
+* **失败分支**：只有 `submit_verdict` 无 FAIL 且提交层 200 才算可提交；**`PASS_CHEAP` 只代表过了①IS 廉价闸，绝不等于可提交**（见 [INDEX.md §闸门阶梯](../INDEX.md)）。PROD/SELF 不过 → 回步 7；配额耗尽按 ET 日历日（00:00 ET 重置）等待。
 
 ### 步 9（S6）复盘回写
+
+**S6 完成定义（2026-09-27 补，缺此项 = 本波未完成）**：`upsert_wave_result` / `upsert_registry_empirical` /
+`upsert_ledger_key` 三件回写完成后，**必须**再跑一次
+
+```
+workflow_campaign(region=$REGION, stage="S2", subcommand="assemble-priors")   # 默认带 --snapshot-ledger
+```
+
+刷新 `priors_snapshot_<region>`，否则下一波 GEM 读到旧先验（GBR 实测：快照停在 2026-09-19，
+而 `region_kb` 已 2026-09-25、`registry_empirical` 已 2026-09-26 → 落后 8 天，本波结论不回流）。
+产物归属见 [INDEX.md §共享产物归属表](../INDEX.md)；GEM 侧对 stale 快照只 WARN，**不阻断**——
+所以这一步只能由 S6 兜底，不能指望 GEM 报错。
+
+**逐数据集经验沉淀（必做）**：DB 台账回写后调用
+[brain-dataset-mining-experience](../brain-dataset-mining-experience/SKILL.md)，对本波每个实际回测数据集执行
+`workflow_campaign(stage="S6", subcommand="dataset-experience", dataset=$DS, extra_args=["--delay", str($DELAY)])`，
+收取异步终态，再补充块外中文字段/机制复盘。默认累计该数据集历史；专门总结本次战役才传 `--waves`。
+下一轮 S-PRE/S1/S2 消费这些经验；未回测、诊断与待出相关性不能记成已验证成果。
 
 未回写视为本波未完成。细节见 [wq-backtest-monitor](../wq-backtest-monitor/SKILL.md) §14。
 
@@ -582,11 +778,17 @@ decay 仍以 `tools/build_gate_prior_from_inventory.py --write-priors` 的 `gate
 ```
 mcp__wqb-db__upsert_wave_result  region=$REGION  wave=$W  verdict=<PASS|FAIL|PARTIAL>  ...
 mcp__wqb-db__upsert_registry_empirical  region=$REGION  ...
-mcp__wqb-db__upsert_ledger_key  region=$REGION  key="s6_verdict_<wave>"  ...
+mcp__wqb-db__upsert_ledger_key  region=$REGION  key="s6_verdict_<wave>"  ...   # ⚠ 已废弃（2026-09-28 去重）：结论唯一真相源 = wave_results.verdict，不再双写 ledger
 ```
 
-**判死封存（2026-09-13 新增：先沉降、再封存）**：任何 `dead_end` 回写前先调
-`seal_dead_end`——把该 idea 涉及波次的失败候选沉降入 salvage_pool（收集宽），
+**判死封存（2026-09-13 新增：先沉降、再封存）**
+
+**前置软核对（2026-09-28 新增，判死回写前必看）**：判死前跑 `tools/forum_recon.py --question "<数据集/信号族> 有无解法" --out negative`；
+`found=false`（负结果已入 `forum_recon_negative_<qkey>`）即为 decision-table D2「论坛无解」的取证；
+`found=true` → 该帖配方转 salvage/Mode B 武器，**不得直接判死**。核对结果记入 `dead_end.payload.forum_recon`
+（软提示起步：无记录不拦写入，但缺失须在 key_findings 说明）。
+
+**回写操作**：任何 `dead_end` 回写前先调 `seal_dead_end`——把该 idea 涉及波次的失败候选沉降入 salvage_pool（收集宽），
 并把残值列表回填 `dead_end.salvage`（原 schema 预留字段，此前恒 null）。
 救援动用仍守各区 `mode_b_qualification` 资格线（动用严），本工具不改动用侧：
 
@@ -621,7 +823,7 @@ mcp__wq-brain-http__value_factor_trendScore  start_date=<本季初>  end_date=<�
 
 ## 整链执行（可选）
 
-九步中**步 2/3/4/5/6 有 workflow 节点**（registry 注册 8 个：`campaign` / `feature_engineering` / `gem` / `batch_track` / `wave_gate` / `judge` / `submit_alpha` / `superalpha`）。步 1 查表、步 7 S4 评审、步 8 提交判定、步 9 复盘回写**无节点**，需按对应章节单独执行（2026-09-11 审计纠正：旧文称"九步可以整条交给 workflow_chain"，与 registry 实际能力不符；同批新增 `wave_gate` 节点，使步 5 门禁首次可入链）。链式调用先干跑再实跑：
+九步中**步 2/3/4/5/6 映射到 workflow 节点**（可用于整链的子集 = `campaign` / `feature_engineering` / `gem` / `batch_track` / `wave_gate` / `judge` / `submit_alpha` / `superalpha`；registry **实际注册的节点总数**见 [INDEX.md「MCP 工具/节点计数基准段」](../INDEX.md)，勿在此裸写）。步 1 查表、步 7 S4 评审、步 8 提交判定、步 9 复盘回写**无节点**，需按对应章节单独执行（2026-09-11 审计纠正：旧文称"九步可以整条交给 workflow_chain"，与 registry 实际能力不符；同批新增 `wave_gate` 节点，使步 5 门禁首次可入链）。链式调用先干跑再实跑：
 
 ```
 mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
@@ -649,8 +851,8 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 
 | 条件 | 动作 |
 |---|---|
-| **停止规则闸自动拦截**（2026-09-15 ⑦ SQL 化，`workflow_campaign(stage="S2"/"S3")` 前置，零配额、干跑也走） | 规则 A：该区 `backtest_results` ≥100 条且达标（S>1.58 & F>1.0）0 条；规则 B：最近 3 个 closed 波 `verdict` 全 FAIL（verdict 已强制枚举，见步 9）。命中即拒绝开波并给出台账覆盖写法。**用户显式要求继续**时写 `mcp__wqb-db__upsert_ledger_key(region, "stop_rules_override", {"reason": "<用户指令与理由>", "until": "YYYY-MM-DD"})` 放行（SOP：用户指令优先，但台账留痕；GBR 已按 09-12「stay in GBR」指令写入，至 09-30）。阈值在 `thresholds.json` `diversity.stop_rules`（`yield_min_backtests` 100 / `consecutive_fail_waves` 3 / `enabled`）。 |
-| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis`（现由上一行规则 B 机械判定） |
+| **停止规则闸自动拦截**（2026-09-15 ⑦ SQL 化，2026-09-23 按轴改版，`workflow_campaign(stage="S2"/"S3")` 前置，零配额、干跑也走） | 规则 A：该区 `backtest_results` ≥100 条且达标（S>1.58 & F>1.0）0 条。规则 B 按轴（region×dataset）计数（verdict 已强制枚举，见步 9）：**B1 同轴熔断**——开波 dataset 轴最近 K=3 个 closed 波连续可计数 FAIL 即拒开（换数据集/换轴即清零）；**B2 区级多轴停**——最近 8 波窗口内无任何 PASS 且 ≥4 个不同轴全部 FAIL，判多轴探索已证伪停区。**豁免**：零配额 FAIL（有 `gate_results` 无 `backtest_results`）与产出新 dead_end 的 FAIL 波不计数；**撞墙型 FAIL**（波内 max\|sharpe\| ≥ floor）计数但附路由提示（优先 prod-first 探针/换 universe/换池，而非停区）；信号缺席（max\|sharpe\| < floor）的拦截归 signal_floor 闸（本闸只在 evidence 标注 wall/signal_absent，正交分工）。命中即拒绝开波并给出台账覆盖写法。**用户显式要求继续**时写 `mcp__wqb-db__upsert_ledger_key(region, "stop_rules_override", {"reason": "<用户指令与理由>", "until": "YYYY-MM-DD"})` 放行（SOP：用户指令优先，但台账留痕；GBR 已按 09-12「stay in GBR」指令写入，至 09-30）。阈值在 `thresholds.json` `diversity.stop_rules`（`consecutive_fail_waves` 3 / `axis_window` 8 / `distinct_fail_axes` 4 / `axis_scope` / `exempt_zero_cost_waves` / `exempt_dead_end_waves` / `yield_min_backtests` 100 / `enabled`）。schema 不齐或 `axis_scope:false` 时回落旧口径（全区最近 3 波全 FAIL）。 |
+| 同轴连续 3 波可计数 FAIL，或窗口内 ≥4 个不同轴全 FAIL 且无新 dead_end | 该轴/该 region 暂停，转 `brain-next-move-analysis`（现由上一行规则 B1/B2 机械判定） |
 | 白名单被 dead_end 全覆盖 | 停止 |
 | 连续 3 波 gate 通过率=0（`gate_results.all_pass` 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
 | **信号天花板闸自动拦截**（2026-09-06 接线） | **参数唯一权威位置 = `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`**（2026-09-17 P2-12 明确；**不在** references/regions/*.md 的 profile 里，profile 只写区域画像）。`workflow_campaign(stage="S2"/"S3")` 前置自动判定：最近 `min_batches` 个波次 `max\|sharpe\| < max_sharpe_floor` 即拒绝开波（`max_sharpe_floor` 缺省 0.5 / `min_batches` 缺省 2；**语义注意**（2026-09-17 改版）：整节缺失时改为 **fail-closed** —— 回落默认 `max_sharpe_floor=0.5 / min_batches=2` 继续判定并输出 `warning`（旧行为是静默放行，与停止闸使命矛盾）；**仅显式 `enabled:false` 才放行**。`thresholds.json` 不可读时同理。**实测 13/13 区域均已配该节**（AMR ASI CHN DEU EUR GBR GLB HKG IND JPN KOR MEA USA，2026-09-17 复核；旧文档记「11 区」为漏计 AMR/GLB）。2026-09-11 按实证回填（规则：每波 max\|sharpe\| 的 p25、**只上调不下调**、样本≥8 波）：**IND=1.2 / USA=0.9 / MEA=1.2**，其余区域维持 0.5 —— 对高信号区 0.5 形同虚设（USA 曾 0/13 波、MEA 0/47 波低于 0.5）。注意 `_evidence` 里"样本 0 波"指的是**回填需 ≥8 波的样本门槛未达**（故不上调 floor），**不是**该区闸失效：DEU 实测 `batches=2 / max_sh=1.7 / verdict=ok`（2026-09-17）。纯 DB 判定零配额，干跑也走。被拦即换 universe / 换数据集 / 换区域，不要绕过。历史教训：这套配置早就写好了却零调用方，GBR 因此跑满 180 条回测、`max\|sharpe\|=1.04`、达标 0 条。 |
@@ -658,7 +860,8 @@ campaign / feature_engineering 都是"启动即返回"，链会等上一步的�
 | 配额耗尽 | 挂起提交，继续步 2 → 9。 |
 | 用户要求持续日循环 | 每个 NY 日先 `brain-next-move-analysis`，再从步 1 跑；日界 21:30 ET |
 
-可选外壳：`scripts/ralph_daily_loop.py` / `ralph_runner.py`（状态模板 `templates/daily_state.template.json`）。循环体仍是上面九步，不是第二套 SOP。
+可选外壳：~~`scripts/ralph_daily_loop.py` / `ralph_runner.py`（状态模板 `templates/daily_state.template.json`）~~
+**已归档 `attic/ra_pipeline_shell_20260928/`（2026-09-28）**：三件零运行痕迹（日循环从未以此落地，无任何实例化状态文件），循环体仍是上面九步，不是第二套 SOP。
 
 ---
 
@@ -693,7 +896,7 @@ PPA 日循环停止闸：submit-ready ≥4。**配额是三条并行通道**：`
 | S2→S3 | `gate_results`（`all_pass` / `fail_reasons`） | `wave_gate` / `gate.py`；直写用 `mcp__wqb-db__upsert_gate_result` |
 | S3 | `backtest_results` / `wave_results` / checkpoint | `pipeline.py`（toolkit）；收割用 `mcp__wq-brain-http__harvest_multisim_alphas` + `mcp__wqb-db__harvest_multisim_results` / `upsert_backtest_rows` |
 | S4 | ledger `s4_walls_<region>_<wave>`；`salvage_pool` | `review_wave.py`；补池用 `mcp__wqb-db__backfill_salvage_pool` |
-| S6 | `wave_results.verdict` + `registry_empirical` + ledger `s6_verdict_<wave>` | `mcp__wqb-db__upsert_wave_result` / `upsert_registry_empirical` / `upsert_ledger_key` |
+| S6 | `wave_results.verdict`（**唯一结论源，2026-09-28 起不再双写 `s6_verdict_<wave>`**）+ `registry_empirical`；派生字段经验 `reports/dataset_experience/*_campain.md`（仅对判死/win 集生成，由 `seal_dead_end`/`add-win` 触发） | `mcp__wqb-db__upsert_wave_result` / `upsert_registry_empirical`；`workflow_campaign(subcommand="dataset-experience")` |
 
 > 「由谁写」列 2026-09-05 补：此前 `upsert_expressions` / `upsert_gate_result` /
 > `upsert_backtest_rows` / `upsert_field_catalog` / `harvest_multisim_*` 这几个写库工具
@@ -744,4 +947,4 @@ MCP 工具调用名 = `mcp__<server>__<注册名>`。注册名与所在模块不
 | 直写字段目录 | `mcp__wqb-db__upsert_field_catalog` | wqb_db_mcp.py |
 | 直写 ledger | `mcp__wqb-db__upsert_ledger_key` | wqb_db_mcp.py |
 
-> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。工具/节点计数**唯一基准 = `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」**（当前 wq-brain-http 68 / wqb-db 36 / workflow 节点 9，测试守护），本表不另维护数字。
+> 维护规则：改 MCP 工具名/归属时同步更新本表；新增 workflow_* 工具须登记。工具/节点计数**唯一基准 = `Claude/skills/INDEX.md`「MCP 工具/节点计数基准段」**，本表不另维护数字（2026-09-26 审计：此处曾裸写 68/36/9 的过时计数，已删）。

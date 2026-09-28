@@ -1,2 +1,0 @@
-stats = generate_stats(alpha);
-ts_ir(stats.returns, 250)

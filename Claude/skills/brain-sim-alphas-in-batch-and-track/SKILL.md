@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: brain-sim-alphas-in-batch-and-track
 description: "WorldQuant BRAIN alpha 批量提交与跟踪（表达式默认读库 `--from-db`；文件/CSV 仅断点续跑兼容）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
 layer: L3
@@ -27,6 +27,14 @@ allowed-tools:
 
 
 # Brain Sim Alphas Batch Track（独立批量跟踪）
+
+## 职责边界
+
+- **本 skill 负责**：**S3 唯一执行者**：批量仿真/发批/跟踪/断点续跑，写 `settings.json` 与回测结果入 `backtest_results`
+- **本 skill 不做**：**不提交 alpha**（提交是 L5）；不做门禁；不生成表达式；`--submit` = 提交**回测**，不是提交 alpha
+- **上游 / 下游**：上游 = 步 5 已过闸批次；下游 = S4 评审
+
+
 
 ## 角色定位
 

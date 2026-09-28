@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: pull-brain-skills
 description: "从 ZIP URL（首选）、Git 仓库或本地目录导入有效的 agent skill。包含 SKILL.md / skill.md 文件（不区分大小写）的文件夹视为有效 skill。"
 layer: L7
@@ -14,6 +14,14 @@ allowed-tools:
 
 
 # Pull BRAIN Skill
+
+## 职责边界
+
+- **本 skill 负责**：skill 导入：从 ZIP URL / 目录 / Git 仓库拉取含 SKILL.md 的 skill
+- **本 skill 不做**：**导入不校验 layer / 命名 / frontmatter** —— 导入后必须人工归层并跑 `python tools/sync_skills.py` + `pytest tests/unit/test_skill_integrity.py -q`；不做 skill 内容创作
+- **上游 / 下游**：上游 = 外部 skill 源；下游 = 仓库 `Claude/skills/`（唯一权威位）
+
+
 
 本 skill 从远程源或本地目录导入 skill 文件夹。
 

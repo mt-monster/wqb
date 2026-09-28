@@ -1,0 +1,311 @@
+{
+ "wins": [
+  {
+   "id": "HKG-A10WOVAE-IS-A-CROWDING-DUMMY",
+   "what": "HKG-A10WOVAE-IS-A-CROWDING-DUMMY",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-CROWDING-STATE-VAR-IS-IRREPLACEABLE",
+   "what": "HKG-CROWDING-STATE-VAR-IS-IRREPLACEABLE",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-DUALGATE-EXP-20260909",
+   "what": "HKG-DUALGATE-EXP-20260909",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-FIRST-SUBMISSION-A10WOVAE",
+   "what": "HKG-FIRST-SUBMISSION-A10WOVAE",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-G7-REGIME-GATED-PREMIUM",
+   "what": "HKG-G7-REGIME-GATED-PREMIUM",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-QMWLONOE-BEST-OVERALL",
+   "what": "HKG-QMWLONOE-BEST-OVERALL",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  }
+ ],
+ "dead_ends": [
+  {
+   "family": "region_kb",
+   "reason": "starmine 价值路天花板 sh 1.22 + prod 0.806",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "情感/趋势类全无截面信号（0.68/0.51/0.35 三连死）",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "fund_holdings_panel institutional holdings and flows",
+   "reason": "两波 14 探针覆盖数据集两个层（MATRIX 持仓结构层 + VECTOR 交易流量层），最高 sharpe 0.56，w2 全线低于 0.5。按 HKG fast_kill（8 探针无 |S|>=0.5 即死）判死。",
+   "salvage": "无。HKG 下一步转 HK 本土披露数据（CCASS 中央结算持股 / 港交所卖空 / 港股通资金流）——本会话已证区域特有披露数据是「强+干净」的唯一来源（IND transaction_cost / KOR insiders5）。",
+   "source": "registry_dead_end",
+   "_entry_id": "HKG-FUND-HOLDINGS-PANEL-WEAK-SIGNAL"
+  },
+  {
+   "family": "mmp_nlp_sentiment 多字段比率组合",
+   "reason": "8 条 divide 比率组合覆盖 7 类独立机制，max |S| = 0.49。数据集条件是全项目见过最好的（521 字段全 MATRIX、cov 全 >=0.85、uc 全 <=2、S0 得分 HKG OTHER 首位 0.9302），但没有信号。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "HKG-MMP-NLP-SENTIMENT-NO-SIGNAL"
+  }
+ ],
+ "region_context": {
+  "tier": "终止区（0 ACTIVE，转 ASI）",
+  "settings_proven": {
+   "universe": "TOP800/TOP500",
+   "delay": 1
+  },
+  "key_notes": [
+   "形态/情感信号区域依赖：判死只对区域有效（GBR pattern_scores 出过 ACTIVE）"
+  ]
+ },
+ "_meta": {
+  "region": "HKG",
+  "sources": [
+   "ledger_kv:region_kb (forum_templates/win_recipes/dead_patterns/notes)",
+   "registry_empirical:win",
+   "registry_empirical:dead_end",
+   "ledger_kv:KB/template_kb",
+   "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
+   "profile_fallback (仅 DB KB 空时)",
+   "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
+  ]
+ },
+ "gate_priors": {
+  "sample_size": 509,
+  "pass_rate": 0.0079,
+  "by_neutralization": {
+   "STATISTICAL": {
+    "rate": 0.0273,
+    "n": 110
+   },
+   "SECTOR": {
+    "rate": 0.0,
+    "n": 277
+   },
+   "SUBINDUSTRY": {
+    "rate": 0.0,
+    "n": 111
+   }
+  },
+  "by_universe": {
+   "TOP800": {
+    "rate": 0.0085,
+    "n": 472
+   },
+   "TOP500": {
+    "rate": 0.0,
+    "n": 37
+   }
+  },
+  "by_operator_count": {
+   "5-8": {
+    "rate": 0.0093,
+    "n": 108
+   },
+   ">8": {
+    "rate": 0.0106,
+    "n": 283
+   },
+   "<=4": {
+    "rate": 0.0,
+    "n": 118
+   }
+  },
+  "by_decay": {
+   "5": {
+    "rate": 0.0476,
+    "n": 21
+   },
+   "8": {
+    "rate": 0.0288,
+    "n": 104
+   },
+   "4": {
+    "rate": 0.0,
+    "n": 232
+   },
+   "0": {
+    "rate": 0.0,
+    "n": 27
+   },
+   "2": {
+    "rate": 0.0,
+    "n": 59
+   },
+   "6": {
+    "rate": 0.0,
+    "n": 21
+   },
+   "3": {
+    "rate": 0.0,
+    "n": 15
+   },
+   "7": {
+    "rate": 0.0,
+    "n": 16
+   }
+  },
+  "by_field_family": {
+   "shrt": {
+    "rate": 0.0162,
+    "n": 185
+   },
+   "price": {
+    "rate": 0.0,
+    "n": 83
+   },
+   "mean": {
+    "rate": 0.0,
+    "n": 16
+   },
+   "headline": {
+    "rate": 0.0,
+    "n": 24
+   },
+   "anl": {
+    "rate": 0.0,
+    "n": 80
+   }
+  },
+  "avoid": [
+   "neutralization=SECTOR(0%, n=277)",
+   "neutralization=SUBINDUSTRY(0%, n=111)",
+   "field_family=shrt(2%, n=185)",
+   "field_family=price(0%, n=83)",
+   "field_family=anl(0%, n=80)",
+   "universe=TOP800(1%, n=472)",
+   "universe=TOP500(0%, n=37)"
+  ],
+  "generated_at": "2026-09-25T09:02:13.671476+00:00",
+  "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.0,
+    "current_n": 232,
+    "recommended": 8,
+    "rate": 0.0288,
+    "n": 104,
+    "lift": 1.44,
+    "source": "gate_priors",
+    "apply": false
+   },
+   {
+    "dim": "neutralization",
+    "current": "SECTOR",
+    "current_rate": 0.0,
+    "current_n": 277,
+    "recommended": "STATISTICAL",
+    "rate": 0.0273,
+    "n": 110,
+    "lift": 1.36,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
+ },
+ "skeleton_field_matrix": {
+  "effective": [
+   {
+    "skeleton": "rank(group_rank(ts_rank(ts_backfill({model_field}, 5), 5), sta1_top3000c20))  # 黑盒排名（TPL-705）",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "group_neutralize({model_field} - group_mean({model_field}, 1, industry), subindustry)  # 剥离行业投影",
+    "field_family": "blackbox_projection",
+    "preferred_principles": [
+     "residual_strip",
+     "preprocess_clean"
+    ],
+    "empirical": "quantile_label/predicted_ 族在 EUR prod_corr 系统性 0.80+ 撞墙（字段内容驱动），黑盒热门字段需先测 prod"
+   },
+   {
+    "skeleton": "rank(winsorize({field}, std=4))  # 去极值后截面排名",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "ts_zscore(winsorize(ts_backfill({field}, 120), std=4), 22)  # 回填+去极值+时序标准化",
+    "field_family": "high_skew_fat_tail",
+    "preferred_principles": [
+     "preprocess_clean",
+     "cross_section_compare"
+    ],
+    "empirical": "体检硬门强制；单边恒正/负字段不能直接用原始水平"
+   },
+   {
+    "skeleton": "rank(ts_backfill({field}, 120))  # 低覆盖先回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   },
+   {
+    "skeleton": "group_backfill({field}, {group})  # 组内回填",
+    "field_family": "low_coverage",
+    "preferred_principles": [
+     "preprocess_clean"
+    ],
+    "empirical": "体检硬门强制"
+   }
+  ],
+  "dead": [
+   {
+    "family": "same_source_sentiment_pair",
+    "reason": "禁用算子 add(加权混信号)（同源多字段（正/负情绪对））"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_zscore(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "sparse_event_lowfreq",
+    "reason": "禁用算子 ts_mean(直接用于稀疏)（稀疏事件/低频数据）"
+   },
+   {
+    "family": "global",
+    "reason": "add(w1*A, w2*B) 加权混信号（闸5 poison）"
+   }
+  ],
+  "orthogonal_hints": [
+   "每波 residual_strip≥1 + info_interaction≥1，transform 设上限（防伪多样性）",
+   "divide 比率型优先于 add 加权型（实证 31.4% vs 13.9%，2.3 倍）",
+   "沉睡算子激活：ts_regression/ts_quantile/days_from_last_change/group_neutralize"
+  ]
+ }
+}

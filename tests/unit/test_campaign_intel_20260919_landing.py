@@ -56,7 +56,7 @@ def _mk_backlog_db(path):
     CREATE TABLE expressions (id INTEGER PRIMARY KEY, wave_id INTEGER, region TEXT, wave TEXT,
         expression TEXT, status TEXT, alpha_id TEXT, created_at TEXT, updated_at TEXT);
     CREATE TABLE backtest_results (id INTEGER PRIMARY KEY, region TEXT, wave TEXT, alpha_id TEXT);
-    CREATE TABLE gate_results (id INTEGER PRIMARY KEY, region TEXT, wave TEXT);
+    CREATE TABLE gate_results (id INTEGER PRIMARY KEY, region TEXT, wave TEXT, all_pass INTEGER);
     INSERT INTO regions VALUES (1, 'USA');
     -- w1: 陈旧、无 gate、无回测 → 该 drop
     INSERT INTO waves VALUES (1, 1, 'old_pool', 'pending');
@@ -65,7 +65,7 @@ def _mk_backlog_db(path):
     -- w2: 陈旧但有 gate → 默认不动，--include-gated 才动
     INSERT INTO waves VALUES (2, 1, 'gated_pool', 'gated');
     INSERT INTO expressions VALUES (3, 2, 'USA', 'gated_pool', 'rank(c)', 'gated', NULL, '2026-01-01T00:00:00', NULL);
-    INSERT INTO gate_results VALUES (1, 'USA', 'gated_pool');
+    INSERT INTO gate_results VALUES (1, 'USA', 'gated_pool', NULL);
     -- w3: 已回测（部分残留未跑）→ 永不 drop；--close-backtested 关掉并 drop 残留
     INSERT INTO waves VALUES (3, 1, '77', 'gated');
     INSERT INTO expressions VALUES (4, 3, 'USA', '77', 'rank(d)', 'selected', 'ALPHA1', '2026-01-01T00:00:00', NULL);
@@ -81,7 +81,8 @@ def _mk_backlog_db(path):
 
 def _run_backlog(ci, tmp_path, **kw):
     a = types.SimpleNamespace(region=None, older_than_days=7, pattern=None, include_gated=False,
-                              include_backtested=False, show=50, apply=False, close_backtested=False)
+                              include_backtested=False, show=50, apply=False, close_backtested=False,
+                              drop_gate_fail_only=False, drop_zero_expr=False)
     for k, v in kw.items():
         setattr(a, k, v)
     return asyncio.run(ci._cmd_backlog_drop(a))

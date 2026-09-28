@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 name: brain-next-move-analysis
 description: "为 WorldQuant BRAIN 顾问生成综合日报。 覆盖平台更新、比赛进展、alpha 表现（IS/OS）、金字塔分析与可执行建议。 当用户要求\"日报\"、\"早报\"、\"状态检查\"或 \"daily report\"、\"morning update\" 时使用。"
 layer: L0
@@ -17,6 +17,14 @@ allowed-tools:
 
 
 # BRAIN 日报工作流
+
+## 职责边界
+
+- **本 skill 负责**：S6 并行情报层：日报 / 平台进展 / 金字塔分析 / 区域态势（SATURATION）
+- **本 skill 不做**：**不产出战役配置白名单**（那是 S0 体检的事）；不选字段；不回测
+- **上游 / 下游**：上游 = 平台活动 + DB；下游 = ra-pipeline 步 1 的情报参考（**非流水线前置**）
+
+
 
 该工作流为 WorldQuant BRAIN 顾问生成结构化日报。
 详细的逐步流程与预期输出见 [reference.md](reference.md)。

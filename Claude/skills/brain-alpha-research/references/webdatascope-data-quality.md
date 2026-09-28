@@ -113,7 +113,9 @@ USA_1 参考值：`isos.mean` sharpe 0.358 / fitness 0.353；甜点区示例（2
 
 `getAlphaCheckStates`（插件 `background.js` 注入到 fetch 拦截器）会解析 `MATCHES_PYRAMID` 检查项，提取命中的 pyramid 名写入 `is.WQPPYS` 字段（如 `momentum/value`）。**Pyramid 是数据集的"高表现池"**——不同 pyramid 定义不同的字段组合/风格。用途：
 
-1. **提交前**：`get_submission_check` 的 `MATCHES_PYRAMID` 是否命中直接决定能否提交（不匹配就是死路）；用金字塔名搜索该数据集的高质量字段组合习惯。
+1. **提交前**：提交层 `checks` 里的 `MATCHES_PYRAMID` 是否命中直接决定能否提交（不匹配就是死路）；
+   （2026-09-26 审计：`get_submission_check` **不是真实 MCP 工具**——提交层 checks 只存在于
+   `POST /alphas/{id}/submit` 响应中；模拟层可用 `get_alpha_details` 的 `is.checks`。）用金字塔名搜索该数据集的高质量字段组合习惯。
 2. **数据包交叉**：`dataSetList.json` 只列出 160 个组合的逐字段体检；若目标 `<ds>_<region>_<universe>_Delay<N>` 缺失，用插件同款前缀回退（`dataFlag.js`: `<ds>_<region>_*_Delay<N>` 找同 region 其他 universe），但 universe 特定覆盖差异需在实际 `coverage` 上复核。
 
 ## 规则 12 — 时间窗口与回测区间选择（sub_beg_time/sub_end_time 深度用法, 2026-08-02 新增）

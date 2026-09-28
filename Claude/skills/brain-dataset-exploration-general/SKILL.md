@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 name: brain-dataset-exploration-general
 description: "提供对 WorldQuant BRAIN 整个数据集进行深入挖掘分析的综合工作流。 包括数据集选择、字段分类（field categorization）、详细描述生成与跨平台调研等步骤。 当用户想\"审计某个数据集\"、\"对字段分类\"或\"探索新数据集\"时使用。"
 layer: L1
@@ -18,6 +18,14 @@ allowed-tools:
 **运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
 
 # 数据集探索专家工作流
+
+## 职责边界
+
+- **本 skill 负责**：**数据集级**审计与分类（选集）：该数据集值不值得挖、类别/覆盖/拥挤度画像
+- **本 skill 不做**：不做单字段深度评测（→ `brain-datafield-exploration-general`）；不做特征工程决策；**区域/universe 档位一律引用 `src/wqb/config.py`，不得自行维护区域表**
+- **上游 / 下游**：上游 = S0 白名单；下游 = 单字段探索
+
+
 
 本工作流指导数据集的深度分析与分类。
 详细岗位手册与具体 MCP 工具策略见 [reference.md](reference.md)。
@@ -57,7 +65,7 @@ allowed-tools:
 |---|---|---|
 | USA | `TOP3000` | |
 | GLB | `TOP3000` | |
-| KOR | `TOP600` | 192 个数据集 / 15 个类别（截至 2026-08） |
+| KOR | `TOP600` | 192 个数据集 / 15 个类别（**2026-08 快照，非权威**） |
 | ASI | `TOP500` | 163 个数据集 |
 | EUR | `TOP2500` | 也支持 `TOP1200` / `TOP800` / `TOP400` |
 | CHN | `TOP2000U` | **不是** `TOP3000` |

@@ -2,7 +2,7 @@
 name: alpha-template-labs-data-analysis
 layer: L0
 description: "Brain Labs 原始数据分析辅助代理（S0 前研究步骤）：检查 USA/TOP3000/D1 MATRIX 数据集，诊断覆盖/缺失/频率/离群值/相关性，把发现转化为 Python 原生抽取机制。当用户要在设计 Python alpha 前做 Labs 原始数据分析时使用。触发词：Labs 分析 / 原始数据分析 / labs data analysis / Python alpha 设计前置。"
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 user-invocable: true
 allowed-tools:
   - Read
@@ -11,6 +11,13 @@ allowed-tools:
 ---
 
 # /alpha-template-labs-data-analysis
+
+## 职责边界
+
+- **本 skill 负责**：S0 前的 Brain Labs 原始数据分析：覆盖/缺失/频率/离群值/相关性诊断
+- **本 skill 不做**：不开战役、不选最终字段、不回测；结论只作 S1 输入
+- **上游 / 下游**：上游 = Labs 原始数据；下游 = S1 字段选择
+
 
 运行 Brain Labs 数据分析代理，说明见
 [reference/brain-labs-data-analysis-agent.md](docs/reference/brain-labs-data-analysis-agent.md)。
@@ -41,6 +48,7 @@ mcp__wq-brain-http__get_datafields(
 ```python
 mcp__wq-brain-http__authenticate_brainlabs()
 # -> {workspaces_url, labs_url, token, ...}; 打开 workspaces_url
+
 ```
 
 3. 生成可粘贴的 Labs 脚本（至多两个 MATRIX 字段）：

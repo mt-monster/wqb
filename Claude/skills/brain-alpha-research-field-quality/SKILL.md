@@ -2,7 +2,7 @@
 name: brain-alpha-research-field-quality
 layer: L1
 description: "字段质量先验与 WebDataScope 数据包质量预筛：按 alphaCount/userCount 排序字段种子、数据包零成本预筛、区域切换预筛门禁。当任务涉及字段质量先验、数据包预筛或基于质量指标的字段/数据集选择时使用。触发词：字段质量 / 质量先验 / WebDataScope / 数据包预筛。"
-last_verified: 2026-09-19
+last_verified: 2026-09-28
 allowed-tools:
   - Read
   - Bash
@@ -10,6 +10,14 @@ allowed-tools:
 ---
 
 # BRAIN Alpha 研究 — 字段质量（Field Quality）
+
+## 职责边界
+
+- **本 skill 负责**：WebDataScope 数据包质量预筛（**S-PRE，纯离线**：低覆盖/高偏度/厚尾/单边/稀疏事件），按 alphaCount/userCount 排字段种子
+- **本 skill 不做**：不产出战役选集、不回测、不提交；**只作 S0 的前置参考，不替代 S0 体检**
+- **上游 / 下游**：上游 = 本地 WebData 快照（`tools/gen_field_inspect_packs.py`）；下游 = S0 选集参考
+
+
 
 ## 触发场景
 

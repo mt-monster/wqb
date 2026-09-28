@@ -54,7 +54,11 @@ def classify(verdict):
     m = _HARD_GATE_RE.search(v)
     if m:
         n_pass = int(m.group(1))
-        return ("PASS" if n_pass > 0 else "FAIL"), f"过硬闸计数 {m.group(1)}/{m.group(2)}"
+        # 2026-09-26 对齐：唯一权威 = `wqb.workflow.nodes.campaign._normalize_verdict`
+        #（停止规则 B 的读取方）。其语义为 N>0 → PARTIAL（N=通过提交层硬闸的条数，与 IS
+        # 达标数不是一回事；部分达标即 PARTIAL，全过也不例外——保守字符串语义归一）。
+        # 旧实现 N>0 → PASS 与读取方分歧 32/72 行（实测），已改正。
+        return ("PARTIAL" if n_pass > 0 else "FAIL"), f"过硬闸计数 {m.group(1)}/{m.group(2)}（对齐 campaign）"
     # 2026-09-15 ⑦ 扩展：MCP upsert_wave_result 此前不校验枚举，Agent 写入了
     # "PASS_READY_x2：…" / "PARTIAL_BREAKTHROUGH：…" / "CLOSED_DEAD_END_DATASET：…" /
     # "GATE_BLOCKED_SATURATION：…" 这类"枚举前缀 + 冒号 + 描述"的形态（全库 ~40 行）。

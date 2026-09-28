@@ -156,3 +156,17 @@ world-quant-brain-mcp/.venv_linux/
 # tracking/hypotheses/ledger.jsonl 由 hypothesis_round 节点持续追加写入，属运行时产物，
 # 每次运行都会变更、不应入库。已 git rm --cached 取消跟踪，这里忽略整个目录。
 tracking/hypotheses/
+
+# ===== 外部工具痕迹与根目录误重定向产物（2026-09-28 新增）=====
+# .box-agent/ 已有同类规则；-scratch 变体是另一宿主的一次性工作区
+.box-agent-scratch/
+# Kimi Code 会话配置（本机绝对路径，非项目代码）
+.kimi-code/
+# 外部命令重定向事故产物：`> nul` / `> -` 会在根目录静默生成同名真实文件
+# （实测 `-` 落过一个 3.4MB JSON dump），且会被长跑进程反复重建，忽略而不是追；
+# gate 分级 dump 误落到根目录同理，已归档到 attic/scratch_gate_20260925/
+/-
+/scratch_gate_*.json
+# 文档工具生成的 sidecar（repo 历史 0 个被跟踪），与 .md 正文重复
+*.artifact.json
+
