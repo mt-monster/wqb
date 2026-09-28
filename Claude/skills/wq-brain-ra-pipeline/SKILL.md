@@ -1,6 +1,6 @@
 ---
 name: wq-brain-ra-pipeline
-description: "REGULAR Alpha 挖掘唯一编排入口。当用户要求在某区域挖 RA / 开战役 / 从零到提交 / 挖 regular alpha / 挖因子 / 持续自我探索 / 日内循环 / 一键战役 / auto campaign / 选数据集/中性化/窗口 / 批量回测 / 发批 / 提交批次 / 达到可提交 Alpha 后停止时使用。PPA / Power Pool 仅当当前主题匹配 region/delay/universe 时作为本 SOP 的分支，不另起编排器。本 skill 只做编排，每一步调既有 skill 或 MCP 工具"
+description: "REGULAR Alpha 挖掘唯一编排入口。当用户要求在某区域挖 RA / 开战役 / 从零到提交 / 挖 regular alpha / 挖因子 / 持续自我探索 / 日内循环 / 一键战役 / auto campaign / 批量回测 / 发批 / 提交批次 / 达到可提交 Alpha 后停止时使用；或要求选数据集/中性化/窗口/衰减的**编排**（本 skill 只做编排决策，选字段/生成/回测/提交的具体动作由步 2–8 调下游 skill 执行，不亲自做）。PPA / Power Pool 仅当当前主题匹配 region/delay/universe 时作为本 SOP 的分支，不另起编排器。"
 layer: L-RA
 allowed-tools:
   - Read
@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "2.3"
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 ---
 
 # WQ BRAIN RA Pipeline（唯一挖掘编排 SOP）
@@ -68,7 +68,24 @@ $REGION = "KOR"        # 唯一输入
 
 ---
 
+## 铁律速查（跨步硬约束锚点，2026-09-29）
+
+正文散落在各步的硬约束在此汇总，防漏看。改任何一条先回到对应步核对权威表述：
+
+| 铁律 | 所在步 | 一句话 |
+|---|---|---|
+| 禁止 `add(A,B)` 混信号（含等权 `0.5A+0.5B`） | 步 4 硬约束 7、步 5 闸5 | 两条独立信号腿加权相加即违规 |
+| 形状配额（≥3 shape family、`trade_when`≤40%） | 步 5 前 `shape_quota_check.py` | 反模板同质化 |
+| prod-first 探针 | 步 5b | 新信号族第二波前必查 prod |
+| 提交四闸 + SUB 比值律 | 步 7 | LOW_SHARPE≥1.58 / F≥1.0 / 2Y≥1.58 / SUB≥0.571×S |
+| 提交前置闸 `submit_gate` + `robustness_audited` | 步 8 | 不过闸提交不出去（P0 已焊进 submit_alpha 节点） |
+| 点亮判定唯一权威 = 平台 `get_pyramid_alphas` | 步 9 | 禁本地表推导 |
+
+---
+
 ## 九步流水线
+
+> **编号唯一性（2026-09-29 固定）**：步 N（1–9）是唯一编排编号，S 阶段是**映射标签**（非第二套编号）——步 1=S-PRE、步 2=S0、步 3=S1、步 4=S2、步 5=S2→S3 门禁（含 5b）、步 6=S3、步 7=S4、步 8=S4→S5、步 9=S6。跨 skill 引用一律用「步 N」，勿再裸写「S 阶段」造成错位。
 
 每步含 **目的 / MCP 调用 / 产物 / 失败分支**。任一步 FAIL 就地回退，不允许跳过继续。
 
@@ -499,9 +516,11 @@ python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选
 
 - **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**软触发（2026-09-28）：结构熵 <1.5 或 diversity 配额超限即查 KB 补骨架，不等硬 FAIL**；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上；显式 `--queries` 关键词包可避免机械派生的穷举）；**波级默认取证**（`forum_recon_wave` 收批时自动落 ledger）应作为 KB 的第一来源，KB 与 ledger 都无货才 live 查；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
-### 步 5b：新信号族的 prod-first 探针（2026-09-19 实证后升为硬门）
+### 步 5b：新信号族的 prod-first 探针（闸 PF 硬门已 fail-closed；新骨架首探仍为软约束）
 
-**任何新信号族在投入第二波之前，必须先用 1–2 条骨架查 `check_correlation(production)`**（`tools/campaign_intel.py prod-first --region R --wave W --top-k 2 --write-ledger --json <out.json>`，`--json` 需要文件路径）。
+> 形态分层（2026-09-29 澄清，勿误判为全程 fail-closed）：**已知死路骨架 = 闸 PF 代码强制拦（fail-closed，已落地）**；**新骨架指纹的"先探针再扩批" = WARN 软约束，靠 Agent 记得跑** `campaign_intel.py prod-first`，漏跑不拦。
+
+**任何新信号族在投入第二波之前，必须先用 1–2 条骨架查 `check_correlation(production)`**（`tools/campaign_intel.py prod-first --region R --wave W --top-k 2 --write-ledger --json <out.json>`，`--json` 需要文件路径；此为软约束，靠 Agent 执行，闸 PF 只兜底"已知死路"）。
 实证：IND intraday_pv_feats 价量相关反转连投 3 波 24 条（S 4.4–6.5 全 IS 过）后才查 prod = 0.79–0.92，整族报废；pv103 尾盘反转 8 条同理。
 判定：家族首探 prod ≥ 0.7 → 记 dead_end 换机制，不做任何去相关变体（bucket/门控/平滑实证都破不了 prod 墙）；0.60–0.70 → 直接进步 8。
 
@@ -688,6 +707,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
   比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
 - **四道提交闸 + SUB 比例律（2026-09-28 新增，跨区域通用，高价值）**：
+  （阈值唯一权威 = `config.GATES`；`brain-how-to-pass-alpha-test` 引用同一份数字。本节为编排摘要，勿另写阈值。）
   提交层实际四闸 = `LOW_SHARPE ≥1.58` / `LOW_FITNESS ≥1.0` / `LOW_2Y_SHARPE ≥1.58` /
   **`LOW_SUB_UNIVERSE_SHARPE`（limit 不是固定值，而是 ≈ 0.571 × 本 alpha 的 sharpe）**。
   平台实测佐证：`wpZkk1Mp` SUB limit=1.03 / sharpe=1.80 = **0.572**；`2rwoAp8b` 1.12/1.96=0.571；
@@ -722,7 +742,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
 
 
 
-S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（反过拟合/稳健性闸）。
+S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（反过拟合/稳健性闸）。**2026-09-29 P0 已焊进提交路由**：`submit_alpha` 节点强制 `submit_gate`（自动拦 Failed RA/PPA≠0 + 模拟层 FAIL + 硬闸 WARNING）+ `robustness_audited=True` 声明（补齐逐年归因），不过闸提交不出去（`force=True` 留痕绕过）。
 
 **提交判定链（顺序执行）**：模拟层（IS checks + 资格门）以 `submit_verdict` 为准；**提交层判据源头 = POST `/alphas/{id}/submit`**（2026-09-27 修正，见第 2 步 ⚠）。
 

@@ -2056,6 +2056,8 @@ def seal_dead_end(
     reason: Optional[str] = None,
     wave_numbers: Optional[List[int]] = None,
     dead_at: Optional[str] = None,
+    require_forum_recon: bool = True,
+    force_seal: bool = False,
 ) -> Dict[str, Any]:
     """判死封存：先沉降残值、再封存 dead_end（2026-09-13 新增，S6 判死标准动作）。
 
@@ -2065,6 +2067,19 @@ def seal_dead_end(
     此前恒 null）。救援动用入口仍以各区 mode_b_qualification 资格线为准——
     本工具只做收集，不改动用侧。
 
+    **判死取证硬闸（2026-09-29 用户定案，fail-closed）**：
+    判死是永久封存一条路，误判代价高。此前 forum_recon 核对只是「软提示」
+    （无记录不拦写入），且工具故障被记成 `found=false` 误当作「论坛无解」
+    （假阴性，实证 5 条中 2 条中招）。现改为硬闸，按 `payload["forum_recon"]` 判定：
+      - 缺失 / 无记录        → **拒绝**（未取证，不得判死）
+      - `found=null` 或 status=error → **拒绝**（工具故障 = 未取证）
+      - `found=true`         → **拒绝**（论坛有解法，应转 salvage/Mode B，不得判死）
+      - `found=false`        → **允许**（decision-table D2「论坛无解」取证成立）
+
+    取证办法：先跑 `tools/forum_recon.py --question "..." --out negative`，
+    把结果写入 `dead_end.payload.forum_recon`（含 question_key/found）。
+    确需绕开时用 `force_seal=True`（会在返回里留 `forced=True` 痕迹）。
+
     Args:
         region: 区域
         entry_id: dead_end 条目 id（registry_empirical，如 KOR-WAVE99-XXX-DEAD）
@@ -2073,11 +2088,28 @@ def seal_dead_end(
         wave_numbers: 该 idea 涉及的波次号列表（沉降扫描范围）；缺省则不扫描，
             仅以空 salvage 封存
         dead_at: 判死日期（缺省今天）
+        require_forum_recon: 是否启用判死取证硬闸（默认 True）；显式 False 可退回旧软提示行为
+        force_seal: 强制判死（绕过取证闸，仅人工确认后使用）
 
     Returns:
         {"entry_id", "status", "action", "waves_scanned", "candidates_scanned",
          "salvaged_count", "salvage_ids", "total_in_pool"}
+        被闸拦下时：{"entry_id", "status": "blocked", "gate", "reason", "how_to_pass"}
     """
+    # ---- 判死取证硬闸（fail-closed）----
+    _pre_payload = _load_dead_end_payload(region, entry_id)
+    gate = _forum_recon_gate(_pre_payload)
+    if require_forum_recon and not force_seal and not gate["allowed"]:
+        return {
+            "entry_id": entry_id,
+            "status": "blocked",
+            "action": "none",
+            "gate": "forum_recon_evidence",
+            "reason": gate["reason"],
+            "how_to_pass": gate["how_to_pass"],
+            "hint": "确需判死且已人工确认：force_seal=True（留痕）；或停用闸：require_forum_recon=False",
+        }
+
     waves_scanned: List[int] = []
     candidates_scanned = 0
     collected_ids: set = set()
@@ -2172,6 +2204,62 @@ def seal_dead_end(
 # 质量指标可从既有表推导（写新表=双真相源）；增益指标是反事实估算无客观来源；
 # 五张表恒 0 行。替代方案 = `tools/step_funnel.py`（只读步级漏斗）。
 # 归档与复活步骤见 `attic/step_metrics_20260917/README.md`。
+
+
+
+def _load_dead_end_payload(region: str, entry_id: str) -> Dict[str, Any]:
+    """读取 dead_end 条目现有 payload（不存在/解析失败返回 {}）。"""
+    conn = _conn()
+    c = conn.cursor()
+    c.execute(
+        "SELECT payload FROM registry_empirical WHERE region=? AND layer=? AND entry_id=?",
+        (region, "dead_end", entry_id),
+    )
+    row = c.fetchone()
+    conn.close()
+    if not (row and row[0]):
+        return {}
+    try:
+        parsed = json.loads(row[0])
+        return parsed if isinstance(parsed, dict) else {}
+    except (json.JSONDecodeError, TypeError):
+        return {}
+
+
+def _forum_recon_gate(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """判死取证闸判定（fail-closed）。
+
+    依据 `payload["forum_recon"]`（由 forum_recon 核对写入）：
+      - 缺失                       → 拒绝：未取证
+      - found=None / status=error  → 拒绝：工具故障 ≠ 论坛无解
+      - found=True                 → 拒绝：论坛有解法，应转 salvage/Mode B
+      - found=False                → 允许：D2「论坛无解」取证成立
+    """
+    fr = payload.get("forum_recon")
+    how = ("先跑 `tools/forum_recon.py --question \"<数据集/信号族> 有无解法\" --out negative`，"
+           "把结果（含 question_key/found）写入该 dead_end 条目的 payload.forum_recon，再判死")
+
+    if not isinstance(fr, dict) or not fr:
+        return {"allowed": False, "state": "missing", "reason":
+                "无 forum_recon 取证记录（未取证，不得判死）", "how_to_pass": how}
+
+    status = str(fr.get("status") or "").lower()
+    found = fr.get("found")
+    has_error = bool(fr.get("error")) or status == "error"
+
+    if has_error or found is None:
+        return {"allowed": False, "state": "error",
+                "reason": f"forum_recon 未取证（工具故障：{fr.get('error') or 'found=null'}）；"
+                          f"故障 ≠ 论坛无解，修复后重试",
+                "how_to_pass": "重跑 forum_recon 直到拿到 found=false/true 的真实结论，再写入 payload.forum_recon"}
+
+    if found is True or str(found).lower() == "true":
+        return {"allowed": False, "state": "has_solution",
+                "reason": "论坛有解法（found=true），按 SOP 应转 salvage/Mode B 武器，不得直接判死",
+                "how_to_pass": "把命中的配方转 Mode B 尝试；确证无效后重新取证再判死"}
+
+    return {"allowed": True, "state": "no_solution", "reason":
+            "forum_recon 确认无解（found=false）——D2「论坛无解」取证成立", "how_to_pass": ""}
 
 @mcp.tool()
 def workflow_inventory_scan(

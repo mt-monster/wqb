@@ -39,6 +39,20 @@ class BacktestMixin:
                     erow = cur.fetchone()
                     if erow:
                         expr_id = int(erow[0])
+                        # D9（2026-09-28 修复）：此前已入库的表达式只取 id、**不推进 status**，
+                        # 只有"表达式不存在"的回落分支才写 status='backtested'。于是正常路径下
+                        # 回测完成后 status 仍滞留 gem/pending —— 积压闸的 conversion 分子恒 0，
+                        # 会误杀后续波（AMR 实证：手动回写 40 条后 conversion 才 0/212→18.9%），
+                        # 且一切 status 口径统计都被污染（GLB status 口径回测=0 而实为 2144）。
+                        # 这里把"待选态"推进为 backtested 并补 alpha_id；
+                        # 只动待选态，不动 backtested/submitted/completed/dropped/superseded 等后续态。
+                        cur.execute(
+                            "UPDATE expressions SET status='backtested', "
+                            "alpha_id=CASE WHEN alpha_id IS NULL OR alpha_id='' THEN ? ELSE alpha_id END, "
+                            "updated_at=? WHERE id=? AND status IN "
+                            "('gem','enhanced','pending','selected','gated')",
+                            (alpha_id, now, expr_id),
+                        )
                     else:
                         self.upsert_expressions(
                             region, str(wave),
@@ -97,7 +111,11 @@ class BacktestMixin:
                     ),
                 )
                 if alpha_id:
-                    cur.execute("SELECT id FROM alphas WHERE alpha_id=?", (alpha_id,))
+                    cur.execute(
+                        "SELECT id, status, platform_status, date_submitted "
+                        "FROM alphas WHERE alpha_id=?",
+                        (alpha_id,),
+                    )
                     arow = cur.fetchone()
                     aval = (
                         code or "",
@@ -125,17 +143,59 @@ class BacktestMixin:
                         now,
                     )
                     if arow:
+                        # N35（reports §14.12.3）：已存在的 alpha 只刷新回测行「确实携带」
+                        # 的指标列。toolkit 复盘行 / MCP 收批行都不带 status /
+                        # platform_status / stage / alpha_type / date_submitted / prod / self
+                        # —— 旧实现整行覆盖，把已提交 alpha 打回 UNSUBMITTED、抹掉平台态与
+                        # 实测相关性，随后被 enqueue_from_alphas 当未提交重新入队。故按存在的
+                        # 键构造 SET，缺列一律保留原值；已提交状态绝不因回测行回退。
+                        cur_status = (arow[1] or "")
+                        cur_pf = (arow[2] or "")
+                        submitted = (
+                            cur_status.upper() not in ("", "UNSUBMITTED", "COMPLETE")
+                            or cur_pf.upper() in ("ACTIVE", "DECOMMISSIONED")
+                            or bool(arow[3])   # date_submitted 有值即已提交
+                        )
+                        updates: Dict[str, Any] = {"region_id": rid}
+                        if code:
+                            updates["expression"] = code
+                        if dataset:  # 仅显式带 dataset 才更新，避免真实数据集被 _unknown 覆盖
+                            updates["dataset_id"] = ds_id
+                        for col, val in (
+                            ("universe", r.get("universe")),
+                            ("delay", r.get("delay")),
+                            ("neutralization", r.get("neut") or r.get("neutralization")),
+                            ("sharpe", r.get("sharpe")),
+                            ("fitness", r.get("fitness")),
+                            ("margin", margin),
+                            ("turnover", turnover),
+                            ("two_year_sharpe", r.get("two_year_sharpe")),
+                            ("is_ladder_sharpe", r.get("is_ladder_sharpe")),
+                            ("platform_status", r.get("platform_status")),
+                            ("stage", r.get("stage")),
+                            ("alpha_type", r.get("alpha_type")),
+                            ("date_submitted", r.get("date_submitted")),
+                            ("sub_universe_sharpe", r.get("sub_universe_sharpe")),
+                            ("returns", r.get("returns")),
+                            ("drawdown", r.get("drawdown")),
+                            ("long_count", r.get("long_count")),
+                            ("short_count", r.get("short_count")),
+                            ("concentrated_weight", r.get("concentrated_weight")),
+                            ("cluster_test", r.get("cluster_test")),
+                        ):
+                            if val is not None:
+                                updates[col] = val
+                        # status：仅当回测行显式带、且不会把已提交 alpha 打回时才改。
+                        # prod/self 相关性不在此覆盖（保留已实测/平台权威值）——落库由
+                        # persist_correlation 专责，harvest 链路显式标 platform_sync。
+                        _incoming_status = r.get("status")
+                        if _incoming_status and not submitted:
+                            updates["status"] = _incoming_status
+                        updates["updated_at"] = now
+                        _set = ", ".join(f"{k}=?" for k in updates)
                         cur.execute(
-                            """UPDATE alphas SET expression=?, region_id=?, dataset_id=?,
-                               universe=?, delay=?, neutralization=?, sharpe=?, fitness=?,
-                               margin=?, turnover=?, two_year_sharpe=?, status=?,
-                               prod_correlation=?, self_correlation=?, is_ladder_sharpe=?,
-                               platform_status=?, stage=?, alpha_type=?, date_submitted=?,
-                               sub_universe_sharpe=?, returns=?, drawdown=?,
-                               long_count=?, short_count=?, concentrated_weight=?,
-                               cluster_test=?, updated_at=?
-                               WHERE id=?""",
-                            aval + (int(arow[0]),),
+                            f"UPDATE alphas SET {_set} WHERE id=?",
+                            list(updates.values()) + [int(arow[0])],
                         )
                     else:
                         cur.execute(
@@ -242,6 +302,7 @@ class BacktestMixin:
             top = votes.most_common(2)
             if len(top) == 1 or top[0][1] > top[1][1]:
                 ds_id = int(top[0][0])
+        ds_from_fields = ds_id is not None   # 字段反查命中真实数据集；否则下面归 _unknown
         if ds_id is None:
             ds_id = self._ensure_dataset(region, "_unknown")
 
@@ -270,9 +331,33 @@ class BacktestMixin:
             "date_submitted": d.get("date_submitted"),
         }
         if row:
-            sets = ", ".join(f"{k}=?" for k in cols)
-            cur.execute(f"UPDATE alphas SET {sets}, updated_at=? WHERE id=?",
-                        list(cols.values()) + [now, int(row[0])])
+            # N35：平台回写器同样按「携带的键」构造 SET —— 部分回写（如仅补相关性、
+            # 或用平台详情刷新指标）不得把 status 默认打回 UNSUBMITTED、也不得把未携带的
+            # 平台态 / 日期 / 相关性覆盖成 NULL。
+            updates: Dict[str, Any] = {"region_id": rid}
+            if expr:
+                updates["expression"] = expr
+            if ds_from_fields:   # 字段反查命中真实数据集才更新，_unknown 兜底不覆盖已有归属
+                updates["dataset_id"] = ds_id
+            for k in ("universe", "delay", "neutralization", "sharpe", "fitness",
+                      "turnover", "two_year_sharpe", "is_ladder_sharpe",
+                      "platform_status", "stage", "alpha_type", "date_submitted"):
+                if cols[k] is not None:
+                    updates[k] = cols[k]
+            if d.get("status"):   # 显式带才改，缺省不把已提交行打回 UNSUBMITTED
+                updates["status"] = cols["status"]
+            # 平台相关性为权威值：带值即覆盖，并同步 prod_corr_source / corr_checked_at
+            # 保持与 persist_correlation 一致的溯源口径（platform_sync）。
+            if cols["prod_correlation"] is not None:
+                updates["prod_correlation"] = cols["prod_correlation"]
+            if cols["self_correlation"] is not None:
+                updates["self_correlation"] = cols["self_correlation"]
+            if cols["prod_correlation"] is not None or cols["self_correlation"] is not None:
+                updates["prod_corr_source"] = "platform_sync"
+                updates["corr_checked_at"] = now
+            _set = ", ".join(f"{k}=?" for k in updates)
+            cur.execute(f"UPDATE alphas SET {_set}, updated_at=? WHERE id=?",
+                        list(updates.values()) + [now, int(row[0])])
         else:
             klist = ", ".join(cols.keys())
             ph = ", ".join("?" * len(cols))

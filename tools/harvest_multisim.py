@@ -38,7 +38,8 @@ import json
 import os
 import re
 import sys
-from typing import Any, Dict, List, Optional
+import time
+from typing import Any, Dict, List, Optional, Set
 
 
 def _mcp_venv_python():
@@ -539,8 +540,30 @@ async def main():
                                 region=a.region, min_sharpe=1.58, min_fitness=1.0,
                                 note=f"auto-enqueue wave={a.wave}")
                             print(f"  [queue] {nq} 条过闸候选 → submit_ready")
-                        except Exception as e:  # 队列记账失败绝不阻断收批
-                            print(f"  [queue] 入队跳过：{e}")
+                        except Exception as e:  # 队列记账失败绝不阻断收批（设计如此）
+                            # ⚠ 2026-09-28：此前只 print 一行就继续，导致**过闸候选被静默吞掉**
+                            # （实测 other466 一轮 `submit_ready +7` 全丢，根因是表缺唯一约束 +
+                            # 后又发现 CHECK 漏 EXPIRED/SUPERSEDED——两处都已修）。
+                            # 现补三道护栏：stderr 可见 + 失败明细持久化（可重放）+ 进程退出码非零。
+                            msg = f"  [queue][FAIL] 入队失败（候选未入队，需重放）: {type(e).__name__}: {e}"
+                            print(msg)
+                            print(msg, file=sys.stderr)
+                            try:
+                                failrec = {
+                                    "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                                    "region": a.region, "wave": str(a.wave),
+                                    "error": f"{type(e).__name__}: {e}",
+                                    "replay": "python tools/harvest_multisim.py "
+                                              "--enqueue-replay  # 或对同 wave 重跑 --auto-upsert",
+                                }
+                                fpath = os.path.join(
+                                    os.path.dirname(__file__), "..", "logs",
+                                    "_state_enqueue_failures.jsonl")
+                                with open(fpath, "a", encoding="utf-8") as fh:
+                                    fh.write(json.dumps(failrec, ensure_ascii=False) + "\n")
+                            except Exception:
+                                pass
+                            _ENQUEUE_FAILED.add(f"{a.region}/{a.wave}: {type(e).__name__}")
                     # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
                     # upsert_backtest_rows 已把 prod/self 写入 alphas（仅当列原为 NULL），
                     # 这里补写 source=platform_sync + corr_checked_at，使复盘可区分
@@ -601,5 +624,13 @@ async def main():
     sys.exit(0 if all_ok else 1)
 
 
+# 2026-09-28：入队失败登记（见 main 内 [queue][FAIL] 分支）——退出码非零提醒候选未入队
+_ENQUEUE_FAILED: Set[str] = set()
+
 if __name__ == "__main__":
     asyncio.run(main())
+    if _ENQUEUE_FAILED:
+        print(f"[queue][FAIL] 本轮 {len(_ENQUEUE_FAILED)} 个 wave 的过闸候选未入队（已记 logs/_state_enqueue_failures.jsonl）：", file=sys.stderr)
+        for x in sorted(_ENQUEUE_FAILED):
+            print("   -", x, file=sys.stderr)
+        sys.exit(2)

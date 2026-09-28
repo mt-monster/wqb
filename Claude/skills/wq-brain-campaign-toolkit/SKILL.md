@@ -1,7 +1,7 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: wq-brain-campaign-toolkit
-description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
+description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 8 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
 layer: L-TOOL
 allowed-tools:
   - Read
@@ -42,7 +42,7 @@ Markdown 经验，保留人工复盘段。方法与 S-PRE/S1/S2 复用契约见
 | 工具 | 职责 |
 |------|------|
 | `campaign.py` | 战役 CLI 入口（registry/ledger 幂等写 + 子命令分发） |
-| `gate.py` | 闸1–5 预检（闸编号唯一基准见 `INDEX.md`「gate.py 闸编号」） |
+| `gate.py` | 闸1–8 预检（8 闸 + 可选闸0；闸编号唯一基准见 `INDEX.md`「gate.py 闸编号」） |
 | `pipeline.py` | 战役编排（checkpoint 断点续跑/七槽填槽） |
 | `scan_fields.py` | typed catalog 字段扫描 |
 | `metrics_cache.py` | 指标缓存（避免重复拉取） |
@@ -97,7 +97,7 @@ MCP 桥接超时返回 `outcome_unknown`、`retry_safe=false`，先查任务及 
 4. verifier 走 `WQ_VALIDATOR_DIR`（缺省自动探测 alpha-expression-verifier skill 的 scripts/）。
 5. 平台级约束只有一份：`config/platform_constraints.json`；区域 ranking/catalog/rules 计数入库。
 6. **Agent 持久化只走 `mcp__wqb-db__*` 或本引擎 CLI；禁止 Write/Copy 战役 json/csv。** `build_wave`/`gate`/`wave_gate`/`pipeline` 走 `--from-db`。
-7. **开波区域闸的模式**（`build_wave.py` / `tools/wave_gate.py` 开波前跑 catalog / signal_floor / stop_rules / backlog）：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省——**2026-10-11 及以前 warn（灰度，只告警），2026-10-12 起 enforce（命中即 exit 2：本波不产出门禁结论，不是表达式问题）**。日期唯一事实源 `_lib/region_gates.WARN_SUNSET`，每次运行第一行打印模式来源与倒计时。放行停波区域写台账 `stop_rules_override` 留痕；`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退。workflow 节点（campaign S2/S3、batch_track）不看这个模式，一律拦截。
+7. **开波区域闸的模式**（`build_wave.py` / `tools/wave_gate.py` 开波前跑 catalog / signal_floor / stop_rules / backlog）：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省——**2026-10-11 及以前 warn（灰度，只告警），2026-10-12 起 enforce（命中即 exit 2：本波不产出门禁结论，不是表达式问题）**。日期唯一事实源 `_lib/region_gates.WARN_SUNSET`，每次运行第一行打印模式来源与倒计时。放行停波区域写台账 `stop_rules_override` 留痕；`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退。**双入口分层是有意设计，勿误解为不一致**：workflow 节点（campaign S2/S3、batch_track）是正式链、恒 enforce（不看 warn 灰度）；CLI 是人工兜底入口、灰度期 warn。**2026-10-12 起 CLI 也切 enforce，两边最终口径一致**。
 
 ## 5. 快速开始（典型流程）
 ```bash
@@ -138,11 +138,11 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 | metrics_cache.py | 指标读穿缓存 | --multisim= / --refresh | poll-and-quota |
 | diversity_audit.py | 多样性审计（latest+history） | --no-ledger | ledger-schema |
 | diversity_extract.py | 单数据集多样性榨取（L1/L2/L3 三轮） | --dataset / --rounds / --size / --max-ppac | gate-rules |
-| distill_experience.py | **经验蒸馏器（G1 学习闭环）**：registry win/dead 模式归纳 → 跨区铁律/红灯族/模板晋升；--apply 落库 | --apply / --json | — |
-| os_feedback.py | **OS 回流（G3 学习闭环）**：拉平台 OS 表现，对比 IS 指标，衰减回写 win 降权标记 | --apply | — |
-| family_atlas.py | **家族导航（G2）**：信号族粒度全局状态机（untried→has_signal→near_gate→active→dead→os_decay），选波前先查图 | --all / --state / --json | — |
-| budget_planner.py | **预算规划器（#3）**：七槽填槽建议 + ET 日提交额度 + READY 候选提交排序 | --submit-plan / --json | — |
-| campaign_mutex.py | **多战役互斥（#7）**：波号 CAS 分配 / 槽位预算 TTL 仲裁 / 提交额度共享账本 | status / alloc-wave / take-slots / quota-reserve | — |
+| distill_experience.py | ~~经验蒸馏器（G1 学习闭环）~~ **已归档**（见 §1.x；"学习闭环"无代码落地，仅文档叙述） | — | — |
+| os_feedback.py | ~~OS 回流（G3 学习闭环）~~ **已归档**（见 §1.x） | — | — |
+| family_atlas.py | ~~家族导航（G2）~~ **已归档**（见 §1.x） | — | — |
+| budget_planner.py | ~~预算规划器~~ **已归档**（见 §1.x） | — | — |
+| campaign_mutex.py | ~~多战役互斥~~ **已归档**（见 §1.x） | — | — |
 | campaign.py ledger | 台账统一 CLI | keys/get/set/mark-dead/add-wave/set-verdict/submit-ready/backup | ledger-schema |
 | campaign.py registry | registry 实证层统一 CLI（幂等写+结构校验） | add-dead-end/add-win/upsert-campaign/add-orphan/list/get；--dry-run/--extra/@file.json。⚠ **必填参数**：`add-dead-end` 需 `--id --family --reason --rule`；`add-win` 需 `--id --what --key` —— 只给 `--extra @file.json` 会 argparse 报错（错误字段名在 extra 里也只当附加，不替代必填） | ledger-schema |
 | campaign.py wave | wave_results 台账统一 CLI（幂等写+一键导入） | upsert/import/get/list；--finding 可重复；--dry-run | ledger-schema |
@@ -330,7 +330,7 @@ mcp__wqb-db__get_region_overview()
 
 | 场景 | 用这个 |
 |---|---|
-| 每波门禁（语法 + 闸1–5 + 闸7/8 + 体检硬门，一键落盘） | `tools/wave_gate.py`（内部会调本 toolkit 的 `gate.py`；2026-09-11 起亦有 MCP 节点 `workflow_execute` node="wave_gate"） |
+| 每波门禁（语法 + 闸1–8 + 体检硬门，一键落盘） | `tools/wave_gate.py`（内部会调本 toolkit 的 `gate.py`；2026-09-11 起亦有 MCP 节点 `workflow_execute` node="wave_gate"） |
 | 批次状态查询/轮询 | `tools/batch_status.py` |
 | 提交层判定（403 盲区） | `tools/submit_verdict.py` |
 | 批量提交 | `tools/submit_batch.py` |

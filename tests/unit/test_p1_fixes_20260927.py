@@ -313,7 +313,14 @@ def _kor_rejected_verdicts():
 
     out = {}
     for f in sorted((KOR_CAMPAIGN / "candidates").glob("wave*_result*.json")):
-        v = json.loads(f.read_text(encoding="utf-8")).get("verdict")
+        payload = json.loads(f.read_text(encoding="utf-8"))
+        # 2026-09-28：candidates/ 下混入了行式转储（顶层 list，如 wave_AL3_results.json /
+        # wave_AL3_modeA_results.json），只是恰好撞上本 glob，并非 wave-result 契约文件。
+        # 契约文件顶层恒为 dict；非 dict 一律跳过，否则 .get() 直接崩。
+        # 生产消费点在 tracking/<REGION>/results/wave*_results.json，不受本目录污染影响。
+        if not isinstance(payload, dict):
+            continue
+        v = payload.get("verdict")
         if v is not None and normalize_verdict(v)[0] is None:
             out[f.name.split("_result")[0].replace("wave", "")] = str(v)
     return out
