@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-26
+last_verified: 2026-09-28
 name: brain-calculate-alpha-selfcorr-quick
 description: "在本地计算 WorldQuant BRAIN alpha 的自相关与 PPAC（Power Pool Alpha Correlation），比通过 MCP 查询平台快得多。 当用户需要计算 alpha 相关性、核对 PPAC 时使用。"
 layer: L4

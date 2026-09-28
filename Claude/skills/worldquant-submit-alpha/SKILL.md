@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-26
+last_verified: 2026-09-28
 name: worldquant-submit-alpha
 description: "通过 API 将 WorldQuant Brain alpha 真正提交（submit）到平台（不只是模拟 simulate）。 当用户对某个 WQ alpha id 说\"提交 alpha / submit / 上平台 / 落地\"时使用。覆盖关键坑： POST /alphas/{id}/submit 返回 201/200 但 status 因 regular.description 过短而永不翻转， 以及正确的嵌套 description PATCH 写法；并说明约 2 分钟的状态翻转延迟与轮询方法。★2026-09-01 新增「点塔优先提交规则」：提交前按金字塔点亮价值优选（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 的 alpha 不计；差 1-2 颗的塔一次提交即点亮，0 亮区域的单颗提交不算点亮）。"
 layer: L5

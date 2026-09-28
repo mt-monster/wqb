@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-28
 name: wqb-concurrency
 description: "WorldQuant Brain 并发挖掘调优。触发词：并发调优/429 风暴/CONCURRENT_SIMULATION_LIMIT_EXCEEDED/ 回测大量 429/提交成功数极低/调线程数/调并发/调信号量/战役 pipeline 批量回测提交/ 最大化回测吞吐/槽位利用率。 核心方法：测定服务端并发上限 C，并把本地在飞数锁到 C，避免 429 风暴与孤儿模拟占槽； 含七槽填槽模式 SOP（7 批 multisim 同提保持槽位常满，每次挖掘必须执行）。 含台账闭环：每波结论经 `campaign.py wave`/`ledger` 幂等 CLI 写入 DB（wave_results/ledger_kv），下一波设计强制以台账决策为输入。"
 layer: L3

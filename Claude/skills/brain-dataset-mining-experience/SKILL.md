@@ -2,7 +2,7 @@
 name: brain-dataset-mining-experience
 layer: L6
 description: 按区域和数据集沉淀字段级因子挖掘经验，生成或更新如 eur_news18_campain.md 的中文文档。用于每波 S6 复盘、总结已挖数据集，以及下一轮选字段前读取已验证机制与失败边界。只读台账，不替代回测、提交判定或挖掘编排。
-last_verified: 2026-09-26
+last_verified: 2026-09-28
 ---
 
 # 数据集与字段挖掘经验

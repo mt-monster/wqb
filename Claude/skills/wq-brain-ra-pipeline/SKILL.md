@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "2.2"
-last_verified: 2026-09-27
+last_verified: 2026-09-28
 ---
 
 # WQ BRAIN RA Pipeline（唯一挖掘编排 SOP）
@@ -112,6 +112,28 @@ mcp__wqb-db__get_dead_datasets     region=$REGION
 mcp__wqb-db__get_mining_yield                              # 全区排名
 mcp__wqb-db__get_mining_yield  region=$REGION  by_dataset=true   # 本区按数据集拆
 ```
+
+**⚠ 跨区死路检查（2026-09-28 新增，必做，勿只用区域 scoped 查询）**
+
+上面三条都是 **`region=$REGION` 作用域**，会**系统性漏掉已在别的区判死的数据集**。
+实证代价：KOR 选 risk70 做主攻集，跑完 114 条回测（best S=0.87 / 0 near）才发现
+`IND-RISK70-NO-SIGNAL` 与 `GLB-RISK70-STYLE-HF-MINVOL1M-FASTKILL` 早已存在 —— risk70 是
+**跨三区独立复现的死族**，本可在 S0 前零成本排除。
+
+```bash
+# 不限 region 的跨区死路检索（对每个候选数据集执行）
+python - <<'PY'
+import sqlite3
+for ds in ["<候选集1>", "<候选集2>"]:
+    rows = sqlite3.connect("file:data/wqb.db?mode=ro", uri=True).execute(
+        "SELECT region, entry_id FROM registry_empirical "
+        "WHERE layer='dead_end' AND (entry_id LIKE ? OR payload LIKE ?)", (f"%{ds}%", f"%{ds}%")).fetchall()
+    print(ds, "->", rows or "无跨区死路")
+PY
+```
+或直接读 `campaign_intel s0-select` 输出里的 **`[跨区弱:REG:maxS@bt]`** 负先验标记
+（同集在其它区 ≥16 条回测且 max|S|<1.0 即视为弱）。**跨区死族一律不进白名单**，
+不论本区评分多高 —— 三区独立复现的负先验强度远高于单区 S0 分数。
 
 **产出率读法（两个比率含义不同，别混）**：
 - `conversion` = 已回测 / 已生成 —— 低 = **流水线**问题（S2→S3 断链，生成远超回测吞吐）。修管道，别换区。

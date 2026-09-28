@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-27
+last_verified: 2026-09-28
 name: wq-brain-campaign-toolkit
 description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
 layer: L-TOOL
