@@ -61,12 +61,17 @@
 
 ## 4. workflow 节点注册
 
-- **新增/修改 workflow 节点 → 四处必须同步**（漏一处测试即红）：
+- **新增/修改 workflow 节点 → 五处必须同步**（漏一处测试即红）：
   ① `src/wqb/workflow/registry.py`（register + NodeMeta，与 `run()` 签名逐字一致）
   ② `tests/unit/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
   ③ `tests/unit/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
   ④ `Claude/skills/INDEX.md` workflow 节点计数
-  → **一次跑完全部检查**：`python tools/audit_node_registration.py`（退出码 1 = 有漂移并列出全部缺口）。
+  ⑤ **`world-quant-brain-mcp/tests/test_tools_workflow_unit.py` 的 `expected_nodes` 集合**（2026-09-29 补）
+  → **一次跑完全部检查**：`python tools/audit_node_registration.py`（退出码 1 = 有漂移并列出全部缺口；已升级为五处审计）。
+- ⚠ **"四处"是错的，实际五处（2026-09-29 实证）**：`forum_recon_wave` 上线时①②③④全绿，
+  根目录 `audit` 报"四处一致"，但全量 pytest 转红 `assert 20 == 19`——漏的是 ⑤ MCP 包测试。
+  根因：**MCP 包测试与根 `tests/` 是两套路径**，习惯性只跑 `tests/unit/test_workflow.py` 会完全看不见 ⑤。
+  ⇒ 纪律：改节点后 `audit` 要跑，**全量 pytest 也要跑**，二者不可互相替代。
 - ⚠ **`audit_node_registration.py` 只校验 registry 元数据 vs `run()` 签名，不覆盖 `tools_workflow.py` 自动注入的参数**
   → `gem→batch_track` 链自动插入 `prod_family_gate` 而 `wave_gate.run()` 无此形参，链必 TypeError 且守护零命中。已单列 `tests/unit/test_wave_gate_auto_insert_contract.py`。
 - **argv 契约校验**：拼子进程命令的节点必须过 `_common.validate_argv(cmd)`
