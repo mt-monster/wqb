@@ -74,60 +74,52 @@
    "source": "region_kb_dead_pattern"
   },
   {
+   "family": "region_kb",
+   "reason": "pv47 残差反转 prod 饱和（wave57）：STATISTICAL 下月/周反转 1.59-1.69、2Y 1.8-2.1 站上 IS 闸，但 prod_corr 0.70-0.81（5 次平台判定，含 ts_quantile/group_rank 几何变体），rn 0.12-0.20 因子暴露；残差动量 ≤0.63，GBR-PV47-RESIDUAL-REVERSAL-PRODSAT",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "model250 ML 复合分生命周期后段+prod 饱和（wave57）：1.28/1.00/2Y0.84 rn0.87，逐年 2.87→~0.9，prod 0.764，GBR-MODEL250-LIFECYCLE-PRODSAT",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "other335 股息模型 2Y 归零（wave57）：15 结构 IS≤1.13、2Y≤0.42，2022-23 后失效，GBR-OTHER335-DIVIDEND-2Y-DEAD",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "earnings_sent_matrix 电话会语调无一致方向（wave57）：15 结构 max 0.95，GBR-EARNINGS-SENT-DEAD",
+   "source": "region_kb_dead_pattern"
+  },
+  {
+   "family": "region_kb",
+   "reason": "intraday_pv_feats 日频微观结构单字段弱（wave57）：max|S| 0.78/0.94，软判死，仅剩复合结构一口子，GBR-INTRADAY-MICRO-WEAK",
+   "source": "region_kb_dead_pattern"
+  },
+  {
    "family": "analyst7_revision_momentum",
    "reason": "analyst7 revision-momentum (est_*_raisednum - est_*_lowerednum / num) 机制有效但严重衰减：d5OYVodX (est_12m_ebt) IS sharpe 1.2/rn 1.07 机制成立，但 yearly stats 2014-2017 sharpe 2.86-3.55 → 2022-2023 仅 0.66-0.88，2Y 0.79 是拥挤化/信号生命周期末期证据，不满足稳健性；未达 Mode B 资格线 (1.2<1.25, 0.79<0.8)",
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "GBR-ANALYST7-REVISION-DECAYED"
-  },
-  {
-   "family": "analyst9",
-   "reason": "ledger analyst9_dead 标记判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-ANALYST9-DEAD"
-  },
-  {
-   "family": "settings_variation",
-   "reason": "",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-DELAY0-INFEASIBLE"
-  },
-  {
-   "family": "dl_riskfree_label",
-   "reason": "wave30 dl_riskfree_returns 5 条全 FAIL：max sharpe 1.09 但 2Y=-0.05，quantile_label/probability_label 族 2Y 段结构性崩溃（GEM 8-26 生成 6 条同族重复）",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-DLRISKFREE-LABEL-DEAD"
-  },
-  {
-   "family": "fundamental6_quality_value",
-   "reason": "fundamental6 基本面质量/价值族全灭：33 条回测 0 达硬闸，最强 akLevrVw（oancf-oiadp/atq）sharpe 0.37/2Y 1.08/rn 0.33 距 1.58 差 76%；裸 rank/group_rank(fnd6_*_atq/revt) 全是规模因子暴露（rn -0.25~-0.73）非超额；ts_zscore(atq/revt,66) 0.68-0.72 但 2Y 0.1-0.18 不稳健",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-FUNDAMENTAL6-CEILING"
-  },
-  {
-   "family": "fund_holdings_panel",
-   "reason": "ledger fund_holdings_panel_dead 标记判死",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "GBR-FUNDHOLDINGS-DEAD"
   }
  ],
  "region_context": {
-  "tier": "达成区（4 ACTIVE，目标完成）；2026-09-12 扩挖战役四波全 FAIL，区域各角度穷尽，建议暂停",
+  "tier": "达成区（4 ACTIVE）；2026-09-12~15 v2 Model/PV 战役 wave57 81 条 FAIL：两个真信号族（pv47 残差反转、model250 ML 复合分）被 prod_corr 0.70-0.81 结构性挡死，其余 IS 天花板；GBR RA 产出率 0/327 → 暂停新挖，除非生产池变化或平台上线新数据集",
   "settings_proven": {
    "delay": "1",
-   "universe": "TOP700"
+   "universe": "TOP700",
+   "neutralization_note": "SUBINDUSTRY 为历史 ACTIVE 设置；STATISTICAL 对照轨 wave57 实证全面更优（未产出提交，故不列为 proven）"
   },
   "key_notes": [
    "win 配方换区必须重新走 1 批验证，不直接扩展",
    "delay0 设置展开已验证不可行（wave53 全 ERROR）",
    "GBR 强信号族（value/revision/pv/quality/news/shortinterest）全部 PROD 饱和或衰减——四波 66 条新回测 + 全角度字段核查实证（2026-09-12）",
    "GBR 未点亮金字塔的处女数据集空间已穷尽：16/16 塔未点亮但所有未触碰 category 的数据集 coverage 全 0（无数据），仅有的 analyst7/fundamental6 两可行探针全判死",
-   "pv29/pv30 是纯统计聚类/PCA 分组数据集（非量价），只能作分组轴不能作信号腿"
+   "pv29/pv30 是纯统计聚类/PCA 分组数据集（非量价），只能作分组轴不能作信号腿",
+   "wave57 流程实证：MCP workflow_batch_track 对 model250 两次零输出挂起，等价 CLI detached 正常；GEM launch_only 曾因 PIPE 回收丢子进程（已修）；assemble-priors 须 stage=S6；S2-COMPLIANCE 闸不接受 candidate_pool_source=manual（Mode B 批需 --force + 台账 s2_force_reason_w57G）"
   ]
  },
  "_meta": {
@@ -143,137 +135,170 @@
   ]
  },
  "gate_priors": {
-  "avoid": [
-   "neutralization=MARKET(0%, n=145)",
-   "neutralization=NONE(0%, n=50)",
-   "neutralization=SECTOR(0%, n=33)",
-   "field_family=mdl(0%, n=132)",
-   "field_family=trading(2%, n=57)",
-   "field_family=nws(0%, n=50)",
-   "field_family=transaction(0%, n=75)"
-  ],
-  "by_decay": {
-   "0": {
-    "n": 43,
-    "rate": 0
-   },
-   "10": {
-    "n": 25,
-    "rate": 0.08
-   },
-   "12": {
-    "n": 361,
-    "rate": 0.0222
-   },
-   "14": {
-    "n": 46,
-    "rate": 0.2826
-   },
-   "4": {
-    "n": 408,
-    "rate": 0.0392
-   },
-   "6": {
-    "n": 30,
-    "rate": 0.1333
-   },
-   "8": {
-    "n": 59,
-    "rate": 0.0169
-   }
-  },
-  "by_field_family": {
-   "anl": {
-    "n": 16,
-    "rate": 0
-   },
-   "breakaway": {
-    "n": 43,
-    "rate": 0.0465
-   },
-   "closing": {
-    "n": 23,
-    "rate": 0
-   },
-   "ep": {
-    "n": 231,
-    "rate": 0.1255
-   },
-   "forward": {
-    "n": 26,
-    "rate": 0
-   },
-   "mdl": {
-    "n": 132,
-    "rate": 0
-   },
-   "nws": {
-    "n": 50,
-    "rate": 0
-   },
-   "oth": {
-    "n": 193,
-    "rate": 0.1088
-   },
-   "snl": {
-    "n": 25,
-    "rate": 0
-   },
-   "trading": {
-    "n": 57,
-    "rate": 0.0175
-   },
-   "transaction": {
-    "n": 75,
-    "rate": 0
-   }
-  },
+  "sample_size": 1000,
+  "pass_rate": 0.053,
   "by_neutralization": {
-   "INDUSTRY": {
-    "n": 400,
-    "rate": 0.0725
-   },
    "MARKET": {
-    "n": 145,
-    "rate": 0
+    "rate": 0.0,
+    "n": 141
    },
-   "NONE": {
-    "n": 50,
-    "rate": 0
-   },
-   "SECTOR": {
-    "n": 33,
-    "rate": 0
+   "INDUSTRY": {
+    "rate": 0.0755,
+    "n": 384
    },
    "SUBINDUSTRY": {
-    "n": 361,
-    "rate": 0.0665
-   }
-  },
-  "by_operator_count": {
-   "5-8": {
-    "n": 318,
-    "rate": 0.0786
+    "rate": 0.0649,
+    "n": 370
    },
-   "<=4": {
-    "n": 436,
-    "rate": 0.0046
+   "NONE": {
+    "rate": 0.0,
+    "n": 49
    },
-   ">8": {
-    "n": 246,
-    "rate": 0.1057
+   "STATISTICAL": {
+    "rate": 0.0,
+    "n": 16
+   },
+   "SECTOR": {
+    "rate": 0.0,
+    "n": 31
    }
   },
   "by_universe": {
    "TOP700": {
-    "n": 1000,
-    "rate": 0.053
+    "rate": 0.053,
+    "n": 1000
    }
   },
-  "generated_at": "2026-09-11T19:36:08.361671+00:00",
-  "pass_rate": 0.053,
-  "sample_size": 1000,
+  "by_operator_count": {
+   "5-8": {
+    "rate": 0.0817,
+    "n": 306
+   },
+   ">8": {
+    "rate": 0.1048,
+    "n": 248
+   },
+   "<=4": {
+    "rate": 0.0045,
+    "n": 446
+   }
+  },
+  "by_decay": {
+   "12": {
+    "rate": 0.0235,
+    "n": 340
+   },
+   "4": {
+    "rate": 0.0371,
+    "n": 431
+   },
+   "14": {
+    "rate": 0.2826,
+    "n": 46
+   },
+   "6": {
+    "rate": 0.1379,
+    "n": 29
+   },
+   "10": {
+    "rate": 0.0769,
+    "n": 26
+   },
+   "0": {
+    "rate": 0.0,
+    "n": 42
+   },
+   "8": {
+    "rate": 0.0169,
+    "n": 59
+   }
+  },
+  "by_field_family": {
+   "mdl": {
+    "rate": 0.0,
+    "n": 122
+   },
+   "breakaway": {
+    "rate": 0.0476,
+    "n": 42
+   },
+   "ep": {
+    "rate": 0.1278,
+    "n": 227
+   },
+   "closing": {
+    "rate": 0.0,
+    "n": 23
+   },
+   "trading": {
+    "rate": 0.0175,
+    "n": 57
+   },
+   "oth": {
+    "rate": 0.104,
+    "n": 202
+   },
+   "nws": {
+    "rate": 0.0,
+    "n": 38
+   },
+   "pv": {
+    "rate": 0.0,
+    "n": 17
+   },
+   "forward": {
+    "rate": 0.0,
+    "n": 26
+   },
+   "transaction": {
+    "rate": 0.0,
+    "n": 74
+   },
+   "snl": {
+    "rate": 0.0,
+    "n": 24
+   }
+  },
+  "avoid": [
+   "neutralization=MARKET(0%, n=141)",
+   "neutralization=NONE(0%, n=49)",
+   "neutralization=SECTOR(0%, n=31)",
+   "field_family=mdl(0%, n=122)",
+   "field_family=trading(2%, n=57)",
+   "field_family=nws(0%, n=38)",
+   "field_family=transaction(0%, n=74)"
+  ],
+  "generated_at": "2026-09-19T15:25:56.712783+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
+ },
+ "settings_prior": {
+  "consumer": "wq-brain-campaign-toolkit/scripts/pipeline.py run (S3)",
+  "recommendations": [
+   {
+    "dim": "decay",
+    "current": 4,
+    "current_rate": 0.0371,
+    "current_n": 431,
+    "recommended": 14,
+    "rate": 0.2826,
+    "n": 46,
+    "lift": 7.62,
+    "source": "gate_priors",
+    "apply": true
+   },
+   {
+    "dim": "neutralization",
+    "current": "SUBINDUSTRY",
+    "current_rate": 0.0649,
+    "current_n": 370,
+    "recommended": "INDUSTRY",
+    "rate": 0.0755,
+    "n": 384,
+    "lift": 1.16,
+    "source": "gate_priors",
+    "apply": false
+   }
+  ]
  },
  "skeleton_field_matrix": {
   "effective": [

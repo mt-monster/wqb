@@ -293,7 +293,24 @@ profile red = `pv1 / mdl177`（exhausted，seed basics 全族死）。实测不�
    —— 失败即**同步 403 = 零成本**（不扣配额），且回带全部提交层 checks。
    ★ `POST` 同步 403 也是**读配额真值**的可靠手段（看 `REGULAR_SUBMISSION` 的 `limit/value`）。
    ★ 每候选**只发 1 次 submit**；201 后只轮询（4 分钟仍 `UNSUBMITTED` 再补发）。
-3. **参考核对（可选，不产出决策）**：PPA 主题匹配 / 相关性门控 / 点塔优选。
+3. **IS→OS 余量定标（2026-09-19 新增，实测定标器 `tools/os_decay_benchmark.py`）**：
+   提交门槛只保证"IS 达标"，**不保证 OS 有值**。本账号 124 颗 USA 有 OS 值的 alpha 实测：
+
+   | 指标 | 值 |
+   |---|---|
+   | 保留率 `OS/IS` 中位 / 均值 | **0.32 / 0.36**（p25 0.05、p75 0.65）|
+   | IS 1.58（提交门槛）→ 期望 OS | **≈ 0.50（中位）**；区间 0.07～1.02（p25～p75）|
+   | **负 OS 概率** | **≈ 22%，且与 IS 高低无关**（`corr(IS,保留率)=+0.001`）|
+
+   ★★ **不要用"抬高 IS 门槛"来降低 OS 风险** —— 实测 IS 与保留率零相关、与 OS 仅 +0.09；
+   IS 3.0 的样本照样出现 OS −1.01。**降 OS 风险只有三条**：分散（数量 × 跨区）、
+   事后监控（`os.sharpe60` 早期预警，比看全期更早发现恶化）、族去相关（避免同族同源一起崩）。
+
+   ★ **报告 READY 时必须同时给出期望 OS 区间**（`python tools/os_decay_benchmark.py --for <该候选 IS>`），
+   不要只报 IS 数字 —— 让用户看到"IS 1.6 的候选 OS 期望只有 ~0.5、且有 1/5 概率为负"。
+   ⚠ 覆盖面：本账号**只有 USA 有 OS 数值**（其余区 `os.sharpe` 全为 null）→ 其他区属外推，须标注。
+
+4. **参考核对（可选，不产出决策）**：PPA 主题匹配 / 相关性门控 / 点塔优选。
    `workflow_judge` 是**参考评审层**（`brain-alpha-judge` 同），**不是提交权威且不执行提交**。
    其返回 `verdict`(READY/REVIEW/BLOCK) **只是摘要**，请优先读 `checklist`（逐闸事实）与 `degraded_gates`；
    **`degraded_gates` 非空 ⇒ verdict 不可作提交依据**（降级闸此前会静默凑出 READY）。

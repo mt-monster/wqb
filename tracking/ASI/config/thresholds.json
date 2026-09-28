@@ -84,13 +84,13 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "model": 1.0,
-   "other": 1.15
+   "other": 1.15,
+   "model": 1.0
   },
   "crowd_sweet_spot_enable": true,
   "sweet_spot_ac_min": 1,
   "sweet_spot_ac_max": 1,
-  "_calibrated_at": "2026-09-15T21:27:18",
+  "_calibrated_at": "2026-09-20T23:22:06",
   "_calibrated_from": "alpha_store 35 alphas/2 ds + results/ 扫描 → 共 2 datasets 实测"
  },
  "mode_b_qualification": {
