@@ -18,6 +18,7 @@ from .._common import (
     backtest_row_count,
     batch_track_no_submit_error,
     detached_launch_failed,
+    resolve_async_tasks_root,
     resolve_campaign_dir,
     resolve_toolkit_dir,
     unbuffered_env,
@@ -40,7 +41,9 @@ def run(
     output_csv: Optional[str] = None,
     campaign_dir: Optional[str] = None,
     detached: bool = True,
-    submit: bool = True,
+    # 2026-09-26 默认改 False：AGENTS.md「提交类节点不入自动链」——batch_track 的 --submit
+    # 指的是「提交回测」，但历史默认 True 曾让整链干跑/误调时把提交也带上。需要提交回测请显式传。
+    submit: bool = False,
     skip_diversity_gate: bool = False,
     datasets_extra: Optional[str] = None,
     _context: Optional[Dict[str, Any]] = None,
@@ -275,10 +278,7 @@ def run(
         # 2026-09-04 修复：任务根目录改用仓库根 REPO_ROOT（原实现从 nodes/ 上溯 3 级
         # 只到 src/，任务实际落到 src/logs/_async_tasks/ 与 campaign/fe 布局分离，
         # 是"任务文件不存在"的直接来源之一）。支持 WQB_TASK_ROOT 注入（单测隔离）。
-        tasks_root = os.environ.get("WQB_TASK_ROOT") or os.path.join(
-            REPO_ROOT, "logs", "_async_tasks",
-        )
-        tasks_root = os.path.abspath(tasks_root)
+        tasks_root = os.path.abspath(resolve_async_tasks_root())
         os.makedirs(tasks_root, exist_ok=True)
         task_id = f"batch_track_{region}_{wave}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         task_dir = os.path.join(tasks_root, task_id)
@@ -293,24 +293,30 @@ def run(
             popen_kwargs: Dict[str, Any] = {
                 "stdout": out_f,
                 "stderr": err_f,
+                # stdin 显式断开：不继承 MCP 服务进程的 stdin（与 campaign 节点一致）
+                "stdin": subprocess.DEVNULL,
                 "cwd": toolkit_dir,
                 # `-u` 管住直接启动的解释器，PYTHONUNBUFFERED 连它 spawn 的
                 # 子进程一起管住 —— 日志实时落盘是 detached 唯一的可观测手段
                 "env": unbuffered_env(),
             }
             if os.name == "nt":
-                # Windows：脱离父进程组，避免 MCP 进程退出时子进程被终止
-                popen_kwargs["creationflags"] = (
-                    subprocess.CREATE_NEW_PROCESS_GROUP
-                    | subprocess.DETACHED_PROCESS
-                )
+                # Windows：只脱离父进程组（与 campaign/gem 节点一致），不再附加
+                # 无控制台创建标志。2026-09-21 根因：该标志让 venv 启动器无控制台，
+                # 真解释器随即自行分配 conhost 并在解释器初始化阶段永久阻塞
+                # （3 小时 0 字节输出、仅加载 python313.dll、CPU 15ms）——即
+                # "detached 启动 0 字节 stdout"顽疾。campaign 节点从未带此标志，从未复现。
+                popen_kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
             else:
                 popen_kwargs["start_new_session"] = True
             proc = subprocess.Popen(cmd, **popen_kwargs)
 
+            from ..process_identity import process_identity
+
             meta = {
                 "task_id": task_id,
                 "pid": proc.pid,
+                "process_identity": process_identity(proc.pid),
                 "cmd": cmd,
                 "region": region,
                 "wave": wave,
@@ -334,7 +340,12 @@ def run(
             # 2026-09-06 新增：存活握手。detached 不看退出码是"启动即死"被吞成
             # success=True 的根因（本次审计 P0：argparse exit=2 被静默 13 天）。
             # 跑得起来的任务此刻仍在运行；跑不起来的已把原因写进 stderr。
-            launch_error = detached_launch_failed(proc, stderr_log)
+            # 2026-09-21：加首字节心跳 —— 存活但 20s 内 0 字节输出即判启动挂死并杀树，
+            # 不再把"活着的哑进程"当成功返回（pipeline 正常几秒内必打 [settings-prior] 等首行）。
+            launch_error = detached_launch_failed(
+                proc, stderr_log, stdout_log=stdout_log,
+                first_output_sec=float(os.environ.get("WQB_DETACHED_FIRST_OUTPUT_SEC", "20")),
+            )
             if launch_error:
                 out_f.close()
                 err_f.close()

@@ -15,7 +15,7 @@ import json
 import re
 from pathlib import Path
 
-from pipeline_paths import FEATURE_ENGINEERING_DIR
+from pipeline_paths import FEATURE_ENGINEERING_DIR, GEM_REPORT_ROOT
 
 
 # ---------------- expected_exposure 兜底（2026-09-01） ----------------
@@ -265,9 +265,17 @@ def _ensure_mandatory_sections(content: str, dataset_id: str, region: str, delay
 def save_ideas_report(content: str, region: str, delay: int, dataset_id: str) -> Path:
     # Ensure mandatory sections before saving
     content = _ensure_mandatory_sections(content, dataset_id, region, delay)
-    output_dir = FEATURE_ENGINEERING_DIR / "output_report"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    filename = f"{region}_delay{delay}_{dataset_id}_ideas.md"
+    # 2026-09-26：产物根从 skill 树内部（FEATURE_ENGINEERING_DIR/output_report）迁到
+    # GEM_DATA_ROOT/output_report —— 原先会把 `*_ideas.md` 写进仓库/安装位的 skill 目录，
+    # 且随 skill_roots 解析漂移落到不同物理位置。GEM_REPORT_ROOT 缺失时回退旧位（保证可用）。
+    output_dir = GEM_REPORT_ROOT
+    try:
+        output_dir.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        output_dir = FEATURE_ENGINEERING_DIR / "output_report"
+        output_dir.mkdir(parents=True, exist_ok=True)
+    # 2026-09-25 目标 B：文件名加 gem_ 前缀，与 fe 节点产物（fe_ 前缀）区分来源
+    filename = f"gem_{region}_delay{delay}_{dataset_id}_ideas.md"
     output_path = output_dir / filename
     output_path.write_text(content, encoding="utf-8")
     return output_path

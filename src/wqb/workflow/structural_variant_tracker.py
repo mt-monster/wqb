@@ -23,6 +23,7 @@
     )
     report = tracker.generate_comparison_report(wave=95)
 """
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import logging
@@ -109,7 +110,7 @@ class StructuralVariantTracker:
         if self._store:
             return self._store._conn()
         elif self._db_path:
-            conn = sqlite3.connect(self._db_path)
+            conn = db_connect(self._db_path)
             conn.row_factory = sqlite3.Row
             return conn
         else:

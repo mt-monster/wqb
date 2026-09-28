@@ -33,6 +33,9 @@ if str(_TOOLS_DIR) not in sys.path:
 
 from mcp_batch_writer import DirectDBWriter  # noqa: E402
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 def write_wave_result(
     region,
@@ -88,7 +91,7 @@ def write_wave_result(
 def list_wave_results(region=None, status=None, archived=None):
     """列出 wave 结果（可按 region/status/archived 过滤）。"""
     import sqlite3
-    conn = sqlite3.connect(str(DB))
+    conn = db_connect(str(DB))
     conn.execute("PRAGMA foreign_keys=ON")
     conn.row_factory = sqlite3.Row
     c = conn.cursor()

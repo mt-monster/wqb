@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 # src/wqb/workflow/_common.py -> repo root
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
@@ -99,6 +100,42 @@ _PREFIX_CATEGORY = [
 _DB_PATH = REPO_ROOT / "data" / "wqb.db"
 
 
+# ---------------------------------------------------------------------------
+# 产物路径收口（2026-09-25 结构优化目标 E）
+# ---------------------------------------------------------------------------
+# 背景：异步任务根目录 logs/_async_tasks 在 gem/batch_track/campaign/fe 四个节点
+# 与 tasks.py、run_logged_subprocess 里各自重复同一表达式（WQB_TASK_ROOT or 默认位），
+# 且 run_logged_subprocess 此前不支持 env 覆盖（不一致）。GEM 数据产物（final_expressions/
+# 数据集 csv/whitelist）深嵌套在 skill 安装位内部（trailSomeAlphas/skills/.../data/），
+# 随 _skill_roots() 解析结果漂移。统一收口到此处，写入点与读取点共用同一解析。
+
+
+def resolve_async_tasks_root() -> str:
+    """异步任务根目录：WQB_TASK_ROOT 优先（单测隔离），否则仓库 logs/_async_tasks。
+
+    供 detached 节点（gem/batch_track/campaign/fe）、tasks.py 读取侧、
+    run_logged_subprocess 同步运行器、以及 tools/cleanup_async_tasks.py 共用。
+    """
+    return os.environ.get("WQB_TASK_ROOT") or str(REPO_ROOT / "logs" / "_async_tasks")
+
+
+def _safe_folder_name(name: str) -> str:
+    """与 GEM pipeline_io.safe_dataset_id 同规则：仅保留字母数字与 -_。"""
+    return "".join(c for c in str(name) if c.isalnum() or c in ("-", "_"))
+
+
+def resolve_gem_data_dir(dataset_id: str, region: str, delay: int) -> Path:
+    """GEM 数据产物目录（仓库稳定路径，与 skill 安装位解耦）。
+
+    优先级：WQB_GEM_DATA_ROOT env > 仓库 data/gem_runs。返回
+    <root>/{dataset_id}_{region}_delay{delay}（folder 名做 safe 清洗）。
+    纯解析不 mkdir（写侧自建）。
+    """
+    root = os.environ.get("WQB_GEM_DATA_ROOT") or str(REPO_ROOT / "data" / "gem_runs")
+    folder = f"{_safe_folder_name(dataset_id)}_{region}_delay{delay}"
+    return Path(root) / folder
+
+
 def _platform_category(dataset_id: str) -> Optional[str]:
     """以平台 category 为准：优先查 datasets 快照（category 非空的最新一条）。
 
@@ -113,7 +150,7 @@ def _platform_category(dataset_id: str) -> Optional[str]:
     if not os.path.isfile(db):
         return None
     try:
-        conn = sqlite3.connect(Path(db).resolve().as_uri() + "?mode=ro", uri=True)
+        conn = db_connect(db, readonly=True, timeout=5.0)
         try:
             row = conn.execute(
                 "SELECT category FROM datasets WHERE name=? "
@@ -578,6 +615,8 @@ def detached_launch_failed(
     proc,
     stderr_log: str,
     grace_sec: float = 1.5,
+    stdout_log: Optional[str] = None,
+    first_output_sec: float = 0.0,
 ) -> Optional[str]:
     """detached 启动后的存活握手：进程秒退或 stderr 有内容即判失败。
 
@@ -585,6 +624,13 @@ def detached_launch_failed(
     看 —— argparse 拒绝、ImportError、路径不存在这类"启动即死"全被吞成
     success=True。这里只等一个很短的宽限期：跑得起来的任务此刻仍在运行，
     跑不起来的已经把原因写进 stderr 了。
+
+    2026-09-21 新增「首字节心跳」（stdout_log + first_output_sec>0 时生效）：
+    子进程存活但在 first_output_sec 内 stdout/stderr 仍是 0 字节 → 判「启动挂死」，
+    杀掉整棵进程树并返回原因。实证：batch_track 以 DETACHED_PROCESS 启动的
+    pipeline 在 venv 启动器下解释器只加载了 python313.dll 就永久阻塞（3 小时
+    0 字节输出、CPU 15ms），旧握手（只看秒退/stderr）把它当成"启动成功"。
+    `-u` + PYTHONUNBUFFERED 保证正常任务几秒内必有首行输出，静默即异常。
 
     返回失败原因字符串；一切正常返回 None。无法判定存活（如测试替身没有
     `poll`）时返回 None 放行 —— 本握手是加固层，不该自己成为故障点。
@@ -604,6 +650,34 @@ def detached_launch_failed(
         rc = poll()
     except Exception:
         return None
+
+    if rc is None and stdout_log and first_output_sec > 0:
+        try:
+            hb_deadline = time.time() + first_output_sec
+            got_output = False
+            while time.time() < hb_deadline:
+                try:
+                    if os.path.getsize(stdout_log) > 0:
+                        got_output = True
+                        break
+                except OSError:
+                    pass
+                if poll() is not None:
+                    break
+                time.sleep(0.25)
+            if poll() is None and not got_output:
+                try:
+                    if os.path.getsize(stderr_log) > 0:
+                        got_output = True
+                except OSError:
+                    pass
+            if poll() is None and not got_output:
+                _kill_process_tree(proc)
+                return (f"子进程存活但 {first_output_sec:.0f}s 内 stdout/stderr 均为 0 字节"
+                        f"（启动挂死，已杀进程树 pid={getattr(proc, 'pid', '?')}）")
+            rc = poll()
+        except Exception:
+            return None
 
     tail = ""
     try:
@@ -729,7 +803,7 @@ def connect_db_readonly(path: Optional[str] = None, timeout: float = 5.0) -> sql
     空库——开波闸等纯读路径（含 dry-run，契约"不写库"）用它（2026-09-27 R5）。
     """
     db = path or resolve_db_path()
-    return sqlite3.connect(Path(db).resolve().as_uri() + "?mode=ro", uri=True, timeout=timeout)
+    return db_connect(db, readonly=True, timeout=timeout)
 
 
 def local_ts(value: Any) -> str:
@@ -761,7 +835,7 @@ def backtest_row_count(region: str, wave: str) -> Optional[int]:
     if not os.path.isfile(path):
         return None
     try:
-        conn = sqlite3.connect(path, timeout=5)
+        conn = db_connect(path, timeout=5)
         try:
             row = conn.execute(
                 "SELECT COUNT(*) FROM backtest_results WHERE region=? AND wave=?",
@@ -817,3 +891,109 @@ def batch_track_no_submit_error(
         "pipeline 未提交任何回测，检查 --submit："
         f"backtest_results 该波仍为 0 行（运行前 {rows_before}，运行后 {rows_after}）"
     )
+
+
+# ---------------------------------------------------------------------------
+# 同步子进程的"日志文件 + 进程树超时"运行器（2026-09-20）
+# ---------------------------------------------------------------------------
+# 事故：workflow_execute(node="wave_gate") 在 MCP 服务内以
+# `subprocess.run(capture_output=True, timeout=1800)` 跑 tools/wave_gate.py，
+# 结果卡满 1800s 才回 "wave_gate 超时"，而同一命令在终端 <1s 完成，且超时后
+# 子进程的全部输出被丢弃、无法定位卡点。根因候选（管道句柄被孙进程继承致
+# communicate() 不返回 / 子进程链在服务环境下阻塞）都指向同一类缺陷：
+#   ① 用 PIPE 收集输出 —— 任何持有管道句柄的后代进程不退出，父进程就永远收不完；
+#   ② 超时只杀直接子进程，不杀进程树，孤儿继续占句柄/占槽；
+#   ③ 超时即丢弃已产生的输出，Agent 只能看到一句"超时"。
+# 本运行器把三点一起治：输出直写日志文件（无管道）、超时杀整棵进程树、
+# 无论成败都返回日志路径与尾部，且 stdin 一律 DEVNULL（服务内无终端，任何
+# 意外的交互读都会永久阻塞）。同步节点（wave_gate / auto_review / auto_pyramid
+# 之类"跑完就回"的短脚本）统一走它；detached 长任务仍走 tasks.py。
+
+
+def _kill_process_tree(proc: "subprocess.Popen") -> None:
+    """杀掉 proc 及其全部后代（Windows: taskkill /T；POSIX: killpg）。"""
+    import subprocess as _sp
+    try:
+        if os.name == "nt":
+            _sp.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)],
+                    capture_output=True, timeout=30)
+        else:
+            import signal
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            except Exception:
+                proc.kill()
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+    try:
+        proc.wait(timeout=15)
+    except Exception:
+        pass
+
+
+def run_logged_subprocess(
+    cmd: Sequence[str],
+    *,
+    log_name: str,
+    timeout_sec: float,
+    cwd: Optional[str] = None,
+    env: Optional[Dict[str, str]] = None,
+    tail_chars: int = 4000,
+) -> Dict[str, Any]:
+    """同步跑一个短命脚本：stdout+stderr 直写 logs/_async_tasks/<log_name>.log。
+
+    Returns:
+        {returncode, timed_out, elapsed_sec, log_path, tail}
+        timed_out=True 时 returncode=None，且已杀整棵进程树；tail 是超时前
+        已落盘的输出尾部（定位卡点用）。
+    """
+    import subprocess as _sp
+    import time as _time
+
+    log_dir = Path(resolve_async_tasks_root())
+    log_dir.mkdir(parents=True, exist_ok=True)
+    safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", str(log_name))[:120]
+    log_path = log_dir / f"{safe}_{_time.strftime('%Y%m%d_%H%M%S')}.log"
+
+    popen_kwargs: Dict[str, Any] = {
+        "cwd": cwd or str(REPO_ROOT),
+        "env": env,
+        "stdin": _sp.DEVNULL,
+        "close_fds": True,
+    }
+    if os.name == "nt":
+        popen_kwargs["creationflags"] = getattr(_sp, "CREATE_NEW_PROCESS_GROUP", 0)
+    else:
+        popen_kwargs["start_new_session"] = True
+
+    t0 = _time.time()
+    timed_out = False
+    returncode: Optional[int] = None
+    with open(log_path, "w", encoding="utf-8", errors="replace") as fh:
+        proc = _sp.Popen(list(cmd), stdout=fh, stderr=_sp.STDOUT, **popen_kwargs)
+        try:
+            returncode = proc.wait(timeout=timeout_sec)
+        except _sp.TimeoutExpired:
+            timed_out = True
+            _kill_process_tree(proc)
+    elapsed = round(_time.time() - t0, 2)
+
+    tail = ""
+    try:
+        with open(log_path, "r", encoding="utf-8", errors="replace") as fh:
+            fh.seek(0, os.SEEK_END)
+            size = fh.tell()
+            fh.seek(max(0, size - tail_chars * 4))
+            tail = fh.read()[-tail_chars:]
+    except Exception:
+        pass
+    return {
+        "returncode": returncode,
+        "timed_out": timed_out,
+        "elapsed_sec": elapsed,
+        "log_path": str(log_path),
+        "tail": tail,
+    }

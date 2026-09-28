@@ -126,7 +126,9 @@ class WorkflowRegistry:
                     category="submit",
                     phase=1,
                     required_params=["alpha_id"],
-                    optional_params=["name", "color", "tags", "descriptions", "force", "confirm_submit", "verify_timeout"],
+                    optional_params=["name", "color", "tags", "descriptions", "force",
+                                     "confirm_submit", "verify_timeout",
+                                     "dataset", "wave", "expr_family", "channel"],
                 )
             )
         except ImportError as e:
@@ -181,8 +183,9 @@ class WorkflowRegistry:
                     required_params=["region", "dataset_id", "delay", "universe"],
                     optional_params=["data_category", "instrument_type", "data_type",
                                      "priors_file", "priors_from_db", "ideas_file", "detached",
-                                     "launch_only", "pipeline_mode", "batch_size",
-                                     "require_operators", "require_count"],
+                                     "launch_only", "console", "pipeline_mode", "batch_size",
+                                     "require_operators", "require_count",
+                                     "prod_first", "prod_first_top_k"],
                 )
             )
         except ImportError as e:
@@ -234,9 +237,9 @@ class WorkflowRegistry:
                     category="gate",
                     phase=4,
                     required_params=["region", "dataset", "wave"],
-                    optional_params=["exprs_file", "candidates", "expr", "from_db",
+                    optional_params=["datasets", "exprs_file", "candidates", "expr", "from_db",
                                      "skip_diversity_gate", "fix", "campaign_dir",
-                                     "inspect_mode"],
+                                     "inspect_mode", "prod_family_gate", "timeout_sec"],
                 )
             )
         except ImportError as e:
@@ -303,24 +306,6 @@ class WorkflowRegistry:
             )
         except ImportError as e:
             logger.warning(f"Failed to register inventory_scan: {e}")
-
-        # Phase 4: field_understanding（自动化字段理解，S1 增强）
-        try:
-            from .nodes import field_understanding
-            self.register(
-                "field_understanding",
-                field_understanding.run,
-                NodeMeta(
-                    name="field_understanding",
-                    description="自动化字段理解（S1 增强）：分析字段特征 + 生成字段理解报告 + 自动分类字段 + 识别高价值字段",
-                    category="field",
-                    phase=4,
-                    required_params=["region", "dataset"],
-                    optional_params=["delay", "auto_classify", "identify_high_value"],
-                )
-            )
-        except ImportError as e:
-            logger.warning(f"Failed to register field_understanding: {e}")
 
         # Phase 4: gem_wave（合并选波到 GEM 生成，S2 增强）
         try:

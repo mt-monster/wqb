@@ -13,13 +13,16 @@ import json
 import sqlite3
 from pathlib import Path
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 ROOT = Path(__file__).resolve().parent.parent
 DB = ROOT / "data" / "wqb.db"
 
 
 def fetch_waves(region):
     """从 wave_results 表拉取某区域全部 wave（按 wave_number 排序）。"""
-    conn = sqlite3.connect(str(DB))
+    conn = db_connect(str(DB))
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute(

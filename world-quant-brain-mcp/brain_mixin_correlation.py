@@ -13,6 +13,34 @@ import pandas as pd
 logger = logging.getLogger("brain_api")
 
 
+def build_alpha_properties_payload(*, name: Optional[str] = None, color: Optional[str] = None,
+                                   tags: Optional[List[str]] = None,
+                                   descriptions: Optional[str] = None,
+                                   selection_description: Optional[str] = None,
+                                   combo_description: Optional[str] = None) -> Dict[str, Any]:
+    """组 PATCH /alphas/{id} 的 body：**只含显式给出的字段**，None 一律不发。
+
+    纯函数、无网络，供 set_alpha_properties 与单测共用。约定：
+      - descriptions 为 None 或历史哨兵字符串 "None" → 不动 regular.description；
+      - tags 为 None → 不动（平台侧保留已有标签）；传 [] 才是显式清空；
+      - name/color 为 None → 不动。
+    """
+    payload: Dict[str, Any] = {}
+    if name is not None:
+        payload["name"] = name
+    if color is not None:
+        payload["color"] = color
+    if tags is not None:
+        payload["tags"] = list(tags)
+    if descriptions is not None and descriptions != "None":
+        payload["regular"] = {"description": descriptions}
+    if selection_description is not None:
+        payload["selection"] = {"description": selection_description}
+    if combo_description is not None:
+        payload["combo"] = {"description": combo_description}
+    return payload
+
+
 class CorrelationMixin:
     def _pnl_response_to_series(self, aid: str, pnl_data: dict) -> Optional[pd.Series]:
         """Convert a raw PnL API response dict to a pandas Series indexed by date."""
@@ -865,21 +893,28 @@ class CorrelationMixin:
                                    selection_description: Optional[str] = None,
                                    combo_description: Optional[str] = None
                                    ) -> Dict[str, Any]:
-        """Update alpha properties (name, color, tags, descriptions)."""
+        """Update alpha properties (name, color, tags, descriptions).
+
+        PATCH 语义：只发送**显式给出**的字段（与官方 ace_lib.set_alpha_properties 一致）。
+        2026-09-21 事故：此前无条件发送 name=None / regular.description=None / tags=[]，
+        submit_alpha 节点在调用方不传 name/descriptions 时把 gJboYLRl 已设好的名称与
+        描述 PATCH 成 null 后才提交。descriptions 的历史默认值 "None"（字符串）同样视为
+        "未提供"。
+        """
         await self.ensure_authenticated()
-        
+
         try:
-            payload = {
-                "color": color,
-                "name": name,
-                "tags": tags if tags is not None else [],
-                "regular": {"description": descriptions}
-            }
-            if selection_description is not None:
-                payload["selection"] = {"description": selection_description}
-            if combo_description is not None:
-                payload["combo"] = {"description": combo_description}
-            
+            payload = build_alpha_properties_payload(
+                name=name, color=color, tags=tags, descriptions=descriptions,
+                selection_description=selection_description,
+                combo_description=combo_description,
+            )
+            if not payload:
+                # 什么都没给：不发空 PATCH，直接回读当前属性（幂等、零副作用）
+                response = await self._request('GET', f"{self.base_url}/alphas/{alpha_id}")
+                response.raise_for_status()
+                return response.json()
+
             response = await self._request('PATCH', f"{self.base_url}/alphas/{alpha_id}", json=payload)
             response.raise_for_status()
             return response.json()

@@ -20,6 +20,7 @@ from typing import Any, Dict, List, Optional
 
 from .._common import connect_db_readonly
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 #: 报告里"过闸"的口径（sharpe ≥ 1.58 且 fitness ≥ 1.0，与收批级联的硬闸前两项一致）

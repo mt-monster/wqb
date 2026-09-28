@@ -23,6 +23,9 @@ import json
 import os
 import sqlite3
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TK = os.path.join(REPO, "Claude", "skills", "wq-brain-campaign-toolkit", "scripts")
 
@@ -94,7 +97,7 @@ def _apply_drop(a, failed_ids):
     shutil.copy2(a.db, a.db_backup)
     print(f"\n[备份] {a.db} → {a.db_backup}")
 
-    conn = sqlite3.connect(a.db)
+    conn = db_connect(a.db)
     conn.row_factory = sqlite3.Row
     before = dict(conn.execute(
         "SELECT status, COUNT(*) FROM expressions WHERE region=? GROUP BY status",
@@ -161,7 +164,7 @@ def _apply_drop(a, failed_ids):
 
 def conn_alpha_check(db_path, ids):
     """复核：本批被改的 id 里是否有 alpha_id 非空（必须 0）。"""
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     n = 0
     for i in range(0, len(ids), 500):
         chunk = ids[i:i + 500]
@@ -198,7 +201,7 @@ def main():
     if a.apply_drop and not a.db_backup:
         raise SystemExit("[拒绝] --apply-drop 必须给 --db-backup <路径>（不可逆写入的硬守卫）")
 
-    conn = sqlite3.connect(a.db)
+    conn = db_connect(a.db)
     rows = conn.execute(
         "SELECT id, expression, dataset, wave, skeleton FROM expressions "
         "WHERE region=? AND status=? AND expression IS NOT NULL AND expression<>'' "

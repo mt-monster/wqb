@@ -40,6 +40,9 @@ import sqlite3
 import sys
 from typing import Any, Dict, List, Optional
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC_DIR = os.path.join(REPO_ROOT, "src")
 if SRC_DIR not in sys.path:
@@ -357,7 +360,9 @@ def main() -> int:
         print(f"[step-funnel] 找不到 DB：{db}", file=sys.stderr)
         return 2
 
-    conn = sqlite3.connect(db)
+    # 只读连接：本工具契约是「跑完 DB 字节不变」（test_run_does_not_modify_db），
+    # 故经工厂的 readonly=True 打开（跳过会改库头的 PRAGMA journal_mode=WAL）。
+    conn = db_connect(db, readonly=True)
     try:
         res = build_funnel(conn, a.region.upper(), a.wave)
     finally:

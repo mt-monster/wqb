@@ -11,6 +11,9 @@
 mutation 必须幂等：同名键覆盖、列表去重追加。schema 守卫：空 key / "_" 前缀 key 拒绝。
 键命名约定见 references/ledger-schema.md。
 """
+import sys as _sys_m, os as _os_m
+_sys_m.path.insert(0, str(_os_m.path.dirname(_os_m.path.abspath(__file__))))  # _lib 可导入
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import datetime
 import json
 import os
@@ -116,7 +119,7 @@ class SqliteLedgerStore:
 
     def _conn(self):
         import sqlite3
-        conn = sqlite3.connect(self.db_path)
+        conn = db_connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 
@@ -262,10 +265,18 @@ def cli_main(ctx, argv):
             return 1
         print(json.dumps(d[a.key], ensure_ascii=False, indent=1))
     elif a.cmd == "set":
+        # 2026-09-21：与 set-verdict 同步支持 `@file` 文件通道（AGENTS.md §5：中文/JSON/多行
+        # 参数一律走文件，绕开 PowerShell 三层引号）。此前 set 只吃内联 JSON，写 region_kb 这类
+        # 10KB 中文 JSON 只能绕道临时脚本。@ 后接绝对路径或相对战役目录路径。
+        raw = a.value[1:] if a.value.startswith("@") else None
         try:
-            val = json.loads(a.value)
-        except json.JSONDecodeError:
-            print(f"value 不是合法 JSON: {a.value[:80]}", file=sys.stderr)
+            if raw:
+                src = raw if os.path.isabs(raw) else ctx.path(raw)
+                val = load_json(src, encoding="utf-8-sig")
+            else:
+                val = json.loads(a.value)
+        except Exception as e:
+            print(f"value 不是合法 JSON（内联或 @file）: {a.value[:80]} ({e})", file=sys.stderr)
             return 1
         store.set_key(a.key, val)
         print(f"set {a.key} OK (keys={len(store.load())})")

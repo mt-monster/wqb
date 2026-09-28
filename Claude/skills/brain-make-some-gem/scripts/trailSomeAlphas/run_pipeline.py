@@ -31,7 +31,7 @@ from pathlib import Path
 
 # --- 环境引导（必须最先执行：sys.path / UTF-8 stdout / ace_lib 等）---
 import pipeline_paths  # noqa: F401
-from pipeline_paths import FEATURE_ENGINEERING_DIR, FEATURE_IMPLEMENTATION_DIR, FEATURE_IMPLEMENTATION_SCRIPTS, ace_lib, ExpressionValidator, wrap_naked_vectors
+from pipeline_paths import FEATURE_ENGINEERING_DIR, FEATURE_IMPLEMENTATION_DIR, FEATURE_IMPLEMENTATION_SCRIPTS, GEM_DATA_ROOT, GEM_REPORT_ROOT, SKILL_DIR_SOURCES, missing_skill_docs, ace_lib, ExpressionValidator, wrap_naked_vectors
 from pipeline_data import build_allowed_metric_suffixes, build_allowed_suffixes_from_ids, build_field_summary, detect_dataset_code, ensure_metadata_block, load_brain_credentials_from_env_or_args, pick_first_present_column, read_text_optional, start_brain_session
 from pipeline_llm import call_moonshot  # noqa: F401  （run.py patch 点，需 rp 全局调用）
 from pipeline_io import (  # noqa: F401
@@ -69,7 +69,9 @@ def _load_skeleton_stats(region: str) -> dict:
     db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
     if not os.path.isfile(db):
         return {}
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(db, timeout=60)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=60000")  # 规范口径（2026-09-20 L1，无 src 依赖内联版）
     conn.row_factory = sqlite3.Row
     try:
         # 1) 归因：s2_*_idea ledger 的 skeleton_metas（expr → skeleton_id）
@@ -374,8 +376,8 @@ def main():
     parser.add_argument(
         "--data-type",
         default="MATRIX",
-        choices=["MATRIX", "VECTOR"],
-        help="Data type to request from BRAIN datafields (MATRIX or VECTOR). Default: MATRIX",
+        choices=["MATRIX", "VECTOR", "GROUP"],
+        help="Data type to request from BRAIN datafields (MATRIX, VECTOR or GROUP). Default: MATRIX",
     )
     parser.add_argument("--wave", default=None, help="Campaign wave id for DB upsert (default s2_<ds>_d<delay>)")
     parser.add_argument("--ideas-file", default=None, help="Use existing ideas markdown instead of generating")
@@ -547,16 +549,25 @@ def main():
     # - If --ideas-file is provided, we treat it as user-managed input and do NOT delete it.
     # - We DO delete the dataset-specific folder under feature-implementation/data.
     if not args.ideas_file:
-        default_ideas = (
-            FEATURE_ENGINEERING_DIR
-            / "output_report"
-            / f"{args.region}_delay{args.delay}_{args.dataset_id}_ideas.md"
-        )
-        delete_path_if_exists(default_ideas)
+        # 2026-09-25 目标 B：GEM 自生成 ideas 改 gem_ 前缀（pipeline_reports.save_ideas_report）。
+        # 清理需覆盖 gem_ 新名 + 无前缀旧名（历史残留）；fe_ 前缀是 fe 节点产物，GEM 无权清理。
+        # 2026-09-26：产物根已迁到 GEM_REPORT_ROOT；同时清旧位（skill 树内部）防 stale 残留。
+        for _root in (GEM_REPORT_ROOT, FEATURE_ENGINEERING_DIR / "output_report"):
+            for _name in (
+                f"gem_{args.region}_delay{args.delay}_{args.dataset_id}_ideas.md",
+                f"{args.region}_delay{args.delay}_{args.dataset_id}_ideas.md",
+            ):
+                delete_path_if_exists(_root / _name)
 
     guessed_dataset_folder = f"{safe_dataset_id(args.dataset_id)}_{args.region}_delay{args.delay}"
-    guessed_dataset_dir = FEATURE_IMPLEMENTATION_DIR / "data" / guessed_dataset_folder
+    # 2026-09-25 结构优化目标 A：数据产物迁出 skill 安装位到仓库稳定路径 GEM_DATA_ROOT
+    # （与 skill_roots 解析解耦）。双清旧路径防 stale 残留。
+    # 同时把 GEM_DATA_ROOT 注入环境，供 fetch_dataset/implement_idea/merge_expression_list
+    # 子进程继承（它们各自读 WQB_GEM_DATA_ROOT，未设置时回退旧行为）。
+    os.environ["WQB_GEM_DATA_ROOT"] = str(GEM_DATA_ROOT)
+    guessed_dataset_dir = GEM_DATA_ROOT / guessed_dataset_folder
     delete_path_if_exists(guessed_dataset_dir)
+    delete_path_if_exists(FEATURE_IMPLEMENTATION_DIR / "data" / guessed_dataset_folder)
 
     ideas_path = None
     skeleton_result = None  # skeleton 模式的产物（expressions/metas/dropped/layers）
@@ -598,6 +609,16 @@ def main():
             data_type=args.data_type,
         )
 
+        # 2026-09-26：skill 目录解析来源与文档缺失必须**可见**。此前 dfe 的 SKILL.md 因解析到
+        # 内嵌 legacy 副本（该副本无 SKILL.md）而静默为空串，顶层 322 行文档从未进 prompt。
+        for _label, (_d, _src) in SKILL_DIR_SOURCES.items():
+            _lines = len(read_text_optional(_d / "SKILL.md").splitlines())
+            _mark = "OK" if _lines else "MISSING"
+            print(f"[skill-doc] {_label}: {_mark} ({_lines} 行) dir={_d} source={_src}", flush=True)
+        _missing = missing_skill_docs()
+        if _missing:
+            print("[skill-doc][WARN] 以下 skill 文档缺失，将**以空内容**进入 LLM prompt —— "
+                  "prompt 会退化为无该 skill 指导：\n  - " + "\n  - ".join(_missing), file=sys.stderr, flush=True)
         feature_engineering_skill_md = read_text_optional(FEATURE_ENGINEERING_DIR / "SKILL.md")
         feature_implementation_skill_md = read_text_optional(FEATURE_IMPLEMENTATION_DIR / "SKILL.md")
         allowed_metric_suffixes = build_allowed_metric_suffixes(fields_df, max_suffixes=300)
@@ -805,9 +826,10 @@ def main():
     # If the ideas file references a different dataset id than the CLI args,
     # ensure we also clean that dataset folder before fetching.
     if dataset_folder != guessed_dataset_folder:
+        delete_path_if_exists(GEM_DATA_ROOT / dataset_folder)
         delete_path_if_exists(FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder)
 
-    dataset_csv_path = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder / f"{dataset_folder}.csv"
+    dataset_csv_path = GEM_DATA_ROOT / dataset_folder / f"{dataset_folder}.csv"
     if not dataset_csv_path.exists():
         raise RuntimeError(
             "Dataset CSV was not created by fetch_dataset.py. "
@@ -820,27 +842,38 @@ def main():
     # 与数据集字段零交集时忽略白名单并告警（防 S1 陈旧决策把绑定池清空）。
     bind_ids = dataset_ids
     whitelist_path = None
+    field_pool_constrained = False  # 2026-09-26：标记是否真正施加了字段约束（供 A/B 评估区分）
     if s1_record and dataset_ids:
         raw_wl = s1_record.get("field_whitelist")
-        if _s1_is_template:
-            # 2026-09-15 ②/⑤：模板渲染 S1 记录的 field_whitelist 是文档白名单块的**前 30 行（字母序）**
-            # ——GBR intraday_pv_feats 实测 30 条全是 *_ask_price_*。不再拿它收窄绑定池；
-            # 改用 store 的跨簇候选池 s2_field_pool_<ds>（builder_version>=2），没有就用全目录。
-            raw_wl = None
+        # 2026-09-26 消费一致性修复：字段池（s2_field_pool_<ds>，经济学归类/跨簇）作为
+        # **单一字段约束源**，模板与非模板 S1 一视同仁——此前非模板只读 field_whitelist、
+        # 完全忽略字段池，且池缺失/legacy 时静默回退全目录（= 无约束），导致实测大量
+        # 表达式 0% 命中池、“字段分类→GEM”形同虚设。现：优先取当前版池，过期(v≠当前)
+        # 则重建，再回退 field_whitelist，最终无约束时**明示**（禁止静默）。
+        pool_wl = None
+        _pool_meta = {}
+        try:
+            _st2 = _wqb_campaign_store()
             try:
-                _st2 = _wqb_campaign_store()
-                try:
-                    _pool = _st2.get_ledger(args.region, f"s2_field_pool_{args.dataset_id}")
-                finally:
-                    _st2.close()
-                if isinstance(_pool, dict) and int(_pool.get("builder_version") or 0) >= 2:
-                    raw_wl = _pool.get("candidate_field_pool")
-                    print(f"[s1] 模板渲染记录：改用跨簇候选池 s2_field_pool_{args.dataset_id}"
-                          f"（{len(raw_wl or [])} 字段，覆盖 {_pool.get('clusters_covered')} 簇）作绑定白名单", flush=True)
-                else:
-                    print("[s1] 模板渲染记录：无版本化候选池，绑定池 = 全目录字段", flush=True)
-            except Exception as _exc:
-                print(f"[s1] 候选池读取异常（{_exc}），绑定池 = 全目录字段", flush=True)
+                _pool = _st2.get_candidate_field_pool(args.region, args.dataset_id)
+                if not _pool:
+                    # 过期/缺失 → 重建（经济学归类优先，回退跨簇）
+                    _pool = _st2.build_economic_field_pool(args.region, args.dataset_id, persist=True)
+                    if not (_pool and _pool.get("candidate_field_pool")):
+                        _pool = _st2.build_candidate_field_pool(args.region, args.dataset_id, persist=True)
+            finally:
+                _st2.close()
+            if isinstance(_pool, dict) and _pool.get("candidate_field_pool"):
+                pool_wl = _pool.get("candidate_field_pool")
+                _pool_meta = {"source": _pool.get("source"),
+                              "builder_version": _pool.get("builder_version")}
+        except Exception as _exc:
+            print(f"[s1] 字段池解析/重建异常（{_exc}），回退 field_whitelist/全目录", flush=True)
+        if pool_wl:
+            raw_wl = pool_wl
+            print(f"[s1] 字段池生效（s2_field_pool_{args.dataset_id}，{len(pool_wl)} 字段，"
+                  f"source={_pool_meta.get('source')}，v{_pool_meta.get('builder_version')}）作绑定白名单", flush=True)
+        # pool_wl 空则沿用 raw_wl=field_whitelist（非模板 S1）；再空则到下面的明示无约束
         wl_ids = [str(x).strip() for x in raw_wl if str(x).strip()] if isinstance(raw_wl, list) else []
         if wl_ids:
             ds_set = set(dataset_ids)
@@ -848,15 +881,29 @@ def main():
             missing = [f for f in wl_ids if f not in ds_set]
             if in_pool:
                 bind_ids = in_pool
-                whitelist_path = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder / "s1_field_whitelist.json"
+                field_pool_constrained = True
+                whitelist_path = GEM_DATA_ROOT / dataset_folder / "s1_field_whitelist.json"
                 whitelist_path.write_text(json.dumps(bind_ids, ensure_ascii=False, indent=1), encoding="utf-8")
                 print(
-                    f"[s1] field_whitelist 生效: 绑定池 {len(dataset_ids)} -> {len(bind_ids)} 字段"
-                    + (f"；{len(missing)} 个白名单 id 不在本数据集（忽略）: {missing[:5]}" if missing else ""),
+                    f"[s1] 字段约束生效: 绑定池 {len(dataset_ids)} -> {len(bind_ids)} 字段"
+                    + (f"；{len(missing)} 个约束 id 不在本数据集（忽略）: {missing[:5]}" if missing else ""),
                     flush=True,
                 )
             else:
-                print(f"[s1] warn: field_whitelist（{len(wl_ids)} 个）与数据集字段零交集，忽略白名单", flush=True)
+                print(f"[s1] warn: 字段约束（{len(wl_ids)} 个）与数据集字段零交集，回退全目录（unconstrained）", flush=True)
+        else:
+            # 显式无约束（禁止静默全目录）：打标记供 A/B 评估区分
+            print(f"[s1] ⚠ UNCONSTRAINED：无字段约束（池缺失且 field_whitelist 空）——"
+                  f"绑定池=全目录 {len(dataset_ids)} 字段，本批表达式属 free 组，"
+                  f"A/B 评估时不得计入 pool-constrained", flush=True)
+    # 约束状态落盘（gem 标注/审计用）
+    try:
+        (GEM_DATA_ROOT / dataset_folder / "field_pool_status.json").write_text(
+            json.dumps({"constrained": field_pool_constrained,
+                        "bind_size": len(bind_ids),
+                        "catalog_size": len(dataset_ids)}, ensure_ascii=False), encoding="utf-8")
+    except Exception:
+        pass
 
     allowed_suffixes = build_allowed_suffixes_from_ids(bind_ids, max_suffixes=300) if bind_ids else []
     dataset_code = detect_dataset_code(dataset_ids) if dataset_ids else None
@@ -875,7 +922,7 @@ def main():
             except Exception:
                 pass
         if _profile_map:
-            orphan_fp_path = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder / "orphan_field_profile.json"
+            orphan_fp_path = GEM_DATA_ROOT / dataset_folder / "orphan_field_profile.json"
             orphan_fp_path.write_text(json.dumps(_profile_map, ensure_ascii=False, indent=1), encoding="utf-8")
             print(f"[orphan] field_profile 注入: {len(_profile_map)} 字段画像（稀疏事件门控用）", flush=True)
     except Exception as exc:
@@ -886,7 +933,7 @@ def main():
         # ---- SKELETON MODE: 直写 idea JSON + final_expressions + meta，绕过模板展开 ----
         if skeleton_result is None:
             raise ValueError("--ideas-file is not supported in skeleton mode; skeleton mode generates its own ideas.")
-        data_dir = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder
+        data_dir = GEM_DATA_ROOT / dataset_folder
         data_dir.mkdir(parents=True, exist_ok=True)
         ts_tag = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
         exprs = skeleton_result["expressions"]
@@ -1000,7 +1047,7 @@ def main():
         if getattr(args, "template_family", None):
             family_fp_path, family_fm_path = _prepare_family_binding(
                 args.region, dataset_id, args.template_family,
-                FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder,
+                GEM_DATA_ROOT / dataset_folder,
                 data_category=args.data_category,
             )
             if family_fp_path == "BLOCKED":
@@ -1043,7 +1090,7 @@ def main():
             cwd=FEATURE_IMPLEMENTATION_SCRIPTS,
         )
 
-    final_path = FEATURE_IMPLEMENTATION_DIR / "data" / dataset_folder / "final_expressions.json"
+    final_path = GEM_DATA_ROOT / dataset_folder / "final_expressions.json"
     if final_path.exists():
         try:
             raw = json.loads(final_path.read_text(encoding="utf-8"))
@@ -1094,8 +1141,10 @@ def main():
         # 根因：ideas 阶段的 Implementation Example 已包含具体算子（如 quantile），
         #       GEM 表达式生成只是机械展开模板（template.format），没有改变算子，
         #       导致 LLM 在 ideas 阶段用的算子（quantile）被原样保留到最终表达式。
-        # 解决：检测外层 wrapper 同质化，强制替换 30% 为多样 wrapper。
-        if valid_expressions:
+        # Explicit ideas are economic contracts: wrapper replacement can remove
+        # a negative sign or corrupt multi-argument calls. Their diversity must
+        # be reviewed by the downstream gate, without rewriting the signal.
+        if valid_expressions and not args.ideas_file:
             import re as _re
             from collections import Counter as _Counter
             
@@ -1270,10 +1319,23 @@ def main():
         try:
             st = _wqb_campaign_store()
             try:
-                st.upsert_expressions(
-                    args.region, str(wave), valid_expressions,
-                    dataset=dataset_id, status="gem",
-                )
+                # L3 写库互斥（2026-09-20）：GEM 批量落库排队（短锁；与 wave_gate/pipeline 排队）
+                try:
+                    import sys as _sys_l3, os as _os_l3
+                    _l3_src = _os_l3.path.normpath(_os_l3.path.join(
+                        _os_l3.path.dirname(_os_l3.path.abspath(__file__)),
+                        "..", "..", "..", "..", "..", "..", "..", "src"))
+                    if _os_l3.path.isdir(_l3_src) and _l3_src not in _sys_l3.path:
+                        _sys_l3.path.insert(0, _l3_src)
+                    from wqb.db_write_lock import write_lock as _wlock
+                except ImportError:
+                    from contextlib import nullcontext as _nc
+                    _wlock = lambda **kw: _nc()  # 降级：无 src 环境不仲裁
+                with _wlock(tag="dbwrite_gem", ttl_sec=600, wait_timeout=120):
+                    st.upsert_expressions(
+                        args.region, str(wave), valid_expressions,
+                        dataset=dataset_id, status="gem",
+                    )
                 idea_payload = {
                     "dataset": dataset_id,
                     "region": args.region,

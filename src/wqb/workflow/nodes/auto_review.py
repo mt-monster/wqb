@@ -24,6 +24,7 @@ from .._common import (
     wq_py,
 )
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 
@@ -94,10 +95,46 @@ def run(
         })
 
     # 如果是 dry-run，到此为止
+    # dry-run：走完零成本前置——构建真实命令（campaign_intel.py s4-prescreen）→ 到此为止。
+    # 不 subprocess、不写库、不建 ids 文件（禁止假 dry-run：不构建命令却报 success）。
     if ctx.get("dry_run"):
+        tools_dir = resolve_tools_dir()
+        py = wq_py()
+        script = os.path.join(tools_dir, "campaign_intel.py")
+        if not os.path.exists(script):
+            result["steps"].append({
+                "step": "find_campaign_intel", "success": False,
+                "error": f"campaign_intel.py not found: {script}",
+            })
+            result["error"] = f"campaign_intel.py not found: {script}"
+            return result
+        planned_ids_file = f"logs/_tmp_s4_ids_{wave}.txt"
+        prescreen_cmd = [
+            py, script, "s4-prescreen",
+            "--ids-file", planned_ids_file,
+        ]
+        result["command"] = " ".join(prescreen_cmd)
+        result["plan"] = {
+            "region": region, "wave": wave, "dataset": dataset,
+            "tool": script,
+            "steps": [
+                "1. 从 backtest_results 解析本波 alpha_id → 写临时 ids 文件",
+                "2. campaign_intel.py s4-prescreen --ids-file 批量分层 READY/REVIEW/REJECT",
+                "3. (auto_walls) walls 诊断：RN_EXPOSURE / structural / turnover / coverage",
+                "4. (auto_salvage) 从 salvage_pool 按 boost_dim 检索卡闸辅助腿",
+                "5. (auto_report) 生成评审报告并写 review_results",
+            ],
+            "auto_prescreen": auto_prescreen,
+            "auto_walls": auto_walls,
+            "auto_salvage": auto_salvage,
+            "auto_report": auto_report,
+        }
+        result["steps"].append({
+            "step": "build_command", "success": True, "command": " ".join(prescreen_cmd),
+        })
         result["success"] = True
         result["dry_run"] = True
-        result["note"] = "dry-run：自动化评审流程已构建，未执行"
+        result["note"] = "dry-run：命令已构建，未执行"
         return result
 
     # 执行自动化评审流程
@@ -107,7 +144,7 @@ def run(
 
         # 从 DB 读取回测结果
         db_path = resolve_db_path()
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
 
@@ -226,7 +263,7 @@ def _retrieve_salvage_legs(region: str, backtest_results: List[Dict[str, Any]]) 
     """自动卡闸辅助腿检索."""
     # 从 salvage_pool 检索辅助腿
     db_path = resolve_db_path()
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 

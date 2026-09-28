@@ -1,14 +1,16 @@
 import json
 import argparse
+import os
 from pathlib import Path
 import sys
 
 def load_data_dir(dataset_name=None):
     script_dir = Path(__file__).resolve().parent
     workspace_dir = script_dir.parent
+    # 2026-09-25 目标 A：数据根读 WQB_GEM_DATA_ROOT（run_pipeline 注入），未设置回退旧位
+    data_root = Path(os.environ.get("WQB_GEM_DATA_ROOT") or (workspace_dir / "data"))
     
     if not dataset_name:
-        data_root = workspace_dir / "data"
         if not data_root.exists():
             print("Error: Data directory not found.", file=sys.stderr)
             sys.exit(1)
@@ -18,7 +20,7 @@ def load_data_dir(dataset_name=None):
         if len(subdirs) == 1:
             dataset_name = subdirs[0].name
             print(f"Auto-detected dataset: {dataset_name}", file=sys.stderr)
-            return workspace_dir / "data" / dataset_name
+            return data_root / dataset_name
         elif len(subdirs) > 1:
             print("Error: Multiple datasets found. Please specify --dataset.", file=sys.stderr)
             sys.exit(1)
@@ -26,7 +28,7 @@ def load_data_dir(dataset_name=None):
             print("Error: No dataset folders found inside data directory.", file=sys.stderr)
             sys.exit(1)
 
-    return workspace_dir / "data" / dataset_name
+    return data_root / dataset_name
 
 def main():
     parser = argparse.ArgumentParser(description="Merge all generated expressions from idea JSON files.")

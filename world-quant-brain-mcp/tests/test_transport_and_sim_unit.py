@@ -98,12 +98,15 @@ def test_retry_wait_exponential_backoff_no_header():
     c = make_shell()
     resp = MagicMock(spec=requests.Response)
     resp.headers = {}
-    # attempt=0: base_delay=2.0 * 1.6^0 = 2.0 + jitter(0..0.2)
+    # attempt=0: base_delay=2.0 * 1.6^0 = 2.0，jitter ∈ [0, min(1.0, 2.0*0.1)] = [0, 0.2]
     wait = c._retry_wait_seconds(resp, attempt=0, base_delay=2.0)
-    assert 2.0 <= wait <= 2.3
-    # attempt=3: 2.0 * 1.6^3 = 8.192 + jitter
+    assert 2.0 <= wait <= 2.0 + min(1.0, 2.0 * 0.1)
+    # attempt=3: 2.0 * 1.6^3 = 8.192，jitter ∈ [0, min(1.0, 8.192*0.1)] = [0, 0.8192]。
+    # 上界按公式推导而非写死：此前写死 9.0 漏算 0.0112，20 万样本实测约 1.4% 概率误报失败
+    # （2026-09-28 全量验证时命中，实测 max=9.0112）。
+    b3 = 2.0 * 1.6 ** 3
     wait3 = c._retry_wait_seconds(resp, attempt=3, base_delay=2.0)
-    assert 8.0 <= wait3 <= 9.0
+    assert 8.0 <= wait3 <= b3 + min(1.0, b3 * 0.1)
 
 
 def test_retry_wait_none_response():

@@ -26,6 +26,9 @@ import re
 import sqlite3
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 注入 tools 目录以导入 skeleton_tags
@@ -107,7 +110,7 @@ def shannon_entropy(counter):
 
 def load_from_db(region, wave, dataset=None):
     db_path = os.path.join(PROJECT_ROOT, 'data', 'wqb.db')
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     cur = conn.cursor()
     sql = "SELECT expression FROM expressions WHERE region=? AND wave=?"
     params = [region, str(wave)]

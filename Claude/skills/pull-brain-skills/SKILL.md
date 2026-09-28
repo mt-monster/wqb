@@ -15,6 +15,14 @@ allowed-tools:
 
 # Pull BRAIN Skill
 
+## 职责边界
+
+- **本 skill 负责**：skill 导入：从 ZIP URL / 目录 / Git 仓库拉取含 SKILL.md 的 skill
+- **本 skill 不做**：**导入不校验 layer / 命名 / frontmatter** —— 导入后必须人工归层并跑 `python tools/sync_skills.py` + `pytest tests/unit/test_skill_integrity.py -q`；不做 skill 内容创作
+- **上游 / 下游**：上游 = 外部 skill 源；下游 = 仓库 `Claude/skills/`（唯一权威位）
+
+
+
 本 skill 从远程源或本地目录导入 skill 文件夹。
 
 **校验规则**：若一个文件夹包含 `SKILL.md` 或 `skill.md` 文件（不区分大小写），即视为有效 skill。

@@ -5,6 +5,9 @@
 基于时间衰减、区域适配、多样性保障计算配方权重.
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import os
@@ -232,7 +235,7 @@ class DynamicRecipeWeighter:
     ) -> None:
         """记录配方使用情况（用于后续权重调整）."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             
             # 更新使用次数

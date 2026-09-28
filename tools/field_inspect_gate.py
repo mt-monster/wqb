@@ -64,23 +64,46 @@ def pack_path(region: str, dataset: str) -> str:
 
 def load_pack(region: str, dataset: str) -> Optional[Dict[str, Any]]:
     """读体检包；不存在或 fields 为空返回 None（视作"无数据"）。"""
+    flat, _ = load_pack_ex(region, dataset)
+    return flat
+
+
+def load_pack_ex(region: str, dataset: str):
+    """读体检包并区分「完整包」与「降级包」。
+
+    返回 `(flat_fields, degraded)`：
+      - `flat_fields`：展平后的 `{field: entry}`；无包/空包为 None。
+      - `degraded`：包内条目带 `_degraded=True`（`gen_inspect_from_db.py` 从 DB
+        `fields` 表生成的 coverage-only 包）时为 True。
+
+    2026-09-27：降级包只带 `coverage_ratio`，`skewness/kurtosis/distribution_shape`
+    为 None → 规则 2/3/4 会被逐条跳过。此前闸把这种包一律报 `enforced`，
+    等于把「只查了 1/5 条规则」读成「全部通过」。现改为在报告里带
+    `degraded=True` + 明示未生效的规则，避免"假完整"。
+    """
     path = pack_path(region, dataset)
     if not os.path.isfile(path):
-        return None
+        return None, False
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
     except (OSError, json.JSONDecodeError):
-        return None
+        return None, False
 
     # 展平 {"fields": {"<ds>": {"<field>": entry}}} → {"<field>": entry}
     flat: Dict[str, Any] = {}
+    degraded = False
     for _ds, fields in (data.get("fields") or {}).items():
         if isinstance(fields, dict):
             flat.update(fields)
     if not flat:
-        return None
-    return flat
+        return None, False
+    # 降级判定：任一字段带 _degraded，或顶层 source 自述 degraded
+    if any(isinstance(v, dict) and v.get("_degraded") for v in flat.values()):
+        degraded = True
+    elif "degraded" in str(data.get("source") or "").lower():
+        degraded = True
+    return flat, degraded
 
 
 def expression_fields(expr: str) -> List[str]:
@@ -125,7 +148,7 @@ def check_expressions(
         "checked_expressions": 0,
     }
 
-    pack = load_pack(region, dataset)
+    pack, degraded = load_pack_ex(region, dataset)
     if pack is None:
         report["status"] = "unavailable"
         report["enforced"] = False
@@ -136,6 +159,16 @@ def check_expressions(
             f"在此之前本闸不生效（低覆盖/厚尾/稀疏事件的预处理约束无人把关）。"
         )
         return report
+
+    # 降级包（coverage-only）必须可见：否则「只查了 1/5 条规则」会被读成「全部通过」
+    if degraded:
+        report["degraded"] = True
+        report["rules_inert"] = [
+            "高偏度须 rank/winsorize/signed_power（规则2：包内 skewness=None）",
+            "厚尾须 rank/winsorize（规则3：包内 kurtosis=None）",
+            "稀疏事件须 trade_when（规则5：包内 distribution_shape=None）",
+            "窗口频率匹配（规则6：包内 frequency=None）",
+        ]
 
     try:
         checker = _load_checker()
@@ -173,11 +206,22 @@ def check_expressions(
     report["uncovered_fields"] = sorted(uncovered)
     report["enforced"] = True
     report["status"] = "partial" if uncovered else "enforced"
+    _hints = []
     if uncovered:
-        report["hint"] = (
+        _hints.append(
             f"{len(uncovered)} 个字段无体检记录，这些字段上的预处理约束未被校验："
             f"{sorted(uncovered)[:10]}"
         )
+    if degraded:
+        # 降级包信息必须保留，不能因为「有未覆盖字段」而被顶掉
+        _hints.append(
+            "降级体检包（coverage-only）：仅规则1（低覆盖须 ts_backfill）生效；"
+            "规则2/3/5/6 因包内缺 skewness/kurtosis/distribution_shape/frequency 未生效。"
+            "补齐完整包：python tools/gen_field_inspect_packs.py --region "
+            f"{region} --dataset {dataset}"
+        )
+    if _hints:
+        report["hint"] = "；".join(_hints)
     return report
 
 
@@ -191,12 +235,15 @@ def format_report(report: Dict[str, Any]) -> str:
 
     n_v = len(report.get("violations", []))
     errors = report.get("errors", [])
+    _deg = "（降级包 coverage-only）" if report.get("degraded") else ""
     lines.append(
-        f"[inspect] 体检硬门 {status}："
+        f"[inspect] 体检硬门 {status}{_deg}："
         f"校验 {report.get('checked_expressions')}/{report.get('total_expressions')} 条，"
         f"违规 {n_v} 条"
         + (f"，体检数据异常 {len(errors)} 处" if errors else "")
     )
+    for _r in report.get("rules_inert", []):
+        lines.append(f"          ⚠ 未生效 {_r}")
     for v in report.get("violations", [])[:20]:
         lines.append(f"          FAIL {v['field']}: {'; '.join(v['violations'])}")
         lines.append(f"               {v['expression'][:110]}")

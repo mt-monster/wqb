@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-12
+last_verified: 2026-09-26
 name: worldquant-submit-alpha
 description: "通过 API 将 WorldQuant Brain alpha 真正提交（submit）到平台（不只是模拟 simulate）。 当用户对某个 WQ alpha id 说\"提交 alpha / submit / 上平台 / 落地\"时使用。覆盖关键坑： POST /alphas/{id}/submit 返回 201/200 但 status 因 regular.description 过短而永不翻转， 以及正确的嵌套 description PATCH 写法；并说明约 2 分钟的状态翻转延迟与轮询方法。★2026-09-01 新增「点塔优先提交规则」：提交前按金字塔点亮价值优选（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 的 alpha 不计；差 1-2 颗的塔一次提交即点亮，0 亮区域的单颗提交不算点亮）。"
 layer: L5
@@ -16,6 +16,13 @@ allowed-tools:
 
 
 # WorldQuant Brain — 实际提交 Alpha 到平台
+
+## 职责边界
+
+- **本 skill 负责**：**REGULAR 单颗 alpha 的真实提交**：`POST /alphas/{id}/submit`，处理 200/201/403 四态与异步补发，以及 name/description/tags/color 属性规范
+- **本 skill 不做**：**不处理 SUPER 组套**（→ `wq-brain-superalpha`）；**不作提交判定**（判定 = `tools/submit_verdict.py`）；不改表达式
+- **上游 / 下游**：上游 = 用户已确认的候选；下游 = `ACTIVE` alpha + S6 台账
+
 
 ## 何时用
 用户要把某个已模拟出的 alpha（已知 platform_id，如 `YPgAa3WR`）真正提交到 WQ
@@ -34,30 +41,56 @@ allowed-tools:
 
 ## 提交流程（MCP 工具调用）
 
+> **属性规范（2026-09-20 起强制）**：`name` / `color` / `tags` 必须遵循
+> `docs/alpha_properties_spec.md`（仓库根相对路径），单一事实源为
+> `src/wqb/alpha_properties.py`。
+> - `color`：平台**仅接受 5 个值** `GREEN/BLUE/RED/YELLOW/PURPLE`（其余 400）。
+>   **提交态默认 `BLUE`（待观察）；`GREEN` 须由 OS 结果挣得，禁当默认值。**
+> - `name`：`<REGION>_<R|S>_<family>_<seq>`。**禁止用 PROD 数值**（提交时快照，会过期骗人）。
+> - `tags`：`CH_<通道>` + `SRC_<数据集>` 必打，可选 `W<波次>` / `EXPRFAM_<族>` / `CORR_<档>`。
+>   一颗最多 4–5 个。**`PowerPoolSelected` 仅真实 PPA 通道可用**（普通提交用 `CH_REG`）。
+> - **平台已自带的不要重复打**：塔（`pyramids`）、类型、区域、作者、`stage`。
+
 **推荐**：使用 `mcp__wq-brain-http__workflow_submit_alpha` MCP 工具（workflow 引擎快捷方式，含预检 + 属性设置 + 提交 + 状态轮询）：
 
 ```
-# 完整提交流程（属性设置 + 提交 + 状态确认，confirm_submit=True 才真正 POST）
+# 【普通 REGULAR 提交】—— 默认形态
+
 mcp__wq-brain-http__workflow_submit_alpha(
   alpha_id="<ALPHA_ID>",
-  name="0.6525",  # prod correlation 值
-  color="GREEN",
-  tags=["PowerPoolSelected"],
+  name="IND_R_pvrevgate_01",        # <REGION>_<R|S>_<family>_<seq>，勿用 PROD 数值
+  color="BLUE",                     # 提交态=待观察；GREEN 要等 OS 结果
+  tags=["CH_REG", "SRC_insiders1", "W113", "EXPRFAM_insgate"],
+  dataset="insiders1",              # 给了这些则 tags 可留空自动生成
+  wave="113",
+  expr_family="insgate",
   descriptions="Idea: <idea>\n\nRationale for data used: <rationale>\n\nRationale for operators used: <rationale>",
-  confirm_submit=True,  # 默认 False 仅预检+查状态；True 才真正提交
+  confirm_submit=True,              # 默认 False 仅预检+查状态；True 才真正提交
   verify_timeout=180
+)
+```
+
+```
+# 【PPA（Power Pool）提交】—— 仅此场景使用 PowerPoolSelected / PURPLE
+mcp__wq-brain-http__workflow_submit_alpha(
+  alpha_id="<ALPHA_ID>",
+  name="DEU_R_starminerev_02",
+  color="PURPLE",                   # PPA 通道专用色
+  tags=["CH_PPA", "SRC_analyst_estimate", "PowerPoolSelected"],
+  descriptions="<三段式，≥100 词>",
+  confirm_submit=True
 )
 ```
 
 **分步模式**（需逐步控制时）：
 
 ```
-# 1) 设置属性（description 必须三段式，name 建议基于 prod correlation）
+# 1) 设置属性（description 必须三段式）
 mcp__wq-brain-http__set_alpha_properties(
   alpha_id="<ALPHA_ID>",
-  name="0.6525",  # prod correlation 值
-  color="GREEN",
-  tags=["PowerPoolSelected"],
+  name="IND_R_pvrevgate_01",
+  color="BLUE",
+  tags=["CH_REG", "SRC_insiders1", "W113"],
   descriptions="Idea: <idea>\n\nRationale for data used: <rationale>\n\nRationale for operators used: <rationale>"
 )
 
@@ -116,31 +149,49 @@ for _ in range(36):   # 最多 3 分钟
 ```
 
 ## 关键坑（必读）
-1. **静默丢弃（两类独立成因）**：`POST /alphas/{id}/submit` 返回 201/200 但
-   `status` 始终 `UNSUBMITTED`、`dateSubmitted=None`。成因有二，必须分清：
-   - (a) `regular.description` 过短/格式错 → 网关后端校验丢弃（前端只显示 WARNING
-     不挡，但网关会丢）。补一个 >=100 字、格式合规的嵌套 `regular.description` 可救活。
-   - (b) **任一硬 IS 闸门 FAIL**（如 `SELF_CORRELATION`、`PROD_CORRELATION`）→
-     提交不被激活（同样 201 但 UNSUBMITTED）。**仅补描述救不了 (b)**，必须先
-     `get_alpha_check` 确认所有硬闸门 PASS 才能提交。两类都表现为「201 但不翻转」，
-     区别只能靠 IS check 定位。
-   - 经验：硬闸门 FAIL 的提交尝试**不消耗每周额度**（status 保持 UNSUBMITTED、
-     无 rejected 记录），探测性提交无成本。
+1. **POST 的 4 种响应形态（2026-09-26 实测重写；此前本节把 ②③ 误诊为「description 过短」）**：
+
+   | # | 响应 | 含义 | 处置 |
+   |---|---|---|---|
+   | ① | `200` + `{"success":true,"reason":"IS checks passed","checks":[…]}` | **明确通过** | 轮询至 `status=ACTIVE` |
+   | ② | `201/202`「Accepted (async); IS checks still computing」 | **异步受理**（客户端只等 60s：`_poll_submit_until_resolved` 6×10s 即放弃） | 等 4 分钟；仍 `UNSUBMITTED` → **re-POST 补发** |
+   | ③ | `200` + 「Non-JSON submit response」+ **空体** | **异步受理、结果未知** | 同 ②：**必须补发**，**不得当成失败** |
+   | ④ | `403` + JSON `{"is":{"checks":[…]}}` | **失败**，但**零成本**且回带**全量 checks 与真因** | 读唯一 FAIL 项定位（见下条） |
+
+   实证（2026-09-26）：`O0GjWqeY` / `2rpX85Ax` / `np8VGNz3` 走 ②③ 后未被补发 → 悬空 `UNSUBMITTED` >24h。
+   **`regular.description` 过短是另一条独立成因**（网关静默丢弃，需补 ≥100 字合规嵌套描述），勿与 ②③ 混为一谈。
+
+2. **403 的真因读法（2026-09-26 实测）**：403 体里 `is.checks` 的 **`result` 有三种**——`PASS` / `WARNING` / `PENDING`，
+   外加 `FAIL`。**`PENDING` ≠ `FAIL`**：`SELF_CORRELATION` / `PROD_CORRELATION` 未算完时就是 `PENDING`，
+   **不挡提交**，不要据此判死。真正拦阻的是 `FAIL` 项，最常见的有两种：
+   - **`REGULAR_SUBMISSION: FAIL value=4 limit=4`** —— **ET 日配额用尽**（非候选缺陷！换日即失效，
+     `SUPER` / PPA 的 `POWER_POOL_SUBMISSION` 是各自独立通道）；
+   - 任一硬指标 `FAIL`（如拟合/换手/子宇宙）—— 这才是候选本身的问题。
+   `PASS_CHEAP` / 模拟层干净 **都不能替代**这一步 POST 实测。
 2. **description 的 PATCH 形式**：用**嵌套** `{"regular": {"description": "..."}}`。
    用扁平的 `{"description": "..."}` 会被 `400 {"description":["Unexpected property."]}` 拒绝。
 3. **翻转延迟**：提交成功后 `status` 不会立刻变，通常等 **2~3 分钟**才从
    `UNSUBMITTED` 翻转为 `ACTIVE`。轮询窗口要够长。
 4. **提交后 IS check**：提交成功后再 `GET /alphas/{id}/check` 只会返回
    `ALREADY_SUBMITTED: FAIL`（代表不可重复提交），属正常，原 21 项闸门结果已锁定。
-5. `GET /alphas/{id}/submit` 返回 `text/html`（前端 SPA 壳），不是 API，
-   不要拿它判断提交结果。
+5. **`GET /alphas/{id}/submit` 在本平台恒返回 `404` + 空体——不要用它做任何判定**（2026-09-26 实测：
+   对未提交的 `O0GjWqeY` 与**已 ACTIVE 的** `MPabNeNz` 同样 404）。历史文档对此有三种互相矛盾且都错的
+   说法（"text/html SPA 壳" / "403 盲区唯一权威" / "可直接走 POST"）；**真相是：提交层的信息只存在于
+   `POST` 响应里**（200/201/403 三态，见第 1 条）。据此也修正一点：`tools/submit_verdict.py` 的
+   提交层视图走的就是这个恒 404 的 GET，故其 403 分支是**死代码**，对处女候选只会给 `UNVERIFIABLE`
+   （不构成可提交依据，见 ra-pipeline 步 1）——**真闸只能靠 POST**。
 6. **提交前必做平台 IS 核验（关键！）**：`scan` 的 `PASS_CHEAP` 本地判定**不会**
-   评估 `SELF_CORRELATION` / `PROD_CORRELATION` 等硬闸门，易出现假阳性。批量提交前
-   务必对每个候选 `get_alpha_check(id)`，确认 **无硬 FAIL**（尤其 `SELF_CORRELATION`
-   阈值 0.7、`PROD_CORRELATION` 阈值 0.7）。self_corr 0.87~1.0 属结构性黏滞信号，
+   评估 `SELF_CORRELATION` / `PROD_CORRELATION` 等硬闸门，易出现假阳性。核验读
+   `get_alpha_details(id)` → `is.checks`（**没有** `get_alpha_check` 这个工具，旧文档名是错的），
+   确认 **无 `FAIL`**（`WARNING`/`PENDING` 不挡）。self_corr 0.87~1.0 属结构性黏滞信号，
    无法靠补 description 救活，只能重挖低自相关变体。PASS_CHEAP ≠ 平台可提交。
-7. 配额查询：`GET /alphas/submission-limit` 路径不存在（404），不要依赖它判断剩余额度；
-   以实际 POST 返回与 `dateSubmitted` 落库为准。
+7. 配额查询：`GET /alphas/submission-limit` 路径不存在（404），不要依赖它判断剩余额度。
+   **REGULAR 余量的唯一可靠来源 = `POST /alphas/{id}/submit` 响应里 `REGULAR_SUBMISSION` 的
+   `value/limit`**（value 从 0 起计数，limit=4；`SUPER`=1、PPA `POWER_POOL_SUBMISSION`=1 各自独立）；
+   `activities/submissions` **缺 `today` 字段、不可用于当日判断**。辅助：`tools/quota_status.py`
+   （按 `stage=OS` 的 `dateSubmitted` 数当日颗数，但**不区分类型**，会与 SUPER 混计）。
+   ⚠ **并行会话消耗同一账号配额**——2026-09-25 当日 4 REGULAR + 1 SUPER 全被另一会话用光，
+   本会话准备好的候选一颗未提。批量提交前 30 秒内必须复检一次。
 
 ## ★ 点塔优先提交规则（2026-09-01 用户定案，提交前必读）
 
@@ -159,7 +210,7 @@ for _ in range(36):   # 最多 3 分钟
    挖矿主战场，不是"提 1 颗就点亮"。
 
 ### 提交优选排序（多候选时）
-1. **能一次点亮塔的优先**（该塔现状 ≥2/3，差 1-2 颗）：先查 `_tower_map.py` 或
+1. **能一次点亮塔的优先**（该塔现状 ≥2/3，差 1-2 颗）：先跑 `python tools/campaign_intel.py pyramid --region <R> --delay <D>` 或
    `tools/submit_verdict.py` 拿每塔当前颗数，找「差 ≤2 颗」的塔 → 对应候选排最前。
 2. 其次**该塔现状 1/3（差 2 颗）** 的候选。
 3. 再次**0/3 需凑 3 颗**（0 亮区域打地基）的候选。
@@ -174,7 +225,8 @@ for _ in range(36):   # 最多 3 分钟
   列表接口带 search 会返回 `["Invalid query"]` 不可用）。
 - 已点亮塔统计：平台 `status=ACTIVE` 全量拉取（响应键 `results`）→ 按 `pyramids` 逐个
   计数（dual-dataset 对两塔各 +1）→ 剔跨 ≥3 catalog → **剔 90 天窗口外** → ≥3 点亮。
-  可复用 `tracking/_submit_kit/_tower_map.py`（WINDOW_DAYS=90 / EXCLUDE_MULTI=3 / MIN_LIT=3）。
+  权威入口 = `python tools/campaign_intel.py pyramid --region <R> --delay <D>`（口径 WINDOW_DAYS=90 / EXCLUDE_MULTI=3 / MIN_LIT=3）。
+  （2026-09-26 审计：旧文档指向的 `tracking/_submit_kit/_tower_map.py` 与 `_quota_now2.py` **整个目录都不存在**，已改为真实工具。）
 
 ### 对表达式构造的反向约束（挖新候选时）
 - 想给某塔 +1：**纯单类别数据集 alpha 最干净**（挂 1 塔）；混 2 类挂 2 塔（两塔各 +1）；
@@ -211,7 +263,8 @@ for _ in range(36):   # 最多 3 分钟
   （value 从 0 起计数，limit=4/1）；硬闸 FAIL 的提交**不消耗**配额（status 保持 UNSUBMITTED）。
 - 判断"今天 ET 日已用几颗"：拉 `/users/self/activities/submissions`（按日聚合记录）
   或本地 DB `alphas.date_submitted`（注意是 EDT 时区 `-04:00`）按当前 ET 日过滤。
-- 可复用：`tracking/_submit_kit/_quota_now2.py`（activities 尾部 + 实时 alpha + DB ledger 三方核对）。
+- 可复用：`python tools/quota_status.py`（按 `stage=OS` 的 `dateSubmitted` 数当日颗数；**不区分 REGULAR/SUPER**，
+  只作辅助），当日 REGULAR 真值仍以 POST 响应 `REGULAR_SUBMISSION.value/limit` 为准。
 
 ### ★ PPA 通道（POWER_POOL_SUBMISSION，1/ET 日，2026-09-12 补全）
 

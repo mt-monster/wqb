@@ -29,6 +29,7 @@ from ...expression.skeleton import (
     structural_signature,
 )
 
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 logger = logging.getLogger(__name__)
 
 #: 写回 expressions 的列。**必须与 `src/wqb/store/_schema.py` 的实际列一致** ——
@@ -157,7 +158,7 @@ def run(
 
         # 从 DB 读取生成的表达式
         db_path = resolve_db_path()
-        conn = sqlite3.connect(db_path)
+        conn = db_connect(db_path)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
 

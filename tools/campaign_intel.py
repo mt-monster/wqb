@@ -36,6 +36,9 @@ import sys
 import datetime
 import time
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 # 2026-09-17 P0-4：ledger 契约归一的规范实现在 src/wqb（单一事实源）
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _SRC_DIR = os.path.join(_REPO_ROOT, "src")
@@ -311,7 +314,7 @@ async def _cmd_s0_select(a):
         import sqlite3
         db = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           "data", "wqb.db")
-        conn = sqlite3.connect(db)
+        conn = db_connect(db)
         cur = conn.cursor()
         # 产出率：ra_clean/backtested per dataset（2026-09-19 严格口径，与 get_mining_yield(strict) 同源）
         # 旧口径只看 sharpe/fitness：IND 34% "产出率"实际可提交 0（robust/2Y/CW 在 ra_failed_checks，
@@ -499,12 +502,22 @@ async def _cmd_s0_select(a):
           f"已点亮；未点亮塔: {', '.join(pyramid_status.get('unlit_category_ids') or [])}")
     print(f"候选: 平台推荐 {len(recommendations)} → 剔除已点亮塔 {len(lit_excluded)}（用户规则，--include-lit 可保留）"
           f" → 剔除判死 {len(dead)} → 存活 {len(alive)}")
-    print(f"\n{'rank':>4} {'score':>7} {'yield':>7} {'bt':>4} {'maxS':>5} {'fld':>4} {'cat':13s} {'lit':>3}  dataset  [先验]")
+    print(f"\n{'rank':>4} {'score':>7} {'yield':>7} {'bt':>4} {'maxS':>5} {'fld':>4} {'ac':>6} {'usr':>5} {'cat':13s} {'lit':>3}  dataset  [先验]")
     for i, x in enumerate(alive[:a.top_n], 1):
         yr_s = f"{x['hist_yield_rate']:.3f}" if x["hist_yield_rate"] is not None else "  -  "
         ms = f"{x['hist_max_sharpe']:.2f}" if x.get("hist_max_sharpe") is not None else "  - "
         fc_s = str(x["field_count"]) if x.get("field_count") is not None else "-"
+        # P5（2026-09-25）：竞争度表面化——伪白空间教训（bt=0 ≠ 平台 alphaCount=0）
+        ac = x.get("dataset_alpha_count")
+        usr = x.get("dataset_user_count")
+        ac_s = str(ac) if ac is not None else "-"
+        usr_s = str(usr) if usr is not None else "-"
         tags = []
+        if ac is not None:
+            if ac <= 50:
+                tags.append("低竞争")
+            elif ac > 1000:
+                tags.append(f"拥挤:ac={ac}(prod墙风险)")
         if x["conditioning_only"]:
             tags.append(f"fields<{a.min_fields}:仅条件腿")
         if x["xr_weak"]:
@@ -512,8 +525,10 @@ async def _cmd_s0_select(a):
         if x["xr_strong"]:
             tags.append("跨区RA-clean:" + ",".join(x["xr_strong"][:3]))
         print(f"{i:>4} {x['total_score']:>7.2f} {yr_s:>7} {x['hist_backtested']:>4} {ms:>5} {fc_s:>4} "
-              f"{str(x['category']):13s} {'Y' if x['category_lit'] else 'N':>3}  "
+              f"{ac_s:>6} {usr_s:>5} {str(x['category']):13s} {'Y' if x['category_lit'] else 'N':>3}  "
               f"{x['dataset_id']} ({x['dataset_name']})" + (f"  [{'; '.join(tags)}]" if tags else ""))
+    print("[强度×竞争度双查 P5] 开波准入 = 强度证据（maxS≥1.25 或 yield>0）× 竞争度（ac 列；"
+          "≤50 低竞争 / >1000 拥挤→prod 墙风险）；缺强度证据不开波（零竞争≠有信号）。")
     if dead:
         print(f"\n[判死沉底 {len(dead)} 个]")
         for x in dead[:10]:
@@ -808,7 +823,7 @@ async def _cmd_prod_first(a):
     from brain_api import BrainApiClient  # noqa: F402
 
     db = os.path.join(_REPO_ROOT, "data", "wqb.db")
-    conn = sqlite3.connect(db)
+    conn = db_connect(db)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(
@@ -878,13 +893,44 @@ async def _cmd_prod_first(a):
             cur.execute("UPDATE alphas SET prod_correlation=?, prod_corr_source='prod_first', "
                         "corr_checked_at=CURRENT_TIMESTAMP WHERE alpha_id=?", (prod, aid))
     conn.commit()
+    summary_at = time.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # 2026-09-25 P1：骨架指纹自学习 —— 把每条探针的骨架指纹 + prod 结果回写 ledger_kv，
+    # 让闸 PF（wave_gate._load_prod_wall_families）下次跑时直接读到最新证据，
+    # 不再只依赖 alphas 表的稀疏记录（全库 prod 覆盖率仅 4.4%）。
+    try:
+        import sys as _sys_pf, os as _os_pf
+        _tools_dir = _os_pf.path.dirname(_os_pf.path.abspath(__file__))
+        if _tools_dir not in _sys_pf.path:
+            _sys_pf.path.insert(0, _tools_dir)
+        from wave_gate import _pf_family as _skel_fp
+        n_fp = 0
+        for x in results:
+            if x.get("prod_correlation") is None:
+                continue
+            fam = _skel_fp(x.get("code") or x.get("expression") or "")
+            if not fam or fam == "?":
+                continue
+            key = f"prod_family_{a.region}_{fam}"
+            cur.execute("INSERT INTO ledger_kv(region, key, value) VALUES(?,?,?) "
+                        "ON CONFLICT(region, key) DO UPDATE SET value=excluded.value, "
+                        "updated_at=CURRENT_TIMESTAMP",
+                        (a.region, key, json.dumps(
+                            {"prod_corr": x["prod_correlation"], "at": summary_at,
+                             "alpha_id": x["alpha_id"], "n": 1}, ensure_ascii=False)))
+            n_fp += 1
+        conn.commit()
+        print(f"[ledger] 骨架指纹自学习：{n_fp} 个 prod_family_* 键已写")
+    except Exception as _e_fp:
+        print(f"[ledger] 骨架指纹回写失败（不阻断）: {_e_fp}", file=sys.stderr)
 
     n_stop = sum(1 for x in results if x["verdict"].startswith("STOP"))
     n_expand = sum(1 for x in results if x["verdict"] == "EXPAND")
+    summary_at = time.strftime("%Y-%m-%dT%H:%M:%S")
     summary = {"region": a.region, "wave": str(a.wave), "probed": len(results),
                "stop": n_stop, "expand": n_expand,
                "unknown": len(results) - n_stop - n_expand, "prod_max": a.prod_max,
-               "results": results, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+               "results": results, "at": summary_at}
     print(f"\n[prod-first] 族级结论：EXPAND={n_expand} STOP={n_stop} UNKNOWN={summary['unknown']}")
     if n_stop and not n_expand:
         print("[prod-first] 本波全部探针撞 prod 墙：该数据集/信号族对生产池同质，"
@@ -969,7 +1015,7 @@ def _pf_release_lock(lock):
 async def _cmd_backlog_drop(a):
     import sqlite3
     db = os.path.join(_REPO_ROOT, "data", "wqb.db")
-    conn = sqlite3.connect(db, timeout=30)
+    conn = db_connect(db, timeout=30)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     regions = [r.strip().upper() for r in (a.region or "").split(",") if r.strip()]
@@ -978,11 +1024,13 @@ async def _cmd_backlog_drop(a):
         SELECT w.id AS wid, w.wave_number AS wave, r.name AS region, w.status AS wstatus,
                COUNT(e.id) AS n_expr, MAX(COALESCE(e.updated_at, e.created_at)) AS last_touch,
                (SELECT COUNT(*) FROM backtest_results b WHERE b.region=r.name AND b.wave=w.wave_number) AS n_bt,
-               (SELECT COUNT(*) FROM gate_results g WHERE g.region=r.name AND g.wave=w.wave_number) AS n_gate
+               (SELECT COUNT(*) FROM gate_results g WHERE g.region=r.name AND g.wave=w.wave_number) AS n_gate,
+               (SELECT g2.all_pass FROM gate_results g2 WHERE g2.region=r.name AND g2.wave=w.wave_number
+                  ORDER BY g2.id DESC LIMIT 1) AS gate_all_pass
         FROM waves w JOIN regions r ON r.id=w.region_id
         LEFT JOIN expressions e ON e.wave_id=w.id AND e.status NOT IN ('superseded','dropped')
         WHERE w.status IN ('pending','gated')
-        GROUP BY w.id HAVING n_expr > 0
+        GROUP BY w.id
         ORDER BY n_expr DESC
         """)
     rows = [dict(r) for r in cur.fetchall()]
@@ -990,11 +1038,20 @@ async def _cmd_backlog_drop(a):
     cutoff = (_dt.datetime.now() - _dt.timedelta(days=a.older_than_days)).strftime("%Y-%m-%dT%H:%M:%S")
     todo = []
     for r in rows:
+        if r["n_expr"] == 0 and not a.drop_zero_expr:
+            # 零活表达式死波：无候选可清，默认跳过（保持原契约）；
+            # --drop-zero-expr 时才把这类波一起标 dropped，清掉 stale 统计噪声。
+            continue
         if regions and r["region"] not in regions:
             continue
         if r["n_bt"] > 0 and not a.include_backtested:
             continue
         if r["n_gate"] > 0 and not a.include_gated:
+            continue
+        if a.drop_gate_fail_only and r.get("gate_all_pass") == 1:
+            # 只清最新 gate_results.all_pass=1 之外的波（闸未判死的空壳波 all_pass=None 一并清，
+            # all_pass=0 已判死的波可配 --include-gated 才清）；
+            # 仅保护 all_pass=1 的活波（如 KOR 97/98/101），不会误清。
             continue
         lt = (r["last_touch"] or "").replace(" ", "T")
         if lt and lt > cutoff:
@@ -1023,7 +1080,8 @@ async def _cmd_backlog_drop(a):
         cur.execute(
             """
             SELECT w.id AS wid, w.wave_number AS wave, r.name AS region,
-                   SUM(CASE WHEN e.alpha_id IS NULL OR e.alpha_id='' THEN 1 ELSE 0 END) AS n_unrun,
+                   SUM(CASE WHEN e.id IS NOT NULL AND (e.alpha_id IS NULL OR e.alpha_id='')
+                            THEN 1 ELSE 0 END) AS n_unrun,
                    COUNT(e.id) AS n_expr, MAX(COALESCE(e.updated_at, e.created_at)) AS last_touch
             FROM waves w JOIN regions r ON r.id=w.region_id
             LEFT JOIN expressions e ON e.wave_id=w.id AND e.status NOT IN ('superseded','dropped')
@@ -1037,7 +1095,10 @@ async def _cmd_backlog_drop(a):
             if regions and r["region"] not in regions:
                 continue
             lt = (r["last_touch"] or "").replace(" ", "T")
-            if r["n_unrun"] == 0 or (lt and lt <= cutoff):
+            # 2026-09-25 修复：n_unrun 在无活表达式时为 NULL，NULL==0 为 False
+            # 使"全已回测、无残留表达式"的波永远进不了 closable。改为 not n_unrun
+            # 覆盖 NULL 与 0 两种情形。
+            if not r["n_unrun"] or (lt and lt <= cutoff):
                 closable.append(r)
         n_unrun = sum(r["n_unrun"] for r in closable)
         print(f"[backlog-drop] 已回测但仍 pending/gated 的波：{len(closable)} 波可 closed"
@@ -1177,6 +1238,10 @@ def main():
     pb.add_argument("--region", default=None, help="逗号分隔区域过滤（缺省全部）")
     pb.add_argument("--older-than-days", type=int, default=7)
     pb.add_argument("--pattern", default=None, help="只处理波号含此子串的波（如 s2_）")
+    pb.add_argument("--drop-gate-fail-only", action="store_true",
+                    help="只清最新 gate_results.all_pass!=1 的波（含 all_pass=0 判死波与 all_pass=NULL 空壳波）；保护 all_pass=1 的活波，可配合 --include-gated 使用")
+    pb.add_argument("--drop-zero-expr", action="store_true",
+                    help="连 live_expr=0 的零活表达式死波一起标 dropped（清 stale 统计噪声；无候选可回测）")
     pb.add_argument("--include-gated", action="store_true", help="连有 gate_results 但未回测的波一起清")
     pb.add_argument("--include-backtested", action="store_true", help="连已有回测行的波一起清（不推荐）")
     pb.add_argument("--show", type=int, default=25)

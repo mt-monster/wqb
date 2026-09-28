@@ -27,6 +27,7 @@ from collections import defaultdict
 
 from .ledger import make_ledger_store
 
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 #: 与 tools/build_gate_prior_from_inventory.py 同口径（算子调用计数 / 字段族前缀）
 _OP_CALL_RE = re.compile(r"\b([a-z][a-z0-9_]{2,})\s*\(")
 _FIELD_TOKEN_RE = re.compile(r"\b([a-z][a-z0-9_]{3,})\b")
@@ -94,7 +95,7 @@ def load_region_kb(ctx):
     path = _db_path(ctx)
     if not path:
         return {}
-    conn = sqlite3.connect(path)
+    conn = db_connect(path)
     try:
         row = conn.execute(
             "SELECT value FROM ledger_kv WHERE region=? AND key='region_kb'", (ctx.region,)
@@ -116,7 +117,7 @@ def save_region_kb(ctx, kb):
     if not path:
         raise RuntimeError("ledger db path unavailable")
     now = _now()
-    conn = sqlite3.connect(path)
+    conn = db_connect(path)
     try:
         conn.execute(
             "INSERT INTO ledger_kv (region, key, value, created_at, updated_at) VALUES (?,?,?,?,?) "
@@ -243,7 +244,7 @@ def compute_local_gate_priors(ctx, sharpe_min=1.58, fitness_min=1.0):
     path = _db_path(ctx)
     if not path:
         return {}
-    conn = sqlite3.connect(path)
+    conn = db_connect(path)
     try:
         rows = conn.execute(
             "SELECT sharpe, fitness, ra_failed_checks, payload_json FROM backtest_results "

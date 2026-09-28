@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-11
+last_verified: 2026-09-26
 name: brain-calculate-alpha-selfcorr-quick
 description: "在本地计算 WorldQuant BRAIN alpha 的自相关与 PPAC（Power Pool Alpha Correlation），比通过 MCP 查询平台快得多。 当用户需要计算 alpha 相关性、核对 PPAC 时使用。"
 layer: L4
@@ -15,6 +15,14 @@ allowed-tools:
 
 
 # Alpha 自相关与 PPAC 相关性计算器
+
+## 职责边界
+
+- **本 skill 负责**：**本地**快筛 self-correlation / PPAC（不占平台相关性配额）
+- **本 skill 不做**：**不替代平台实测** —— 提交前必须实测平台值；不作提交判定；不改 alpha
+- **上游 / 下游**：上游 = 候选 PnL；下游 = S4 预筛（再进 `check_correlation` / `correlations/prod`）
+
+
 
 本 skill 用于计算 alpha 的自相关与 PPAC。
 用法与参数详情参见 [reference.md](reference.md)。
@@ -37,9 +45,13 @@ allowed-tools:
 1. 本地值**高**（>0.7）→ 可信，可据此否决候选（保守方向安全）。
 2. 本地值**低** ≠ 平台会低。**若候选的同族/孪生体是近期提交的，本地值不可信**。
 3. 同族连测场景（「同族只留最优 1 颗」）**不要依赖本地 SELF 判活**，改用零成本实测：
-   `GET /alphas/{id}/submit` → **403 = BLOCKED**，响应体带各 check 的 `value/limit`
-   （比 `is.checks` 的 PENDING 更早拿到平台实测 PROD/SELF）；或 POST 后回读 status。
-   注：硬闸阻断的提交**不消耗配额**（`dateSubmitted` 保持 None、activities 不变）。
+   **`POST /alphas/{id}/submit`** → `403` 时响应体 `is.checks` 带各 check 的 `value/limit`
+   （比 `is.checks` 的 `PENDING` 更早拿到平台实测 PROD/SELF）。真正拦阻的是 `FAIL` 项，
+   **`PENDING` ≠ `FAIL`、不挡提交**。
+   ⚠ **`GET /alphas/{id}/submit` 恒返回 `404`+空体，不能用**（2026-09-26 实测：对已 ACTIVE 的 alpha 同样 404）。
+   旧文写的"`GET … → 403 = BLOCKED`"是错的，403 只可能来自 POST。
+   注：硬闸阻断的提交**不消耗配额**（`dateSubmitted` 保持 None、activities 不变）；配额用尽同样表现为 403
+   （`REGULAR_SUBMISSION: FAIL value=4 limit=4`），属换日即失效、非候选缺陷。
 
 ## 工具脚本
 执行计算时，运行 `scripts` 目录下的 `skill.py` 脚本。

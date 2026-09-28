@@ -103,3 +103,19 @@ GEM `--priors-file` 必须携带 `syntax_patterns`：`scale(-rank(x))` 作为推
 ## 战役选集硬规则（2026-09-19 用户定案）
 **已点亮塔不开战役**：IND 当季已点亮 = analyst(5, 含 pwRJmvP3) / model / risk / other / fundamental → 这些类别的数据集不再作主数据集选波，只能作组腿辅助。
 可挖面 = pv（2/3，pv103 尾盘反转族被外部孪生堵死、pv106 判死）、option（option30 fitness 天花板、option1 判死）、earnings（earnings3/earnings11 判死）、news/sentiment（news79/nst/sentiment21/earnings11 判死，news85/84/54 未探）、insiders/institutions/shortinterest/macro/imbalance（判死或字段<5）。
+
+## 组腿配方（2026-09-19 实证 3 颗 ACTIVE：pwRJmvP3 / ZYbqREW1 / levk5JYN）
+
+**原料**：IND 唯一稳定 S>4 的主信号 = `multiply(-1, ts_mean(corr_last_trade_price_with_volume, 5))`（intraday_pv_feats 日内价量相关反转），裸用 prod 0.79–0.92 撞墙。
+**破 prod 墙的唯一有效结构 = `trade_when` 慢开关**：用一个**慢变量**（月/季频）把宇宙切掉约一半，进 >0.5 / 出 <0.4 的滞回带：
+
+| 门控字段（塔） | 结果 | prod |
+|---|---|---|
+| 税前利润预期修正 rank<0.5（analyst_consensus） | ZYbqREW1 S 3.20 / F 2.06 / robust 1.13 | **0.54** |
+| 机构持股比例 rank>0.5（institutions6） | levk5JYN S 3.34 / F 2.20 / robust 1.44 | **0.55** |
+| 机构持有人数 rank>0.5 | xA392Xpb S 3.18 / F 2.00 / robust 1.12（未提交） | 待查 |
+| 覆盖分析师数 rank>0.5 | 3qX3Mp6O S 3.18 / robust 1.00 | 待查 |
+
+**无效结构（w198/w199 实证）**：`group_rank(主腿, bucket(慢变量))` 保留全部持仓，只重排 → prod 0.79–0.83；快变量门控（情绪 5 日比值、期权成交量 z、新闻计数）→ 换手 0.46–0.65 + robust 掉到 0.5–0.9。
+**两边为空的门控**（macro63 成员标志、价带比例、财报双区间）→ 全 0 持仓（LOW_TURNOVER/CW），先查字段取值分布再用 `equal/greater`。
+**self-corr**：同主腿不同慢门控之间 0.46（ZYbqREW1 vs levk5JYN），可并存；同门控换阈值/窗口的兄弟 >0.9，只能提一颗。

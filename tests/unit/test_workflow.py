@@ -97,8 +97,8 @@ def test_registry_lists_all_core_nodes():
         # 不再注册；替代方案 tools/step_funnel.py。故此处移除 "step_metrics"。
         # Phase 4：自动化库存盘点（2026-09-16 新增，S-PRE 增强）
         "inventory_scan",
-        # Phase 4：自动化字段理解（2026-09-16 新增，S1 增强）
-        "field_understanding",
+        # 2026-09-26 P2.1：field_understanding 已删除（与 feature_engineering + campaign-S1
+        # 构成第三套 S1 实现，违反单源约定；S1 字段理解走 feature_engineering 节点）。
         # Phase 4：合并选波到 GEM 生成（2026-09-16 新增，S2 增强）
         "gem_wave",
         # Phase 4：合并重复门禁检查（2026-09-16 新增，S2→S3 增强）

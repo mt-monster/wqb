@@ -119,6 +119,11 @@ def stub_env(tmp_path):
         "WQB_DB_PATH": db,
         "PYTHONPATH": os.path.join(REPO, "src") + os.pathsep + os.path.join(REPO, "tools"),
         "PYTHONIOENCODING": "utf-8",
+        # 本文件专测 gate.py 的终态语义（PASS/FAIL/ERROR），不测体检策略——
+        # 2026-09-28 起 wave_gate 对"新数据集首波缺体检包"自动升 enforce（fail-closed，
+        # 见 test_inspect_mode_failclosed_p1p1 与 S0 体检包硬前置），stub 数据集天然无包，
+        # 这里显式降为 warn 隔离之，避免终态断言被体检策略误伤。
+        "WQB_INSPECT_MODE": "warn",
     })
     return env, str(campaign)
 
@@ -129,7 +134,8 @@ def _run(env_campaign, mode):
     return subprocess.run(
         [sys.executable, os.path.join(REPO, "tools", "wave_gate.py"),
          "--campaign-dir", campaign, "--dataset", "stubds",
-         "--wave", "w_stub", "--from-db", "--region", "TST"],
+         "--wave", "w_stub", "--from-db", "--region", "TST",
+         "--skip-semantic-gate"],   # 隔离闸 SEM（本文件专测 gate.py 终态，不测 S1 语义台账）
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         env=env, timeout=600)
 

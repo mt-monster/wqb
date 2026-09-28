@@ -28,6 +28,14 @@ allowed-tools:
 
 # Brain Sim Alphas Batch Track（独立批量跟踪）
 
+## 职责边界
+
+- **本 skill 负责**：**S3 唯一执行者**：批量仿真/发批/跟踪/断点续跑，写 `settings.json` 与回测结果入 `backtest_results`
+- **本 skill 不做**：**不提交 alpha**（提交是 L5）；不做门禁；不生成表达式；`--submit` = 提交**回测**，不是提交 alpha
+- **上游 / 下游**：上游 = 步 5 已过闸批次；下游 = S4 评审
+
+
+
 ## 角色定位
 
 - **编排器（`wq-brain-ra-pipeline`）S3 入口 = 本 skill**。本 skill 是批量跟踪与战役执行的单一入口。

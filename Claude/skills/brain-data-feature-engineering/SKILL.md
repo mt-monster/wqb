@@ -30,6 +30,14 @@ allowed-tools:
 
 # BRAIN 数据特征工程工作流
 
+## 职责边界
+
+- **本 skill 负责**：字段 → 特征工程决策：预处理方式（backfill/winsorize/rank/zscore/ts_event_*）、产出 ideas 与机制说明
+- **本 skill 不做**：**不生成最终 alpha 表达式**（那是 L2 `brain-make-some-gem`）；不回测；不改 DB 结构化台账
+- **上游 / 下游**：上游 = S1 字段白名单；下游 = S2 生成
+
+
+
 **目的**：将 BRAIN 数据集字段自动转化为深入、有意义的特征工程思路。
 
 **思维模式详解**：参见 `reference.md`（特征工程理念）。

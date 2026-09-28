@@ -27,6 +27,37 @@ from _lib.wqb_store import get_store
 import metrics_cache
 
 
+def _os_baseline(ctx):
+    """读 OS 衰减基线（步 7 校准用，2026-09-20 接线）。
+
+    基线 = 已提交 alpha 的 IS→OS 实测衰减（DB alphas.os_* 字段，由
+    tools/sync_platform_alphas.py 同步）。样本不足或 DB 不可读时返回 None，
+    评审照常进行（fail-open，不阻断）。
+    """
+    try:
+        st = get_store(ctx)
+        try:
+            from wqb.research.os_decay import load_baseline
+            return load_baseline(st, ctx.region)
+        finally:
+            st.close()
+    except Exception as e:  # noqa: BLE001 — 基线不可得不阻断评审
+        print(f"[os_decay] 基线不可读，跳过 IS→OS 折算: {e}")
+        return None
+
+
+def annotate_os_calibration(rows, baseline, region):
+    """给评审行追加 os_calibration（预期 OS 水位 + 存活率提示）。"""
+    if not baseline or int(baseline.get("n") or 0) <= 0:
+        return None
+    try:
+        from wqb.research.os_decay import annotate_rows
+        return annotate_rows(rows, baseline, region)
+    except Exception as e:  # noqa: BLE001
+        print(f"[os_decay] 折算失败，跳过: {e}")
+        return None
+
+
 def walls(r, t):
     """诊断未达标行卡在哪堵墙。指标缺失（None）不算败、单独标 *_UNKNOWN，避免误判。"""
     w = []
@@ -245,12 +276,32 @@ def main():
             near.append(r)
     report_near_exclusions(excluded, t, t_near)
 
-    print(f"{'id':10s} {'sh':>6} {'fit':>5} {'2y':>5} {'mg_bp':>7} {'tvr%':>6} {'rn':>5} walls")
+    # ---- OS 衰减校准（2026-09-20 接线）：给每行追加预期 OS 水位 + 存活率提示 ----
+    os_base = _os_baseline(ctx)
+    os_cal = annotate_os_calibration(rows, os_base, ctx.region)
+    if os_cal:
+        ratio = os_base.get("os_is_sharpe_ratio_mean")
+        surv = os_base.get("non_positive_pct")
+        print(f"\n[os_decay] 基线 n={os_base.get('n')}（IS→OS 衰减比 {ratio}，"
+              f"OS<=0 占比 {surv}%）；已为 {os_cal.get('annotated')} 行折算预期 OS 水位")
+        print("           注：IS 与 OS 秩相关仅 +0.086 —— 折算值给期望水位，不作单候选排序依据")
+        print("           （提高 IS 阈值不会提升 OS 存活率；IS 各桶 OS>0 率平坦 70-80%）")
+    elif os_base is None:
+        print("\n[os_decay] 无基线（DB 未同步平台 OS 池）：跳过折算。"
+              "跑 tools/sync_platform_alphas.py 后自动生效")
+    else:
+        print(f"\n[os_decay] 样本不足（n={os_base.get('n')}），跳过折算")
+
+    print(f"\n{'id':10s} {'sh':>6} {'fit':>5} {'2y':>5} {'mg_bp':>7} {'tvr%':>6} {'rn':>5} "
+          f"{'expOS':>6} walls")
     for r in rows:
         w = r["walls"]
+        cal = r.get("os_calibration") or {}
+        exp = cal.get("expected_os_sharpe")
         print(f"{r['id']:10s} {r.get('sharpe') or 0:6.2f} {r.get('fitness') or 0:5.2f} "
               f"{r.get('two_year_sharpe') or 0:5.2f} {r.get('margin_bp') or 0:7.2f} "
-              f"{r.get('turnover_pct') or 0:6.2f} {r.get('rn_sharpe') or 0:5.2f} {','.join(w) or 'PASS'}")
+              f"{r.get('turnover_pct') or 0:6.2f} {r.get('rn_sharpe') or 0:5.2f} "
+              f"{(f'{exp:.2f}' if exp is not None else '-'):>6} {','.join(w) or 'PASS'}")
 
     # ---- P1 verdict 自动推荐（规则 -> 下波方向，仅建议非强制） ----
     wave_meta = {"region": ctx.region,
@@ -269,6 +320,8 @@ def main():
                "reviewed_at": datetime.datetime.now().isoformat(timespec="seconds"),
                "thresholds": t, "all": rows, "candidates": candidates,
                "combo_candidates": combo_candidates, "near": near,
+               "os_decay_baseline": os_base,
+               "os_calibration": os_cal,
                "next_wave_recommendations": recs}
     st = get_store(ctx)
     try:

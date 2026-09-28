@@ -12,6 +12,9 @@
   - 作为 expr_lint 的 fields_gate json 白名单之外的**补充闸**：
     json 白名单管"类型/覆盖", 本闸管"该字段在当前区域上下文是否真的可用"(token-name 隐患)。
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import os
 import sqlite3
 
@@ -26,7 +29,7 @@ PLATFORM_FIELDS = {
 
 
 def _connect(db_path=None):
-    conn = sqlite3.connect(db_path or DB)
+    conn = db_connect(db_path or DB)
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 

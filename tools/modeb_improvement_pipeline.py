@@ -16,6 +16,9 @@ from datetime import datetime, timezone
 from typing import List, Tuple, Dict
 from dataclasses import dataclass
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 DB = r'D:\coding\traeCN_project\wqb\data\wqb.db'
 
 
@@ -35,7 +38,7 @@ class ModeBImprovementPipeline:
         self.region = region
         self.dataset = dataset
         self.base_field = base_field
-        self.conn = sqlite3.connect(DB)
+        self.conn = db_connect(DB)
         self.conn.row_factory = sqlite3.Row
         
     def generate_all_phases(self) -> Dict[int, List[ImprovementExpr]]:

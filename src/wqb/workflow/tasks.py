@@ -25,13 +25,12 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 
-from ._common import REPO_ROOT
+from ._common import REPO_ROOT, resolve_async_tasks_root
+from .process_identity import process_identity, match_process
 
 #: 任务根目录。与四个节点一致：WQB_TASK_ROOT 优先（单测隔离），否则仓库 logs/_async_tasks
 def task_root() -> str:
-    return os.environ.get("WQB_TASK_ROOT") or os.path.join(
-        REPO_ROOT, "logs", "_async_tasks"
-    )
+    return resolve_async_tasks_root()
 
 
 def _read_json(path: str) -> Optional[Dict[str, Any]]:
@@ -43,6 +42,8 @@ def _read_json(path: str) -> Optional[Dict[str, Any]]:
 
 
 def _tail(path: str, limit: int = 2000) -> str:
+    if limit <= 0:
+        return ""
     try:
         with open(path, "r", encoding="utf-8", errors="replace") as f:
             return f.read()[-limit:]
@@ -78,12 +79,17 @@ def _from_flat(path: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     """campaign / feature_engineering 布局：<task_id>.json"""
     data = _read_json(path) or {}
     root = os.path.dirname(path)
-    finished = "finished_at" in data or "returncode" in data or "success" in data
     status = "running"
-    if data.get("status") == "running":
-        status = "running"
-    elif finished:
-        status = "succeeded" if data.get("success") else "failed"
+    identity_error = None
+    if data.get("returncode") is not None:
+        status = "succeeded" if data["returncode"] == 0 else "failed"
+    elif isinstance(data.get("success"), bool):
+        status = "succeeded" if data["success"] else "failed"
+    elif data.get("finished_at"):
+        status = "unknown"
+    elif data.get("pid"):
+        alive, identity_error = _task_process(data)
+        status = "running" if alive is True else "unknown"
 
     out = {
         "task_id": task_id,
@@ -93,7 +99,7 @@ def _from_flat(path: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
         "started_at": data.get("started_at"),
         "finished_at": data.get("finished_at"),
         "returncode": data.get("returncode"),
-        "error": data.get("error") or data.get("ledger_error"),
+        "error": data.get("error") or data.get("ledger_error") or identity_error,
     }
     stdout_path = os.path.join(root, f"{task_id}.out")
     stderr_path = os.path.join(root, f"{task_id}.err")
@@ -138,6 +144,18 @@ def _assert_batch_track_submitted(
     )
 
 
+def _task_process(meta):
+    alive = _pid_alive(meta.get("pid"))
+    if alive is not True:
+        return alive, None
+    matched = match_process(meta, process_identity(meta.get("pid")))
+    if matched is False:
+        return None, "PID_IDENTITY_MISMATCH: PID belongs to a different process; reconcile task/DB before retry"
+    if matched is None:
+        return None, "PROCESS_IDENTITY_UNKNOWN: cannot verify that the live PID belongs to this task"
+    return True, None
+
+
 def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     """gem / batch_track 布局：<task_id>/meta.json + stdout.log / stderr.log"""
     meta = _read_json(os.path.join(task_dir, "meta.json")) or {}
@@ -145,17 +163,34 @@ def _from_dir(task_dir: str, task_id: str, tail_lines: int) -> Dict[str, Any]:
     stderr_log = meta.get("stderr_log") or os.path.join(task_dir, "stderr.log")
     stderr_tail = _tail(stderr_log, tail_lines)
 
-    alive = _pid_alive(meta.get("pid"))
+    alive = None
     error = meta.get("failed_at_launch")
+    explicit = str(meta.get("status") or "").strip().lower()
+    _explicit_ok = ("completed", "succeeded", "success")
+    _explicit_bad = ("failed", "error", "cancelled", "canceled")
     if meta.get("failed_at_launch"):
         status = "failed"
-    elif alive is True:
-        status = "running"
-    elif alive is False:
-        # 进程已退出：stderr 有内容视作失败，否则按完成处理
-        status = "failed" if stderr_tail.strip() else "succeeded"
+    elif explicit in _explicit_ok or explicit in _explicit_bad:
+        # 2026-09-25 修复：meta.json 的显式 status 必须权威。此前该字段被无视，
+        # 推断分支「死进程 + stderr 空 → succeeded」会把已判 failed 的任务误报为
+        # succeeded（实测：gem 402 欠费任务 traceback 打在 stdout、stderr 干净，
+        # 任务列表显示 succeeded 而 meta 写着 failed）。显式终态优先于一切推断。
+        status = "succeeded" if explicit in _explicit_ok else "failed"
+        if status == "failed":
+            error = error or meta.get("error")
+    elif meta.get("returncode") is not None:
+        status = "succeeded" if meta["returncode"] == 0 else "failed"
+    elif isinstance(meta.get("success"), bool):
+        status = "succeeded" if meta["success"] else "failed"
     else:
-        status = "unknown"
+        alive, error = _task_process(meta)
+        if alive is True:
+            status = "running"
+        elif alive is False:
+            # 旧任务无终态记录时保留历史推断；显式终态优先于进程身份。
+            status = "failed" if _tail(stderr_log, 4000).strip() else "succeeded"
+        else:
+            status = "unknown"
 
     if status == "succeeded":
         assert_error = _assert_batch_track_submitted(meta, stdout_log)

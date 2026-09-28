@@ -10,15 +10,20 @@ GET /alphas/{id}/submit 的 403 检查列表（零成本，不消耗提交配额
 模拟层 WARNING 中的 LOW_FITNESS/LOW_SHARPE/LOW_2Y_SHARPE 在提交层是硬闸 FAIL，
 必须本地拦截，不再放行。
 
-本工具输出双视图：
-  1) 模拟层：get_alpha_details 的 checks fail/warning 逐条
-  2) 提交层：GET /alphas/{id}/submit —— 200 无检查=可提交；403 带检查列表=BLOCKED 及原因
+本工具输出双视图（2026-09-28 R8 修正）：
+  1) 模拟层：get_alpha_details 的 checks fail/warning + WebDataScope Failed RA/PPA 计数
+  2) 提交层：GET /alphas/{id}/submit —— **平台恒返 404**（2026-09-26 实测，ACTIVE 者也 404），
+     该视图已定性为死端点，403 分支是历史遗留；**真闸只有用户确认后的 POST submit**
+     （三态响应 + 异步补发，见 worldquant-submit-alpha）。
+
+判定口径：**本工具是否决权威**（BLOCKED 即不提交）；报可放行时仍需
+「平台 prod<0.7（另跑 check_correlation(refresh=True)）+ 用户确认」。
+已提交/ACTIVE 的 alpha 报 ALREADY_SUBMITTED，不做可提交判定。
 
 用法:
   python tools/submit_verdict.py --alpha-id 2rlRAZaZ
-  python tools/submit_verdict.py --alpha-id 2rlRAZaZ
 
-退出码: 0=可直接提交（模拟无 FAIL 且提交层 200）, 1=BLOCKED/未就绪
+退出码: 0=可放行（SUBMITTABLE / UNVERIFIABLE / ALREADY_SUBMITTED）, 1=BLOCKED
 运行环境: 使用 MCP venv（`$WQ_PY` 或 world-quant-brain-mcp/.venv），依赖 brain_api。
 """
 import argparse
@@ -46,6 +51,31 @@ def _bootstrap():
 
 # 提交层硬闸项：模拟层 WARNING 但提交层 FAIL 的检查名
 _SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
+
+
+def _count_failed(checks, kind):
+    """WebDataScope Failed RA/PPA 计数（唯一口径源 = src/wqb.config）；返回 (count, items)。"""
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+        from wqb.config import (RA_CHECK_NAMES as _RA_NAMES, PPA_CHECK_NAMES as _PPA_NAMES,
+                                check_counts_as_failed as _counts_bad)
+    except Exception:
+        return 0, []          # 拿不到口径时不误报：计数置 0 并在报告里注明
+    names = _RA_NAMES if kind == "RA" else _PPA_NAMES
+    items = []
+    for c in checks or []:
+        nm = str(c.get("name") or "")
+        res = str(c.get("result") or "")
+        hit = nm in names and _counts_bad(res)
+        if kind == "PPA" and nm == "LOW_SHARPE":
+            try:
+                hit = hit or float(c.get("value") or 0) < 1
+            except (TypeError, ValueError):
+                pass
+        if hit:
+            items.append({"name": nm, "result": res, "value": c.get("value"),
+                          "limit": c.get("limit")})
+    return len(items), items
 
 
 def _render_checks(checks):
@@ -83,6 +113,21 @@ async def main():
         print(_render_checks(warns))
     if not fails and not warns:
         print("  (无 FAIL/WARNING)")
+
+    # 已提交/已落地：不做可提交判定（此前对 ACTIVE 也判 BLOCKED，假阴性）
+    if status in ("ACTIVE", "SUBMITTED") or detail.get("dateSubmitted"):
+        print(f"\nVERDICT: ALREADY_SUBMITTED（status={status}）")
+        print("  alpha 已提交/已落地，不构成可提交判定对象；请勿重复 POST submit。")
+        sys.exit(0)
+
+    failed_ra, failed_ra_items = _count_failed(sim_checks, "RA")
+    failed_ppa, failed_ppa_items = _count_failed(sim_checks, "PPA")
+    is_ppa = str(detail.get("type") or "").upper() == "PPA"
+    print(f"\n--- WebDataScope Failed-count 资格门（REGULAR 看 RA / PPA 看 PPA）---")
+    print(f"  Failed RA = {failed_ra}；Failed PPA = {failed_ppa}"
+          + ("（本候选按 PPA 判定）" if is_ppa else "（本候选按 REGULAR 判定）"))
+    for it in (failed_ppa_items if is_ppa else failed_ra_items):
+        print(f"    [{it['name']}] {it['result']} value={it['value']} limit={it['limit']}")
 
     # 提交层判定：GET /alphas/{id}/submit（零成本）
     submit_url = f"{brain.base_url}/alphas/{a.alpha_id}/submit"
@@ -122,23 +167,49 @@ async def main():
     #     print(f"  rolling  剩余: {q.get('rolling', {}).get('remaining', '?')}")
     #     print(f"  daily    剩余: {q.get('daily', {}).get('remaining', '?')}")
 
-    # 判定：模拟层无 FAIL + 无提交层硬闸 WARNING，且提交层为 200 或处女提交 404
+    # 判定：模拟层无 FAIL + 无提交层硬闸 WARNING + Failed-count 为零，
+    # 且提交层为 200 或处女提交 404
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
     hard_gate_warns = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
-    ok = not fails and not hard_gate_warns and (submit_status == 200 or prepost_unverifiable)
-    # 2026-09-08：处女提交 404 时提交层无信息，不能报 SUBMITTABLE（假阳性已三次复现）
+    failed_gate_ok = (failed_ppa == 0) if is_ppa else (failed_ra == 0)
+    ok = (not fails and not hard_gate_warns and failed_gate_ok
+          and (submit_status == 200 or prepost_unverifiable))
     verdict = "UNVERIFIABLE" if (ok and prepost_unverifiable) else ("SUBMITTABLE" if ok else "BLOCKED")
     print(f"\nVERDICT: {verdict}")
-    if hard_gate_warns:
+    if not failed_gate_ok:
+        names = [c["name"] for c in (failed_ppa_items if is_ppa else failed_ra_items)]
+        print(f"  原因: Failed-count 资格门非零（{'PPA' if is_ppa else 'RA'}）：{names}")
+    elif hard_gate_warns:
         names = [c.get("name") for c in hard_gate_warns]
         print(f"  原因: 模拟层 WARNING 含提交层硬闸项 {names}（提交时平台判 FAIL）")
     elif not fails and prepost_unverifiable:
-        print("  判定依据: 模拟层无 FAIL/硬闸 WARNING，但提交层 404（处女提交）无法验证。")
-        print("  提交前必须另跑 check_correlation(alpha_id, refresh=True) 确认 all_passed。")
+        print("  判定依据: 模拟层无 FAIL/硬闸 WARNING/Failed-count，但提交层 404"
+              "（GET /submit 平台恒 404，死端点）无法验证。")
+        print("  放行条件 = 平台 prod<0.7 + 用户确认；提交前必须另跑 "
+              "check_correlation(alpha_id, refresh=True) 确认 all_passed。")
     elif fails:
         print("  原因: 模拟层 checks 存在 FAIL，先优化再试")
     elif submit_status == 403:
         print("  原因: 提交层 403，见上检查列表（模拟层 WARNING 已升级）")
+
+    # --- 队列状态升级（2026-09-20）---
+    # 本工具是提交判定的唯一权威；出 SUBMITTABLE 时把待提交队列里该条
+    # 从 IS_ONLY 升级为 SUBMIT_LAYER_VERIFIED 并刷新 verified_at，
+    # 使队列可信度与判定权威一致。容错：绝不影响判定结果与退出码。
+    if verdict == "SUBMITTABLE":
+        try:
+            sys.path.insert(0, os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
+            from wqb.store.submit_queue import mark_verified
+            n = mark_verified(a.alpha_id, rec={
+                "sharpe": is_.get("sharpe"), "fitness": is_.get("fitness"),
+                "turnover": is_.get("turnover"),
+            })
+            print(f"  [queue] 已升级 SUBMIT_LAYER_VERIFIED（{n} 条）" if n
+                  else "  [queue] 队列中无此条，跳过升级")
+        except Exception as e:  # noqa: BLE001
+            print(f"  [queue] 升级跳过：{e}")
+
     sys.exit(0 if ok else 1)
 
 

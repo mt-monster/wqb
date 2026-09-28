@@ -29,6 +29,9 @@
   # 只看统计不写库
   python tools/validate_fields_batch.py --region IND --dry-run
 """
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import json
 import os
@@ -180,7 +183,7 @@ def main():
                     help="只处理 fields 表里有字段记录的数据集(跳过空壳, 适合 GBR 这种大量登记空壳的区域)")
     args = ap.parse_args()
 
-    conn = sqlite3.connect(args.db)
+    conn = db_connect(args.db)
     conn.execute("PRAGMA foreign_keys=ON")
     cur = conn.cursor()
 

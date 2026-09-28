@@ -12,6 +12,9 @@
 8. 计算成本评估
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import os
@@ -187,7 +190,7 @@ class FieldQualityScorerV2:
     def _get_coverage(self, field_id: str, dataset: str, region: str) -> float:
         """获取字段覆盖度."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT coverage FROM field_catalog
@@ -261,7 +264,7 @@ class FieldQualityScorerV2:
     def _get_sharpe_stats(self, field_id: str, region: str) -> Dict[str, float]:
         """获取 Sharpe 统计."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT avg_sharpe, sharpe_std, recent_1y_sharpe, full_period_sharpe

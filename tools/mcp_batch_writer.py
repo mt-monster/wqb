@@ -10,6 +10,9 @@
     writer.flush()  # 可选：强制 flush 本地队列
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import logging
@@ -239,7 +242,7 @@ class DirectDBWriter(MCPBatchWriter):
     def _get_conn(self):
         if self._conn is None:
             import sqlite3
-            self._conn = sqlite3.connect(self.db_path, timeout=30.0)
+            self._conn = db_connect(self.db_path, timeout=30.0)
             self._conn.row_factory = sqlite3.Row
             self._conn.execute("PRAGMA foreign_keys=ON")
             self._conn.execute("PRAGMA journal_mode=WAL")

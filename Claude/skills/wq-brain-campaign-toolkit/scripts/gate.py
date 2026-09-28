@@ -767,21 +767,44 @@ def check_batch_diversity(exprs, ctx, batch_type="explore", skip=False, dataset=
             ops_present = set(_op_call.findall(e)) & req_ops
             return {(op, f) for op in ops_present for f in _leaf(e)}
 
-        per_expr = [_expr_combos(e) for e in exprs]
-        combos = set().union(*per_expr) if per_expr else set()
-        op_hits = len(combos)
-        need = inj.get("per_batch_min_operators", 2)
-        if op_hits < need:
+        # 2026-09-24 P1 强度优先：闸 6 从「跨族算子组合」改为「字段族不重复」。
+        # 原实现要求每批 ≥2 个互异 (算子,字段) 组合使用 required 算子，
+        # 导致 build_wave 的 diversity-heal 注入 group_cartesian_product(sector,sector)
+        # 等 degenerate 式凑数（5 次命中），烧配额在无意义式上。
+        # 现改为：只查「同一字段族不重复」（用 _lib.common.expr_fields 提取字段集合，
+        # 同一字段集合的表达式最多 max_field_repeat 条），多样性交给字段族不重复
+        # 与算子树分桶（bucket_key）来控，不再强制跨族算子组合。
+        # 字段族不重复检查（2026-09-24 P1）：同一字段集合的表达式最多 max_field_repeat 条
+        _max_field_repeat = int(os.environ.get("WQB_MAX_FIELD_REPEAT", "3"))
+        _field_counter = collections.Counter()
+        _field_duplicates = []
+        for e in exprs:
+            fields = frozenset(expr_fields(e, known_ops=None, min_len=6))
+            _field_counter[fields] += 1
+            if _field_counter[fields] > _max_field_repeat:
+                _field_duplicates.append({
+                    "fields": sorted(fields),
+                    "count": _field_counter[fields],
+                    "limit": _max_field_repeat,
+                })
+        if _field_duplicates:
             issues.append(
-                f"[DIVERSITY] 注入算子(字段组合)达标 {op_hits}/{need}：每批至少 {need} 个"
-                f"互异 (算子,字段) 组合使用 {sorted(req_ops)} 之一"
-                f"（契约 issued_at={inj.get('issued_at')}）")
+                f"[DIVERSITY-FIELD] 字段族重复超限：{len(_field_duplicates)} 个字段族"
+                f"出现次数 > {_max_field_repeat}（同一字段集合的表达式过多，"
+                f"回测必高相关；请换字段组合或换信号概念）"
+            )
+            for dup in _field_duplicates[:5]:  # 只留前 5 个示例
+                print(f"[DIVERSITY-FIELD] 字段族 {dup['fields']} 出现 {dup['count']} 次"
+                      f"（上限 {_max_field_repeat}）")
         # 可选冗余粗筛（无需收益数据）：两条表达式的 (算子,字段) 组合集完全相同
         #   = 结构性近重复信号，建议保留其一避免浪费配额（非阻断 WARN）。
-        _sig_counter = collections.Counter(frozenset(c) for c in per_expr)
+        # 2026-09-24 P1：per_expr 已随「跨族算子组合」检查一起移除，
+        # 结构性近重复信号改用字段集合判定（同一字段集合出现 >1 次即 WARN）。
+        _field_sets = [frozenset(expr_fields(e, known_ops=None, min_len=6)) for e in exprs]
+        _sig_counter = collections.Counter(_field_sets)
         for _s, _c in _sig_counter.items():
             if _c > 1 and _s:
-                print(f"[DIVERSITY-WARN] 结构性近重复信号（{_c} 条共享组合集 "
+                print(f"[DIVERSITY-WARN] 结构性近重复信号（{_c} 条共享字段集合 "
                       f"{sorted(_s)}）——建议保留其一，避免浪费配额")
     skel_counts = collections.Counter(skeleton(e) for e in exprs)
     for name, quota in (inj.get("skeleton_quota") or {}).items():

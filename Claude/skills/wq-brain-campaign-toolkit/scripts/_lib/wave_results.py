@@ -20,6 +20,9 @@ created_at 每次评审都被重置成"现在"，停止规则 B 的窗口（按�
 表结构见 database/schema.sql（wave_results：UNIQUE(region, wave_number)）。
 CLI 由 campaign.py wave 转发；查表走 wqb-db-mcp（只读），写库走本入口。
 """
+import sys as _sys_m, os as _os_m
+_sys_m.path.insert(0, str(_os_m.path.dirname(_os_m.path.abspath(__file__))))  # _lib 可导入
+from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 import argparse
 import datetime
 import json
@@ -54,7 +57,7 @@ class WaveResultsStore:
 
     def _conn(self):
         import sqlite3
-        conn = sqlite3.connect(self.db_path)
+        conn = db_connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 

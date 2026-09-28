@@ -5,6 +5,9 @@
 评分维度：覆盖度、历史 Sharpe、更新频率、经济可解释性.
 """
 from __future__ import annotations
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 
 import json
 import os
@@ -118,7 +121,7 @@ class FieldQualityScorer:
     def _get_coverage(self, field_id: str, dataset: str, region: str) -> float:
         """获取字段覆盖度."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             
             # 从 field_catalog 查询
@@ -141,7 +144,7 @@ class FieldQualityScorer:
     def _get_historical_sharpe(self, field_id: str, region: str) -> float:
         """获取字段历史 Sharpe（从 WebDataScope 或本地缓存）."""
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = db_connect(self.db_path)
             cursor = conn.cursor()
             
             # 从 field_catalog 查询历史表现

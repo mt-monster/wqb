@@ -13,7 +13,8 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-DB = r'D:\coding\traeCN_project\wqb\data\wqb.db'
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
+from .._common import resolve_db_path  # 禁止硬编码绝对路径（AGENTS.md）
 
 
 def run(
@@ -41,6 +42,13 @@ def run(
         执行结果
     """
     if dry_run:
+        # 诚实 dry-run：构建真实表达式预览（_generate_phase 纯函数，零副作用）→ 到此为止。
+        # 不入库、不建目录（禁止假 dry-run：不构建计划却报 success）。
+        phases = [phase] if phase is not None else [0, 1, 2, 3]
+        preview = {
+            str(p): [e["expr"] for e in _generate_phase(region, dataset, base_field, p)]
+            for p in phases
+        }
         return {
             "success": True,
             "dry_run": True,
@@ -48,10 +56,17 @@ def run(
             "dataset": dataset,
             "base_field": base_field,
             "phase": phase,
-            "message": "Dry run: would generate Mode B improvement expressions",
+            "plan": {
+                "phases": phases,
+                "expression_preview": preview,
+                "total_to_generate": sum(len(v) for v in preview.values()),
+                "insert_target": f"expressions (wave={wave or '<auto>'})",
+                "concepts": ["regime/conditional", "residual", "interaction", "temporal"],
+            },
+            "note": "dry-run：Mode B 表达式预览已构建，未入库",
         }
     
-    conn = sqlite3.connect(DB)
+    conn = db_connect(resolve_db_path())
     conn.row_factory = sqlite3.Row
     
     try:

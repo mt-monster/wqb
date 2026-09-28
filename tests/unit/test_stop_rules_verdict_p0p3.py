@@ -28,8 +28,10 @@ from wqb.workflow.nodes import campaign as C
     ("PASS", "PASS"),
     ("0/6 过硬闸, 新高 0.31", "FAIL"),      # 实测 EUR 形态：0 条过硬闸 = 全被硬闸拦下
     ("0/8 过硬闸, 新高 0.43", "FAIL"),
-    # 2026-09-27 N30：与写入契约同一张表（此前这里判 PARTIAL、写入契约判 PASS）；规则 B 只看是否 FAIL
-    ("3/8 过硬闸, 新高 2.10", "PASS"),
+    # 2026-09-27 N30：与写入契约同一张表（唯一权威 = wqb.wave_results_contract.normalize_verdict，
+    # N>0 一律 PARTIAL——含 8/8：无法从字符串确认其余闸门全过，保守语义；
+    # 守护测试 test_wave_verdict_enum 同此断言）。规则 B 只看是否 FAIL。
+    ("3/8 过硬闸, 新高 2.10", "PARTIAL"),
     ("GREEN: 2 候选达标", "PASS"),           # 历史写法，此前只能给 UNKNOWN
     ("YELLOW: 0 候选, 3 near", "PARTIAL"),
     ("RED: 5 全灭", "FAIL"),

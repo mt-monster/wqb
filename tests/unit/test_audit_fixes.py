@@ -480,14 +480,18 @@ def _batch_track_dry_run_command(**overrides):
 
 
 def test_batch_track_command_has_submit_flag():
-    """缺 --submit 时 pipeline 只出计划就退出，回测一条不发。"""
-    command = _batch_track_dry_run_command()
-    if not command:
+    """submit 旗标必须正确接线：**默认不传**（2026-09-26 治理：提交类参数不入自动链），
+    显式 submit=True 时命令里必须有 --submit（= 提交**回测**，不是提交 alpha；
+    提交 alpha 走 submit_alpha 且需用户确认）。"""
+    if not _batch_track_dry_run_command():
         pytest.skip("toolkit 未安装，无命令可查")
-    assert "--submit" in command, (
-        "batch_track 必须传 --submit —— 这是提交**回测**(simulation)，"
-        "不是提交 alpha（提交 alpha 走 submit_alpha 且需用户确认）"
+    default_cmd = _batch_track_dry_run_command()
+    assert "--submit" not in default_cmd, (
+        "batch_track 默认不得带 --submit（2026-09-26 起 submit 默认 False，"
+        "与 AGENTS.md「提交类节点不入自动链」对齐）"
     )
+    explicit_cmd = _batch_track_dry_run_command(submit=True)
+    assert "--submit" in explicit_cmd, "显式 submit=True 时必须把 --submit 传给 pipeline"
 
 
 def test_batch_track_command_is_unbuffered():

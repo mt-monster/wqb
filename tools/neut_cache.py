@@ -25,8 +25,11 @@ import os
 import sqlite3
 import sys
 
+import sys as _sys, os as _os
+_sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
+from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-# pack_reader 在 tools/lib/，不在上面这条路径里，必须显式注入，
+# pack_reader 在 tools/lib/，不在上面两条路径里，必须显式注入，
 # 否则 rebuild() 里 `from pack_reader import open_pack` 会 ModuleNotFoundError。
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib"))
 
@@ -51,7 +54,7 @@ CREATE TABLE IF NOT EXISTS neut_cache (
 
 def _conn(db_path):
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    conn = db_connect(db_path)
     conn.executescript(_DDL)
     return conn
 

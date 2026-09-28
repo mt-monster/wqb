@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from pathlib import Path
 import argparse
 import sys
@@ -45,7 +46,8 @@ def load_data(dataset_name=None):
     workspace_dir = script_dir.parent
     
     if not dataset_name:
-        data_root = workspace_dir / "data"
+        # 2026-09-25 目标 A：数据根读 WQB_GEM_DATA_ROOT（run_pipeline 注入），未设置回退旧位
+        data_root = Path(os.environ.get("WQB_GEM_DATA_ROOT") or (workspace_dir / "data"))
         if not data_root.exists():
             print("Error: Data directory not found.", file=sys.stderr)
             sys.exit(1)
@@ -65,7 +67,7 @@ def load_data(dataset_name=None):
             print("Error: No dataset folders found inside data directory.", file=sys.stderr)
             sys.exit(1)
 
-    dataset_dir = workspace_dir / "data" / dataset_name
+    dataset_dir = Path(os.environ.get("WQB_GEM_DATA_ROOT") or (workspace_dir / "data")) / dataset_name
     data_path = dataset_dir / f"{dataset_name}.csv"
     
     print(f"Loading data from {data_path}...", file=sys.stderr)
@@ -77,7 +79,9 @@ def load_data(dataset_name=None):
         sys.exit(1)
 
 def extract_keys_from_template(template):
-    return re.findall(r'\{([A-Za-z0-9_]+)\}', template)
+    # A repeated placeholder is one binding, even when used in a condition
+    # and its signal. Distinct placeholders still cannot bind the same field.
+    return list(dict.fromkeys(re.findall(r'\{([A-Za-z0-9_]+)\}', template)))
 
 
 def _matches_metric(field_id: str, metric: str) -> bool:
@@ -504,6 +508,13 @@ def match_single_horizon_auto(df, template, max_expressions=24, lint_enabled: bo
         sole_cands = candidates_by_metric.get(sole_metric) or []
         if len(sole_cands) == 1:
             orphan_field = sole_cands[0]
+            # Cluster labels are grouping axes. Scalar wrappers such as rank(label)
+            # or ts_delta(label) do not represent additional economic hypotheses.
+            type_col = next((c for c in ("type", "dataType", "data_type") if c in df.columns), None)
+            if type_col:
+                bound_types = df.loc[df["id"].astype(str) == orphan_field, type_col]
+                if bound_types.astype(str).str.upper().eq("GROUP").any():
+                    return results
             # 传入该字段的体检画像（shape/coverage），供稀疏事件门控判定
             orphan_profile = (field_profile_map or {}).get(orphan_field) or {}
             before = len(results)

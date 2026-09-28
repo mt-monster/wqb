@@ -110,6 +110,7 @@ variables:
 - **产物**：提交判定（SUBMITTABLE / BLOCKED / WAIT_THEME_ROTATION）
 
 ### 步 9（S6）复盘回写
+- **逐数据集经验**：台账写回后执行 `brain-dataset-mining-experience`（权威细节见 `Claude/skills/brain-dataset-mining-experience/SKILL.md`），更新每个实际回测数据集的 `reports/dataset_experience/<region>_<dataset>_campain.md`，并在下一轮 S-PRE/S1/S2 读取。
 - **MCP**：`upsert_wave_result(verdict=PASS|FAIL|PARTIAL)` / `upsert_registry_empirical`（dead_end / win / campaign）/ `upsert_ledger_key(key="s6_verdict_<wave>")`
 - **产物**：wave_results.verdict + registry_empirical 更新
 - **闭环**：S6 回写 → 下一波 S-PRE 自动读最新 dead_ends/wins/campaigns
@@ -120,7 +121,7 @@ variables:
 
 | 条件 | 动作 |
 |---|---|
-| 连续 3 波全 FAIL 且无新 dead_end | 该 region 暂停，转 `brain-next-move-analysis` |
+| 同轴连续 3 波可计数 FAIL（停止闸 B1），或最近 8 波窗口内 ≥4 个不同轴全 FAIL 且无 PASS（B2） | 该轴/该 region 暂停，转 `brain-next-move-analysis`（零配额 FAIL 与产出新 dead_end 的 FAIL 波不计数；由 `workflow_campaign(stage="S2"/"S3")` 前置停止规则闸机械判定） |
 | 白名单被 dead_end 全覆盖 | 停止 |
 | 连续 3 波 gate 通过率=0（gate_results.all_pass 全 0） | 该区信号族/数据集判死，转 `wq-brain-campaign-matrix` 换数据集，或转 `brain-next-move-analysis` 换区域 |
 | ACTIVE RA ≥10 | 可转 `wq-brain-superalpha`（先 `sa_probe --region $REGION`） |

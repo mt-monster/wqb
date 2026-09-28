@@ -105,19 +105,29 @@ def _is_composite_expr(code: str) -> bool:
 def _pick_checks(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """从 alpha 详情中提取 checks 列表。
 
-    平台返回的 checks 可能在顶层 data.checks 或嵌套 data.raw.checks（取决于端点）。
-    统一从这里取，避免上层重复判断。
+    平台返回的 checks 可能在多个位置，依端点不同而异。**2026-09-19 实测更正**：
+    真实位置是**顶层 `is.checks`**（alpha 详情顶层键含 `is`，checks 在其内），
+    而非 `data.checks` / `data.raw.checks` / `data.raw.is.checks`。
+    此前的路径全部落空 → 本函数恒返回 `[]` → 所有 checks 派生列采集不到
+    （实测：`alphas.cluster_test` 0/4,926、`concentrated_weight` 0/4,926，
+    而直接读 `is.*` 的列正常：`two_year_sharpe` 86.1%）。
+    证据：IND/QPGbAOn5 的 `is.checks` 含 `{name: CLUSTER_TEST, result: PASS, limit: 1, value: 2.59}`。
     """
-    # 1) 顶层 checks（fetch_alpha_details 已提取）
+    # 1) 顶层 is.checks（2026-09-19 实测的真实位置，放最前）
+    is_top = data.get("is") or {}
+    checks = is_top.get("checks")
+    if isinstance(checks, list) and checks:
+        return checks
+    # 2) 顶层 checks（部分瘦身端点会平铺出来）
     checks = data.get("checks")
     if isinstance(checks, list) and checks:
         return checks
-    # 2) raw.checks（部分端点嵌套在 raw 里）
+    # 3) raw.checks（历史端点嵌套）
     raw = data.get("raw") or {}
     checks = raw.get("checks")
     if isinstance(checks, list) and checks:
         return checks
-    # 3) raw.is.checks（再嵌套一层）
+    # 4) raw.is.checks（再嵌套一层）
     is_raw = raw.get("is") or {}
     checks = is_raw.get("checks")
     if isinstance(checks, list) and checks:
@@ -281,10 +291,41 @@ async def harvest_one_multisim(
     base = brain.base_url
     loc = _shape_url(base, multisim_id)
 
-    # 1. 拉取 children
-    resp = await brain._request("GET", loc)
-    if resp.status_code != 200:
-        return {"multisim_id": multisim_id, "error": f"HTTP {resp.status_code}"}
+    # 1) 拉取 children —— 带重试（2026-09-28 实证）
+    #
+    # ⚠ 关键经验：`GET /simulations/{multisim_id}` 在**并发读同一 multisim 时返回 404**，
+    # 而不是 409/423。实证：pipeline（batch_track）正在轮询这批 multisim 的同一时刻
+    # 另起本 CLI 收批，21 个 ID 里 20 个报 HTTP 404；等 pipeline 结束后用**同样的 ID、
+    # 同样的拼法**重跑，全部 200（含当时被误判为"孤儿批"的那只）。直连复现同样 200，
+    # 说明 URL 构造无误，404 是平台侧的瞬态并发假象。
+    # 此前本函数零重试 → 直接把瞬态 404 当成"该批不存在"，配合上层 `--auto-upsert`
+    # 会静默丢整批数据（本次差点丢 160/168 条）。
+    # 故：404 / 5xx / 异常一律按可重试处理（4 次，2s·4s·8s 退避），
+    # 只有 4 次后仍失败才判错，并在 message 里注明"可能是并发抢占，建议 pipeline 结束后重跑"。
+    resp = None
+    last_err = None
+    _RETRY_STATUS = {404, 429, 500, 502, 503, 504}
+    for _attempt in range(4):
+        try:
+            resp = await brain._request("GET", loc)
+        except Exception as e:  # 连接瞬断同样可重试
+            last_err = f"exc: {e}"
+            resp = None
+        if resp is not None and resp.status_code == 200:
+            break
+        code = getattr(resp, "status_code", None)
+        last_err = f"HTTP {code}" if code else (last_err or "no response")
+        if code is not None and code not in _RETRY_STATUS:
+            break  # 401/403 等是确定性失败，重试无益
+        if _attempt < 3:
+            await asyncio.sleep(2 ** (_attempt + 1))
+
+    if resp is None or resp.status_code != 200:
+        hint = ""
+        if (getattr(resp, "status_code", None) == 404 or "404" in str(last_err)):
+            hint = "（404 在并发读同一 multisim 时为瞬态假象；建议 pipeline 进程结束后重跑本批）"
+        return {"multisim_id": multisim_id, "error": f"{last_err}{hint}", "transient_404": "404" in str(last_err)}
+
     data = resp.json() if resp.text else {}
     children = data.get("children") or []
 
@@ -418,6 +459,8 @@ async def main():
     ap.add_argument("--region", help="区域（用于关联 expressions 与 upsert）")
     ap.add_argument("--ids-only", action="store_true", help="只拉 alpha IDs，不拉详情")
     ap.add_argument("--auto-upsert", action="store_true", help="自动写回 backtest_rows")
+    ap.add_argument("--no-queue", action="store_true",
+                    help="关闭「过闸候选自动入队 submit_ready」（默认开启，随 --auto-upsert）")
     ap.add_argument("--retry-failed", action="store_true", help="重试失败的 children")
     ap.add_argument("--json", dest="json_out", help="结果落盘 JSON 路径")
     a = ap.parse_args()
@@ -469,9 +512,12 @@ async def main():
     if a.auto_upsert and a.wave and a.region:
         sys.path.insert(0, str(os.path.join(os.path.dirname(__file__), "..", "src")))
         from wqb.store import CampaignStore
+        # L3 写库互斥（2026-09-20）：收批批量 upsert 排队（短锁，只包写库段）
+        from wqb.db_write_lock import write_lock as _wlock
         db_path = os.path.join(os.path.dirname(__file__), "..", "data", "wqb.db")
         store = CampaignStore(db_path)
         try:
+          with _wlock(tag="dbwrite_harvest", ttl_sec=600, wait_timeout=120):
             for r in results:
                 if r.get("alphas"):
                     # 关联 expression_id
@@ -480,6 +526,21 @@ async def main():
                     rows = _to_backtest_rows(r["alphas"])
                     n = store.upsert_backtest_rows(a.region, str(a.wave), rows)
                     print(f"  [upsert] {n} rows → backtest_results (region={a.region} wave={a.wave})")
+
+                    # --- 自动入队：把本轮过闸候选写入 submit_ready（2026-09-20）---
+                    # 解决"回测找到可提交项但不当天提交就遗忘"。阈值用提交层口径，
+                    # 未过闸者会被标 DEAD 自动排除，故可直接全量喂入。
+                    if not a.no_queue:
+                        try:
+                            sys.path.insert(0, str(os.path.join(
+                                os.path.dirname(__file__), "..", "src")))
+                            from wqb.store.submit_queue import enqueue_from_alphas
+                            nq = enqueue_from_alphas(
+                                region=a.region, min_sharpe=1.58, min_fitness=1.0,
+                                note=f"auto-enqueue wave={a.wave}")
+                            print(f"  [queue] {nq} 条过闸候选 → submit_ready")
+                        except Exception as e:  # 队列记账失败绝不阻断收批
+                            print(f"  [queue] 入队跳过：{e}")
                     # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
                     # upsert_backtest_rows 已把 prod/self 写入 alphas（仅当列原为 NULL），
                     # 这里补写 source=platform_sync + corr_checked_at，使复盘可区分
@@ -516,7 +577,12 @@ async def main():
                     green_count = sum(1 for a in all_alphas if a.get("sharpe") and a.get("sharpe") >= 1.58 and a.get("fitness") and a.get("fitness") >= 1.0)
                     if green_count == 0:
                         # 全 RED，触发 salvage
-                        _salvage_to_pool(a.region, int(a.wave), all_alphas)
+                        # 2026-09-28 修：原先强转 int(a.wave)，而 SOP 全链路的波号是
+                        # **字符串**（支持 `97` 与 `s2_<ds>_d1` 两种形态）→ 传
+                        # `s2_fundamental17_d1` 时抛 `invalid literal for int()`，
+                        # salvage 步骤被 except 吞成 `skipped`，整波残值静默不入池。
+                        # `_salvage_to_pool` 的 wave_number 声明为 Any 且仅作存档字段，直传字符串即可。
+                        _salvage_to_pool(a.region, a.wave, all_alphas)
                         pool = _get_ledger_raw(a.region, "salvage_pool") or {"entries": []}
                         print(f"  [salvage] all RED, pool entries: {len(pool.get('entries', []))}")
             except Exception as e:

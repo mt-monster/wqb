@@ -57,7 +57,7 @@
 | 条件                                             | 动作                                                                          |
 | ---------------------------------------------- | --------------------------------------------------------------------------- |
 | 已有战役目录 tracking/<REGION>/                      | `score_datasets.py --campaign-dir tracking/<REGION>`（权威，v3.1 分位 tier）       |
-| 无战役目录（跨区试探）                                    | `dataset_health_check.py --region R --delay D --universe U`（固定阈值，仅试探）       |
+| 无战役目录（跨区试探）                                    | `tools/campaign_intel.py s0-select` / `xr-probe`（原 `dataset_health_check.py` 已归档 `attic/ra_pipeline_shell_20260928/`）       |
 | generate 白名单                                   | tier1 + `tier_note=pyramid_quota` 上提的非 MODEL（配额后仍无非 MODEL 不得退回纯 MODEL 七槽） |
 | 白名单排序                                          | 先按金字塔配给（每波 ≥2 槽非 MODEL），再 score desc；**禁止** pyramidMultiplier desc 把 PV 整座挤出（**例外**：`mode=ppa` 的 PPA 排序见 `wq-brain-ppa-mining §1.0`，那里以 pyramidMultiplier desc 为主） |
 | 硬地板                                            | cov<0.65 或 usableFields<5 → excluded（mode 无关）                               |

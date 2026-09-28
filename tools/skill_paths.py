@@ -36,9 +36,14 @@ def skill_roots() -> List[str]:
 
 
 def skill_script_dirs(skill: str, env_var: Optional[str] = None) -> List[str]:
-    """某 skill 的 scripts/ 目录候选（有序、去重）；env_var（如 WQ_TOOLKIT_DIR）给出时排最前。"""
-    cands = [os.environ.get(env_var)] if env_var else []
-    cands += [os.path.join(root, skill, "scripts") for root in skill_roots()]
+    r"""某 skill 的 scripts/ 目录候选（有序、去重、分隔符归一）；env_var（如 WQ_TOOLKIT_DIR）给出时排最前。
+
+    2026-09-28：`_skill_roots()` 的部分候选用 `/` 拼 home（Windows 上出混合分隔符，
+    如 `C:\Users\x/.claude/skills\...`），字符串相等性比较（含 test_skill_script_dirs_follow_skill_roots）
+    与命令展示都受害；此处统一 `normpath`。
+    """
+    cands = [os.environ.get(env_var)] if env_var else []   # env 显式值原样保留（不归一）
+    cands += [os.path.normpath(os.path.join(root, skill, "scripts")) for root in skill_roots()]
     out: List[str] = []
     for c in cands:
         if c and c not in out:

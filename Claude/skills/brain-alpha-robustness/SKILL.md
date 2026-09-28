@@ -1,7 +1,7 @@
 ---
 name: brain-alpha-robustness
 description: "提交前稳健性验证：汇集论坛实证的归因与反过拟合技术，跨年度与子宇宙做 PnL 归因分析，拒绝高 Sharpe 来自噪声拟合、股票集中或单年行情的候选。当任务涉及提交前验证、OS 表现不佳的事后复盘，或用户提到过拟合/稳健性/子宇宙/逐年统计/PnL 归因/衰减比/参数稳定性时使用。"
-last_verified: 2026-09-19
+last_verified: 2026-09-26
 layer: L4
 allowed-tools:
   - Read
@@ -14,9 +14,19 @@ allowed-tools:
 > **`brain-alpha-judge` = S5 唯一提交评审入口**（双闸评审）。先过本闸，再进 judge，不要互相替代。
 > **边界**：本 skill 诊断"该不该提交"（过拟合），judge 决策"现在值不值得提交"（综合评审）。本 skill **不重复** judge 的平台硬检查/PPA 主题门控/value-factor trend 投影；judge **不重复** 本 skill 的归因计算。完整职责边界表见 `brain-alpha-judge` SKILL.md「与 brain-alpha-robustness 的职责边界」节。
 
-> ⚠️ **本副本已非权威版（2026-08-22 迁出）**：权威版位于 `<SKILL_ROOT>/`（正式 L4 成员，三副本同步）。本目录副本仅为历史引用保留，勿再编辑。
+> **权威性（2026-09-26 审计更正）**：真相源 = **仓库 `Claude/skills/brain-alpha-robustness/`**（本目录），
+> 由 `tools/sync_skills.py` 多目标同步到各宿主安装位（见 `Claude/skills/INDEX.md §唯一权威副本`）。
+> 旧文曾写"本副本已非权威版、勿再编辑"——**与 INDEX 的单源规则相悖，已删除**：那样写会让真正的真相源停止演进。
 
 # BRAIN Alpha 稳健性（Robustness）
+
+## 职责边界
+
+- **本 skill 负责**：反过拟合 / 稳健性闸：跨年度、子宇宙、逐年 PnL 归因，拒绝「高 Sharpe 来自噪声拟合/股票集中/单年行情」（S4→S5 **必经**）
+- **本 skill 不做**：不做提交判定（submit_verdict）、**不编辑候选使其过闸**（那是 `brain-alpha-repair`/optimization-v1 的事）
+- **上游 / 下游**：上游 = S4 达标候选；下游 = `brain-alpha-judge` 参考评审 → S5
+
+
 
 ## 衔接协议（九步流水线定位）
 
@@ -28,7 +38,7 @@ allowed-tools:
 
 提交前验证 alpha 候选、已提交 alpha 的 OS 表现不佳事后复盘，或任何提到过拟合 / 稳健性 / robust test / sub-universe / yearly stats / PnL attribution / 归因分析 / decay ratio / 厂字形 / year-skipping / stock concentration / parameter stability 的请求。
 
-与 `brain-alpha-repair` 的区别（后者是编辑候选使其可过闸）——本 skill 依据稳健性与归因证据**诊断**该候选**是否应该**提交。通过 `check_correlation` 和 `get_submission_check` 的 alpha 仍可能过拟合在单一年份或 5 只股票上；这正是本 skill 要抓住的情形。
+与 `brain-alpha-repair` 的区别（后者是编辑候选使其可过闸）——本 skill 依据稳健性与归因证据**诊断**该候选**是否应该**提交。通过相关性预检（`get_alpha_details` 的 `is.checks` + `check_correlation`；**不存在 `get_submission_check` 这个 MCP 工具**，2026-09-26 审计已更正）的 alpha 仍可能过拟合在单一年份或 5 只股票上；这正是本 skill 要抓住的情形。
 
 ## 工作流
 
@@ -130,6 +140,9 @@ allowed-tools:
 ## 验证清单
 
 1. 运行 `tools/forum_cache_builder.py --status`；过期/为空时在 Phase A 调 `authenticate` 和至少一次 `search_forum_posts`；确认缓存达到 ≥30 帖再继续。缓存新鲜时确认可加载并跳过实时搜索。
-2. 对样本 alpha 端到端跑 Phase B，确认全部四个 MCP 工具（`get_alpha_details`、`get_alpha_yearly_stats`、`get_alpha_pnl`、`check_correlation`）返回非空载荷。任一返回空时重试一次后向用户报错——不得编造数字。
+2. 对样本 alpha 端到端跑 Phase B，确认全部四个 MCP 工具（`get_alpha_details`、`get_alpha_yearly_stats`、`get_alpha_pnl`、`check_correlation`）返回非空载荷。
+   ⚠ `check_correlation` 是**阻塞式轮询且依赖 Redis（本环境不可用）→ 易「等死」**；生产/自相关的可靠取法是
+   **直接 15s 间隔长窗口轮询 `GET /alphas/{id}/correlations/prod`**（该端点恒秒回 200，**空体 = 平台仍在算**，
+   非空返回 `{records, max, min}`，**`max` 才是判定值**），且**不要高频 `refresh=true`**（会加长平台队列）。任一返回空时重试一次后向用户报错——不得编造数字。
 3. 发 `alpha.robustness_audit` 事件；确认出现在 `data/events/<today>.jsonl`。
 4. 确认 Phase E（PPA 提交规则/幽灵提交识别/提交探测协议）在候选通过审计后被读取消费。

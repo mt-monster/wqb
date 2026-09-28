@@ -11,6 +11,14 @@ allowed-tools:
 
 # BRAIN Alpha 研究 — 字段质量（Field Quality）
 
+## 职责边界
+
+- **本 skill 负责**：WebDataScope 数据包质量预筛（**S-PRE，纯离线**：低覆盖/高偏度/厚尾/单边/稀疏事件），按 alphaCount/userCount 排字段种子
+- **本 skill 不做**：不产出战役选集、不回测、不提交；**只作 S0 的前置参考，不替代 S0 体检**
+- **上游 / 下游**：上游 = 本地 WebData 快照（`tools/gen_field_inspect_packs.py`）；下游 = S0 选集参考
+
+
+
 ## 触发场景
 
 字段质量先验、WebDataScope 数据包质量预筛、或基于质量指标的数据集/字段选择。
