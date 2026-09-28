@@ -1,4 +1,4 @@
-# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑 → N30 修复与第五轮探针 → N31 修复与第六轮探针 → 第 4 项口径修复与第七轮探针，2026-09-27～28）
+# RA 九步流水线逐阶段展开 · 价值评估 · Dry-Run（沙箱 → P0 修复 → 真实环境复跑 → P1 修复 → 第三轮复跑 → P1 第二批修复 → 第四轮复跑 → N30 修复与第五轮探针 → N31 修复与第六轮探针 → 第 4 项口径修复与第七轮探针 → N35 修复与第八轮探针，2026-09-27～28）
 
 > **对象**：`Claude/skills/wq-brain-ra-pipeline/SKILL.md`（v2.2，last_verified 2026-09-19）定义的唯一挖掘编排 SOP（S-PRE→S6 九步），以及它调用的 workflow 节点、`tools/`、toolkit 脚本与 MCP 函数。
 > **代码基线**：`c393bca`（2026-09-25）。
@@ -10,6 +10,7 @@
 > **第五轮（同日更新，见 §14.10）**：按审阅意见修 N30。盘点全部 wave_results 写入方后，同一根因有四处：收批级联、toolkit 评审写入（主路径）、点塔回写、两个 verdict 归一器。四处全部改走写入契约，波号一律原字符串，约定写进 AGENTS.md §8.6。真实环境探针修复前 / 后对照 9/9 ✅，含"修复后的代码接手修复前的库"。新记 N31（P2，需定）：SOP 的手动补收入口在 MCP 层不存在。实录 `realenv/realenv_transcript_n30.txt`。
 > **第六轮（同日更新，见 §14.11）**：按审阅意见修 N31。根因是 726a350 把新函数插进了 `@mcp.tool()` 与 `harvest_multisim_results` 之间，装饰器错挂到私有函数上，不是有意降级。装饰器已复位；声称承接它、实际从没能用的 `workflow_auto_harvest` 改好（带 alphas 时调同一实现入库，不带时只读出报告）；加了私有函数不得注册的守护。真实环境照 SOP 原文调用 5/5 ✅。新记 N32（P2）：`workflow_auto_review` 同样没在真实表结构上跑过。实录 `realenv/realenv_transcript_n31.txt`。
 > **第七轮（2026-09-28，见 §14.12）**：按审阅意见修第 4 项（§14.11.3）：`backtest_results.ra_failed_checks` 按 `wqb.config` 的 RA 唯一定义写。唯一写入方 `CampaignStore.upsert_backtest_rows` 与三条生产路径（收批拍平、toolkit 评审、收批 CLI）都改了，`failed_checks`（全部 FAIL）留在 payload 里；约定写进 AGENTS.md §8.7。真实环境探针 9/9 ✅：真实数据修复前后逐条相同，只有构造出的分叉情形（相关性 FAIL、RA 项 WARNING）改为按定义写。探针顺带发现三个既有问题 N33–N35（未修），其中 N35（P1）会让已提交的 alpha 重新进提交队列。实录 `realenv/realenv_transcript_item4.txt`。
+> **第八轮（2026-09-28，见 §14.13）**：按审阅意见修 N35。同一个 alpha 被多条路径反复写入，两个写入方却都整行覆盖，把"这一行没带"当成"清空"。改为一条写法（`_write_alpha_row`）加三条规则：没带不清空、生命周期不回退、数据集归属点名才改；`backtest_results` 的 upsert 同样按合并写。约定写进 AGENTS.md §8.8。真实环境探针 8/8 ✅：修复前一次重评审就把已提交的 alpha 放回提交队列 READY，修复后不再入队。已被清掉的旧行靠一次 `sync_platform_alphas` 回填补回（§14.13.3）。实录 `realenv/realenv_transcript_n35.txt`。
 
 **证据等级**（全文每条判断都标注来源，避免"推测记账"）：
 
@@ -44,7 +45,7 @@
 
 **总评**：九步骨架本身没有多余的"步"——每一步都承载着至少一个有实证的判别机制。本轮发现的问题集中在**步与步之间的接缝**（写入口契约、快照/文件双载体、节点 vs CLI 两条执行路径语义不一）和**展示层噪声**，而不是"缺步骤"或"步骤无用"。真正该**去除**的是少数已被证明无效或误导的子项（死代码缓存、分叉实现、只打印不判定的伪硬闸），真正该**深化**的是把 SOP 文字规则变成机器可执行的约束（users 分级、区域闸 enforce、verdict 写入契约）。
 
-### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9；N31 为第五轮新增，详见 §14.10；N32 为第六轮新增，详见 §14.11；N33–N35 为第七轮新增，详见 §14.12.3）
+### 0.2 本轮新发现（按严重度；均为 09-16/17 三份审计未记录的问题；N16–N27 为第二轮真实环境新增，详见 §14.5；N28–N29 为第三轮新增，详见 §14.8；N30 为第四轮新增，详见 §14.9；N31 为第五轮新增，详见 §14.10；N32 为第六轮新增，详见 §14.11；N33–N35 为第七轮新增，详见 §14.12.3；N35 第八轮已修，详见 §14.13）
 
 | # | 级别 | 发现 | 证据 |
 |---|---|---|---|
@@ -77,7 +78,7 @@
 | N32 | P2 未修 | `workflow_auto_review`（auto_review 节点）没在真实表结构上跑过：指标为空（NULL）的行在 walls 诊断处 `TypeError`，写入目标表 `review_results` 不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响 | 〔真〕§14.11 |
 | N33 | P2 未修 | `CampaignStore` 建的 `alphas` 表没有 `soft_deleted` / `disposition`，提交队列入队查询在新建的库上 `no such column`；收批后的自动入队只打印"入队跳过" | 〔真〕§14.12.3 |
 | N34 | P2 未修 | `upsert_backtest_rows` 按原串查 expressions，`upsert_expressions` 存 strip 后的式子：代码首尾带空白的回测行整行静默跳过（真实评审行 112 条里 3 条） | 〔真〕§14.12.3 |
-| N35 | **P1** 未修 | `upsert_backtest_rows` 同步 `alphas` 时，行里没带的列（status / platform_status / date_submitted / stage / prod / self 等）被写成默认值或 NULL：已提交的 alpha 经一次重评审或重收批就回到 `UNSUBMITTED`、相关性清空，随后被提交队列放进 READY | 〔真〕§14.12.3 |
+| N35 | **P1** ✅已修（§14.13） | `upsert_backtest_rows` 同步 `alphas` 时，行里没带的列（status / platform_status / date_submitted / stage / prod / self 等）被写成默认值或 NULL：已提交的 alpha 经一次重评审或重收批就回到 `UNSUBMITTED`、相关性清空，随后被提交队列放进 READY | 〔真〕§14.12.3 |
 
 ### 0.3 09-16/17 建议的落地复核（代码核验）
 
@@ -1088,7 +1089,7 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
    - 真实环境 9/9 ✅；
    - 根测试逐文件跑 1617 passed / 17 failed / 20 skipped，失败集合与 `baf6f19` 相同；
    - 新用例 17 条，在修复前的代码上 11 条失败。
-7. **探针顺带发现三个既有问题**（与本项无关，两棵树相同，未修）：见 §14.12.3，其中 N35 会让已提交的 alpha 重新进提交队列。
+7. **探针顺带发现三个既有问题**（与本项无关，两棵树相同，未修）：见 §14.12.3，其中 N35 会让已提交的 alpha 重新进提交队列（第八轮已修，§14.13）。
 
 #### 14.12.1 修复内容
 
@@ -1118,7 +1119,7 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
 
 | # | 级别 | 发现 | 建议 |
 |---|---|---|---|
-| N35 | P1 | `upsert_backtest_rows` 同步 `alphas` 时，status / platform_status / date_submitted / stage / prod / self 等列无条件取行里的值，行里没带就写默认值或 NULL。实测：一条已提交的 alpha（ACTIVE、date_submitted、prod 0.55 / self 0.31）经一次 toolkit 重评审行 upsert 后，变成 `UNSUBMITTED`，上述列全部为 NULL，`prod_corr_source` 却仍是 platform_sync；随后 `enqueue_from_alphas` 把它放进 READY（`IS_ONLY`） | 同步 `alphas` 时行里没带的列保持原值（`COALESCE(?, 列)`）；status 不从已提交态回退；相关性写入统一走 `persist_correlation` |
+| N35 | P1 ✅已修（§14.13） | `upsert_backtest_rows` 同步 `alphas` 时，status / platform_status / date_submitted / stage / prod / self 等列无条件取行里的值，行里没带就写默认值或 NULL。实测：一条已提交的 alpha（ACTIVE、date_submitted、prod 0.55 / self 0.31）经一次 toolkit 重评审行 upsert 后，变成 `UNSUBMITTED`，上述列全部为 NULL，`prod_corr_source` 却仍是 platform_sync；随后 `enqueue_from_alphas` 把它放进 READY（`IS_ONLY`） | 同步 `alphas` 时行里没带的列保持原值（`COALESCE(?, 列)`）；status 不从已提交态回退；相关性写入统一走 `persist_correlation` |
 | N34 | P2 | `upsert_backtest_rows` 按原串查 `expressions`，`upsert_expressions` 存的却是 strip 后的式子。代码首尾带空白的行查不到 expression_id，整行跳过，返回的 n 变少，没有任何提示。真实评审行 112 条里有 3 条（截断的旧行，末尾是 `", "`） | 两边用同一个规范化后的式子查找；跳过的行计数并告警 |
 | N33 | P2 | `CampaignStore` 建的 `alphas` 表没有 `soft_deleted` / `disposition`，而提交队列 `enqueue_from_alphas` 的查询要用它们（生产库与 `test_submit_queue_gates` 的夹具里有）。空库上直接报 `no such column`。`tools/harvest_multisim.py` 收批后的自动入队包在 try 里，只打印"入队跳过" | 把两列加进建表与迁移（`_schema.py`） |
 
@@ -1140,6 +1141,90 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
   - 3 条真实评审行两棵树都没入库，即 N34，由此牵连 payload 比对。探针改为只比两棵树都入库的行，并列出被跳过的行。
 
   修正后第 2 遍 9/9。定稿前 `_backtest.py` 又补了一处（逗号分隔的名字串），第 3 遍在最终代码上重跑，即附件实录，9/9；逐文件回归也在最终代码上重跑过，数字同上。
+
+
+### 14.13 N35 修复与第八轮真实环境探针（2026-09-28）
+
+> 审阅意见："按最佳方案修复 N35"。实录 `realenv/realenv_transcript_n35.txt`，复现 `realenv/reproduce_realenv_n35.sh`（附录 A）。
+> 方法：两棵树各起一个 wqb-db server（stdio，`.mcp.json` 原样）。一棵是修复前的 main（`023bdb9`，git archive 副本），一棵是本工作树，各用一个空库走同一条 alpha 生命周期：
+> 1. 收批入库；
+> 2. 相关性落库；
+> 3. 提交后平台同步（`tools/sync_platform_alphas` 的真实转换）；
+> 4. toolkit 重评审；
+> 5. 事后补收；
+> 6. 读提交队列、区域 ACTIVE 计数、sync 的本地已提交台账与 `get_mining_yield`。
+>
+> 同步、相关性、重评审、入队都在各自代码树的子进程里跑真实代码。载荷用 `tracking/mining/result_submit_*` 的 11 条真实平台 checks，加上真实载荷裁剪件；提交时间、OS 段与相关性数值是构造值。
+
+#### 14.13.0 一页结论
+
+1. **根因**：同一个 alpha 会被多条路径反复写入，每条路径只带自己知道的列，但两个写入方都把整行覆盖。"这一行没带"被当成了"清空"。
+   - `upsert_backtest_rows` 同步 alphas 时，status 缺省写 UNSUBMITTED，其余没带的列写 NULL；
+   - `upsert_alpha_from_platform` 同理，`sync_platform_alphas` 传 `two_year_sharpe=None`，字段投票推断不出时数据集写 `_unknown`；
+   - 同一函数里 `backtest_results` 的 ON CONFLICT 也是整行覆盖。
+2. **方案：一条写法，三条规则。** 两个写入方写 alphas 行时共用 `_write_alpha_row`，`backtest_results` 的 upsert 按同样的规则改写。三条规则：
+   - **没带不等于清空**：None 或空值不覆盖已有值；
+   - **生命周期不回退**：`status` / `platform_status` 到了 ACTIVE / SUBMITTED / DECOMMISSIONED、`stage` 到了 OS 以后，不会被未提交类的值改回去；已提交态之间照常变化；
+   - **数据集归属**：调用方点名了才改；字段投票这类推断只补 `_unknown`。
+
+   另外，写相关性时同时记 `prod_corr_source` / `corr_checked_at`，与 `persist_correlation` 用同一个取值规则（[0,1] 以外的值不算数）。此前回测行写进来的相关性不记来源，而两条收批路径随后补记来源的调用，又因为值已存在而被跳过。
+3. **真实环境 8/8 ✅**。以一条已提交的 alpha 为例，修复前与修复后对照如下：
+
+   | 步骤 | 修复前 | 修复后 |
+   |---|---|---|
+   | ③ 平台同步后 | 2Y 被清空，数据集变成 `_unknown` | 都保留 |
+   | ④ 一次 toolkit 重评审后 | 回到 UNSUBMITTED；platform_status、提交时间、stage、相关性全部清空；回测行的 returns、drawdown、多空数、数据集被清成 NULL | 全部保留 |
+   | ⑤ 事后补收 | 收批行不带平台状态，上面的状态也补不回来 | 已提交状态照旧 |
+
+   读取方也跟着恢复正常：修复前 4 条已提交的 alpha 又进了提交队列（IS_ONLY / READY），修复后一条都不入队。其余指标见 §14.13.2。
+4. **行里带了的值照常更新**，比如重评审后的 sharpe。**新行的缺省值不变**。没提交的 alpha，修复前后入队结果逐条相同。
+5. **验证**：
+   - 新用例 9 条，在修复前代码上有 8 条失败。唯一通过的一条断言的是"新行缺省值不变"，本来就应该通过。
+   - 逐文件回归 1626 passed / 17 failed / 20 skipped，失败集合与 `023bdb9` 相同。
+
+#### 14.13.1 修复内容
+
+| 项 | 改动 | 文件 |
+|---|---|---|
+| alphas 行的唯一写法 | 新增 `_write_alpha_row`：新行照写，status 缺省 UNSUBMITTED，没有归属时数据集用 `_unknown`；已有行按 `_merge_alpha_columns` 合并；按规则改数据集归属；写了相关性就记来源与时间。`upsert_backtest_rows` 与 `upsert_alpha_from_platform` 都改为经它写，不再各自拼整行 UPDATE | `src/wqb/store/_backtest.py` |
+| 合并规则 | `_merge_alpha_columns`：None 或空值不写；`_SUBMITTED_STATES` 里的已提交态不回退 | 同上 |
+| 回测行 upsert | ON CONFLICT 时指标与 dataset 用 `COALESCE(新值, 原值)`。`ra_failed_checks` 只在这一行说得清时才改：空（RA 全过）照样覆盖旧名单，说不清就保留。`payload_json` 仍是最近一次的原始行。expressions 表的指标副本同样按合并写 | 同上 |
+| 相关性取值 | 抽出 `_corr_value`（[0,1] 以外不算数），`persist_correlation` 与两个写入方共用；0 / 0.0 不再因为 `or` 串联被当成没有 | 同上 |
+| 注释 | 收批 CLI 里"只填 NULL、这里补记来源"的旧说明改为实际行为 | `tools/harvest_multisim.py` |
+| 测试 | `tests/unit/test_n35_alpha_state_merge.py` 9 条，覆盖：<br>• 原问题复现：重评审后提交态、相关性、数据集保留；已提交的 alpha 不再入队；<br>• 生命周期只进不退；<br>• 数据集归属只在点名时改，推断只补 `_unknown`；<br>• 相关性带来源写入、不被清空、越界值不算数、0.0 是真值；<br>• 走 `sync_platform_alphas.to_store_payload` 真实转换后保留本地回测值；<br>• 回测行保留收批指标，`ra_failed_checks` 只在说得清时改；<br>• 新行缺省值不变；<br>• 经 MCP 的 `harvest_multisim_results` 重收一条已提交的 alpha 仍是已提交 | |
+| 约定 | AGENTS.md §8.8 | |
+| 演练脚本 | `realenv/run_realenv_n35.py` + `reproduce_realenv_n35.sh` | |
+
+#### 14.13.2 真实环境：修复前 vs 修复后
+
+| 观察点 | 修复前（main `023bdb9`） | 修复后 |
+|---|---|---|
+| ③ 平台同步后，4 条已提交的 alpha | 2Y 全部变成 NULL，数据集全部变成 `_unknown` | 2Y 与数据集保留 |
+| ④ toolkit 重评审后（以 2rp1vPX6 为例） | UNSUBMITTED，没有平台状态，没有提交时间，没有 stage；prod 为 NULL；数据集 `_unknown`；returns 为 NULL | 状态 COMPLETE，平台状态 ACTIVE，有提交时间，stage OS；prod 0.62（platform_sync）；数据集 probe_ds；returns 0.0801 |
+| ⑤ 事后补收后 | 平台状态与提交时间仍为空，prod 仍为空 | 同 ④ |
+| ④ 后的回测行（以 QPGbAOn5 为例：returns / drawdown / 多头数 / 空头数 / 数据集） | 全部为空 | 0.1531 / 0.0284 / 251 / 249 / probe_ds |
+| 提交队列 | 4 条已提交的 alpha 被放进 READY（`IS_ONLY`），共入队 12 条 | 已提交的 alpha 不入队，共入队 8 条（与修复前的未提交部分逐条相同） |
+| 区域 ACTIVE 计数（`tools/region_status` 的查询） | 空 | USA 3 |
+| sync 的本地已提交台账（`date_submitted IS NOT NULL`） | 0 条：下次同步会把它们全当漏记重补一遍 | 4 条 |
+| `get_mining_yield` 的 prod_clean | 0（相关性被清空） | 4 |
+
+#### 14.13.3 旧数据与残留
+
+- **已经被清掉的行不会自动恢复**，本项只保证今后不再清。本机可以这样查、这样补：
+  1. 先跑 `python tools/sync_platform_alphas.py --dry-run` 查看。它以平台 OS 池为准，打印"本地已提交台账 N；漏记 M"。本地因 N35 被改回未提交的 alpha，会算在"漏记"里。
+  2. 再去掉 `--dry-run` 跑一次回填。修复后这次回填按合并写，能补回平台状态、stage 与提交时间，不会再清本地回测值。
+  3. 补回之后，下一次入队（`enqueue_from_alphas` 入队后按 alphas 表退役已提交者）会把之前误放进 READY 的条目退掉。
+  4. 被清空的相关性：平台对象里带 `prodCorrelation` / `selfCorrelation` 的会随同步补回，其余需要重新做相关性检查。
+- **N33、N34 仍未修**，已作为独立任务提出。本轮探针补上两列后再入队，与本项无关。
+- 旧库里，已经被整行覆盖过的 `backtest_results.payload_json` 找不回旧内容。今后 `payload_json` 仍记最近一次原始行，列按合并写（AGENTS.md §8.8）。
+
+#### 14.13.4 回归与同步
+
+- **根测试**：逐文件跑，1626 passed / 17 failed / 20 skipped。失败集合与 `023bdb9` 逐条相同（同 §14.12.4 的环境类问题）；heartbeat 用例照旧会连 pytest 一起被 killpg。
+- **相关套件同进程跑**：`test_store`、第 4 项、N31、N30、提交队列、prod-first、wiring 共 124 条通过；`test_audit_fixes` 39 passed / 1 skipped。
+- **新用例在修复前代码上**：放进 `023bdb9` 的工作树跑，9 条里 8 条失败。
+- **pyflakes**：改动文件无告警。本项没有改技能文件，不需要同步。
+- **第八轮共跑 2 遍**。第 1 遍 8/8，但回测行那一项取的是 ⑤ 之后的状态：⑤ 的补收会把收批指标重新写一遍，看不出 ④ 清没清过。改为 ④ 之后立即取数，第 2 遍即附件实录，8/8，修复前 ④ 之后该行全为空。
 
 ---
 
@@ -1228,6 +1313,15 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.s
 
 然后读 `get_mining_yield` 与提交队列。两棵树的 `data/wqb.db` 演练期间换成空库，结束后移回。第七轮共跑 3 遍，经过见 §14.12.4。
 
+**第八轮（N35 修复后的专项探针）**：
+
+```bash
+bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_n35.sh
+# 可选：REALENV_SCRATCH=<目录>  PRE_FIX_REV=<N35 修复前的提交，默认 023bdb9>  REALENV_ALLOW_DB_SWAP=1（本地库 >5MB 时）
+```
+
+两棵树各起一个 wqb-db server（stdio，`.mcp.json` 原样），各用一个空库走同一条 alpha 生命周期：收批 → 相关性落库 → 平台同步 → toolkit 重评审 → 事后补收，最后读提交队列等读取方。两棵树的 `data/wqb.db` 演练期间换成空库，结束后移回。第八轮共跑 2 遍，经过见 §14.13.4。
+
 ## 附录 B：证据索引（主要 `文件:行`）
 
 | 发现 | 位置 |
@@ -1267,4 +1361,4 @@ bash reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.s
 | 第 4 项 | 修复前：`src/wqb/store/_backtest.py`（`failed = r.get("failed_checks") or r.get("ra_failed_checks")`）；修复后：`_backtest.py:22`（`ra_failed_names`）、`:97`；`wqb_db_mcp.py:1352`（原始 is 块）、`:1373`（精简结构 ra 块）、`:1393`（扁平 checks）；`metrics_cache.py:26`、`:108`；`tools/harvest_multisim.py:138`、`:247`；读取方 `wqb_db_mcp.py:613`（严格产出率）、`src/wqb/store/submit_queue.py:108`（`ra_fail_of`） |
 | N33 | `src/wqb/store/submit_queue.py:484`（`COALESCE(a.soft_deleted,0)=0`）；`src/wqb/store/_schema.py:162`（alphas 建表，无 soft_deleted / disposition）；`tools/harvest_multisim.py` 收批后自动入队的 try 块 |
 | N34 | `src/wqb/store/_backtest.py:66`、`:71`、`:84`（按原串 code 查 expressions）；`src/wqb/store/_expressions.py:105`（存 strip 后的式子） |
-| N35 | `src/wqb/store/_backtest.py:163`（`UPDATE alphas SET …` 无条件取行里的值，含 status / platform_status / date_submitted / prod_correlation / self_correlation） |
+| N35 | 修复前：`src/wqb/store/_backtest.py:163`（`UPDATE alphas SET …` 无条件取行里的值）、`upsert_alpha_from_platform` 同样整行覆盖、backtest_results 的 ON CONFLICT 整行覆盖；修复后：`_backtest.py:79`（`_merge_alpha_columns`）、`:72`（`_SUBMITTED_STATES`）、`:248`（`_write_alpha_row`）、`:160-176`（回测行合并写，`ra_failed_checks` 按是否说得清）、`:52`（`_corr_value`）；读取方 `src/wqb/store/submit_queue.py:484-488`（入队过滤）、`tools/region_status.py:57`、`tools/sync_platform_alphas.py`（本地已提交台账） |

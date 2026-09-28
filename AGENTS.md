@@ -454,3 +454,30 @@ pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR �
   或平台精简结构 `ra` 块里预算好的名单（RA 全过时不带名单键，按空列表处理）。不要自己数 FAIL。
 - **`failed_checks` = 全部 FAIL 项名**（评审 / 诊断用），照旧留在行里与 `payload_json`。相关性等非 RA 失败读它，
   或读 `alphas.prod_correlation` / `self_correlation` 的数值（提交队列的相关性闸就看数值），不要从这一列推断。
+
+### 8.8 alphas / backtest_results 写入是合并式（2026-09-28 N35 固化）
+
+同一个 alpha 会被多条路径反复写入：收批（wqb-db `harvest_multisim_results`、`tools/harvest_multisim.py`）、
+toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_alphas`）、相关性落库。
+每次写入都只带它自己知道的那几列。
+
+- **只经 CampaignStore 写**：
+  - `upsert_backtest_rows` 写回测行，并同步 alphas；
+  - `upsert_alpha_from_platform` 写平台详情；
+  - 两者写 alphas 行时共用 `_write_alpha_row`；
+  - 相关性单独落库走 `persist_correlation`。
+
+  新增写入方不要自己拼整行覆盖的 `UPDATE alphas SET …`。一次性修数工具除外，但须人工复核。
+- **没带不等于清空**：行里没有、或值为 None 的列保留原值，alphas 与 backtest_results 都是这样。
+  `backtest_results.ra_failed_checks` 只在这一行说得清时才改。空列表表示 RA 全过，照样会覆盖旧名单。
+- **生命周期不回退**：
+  - `status` / `platform_status` 一旦是 ACTIVE / SUBMITTED / DECOMMISSIONED，就不会再被 UNSUBMITTED / COMPLETE 之类的值改回去；
+  - `stage` 一旦是 OS，就不会再被 IS 改回去。
+
+  已提交态之间可以互相变化，比如 ACTIVE 变 DECOMMISSIONED。
+- **数据集归属**：
+  - 调用方点名了数据集，才改归属；
+  - 没点名（缺省为 `_unknown`），不动；
+  - 字段投票这类推断，只补 `_unknown` 的行。
+- **相关性**：写入时同时记 `prod_corr_source` 与 `corr_checked_at`。[0,1] 以外的值不算数。
+- `backtest_results.payload_json` 仍是最近一次入库的原始行。需要"历次入库的并集"时读列，不要读 payload。

@@ -557,9 +557,8 @@ async def main():
                         except Exception as e:  # 队列记账失败绝不阻断收批
                             print(f"  [queue] 入队跳过：{e}")
                     # 2026-09-18（设计文档 §2.2 改动#5）：相关性来源标记。
-                    # upsert_backtest_rows 已把 prod/self 写入 alphas（仅当列原为 NULL），
-                    # 这里补写 source=platform_sync + corr_checked_at，使复盘可区分
-                    # 平台权威值与本地 triage 抽测值。
+                    # 2026-09-28 N35：upsert_backtest_rows 写相关性时已一并记 prod_corr_source=platform_sync
+                    # 与 corr_checked_at（行里没带就不动已有值），这里的补写通常是空操作，留作兜底。
                     for row in rows:
                         if row.get("alpha_id") and (
                             row.get("prod_correlation") is not None

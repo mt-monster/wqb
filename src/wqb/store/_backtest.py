@@ -49,6 +49,52 @@ def ra_failed_names(r: Dict[str, Any]) -> Optional[List[str]]:
     return None
 
 
+def _corr_value(v: Any) -> Optional[float]:
+    """相关性取值：[0,1] 内的数才算数；None / 非数 / 越界按"没有"处理（防空值与异常值污染）。"""
+    if v is None:
+        return None
+    try:
+        fv = float(v)
+    except (TypeError, ValueError):
+        return None
+    return fv if 0.0 <= fv <= 1.0 else None
+
+
+def _first_present(d: Dict[str, Any], *keys: str) -> Any:
+    """按顺序取第一个不是 None 的键值（此前用 `or` 串联，0 / 0.0 会被当成没有）。"""
+    for k in keys:
+        if d.get(k) is not None:
+            return d.get(k)
+    return None
+
+
+#: 生命周期列的"已提交"态：一旦到了这里，不再被未提交类的值（UNSUBMITTED / COMPLETE / IS …）改回去
+_SUBMITTED_STATES = {
+    "status": frozenset({"ACTIVE", "SUBMITTED", "DECOMMISSIONED"}),
+    "platform_status": frozenset({"ACTIVE", "SUBMITTED", "DECOMMISSIONED"}),
+    "stage": frozenset({"OS"}),
+}
+
+
+def _merge_alpha_columns(existing: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, Any]:
+    """已有 alphas 行的合并式更新：返回真正要写的列（2026-09-28 N35）。
+
+    - 值为 None / 空串的列不写：这一行"没带"不等于"清空"；
+    - status / platform_status / stage 已处在已提交态时，不被未提交类的值改回去（已提交态之间可以变，
+      如 ACTIVE → DECOMMISSIONED）。
+    """
+    out: Dict[str, Any] = {}
+    for col, val in incoming.items():
+        if val is None or val == "":
+            continue
+        submitted = _SUBMITTED_STATES.get(col)
+        if (submitted and str(existing.get(col) or "").upper() in submitted
+                and str(val).upper() not in submitted):
+            continue
+        out[col] = val
+    return out
+
+
 class BacktestMixin:
     """Backtest results and submission recording methods."""
 
@@ -99,6 +145,10 @@ class BacktestMixin:
                     turnover = r["turnover_pct"] / 100.0
                 failed = ra_failed_names(r)
                 payload = _dumps(r)
+                # 同一 alpha 再次入库（重评审、重收批、事后补收）时按合并写（2026-09-28 N35）：
+                # 行里没带的指标与数据集保留原值——toolkit 评审行本来就不带 returns / drawdown / 多空数等，
+                # 此前会把收批写进来的值清成 NULL。ra_failed_checks 只在这一行说得清时才改
+                # （空 = RA 全过也要写进去，覆盖旧名单）。payload_json 仍是最近一次入库的原始行。
                 cur.execute(
                     """INSERT INTO backtest_results
                        (expression_id, alpha_id, status, sharpe, fitness, turnover,
@@ -109,16 +159,24 @@ class BacktestMixin:
                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                        ON CONFLICT(alpha_id) DO UPDATE SET
                         expression_id=excluded.expression_id, status=excluded.status,
-                        sharpe=excluded.sharpe, fitness=excluded.fitness,
-                        turnover=excluded.turnover, margin=excluded.margin,
-                        returns=excluded.returns, drawdown=excluded.drawdown,
-                        two_year_sharpe=excluded.two_year_sharpe,
-                        sub_universe_sharpe=excluded.sub_universe_sharpe,
-                        risk_neutralized_sharpe=excluded.risk_neutralized_sharpe,
-                        long_count=excluded.long_count, short_count=excluded.short_count,
-                        pnl=excluded.pnl, book_size=excluded.book_size,
-                        ra_failed_checks=excluded.ra_failed_checks,
-                        region=excluded.region, wave=excluded.wave, dataset=excluded.dataset,
+                        sharpe=COALESCE(excluded.sharpe, sharpe),
+                        fitness=COALESCE(excluded.fitness, fitness),
+                        turnover=COALESCE(excluded.turnover, turnover),
+                        margin=COALESCE(excluded.margin, margin),
+                        returns=COALESCE(excluded.returns, returns),
+                        drawdown=COALESCE(excluded.drawdown, drawdown),
+                        two_year_sharpe=COALESCE(excluded.two_year_sharpe, two_year_sharpe),
+                        sub_universe_sharpe=COALESCE(excluded.sub_universe_sharpe, sub_universe_sharpe),
+                        risk_neutralized_sharpe=COALESCE(excluded.risk_neutralized_sharpe,
+                                                         risk_neutralized_sharpe),
+                        long_count=COALESCE(excluded.long_count, long_count),
+                        short_count=COALESCE(excluded.short_count, short_count),
+                        pnl=COALESCE(excluded.pnl, pnl),
+                        book_size=COALESCE(excluded.book_size, book_size),
+                        ra_failed_checks=CASE WHEN ? THEN excluded.ra_failed_checks
+                                              ELSE ra_failed_checks END,
+                        region=excluded.region, wave=excluded.wave,
+                        dataset=COALESCE(excluded.dataset, dataset),
                         code=excluded.code, payload_json=excluded.payload_json,
                         created_at=excluded.created_at""",
                     (
@@ -131,65 +189,52 @@ class BacktestMixin:
                         r.get("pnl"), r.get("book_size"),
                         _dumps(failed) if failed else None,
                         region, str(wave), dataset, code, payload, now,
+                        failed is not None,
                     ),
                 )
                 if alpha_id:
-                    cur.execute("SELECT id FROM alphas WHERE alpha_id=?", (alpha_id,))
-                    arow = cur.fetchone()
-                    aval = (
-                        code or "",
-                        rid, ds_id,
-                        r.get("universe"), r.get("delay"),
-                        r.get("neut") or r.get("neutralization"),
-                        r.get("sharpe"), r.get("fitness"), margin, turnover,
-                        r.get("two_year_sharpe"),
-                        r.get("status") or "UNSUBMITTED",
-                        r.get("prod_corr") or r.get("prod_correlation"),
-                        r.get("self_corr") or r.get("self_correlation"),
-                        r.get("is_ladder_sharpe"),
-                        r.get("platform_status"),
-                        r.get("stage"),
-                        r.get("alpha_type"),
-                        r.get("date_submitted"),
-                        # ---- 2026-09-18：回测指标全量落库（设计文档 §2.2）----
-                        r.get("sub_universe_sharpe"),
-                        r.get("returns"),
-                        r.get("drawdown"),
-                        r.get("long_count"),
-                        r.get("short_count"),
-                        r.get("concentrated_weight"),
-                        r.get("cluster_test"),
-                        now,
+                    self._write_alpha_row(
+                        cur, alpha_id,
+                        {
+                            "expression": code,
+                            "universe": r.get("universe"),
+                            "delay": r.get("delay"),
+                            "neutralization": _first_present(r, "neut", "neutralization"),
+                            "sharpe": r.get("sharpe"),
+                            "fitness": r.get("fitness"),
+                            "margin": margin,
+                            "turnover": turnover,
+                            "two_year_sharpe": r.get("two_year_sharpe"),
+                            "status": r.get("status"),
+                            "prod_correlation": _corr_value(_first_present(r, "prod_corr", "prod_correlation")),
+                            "self_correlation": _corr_value(_first_present(r, "self_corr", "self_correlation")),
+                            "is_ladder_sharpe": r.get("is_ladder_sharpe"),
+                            "platform_status": r.get("platform_status"),
+                            "stage": r.get("stage"),
+                            "alpha_type": r.get("alpha_type"),
+                            "date_submitted": r.get("date_submitted"),
+                            # ---- 2026-09-18：回测指标全量落库（设计文档 §2.2）----
+                            "sub_universe_sharpe": r.get("sub_universe_sharpe"),
+                            "returns": r.get("returns"),
+                            "drawdown": r.get("drawdown"),
+                            "long_count": r.get("long_count"),
+                            "short_count": r.get("short_count"),
+                            "concentrated_weight": r.get("concentrated_weight"),
+                            "cluster_test": r.get("cluster_test"),
+                        },
+                        region_id=rid,
+                        # 调用方点名了数据集才改归属；没点名（缺省 _unknown）不动已有归属
+                        dataset_id=ds_id if dataset and dataset != "_unknown" else None,
+                        dataset_authoritative=True,
+                        default_dataset_id=ds_id,
+                        # 回测行里的相关性来自平台返回的 alpha（两条收批路径都是），可在行里用 prod_corr_source 另注
+                        corr_source=r.get("prod_corr_source") or "platform_sync",
+                        now=now,
                     )
-                    if arow:
-                        cur.execute(
-                            """UPDATE alphas SET expression=?, region_id=?, dataset_id=?,
-                               universe=?, delay=?, neutralization=?, sharpe=?, fitness=?,
-                               margin=?, turnover=?, two_year_sharpe=?, status=?,
-                               prod_correlation=?, self_correlation=?, is_ladder_sharpe=?,
-                               platform_status=?, stage=?, alpha_type=?, date_submitted=?,
-                               sub_universe_sharpe=?, returns=?, drawdown=?,
-                               long_count=?, short_count=?, concentrated_weight=?,
-                               cluster_test=?, updated_at=?
-                               WHERE id=?""",
-                            aval + (int(arow[0]),),
-                        )
-                    else:
-                        cur.execute(
-                            """INSERT INTO alphas
-                               (alpha_id, expression, region_id, dataset_id, universe,
-                                delay, neutralization, sharpe, fitness, margin, turnover,
-                                two_year_sharpe, status, prod_correlation, self_correlation,
-                                is_ladder_sharpe, platform_status, stage, alpha_type,
-                                date_submitted, sub_universe_sharpe, returns, drawdown,
-                                long_count, short_count, concentrated_weight, cluster_test,
-                                created_at, updated_at)
-                               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                            (alpha_id,) + aval + (now,),
-                        )
                 if alpha_id and r.get("sharpe") is not None:
                     cur.execute(
-                        """UPDATE expressions SET sharpe=?, fitness=?, margin=?, turnover=?,
+                        """UPDATE expressions SET sharpe=?, fitness=COALESCE(?, fitness),
+                           margin=COALESCE(?, margin), turnover=COALESCE(?, turnover),
                            updated_at=? WHERE alpha_id=?""",
                         (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
                     )
@@ -199,6 +244,58 @@ class BacktestMixin:
             self.connection.rollback()
             raise
         return n
+
+    def _write_alpha_row(
+        self, cur: Any, alpha_id: str, incoming: Dict[str, Any], *,
+        region_id: int, dataset_id: Optional[int], dataset_authoritative: bool,
+        default_dataset_id: int, corr_source: str, now: str,
+    ) -> str:
+        """alphas 行的唯一写法：upsert_backtest_rows 与 upsert_alpha_from_platform 共用（2026-09-28 N35）。
+
+        - 新行：照写；status 缺省 UNSUBMITTED，没有数据集归属时用 default_dataset_id（_unknown）。
+        - 已有行：按 `_merge_alpha_columns` 合并——行里没带的列不动，生命周期不从已提交态回退。
+          此前两个写入方都是整行覆盖：一次 toolkit 重评审就把已提交 alpha 改回 UNSUBMITTED、清空
+          platform_status / date_submitted / 相关性，提交队列随后又把它放回 READY。
+        - dataset_id：dataset_authoritative（调用方点名了数据集）时覆盖；否则（字段投票等推断）只在
+          原来没有归属（_unknown）时补上。
+        - 写了相关性就同时记来源与时间（prod_corr_source / corr_checked_at），与 persist_correlation 一致。
+
+        不提交事务，由调用方提交。返回 "inserted" / "updated"。
+        """
+        cur.execute(
+            "SELECT a.id, a.status, a.platform_status, a.stage, d.name FROM alphas a "
+            "LEFT JOIN datasets d ON d.id = a.dataset_id WHERE a.alpha_id=?",
+            (alpha_id,),
+        )
+        row = cur.fetchone()
+        corr_cols = {c for c in ("prod_correlation", "self_correlation") if incoming.get(c) is not None}
+        if row is None:
+            cols = dict(incoming)
+            cols["expression"] = cols.get("expression") or ""
+            cols["status"] = cols.get("status") or "UNSUBMITTED"
+            cols.update(alpha_id=alpha_id, region_id=region_id,
+                        dataset_id=dataset_id if dataset_id is not None else default_dataset_id)
+            if corr_cols:
+                cols.update(prod_corr_source=corr_source, corr_checked_at=now)
+            cols.update(created_at=now, updated_at=now)
+            cur.execute(
+                f"INSERT INTO alphas ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))})",
+                list(cols.values()),
+            )
+            return "inserted"
+        sets = _merge_alpha_columns(
+            {"status": row[1], "platform_status": row[2], "stage": row[3]}, incoming)
+        sets["region_id"] = region_id
+        if dataset_id is not None and (dataset_authoritative or row[4] in (None, "_unknown")):
+            sets["dataset_id"] = dataset_id
+        if corr_cols & set(sets):
+            sets.update(prod_corr_source=corr_source, corr_checked_at=now)
+        sets["updated_at"] = now
+        cur.execute(
+            f"UPDATE alphas SET {', '.join(f'{k}=?' for k in sets)} WHERE id=?",
+            list(sets.values()) + [int(row[0])],
+        )
+        return "updated"
 
     def record_submission(
         self,
@@ -233,6 +330,10 @@ class BacktestMixin:
         期望 d 键：alpha_id, region, expression, sharpe, fitness, turnover,
         two_year_sharpe, is_ladder_sharpe, prod_correlation, self_correlation,
         platform_status, stage, alpha_type, date_submitted, universe, delay, neutralization
+
+        已有行按合并写（2026-09-28 N35，见 `_write_alpha_row`）：d 里没有或为 None 的键不动——
+        tools/sync_platform_alphas 传 two_year_sharpe=None（平台 is 段没有这一项），此前会把本地回测
+        写进来的 2Y 清掉；字段投票推断的数据集只补 _unknown，不改掉已有归属。相关性记来源 platform_sync。
         """
         import re
         from collections import Counter
@@ -274,44 +375,34 @@ class BacktestMixin:
             top = votes.most_common(2)
             if len(top) == 1 or top[0][1] > top[1][1]:
                 ds_id = int(top[0][0])
-        if ds_id is None:
-            ds_id = self._ensure_dataset(region, "_unknown")
 
-        cur.execute("SELECT id FROM alphas WHERE alpha_id=?", (aid,))
-        row = cur.fetchone()
-        now = _now()
-        cols = {
-            "alpha_id": aid,
-            "expression": expr,
-            "region_id": rid,
-            "dataset_id": ds_id,
-            "universe": d.get("universe"),
-            "delay": d.get("delay"),
-            "neutralization": d.get("neutralization"),
-            "sharpe": d.get("sharpe"),
-            "fitness": d.get("fitness"),
-            "turnover": d.get("turnover"),
-            "two_year_sharpe": d.get("two_year_sharpe"),
-            "status": d.get("status") or "UNSUBMITTED",
-            "prod_correlation": d.get("prod_correlation") or d.get("prod_corr"),
-            "self_correlation": d.get("self_correlation") or d.get("self_corr"),
-            "is_ladder_sharpe": d.get("is_ladder_sharpe"),
-            "platform_status": d.get("platform_status"),
-            "stage": d.get("stage"),
-            "alpha_type": d.get("alpha_type"),
-            "date_submitted": d.get("date_submitted"),
-        }
-        if row:
-            sets = ", ".join(f"{k}=?" for k in cols)
-            cur.execute(f"UPDATE alphas SET {sets}, updated_at=? WHERE id=?",
-                        list(cols.values()) + [now, int(row[0])])
-        else:
-            klist = ", ".join(cols.keys())
-            ph = ", ".join("?" * len(cols))
-            cur.execute(
-                f"INSERT INTO alphas ({klist}, created_at, updated_at) VALUES ({ph}, ?, ?)",
-                list(cols.values()) + [now, now],
-            )
+        self._write_alpha_row(
+            cur, aid,
+            {
+                "expression": expr,
+                "universe": d.get("universe"),
+                "delay": d.get("delay"),
+                "neutralization": d.get("neutralization"),
+                "sharpe": d.get("sharpe"),
+                "fitness": d.get("fitness"),
+                "turnover": d.get("turnover"),
+                "two_year_sharpe": d.get("two_year_sharpe"),
+                "status": d.get("status"),
+                "prod_correlation": _corr_value(_first_present(d, "prod_correlation", "prod_corr")),
+                "self_correlation": _corr_value(_first_present(d, "self_correlation", "self_corr")),
+                "is_ladder_sharpe": d.get("is_ladder_sharpe"),
+                "platform_status": d.get("platform_status"),
+                "stage": d.get("stage"),
+                "alpha_type": d.get("alpha_type"),
+                "date_submitted": d.get("date_submitted"),
+            },
+            region_id=rid,
+            dataset_id=ds_id,                      # 字段投票的推断，只补 _unknown
+            dataset_authoritative=False,
+            default_dataset_id=self._ensure_dataset(region, "_unknown"),
+            corr_source="platform_sync",
+            now=_now(),
+        )
         self.connection.commit()
         return aid
 
@@ -344,19 +435,8 @@ class BacktestMixin:
         if not alpha_id:
             return {"skipped": "no_alpha_id"}
 
-        def _valid(v: Any) -> Optional[float]:
-            if v is None:
-                return None
-            try:
-                fv = float(v)
-            except (TypeError, ValueError):
-                return None
-            if fv < 0.0 or fv > 1.0:
-                return None
-            return fv
-
-        p = _valid(prod)
-        s = _valid(self_)
+        p = _corr_value(prod)
+        s = _corr_value(self_)
         if p is None and s is None:
             return {"skipped": "no_valid_value", "alpha_id": alpha_id}
 
@@ -369,8 +449,8 @@ class BacktestMixin:
         if not row:
             return {"skipped": "not_found", "alpha_id": alpha_id}
 
-        cur_prod = _valid(row[1])
-        cur_self = _valid(row[2])
+        cur_prod = _corr_value(row[1])
+        cur_self = _corr_value(row[2])
         new_prod = p if (p is not None and (overwrite or cur_prod is None)) else None
         new_self = s if (s is not None and (overwrite or cur_self is None)) else None
         if new_prod is None and new_self is None:
