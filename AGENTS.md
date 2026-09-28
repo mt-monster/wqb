@@ -439,3 +439,18 @@ pre-commit 钩子已绕过第 2 条（见下一节：唯一 basetemp + TMPDIR �
   `GREEN:`/`YELLOW:`/`RED:` 等、`[pyramid]`），其余保留。
 - **verdict 归一只有一张表**：`wave_results_contract.normalize_verdict`；停止闸的 `_normalize_verdict` 委托它，
   不另写规则。
+
+### 8.7 backtest_results.ra_failed_checks 口径（2026-09-28 第 4 项固化）
+
+严格产出率（`get_mining_yield` / `campaign_intel`）、prod-first 选探针、toolkit `region_kb` 的本地闸门先验、
+提交队列的 RA 闸都读这一列，都把"空"当作"平台 RA 硬闸全过"。
+
+- **这一列只装 RA 资格门失败项**，定义只有一份：`wqb.config.compute_webdata_failed_counts`（R3）——18 项 RA check
+  里 result 既不是 PASS 也不是 PENDING 的（WARNING / ERROR 也算）。空 / NULL = RA 全过。
+- **唯一写入方** `CampaignStore.upsert_backtest_rows` 经 `wqb.store._backtest.ra_failed_names(row)` 取值：行里给了
+  `ra_failed_checks` 就用它（只留 RA 项名；空列表 = 全过）→ 否则从完整 `checks` 现算 → 否则 `failed_checks ∩ RA`
+  （旧缓存行，看不到 RA 项的 WARNING / ERROR）。
+- **写入方手里有完整 checks，就按定义给 `ra_failed_checks`**：`compute_webdata_failed_counts(checks)["ra_failed_names"]`，
+  或平台精简结构 `ra` 块里预算好的名单（RA 全过时不带名单键，按空列表处理）。不要自己数 FAIL。
+- **`failed_checks` = 全部 FAIL 项名**（评审 / 诊断用），照旧留在行里与 `payload_json`。相关性等非 RA 失败读它，
+  或读 `alphas.prod_correlation` / `self_correlation` 的数值（提交队列的相关性闸就看数值），不要从这一列推断。

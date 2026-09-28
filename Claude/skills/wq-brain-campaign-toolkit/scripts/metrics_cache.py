@@ -23,13 +23,39 @@ from _lib.common import (CampaignContext, add_campaign_arg, atomic_write, load_c
 from _lib.api import Api
 
 
-def row_from_alpha(aid, a):
+def _ra_failed_names(checks, campaign_dir=None):
+    """RA 资格门失败项名，口径取 wqb.config.compute_webdata_failed_counts（唯一定义，R3）。
+
+    拿不到工作区的 wqb 包时返回 None：行里就不带 ra_failed_checks，入库时 CampaignStore
+    从 failed_checks 里只留 RA 项名。
+    """
+    try:
+        from wqb.config import compute_webdata_failed_counts
+    except ImportError:
+        from _lib.wqb_store import _workspace_roots
+        for root in _workspace_roots(campaign_dir):
+            src = os.path.join(root, "src")
+            if os.path.isdir(os.path.join(src, "wqb")):
+                if src not in sys.path:
+                    sys.path.insert(0, src)
+                break
+        try:
+            from wqb.config import compute_webdata_failed_counts
+        except ImportError:
+            return None
+    return compute_webdata_failed_counts(checks)["ra_failed_names"]
+
+
+def row_from_alpha(aid, a, campaign_dir=None):
     """从 GET /alphas/{id} 响应提取指标行（margin*10000、turnover*100 单位换算）。
 
     2026-09-13 修复（表达式截断事故）：`code` 曾截断为 [:110] 仅作展示，但
     pipeline.stage_review → save_backtest_results 会把该 code 写回 expressions 表，
     导致 backtested 行表达式被截断、且与 gem 原行失联（SELECT expression 匹配不上，
     新建截断行）。现保留全文；展示端如需短串自行切片。
+
+    failed_checks 是全部 FAIL 项名（评审与诊断用）；ra_failed_checks 只含 RA 资格门失败项
+    （2026-09-28，入 backtest_results 同名列）。campaign_dir 只用来定位 wqb 工作区。
     """
     i = a.get("is") or {}
     rn = i.get("riskNeutralized") or {}
@@ -61,7 +87,7 @@ def row_from_alpha(aid, a):
     code = a.get("regular")
     if isinstance(code, dict):
         code = code.get("code", "")
-    return {
+    row = {
         "id": aid,
         "code": str(code or ""),
         "neut": (a.get("settings") or {}).get("neutralization"),
@@ -79,6 +105,10 @@ def row_from_alpha(aid, a):
         "failed_checks": failed,
         "cached_at": datetime.datetime.now().isoformat(timespec="seconds"),
     }
+    ra_failed = _ra_failed_names(checks, campaign_dir)
+    if ra_failed is not None:
+        row["ra_failed_checks"] = ra_failed
+    return row
 
 
 class MetricsFetcher:
@@ -111,7 +141,7 @@ class MetricsFetcher:
         except Exception as e:
             code = getattr(e, "code", None)
             return {"id": aid, "error": f"HTTP {code}" if code else str(e)[:80]}
-        row = row_from_alpha(aid, a)
+        row = row_from_alpha(aid, a, campaign_dir=getattr(self.ctx, "dir", None))
         if self.use_cache:
             atomic_write(cp, row)
         return row

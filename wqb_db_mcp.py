@@ -39,6 +39,7 @@ DB_PATH = ROOT / "data" / "wqb.db"
 
 from wqb.store import CampaignStore  # noqa: E402
 from wqb import wave_results_contract as _wave_contract  # noqa: E402
+from wqb.config import compute_webdata_failed_counts  # noqa: E402  RA 资格门唯一口径（R3）
 
 
 def _store() -> CampaignStore:
@@ -1338,19 +1339,17 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
                      "LOW_INVESTABILITY_CONSTRAINED_SHARPE": "investability_sharpe",
                      "IS_LADDER_SHARPE": "is_ladder_sharpe", "PROD_CORRELATION": "prod_correlation",
                      "SELF_CORRELATION": "self_correlation"}
-        fails = []
         for c in isb.get("checks") or []:
             if not isinstance(c, dict):
                 continue
-            nm, val, res = c.get("name"), c.get("value"), c.get("result")
+            nm, val = c.get("name"), c.get("value")
             if nm in _name_map and val is not None and m.get(_name_map[nm]) is None:
                 m[_name_map[nm]] = val
-            if res == "FAIL":
-                fails.append(nm)
         if a.get("checks") is None:
             out["checks"] = [c for c in (isb.get("checks") or []) if isinstance(c, dict)]
         if out.get("ra_failed_checks") is None:
-            out["ra_failed_checks"] = fails
+            # 2026-09-28：按 RA 唯一定义（wqb.config，R3）从完整 checks 算；此前存的是全部 FAIL 项名
+            out["ra_failed_checks"] = compute_webdata_failed_counts(isb.get("checks"))["ra_failed_names"]
         if isb.get("prodCorrelation") is not None:
             out.setdefault("prod_correlation", isb.get("prodCorrelation"))
         if isb.get("selfCorrelation") is not None:
@@ -1371,8 +1370,10 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
         if out.get(dst) is None and m.get(src) is not None:
             out[dst] = m.get(src)
     ra = a.get("ra") if isinstance(a.get("ra"), dict) else {}
-    if out.get("ra_failed_checks") is None and ra.get("ra_failed_checks") is not None:
-        out["ra_failed_checks"] = ra.get("ra_failed_checks")
+    if out.get("ra_failed_checks") is None and ("ra_failed_checks" in ra or "failed_ra_count" in ra):
+        # 精简结构的 ra 块由 mcp_core 按同一定义从完整 checks 预算；RA 全过时不带名单键 → 空列表。
+        # 精简后的 checks 分桶会把 ERROR 并进 pass 桶，不能拿来重算。
+        out["ra_failed_checks"] = ra.get("ra_failed_checks") or []
     if isinstance(out.get("ra_failed_checks"), str) and out["ra_failed_checks"].startswith("["):
         try:
             out["ra_failed_checks"] = json.loads(out["ra_failed_checks"])
@@ -1388,6 +1389,9 @@ def _flatten_platform_alpha(a: Dict[str, Any]) -> Dict[str, Any]:
                 elif isinstance(c, str):
                     flat.append({"name": c, "result": k.upper()})
         out["checks"] = flat
+    if out.get("ra_failed_checks") is None and isinstance(out.get("checks"), list) and out["checks"]:
+        out["ra_failed_checks"] = compute_webdata_failed_counts(out["checks"])["ra_failed_names"]
+    # failed_checks = 全部 FAIL 项名（评审 / 诊断用，进回测行 payload_json）；ra_failed_checks 只含 RA 项
     if out.get("failed_checks") is None and isinstance(out.get("checks"), list):
         out["failed_checks"] = [c.get("name") for c in out["checks"] if c.get("result") == "FAIL"]
     return out

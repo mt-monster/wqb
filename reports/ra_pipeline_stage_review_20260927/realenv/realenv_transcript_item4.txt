@@ -1,0 +1,165 @@
+
+==============================================================================================================
+第 4 项真实环境探针 · 步 0 · 环境与输入
+==============================================================================================================
+  本工作树: <repo>  HEAD=baf6f19 merge(main): 同步 origin/main（006ffed）到开发分支
+  BASE_DIR: <base>  HEAD=（git archive 副本，无 .git）
+  本工作树未提交改动（= 第 4 项修复）: ['AGENTS.md', 'Claude/skills/wq-brain-campaign-toolkit/scripts/metrics_cache.py', 'reports/ra_pipeline_stage_review_20260927.md', 'reports/ra_pipeline_stage_review_20260927/realenv/realenv_transcript_item4.txt', 'reports/ra_pipeline_stage_review_20260927/realenv/reproduce_realenv_item4.sh', 'reports/ra_pipeline_stage_review_20260927/realenv/run_realenv_item4.py', 'src/wqb/store/_backtest.py', 'tests/unit/test_ra_failed_checks_single_definition.py', 'tools/harvest_multisim.py', 'wqb_db_mcp.py']
+  world-quant-brain-mcp/.env 存在? False （只判存在，不读取）
+  ① 真实评审行 112 条（GBR 59, MEA 8, USA 45）；failed_checks 里出现的名字：{'LOW_SHARPE': 94, 'LOW_FITNESS': 97, 'LOW_SUB_UNIVERSE_SHARPE': 50, 'LOW_2Y_SHARPE': 71, 'IS_LADDER_SHARPE': 13, 'CONCENTRATED_WEIGHT': 17, 'HIGH_TURNOVER': 2}；非 RA 名字：无
+  ② 真实平台载荷 11 条（['2rp1vPX6', 'A17oXw3g', 'A1GRLWWY', 'A1GRvlxQ', 'LLGP8jWn', 'N1bXLYjq', 'RRmJ9GYz', 'omN1aJeJ', 'qMNK511Z', 'qMNKOQvv', 'vRNKZWxA']）：
+     2rp1vPX6 USA S=2.15 F=1.72 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     A17oXw3g USA S=2.03 F=1.59 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     A1GRLWWY USA S=1.78 F=2.54 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'ERROR'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     A1GRvlxQ USA S=1.67 F=1.27 RA 失败=['LOW_SUB_UNIVERSE_SHARPE'] 全部 FAIL=['LOW_SUB_UNIVERSE_SHARPE'] 非 PASS 项=[('CLUSTER_TEST', 'WARNING'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('LOW_SUB_UNIVERSE_SHARPE', 'FAIL'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     LLGP8jWn USA S=1.78 F=2.55 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'ERROR'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     N1bXLYjq USA S=1.82 F=1.31 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'WARNING'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     RRmJ9GYz USA S=1.66 F=1.15 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'WARNING'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     omN1aJeJ USA S=2.25 F=2.43 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'ERROR'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     qMNK511Z USA S=1.76 F=2.49 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'ERROR'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     qMNKOQvv USA S=1.72 F=1.09 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'WARNING'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     vRNKZWxA USA S=1.92 F=1.24 RA 失败=[] 全部 FAIL=[] 非 PASS 项=[('CLUSTER_TEST', 'WARNING'), ('DATA_DIVERSITY', 'PENDING'), ('HT_HIGH_TURNOVER_RETURNS_RATIO', 'WARNING'), ('HT_PNL_REALIZATION_HORIZON', 'WARNING'), ('HT_TURNOVER', 'WARNING'), ('MATCHES_THEMES', 'WARNING'), ('OSMOSIS_ALLOCATION', 'WARNING'), ('POWER_POOL_CORRELATION', 'PENDING'), ('PROD_CORRELATION', 'PENDING'), ('REGULAR_SUBMISSION', 'PENDING'), ('SELF_CORRELATION', 'PENDING')]
+     两种定义在真实载荷上分叉的条数：0 []
+  ② 分叉情形 v_clean: RA 失败=[]  全部 FAIL（修复前这一列）=[]
+  ② 分叉情形 v_corr_fail: RA 失败=[]  全部 FAIL（修复前这一列）=['SELF_CORRELATION']
+  ② 分叉情形 v_ra_warning: RA 失败=['LOW_SUB_UNIVERSE_SHARPE']  全部 FAIL（修复前这一列）=[]
+  ② 分叉情形 v_ra_fail: RA 失败=['LOW_2Y_SHARPE']  全部 FAIL（修复前这一列）=['LOW_2Y_SHARPE']
+
+==============================================================================================================
+修复前（BASE_DIR） · 同一序列（空库起步）
+==============================================================================================================
+
+--- ② toolkit 评审写入（pipeline stage_review 的写法；本树 toolkit，子进程，WQB_DB_PATH 指向演练库）
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/item4/toolkit_write.py <scratch>/item4/base.toolkit_input.json
+  | {"rows": 15, "written": 15, "row_has_ra_failed_checks": false}
+  => exit=0 | DB Δ={"backtest_results": 15, "waves": 2, "alphas": 15, "datasets": 2, "expressions": 15, "regions": 2} | git 新脏文件=无 | 新/改文件=["<base>/data/wqb.db"]
+
+--- ① 真实评审行 → upsert_backtest_rows（按区域）
+    GBR: 59 行 → n=59  isError=False
+    MEA: 8 行 → n=8  isError=False
+    USA: 45 行 → n=42  isError=False
+
+--- ② 收批·原始形态 → harvest_multisim_results（按区域）
+    IND: 4 条 → upserted=4  isError=False
+    USA: 11 条 → upserted=11  isError=False
+
+--- ② 收批·精简形态 → harvest_multisim_results（按区域）
+    IND: 4 条 → upserted=4  isError=False
+    USA: 11 条 → upserted=11  isError=False
+
+--- ③ 读取方：get_mining_yield（默认严格口径）
+[wqb-db·base] get_mining_yield()  → isError=False  0.01s
+    out: {"rows": [{"region": "USA", "expressions": 68, "backtested": 75, "conversion": 1.1029, "passed": 35, "ra_clean": 32, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.4267, "yield_rate_loose": 0.4667, "prod_wall_ratio": null}, {"region": "IND", "expressions": 12, "backtested": 12, "conversion": 1.0, "passed": 12, "ra_clean": 5, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.4167, "yield_rate_loose": 1.0, "prod_wall_ratio": null}, {"region": "MEA", "expressions": 3, "backtested": 8, "conversion": 2.6667, "passed": 2, "ra_clean": 2, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.25, "yield_rate_loose": 0.25, "prod_wall_ratio": null}, {"region": "GBR", "expressions": 59, "backtested …(+517 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无
+
+--- ③ 读取方：提交队列 enqueue_from_alphas（本树 src，dedup 关）
+    注：CampaignStore 建的 alphas 表没有 ['soft_deleted', 'disposition']，提交队列的入队查询要用（生产库与 test_submit_queue_gates 夹具里有），空库上直接 no such column——两棵树相同的既有缺口，与本项无关；演练库补上这两列再入队
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/item4/enqueue.py <base>/data/wqb.db
+  | {"enqueued": 154}
+  => exit=0 | DB Δ={"submit_ready": 154} | git 新脏文件=无 | 新/改文件=["<base>/data/wqb.db"]
+    backtest_results 154 行；submit_ready 154 行
+
+==============================================================================================================
+修复后（本工作树） · 同一序列（空库起步）
+==============================================================================================================
+
+--- ② toolkit 评审写入（pipeline stage_review 的写法；本树 toolkit，子进程，WQB_DB_PATH 指向演练库）
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/item4/toolkit_write.py <scratch>/item4/fixed.toolkit_input.json
+  | {"rows": 15, "written": 15, "row_has_ra_failed_checks": true}
+  => exit=0 | DB Δ={"backtest_results": 15, "waves": 2, "alphas": 15, "datasets": 2, "expressions": 15, "regions": 2} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db"]
+
+--- ① 真实评审行 → upsert_backtest_rows（按区域）
+    GBR: 59 行 → n=59  isError=False
+    MEA: 8 行 → n=8  isError=False
+    USA: 45 行 → n=42  isError=False
+
+--- ② 收批·原始形态 → harvest_multisim_results（按区域）
+    IND: 4 条 → upserted=4  isError=False
+    USA: 11 条 → upserted=11  isError=False
+
+--- ② 收批·精简形态 → harvest_multisim_results（按区域）
+    IND: 4 条 → upserted=4  isError=False
+    USA: 11 条 → upserted=11  isError=False
+
+--- ③ 读取方：get_mining_yield（默认严格口径）
+[wqb-db·fixed] get_mining_yield()  → isError=False  0.04s
+    out: {"rows": [{"region": "IND", "expressions": 12, "backtested": 12, "conversion": 1.0, "passed": 12, "ra_clean": 6, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.5, "yield_rate_loose": 1.0, "prod_wall_ratio": null}, {"region": "USA", "expressions": 68, "backtested": 75, "conversion": 1.1029, "passed": 35, "ra_clean": 32, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.4267, "yield_rate_loose": 0.4667, "prod_wall_ratio": null}, {"region": "MEA", "expressions": 3, "backtested": 8, "conversion": 2.6667, "passed": 2, "ra_clean": 2, "prod_clean": 0, "prod_blocked": 0, "yield_rate": 0.25, "yield_rate_loose": 0.25, "prod_wall_ratio": null}, {"region": "GBR", "expressions": 59, "backtested":  …(+514 chars)
+    side-effects: DB Δ=无 | git 新脏文件=无
+
+--- ③ 读取方：提交队列 enqueue_from_alphas（本树 src，dedup 关）
+    注：CampaignStore 建的 alphas 表没有 ['soft_deleted', 'disposition']，提交队列的入队查询要用（生产库与 test_submit_queue_gates 夹具里有），空库上直接 no such column——两棵树相同的既有缺口，与本项无关；演练库补上这两列再入队
+$ <repo>/world-quant-brain-mcp/.venv/bin/python <scratch>/item4/enqueue.py <repo>/data/wqb.db
+  | {"enqueued": 154}
+  => exit=0 | DB Δ={"submit_ready": 154} | git 新脏文件=无 | 新/改文件=["<repo>/data/wqb.db"]
+    backtest_results 154 行；submit_ready 154 行
+
+==============================================================================================================
+逐行对照：分叉情形 × 三条写入路径（这一列：修复前 → 修复后 ｜ 期望 = RA 唯一定义）
+==============================================================================================================
+  raw_v_clean          收批·原始形态    None                           → None                           ｜ 期望 None  ✓
+  raw_v_corr_fail      收批·原始形态    ["SELF_CORRELATION"]           → None                           ｜ 期望 None  ✓
+  raw_v_ra_fail        收批·原始形态    ["LOW_2Y_SHARPE"]              → ["LOW_2Y_SHARPE"]              ｜ 期望 ["LOW_2Y_SHARPE"]  ✓
+  raw_v_ra_warning     收批·原始形态    None                           → ["LOW_SUB_UNIVERSE_SHARPE"]    ｜ 期望 ["LOW_SUB_UNIVERSE_SHARPE"]  ✓
+  slim_v_clean         收批·精简形态    None                           → None                           ｜ 期望 None  ✓
+  slim_v_corr_fail     收批·精简形态    ["SELF_CORRELATION"]           → None                           ｜ 期望 None  ✓
+  slim_v_ra_fail       收批·精简形态    ["LOW_2Y_SHARPE"]              → ["LOW_2Y_SHARPE"]              ｜ 期望 ["LOW_2Y_SHARPE"]  ✓
+  slim_v_ra_warning    收批·精简形态    ["LOW_SUB_UNIVERSE_SHARPE"]    → ["LOW_SUB_UNIVERSE_SHARPE"]    ｜ 期望 ["LOW_SUB_UNIVERSE_SHARPE"]  ✓
+  tk_v_clean           toolkit 评审 None                           → None                           ｜ 期望 None  ✓
+  tk_v_corr_fail       toolkit 评审 ["SELF_CORRELATION"]           → None                           ｜ 期望 None  ✓
+  tk_v_ra_fail         toolkit 评审 ["LOW_2Y_SHARPE"]              → ["LOW_2Y_SHARPE"]              ｜ 期望 ["LOW_2Y_SHARPE"]  ✓
+  tk_v_ra_warning      toolkit 评审 None                           → ["LOW_SUB_UNIVERSE_SHARPE"]    ｜ 期望 ["LOW_SUB_UNIVERSE_SHARPE"]  ✓
+
+==============================================================================================================
+读取方
+==============================================================================================================
+  get_mining_yield 修复前：totals backtested=154 passed=49 ra_clean=39；按区 (backtested, passed, ra_clean)={'USA': (75, 35, 32), 'IND': (12, 12, 5), 'MEA': (8, 2, 2), 'GBR': (59, 0, 0)}
+  get_mining_yield 修复后：totals backtested=154 passed=49 ra_clean=40；按区 (backtested, passed, ra_clean)={'IND': (12, 12, 6), 'USA': (75, 35, 32), 'MEA': (8, 2, 2), 'GBR': (59, 0, 0)}
+  严格口径计为 RA 干净的集合差：只在修复前=['raw_v_ra_warning', 'tk_v_ra_warning']；只在修复后=['raw_v_corr_fail', 'slim_v_corr_fail', 'tk_v_corr_fail']
+  提交队列 raw_v_clean          修复前 ('IS_ONLY', 'READY')  →  修复后 ('IS_ONLY', 'READY')
+  提交队列 raw_v_corr_fail      修复前 ('FAIL:RA:SELF_CORRELATION', 'DEAD')  →  修复后 ('FAIL:SELF', 'DEAD')
+  提交队列 raw_v_ra_fail        修复前 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')  →  修复后 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')
+  提交队列 raw_v_ra_warning     修复前 ('IS_ONLY', 'READY')  →  修复后 ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')
+  提交队列 slim_v_clean         修复前 ('IS_ONLY', 'READY')  →  修复后 ('IS_ONLY', 'READY')
+  提交队列 slim_v_corr_fail     修复前 ('FAIL:RA:SELF_CORRELATION', 'DEAD')  →  修复后 ('FAIL:SELF', 'DEAD')
+  提交队列 slim_v_ra_fail       修复前 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')  →  修复后 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')
+  提交队列 slim_v_ra_warning    修复前 ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')  →  修复后 ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')
+  提交队列 tk_v_clean           修复前 ('IS_ONLY', 'READY')  →  修复后 ('IS_ONLY', 'READY')
+  提交队列 tk_v_corr_fail       修复前 ('FAIL:RA:SELF_CORRELATION', 'DEAD')  →  修复后 ('IS_ONLY', 'READY')
+  提交队列 tk_v_ra_fail         修复前 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')  →  修复后 ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')
+  提交队列 tk_v_ra_warning      修复前 ('IS_ONLY', 'READY')  →  修复后 ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')
+
+==============================================================================================================
+第 4 项验证清单（✅/❌ 判修复后，括号里是修复前的实测）
+==============================================================================================================
+  两棵树都没入库 3 条：['1YpRwz2J', 'wpaAa5Qp', 'xANoNo8n']——代码末尾带空白（截断的旧评审行）：upsert_expressions 存 strip 后的式子，回测行按原串查不到 expression_id 就跳过。与本项无关的既有问题；下面只比两棵树都入库的行
+  ✅ 两棵树入库的行集合相同（本项不改变哪些行能入库）
+       只在一棵树里有的行：无；两棵树都没入库 3 条（见上）
+       （—）
+  ✅ 真实评审行（109/112 条入库，只有 failed_checks 的旧缓存行形态）：这一列 = failed_checks ∩ RA，两棵树逐条相同
+       修复后与期望不符 0 条；两树不同 0 条
+       （修复前与期望不符 0 条）
+  ✅ 真实平台载荷（11 条 × 3 条写入路径 = 33 行）：这一列 = RA 唯一定义，两棵树逐条相同
+       修复后与期望不符 0；两树不同 0
+       （修复前与期望不符 0）
+  ✅ 分叉情形（4 种 × 3 条写入路径 = 12 行）：这一列 = RA 唯一定义
+       修复后与期望不符 0
+       （修复前与期望不符 5 行：['raw_v_corr_fail', 'raw_v_ra_warning', 'slim_v_corr_fail', 'tk_v_corr_fail', 'tk_v_ra_warning']）
+  ✅ toolkit 评审行带上 ra_failed_checks（按唯一定义现算；拿不到 wqb 时才不带、由存储层回落）
+       修复后：{'rows': 15, 'written': 15, 'row_has_ra_failed_checks': True}
+       （修复前：{'rows': 15, 'written': 15, 'row_has_ra_failed_checks': False}）
+  ✅ 全部 FAIL 项照旧留在 payload_json.failed_checks（评审 / 诊断用），四条路径逐条一致
+       修复后不一致：无
+       （修复前不一致：无）
+  ✅ 严格产出率的 RA 干净集合 = 按定义（sharpe/fitness 过线且 RA 失败项为空）
+       修复后：ra_clean 40 条；只在修复后计为干净 ['raw_v_corr_fail', 'slim_v_corr_fail', 'tk_v_corr_fail']
+       （修复前：ra_clean 39 条；只在修复前计为干净 ['raw_v_ra_warning', 'tk_v_ra_warning']）
+  ✅ 提交队列：RA 项 WARNING 被 RA 闸拦下；相关性 FAIL 不再冒充 RA（收批路径由 SELF 数值拦，toolkit 行 IS_ONLY 待 verify）
+       修复后：raw_v_corr_fail ('FAIL:SELF', 'DEAD')；raw_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；raw_v_ra_warning ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')；slim_v_corr_fail ('FAIL:SELF', 'DEAD')；slim_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；slim_v_ra_warning ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')；tk_v_corr_fail ('IS_ONLY', 'READY')；tk_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；tk_v_ra_warning ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')
+       （修复前：raw_v_corr_fail ('FAIL:RA:SELF_CORRELATION', 'DEAD')；raw_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；raw_v_ra_warning ('IS_ONLY', 'READY')；slim_v_corr_fail ('FAIL:RA:SELF_CORRELATION', 'DEAD')；slim_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；slim_v_ra_warning ('FAIL:RA:LOW_SUB_UNIVERSE_SHARPE', 'DEAD')；tk_v_corr_fail ('FAIL:RA:SELF_CORRELATION', 'DEAD')；tk_v_ra_fail ('FAIL:RA:LOW_2Y_SHARPE', 'DEAD')；tk_v_ra_warning ('IS_ONLY', 'READY')）
+  ✅ 真实数据（评审行 109 + 平台载荷 33）的提交队列判定两棵树相同
+       两树不同：无
+       （修复前入队 154 条）
+
+  结果：9/9 ✅
+
+[收尾] 两棵树的 data/wqb.db 已复原；演练库留在 <scratch>/item4/

@@ -4,7 +4,49 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Sequence
 
+from ..config import RA_CHECK_NAMES, compute_webdata_failed_counts
 from ._common import _dumps, _loads, _now
+
+
+def _check_names(v: Any) -> Optional[List[str]]:
+    """项名列表（元素是名字或 {name, …}；也收 JSON 字符串——旧路径有双重编码——与逗号分隔的名字串，
+    同 submit_queue.ra_fail_of）；认不出的形状返回 None。"""
+    for _ in range(2):
+        if isinstance(v, (str, bytes, bytearray)):
+            v = _loads(v)
+    if isinstance(v, str):
+        v = [x.strip().strip('"') for x in v.strip().strip("[]").split(",")]
+    if not isinstance(v, (list, tuple)):
+        return None
+    names = [x.get("name") if isinstance(x, dict) else x for x in v]
+    return [n for n in names if isinstance(n, str) and n]
+
+
+def ra_failed_names(r: Dict[str, Any]) -> Optional[List[str]]:
+    """一行回测的 RA 资格门失败项名——`backtest_results.ra_failed_checks` 列的唯一写法（2026-09-28）。
+
+    口径是 wqb.config 的 RA 唯一定义（R3）：18 项 RA check 里 result 既不是 PASS 也不是 PENDING 的。
+    按行里现有的信息取，优先级：
+      1. ra_failed_checks（拍平层 / 平台精简结构按同一定义算好的；空列表 = RA 全过），只留 RA 项名；
+      2. 完整 checks（[{name, result, …}]）→ compute_webdata_failed_counts 现算；
+      3. 只有 failed_checks（全部 FAIL 项名：旧指标缓存行、旧调用方）→ 只留 RA 项名。这一档看不到
+         RA 项的 WARNING / ERROR（真实数据里 RA 项只出现 PASS / FAIL）。
+    三者都没有 → None（入库为 NULL，读取方按"无失败"计，与此前一致）。
+
+    此前这一列存 `failed_checks or ra_failed_checks`，实际是所有 check 里 FAIL 的名字：相关性等
+    非 RA 项 FAIL 时被记成"RA 不干净"，RA 项 WARNING / ERROR 时又被记成干净。
+    failed_checks（全部 FAIL）原样留在 payload_json 里。
+    """
+    given = _check_names(r.get("ra_failed_checks"))
+    if given is not None:
+        return list(dict.fromkeys(n for n in given if n in RA_CHECK_NAMES))
+    checks = r.get("checks")
+    if isinstance(checks, list) and any(isinstance(c, dict) and "result" in c for c in checks):
+        return compute_webdata_failed_counts(checks)["ra_failed_names"]
+    failed = _check_names(r.get("failed_checks"))
+    if failed is not None:
+        return list(dict.fromkeys(n for n in failed if n in RA_CHECK_NAMES))
+    return None
 
 
 class BacktestMixin:
@@ -55,7 +97,7 @@ class BacktestMixin:
                 turnover = r.get("turnover")
                 if turnover is None and r.get("turnover_pct") is not None:
                     turnover = r["turnover_pct"] / 100.0
-                failed = r.get("failed_checks") or r.get("ra_failed_checks") or []
+                failed = ra_failed_names(r)
                 payload = _dumps(r)
                 cur.execute(
                     """INSERT INTO backtest_results

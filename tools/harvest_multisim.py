@@ -135,6 +135,18 @@ def _pick_checks(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     return []
 
 
+def _ra_failed_names(checks: List[Dict[str, Any]]) -> Optional[List[str]]:
+    """RA 资格门失败项名，口径取 wqb.config（唯一定义，R3）；拿不到 wqb 包时返回 None（入库时按 failed_checks 回落）。"""
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src")
+    if src not in sys.path:
+        sys.path.insert(0, src)
+    try:
+        from wqb.config import compute_webdata_failed_counts
+    except ImportError:
+        return None
+    return compute_webdata_failed_counts(checks)["ra_failed_names"]
+
+
 def _extract_check_value(checks: List[Dict[str, Any]], name: str) -> Optional[float]:
     """从 checks 列表中提取指定硬闸的 value。"""
     for c in checks:
@@ -232,6 +244,7 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
         data_with_raw["raw"] = data  # 自引用，让 _pick_checks 能查到 raw.checks
         checks = _pick_checks(data_with_raw)
         failed_checks = [c.get("name") for c in checks if c.get("result") == "FAIL"]
+        ra_failed_checks = _ra_failed_names(checks)   # 2026-09-28：只含 RA 项，入 backtest_results 同名列
         # 从 checks 提取全硬闸值（2026-09-02 优化点②：收割即带全闸画像）
         two_year = _extract_two_year_sharpe(is_, checks)
         is_ladder = _extract_is_ladder_sharpe(is_, checks)
@@ -267,6 +280,7 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
             "cluster_test": cluster_test,
             "checks": checks,
             "failed_checks": failed_checks,
+            "ra_failed_checks": ra_failed_checks,
             "expression": data.get("regular", {}).get("code") if isinstance(data.get("regular"), dict) else None,
             "settings": {
                 "universe": data.get("settings", {}).get("universe"),
@@ -426,6 +440,7 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "is_ladder_sharpe": a.get("is_ladder_sharpe"),
             "sub_universe_sharpe": a.get("sub_universe_sharpe"),
             "failed_checks": a.get("failed_checks"),
+            "ra_failed_checks": a.get("ra_failed_checks"),
             # 透传 PROD/SELF 相关性 → campaign.upsert_backtest_rows 写入 alphas
             "prod_correlation": a.get("prod_correlation"),
             "self_correlation": a.get("self_correlation"),
