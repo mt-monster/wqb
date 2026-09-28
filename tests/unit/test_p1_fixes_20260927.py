@@ -313,7 +313,10 @@ def _kor_rejected_verdicts():
 
     out = {}
     for f in sorted((KOR_CAMPAIGN / "candidates").glob("wave*_result*.json")):
-        v = json.loads(f.read_text(encoding="utf-8")).get("verdict")
+        data = json.loads(f.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):        # wave_AL3_* 等批量列表工件不是单波结果 dict，跳过
+            continue
+        v = data.get("verdict")
         if v is not None and normalize_verdict(v)[0] is None:
             out[f.name.split("_result")[0].replace("wave", "")] = str(v)
     return out

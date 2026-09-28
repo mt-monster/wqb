@@ -73,7 +73,7 @@
 | N29 | P2 ✅已修（§14.8） | R21 逐条回写把"闸门环境缺失"（`[*_UNKNOWN]`）写成 `fail`；这类结论还会进逐条缓存，环境修好后仍被复用 | 〔真〕§14.8 |
 | N30 | **P1** ✅已修（§14.10） | 收批级联 `wqb_db_mcp._cascade_wave_result`（`harvest_multisim_results` 调用，SOP 步 6 的手动补收入口）绕过 P0-1 写入契约：用 `int(re.search(r"(\d+)", wave))` 取波号（`s2_<ds>_d1` → **2**、`91c` → 91），直接 UPDATE 覆盖已有 verdict（含人写的枚举值）或 INSERT 一条 closed 行。修复时查出同一根因还有 toolkit 评审写入（主路径：首个数字入库、冲突顺延 max+1、INSERT OR REPLACE 重置 `created_at`）与点塔回写，一并修复 | 〔码〕§14.9.4；〔真〕§14.10 |
 | N31 | P2 ✅已修（§14.11） | SOP 步 6 的手动补收入口 `mcp__wqb-db__harvest_multisim_results` 在 MCP 层不存在：按 SOP 调用得 `Unknown tool`。根因是 726a350 把 `_flatten_platform_alpha` 插进了它与 `@mcp.tool()` 之间，装饰器错挂到私有函数上（提交说明称"降级"）；声称承接的 `workflow_auto_harvest` 按不存在的列读写，从没能用 | 〔真〕§14.10、§14.11 |
-| N32 | P2 未修 | `workflow_auto_review`（auto_review 节点）没在真实表结构上跑过：指标为空（NULL）的行在 walls 诊断处 `TypeError`，写入目标表 `review_results` 不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响 | 〔真〕§14.11 |
+| N32 | P2 ✅已修 | `workflow_auto_review`（auto_review 节点）没在真实表结构上跑过：指标为空（NULL）的行在 walls 诊断处 `TypeError`，写入目标表 `review_results` 不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响。**已修（照 N31 auto_harvest）**：改为只读评审报告——`connect_db_readonly` 只读、步骤按名取、指标 NULL 按缺失、prescreen 由 subprocess 打平台改为本地分层，不写任何库；新增 6 条非 dry-run 用例（真实 CampaignStore schema，含 NULL 行），旧码上必红 | 〔真〕§14.11；〔码〕`auto_review.py` + `tests/unit/test_n32_review_entry.py` |
 
 ### 0.3 09-16/17 建议的落地复核（代码核验）
 
@@ -1011,7 +1011,7 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
    - 修复前：照 SOP 原文调用得 `Unknown tool`，`workflow_auto_harvest` 对真实波 94 报错，工具表里有 `_flatten_platform_alpha`。
    - 修复后：照 SOP 原文入库 9 条，逐项与输入一致（sharpe / fitness / turnover / 2Y / sub / 中性化 / 批次标记），同时级联出 wave_results 暂定结论和 salvage 条目。只读报告不改库（DB Δ 无）。
 5. **回归**：根测试 1285 passed / 13 failed / 15 skipped，失败集合与修复前的 main 相同。MCP 包 78 / 5。新用例在修复前的代码上 7/7 失败。
-6. **新记 N32（P2，未修）**：`workflow_auto_review`（auto_review 节点）同样没在真实表结构上跑过。指标为空（NULL）的行在 walls 诊断处直接 `TypeError`，写入目标表 `review_results` 也不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响。
+6. **新记 N32（P2；已修，见 §14.11.3）**：`workflow_auto_review`（auto_review 节点）同样没在真实表结构上跑过。指标为空（NULL）的行在 walls 诊断处直接 `TypeError`，写入目标表 `review_results` 也不存在。SOP 的 S4 评审走 toolkit `review_wave.py`，不受影响。后续照 N31 auto_harvest 的做法改为只读评审报告（`connect_db_readonly`、步骤按名取、NULL 按缺失、prescreen 本地分层、不写库），并补 `tests/unit/test_n32_review_entry.py` 6 条非 dry-run 用例。
 
 #### 14.11.1 修复内容
 
@@ -1040,7 +1040,7 @@ WHERE wr.verdict IS NOT NULL AND wr.verdict NOT IN ('PASS', 'FAIL', 'PARTIAL');
 
 | # | 级别 | 发现 | 建议 |
 |---|---|---|---|
-| N32 | P2 未修 | `workflow_auto_review`：turnover 为 NULL 的回测行在 `bt.get("turnover", 0) > 0.7` 处 `TypeError: '>' not supported between 'NoneType' and 'float'`（`.get` 的缺省值只在键不存在时生效，库里读出来的是 None）；写入目标 `review_results` 表不存在。与 auto_harvest 同一批（09-16 起的 Phase 4 自动化节点）没在真实表结构上跑过，单测只覆盖 dry-run | 按 auto_harvest 的做法：先在真实表结构上跑通，写入要么落到真实存在的表（经 CampaignStore），要么改为只读报告；补非 dry-run 的用例 |
+| N32 | P2 ✅已修 | `workflow_auto_review`：turnover 为 NULL 的回测行在 `bt.get("turnover", 0) > 0.7` 处 `TypeError: '>' not supported between 'NoneType' and 'float'`（`.get` 的缺省值只在键不存在时生效，库里读出来的是 None）；写入目标 `review_results` 表不存在。与 auto_harvest 同一批（09-16 起的 Phase 4 自动化节点）没在真实表结构上跑过，单测只覆盖 dry-run | 采纳"改为只读报告"：照 N31 auto_harvest 重写——`connect_db_readonly` 只读、步骤按名取、指标 NULL 按缺失（`(bt.get(k) or 0)`）、auto_prescreen 由 subprocess 打平台改为本地分层，不写任何库（删除 `review_results` 写入）；新增 `tests/unit/test_n32_review_entry.py` 6 条非 dry-run 用例（真实 CampaignStore schema、含 NULL 行、走 FastMCP `call_tool`），旧码上必红。根测试无新增失败、MCP 包 85 passed 不变 |
 | 口径待核 | P3 | `CampaignStore.upsert_backtest_rows` 往 `ra_failed_checks` 列写的是 `failed_checks or ra_failed_checks`。平台行两者都有时，存的是全部 FAIL 项，而不是平台预计算的 RA 子集。本轮冒烟测试里，嵌套 `ra.ra_failed_checks=[PROD_CORRELATION]`、`checks.fail=[LOW_2Y_SHARPE]` 时存成了后者。该列有下游读者（toolkit `region_kb`、`tools/campaign_intel.py`），影响未评估 | 核对下游是否把这一列当"RA 失败项"计数，再决定优先取哪一个 |
 | N26 | 既有 | wqb-db 写死 `<repo>/data/wqb.db`，而 auto_harvest 节点按 `resolve_db_path()` 读。生产 env 下两者是同一个文件；若给 server 单独设了 `WQB_DB_PATH`，`workflow_auto_harvest` 会写一个库、读另一个库 | 随 N26 一并收敛 |
 
