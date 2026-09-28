@@ -417,14 +417,15 @@ def test_workflow_list_nodes_shape(monkeypatch):
     # 2026-09-20：alpha_booster / modeb_improve 注册（此前未同步本表）→ 17→19
     # 2026-09-26 P2.1：field_understanding 删除（重复的第三套 S1 实现，S1 走 feature_engineering）→ 19→18
     # 2026-09-28 P4：forum_recon 上线（论坛问题驱动只读检索）→ 18→19
-    # 2026-09-29：forum_recon_wave 上线（波次级论坛检索）→ 19→20
-    # ⚠ 本集合是 workflow 节点注册的「第五个同步点」——前四处见 AGENTS.md §3.5，
-    #   2026-09-29 全量测试即因本处漏同步而转红。增删节点请先跑 tools/audit_node_registration.py。
+    # 2026-09-29：本集合曾提前改为 20（期望 forum_recon_wave），但该节点的 registry 注册
+    #   与实现文件当时仍是并行会话的未提交工作区改动，未入任何提交 → 合并进 main 后
+    #   registry 实际 19，此处 20 转红（assert 19 == 20）。回退为 19 与已提交代码自洽；
+    #   forum_recon_wave 注册入库时请连同本集合一起同步为 20（跑 tools/audit_node_registration.py）。
+    # ⚠ 本集合是 workflow 节点注册的「第五个同步点」——前四处见 AGENTS.md §3.5。
     # 断言要点：数目与 nodes 列表一致即可；若新增/移除节点，请同步本行并注明来源。
     expected_nodes = {
         "alpha_booster", "auto_harvest", "auto_pyramid", "auto_review", "batch_track",
-        "campaign", "feature_engineering", "forum_recon", "forum_recon_wave",
-        "gem", "gem_wave",
+        "campaign", "feature_engineering", "forum_recon", "gem", "gem_wave",
         "hypothesis_round", "inventory_scan", "judge", "modeb_improve",
         "structural_reconstruct", "submit_alpha", "superalpha", "unified_gate",
         "wave_gate",

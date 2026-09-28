@@ -85,9 +85,13 @@ def test_rereview_does_not_put_a_submitted_alpha_back_in_the_queue(store, tmp_pa
     store.upsert_backtest_rows("USA", "w1", [HARVEST_ROW], dataset="dsA")
     _submitted(store)
     store.upsert_backtest_rows("USA", "w1", [REVIEW_ROW])
-    # 提交队列的入队查询要 soft_deleted / disposition（生产库有；CampaignStore 建表没有，另记 N33）
-    store.connection.execute("ALTER TABLE alphas ADD COLUMN soft_deleted INTEGER DEFAULT 0")
-    store.connection.execute("ALTER TABLE alphas ADD COLUMN disposition TEXT")
+    # 提交队列的入队查询要 soft_deleted / disposition（N33 起 CampaignStore 建表已自带两列；
+    # 对更老结构的库保留防御性补列，故按 PRAGMA 判存再 ALTER——N33 合入后无条件 ALTER 会 duplicate column）
+    _cols = {r[1] for r in store.connection.execute("PRAGMA table_info(alphas)").fetchall()}
+    if "soft_deleted" not in _cols:
+        store.connection.execute("ALTER TABLE alphas ADD COLUMN soft_deleted INTEGER DEFAULT 0")
+    if "disposition" not in _cols:
+        store.connection.execute("ALTER TABLE alphas ADD COLUMN disposition TEXT")
     store.connection.commit()
     enqueue_from_alphas(db_path=str(tmp_path / "wqb.db"), dedup=False)
     got = store.connection.execute("SELECT alpha_id, gate, status FROM submit_ready").fetchall()
