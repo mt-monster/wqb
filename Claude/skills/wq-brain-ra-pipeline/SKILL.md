@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
-version: "2.2"
+version: "2.3"
 last_verified: 2026-09-28
 ---
 
@@ -49,6 +49,23 @@ $REGION = "KOR"        # 唯一输入
 阶段决策见 [references/decision-table.md](references/decision-table.md)。优先级：用户显式指令 > 决策表 > 本正文。
 提示词模板（开新区 / 续波 / 发批 / 单条修复 / 日循环，以"可过闸 REGULAR alpha"为目标）见 [references/ra-campaign-prompt.md](references/ra-campaign-prompt.md)。
 
+### 经验库必读（2026-09-29 建立）
+
+实证经验沉淀在仓库 `docs/experience/`（索引 [`README.md`](docs/experience/README.md)）。
+**走本 SOP 前按当前步骤读对应篇**——这些是已付学费的实证结论，不读等于重复踩坑：
+
+| 当前在做的步 | 必读 | 关键收益 |
+|---|---|---|
+| 步 1 S-PRE 选区选集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md) | 区域过闸率排序 + MEA/IND/DEU 停投结论，别在死区开波 |
+| 步 3–4 S1/S2 设计信号 | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) | 组合形态铁律（含等权 `add(rank(A),rank(B))` 同属违规）、破闸合规旋钮 |
+| 步 7 S4 诊断改进 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) | 已证伪路径清单，避免在死路上继续烧模拟次数 |
+| 步 8 提交判定 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) | 提交层四闸 + SUB 比值律（limit≈0.571×sharpe）+ 配额/相关性取数口径 |
+| 改链路/skill/DB | [`04_engineering.md`](docs/experience/04_engineering.md) | skill 单点写入、DB 写锁、节点四处同步 |
+
+⚠ 这些 md 是**给人/Agent 看的软层**；**机器强制层另有其物**：
+`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），
+由 `RuleStore.query()` 在 `build_wave`/`pipeline`/`gate`/`review_wave` 注入。**两轨同源，改一边要同步另一边。**
+
 ---
 
 ## 九步流水线
@@ -81,6 +98,7 @@ $REGION = "KOR"        # 唯一输入
 S1 用字段级失败边界选字段，S2 机制文档引用相关 wave/alpha 并说明新假设。文件不存在则以 DB 查表结果为准。
 
 目的：region 先验，避免重复已判死路径。可选并行：`brain-next-move-analysis`（日报，不产出配置）。
+**跨区横比另读 [`03_region_dataset.md`](docs/experience/03_region_dataset.md)**（12 区过闸率排序 + MEA/IND/DEU 停投结论）：profile 管"这个区怎么配"，03 管"这个区值不值得挖"，两者互补——后者拦的是"在某区死磕其实全区垫底"这类决策错误。
 **论坛默认不查**（选区已有 registry/yield 先验，避免 token 黑洞）；仅当「判死区复开评估」时用
 `tools/forum_recon.py`（recon 模式，只读）取证翻案线索。
 
@@ -325,9 +343,17 @@ efficiency / liquidity_risk / size_level / per_share / dividend。
 
 **可选** `mcp__wq-brain-http__workflow_campaign`（subcommand="diversity-extract"）做方向参考，**不替代** GEM，不强制先行。
 
+**模板形状配额与形状源（2026-09-28 v2.3 落地，反模板同质化）**：实战波次连续同质化（wave84/85 实测：19 条选中仅 ~9 个算子形状、trade_when 占比 62%；而平台已验证算子 103 个、KB 模板库 141 条零调用）。硬约束：
+
+1. **形状配额**：每波候选（ideas 渲染或 LLM 产出）须覆盖 ≥3 个 shape family；`trade_when` 类条件式占比 ≤40%。机械检查（步 5 门禁前必跑）：`python tools/shape_quota_check.py --region $REGION --wave $W`。形状族谱系（不限于）：条件式 `trade_when` / 趋势状态机 `if_else`（Alpha#9/#10 形状：`if_else(greater(ts_delta(x,5),0), ts_delta(x,22), multiply(-1, ts_delta(x,22)))`；⚠ `ts_min` 为后台不可访问算子，勿用，条件腿用 `ts_delta`/`ts_rank`）/ 时点定位 `ts_arg_max|ts_arg_min` / 新鲜度 `days_from_last_change` / 共振 `ts_corr` / 状态 `ts_zscore` / 比值几何 `divide(A,B)` / 价差几何 `subtract(rank(A),rank(B))` / 乘法交互 `multiply(slow, fast_rank)` / 凸性 `signed_power` / 截断 `winsorize+group_zscore`。
+2. **事件条件化去 trade_when 单一依赖**：稀疏事件门控可换 `if_else` 趋势状态机、`ts_arg_max` 时点、`days_from_last_change` 新鲜度、`signed_power` 凸性、`winsorize/group_zscore` 几何等**已验证**低用算子（`ts_av_diff`、`vector_neut`、`ts_quantile` 同列）。⚠ `ts_event_*` 系在 `data/operators_verified.json` 103 清单中**未验证**（event ops=[]），USA profile 的「ts_event_* 裸 rank」建议不可直接执行，改用上述事件形状。
+3. **形状源分工（契约波 vs 探索波）**：**契约波**（`--selection-contract-key`）用于机制验证，但它强制 `--enhance-diversity never --auto-coverage never`——恰锁死算子覆盖注入（plan_coverage_wave）与 diversity-heal 两个形状发生器，是契约波同质化的**结构性根源**；**形状发现走非契约探索波**（`--enhance-diversity auto --auto-coverage auto`，吃算子覆盖契约，专吃未用算子）。两类波分开跑，不要在契约波里追求形状广度。
+4. **LLM phased 与 ideas 渲染混批**：LLM phased（不带 `--ideas-file`）出形状广度、ideas 渲染出机制精度；推荐两段式——LLM 概念生成 → 落 ideas md → 渲染定型（机制可审、形状可扩）。402 余额不足时退 ideas 旁路（见上）。
+5. **KB 模板优先**：形状枯竭时取 `KB/community_tpl_kb.templates`（含 TPL-A101-* 事件形状）与 `external_template_sources`（Alpha101/Alpha158/gtja191/Alpha Zoo），取骨架前必查 `ghost_operator_advisory`。
+
 硬约束：
 
-1. 先读 win 层（= `region_kb.win_recipes`，与 priors.json 同源）。有胜绩则本波至少 2 槽按**机制**换腿。EUR 已验证：`0.4 × 慢 MODEL 残差 + 0.6 × 快 PV`，中性化/decay 跟 win。
+1. 先读 win 层（= `region_kb.win_recipes`，与 priors.json 同源）。有胜绩则本波至少 2 槽按**机制**换腿。EUR 已验证：慢 MODEL 残差 × 快 PV 的慢快结构交互，中性化/decay 跟 win。⚠ 2026-09-28 更正：原文的 `0.4 × 慢残差 + 0.6 × 快腿` 加权相加形态已被闸5 `POISON:equal_weight_leg_add` 禁用（含 `add(multiply(0.4,…))` 变体），取其意改用**乘法交互**（`multiply(slow, fast_rank)`）或**条件结构**（`trade_when`/`if_else`），不复制加权公式。
 2. GEM 概念优先：机制 → 1-2 个具体字段 id → 一个 Implementation Example。禁止「每个字段套 rank」。必须带 `priors_file`。
 3. 有信号：`|Sharpe|≥1.0` / `PASS_CHEAP` / registry 标明有 IS 但卡 prod。复合后 `|S|<0.5` 不再入选波池。
 4. 七槽（Token-Bucket C≈7，2026-08-25 起）：≥2 跨金字塔；≥1 win 换腿；弱探针最多 1 槽且仅当本波尚无近闸字段。
@@ -336,6 +362,13 @@ efficiency / liquidity_risk / size_level / per_share / dividend。
 7. **禁止 add(A,B) 混信号**（CLAUDE.md）：防过拟合，警惕 `add(A,B)` 模式；优先单数据集 atom alpha，双数据集不要总是同一金字塔组合（均匀点塔）。
 8. **字段角色区分**（CLAUDE.md）：区分主信号 vs 辅助信号 vs group/bucket 字段；辅助信号可考虑 bucket 自定义分组；group 类型字段可用 `group_*` 操作符。
 9. **金字塔点亮**（CLAUDE.md）：一个金字塔需 3 颗 alpha 点亮，尽可能多点塔且均匀分布。
+   ★ **点亮判定唯一权威 = 平台 `get_pyramid_alphas`**（按季度返回 region/delay/category 的提交计数，≥3 即点亮）。
+   **禁止用本地表推导**，两个实测原因：
+   ① `alphas.date_submitted` **全库仅 2.7% 非空**，用它判"提交"必然低估；
+   ② **塔归属来自平台 pyramid 匹配，≠ `datasets.category`**（KOR 47% 的 ACTIVE 记录 `category=None`，挂 `_unknown` 占位 422 条）。
+   平台返回的 `MATCHES_PYRAMID ×N` 只表示**匹配到塔并给倍率**，**≠ 已点亮**，勿据此判亮。
+   注：`get_pyramid_alphas` 传 `start_date` 会被对齐到季度快照（KOR fundamental 传参得 1、默认得 3），
+   做"近 90 天"判定请用**默认季度值**。
 
 **priors.json 组装：首选 `mcp__wq-brain-http__workflow_campaign`（subcommand="assemble-priors"），以下协议仅作其内部映射说明，勿手写组装**。GEM 管道只消费 `wins`（≤6）与 `dead_ends`（≤12）两个键（`economic_priors.py`），其余键会被忽略：
 
@@ -409,11 +442,13 @@ S4遇到指标上升但未达增强资格时，按同一[选波实验清单](../
 落库核验selected与无alpha_id；受保护状态或计划外旧selected/gated导致回滚，先核对再显式处理。
 
 * **失败分支**：GEM 未入库则按超时恢复清单查任务，确认失败才回退，不要手写；候选不足则 enhance / 扩组合，仍不足换数据集。
-* **机制枯竭/同质化（2026-09-28 新增）**：GEM 产出同骨架触封顶、或 win 配方无腿可换时，
+* **机制枯竭/同质化（2026-09-28 新增；2026-09-29 补默认路径）**：GEM 产出同骨架触封顶、或 win 配方无腿可换时，
   先 `python tools/forum_recon.py --question "<具体机制问题>" --context region=$REGION,dataset=$DS --out kb`
   （或等价节点 `mcp__wq-brain-http__workflow_execute` node="forum_recon"，P4 已节点化）
   回补 `KB/community_tpl_kb.forum_recon_entries`（模板须先过 `ghost_operator_advisory` 替换）再重跑 GEM；
   **额度以查出有效文章为标准**（自适应扩展关键词，命中即收束，安全上限防失控），同问题 7 天缓存不重复查。
+  **默认兜底（2026-09-29）**：本波收批时 `forum_recon_wave` 节点已自动取证并落 ledger ——
+  枯竭时**先读该 ledger 结论**，只有确实无货/需换角度才再跑 live 查，不必每次重新触发。
 
 ### 步 5（S2→S3）门禁
 
@@ -462,7 +497,7 @@ python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选
 退出码 1 = 有幽灵算子（违规式隔离到独立小批或换已验证等价算子，映射表见 `KB/community_tpl_kb` 的
 `ghost_operator_advisory`）。纯本地检测，零配额。
 
-- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上）；若 2 跨集 FAIL 则拆回单集组合，不停挖。
+- **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**软触发（2026-09-28）：结构熵 <1.5 或 diversity 配额超限即查 KB 补骨架，不等硬 FAIL**；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上；显式 `--queries` 关键词包可避免机械派生的穷举）；**波级默认取证**（`forum_recon_wave` 收批时自动落 ledger）应作为 KB 的第一来源，KB 与 ledger 都无货才 live 查；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
 ### 步 5b：新信号族的 prod-first 探针（2026-09-19 实证后升为硬门）
 
@@ -652,13 +687,34 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
   该值已入 `backtest_results.risk_neutralized_sharpe`，步 9 需与 GEM 声明的 `Expected Exposure`
   比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
-- **卡闸找武器（2026-09-28 新增）**：Mode B 常规改进 2–3 轮仍卡墙（prod/2Y/CW/tvr/robust）且未到判死时，
+- **四道提交闸 + SUB 比例律（2026-09-28 新增，跨区域通用，高价值）**：
+  提交层实际四闸 = `LOW_SHARPE ≥1.58` / `LOW_FITNESS ≥1.0` / `LOW_2Y_SHARPE ≥1.58` /
+  **`LOW_SUB_UNIVERSE_SHARPE`（limit 不是固定值，而是 ≈ 0.571 × 本 alpha 的 sharpe）**。
+  平台实测佐证：`wpZkk1Mp` SUB limit=1.03 / sharpe=1.80 = **0.572**；`2rwoAp8b` 1.12/1.96=0.571；
+  `6XjLAaWO` 0.89/1.55=0.574（三处独立一致）。
+  **推论（关键）**：SUB 是**比值闸** —— 把 S 压到刚过 1.58 会**同步降低** SUB 要求
+  （S=1.62 时只需 SUB≥0.93）。故「S 越高越好」是错的，优化目标是
+  **`SUB/S ≥ 0.571` ∧ `2Y ≥ 1.58` ∧ `S ≥ 1.58` ∧ `F ≥ 1.0` 同时成立**。
+  破比值闸的合规旋钮（实测有效）：**换分组轴到 `market`/`exchange`**（两者效果不同：
+  `market` 给比值、`exchange` 给 2Y）、`signed_power` 压尾、`ts_decay_linear`/长窗 `ts_rank` 平滑。
+  KOR/other466 实证：`group_rank(R, market)` 把比值从 0.55 抬到 **0.59**，是过闸的决定性一步。
+- **零成本定位卡点**：`submit_verdict` 在处女提交（404）时仍返回**模拟层完整 checks**
+  （`模拟层 checks: N 条 (FAIL x / WARNING y)` + `Failed RA/PPA` 计数），足以定位唯一卡点，
+  **不要等真 POST 才知道卡在哪一闸**。
+- **卡闸找武器（2026-09-28 新增；2026-09-29 补默认路径）**：Mode B 常规改进 2–3 轮仍卡墙（prod/2Y/CW/tvr/robust）且未到判死时，
   跑 `tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`
   （每波 ≤1 次；**额度以查出有效文章为标准**）；命中的配方/手法入 idea 池供 Mode B Step B3 使用，
   并写 ledger `forum_recon_<qkey>` 留痕。
+  **默认兜底（2026-09-29）**：卡墙时**先读本波 `forum_recon_wave` 已落的 ledger 结论**（收批时自动跑过），
+  只有 ledger 无货或需换角度才再跑 live —— 保证「默认路径就能拿到武器」，不依赖 Agent 记得触发。
 - **prod 验证排队调度**：多候选时走串行泳道（本地检查全批先跑、prod 队列恒保持 1 在飞、等待期插本地活），细则见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md) §7（含 7 天结果缓存与 `refresh` 终验）。
 
 ### 步 8（S4→S5）稳健闸与提交判定
+
+> **提交前必读 [`01_platform_gates.md`](docs/experience/01_platform_gates.md)**：提交层四闸
+> （`LOW_SHARPE ≥1.58` / `LOW_FITNESS ≥1.0` / `LOW_2Y_SHARPE ≥1.58` / `LOW_SUB_UNIVERSE_SHARPE`，**均为严格不等式**）
+> 且 **SUB 是比值闸：limit ≈ 0.571 × 本 alpha sharpe**。⇒「sharpe 越高越好」在提交层是错的——
+> 把 S 压到刚过 1.58 会同步降低 SUB 要求，目标是 `SUB/S≥0.571 ∧ 2Y≥1.58 ∧ S≥1.58 ∧ F≥1.0` **同时成立**。
 
 > **prod 0.60–0.70 的候选当天提交，不先做变体（2026-09-19 血的教训）**：IND pv103 尾盘反转 mLm2xG1K（S 3.83，IS 全过，prod 0.6997）
 > 因为先花 1 小时做去相关变体，期间外部用户提交了同款，复查 prod = 1.0000，整族封死。规则：`submit_verdict` READY 且 prod < 0.7 → 立即请用户确认提交；
@@ -783,10 +839,27 @@ mcp__wqb-db__upsert_ledger_key  region=$REGION  key="s6_verdict_<wave>"  ...   #
 
 **判死封存（2026-09-13 新增：先沉降、再封存）**
 
-**前置软核对（2026-09-28 新增，判死回写前必看）**：判死前跑 `tools/forum_recon.py --question "<数据集/信号族> 有无解法" --out negative`；
-`found=false`（负结果已入 `forum_recon_negative_<qkey>`）即为 decision-table D2「论坛无解」的取证；
-`found=true` → 该帖配方转 salvage/Mode B 武器，**不得直接判死**。核对结果记入 `dead_end.payload.forum_recon`
-（软提示起步：无记录不拦写入，但缺失须在 key_findings 说明）。
+**前置取证闸（2026-09-28 新增软核对；2026-09-29 升级为 fail-closed 硬闸）**：判死前**必须**有 forum_recon 取证。
+
+- **默认取证路径（波级，无需 Agent 记得触发）**：收批时走
+  `mcp__wq-brain-http__workflow_execute node="forum_recon_wave" region=$REGION wave=$WAVE dataset=$DS`
+  —— 自动派生决策问题、每波 ≤1 次、结果落 ledger（`forum_recon_<qkey>` 有解 /
+  `forum_recon_negative_<qkey>` 无解 / `forum_recon_error_<qkey>` 故障）。
+  需针对特定族再查时才手动跑 `tools/forum_recon.py --question "<数据集/信号族> 有无解法" --out negative`。
+- **结果写入** `dead_end.payload.forum_recon`（含 `question_key` / `found`）；`seal_dead_end` 据此判定：
+
+  | `payload.forum_recon` | 判死闸 |
+  |---|---|
+  | `found=false` | ✅ **允许**判死（decision-table D2「论坛无解」取证成立） |
+  | `found=true` | ❌ 拒绝 —— 配方转 salvage/Mode B 武器，**不得直接判死** |
+  | `found=null` / `status=error` | ❌ 拒绝 —— **工具故障 = 未取证，故障 ≠ 论坛无解** |
+  | 缺失 | ❌ 拒绝 —— 未取证 |
+
+  ⚠ **为什么必须 fail-closed**：判死是永久封存一条路。2026-09-29 实证 5 条 recon 记录里
+  **2 条是工具故障**（`load_creds` TypeError、`No module named 'requests'`），旧代码把它们记成
+  `found=false` 落 `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」→ 误把活路判死。
+  现故障改落 `forum_recon_error_*`、`found=null`、**且不进 7 天 TTL 缓存**（故障应重试，不该被回放一周）。
+- 绕过（需人工确认）：`seal_dead_end(..., force_seal=True)`（留痕 `forced=True`）或 `require_forum_recon=False`。
 
 **回写操作**：任何 `dead_end` 回写前先调 `seal_dead_end`——把该 idea 涉及波次的失败候选沉降入 salvage_pool（收集宽），
 并把残值列表回填 `dead_end.salvage`（原 schema 预留字段，此前恒 null）。

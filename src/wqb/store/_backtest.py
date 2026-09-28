@@ -103,7 +103,7 @@ class BacktestMixin:
         dataset: Optional[str] = None,
     ) -> int:
         wave_id = self._ensure_wave(region, str(wave), dataset)
-        n = 0
+        n = skipped = 0
         cur = self.connection.cursor()
         now = _now()
         rid = self._ensure_region(region)
@@ -112,7 +112,11 @@ class BacktestMixin:
         cur.execute("BEGIN")
         try:
             for r in rows:
-                code = r.get("code") or r.get("expression") or r.get("expr") or ""
+                # expressions 表存的是 strip 后的表达式（见 _expressions.upsert_expressions），
+                # 这里查/写必须同口径 strip：否则带首尾空白的 code（如上游截断到 110 字符、
+                # 尾部残留 `", "` 的 legacy 码）第一遍查不中，回落 upsert_expressions 写入的又是
+                # strip 后的值，第二遍仍查不中 → expr_id=None → 整行被静默丢弃（N34）。
+                code = (r.get("code") or r.get("expression") or r.get("expr") or "").strip()
                 alpha_id = r.get("id") or r.get("alpha_id")
                 expr_id = None
                 if code:
@@ -136,6 +140,7 @@ class BacktestMixin:
                         erow = cur.fetchone()
                         expr_id = int(erow[0]) if erow else None
                 if expr_id is None:
+                    skipped += 1
                     continue
                 margin = r.get("margin")
                 if margin is None and r.get("margin_bp") is not None:
@@ -239,6 +244,11 @@ class BacktestMixin:
                         (r.get("sharpe"), r.get("fitness"), margin, turnover, now, alpha_id),
                     )
                 n += 1
+            if skipped:
+                print(
+                    f"[backtest] WARN: {skipped}/{len(rows)} 行表达式为空或无法落库已跳过"
+                    f"（region={region} wave={wave} dataset={dataset or '_unknown'}）"
+                )
             self.connection.commit()
         except Exception:
             self.connection.rollback()

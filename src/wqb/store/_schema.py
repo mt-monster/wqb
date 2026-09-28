@@ -339,6 +339,19 @@ class SchemaMixin:
             ("os_synced_at", "TIMESTAMP"),
         ):
             self._add_column("alphas", col, ddl)
+        # ---- 2026-09-28 N33：submit_queue.enqueue_from_alphas 的过滤列 ----
+        # enqueue_from_alphas 的 WHERE 用 COALESCE(a.soft_deleted,0)=0 与
+        #   COALESCE(a.disposition,'')<>'DEAD' 过滤，但这两列此前只在生产库和
+        #   tests/unit/test_submit_queue_gates.py 的最小 fixture 里存在 —— CampaignStore
+        #   建的库两列皆无 → 任何走 CampaignStore 的库上 enqueue 直接
+        #   `no such column: a.soft_deleted`（harvest 收批 auto-enqueue 被 try/except
+        #   吞成「入队跳过」，静默失败）。补列（可空）即修；_add_column 幂等，兼作老库迁移。
+        #   soft_deleted=软删标记（0/1），disposition=处置态（'DEAD' 等）。
+        for col, ddl in (
+            ("soft_deleted", "INTEGER DEFAULT 0"),
+            ("disposition", "TEXT"),
+        ):
+            self._add_column("alphas", col, ddl)
         # 索引：按相关性筛候选是高频查询路径（prod<=0.7 / self<=0.7 双闸预筛）
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_alphas_prod_corr "

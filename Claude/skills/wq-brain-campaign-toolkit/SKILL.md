@@ -198,6 +198,15 @@ $PY $TK/pipeline.py --campaign-dir $CD quota
 
 判据全文（含阈值表与反向纪律）见 [`docs/experience/fail_fast_rules.md`](docs/experience/fail_fast_rules.md)；规则条目 `failure_nature_classifier_v1` / `no_effort_seven_signals_v1` 在 `config/methodology_rules.json`。纪律：**AI/自动化只做研究效率（整理/统计/打标/复盘），不自动提交、不刷规则**。
 
+> **经验库双轨（2026-09-29）**：`config/methodology_rules.json` 是**机器消费层**——本引擎
+> `RuleStore.query()` 会在 `build_wave`/`pipeline`/`gate`/`review_wave` 注入命中规则
+> （硬拦截只有 `dead_end(block_pattern)` / `universe_lever` / `explore_contract` 三类，
+> `strategy`/`diagnosis` 仅提示）。与之**同源**的**人读层**在仓库 `docs/experience/`
+> （索引 `README.md`：01 平台闸门 / 02 信号模式 / 03 区域数据集 / 04 工程纪律 / 05 反模式）。
+> **改一边必须同步另一边**，否则出现"文档写了但流程不认"。2026-09-28 实证入库的五条：
+> `sub_universe_ratio_gate_v1`、`pyramid_lighting_platform_only_v1`、`mixed_signal_leg_ban_v1`、
+> `same_family_consecutive_submit_v1`、`region_stop_invest_v1`。
+
 ## 7.z 2026-09-19 新增子命令/开关（今日实证驱动）
 
 | 入口 | 作用 | 何时用 |
