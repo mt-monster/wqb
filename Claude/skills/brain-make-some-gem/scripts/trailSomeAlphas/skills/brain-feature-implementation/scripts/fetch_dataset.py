@@ -50,25 +50,26 @@ def main():
     # Ensure data directory exists
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load configuration
-    if not config_path.exists():
-        print(f"Error: Config file not found at {config_path}")
-        sys.exit(1)
-
-    config = load_config(config_path)
-    if not config:
-        sys.exit(1)
-
-    # Extract credentials (env override -> config)
-    email = os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL")
-    password = os.environ.get("BRAIN_PASSWORD")
+    # 凭据来源（2026-09-29，skills 审查 FI-02）：标准环境变量优先——与 MCP 服务 / toolkit / inspect-raw
+    # 同名；旧别名仍认；config.json 只在环境变量不全时才需要（此前无论环境变量是否齐全都硬要 config.json）。
+    #   CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD  >  BRAIN_USERNAME|BRAIN_EMAIL / BRAIN_PASSWORD  >  config.json
+    email = (os.environ.get("CREDENTIALS_EMAIL") or os.environ.get("BRAIN_USERNAME")
+             or os.environ.get("BRAIN_EMAIL"))
+    password = os.environ.get("CREDENTIALS_PASSWORD") or os.environ.get("BRAIN_PASSWORD")
     if not email or not password:
+        if not config_path.exists():
+            print("Error: BRAIN credentials missing. Set CREDENTIALS_EMAIL/CREDENTIALS_PASSWORD "
+                  f"(or create {config_path.name} in the skill root with a BRAIN_CREDENTIALS.email/password object).")
+            sys.exit(1)
+        config = load_config(config_path)
+        if not config:
+            sys.exit(1)
         creds = config.get("BRAIN_CREDENTIALS", {})
         email = email or creds.get("email")
         password = password or creds.get("password")
 
     if not email or not password:
-        print("Error: BRAIN credentials missing. Set BRAIN_USERNAME/BRAIN_PASSWORD or config.json")
+        print("Error: BRAIN credentials missing. Set CREDENTIALS_EMAIL/CREDENTIALS_PASSWORD or fill config.json")
         sys.exit(1)
 
     # Override ace_lib.get_credentials to use our config values
@@ -76,7 +77,7 @@ def main():
     ace_lib.get_credentials = lambda: (email, password)
 
     try:
-        print(f"Logging in as {email}...")
+        print("Logging in (credentials come from the environment or config.json; not echoed)...")
         session = ace_lib.start_session()
         
         print(f"Fetching datafields for dataset: {args.datasetid} (Region: {args.region}, Delay: {args.delay})...")

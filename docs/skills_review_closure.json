@@ -465,29 +465,43 @@
    "cat": "边界·**P1**"
   },
   "EV-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题“校验非法表达式”，示例 `rank(close, 5)`，注释却说“rank(x, n) 是合法的（n 为窗口），此例仅演示运行位置”——**没有任何真正非法的示例、也没有期",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/alpha-expression-verifier/SKILL.md",
+   "note": "示例表换成 6 个真实输入与真实 errors（合法 / 括号不匹配 / 元数不足 / 元数过多 / 未知函数 / rank(x,5) 合法且第二参是 rate），测试逐行对真实校验器",
+   "verify": "tests/unit/test_se_docs.py::test_ev_documented_examples_match_real_validator_output"
   },
   "EV-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "路径两种写法（`$WQ_VALIDATOR_DIR/verify_expr.py` 与示例里的 `scripts/verify_expr.py`），`$WQ_VALIDATOR_D",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/alpha-expression-verifier/SKILL.md",
+   "note": "只留一种写法（仓库根相对路径）+ $WQ_VALIDATOR_DIR 的含义与 gate.py 同变量；史注删除",
+   "verify": "tests/unit/test_se_docs.py::test_ev_docs_reference_paths_that_exist"
   },
   "EV-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "`densify()` 可接收原生 GROUP 分组轴，“本层无法确认平台类型；输出仍是分组键，不能交给 `rank()` 等数值参数”——明确写出**本层做不到什么**",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/alpha-expression-verifier/SKILL.md",
+   "note": "densify 分组键说明保留（本层做不到什么）"
   },
   "EV-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“gate.py（**5 闸**）”（实为 8 闸+闸 0）、“validator.py（1363 行巨石）”行数会漂移；“不要改 validator.py”是变更纪律，宜放 AG",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/alpha-expression-verifier/SKILL.md | Claude/skills/alpha-expression-verifier/scripts/validator.py",
+   "note": "「5 闸」「1363 行」删除（不再写会漂移的数字）；变更纪律留一句并指向影响面。同时发现并修复更实质的问题：validator.py 有 4 份、3 个版本，FI / GEM 内嵌 / inspect-raw 三份缺 hump 命名参数、bucket 必带 range、densify 类型三处已修复的事故修复——改为逐字节镜像权威版，并加测试守护",
+   "verify": "tests/unit/test_se_docs.py::test_ev_stale_copies_would_have_let_the_2026_incidents_through"
   },
   "EV-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "无失败分支：脚本找不到、依赖缺失、`errors` 各类型的含义与处理",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/alpha-expression-verifier/SKILL.md",
+   "note": "新增「常见错误 → 含义 → 处理」表与退出码语义（非法表达式也退 0，调用方必须解析 valid；只有缺参 / 导入失败 / 异常才退 1，均有测试）",
+   "verify": "tests/unit/test_se_docs.py::test_ev_invalid_expression_exits_zero_and_errors_exit_one"
   },
   "EX-01": {
    "status": "fixed",
@@ -716,34 +730,50 @@
    "cat": "职责·P2"
   },
   "FI-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 的触发语“当用户提供 idea 文档、**要求生成 alpha 表达式**或下载数据集时使用”会让它被直接触发，而边界句与 RA 反模式都禁止把它当主链入口",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md",
+   "note": "description 改「排查或手动复现 GEM 渲染时查阅、不是生成表达式的入口」，从触发列表撤出「要求生成 alpha 表达式」",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "FI-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“skill 层不直接调用 MCP”，数据下载经 `ace_lib` 用 **skill 目录内 `config.json` 的明文邮箱/口令**——又一种凭据来源（全库已有 ≥8",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md | Claude/skills/brain-feature-implementation/scripts/fetch_dataset.py",
+   "note": "凭据：标准环境变量 CREDENTIALS_EMAIL/PASSWORD 优先，旧别名仍认，config.json 只在环境变量不全时才需要（此前无论如何都硬要它）；登录不再回显邮箱；文档声明 agent 不读 / 不回显 config.json 与 .env；GEM 内嵌副本同步改（逐字节相同，测试守）",
+   "verify": "tests/unit/test_se_docs.py::test_fi_fetch_dataset_without_any_credentials_says_how_to_fix"
   },
   "FI-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“定位脚本：`ls -R` / `Get-ChildItem -Recurse` 找 `fetch_dataset.py`，通常在 …/scripts”——**没有给出确定路径**",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md",
+   "note": "给确定路径（仓库根相对 & $WQ_PY …/scripts/…，脚本与 CWD 无关，去掉 cd）；写清顶层 vs GEM 内嵌的适用时机与解析顺序（WQB_FI_SKILL_DIR > 安装位 > 仓库 > 内嵌兜底）；两份目录现逐字节相同并有测试；--universe 缺省 TOP3000 只适用部分区域，改指 config.REGIONS[<R>].default_universe；implement_idea 全部真实参数列出（原文「只接受两个」已过期）",
+   "verify": "tests/unit/test_se_docs.py::test_fi_documented_cli_flags_and_universe_source_exist"
   },
   "FI-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“使用 `TaskCreate` 工具创建计划”——宿主专有工具；GEM 把本文件拼进 LLM prompt 时该指令无意义",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_prompts.py",
+   "note": "TaskCreate 与 allowed-tools 里的 TaskCreate 删除；核实代码：build_prompt 已不使用 FI 文本（只用 FE 8 问当提示），原「拼进 LLM prompt」的担忧已过时——文档写明并由 AST 测试钉死，将来若又拼进去要同步改文档",
+   "verify": "tests/unit/test_se_docs.py::test_fi_skill_text_is_not_spliced_into_the_gem_prompt"
   },
   "FI-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "步骤 5 产出 `final_expressions.json` 并“向用户报告文件路径”，而边界头与全库均规定该文件**不是真相源**、DB 才是；手动流程没有入库步骤",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md",
+   "note": "职责边界写明 final_expressions.json 不是真相源、无下游读取（只有 GEM 节点入库）；想入库走 inspect-raw 或直接用 GEM，不要写 SQL；步骤 5 要求向用户注明「未入库」"
   },
   "FI-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“描述”节里塞了行为规则（占位符只绑定一次、GROUP 不自动扩展数值变体）",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-feature-implementation/SKILL.md",
+   "note": "行为规则（占位符只绑定一次、GROUP 不扩展数值变体）挪进「模板语法」节，删「描述」节"
   },
   "FQ-01": {
    "status": "open",
@@ -1423,179 +1453,268 @@
    "note": "情景卡 JD-01 PPA 候选（Sharpe 1.2 / PPAC 0.42 / 主题匹配）、JD-02 多候选点塔排序（3 个候选，预期 X > Y > Z）、JD-03 降级运行（输出不能作依据）"
   },
   "LB-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "阶段定位三说：“S0 前”“结论只作 **S1** 输入”“在 **S2** 候选设计之前”。且它服务的是 Labs 的 Python alpha，而 RA 流水线只产 FASTE",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "新增「与 REGULAR 流水线的关系」表：Python 轨道 vs FASTEXPR；结论只作线索、不进提交路径；衍生 FASTEXPR 表达式按外部 idea 走 inspect-raw 入库通道；阶段定位统一为「S0 前研究，线索给 S1」",
+   "verify": "tests/unit/test_se_docs.py::test_boundary_section_directly_follows_h1"
   },
   "LB-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "链接文字 `reference/…` 而目标 `docs/reference/…`（仓库根路径，skill 目录内不存在），同步到其它宿主目录后断",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md | Claude/skills/alpha-template-labs-data-analysis/references/agent-spec.md",
+   "note": "规范文档由 docs/reference 移入 skill 的 references/agent-spec.md（git mv），链接改 skill 相对；同时按引擎实际字段形态与 artifact 键重写",
+   "verify": "tests/unit/test_se_docs.py::test_lb_spec_classes_match_the_engine_classifier_and_spec_moved_into_the_skill"
   },
   "LB-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "第 4 步“在 Brain Labs 里运行该脚本”只能由**人**在浏览器完成，全文没有标出“此处暂停等用户回传 JSON”；第 2 步“配额告警后已获批准”未定义（哪种配额？谁",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "第 4 步显式标【人工 · 在此暂停】并写明对用户的话术与「收到 JSON 前不得继续 / 不得编造」；第 2 步【需用户同意】并定义：新开会话占用账号唯一的交互会话，先问用户",
+   "verify": "tests/unit/test_se_docs.py::test_lb_human_pause_and_labs_paths_are_explicit"
   },
   "LB-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "`labs_output=\"/tmp/…\"` 是 Linux 路径（工作区为 Windows）；第 7 步写 `tracking/runs/*.json` 与“DB 唯一事实源、禁",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md | Claude/skills/alpha-template-labs-data-analysis/references/agent-spec.md",
+   "note": "labs_output 写明是 Labs 内（Linux）路径，/tmp 正确；ingest_labs_result 只解析不落盘（测试）；一次性分析 JSON 不是战役产物、不入 DB，建议 --output tracking/_scratch/（缺省 tracking/runs 会被 git 跟踪，已警示）",
+   "verify": "tests/unit/test_se_docs.py::test_lb_human_pause_and_labs_paths_are_explicit"
   },
   "LB-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“返回接受/拒绝的机制及对 Python alpha 的启示”——无输出格式",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "第 8 步给固定回报格式与填好的例子（字段 / 形态 / 覆盖 / 诊断 / 接受或拒绝 / 理由 + 机制 + 对 RA 的线索）"
   },
   "LB-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "`rtk python3 …`（“本机沙箱代理运行器”）只存在于作者环境，同一行又说“无 rtk 用 `$WQ_PY`”；与 AGENTS.md“用 venv python”不一致",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "rtk 说明删除；CLI 统一 & $WQ_PY world-quant-brain-mcp/labs_data_analysis_agent.py；子命令表（含文档里原先缺的 screen-os-clues / run-csv）与代码逐个核对",
+   "verify": "tests/unit/test_se_docs.py::test_lb_labs_tools_and_agent_subcommands_exist"
   },
   "LB-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“下游 Python alpha 设计禁止用 VECTOR/GROUP 字段”与 RA/GEM（VECTOR 用 `vec_*`、group 用 `group_*`）口径不同，未说",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "「禁止 VECTOR/GROUP」注明仅 Python 轨道；FASTEXPR 轨道用 vec_* / group_*（RA / GEM）"
   },
   "LB-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“体检数据包是 2012–2021 离线快照”与 RA 使用的 `WebData_20260219` 快照不符；“`check_expr_against_inspect`”函数在 ",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md",
+   "note": "体检数据包写明 WebData_20260219（2026-02-19 打包，逐字节体检覆盖 2012–2021）；check_expr_against_inspect 的调用入口改指 field_inspect_gate.py（wave_gate 内置）"
   },
   "LB-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "默认示例给了字段、角色（主信号/上下文）与倾向（状态切换/意外抽取优于水平值）及条件",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/alpha-template-labs-data-analysis/SKILL.md | world-quant-brain-mcp/labs_data_analysis_agent.py",
+   "note": "默认示例保留结构（字段 / 角色 / 倾向 / 骨架），但修正一处与引擎相反的内容：imb5_mktcap 是直接市值数据，被引擎的 no-PV / no-direct-market-data 约束排除，只可做相关性诊断，不作上下文；测试用引擎函数断言",
+   "verify": "tests/unit/test_se_docs.py::test_lb_default_example_respects_the_engine_market_data_constraint"
   },
   "ME-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "frontmatter 缺 `allowed-tools`，description 无“当…时使用”触发句（只有用途描述）；其余 skill 均有",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "description 改触发句「每波 S6 收尾 / 下一轮选字段前读经验时使用」。allowed-tools 有意不补：补了等于给该 skill 预批准工具（能力基线棘轮要求人审），缺省=无预批准更安全",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "ME-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“先收回回测、完成 S4 与 **`s6_verdict_<wave>` 回写**，再调用本技能”“结构化结论仍经 wqb-db 回写 **`s6_verdict_*`**／reg",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md | tests/unit/test_ledger_key_catalog.py",
+   "note": "「s6_verdict_<wave> 回写」改为「upsert_wave_result（含 verdict）」，结尾改「结构化结论不经本 skill 回写：波结论 upsert_wave_result、判死 seal_dead_end」；DEPRECATED_TEACHING_BASELINE 清零（最后一处已改）",
+   "verify": "tests/unit/test_se_docs.py::test_me_documented_flags_markers_and_status_words_exist"
   },
   "ME-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“单次失败只约束『字段搭配＋结构＋设置』，不能据此判死整个字段或数据集；推翻旧经验须提供新证据”——**判死粒度**的最清晰表述",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "判死粒度那条保留并放进「主流程连接」（单次失败只约束搭配 + 结构 + 设置）"
   },
   "ME-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "干跑→实跑→`workflow_task_status`；省略 wave/dataset 的语义、D1 战役传 `--delay 1`——具体、可执行；RA 步 9 写 `str(",
-   "cat": "情景·🟢/P3"
+   "cat": "情景·🟢/P3",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "--delay 统一写「传本战役的 delay」（只接受 0 / 1，代码 choices）",
+   "verify": "tests/unit/test_se_docs.py::test_me_documented_flags_markers_and_status_words_exist"
   },
   "ME-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“核对仓库文件的波次和行数，不能只凭任务 succeeded 判定”——好规则，但没给**期望值**（应出现哪些波号、哪一块被替换）",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "加「核验」一节：命令 Select-String '范围：|筛选：' + 期望（范围行含区域 / 数据集 / 全部波次 / 去重后 N 条 = rows=N；筛选行与传参一致），并解释并发编辑被拒",
+   "verify": "tests/unit/test_se_docs.py::test_me_grep_tokens_in_the_verification_step_are_in_the_generated_block"
   },
   "ME-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "人工复盘 5 条都是分号串起的长句，且没有提供**自动生成文件的骨架**（各级标题、块外应写在何处），读者不知道“块外”的具体位置；“一次纠错复验的边界见主流程链接的选波清单”——",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "新增「文件骨架」（BEGIN/END 块 + ## 人工机制复盘 五个子标题，与工具对新文件的实际写法一致，测试守）；五节各写什么保留；补 post-wave-reading 的纠错复验链接与 README 索引链接",
+   "verify": "tests/unit/test_se_docs.py::test_me_manual_review_skeleton_matches_what_the_tool_writes_for_a_new_file"
   },
   "ME-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“缺失写未核实，不拼接不同候选最好指标”“有测量缺陷的比较不写成机制有效/无效的证据”——反 cherry-pick 护栏",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "反 cherry-pick 护栏保留（不拼接不同候选最好指标；有测量缺陷的比较不作证据）"
   },
   "ME-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "`research_leads_w<W>` 是一个新 ledger 键，未登记于 ledger-schema",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md | docs/ledger_keys.json",
+   "note": "research_leads_w<W> 已登记进 ledger 键目录（S-D，文档指 post-wave-reading.md），本文引用并指向该页"
   },
   "ME-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "`tools/dataset_experience.py --waves` 被检查器判“flag 缺失”是**误报**（flag 在 `src/wqb/research/datas",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/brain-dataset-mining-experience/SKILL.md",
+   "note": "写明 tools/dataset_experience.py 只是薄壳，参数解析与实现在 src/wqb/research/dataset_experience.py"
   },
   "NM-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "只写“日报/早报/状态检查”，但 §5.5 是 RA 用来“选区/转区”的区域态势；用户说“哪个区更值得挖”不会命中本 skill",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md",
+   "note": "description 加「区域态势 / 哪个区更值得挖 / 该不该转区 / 下一步做什么」触发，并写明只报告不决策",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "NM-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界句说“本 skill 不选字段、非流水线前置”，但 ra-pipeline 把它当**分支终点**（步 1 失败→“转 next-move 选新区域”；停止规则→“转 next",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md",
+   "note": "边界改「报告器」：转述 region_status 输出，选区决策归 wqb.region_rotation（region_status --rotate / MCP region_rotation）与 matrix；写明它是 ra-pipeline 的转区出口 + 每 ET 日日报、不是前置；层名统一 L0",
+   "verify": "tests/unit/test_se_docs.py::test_boundary_section_directly_follows_h1"
   },
   "NM-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "又一次把“S0 体检白名单由 `wq-brain-ppa-mining §1.0` 产出”（PPA 专用方法论当全体 S0）",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md",
+   "note": "S0 白名单归属改指 RA 步 2 / 决策表 D4，删 ppa-mining §1.0 的指向"
   },
   "NM-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "唯一一句无方法：缺“输入（哪些表/工具）”“如何得出金字塔缺口”“建议的固定格式”“必须遵守的约束”。且 §5 建议用 `get_pyramid_multipliers`“金字塔定",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md",
+   "note": "§3 固定建议模板（动作 / 依据 / 前置检查 / 预期成本 / 何时复核）+ 三项前置检查（点亮塔 category_lit、跨区弱先验、停波闸 A/B1/B2），命中即改写为替代动作；选塔以「未点亮」为准，不以乘数为准"
   },
   "NM-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“IS/OS 表现”没说范围：全部？最近 N 天？Top N？reference 写 `limit 30, offset 0`（无排序说明）——3 万条 IS 库存里取任意 30 ",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md",
+   "note": "§2.1 定 Alpha 表现取数范围：OS 全量分页 + 新提交；IS 不枚举，只看自上次日报新增 + 可提交队列（get_submit_ready）；单颗深挖限被点名者；IS/OS 词义按 get_user_alphas 文档"
   },
   "NM-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“首选 `region_status.py`”后又说“手动查询仍可按下列口径执行”并称“下述判据即其实现口径”——文档复述了代码逻辑，两份实现必漂移；区域清单写死“USA/EUR/",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | tools/region_status.py",
+   "note": "手动口径整段删除，只引用 tools/region_status.py 输出；区域清单改「config.REGIONS（现 14 个）」；判据数值提为 region_status 顶部常量（PASS_SHARPE_MIN 等），文档表由测试钉死",
+   "verify": "tests/unit/test_se_docs.py::test_nm_region_list_is_not_hardcoded_and_config_regions_is_the_source"
   },
   "NM-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“≥10 且风格同质→`prod_saturation: likely`”与 campaign-matrix、USA profile 是**第三份拷贝**，“风格同质”无判据；“p",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | tools/region_status.py | Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "「≥10 且风格同质」拷贝删除：prod_saturation 只认 region_status 的 pass_ge_158 ≥ 10（matrix 同源，测试断言）；probe-only 名单删，改指 profile entry_verdict",
+   "verify": "tests/unit/test_se_docs.py::test_nm_matrix_prod_saturation_shares_the_same_constant"
   },
   "NM-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "好：有固定输出表。缺：“达标数”是 `sharpe≥1.58` 的宽口径，而 RA 的选区先验用严格口径（`ra_failed_checks` 为空）；“建议动作”四选一的判据没有",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | tools/region_status.py",
+   "note": "输出表加列并写明口径：宽口径 pass_ge_158（只看 Sharpe）与严格口径 ra_clean（get_mining_yield）并列；4 个建议动作各给一条数值判据，与代码逐条对应",
+   "verify": "tests/unit/test_se_docs.py::test_nm_skill_action_table_matches_the_constants"
   },
   "NM-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "用一段话定义了 `entry_verdict` 三态的**默认行为**（active 默认继续；probe-only 默认不开战役；frozen 仅报状态）——这正是 ra-pip",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md",
+   "note": "entry_verdict 三态默认含义只有 step1-inventory §1.1 一处定义（RA 已补）；本 skill 只引用，并写明「数据侧建议不覆盖 entry_verdict」"
   },
   "NM-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "维护警示“注册名含大写 S…勿再改”属开发者备注",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | tests/unit/test_se_docs.py",
+   "note": "「注册名含大写 S…勿再改」开发者备注删除，改由测试断言文档引用的每个 MCP 工具名在代码里真实存在",
+   "verify": "tests/unit/test_se_docs.py::test_nm_every_cited_mcp_tool_exists_and_arity_claims_hold"
   },
   "NM-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "叙事体（“帮助秘书接手”“请随时与前任秘书联系”），对 agent 无指令价值；示例日期 2025-08-09、GAC2025 已过期",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "reference 改规范体：不再「交接给秘书」，示例日期 / 用户 ID 全部占位；只写各章怎么取数与字段怎么读"
   },
   "NM-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "“获取当前时间，running `get_ny_time.py`”——脚本不存在（机械检查 MISSING），且与 L99“使用系统日期动态获取”并存；日期错则事件过滤全错",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "get_ny_time.py 指令删除（脚本从未存在）；唯一取时方式 = wqb.timeutil.et_now()，命令写入 SKILL §1 且由测试实跑",
+   "verify": "tests/unit/test_se_docs.py::test_nm_reference_has_no_credential_passing_or_ghost_script_instruction"
   },
   "NM-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "与 SKILL 不一致：reference 是 0 摘要/1 基本信息/2 平台/3 比赛/4 活动/5 建议/6 Alpha；SKILL 是 0 摘要/1 平台/2 比赛/3 事",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "大纲只在 SKILL 一份（含区域态势章）；reference 各章按「怎么取数 / 字段怎么读」组织，无第二套章节号"
   },
   "NM-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "①要求“`authenticate` 提供用户的电子邮件和密码”——`authenticate(email, password)` 确实收明文，但 AGENTS.md 规定凭据只在",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "删除「authenticate 提供邮箱和密码」——MCP 的 authenticate 没有参数、凭据由服务端读取（测试绑到签名）；leaderboard 用户 ID 占位；get_events 无参数（删 random_string）；get_messages 与 RA 对齐 limit=30；认证失败请用户在本机登录",
+   "verify": "tests/unit/test_se_docs.py::test_nm_reference_has_no_credential_passing_or_ghost_script_instruction"
   },
   "NM-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“IS = 正在回测的 alpha”“OS = 最近成功提交的”语义不准（IS=样本内阶段的 alpha，OS=已提交）；`get_alpha_yearly_stats` 在同一行",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-next-move-analysis/SKILL.md | Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "IS/OS 词义按平台（IS=未提交、OS=已提交），正在回测的归 wq-backtest-monitor；工具清单去重"
   },
   "NM-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "“善用论坛”（与 RA“论坛默认不查”冲突，且无具体工具）；“`todo_write`”是某宿主专有工具",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "论坛默认不查，仅用户点名或公告出现需查证的规则变更时才读；任务清单不指定宿主专有工具名"
   },
   "NM-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "错误防范里只有 GAC 一个**具体场景**（好）；“数据解读错误/输出格式错误/持续改进机制”是空泛口号",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-next-move-analysis/reference.md",
+   "note": "错误防范改「常见误读（症状 → 原因 → 防范）」表：达标≠可提交、已点亮塔被推荐、停波区仍建议再开一波、事件章含过期项；GAC 案例保留并写成三段式"
   },
   "NS-01": {
    "status": "open",

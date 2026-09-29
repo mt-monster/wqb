@@ -1,128 +1,70 @@
-# WorldQuant BRAIN 每日日报撰写工作流程
+# 日报取数与字段读法（配套 [SKILL.md](SKILL.md)）
 
-## 概述
+> 章节大纲、建议模板与区域态势只在 SKILL.md 里定义一份；本文只写**每章怎么取数、返回的字段怎么读、常见误读**。
+> 日期一律用 SKILL §1 的 ET 时间；示例里的 ID、日期都是占位。
 
-本文档详细描述了撰写 WorldQuant BRAIN 平台每日日报的工作流程，旨在帮助秘书或助手接手此任务，确保日报内容全面、准确，并为用户提供有价值的见解和建议。工作流程包括数据收集、分析和报告撰写的具体步骤，以及使用的 BRAIN MCP 工具。
+## 通用规则
 
-## 总体工作流程
-0. 获取当前时间，running get_ny_time.py。
-1. **认证与准备**：使用用户提供的登录凭据，通过 BRAIN MCP 工具认证，访问平台数据。
-2. **数据收集**：获取用户的 收入、 alpha 数据、比赛信息、平台消息和事件等。偏好并行调用工具以提高效率。
-3. **数据分析**：分析 alpha 性能、比赛规则、pyramid 分布和策略建议，包括相关性检查和年度统计。
-4. **报告撰写**：按照预定义结构撰写日报，填充真实数据并提供建议。包括执行摘要，并将 Alpha 部分移到报告后部。
-5. **修订与更新**：根据用户反馈或新数据更新报告内容，撰写并输出相应markdown日报文件。
-6. **文档记录**：记录并更新工作流程以便他人参考。
+- **认证**：由 MCP 服务端自动完成（凭据在服务端的 `.env` 里）；`authenticate` 工具**没有参数**。agent **不得读取**凭据文件、不得打印凭据、不得向用户索要口令、不得把口令传给任何工具（AGENTS.md）。认证失败 → 请用户在本机终端登录后重试。
+- **并行**：各章取数互不依赖，可一次并行发出；同一章内 `get_user_alphas` → `get_alpha_details` 是依赖关系，须串行。
+- **失败不编数**：某章工具失败，日报里写「本章数据不可用：<原因>」，不得用旧数或估计值补。
+- **论坛**：日报默认不读论坛。只有用户点名，或 §比赛 / §公告 里出现需要查证的规则变更时，才用 `search_forum_posts`（见 `brain-forum-browse`）。
+- **任务清单**：宿主提供什么清单工具就用什么；不要在文档里指定某个宿主专有的工具名。
 
-## 具体步骤与章节对应
+## 平台公告
 
-### 0. 执行摘要 (新增)
-- **步骤**：
-  1. 基于所有收集数据，总结关键洞见、机会、风险和行动优先级。
-  2. 使用量化指标（如 Sharpe 提升估算）提供决策支持。
-- **使用的 MCP 工具**：无，直接基于后续分析。
+`get_messages(limit=30, offset=0)`。不传 `limit` 会拉全量，日报不需要。摘要只保留与挖矿 / 提交规则 / 比赛 / 算子与数据更新相关的条目，其余不写。**PPA 主题公告**（标题含 "Power Pool"）交给 ra-pipeline 步 1 §1.6 解析，日报只提示「有新主题，见步 1」。
 
-### 1. 日报基本信息
-- **步骤**：
-  1. 确定报告日期，通常是当前日期（如 2025年8月9日）。使用系统日期动态获取。
-  2. 填写报告人和收件人信息，通常是秘书（AI 助手）和用户姓名。
-- **使用的 MCP 工具**：无，直接手动输入或通过简单脚本获取日期。
+## 排行榜与多样性分数
 
-### 2. 平台动向 (调整顺序)
-- **步骤**：
-  1. **获取平台更新**：获取 BRAIN 平台最近的公告和更新。
-     - 使用工具：`mcp__wq-brain-http__get_messages`（设置 `limit` 为 null，`offset` 为 0）。
-  2. **社区动态**：从消息中提取社区相关信息，如研究论文或热门话题。
-  3. **排行榜变化**：记录用户位置变化。
-     - 使用工具：`mcp__wq-brain-http__get_leaderboard`（设置 `user_id` 为用户 ID，如 "CQ89422"）。
-   4. **多样性分数**：收集用户最近一个季度的多样性分数，获知其value factor趋势，该分数捕捉用户提交Alpha的多样性，来判断其value factor的变化趋势，在0-1之间，越高越好，据此提出具体建议。
-- **使用的 MCP 工具**：
-  - `mcp__wq-brain-http__get_messages`：获取平台公告和社区动态。
-  - `mcp__wq-brain-http__get_leaderboard`：获取用户排行榜统计。
-  - `mcp__wq-brain-http__value_factor_trendScore`：用户value factor趋势，又名多样性分数。
+- `get_leaderboard(user_id=<用户 ID>)`：用户 ID 由用户告知；日报里写占位（`<USER_ID>`），不把真实 ID 落盘。
+- `value_factor_trendScore(start_date, end_date)`：**两个日期都必填**（ISO UTC，如 `2026-07-01T00:00:00Z` → `2026-09-29T23:59:59Z`），只统计该区间内**已提交（OS）REGULAR alpha**。返回 `diversity_score`（0–1，越高越好）、`N`、`A`、`P`、`per_pyramid_counts`。
+- **读法**：分数本身没有平台阈值。只做「同一起点、不同终点」的前后比较；后一次低于前一次 → 建议「下一波 S0 改攻未点亮塔」。区间不同的两次读数不可比。
+- 用户在意的「value factor 趋势」= 这个分数随时间的变化，不是某一天的绝对值。
 
-### 3. 比赛参与与进度
-- **步骤**：
-  1. **获取用户参与的比赛**：获取用户当前参与的所有比赛信息。
-     - 使用工具：`mcp__wq-brain-http__get_user_competitions`（设置 `user_id` 为 "self"）。
-  2. **筛选未截止比赛**：根据比赛日期判断哪些比赛尚未截止，优先关注这些比赛。
-  3. **比赛进度报告**：记录用户在每个比赛中的排名、提交的 alpha 表现等信息。
-  4. **⚠️ 关键：比赛规则与要求详细分析**：获取每个比赛的详细规则和要求。
-     - 使用工具：`mcp__wq-brain-http__get_competition_details` 和 `mcp__wq-brain-http__get_competition_agreement`（设置 `competition_id` 为具体比赛 ID）。
-     - **必须仔细阅读比赛协议**：特别注意universe要求、delay要求、Alpha类型限制等关键参数。
-     - **常见错误**：例如GAC类比赛要求GLOBAL universe，而非特定region（如USA）。
-  5. **比赛相关计划与建议**：基于规则和用户当前表现，提供下一步行动建议和研究方向。
-     - **验证符合性**：确保推荐的Alpha完全符合比赛规则要求。
-     - **结合 pyramid 缺失类别**：在符合比赛规则的前提下，考虑pyramid优化。
-- **使用的 MCP 工具**：
-  - `mcp__wq-brain-http__get_user_competitions`：获取用户参与的比赛列表。
-  - `mcp__wq-brain-http__get_competition_details`：获取比赛详细信息。
-  - `mcp__wq-brain-http__get_competition_agreement`：获取比赛规则和条款。
+## 比赛
 
-### 4. 未来活动预告
-- **步骤**：
-  1. **获取即将到来的事件**：获取 BRAIN 平台上的比赛、研讨会或其他活动信息，过滤过去事件（基于当前日期，如 2025-08-09）。
-     - 使用工具：`mcp__wq-brain-http__get_events`（设置 `random_string` 为任意值，如 "dummy"）。
-  2. **计划任务**：基于当前 alpha 和比赛状态，列出未来几天计划完成的任务。
-- **使用的 MCP 工具**：
-  - `mcp__wq-brain-http__get_events`：获取平台事件信息。
+1. `get_user_competitions()` → 列出参与的比赛，只保留**未截止**的（按 ET 今日判断）。
+2. 对每个保留的比赛：`get_competition_details(competition_id)` + `get_competition_agreement(competition_id)`。
+3. **必须读协议全文里的 universe / delay / alpha 类型 / 提交上限**，写进日报的「规则核对」一列。
+4. 推荐 alpha 时逐项对照；不符合就不推荐。
 
-### 5. 研究回归与建议
-- **步骤**：
-  1. **研究回归**：基于当前 alpha 表现总结研究成果，包括年度统计。
-  2. **建议**：综合 alpha 表现、比赛要求和平台动向，提供 alpha 优化、比赛策略、数据字段探索和风险管理等方面的建议。优先级列表化。
-- **使用的 MCP 工具**：基于 Alpha 部分数据。
+**真实案例**（症状 → 原因 → 防范）：某全球赛（GAC）的日报里推荐了 USA 区的 alpha——症状是「建议看起来合理」，原因是没读协议、想当然认为「有 alpha 就行」，协议实际要求 GLOBAL universe。防范：建议里的每个候选都要写「协议第几条 → 满足」，缺这一列就不发这条建议。
 
-### 6. Alpha 进展与状态 (移到后部)
-- **步骤**：
-  1. **获取 IS (In-Sample) Alpha 数据**：获取用户当前正在回测的 alpha 信息。
-     - 使用工具：`mcp__wq-brain-http__get_user_alphas`（设置 `stage` 为 "IS"，`limit` 为 30，`offset` 为 0）。
-  2. **获取 OS (Out-of-Sample) Alpha 数据**：获取用户最近成功提交的 alpha 信息。
-     - 使用工具：`mcp__wq-brain-http__get_user_alphas`（设置 `stage` 为 "OS"，`limit` 为 30，`offset` 为 0）。
-  3. **昨日进展**：查看平台日志或使用 `mcp__wq-brain-http__get_user_activities` 追踪活动。
-  4. **性能分析**：分析每个 alpha 的关键指标（如 Sharpe Ratio、PnL、Fitness），与平台标准对比。并行调用工具获取细节。
-     - 使用工具：`mcp__wq-brain-http__get_alpha_details`、`get_alpha_yearly_stats`、`mcp__wq-brain-http__get_alpha_pnl`、`mcp__wq-brain-http__get_alpha_yearly_stats`、`mcp__wq-brain-http__check_correlation` (阈值 0.7)。
-  5. **OS Alpha 详细分析**：对每个 OS alpha 分析数据字段、运算符和含义。提供两个角度改进建议：(1) Idea 本身 (e.g., 修改窗口、添加运算符)；(2) 结合比赛 (e.g., GAC2025 要求) 或近季度缺失 pyramid (使用 `mcp__wq-brain-http__get_pyramid_alphas` 和 `mcp__wq-brain-http__get_pyramid_multipliers`，推荐具体数据字段)。
-  6. **其他数据字段建议**：基于策略，使用 `mcp__wq-brain-http__get_datafields` 搜索并推荐字段 (e.g., search="EPS")。
-- **使用的 MCP 工具**：
-  - `mcp__wq-brain-http__get_user_alphas`：获取 IS/OS 列表。
-  - `mcp__wq-brain-http__get_alpha_details`：详细代码/描述。
-  - `get_alpha_yearly_stats`：全面性能分析。
-  - `mcp__wq-brain-http__check_correlation`：相关性检查。
-  - `mcp__wq-brain-http__get_alpha_pnl`：PnL 数据。
-  - `mcp__wq-brain-http__get_alpha_yearly_stats`：年度统计。
-  - `mcp__wq-brain-http__get_pyramid_alphas` 和 `mcp__wq-brain-http__get_pyramid_multipliers`：pyramid 分布和乘数。
-  - `mcp__wq-brain-http__get_datafields`：推荐数据字段。
+## 事件
 
-## 其他注意事项
+`get_events()`，**无参数**（不要传任何占位参数）。按 ET 今日过滤掉已过去的事件；剩余按日期升序写「未来 N 天」。
 
-- **认证**：在开始任何数据获取之前，需使用 `mcp__wq-brain-http__authenticate` 工具进行认证，提供用户的电子邮件和密码。
-- **动态日期**：使用系统日期动态获取当前日期，确保事件过滤准确（e.g., 排除过去事件）。
-- **并行工具调用**：优先并行调用 MCP 工具以加速数据收集。
-- **善用论坛**：善用论坛，获取更多信息。
-- **用户反馈**：在每个阶段完成后，检查用户是否有补充信息或修改意见，并相应更新报告。
-- **任务管理**：使用 `todo_write` 工具创建和更新待办事项列表，确保每个步骤按部就班完成。
+## Alpha 表现
 
-## 质量控制与错误防范
+范围与取法见 SKILL §2.1；这里写字段读法：
 
-### 常见错误及防范措施
-1. **比赛规则理解错误**：
-   - **错误示例**：误认为GAC2025接受USA region Alpha，实际要求GLOBAL universe
-   - **防范措施**：必须详细阅读`mcp__wq-brain-http__get_competition_agreement`返回的完整规则文档
-   - **验证步骤**：在提供建议前，再次确认Alpha的universe、delay等参数符合比赛要求
+- `get_user_alphas` 返回精简结构（`results` + 分页信息）；**API 单次最多 100 条**，用 `offset` 翻页。`region` / `status` / `is_super` 是**客户端过滤**（会多翻几页），`type` 是服务端过滤。
+- `get_alpha_details(alpha_id)`：表达式、设置、`is` 指标与 `checks`；`get_alpha_yearly_stats(alpha_id)`：分年 Sharpe / 收益（近 2 年稳健性看这个）；`get_alpha_pnl(alpha_id)`：净值曲线（需要时再取）。
+- `check_correlation(alpha_id, correlation_type="production", threshold=0.7)`：**只读的相关性检查**，用于给建议提供「会不会撞 prod 墙」的依据；它**不是提交**。
+- OS alpha 的改进建议给两个角度：① idea 本身（窗口 / 算子 / 条件是否符合窗口规则，1/5/22/66/252 等）；② 结合比赛规则或近季度**未点亮塔**（`get_pyramid_alphas` + `get_pyramid_multipliers`）——**只列塔与缺口，具体选集交给 ra-pipeline 步 2**，不在日报里点名字段。
 
-2. **数据解读错误**：
-   - **防范措施**：对关键指标进行交叉验证，如Sharpe ratio、fitness等
-   - **质量检查**：确保所有建议都有数据支撑，避免主观推测
+## 金字塔
 
-3. **输出格式错误**：
-   - **用户偏好**：根据用户要求选择聊天输出或markdown文件
-   - **结构完整性**：确保日报包含所有必需章节且逻辑清晰
+- `get_pyramid_alphas()` 默认统计**当季**（UTC 季度边界；跨季度首日会与 ET 日历日差几小时，做 1 号 / 季度末判断时以 ET 为准）。每个 category 的 ACTIVE 数 ≥ 3 = 已点亮。
+- `get_pyramid_multipliers()`：平台鼓励度（乘数）。**乘数只说明平台鼓励哪里，不是选塔准则**——选塔以「未点亮」为第一准则（SKILL §3 前置检查 1）。
 
-### 持续改进机制
-- 记录每次错误的根本原因
-- 更新工作流程以防止类似错误重复发生
-- 建立验证清单确保关键信息准确性
+## 区域态势
 
-## 总结
+命令与口径见 SKILL §4。字段读法：
 
-以上工作流程涵盖了撰写 BRAIN 平台每日日报的各个方面，从数据收集到报告撰写和更新。通过使用指定的 MCP 工具，秘书可以获取必要的数据并分析用户在平台上的表现，从而提供有针对性的建议和见解。如有任何问题或需要进一步指导，请随时与前任秘书或平台支持团队联系。
+| 字段 | 读法 |
+|---|---|
+| `backtested` / `pass_ge_158` / `pass_rate_pct` | 本地 `backtest_results` 的条数 / `sharpe ≥ 1.58` 的条数 / 比例（**宽口径**，不代表可提交） |
+| `active_local` | 本地库里 `platform_status=ACTIVE` 的条数（与平台全量可能有偏差） |
+| `campaigns` / `exhausted_pct` | registry 里 campaign 层的 untried / in_progress / exhausted 分布与穷尽占比 |
+| `suggested_action` | 数据侧提示，判据在 SKILL §4 表；不覆盖 `entry_verdict`，不是转区结论 |
+
+## 常见误读（症状 → 原因 → 防范）
+
+| 症状 | 原因 | 防范 |
+|---|---|---|
+| 日报把「达标 12 条」写成「有 12 条可提交」 | `pass_ge_158` 只看 Sharpe，没算 RA 硬闸与 prod 相关性 | 与 `get_mining_yield(strict=True)` 的 `ra_clean` 并列写，并写明口径 |
+| 建议开 X 战役，但 X 所在塔当季已点亮 | 用「乘数高」当理由，没做 SKILL §3 前置检查 1 | 每条建议写三项前置检查的结果 |
+| 建议「再开一波」，但该区停止规则已命中 | 没查 L.2 停止规则与 waiver | 前置检查 3；命中只能建议换区 / 换轴 / 等用户放行 |
+| 「事件」章列出了上周的活动 | 没按 ET 今日过滤 | SKILL §1 取时间；事件按日期过滤 |

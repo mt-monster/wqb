@@ -1,119 +1,74 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: brain-feature-implementation
-description: "根据 idea Markdown 文档实现 WorldQuant Brain 特征：下载数据集并生成文档中定义的 alpha 表达式 （alpha expressions / dataset download / expression generation）。 当用户提供 idea 文档、要求生成 alpha 表达式或下载数据集时使用。"
+description: "排查或手动复现 GEM 引擎的模板渲染（idea Markdown → alpha 表达式）时查阅：模板语法规则与手动流程。不是生成表达式的入口——要生成表达式请用 brain-make-some-gem。"
 layer: L2
 allowed-tools:
   - Read
   - Bash
-  - TaskCreate
 ---
-
-
-
-
-
-
 
 # Brain 特征实现（Brain Feature Implementation）
 
 ## 职责边界
 
-- **本 skill 负责**：idea Markdown → 可执行的 alpha 表达式实现（含数据集下载与模板渲染）
-- **本 skill 不做**：**不得作为独立主链入口** —— 本 skill 被内嵌在 `brain-make-some-gem` 引擎（`scripts/trailSomeAlphas/`）内供其调用，主链入口是 `brain-make-some-gem`（ra-pipeline 已把「直接把 FI 当主链入口」列为反模式）
-- **上游 / 下游**：上游 = ideas 文档；下游 = GEM 引擎内部（产物 `final_expressions.json` **不是真相源**，真相源是 DB `expressions` 表）
+- **本 skill 负责**：把 idea Markdown 里的模板公式渲染成 alpha 表达式——`implement_idea.py`（渲染）、`fetch_dataset.py`（下载字段）、`merge_expression_list.py`（合并）。这是 GEM 引擎内部的一段；本文写**模板语法规则**与**手动复现 / 排障流程**。
+- **本 skill 不做**：**不得作为主链入口**（主链入口 = `brain-make-some-gem`；ra-pipeline 把「直接把 FI 当主链入口」列为反模式）；不选数据集 / 字段（S0 / S1）；不回测、不提交、**不写 DB**。
+- **上游 / 下游**：上游 = ideas 文档（GEM 的 LLM 产物，或手写）；下游 = GEM 引擎内部。手动流程的产物 `final_expressions.json` **不是真相源**（真相源是 DB `expressions` 表），也没有任何下游读它——只有 GEM 节点会在自己的流程里把它入库。想让这批表达式进 `expressions` 表：走 `brain-inspect-raw-template-create-setting`（外部 / 手写通道），或直接用 `brain-make-some-gem`；**不要自己写 SQL**。
 
+## 模板语法
 
+- 模板用 Python format 语法：`{variable}`，`variable` 必须是数据集字段的**后缀**（如 `mean`、`st_dev`、`gro`），不带数据集前缀或 horizon（脚本自动检测）。
+  - 正确：字段 `anl15_gr_12_m_gro / anl15_gr_12_m_pe` → 模板 `{gro} / {pe}`。
+  - 错误：`{anl15_gr_12_m_gro} / {pe}`（带了前缀）；`${gro} / ${pe}`（Shell 语法）。
+- 同名占位符可在条件与信号中重复出现，**只绑定一次**；不同占位符仍**禁止**退化为同一字段的恒等式（脚本默认开语义 lint，会拦恒等式 / 裸字段 / 元数据腿）。
+- 下载支持 MATRIX / VECTOR / GROUP。GROUP 是分组轴：单个 GROUP 占位符只保留概念原式，**不自动扩展** `rank(label)`、`ts_delta(label)` 等数值变体。
+- 组合爆炸受 `--max-expressions`（缺省 24）约束：每个模板的展开条数上限；完全匹配的字段 id 保持 1:1。
 
-## 描述
-本 skill 将 WorldQuant Brain idea 文档（Markdown）自动转换为可执行的 Alpha 表达式，并为每种独立的 idea 模式处理数据集下载和代码生成。
-同名占位符可在条件与信号中重复出现，只绑定一次；不同占位符仍禁止退化为同一字段的恒等式。
-下载支持 MATRIX/VECTOR/GROUP；GROUP 是分组轴，单个 GROUP 占位符只保留概念原式，不自动扩展 rank(label) 或 ts_delta(label) 等数值变体。
+## 与 GEM 引擎的关系（谁读本文件）
 
-## 工作范围
-*   本 skill 通过 `scripts/` 下的 Python 脚本操作本地 CSV 文件与 Brain 下载接口。
-*   **skill 层不直接调用 WorldQuant Brain MCP 工具**；数据下载由 `fetch_dataset.py` 内部通过 `ace_lib` 调用 Brain API（需 `config.json` 提供凭据）。
-*   **禁止编写自定义 Python 脚本**（如 `python -c ...` 或新建 `.py` 文件）来检查数据或生成表达式。必须使用 `scripts/implement_idea.py` 工具。
-*   不要尝试在平台上提交 alpha 或运行模拟。只关注在本地生成表达式文件。
+- GEM 的 LLM prompt **不拼入本文件**：`pipeline_prompts.build_prompt` 只把 feature-engineering 的 8 问当提示，FI 文本虽被读入但**不使用**（源码注释：Concept-first，不要整篇灌进去）。所以本文只面向人 / agent 的手动流程与排障；对 LLM 的机器约束在 prompt 的 `CRITICAL OUTPUT RULES` 里。这一条由 `tests/unit/test_se_docs.py` 钉死——将来若又把 FI 文本拼进 prompt，要同步改本节。
+- GEM 运行时用哪份脚本：`pipeline_paths._resolve_skill_dir` 解析——环境变量 `WQB_FI_SKILL_DIR` > 各宿主安装位 > 仓库自带；都找不到才用内嵌副本 `brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/`（启动时打印 `[skill-doc] … embedded:legacy` 即走了兜底）。
+- **两份目录当前逐字节相同**：SKILL.md 由 `python tools/sync_gem_embedded_skill.py --apply` 从本文件同步；`validator.py` 与 `alpha-expression-verifier` 的权威版一致（`hump` 命名参数、`bucket` 必带 `range=`/`buckets=`、`densify` 分组键的修复都在里面）——改 validator 必须四处一起改，由测试守护。
 
-## 前置准备：config.json
-`fetch_dataset.py` 从 **本 skill 根目录**读取 `config.json` 获取 Brain 登录凭据。首次使用前在该目录创建 `config.json`：
+## 前置：凭据（只影响 `fetch_dataset.py`）
+
+`fetch_dataset.py` 的凭据来源，优先级从高到低：环境变量 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（标准名，与 MCP 服务、toolkit 同名）→ 旧别名 `BRAIN_USERNAME`（或 `BRAIN_EMAIL`）/ `BRAIN_PASSWORD` → 本 skill 根目录的 `config.json`（可选，已 `.gitignore`；只在环境变量不全时才需要）：
 
 ```json
-{
-  "BRAIN_CREDENTIALS": {
-    "email": "your_brain_email@example.com",
-    "password": "your_brain_password"
-  }
-}
+{ "BRAIN_CREDENTIALS": { "email": "<your_brain_email>", "password": "<your_brain_password>" } }
 ```
 
-缺文件或字段时脚本会打印错误并退出（不消耗平台资源）。凭据不要提交到版本库。
+**agent 不读取、不回显、不提交 `config.json` 与 `.env`**（AGENTS.md）；缺凭据时脚本报错退出，不消耗平台资源。
 
-## 操作步骤
+## 手动流程（复现 / 排障；在仓库根运行，脚本与 CWD 无关）
 
-1.  **分析 idea 文档**
-    *   读取提供的 markdown 文件。
-    *   提取以下元数据：
-        *   **数据集 ID**（如 `analyst15`）
-        *   **区域**（如 `GLB`）
-        *   **延迟**（如 `1` 或 `0`）
-    *   *若缺少任何元数据，请向用户澄清。*
+`$WQ_PY` = MCP venv 解释器；`FI = Claude/skills/brain-feature-implementation/scripts`（GEM 内嵌副本用它的对应目录）。
 
-2.  **下载数据集**
-    *   使用提取的参数执行下载脚本。
-    *   **定位脚本**：
-        *   检查当前工作目录（`ls -R` 或 `Get-ChildItem -Recurse`）。
-        *   找到 `fetch_dataset.py` 的路径，它通常在 `brain-feature-implementation/scripts` 或 `scripts` 下。
-    *   **运行命令**：
-        *   运行前先切换到脚本所在目录。
-        *   命令：
-            ```bash
-            cd <PATH_TO_SCRIPTS_FOLDER> && python fetch_dataset.py --datasetid <ID> --region <REGION> --delay <DELAY>
-            ```
-    *   等待下载完成。脚本会在 `../data/` 下创建文件夹。
+1. **分析 idea 文档**：读 markdown，提取数据集 ID（如 `analyst15`）、区域（如 `GLB`）、延迟（`0` / `1`）。缺任何一项 → 问用户，不要猜。
+2. **下载字段**：
+   ```powershell
+   & $WQ_PY $FI/fetch_dataset.py --datasetid <ID> --region <REGION> --delay <DELAY> --universe <U> [--data-type MATRIX|VECTOR|GROUP]
+   ```
+   **`--universe` 缺省 `TOP3000` 只适用于部分区域**（USA / GLB 等）；其它区域必须显式传该区的合法 universe——取值以 `src/wqb/config.py::REGIONS[<R>]["default_universe"]` 为准（例：KOR / AMR 是 `TOP600`）。产物落在 `<数据根>/<ID>_<REGION>_delay<DELAY>/`，数据根 = 环境变量 `WQB_GEM_DATA_ROOT`，未设 → skill 目录下 `data/`。
+3. **规划**：列出 idea 里每个「特征定义 / 公式」（`Definition: <formula>` 或公式代码块），每条一项；用宿主自带的清单能力跟踪（本文不指定具体工具名）。
+4. **逐条渲染**：
+   ```powershell
+   & $WQ_PY $FI/implement_idea.py --template "<模板>" --dataset "<数据集目录名>"
+   ```
+   数据集目录名 = `{ID}_{REGION}_delay{DELAY}`（如 `analyst10_GLB_delay1`）。可选参数：`--idea`（自然语言说明）、`--max-expressions`、`--no-lint`（**不建议关**）、`--field-whitelist <json>`（S1 白名单，收窄绑定池）、`--field-profile` + `--family-match`（按字段画像过滤绑定池）。**不要**用 `python -c` 或临时脚本去检查数据 / 处理结果，信任脚本输出（生成条数、被 lint 拦下的原因）。
+5. **合并**：
+   ```powershell
+   & $WQ_PY $FI/merge_expression_list.py --dataset "<数据集目录名>"
+   ```
+   在数据集目录生成 `final_expressions.json`（去重后的表达式）。向用户报告唯一表达式条数与路径，并**注明它不是真相源、未入库**（见职责边界）。
 
-3.  **规划实现**
-    *   扫描 markdown 文件中的 **特征定义（Feature Definitions）** 或 **公式（Formulas）**。
-    *   查找类似 `Definition: <formula>` 的模式或描述数学公式的代码块。
-    *   使用 `TaskCreate` 工具创建计划，为每个独立的 idea/公式建立一个条目。
-        *   *标题*：idea 名称或 ID（如 "3.1.1 Estimate Stability Score"）。
-        *   *描述*：具体的模板公式（如 `template: "{st_dev} / abs({mean})"`）。
+## 常见错误
 
-4.  **执行实现**
-    *   对 Todo 列表中的每一项：
-        *   **构造模板**：
-            *   使用 Python format string 语法 `{variable}`。
-            *   `{variable}` 必须匹配数据集中字段的 **后缀**（如 `mean`、`st_dev`、`gro`）。
-            *   **关键**：模板中不要包含完整前缀或 horizon，脚本会自动检测。
-            *   *正确示例*：对于 `anl15_gr_12_m_gro / anl15_gr_12_m_pe`，使用模板 `{gro} / {pe}`。
-            *   *错误示例*：`{anl15_gr_12_m_gro} / {pe}`（包含前缀）。
-            *   *错误示例*：`${gro} / ${pe}`（Shell 语法）。
-        *   **确定数据集文件夹**：`{ID}_{REGION}_delay{DELAY}`（如 `analyst10_GLB_delay1`）。
-        *   **运行脚本**：
-            *   切换到包含 `implement_idea.py` 的文件夹（如步骤 2 所述）。
-            *   命令：
-                ```bash
-                cd <PATH_TO_SCRIPTS_FOLDER> && python implement_idea.py --template "<TEMPLATE_STRING>" --dataset "<DATASET_FOLDER_NAME>"
-                ```
-            *   *注意*：脚本只接受 `--template` 和 `--dataset`。不要传其他参数，如 `--filters` 或 `--groupby`。
-            *   **严格规则**：不要用 `python -c` 或创建临时脚本验证或处理结果。信任 `implement_idea.py` 的输出。
-        *   验证输出（生成的表达式数量）。
-        *   将 Todo 项标记为完成。
-
-5.  **完成输出**
-    *   所有 Todo 项完成后，将所有生成的表达式合并到单个文件中。
-    *   **运行合并脚本**：
-        *   切换到包含脚本的文件夹。
-        *   命令：
-            ```bash
-            cd <PATH_TO_SCRIPTS_FOLDER> && python merge_expression_list.py --dataset "<DATASET_FOLDER_NAME>"
-            ```
-    *   这会在数据集目录下生成 `final_expressions.json`。
-    *   向用户报告唯一表达式的总数以及最终文件的路径。
-
-## 脚本依赖
-本 skill 依赖其 `scripts/` 目录下的以下脚本：
-- `fetch_dataset.py`：从 Brain API 下载数据。
-- `implement_idea.py`：根据模板生成 alpha 表达式。
-- `ace_lib.py` 与 `helpful_functions.py`：支持库。
+| 现象 | 含义 | 处理 |
+|---|---|---|
+| `Error: BRAIN credentials missing …` | 环境变量与 `config.json` 都没给出凭据 | 由用户在本机设 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（或建 `config.json`）；不要把口令贴进对话 |
+| `Error: No data found or empty response.` | 该 `dataset × region × delay × universe` 组合没有字段（常见于 universe 写错） | 核对 `config.REGIONS` 里该区的合法 universe；用 `get_datafields` 先确认 |
+| `Multiple datasets found. Please specify --dataset.` | 数据根下有多个数据集目录 | 显式传 `--dataset` |
+| 渲染出 0 条 | 占位符没匹配上字段后缀，或被语义 lint 拦下 | 看脚本输出的拦截原因；按「模板语法」修模板 |
+| `Error: Could not import 'ace_lib'` | 依赖缺失或 skill 目录不完整 | 用 `$WQ_PY`；确认 `scripts/ace_lib.py` 存在 |

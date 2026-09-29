@@ -2,7 +2,7 @@
 """区域状态记分板（P1-6：区域状态单一事实源）。
 
 收敛三个原型的同一需求：
-  - brain-next-move-analysis §5.5 区域饱和度检测（日报消费）
+  - brain-next-move-analysis「区域态势」（日报消费；只转述本工具的输出）
   - wq-brain-campaign-matrix 配置包 prod_saturation / prod_risk 标注（S-PRE 消费）
   - 数据集记分板（防止重复挖已饱和 dataset）
 
@@ -38,6 +38,22 @@ DB = os.path.join(REPO, "data", "wqb.db")
 PROFILE_DIR = os.path.join(REPO, "Claude", "skills", "wq-brain-ra-pipeline",
                            "references", "regions")
 
+# ---- 记分板判据（单一事实源：skill / matrix 只引用这里，不复述数值；tests/unit/test_se_docs.py 钉死） ----
+#: 「达标」= 研究仿真口径 sharpe >= 此值（宽口径；RA 选区先验用的严格口径见 wqb-db get_mining_yield 的 ra_clean）
+PASS_SHARPE_MIN = 1.58
+#: 本区达标数 >= 此值 → 「继续（注意 PROD 同质风险）」，也是 campaign-matrix `prod_saturation: likely` 的判据
+PROD_SATURATION_MIN_PASS = 10
+#: 战役 exhausted 占比 >= 此值（%）且战役总数 >= EXHAUSTED_MIN_CAMPAIGNS → 「冻结/转区」
+EXHAUSTED_FREEZE_PCT = 80.0
+EXHAUSTED_MIN_CAMPAIGNS = 5
+#: 有 untried 战役且回测量 < 此值 → 「开战役候选」
+OPEN_CAMPAIGN_MAX_BACKTESTED = 20
+#: 四个建议动作（输出 `suggested_action` 字段的取值；skill 的输出表与之逐字对应）
+ACTION_CONTINUE = "继续（注意 PROD 同质风险→正交方向）"
+ACTION_FREEZE = "冻结/转区（exhausted 占比过高）"
+ACTION_OPEN = "开战役候选（untried 充足、投入不足）"
+ACTION_WATCH = "继续观察"
+
 
 def _entry_verdict(region: str) -> str:
     path = os.path.join(PROFILE_DIR, f"{region}.md")
@@ -50,8 +66,8 @@ def _entry_verdict(region: str) -> str:
 
 def region_status(conn: sqlite3.Connection, region: str) -> dict:
     bt_total, bt_pass = conn.execute(
-        "SELECT COUNT(*), COALESCE(SUM(CASE WHEN sharpe>=1.58 THEN 1 ELSE 0 END),0) "
-        "FROM backtest_results WHERE region=?", (region,)).fetchone()
+        "SELECT COUNT(*), COALESCE(SUM(CASE WHEN sharpe>=? THEN 1 ELSE 0 END),0) "
+        "FROM backtest_results WHERE region=?", (PASS_SHARPE_MIN, region)).fetchone()
     active = conn.execute(
         "SELECT COUNT(*) FROM alphas a JOIN regions r ON r.id=a.region_id "
         "WHERE r.name=? AND UPPER(COALESCE(a.platform_status,''))='ACTIVE'",
@@ -75,15 +91,16 @@ def region_status(conn: sqlite3.Connection, region: str) -> dict:
     total_camp = sum(camp.values())
     exhausted_pct = round(100 * camp["exhausted"] / total_camp, 1) if total_camp else 0.0
     hit_rate = round(100 * bt_pass / bt_total, 1) if bt_total else 0.0
-    # 动作建议（与 next-move §5.5 / campaign-matrix 口径一致）
-    if bt_pass >= 10:
-        action = "继续（注意 PROD 同质风险→正交方向）"
-    elif exhausted_pct >= 80 and total_camp >= 5:
-        action = "冻结/转区（exhausted 占比过高）"
-    elif camp["untried"] > 0 and bt_total < 20:
-        action = "开战役候选（untried 充足、投入不足）"
+    # 动作建议（判据即上方常量；next-move「区域态势」/ campaign-matrix 只引用，不复述）。
+    # 顺序即优先级：先看 prod 同质，再看战役穷尽，最后看投入不足。
+    if bt_pass >= PROD_SATURATION_MIN_PASS:
+        action = ACTION_CONTINUE
+    elif exhausted_pct >= EXHAUSTED_FREEZE_PCT and total_camp >= EXHAUSTED_MIN_CAMPAIGNS:
+        action = ACTION_FREEZE
+    elif camp["untried"] > 0 and bt_total < OPEN_CAMPAIGN_MAX_BACKTESTED:
+        action = ACTION_OPEN
     else:
-        action = "继续观察"
+        action = ACTION_WATCH
     return {
         "region": region,
         "entry_verdict": _entry_verdict(region),
@@ -219,7 +236,7 @@ def main() -> int:
               f'{r["pass_ge_158"]:4d} {r["pass_rate_pct"]:5.1f}% {r["active_local"]:6d} '
               f'{r["waves"]:5d} {r["exhausted_pct"]:7.1f}% {r["suggested_action"]}')
     print("-" * 88)
-    print("消费方：next-move §5.5 日报 / campaign-matrix 配置包标注 / 波次规划。"
+    print("消费方：next-move 日报「区域态势」/ campaign-matrix 配置包标注 / 波次规划。"
           "本地口径偏差提醒见输出 JSON note。")
     return 0
 

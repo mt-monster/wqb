@@ -6,6 +6,13 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**brain-next-move-analysis / labs / expression-verifier / feature-implementation / dataset-mining-experience（S-E-1）**
+- next-move 定为**报告器**：只转述 `tools/region_status.py` 的输出，选区决策归 `wqb.region_rotation`；判据数值提为 `region_status.py` 顶部常量（文档判据表与 matrix 的 `≥ 10` 由测试钉死）；日报按固定五列模板给建议，三项前置检查（点亮塔 / 跨区弱先验 / 停波闸）；`reference.md` 改规范体，删「传邮箱口令」「`get_ny_time.py`」「`random_string`」等不存在的东西 → NM-01…17 / DEC-40
+- `validator.py` 四份三版本 → 逐字节镜像权威版（GEM 与外部 idea 入库通道此前用缺 hump / bucket / densify 修复的旧副本本地放行）；verifier SKILL 换真实非法示例与退出码语义 → EV-01…05 / DEC-41
+- labs skill：规范移入 skill、按引擎实际形态重写；默认示例修正（`imb5_mktcap` 被引擎合规约束排除）；人工暂停点显式标出 → LB-01…09 / DEC-42
+- feature-implementation：description 撤出「生成表达式」触发；`fetch_dataset.py` 认 `CREDENTIALS_*`、不再强制 `config.json`、不回显邮箱；核实 GEM 已不把 FI 文本拼进 prompt（AST 测试钉死）→ FI-01…06 / DEC-43
+- dataset-mining-experience：已废止的 `s6_verdict_<wave>` 教学清零（最后一处）；补核验步骤与文件骨架 → ME-01…09
+
 **wq-brain-ra-pipeline v3.0（重构）**
 - 核心 `SKILL.md` 由 950 行 → 约 220 行：每步固定模板（目的 / 前置 / 调用 / 产物 / 完成定义 / 失败分支 / 不做 / 细则）；细则、事故、情景卡拆到 `references/`（`step1`–`step9`、`loop-and-stop`、`forum-recon-triggers`、`ppa-vs-ra`、`tool-index`、`scenarios`、`incidents`）→ RA-10 / RA-103 / RA-117
 - `assemble-priors-internals.md` **按代码重写**：旧文写的「`GLOBAL/region_kb.templates[]` → wins」「`methodology[]` → region_context」代码里都没有，真正承载 S6 回写的 `registry_empirical` win / dead_end 层旧文一个字没提 → RA-50

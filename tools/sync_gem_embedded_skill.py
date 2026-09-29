@@ -16,8 +16,11 @@
     python tools/sync_gem_embedded_skill.py --check   # 只校验（等价于测试的守卫，退出码 1 = 有漂移）
     python tools/sync_gem_embedded_skill.py --apply   # 从权威版覆盖内嵌副本
 
-约定：**顶层是源，内嵌是派生物**；只同步 SKILL.md，绝不动内嵌的 `scripts/`
-（`ace_lib` / `validator` 是引擎硬依赖，与顶层不同文属设计使然）。
+约定：**顶层是源，内嵌是派生物**；本工具只同步 SKILL.md，不动内嵌的 `scripts/`。
+2026-09-29（skills 审查 FI-03 / EV）：两份 `scripts/` 目前逐字节相同，其中 `validator.py` 与
+`alpha-expression-verifier` 的权威版一致——之前三份 validator 各自演化，GEM 与外部 idea 入库通道
+用的是缺 hump / bucket / densify 修复的旧副本。此后由 `tests/unit/test_se_docs.py` 守护；
+改 validator 时按其文件头「单一来源」一节四处一起覆盖。
 """
 from __future__ import annotations
 

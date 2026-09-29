@@ -5,6 +5,17 @@
 
 本模块实现了一个能够检测字符串表达式格式是否正确的系统，基于PLY(Python Lex-Yacc)
 构建词法分析器和语法分析器，识别表达式中的操作符、函数和字段，并验证其格式正确性。
+
+【命名辨析 2026-09-12】本文件是**完整语法校验引擎**（签名/词法/语法）；
+src/wqb/expression/validator.py 只做形状分类与批级多样性闸（check_batch），不做语法。
+两者同名不同物，跨处引用前先核对角色。
+
+【单一来源 2026-09-29】本文件以 `alpha-expression-verifier/scripts/validator.py` 为**唯一权威版**；
+`brain-feature-implementation`、其 GEM 内嵌副本、`brain-inspect-raw-template-create-setting` 的
+`scripts/validator.py` 是逐字节镜像（tests/unit/test_se_docs.py 钉死）。改本文件必须同步覆盖三处：
+    for d in <三处 scripts 目录>; do cp <本文件> $d/validator.py; done
+此前三份各自演化：hump 命名参数（2026-09-07 事故）、bucket 必带 range/buckets（2026-09-19 事故）、
+densify 分组键类型的修复只落在权威版，GEM 与外部 idea 入库通道仍用旧副本本地放行。
 """
 
 import re
@@ -172,7 +183,13 @@ supported_functions = {
     'ts_skewness': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'ts_max_diff': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'kth_element': {'min_args': 3, 'max_args': 3, 'arg_types': ['expression', 'number', 'number']},
-    'hump': {'min_args': 1, 'max_args': 2, 'arg_types': ['expression', 'number'], 'param_names': ['x', 'hump']},
+    # 2026-09-07 事故修复：漏标 keyword_only 导致 hump(x, 0.005) 通过本地闸，平台回
+    # "Invalid number of inputs : 2, should be exactly 1 input(s)." 并 CANCEL 整批 8 条
+    # multisim。catalog 签名 hump(x, hump = 0.01) 的 = 即命名参数标记，只能写 hump=0.005。
+    # 注：本表是手写的，与平台 catalog 存在漂移（bucket/rank/quantile/scale/normalize/
+    # combo_a/group_backfill/reduce_* 同样漏标）；权威签名以 wqb.expression.op_arity
+    # （从 get_operators 的 definition 串自动推导）为准，闸门已并联该模块。
+    'hump': {'min_args': 1, 'max_args': 2, 'arg_types': ['expression', 'number'], 'param_names': ['x', 'hump'], 'keyword_only': True},
     'ts_median': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     'ts_delta': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'number']},
     # Platform: ts_poly_regression(y, x, d, k=1) and k must be keyword if provided
@@ -268,7 +285,11 @@ supported_functions = {
     's_log_1p': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     'reverse': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},  # -x
     'power': {'min_args': 2, 'max_args': 2, 'arg_types': ['expression', 'expression']},  # power(x, y)
-    'densify': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
+    # densify(group)：平台语义=把稀疏分组键压成连续可用桶（输入/输出都是分组键）。
+    # 2026-09-20 修正：原 arg_types=['expression'] 使 densify(bucket(...)) 被判 Unit[Group:1] 不兼容，
+    # 而论坛验证过的 ASI robust 配方 group_cartesian_product(country, densify(bucket(rank(cap), range=...)))
+    # 平台可跑——本地闸误拦。
+    'densify': {'min_args': 1, 'max_args': 1, 'arg_types': ['category']},
     'floor': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     # Appended missing operators
     'arc_cos': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression'], 'param_names': ['x']},
@@ -596,6 +617,16 @@ class ExpressionValidator:
 
         errors = []
 
+        # 2026-09-19 事故修复（JPN wave7）：`bucket(rank(x))` 不带 range=/buckets= 通过本地闸，
+        # 平台回 'At least one of "buckets", "range" is required.' → ERROR 并连坐整批 CANCELLED。
+        # 平台签名：bucket(x, range="start,end,step") 或 bucket(x, buckets="b1,b2,...")，二者必有其一。
+        if function_name == 'bucket':
+            has_kw = any(isinstance(a, dict) and a.get('type') == 'named'
+                         and a.get('name') in ('range', 'buckets') for a in args)
+            if not has_kw:
+                errors.append('函数 bucket 必须带命名参数 range="start,end,step" 或 buckets="..."'
+                              '（平台报 At least one of "buckets", "range" is required.）')
+
         # Keyword-only enforcement for optional parameters.
         # If enabled, only the required leading arguments can be positional.
         keyword_only_from = function_info.get('keyword_only_from')
@@ -692,8 +723,7 @@ class ExpressionValidator:
 
         # Unit compatibility check
         # bucket()/group_cartesian_product() output a derived category (grouping key).
-        # It can only be consumed where a category/grouping key is expected (typically by group_* operators).
-        # It must not flow into normal Unit[] inputs like ts_mean's first argument.
+        # It can only be consumed where a category/grouping key is expected.
         if self._is_derived_category(arg) and expected_type != 'category':
             errors.append(
                 f"Incompatible unit for input of \"{function_name}\" at index {arg_index}, expected \"Unit[]\", found \"Unit[Group:1]\""
@@ -726,8 +756,16 @@ class ExpressionValidator:
                 errors.append(f"无效的字段名: {arg.value}")
         elif expected_type == 'category':
             if not function_name.startswith('group_'):
-                # 非group函数的category参数必须是category类型且在valid_categories中
-                if arg.node_type != 'category':
+                # 非group函数的category参数必须是category类型且在valid_categories中；
+                # 派生分组键（bucket/group_cartesian_product/densify 产物）同样合法（2026-09-20）
+                if self._is_derived_category(arg):
+                    pass
+                elif function_name == 'densify' and arg.node_type == 'field':
+                    # Dataset GROUP fields are parsed as ordinary identifiers.
+                    # This syntax-only layer has no catalog; field existence and
+                    # data types remain the campaign gate's responsibility.
+                    pass
+                elif arg.node_type != 'category':
                     errors.append(f"参数 {arg_index+1} 应该是一个类别，但得到 {arg.node_type}")
                 elif arg.value not in valid_categories:
                     errors.append(f"无效的类别: {arg.value}")
@@ -764,11 +802,9 @@ class ExpressionValidator:
             unit = 'category' if 'category' in child_units else 'unit'
         elif node.node_type == 'function':
             fname = node.value
-            # Group-building functions create derived category outputs
             if fname in {'bucket', 'group_cartesian_product'}:
                 unit = 'category'
             else:
-                # Default: propagate from the first positional argument if available
                 first_arg = None
                 for child in node.children:
                     if isinstance(child, dict):
@@ -778,7 +814,6 @@ class ExpressionValidator:
                     else:
                         first_arg = child
                         break
-
                 if hasattr(first_arg, 'node_type'):
                     unit = self._infer_unit(first_arg)
                 else:
@@ -799,7 +834,7 @@ class ExpressionValidator:
 
         derived = False
         if node.node_type == 'function':
-            if node.value in {'bucket', 'group_cartesian_product'}:
+            if node.value in {'bucket', 'group_cartesian_product', 'densify'}:
                 derived = True
             else:
                 function_info = supported_functions.get(node.value, {})
@@ -819,7 +854,6 @@ class ExpressionValidator:
                                 if param_index < len(arg_types):
                                     expected_type = arg_types[param_index]
 
-                            # Do not propagate "derived" through allowed category/grouping-key inputs.
                             if expected_type == 'category':
                                 continue
 
@@ -857,7 +891,7 @@ class ExpressionValidator:
         - At least 2 positional expression terms.
         - Optional filter flag can be provided as:
           - named argument: filter=<boolean>
-          - last positional argument: <boolean>
+          - last positional argument: <boolean> or 0/1
         """
         errors: List[str] = []
 
@@ -905,11 +939,9 @@ class ExpressionValidator:
         if len(positional_nodes) < 2:
             errors.append(f"函数 add 需要至少 2 个输入项（不含filter），但只提供了 {len(positional_nodes)}")
 
-        # Validate all term inputs as expressions (no-op, but keep recursion behavior consistent)
         for idx, node in enumerate(positional_nodes):
             errors.extend(self._validate_arg_type(node, 'expression', idx, 'add', is_in_group_arg))
 
-        # Validate filter, if present (named takes precedence; if both present, that's an error)
         if positional_filter_node is not None and named_filter_nodes:
             errors.append("函数 add 的 filter 不能同时用位置参数和命名参数传递")
         if positional_filter_node is not None:
@@ -1085,7 +1117,6 @@ class ExpressionValidator:
                 if ch != '=':
                     continue
 
-                # 过滤比较操作符(==,!=,<=,>=)
                 prev_ch = stmt[i - 1] if i > 0 else ''
                 next_ch = stmt[i + 1] if i + 1 < len(stmt) else ''
                 if prev_ch in ['=', '!', '<', '>'] or next_ch == '=':
