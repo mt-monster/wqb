@@ -19,8 +19,10 @@ def _spawn(code, tmp_path):
     err = tmp_path / "stderr.log"
     fo = open(out, "w", encoding="utf-8")
     fe = open(err, "w", encoding="utf-8")
+    # 与生产启动点一致：POSIX 上子进程自成会话，killpg 才不会连测试进程一起杀
+    extra = {} if sys.platform == "win32" else {"start_new_session": True}
     proc = subprocess.Popen([sys.executable, "-u", "-c", code], stdout=fo, stderr=fe,
-                            stdin=subprocess.DEVNULL)
+                            stdin=subprocess.DEVNULL, **extra)
     return proc, str(out), str(err), fo, fe
 
 
@@ -75,3 +77,19 @@ def test_batch_track_launch_flags_match_campaign_node():
     code_lines = [ln for ln in launch.splitlines() if not ln.strip().startswith("#")]
     assert not any("DETACHED_PROCESS" in ln for ln in code_lines)
     assert any('"stdin": subprocess.DEVNULL' in ln for ln in code_lines)
+
+
+def test_kill_process_tree_never_kills_own_group(tmp_path):
+    """子进程与调用方同一进程组（漏了 start_new_session）时，只杀子进程，调用方必须活着。"""
+    if sys.platform == "win32":
+        return
+    from wqb.workflow._common import _kill_process_tree
+    proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"],
+                            stdin=subprocess.DEVNULL)   # 故意不新开会话：与本进程同组
+    try:
+        _kill_process_tree(proc)
+        assert proc.poll() is not None      # 子进程已死
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+    # 能走到这里就说明本进程没被 killpg 误杀

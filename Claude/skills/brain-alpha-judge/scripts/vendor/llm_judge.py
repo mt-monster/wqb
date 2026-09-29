@@ -11,7 +11,9 @@ import requests
 class LlmJudge:
     def __init__(self, cfg: Dict[str, Any] | None = None) -> None:
         cfg = cfg or {}
-        self.enabled = bool(cfg.get("enabled", True))
+        # 外发默认关闭（2026-09-29）：开启后会把候选的检查指标/相关性/语料摘录发往 api_url 指向的
+        # 第三方端点（表达式原文另由 judge.llm.send_expression 单独放行，默认不发）。须显式 enabled=true。
+        self.enabled = bool(cfg.get("enabled", False))
         self.provider = str(cfg.get("provider", "openai-compatible"))
         self.model = str(cfg.get("model", "gpt-4o-mini"))
         self.api_url = str(cfg.get("api_url", "https://api.openai.com/v1/chat/completions"))
@@ -19,10 +21,9 @@ class LlmJudge:
         self.language = str(cfg.get("language", "zh-CN"))
 
         configured_key = str(cfg.get("api_key", "")).strip()
-        env_key = (
-            os.environ.get("BRAIN_JUDGE_LLM_API_KEY", "").strip()
-            or os.environ.get("OPENAI_API_KEY", "").strip()
-        )
+        # 只认专用变量：不再回落到通用的 OPENAI_API_KEY——否则用户为别的用途设的 OpenAI key 会让
+        # judge 悄悄开始外发（2026-09-29）。
+        env_key = os.environ.get("BRAIN_JUDGE_LLM_API_KEY", "").strip()
         self.api_key = configured_key or env_key
 
     def decide(self, payload: Dict[str, Any]) -> Dict[str, Any]:

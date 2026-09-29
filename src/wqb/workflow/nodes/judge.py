@@ -42,7 +42,7 @@ from .._common import (
 def run(
     alpha_id: str,
     trend_window_days: int = 365,
-    llm_enabled: bool = True,
+    llm_enabled: bool = False,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行 Alpha 六步闸门判定（真实平台数据）——**只判定，不提交**。
@@ -60,7 +60,8 @@ def run(
     Args:
         alpha_id: Alpha ID
         trend_window_days: trend score 窗口天数
-        llm_enabled: 是否启用 LLM 决策层（当前为规则层占位，无 LLM key 时自动跳过）
+        llm_enabled: LLM 决策层开关，默认 False（占位：本节点当前只有规则层，尚未接线；
+            接线后也属于第三方外发，须显式开启，见 brain-alpha-judge 的外发字段白名单）
         _context: 执行上下文
 
     Returns:

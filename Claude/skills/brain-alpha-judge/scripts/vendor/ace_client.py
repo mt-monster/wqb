@@ -97,35 +97,34 @@ class AceClient:
         return self._request_json("GET", "/users/self/activities/pyramid-multipliers")
 
     def submit_alpha(self, alpha_id: str) -> bool:
-        response = self.session.post(f"{self.base_url}/alphas/{alpha_id}/submit")
-        while True:
-            retry_after = response.headers.get("Retry-After") or response.headers.get("retry-after")
-            if not retry_after:
-                break
-            time.sleep(float(retry_after))
-            response = self.session.get(f"{self.base_url}/alphas/{alpha_id}/submit")
-        return response.status_code == 200
+        """已移除（2026-09-29）：judge 是参考层，不提交。
+
+        提交只走 workflow_submit_alpha（用户明确确认后；见 worldquant-submit-alpha）。
+        保留同名方法只为让误用者得到明确报错，而不是 AttributeError。
+        """
+        raise RuntimeError(
+            "AceClient.submit_alpha 已移除：judge 不提交；提交请用 workflow_submit_alpha（需用户明确确认）")
 
     def get_submit_verdict(self, alpha_id: str) -> Dict[str, Any]:
-        """Real submission verdict (2026-08-11 GBR campaign verified).
+        """只读：GET /alphas/{id}/submit（**不再 POST**）。
 
-        POST /submit -> 201 = accepted (async checks pending).
-        GET  /submit -> 200 = FINAL SUCCESS / 403 = rejected (body has FAIL checks)
-                      / 404 = submission record cleared (was rejected async).
-        get_alpha_details only shows WARNING for 2Y/CW; the real pass/fail is
-        decided here at submit time. The only reliable success signal is the
-        alpha appearing in the OS pool (status=ACTIVE).
+        2026-09-29：此前本方法先 `POST /alphas/{id}/submit` 再 GET，而 baseline_from_platform
+        每跑一次 judge 都会调用它——评审一次就真的提交（或触发提交）一次候选，通过的 POST
+        不可撤销（且其后的 classify_check_pass 调用曾被外层 try/except 吞掉异常，事故无痕）。
+        已改为纯 GET。
+        注意：GET /submit 对未提交候选平台恒返 404（2026-09-26 实测，死端点），返回值只作信息，
+        不构成提交判定；提交判定 = submit_verdict + prod 实测 + 用户确认（见 worldquant-submit-alpha）。
         """
-        post = self.session.post(f"{self.base_url}/alphas/{alpha_id}/submit")
         verdict = self.session.get(f"{self.base_url}/alphas/{alpha_id}/submit")
         body = verdict.json() if (verdict.text or "").strip() else {}
-        checks = body.get("is", {}).get("checks", [])
+        checks = body.get("is", {}).get("checks", []) if isinstance(body, dict) else []
         failed = [c.get("name") for c in checks if classify_check_pass(c) is False]
         return {
-            "post_status": post.status_code,
+            "post_status": None,          # 保留键名兼容下游；本方法不再发 POST
             "verdict_status": verdict.status_code,
             "final_success": verdict.status_code == 200,
             "failed_checks": failed,
+            "note": "read-only GET; dead endpoint (404) for unsubmitted alphas — informational only",
         }
 
 
@@ -134,7 +133,8 @@ def classify_check_pass(check: Dict[str, Any]) -> bool | None:
 
     PENDING (e.g. SELF_CORRELATION during async checks) must NOT be treated
     as failure - it is unresolved. get_alpha_details WARNING for 2Y/CW is not
-    the real verdict; call get_submit_verdict() for the authoritative result.
+    the real verdict (WARNING is classified as None here, so it never blocks by itself);
+    the authoritative veto is submit_verdict (hard-gate WARNINGs count as FAIL there).
     """
     for key in ("result", "status", "checkResult"):
         value = check.get(key)

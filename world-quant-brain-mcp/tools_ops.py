@@ -199,140 +199,43 @@ async def batch_status(
 
 # ── submit_verdict ──
 
-
-def _count_failed(checks, kind):
-    """WebDataScope Failed RA/PPA 计数（规则唯一权威 = src/wqb/config.py 的 CHECK 名单 +
-    wq-brain-ra-pipeline/references/webdatascope-failed-gates.md 的计数伪码）.
-
-    返回 (count, items)；items 逐条 name/result/value/limit（报告要求逐条列名）。
-    PPA 附加规则：LOW_SHARPE 的 value<1 无论 result 显示什么都计入。
-    """
-    from wqb.config import (RA_CHECK_NAMES as _RA_NAMES,  # noqa: WPS433（延迟导入：MCP 包不强依赖 src）
-                            PPA_CHECK_NAMES as _PPA_NAMES,
-                            check_counts_as_failed as _counts_bad)
-    names = _RA_NAMES if kind == "RA" else _PPA_NAMES
-    items = []
-    for c in checks or []:
-        nm = str(c.get("name") or "")
-        res = str(c.get("result") or "")
-        hit = nm in names and _counts_bad(res)
-        if kind == "PPA" and nm == "LOW_SHARPE":
-            try:
-                hit = hit or float(c.get("value") or 0) < 1
-            except (TypeError, ValueError):
-                pass
-        if hit:
-            items.append({"name": nm, "result": res,
-                          "value": c.get("value"), "limit": c.get("limit")})
-    return len(items), items
-
 @mcp.tool()
 async def submit_verdict(alpha_id: str) -> Dict[str, Any]:
-    """提交层判定（否决权威）：模拟层 checks + Failed-count 资格门 + GET /submit 双视图.
+    """提交层判定（**否决权威**，只能拦不能放）：模拟层 checks + Failed-count 资格门 + GET /submit 双视图.
 
-    等价于 tools/submit_verdict.py。判定口径（2026-09-28 R8 修正）：
-    - **否决权威**：本工具说 BLOCKED 即不提交；说可放行时仍需满足「平台 prod<0.7 + 用户确认」
-      —— prod/自相关不在本工具内查，需另跑 check_correlation(refresh=True)。
+    判定逻辑的唯一实现在 ``wqb.submit_verdict_core``（与 tools/submit_verdict.py、
+    tools/batch_submit_verdict.py 共用）。口径（2026-09-29 X-2 整改）：
+    - BLOCKED 即不提交；不 BLOCKED 时仍需「平台 prod<0.7 + 用户明确确认」——prod/自相关不在本工具内查，
+      另跑 check_correlation(alpha_id, refresh=True)。
     - 模拟层：get_alpha_details 的 checks fail/warning + WebDataScope Failed RA/PPA 计数
       （规则见 wq-brain-ra-pipeline/references/webdatascope-failed-gates.md；唯一实现在 wqb.config）。
-    - 提交层：GET /alphas/{id}/submit **平台恒返 404**（2026-09-26 实测，ACTIVE 者也 404）
-      ——403 分支是死代码，该视图仅供历史兼容；**真闸只有用户确认后的 POST submit**
-      （三态响应 + 异步补发，见 worldquant-submit-alpha / submit_alpha 节点）。
+    - 提交层：GET /alphas/{id}/submit **平台恒返 404**（2026-09-26 实测，ACTIVE 者也 404）——
+      200/403 分支仅作防御保留；**真闸只有用户确认后的 POST submit**（三态响应 + 异步补发，
+      见 worldquant-submit-alpha / submit_alpha 节点）。因此对未提交候选现实中只会得到
+      UNVERIFIABLE 或 BLOCKED，上游条件不得写「等 SUBMITTABLE」。
 
     Args:
         alpha_id: Alpha ID
 
     Returns:
         {verdict: "SUBMITTABLE"|"UNVERIFIABLE"|"BLOCKED"|"ALREADY_SUBMITTED",
+         exit_code (0/10/1/11，与 CLI 一致), reason_code, next_step,
          failed_ra, failed_ppa, sim_fails, submit_status, submit_checks, ...}
     """
     try:
+        from wqb.submit_verdict_core import (  # noqa: WPS433（延迟导入：MCP 包不强依赖 src）
+            decide, is_already_submitted, normalize_submit_layer)
         await brain_client.ensure_authenticated()
 
-        # 模拟层
         detail = await brain_client.get_alpha_details(alpha_id)
-        status = detail.get("status")
-        is_ = detail.get("is") or {}
-        sim_checks = is_.get("checks") or []
-        fails = [c for c in sim_checks if c.get("result") == "FAIL"]
-        warns = [c for c in sim_checks if c.get("result") == "WARNING"]
+        if is_already_submitted(detail):
+            return decide(alpha_id, detail)
 
-        # 已提交/已落地：不再做可提交判定（此前对 ACTIVE 也报 BLOCKED，假阴性）
-        if status in ("ACTIVE", "SUBMITTED") or detail.get("dateSubmitted"):
-            return {
-                "verdict": "ALREADY_SUBMITTED",
-                "verdict_note": (f"alpha 已提交/已落地（status={status}），不构成可提交判定对象；"
-                                 "请勿重复 POST submit（幂等但浪费配额/产生混乱）。"),
-                "alpha_id": alpha_id, "alpha_status": status,
-                "sim_fails": fails, "sim_warnings": warns,
-                "hard_gate_warnings": [], "submit_status": None, "submit_checks": [],
-                "prepost_unverifiable": False,
-                "failed_ra": 0, "failed_ppa": 0,
-                "failed_ra_items": [], "failed_ppa_items": [],
-            }
-
-        # WebDataScope Failed-count 资格门（唯一实现 = wqb.config；REGULAR 看 RA、PPA 看 PPA）
-        is_ppa = str(detail.get("type") or "").upper() == "PPA" or any(
-            "PowerPoolSelected" in str(t) for t in (detail.get("tags") or []))
-        failed_ra, failed_ra_items = _count_failed(sim_checks, "RA")
-        failed_ppa, failed_ppa_items = _count_failed(sim_checks, "PPA")
-
-        # 提交层
         submit_url = f"{brain_client.base_url}/alphas/{alpha_id}/submit"
         resp = await brain_client._request("GET", submit_url)
-        submit_status = resp.status_code
-        submit_checks = []
-        if resp.status_code == 200:
-            body = resp.json() if resp.text else {}
-            submit_checks = (body.get("is") or {}).get("checks") or []
-        elif resp.status_code == 403:
-            body = resp.json() if resp.text else {}
-            submit_checks = body.get("checks") or body.get("detail") or []
-            if isinstance(submit_checks, list) and submit_checks and isinstance(submit_checks[0], str):
-                submit_checks = [{"name": c, "result": "FAIL"} for c in submit_checks]
-
-        # 判定：模拟层无 FAIL + 无提交层硬闸 WARNING + Failed-count 资格门为零，
-        # 且提交层为 200 或处女提交 404
-        _SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
-        prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
-        hard_gate_warns = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
-        failed_gate_ok = (failed_ppa == 0) if is_ppa else (failed_ra == 0)
-        ok = (not fails and not hard_gate_warns and failed_gate_ok
-              and (submit_status == 200 or prepost_unverifiable))
-
-        # 2026-09-08：处女提交（404）时提交层没有任何信息，此前一律报 SUBMITTABLE，
-        # 造成假阳性（IND qMja95Q2 判 SUBMITTABLE 实测 prod 0.7354；MEA Jj7ee6nO/omqEE1pn 同）。
-        # 这种情况只能说明「模拟层无阻塞」，不能说明可提交 —— 单列 UNVERIFIABLE，
-        # 迫使调用方另跑 check_correlation(refresh=True) 看 all_passed 才作准。
-        if ok and prepost_unverifiable:
-            verdict = "UNVERIFIABLE"
-        elif ok:
-            verdict = "SUBMITTABLE"
-        else:
-            verdict = "BLOCKED"
-
-        return {
-            "verdict": verdict,
-            "verdict_note": (
-                "提交层返回 404（GET /alphas/{id}/submit 平台恒 404，该视图已定性为死端点），"
-                "无法验证。模拟层无 FAIL/硬闸 WARNING/Failed-count，但 PROD_CORRELATION / "
-                "SELF_CORRELATION 未经平台确认——放行条件 = 平台 prod<0.7 + 用户确认；"
-                "提交前必须另跑 check_correlation(alpha_id, refresh=True) 并确认 all_passed。"
-            ) if verdict == "UNVERIFIABLE" else (
-                "Failed-count 资格门非零" if not failed_gate_ok else None),
-            "alpha_id": alpha_id,
-            "alpha_status": status,
-            "is_ppa": is_ppa,
-            "sim_fails": fails,
-            "sim_warnings": warns,
-            "hard_gate_warnings": hard_gate_warns,
-            "failed_ra": failed_ra, "failed_ppa": failed_ppa,
-            "failed_ra_items": failed_ra_items, "failed_ppa_items": failed_ppa_items,
-            "submit_status": submit_status,
-            "submit_checks": submit_checks,
-            "submit_layer_view": "dead_endpoint_404" if submit_status == 404 else "live",
-            "prepost_unverifiable": prepost_unverifiable,
-        }
+        body = resp.json() if (resp.status_code in (200, 403) and resp.text) else {}
+        return decide(alpha_id, detail, resp.status_code,
+                      normalize_submit_layer(resp.status_code, body))
 
     except Exception as e:
         return {"error": f"submit_verdict failed: {str(e)}"}

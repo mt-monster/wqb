@@ -533,7 +533,18 @@ QUOTA_CHECK_NAMES = {"REGULAR_SUBMISSION"}
 
 # 内部硬闸（src/wqb/config.py GATES_INTERNAL 口径）：数值层面显式校验，
 # 不信任平台 WARNING 口径——模拟层 WARNING 的 LOW_FITNESS/LOW_2Y_SHARPE 提交时会翻 FAIL。
-INTERNAL_HARD_GATES = {"sharpe_min": 1.58, "fitness_min": 1.0, "two_year_min": 1.58}
+# PPA 不是「REGULAR 内部严线」的对象：平台对 PPA 只看 PPA 名单 + LOW_SHARPE value<1
+# （src/wqb/config.py compute_webdata_failed_counts），没有 fitness / 2Y 硬闸。
+# 2026-09-29 前对 PPA 也套 1.58，会把 Sharpe∈[1.0,1.58) 的合法 PPA 判 BLOCK。
+# 数值与 wqb.config 的一致性由 tests/unit/test_judge_gates_match_config.py 断言。
+INTERNAL_HARD_GATES = {"sharpe_min": 1.58, "fitness_min": 1.0, "two_year_min": 1.58, "ppa_sharpe_min": 1.0}
+
+
+def _is_ppa(alpha_details: Dict[str, Any]) -> bool:
+    d = alpha_details or {}
+    if str(d.get("type") or "").upper() == "PPA":
+        return True
+    return any("PowerPoolSelected" in str(t) for t in (d.get("tags") or []))
 
 
 def internal_hard_gate_failures(alpha_details: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -541,6 +552,10 @@ def internal_hard_gate_failures(alpha_details: Dict[str, Any]) -> List[Dict[str,
     failures: List[Dict[str, Any]] = []
     sharpe = is_block.get("sharpe")
     fitness = is_block.get("fitness")
+    if _is_ppa(alpha_details):
+        if isinstance(sharpe, (int, float)) and sharpe < INTERNAL_HARD_GATES["ppa_sharpe_min"]:
+            failures.append({"name": "LOW_SHARPE", "value": sharpe, "limit": INTERNAL_HARD_GATES["ppa_sharpe_min"]})
+        return failures
     if isinstance(sharpe, (int, float)) and sharpe < INTERNAL_HARD_GATES["sharpe_min"]:
         failures.append({"name": "LOW_SHARPE", "value": sharpe, "limit": INTERNAL_HARD_GATES["sharpe_min"]})
     if isinstance(fitness, (int, float)) and fitness < INTERNAL_HARD_GATES["fitness_min"]:
@@ -870,10 +885,18 @@ def build_llm_payload(
     projection_block: Dict[str, Any],
     corpus_materials: List[Dict[str, str]],
     deterministic: str,
+    send_expression: bool = False,
 ) -> Dict[str, Any]:
+    """LLM 外发载荷（**外发字段白名单**，2026-09-29）。
+
+    外发（发往 llm.api_url 指向的第三方端点）：alpha_id、平台检查的 name/result/value/limit、
+    自相关/prod 相关性最大值、表达式**结构统计**（算子个数/窗口分布，不含原文）、rubric 规则状态、
+    trend/projection 数值、确定性判定、论坛语料摘录。
+    **表达式原文默认不外发**（核心资产）：仅当 config 里 judge.llm.send_expression=true 才带上。
+    """
     checks = platform.get("checks", []) if isinstance(platform.get("checks"), list) else []
     failed_checks = platform.get("failed_checks", []) if isinstance(platform.get("failed_checks"), list) else []
-    expression = platform.get("expression") or ""
+    expression = (platform.get("expression") or "") if send_expression else "<withheld: judge.llm.send_expression=false>"
 
     return {
         "candidate": {
@@ -1100,7 +1123,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--corpus-dir", default=str(SKILL_DIR / "data" / "forum_corpus"))
     parser.add_argument("--output-json", default="")
     parser.add_argument("--output-markdown", default="")
-    parser.add_argument("--confirm-submit", action="store_true")
+    # 已移除（2026-09-29）：judge 是参考层，不提交。保留参数只为让旧命令行得到明确报错而不是静默忽略。
+    parser.add_argument("--confirm-submit", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--interactive-biometric", action="store_true")
     parser.add_argument("--trend-start-date", default="")
     parser.add_argument("--trend-end-date", default="")
@@ -1110,6 +1134,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.confirm_submit:
+        print(json.dumps({
+            "error": "--confirm-submit 已移除：judge 不提交。"
+                     "提交流程 = submit_verdict → prod 实测 → 用户明确确认 → workflow_submit_alpha(confirm_submit=True)。",
+        }, ensure_ascii=False), file=sys.stderr)
+        return 2
     config = load_json(Path(args.config), {})
     judge_cfg = config.get("judge", {}) if isinstance(config, dict) else {}
     trend_cfg = judge_cfg.get("value_factor_trend", {}) if isinstance(judge_cfg, dict) else {}
@@ -1233,6 +1263,7 @@ def main() -> int:
             projection_block=projection,
             corpus_materials=corpus_materials,
             deterministic=rule_based_verdict,
+            send_expression=bool(llm_cfg.get("send_expression", False)),
         )
         llm_decision = llm_judge.decide(llm_payload)
         if llm_decision.get("available") and llm_decision.get("verdict") in {"READY", "REVIEW", "BLOCK"}:
@@ -1258,17 +1289,11 @@ def main() -> int:
             "overall_verdict": overall_verdict,
             "platform_submit_ok": bool(platform.get("platform_submit_ok")),
             "worth_submit_now": overall_verdict == "READY" and bool(platform.get("platform_submit_ok")),
-            "submit_action": "not_attempted",
+            "judge_submits": False,     # 恒 False：judge 不提交（2026-09-29 删除 --confirm-submit 与 submit_alpha）
         }
+        report["submit_action"] = "confirmation_required" if report["worth_submit_now"] else "not_attempted"
 
         report["suggestions"] = build_doc_grounded_suggestions(platform, extra, trend_block)
-
-        if args.confirm_submit and report["worth_submit_now"] and alpha_id and client is not None:
-            report["submit_action"] = "submitted" if client.submit_alpha(alpha_id) else "submit_failed"
-        elif args.confirm_submit and not report["worth_submit_now"]:
-            report["submit_action"] = "blocked_before_submit"
-        elif report["worth_submit_now"]:
-            report["submit_action"] = "confirmation_required"
 
         reports.append(report)
 

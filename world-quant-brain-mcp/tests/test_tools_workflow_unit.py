@@ -269,7 +269,7 @@ def test_judge_defaults(monkeypatch):
     tools_workflow.workflow_judge(alpha_id="a7")
     _, params, _ = rec.calls[0]
     assert params["trend_window_days"] == 365
-    assert params["llm_enabled"] is True
+    assert params["llm_enabled"] is False      # 外发类开关默认关闭（2026-09-29）
 
 
 def test_confirm_submit_bool_type_not_coerced(monkeypatch):

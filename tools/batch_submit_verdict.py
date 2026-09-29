@@ -35,27 +35,17 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MCP_DIR = ROOT / "world-quant-brain-mcp"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py）
+
+MCP_DIR = _pyenv.mcp_dir()
 RESULTS = ROOT / "results"
 CKPT = RESULTS / "batch_submit_verdict_checkpoint.json"
 REPORT = RESULTS / "batch_submit_verdict_report.json"
 
-# 提交层硬闸项：模拟层 WARNING 但提交层 FAIL 的检查名（与 submit_verdict.py 一致）
-_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
-
-
-def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, str(MCP_DIR / ".venv" / "Scripts" / "python.exe")]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
-
 
 def _bootstrap_path():
-    sys.path.insert(0, str(MCP_DIR))
-    sys.path.insert(0, str(ROOT / "src"))
+    _pyenv.bootstrap_paths()
 
 
 def _render_checks(checks):
@@ -112,29 +102,23 @@ async def _get_submit_view(brain, alpha_id, max_tries=8):
     return None, {"error": f"request failed after {max_tries} tries: {last_exc}"}
 
 
-def _verdict(status, sim_checks, submit_status, layer_checks):
-    fails = [c for c in sim_checks if c.get("result") == "FAIL"]
-    warns = [c for c in sim_checks if c.get("result") == "WARNING"]
-    hard = [c for c in warns if c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
+def _verdict(alpha_id, detail, submit_status, layer_checks):
+    """批量口径 = 单条口径（wqb.submit_verdict_core.decide）+ 本工具特有的 ALREADY_LIVE 标签。
+
+    2026-09-29 起不再自带一份判定：此前这里缺 Failed-count 资格门，与 submit_verdict 不一致。
+    返回 (verdict, reason)；verdict ∈ SUBMITTABLE / UNVERIFIABLE / BLOCKED / ALREADY_LIVE。
+    """
+    from wqb.submit_verdict_core import decide
+    status = detail.get("status")
     # 已上线（ACTIVE/SUBMITTED/PENDING 等）：本地队列行是过时副本，不可再提交
     if submit_status == 404 and status != "UNSUBMITTED":
         return "ALREADY_LIVE", f"platform_status={status}"
-    prepost = submit_status == 404 and status == "UNSUBMITTED"
-    ok = (not fails) and (not hard) and (submit_status == 200 or prepost)
-    if ok and prepost:
-        return "UNVERIFIABLE", ""
-    if ok:
-        return "SUBMITTABLE", ""
-    # BLOCKED —— 失败原因
-    if fails:
-        return "BLOCKED", "SIM_FAIL:" + ",".join(c.get("name") for c in fails)
-    if hard:
-        return "BLOCKED", "SUBMIT_HARD_WARN:" + ",".join(c.get("name") for c in hard)
-    if submit_status == 403:
-        lc = layer_checks if isinstance(layer_checks, list) else []
-        names = [(c.get("name") if isinstance(c, dict) else str(c)) for c in lc]
-        return "BLOCKED", "SUBMIT_403:" + ",".join(names)
-    return "BLOCKED", f"UNKNOWN(http={submit_status})"
+    r = decide(alpha_id, detail, submit_status, layer_checks)
+    if r["verdict"] == "ALREADY_SUBMITTED":
+        return "ALREADY_LIVE", f"platform_status={status}"
+    if r["verdict"] in ("SUBMITTABLE", "UNVERIFIABLE"):
+        return r["verdict"], ""
+    return "BLOCKED", r["reason_code"]
 
 
 async def run_phase1(brain, rows, ckpt, throttle=1.5, align_live=False):
@@ -165,7 +149,6 @@ async def run_phase1(brain, rows, ckpt, throttle=1.5, align_live=False):
         # P8（2026-09-25）：塔位经济——pyramids.effective = 本提交能新点亮的塔数；
         # effective=0（塔已点亮）的候选提交边际价值低，需评估是否放弃（用户 2026-09-25 令）。
         tower_eff = (detail.get("pyramids") or {}).get("effective")
-        sim_checks = is_.get("checks") or []
         submit_status, body = await _get_submit_view(brain, aid)
         if submit_status is None:
             print(f" submit_view ERR")
@@ -184,7 +167,7 @@ async def run_phase1(brain, rows, ckpt, throttle=1.5, align_live=False):
                 layer_checks = [{"name": c, "result": "FAIL"} for c in layer_checks]
         else:
             layer_checks = []
-        verdict, reason = _verdict(status, sim_checks, submit_status, layer_checks)
+        verdict, reason = _verdict(aid, detail, submit_status, layer_checks)
         rec = {
             "sharpe": is_.get("sharpe"), "fitness": is_.get("fitness"),
             "turnover": is_.get("turnover"), "region": region,

@@ -109,6 +109,7 @@ except ImportError:  # Docker 镜像：冻结副本（WebDataScope-0.10.20 backg
     def _failed_counts(checks):
         failed_ra = failed_ppa = 0
         ra_names, ppa_names, details = [], [], []
+        ra_items, ppa_items = [], []
         for check in checks or []:
             if not isinstance(check, dict):
                 continue
@@ -117,16 +118,20 @@ except ImportError:  # Docker 镜像：冻结副本（WebDataScope-0.10.20 backg
             ra_hit = name in _RA_CHECK_NAMES and bad
             ppa_hit = (name in _PPA_CHECK_NAMES and bad) or (
                 name == "LOW_SHARPE" and isinstance(val, (int, float)) and val < 1)
+            item = {"name": name, "result": res, "value": val, "limit": check.get("limit")}
             if ra_hit:
                 failed_ra += 1
                 ra_names.append(name)
+                ra_items.append(dict(item))
             if ppa_hit:
                 failed_ppa += 1
                 ppa_names.append(name)
+                ppa_items.append(dict(item))
             if ra_hit or ppa_hit:
                 details.append(dict(check))
         return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
-                "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details}
+                "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details,
+                "ra_items": ra_items, "ppa_items": ppa_items}
 
 
 def _truncate(s, n=160):

@@ -396,14 +396,18 @@ def check_counts_as_failed(result: Any) -> bool:
 def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, Any]:
     """按 WebDataScope 口径统计 alpha ``is.checks`` 的 RA / PPA 资格门失败项。
 
-    返回 ``{"failed_ra", "failed_ppa", "ra_failed_names", "ppa_failed_names", "details"}``：
-    两个计数、按 checks 原顺序的失败项名，以及计入任一失败的 check 原文（details）。
+    返回 ``{"failed_ra", "failed_ppa", "ra_failed_names", "ppa_failed_names", "details",
+    "ra_items", "ppa_items"}``：两个计数、按 checks 原顺序的失败项名，计入任一失败的
+    check 原文（details），以及按 RA / PPA 分开的逐条 ``{name,result,value,limit}``
+    （``ra_items`` / ``ppa_items``；2026-09-29 增，供 submit_verdict 逐条列名，避免另抄一份口径）。
     非 dict 的条目跳过。
     """
     failed_ra = failed_ppa = 0
     ra_names: List[str] = []
     ppa_names: List[str] = []
     details: List[dict] = []
+    ra_items: List[dict] = []
+    ppa_items: List[dict] = []
     for check in checks or []:
         if not isinstance(check, dict):
             continue
@@ -412,16 +416,20 @@ def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, 
         ra_hit = name in RA_CHECK_NAMES and bad
         ppa_hit = (name in PPA_CHECK_NAMES and bad) or (
             name == "LOW_SHARPE" and isinstance(val, (int, float)) and val < 1)
+        item = {"name": name, "result": res, "value": val, "limit": check.get("limit")}
         if ra_hit:
             failed_ra += 1
             ra_names.append(name)
+            ra_items.append(dict(item))
         if ppa_hit:
             failed_ppa += 1
             ppa_names.append(name)
+            ppa_items.append(dict(item))
         if ra_hit or ppa_hit:
             details.append(dict(check))
     return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
-            "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details}
+            "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details,
+            "ra_items": ra_items, "ppa_items": ppa_items}
 
 
 # ---------------------------------------------------------------------------

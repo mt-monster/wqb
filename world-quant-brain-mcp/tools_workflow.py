@@ -223,7 +223,7 @@ def workflow_superalpha(
 def workflow_judge(
     alpha_id: str,
     trend_window_days: int = 365,
-    llm_enabled: bool = True,
+    llm_enabled: bool = False,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """Alpha 六步闸门判定（judge 节点快捷方式）——**只判定，不提交**。
@@ -239,7 +239,9 @@ def workflow_judge(
     Args:
         alpha_id: Alpha ID
         trend_window_days: trend score 窗口天数
-        llm_enabled: 是否启用 LLM 决策层
+        llm_enabled: LLM 决策层开关，**默认 False**（2026-09-29）。本节点当前只有规则层，该参数是占位、
+            尚未接线；即便将来接线，也是把检查指标发往第三方端点的外发动作，须显式开启并遵守
+            judge 的外发字段白名单（见 brain-alpha-judge）。
         dry_run: 是否干跑
 
     Returns:

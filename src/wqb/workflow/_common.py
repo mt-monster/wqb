@@ -920,7 +920,13 @@ def _kill_process_tree(proc: "subprocess.Popen") -> None:
         else:
             import signal
             try:
-                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+                pgid = os.getpgid(proc.pid)
+                # 子进程与本进程同组（启动方漏了 start_new_session=True）时 killpg 会连调用方一起
+                # SIGKILL——2026-09-29 在测试里实测整个 pytest 被杀（exit 137）。此时只杀子进程。
+                if pgid == os.getpgrp():
+                    proc.kill()
+                else:
+                    os.killpg(pgid, signal.SIGKILL)
             except Exception:
                 proc.kill()
     except Exception:
