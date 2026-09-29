@@ -95,6 +95,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 | ④ | 事件门控 | `trade_when` / `if_else` |
 | ⑤ | 换字段组合或换信号概念 | Mode B 想法层 |
 | ⑥ | SuperAlpha combo | 在 [`wq-brain-superalpha`](../../wq-brain-superalpha/SKILL.md) 层，不在表达式层 |
+| ⑦ | **协动对象** `ts_corr(rank(主), rank(辅), W)` / `ts_covariance(主, 辅, W)` | 取两序列的**关系统计量**作信号，不是水平相加；辅助腿只经关系统计量进入（形态库 F5，2026-09-13 路线 A 已列入；本表此前漏列）。完整的 F1–F6 形态、入场方式的可检判据与卡点映射见 [`optimization-v1 形态库`](../../wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md) |
 
 ### 7.7.3 辅助腿入场三式（回答「取到辅助腿之后能怎么用」）
 

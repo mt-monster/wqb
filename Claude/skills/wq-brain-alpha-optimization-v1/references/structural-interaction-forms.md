@@ -2,11 +2,10 @@
 
 > **用途**：Mode B「卡闸 → 组合腿救援」（[SKILL.md](../SKILL.md)）的合规形态库。
 > **主腿** = 本 alpha 核心字段/概念（冻结）；**辅助腿** = salvage_pool 条目（≤2 条，必取，禁凭空另造）。
-> **硬边界**：禁一切加权混合——`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`
-> 均被 gate 闸5 block；禁权重网格扫描。本库形态全部是"单一经济信号"结构，不是拼腿。
-> **算子核验（2026-09-13）**：本库算子均已对 live known_ops 白名单（103 个，与
-> `platform_constraints.json` / `docs/reference/operators_catalog.json` 同源）核验；写法取自平台定义原文。
-> 未入白名单的投影/偏相关族（vector_proj / regression_neut / ts_partial_corr 等）**不采用**。
+> **硬边界**：禁一切加权混合 / 等权相加 / 中缀 `+` 相加——两条独立信号腿相加，无论权重写在哪一侧（<!-- lint:counterexample -->`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`、`add(rank(A),rank(B))` 均属此类），
+> 闸 5 的结构判定（`equal_weight_leg_add` / `infix_leg_sum` / `weighted_signal_mix_structural`，见 `platform_constraints.json` `poison_patterns`）会 block；禁权重网格扫描。本库形态全部是「单一经济信号」结构，不是拼腿。
+> **算子核验**：本库出现的每个算子都在 `known_ops`（平台 `get_operators` 实测清单，`platform_constraints.json`），由 `tests/unit/test_optimization_v1_docs.py` 守；写法取自平台定义原文。
+> 未入清单的投影/偏相关族（vector_proj / regression_neut / ts_partial_corr 等）**不采用**。
 
 ## 形态族总览
 
@@ -19,9 +18,26 @@
 | F5 协同背离 | 协动对象 | sharpe 弱（新机制维度） | ts_corr / ts_covariance / kth_element |
 | F6 调节稳健 | （作用于 F1–F5 成品） | TVR 出界 / 尾部风险 | hump / ts_target_tvr_hump / tail / winsorize |
 
-## F1 参照系族（辅助腿当基准）
+## 合规的可检判据（取代「成品须能用一句话说清单一经济信号」）
+
+「一句话说得清」不可检，也拦不住换汤不换药的拼腿。改用**辅助腿如何进入表达式**这一可检特征：辅助腿只能以下列五种方式之一入场，且**不得作为被加 / 被乘的一项进入表达式的取值**。
+
+| 入场方式 | 长什么样（辅 = 辅助腿字段） | 对应形态族 | 机检 |
+|---|---|---|---|
+| ① 条件 | 辅只出现在 `if_else` / `trade_when` 的**条件参数**里 | F3 | 闸 5 不误伤（条件参数不是信号腿） |
+| ② 分组轴 | 辅只出现在 `bucket(...)` → `group_*` 的**分组参数**里 | F4 | 同上 |
+| ③ 残差化 | `vector_neut(主, 辅)` / `ts_regression(主, 辅, W)` 残差 / `group_neutralize(主, bucket(辅))` | F2 | 同上 |
+| ④ 协动对象 | 辅只经关系统计量进入：`ts_corr` / `ts_covariance`（取的是两序列的**关系**，不是水平） | F5 | 同上 |
+| ⑤ 同源价差 | `subtract(rank(主), rank(辅))` 且**同时满足**：两腿派生自同一组字段（同一数据集 / 同一经济量的不同口径）；差值有自洽的一句话经济含义；外层只叠单信号几何（`group_rank` / `ts_rank` / `ts_decay_linear` …）。**跨数据集的辅助腿不得走本方式** | F1 | 闸 5 `spread_cross_dataset`（多数据集 mix 批内判定）；同源与否由 `platform_constraints.json` `spread_signal_ruling`（用户 2026-09-28 裁定）定义 |
+
+**与 RA 的对应**（RA [`step7-diagnose.md`](../../wq-brain-ra-pipeline/references/step7-diagnose.md) §7.7 是「允许形态」的唯一清单，本页是它的细化）：条件 = §7.7.3 (a) / §7.7.2 ④；分组轴 = (b)；残差化 = (c)；同源价差 = §7.7.2 ②；协动对象 = §7.7.2 ⑦。
+
+推论：**跨数据集的辅助腿只能走 ①②③④**（这也是 F2 对 PROD / SELF 墙最有效的原因）；`add(...)` / 中缀 `+` / 系数乘法不在此表内，一律违规。
+
+## F1 参照系族（辅助腿当基准）——**仅限同源辅助腿**
 
 经济含义：主信号相对辅助腿的**强弱/比率/关系变化**，是单一价差叙事，不是两信号平均。
+**适用前提**：主、辅同源（同一数据集，或同一经济量的不同口径），见上表方式⑤。跨数据集辅助腿不得用本族——`subtract` 跨集会被闸 5 `spread_cross_dataset` block，`divide` 跨集虽无机检，按同一标准自律。
 
 | 形态 | 经济模板 | 实例（`主`/`辅`=字段） |
 |------|---------|----------------------|
@@ -30,7 +46,7 @@
 | `ts_delta(subtract(rank(主), rank(辅)), W)` | 价差的时序变化（关系改善/恶化） | `ts_delta(rank({主}) - rank({辅}), 66)` |
 | `ts_regression(主, 辅, W)` | 联动弹性（主对辅的敏感度 beta） | `rank(ts_regression({主}, {辅}, 66))` |
 
-约束：价差/比率必须能写成一句话（"A 相对 B 贵/强/改善"）；写不出 → 换族。
+约束：价差/比率必须能写成一句话（"A 相对 B 贵/强/改善"）且两腿同源；写不出或跨数据集 → 换族（F2–F5）。
 
 ## F2 正交化族（辅助腿当"待剔除的暴露"）——PROD/SELF 相关墙首选
 
@@ -45,7 +61,7 @@
 
 用法要点：
 - **跨数据集辅助腿**（`exclude_dataset=<主数据集>` 取到的腿）效果最好——正交掉的是一个全新的暴露方向。
-- 成品须重新走 selfcorrQuick → check_correlation 验证（目标：把 PROD 压回 <0.7）。
+- 成品须重新走 selfcorrQuick → `check_correlation` 验证；PROD 读数按 RA 决策表 **D0-P** 处置（本族属其「唯一例外」路径：主腿已 `eligible` 且有 salvage 辅助腿）。
 - 若正交后 sharpe 塌方 → 说明主信号原本就是辅助腿的暴露，属"risk_neut≈0"型伪信号（参见 ra-pipeline 步 7 硬规则），放弃而非硬救。
 
 ## F3 条件门控族（辅助腿当开关）
@@ -91,7 +107,7 @@
 
 | 形态 | 作用 | 参数要点 |
 |------|------|---------|
-| `hump(信号, hump=0.01)` | 抑制微小变动 → 降换手（TVR 墙） | hump 越小越平滑；先验证 sharpe 不塌 |
+| `hump(信号, hump=0.01)` | 抑制微小变动 → 降换手（TVR 墙） | **必须命名参数**（`hump(x, hump=k)`；RA 决策表 D6 定：`hump` 仍受支持）；hump 越小越平滑；先验证 sharpe 不塌。`wq-brain-ppa-mining` 里「hump 对组合信号有破坏性」是 PPA 场景经验、此处未复核——作用于 F1–F5 成品时先小样本验证 |
 | `ts_target_tvr_hump(信号, target_tvr=0.15)` | 目标换手率自适应平滑（genius 级） | 直接对准目标 TVR 调参 |
 | `ts_target_tvr_decay(信号, target_tvr=0.15)` | 同上 decay 版 | 二选一，不与 hump 叠用 |
 | `tail(信号, lower=q, upper=1-q, newval=0.5)` | 掐中段/两端（视分布） | 参数为常数；与原分布配合 |
@@ -111,11 +127,11 @@
 
 ## 反例与灰区（自检）
 
-- ❌ 加权混合：`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,...),multiply(0.5,...))` —— 闸5 block，勿尝试。
+- ❌ 加权混合 / 等权相加 / 中缀 `+`：<!-- lint:counterexample -->`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,...),multiply(0.5,...))`、`add(rank(A),rank(B))` —— 闸 5 block，勿尝试。
 - ❌ 权重网格扫描（0.3/0.7 → 0.4/0.6）。
 - ⚠️ `multiply(主, 辅)` 双原始信号相乘 = 混信号灰区 → 用 `ts_corr` 或 `if_else` 表达同一意图
   （项目先例：concept-first 指引 "ts_corr(surprise, sentiment) instead of multiply(surprise, sentiment)"）。
-- ⚠️ `subtract(rank(主), rank(辅))` 无经济含义的拼凑（伪价差）。
+- ⚠️ `subtract(rank(主), rank(辅))` 无经济含义的拼凑（伪价差），或两腿跨数据集（闸 5 `spread_cross_dataset` block）。
 - ⚠️ 同一辅助腿反复充当多形态输入 → 伪多样（多样性的载体应是机制，不是包装）。
 
-**提交前自检 5 问**：① 一句话经济信号能说清？② 辅助腿角色 ∈ {参照 / 暴露方向 / 条件 / 分组轴 / 协动对象} 而非"被平均的腿"？③ 无系数乘法叠加、无权重网格？④ 辅助腿 ≤2 且优先跨数据集？⑤ 成品已过 selfcorrQuick / prod 预检？
+**入场前自检 5 问**（每条都可检）：① 辅助腿的入场方式属于上表①–⑤之一？② 辅助腿**没有**作为被加 / 被乘的项进入表达式取值？③ 无系数乘法叠加、无权重网格？④ 辅助腿 ≤ 2；跨数据集时没有用 F1？⑤ 成品已过 `wave_gate --batch-type repair`，且 selfcorr / prod 预检已做？

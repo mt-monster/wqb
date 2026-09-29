@@ -1,79 +1,68 @@
-# Alpha 表达式解释工作流
+# Alpha 表达式解释工作流（详细版）
 
-本手册提供分析并解释 WorldQuant BRAIN alpha 表达式的分步工作流。按本指南操作，可高效收集必要信息，理解任何 alpha 背后的逻辑与潜在策略。
+> 主 SOP 见 [SKILL.md](SKILL.md)（含真实工具签名、`filter_sharpe=False`、第 7 步概念重叠检查）。本页给成品示例、检索技巧与情景卡。
 
-## 第 1 步：拆解 Alpha 表达式
+## 检索技巧（第 2 步展开）
 
-第一步将 alpha 表达式拆解为基本组成部分：数据字段与算子。
-
-例如，给定表达式 `quantile(ts_regression(oth423_find,group_mean(oth423_find,vec_max(shrt3_bar),country),90))`：
-
-- **数据字段**：`oth423_find`、`shrt3_bar`
-- **算子**：`quantile`、`ts_regression`、`group_mean`、`vec_max`
-
-## 第 2 步：分析数据字段
-
-使用 MCP 工具 `get_datafields`（服务器 `wq-brain-http`）获取每个数据字段的详细信息。
-
-示例调用：
+示例调用（**没有 `instrument_type` 参数**；`dataset_id` 必传，未知就传 `None`）：
 
 ```
-mcp__wq-brain-http__get_datafields(instrument_type="EQUITY", region="ASI", delay=1, universe="MINVOL1M", data_type="VECTOR", search="shrt3_bar")
+mcp__wq-brain-http__get_datafields(region="ASI", dataset_id=None, universe="MINVOL1M", delay=1, data_type="VECTOR", search="shrt3_bar", filter_sharpe=False)
 ```
 
-高效检索技巧：
+- **尽量给全已知信息**：`region`、`universe`、`delay`、`data_type`；`search` 用完整 field id。
+- **迭代检索**：没找到就换参数组合。区域可能有多个 universe（ASI 例：`MINVOL1M`；可用 universe 以 `get_platform_setting_options` / `wqb.config.REGIONS` 为准，不要凭记忆写）。
+- **核对数据类型**：MATRIX（每只股票每天一个值）还是 VECTOR（每只股票每天多个值）——决定要不要 `vec_*`。
+- **`filter_sharpe=False`**：解释既有 alpha 时必开，否则 Sharpe < 0 的字段被静默过滤（见 SKILL 第 2 步）。
 
-- **指定参数**：尽量提供已知的全部信息，包括 `instrument_type`、`region`、`delay`、`universe` 与 `data_type`（MATRIX 或 VECTOR）。
-- **迭代检索**：若第一次未找到目标字段，尝试不同的参数组合。例如 ASI 区域有两个 universe：`MINVOL1M` 与 `ILLIQUID_MINVOL1M`。
-- **核对数据类型**：务必确认数据是 MATRIX（每只股票每天一个值）还是 VECTOR（每只股票每天多个值）。这对理解数据如何被使用至关重要。
+## 成品示例（第 6 步四段）
 
-示例字段信息：
+对 `quantile(ts_regression(oth423_find,group_mean(oth423_find,vec_max(shrt3_bar),country),90))`（ASI）：
 
-- `oth423_find`：ASI 区域 "Fundamental Income and Dividend Model" 数据集的 matrix 数据字段，表示 "Find score"，可能反映基本面吸引力。
-- `shrt3_bar`：ASI 区域 "Securities Lending Files Data" 数据集的 vector 数据字段，提供评级向量（1-10），表示借入某只股票的意愿强度，是卖空兴趣的代理指标。
+**字段（事实，取自数据集描述）**
 
-## 第 3 步：理解算子
+| 字段 | 类型 / 数据集 | 描述文字给出的含义 |
+|---|---|---|
+| `oth423_find` | MATRIX · "Fundamental Income and Dividend Model" | "Find score" |
+| `shrt3_bar` | VECTOR · "Securities Lending Files Data" | 评级向量（1–10），表示借入某只股票的意愿强度 |
 
-使用 MCP 工具 `get_operators`（服务器 `wq-brain-http`）获取全部可用算子及其描述。
+**解释**
 
-该命令的输出信息丰富。本手册附录提供了最常用算子的速查表。
+- **思路（Idea）**：（推测）取「个股基本面吸引力」中**不能被卖空需求加权的全国均值解释**的那部分，做横截面分位。
+- **数据理由（Rationale for data）**：`oth423_find` 是基本面打分（事实）；`shrt3_bar` 是借券需求评级，常被当作卖空兴趣的代理（事实 + 领域常识）。把两者放在一起，是想让「卖空拥挤度」参与基准的构造（推测）。VECTOR 字段必须先 `vec_max` 聚合（每股每天取最强的一条评级）。
+- **算子理由（Rationale for operators）**：`vec_max` 把 VECTOR 聚合成矩阵值 → `group_mean(x, weight, group)` 以该权重在 `country` 内求加权均值，得到「借券需求加权的国家层基准」→ `ts_regression(y, x, 90)` 用 90 日窗口把个股得分对该基准回归（默认取残差，以平台算子文档为准）→ `quantile` 变成横截面分位。
+- **进一步启发（结构化 3 栏）**：
 
-## 第 4 步：查阅官方文档
+| 新概念名 | 候选字段 | 预计与 book 的正交性 |
+|---|---|---|
+| 「拥挤度残差」：把基本面打分对卖空拥挤基准回归取残差 | 同数据集内其它借券字段（如 `shrt3_*` 系列）；换 group 轴（`subindustry`） | 中——同用 `shrt3_bar`，与 book 内已有借券类 alpha 可能同族，先跑第 7 步 |
 
-对于更复杂的主题，官方 BRAIN 文档是宝贵资源。使用 `get_documentations` 工具（MCP `wq-brain-http`）查看可用文档列表，再用 `get_documentation_page` 阅读具体页面。
+**收益来源证据**：写之前先取 `get_alpha_yearly_stats`（哪几年贡献了收益）与 `get_alpha_pnl`（曲线形状）；long / short 侧与行业集中度没有直接接口，写「未核验」。**注意**：`country` 作 group 在部分区域无效（`region_invalid_group_fields`，如 JPN 的 sector / subindustry / industry），换区域复用这个例子前先核对。
 
-示例：为更好理解 vector 数据字段，可查阅 "Vector Data Fields" 文档（`vector-datafields`）。该文档说明：vector 数据每个工具每天包含多个值，必须先通过 vector 算子聚合，才能与其他算子一起使用。
+## 情景卡
 
-## 第 5 步：借助外部调研拓宽理解（可选——使用 arxiv_api.py 脚本获取最新研究论文）
+### 卡 EX-1　Mode B 换概念前查概念重叠
 
-为获取前沿思路与灵感，可使用本 skill 附带的 `arxiv_api.py` 脚本在 arXiv 上搜索学术论文。
+- **前置状态**：本区 book 有 3 颗 ACTIVE alpha——A1 `rank(ts_zscore(snt21_pos_mean, 66))`、A2 `group_rank(ts_delta(fnd28_ebit, 22), industry)`、A3 `rank(ts_zscore(divide(snt21_pos_mean, snt21_pos_max), 22))`；想换成的新概念是 `rank(ts_zscore(snt21_pos_max, 252))`。
+- **步骤**：`$WQ_PY tools/concept_overlap.py --region <REGION> --expr "rank(ts_zscore(snt21_pos_max, 252))"`（book 取自 `alphas` 表 ACTIVE 行；库空 / 不可读就改用 `--book-json`）。
+- **预期**：`verdict: HIGH`——A3 与新概念**同骨架**（`rank→ts_zscore`）且字段 Jaccard = 0.5（共享 `snt21_pos_max`）；A1、A2 无共享字段不出现。建议 = 换概念。
+- **分支**：`MEDIUM`（例：把新概念换成 `rank(ts_rank(snt21_pos_max, 66))`——骨架不同、Jaccard 仍 0.5）→ 可继续，但优先换字段 / 骨架，提交前必测 SELF / PROD；`CLEAR` → 概念基本不同，仍须实测相关性。
+- **完成定义**：给出 `verdict` 与重叠清单，并把「继续 / 换概念」写进本轮日志。
+- **反例**：把 `HIGH` 当成 SELF / PROD 一定超线的证据（它只是启发式）；把 `CLEAR` 当成可以跳过相关性实测。
 
-工作流：
+### 卡 EX-2　战略级候选提交前确认收益来源
 
-1. **识别关键词**：基于对 alpha 的分析，识别相关关键词。对于示例，关键词为："short interest"、"fundamental analysis"、"relative value"、"news sentiment"。
-2. **运行脚本**（从本 skill 的 `scripts/` 目录执行）：
+- **前置状态**：候选已过 `Failed RA == 0`，用户要在提交前确认「收益从哪来」。
+- **步骤**：按第 6 步四段写解释；证据取 `get_alpha_yearly_stats`（逐年）与 `get_alpha_pnl`（曲线）；把下面三条**警示信号**逐条对照并如实写「命中 / 未命中 / 未核验」：① 收益集中在某 1 个行业（无直接接口 → 多半「未核验」）；② 收益集中在某 1 年（逐年 Sharpe 一年独大）；③ 收益集中在 1 侧（long 或 short，无直接接口 → 多半「未核验」）。
+- **分支**：② 命中 → 交 `brain-alpha-robustness`（其 Phase C 近窗判据才是判定，本卡只提示）；「未核验」项不得被写成「通过」。
+- **完成定义**：三条警示信号各有状态，且每个「命中」附证据来源（工具 + 数据）。
+- **反例**：靠自由发挥的叙事替代证据；把解释当作提交理由（解释不构成放行）。
 
-```
-python scripts/arxiv_api.py "your keywords here" -n 10
-```
+## 故障排查
 
-若本地无此脚本，可回退到 HTTPS arXiv API 查询（https://export.arxiv.org/api/query），或跳过此步并在解释中注明。
-
-## 第 6 步：综合并解释
-
-收集完必要信息后，按清晰简洁的格式组织解释。推荐模板：
-
-- **思路（Idea）**：alpha 策略的高层概述。
-- **数据理由（Rationale for data）**：为什么选择这些数据字段？它们代表什么？
-- **算子理由（Rationale for operators）**：算子如何逐步变换数据生成最终信号。
-- **进一步启发（Further Inspiration）**：基于研究的新 alpha 思路。
-
-## 故障排查（Troubleshooting）
-
-- **SSL 错误**：运行访问互联网的 Python 脚本时若遇到 `CERTIFICATE_VERIFY_FAILED` 错误，可借助 AI 修改脚本或调整执行方式。
+- **SSL 错误**：跑访问互联网的脚本时若遇到 `CERTIFICATE_VERIFY_FAILED`，先检查代理 / CA 设置（云端环境见其网络策略说明），**不要**关闭 TLS 校验。
+- **`get_datafields` 返回空**：先确认 `filter_sharpe=False`，再按 SKILL 第 2 步的排查顺序走。
 
 ## 附录 A：理解 Vector 数据
 
-Vector 数据是一种特殊的数据字段类型：每个工具每天记录的事件数量可以变化。这与标准 matrix 数据形成对比——matrix 数据每个工具每天只有一个值。
-
-例如，新闻情绪数据通常是 vector，因为一只股票一天内可能有多篇新闻文章。要在大多数 BRAIN 算子中使用此类数据，必须先通过 vector 算子将其聚合成单一值。
+Vector 数据是特殊的数据字段类型：每个工具每天记录的事件数量可以变化，与 matrix 数据（每个工具每天只有一个值）相对。例如新闻情绪通常是 vector——一只股票一天可能有多篇新闻。要在大多数算子中使用，必须先经 vector 算子聚合成单一值（`vec_avg` / `vec_sum` / `vec_max` …，全集见 SKILL 附录）。

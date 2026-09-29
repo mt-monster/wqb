@@ -44,12 +44,24 @@ IGNORE_SUFFIXES = (".pyc", ".pyo")
 IGNORE_NAMES = {"parsetab.py", "parser.out"}
 
 
+def _is_secret_file(name: str) -> bool:
+    """密钥/凭据类本地文件（`.env`、`.arxiv_llm.env`、`.env.local` …）：只留在源位，不复制到安装位。
+
+    `*.env.example` / `*.example` 是模板，照常同步。skills 审查 X-15：skill 目录内的 key 文件不得被同步扩散。
+    """
+    if name.endswith(".example"):
+        return False
+    return name == ".env" or name.endswith(".env") or name.startswith(".env.")
+
+
 def _is_ignored(rel: Path) -> bool:
     if any(part in IGNORE_DIRS for part in rel.parts):
         return True
     if rel.name in IGNORE_NAMES or rel.suffix in IGNORE_SUFFIXES:
         return True
     if ".bak_" in rel.name:
+        return True
+    if _is_secret_file(rel.name):
         return True
     return False
 

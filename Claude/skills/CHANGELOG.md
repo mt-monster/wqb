@@ -37,6 +37,20 @@
 - 删除「提交探测协议」（逐个提交读 prodCorr，提交即真实动作）；判定表更正（子宇宙引平台相对公式、算子数降软标记、Margin 标经验线）→ RB-10 / RB-15
 - `allowed-tools` +`mcp__wqb-db__*`（写台账所需，能力基线已人审登记）
 
+**wq-brain-alpha-optimization-v1（Mode B 资格单一真相源 + Mode A 收口）**
+- 新增 `references/mode-b-qualification.md`：主闸 + 旁路 A–E + 判死线 + 覆盖优先级 + 各代码入口实际覆盖范围（judge 节点只喂 6 个指标，A / B / D 恒不命中）；「未达资格线一律判死」全库作废并由测试扫描禁止；新增只读 CLI `tools/mode_b_qualify.py`（同一判定函数、全指标）→ OP-18 / HP-15 / OP-11 / OP-13（`tests/unit/test_mode_b_qualification_doc.py`、`test_mode_b_qualify_cli.py`）
+- `mode_b_config.py` 模块文档串的覆盖顺序更正（区域 ledger > 区域 thresholds > GLOBAL ledger > 内置），测试钉住
+- Mode A：结果入库（不写自建文本文件）；算子上限标注 PPA-only；校验层固定三段（verifier → `ghost-audit` → `wave_gate --batch-type repair`）；主题算子表按 `known_ops` 分「已核验 / 未列入清单」栏（62 个里 35 个未在清单）；止损阶梯合并；删「70/30 精力」与分钟级预算；手抄阈值改引 `config` → OP-01…OP-17（`test_optimization_v1_docs.py`）
+- 形态库：加「入场方式」五类可检判据；F1 限同源（用户 2026-09-28 `spread_signal_ruling`）；`hump` 状态统一 → OP-12
+- arXiv：脚本全库只留一份；写明外发边界（查询词发 arxiv.org；`--llm` 才把公开摘要发第三方，密钥仅环境变量 / gitignore 的 `.arxiv_llm.env`）；`sync_skills` 不再复制 `*.env` → OP-04 / EX-06
+
+**brain-how-to-pass-alpha-test / brain-alpha-repair / brain-explain-alphas / brain-calculate-alpha-selfcorr-quick**
+- how-to-pass：SKILL §0 把 18 个 `RA_CHECK_NAMES` + SELF / PROD 逐项登记「平台线 / 内部线（config 键）/ 读哪节」；数值例（Fitness / 子宇宙）；§6 拆 SELF / PROD；CW 证据迁 `references/`；删 quota-via-submit 句；「FAIL 回流」改「建议路径（不执行）」；情景卡 → HP-01…HP-21
+- `check_correlation` 环境事实（阻塞轮询、单并发、Redis 只是可选缓存、`refresh` 量化）只写 RA `prod-corr-avoidance.md` §1 一处 → HP-11
+- repair：撤回不可恢复的「5 轴旋转 / 降相关 6 武器」，其余配方登记去向并由测试校验（「声明已上移的术语必须能 grep 到」）；description 退役触发词；三张情景卡 → RE-01…RE-12（`test_brain_alpha_repair_docs.py`）
+- explain：真实 `get_datafields` 签名 + `filter_sharpe=False`；`vec_mean` → `vec_avg`；新增第 7 步概念重叠检查及只读程序 `tools/concept_overlap.py`；结构化「进一步启发」→ EX-01…EX-10
+- selfcorr-quick：SELF / PROD 不互相推导；删「POST /submit 零成本实测」；脚本改 `importlib.metadata`、tqdm 缺失降级、非交互不安装、凭据环境变量优先、固定产物目录、Excel `Meta` sheet 与盲区自动警告 → SC-01…SC-10（`test_selfcorr_quick_script.py`）
+
 **worldquant-submit-alpha / GLOSSARY / decision-table / INDEX 等（提交链单一叙述）**：见 `reports/skills_review_20260929_closure.md` 的 SB-* / X-1 / X-2 / X-4~6 条目。
 
 **已迁出本日志的历史（原 RA `SKILL.md` 里的日期叙述，按时间倒序，仅留一行）**

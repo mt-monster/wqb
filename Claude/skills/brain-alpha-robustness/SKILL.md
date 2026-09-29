@@ -16,7 +16,7 @@ allowed-tools:
 
 - **本 skill 负责**：反过拟合 / 稳健性闸：跨年度、子宇宙、逐年 PnL 归因，拒绝「高 Sharpe 来自噪声拟合 / 股票集中 / 单年行情」（S4→S5，**REJECT 由代码执行**：结论落台账 `robustness_<alpha_id>`，`submit_verdict` 读到 REJECT 即 BLOCKED，见下「结论去哪」）
 - **本 skill 不做**：不做提交判定（`submit_verdict`）、**不编辑候选使其过闸**（→ `brain-alpha-repair` / `wq-brain-alpha-optimization-v1`）、**不做论坛知识刷新**（那是独立任务，见 Phase A）
-- **上游 / 下游**：上游 = S4 达标候选（`brain-explain-alphas` 归因之后）；下游 = `submit_verdict` → prod 实测 → 用户确认；`brain-alpha-judge` 只是**可选参考评审**，不是「唯一提交评审入口」（旧文这样写，与 judge 自己的定位矛盾，已删）
+- **上游 / 下游**：上游 = S4 达标候选（`brain-calculate-alpha-selfcorr-quick` 之后；`brain-explain-alphas` 是**可选**归因，跳过不影响入场）；下游 = `submit_verdict` → prod 实测 → 用户确认；`brain-alpha-judge` 只是**可选参考评审**，不是「唯一提交评审入口」（旧文这样写，与 judge 自己的定位矛盾，已删）
 
 与 `brain-alpha-repair` 的区别：repair 编辑候选使其可过闸；本 skill 依据稳健性与归因证据**诊断**该候选**是否应该**提交。通过相关性预检（`get_alpha_details` 的 `is.checks` + `check_correlation`；**不存在 `get_submission_check` 这个 MCP 工具**）的 alpha 仍可能过拟合在单一年份或 5 只股票上——这正是本 skill 要抓住的情形。
 
@@ -123,7 +123,7 @@ mcp__wqb-db__upsert_ledger_key(region=<alpha 的区域>, key="robustness_<alpha_
 
 ## prod 相关性怎么取（RB-17：从验证清单提到正文）
 
-- `check_correlation(alpha_id)`（MCP）是**阻塞轮询**：内置 `prod_corr_poll_s`（30 s）轮询、最长 `prod_corr_timeout_s`（3600 s），账号级单并发（忙时立即返回 `correlation_busy`）；已决结果缓存 7 天（`from_cache: true`），提交前终验用 `refresh=True`。Redis **只是可选缓存**（无 Redis 功能不受影响，相关性锁回落为进程内 fail-fast 锁）；「等死」的原因是 30 s × 120 次的阻塞轮询与账号级单并发，不是 Redis。
+- `check_correlation(alpha_id)`（MCP）会**阻塞**（轮询最长 60 min）、账号级单并发（忙时立即返回 `correlation_busy`），提交前终验用 `refresh=True`。**这些环境事实（含 Redis 只是可选缓存、三种返回的处置、`refresh=True` 的量化）只写一处**：RA [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1，本 skill 不再复述。
 - 想直接看平台值：`GET /alphas/{id}/correlations/prod` 恒秒回 200，**空体 = 平台仍在算**，非空返回 `{records, max, min}`，**`max` 才是判定值**；不要高频 `refresh=true`（会加长平台队列）。合规入口：`python tools/campaign_intel.py prod-first`（串行、进程锁、单条硬超时；见 [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md)）。任一返回空时重试一次后向用户报错——**不得编造数字**。
 
 ## 设计边界

@@ -5,8 +5,9 @@ Calculates self-correlation and PPAC correlation for WorldQuant BRAIN alphas.
 """
 
 import subprocess
-import pkg_resources
+import re
 import sys
+from importlib import metadata as importlib_metadata
 import requests
 import pandas as pd
 import logging
@@ -14,7 +15,11 @@ import time
 import pickle
 from collections import defaultdict
 import numpy as np
-from tqdm import tqdm
+try:
+    from tqdm import tqdm
+except ImportError:                       # 缺依赖时由 main() 的依赖检查给出可执行的安装命令；这里给个无进度条的替身
+    def tqdm(iterable, **_kwargs):
+        return iterable
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
@@ -41,55 +46,56 @@ REQUIRED_PACKAGES = [
     "openpyxl>=3.1.0"  # pd.ExcelWriter/to_excel 写 .xlsx 需要
 ]
 
-def check_and_install_requirements():
-    """检查并安装必要的Python包"""
-    missing_packages = []
+def _version_tuple(version: str):
+    """'2.3.3' / '2.3.3.post1' → (2, 3, 3)：只比前三段数字，够判「不低于最低版本」。"""
+    return tuple(int(x) for x in re.findall(r"\d+", version)[:3])
 
+
+def find_missing_requirements():
+    """返回缺失或版本过低的包声明列表（用 importlib.metadata，不依赖已被移除的 pkg_resources）。"""
+    missing = []
     for package in REQUIRED_PACKAGES:
-        # 解析包名和版本要求
-        if '>=' in package:
-            pkg_name, min_version = package.split('>=')
-        else:
-            pkg_name = package
-            min_version = None
-
+        pkg_name, _, min_version = package.partition(">=")
         try:
-            # 检查包是否已安装
-            installed_version = pkg_resources.get_distribution(pkg_name).version
-            if min_version:
-                # 检查版本是否满足要求
-                if pkg_resources.parse_version(installed_version) < pkg_resources.parse_version(min_version):
-                    missing_packages.append(package)
-        except pkg_resources.DistributionNotFound:
-            missing_packages.append(package)
-        except Exception:
-            missing_packages.append(package)
+            installed = importlib_metadata.version(pkg_name)
+            if min_version and _version_tuple(installed) < _version_tuple(min_version):
+                missing.append(package)
+        except Exception:                 # PackageNotFoundError 或版本串异常：一律按缺失处理
+            missing.append(package)
+    return missing
 
-    if missing_packages:
-        print(f"发现 {len(missing_packages)} 个缺失或版本过低的包:")
-        for pkg in missing_packages:
-            print(f"  - {pkg}")
 
-        # 询问用户是否安装
-        response = input("\n是否自动安装缺失的包? (y/n): ").strip().lower()
-        if response == 'y':
-            print("正在安装缺失的包...")
-            for pkg in missing_packages:
-                try:
-                    print(f"安装 {pkg}...")
-                    subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
-                except subprocess.CalledProcessError as e:
-                    print(f"安装 {pkg} 失败: {e}")
-                    return False
-            print("所有包安装完成!")
-            return True
-        else:
-            print("请手动安装缺失的包:")
-            print(f"pip install {' '.join(missing_packages)}")
+def check_and_install_requirements():
+    """检查依赖；缺失时**非交互环境不自动安装**（agent 里 input() 会 EOF / 挂住），只给出可复制的安装命令。"""
+    missing_packages = find_missing_requirements()
+    if not missing_packages:
+        return True                       # 全都在：不打印，节省 token
+
+    print(f"发现 {len(missing_packages)} 个缺失或版本过低的包:")
+    for pkg in missing_packages:
+        print(f"  - {pkg}")
+    install_cmd = f"{sys.executable} -m pip install " + " ".join(f'"{p}"' for p in missing_packages)
+
+    if not sys.stdin.isatty():
+        print("非交互环境，不自动安装。请先在本解释器里执行：")
+        print(f"  {install_cmd}")
+        return False
+
+    response = input("\n是否自动安装缺失的包? (y/n): ").strip().lower()
+    if response != 'y':
+        print("请手动安装缺失的包:")
+        print(f"  {install_cmd}")
+        return False
+    print("正在安装缺失的包...")
+    for pkg in missing_packages:
+        try:
+            print(f"安装 {pkg}...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
+        except subprocess.CalledProcessError as e:
+            print(f"安装 {pkg} 失败: {e}")
             return False
-    else:
-        # 所有包都已安装，不显示任何消息以减少token使用
-        return True
+    print("所有包安装完成!")
+    return True
 
 # ===== 登录函数 =====
 def sign_in(username, password):
@@ -570,6 +576,60 @@ def calculate_self_correlation_for_alphas(session, data_path, alpha_df, tag='Sel
     return result_df
 
 # ===== 主函数 =====
+# ===== 凭据 / 产物目录 / 池新鲜度（skills 审查 SC-03 / SC-07 / SC-09）=====
+BLIND_SPOT_NOTE = ("本地 SELF 基于「已有 OS PnL 的已提交 alpha 池」；近期（约当天）提交的孪生体尚无 OS PnL、不在池内——"
+                   "本地值低 ≠ 平台低。提交前须平台实测（PROD 用 check_correlation；SELF 的平台值只在提交响应里，见 worldquant-submit-alpha）。")
+
+
+def resolve_credentials(cli_username=None, cli_password=None, environ=None):
+    """凭据来源：进程环境变量 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD（标准命名，与 MCP / toolkit 一致）
+    → 旧别名 BRAIN_USERNAME / BRAIN_PASSWORD。命令行 --username / --password 仍可用，但 **--password 不推荐**
+    （会进入进程列表与 shell 历史），使用时返回警告。返回 (username, password, warnings)。
+    """
+    env = os.environ if environ is None else environ
+    warnings = []
+    username = cli_username or env.get("CREDENTIALS_EMAIL") or env.get("BRAIN_USERNAME") or ""
+    if cli_password:
+        password = cli_password
+        warnings.append("--password 会进入进程列表 / shell 历史；请改用环境变量 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD")
+    else:
+        password = env.get("CREDENTIALS_PASSWORD") or env.get("BRAIN_PASSWORD") or ""
+    return username.strip(), password.strip(), warnings
+
+
+def default_out_dir() -> Path:
+    """缓存池与 Excel 的落点：$WQ_SELFCORR_OUT_DIR → 仓库内 data/selfcorr_quick（data/ 已 gitignore）→ ./selfcorr_quick_out。
+    此前落点随 CWD 走（缓存 pickle 与 Excel 散在任意目录，甚至被提交进仓库）。
+    """
+    env = os.environ.get("WQ_SELFCORR_OUT_DIR")
+    if env:
+        return Path(env)
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "AGENTS.md").is_file():          # 在仓库内运行（data/ 已 gitignore，不存在时由 mkdir 创建）
+            return parent / "data" / "selfcorr_quick"
+    return Path.cwd() / "selfcorr_quick_out"
+
+
+def pool_meta(data_path: Path) -> dict:
+    """OS PnL 池的新鲜度：缓存文件最后刷新时间与池内 alpha 数；读不到 → 字段为 None。"""
+    meta = {"pool_last_refreshed": None, "pool_alpha_count": None}
+    try:
+        meta["pool_last_refreshed"] = datetime.fromtimestamp(
+            (Path(data_path) / "os_alpha_pnls.pickle").stat().st_mtime).isoformat(timespec="seconds")
+        ids = load_obj(str(Path(data_path) / "os_alpha_ids"))
+        meta["pool_alpha_count"] = sum(len(v) for v in ids.values())
+    except Exception:                     # noqa: BLE001 —— 元信息缺失不影响主流程
+        pass
+    return meta
+
+
+def blind_spot_banner(max_self_corr, threshold: float = 0.7):
+    """本地 SELF 最大值低于 threshold 时给出盲区警告（此时最需要提醒：低值不可当作放行依据）；否则 None。"""
+    if max_self_corr is None or max_self_corr != max_self_corr:       # None / NaN
+        return None
+    return BLIND_SPOT_NOTE if max_self_corr < threshold else None
+
+
 def main():
     parser = argparse.ArgumentParser(description='Calculate alpha self-correlation and PPAC correlation')
     parser.add_argument('--start-date', default=DEFAULT_START_DATE, help='Start date in MM-DD format')
@@ -578,9 +638,10 @@ def main():
     parser.add_argument('--sharpe-threshold', type=float, default=DEFAULT_SHARPE_THRESHOLD, help='Sharpe ratio threshold')
     parser.add_argument('--fitness-threshold', type=float, default=DEFAULT_FITNESS_THRESHOLD, help='Fitness threshold')
     parser.add_argument('--alpha-num', type=int, default=DEFAULT_ALPHA_NUM, help='Number of alphas to retrieve')
-    parser.add_argument('--username', help='BRAIN platform email')
-    parser.add_argument('--password', help='BRAIN platform password')
-    parser.add_argument('--output', help='Output Excel file name (default: auto-generated)')
+    parser.add_argument('--username', help='BRAIN platform email（缺省读环境变量 CREDENTIALS_EMAIL）')
+    parser.add_argument('--password', help='【不推荐】会进入进程列表 / shell 历史；请改用环境变量 CREDENTIALS_PASSWORD')
+    parser.add_argument('--output', help='Output Excel file name (default: auto-generated，落在 --out-dir)')
+    parser.add_argument('--out-dir', help='缓存池与 Excel 的目录（缺省 $WQ_SELFCORR_OUT_DIR → 仓库内 data/selfcorr_quick）')
     parser.add_argument('--max-workers', type=int, default=DEFAULT_MAX_WORKERS, help='Maximum workers for correlation calculation')
 
     args = parser.parse_args()
@@ -590,28 +651,24 @@ def main():
         print("缺少必要的依赖包，程序退出。")
         return 1
 
-    # 配置参数
+    # 配置参数：凭据只来自环境变量（命令行 --password 仅兼容，会告警）；产物落在固定目录而非 CWD
+    username, password, cred_warnings = resolve_credentials(args.username, args.password)
+    for w in cred_warnings:
+        print(f"[警告] {w}", file=sys.stderr)
+
     class cfg:
-        username = args.username or ""
-        password = args.password or ""
-        data_path = Path('.')
+        data_path = Path(args.out_dir) if args.out_dir else default_out_dir()
 
-    # If no credentials provided, try to get from environment or config
+    cfg.username, cfg.password = username, password
     if not cfg.username or not cfg.password:
-        # Try to get from environment variables
-        cfg.username = os.environ.get('BRAIN_USERNAME', '')
-        cfg.password = os.environ.get('BRAIN_PASSWORD', '')
-
-    if not cfg.username or not cfg.password:
-        print("错误: 需要提供用户名和密码")
-        print("请通过 --username 和 --password 参数提供，或设置 BRAIN_USERNAME 和 BRAIN_PASSWORD 环境变量")
+        print("错误: 缺少平台凭据")
+        print("请在进程环境里设置 CREDENTIALS_EMAIL 和 CREDENTIALS_PASSWORD（旧别名 BRAIN_USERNAME / BRAIN_PASSWORD 仍认）")
         return 1
+    cfg.data_path.mkdir(parents=True, exist_ok=True)
 
     # 动态生成输出文件名
-    if args.output:
-        output_file = args.output
-    else:
-        output_file = f"alpha_results_{args.start_date}_{args.region}.xlsx"
+    output_name = args.output or f"alpha_results_{args.start_date}_{args.region}.xlsx"
+    output_file = output_name if os.path.dirname(output_name) else str(cfg.data_path / output_name)
 
     # 登录
     print("登录WorldQuant Brain...")
@@ -666,9 +723,18 @@ def main():
     result_df = result_df[available_columns]
 
     # 保存到Excel
+    meta = pool_meta(cfg.data_path)
+    meta.update({"generated_at": datetime.now().isoformat(timespec="seconds"), "region": args.region,
+                 "start_date": args.start_date, "end_date": args.end_date, "note": BLIND_SPOT_NOTE})
     with pd.ExcelWriter(output_file) as writer:
         result_df.to_excel(writer, sheet_name='Alpha Results', index=False)
+        pd.DataFrame(list(meta.items()), columns=["key", "value"]).to_excel(writer, sheet_name='Meta', index=False)
     print(f"\n结果已保存到: {output_file}")
+    print(f"OS PnL 池：最后刷新 {meta['pool_last_refreshed']}，共 {meta['pool_alpha_count']} 个 alpha")
+    if 'self_correlation' in result_df.columns:
+        banner = blind_spot_banner(pd.to_numeric(result_df['self_correlation'], errors='coerce').max())
+        if banner:
+            print(f"\n[盲区警告] 本批本地 SELF 最大值 < 0.7：{banner}")
 
     # 打印前10个结果
     print("\n前10个Alpha的结果:")

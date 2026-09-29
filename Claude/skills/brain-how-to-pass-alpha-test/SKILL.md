@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-29
 name: brain-how-to-pass-alpha-test
-description: "提供 WorldQuant BRAIN alpha 提交测试的详细要求、阈值与改进建议。 涵盖 Fitness、Sharpe、Turnover、Weight、Sub-universe 与 Self-Correlation 测试。 当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用 （submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
+description: "只读地回答 WorldQuant BRAIN alpha 提交测试的问题：每个检查（18 个 RA 检查 + SELF / PROD 相关性）的线、为什么没过、往哪个方向改，并给出失败后的建议路径（不执行）。当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用（submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
 layer: L4
 allowed-tools:
   - Read
@@ -9,138 +9,142 @@ allowed-tools:
   - mcp__wq-brain-http__*
 ---
 
-
-
-
-
-
-
 # BRAIN Alpha 提交测试：要求与改进建议
 
 ## 职责边界
 
-- **本 skill 负责**：**只读**查阈值与解释「为什么不过闸」：Fitness/Sharpe/Turnover/Weight/Sub-universe/Self-Correlation 的门限与改进方向
-- **本 skill 不做**：**不产生新表达式、不回测、不改候选** —— 需要动手改 → 转 `wq-brain-alpha-optimization-v1`。判据：**是否产生新表达式**
-- **上游 / 下游**：上游 = 失败的候选指标；下游 = 改进（optimization-v1）
+- **本 skill 负责**：**只读**——回答「某项检查的线是什么、为什么没过、先往哪个方向想」，并在 FAIL 后给出**建议路径**（下文「诊断之后」）。
+- **本 skill 不做**：不产生新表达式、不回测、不改候选——需要动手改 → `wq-brain-alpha-optimization-v1`（判据：**是否产生新表达式**）；**不执行**分流与判死回写（写台账 / 终止候选归 RA 步 5b / 步 9 的 `seal_dead_end` 流程）；不做提交判定（`tools/submit_verdict.py`）。
+- **上游 / 下游**：上游 = 失败的候选指标（S3 `brain-sim-alphas-in-batch-and-track`；结果读 `backtest_results` 表）；下游 = `wq-brain-alpha-optimization-v1` → `brain-calculate-alpha-selfcorr-quick` →（可选）`brain-explain-alphas` → `brain-alpha-robustness` → `tools/submit_verdict.py`。
 
+完整细节与社区背景见 [reference.md](reference.md)；每类失败的「症状 → 根因 → 动作 → 验收」情景卡见 [references/scenarios.md](references/scenarios.md)。
 
+## 0. 检查名 → 线 → 读哪节
 
-本 skill 提供通过 alpha 提交测试的关键要求与专家建议。
-完整细节、阈值与社区策略请阅读 [reference.md](reference.md)。
+提交测试的真实来源是 `is.checks` 里的 **18 个 `RA_CHECK_NAMES`**（`wqb.config`；PPA 另计 7 个 `PPA_CHECK_NAMES`；计数口径见 RA [`webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md)：`result` 既不是 `PASS` 也不是 `PENDING` 即计入失败，**`WARNING` 也算**）。**数值一律以 `wqb.config` 为准，本页只写键名**：
 
-## 概述
+- 平台官方线 = `config.PLATFORM_CHECK_LINES`（LOW_SHARPE / LOW_FITNESS 按 delay 分列）；
+- 内部严线 = `config.GATES_INTERNAL`（研究阶段省配额的本地预筛，**比平台线严**——按平台线判「已过」会把会被内部闸拦下的候选当成已过）。
 
-Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
+| 检查名 | 它在说什么 | 平台线（config 键） | 内部线（config 键） | 失败时读哪 |
+|---|---|---|---|---|
+| `LOW_SHARPE` | IS Sharpe 不够（RA 侧只认 `result`） | `PLATFORM_CHECK_LINES['low_sharpe_min']` | `GATES_INTERNAL['sharpe_min']` | §2 |
+| `LOW_FITNESS` | Fitness 不够 | `PLATFORM_CHECK_LINES['low_fitness_min']` | `GATES_INTERNAL['fitness_min']` | §1 |
+| `LOW_TURNOVER` / `HIGH_TURNOVER` | 换手过低 / 过高 | `PLATFORM_CHECK_LINES['turnover_range']` | `GATES_INTERNAL['turnover_range']` | §3 |
+| `CONCENTRATED_WEIGHT` | 单票权重集中；**无 value / limit**，只显示 `PASS` / `WARNING` | — | — | §4 |
+| `LOW_SUB_UNIVERSE_SHARPE` | 子宇宙 Sharpe 相对不足（相对公式，见 §5） | 平台相对公式 | — | §5 |
+| `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 近两年 Sharpe（同一事实的两个读数位，`RA_2Y_NAMES`） | `PLATFORM_CHECK_LINES['low_2y_sharpe_min']` | 同左（`submit_queue.LIM['two_year']`） | [playbook](references/two-year-sharpe-playbook.md) |
+| `LOW_RETURNS` | Returns 不够 | 平台线（读响应里的 value / limit） | `GATES_INTERNAL['returns_min']` | 暂无专项经验：先看 §1（Returns 是 Fitness 的分子） |
+| `LOW_ROBUST_UNIVERSE_SHARPE` / `LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO` / `LOW_ROBUST_UNIVERSE_RETURNS` | 稳健宇宙下 Sharpe / Returns 相对不足 | 平台相对线（读响应） | — | 暂无专项经验：见 `brain-alpha-robustness`（子宇宙 / 稳健性）与 §5 的思路 |
+| `LOW_INVESTABILITY_CONSTRAINED_SHARPE` | 可投资性约束下的 Sharpe 不足 | 平台线（读响应） | — | 暂无专项经验：先抬整体 Sharpe，降低对非流动股的依赖（§5） |
+| `LOW_AFTER_COST_ILLIQUID_UNIVERSE_SHARPE` | 计入成本后非流动宇宙的 Sharpe 不足 | 平台线（读响应） | — | 暂无专项经验：成本敏感 → 先降换手（§3） |
+| `LOW_GLB_EMEA_SHARPE` / `LOW_GLB_AMER_SHARPE` / `LOW_GLB_APAC_SHARPE` | GLB 各大区分区 Sharpe（仅 GLB） | 平台线（读响应） | — | 暂无专项经验（GLB 区域 profile 见 RA `regions/GLB.md`） |
+| `LOW_ASI_JPN_SHARPE` | ASI 内日本子集 Sharpe（仅 ASI） | 平台线（读响应） | — | 暂无专项经验 |
+| *`SELF_CORRELATION`*（不计入 Failed RA，另行核） | 与自己已提交 alpha 太像 | `GATES_PLATFORM['self_corr_max']` | `GATES_INTERNAL['self_corr_max']` | §6a |
+| *`PROD_CORRELATION`*（同上） | 与全平台生产池太像（prod 墙） | `GATES_PLATFORM['prod_corr_max']` | — | §6b |
 
-### 失败点 → 修法族（速查；RA 提示词 §2.3 与 `brain-alpha-repair` 反向链接到这里）
+「暂无专项经验」是如实登记，不是漏写：这些检查在本库还没有可复用的修法；遇到时先按表里给的相邻小节思路，并把新经验回写。
 
-平台检查名以 `config.PLATFORM_CHECK_LINES` / 平台响应为准；下表只回答「先往哪个方向想」，**不产生新表达式**（动手改 → `wq-brain-alpha-optimization-v1`，先想法后参数）。
+## 失败点 → 修法族（速查；RA 提示词 §2.3 与 `brain-alpha-repair` 反向链接到这里）
 
-| 失败的检查 | 它在说什么 | 修法族 | 细则 |
-|---|---|---|---|
-| `LOW_SHARPE` / `LOW_FITNESS` | 信号强度不够 | 信号层：换数据 / 换概念 / 换结构；不是磨参数 | 本文 §1 §2 |
-| `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 近两年形态崩；1.58 恰好也 FAIL | 先看逐年形态，再按 设置轴 → 表达式轴 → 机制轴 | 本文末「LOW_2Y_SHARPE / IS_LADDER 破闸」 |
-| `LOW_TURNOVER` / `HIGH_TURNOVER` | 换手过低 / 过高 | 平滑与窗口（`ts_decay_linear` / `ts_mean` / `decay`） | 本文 §3 |
-| `CONCENTRATED_WEIGHT` | 权重集中在少数股票 | 时间平滑；低频字段先 `ts_backfill`；**参数层无效** | 本文 §4 |
-| `LOW_SUB_UNIVERSE_SHARPE` | 子宇宙不稳 | 分散化骨架：去掉与市值相关的乘数、分组 decay | 本文 §5 |
-| `SELF_CORRELATION` | 与自己已提交的 alpha 太像 | 换概念 / 换数据源，不是换窗口 | 本文 §6 |
-| `PROD_CORRELATION` | 与全平台已提交池太像（prod 墙） | 只按决策表 **D0-P** 一张表处置（< 0.60 正常扩；0.60–0.70 不扩变体、当天进提交步；0.70–0.75 仅 1 次结构性尝试；≥ 0.75 或尝试失败 → 判死），**不磨参数** | [`decision-table.md`](../wq-brain-ra-pipeline/references/decision-table.md) |
+下表只回答「先往哪个方向想」，**不产生新表达式**（动手改 → `wq-brain-alpha-optimization-v1`，先想法后参数）。
 
-## 1. Fitness
-### 要求
-- 至少为 "Average"：Delay-0 需大于 1.3，或 Delay-1 需大于 1。
-- Fitness = Sharpe * sqrt(abs(Returns) / max(Turnover, 0.125))。
+| 失败的检查 | 修法族 | 细则 |
+|---|---|---|
+| `LOW_SHARPE` / `LOW_FITNESS` | 信号层：换数据 / 换概念 / 换结构；不是磨参数 | §1 §2 |
+| `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 先看逐年形态，再按 设置轴 → 表达式轴 → 机制轴 | playbook |
+| `LOW_TURNOVER` / `HIGH_TURNOVER` | 平滑与窗口（`ts_decay_linear` / `ts_mean` / `decay`） | §3 |
+| `CONCENTRATED_WEIGHT` | 时间平滑；低频字段先 `ts_backfill`；**中性化与参数层无效** | §4 |
+| `LOW_SUB_UNIVERSE_SHARPE` | 先抬整体 Sharpe；再去掉与市值相关的乘数、分档 decay | §5 |
+| `SELF_CORRELATION` | 换概念 / 换数据源，不是换窗口 | §6a |
+| `PROD_CORRELATION` | 只按 RA 决策表 **D0-P** 一张表处置，**不磨参数** | §6b |
 
-### 改进建议
-- 提高 Sharpe/Returns 并降低 Turnover。
-- 使用分组算子（group operators，如搭配 pv13）来提升 fitness。
-- 用 `mcp__wq-brain-http__get_alpha_details` 工具检查（返回 `is.checks`；提交配额从 submit 响应的 `REGULAR_SUBMISSION`/`SUPER_SUBMISSION` check 读，`get_submission_quota` 已于 2026-08-25 移除）。
+## 1. Fitness（`LOW_FITNESS`）
 
-## 2. Sharpe Ratio
-### 要求
-- Delay-0 需大于 2，或 Delay-1 需大于 1.25。
-- Sharpe = sqrt(252) * IR，其中 IR = mean(PnL) / stdev(PnL)。
+**要求**：至少 "Average"——线见 §0（Delay-0 与 Delay-1 不同；本库战役几乎全是 **Delay-1**，取 `settings.delay` 对应列）。
 
-### 改进建议
-- 关注低波动下的稳定 PnL。
-- 对流动性/非流动性股票分别对信号做 decay。
-- 若 Sharpe 为负（如 -1 到 -2），可尝试翻转符号：`-original_expression`。
+**公式**：`Fitness = Sharpe × sqrt(|Returns| / max(Turnover, 0.125))`（另一写法 `Sharpe × √(505 × margin)` 见 playbook §1，同一关系）。
 
-## 3. Turnover
-### 要求
-- 1% < Turnover < 70%。
+**要点**：换手低于 12.5% 后**继续降换手不再抬 Fitness**（分母被 floor）。
 
-### 改进建议
-- 使用衰减函数（`ts_decay_linear`）平滑信号。
+| 数值例 | Sharpe | Returns | Turnover | Fitness | 读法 |
+|---|---|---|---|---|---|
+| ① floor 生效 | 1.6 | 6% | 8% | ≈ **1.11** | 与 Turnover = 12.5% 时**相同**——别再为 Fitness 降换手 |
+| ② 高换手 | 1.6 | 6% | 40% | ≈ **0.62** | 其余不变 |
+| ③ 降到 25% | 1.6 | 6% | 25% | ≈ **0.78** | ②→③ 把换手从 40% 降到 25% 就抬了 0.16；再往 12.5% 才到 ≈ 1.11 |
 
-## 4. Weight Test（平台检查名 `CONCENTRATED_WEIGHT`）
-### 要求
-- 任一股票的权重上限 <10%。
+**改进**：提高 Sharpe / Returns、降低 Turnover（到 12.5% 为止）；用分组算子（如搭配 pv13）提升 fitness。检查用 `mcp__wq-brain-http__get_alpha_details`（返回 `is.checks`）。
 
-### 改进建议
-- 使用中性化（如 `neutralize(x, "MARKET")`）来分散权重。
-  ⚠️ **2026-09-01 实测修正（IND/TOP500 实证）：中性化对本闸无效**，见下。
+**配额不在本 skill 职责内**：提交配额的读取归 `worldquant-submit-alpha` / `brain-next-move-analysis`。**读配额不得靠 POST submit**——通过即真提交，不可撤销；预检用 `workflow_submit_alpha(confirm_submit=False)`（默认值：本地放宽预检 + 查状态，见 [`submit-chain.md`](../worldquant-submit-alpha/references/submit-chain.md)）。
 
-### ★ 实测要点（2026-09-01，IND analyst 修正族双例验证）
-- **本闸是"隐形第四闸"，且无法预检**：不同于 SELF/PROD，**它无 value/limit**，IS 阶段只显示
-  `WARNING` 或 `PASS`，**提交后才判 FAIL（403）**。IS 阶段 WARNING 的 alpha 提交后必 FAIL
-  （硬闸失败零成本，不消耗配额）。→ **提交纪律：先看 IS 阶段该闸状态，WARNING 就别提。**
-- **根因在表达式结构，不在参数**：瞬时离散计数/事件类信号 → 权重集中 → FAIL；
-  同一信号加时间平滑（`ts_mean(x, 10)`）→ **PASS**。
-  | 构造 | 本闸 | 结果 |
-  |---|---|---|
-  | `add(0.6*rank(subtract(U30,D30)), 0.4*(-rank(ts_mean(RES,10))))`（A 项瞬时） | WARNING | 提交 FAIL（4.26/3.97 也照拦） |
-  | `add(0.6*rank(subtract(U14,D14)), 0.4*(-rank(ts_mean(RES,10))))`（A 项瞬时） | WARNING | 提交 FAIL |
-  | `add(0.6*rank(ts_mean(subtract(U14,D14),10)), 0.4*(-rank(ts_mean(RES,10))))`（A 项平滑） | **PASS** | 提交成功（3.70/3.19） |
-  | `rank(ts_mean(subtract(U30,D30),10))`（单信号平滑） | **PASS** | 已 ACTIVE |
+## 2. Sharpe（`LOW_SHARPE`）
 
-  > ⚠ **表中前三行的 `add(0.6*rank(...), 0.4*rank(...))` 加权混合为 2026-09-01 历史实测**
-  > （当时闸5 仅拦星号中缀、未覆盖 `multiply()` 函数式）。**自 2026-09-13「路线 A」起该形态已被闸5
-  > 全量 block**，不得再照抄。本表可继承的结论只有一条：**时间平滑治 CW**——
-  > 落地请取第四行的合规单信号平滑形（`ts_mean` / `ts_decay_linear`），或改用
-  > `subtract(rank(短窗), rank(长窗))` 等结构交互。
-- **参数层全无效（别再试）**：换 neutralization（MARKET/SECTOR/INDUSTRY/SUBINDUSTRY 四档）仍 WARNING；
-  truncation 0.08→0.02/0.01 仍 WARNING；末端再套 `rank(...)` **反而变 FAIL**；`scale(x, 1)` 语法错（scale 只收 1 输入）。
-- **结论**：事件/计数类字段（分析师评级变动、新闻计数、财报事件等）构造时**默认加时间平滑**
-  （`ts_mean` / `ts_decay_linear`），不要直接 rank 瞬时值。
+**要求**：线见 §0（Delay-0 与 Delay-1 不同；取 `settings.delay` 对应列）。`Sharpe = sqrt(252) × IR`，`IR = mean(PnL) / stdev(PnL)`。
 
-## 5. Sub-universe Test
-### 要求
-- Sub-universe Sharpe >= 0.75 * sqrt(subuniverse_size / alpha_universe_size) * alpha_sharpe。
+**改进**：关注低波动下的稳定 PnL；对流动性 / 非流动性股票分档做 decay（写法用 `bucket` / `group_*`，见 optimization-v1 形态库 F4）；Sharpe 为负（如 -1 到 -2）可试翻转符号 `-original_expression`。
 
-### 改进建议
-- 避免使用与市值相关的乘数。
-- 对流动性/非流动性部分分别做 decay。
+## 3. Turnover（`LOW_TURNOVER` / `HIGH_TURNOVER`）
 
-## 6. Self-Correlation
-### 要求
-- 与自身已提交 alpha 的 PnL 相关性 <0.7。
+**要求**：区间见 §0（平台线 1%–70%；内部线更窄，别互相顶替）。
 
-### 改进建议
-- 提交多样化的 idea。
-- 取相关性的可靠方式：**先本地快筛**（`brain-calculate-alpha-selfcorr-quick`），再对平台值
-  **直接 15s 间隔长窗口轮询 `GET /alphas/{id}/correlations/prod`**（恒秒回 200，**空体 = 仍在算**，
-  非空取 `max`）。
-  ⚠ `mcp__wq-brain-http__check_correlation` 是同一 GET 的**阻塞式轮询且依赖 Redis（本环境不可用）→ 易「等死」**，
-  且**不要高频 `refresh=true`**（会加长平台队列）。库内 prod 值会严重过期，提交前必须实测。
-- 对负相关 alpha 做变换。
+**改进**：用 `ts_decay_linear` / `ts_mean` 平滑信号；Fitness 视角下换手低于 12.5% 没有额外收益（§1）。
+
+## 4. Weight Test（`CONCENTRATED_WEIGHT`）
+
+**要求**：任一股票权重上限 < 10%。
+
+**要点（一行读完）**：**中性化对本闸无效**；**有效手段是时间平滑**（`ts_mean` / `ts_decay_linear`，窗口取 5 或 22；原实验用 10，需复验）；低频字段先 `ts_backfill`；事件 / 计数类信号构造时默认加时间平滑，不要直接 rank 瞬时值。
+
+- **本闸无法预检**：无 value / limit，IS 阶段只显示 `WARNING` / `PASS`。`WARNING` 计入 Failed RA（口径见 §0 的链接）→ Failed RA ≠ 0 就不该提交。实测 4 例里 2 例（IS 阶段 `WARNING` 者）提交后 FAIL；2 例（`PASS` 者）成功。
+- **根因在表达式结构，不在参数**：瞬时离散计数 / 事件类信号 → 权重集中；同一信号加时间平滑 → PASS。合规式样：`rank(ts_mean(subtract(U30, D30), 10))`（单信号平滑，已 ACTIVE）。
+- **参数层全无效（别再试）**：换 neutralization 四档仍 `WARNING`；truncation 0.08 → 0.02 / 0.01 仍 `WARNING`；末端再套 `rank(...)` 反而变 FAIL；`scale(x, 1)` 语法错。
+- **适用范围**：证据只来自 **IND / TOP500 的分析师修正族**（n = 4，2 例 FAIL / 2 例 PASS），置信度低；**未验证范围**：其它区域、其它信号类型。证据表与逐例细节见 [references/concentrated-weight-evidence.md](references/concentrated-weight-evidence.md)（含已被闸 5 禁止的历史加权混合写法，**不得照抄**）。
+
+## 5. Sub-universe（`LOW_SUB_UNIVERSE_SHARPE`）
+
+**要求**：`Sub-universe Sharpe ≥ 0.75 × sqrt(subuniverse_size / alpha_universe_size) × alpha_sharpe`。
+
+**数值例**：TOP3000 → 子集 TOP1000：门槛 = `0.75 × sqrt(1000 / 3000)` = 0.433 倍 alpha Sharpe；alpha Sharpe = 1.6 时子集 Sharpe 需 ≥ **0.69**。
+
+**改进**：先抬整体 Sharpe（子集门槛按整体的比例走）；避免与市值相关的乘数；再考虑对流动性 / 非流动性部分分档 decay——分档用 `bucket` / `group_*` 表达（optimization-v1 形态库 F4），**不要**把两份不同 decay 的信号按权重相加（闸 5 block）。
+
+**常见报错**：`Sub-universe Sharpe NaN is not above cutoff` = 子集覆盖不足（子集里字段大面积缺失）→ 对字段 `ts_backfill` 或 `pasteurize` 后重测。
+
+## 6a. Self-Correlation（`SELF_CORRELATION`）
+
+**要求**：与**自己已提交** alpha 的 PnL 相关 < 线（§0：`GATES_PLATFORM['self_corr_max']`）。**平台还有第二条通过路径**：新 alpha 的 Sharpe 比与之相关的已提交 alpha **高 10%** 也可过——例：新 1.9 vs 旧 1.6 → 1.19× ≥ 1.10 → 过；新 1.7 vs 旧 1.6 → 1.06× < 1.10 → 不过。**本库按单阈值处理，未实现该豁免**（`GATES_PLATFORM` / `submit_queue.LIM` 都是单阈值），所以这条路径在本库是「平台可能放行、本库先拦」的保守偏差。
+
+**取值途径**：本地快筛 `brain-calculate-alpha-selfcorr-quick`（批量）/ MCP `check_self_correlation`（单个）——两者都有**结构性盲区**（近期提交的孪生体不在本地池，见 selfcorr-quick）；平台的 SELF 值目前只在提交响应里（提交即真提交，见 `worldquant-submit-alpha`）。
+
+**失败处置**：**换 idea / 换数据源**，不是换窗口。（PROD 与 SELF 是两个池、两条路，**别混**。）
+
+## 6b. Prod-Correlation（`PROD_CORRELATION`）
+
+**要求**：与**全平台生产池**相关 < 线（§0：`GATES_PLATFORM['prod_corr_max']`）。
+
+**取值**：`check_correlation`（只读 `GET correlations/prod`）——**阻塞轮询 ≤ 60 min、账号级单并发（忙时立即返回 `correlation_busy`）、有 Redis 才缓存**；三种返回的处置与「不要高频 `refresh=true`」的量化见 RA [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1（环境事实只写那一处）。**禁用** `POST /submit` 探测。
+
+**处置**：只按 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md)（< 0.60 扩；0.60–0.70 不扩、当天进提交步；0.70–0.75 仅 1 次结构性尝试；≥ 0.75 或尝试失败 → 判死）。**不磨参数。**
 
 ## 通用建议
-- **从简单开始**：先使用 `ts_rank` 等基础算子。
-- **优化设置**：选择 TOP3000 等股票池（USA, D1）。
-- **ATOM 原则**：避免混合数据集，以受益于放宽的 "ATOM" 提交标准（近 2 年 Sharpe / Last 2Y Sharpe）。
 
-## 衔接协议
-- **上游**：S3 `brain-sim-alphas-in-batch-and-track`（回测结果优先查 **backtest_results 表**（`mcp__wqb-db__*` 查询工具，结构化真相源）；`simulation_status.csv` 候选池为排障兼容回退）。
-- **本 skill 角色**：S4 链首步——失败项定位与阈值判定。
-- **FAIL 回流纪律（2026-09-02，区域无关，强制）**：判定 FAIL 后候选不得直接丢弃/只留 near_pool，按资格线分流：
-  1. 对照区域 `thresholds.json` 的 `mode_b_qualification`（缺省 sharpe≥1.25 且 fitness≥0.8）：**达标 → 强制进
-     `wq-brain-alpha-optimization-v1`**（Mode B 想法层 → 常规 2–3 轮仍卡结构性闸 → 其「组合腿救援」协议
-     消费 salvage_pool 补强腿）；**未达标 → 判死**（dead_end 回写 + wave 台账 closed，勿送 near_pool / 勿发增强波）。
-  2. 快达标因子（S≥1.0 且 prod corr<0.5）已由 S4 `review_wave.py --write-ledger` 自动幂等写入台账
-     `salvage_pool`（对齐 `_salvage_to_pool` entry 结构，带 boost_dims 卡点标注），**无需人工手写入池**。
-- **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorr-quick` → `brain-explain-alphas`。
+- **从简单开始**：先用 `ts_rank` 等基础算子。
+- **股票池取本区默认**（`wqb.config.REGIONS` 各区 universe，如 USA=TOP3000、KOR=TOP600、EUR=TOP2500），不要照搬 USA 的选择。
+- **ATOM 原则**（单数据集 alpha，享放宽的提交口径，近 2 年 Sharpe 为准）：**判据** = 表达式只用单一数据集的字段（分组字段除外）；**阈值**只引用平台官方表（见 GLOSSARY「ATOM alpha」，不在别处写数字）；**适用对象** = 单数据集 alpha。RA 的跨数据集路线（D3 / D11 / D14）与 ATOM 冲突时：跨集组合**主动放弃 ATOM 放宽**，按常规线（`LOW_2Y_SHARPE` 等）判——这是有意的取舍，不是疏漏。
+
+## 诊断之后：建议路径（本 skill 只建议，不执行）
+
+判定 FAIL 后候选不得直接丢弃或只留 near_pool。先做**资格判定**（[`mode-b-qualification.md`](../wq-brain-alpha-optimization-v1/references/mode-b-qualification.md) 的判定表；命令 `$WQ_PY tools/mode_b_qualify.py evaluate …`），再按结论建议：
+
+| 判定 | 建议路径 | 谁执行 |
+|---|---|---|
+| `main_gate` / `bypass` | 进 `wq-brain-alpha-optimization-v1` Mode B（`bypass` 带绑定的 `mode_b_action`）；常规 2–3 轮仍卡结构性闸再走「组合腿救援」 | optimization-v1 |
+| `no_qualify` | 不进改进；留 near / salvage 或结束；**不写 `dead_end`** | — |
+| `dead_end` | **候选级**封存：先 `forum_recon`（`found=true` 不得直接判死），再 `seal_dead_end` | RA 步 9 §9.5 |
+
+- 判死**粒度**：上表是**候选级**（`dead_end(candidate)`，只约束该字段搭配 + 结构 + 设置，见 `brain-dataset-mining-experience`）；**家族 / 波次级**判死按 RA 步 5b / D0-P / D15，本 skill 不做。
+- salvage_pool 由 S4 `review_wave.py --write-ledger` 自动幂等写入（combo 候选 + near 补充），**无需人工入池**；入池线 vs 动用线的区别见资格判定表 §5（入池宽、动用严）。
 
 ## LOW_2Y_SHARPE / IS_LADDER 破闸
 
-先 `get_alpha_yearly_stats` 诊断逐年形态，再按 设置轴 → 表达式轴 → 机制轴 三级修；末两年符号反转且三轴代表变体都不过 = 家族判死。完整手册（论坛实证 + 文献 + KOR risk71 反例）：[references/two-year-sharpe-playbook.md](references/two-year-sharpe-playbook.md)。
+先 `get_alpha_yearly_stats` 诊断逐年形态，再按 设置轴 → 表达式轴 → 机制轴 三级修；末两年符号反转且三轴代表变体都不过 = 该 (区域, 家族) 判死。完整手册（论坛实证 + 文献 + KOR risk71 反例）：[references/two-year-sharpe-playbook.md](references/two-year-sharpe-playbook.md)。

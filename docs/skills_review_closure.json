@@ -382,54 +382,75 @@
    "cat": "情景·P2"
   },
   "EX-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界与衔接协议称本 skill 服务于“Mode B 换概念前**先查概念重叠**”与“提交前对战略级候选做收益来源确认”。但 6 步模板全部是“解释一个 alpha”，**没有一",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | tools/concept_overlap.py",
+   "note": "补第 7 步概念重叠检查及对应程序：目标 vs 本区 ACTIVE book 的（字段集合、骨架指纹），与闸 PF / prod-first 同源函数；HIGH/MEDIUM/LOW/CLEAR 是启发式提示（Jaccard 0.5 阈值有取值理由、未做样本外标定），不构成平台判定",
+   "verify": "tests/unit/test_concept_overlap.py"
   },
   "EX-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“必填/推荐参数：`instrument_type`（如 EQUITY）、region、delay、universe、data_type、search”——MCP `get_dat",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "note": "get_datafields 真实签名（region / dataset_id / universe 必传，无 instrument_type），区分必填 / 推荐"
   },
   "EX-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "第 2 步“获取每个数据字段的详细信息”，但工具默认 `filter_sharpe=True`——**OS/IS Sharpe<0 的字段被静默过滤**。解释一个已有 alpha ",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "note": "解释既有 alpha 时 filter_sharpe=False、search 用完整 field id、返回为空的排查顺序"
   },
   "EX-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "首例 `quantile(ts_regression(oth423_find, group_mean(oth423_find, vec_max(shrt3_bar), countr",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-explain-alphas/reference.md",
+   "note": "示例标注 VECTOR→必须 vec_*、MATRIX→禁 vec_*；country 作 group 部分区域无效；字段含义分「事实 / 推测」两栏"
   },
   "EX-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "reference 说“本手册附录提供了最常用算子的速查表”，但附录只有“附录 A：理解 Vector 数据”——**指向不存在的附录**；第 3 步全量 `get_operato",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "note": "删「附录速查表」的不存在引用；改「取回全量后只读用到的算子」"
   },
   "EX-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "第 5 步“可选”，但：①`python scripts/arxiv_api.py` 是相对路径，agent 的 CWD 通常不在 skill 目录；②同名脚本在 optimiza",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/arXiv_API_Tool_Manual.md",
+   "note": "脚本单份、路径写全；外发边界一句话（只发通用关键词）"
   },
   "EX-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 四段模板与“收益来源归因”的用途对得上。P2：①“数据理由”只问“它们代表什么”，**没有证据要求**——收益主要来自 long 侧还是 short 侧、哪一年、哪个行业（`g",
-   "cat": "情景·🟢+P2"
+   "cat": "情景·🟢+P2",
+   "where": "Claude/skills/brain-explain-alphas/reference.md | Claude/skills/brain-explain-alphas/SKILL.md",
+   "note": "给出对首例的完整四段成品示例；证据要求（逐年 / PnL / long-short 与行业未核验就写未核验）；落点（回复 / key_findings，不新造键）；「进一步启发」改结构化 3 栏"
   },
   "EX-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“需要聚合（如 `vec_mean`、`vec_sum`）”——**`vec_mean` 不在 `known_ops`（103）**，平台算子是 `vec_avg`（`vector",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-explain-alphas/reference.md",
+   "note": "vec_mean → vec_avg，并以 platform_constraints.vector_only_ops 为准列出（vec_norm 标需复核）"
   },
   "EX-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "上游 selfcorr-quick；本 skill 是“S4 按需工具”；下游 robustness（必经闸）。而 robustness 又把 explain-alphas 列为其",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-explain-alphas/SKILL.md | Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "链图写成 selfcorr-quick →(可选) explain → robustness，写明跳过 explain 不影响 robustness 入场；robustness 的上游同步改；删改动史"
   },
   "EX-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺两个情景：①“Mode B 换概念前查重叠”——给一个含 3 个 ACTIVE alpha 的 book，目标候选与其中 1 个共享（字段族、时序骨架），输出“重叠高 → 建议换",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/brain-explain-alphas/reference.md | tests/unit/test_concept_overlap.py",
+   "note": "两张情景卡：Mode B 换概念前查重叠（3 个 ACTIVE alpha 的 book，输出 HIGH + 换概念）/ 战略级候选提交前确认收益来源（三条警示信号，未核验不得写成通过）"
   },
   "FB-01": {
    "status": "open",
@@ -817,109 +838,165 @@
    "cat": "边界·P1"
   },
   "HP-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 与职责边界自称“**只读**查阈值、解释为何不过闸；不产生表达式、不回测、不改候选”，正文却含两条执行性规则：L73“提交纪律：先看 IS 阶段该闸状态，W",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "职责边界改为「只读 + 给出建议路径，不执行」；分流与判死回写归 RA 步 5b / 步 9（seal_dead_end）",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_boundary_says_read_only_and_does_not_execute_dead_end_writeback"
   },
   "HP-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "阈值只有“平台默认值”一列（Fitness D1>1、Sharpe D1>1.25、Turnover 1–70%）。本库**实际闸线更严**：`GATES_INTERNAL` Sh",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "§0 三列表：18 个 RA_CHECK_NAMES + SELF / PROD 逐项「平台线 / 内部线（config 键）/ 读哪节」；无专项经验项如实写「暂无专项经验」；数字只在 config，正文只写键名",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_config_keys_named_in_the_table_exist"
   },
   "HP-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "一句话塞了三件事：检查工具（`get_alpha_details`）、**配额读取方式**、**工具移除史**：“提交配额从 submit 响应的 `REGULAR_SUBMISS",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "删「配额从 submit 响应读」句；写明配额读取归 submit-alpha / next-move、读配额不得靠 POST submit、预检用 confirm_submit=False（本地放宽预检 + 查状态）",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_no_quota_via_submit_and_no_stale_environment_claims"
   },
   "HP-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "Fitness/Sharpe 的 Delay-0 / Delay-1 两列并列，但本战役几乎全是 D1，未说明“取哪一列、delay 从哪读（`settings.delay`）”。",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/references/scenarios.md",
+   "note": "Fitness 数值例（Sharpe1.6/Returns6%/Turnover 8%→≈1.11 与 12.5% 相同；40%→25%：0.62→0.78）、delay 取 settings.delay 对应列、与 playbook 的 √(505×margin) 互指；Sub-universe 数值例（TOP3000→TOP1000 门槛 0.433 倍，Sharpe1.6→≥0.69）与 NaN 报错对策",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_numeric_examples_match_the_formula"
   },
   "HP-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“对流动性/非流动性股票分别做 decay”在 §2 与 §5 各出现一次而无表达式；reference L166 的示例 `ts_decay_linear(s,5)*rank(v",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md",
+   "note": "「分别对流动性/非流动性 decay」的加权相加示例删除，改用 bucket / group_* 写法（形态库 F4）；闸 5 infix_leg_sum / 加权混合会拦相加写法；同一结构两种写法判定相反的问题不再靠示例放行",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
   "HP-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“改进建议：使用中性化…”后紧跟缩进注释“⚠ 2026-09-01 实测修正：中性化对本闸无效”——先给一条错建议再在注释里撤回，只读要点行的人会照做；同时该节标题“Weight ",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "CW 要点行直接写「中性化无效、有效手段是时间平滑」；每节标题带平台检查名"
   },
   "HP-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 因果链完整（见总评）。P2：①证据仅来自 **IND/TOP500 的分析师修正族**，小标题却是通用的“★ 实测要点”，未标适用范围与置信度（n=4，其中 2 例 FAIL）",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/references/concentrated-weight-evidence.md | Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "证据表移 references/，正文只留合规式样；写明适用范围（IND/TOP500 分析师修正族、n=4）与未验证范围；窗口 10 不在白名单，复用时取 5 或 22；「末端再套 rank 反而 FAIL」标为假设。原始记录无 alpha id，如实标注无从补",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_concentrated_weight_evidence_page_flags_scope_and_forbidden_forms"
   },
   "HP-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“IS 阶段 WARNING 的 alpha 提交后必 FAIL … WARNING 就别提”是**提交纪律**，且已有唯一实现：`config.check_counts_as_f",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "CW=WARNING 计入 Failed RA（引 failed-gates 口径），删重述；「必 FAIL」改「4 例里 2 例 IS 阶段 WARNING 者提交后 FAIL」"
   },
   "HP-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "Sub-universe 只给公式与两条泛泛建议（“避免市值相关乘数”“分别 decay”），缺：①平台检查名 `LOW_SUB_UNIVERSE_SHARPE`；②数值例：TOP",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/references/scenarios.md",
+   "note": "Fitness 数值例（Sharpe1.6/Returns6%/Turnover 8%→≈1.11 与 12.5% 相同；40%→25%：0.62→0.78）、delay 取 settings.delay 对应列、与 playbook 的 √(505×margin) 互指；Sub-universe 数值例（TOP3000→TOP1000 门槛 0.433 倍，Sharpe1.6→≥0.69）与 NaN 报错对策",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_numeric_examples_match_the_formula"
   },
   "HP-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题 Self-Correlation，“要求”是 **SELF**（与自己已提交 alpha 的 PnL 相关 <0.7），“改进建议”整段讲的却是 **PROD**（`GET ",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "§6 拆 6a SELF（判据、取值途径与盲区、处置）/ 6b PROD（取值指向 prod-corr-avoidance §1，处置只按 D0-P）；「对负相关 alpha 做变换」语义不明已删"
   },
   "HP-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`check_correlation`… **依赖 Redis（本环境不可用）→ 易「等死」**”与代码不符：Redis 只是**可选缓存**（`brain_mixin_tran",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md | Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "check_correlation 环境事实只写 prod-corr-avoidance §1 一处：阻塞轮询 30s×120、账号级单并发（correlation_busy 带 retry_after）、Redis 只是可选缓存（无 Redis 不缓存）、三种返回处置表、refresh 每决策点至多 1 次且间隔 ≥5 分钟（经验值）；how-to-pass / robustness 改指针",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_no_quota_via_submit_and_no_stale_environment_claims"
   },
   "HP-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "SKILL 版 SELF 判据只有“相关 <0.7”，漏掉平台的第二条通过路径——reference L175：“Or Sharpe at least 10% greater th",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "note": "决定：本库按单阈值处理，不实现平台「Sharpe 高 10%」豁免（GATES_PLATFORM / submit_queue.LIM 均单阈值）；写明数值例（1.9 vs 1.6 过 / 1.7 vs 1.6 不过）与「平台可能放行、本库先拦」的保守偏差"
   },
   "HP-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "“通用建议”三条都是 USA/D1 口径且与全库规范冲突：①“选择 TOP3000（USA, D1）”——KOR TOP600、EUR TOP2500 等；本 skill 的“FA",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "删「TOP3000（USA）」，改引 wqb.config.REGIONS 各区默认 universe；ATOM 写成 判据 / 阈值（只引官方表）/ 适用对象 三项，并说明与 D3 / D11 / D14 跨集路线冲突时主动放弃 ATOM 放宽"
   },
   "HP-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "上游句同时写真相源（`backtest_results` 表）与文件回退（`simulation_status.csv`），未说何时用回退；“S4 链首步”用 S-label，全库",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "上游改读 backtest_results 表；下游链补 robustness → submit_verdict，与 INDEX 流水线一致；步号统一"
   },
   "HP-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "**资格线模型已过期**：文中“对照区域 `thresholds.json` 的 `mode_b_qualification`（缺省 sharpe≥1.25 且 fitness≥0",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md",
+   "note": "FAIL 回流改「建议路径（不执行）」：先做资格判定（主闸 + 旁路 + 判死线），再按 main_gate/bypass → Mode B、no_qualify → 不改不判死、dead_end → 候选级封存（forum_recon → seal_dead_end）；粒度分候选级 / 家族级；salvage 入池宽、动用严",
+   "verify": "tests/unit/test_mode_b_qualification_doc.py::test_no_skill_doc_says_below_qualification_means_dead"
   },
   "HP-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "第 1 条“未达标 → 判死（dead_end 回写 + wave 台账 closed，**勿送 near_pool**）”与第 2 条“快达标因子（S≥1.0 且 prod co",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md",
+   "note": "FAIL 回流改「建议路径（不执行）」：先做资格判定（主闸 + 旁路 + 判死线），再按 main_gate/bypass → Mode B、no_qualify → 不改不判死、dead_end → 候选级封存（forum_recon → seal_dead_end）；粒度分候选级 / 家族级；salvage 入池宽、动用严",
+   "verify": "tests/unit/test_mode_b_qualification_doc.py::test_no_skill_doc_says_below_qualification_means_dead"
   },
   "HP-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 playbook 的“先诊断 → 三轴按成本递增 → 有数值的判死规则 + 反例表 + ‘不再调参’的止损线”是全库最好的决策树。P2：①判死范围写“家族判死”，但证据全来自 ",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/references/two-year-sharpe-playbook.md",
+   "note": "判死范围改 (region, family) 并标 KOR 2022–23 证据出处；rank_by_side 标不在 known_ops、先 get_operators 确认；窗口 250/50/500 标白名单对应值；记 dead_end 的路径写明 forum_recon → seal_dead_end；IS_LADDER 阶梯数字标来源并链到 config 常量",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_playbook_scope_is_region_family_and_window_notes_present"
   },
   "HP-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "“Turnover and Drawdown … (e.g., low turnover **< 250%**)”与同文 L131 “1% < Turnover < 70%”直接冲",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "§0 三列表：18 个 RA_CHECK_NAMES + SELF / PROD 逐项「平台线 / 内部线（config 键）/ 读哪节」；无专项经验项如实写「暂无专项经验」；数字只在 config，正文只写键名",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_config_keys_named_in_the_table_exist"
   },
   "HP-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "63 行“想法层通识”（idea sources、arXiv、ATOM、6 种字段探测、社区模板、官方例子）与提交测试阈值无关，且与 optimization-v1 Mode B、",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "note": "删 63 行想法层通识（idea 来源 / arXiv / ATOM / 6 种字段探测 / 社区模板 / 官方例子），含 scale_down、中缀减法 + 窗口 240 的幽灵 / 非标写法；arXiv 路径问题随之消失",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
   "HP-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "①arxiv 脚本路径 `wq-brain-alpha-optimization-v1/scripts/arxiv_api.py` 无根前缀（checker 判 MISSING；库",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/reference.md",
+   "note": "删 63 行想法层通识（idea 来源 / arXiv / ATOM / 6 种字段探测 / 社区模板 / 官方例子），含 scale_down、中缀减法 + 窗口 240 的幽灵 / 非标写法；arXiv 路径问题随之消失",
+   "verify": "tests/unit/test_how_to_pass_docs.py::test_reference_no_longer_carries_idea_layer_or_unsafe_examples"
   },
   "HP-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺一组“症状 → 根因 → 动作 → 验收”情景卡。建议 5 张：①Fitness 不过但 Sharpe 过（→ 看 turnover 是否 >25%，`ts_decay_line",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/brain-how-to-pass-alpha-test/references/scenarios.md",
+   "note": "5 张情景卡：Fitness 不过 / 仅 2Y 不过 / CW=WARNING / Sub-universe 不过 / SELF vs PROD"
   },
   "IR-01": {
    "status": "open",
@@ -1420,94 +1497,141 @@
    "cat": "边界·P3"
   },
   "OP-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 承诺“**把 PROD 相关性压到 0.7 以下**”；RA 步 5b 明令“家族首探 prod ≥0.7 → 记 dead_end 换机制，**不做任何去",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "description 去掉「把 PROD 压到 0.7 以下」的承诺；职责边界写明「不承诺压 PROD，prod 墙只按 D0-P」；本 skill 只承接 D0-P 的「唯一例外」（组合腿救援）与「踩线带 1 次结构性尝试」",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_description_no_longer_promises_a_prod_number"
   },
   "OP-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“Mode B 70% / Mode A 30% 精力”在 RA 步 7、D11、ra-campaign-prompt 2.3 也被引用，含义各异（时间？模拟配额？变体条数？）；同",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "删「70%/30% 精力」（无可度量含义）；三个上限合并为一条止损阶梯（第 3 个周期救援 / 第 5 个判死 / 累计结构 >10 换数据集）；每步预算改调用数 / 条数，不按分钟"
   },
   "OP-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "B1–B5 每步给“5–10 min”式时间预算——这是给人的节奏，agent 无意义；B1 两行都是 `get_alpha_details`",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "删「70%/30% 精力」（无可度量含义）；三个上限合并为一条止损阶梯（第 3 个周期救援 / 第 5 个判死 / 累计结构 >10 换数据集）；每步预算改调用数 / 条数，不按分钟"
   },
   "OP-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "arXiv 概念检索用 `scripts/arxiv_api.py --concepts --llm`，走 **DeepSeek** 概念层，凭证在 `scripts/.arxiv",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/arXiv_API_Tool_Manual.md | tools/sync_skills.py",
+   "note": "写明 arXiv 外发边界（查询词发 arxiv.org、只发通用关键词；--llm 才把公开摘要发第三方 DeepSeek，密钥仅环境变量 / gitignore 的 .arxiv_llm.env）；explain 里的重复脚本删除、全库只留一份；sync_skills 不再复制 *.env",
+   "verify": "tests/unit/test_sync_skills_ignores_secret_files.py"
   },
   "OP-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“旧文写的 `create_multiSim` 不是真实工具名（2026-09-26 审计）”为文档改错史",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "删 create_multiSim 改错史",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_no_self_made_result_text_file_and_no_stale_names"
   },
   "OP-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "硬规则 7 与工作流 8：回测后“立即以 UTF-8 追加模式把本批结果写入**指定的文本文件**”——与 DB 单轨（回测结果已由 harvest 入 `backtest_res",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/examples.md",
+   "note": "Mode A 结果入库（harvest_multisim_alphas → harvest_multisim_results → backtest_results），迭代日志写回复并进 S6 key_findings，不再写自建文本文件；示例 / 提示模式同步改",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_no_self_made_result_text_file_and_no_stale_names"
   },
   "OP-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“operatorCount>8 的候选无效”“平台是最终裁判”——**算子≤8 是 PPA 的限制**；REGULAR 无此上限（GEM 过闸样本 p90=12 个算子），rob",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "note": "算子数 ≤8 标注 PPA-only；REGULAR 无上限，复杂度纪律引 GEM「复杂度预算」与 robustness 软标记；operatorCount 仍以平台返回为准",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_skill_declares_operator_ceiling_is_ppa_only_and_uses_config_for_thresholds"
   },
   "OP-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“Stage A 阶段禁止纯微调”——Stage A 在全库只在 toolkit 探针里有定义（Stage A/B 探针），此处未定义",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/reference.md | Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "Stage A / B 在 reference §6.5 定义（微调闸 Sharpe>1.40 且 Fitness>0.90），SKILL 硬规则 5 指向；注明与 toolkit 探针里的 Stage A/B 不是一回事"
   },
   "OP-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "Mode A/B 的变体只经“本地 `validate_expression` + verifier”就直接 `create_multi_simulation`，**没有经过 `w",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "note": "校验层固定三段：verifier → campaign_intel ghost-audit → wave_gate --batch-type repair（写明命令、退出码、validate_expressions 不查幽灵算子）；删「当前项目暴露时使用」的条件式措辞",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_mode_a_validation_layer_and_gate_command_are_documented"
   },
   "OP-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“陷阱”里含 SuperAlpha 构造，与优化陷阱无关；EVENT/`winsorize` 条重复 datafield-exploration",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "删「陷阱」节：SuperAlpha 构造无关、PROD 闸门并入 D0-P 节；EVENT / winsorize 条并入 B2 一句（闸 8 会拦）"
   },
   "OP-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 仅就**写法**而言：触发线 → 动作 → 卡点→`boost_dim` 映射五行，**触发条件→动作**清晰；**内容已过期**——资格线的数值与“未达线一律判死”已被 `m",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md",
+   "note": "salvage min_sharpe 由 0.5 改为可选 1.0（与 review_wave combo_sharpe_min 缺省 1.0 同口径；缺省不传）；入池线 / 动用线区别写进资格判定表 §5；触发线改引判定表",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_no_self_made_result_text_file_and_no_stale_names"
   },
   "OP-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "构造纪律明确（主腿冻结、辅助腿 ≤2 且取自 salvage_pool、禁加权/权重网格、溯源标记）——**是 RA-90 缺的“辅助腿入场”答案**。但合规判据仍是“成品须能用一",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md",
+   "note": "「一句话说清单一经济信号」换成五类可检的入场方式（条件 / 分组轴 / 残差化 / 协动对象 / 同源价差）；F1 限同源（用户 2026-09-28 spread_signal_ruling，跨数据集 subtract 由闸 5 spread_cross_dataset 拦）；hump 统一为「仍受支持、必须命名参数」（RA D6）；RA §7.7.2 补 ⑦ 协动对象并链到形态库（此前漏列）",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_forms_doc_only_uses_verified_operators"
   },
   "OP-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "说明 salvage_pool 由 `review_wave.py --write-ledger` 自动入池（S≥1.0 且 prod<0.5）；RA 用 `min_sharpe=",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md",
+   "note": "salvage min_sharpe 由 0.5 改为可选 1.0（与 review_wave combo_sharpe_min 缺省 1.0 同口径；缺省不传）；入池线 / 动用线区别写进资格判定表 §5；触发线改引判定表",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_no_self_made_result_text_file_and_no_stale_names"
   },
   "OP-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "“过拟合与稳健性测试”四项与 `brain-alpha-robustness` Phase C 大量重复但**阈值不同**（子宇宙：此处 sharpe>1、fitness>0.7、",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "「过拟合与稳健性测试」四项删除，改为指向 brain-alpha-robustness（同库 L4，判据与阈值只有一处）；「外部 Agent 技能」措辞更正"
   },
   "OP-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`tools/submit_verdict.py`（提交层**权威**判定）”——第 5 处“权威”字样，与 RA L681“提交层唯一权威不是 submit_verdict”冲",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "「提交层权威判定」改「提交前否决闸；放行须用户确认」，与 GLOSSARY 的否决 / 放行两权威一致"
   },
   "OP-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "预期产出把 Turnover 写成“1%–40%（内部目标 ≤40%）”；全库换手区间现有：平台 1–70%（config）、内部 5–20%（config）、D0 “5–20%”",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/reference.md",
+   "note": "预期产出 / 完成定义不再手抄 Sharpe / Fitness / 换手区间，改引 wqb.config.GATES_INTERNAL 与 Failed RA==0",
+   "verify": "tests/unit/test_optimization_v1_docs.py::test_skill_declares_operator_ceiling_is_ppa_only_and_uses_config_for_thresholds"
   },
   "OP-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "“持续迭代直到至少一个候选满足全部条件”是无终止条件的循环（与 3–5 周期/10 种结构上限矛盾）",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "预期产出改「出现达标候选，或触发止损阶梯（判死回写）」，消除无终止条件的循环"
   },
   "OP-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "“触发线：本 alpha 必须已过 `mode_b_qualification` 资格线（sharpe≥1.25 且 fitness≥0.8，以区域 `thresholds.jso",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md | tools/mode_b_qualify.py | src/wqb/workflow/mode_b_config.py",
+   "note": "资格线单一真相源：判定表（主闸 + 旁路 A–E + 判死线 + 覆盖优先级 + 各入口覆盖范围）；数值 / 动作文案与 _DEFAULT_GLOBAL 逐项对拍，覆盖顺序更正并钉住；只读 CLI 补 judge 节点喂不到的 A/B/D；「未达资格线一律判死」由测试扫全部 skill 文档禁止",
+   "verify": "tests/unit/test_mode_b_qualify_cli.py"
   },
   "P0-1": {
    "status": "open",
@@ -3064,64 +3188,94 @@
    "note": "头注「被 SKILL 哪一步引用」索引：每条 D 对应哪些步骤消费一目了然"
   },
   "RE-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "声明“5 轴旋转、降相关 6 武器、分布形态→修复方向映射、news/sentiment 专用方向、幽灵算子警告、体检硬门复验已于 2026-08-23 全部上移进 optimiz",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "where": "Claude/skills/brain-alpha-repair/references/repair-recipes.md | Claude/skills/brain-alpha-repair/SKILL.md | Claude/skills/INDEX.md",
+   "note": "配方逐项核销：4 项在别处有（字段体检文档 / 代码闸 / RA step5 §5.3 / news_sentiment_playbook）并登记去向，「5 轴旋转」「降相关 6 武器」原文不可恢复（git 内 optimization-v1 从未有）——撤回；INDEX 卖点更正；测试：声明已上移的术语必须能 grep 到",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py"
   },
   "RE-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "description、职责边界、“触发场景”三处重复同一列表；定位声明称“改进的唯一入口是 optimization-v1”，边界又称“只作配方参考、不直接执行”。descrip",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "description 退役触发词，改「配方索引与补充实证，非改进入口」；边界写明与 optimization-v1 的分工",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_description_is_no_longer_a_trigger_competing_with_optimization_v1"
   },
   "RE-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢“REGULAR 修复成功的唯一标准是 `Failed RA == 0`；PPA 是 `Failed PPA == 0`；改善 Sharpe/Fitness/相关性但 faile",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "写明 REGULAR / PPA 判定方法（PPA 通道 / 标签 CH_PPA / classifications 含 Power Pool Alpha）；failed-count 规则一处定义（failed-gates §1），此处只引用"
   },
   "RE-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“选定任何算子前先确认它在当前 `get_operators` 返回里”——方向对，但成本高（全量返回），且已有机械守护（gate0 的 `known_ops`/`ghost_op",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "选算子对照 known_ops / ghost_ops 与 ghost-audit，不再要求全量 get_operators"
   },
   "RE-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "三条 bullet：turnover 写“平台支持的降换手算子”（**无算子名**）、coverage 写“回填、重审向量聚合、复查 NaN 策略”（无参数）、correlatio",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-repair/references/repair-recipes.md | Claude/skills/brain-alpha-repair/references/scenarios.md",
+   "note": "turnover / coverage / correlation 三类各给可复制模板 + 适用条件 + 预期效果（方向）；库内无实测降幅，如实写「以小样本为准」；模板算子由测试对照 known_ops",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_recipe_templates_only_use_known_operators"
   },
   "RE-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "链接 `docs/reference/news_sentiment_playbook.md` 以仓库根为基准书写，而 markdown 相对链接应从 skill 目录解析（会落到 ",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "news_sentiment_playbook 链接改仓库根形式（链接测试通过）",
+   "verify": "tests/unit/test_skill_integrity.py::test_markdown_links_resolve"
   },
   "RE-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "声明自己是该教训的“**唯一完整版**；ppa-mining §1.0.x 红灯行与其它文档只允许引用此处”。问题：①把一条“唯一权威”实证放在**自称已退役**的 skill 里",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-alpha-repair/references/repair-recipes.md",
+   "note": "GLB emotion 实证拆成 事实表 / 4 条结论 / 适用范围（仅 GLB emotion 族）；结论的处置口径并入 D0-P，不另立学说"
   },
   "RE-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“提交探测零成本（硬闸失败不消耗**周**额度），但浪费时间——先 5 个多样化探针（不同前缀×universe×neutralization）确认 prodCorr 再决定是否全",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-repair/references/repair-recipes.md | Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "探针改只读 check_correlation，家族首探 = 1 条（删「先 5 探针」与 POST 探测）；删「周额度」过期概念",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_no_dead_requirements_left_in_skill"
   },
   "RE-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "“USA REGULAR 修复保持 TOP3000 默认 universe；用其他 USA universe 时台账必须记录 TOP3000 失败原因与该 universe 回答的",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-ra-pipeline/references/regions/USA.md | Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "USA universe 约定迁入 regions/USA.md「步 7 注入」，记录落 wave_result.key_findings（不新造台账键）"
   },
   "RE-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“修复记录为新的轨迹步骤”“确认修复路径在 `trajectory_steps` 可见”：`trajectory_steps` 是 `wqb.memory.SimulationDB",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "删 trajectory_steps / settings fingerprint 要求（无生产写入方 / 无生成者）；改用现存机制：expressions.fingerprint + settings_json",
+   "verify": "tests/unit/test_brain_alpha_repair_docs.py::test_no_dead_requirements_left_in_skill"
   },
   "RE-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "4 条验证项里，第 2 条（failed count 为零）机器可判，第 4 条“确认 §2d 的教训在修复决策时被读取”**无可检产物**（“读取”不留痕）",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-repair/SKILL.md",
+   "note": "验证清单改成可检项（expressions 表有 fingerprint / settings_json、failed-count 为零、算子在 known_ops 且 ghost-audit 0、GLB emotion 有平台 prod 读数）"
   },
   "RE-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "应有三张情景卡：①降换手（turnover 32%、Sharpe 1.7 → 动作、预期、验收 `Failed RA==0`）；②覆盖不足（cr<0.4 → `ts_backfil",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/brain-alpha-repair/references/scenarios.md",
+   "note": "三张情景卡：降换手（Fitness 演算 0.74→≲17%）/ 覆盖不足 / 降相关（D0-P 判据 + 唯一例外）"
   },
   "RF-01": {
    "status": "fixed",
@@ -3576,54 +3730,77 @@
    "note": "四张情景卡：正常 / 异步未翻转 / 配额 403 / 并行会话用光配额"
   },
   "SC-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界清楚（本地快筛 / 不占平台配额 / 不替代实测 / 不作提交判定）。但 MCP 已有 `check_self_correlation`（本地增量缓存；`correlation",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md",
+   "note": "加对照表：MCP check_self_correlation（单个、即时）vs skill.py（批量、Excel）；description 触发词限定为「本地快筛 SELF / PPAC」"
   },
   "SC-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“若 self-corr 高于 0.7，甚至无需再向平台查询生产相关性——因为平台结果同样会高于 0.7”。**SELF（自己已提交）与 PROD（平台生产池）是两个池**，SEL",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-how-to-pass-alpha-test/SKILL.md",
+   "note": "SELF 与 PROD 是两个池：本地 SELF>0.7 只推出 SELF 已必然 FAIL，推不出 PROD>0.7；Sharpe 10% 豁免路径写明本库未实现（单阈值 config 常量）"
   },
   "SC-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 见总评。P2：①未给“近期”的量化界线（新提交多久后进池？池刷新周期？）；②无“何时本地值可信”的检查步骤（如比较池文件 mtime 与最近提交时间）；③“务必先读”的 ★★ ",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md",
+   "note": "脚本输出池最后刷新时间与池大小（终端 + Excel Meta sheet），本地 SELF 最大值 <0.7 自动打印盲区警告；强调符号只留 ★★",
+   "verify": "tests/unit/test_selfcorr_quick_script.py::test_pool_meta_reports_refresh_time_and_size"
   },
   "SC-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "推荐“同族连测场景不要依赖本地 SELF，改用零成本实测：`POST /alphas/{id}/submit`”。**仅当硬闸失败时才不消耗配额；若该 alpha 全部通过，POS",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md",
+   "note": "删「POST /submit 零成本实测」：全部通过时它就是真提交；写明 confirm_submit=False 只是本地放宽预检（不含平台 SELF/PROD 值）、平台 SELF 值目前只在提交响应里；同族连测改「本地排序 + 用户授权后提交」"
   },
   "SC-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`PENDING` ≠ `FAIL`、不挡提交”“`GET /alphas/{id}/submit` 恒 404”是有价值的**否定性事实**。但：①夹带改错史（“旧文写的 `G",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/worldquant-submit-alpha/references/submit-chain.md",
+   "note": "GET 恒 404 / PENDING ≠ FAIL / 配额 403 与候选 403 的区分：整段迁指向 submit-alpha 的提交 API 行为表，本页只留链接；删改错史"
   },
   "SC-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`REGULAR_SUBMISSION: FAIL value=4 limit=4` … 换日即失效”：①“4/4”是某次实测，limit 随账号/日变化，应写 `value ≥",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/worldquant-submit-alpha/references/submit-chain.md",
+   "note": "GET 恒 404 / PENDING ≠ FAIL / 配额 403 与候选 403 的区分：整段迁指向 submit-alpha 的提交 API 行为表，本页只留链接；删改错史"
   },
   "SC-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "脚本段：①示例 `python <SKILL_ROOT>/…/skill.py`——`<SKILL_ROOT>` 未定义，裸 `python` 而非库内约定的 `$WQ_PY`；r",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py | Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md",
+   "note": "补「被测对象是谁」（UNSUBMITTED/IS_FAIL 候选按创建日期区间圈定）；命令统一 $WQ_PY 与仓库相对路径；凭据环境变量优先（--password 兼容但告警）；importlib.metadata 替代 pkg_resources、tqdm 缺失降级、非交互不 input()（此前在 MCP venv 里根本跑不起来）",
+   "verify": "tests/unit/test_selfcorr_quick_script.py"
   },
   "SC-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "下游写“explain-alphas → 过拟合/稳健性测试（见 optimization-v1）→ judge”。robustness 已是独立 skill（`brain-alp",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md | Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md",
+   "note": "链尾改 explain(可选) → robustness → submit_verdict；optimization-v1 下游已回指 selfcorr-quick"
   },
   "SC-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "英文原译混在中文 skill 里；`--sharpe-threshold -1.0`/`--fitness-threshold -1.0` 默认意味着“不过滤”，未解释；结果“保存",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md | Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py",
+   "note": "reference 重写为中文参数 / 产物 / 依赖表；产物目录固定（$WQ_SELFCORR_OUT_DIR / data/selfcorr_quick，gitignore）；-1.0 阈值 = 实际不过滤；check_status 含义（平台检查无 FAIL 且 long+short>100，非相关性结论）",
+   "verify": "tests/unit/test_selfcorr_quick_script.py::test_out_dir_is_fixed_not_cwd"
   },
   "SC-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "用一张 3 行决策表替换现有 3 条规则：①“同族 5 个孪生体，其中 blRaArVZ 昨日提交；本地 SELF=0.23” → **不采信**，预检平台实测；②“本地 SELF",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md",
+   "note": "3 行判读决策表（本地 0.23 且同族近期提交→不采信；0.81→直接否决；0.40 且同族近期无提交→可信度中等）"
   },
   "SP-01": {
    "status": "fixed",

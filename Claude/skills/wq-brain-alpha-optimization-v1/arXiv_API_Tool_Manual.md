@@ -2,6 +2,15 @@
 
 A comprehensive Python tool for searching, analyzing, and downloading research papers from arXiv using their public API. Perfect for researchers, students, and anyone interested in academic papers.
 
+> **本库使用须知（skills 审查 OP-04 / EX-06）**
+> - 脚本位置：`Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py`（全库**唯一一份**；`brain-explain-alphas` 也用它，不再各留拷贝）。下文命令里的 `$ARXIV` 就是这个路径，`$WQ_PY` 是 MCP venv 解释器：
+>   ```bash
+>   ARXIV=Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py
+>   ```
+> - **外发边界**：查询词发往 `export.arxiv.org`——**只发通用关键词**，不发未公开表达式 / 数据集名 / 字段名 / alpha id。`--concepts` 只用本地规则层；**`--llm` 会把检索到的公开论文标题 / 摘要发给第三方 LLM**（缺省 `https://api.deepseek.com/v1`、模型 `deepseek-v4-flash`，用 `--llm-base` / `--llm-model` 改）。
+> - **密钥**：只读进程环境变量 `OPENAI_API_KEY`（兼容 `OPENAI_BASE_URL` / `OPENAI_MODEL`），或 `scripts/.arxiv_llm.env`（已 gitignore，`sync_skills` 不复制）。缺密钥时自动降级到规则层。**不要把密钥写进命令行、文档或对话。**
+> - 下文 Python API 示例（`from arxiv_api import ...`）假设 `scripts/` 已在 `sys.path`。
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -34,52 +43,53 @@ A comprehensive Python tool for searching, analyzing, and downloading research p
 pip install requests
 ```
 
-### Download the Script
+### Locate the Script
 ```bash
-# Clone or download arxiv_api.py to your working directory
+# 脚本随本仓库提供，无需另行下载（依赖 requests 已在 MCP venv 内）
+ARXIV=Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py
 ```
 
 ## 🎯 Quick Start
 
 ### Basic Search
 ```bash
-python arxiv_api.py "machine learning"
+$WQ_PY $ARXIV "machine learning"
 ```
 
 ### Search with Custom Results
 ```bash
-python arxiv_api.py "quantum computing" -n 10
+$WQ_PY $ARXIV "quantum computing" -n 10
 ```
 
 ### Search and Download First Result
 ```bash
-python arxiv_api.py "deep learning" -d
+$WQ_PY $ARXIV "deep learning" -d
 ```
 
 ### Interactive Mode
 ```bash
-python arxiv_api.py -i
+$WQ_PY $ARXIV -i
 ```
 
 ### Search within a Category (cuts cross-topic noise)
 ```bash
-python arxiv_api.py "post-earnings-announcement drift" -c q-fin
+$WQ_PY $ARXIV "post-earnings-announcement drift" -c q-fin
 ```
 
 ### Noise-free phrase search (recommended for relevance)
 ```bash
-python arxiv_api.py 'abs:"post-earnings-announcement drift"' -n 5
+$WQ_PY $ARXIV 'abs:"post-earnings-announcement drift"' -n 5
 ```
 
 ### Save Results as JSON (for pipeline consumption)
 ```bash
-python arxiv_api.py 'abs:"post-earnings-announcement drift"' -n 5 -j pead.json
+$WQ_PY $ARXIV 'abs:"post-earnings-announcement drift"' -n 5 -j pead.json
 ```
 
 ### Extract Factor Concepts (Mode B idea feed)
 ```bash
-python arxiv_api.py "momentum spillover" -n 5 --concepts
-python arxiv_api.py "momentum spillover" -n 5 --concepts --llm   # LLM-enhanced (needs OPENAI_API_KEY)
+$WQ_PY $ARXIV "momentum spillover" -n 5 --concepts
+$WQ_PY $ARXIV "momentum spillover" -n 5 --concepts --llm   # LLM 增强：会把公开论文标题/摘要发给第三方 LLM，见上方外发边界；需 OPENAI_API_KEY
 ```
 
 ### Download Paper by ID (with auto-rename)
@@ -96,12 +106,17 @@ Direct search queries from the command line.
 
 **Syntax:**
 ```bash
-python arxiv_api.py [query] [options]
+$WQ_PY $ARXIV [query] [options]
 ```
 
 **Options:**
 - `-n, --max_results`: Maximum number of results (default: 5)
 - `-d, --download`: Download the first result automatically
+- `-c, --cat`: Restrict to an arXiv category/archive, e.g. `q-fin` (auto-expands to subcategories)
+- `-j, --json PATH`: Write results as JSON to PATH instead of printing
+- `--concepts`: Extract quantifiable factor concepts from abstracts (local rule layer; no external call)
+- `--llm`: Concept extraction via an OpenAI-compatible LLM — **sends public paper titles/abstracts to the LLM endpoint** (see the note at the top; key from `OPENAI_API_KEY` / `scripts/.arxiv_llm.env`)
+- `--llm-model` / `--llm-base`: Override the LLM model / base URL (defaults `deepseek-v4-flash` / `https://api.deepseek.com/v1`)
 - `-i, --interactive`: Start interactive mode
 - `-h, --help`: Show help message
 
@@ -237,7 +252,7 @@ Starts the interactive command-line interface.
 ### Example 1: Basic Paper Search
 ```bash
 # Search for machine learning papers
-python arxiv_api.py "machine learning"
+$WQ_PY $ARXIV "machine learning"
 
 # Output:
 # Searching arXiv for: 'machine learning'
@@ -254,19 +269,19 @@ python arxiv_api.py "machine learning"
 ### Example 2: Search with Custom Results
 ```bash
 # Get 10 results for quantum computing
-python arxiv_api.py "quantum computing" -n 10
+$WQ_PY $ARXIV "quantum computing" -n 10
 ```
 
 ### Example 3: Search and Download (with auto-rename)
 ```bash
 # Search for papers and download the first one
-python arxiv_api.py "artificial intelligence" -d
+$WQ_PY $ARXIV "artificial intelligence" -d
 # Downloaded file will be automatically renamed to the paper title
 ```
 
 ### Example 4: Interactive Mode with Smart Download
 ```bash
-python arxiv_api.py -i
+$WQ_PY $ARXIV -i
 
 # 📚 arxiv> search blockchain finance 5
 # 📚 arxiv> download 2502.05218v1
@@ -353,28 +368,28 @@ from arxiv_api import download_paper
 ##### Field-Specific Searches
 ```bash
 # Search by author
-python arxiv_api.py "au:Yann LeCun"
+$WQ_PY $ARXIV "au:Yann LeCun"
 
 # Search by title
-python arxiv_api.py "ti:deep learning"
+$WQ_PY $ARXIV "ti:deep learning"
 
 # Search by abstract
-python arxiv_api.py "abs:neural networks"
+$WQ_PY $ARXIV "abs:neural networks"
 
 # Search by category
-python arxiv_api.py "cat:cs.AI"
+$WQ_PY $ARXIV "cat:cs.AI"
 ```
 
 ##### Complex Queries
 ```bash
 # Multiple terms
-python arxiv_api.py "machine learning AND neural networks"
+$WQ_PY $ARXIV "machine learning AND neural networks"
 
 # Exclude terms
-python arxiv_api.py "deep learning NOT reinforcement"
+$WQ_PY $ARXIV "deep learning NOT reinforcement"
 
 # Date range
-python arxiv_api.py "machine learning AND submittedDate:[20230101 TO 20231231]"
+$WQ_PY $ARXIV "machine learning AND submittedDate:[20230101 TO 20231231]"
 ```
 
 ### Batch Operations

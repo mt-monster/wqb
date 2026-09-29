@@ -100,7 +100,7 @@ L4  诊断优化     brain-how-to-pass-alpha-test
                  · brain-calculate-alpha-selfcorr-quick
                  · brain-explain-alphas
                  · brain-alpha-robustness（S4→S5 必经闸）
-                 · brain-alpha-repair（弱候选修复配方；改进入口仍为 optimization-v1）
+                 · brain-alpha-repair（弱候选修复的配方索引与补充实证；非改进入口，改进入口仍为 optimization-v1）
 L5  过闸提交     brain-alpha-judge · worldquant-submit-alpha · wq-brain-superalpha
 L6  监控复盘     wq-backtest-monitor · brain-dataset-mining-experience（字段/机制经验沉淀与复用）
 L7  元技能       pull-brain-skills · planning-with-files
@@ -114,7 +114,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | name | 迁入层 | 功能 |
 |---|---|---|
 | ~~brain-alpha-orchestrator~~ | — | 2026-08-31 已并入 `wq-brain-ra-pipeline`（独有硬门已迁移：ghost-op/PPA 门禁、check_batch+check_expr_against_inspect、批次故障协议、failed-count 资格门） |
-| brain-alpha-repair | L4 | 弱候选修复（5 轴旋转 + 6 武器去相关 + 体检硬门） |
+| brain-alpha-repair | L4 | 弱候选修复的配方索引与补充实证（三类模板 + GLB emotion 实证 + failed-count 判据；非改进入口） |
 | brain-alpha-research | L1 | 数据集/字段/设置研究（forum 模板 / 13 范式 / news 分类 / WebDataScope 预筛） |
 | alpha-template-labs-data-analysis | L0 | Brain Labs 原始数据分析（S0 前研究步骤，MCP labs 工具链） |
 

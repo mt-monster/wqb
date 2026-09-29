@@ -1,7 +1,7 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: wq-brain-alpha-optimization-v1
-description: "现有 WorldQuant BRAIN alpha 的两模式优化器。Mode B（想法层，70% 精力）：改信号概念/ 字段组合，从 arXiv 引入概念，5 步改进工作流。Mode A（参数层，30% 精力）：冻结核心想法， 在严格 8 候选批中调 decay/窗口/中性化/truncation，含本地校验与低相关提交规则。 当用户要求改进或优化某个 BRAIN alpha ID、修复失败的提交测试、把 PROD 相关性压到 0.7 以下、 或通过包括 IS_LADDER_SHARPE 在内的全部检查时使用。"
+description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/truncation）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4
 allowed-tools:
   - Read
@@ -12,186 +12,137 @@ allowed-tools:
 user-invocable: true
 ---
 
-
-
-
-
-
-
-**运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
-
 # WQ BRAIN Alpha Optimization V1（两模式）
 
 ## 职责边界
 
-- **本 skill 负责**：**动手改**现有 alpha：Mode B 想法层（70%，换信号概念/字段组合）→ Mode A 参数层（30%，调 decay/窗口/中性化/truncation），**会产生新变体并回测**
-- **本 skill 不做**：不做最终提交判定（`tools/submit_verdict.py`）；不负责只读的阈值查询（→ `brain-how-to-pass-alpha-test`）
-- **上游 / 下游**：上游 = 卡住的候选；下游 = S5 提交判定
+- **本 skill 负责**：**动手改**现有 alpha——Mode B 想法层（换信号概念 / 字段组合 / 组合腿救援）→ Mode A 参数层（decay / 窗口 / 中性化 / truncation）；**会产生新变体并回测**。
+- **本 skill 不做**：不做提交判定（`tools/submit_verdict.py`）；不做只读的阈值 / 失败原因查询（→ `brain-how-to-pass-alpha-test`）；不做稳健性审计（→ `brain-alpha-robustness`）；**不承诺把 PROD 相关性压到某个数**——prod 墙的处置只有 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md) 一张表，本 skill 只承接其中「已 eligible 且有 salvage 辅助腿」的组合腿救援与「踩线带 1 次结构性尝试」。
+- **上游 / 下游**：上游 = S4 判「可改」的候选（`brain-how-to-pass-alpha-test` 定位失败项，下节判资格）；下游 = `brain-calculate-alpha-selfcorr-quick` →（可选）`brain-explain-alphas` → `brain-alpha-robustness` → `tools/submit_verdict.py`（提交前否决闸；放行须用户确认，见 `worldquant-submit-alpha`），**不直接提交**。
 
+**运行环境**：所有 Python 命令用 MCP venv（`$WQ_PY`），不要用系统 Python。
 
+## 入场：先做资格判定
 
-> **模式调度（原 improve-alpha-performance 已并入本 skill 并彻底移除（目录已删），2026-08-15）**：
-> - **Mode B 想法层（默认入口，70% 精力）**：信号概念/字段组合需要改变时使用——换概念、换字段、arXiv 引入新金融概念。
-> - **Mode A 参数层（30% 精力）**：核心想法已验证、只调 decay/窗口/中性化/truncation 时使用——8 候选严格批验证。
-> - 规则：**先想法后参数（70/30 原则）**。Mode B 改出更好的"想法"后，交给 Mode A 做参数收敛。
-> - 两者都失败、>10 种结构无果 → 转向换数据集（回 S0/S1，阶段定义见 `INDEX.md` 流水线表；数据集探索见 `brain-dataset-exploration-general`）。
+候选值不值得继续改，只看一张表：[`references/mode-b-qualification.md`](references/mode-b-qualification.md)（主闸 + 旁路 A–E + 判死线；数值出自 `mode_b_config`，别处不手抄）。判定用同一个函数的 CLI（只读），把**全部**指标喂进去（judge 节点只喂 6 个，A / B / D 旁路在那里恒不命中）：
 
-## Mode B：想法层改进（5 步工作流，每周期 30–60 分钟）
+```bash
+$WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness <F> --two-year-sharpe <2Y> \
+    [--robust-sharpe ..] [--margin-bp ..] [--turnover ..] [--returns .. --returns-median ..] [--prod-corr .. --other-dims-pass]
+```
 
-**触发**：Sharpe 卡在低水平、负年份、与 book 高相关等"结构性弱"问题；或用户明确要"改进想法/换概念"。
+| 结论（`result.verdict`） | 本 skill 的动作 |
+|---|---|
+| `main_gate` | 进 Mode B 通用步骤 B1–B5 |
+| `bypass` | 进 Mode B，**首选修法 = 该旁路绑定的 `mode_b_action`**（结果里给出） |
+| `no_qualify` | 不进改进；候选留在 near / salvage 或结束；**不写 `dead_end`** |
+| `dead_end` | 不改；候选级封存流程见 RA [step9 §9.5](../wq-brain-ra-pipeline/references/step9-writeback.md)（先 `forum_recon`，再 `seal_dead_end`） |
 
-### Step B1: 收集 Alpha 信息（5–10 min）
-- `mcp__wq-brain-http__get_alpha_details` 拉表达式、设置、PnL/Sharpe/Fitness/Turnover/Drawdown。
-- `mcp__wq-brain-http__get_alpha_details`（is.checks）+ `mcp__wq-brain-http__check_correlation`（self/prod，阈值 0.7）。
-- 记录失败项（如 sub-universe 低 = 依赖非流动股；ATOM 单数据集 alpha 确认宽松阈值）。
+## 模式调度与止损（一条规则）
 
-### Step B2: 评估核心字段（5–10 min）
-- 确认字段 `type`（VECTOR/EVENT）与 coverage。
-- 用 `brain-datafield-exploration-general` 的 6 评测（Coverage / Non-Zero / 更新频率 / Bounds / 中心趋势 / 分布）在 neutral settings（NONE/decay=0/短测试期）下摸清数据性质。
-- 产出洞察：如"季度稀疏数据 → 优先 persistence 类想法"。
+- **先想法后参数**：Mode B 决定「改什么信号」，Mode A 只在核心想法已验证后做参数收敛。进 Mode A 的线（Stage B）：最优候选 Sharpe > 1.40 且 Fitness > 0.90（[`reference.md`](reference.md) §6.5）。
+- **止损阶梯**（同一 alpha 累计，先到先停）：
 
-### Step B3: 提出想法级改进（10–15 min）
-- 查平台文档/社区技巧（ATOM 原则、负信号翻转）。
-- **arXiv 概念检索（默认走 LLM 概念层）**：`scripts/arxiv_api.py "<query>" --concepts --llm -j <region>_<topic>_concepts.json`（用法见 [arXiv_API_Tool_Manual.md](arXiv_API_Tool_Manual.md)）。`<query>` 用 `abs:"短语"` 降噪写法（如 `abs:"post-earnings-announcement drift"`），`--concepts` 抽因子概念、`--llm` 走 DeepSeek 概念层（凭证在 `scripts/.arxiv_llm.env`），`-j` 把概念结构化落盘供候选池直接消费。例：搜 `abs:"return on assets momentum analyst estimates"` → 提取 3–5 篇论文概念（如 precision weighting = 除以 std_dev）。若 LLM 不可用则自动降级规则层。
-- 头脑风暴 4–6 个变体：每个只动 1–2 个概念（如加 revision delta）。
-- 对照平台算子库校验；不存在的算子换成等价构造（如自写动量公式）。
+  | 累计想法周期（B1–B5 走一遍 = 1 个） | 仍卡在结构性闸门 → |
+  |---|---|
+  | 第 3 个 | 候选 `eligible` → 组合腿救援（下文）；不 `eligible` → 结束该候选 |
+  | 第 5 个 | 判死回写（先 `forum_recon`、再 `seal_dead_end`），换字段回 S1 |
+  | 累计试过的结构 > 10 种仍无果 | 换数据集回 S0（阶段定义见 [`INDEX.md`](../INDEX.md) 流水线表；数据集探索见 `brain-dataset-exploration-general`） |
 
-### Step B4: 仿真对比（10–20 min）
-- `mcp__wq-brain-http__create_multi_simulation`（2–8 条）跑变体；multi 失败退并行单仿。
-  （2026-09-26 审计：旧文写的 `create_multiSim` **不是真实工具名**，真实注册名为 `create_multi_simulation`。）
-- 按 Fitness/Sharpe 排名；检查 sub-universe 与逐年一致性；负信号可翻转。
+  没有「精力占比」——只按周期数与结构数计；每个周期的调用预算见下（不按分钟计）。
 
-### Step B5: 验证迭代（5–10 min）
-- Top 变体跑 submission/correlation 检查。
-- 失败 → 回 Step B3（想法池上限 3–5 周期/alpha，仍卡 → 换字段，回 S1，阶段定义见 `INDEX.md` 流水线表）。
-- 通过 → 交给 Mode A 做参数收敛；收敛后按「衔接协议」进入下游链（selfcorrQuick → explain-alphas → 过拟合与稳健性测试 → brain-alpha-judge 评审），**不直接提交**。
+## Mode B：想法层改进（B1–B5）
 
-### Mode B 最佳实践
-- 周期上限 3–5 次/alpha；70% 想法 / 30% 参数；成功 = 过检查 + 逐年稳定。
-- 保持迭代日志（每轮 metrics 表）。
+**触发**：Sharpe 卡在低水平、负年份、与 book 高相关等结构性弱点；或用户明确要「改进想法 / 换概念」。
+
+| 步 | 做什么 | 预算 |
+|---|---|---|
+| **B1 收集** | `get_alpha_details`（表达式 / 设置 / 指标 / `is.checks`）；相关性读 `alphas.prod_correlation`，缺才 `check_correlation`（阻塞轮询 ≤ 60 min、账号级单并发，见 [`prod-corr-avoidance.md`](../wq-brain-ra-pipeline/references/prod-corr-avoidance.md) §1）。记录失败项与对应 `mode_b_action` | ≤ 2 次平台调用 |
+| **B2 评估核心字段** | 字段 `type`（VECTOR / EVENT）与 coverage；用 `brain-datafield-exploration-general` 的评测在中性设置下摸清数据性质（如「季度稀疏 → 优先 persistence 类想法」）。**EVENT 字段会让整个 multi-sim 批次失败**（如 `winsorize` 报 `does not support event inputs`），闸 8 会拦：移除 EVENT 字段或先单条探针 | 每字段 1 次评测 |
+| **B3 提想法级改进** | 查平台文档 / 社区技巧；arXiv 概念检索（**外发边界见下**）；头脑风暴 4–6 个变体，**每个只动 1–2 个概念**；变体所用算子对照 `known_ops`（[`reference.md`](reference.md) §8 标注了哪些未核验） | 4–6 条变体 |
+| **B4 仿真对比** | 变体**先过 `ghost-audit` 与 `wave_gate --batch-type repair`**（命令见 Mode A 校验层），再 `create_multi_simulation`（2–8 条；multi 失败退并行单仿）；收割入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；按 Fitness / Sharpe 排名，查 sub-universe 与逐年一致性，负信号可翻转 | 1 个 multi 批 |
+| **B5 验证迭代** | Top 变体做相关性检查。失败 → 回 B3（受上面的止损阶梯约束）；通过 → 交 Mode A 收敛，然后走下游链，**不直接提交** | — |
+
+**arXiv 概念检索的外发边界**（`scripts/arxiv_api.py`，用法见 [`arXiv_API_Tool_Manual.md`](arXiv_API_Tool_Manual.md)）：
+
+- 查询词发往 `export.arxiv.org`：**只发通用关键词**（如 `abs:"post-earnings-announcement drift"`），**不发**未公开表达式、数据集名 / 字段名、alpha id。
+- `--concepts` 只用本地规则层抽概念，不外发。**`--llm` 会把检索到的公开论文标题 / 摘要发给第三方 LLM**（缺省 `api.deepseek.com`、模型 `deepseek-v4-flash`，可用 `--llm-base` / `--llm-model` 改）；密钥只读进程环境变量 `OPENAI_API_KEY`，或 skill 目录内被 gitignore 的 `scripts/.arxiv_llm.env`（`sync_skills` 不会复制它）；缺密钥自动降级规则层。**不要把密钥写进命令行、文档或对话。**
+- 运行：`$WQ_PY Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py "<query>" --concepts [--llm] -j <region>_<topic>_concepts.json`。`brain-explain-alphas` 用同一份脚本（不再各留一份拷贝）。
 
 ## Mode A：参数层优化（8 候选严格批）
 
-本模式用于对现有 alpha 做端到端参数优化，含严格预检校验、结构化迭代与强制低相关检查。全部规则见 [reference.md](reference.md)（硬规则、主题配额、执行流、文件追加契约）。
+对现有 alpha 做端到端参数优化：严格预检、结构化迭代、强制低相关检查。全部规则（硬规则 / 阶段 / 主题配额 / 执行流）见 [`reference.md`](reference.md)。
 
-### 硬规则
+**硬规则**：
 
 1. 冻结基线 alpha 的核心字段与数据集，后续轮次不得替换。
-2. 任何仿真之前，每个候选必须先通过本地校验。
-3. 每轮必须恰好包含 8 个候选表达式。
-4. 平台 `operatorCount` 是最终裁判：任何算子数超过 8 的候选无效。
-5. Stage A 阶段禁止纯微调，只能做结构化升级。
-6. 任何零 FAIL 项的候选必须立即走提交相关性（correlation）检查。
-7. `mcp__wq-brain-http__create_multi_simulation` 结束后，立即以 UTF-8 追加模式把本批结果写入指定的文本文件。
-8. 校验或仿真失败时只修精确的报错点；不得为通过而删除核心逻辑来简化表达式。
+2. **任何仿真之前，每个候选必须先过本地校验与门禁**（见下）。
+3. 每轮恰好 8 个候选表达式。
+4. **PPA** 候选的 `operatorCount` 上限 8（平台 Power Pool 规则）；REGULAR 无此上限，复杂度纪律见 `brain-make-some-gem`「复杂度预算」。平台返回的 `operatorCount` 是最终裁判。
+5. Stage A（最优候选未达 Sharpe > 1.40 且 Fitness > 0.90）禁止纯微调，只能做结构化升级（定义见 `reference.md` §6.5 / §7）。
+6. 全部检查零 FAIL 的候选立即做 PROD 相关性检查，读数按 D0-P 处置。
+7. **结果入库、不写自建文本文件**：批回测结束后确认 `backtest_results` 已入库（`harvest_multisim_alphas` → `wqb-db harvest_multisim_results`）；迭代日志（8 槽角色 / 失败项 / next_actions）写在本轮回复里，S6 回写时进 `wave_result.key_findings`（RA [step9](../wq-brain-ra-pipeline/references/step9-writeback.md)）。
+8. 校验或仿真失败时只修精确的报错点；不得为过校验而删核心逻辑。
 
-### 必需工作流
+**校验层**（3 段，顺序执行，全过才可仿真）：
 
-1. 用 WorldQuant BRAIN MCP 工具确认平台设置合法。
-2. 读取基线 alpha，冻结其核心数据字段。
-3. 先规划 8 个角色，再在主题配额与常用算子限制内编写表达式。
-4. 校验前先对照本地算子库做算子预检。
-5. 运行本地表达式校验并修复至全部通过。
-6. 用 `mcp__wq-brain-http__create_multi_simulation` 回测这 8 个已校验的表达式。
-7. 若批量输出被截断，逐条补取缺失详情。
-8. 回测后立即把 8 条结果追加到目标结果文件。
-9. 下一轮前诊断负信号翻转、`operatorCount` 溢出、FAIL 原因与相关性。
+```bash
+# ① 语法 / 算子元数：alpha-expression-verifier（wave_gate 内含，与闸 1 同源）
+# ② 幽灵算子：validate_expressions / preflight_expressions 不查幽灵算子，必须单独跑
+$WQ_PY tools/campaign_intel.py ghost-audit --region <REGION> --exprs-file <变体文件>
+# ③ 闸 1–9 + SEM：repair 批不做质量预估标注、默认豁免批级多样性
+$WQ_PY tools/wave_gate.py --campaign-dir tracking/<REGION> --dataset <主信号数据集> --wave <本 alpha 所属波次> \
+    --exprs-file <变体文件> --batch-type repair
+```
 
-### 校验层
+退出码：`0` PASS / `1` 表达式不合格（改表达式）/ `2` 环境错误（不是表达式问题）。闸的现象 → 动作 → 能否豁免见 RA [step5-gates.md](../wq-brain-ra-pipeline/references/step5-gates.md) §5.2。
 
-- 首选：当前项目暴露本地 `validate_expression` 能力时使用它。
-- 配套语法检查：复用现有 [expression verifier skill](../alpha-expression-verifier/SKILL.md)。
-- 在任何平台请求之前，把语法校验与算子签名校验视为硬闸门。
+**候选批三灯分级**（复用 probe_scoring_v2 原则）：8 候选批的优劣分级可套 `wq-brain-campaign-toolkit` 的 v2 三灯公式（`score_datasets.py --probe-score --from-json` 离线校准，公式见 toolkit `references/probe-scoring-v2.md`）。三条原则：① 联合评估在最强单点，禁止跨候选 OR 拼出不存在的理想探针；② 2Y 红灯仅当平台返回值判定（`two_year_sharpe=None` 不算败）；③ tvr 结构性墙——全部候选同侧出界时绿灯封顶黄灯（LOW → trade_when / decay 拉 tvr；HIGH → 拉长窗口压 tvr）。
 
-### 候选批三灯分级（复用 probe_scoring_v2 原则）
+## prod 相关性墙 → D0-P；组合腿救援是它的「唯一例外」
 
-8 候选批的优劣分级可套 `wq-brain-campaign-toolkit` 的 v2 三灯公式（`score_datasets.py --probe-score --from-json` 离线校准，公式见 toolkit `references/probe-scoring-v2.md`）。核心原则：
-1. **联合评估在最强单点**，禁止跨候选 OR 拼出不存在的理想探针（v1 教训）；
-2. **2Y 红灯仅当平台返回值判定**（`two_year_sharpe=None` 不算败）；
-3. **tvr 结构性墙**：全部候选同侧出界时绿灯封顶黄灯（LOW→trade_when/decay 拉 tvr；HIGH→拉长窗口压 tvr）。
+prod 读数怎么处置只看 RA 决策表 [D0-P](../wq-brain-ra-pipeline/references/decision-table.md)（< 0.60 扩；0.60–0.70 不扩、当天进步 8；0.70–0.75 只 1 次结构性尝试；≥ 0.75 或尝试失败 → `dead_end`）。本 skill 不另立反馈循环。
 
-## 陷阱（已核实）
+**唯一例外**（D0-P 明写）：候选已 `eligible`（[资格判定表](references/mode-b-qualification.md)：主闸或旁路），且 Mode B 常规改进 3 个周期仍被结构性闸门卡住，才进入组合腿救援。**救援不是重写主信号**：保留强主腿 + 从 salvage_pool 取补强辅助腿做合规改造。
 
-- **EVENT 字段会破坏 `winsorize`**：对 event 类型字段执行 `winsorize(x, std=N)` 会报 `winsorize does not support event inputs`。先用 `ts_event_*` 把 EVENT 转成 VECTOR（见 `brain-datafield-exploration-general`）。单个 event 字段会导致整个 multi-sim 批次失败。
-- **PROD 相关（correlation）闸门**：`PROD correlation < 0.7` 是硬提交闸门（与 Self-Correlation 同族）。提交前用 `mcp__wq-brain-http__check_correlation` 探测；反复提交主导你 book 的同一因子族是常见的失败原因。
-- **SuperAlpha 构造**：把 ≥10 颗 alpha 合成 `type=SUPER` 使用 selection+combo 工作流（而非 `combination()`）。见 `wq-brain-superalpha`。
+**弹药查询**（`mcp__wqb-db__get_salvage_pool`；参数 `region` / `boost_dim` / `exclude_dataset` / `min_sharpe`，全可选）：
 
-## prod_corr 反馈循环（闸门失败回流规则）
+| 卡点 | 参数 |
+|---|---|
+| LOW_2Y_SHARPE / 2Y 墙 | `boost_dim="boost_2y"` |
+| TVR 墙（turnover 出界） | `boost_dim="boost_tvr"` |
+| CONCENTRATED_WEIGHT / sub-universe | `boost_dim="boost_cw"` |
+| 信号弱（sharpe / fitness 不足） | `boost_dim="boost_sharpe"` |
+| PROD / SELF 相关 ≥ 0.7 | `exclude_dataset=<主信号数据集>`（优先跨数据集正交腿） |
+| 只要强腿（可选） | `min_sharpe=1.0`（与入池线 `combo_sharpe_min` 缺省 1.0 同口径；缺省不传） |
 
-若 `mcp__wq-brain-http__check_correlation` 返回 prod_corr ≥ 0.7，或生产相关性结果尚未出来：
-1. 不提交、不进入 S5；该 alpha 不符合提交要求。
-2. 回 **Mode B Step B3** 换字段组合/信号概念（想法池上限 3–5 周期/alpha）。
-3. 常规想法级改进 2–3 轮仍卡闸 → 按下方「组合腿救援」协议执行（不是继续无脑换字段）。
-4. 3 周期仍卡 0.7 → 换字段回 S1（数据集/字段探索见 `brain-dataset-exploration-general`）。
-5. 换字段仍卡 → 换数据集（仅当模板多样性已穷尽且查阅论坛无解时，回 S0）。
+入池对象是 S4 `review_wave.py --write-ledger` 幂等写入的 combo 候选 + near 补充（入池线 vs 动用线的区别见资格判定表 §5：**入池宽、动用严**）。
 
-## Mode B 卡闸 → 组合腿救援（salvage_pool 复用协议，区域无关）
+**构造纪律**（路线 A：禁加权混合）：
 
-**触发线（用户纪律 2026-09-02）**：本 alpha 必须已过 `mode_b_qualification` 资格线
-（sharpe≥1.25 且 fitness≥0.8，以区域 `thresholds.json` 为准，缺省 1.25/0.8），
-且 Mode B 常规想法级改进（Step B1–B5）2–3 轮仍被结构性闸门卡死时，才允许进入组合腿救援。
-**未达资格线的弱信号候选一律判死（dead_end 回写 + wave 台账 closed），禁止救援**（弱信号组合成功率极低）。
+1. 主腿冻结；辅助腿 ≤ 2 条，**必须取自 salvage_pool 返回条目**（禁止凭空另造腿）。
+2. **禁止一切加权混合 / 等权相加 / 中缀 `+` / 权重网格**（闸 5 结构判定 block）。仅允许两种合规形态：
+   a) **结构交互式**（首选）：辅助腿只能以「条件 / 分组轴 / 残差化 / 协动对象 / 同源价差」五种方式之一入场——形态族 F1–F6、**可检判据**与卡点映射见 [`references/structural-interaction-forms.md`](references/structural-interaction-forms.md)（跨数据集的辅助腿只能走前四种，不得走 F1）。
+   b) **SuperAlpha combo**（组件级）：本区已有 ≥ 10 颗 ACTIVE REGULAR 时走 `wq-brain-superalpha` 的 selection + combo（平台机制，不做表达式层加权）；SUPER 的 prod 闸与提交路径以该 skill 为准。
+3. 每条候选溯源标记 `combo_rescue_from_<本alpha_id>_with_<salvage_id>_<形态>`，写入本轮日志。
+4. 验证走 Mode A 批纪律：8 候选严格批 → 校验层三段 → multiSim。
 
-救援不是重写主信号：保留强主腿 + 从 salvage_pool 取补强辅助腿做合规正交改造（形态见下方构造纪律，禁用加权混合）。
+**验证与兜底**：过闸（全 checks PASS + prod 读数按 D0-P 可放行）→ 走标准下游链（见「职责边界」），不直接提交；池内无匹配（返回空 / 全同数据集）或组合 1–2 轮仍 FAIL → 判死回写（先 `forum_recon`，再 `seal_dead_end` 沉降残值），禁止无限烧配额；残余线索写 ledger salvage 字段留痕。
 
-**弹药查询**（卡点 → boost_dim 映射，`mcp__wqb-db__get_salvage_pool`）：
-- 卡 LOW_2Y_SHARPE / 2Y 墙 → `boost_dim="boost_2y"`
-- 卡 TVR 墙（turnover 出界）→ `boost_dim="boost_tvr"`
-- 卡 CONCENTRATED_WEIGHT / sub-universe → `boost_dim="boost_cw"`
-- 信号弱（sharpe/fitness 不足）→ `boost_dim="boost_sharpe"`
-- 卡 PROD/self correlation ≥0.7 → `exclude_dataset=<主信号数据集>`，优先跨数据集正交腿
-- 通用过滤：`min_sharpe=0.5`（池内快达标因子下限）
+## 过拟合与稳健性
 
-**构造纪律（路线 A，2026-09-13 修订：禁加权混合）**：
-1. 主腿（本 alpha 核心字段/概念）冻结，辅助腿 ≤2 条，**必须取自 salvage_pool 返回条目**（禁止凭空另造腿）。
-2. **禁止一切加权混合**（`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`
-   均被 gate 闸5 block；同理禁权重网格扫描）。仅允许两种合规形态：
-   a) **结构交互式**（首选）：辅助腿作为参照/暴露方向/条件/分组轴/协动对象改造主腿信号——六大形态族
-      （F1 参照系 / F2 正交化 / F3 条件门控 / F4 分组重组 / F5 协同背离 / F6 调节稳健）与卡点映射见
-      [references/structural-interaction-forms.md](references/structural-interaction-forms.md)
-      （算子已过 live 白名单核验）；成品须能用一句话说清“单一经济信号”。
-   b) **SuperAlpha combo**（组件级）：本区已有 ≥10 颗 ACTIVE REGULAR 时，走
-      `wq-brain-superalpha` 的 selection+combo（平台机制，不做表达式层加权），合成目标 prod_corr < 0.7。
-3. 每条候选溯源标记 `combo_rescue_from_<本alpha_id>_with_<salvage_id>_<形态>`，写入迭代日志。
-4. 验证走 Mode A 批纪律：8 候选严格批 → 本地校验 → multiSim。
-
-**验证与兜底**：
-- 过闸（全 checks PASS + prod corr <0.7）→ 按标准下游链推进（selfcorrQuick → explain-alphas →
-  robustness → judge/verdict），不直接提交。
-- 池内无匹配（返回空 / 全同数据集）或组合 1–2 轮仍 FAIL → 判死（dead_end 回写，回写前先走 `mcp__wqb-db__seal_dead_end` 沉降残值再封存），
-  禁止无限烧配额；残余线索写 ledger salvage 字段留痕。
-
-**弹药来源说明**：salvage_pool 由 S4 `review_wave.py --write-ledger` 自动幂等写入
-（快达标因子：S≥1.0 且 prod corr<0.5 的 combo 候选 + near 补充），无需人工手写入池。
-
-## 过拟合与稳健性测试（每个候选进入 S5 前必做）
-
-Mode B/A 产出满足指标门槛的候选后，必须先通过本节四项检查：
-1. **参数敏感性**：decay/窗口 ±1 档邻域内 Sharpe 不塌方（邻域塌方 = 过拟合信号）。
-2. **子宇宙一致性**：sub-universe Sharpe 与主宇宙同向且达内部线（sharpe>1, fitness>0.7, margin>5bp）。
-3. **逐年一致性**：分年 Sharpe 无连续两年大幅塌方（Mode B Step B4 已查，此处复核）。
-4. **概念对照**：收益来源归因与既有 book 内 alpha 不重叠（见 `brain-explain-alphas`）。
-
-完整审计工作流（归因 + 反过拟合闸门 + PPA 提交规则）见外部 Agent 技能 `brain-alpha-robustness`（登记于 INDEX.md 外部 Agent Skill 段）。
-
-## 衔接协议
-
-- **上游**：`brain-how-to-pass-alpha-test`（失败项定位与阈值判定；S4 判定 FAIL 且达 mode_b_qualification
-  的候选**强制回流**本 skill Mode B，非可选）← S3 `brain-sim-alphas-in-batch-and-track`（回测结果**优先读 `backtest_results` 表**；`simulation_status.csv` 仅排障兼容）。
-- **下游**：`brain-calculate-alpha-selfcorr-quick`（本地快筛 self-corr/PPAC）→ `brain-explain-alphas`（收益来源归因）→ **brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `tools/submit_verdict.py`（提交层权威判定；brain-alpha-judge 仅作参考评审，verdict 不构成提交依据）。
-
-## 渐进式文档
-
-- Mode A 完整规则、主题配额、逐步执行流与文件追加契约：[reference.md](reference.md)
-- 示例提示词、输出格式与 `LLbaqEqa` 优化案例：[examples.md](examples.md)
-- Mode B 的 arXiv 工具：[arXiv_API_Tool_Manual.md](arXiv_API_Tool_Manual.md) + [scripts/arxiv_api.py](scripts/arxiv_api.py)
+不在本 skill 内做：参数敏感性、子宇宙一致性、逐年一致性、概念对照的**判据与阈值只有一处**——[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)（同库 L4，S4 → S5 必经）。Mode A 收敛后直接交给它；本 skill 只保证「回测前后每个候选都留有逐年 / sub-universe 读数」。
 
 ## 预期产出
 
-持续迭代（Mode B → Mode A），直到至少一个候选满足以下全部条件：
+Mode B → Mode A 迭代，直到出现**至少一个达标候选**，或触发上面的止损阶梯（判死回写）。
 
-- Sharpe > 1.58
-- Fitness > 1.0
-- Turnover 在 1%–40% 之间（平台硬闸门为 1%–70%；本 skill 为稳健性采用更严格的内部目标 ≤40%）
-- 所有平台检查 PASS，包括 `IS_LADDER_SHARPE`
-- `PROD correlation < 0.7`
+「达标」= 平台全部检查 PASS（`Failed RA == 0`，口径见 RA [`webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md)，含 `IS_LADDER_SHARPE`）**且**满足内部闸线（`wqb.config.GATES_INTERNAL`；Sharpe / Fitness / Turnover 等数值以 config 为准，**不在此复写**），并且 PROD 读数按 D0-P 可放行。
+
+## 渐进式文档
+
+- Mode A 完整规则、主题配额、逐步执行流：[reference.md](reference.md)
+- 示例（直接优化 / Stage A / 负信号翻转 / 校验合同 / 迭代日志）与场景卡：[examples.md](examples.md)
+- Mode B 资格判定表：[references/mode-b-qualification.md](references/mode-b-qualification.md)
+- 组合腿救援形态库：[references/structural-interaction-forms.md](references/structural-interaction-forms.md)
+- arXiv 工具：[arXiv_API_Tool_Manual.md](arXiv_API_Tool_Manual.md) + [scripts/arxiv_api.py](scripts/arxiv_api.py)

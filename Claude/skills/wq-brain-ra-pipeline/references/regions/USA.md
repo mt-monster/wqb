@@ -58,6 +58,10 @@ USA 的 prod 墙很硬：0.6 → 0.7 区间几乎必然继续恶化（同族 145
 
 诊断改进阶段，`wq-brain-alpha-optimization-v1` Mode B 必须启用**正交方向推荐**（联动 P2-1 增强）：同族出现 prod ≥ 0.6 → 按 D0-P 处置（0.60–0.70 当天进步 8；≥ 0.75 判 dead_end 并换正交概念），**禁止同族继续磨参数**。
 
+### 步 7 注入：修复用 universe 约定（自 `brain-alpha-repair` 迁入，skills 审查 RE-09）
+
+USA REGULAR 的修复保持 `TOP3000` 默认 universe（`config.REGIONS['USA']['default_universe']`）。改用其它 USA universe 时，在本波 `wave_result.key_findings` 里写明：① TOP3000 下失败的原因；② 换的这个 universe 要回答的诊断问题。**不新造台账键。**
+
 ## 避坑清单
 
 - 禁止生成 book/PE/ROE 等经典基本面单因子及其线性变体（必死）。

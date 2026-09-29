@@ -9,11 +9,14 @@
 本模块是所有消费点（judge.py / probe_batch_mode.py / mode_b_adaptive.py）的唯一
 加载与判定入口，避免各处散落硬编码与重复 $ref 解析。
 
-配置优先级（高 → 低）：
+配置优先级（高 → 低；区域层只能改主闸 sharpe_min/fitness_min，旁路与判死线只来自 3/4）：
   1. 区域 ledger_kv  <region>/mode_b_qualification（自适应学习写的主闸值）
-  2. 全局 ledger_kv  GLOBAL/mode_b_qualification（权威主闸+旁路+判死线）
-  3. 区域 thresholds.json 的 mode_b_qualification（$ref 引用全局 + _overrides 覆盖）
-  4. 内置默认（主闸 1.25/0.8）
+  2. 区域 thresholds.json 的 mode_b_qualification（_overrides 单字段覆盖；无 $ref 的旧结构直接读顶层
+     sharpe_min/fitness_min）
+  3. 全局 ledger_kv  GLOBAL/mode_b_qualification（权威主闸+旁路+判死线）
+  4. 内置默认 _DEFAULT_GLOBAL（主闸 1.25/0.8）
+  （2026-09-29 更正：此前 2/3 的先后与 load_mode_b_config 的实际覆盖顺序相反；由
+  tests/unit/test_mode_b_qualification_doc.py 钉住。）
 
 判定模型：
   - 主闸：sharpe≥sharpe_min AND fitness≥fitness_min → 直接放行
