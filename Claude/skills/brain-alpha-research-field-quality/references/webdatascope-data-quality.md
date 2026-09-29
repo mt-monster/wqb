@@ -142,6 +142,8 @@ USA_1 参考值：`isos.mean` sharpe 0.358 / fitness 0.353；甜点区示例（2
 | monthly | 低 | 0 即可 | ≥21d |
 | quarterly | 极低 | 0 即可 | ≥63d |
 
+> **两层口径，别混**：上表「时序窗口下限」是**理论下限**（窗口至少覆盖一个更新周期）。体检硬门实际执行的是更严的**代码口径**——`tools/webdata_quality.py::check_expr_against_inspect` 的硬检查 6：daily ≥ 22（字段名含 flow / volume / turnover / news / event / intraday 等流量·事件词根的 daily 字段降为 5）、weekly ≥ 52、monthly ≥ 120、quarterly ≥ 252，低于即报「窗口错配」。写表达式按代码口径，别按本表的 21d / 63d。
+
 `LongCount`/`ShortCount` 失衡（如 Long2873/Short2）→ 必须对称化（`signed_power`/双 rank/减均值），否则单边持仓触发 CONCENTRATED_WEIGHT 或换手异常。`IntegerStatus=1`（离散）字段用 `ts_delta` 会产生稀疏跳变 → 换手飙高，优先 `rank`/`bucket`/`group_rank`。
 
 ## 规则 14 — 截尾/Power 参数提示（skew/kurt 驱动, 2026-08-02 新增）

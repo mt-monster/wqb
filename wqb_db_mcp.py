@@ -1054,7 +1054,8 @@ def upsert_expressions(
     实际生成链路 = GEM runner → 本工具落库，此前**本工具没有 source 形参**，
     导致全库 source 几乎全 NULL（GEM 产出不可辨识、无法做模式 A/B）。
     建议取值：`gem_phased` / `gem_skeleton` / `gem_single`（对应 --pipeline-mode）、
-    `manual` / `probe` / `diversity`。条目级 `source` 优先于本参数。
+    `manual` / `probe` / `diversity` / `hypothesis`（`hypothesis_round` 节点构建的
+    4 条一组假设实验，见 brain-alpha-research-hypothesis-first §5）。条目级 `source` 优先于本参数。
     """
     store = _store()
     try:

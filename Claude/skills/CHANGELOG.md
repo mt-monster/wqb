@@ -6,6 +6,14 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**field-quality / news-sentiment / hypothesis-first / dataset-exploration / datafield-exploration（S-E-4）**
+- field-quality：`alphaCount` 先验**分阶段**（选方向用、造批服从 RA 步 3 §3.3、饱和集不叠加）；五个「拥挤度」数字标明各自的轴与源码（测试逐项对照）；区域切换预筛自检明示为工具级、未接入节点，数据包不覆盖的区域走 `--source exempt`；规则 13 补「理论下限 vs 硬门代码口径」两层 → FQ-01…08 / DEC-51
+- news-sentiment：6 桶 / 每批目标明示为**指引、无代码闸**（`news_loop.py`、Beta 桶采样、`wqb news-refresh-portfolio` 都不存在），6 桶表内联并由测试对照矩阵；Tier A 改候选来源 + 路由前三查；Tier B 三分支；分类器事实更正（覆盖只有 news12、缓存路径、`novelty` 归 attention、无调用方）；news12 字段码 M → C；四份 `docs/reference/news*.md` 原位修正 → NS-01…06 / DEC-49
+- hypothesis-first：条件激活（目录缺失由 agent 起草，取消与 RA「强制切换」的互锁）；取消无人读的 `field_semantics` YAML；类别词表单一来源 = `HYPOTHESIS_CLASSES`（此前代码与 SKILL 各一份互不重叠），`load_catalog` 拒收词表外的类；`judge()` 修「对照更好却判 partially_supported」；节点账本目录锚仓库根、单测不再污染仓库账本；补「构建 → 入库 → 闸 → 回测 → judge → 写回」回路 → HF-01…10 / DEC-50
+- dataset-exploration：区域 → universe 表删（JPN 是有效区域）；评分只留指针；分类落 `s1_semantic_<ds>` + 分类法一览；调研默认不查论坛；范围控制；reference 436 行英文手册 → 精简中文 → DE-01…08 / DEC-53
+- datafield-exploration：六法全部改为**平台算子目录内的算子 + 比较式**（`ts_median` 幽灵 / `scale_down` 不在目录 / `ts_event_*` 平台没有 / `? :` 过不了 MCP 静态语法闸），逐条过校验器；类型先行表按闸 3 / 闸 8；先离线体检包后在线最小集，每法「→ 交 FE」→ DF-01…08 / DEC-52
+- INDEX S1 行去掉不存在的 `ts_event_*` 预处理项；`upsert_expressions` 文档补 `hypothesis` 来源标签
+
 **wq-brain-ppa-mining / brain-alpha-research（S-E-3）**
 - ppa-mining 收敛为 PPA 方法论：适用域表（PPA vs RA vs 代码缺省，测试逐项对照 `score_datasets.py`）、单一执行器（`workflow_campaign(stage="S0")` + `s0-select`，旧 `dataset_health_check.py` 归档到 `attic/ppa_mining_20260929/`）、三个「最优拥挤度」口径各标轴与出处、`alphaCount = 0` 不再「优先级最高」；字段级决策表与体检硬门（`check_expr_against_inspect`）同源；「V9 突破版」带权重配方删除并给合规改写；`is_placeholder` / C = 5 / 过期 universe 档位表 / `PowerPoolSelected` 的 MCP 提交删除；2026-08 区域快照移到 `references/region-snapshots-2026-08.md`（带失效条件，非指令）→ PP-01…26 / DEC-46
 - alpha-research：拆研究者 / 维护者步骤，常量只引用 config，验证改为真实命令（`wqb research` 不存在）；`check_batch` 不再称门禁；WebDataScope 26 条规则移入 field-quality；references 清 wikilink / 旧路径并逐个入链；ASI 档的等权拼腿结果标「已被政策禁止」→ AR-01…13 / DEC-47

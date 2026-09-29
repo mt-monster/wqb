@@ -1,84 +1,84 @@
 ---
-last_verified: 2026-09-28
 name: brain-dataset-exploration-general
-description: "提供对 WorldQuant BRAIN 整个数据集进行深入挖掘分析的综合工作流。 包括数据集选择、字段分类（field categorization）、详细描述生成与跨平台调研等步骤。 当用户想\"审计某个数据集\"、\"对字段分类\"或\"探索新数据集\"时使用。"
 layer: L1
+description: "对已在 S0 白名单（或用户点名）的某一个数据集做数据集级审计：画像（字段数 / 覆盖 / 拥挤度）、字段分类落台账、按覆盖与使用量抽样深挖关键字段。用户要审计某个数据集、给数据集字段分类、探索新数据集时使用；选集走 S0，单字段评测走 datafield-exploration。"
+last_verified: 2026-09-29
 allowed-tools:
   - Read
   - Bash
   - mcp__wq-brain-http__*
 ---
 
-
-
-
-
-
-
-**运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
-
 # 数据集探索专家工作流
 
 ## 职责边界
 
-- **本 skill 负责**：**数据集级**审计与分类（选集）：该数据集值不值得挖、类别/覆盖/拥挤度画像
-- **本 skill 不做**：不做单字段深度评测（→ `brain-datafield-exploration-general`）；不做特征工程决策；**区域/universe 档位一律引用 `src/wqb/config.py`，不得自行维护区域表**
-- **上游 / 下游**：上游 = S0 白名单；下游 = 单字段探索
+- **本 skill 负责**：对**一个**数据集做数据集级审计——画像 → 字段分类落台账 → 关键字段抽样 → 审计结论。
+- **本 skill 不做**：不选集（选集 = RA 步 2 / S0）；不做单字段深度评测（→ [`brain-datafield-exploration-general`](../brain-datafield-exploration-general/SKILL.md)）；不做特征工程决策；**不逐字段撰写「增强描述」**；**区域 / universe 档位一律引用 `src/wqb/config.py`（`REGIONS[<R>]`）与 `get_platform_setting_options`，本文不维护区域表**（各区状态看 INDEX「区域清单」与 `regions/<R>.md`）。
+- **上游 / 下游**：上游 = S0 白名单内的数据集，或用户点名的候选（没有白名单、用户也没点名 → 先走 RA 步 2 选集）；下游 = 步 3 的 `s1_semantic_<ds>`、`brain-datafield-exploration-general`、特征工程。
 
+## 1. 先定范围：分类永远全量，深挖只做代表字段
 
+数据集可以有 1000+ 个字段（JPN analyst 1026），**不能逐个字段编目 / 写描述 / 仿真**：
 
-本工作流指导数据集的深度分析与分类。
-详细岗位手册与具体 MCP 工具策略见 [reference.md](reference.md)。
+- **分类**（§3）用本地脚本，零配额、秒级——**永远全量**。
+- **深挖**（§5）只做**代表字段 ≤ 12 个**（缺省，经验值，可按需调）：每个语义大类取 `coverage` 最高、同分取 `userCount` 最高的 1–2 个，再加 3 个**冷门候选**（`userCount` 0–9 且 `coverage ≥ 0.4`——RA 步 3 §3.3 的冷门优先）。
+- **描述**：平台字段描述以平台为准；本 skill 不产「增强描述」，对代表字段最多在审计结论里各写一行注释。
 
-## Phase 1: 数据集选择与初步评估
-1. **确定数据集**：根据战略重要性或用户需求选择。
-2. **初步探索**：
-   - 用 `get_datasets` 查找数据集。
-   - 用 `get_datafields` 统计字段数并检查覆盖率。
-   - 用 `get_documentations` 查找相关文档。
+## 2. 画像（一次 `get_datasets` + 一次 `get_datafields`）
 
-## Phase 2: 字段分类
-将数据字段归入逻辑类别：
-- **业务职能（Business Function）**：财务（Financials）、市场数据（Market Data）、预测（Estimates）等。
-- **数据类型（Data Type）**：Matrix、Vector。
-- **更新频率（Update Frequency）**：日频（Daily）、季频（Quarterly）。
-- **层级（Hierarchy）**：一级 -> 二级 -> 三级（如 Financials -> Income Statement -> Revenue）。
+```
+mcp__wq-brain-http__get_datasets       region=<R>  delay=<D>  universe=<U>  [category=…]   # fieldCount / alphaCount / userCount / pyramidMultiplier
+mcp__wq-brain-http__get_datafields     region=<R>  dataset_id=<ds>  universe=<U>  delay=<D> # 逐字段 type / coverage / userCount / alphaCount
+mcp__wq-brain-http__get_documentations / get_documentation_page                              # 数据集文档（页名以目录返回为准）
+```
 
-## Phase 3: 数据集双门槛评分与两段式探针（战役级）
-战役级数据集初筛用双门槛评分（权威定义见 `wq-brain-ppa-mining §1.0`，执行走 `wq-brain-campaign-toolkit` 的 `score_datasets.py`，公式见其 `references/probe-scoring-v2.md`）：
-- 评分公式：`0.40*cov + 0.30/(1+log10(1+alphaCount)) + 0.20*log1p(fieldCount)/log1p(1000) + 0.10*min(valueScore,10)/10`（vs 缺失按 0.3）；
-- tier1 硬门槛：cov≥0.85 且 alphaCount≤50 且 fieldCount≥10 → 直接攻；tier2（cov≥0.85/ac≤200/fc≥5）→ 探针先行；
-- **两段式探针**：Stage A 评完 `EARLY_RED` 即不跑 Stage B（省批）；三灯判定（v2）细节指向 toolkit references。
+- `<U>` 取 `config.REGIONS[<R>]["default_universe"]`；D0 或其它档位用 `get_platform_setting_options` 核实，**不凭记忆**。
+- **universe 传错的症状**：`get_datasets` **静默返回 0 条**（假阴性，数据其实存在），手写 `/data-fields` 则报 500（`wq-brain-ppa-mining` §11）——**先怀疑 universe，再怀疑该区没有数据**。
+- 画像要写的：字段数、`coverage` 分布（< 0.4 的字段占比）、平台 `alphaCount` / `userCount`（拥挤度五条轴怎么读见 [`brain-alpha-research-field-quality`](../brain-alpha-research-field-quality/SKILL.md) §2）、所在 category 是否已点亮（S0 的 `recommend_datasets`）。
 
-## Phase 4: 增强描述与分析
-1. **描述**：撰写详细描述（业务背景、方法论、典型取值）。
-2. **分析**：对关键字段使用 `brain-datafield-exploration-general` 的技术来理解分布与形态。
+## 3. 字段分类：落点，以及全库的几套分类法
 
-## Phase 5: 整合
-1. **调研**：查阅论坛帖子获取社区见解（`brain-forum-browse` skill 或 `mcp__wq-brain-http__search_forum_posts`）。
-2. **Alpha 思路**：基于数据集特征头脑风暴 alpha 概念。
+```powershell
+python tools/field_semantic_classify.py --region <R> --dataset <ds> --write-ledger
+```
 
-## 关键：Region → Universe 映射（用于 `get_datasets`）
-`get_datasets` **严格按照该区域的有效 universe 过滤**（下表数字为 **2026-08 平台快照**，用时以 `get_platform_setting_options` 实时复核为准）。传错 universe 会**静默返回空结果**（假阴性——数据其实存在，但你却会得出"没有数据"的结论）。务必按区域使用正确的 universe：
+产物 = ledger `s1_semantic_<ds>`（signal 白名单 / blocked 黑名单 + 经济大类）——**这是唯一有下游消费者的分类**：RA 步 3 的完成定义要求它，`wave_gate` 缺它整波 exit 2。脚本读 DB `fields` 表，所以要先有字段目录（步 3 的 `workflow_campaign(stage="S1", dataset=<ds>)`）。经济大类偏财报口径（估值 / 盈利 / 成长 / 现金流 / 杠杆 / 效率 / 流动性风险 / 规模 / 每股 / 分红 共 10 类 + `other`），非财报数据集（news / pv / model）大多落 `other`——**看 signal / blocked 的分界即可**。
 
-| 区域 | 有效 universe（get_datasets） | 备注 |
-|---|---|---|
-| USA | `TOP3000` | |
-| GLB | `TOP3000` | |
-| KOR | `TOP600` | 192 个数据集 / 15 个类别（**2026-08 快照，非权威**） |
-| ASI | `TOP500` | 163 个数据集 |
-| EUR | `TOP2500` | 也支持 `TOP1200` / `TOP800` / `TOP400` |
-| CHN | `TOP2000U` | **不是** `TOP3000` |
-| JPN | — | **不是有效的 EQUITY 区域** —— `get_datasets` 返回 0 |
-| HKG / IND / MEA / DEU / GBR | 区域特定 | 通过 `get_platform_setting_options` 核实 |
+旧文的四个维度（业务职能 / 数据类型 / 更新频率 / 层级）只是**写审计结论时的阅读辅助**，没有机器落点；数据类型来自 `get_datafields` 的 `type`，更新频率来自体检包 `frequency`。全库共有下面几套分类法，互相不替代：
 
-指导说明：
-- 用 `get_platform_setting_options` 获取权威 universe 列表（返回每个区域的有效 universe）。
-- `get_datafields` 同样需要 `dataset_id` + 区域 universe。
-- JPN 不在 EQUITY 区域列表中，不要调用 `get_datasets(region=JPN)`。
-- 如果某区域返回 0 个数据集，先怀疑 universe 传错，再怀疑该区域为空。
+| 分类法 | 维度 | 用在哪 | 落点 |
+|---|---|---|---|
+| **S1 语义**（本 skill 的落点） | signal / blocked + 10 个经济大类 | 闸 SEM、GEM 字段池 | ledger `s1_semantic_<ds>` |
+| 新闻 5 家族 | direction / attention / dispersion / event_type / peer_context | news / sentiment 数据集的配对设计 | `tracking/taxonomies/…`（[`news-sentiment`](../brain-alpha-research-news-sentiment/SKILL.md) §2） |
+| dfe 8 问 ↔ GEM 概念位 ↔ hypothesis 12 类 | 三套本体互相映射 | 特征工程 ideas、GEM 生成配额、饱和集假设目录 | 见 [`concept-taxonomy-map.md`](../wq-brain-ra-pipeline/references/concept-taxonomy-map.md) |
 
-## 核心职责
-- **深入挖掘**：一次专注于一个数据集。
-- **清点盘存**：为所有字段编目。
-- **文档化**：改进描述。
+## 4. 评分：只留指针，不手算
+
+数据集级评分与拥挤罚**不在本 skill 里算**：执行 = toolkit `score_datasets.py`（S0，`workflow_campaign(stage="S0")`），公式、阈值、缺省以 `wq-brain-campaign-toolkit/references/probe-scoring-v2.md` 与 `score_datasets.py` 的常量为准；PPA 战役另有硬闸（`wq-brain-ppa-mining` §1）。旧文里的 `0.30/(1+log10(1+alphaCount))` 公式、「vs 缺失按 0.3」、tier2「cov ≥ 0.85 / ac ≤ 200 / fc ≥ 5」已被 v3.1（分段拥挤罚、分位分层、硬地板）取代，**不要再用**。
+
+## 5. 关键字段抽样
+
+按 §1 选出的代表字段，走 [`brain-datafield-exploration-general`](../brain-datafield-exploration-general/SKILL.md)：**先离线体检包、再最小仿真集**。不对整个数据集逐字段仿真。
+
+## 6. 调研：默认不查论坛
+
+论坛检索默认**不做**（token 黑洞，见 RA 的论坛触发表）。只有满足触发条件才查——判死复开、机制枯竭——走 `python tools/forum_recon.py --question "<决策问题>" --out kb`（[`forum-recon-triggers.md`](../wq-brain-ra-pipeline/references/forum-recon-triggers.md)）。**不要**为数据集审计加载 `brain-forum-browse`（它是只读浏览，不是审计工具）。平台官方文档（`get_documentations`）不受此限。
+
+## 7. 审计结论怎么写
+
+- **机器可读的只有 `s1_semantic_<ds>`**（§3）与步 3 写的 `catalog_<ds>`；其余都是给人读的结论，写在对话里，需要留档时写 `reports/dataset_audit_<REGION>_<ds>.md`（**不是事实源**，事实源在 DB）。结论模板见 [`reference.md`](reference.md)。
+- **Alpha 思路**只写**机制假设**（一句话经济叙事 + 该用哪一类数据当主 / 辅信号），**不写表达式**——表达式走 RA 步 4 的概念优先生成。
+
+## 验证清单（每项写产物）
+
+1. **范围已定**：结论里写明「分类 = 全量 N 个字段；深挖 = 代表字段 K 个（≤ 12）」，没有逐字段编目。
+2. **画像有读数**：字段数、`coverage < 0.4` 占比、`alphaCount` / `userCount`、category 点亮状态；universe 取自 `config.REGIONS`（或 `get_platform_setting_options`），不是手写表。
+3. **分类已落台账**：`mcp__wqb-db__get_ledger_key(region, "s1_semantic_<ds>")` 能读到（或注明字段目录尚未扫描、先跑步 3 的 S1）。
+4. **调研有触发理由**：没有无理由的论坛检索；若查了，写明命中的是哪条触发。
+
+## references
+
+| 文件 | 何时读 |
+|---|---|
+| [`reference.md`](reference.md) | 要写审计结论（模板）、查 MCP 工具速查、找平台文档页时 |

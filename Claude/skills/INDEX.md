@@ -143,7 +143,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 |---|---|---|---|
 | S-PRE 战役查表 | 该区域有什么、什么已死、挖到哪了？ | **wq-brain-campaign-matrix**（查 registry_empirical 表三层：静态配置/数据集资产/死路胜绩台账 → 预解析配置包；**不替代 S0 体检**） | region 配置包（universe/中性化/排除族/候选集） |
 | S0 情报选题 | 在哪挖？ | **S0 体检**（RA：ra-pipeline 决策表 D4 + 步 2，执行器 = `workflow_campaign(stage="S0")` 与 `campaign_intel.py s0-select`；**仅 PPA 战役**另适用 `wq-brain-ppa-mining` 的三硬门槛，`dataset_health.mode="ppa"`，阈值以各区 `thresholds.json` 为准，方法论见其 SKILL §1 / §3）；brain-next-move-analysis 为**并行情报层**（日报/金字塔分析，非流水线前置，不产出配置） | region+dataset+universe+delay+中性化 白名单 |
-| S1 数据理解 | 用什么字段、怎么预处理？ | brain-dataset-exploration-general → brain-datafield-exploration-general → brain-data-feature-engineering | 字段白名单 + 预处理决策（backfill/winsorize/rank/zscore/ts_event_*） |
+| S1 数据理解 | 用什么字段、怎么预处理？ | brain-dataset-exploration-general → brain-datafield-exploration-general → brain-data-feature-engineering | 字段白名单 + 预处理决策（backfill/winsorize/rank/zscore/trade_when 门控；VECTOR 先 `vec_*`，平台没有 `ts_event_*`） |
 | S2 表达式生成 | 怎么写成表达式？ | brain-make-some-gem（批量，含增强策略）/ brain-feature-implementation（idea→本地CSV）；alpha-expression-verifier 预检语法 | **`expressions` 表**（status=`gem`/`enhanced`）+ ledger `s2_<ds>_d<delay>_idea` |
 | S3 设置仿真 | 怎么合法设置并批量跑？ | brain-inspect-raw-template-create-setting → brain-sim-alphas-in-batch-and-track；并发问题查 wqb-concurrency | alpha_list.json → IS 指标 + status CSV |
 | S4 诊断优化 | 为什么不过闸？ | brain-how-to-pass-alpha-test（查阈值）→ wq-brain-alpha-optimization-v1（**两模式**：先 Mode B 想法层，后 Mode A 参数层；prod_corr≥0.7 回 Mode B）→ brain-calculate-alpha-selfcorr-quick（本地快筛 self-corr/PPAC）→ brain-explain-alphas（收益来源归因）→ **过拟合/稳健性闸**（brain-alpha-robustness，S4→S5 必经） | 达标 + 稳健变体 |

@@ -7,7 +7,6 @@
   "bare-python|Claude/skills/brain-make-some-gem/examples.md|python run.py --status <task_id> --tail-lines 60|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/reference.md|python run.py --config config.json --data-category analyst --region <REGION> --d|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/reference.md|python run.py --status <task_id> --tail-lines 60|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
-  "cli-password|Claude/skills/brain-make-some-gem/scripts/headless_runner/README.md|$env:BRAIN_PASSWORD=\"your_password\"|命令行/示例里传口令或邮箱": 1,
-  "expr-gate|Claude/skills/brain-datafield-exploration-general/SKILL.md|ts_median(datafield, 1000) > X|[GHOST] 幽灵算子（平台不存在，回测 ERROR 并连坐整批 CANCELLED）: ['ts_median']": 1
+  "cli-password|Claude/skills/brain-make-some-gem/scripts/headless_runner/README.md|$env:BRAIN_PASSWORD=\"your_password\"|命令行/示例里传口令或邮箱": 1
  }
 }

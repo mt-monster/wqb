@@ -61,6 +61,8 @@ python tools/gen_field_inspect_packs.py --all --dry-run                  # ② �
 python tools/gen_field_inspect_packs.py --region <REGION> --delay <D>
 ```
 
+**区域切换预筛自检**（field-quality §3，用户 2026-08-05 定的纪律）：换到一个新区回测前，先 `python tools/prescreen_gate.py --region <R>`（exit 0 = PASS / 1 = BLOCK）。BLOCK → 先按 [`brain-alpha-research-field-quality`](../../brain-alpha-research-field-quality/SKILL.md) §2 预筛并 `--record` 登记，或（数据包不覆盖该区时）`--record --source exempt` 登记免预筛理由。这是**工具级自检**，没有接入 workflow 节点。
+
 **数据源覆盖边界**（勿误判为「忘了生成」）：本地快照 `research-data/WebData_20260219_V0.10.9.zip`（160 条数据集，仅 ASI / CHN / EUR / GLB / JPN / KOR / USA 七区；as_of 2026-09-17）**早于本期战役选集**——JPN 白名单 12 集中 0 集、DEU 9 集中 0 集落在快照内。这些区的包**无法由本地数据生成**，须先更新 WebDataScope 导出包再跑 ②。此前可显式降级 `--inspect-mode warn`，**但必须写 `inspect` waiver**（`python tools/waiver.py new --gate inspect …`，见 AGENTS.md §8.1.2），不得默认静默通过。
 
 **缺包行为**（`tools/wave_gate.py --inspect-mode {off,warn,enforce}` / `WQB_INSPECT_MODE`；节点 `wave_gate` 同名参数）：`warn` = 缺省，告警放行；`enforce` = fail-closed，缺包即整波拦截，**新数据集首波自动升 enforce**。开新区 / 新数据集建议直接 `enforce`（同一 KOR/model109 无包：`warn` → EXIT 0 / PASS；`enforce` → EXIT 1 / FAIL）。三个同构闸（体检 / SEM / 区域闸）缺省值各异，总表见 [INDEX「闸与逃生口总表」](../../INDEX.md)。

@@ -1,8 +1,11 @@
 # News Bucket ↔ Field-Family Pairing Map
 
 > Companion to `news_sentiment_playbook.md`. Defines how the five field families
-> (§2 of the playbook) pair into the six buckets, and the sampling / rotation rules
-> enforced by `src/wqb/search/news_loop.py`.
+> (§2 of the playbook) pair into the six buckets, plus pairing / rotation rules.
+> **Design guidance only — no code enforces any of it** (the `news_loop.py` that older
+> versions cite does not exist). The batch-level diversity gate is toolkit gate 6
+> (`check_batch_diversity`); the skill that carries this map is
+> `Claude/skills/brain-alpha-research-news-sentiment`.
 
 ## 1. Family → Bucket compatibility matrix
 
@@ -17,13 +20,13 @@
 ● strong · ◐ possible · ○ weak. HIGH-priority buckets (Dispersion / Event-cond. /
 Propagation) must be fed by their ● families.
 
-## 2. Bucket sampling (Beta posterior)
-The orchestrator samples buckets with a Beta posterior biased toward D / E / P
-(Dispersion / Event-conditioned / Propagation) so HIGH-priority coverage is
-guaranteed even early in a session. Per-batch draw respects the hard gates
-(≥3 buckets, ≥1 HIGH).
+## 2. Bucket sampling (by hand)
+When designing one batch, spread it over buckets and lean toward D / E / P
+(Dispersion / Event-conditioned / Propagation) so HIGH-priority coverage exists even
+in the first wave. Targets for a batch: ≥3 buckets, ≥1 HIGH. There is no sampler that
+draws buckets for you (no Beta posterior anywhere in `src/wqb/search/`).
 
-## 3. Cross-family field pairing rules (§4 referenced by playbook)
+## 3. Cross-family field pairing rules
 - Pair across families, never 3-from-1.
 - `direction × attention` → Surprise / Event-conditioned (attention gates the
   direction signal to anomaly days).
@@ -37,21 +40,24 @@ guaranteed even early in a session. Per-batch draw respects the hard gates
 When fields are VECTOR (per-horizon arrays):
 - Rotate `vec_op` (e.g. `ts_mean`, `ts_zscore`, `ts_av_diff`, `vec_avg`) so every
   batch uses ≥2 distinct `vec_op`.
-- `vec_op` choice is logged for `check_batch` shape-variety enforcement.
+- Note the `vec_op` choice per expression in your batch notes (nothing logs it for you;
+  `wqb.expression.validator.check_batch` has no callers and is not a gate).
 - Never summarize a VECTOR field with a scalar op before `vec_avg` / aggregation.
 
-## 5. Event-gated template inclusion
-- `P15_EVENT_CONDITIONED` is included only when the dataset exposes event timestamps
-  or an attention/anomaly field (attention family). Without it, fall back to
-  Surprise / Change.
+## 5. Event-gated designs
+- Event-conditioned designs (`trade_when` on an attention anomaly) only make sense when
+  the dataset exposes event timestamps or an attention/anomaly field (attention
+  family). Without one, fall back to Surprise / Change. (No template named
+  `P15_EVENT_CONDITIONED` exists in code.)
 
 ## 6. Reversed-sign variant inclusion
 - Every primary candidate also emits a reversed-sign variant (`-rank(...)` /
-  `reverse(...)`). The reversed sign is a first-line de-correlation weapon
-  (see `brain-alpha-repair` step 2, weapon 4) and frequently recovers signal when
-  raw direction is already priced in.
+  `reverse(...)`): it frequently recovers signal when the raw direction is already priced
+  in. Whether it also lowers correlation is an empirical question — measure it
+  (`check_correlation`), do not assume it.
 
 ## 7. Failure attribution per result
-Each result is tagged with which (family, bucket, vec_op) combination produced it, so
-the scheduler's failure memory can deprioritise a (category, dataset, bucket, shape)
-arm after repeated rejects.
+Tag each result with the (family, bucket, vec_op) combination that produced it, in the
+wave's `key_findings` (RA step 9). `wqb.search.failure_memory` keys arms on
+(region, dataset, paradigm, shape_bucket) — news buckets are not part of that key, so
+bucket-level lessons live in the notes, not in the scheduler.

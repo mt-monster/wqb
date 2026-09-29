@@ -27,6 +27,9 @@ logger = logging.getLogger(__name__)
 #: 默认假设目录（与 brain-alpha-research-hypothesis-first 的约定一致）
 _CATALOG_DIR = os.path.join(str(REPO_ROOT), "data", "hypothesis_catalog")
 
+#: 账本目录锚定仓库根（`save_to_ledger` 缺省是相对当前工作目录，MCP 进程的 CWD 不一定是仓库根）
+_LEDGER_DIR = os.path.join(str(REPO_ROOT), "tracking", "hypotheses")
+
 
 def _default_catalog(dataset_id: str) -> str:
     return os.path.join(_CATALOG_DIR, f"{dataset_id}_hypotheses.json")
@@ -52,7 +55,7 @@ def run(
         region: 区域（仅透传记录，用于台账键）
         delay: 延迟（仅透传记录）
         session_id: 台账 session 标识（save_ledger=True 时必填语义）
-        save_ledger: 实跑后把轮次记录追加到 tracking/hypotheses/ledger.jsonl
+        save_ledger: 实跑后把轮次记录追加到 <仓库根>/tracking/hypotheses/ledger.jsonl（运行时缓存，不入库、不作事实源）
         dry_run: 干跑（由 executor 经 _context 注入）
         _context: 执行上下文（由 executor 注入）
 
@@ -122,7 +125,7 @@ def run(
             sid = session_id or f"{dataset_id}_{region}_d{delay}"
             ledger_path = save_to_ledger(
                 {"status": "ROUND_BUILT", "reason": "hypothesis_round node",
-                 "diagnostics": plan}, sid)
+                 "diagnostics": plan}, sid, ledger_dir=_LEDGER_DIR)
             steps.append({"step": "ledger_saved", "success": True, "path": ledger_path})
         except Exception as e:  # noqa: BLE001
             steps.append({"step": "ledger_saved", "success": False, "error": str(e)})

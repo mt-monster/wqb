@@ -417,84 +417,132 @@
    "note": "增「常见失败与处置」表（region not found / 缺 region / frozen / registry 与 profile 冲突 / 回写被拒缺 rule / entry_id 不一致 / prod_saturation=unknown）与 3 张情景卡 MX-1..3"
   },
   "DE-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 中“跨平台调研”正文没有对应步骤；“字段分类”触发与 news-sentiment 重叠；运行环境句在 H1 之前、7 个空行",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "description 限定「已在白名单 / 点名的某一个数据集」的数据集级审计，撤出「跨平台调研」；新闻字段 5 家族分类交 news-sentiment；运行环境句删（唯一 Python 命令自带 _pyenv），头部空行整理",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "DE-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界句禁止“自行维护区域表”，随后维护一张“Region → Universe”表；表中 **JPN “不是有效的 EQUITY 区域，`get_datasets` 返回 0”**",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "Region → Universe 表删，改 config.REGIONS[<R>][default_universe] 与 get_platform_setting_options；JPN「非有效 EQUITY 区域」删（config 有 JPN / TOP1600，RA 有 profile）；universe 传错的症状（get_datasets 静默返回 0 条 / 手写 /data-fields 报 500）保留",
+   "verify": "tests/unit/test_se_docs.py::test_de_has_no_region_table_and_jpn_is_a_valid_region"
   },
   "DE-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界说“上游=S0 白名单（数据集已选定）”，Phase 1 第 1 步又是“确定数据集：根据战略重要性或用户需求选择”且无判据",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "上游 = 白名单内某集或用户点名；无白名单且未点名 → 先走 RA 步 2 选集；Phase 1「按战略重要性选择」删",
+   "verify": "tests/unit/test_se_docs.py::test_de_has_no_region_table_and_jpn_is_a_valid_region"
   },
   "DE-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "字段分类按业务职能/数据类型/频率/层级，**没有产出位置**；下游 RA 的硬前置是 `s1_semantic_<ds>` 台账（`field_semantic_classify",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "§3 字段分类落点 = ledger s1_semantic_<ds>（field_semantic_classify.py，读 fields 表，唯一有下游消费者）；四维分类降为阅读辅助；加「字段分类法一览」（S1 语义 / 新闻 5 家族 / 三套互映射本体）；说明经济大类偏财报口径，非财报集多落 other",
+   "verify": "tests/unit/test_se_docs.py::test_de_classification_landing_point_and_taxonomies_match_the_tool"
   },
   "DE-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "给出的评分公式是**旧式**：`0.30/(1+log10(1+alphaCount))`、“vs 缺失按 0.3”、tier2“cov≥0.85/ac≤200/fc≥5”；而其指",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "评分公式与阈值删，只留指针（score_datasets.py + probe-scoring-v2.md）；旧 0.30/(1+log10(1+alphaCount)) 与 tier2 门槛标已被 v3.1 取代、不要再用（测试）",
+   "verify": "tests/unit/test_se_docs.py::test_de_scoring_and_research_sections_point_at_the_current_sources"
   },
   "DE-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“调研：查阅论坛（`brain-forum-browse` skill 或 `search_forum_posts`）”——与 RA“论坛默认不查（token 黑洞）”冲突；加载 ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md",
+   "note": "调研默认不查论坛：触发条件（判死复开 / 机制枯竭）走 forum_recon.py；不为审计加载 brain-forum-browse",
+   "verify": "tests/unit/test_se_docs.py::test_de_scoring_and_research_sections_point_at_the_current_sources"
   },
   "DE-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“撰写详细描述”“改进描述”“为所有字段编目”——无输出位置/格式；对 1000+ 字段的数据集（JPN analyst 1026）不可行，无范围控制",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-dataset-exploration-general/SKILL.md | Claude/skills/brain-dataset-exploration-general/reference.md",
+   "note": "§1 范围控制：分类永远全量（本地脚本零配额），深挖代表字段 ≤ 12（每类 1–2 + 3 冷门）；不产「增强描述」；审计结论模板与落点写清（对话 / reports/dataset_audit_*.md，非事实源）",
+   "verify": "tests/unit/test_se_docs.py::test_de_scoring_and_research_sections_point_at_the_current_sources"
   },
   "DE-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "英文岗位手册体裁（Position Overview、Deliverables），与中文 SKILL 混用；含旧流程",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-dataset-exploration-general/reference.md",
+   "note": "436 行英文岗位手册 → ≤ 60 行中文背景（结论模板 / MCP 速查 / 文档页）；其中的 6-Tips 方法只在 datafield-exploration 保留一份（此前两处各抄一遍，都带不可用算子）",
+   "verify": "tests/unit/test_se_docs.py::test_de_reference_is_short_chinese_and_the_six_tips_live_only_in_datafield_exploration"
   },
   "DF-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题/description 说“6 种方法”，正文有 6 法 + 2 个备注 + “7. 批量字段收割”，编号跳跃",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md",
+   "note": "「6 种方法」对应正文「法 1–6」连号；类型陷阱、批量收割改为无编号章节，不再跳号（测试）",
+   "verify": "tests/unit/test_se_docs.py::test_df_settings_trap_and_cost_claims_are_backed_by_code"
   },
   "DF-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“运行这些模拟时用 Neutralization None、Decay 0、Test Period **P0Y0M**”——6 种方法每个字段各需 ≥1 次仿真，文中**没有成本提",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "note": "§0 先离线后在线 + 成本：体检包先答法 1 / 3 / 6；在线最小集 6 条一批 / 扩展集 ≤ 8，全跑六法 ≈ 15 条；create_multi_simulation 单次 2–10 条、连坐、有静态门禁；手工探索不入库不进战役统计；testPeriod 统一 P0Y0M0D",
+   "verify": "tests/unit/test_se_docs.py::test_df_settings_trap_and_cost_claims_are_backed_by_code"
   },
   "DF-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "`ts_median(datafield, 1000)` 注为“5 年中位数”——1000 交易日≈4 年（标准窗口是 1008=4 年），窗口非标且换算错；**更根本的是 `ts",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | tests/fixtures/skill_lint_baseline.json",
+   "note": "法 5 改 ts_mean(datafield, 252)（1 年；要 4 年用 1008，标准窗口），ts_median 标幽灵算子；skill_lint 基线里对应的 GHOST 条目已清",
+   "verify": "tests/unit/test_se_docs.py::test_df_every_operator_is_in_the_platform_catalog_unless_marked_as_a_counterexample"
   },
   "DF-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“VECTOR 字段应**直接**用于 rank/ts_*，**不要**包在 `vec_*` 里；`winsorize` 安全”——与全库相反：toolkit 闸 3“type==",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "note": "「类型先行」表：MATRIX 不包 vec_*；VECTOR 必须先 vec_*（闸 3；裸用 → 平台 400 event inputs；fix_vector_fields / preflight auto_fix_vector）；旧「直接用、winsorize 安全」标已更正",
+   "verify": "tests/unit/test_se_docs.py::test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool"
   },
   "DF-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“EVENT 先用 `ts_event_*` **转换为 VECTOR**”——把 `ts_event_*` 的输出称为 VECTOR，与闸 3 对 VECTOR（需 `vec_*",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/INDEX.md",
+   "note": "EVENT（type==EVENT）：平台没有 ts_event_*（KOR wave16 实测 8/8 ERROR），闸 8 直接 FAIL、先单条探针；不再把 ts_event_* 输出称作 VECTOR；INDEX S1 行的 ts_event_* 预处理项同步改",
+   "verify": "tests/unit/test_se_docs.py::test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool"
   },
   "DF-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“GET /data-fields 裸 `dataset=` 被静默忽略→必须 `dataset.id=`（KOR 2026-08-15 实测）”+ 4 步规避 + 实测说明——*",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md",
+   "note": "范式保留为「症状 → 原因 → 规避」表：裸 dataset= 被静默忽略 → dataset.id=；补 MCP get_datafields 已封装（源码核对），只在手写 REST 时会踩",
+   "verify": "tests/unit/test_se_docs.py::test_df_settings_trap_and_cost_claims_are_backed_by_code"
   },
   "DF-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "只讲“怎么测”，没有“测完怎么用”（覆盖%、频率→窗口选择、范围→预处理的**决策映射**），职责上交给特征工程但无链接",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md",
+   "note": "每法末加「→ 交 FE」：覆盖 → backfill、非零 → trade_when、频率 → 窗口下限（体检 min_window / 硬门代码口径）、范围 → 去量纲、中心 → 单边先取变化率、形态 → winsorize / rank / 门控；链接 brain-data-feature-engineering",
+   "verify": "tests/unit/test_se_docs.py::test_df_offline_pack_fields_and_window_floors_match_the_generator"
   },
   "DF-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "**算子口径与库内清单/闸门不一致（上一轮评审 P0-1，至今未修）**：方法 5 用 `ts_median(datafield, 1000)`——`ts_median` 在 `p",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-datafield-exploration-general/SKILL.md | Claude/skills/brain-datafield-exploration-general/reference.md",
+   "note": "算子口径以平台 103 算子目录裁决：ts_median（幽灵）→ ts_mean；scale_down（不在目录）→ zscore 刻度；ts_event_*（平台没有）删；机械检查：SKILL / reference 里出现的算子必须在目录内或标为反例（测试）；顺带发现 ? : 三元过不了 MCP 静态语法闸，六法表达式改比较式并逐条过校验器",
+   "verify": "tests/unit/test_se_docs.py::test_df_documented_method_expressions_pass_the_mcp_static_gate_grammar"
   },
   "EV-01": {
    "status": "fixed",
@@ -855,44 +903,68 @@
    "note": "行为规则（占位符只绑定一次、GROUP 不扩展数值变体）挪进「模板语法」节，删「描述」节"
   },
   "FQ-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "“按 `alphaCount` **降序**排字段、从分布头部开始播种（社区反复用来构建可提交 alpha 的字段更可靠）；低使用量字段只用于去相关/新颖性”——与 RA 步 3 ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "§1 分阶段：选方向可用 alphaCount / userCount 作先验，进入造批服从 RA 步 3 §3.3（users 分级、冷门字段占批次预算 ≥ 50%，逐格对照 RA 文档）；饱和数据集不叠加本先验（那是 hypothesis-first 的适用域）",
+   "verify": "tests/unit/test_se_docs.py::test_fq_prior_is_staged_and_agrees_with_the_ra_step3_users_grading"
   },
   "FQ-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“用 `jq` 把保存的 `get_datafields` 结果排序取前 ~30”——`jq` 在 Windows 环境未必存在；DB 唯一模式下字段目录在 `fields` 表，",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "删 jq（Windows 未必有）与散写 SQL，取数改 get_datafields 在对话里按 alphaCount 降序取前 ~30",
+   "verify": "tests/unit/test_se_docs.py::test_fq_prior_is_staged_and_agrees_with_the_ra_step3_users_grading"
   },
   "FQ-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "规则速查 (a)“甜点区 100≤count≤3000 且 sharpe≥1.1×均值；<50 不可信、**>30K 饱和**”——饱和阈值 30K，而 RA 步 2 #6 用 *",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "「拥挤度阈值：五个数，五条轴」表：离线甜点 / 饱和（webdata_quality）、S0 拥挤罚（score_datasets）、RA 饱和路由（≥ 1 万或连续 2 波）、PPA 硬闸、校准甜区——轴不同不冲突，逐项由测试对照源码",
+   "verify": "tests/unit/test_se_docs.py::test_fq_crowding_table_numbers_match_their_code_sources"
   },
   "FQ-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "核心 26 条规则在另一个 skill 的 reference（`../brain-alpha-research/references/…`，跨 skill 相对链接），且写“23",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md | Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md",
+   "note": "26 条规则文档已在本 skill references/（测试守 26 条、无跨 skill 相对链接）；规则 13 补两层口径：理论下限 21d / 63d vs 体检硬门实际执行的代码口径 daily 22 / weekly 52 / monthly 120 / quarterly 252（流量类 daily 5）",
+   "verify": "tests/unit/test_se_docs.py::test_fq_data_pack_coverage_and_rule_document_moved_in"
   },
   "FQ-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "数据包覆盖边界（7 区、9 组合、160 条/125 名）+ 判定顺序 + 免预筛留痕——**场景→顺序→动作**清楚；小笔误“这此区域”",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "范式保留（数据包覆盖 7 区 / 9 组合 / 160 条记录 + 判定顺序 + 免预筛留痕）；「这此区域」笔误随重写消失（测试）",
+   "verify": "tests/unit/test_se_docs.py::test_fq_prior_is_staged_and_agrees_with_the_ra_step3_users_grading"
   },
   "FQ-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“**每次切换区域回测前必须**先跑 `webdata_quality.py`（用户强制纪律）”，但 DEU/IND/GBR/MEA/TWN 不在包内，预筛必空；本节未提上一节的豁",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "§2 判定顺序（在包内 → 预筛；不在 → 改走平台侧并 --source exempt 登记免预筛理由）；§3 首句限定「数据包覆盖的区域」，DEU / IND / GBR / MEA / TWN 不再被要求先跑必空的预筛",
+   "verify": "tests/unit/test_se_docs.py::test_fq_data_pack_coverage_and_rule_document_moved_in"
   },
   "FQ-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“机器门禁 `prescreen_gate.py`……当前为工具级门禁，节点内嵌接线待 `nodes/campaign.py` 并行改动落定后跟进”——待办状态写进 SOP；且 r",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md",
+   "note": "§3「机器自检」写明工具级、未接入 workflow 节点（测试：campaign.py 零引用），待办状态出 SOP；BLOCK 时先预筛或登记豁免，不靠别的 waiver 绕过；RA 步 2 补一段自检指针",
+   "verify": "tests/unit/test_se_docs.py::test_fq_prescreen_gate_cli_and_ledger_key_are_what_the_skill_says"
   },
   "FQ-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "验证清单 3 条都是“确认已…”，无期望输出/无留痕位置",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-alpha-research-field-quality/SKILL.md",
+   "note": "验证清单改产物形式：前 ~30 字段表 / 预筛输出或豁免登记 / prescreen_gate exit 0 + get_ledger_key 可读",
+   "verify": "tests/unit/test_se_docs.py::test_fq_prior_is_staged_and_agrees_with_the_ra_step3_users_grading"
   },
   "FR-01": {
    "status": "fixed",
@@ -1021,54 +1093,84 @@
    "cat": "边界·P1"
   },
   "HF-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "本 skill：“假设目录为空时**不强行路由**（需先有假设生成器）”；RA：数据集 alphaCount≥1 万或连续 2 波全灭 → “**强制**切本工作流，不再做模板遍历",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "状态节（条件激活 / dormant）+ §1 分支表：目录缺失 → agent 按 §3 起草（干跑校验，闸即批准人，无人工批准点）；起草不出 → 回步 2 换集 / 冷门字段优先；「等假设生成器」与 RA「强制切换」互锁的死锁取消",
+   "verify": "tests/unit/test_se_docs.py::test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit"
   },
   "HF-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“上游 = 字段扫描产出的假设目录”不准：目录由 agent 按 §3 手写，字段扫描不产假设",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "上游改「RA 步 2 约束 6 路由 + s1_semantic_<ds>」，目录由 agent 按 §3 起草（字段扫描不产假设）",
+   "verify": "tests/unit/test_se_docs.py::test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit"
   },
   "HF-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "三个切换信号：α≥10K（量化）、“90 条模板会话已见顶（news12 Fitness≈0.42）”（个例数字）、“论坛高赞自动化流程…已把模板空间挖到天花板”（无法度量），而 ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "切换信号统一为 RA 的两条可测信号（alphaCount ≥ 1 万 / 连续 2 波全灭）；news12 Fitness 0.42 个例与论坛 80 赞帖降为背景，不作触发",
+   "verify": "tests/unit/test_se_docs.py::test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit"
   },
   "HF-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "新产物 `data/field_semantics/*.yaml`（`anchor_only` 等）与 RA 闸 SEM 的 `s1_semantic_<ds>` 台账（signa",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "取消 data/field_semantics/*.yaml（无代码读、无闸执行，与 s1_semantic_<ds> 是两套互不引用的字段语义）；字段语义 = s1_semantic_<ds>；anchor-only 是纪律（只作条件 / 分母 / group），不是台账字段",
+   "verify": "tests/unit/test_se_docs.py::test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit"
   },
   "HF-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "示例窗口用 20（非标准窗口，CLAUDE.md 要求 1/5/22/66…，RA 预闸会别名 20→22）；`control_constant` 的内容是 `volume` 的 ",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "示例改标准窗口（5 / 22），四条表达式形状经规范校验器实测通过；control_constant 语义写清（保持同结构、信号项换同集无关字段，不是数值常数；白名单外字段会被闸 2 拦）",
+   "verify": "tests/unit/test_se_docs.py::test_hf_json_example_loads_with_the_real_catalog_loader_and_validates"
   },
   "HF-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "12 类假设与 `concept-taxonomy-map.md`（只映射 10 类，缺 `under_reaction`、`event_conditional`）不一致",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | src/wqb/research/hypothesis_miner.py | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md",
+   "note": "类别词表单一来源 = hypothesis_miner.HYPOTHESIS_CLASSES：此前代码那份 12 类与 SKILL / 映射表几乎互不重叠且无调用方，现对齐为 SKILL 的 12 类；load_catalog 拒收词表外的类；测试守 SKILL / 代码 / 映射表三处一致",
+   "verify": "tests/unit/test_research.py::test_hypothesis_classes_match_skill_vocabulary"
   },
   "HF-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`run_hypothesis_round` 派发一个实验=4 条 alpha”，节点说明写“**实跑纯本地构建、不触平台**”——所以这一步只产**计划**；此后怎样入库、过闸",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | wqb_db_mcp.py",
+   "note": "§5 完整回路表：干跑 → 实跑构建 → upsert_expressions(source=hypothesis) → 步 5 门禁 → 步 6 回测 → judge → 步 9 写回；给 judge 的手工命令；验证清单改 4 项产物；upsert_expressions 文档补 hypothesis 来源标签",
+   "verify": "tests/unit/test_se_docs.py::test_hf_node_params_paths_ledger_and_tools_match_the_skill"
   },
   "HF-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "判定四态（rejected/partially_supported/supported/needs_refinement）是**又一套 verdict 词汇**；“伪信号（主 Sh",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | src/wqb/research/hypothesis_miner.py",
+   "note": "四态 = 假设级结论，与波级 PASS/PARTIAL/FAIL 及数据集级 dead_end 分层；阈值引用代码常量（|Δ| ≤ 0.1 / 主 Sharpe < 0.3 / Δ > 0.5 且 fitness > 0.8）并注明是无校准记录的经验值；rejected 不写 registry；顺带修 judge 把「对照比主假设好」误判 partially_supported 的逻辑缺陷",
+   "verify": "tests/unit/test_se_docs.py::test_hf_verdict_table_quotes_the_code_constants_and_judge_behaves_as_documented"
   },
   "HF-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "台账位置两处不同：`data/hypothesis_ledger/<session>.jsonl`（§6）与 `tracking/hypotheses/ledger.jsonl`（",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | src/wqb/workflow/nodes/hypothesis_round.py | tests/unit/test_workflow_nodes.py",
+   "note": "台账两层：事实源 = 步 9 wave_results.key_findings；辅助日志 = tracking/hypotheses/ledger.jsonl（gitignore、不作事实源；节点缺省锚仓库根，此前相对 CWD）；data/hypothesis_ledger 从未存在、「元学习取代 bandit」删；顺带修节点单测每次回归往仓库账本追加一行（65 行 t1 垃圾）",
+   "verify": "tests/unit/test_workflow_nodes.py::test_hypothesis_round_ledger_dir_is_anchored_at_repo_root"
   },
   "HF-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“字段质量先验（alphaCount/userCount）仍作种子排序依据”——**饱和数据集里的高使用字段最易撞 prod 墙**（RA 步 3），与 FQ-01 同源冲突",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md",
+   "note": "字段选择与 FQ 反向：饱和集信号字段优先 users 0–9 冷门字段（占批次预算 ≥ 50%），热门字段只作门控 / 锚，alphaCount / userCount 不再作种子排序依据；引用 RA 步 3 §3.3 与 field-quality §1",
+   "verify": "tests/unit/test_se_docs.py::test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit"
   },
   "HP-01": {
    "status": "fixed",
@@ -1812,34 +1914,52 @@
    "note": "错误防范改「常见误读（症状 → 原因 → 防范）」表：达标≠可提交、已点亮塔被推荐、停波区仍建议再开一波、事件章含过期项；GAC 案例保留并写成三段式"
   },
   "NS-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "6 桶的**名称与定义没有写在 SKILL 里**（只出现“Event / Dispersion / Propagation 三桶高优先”），依赖 `docs/reference/",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | docs/reference/news_bucket_field_map.md",
+   "note": "6 桶表（设计目标 / 优先级 / ● 强适配家族 / ◐ 可选，HIGH = Dispersion / Event-conditioned / Propagation）内联进 SKILL，逐格由测试对照 news_bucket_field_map.md 的矩阵；链接文字改成真实仓库根路径；顺带更正分类器事实（覆盖只有 news12、缓存路径 tracking/taxonomies、novelty 归 attention、is_news_dataset 只认 category==news 与三个前缀）",
+   "verify": "tests/unit/test_se_docs.py::test_ns_bucket_table_matches_the_pairing_matrix_document"
   },
   "NS-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "R/A/V/M/T 的 “M” 与 motif “M1–M6” 同字母；“M4 → surprise **或** change”未说何时取哪个",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | docs/reference/news.md",
+   "note": "news12 字段码 M → C（旧称 M，SKILL 与 news.md 同改），与 motif M1–M6 不再撞字母；M4 取舍判据：参照预期 / 事件典型值 → Surprise，参照该字段自身历史 → Change（motif 原始定义仓库里没有，只留映射）",
+   "verify": "tests/unit/test_se_docs.py::test_ns_news12_field_code_c_and_motif_ids_do_not_collide"
   },
   "NS-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“冷启动任务路由到 **Tier A**（fieldCount≥50 且 alphaCount/fieldCount≤5 且 pyramidMultiplier≥1.2）：news",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | docs/reference/news_dataset_portfolio.md",
+   "note": "Tier A 改「候选来源」：路由前三查（判死 / 跨区弱 / lit 塔，读 s0-select 标记），命中任一即不路由；验证清单不再固化「优先路由 Tier A」；Tier A 门槛补 alphaCount/fieldCount ≤ 5 与 typed-catalog 覆盖",
+   "verify": "tests/unit/test_se_docs.py::test_ns_routing_checks_use_real_s0_select_tags_and_weak_probe_cap"
   },
   "NS-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "`wqb news-refresh-portfolio` 命令**不存在**（同 AR-12）",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | docs/reference/news_dataset_portfolio.md",
+   "note": "wqb news-refresh-portfolio 从未存在：SKILL 与 docs 都删，改指 get_datasets(category=…) 与 S0 recommend_datasets；连带删 news_loop.py / P15_EVENT_CONDITIONED / Beta 桶采样等文档里的不存在实现，6 桶与「每批 ≥ 3 桶」明示为指引、无代码闸",
+   "verify": "tests/unit/test_se_docs.py::test_ns_bucket_gates_are_guidance_and_the_dead_references_stay_dead"
   },
   "NS-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“Tier B 已饱和——挖掘前必须向用户标注”只有告知，没有“告知之后怎么办”的分支（继续/放弃/换结构）",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md",
+   "note": "Tier B 告知之后三个分支：假设优先（缺省，RA 步 2 约束 6）/ 放弃 / 用户坚持则只许高度非对称结构且先做 prod-first（D0-P）",
+   "verify": "tests/unit/test_se_docs.py::test_ns_routing_checks_use_real_s0_select_tags_and_weak_probe_cap"
   },
   "NS-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "多个日期括号（2026-04-21/23）和数据快照（120K α 等）未标失效条件",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-alpha-research-news-sentiment/SKILL.md | docs/reference/news_dataset_portfolio.md | docs/reference/news.md",
+   "note": "portfolio 与 news 文档标 2026-04 快照、以 get_datasets / S0 实时读数为准；Tier B α 数写日期；「Hard gates」改「设计目标（无代码闸）」，playbook 幽灵算子表补 neutralize 并由测试钉死 = config.GHOST_OPERATORS",
+   "verify": "tests/unit/test_se_docs.py::test_ns_playbook_ghost_table_is_exactly_config_ghost_operators"
   },
   "OP-01": {
    "status": "fixed",

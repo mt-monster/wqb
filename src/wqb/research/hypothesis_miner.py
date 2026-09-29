@@ -14,19 +14,22 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, List, Optional
 
+# 假设类别词表（单一来源）。与 brain-alpha-research-hypothesis-first 的类别行、
+# wq-brain-ra-pipeline/references/concept-taxonomy-map.md 的第 4 列逐名一致，
+# 由 tests/unit/test_concept_taxonomy_map.py 守；新增类须同步这三处。
 HYPOTHESIS_CLASSES: List[str] = [
     "over_reaction",
     "under_reaction",
-    "momentum",
-    "mean_reversion",
-    "volatility_risk",
-    "liquidity",
-    "information_flow",
-    "event_driven",
-    "sentiment_drift",
-    "peer_relative",
-    "coverage_gap",
-    "decay_structure",
+    "dispersion",
+    "event_conditional",
+    "propagation",
+    "information_asymmetry",
+    "cross_dataset",
+    "horizon_spread",
+    "regime",
+    "residual",
+    "slow_diffusion",
+    "urgency",
 ]
 
 _PSEUDO_SIGNAL_TOLERANCE = 0.1
@@ -102,6 +105,11 @@ def judge(result: ExperimentResult) -> Dict:
         status = HypothesisVerdict.NEEDS_REFINEMENT
         reason = (f"Primary Sharpe {result.primary_sharpe:.2f} below "
                   f"{_MIN_PRIMARY_SHARPE}; refine before judging.")
+    elif sharpe_delta < -_PSEUDO_SIGNAL_TOLERANCE:
+        # 对照（去掉门控 / 换成常数）反而更好：门控在拖累信号，不是解释信号。
+        status = HypothesisVerdict.REJECTED
+        reason = (f"Constant control beats primary by {-sharpe_delta:.2f} "
+                  f"(> {_PSEUDO_SIGNAL_TOLERANCE}): the gate hurts, not explains.")
     elif (sharpe_delta > _SUPPORTED_SHARPE_DELTA
           and result.primary_fitness > _SUPPORTED_FITNESS):
         status = HypothesisVerdict.SUPPORTED
@@ -115,7 +123,7 @@ def judge(result: ExperimentResult) -> Dict:
 
 
 def load_catalog(path: str) -> List[Hypothesis]:
-    """Load a hypothesis catalog (JSON). Raises on missing file/fields."""
+    """Load a hypothesis catalog (JSON). Raises on missing file/fields or unknown class."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Catalog not found: {path}")
     with open(path, "r", encoding="utf-8") as f:
@@ -126,6 +134,10 @@ def load_catalog(path: str) -> List[Hypothesis]:
         if missing:
             raise ValueError(
                 f"Hypothesis entry missing required fields: {missing}")
+        if entry["hypothesis_class"] not in HYPOTHESIS_CLASSES:
+            raise ValueError(
+                f"Hypothesis {entry['hypothesis_id']!r}: unknown hypothesis_class "
+                f"{entry['hypothesis_class']!r}; allowed: {HYPOTHESIS_CLASSES}")
         hypotheses.append(Hypothesis(**{k: entry[k] for k in _REQUIRED_FIELDS}))
     return hypotheses
 

@@ -33,6 +33,11 @@ SE_SKILLS = (
     "brain-forum-browse",
     "wq-brain-ppa-mining",
     "brain-alpha-research",
+    "brain-alpha-research-field-quality",
+    "brain-alpha-research-news-sentiment",
+    "brain-alpha-research-hypothesis-first",
+    "brain-dataset-exploration-general",
+    "brain-datafield-exploration-general",
 )
 
 
@@ -785,3 +790,424 @@ def test_ar_references_all_linked_and_the_webdata_rules_moved_to_field_quality()
         assert "[[" not in text, f"{f.name} 还有 Obsidian wikilink"
     assert "已被禁止" in _read(AR / "references" / "asi-methodology.md")
     assert "[未验证" in _read(AR / "references" / "jump-decay-methodology.md")
+
+
+# ----------------------------------------------------------------------------- 共用：算子目录 / 表格解析
+
+def _platform_operator_catalog():
+    """平台 `get_operators` 的 103 个算子全集（docs/reference/operators_catalog.json）。"""
+    d = json.loads(_read(REPO / "docs" / "reference" / "operators_catalog.json"))
+    return {o["name"] for o in d["results"]}
+
+
+def _md_table_rows(text, header_startswith):
+    """取以 header_startswith 开头的那张 markdown 表的数据行（每行拆成去掉首尾空白的单元格列表）。"""
+    lines = text.splitlines()
+    for i, ln in enumerate(lines):
+        if ln.startswith(header_startswith):
+            rows = []
+            for row in lines[i + 2:]:
+                if not row.startswith("|"):
+                    break
+                cells = [c.strip() for c in row.strip().strip("|").split("|")]
+                rows.append(cells)
+            return rows
+    raise AssertionError(f"找不到表头 {header_startswith!r}")
+
+
+# ----------------------------------------------------------------------------- FQ：field-quality
+
+FQ = SKILLS / "brain-alpha-research-field-quality"
+_TK = SKILLS / "wq-brain-campaign-toolkit" / "scripts"
+
+
+def test_fq_crowding_table_numbers_match_their_code_sources():
+    t = _read(FQ / "SKILL.md")
+    wq = _read(REPO / "tools" / "webdata_quality.py")
+    assert "if cnt < 50:" in wq and "100 <= cnt <= 3000" in wq and "cnt > 30000" in wq and "sweet_bonus = 0.5" in wq
+    assert "100–3000" in t and "< 50" in t and "> 30000" in t and "×0.5" in t
+    sd = _read(_TK / "score_datasets.py")
+    doc = sd.split("def crowd_penalty", 1)[1].split('"""', 2)[1]
+    for frag in ("ac<=50 满分 0.30", "50→500 线性降至 0.15", "500→5000 线性降至 0.02", ">5000 恒 0.02"):
+        assert frag in doc, frag
+    assert "≤ 50 → 0.30" in t and "降到 0.15" in t and "降到 0.02" in t and "> 5000 恒 0.02" in t
+    assert 'h.get("sweet_spot_ac_min", 50)' in sd and 'h.get("sweet_spot_ac_max", 1000)' in sd and "50–1000" in t
+    step2 = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step2-s0.md")
+    assert "`alphaCount ≥ 1 万`" in step2 and "**连续 2 波**" in step2
+    assert "1 万" in t and "连续 2 波" in t
+
+
+def test_fq_prescreen_gate_cli_and_ledger_key_are_what_the_skill_says():
+    t = _read(FQ / "SKILL.md")
+    pg = _read(REPO / "tools" / "prescreen_gate.py")
+    for flag in ("--region", "--record", "--source", "--summary"):
+        assert f'"{flag}"' in pg and flag in t, flag
+    assert "exempt" in t and "webdata_quality" in t
+    assert "0=PASS" in pg and "exit 0 = PASS / 1 = BLOCK" in t
+    assert "没有接入 workflow 节点" in t or "未接入 workflow 节点" in t
+    assert not re.search(r"prescreen_gate|prescreen_", _read(REPO / "src" / "wqb" / "workflow" / "nodes" / "campaign.py"))
+    cat = {e["key"]: e for e in json.loads(_read(REPO / "docs" / "ledger_keys.json"))["entries"]}
+    assert any(w["ref"] == "tools/prescreen_gate.py" for w in cat["prescreen_<region>"]["writers"])
+
+
+def test_fq_data_pack_coverage_and_rule_document_moved_in():
+    t = _read(FQ / "SKILL.md")
+    for r in ("ASI", "CHN", "EUR", "GLB", "JPN", "KOR", "USA"):
+        assert r in t.split("数据包区域覆盖边界", 1)[1][:400], r
+    assert "DEU / IND / GBR / MEA / TWN" in t and "--source exempt" in t
+    ref = FQ / "references" / "webdatascope-data-quality.md"
+    assert ref.is_file() and "references/webdatascope-data-quality.md" in t
+    # 规则 13 的「时序窗口下限」是理论下限，闸实际执行的是代码口径——两层口径必须都写明
+    r13 = _read(ref).split("## 规则 13", 1)[1].split("## 规则 14", 1)[0]
+    assert "两层口径" in r13 and "monthly ≥ 120" in r13 and "quarterly ≥ 252" in r13
+    assert "{'daily': 22, 'weekly': 52, 'monthly': 120, 'quarterly': 252}" in _read(REPO / "tools" / "webdata_quality.py")
+
+
+def test_fq_prior_is_staged_and_agrees_with_the_ra_step3_users_grading():
+    t = _read(FQ / "SKILL.md")
+    ra3 = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step3-s1-semantic.md").split("## 3.3", 1)[1].split("## 3.4", 1)[0]
+    for tok in ("≥ 50", "10–49", "0–9", "冷门字段占批次预算 ≥ 50%"):
+        assert tok in ra3 and tok in t, tok
+    assert "受 ra-pipeline 步 3" in t and "分阶段" in t and "饱和数据集" in t and "不叠加本先验" in t
+    assert "不依赖 `jq`" in t and not re.search(r"\bjq\s+[-'\.]", t) and "这此" not in t   # 旧文的 jq 依赖与笔误
+    assert "get_datafields" in t and "get_datafields" in _all_http_tools()
+    body = t.split("## 验证清单", 1)[1]
+    assert "prescreen_gate.py --region <R>" in body and "get_ledger_key(region" in body and "笔记 / 回报里有前 ~30 字段表" in body
+
+
+# ----------------------------------------------------------------------------- NS：news-sentiment
+
+NS = SKILLS / "brain-alpha-research-news-sentiment"
+_NEWS_DOCS = REPO / "docs" / "reference"
+
+
+def test_ns_classifier_facts_in_the_skill_match_the_module():
+    from wqb.research import news_field_classifier as nfc
+    t = _read(NS / "SKILL.md")
+    assert set(nfc.DATASET_OVERRIDES) == {"news12"} and "目前只有 `news12`" in t
+    for fam, kws in nfc.KEYWORD_RULES.items():
+        for kw in kws:
+            assert f"`{kw}`" in t, f"分类器关键词 {kw!r}（{fam.value}）没写进 SKILL 的家族表"
+    assert nfc.classify_field("news_novelty") == nfc.FieldFamily.ATTENTION and "`novelty` 归 attention" in t
+    assert nfc.is_news_dataset("news12") and nfc.is_news_dataset("snt3") and nfc.is_news_dataset("sentiment22")
+    assert not nfc.is_news_dataset("socialmedia12") and not nfc.is_news_dataset("nws12") and nfc.is_news_dataset("x", "news")
+    assert not nfc.is_news_dataset("x", "sentiment")                     # category 只认 news
+    assert "tracking/taxonomies/taxonomy_<ds>_<REGION>.json" in t
+    assert nfc._taxonomy_path("d", "R", "tracking/taxonomies").replace("\\", "/") == "tracking/taxonomies/taxonomy_d_R.json"
+    assert "data/field_taxonomy" not in t and "data/field_taxonomy" not in _read(_NEWS_DOCS / "news_sentiment_playbook.md")
+    # 没有任何流水线代码调用分类器
+    users = [str(f.relative_to(REPO)) for root in (REPO / "src", REPO / "tools", MCP_DIR)
+             for f in root.rglob("*.py") if ".venv" not in f.parts and "news_field_classifier" in _read(f)
+             and f.name != "news_field_classifier.py"]
+    assert not users, f"分类器有了调用方，SKILL 里「没有任何流水线节点调用」要改：{users}"
+
+
+def test_ns_bucket_table_matches_the_pairing_matrix_document():
+    t = _read(NS / "SKILL.md")
+    rows = _md_table_rows(t, "| 桶 |")
+    skill = {}
+    for cells in rows:
+        name = re.sub(r"[*]", "", cells[0]).split()[0]
+        strong = {x for x in re.split(r"[、,\s]+", cells[3]) if re.fullmatch(r"[a-z_]+", x)}
+        maybe = {x for x in re.split(r"[、,\s]+", cells[4]) if re.fullmatch(r"[a-z_]+", x)}
+        skill[name] = (strong, maybe, "HIGH" in cells[2])
+    doc = _read(_NEWS_DOCS / "news_bucket_field_map.md")
+    mrows = _md_table_rows(doc, "| Family")
+    buckets = ["Level", "Change", "Surprise", "Dispersion", "Event", "Propagation"]
+    matrix = {b: (set(), set()) for b in buckets}
+    for cells in mrows:
+        fam = cells[0]
+        for b, mark in zip(buckets, cells[1:7]):
+            if mark == "●":
+                matrix[b][0].add(fam)
+            elif mark == "◐":
+                matrix[b][1].add(fam)
+    assert set(skill) == {"Level", "Change", "Surprise", "Dispersion", "Event-conditioned", "Propagation"}
+    for b, key in (("Level", "Level"), ("Change", "Change"), ("Surprise", "Surprise"), ("Dispersion", "Dispersion"),
+                   ("Event", "Event-conditioned"), ("Propagation", "Propagation")):
+        assert skill[key][0] == matrix[b][0] and skill[key][1] == matrix[b][1], (key, skill[key], matrix[b])
+    assert {k for k, v in skill.items() if v[2]} == {"Dispersion", "Event-conditioned", "Propagation"}
+
+
+def test_ns_bucket_gates_are_guidance_and_the_dead_references_stay_dead():
+    assert not (REPO / "src" / "wqb" / "search" / "news_loop.py").exists()
+    for f in ("news_bucket_field_map.md", "news_sentiment_playbook.md"):
+        d = _read(_NEWS_DOCS / f)
+        flat = re.sub(r"[\s>]+", " ", d)                         # 引用块折行后再看上下文
+        for m in re.finditer(r"news_loop\.py", flat):
+            assert "does not exist" in flat[m.start(): m.start() + 120], (f, flat[m.start(): m.start() + 120])
+        assert "P15_EVENT_CONDITIONED" not in d.replace("No template named\n  `P15_EVENT_CONDITIONED` exists in code.", "") or "exists in code" in d
+    for f in ("news_dataset_portfolio.md",):
+        d = _read(_NEWS_DOCS / f)
+        assert "never existed" in d
+    t = _read(NS / "SKILL.md")
+    for line in t.splitlines():
+        assert "news-refresh-portfolio" not in line, line
+    assert "不是闸门" in t and "无代码闸" in t and "check_batch_diversity" in t
+    for n in ("Hard gates",):
+        assert n not in _read(_NEWS_DOCS / "news_sentiment_playbook.md")
+    # 每批设计目标里唯一有执行点的一条：覆盖 < 0.4 → backfill（体检硬门检查 1）
+    assert "coverage_ratio'] < 0.4" in _read(REPO / "tools" / "webdata_quality.py")
+
+
+def test_ns_playbook_ghost_table_is_exactly_config_ghost_operators():
+    from wqb import config
+    d = _read(_NEWS_DOCS / "news_sentiment_playbook.md")
+    sec = d.split("## 5.", 1)[1].split("## 6.", 1)[0]
+    ops = set(re.findall(r"^\| `([a-z_0-9]+)` \|", sec, re.M))
+    assert ops == set(config.GHOST_OPERATORS), (ops ^ set(config.GHOST_OPERATORS))
+
+
+def test_ns_routing_checks_use_real_s0_select_tags_and_weak_probe_cap():
+    from wqb import config
+    t = _read(NS / "SKILL.md")
+    step2 = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step2-s0.md")
+    ci = _read(REPO / "tools" / "campaign_intel.py")
+    assert 's0-select' in ci and "跨区弱" in ci and "[跨区弱:REG:maxS@bt]" in step2 and "[跨区弱:REG:maxS@bt]" in t
+    assert "`lit=Y`" in step2 and "lit=Y" in t and "hist_backtested ≥ 8" in t and "`bt ≥ 8`" in step2
+    assert config.MINING["weak_probe_slots_max"] == 1 and "`MINING[\"weak_probe_slots_max\"]` = 1" in t
+    assert "D0-P" in t and "D0-P" in _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "decision-table.md")
+    port = _read(_NEWS_DOCS / "news_dataset_portfolio.md")
+    assert "candidate source, not a routing rule" in port and "alphaCount / fieldCount ≤ 5" in port
+    for f in ("news_dataset_portfolio.md", "news.md", "news_sentiment_playbook.md", "news_bucket_field_map.md"):
+        assert "researcher_workflow" not in _read(_NEWS_DOCS / f), f
+
+
+def test_ns_news12_field_code_c_and_motif_ids_do_not_collide():
+    t = _read(NS / "SKILL.md")
+    n = _read(_NEWS_DOCS / "news.md")
+    assert "C（旧称 M）" in t and "**C** (context/microstructure)" in n and "| M | **event_type**" not in n
+    assert "M4 → Surprise 或 Change" in t and "自身的历史" in t
+
+
+# ----------------------------------------------------------------------------- HF：hypothesis-first
+
+HF = SKILLS / "brain-alpha-research-hypothesis-first"
+
+
+def _hf_example():
+    t = _read(HF / "SKILL.md")
+    m = re.search(r"```json\n(\{\"hypotheses\".*?)\n```", t, re.S)
+    assert m, "hypothesis-first 里找不到 JSON 示例"
+    return json.loads(m.group(1))
+
+
+def test_hf_json_example_loads_with_the_real_catalog_loader_and_validates(tmp_path):
+    from wqb.research import hypothesis_miner as hm
+    ex = _hf_example()
+    path = tmp_path / "ex_hypotheses.json"
+    path.write_text(json.dumps(ex), encoding="utf-8")
+    hs = hm.load_catalog(str(path))
+    assert len(hs) == 1 and set(hs[0].to_dict()) == set(hm._REQUIRED_FIELDS)
+    exps = hm.run_hypothesis_round(str(path))["H_overreact_attention"]["expressions"]
+    assert len(exps) == 4
+    spec = importlib.util.spec_from_file_location("_hf_validator", SKILLS / "alpha-expression-verifier" / "scripts" / "validator.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_hf_validator"] = mod
+    spec.loader.exec_module(mod)
+    v = mod.ExpressionValidator()
+    for e in exps:
+        e = e.replace("<关注度字段>", "volume").replace("<反应字段>", "returns").replace("<同集无关字段>", "close")
+        r = v.check_expression(e)
+        assert r["valid"], (e, r["errors"])
+    for w in re.findall(r"ts_zscore\(<[^>]+>, (\d+)\)", json.dumps(ex, ensure_ascii=False)):
+        assert int(w) in (1, 5, 22, 66, 252, 504, 1008, 1260), w          # 示例只用标准窗口
+    # 单一字段清单：SKILL 里的 8 个必填字段名就是代码里的 8 个
+    t = _read(HF / "SKILL.md")
+    assert "8 个必填字段" in t and len(hm._REQUIRED_FIELDS) == 8
+
+
+def test_hf_verdict_table_quotes_the_code_constants_and_judge_behaves_as_documented():
+    from wqb.research import hypothesis_miner as hm
+    t = _read(HF / "SKILL.md")
+    for name, val in (("_PSEUDO_SIGNAL_TOLERANCE", "0.1"), ("_MIN_PRIMARY_SHARPE", "0.3"),
+                      ("_SUPPORTED_SHARPE_DELTA", "0.5"), ("_SUPPORTED_FITNESS", "0.8")):
+        assert float(getattr(hm, name)) == float(val) and name in t, name
+    R = hm.ExperimentResult
+    cases = [
+        (R("h", 0.5, 0.4, 0.45, 0.48), "rejected"),                                      # 伪信号
+        (R("h", 0.5, 0.5, 0.9, 0.5, primary_fitness=0.9), "rejected"),                   # 对照更好
+        (R("h", 0.2, 0.1, 0.0, 0.15), "needs_refinement"),
+        (R("h", -0.8, -0.5, 0.4, -0.6), "needs_refinement"),                             # 负值先试翻符号
+        (R("h", 0.8, 0.5, 0.5, 0.6, primary_fitness=0.4), "partially_supported"),
+        (R("h", 1.5, 1.0, 0.0, 1.3, primary_fitness=1.0), "supported"),
+    ]
+    for r, want in cases:
+        assert hm.judge(r)["status"].value == want, (r, want)
+    for state in ("rejected", "needs_refinement", "partially_supported", "supported"):
+        assert f"`{state}`" in t
+    assert "`expected_direction` 只是记录" in t and "expected_direction" not in _read(REPO / "src" / "wqb" / "research" / "hypothesis_miner.py").split("def judge", 1)[1].split("def load_catalog", 1)[0]
+
+
+def test_hf_node_params_paths_ledger_and_tools_match_the_skill():
+    import inspect
+    from wqb.workflow.nodes import hypothesis_round as hr
+    from wqb.workflow._common import REPO_ROOT
+    t = _read(HF / "SKILL.md")
+    sig = set(inspect.signature(hr.run).parameters)
+    for p in ("dataset_id", "region", "delay", "max_hypotheses", "catalog_path", "save_ledger"):
+        assert p in sig and p in t, p
+    assert Path(hr._CATALOG_DIR) == Path(str(REPO_ROOT)) / "data" / "hypothesis_catalog" and "data/hypothesis_catalog/<dataset>_hypotheses.json" in t
+    assert Path(hr._LEDGER_DIR) == Path(str(REPO_ROOT)) / "tracking" / "hypotheses" and "tracking/hypotheses/ledger.jsonl" in t
+    wf = _all_http_tools()["workflow_execute"]
+    assert {"node", "params", "dry_run"} <= set(_params(wf)) and 'node="hypothesis_round"' in t
+    db = _all_db_tools()
+    assert "source" in _params(db["upsert_expressions"]) and 'source="hypothesis"' in t and "`hypothesis`" in _read(REPO / "wqb_db_mcp.py")
+    for tool in ("list_expressions", "list_alphas_by_wave", "get_gate_result", "upsert_wave_result"):
+        assert tool in db and tool in t or tool == "upsert_wave_result", tool
+    for tool in ("workflow_batch_track", "create_multi_simulation"):
+        assert tool in _all_http_tools()
+    assert "hypothesis_round" in _read(REPO / "src" / "wqb" / "workflow" / "registry.py")
+    # judge() 没有生产调用方（只有单测）——SKILL 状态表这样写
+    callers = [str(f.relative_to(REPO)) for root in (REPO / "src", REPO / "tools", MCP_DIR) for f in root.rglob("*.py")
+               if ".venv" not in f.parts and re.search(r"\bjudge\(", _read(f)) and "hypothesis_miner" in _read(f)
+               and f.name != "hypothesis_miner.py"]
+    assert not callers, callers
+    assert "没有调用方" in t
+
+
+def test_hf_retired_artifacts_are_named_as_retired_and_the_dormant_status_is_explicit():
+    t = _read(HF / "SKILL.md")
+    for stale in ("data/field_semantics", "data/hypothesis_ledger"):
+        for line in t.splitlines():
+            if stale in line:
+                assert "已取消" in line or "从未存在" in line, (stale, line)
+    assert "## 状态：条件激活（dormant）" in t and "不存在「等假设生成器」的前置" in t
+    assert "s1_semantic_<ds>" in t and "冷门字段" in t and "不再作种子排序依据" in t
+    step2 = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step2-s0.md")
+    assert "hypothesis-first" in step2 and "dormant" in step2
+    assert "load_catalog` 抛错" in t
+
+
+# ----------------------------------------------------------------------------- DE：dataset-exploration
+
+DE = SKILLS / "brain-dataset-exploration-general"
+
+
+def test_de_has_no_region_table_and_jpn_is_a_valid_region():
+    from wqb import config
+    t = _read(DE / "SKILL.md")
+    assert "JPN" in config.REGIONS and config.REGIONS["JPN"]["default_universe"] == "TOP1600"
+    assert not re.search(r"^\|\s*(USA|KOR|EUR|CHN|JPN|ASI|GLB)\s*\|", t, re.M), "又出现了区域 → universe 表"
+    assert "不是有效的 EQUITY 区域" not in t and "返回 0" not in t.replace("静默返回 0 条", "")
+    assert 'config.REGIONS[<R>]["default_universe"]' in t and "get_platform_setting_options" in t
+    assert "先走 RA 步 2 选集" in t and "确定数据集：根据战略重要性" not in t        # 上游 = 白名单内某集；无判据的「自选」删
+
+
+def test_de_classification_landing_point_and_taxonomies_match_the_tool():
+    t = _read(DE / "SKILL.md")
+    src = _read(REPO / "tools" / "field_semantic_classify.py")
+    for flag in ("--region", "--dataset", "--write-ledger"):
+        assert f'"{flag}"' in src and flag in t, flag
+    import field_semantic_classify as fsc
+    assert len(fsc.ECON_CATEGORIES) == 10 and "共 10 类" in t
+    assert "s1_semantic_<ds>" in t and "wave_gate" in t
+    ra = _read(SKILLS / "wq-brain-ra-pipeline" / "SKILL.md")
+    assert "s1_semantic_<ds>" in ra and "field_semantic_classify.py" in ra
+    assert (SKILLS / "wq-brain-ra-pipeline" / "references" / "concept-taxonomy-map.md").is_file()
+    assert "conn = db_connect(readonly=True)" in src and "`fields` 表" in t
+
+
+def test_de_scoring_and_research_sections_point_at_the_current_sources():
+    t = _read(DE / "SKILL.md")
+    for line in t.splitlines():
+        if "log10(1+alphaCount)" in line:
+            assert "取代" in line and "不要再用" in line
+    assert (SKILLS / "wq-brain-campaign-toolkit" / "references" / "probe-scoring-v2.md").is_file() and "probe-scoring-v2.md" in t
+    assert (REPO / "tools" / "forum_recon.py").is_file() and "forum_recon.py" in t
+    assert (SKILLS / "wq-brain-ra-pipeline" / "references" / "forum-recon-triggers.md").is_file()
+    assert "不要**为数据集审计加载 `brain-forum-browse`" in t
+    assert "代表字段 ≤ 12 个" in t and "不产「增强描述」" in t and "不写表达式" in t
+
+
+def test_de_reference_is_short_chinese_and_the_six_tips_live_only_in_datafield_exploration():
+    ref = _read(DE / "reference.md")
+    assert len(ref.splitlines()) <= 60 and "Job Duty Manual" in ref
+    assert "scale_down" not in ref and "ts_median" not in ref and "Position Overview" not in ref
+    assert "reference.md" in _read(DE / "SKILL.md")
+    tools = _all_http_tools()
+    for name in re.findall(r"`((?:get|create|search|read)_[a-z_]+)`", ref.split("MCP 工具速查", 1)[1].split("平台文档页", 1)[0]):
+        assert name in tools, f"reference.md 速查表里的工具 {name} 不存在"
+    assert "ensure_authenticated" in _read(MCP_DIR / "tools_sim.py") and not _required_params(tools["authenticate"])
+
+
+# ----------------------------------------------------------------------------- DF：datafield-exploration
+
+DF = SKILLS / "brain-datafield-exploration-general"
+
+
+def test_df_every_operator_is_in_the_platform_catalog_unless_marked_as_a_counterexample():
+    cat = _platform_operator_catalog()
+    assert len(cat) == 103 and "scale_down" not in cat and "ts_median" not in cat and not any(n.startswith("ts_event_") for n in cat)
+    marks = ("不要", "不在", "幽灵", "不存在", "旧文", "原帖", "没有", "过不了", "会被拒", "替换", "换成", "不能")
+    pat = re.compile(r"\b(ts_[a-z_]+|vec_[a-z_]+|group_[a-z_]+|scale_down|zscore|rank|abs|if_else|trade_when|winsorize)\(")
+    for f in (DF / "SKILL.md", DF / "reference.md"):
+        for i, line in enumerate(_read(f).splitlines(), 1):
+            for name in pat.findall(line):
+                if name not in cat:
+                    assert any(m in line for m in marks), f"{f.name}:{i} 出现目录外算子 {name}：{line[:80]}"
+    t = _read(DF / "SKILL.md")
+    for v in ("vec_avg", "vec_sum", "vec_max", "vec_min", "vec_count", "vec_stddev", "vec_range"):
+        assert v in cat and f"`{v}`" in t + _read(DF / "reference.md"), v
+
+
+def test_df_vector_matrix_event_rules_match_gate_3_gate_8_and_the_fix_tool():
+    t = _read(DF / "SKILL.md")
+    gate = _read(_TK / "gate.py")
+    assert "最内层" in _read(SKILLS / "wq-brain-campaign-toolkit" / "references" / "gate-rules.md") and "[TYPE]" in t
+    assert re.search(r"8.*EVENT.*block", gate) and "平台无 ts_event_*" in gate
+    assert "平台没有 `ts_event_*` 系列" in t and "闸 8 直接 FAIL" in t
+    tools = _all_http_tools()
+    assert "fix_vector_fields" in tools and "auto_fix_vector" in _params(tools["preflight_expressions"])
+    assert "does not support event inputs" in _read(MCP_DIR / "tools_sim.py").split("async def fix_vector_fields", 1)[1][:900]
+    assert "fix_vector_fields" in t and "auto_fix_vector=true" in t
+    for old in ("VECTOR 字段应**直接**用于", "`winsorize` 安全", "转成 VECTOR"):
+        for line in t.splitlines():
+            if old in line:
+                assert "旧文" in line and "已更正" in line, f"旧口径 {old!r} 只许出现在「旧文…已更正」的说明里：{line[:60]}"
+
+
+def test_df_documented_method_expressions_pass_the_mcp_static_gate_grammar():
+    spec = importlib.util.spec_from_file_location("_df_validator", SKILLS / "alpha-expression-verifier" / "scripts" / "validator.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_df_validator"] = mod
+    spec.loader.exec_module(mod)
+    v = mod.ExpressionValidator()
+    rows = _md_table_rows(_read(DF / "reference.md"), "| 法 | MATRIX")
+    assert len(rows) == 6
+    for cells in rows:
+        for cell in cells[1:3]:
+            e = cell.strip("`").replace("datafield", "close").replace(", N)", ", 22)").replace("> X", "> 10").replace("> k", "> 1")
+            assert "?" not in e, e
+            r = v.check_expression(e)
+            assert r["valid"], (e, r["errors"])
+    src = _read(MCP_DIR / "tools_sim.py")
+    assert "_toolkit_gate_check(alpha_expressions)" in src and "len(alpha_expressions) < 2" in src and "len(alpha_expressions) > 10" in src
+    t = _read(DF / "SKILL.md")
+    assert "单次 2–10 条" in t and "没有 `? :` 三元" in t
+
+
+def test_df_offline_pack_fields_and_window_floors_match_the_generator():
+    t = _read(DF / "SKILL.md")
+    wq = _read(REPO / "tools" / "webdata_quality.py")
+    for key in ("coverage_ratio", "skewness", "kurtosis", "frequency", "distribution_shape", "min_window",
+                "recommended_decay", "recommended_truncation"):
+        assert f"'{key}'" in wq and f"`{key}`" in t, key
+    body = wq.split("def check_expr_against_inspect", 1)[1]
+    assert "{'daily': 22, 'weekly': 52, 'monthly': 120, 'quarterly': 252}" in body and "daily=5" in body
+    assert "daily ≥ 22" in t and "weekly ≥ 52" in t and "monthly ≥ 120" in t and "quarterly ≥ 252" in t
+    for shape in ("point_mass", "zero_inflated", "ceiling", "concentrated", "spread"):
+        assert shape in wq and shape in t, shape
+    assert "tracking/mining/field_inspect_<region 小写>_<dataset>.json" in t and "field_inspect_{" in _read(REPO / "tools" / "field_inspect_gate.py") + "field_inspect_{"
+
+
+def test_df_settings_trap_and_cost_claims_are_backed_by_code():
+    t = _read(DF / "SKILL.md")
+    assert 'testPeriod: str = "P0Y0M0D"' in _read(SKILLS / "brain-inspect-raw-template-create-setting" / "scripts" / "resolve_settings.py") and "`P0Y0M0D`" in t
+    assert "params['dataset.id'] = dataset_id" in _read(MCP_DIR / "brain_mixin_simulation.py") and "dataset.id=<id>" in t
+    assert "1 + 1 + 3 + 1" not in t and "6 条" in t and "≈ 15 条仿真" in t
+    assert re.findall(r"^## 法 (\d)：", t, re.M) == list("123456")                  # 六法连号，其余章节不占数字
+    assert "## 类型先行" in t and "## 批量字段收割" in t and not re.search(r"^## (?:4′|7)\.", t, re.M)
+    assert "`ts_median`" in t and "幽灵算子" in t and "ts_median" in __import__("wqb.config", fromlist=["GHOST_OPERATORS"]).GHOST_OPERATORS
+    for link in re.findall(r"\]\((\.\./[a-z0-9-]+/SKILL\.md|reference\.md)\)", t):
+        assert (DF / link).resolve().is_file(), link

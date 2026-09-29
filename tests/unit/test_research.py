@@ -132,6 +132,30 @@ def test_hypothesis_classes_count():
     assert "over_reaction" in HYPOTHESIS_CLASSES
 
 
+def test_hypothesis_classes_match_skill_vocabulary():
+    """类别词表单一来源 = 代码常量；hypothesis-first SKILL 的类别行必须逐名一致
+    （此前两边各有一份互不重叠的 12 类，代码那份没有任何调用方）。"""
+    import re
+    skill = (Path(__file__).resolve().parents[2] / "Claude" / "skills"
+             / "brain-alpha-research-hypothesis-first" / "SKILL.md").read_text(encoding="utf-8")
+    m = re.search(r"假设类别（12 类.*?）：`([a-z_ /]+)`", skill)
+    assert m, "hypothesis-first SKILL 里找不到「假设类别（12 类…）：`a / b / …`」行"
+    declared = [c.strip() for c in m.group(1).split("/") if c.strip()]
+    assert declared == HYPOTHESIS_CLASSES
+
+
+def test_load_catalog_rejects_unknown_hypothesis_class(tmp_path):
+    entry = {
+        "hypothesis_id": "H1", "hypothesis_class": "momentum",  # 旧词表里有、现词表里没有
+        "description": "d", "minimal_expression": "rank(x)", "ablation_no_gate": "rank(x)",
+        "control_constant": "rank(v)", "variant": "rank(x)", "expected_direction": "positive",
+    }
+    path = tmp_path / "c.json"
+    path.write_text(json.dumps({"hypotheses": [entry]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="unknown hypothesis_class"):
+        load_catalog(str(path))
+
+
 def test_hypothesis_to_dict():
     h = Hypothesis(
         hypothesis_id="test_01",
@@ -160,6 +184,30 @@ def test_judge_rejected_pseudo_signal():
     verdict = judge(result)
     assert verdict["status"] == HypothesisVerdict.REJECTED
     assert verdict["diagnostics"]["pseudo_signal"] is True
+
+
+def test_judge_rejects_when_control_beats_primary():
+    """对照比主假设好 > 0.1 且主假设 Sharpe 不低：此前落进 partially_supported（'Delta over control exists'）。"""
+    result = ExperimentResult(
+        hypothesis_id="t1",
+        primary_sharpe=0.5,
+        ablation_sharpe=0.5,
+        control_sharpe=0.9,
+        variant_sharpe=0.5,
+        primary_fitness=0.9,
+    )
+    verdict = judge(result)
+    assert verdict["status"] == HypothesisVerdict.REJECTED
+    assert verdict["diagnostics"]["sharpe_delta"] < 0
+    assert "control beats primary" in verdict["reason"].lower()
+
+
+def test_judge_negative_primary_still_needs_refinement_not_rejected():
+    """主假设 Sharpe 为负（符号可能反了）先走 needs_refinement，不被「对照更好」吞成 rejected。"""
+    result = ExperimentResult(
+        hypothesis_id="t1", primary_sharpe=-0.8, ablation_sharpe=-0.5,
+        control_sharpe=0.4, variant_sharpe=-0.6)
+    assert judge(result)["status"] == HypothesisVerdict.NEEDS_REFINEMENT
 
 
 def test_judge_needs_refinement_low_sharpe():

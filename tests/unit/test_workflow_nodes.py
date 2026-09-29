@@ -1061,9 +1061,11 @@ def test_hypothesis_round_missing_catalog_fails_clean(monkeypatch):
     assert out["success"] is False and "假设目录不存在" in out["error"]
 
 
-def test_hypothesis_round_real_run_builds_four_expressions(tmp_path):
+def test_hypothesis_round_real_run_builds_four_expressions(tmp_path, monkeypatch):
     import json
     from wqb.workflow.nodes import hypothesis_round as hr
+    # 账本目录必须可重定向：此前本测试每次回归都往仓库的 tracking/hypotheses/ledger.jsonl 追加一行
+    monkeypatch.setattr(hr, "_LEDGER_DIR", str(tmp_path / "ledger"))
     catalog = tmp_path / "ds_hypotheses.json"
     catalog.write_text(json.dumps({"hypotheses": [
         {"hypothesis_id": "H0", "hypothesis_class": "dispersion",
@@ -1077,6 +1079,15 @@ def test_hypothesis_round_real_run_builds_four_expressions(tmp_path):
     exps = out["experiments"]["H0"]["expressions"]
     assert len(exps) == 4
     assert out["ledger_path"] and Path(out["ledger_path"]).exists()
+    assert Path(out["ledger_path"]).parent == tmp_path / "ledger"
+
+
+def test_hypothesis_round_ledger_dir_is_anchored_at_repo_root():
+    """缺省账本目录不依赖进程 CWD（save_to_ledger 的缺省是相对路径）。"""
+    from wqb.workflow._common import REPO_ROOT
+    from wqb.workflow.nodes import hypothesis_round as hr
+    assert os.path.isabs(hr._LEDGER_DIR)
+    assert Path(hr._LEDGER_DIR) == Path(str(REPO_ROOT)) / "tracking" / "hypotheses"
 
 
 def test_hypothesis_round_registered_with_matching_signature():
