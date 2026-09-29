@@ -65,7 +65,7 @@ control_constant / variant / expected_direction`；2026-09-12 更正：旧文示
 }]}
 ```
 
-假设类别（12 类；与 dfe 8 问/GEM 概念位的映射见 ra-pipeline references/concept-taxonomy-map.md）：`over_reaction / under_reaction / dispersion / event_conditional / propagation / information_asymmetry / cross_dataset / horizon_spread / regime / residual / slow_diffusion / urgency`。
+假设类别（12 类；与 dfe 8 问/GEM 概念位的映射见 [`wq-brain-ra-pipeline/references/concept-taxonomy-map.md`](../wq-brain-ra-pipeline/references/concept-taxonomy-map.md)）：`over_reaction / under_reaction / dispersion / event_conditional / propagation / information_asymmetry / cross_dataset / horizon_spread / regime / residual / slow_diffusion / urgency`。
 
 ### 4. 派发 — `run_hypothesis_round`
 

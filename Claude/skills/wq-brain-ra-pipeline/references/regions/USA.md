@@ -21,15 +21,13 @@ priors:
   win_recipes: []
 gate_overrides:
   cw_gate: WARN
-  longcount_min: 80
-  prod_corr_early_warn: 0.6
 loop_policy:
   max_probes_per_wave: 1
-  fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死"
+  fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
   stop_conditions: ["白名单被 dead_end 全覆盖"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(USA)"
-  last_verified: 2026-08-25
+  last_verified: 2026-09-29
 ---
 
 # USA — 饱和市场正交战
@@ -48,15 +46,17 @@ USA 是挖得最深的市场：`search_alphas_by_sharpe(USA, 1.58)` 命中大量
 
 ### 步 4 注入：priors 硬排除饱和族
 
-GEM `--priors-file` 必须包含 `signal_families_exclude`；生成结果若仍命中饱和族，build-wave 阶段直接剔除，不进七槽。
+GEM 的 priors（DB 快照 `priors_snapshot_<region>`；缺失时才显式传 `--priors-file`）必须包含 `signal_families_exclude`；生成结果若仍命中饱和族，build-wave 阶段直接剔除，不进本波。
 
-### 步 6 注入：prod-first 加严
+### 步 6 注入：prod-first（**并入 D0-P，不另设预警线**）
 
-每槽先 1–2 条骨架查 `prod_corr`，**预警线 0.6**（全局默认 0.7）：≥0.6 即停扩换腿，不再等 0.7。USA 的 0.6→0.7 区间几乎必然继续恶化。
+USA 的 prod 墙很硬：0.6 → 0.7 区间几乎必然继续恶化（同族 145 颗 ACTIVE 同质）。**处置只按决策表 D0-P**：首探 < 0.60 才扩变体；**0.60–0.70 不扩变体、当天进步 8**（提交前 `check_correlation(refresh=True)` 终验）；≥ 0.75 或踩线尝试失败 → dead_end。
+（旧版这里写「预警线 0.6：≥ 0.6 即**停扩换腿**」——那与 D0-P 的 0.60–0.70 行直接相反，会让已成型的候选被放着不提交，正是 IND pv103 事故 0.6997 → 1.0000 的反面教训；`prod_corr_early_warn` 键也已从 front-matter 删除。
+若要表达「USA 更严」，含义是**扩批之前**就按族查 prod-first，而不是改阈值。）
 
 ### 步 7 注入：Mode B 强制正交
 
-诊断改进阶段，`wq-brain-alpha-optimization-v1` Mode B 必须启用**正交方向推荐**（联动 P2-1 增强）：同族变体 >3 次仍 prod_corr ≥0.6 → 判该族死刑，写 dead_end，换正交概念，禁止同族继续磨参数。
+诊断改进阶段，`wq-brain-alpha-optimization-v1` Mode B 必须启用**正交方向推荐**（联动 P2-1 增强）：同族出现 prod ≥ 0.6 → 按 D0-P 处置（0.60–0.70 当天进步 8；≥ 0.75 判 dead_end 并换正交概念），**禁止同族继续磨参数**。
 
 ## 避坑清单
 

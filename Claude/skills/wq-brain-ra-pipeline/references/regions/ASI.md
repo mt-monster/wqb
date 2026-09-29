@@ -21,12 +21,10 @@ priors:
   win_recipes: []
 gate_overrides:
   cw_gate: WARN
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 5
   first_wave_probe_exemption: true
-  fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死"
+  fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
   stop_conditions: ["白名单被 dead_end 全覆盖", "连续 3 波全 FAIL 且无新 dead_end"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(ASI)"
@@ -47,12 +45,12 @@ ASI 基本未开垦：无 win 层、无死路记录，registry 接近空白。�
 
 ### 步 2 注入：全量探针模式
 
-- 全部候选数据集过 `dataset_health_check` + `score_datasets.py` 三灯评分，按分数排探针优先级；
+- 全部候选数据集过 `score_datasets.py` 三灯评分（`dataset_health_check.py` 是随 `wq-brain-ppa-mining` 分发的兜底体检脚本，步 2 见 [`../step2-s0.md`](../step2-s0.md)），按分数排探针优先级；
 - 金字塔配额照旧（≥2 非 MODEL），但无 win 层可读，候选顺序 = 三灯分数 × 已知线索（analyst94/analyst81 优先）。
 
 ### 步 6 注入：首波探针豁免（一次性）
 
-首波允许 **全槽探针**（七槽制下即 7 槽，豁免骨架"弱探针最多 1 槽"约束一次），目的建 baseline；第二波起恢复正常约束，`max_probes_per_wave` 回落 1。
+首波允许 **波内全探针**（豁免「弱探针最多 1 个波内配额位」约束一次），目的建 baseline；第二波起恢复正常约束，`max_probes_per_wave` 回落 1。
 
 ### 步 9 注入：强制回写加倍
 

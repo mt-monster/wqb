@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: brain-how-to-pass-alpha-test
 description: "提供 WorldQuant BRAIN alpha 提交测试的详细要求、阈值与改进建议。 涵盖 Fitness、Sharpe、Turnover、Weight、Sub-universe 与 Self-Correlation 测试。 当用户询问 alpha 提交失败原因、如何提升 alpha 指标或测试要求时使用 （submission tests / thresholds / improvement tips / 提交测试 / 通过测试）。"
 layer: L4
@@ -31,6 +31,20 @@ allowed-tools:
 ## 概述
 
 Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
+
+### 失败点 → 修法族（速查；RA 提示词 §2.3 与 `brain-alpha-repair` 反向链接到这里）
+
+平台检查名以 `config.PLATFORM_CHECK_LINES` / 平台响应为准；下表只回答「先往哪个方向想」，**不产生新表达式**（动手改 → `wq-brain-alpha-optimization-v1`，先想法后参数）。
+
+| 失败的检查 | 它在说什么 | 修法族 | 细则 |
+|---|---|---|---|
+| `LOW_SHARPE` / `LOW_FITNESS` | 信号强度不够 | 信号层：换数据 / 换概念 / 换结构；不是磨参数 | 本文 §1 §2 |
+| `LOW_2Y_SHARPE` / `IS_LADDER_SHARPE` | 近两年形态崩；1.58 恰好也 FAIL | 先看逐年形态，再按 设置轴 → 表达式轴 → 机制轴 | 本文末「LOW_2Y_SHARPE / IS_LADDER 破闸」 |
+| `LOW_TURNOVER` / `HIGH_TURNOVER` | 换手过低 / 过高 | 平滑与窗口（`ts_decay_linear` / `ts_mean` / `decay`） | 本文 §3 |
+| `CONCENTRATED_WEIGHT` | 权重集中在少数股票 | 时间平滑；低频字段先 `ts_backfill`；**参数层无效** | 本文 §4 |
+| `LOW_SUB_UNIVERSE_SHARPE` | 子宇宙不稳 | 分散化骨架：去掉与市值相关的乘数、分组 decay | 本文 §5 |
+| `SELF_CORRELATION` | 与自己已提交的 alpha 太像 | 换概念 / 换数据源，不是换窗口 | 本文 §6 |
+| `PROD_CORRELATION` | 与全平台已提交池太像（prod 墙） | 只按决策表 **D0-P** 一张表处置（< 0.60 正常扩；0.60–0.70 不扩变体、当天进提交步；0.70–0.75 仅 1 次结构性尝试；≥ 0.75 或尝试失败 → 判死），**不磨参数** | [`decision-table.md`](../wq-brain-ra-pipeline/references/decision-table.md) |
 
 ## 1. Fitness
 ### 要求

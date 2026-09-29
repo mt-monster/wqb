@@ -728,15 +728,9 @@
   },
   {
    "key": "submit_ready_blocked",
-   "status": "active",
-   "purpose": "被 prod≥0.7 卡死的数据集 / 信号族饱和记录（下一轮 S0 读取，按拥挤处理）",
-   "writers": [
-    {
-     "kind": "agent",
-     "ref": "mcp__wqb-db__upsert_ledger_key",
-     "doc": "Claude/skills/wq-brain-ra-pipeline/SKILL.md"
-    }
-   ],
+   "status": "deprecated",
+   "purpose": "旧：prod≥0.7 卡死的饱和记录（S0 从未读取，仅 step_funnel 计数）。**已由 `saturated_datasets` 取代——新写入用 `campaign_intel.py mark-saturated`**",
+   "writers": [],
    "readers": [
     {
      "kind": "code",
@@ -744,13 +738,8 @@
      "via": "仅计数"
     }
    ],
-   "missing": "S0 不做拥挤降权",
-   "refresh": "每次 prod 墙事件追加",
-   "orphan": {
-    "kind": "promised-reader-missing",
-    "tracked_by": "IX-20",
-    "reason": "文档说下一轮 S0 体检读取并降权，但代码里只有 step_funnel 计数，S0 并不读它；写入靠 agent 手工追加"
-   }
+   "missing": "—",
+   "refresh": "已废止（历史值保留，仅供 step_funnel 计数）"
   },
   {
    "key": "waves",
@@ -865,8 +854,14 @@
   {
    "key": "saturated_datasets",
    "status": "active",
-   "purpose": "prod 饱和事实 `{datasets:{ds:{reason}}}`；score 据此降级，P5 据此拍平 model",
-   "writers": [],
+   "purpose": "prod 饱和事实 `{datasets:{ds:{reason, updated, source_wave?, prod_corr?}}}`；S0 打分（score_datasets P2 降级 / P5 拍平 model）读取",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py",
+     "via": "`mark-saturated --write-ledger`（S6 判某集被 prod 墙卡死时调用）"
+    }
+   ],
    "readers": [
     {
      "kind": "code",
@@ -874,12 +869,7 @@
     }
    ],
    "missing": "不降级、不拍平",
-   "refresh": "无自动写入方",
-   "orphan": {
-    "kind": "read-without-writer",
-    "tracked_by": "IX-20",
-    "reason": "只能经通用 `campaign.py ledger set` 手写；没有任何步骤产生它，P2 / P5 降级实际是死代码路径"
-   }
+   "refresh": "S6 逐次追加；饱和解除用 `mark-saturated --remove`"
   },
   {
    "key": "seat_model",
@@ -1413,6 +1403,27 @@
    "readers": [],
    "missing": "—",
    "refresh": "—"
+  },
+  {
+   "key": "selection_w<W>",
+   "status": "active",
+   "purpose": "已评审选波实验清单（机制 + 基线 / 反证对照）；键名可自定，经 `--selection-contract-key <KEY>` 传给 build_wave（约定 `selection_w<W>`）",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/wq-brain-campaign-toolkit/references/selection-plan.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py",
+     "via": "`--selection-contract-key`；键缺失即报错，不落选集"
+    }
+   ],
+   "missing": "build_wave 报缺清单并中止（不自动放宽）",
+   "refresh": "每个预定实验一份；来源必须是实际 GEM 产物"
   }
  ]
 }

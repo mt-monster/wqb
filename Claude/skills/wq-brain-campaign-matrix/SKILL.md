@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: wq-brain-campaign-matrix
 description: "WorldQuant BRAIN alpha 挖掘的\"区域×数据集\"战役矩阵。当用户要在某区域挖 alpha / 开战役 / campaign / 查区域配置 / 看哪些数据集还没挖 / 走 region×dataset 效率工作流， 或任何新挖掘战役开始时（S0 之前）使用。把区域静态配置（合法 universe 档位、默认 neutralization、EVENT 字段规则）、数据集资产（清单 + PPA 预筛）与实证台账 （dead-ends / wins / campaign 状态）解析为预解析配置包，原样派发 S0–S6 skill 链 并把结果回写 registry。"
 layer: L-PRE
@@ -22,7 +22,7 @@ allowed-tools:
 ## 职责边界
 
 - **本 skill 负责**：查表：输入 region + 意图 → 输出**预解析配置包**（universe/delay/中性化/候选数据集/死路/胜绩台账），战役后回写 registry
-- **本 skill 不做**：不执行任何挖掘动作（执行在 toolkit 与各 skill）；**不产出中间文件**（配置包以参数注入下游）
+- **本 skill 不做**：不执行任何挖掘动作（执行在 toolkit 与各 skill）；**不产出中间文件**（配置包以参数注入下游）；**整链（九步）请走 `wq-brain-ra-pipeline`**——用户已给 REGION 与数据集就不必先调本 skill，只在「挖点什么 / 哪个区好」时先来这里
 - **上游 / 下游**：上游 = ra-pipeline S-PRE 或用户直给；下游 = S0 体检；另一端 = S6 回写后供下次查表
 
 

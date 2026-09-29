@@ -104,7 +104,9 @@ def test_sop_harvest_entry_is_registered_and_no_private_tool_is(db_mcp):
     assert {"alphas", "multisim_id", "dataset"} <= set(tools["harvest_multisim_results"].inputSchema["properties"])
     assert {"alphas", "dataset"} <= set(tools["workflow_auto_harvest"].inputSchema["properties"])
     # SOP 里写的每个 wqb-db 工具都在活的注册表里（不只是静态扫描装饰器）
-    named = set(re.findall(r"mcp__wqb-db__([A-Za-z0-9_]+)", SOP.read_text(encoding="utf-8")))
+    # 2026-09-29：ra-pipeline 拆成核心 SKILL.md + references/（步 6 的收批命令在 step6-backtest.md）——SOP 指整个目录
+    named = set(re.findall(r"mcp__wqb-db__([A-Za-z0-9_]+)",
+                           "\n".join(p.read_text(encoding="utf-8") for p in sorted(SOP.parent.rglob("*.md")))))
     assert "harvest_multisim_results" in named and named <= set(tools), named - set(tools)
 
 

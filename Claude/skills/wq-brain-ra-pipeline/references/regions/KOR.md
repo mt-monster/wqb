@@ -22,9 +22,7 @@ priors:
     - "分析师评级修正 × SH（shortinterest/holders）混合（2 颗 ACTIVE 实证）"
 gate_overrides:
   cw_gate: FAIL
-  longcount_min: 80
   longcount_verdict: FAIL
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 1
   fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死回写，不扩批（小宇宙烧不起配额）"

@@ -22,8 +22,6 @@ priors:
     - "早期 3 颗 ACTIVE（fundamental6/model25 时代），配方已被后续死路覆盖，不可复用"
 gate_overrides:
   cw_gate: FAIL
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 1
   fast_kill: "frozen 态不适用；probe-only 后门单波 8 探针上限"

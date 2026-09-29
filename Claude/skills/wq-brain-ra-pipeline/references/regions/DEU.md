@@ -21,8 +21,6 @@ priors:
   win_recipes: []
 gate_overrides:
   cw_gate: WARN
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 1
   fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死；sub_universe 未过则不再加变体（墙是结构性的，调参无解）"

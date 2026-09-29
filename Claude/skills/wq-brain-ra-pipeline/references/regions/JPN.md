@@ -23,8 +23,6 @@ priors:
   win_note: "区域 win 层空（新开垦）；GLOBAL region_kb 模板可用；anl15 系按精确表达式（sha1）级封禁，非前缀通配"
 gate_overrides:
   cw_gate: FAIL
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 5
   fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死回写，不扩批不换设置重试"

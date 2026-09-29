@@ -9,7 +9,7 @@
 
 ## DB清单
 
-由 `mcp__wqb-db__upsert_ledger_key(region=...,key=...,value=...)` 保存；来源必须是实际GEM产物，不能自己造表达式绕过S2。
+由 `mcp__wqb-db__upsert_ledger_key(region=...,key=...,value=...)` 保存，约定键名 `selection_w<W>`（`<W>` = 目标波号；`--selection-contract-key` 接受任意键名）；来源必须是实际GEM产物，不能自己造表达式绕过S2。
 
 ```json
 {

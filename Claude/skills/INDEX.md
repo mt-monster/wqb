@@ -53,22 +53,24 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 区域集合的唯一事实源是代码常量 `src/wqb/config.py::REGIONS`（**14 个**）。skill 文档、profile 目录、
 战役目录三者必须与下表一致——2026-09-11 审计曾发现"代码 14 / profile 11 / 各处口头清单各异"的三方漂移。
 
-| region | profile<br>`wq-brain-ra-pipeline/references/regions/<R>.md` | 战役目录<br>`tracking/<R>/` | `entry_verdict` |
-|---|---|---|---|
-| AMR | ✗ 未建 | ✗ | —（`config.REGIONS` 有；无 profile → ra-pipeline 按"处女地模板"路由） |
-| ASI | ✓ | ✓ | `probe-only` |
-| CHN | ✓ | ✓ | `probe-only` |
-| DEU | ✓（2026-09-11 补） | ✓ | `active` |
-| EUR | ✓ | ✓ | `active` |
-| GBR | ✓ | ✓ | `active` |
-| GLB | ✓ | ✓ | `active` |
-| HKG | ✓ | ✓ | `probe-only` |
-| IND | ✓ | ✓ | `active` |
-| JPN | ✓（2026-09-15 补） | ✓ | `active` |
-| KOR | ✓ | ✓ | `active` |
-| MEA | ✓ | ✓ | `frozen`（步 1 即拒；唯一后门见该区 profile） |
-| TWN | ✓ | ✗ | `probe-only` |
-| USA | ✓ | ✓ | `active` |
+| region | profile<br>`wq-brain-ra-pipeline/references/regions/<R>.md` | 战役目录<br>`tracking/<R>/` | `entry_verdict` | 缺口（步 1 的行为） |
+|---|---|---|---|---|
+| AMR | ✗ 未建 | 仅 `config/`（`settings.json` / `thresholds.json`），无波产物 | —（`config.REGIONS` 有） | 无 profile：走「处女地模板」（参照 ASI），且**先补 profile** 再开波 |
+| ASI | ✓ | ✓ | `probe-only` | — |
+| CHN | ✓ | ✓ | `probe-only` | — |
+| DEU | ✓（2026-09-11 补） | ✓ | `active` | — |
+| EUR | ✓ | ✓ | `active` | — |
+| GBR | ✓ | ✓ | `active` | — |
+| GLB | ✓ | ✓ | `active` | — |
+| HKG | ✓ | ✓ | `probe-only` | — （profile 的 `universe` 已于 2026-09-29 从 `config.REGIONS` 回填；步 1 仍复核） |
+| IND | ✓ | ✓ | `active` | — |
+| JPN | ✓（2026-09-15 补） | ✓ | `active` | — |
+| KOR | ✓ | ✓ | `active` | — |
+| MEA | ✓ | ✓ | `frozen` | 步 1 即拒，不进步 2；后门见 ra-pipeline `references/scenarios.md` 情景 RA-08 |
+| TWN | ✓ | ✗ 无目录 | `probe-only` | 开波前先补 `tracking/TWN/config/{settings,thresholds}.json` |
+| USA | ✓ | ✓ | `active` | — |
+
+缺口清单的机检登记在 `tests/unit/test_region_alignment.py`（补上一个缺口就必须从登记里删掉）；每个缺口区域在步 1 的行为写在 ra-pipeline 的 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)。
 
 规则（与 `wq-brain-ra-pipeline` 步 1 一致）：
 - **有 profile 的区**按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略执行。
@@ -128,7 +130,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | 阶段 | 问题 | 入口 skill | 产出 |
 |---|---|---|---|
 | S-PRE 战役查表 | 该区域有什么、什么已死、挖到哪了？ | **wq-brain-campaign-matrix**（查 registry_empirical 表三层：静态配置/数据集资产/死路胜绩台账 → 预解析配置包；**不替代 S0 体检**） | region 配置包（universe/中性化/排除族/候选集） |
-| S0 情报选题 | 在哪挖？ | **wq-brain-ppa-mining §1.0 体检**（cov≥0.85/alphaCount≤50/fields≥10 三硬门槛，不可跳过；方法定义见 ppa-mining §1.0，执行工具为 toolkit `score_datasets.py`（权威）/ `dataset_health_check.py`（兜底））；brain-next-move-analysis 为**并行情报层**（日报/金字塔分析，非流水线前置，不产出配置） | region+dataset+universe+delay+中性化 白名单 |
+| S0 情报选题 | 在哪挖？ | **wq-brain-ppa-mining §1.0 体检**（cov≥0.85/alphaCount≤50/fields≥10 三硬门槛，不可跳过；方法定义见 ppa-mining §1.0，执行工具为 toolkit `score_datasets.py`（权威）/ `dataset_health_check.py`（兜底，随 ppa-mining 分发于 `wq-brain-ppa-mining/scripts/`））；brain-next-move-analysis 为**并行情报层**（日报/金字塔分析，非流水线前置，不产出配置） | region+dataset+universe+delay+中性化 白名单 |
 | S1 数据理解 | 用什么字段、怎么预处理？ | brain-dataset-exploration-general → brain-datafield-exploration-general → brain-data-feature-engineering | 字段白名单 + 预处理决策（backfill/winsorize/rank/zscore/ts_event_*） |
 | S2 表达式生成 | 怎么写成表达式？ | brain-make-some-gem（批量，含增强策略）/ brain-feature-implementation（idea→本地CSV）；alpha-expression-verifier 预检语法 | **`expressions` 表**（status=`gem`/`enhanced`）+ ledger `s2_<ds>_d<delay>_idea` |
 | S3 设置仿真 | 怎么合法设置并批量跑？ | brain-inspect-raw-template-create-setting → brain-sim-alphas-in-batch-and-track；并发问题查 wqb-concurrency | alpha_list.json → IS 指标 + status CSV |
@@ -259,7 +261,7 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 - ⑤ **产出率严格口径**：`get_mining_yield(strict=True)` 默认 `yield_rate=ra_clean/backtested`，另给 `prod_clean/prod_blocked/prod_wall_ratio`；`s0-select` 同源，并新增跨区负先验 / 字段数守卫 / maxS 列。
 - ⑥ **GEM 生成侧预闸扩展**：`hump` 命名参数、`bucket` 缺 range 补/丢、区域非法 group 字段（`platform_constraints.json` `region_invalid_group_fields`）、非标窗口别名归一、同骨架换字段封顶（`WQB_GEM_MAX_PER_SKELETON` 缺省 12）。
 - ⑦ **闸门**：`gate.py` 闸 2b 区域非法 group 字段 FAIL；validator `bucket()` 必带 range/buckets。
-- ⑧ **台账修复**：pipeline 收批写 `backtest_results.dataset`（此前恒 NULL，928 行）；`tools/backfill_backtest_dataset.py` 只填空回填历史；`build_wave` 波号残留（全 dropped）时回退源池。
+- ⑧ **台账修复**：pipeline 收批写 `backtest_results.dataset`（此前恒 NULL，928 行）；历史空值回填（`backfill_backtest_dataset.py`，只填空）**已一次性跑完并归档到 `tools/legacy/`**（见 `tools/README.md`），不再是可调用入口；`build_wave` 波号残留（全 dropped）时回退源池。
 
 ## 2026-09-15 接线修复（审计落地，细节见各 skill）
 

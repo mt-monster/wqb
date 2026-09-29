@@ -438,7 +438,7 @@ def main():
     ap.add_argument("--source-wave", default=None,
                     help="显式从此源池重建；不优先读取目标波旧选集")
     ap.add_argument("--selection-contract-key", default=None,
-                    help="DB ledger机制/对照清单；按source_id及原式精确核验，条数由清单推导")
+                    help="DB ledger机制/对照清单（约定键名 selection_w<W>）；按source_id及原式精确核验，条数由清单推导")
     ap.add_argument("--per-bucket", type=int, default=8)
     ap.add_argument("--meta-file", default=None,
                     help="final_expressions_meta.json 路径（family 标签分桶）；缺省在 --file 同目录自动探测")

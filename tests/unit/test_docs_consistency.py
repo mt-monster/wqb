@@ -122,10 +122,10 @@ def test_signal_floor_docs_state_authoritative_location_and_real_region_count():
         f"signal_floor 覆盖不完整：{len(configured)}/{len(paths)}"
     )
 
-    # ② 文档口径须与实况一致
-    skill = _read(RA_PIPELINE / "SKILL.md")
+    # ② 文档口径须与实况一致（2026-09-29：停止 / 天花板规则从 SKILL.md 拆到 references/loop-and-stop.md，两处合读）
+    skill = _read(RA_PIPELINE / "SKILL.md") + _read(RA_PIPELINE / "references" / "loop-and-stop.md")
     assert "diversity.signal_floor" in skill
-    assert "唯一权威位置" in skill, "未写明 signal_floor 的权威位置"
+    assert "权威位置" in skill, "未写明 signal_floor 的权威位置"
     assert f"{len(configured)}/{len(configured)} 区域均已配该节" in skill, (
         f"文档未记录真实的区域覆盖数 {len(configured)}/{len(configured)}"
     )

@@ -21,11 +21,9 @@ priors:
   win_recipes: []
 gate_overrides:
   cw_gate: WARN
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 2
-  fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死"
+  fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
   stop_conditions: ["白名单被 dead_end 全覆盖"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(CHN)"
@@ -61,5 +59,5 @@ GEM 生成时 priors 必须声明 A 股特殊性：
 ## 避坑清单
 
 - 档位未实测前，任何生成/回测请求一律拒绝（返空事故防线）。
-- 量价信号先过"涨跌停截断"常识审查再进七槽。
+- 量价信号先过"涨跌停截断"常识审查再进本波。
 - GLB emotion 铁律照 exclusion。

@@ -7,7 +7,8 @@
       "what": "GBR 的 stop_rules_override（用户 2026-09-12「stay in GBR」指令）到期：GBR 区停止规则恢复约束，开波会被拦。",
       "where": [
         "ledger:GBR/stop_rules_override.until",
-        "Claude/skills/wq-brain-ra-pipeline/SKILL.md::stop_rules_override"
+        "src/wqb/waiver.py::stop_rules_override",
+        "Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md::stop_rules_override"
       ],
       "resolution": {
         "kind": "auto",
@@ -19,13 +20,15 @@
     {
       "id": "TB-02",
       "date": "2026-10-12",
-      "mentions": ["2026-10-11"],
+      "mentions": [
+        "2026-10-11"
+      ],
       "what": "CLI 开波区域闸缺省模式 warn → enforce（WARN_SUNSET=2026-10-11，次日起缺省 enforce，命中即 exit 2）。",
       "where": [
         "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_gates.py::WARN_SUNSET",
         "AGENTS.md::WARN_SUNSET",
         "Claude/skills/wq-brain-campaign-toolkit/SKILL.md::WARN_SUNSET",
-        "Claude/skills/wq-brain-ra-pipeline/SKILL.md::2026-10-12"
+        "Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md::2026-10-12"
       ],
       "resolution": {
         "kind": "code",

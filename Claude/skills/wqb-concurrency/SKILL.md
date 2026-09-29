@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: wqb-concurrency
 description: "WorldQuant Brain 并发挖掘调优。触发词：并发调优/429 风暴/CONCURRENT_SIMULATION_LIMIT_EXCEEDED/ 回测大量 429/提交成功数极低/调线程数/调并发/调信号量/战役 pipeline 批量回测提交/ 最大化回测吞吐/槽位利用率。 核心方法：测定服务端并发上限 C，并把本地在飞数锁到 C，避免 429 风暴与孤儿模拟占槽； 含七槽填槽模式 SOP（7 批 multisim 同提保持槽位常满，每次挖掘必须执行）。 含台账闭环：每波结论经 `campaign.py wave`/`ledger` 幂等 CLI 写入 DB（wave_results/ledger_kv），下一波设计强制以台账决策为输入。"
 layer: L3
@@ -117,3 +117,13 @@ self._sub_sem = threading.Semaphore(C)   # C = 实测上限
 6. **台账驱动选波（强制输入）**：下一波批次设计前必须先读 DB 台账——`campaign.py ledger get` / `wave get`、`mcp__wqb-db__get_latest_wave` / `get_wave_result` / `get_ledger_key`（判死清单/`exhausted_skeletons`/「下一波决策」节）；`WAVE_LEDGER.md` 快照仅作人工速览。禁止凭上轮对话记忆选波，禁止重发已饱和骨架或判死数据集的表达式。批间差异化（不同数据集/字段族/decay/中性化）以台账多样性快照中的补盲项为准。
 
 **注意**：提交配额（ET 日历日 REGULAR 4/日 + SUPER 1/日）与回测并行槽位是两个独立机制；本模式兼容第 1 节演进注记的令牌桶模型（7 批 multisim 仅耗 7 令牌、瞬时 ≤7 安全包络内）。
+
+### 8.1 账户级槽位仲裁（跨进程；`_lib/slots.py`，2026-09-19）
+
+`pipeline.py` 每个进程各自把并发锁在 `min(7, 批数)`；**两条流水线同跑**（IND w171 + JPN w8 实测）在飞 10–13 个 multisim，超过账户级 C≈7，此前只能靠 429 退避被动兜底。现由 toolkit `_lib/slots.py` 做主动仲裁：
+
+- 目录 `<repo>/logs/_slots/` 下**每个在飞 multisim 一个 token 文件**（内容 pid / multisim id / 时间戳）；提交前 `acquire()` 数活 token，≥ cap 则轮询等待，拿到即写 token；进入终态后 `release()` 删 token。
+- **陈旧 token**（进程已死，或超过 max_age 秒）自动回收，避免崩溃残留占坑；任何异常都降级为「不仲裁」（打印 warn），**绝不阻断提交**。
+- 环境变量：`WQB_GLOBAL_SLOTS`（账户级 cap，缺省 7；`0` = 关闭仲裁）、`WQB_SLOTS_DIR`（目录）。
+- **429 时怎么降并发**（可执行手段）：① 等待退避（MCP 内建 `Retry-After` + 指数）② 设 `WQB_GLOBAL_SLOTS=<n>` 降账户级并发 ③ 批大小 ≤ 5。**注意**：外部往 `pipeline.py` 传非 7 的并发形参**只会收到 warning，不会降并发**（并发在 pipeline 内部锁定）。ra-pipeline 步 6 的故障表只保留这一句指针。
+

@@ -44,6 +44,9 @@ import sys
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
+import sys as _sys_pe, os as _os_pe
+_sys_pe.path.insert(0, _os_pe.path.dirname(_os_pe.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器解析（tools/_pyenv.py）；作为脚本运行时自动切到 MCP venv，故文档里可写裸 python
 
 import sys as _sys, os as _os
 _sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
@@ -317,4 +320,5 @@ def main():
 
 
 if __name__ == "__main__":
+    _pyenv.reexec_under_venv()
     main()

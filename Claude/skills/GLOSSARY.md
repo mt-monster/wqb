@@ -18,13 +18,14 @@
 | **提交层信息** | `POST /submit` 响应里的 checks。`GET /alphas/{id}/submit` 在本平台恒 404，**不是**信息来源 | 「提交层视图」（指 GET 的那个） | submit-chain.md §3 |
 | **corr_slot** | 相关性计算的账号级单并发；忙时立即返回 `correlation_busy` | 「配额」 | `config.WAIT_THRESHOLDS` |
 | **submit_quota** | 每个 **ET 日历日**：REGULAR 4 + SUPER 1 + PPA 1（三者并行不互占） | 「周额度」（已废止）、48h / 24h 滚动 | `wqb.timeutil`、`tools/quota_status.py` |
-| **family_key（信号族）** | 表达式骨架指纹的**前 2 个算子**（`n_ops=3` 是更严粒度），如 `rank→ts_delta` | 「字段集合」「5b 的信号族」 | `tools/wave_gate.py::_pf_family` |
+| **信号族（family）** | 表达式引用的**字段集合**（去算子 / 常数），如 `snt21_pos_mean+snt21_pos_max`——prod-first 探针的分组单位（每族只探最强 1 条）；`dead_end` 记录里的 `family` 是人给的族名 | 与「骨架」混用 | `tools/campaign_intel.py::_pf_family` |
+| **骨架指纹（skeleton）** | 表达式里**前 2 个算子调用名**（如 `rank→ts_backfill`）——闸 PF 的判据，也是 ledger `prod_family_<region>_<family>` 键里的那个 family。比字段更准：同字段换骨架，prod 由 0.76–0.82 降到 0.46–0.57（`mdl135_d01_icc` 实证） | 叫成「信号族」 | `tools/wave_gate.py::_pf_family` |
 | **meets_internal_line** | Sharpe>1.58 且 Fitness>1.0（停止规则 A 的「达标」） | 裸写「达标」 | `config.GATES_PLATFORM` |
 | **ra_clean** | `is.checks` 里 RA 18 项没有任何非 PASS/PENDING（Failed RA = 0） | 裸写「达标」「零硬闸失败」 | `config.compute_webdata_failed_counts` |
 | **review_passed** | 评审闸全过，波结论 `PASS` | 「GREEN 波」 | `wave_results.verdict` |
 | **ATOM alpha** | 只用**单一数据集**字段的 alpha（允许的分组字段除外），享受放宽的提交口径（以近 2 年 Sharpe 为准） | 把「ATOM 提交口径」与 judge 的 `SINGLE_DATA_SET` 标签当两件事 | brain-how-to-pass-alpha-test `reference.md`；放宽的具体阈值**只引用官方表**，不在别处写数字 |
 | **FAIL / PENDING / WARNING** | `FAIL` 挡；`PENDING` = 结果未出，**不据此判死也不据此放行**；`WARNING` 见 §2.4 | 一个词三种范围 | §2.4 |
-| **判死（按粒度）** | 候选=淘汰；字段搭配=禁配；**家族=`dead_end`（范围 = region × family_key）**；数据集=`<ds>_dead` 台账键；波=`FAIL` | 「判死」不带粒度 | registry / ledger-keys |
+| **判死（按粒度）** | 候选=淘汰；字段搭配=禁配；**家族=`dead_end`（范围 = region × 信号族名）**；数据集=`<ds>_dead` 台账键；波=`FAIL` | 「判死」不带粒度 | registry / ledger-keys |
 | **否决权威 / 放行权威** | 否决权威**只能拦不能放**（`submit_verdict`、Failed-count 门、prod 实测）；放行权威 = **用户明确确认 + `confirm_submit=True` 的 POST**（不可逆） | 「唯一权威」 | submit-chain.md §1 |
 | **IS 衰减比 / IS→OS 衰减** | 前者 = IS 内部 `last_year/full_period`；后者 = 提交后平台 OS 相对 IS 的衰减 | 都叫「衰减比」 | brain-alpha-robustness |
 | **内部严线 / 平台线** | 内部严线 = 研究阶段省配额的本地预筛（`GATES_INTERNAL`）；平台线 = 提交阶段平台检查的官方线（`PLATFORM_CHECK_LINES`、`GATES_PLATFORM`）。**Sharpe 有三条不同的线，别互相顶替**：LOW_SHARPE 1.25（D1）、LOW_2Y_SHARPE 1.58、内部 1.58 | 「合格线」不带层 | `src/wqb/config.py` |

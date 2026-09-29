@@ -41,5 +41,5 @@
 
 1. 本清单作为 `WAVE_LEDGER.md` 的 S2 章节模板
 2. 每次进入 S2 前复制本清单到当前波次台账
-3. 全部勾选完成后方可调用 `pipeline.py run`
-4. `pipeline.py` 会硬闸校验 `feature_engineering_doc` 字段，缺失则中止
+3. 全部勾选后再调用 `pipeline.py run`（自查纪律，不是机器闸）
+4. `pipeline.py` 只在缺 `s2_compliance_w<wave>` 记录时打印一行提示，**不中止、不需要 `--force`**（2026-09-15 起；详见 `S2_COMPLIANCE_GUIDE.md`）

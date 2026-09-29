@@ -31,6 +31,9 @@ import sys
 import tempfile
 import zipfile
 from typing import Dict, List, Tuple
+import sys as _sys_pe, os as _os_pe
+_sys_pe.path.insert(0, _os_pe.path.dirname(_os_pe.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器解析（tools/_pyenv.py）；作为脚本运行时自动切到 MCP venv，故文档里可写裸 python
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _TOOLS_LIB = os.path.join(REPO_ROOT, "tools", "lib")
@@ -167,4 +170,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    _pyenv.reexec_under_venv()
     raise SystemExit(main())

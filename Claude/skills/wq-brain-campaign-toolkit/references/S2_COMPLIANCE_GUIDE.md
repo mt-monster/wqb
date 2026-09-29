@@ -1,144 +1,55 @@
-# S2 合规硬闸与检查清单使用指南
+# S2 合规记录与检查清单（**提示级，不阻断**）
 
-## 概述
+> 2026-09-29（skills 审查 RA-76）：本文旧版把 `pipeline.py run` 写成「强制校验 `s2_compliance_w<wave>`、缺失中止、`--force` 逃生」——那是 **2026-08-26 ~ 09-15** 的行为。
+> 2026-09-15（降级 ⑥）起：缺记录只打印一行提示，**不中止、不需要 `--force`**。以代码为准：`scripts/pipeline.py` 的 `_check_s2_compliance` 调用处（「S2 合规记录：仅提示，不再中止」）。
 
-为防止跳过 `brain-data-feature-engineering` skill 直接手写候选池，现已落地两层防御机制：
+## 现状一句话
 
-1. **第二层：检查清单** - 每次进入 S2 前的自查模板
-2. **第一层：流程硬闸** - `pipeline.py` 入口强制校验
+| 路径 | 行为 |
+|---|---|
+| `pipeline.py run`（跑批入口） | 有记录 → 打印 `[S2-COMPLIANCE] 记录存在: …`；没有 → 打印 `[S2-COMPLIANCE] 无合规记录（仅提示，不阻断）: …`，**继续往下跑** |
+| 工作流预检节点（`src/wqb/workflow/nodes/campaign.py`，预检通过后） | 记录缺失且 S1 台账 `s1_<dataset>_d1` 有 `ideas_md_path` → **自动补录**（`candidate_pool_source=skill`，`notes` 写 `auto-marked by preflight`）；补录失败只记警告 |
+| `campaign.py s2-mark`（= `scripts/s2_compliance_mark.py`） | **可选**的手工标记；写 `ledger_kv` 的 `s2_compliance_w<wave>`（键目录见 `docs/ledger_keys.json`） |
 
----
+## 为什么降级（证据）
 
-## 第二层：检查清单（自查模板）
+- 校验只验「有一条台账指向一份文档、文档含『字段 / 特征 / 建议』三个词、来源标记为 `skill`」，**不验内容**；文档本身由确定性模板渲染（8 问框架），对表达式质量零贡献。
+- 手工批（GEM Mode B 等）没有特征工程文档，旧硬闸只能靠 `--force` 绕过——**闸变成了每次都要绕的仪式**。
+- 真正保障「字段白名单 / 类型 / 不可访问算子」的是 **typed catalog**（`stage_gate` 缺目录会 FAIL），不是这条记录。
 
-### 文件位置
-`references/S2_COMPLIANCE_CHECKLIST.md`
+## 检查清单（自查，仍可用）
 
-### 使用方法
+`references/S2_COMPLIANCE_CHECKLIST.md`：进入 S2 前的自查模板（是否基于 `brain-data-feature-engineering` 的输出构建候选、字段 / 窗口 / 中性化各写了理由）。
+它是**给 agent 的自我提醒**，不是机器闸；勾选与否不影响 `pipeline.py` 的行为。
 
-1. 每次进入 S2 前，复制清单内容到当前波次的 `WAVE_LEDGER.md`
-2. 逐项确认并勾选
-3. 全部完成后，执行 `s2-mark` 命令写入合规记录
-
-### 清单内容摘要
-
-- 已调用 `brain-data-feature-engineering` skill（时间/参数/输出路径）
-- 已生成特征工程 markdown 文档（包含字段分类/覆盖率/建议）
-- 候选池基于 skill 输出构建（非手写）
-- 决策依据完整填写
-- 禁止事项确认（未跳过/未简化/未错误认知）
-
----
-
-## 第一层：流程硬闸（强制校验）
-
-### 机制说明
-
-`pipeline.py run` 在读取表达式前，会强制校验 S2 合规记录：
-
-- 检查 `ledger_kv` 中是否存在 `s2_compliance_w{wave}` 记录
-- 检查 `feature_engineering_doc` 字段是否存在且文件有效
-- 检查文档是否包含必要章节（字段/特征/建议）
-- 检查 `candidate_pool_source` 是否为 `skill`
-
-### 校验失败行为
-
-```
-[S2-COMPLIANCE] 未找到 wave=36 的 S2 合规记录（ledger_kv key=s2_compliance_w36）
-[S2-COMPLIANCE] 中止：必须先完成特征工程 skill 并记录文档路径
-[S2-COMPLIANCE] 逃生阀：--force 强行继续（需在台账记录原因）
-```
-
-### 逃生阀
-
-使用 `--force` 可强行继续，但必须在台账中记录原因：
+## 想留一份可审计的记录时（可选）
 
 ```bash
-python pipeline.py --campaign-dir tracking/KOR run --wave 36 --dataset kor_streetaccount1 --force
-```
-
----
-
-## 标准工作流程
-
-### 步骤 1: 调用特征工程 skill
-
-```bash
-# 通过 Skill 工具调用
-Skill(brain-data-feature-engineering, region=KOR, dataset=kor_streetaccount1, delay=1)
-```
-
-### 步骤 2: 生成特征工程文档
-
-skill 会输出 markdown 文档，例如：
-`tracking/KOR/feature_engineering_kor_streetaccount1_20260826.md`
-
-### 步骤 3: 填写检查清单
-
-将 `S2_COMPLIANCE_CHECKLIST.md` 内容复制到 `WAVE_LEDGER.md`，逐项勾选。
-
-### 步骤 4: 写入合规标记
-
-```bash
-python campaign.py --campaign-dir tracking/KOR s2-mark \
-    --wave 36 \
+# 1. 特征工程文档（brain-data-feature-engineering 产出）
+#    例：tracking/KOR/feature_engineering_kor_streetaccount1_20260826.md
+# 2. 写入合规标记
+$WQ_PY campaign.py --campaign-dir tracking/KOR s2-mark --wave 36 \
     --doc-path tracking/KOR/feature_engineering_kor_streetaccount1_20260826.md \
-    --candidate-pool-source skill \
-    --notes "brain-data-feature-engineering skill 生成"
+    --candidate-pool-source skill --notes "brain-data-feature-engineering 生成"
 ```
 
-### 步骤 5: 运行 pipeline
+- `s2-mark` 自己的 `--force` = **覆盖已存在的记录**（重复标记同一波会拒绝），与 `pipeline.py` 的 `--force` 无关。
+- 手工构建候选池就如实写 `--candidate-pool-source manual`——现在它不会被拦，只是留下事实。
 
-```bash
-python campaign.py --campaign-dir tracking/KOR pipeline run \
-    --wave 36 --dataset kor_streetaccount1 --submit
-```
+## 别把两个 `--force` 弄混
 
-此时硬闸校验通过，正常执行。
+`pipeline.py run --force` 只越过**配额闸**（提交配额耗尽时继续，会用光当日额度）与 **universe 判死规则**闸；**与 S2 合规无关**。细节见 [`poll-and-quota.md`](poll-and-quota.md)。
 
----
+## 文件
 
-## 文件清单
+| 文件 | 说明 |
+|---|---|
+| `references/S2_COMPLIANCE_CHECKLIST.md` | 自查模板 |
+| `scripts/pipeline.py::_check_s2_compliance` | 只读校验，结果仅打印 |
+| `scripts/s2_compliance_mark.py` | 手工标记（`campaign.py s2-mark`） |
+| `src/wqb/workflow/nodes/campaign.py`（预检节点） | 预检通过后自动补录 |
 
-| 文件 | 路径 | 说明 |
-|:---|:---|:---|
-| 检查清单模板 | `references/S2_COMPLIANCE_CHECKLIST.md` | 每次 S2 前自查用 |
-| 硬闸校验函数 | `scripts/pipeline.py::_check_s2_compliance` | pipeline 入口强制校验 |
-| 合规标记工具 | `scripts/s2_compliance_mark.py` | 写入 S2 合规记录到 ledger_kv |
-| 子命令注册 | `scripts/campaign.py` | 添加 `s2-mark` 子命令 |
+## 版本
 
----
-
-## 故障排查
-
-### 问题 1: 硬闸报错"未找到 S2 合规记录"
-
-**原因**: 未执行 `s2-mark` 命令写入记录
-
-**解决**:
-```bash
-python campaign.py --campaign-dir <DIR> s2-mark --wave <WAVE> --doc-path <PATH>
-```
-
-### 问题 2: 硬闸报错"文档不存在"
-
-**原因**: `--doc-path` 路径错误或文件被移动
-
-**解决**: 确认文档实际路径，重新执行 `s2-mark --force` 覆盖
-
-### 问题 3: 硬闸报错"候选池来源标记异常"
-
-**原因**: `candidate_pool_source` 不是 `skill`（可能是 `manual`）
-
-**解决**: 如确实为 skill 生成，重新标记：
-```bash
-python campaign.py --campaign-dir <DIR> s2-mark --wave <WAVE> --doc-path <PATH> --candidate-pool-source skill --force
-```
-
-如为手动构建，需补做特征工程 skill 或接受风险使用 `--force` 继续。
-
----
-
-## 版本历史
-
-- **1.0** (2026-08-26): 初始版本，落地两层防御机制
+- **2.0**（2026-09-29）：与 2026-09-15 降级对齐；删除「硬闸 / 逃生阀 / 故障排查」三节（对应的报错已不存在）。
+- 1.0（2026-08-26）：初版（两层防御：清单 + `pipeline.py` 硬闸）。

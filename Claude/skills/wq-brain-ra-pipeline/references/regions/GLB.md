@@ -21,11 +21,9 @@ priors:
   win_recipes: []
 gate_overrides:
   cw_gate: WARN
-  longcount_min: 80
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 1
-  fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死"
+  fast_kill: "缺省（决策表 D15：新数据集 8 探针无 |S|≥0.5 即判死）；本区无额外规则"
   stop_conditions: ["白名单被 dead_end 全覆盖"]
 empirical_anchor:
   dead_ends_ref: "get_dead_ends(GLB)"

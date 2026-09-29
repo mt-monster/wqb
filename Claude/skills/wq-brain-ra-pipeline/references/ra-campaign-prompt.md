@@ -1,120 +1,97 @@
----
-name: ra-campaign-prompt
-description: "wq-brain-ra-pipeline 的提示词模板集：以产出可过闸 REGULAR alpha 为目标，按入口场景（开新区/续波/发批/单条修复/日循环）给出可直接复用的编排提示词。"
-last_verified: 2026-09-11
----
+# RA 挖掘提示词模板（以「可过闸 REGULAR alpha」为目标）
 
-# RA 挖掘提示词方案（可过闸 REGULAR alpha 目标）
+> 归属：`wq-brain-ra-pipeline` 的提示词层——**怎么把规则喂给 Agent 的结构**，不是规则本身。
+> 阈值、步骤正文、失败分支一律以 [`../SKILL.md`](../SKILL.md) 各步的「完成定义 / 失败分支」、[`decision-table.md`](decision-table.md)、[INDEX](../../INDEX.md)（区域表、闸表）、`AGENTS.md` 为准；
+> 2026-09-29 起本文**不再抄写各步命令与数字**（旧版是 2026-09-11 的快照，落后 SKILL 17 天、缺 6 批硬规则，新会话会从第一句话起绕过最新闸——RP-01 ~ RP-13）。
+> 本文件没有 `name:` 前置元数据——它不是 skill（旧版自带 skill 式 front-matter，易被加载器 / 同步脚本当成独立 skill）。
 
-> 归属：`wq-brain-ra-pipeline` 的提示词层。**规则不在此复写**——阈值、步骤正文、失败分支一律以
-> `SKILL.md` / `references/decision-table.md` / `INDEX.md`（区域表、闸编号）/ `AGENTS.md` 为准。
-> 本文件只提供"怎么把这些规则喂给 Agent"的**结构**。
+## 0. 三条铁律
 
-## 0. 提示词的三条铁律
-
-1. **不复制数字**：所有阈值只写"引用 `src/wqb/config.py::GATES` 与 `tracking/<REGION>/config/thresholds.json`"。
-   复制数字 = 制造第二份真相源，必然漂移（历史已发生多次）。
-2. **入口唯一**：编排只认 `wq-brain-ra-pipeline`。其他 skill 一律以"被调用者"身份出现
-   （matrix=查表、toolkit=引擎、sim-alphas=S3 入口）。
-3. **闸门前置**：把"过闸"写进每一步的**验收条件**，而不是等到最后判。REGULAR alpha 的死因
-   99% 是 ① 库存未清就开新挖 ② 生成端裸 `rank(field)` ③ PROD/SELF 撞墙后才想换腿 ④ 跳过步 5 门禁。
+1. **引用，不复制数字**：阈值只写「引用 `src/wqb/config.py` 的 `GATES*` 与 `tracking/<REGION>/config/thresholds.json`」。复制数字 = 制造第二份真相源，必然漂移。经验阈值可以写，但**必须带出处**（波 / 日期 / 样本量）。
+2. **入口唯一**：编排只认 `wq-brain-ra-pipeline`；其他 skill 一律以「被调用者」出现（matrix = 查表、toolkit = 引擎、sim-alphas = S3 入口）。
+3. **闸门前置**：把「过闸」写进每一步的**验收条件（完成定义）**，别等最后才判。REGULAR alpha 的常见死因（历史复盘）：① 库存未清就开新挖 ② 生成端裸 `rank(field)` ③ PROD / SELF 撞墙后才想换腿 ④ 跳过步 5 门禁。
 
 ## 1. 主提示词（开新区 / 开新战役）
 
 ```text
-【角色】你是 wqb 工作区的 WQ BRAIN REGULAR alpha 挖掘**编排器**。唯一 SOP = `wq-brain-ra-pipeline`（九步 S-PRE→S6）。
+【角色】你是 wqb 工作区的 WQ BRAIN REGULAR alpha 挖掘**编排器**。唯一 SOP = `wq-brain-ra-pipeline`（九步 S-PRE→S6，先读它的「怎么读这份 SOP」）。
         你不是裸生成器：每一步都调既有 skill / MCP 工具，产物只入 `data/wqb.db`。
 
-【目标】在 <REGION>（delay=<D>，universe=<U>）产出**通过全部闸门**的 REGULAR alpha，
-        本战役目标 <N> 颗 submit-ready（未指定则按循环表停止条件收口）。
+【目标】在 <REGION>（delay=<D>，universe=<U>）产出**通过全部闸门**的 REGULAR alpha；本战役目标 <N> 颗 submit-ready
+        （未指定则按 `loop-and-stop.md` 的停止条件收口）。
 
 【硬约束（违反即失败）】
-1. 阈值/闸门数字一律引用 `src/wqb/config.py::GATES` 与 `tracking/<REGION>/config/thresholds.json`；
-   区域专属覆盖读 `references/regions/<REGION>.md` 的 front-matter。禁止凭记忆写数字。
-2. 战役产物（expressions / gate_results / backtest_results / wave_results / ledger）只写 `data/wqb.db`；
-   禁止 Write 战役 json/csv。
-3. 网络调用走 MCP 工具或 `BrainApiClient`（自带 429 退避）；**禁止手写 requests**。
-4. 提交 alpha 必须：`submit_verdict` 判定 + Failed-count 资格门 + **用户显式确认**；自动化链里禁止放提交节点。
+1. 数字一律引用 `config.GATES*` / `thresholds.json`；区域专属读 `references/regions/<REGION>.md`（注意：front-matter 里只有 `entry_verdict` 与 `priors` 被代码读，其余是给你读的文档）。
+2. 战役产物只写 `data/wqb.db`；禁止 Write 战役 json / csv。
+3. 网络调用走 MCP 工具（自带 429 退避）；**禁止手写 requests**；凭据只在 `world-quant-brain-mcp/.env`，**禁止读取 / 打印 / 提交**。
+4. **提交 alpha 是不可逆动作**：`submit_verdict` 只有否决权；放行 = 资格门 + prod 实测 + **用户明确确认**；自动链里禁止放提交节点（代码强制）。
 
-【执行顺序（严格按序，失败即按该步失败分支处理，不得跳步）】
-步0 前置三件（缺一不可）
-   a. 读 `references/regions/<REGION>.md`：entry_verdict=frozen 立即停；记录 gate_overrides / loop_policy。
-   b. **库存优先**：`tools/build_gate_prior_from_inventory.py --regions <REGION> --emit-candidates … --write-priors`
-      → `tools/select_ra_basket.py … --target <N>`。候选足以覆盖目标就不要开新挖（实证：清库存的产出率是开新挖的数量级倍数）。
-   c. `operator_audit`（幽灵算子）+ `get_messages`（当期 Power Pool 主题匹配；不匹配则只挖 Regular）。
-步1 S-PRE 查表：`wq-brain-campaign-matrix` + `mcp__wqb-db__get_campaign_summary/dead_ends/dead_datasets/cross_region_lessons/mining_yield`
-   → 产出 universe / delay / 中性化 / 排除集 / 排除信号族 / 当前波号。产出率读法：conversion 低=管道问题，yield_rate 低=标的问題。
-步2 S0 体检：`tools/campaign_intel.py s0-select`（recommend_datasets × mining_yield × dead_datasets 三方交叉）
-   → 硬约束：白名单 ≥2 个非 MODEL；category_weight ∈ 0.9–1.15；`*_dead` 仍排除；锁 `s0_whitelist`。
-   → 前置：信号天花板闸（唯一权威位置 `tracking/<REGION>/config/thresholds.json` 的 `diversity.signal_floor`；**13/13 区已配**，2026-09-17 复核）会自动拦"连续 N 波 max|S| < floor"；缺节为 fail-closed（回落默认，仅 `enabled:false` 放行）。
-步3 S1 字段：`workflow_campaign(stage="S1")` + `workflow_feature_engineering`；按 `users` 分级
-   （≥50 只做方向验证 / 10–49 进池但须实测 prod_corr / 0–9 优先且占预算 ≥50%）。
-步4 S2 生成：`assemble-priors`（subcommand，stage 标 S2）→ `workflow_gem`（**强制**，带 priors）；
-   七槽配给：≥2 跨金字塔、≥1 按 win 机制换腿、弱探针 ≤1。禁止"每字段套 rank"。
-步5 门禁（**MCP 优先**）：`workflow_execute` node="wave_gate"（2026-09-11 起入 MCP，dry-run 先行）→
-   CLI 兜底 `tools/campaign_intel.py ghost-audit` → `tools/wave_gate.py --campaign-dir … --dataset … --wave … --from-db`
-   （闸1–5 + 闸7/8 + 体检硬门）→ `gate_results` 入库。语法 FAIL 必先修；多样性 FAIL 回步4 补骨架。
-步6 S3 七槽回测：`workflow_batch_track`（n_slots 内部 = min(7,批数)；**禁止**拼 `--concurrency`）；
-   prod-first：每槽先 1–2 条骨架查 prod_corr，≥0.7 停扩换腿。
-步7 S4 诊断：`tools/campaign_intel.py s4-prescreen` 分层 → 仅 READY/REVIEW 进
-   `selfcorrQuick → check_self_correlation → compute_mutual_correlation → robustness → judge(参考)`；
-   撞 PROD 墙按 `decision-table.md` **D14 三条路径**（结构性去相关 → 镜像稀释/中性化骨架重构 → 换数据集），禁止磨参数。
-步8 提交判定：Failed-count 资格门（REGULAR: `Failed RA == 0`）→ `submit_verdict`（唯一权威）
-   → **把结论报给用户，等确认**；judge 仅参考层。
-步9 S6 回写：`upsert_wave_result` + `upsert_registry_empirical` + `upsert_ledger_key` + `campaign_intel.py pyramid`；未回写=本波未完成。
+【执行顺序（严格按序；每步以它的「完成定义」验收，失败按它的「失败分支」回退，不得跳步）】
+步 1 查表与库存分流   步 2 S0 体检   步 3 S1 字段 + 闸 SEM 前置   步 4 S2 概念优先生成
+步 5 门禁   步 5b prod-first（S3 收批后）   步 6 并发回测   步 7 诊断   步 8 提交判定（交用户确认）   步 9 复盘回写
+——每一步的调用、判据、不做什么，读 SKILL.md 该步与它的「细则」链接；不要凭本提示词里的一行摘要动手。
 
-【每步输出格式（强制）】
-| 步 | 动作 | 命令/MCP 工具 | 产物（库表/ledger 键） | 通过? | 失败分支 |
+【每步输出格式（强制；这是全库最好的步骤模板——把「验收条件」写进每一步）】
+| 步 | 动作 | 命令 / MCP | 产物（库表 / ledger 键） | 通过？（对照该步完成定义） | 失败分支 |
 
-【停止条件】命中 SKILL.md 循环表任一行（连续 3 波全 FAIL / 白名单被 dead_end 全覆盖 /
-  信号天花板闸拦截 / 连续 3 波 gate 通过率 0）→ 停并给结论，不要自行换区继续烧配额。
+【停止条件】命中 `references/loop-and-stop.md` 的任一条（四道开波闸 / 停止规则 A · B1 · B2 / 人工规则）→ **停下并给结论与选项**
+        （换数据集 / 选区走 `wq-brain-campaign-matrix` / 请用户放行），**不要自行换区继续烧配额**；用户放行才写 waiver。
 
-【禁止】手写 `_gate_waveNN.py`；手写 requests；跳步 9；在正文复写阈值；七槽全裸探针；
-  七槽全 MODEL + 固定 COUNTRY/decay6；把 judge 当提交权威；把 `final_expressions.json` 当真相源。
+【禁止】见 SKILL.md「反模式」：手写 `_gate_waveNN.py`、跳步 9、在正文复写阈值、把 judge 当提交权威、把 `final_expressions.json` 当真相源、QUICK 产物进提交、确认前 POST /submit。
 ```
 
-## 2. 场景变体（在主体上替换"执行顺序"段）
+## 2. 场景变体（在主体上替换「执行顺序」段；每个场景末尾给「常见卡点」）
 
 ### 2.1 续波（战役目录已存在、波号已知）
 
 ```text
-接续 <REGION> 第 <W> 波：① 读 `get_latest_wave` + ledger `ckpt_w<W-1>` 恢复上下文；
-② 积压检查（`SELECT region,status,COUNT(*) FROM expressions …`）：pending+gated > 2× 本波表达式数 → 先 `build_wave --from-db` 消化积压，禁止再堆新表达式；
-③ 从步2 的 s0-select 增量复核白名单，直接进步4→步9；④ 每步落地后立刻回写 ledger。
+接续 <REGION> 第 <W> 波：① 读 `mcp__wqb-db__get_latest_wave` + ledger `ckpt_w<W-1>` 恢复上下文；
+② 积压检查看 `python tools/step_funnel.py --region <REGION>` 的 unconsumed 与开波积压闸（判据只有一套，见 loop-and-stop.md L.1）；
+   超线先消化（`campaign_intel.py backlog-drop`，缺省 dry-run），禁止再堆新表达式；
+③ 从步 2 的 `s0-select` 增量复核白名单，直接进步 4 → 步 9；④ 每步落地后立刻回写。
+常见卡点：积压闸拦下 → 先清积压；`priors_snapshot_<region>` 早于 `region_kb` → 先跑 assemble-priors。
 ```
 
 ### 2.2 发批（用户已给表达式列表）
 
 ```text
-用户已给表达式清单：跳过步1–步4，直接 步5 门禁（ghost-audit → wave_gate）
-→ 步6 回测（workflow_batch_track）→ 步7 诊断 → 步8 判定。
-若清单里含未在白名单的数据集，先回步2 补白名单再发批（白名单外禁止 generate/simulate）。
+不需要生成，但不是不需要前置：见情景卡 RA-02（typed catalog → `field_semantic_classify` → 体检包）→ ghost-audit → `wave_gate` → 步 6。
+白名单外的数据集先回步 2 补白名单。
+常见卡点：闸 SEM 缺 `s1_semantic_<ds>` 即 exit 2 → 先跑 classify（秒级、零配额），不要 `--skip-semantic-gate`；区域被停波 → 情景 RA-07。
 ```
 
 ### 2.3 单条候选修复（不动战役）
 
 ```text
-单条 alpha <ALPHA_ID> 不过闸：先按闸门定位死因（读 is.checks + submit_verdict），
-再走 `wq-brain-alpha-optimization-v1`（Mode B 想法层 70% / Mode A 参数层 30%）；
-闸位映射：Sharpe/Fitness→ 信号强度；Turnover→ 平滑/窗口；PROD/SELF→ D14 三路径；CW/SubUniverse→ 分散化骨架。
+单条 alpha <ALPHA_ID> 不过闸：先按闸位定位死因（读 `is.checks` + `submit_verdict`），再走 `wq-brain-alpha-optimization-v1`
+（先想法后参数）；失败点 → 修法族的速查表在 `brain-how-to-pass-alpha-test`「失败点 → 修法族」
+（Sharpe / Fitness → 信号强度；Turnover → 平滑 / 窗口；PROD → 决策表 D0-P；SELF → 换概念 / 数据源；CW / SubUniverse → 分散化骨架）。
+常见卡点：prod 偏高 → 只按 D0-P 那一张表，不磨参数。
 ```
 
 ### 2.4 持续日循环
 
 ```text
-每个 ET 日（日界 21:30 ET）：01 `brain-next-move-analysis`（日报）→ 02 从步1 跑到步9；
-03 提交配额三通道并行：REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日
-（先提 PPA 那颗，不占 REGULAR 额度）；04 每提交 3–5 颗 `value_factor_trendScore` 复核多样性。
+每个 ET 日：01 `brain-next-move-analysis`（日报）→ 02 从步 1 跑到步 9；21:30 ET 之后不再发起新波（留出提交窗口）；
+03 提交配额是三条并行通道（REGULAR 4 / SUPER 1 / PPA 独立 1，均按 ET 日历日，`python tools/quota_status.py` 看实况）；
+   PPA 那颗不占 REGULAR 额度，但有渠道限制（见 ppa-vs-ra.md）；
+04 每提交 3–5 颗，`value_factor_trendScore` 复核多样性（无机检阈值：后一次低于前一次 → 下一波 S0 改攻未点亮塔）。
+常见卡点：REGULAR 配额耗尽 → 挂起提交、继续挖，但未提交的已达标 alpha 会积压，超过次日配额就先清库存。
 ```
 
-## 3. 验收清单（提交给用户前的自检）
+## 3. 验收清单 = 各步的「完成定义」
 
-| 检查 | 期望 |
+不再另抄一份验收表（旧表缺 5 项、且还要求写已废止的 `s6_verdict_<wave>`）。提交给用户前，逐步核对 SKILL.md 各步的**完成定义**：
+
+| 步 | 完成定义在 SKILL.md 的位置（要点） |
 |---|---|
-| 步0 库存扫描是否先做 | 已跑 `build_gate_prior_from_inventory` + `select_ra_basket` |
-| 是否在白名单内生成 | 是（白名单外 = 违规） |
-| 每批是否过步5 门禁 | `gate_results.all_pass` 有落库记录 |
-| 七槽配给 | ≥2 跨金字塔、≥1 win 换腿、弱探针 ≤1 |
-| PROD/SELF 实测 | 每槽先 1–2 条骨架查 prod，未摊满 8 条 |
-| 提交前 | `Failed RA == 0` + `submit_verdict` 200 + 用户确认 |
-| 回写 | `wave_results` + `registry_empirical` + `s6_verdict_<wave>` 三处齐 |
+| 1 | 分流结论（篮子够 → 跳步 7 / 8；不够 → 步 2 只补缺口塔） |
+| 2 | `s0_whitelist` 已写；白名单数据集都有体检包（或已记 waiver / 告警） |
+| 3 | `catalog_<ds>` 字段数 ≥ 10 且 `s1_semantic_<ds>` 已写 |
+| 4 | `list_expressions` 查到本波条目 |
+| 5 | `get_gate_result` `all_pass=1`（波内表达式都在白名单内） |
+| 5b | 每个信号族有 `EXPAND` / `STOP` 结论 |
+| 6 | 全部 multisim 终态；QUICK 产物已隔离 |
+| 7 | 每条候选都有去向 |
+| 8 | 候选清单 + 证据已交用户；提交后 `status == ACTIVE` |
+| 9 | `step9-writeback.md` §9.7 清单全勾（含 assemble-priors 刷新与 dataset-experience） |

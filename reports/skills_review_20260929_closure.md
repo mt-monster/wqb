@@ -6,7 +6,7 @@
 
 | 状态 | fixed | superseded | declined | needs-platform | open | 合计 |
 |---|---|---|---|---|---|---|
-| 条数 | 24 | 0 | 0 | 1 | 733 | 758 |
+| 条数 | 224 | 0 | 2 | 1 | 531 | 758 |
 
 ## T0
 
@@ -542,137 +542,137 @@
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RA-01 | open |  | 塞入 15 个触发词，其中“选数据集/中性化/窗口”“批量回测”“发批”“提交批次”与 `wq-brain-campaign-matrix`、`brain-sim-alphas-i |
-| RA-02 | open |  | “不亲自动手/只做编排、每步调既有 skill 或 MCP”，但正文直接调用 ≥12 个 `tools/*.py` CLI（build_gate_prior_from_invent |
-| RA-03 | open |  | “提交层**唯一权威** = submit_verdict”（L20、L938）⇄ “它是**否决权威**”（L679）⇄ “提交层唯一权威**不是** submit_verdic |
-| RA-04 | open |  | `brain-deepExplore` 废止说明是变更史，且是“不要再读”式负指令，没有正向去向 |
-| RA-05 | open |  | 表名“三角”只有 3 行，随后又追加 3 个例外 skill；matrix 的“where=查表选区选集”与步 1/步 2 的“查表/选集”重叠，且没有说**何时**调 matri |
-| RA-06 | open |  | 声称“唯一输入 `$REGION`”，后文却用 `$DELAY/$UNIVERSE/$DS/$W/$DTYPE/$TARGET_SEATS`；其中 `$DELAY/$UNIVERS |
-| RA-07 | open |  | “MCP 应用尽用——**能**走 MCP 的一律走”没有判据；示例却大量使用裸 `python`（L96/99/127/171/193/286 等），与同段“走 `$WQ_PY` |
-| RA-08 | open |  | “阈值不复写，引用 `GATES`”，但本文含 ≥15 处字面阈值（1.58、1.0、0.7、0.60–0.70、≥100、≥16、≥30…）；反模式又把“复写阈值”列为禁止项—— |
-| RA-09 | open |  | 优先级只写“用户 > 决策表 > 正文”，L75 另写“profile > 正文”；profile 与决策表谁高、用户指令与代码 fail-closed 闸谁高，均未说 |
-| RA-10 | open |  | “每步含 目的/MCP 调用/产物/失败分支；任一步 FAIL 就地回退，不允许跳过” 与实际不符：步 7 无“目的/产物”、“失败分支”夹在段中（L654）；步 1 的调用散在  |
-| RA-11 | open |  | 两套编号并用：“步 1–9(+5b)” 与 “S-PRE/S0–S6”，正文混用（步 1 里的“S1 用字段级失败边界选字段”指的是步 3；步 4 里的“S4/S6 依据配对证据” |
-| RA-12 | open |  | 硬编码“13 个 profile”“14 个 REGIONS”“仅 AMR 未覆盖”，同一事实三种说法且随时过期；另有事实漂移：`AMR` “无战役目录”但 `tracking/A |
-| RA-13 | open |  | “生成先验”行的 profile 字段列写成优先级句子（应为 `priors`），与其余三行形式不一；缺“字段缺失时回落什么”列 |
-| RA-14 | open |  | 一段塞 4 条规则（优先级、缺字段回落、未覆盖区域、frozen）；“frozen 步 1 即拒”与 L87“按 profile 入口裁决处理、不继续步 2”不一致；`probe- |
-| RA-15 | open |  | 首段是对 dataset-mining-experience 的消费规则，夹带“S1 用…选字段，S2 机制文档引用…”（指步 3/步 4）；“以 DB 查表结果为准”未说是哪个工 |
-| RA-16 | open |  | “论坛默认不查；仅当『判死区复开评估』时用 forum_recon”：该触发条件无定义；而同一工具在步 4（机制枯竭）、步 5（KB 无货）、步 7（卡闸找武器）、步 9（判死前软 |
-| RA-17 | open |  | “先读区域 profile”放在“目的”之后、库存盘点之前，且 `frozen` 处理与 L75 不一致 |
-| RA-18 | open |  | 这是**全流程最大分流点**（“先清库存，再开新挖”，实证 170 次新回测 0 可提交 vs 一次扫描 20 条），却只有一句判据“候选池不足以覆盖目标金字塔”——无量化定义（多 |
-| RA-19 | open |  | “篮子敲定以 detail 端点 `is.checks` 无 `result==FAIL` 为准”弱于步 8 的 RA 口径（WARNING/ERROR 也计，`check_cou |
-| RA-20 | open |  | 一行 ≈700 字混合：调用、解析字段、匹配规则、标签（YELLOW + WAIT_THEME_ROTATION）、RA 不受限、重扫铁律、两条带日期的快照（09-27 到期、09 |
-| RA-21 | open |  | 用 `LIKE '%ds%'` 扫 `payload`，`model1` 会误命中 `model109`；bash heredoc（RA-07）；`get_dead_ends()` |
-| RA-22 | open |  | 两个比率的动作区分很好（conversion→修管道，yield→换标的）；但“yield_rate **连续**为 0 且样本 ≥100”——yield_rate 是累计比值，“ |
-| RA-23 | open |  | “产物：universe/delay/中性化/排除集/…”没说写到哪（ledger key？settings.json？），下游却直接读 `$DELAY/$UNIVERSE` |
-| RA-24 | open |  | “转 brain-next-move-analysis **选新区域**”，但同文件 L83 说 next-move“日报，不产出配置”，选区归 matrix（三角分工）；库存盘点 |
-| RA-25 | open |  | 顺序颠倒：先写“调 `workflow_campaign(S0)`；锁白名单后 upsert `s0_whitelist`”，后面才说“S0 评分**前**先跑 `s0-selec |
-| RA-26 | open |  | 括号里是“原 dataset_health_check.py 已归档到 attic”的变更史；而 ppa-mining 仍附带同名脚本，INDEX L129 又指向它 → 读者看到 |
-| RA-27 | open |  | `upsert_ledger_key(region,"s0_whitelist",{...})` 的 payload 用 `{...}` 省略，无字段定义 |
-| RA-28 | open |  | 标题“开区**硬**前置”，正文“缺包时步 5 硬门**不生效**”，默认 `--inspect-mode warn`（放行），L221 又降为“须先补或降级并记因”，L183 是 |
-| RA-29 | open |  | 快照数字（320 个包、HKG172/USA104…；ZIP=20260219、160 集、七区）与 L427 重复且日期标注不同（09-17 vs 09-11） |
-| RA-30 | open |  | 一大段混合：命令、四点增强（①–④）、新列与新标记（`maxS/fld/[跨区弱…]/[跨区RA-clean…]/仅条件腿`）、历史背景（IND 7 集 197 回测 0 候选）； |
-| RA-31 | open |  | 指令 `python tools/backfill_backtest_dataset.py` **文件不存在**（已验证）→ 指令不可执行 |
-| RA-32 | open |  | `est_seats` 缺省 2 无依据；“座位”与 CLAUDE.md “3 颗点亮一座塔”的关系没说 |
-| RA-33 | open |  | 编号从 0 开始（后插）；混杂硬规则与启发式；#1“win 族必须进**候选**”与 #0“已点亮塔不得进**白名单**”未说“候选≠白名单”；#3“category_weight |
-| RA-34 | open |  | 9 行注释是在回答“为什么第三步不能删”（历史评审问答）、暴露 `cmd_calibrate/cmd_score` 内部函数名；`ac`（alphaCount）缩写未定义；发现两类 |
-| RA-35 | open |  | P0/P2/P3/P5/P6 是内部工单号（缺 P1/P4）；内容默认 OFF、机制细节又指向 toolkit §6.x → 属 toolkit 的职责，SOP 只需说“何时打开” |
-| RA-36 | open |  | “写 findings”不说写哪 |
-| RA-37 | open |  | “必做 typed catalog”与“深度字段理解**按需/禁注入 GEM**”“S1 三件套**按需加载**”并列，而 L257 又说“该层是两条铁律的**唯一落点**，本步* |
-| RA-38 | open |  | 括号内是“2026-09-26 审计补入边”的过程叙述 |
-| RA-39 | open |  | 只有一行命令，无“目的”；“产物：fields 表 + ledger S1 决策”没有 key 名 |
-| RA-40 | open |  | 50/10/9/≥50% 的阈值无出处（指向 prod-corr-avoidance.md，但正文不摘要）；“已确认超标的字段族”的登记处未说；“orchestrator 迁移”是 |
-| RA-41 | open |  | “字段数 <10 则退回步 2 白名单外”语句不通（回步 2 把该集移出白名单？）；与 L201“fields<5 标仅条件腿”是两个阈值（5 与 10）；VECTOR 提示不是失 |
-| RA-42 | open |  | **“双重 fail-closed（代码保证，不靠记忆）”与代码不符**（已核对源码）：①`s1_semantic_<ds>` 只被 `tools/wave_gate.py` 读， |
-| RA-43 | open |  | 起因/证据（348 条、49.4%、37/373）篇幅 ≈ 规则本身的 2 倍 |
-| RA-44 | open |  | “与仓库既有闸同构（CLI>env>缺省 enforce）… 同 WQB_INSPECT_MODE、WQB_GATE_MODE”暗示缺省相同；实际体检门缺省 warn、CLI 总闸 |
-| RA-45 | open |  | LLM 402 余额不足会表现为误导性“no meta.json within 90s”、干跑假绿、旁路手写 ideas + `headless_runner/run.py`——价 |
-| RA-46 | open |  | **加权混合自相矛盾**：#1 以 EUR `0.4×慢 MODEL + 0.6×快 PV` 作“已验证配方”；#7“禁止 add(A,B) 混信号”；L392 预闸“丢弃加权混合 |
-| RA-47 | open |  | 硬约束 #2“**必须**带 `priors_file`”与 L377“priors_file **已可省略**（GEM 从 DB 快照直读）”直接矛盾 |
-| RA-48 | open |  | #1“≥2 槽按机制换腿”与 #4“≥1 win 换腿”数值冲突；#3 中 `PASS_CHEAP` 首次出现但直到 L708 才指向定义；#5“若 2 跨集”“慢腿/快腿”无定义 |
-| RA-49 | open |  | “槽”一词三义：并发模拟槽（Token-Bucket C≈7、`slots=7`）、波内表达式配额（七槽：≥2 跨金字塔…）、批大小（8 子模拟）。“8 条不是固定上限”与“七槽” |
-| RA-50 | open |  | “首选 assemble-priors 节点，**以下协议仅作内部映射说明，勿手写**”，随后 5 条是实现细节（ledger key、JSON 形状）；但第 5 条含**真规则* |
-| RA-51 | open |  | “stage=S2 与路由无关”的注释是对旧误解的答辩；assemble-priors 调用在 L347 与 L373 出现两次，读者以为要调两次 |
-| RA-52 | open |  | 伪赋值与真调用混在一个块；最后一行 `workflow_campaign(stage="S2", dataset, wave)`（build-wave）无注释；`pipeline_ |
-| RA-53 | open |  | “除下述…外”指向其后的“原有：…”，先后颠倒；6 类自动改写（hump、bucket、非法 group、窗口别名、每骨架封顶 12、quantile 归一）只写了“系统做什么”， |
-| RA-54 | open |  | 首句“消费 `methodology_rules`…”缺主语，像被截断；“未验证 DB 有表达式，不得声称步 4 成功”是**完成定义**却无验证手段 |
-| RA-55 | open |  | 一个 13 行的无编号段落含 ≥12 条规则（8 条非上限、`--size` 语义、清单写入 ledger、extra_args 组合、条数由清单推导、`--expected-co |
-| RA-56 | open |  | “按超时恢复清单查任务”——**该清单在全部 skills 中无定义**（已 grep）；“不要手写”与 L324 旁路“手写 ideas md”需区分（表达式 vs ideas） |
-| RA-57 | open |  | forum_recon 第二个触发点，与 L84“默认不查”并存；“触封顶”“无腿可换”怎么发现没说；“额度以查出有效文章为标准…安全上限”上限数值缺、“有效文章”未定义 |
-| RA-58 | open |  | 两条禁止（新建 `_gate_waveNN.py`、写 `cache/gate_wave*.json`）无理由、无正向指向（正向在 L442） |
-| RA-59 | open |  | **wave_gate 含哪些闸，在 5 处各写一遍且互不一致**：L423 多样性=闸 6（且“由 wave_gate 自动调用”）；L429 “闸 1–5 + 闸 7/8 +  |
-| RA-60 | open |  | 出现**删除线原文**（`~~注：…~~`）+“↳ 已收敛”；“不要再把 check_batch 当判据”是变更史叙述 |
-| RA-61 | open |  | “契约过期 **FAIL-CLOSED 并自动续约**”自相矛盾（拦截还是续约后放行？）；60%、2/3 阈值无依据（虽有 wave 实证） |
-| RA-62 | open |  | 说体检包由 `webdata_quality.py --export-expr` 生成（L426），而步 2 说用 `gen_field_inspect_packs.py`（L17 |
-| RA-63 | open |  | 既称“MCP 节点与 CLI 同一实现”，示例却只给 CLI，与“MCP 应用尽用”不一致；ghost-audit 命令在 L440 与 L459 重复 |
-| RA-64 | open |  | 一行塞 2 个无关提示（VECTOR 预检；repair 批跳过多样性闸），且 L423 已说 repair 类默认豁免 |
-| RA-65 | open |  | 闸 2b（非法 group 字段 FAIL）与 L387 预闸（非法 group 字段**丢弃**）、bucket range（预闸补/丢 vs 语法闸 FAIL）是同一批规则的两 |
-| RA-66 | open |  | 幽灵算子命中后的三种处置（等价替换/`preflight_expressions` 单测/丢弃）没有选择判据 |
-| RA-67 | open |  | 只覆盖 3 类失败（语法、多样性、KB 无货）+“2 跨集”；**闸 SEM（exit 2）、体检硬门、闸 PF、闸 2b、幽灵算子（exit 1）、闸 7/8 数据质量**的失败 |
-| RA-68 | open |  | 标题“升为硬门”，但代码：已知死骨架→拦截整波；**新骨架→仅 WARN**；“投入第二波前必须先查”只是流程要求。硬/软混说；“新信号族”“新”相对谁（本区/全库）未定义；闸 P |
-| RA-69 | open |  | 只给两个区间：≥0.7 → dead_end 换机制；0.60–0.70 → 直接进步 8；**<0.60 无指示**。且“不做任何去相关变体”与 D14（prod 墙突破 SOP |
-| RA-70 | open |  | 第 5 种开关形态（布尔对 `--prod-family-gate/--no-…`）；“拦截整波”与闸 SEM“仅剔除命中表达式”粒度不一致，未解释 |
-| RA-71 | open |  | S3 入口有 3 个：`workflow_batch_track`（L511）、`brain-sim-alphas-in-batch-and-track`、toolkit `pip |
-| RA-72 | open |  | “弱探针最多 1 槽；有近闸字段则 0”与步 4 #4 逐字重复；“组合批/裸探针”无定义 |
-| RA-73 | open |  | 一个编号条目内含 4 个主题：设置跟 win、ILLIQUID_MINVOL1M 永久停提、**QUICK/FULL 模式**、设置层先验自动改写。其中 **“QUICK 不可提交 |
-| RA-74 | open |  | 第 **3 次**定义 prod-first：5b“投入第二波前，`--top-k 2`”；此处“每槽先 1–2 条骨架”；步 7“S3 收批后必调，`--top-k 3`”。时机 |
-| RA-75 | open |  | 一句里塞“表达式从 list_expressions 取”与安全规则“禁止自动提交 alpha”；“自动”的判据未写；`pipeline --submit`=提交回测的澄清（L68 |
-| RA-76 | open |  | “S2-COMPLIANCE 已降级为提示”是变更史；toolkit 的 S2_COMPLIANCE_* 文档仍按“必做”写，未同步 |
-| RA-77 | open |  | 16 行注释讲历史（`--concurrency` 不存在→argparse exit 2→detached 静默；2026-09-27 三道闸），命令只有 1 行；块内 8 个工 |
-| RA-78 | open |  | “429 则**降并发**、批大小 ≤5”——但并发由 pipeline 内部锁定为 `min(7,批数)`、外部传非 7 只会被 warning；表格 429 又写“指数退避”。 |
-| RA-79 | open |  | “依据”列是 wave 代号（e10a/e10b、b87/b92/b93）——对新读者无意义；行 1“8 子模拟全 ERROR → 重发相同表达式”与 L544“先归因再重发”冲突 |
-| RA-80 | open |  | 账户级槽位仲裁（`_lib/slots.py`、`WQB_GLOBAL_SLOTS`）属并发细节，L483 却宣称“并发唯一来源=wqb-concurrency”→ 职责越界、重复 |
-| RA-81 | open |  | 用裸 SQL 查积压，而 `campaign_intel.py backlog-drop`（toolkit SKILL L209）正是积压清理工具，此处未提；“近闸积压”“2 倍” |
-| RA-82 | open |  | 描述节点内部（解析 alpha_id、拼 review_wave 参数）并附修复史；对“解析不到即 FAIL”没给 agent 动作 |
-| RA-83 | open |  | RN_EXPOSURE 有两个版本：L566“rn_sharpe ≤ rn_sharpe_min（默认 0）→ 墙、不进候选/near/salvage/组合腿”；L647“rn ≤ |
-| RA-84 | open |  | “Mode B 70% / Mode A 30%”比例无解释（预算？次数？）；“未编排增强节点去留（登记）”是项目管理信息；alpha_booster/modeb_improve  |
-| RA-85 | open |  | 第 3 处 prod-first（见 RA-74）；“STOP → **换白名单不同数据集**（D0）”与 5b“**换机制**”、D14“突破 SOP”冲突（RA-69） |
-| RA-86 | open |  | 墙/池的术语（RN_EXPOSURE、ROBUST_STRUCTURAL、PARTIAL、near、salvage、停止规则 B）首次出现处均无定义，也无词汇表 |
-| RA-87 | open |  | S4 有两套实现：`review_wave.py`（`workflow_campaign(S4)`，L560）与“selfcorrQuick→check_self_correlat |
-| RA-88 | open |  | “语义边界（实测决定，别误用）：Spearman 仅 +0.086，本校准**不抬高 IS 阈值**”——好范例：说明了“别拿它做什么” |
-| RA-89 | open |  | 规则本身有**漏洞**：允许 `subtract(rank(A),rank(B))`“视作单一价差信号，须有经济含义”，但 `subtract(a,b)` ≡ `add(a,-b) |
-| RA-90 | open |  | “卡闸辅助腿检索”（跨数据集正交辅助腿）与紧随其后“禁止任何加权混合”之间缺桥：**取到辅助腿后能怎么用？** 允许项①–⑤没有逐一对应到“辅助腿→用法”。这恰是 CLAUDE.m |
-| RA-91 | open |  | “路线 A”未定义（“路线 B”是谁？D14 有 route 1/2/3，稀释腿=加权混合，与此处冲突） |
-| RA-92 | open |  | 含 commit 级细节（`_detect_weighted_mix_structural`、`platform_constraints.json v1.5`、16 条测试构成）； |
-| RA-93 | open |  | 位于步中；“prod_corr ≥0.7 则 Mode B 换概念”是 prod 墙处置的第 4 种说法（RA-69）；“>10 种结构”无依据 |
-| RA-94 | open |  | forum_recon 第 3 个触发点，`--out ledger`（前面是 kb） |
-| RA-95 | open |  | “**submit_verdict READY** 且 prod<0.7 → 立即请用户确认”：submit_verdict 的标签是 SUBMITTABLE/UNVERIFIAB |
-| RA-96 | open |  | “提交判定链（顺序执行）”只编号了 2 项；真正的链是 资格门 → submit_verdict → robustness → prod<0.7 复核（`check_correla |
-| RA-97 | open |  | **“可靠判据=直接 POST；失败回带 403+全量 checks，零成本”**：但 POST 若全部通过就是**真实且不可撤销的提交**；本文同时要求“确认前禁止 workfl |
-| RA-98 | open |  | Failed-count 资格门与步 1 的“无 FAIL”口径不一（RA-19）；`webdatascope-failed-gates.md` 的 RA 清单缺 `LOW_ROB |
-| RA-99 | open |  | “禁止 workflow_submit_alpha / submit_batch”未覆盖裸 `submit_alpha`（judge 引用的工具名机械检查判为未注册）；`--sub |
-| RA-100 | open |  | 只写 REGULAR→submit-alpha、SUPER→superalpha；**PPA（只能走平台 web UI）**未提，而步 9/PPA 分支要求“优先提 PPA 那颗” |
-| RA-101 | open |  | 表本身清晰（好范例）；但 2026-09-28 起补发已自动化，表仍写成手工步骤 → 手工+自动可能双补发；“等 4 分钟”“60 秒窗口”无依据 |
-| RA-102 | open |  | “只有 submit_verdict **无 FAIL** 且提交层 **200** 才算可提交”：submit_verdict 没有 FAIL 标签；提交层 200 = 已经提交 |
-| RA-103 | open |  | 文本顺序与执行顺序**相反**：“完成定义（回写 → assemble-priors）”在前，“开步先看漏斗（回写结论前先跑）”在后，“自动部分/verdict 判定表/判死封存/ |
-| RA-104 | open |  | “未回写=本波未完成”“GEM 对 stale 快照只 WARN 不阻断，只能由 S6 兜底”——好的边界陈述。但调用写成伪函数 `workflow_campaign(region |
-| RA-105 | open |  | 步 9 说 dataset-experience **必做，对本波每个回测数据集**；Artifact 表 S6 行说该文件“**仅对判死/win 集生成**，由 seal_dea |
-| RA-106 | open |  | 自动部分（region_kb 刷新）、verdict 枚举、合并语义、`closed`必须带 verdict 挤在一段；这些是**写入契约**而非流程 |
-| RA-107 | open |  | 3 行小表清晰（好范例）；但“达标”在全文有 3 种口径：S>1.58 & F>1.0（停止规则 A）、`ra_failed_checks` 为空（严格 yield）、过全部评审闸 |
-| RA-108 | open |  | **可执行代码块内展示已废弃命令** `upsert_ledger_key … key="s6_verdict_<wave>"`（仅靠行尾注释警告）；`ra-campaign-pr |
-| RA-109 | open |  | “decision-table D2『论坛无解』”——D2 实为“未过闸→证据复核分支”，无“论坛无解”一词；“软提示起步”而措辞“须” |
-| RA-110 | open |  | “dead_end 回写前先 seal_dead_end”，但 seal 需要 `entry_id=<DEAD_END_ID>`——此时 dead_end 尚未创建，ID 从哪来？ |
-| RA-111 | open |  | “add-win（mix 比例…）”“add-dead-end”不是命令，实为 `campaign.py registry add-win/add-dead-end`（toolki |
-| RA-112 | open |  | 多样性监控“评分下降则切换目标塔”——无阈值、无谁来切；IS→OS 归因“写进 wave_result”不说写哪个字段 |
-| RA-113 | open |  | **S6→S0 反馈环断裂**（已核对代码）：SOP 要求写 ledger `submit_ready_blocked`，说“下一轮 S0 读取”；而 S0 评分实际读 `satu |
-| RA-114 | open |  | “步 2/3/4/5/6 映射到节点”，括号却列 8 个节点含 judge/submit_alpha/superalpha（属步 8）；随后“步 7、步 8 无节点”——但步 7  |
-| RA-115 | open |  | “干跑校验命令能否被 argparse 接受”与 L322“干跑假绿（LLM 通道）”应在同处成对说明；否则读者只记得“干跑绿=能跑” |
-| RA-116 | open |  | “提交类节点不入链（confirm_submit 须步 8 用户确认后单独调用）”——**范例**：清晰、可检、有理由 |
-| RA-117 | open |  | 单元格 ≈2000 字：规则 A、B1、B2、豁免、撞墙型 FAIL 路由、signal_floor 分工、覆盖写法、11 个阈值键、回落语义；还含**会过期的状态**“GBR 已 |
-| RA-118 | open |  | 3 套“连续 3 波”规则：B1（同轴 closed 波 FAIL）、行 2（重复 B1/B2）、行 4（gate 通过率=0）——对象不同，先后无序；规则 A 用宽口径“达标”（ |
-| RA-119 | open |  | 信号天花板闸：“实测 **13/13** 区域均已配（AMR ASI CHN DEU EUR GBR GLB HKG IND JPN KOR MEA USA）”——名单缺 TWN  |
-| RA-120 | open |  | “日界 21:30 ET”与“配额 00:00 ET 重置”并存，未解释为何不同；“NY 日”未定义 |
-| RA-121 | open |  | “ACTIVE RA ≥10 → 可转 superalpha”“配额耗尽→继续步 2–9（挂起提交）”：未说后者会积压未提交 alpha 的上限 |
-| RA-122 | open |  | 再次出现删除线原文 + 归档说明 |
-| RA-123 | open |  | 快捷入口“发批：直接走步 5，跳过 S0–S2”——但步 5 的闸 SEM **缺省 enforce**，缺 `s1_semantic_<ds>` 即 **exit 2**；体检硬 |
-| RA-124 | open |  | 含 2026-10-11/12 的“到期即变”文案（时间炸弹型文字） |
-| RA-125 | open |  | “步 1 matrix 后 步 2 体检（不可跳过）则配置包写回 settings.json 后 步 3”——语法不通、“配置包”未定义、“matrix”并非步 1 正文内容；“先 |
-| RA-126 | open |  | 作为“分支”只有 3 行 + 指向 312 行的 `ppa-mining-experience.md`（与 wq-brain-ppa-mining SKILL 近似拷贝，24 段重 |
-| RA-127 | open |  | “日循环应**当天优先提 PPA 那一颗**”，但 submit/robustness 两份 skill 都说合法 PPA **只能走平台 web UI**、MCP 自动通道会拦； |
-| RA-128 | open |  | “战役产物只入 wqb.db，禁止 Write 战役 json/csv”与 `cache/candidates.json`、`cache/basket.json`、`--exprs |
-| RA-129 | open |  | 表是好范例（阶段/入库/由谁写），但**不完整**：正文出现的 ledger key 至少还有 `s1_semantic_<ds>`、`s2_field_pool_<ds>`、`f |
-| RA-130 | open |  | 9 条均是一行禁令、无理由/无正向替代；用了错误词“submit_verdict READY”（RA-95）；遗漏本文最痛的 5 条：QUICK 产物进提交、无确认 POST、`- |
-| RA-131 | open |  | 第 3 处“唯一权威”：“提交判定（唯一权威）\ |
+| RA-01 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | description 只留整链/开战役/从零到提交/日循环触发；单点动作词让给 matrix / sim-alphas / submit，正文「分工」段写明何时调它们 |
+| RA-02 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/tool-index.md | 职责边界改为「不实现能力，但规定调用顺序与判据」；CLI→步→归属表放 tool-index.md T.1；直读 sqlite 换成 MCP 或注明原因 |
+| RA-03 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| AGENTS.md \| Claude/skills/GLOSSARY.md | 全库统一「否决权威 / 放行权威」两词，删除「唯一权威 = submit_verdict」；RA 正文只剩三句（UNVERIFIABLE 不是放行） |
+| RA-04 | fixed | Claude/skills/CHANGELOG.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 变更史 / 过程叙述迁入 CHANGELOG：brain-deepExplore 废止说明、2026-09-26 审计补入边、脚本归档说明；正文只留正向指向 |
+| RA-05 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 「分工」段：when/what=本 skill、where=matrix（用户没给 REGION 时先调、多区并列回问）、how=toolkit，并列出其余去向 |
+| RA-06 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 变量表： 必填；/ 来自 settings.json；/// 各有来源； 明确为字符串 |
+| RA-07 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| tools/_pyenv.py \| tests/unit/test_pyenv.py | 「MCP 应用尽用」给出判据（有对应 MCP 工具即用）；6 个 tools/*.py 接入 _pyenv，文档可写裸 python 且跨平台可解析 |
+| RA-08 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 「复写」定义 = 拷贝 config GATES* 闸门值；区域/机制经验阈值允许但须带出处；正文字面数字下沉到 references 并带出处 |
+| RA-09 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 「冲突裁决」一行：用户指令 > 代码 fail-closed > profile > 决策表 > 正文；D0-P 不接受区域改写；红线不可覆盖 |
+| RA-10 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| tests/unit/test_ra_sop_template.py | 每步固定模板（目的/前置/调用/产物/完成定义/失败分支/不做/细则）由测试守；FAIL 三种含义在「怎么读」里点明 |
+| RA-11 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 编号：正文只用「步 N」，S 编号仅在 MCP 参数处；一张对照表（步↔阶段） |
+| RA-12 | fixed | tests/unit/test_region_alignment.py \| Claude/skills/INDEX.md \| Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | 删掉硬编码的 13/14 个区域说法；三处清单（config.REGIONS / profile / tracking）由测试对齐，已知缺口显式登记（AMR 无 profile、TWN 无 tracking） |
+| RA-13 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | Profile 注入表增「谁读 / 缺失回落」两列；键的实际读取方（代码 vs 文档）写在契约文件 §1 |
+| RA-14 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | entry_verdict 三态默认含义放 step1 §1.1，profile 只写差异；frozen 步 1 即拒（与「不继续步 2」统一）；probe-only 含义写明 |
+| RA-15 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | step1 §1.3 写明查表用哪个 MCP 工具（get_campaign_summary/get_dead_ends/…），「以 DB 查表结果为准」指向具体工具 |
+| RA-16 | fixed | Claude/skills/wq-brain-ra-pipeline/references/forum-recon-triggers.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | forum_recon 五个触发点并成一张表（触发条件、额度以「查出有效文章」为准、7 天缓存、退出码）；正文只留「默认不查，触发点见表」 |
+| RA-17 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | entry_verdict 三态默认含义放 step1 §1.1，profile 只写差异；frozen 步 1 即拒（与「不继续步 2」统一）；probe-only 含义写明 |
+| RA-18 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | 库存盘点给出量化分流（篮子 ≥ target 且覆盖 ≥3 座未点亮塔 → 跳步 7/8；否则只补缺口塔）；篮子口径统一为 Failed RA==0；产物写到哪（settings.json / ledger）写明 |
+| RA-19 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | 库存盘点给出量化分流（篮子 ≥ target 且覆盖 ≥3 座未点亮塔 → 跳步 7/8；否则只补缺口塔）；篮子口径统一为 Failed RA==0；产物写到哪（settings.json / ledger）写明 |
+| RA-20 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | 长行拆开：调用/解析字段/标签/重扫铁律/带日期快照分列；快照过期状态不再写进正文 |
+| RA-21 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 不再用 LIKE '%ds%' 扫 payload（model1 误命中 model109）；跨区死路走 get_dead_ends 不传 region |
+| RA-22 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | §1.5 两个比率含义分开：conversion（修管道）与 yield（换标的）；yield 是累计比值，「连续为 0」改写为「累计为 0 且已测 ≥ 100」并说明 100 = 停止规则 A 的样本量下限 |
+| RA-23 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md | 库存盘点给出量化分流（篮子 ≥ target 且覆盖 ≥3 座未点亮塔 → 跳步 7/8；否则只补缺口塔）；篮子口径统一为 Failed RA==0；产物写到哪（settings.json / ledger）写明 |
+| RA-24 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 库存盘点转向 matrix 选区（next-move 是并行情报层，不产配置） |
+| RA-25 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 步 2 调用顺序改为 s0-select → calibrate → S0 排名 → 硬约束筛 → 锁白名单 → 体检包核对；「先锁白名单后读约束」的颠倒消除 |
+| RA-26 | fixed | Claude/skills/INDEX.md \| Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/ASI.md | dataset_health_check.py 只在 wq-brain-ppa-mining/scripts/（兜底体检）；INDEX、ASI profile、经验文档里的路径统一；删除「已归档到 attic」变更史 |
+| RA-27 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | §2.4 给出 s0_whitelist 最小形态（universe / delay / datasets / entries）与读取一律经 wqb.ledger_whitelist.normalize；写入先读再 mode=merge，「工具产物 vs 手工锁」分开 |
+| RA-28 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 体检包：缺省 warn 放行并告警；--inspect-mode off 才需 inspect waiver；标题不再写「硬前置」而实际 warn |
+| RA-29 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | 快照数字（包数 / 区域计数）删除或带日期与出处，不在两处各写一遍 |
+| RA-30 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | 一大段拆成：命令 / 选择增强 / 新列新标记 / 历史背景（IND 7 集 197 回测）分列 |
+| RA-31 | fixed | Claude/skills/INDEX.md \| tools/README.md | INDEX 里 tools/backfill_backtest_dataset.py 指令改为「已一次性跑完并归档到 tools/legacy/」，不再是可调用入口 |
+| RA-32 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | est_seats 缺省 2 给出依据，并写明与「3 颗点亮一座塔」的关系 |
+| RA-33 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | 白名单约束 0–7 分「硬（代码执行）/ 准则（启发式）」两栏并写执行点；#1 候选≠白名单、#0 已点亮塔不进白名单区分 |
+| RA-34 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | calibrate/score 内部函数名与历史评审问答移出；ac 缩写给出定义 |
+| RA-35 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | 内部工单号（P0/P2/P3/P5/P6）不再出现在 SOP；默认 OFF 的增强只说「何时打开」，机制细节指向 toolkit |
+| RA-36 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md \| Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | findings 写哪里：wave_results.key_findings（步 9 写入契约） |
+| RA-37 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 步 3 把「必做（typed catalog）」与「按需（深度字段理解、禁注入 GEM）」分栏；两条必做铁律的落点写明 |
+| RA-38 | fixed | Claude/skills/CHANGELOG.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 变更史 / 过程叙述迁入 CHANGELOG：brain-deepExplore 废止说明、2026-09-26 审计补入边、脚本归档说明；正文只留正向指向 |
+| RA-39 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 步 3 把「必做（typed catalog）」与「按需（深度字段理解、禁注入 GEM）」分栏；两条必做铁律的落点写明 |
+| RA-40 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md \| Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 50/10/9/≥50% 阈值补出处；「已确认超标字段族」登记处写明；orchestrator 迁移说明移出 |
+| RA-41 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 步 3 把「必做（typed catalog）」与「按需（深度字段理解、禁注入 GEM）」分栏；两条必做铁律的落点写明 |
+| RA-42 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 「双重 fail-closed」按代码实况重写：s1_semantic_<ds> 由 wave_gate 读；GEM 侧不过滤；闸 SEM 缺省 enforce，exit 2 |
+| RA-43 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md | 闸 SEM 起因证据（348 条 / 49.4% / 37/373）压成一行放证据小节，规则本身在前 |
+| RA-44 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 体检包：缺省 warn 放行并告警；--inspect-mode off 才需 inspect waiver；标题不再写「硬前置」而实际 warn |
+| RA-45 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | LLM 402 余额不足被误报成 no meta.json 90s：失败分支先查 LLM 通道、不重试；干跑假绿在同处成对说明 |
+| RA-46 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/CHANGELOG.md | 加权混合矛盾消除：已验证配方只记「信号概念 + 设置」，不再以 0.4×慢+0.6×快为配方；允许形态只有一份清单（步 7 §7.7）；slow_fast_mix 只留作 09-13 之前历史（CHANGELOG） |
+| RA-47 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | priors_file 已可省略（GEM 从 DB 快照直读），硬约束 #2 改写；两处不再矛盾 |
+| RA-48 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/GLOSSARY.md | 「槽」三义拆词：并发令牌 / 波内配额 / 批；数值冲突（≥2 槽 vs ≥1 win）统一为一处；PASS_CHEAP 在首次出现处链接定义 |
+| RA-49 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/GLOSSARY.md | 「槽」三义拆词：并发令牌 / 波内配额 / 批；数值冲突（≥2 槽 vs ≥1 win）统一为一处；PASS_CHEAP 在首次出现处链接定义 |
+| RA-50 | fixed | Claude/skills/wq-brain-ra-pipeline/references/assemble-priors-internals.md | 按代码重写：wins/dead_ends 的真实来源与截断顺序、registry_empirical win/dead_end 层、profile 兜底范围；旧文里代码没有的映射删除 |
+| RA-51 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | assemble-priors 只在一处调用；「stage=S2 与路由无关」的答辩注释删除 |
+| RA-52 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | 伪赋值与真调用分块；build-wave 那一行加注释；pipeline 参数说明补全 |
+| RA-53 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | 自动改写 6 类（hump / bucket / 非法 group / 窗口别名 / 每骨架封顶 12 / quantile 归一）列表化：系统做什么 + agent 看到什么 + 不用再手改 |
+| RA-54 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 完成定义有验证手段：list_expressions 查到本波条目，否则不得声称步 4 成功；首句补主语 |
+| RA-55 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | 13 行无编号大段拆成带编号的短规则（8 条非上限、--size 语义、清单写入 ledger、条数由清单推导…） |
+| RA-56 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | 「超时恢复清单」未定义的指向删除，改为 step6 §6.4 故障表；手写 ideas ≠ 手写表达式在步 4 区分 |
+| RA-57 | fixed | Claude/skills/wq-brain-ra-pipeline/references/forum-recon-triggers.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | forum_recon 五个触发点并成一张表（触发条件、额度以「查出有效文章」为准、7 天缓存、退出码）；正文只留「默认不查，触发点见表」 |
+| RA-58 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 两条禁令附理由与正向指向（用 wave_gate.py，结果落 gate_results） |
+| RA-59 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | wave_gate 含哪些闸只在 INDEX 两张生成表（GATE_REGISTRY / waiver.GATE_POLICIES）；正文不再 5 处各写一遍 |
+| RA-60 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 删除线原文与「已收敛」历史叙述清掉；check_batch 不再作判据 |
+| RA-61 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 契约过期的处理顺序写成一条：过期 → 自动续约 → 用新契约重判（重判仍可 FAIL）；60% / 2/3 标注为 wave94/95/98/104 实证的经验值 |
+| RA-62 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md \| Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 体检包由 gen_field_inspect_packs.py 生成，webdata_quality --export-expr 是另一用途，两处统一 |
+| RA-63 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md \| Claude/skills/wq-brain-ra-pipeline/references/tool-index.md | MCP 与 CLI 同一实现，示例同时给节点名；ghost-audit 命令只出现一处 |
+| RA-64 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 两条无关提示拆开；repair 批默认豁免多样性闸只在闸表一处写 |
+| RA-65 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 闸 2b（非法 group 字段 FAIL）与预闸（丢弃）的关系写明：预闸先丢、语法闸兜底 |
+| RA-66 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 幽灵算子命中后三种处置给出选择判据（等价替换 / preflight 单测 / 丢弃） |
+| RA-67 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md | 失败分支全表：闸 SEM / 体检包 / 闸 PF / 闸 2b / 幽灵算子 / 闸 7/8 → 现象 → 动作 → 回哪步 → 能否豁免 |
+| RA-68 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 闸 PF 硬/软分开：已知死骨架拦整波、新骨架 WARN；「新」= 本区台账内未见；prod-first 处置只走 D0-P |
+| RA-69 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | prod 墙处置只剩决策表 D0-P 一张（<0.60 扩 / 0.60–0.70 不扩变体当天进步 8 / 0.70–0.75 一次结构性尝试 / ≥0.75 dead_end）；prod-first 定义只在核心步 5b |
+| RA-70 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step5-gates.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 闸 PF 硬/软分开：已知死骨架拦整波、新骨架 WARN；「新」= 本区台账内未见；prod-first 处置只走 D0-P |
+| RA-71 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | S3 入口三处并列写明分工：workflow_batch_track（默认）/ sim-alphas（手写 alpha_list）/ toolkit pipeline（调试） |
+| RA-72 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/GLOSSARY.md | 「槽」三义拆词：并发令牌 / 波内配额 / 批；数值冲突（≥2 槽 vs ≥1 win）统一为一处；PASS_CHEAP 在首次出现处链接定义 |
+| RA-73 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 设置跟 win / ILLIQUID 永久停提 / QUICK-FULL / 设置层先验拆开；QUICK 产物不可提交单列为「不做」 |
+| RA-74 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | prod 墙处置只剩决策表 D0-P 一张（<0.60 扩 / 0.60–0.70 不扩变体当天进步 8 / 0.70–0.75 一次结构性尝试 / ≥0.75 dead_end）；prod-first 定义只在核心步 5b |
+| RA-75 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | §6.3 第 5 条：「表达式从 list_expressions 取」与安全规则拆开、安全规则放最前；「自动」的判据 = confirm_submit=True 只在步 8 用户确认后单独调用；pipeline.py --submit / submit_batch 是派发仿真 |
+| RA-76 | fixed | Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md \| Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md \| Claude/skills/wq-brain-campaign-toolkit/SKILL.md | toolkit 的 S2 合规文档同步为「仅提示、不阻断、无 --force」（2026-09-15 降级）；指南 v2.0，清单末条改写，SKILL ⑥ 行加链接 |
+| RA-77 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | 历史注释（--concurrency 不存在→argparse exit 2）移到 incidents；命令块只留命令 |
+| RA-78 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md \| Claude/skills/wqb-concurrency/SKILL.md | 429：并发由 pipeline 内部锁 min(7,批数)，外部传非 7 只 warning；降批大小走 §6.4 故障表；指数退避与 429 行统一 |
+| RA-79 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | 故障表「依据」列由 wave 代号改为现象描述 + 日期；「全 ERROR 重发相同表达式」与「先归因再重发」统一为先归因 |
+| RA-80 | fixed | Claude/skills/wqb-concurrency/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 账户级槽位仲裁（slots.py / WQB_GLOBAL_SLOTS）落在 wqb-concurrency §8.1；RA 只引用不重复 |
+| RA-81 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step1-inventory.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | 积压清理提到 campaign_intel.py backlog-drop；近闸积压、2 倍给出口径与出处 |
+| RA-82 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | S4 节点内部实现细节与修复史移出；「解析不到 alpha_id 即 FAIL → 用其列出的字符串波号重试」写成 agent 动作 |
+| RA-83 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | RN_EXPOSURE 只留一版：rn_sharpe ≤ rn_sharpe_min（默认 0）→ 墙，不进候选 / near / salvage / 组合腿；想法级判死另列 |
+| RA-84 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | Mode B / Mode A 比例的解释与出处；未编排增强节点去留登记移到 CHANGELOG |
+| RA-85 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | prod 墙处置只剩决策表 D0-P 一张（<0.60 扩 / 0.60–0.70 不扩变体当天进步 8 / 0.70–0.75 一次结构性尝试 / ≥0.75 dead_end）；prod-first 定义只在核心步 5b |
+| RA-86 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/GLOSSARY.md | 墙 / 池术语（RN_EXPOSURE、ROBUST_STRUCTURAL、PARTIAL、near、salvage、停止规则 B）在首次出现处给一句定义并链接 GLOSSARY |
+| RA-87 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | S4 两套实现（review_wave 与逐候选链）并列写明分工与先后：评审在前、逐候选链在后 |
+| RA-88 | declined |  | 范本，保留：说明「别拿它做什么」的语义边界写法（IS→OS 衰减校准不抬高 IS 阈值）；已原样保留在步 7 与 CHANGELOG |
+| RA-89 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | 步 7 §7.7：subtract(rank A, rank B) 须同源且有单一经济含义（跨数据集由闸 5 spread_cross_dataset 拦）；等价 add(a,-b) 的漏洞按同罪处理 |
+| RA-90 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | 辅助腿入场三式（条件 trade_when / 分组 bucket / 残差 neutralize）；每式的证据强度与已知局限；multiply(rank,rank) 为灰区默认不用 |
+| RA-91 | fixed | Claude/skills/GLOSSARY.md \| Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md | 「路线 A」不再作术语出现；权重禁令直接写规则并指向 CHANGELOG 的 2026-09-13 条 |
+| RA-92 | fixed | Claude/skills/wq-brain-ra-pipeline/references/incidents.md \| Claude/skills/CHANGELOG.md | commit 级细节（_detect_weighted_mix_structural、platform_constraints v1.5、16 条测试构成）移出正文，事故与落点见 incidents I-1 与 CHANGELOG |
+| RA-93 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | prod 墙处置只剩决策表 D0-P 一张（<0.60 扩 / 0.60–0.70 不扩变体当天进步 8 / 0.70–0.75 一次结构性尝试 / ≥0.75 dead_end）；prod-first 定义只在核心步 5b |
+| RA-94 | fixed | Claude/skills/wq-brain-ra-pipeline/references/forum-recon-triggers.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | forum_recon 五个触发点并成一张表（触发条件、额度以「查出有效文章」为准、7 天缓存、退出码）；正文只留「默认不查，触发点见表」 |
+| RA-95 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/wq-brain-ra-pipeline/references/incidents.md | 步 8 完成判定链改为有序清单：资格门 → submit_verdict（否决）→ prod 实测 → 用户确认 → workflow_submit_alpha；标签用真实值（SUBMITTABLE 不存在；UNVERIFIABLE 不是放行） |
+| RA-96 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/wq-brain-ra-pipeline/references/incidents.md | 步 8 完成判定链改为有序清单：资格门 → submit_verdict（否决）→ prod 实测 → 用户确认 → workflow_submit_alpha；标签用真实值（SUBMITTABLE 不存在；UNVERIFIABLE 不是放行） |
+| RA-97 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/worldquant-submit-alpha/references/submit-chain.md | 删除「直接 POST 零成本」说法：POST 通过即真实提交；prod 一律 check_correlation；确认前禁止一切真提交入口 |
+| RA-98 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | Failed-count 资格门口径与步 1 统一（RA 口径：WARNING/ERROR 也计）；名单以 config.RA_CHECK_NAMES 为准，文档不再抄一份 |
+| RA-99 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 「不做」列出真提交入口全集（workflow_submit_alpha / submit_alpha 节点 / workflow_superalpha / super_build.py submit）并写明 submit_batch 与 pipeline.py --submit 是派发仿真 |
+| RA-100 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/ppa-vs-ra.md | 步 8 分流三类：REGULAR → submit-alpha；SUPER → superalpha；PPA → web UI 交接（MCP 预检不够时 agent 停下，用户不在线则留在 submit_ready）；「当天优先提 PPA」只在渠道允许时成立 |
+| RA-101 | fixed | Claude/skills/worldquant-submit-alpha/SKILL.md | 四态处置表在 submit-alpha 一处维护，补发已自动化的说明与等待窗口依据在该 skill；RA 只指向它 |
+| RA-102 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md \| Claude/skills/wq-brain-ra-pipeline/references/incidents.md | 步 8 完成判定链改为有序清单：资格门 → submit_verdict（否决）→ prod 实测 → 用户确认 → workflow_submit_alpha；标签用真实值（SUBMITTABLE 不存在；UNVERIFIABLE 不是放行） |
+| RA-103 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | 步 9 按执行顺序写成有序清单（step_funnel → verdict → pyramid → upsert_wave_result → seal/win → mark-saturated → dataset-experience → assemble-priors）；完成定义清单 §9.7 |
+| RA-104 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 调用写成真实工具名与参数（伪函数删除）；「未回写 = 本波未完成」保留 |
+| RA-105 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md \| tools/campaign_intel.py | dataset-experience 范围统一为「本区域已回测的全部数据集」，Artifact 表同步；判死集另有 seal_dead_end |
+| RA-106 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | 步 9 按执行顺序写成有序清单（step_funnel → verdict → pyramid → upsert_wave_result → seal/win → mark-saturated → dataset-experience → assemble-priors）；完成定义清单 §9.7 |
+| RA-107 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 「达标」三种口径分别命名并列表（停止规则 A / 严格 yield / 过全部评审闸） |
+| RA-108 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 可执行块里不再出现废止命令；s6_verdict_<wave> / wave<N>_verdict 仅在「不做」与反模式里作为废止说明（skill_lint 计数下降） |
+| RA-109 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 「论坛无解」措辞改为引用 D2 实际含义；软提示措辞与「须」区分 |
+| RA-110 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | seal_dead_end 是 upsert：先建（entry_id 由它返回）再补；写入顺序在 §9.1 |
+| RA-111 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | add-win / add-dead-end 换成真实命令（upsert_registry_empirical / seal_dead_end） |
+| RA-112 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | 多样性监控与 IS→OS 归因写入字段（key_findings）与触发阈值写明 |
+| RA-113 | fixed | tools/campaign_intel.py \| tests/unit/test_campaign_intel_mark_saturated.py \| docs/ledger_keys.json \| Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | S6→S0 反馈环接通：新增 campaign_intel.py mark-saturated 写 saturated_datasets（S0 评分读取）；submit_ready_blocked 降为 deprecated |
+| RA-114 | fixed | Claude/skills/wq-brain-ra-pipeline/references/tool-index.md | tool-index T.1 按步给出 MCP / 节点 / CLI（judge、submit_alpha、superalpha 归步 8）；T.2 写明步 1 分流、步 7 逐候选、步 8 提交、步 9 判死封存没有单一节点或不该入链 |
+| RA-115 | fixed | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | LLM 402 余额不足被误报成 no meta.json 90s：失败分支先查 LLM 通道、不重试；干跑假绿在同处成对说明 |
+| RA-116 | fixed | src/wqb/workflow/executor.py \| tests/unit/test_workflow_chain_irreversible_guard.py \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 「提交类节点不入链」由代码强制：execute_chain 拒绝带 confirm_submit=True 的 submit_alpha / superalpha |
+| RA-117 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 停止规则 A / B1 / B2、signal_floor、放行协议拆成表，每条配缺省数字与数字例；会过期的状态（GBR 至 09-30）不再写 |
+| RA-118 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 三套「连续 3 波」规则按对象分列（B1 同轴 closed 波 FAIL / B2 区级多轴 / gate 通过率 0），先后顺序写明 |
+| RA-119 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md \| tests/unit/test_docs_consistency.py | signal_floor：区域数以磁盘实况为准（测试守）；不再写含 TWN 遗漏的名单 |
+| RA-120 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md \| Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 日界 21:30 ET 与配额 00:00 ET 的区别与「NY 日」定义写明 |
+| RA-121 | fixed | Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 配额耗尽继续步 2–9 时未提交积压的上限与路由写明；ACTIVE RA ≥10 转 superalpha 的判据保留 |
+| RA-122 | fixed | Claude/skills/CHANGELOG.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | 变更史 / 过程叙述迁入 CHANGELOG：brain-deepExplore 废止说明、2026-09-26 审计补入边、脚本归档说明；正文只留正向指向 |
+| RA-123 | fixed | Claude/skills/wq-brain-ra-pipeline/references/scenarios.md \| Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 快捷入口「发批」补前置：闸 SEM（缺 s1_semantic_<ds> exit 2）与体检包会拦；情景卡 RA-0x 逐一给出 |
+| RA-124 | fixed | docs/time_bombs.json \| Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 带日期的「到期即变」文案登记到 docs/time_bombs.json（TB-01/02）；正文只在 L.3 留一处 CLI 日期说明 |
+| RA-125 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | 整链执行一节改为可读句式；「配置包」不再无定义地出现 |
+| RA-126 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md \| Claude/skills/wq-brain-ra-pipeline/references/ppa-vs-ra.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | PPA 方法论合并：ppa-mining-experience.md 由 312 行（39/52 段与 ppa-mining SKILL 逐字重复）缩为独有实证 + 作废旧说法表；PPA 分支差异表在 ppa-vs-ra.md；删除 GET/POST 提交判定脚本 |
+| RA-127 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/ppa-vs-ra.md | 步 8 分流三类：REGULAR → submit-alpha；SUPER → superalpha；PPA → web UI 交接（MCP 预检不够时 agent 停下，用户不在线则留在 submit_ready）；「当天优先提 PPA」只在渠道允许时成立 |
+| RA-128 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md | Artifact 契约：战役事实源只入 wqb.db；一次性中间文件（cache/*.json、--exprs-file）可写但可丢弃 |
+| RA-129 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| docs/ledger_keys.json | Artifact 表补全并指向 docs/ledger_keys.json（键的用途 / 写入方 / 读取方由测试守） |
+| RA-130 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/incidents.md | 反模式每条改为「因 X 发生过 Y → 改用 Z」，补上最痛的 5 条（QUICK 进提交、无确认 POST、--skip-semantic-gate、双写 verdict、LLM 402 干跑） |
+| RA-131 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| AGENTS.md \| Claude/skills/GLOSSARY.md | 全库统一「否决权威 / 放行权威」两词，删除「唯一权威 = submit_verdict」；RA 正文只剩三句（UNVERIFIABLE 不是放行） |
 
 ## RB
 
@@ -700,48 +700,48 @@
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RC-01 | open |  | 教 agent 用“**POST /alphas/{id}/submit 触发 prod_corr 计算**”“提交前先 GET 或 POST 触发计算”——GET 提交视图已证实 |
-| RC-02 | open |  | 标题“已确认超标”，第 2 行是“未触发（同族高概率 >0.7）”——推测混进“已确认”表 |
-| RC-03 | open |  | “同族不重复投入，不再投任何变体”与 D14 路径 1/2/2b（变体去相关）相悖 |
-| RC-04 | open |  | “GLB 黄金配方”margin 5.0–5.1bp，低于 `GATES_INTERNAL.margin_bp_min=10`；且该族在 §6 被判“已穷尽-规避”，配方未标废止 |
-| RC-05 | open |  | §5“待验证实验”与 §6“决定性实验——失败”并存（假设与其证伪都留着）；“已投入 b10-b19”“10 个 PPA 目标不可达”是会过期的状态 |
-| RC-06 | open |  | 有触发、现状、4 条强制纪律，可直接执行（含缓存/`refresh=True`/`from_cache`）——**范例**；但含 Redis 键名等实现细节，且被放在文末 |
-| RC-07 | open |  | 与 SKILL 5b、步 6 #4、步 7 prod-first、闸 PF、D0/D14 共 6 处谈 prod，无一处是“总纲” |
+| RC-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | prod-corr-avoidance 改写为 prod 总纲：删除「POST / GET /submit 触发 prod 计算」的危险旧指令（GET 恒 404；POST 通过即真实提交）；prod 一律 check_correlation |
+| RC-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md | 「已确认」表只收提交实测的族；推测项单列为「待验证（推测，未触发实测）」 |
+| RC-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 「不再投任何变体」限定为已确认撞墙的族；变体尝试的唯一例外（踩线带 1 次结构性尝试）在 D0-P，两处不再相悖 |
+| RC-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md | 「GLB 黄金配方」标为历史：该族已判死，且 margin 5.0–5.1bp 低于 GATES_INTERNAL.margin_bp_min（10），不得当直接套用配方 |
+| RC-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md | §4 证据附录整体标为历史（GLB 双墙实验），假设与其证伪不再并列作待办；会过期的状态说法降为带日期的历史结论 |
+| RC-06 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md | 排队纪律（触发 / 缓存 7 天 / refresh=True / from_cache / 串行泳道）提到最前一节，Redis 键名等实现细节收进出处列 |
+| RC-07 | fixed | Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/SKILL.md | prod 总纲成为唯一入口：怎么测 / 怎么读 / 已确认族在此；「拿到值之后怎么办」只有 D0-P 一张表，其余文档只引用 |
 
 ## RD
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RD-01 | open |  | “表中没有的分支才允许停下问用户”“用户指令与硬约束冲突时**直接执行、不请示**、只在台账记录”——**没有红线清单**：不可逆动作（提交 alpha）、平台条款、凭据等不应被“ |
-| RD-02 | open |  | 一个格子里三套阈值：`TVR 5–20%` 与 `turnover 5–30%` 并存；`margin>5bp` 出现两次，而 `config.GATES_INTERNAL.mar |
-| RD-03 | open |  | “混合是**主动提分手段**，Sharpe 1.58–2.0 就主动混合冲更高”——意图正是 CLAUDE.md 禁止的“混信号调参”；D3 又规定只能用“结构交互”（ts_cor |
-| RD-04 | open |  | prod 墙有**三套学说**：D0 行 4“换白名单不同数据集 regenerate，勿磨同腿变体”；D14“结构性去相关→镜像稀释→中性化骨架重构→最后才换数据集（并称 D0  |
-| RD-05 | open |  | 同表内 `LOW_2Y strictly > 1.6` 与 `LOW_2Y>1.58`；代码 `submit_queue.LIM["two_year"]=1.58` |
-| RD-06 | open |  | 一行混用内部线与平台线（`SELF<0.5` 内部 vs `submit_queue` 与平台 0.7）；`PPAC`、`CW` 缩写未定义 |
-| RD-07 | open |  | 说 submit_ready 池是“`ledger_kv` 表，经 `upsert_ledger_key` 或 `campaign.py ledger submit-ready`  |
-| RD-08 | open |  | “`submit_alpha` 返回 **201 + success:false** 是工具 bug，不算失败”——与 SKILL 步 8 的四态表（②=201 + success |
-| RD-09 | open |  | “sharpe < 0.8 → **放弃该数据集**”：①符号盲（强负信号 -1.9 也 <0.8，而 D12 说强负=方向写反、要镜像探针）；②粒度错位（单条 alpha 的 s |
-| RD-10 | open |  | CW 失败 → “backfill + **结构交互补腿**”；而 D3 “不允许用增删腿数的方式修不达标的信号”、D6 的 CW 修法优先级是“①时间平滑 ②换算子几何 ③单信号 |
-| RD-11 | open |  | ①仍写“两种写法均被闸 5 block”——正是 2026-09-28 事故里被证伪的旧说法（等权 `add(rank,rank)` 曾漏闸，见 SKILL 事故记录），未提 `e |
-| RD-12 | open |  | 多处保留**删除线原文**（`~~MINING.slow_fast_mix~~`、`~~add(multiply…)~~`、`~~慢变量×快变量加权混合~~`）——agent 若忽 |
-| RD-13 | open |  | S0 有三个入口名：`score_datasets.py --campaign-dir`（此处称“权威”）、`workflow_campaign(S0)`（SKILL）、`s0-s |
-| RD-14 | open |  | `usableFields<5 → excluded（mode 无关）` 与行 8 “fields<5 → tier2 探针例外”、SKILL“fields<5 标仅条件腿”、步  |
-| RD-15 | open |  | “用户指定数据集与白名单冲突 → 用户优先”，而步 2 #0“已点亮塔不进白名单（用户定案，硬规则）”也是用户指令；两条用户指令冲突时以**时间在后者**为准未写 |
-| RD-16 | open |  | “本地 MCP 127.0.0.1:8876 宕机 → `--mode direct`”写死环境；云端/其它环境为 stdio |
-| RD-17 | open |  | “对照轨可探 COUNTRY / **ILLIQUID_MINVOL1M** / delay0”——SKILL 步 6 已写 ILLIQUID_MINVOL1M 对 USA/ASI |
-| RD-18 | open |  | “**`hump` 已废弃禁用**”与 SKILL 步 4 预闸对 `hump(x,k)` 做**改写为 `hump(x, hump=k)`**、步 5 说“此前只拦 hump 不 |
-| RD-19 | open |  | 把 `subtract(rank(慢), rank(快))` 称为“**单信号结构**”并作为 CW 的合规改法——与“两条独立腿相加”仅差符号（见 RA-89） |
-| RD-20 | open |  | S2-D 在 SKILL 反模式里是“旧 S2-D/S2-M 必跑”的禁项，这里仍有完整决策表；`enter_multi_dataset`（≥15 / 0.7 / 0.8）会把流程 |
-| RD-21 | open |  | 行 4“回收筛选后立即**追加 `WAVE_LEDGER.md` + `ledger.json`**”、行 6“下一波前先**读 `WAVE_LEDGER.md` 的『下一波决策』 |
-| RD-22 | open |  | “决策表”里放了 0–6 的**步骤清单**（非 条件→动作）；行 2 同时讲 7 批并行、8 条上限、prod-first、配比，行 5 又重复配比与“弱探针≤1” |
-| RD-23 | open |  | “PPA 提交：仅当主题匹配且用户确认”——未提**合法 PPA 只能走平台 web UI**（submit/robustness 两个 skill 已写）；agent 会尝试用  |
-| RD-24 | open |  | “持久化 artifact 与 verdict **到 state**”（state json 已废）；“每 15 轮回测做一次多样性评估”“C 实测约 5–7”与 `CONCUR |
-| RD-25 | open |  | 整表建立在**已废止的加权混合配方**上（头注自己承认“此为历史配方”），仍占 18 行；“70% 精力做配方家族扩展”的“精力”不可操作；“腿禁用≠整集判死”“慢腿/快腿”未定义 |
-| RD-26 | open |  | “判死”阈值散落：D2 <0.8、D12 全方向 \ |
-| RD-27 | open |  | 是 S1 前置体检的核心规则（longCount≥80、稀疏事件 CW 无解、新集先 1 条单仿真），但 SKILL 步 3 没有引用它（只引 D0/D2 等）；profile 又 |
-| RD-28 | open |  | “镜像稀释：加一条相关≈0 的稀释腿”与“禁止任何加权混合/等权 leg-add”**直接冲突**；引用的 `docs/experience/prod_wall_breakthro |
-| RD-29 | open |  | 关键证据是 0.7003→0.6993（差 0.001），且同文档另一处（SKILL L663）显示 prod 会因外部提交在 1 小时内 0.6997→1.0000——单次 0. |
-| RD-30 | open |  | 与 SKILL 的对应关系没有索引：SKILL 只引用了 D0、D2；D1/D3/D4–D14 是否被步骤消费、由谁消费，读者无从知晓 |
+| RD-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 头注加优先级与红线：用户指令与硬约束冲突时执行并写 waiver 留痕；红线（提交前用户确认 / 凭据 / 平台限额）任何人批准都无效；「表中没有的分支才允许停下问用户」限于非红线 |
+| RD-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D0 廉价闸只引 config.GATES["internal"]（TVR 区间、margin 等不再在表里复写）；用户临时阈值只在该次会话内生效 |
+| RD-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | D3 按意图重定义：跨数据集补腿不是提分捷径；第二数据集只能以条件 / 分组 / 残差入场，不并列相加；删除「主动混合冲更高 Sharpe」 |
+| RD-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | prod 墙只剩 D0-P 一张表；D14 降为「踩线带内那 1 次结构性尝试怎么做」；镜像稀释撤回 |
+| RD-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D1 第 2 步 LOW_2Y 以平台线为准（PLATFORM_CHECK_LINES），删除「strictly > 1.6」与「> 1.58」并存 |
+| RD-06 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D1 第 4 步区分平台线（PROD/SELF < 0.7、CW 必过）与内部线（SELF < 0.5）；PPAC / CW 缩写首次出现处给全称 |
+| RD-07 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D1 第 6 步：submit_ready 是独立 SQL 表（submit_queue.py 单一事实源），不是 ledger_kv 键 |
+| RD-08 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/worldquant-submit-alpha/SKILL.md | 删除「201 + success:false 是工具 bug」；提交响应四态统一由 submit-alpha 处置，判据只认 status == ACTIVE |
+| RD-09 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D2「sharpe < 0.8 放弃」改为「该集最强 \|sharpe\| < 0.8 且已做镜像探针（D12）」：符号盲与粒度错位修正 |
+| RD-10 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D2 / D6：CW 失败只按 D6 修法顺序（时间平滑 → 换算子几何 → 单信号结构 → 换字段），不补腿（D3） |
+| RD-11 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | D3 按意图重定义：跨数据集补腿不是提分捷径；第二数据集只能以条件 / 分组 / 残差入场，不并列相加；删除「主动混合冲更高 Sharpe」 |
+| RD-12 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 删除线原文（MINING.slow_fast_mix、add(multiply…)、慢×快加权混合）全部清除，历史只在 CHANGELOG |
+| RD-13 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md | D4：S0 三个入口名并成一个顺序（s0-select → calibrate → 打分），score_datasets.py 是 workflow_campaign(S0) 的内部实现 |
+| RD-14 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D4 字段数 / 覆盖率 → 处置：一张四行表，区分 usableFields（S0）与「有覆盖的字段数」（S1）两个量，阈值与处置各一处 |
+| RD-15 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D4：两条用户指令冲突时，后到的显式指令覆盖先前的「定案」并记 override |
+| RD-16 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D4 MCP 不可达行去掉写死的 127.0.0.1:8876，改为「见环境章」 |
+| RD-17 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D5：ILLIQUID_MINVOL1M 对 USA / ASI / EUR 已停提，不得作对照档；universe 见 config.REGIONS |
+| RD-18 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D6：hump 仍受支持但须命名参数 hump(x, hump=k)，删除「已废弃禁用」 |
+| RD-19 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D2 / D6：CW 失败只按 D6 修法顺序（时间平滑 → 换算子几何 → 单信号结构 → 换字段），不补腿（D3） |
+| RD-20 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D7（S2-D 多样性榨取）标为可选、默认关闭，并说明 enter_multi_dataset 与「单数据集 atom 优先」方向相反 |
+| RD-21 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | D8 只留「条件 → 动作」的真决策；步骤清单并入步 6 细则；WAVE_LEDGER.md / ledger.json 写法删除（战役产物只入 wqb.db） |
+| RD-22 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step6-backtest.md | D8 只留「条件 → 动作」的真决策；步骤清单并入步 6 细则；WAVE_LEDGER.md / ledger.json 写法删除（战役产物只入 wqb.db） |
+| RD-23 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D9：合法 PPA 只能走平台 web UI（MCP 通道不感知 PPA），agent 停下交接 |
+| RD-24 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D10：verdict 持久化到 DB（战役 state json 已废）；多样性评估节奏标「经验，无统计依据」；并发以 config.CONCURRENCY 为准 |
+| RD-25 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D11 重写为只保留仍有效的规则；加权混合配方标已废止，「腿禁用 ≠ 整集判死」给定义 |
+| RD-26 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D15 判死判据表：对象 / 判据 / 出处 / 记录位置摆在一处（不强行统一不同粒度的数字） |
+| RD-27 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step3-s1-semantic.md | D13 由步 3 §3.2 直接引用；profile 不再有 longcount_min 键（等同全局默认且无代码读取） |
+| RD-28 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | D3 按意图重定义：跨数据集补腿不是提分捷径；第二数据集只能以条件 / 分组 / 残差入场，不并列相加；删除「主动混合冲更高 Sharpe」 |
+| RD-29 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | D14 中 0.7003→0.6993 证据标注 n=1、差值在测量噪声内，只算「可试」；同文 pv103 0.6997→1.0000 说明单次读数会被外部提交冲走 |
+| RD-30 | fixed | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md | 头注「被 SKILL 哪一步引用」索引：每条 D 对应哪些步骤消费一目了然 |
 
 ## RE
 
@@ -764,55 +764,55 @@
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RF-01 | open |  | RA 清单只有 **17 项，缺 `LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO`**；`config.RA_CHECK_NAMES` 是 18 项， |
-| RF-02 | open |  | 来源写 WebDataScope **1.3.1/1.0.6**，config 注释写 **0.10.20**——版本引用不一致、且都是仓外代码，无法复核 |
-| RF-03 | open |  | 口径“result 既非 PASS 也非 PENDING 才计失败”意味着 **PENDING（仍在计算）不计入**——这与平台行为一致（submit-alpha 关键坑 #2、s |
-| RF-04 | open |  | “LOW_SHARPE value<1 计 PPA 失败，不论显示状态”——只覆盖 PPA，RA 侧对 LOW_SHARPE 的 value 判据未说 |
-| RF-05 | open |  | 与 `config.compute_webdata_failed_counts` 重复（第二份实现的文字副本），且没指向它 |
-| RF-06 | open |  | 全英文（其余全中文），SKILL 引用它作为“规则见此” |
+| RF-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 名单以 config.RA_CHECK_NAMES（18 项）/ PPA_CHECK_NAMES 为准，文档不再抄名单（旧版缺 LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO）；冻结副本由测试守 |
+| RF-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 来源版本引用以 config.py 注释为准，并说明插件在仓外无法复核 |
+| RF-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | §2 PENDING：Failed == 0 不等于已通过；给出 Failed × 名单内 PENDING 的三行含义表与调用方动作 |
+| RF-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 明确 PPA 另计 LOW_SHARPE value < 1；RA 侧只认 result，不看 value |
+| RF-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 名单以 config.RA_CHECK_NAMES（18 项）/ PPA_CHECK_NAMES 为准，文档不再抄名单（旧版缺 LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO）；冻结副本由测试守 |
+| RF-06 | fixed | Claude/skills/wq-brain-ra-pipeline/references/webdatascope-failed-gates.md | 全文改为中文，并指向 config.compute_webdata_failed_counts 为唯一实现 |
 
 ## RP
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RP-01 | open |  | “不复制数字”，但主提示词自身含 13/13、≥2 非 MODEL、0.9–1.15、≥50/10–49/0–9、min(7,批数)、≥0.7 等十余个字面数字；铁律 #3 的“9 |
-| RP-02 | open |  | “步 0”不存在于 SKILL 的九步；`operator_audit`（平台算子表审计）被当成“幽灵算子”检查，而 SKILL 步 5 的 `ghost-audit` 是**表达 |
-| RP-03 | open |  | 缺 SKILL 步 2 的五项新规：calibrate、**已点亮塔不进白名单**（09-19 用户定案）、体检包前置与 `--inspect-mode`、座位可达性、饱和路由 |
-| RP-04 | open |  | 把 `workflow_feature_engineering` 列为步 3 动作；SKILL 明确它**按需、仅人读、禁注入 GEM**（否则 GEM 退化为模板展开）；且完全没 |
-| RP-05 | open |  | “workflow_gem（强制，**带 priors**）”与 SKILL L377“priors_file 已可省略”矛盾（同 RA-47）；七槽“≥1 按 win 换腿”与  |
-| RP-06 | open |  | 顺序与 SKILL 相反（先 wave_gate，再“CLI 兜底 ghost-audit”）；ghost-audit 不是 wave_gate 的兜底而是**先行独立闸**；缺闸 |
-| RP-07 | open |  | ①链缺 `check_correlation`（SKILL 有）；②撞 prod 墙“按 D14 三条路径”——与 SKILL 5b“不做任何去相关变体”冲突（入口提示词在**教  |
-| RP-08 | open |  | 步 9 只列三件回写 + pyramid，**缺 assemble-priors 刷新与 dataset-experience（SKILL 的两项完成定义）**；验收表要求 `s6 |
-| RP-09 | open |  | “连续 3 波 gate 通过率 0 → 停并给结论，**不要自行换区**”，而 SKILL 循环表同一行写“转 matrix 换数据集，或 next-move 换区域” |
-| RP-10 | open |  | “\ |
-| RP-11 | open |  | 2.1–2.4 是好的情景化写法，但：2.2 发批“跳过步 1–4”与 SKILL 快捷入口“跳过 S0–S2（步 2–4）”不一致，且都没提闸 SEM/体检包会拦；2.3“Mod |
-| RP-12 | open |  | “Sharpe/Fitness→信号强度；Turnover→平滑/窗口；PROD/SELF→D14；CW/SubUniverse→分散化骨架”是有价值的**失败点→修法族**映射， |
-| RP-13 | open |  | 缺：SEM/体检包、5b prod-first、assemble-priors 刷新、dataset-experience、QUICK 产物隔离；“`submit_verdict` |
+| RP-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 提示词不再复写数字（引用 config / 决策表）；铁律逐条指向 SKILL 步 |
+| RP-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 「步 0」删除；operator_audit（平台算子表）与 ghost-audit（表达式级）区分 |
+| RP-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 步 2 补齐：calibrate、已点亮塔不进白名单、体检包前置与 --inspect-mode、座位可达性、饱和路由 |
+| RP-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | workflow_feature_engineering 从步 3 动作里移除（按需、仅人读、禁注入 GEM） |
+| RP-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | priors_file 可省略与波内配额 ≥ 2 位换腿与 SKILL 统一（同 RA-47 / RA-48） |
+| RP-06 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 步 5 顺序改为 ghost-audit 先行、wave_gate 随后；缺闸（SEM / PF / 体检）补齐 |
+| RP-07 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 逐候选链补 check_correlation；撞 prod 墙只引 D0-P（不再「按 D14 三条路径」） |
+| RP-08 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 步 9 补 assemble-priors 刷新与 dataset-experience；验收表不再要求写 s6_verdict_<wave> |
+| RP-09 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md \| Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md | 「连续 3 波 gate 通过率 0」的动作与 SKILL 循环表统一（转 matrix 换数据集 / next-move 换区域，或用户显式放行） |
+| RP-10 | fixed | Claude/skills/wq-brain-ra-pipeline/SKILL.md \| tests/unit/test_ra_sop_template.py \| Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 「步 \| 动作 \| 命令 \| 产物 \| 通过？\| 失败分支」提升为 SKILL 每步固定模板（RA-10，由测试守）；提示词里只留一行格式引用 |
+| RP-11 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md \| Claude/skills/wq-brain-ra-pipeline/references/scenarios.md | 发批快捷入口与 SKILL 一致（步 5 起，前置闸 SEM / 体检包会拦）；Mode B 描述与 §7.7 统一；情景卡 RA-02 / RA-03 |
+| RP-12 | fixed | Claude/skills/brain-how-to-pass-alpha-test/SKILL.md \| Claude/skills/brain-alpha-repair/SKILL.md \| Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 失败点 → 修法族速查表放 brain-how-to-pass-alpha-test，repair 与 RA 提示词双向链接（PROD 一行只引 D0-P） |
+| RP-13 | fixed | Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md | 验收表补：SEM / 体检包、5b prod-first、assemble-priors 刷新、dataset-experience、QUICK 产物隔离；submit_verdict 标签用真实值 |
 
 ## RR
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RR-01 | open |  | SKILL 说 front-matter“声明静态配置/闸门覆盖/循环策略”并“注入”步骤；实测（全仓 grep）**只有 `entry_verdict` 被代码读取**（`reg |
-| RR-02 | open |  | “预警线 0.6：≥0.6 即**停扩换腿**”，与 SKILL 5b/L663“prod 0.60–0.70 → 当天提交、不做变体”直接冲突；SKILL 又规定“profile |
-| RR-03 | open |  | front-matter 仍把 `mdl177`（model 塔）与“慢变量基本面集”列为 `green` 与 `signal_families_include`，而正文（09-1 |
-| RR-04 | open |  | 至少 USA/HKG/IND 均为 2026-08-25（批量戳），与 SKILL 的 09-28 批量戳同类：戳不区分“通读核对”与“机械刷新” |
-| RR-05 | open |  | 章节顺序是**写入时间序**（避坑清单在中部，“战役选集硬规则”在倒数第 3 节）；agent 读 IND 想查“能挖什么”要翻过 60 行证据 |
-| RR-06 | open |  | “IS Sharpe 1.0–1.25 但 2Y ≥1.5 的候选不降格、不判死，进 Mode A”——没说这类候选最终**靠什么过 LOW_SHARPE/IS_LADDER 检查 |
-| RR-07 | open |  | 表格行内含 ` |
-| RR-08 | open |  | 用 `trade_when` **慢开关**（月/季频变量切掉约一半宇宙，进 >0.5/出 <0.4 滞回带）作辅助腿，并给“无效结构”反例（bucket 重排、快变量门控、两边为 |
-| RR-09 | open |  | HKG `universe: []`（“实测”）而 D5 已写 HKG TOP500/800；TWN 有 profile 无 `tracking/TWN/`；SKILL“三者对齐表 |
-| RR-10 | open |  | `fast_kill: 新数据集 8 探针无 |
+| RR-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/USA.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md | region-profile-contract §1：front-matter 哪些键被代码读（只有 entry_verdict / priors 兜底），其余为文档；gate_overrides 只写与默认不同的键（删除 longcount_min / prod_corr_early_warn 等同默认项） |
+| RR-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md \| Claude/skills/wq-brain-ra-pipeline/references/decision-table.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/USA.md | USA「0.6 即停扩换腿」并入 D0-P 0.60–0.70 行；profile 不得另设预警线（契约 §1 明文） |
+| RR-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md | IND front-matter：green 清空并加 green_note（已点亮塔不作主数据集，旧版把 mdl177 列 green 与 2026-09-19 用户定案相反）；signal_families_include 与正文对齐 |
+| RR-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | §3 last_verified = 最近一次「内容核对」日期，批量机械刷新不得改这个戳 |
+| RR-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md | §2 正文固定模板（定位 → 硬规则 → 流程变体 → 配方 → 避坑 → 证据附录）；IND 已按此重排，其余区域在下次被编辑时随手整理 |
+| RR-06 | fixed | Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md | IND 步 7/8 注入：2Y 强只免于被误杀、不免闸，最终过闸路径写明 |
+| RR-07 | fixed | Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md | 表格行内 \|ts_mean(P,252)\| 改为 abs(ts_mean(P,252))，GFM 不再把该行拆列 |
+| RR-08 | declined |  | 范本，保留：trade_when 慢开关辅助腿与「无效结构」反例；内容已上移为步 7 §7.7.3（辅助腿入场三式）并在 IND profile 保留区域画像 |
+| RR-09 | fixed | tests/unit/test_region_alignment.py \| Claude/skills/INDEX.md \| Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | 删掉硬编码的 13/14 个区域说法；三处清单（config.REGIONS / profile / tracking）由测试对齐，已知缺口显式登记（AMR 无 profile、TWN 无 tracking） |
+| RR-10 | fixed | Claude/skills/wq-brain-ra-pipeline/references/regions/KOR.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/TWN.md \| Claude/skills/wq-brain-ra-pipeline/references/regions/HKG.md | 缺省项统一写成「缺省（决策表 D15：新数据集 8 探针无 \|S\|≥0.5 即判死）」；只有 KOR / HKG / TWN / JPN / DEU / MEA 写各自差异；语义 = 文档级快判死（D15 说明），代码不读 |
 
 ## RT
 
 | ID | 状态 | 位置 / 依据 | 说明 |
 |---|---|---|---|
-| RT-01 | open |  | 标题“hypothesis **12 类**”，表中实际只出现 10 个类名（slow_diffusion、regime、propagation、urgency、over_reac |
-| RT-02 | open |  | “一次生成**只挂一套**主分类”，同句又要求“**同时**标 `dfe_question` 与 `hypothesis_class`”——自相矛盾 |
-| RT-03 | open |  | 引用 `validator.check_batch` 作“批级 shape 判重”——SKILL 步 5 已宣告它零调用方、仅作方法论参考；此处仍当有效机制 |
-| RT-04 | open |  | 把“组合腿（slow×fast spread）/ subtract(rank A, rank B)”列为标准概念位，与 RA-46/RA-89 的加权混合与 leg-add 规则冲 |
-| RT-05 | open |  | 文件放在 ra-pipeline/references，被 hypothesis-first（以“ra-pipeline references/concept-taxonomy-m |
+| RT-01 | fixed | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md \| tests/unit/test_concept_taxonomy_map.py | 分类表按代码实况重写：类名与数量对齐（不再写「12 类」而表中 10 个），由 test_concept_taxonomy_map 守 |
+| RT-02 | fixed | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md | 「主分类」与「同时标 dfe_question / hypothesis_class」的矛盾消除：一次生成只挂一套主分类，另一套作交叉标签 |
+| RT-03 | fixed | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md | validator.check_batch 只作方法论参考（全仓零调用方），不再作有效机制引用 |
+| RT-04 | fixed | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md \| Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md | 组合腿（slow × fast spread）/ subtract(rank A, rank B) 不再作标准概念位；同源对偶价差才允许（步 7 §7.7.2） |
+| RT-05 | fixed | Claude/skills/wq-brain-ra-pipeline/references/concept-taxonomy-map.md \| Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md | 归属说明：文件保留在 ra-pipeline/references（GEM 与 hypothesis-first 共用），双方以链接互相指向 |
 
 ## SA
 

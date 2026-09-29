@@ -35,6 +35,9 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+import sys as _sys_pe, os as _os_pe
+_sys_pe.path.insert(0, _os_pe.path.dirname(_os_pe.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器解析（tools/_pyenv.py）；作为脚本运行时自动切到 MCP venv，故文档里可写裸 python
 
 # ---- skill 目录自动解析 ----
 # 2026-09-27 R12：改走 tools/skill_paths（WQ_*_DIR > ~/.claude > ~/.codex > 历史 Agent 位 >
@@ -1704,6 +1707,7 @@ def main():
     sys.exit(0 if all_pass else 1)
 
 if __name__ == "__main__":
+    _pyenv.reexec_under_venv()
     import os as _os_sc; _os_sc.environ.setdefault("WQB_STARTUP_CHECKS", "once")  # 启动校验每进程只打一次（2026-09-19）
     # L3 写库互斥（2026-09-20）：门禁写 gate_results/expressions，与 build_wave/pipeline/harvest 排队
     _src = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))

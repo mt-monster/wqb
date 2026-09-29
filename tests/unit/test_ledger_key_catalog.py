@@ -26,8 +26,6 @@ MARK = re.compile(r"废止|已废|历史|deprecated|不再|旧键|legacy|勿用|
 DEPRECATED_TEACHING_BASELINE = {
     ("Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md", "wave<N>_verdict"),
     ("Claude/skills/brain-dataset-mining-experience/SKILL.md", "s6_verdict_<wave>"),
-    ("Claude/skills/wq-brain-ra-pipeline/references/ra-campaign-prompt.md", "s6_verdict_<wave>"),
-    ("Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md", "s6_verdict_<wave>"),
 }
 
 

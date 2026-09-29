@@ -430,8 +430,9 @@ def workflow_chain(
             {"node": "gem", "params": {...}},
         ], dry_run=True)
 
-    注意：链里不要放 confirm_submit=True 的 submit_alpha / superalpha ——
-    提交必须有用户明确确认（ra-pipeline 步 8），不走自动链。
+    ⚠ 链里**不允许**放 confirm_submit=True 的 submit_alpha / superalpha：提交是不可逆动作，必须有用户明确确认
+    （ra-pipeline 步 8）后单独调用。这一条由 `wqb.workflow.executor.execute_chain` 强制——出现即整链拒绝、一步都不执行
+    （干跑也拒；`confirm_submit` 缺省 / 为假的提交类步骤只做预检，允许入链）。
 
     2026-09-06：`join_async` 默认开启 —— gem / batch_track / campaign /
     feature_engineering 都是"启动即返回"，不等就是下游读空库。要"只发起不等待"

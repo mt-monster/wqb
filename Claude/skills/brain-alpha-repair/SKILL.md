@@ -2,7 +2,7 @@
 name: brain-alpha-repair
 layer: L4
 description: "修复或演化弱候选 alpha：在保持多样性与可追溯性的前提下降 turnover、提覆盖、降相关性，或从反复失败的搜索轨迹中恢复。触发词：候选修复 / 降换手 / 提覆盖 / 降相关 / 失败轨迹恢复。"
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 allowed-tools:
   - Read
   - Bash
@@ -29,7 +29,7 @@ allowed-tools:
 
 ## 工作流
 
-1. **先诊断再动手**。改公式前先读最新仿真指标、闸门失败原因与轨迹步骤。
+1. **先诊断再动手**。改公式前先读最新仿真指标、闸门失败原因与轨迹步骤。失败的检查 → 该往哪个方向修（信号 / 平滑窗口 / 时间平滑 + 回填 / 分散化骨架 / 换概念 / D0-P）的速查表在 [`brain-how-to-pass-alpha-test`](../brain-how-to-pass-alpha-test/SKILL.md)「失败点 → 修法族」。
 1a. 修复属于 REGULAR 或 PPA 挖掘链时，以 [`../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) 的 WebDataScope failed-count 门为修复目标。REGULAR 修复成功的唯一标准是 `Failed RA == 0`；PPA 是 `Failed PPA == 0`。改善 Sharpe/Fitness/相关性但 failed count 非零的修复仍是 reject，不得进入 `check_correlation` 或 `set_alpha_properties`。
 2. **结构修复优先于暴力调参**。选定任何算子前先确认它在当前 `get_operators` 返回里（幽灵算子清单与替换表见 `wq-brain-alpha-optimization-v1` Step B3）。
    - **turnover**：用平台支持的降换手算子（线性时序衰减、仓位变化阻尼、TVR 目标调参）或调高仿真 `decay`；

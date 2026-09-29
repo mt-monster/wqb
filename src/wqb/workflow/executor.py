@@ -22,6 +22,36 @@ from .registry import get_registry
 
 logger = logging.getLogger(__name__)
 
+#: 会真正提交 / 不可逆的节点。链里出现「confirm_submit 为真」的这类步骤一律拒绝整链（不执行任何步骤，干跑也拒）：
+#: 提交是不可逆动作，必须在用户明确确认后**单独**调用（ra-pipeline 步 8；AGENTS.md §8.9）。
+#: 此前这条只是 `workflow_chain` docstring 里的一句话，没有任何代码强制（skills 审查 X-9 / RA-116）。
+IRREVERSIBLE_CHAIN_NODES = ("submit_alpha", "superalpha")
+
+_TRUTHY = {"1", "true", "yes", "y", "on"}
+
+
+def _truthy(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in _TRUTHY
+    return bool(value)
+
+
+def chain_irreversible_steps(chain: Optional[List[Dict[str, Any]]]) -> List[tuple]:
+    """返回链里违规的步骤 `[(下标, 节点名), ...]`：提交类节点且 `params.confirm_submit` 为真。
+
+    `confirm_submit` 缺省 / 为假的提交类步骤只做预检（不 POST），允许入链；字符串 "true" 也算真
+    （MCP 参数可能以字符串到达）。
+    """
+    bad: List[tuple] = []
+    for i, step in enumerate(chain or []):
+        if not isinstance(step, dict):
+            continue
+        node = step.get("node")
+        params = step.get("params") or {}
+        if node in IRREVERSIBLE_CHAIN_NODES and isinstance(params, dict) and _truthy(params.get("confirm_submit")):
+            bad.append((i, node))
+    return bad
+
 
 @dataclass
 class WorkflowResult:
@@ -229,6 +259,20 @@ class WorkflowExecutor:
         Returns:
             List[WorkflowResult]
         """
+        bad = chain_irreversible_steps(chain)
+        if bad:
+            names = "、".join(f"第 {i + 1} 步 {n}" for i, n in bad)
+            first_i, first_node = bad[0]
+            return [WorkflowResult(
+                success=False,
+                node=first_node,
+                params=(chain[first_i].get("params") or {}),
+                error=(f"链里不允许出现 confirm_submit=True 的提交类步骤（{names}）：提交是不可逆动作（通过即提交，无撤回），"
+                       f"必须在用户明确确认后单独调用（ra-pipeline 步 8；AGENTS.md §8.9）。整链未执行。"),
+                dry_run=dry_run,
+                metadata={"guard": "irreversible_chain_step", "steps": [i for i, _ in bad]},
+            )]
+
         results = []
         for step in chain:
             node = step.get("node")

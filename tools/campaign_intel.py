@@ -17,6 +17,9 @@
                 跑平台 PROD_CORRELATION（单并发排队，串行），把"先烧回测、最后才知道撞 prod"
                 前移到扩批之前；结果写 alphas.prod_correlation（已有行）+ ledger prod_first_<wave>，
                 并给出族级 EXPAND / STOP 建议（≥0.7 的族不再扩变体，换族）
+  mark-saturated S6→S0 反馈（2026-09-29）：把被 prod 墙卡死的数据集写入 ledger saturated_datasets，
+                S0 打分（score_datasets P2/P5）读取并降级；缺省 dry-run，--write-ledger 落库
+  backlog-drop  积压波清理（缺省 dry-run，--apply 写库）
 
 用法:
   python tools/campaign_intel.py s0-select --region EUR --delay 1 --universe TOP2500
@@ -24,6 +27,7 @@
   python tools/campaign_intel.py s4-prescreen --alpha-ids id1 id2 id3
   python tools/campaign_intel.py ghost-audit --region EUR --exprs-file candidates.txt
   python tools/campaign_intel.py prod-first --region IND --wave 172 --top-k 3 --write-ledger
+  python tools/campaign_intel.py mark-saturated --region EUR --dataset model26 --reason "prod 墙 ≥0.9" --wave 12 --write-ledger
 
 退出码: 0=成功，1=失败/有 BLOCK 项。
 运行环境: 使用 MCP venv（$WQ_PY 或 world-quant-brain-mcp/.venv），依赖 brain_api。
@@ -1105,6 +1109,81 @@ async def _cmd_backlog_drop(a):
     return 0
 
 # ---------------------------------------------------------------------------
+# mark-saturated：S6→S0 饱和反馈的写入口（2026-09-29，skills 审查 RA-113 / IX-20）
+#   S0 打分（score_datasets.apply_saturation_demotion / P5 拍平 model）读 ledger `saturated_datasets`，
+#   此前全仓库没有任何写入方；S6 文档教写的 `submit_ready_blocked` 只被 step_funnel 计数，反馈永远不生效。
+# ---------------------------------------------------------------------------
+
+_SATURATED_KEY = "saturated_datasets"
+
+
+def _merge_saturated(existing, datasets, reason=None, wave=None, prod_corr=None, remove=False, now=None):
+    """纯函数：把 datasets 并入（或 remove=True 时移出）`saturated_datasets` 台账值。
+
+    返回 (新值, 变更清单[(action, dataset)])。台账形状固定为 `{"datasets": {ds: {reason, updated, ...}}}`
+    （score_datasets.apply_saturation_demotion 读取 reason；其余键仅作审计）。
+    """
+    val = dict(existing) if isinstance(existing, dict) else {}
+    cur = val.get("datasets")
+    dss = dict(cur) if isinstance(cur, dict) else {}
+    changed = []
+    for ds in datasets:
+        if remove:
+            if ds in dss:
+                dss.pop(ds)
+                changed.append(("removed", ds))
+            continue
+        rec = {"reason": reason, "updated": now}
+        if wave is not None:
+            rec["source_wave"] = str(wave)
+        if prod_corr is not None:
+            rec["prod_corr"] = prod_corr
+        changed.append(("updated" if ds in dss else "added", ds))
+        dss[ds] = rec
+    val["datasets"] = dss
+    return val, changed
+
+
+async def _cmd_mark_saturated(a):
+    datasets = [d.strip() for d in (a.dataset or []) if d and d.strip()]
+    if not datasets:
+        print("[mark-saturated] 需要至少一个 --dataset", file=sys.stderr)
+        return 1
+    if not a.remove and not (a.reason or "").strip():
+        print("[mark-saturated] 登记饱和须给 --reason（供 S0 tier_note 与人工复核）；撤销请用 --remove", file=sys.stderr)
+        return 1
+    conn = db_connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT value FROM ledger_kv WHERE region=? AND key='saturated_datasets'", (a.region,))
+        row = cur.fetchone()
+        try:
+            existing = json.loads(row[0]) if row and row[0] else {}
+        except (TypeError, ValueError):
+            existing = {}
+        now = time.strftime("%Y-%m-%dT%H:%M:%S")
+        new, changed = _merge_saturated(existing, datasets, (a.reason or "").strip(), a.wave,
+                                        a.prod_corr, a.remove, now)
+        if not changed:
+            print(f"[mark-saturated] {a.region}/{_SATURATED_KEY}：无变更")
+            return 0
+        for act, ds in changed:
+            print(f"[mark-saturated] {a.region}: {ds} → {act}")
+        if not a.write_ledger:
+            print("[mark-saturated] dry-run（加 --write-ledger 落库；S0 下一次打分即读取）")
+            return 0
+        cur.execute("INSERT INTO ledger_kv(region, key, value) VALUES(?, 'saturated_datasets', ?) "
+                    "ON CONFLICT(region, key) DO UPDATE SET value=excluded.value, "
+                    "updated_at=CURRENT_TIMESTAMP",
+                    (a.region, json.dumps(new, ensure_ascii=False)))
+        conn.commit()
+        print(f"[ledger] {a.region}/{_SATURATED_KEY} 已写（{len(new['datasets'])} 个数据集处于饱和态）")
+        return 0
+    finally:
+        conn.close()
+
+
+# ---------------------------------------------------------------------------
 # ghost-audit：幽灵算子硬闸
 # ---------------------------------------------------------------------------
 
@@ -1237,6 +1316,16 @@ def main():
                     help="已有回测行却仍 pending/gated 的波标 closed（残留未回测表达式标 dropped）")
     pb.add_argument("--apply", action="store_true", help="真正写库（缺省 dry-run）")
 
+    pm = sub.add_parser("mark-saturated",
+                        help="S6→S0 反馈：把被 prod 墙卡死的数据集记入台账 saturated_datasets（默认 dry-run；--write-ledger 落库）")
+    pm.add_argument("--region", required=True)
+    pm.add_argument("--dataset", action="append", default=[], help="数据集 id，可重复")
+    pm.add_argument("--reason", default=None, help="饱和原因（写入 S0 的 tier_note；--remove 时可省）")
+    pm.add_argument("--wave", default=None, help="证据来源波号（审计用）")
+    pm.add_argument("--prod-corr", type=float, default=None, help="触发饱和的实测 prod 相关性（审计用）")
+    pm.add_argument("--remove", action="store_true", help="撤销登记（饱和已解除时）")
+    pm.add_argument("--write-ledger", action="store_true", help="写 ledger saturated_datasets（缺省只预览）")
+
     pg = sub.add_parser("ghost-audit", help="幽灵算子硬闸（S2 产物入库后）")
     pg.add_argument("--region", required=True)
     pg.add_argument("--delay", type=int, default=1)
@@ -1251,7 +1340,8 @@ def main():
     coro = {"s0-select": _cmd_s0_select, "pyramid": _cmd_pyramid,
             "s4-prescreen": _cmd_s4_prescreen, "ghost-audit": _cmd_ghost_audit,
             "prod-first": _cmd_prod_first, "xr-probe": _cmd_xr_probe,
-            "backlog-drop": _cmd_backlog_drop}[a.cmd](a)
+            "backlog-drop": _cmd_backlog_drop,
+            "mark-saturated": _cmd_mark_saturated}[a.cmd](a)
     sys.exit(asyncio.run(coro))
 
 

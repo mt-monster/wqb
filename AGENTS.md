@@ -63,18 +63,20 @@
 | 3 | S1 字段扫描与理解 | `workflow_campaign(stage="S1")` + `workflow_feature_engineering` |
 | 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-make-some-gem` headless_runner） |
 | 5 | S2→S3 门禁 | `workflow_execute(node="wave_gate")`（2026-09-11 起有节点）或 CLI `tools/wave_gate.py`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
-| 6 | S3 七槽回测 | `workflow_batch_track`（并发纪律权威 = `wqb-concurrency` §8） |
+| 6 | S3 并发回测 | `workflow_batch_track`（并发参数见 `wqb.config.CONCURRENCY` 与 `wqb-concurrency` §8） |
 | 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
-| 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（唯一权威）→ 用户确认 → `workflow_submit_alpha` |
-| 9 | S6 复盘回写 | `mcp__wqb-db__upsert_wave_result` / `upsert_registry_empirical` / `upsert_ledger_key` |
+| 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（**否决权威**：只能拦不能放）→ `check_correlation(refresh=True)` prod 实测 → **用户确认** → `workflow_submit_alpha(confirm_submit=True)`（不可逆） |
+| 9 | S6 复盘回写 | `mcp__wqb-db__upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical`，再跑一次 `assemble-priors`（完成定义见 ra-pipeline `references/step9-writeback.md`） |
 
 整链可用 `mcp__wq-brain-http__workflow_chain`（先 `dry_run=True` 看每步构建出的命令）。
 **但提交类节点不入自动链**：`workflow_submit_alpha` / `workflow_superalpha` 的
-`confirm_submit=True` 必须由用户在步 8 明确确认后单独调用。
+`confirm_submit=True` 必须由用户在步 8 明确确认后单独调用。这条由代码强制（`wqb.workflow.executor.execute_chain`：
+链里出现即整链拒绝、一步都不执行，干跑也拒；`tests/unit/test_workflow_chain_irreversible_guard.py`）。
 
 **几条不在 SKILL.md、属仓库工程约定的补充**：
 
-- **判定与提交的权威划分**：提交判定唯一权威 = `tools/submit_verdict.py`（MCP `submit_verdict`）。
+- **判定与提交的权威划分**：`tools/submit_verdict.py`（MCP `submit_verdict`；实现 `wqb.submit_verdict_core`）是提交判定的**否决权威**——它说 `BLOCKED` 就不提交，
+  但它**放行不了**任何东西：放行权威 = 用户明确确认 + `confirm_submit=True` 的 POST（词表见 `Claude/skills/GLOSSARY.md`，链路见 `worldquant-submit-alpha/references/submit-chain.md`）。
   `brain-alpha-judge` / `workflow_judge` 是**参考评审层**，2026-09-05 起代码里已无提交路径。
 - **workflow 节点元数据**：`registry.py` 的 `required_params` / `optional_params` 必须与节点
   `run()` 签名一致（`_context` / `dry_run` 除外）。`workflow_list_nodes` 把它当 API 文档

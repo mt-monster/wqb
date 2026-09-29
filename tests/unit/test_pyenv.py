@@ -16,7 +16,10 @@ sys.path.insert(0, str(ROOT / "tools"))
 import _pyenv  # noqa: E402
 
 SOP_CLIS = ["submit_verdict", "batch_submit_verdict", "super_build", "campaign_intel", "harvest_multisim",
-            "sa_probe", "submit_batch", "quota_status", "batch_status", "mcp_ping"]
+            "sa_probe", "submit_batch", "quota_status", "batch_status", "mcp_ping",
+            # 2026-09-29：ra-pipeline 各步细则里以裸 `python` 调用的脚本（skill_lint bare-python 只放行接了 _pyenv 的）
+            "build_gate_prior_from_inventory", "select_ra_basket", "gen_field_inspect_packs",
+            "field_semantic_classify", "wave_gate", "sync_platform_alphas"]
 
 
 def test_resolution_order(tmp_path, monkeypatch):

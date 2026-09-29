@@ -22,9 +22,7 @@ priors:
     - "（借用）KOR 分析师预期变化面可作先验，本地验证后回写"
 gate_overrides:
   cw_gate: FAIL
-  longcount_min: 80
   longcount_verdict: FAIL
-  prod_corr_early_warn: 0.7
 loop_policy:
   max_probes_per_wave: 2
   fast_kill: "新数据集 8 探针无 |S|≥0.5 即判死（类 KOR 小宇宙纪律）"
@@ -45,6 +43,7 @@ TWN 小宇宙，registry 空白。结构上半导体/电子权重极高（单一
 ### 步 1 注入：档位实测
 
 `get_platform_setting_options(TWN)` 实测合法档，禁止外推 KOR TOP600。
+**缺口**：`tracking/TWN/` 目录**不存在**（有 profile、无战役目录）——开波前先补 `tracking/TWN/config/{settings,thresholds}.json`（开新区前置，见 [`../region-profile-contract.md`](../region-profile-contract.md) §4）。
 
 ### 步 5 注入：继承 KOR 严闸
 

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: brain-make-some-gem
 description: "S2 概念优先的 GEM alpha 表达式生成器（headless_runner）。当需要为某个 region/dataset/delay/universe 组合生成候选 alpha 表达式、跑 GEM、补候选池、按 priors 做增强变体扩展时使用。触发词：生成表达式 / 跑 GEM / makeSomeGem / 选波生成 / 概念优先生成 / final_expressions。编排入口是 wq-brain-ra-pipeline 步 4，标准调用走 mcp__wq-brain-http__workflow_gem，本 skill 描述其后端引擎与产物契约。"
 layer: L2
@@ -49,6 +49,8 @@ allowed-tools:
 | **skeleton mode**（`--pipeline-mode skeleton`） | 字段语义分层后可机械配槽（P0 协议） | `trailSomeAlphas/skeletons.py` 代码骨架（field layering → WINDOW_DOMAINS → 骨架组装） | **代码组装**（LLM 只输出结构化 JSON，语法合法性构造保证） |
 
 选择规则：字段可分层（signal/metadata/scale 清晰）→ skeleton mode；需要族级经济机制叙事（mechanism_premise / field_profile_match）→ family mode。
+
+> 概念位分类学（dfe 8 问 ↔ GEM 概念位 ↔ hypothesis 12 类）见 [`wq-brain-ra-pipeline/references/concept-taxonomy-map.md`](../wq-brain-ra-pipeline/references/concept-taxonomy-map.md)；「概念位」是生成时的分类，与**波内配额**、**并发令牌**是三个东西。
 **2026-09-15 ②**：`workflow_gem` / gem 节点新增 `pipeline_mode`（single/phased/skeleton）透传；headless runner 缺省从 `single` 改为 `phased`
 （与本表一致），`skeleton` 从节点层可达。S1 ledger `source ∈ {feature_engineering_node, standalone, standalone_v2}` 的模板渲染文档
 **不再自动注入** `--ideas-file`（注入后本管线零 LLM 调用、整波退化为模板展开）；显式 `ideas_file` 仍可覆盖。落盘前 `pipeline_pregate.py`
