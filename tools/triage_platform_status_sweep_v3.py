@@ -6,9 +6,11 @@ import sqlite3
 import sys
 from datetime import datetime
 
-sys.path.insert(0, r"D:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-DB = r"D:\coding\traeCN_project\wqb\data\wqb.db"
-OUT = r"D:\coding\traeCN_project\wqb\logs\_triage_platform_status_v3.json"
+import os as _os_repo
+_REPO = _os_repo.path.dirname(_os_repo.path.dirname(_os_repo.path.abspath(__file__)))   # 仓库根（无盘符硬编码）
+sys.path.insert(0, _os_repo.path.join(_REPO, 'world-quant-brain-mcp'))
+DB = _os_repo.path.join(_REPO, 'data', 'wqb.db')
+OUT = _os_repo.path.join(_REPO, 'logs', '_triage_platform_status_v3.json')
 
 FINAL = ["Jj7ee6nO", "omqEE1pn", "E5l6mmqJ", "6XjqLn3J"]
 

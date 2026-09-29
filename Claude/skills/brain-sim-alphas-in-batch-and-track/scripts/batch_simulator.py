@@ -19,8 +19,13 @@ from typing import List, Dict, Any
 def _open_store():
     """定位 CampaignStore DB，返回连接实例（可能为 None）。region 用调用处传入。"""
     try:
-        roots = [os.environ.get("WQB_ROOT"), os.environ.get("WQ_PROJECT_ROOT"),
-                 r"D:\coding\traeCN_project\wqb"]
+        roots = [os.environ.get("WQB_WORKSPACE"), os.environ.get("WQB_ROOT"), os.environ.get("WQ_PROJECT_ROOT")]
+        _here = os.path.dirname(os.path.abspath(__file__))
+        for _ in range(8):                       # 仓库内运行：上溯到含 src/wqb 的目录
+            if os.path.isdir(os.path.join(_here, "src", "wqb")):
+                roots.append(_here)
+                break
+            _here = os.path.dirname(_here)
         for root in roots:
             if not root:
                 continue
@@ -884,7 +889,7 @@ class BatchSimulator:
             logger.error(f"Critical error in batch processing: {e}", exc_info=True)
 
     def run(self, alpha_list: List[dict], batch_size: int = 3, concurrency: int = 2,
-            enhance_diversity: str = "auto"):
+            enhance_diversity: str = "never"):
         """
         Main entry point to run the simulation manager.
         
@@ -1011,8 +1016,11 @@ def main():
     parser.add_argument("--tasks-dir", default="outputs/tasks", help="Task directory root for detached mode")
     parser.add_argument("--status", default=None, help="Show detached task status by task id and exit")
     parser.add_argument("--tail-lines", type=int, default=40, help="Tail lines for --status output")
-    parser.add_argument("--enhance-diversity", default="always", choices=["auto", "always", "never"],
-                        help="Diversity enhancement mode: always=force enhance (default), auto=enhance if needed, never=disable")
+    parser.add_argument("--enhance-diversity", default="never", choices=["auto", "always", "never"],
+                        help="Diversity enhancement mode: never=do not rewrite expressions (default since 2026-09-29), "
+                             "auto=enhance if diversity is low, always=force enhance. Enhancement mutates structure / "
+                             "swaps outer operators, which conflicts with the GEM rule that explicit ideas keep their "
+                             "economic direction - opt in explicitly")
     args = parser.parse_args()
 
     tasks_dir = Path(args.tasks_dir)

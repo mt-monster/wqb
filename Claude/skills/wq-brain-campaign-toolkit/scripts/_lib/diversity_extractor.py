@@ -353,11 +353,14 @@ class DynamicParamSpaceMapper:
     def _adjust_param_space(self, operator: str, param_performance: Dict[str, List]) -> Dict[str, List]:
         """基于参数效果动态调整参数空间"""
         # 默认参数空间
+        # 窗口只用有交易日含义的档：周 5 / 月 22 / 季 66 / 年 252（CLAUDE.md；闸 9 白名单同口径）。
+        # 旧值 10/20/60/120/250 无实测依据，2026-09-29 收敛。
+        _win = [5, 22, 66, 252]
         default_spaces = {
-            "ts_rank": {"window": [5, 10, 20, 60, 120, 250]},
-            "ts_zscore": {"window": [5, 10, 20, 60, 120, 250]},
-            "ts_delta": {"window": [5, 10, 20, 60, 120, 250]},
-            "ts_decay_linear": {"window": [5, 10, 20, 60, 120, 250]},
+            "ts_rank": {"window": list(_win)},
+            "ts_zscore": {"window": list(_win)},
+            "ts_delta": {"window": list(_win)},
+            "ts_decay_linear": {"window": list(_win)},
         }
         
         if operator not in default_spaces:
@@ -734,7 +737,7 @@ class DiversityRoundGenerator:
         field_type = field_types.get(selected_field, "MATRIX")
         
         # 选择 ts_rank 算子，生成不同窗口参数的变体
-        windows = self.param_spaces.get("ts_rank", {}).get("window", [10, 20, 60])
+        windows = self.param_spaces.get("ts_rank", {}).get("window", [5, 22, 66])
         
         expressions = []
         for i, window in enumerate(windows[:size]):

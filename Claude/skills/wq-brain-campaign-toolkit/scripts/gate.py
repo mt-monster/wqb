@@ -194,6 +194,9 @@ def get_validator():
             sys.path.insert(0, d)
             from validator import ExpressionValidator
             _VALIDATOR = ExpressionValidator()
+            # 查找顺序里主目录已安装副本在仓库副本之前（旧拷贝可能落后）：每个进程打印一次所用路径，
+            # 让「验证行为」可复现；写 stderr，不污染 stdout 的 JSON 报告（skills 审查 TR-09）
+            print(f"[gate] 闸1 verifier = {d}", file=sys.stderr)
             return _VALIDATOR
     _VALIDATOR = False  # 标记已探测且缺失
     return None

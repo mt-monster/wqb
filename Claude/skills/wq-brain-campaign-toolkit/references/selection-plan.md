@@ -1,60 +1,43 @@
 # 机制与对照驱动的选波
 
+> 本页只讲**选波**（怎么把 GEM 产物选成一波）。波后怎么读结果、研究线索、纠错复验见 [`post-wave-reading.md`](post-wave-reading.md)。
+
 ## 两种模式
 
-- 普通探索：`--size N`是容量上限。允许因历史去重、字段/族配额而少选；wave_meta记录差额与原因。不得据此声称已覆盖全部机会。
-- 已评审实验：`--selection-contract-key KEY`从同区域ledger读取下方清单。条数由required推导，容量不得小于它。保持现有配额、去重及后续门禁；冲突时报告缺失项，不自动放宽或凑数。
+- **普通探索**：`--size N` 是容量上限。允许因历史去重、字段 / 族配额而少选；`wave_meta` 记录差额与原因。不得据此声称已覆盖全部机会。
+- **已评审实验**：`--selection-contract-key KEY` 从同区域 ledger 读取下方清单。条数由 `required` 推导，容量不得小于它。保持现有配额、去重及后续门禁；冲突时报告缺失项，**不自动放宽或凑数**。
 
-没有固定的8条或12条上限。先选经济机制，再为关键变化/残差等变换配水平基线或反证对照。相同字段换窗口通常属于参数敏感性，不能冒充多个独立机制。首次探针有限不代表全集搜索完成。
+没有固定的 8 条或 12 条上限。先选经济机制，再为关键变化 / 残差等变换配水平基线或反证对照。相同字段换窗口通常属于参数敏感性，不能冒充多个独立机制。首次探针有限不代表全集搜索完成。
 
-## DB清单
+`--expected-count N`（固定机制批）数量不符时返回 `selection-count` 与排除原因，不写本波表达式或 `wave_meta`；`--source-wave` 显式指定 GEM 来源，重建时不再优先读残缺目标波。选中项若已回测、`dropped` 或 `superseded`，返回 `selection-state` 并回滚选集事务；落库后验证每个 picked 的状态与 `alpha_id`。**该检查只保证「本次 picked」，不会自动清理旧的 `selected` / `gated`。** `--size` 在 CLI 与 workflow S2 中都只表示容量，不会自动补 `expected-count`。预定机制 / 对照实验优先 `--selection-contract-key`：按 DB 清单推导数量，并核验 `source_id`、原式、`dataset` / `region` / `delay` / `source_wave` 及状态——同条数错表达式也会失败。`wave_meta.selection_audit` 记录来源项的选中 / 延后及原因；**未选不等于机制失败**。
 
-由 `mcp__wqb-db__upsert_ledger_key(region=...,key=...,value=...)` 保存，约定键名 `selection_w<W>`（`<W>` = 目标波号；`--selection-contract-key` 接受任意键名）；来源必须是实际GEM产物，不能自己造表达式绕过S2。
+**「受保护状态」**（`build_wave` 拒绝覆盖）：目标波里已有 `alpha_id`（已回测），或状态为 `superseded` / `dropped` 的行；另外，「计划外」的 `selected` / `gated` / 已回测行会阻断，防下游多发。
+
+## DB 清单
+
+由 `mcp__wqb-db__upsert_ledger_key(region=…, key=…, value=…)` 保存，约定键名 `selection_w<W>`（`<W>` = 目标波号；`--selection-contract-key` 接受任意键名）；来源必须是实际 GEM 产物，不能自己造表达式绕过 S2。
 
 ```json
 {
   "region": "EUR", "dataset": "fundamental17", "delay": 1,
   "wave": "251", "source_wave": "s2_fundamental17_d1",
   "required": [
-    {"source_id": 123, "expression": "<DB原式逐字复制>",
+    {"source_id": 123, "expression": "<DB 原式逐字复制>",
      "mechanism": "receivables_efficiency", "role": "hypothesis",
      "rationale": "检验应收周转改善"},
-    {"source_id": 124, "expression": "<配对基线DB原式>",
+    {"source_id": 124, "expression": "<配对基线 DB 原式>",
      "mechanism": "receivables_efficiency", "role": "control",
      "rationale": "保持预处理和分组一致，检验水平是否解释变化信号"}
   ]
 }
 ```
 
-ID仅为格式示例。required内ID、原式和机制/角色对不得重复；同一机制如需两个不同对照，应明确命名各自问题。清单region/dataset/delay/wave必须与本次一致。
+ID 仅为格式示例。`required` 内 ID、原式和机制 / 角色对不得重复；同一机制如需两个不同对照，应明确命名各自问题。清单 `region` / `dataset` / `delay` / `wave` 必须与本次一致。
 
-调用既有 `workflow_campaign(stage="S2",...)` 的extra_args传：
-`--selection-contract-key KEY --size N --enhance-diversity never --auto-coverage never`。
-清单推导source_wave和expected_count；显式传入冲突值会失败。旧 `--expected-count` 是兼容的数量检查，不具备身份覆盖保证。
+调用既有 `workflow_campaign(stage="S2", …)` 的 `extra_args` 传：`--selection-contract-key KEY --size N --enhance-diversity never --auto-coverage never`（两者缺省本就是 `never`，显式写出是为了让命令自证）。清单推导 `source_wave` 和 `expected_count`；显式传入冲突值会失败。旧 `--expected-count` 是兼容的数量检查，不具备身份覆盖保证。
 
 ## 失败及审计
 
-源ID缺失、来源不符、表达式变化、已回测或受保护状态均阻断；不会自动恢复superseded/dropped。
-字段/族配额或历史去重挡住清单项时，返回机制、原式和原因，不落目标波选集。先审查去重是否已有可复用证据，再决定修改计划、容量或分波；不要机械放大配额。
-目标波已有计划外selected/gated/已回测行时阻断，防下游多发。通常使用新波；只有无回测且已核实的旧选集才可显式整理。
+源 ID 缺失、来源不符、表达式变化、已回测或受保护状态均阻断；不会自动恢复 `superseded` / `dropped`。字段 / 族配额或历史去重挡住清单项时，返回机制、原式和原因，不落目标波选集。先审查去重是否已有可复用证据，再决定修改计划、容量或分波；不要机械放大配额。目标波已有计划外 `selected` / `gated` / 已回测行时阻断，防下游多发；通常使用新波，只有无回测且已核实的旧选集才可显式整理。
 
-`wave_meta`记录模式、清单快照、容量、计划数、选中数、source_id/原式/源状态以及选中或延后原因。
-单独源池中未选项原样保留；同目标波落选待选项仍按既有规则归档superseded，保留原式和状态变更记录。superseded不代表实证dead_end；恢复须明确理由及ID。
-
-## 下一波选择
-
-S4/S6比较主假设和对照的Sharpe/Fitness、RN指标、逐年表现及相关性，再判断变换是否值得继续。不要仅按单次最高Sharpe扩展窗口。
-优先补未覆盖的独立机制或缺少的对照；有证据的方向再做有限敏感性检验。延后项记录重访条件，只有实际回测失败且满足判死规则才能成为dead_end。
-在阶段总结列出计划数、选中数、门禁通过数、完成数、未覆盖的问题和下一步原因。
-
-### 指标上升但尚未达到增强资格
-
-先确认比较有效：配对的经济问题、字段口径、预处理、设置与样本范围须一致；检查平台UNITS等警告。跨机制的两批最高Sharpe只能表示发现了更强候选，不能证明某次变换有效。有单位/语义缺陷的旧式不适合做干净对照，也不能用其失败判死正确的经济假设。
-
-将值得调查的问题写入同区域ledger `research_leads_w<W>`，记录alpha、对照、同条指标、未解决问题、下一项检查与停止条件。它只保留研究证据，不是near/ready池，不自动获得Mode B资格或追加模拟权限。沿用用户提示词/区域配置的资格线。
-
-先用已有结果和只读平台详情核查覆盖、逐年收益、2Y与RN强度。保留正证据和反证，不因全期Sharpe提高而忽略近窗或风险暴露恶化。全期/年度Sharpe不是独立重复试验，未经配对检验不能宣称提升显著。
-
-若发现具体的单位、字段映射或对照缺口，可按已授权研究范围做一次最小纠错复验：预先列明缺陷、要回答的问题、必测项及停止条件；冻结与缺陷无关的参数，已有同设置对照直接复用。新表达式仍走GEM→身份清单→门禁→回测，平台警告未解决则只记录测量未决。不能借“纠错”给无缺陷弱信号反复换窗口、翻号或组腿；纠错后的结果须重新满足资格线才能发增强波。
-
-没有具体可检验缺口时保留线索，转向其他独立机制。S6同时记录“原式未达标”和“研究问题是否已解决”，避免把停止参数扩展写成停止一切研究。
+`wave_meta` 记录模式、清单快照、容量、计划数、选中数、`source_id` / 原式 / 源状态以及选中或延后原因。单独源池中未选项原样保留；同目标波落选待选项仍按既有规则归档 `superseded`，保留原式和状态变更记录。`superseded` 不代表实证 `dead_end`；恢复须明确理由及 ID。

@@ -33,7 +33,8 @@ class FieldQualityScorer:
             db_path: wqb.db 路径，默认自动检测
         """
         if db_path is None:
-            wqb_root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
+            wqb_root = (os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT")
+                        or os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             db_path = os.path.join(wqb_root, "data", "wqb.db")
         self.db_path = db_path
         

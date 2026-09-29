@@ -7,10 +7,6 @@ import sys
 from pathlib import Path
 
 
-#: 历史默认工作区（作者本机）。只有它真实存在且含 src/wqb 时才会入选——见 _workspace_roots。
-_LEGACY_ROOT = r"D:\coding\traeCN_project\wqb"
-
-
 def _walk_up(start):
     """从 start 向上（≤8 层）找工作区标记 src/wqb 或 data/wqb.db；找不到返回 None。"""
     if not start:
@@ -31,8 +27,8 @@ def _workspace_roots(campaign_dir=None):
     显式环境变量按原样采信；推断来源（战役目录 / 本文件 / cwd 上溯）要求命中工作区标记。
     2026-09-27 R19：历史默认 `D:\\coding\\traeCN_project\\wqb` 此前无条件兜底——仓库不在该
     路径时，`_lib/ledger` 在 cwd 下拼出相对路径 "D:\\coding\\…\\data\\wqb.db" 直接崩溃，
-    tools/wave_gate.py 的同款兜底则造出杂散目录与空库。现只在它真实存在且含 src/wqb 时
-    才作为最后一个候选。
+    tools/wave_gate.py 的同款兜底则造出杂散目录与空库。2026-09-29（X-14）起该历史默认路径
+    彻底移除：只认环境变量与「战役目录 / 本文件 / cwd 上溯」这些真实可验证的来源。
     """
     cands = [
         _walk_up(campaign_dir),
@@ -41,7 +37,6 @@ def _workspace_roots(campaign_dir=None):
         os.environ.get("WQ_PROJECT_ROOT"),
         _walk_up(os.path.dirname(os.path.abspath(__file__))),   # 仓库内的 toolkit
         _walk_up(os.getcwd()),
-        _LEGACY_ROOT if os.path.isdir(os.path.join(_LEGACY_ROOT, "src", "wqb")) else None,
     ]
     roots = []
     for r in cands:
@@ -57,7 +52,7 @@ def resolve_db_path(ctx=None):
     `_lib/wave_results.WaveResultsStore` 共用——此前前者按战役目录上溯、后三者只认
     WQB_WORKSPACE 否则落硬编码盘符，同一次 assemble-priors 会读两个库。
     顺序：WQB_DB_PATH > 战役目录上溯 > WQB_WORKSPACE > WQB_ROOT > WQ_PROJECT_ROOT
-    > 本文件上溯 > cwd 上溯 > 历史默认（仅当真实存在）。
+    > 本文件上溯 > cwd 上溯。
     """
     env = os.environ.get("WQB_DB_PATH")
     if env:

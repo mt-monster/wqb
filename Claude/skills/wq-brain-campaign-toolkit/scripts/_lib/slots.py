@@ -32,11 +32,6 @@ def slots_dir():
         return os.environ["WQB_SLOTS_DIR"]
     # 工作区根优先取环境变量（skill 装在 ~/.claude/skills 时 __file__ 上溯不到仓库）
     root = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT") or _REPO_ROOT
-    if not os.path.isdir(os.path.join(root, "logs")):
-        for cand in (r"D:\coding\traeCN_project\wqb",):
-            if os.path.isdir(os.path.join(cand, "logs")):
-                root = cand
-                break
     return os.path.join(root, "logs", "_slots")
 
 

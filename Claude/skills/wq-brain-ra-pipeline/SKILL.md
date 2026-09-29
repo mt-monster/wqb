@@ -203,7 +203,7 @@ last_verified: 2026-09-29
 | S2 | `expressions`（status `gem` / `enhanced` / `selected`）；ledger idea；`priors_snapshot_<region>` | `workflow_gem` 落库 + `assemble-priors`；直写 `upsert_expressions` |
 | S2→S3 | `gate_results`（`all_pass` / `fail_reasons`） | `wave_gate` / `gate.py`；直写 `upsert_gate_result` |
 | S3 | `backtest_results` / `wave_results` / checkpoint；ledger `prod_first_<wave>` | `pipeline.py`（toolkit）；收割 `harvest_multisim_alphas` + `harvest_multisim_results` |
-| S4 | ledger `s4_walls_<region>_<wave>`；`salvage_pool` | `review_wave.py`；补池 `backfill_salvage_pool` |
+| S4 | ledger `s4_walls_<region>_<wave>`（`workflow_campaign` S4 节点写）或 `review_<tag>`（`review_wave.py --write-ledger` CLI 写）；`salvage_pool` | `review_wave.py`；补池 `backfill_salvage_pool` |
 | S6 | `wave_results.verdict`（唯一结论源）+ `registry_empirical` + ledger `saturated_datasets`；`reports/dataset_experience/*_campain.md`（每个回测过的数据集一份；本波涉及的由步 9 ⑦ 逐个刷新，**不是只对判死 / win 集生成**） | `upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical` / `mark-saturated` / `dataset-experience` |
 
 ## 反模式（每条：因 X 发生过 Y → 改用 Z）

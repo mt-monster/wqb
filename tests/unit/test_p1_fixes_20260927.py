@@ -140,14 +140,13 @@ def test_toolkit_db_path_env_precedence(tmp_path, clean_env):
     assert wqb_store.resolve_db_path(SimpleNamespace(dir=str(tmp_path))) == str(tmp_path / "x.db")
 
 
-def test_legacy_root_only_when_it_exists(tmp_path, clean_env):
+def test_legacy_root_is_gone(tmp_path, clean_env):
+    """2026-09-29（X-14 / DEC-37）：作者本机盘符的「历史默认工作区」彻底移除——此前只在它存在时入选，
+    仍是一条固定路径候选；现只认环境变量与「战役目录 / 本文件 / cwd 上溯」这些可验证的来源。"""
     from _lib import wqb_store
 
-    legacy = tmp_path / "legacy"
-    clean_env.setattr(wqb_store, "_LEGACY_ROOT", str(legacy))
-    assert str(legacy) not in wqb_store._workspace_roots()             # 不存在 → 绝不入选
-    (legacy / "src" / "wqb").mkdir(parents=True)
-    assert wqb_store._workspace_roots()[-1] == str(legacy)             # 存在 → 只作最后兜底
+    assert not hasattr(wqb_store, "_LEGACY_ROOT")
+    assert all("traeCN_project" not in r for r in wqb_store._workspace_roots())
 
 
 def test_wave_gate_db_path_never_hardcoded(tmp_path, clean_env):

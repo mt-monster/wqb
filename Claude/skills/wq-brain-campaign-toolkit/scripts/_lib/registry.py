@@ -4,7 +4,9 @@
 取代散装 INSERT OR REPLACE 直改（无校验/无单事务/payload 结构漂移风险）。
 与 _lib/ledger.py 同模式：
   1. 幂等 upsert：INSERT OR REPLACE + UNIQUE(region, layer, entry_id)，可重复跑
-  2. payload 结构校验：按 layer 必填字段；dead_end/win 缺省自动补 dead_at/date
+  2. payload 结构校验：**只在工作区的 `wqb.registry_contract` 实现一份**（与 wqb-db MCP 的
+     `upsert_registry_empirical` / `seal_dead_end` 共用；DEC-34）——按 layer 必填字段；
+     dead_end/win 缺省自动补 dead_at/date
   3. 单事务提交，防半写
   4. 读（list/get）与写同入口，便于回写后立即验证
 
@@ -17,18 +19,33 @@ from _lib.db import connect as db_connect  # 规范工厂（2026-09-20 L1 收口
 import argparse
 import datetime
 import json
+import os
 import sys
 
 from .common import load_json
 from .ledger import SqliteLedgerStore  # 复用 db 路径单一来源
 
-REQUIRED = {
-    "dead_end": ["id", "family", "reason", "rule"],
-    "win": ["id", "what", "key"],
-    "campaign": ["dataset", "status"],
-    "orphan": ["id"],
-}
-STATUS_OK = ("untried", "in_progress", "exhausted")
+
+def _contract():
+    """工作区的写入契约 `wqb.registry_contract`（校验的唯一实现）；找不到直接退出并说明怎么设。"""
+    try:
+        from wqb import registry_contract
+        return registry_contract
+    except ImportError:
+        pass
+    from .wqb_store import _workspace_roots
+    for root in _workspace_roots():
+        src = os.path.join(root, "src")
+        if os.path.isdir(os.path.join(src, "wqb")):
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            try:
+                from wqb import registry_contract
+                return registry_contract
+            except ImportError:
+                continue
+    raise SystemExit("找不到工作区的写入契约 wqb.registry_contract（src/wqb）：设 WQB_WORKSPACE "
+                     "指向工作区根后重试。registry 只经这一个契约校验，不在 toolkit 里另存一份规则")
 
 
 def today():
@@ -68,17 +85,11 @@ class RegistryStore:
 
     def upsert(self, layer, payload, dry_run=False):
         """幂等写入（INSERT OR REPLACE，单事务）。返回规范化后的条目 dict。"""
+        c = _contract()
         p = validate(layer, payload)
-        entry_id = p["id"] if layer != "campaign" else p["dataset"]
-        if layer == "dead_end":
-            family = p.get("family")
-        elif layer == "win":
-            family = p.get("what")
-        elif layer == "campaign":
-            family = p.get("dataset")
-        else:
-            family = None
-        dead_at = p.get("dead_at") or p.get("date")
+        entry_id = c.entry_id_of(layer, p)
+        family = c.family_of(layer, p)
+        dead_at = c.dead_at_of(p)
         if dry_run:
             return {"dry_run": True, "region": self.region, "layer": layer,
                     "entry_id": entry_id, "family": family, "dead_at": dead_at,
@@ -128,20 +139,12 @@ class RegistryStore:
 
 
 def validate(layer, payload):
-    """按 layer 校验必填字段；缺省自动补 dead_at/date。返回规范化 payload。"""
-    if layer not in REQUIRED:
-        raise SystemExit(f"非法 layer: {layer}（可选: {sorted(REQUIRED)}）")
-    missing = [k for k in REQUIRED[layer] if not payload.get(k)]
-    if missing:
-        raise SystemExit(f"{layer} payload 缺必填字段: {missing}")
-    if layer == "campaign" and payload["status"] not in STATUS_OK:
-        raise SystemExit(f"campaign.status 非法: {payload['status']}（可选: {STATUS_OK}）")
-    p = dict(payload)
-    if layer == "dead_end" and not p.get("dead_at"):
-        p["dead_at"] = today()
-    if layer == "win" and not p.get("date"):
-        p["date"] = today()
-    return p
+    """按 layer 校验必填字段；缺省自动补 dead_at/date。返回规范化 payload（实现见 wqb.registry_contract）。"""
+    c = _contract()
+    try:
+        return c.validate(layer, payload, today=today())
+    except c.RegistryContractError as e:
+        raise SystemExit(str(e))
 
 
 def merge_payload(raw, named):
@@ -158,6 +161,8 @@ def merge_payload(raw, named):
 
 def cli_main(ctx, argv):
     """argv = registry 之后的参数。返回退出码。"""
+    STATUS_OK = _contract().STATUS_OK
+    REQUIRED = _contract().REQUIRED
     ap = argparse.ArgumentParser(prog="campaign.py registry",
                                  description="registry 实证层统一 CLI（幂等写 + 结构校验）")
     sub = ap.add_subparsers(dest="cmd", required=True)

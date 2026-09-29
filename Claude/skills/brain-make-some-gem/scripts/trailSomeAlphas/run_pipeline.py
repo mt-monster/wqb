@@ -65,8 +65,14 @@ def _load_skeleton_stats(region: str) -> dict:
     消费端（build_skeleton_prompt）自动降级为默认顺序。
     """
     import sqlite3
-    root = os.environ.get("WQB_ROOT") or r"D:\coding\traeCN_project\wqb"
+    root = os.environ.get("WQB_WORKSPACE") or os.environ.get("WQB_ROOT")
+    if not root:
+        from pipeline_paths import _find_repo_root       # 上溯到含 src/wqb 的仓库根（无作者盘符兜底）
+        _repo = _find_repo_root()
+        root = str(_repo) if _repo is not None else ""
     db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
+    if not root and not os.environ.get("WQB_DB_PATH"):
+        return {}
     if not os.path.isfile(db):
         return {}
     conn = sqlite3.connect(db, timeout=60)

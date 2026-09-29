@@ -4,7 +4,9 @@ import sqlite3
 import time
 from datetime import datetime
 
-DB = r"D:\coding\traeCN_project\wqb\data\wqb.db"
+import os as _os_repo
+_REPO = _os_repo.path.dirname(_os_repo.path.dirname(_os_repo.path.abspath(__file__)))   # 仓库根（无盘符硬编码）
+DB = _os_repo.path.join(_REPO, 'data', 'wqb.db')
 ts = datetime.now().isoformat(timespec="seconds")
 
 

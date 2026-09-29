@@ -24,7 +24,6 @@ MARK = re.compile(r"废止|已废|历史|deprecated|不再|旧键|legacy|勿用|
 
 #: 文档里仍未带废止标记就教旧键的（文件, 键）——审查里点名要改的位置；改完必须从这里删（棘轮：只减不增）。
 DEPRECATED_TEACHING_BASELINE = {
-    ("Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md", "wave<N>_verdict"),
     ("Claude/skills/brain-dataset-mining-experience/SKILL.md", "s6_verdict_<wave>"),
 }
 

@@ -84,11 +84,15 @@ def _find_wqb_db() -> Optional[str]:
         cand = os.path.join(ws, "data", "wqb.db")
         if os.path.isfile(cand):
             return cand
-    # 硬编码兜底
-    for root in [r"D:\coding\traeCN_project\wqb"]:
-        cand = os.path.join(root, "data", "wqb.db")
-        if os.path.isfile(cand):
-            return cand
+    # 从本文件上溯到含 src/wqb 的仓库根（无作者盘符兜底）
+    here = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(8):
+        if os.path.isdir(os.path.join(here, "src", "wqb")):
+            cand = os.path.join(here, "data", "wqb.db")
+            if os.path.isfile(cand):
+                return cand
+            break
+        here = os.path.dirname(here)
     return None
 
 

@@ -18,10 +18,15 @@ from skill_roots import candidate_paths_under_skill
 def _wqb_campaign_store():
     """Locate CampaignStore from skill scripts (workspace src/)."""
     roots = [
+        os.environ.get("WQB_WORKSPACE"),
         os.environ.get("WQB_ROOT"),
         os.environ.get("WQ_PROJECT_ROOT"),
-        r"D:\coding\traeCN_project\wqb",
     ]
+    _here = Path(__file__).resolve()
+    for anc in _here.parents:                    # 仓库内运行：上溯到含 src/wqb 的目录（不再有作者盘符兜底）
+        if (anc / "src" / "wqb").is_dir():
+            roots.append(str(anc))
+            break
     for root in roots:
         if not root:
             continue
@@ -32,7 +37,7 @@ def _wqb_campaign_store():
             from wqb.store import CampaignStore
             db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
             return CampaignStore(db)
-    raise ImportError("wqb.store not found; set WQB_ROOT")
+    raise ImportError("wqb.store not found; set WQB_WORKSPACE (or WQB_ROOT) to the wqb workspace")
 
 
 def _load_template_families() -> dict:

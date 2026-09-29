@@ -41,7 +41,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-WQ_ROOT = Path(r"D:\coding\traeCN_project\wqb")
+WQ_ROOT = Path(__file__).resolve().parents[1]      # 仓库根（无盘符硬编码）
 sys.path.insert(0, str(WQ_ROOT))
 sys.path.insert(0, str(WQ_ROOT / "world-quant-brain-mcp"))
 

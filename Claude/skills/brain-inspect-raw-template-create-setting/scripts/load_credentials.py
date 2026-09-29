@@ -35,9 +35,9 @@ def load_credentials(
       2) skill-local config.json
       3) ~/secrets/platform-brain.json (if allow_home_secrets)
 
-    Supported env vars:
-      - BRAIN_USERNAME or BRAIN_EMAIL
-      - BRAIN_PASSWORD
+    Supported env vars（标准名在前，与 MCP 服务 / toolkit / batch_simulator 同名；旧别名仍认）:
+      - CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD   （标准）
+      - BRAIN_USERNAME or BRAIN_EMAIL, BRAIN_PASSWORD   （旧别名）
       - BRAIN_API_URL (optional)
       - BRAIN_URL (optional)
     """
@@ -48,8 +48,9 @@ def load_credentials(
     brain_url = os.environ.get("BRAIN_URL", "https://platform.worldquantbrain.com")
 
     if allow_env:
-        env_username = os.environ.get("BRAIN_USERNAME", os.environ.get("BRAIN_EMAIL", ""))
-        env_password = os.environ.get("BRAIN_PASSWORD", "")
+        env_username = (os.environ.get("CREDENTIALS_EMAIL")
+                        or os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL") or "")
+        env_password = os.environ.get("CREDENTIALS_PASSWORD") or os.environ.get("BRAIN_PASSWORD") or ""
 
     if env_username and env_password:
         return BrainCredentials(
@@ -85,7 +86,7 @@ def load_credentials(
 
     raise RuntimeError(
         "Missing BRAIN credentials. Provide either: "
-        "(1) env vars BRAIN_USERNAME/BRAIN_EMAIL + BRAIN_PASSWORD, or "
+        "(1) env vars CREDENTIALS_EMAIL + CREDENTIALS_PASSWORD (legacy: BRAIN_USERNAME/BRAIN_EMAIL + BRAIN_PASSWORD), or "
         f"(2) {cfg_path} with username/password, or "
         "(3) ~/secrets/platform-brain.json with email/password. "
         "See config.example.json for the expected schema."

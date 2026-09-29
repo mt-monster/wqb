@@ -222,7 +222,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
     ★ verdict 只接受 PASS / FAIL / PARTIAL；描述性结论写 `key_findings`。
   【逐数据集经验沉淀（必做）】`mcp__wq-brain-http__workflow_campaign region="USA" stage="S6" subcommand="dataset-experience" dataset=<DS> extra_args=["--delay","1"]`
     未回测、诊断与待出相关性不能记成已验证成果。
-  【判死封存】dead_end 回写前调 `mcp__wqb-db__seal_dead_end region="USA" entry_id=<DEAD_END_ID> family=<族名> wave_numbers=[W1,W2,...]`
+  【判死封存】dead_end 回写前调 `mcp__wqb-db__seal_dead_end region="USA" entry_id=<DEAD_END_ID> family=<族名> reason=<带数据的判死原因> rule=<下次怎么办> wave_numbers=[W1,W2,...]`
   【点塔进度】`python tools/campaign_intel.py pyramid --region USA --delay 1`
     输出末尾 [key_findings] 单行直接拷进 upsert_wave_result 的 key_findings。
   【提交多样性监控】每提交 3–5 颗调 `mcp__wq-brain-http__value_factor_trendScore start_date=<本季初> end_date=<今天>`

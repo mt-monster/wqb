@@ -70,21 +70,12 @@ def resolve_candidates(idea_ctx: dict[str, Any], options_snapshot: dict[str, Any
 
 
 def _wqb_store():
-    """定位 workspace src/wqb 的 CampaignStore（WQB_DB_PATH 优先隔离）。"""
-    import os
-    roots = [os.environ.get("WQB_ROOT"), os.environ.get("WQ_PROJECT_ROOT"),
-             r"D:\coding\traeCN_project\wqb"]
-    for root in roots:
-        if not root:
-            continue
-        src = os.path.join(root, "src")
-        if os.path.isdir(os.path.join(src, "wqb")):
-            if src not in sys.path:
-                sys.path.insert(0, src)
-            from wqb.store import CampaignStore
-            db = os.environ.get("WQB_DB_PATH") or os.path.join(root, "data", "wqb.db")
-            return CampaignStore(db)
-    return None
+    """定位 workspace src/wqb 的 CampaignStore（WQB_DB_PATH 优先隔离）；找不到返回 None。"""
+    _skill = Path(__file__).resolve().parents[1]
+    if str(_skill) not in sys.path:
+        sys.path.insert(0, str(_skill))
+    from scripts._workspace import open_store
+    return open_store()
 
 
 def main() -> None:

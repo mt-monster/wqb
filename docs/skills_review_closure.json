@@ -206,124 +206,183 @@
    "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_scenario_cards_exist_with_the_two_mandatory_chapters_in_the_sample"
   },
   "CM-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "字段顺序与其余 skill 不同（`last_verified` 先于 `name`）；description 后半是“它做什么”（解析配置包、原样派发 S0–S6、回写 regi",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md | tests/fixtures/skill_capabilities_baseline.json",
+   "note": "description 改为「区域已定、需要 dataset / 死路 / 胜绩配置包时」，不再与 ra-pipeline 抢「开战役」触发词；allowed-tools 补 4 个只读 wqb-db 工具（能力基线 _doc 已登记理由，待用户复核）；frontmatter 字段顺序沿用全库多数写法，未另做统一",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_allowed_tools_match_the_body"
   },
   "CM-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "6 个空行；运行环境一句话放在 H1 标题**之前**",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "6 个连续空行删除；「运行环境」单句挪出 H1 之前（现 H1 后紧跟「职责边界」，由测试守）",
+   "verify": "tests/unit/test_sd_docs.py::test_boundary_section_directly_follows_h1"
   },
   "CM-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "三种说法互相矛盾：职责边界“**本 skill 负责** … 战役后回写 registry”；§4 与 L139“**由本 skill 的 §4 回写流程**提炼判死结论”；L14",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md",
+   "note": "唯一归属：registry 的 schema / ID 命名 / 校验归 matrix（回写规范一节），何时写与写什么归 RA 步 9；职责边界删「回写」改「拥有写入规范」，闭环段落删除",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_storage_map_and_registry_schema_follow_the_contract"
   },
   "CM-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“既有 **31 个**其他 skill”硬编码（现为 33 个 SKILL.md，INDEX 有 32/33 两种说法）；“只做查表与回写、不执行挖掘”在 L24、L32、L36",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "删硬编码「31 个其他 skill」；「只查表不执行」只在职责边界写一次"
   },
   "CM-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "写入路径：L37“走 `campaign.py registry` 幂等 CLI **或** 会话内 `upsert_registry_empirical`”；§4 与硬规则 4“",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md | src/wqb/registry_contract.py | wqb_db_mcp.py | Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/registry.py | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md | docs/ra-mining-prompt-region-agnostic.md",
+   "note": "DEC-34：措辞统一为「MCP 可用时 MCP，无 MCP / 批量用 CLI」；并把它落成代码——校验只在 registry_contract 一份，CLI 与 MCP upsert_registry_empirical / seal_dead_end 共用；seal_dead_end 新建条目必须带 rule",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_seal_dead_end_new_entry_needs_rule_and_has_no_side_effects"
   },
   "CM-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "单个 ≈750 字 bullet 含两条规则 + 工具指针：①“强制”标注 `prod_risk: high` / `prod_saturation: likely`，但**没有 ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "配置包给固定字段表：prod_risk（与含 PROD_CORRELATION 类墙的 dead_end 重叠，附条目 id）/ prod_saturation（region_status.py --json 的 pass_ge_158 ≥ 10，口径只此一处）；样例补齐两字段；删 min_sharpe=1.58 字面值；不再引用不存在的「输出契约」节；撞墙后怎么办只指向 D0-P",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_prod_saturation_reads_the_single_region_status_implementation"
   },
   "CM-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“S0 健康检查 = `wq-brain-ppa-mining` §1.0 硬门槛方法论 + `score_datasets.py`”——把 PPA 专用阈值（cov≥0.85/a",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "配置包带 mode 字段；体检方法分模式：RA 走决策表 D4 / 步 2，PPA 走 ppa-mining §1.0，不再把 PPA 阈值当全部战役的 S0 方法论"
   },
   "CM-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "**两套 schema 并存**：表格说 4 张表（`regions`/`datasets`/`registry_empirical`/`cross_region_lessons`",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "重写为唯一一张「存储地图」（概念 → 表 / layer → 读 → 写）；cross_region_lessons 表标已废弃（迁入 registry_empirical layer='cross_region'）；「层」一词只指 layer 列；registry 与 region_kb 并列合并（无谁派生谁）",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_storage_map_and_registry_schema_follow_the_contract"
   },
   "CM-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "一段里含历史（2026-08-21 起单轨、JSON 已归档）、读法（MCP 或裸 SELECT）、写法（CLI）、迁移工具（migrate_phase2.py）；提到的 `cam",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "历史（单轨、JSON 归档、迁移工具）从正文移除（CHANGELOG 记一笔）；读法只保留 MCP；不再出现 campaign_registry.json 文件名"
   },
   "CM-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“region（**必须**）”，却又在 ra-pipeline 三角分工里被定义为“**where=查表选区**选集”。matrix 无法选区（region 是入口参数）；真正的",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "region 是入口参数、matrix 不选区：缺 region 回问用户，或转 next-move / region_status --rotate；删「最高优先级」（campaign 层只有 status 三值，没有排序键）"
   },
   "CM-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "只给调用，没说返回结构与空结果的含义（`get_region_config` 返回空 = 新区？）",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "查表调用后附返回摘要与空结果含义（region not found = 该区从未入库，不是「没有配置」）"
   },
   "CM-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "自由文本样例，缺：`prod_risk/prod_saturation`（强制项）、`entry_verdict`（profile）、`lit_towers`（09-19 硬规则）",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "完整配置包样例 + 字段来源表；「候选 = 待 S0 筛选的超集，不是白名单」（已点亮塔、win 族、体检硬门由 S0 执行）；「数据集 dominant」一说删除",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_config_package_has_the_promised_fields_and_no_copied_dispatch_chain"
   },
   "CM-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "把九步派发链**整段复制**（步 2–9 的工具名），与 ra-pipeline 已不同步：仍写步 3 用 `workflow_feature_engineering`（ra-pi",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "整段九步派发链删除，改一句「交还 ra-pipeline 步 2」；测试断言 matrix 不再出现 workflow_batch_track / submit_verdict 等编排词",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_config_package_has_the_promised_fields_and_no_copied_dispatch_chain"
   },
   "CM-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "代码块标 bash、用 `\\` 续行，正文却规定 PowerShell；`campaign.py` 裸写，前文说 `$WQ_TOOLKIT_DIR/campaign.py`；示例 ",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "命令改 PowerShell + $WQ_TOOLKIT_DIR，日期改占位；定义 ID 命名规则（<REGION>-<数据集或族>-<症状>-DEAD）与各 layer 必填字段表（与 registry_contract 一致，测试守）；--key 定义为「设置与骨架」，不记混合比例",
+   "verify": "tests/unit/test_sd_docs.py::test_matrix_storage_map_and_registry_schema_follow_the_contract"
   },
   "CM-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“只记有跨会话价值的结论，不记过程性噪声”——判据抽象",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "给 3 正例（带 rule 的 dead_end、可复用 win 配方、数据集 exhausted）与 3 反例（单波 FAIL、单条 alpha 未过闸、参数扫描结果）"
   },
   "CM-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "步骤**不可执行**：①数据源 `research-data/fresh_datasets_7region.json` 不存在（机械检查）；②“复制到 assets 层/stati",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/INDEX.md | Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "开新区检查表在 INDEX 唯一维护（落点 + 验证命令）；不存在的 fresh_datasets_7region.json 删除；regions / datasets 表的写入路径写清（CampaignStore 自动建行、discover / ingest_dataset_assets）；tracking/region_config.json 无代码读取，明确排除",
+   "verify": "tests/unit/test_sd_docs.py::test_index_has_the_single_new_region_checklist_and_matrix_links_it"
   },
   "CM-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "“以更新 registry 为准”歧义（以“更新后的 registry”为准，还是“去更新 registry”？）",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "改「与 registry 冲突时以 registry 为准，并在发现处修正来源文档」"
   },
   "CM-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "“死路 rule **优先于用户直觉**”与 ra-pipeline/decision-table 的“用户显式指令 > 决策表”冲突",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "死路 rule 与用户指令：先提示一次依据，用户坚持则执行并在 key_findings 记「用户覆盖」——与 RA「用户显式指令 > 决策表」一致；情景 MX-2"
   },
   "CM-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "说“AMR/**JPN** 本工作区未启用（无 profile、无战役目录）”——JPN profile 已于 09-15 补齐（ra-pipeline L62），JPN 有 pr",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md | Claude/skills/INDEX.md",
+   "note": "区域覆盖事实只在 INDEX §区域清单维护，硬规则 3 改「以 config.REGIONS 与 INDEX 为准」，不再断言 AMR / JPN 未启用（JPN profile 已于 09-15 补齐）"
   },
   "CM-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "“禁止散装 SQL”出现 5 次",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "「禁止散装 SQL」收敛为硬规则 4 一处"
   },
   "CM-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "同两行内自相矛盾：“submit_ready … **进战役台账（ledger_kv）不进 registry**”与“registry schema 约定：region 级可增 …",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md | docs/ledger_keys.json | wqb_db_mcp.py",
+   "note": "DEC-33：submit_ready 唯一存储 = SQL 表；registry schema 不再有 submit_ready[] 镜像；matrix 存储地图与台账边界只提 SQL 表",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_ledger_catalog_marks_submit_ready_key_legacy"
   },
   "CM-22": {
-   "status": "open",
+   "status": "fixed",
    "title": "matrix 硬规则 1 说 **registry 是“唯一事实源”**；ra-pipeline 步 4/9 说 **DB KB（`region_kb`/`template_kb`",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "写明同步关系：registry 与 region_kb 并列，由 assemble-priors 合并（registry 的 win / dead_end 层 + region_kb 的论坛模板 / 配方 / 死路模式 / 过闸率先验）；S6 只写 registry；回写后必须再跑 assemble-priors"
   },
   "CM-23": {
-   "status": "open",
+   "status": "fixed",
    "title": "“S6 均走 toolkit 幂等 CLI”，而 ra-pipeline 步 9 示例是 MCP `upsert_*`；“未回写的复盘视为未完成”与 ra-pipeline 完成定",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "S6 回写细节整段删除，只保留「回写后必须再跑 assemble-priors」并指向 RA 步 9 的完成定义"
   },
   "CM-24": {
-   "status": "open",
+   "status": "fixed",
    "title": "**没有失败分支与反例**：`get_region_config` 空、region 不在 REGIONS、registry 与 profile 冲突、写入被幂等 CLI 拒绝（缺",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wq-brain-campaign-matrix/SKILL.md",
+   "note": "增「常见失败与处置」表（region not found / 缺 region / frozen / registry 与 profile 冲突 / 回写被拒缺 rule / entry_id 不一致 / prod_saturation=unknown）与 3 张情景卡 MX-1..3"
   },
   "DE-01": {
    "status": "open",
@@ -1048,44 +1107,67 @@
    "note": "5 张情景卡：Fitness 不过 / 仅 2Y 不过 / CW=WARNING / Sub-universe 不过 / SELF vs PROD"
   },
   "IR-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 442 字，含“不要用于增强模板”——“增强模板”“raw template”在全库其它处没有定义；“创建 alpha 列表”触发与 sim-alphas ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md",
+   "note": "description 重写：说清「外部 / 手写 idea JSON → 核对设置 → 写 expressions 表」，去掉全库无定义的「raw / 增强模板」用语；与 sim-alphas 的触发分开（这里不发起回测）",
+   "verify": "tests/unit/test_sd_docs.py::test_description_is_a_short_trigger_statement"
   },
   "IR-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "铁律：`alpha_list.json` 等**不得当交接真相源、Agent 禁止 Write**；而本 skill 的输出与下游明写“`alpha_list.json` 交 si",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md | Claude/skills/brain-inspect-raw-template-create-setting/scripts/build_alpha_list.py | Claude/skills/brain-inspect-raw-template-create-setting/scripts/process_template.py",
+   "note": "交接以 expressions 表为准；alpha_list.json 只有显式 --out 才写并声明「不是交接文件」；过时的「停止并交还 AI」提示同步重写",
+   "verify": "tests/unit/test_sd_docs.py::test_inspect_raw_boundary_no_longer_promises_a_settings_plan_or_ai_handoff"
   },
   "IR-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "设置决策有三种口径：blockquote“人工设置决策环节已删除，仅两个职能”；职责边界“产出**设置计划**（universe/中性化/decay/truncation/maxT",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md | Claude/skills/brain-inspect-raw-template-create-setting/scripts/process_template.py",
+   "note": "边界与步骤统一为「设置一律来自 settings.json / profile settings_proven / --set；本 skill 不做设置决策」，删「产出设置计划」「选定设置组合」",
+   "verify": "tests/unit/test_sd_docs.py::test_inspect_raw_boundary_no_longer_promises_a_settings_plan_or_ai_handoff"
   },
   "IR-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“上游 = GEM 产出的 `*_idea_*.json`”，但 GEM 节点已直接把表达式落 `expressions` 表；`build_alpha_list.py` 直写同一",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md",
+   "note": "新增「何时走本通道」三行表：GEM 已入库 → 不走本 skill（互斥）；外部 / 手写 idea → 本 skill（status=pending）；已在库按设置展开 → build_alpha_list.py --from-db（本脚本的参数，不是 pipeline 的）",
+   "verify": "tests/unit/test_sd_docs.py::test_inspect_raw_boundary_no_longer_promises_a_settings_plan_or_ai_handoff"
   },
   "IR-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "凭据来源再增 3 种：`BRAIN_USERNAME/BRAIN_EMAIL`+`BRAIN_PASSWORD`、skill 内 `config.json`、`~/secrets/",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md | Claude/skills/brain-inspect-raw-template-create-setting/scripts/load_credentials.py",
+   "note": "凭据标准名 CREDENTIALS_* 优先（旧别名 / config.json / ~/secrets 仍认），文档写全顺序；agent 不读 .env",
+   "verify": "tests/unit/test_sd_docs.py::test_inspect_raw_credentials_prefer_the_standard_names"
   },
   "IR-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“先 `cd \"path/to/…\"`”是占位；产物落在 skill 目录下的 `processed_templates/<filename>/`（skill 树内写文件，GEM ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md | Claude/skills/brain-inspect-raw-template-create-setting/scripts/process_template.py | Claude/skills/brain-inspect-raw-template-create-setting/scripts/_workspace.py",
+   "note": "cd 占位删；process_template 新增 --out-dir（缺省仍落 skill 目录 processed_templates/，已 gitignore 且不参与同步）；示例文件名改占位；作者盘符兜底并入 _workspace.py 一份（env > 上溯，无盘符）",
+   "verify": "tests/unit/test_sd_portability.py::test_workspace_root_helpers_prefer_env_then_repo_walkup"
   },
   "IR-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "可选字段默认值：`nanhandling`(**OFF**)、`maxtrade`(**OFF**)、`testperiod`(P0Y0M0D)；而战役 `settings.jso",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md | Claude/skills/brain-inspect-raw-template-create-setting/scripts/build_alpha_list.py",
+   "note": "DEC-39：实测战役 settings 的 nanHandling 7 OFF / 6 ON、maxTrade 8 OFF / 5 ON——不统一，所以不改缺省值，改来源透明：新增 --campaign-dir（没给的可选字段取战役 settings.json），并打印每个字段的来源；testPeriod 统一说法（无测试期 P0Y0M0D，P6Y 是真实测试期）",
+   "verify": "tests/unit/test_sd_docs.py::test_inspect_raw_doc_states_the_real_defaults_and_the_real_campaign_split"
   },
   "IR-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“中性化必须始终选一个有效选项（**不能为 None**）”，而 datafield-exploration 要求字段探测用“**Neutralization: None**”",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md",
+   "note": "两个场景各标适用：生产回测中性化不能为 None（本 skill），字段探测要求 Neutralization: None（datafield-exploration）；情景 IR-B"
   },
   "IX-01": {
    "status": "open",
@@ -2517,8 +2599,9 @@
    "status": "fixed",
    "title": "“S2-COMPLIANCE 已降级为提示”是变更史；toolkit 的 S2_COMPLIANCE_* 文档仍按“必做”写，未同步",
    "cat": "逻辑·P3",
-   "where": "Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md | Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md | Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
-   "note": "toolkit 的 S2 合规文档同步为「仅提示、不阻断、无 --force」（2026-09-15 降级）；指南 v2.0，清单末条改写，SKILL ⑥ 行加链接"
+   "where": "attic/toolkit_docs_20260929/README.md | Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "toolkit 的 S2 合规文档同步为「仅提示、不阻断、无 --force」后，S2_COMPLIANCE_* 因 TR-32 整体归档（其「必须调用特征工程」要求已被撤回）；SKILL 子命令表 s2-mark 行写明「可选标记、缺记录只打印提示」",
+   "verify": "tests/unit/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short"
   },
   "RA-77": {
    "status": "fixed",
@@ -3610,44 +3693,66 @@
    "note": "归属说明：文件保留在 ra-pipeline/references（GEM 与 hypothesis-first 共用），双方以链接互相指向"
   },
   "SA-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 触发含“**批量提交 alpha**”，而边界写“不提交 alpha、`--submit`=提交**回测**”；“调并发/配额闸/战役 pipeline”分",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md",
+   "note": "description：触发词改「批量回测 / 发起回测」（去「批量提交 alpha」），并发与配额触发让给 wqb-concurrency / toolkit",
+   "verify": "tests/unit/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
   "SA-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“S3 **唯一**执行者/单一入口”，RA 步 6 却列出三个入口（`workflow_batch_track`、本 skill、toolkit）并让 agent 自选；边界“不",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md",
+   "note": "「唯一入口 / 唯一执行者」改入口选用表（workflow_batch_track / pipeline.py / batch_simulator.py 三个入口各管一类场景）；「调用 gate.py 闸」的引擎能力表删除（区分调用与实现）；settings.json 声明「本 skill 不写」",
+   "verify": "tests/unit/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
   "SA-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“长任务执行规则”整节以**文件模式**为主线：启动前预检 `alpha_list.json` 存在、“进度真相源=输出 CSV”、“失败=进程停止 且 CSV 无进展≥**3 分",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md",
+   "note": "长任务规则分两路：MCP / 引擎路径（无 CSV，看 workflow_task_status + backtest_results，卡住 = WAIT_THRESHOLDS 的 60 / 360 分钟）与兼容 CLI 路径（CSV 进度，≥3 分钟无更新 + 进程不可达 = 本地进程死了）；注明两个判据判的是不同层，不是「相差 20 倍」的同一件事",
+   "verify": "tests/unit/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
   "SA-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "兼容命令示例用保守值（`--batch-size 3 --concurrency 2`），⚠ 警告放在代码**之后**；裸 `python` 与“$WQ_PY”规则不符",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/README.md | Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md | Claude/skills/brain-sim-alphas-in-batch-and-track/examples.md",
+   "note": "警告前置；示例数字换占位 <B> / <C>；裸 python 全换 $WQ_PY（README 的 $env:BRAIN_PASSWORD 示例一并删）",
+   "verify": "tests/unit/test_sd_docs.py::test_sim_alphas_entry_table_and_no_stale_claims"
   },
   "SA-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "多样性增强**默认 `always`**：按“算子熵<2.0/覆盖率<50%/新颖度<80%/结构相似度>70%”自动做结构变异、**算子替换（ts_rank→ts_scale）*",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py | Claude/skills/brain-sim-alphas-in-batch-and-track/scripts/batch_simulator.py",
+   "note": "DEC-35：两处 --enhance-diversity 缺省改 never（增强会结构变异 / 替换算子 / 追加 novel，与 GEM 铁律冲突；阈值无实证），auto / always 显式 opt-in；测试守缺省",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_diversity_enhancement_defaults_to_never_in_both_entry_points"
   },
   "SA-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "阶段→脚本→产物表是同一映射的**第 3 份**（toolkit §6、RA Artifact 表、本表），且产物写成旧文件名（`reference/…_dataset_ranki",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md",
+   "note": "第 3 份「阶段 → 脚本 → 产物」映射表删除，改指 toolkit SKILL §1 分工表与「产物契约」（以 DB 为准）"
   },
   "SA-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“禁止**五**数据集同时首探”——数字 5 与七槽不符（RA 反模式写“七槽全裸探针”）",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md",
+   "note": "「禁止五数据集同时首探」删，改「填槽内容规则见 RA 步 4 / 步 6」（规则而非数字）"
   },
   "SA-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "凭据变量名 `BRAIN_EMAIL/BRAIN_PASSWORD` 与 inspect（`BRAIN_USERNAME`…）、concurrency/toolkit（`WQ_US",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/brain-sim-alphas-in-batch-and-track/README.md | Claude/skills/brain-sim-alphas-in-batch-and-track/scripts/batch_simulator.py",
+   "note": "凭据名统一：标准名 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD（与 MCP、toolkit 同名），旧别名 BRAIN_* 仍认；解析顺序写成脚本实际顺序（--config → env → 工作区 .env）；agent 不读 .env",
+   "verify": "tests/unit/test_sd_docs.py::test_sim_alphas_credential_chain_matches_batch_simulator"
   },
   "SB-01": {
    "status": "fixed",
@@ -4131,404 +4236,604 @@
    "cat": "AR-12、NS-04、RA-31、NM-12、BM-06、SP-06、RD-28、CM-16"
   },
   "TK-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 702 字（全库最长）是**功能清单**（含“骨架配给 linear_mix≤0.5”“REGULAR 4/日+SUPER 1/日+PPA 1/日”等实现细",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | tests/fixtures/skill_capabilities_baseline.json",
+   "note": "description 由 702 字功能清单改为 173 字触发场景；闸数只留代码口径；allowed-tools 补 6 个只读 wqb-db 工具（理由已登记，待用户复核）",
+   "verify": "tests/unit/test_sd_docs.py::test_description_is_a_short_trigger_statement"
   },
   "TK-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "7 个连续空行；“ledging”笔误",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "连续空行与 ledging 笔误清理"
   },
   "TK-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "声称本 skill 是 **`wave_results` / `registry_empirical` / `ledger_kv` 的“唯一正式写入方”**——但 `mcp__wq",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "删「唯一正式写入方」；新增 §3 写入矩阵（表 × 校验实现 × 入口 × 适用）：wave_results / registry_empirical / ledger_kv / submit_ready 各写清",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_write_matrix_names_the_single_implementations"
   },
   "TK-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "`campaign.py dataset-experience` 的说明是孤立段落，夹在“职责边界”与“1. 定位”之间；§6 子命令表里没有这一行",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "dataset-experience 进 §6 子命令表",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_subcommand_table_is_complete_and_archived_scripts_are_not_offered"
   },
   "TK-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“本 skill 是战役脚本的**唯一权威实现**”——实际引擎分两处：本 toolkit（gate/pipeline/build_wave/score_datasets/revi",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "删「唯一权威实现」；§1 加 toolkit vs tools/ 分工表（阶段 → toolkit → tools/），补全 wave_gate / campaign_intel / harvest_multisim / step_funnel 等"
   },
   "TK-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题是“使用率分级”，正文却含**行为契约与安全规则**：选波数量契约（L53–62）、异步恢复（L64–68，含 “MCP 桥接超时返回 `outcome_unknown`、`r",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "§7「重发安全与异步恢复」独立成节，写成三步恢复顺序（workflow_task_status → 按 multisim_id 查 backtest_results → 两处皆空且任务已死才重发）+ 情景 TK-A"
   },
   "TK-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "已归档脚本（`distill_experience/os_feedback/family_atlas/budget_planner/campaign_mutex/signal_cl",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | attic/toolkit_docs_20260929/README.md",
+   "note": "删除线行与括号撤回全部清理；§6 只留存在的脚本，已归档清单合成一段并指向 attic 三处；测试逐个核对 scripts/ 里确无这些文件、SKILL 里只在「已归档」行出现",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_subcommand_table_is_complete_and_archived_scripts_are_not_offered"
   },
   "TK-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“核心 5 工具”按 2026-08-31 的静态引用扫描定义，`score_datasets/build_wave/review_wave` 被划为“中使用率”，而 RA 的 S",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "「使用率分级」整节删除（按 2026-08-31 静态引用扫描的分级与实际流程不符），换成「按阶段选脚本」表"
   },
   "TK-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "10 行无编号、中英文无空格（“`--size`在CLI与workflow S2中都只表示容量”），与 RA L397–409 及 `selection-plan.md` 是**同",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/selection-plan.md",
+   "note": "选波数量与状态契约 10 行拷贝删除，只在 selection-plan.md 维护（含 expected-count / source-wave / selection-state / 受保护状态定义）",
+   "verify": "tests/unit/test_sd_docs.py::test_selection_and_post_wave_pages_are_split_and_the_catalog_points_at_the_right_one"
   },
   "TK-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "同一段里放了两件无关的事：异步任务恢复、救援池 `exclude_dataset` 的来源排除；后者属于 `get_salvage_pool`/RA 步 7",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "异步恢复与救援池来源排除拆开：前者进 §7 步骤，后者一段指向 get_salvage_pool / RA 步 7，并写明「数据集不同只证明来源不同」"
   },
   "TK-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“brain-sim-alphas-in-batch-and-track 是**唯一运行时调用方**”不成立：`workflow_batch_track` / `workflow_",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "「唯一运行时调用方」改「主要调用方」并列出 workflow_campaign / workflow_batch_track 节点"
   },
   "TK-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "该行是**最好的产物契约**（脚本 → 库表/ledger key），但是一整行 700 字；且与 RA Artifact 表冲突：这里 `review_wave.py → led",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/INDEX.md",
+   "note": "700 字一行改成「产物契约」表（入口 → DB 落点）；review_wave 写 review_<tag>、workflow S4 节点另写 s4_walls_…，RA 产物表两个键都写明（RA SKILL 的 S4 行同步）",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_product_contract_keys_exist_in_the_ledger_catalog"
   },
   "TK-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "契约里夹带“KOR/IND/DEU 混合形态、`probe_scoring_v2` 刻意缺”的决策记录（对 agent 的动作是什么？）；`campaign-dir-contrac",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "决策记录换成事实陈述（probe_scoring_v2 刻意缺的原因保留为 schema 事实）；指针去重；新增「缺目录 / 缺 thresholds 时的行为」表（TWN / AMR 情形）",
+   "verify": "tests/unit/test_sd_docs.py::test_campaign_dir_contract_marks_files_and_its_json_example_is_valid"
   },
   "TK-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "凭据链列了 4 个来源（环境变量 / `BRAIN_CREDENTIALS` / `~/.brain_credentials` / `MCP_CONFIG_FILE`），与 AGE",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "凭据链列出脚本实际顺序（CREDENTIALS_* → WQ_* → BRAIN_CREDENTIALS / ~/.brain_credentials → MCP_CONFIG_FILE），并加红线「agent 不得读取、打印这些文件或 .env」"
   },
   "TK-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "开波闸模式段 560 字，实际决策只有“命令行 > 环境变量 > 按日期缺省；节点一律拦截”",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "开波区域闸 560 字改成 2 行小表（入口 × 缺省 × 命中结果），日期唯一事实源 region_gates.WARN_SUNSET"
   },
   "TK-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "①bash 变量赋值（`PY=$WQ_PY`）与全库 PowerShell 约定不符；②流程只用 `gate.py`（闸 1–6），**完全不含 `tools/wave_gate.",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "快速开始改 PowerShell（$WQ_PY / $TK）；标明门禁走 tools/wave_gate.py（含体检硬门 / 闸 SEM / PF / 2b）；补 GEM 一步说明；--submit 旁注「发起回测，不是提交 alpha」，--max-rounds 有说明"
   },
   "TK-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "子命令表：①含 5 个已归档脚本（TK-07）；②缺 RA 依赖的 `campaign.py assemble-priors`、`dataset-experience`、`dive",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "子命令表补全 assemble-priors / diversity-extract / s2-mark / dataset-experience 与 harvest.py / check_ledger_sync.py / neutralization_sweep.py；闸数统一「8 闸 + 可选闸0」；细节文档改链接；campaign.py 文档串同步（8 闸、去重复行、修 \\u003e 乱码）",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_subcommand_table_is_complete_and_archived_scripts_are_not_offered"
   },
   "TK-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "§6.x 记录 `saturated_datasets`、`seat_model` 是“数据源台账”，但**全仓库没有任何代码或指令写入 `saturated_datasets`*",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | docs/ledger_keys.json",
+   "note": "saturated_datasets 的写入口 = campaign_intel.py mark-saturated（DEC-13，已落地）；seat_model 登记 orphan 并在文档写明；饱和相关机制只谈函数名与开关"
   },
   "TK-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "P0/P2/P3/P5/P6 是审计工单号（无 P1；P4 只在 L169 出现）；与 `probe-scoring-v2.md` 的“P5 分段罚”、探针模板 P1–P8 **同",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md",
+   "note": "P0/P2/P3/P5/P6 审计工单号全部改用功能名；probe-scoring 里的「探针 P1–P8」专指模板一组"
   },
   "TK-20": {
-   "status": "open",
+   "status": "declined",
    "title": "“`score`=信号强度榜、`pyramid_view`=点塔战略榜，语义分离，**勿相加或混排**”——明确写了“不要拿它做什么”",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "note": "范本（🟢）：「score=信号强度榜、pyramid_view=点塔战略榜，勿相加或混排」——原样保留在 §8"
   },
   "TK-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "“接线修复落地（审计①③⑥⑦）”是变更记录，圈号指向外部审计报告；内容与 RA（settings prior、region_kb 刷新、S2-COMPLIANCE 降级、rn 墙/",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "§6.y「接线修复落地（审计①③⑥⑦）」变更记录删除（改进 CHANGELOG）；settings prior / region_kb 刷新 / S2-COMPLIANCE 降级 / rn 墙 / 停止规则各在对应章节留一句现行事实，键契约见 campaign-dir-contract"
   },
   "TK-22": {
-   "status": "open",
+   "status": "fixed",
    "title": "“小宇宙区域 KOR/HKG/TWN **按 profile 升级 FAIL**”“CW 在区域 profile 的 `cw_gate` 覆盖中处理”——代码核对：`gate.py",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "闸 7 明写「目前只有 WARN，没有任何代码读取 profile 的 longcount_verdict / cw_gate」，小宇宙区域按 FAIL 处理由 agent 依 profile 自行执行；删无出处的「约 17% 死路」；同时更正闸 8 口径（引用 EVENT 字段即拦，平台无 ts_event_*）",
+   "verify": "tests/unit/test_sd_docs.py::test_toolkit_gate_facts_match_the_code"
   },
   "TK-23": {
-   "status": "open",
+   "status": "fixed",
    "title": "“无效努力七信号”里 4 条是定性判断（“换变体无本质变化”“反复失败”“偏高”）未给可测口径；“priority 65”魔法数；链接 `docs/experience/fail_",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "fail-fast 指向 docs/experience/fail_fast_rules.md（七信号的量化口径与 FAIL_FAST_THRESHOLDS 一一对应），链接改仓库根形式（skill 同步到别的宿主后不断）；无「priority 65」魔法数",
+   "verify": "tests/unit/test_sd_docs.py::test_fail_fast_link_resolves_from_the_repo_root"
   },
   "TK-24": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题“今日实证驱动”（相对时间）；第 1 行 `prod-first` 与 RA 步 7 的 `--top-k 3` 不一致（此处 `--prod-first-top-k 2`，与",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "标题改「开关与入口」并用绝对日期；prod-first 的 top-k 差异写明（pipeline 透传缺省 2，campaign_intel 自身缺省 3）"
   },
   "TK-25": {
-   "status": "open",
+   "status": "fixed",
    "title": "**同一协议写了两遍**：§7.y“二分排障（5 步）”与文末“平台报错二分定位（3 条）”；同步目标一处写 2 个（`platform_constraints.json` + p",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "二分排障合并成一份（§11，保留场景 → 步骤 → 判据的写法，JPN 例）；同步目标统一三处（profile + platform_constraints + pipeline_pregate）；开关表去重；节号重排"
   },
   "TK-26": {
-   "status": "open",
+   "status": "fixed",
    "title": "“禁止 record_*.py 式直改”×2、“禁止第二权威实现”×2、“单轨数据库”与 matrix 重复；#2 的 429 退避属 wqb-concurrency；#3 仍提 ",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "§8 重复项（record_*.py、第二权威、单轨）合并进 §13 纪律；429 退避归 poll-and-quota；旧文件布局（candidates / results / reviews）删"
   },
   "TK-27": {
-   "status": "open",
+   "status": "fixed",
    "title": "“**提交配额**是稀缺资源：未过 gate 不提交；pipeline 默认只干跑，显式 `--submit` 才烧配额；`--force` 才越过配额闸”——“提交/配额”同时指",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md | Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md | Claude/skills/wqb-concurrency/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py",
+   "note": "DEC-36：术语固定 dispatch（发起回测）vs submit（提交 alpha）；核对代码——配额闸缺省关闭（enabled=False），--force 越过的是 universe 判死规则与（区域开了配额闸时的）配额闸，不提交 alpha、不耗额度；help、文档、测试三处同步",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_pipeline_force_help_states_what_it_bypasses"
   },
   "TK-28": {
-   "status": "open",
+   "status": "fixed",
    "title": "把 RA 步 4 硬约束**原样抄第三份**，含①已被禁的加权混合范例“EUR：`0.40` 慢 MODEL 残差 × `0.60` 快 PV”，②“有信号字段先做组合（同集或跨金",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "RA 步 4 硬约束的第三份拷贝（含被禁的加权混合范例）整段删除，改一句「见 ra-pipeline 步 4 / 步 6，参数见 config.MINING」"
   },
   "TK-29": {
-   "status": "open",
+   "status": "fixed",
    "title": "“新增/修改 workflow 节点 → 四处同步”是**开发者流程**（改 registry.py、两个测试、INDEX 计数，`audit_node_registration.",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "AGENTS.md | Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "开发者流程（workflow 节点四处同步 + audit_node_registration）已在 AGENTS.md「变更影响面」，toolkit 只留一行指针"
   },
   "TK-30": {
-   "status": "open",
+   "status": "fixed",
    "title": "“**AI 回写一律走 `campaign.py wave` CLI**”与 RA 步 9“`mcp__wqb-db__upsert_wave_result`”“一律”冲突（两者虽",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md",
+   "note": "回写路径统一为「MCP 可用时 MCP、无 MCP / 批量用 CLI，同一契约」，旧的 results/wave63_results.json 示例改占位"
   },
   "TK-31": {
-   "status": "open",
+   "status": "fixed",
    "title": "“WAVE_LEDGER.md 是从数据库**生成**的快照（覆盖写，勿手改）”——正确，且与 decision-table D8 的“追加 WAVE_LEDGER.md”矛盾",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "范本（🟢）：「WAVE_LEDGER.md 是从数据库生成的快照、勿手改」保留为全库口径（RA D8 已一致）"
   },
   "TK-32": {
-   "status": "open",
+   "status": "fixed",
    "title": "查询清单把 `get_ledger_key(key=\"submit_ready\")` / `get_submit_ready` 当作“达标池”读法；但 **`submit_read",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md | wqb_db_mcp.py | docs/ledger_keys.json | Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+   "note": "DEC-33：提交队列唯一事实源 = SQL 表 submit_ready；MCP get_submit_ready 改读表（可按 status 过滤）；ledger 键降 legacy 审计副本，ledger submit-ready 每次打印提示",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_ledger_set_verdict_and_submit_ready_print_deprecation_notices"
   },
   "TK-33": {
-   "status": "open",
+   "status": "fixed",
    "title": "15 个 MCP 查询示例（含 alpha 查询、区域概览）属 INDEX/wqb-db 工具说明，而非引擎职责",
-   "cat": "职责·P3"
+   "cat": "职责·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "15 个 MCP 查询示例删除（属 INDEX 工具表）"
   },
   "TK-34": {
-   "status": "open",
+   "status": "fixed",
    "title": "唯一说明“toolkit vs tools/ 分工”的位置（好），但只有 5 行，且用了已被 RA 作废的旧称“提交层判定（403 盲区）”",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "「工具化纪律」前移并扩成 §1 的 toolkit vs tools/ 分工表，旧称「提交层判定（403 盲区）」换成 submit_verdict 唯一权威"
   },
   "TK-35": {
-   "status": "open",
+   "status": "fixed",
    "title": "文末又一个“2026-09-19 新增”，见 TK-25；另含“2026-09-19～27 它不在 MCP 工具表里（装饰器错挂，N31）”这样的故障史",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "文末「2026-09-19 新增」并入 §11 / §12，MCP 工具表故障史（装饰器错挂，N31）删除"
   },
   "TR-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "声称“闸编号唯一基准 = `gate.py` 模块头”；而 ra-pipeline、toolkit SKILL 都写“唯一基准见 INDEX.md「gate.py 闸编号」”——*",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md | tests/unit/test_docs_consistency.py",
+   "note": "不再自称「唯一基准」：编号唯一注册表 = gate.py::GATE_REGISTRY（INDEX 表由它生成），wave_gate 层的闸指向 INDEX「闸与逃生口总表」；相应旧测试断言改指 GATE_REGISTRY",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_lists_every_platform_poison_pattern_and_points_to_the_registry"
   },
   "TR-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“当前平台级：`nested_three_leg_add`”——`platform_constraints.json` v1.5 实有 **6 条**（另有 `weighted_s",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "闸 5 列全平台级 8 条（含 4 条结构判定 + 3 条正则 + spread_cross_dataset），每条写「拦什么 / 放行形态」，合规替代三选一；测试逐条核对 platform_constraints",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_lists_every_platform_poison_pattern_and_points_to_the_registry"
   },
   "TR-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "写“契约到 `expires_after_batches` 自动**失效**”；`gate.py` 与 RA 均为“过期→**FAIL-CLOSED** 并自动续约”（gate.p",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "闸 6 契约过期改写成与代码一致：FAIL-CLOSED（阻断）并自动续约；逃生口留痕键名指向 INDEX 总表",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_lists_every_platform_poison_pattern_and_points_to_the_registry"
   },
   "TR-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“构建端：`diversity_slots.py --campaign-dir <DIR>` 打印当前契约”——该脚本已归档（SKILL L73），文件不存在",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "diversity_slots.py（已归档）指引删除，改「契约就在台账里，照它写」",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_lists_every_platform_poison_pattern_and_points_to_the_registry"
   },
   "TR-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“注入算子的经济学写法”以 `ts_corr(慢腿,快腿,20)` / `if_else` / `group_zscore(慢腿, sector)` 为例，仍是“慢×快”双腿叙事；",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "注入算子三种入场方式（事件门控 / 分组 / 单信号几何）与 optimization-v1 的辅助腿入场形态表对齐；group 字段须为该区合法字段（JPN sector 非法，闸 2b）；删「慢腿×快腿」叙事"
   },
   "TR-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "描述**文件模式**（`<region>_wave*_exprs.json`、`candidates/*.json`、`reviews/*.json`、输出 `candidates",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "build_wave 规则重写为 DB 口径（history_expressions 去重）；linear_mix 澄清为「含 add( / multiply( 表达式的占比上限」，不是配给目标、也不许可拼腿（闸 5 拦）；多样性增强缺省 never",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_does_not_describe_the_file_era_build_wave"
   },
   "TR-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "`diversity_extract.py` 在此写了 40 行，又有根目录 3 份说明（546 行）、D7 一份——同一工具 5 份文档",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/diversity-extract.md | attic/toolkit_docs_20260929/README.md",
+   "note": "diversity_extract 的 5 份文档合并成一页（43 行）；根目录三份归档",
+   "verify": "tests/unit/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short"
   },
   "TR-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "墙枚举“SHARPE/FITNESS/2Y/MARGIN/TVR/CW/RA_OTHER/NO_DATA”缺 `RN_EXPOSURE`、`ROBUST_STRUCTURAL`、p",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "墙枚举补全：*_UNKNOWN、NO_DATA、CW、RN_EXPOSURE、RA_OTHER，近闸池排除类 ROBUST_STRUCTURAL / RN_EXPOSURE；missing≠fail 保留；prod 类墙指向 prod-first 与 D0-P",
+   "verify": "tests/unit/test_sd_docs.py::test_gate_rules_lists_every_platform_poison_pattern_and_points_to_the_registry"
   },
   "TR-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "verifier 查找顺序把用户主目录已安装副本（`~/.claude/skills`…）放在**仓库 `Claude/skills` 之前**——旧副本会覆盖仓库版本，验证行为不",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md | Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py",
+   "note": "verifier 查找顺序不改（主目录已安装副本先于仓库副本是有意的：那是 agent 实际加载位），改为每个进程 stderr 打印一行所用路径，让验证行为可复现；SYNTAX_UNKNOWN 显式报警保留"
   },
   "TR-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "`--fix` 段与闸 4 的“不要改 validator.py”“对 ops_used 判定是死代码”是给开发者的实现注释；闸 3 同句称 VECTOR 违规报 “[EVENT]",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "分「agent 需知」与「维护者需知」两部分；闸 3 的 [EVENT] 标签写明是历史遗留（指 VECTOR，与闸 8 无关）"
   },
   "TR-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`stage_submit_poll` … 并行提交+轮询 N 批（**N=min(5, 批数)**）”——代码是 `n_slots = min(7, n_total)`（`pi",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md",
+   "note": "N=min(5,…) 改 7（代码 n_slots = min(7, n_total)），且该段整体改写为现行七槽",
+   "verify": "tests/unit/test_sd_docs.py::test_poll_and_quota_tables_equal_the_code_constants"
   },
   "TR-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "整节是“单批在飞规则（**已废弃**）”：删除线原文 + 纠正 + 历史实证；agent 读到的第一句是被废止的规则",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md",
+   "note": "「单批在飞（已废弃）」的删除线原文与历史实证移除，只留现行七槽 + 一句「旧规则已废止」",
+   "verify": "tests/unit/test_sd_docs.py::test_poll_and_quota_tables_equal_the_code_constants"
   },
   "TR-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "配额只写两条通道（REGULAR 4 + SUPER 1），而 toolkit description、`campaign-dir-contract` 写三条（含 PPA `POW",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md",
+   "note": "配额三通道统一（REGULAR 4 + SUPER 1 + PPA 1）；读额度用 pipeline.py quota，勿靠 POST；写明 quota 的 used 数 OS 池当日全部提交、不区分通道（保守上界），精确分通道读数只在提交响应里（needs-platform：需在有账号环境核对）；旧「activities 口径」说法删除（代码只用 OS alphas）"
   },
   "TR-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "“凭证与登录”一节混入 metrics_cache 读穿缓存",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md",
+   "note": "「凭证与登录」改「凭证与缓存」，metrics_cache 读穿缓存另起一段"
   },
   "TR-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "仍把 `wave<N>_verdict` + `ledger set-verdict` 当作**逐波结论的正式通道**——RA 已于 09-28 声明“结论唯一真相源=`wave_",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md | tests/unit/test_ledger_key_catalog.py | Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+   "note": "wave<N>_verdict / ledger set-verdict 标废止（wave_results.verdict 唯一真相源），CLI 每次打印废止提示；键目录测试的「教废止键」棘轮基线删掉这一项（只减不增）",
+   "verify": "tests/unit/test_sd_docs.py::test_ledger_schema_points_to_the_catalog_and_marks_legacy_keys"
   },
   "TR-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "`submit_ready[]` 只描述 ledger 列表，完全没提 SQL 表 `submit_ready`（TK-32 脑裂）",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md | docs/ledger_keys.json",
+   "note": "submit_ready 的两个家写清：SQL 表 = 队列，ledger 键 = legacy 审计副本",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_ledger_catalog_marks_submit_ready_key_legacy"
   },
   "TR-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "“键命名约定”只有 12 行且多为旧键；正文与 RA 用到的活跃键（`s0_ranking`、`s0_whitelist`、`s1_<ds>_d<delay>`、`s1_seman",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md | docs/ledger_keys.json",
+   "note": "键命名约定表删除，改指 docs/ledger_keys.json（75 键 × 写入方 / 读取方 / 缺失行为 / 刷新，且有「被读的键必有写入方」测试）；只列家族前缀与已废止键",
+   "verify": "tests/unit/test_sd_docs.py::test_ledger_schema_points_to_the_catalog_and_marks_legacy_keys"
   },
   "TR-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "原语（`.bak` 滚动备份、`atomic_save`、双遍重放）是 **JSON 后端** 的描述；默认后端已是 SQLite",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md",
+   "note": "原语分「SQLite（现行，单事务）/ JSON（已弃：.bak、atomic_save、双遍重放）」两段"
   },
   "TR-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题“CLI（campaign.py ledger / 直接 _lib.ledger 不支持，走 campaign.py）”语句不通",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/ledger-schema.md",
+   "note": "CLI 标题改通顺，并标出 set 是整值覆盖（共享键用 MCP merge）"
   },
   "TR-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "目录布局把**仍必需**（`config/`、`reference/` typed catalog）与**DB 唯一模式下已不产出**（`candidates/`、`reviews",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "目录布局逐项标 [必需] / [可选] / [历史]（candidates / reviews / results / wave*_exprs.json / ranking / catalog 文件为历史）",
+   "verify": "tests/unit/test_sd_docs.py::test_campaign_dir_contract_marks_files_and_its_json_example_is_valid"
   },
   "TR-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "示例 JSON 含行内 `#` 注释（非法 JSON，复制会报错）；示例中性化 `SECTOR`，而决策表 D5 称 SECTOR/MARKET 会压垮 IS_LADDER",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "示例 JSON 去掉行内 # 注释（测试解析 json 代码块）；示例中性化改 STATISTICAL 并注明非推荐值、受 D5 约束",
+   "verify": "tests/unit/test_sd_docs.py::test_campaign_dir_contract_marks_files_and_its_json_example_is_valid"
   },
   "TR-22": {
-   "status": "open",
+   "status": "fixed",
    "title": "`hard_gates` 的“权威定义见 brain-how-to-pass-alpha-test”——而 `config.GATES` 才是全库唯一事实源",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "hard_gates 的权威改指 config.py::GATES（GATES_INTERNAL / GATES_PLATFORM）",
+   "verify": "tests/unit/test_sd_docs.py::test_campaign_dir_contract_marks_files_and_its_json_example_is_valid"
   },
   "TR-23": {
-   "status": "open",
+   "status": "fixed",
    "title": "称 `diversity.signal_floor` 是“**唯一有消费方**的子键”，下文又给 `diversity.stop_rules`（同样被 `_run_stop_rul",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "diversity 行改「signal_floor 与 stop_rules 都有消费方」，并补 stop_rules 全部 8 个键与规则 A / B 语义"
   },
   "TR-24": {
-   "status": "open",
+   "status": "fixed",
    "title": "“上表”指的是其后的表；“11 个区域已补齐”与 RA 的“13/13”、REGIONS=14、TWN 缺目录三种数字并存",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md",
+   "note": "「上表」指代改明确；区域数量改指 INDEX §区域清单（不再写 11 / 13 / 14 三种数）"
   },
   "TR-25": {
-   "status": "open",
+   "status": "fixed",
    "title": "**优点**：有完整 JSON 清单示例（hypothesis/control 配对、“ID 仅为格式示例”）。**问题**：①标题“选波”，后半（L44–60）是波后解读与研究线",
-   "cat": "情景·🟢/P2"
+   "cat": "情景·🟢/P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/selection-plan.md | Claude/skills/wq-brain-campaign-toolkit/references/post-wave-reading.md | docs/ledger_keys.json",
+   "note": "拆成「选波」与「波后解读」两篇；定义资格线 / 增强资格 / 受保护状态 / UNITS 警告；research_leads_w<W> 在解读篇给 JSON 样例（键目录 doc 指向随之更新）；纠错复验单模板 + 缺陷白名单（单位警告 / 字段映射 / 对照不匹配，「Sharpe 弱」不算缺陷）；中英文补空格",
+   "verify": "tests/unit/test_sd_docs.py::test_selection_and_post_wave_pages_are_split_and_the_catalog_points_at_the_right_one"
   },
   "TR-26": {
-   "status": "open",
+   "status": "fixed",
    "title": "文档 tier 分位 **P80/P55**、`coverage_hard_min` **0.65**；代码缺省 **P60/P30**、`coverage_hard_min` 缺",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md",
+   "note": "tier 分位改代码缺省 P60 / P30、coverage_hard_min 缺省 0.7（旧文 P80 / P55 / 0.65 从未存在于代码），测试从 score_datasets 源码抽缺省值对文档",
+   "verify": "tests/unit/test_sd_docs.py::test_probe_scoring_numbers_are_the_code_defaults"
   },
   "TR-27": {
-   "status": "open",
+   "status": "fixed",
    "title": "三灯动作建议：“绿灯带 CW 失败 → 骨架直接上**跨 Category rank 加法**”“黄灯 → 只做镜像腿与**两两融合**限 2 批”——直接**推荐**被禁的 le",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md | Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py",
+   "note": "DEC-38：三灯 action 的拼腿推荐在代码与文档同时改掉（绿灯 → 单信号结构变体；带 CW → 事件门控 / group / 同源价差；黄灯 → 镜像腿与同源价差），测试断言代码里不再出现「跨Category rank加法 / 两两融合」",
+   "verify": "tests/unit/test_sd_docs.py::test_probe_scoring_numbers_are_the_code_defaults"
   },
   "TR-28": {
-   "status": "open",
+   "status": "fixed",
    "title": "“calibrate **不在默认流程里**（ra-pipeline SOP 都不自动调）”，而 RA 步 2 把 calibrate 列为“**必需**”——一处说“没人调”，一",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md",
+   "note": "改「工具不自动执行 calibrate；SOP 要求显式执行」；RA 步 2 的校准段同步加「不要 apply、先查 ac 来源」并指向本处的处置表"
   },
   "TR-29": {
-   "status": "open",
+   "status": "fixed",
    "title": "P 编号同号异义（“P5 分段罚”对 SKILL“P5 饱和拍平 model”；探针模板 P1–P8）；三灯里 `margin(>5bp)`/`tvr(5–30%)`/`rn(>=",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md | Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json",
+   "note": "P 编号只在「探针 P1–P8」这一组（审计工单号已去）；三灯阈值只写引用（参数在 thresholds.probe_scoring_v2 / score_v2），并写明与内部严线 / RN_EXPOSURE 不是同一套；探针 P6 窗口 60 → 66（无实测依据的窗口）",
+   "verify": "tests/unit/test_sd_docs.py::test_probe_scoring_numbers_are_the_code_defaults"
   },
   "TR-30": {
-   "status": "open",
+   "status": "fixed",
    "title": "“审 dry-run 时重点看两处异常 → 该怎么办（勿 apply，先查 ac 来源）”“数据源优先级 ①–④”——**场景→动作→理由**齐全，是全库最好的情景范式；RA 步 ",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/probe-scoring-v2.md | Claude/skills/wq-brain-ra-pipeline/references/step2-s0.md",
+   "note": "范本（🟢）「审 dry-run 看两处异常 → 怎么办」保留为一张处置表；RA 步 2 校准段改为引用本处并补「怎么办」"
   },
   "TR-31": {
-   "status": "open",
+   "status": "fixed",
    "title": "整篇描述 9 个脚本（`proxy_prescreen/ortho_prescreen/migrate_templates/diversity_slots/param_opt/bu",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "attic/toolkit_docs_20260929/README.md | Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "enhancement-v2.md 整篇移入 attic（其描述的 9 个脚本早已归档，含被禁的混合权重与与 RA 冲突的判死纪律）；仅保留一句原则「预算只花在本地筛过的精英上」",
+   "verify": "tests/unit/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short"
   },
   "TR-32": {
-   "status": "open",
+   "status": "fixed",
    "title": "要求“每次进 S2 必须调用 `brain-data-feature-engineering`、候选池**基于特征工程文档构建**、`pipeline.py` 硬闸缺记录即中止”—",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "attic/toolkit_docs_20260929/README.md | Claude/skills/wq-brain-campaign-toolkit/SKILL.md",
+   "note": "S2_COMPLIANCE_* 移入 attic（三条要求均已撤回）；s2-mark 仍是可选标记",
+   "verify": "tests/unit/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short"
   },
   "TR-33": {
-   "status": "open",
+   "status": "fixed",
    "title": "3 份互为近似拷贝（9 个共享段落，Jaccard 见机械检查 §G），孤儿，营销文风（“核心价值/深度集成方案总结”），引用不存在的 `scripts/test_diversit",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-brain-campaign-toolkit/references/diversity-extract.md | attic/toolkit_docs_20260929/README.md",
+   "note": "DIVERSITY_EXTRACT 三份（546 行）归档，合并为 references/diversity-extract.md（43 行）；L3 窗口收敛为 5 / 22 / 66 / 252（代码同步）",
+   "verify": "tests/unit/test_sd_docs.py::test_retired_docs_moved_to_attic_and_merged_page_is_short"
   },
   "WC-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 329 字，含“每次挖掘必须执行”“下一波设计强制以台账决策为输入”这类**要求**；“提交成功数极低”歧义（实指 429 下的模拟接受数）",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "description 只写触发场景（122 字）；删「每次挖掘必须执行」「下一波强制以台账为输入」；「提交成功数」改「接受数」",
+   "verify": "tests/unit/test_sd_docs.py::test_description_is_a_short_trigger_statement"
   },
   "WC-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界：“不发起回测、不改表达式、不提交”，只管并发；§8 却包含台账同步门（`check_ledger_sync`）、写波结论（`wave upsert`/`ledger set`",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "边界明写「不管台账、复盘与选波」；§8 只留并发部分，台账同步门 / 写波结论 / 台账驱动选波 / 每 10 波评估全部撤回给 RA 步 1 / 步 9",
+   "verify": "tests/unit/test_sd_docs.py::test_concurrency_boundary_no_longer_swallows_the_ledger_loop"
   },
   "WC-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "演进注记：“配置基准以新模型为准（**瞬时 ≤6 安全**、批间 ≥45s）”；§8 末：“7 批 multisim 仅耗 7 令牌、**瞬时 ≤7 安全包络内**”——同文件两个",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md | src/wqb/config.py",
+   "note": "「≤6」与「≤7」两个包络实为两个量：七槽 7（config.CONCURRENCY.slots，代码按 7 同提）与保守档 6 / 批间 ≥45 s（safe_instant_submits / min_batch_interval_sec，当前无代码读取）；SOP 加「批间间隔」规则；测试钉住这两个常量无读取方，一旦接线就逼着改文档",
+   "verify": "tests/unit/test_sd_docs.py::test_conservative_envelope_constants_have_no_readers_yet_and_the_doc_says_so"
   },
   "WC-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "§2 给出 `self._sub_sem = threading.Semaphore(C)` 的实现代码、§3 教“线程=C+1”，例子仍用 **C=5**（“3 线程×2 数据集",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "§2 / §3 标「给引擎维护者」，agent 不手写 runner；示例数字改 C=7、引用 config；顶部加读者分层说明"
   },
   "WC-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "429 退避 `wait=min(20+attempt*8,45)s，最多 ~40 次`——全库第 3 套退避（toolkit：5s×2×5 次；BrainApiClient 自带",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md",
+   "note": "退避口径合一：toolkit 传输层 5 s ×2 最多 5 次、MCP 内建 Retry-After，手写 runner 的口径只作原理；429 时降并发用 WQB_GLOBAL_SLOTS（RA 步 6 与本 skill 同一说法）"
   },
   "WC-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "凭据加载“`load_dotenv(...abspath(__file__), \".env\")`”是给脚本作者的代码，对 agent 应写“**不读取 .env**（AGENTS.",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "§6 凭据改「agent 不读取 .env」，给脚本作者的 load_dotenv 提示单列",
+   "verify": "tests/unit/test_sd_docs.py::test_concurrency_boundary_no_longer_swallows_the_ledger_loop"
   },
   "WC-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "SOP 步 3“`lookINTO_SimError_message` → children → `get_alpha_details` 逐 ID”是旧 3 段链；RA 已用 `h",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "SOP 步 3 改现行工具：harvest_multisim_alphas 一键收批（18 次调用压成 2 次）+ harvest_multisim_results 入库，lookINTO_SimError_message 只用于定位批内 ERROR",
+   "verify": "tests/unit/test_sd_docs.py::test_concurrency_boundary_no_longer_swallows_the_ledger_loop"
   },
   "WC-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`validate_fields=false` 避免预检超时”与 RA 步 3“新字段先 `create_multi_simulation(validate_fields=tru",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "validate_fields 分场景：验活探针 true（RA 步 3），正式批 false（避免预检超时）",
+   "verify": "tests/unit/test_sd_docs.py::test_concurrency_boundary_no_longer_swallows_the_ledger_loop"
   },
   "WC-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "台账同步门（`check_ledger_sync`）是“执行层硬门”，但 RA 步 6 正文没有它（只在 decision-table D8 与本文）；“创建批次文件时同步在台账登",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/decision-table.md",
+   "note": "台账同步门如实定性：check_ledger_sync 两份都是文件时代校验，现行同步门 = 开波三道区域闸 + step_funnel（RA D8 已一致）；「创建批次文件时登记批次表」删"
   },
   "WC-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "步 4 是一个 ≈600 字段落含 6 条规则（写 DB、快照勿手改、禁 runs/ 散件、未写不得提交下一波、判死当场写、每 10 波评估）",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "步 4 的 600 字段落随台账职责一并移出，SOP 改 5 条有序清单"
   },
   "WC-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“提交配额与回测并行槽位是**两个独立机制**”——引擎里 `pipeline.stage_submit_poll` 在**提交配额耗尽时中止回测发起**（`--force` 才继",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md | Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md | Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py",
+   "note": "DEC-36：如实说明——配额闸缺省关闭，回测发起不受提交额度约束（仅区域 submit_quota.enabled=true 才有该闸）；测试钉住缺省",
+   "verify": "tests/unit/test_sd_engine_contracts.py::test_quota_gate_is_off_by_default"
   },
   "WC-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "测 C 的 4 步给出**易踩坑**（`language` 必须 FASTEXPR，错了是 400 而非 429）、判据（首批连续 201 数=C）、“429 报文不含数字”与“/",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/wqb-concurrency/SKILL.md",
+   "note": "范本（🟢）「测 C 的 4 步 + 易踩坑 + 反面知识」原样保留在 §1；并补两张情景卡（全 429 / 我该开几个线程）"
   },
   "X-1": {
    "status": "open",

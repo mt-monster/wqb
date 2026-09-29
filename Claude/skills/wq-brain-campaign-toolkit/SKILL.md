@@ -1,354 +1,251 @@
 ---
 last_verified: 2026-09-29
 name: wq-brain-campaign-toolkit
-description: "区域无关的 WorldQuant BRAIN alpha 挖掘战役引擎（战役脚本的唯一权威实现）。 触发词：战役脚本/campaign toolkit/gate 5 闸预检/pipeline 编排/wave 选波/probe 三灯判定/ 台账/ledger/scan_fields 字段扫描/review 评审/多样性 diversity/配额 quota/断点续跑。 功能覆盖：8 闸预检（闸1 语法含算子元数/闸2 字段白名单/闸3 VECTOR 类型/闸4 不可访问算子 ts_min,ts_max/闸5 毒模式/闸6 批级多样性/闸7 longCount/闸8 EVENT 类型；+可选闸0 语义反模式，sha1 缓存）、pipeline 编排（checkpoint 断点续跑/ 回测并发走七槽填槽（wqb-concurrency §8，2026-08-25 起 7 批），见 references/poll-and-quota.md/单批在飞已废弃/ 挂起熔断 60min/429 指数退避/ET 日历日提交配额闸（REGULAR 4/日 + SUPER 1/日 + PPA 独立 `POWER_POOL_SUBMISSION` 1/日，00:00 ET 重置，三者并行不互占））、wave 构建 （全历史去重/算子树分桶/骨架配给 linear_mix≤0.5/near 加权）、数据集评分+探针 v2 三灯判定、 台账 LedgerStore（原子写/双遍重放/幂等）、typed catalog 字段扫描（dataset.id= 过滤陷阱）、 review walls 诊断+多样性审计。"
+description: "战役目录内执行引擎（gate / pipeline / build_wave / score_datasets / review_wave / campaign.py 的 ledger·registry·wave）的用法与契约。要跑战役脚本、查子命令与台账键、处理超时或重发时使用；何时用、怎么判由 wq-brain-ra-pipeline 定。"
 layer: L-TOOL
 allowed-tools:
   - Read
   - Grep
   - Glob
   - Bash
+  - mcp__wqb-db__get_wave_result
+  - mcp__wqb-db__list_wave_results
+  - mcp__wqb-db__get_latest_wave
+  - mcp__wqb-db__get_ledger_key
+  - mcp__wqb-db__list_ledger_keys
+  - mcp__wqb-db__get_submit_ready
 ---
-
-
-
-
-
-
 
 # wq-brain-campaign-toolkit（战役引擎层）
 
 ## 职责边界
 
-- **本 skill 负责**：战役目录内的执行引擎：gate / pipeline / wave / probe / ledging / scan_fields / review / diversity
-- **本 skill 不做**：不做区域选择（campaign-matrix）、不做最终提交判定（submit_verdict）、不直接提交 alpha
-- **上游 / 下游**：上游 = 战役目录 + 子命令；下游 = `data/wqb.db` 各表（**wave_results / registry_empirical / ledger_kv 的唯一正式写入方**）
+- **本 skill 负责**：战役目录（`tracking/<REGION>/`）内**执行引擎的用法与契约**——`scripts/` 下各脚本与 `campaign.py` 子命令的参数、写入矩阵、重发安全与异步恢复规则，以及闸门 / 探针 / 配额 / 台账的细则（`references/`）。
+- **本 skill 不做**：不做区域选择（`wq-brain-campaign-matrix` / `brain-next-move-analysis`）；不做提交判定（`tools/submit_verdict.py`）、不直接提交 alpha；**不定义「何时用、怎么判、用什么阈值」**（那是 `wq-brain-ra-pipeline` 与各方法论 skill）；**不是任何表的「唯一写入方」**——`wave_results` / `registry_empirical` / `ledger_kv` 各有多个入口，见 §3 写入矩阵。
+- **上游 / 下游**：上游 = `wq-brain-ra-pipeline`（编排）、`brain-sim-alphas-in-batch-and-track`（S3 主要调用方）以及以子进程调用本引擎的 workflow 节点（`workflow_campaign` / `workflow_batch_track`）；下游 = `data/wqb.db` 各表与 ledger 键（键契约见 `docs/ledger_keys.json`）。
 
+## 1. 定位与分工
 
-S6 新增 `campaign.py dataset-experience --dataset <id> --delay 1`：调用规范核心生成字段级
-Markdown 经验，保留人工复盘段。方法与 S-PRE/S1/S2 复用契约见
-[brain-dataset-mining-experience](../brain-dataset-mining-experience/SKILL.md)。
+三角分工：`wq-brain-ra-pipeline` = when / what；`wq-brain-campaign-matrix` = where（给定区域后查表）；**本 skill = how（战役目录内怎么执行）**。所有脚本用 MCP venv：`$WQ_PY`；引擎脚本为标准库实现（仅闸 1 需要 `alpha-expression-verifier`，经 `WQ_VALIDATOR_DIR` 探测）。
 
-## 1. 定位
-- 本 skill 是**战役脚本的唯一权威实现**（引擎层，可运行脚本）。其他 skill 只写"何时用/怎么判"（方法论层）并指向这里，禁止在别处复制本 scripts/ 的逻辑。
-- 从 `tracking/KOR` 战役工具栈抽象而来（2026-08-15，KOR 战役 15+ 轮实证）；KOR 目录脚本保留为区域历史实现。
-- 上下游分工：`wq-brain-ra-pipeline`=when/what/怎么挖 → `wq-brain-campaign-matrix`=where（查表选区选集）→ **本 skill=how（战役目录内执行）**。
+**toolkit（`scripts/`）与仓库 `tools/` 的分工**——同一阶段常常两边各有一步，别在 toolkit 里复制 `tools/` 的逻辑，也别反过来：
 
-## 1.x 工具使用率等级（2026-08-31 v2 修正版，引导优先使用）
+| 阶段 | toolkit `scripts/` | 仓库 `tools/` |
+|---|---|---|
+| S0 选集 | `score_datasets.py`（评分 / 探针计划 / 三灯） | `campaign_intel.py s0-select`（默认剔已点亮塔）、`region_status.py`、`field_inspect_gate.py`（体检硬门） |
+| S1 字段 | `scan_fields.py`（typed catalog） | `field_semantic_classify.py`（语义归类） |
+| S2 选波 | `build_wave.py`（去重 / 分桶 / 配给，**不生成**表达式）、`assemble_priors.py`、`diversity_extract.py` | — |
+| S2→S3 门禁 | `gate.py`（闸 0–9） | **`wave_gate.py`**（= `gate.py` + 体检硬门 + 闸 SEM / PF / 2b / 2.6 + 区域闸；**每波必走它**，也是 MCP 节点 `workflow_execute node="wave_gate"`） |
+| S3 发批 / 收批 | `pipeline.py`（七槽填槽）、`metrics_cache.py` | `submit_batch.py`（批量**派发仿真**，不是提交 alpha）、`batch_status.py`（状态轮询）、`harvest_multisim.py`（收批入库） |
+| S4 评审 | `review_wave.py` | `campaign_intel.py prod-first`、`step_funnel.py`、`forum_recon.py` |
+| S5 提交判定 | — | `submit_verdict.py`（唯一权威）；SUPER 只走 `super_build.py` |
+| S6 回写 | `campaign.py ledger` / `registry` / `wave`、`diversity_audit.py`、`dataset_experience`（`campaign.py dataset-experience`） | `campaign_intel.py mark-saturated`、`export_wave_ledger_md.py`、`step_funnel.py` |
 
-> 完整评估报告：`reports/toolkit_usage_review_2026-08-31.md`。按「工作区引用 + toolkit 内部 import + CLI 子命令分发」三维扫描分级，**优先使用核心工具**。
+工具索引与参数见 `tools/README.md`；缺参数就改工具（保持 `--help` 自文档），反复新建一次性脚本说明工具化不彻底（AGENTS.md §6）。
 
-**核心工具（高使用率，优先使用）**：
-| 工具 | 职责 |
-|------|------|
-| `campaign.py` | 战役 CLI 入口（registry/ledger 幂等写 + 子命令分发） |
-| `gate.py` | 闸1–5 预检（闸编号唯一基准见 `INDEX.md`「gate.py 闸编号」） |
-| `pipeline.py` | 战役编排（checkpoint 断点续跑/七槽填槽） |
-| `scan_fields.py` | typed catalog 字段扫描 |
-| `metrics_cache.py` | 指标缓存（避免重复拉取） |
-| ~~`distill_experience.py` / `os_feedback.py` / `family_atlas.py` / `budget_planner.py` / `campaign_mutex.py`~~ | **已归档 `attic/toolkit_zero_ref_20260928/`（2026-09-28）**：三维引用实测全 0（无代码调用方、无测试、无运行产物），"学习闭环（G1/G2/G3）"仅存在于文档叙述。需要时从 attic 取回并先补调用方 |
+## 2. 环境与调用约定
 
-**辅助工具（中使用率）**：`review_wave.py` / `score_datasets.py` / `harvest.py` / `build_wave.py` / `diversity_audit.py` / `check_ledger_sync.py`。
+1. 所有脚本统一 `--campaign-dir <路径>`（缺省 = 当前工作目录）。
+2. **region 只从 `config/settings.json` 的 `region` 派生**，并校验与战役目录名一致（不一致即报错；测试可用 `CAMPAIGN_SKIP_DIR_CHECK=1`）。禁止从目录名或命令行猜。
+3. **凭据**：脚本自己按 `CREDENTIALS_EMAIL/PASSWORD` → `WQ_USERNAME/WQ_PASSWORD` → `BRAIN_CREDENTIALS`（JSON 路径）/ `~/.brain_credentials` → `MCP_CONFIG_FILE` / `~/.brain_mcp_config.json` 的顺序读取。**agent 不得读取、打印这些文件或 `world-quant-brain-mcp/.env`**（AGENTS.md 红线），也不把凭据写进命令行。
+4. 平台级约束只有一份：`config/platform_constraints.json`；区域 ranking / catalog / rules 计数入库。
+5. **Agent 持久化只走 `mcp__wqb-db__*` 或本引擎 CLI，禁止 Write / Copy 战役 json / csv**；`build_wave` / `gate` / `wave_gate` / `pipeline` 走 `--from-db`。
+6. **开波区域闸的模式**（`build_wave.py` / `tools/wave_gate.py` 开波前跑 catalog / signal_floor / stop_rules / backlog）：
 
-**选波数量与状态契约（2026-09-24）**：固定机制批用 `build_wave.py --expected-count N`，
-数量不符时返回 `selection-count` 与排除原因，不写本波表达式或 wave_meta；
-`--source-wave` 显式指定 GEM 来源，重建时不再优先读残缺目标波。
-选中项若已回测、dropped 或 superseded，返回 `selection-state` 并回滚选集事务；
-落库后验证每个 picked 的状态与 alpha_id。该检查保证本次 picked，不会自动清理旧 selected/gated。
-`--size` 在CLI与workflow S2中都只表示容量，不会自动补expected-count。
-预定机制/对照实验优先 `--selection-contract-key`：按DB清单推导数量，并核验source_id、
-原式、dataset/region/delay/source_wave及状态；同条数错表达式也会失败。
-`wave_meta.selection_audit`记录来源项的选中/延后及原因；未选不等于机制失败。
-清单格式与复用流程见[选波实验清单](references/selection-plan.md)。
+| 入口 | 缺省 | 命中时 |
+|---|---|---|
+| 命令行 `--gate-mode` > 环境变量 `WQB_GATE_MODE` > 按日期缺省 | **2026-10-11 及以前 warn（只告警）；2026-10-12 起 enforce**（日期唯一事实源 `_lib/region_gates.WARN_SUNSET`，每次运行第一行打印模式来源与倒计时） | enforce：exit 2，本波不产出门禁结论（不是表达式问题） |
+| workflow 节点（campaign S2 / S3、batch_track） | 不看这个模式，**一律 enforce** | 同上 |
 
-**异步恢复**：任务查询核对进程创建时间与可执行文件；PID 身份不符或无法核实时返回 unknown。
-以明确退出码/成功标记优先判终态；旧目录任务缺终态时仍保留历史日志推断，不能代替 DB 收批核验。
-MCP 桥接超时返回 `outcome_unknown`、`retry_safe=false`，先查任务及 DB，禁止盲目重发模拟。
-救援池 `exclude_dataset` 依据同区域同 alpha_id 的回测/表达式来源排除；未知来源不作跨集腿，
-多集候选按来源全集排除。数据集不同只证明来源不同，不证明 Prod/Self 相关性合格。
+放行停波区域写台账 `stop_rules_override` 留痕；`--gate-mode warn` 只作临时回退。
 
-**内部使用工具（工作区零引用但被本目录 import / CLI 分发，必须保留）**：`assemble_priors.py`（被 build_wave/gate import + `campaign.py assemble-priors`）/ `diversity_extract.py`（`campaign.py diversity-extract`）/ `s2_compliance_mark.py`（`campaign.py s2-mark`）/ `neutralization_sweep.py`（pipeline 兼容其产物）。**勿删**。
-（`signal_classifier.py` / `composition_validator.py` 2026-09-28 实测亦为零引用孤儿——被本目录 import 的说法不成立，已随上表归档。）
+## 3. 写入矩阵（谁能写哪张表）
 
-**确认零使用（三维全 0，2026-08-31 已归档）**：`migrate_templates`（一次性）/ `compose_signals` / `param_opt` / `ortho_prescreen` / `proxy_prescreen` / `rescue_checklist` / `calibrate_probe` / `fit_mix_weights` / `build_mix` / `adhoc` / `param_matrix` / `diversity_slots` / `composition_templates`（仅被 compose_signals 引用）——已移入 `attic/tools_archive_20260831/`。新任务一律用核心 5 工具，不要调用这些；如需回溯旧逻辑去 attic 取。
+| 表 / 键 | 校验的唯一实现 | 入口（同一份契约） | 适用 |
+|---|---|---|---|
+| `wave_results` | `wqb.wave_results_contract.upsert_wave_result` | MCP `upsert_wave_result`（会话内首选）· `campaign.py wave upsert / import`（无 MCP、批量）· 引擎收批 / 评审（`pipeline.py`、`review_wave.py`、`harvest_multisim`） | 逐波结论，RA 步 9 |
+| `registry_empirical` | `wqb.registry_contract` | MCP `seal_dead_end` / `upsert_registry_empirical` · `campaign.py registry …` | 跨会话结论，schema 见 matrix §4 |
+| `ledger_kv` | 键契约 `docs/ledger_keys.json` | MCP `upsert_ledger_key`（merge / replace / append；**共享键禁 replace**）· `campaign.py ledger set`（整值覆盖）· 引擎脚本（按各键的写入方） | 战役台账 |
+| SQL 表 `submit_ready` | `wqb.store.submit_queue` | S3 收批（harvest 钩子）自动入队、提交后自动退役；`tools/submit_queue.py` | **提交队列的唯一事实源**（MCP `get_submit_ready` 读它；ledger 同名键只是 legacy 审计副本） |
 
-## 衔接协议（上游 / 输入 / 输出 / 下游）
+会话内轻量回写用 MCP，无 MCP / 批量用 CLI，两者写同一张表、同一份校验，任选其一，不要两边各写一遍。
 
-- **上游**：`wq-brain-ra-pipeline`（编排器）；`brain-sim-alphas-in-batch-and-track`（S3 入口，经 subprocess 调用本引擎——唯一运行时调用方）；`wq-brain-campaign-matrix`（S-PRE 配置包 → 映射为 `--campaign-dir` 与 settings/thresholds 参数）；`wq-backtest-monitor`（S6 §14 经 `campaign.py ledger` 幂等回写）。
-- **本 skill 角色**：L-TOOL 引擎层 = how；S1–S6 各阶段战役脚本的唯一权威实现，方法论层 skill 一律指向此处、禁止复制 scripts/ 逻辑。
-- **输入**：战役目录 `tracking/<REGION>/`（`config/settings.json` + `config/thresholds.json` + `reference/` typed catalog）+ 子命令（`--campaign-dir` 铁律见 §4）；并发纪律引用 `wqb-concurrency` §8 七槽填槽。
-- **输出（入库总原则：DB 为唯一战役真相源；禁止 Agent Write 战役 json/csv）**：S1 经 `campaign.py ledger set "s1_<ds>_d<delay>"` / `mcp__wqb-db__upsert_ledger_key`；`score_datasets.py` → ledger `s0_ranking`；白名单 `s0_whitelist`；`scan_fields.py` → `fields` 表；`diversity_extract.py` → `diversity_potential` + expressions；`build_wave.py --from-db` + `gate.py --from-db` → `expressions` / `gate_results`；`pipeline.py` → `backtest_results` + ledger `ckpt_w<W>` + `wave_results`；`review_wave.py` → ledger `review_<tag>`；`methodology_rules` 区域计数 → ledger_kv（全局规则仍用 toolkit `config/methodology_rules.json`）。静态配置 `settings.json`/`thresholds.json`/`platform_constraints.json` 仍为文件。
-- **下游**：`brain-sim-alphas-in-batch-and-track`（S3 编排入口）；S4 诊断族（`brain-how-to-pass-alpha-test`/`wq-brain-alpha-optimization-v1`/`brain-alpha-robustness`）消费 review/ranking 产物；`wq-backtest-monitor`（S6）经本引擎回写台账反哺 S-PRE。
+## 4. 战役目录契约
 
-## 2. 运行环境
-所有 Python 命令使用 MCP venv：`$WQ_PY`。脚本为纯标准库实现；仅 gate 闸1 需 import alpha-expression-verifier（经 `WQ_VALIDATOR_DIR` 探测）。
+`tracking/<REGION>/config/settings.json`（仿真设置 + `_multi_sim_batch_size`）与 `config/thresholds.json`（阈值）**必需**；`reference/` 存 typed catalog 与区域生成约束。区域没有目录或缺 `thresholds.json` 时的行为、完整 schema、每个文件的 必需 / 可选 / 历史 标记见 [`references/campaign-dir-contract.md`](references/campaign-dir-contract.md)。
 
-## 3. 战役目录契约
-`tracking/<REGION>/` 必须含：
-- `config/settings.json`：仿真设置（region/universe/delay/neutralization/decay/truncation/maxTrade/pasteurization...）+ `_multi_sim_batch_size` + `_concurrency_rule`
-- `config/thresholds.json`：规范形态为六节（review / near / quick_scan / probe_scoring_v2 / hard_gates / dataset_health）+ 可选节（`diversity` / poll / submit_quota）。**KOR / IND / DEU 现为混合形态**（2026-09-12 更新：顶层扁平键 `sharpe_min` 等保留；`quick_scan`/`hard_gates` 已于 2026-09-11 补齐；`probe_scoring_v2` 仍缺——**刻意**，补齐会改 S0 评分行为，需单独实证后再引入）——读阈值必须两版兼容。完整 schema 与两版对照 → [references/campaign-dir-contract.md](references/campaign-dir-contract.md)
-- `reference/`：typed catalog（`<region>_<dataset>_fields.json`）与 `<region>_generation_constraints.json`
-- 完整 schema 与目录布局 → [references/campaign-dir-contract.md](references/campaign-dir-contract.md)
+## 5. 典型流程（PowerShell；`$TK` = `$WQ_TOOLKIT_DIR`）
 
-## 4. 调用约定（铁律）
-1. 所有脚本统一 `--campaign-dir <路径>`（缺省=当前工作目录）。
-2. **region 只从 `config/settings.json.region` 派生**，并校验与战役目录名一致（不一致即报错；测试可用 `CAMPAIGN_SKIP_DIR_CHECK=1` 跳过）。禁止从目录名或命令行猜 region。
-3. 凭证走环境变量链：`WQ_USERNAME`/`WQ_PASSWORD` → `BRAIN_CREDENTIALS`（JSON 路径）→ `~/.brain_credentials` → `MCP_CONFIG_FILE` / `~/.brain_mcp_config.json`。
-4. verifier 走 `WQ_VALIDATOR_DIR`（缺省自动探测 alpha-expression-verifier skill 的 scripts/）。
-5. 平台级约束只有一份：`config/platform_constraints.json`；区域 ranking/catalog/rules 计数入库。
-6. **Agent 持久化只走 `mcp__wqb-db__*` 或本引擎 CLI；禁止 Write/Copy 战役 json/csv。** `build_wave`/`gate`/`wave_gate`/`pipeline` 走 `--from-db`。
-7. **开波区域闸的模式**（`build_wave.py` / `tools/wave_gate.py` 开波前跑 catalog / signal_floor / stop_rules / backlog）：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省——**2026-10-11 及以前 warn（灰度，只告警），2026-10-12 起 enforce（命中即 exit 2：本波不产出门禁结论，不是表达式问题）**。日期唯一事实源 `_lib/region_gates.WARN_SUNSET`，每次运行第一行打印模式来源与倒计时。放行停波区域写台账 `stop_rules_override` 留痕；`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退。workflow 节点（campaign S2/S3、batch_track）不看这个模式，一律拦截。
-
-## 5. 快速开始（典型流程）
-```bash
-PY=$WQ_PY
-TK=$WQ_TOOLKIT_DIR
-CD=<CAMPAIGN_DIR>   # 如 tracking/KOR
-# 评分前先校准（实测反学 category 权重+拥挤甜区）：先 dry-run 人工审、确认无异常再 apply
-
-# 详见 references/probe-scoring-v2.md「评分前必做：calibrate 自学习校准」
-$PY $TK/score_datasets.py --campaign-dir $CD --calibrate --dry-run   # 审：甜区 ac 是否异常巨大 / strong_acs 是否空
-$PY $TK/score_datasets.py --campaign-dir $CD --calibrate             # 确认无异常后才写 thresholds
-$PY $TK/score_datasets.py --campaign-dir $CD
-$PY $TK/scan_fields.py --campaign-dir $CD --dataset <ds>
-$PY $TK/score_datasets.py --campaign-dir $CD --probe-plan <ds> --fields 6
-$PY $TK/build_wave.py --campaign-dir $CD --from-db --dataset <ds> --wave 01A
-$PY $TK/gate.py --campaign-dir $CD --dataset <ds> --from-db --wave 01A
-$PY $TK/gate.py --campaign-dir $CD --dataset <ds> --from-db --wave 01A --fix
-$PY $TK/pipeline.py --campaign-dir $CD run --dataset <ds> --wave 01A --dry-run
-$PY $TK/pipeline.py --campaign-dir $CD run --dataset <ds> --wave 01A --submit --review --write-ledger
-$PY $TK/pipeline.py --campaign-dir $CD run --dataset <ds> --wave 01A --submit --max-rounds 3 --review --write-ledger
-# 评审 / 三灯 / 多样性 / 台账 / 配额
-$PY $TK/review_wave.py --campaign-dir $CD --multisim <id> --tag 01A --write-ledger
-$PY $TK/score_datasets.py --campaign-dir $CD --probe-score <multisim> --dataset <ds> --stage A
-$PY $TK/diversity_audit.py --campaign-dir $CD
-$PY $TK/campaign.py --campaign-dir $CD ledger keys
-$PY $TK/pipeline.py --campaign-dir $CD quota
+```powershell
+$CD = "tracking/<REGION>"
+# S0：评分前先校准——先 dry-run 人工审（甜区 ac 是否异常巨大 / strong_acs 是否空），确认无异常再写
+& $WQ_PY "$TK/score_datasets.py" --campaign-dir $CD --calibrate --dry-run
+& $WQ_PY "$TK/score_datasets.py" --campaign-dir $CD --calibrate
+& $WQ_PY "$TK/score_datasets.py" --campaign-dir $CD
+# S1
+& $WQ_PY "$TK/scan_fields.py" --campaign-dir $CD --dataset <ds>
+& $WQ_PY "$TK/score_datasets.py" --campaign-dir $CD --probe-plan <ds> --fields 6
+# S2（表达式由 brain-make-some-gem 生成入库；这里只做选波后处理）
+& $WQ_PY "$TK/build_wave.py" --campaign-dir $CD --from-db --dataset <ds> --wave <W>
+# 门禁：每波走 tools/wave_gate.py（含体检硬门 / 闸 SEM / PF / 2b），见 ra-pipeline 步 5；下面只是 toolkit 内的 gate.py
+& $WQ_PY "$TK/gate.py" --campaign-dir $CD --dataset <ds> --from-db --wave <W>
+# S3：先看计划（不带 --submit 只打印计划），再 --dry-run 校验，最后 --submit（= 发起回测，不是提交 alpha）
+& $WQ_PY "$TK/pipeline.py" --campaign-dir $CD run --dataset <ds> --wave <W> --dry-run
+& $WQ_PY "$TK/pipeline.py" --campaign-dir $CD run --dataset <ds> --wave <W> --submit --review --write-ledger
+# S4 / S6
+& $WQ_PY "$TK/review_wave.py" --campaign-dir $CD --multisim <id> --tag <W> --write-ledger
+& $WQ_PY "$TK/diversity_audit.py" --campaign-dir $CD
+& $WQ_PY "$TK/pipeline.py" --campaign-dir $CD quota
 ```
 
+`--max-rounds N` 启用多轮即收即补（缺省 1 = 单轮全提全收）；`--serial` 一次只提 1 批（排障用）。**术语固定**：发起回测 = **dispatch**（消耗仿真并发槽位），提交 alpha = **submit**（消耗 ET 日提交额度）。`pipeline.py` 没有任何提交 alpha 的动作。
+
 ## 6. 子命令一览
-| 脚本 | 职责 | 关键参数 | 细节文档 |
-|---|---|---|---|
-| scan_fields.py | typed catalog 字段扫描 | --dataset / --limit / --zero-comp | campaign-dir-contract |
-| score_datasets.py | 数据集评分 / 探针计划 / 三灯评分 | --probe-plan / --probe-score / --stage | probe-scoring-v2 |
-| gate.py | **8 闸 + 可选闸0**：闸1 语法(含算子元数)/闸2 白名单/闸3 类型/闸4 不可访问算子/闸5 毒模式/闸6 批级多样性/闸7 longCount(`--sanity-longcount`)/闸8 EVENT(`--sanity-event-type`)，+sha1 缓存（--fix 自动裹 vec_*） | --dataset / --file / --expr / --fix / --sanity-longcount / --sanity-event-type / --sanity-all / --gate0 | gate-rules |
-| build_wave.py | 选波后处理（去重/分桶/配给/near；**不生成**表达式，`--file` 来自 makeSomeGem）+ 多样性增强（默认开启）+ **选波权威化**（2026-09-12：picked 写 selected 的同一事务里，本波落选且仍为 gem/pending/enhanced 的行归档 superseded，dropped/selected/gated 与已回测行不碰；要重选同波先用 `mcp__wqb-db__set_expression_status` 改回 gem） | --file / --wave / --size / --enhance-diversity always\|auto\|never / --auto-coverage auto\|always\|never（never = 契约签发/注入/自愈三处全关） | gate-rules |
-| pipeline.py | 端到端编排 + 配额闸；**装载 settings 后按 `region_kb.gate_priors` 实测过闸率改写 decay/neutralization（settings prior，2026-09-15 ①）**；收批后自动刷新 `region_kb`（③）；中止路径 rc=2（⑥） | run / quota；--submit / --dry-run / --no-settings-prior；--set K=V 钉住维度 | poll-and-quota |
-| review_wave.py | walls 诊断 + 台账回写；`rn_sharpe ≤ review.rn_sharpe_min`（缺省 0）判 `RN_EXPOSURE` 墙、不进候选（⑦），也不进 near / salvage 池与组合候选（2026-09-27，与 pipeline review 阶段同一判据 `near_block_wall`） | --multisim / --alphas / --write-ledger | gate-rules |
-| metrics_cache.py | 指标读穿缓存 | --multisim= / --refresh | poll-and-quota |
-| diversity_audit.py | 多样性审计（latest+history） | --no-ledger | ledger-schema |
-| diversity_extract.py | 单数据集多样性榨取（L1/L2/L3 三轮） | --dataset / --rounds / --size / --max-ppac | gate-rules |
-| distill_experience.py | **经验蒸馏器（G1 学习闭环）**：registry win/dead 模式归纳 → 跨区铁律/红灯族/模板晋升；--apply 落库 | --apply / --json | — |
-| os_feedback.py | **OS 回流（G3 学习闭环）**：拉平台 OS 表现，对比 IS 指标，衰减回写 win 降权标记 | --apply | — |
-| family_atlas.py | **家族导航（G2）**：信号族粒度全局状态机（untried→has_signal→near_gate→active→dead→os_decay），选波前先查图 | --all / --state / --json | — |
-| budget_planner.py | **预算规划器（#3）**：七槽填槽建议 + ET 日提交额度 + READY 候选提交排序 | --submit-plan / --json | — |
-| campaign_mutex.py | **多战役互斥（#7）**：波号 CAS 分配 / 槽位预算 TTL 仲裁 / 提交额度共享账本 | status / alloc-wave / take-slots / quota-reserve | — |
-| campaign.py ledger | 台账统一 CLI | keys/get/set/mark-dead/add-wave/set-verdict/submit-ready/backup | ledger-schema |
-| campaign.py registry | registry 实证层统一 CLI（幂等写+结构校验） | add-dead-end/add-win/upsert-campaign/add-orphan/list/get；--dry-run/--extra/@file.json。⚠ **必填参数**：`add-dead-end` 需 `--id --family --reason --rule`；`add-win` 需 `--id --what --key` —— 只给 `--extra @file.json` 会 argparse 报错（错误字段名在 extra 里也只当附加，不替代必填） | ledger-schema |
-| campaign.py wave | wave_results 台账统一 CLI（幂等写+一键导入） | upsert/import/get/list；--finding 可重复；--dry-run | ledger-schema |
 
-## 6.x S0 评分机制增强（2026-09-14，P0–P6）
+`campaign.py --campaign-dir <DIR> <子命令> …`：
 
-`score_datasets.py` 评分 = `(0.4·cov + crowd_penalty(ac) + 0.2·breadth + 0.1·valueScore + empirical_prior) × category_weight[0.9~1.15]`；分位分层 tier1≥P60 / tier2≥P30。**新参数默认 OFF/中性**（`empirical_weight=0.0`、饱和项需 `saturated_datasets` 台账才生效），无台账时行为与旧版逐条一致；区域经 `thresholds.json` 的 `dataset_health` 节 opt-in。canonical 默认见 `src/wqb/config.py` 的 `DATASET_HEALTH_SCORING`。
-
-| 项 | 机制 | 开关（dataset_health） | 数据源台账 |
-|---|---|---|---|
-| P0 经验强度先验 | `score()` 叠加 `empirical_prior`=`empirical_weight`·clamp(ceiling_ratio)，把目标从「干净+低拥挤」拉向「过闸概率」 | `empirical_weight`(0=关) / `empirical_prior_neutral` | `dataset_empirical_prior` |
-| P2 饱和再验证降级 | 命中集自动降 `excluded` 且不被保底带复活 | `saturation_demotion_enable` | `saturated_datasets` |
-| P3 universe 一致性守卫 | `s0_ranking`/`s0_whitelist`.universe ≠ `settings.universe` → `[WARN]`，提示重生成+白名单复核 | 常开 | 读 `settings.json`.universe |
-| P5 饱和拍平 model | `_region_saturated` 时 model 类 `category_weight` 封顶 1.0 | `flatten_model_when_saturated` | 由 `saturated_datasets` 非空推导 |
-| P6 calibrate token 去重 | `_expr_fields` 去重 + 剔除 group 变量关键字，根治甜区污染 | 常开（calibrate 内） | — |
-
-**信号分 vs 点塔分（P5 拆分）**：`s0_ranking.ranking[].score`=信号强度榜（哪个集能出好 alpha）；`pyramid_view`=点塔战略榜（哪个集点亮金字塔，pyr_value 驱动）。两榜语义分离：选集先看信号分定候选，再用点塔分排提交优先级，勿相加或混排。
-
-**新增台账键**（`make_ledger_store(ctx)` 读写，均 region-scoped）：
-
-- `dataset_empirical_prior` — calibrate 产出：`{region, gate_sharpe, updated, priors:{ds:{best_sharpe, ceiling_ratio, observations}}}`，`ceiling_ratio`=best_sharpe/gate_sharpe。
-- `saturated_datasets` — prod 饱和事实：`{datasets:{ds:{reason}}}`；score 据此降级，P5 据此拍平 model。
-- `seat_model`（campaign_intel `s0-select` 读）— `{seats:{ds:est_seats}, seats_per_dataset_default:2}`；同族高互相关只算 1 座位。
-- `s0_whitelist.candidates[].override`（P4）— 手工捞回自动判死/排除集时须写 `{reason, auto_tier, auto_excluded_by}`。
-
-## 6.y 接线修复落地（2026-09-15，审计 ①③⑥⑦）
-
-| 项 | 机制 | 开关 / 台账 |
+| 子命令 | 转发到 | 职责 |
 |---|---|---|
-| ① settings prior | `_lib/region_kb.py::apply_settings_prior`：读 `region_kb.gate_priors`（缺则 `gate_priors_local`）的 `by_decay` / `by_neutralization`，格子样本 ≥`min_n`(30) 且过闸率 ≥ 当前设置 ×`min_lift`(2.0) 才改写；显式 `--set`/`--neutralization` 钉住的维度不动。GEM prompt 只再渲染 operator-count / field-family（`economic_priors.py`），设置维度不进 prompt。 | `thresholds.json` `settings_prior{enabled,min_n,min_lift,dims}`；CLI `--no-settings-prior` |
-| ③ region_kb 波后刷新 | `stage_review` 写完 wave_results 后 `refresh_after_wave`：`recent_waves`（近 20 波）+ `gate_priors_local`（本地 backtest_results 重算 by_neutralization/op_count/field_family，无 decay）+ `updated_at`。定向 upsert，不整区重写。 | 常开（异常不阻断） |
-| ⑥ S2-COMPLIANCE 降级 | `s2_compliance_w<wave>` 缺失只打印 `[S2-COMPLIANCE] 无合规记录（仅提示，不阻断）`，不再 `--force`；`s2_compliance_mark.py` / `campaign.py s2-mark` 保留为可选标记（现状、证据与两个 `--force` 的区别见 [`references/S2_COMPLIANCE_GUIDE.md`](references/S2_COMPLIANCE_GUIDE.md)）。`pipeline.py` 全部中止路径 `sys.exit(2)`。 | — |
-| ⑦ rn 墙 / 停止规则 / verdict 枚举 | `review_wave.rn_exposure()` 进 `walls()`/`passes()`；停止规则由节点层 `campaign.py::_run_stop_rules_gate` 按 DB 判定（区 backtested≥100 且 passed=0；2026-09-23 起规则 B 按轴：B1 同轴连续 K 波可计数 FAIL 熔断 / B2 窗口内 ≥D 个不同轴全 FAIL 且无 PASS 停区，零配额与 dead_end 产出波豁免；schema 不齐或 axis_scope:false 回落旧口径"最近 3 closed 波全 FAIL"），ledger `stop_rules_override{reason,until}` 放行；`mcp__wqb-db__upsert_wave_result` 归一/拒绝非枚举 verdict。 | `thresholds.review.rn_sharpe_min`；`thresholds.diversity.stop_rules{enabled,yield_min_backtests,consecutive_fail_waves,axis_scope,axis_window,distinct_fail_axes,exempt_zero_cost_waves,exempt_dead_end_waves}` |
+| `scan-fields` | `scan_fields.py` | typed catalog 字段扫描（`--dataset` / `--limit` / `--zero-comp`）；**过滤必须是 `dataset.id=`**，裸 `dataset=` 会被平台静默忽略 |
+| `score` | `score_datasets.py` | 数据集评分 / `--probe-plan` / `--probe-score`（三灯）/ `--calibrate`，细则 [`probe-scoring-v2.md`](references/probe-scoring-v2.md) |
+| `gate` | `gate.py` | **8 闸 + 可选闸0**（子闸 1b / 2b / 2b-2，附加闸 9）；闸表由代码生成（`gate.py --print-gate-table`，INDEX 已收录），细则 [`gate-rules.md`](references/gate-rules.md) |
+| `build-wave` | `build_wave.py` | 选波后处理（去重 / 分桶 / 骨架配给 / near 加权 / 选波权威化）；数量与身份契约见 [`selection-plan.md`](references/selection-plan.md) |
+| `assemble-priors` | `assemble_priors.py` | 从 DB 确定性组装 GEM priors（内部映射见 RA `assemble-priors-internals.md`）；**回写后必须再跑** |
+| `pipeline` | `pipeline.py` | 端到端编排（七槽填槽）与 `quota`，细则 [`poll-and-quota.md`](references/poll-and-quota.md) |
+| `review` | `review_wave.py` | walls 诊断 + 台账回写 |
+| `dataset-experience` | `dataset_experience.py` | 数据集 / 字段经验 Markdown（保留人工复盘段），方法见 `brain-dataset-mining-experience` |
+| `metrics` | `metrics_cache.py` | alpha IS 指标读穿缓存（`--multisim=<id>` / `--refresh`） |
+| `diversity` | `diversity_audit.py` | 多样性审计（累积进台账 `diversity_history`） |
+| `diversity-extract` | `diversity_extract.py` | 单数据集多样性榨取，见 [`diversity-extract.md`](references/diversity-extract.md) |
+| `s2-mark` | `s2_compliance_mark.py` | S2 合规标记：**可选**记录，缺记录只打印提示、不阻断（`pipeline.py` 对它不再 `--force`） |
+| `ledger` | `_lib/ledger.py` | 台账 CLI：`keys / get / set / mark-dead / add-wave / submit-ready / backup`；`set-verdict` 与 `submit-ready` 已废止（见 [`ledger-schema.md`](references/ledger-schema.md)） |
+| `registry` | `_lib/registry.py` | registry 幂等 CLI：`add-dead-end / add-win / upsert-campaign / add-orphan / list / get`（必填参数见 matrix §4） |
+| `wave` | `_lib/wave_results.py` | `wave_results` CLI：`upsert / import / get / list`（`--verdict` 只收 PASS / FAIL / PARTIAL；`--finding` 可重复） |
 
-## 7. 闸 7-8：数据质量预检（2026-08-25 落地）
+不经 `campaign.py` 的独立脚本：`harvest.py`（兼容：把 multisim 子仿真指标收割到 `results/<ms>_metrics.json` 文件；**DB 收批用 `tools/harvest_multisim.py` / MCP `harvest_multisim_results`**）、`check_ledger_sync.py`（文件时代校验，见 [`ledger-schema.md`](references/ledger-schema.md)）、`neutralization_sweep.py`（生成设置对照批的 alpha_list，兼容产物）。
 
-在 5 基础闸（语法/字段白名单/VECTOR 类型/不可访问算子/毒模式）之后追加两个**数据质量闸**，实证动机：约 17% 死路属结构性缺陷（longCount 过低、EVENT 字段误用时间序列算子），可事前静态拦截。
+**已归档**（不要再调用，`scripts/` 里已无这些文件）：`distill_experience` / `os_feedback` / `family_atlas` / `budget_planner` / `campaign_mutex` / `signal_classifier` / `composition_validator` → `attic/toolkit_zero_ref_20260928/`；`migrate_templates` / `compose_signals` / `param_opt` / `ortho_prescreen` / `proxy_prescreen` / `rescue_checklist` / `calibrate_probe` / `fit_mix_weights` / `build_mix` / `adhoc` / `param_matrix` / `diversity_slots` / `composition_templates` → `attic/tools_archive_20260831/`；`references/enhancement-v2.md`、`S2_COMPLIANCE_*`、`DIVERSITY_EXTRACT_*`（描述的正是这些已归档或已撤回的机制）→ `attic/toolkit_docs_20260929/`。需要旧逻辑去 attic 取，先补调用方与测试再启用。
 
-| 闸 | 检查 | 判定 | 启用参数 |
+**产物契约（脚本 → DB 落点；DB 是唯一战役真相源，静态配置 `settings.json` / `thresholds.json` / `platform_constraints.json` 仍是文件）：**
+
+| 入口 | 落点 |
+|---|---|
+| `scan_fields.py` | `fields` 表（typed catalog）；缓存 `catalog_<ds>` |
+| `score_datasets.py` | ledger `s0_ranking`；`--calibrate` → `thresholds.dataset_health` + `dataset_empirical_prior`；`--mark-dead` → `<ds>_dead`。白名单 `s0_whitelist` 由 agent 用 **merge** 写入 |
+| S1 台账 | `campaign.py ledger set "s1_<ds>_d<delay>"` / MCP `upsert_ledger_key` |
+| `diversity_extract.py` | ledger `diversity_<ds>` / `diversity_matrix_<ds>` / `diversity_evaluation_<ds>` + `expressions` |
+| `build_wave.py --from-db` | `expressions`（`selected` / `superseded`）+ ledger `wave_meta_<wave>` |
+| `gate.py --from-db` | `gate_results` 表 + ledger `gate_cache_<ds>` / `gate_w<wave>_<ds>` |
+| `pipeline.py` | `backtest_results` 表、ledger `ckpt_w<W>`（checkpoint）、`wave_results`（`--review` 时）、`region_kb` 的波后刷新 |
+| `review_wave.py --write-ledger` | ledger `review_<tag>` / `near_pool` / `salvage_pool`（另在 `submit_ready` 键留 legacy 审计副本）；`workflow_campaign` S4 **节点**路径另写 `s4_walls_<region>_<wave>`（审计） |
+| `diversity_audit.py` | ledger `diversity_audit_latest` / `diversity_history` |
+| `methodology_rules` 区域计数 | ledger_kv（全局规则仍用 toolkit `config/methodology_rules.json`） |
+
+## 7. 重发安全与异步恢复（最容易被略过的规则）
+
+MCP 桥接超时会返回 `outcome_unknown` 且 `retry_safe=false`：**服务端可能已经收下这批**。此时**禁止盲目重发**（同一批会变成孤儿模拟占槽，也可能重复回测）。恢复顺序：
+
+1. `mcp__wq-brain-http__workflow_task_status`（任务查询会核对进程创建时间与可执行文件；PID 身份不符或无法核实时返回 `unknown`，以明确退出码 / 成功标记优先判终态；旧目录任务缺终态时的历史日志推断**不能代替** DB 收批核验）；
+2. 按 `multisim_id` 查 `backtest_results`（`mcp__wqb-db__*` 或 `tools/step_funnel.py --wave`）；
+3. **两处都空且任务确已死亡**，才允许重发；重发前先过一遍 `tools/expr_lint.py` / `wave_gate`，避免坏式连坐。
+
+RA 步 6 的「超时恢复清单」指向本节。救援池的来源排除是另一件事：`exclude_dataset` 依据同区域同 alpha_id 的回测 / 表达式来源排除，未知来源不作跨集腿；**数据集不同只证明来源不同，不证明 Prod / Self 相关性合格**（属 `get_salvage_pool` / RA 步 7）。
+
+## 8. S0 评分机制（函数名即入口，不用审计工单号）
+
+`score_datasets.py` 的分数 = `(0.4·coverage + crowd_penalty(alphaCount) + 0.2·breadth + 0.1·valueScore + empirical_prior) × category_weight[0.9~1.15]`；tier 按本区域数据集分布的**分位**切（缺省 tier1 ≥ P60、tier2 ≥ P30，`coverage_hard_min` 缺省 0.7，代码缺省见 `score_datasets.assign_quantile_tiers` 与 `thresholds.dataset_health`，细则 [`probe-scoring-v2.md`](references/probe-scoring-v2.md)）。新机制**缺省关闭 / 中性**，无对应台账时行为与旧版一致；`src/wqb/config.py::DATASET_HEALTH_SCORING` 是缺省事实源。
+
+| 机制 | 作用 | 开关（`dataset_health`） | 读取的台账键 |
 |---|---|---|---|
-| 闸 7 longCount | 表达式引用的 VECTOR 字段在 typed catalog 中的 `longCount` | `0 ≤ longCount < 80` → WARN（小宇宙区域如 KOR/HKG/TWN 按 profile 升级 FAIL） | `--sanity-longcount` |
-| 闸 8 EVENT 类型 | 字段 `type==EVENT` 但表达式未使用 `ts_event_*` 算子 | FAIL（EVENT 字段禁 ts_* 通用时序算子，铁律） | `--sanity-event-type` |
+| 经验强度先验 | 分数叠加 `empirical_weight × clamp(ceiling_ratio)`，把目标从「干净 + 低拥挤」拉向「过闸概率」 | `empirical_weight`（0 = 关）/ `empirical_prior_neutral` | `dataset_empirical_prior`（由 `--calibrate` 写） |
+| 饱和再验证降级 | 命中的数据集降 `excluded`，且不被保底带复活 | `saturation_demotion_enable` | `saturated_datasets`（**写入口 = `campaign_intel.py mark-saturated`**，S6 判某集被 prod 墙卡死时调用；合并式、缺省 dry-run、`--remove` 可撤销） |
+| 饱和区拍平 model | 区域进入饱和态时 model 类 `category_weight` 封顶 1.0 | `flatten_model_when_saturated` | 由 `saturated_datasets` 非空推导 |
+| universe 一致性守卫 | `s0_ranking` / `s0_whitelist` 的 universe ≠ `settings.universe` → `[WARN]`，提示重生成 + 白名单复核 | 常开 | `settings.json` |
+| calibrate token 去重 | 剔除 group 变量关键字，防甜区污染 | 常开（calibrate 内） | — |
 
-`--sanity-all` = 闸 7+8 全开；输出 JSON 新增 `sanity_gates` 字段。CW（持仓集中度）为回测后动态指标，**不进静态闸**，在步 7 评审与 KOR 等区域 profile 的 `cw_gate` 覆盖中处理。
+`s0_ranking.ranking[].score` = **信号强度榜**（哪个集能出好 alpha）；`pyramid_view` = **点塔战略榜**（哪个集点亮金字塔）。两榜语义分离：先看信号分定候选，再用点塔分排提交优先级，**勿相加或混排**。`s0_whitelist.candidates[].override` 手工捞回自动判死 / 排除集时必须写 `{reason, auto_tier, auto_excluded_by}`。`seat_model`（`campaign_intel s0-select` 读）目前**没有写入方**（`docs/ledger_keys.json` 登记为 orphan），缺省 `seats_per_dataset_default: 2`。
 
-## 7.x fail-fast：失败性质判定（2026-09-13 落地）
+## 9. 闸门
 
-步 7 评审除 walls 诊断外，先判定**失败性质**再决定是否继续投入（机器实现 `_lib/rules.py::classify_failure`，接入 `recommend_next_wave`）：
+闸编号的唯一注册表是 `gate.py` 的 `GATE_REGISTRY`（INDEX 里的闸表由 `gate.py --print-gate-table` 生成、测试比对）。文档里「5 闸」= 闸 1–5，「8 闸」= 闸 1–8（+ 可选闸 0，子闸 1b / 2b / 2b-2，附加闸 9）。`tools/wave_gate.py` 的闸 SEM / PF / 2b / 2.6 与逃生口总表在 INDEX「闸与逃生口总表」。逐闸细则见 [`gate-rules.md`](references/gate-rules.md)；下面只写容易读错的三点：
 
-- **无效努力七信号**：Sharpe 卡 0.7–0.9 / PnL 后半段衰减 / 换变体无本质变化 / Fitness 始终不达标 / Sub-universe 反复失败 / Weight concentration 偏高 / 过线后 Similarity 爆表。**命中 ≥2 项 → 结构性，止损换方向**。
-- **可修复**：仅卡参数层墙（2Y/MARGIN/TVR/CW/FITNESS）→ 新增「可修复失败」推荐（priority 65），杠杆 = decay / neutralization / gate / 换历史位置表达。
-- **结构性**：命中远期衰减/变体不变/相似度墙，或信号太弱（`max_sharpe<1.0`）→ 富化既有「结构层重构」推荐，停止该家族。
+- **闸 7（longCount）目前只有 WARN**：`0 ≤ longCount < 80` 标 WARN，**没有任何代码读取区域 profile 的 `longcount_verdict` / `cw_gate` 把它升成 FAIL**（那两个键是文档级约定，见 RA `region-profile-contract.md`）。小宇宙区域（KOR / HKG / TWN）要按 FAIL 处理，由 agent 依 profile 自行执行。CW（持仓集中度）是回测后指标，不进静态闸，在步 7 评审处理。
+- **闸 8（EVENT 类型）= 引用 `type==EVENT` 的字段即 FAIL**：平台没有 `ts_event_*` 系列（KOR wave16 实测 8/8 ERROR），旧口径「必须改用 `ts_event_*`」已作废——先做**单条探针**（§11 的二分协议）。
+- **闸 6 契约过期是 FAIL-CLOSED**：`consumed_batches` 达 `expires_after_batches`（缺省 10）→ 阻断提交并**自动续约**新契约，要求按新契约重跑闸门；不是「过期就不再拦」。
 
-判据全文（含阈值表与反向纪律）见 [`docs/experience/fail_fast_rules.md`](docs/experience/fail_fast_rules.md)；规则条目 `failure_nature_classifier_v1` / `no_effort_seven_signals_v1` 在 `config/methodology_rules.json`。纪律：**AI/自动化只做研究效率（整理/统计/打标/复盘），不自动提交、不刷规则**。
+## 10. fail-fast：失败性质判定（步 7 评审用）
 
-## 7.z 2026-09-19 新增子命令/开关（今日实证驱动）
+评审先判**失败性质**再决定继续投入（机器实现 `_lib/rules.py::classify_failure`，阈值见 `FAIL_FAST_THRESHOLDS`，每条信号的量化口径在 [`docs/experience/fail_fast_rules.md`](docs/experience/fail_fast_rules.md)）：**七个无效努力信号**命中结构性信号（远期衰减 / 变体不变 / 相似度墙），或 `max_sharpe < 1.0`，或命中 ≥ 2 项 → `STOP_STRUCTURAL`（止损换方向）；仅命中参数层信号 → `RETRY_FIXABLE`（杠杆 = decay / neutralization / gate / 换历史位置表达）。纪律：**AI / 自动化只做研究效率（整理 / 统计 / 打标 / 复盘），不自动提交、不刷规则**。
+
+## 11. 平台报错二分排障（单条探针，不用 multisim）
+
+multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCELLED。**排障时禁止再用 multisim 二分**（JPN `Invalid data field close` 实证：3 条 multisim 二分 → 3 条全 ERROR，两批白烧）。
+
+1. 先本地：`python tools/campaign_intel.py ghost-audit`（幽灵算子）→ `wave_gate.py --expr`（语法 / 字段 / 区域非法字段）。
+2. 仍需平台定位时，用**单条** `mcp__wq-brain-http__create_simulation`，按「最简 → 最复杂」逐层加：`rank(field)` → `rank(vec_avg(field))`（VECTOR）→ 加一层 `ts_*`（`ts_delta(field,5)`）→ 加 group / bucket；**第一条报错的层即病灶**。
+3. 报错文本与表达式无关时（如 `Invalid data field close` 而式中无 close）先查区域数据可用性：`get_datasets(region, delay, universe, category=pv)` 看 pv1 是否存在（JPN / TOP1600 / D1 无 pv1 → 任何 `ts_*(vec_*(…))` 必错）。
+4. 结论写入 `references/regions/<R>.md` 硬事实 + `platform_constraints.json`（`region_invalid_fields` / `region_vector_ts_forbidden`）+ GEM 侧预闸 `pipeline_pregate.py`，让 GEM 预闸与闸 2b 在下一波前拦住——三处同步，不留口头记忆。
+5. `pipeline.py` 收批日志里 `隔离坏式=N 重发批=M` 是兜底信号：N > 0 说明预闸缺规则，回到第 4 步补规则。
+
+## 12. 开关与入口（按绝对日期，不写「今日」）
 
 | 入口 | 作用 | 何时用 |
 |---|---|---|
-| `pipeline.py run … --prod-first [--prod-first-top-k 2]` | 评审后自动调 `campaign_intel prod-first`：每信号族最强 1 条探 prod，写 `prod_first_<wave>` 台账 | **新信号族第一波必开**（SOP 步 5b）；族级 STOP 后不得再投变体 |
-| `pipeline.py run … --batch-type probe` | 探针批：与 repair 同样豁免多样性契约与 qp 预估标注 | 单集 8 条首探 |
-| `campaign_intel.py xr-probe --exprs-file f --regions USA,GLB,HKG --tag t --write-ledger` | 跨区探针：按各区 settings 发 multisim → 收批入库（wave=probe_<tag>）→ `GLOBAL/xr_probe_<tag>` | 判"机制能不能搬"，10 分钟出结论；≤10 条/区 |
-| `campaign_intel.py prod-first … --probe-timeout 600` | 单条 PC 硬超时 + 进程锁（`data/.prod_first.lock`） | 平台 PC 单并发；并跑第二个会被拒（退出码 3） |
-| `campaign_intel.py backlog-drop [--include-gated] [--close-backtested] --apply` | 积压清理：>N 天未动且无回测的波标 dropped；已回测却仍 pending/gated 的波标 closed | `wave-ttl-check` WARN 时跑；默认 dry-run |
-| `campaign_intel.py s0-select`（默认剔除 lit 塔，`--include-lit` 保留） | 用户规则：已点亮塔不开战役 | 每次 S0 |
-| `wave_gate.py --batch-type repair|probe` | 跳过 qp 质量预估标注（修复批实测 S2.1 却被预估 0.65 BLOCK） | 修复/探针批 |
-| `tools/prod_saturation_gate.py` | 字段饱和须有 prod 撞墙证据（已知 prod 中 ≥50% ≥0.7 且 ≥2 条）；无 prod 信息只列 candidate | 自动（wave_gate 内） |
+| `pipeline.py run … --prod-first [--prod-first-top-k 2]` | 评审后自动调 `campaign_intel prod-first`：每信号族最强 1 条探 prod，写 `prod_first_<wave>`（**注意**：`campaign_intel prod-first` 自身 `--top-k` 缺省 3，这里 pipeline 透传缺省 2） | 新信号族第一波（步 5b）；族级 STOP 后不再投变体 |
+| `pipeline.py run … --batch-type probe` | 探针批：与 `repair` 同样豁免闸 6 多样性契约与 qp 预估标注 | 单集 8 条首探 |
+| `campaign_intel.py xr-probe --exprs-file f --regions USA,GLB,HKG --tag t --write-ledger` | 跨区探针：按各区 settings 发 multisim → 收批入库（wave = `probe_<tag>`）→ 写 `GLOBAL/xr_probe_<tag>` | 判「机制能不能搬」，≤ 10 条 / 区 |
+| `campaign_intel.py prod-first … --probe-timeout 600` | 单条 PC 硬超时 + 进程锁 `data/.prod_first.lock` | 平台 PC 单并发；并跑第二个被拒（退出码 3） |
+| `campaign_intel.py backlog-drop [--include-gated] [--close-backtested] --apply` | 积压清理：> N 天未动且无回测的波标 dropped；已回测却仍 pending / gated 的波标 closed | `wave-ttl-check` WARN 时；缺省 dry-run |
+| `campaign_intel.py s0-select`（缺省剔已点亮塔，`--include-lit` 保留） | 用户规则（2026-09-19）：已点亮塔不开战役 | 每次 S0 |
+| `wave_gate.py --batch-type repair\|probe` | 跳过 qp 质量预估标注（修复批实测 S2.1 却被预估 0.65 BLOCK） | 修复 / 探针批 |
+| `tools/prod_saturation_gate.py` | 字段「饱和」须有 prod 撞墙证据（已知 prod 中 ≥ 50% 且 ≥ 2 条 ≥ 0.7）；无 prod 信息只列 candidate；仅凭本账户 IS 过闸次数不再判饱和 | 自动（`wave_gate` 内） |
 
-## 7.y 平台报错二分排障协议（2026-09-19 落地）
+另有两条**数据行为**：`expressions.settings_json` 里的仿真键（decay / neutralization / universe / truncation …）会作为 per-item override 随批提交（同一波内表达式文本必须不同；非仿真键 `note` / `status_change` 自动剔除）；`harvest_multisim_results` 直接接受 `harvest_multisim_alphas` 的嵌套输出并自动补 `dataset`。启动期 `[wave-key-check]` / `[wave-ttl-check]` 每进程只打一次（`WQB_STARTUP_CHECKS=0` 关闭）。
 
-multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCELLED。因此**排障时禁止再用 multisim 二分**
-（JPN `Invalid data field close` 实证：3 条 multisim 二分 → 3 条全 ERROR，两批白烧）。协议：
+## 13. 纪律
 
-1. 先本地：`tools/campaign_intel.py ghost-audit`（幽灵算子）→ `wave_gate.py --expr`（语法/字段/区域非法字段）。
-2. 仍需平台定位时，用**单条** `mcp__wq-brain-http__create_simulation`（不是 multi），按"最简 → 最复杂"顺序逐层加算子：
-   `rank(field)` → `rank(vec_avg(field))` → `rank(ts_op(...))` → 完整式；第一条报错的层即病灶。
-3. 报错文本与表达式无关时（如 `Invalid data field close` 而式中无 close）先查区域数据可用性：
-   `get_datasets(region, delay, universe, category=pv)` 看 pv1 是否存在（JPN/TOP1600/D1 无 pv1 → 任何 ts_*(vec_*(…)) 必错）。
-4. 结论写入 `references/regions/<R>.md` 硬事实 + `platform_constraints.json`（`region_invalid_fields` / `vector_ts_forbidden_regions`），
-   让 GEM 预闸与闸 2b 在下一波前拦住，而不是靠 pipeline 的连坐隔离兜底。
-5. pipeline 收批日志里 `隔离坏式=N 重发批=M` 是兜底信号：N>0 说明预闸缺规则，回到第 4 步补规则。
+1. **原子写**：台账一律走 `make_ledger_store(ctx)`（缺省 SQLite 后端，`ledger_kv` 表；旧 JSON 后端已弃）；双遍重放 + 幂等 mutation。
+2. **单进程单登录**；429 退避口径见 [`poll-and-quota.md`](references/poll-and-quota.md)。
+3. 战役数据只按脚本既定产物写入；手工编辑先备份。**禁止第二权威实现**——一次性脚本模式已淘汰。
+4. **提交配额是稀缺资源，但与回测并行槽位是两个独立机制**：`pipeline.py` 缺省**不**因提交额度中止回测发起（区域 `thresholds.submit_quota.enabled=true` 才启用该闸，`--force` 可越过；缺省关闭是 2026-08-26 用户指令）；未过 gate 不提交 alpha。
+5. 选波 / 填槽的优先级（win 换腿、跨金字塔位、prod-first、弱探针上限）**只在 RA 步 4 / 步 6 与 `src/wqb/config.py::MINING`**，本 skill 不复写。类型为 `strategy` 的规则会在 `build_wave` / `pipeline` 打印 `[rules][strategy:…]`。
+6. 新增 / 修改 workflow 节点的注册同步（四处）是开发者流程，见 AGENTS.md「变更影响面」，不在挖矿 skill 里。
 
-## 8. 纪律
-1. **原子写**（tmp+os.replace）；台账一律走 `make_ledger_store(ctx)` 工厂（默认 SQLite 后端 `SqliteLedgerStore`，存 `data/wqb.db` 的 `ledger_kv` 表；旧 JSON 后端 `LedgerStore` 保留但已弃用）。双遍重放 + 幂等 mutation，禁止 record_*.py 式直改。
-2. **单进程单登录**；429 指数退避（5 次，5s 起倍增）。
-3. 不动战役数据：candidates/results/reviews/reference/台账只按脚本既定产物写入；手工编辑先备份。
-4. 禁止第二权威实现；record_*.py 一次性脚本模式已淘汰。
-5. 提交配额是稀缺资源：未过 gate 不提交；pipeline 默认只干跑，显式 `--submit` 才烧配额；`--force` 才越过配额闸。
-6. **单轨数据库模式**（2026-08-21 起）：历史 JSON（campaign_state / registry / wave_results）已归档到 `attic/json_archive/`，唯一事实源为 `data/wqb.db`。台账读写走 `make_ledger_store(ctx)`（默认 sqlite）；registry 写一律走 `campaign.py registry` 幂等 CLI（散装 SQL/dao 直改仅限读），见 `_lib/registry.py`。
-7. **选波/填槽优先级（与 `wq-brain-ra-pipeline` 步 4/步 6、`src/wqb.config.MINING` 对齐）**：
-   1. 开波先读 registry **win** 层。有胜绩则至少 `win_replay_slots_min` 槽按该**机制换腿**（EUR 实证：`0.40` 慢 MODEL 残差 × `0.60` 快 PV），设置跟 win（中性化/decay），禁止只穷举同金字塔换字段。
-   2. 每波至少 `cross_pyramid_slots_min` 槽引入非 MODEL 成分。S0 `apply_pyramid_quota` 默认开启，白名单至少 2 个非 MODEL；`category_weight` 夹在 0.9–1.15。
-   3. 有信号字段先做组合（同集或跨金字塔慢×快）。有信号 = `|Sharpe|≥1.0` / `PASS_CHEAP` / registry 标明有 IS 但卡 prod（腿禁用 ≠ 整集判死）。复合后 `|S|<0.5` 不再占槽。
-   4. **prod-first**：每槽先 1–2 条骨架查平台 `prod_corr`；≥0.7 停扩、换腿（Mode B）。禁止先摊满 8 条再查 prod。
-   5. 弱探针最多 1 槽，且仅当本波尚无近闸字段。反模式：七槽同时打 7 个未证明信号的新数据集裸探针；七槽全纯 MODEL。
-   6. 跨集 gate 白名单失败 → 合并 catalog 再过闸；仍失败则拆成慢腿批 + 快腿批同波对照，不停挖。
-   `type=strategy` 规则会在 `build_wave`/`pipeline` 打印 `[rules][strategy:…]`。
+## 14. 台账落盘（单轨 DB）
 
-8. **新增/修改 workflow 节点 → 四处必须同步**（2026-09-18 固化）：
-   workflow 节点住在 `src/wqb/workflow/`，但**注册信息散在四处**，漏一处测试即红：
+**波结论**回收后写 `wave_results`（不再手写 `wave<N>_results.json`）：
 
-   | # | 位置 | 要改什么 |
-   |---|---|---|
-   | ① | `src/wqb/workflow/registry.py` | `register()` 调用 + `NodeMeta`；**`required_params`/`optional_params` 必须与 `run()` 签名逐字一致**（唯一例外 `_context` / `dry_run`） |
-   | ② | `tests/unit/test_workflow.py` | `test_registry_lists_all_core_nodes` 的期望节点集合（加节点则加一条 + 注释写日期与阶段） |
-   | ③ | `tests/unit/test_skill_integrity.py` | `_DRY_RUN_CASES` 干跑用例表（参数须零副作用） |
-   | ④ | `Claude/skills/INDEX.md` | workflow 节点计数（`test_docs_consistency.py` 机械守护） |
-
-   **一次跑完全部检查**，不要"改一处跑一次测试"：
-   ```bash
-   python tools/audit_node_registration.py            # 列出四处全部缺口，退出码 1 = 有漂移
-   python tools/audit_node_registration.py --node X   # 新增节点后单节点自检
-   ```
-   干跑契约：节点必须「走完零成本前置 → 构建出命令/请求计划 → 到此为止」，不 subprocess、
-   不写库、不建目录；干跑失败必须**带得出 `error`**（禁止 `success=False` + `error=None`）。
-   ★ 战例：`alpha_booster` 只做了 ①，②③ 漏同步 + NodeMeta 漏 `forum_refresh` → 3 个测试红；
-   `gem` 的 meta 漏 `batch_size` 同样被 ① 的签名比对逮到。
-
-## 9. 台账落盘（单轨 DB 模式）
-
-**wave 结果台账**：每波回收后写入 `wave_results` 表（不再手写 `wave<N>_results.json`）。**AI 回写一律走 `campaign.py wave` CLI**（`tools/wave_results_writer.py` Python API 仅保留给引擎内部程序化写入）：
-
-```bash
-# 一键导入现成 wave<N>_results.json 入库（幂等，重复跑无副作用；默认 status=closed）
-$WQ_PY campaign.py --campaign-dir tracking/<REGION> wave import --file results/wave63_results.json
-
-# 手填/更新 wave 结论（--finding 可重复多条；--candidates/--batches 用 @file.json 数组）
-# 2026-09-27 起与 wqb-db 的 upsert_wave_result 同一写入契约：合并写入（只改本次给出的字段，
-# created_at 不变）；--wave 用波号原字符串（63 / s2_<ds>_d1），--verdict 只收 PASS/FAIL/PARTIAL；
-# 不给 --status 时：带 --verdict 即结案，否则已有波保持原状态、新波 open（只补 focus 不会把结案波改回 open）
-$WQ_PY campaign.py --campaign-dir tracking/<REGION> wave upsert --wave 63 \
-    --focus "..." --context "..." --verdict FAIL --status closed \
-    --finding "..." --finding "..."
-
-# 写后立即验证（同一入口，无需另写查询脚本）
-$WQ_PY campaign.py --campaign-dir tracking/<REGION> wave get --wave 63
+```powershell
+# 一键导入现成 wave<N>_results.json（幂等，默认 status=closed）
+& $WQ_PY "$TK/campaign.py" --campaign-dir tracking/<REGION> wave import --file <文件>
+# 手填 / 更新（合并写入：只改本次给出的字段；--wave 用波号原字符串，--verdict 只收 PASS/FAIL/PARTIAL；
+# 不给 --status 时：带 --verdict 即结案，否则已有波保持原状态、新波 open）
+& $WQ_PY "$TK/campaign.py" --campaign-dir tracking/<REGION> wave upsert --wave 63 `
+    --focus "…" --context "…" --verdict FAIL --status closed --finding "…" --finding "…"
+& $WQ_PY "$TK/campaign.py" --campaign-dir tracking/<REGION> wave get --wave 63      # 写后验证
 ```
 
-**WAVE_LEDGER.md 快照**：人工可读快照，从数据库生成（覆盖写，勿手改）。
+`WAVE_LEDGER.md` 是从数据库**生成**的快照（`python tools/export_wave_ledger_md.py --region <R>`，覆盖写，勿手改、勿当写入入口）。`review_wave.py --write-ledger` 写 ledger 键（`review_<tag>` 等，键契约见 `docs/ledger_keys.json`）。MCP 查询工具的清单与用法见 INDEX 工具表，不在此复制。
 
-```bash
-# 导出 WAVE_LEDGER.md 快照
-python tools/export_wave_ledger_md.py --region MEA
-```
+## 情景卡
 
-**战役台账（ledger_kv）**：`review_wave.py --write-ledger` 已默认走 `make_ledger_store(ctx)`（sqlite 后端），写入 `ledger_kv` 表。
+### 情景 TK-A　`create_multi_simulation` 超时返回 `outcome_unknown`
 
-**查询工具（wqb-db-mcp）**：
-```
-# 查 wave 结果
-mcp__wqb-db__get_wave_result(region="MEA", wave_number=49)
-mcp__wqb-db__list_wave_results(region="MEA", status="closed", limit=10)
-mcp__wqb-db__get_latest_wave(region="MEA")
+- **前置状态**：发批调用超时，返回 `outcome_unknown`、`retry_safe=false`。
+- **步骤**：① `workflow_task_status` 看任务是否还活着；② 按 multisim_id 查 `backtest_results`；③ 有行 → 走收批；无行且任务在跑 → 等，不重发；无行且任务已死 → 才重发（先过闸）。
+- **完成定义**：该批要么已收批入库，要么确认死亡后只重发了一次。
+- **反例**：看到超时就立刻重发（同一批双份占槽）；`TaskStop` 强杀（服务端已提交的仿真仍在跑，只会制造孤儿，见 `wqb-concurrency`）。
 
-# 查台账
-mcp__wqb-db__get_ledger_key(region="MEA", key="submit_ready")
-mcp__wqb-db__list_ledger_keys(region="MEA")
-mcp__wqb-db__get_submit_ready(region="MEA")
-mcp__wqb-db__get_dead_datasets(region="KOR")
+### 情景 TK-B　新数据集首波报 `Invalid data field close`
 
-# 查 alpha
-mcp__wqb-db__get_alpha_by_id(alpha_id="QP7er8qp")
-mcp__wqb-db__list_alphas_by_wave(region="MEA", wave_number=49)
-mcp__wqb-db__search_alphas_by_sharpe(region="MEA", min_sharpe=1.5, limit=10)
+- **前置状态**：JPN / TOP1600 / D1，式中并无 close。
+- **步骤**：按 §11 的二分协议：本地 ghost-audit → 单条 `create_simulation` 逐层加 → 查区域是否有 pv1 → 把结论写进 profile + `platform_constraints.json` + `pipeline_pregate.py`。
+- **完成定义**：下一波 GEM 预闸 / 闸 2b 在本地就拦住同类式子。
+- **反例**：用 multisim 二分；只在对话里记住「JPN 不能用 ts_*(vec_*)」。
 
-# 综合查询
-mcp__wqb-db__get_campaign_summary(region="MEA")
-mcp__wqb-db__get_region_overview()
-```
+### 情景 TK-C　评分前校准，dry-run 输出异常
 
-
-## 工具化纪律（tools/ 通用工具，勿再写一次性脚本）
-
-本 toolkit 提供战役目录内的执行原语；**跨区域通用的高频同构操作在项目 `tools/`**，
-两者分工固定，不要在 toolkit 内复制一份：
-
-| 场景 | 用这个 |
-|---|---|
-| 每波门禁（语法 + 闸1–5 + 闸7/8 + 体检硬门，一键落盘） | `tools/wave_gate.py`（内部会调本 toolkit 的 `gate.py`；2026-09-11 起亦有 MCP 节点 `workflow_execute` node="wave_gate"） |
-| 批次状态查询/轮询 | `tools/batch_status.py` |
-| 提交层判定（403 盲区） | `tools/submit_verdict.py` |
-| 批量派发仿真（dispatch，不是提交 alpha 上平台） | `tools/submit_batch.py` |
-| SA 组件池探针 / SUPER 组套 | `tools/sa_probe.py`、`tools/super_build.py` |
-
-工具索引与参数见 `tools/README.md`；缺参数就改工具（保持 `--help` 自文档），
-反复新建一次性脚本即说明工具化不彻底（AGENTS.md §6）。
-
-## 2026-09-19 新增：排障协议 + 三个新开关
-
-### 平台报错二分定位（bisect）协议
-- **二分只用单条 `create_simulation`，禁止用 multisim**：multisim 任一子式 ERROR → 同批其余 CANCELLED（连坐），
-  三条式子放一批等于一次只学到"有错"（JPN 2026-09-19 实证：sFh7WIj4rJ9PWHchFNnQd 三式全 ERROR，零信息）。
-- 顺序：`rank(field)` → `rank(vec_avg(field))`（VECTOR）→ 加一层 ts_\*（`ts_delta(field,5)`）→ 加 group/bucket；
-  第一条报错的层就是坑。报错文本里的字段名（如 "Invalid data field close"）不一定在式子里——JPN 无 pv1 时
-  `ts_*(vec_*(f))` 也报 close（VECTOR 日频对齐依赖 pv1）。
-- 定位后把事实写进：`config/platform_constraints.json`（`region_invalid_fields` / 区域 group 字段）、
-  `pipeline_pregate.py`（GEM 侧丢弃）、`references/regions/<R>.md` 硬事实；三处同步，不留口头记忆。
-
-### 新开关
-- `pipeline.py run --batch-type probe`：探针批（与 repair 一样豁免多样性契约；`wave_gate.py --batch-type repair|probe` 同时跳过 qp 质量预估标注——修复/探针批以实测为准）。
-- `tools/campaign_intel.py s0-select` 默认剔除已点亮塔（用户规则 2026-09-19，`--include-lit` 保留）。
-- `tools/campaign_intel.py xr-probe --exprs-file <txt> --regions USA,GLB,HKG [--dataset ds] [--universe U] [--set decay=10] [--tag t] --write-ledger`：
-  跨区探针一键化——按各区 `tracking/<R>/config/settings.json` 发批、轮询、收批入库（wave=`probe_<tag>`）、写 `GLOBAL/xr_probe_<tag>`。
-  用于 SOP 步 1 跨区先验（IND flash 一致预期修正在 USA/GLB/HKG 全 ≤0.64 的结论，10 分钟得出）。
-- `expressions.settings_json` 里的仿真键（decay/neutralization/universe/truncation/…）现在会作为 per-item override 随批提交
-  （EUR w207 实证 COUNTRY 中性化与 TOP2500 变体生效）；非仿真键（note/status_change）自动剔除。同一波内表达式文本必须不同。
-- `wqb-db harvest_multisim_results` 直接接受 `harvest_multisim_alphas` 的嵌套输出（metrics/ra/checks/settings 自动拍平），并自动补 `dataset`；整个返回值也可以直接传（multisim_id 随之写进回测行，`workflow_auto_harvest multisim_id=…` 可按批出只读报告）。2026-09-19～27 它不在 MCP 工具表里（装饰器错挂，N31），期间按 SOP 调用会 Unknown tool。
-- `tools/prod_saturation_gate.py`：字段"饱和"需要 prod 撞墙证据（已知 prod 中 ≥50% 且 ≥2 条 ≥0.7）；仅凭本账户 IS 过闸次数不再判饱和。
-- 启动期 `[wave-key-check]/[wave-ttl-check]` 每进程只打一次（`WQB_STARTUP_CHECKS=0` 关闭）；已 contested 的规则不再逐波重复证伪。
+- **前置状态**：`score_datasets.py --calibrate --dry-run` 打出甜区 `ac` 高达 8560–21508。
+- **步骤**：疑似拥挤度口径把区域全部 alpha 算成了数据集拥挤，甜区反转会**反向奖励超拥挤**——**不要 apply**，先查 `ac` 来源；`strong_acs` 为空（无 best ≥ 1.5 的强信号）则甜区退回缺省 50–1000，确认该区确实要甜区逻辑再 apply；无实测数据的区（alphas 表空）护栏会跳过、不写。
+- **完成定义**：写入 `thresholds.dataset_health` 的值经人工看过。
+- **反例**：不看 dry-run 直接 apply。

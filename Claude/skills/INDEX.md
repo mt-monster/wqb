@@ -76,7 +76,19 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 - **有 profile 的区**按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略执行。
 - **无 profile 的区**（AMR）走"处女地模板"（参照 ASI profile）；开新区前必须先补 profile + `tracking/<R>/config/`。
 - `frozen` 区（MEA）步 1 直接拒绝，不进入步 2。
-- 新增/删除区域时必须同步四处：`src/wqb/config.py::REGIONS`、本表、profile 文件、战役目录。
+- 新增/删除区域时必须同步四处：`src/wqb/config.py::REGIONS`、本表、profile 文件、战役目录（逐项做法与验证见下「开新区检查表」）。
+
+### 开新区检查表（单一来源；matrix / ra-pipeline 只引用本节）
+
+| # | 落点 | 做什么 | 验证 |
+|---|---|---|---|
+| 1 | `src/wqb/config.py::REGIONS` | 新增 `universes` / `neutralizations` / `delays` / `categories` / `default_universe`；档位用 `mcp__wq-brain-http__get_platform_setting_options` **实测**，禁止照抄 USA | `python -c "from wqb.config import REGIONS; print(sorted(REGIONS))"` |
+| 2 | `tracking/<R>/config/` | 建 `settings.json`（仿真设置）+ `thresholds.json`（阈值），契约见 toolkit [`campaign-dir-contract.md`](wq-brain-campaign-toolkit/references/campaign-dir-contract.md)；`region` 必须与目录名一致 | `python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/<R> ledger keys` 不报错 |
+| 3 | `wq-brain-ra-pipeline/references/regions/<R>.md` | 写 profile（front-matter 契约见 [`region-profile-contract.md`](wq-brain-ra-pipeline/references/region-profile-contract.md)），含 `entry_verdict` | `pytest tests/unit/test_region_alignment.py` |
+| 4 | 本文「区域清单」表 | 加一行（profile / 战役目录 / `entry_verdict` / 缺口） | `pytest tests/unit/test_docs_consistency.py` |
+| 5 | 首次入库 | `regions` 行在该区首次写入时由 `CampaignStore` 自动建；数据集资产用 `tools/discover_datasets.py` / `tools/ingest_dataset_assets.py`，字段级用 toolkit `scan_fields.py` | `mcp__wqb-db__get_region_config(<R>)` 不再报 `region not found` |
+
+`tracking/region_config.json` 目前**没有代码读取**（只有 JPN profile 提到过它），不在检查表内。
 
 ## 分层架构（L0–L7）
 

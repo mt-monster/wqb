@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-29
 name: brain-sim-alphas-in-batch-and-track
-description: "WorldQuant BRAIN alpha 批量提交与跟踪（表达式默认读库 `--from-db`；文件/CSV 仅断点续跑兼容）+ 战役执行入口。当用户要求 批量回测/批量提交 alpha、断点续传、查看 simulation_status.csv、重跑失败项、调并发、战役 pipeline、 七槽填槽模式、配额闸、跨区临时批跑 时调用。S3 编排器入口；执行后端为 wq-brain-campaign-toolkit 引擎。"
+description: "批量发起 alpha 回测并跟踪（发起回测 ≠ 提交 alpha）：手写 / 外部 alpha 列表的批量回测、断点续跑、失败项重跑，用 batch_simulator.py 或 workflow_batch_track。战役目录内正式波次的入口选用见本文；并发调优找 wqb-concurrency，战役引擎参数找 wq-brain-campaign-toolkit。"
 layer: L3
 allowed-tools:
   - Read
@@ -11,200 +11,119 @@ allowed-tools:
   - TaskCreate
 ---
 
-## 持久化铁律（DB 单轨）
-
-战役产物只写入 `data/wqb.db`（经 `wqb.store` / `mcp__wqb-db__*`）。**禁止**把 `final_expressions.json` / `alpha_list.json` / `candidates/*.json` / `cache/*batches*.json` / `results/*.csv` 当**交接真相源**；Agent 禁止 Write 这些文件。静态配置与凭证除外。
-
-> **`simulation_status.csv` 的定位（2026-09-11 澄清）**：它是**断点续跑的进度缓存**（记录哪些 multisim 已提交/回收），
-> 不是交接真相源——下游 S4 一律优先读 `backtest_results` 表，CSV 缺失不阻塞。上文的"禁止"针对的是
-> "拿 CSV 当跨阶段交接依据"，不针对引擎自己续跑时读写该文件；二者不矛盾。
-
-
-
-
-
-
-
-
-# Brain Sim Alphas Batch Track（独立批量跟踪）
+# Brain Sim Alphas Batch Track（批量回测跟踪）
 
 ## 职责边界
 
-- **本 skill 负责**：**S3 的批量仿真入口之一**：批量仿真/发批/跟踪/断点续跑，写 `settings.json` 与回测结果入 `backtest_results`（选用判据见 ra-pipeline 步 6 细则 §6.1：DB 里的表达式要整波闸 → `workflow_batch_track`；手写 alpha_list → 本 skill；调试 → toolkit `pipeline.py`）；**整链请走 `wq-brain-ra-pipeline`**
-- **本 skill 不做**：**不提交 alpha**（提交是 L5）；不做门禁；不生成表达式；`--submit` = 提交**回测**，不是提交 alpha
-- **上游 / 下游**：上游 = 步 5 已过闸批次；下游 = S4 评审
+- **本 skill 负责**：**S3 的批量仿真入口之一**——批量发批 / 跟踪 / 断点续跑，回测结果入库（`backtest_results`）；并给出**入口选用表**（下节）。**整链走 `wq-brain-ra-pipeline`。**
+- **本 skill 不做**：**不提交 alpha**（提交是 L5；这里的 `--submit` / 「提交」一律指**提交回测**）；不做门禁（门禁是 `tools/wave_gate.py`）、不生成表达式；**不写 `settings.json`**（静态配置：建战役目录时由人补，缺失时 `workflow_campaign` 节点按 DB 补建）；不管并发调优（`wqb-concurrency`）与配额（toolkit）。
+- **上游 / 下游**：上游 = RA 步 5 已过闸的批次（DB `expressions` 表），或用户直给的合规 alpha 列表；下游 = S4 评审（`brain-how-to-pass-alpha-test` 起，读 `backtest_results`）。
 
+## 入口选用表（S3 有三个入口，各管一类场景）
 
-
-## 角色定位
-
-- **编排器（`wq-brain-ra-pipeline`）S3 入口 = 本 skill**。本 skill 是批量跟踪与战役执行的单一入口。
-- **执行后端 = `wq-brain-campaign-toolkit`**（引擎实现层，本 skill 通过 subprocess 调用其脚本）。两 skill 是"入口/引擎"关系，不重复实现。
-- **独立 skill，不依赖 `brain-make-some-gem`**——只要表达式已入 `expressions` 表（默认 `--from-db`）或符合 `alpha_list.json` 兼容格式即可。
-
-## 衔接协议
-- **上游**：S3 前置 `brain-inspect-raw-template-create-setting`（产出 `settings_candidates.json` + `alpha_list.json`，并默认写 **expressions 表**）；或用户直接提供的合规 `alpha_list.json`。**表达式输入默认读库**：引擎 `pipeline.py --from-db` 默认启用（文件模式已废弃），从 **expressions 表**（`data/wqb.db`，结构化真相源）按 region+wave 取表达式；`alpha_list.json`/`--file` 仅为兼容输入与排障。
-- **本 skill 角色**：S3 批量回测与战役执行单一入口。**并发纪律（七槽填槽 SOP、C≈7 Token-Bucket 锁定在飞数）的唯一权威定义在 `wqb-concurrency` 技能（§8）**，本 skill 只引用不重复实现。
-- **下游**：回测结果双写 **backtest_results 表**（`mcp__wqb-db__*` 可查）；`simulation_status.csv`（+ 战役目录 `results/`）为排障兼容产物，交 S4 链首步 `brain-how-to-pass-alpha-test` 做失败项定位与阈值判定（查历史回测优先读库）。
-
-## 运行环境
-
-所有 Python 命令使用 MCP venv：`$WQ_PY`，确保依赖（requests/pandas/ply）可用。不要使用系统 Python。
-
-PowerShell 中用 `;` 链命令（不要用 `&&`）；路径检查用 `Test-Path`、`Get-ChildItem`、`Import-Csv`。
-
-## 输入/输出契约
-
-| 类型 | 默认路径 | 说明 |
+| 场景 | 入口 | 说明 |
 |---|---|---|
-| alpha 输入（默认） | `data/wqb.db` → **expressions 表**（`pipeline.py --from-db`，默认启用） | 按 region+wave 取待回测表达式；库为结构化真相源 |
-| alpha 输入（兼容） | `data/alpha_list.json`（兼容根目录 `alpha_list.json`） | **已废弃**的文件模式，仅排障/兼容用 |
-| 状态输出 | `outputs/simulation_status.csv`（用户可指定） | **断点续跑的进度缓存**（非真相源），下游查结果请读 `backtest_results` |
-| 多样性报告 | `outputs/diversity_report.json`（开启增强时生成） | 增强前后指标+动作记录 |
-| **回测结果（结构化真相源）** | `data/wqb.db` → **backtest_results 表**（pipeline.py 双写） | 引擎脚本直写；库为跨阶段查询接口，CSV/JSON 仅为排障兼容 |
-| **波级台账** | `data/wqb.db` → wave_results / ledger_kv 表（`--write-ledger` 时） | 正式回写走 toolkit 幂等 CLI；会话内轻量回写可用 `mcp__wqb-db__upsert_wave_result` / `upsert_ledger_key` |
+| 战役目录内、DB 里已有本波表达式，要整波过闸后回测 | **`mcp__wq-brain-http__workflow_batch_track`**（推荐） | 节点内含区域闸；七槽填槽；细则 RA 步 6 §6.1 |
+| 战役目录内、要调引擎参数 / 调试 | toolkit `pipeline.py run …`（`wq-brain-campaign-toolkit`） | 引擎本体；`--submit` = 发起回测 |
+| **手写 / 外部来源的 alpha 列表，或非战役目录的跨区临时批** | **本 skill 的 `scripts/batch_simulator.py`**（兼容路径） | CSV 是进度缓存；见下 |
 
-**入库总原则**：流程产物一律入数据库（结构化真相源），文件仅作排障与断点续跑兼容；S4 链查历史回测优先读 backtest_results 表（`mcp__wqb-db__*` 查询工具），文件缺失不阻塞。
+**并发纪律（七槽填槽、C≈7、账户级仲裁）的唯一权威在 `wqb-concurrency`（§8）**，本 skill 只引用。填槽内容（组合优先 vs 弱探针）的硬约束在 RA 步 4 / 步 6，这里不复写。
+
+## 持久化铁律（DB 单轨）
+
+战役产物只写入 `data/wqb.db`（经 `wqb.store` / `mcp__wqb-db__*`）。**禁止**把 `final_expressions.json` / `alpha_list.json` / `candidates/*.json` / `results/*.csv` 当**跨阶段交接的真相源**；Agent 不 Write 这些文件。跨阶段交接一律走 DB：表达式 = `expressions` 表，结果 = `backtest_results` 表，波结论 = `wave_results`。
+
+> `simulation_status.csv` 是 `batch_simulator.py` **断点续跑的进度缓存**（记录哪些 multisim 已提交 / 回收），不是交接真相源——下游 S4 优先读 `backtest_results`，CSV 缺失不阻塞。上面的「禁止」针对「拿 CSV 当跨阶段交接依据」，不针对引擎自己续跑时读写它；二者不矛盾。
+
+## 输入 / 输出契约
+
+| 类型 | 默认 | 说明 |
+|---|---|---|
+| alpha 输入（默认） | `data/wqb.db` → `expressions` 表（`pipeline.py --from-db`，缺省启用） | 按 region + wave 取待回测表达式 |
+| alpha 输入（兼容） | `data/alpha_list.json` | **已废弃的文件模式**：仅 `batch_simulator.py` 的跨区临时批 / 排障 |
+| 状态输出 | `outputs/simulation_status.csv`（用户可指定） | 进度缓存，非真相源 |
+| **回测结果** | `backtest_results` 表 | 引擎直写；`batch_simulator.py` 同时入库，CSV 降为导出视图 |
+| 波级台账 | `wave_results` / `ledger_kv` | 回写路径见 toolkit SKILL §3 写入矩阵 |
 
 ## 凭据
 
-- 首选：`configs/config.json`（仓库内不含此文件，需按 `configs/README.md` 自建）
-- 兜底：环境变量 `BRAIN_EMAIL` / `BRAIN_PASSWORD`
-- 禁止把凭据硬编码进代码或文档。
+凭据**由脚本 / MCP 自己读取**：**agent 不读取 `.env`、不打印、不把口令放命令行**（AGENTS.md）。标准环境变量名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（与 MCP 服务、toolkit 同名）；`batch_simulator.py` 的解析顺序是 `--config`（`configs/config.json`，本地文件、已被 `.gitignore`，格式见 `configs/README.md`）→ 环境变量（`CREDENTIALS_*`，另认旧别名 `BRAIN_EMAIL` / `BRAIN_USERNAME` / `BRAIN_PASSWORD`）→ 工作区 `world-quant-brain-mcp/.env`。禁止把凭据硬编码进代码或文档。
 
-## 标准命令（MCP 工具调用）
+## 运行环境
 
-**推荐**：使用 `mcp__wq-brain-http__workflow_batch_track` MCP 工具（workflow 引擎快捷方式）：
+所有 Python 命令用 MCP venv：`$WQ_PY`（依赖 requests / pandas / ply），不要用系统 Python。PowerShell 用 `;` 链命令（不用 `&&`）；路径检查用 `Test-Path`、`Get-ChildItem`、`Import-Csv`。
+
+## 标准命令
+
+**推荐**（战役内正式波次）：`mcp__wq-brain-http__workflow_batch_track`：
 
 ```
-# S3 批量回测跟踪
-mcp__wq-brain-http__workflow_batch_track(
-  region="KOR",
-  wave="36A",
-  dataset="model219",
-  concurrency=7,  # 七槽填槽
-  max_rounds=3
-)
-
-# 批次状态查询（单次，非轮询）
-mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])
+mcp__wq-brain-http__workflow_batch_track(region="KOR", wave="<W>", dataset="<ds>", concurrency=7, max_rounds=3)
+mcp__wq-brain-http__batch_status(simulation_ids=["<id1>", "<id2>"])     # 单次状态查询，非轮询
 ```
 
-> **边界说明（2026-09-12）**：MCP 节点的 `concurrency` 参数是节点内部参数（映射七槽填槽）；
-> CLI 层**禁止**给 `pipeline.py run` 拼接 `--concurrency`（argparse 未声明，会被 `validate_argv` 拦截）——两者不是一回事。
+> MCP 节点的 `concurrency` 是节点内部参数（映射七槽填槽）；CLI 层**禁止**给 `pipeline.py run` 拼 `--concurrency`（argparse 未声明，会被 `validate_argv` 拦截）——两者不是一回事。
 
-**兼容模式**（旧 PowerShell 链，逐步淘汰）：
+**兼容路径**（`batch_simulator.py`，跨区临时批 / 手写列表）。⚠️ **先看警告**：下面的 `<B>` / `<C>` 是**占位**，不是推荐值——旧文的示例数字是保守的试探值，被人当默认抄进了正式波次；**战役目录内的正式 wave 一律走七槽填槽**，不要用本路径。
 
 ```powershell
-# 在本 skill 所在目录运行（<SKILL_ROOT> 按实际安装根替换；真相源 = 仓库 Claude/skills，各宿主安装位同名）
-Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"
-python scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json --output-csv outputs/simulation_status.csv --batch-size 3 --concurrency 2 --detached
-# ⚠️ 上面的 --concurrency 2 / --batch-size 3 只适用于「非编排的跨区临时批」（保守试探）。
-# 战役目录内的正式 wave 一律走七槽填槽 concurrency=7（唯一权威 wqb-concurrency §8），
-# 不要照抄这两个数字去跑正式波次。
-
-# 查询后台任务状态（替换 task_id）
-python scripts/batch_simulator.py --status "<task_id>" --tail-lines 60
+Set-Location "<skills_root>/brain-sim-alphas-in-batch-and-track"      # 真相源 = 仓库 Claude/skills，各宿主安装位同名
+& $WQ_PY scripts/batch_simulator.py --config configs/config.json --alpha-json data/alpha_list.json `
+    --output-csv outputs/simulation_status.csv --batch-size <B> --concurrency <C> --detached
+& $WQ_PY scripts/batch_simulator.py --status "<task_id>" --tail-lines 60      # 查询后台任务
 ```
 
-## 长任务执行规则
+## 长任务与失败判据（两条路径，各写各的）
 
-1. **启动前预检**：`configs/config.json` 存在（或 env 凭据就绪）、`data/alpha_list.json` 存在。
-2. **默认后台执行**：大批量用 `--detached`，每 60–180 秒轮询一次。
-3. **进度真相源 = 输出 CSV**，不是终端 tail。终端超时不等于失败。
-4. **超时处理**：命令跟踪超时时，先查 CSV 是否存在、文件大小是否变化、行数是否增加；artifact 仍在更新就继续轮询。
-5. **失败判定**（两个条件同时满足才算失败）：
-   - 进程看似停止或不可达，且
-   - CSV 无进展持续 ≥ 3 分钟。
-6. **每轮轮询最少检查**：CSV 存在 / 总行数 / `status` 分布（`COMPLETE/COMPLETED`、`ERROR/FAIL`、其他）。
-7. **最终摘要必含**：CSV 路径、总行数、各 status 计数、下一步建议（续跑 / 仅重跑失败项 / 降并发）。
+**MCP / 引擎路径**（`workflow_batch_track` + `workflow_task_status`，**没有 CSV**）：进度看任务状态与 `backtest_results`；在飞回测 progress 连续 `WAIT_THRESHOLDS.sim_stall_min`（60 分钟）无变化判 `STALLED`、总时长超 `sim_timeout_min`（360 分钟）判超时（数字唯一来源 `src/wqb/config.py::WAIT_THRESHOLDS`）。发批超时返回 `outcome_unknown` 时**禁止盲目重发**，按 toolkit SKILL §7 的恢复顺序处理。
 
-## 续跑语义
+**兼容 CLI 路径**（`batch_simulator.py`，进度真相源 = **输出 CSV**，不是终端 tail；终端超时不等于失败）：
 
-- 续跑键 = `fingerprint` + 同一输出 CSV 文件。
-- 声明"无法续跑"前必须先核对：同一 CSV 路径、alpha 内容/settings/type 未变。
-- 不要随意改 fingerprint 逻辑，除非用户明确要求。
+1. **启动前预检**：凭据就绪（`configs/config.json` 存在或环境变量已设）、`data/alpha_list.json` 存在。
+2. 大批量用 `--detached`，每 60–180 秒查询一次；命令跟踪超时时先看 CSV 是否存在、大小是否变化、行数是否增加，仍在更新就继续等。
+3. **失败判定（两个条件同时满足）**：进程看似停止或不可达，**且** CSV 无进展持续 ≥ 3 分钟。**这条只回答「本地进程还活着吗」**；平台侧「仿真卡住了吗」是 60 分钟那条——两者判的是不同层，别互相替代。
+4. 每轮最少检查：CSV 存在 / 总行数 / `status` 分布（`COMPLETE` / `ERROR` / 其他）。
+5. 最终摘要必含：CSV 路径、总行数、各 status 计数、下一步建议（续跑 / 仅重跑失败项 / 降并发）。
 
-## 多样性增强（双路径）
+## 续跑语义（CSV 路径）
 
-多样性增强现已集成到两条执行路径：
+续跑键 = `fingerprint` + 同一输出 CSV。声明「无法续跑」前必须先核对：同一 CSV 路径、alpha 的内容 / settings / type 未变。不要随意改 fingerprint 逻辑，除非用户明确要求。
 
-| 路径 | 脚本 | 触发方式 | 场景 |
-|---|---|---|---|
-| 战役引擎（S2 选波） | `../wq-brain-campaign-toolkit/scripts/build_wave.py` | `--enhance-diversity always`（默认）/ auto / never | 战役目录内正式 wave 回测 |
-| ad-hoc 批量（本 skill 自带） | `scripts/batch_simulator.py` | `--enhance-diversity always`（默认）/ auto / never | 非编排跨区临时批 |
+## 多样性增强（`--enhance-diversity`，缺省 `never`）
 
-ad-hoc 批量路径使用本 skill 自带 `scripts/diversity_enhancer.py`；战役引擎路径的多样性增强由 `../wq-brain-campaign-toolkit/scripts/build_wave.py` 内部实现。**默认即走多样性路**（`always`），无需显式传参；显式 `--enhance-diversity never` 可关闭。
+`batch_simulator.py` 与 toolkit `build_wave.py` 都有 `--enhance-diversity never | auto | always`，**缺省 `never`**（2026-09-29 起，此前缺省 `always`）。原因：增强会**结构变异 / 替换外层算子（如 `ts_rank → ts_scale`）/ 追加 novel、random 式**，与 GEM 铁律（显式 idea 的表达式保持经济方向，算子多样性是语义多样性的结果）和 RA「不补参数变体凑数」冲突；`auto` 的触发阈值（算子熵 < 2.0、覆盖率 < 50%、新颖度 < 80%、结构相似度 > 70%）是经验值、没有实证依据。需要时**显式**传 `auto` / `always`（例如为降 prod 相关性有意试所有算子），并留意产出的 `diversity_report.json`（原始 / 增强后指标 + 动作记录）。战役引擎路径的增强由 `build_wave.py` 内部实现；本 skill 自带 `scripts/diversity_enhancer.py` 只服务 `batch_simulator.py`。
 
-**模式**：
-```powershell
---enhance-diversity always  # 默认，强制增强
---enhance-diversity auto    # 多样性不足时自动增强
---enhance-diversity never   # 禁用
-```
+## 战役引擎能力
 
-**自动增强触发阈值**：
-- 算子熵 < 2.0
-- 算子覆盖率 < 50%
-- 新颖度 < 80%
-- 结构相似度 > 70%
-
-**增强方式**：结构变异（swap_branches/insert_layer/delete_layer）、算子替换（ts_rank → ts_scale）、事件门控（trade_when/if_else）、分组包裹（group_rank/group_zscore）。
-
-**产出**：`diversity_report.json`（CSV 同目录），含原始/增强后指标、改进建议、动作记录。
-
-## 战役引擎能力（本 skill 调用 `wq-brain-campaign-toolkit` 作为执行后端）
-
-本 skill 是批量跟踪与战役执行的**单一入口**；以下能力由 `wq-brain-campaign-toolkit`（引擎实现层，相对路径 `../wq-brain-campaign-toolkit/`）提供，本 skill 调用它们完成 S1–S6 各阶段执行。两 skill 是"入口/引擎"关系，不重复实现。
-
-| 阶段 | 能力 | 引擎脚本（`../wq-brain-campaign-toolkit/scripts/`） | 产出 |
-|---|---|---|---|
-| S1 | 字段扫描（typed catalog） | `scan_fields.py` | `reference/<region>_<dataset>_fields.json` |
-| S1 | 数据集评分+探针计划 | `score_datasets.py` | `reference/<region>_dataset_ranking.json`（mode/tier/tier_note） |
-| S2 | 候选生成（去重/分桶/骨架配给）+ 多样性增强 | `build_wave.py`（`--enhance-diversity auto/always/never`） | `candidates/*.json` + `candidates/<region>_wave<wave>_diversity_report.json` |
-| S2 | 闸1–5 预检（语法/字段白名单/VECTOR 包裹/不可访问算子/毒模式；闸编号基准见 INDEX） | `gate.py` | 闸门报告 |
-| S3 | 七槽填槽模式（7 批 multisim 同提、统一轮询、即收即补；并发纪律权威定义见 **`wqb-concurrency`** §8；**填槽内容**（组合优先 vs 弱探针）硬约束见 **`wq-brain-ra-pipeline` 步 4/步 6**，本表不复写；pipeline.py 2026-08-21 代码落地，支持 `--max-rounds` 多轮） | `pipeline.py`（七槽模式） | checkpoint JSON + alpha id |
-| S3 | 挂起熔断/退避/配额闸（机制沿用） | `pipeline.py`（内部 poller） | STALLED 检测、ET 日历日配额闸 |
-| S4 | 评审墙诊断 | `review_wave.py` | `reviews/<region>_review_<wave>.json`（walls + 候选/near） |
-| S4 | 三灯探针评分 | `score_datasets.py --probe-score` | 三灯报告 |
-| S5 | 配额查询（ET 日历日 4/1 口径） | `pipeline.py quota` | 配额状态 |
-| S6 | 多样性审计 | `diversity_audit.py` | 同质报告 |
-| S6 | 台账回写 | `campaign.py ledger`（内部 LedgerStore） | `ledger_kv` 表（data/wqb.db，SQLite 后端） |
-
-**调用规则**：
-- 本 skill 通过 `subprocess` 调用引擎脚本，命令统一用 `python ../wq-brain-campaign-toolkit/scripts/<script>.py --campaign-dir tracking/<REGION> ...`。
-- 引擎脚本的 `--campaign-dir` 参数指向战役目录（`tracking/<REGION>/`），所有产出落到该目录下的 `reference/`、`candidates/`、`results/`、`reviews/` 子目录。
-- 配置基准：`tracking/<REGION>/config/settings.json`（region/universe/delay/中性化）与 `config/thresholds.json`（闸门阈值、`dataset_health`、`poll` 退避参数）。
-- 引擎细节（算子约束、poll-and-quota 参数、campaign-dir 契约）见 `../wq-brain-campaign-toolkit/references/` 下各文档；本 skill 文档不重复，按需引用。
-- **填槽内容**：有空槽补单数据集组合批，禁止五数据集同时首探；细则只引用 `wq-brain-ra-pipeline` 步 4/步 6，本 skill 不复写。
-
-**与传统 batch_simulator.py 的关系**：
-- `batch_simulator.py`（本 skill 自带）= 多批并发 ThreadPool 的轻量跟踪器，用于非编排跨区临时批。
-- 引擎脚本（`pipeline.py` 等）= 战役目录内的正式执行路径，七槽填槽模式 + 熔断 + 配额闸。
-- 两者共存：编排器/正式战役走引擎脚本；ad-hoc 批量跟踪走 `batch_simulator.py`。
+本 skill 不再复制「阶段 → 脚本 → 产物」映射表（那是第三份拷贝）。**阶段与脚本**见 `wq-brain-campaign-toolkit` SKILL §1 的分工表与 §6 子命令表；**产物落点**见其「产物契约」表（以 DB 为准）。调用引擎脚本统一 `--campaign-dir tracking/<REGION>`，配置基准是 `config/settings.json` 与 `config/thresholds.json`。
 
 ## 输出契约
 
-每次返回：
-1. status CSV 路径
-2. 总行数与各 `status` 计数
-3. submitted/skipped/completed/failed 摘要（如可用）
-4. 下一步建议（如降并发或仅重跑失败项）
+每次返回：① 任务 / 批次标识（MCP 路径 = `task_id` 与 multisim id；CLI 路径 = status CSV 路径）；② 总数与各 `status` 计数；③ submitted / skipped / completed / failed 摘要（如可用）；④ 下一步建议（降并发 / 仅重跑失败项 / 转 S4）。
 
-## 参考文件
+## 情景卡
 
-- 字段与文件映射：[reference.md](reference.md)
-- 触发示例：[examples.md](examples.md)
+### 情景 SA-A　手写 20 条 alpha 做一次跨区临时回测
 
+- **前置状态**：用户给了一份合规 `alpha_list.json`，不在任何战役目录里。
+- **步骤**：① 确认凭据已由环境提供（不读 `.env`）；② `batch_simulator.py … --detached`（`<B>` / `<C>` 按用户意图，正式波次不走这条）；③ 每 60–180 s `--status` 查询；④ 以 CSV 行数与 status 分布汇报；⑤ 结果同时在 `backtest_results`。
+- **分支**：进程不可达且 CSV ≥ 3 分钟无更新 → 用**同一 CSV** 续跑；改了 alpha 内容 → 会重跑（fingerprint 变了）。
+- **完成定义**：输出契约四项齐全。
+- **反例**：把这条路径用于战役正式波次；拿 CSV 当 S4 的输入。
 
-## 工具化纪律（tools/ 通用工具，勿再写一次性脚本）
+### 情景 SA-B　整波过闸后发批，结果卡在 `outcome_unknown`
 
-批次/子任务状态查询与轮询**不要手写** `check_*batch*.py`，用通用工具（内置 429 退避）：
+- **步骤**：`workflow_task_status` → 按 multisim_id 查 `backtest_results` → 两处都空且任务已死才重发（toolkit SKILL §7）。
+- **反例**：超时就重发；`TaskStop` 强杀（制造孤儿，见 `wqb-concurrency` §4）。
+
+## 参考与工具化纪律
+
+- 字段与文件映射：[reference.md](reference.md)；触发示例：[examples.md](examples.md)；CLI 使用说明：[README.md](README.md)。
+- 批次 / 子任务状态查询与轮询**不要手写** `check_*batch*.py`，用通用工具（内置 429 退避）：
 
 ```powershell
 & $WQ_PY tools/batch_status.py --ids <sim_or_multisim_id> [...] --watch --json <落盘路径>
-# --interval 轮询间隔秒（默认 20）  --max-waits 最大次数（默认 180 = 60min）
+# --interval 轮询间隔秒（缺省 20）  --max-waits 最大次数（缺省 180 = 60 分钟）
 ```
 
-每波门禁同理走 `tools/wave_gate.py`（见 `wq-brain-ra-pipeline` 步 5），
-禁止新建 `tracking/<R>/scripts/_gate_waveNN.py`。
+每波门禁走 `tools/wave_gate.py`（RA 步 5），禁止新建 `tracking/<R>/scripts/_gate_waveNN.py`。

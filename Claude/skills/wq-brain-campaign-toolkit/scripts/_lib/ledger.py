@@ -297,9 +297,18 @@ def cli_main(ctx, argv):
         key = a.wave if a.wave.endswith("_verdict") else f"wave{a.wave}_verdict"
         val.setdefault("recorded_at", today())
         store.set_key(key, val)
-        print(f"set-verdict {key} OK")
+        # DEC-36：逐波结论的唯一真相源是 wave_results.verdict（RA 步 9）。本命令仍写旧键
+        # 以免打断旧脚本，但每次都点名废止——新流程写 `campaign.py wave upsert --verdict`
+        print(f"[废止] set-verdict 写的 {key} 不是逐波结论的真相源；逐波结论请写 wave_results："
+              f"`campaign.py wave upsert --wave <W> --verdict PASS|FAIL|PARTIAL --status closed`"
+              f"（或 MCP upsert_wave_result）", file=sys.stderr)
+        print(f"set-verdict {key} OK（legacy）")
     elif a.cmd == "submit-ready":
         store.submit_ready(a.alpha_id, a.note or "")
+        # DEC-33：提交队列的唯一事实源是 SQL 表 submit_ready（S3 收批自动入队、提交后自动退役）。
+        # 本命令只往 ledger 的同名键追加一条审计记录，不进队列，也不会被提交流程读到。
+        print("[legacy] ledger 键 submit_ready 只是审计副本，不是提交队列；候选入队由 S3 收批自动完成"
+              "（`tools/submit_queue.py list` 查看队列）", file=sys.stderr)
         print(f"submit-ready {a.alpha_id} OK (total={len(store.load().get('submit_ready', []))})")
     elif a.cmd == "backup":
         print(f"backup -> {store.backup_now()}")

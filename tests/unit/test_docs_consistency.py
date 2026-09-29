@@ -156,7 +156,8 @@ def test_no_competing_gate_counts_in_docs():
     toolkit = _read(TOOLKIT_SKILL)
     rules = _read(GATE_RULES)
     assert "**8 闸 + 可选闸0**" in toolkit, "toolkit §6 未用权威口径"
-    assert "闸编号唯一基准" in rules, "gate-rules 未标注闸编号基准"
+    # 2026-09-29（TR-01）：编号基准已移到代码里的 GATE_REGISTRY；gate-rules 只引用它，不再自称「唯一基准」
+    assert "GATE_REGISTRY" in rules and "唯一注册表" in rules, "gate-rules 未指向闸编号的唯一注册表 GATE_REGISTRY"
     assert "gate 6 闸判定细则" not in rules, "gate-rules 标题仍是旧的『6 闸』口径"
 
 

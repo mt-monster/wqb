@@ -441,8 +441,13 @@ def main():
 
     # 主轨入库：体检报告入 DB ledger（health_<region>_d<delay>），不落共享数据湖 tracking/mining
     try:
-        roots = [os.environ.get("WQB_ROOT"), os.environ.get("WQ_PROJECT_ROOT"),
-                 r"D:\coding\traeCN_project\wqb"]
+        roots = [os.environ.get("WQB_WORKSPACE"), os.environ.get("WQB_ROOT"), os.environ.get("WQ_PROJECT_ROOT")]
+        _here = os.path.dirname(os.path.abspath(__file__))
+        for _ in range(8):                       # 仓库内运行：上溯到含 src/wqb 的目录
+            if os.path.isdir(os.path.join(_here, "src", "wqb")):
+                roots.append(_here)
+                break
+            _here = os.path.dirname(_here)
         st = None
         for root in roots:
             if not root:

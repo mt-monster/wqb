@@ -39,11 +39,6 @@ def lock_dir():
     if os.environ.get("WQB_DBLOCK_DIR"):
         return os.environ["WQB_DBLOCK_DIR"]
     root = os.environ.get("WQB_ROOT") or _REPO_ROOT
-    if not os.path.isdir(os.path.join(root, "logs")):
-        for cand in (r"D:\coding\traeCN_project\wqb",):
-            if os.path.isdir(os.path.join(cand, "logs")):
-                root = cand
-                break
     return os.path.join(root, "logs", "_dblock")
 
 

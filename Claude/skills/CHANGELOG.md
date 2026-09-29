@@ -75,3 +75,13 @@
 - 2026-09-06 · signal_floor 接线；`--concurrency` 不存在导致 S3 从未真跑的修复；产出率先验
 - 2026-08-25 · 区域 Profile 路由落地；并发由 5 → 7（Token-Bucket C≈7）
 - `brain-deepExplore` 已废止并入 ra-pipeline；其 S2-D / S2-M 概念已废，见步 4
+
+**引擎与执行层（campaign-matrix / campaign-toolkit / wqb-concurrency / sim-alphas / inspect-raw）**
+- `wq-brain-campaign-toolkit`：SKILL 由 354 行追加式日志 → 251 行：description 702 字功能清单 → 173 字触发场景；「唯一权威实现 / 唯一正式写入方」删，改 §3 写入矩阵与 §1 toolkit-vs-`tools/` 分工表；「使用率分级」删，改「按阶段选脚本」；子命令表补全并删已归档脚本；「重发安全与异步恢复」独立成节（`outcome_unknown` 三步恢复）；产物契约表；二分排障合并成一份；文末日志与开发者流程（节点四处同步，AGENTS.md 已有）撤出 → TK-01…TK-35
+- toolkit references 全部按代码核对重写：`gate-rules`（闸 5 列全 8 条毒模式、闸 6 过期 = FAIL-CLOSED、闸 7 只有 WARN、闸 8 更正为「引用即拦」、build_wave 改 DB 口径）、`poll-and-quota`（七槽 = 7、配额闸缺省关闭、`quota` 不区分通道）、`ledger-schema`（指向 `docs/ledger_keys.json`，`wave<N>_verdict` 标废止）、`campaign-dir-contract`（必需 / 可选 / 历史）、`probe-scoring-v2`（P60 / P30 / 0.7 是代码缺省）；`selection-plan` 拆出 `post-wave-reading`；新增 `diversity-extract`（合并 546 行三份说明）；`enhancement-v2` / `S2_COMPLIANCE_*` / `DIVERSITY_EXTRACT_*` 归档到 `attic/toolkit_docs_20260929/` → TR-01…TR-33
+- `wq-brain-campaign-matrix`：重写为「存储地图 + 配置包字段表 + 回写规范 + 失败处置 + 三张情景卡」；不再复制九步派发链；`cross_region_lessons` 表标已废弃；开新区检查表移到 INDEX 唯一维护 → CM-01…CM-24
+- `wqb-concurrency`：边界收回「只管并发」（台账 / 复盘 / 选波撤给 RA 步 1 / 步 9）；两个「安全包络」澄清为两个量（七槽 7 与保守档 6，后者当前无代码读取）；§2–§3 标「给引擎维护者」；SOP 步 3 换成 `harvest_multisim_alphas`；`validate_fields` 分场景；§4 / §8 / §8.1 编号不变（被 20 处引用）→ WC-01…WC-12
+- `brain-sim-alphas-in-batch-and-track`：「唯一入口」改入口选用表（三入口各管一类）；长任务规则分 MCP / CLI 两路（60 分钟与 3 分钟判的是不同层）；第 3 份阶段映射表删；凭据标准名 `CREDENTIALS_*`；README / reference / examples 同步 → SA-01…SA-08
+- `brain-inspect-raw-template-create-setting`：边界与步骤改为「外部 / 手写 idea → 核对设置 → 写 `expressions` 表」，GEM 已入库的批次不走本 skill（互斥）；`build_alpha_list.py` 新增 `--campaign-dir` 并**打印每个可选字段的来源**；`process_template.py` 新增 `--out-dir`；提示文案不再要求「交还 AI 做设置决策」→ IR-01…IR-08
+- 代码（DEC-33…39）：MCP `get_submit_ready` 改读 SQL 队列表（ledger 同名键降 legacy 审计副本）；registry 写入校验唯一实现 `src/wqb/registry_contract.py`（CLI 与 MCP `upsert_registry_empirical` / `seal_dead_end` 共用，`seal_dead_end` 新建须带 `rule`）；`--enhance-diversity` 缺省 `always` → `never`（`build_wave.py` / `batch_simulator.py`）；`ledger set-verdict` / `submit-ready` 打印废止提示；`pipeline --force` 语义写准；三灯 `action` 不再推荐拼腿；L3 榨取窗口与探针 P6 收敛到有意义的窗口；gate 每进程打印所用 verifier 路径；作者盘符兜底全部移除（AST 测试守护）
+- 测试：`tests/unit/test_sd_docs.py`（文档 ↔ 代码）、`test_sd_engine_contracts.py`（契约与缺省）、`test_sd_portability.py`（盘符）

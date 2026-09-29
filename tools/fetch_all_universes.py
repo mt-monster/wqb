@@ -127,7 +127,7 @@ for r in sorted(neutralization_dict.keys()):
 print("}")
 
 # save JSON
-out_dir = Path(r"D:\coding\traeCN_project\wqb\tracking\mining")
+out_dir = Path(__file__).resolve().parents[1] / "tracking" / "mining"      # 仓库根下（无盘符硬编码）
 out_dir.mkdir(parents=True, exist_ok=True)
 out_path = out_dir / "platform_universes_all_regions.json"
 result = {

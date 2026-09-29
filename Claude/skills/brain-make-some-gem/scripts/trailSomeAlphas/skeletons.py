@@ -45,7 +45,7 @@ def _warn(msg: str) -> None:
 def _resolve_wqb_tools_dir() -> str | None:
     """解析工作区 tools 目录（经济 KB / 字段评分器所在），供可选增强导入。
 
-    探测顺序：WQB_TOOLS_DIR → WQB_ROOT/WQ_PROJECT_ROOT 下 tools → 已知默认路径。
+    探测顺序：WQB_TOOLS_DIR → WQB_ROOT/WQ_PROJECT_ROOT 下 tools → 从本文件上溯到仓库根下的 tools（无作者盘符兜底）。
     找不到返回 None（增强项静默降级，不阻断主流程）。
     """
     for env_name in ("WQB_TOOLS_DIR",):
@@ -57,9 +57,12 @@ def _resolve_wqb_tools_dir() -> str | None:
         cand = os.path.join(root, "tools")
         if os.path.isdir(cand):
             return cand
-    for cand in (r"D:\coding\traeCN_project\wqb\tools",):
-        if os.path.isdir(cand):
-            return cand
+    here = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(8):                           # 仓库内运行：上溯到含 src/wqb 的目录，取其 tools/
+        if os.path.isdir(os.path.join(here, "src", "wqb")):
+            cand = os.path.join(here, "tools")
+            return cand if os.path.isdir(cand) else None
+        here = os.path.dirname(here)
     return None
 
 

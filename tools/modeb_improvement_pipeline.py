@@ -19,7 +19,9 @@ from dataclasses import dataclass
 import sys as _sys, os as _os
 _sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
-DB = r'D:\coding\traeCN_project\wqb\data\wqb.db'
+import os as _os_repo
+_REPO = _os_repo.path.dirname(_os_repo.path.dirname(_os_repo.path.abspath(__file__)))   # 仓库根（无盘符硬编码）
+DB = _os_repo.path.join(_REPO, 'data', 'wqb.db')
 
 
 @dataclass

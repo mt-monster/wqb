@@ -127,9 +127,6 @@ def _find_workspace_root():
         if os.path.isdir(os.path.join(here, "src", "wqb")):
             return here
         here = os.path.dirname(here)
-    for cand in (r"D:\coding\traeCN_project\wqb",):
-        if os.path.isdir(os.path.join(cand, "src", "wqb")):
-            return cand
     return None
 
 
@@ -748,7 +745,7 @@ def stage_submit_poll(ctx, ck, passed, max_batches, force, checkpoint_dir=None,
     q = submission_quota(api, qc["limit"])
     print(f"[quota] used={q['used']} remaining={q['remaining']} reset={q['next_reset_utc']} enabled={qc.get('enabled', True)}")
     if qc.get("enabled", True) and q["remaining"] <= 0 and not force:
-        print("[quota] 提交配额耗尽，中止（--force 强行继续）")
+        print("[quota] 提交配额耗尽，中止回测发起（thresholds.submit_quota.enabled=true 才有此闸；--force 强行继续）")
         return
 
     exprs = [p["expr"] for p in passed]
@@ -1027,7 +1024,10 @@ def main():
                    help="跳过闸6 批级多样性强制（逃生阀，需在台账记录原因）")
     p.add_argument("--sanity-all", action="store_true",
                    help="一次性跑闸 7+8（longCount 真实性 + EVENT 类型检测）")
-    p.add_argument("--force", action="store_true")
+    p.add_argument("--force", action="store_true",
+                   help="越过两道可选的中止：① universe 命中判死规则；② 提交配额耗尽——②只在区域 "
+                        "thresholds.submit_quota.enabled=true 时才存在（缺省关闭）。不提交 alpha、不消耗配额，"
+                        "只是不中止回测发起。")
     p.add_argument("--fresh", action="store_true")
     p.add_argument("--dry-run", action="store_true", help="不提交，仅走 gate+编排框架")
     p.add_argument("--checkpoint-dir", default=None, help="checkpoint 重定向（测试用临时目录）")
@@ -1231,7 +1231,7 @@ def stage_prod_first(ctx, a):
     下一波不得再投该族变体（IND intraday_pv_feats 3 波 24 条全 IS 过才发现 prod 0.79-0.92 的教训）。"""
     import subprocess
     repo = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
-    for cand in (os.environ.get("WQB_ROOT"), repo, r"D:\coding\traeCN_project\wqb"):
+    for cand in (os.environ.get("WQB_ROOT"), repo):
         if cand and os.path.isfile(os.path.join(cand, "tools", "campaign_intel.py")):
             repo = cand
             break

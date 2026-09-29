@@ -698,8 +698,8 @@
   },
   {
    "key": "submit_ready",
-   "status": "active",
-   "purpose": "达标待提交缓冲池 list `{id, note, queued_at}`（**不同于**同名 SQL 表 `submit_ready`，后者是提交队列）",
+   "status": "legacy",
+   "purpose": "达标候选的**审计副本** list `{id, note, queued_at}`（review_wave `--write-ledger` 留下；没有生命周期，提交后不会退役）。**不是提交队列**：提交队列是同名 SQL 表 `submit_ready`（S3 收批自动入队、提交后自动退役；`tools/submit_queue.py list` / MCP `get_submit_ready` 读它）。DEC-33",
    "writers": [
     {
      "kind": "code",
@@ -709,22 +709,18 @@
     {
      "kind": "code",
      "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
-     "via": "`campaign.py ledger submit-ready`"
+     "via": "`campaign.py ledger submit-ready`（每次调用打印 legacy 提示）"
     }
    ],
    "readers": [
     {
      "kind": "code",
-     "ref": "wqb_db_mcp.py",
-     "via": "get_submit_ready"
-    },
-    {
-     "kind": "code",
-     "ref": "tools/step_funnel.py"
+     "ref": "tools/step_funnel.py",
+     "via": "仅计数（S4→S5 就绪数）"
     }
    ],
-   "missing": "视为无待提交候选",
-   "refresh": "提交后须从池中移出（提交队列以 SQL 表为准）"
+   "missing": "视为无审计记录；不影响提交流程（提交流程只读 SQL 表）",
+   "refresh": "只增不减；要看真实待提交候选一律读 SQL 表 submit_ready（MCP get_submit_ready）"
   },
   {
    "key": "submit_ready_blocked",
@@ -1041,7 +1037,7 @@
     {
      "kind": "agent",
      "ref": "mcp__wqb-db__upsert_ledger_key",
-     "doc": "Claude/skills/wq-brain-campaign-toolkit/references/selection-plan.md"
+     "doc": "Claude/skills/wq-brain-campaign-toolkit/references/post-wave-reading.md"
     }
    ],
    "readers": [],

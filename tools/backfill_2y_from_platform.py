@@ -12,9 +12,11 @@ import sqlite3
 import sys
 from datetime import datetime
 
-sys.path.insert(0, r"D:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-DB = r"D:\coding\traeCN_project\wqb\data\wqb.db"
-TARGETS = r"D:\coding\traeCN_project\wqb\logs\_backfill_2y_targets.json"
+import os as _os_repo
+_REPO = _os_repo.path.dirname(_os_repo.path.dirname(_os_repo.path.abspath(__file__)))   # 仓库根（无盘符硬编码）
+sys.path.insert(0, _os_repo.path.join(_REPO, 'world-quant-brain-mcp'))
+DB = _os_repo.path.join(_REPO, 'data', 'wqb.db')
+TARGETS = _os_repo.path.join(_REPO, 'logs', '_backfill_2y_targets.json')
 
 
 async def main():
@@ -53,7 +55,7 @@ async def main():
             print(f"  进度 {i+1}/{len(targets)} 2Y={ok2y} ladder={okladder}")
 
     print(f"拉取完成: 2Y={ok2y}/{len(targets)} ladder={okladder}/{len(targets)}")
-    json.dump(results, open(r"D:\coding\traeCN_project\wqb\logs\_backfill_2y_results.json", "w", encoding="utf-8"), indent=1)
+    json.dump(results, open(_os_repo.path.join(_REPO, 'logs', '_backfill_2y_results.json'), "w", encoding="utf-8"), indent=1)
 
     # 写库
     conn = sqlite3.connect(DB, timeout=15)

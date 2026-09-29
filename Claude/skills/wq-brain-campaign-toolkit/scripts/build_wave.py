@@ -450,8 +450,11 @@ def main():
                     help="qp-mode=hard 时保留的高预估探针数（校准 qp 用，默认 2）")
     ap.add_argument("--prod-risk-order", default="on", choices=["on", "off"],
                     help="prod 饱和字段降权（2026-09-25 P1）：命中历史撞墙字段的表达式排后（默认 on）")
-    ap.add_argument("--enhance-diversity", default="always", choices=["auto", "always", "never"],
-                    help="多样性增强模式：always=强制增强（默认），auto=不足时增强，never=禁用")
+    ap.add_argument("--enhance-diversity", default="never", choices=["auto", "always", "never"],
+                    help="多样性增强模式：never=不改写表达式（默认，2026-09-29 起）；auto=多样性不足时增强；"
+                         "always=强制增强。增强会「结构变异 + 算子替换 + 追加 novel/random」——与 GEM 铁律"
+                         "（显式 idea 的表达式保持经济方向，算子多样性是语义多样性的结果）和 RA「不补参数变体凑数」"
+                         "冲突，故只作显式 opt-in（DEC-35）")
     ap.add_argument("--auto-coverage", default="never", choices=["auto", "always", "never"],
                     help="算子全覆盖：never=禁用（默认，2026-09-24 P1 强度优先改默认）；"
                          "auto=无活跃契约时自动签发并注入；always=每波强制重签。"
@@ -502,8 +505,8 @@ def main():
         try:
             import sqlite3 as _sq
             import os as _os
-            _wqb_root = _os.environ.get("WQB_ROOT") or _os.environ.get("WQ_PROJECT_ROOT") or r"D:\coding\traeCN_project\wqb"
-            _db = _os.path.join(_wqb_root, "data", "wqb.db")
+            from _lib.wqb_store import resolve_db_path as _resolve_db_path   # 与 get_store 同一个库（R19）
+            _db = _resolve_db_path(ctx)
             _c = _sq.connect(_db)
             _n_gem = _c.execute(
                 "SELECT COUNT(*) FROM expressions WHERE region=? AND status='gem'",

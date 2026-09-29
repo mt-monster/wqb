@@ -1,6 +1,6 @@
 # 步 2（S0）细则：数据集体检 + 金字塔配置
 
-> 主 SOP 见 [`../SKILL.md`](../SKILL.md) 步 2。评分机制的实现细节在 `wq-brain-campaign-toolkit` §6.x，本文只写**何时用、怎么判、写到哪**。
+> 主 SOP 见 [`../SKILL.md`](../SKILL.md) 步 2。评分机制的实现细节在 `wq-brain-campaign-toolkit` §8（S0 评分机制）与 `references/probe-scoring-v2.md`，本文只写**何时用、怎么判、写到哪**。
 
 ## 2.1 有序清单（按此顺序，不要先锁白名单再读约束）
 
@@ -13,7 +13,7 @@
 | ⑤ | 锁白名单 | `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {…}, mode="merge")` | 见 2.4；**用 merge，禁整值覆盖共享键**（2026-09-25 事故） |
 | ⑥ | 体检包核对 | 见 2.5 | 白名单数据集须有 `field_inspect` 包 |
 
-可选 ②′：`calibrate=true dry_run=true` 只预览不写盘，仅**新区 / 校准结果可疑**时才审。审两处异常：甜区 `ac`（alphaCount）异常巨大（如 MEA 8560–21508，反向奖励超拥挤）/ `strong_acs` 空（无强信号）→ **回步 1 复核 `thresholds.json` 或手改**。`recommend_datasets` 不能替代体检。
+可选 ②′：`calibrate=true dry_run=true` 只预览不写盘，仅**新区 / 校准结果可疑**时才审。审两处异常：甜区 `ac`（alphaCount）异常巨大（如 MEA 8560–21508，反向奖励超拥挤）/ `strong_acs` 空（无强信号）→ **不要 apply**，先查 `ac` 来源（口径错会把区域全部 alpha 算成数据集拥挤，甜区反转后反向奖励超拥挤）；`strong_acs` 空则确认该区确实要甜区逻辑再 apply；再**回步 1 复核 `thresholds.json` 或手改**。处置表见 toolkit `references/probe-scoring-v2.md` §二。`recommend_datasets` 不能替代体检。
 
 ## 2.2 `s0-select` 输出标记 → 含义 → 动作
 
@@ -65,7 +65,7 @@ python tools/gen_field_inspect_packs.py --region <REGION> --delay <D>
 
 **缺包行为**（`tools/wave_gate.py --inspect-mode {off,warn,enforce}` / `WQB_INSPECT_MODE`；节点 `wave_gate` 同名参数）：`warn` = 缺省，告警放行；`enforce` = fail-closed，缺包即整波拦截，**新数据集首波自动升 enforce**。开新区 / 新数据集建议直接 `enforce`（同一 KOR/model109 无包：`warn` → EXIT 0 / PASS；`enforce` → EXIT 1 / FAIL）。三个同构闸（体检 / SEM / 区域闸）缺省值各异，总表见 [INDEX「闸与逃生口总表」](../../INDEX.md)。
 
-## 2.6 评分机制增强（默认 OFF，需区域 `thresholds.json` 显式 opt-in；机制见 toolkit §6.x）
+## 2.6 评分机制增强（默认 OFF，需区域 `thresholds.json` 显式 opt-in；机制见 toolkit §8）
 
 | 增强 | 何时打开 |
 |---|---|

@@ -3,14 +3,16 @@
 and scan them for a given operator (default ts_max). Resumable via results/op_scan.json."""
 import asyncio, json, os, sys
 
-VENV = "D:/coding/traeCN_project/wqb/world-quant-brain-mcp"
+import os as _os_repo
+_REPO = _os_repo.path.dirname(_os_repo.path.dirname(_os_repo.path.abspath(__file__)))   # 仓库根（无盘符硬编码）
+VENV = _os_repo.path.join(_REPO, 'world-quant-brain-mcp')
 sys.path.insert(0, VENV)
-sys.path.insert(0, "D:/coding/traeCN_project/wqb/src")
+sys.path.insert(0, _os_repo.path.join(_REPO, 'src'))
 from brain_api import brain_client  # noqa: E402
 from wqb.db_conn import connect as db_connect  # noqa: E402
 
-DB = "D:/coding/traeCN_project/wqb/data/wqb.db"
-OUT = "D:/coding/traeCN_project/wqb/results/op_scan.json"
+DB = _os_repo.path.join(_REPO, 'data', 'wqb.db')
+OUT = _os_repo.path.join(_REPO, 'results', 'op_scan.json')
 OP = sys.argv[1] if len(sys.argv) > 1 else "ts_max"
 
 def log(*a): print(*a, flush=True)

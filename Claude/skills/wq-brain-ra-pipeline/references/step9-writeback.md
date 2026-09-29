@@ -66,13 +66,14 @@ mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|P
 2. **封存**：
 
 ```
-mcp__wqb-db__seal_dead_end  region=$REGION  entry_id=<ID>  family=<族名>  reason=<判死原因>  wave_numbers=[W1,W2,…]
+mcp__wqb-db__seal_dead_end  region=$REGION  entry_id=<ID>  family=<族名>  reason=<判死原因，带数据>  rule=<下次怎么办>  wave_numbers=[W1,W2,…]
 ```
 
    - **`entry_id` 由你命名，不需要先创建**：`seal_dead_end` 本身就是 upsert（沉降残值 → 读现有 payload → 回填 `payload.salvage` → 写 `dead_end` 层）。命名约定 `<REGION>-<数据集或族>-<症状>`，全大写连字符，区域内唯一（如 `KOR-WAVE99-XXX-DEAD`）。
+   - **`family` / `reason` / `rule` 新建时必填**（与 CLI `add-dead-end` 同一份校验，`wqb.registry_contract`）：缺任一项返回 `status=error` 且**不沉降、不写库**；条目已存在时可省，已有的 `rule` 会保留。`rule` = 下次怎么办（配置包排除该族时引用它）。
    - `wave_numbers` **只识别整数波号**：字符串波号（`s2_<ds>_d1`）会被跳过、不沉降；这类波的残值已在收批级联里入池，需要补池用 `mcp__wqb-db__backfill_salvage_pool`。
    - 封存后 `registry_empirical` 的 `dead_end` 层进入下一次 assemble-priors 的 `dead_ends`（倒序，新封存者靠前）。
-3. **写入路径只有这一条**（MCP 可用时）；无 MCP 时用 toolkit 的带校验 CLI：`python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/$REGION registry add-dead-end --id … --family … --reason … --rule …`（`id / family / reason / rule` 必填，`--dry-run` 可先校验）——两条路径写同一张表，不要各写一遍。
+3. **写入路径**：MCP 可用时用上面的调用；无 MCP 或批量回写时用 toolkit 的带校验 CLI：`python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/$REGION registry add-dead-end --id … --family … --reason … --rule …`（`id / family / reason / rule` 必填，`--dry-run` 可先校验）——两条路径写同一张表、同一份校验，任选其一，**不要两边各写一遍**。
 
 ## 9.6 胜绩回写
 

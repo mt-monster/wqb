@@ -39,6 +39,7 @@ DB_PATH = ROOT / "data" / "wqb.db"
 
 from wqb.store import CampaignStore  # noqa: E402
 from wqb import wave_results_contract as _wave_contract  # noqa: E402
+from wqb import registry_contract as _registry_contract  # noqa: E402  registry 写入校验唯一实现（DEC-34）
 from wqb.config import compute_webdata_failed_counts  # noqa: E402  RA 资格门唯一口径（R3）
 
 
@@ -343,19 +344,31 @@ def list_ledger_keys(region: str) -> List[str]:
 
 
 @mcp.tool()
-def get_submit_ready(region: str) -> List[Dict[str, Any]]:
-    """获取某区域 submit_ready 候选列表（ledger_kv 的 submit_ready key）。
+def get_submit_ready(region: str, status: str = "READY", limit: int = 50) -> List[Dict[str, Any]]:
+    """提交队列：读 SQL 表 `submit_ready`（**唯一事实源**，DEC-33）。
+
+    S3 收批（harvest 钩子）自动入队、提交后自动退役；同一张表也是 `tools/submit_queue.py list` 的数据源。
+    ledger_kv 里同名的键 `submit_ready` 只是 `review_wave.py --write-ledger` 留的审计副本（legacy，
+    没有生命周期、不会退役），本工具**不再读它**——读它会把已提交 / 已判死的候选当成待提交。
 
     Args:
         region: 区域
+        status: READY（缺省，按优先级降序）| SUBMITTED | DEAD | EXPIRED | SUPERSEDED | ALL
+        limit: 最多返回条数（缺省 50，上限 500）
 
     Returns:
-        submit_ready 候选列表
+        队列行列表（alpha_id / expr / sharpe / fitness / turnover / prod / self / gate / status / note …）；
+        status 非法时返回 [{"error": ...}]
     """
-    result = get_ledger_key(region, "submit_ready")
-    if isinstance(result, dict) and "error" in result:
-        return []
-    return result if isinstance(result, list) else []
+    from wqb.store import submit_queue as _sq
+    st = (status or "READY").strip().upper()
+    if st not in ("READY", "SUBMITTED", "DEAD", "EXPIRED", "SUPERSEDED", "ALL"):
+        return [{"error": f"invalid status: {status!r} "
+                          "(expected READY|SUBMITTED|DEAD|EXPIRED|SUPERSEDED|ALL)"}]
+    rows = _sq.list_ready(region, db_path=str(DB_PATH), all_status=(st != "READY"))
+    if st not in ("READY", "ALL"):
+        rows = [r for r in rows if r.get("status") == st]
+    return rows[: max(1, min(int(limit or 50), 500))]
 
 
 @mcp.tool()
@@ -962,19 +975,43 @@ def upsert_registry_empirical(
 ) -> Dict[str, Any]:
     """回写 registry 实证层（幂等 upsert，按 region+layer+entry_id）。
 
-    layer ∈ {dead_end, campaign, win}。payload 为该条的完整 dict（自动序列化）。
+    与 `campaign.py registry` CLI 共用 `wqb.registry_contract` 的校验（DEC-34，两条入口写同一张表、
+    同一份规则）：dead_end 必填 id / family / reason / rule；win 必填 id / what / key；
+    campaign 必填 dataset / status（untried|in_progress|exhausted）；orphan 必填 id。
+    payload 缺 id（campaign 缺 dataset）时用 entry_id 补；缺 dead_at / date 时补当天。
+    layer='cross_region' 是自旧表迁入的层，不校验。校验失败返回 {"error": ...}，不写库。
 
     Args:
         region: 区域
-        layer: 层（dead_end/campaign/win）
-        entry_id: 条目 id（如 MEA-MDL31-CHG-WEAK）
+        layer: 层（dead_end / win / campaign / orphan；cross_region 免校验）
+        entry_id: 条目 id（如 MEA-MDL31-CHG-WEAK；campaign 层 = 数据集名）
         payload: 完整 payload dict
-        family: 信号族名（可选）
-        dead_at: 判死日期（可选，dead_end 层用）
+        family: 信号族名（缺省取 payload 的 family / what / dataset）
+        dead_at: 判死日期（缺省取 payload 的 dead_at / date）
 
     Returns:
         {"action": "inserted"|"updated", "region": ..., "layer": ..., "entry_id": ...}
     """
+    rc = _registry_contract
+    if isinstance(payload, str):
+        try:
+            payload = json.loads(payload)
+        except json.JSONDecodeError:
+            return {"error": "payload 不是合法 JSON 对象"}
+    if layer not in rc.FREEFORM_LAYERS:
+        if not isinstance(payload, dict):
+            return {"error": f"{layer} payload 必须是对象（dict），得到 {type(payload).__name__}"}
+        payload = dict(payload)
+        key = "dataset" if layer == "campaign" else "id"
+        payload.setdefault(key, entry_id)
+        try:
+            payload = rc.validate(layer, payload)
+        except rc.RegistryContractError as e:
+            return {"error": str(e)}
+        if rc.entry_id_of(layer, payload) != entry_id:
+            return {"error": f"entry_id={entry_id!r} 与 payload.{key}={rc.entry_id_of(layer, payload)!r} 不一致"}
+        family = family or rc.family_of(layer, payload)
+        dead_at = dead_at or rc.dead_at_of(payload)
     conn = _conn()
     c = conn.cursor()
     pl = json.dumps(payload, ensure_ascii=False)
@@ -2060,6 +2097,7 @@ def seal_dead_end(
     reason: Optional[str] = None,
     wave_numbers: Optional[List[int]] = None,
     dead_at: Optional[str] = None,
+    rule: Optional[str] = None,
 ) -> Dict[str, Any]:
     """判死封存：先沉降残值、再封存 dead_end（2026-09-13 新增，S6 判死标准动作）。
 
@@ -2073,15 +2111,51 @@ def seal_dead_end(
         region: 区域
         entry_id: dead_end 条目 id（registry_empirical，如 KOR-WAVE99-XXX-DEAD）
         family: 信号族名（可选，payload 无则补）
-        reason: 判死原因（可选，并入 payload）
+        reason: 判死原因（带数据；并入 payload）
         wave_numbers: 该 idea 涉及的波次号列表（沉降扫描范围）；缺省则不扫描，
             仅以空 salvage 封存
         dead_at: 判死日期（缺省今天）
+        rule: 下次怎么办（**新建条目必填**；条目已有 rule 时可省，给了则覆盖）。
+            与 `campaign.py registry add-dead-end` 同一份校验（DEC-34）：
+            dead_end 必填 id / family / reason / rule，缺则返回 status=error 且**不沉降、不写库**
 
     Returns:
         {"entry_id", "status", "action", "waves_scanned", "candidates_scanned",
          "salvaged_count", "salvage_ids", "total_in_pool"}
     """
+    # 先读现有 payload 并做契约校验：失败时不产生任何副作用（沉降入池、写库都在校验之后）
+    payload: Dict[str, Any] = {}
+    conn = _conn()
+    c = conn.cursor()
+    c.execute(
+        "SELECT payload, family FROM registry_empirical WHERE region=? AND layer=? AND entry_id=?",
+        (region, "dead_end", entry_id),
+    )
+    row = c.fetchone()
+    conn.close()
+    if row and row[0]:
+        try:
+            parsed = json.loads(row[0])
+            if isinstance(parsed, dict):
+                payload = parsed
+        except (json.JSONDecodeError, TypeError):
+            pass
+    payload.setdefault("id", entry_id)
+    if family:
+        payload.setdefault("family", family)
+    if not payload.get("family") and row and row[1]:
+        payload["family"] = row[1]
+    if reason:
+        payload["reason"] = reason
+    if rule:
+        payload["rule"] = rule
+    payload.setdefault("source", "registry_dead_end")
+    try:
+        _registry_contract.validate("dead_end", payload)
+    except _registry_contract.RegistryContractError as e:
+        return {"entry_id": entry_id, "status": "error",
+                "error": f"{e}（seal_dead_end 需要 family / reason / rule；rule = 下次怎么办）"}
+
     waves_scanned: List[int] = []
     candidates_scanned = 0
     collected_ids: set = set()
@@ -2118,28 +2192,7 @@ def seal_dead_end(
     pool_ids = {e.get("alpha_id") for e in pool.get("entries", []) if e.get("alpha_id")}
     salvage_ids = sorted(collected_ids & pool_ids)
 
-    # 读现有 dead_end payload 并回填 salvage
-    payload: Dict[str, Any] = {}
-    conn = _conn()
-    c = conn.cursor()
-    c.execute(
-        "SELECT payload, family FROM registry_empirical WHERE region=? AND layer=? AND entry_id=?",
-        (region, "dead_end", entry_id),
-    )
-    row = c.fetchone()
-    conn.close()
-    if row and row[0]:
-        try:
-            parsed = json.loads(row[0])
-            if isinstance(parsed, dict):
-                payload = parsed
-        except (json.JSONDecodeError, TypeError):
-            pass
-    if family:
-        payload.setdefault("family", family)
-    if reason:
-        payload["reason"] = reason
-    payload.setdefault("source", "registry_dead_end")
+    # 回填 salvage（payload 已在上面读出并通过契约校验）
     payload["salvage"] = {
         "alpha_ids": salvage_ids,
         "count": len(salvage_ids),
@@ -2157,6 +2210,8 @@ def seal_dead_end(
         family=(family or payload.get("family")),
         dead_at=(dead_at or _now()),
     )
+    if "error" in res:
+        return {"entry_id": entry_id, "status": "error", "error": res["error"]}
     return {
         "entry_id": entry_id,
         "status": "success",

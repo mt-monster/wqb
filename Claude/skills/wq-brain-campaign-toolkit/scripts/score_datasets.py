@@ -1185,11 +1185,11 @@ def score_v2(rows, cfg, stage="all"):
                   if tvr_struct == "LOW" else
                   "结构性高tvr（全族>30%，news_sentiment_transfer 教训）：拉长窗口/加大 decay 压 tvr，限2批")
     elif light == "GREEN" and cw_fail:
-        action = "绿灯(带CW修复)：深挖，骨架直接上跨Category rank加法（CW手册类型三）"
+        action = "绿灯(带CW修复)：深挖——用事件门控 / group 分组 / 同源价差修 CW；不要加权或等权拼腿（闸5 全局禁止）"
     elif light == "GREEN":
-        action = "绿灯：深度挖掘（骨架融合/FE假设族/参数精磨）"
+        action = "绿灯：深度挖掘（单信号结构变体 / FE 假设族 / 参数精磨；不拼腿）"
     elif light == "YELLOW":
-        action = "黄灯：只做镜像腿与两两融合，限2批"
+        action = "黄灯：只做镜像腿（同一信号取反）与同源价差，限2批"
     else:
         action = "红灯：判死入台账，不回头" + ("（镜像偏强，可选留1批镜像验证）" if mirror else "")
     return {"light": light, "potential": potential, "best": best["id"],
