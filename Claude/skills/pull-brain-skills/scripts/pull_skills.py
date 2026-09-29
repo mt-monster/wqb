@@ -5,7 +5,7 @@ Import skill folders (ZIP URL / Git repo / local dir) into a **quarantine stagin
 with a security audit. It never installs into a live skill root by default.
 
 Usage:
-  python pull_skills.py <zip_url | git_url | local_dir> [--dest <dir>] [--branch <b>]
+  python pull_skills.py <zip_url | git_url | local_dir> [--dest <dir>] [--branch <b>] [--subdir <rel>]
                         [--overwrite] [--allow-live-dest] [--accept-risk]
 
 Why (skills review PB-01/02/03, 2026-09-29): an imported skill is **instructions + executable material
@@ -25,10 +25,18 @@ Behavior:
   ~/.workbuddy/skills, <cwd>/.qoder/skills) needs `--allow-live-dest`; even then, folders whose risk is
   not `low` are skipped unless `--accept-risk` is given.
 - Nothing from the imported folders is ever executed by this tool.
+- Exit codes: 0 = at least one skill folder was staged/copied; 1 = usage error; 2 = fetch/clone failure;
+  3 = destination is a live root without --allow-live-dest; 4 = fetched fine but **nothing was imported**
+  (no top-level folder holds SKILL.md — many skill repos keep skills under `skills/<name>/`: pass
+  `--subdir skills`). skills review PB-05: this used to exit 0 with `ok: true` and zero imports.
+- ZIP downloads have a timeout and a size cap (`MAX_ZIP_BYTES`). `--branch` applies to Git URLs only.
+  A branch-head ZIP (`.../archive/refs/heads/main.zip`) is a mutable reference — prefer a pinned commit
+  (`.../archive/<sha>.zip`) so the audit you reviewed is the content you install.
 
 Notes:
 - Requires Git in PATH only for git URLs. Only checks that SKILL.md/skill.md exists (case-insensitive);
-  it does not validate YAML semantics. Copies top-level folders only.
+  it does not validate YAML semantics. Copies the folders directly under the scan root (repo root, or
+  `--subdir`).
 """
 
 import json
@@ -59,6 +67,8 @@ RISK_PATTERNS: List[Tuple[str, str]] = [
 ]
 TEXT_SUFFIXES = {".md", ".py", ".sh", ".ps1", ".bat", ".cmd", ".js", ".ts", ".json", ".yaml", ".yml", ".toml", ".txt", ""}
 MAX_SCAN_BYTES = 512 * 1024
+MAX_ZIP_BYTES = 50 * 1024 * 1024     # 50 MB：skill 仓库的 ZIP 远小于此；超限即中止
+ZIP_TIMEOUT_S = 60
 
 
 def run(cmd: List[str], cwd: Optional[str] = None) -> subprocess.CompletedProcess:
@@ -188,6 +198,38 @@ def copy_skill_folder(src_folder: str, dest_root: str, overwrite: bool, *, backu
     return out
 
 
+def download_zip(url: str, dest_path: str, *, max_bytes: int = MAX_ZIP_BYTES, timeout: float = ZIP_TIMEOUT_S) -> int:
+    """下载 ZIP：带超时与大小上限（旧实现是无界的 urlretrieve）。返回字节数；超限抛 ValueError。"""
+    import urllib.request
+    total = 0
+    with urllib.request.urlopen(url, timeout=timeout) as resp, open(dest_path, "wb") as out:   # noqa: S310
+        declared = resp.headers.get("Content-Length")
+        if declared and int(declared) > max_bytes:
+            raise ValueError(f"zip too large: Content-Length {declared} > {max_bytes} bytes")
+        while True:
+            chunk = resp.read(1024 * 256)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > max_bytes:
+                raise ValueError(f"zip exceeds {max_bytes} bytes; aborted")
+            out.write(chunk)
+    return total
+
+
+def resolve_scan_root(repo_dir: str, subdir: Optional[str]) -> str:
+    """扫描根：仓库根，或其内的 `--subdir`（真实路径必须仍在仓库内，防 `..` 越界）。"""
+    if not subdir:
+        return repo_dir
+    base = os.path.realpath(repo_dir)
+    target = os.path.realpath(os.path.join(base, subdir))
+    if target != base and not target.startswith(base + os.sep):
+        raise ValueError(f"--subdir escapes the repository: {subdir}")
+    if not os.path.isdir(target):
+        raise ValueError(f"--subdir not found in the fetched source: {subdir}")
+    return target
+
+
 def _safe_extract(zf: zipfile.ZipFile, target: str) -> None:
     """Zip-slip guard: every member must resolve inside `target`."""
     base = os.path.realpath(target)
@@ -200,7 +242,7 @@ def _safe_extract(zf: zipfile.ZipFile, target: str) -> None:
 
 # ---------------------------------------------------------------- main
 def parse_args(argv: List[str]) -> Dict[str, object]:
-    opts: Dict[str, object] = {"src": argv[0], "dest": None, "branch": None, "overwrite": False,
+    opts: Dict[str, object] = {"src": argv[0], "dest": None, "branch": None, "subdir": None, "overwrite": False,
                                "allow_live": False, "accept_risk": False}
     i = 1
     while i < len(argv):
@@ -210,6 +252,9 @@ def parse_args(argv: List[str]) -> Dict[str, object]:
             i += 2
         elif a == "--branch" and i + 1 < len(argv):
             opts["branch"] = argv[i + 1]
+            i += 2
+        elif a == "--subdir" and i + 1 < len(argv):
+            opts["subdir"] = argv[i + 1]
             i += 2
         elif a == "--overwrite":
             opts["overwrite"] = True
@@ -230,7 +275,7 @@ def main() -> None:
         print(json.dumps({
             "ok": False,
             "error": "Missing source (zip url / git url / local dir)",
-            "usage": "python pull_skills.py <zip_url|git_url|local_dir> [--dest <dir>] [--branch <b>] "
+            "usage": "python pull_skills.py <zip_url|git_url|local_dir> [--dest <dir>] [--branch <b>] [--subdir <rel>] "
                      "[--overwrite] [--allow-live-dest] [--accept-risk]",
         }, ensure_ascii=False))
         sys.exit(1)
@@ -259,10 +304,9 @@ def main() -> None:
                 print(json.dumps({"ok": False, "stage": "copy_local", "error": str(e)}, ensure_ascii=False))
                 sys.exit(2)
         elif repo_url.lower().endswith(".zip"):                        # Case 2: ZIP URL
-            import urllib.request
             try:
                 zip_path = os.path.join(tempdir, "repo.zip")
-                urllib.request.urlretrieve(repo_url, zip_path)
+                download_zip(repo_url, zip_path)
                 extract_dir = os.path.join(tempdir, "extracted")
                 with zipfile.ZipFile(zip_path, "r") as zf:
                     _safe_extract(zf, extract_dir)
@@ -291,10 +335,18 @@ def main() -> None:
             if os.path.isdir(r):
                 existing_live.update(os.listdir(r))
 
+        try:
+            scan_root = resolve_scan_root(repo_dir, o["subdir"])
+        except ValueError as e:
+            print(json.dumps({"ok": False, "stage": "subdir", "error": str(e)}, ensure_ascii=False))
+            sys.exit(2)
+        if o["branch"] and not repo_url.lower().endswith(".git") and (os.path.isdir(repo_url) or repo_url.lower().endswith(".zip")):
+            print("[pull_skills] note: --branch only applies to Git URLs; ignored for ZIP / local sources", file=sys.stderr)
+
         copied: List[Dict[str, object]] = []
         skipped: List[Dict[str, object]] = []
-        for entry in sorted(os.listdir(repo_dir)):
-            sub = os.path.join(repo_dir, entry)
+        for entry in sorted(os.listdir(scan_root)):
+            sub = os.path.join(scan_root, entry)
             if not os.path.isdir(sub) or os.path.islink(sub) or entry == ".git":
                 continue
             if not any(f.lower() == "skill.md" for f in os.listdir(sub)):
@@ -310,6 +362,15 @@ def main() -> None:
             res["audit"] = audit
             (copied if res["status"] == "copied" else skipped).append(res)
 
+        if not copied:
+            print(json.dumps({
+                "ok": False, "stage": "nothing_imported", "repo": repo_url, "dest": dest,
+                "error": "no skill folder was imported: no top-level folder holds SKILL.md (or everything was skipped). "
+                         "Many skill repos keep skills under skills/<name>/ — re-run with --subdir skills. "
+                         "If folders were skipped for risk / existing names, see `skipped`.",
+                "skipped": skipped,
+            }, indent=2, ensure_ascii=False))
+            sys.exit(4)
         print(json.dumps({
             "ok": True, "repo": repo_url, "dest": dest, "dest_is_live_root": live,
             "staged_only": not live,

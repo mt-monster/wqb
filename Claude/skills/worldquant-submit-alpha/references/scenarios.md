@@ -14,7 +14,7 @@
   3. 核验：`get_alpha_details(X)` → `status == ACTIVE` 且 `dateSubmitted` 非空。
   4. 回写 S6（`wq-backtest-monitor` §14），并重跑 `campaign_intel.py pyramid --region IND --delay 1` 确认目标塔 +1。
 - **分支**：`200 + success:true` → 直接步骤 3；`201/202` 或 `200` 空体 → 见 S5-02；`403` → 读 `is.checks` 里唯一的 `FAIL`：`REGULAR_SUBMISSION value ≥ limit` → 见 S5-03，其余 FAIL → 回 ra-pipeline 步 7。
-- **产物与落点**：`wave_results.verdict`（经 `upsert_wave_result`）；`submit_ready` 表该条状态更新；OS 监控在 S6。
+- **产物与落点**：`wave_results.verdict`（经 `upsert_wave_result`）；`submit_ready` 表该条状态更新；OS 表现监控目前没有承接者（见 RA step9 §9.8），S6 只做监控复盘与台账回写。
 - **完成定义（可机检）**：`status == ACTIVE ∧ dateSubmitted ≠ null ∧ wave_results.verdict ≠ null`。
 - **反例**：不要用 POST 试探配额；不要在 `UNVERIFIABLE` 时跳过 prod 实测；不要在 201 后立刻判失败；不要把硬闸类 `WARNING`（`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE`）当「不挡」——它们在提交层等价 FAIL。
 

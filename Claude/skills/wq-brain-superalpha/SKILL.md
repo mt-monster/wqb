@@ -16,7 +16,7 @@ allowed-tools:
 
 - **本 skill 负责**：**SUPER（SuperAlpha）组套**——select → status → probe → submit；需本区 ACTIVE REGULAR ≥ 10，且双闸（SELF / PROD）达标
 - **本 skill 不做**：**不提交 REGULAR 单颗**（→ `worldquant-submit-alpha`）；**不挖 REGULAR**（→ `wq-brain-ra-pipeline`）。组件不足时输出「缺口清单」交给 RA（见下），**不得改用 REGULAR 路径绕过**，也不得绕过 prod 闸
-- **上游 / 下游**：上游 = 本区 ≥ 10 颗 ACTIVE REGULAR（`sa_probe` 给 `GO`）+ 用户明确要组 SA；下游 = SUPER ACTIVE → S6 [`wq-backtest-monitor`](../wq-backtest-monitor/SKILL.md)（OS 监控与台账回写）
+- **上游 / 下游**：上游 = 本区 ≥ 10 颗 ACTIVE REGULAR（`sa_probe` 给 `GO`）+ 用户明确要组 SA；下游 = SUPER ACTIVE → S6 [`wq-backtest-monitor`](../wq-backtest-monitor/SKILL.md)（监控复盘与台账回写；**OS 表现监控与重着色目前没有承接者**，见 RA step9 §9.8）
 
 **组件不足时交给 RA 的输入**：区域 / 缺口 N 颗（`sa_probe` 的 `need`）/ 若 PROD 已饱和还需 **prod < 0.55 的新血 REGULAR**（见 levers §3）。接收方 = `wq-brain-ra-pipeline` 步 1（库存盘点）起的常规九步；反向的触发（本区 ACTIVE REGULAR ≥ 10 → 可转 SuperAlpha）写在 RA 的 `loop-and-stop.md` L.4。
 

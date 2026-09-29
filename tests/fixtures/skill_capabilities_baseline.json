@@ -1,5 +1,5 @@
 {
- "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。 变更记录：2026-09-29 brain-alpha-robustness +mcp__wqb-db__*（稳健性结论写台账 robustness_<alpha_id> 需要 upsert_ledger_key；只写该键，读取方 submit_verdict；已人审：wqb-db 是本地库，无外发面，RA 等 skill 同样持有）。",
+ "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。 变更记录（整改执行者评审，**待用户复核**）：① 2026-09-29 brain-alpha-robustness +mcp__wqb-db__*（稳健性结论写台账 robustness_<alpha_id> 需要 upsert_ledger_key；只写该键，读取方 submit_verdict；wqb-db 是本地库，无外发面，RA 等 skill 同样持有）。② 2026-09-29 wq-backtest-monitor +5 个**只读** wqb-db 工具（get_wave_result / list_wave_results / get_latest_wave / get_ledger_key / list_alphas_by_wave）：复盘要读 checkpoint（ledger ckpt_w<wave>）与 wave_results 核验 verdict；不含任何 upsert_*，回写仍走 RA 步 9 的调用链。",
  "allowed_tools": {
   "alpha-expression-verifier": [
    "Bash"
@@ -138,7 +138,12 @@
    "Bash",
    "Glob",
    "Grep",
-   "Read"
+   "Read",
+   "mcp__wqb-db__get_latest_wave",
+   "mcp__wqb-db__get_ledger_key",
+   "mcp__wqb-db__get_wave_result",
+   "mcp__wqb-db__list_alphas_by_wave",
+   "mcp__wqb-db__list_wave_results"
   ],
   "wq-brain-alpha-optimization-v1": [
    "Bash",

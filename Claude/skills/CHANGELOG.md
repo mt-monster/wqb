@@ -51,6 +51,11 @@
 - explain：真实 `get_datafields` 签名 + `filter_sharpe=False`；`vec_mean` → `vec_avg`；新增第 7 步概念重叠检查及只读程序 `tools/concept_overlap.py`；结构化「进一步启发」→ EX-01…EX-10
 - selfcorr-quick：SELF / PROD 不互相推导；删「POST /submit 零成本实测」；脚本改 `importlib.metadata`、tqdm 缺失降级、非交互不安装、凭据环境变量优先、固定产物目录、Excel `Meta` sheet 与盲区自动警告 → SC-01…SC-10（`test_selfcorr_quick_script.py`）
 
+**wq-backtest-monitor / planning-with-files / pull-brain-skills（L6 / L7）**
+- monitor：重新定位为 S6「监控与复盘」（REGULAR / PPA / SUPER 通用）；写入 SOP 只在 RA 步 9，monitor 只触发并核验；命令模板按真实 CLI 重写（旧四条全错、其中一条写已废止的 `wave{W}_verdict` 键）并由测试对真实 argparse 校验；checkpoint 位置更正为 ledger `ckpt_w<wave>`；判停阈值只引 `config.WAIT_THRESHOLDS`；删「四关」、并发模型（改指 `config.CONCURRENCY`）、全部历史任务实例与「TOP800/1500/2500/5000 非法」的错误 universe 论断；OS 表现监控与重着色声明无承接者（INDEX / superalpha / submit-alpha 同步）；INDEX 的 `wave_results` 归属更正为「唯一写入函数 + 两个等价入口」→ BM-01…BM-18（`test_wq_backtest_monitor_docs.py`、`test_wait_thresholds.py`）
+- planning-with-files：触发口径唯一、优先级「用户 > 领域协议 > 本 skill」；「永不重复失败」改为区分确定性 / 暂时性失败；PreToolUse 钩子只挂 `Write|Edit`（20 行）；钩子逐条写明成本；规划文件固定仓库根；INDEX 持久化铁律加豁免句、`version` / `hooks` 语义；新增 WQ 战役示例 → PW-01…PW-10（`test_planning_with_files_docs.py`）
+- pull-brain-skills：SKILL 与代码默认值对齐（暂存目录、审查、不安装）并由测试守；空导入退出码 4、`--subdir`、ZIP 超时 + 大小上限；ZIP 示例用固定 commit；导入后清单、回滚、情景卡 → PB-01…PB-07（`test_pull_skills_safety.py`）
+
 **worldquant-submit-alpha / GLOSSARY / decision-table / INDEX 等（提交链单一叙述）**：见 `reports/skills_review_20260929_closure.md` 的 SB-* / X-1 / X-2 / X-4~6 条目。
 
 **已迁出本日志的历史（原 RA `SKILL.md` 里的日期叙述，按时间倒序，仅留一行）**

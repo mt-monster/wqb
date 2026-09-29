@@ -34,7 +34,7 @@
 
 所有 Python 命令使用 MCP venv，统一经变量 **`$WQ_PY`** 引用，不要硬编码绝对路径、不要使用系统 Python。
 
-**战役产物持久化铁律（2026-08-24 全量切库）**：Agent 持久化只走 `mcp__wqb-db__*` 或 `campaign.py` / toolkit 脚本的 `--from-db`；**禁止** `Write` / `Copy-Item` 战役 json/csv（`candidates/*.json`、`cache/w*_batches.json`、`cache/gate_wave*.json`、`results/*.csv`、`reviews/*.json`、`final_expressions.json` 当真相源）。静态配置（`settings.json`/`thresholds.json`/`platform_constraints.json`）与凭证、CLI 临时 `@file.json`、BRAIN 原始 CSV 仍用文件。
+**战役产物持久化铁律（2026-08-24 全量切库）**：Agent 持久化只走 `mcp__wqb-db__*` 或 `campaign.py` / toolkit 脚本的 `--from-db`；**禁止** `Write` / `Copy-Item` 战役 json/csv（`candidates/*.json`、`cache/w*_batches.json`、`cache/gate_wave*.json`、`results/*.csv`、`reviews/*.json`、`final_expressions.json` 当真相源）。静态配置（`settings.json`/`thresholds.json`/`platform_constraints.json`）与凭证、CLI 临时 `@file.json`、BRAIN 原始 CSV 仍用文件。**规划文件**（`planning-with-files` 的 `task_plan.md` / `findings.md` / `progress.md`，仓库根、已 gitignore）是**过程笔记，不是战役产物**，不受本条限制——但战役**结果**仍只以 DB 台账为准。
 
 **`$WQ_PY` 定义（本机单一事实源）：**路径 = `<repo>/world-quant-brain-mcp/.venv/Scripts/python.exe`（`<repo>` = 工作区根；**禁止硬编码绝对盘符路径**，换机即断）。
 ```bash
@@ -136,7 +136,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | S3 设置仿真 | 怎么合法设置并批量跑？ | brain-inspect-raw-template-create-setting → brain-sim-alphas-in-batch-and-track；并发问题查 wqb-concurrency | alpha_list.json → IS 指标 + status CSV |
 | S4 诊断优化 | 为什么不过闸？ | brain-how-to-pass-alpha-test（查阈值）→ wq-brain-alpha-optimization-v1（**两模式**：先 Mode B 想法层，后 Mode A 参数层；prod_corr≥0.7 回 Mode B）→ brain-calculate-alpha-selfcorr-quick（本地快筛 self-corr/PPAC）→ brain-explain-alphas（收益来源归因）→ **过拟合/稳健性闸**（brain-alpha-robustness，S4→S5 必经） | 达标 + 稳健变体 |
 | S5 过闸提交 | 能不能提交？ | 廉价闸→PC 等待→硬闸 → `tools/submit_verdict.py`（提交层唯一权威）→ worldquant-submit-alpha（REGULAR）/ wq-brain-superalpha（SUPER）；brain-alpha-judge 仅作 PPA 主题/相关性人工核对清单与 trend score 参考（2026-08-31 起不再承担最终判定） | ACTIVE alpha |
-| S6 监控复盘 | 跑得怎么样？ | wq-backtest-monitor（进程枚举/四关审计/ETA + §14 台账回写）；日常由 `wq-brain-ra-pipeline` 步 9 编排 | 复盘报告 + 台账回写 → 反哺 S-PRE |
+| S6 监控复盘 | 跑得怎么样？ | wq-backtest-monitor（进度 / ETA / 提交状态盘点 / 复盘报告；台账回写的 SOP 只在 `wq-brain-ra-pipeline` 步 9，monitor 只触发并核验）；OS 表现监控与重着色**没有承接者** | 复盘报告 + 台账回写 → 反哺 S-PRE |
 
 **toolkit 引擎映射**（战役目录内执行，详见 `wq-brain-campaign-toolkit/SKILL.md`）：
 | 阶段 | toolkit 子命令 |
@@ -311,7 +311,7 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 ## 并发口径（演进注记）
 
 - 旧模型：固定槽位 C=5（wqb-concurrency 阶梯实测，2026-07 前）。
-- 新模型：**Token-Bucket，突发容量 C≈7、慢补充 ~1 令牌/20–40s**（wq-backtest-monitor §6，2026-08 实测）。
+- 新模型：**Token-Bucket，突发容量 C≈7、慢补充 ~1 令牌/20–40s**（参数唯一来源 `config.CONCURRENCY`；参数表与七槽填槽 SOP 见 `wqb-concurrency` §8）。
 - 配置基准以新模型为准：瞬时提交 ≤6 安全、批间 ≥45s、禁同账号 ≥8 齐射。
 - **七槽填槽模式（2026-08-25 更新 5→7，每次挖掘必须执行）**：四重门禁后 7 批 multisim 同提实证安全（连续多波 0 连坐），每轮 7 批×8 条同提→统一轮询→即收即补保持槽位常满，单轮吞吐 ×7；SOP 全文见 `wqb-concurrency` §8。旧"单批在飞串行"模式废弃。
 
@@ -359,7 +359,7 @@ agent_created: true              # 可选，仅模型创建的技能标注
 ```
 
 必需字段：`name` / `layer` / `description` / `last_verified`；
-可选字段：`version` / `user-invocable` / `allowed-tools` / `agent_created` / `hooks`（`user-invocable: true` = 该 skill 也可由用户以 `/<skill 名>` 直接调用，而不只是被 agent 按 description 触发；不影响路由与边界）。
+可选字段：`version` / `user-invocable` / `allowed-tools` / `agent_created` / `hooks`（`user-invocable: true` = 该 skill 也可由用户以 `/<skill 名>` 直接调用，而不只是被 agent 按 description 触发；不影响路由与边界。`version` = 外部来源 skill 的**上游版本号**，只登记来源，与本库的 `last_verified` 无关。`hooks` = 在 agent 生命周期事件上自动执行的命令，等价于任意命令执行：只有白名单内的 skill 可声明（`tests/unit/test_skill_hooks_and_tools_guard.py`），且必须在该 skill 正文逐条写明每个钩子做什么与成本，经人工审查后才可加入白名单）。
 禁止出现 `when_to_use` / `trigger_when` / `title` 等非标字段。
 权威契约见 `AGENTS.md §SKILL.md frontmatter 契约`。
 
@@ -386,7 +386,7 @@ H1 标题之后紧跟该段，格式为**三条**：
    **禁止**用"修正为…" / "撤回…" / "实测推翻…"等口吻改写。若 skill 的实证观测与常量冲突，
    **保留观测但显式标注冲突并裁定以 config 为准**（样板见 `brain-alpha-research` §12(a)）。
 2. **同一产物只能有一个主写方**。DB 表 / 产物文件若被多个 skill 提及，边界段必须写明
-   「唯一正式写入方 = X；Y 仅在 <场景> 作逃生阀」（样板见 `wq-backtest-monitor` 与
+   「唯一正式写入方 = X；Y 仅在 <场景> 作逃生阀」（样板见 RA `step9-writeback.md` §9.4 与
    `brain-sim-alphas-in-batch-and-track` 对 `wave_results` 的约定）。
 
 ### 共享产物归属表（2026-09-27 补）
@@ -398,7 +398,7 @@ H1 标题之后紧跟该段，格式为**三条**：
 
 | 产物 | 唯一正式写入方 | 只读消费方 | 刷新 / 失效责任 | 逃生阀 |
 |---|---|---|---|---|
-| `wave_results` | `wq-brain-campaign-toolkit`（campaign 子命令，幂等 CLI） | ra-pipeline 步 9、`wq-backtest-monitor` | 波级收尾由 S6 回写 | 会话内 `mcp__wqb-db__upsert_wave_result`（须守 PASS/PARTIAL/FAIL 枚举） |
+| `wave_results` | **`wqb.wave_results_contract.upsert_wave_result`（唯一写入函数：verdict 枚举归一 / 合并语义 / closed 须带 verdict）**；入口两个且等价——MCP `upsert_wave_result`、toolkit `campaign.py wave upsert`，都走这个函数 | ra-pipeline 步 9、`wq-backtest-monitor`（只读核验） | 波级收尾由 S6 回写（顺序与契约见 RA `step9-writeback.md`） | —（有 MCP 用 MCP，无 MCP 用 CLI；不要两边各写一遍） |
 | `registry_empirical` | toolkit `campaign.py registry` / `upsert_registry_empirical` | ra-pipeline 步 1–2、`wq-brain-campaign-matrix` | 每波 S6 回写 win/dead | 会话内轻量 `upsert_registry_empirical`（战役目录内仍走 CLI 以保必填校验） |
 | `ledger_kv` | toolkit ledger 子命令 | ra-pipeline 各步、`brain-*` 只读 | 按 key 定；`s0_whitelist` 有契约归一（replace/merge 双侧 canonicalize） | 会话内 `upsert_ledger_key` |
 | `expressions` | `brain-make-some-gem`（S2 生成） | 门禁闸、S3 回测 | 状态推进走 `set_expression_status` | — |

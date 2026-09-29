@@ -67,94 +67,143 @@
    "cat": "职责·P1"
   },
   "BM-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 与 H1 把本 skill 定位为“WorldQuant BRAIN **PPA** alpha 挖掘任务的监控/盘点/效率分析”“WQ PPA 挖掘·监控",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md | Claude/skills/INDEX.md | Claude/skills/wq-brain-superalpha/SKILL.md | Claude/skills/worldquant-submit-alpha/references/scenarios.md",
+   "note": "重新定位为 S6「监控与复盘」（REGULAR/PPA/SUPER 通用），去掉「PPA」定位；OS 表现监控与重着色明确声明无承接者（RA step9 §9.8 已登记），INDEX / superalpha / submit-alpha 的措辞同步改；不拆 skill，改为「监控 + 触发核验」，写入 SOP 归 RA 步 9",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_writeback_sop_lives_only_in_ra_step9_and_monitor_only_triggers_and_verifies"
   },
   "BM-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“持久化铁律（DB 单轨）”置于 frontmatter 之后、H1 之前，且在多个 skill 里逐字重复；与本 skill 自己的取证来源冲突：§10 的“取证方式”全是 ch",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "持久化铁律缩为一句；checkpoint 明确为「运行态证据（可读、非真相源）」，位置是 ledger ckpt_w<wave>（不再教读 results/*.json）；提交状态盘点改读 alphas / robustness / submit_verdict",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_checkpoint_lives_in_the_ledger_not_a_results_file"
   },
   "BM-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界“负责：…§14 台账回写”，同时“**不是** `wave_results`/`registry_empirical` 的正式写入方——唯一正式写入 = toolkit 幂等",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "边界改「触发并核验」，写入 SOP 只在 RA step9；补「写失败怎么办」（按 suggestion 显式传枚举重试一次，仍失败走同函数的 CLI 逃生阀并报告，不得静默跳过）"
   },
   "BM-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "三处对“机器级进程枚举”的要求互相矛盾：L36“当用户要盯回测/盘点…按下述框架产出**完整分析**”；§7 #6“监控第一视角：**必须**机器级进程枚举为发现入口”；L43–4",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "定一个默认：日常读 DB / checkpoint / batch_status，故障排查才枚举进程（Linux 与 Windows 各一条命令）；删除指向不存在 attic 归档的说法"
   },
   "BM-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“四关”（① 研究仿真 IS 廉价闸 ② 生产仿真 OOS ③ 生产相关性 ④ 平台 submittable + 真实提交）是全库**第 4 套闸门分类**（gate.py 闸 1",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "删除「四关」体系（全库第 4 套闸门分类）与历史快照；改为映射到既有口径：Failed RA / submit_verdict 标签 / D0-P；阈值不抄，引 config",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_stale_claims_are_gone"
   },
   "BM-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“取证函数 `collect_verified_pids()`（取 `found_alphas` 的 pid）”——全库检索仅此一处，函数不存在；`found_alphas` 是 ",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "持久化铁律缩为一句；checkpoint 明确为「运行态证据（可读、非真相源）」，位置是 ledger ckpt_w<wave>（不再教读 results/*.json）；提交状态盘点改读 alphas / robustness / submit_verdict",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_checkpoint_lives_in_the_ledger_not_a_results_file"
   },
   "BM-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“并发模型·Token-Bucket（C=7）”与 `wqb-concurrency`（L3）重复；核对 `config.CONCURRENCY = {slots 7, burst",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md | Claude/skills/INDEX.md",
+   "note": "并发模型整节删除，改指 config.CONCURRENCY 与 wqb-concurrency §8；INDEX 里把出处写成 monitor §6 的那行改指向唯一来源；不再下带时点的「瓶颈」判断"
   },
   "BM-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "工作纪律 6 条：①“universe 合法性：TOP500/1000/2000/3000 合法；**TOP800/1500/2500/5000 非法**（400 拒）”与 `co",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "universe 合法性改取 config.REGIONS[region]['universes']（旧文把 EUR 默认 TOP2500 判非法）；止损线指向 RA loop-and-stop 与 optimization-v1；「PASS_CHEAP 不得称可提交」合并为一处",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_stale_claims_are_gone"
   },
   "BM-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "①“新监控脚本应在 `tools/` 按**统一规范**新建”——规范未给；②“红线：绝不动在跑进程的 checkpoint 与脚本（如 v52b …）”是好红线（🟢），但示例是历",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "红线泛化为「status=RUNNING 战役的 checkpoint 与运行脚本不得修改/移动/删除」；给出新监控脚本规范（tools/、docstring 三段、import _pyenv、只读、单测）；实例（v52b 等）全部删除，历史快照标注随之失效"
   },
   "BM-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“提交核查（强制章节，每次汇报不可省略）”：①三级分类“✅ 已正式提交 / ✅ 回测完成待提交 / 🔶 仍需进一步验证”，但“**回测完成待提交**”未定义，且与“PASS_CHE",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "三级分类映射到 submit_verdict 标签 + 提交队列 SQL 表（tools/submit_queue.py list）+ alphas.status；取证改读 DB；句式「N 个候选：a 已提交，b 待提交，c 仍需验证」保留；ledger 键 submit_ready 与同名 SQL 表不是同一物",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_submit_status_audit_maps_to_existing_labels_and_names_the_queue_table"
   },
   "BM-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“ETA（强制章节，每次汇报不可省略）”的输出格式要求“包含 **ds 舰队全部 7 路 + tri_track + v52b**”——这些是 2026-09 前的历史任务（L80",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md | Claude/skills/wq-backtest-monitor/references/scenarios.md",
+   "note": "ETA 改「每个在飞 wave 一行」；如实写明 checkpoint 只有 submitted_at 与终态、无完成时间戳，故用吞吐法粗估；置信度标注为经验值；无完成批 → 未知；与 sim_stall_min 联动（已挂起不再报数）；历史任务名删除",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_checkpoint_batch_fields_named_in_the_eta_section_are_the_ones_pipeline_writes"
   },
   "BM-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "“标准报告结构（**唯一标准依据**）：§1 背景 / §2 分析维度 / §3 核心发现 / §4 结论与建议”，其中 §2 又写“进程盘点（§1–§2）/ 并发进度（§2）/ ",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "报告章节改编号 R1–R4（不再与 skill 章节号混用）；删「唯一标准依据」；allowed-tools 只补 5 个只读 wqb-db 工具（能力基线已登记，待用户复核）",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_allowed_tools_grew_only_by_read_only_db_tools"
   },
   "BM-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢“判停依据 = poll 熔断参数组：progress 60 min 无变化判 STALLED、总超时 360 min（可被 thresholds.json `poll` 节覆盖",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md | src/wqb/config.py",
+   "note": "判停阈值只引 config.WAIT_THRESHOLDS（sim_stall_min / sim_timeout_min，与 poller.DEFAULT_POLL 由 test_wait_thresholds 钉住），即「等待/卡住阈值表」",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_stall_thresholds_are_from_config_and_equal_to_the_poller_defaults"
   },
   "BM-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "**命令模板四条全部与真实 CLI 不符**（核对 `_lib/wave_results.py`、`_lib/registry.py`、`_lib/ledger.py`）：①`wa",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "命令模板按真实 CLI 重写（wave upsert 用 --finding，registry add-* 带必填参数，先 --dry-run），删 ledger set-verdict（写已废止的 wave<N>_verdict 键）；测试用真实 argparse 校验每个 flag",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_required_flags_of_the_real_cli_are_all_supplied"
   },
   "BM-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“方法论规则计数：若本波消费了 `tracking/<REGION>/reference/methodology_rules.json` 的 active 规则，回写 `times",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "方法论规则计数由代码自动完成（gate.py 消费契约、pipeline.py 校验 universe 杠杆与收批后 validate_rules，规则存 ledger methodology_rules），删除手工回写要求以免重复计数",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_stale_claims_are_gone"
   },
   "BM-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "三条写入路径并列：toolkit CLI（战役目录内）/ `mcp__wqb-db__upsert_*`（无战役目录）/ `upsert_ledger_key`（“如 submit",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "三级分类映射到 submit_verdict 标签 + 提交队列 SQL 表（tools/submit_queue.py list）+ alphas.status；取证改读 DB；句式「N 个候选：a 已提交，b 待提交，c 仍需验证」保留；ledger 键 submit_ready 与同名 SQL 表不是同一物",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_submit_status_audit_maps_to_existing_labels_and_names_the_queue_table"
   },
   "BM-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "L159“中文/JSON 参数一律走 `@file` 文件通道（AGENTS.md §5）”，但 `@notes.json` 等文件写到哪里未说（战役目录？scratch？）；与 ",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-backtest-monitor/SKILL.md",
+   "note": "@file 临时文件写会话 scratchpad、用完删除；末行「修改报告结构前先与用户确认」移入报告骨架一节"
   },
   "BM-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺三张情景：①**日常一波收尾**（pipeline 完成 → `review_wave` → `wave upsert --verdict` → `get_wave_result",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/wq-backtest-monitor/references/scenarios.md",
+   "note": "三张情景卡：日常一波收尾（真实命令序列 + get_wave_result 自检）、挂起处置（STALLED 判定 / 平台侧核对 / 留痕）、≤20 行的合规汇报样例",
+   "verify": "tests/unit/test_wq_backtest_monitor_docs.py::test_scenario_cards_exist_with_the_two_mandatory_chapters_in_the_sample"
   },
   "CM-01": {
    "status": "open",
@@ -1679,39 +1728,58 @@
    "cat": "🟡 **部分**"
   },
   "PB-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "导入外部 skill = 向运行时注入**指令与可执行物**，本 skill **没有任何入库前审查步骤**：不列 `hooks` / `allowed-tools` / `scr",
-   "cat": "边界·**P1（安全）**"
+   "cat": "边界·**P1（安全）**",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md | Claude/skills/pull-brain-skills/scripts/pull_skills.py",
+   "note": "代码侧（暂存目录 / 静态审查 / 不删除 / 活跃根守卫 / zip-slip）已由 3987274 落地；本轮 SKILL 重写：边界写明「不安装、不执行被导入内容」、审查报告怎么读、导入后清单、出现 hooks / Bash / .env 读取的处置",
+   "verify": "tests/unit/test_pull_skills_safety.py"
   },
   "PB-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“首选推荐”的示例 1 默认带 **`--overwrite`**；脚本对已存在目录先 `shutil.rmtree(dest_folder)` 再复制——**无备份、无确认、无 ",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md | Claude/skills/pull-brain-skills/scripts/pull_skills.py",
+   "note": "示例默认不带 --overwrite；--overwrite 只挪到 .backup 不删除（代码已是），文档写明可恢复路径",
+   "verify": "tests/unit/test_pull_skills_safety.py::test_skill_doc_matches_the_code_defaults_and_flags"
   },
   "PB-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "**文档与代码默认目的地相反**：SKILL 写“`--dest` 默认 = 仓库真相源 `Claude/skills/`（导入后须跑 `sync_skills.py`）”，而 `",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md | tests/unit/test_pull_skills_safety.py",
+   "note": "文档默认目的地改为与代码一致（attic/import_staging/），新增测试断言文档与代码的默认目的地 / 选项一致",
+   "verify": "tests/unit/test_pull_skills_safety.py::test_skill_doc_matches_the_code_defaults_and_flags"
   },
   "PB-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "ZIP 地址“在仓库 URL 后追加 `/archive/refs/heads/main.zip`”：①假设默认分支是 `main`（`master` 仓库 404）；②分支头是*",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md | Claude/skills/pull-brain-skills/scripts/pull_skills.py",
+   "note": "ZIP 示例改固定 commit SHA（分支头是可变引用）；--branch 只对 Git 生效并在其它源提示；下载加超时（60 s）与大小上限（50 MB）",
+   "verify": "tests/unit/test_pull_skills_safety.py::test_download_is_bounded_by_size_and_timeout"
   },
   "PB-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“有效 skill”只要求“顶层文件夹里有 SKILL.md/skill.md”，比本库契约（name==目录名、layer、last_verified、职责边界段、kebab-c",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/pull-brain-skills/scripts/pull_skills.py | Claude/skills/pull-brain-skills/SKILL.md",
+   "note": "拉取成功但一个都没导入 → 退出码 4（不再 ok:true 退出 0）；新增 --subdir 支持 skills/<name>/ 二级目录（路径不得越出仓库）；「有效 skill」只查 SKILL.md 存在，契约检查放导入后清单",
+   "verify": "tests/unit/test_pull_skills_safety.py::test_subdir_reaches_second_level_skills_and_refuses_escape"
   },
   "PB-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“导入后必须人工归层并跑 `python tools/sync_skills.py` + `pytest tests/unit/test_skill_integrity.py -q",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md",
+   "note": "导入后 7 项清单（看报告 / 归层 / frontmatter / 边界段 / 命名 / 移入并 sync + 测试 / 回滚），命令用 $WQ_PY，含 test_skill_boundaries"
   },
   "PB-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺三个情景：①从 GitHub 仓库导入 1 个 skill 到审查区并生成审查报告（含 hooks/allowed-tools/scripts 清单）；②导入的 skill 与现",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/pull-brain-skills/SKILL.md",
+   "note": "三张情景卡：GitHub 仓库导入到审查区并读报告 / 同名更新（diff + 合并）/ 发现 hooks 或读 .env 的拒绝与留痕"
   },
   "PP-01": {
    "status": "open",
@@ -1844,54 +1912,81 @@
    "cat": "情景·🟢"
   },
   "PW-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "frontmatter 内嵌 4 类 shell 钩子：SessionStart / PostToolUse 的 `echo`；PreToolUse（匹配 `Write\\",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/planning-with-files/SKILL.md | Claude/skills/planning-with-files/scripts/check-complete.sh | Claude/skills/INDEX.md",
+   "note": "Stop 钩子占位符问题已由 3987274 修（内联、无 plan 静默、永远 exit 0）；本轮：PreToolUse 只挂 Write|Edit 且只回显 20 行（不再每次 Bash 注入 30 行）；正文逐个钩子写明做什么 / 成本；声明 POSIX-only、无 bash 宿主可删 hooks 块；check-complete.sh 标注仅手动；INDEX 定义 hooks 白名单 + 逐条写明的审查规则。PowerShell 等价未实现（如实标注）",
+   "verify": "tests/unit/test_skill_hooks_and_tools_guard.py"
   },
   "PW-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "触发条件三个口径：description“需要 **>5 次工具调用**的任务”、正文“多步任务（**3 步以上**）/任何需要组织规划的任务”、SessionStart 提示“A",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "触发口径只剩一个（用户明确要求 / 跨会话 / 无现成状态存储且步数多）；WQ 流水线任务不用；写优先级（用户当次指令 > 领域协议 > 本 skill）；删「没有商量余地」；边界删掉不成立的「共用 $WQ_PY」",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_single_trigger_criterion_and_priority_rules"
   },
   "PW-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“两动作规则”（每 2 次查看/浏览/搜索就写文件）与“**永不重复失败**：`if action_failed: next_action != same_action`，绝不重复",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "区分确定性失败（同输入必再败→换方案，3 次协议）与暂时性失败（429 / 空体轮询 / PENDING / 异步补发→按各 skill 协议重试）；定义失败粒度；领域协议优先",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_single_trigger_criterion_and_priority_rules"
   },
   "PW-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“规划文件应创建在项目目录（当前工作的文件夹）”：WQ 仓库 `.gitignore` 只忽略**仓库根**的 `/task_plan.md`、`/findings.md`、`/p",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/planning-with-files/SKILL.md | Claude/skills/INDEX.md",
+   "note": "规划文件固定建在仓库根（已 gitignore；子目录工作也写回仓库根），云端 / 只读会话用 scratchpad；INDEX 持久化铁律加豁免句（规划文件是过程笔记、不是战役产物，结果仍以 DB 为准）",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_planning_files_live_in_repo_root_and_are_gitignored"
   },
   "PW-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“3 次失败后：上报给用户”与 RA 停止规则 A/B1/B2、optimization-v1“>10 种结构 / 3–5 周期”、monitor“>10 种结构才转向”、subm",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "区分确定性失败（同输入必再败→换方案，3 次协议）与暂时性失败（429 / 空体轮询 / PENDING / 异步补发→按各 skill 协议重试）；定义失败粒度；领域协议优先",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_single_trigger_criterion_and_priority_rules"
   },
   "PW-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 读/写决策矩阵与“五问重启测试”是全文最可执行的部分，直接对应“压缩后恢复”；表述短、判据明确（“刚写完文件 → 不要读”“间隔后恢复 → 读取所有规划文件”）",
-   "cat": "逻辑·🟢"
+   "cat": "逻辑·🟢",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "五问加 WQ 填好示例（RA 步 4 GEM 中断后恢复：五问答案各来自哪个文件 / 台账键，结果以台账为准）"
   },
   "PW-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "脚本为 bash（Windows 主宿主需 Git Bash/WSL，未说明）；模板阶段是软件开发通用阶段（“Requirements & Discovery / Planning",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/planning-with-files/references/wq-examples.md | Claude/skills/planning-with-files/SKILL.md",
+   "note": "新增一次 RA 战役的 task_plan 示例（九步 = 九个 Phase，每阶段写台账检查点，保持 Status 行格式）；bash 脚本要求 Git Bash/WSL 已写明；check-complete 与模板文本耦合已写明。「脚本改 Python / 双实现」未做（维持 bash，如实标注）",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_wq_example_matches_the_check_complete_counting_convention"
   },
   "PW-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "反模式“用 TodoWrite 做持久化 → 创建 `task_plan.md`”：宿主提供 Task 工具（TaskCreate/TaskUpdate）并要求维护任务清单，二者是",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "反模式改为「会话内用 Task 工具、跨会话状态用文件 / DB」（互补而非互斥）；WQ 战役结果指向 DB 台账"
   },
   "PW-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "`version: \"2.1.0\"`（外部来源版本号，与本库“内容版本递增”的关系未说）；来源、许可与上游同步策略未标（疑为外部开源 skill 的中文化）；`user-invoc",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/planning-with-files/SKILL.md | Claude/skills/INDEX.md",
+   "note": "边界加来源注记（外部开源 Manus 风格 skill 的中文化改编，version 为上游版本号）并如实标「上游地址与许可未在仓库内登记——待人补充」（仓库内无法查证）；INDEX 契约补 version / hooks 语义（user-invocable 已定义）。残留：需用户补充上游 URL 与许可",
+   "verify": "tests/unit/test_planning_with_files_docs.py::test_version_and_hooks_semantics_are_defined_in_index"
   },
   "PW-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺三个 WQ 情景：①**一次 RA 战役**的 task_plan（九步阶段 + 每步产物写 DB 的检查点）；②**长任务被压缩后恢复**：五问 → 读 task_plan →",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/planning-with-files/SKILL.md",
+   "note": "三张 WQ 情景卡：一次 RA 战役的计划 / 压缩后恢复（五问 → 台账核对） / 用户说「直接改，别写计划」"
   },
   "RA-01": {
    "status": "fixed",

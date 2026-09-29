@@ -159,3 +159,83 @@ def test_source_never_deletes_anything_but_its_own_tempdir():
     text = SCRIPT.read_text(encoding="utf-8")
     calls = [ln.strip() for ln in text.splitlines() if "shutil.rmtree(" in ln and not ln.strip().startswith("#")]
     assert calls == ["shutil.rmtree(tempdir, ignore_errors=True)   # our own temp clone only — never a user/skill folder"]
+
+
+# ---------------------------------------------------------------------------
+# PB-04 / PB-05（2026-09-29）：二级目录仓库、空导入不再「成功」、ZIP 下载有界
+# ---------------------------------------------------------------------------
+def test_nothing_imported_is_a_failure_with_a_subdir_hint(tmp_path):
+    src = tmp_path / "src"
+    _mk(src / "skills", "nested", BENIGN)                 # skill 放在 skills/<name>/ 二级目录
+    work = tmp_path / "work"
+    work.mkdir()
+    out = _run([str(src)], tmp_path / "home", work)
+    assert out.returncode == 4, out.stdout
+    data = json.loads(out.stdout)
+    assert data["ok"] is False and data["stage"] == "nothing_imported" and "--subdir skills" in data["error"]
+
+
+def test_subdir_reaches_second_level_skills_and_refuses_escape(tmp_path):
+    src = tmp_path / "src"
+    _mk(src / "skills", "nested", BENIGN)
+    work = tmp_path / "work"
+    work.mkdir()
+    ok = _run([str(src), "--subdir", "skills"], tmp_path / "home", work)
+    assert ok.returncode == 0, ok.stderr
+    assert [c["folder"] for c in json.loads(ok.stdout)["copied"]] == ["nested"]
+    assert (work / "import_staging" / "nested" / "SKILL.md").is_file()
+
+    (tmp_path / "outside").mkdir()
+    esc = _run([str(src), "--subdir", "../outside"], tmp_path / "home", work)
+    assert esc.returncode == 2 and json.loads(esc.stdout)["stage"] == "subdir"
+    missing = _run([str(src), "--subdir", "nope"], tmp_path / "home", work)
+    assert missing.returncode == 2
+
+
+def test_download_is_bounded_by_size_and_timeout(ps, tmp_path, monkeypatch):
+    import io
+    import urllib.request
+
+    seen = {}
+
+    class Resp(io.BytesIO):
+        def __init__(self, data, declared=None):
+            super().__init__(data)
+            self.headers = {"Content-Length": declared} if declared else {}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def fake_open(url, timeout=None):
+        seen["timeout"] = timeout
+        return Resp(b"x" * 2048)
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_open)
+    with pytest.raises(ValueError, match="exceeds"):
+        ps.download_zip("https://example.invalid/a.zip", str(tmp_path / "a.zip"), max_bytes=1024)
+    assert seen["timeout"] == ps.ZIP_TIMEOUT_S
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda url, timeout=None: Resp(b"x", declared="999999999"))
+    with pytest.raises(ValueError, match="too large"):
+        ps.download_zip("https://example.invalid/b.zip", str(tmp_path / "b.zip"), max_bytes=1024)
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda url, timeout=None: Resp(b"y" * 100))
+    assert ps.download_zip("https://example.invalid/c.zip", str(tmp_path / "c.zip"), max_bytes=1024) == 100
+
+
+def test_skill_doc_matches_the_code_defaults_and_flags():
+    """PB-03：文档与代码的默认目的地 / 选项必须一致（此前恰好相反）。"""
+    doc = (ROOT / "Claude" / "skills" / "pull-brain-skills" / "SKILL.md").read_text(encoding="utf-8")
+    code = SCRIPT.read_text(encoding="utf-8")
+    assert "attic/import_staging" in doc and "attic" in code and "import_staging" in code
+    assert "默认 = 仓库真相源 `Claude/skills/`" not in doc
+    for flag in ("--dest", "--branch", "--subdir", "--overwrite", "--allow-live-dest", "--accept-risk"):
+        assert flag in code and flag in doc, f"{flag} 没有同时出现在代码与文档里"
+    for exit_code in ("退出码", "4"):
+        assert exit_code in doc
+    # 示例里的 --overwrite 不能出现在「首选推荐」的默认命令上
+    first_example = doc.split("### 示例 1", 1)[1].split("### 示例 2", 1)[0]
+    assert "--overwrite" not in first_example

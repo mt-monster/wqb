@@ -1,7 +1,8 @@
 #!/bin/bash
 # Check if all phases in task_plan.md are complete
 # Exit 0 if complete, exit 1 if incomplete
-# Used by Stop hook to verify task completion
+# Manual check only (2026-09-29): the Stop hook is now an inline, non-blocking reminder in SKILL.md frontmatter.
+# Exit 1 here is for scripts/humans calling this file directly; no hook runs it.
 
 PLAN_FILE="${1:-task_plan.md}"
 
