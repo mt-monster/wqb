@@ -11,7 +11,7 @@
 | 时点 | 门禁回答的问题 | 做法 |
 |---|---|---|
 | **挖矿期**（步 1） | 这个战役**要不要进 PPA 分支** | `get_messages(limit=30)` 实时扫当期 Power Pool 公告（**每次 S-PRE 重扫，禁止复用 settings 快照**）：主题的 region / delay / universe **匹配** → 走 PPA 分支；**不匹配 → 走 RA 分支**（不为不受理的主题烧配额） |
-| **候选期**（步 7 之后） | 一颗**已达标**的候选**现在能不能走 PPA 通道** | 不在当期主题窗口 → 候选标 `YELLOW` + `WAIT_THEME_ROTATION`（`brain-alpha-judge` 用同名结果值，不返回 `READY`），**等主题轮转**；RA 常规提交**不受**主题限制 |
+| **候选期**（步 7 之后） | 一颗**已达标**的候选**现在能不能走 PPA 通道** | 不在当期主题窗口 → agent **手工**把候选标为 `YELLOW` + `WAIT_THEME_ROTATION`（**没有代码实现**：`brain-alpha-judge` 脚本只有 READY / REVIEW / BLOCK 三态，不产出该值；记入本波 `key_findings`），**等主题轮转**；RA 常规提交**不受**主题限制 |
 | **提交期**（步 8） | 走 MCP 还是 web UI | 见 [`ppa-handoff.md`](../../worldquant-submit-alpha/references/ppa-handoff.md)：满足本地预检可走 MCP，否则 agent **停下交接**人工在 web UI 提交 |
 
 ## 2. 逐步差异表

@@ -17,8 +17,11 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-# 缓存位置：skill 目录下，随 skill 分发
-SKILL_DIR = Path.home() / ".qoder-cn" / "skills" / "brain-alpha-robustness"
+# 缓存位置：仓库内 skill 目录下（随 skill 分发）。2026-09-29 前写死为 `~/.qoder-cn/skills/...`——那是某一个宿主的
+# 安装位，其它宿主 / 云端环境不存在（skills 审查 RB-04）。可用 WQ_ROBUSTNESS_SKILL_DIR 覆盖。
+_REPO = Path(__file__).resolve().parents[1]
+SKILL_DIR = Path(os.environ.get("WQ_ROBUSTNESS_SKILL_DIR")
+                 or (_REPO / "Claude" / "skills" / "brain-alpha-robustness"))
 CACHE_FILE = SKILL_DIR / "data" / "forum_cache.json"
 TTL_DAYS = 7
 

@@ -250,7 +250,9 @@ async def set_alpha_properties(alpha_id: str, name: Optional[str] = None,
     """
       Note: Update alpha properties (name, color, tags, descriptions).
       For SUPER alphas, selection_description and combo_description are also required and must
-      each be at least 100 English characters.
+      each be at least 100 English characters. For a SUPER alpha pass ONLY those two (leave
+      `descriptions` at its default): a `descriptions` value adds a `regular` field to the PATCH
+      body, which the platform rejects with 400 for type=SUPER.
       Args:
         color: may be one of `RED` `GREEN` `YELLOW` `BLUE` `PURPLE`；
         name: 使用生产相关性命名，不能带空格；建议基于 production correlation
@@ -270,7 +272,7 @@ async def set_alpha_properties(alpha_id: str, name: Optional[str] = None,
         Must be at least 100 English characters. Write in English.
     """
     try:
-        if descriptions and descriptions == "None":
+        if descriptions and descriptions == "None" and not (selection_description or combo_description):
             return {
                 "error": (
                     "descriptions cannot be the literal string 'None'. "

@@ -1,5 +1,5 @@
 {
- "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。",
+ "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。 变更记录：2026-09-29 brain-alpha-robustness +mcp__wqb-db__*（稳健性结论写台账 robustness_<alpha_id> 需要 upsert_ledger_key；只写该键，读取方 submit_verdict；已人审：wqb-db 是本地库，无外发面，RA 等 skill 同样持有）。",
  "allowed_tools": {
   "alpha-expression-verifier": [
    "Bash"
@@ -44,7 +44,8 @@
   "brain-alpha-robustness": [
    "Bash",
    "Read",
-   "mcp__wq-brain-http__*"
+   "mcp__wq-brain-http__*",
+   "mcp__wqb-db__*"
   ],
   "brain-calculate-alpha-selfcorr-quick": [
    "Bash",

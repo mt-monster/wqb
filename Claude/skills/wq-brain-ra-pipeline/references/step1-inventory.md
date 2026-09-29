@@ -84,7 +84,7 @@ python tools/campaign_intel.py s0-select --region $REGION --delay $DELAY --unive
 
 1. `mcp__wq-brain-http__get_messages(limit=30)`，扫 `type == "ANNOUNCEMENT"` 且标题含 "Power Pool" 的公告。
 2. 解析当期主题：region / delay / universe / 中性化集合 / 禁止数据集 / 有效时间。
-3. **PPA 提交必须精确匹配主题**；不在当期主题的达标候选标 `YELLOW + WAIT_THEME_ROTATION`（这是挖矿期的候选标签；它与提交期的 web UI 主题窗口核对是两道不同的门，后者见 [`ppa-handoff.md`](../../worldquant-submit-alpha/references/ppa-handoff.md)）。RA 常规提交不受主题限制。
+3. **PPA 提交必须精确匹配主题**；不在当期主题的达标候选由 agent 手工标 `YELLOW + WAIT_THEME_ROTATION`（**没有代码实现**，记入本波 `key_findings`；它与提交期的 web UI 主题窗口核对是两道不同的门，后者见 [`ppa-handoff.md`](../../worldquant-submit-alpha/references/ppa-handoff.md)）。RA 常规提交不受主题限制。
 4. **每次 S-PRE 实时重扫，禁止复用 settings 快照**（实证：GLB/D1 Liquid Aug'26 主题到期后 settings `_ppa_theme` 仍写「匹配，可继续」）；新主题的准入条件会变，读公告原文。
 
 ## 1.7 产物与失败分支

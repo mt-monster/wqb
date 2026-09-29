@@ -605,6 +605,35 @@ def baseline_from_platform(client: AceClient, alpha_id: str) -> Dict[str, Any]:
     }
 
 
+_DESC_SECTIONS = ("Idea:", "Rationale for data used:", "Rationale for operators used:")
+
+
+def notes_from_description(description: Any) -> Dict[str, str]:
+    """从三段式 alpha description 取 rubric 的两个必填证据字段（skills 审查 JD-13）。
+
+    `--alpha-id` 模式下候选只有 alpha_id 与平台回填的 expression，rubric 的 `economic_foundation`
+    （必填 idea_summary / rationale）此前**天生不过**——没有任何产出者。平台侧的三段式 description
+    （Idea / Rationale for data used / Rationale for operators used）正是这两项证据的来源：
+        idea_summary ← Idea；rationale ← 两段 Rationale 拼接。
+    其余 notes 字段（稳健性 / 覆盖 / 换手 / 相关性 …）仍须由调用方经 `--input-json` 提供，见 SKILL「证据字段」表。
+    """
+    text = str(description or "")
+    if not text.strip():
+        return {}
+    positions = sorted((text.find(h), h) for h in _DESC_SECTIONS if text.find(h) >= 0)
+    parts: Dict[str, str] = {}
+    for i, (pos, header) in enumerate(positions):
+        end = positions[i + 1][0] if i + 1 < len(positions) else len(text)
+        parts[header] = flatten_text(text[pos + len(header):end])
+    out: Dict[str, str] = {}
+    if parts.get("Idea:"):
+        out["idea_summary"] = parts["Idea:"]
+    rat = " ".join(x for x in (parts.get("Rationale for data used:"), parts.get("Rationale for operators used:")) if x)
+    if rat:
+        out["rationale"] = rat
+    return out
+
+
 def evaluate_required_fields(candidate: Dict[str, Any], required_fields: Iterable[str]) -> Tuple[bool, List[str]]:
     missing = [field for field in required_fields if not flatten_text(candidate.get(field, ""))]
     return (not missing, missing)
@@ -736,6 +765,17 @@ def evaluate_extra_standards(
     else:
         overall = "pass"
     return {"overall": overall, "rules": results}
+
+
+_VERDICT_RANK = {"READY": 2, "REVIEW": 1, "BLOCK": 0}
+
+
+def stricter_verdict(a: str, b: str) -> str:
+    """两个判定里更严的一个（BLOCK < REVIEW < READY）。LLM 只能**收紧**确定性判定，不能放宽——
+    否则 platform 数据缺失 / PPA 闸失败时，一个乐观的 LLM 回答就能把 overall_verdict 抬成 READY，
+    而文档承诺的「不能为 READY」护栏此前只对 internal_gate_failures 与配额生效（skills 审查 JD-07 / JD-10）。"""
+    ra, rb = _VERDICT_RANK.get(a, 1), _VERDICT_RANK.get(b, 1)
+    return a if ra <= rb else b
 
 
 def deterministic_verdict(platform: Dict[str, Any], extra: Dict[str, Any]) -> str:
@@ -932,6 +972,15 @@ def render_markdown(result: Dict[str, Any]) -> str:
     lines = [
         f"# Alpha Judge Report: {result.get('candidate_label', 'candidate')}",
         "",
+    ]
+    degraded = result.get("degraded") or {}
+    if degraded.get("is_degraded"):
+        lines.extend([
+            f"> ⚠ **降级运行**（{', '.join(degraded.get('reasons') or [])}）：没有平台数据，只剩表达式启发式；"
+            "verdict 上限 REVIEW，**不得作为提交依据**。",
+            "",
+        ])
+    lines += [
         f"- Alpha ID: {result.get('alpha_id', '') or 'N/A'}",
         f"- Platform Submit OK: {result['platform'].get('platform_submit_ok', False)}",
         f"- Extra Standard Status: {result['extra'].get('overall', 'review')}",
@@ -1248,6 +1297,14 @@ def main() -> int:
 
         if not candidate.get("expression") and platform.get("expression"):
             candidate["expression"] = platform["expression"]
+        # 证据字段：调用方没给的 idea_summary / rationale，取平台 description 的三段式（见 notes_from_description）
+        if platform.get("available"):
+            regular = (platform.get("alpha_details") or {}).get("regular")
+            derived = notes_from_description(regular.get("description") if isinstance(regular, dict) else None)
+            for key, value in derived.items():
+                if not flatten_text(candidate.get(key, "")):
+                    candidate[key] = value
+                    candidate.setdefault("_derived_from_description", []).append(key)
 
         heuristics = analyze_expression(candidate.get("expression", ""), rubric)
         extra = evaluate_extra_standards(candidate, rubric, heuristics, platform)
@@ -1267,7 +1324,7 @@ def main() -> int:
         )
         llm_decision = llm_judge.decide(llm_payload)
         if llm_decision.get("available") and llm_decision.get("verdict") in {"READY", "REVIEW", "BLOCK"}:
-            overall_verdict = str(llm_decision.get("verdict"))
+            overall_verdict = stricter_verdict(str(llm_decision.get("verdict")), rule_based_verdict)
         else:
             overall_verdict = rule_based_verdict
         # 硬护栏：内部硬闸失败 → 上限 BLOCK；仅配额未释放 → 上限 REVIEW（等配额释放后重判）。
@@ -1276,9 +1333,16 @@ def main() -> int:
         if platform.get("quota_blocked") and overall_verdict == "READY":
             overall_verdict = "REVIEW"
 
+        degraded_reasons = []
+        if client is None:
+            degraded_reasons.append("no_credentials_or_client")
+        if not platform.get("available"):
+            degraded_reasons.append("platform_data_unavailable")
         report = {
             "alpha_id": alpha_id,
             "candidate_label": alpha_id or safe_slug(candidate.get("idea_summary", "candidate")),
+            # 降级运行（无凭据 / 平台数据取不到）：只剩表达式启发式，verdict 上限 REVIEW，不得作为提交依据
+            "degraded": {"is_degraded": bool(degraded_reasons), "reasons": degraded_reasons},
             "platform": platform,
             "value_factor_trend": trend_block,
             "value_factor_projection": projection,

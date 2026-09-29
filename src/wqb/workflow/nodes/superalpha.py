@@ -36,7 +36,7 @@ def run(
     components: List[str],
     selection: Optional[str] = None,
     combo: Optional[str] = None,
-    neutralization: str = "SUBINDUSTRY",
+    neutralization: Optional[str] = None,
     confirm_submit: bool = False,
     dry_run: bool = False,
     _context: Optional[Dict[str, Any]] = None,
@@ -48,7 +48,8 @@ def run(
         components: 组件 alpha ID 列表（≥10 个 ACTIVE REGULAR）
         selection: selection 表达式（默认自动生成）
         combo: combo 表达式（默认自动生成）
-        neutralization: 中性化方式（默认 SUBINDUSTRY）
+        neutralization: 中性化方式（**必填，无缺省**：结论因区而异——USA / GLB 已知最优 SUBINDUSTRY，
+            KOR / IND 已知最优 STATISTICAL，不可跨区照搬；2026-09-29 取消 SUBINDUSTRY 缺省）
         confirm_submit: 是否真正提交（默认 False，仅建 simulation）
         dry_run: 是否干跑
         _context: 执行上下文
@@ -74,6 +75,11 @@ def run(
 
     if len(components) < _MIN_COMPONENTS:
         result["error"] = f"Need at least {_MIN_COMPONENTS} components, got {len(components)}"
+        return result
+
+    if not neutralization:
+        result["error"] = ("neutralization 必须显式指定（无缺省）：最优方案因区而异，USA / GLB 已知 SUBINDUSTRY、"
+                           "KOR / IND 已知 STATISTICAL，需逐区扫描，不可照搬默认值")
         return result
 
     # Step 1: SA 组件池探针（真实统计同区域 ACTIVE/IS/OS REGULAR 数）
@@ -117,10 +123,14 @@ def run(
         return result
 
     # Step 2: select（创建 SUPER simulation）
+    # selection / combo 缺省（None）由 super_build 按模板生成；显式给出则原样覆盖（此前这两个参数被静默忽略）。
+    # components 只用于「≥10 颗」计数与 sa_probe 核对——SUPER 的成分由 selection 表达式在运行时筛选，不按 id 列表指定。
     select_result = _run_super_build("select", {
         "region": region,
         "universe": _default_universe(region),
         "neutralization": neutralization,
+        "selection": selection,
+        "combo": combo,
     })
     result["steps"].append(select_result)
     if not select_result.get("success"):

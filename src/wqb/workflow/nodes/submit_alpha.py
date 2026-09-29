@@ -198,6 +198,19 @@ def run(
         result["blocked"] = True
         return _finalize(result, store, alpha_id)
 
+    # 2026-09-29（skills 审查 SP-13 / T0-4）：SUPER 的提交只走 `super_build.py submit`（或
+    # `workflow_superalpha(confirm_submit=True)`，它内部调用同一入口）——那里有 prod ≥ 0.7 不提交的闸。
+    # 本节点没有 prod 闸，`force=True` 还会跳过本地预检：对 SUPER 直接 confirm_submit=True 等于绕过用户铁律，
+    # 且第一次通过的 POST 就是真提交。所以在任何副作用（改属性 / POST）之前拒绝，force 也不能放行。
+    if confirm_submit and _alpha_type(precheck) == "SUPER":
+        result["reason"] = "super_requires_super_build"
+        result["blocked"] = True
+        result["error"] = (
+            "SUPER alpha 不得经本节点提交：请用 `python tools/super_build.py submit --alpha-id <ID>`"
+            "（内置 prod 闸，max ≥ 0.7 或探针超时一律拒绝）或 `workflow_superalpha(confirm_submit=True)`；"
+            "`force=True` 对 SUPER 无效。见 wq-brain-superalpha。")
+        return _finalize(result, store, alpha_id)
+
     # Step 2: 设置属性（仅在实际提交前做，避免空改）
     if confirm_submit:
         # tags 未显式给出 → 按规范自动生成（此处才可触碰网络：dry-run 已在上面短路）
@@ -298,6 +311,13 @@ def run(
         result["async_stuck"] = True
 
     return _finalize(result, store, alpha_id)
+
+
+def _alpha_type(details: Any) -> str:
+    """alpha 详情里的 type（REGULAR / SUPER / …），缺失或异常返回空串。"""
+    if not isinstance(details, dict):
+        return ""
+    return str(details.get("type") or "").strip().upper()
 
 
 def _classify_submit_response(submit: Any) -> str:

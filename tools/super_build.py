@@ -12,8 +12,8 @@
 
 子命令:
   select  创建 SUPER simulation（参数全 CLI，不再硬编码区域）
-          python tools/super_build.py select --region MEA --universe TOP400 \
-              --delay 1 --decay 5 --selection-limit 10 --self-gate 0.55
+          python tools/super_build.py select --region KOR --neutralization STATISTICAL \
+              --decay 5 --selection-limit 10 --self-gate 0.55   # universe / delay 缺省取 config.REGIONS
   status  查 SUPER 模拟状态与指标
           python tools/super_build.py status --alpha-id KPGvRMg1
   probe   零成本双闸探针（SELF 本地计算 + PROD 平台）
@@ -180,8 +180,34 @@ def build_combo_description(region):
     )
 
 
+def resolve_universe_delay(region, universe=None, delay=None):
+    """universe / delay 一律取自 `wqb.config.REGIONS`（合法档位的唯一来源），不再有写死的 TOP400 缺省。
+
+    旧 CLI 缺省 `--universe TOP400` 只对 MEA 合法：USA 的档位是 TOP3000 / TOP2000 …、KOR 是 TOP600，
+    传错平台回 HTTP 500（无提示，极易误判为服务故障）。返回 (universe, delay)；不合法抛 ValueError（含合法清单）。
+    """
+    from wqb.config import REGIONS  # noqa: WPS433  （main() 已 bootstrap 了 src 路径）
+    cfg = REGIONS.get(str(region).upper())
+    if cfg is None:
+        raise ValueError(f"未知区域 {region!r}；合法区域：{sorted(REGIONS)}")
+    universes = list(cfg.get("universes") or [cfg["default_universe"]])
+    delays = list(cfg["delays"])
+    uni = universe or cfg["default_universe"]
+    dly = delays[0] if delay is None else delay
+    if uni not in universes:
+        raise ValueError(f"{region} 的合法 universe = {universes}，收到 {uni!r}（非法档位平台回 HTTP 500）")
+    if dly not in delays:
+        raise ValueError(f"{region} 的合法 delay = {delays}，收到 {dly!r}")
+    return uni, dly
+
+
 async def cmd_select(a):
     from brain_api import BrainApiClient, SimulationData, SimulationSettings  # noqa: F402
+    try:
+        a.universe, a.delay = resolve_universe_delay(a.region, a.universe, a.delay)
+    except ValueError as e:
+        print(f"[error] {e}")
+        return 1
     brain = BrainApiClient()
     await brain.ensure_authenticated()
     settings = SimulationSettings(
@@ -192,11 +218,13 @@ async def cmd_select(a):
         selectionHandling="POSITIVE", selectionLimit=a.selection_limit,
         componentActivation="IS", unitHandling="VERIFY", nanHandling="ON",
     )
-    selection = SELECTION_TEMPLATE.format(self_gate=a.self_gate,
-                                          turnover_min=getattr(a, "turnover_min", 0.01),
-                                          turnover_max=getattr(a, "turnover_max", 0.5),
-                                          prod_ceiling=getattr(a, "prod_ceiling", 0.7))
-    combo = COMBO_TEMPLATE.format(expr=combo_expr(getattr(a, "combo_power", 1)))
+    # --selection / --combo 给出完整表达式时覆盖模板（workflow_superalpha 的 selection / combo 参数经此生效）
+    selection = getattr(a, "selection", None) or SELECTION_TEMPLATE.format(
+        self_gate=a.self_gate,
+        turnover_min=getattr(a, "turnover_min", 0.01),
+        turnover_max=getattr(a, "turnover_max", 0.5),
+        prod_ceiling=getattr(a, "prod_ceiling", 0.7))
+    combo = getattr(a, "combo", None) or COMBO_TEMPLATE.format(expr=combo_expr(getattr(a, "combo_power", 1)))
     sim_data = SimulationData(type="SUPER", settings=settings, regular=None,
                               combo=combo, selection=selection)
     print(f"[select] SUPER {a.region}/{a.universe}/d{a.delay}/decay{a.decay}/"
@@ -301,6 +329,9 @@ async def cmd_submit(a):
     #      命名为 USA_S_10comp_01）。故 name 与 description 一律**以 alpha 详情的真实 region 为准**。
     if d.get("settings") and (d.get("settings") or {}).get("region"):
         a.region = (d.get("settings") or {}).get("region")
+    # 描述里写的中性化方案以 alpha 详情为准（不再依赖调用方另传一份、也不再有会误导的 SUBINDUSTRY 缺省）
+    if not a.neutralization:
+        a.neutralization = (d.get("settings") or {}).get("neutralization") or "the configured"
     name = a.name
     if not name:
         # ★ 2026-09-24 修：原先调用 build_name(..., seq=1) → 恒为 `_01`，**同区同 selectionLimit 的
@@ -342,11 +373,14 @@ def main():
 
     p = sub.add_parser("select", help="创建 SUPER simulation")
     p.add_argument("--region", required=True)
-    p.add_argument("--universe", default="TOP400")
-    p.add_argument("--delay", type=int, default=1)
+    p.add_argument("--universe", default=None,
+                   help="缺省取 wqb.config.REGIONS[region] 的默认档；显式传入须在该区合法档位内")
+    p.add_argument("--delay", type=int, default=None,
+                   help="缺省取该区 delays[0]；显式传入须在该区合法 delay 内")
     p.add_argument("--decay", type=int, default=5)
-    p.add_argument("--neutralization", default="SUBINDUSTRY",
-                   help="中性化方案；★区域相关须逐区扫描（USA 最优 SUBINDUSTRY、IND 最优 STATISTICAL，结论不可迁移），勿照搬默认")
+    p.add_argument("--neutralization", required=True,
+                   help="中性化方案（必填，无缺省）：★区域相关须逐区扫描（USA / GLB 已知最优 SUBINDUSTRY、"
+                        "KOR / IND 已知最优 STATISTICAL，结论不可迁移），缺省值会把人引向错误起点（2026-09-29 取消缺省）")
     p.add_argument("--truncation", type=float, default=0.08)
     p.add_argument("--combo-power", type=int, default=1,
                    help="combo 权重幂次（杠杆 3）：1/3/5，5 次方实测最优（免费压最后一截）")
@@ -358,6 +392,10 @@ def main():
                    help="selection turnover 上限（池内成分 turnover 最高 0.5495 时需调至 0.6）")
     p.add_argument("--prod-ceiling", type=float, default=0.7,
                    help="selection 评分项 prod 上限；池内存在 prod>0.7 成分被 POSITIVE 剔除致不足 10 颗时调至 1.0（超标成分降权参与而非出局）")
+    p.add_argument("--selection", default=None,
+                   help="（可选）完整 selection 表达式，覆盖模板；缺省按 --self-gate / --turnover-* / --prod-ceiling 生成")
+    p.add_argument("--combo", default=None,
+                   help="（可选）完整 combo 表达式，覆盖模板；缺省按 --combo-power 生成")
     p.add_argument("--json", dest="json_out", help="原始结果落盘")
     p.set_defaults(fn=cmd_select)
 
@@ -377,8 +415,8 @@ def main():
     p.add_argument("--region", default="USA", help="用于生成描述模板的英文市场名")
     p.add_argument("--selection-limit", type=int, default=10)
     p.add_argument("--self-gate", type=float, default=0.55)
-    p.add_argument("--neutralization", default="SUBINDUSTRY",
-                   help="描述模板用的中性化方案名（与 select 时的实际参数一致）")
+    p.add_argument("--neutralization", default=None,
+                   help="（可选）描述模板用的中性化方案名；缺省取该 alpha 详情里的真实 settings.neutralization")
     p.add_argument("--skip-precheck", action="store_true", help="跳过提交层前置判定")
     # ★ 2026-09-25 prod 闸（用户铁律：prod≥0.7 不得提交，平台 PASS 也不提）
     p.add_argument("--prod-gate", type=float, default=0.7,

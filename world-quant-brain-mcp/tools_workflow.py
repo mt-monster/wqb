@@ -193,18 +193,22 @@ def workflow_superalpha(
     components: List[str],
     selection: Optional[str] = None,
     combo: Optional[str] = None,
-    neutralization: str = "SUBINDUSTRY",
+    neutralization: Optional[str] = None,
     confirm_submit: bool = False,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """构建并提交 SuperAlpha（superalpha 节点快捷方式）.
+
+    ⚠ 不可逆：`confirm_submit=True` 会经 `super_build.py submit` 真正提交（内置 prod ≥ 0.7 不提交的闸），
+    需要用户明确确认；默认 False 只建 simulation + 双闸探针。
 
     Args:
         region: 区域代码
         components: 组件 alpha ID 列表（≥10 个 ACTIVE REGULAR）
         selection: selection 表达式（默认自动生成）
         combo: combo 表达式（默认自动生成）
-        neutralization: 中性化方式（默认 SUBINDUSTRY）
+        neutralization: 中性化方式（**必填，无缺省**：USA / GLB 已知 SUBINDUSTRY、KOR / IND 已知 STATISTICAL，
+            结论不可跨区照搬，需逐区扫描）
         confirm_submit: 是否真正提交（默认 False，仅建 simulation + 探针）
         dry_run: 是否干跑
 

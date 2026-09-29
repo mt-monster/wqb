@@ -196,3 +196,67 @@ def test_verdict_says_zero_failed_is_not_passed_when_named_checks_pending():
     assert "PENDING" in r["verdict_note"] and "不得据此放行" in r["verdict_note"]
     clean = decide("A2", {"status": "UNSUBMITTED", "is": {"checks": [{"name": "LOW_SHARPE", "result": "PASS"}]}}, 404, [])
     assert clean["pending_gate_names"] == [] and "PENDING" not in (clean["verdict_note"] or "")
+
+
+# ---------------------------------------------------------------------------
+# 稳健性闸的落点（skills 审查 RB-03 / T0-18）：REJECT 拦、CONDITIONAL / 无记录只提示
+# ---------------------------------------------------------------------------
+
+def _clean_detail(status="UNSUBMITTED"):
+    return {"status": status, "type": "REGULAR", "settings": {"region": "KOR"},
+            "is": {"checks": [{"name": "LOW_SHARPE", "result": "PASS", "value": 2.0, "limit": 1.25}]}}
+
+
+def test_robustness_reject_blocks_an_otherwise_clean_candidate():
+    from wqb.submit_verdict_core import decide
+    r = decide("A1", _clean_detail(), 404, [],
+               robustness={"verdict": "REJECT", "failed_checks": ["RECENT_3YR_NEGATIVE"]})
+    assert r["verdict"] == "BLOCKED" and r["exit_code"] == 1
+    assert r["reason_code"].startswith("ROBUSTNESS_REJECT")
+    assert r["robustness"]["recorded"] is True and r["robustness"]["verdict"] == "REJECT"
+
+
+def test_missing_robustness_record_only_adds_a_hint():
+    from wqb.submit_verdict_core import decide
+    r = decide("A1", _clean_detail(), 404, [])
+    assert r["verdict"] == "UNVERIFIABLE"            # 不改判：无记录 fail-open
+    assert r["robustness"]["recorded"] is False
+    assert "robustness_<alpha_id>" in r["next_step"]
+
+
+def test_conditional_robustness_is_a_hint_not_a_block():
+    from wqb.submit_verdict_core import decide
+    r = decide("A1", _clean_detail(), 404, [], robustness={"verdict": "conditional"})
+    assert r["verdict"] == "UNVERIFIABLE" and r["robustness"]["verdict"] == "CONDITIONAL"
+    assert "CONDITIONAL" in r["next_step"] and "brain-alpha-repair" in r["next_step"]
+
+
+def test_pass_record_adds_no_hint_and_junk_record_is_ignored():
+    from wqb.submit_verdict_core import decide
+    r = decide("A1", _clean_detail(), 404, [], robustness={"verdict": "PASS"})
+    assert r["verdict"] == "UNVERIFIABLE" and "稳健性" not in r["next_step"]
+    junk = decide("A1", _clean_detail(), 404, [], robustness={"verdict": "MAYBE"})
+    assert junk["robustness"]["recorded"] is False      # 不认识的取值当作没有记录，不能凭它放行或拦截
+
+
+def test_already_submitted_short_circuits_before_robustness():
+    from wqb.submit_verdict_core import decide
+    r = decide("A1", _clean_detail("ACTIVE"), robustness={"verdict": "REJECT"})
+    assert r["verdict"] == "ALREADY_SUBMITTED"
+
+
+def test_read_record_roundtrip_and_tolerance(tmp_path):
+    import json
+    import sqlite3
+    from wqb.robustness_record import key_for, read_record
+    db = tmp_path / "wqb.db"
+    con = sqlite3.connect(db)
+    con.execute("CREATE TABLE ledger_kv (region TEXT, key TEXT, value TEXT, PRIMARY KEY(region, key))")
+    con.execute("INSERT INTO ledger_kv VALUES (?,?,?)",
+                ("KOR", key_for("A1"), json.dumps({"alpha_id": "A1", "verdict": "REJECT", "failed_checks": ["X"]})))
+    con.commit(); con.close()
+    got = read_record("A1", "kor", str(db))
+    assert got and got["verdict"] == "REJECT" and got["failed_checks"] == ["X"]
+    assert read_record("A2", "KOR", str(db)) is None                 # 无记录
+    assert read_record("A1", "KOR", str(tmp_path / "missing.db")) is None   # 无库：不崩
+    assert read_record("", "KOR", str(db)) is None and read_record("A1", None, str(db)) is None

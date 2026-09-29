@@ -359,7 +359,7 @@ agent_created: true              # 可选，仅模型创建的技能标注
 ```
 
 必需字段：`name` / `layer` / `description` / `last_verified`；
-可选字段：`version` / `user-invocable` / `allowed-tools` / `agent_created` / `hooks`。
+可选字段：`version` / `user-invocable` / `allowed-tools` / `agent_created` / `hooks`（`user-invocable: true` = 该 skill 也可由用户以 `/<skill 名>` 直接调用，而不只是被 agent 按 description 触发；不影响路由与边界）。
 禁止出现 `when_to_use` / `trigger_when` / `title` 等非标字段。
 权威契约见 `AGENTS.md §SKILL.md frontmatter 契约`。
 

@@ -159,7 +159,7 @@ last_verified: 2026-09-29
 ### 步 8（S4→S5）稳健闸与提交判定
 
 - **目的**：决定哪些候选值得请用户确认提交。**本步不执行提交。**
-- **前置**：步 7 的候选已过稳健性（[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)，S4→S5 必经）。
+- **前置**：步 7 的候选已过稳健性（[`brain-alpha-robustness`](../brain-alpha-robustness/SKILL.md)，S4→S5 必经；结论写台账 `robustness_<alpha_id>`，`submit_verdict` 读取——`REJECT` → `BLOCKED`，无记录只提示）。
 - **调用**（有序检查清单，任一步说「不」就停）：① **资格门** `Failed RA == 0`（`compute_webdata_failed_counts`；名单内仍有 `PENDING` 时 `Failed=0` 只表示「暂无失败」，待其算完再判）② `submit_verdict`（**否决权威**，退出码 `1` BLOCKED / `10` UNVERIFIABLE / `11` ALREADY_SUBMITTED）③ prod 实测 `check_correlation(alpha_id, refresh=True)` < 0.7 ④ **用户明确确认** ⑤ 才可 `workflow_submit_alpha(confirm_submit=True)`（**不可逆**，单独调用；执行与四态响应处置见 [`worldquant-submit-alpha`](../worldquant-submit-alpha/SKILL.md)，SUPER 走 `wq-brain-superalpha`，PPA 走 web UI 交接）。
 - **产物**：候选清单 + 每条的证据（资格门 / verdict 退出码 / prod 值）交用户。
 - **完成定义**：清单已交用户；**用户确认后**提交，`get_alpha_details` → `status == ACTIVE` 且 `dateSubmitted` 非空。

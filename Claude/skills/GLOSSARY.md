@@ -42,7 +42,7 @@
 | `submit_verdict` | `SUBMITTABLE` / `UNVERIFIABLE` / `BLOCKED` / `ALREADY_SUBMITTED`（退出码 0 / 10 / 1 / 11） | `wqb.submit_verdict_core.decide` | **看退出码**。`SUBMITTABLE` 现实中不会出现（依赖恒 404 的 GET）；`UNVERIFIABLE` = 模拟层干净但提交层无信息 → 仍须 prod 实测 + 用户确认，**不是放行** |
 | judge / `workflow_judge` | `READY` / `REVIEW` / `BLOCK` | `judge_alpha.py`（参考评审） | 只作排序 / 参考；**不放行**。路由条件里的「READY」指 judge 或 s4-prescreen，不是 `submit_verdict` |
 | `s4-prescreen` | `READY` / `REVIEW` / `REJECT` | `campaign_intel.py s4-prescreen` | S4 预筛压缩 |
-| robustness | `PASS` / `CONDITIONAL` / `REJECT` | brain-alpha-robustness | 参考闸（目前没有代码读取其判定） |
+| robustness | `PASS` / `CONDITIONAL` / `REJECT` | brain-alpha-robustness | 稳健性闸（判定写台账 `robustness_<alpha_id>`，`submit_verdict` 读取：REJECT → BLOCKED，CONDITIONAL / 无记录只提示） |
 
 ### 2.2 波级
 

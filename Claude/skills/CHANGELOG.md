@@ -18,6 +18,25 @@
 - 6 个 `tools/*.py`（`build_gate_prior_from_inventory` / `select_ra_basket` / `gen_field_inspect_packs` / `field_semantic_classify` / `wave_gate` / `sync_platform_alphas`）接入 `tools/_pyenv`：作为脚本运行时自动切到 MCP venv，文档里可写裸 `python`（skill_lint bare-python）→ RA-07 / X-14
 - 词表：**信号族**（字段集合，prod-first 分组）与**骨架指纹**（前 2 个算子，闸 PF）分开定义；旧 GLOSSARY 把两者写反 → RA-68
 
+**wq-brain-superalpha v2.0（重构）**
+- 旧 SKILL 是按时间追加的日记（后文推翻前文而前文不改；**全文没有「怎么建 SUPER simulation」的调用**；`force=True` 的 MCP 路径绕过 prod 闸；「预检」其实是真提交）。改为核心 SKILL（入口表 + 不可逆动作块 + 判定优先级 + 步 0–4 固定模板 + 参数取值理由 + 验证清单）+ `references/`（`levers-and-evidence.md` 决策表与参数-指标对照、`cases.md` 四个案例、`scenarios.md` 四张情景卡）→ SP-01 ~ SP-19
+- 由代码强制：`submit_alpha` 节点拒绝 `type == SUPER` 的 `confirm_submit=True`（SUPER 只走 `super_build.py submit`，内置 prod ≥ 0.7 闸）→ SP-13 / T0-4（`tests/unit/test_submit_alpha_super_guard.py`）
+- `super_build.py`：`--neutralization` 无缺省；universe / delay 取自 `config.REGIONS` 并校验；新增 `--selection` / `--combo`（`workflow_superalpha` 的同名参数此前被静默忽略）→ SP-17 / T0-8
+- MCP `set_alpha_properties`：允许只传 SUPER 的 selection / combo 描述（此前缺省 `descriptions` 一律报错）→ SP-06
+- 区域状态（MEA 通道对 SUPER 已关闭）从 SKILL 移到 MEA profile；「现状计数」快照删除，改为 `sa_probe` 实时命令
+
+**brain-alpha-judge（三职能重排 + 安全收口）**
+- SKILL 由「两道硬闸 + 六步 + 确认后提交」的旧骨架重排为三职能（PPA 核对清单 / trend score / 点塔排序）；旧「提交语义（GBR 旧口径）」「确认规则」「提交路由」整节删除，点塔口径只留 submit-alpha 的 `quota-and-tower.md` §2 → JD-01 ~ JD-05、JD-15 / JD-16
+- 代码：凭据只读进程环境变量（不读 `.env` / 明文文件）；LLM 只能收紧确定性判定；降级运行标记；`--alpha-id` 模式取平台三段式 description 补 rubric 必填证据字段；补 `test_judge_gates_match_config.py`（脚本注释早引用、文件并不存在）→ JD-07 / JD-09 / JD-10 / JD-13
+- 更正：`quota-and-tower.md` 的分档「差 1–2 颗一次点亮」（与「差 2 颗」重叠，且差 2 颗一次提交仍差 1 颗）；RA 文档里 `WAIT_THEME_ROTATION` 「judge 用同名结果值」的说法（没有代码实现）
+- 规划文档 `improvement-roadmap.md` / `future-improvement-guide.md` 归档到 `attic/judge_planning_docs_20260929/`
+
+**brain-alpha-robustness（「必经闸」有了代码落点）**
+- 判定写 ledger `robustness_<alpha_id>`，`submit_verdict`（CLI / MCP / 批量）读取：REJECT → BLOCKED，CONDITIONAL / 无记录只提示（新模块 `wqb.robustness_record`，键进 `docs/ledger_keys.json`，单测在 `tests/unit/test_submit_verdict_core.py`）→ RB-03 / T0-18
+- Phase A 拆分：闸门只读 `references/techniques.md`，论坛新发现只作「提案」（E 节）；`forum_cache_builder` 缓存路径改仓库内 → RB-04 / RB-05
+- 删除「提交探测协议」（逐个提交读 prodCorr，提交即真实动作）；判定表更正（子宇宙引平台相对公式、算子数降软标记、Margin 标经验线）→ RB-10 / RB-15
+- `allowed-tools` +`mcp__wqb-db__*`（写台账所需，能力基线已人审登记）
+
 **worldquant-submit-alpha / GLOSSARY / decision-table / INDEX 等（提交链单一叙述）**：见 `reports/skills_review_20260929_closure.md` 的 SB-* / X-1 / X-2 / X-4~6 条目。
 
 **已迁出本日志的历史（原 RA `SKILL.md` 里的日期叙述，按时间倒序，仅留一行）**

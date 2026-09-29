@@ -110,3 +110,7 @@ Answer a different question from platform checks:
 - `test_period_notes`
 
 The first version tolerates partial evidence, but missing evidence should usually prevent `READY`.
+
+---
+
+> **来源与权威（2026-09-29）**：本文只是对 `data/extra_submission_rubric.json` 的**英文说明**；规则 id、`severity`、`required_fields` 以 JSON 为准，两者不一致时以 JSON 为准。字段从哪来见 [`../SKILL.md`](../SKILL.md)「证据字段」。

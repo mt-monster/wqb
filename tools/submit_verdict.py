@@ -59,6 +59,7 @@ async def main():
 
     _bootstrap()
     from brain_api import BrainApiClient  # noqa: F402
+    from wqb.robustness_record import read_record as read_robustness  # noqa: F402
     from wqb.submit_verdict_core import (EXIT_CODES, decide, is_already_submitted,  # noqa: F402
                                          normalize_submit_layer)
     brain = BrainApiClient()
@@ -90,7 +91,9 @@ async def main():
     submit_url = f"{brain.base_url}/alphas/{a.alpha_id}/submit"
     resp = await brain._request("GET", submit_url)
     body = resp.json() if (resp.status_code in (200, 403) and resp.text) else {}
-    result = decide(a.alpha_id, detail, resp.status_code, normalize_submit_layer(resp.status_code, body))
+    region = ((detail.get("settings") or {}).get("region") or detail.get("region"))
+    result = decide(a.alpha_id, detail, resp.status_code, normalize_submit_layer(resp.status_code, body),
+                    robustness=read_robustness(a.alpha_id, region))
 
     print("\n--- WebDataScope Failed-count 资格门（REGULAR 看 RA / PPA 看 PPA）---")
     print(f"  Failed RA = {result['failed_ra']}；Failed PPA = {result['failed_ppa']}"

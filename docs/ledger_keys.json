@@ -1424,6 +1424,27 @@
    ],
    "missing": "build_wave 报缺清单并中止（不自动放宽）",
    "refresh": "每个预定实验一份；来源必须是实际 GEM 产物"
+  },
+  {
+   "key": "robustness_<alpha_id>",
+   "status": "active",
+   "purpose": "稳健性闸（brain-alpha-robustness）的判定落点：{alpha_id, verdict PASS|CONDITIONAL|REJECT, failed_checks[], soft_flags[], checked_at, report_path}；region = alpha 所在区域",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/brain-alpha-robustness/SKILL.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/robustness_record.py",
+     "via": "submit_verdict（CLI / MCP / 批量）：REJECT → BLOCKED；CONDITIONAL / 无记录 → 只提示"
+    }
+   ],
+   "missing": "无记录 → 判定不变，仅在 next_step 提示「稳健性结论未落台账」（fail-open：旧候选与非 RA 链候选不被一刀切挡死）；REJECT 记录一律拦（fail-closed）",
+   "refresh": "每次 robustness 审计覆盖（同一 alpha 重审后以最新为准）"
   }
  ]
 }

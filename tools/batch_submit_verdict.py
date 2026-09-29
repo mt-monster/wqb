@@ -108,12 +108,15 @@ def _verdict(alpha_id, detail, submit_status, layer_checks):
     2026-09-29 起不再自带一份判定：此前这里缺 Failed-count 资格门，与 submit_verdict 不一致。
     返回 (verdict, reason)；verdict ∈ SUBMITTABLE / UNVERIFIABLE / BLOCKED / ALREADY_LIVE。
     """
+    from wqb.robustness_record import read_record as read_robustness
     from wqb.submit_verdict_core import decide
     status = detail.get("status")
     # 已上线（ACTIVE/SUBMITTED/PENDING 等）：本地队列行是过时副本，不可再提交
     if submit_status == 404 and status != "UNSUBMITTED":
         return "ALREADY_LIVE", f"platform_status={status}"
-    r = decide(alpha_id, detail, submit_status, layer_checks)
+    region = ((detail.get("settings") or {}).get("region") or detail.get("region"))
+    r = decide(alpha_id, detail, submit_status, layer_checks,
+               robustness=read_robustness(alpha_id, region))
     if r["verdict"] == "ALREADY_SUBMITTED":
         return "ALREADY_LIVE", f"platform_status={status}"
     if r["verdict"] in ("SUBMITTABLE", "UNVERIFIABLE"):

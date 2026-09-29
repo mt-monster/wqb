@@ -1082,99 +1082,137 @@
    "cat": "情景·**是**"
   },
   "JD-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 首句“（参考层·非提交判定）”，末句却写“……或**在明确确认后提交**时使用”与英文触发语 “Before submitting a Regular or",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "description 收敛为「提交前参考评审（PPA 核对 / trend / 点塔排序）；不判定、不提交」，删「确认后提交」与 MEA 区域状态；user-invocable 在 INDEX 里登记含义"
   },
   "JD-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "同一条边界写了 **5 次**：职责边界（L25–27）、“三职能…存活的全部价值”（L31–37）、弃用声明（L41）、衔接协议（L52）、确认规则/提交路由（L238–250）",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "边界只留首屏一处；旧「两道硬闸 + 六步 + 确认后提交」骨架、弃用声明、确认规则 / 提交路由整节删除；正文重排为三职能各一节"
   },
   "JD-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "**同文件自相矛盾**：L42–44“`GET /alphas/{id}/submit` **恒返回 404**；提交层 403 分支是死代码；唯一真闸 = 确认后 POST 三态",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts/vendor/ace_client.py | Claude/skills/worldquant-submit-alpha/references/submit-chain.md",
+   "note": "删「提交语义（GBR 旧口径）」整节；vendor get_submit_verdict 只 GET、submit_alpha 只抛错；全库 GET /submit 口径只留 submit-chain（SUPER 的差异见 SP-11 needs-platform）"
   },
   "JD-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "提交后翻转延迟三个数：“~40 s 内翻 OS/ACTIVE”（L46）、“等 **4 分钟**后补发”（L114）、submit-alpha“2~3 分钟”；“受理后再次 POS",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/worldquant-submit-alpha/references/submit-chain.md",
+   "note": "judge 不再自述翻转延迟 / 二次 POST；唯一提交状态机 = submit-chain §2（REGULAR / SUPER / 补发在同一张表里）"
   },
   "JD-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "robustness 与 judge 对照表（核心问题 / 判定性质 / 关注指标 / 数据源 / 是否改表达式 / 输出）结构清晰（🟢），但：①judge 被标“**决策性**（",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "链按 AGENTS.md：资格门 → robustness → submit_verdict → prod 实测 → 用户确认；judge 标「可选参考、不在必经链上」；删「引用 robustness 结论」（脚本不读）；对照表保留并改口径"
   },
   "JD-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "“V1 当前包含 20 篇……长超时本地恢复扫描后，剩余 0 条内置搜索快照条目”是**建库过程说明**，非适用范围；篇数已漂移：`data/forum_corpus/` 与 `i",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "语料一节改为：静态快照、篇数与生成日期见 index.json（21 篇，2026-04-12）、无更新机制；建库史删除"
   },
   "JD-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“凭据前置”规定读取顺序：`configs/config.json`（含明文 `username/password` 字段）→ 环境变量 `BRAIN_USERNAME/PASSW",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/scripts/vendor/load_credentials.py | Claude/skills/brain-alpha-judge/configs/config.example.json | Claude/skills/brain-alpha-judge/scripts/judge_alpha.py | Claude/skills/brain-alpha-judge/SKILL.md | tests/unit/test_judge_never_submits.py",
+   "note": "凭据只读进程环境变量 CREDENTIALS_EMAIL/PASSWORD（旧别名保留）；不读 .env / config.json 明文 / ~/secrets；发现明文只在 stderr 提示迁移不打印值；降级运行 verdict 上限 REVIEW、报告首行标降级、JSON 有 degraded 字段；示例配置删 username/password"
   },
   "JD-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“闸门顺序”六步没有输入/命令/产物：①“确认 alpha 在基线上可提交”本身是判定（与“不作判定”冲突）；②步 2“若为 PPA（或标签含 PowerPoolSelected）",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "「运行与降级」+ 各职能表：每项写输入 / 命令 / 来源；PPA 闸触发条件统一为 type=PPA 或标签含 PowerPoolSelected；删「第 6 步提交」"
   },
   "JD-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "PPA 附加闸门与代码/规范不符：①**颜色**：“标签必须含 PowerPoolSelected；颜色为 **GREEN**”，但 `alpha_properties.COLOR",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts/judge_alpha.py | tests/unit/test_judge_gates_match_config.py",
+   "note": "颜色 PURPLE（脚本不校验，明写）；PPA Sharpe 线 1.0 与平台 LOW_SHARPE value<1 一致（新增一致性测试，脚本注释早已引用却不存在）；WAIT_THEME_ROTATION 明写「没有代码实现」并更正 RA 文档里的错误说法；CW 配方改指 how-to-pass §4（时间平滑），删被禁的加权相加推荐"
   },
   "JD-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "LLM 决策层：①“Agent 模式：直接使用当前 AI 会话产出 LLM 判定”与“judge 可调用 LLM”——在 agent 会话里 LLM 即 agent 自身，“调用”",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts/vendor/llm_judge.py | Claude/skills/brain-alpha-judge/scripts/judge_alpha.py | Claude/skills/brain-alpha-judge/configs/config.example.json | tests/unit/test_judge_never_submits.py",
+   "note": "LLM 缺省关闭；外发字段白名单写明（表达式原文默认不外发）；密钥只认 BRAIN_JUDGE_LLM_API_KEY（不读配置 api_key、不回落 OPENAI_API_KEY）；LLM 只能收紧确定性判定（stricter_verdict），overall_verdict 上界可复现；删「Agent 模式」的无对象说法；示例与模板一致"
   },
   "JD-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“建议必须引用语料/标准证据（帖子 ID 或规则 ID）”“REVIEW/BLOCK 至少 3 条具体行动”：①语料是 21 篇静态论坛帖，许多合理建议（“换数据集”“错开 dec",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "建议格式 {动作, 对象, 预期, 验收}；证据 id 可选；删「至少 3 条」数量下限与「必须引用语料」"
   },
   "JD-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 trend score 字段定义完整（`N/A/P/P_max/S_A/S_P/S_H`；`diversity_score=S_A×S_P×S_H`；仅 `stage=OS`、",
-   "cat": "逻辑·🟢+P2"
+   "cat": "逻辑·🟢+P2",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "ATOM 术语区分（judge = SINGLE_DATA_SET 纯度；how-to-pass = 提交标准放宽档）；S_P（宏观多样性）与点亮数（先提哪颗）分工写明；trend delta 标「仅信息、无决策用途」"
   },
   "JD-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "CLI 段：①PowerShell 语法（`Set-Location`、`Get-ChildItem`）+ 裸 `python scripts/judge_alpha.py` + ",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts/judge_alpha.py | tests/unit/test_judge_never_submits.py",
+   "note": "PowerShell 命令换成 $WQ_PY；补退出码 / 输出位置；证据字段表（字段 → 来源）；--alpha-id 模式自动取平台三段式 description 补 idea_summary / rationale（此前 economic_foundation 天生不过）"
   },
   "JD-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "①“确认规则（已简化：本 skill 不执行提交）……`--confirm-submit` 已废弃，勿再用”——但 `scripts/judge_alpha.py` **仍保留 `",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/brain-alpha-judge/scripts/judge_alpha.py | Claude/skills/brain-alpha-judge/scripts/vendor/ace_client.py | tests/unit/test_judge_never_submits.py",
+   "note": "--confirm-submit 移除（传入报错退出 2）、vendor submit_alpha 只抛错（由测试守）；路由条件改为「submit_verdict ≠ BLOCKED + 用户确认」，READY 是本 skill 词汇；prod 墙只引 D0-P"
   },
   "JD-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "点塔优选整节是 submit-alpha L196–233 的**第二份拷贝**（三层口径、A/B/C 档、过度提交、UNKNOWN 处理、`GET /data-fields`、`",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/brain-alpha-judge/SKILL.md | Claude/skills/worldquant-submit-alpha/references/quota-and-tower.md",
+   "note": "点塔排序只在 quota-and-tower §2（judge 只链接）；分档更正为「差 1 颗 / 差 2 颗 / 差 3 颗」，「差 1–2 颗一次点亮」的旧错误在该文档 §2.2 修正"
   },
   "JD-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "同 SB-16/SB-17：“候选将点亮哪座塔”UNKNOWN 无算法；`GET /data-fields/{field}`“列表接口带 search 返回 Invalid que",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/worldquant-submit-alpha/references/quota-and-tower.md | Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "UNKNOWN 塔不预测（quota-and-tower §2.3）；_tower_map 审计注记、GET /data-fields 说明随 JD-15 从 judge 删除"
   },
   "JD-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "“独立原则：将本 skill 视为自包含；仅从本 skill 目录导入；vendor/ 放运行时辅助；不要依赖 `untracked/`、`untracked/APP/`”是**给",
-   "cat": "职责·P3"
+   "cat": "职责·P3",
+   "where": "Claude/skills/brain-alpha-judge/references/developer-notes.md | tests/unit/test_judge_gates_match_config.py",
+   "note": "「独立原则」等开发者规约移到 developer-notes.md；INDEX 的内部闸第 3 份拷贝有一致性测试"
   },
   "JD-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "references 5 个文件中 `improvement-roadmap.md`（73 行）与 `future-improvement-guide.md`（179 行）是**规",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "attic/judge_planning_docs_20260929/README.md | Claude/skills/brain-alpha-judge/references/extra-standard-rubric.md | Claude/skills/brain-alpha-judge/SKILL.md",
+   "note": "improvement-roadmap / future-improvement-guide 归档到 attic；rubric 以 JSON 为机器可读源（英文说明加来源声明）；SKILL 补「证据字段」表"
   },
   "JD-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺三张情景：①**PPA 候选**（Sharpe 1.2、PPAC 0.42、主题当期匹配）——按现规则 BLOCK，按 PPA 口径应放行：写明用哪套口径；②**多候选点塔排序*",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/brain-alpha-judge/references/scenarios.md",
+   "note": "情景卡 JD-01 PPA 候选（Sharpe 1.2 / PPAC 0.42 / 主题匹配）、JD-02 多候选点塔排序（3 个候选，预期 X > Y > Z）、JD-03 降级运行（输出不能作依据）"
   },
   "LB-01": {
    "status": "open",
@@ -2648,89 +2686,123 @@
    "note": "全库统一「否决权威 / 放行权威」两词，删除「唯一权威 = submit_verdict」；RA 正文只剩三句（UNVERIFIABLE 不是放行）"
   },
   "RB-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "两个引用块置于 H1 之前，后一块（“权威性”）是关于**本 skill 副本谁为真相源**的元说明（旧说法已删），与稳健性无关，应在 INDEX",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "H1 之前的两个引用块删除（「权威性」元说明是 INDEX 的事；「定位声明」并入职责边界）"
   },
   "RB-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "本文自相矛盾：头部“`brain-alpha-judge` = **S5 唯一提交评审入口**（双闸评审），先过本闸再进 judge”；衔接协议与 Phase C 写“PASS →",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "judge 统一为「可选参考评审」，删「S5 唯一提交评审入口」"
   },
   "RB-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "声明“S4→S5 **必经**闸”，但**没有任何代码读取该判定**（全仓 grep：只有 `judge.py` 注释提到；`submit_verdict`/提交节点不检查）；Ph",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "src/wqb/robustness_record.py | src/wqb/submit_verdict_core.py | tools/submit_verdict.py | tools/batch_submit_verdict.py | world-quant-brain-mcp/tools_ops.py | docs/ledger_keys.json | tests/unit/test_submit_verdict_core.py | Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "「必经闸」有了代码落点：判定写台账 robustness_<alpha_id>（agent 经 upsert_ledger_key），submit_verdict 三入口读取——REJECT → BLOCKED，CONDITIONAL / 无记录只提示（fail-open 于缺失、fail-closed 于 REJECT）；键登记进目录并有单测"
   },
   "RB-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "Phase A 要求每次运行先 `forum_cache_builder --status`，过期则手工重拉 5 个关键词包（≥30 帖）并去重写回缓存——同一段先说“统一走 `-",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md | tools/forum_cache_builder.py | tests/unit/test_forum_cache_builder_paths.py",
+   "note": "Phase A 拆分：闸门只读 references/techniques.md，论坛刷新是独立任务；forum_cache_builder 缓存路径由写死的 ~/.qoder-cn/... 改为仓库内 skill 目录（WQ_ROBUSTNESS_SKILL_DIR 可覆盖）；手工刷新步骤删除，统一 --ensure / --plan"
   },
   "RB-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“若刷新发现下方核对表之外的新规则，**以新规则为准**（在会话日志记录）”——闸门阈值可被当日论坛内容改写：同一候选在不同日期可得不同判定，不可复现、无审批",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md | Claude/skills/brain-alpha-robustness/references/techniques.md",
+   "note": "论坛新发现只作「提案」追加到 techniques.md 的 E 节，人审后才进 Phase C；删「以新规则为准」"
   },
   "RB-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "步骤仍写“先经 MCP `authenticate`”（需邮箱/口令）——与 AGENTS.md 凭据红线冲突（同 NM-14/FB-10）",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "删「先经 MCP authenticate（邮箱 / 口令）」：认证由服务端完成，失败即停并请用户处理"
   },
   "RB-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "B.0：“Failed RA/PPA 非零 → **立即 REJECT**、无 CONDITIONAL 通道”；RA 步 8：非零 → **回步 7 修复**。同一情形一处“拒绝”",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "B.0 三行表：Failed > 0 → REJECT 并按 RA 步 7 转 repair 后重新入闸（不是永久判死）；PENDING → 待复查，既不 REJECT 也不 PASS"
   },
   "RB-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "B.0a 从 `tracking/field_inspect_<region>.json` 取体检结果——RA 的体检包路径是 `tracking/mining/field_ins",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "体检包路径改为 tracking/mining/field_inspect_<region 小写>_<dataset>.json，给出 tools/field_inspect_gate.py 命令"
   },
   "RB-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "近窗制度（用户指令 2026-06-20，理由：要求 10 年全强会杀活信号）+ 计算口径 + 全历史指标仅作软标记——**判据与理由并举**；“sharpe > ~0.3”“用户",
-   "cat": "情景·🟢/P3"
+   "cat": "情景·🟢/P3",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "近窗制度写明来源（用户指令 2026-06-20 + 理由）与数值：用户 2Y 线 = PLATFORM_CHECK_LINES[low_2y_sharpe_min]；「每年为正」= sharpe > 0.3，平年 |sharpe| < 0.3"
   },
   "RB-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "判定表个别行与他处不符：①“Sub-universe 全部 ≥1.0（TOP1000/500/200）”固定了子宇宙档，而平台 LOW_SUB_UNIVERSE_SHARPE 是*",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "判定表更正：子宇宙改引平台相对公式与 LOW_SUB_UNIVERSE_SHARPE 结果；算子数 REGULAR 降为软标记（PPA 才有硬上限 ≤ 8）；Margin 标注为论坛经验线（内部严线 10bp 另计）；经济可解释性给判例"
   },
   "RB-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "REJECT 后要求调用 `wqb.search.failure_memory.record(category, dataset, universe, paradigm, shap",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "Phase D：台账 robustness_<alpha_id> 是唯一被代码读取的落点；事件与 failure_memory 移出必做项（两模块全仓库无消费方，只写文件），需要时的入口指向源文件；description 软标记改走 submit-alpha 设属性"
   },
   "RB-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "Phase E 编号 1,3,4,5,6（**缺 2**）",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "Phase E 编号重排为 1–5，无缺号"
   },
   "RB-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "“提交前用 `set_alpha_properties` 预置描述 + `tags=[\"PowerPoolSelected\"]` + `color=GREEN`”与本节第 1 条“",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "PPA 标签 / 颜色澄清：用于记账与识别，web UI 流程里是否仍被要求未复核；颜色是 PURPLE 不是 GREEN"
   },
   "RB-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "“幽灵提交识别：台账记 ACTIVE 但平台 404 → **修正台账为 PHANTOM**”——`PHANTOM` 不是代码中存在的状态；且 2026-09-28 N35 之后，",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "PHANTOM 不再写 alphas.status（非代码状态，且合并写入对 ACTIVE / SUBMITTED / DECOMMISSIONED 不回退）；改为核对报告 / key_findings 留痕，并指明归属 monitor / submit-alpha 而非稳健性闸"
   },
   "RB-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“**提交探测协议**：选 5 个最大化多样样本，逐个提交+轮询 `/check` 读 prodCorr；5 个全 FAIL → 整族不可提交”——提交即真实动作（若通过即 ACT",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "「提交探测协议」（逐个提交读 prodCorr）删除并写明原因（提交即真实动作）；prod 一律 check_correlation + 决策表 D0-P"
   },
   "RB-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "“判定阈值可通过 skill 参数放宽”——skill 没有参数机制；阈值来源“2026-04-22 论坛共识”",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "「可通过 skill 参数放宽」改为「放宽入口 = 用户明确指令，留痕于 soft_flags」；skill 无参数机制"
   },
   "RB-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "验证清单第 2 条藏着**最重要的操作知识**：`check_correlation` 阻塞轮询、依赖 Redis（“本环境不可用”）易“等死”；可靠取法是 15s 间隔轮询 `G",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-alpha-robustness/SKILL.md",
+   "note": "验证清单第 2 条的取数知识提为正文「prod 相关性怎么取」；Redis 更正为可选缓存（等死来自 30s×120 次阻塞轮询与账号级单并发）；给合规入口 campaign_intel.py prod-first"
   },
   "RC-01": {
    "status": "fixed",
@@ -3554,99 +3626,137 @@
    "cat": "情景·**是**"
   },
   "SP-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 400 字，塞入 `(1 + 0 * (prod_correlation > 0))`、`score = (0.7 - prod_correlation)`",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "description 只留触发词 + 前置 + 范围；「运行环境」段（含对 SUPER 必 400 的 set_alpha_properties）移除；提交调用不再当固定写法"
   },
   "SP-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界写得好：“本区 ACTIVE REGULAR ≥10 且双闸达标；**不得改用 REGULAR 路径绕过**”（🟢 有止损句）。问题：①上游写“`submit_verdict`",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "边界重写：上游 = sa_probe GO + 用户要组 SA（不再写不可达的 SUBMITTABLE）；组件不足 → 输出「区域 / 缺口 N 颗 / 需 prod<0.55 新血」交 ra-pipeline 步 1 起；下游只写 S6 监控一种说法"
   },
   "SP-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“硬前置（必读，否则必败）”混了四类东西：①规则（≥10 颗、异步校验、描述 ≥100 字、裸 PATCH）；②**日期快照**——“现状（2026-09-11）：USA 133 ",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md | Claude/skills/wq-brain-superalpha/references/levers-and-evidence.md",
+   "note": "日期快照（USA 133 / EUR 7 …）删除，计数改为 sa_probe 实时命令；区域状态与瓶颈移入各区 profile；规则与证据分开"
   },
   "SP-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢“**201 ≠ SA 合法**：错误异步出现在模拟结果（`status:\"ERROR\"`，`At least 10 component alphas are required`",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "步 0 组件计数：region= 参数不生效的提醒上移到此；用 sa_probe（MCP / CLI），不手写 requests 翻页"
   },
   "SP-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“MEA 通道已关闭：`POST /simulations region=MEA` → 400 ‘Region MEA is not available’，既有 2 颗 MEA S",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/regions/MEA.md | Claude/skills/wq-brain-superalpha/references/cases.md",
+   "note": "MEA 通道关闭移到 MEA profile 的「SuperAlpha 状态」；SKILL 不再把 MEA 列入组 SA 区域；案例 2 标「存量，不可复制」"
   },
   "SP-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢“各需 ≥100 英文字；`set_alpha_properties` 对 SUPER 必 400（无条件带 `regular` 字段）；正确写法 = 裸 PATCH 最小 pa",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md | world-quant-brain-mcp/tools_alpha.py | world-quant-brain-mcp/tests/test_mcp_tools_unit.py",
+   "note": "失效脚本指针 logs/_fix_desc_sa4.py 删除；写明「走 CLI 描述自动写入；手工路径只传 selection_description + combo_description，不传 descriptions」；MCP set_alpha_properties 放行 SUPER 只传两段描述（此前缺省 descriptions 一律报错）并加单测"
   },
   "SP-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "配额模型再次重述（ET 日 REGULAR 4 + SUPER 1；`get_submission_quota` 已移除；读 submit 响应；“硬闸 FAIL 不消耗配额，属零",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "配额模型只留指针（quota-and-tower.md）；删除「硬闸 FAIL 属零成本探测」的泛化说法——SUPER 第一次通过的 POST 就是真提交"
   },
   "SP-08": {
-   "status": "open",
+   "status": "needs-platform",
    "title": "①combo 只给“`1 - maxCorr`；maxCorr 借助 `generate_stats/self_corr/reduce_max/if_else` 等算子构造”，示例",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "note": "已按证据改写：SKILL 给出 super_build 的完整可执行 selection / combo 模板与各参数取值理由；「USA 必须出现 prod_correlation 子串」的来源与后果、以及 500（≈2 年取整，非标准窗口）都在文中标注为未复核",
+   "verify": "① 在 USA 与另一区各建一颗 SUPER，selection 去掉 (prod_correlation > 0) 子串，看模拟是否报错；② 同池同配方仅把 self_corr 窗口 500 换成 504，比较 SELF / PROD；无差异则统一为 504（标准窗口表）"
   },
   "SP-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "**追加式文档：后文推翻前文，前文未改。** L108“把 PROD 压到 0.7 以下的**决定性因素**是 SUBINDUSTRY”；后文：“PROD 已结构性饱和（USA 0",
-   "cat": "逻辑·**P1**"
+   "cat": "逻辑·**P1**",
+   "where": "Claude/skills/wq-brain-superalpha/references/levers-and-evidence.md",
+   "note": "改写为一张双闸决策表：症状 → 已实证有效 → 已实证无效 → 止损线（PROD 饱和 → 停止调参回 RA）；阅读顺序补丁删除，SUBINDUSTRY 降为「USA / GLB 已知最优」"
   },
   "SP-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 篮宽×decay 表与 KOR decay 曲线（12→300 逐档 SELF / S / F / turnover）是全库最完整的参数-指标对照。P2：①“USA V8/V9",
-   "cat": "逻辑·🟢+P2"
+   "cat": "逻辑·🟢+P2",
+   "where": "Claude/skills/wq-brain-superalpha/references/levers-and-evidence.md",
+   "note": "V8/V9/V11/V12 变体代号给出定义；「恒」改「在 USA / KOR 观察到」；「prod < 0.6 硬门」零成本探针提到 SKILL 与 levers §3 显著位置"
   },
   "SP-11": {
-   "status": "open",
+   "status": "needs-platform",
    "title": "“**`GET /alphas/{id}/submit` 200 可能是 PENDING 假阳性**”——与 submit-alpha 关键坑 #5（“`GET /submit` ",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "note": "两份记录不一致（REGULAR 恒 404；SUPER 2026-09-11 观察为 200 但 SELF/PROD PENDING）且无法在离线环境复核；保守处置：SKILL 与 submit-chain 一律写「无论哪种 type 都不得用 GET /submit 放行，判据只有提交后的 status」",
+   "verify": "对同一环境里一颗 UNSUBMITTED 的 SUPER 与一颗 ACTIVE REGULAR 各 GET /alphas/{id}/submit，记录 HTTP 状态与 body；结果按 type 填进 submit-chain.md §3 的行为表"
   },
   "SP-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "“零成本双闸探针（提交前必做）”用 MCP `check_self_correlation` 与 `check_correlation`：①配套 CLI `super_build.",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "探针统一为 super_build.py probe；注明本地 SELF 对近期新提交孪生体的盲区（selfcorr-quick 实测 0.229 vs 0.8392），近期有同构 SA 时只当下限；run_selection 误区并入步 3「不做」"
   },
   "SP-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "submit 流程有**两个入口，安全性不同**：Step 0 的 **prod 闸**（max≥0.7 拒绝；超时 fail-closed；`--allow-prod-above",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md | src/wqb/workflow/nodes/submit_alpha.py | tests/unit/test_submit_alpha_super_guard.py | tools/super_build.py | src/wqb/workflow/nodes/superalpha.py | tests/unit/test_workflow_nodes.py",
+   "note": "入口表列全（super_build select/status/probe/submit、workflow_superalpha、sa_probe）；submit_alpha 节点代码拒绝 SUPER confirm_submit（force 无效）；不可逆动作块；「预检 = 真提交」的说法删除；workflow_superalpha 的 selection/combo 转发到 super_build select"
   },
   "SP-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "四个“真实案例”按时间顺序堆叠：案例 1 自称使用已禁用的 `combination()`，“此处仅为等价思路说明”，**不可复现**，且“成分：…→ 等价体须 PROD≤0.7 ",
-   "cat": "情景·**P1**"
+   "cat": "情景·**P1**",
+   "where": "Claude/skills/wq-brain-superalpha/references/cases.md | Claude/skills/wq-brain-superalpha/references/levers-and-evidence.md",
+   "note": "规则表（规则 / 证据 / 适用范围）与案例分离；四个案例各 5 行并标是否可复现；案例 3 / 4 标「提交时无 prod 闸，现行需 --allow-prod-above-07」；案例 1 标不可复现"
   },
   "SP-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "“判定只看 result，不看 value”出现 3 次，“我方铁律 prod≥0.7 不提交，以我方闸为准”出现 2 次，**两者并存时的优先级只在验证清单末尾一句**（L243",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "顶部「判定优先级」：平台 result=PASS 且我方 prod<0.7 才提交，后者更严，二者不冲突；「只看 result」只出现一处"
   },
   "SP-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "“淘汰的同构变体打 `RETIRE_<date>_DUP_SA` + color RED + hidden，防审计误报”——`RETIRE_…` 是 tag 还是 name 未说，",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "淘汰变体按 alpha_properties_spec：RETIRE_<YYYYMMDD> + hidden，不用 RED（RED = 已提交待退役），新前缀须先登记规范"
   },
   "SP-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 六条勾选项可检（“组件恰好 10 颗时必须放宽 gate，否则秒拒”“只看 result 但我方 prod 闸优先”）。P3：“neutralization 逐区扫描（USA/",
-   "cat": "边界·🟢+P3"
+   "cat": "边界·🟢+P3",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md | tools/super_build.py | tests/unit/test_super_build_prod_gate.py",
+   "note": "验证清单改为「需扫描的档位 + 已知最优（区域，日期）」；super_build select --neutralization 必填、无缺省（submit 的描述中性化取自 alpha 详情）；universe / delay 取自 config.REGIONS"
   },
   "SP-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`alpha-expression-verifier`：提交前本地校验 selection/combo 表达式语法”——核对：该 skill 全文**无** selection ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-superalpha/SKILL.md",
+   "note": "删除指向不具备该能力的 alpha-expression-verifier；补 SUPER 专属检查名表（SUPER_SUBMISSION / NON_SELF_SUPER_ALPHA / LOW_TURNOVER 0.02 / IND 独有 LOW_ROBUST_UNIVERSE_SHARPE）"
   },
   "SP-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "缺三张“从零到一”情景：①**KOR/IND 从 0 到 SA**：数组件 → 差 N 颗回 RA → `select`（decay / nu / self-gate）→ `sta",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/wq-brain-superalpha/references/scenarios.md",
+   "note": "情景卡 SA-01 KOR/IND 从 0 到 SA、SA-02 组件恰好 10 颗（self_gate 0.65→0.70→0.85 与代价）、SA-03 近克隆被拒（同构淘汰法）、SA-04 PROD 饱和止损线"
   },
   "T0-1": {
    "status": "open",

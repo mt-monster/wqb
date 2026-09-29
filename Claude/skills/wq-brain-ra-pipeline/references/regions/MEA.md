@@ -62,6 +62,11 @@ S-PRE 查表发现以下任一条件，`entry_verdict` 自动回升 probe-only �
 - 平台新上线 MEA 数据集（campaign 表出现 untried 项）；
 - Power Pool 主题匹配 MEA（PPA 分支，走骨架 PPA 流程）。
 
+## SuperAlpha 状态（平台状态，不属于 SA 方法论；原写在 `wq-brain-superalpha` 里）
+
+- **MEA 通道对 SUPER 已关闭**（2026-09-11 复测）：`POST /simulations` 带 `region=MEA` → 400 `{"settings":{"region":["Region MEA is not available."]}}`。既有 2 颗 MEA SA（78jYpn0Z / 3qlYKAaO）是关闭前的**存量，不能再新增**——别在 MEA 上浪费探测；`wq-brain-superalpha` 的案例 2 因此标为「不可复制」。
+- 状态会变：以 `python tools/sa_probe.py --region MEA` 与当期 `get_platform_setting_options(MEA)` 为准，不要凭本节复核。
+
 ## 避坑清单
 
 - 禁止"再试一次已 exhausted 数据集换参数"——死路 rule 优先于直觉（matrix 硬规则 2）。

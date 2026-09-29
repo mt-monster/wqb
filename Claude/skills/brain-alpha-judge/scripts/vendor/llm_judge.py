@@ -20,11 +20,10 @@ class LlmJudge:
         self.timeout_seconds = int(cfg.get("timeout_seconds", 60))
         self.language = str(cfg.get("language", "zh-CN"))
 
-        configured_key = str(cfg.get("api_key", "")).strip()
-        # 只认专用变量：不再回落到通用的 OPENAI_API_KEY——否则用户为别的用途设的 OpenAI key 会让
-        # judge 悄悄开始外发（2026-09-29）。
-        env_key = os.environ.get("BRAIN_JUDGE_LLM_API_KEY", "").strip()
-        self.api_key = configured_key or env_key
+        # 密钥只认专用环境变量：① 不再回落到通用的 OPENAI_API_KEY——否则用户为别的用途设的 OpenAI key 会让
+        # judge 悄悄开始外发；② 不再读配置文件里的 api_key 明文（2026-09-29，skills 审查 JD-10）。
+        self.config_key_ignored = bool(str(cfg.get("api_key", "")).strip())
+        self.api_key = os.environ.get("BRAIN_JUDGE_LLM_API_KEY", "").strip()
 
     def decide(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         if not self.enabled:
@@ -36,7 +35,8 @@ class LlmJudge:
         if not self.api_key:
             return {
                 "available": False,
-                "reason": "missing_api_key",
+                "reason": ("config_api_key_ignored_use_env_BRAIN_JUDGE_LLM_API_KEY"
+                           if self.config_key_ignored else "missing_api_key"),
             }
 
         system_prompt = (

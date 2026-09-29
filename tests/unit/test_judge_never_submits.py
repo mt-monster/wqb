@@ -25,6 +25,7 @@ def _load(name, path):
             sys.path.insert(0, p)
     spec = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod            # dataclass（from __future__ import annotations）解析注解时要在 sys.modules 里找到本模块
     spec.loader.exec_module(mod)
     return mod
 
@@ -174,3 +175,111 @@ def test_example_config_ships_egress_off():
     llm = cfg["judge"]["llm"]
     assert llm["enabled"] is False and llm["send_expression"] is False
     assert not llm.get("api_key")
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-29（JD-07 / JD-10）：凭据只读进程环境变量；LLM 只能收紧判定；降级运行有标记
+# ---------------------------------------------------------------------------
+
+@pytest.fixture()
+def creds():
+    return _load("judge_load_credentials_under_test", VENDOR / "load_credentials.py")
+
+
+def _clear_cred_env(monkeypatch):
+    for k in ("CREDENTIALS_EMAIL", "CREDENTIALS_PASSWORD", "BRAIN_USERNAME", "BRAIN_EMAIL", "BRAIN_PASSWORD"):
+        monkeypatch.delenv(k, raising=False)
+
+
+def test_credentials_come_from_process_env_only(creds, monkeypatch, tmp_path):
+    _clear_cred_env(monkeypatch)
+    monkeypatch.setenv("CREDENTIALS_EMAIL", "a@example.invalid")
+    monkeypatch.setenv("CREDENTIALS_PASSWORD", "pw-from-env")
+    got = creds.load_credentials(skill_dir=tmp_path)
+    assert (got.username, got.password) == ("a@example.invalid", "pw-from-env")
+
+
+def test_legacy_env_aliases_still_work(creds, monkeypatch, tmp_path):
+    _clear_cred_env(monkeypatch)
+    monkeypatch.setenv("BRAIN_USERNAME", "b@example.invalid")
+    monkeypatch.setenv("BRAIN_PASSWORD", "pw2")
+    assert creds.load_credentials(skill_dir=tmp_path).username == "b@example.invalid"
+
+
+def test_plaintext_credentials_in_config_file_are_not_used_and_not_printed(creds, monkeypatch, tmp_path, capsys):
+    _clear_cred_env(monkeypatch)
+    monkeypatch.setenv("HOME", str(tmp_path))            # 隔离 ~/secrets
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs" / "config.json").write_text(
+        json.dumps({"username": "leak@example.invalid", "password": "SECRET-IN-FILE"}), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="CREDENTIALS_EMAIL"):
+        creds.load_credentials(skill_dir=tmp_path)
+    err = capsys.readouterr().err
+    assert "configs/config.json" in err and "SECRET-IN-FILE" not in err and "leak@example.invalid" not in err
+
+
+def test_home_secrets_file_is_no_longer_a_credential_source(creds, monkeypatch, tmp_path):
+    _clear_cred_env(monkeypatch)
+    monkeypatch.setenv("HOME", str(tmp_path))
+    (tmp_path / "secrets").mkdir()
+    (tmp_path / "secrets" / "platform-brain.json").write_text(
+        json.dumps({"email": "x@example.invalid", "password": "pw"}), encoding="utf-8")
+    with pytest.raises(RuntimeError):
+        creds.load_credentials(skill_dir=tmp_path / "nowhere", allow_home_secrets=True)
+
+
+def test_example_config_carries_no_credential_fields():
+    cfg = json.loads((JUDGE / "configs" / "config.example.json").read_text(encoding="utf-8"))
+    assert "username" not in cfg and "password" not in cfg
+    assert cfg["judge"]["llm"]["enabled"] is False and cfg["judge"]["llm"]["api_key"] == ""
+
+
+def test_llm_key_only_from_dedicated_env_var(monkeypatch):
+    lj = _load("llm_judge_under_test", VENDOR / "llm_judge.py")
+    monkeypatch.delenv("BRAIN_JUDGE_LLM_API_KEY", raising=False)
+    monkeypatch.setenv("OPENAI_API_KEY", "should-not-be-used")
+    j = lj.LlmJudge({"enabled": True, "api_key": "key-in-config-file"})
+    assert j.api_key == "" and j.config_key_ignored is True
+    out = j.decide({"candidate": {}})
+    assert out["available"] is False and "BRAIN_JUDGE_LLM_API_KEY" in out["reason"]
+
+
+def test_llm_can_only_tighten_the_deterministic_verdict(judge):
+    s = judge.stricter_verdict
+    assert s("READY", "REVIEW") == "REVIEW"      # 乐观的 LLM 不能把平台数据缺失的 REVIEW 抬成 READY
+    assert s("READY", "BLOCK") == "BLOCK"
+    assert s("BLOCK", "READY") == "BLOCK"        # LLM 更严则采纳
+    assert s("REVIEW", "REVIEW") == "REVIEW"
+
+
+def test_degraded_report_is_flagged_in_markdown(judge):
+    result = {"candidate_label": "x", "alpha_id": "", "platform": {"available": False, "failed_checks": []},
+              "extra": {"overall": "review", "rules": []}, "degraded": {"is_degraded": True, "reasons": ["no_credentials_or_client"]},
+              "value_factor_trend": {}, "value_factor_projection": {}, "expression_analysis": {}, "suggestions": []}
+    md = judge.render_markdown(result)
+    assert "降级运行" in md.splitlines()[2] and "不得作为提交依据" in md
+
+
+def test_notes_from_three_section_description(judge):
+    desc = ("Idea: Buy stocks whose analyst revisions accelerate.\n\n"
+            "Rationale for data used: Revisions lead price.\n\n"
+            "Rationale for operators used: ts_rank smooths noise.")
+    got = judge.notes_from_description(desc)
+    assert got["idea_summary"] == "Buy stocks whose analyst revisions accelerate."
+    assert got["rationale"] == "Revisions lead price. ts_rank smooths noise."
+
+
+@pytest.mark.parametrize("bad", [None, "", "no headers at all", 123])
+def test_notes_from_description_tolerates_missing_or_odd_input(judge, bad):
+    assert judge.notes_from_description(bad) == {}
+
+
+def test_alpha_id_mode_rubric_is_no_longer_doomed_when_platform_has_a_description(judge):
+    """economic_foundation 的必填字段由平台 description 补上，不再恒失败。"""
+    rubric = json.loads((JUDGE / "data" / "extra_submission_rubric.json").read_text(encoding="utf-8"))
+    cand = {"alpha_id": "A1"}
+    for k, v in judge.notes_from_description("Idea: x y.\n\nRationale for data used: a.\n\nRationale for operators used: b.").items():
+        cand[k] = v
+    ok, missing = judge.evaluate_required_fields(cand, ["idea_summary", "rationale"])
+    assert ok and not missing
+    assert rubric[0]["id"] == "economic_foundation"

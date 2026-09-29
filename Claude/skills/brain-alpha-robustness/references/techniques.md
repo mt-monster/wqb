@@ -51,3 +51,12 @@
 ## D · When in doubt
 
 MH33574 (36 votes): **"when you feel not right, it is not right"**. A candidate that passes all quantitative gates but makes the reviewer uneasy about economic justification should be demoted to CONDITIONAL — the OS reality usually validates the intuition.
+
+## E · 提案区（未审核；**Phase C 不采用**）
+
+> 论坛刷新（`tools/forum_cache_builder.py` / `tools/forum_recon.py`）发现 A–D 之外的新规则时，**只追加到这里**：日期 / 来源帖 / 赞数 / 一句话规则 / 为什么可能有用。
+> 经人审后才移入 A–D 并同步改 SKILL.md 的 Phase C 表——闸门阈值不得被当日论坛内容改写（否则同一候选在不同日期得到不同判定，不可复现）。
+
+| 日期 | 来源 | 赞数 | 提案 | 状态 |
+|---|---|---|---|---|
+| — | — | — | （暂无） | — |

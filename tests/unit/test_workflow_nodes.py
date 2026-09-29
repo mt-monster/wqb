@@ -500,7 +500,7 @@ def test_superalpha_confirm_true_step_name_normalized(monkeypatch):
         return out
 
     monkeypatch.setattr(sa2, "_run_super_build", fake_build)
-    out = sa2.run(region="KOR", components=_sa_components(), confirm_submit=True)
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=True)
 
     assert out["success"] is True
     assert seen == ["select", "status", "probe", "submit"]
@@ -517,7 +517,7 @@ def test_superalpha_confirm_false_skips_submit_and_uses_same_step_name(monkeypat
                                                          "success": True,
                                                          "alpha_id": "FAKEALPHA"
                                                          if sc == "select" else None})[1])
-    out = sa2.run(region="KOR", components=_sa_components(), confirm_submit=False)
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=False)
 
     assert out["success"] is True
     assert seen == ["select", "status", "probe"], f"未确认却走了后续子命令: {seen}"
@@ -534,7 +534,7 @@ def test_superalpha_probe_blocked_stops_before_super_build(monkeypatch):
     seen = []
     monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
 
-    out = sa2.run(region="KOR", components=_sa_components(), confirm_submit=False)
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=False)
 
     assert out["success"] is False
     assert "eligible" in out["error"]
@@ -546,11 +546,39 @@ def test_superalpha_dry_run_stops_after_probe(monkeypatch):
     seen = []
     monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
 
-    out = sa2.run(region="KOR", components=_sa_components(), dry_run=True)
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", dry_run=True)
 
     assert out["success"] is True
     assert seen == []
     assert [s["step"] for s in out["steps"]] == ["sa_probe", "dry_run"]
+
+
+def test_superalpha_forwards_explicit_selection_and_combo_to_select(monkeypatch):
+    """selection / combo 是文档化的覆盖参数；此前被节点静默忽略（声明存在、实现缺位）。"""
+    _stub_probe_go(monkeypatch)
+    params_seen = {}
+
+    def fake_build(subcommand, params):
+        params_seen[subcommand] = dict(params)
+        return {"step": f"super_build_{subcommand}", "success": True,
+                "alpha_id": "FAKEALPHA" if subcommand == "select" else None}
+
+    monkeypatch.setattr(sa2, "_run_super_build", fake_build)
+    sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL",
+            selection="SEL_EXPR", combo="COMBO_EXPR")
+    assert params_seen["select"]["selection"] == "SEL_EXPR"
+    assert params_seen["select"]["combo"] == "COMBO_EXPR"
+    assert params_seen["select"]["neutralization"] == "STATISTICAL"
+
+
+def test_superalpha_requires_explicit_neutralization(monkeypatch):
+    """最优中性化因区而异（USA / GLB = SUBINDUSTRY、KOR / IND = STATISTICAL）；不再有 SUBINDUSTRY 缺省。"""
+    _stub_probe_go(monkeypatch)
+    seen = []
+    monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
+    out = sa2.run(region="KOR", components=_sa_components(), confirm_submit=False)
+    assert out["success"] is False and "neutralization" in out["error"]
+    assert seen == [], "缺 neutralization 时不得建 simulation"
 
 
 def test_superalpha_too_few_components_rejected(monkeypatch):

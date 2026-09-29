@@ -429,3 +429,37 @@ def test_validate_expressions_builtin_fields_skip_lookup(monkeypatch):
     assert v["unknown_fields"] == []
     assert set(v["builtin_fields"]) == {"volume", "close"}
     assert not stub.calls  # 内置字段未触发任何平台查询
+
+
+# ---------------------------------------------------------------------------
+# set_alpha_properties：SUPER 只传 selection / combo 描述（skills 审查 SP-06）
+# ---------------------------------------------------------------------------
+
+class _PropsStub:
+    def __init__(self):
+        self.args = None
+
+    async def set_alpha_properties(self, *a, **k):
+        self.args = a
+        return {"id": a[0]}
+
+
+def test_set_alpha_properties_super_descriptions_do_not_need_regular_description(monkeypatch):
+    """SUPER 的 PATCH 不能带 `regular` 字段（平台 400）；工具此前对缺省 descriptions 一律报错，等于 SUPER 描述只能绕开工具写。"""
+    import tools_alpha
+    stub = _PropsStub()
+    monkeypatch.setattr(tools_alpha, "brain_client", stub)
+    out = asyncio.run(tools_alpha.set_alpha_properties(
+        "S1", name="GLB_S_10comp_ABC123",
+        selection_description="s" * 120, combo_description="c" * 120))
+    assert "error" not in out
+    assert stub.args[4] == "None", "descriptions 必须保持缺省，client 才不会给 SUPER 带 regular 字段"
+    assert stub.args[5] == "s" * 120 and stub.args[6] == "c" * 120
+
+
+def test_set_alpha_properties_regular_without_any_description_is_still_rejected(monkeypatch):
+    import tools_alpha
+    stub = _PropsStub()
+    monkeypatch.setattr(tools_alpha, "brain_client", stub)
+    out = asyncio.run(tools_alpha.set_alpha_properties("R1", name="x"))
+    assert "error" in out and stub.args is None

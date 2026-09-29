@@ -28,6 +28,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Tuple
 
 from .config import compute_webdata_failed_counts
+from .robustness_record import normalize_record as _normalize_robustness
 
 VERDICTS = ("SUBMITTABLE", "UNVERIFIABLE", "BLOCKED", "ALREADY_SUBMITTED")
 
@@ -92,11 +93,14 @@ def decide(
     detail: Dict[str, Any],
     submit_status: Optional[int] = None,
     submit_checks: Optional[List[Dict[str, Any]]] = None,
+    robustness: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """按模拟层 + 提交层视图给出否决权威判定。
 
     ``detail`` = ``get_alpha_details`` 的返回；``submit_status`` = GET /submit 的 HTTP 状态
-    （已提交者无需请求，传 None）；``submit_checks`` = :func:`normalize_submit_layer` 的结果。
+    （已提交者无需请求，传 None）；``submit_checks`` = :func:`normalize_submit_layer` 的结果；
+    ``robustness`` = 台账 ``robustness_<alpha_id>`` 的记录（:func:`wqb.robustness_record.read_record`，
+    2026-09-29 起）：``REJECT`` → BLOCKED；``CONDITIONAL`` / 无记录 → 只在 ``next_step`` 里提示、不拦。
     返回字典的键是 MCP ``submit_verdict`` 历史返回体的超集，另加 ``exit_code`` /
     ``reason_code`` / ``next_step``。
     """
@@ -142,7 +146,9 @@ def decide(
 
     hard_gate_warns = [c for c in warns if c.get("name") in SUBMIT_HARD_GATE_WARNINGS]
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
-    ok = (not fails and not hard_gate_warns and failed_gate_ok
+    rob = _normalize_robustness(robustness) if robustness is not None else None
+    rob_reject = bool(rob and rob["verdict"] == "REJECT")
+    ok = (not fails and not hard_gate_warns and failed_gate_ok and not rob_reject
           and (submit_status == 200 or prepost_unverifiable))
 
     reasons: List[Tuple[str, List[str]]] = []
@@ -152,6 +158,8 @@ def decide(
         reasons.append((f"FAILED_COUNT_{kind}", _names(failed_gate_items)))
     if hard_gate_warns:
         reasons.append(("SUBMIT_HARD_WARN", _names(hard_gate_warns)))
+    if rob_reject:
+        reasons.append(("ROBUSTNESS_REJECT", list(rob["failed_checks"])))
     if submit_status == 403:
         reasons.append(("SUBMIT_403", _names(submit_checks)))
     if submit_status == 404 and status != "UNSUBMITTED":
@@ -176,7 +184,16 @@ def decide(
         note = "；".join(f"{code}[{','.join(nm)}]" if nm else code for code, nm in reasons)
         next_step = "先修复上述阻断项并重新回测后再判定；不要绕过（force / 直接 POST 探测均不可取）。"
 
+    if verdict != "BLOCKED":
+        if rob is None:
+            next_step += (" 稳健性结论未落台账（ledger `robustness_<alpha_id>`）：未跑 brain-alpha-robustness 则先跑；"
+                          "本提示不拦截。")
+        elif rob["verdict"] == "CONDITIONAL":
+            next_step += (" 稳健性 CONDITIONAL：先 brain-alpha-repair 修复并重审（≤ 2 轮），再请用户确认；本提示不拦截。")
     base.update({
+        "robustness": {"recorded": rob is not None, "verdict": rob["verdict"] if rob else None,
+                       "failed_checks": rob["failed_checks"] if rob else [],
+                       "checked_at": rob["checked_at"] if rob else None},
         "verdict": verdict,
         "exit_code": EXIT_CODES[verdict],
         "reason_code": reason_code,

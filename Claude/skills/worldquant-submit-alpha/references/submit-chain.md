@@ -30,7 +30,7 @@
 | 1 | **资格门**：`Failed RA == 0`（PPA 看 `Failed PPA`）；名单内若仍有 `PENDING`，`Failed=0` 只表示「暂无失败」，**待其算完再判** | 否决 | `wqb.config.compute_webdata_failed_counts`（`submit_verdict` 已内含；输出里的 `pending_ra` / `pending_ppa`） | 非零 → 回 ra-pipeline 步 7 修 | 是 |
 | 2 | **模拟层 + 硬闸类 WARNING**：`is.checks` 无 FAIL；`LOW_FITNESS` / `LOW_SHARPE` / `LOW_2Y_SHARPE` 的 WARNING 视同 FAIL | 否决 | `python tools/submit_verdict.py --alpha-id <ID>`（或 MCP `submit_verdict`；同一份实现 `wqb.submit_verdict_core`） | 见 §2.1 退出码 | 是 |
 | 3 | **prod 实测 < 0.7**（`GET correlations/prod`，账号级单并发；忙时立即返回 `correlation_busy`，阻塞轮询窗口见 `WAIT_THRESHOLDS`） | 否决 | `mcp__wq-brain-http__check_correlation(alpha_id, refresh=True)`；SUPER 用 `super_build.py probe` | ≥ 0.7 → prod 墙决策表（ra-pipeline `decision-table.md` D0） | 是 |
-| 4 | **稳健性闸**（如已跑） | 否决（目前**没有代码读取**其结论，靠人工遵守；建议落台账键后由 `submit_verdict` 读取） | brain-alpha-robustness | `REJECT` → 停 | 是 |
+| 4 | **稳健性闸** | 否决（**有代码读取**：结论落台账 `robustness_<alpha_id>`，`submit_verdict` 三入口读它——`REJECT` → `BLOCKED`；`CONDITIONAL` / 无记录只在 `next_step` 提示，不拦） | brain-alpha-robustness | `REJECT` → 停 | 是 |
 | 5 | **用户明确确认** | 放行的必要条件 | 人 | 未确认 → 停在这里，列出候选与证据交用户 | 是 |
 | 6 | **提交** `workflow_submit_alpha(confirm_submit=True)` | **放行（不可逆）** | 本 skill §4 四态表 | 200 = 已提交；201 / 202 / 空体 200 = 异步受理 | **否** |
 | 7 | **轮询与补发**：等状态离开 `UNSUBMITTED`；窗口内未翻 → 补发一次 → 再等一个窗口 → 仍未翻记 `ASYNC_STUCK` 并知会用户 | — | 窗口取 `WAIT_THRESHOLDS`（`submit_flip_wait_s` / `submit_flip_poll_s` / `submit_repost_max`） | `ACTIVE` = 完成 | — |

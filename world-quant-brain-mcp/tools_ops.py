@@ -223,6 +223,7 @@ async def submit_verdict(alpha_id: str) -> Dict[str, Any]:
          failed_ra, failed_ppa, sim_fails, submit_status, submit_checks, ...}
     """
     try:
+        from wqb.robustness_record import read_record as read_robustness  # noqa: WPS433
         from wqb.submit_verdict_core import (  # noqa: WPS433（延迟导入：MCP 包不强依赖 src）
             decide, is_already_submitted, normalize_submit_layer)
         await brain_client.ensure_authenticated()
@@ -234,8 +235,10 @@ async def submit_verdict(alpha_id: str) -> Dict[str, Any]:
         submit_url = f"{brain_client.base_url}/alphas/{alpha_id}/submit"
         resp = await brain_client._request("GET", submit_url)
         body = resp.json() if (resp.status_code in (200, 403) and resp.text) else {}
+        region = ((detail.get("settings") or {}).get("region") or detail.get("region"))
         return decide(alpha_id, detail, resp.status_code,
-                      normalize_submit_layer(resp.status_code, body))
+                      normalize_submit_layer(resp.status_code, body),
+                      robustness=read_robustness(alpha_id, region))
 
     except Exception as e:
         return {"error": f"submit_verdict failed: {str(e)}"}

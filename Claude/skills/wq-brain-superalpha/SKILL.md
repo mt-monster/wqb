@@ -1,7 +1,7 @@
 ---
-last_verified: 2026-09-28
+last_verified: 2026-09-29
 name: wq-brain-superalpha
-description: "通过 selection + combo 工作流（type=SUPER）构建并提交 WorldQuant BRAIN SuperAlpha。 触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 组合多个 alpha；或单区域需把 ≥10 个 REGULAR 组件合成一颗 SUPER alpha，并保持 prod_correlation < 0.7、 self_correlation < 0.7。覆盖 SUBINDUSTRY 杠杆、`(1 + 0 * (prod_correlation > 0))` no-op 门控、score = (0.7 - prod_correlation)、self_correlation < 0.55 硬闸、 `mcp__wq-brain-http__workflow_submit_alpha(confirm_submit=True, force=True)` 两次调用判定、以及 ≥10 颗 ACTIVE REGULAR 组件前置条件。"
+description: "构建并提交 WorldQuant BRAIN SuperAlpha（type=SUPER，selection + combo 工作流）。触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 把多个 alpha 组合成一个。前置：单一区域已有 ≥10 颗 ACTIVE REGULAR 作组件；目标：合成后 SELF / PROD 相关性均 < 0.7 且 status → ACTIVE。范围：组件计数 → 建 SUPER simulation → 双闸探针 → 提交（不可逆，需用户明确确认）。"
 layer: L5
 allowed-tools:
   - Read
@@ -10,241 +10,142 @@ allowed-tools:
   - mcp__wq-brain-http__*
 ---
 
-
-
-
-
-
-
-**运行环境**：所有 Python 命令使用 MCP venv（`$WQ_PY`），确保依赖（requests/pandas）可用。不要使用系统 Python。SuperAlpha 的创建/提交通过 WorldQuant BRAIN MCP 工具完成（mcp__wq-brain-http__get_user_alphas / mcp__wq-brain-http__set_alpha_properties / mcp__wq-brain-http__workflow_submit_alpha / mcp__wq-brain-http__check_correlation / mcp__wq-brain-http__check_self_correlation）。
-
 # WQ BRAIN SuperAlpha（selection + combo）构造与提交
 
 ## 职责边界
 
-- **本 skill 负责**：**SUPER（SuperAlpha）组套**：selection + combo 工作流，需本区 ACTIVE REGULAR ≥10 且双闸（SELF/PROD）达标
-- **本 skill 不做**：**不提交 REGULAR 单颗**（→ `worldquant-submit-alpha`）；组件不足 10 颗或双闸不过 → 回 `wq-brain-ra-pipeline` 步 7，不得改用 REGULAR 路径绕过
-- **上游 / 下游**：上游 = 本区 ≥10 颗 ACTIVE REGULAR；下游 = SUPER alpha 入池
+- **本 skill 负责**：**SUPER（SuperAlpha）组套**——select → status → probe → submit；需本区 ACTIVE REGULAR ≥ 10，且双闸（SELF / PROD）达标
+- **本 skill 不做**：**不提交 REGULAR 单颗**（→ `worldquant-submit-alpha`）；**不挖 REGULAR**（→ `wq-brain-ra-pipeline`）。组件不足时输出「缺口清单」交给 RA（见下），**不得改用 REGULAR 路径绕过**，也不得绕过 prod 闸
+- **上游 / 下游**：上游 = 本区 ≥ 10 颗 ACTIVE REGULAR（`sa_probe` 给 `GO`）+ 用户明确要组 SA；下游 = SUPER ACTIVE → S6 [`wq-backtest-monitor`](../wq-backtest-monitor/SKILL.md)（OS 监控与台账回写）
 
+**组件不足时交给 RA 的输入**：区域 / 缺口 N 颗（`sa_probe` 的 `need`）/ 若 PROD 已饱和还需 **prod < 0.55 的新血 REGULAR**（见 levers §3）。接收方 = `wq-brain-ra-pipeline` 步 1（库存盘点）起的常规九步；反向的触发（本区 ACTIVE REGULAR ≥ 10 → 可转 SuperAlpha）写在 RA 的 `loop-and-stop.md` L.4。
 
+> 本文只写**规则与每步骨架**；杠杆与参数-指标对照在 [`references/levers-and-evidence.md`](references/levers-and-evidence.md)，四个真实案例在 [`references/cases.md`](references/cases.md)，情景卡在 [`references/scenarios.md`](references/scenarios.md)，日期与变更在 [`../CHANGELOG.md`](../CHANGELOG.md)。
+> 旧版是按时间追加的日记：后文推翻前文而前文不改（「SUBINDUSTRY 是决定性杠杆」被三处后文推翻），且**全文没有一处写「怎么建 SUPER simulation」**。2026-09-29 重写。
 
-## 何时用
-- 用户说「组 SuperAlpha / 组 SA / 合成超级 alpha / 把多个 alpha 组合成一个」。
-- 目标是把一个区域内 **≥10 颗已 ACTIVE 的 REGULAR alpha** 合成为一颗 `type=SUPER` 的 alpha，
-  并要求合成后的 `PROD_CORRELATION < 0.7` 且 `SELF_CORRELATION < 0.7`，最终 `status → ACTIVE`。
-- 典型场景：USA（book 已有 ~145 ACTIVE，可直接组）；或用非 USA 区域（KOR/MEA/ASI/GLB 需先攒齐 ≥10 颗 ACTIVE 组件）。
+## 入口
 
-## 衔接协议
-- **上游**：S5 提交层判定 `tools/submit_verdict.py`（SUBMITTABLE 且 type=SUPER：单区域已攒齐 ≥10 颗 ACTIVE REGULAR 组件；brain-alpha-judge 参考评审可为点塔排序提供输入）。
-- **本 skill 角色**：S5 SUPER 落地——selection + combo 合成并提交，压 PROD/SELF < 0.7。
-- **下游**：S6 `wq-backtest-monitor`（OS 表现监控；§14 台账回写 `wave_results` + `registry_empirical` 反哺 S-PRE）。
-
-## 硬前置（必读，否则必败）
-1. **组件数量**：SUPER alpha 要求 **≥10 颗同一 region 的、已 ACTIVE 的 REGULAR alpha** 作为成分。
-   - **★ 校验时机实测修正（2026-09-11）**：平台**不在创建时**校验。`POST /simulations`
-     （type=SUPER）会**正常返回 201 + Location**，错误是**异步**出现在**模拟结果**里：
-     `GET /simulations/{id}` → `{"status":"ERROR", "message":"At least 10 component alphas are
-     required for Super Alpha.", "location":{"property":"combo"}}`。
-     → **201 ≠ SA 合法**；必须轮询模拟结果才能判定，勿把 201 当作通过。
-   - **判定入口（零成本）**：先数本区 ACTIVE REGULAR 数（`GET /users/self/alphas?status=ACTIVE`
-     翻页，按 `settings.region` + `type=='REGULAR'` 过滤）。<10 直接用此结论回复用户，
-     不必发起模拟（省一个 sim 槽）。
-   - 现状（2026-09-11 实测）：USA 133 / MEA 19 / IND 18 / KOR 13 / **EUR 7** / HKG 4 / GBR 4 /
-     ASI 2 / GLB 1（ACTIVE REGULAR 计数）。**EUR 仅 7 颗，差 3 颗**，故当前无法组 EUR SA。
-   - **★ MEA 通道已关闭（2026-09-11 复测确认）**：`POST /simulations` 带 `region=MEA` 直接
-     **400** `{"settings":{"region":["Region MEA is not available."]}}`。既有 2 颗 MEA SA
-     （78jYpn0Z / 3qlYKAaO）是关闭前的存量，**不能再新增**——别在 MEA 上浪费探测。
-   - 各区实测瓶颈（2026-09-11，均零成本探测）：
-     * **USA**：SUBINDUSTRY 才过子宇宙闸（STATISTICAL 必挂 `LOW_SUB_UNIVERSE_SHARPE`），
-       但同 nu 同评分会撞克隆 KPGvRMg1 → SELF 0.93；decay 60 降到 0.83，decay 300 虽再降
-       SELF 却摧毁子宇宙（0.47）→ **decay 窗口双向挤压，无共同可行点**。
-     * **IND**：区域专属闸 `LOW_ROBUST_UNIVERSE_SHARPE`（IND 独有，其他区无此闸）。
-     * **KOR**：SELF 可用 decay≥300 解决，PROD 0.78 是成分池结构性地板。
-   - KOR 历史教训：book 内大量 UNSUBMITTED 空壳草稿、**0 ACTIVE** → 必须先挖并提交 ≥10 颗
-     REGULAR KOR 使其 ACTIVE，才能组 SA（现已达 13 颗且已组 2 颗 SA）。
-2. **描述长度与写入方式（实测 400 坑，2026-08-28）**：selection/combo 描述**各需 ≥100 英文字**。
-   但 `set_alpha_properties`（MCP 工具与 brain_api 方法均是）**对 SUPER alpha 必返 400**——它无条件在 payload
-   带 `regular` 字段，SUPER 无 regular 组件被平台拒绝。**正确写法：裸 PATCH 最小 payload**：
-   `PATCH /alphas/{id}`，body 只带 `{"selection":{"description":...},"combo":{"description":...}}`
-   （勿带 regular/color/name/tags）→ 200。写完 `get_alpha_details` 回读 sel/combo desc 长度确认 >0 再提交。
-   参考脚本 `logs/_fix_desc_sa4.py`。
-3. **提交配额**：提交 REGULAR 组件与 SA 都占 **ET 日历日提交配额**（REGULAR 4 颗/日 + SUPER 1 颗/日，00:00 ET 重置，非仿真额度）；`get_submission_quota` 已于
-   2026-08-25 移除，剩余额度改从 submit 响应的 `REGULAR_SUBMISSION` check 的 value/limit 读取（counter 0→1→…）。
-   （注意：硬闸门 FAIL 的提交尝试不消耗配额，status 保持 UNSUBMITTED，属零成本探测。）
-
-## SA 的结构
-一颗 SUPER alpha 由两段表达式构成（经裸 PATCH 写入，勿用 set_alpha_properties，见硬前置 #2 的 400 坑）：
-- `selection`：从候选成分里**筛成分 + 赋权重**。
-- `combo`：把筛出的成分**合成**成最终信号。
-
-> `combination(alpha(...))` 现已**不可用**（报错 "inaccessible or unknown operator combination"）。
-> 必须用 **selection + combo** 工作流，不要尝试旧的 `combination()` 写法。
-
-## selection 语法（实测）
-- USA 区域**必须**在表达式里出现 `(prod_correlation > 0)` 子串，但作为**非门控 no-op** 写：
-  `(1 + 0 * (prod_correlation > 0))` —— 否则会把 novel（prod≈0）成分清零，逼入饱和的价值/盈利因子。
-- 评分用 `(0.7 - prod_correlation)` 偏好 novel 成分（prod 越低越被选中）。
-- 硬闸：`self_correlation < 0.55`（把自相关过高的成分剔除）。
-- turnover 界：`(0.01, 0.5)`。
-- 逻辑符：`&` / `and` 被拒；用 `*`(AND) / `||`(OR) / `==`。
-- `selectionLimit` 至少 10（即至少选出 10 个成分）。
-- `prod_correlation` 在 **selection 可用**，但在 **combo 不可用**（combo 里引用会报 "unknown variable"）。
-
-示例骨架（USA 风格）：
-```
-selection: (1 + 0 * (prod_correlation > 0)) *
-           (0.7 - prod_correlation) *
-           (self_correlation < 0.55) *
-           (turnover > 0.01) * (turnover < 0.5)
-combo:     1 - maxCorr
-```
-
-## combo 语法（实测）
-- `prod_correlation` **不可用**；只能用 `1 - maxCorr` 做 SELF 多样性。
-- `maxCorr` 借助 `generate_stats` / `self_corr` / `reduce_max` / `if_else` 等算子构造。
-- combo 的目的是降低成分间自相关，从而把 SELF_CORRELATION 压到 0.7 以下。
-- 注意：`1 - maxCorr` 只能压 **SELF**，压不动 **PROD**（生产相关由成分本身决定）。
-
-## 关键杠杆：SUBINDUSTRY 中性化
-- 把 `PROD_CORRELATION` 压到 0.7 以下的**决定性因素**是 neutralization 用 **SUBINDUSTRY**（而非 MARKET）。
-- 实测（USA KPGvRMg1）：
-  - MARKET 中性化下，该 selection 的 PROD 地板 ~0.7169（结构性：用户 book 全是正向生产相关，无负相关成分可抵消）。
-  - 换成 **SUBINDUSTRY** 后降到 **0.6944**（<0.7，过闸）。
-- 对**单颗 REGULAR alpha**，SUBINDUSTRY 无效（KOR 种子实测：prod-corr 几乎不变，且 sharpe/fitness 反而跌破 LOW 闸）。
-  SUBINDUSTRY 只在 **SA 组合层面（10+ 去中心化成分）** 才降 prod-corr。
-
-## ★★ 篮宽与 decay 的交互（2026-09-11 USA 12 结构实测，优先于上表阅读）
-**篮宽（selectionLimit 相对有效池大小）决定双闸的走向，decay 的作用方向随之改变：**
-
-| 篮 | SELF | PROD | decay 效应 |
-|---|---|---|---|
-| **窄篮**（limit 10，远小于有效池） | **高**（USA 0.83–0.93） | 低（多在 SELF 失败后未揭露） | decay↑ → **SELF↓** |
-| **宽篮**（limit ≥ 有效池，如 1000） | **过闸 ✅** | **高**（USA 0.85–0.91） | decay↑ → **PROD↑**（3→0.85, 10→0.87, 60→0.91） |
-
-- **宽篮是解 SELF 的杠杆**：宽混合信号 ≠ book 中任何单颗 alpha（USA V8/V9/V11/V12 SELF 全过）。
-- **★ 修正旧规律**：早期「decay 越大双降」来自 **top-10 窄篮**实验（09-10 USA 7 档），
-  **不可迁移到宽篮**——宽篮下 decay 与 PROD 是**正相关**。
-  正确记法：**decay 对 SELF 恒为负向杠杆；对 PROD 的方向取决于篮宽（窄篮↓ / 宽篮↑）**。
-- **selectionLimit 超过有效池后无效**：USA limit 1000 与 50 指标逐位相同（sh3.06/fit3.62/to0.0783），
-  因为有效篮子由 `self_correlation < X` 门决定，调 limit 是空转。想改篮宽要改**门**，不是改 limit。
-
-## ★ PROD 已结构性饱和（2026-09-11 跨区实测）
-| 区域 | PROD 地板 | 结论 |
+| 入口 | 做什么 | 会提交吗 |
 |---|---|---|
-| USA | **0.85–0.91**（宽篮） | 存量池饱和，调参无解 |
-| KOR | **0.78** | 存量池饱和，调参无解 |
-- **统一出路：注入低 prod 新血 REGULAR**（prod<0.55 级别），把成分池的 prod 分布整体左移。
-  新血到位后，用「宽篮 + SUBINDUSTRY + 低 decay（3–10）」这套已过 SELF 的配置直接重提。
+| `python tools/super_build.py select / status / probe` | 建 SUPER simulation / 查状态与指标 / 双闸探针 | 否 |
+| `python tools/super_build.py submit --alpha-id <ID>` | 写名称与描述 → **prod 闸** → 提交 | **是（不可逆）** |
+| `mcp__wq-brain-http__workflow_superalpha(region, components, neutralization, confirm_submit=False)` | 上面几步的 MCP 封装：sa_probe → select → status → probe →（仅 `confirm_submit=True`）submit | `confirm_submit=True` 时是——内部调用 `super_build.py submit`，**同一个 prod 闸**。只转发 region / universe / neutralization / selection / combo，`decay` / `selectionLimit` / `self_gate` 用 CLI 缺省；要调杠杆走 CLI |
+| `mcp__wq-brain-http__sa_probe(region)` / `python tools/sa_probe.py --region <R>` | 组件池计数：`GO`（ACTIVE REGULAR ≥ 10）/ `BLOCKED` | 否 |
 
-## ★ decay 是压 SA「SELF 闸」的有效杠杆（2026-09-11 KOR 实测曲线，窄篮口径）
-同池同配方（仅改 decay，selection 评分 `(1.0-self_correlation)`，nu=SECTOR）：
+**不要**对 SUPER 调 `workflow_submit_alpha(confirm_submit=True[, force=True])`：该节点没有 prod 闸，`force=True` 还跳过本地预检——旧版正是这样教的。现在节点在任何副作用之前**拒绝 SUPER**（`reason: super_requires_super_build`，`force` 也无效；`tests/unit/test_submit_alpha_super_guard.py` 守）。
+`components` 参数只用于「≥ 10 颗」计数：SUPER 的成分由 `selection` 表达式在运行时筛选，**不按 id 列表指定**。
 
-| decay | SELF_CORRELATION | sharpe | fitness | turnover |
-|---|---|---|---|---|
-| 12 | 0.8160 ❌ | 3.13 | 4.07 | 0.086 |
-| 40 | 0.7740 ❌ | 2.73 | 3.39 | 0.048 |
-| 100 | 0.7294 ❌ | 2.38 | 2.82 | 0.033 |
-| 200 | 0.7021 ❌ | 2.16 | 2.49 | 0.027 |
-| **300** | **过闸 ✅** | 2.07 | 2.36 | 0.026 |
+## 不可逆动作块
 
-- decay 单调压 SELF（平滑信号→与 book 中高频成分去相关），指标同步下降但平滑可预期。
-- **用法**：SELF 差 0.05–0.12 时，按上表斜率先把 decay 拉到 200–300 试探；turnover 会向
-  LOW_TURNOVER 闸（SUPER 0.02）逼近，须同时盯。
-- **但 PROD 不吃这一套**：decay=300 时 PROD=0.7821、混合评分 `(1.0-self)*(1.0-prod)` decay=250
-  时 PROD=0.7832 —— **PROD 地板由成分池决定，与评分/decay 无关**。
-  快速探测成分池 prod 分布：selection 加硬门 `(prod_correlation < 0.6)`，若报
-  "At least 10 component alphas" 即说明合格成分不足 10 颗（KOR 13 颗实测如此）。
+> ⚠ **不可逆：`super_build.py submit`（= `workflow_superalpha(confirm_submit=True)` 的最后一步）——第一次通过的 POST 就是真提交**，没有零成本的「再试一次」。被拒（403）零成本；通过 = 已提交（2–3 分钟后翻 ACTIVE）。
+> **前置（缺一不得执行）**：① `sa_probe` = `GO`；② SUPER simulation 已完成且 `status` 子命令无 FAIL；③ `probe` 双闸通过；④ **prod 实测 < 0.7**（CLI 内置闸：`max ≥ 0.7` 或探针超时一律拒绝，不写属性、不发 POST）；⑤ **用户明确确认**；⑥ 本 ET 日 SUPER 配额未满（`python tools/quota_status.py`）。
+> **默认形态**：`select` / `status` / `probe` 与 `workflow_superalpha(confirm_submit=False)` 都不提交。
+> **需要用户明确确认**：是。
+> **执行后必须核验**：`python tools/super_build.py status --alpha-id <ID>` → `ACTIVE`。
+> **豁免**：`--allow-prod-above-07` 只在用户显式要求时用（它同时豁免「value ≥ 0.7」与「探针超时」两种拒绝，且平台可能仍回 PASS）；不得默认携带。
 
-## ★ SUPER 提交判定陷阱：GET /submit 200 可能是 PENDING 假阳性
-- `POST /submit` → 201 后，`GET /alphas/{id}/submit` 可能返回 **200** 但 SELF/PROD 仍是 PENDING
-  （平台未算完）——**这不是过闸**。KOR 实测：GET 200 后 10 分钟仍 UNSUBMITTED，二次 POST 才吐出
-  `SELF_CORRELATION 0.7021 FAIL`。
-- **正确判据**：二次 `POST /submit`，且校验四项 SUPER 专属闸
-  （`SELF_CORRELATION` / `PROD_CORRELATION` / `SUPER_SUBMISSION` / `NON_SELF_SUPER_ALPHA`）
-  **全部出值（非 PENDING）且 PASS** 才算过。`NON_SELF_SUPER_ALPHA` 就是「同策略 SA 自残」闸。
-- 被阻的 SUPER 提交同样**零配额成本**（status 保持 UNSUBMITTED、SUPER_SUBMISSION 不计数）。
+**判定优先级**：提交 = 平台 `result == PASS`（必要）**且**我方 prod 实测 < 0.7（必要）。后者更严：平台对 SUPER 可能回带 value > 0.7 仍判 PASS（GLB 0.8094 / KOR 0.8571 实证，见 cases），但**我方铁律是 prod ≥ 0.7 不提交**——两者不冲突，任一说「不」就停。别自己按 value 预判 PASS / FAIL（分界不稳定），判定永远看 `result`。
 
-## 零成本双闸探针（提交前必做）
-提交前用以下探针确认，零成本（不消耗配额）：
-- `mcp__wq-brain-http__check_self_correlation`：SA 与自身 book 的 max_correlation；若 ≈0.9+ 命中已 ACTIVE 的 SA，Self 闸必拒。
-- `mcp__wq-brain-http__check_correlation`（prod）：SA 与已提交 alpha 的 PROD_CORRELATION；若 >0.7 必拒。
-- 若探针显示 max_correlation ≈ 0.90–0.92 且 top 命中已有 ACTIVE SA，则该 SA 是近克隆，Self 闸必拒 —— 需换成分。
+## 步骤
 
-> 误区提醒：`mcp__wq-brain-http__run_selection` 是**选股（instrument filtering）** 工具，**不是 alpha 选择**（alpha 选择由 SA 的 `selection` 表达式完成）。两者同名易混，务必区分。
+### 步 0　组件计数
+- **目的**：决定值不值得发 SUPER simulation（省一个仿真槽）。
+- **前置**：已定区域。
+- **调用**：`mcp__wq-brain-http__sa_probe(region=<R>)`；无 MCP：`python tools/sa_probe.py --region <R>`（退出码 0 = GO，1 = BLOCKED）。
+- **产物**：`{verdict, eligible, need, eligible_ids}`。`/users/self/alphas` 的 `region=` 参数**不生效**（各区返回同一份全量）——工具已拉全量后按 `settings.region` 本地分组，**不要手写 requests 翻页**。
+- **完成定义**：`verdict == GO`（`eligible ≥ 10`）。
+- **失败分支**：`BLOCKED` → 把 `need` 交 RA（见上「组件不足」），**不发 simulation**。
+- **不做**：不以「现状快照」（旧版写过「USA 133 / EUR 7 …」）作依据——计数只用这条命令的实时结果。
 
-## submit 流程（实测）
-0. ★ **prod 闸（2026-09-25 起 `super_build.py submit` 默认强制）**：提交前轮询
-   `GET /alphas/{id}/correlations/prod`（15s 间隔，窗口默认 900s），**max ≥ 0.7 一律拒绝提交**
-   （用户铁律：prod≥0.7 不提交，即使平台提交层对 SUPER 可能回带 value>0.7 且 result=PASS）。
-   probe 超时未出数同样 fail-closed 拒绝。确要豁免须显式 `--allow-prod-above-07`；
-   阈值/窗口可用 `--prod-gate` / `--probe-timeout` 调整。平台慢算时重跑命令即可续等。
-1. 先用裸 PATCH 写 selection / combo / 两个 description（≥100 英文字；**勿用 set_alpha_properties，SUPER 必 400**，见硬前置 #2）。
-2. `mcp__wq-brain-http__workflow_submit_alpha(alpha_id=<ID>, confirm_submit=True, force=True)` → 常返 **201 异步**（status 停在 UNSUBMITTED 是正常的，平台随后计算闸门）。
-3. **再调一次** `mcp__wq-brain-http__workflow_submit_alpha(alpha_id=<ID>, confirm_submit=True, force=True)` → 直接回带 **PROD / SELF 值的 verdict**：
-   - **403** = FAIL，响应体带具体 value（如 `PROD_CORRELATION 0.7668 > 0.7`）。
-   - **200 "IS checks passed"** = 全部过闸，等待 2–3 分钟翻转为 ACTIVE。
-4. 命名约定（2026-09-20 规范，见 `docs/alpha_properties_spec.md`）：`<REGION>_S_<N>comp_<alpha_id后6位>`，
-   如 `GLB_S_10comp_NQ57NW`。**不要把 PROD 数值放进 name**（提交时快照会过期骗人）；
-   也不要用固定序号 `_01`（同区多颗必重名——GLB 一轮造出三颗同名候选的实证）。
-   `tools/super_build.py submit` 缺省已按此生成。
+### 步 1　建 SUPER simulation
+- **目的**：用 selection + combo 建一颗 `type=SUPER` 的 simulation。
+- **前置**：步 0 = GO；已确定**中性化档位**（**无缺省，必须显式**：USA / GLB 已知最优 SUBINDUSTRY，KOR / IND 已知 STATISTICAL，结论不可跨区照搬，见 levers §1）；universe / delay 缺省取 `wqb.config.REGIONS`（旧缺省 `TOP400` 只对 MEA 合法，非法档位平台回 HTTP 500）。
+- **调用**：
+  ```
+  python tools/super_build.py select --region KOR --neutralization STATISTICAL --decay 5 --selection-limit 10 --self-gate 0.55
+  ```
+  其余旋钮：`--combo-power {1,3,5}`、`--turnover-min / --turnover-max`、`--prod-ceiling`、`--selection` / `--combo`（给完整表达式覆盖模板）、`--json <path>`。取值理由见下「参数」。
+- **产物**：SUPER alpha id（stdout 的 `alpha id = …`）。
+- **完成定义**：拿到 id，且步 2 不是 `ERROR`。
+- **失败分支**：**201 ≠ SA 合法**——平台不在创建时校验，错误异步出现在模拟结果里（`GET /simulations/{id}` → `status: ERROR`，`message: "At least 10 component alphas are required for Super Alpha."`，`location.property: combo`）→ 转情景 SA-02（组件恰好 10 颗：放宽 gate）；「PROD 一直偏高」转 levers §3。
+- **不做**：不用旧的 `combination(alpha(...))`（平台已报 "inaccessible or unknown operator combination"）；不把 `selectionLimit` 当杠杆（超过有效池后无效，USA 1000 与 50 逐位相同——要改篮宽改**门**）。
 
-## 真实案例：USA KPGvRMg1（已 ACTIVE，可作为模板）
-（注意：`combination()` 已被平台禁用，此处仅为等价思路说明，实际提交用现行 selection+combo 流程）
-- 成分：5 个显式 alpha 的 `combination()` 思路 → 等价体须 PROD≤0.7 且 SELF≤0.7 且 ACTIVE。
-- 最终获胜体 `KPGvRMg1`（name=`0.6944`，现 ACTIVE）：PROD_CORRELATION 0.6944、SELF_CORRELATION 0.557、
-  sharpe 2.89、fitness 2.39、turnover 0.2194。
-- 决定性杠杆：SUBINDUSTRY 中性化（MARKET 天花板 0.7169 → SUBINDUSTRY 0.6944）。
+### 步 2　查状态
+- **调用**：`python tools/super_build.py status --alpha-id <ID>`（打印 sharpe / fitness / turnover 与全部 checks，`FAIL` 时退出码 1）。
+- **完成定义**：`status` 不是 `ERROR`，且无 `FAIL` 检查。
+- **失败分支**：`ERROR` + `At least 10 component alphas` → 步 1 失败分支；`LOW_SUB_UNIVERSE_SHARPE` / `LOW_TURNOVER`（SUPER 下限 0.02）→ levers §3 的对应行。
 
-## 真实案例 2：MEA 78jYpn0Z（2026-08-28 ACTIVE，MEA 第 2 颗 SA）
-- **组件困境**：自由池仅 6 颗（3 老 + 3 新提），不足 10 → selection 借既有 SA `3qlYKAaO` 内低 prod-corr 成分补齐：
-  `((neutralization == "COUNTRY") || (prod_correlation < 0.55)) * (turnover > 0.01) * (turnover < 0.6)`
-  —— 自由池 6 颗全 COUNTRY 中性（SA 内部成分多为 SECTOR），`prod_correlation<0.55` 精准借入 4 颗最低 pCorr 的 SECTOR 成分 → 恰好 10 颗。
-- **结果**：PROD=0.6996 / SELF=0.6996（双双擦线 <0.7 过闸），与既有 SA 仅 0.4731 相关；
-  sharpe 2.52 / fitness 2.99 / turnover 0.052 / subUniverse 2.09 / IS_LADDER 2.93。
-- **流程坑**：描述裸 PATCH（见硬前置 #2）后 submit 两次均 200 "IS checks passed"，30s 内翻 OS/ACTIVE。
-- **注意**：0.6996 擦线可过但极脆弱——自由池扩到 10 后可重组零重叠变体，降低对借入成分的依赖。
+### 步 3　双闸探针
+- **调用**：`python tools/super_build.py probe --alpha-id <ID>`（SELF 本地 + PROD 平台；`PASS` / `BLOCKED`，退出码 0 / 1）。
+- **完成定义**：`VERDICT: PASS`（SELF 与 PROD 都 < 0.7）。
+- **失败分支**：SELF ≈ 0.9+ 且命中已 ACTIVE 的 SA = **近克隆**，SELF 闸必拒 → 情景 SA-03（换成分 / 错开 (neutralization, decay)）；PROD ≥ 0.7 → levers §3（PROD 饱和 → 停止调参，回 RA 挖新血）。
+- **不做**：**本地 SELF 对近期新提交的孪生体结构性失明**（selfcorr-quick 实测：本地 0.229 vs 平台 0.8392；SA 恰是「池子被消耗、近克隆风险高」的场景）——近期有同构 SA 提交时，探针的 SELF 只能当下限；先枚举存量 SA 的 (neutralization, decay) 并错开（情景 SA-03）。`mcp__wq-brain-http__run_selection` 是**选股（instrument filtering）**工具，与 SA 的 `selection` 表达式无关，别混。
 
-## 真实案例 3：GLB A1NQ57NW（2026-09-24 ACTIVE，GLB 首颗 SA）+ 配方复核
-- 前置：GLB ACTIVE REGULAR 恰好 10 颗（0 颗 SUPER，池子未被消耗=新鲜度最高）、当日 SUPER 配额未用。
-- **settings 对齐组件主流**：MINVOL1M/d1/dec10/tr0.08/maxTrade OFF，nu=SUBINDUSTRY。
-- **self_gate 是「组件够不够 10」的首要旋钮**：0.65 时三中性化全撞「At least 10 component alphas
-  are required」（有一颗 self_corr 落在 [0.65,0.70)）；放宽 0.70 即成。梯度放宽成本极低
-  （组件不足的 sim 秒级失败回错），先 0.65 → 不行 0.70/0.85。
-- 产物：IS S4.26/F3.72/T0.101，CLUSTER 3.0，IS_LADDER 4.82，GLB 分区 sharpe AMER/EMEA/APAC 全 PASS。
-- ★ **平台对 SUPER 的 SELF/PROD 回带 >0.7 仍可判 PASS**（实测 SELF/PROD value=0.8094、limit=0.7、
-  **result=PASS**）→ **只看 result，不看 value**；预检唯一可靠方式仍是 `super_build.py submit`（403 零成本）。
-- ★ **库存盘点坑**：`/users/self/alphas` 的 `region=` 查询参数不生效（各区返回同一份全量）→
-  拉全量后按 `settings.region` 本地分组。
-- 淘汰的同构变体打 `RETIRE_<date>_DUP_SA` + color RED + hidden，防审计误报。
+### 步 4　提交（不可逆；见上「不可逆动作块」）
+- **调用**：`python tools/super_build.py submit --alpha-id <ID>`：prod 闸（轮询 `GET /alphas/{id}/correlations/prod`，15 s 间隔、窗口缺省 900 s）→ 取详情与提交层预检 → 写 name + 两段描述 → POST（CLI 只发这一次；受理后用 `status` 子命令轮询核验，窗口见 `wqb.config.WAIT_THRESHOLDS`）。选项：`--prod-gate`（阈值，缺省 0.7）、`--probe-timeout`、`--allow-prod-above-07`（豁免，见上）。
+- **描述写入**：CLI 内置 ≥ 100 英文字的 selection / combo 描述，**走 CLI 就不需要手工 PATCH**。手工路径只传 `selection_description` + `combo_description`（**不要传 `descriptions`**：它会给 PATCH body 加 `regular` 字段，SUPER 被平台 400）；写完 `get_alpha_details` 回读两段描述长度 > 0 再提交。
+- **命名**：`<REGION>_S_<N>comp_<alpha_id 尾 6 位>`（规范见 `docs/alpha_properties_spec.md`；**不要把 PROD 数值放进 name**——提交时快照会过期骗人，也不要固定序号 `_01`：同区多颗必重名，GLB 曾一轮造出三颗同名候选）。
+- **完成定义**：`status` 子命令 → `ACTIVE`。
+- **失败分支**：403 = 拒绝（响应体带具体 FAIL 与 value；零配额成本，SUPER_SUBMISSION 不计数）→ 按 FAIL 名回步 1 / 情景；`SUPER_SUBMISSION` 已满 → 次日再提。
+- **不做**：不对同一颗 SA 连续 POST「试探」；不用 `GET /alphas/{id}/submit` 判定（见下）。
 
-## 真实案例 4：KOR 9qjGvaWe（2026-09-25 ACTIVE，KOR 第 4 颗 SA）—— 同构淘汰法实证
-- 背景：KOR 已有 3 颗 ACTIVE SUPER，池子 13 颗 REGULAR 大多被消耗过。同轮建 3 个差异化变体，
-  **全部用 `super_build.py submit` 零成本预检**（403 不耗配额，SUPER_SUBMISSION 始终 0/1）：
-  - STATISTICAL/dec5  → ❌ SELF **0.9729**（与存量 rKOPg9gd STATISTICAL/dec5 同构）
-  - STATISTICAL/dec30 → ❌ SELF **0.8938**（与存量 j23jgb8Z STATISTICAL/dec30 同构）
-  - **SUBINDUSTRY/dec10 → ✅ SELF/PROD 0.8571 result=PASS → ACTIVE**（S3.27/F4.13/T0.0925）
-- ★ **可复制打法**：先枚举存量 SA 的 (neutralization, decay) 组合，新变体**刻意错开**；
-  逐个 submit 预检，被拒变体打 `RETIRE_<date>_BLOCKED_SA` + 自解释撞谁标签 + color RED + hidden。
-- ★ **PASS/FAIL 分界补全**：value 0.8094（GLB）与 0.8571（KOR）= PASS；0.8938 与 0.9729 = FAIL
-  → 分界在 0.86~0.89 之间。但**判定永远只看 result**，不要自己按 value 预判。
-- ★ 流程坑：`super_build.py submit --skip-precheck` 曾 UnboundLocalError（详情拉取被藏进
-  precheck 分支，`d` 未定义，2026-09-25 修）——提交类 CLI 的「跳过前置」路径也要单测。
-- **KOR 的优势中性化是 STATISTICAL**（最强一颗即 STATISTICAL），**不是** SUBINDUSTRY ——
-  与 USA/GLB 的 SUBINDUSTRY 结论相反，再次证明 neutralization 必须**逐区扫描**，不可跨区照搬。
-- 追加 SA 的真正约束是**池子新鲜度**：13 颗 REGULAR 大多已被 3 颗 SUPER 消耗，新 SA 与存量
-  rKOPg9gd 近克隆风险高；差异化靠 **decay/中性化错开** + 新提 REGULAR 新血。
+**`GET /alphas/{id}/submit` 的行为按 type 未复核**：REGULAR 上它恒 404（2026-09-26 实测），SUPER 上 2026-09-11 的 KOR 观察是「200 但 SELF / PROD 仍 PENDING（假阳性）」。两份记录不一致、也没有重新对照，所以**无论哪种类型都不得用它放行**——判据只有提交后的 `status`。核对办法见闭环台账 SP-11（needs-platform）。
+
+## 硬前置（规则）
+
+1. **组件**：≥ 10 颗**同一 region** 的、已 ACTIVE 的 REGULAR（平台 `selectionLimit ≥ 10`）。恰好 10 颗时 selection 的运行时筛选（self_gate / turnover 带）会再刷掉一部分，必须放宽 gate，否则「At least 10 component alphas」秒拒。
+2. **描述**：selection / combo 描述各 ≥ 100 英文字（平台硬门槛）。
+3. **配额**：提交 REGULAR 组件与 SA 都占 **ET 日历日**配额（REGULAR 4 + SUPER 1，00:00 ET 重置），模型与来源见 [`worldquant-submit-alpha/references/quota-and-tower.md`](../worldquant-submit-alpha/references/quota-and-tower.md)，不在这里重述。
+4. **区域可用性**：区域状态（例如 MEA 的 `POST /simulations` 现返回 400 "Region MEA is not available."，既有 2 颗 MEA SA 是存量）属于平台状态，不属于 SA 方法论：以各区 profile（`wq-brain-ra-pipeline/references/regions/<R>.md`）与 `wq-brain-campaign-matrix` 为准。
+
+## SA 结构与语法（实测）
+
+`selection` 从候选成分里**筛成分 + 赋权重**；`combo` 把筛出的成分**合成**成最终信号。`tools/super_build.py` 的两个模板是可执行的原文（**以代码为准**）：
+
+```
+selection: (1 + 0 * (prod_correlation > 0)) * ({prod_ceiling} - prod_correlation) * (self_correlation < {self_gate}) * (turnover > {turnover_min}) * (turnover < {turnover_max})
+combo:     stats = generate_stats(alpha); innerCorr = self_corr(stats.returns, 500); ic = if_else(innerCorr == 1.0, nan, innerCorr); maxCorr = reduce_max(ic); w = 1 - maxCorr; w
+```
+
+- **selection**：逻辑符 `&` / `and` 被拒，用 `*`（AND）/ `||`（OR）/ `==`；`prod_correlation` 在 selection 可用、在 combo **不可用**（引用会报 `unknown variable`）。`(prod_correlation > 0)` 写成 `(1 + 0 * (…))` 的**非门控 no-op**：直接乘会把 prod ≈ 0 的 novel 成分清零。⚠ 这一项来自 USA 的 2026-08 实测，**平台是否硬性要求 selection 里出现该子串未复核**（模板对所有区域都带它，没有因缺它而失败的记录）。
+- **combo**：只能压 **SELF**，压不动 PROD（生产相关由成分池本身决定）。`--combo-power 3 / 5` 把权重写成 `w*w*w` / `w*w*w*w*w`（拉大离散度，集中到最独立的成分）。⚠ `500` 是模板沿用的历史值（≈ 2 年 = 504 个交易日的取整），**不在本库标准窗口表内，且没有做过 500 对 504 的对照**——登记为待验证（SP-08）。
+- `combination(alpha(...))` 已不可用；必须用 selection + combo。
+
+## 参数（缺省与取值理由）
+
+| 旋钮 | 缺省 | 取值理由 / 何时改 |
+|---|---|---|
+| `--neutralization` | **无缺省** | 因区而异，需逐区扫描；已知最优（区域，日期）见 levers §1。缺省值会把人引向错误起点，故 2026-09-29 取消 |
+| `--decay` | 5 | 窄篮下 decay↑ → SELF↓（levers §2 的 KOR 曲线）；宽篮下 decay↑ → PROD↑ |
+| `--selection-limit` | 10 | 平台下限；**超过有效池后无效**，想改篮宽改 self_gate |
+| `--self-gate` | 0.55 | `self_correlation < gate` 的硬闸。组件恰好 10 颗时 0.65 → 0.70 → 0.85 逐档放宽（成本极低：组件不足的 sim 秒级失败回错） |
+| `--turnover-min / --turnover-max` | 0.01 / 0.5 | 池内成分 turnover 最高 0.5495 时改 0.6（MEA 案例） |
+| `--prod-ceiling` | 0.7 | 评分项 `(0.7 - prod_correlation)`：偏好 prod 低的 novel 成分。池内存在 prod > 0.7 的成分被 POSITIVE 剔除致不足 10 颗时改 1.0（超标成分降权参与而非出局） |
+| `--combo-power` | 1 | 1 / 3 / 5；IND 实测 SELF 0.7581 → 0.7539（3 次方）→ 0.7508（5 次方），代码注释称「免费压最后一截」（指标口径以该注释为准，未复核） |
 
 ## 验证清单
-- [ ] 同区域 ACTIVE REGULAR 成分 ≥10 颗（**注意 selection 是运行时筛选**：self_gate/turnover 带会再刷，
-      组件恰好 10 颗时必须放宽 gate，否则「At least 10 component alphas」秒拒）。
-- [ ] selection/combo 描述经**裸 PATCH** 写入并回读验证长度 >0（set_alpha_properties 对 SUPER 必 400）。
-- [ ] neutralization **逐区扫描**（USA/GLB=SUBINDUSTRY、KOR=STATISTICAL、IND 一轮 SUBINDUSTRY 一轮 STATISTICAL）。
-- [ ] **prod 闸（默认强制）**：`super_build.py submit` 先 probe，max≥0.7 或超时即拒；豁免须 `--allow-prod-above-07`。
-- [ ] 提交判定**只看 result**：平台对 SUPER 可能回带 value>0.7 且 PASS（GLB 0.8094 / KOR 0.8571 实证），
-      但**我方铁律是 prod≥0.7 不提交**，两套口径并存时以我方闸为准。
-- [ ] status 翻转为 ACTIVE（2–3 分钟后）；name 用 `<REGION>_S_<N>comp_<id尾6位>`。
+
+- [ ] 同区域 ACTIVE REGULAR ≥ 10 颗（`sa_probe` = GO）；恰好 10 颗时已放宽 gate。
+- [ ] **中性化已逐区扫描**：需扫描的档位 + 已知最优（区域，日期）——USA / GLB = SUBINDUSTRY、KOR / IND = STATISTICAL（见 levers §1；IND 极差 0.199）。
+- [ ] `probe` 双闸通过；**prod 闸**（`super_build.py submit` 默认强制）通过，或用户显式豁免。
+- [ ] 提交判定看 `result`，且我方 prod 实测 < 0.7。
+- [ ] status 翻 ACTIVE（2–3 分钟后）；name 用 `<REGION>_S_<N>comp_<id 尾 6 位>`。
+- [ ] **淘汰的同构变体**按 `docs/alpha_properties_spec.md`：打 `RETIRE_<YYYYMMDD>` 并 hidden；撞了谁写进描述而不是新造标签前缀（新前缀须先登记规范）；color **不用 RED**（规范里 RED = 已提交 · 待退役，这些变体从未提交）。
+
+## SUPER 专属检查名（`get_alpha_details` / 提交响应里出现）
+
+| 检查 | 含义 |
+|---|---|
+| `SELF_CORRELATION` / `PROD_CORRELATION` | 与自己已提交 / 全平台已提交池的相关；提交时**实时**查 |
+| `SUPER_SUBMISSION` | SUPER 日配额（1 / ET 日） |
+| `NON_SELF_SUPER_ALPHA` | 同策略 SA「自残」闸 |
+| `LOW_TURNOVER`（SUPER 下限 0.02） / `LOW_SUB_UNIVERSE_SHARPE` | 换手过低 / 子宇宙不稳 |
+| `LOW_ROBUST_UNIVERSE_SHARPE` | **IND 独有** |
+
+IS 闸门的通用阈值见 `brain-how-to-pass-alpha-test`；它不覆盖上表 SUPER 专属项。
 
 ## 相关 skill
-- `worldquant-submit-alpha`：单颗 REGULAR 的提交与硬闸门细节（静默丢弃、翻转延迟、PROD/SELF<0.7）。
-- `brain-how-to-pass-alpha-test`：各 IS 闸门阈值（Fitness/Sharpe/Turnover/Self-Corr/PROD_CORR）。
-- `alpha-expression-verifier`：提交前本地校验 selection/combo 表达式语法。
+
+- `worldquant-submit-alpha`：单颗 REGULAR 的提交与响应处置；提交链状态机见其 `references/submit-chain.md`。
+- `brain-how-to-pass-alpha-test`：各 IS 闸门阈值（Fitness / Sharpe / Turnover / Self-Corr / PROD_CORR）。
+- `brain-calculate-alpha-selfcorr-quick`：本地 SELF 快筛及其盲区。
