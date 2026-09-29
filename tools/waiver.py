@@ -2,7 +2,7 @@
 """waiver.py — 闸「放行 / 豁免」台账协议的命令行（实现见 src/wqb/waiver.py）。
 
 子命令：
-  gates                            可豁免的闸 / 批准人 / 最长有效期 / 逃生口 / 不可豁免的红线
+  gates [--markdown]               可豁免的闸 / 批准人 / 最长有效期 / 逃生口 / 不可豁免的红线（--markdown = INDEX 嵌入表）
   list  --region R                 该区全部 waiver（新键 waiver_* + 旧键 stop_rules_override /
                                    backlog_gate_override），标 ACTIVE / EXPIRED / INVALID / NO_EXPIRY
   new   --gate G --region R ...    校验并生成一条 waiver；默认只打印值与 MCP 调用（不写库），
@@ -35,8 +35,11 @@ def _connect(readonly=True):
     return connect(readonly=readonly)
 
 
-def cmd_gates(_a):
+def cmd_gates(a):
     from wqb import waiver as W
+    if getattr(a, "markdown", False):
+        print(W.render_switch_table())      # 嵌入 Claude/skills/INDEX.md（tests/unit/test_waiver.py 比对）
+        return 0
     print("可豁免的闸（新增可豁免闸须先在 wqb.waiver.GATE_POLICIES 登记）：")
     for g, p in W.GATE_POLICIES.items():
         print(f"  {g:13s} {p.title}\n"
@@ -114,7 +117,8 @@ def cmd_check(a):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="闸放行 / 豁免台账协议（wqb.waiver）")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("gates", help="可豁免的闸 / 红线 / 枚举")
+    p = sub.add_parser("gates", help="可豁免的闸 / 红线 / 枚举")
+    p.add_argument("--markdown", action="store_true", help="只输出「闸与逃生口总表」（INDEX.md 嵌入块）")
     p = sub.add_parser("list", help="列出某区全部 waiver")
     p.add_argument("--region", required=True)
     p = sub.add_parser("new", help="校验并生成一条 waiver（默认不写库）")

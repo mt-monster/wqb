@@ -75,24 +75,36 @@ class GatePolicy:
     legacy_key: Optional[str] = None
     #: 对应的 CLI / 环境逃生口（文档与横幅引用）
     flags: Tuple[str, ...] = ()
+    #: 以下三项只服务文档总表（`render_switch_table`，嵌入 INDEX.md；skills 审查 X-6）
+    layer: str = ""            # 所在层
+    default: str = ""          # 缺省行为
+    flip: str = "—"            # 含日期翻转时写明日期与登记号（docs/time_bombs.json）
 
 
 #: 可豁免的闸。新增可豁免闸必须先在这里登记（登记即声明批准人与最长有效期）。
 GATE_POLICIES: Dict[str, GatePolicy] = {p.gate: p for p in (
-    GatePolicy("stop_rules", "区域停止规则闸", ("user",), 30, "stop_rules_override",
-               ("WQB_DISABLE_STOP_RULES_GATE=1（仅测试隔离）",)),
-    GatePolicy("backlog", "区域积压闸", ("user",), 30, "backlog_gate_override",
-               ("WQB_DISABLE_BACKLOG_GATE=1（仅测试隔离）",)),
-    GatePolicy("region_gates", "开波区域闸整体降级（--gate-mode warn/off）", ("user",), 7, None,
-               ("--gate-mode warn|off", "WQB_GATE_MODE=warn|off")),
-    GatePolicy("inspect", "字段体检硬门缺包", ("user", "agent"), 7, None,
-               ("--inspect-mode off|warn", "WQB_INSPECT_MODE")),
+    GatePolicy("stop_rules", "区域停止规则闸（规则 A / B1 / B2）", ("user",), 30, "stop_rules_override",
+               ("WQB_DISABLE_STOP_RULES_GATE=1（仅测试隔离）",),
+               layer="开波区域闸（节点一律拦截；CLI 随 gate-mode）", default="常开"),
+    GatePolicy("backlog", "区域积压闸（conversion / pending+gated / 未消费）", ("user",), 30, "backlog_gate_override",
+               ("WQB_DISABLE_BACKLOG_GATE=1（仅测试隔离）",),
+               layer="开波区域闸（节点一律拦截；CLI 随 gate-mode）", default="常开"),
+    GatePolicy("region_gates", "开波区域闸整体降级（catalog / signal_floor / stop_rules / backlog）", ("user",), 7, None,
+               ("--gate-mode warn|off", "WQB_GATE_MODE=warn|off"),
+               layer="wave_gate / build_wave CLI", default="warn 至 2026-10-11，之后 enforce",
+               flip="**2026-10-12**（TB-02）"),
+    GatePolicy("inspect", "字段体检硬门（缺体检包）", ("user", "agent"), 7, None,
+               ("--inspect-mode off|warn", "WQB_INSPECT_MODE"),
+               layer="wave_gate 内置", default="warn；新数据集首波自适应 enforce"),
     GatePolicy("semantic", "闸 SEM 字段语义归类", ("user", "agent"), 7, None,
-               ("--skip-semantic-gate", "--semantic-gate off|warn", "WQB_SEM_MODE")),
-    GatePolicy("diversity", "闸 6 多样性契约", ("user", "agent"), 3, None,
-               ("--skip-diversity-gate",)),
+               ("--skip-semantic-gate", "--semantic-gate off|warn", "WQB_SEM_MODE"),
+               layer="wave_gate 内置", default="enforce（缺台账 exit 2）"),
+    GatePolicy("diversity", "gate.py 闸 6 多样性契约", ("user", "agent"), 3, None,
+               ("--skip-diversity-gate",),
+               layer="gate.py 闸 6", default="常开（repair / probe 批豁免）"),
     GatePolicy("prod_family", "闸 PF 信号族死路预检", ("user", "agent"), 3, None,
-               ("--no-prod-family-gate",)),
+               ("--no-prod-family-gate",),
+               layer="wave_gate 内置", default="开"),
 )}
 
 #: wave_gate CLI 开关 → 闸 id（`tools/wave_gate.py` 用它把「开了哪些逃生口」翻成 waiver 检查）
@@ -483,3 +495,18 @@ def rejected_note(w: Optional[Waiver]) -> str:
     if w is None or w.active:
         return ""
     return f"（已有 {w.source_key} 但{w.status}：{'；'.join(w.problems) or '已过期（到期日 ' + str(w.expires_at) + '）'}，未采纳）"
+
+
+def render_switch_table() -> str:
+    """「闸与逃生口总表」（Markdown）——嵌入 Claude/skills/INDEX.md 的 switch-table 块，
+    tests/unit/test_waiver.py 比对；改政策先改 GATE_POLICIES，再重新生成。"""
+    def esc(x: str) -> str:            # 单元格里的 | 必须转义，否则表格错列
+        return x.replace("|", "\\|")
+
+    rows = ["| 闸 id（waiver 的 gate） | 层 | 判据 | 逃生口 | 缺省 | 日期翻转 | waiver 批准人 / 最长 |",
+            "|---|---|---|---|---|---|---|"]
+    for g, p in GATE_POLICIES.items():
+        rows.append("| `{g}` | {layer} | {title} | {flags} | {default} | {flip} | {who} / {n} 天 |".format(
+            g=g, layer=esc(p.layer), title=esc(p.title), flags="、".join(f"`{esc(f)}`" for f in p.flags),
+            default=esc(p.default), flip=esc(p.flip), who="/".join(p.approvers), n=p.max_days))
+    return "\n".join(rows)

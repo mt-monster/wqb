@@ -29,7 +29,7 @@
 | `mcp_7slot_batch.py` | 七槽并发回测（MCP 驱动，`--alpha-json` + `--settings-json` + `--output-csv`）。★ 2026-09-17 修正：此前本表写 `mcp_5slot_batch.py`，**该文件并不存在** | — |
 | `batch_status.py` | 批次/子任务状态查询与 `--watch` 轮询（multisim 或单条） | `tracking/_scratch/check_*batch*.py`、`track_mea_super_resume.py` 轮询段 |
 | `harvest_multisim.py` | multisim 收批：拉 children → 拉 alpha 详情 → 关联 expressions → 可选 upsert backtest_rows | `tracking/*/scripts/poll_wave*.py`、手写收批脚本 |
-| `submit_batch.py` | 批量提交（`--spec` 支持逐批不同设置） | 31 个 `_submit_*.py` |
+| `submit_batch.py` | 批量**派发仿真**（`POST /simulations`；`--spec` 支持逐批不同设置）。⚠ 不是把 alpha 提交上平台——那是不可逆的 `workflow_submit_alpha(confirm_submit=True)` | 31 个 `_submit_*.py` |
 
 ## 探针编排（新数据集首探）
 

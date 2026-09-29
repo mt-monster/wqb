@@ -397,14 +397,20 @@ def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, 
     """按 WebDataScope 口径统计 alpha ``is.checks`` 的 RA / PPA 资格门失败项。
 
     返回 ``{"failed_ra", "failed_ppa", "ra_failed_names", "ppa_failed_names", "details",
-    "ra_items", "ppa_items"}``：两个计数、按 checks 原顺序的失败项名，计入任一失败的
-    check 原文（details），以及按 RA / PPA 分开的逐条 ``{name,result,value,limit}``
-    （``ra_items`` / ``ppa_items``；2026-09-29 增，供 submit_verdict 逐条列名，避免另抄一份口径）。
-    非 dict 的条目跳过。
+    "ra_items", "ppa_items", "pending_ra", "pending_ppa", "ra_pending_names", "ppa_pending_names"}``：
+    两个计数、按 checks 原顺序的失败项名，计入任一失败的 check 原文（details），以及按 RA / PPA 分开的
+    逐条 ``{name,result,value,limit}``（``ra_items`` / ``ppa_items``；2026-09-29 增，供 submit_verdict
+    逐条列名，避免另抄一份口径）。非 dict 的条目跳过。
+
+    ``pending_*``（2026-09-29 增，skills 审查 RF-03）：**名单内**检查仍为 PENDING 的个数与名字。口径不变
+    （PENDING 不计失败，与平台「不挡提交」一致），但 ``failed_ra == 0`` 在 ``pending_ra > 0`` 时只表示
+    「暂无失败」而非「已通过」——调用方须等其算完再判，不得据此放行。
     """
     failed_ra = failed_ppa = 0
     ra_names: List[str] = []
     ppa_names: List[str] = []
+    ra_pending: List[str] = []
+    ppa_pending: List[str] = []
     details: List[dict] = []
     ra_items: List[dict] = []
     ppa_items: List[dict] = []
@@ -412,6 +418,11 @@ def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, 
         if not isinstance(check, dict):
             continue
         name, res, val = check.get("name"), check.get("result"), check.get("value")
+        if res == "PENDING":
+            if name in RA_CHECK_NAMES:
+                ra_pending.append(name)
+            if name in PPA_CHECK_NAMES:
+                ppa_pending.append(name)
         bad = check_counts_as_failed(res)
         ra_hit = name in RA_CHECK_NAMES and bad
         ppa_hit = (name in PPA_CHECK_NAMES and bad) or (
@@ -429,7 +440,9 @@ def compute_webdata_failed_counts(checks: Optional[Iterable[Any]]) -> Dict[str, 
             details.append(dict(check))
     return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
             "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details,
-            "ra_items": ra_items, "ppa_items": ppa_items}
+            "ra_items": ra_items, "ppa_items": ppa_items,
+            "pending_ra": len(ra_pending), "pending_ppa": len(ppa_pending),
+            "ra_pending_names": ra_pending, "ppa_pending_names": ppa_pending}
 
 
 # ---------------------------------------------------------------------------

@@ -110,10 +110,16 @@ except ImportError:  # Docker 镜像：冻结副本（WebDataScope-0.10.20 backg
         failed_ra = failed_ppa = 0
         ra_names, ppa_names, details = [], [], []
         ra_items, ppa_items = [], []
+        ra_pending, ppa_pending = [], []
         for check in checks or []:
             if not isinstance(check, dict):
                 continue
             name, res, val = check.get("name"), check.get("result"), check.get("value")
+            if res == "PENDING":
+                if name in _RA_CHECK_NAMES:
+                    ra_pending.append(name)
+                if name in _PPA_CHECK_NAMES:
+                    ppa_pending.append(name)
             bad = _ra_bad(res)
             ra_hit = name in _RA_CHECK_NAMES and bad
             ppa_hit = (name in _PPA_CHECK_NAMES and bad) or (
@@ -131,7 +137,9 @@ except ImportError:  # Docker 镜像：冻结副本（WebDataScope-0.10.20 backg
                 details.append(dict(check))
         return {"failed_ra": failed_ra, "failed_ppa": failed_ppa,
                 "ra_failed_names": ra_names, "ppa_failed_names": ppa_names, "details": details,
-                "ra_items": ra_items, "ppa_items": ppa_items}
+                "ra_items": ra_items, "ppa_items": ppa_items,
+                "pending_ra": len(ra_pending), "pending_ppa": len(ppa_pending),
+                "ra_pending_names": ra_pending, "ppa_pending_names": ppa_pending}
 
 
 def _truncate(s, n=160):

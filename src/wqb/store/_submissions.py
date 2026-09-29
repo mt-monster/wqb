@@ -2,7 +2,6 @@
 """SubmissionsMixin: submission ledger CRUD for CampaignStore."""
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from ._common import _dumps, _loads, _now
@@ -84,30 +83,6 @@ class SubmissionsMixin:
         cur.execute(sql, params)
         return [dict(row) for row in cur.fetchall()]
 
-    def get_quota_status(self, region: Optional[str] = None, window_hours: int = 48) -> Dict[str, Any]:
-        """Get submission quota status for the rolling window."""
-        cur = self.connection.cursor()
-        # 计算窗口内的提交数
-        cutoff = datetime.now().timestamp() - (window_hours * 3600)
-        cutoff_str = datetime.fromtimestamp(cutoff).isoformat()
-
-        sql = """SELECT COUNT(*) as used FROM submission_ledger
-                 WHERE submitted_at > ? AND status IN ('SUBMITTED', 'ACTIVE')"""
-        params: List[Any] = [cutoff_str]
-        if region:
-            sql += " AND region=?"
-            params.append(region)
-
-        cur.execute(sql, params)
-        used = cur.fetchone()[0]
-
-        # 默认配额限制（可从 platform_constraints.json 读取）
-        quota_limit = 4  # 48h 滚动配额
-
-        return {
-            "used": used,
-            "limit": quota_limit,
-            "remaining": max(0, quota_limit - used),
-            "window_hours": window_hours,
-            "region": region,
-        }
+    # 配额口径不在这里：提交配额按 **ET 日历日**（REGULAR 4 + SUPER 1 + PPA 1，互不占用），来源是平台 OS 池的
+    # `dateSubmitted`，见 tools/quota_status.py 与 wqb.timeutil。本类曾有一个 48h 滚动窗口的
+    # `get_quota_status`（口径 2026-09-01 已推翻、无任何调用方），2026-09-29 删除，避免被误用。

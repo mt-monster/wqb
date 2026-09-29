@@ -145,7 +145,7 @@ def workflow_batch_track(
 def workflow_submit_alpha(
     alpha_id: str,
     name: Optional[str] = None,
-    color: str = "GREEN",
+    color: Optional[str] = None,
     tags: Optional[List[str]] = None,
     descriptions: Optional[str] = None,
     force: bool = False,
@@ -155,10 +155,14 @@ def workflow_submit_alpha(
 ) -> Dict[str, Any]:
     """提交 Alpha 到平台（submit_alpha 节点快捷方式）.
 
+    ⚠ 不可逆：`confirm_submit=True` 会真正 POST /alphas/{id}/submit——通过即提交。默认 False 只做预检 + 查状态。
+    需要用户明确确认后才可置 True（见 worldquant-submit-alpha 的提交链）。
+
     Args:
         alpha_id: Alpha ID
-        name: 名称（建议基于 prod correlation）
-        color: 颜色标记
+        name: 名称（`<REGION>_<R|S>_<family>_<seq>`，禁用 PROD 数值；见 docs/alpha_properties_spec.md）
+        color: 颜色标记。缺省（None）→ 节点按提交态取 BLUE（待观察）；GREEN 须由 OS 结果挣得，
+            不得作默认值（此前本签名默认 "GREEN" 会把节点的 BLUE 缺省顶掉）
         tags: 标签列表
         descriptions: 描述文本（三段式）
         force: 是否跳过本地预检

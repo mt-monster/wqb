@@ -341,7 +341,9 @@ async def submit_batch(
     truncation: float = 0.0,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
-    """批量提交 alpha 表达式进行回测（REST 直连）.
+    """批量**派发** alpha 表达式去回测（REST 直连 `POST /simulations`）.
+
+    ⚠ 这里的「提交」是派发仿真，**不是**把 alpha 提交上平台（那是不可逆的 `workflow_submit_alpha(confirm_submit=True)`）。
 
     等价于 tools/submit_batch.py。将表达式列表组装为 payload 并 POST /simulations。
 

@@ -10,7 +10,21 @@
 | 有 alpha 过廉价闸（Sharpe>1.58 / Fitness≥1.0 / TVR 5–20% / 无 FAIL；及用户阈值 margin>5bp、turnover 5–30%、risk\_neut S>1、F>0.7、margin>5bp、ra\_failed\_count=0） | 进 D1 验证链                                           | 验证报告       |
 | 单数据集 alpha 过廉价闸但 Sharpe 在接近区（1.58–2.0）且白名单存在正交数据集                                                                                          | **主动**进 D3 混合提分（不等失败；MEA 区域优先组合）                     | 混合表达式      |
 | 全部未过廉价闸                                                                                                                                          | 进 D2 证据复核分支                                        | 分支动作       |
-| 过闸但 prod-corr>0.7                                                                                                                                | 判"撞 prod-corr 墙"→ 换白名单**不同数据集** regenerate（勿磨同腿变体） | 新 wave 表达式 |
+| 过闸但 prod 首探偏高（≥0.60） | **按 D0-P 查表**（本表是 prod 墙处置的唯一决策表） | 见 D0-P |
+
+## D0-P. prod 墙首探决策（**唯一决策表**——其余文档一律引用本表，不得另立学说）
+
+> 同一情景（某家族首探 prod 相关性偏高，下一步怎么办）此前有 ≥6 套互相矛盾的处置（首探即判 / prod-first 串行 / 镜像稀释 / 反馈循环与组合腿救援 / 先 5 探针 / 区域预警线）。
+> 现统一为下表（skills 审查 X-1；2026-09-29 定案，理由与证据见 `reports/skills_review_20260929_closure.md` 与 `docs/skills_review_decisions.md` DEC-07）。
+> **首探口径**：族内最强 1 条、平台实测（`check_correlation` 读 `GET correlations/prod`）、串行；实现 `tools/campaign_intel.py prod-first`（`--top-k` 缺省 3 个族、每族最强 1 条，以 argparse 缺省为准）。
+
+| 首探 prod | 动作 | 说明 / 例外 |
+| --- | --- | --- |
+| **< 0.60** | 正常扩变体，进步 7–8 | — |
+| **0.60–0.70** | **不扩变体，当天进步 8**（提交前仍须 `check_correlation(refresh=True)` 终验） | 外部同款会在一小时内把 prod 堵到 1.0（pv103 实证）。**区域 profile 不得另设「预警线」改写本行**（USA 的「0.6 即停扩换腿」已并入本行） |
+| **0.70–0.75（踩线带）** | **只允许 1 次结构性尝试**：① 删腿 / 换广度轴（MEA 9qXoJge2 0.716→0.6525 实证）或 ② 表达式层 `group_neutralize(同信号, sector)` 包裹（KOR wave113 0.7003→0.6993 实证）；尝试后仍 ≥0.70 → 按下一行 | 前提：诊断显示自家 book 低相关（拥挤源在外部池）。**禁止**：磨参数（decay / 中性化设置 / 窗口）、bucket / 门控 / 平滑（option8 IV 族 0.83–0.91 全参数空间实证无效）、镜像稀释与任何腿相加 |
+| **≥ 0.75，或踩线带尝试失败** | 家族记 `dead_end`：先 `forum_recon`（`found=true` 不得直接判死）→ `seal_dead_end`；下一步 = **换机制 / 换白名单不同数据集**（勿磨同腿变体） | **唯一例外**：已过 `mode_b_qualification`（主闸或旁路）且有 salvage 辅助腿的候选，可走 Mode B 组合腿救援（optimization-v1 入场三式；禁加权） |
+| **探针方式** | 只读 `GET correlations/prod`（`check_correlation` / `prod-first`） | **禁用 POST /submit 探测**（通过即提交，见 `worldquant-submit-alpha/references/submit-chain.md`） |
 
 ## D1. 通过廉价闸后的验证链（全自动，逐 alpha 执行）
 
@@ -180,14 +194,11 @@
 | 字段批内连坐预防 | 不确定字段隔离到独立小批；一个坏字段会 CANCEL 整批 8 条（实证） |
 | 慢变量族差分设计 | 见 D12：差分激活对慢变量可能反向，设计时水平值与差分分开批验证 |
 
-## D14. PROD 墙路由（撞墙后的三条破墙路径，按优先级；EUR/MEA/KOR 实证，2026-08）
+## D14. PROD 墙路由细则（**决策以 D0-P 为准**；本节只补「踩线带」里可做的那 1 次结构性尝试怎么做）
 
-| 优先级 | 路径 | 适用条件 |
+| 序 | 尝试（踩线带 0.70–0.75 内只许选 1 种、做 1 次） | 适用条件 / 实证 |
 | --- | --- | --- |
-| 1 | **结构性去相关**：删腿/换广度轴（如 revision 腿 → raised-breadth 双轴，MEA 9qXoJge2 0.716→0.6525 实证） | 候选与自家已提交族高相关，且存在可替换的经济等价维度 |
-| 2 | **镜像稀释**：加一条与主腿相关≈0 的稀释腿（EUR Wj71Q12o prod 0.9013→0.6847、IS 反升；SOP 见 `docs/experience/prod_wall_breakthrough_sop.md`） | IS 全过但 prod 0.8-0.95；先用 `compute_mutual_correlation` 找相关≈0 的候选腿 |
-| 2b | **中性化骨架重构**：`group_neutralize(同信号, sector)` 包裹——行业暴露是与 PROD 池拥挤的接触面（KOR wave113 实证：同一 pvdom 信号裸结构 0.7003→包裹后 0.6993 过闸并直接提交 ACTIVE；注意是表达式层骨架非设置层中性化） | prod 踩线 0.70-0.75 且诊断显示自家 book 低相关（拥挤源在外部池） |
-| 3 | **换白名单不同数据集**（D0 默认动作） | 1/2 无素材时；勿磨同腿变体 |
-| 禁止 | 磨参数（decay/中性化/窗口）降 PROD——拥挤风格与参数无关（option8 IV 族 0.83-0.91 全参数空间实证） | — |
-| 前置 | 达标候选提交前必须平台侧 `check_correlation`（本地互相关只是下限，本地 0.61 → 平台 0.7723 REJECT 实证） | 全部达标候选 |
-
+| 1 | **结构性去相关**：删腿 / 换广度轴（如 revision 腿 → raised-breadth 双轴，MEA 9qXoJge2 0.716→0.6525） | 候选与自家已提交族高相关，且存在可替换的经济等价维度 |
+| 2 | **中性化骨架重构**：`group_neutralize(同信号, sector)` 包裹——行业暴露是与 PROD 池拥挤的接触面（KOR wave113：同一 pvdom 信号裸结构 0.7003→包裹后 0.6993 过闸并直接提交 ACTIVE；注意是表达式层骨架，不是设置层中性化） | prod 踩线 0.70–0.75 且诊断显示自家 book 低相关（拥挤源在外部池） |
+| 前置 | 达标候选提交前必须平台侧 `check_correlation(refresh=True)`（本地互相关只是下限：本地 0.61 → 平台 0.7723 REJECT 实证） | 全部达标候选 |
+| **禁止** | 磨参数（decay / 中性化设置 / 窗口）降 PROD——拥挤风格与参数无关（option8 IV 族 0.83–0.91 全参数空间实证）；bucket / 门控 / 平滑；**镜像稀释**（加一条与主腿相关≈0 的稀释腿）——**已撤回**：它是「腿相加」，与全局禁令（禁止任何加权混合 / 等权腿相加，见 D3）直接冲突；其引用的 `docs/experience/prod_wall_breakthrough_sop.md` 并不存在，历史实证（EUR Wj71Q12o 0.9013→0.6847）只作背景，不得复现 | — |

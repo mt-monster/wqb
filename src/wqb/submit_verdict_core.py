@@ -137,6 +137,8 @@ def decide(
     kind = "PPA" if is_ppa else "RA"
     failed_gate_items = failed_ppa_items if is_ppa else failed_ra_items
     failed_gate_ok = not failed_gate_items
+    # 名单内检查仍 PENDING：Failed==0 只表示「暂无失败」，不是「已通过」（skills 审查 RF-03）
+    pending_names = counts["ppa_pending_names"] if is_ppa else counts["ra_pending_names"]
 
     hard_gate_warns = [c for c in warns if c.get("name") in SUBMIT_HARD_GATE_WARNINGS]
     prepost_unverifiable = submit_status == 404 and status == "UNSUBMITTED"
@@ -158,13 +160,15 @@ def decide(
     if not ok and not reasons:
         reasons.append((f"UNKNOWN_HTTP_{submit_status}", []))
 
+    pending_note = (f"；资格门名单内仍有 PENDING 项 {pending_names}：Failed=0 只表示暂无失败，"
+                    "待其算完（重取 get_alpha_details）再判，不得据此放行" if pending_names else "")
     if ok and prepost_unverifiable:
         # 2026-09-08：处女提交（404）时提交层没有任何信息，此前一律报 SUBMITTABLE，
         # 造成假阳性（IND qMja95Q2 判 SUBMITTABLE 实测 prod 0.7354；MEA Jj7ee6nO/omqEE1pn 同）。
-        verdict, note, next_step = "UNVERIFIABLE", _UNVERIFIABLE_NOTE, _NEXT_STEP_RELEASE
+        verdict, note, next_step = "UNVERIFIABLE", _UNVERIFIABLE_NOTE + pending_note, _NEXT_STEP_RELEASE
         reason_code = "UNVERIFIABLE_404"
     elif ok:
-        verdict, note, next_step = "SUBMITTABLE", None, _NEXT_STEP_RELEASE
+        verdict, note, next_step = "SUBMITTABLE", (pending_note.lstrip("；") or None), _NEXT_STEP_RELEASE
         reason_code = "SUBMITTABLE"
     else:
         verdict = "BLOCKED"
@@ -183,6 +187,7 @@ def decide(
         "hard_gate_warnings": hard_gate_warns,
         "failed_ra": failed_ra, "failed_ppa": failed_ppa,
         "failed_ra_items": failed_ra_items, "failed_ppa_items": failed_ppa_items,
+        "pending_gate_names": pending_names,
         "submit_status": submit_status,
         "submit_checks": submit_checks,
         "submit_layer_view": "dead_endpoint_404" if submit_status == 404 else "live",

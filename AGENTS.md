@@ -247,7 +247,7 @@ git config core.hooksPath tools/git-hooks
 | SA 组件池探针（≥10 ACTIVE 硬前置） | `tools/sa_probe.py --region …`（替代 `probe_*sa*.py`） |
 | 提交层判定（403 盲区） | `tools/submit_verdict.py --alpha-id …`（替代手写 GET /alphas/{id}/submit） |
 | SUPER 组套/提交全流程 | `tools/super_build.py {select|status|probe|submit} …`（替代 `track_mea_super*.py`） |
-| 批量提交 | `tools/submit_batch.py`（替代 `_submit_*.py`） |
+| 批量派发仿真（dispatch；**不是**把 alpha 提交上平台） | `tools/submit_batch.py`（替代 `_submit_*.py`） |
 
 执行约定：
 1. 网络工具一律用 MCP venv（`$WQ_PY` 或 `world-quant-brain-mcp/.venv`）运行，工具已内置自动切换；

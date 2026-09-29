@@ -96,8 +96,6 @@
   "cmd-script|Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md|python rescue_checklist.py --campaign-dir tracking/GBR --dataset <DS> --fail|脚本不存在: rescue_checklist.py": 1,
   "cmd-subcommand|Claude/skills/wq-brain-campaign-toolkit/SKILL.md|$PY $TK/campaign.py --campaign-dir $CD ledger keys|ledger.py: 无子命令 'keys'（有: ['add-wave', 'get', 'mark-dead', '": 1,
   "env-read|Claude/skills/brain-alpha-judge/SKILL.md|> `world-quant-brain-mcp/.env` (`CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`) →|文档指示读取 .env（凭据只由 MCP 服务端加载，agent 不接触）": 1,
-  "env-read|Claude/skills/worldquant-submit-alpha/SKILL.md|from dotenv import load_dotenv|文档指示读取 .env（凭据只由 MCP 服务端加载，agent 不接触）": 1,
-  "env-read|Claude/skills/worldquant-submit-alpha/SKILL.md|load_dotenv(r\"world-quant-brain-mcp/.env\")|文档指示读取 .env（凭据只由 MCP 服务端加载，agent 不接触）": 1,
   "expr-gate|Claude/skills/brain-alpha-judge/SKILL.md|add(multiply(rank(...), w1), multiply(rank(...), w2))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
   "expr-gate|Claude/skills/brain-alpha-research/references/asi-methodology.md|add(add(ts_rank(W_m30,52), ts_rank(W_m30,88)), ts_rank(W_m110,60))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
   "expr-gate|Claude/skills/brain-alpha-research/references/asi-methodology.md|add(ts_rank(W_m30,52), ts_rank(W_m110,60))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
@@ -114,7 +112,6 @@
   "expr-gate|Claude/skills/wq-brain-ra-pipeline/SKILL.md|add(rank(a),rank(b))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
   "expr-gate|Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md|add(multiply(rank(A), w1), multiply(rank(B), w2))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
   "expr-gate|Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md|rank(add(A,B))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
-  "mcp-param|Claude/skills/brain-explain-alphas/reference.md|mcp__wq-brain-http__get_datafields(instrument_type=\"EQUITY\", region=\"ASI\", delay|get_datafields: 签名里没有参数 ['instrument_type']": 1,
-  "mcp-param|Claude/skills/worldquant-submit-alpha/SKILL.md|mcp__wq-brain-http__workflow_submit_alpha(|workflow_submit_alpha: 签名里没有参数 ['dataset', 'expr_family']": 1
+  "mcp-param|Claude/skills/brain-explain-alphas/reference.md|mcp__wq-brain-http__get_datafields(instrument_type=\"EQUITY\", region=\"ASI\", delay|get_datafields: 签名里没有参数 ['instrument_type']": 1
  }
 }

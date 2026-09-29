@@ -2,6 +2,7 @@
 """wqb.waiver 协议：键、校验、读取顺序、旧键兼容、横幅、跳过检查（skills 审查 X-8）。"""
 import datetime as dt
 import json
+import re
 import sqlite3
 
 import pytest
@@ -253,3 +254,35 @@ def test_every_flag_maps_to_a_registered_gate_and_policy_is_sane():
     for g, pol in W.GATE_POLICIES.items():
         assert pol.gate == g and pol.max_days > 0 and set(pol.approvers) <= set(W.APPROVERS)
         assert pol.flags, f"{g} 没有登记逃生口（flags）——文档无从引用"
+
+
+def test_index_switch_table_is_generated_from_gate_policies():
+    """INDEX.md 的「闸与逃生口总表」必须等于 render_switch_table()（改政策先改注册表再重生成）。"""
+    import re
+    from pathlib import Path
+    idx = (Path(__file__).resolve().parents[2] / "Claude" / "skills" / "INDEX.md").read_text(encoding="utf-8")
+    m = re.search(r"<!-- switch-table:start -->\n(.*?)\n<!-- switch-table:end -->", idx, re.S)
+    assert m, "INDEX.md 缺 switch-table 块"
+    assert m.group(1).strip() == W.render_switch_table().strip(), \
+        "INDEX 的总表与 GATE_POLICIES 不一致：python tools/waiver.py gates --markdown 重新生成后替换"
+
+
+def test_switch_table_escapes_pipes_and_lists_every_gate():
+    t = W.render_switch_table()
+    for g in W.GATE_POLICIES:
+        assert f"`{g}`" in t
+    for line in t.splitlines()[2:]:
+        # 7 列 = 8 个未转义竖线（首尾各一）
+        assert len(re.split(r"(?<!\\)\|", line)) - 1 == 8, line
+
+
+def test_policy_defaults_agree_with_code_where_derivable():
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    sys.path.insert(0, str(root / "tools"))
+    import wave_gate
+    assert wave_gate.DEFAULT_INSPECT_MODE in W.GATE_POLICIES["inspect"].default
+    src = (root / "tools" / "wave_gate.py").read_text(encoding="utf-8")
+    assert 'or "enforce"' in src and "enforce" in W.GATE_POLICIES["semantic"].default   # 闸 SEM 缺省 enforce
+    assert W.DEFAULT_MODE == "warn"

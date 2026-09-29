@@ -170,3 +170,29 @@ def test_cli_exit_codes_follow_the_contract():
         assert ei.value.code == code, verdict
     text = (ROOT / "tools" / "submit_verdict.py").read_text(encoding="utf-8")
     assert "sys.exit(0 if ok else 1)" not in text
+
+
+# ----------------------------------------------------------------------------- PENDING（skills 审查 RF-03）
+def test_pending_named_checks_are_reported_but_not_failed():
+    from wqb.config import compute_webdata_failed_counts
+    c = compute_webdata_failed_counts([
+        {"name": "HIGH_TURNOVER", "result": "PENDING"},            # 名单内：RA 与 PPA 都认这一项
+        {"name": "CONCENTRATED_WEIGHT", "result": "PENDING"},      # 仅 RA
+        {"name": "SELF_CORRELATION", "result": "PENDING"},         # 不在名单：不算
+        {"name": "LOW_FITNESS", "result": "PASS"},
+    ])
+    assert c["failed_ra"] == 0 and c["failed_ppa"] == 0
+    assert c["pending_ra"] == 2 and c["ra_pending_names"] == ["HIGH_TURNOVER", "CONCENTRATED_WEIGHT"]
+    assert c["pending_ppa"] == 1 and c["ppa_pending_names"] == ["HIGH_TURNOVER"]
+
+
+def test_verdict_says_zero_failed_is_not_passed_when_named_checks_pending():
+    from wqb.submit_verdict_core import decide
+    detail = {"status": "UNSUBMITTED", "is": {"checks": [
+        {"name": "LOW_SHARPE", "result": "PASS"}, {"name": "CONCENTRATED_WEIGHT", "result": "PENDING"}]}}
+    r = decide("A1", detail, 404, [])
+    assert r["verdict"] == "UNVERIFIABLE" and r["failed_ra"] == 0
+    assert r["pending_gate_names"] == ["CONCENTRATED_WEIGHT"]
+    assert "PENDING" in r["verdict_note"] and "不得据此放行" in r["verdict_note"]
+    clean = decide("A2", {"status": "UNSUBMITTED", "is": {"checks": [{"name": "LOW_SHARPE", "result": "PASS"}]}}, 404, [])
+    assert clean["pending_gate_names"] == [] and "PENDING" not in (clean["verdict_note"] or "")

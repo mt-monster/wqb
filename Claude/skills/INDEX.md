@@ -2,7 +2,9 @@
 
 > 本文件是全部 WQ/BRAIN skill 的架构基准：分层定位、挖掘流水线入口规则、闸门阶梯、权威版本声明。
 > 修改任何 skill 前先读本文件；新增 skill 必须归入下述某层并更新本索引。
-> **last_verified: 2026-09-26**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
+> **last_verified: 2026-09-29**（索引整体有效性锚点；平台 operator/阈值/区域状态变更后须同步刷新）。
+> **术语、状态词表（alpha / 波 / 区域三层）、跨文档「谁说了算」登记表见 [`GLOSSARY.md`](GLOSSARY.md)**——同一个词只用那里定义的含义；
+> 提交链（否决权威 / 放行权威、可达状态机、不可逆动作块）见 [`worldquant-submit-alpha/references/submit-chain.md`](worldquant-submit-alpha/references/submit-chain.md)。
 > 现行审计：`output_report/skills_multi_copy_audit_20260910.md`（多副本治理 P0/P1/P2）；
 > 工具使用率见 `reports/toolkit_usage_review_2026-08-31.md`（更早审计已归档 `attic/`）。
 
@@ -190,14 +192,27 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 > 另有一道**独立的**"体检硬门"（`tools/field_inspect_gate.py`，由 `tools/wave_gate.py` 内置调用），
 > 判据是 WebDataScope 字段体检包（低覆盖/高偏度/厚尾/单边/稀疏事件），**与闸7/8 不同源**，勿混谈。
 
-### wave_gate.py 内置闸（非 gate.py 闸编号）
+### 闸与逃生口总表（wave_gate 层 + 可豁免的闸；X-6）
 
-| 闸 | 判据 | 开关 | 落地 |
-|---|---|---|---|
-| 开波区域闸 | signal_floor / stop_rules / backlog 三道闸 | `--gate-mode {off,warn,enforce}` | 2026-09-17 P0-1 |
-| 体检硬门 | 低覆盖/高偏度/厚尾/单边/稀疏事件 | `--inspect-mode {off,warn,enforce}` | 2026-09-06 接线 |
-| PROD 饱和闸 | 字段热度 + 数据集占比 | 常开 | 2026-09-07 P1-1 |
-| **闸 PF** | **骨架级死路预检（prod-first 前置）** | `--prod-family-gate`（默认开）/ `--no-prod-family-gate` | **2026-09-25 P2** |
+表由 `python tools/waiver.py gates --markdown` 生成（唯一注册表 = `src/wqb/waiver.py` 的 `GATE_POLICIES`），
+`tests/unit/test_waiver.py` 比对——**改政策先改注册表，再重新生成本表**。用了任一逃生口，`tools/wave_gate.py` 首屏点名，
+台账须有对应 waiver（AGENTS.md §8.1.2；缺省 warn，`--waiver-mode enforce` 无 waiver 即 exit 2）。
+
+<!-- switch-table:start -->
+| 闸 id（waiver 的 gate） | 层 | 判据 | 逃生口 | 缺省 | 日期翻转 | waiver 批准人 / 最长 |
+|---|---|---|---|---|---|---|
+| `stop_rules` | 开波区域闸（节点一律拦截；CLI 随 gate-mode） | 区域停止规则闸（规则 A / B1 / B2） | `WQB_DISABLE_STOP_RULES_GATE=1（仅测试隔离）` | 常开 | — | user / 30 天 |
+| `backlog` | 开波区域闸（节点一律拦截；CLI 随 gate-mode） | 区域积压闸（conversion / pending+gated / 未消费） | `WQB_DISABLE_BACKLOG_GATE=1（仅测试隔离）` | 常开 | — | user / 30 天 |
+| `region_gates` | wave_gate / build_wave CLI | 开波区域闸整体降级（catalog / signal_floor / stop_rules / backlog） | `--gate-mode warn\|off`、`WQB_GATE_MODE=warn\|off` | warn 至 2026-10-11，之后 enforce | **2026-10-12**（TB-02） | user / 7 天 |
+| `inspect` | wave_gate 内置 | 字段体检硬门（缺体检包） | `--inspect-mode off\|warn`、`WQB_INSPECT_MODE` | warn；新数据集首波自适应 enforce | — | user/agent / 7 天 |
+| `semantic` | wave_gate 内置 | 闸 SEM 字段语义归类 | `--skip-semantic-gate`、`--semantic-gate off\|warn`、`WQB_SEM_MODE` | enforce（缺台账 exit 2） | — | user/agent / 7 天 |
+| `diversity` | gate.py 闸 6 | gate.py 闸 6 多样性契约 | `--skip-diversity-gate` | 常开（repair / probe 批豁免） | — | user/agent / 3 天 |
+| `prod_family` | wave_gate 内置 | 闸 PF 信号族死路预检 | `--no-prod-family-gate` | 开 | — | user/agent / 3 天 |
+<!-- switch-table:end -->
+
+> 另：**PROD 饱和闸**（字段热度 + 数据集占比，`tools/wave_gate.py` 内置，常开）无逃生口，enforced 态违规直接拦截。
+> **红线**（提交前的用户确认、凭据、平台限额）不可豁免（`wqb.waiver.RED_LINES`）。gate.py 的 `--gate0` / `--sanity-longcount` /
+> `--sanity-event-type` / `window_whitelist_enforce` 是**功能开关**（开得越多越严），不是逃生口，见上面的闸表。
 
 ### MCP 工具/节点计数（唯一基准，2026-09-12 核定）
 
@@ -416,16 +431,11 @@ python tools/sync_skills.py --check            # 仓库与全部安装位零漂�
 
 校验不通过（exit 1）时禁止合并/发布。
 
-## 提交配额口径（重要修正，2026-09-01 定案）
+## 提交配额口径
 
-提交配额 = **REGULAR 4 颗/ET 日历日 + SUPER 1 颗/ET 日历日**，**00:00 ET（= 12:00 GMT+8）重置**。旧"48h 滚动窗口"口径已证伪（08-12 一次 48h 内提交 6 颗全成功），勿再沿用。
-
-- `get_submission_quota` MCP 工具已于 2026-08-25 移除，**不要依赖它**；其旧返回的 `hours_until_release` 语义本身也有 bug。
-- 剩余额度从 submit 响应的 `REGULAR_SUBMISSION` / `SUPER_SUBMISSION` check 的 `value/limit` 读（value 从 0 起计数，limit=4/1）；硬闸 FAIL 的提交**不消耗**配额（status 保持 UNSUBMITTED）。
-- 判断"今天 ET 日已用几颗"：**唯一可靠 = `python tools/quota_status.py`**（MCP venv `$WQ_PY`；列 `stage=OS` 按 `dateSubmitted` 数当日颗数，直接给出 REGULAR 余量）。
-  ⚠️ **`GET /users/self/activities/submissions` 不得用于当日配额判断** —— 该端点只有
-  `yesterday/current/previous/ytd` 快照、**缺 today 字段**，据此判断必误判（2026-09-21 事故：并行会话已用掉 2 颗仍显示"昨日 5"，导致撞 `REGULAR_SUBMISSION(4/4)` 墙）。
-  SUPER 用量需从提交响应 `SUPER_SUBMISSION` 的 `value/limit` 读（本工具不区分类型）。本地 DB `alphas.date_submitted`（EDT `-04:00`）按 ET 日过滤可作交叉校验。
+**单一来源：[`worldquant-submit-alpha/references/quota-and-tower.md`](worldquant-submit-alpha/references/quota-and-tower.md)**（模型、数据来源、复检与撞墙、点塔优选）。
+一句话：**REGULAR 4 + SUPER 1 + PPA 1 每 ET 日历日**（三者并行不互占），00:00 ET 重置，换算 GMT+8 为夏令时 12:00 / 冬令时 13:00（以 `python tools/quota_status.py`
+输出为准）；当日已提交数用 `quota_status.py`（列 `stage=OS` 按 `dateSubmitted` 数），**不用** `GET /users/self/activities/submissions`（缺 today 字段）。
 
 ## 2026-09-19 平台区域硬事实（当日实测，优先级高于任何旧记）
 
