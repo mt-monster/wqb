@@ -31,6 +31,8 @@ SE_SKILLS = (
     "brain-feature-implementation",
     "brain-dataset-mining-experience",
     "brain-forum-browse",
+    "wq-brain-ppa-mining",
+    "brain-alpha-research",
 )
 
 
@@ -346,6 +348,16 @@ def test_ev_stale_copies_would_have_let_the_2026_incidents_through():
     assert not v.check_expression("bucket(rank(cap))")["valid"]
 
 
+def test_ev_subtract_accepts_the_named_filter_parameter():
+    """决策表 D6 与平台都允许 subtract(x, y, filter=true)；此前 subtract 漏标 param_names，命名写法被本地闸误拒。"""
+    pytest.importorskip("ply")
+    v = _load_validator().ExpressionValidator()
+    assert v.check_expression("subtract(a, b, filter=true)")["valid"]
+    assert v.check_expression("subtract(a, b, true)")["valid"]
+    assert not v.check_expression("subtract(a, b, foo=true)")["valid"]
+    assert not v.check_expression("divide(a, b, filter=true)")["valid"]      # divide 没有 filter
+
+
 def test_ev_docs_reference_paths_that_exist():
     t = _skill("alpha-expression-verifier")
     for rel in ("Claude/skills/alpha-expression-verifier/scripts/verify_expr.py",
@@ -599,3 +611,177 @@ def test_fb_init_workspace_defaults_to_read_only_and_write_path_is_opt_in(tmp_pa
     assert sorted(Path(x).name for x in wr["created"]) == ["forum_findings.md", "forum_stroll_notes.md",
                                                             "run_contract.md", "session_plan.md"]
     assert (tmp_path / "ws" / "personal_experience_memory.md").is_file()
+
+
+# ----------------------------------------------------------------------------- PP：ppa-mining
+
+PPA = SKILLS / "wq-brain-ppa-mining"
+
+
+def _ppa():
+    return _read(PPA / "SKILL.md")
+
+
+def test_pp_code_defaults_in_the_skill_match_score_datasets_source():
+    src = _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "score_datasets.py")
+    t = _ppa()
+    for key, val in (("coverage_hard_min", "0.7"), ("field_count_hard_min", "5"), ("tier2_coverage_min", "0.85"),
+                     ("tier2_field_count_min", "5"), ("tier2_alpha_count_max", "200"),
+                     ("tier1_score_pct", "0.6"), ("tier2_score_pct", "0.3"), ("alpha_count_max", "50")):
+        assert re.search(rf'h\.get\("{key}",\s*{re.escape(val)}\)', src), f"源码里 {key} 的缺省值不再是 {val}"
+        assert re.search(rf"`{key}`\s*{re.escape(val)}", t), f"SKILL 没写 {key} = {val}"
+    # 三个「拥挤度」口径都要能在代码里找到
+    wq = _read(REPO / "tools" / "webdata_quality.py")
+    assert "100 <= cnt <= 3000" in wq and "> 0.15" in wq and "100 ≤ count ≤ 3000" in t and "0.15" in t
+    assert 'h.get("sweet_spot_ac_min", 50)' in src and 'h.get("sweet_spot_ac_max", 1000)' in src and "50–1000" in t
+
+
+def test_pp_field_level_table_is_pinned_to_the_inspect_gate_source():
+    src = _read(REPO / "tools" / "webdata_quality.py")
+    t = _ppa()
+    body = src.split("def check_expr_against_inspect", 1)[1]
+    assert "coverage_ratio'] < 0.4" in body and "< 0.4" in t
+    assert "abs(meta['skewness']) > 2" in body and "\\|skew\\| > 2" in t
+    assert "meta['kurtosis'] > 8" in body and "| > 8 |" in t
+    assert "{'daily': 22, 'weekly': 52, 'monthly': 120, 'quarterly': 252}" in body and "22 / 52 / 120 / 252" in t
+    assert "daily=5" in body and "降到 5" in t
+    for kw in ("ts_backfill", "group_backfill", "winsorize", "signed_power", "trade_when", "zero_inflated", "point_mass"):
+        assert kw in body and kw in t, kw
+    assert "is_placeholder" not in t.replace("旧文里的 `is_placeholder` **不是 BRAIN 算子**", "")
+
+
+def test_pp_gate_line_table_matches_config():
+    from wqb import config
+    t = _ppa()
+    gp, gi = config.GATES_PLATFORM, config.GATES_INTERNAL
+    assert f"Sharpe ≥ {gp['sharpe_min']}" in t and f"Fitness ≥ {gp['fitness_min']}" in t
+    lo, hi = gp["turnover_range"]
+    assert f"[{int(lo * 100)}%, {int(hi * 100)}%]" in t
+    assert f"self_corr < {gp['self_corr_max']}" in t and f"prod_corr < {gp['prod_corr_max']}" in t
+    lo, hi = gi["turnover_range"]
+    assert f"[{int(lo * 100)}%, {int(hi * 100)}%]" in t
+    assert f"margin ≥ {int(gi['margin_bp_min'])}bp" in t and f"returns ≥ {int(gi['returns_min'] * 100)}%" in t
+    assert f"self_corr < {gi['self_corr_max']}" in t
+    assert "margin_bp_min" not in gp and "returns_min" not in gp        # 旧文的「平台硬线 Margin>5bp / Returns>5%」不成立
+    assert "Margin > 5bp" in t                                             # 只在「已删」说明里出现
+
+
+def test_pp_removed_teachings_stay_removed():
+    t = _ppa()
+    assert "ILLIQUID_MINVOL1M" not in t and "TaskStop" not in t and "lavender1203" not in t
+    assert 'tags=["PowerPoolSelected"]` + `color` 的 MCP 提交在本环境**会被拦**' in t
+    assert "C = 5" in t and "已删" in t.split("C = 5", 1)[1][:40]
+    assert "189" in t and "没有依据" in t                                # 非标准窗口只在「已换」说明里
+    assert "0.35" in t and "已删除作配方" in t
+
+
+def test_pp_legacy_script_is_archived_and_not_offered():
+    assert (REPO / "attic" / "ppa_mining_20260929" / "dataset_health_check.py").is_file()
+    assert not (PPA / "scripts").exists()
+    offenders = []
+    for f in list((SKILLS).rglob("*.md")):
+        for i, line in enumerate(_read(f).splitlines(), 1):
+            if "dataset_health_check" in line and "归档" not in line:
+                offenders.append(f"{f.relative_to(REPO)}:{i}")
+    assert not offenders, offenders
+
+
+def test_pp_referenced_commands_and_snapshot_page_exist():
+    t = _ppa()
+    assert "s0-select" in _read(REPO / "tools" / "campaign_intel.py")
+    ph = _read(REPO / "tools" / "ppa_handoff.py")
+    assert 'add_parser("sheet"' in ph and 'add_parser("record"' in ph and "--ppac" in ph
+    wq = _read(REPO / "tools" / "webdata_quality.py")
+    for flag in ("--zip", "--recommend", "--fields"):
+        assert f"'{flag}'" in wq and flag in t
+    assert "get_datasets" in _all_http_tools() and "get_mining_yield" in _all_db_tools()
+    snap = _read(PPA / "references" / "region-snapshots-2026-08.md")
+    assert "失效条件" in snap and "不是行动指令" in snap
+    assert "references/region-snapshots-2026-08.md" in t
+    assert 'mode="ppa"' in t and "score_datasets" in _read(SKILLS / "wq-brain-campaign-toolkit" / "SKILL.md") + "score_datasets"
+
+
+def test_pp_ra_side_copy_is_a_short_pointer_page():
+    exp = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "ppa-mining-experience.md")
+    assert len(exp.splitlines()) <= 60
+    assert "dataset_health_check" not in exp.replace("已归档", "") or "不存在" in exp
+
+
+# ----------------------------------------------------------------------------- AR：alpha-research
+
+AR = SKILLS / "brain-alpha-research"
+
+
+def test_ar_verification_commands_really_run_and_give_the_documented_output():
+    from wqb import config
+    t = _read(AR / "SKILL.md")
+    cmd1 = ("import sys; sys.path.insert(0,'src'); from wqb.research.evidence import EVIDENCE_REGISTRY as R; "
+            "[print(e.date, e.category, '|', e.actionable_rule) for e in R]")
+    cmd2 = ("import sys; sys.path.insert(0,'src'); from wqb.config import REGIONS, neutralization_search_order; "
+            "print(REGIONS['USA']['default_universe']); print(neutralization_search_order('USA'))")
+    assert cmd1 in t and cmd2 in t
+    o1 = subprocess.run([sys.executable, "-c", cmd1], cwd=str(REPO), capture_output=True, text=True, timeout=60)
+    assert o1.returncode == 0 and len(o1.stdout.strip().splitlines()) >= 4, o1.stderr
+    o2 = subprocess.run([sys.executable, "-c", cmd2], cwd=str(REPO), capture_output=True, text=True, timeout=60)
+    assert o2.returncode == 0
+    lines = o2.stdout.strip().splitlines()
+    assert lines[0] == "TOP3000" and len(eval(lines[1])) == 11 and "（11 项）" in t
+    assert "wqb research" in t and "不存在" in t                          # 只在「命令不存在」的说明里出现
+    assert not (REPO / "pyproject.toml").exists() or "wqb" not in (_read(REPO / "pyproject.toml").split("[project.scripts]")[1]
+                                                                    if "[project.scripts]" in _read(REPO / "pyproject.toml") else "")
+    assert len(config.PARADIGMS) == 13 and config.SHAPE_CLASSES == {"S1", "S4", "S5", "S9"}
+
+
+def test_ar_check_batch_really_has_no_callers_and_gate6_is_the_real_diversity_gate():
+    callers = []
+    for root in (REPO / "src", REPO / "tools", REPO / "Claude" / "skills", REPO / "world-quant-brain-mcp"):
+        for f in root.rglob("*.py"):
+            if ".venv" in f.parts or "attic" in f.parts or "trailSomeAlphas" in f.parts:
+                continue
+            try:
+                tree = ast.parse(_read(f))
+            except SyntaxError:
+                continue
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Call):
+                    fn = node.func
+                    name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
+                    if name == "check_batch":
+                        callers.append(f"{f.relative_to(REPO)}:{node.lineno}")
+    assert not callers, f"check_batch 现在有调用方了——AR SKILL 步 8 与 evidence.py 的说法要改：{callers}"
+    assert "check_batch_diversity" in _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "gate.py")
+    from wqb.research.evidence import EVIDENCE_REGISTRY
+    assert any("check_batch_diversity" in e.actionable_rule for e in EVIDENCE_REGISTRY)
+
+
+def test_ar_evidence_schema_ledger_writers_and_ghost_source_match_the_code():
+    import dataclasses
+    from wqb import config
+    from wqb.research.evidence import Evidence
+    t = _read(AR / "SKILL.md")
+    for f in dataclasses.fields(Evidence):
+        assert f"`{f.name}`" in t, f.name
+    cat = {e["key"]: e for e in json.loads(_read(REPO / "docs" / "ledger_keys.json"))["entries"]}
+    assert any(w["ref"] == "tools/forum_recon.py" for w in cat["community_tpl_kb"]["writers"])
+    assert cat["template_kb"]["writers"] == [] and cat["template_kb"].get("orphan")
+    assert len(config.GHOST_OPERATORS) >= 10 and "config.GHOST_OPERATORS" in t
+    assert "operator_audit" in _all_http_tools()
+    fa = _read(REPO / "tools" / "fetch_all_universes.py")
+    assert "Desktop" not in fa and "CREDENTIALS_EMAIL" in fa
+
+
+def test_ar_references_all_linked_and_the_webdata_rules_moved_to_field_quality():
+    t = _read(AR / "SKILL.md")
+    for f in sorted((AR / "references").glob("*.md")):
+        assert f.name in t, f"{f.name} 没有入链（SKILL 索引里要写一行「何时读」）"
+    assert not (AR / "references" / "webdatascope-data-quality.md").exists()
+    moved = SKILLS / "brain-alpha-research-field-quality" / "references" / "webdatascope-data-quality.md"
+    assert moved.is_file() and len(re.findall(r"^## 规则 \d+", _read(moved), re.M)) == 26
+    for f in (SKILLS / "brain-alpha-research-field-quality" / "SKILL.md", SKILLS / "brain-alpha-repair" / "references" / "repair-recipes.md",
+              AR / "references" / "sources.md"):
+        assert "brain-alpha-research/references/webdatascope-data-quality" not in _read(f), f.name
+    for f in (AR / "references").glob("*.md"):
+        text = _read(f)
+        assert "[[" not in text, f"{f.name} 还有 Obsidian wikilink"
+    assert "已被禁止" in _read(AR / "references" / "asi-methodology.md")
+    assert "[未验证" in _read(AR / "references" / "jump-decay-methodology.md")

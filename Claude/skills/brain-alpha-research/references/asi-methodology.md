@@ -4,7 +4,8 @@
 > - post 37473718017175《ASI MINVOL1M市场Robust Universe优化案例》（SC16582, Main 3.28 / Robust 3.04 / 12-12 checks）
 > - post 36383377642391《ASI robust FAIL优化小技巧》（SZ83096）
 > - post 41311721014423《MINVOL1M中的行业中性化探讨》
-> 关联：[[backtest-experience-archive]]、[[forum-template-library]]
+> 关联：[backtest-experience-archive.md](backtest-experience-archive.md)、[forum-template-library.md](forum-template-library.md)
+> **状态**：2026-08 的历史研究档；§8.2–§8.3 的「等权拼腿」结果违反现行政策（见各节标注），不可复用。
 
 ## 1. 信号层：ASI 最强信号族
 
@@ -69,7 +70,7 @@
   3. 无 `ts_decay_linear` 的 44 窗版反而更强——smoothing 在此场景非必需。
   4. 相比 b10/b11 用错字段（analyst10 近似 0.66）：**真字段 + 44 窗 = 2.2 倍提升**。
   5. 全指标（2Y/rn）同步达标，方向为正——进入 robust 测试条件良好。
-- 存档：`wqb-share-03/tracking/result_model30_asi_b22.json` / `details_a16_m30.json`
+- 存档：旧检出目录 `wqb-share-03/tracking/` 下的 `result_model30_asi_b22.json` / `details_a16_m30.json`（现仓库对应 `tracking/`）
 
 ## 8. ASI 全轨道结论（2026-08-05，b22-b34 共 13 批 104 表达式）
 
@@ -77,16 +78,16 @@
 - 52 窗 country：1.48（sharpe 峰值）；cap 十分位组内：1.48/0.71；**SUBINDUSTRY 中性化 × 双窗 blend（60+88）= 2Y 1.64 ✅ / JPN 0.97**（2Y/JPN 达标但 sharpe 1.39 不达标）
 - SUBINDUSTRY 在 ASI 的作用**反直觉**：论坛说 MINVOL1M 用 SUBINDUSTRY 抹信号（sh 降 0.09），但它把 JPN 子域从 0.89 提到 0.96——JPN 内部选股受益
 
-### 8.2 跨数据集 blend 突破（model30 × model110）
-- `add(ts_rank(W_m30,52), ts_rank(W_m110,60))`（7 ops）= **sh 2.25 / fit 1.40 / ret 4.9% / rn 1.74 / subU 1.24**（7 项中 5 项达标）
+### 8.2 跨数据集 blend（model30 × model110）——**历史结果，现已被政策禁止，不可复用**
+- 历史配方（**已被禁止的等权拼腿，仅作记录**）`add(ts_rank(W_m30,52), ts_rank(W_m110,60))`（7 ops）= **sh 2.25 / fit 1.40 / ret 4.9% / rn 1.74 / subU 1.24**（7 项中 5 项达标）
 - 腿字段选择：`mdl110_score`（sharpe 最强 2.25）vs `mdl110_value`（JPN 最优 0.75）；growth/sentiment/momentum/alternative 腿 JPN 灾难性（≤0.05）
 - 遗留瓶颈：**LOW_ASI_JPN_SHARPE 0.70-0.75 vs 1.0、IS_LADDER 1.47 vs 1.6**——model110 腿固有稀释，论坛公认 ASI 结构性难题
 
-### 8.3 三腿 blend 实测（b34）——不可行
+### 8.3 三腿 blend 实测（b34）——不可行（且同样属于已被禁止的拼腿形态）
 - 全预处理三腿 = 11 ops 超限（<8 硬约束）
 - 压缩预处理（裸 ts_rank + 外层 zscore/rank/winsorize 补偿，6 ops）：**JPN 从 0.70 崩到 0.37**——外层补偿无法替代字段级 winsorize+ts_backfill（再次验证第 2 节结论）
 - 三族各一腿（m30+score+value）：JPN 0.72 但 fitness 崩 0.76
-- **结论：<8 ops 下三腿不可行；两腿全预处理是唯一有效结构**。若平台放宽 ops/multiply 约束，三腿 2:1 加权骨架（`add(add(ts_rank(W_m30,52), ts_rank(W_m30,88)), ts_rank(W_m110,60))`）可直接复用
+- **结论：<8 ops 下三腿不可行；两腿全预处理是唯一有效结构**。旧文曾写「若平台放宽 ops / multiply 约束，三腿 2:1 加权骨架可直接复用」——**该形态（等权 / 加权 `add` 拼腿）已被现行闸 5 与 ra-pipeline 路线 A 禁止，不再复用**；ASI 的可行方向是同源价差与条件 / 分组辅助腿
 
 ### 8.4 其他失效变体（避坑清单）
 - 双层 rank（ts_rank(ts_rank(x,52),10)）：sharpe 崩至 0.26

@@ -1,7 +1,7 @@
 # 基于 us_short_sale / board_gov_stats / short_interest_pred / biasfree_analyst 的 Alpha 模板
 
 > 来源：参考 `alpha_inspiration_analyst10.md` 模板格式，基于本轮 USA/D1 PPA 挖掘（批 63/64/65）实际回测的表达式提炼。
-> 全部表达式已通过 `wqb.expression.validator.check_batch` 校验（外层包装≥2、双字段≥3、形状≥2、窗口≥2）。
+> **状态**：2026-08 的历史提炼，**未按现行流程复核**——`check_batch` 只是方法论参考、**不是门禁**（批级多样性门禁 = toolkit `gate.py` 闸 6），本文不声称已过任何闸；使用前按 ra-pipeline 重新过闸。
 > 回测配置：USA / TOP3000 / D1 / SUBINDUSTRY / decay8 / trunc0.04 / nan ON / maxTrade ON。
 
 ---

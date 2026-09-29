@@ -2,8 +2,8 @@
 
 > 基于 2026-08 全量回测数据（281 个存档文件 / 1957 条回测记录）系统性提炼。
 > 覆盖轨道：KOR（主目标）、ASI（早期探索）、USA option（并行探索）。
-> 数据源：`wqb-share-03/tracking/` 全部 `result_*` / `kor_*` 存档。
-> 关联：[[forum-template-library]]（模板）、[[webdatascope-data-quality]]（预筛）。
+> 数据源：旧检出目录 `wqb-share-03/tracking/` 的全部 `result_*` / `kor_*` 存档（现仓库对应 `tracking/`，个别文件已归档）。
+> 关联：[forum-template-library.md](forum-template-library.md)（模板）、[webdatascope-data-quality.md](../../brain-alpha-research-field-quality/references/webdatascope-data-quality.md)（预筛）。
 
 ---
 
@@ -26,7 +26,7 @@
 | 评级 | 数据集 | 样本 | ≥1.3 | ≥1.5 | 峰值 | 结论 |
 |---|---|---|---|---|---|---|
 | ★★★ | model110（ML/AI 复合） | 16 | 9 | 9 | 2.42 | 强信号，但 2Y(IS_LADDER) 与 asi_jpn 子域双卡 |
-| ★★★ | **model30（EPS Estimate Model）** | 8 | **7** | 0 | **1.46** | **论坛 star_eps_surprise_prediction_fy1 真字段**，44 窗模板 1.39-1.46，2Y/rn 同步达标（2026-08-04 b22 验证，详见 [[asi-methodology]]） |
+| ★★★ | **model30（EPS Estimate Model）** | 8 | **7** | 0 | **1.46** | **论坛 star_eps_surprise_prediction_fy1 真字段**，44 窗模板 1.39-1.46，2Y/rn 同步达标（2026-08-04 b22 验证，详见 [asi-methodology.md](asi-methodology.md)） |
 | ★★ | fundamental_asi | 24 | 17 | 9 | 1.61 | 峰值可用，需过 RA |
 | ✗ | news104/7/29、sentiment、institutions、analyst_asi、model144、fundamental44 | 全部 | 0 | 0 | <1.0 | ASI 新闻/情绪类全灭 |
 

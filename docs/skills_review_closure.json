@@ -2,69 +2,101 @@
  "_doc": "skills 审查（reports/skills_review_20260929.md）条目处置登记；由 tools/closure_ledger.py 维护，tests/unit/test_closure_ledger.py 守：每个报告 ID 都有条目、状态合法、fixed 有存在的 where、needs-platform 有 verify。",
  "items": {
   "AR-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 与“触发场景”段几乎逐字重复；“数据集发现/字段选择/类别映射”与 `brain-dataset-exploration-general`、`brain-d",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "description 只写研究方法 / 搜索空间扩展 + 指向路由表，删与其重复的「触发场景」段",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "AR-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界句：“不得自行修正/撤回 `config.py` 权威常量；skill 不是常量的第二作者”，同一文件却在步 10 维护“全区域 universe/delay/中性化固化表”约",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "边界改「常量只引用 config；研究结论可写但须标日期与失效条件」；固化表与区域优先级观测删除（只留指针），步 12 标题去「撤回」"
   },
   "AR-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "路由表只列 3 个专项 + “其他（本 skill）”；未列同为 L1 的 dataset-exploration / datafield-exploration / featur",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "§1 路由表补全 8 类任务（含 dataset-exploration / datafield-exploration / feature-engineering / S0），每行一句判据"
   },
   "AR-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "读者是开发者：读源码（`evidence.py`）、补 `config.py` 缺项、扩 `PARADIGMS`；agent 视角的“研究”产出无格式（步 6“机器可读的简明记录”",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "分「研究者步骤」（§2）与「维护者步骤」（§4）；研究记录 schema = Evidence 六字段 + applies_to / expires_when，落点写清；新增 vs 修正的判据：仅新增且经平台实测才可写 config",
+   "verify": "tests/unit/test_se_docs.py::test_ar_evidence_schema_ledger_writers_and_ghost_source_match_the_code"
   },
   "AR-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "步 1 要求“读源码 `src/wqb/research/evidence.py` 理解最新设计信号”，链接为 skill 相对路径（skill 被同步到其它宿主目录后失效）；应是",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "去掉「读源码 evidence.py」的 skill 相对链接，改为运行入口（打印 EVIDENCE_REGISTRY 的命令，测试实跑）",
+   "verify": "tests/unit/test_se_docs.py::test_ar_verification_commands_really_run_and_give_the_documented_output"
   },
   "AR-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "落点清楚（`KB/community_tpl_kb` / `KB/template_kb`，不是代码模板表）——好；但 L46 整段是“已删除模块”的史注，`paradigms.p",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md | Claude/skills/brain-alpha-research/references/jump-decay-methodology.md",
+   "note": "「已删除模块」史注移出正文（进 CHANGELOG）；jump-decay 里的 paradigms.py / grammar.py 改成历史说明；--emit-ideas 写明产物是确定性模板，只作人读参考或经 LLM 改写后注入（对账 RA 步 4）"
   },
   "AR-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“形状覆盖…`validator.check_batch` 正是按 shape signature 判重（≥2 shape signatures），所以形状覆盖是**过闸条件**”",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md | src/wqb/research/evidence.py",
+   "note": "删「check_batch 是过闸条件」——AST 测试证明它零调用方；真门禁 = gate.py 闸 6；SHAPE_CLASSES 与代码对齐（4 类，不含 S0）；evidence.py 里同样陈旧的规则文字一并改指闸 6",
+   "verify": "tests/unit/test_se_docs.py::test_ar_check_batch_really_has_no_callers_and_gate6_is_the_real_diversity_gate"
   },
   "AR-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "固化表要点（COUNTRY 中性化仅 EUR/GLB/ASI/MEA；Delay=0 仅 USA/EUR/CHN/GBR/DEU）与 ppa-mining（Delay 0 仅 US",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "固化表两句（COUNTRY 中性化仅 4 区 / Delay 0 仅 5 区）已不成立且互相矛盾，删；只引用 config.REGIONS，并写「支持 vs 数据广」"
   },
   "AR-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "API 实测约束 (a)–(e) 是 ppa-mining §9.1 与 ra-pipeline/ppa-mining-experience 的第 3 份拷贝；(e) 含 `loc",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "API 实测约束只留指针（唯一出处 = ppa-mining §11），删 localhost:8876 等环境细节"
   },
   "AR-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "2026-08-05 快照（HKG 209/KOR 192/EUR 178 数据集、“19 个未开发数据集首选 `ml_factor_proj`”）当作 S0 旁证保留，并在正文里",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md | tools/fetch_all_universes.py",
+   "note": "区域快照与「首选 ml_factor_proj」删除（已移到 ppa-mining 的历史页）；区域优先级只写 config.REGION_PRIORITY，选区用 region_rotation / s0-select；顺带修 fetch_all_universes.py 缺省 .env 指向作者桌面目录（改认 CREDENTIALS_* 与仓库内 .env）"
   },
   "AR-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "步 13 与 ppa-mining §1.3、ppa-mining-experience 重复；离线包星级说明第 3 次出现",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "离线包星级说明只在 ppa-mining §5.1 一处，本文留指针"
   },
   "AR-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "“运行 `wqb research` / `wqb settings`”——**仓库无此 CLI**（无 `cli.py`、`pyproject.toml` 无 scripts）；",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md",
+   "note": "验证清单改真实可跑的命令 + 期望输出（第二条打印 TOP3000 与 11 项中性化顺序），并注明 wqb research / wqb settings 不存在；测试实跑",
+   "verify": "tests/unit/test_se_docs.py::test_ar_verification_commands_really_run_and_give_the_documented_output"
   },
   "AR-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "①5 个无入链（`alpha-inspiration-usa-d1-shortinterest-insiders`、`asi-methodology`、`backtest-expe",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-alpha-research/SKILL.md | Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md | Claude/skills/brain-alpha-research/references/asi-methodology.md | Claude/skills/brain-alpha-research/references/backtest-experience-archive.md | Claude/skills/brain-alpha-research/references/jump-decay-methodology.md",
+   "note": "SKILL 里每个 reference 一行「何时读」（测试：无孤儿）；webdatascope-data-quality.md（26 条规则）移入 field-quality 并修入链、消费位置表与 check_batch 说法；wikilink 全清、wqb-share-03 旧路径标注；jump-decay 标 [未验证]；asi 的等权拼腿结果标「已被政策禁止」；alpha-inspiration 去掉「已过 check_batch」",
+   "verify": "tests/unit/test_se_docs.py::test_ar_references_all_linked_and_the_webdata_rules_moved_to_field_quality"
   },
   "BM-01": {
    "status": "fixed",
@@ -2046,134 +2078,199 @@
    "note": "三张情景卡：GitHub 仓库导入到审查区并读报告 / 同名更新（diff + 合并）/ 发现 hooks 或读 .env 的拒绝与留痕"
   },
   "PP-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "466 字；触发含“WorldQuant / WQ Brain / alpha 挖掘 / 用户要开新战役·换区域·问某数据集能不能打 → **必须先执行 §1.0**”，会被**所",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "description 收窄为「开 PPA 战役 / 判断数据集能不能打 PPA」，从触发里撤出「所有 WQ 挖矿 / 开新战役必须先执行 §1.0」；§1 第一屏写明硬门槛只适用 PPA 模式，RA 走决策表 D4",
+   "verify": "tests/unit/test_se_docs.py::test_description_is_a_short_trigger_statement"
   },
   "PP-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界句声称负责“**PPA 主题匹配核查**”，全文找不到这一节（主题门禁实际在 RA 步 1 的 `get_messages` 扫描、`worldquant-submit-alp",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "删「PPA 主题匹配核查」承诺，边界改为：挖矿期在 ra-pipeline 步 1 §1.6 / ppa-vs-ra §1，提交期在 worldquant-submit-alpha 的 PPA 通道"
   },
   "PP-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "大量步骤写成“读 hover 卡片 / 读徽章 / distribution.js 白空间表 / genius.js 算子分析”——这是 **Chrome 扩展的 UI 操作**，",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§2「体检怎么做（agent 取数路径）」表：每个面板对应命令 / 产物；UI 操作只作人工核对备注；字段级表数值来自体检硬门源码（测试钉死）",
+   "verify": "tests/unit/test_se_docs.py::test_pp_field_level_table_is_pinned_to_the_inspect_gate_source"
   },
   "PP-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "体检执行器**三套**：本 skill 的 `scripts/dataset_health_check.py`（§1.0、§7 步 0 都要求“不可跳过”）、boundary 里写",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md | attic/ppa_mining_20260929/README.md | Claude/skills/INDEX.md | Claude/skills/wq-brain-ra-pipeline/references/regions/ASI.md",
+   "note": "DEC-46：唯一执行器 = workflow_campaign(stage=S0) + s0-select；dataset_health_check.py（自读 .env 直连、零调用方）归档；127.0.0.1:8876 / --mode direct 等环境细节随之移出；INDEX S0 行、ASI profile、RA 的作废说法表同步",
+   "verify": "tests/unit/test_se_docs.py::test_pp_legacy_script_is_archived_and_not_offered"
   },
   "PP-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "①cov 阈值有 0.85（硬门）、0.7（一票否决）两档，而 D4/代码用 0.65（文档）/0.7（代码缺省）、保底带 0.65–0.85；②“`alphaCount==0` ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§1 阈值对照表：PPA / RA / 代码缺省（逐项由测试对照 score_datasets.py）；适用域移到第一屏；alphaCount == 0 改「只做探针」（与 probe-scoring-v2 一致），cov ≥ 0.9 且字段 ≥ 10 才优先",
+   "verify": "tests/unit/test_se_docs.py::test_pp_code_defaults_in_the_skill_match_score_datasets_source"
   },
   "PP-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "EUR 32 次回测教训有数据、有反事实，是好范式；但“若前置则完全可避免”的反事实后来未被验证（ac=0 集实测多为伪白空间）",
-   "cat": "情景·🟢/P3"
+   "cat": "情景·🟢/P3",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "EUR 32 次回测教训保留，并补后续验证状态：ac = 0 的集多为伪白空间——体检是必要条件不是充分条件"
   },
   "PP-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题“规则引擎（从台账自动推导，**无需硬编码**）”，随后表内硬编码 KOR/MEA 区域特征与 6 组“当前已知红灯”（图表形态、新闻/情绪、AI/ML、信用风险、行为金融、G",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§4 只留红 / 黄 / 绿判据 + 查询命令（get_dead_ends / get_campaigns / get_cross_region_lessons），快照与 6 组红灯清单删除（registry 才是事实源）；跨区外推统一按 RA 跨区先验规则，单区判死不外推"
   },
   "PP-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“sweet-spot：100 ≤ count ≤ 3000 且 sharpe ≥ 1.1×均值”与本文 §1.0 的 alphaCount≤50、toolkit calibrat",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§1 三个「最优拥挤度」口径并成一张表：轴（平台 alphaCount vs 离线提交量 count）/ 区间 / 出处，源码逐项核对",
+   "verify": "tests/unit/test_se_docs.py::test_pp_code_defaults_in_the_skill_match_score_datasets_source"
   },
   "PP-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "同一 skill 内：“KOR → SECTOR 最佳（0.562）”“按 dominant method（KOR→SECTOR）”与“SECTOR/MARKET 中性化大幅降低 ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§5.1 中性化：dominant method 只在实测更优且 IS_LADDER 仍达标时采用，否则 D5 禁用 SECTOR / MARKET"
   },
   "PP-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“离线包缺≠平台缺；离线包有≠平台有”+ EUR 四个集根本不存在的反例 + 规则“先体检确认存在且达标，判‘不可用’前换区查一遍”——**场景→规则→动作**齐全",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "离线包 ★★★ 一节保留（场景 → 规则 → 动作），补「只影响本地分析质量」"
   },
   "PP-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“IS sharpe >> OS sharpe”用“>>”，无量化（field-quality 用“差 >0.15”）；对 KOR `model253` 的引用是个例",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "OS 退化量化为 IS − OS > 0.15（webdata_quality 的 degraded 与 field-quality 同阈值）"
   },
   "PP-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "表里“极低(<30%) → **加 `is_placeholder`** 或换字段”——`is_placeholder` **不是 BRAIN 算子或字段**（仓库只有内部函数 `",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "is_placeholder 删除（非 BRAIN 算子）；缺失 / 偏斜 / 峰度阈值改为体检硬门的真实数值（cr < 0.4、|skew| > 2、kurt > 8、频率最小窗口、trade_when 门控）",
+   "verify": "tests/unit/test_se_docs.py::test_pp_field_level_table_is_pinned_to_the_inspect_gate_source"
   },
   "PP-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "“组合范式（V9 突破版）”：`scale(rank(ts_zscore(subtract(...),189))) + scale(-rank(ts_zscore(returns,",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md | src/wqb/research/evidence.py | Claude/skills/alpha-expression-verifier/scripts/validator.py",
+   "note": "V9 带 0.35 权重的配方删除作配方（标「已删除」并说明违反路线 A）；给合规改写（returns 反转作 trade_when 条件、标准窗口 22/66/252）；核实闸 5 现已拦 X + Y*0.35（infix_leg_sum，实测）；顺带修 subtract 命名参数 filter=true 被本地闸误拒（DEC-48）",
+   "verify": "tests/unit/test_se_docs.py::test_ev_subtract_accepts_the_named_filter_parameter"
   },
   "PP-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "§3.1 把 KOR 的 **Sentiment/Option/Macro 空白**列为“真·低竞争机会（重点）”，而 §1.0.x 把 KOR 新闻/情绪族列为**三连判死红灯*",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "白空间表降为「候选池来源」，必须再过体检与跨区先验；KOR Sentiment 空白 vs 新闻三连死的矛盾写清读法（空白只说明没人试，不说明能出货）；快照移出"
   },
   "PP-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "鼓励“补进极少使用的算子（如 `ts_regression`…）以满足 Genius 六维”，而 §5.9 又说 `ts_regression(A,B,n).residual` 语",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§9 步 6 分「指标补齐」与「质量」；罕见算子须先过闸 5 与语法闸；符号映射表删（解析工具的实现细节）"
   },
   "PP-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "“并发上限 **C=5**”出现两次，而 `config.CONCURRENCY.slots=7`（config 注释还专门记录了历史上 5/8/6/4/3 并存的问题）；D10 ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "删「C = 5」，指向 wqb-concurrency（config 里 slots = 7）",
+   "verify": "tests/unit/test_se_docs.py::test_pp_removed_teachings_stay_removed"
   },
   "PP-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "testPeriod 三个值并存：示例 `P0D`、最佳参数 `P6Y`、“最大 P6Y0M0D”",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "testPeriod：无测试期写 P0Y0M0D，P6Y 是真实 6 年测试期也是平台最大值，两回事写清"
   },
   "PP-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "hump：“破坏性，**勿用**”（§5.7）与“`hump(x, hump=0.01)` **必须命名参数**”（§9）并存；D6 称“已废弃禁用”，RA 预闸却自动改写 hum",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "hump 状态统一：仍受支持但必须命名参数 hump(x, hump=k)（决策表 D6；预闸自动改写位置形态）；旧「破坏性勿用」删"
   },
   "PP-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "把 “Margin > 5bp、Returns > 5%” 列为**平台硬线**；`config.GATES_PLATFORM` 没有这两项，`GATES_INTERNAL` 是 ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§8 闸门线逐项对齐 config.GATES_PLATFORM / GATES_INTERNAL / PLATFORM_CHECK_LINES（测试）；Margin>5bp / Returns>5% 平台硬线说法删；PPAC 展开为 Power Pool 相关性",
+   "verify": "tests/unit/test_se_docs.py::test_pp_gate_line_table_matches_config"
   },
   "PP-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "步 4“建 reversed spread，加 returns 反转组合”＝PP-13 的混合；步 5“**权重**/窗口/中性化/truncation 微调”＝参数扫描，与 CL",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "步 4「加 returns 反转组合」改单信号 / 同源价差 / 辅助腿三式；步 5 删「权重」，参数只在有依据的少数维度内扫并记录理由"
   },
   "PP-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "“**提交**：`tags=[\"PowerPoolSelected\"]`, `color=GREEN`”——`worldquant-submit-alpha` / `brain-a",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "步 8 改「PPA 由用户在 web UI 提交，agent 出清单 + 主题匹配证据 + ppa_handoff 交接单」；PowerPoolSelected 的 MCP 提交明示会被拦（测试）",
+   "verify": "tests/unit/test_se_docs.py::test_pp_referenced_commands_and_snapshot_page_exist"
   },
   "PP-22": {
-   "status": "open",
+   "status": "fixed",
    "title": "2026-08-05/23 的区域快照（KOR 192 集、EUR 178 集、HKG 209 集；“首选 `news_sentiment_nlp`：三区 alphaCount=0",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md | Claude/skills/wq-brain-ppa-mining/references/region-snapshots-2026-08.md",
+   "note": "§8 快照移到 references/region-snapshots-2026-08.md（带日期、失效条件、「不是行动指令」，并写明此后证据反向）；SKILL §10 只留选区方法；倍率差表只留方法与当时数字",
+   "verify": "tests/unit/test_se_docs.py::test_pp_referenced_commands_and_snapshot_page_exist"
   },
   "PP-23": {
-   "status": "open",
+   "status": "fixed",
    "title": "“自行实现 `_reauth()`”与“禁止手写 requests、用 `BrainApiClient`”冲突；429 退避写了第三种（`min(20+attempt*8,45)s",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "删「自行实现 _reauth()」「429 退避 min(20+attempt*8,45)」「lavender1203 fork / 端口 8876 / Trust」；改「用 BrainApiClient，429 处置见 wqb-concurrency」；MCP 工具罗列删"
   },
   "PP-24": {
-   "status": "open",
+   "status": "fixed",
    "title": "合法 universe 表仍含 `ILLIQUID_MINVOL1M`（USA/EUR/ASI）；`config.REGIONS` 注释：2026-09-22 已从 USA/EUR",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "合法 universe 表删（含已停提的 ILLIQUID_MINVOL1M），改指 get_platform_setting_options 与 config.REGIONS",
+   "verify": "tests/unit/test_se_docs.py::test_pp_removed_teachings_stay_removed"
   },
   "PP-25": {
-   "status": "open",
+   "status": "fixed",
    "title": "两份 PPA 方法论（24 段重复，Jaccard 0.50）；ra-pipeline 版还引用不存在的 `wq-brain-ra-pipeline/scripts/dataset",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md | Claude/skills/wq-brain-ra-pipeline/references/ppa-vs-ra.md",
+   "note": "RA 侧副本早已缩为 39 行（独有实证 + 作废说法表）；本轮把其中对 dataset_health_check 的指向改成「已归档」，方法论只有 ppa-mining 一个家（测试：RA 侧 ≤ 60 行）",
+   "verify": "tests/unit/test_se_docs.py::test_pp_ra_side_copy_is_a_short_pointer_page"
   },
   "PP-26": {
-   "status": "open",
+   "status": "fixed",
    "title": "六条实测约束（数据集级体检走 `get_datasets`；`/data-fields` 四参齐全；非法 universe 报 500 而非 400；TLS 抖动优先复用常驻 MC",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/wq-brain-ppa-mining/SKILL.md",
+   "note": "§11 六条实测约束改成「症状 → 原因 → 处置」表；合法档位表按 PP-24 处理"
   },
   "PW-01": {
    "status": "fixed",

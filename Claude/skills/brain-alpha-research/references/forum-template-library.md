@@ -53,11 +53,11 @@
 ## E. 双数据集混信号模板（forum IND 情感帖, 2025-12-09）
 
 双数据集信号混合（论坛称"混信号"）：适合新手/断粮/点塔场景。
-与本项目 KOR 实测呼应：跨数据集 blend（add/subtract）在 KOR 上产出达标候选（JjGwjd5E = analyst39×pv106），前提是两腿正交（不同类别）；同数据集族内 blend 无效（pv106 族内全灭）。
+与本项目 KOR 实测呼应：跨数据集 blend（当时用 add / subtract；**现行政策只允许同源价差 `subtract`，不允许 `add` 等权 / 加权拼腿**，见 ra-pipeline 步 7 §7.7）在 KOR 上产出达标候选（JjGwjd5E = analyst39×pv106），前提是两腿正交（不同类别）；同数据集族内 blend 无效（pv106 族内全灭）。
 
 ## 使用规则
 
-1. 每个模板代入字段前，先本地 `check_batch` 校验 + 确认算子签名（命名参数坑：winsorize std=、ts_decay_linear dense=、hump hump=、ts_backfill lookback=）
+1. 每个模板代入字段前，先过 `gate.py`（语法 / 幽灵算子 / 元数）+ 确认算子签名（命名参数坑：winsorize std=、ts_decay_linear dense=、hump hump=、ts_backfill lookback=）
 2. B 体系模板空间大（1240+），优先按经济含义定向生成，不要全空间枚举
 3. D 模板高 turnover 信号必须配 decay≥12 或长窗（本项目 GLB 实测 decay16+250 窗解决 margin）
 4. 模板与数据集匹配度：先查 WebDataScope 数据体检（分布形状/频率）再选模板族

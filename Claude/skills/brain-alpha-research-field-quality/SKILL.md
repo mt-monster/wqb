@@ -41,7 +41,7 @@ allowed-tools:
 
 挖矿目标确定 region/delay 后、调用任何模拟前，先用本地 WebDataScope 数据包（`WebData_*.zip`）做零成本预筛。
 
-**完整 23 条规则与数据结构见 [`../brain-alpha-research/references/webdatascope-data-quality.md`](../brain-alpha-research/references/webdatascope-data-quality.md)**，排名脚本 [`tools/webdata_quality.py`](tools/webdata_quality.py)。
+**完整 23 条规则与数据结构见 [`references/webdatascope-data-quality.md`](references/webdatascope-data-quality.md)**，排名脚本 [`tools/webdata_quality.py`](tools/webdata_quality.py)。
 
 核心决策规则速查：
 (a) 数据集甜点区 = 100≤count≤3000 且 sharpe≥1.1×区域均值；<50 不可信，>30K 饱和避开；

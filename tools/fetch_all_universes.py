@@ -12,15 +12,19 @@ from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
-# --- load .env ---
-ENV_PATH = os.environ.get("WQ_ENV_PATH", os.path.join(os.path.expanduser("~"), "Desktop", "E3", "quant", "worldquant_alpha", ".env"))
+# --- 凭据（2026-09-29，skills 审查 AR-10 / X-14 / X-15）---
+# 此前缺省 .env 路径指向项目外的作者桌面目录。现在：环境变量 > MCP 服务的 .env（仓库内）；
+# 变量名认标准 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD，旧名 WQ_USERNAME / WQ_PASSWORD 仍认。
+# 日常取合法档位请用 MCP 工具 get_platform_setting_options（凭据在服务端）；本脚本只在需要把整张表批量固化成 JSON 时用。
+REPO_ROOT = Path(__file__).resolve().parents[1]
+ENV_PATH = os.environ.get("WQ_ENV_PATH") or str(REPO_ROOT / "world-quant-brain-mcp" / ".env")
 load_dotenv(ENV_PATH)
-USERNAME = os.getenv("WQ_USERNAME", "")
-PASSWORD = os.getenv("WQ_PASSWORD", "")
+USERNAME = os.getenv("CREDENTIALS_EMAIL") or os.getenv("WQ_USERNAME", "")
+PASSWORD = os.getenv("CREDENTIALS_PASSWORD") or os.getenv("WQ_PASSWORD", "")
 BASE = "https://api.worldquantbrain.com"
 
 if not USERNAME or not PASSWORD:
-    print("ERROR: WQ_USERNAME/WQ_PASSWORD not found in .env"); sys.exit(1)
+    print("ERROR: 凭据缺失：请在环境里设 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD（或用 WQ_ENV_PATH 指向 .env）"); sys.exit(1)
 
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0"})

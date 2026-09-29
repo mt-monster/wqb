@@ -31,7 +31,10 @@ EVIDENCE_REGISTRY: List[Evidence] = [
         design_implication="Uniform batches correlate internally and burn "
                            "correlation quota at submission.",
         actionable_rule="Enforce ≥2 shape signatures and ≥2 outer wrappers "
-                        "per batch via check_batch before dispatch.",
+                        "per batch via the toolkit gate's batch-diversity check "
+                        "(gate 6, check_batch_diversity) before dispatch. "
+                        "(wqb.expression.validator.check_batch is methodology "
+                        "reference only, not a gate.)",
         date="2026-04-20",
     ),
     Evidence(

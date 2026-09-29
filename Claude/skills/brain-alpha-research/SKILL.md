@@ -1,8 +1,8 @@
 ---
 name: brain-alpha-research
 layer: L1
-description: "研究数据集、字段、类别、universe、仿真设置与最新 alpha 挖掘方法，在不牺牲严谨性或平台兼容性的前提下扩展可搜索机会集。当任务是数据集发现、字段选择、设置空间扩展、类别映射，或把最新论文与平台/论坛指引整合进挖掘工作流时使用。"
-last_verified: 2026-09-28
+description: "做研究方法与搜索空间扩展（设置空间、范式库、论坛 / 论文模板整合、跨区陷阱）时使用；数据集 / 字段 / 新闻 / 饱和集等具体任务先看路由表，走对应专项 skill。常量只引用 config，不选集。"
+last_verified: 2026-09-29
 allowed-tools:
   - Read
   - Bash
@@ -13,51 +13,72 @@ allowed-tools:
 
 ## 职责边界
 
-- **本 skill 负责**：通用研究方法与范式库：数据集/字段/设置研究、跨区陷阱、universe 固化表
-- **本 skill 不做**：**不得自行「修正」/「撤回」 `src/wqb/config.py` 的权威常量**（区域优先级 / universe / 中性化一律**引用** config，skill 不是常量的第二作者）；不做具体选集（那是 S0）
-- **上游 / 下游**：上游 = 研究需求；下游 = S0/S1 的输入参考
+- **本 skill 负责**：研究方法与范式库——设置空间怎么扩、论坛 / 论文模板怎么整合与分类、研究结论怎么记录（研究者步骤）；另有一小节给维护者（改 config / 扩 `PARADIGMS`）。
+- **本 skill 不做**：**不当 `src/wqb/config.py` 常量的第二作者**——区域优先级 / universe / delay / 中性化一律**引用** config；研究结论可以写，但必须标日期与失效条件；不做具体选集（S0）；不产出配置包。
+- **上游 / 下游**：上游 = 研究需求；下游 = S0 / S1 的参考输入（不是流水线前置）。
 
+## 1. 路由：先选对 skill
 
-
-## 触发场景
-
-数据集发现、字段选择、设置空间扩展、类别映射，或把论文/平台/论坛最新指引整合进挖掘工作流。
-
-## 专项 skill 路由（2026-08-31 拆分）
-
-本 skill 已拆分为多个专项 skill，按任务类型选择：
-
-| 任务类型 | 专项 skill |
-|---------|-----------|
-| 新闻/情绪数据集研究 | `brain-alpha-research-news-sentiment` |
-| 饱和数据集 hypothesis-first | `brain-alpha-research-hypothesis-first` |
+| 任务 | 用哪个 |
+|---|---|
+| 选集（在哪挖、白名单） | S0：ra-pipeline 步 2 / 决策表 D4；PPA 战役另看 `wq-brain-ppa-mining` |
+| 发现数据集、类别映射 | `brain-dataset-exploration-general` |
+| 探测单字段的行为（覆盖 / 分布 / 是否有信号） | `brain-datafield-exploration-general` |
+| 字段 → 经济概念（特征工程） | `brain-data-feature-engineering` |
 | 字段质量先验 / WebDataScope 预筛 | `brain-alpha-research-field-quality` |
-| 其他研究任务（本 skill） | `brain-alpha-research` |
+| 新闻 / 情绪类数据集 | `brain-alpha-research-news-sentiment` |
+| 饱和数据集（模板已被挖穿）改走假设驱动 | `brain-alpha-research-hypothesis-first` |
+| 其它：设置空间扩展、范式库、论坛 / 论文模板整合、跨区陷阱 | **本 skill** |
 
-## 工作流
+## 2. 研究者步骤
 
-1. 先读 [`src/wqb/research/evidence.py`](src/wqb/research/evidence.py) 理解最新设计信号。
-2. 把期望的搜索扩展与 [`src/wqb/config.py`](src/wqb/config.py) 对照。缺失的区域/universe/中性化/类别/搜索 profile 先在那里补齐。
-3. USA REGULAR 研究默认 universe 取 `TOP3000`。其他 USA universe 只作显式诊断或修复记录，不作常规搜索扩展。
-4. 扩展中性化覆盖时，使用 `neutralization_search_order(region)` 的完整支持顺序，原始平台选项集保留在 `REGIONS`。
-5. 记录新设置或想法时，注明它影响：结构多样性 / 设置多样性 / 类别覆盖 / 内存与去重 / 可观测性。
-6. 研究产出捕获为**机器可读的简明记录**，不是纯散文笔记。
-7. **论坛模板挖掘（2026-04-21，2026-09-05 校正落点）**。扫描论坛帖时，把每个有希望的模板对照 [`src/wqb/config.py`](src/wqb/config.py) 的 `PARADIGMS`（P1_SPREAD … P13_BUCKET_NEUT，13 条）分类。2026-04-21 论坛审计正是以此新增 P9_INFORMATION、P10_NORM_REG、P11_RESIDUAL_STRIP、P12_DISTRIBUTIONAL、P13_BUCKET_NEUT。≥50 赞的高赞模板若无法归入现有范式，先在 `PARADIGMS` 补范式名，再把模板本身写进 DB KB —— 落点是 ledger `KB/community_tpl_kb`（候选库，带 `category` / `placeholder_conventions` / `ghost_operator_advisory`）与 `KB/template_kb`（`validated` / `failed`），**不是**代码里的模板表。
-   > **历史注记**：`src/wqb/expression/paradigms.py` 及其 `Template(paradigm, name, expression, …)` / `asymmetric` / `pre_op_pool_a`/`_b` / `PRE_OPS_WINDOWED` / `PRE_OPS_WINDOWLESS` 数据模型已在「remove dead modules」提交中删除。现存的只有 `config.PARADIGMS`（范式名清单）与 `config.SHAPE_CLASSES`（形状分类）。看到旧文档提这些符号，按本条改写，不要试图 import。
-   **KB 消费闭环（2026-09-12 补）**：`KB/community_tpl_kb` 的模板用 `python tools/kb_templates.py --json [--category c --search kw]` 检索/导出，`--emit-ideas <path>` 产出 GEM ideas JSON（经 `run.py --ideas-file` 注入生成端）；含幽灵算子的模板默认剔除（--with-ghost 才放行，须先按 advisory 替换）。写 KB 前的形状/范式核对仍按本节 9 执行。
-8. **算子分类覆盖检查**。论坛模板用了不在 `grammar._OP_ARITY` 里的算子时，它同样不在语法生成器里。**扩展 `_OP_ARITY` 前，先用 MCP `get_operators` 核对该算子在当前平台真实存在。**幽灵算子（平台不存在，用了整批静默失败）**权威清单 = `data/wqb.db` ledger `KB/community_tpl_kb.ghost_operator_advisory`**（ghost_to_equivalent 10 个 + 替换表 + unverified_community_ops + forbidden_regular），静态快照在 `wq-brain-campaign-toolkit/config/platform_constraints.json.ghost_ops`。论坛模板引用幽灵算子时，用其替换表改写或弃用（2026-09-12 更正：旧文指向 operators_notes.md「幽灵算子段」，该文件实为使用统计转储，无此段）。
-9. **形状覆盖检查（2026-04-22，2026-09-05 校正落点）**。论坛模板的二元组合器用了两个不同前置算子、单侧包裹或跨层组合器时，语法与 KB 应原生支持该形状。入库前先分类形状：`wqb.expression.validator.classify_shape(expr)` / `_shape_signature(expr)` 可分类任意已解析表达式，形状枚举在 `config.SHAPE_CLASSES`（S1/S4/S5/S9/S0）。核对目标形状在每个范式至少有一个代表模板；缺该形状变体时，在 `KB/community_tpl_kb` 补一条非对称骨架（`op1(A) - op2(B)` / `A - op2(B)` / `rank(A) vs group_rank(B,g)`），并在条目里写清两侧前置算子的取值约定，不要把前置算子冻结成唯一写法。
-   > 步 5 的多样性守卫 `validator.check_batch` 正是按 shape signature 判重（≥2 shape signatures），所以形状覆盖不是文档洁癖，是过闸条件。
-10. **全区域 universe / delay / 中性化固化表（2026-08-09 平台实测）**。数据集研究时**必须使用平台实测的合法值**，禁止猜测 universe 档位。完整固化表现在以 `src/wqb/config.py` 的 `REGIONS`（`universes`/`default_universe`）为唯一权威；抓取脚本 `tools/fetch_all_universes.py`（`OPTIONS /simulations` → 解析）。关键约束：(a) **COUNTRY 中性化仅 EUR/GLB/ASI/MEA 支持**；(b) **MEA 中性化最少**（仅6种，无 STATISTICAL/FAST/SLOW）；(c) **Delay=0 仅 USA/EUR/CHN/GBR/DEU**。
-11. **API 实测约束（2026-08-05 沉淀，勿再踩）**。(a) `GET /data-fields` 必须 `instrumentType+region+delay+universe` 四参齐全，缺 universe → 400；(b) `universe` 传非法档位 → **500**（不是 400）；(c) **`get_datasets` 直接返回 coverage/fieldCount/userCount/alphaCount/valueScore/pyramidMultiplier**，比逐字段聚合快约 2 个数量级 → 数据集级体检优先走它；(d) 直连 API 的 `category` 是 dict，MCP 已扁平化为 str，需归一；(e) 沙箱到 api.worldquantbrain.com 有 TLS 抖动，常驻 MCP(localhost:8876) 共享会话更稳。
-12. **区域优先级与 EUR 死路撤回（2026-08-05 实证）**。(a) **区域优先级 = 研究性观测，**不是**权威常量**：2026-08-05 实测 HKG 209 数据集 / cov 均值 0.6958 / 倍率 1.8；KOR 192 / 0.7046 / 1.7；EUR 178 / 0.6616 / 1.3–1.5。
-   ⚠ **冲突已标注（2026-09-26 审计）**：本观测倾向 HKG ≈ KOR > EUR，但**区域优先级的唯一权威常量 `src/wqb/config.py::REGION_PRIORITY` 当前为 USA=3 / EUR=KOR=GLB=2 / 其余（含 HKG）=1 —— 即权威口径里 EUR(2) > HKG(1)，与本观测相反**。
-   **裁定：以 `config.REGION_PRIORITY` 为准**；skill **不得**用"修正 / 撤回"口吻改写 config 常量（本条原为"修正为…"表述，已改）。本观测仅作 S0 选集时的**参考旁证**，不得单独用于定区域白名单。(b) **原"EUR 死路"判断是错的，已撤回**——EUR/TOP1200/D1 实际有 178 数据集/38609 字段，coverage 均值 0.6616，35 个 ≥0.90。原战役 32 次回测只用了 4 个劣质数据集(model30 cov.713但4202 alpha极度拥挤 / news21 cov.53 / insiders12 cov.20)，无一满足 cov≥0.85。(c) **19 个高覆盖未开发数据集**（cov≥.85 & alpha≤50 & fields≥10），首选 `ml_factor_proj`（333字段全MATRIX/coverage全部1.0/0用户0alpha/valueScore 5.0/倍率1.5）。
-13. **跨区域误推荐陷阱（2026-08-05 强化）**。`fundamental86/risk59/model216/fundamental94` 不是"0 字段"，而是 **EUR 区域根本不提供**；它们在 **KOR 全部可用**（fundamental94 有 215 字段 cov .8558）。属跨区域误推荐，与数据包过期无关。**判定某数据集不可用前，先换区域查一遍**。离线包 ★★★/☆☆☆ 只代表离线匹配度，**严禁**据此推断平台数据可用性。
+1. **对照 config，只引用不改**：区域参数在 `config.REGIONS[<R>]`（`universes` / `default_universe` / `delays` / `neutralizations`）；范式名清单 `config.PARADIGMS`（13 条）；形状类 `config.SHAPE_CLASSES`（`{S1, S4, S5, S9}` 四类）。缺项 → 写成研究记录（步 5），**不要直接改 config**（判据见 §4）。
+2. **USA REGULAR** 研究默认 universe = `TOP3000`；其它 USA universe 只作显式诊断或修复记录，不作常规搜索扩展。
+3. **扩展中性化覆盖**：用 `wqb.config.neutralization_search_order(region)` 的完整顺序，平台原始选项集保留在 `REGIONS`。
+4. **记录新设置 / 想法**时注明它影响哪一维：结构多样性 / 设置多样性 / 类别覆盖 / 内存与去重 / 可观测性。
+5. **研究产出写成机器可读的简明记录**，字段沿用 `wqb.research.evidence.Evidence`：`source`、`source_type`（现有值 `platform` / `measurement`；论文来源用 `paper`）、`category`、`design_implication`、`actionable_rule`、`date`；再加两项本 skill 的要求：`applies_to`（区域 / universe / delay / 数据集范围）与 `expires_when`（失效条件）。**落点**：给用户看的研究结论写 `reports/` 下的 Markdown；要变成**规则**的才交维护者（§4）加进 `EVIDENCE_REGISTRY`——不要把散文笔记当结论。
+6. **论坛模板整合**：论坛帖里的模板经 `python tools/forum_recon.py --question "<决策问题>" --out kb` 入库（**`KB/community_tpl_kb.forum_recon_entries[]` 的唯一写入方**，按 post_id 幂等合并；触发点与额度见 ra-pipeline `forum-recon-triggers.md`）。每个有希望的模板对照 `config.PARADIGMS` 分类；**≥ 50 赞**且归不进现有范式 → 先记研究记录，由维护者补范式名。检索 / 导出：`python tools/kb_templates.py --json [--category c --search kw]`；`--emit-ideas` 产出的是**确定性模板**——直接注入 GEM 会让它一行 LLM 都不调（ra-pipeline 步 4 不允许），只作**人读参考**，或经 LLM 改写后再注入。**不要手写 `KB/template_kb`**（它目前没有写入方代码，`docs/ledger_keys.json` 登记为 orphan）。
+7. **算子覆盖**：论坛模板用了语法生成器不认识的算子，先用 `get_operators` 核对它在当前平台真实存在，再谈扩展；**幽灵算子**（平台不存在，用了整批静默失败）的权威清单 = `config.GHOST_OPERATORS`（`mcp__wq-brain-http__operator_audit` 可批量查），替换表在 ledger `KB/community_tpl_kb.ghost_operator_advisory`——含幽灵算子的模板按替换表改写或弃用。
+8. **形状覆盖**：入库前用 `wqb.expression.validator.classify_shape(expr)`（及 `_shape_signature`）给模板分类，核对每个范式至少有一个代表形状；缺形状变体时记研究记录（`op1(A) - op2(B)` / `A - op2(B)` / `rank(A) vs group_rank(B, g)` 等非对称骨架，两侧前置算子的取值约定写清，不冻结成唯一写法）。**`check_batch` 不是门禁**——它零调用方、只作方法论参考；批级多样性的真门禁是 toolkit `gate.py` 闸 6（`check_batch_diversity`）。
 
-## 验证清单
+## 3. 平台约束：只留指针（各有唯一出处）
 
-1. 运行 `wqb research` 确认新证据出现且带设计含义。
-2. 运行 `wqb settings` 确认扩展的设置空间可打印。
-3. 确认 USA 默认搜索顺序仍是 `TOP3000`，USA 中性化覆盖与平台支持一致。
-4. 确认 §10-§13（universe 固化/API 约束/区域优先级/跨区陷阱）在规划时被读取消费。
+| 约束 | 唯一出处 |
+|---|---|
+| universe / delay / 中性化的合法值 | `config.REGIONS` 与 `mcp__wq-brain-http__get_platform_setting_options`（**不凭记忆**；档位随平台更新，2026-09-22 重探后旧的「COUNTRY 中性化仅 EUR/GLB/ASI/MEA」「Delay 0 仅 USA/EUR/CHN/GBR/DEU」两句都已不成立） |
+| 「支持」vs「数据广」 | `delays` 里有 0 只说明**平台接受** D0，不说明该区 D0 数据丰富——数据情况以 S0 体检为准 |
+| `/data-fields` 四参齐全、非法 universe 报 500、`get_datasets` 一次给全数据集指标、TLS 抖动 | `wq-brain-ppa-mining` §11（症状 → 原因 → 处置表） |
+| 区域优先级 | `config.REGION_PRIORITY`（USA 3 / EUR、KOR、GLB 2 / 其余 1）；选区用 `region_rotation` 与 `s0-select`，**不用**本 skill 的观测 |
+| 离线包 ★★★ 不等于平台可用；跨区误推荐 | `wq-brain-ppa-mining` §5.1 |
+
+2026-08-05 的区域快照（HKG 209 / KOR 192 / EUR 178 个数据集、「未开发首选 `ml_factor_proj`」等）**已移出**——它带日期与失效条件，放在 `wq-brain-ppa-mining/references/region-snapshots-2026-08.md`；「EUR 死路」的旧判断已撤回（那是选集错误，不是区域无解）。
+
+## 4. 维护者步骤（改 config / 扩范式）
+
+- **新增 vs 修正**：只有「**新增**且经平台实测」才可写进 config（实测来源：`get_platform_setting_options` 的返回，或 `python tools/fetch_all_universes.py` 批量固化——它读服务端 `.env`，日常不用）。**修正 / 撤回**既有常量是用户裁决，skill 不自作主张。
+- 扩 `config.PARADIGMS` / `_OP_ARITY` 前先过 §2 的步 6–8；改完跑 `tests/unit/test_research.py`。
+- 要让一条研究结论成为规则：在 `src/wqb/research/evidence.py` 的 `EVIDENCE_REGISTRY` 加一条 `Evidence`（其 `actionable_rule` 必须指向**真实存在的执行点**，不要写「由 X 强制」而 X 不强制）。
+
+## 5. 验证（可执行）
+
+（历史文档里的 `wqb research` / `wqb settings` 命令**不存在**——仓库没有该 CLI。）
+
+```powershell
+& $WQ_PY -c "import sys; sys.path.insert(0,'src'); from wqb.research.evidence import EVIDENCE_REGISTRY as R; [print(e.date, e.category, '|', e.actionable_rule) for e in R]"
+& $WQ_PY -c "import sys; sys.path.insert(0,'src'); from wqb.config import REGIONS, neutralization_search_order; print(REGIONS['USA']['default_universe']); print(neutralization_search_order('USA'))"
+& $WQ_PY -m pytest tests/unit/test_research.py -q
+```
+
+**期望**：第一条逐行打印证据（日期 / 类别 / 可执行规则）；第二条先打印 `TOP3000`，再打印 USA 的完整中性化顺序（11 项）；第三条全绿。USA 默认 universe 不是 `TOP3000`、或中性化顺序被截短，即为回归。
+
+## 6. references（何时读）
+
+| 文件 | 何时读 |
+|---|---|
+| [`references/forum-template-library.md`](references/forum-template-library.md) | 做论坛模板分类时（A–E 体系与使用规则） |
+| [`references/asi-methodology.md`](references/asi-methodology.md) | 研究 ASI 区的 robust 达标路径时（含 2026-08 的历史结果；§8.2–§8.3 的等权拼腿已被政策禁止，只读不复用） |
+| [`references/backtest-experience-archive.md`](references/backtest-experience-archive.md) | 找 2026-08 的 KOR / ASI / USA option 回测经验时（历史档案） |
+| [`references/alpha-inspiration-usa-d1-shortinterest-insiders.md`](references/alpha-inspiration-usa-d1-shortinterest-insiders.md) | 找 USA/D1 的 short-interest / insiders 类模板灵感时（历史提炼，未按现行流程复核） |
+| [`references/jump-decay-methodology.md`](references/jump-decay-methodology.md) | 研究 `jump_decay` 时——**推测性文档 [未验证]**，该算子当前账号不可用 |
+| [`references/sources.md`](references/sources.md) | 研究来源优先级 |
+| WebDataScope 26 条规则 | 已移到 `brain-alpha-research-field-quality/references/webdatascope-data-quality.md` |

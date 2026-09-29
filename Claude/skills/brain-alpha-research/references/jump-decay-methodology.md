@@ -2,7 +2,7 @@
 
 > 来源：post 37877587810327《GLB区域使用ppa点塔》（YB44630, 2026-01-23, 15 votes, 14 comments）
 > 学习时间：2026-08-05。原始存档：`tracking/forum_glb_ppa_pyramid.json`
-> 状态：**jump_decay 权限未开放（当前账号 inaccessible）**——方法论先行沉淀，权限开放后按本档实验
+> 状态：**[未验证 · 推测性文档]** jump_decay 权限未开放（当前账号 inaccessible）——方法论先行沉淀，权限开放后按本档实验；文中的适配方案已实测无效（见 §3）
 
 ## 1. 核心表达式（帖子模板）
 
@@ -31,7 +31,7 @@ jump_decay(ts_delta(x, 5), 3, sensitivity = 0.3, force = 0.05)
 ## 3. 权限状态与适配方案（2026-08-05 实测）
 
 - **jump_decay 提交时语法通过、运行时拒绝**：`Attempted to use inaccessible or unknown operator "jump_decay"`——与帖子评论区一致（YB44630："应该权限还没开放"）
-- 本地 grammar.py 已有 jump_decay 记录（"jump_decay": 1），paradigms.py 归入 _FILTER_POOL（hump/bucket/jump_decay/nan_mask 同组）
+- （历史：当时本地 grammar.py 有 jump_decay 记录、paradigms.py 归入 _FILTER_POOL；这两个模块已删除，现仅有 `config.PARADIGMS` 范式名清单）
 - **适配方案（已实测 GLB/TOPDIV3000/FAST）**：`winsorize(ts_delta(x,5), std=3)`（截断跳变）+ `ts_decay_linear(...,5)`（平滑）模拟——**结果无效**（sh -0.44~0.15，tvr 0.30-0.50 高换手，GLB 三区域子域全 fail）。跳变平滑无法用 winsorize 精确模拟（winsorize 是静态截断，jump_decay 是相对跳变检测）
 
 ## 4. 未来实验计划（权限开放后）
@@ -43,6 +43,6 @@ jump_decay(ts_delta(x, 5), 3, sensitivity = 0.3, force = 0.05)
 
 ## 5. 关联
 
-- [[asi-methodology]]（robust 达标四件套——"Main 别冲太高"同源思路）
-- [[forum-template-library]]（模板库 A-E）
-- [[backtest-experience-archive]]（GLB 三区域墙：b1-b7r 全验证）
+- [asi-methodology.md](asi-methodology.md)（robust 达标四件套——"Main 别冲太高"同源思路）
+- [forum-template-library.md](forum-template-library.md)（模板库 A-E）
+- [backtest-experience-archive.md](backtest-experience-archive.md)（GLB 三区域墙：b1-b7r 全验证）

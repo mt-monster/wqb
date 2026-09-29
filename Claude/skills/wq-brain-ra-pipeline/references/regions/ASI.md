@@ -45,7 +45,7 @@ ASI 基本未开垦：无 win 层、无死路记录，registry 接近空白。�
 
 ### 步 2 注入：全量探针模式
 
-- 全部候选数据集过 `score_datasets.py` 三灯评分（`dataset_health_check.py` 是随 `wq-brain-ppa-mining` 分发的兜底体检脚本，步 2 见 [`../step2-s0.md`](../step2-s0.md)），按分数排探针优先级；
+- 全部候选数据集过 `score_datasets.py` 三灯评分（步 2 见 [`../step2-s0.md`](../step2-s0.md)；旧的 `dataset_health_check.py` 兜底脚本已归档），按分数排探针优先级；
 - 金字塔配额照旧（≥2 非 MODEL），但无 win 层可读，候选顺序 = 三灯分数 × 已知线索（analyst94/analyst81 优先）。
 
 ### 步 6 注入：首波探针豁免（一次性）

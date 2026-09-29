@@ -8,7 +8,7 @@
 
 | 旧声明的配方 | 现状 | 现在去哪找 | 校验的术语 |
 |---|---|---|---|
-| 分布形态 → 修复方向映射 | **有**（不在 optimization-v1，在字段体检文档） | [`brain-alpha-research/references/webdatascope-data-quality.md`](../../brain-alpha-research/references/webdatascope-data-quality.md)（分布形状表与规则 4） | `zero_inflated`、`ceiling`、`kurtosis` |
+| 分布形态 → 修复方向映射 | **有**（不在 optimization-v1，在字段体检文档） | [`brain-alpha-research-field-quality/references/webdatascope-data-quality.md`](../../brain-alpha-research-field-quality/references/webdatascope-data-quality.md)（分布形状表与规则 4） | `zero_inflated`、`ceiling`、`kurtosis` |
 | 体检硬门复验 | **有**（已是代码闸） | 函数 `tools/webdata_quality.py::check_expr_against_inspect`；闸的处置见 RA [`step5-gates.md`](../../wq-brain-ra-pipeline/references/step5-gates.md)「体检硬门」行（`--inspect-mode`） | `check_expr_against_inspect`、`体检硬门` |
 | 幽灵算子警告 | **有** | RA `step5-gates.md` §5.3（三种处置）+ `platform_constraints.json` 的 `ghost_ops`；表达式级检查 `tools/campaign_intel.py ghost-audit` | `ghost_ops`、`幽灵算子` |
 | news / sentiment 专用方向 | **有** | [`docs/reference/news_sentiment_playbook.md`](../../../../docs/reference/news_sentiment_playbook.md)（通用菜单在此类数据上适得其反，必须走它） | `news` |

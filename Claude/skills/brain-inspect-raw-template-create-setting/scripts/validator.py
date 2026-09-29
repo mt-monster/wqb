@@ -265,7 +265,9 @@ supported_functions = {
     'add': {'min_args': 2, 'max_args': 101, 'arg_types': ['expression'] * 101},
     'multiply': {'min_args': 2, 'max_args': 100, 'arg_types': ['expression'] * 99 + ['boolean'], 'param_names': ['x', 'y', 'filter']},  # multiply(x, y, ..., filter=false)
     'sign': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
-    'subtract': {'min_args': 2, 'max_args': 3, 'arg_types': ['expression', 'expression', 'boolean']},  # subtract(x, y, filter=false)
+    # 2026-09-29：补 param_names——此前命名参数 `filter=true` 被判「函数 subtract 不存在参数 'filter'」（multiply 有、subtract 漏标），
+    # 而决策表 D6 与平台都允许 subtract(x, y, filter=true)；位置写法 subtract(x, y, true) 一直可用。
+    'subtract': {'min_args': 2, 'max_args': 3, 'arg_types': ['expression', 'expression', 'boolean'], 'param_names': ['x', 'y', 'filter']},  # subtract(x, y, filter=false)
     'pasteurize': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     'log': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},
     'purify': {'min_args': 1, 'max_args': 1, 'arg_types': ['expression']},

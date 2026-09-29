@@ -34,6 +34,6 @@
 | 「`GET /alphas/{id}/submit` → 200 = 最终成功 / 403 = 拒绝」，并附「用底层 client 先 POST 再 GET 判定」的脚本 | GET 提交视图对全部候选恒 404（实测），不能证明可提交；而 POST 是**不可撤销的真实提交**——把它写成「判定脚本」等于教人绕过用户确认 | [`AGENTS.md`](../../../../AGENTS.md) 提交链一节；[`worldquant-submit-alpha`](../../worldquant-submit-alpha/SKILL.md) |
 | 「唯一可靠验证 = alpha 出现在 OS 池」当作提交前判据 | 那是**提交后**的确认，不是放行依据 | 同上 |
 | 「并发上限 C=5」 | 2026-08-25 起 Token-Bucket C≈7 | [`wqb-concurrency`](../../wqb-concurrency/SKILL.md) |
-| 体检脚本在 `wq-brain-ra-pipeline/scripts/dataset_health_check.py` / `tools/eur_field_coverage.py` | 前者不存在；体检脚本随 ppa-mining 分发，RA 的步 2 用 `score_datasets.py` + `campaign_intel.py s0-select` | [`step2-s0.md`](step2-s0.md)；`wq-brain-ppa-mining/scripts/dataset_health_check.py`（兜底） |
+| 体检脚本在 `wq-brain-ra-pipeline/scripts/dataset_health_check.py` / `tools/eur_field_coverage.py` | 前者不存在；`dataset_health_check.py`（曾随 ppa-mining 分发的兜底脚本）**已归档**（2026-09-29，零调用方），S0 体检的唯一执行器是 `workflow_campaign(stage="S0")` + `campaign_intel.py s0-select` | [`step2-s0.md`](step2-s0.md) |
 | 「本文件吸收了原 ppa-mining；禁止再把它当独立 Skill 触发」 | ppa-mining 仍是独立 skill（方法论层，不编排、不提交） | [`ppa-vs-ra.md`](ppa-vs-ra.md) |
 | 「廉价闸 / 硬闸」数字的第三份复写（Sharpe ≥ 1.58 … PROD < 0.70） | 阈值只在 `config.GATES` / `PLATFORM_CHECK_LINES` 一处定义，文档复写会过期 | [`decision-table.md`](decision-table.md) 与 INDEX「闸门阶梯」 |

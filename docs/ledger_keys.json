@@ -1160,17 +1160,12 @@
   },
   {
    "key": "health_<region>_d<delay>_<universe>",
-   "status": "active",
-   "purpose": "PPA 数据集体检报告",
-   "writers": [
-    {
-     "kind": "code",
-     "ref": "Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py"
-    }
-   ],
+   "status": "deprecated",
+   "purpose": "PPA 数据集体检报告（已废止：唯一写入方 dataset_health_check.py 于 2026-09-29 归档，S0 体检由 workflow_campaign(stage=\"S0\") 产出 s0_ranking / s0_whitelist）",
+   "writers": [],
    "readers": [],
    "missing": "无消费方",
-   "refresh": "每次体检覆盖"
+   "refresh": "不再写入"
   },
   {
    "key": "operator_coverage",

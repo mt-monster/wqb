@@ -6,6 +6,11 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**wq-brain-ppa-mining / brain-alpha-research（S-E-3）**
+- ppa-mining 收敛为 PPA 方法论：适用域表（PPA vs RA vs 代码缺省，测试逐项对照 `score_datasets.py`）、单一执行器（`workflow_campaign(stage="S0")` + `s0-select`，旧 `dataset_health_check.py` 归档到 `attic/ppa_mining_20260929/`）、三个「最优拥挤度」口径各标轴与出处、`alphaCount = 0` 不再「优先级最高」；字段级决策表与体检硬门（`check_expr_against_inspect`）同源；「V9 突破版」带权重配方删除并给合规改写；`is_placeholder` / C = 5 / 过期 universe 档位表 / `PowerPoolSelected` 的 MCP 提交删除；2026-08 区域快照移到 `references/region-snapshots-2026-08.md`（带失效条件，非指令）→ PP-01…26 / DEC-46
+- alpha-research：拆研究者 / 维护者步骤，常量只引用 config，验证改为真实命令（`wqb research` 不存在）；`check_batch` 不再称门禁；WebDataScope 26 条规则移入 field-quality；references 清 wikilink / 旧路径并逐个入链；ASI 档的等权拼腿结果标「已被政策禁止」→ AR-01…13 / DEC-47
+- 校验器：`subtract(x, y, filter=true)` 命名参数被误拒（漏标 `param_names`）已修，四份镜像同步 → DEC-48
+
 **brain-forum-browse（S-E-2）**
 - SKILL 改写为现役能力（只读 explore + 薄 recon + MCP 排障表）；「每轮必须贡献 / 不可协商」撤销——没有写工具时它无法满足；写路径（Run Contract / Auto-Send E1 / 对抗审查 / curator / 论坛 HTML）整体移入 `references/write-path/`（休眠，含阶段执行顺序表、术语消歧、公开内容脱敏清单），`mcp-by-phase.md` 460 → 43 行；模板与 `init_workspace.py` 默认只读、`--write-path` 显式开启 → FB-01…18 / FR-01…07 / DEC-45
 - MCP：`get_glossary_terms` / `search_forum_posts` / `read_forum_post` / `get_daily_and_quarterly_payment` 删除 `email` / `password` 参数（凭据只由服务端配置提供），并加全库守护测试 → FB-10 / DEC-44

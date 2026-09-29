@@ -2,18 +2,12 @@
  "_doc": "skill_lint 棘轮基线：现存已知违规。新增违规测试必红；修复后必须从这里删除（测试会提示）。只在有意接受时用 `python tools/skill_lint.py --update-baseline` 重写，并人审 diff。",
  "violations": {
   "bare-python|Claude/skills/INDEX.md|python tools/sync_skills.py --check # 仓库与全部安装位零漂移|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
-  "bare-python|Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md|python tools/webdata_quality.py --zip WebData_*.zip --region USA --delay 1 --fie|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
-  "bare-python|Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md|python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region ASI |裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
-  "bare-python|Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md|python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region KOR |裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
-  "bare-python|Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md|python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA |裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 3,
   "bare-python|Claude/skills/brain-make-some-gem/SKILL.md|python run.py --config config.json --data-category <CATEGORY> --region <REGION> |裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/examples.md|python run.py --config config.json --data-category analyst --region <REGION> --d|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/examples.md|python run.py --status <task_id> --tail-lines 60|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/reference.md|python run.py --config config.json --data-category analyst --region <REGION> --d|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "bare-python|Claude/skills/brain-make-some-gem/reference.md|python run.py --status <task_id> --tail-lines 60|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1,
   "cli-password|Claude/skills/brain-make-some-gem/scripts/headless_runner/README.md|$env:BRAIN_PASSWORD=\"your_password\"|命令行/示例里传口令或邮箱": 1,
-  "expr-gate|Claude/skills/brain-alpha-research/references/asi-methodology.md|add(add(ts_rank(W_m30,52), ts_rank(W_m30,88)), ts_rank(W_m110,60))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
-  "expr-gate|Claude/skills/brain-alpha-research/references/asi-methodology.md|add(ts_rank(W_m30,52), ts_rank(W_m110,60))|[POISON:equal_weight_leg_add] 【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是": 1,
   "expr-gate|Claude/skills/brain-datafield-exploration-general/SKILL.md|ts_median(datafield, 1000) > X|[GHOST] 幽灵算子（平台不存在，回测 ERROR 并连坐整批 CANCELLED）: ['ts_median']": 1
  }
 }

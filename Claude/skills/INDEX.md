@@ -142,7 +142,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 | 阶段 | 问题 | 入口 skill | 产出 |
 |---|---|---|---|
 | S-PRE 战役查表 | 该区域有什么、什么已死、挖到哪了？ | **wq-brain-campaign-matrix**（查 registry_empirical 表三层：静态配置/数据集资产/死路胜绩台账 → 预解析配置包；**不替代 S0 体检**） | region 配置包（universe/中性化/排除族/候选集） |
-| S0 情报选题 | 在哪挖？ | **wq-brain-ppa-mining §1.0 体检**（cov≥0.85/alphaCount≤50/fields≥10 三硬门槛，不可跳过；方法定义见 ppa-mining §1.0，执行工具为 toolkit `score_datasets.py`（权威）/ `dataset_health_check.py`（兜底，随 ppa-mining 分发于 `wq-brain-ppa-mining/scripts/`））；brain-next-move-analysis 为**并行情报层**（日报/金字塔分析，非流水线前置，不产出配置） | region+dataset+universe+delay+中性化 白名单 |
+| S0 情报选题 | 在哪挖？ | **S0 体检**（RA：ra-pipeline 决策表 D4 + 步 2，执行器 = `workflow_campaign(stage="S0")` 与 `campaign_intel.py s0-select`；**仅 PPA 战役**另适用 `wq-brain-ppa-mining` 的三硬门槛，`dataset_health.mode="ppa"`，阈值以各区 `thresholds.json` 为准，方法论见其 SKILL §1 / §3）；brain-next-move-analysis 为**并行情报层**（日报/金字塔分析，非流水线前置，不产出配置） | region+dataset+universe+delay+中性化 白名单 |
 | S1 数据理解 | 用什么字段、怎么预处理？ | brain-dataset-exploration-general → brain-datafield-exploration-general → brain-data-feature-engineering | 字段白名单 + 预处理决策（backfill/winsorize/rank/zscore/ts_event_*） |
 | S2 表达式生成 | 怎么写成表达式？ | brain-make-some-gem（批量，含增强策略）/ brain-feature-implementation（idea→本地CSV）；alpha-expression-verifier 预检语法 | **`expressions` 表**（status=`gem`/`enhanced`）+ ledger `s2_<ds>_d<delay>_idea` |
 | S3 设置仿真 | 怎么合法设置并批量跑？ | brain-inspect-raw-template-create-setting → brain-sim-alphas-in-batch-and-track；并发问题查 wqb-concurrency | alpha_list.json → IS 指标 + status CSV |

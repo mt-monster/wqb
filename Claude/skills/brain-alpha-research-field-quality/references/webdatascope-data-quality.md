@@ -1,6 +1,6 @@
 # WebDataScope 数据包驱动的数据集/字段质量预筛与中性化选择
 
-来源：WebDataScope-1.3.1 插件（幻华，2026-08-02 发布；2026-08-05 更新，zip 在 `wqb-share-03/WebDataScope-1.3.1.zip`，解压目录 `wqb-share-03/WebDataScope-1.3.1/`）+ 离线数据包 `WebData_20260219_V0.10.9.zip`（数据包与插件版本解耦，格式不变）。
+来源：WebDataScope-1.3.1 插件（幻华，2026-08-02 发布；2026-08-05 更新，zip 曾在旧检出目录 `wqb-share-03/`（现仓库的 `research-data/` 与外部下载位置为准））+ 离线数据包 `WebData_20260219_V0.10.9.zip`（数据包与插件版本解耦，格式不变）。
 数据包为 zlib + msgpack 编码，导入后存入插件 IndexedDB（`WQP_Extension_Data_Files`）。以下规则在挖矿 research 阶段作为**零成本预筛**使用（不消耗模拟额度）。注：本档规则转写自 1.0.6，2026-08-05 已核对 1.3.1 源码（`src/background/background.js:270` 的 `getAlphaCheckStates` failed-count 门禁逻辑保留，规则一致；插件 1.3.1 新增 alpha 描述助手/社区帖标记/prod memo/会话保活等扩展功能，不影响离线预筛规则）。
 
 ## 数据包结构（实测）
@@ -297,7 +297,7 @@ KOR_1 实测 Top15 头部：`close(21744) / returns(17091) / volume(14150) / cap
 导出命令：
 
 ```bash
-python tools/webdata_quality.py --zip WebData_*.zip --region USA --delay 1 \
+& $WQ_PY tools/webdata_quality.py --zip WebData_*.zip --region USA --delay 1 \
     --fields fundamental6,insiders3 \
     --export-expr tracking/field_inspect_usa.json \
     --neut subindustry
@@ -324,34 +324,34 @@ python tools/webdata_quality.py --zip WebData_*.zip --region USA --delay 1 \
 
 | Skill | 步骤 | 动作 |
 |---|---|---|
-| `brain-alpha-research` | 第 16 步 | 研究阶段跑 `--export-expr` 生成 JSON |
-| `wq-brain-ra-pipeline` | 步 5 | `check_batch` 后、`create_multi_simulation` 前调用 `check_expr_against_inspect` |
+| `brain-alpha-research-field-quality` | 字段质量预筛 | 研究阶段跑 `tools/gen_field_inspect_packs.py`（或 `--export-expr`）生成体检包 |
+| `wq-brain-ra-pipeline` | 步 5 | `wave_gate` 内置 `field_inspect_gate`，在 `create_multi_simulation` 前逐条调用 `check_expr_against_inspect` |
 | `brain-alpha-repair` | 第 2c 步 | 修复后复验，`ok=False` 继续修复 |
 | `brain-alpha-repair/references/repair-order.md` | 第 6 步 | 修复流程末尾的体检硬门复验 |
 | `brain-alpha-robustness` | Phase B.0a | 候选到达 robustness 审计时的体检硬门前置确认 |
 | `alpha-template-labs-data-analysis` | Hard Rules | Labs 分析衍生的表达式提交前须通过体检硬门 |
 
-执行流程：`check_batch（多样性）→ check_expr_against_inspect（合理性）→ create_multi_simulation`
+执行流程：`gate.py`（语法 / 幽灵算子 / 批级多样性闸 6）→ `wave_gate` 内的 `check_expr_against_inspect`（合理性）→ `create_multi_simulation`。（`wqb.expression.validator.check_batch` 只是方法论参考，**不是门禁**。）
 
 ## 重新生成排名数据
 
 解包与排名脚本见 [`../../../../tools/webdata_quality.py`](../../../../tools/webdata_quality.py)（依赖 `msgpack`）：
 
-```bash
+```powershell
 # 数据集排名 + 甜点区 + OS 退化 + 类别统计 + Universe 覆盖
-python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1
 
 # 跨区域数据集对比（识别 region-specific 机会）
-python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region ASI --delay 1 --cross-region
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region ASI --delay 1 --cross-region
 
 # 字段级体检（分布形状解析 + 预处理算子建议 + 字段组合建议）
-python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --fields fundamental6,insiders3
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --fields fundamental6,insiders3
 
 # 导出完整 JSON（含字段 Top 榜 + 每字段最优中性化）
-python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --json-out tracking/quality_usa1.json
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region USA --delay 1 --json-out tracking/quality_usa1.json
 
 # 挖掘推荐表（规则 20 综合评分, 决定挖掘顺序）+ 字段 Top 榜（规则 21）
-python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region KOR --delay 1 --recommend --field-top 15
+& $WQ_PY tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region KOR --delay 1 --recommend --field-top 15
 ```
 
 输出：**区域级中性化排名表**（规则 19）、**Universe 覆盖表**、（可选）跨区域对比表、数据集排名（count/sharpe/fitness/OS sharpe/最优中性化，含 `osis_count` 阈值）、甜点区清单（区域均值×1.1 阈值）、**OS 退化检测表**、类别级统计、**字段级体检报告**（含分布形状与组合建议）、**挖掘推荐表**（规则 20）、**字段 Top 榜**（规则 21，含字段级最优中性化）。数据包更新后重跑即可刷新先验。
