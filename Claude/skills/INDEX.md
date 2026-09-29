@@ -162,22 +162,30 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 
 **层级**：① IS 廉价闸 → ② PC 等待 → ③ 硬闸（PROD/SELF）。PASS_CHEAP 只代表过了 ①，绝不等于可提交。
 
-### gate.py 闸编号（权威 = `gate.py` 模块头，2026-09-11 核定）
+### gate.py 闸编号（权威 = `gate.py` 的 `GATE_REGISTRY`，表由代码生成）
 
-`wq-brain-campaign-toolkit/scripts/gate.py` 共 **8 闸 + 可选闸0**。文档中出现的"5 闸"一律指闸1–5，
-"7 闸"指闸1–7；**不要**再用第三种口径：
+`wq-brain-campaign-toolkit/scripts/gate.py` 共 **8 闸 + 可选闸0**（闸 1–8 + 闸0），另有**子闸** 1b / 2b / 2b-2
+与**附加闸 9**（窗口，默认 warn）。文档中出现的"5 闸"一律指闸1–5，"7 闸"指闸1–7；**不要**再用第三种口径。
+下表由 `python wq-brain-campaign-toolkit/scripts/gate.py --print-gate-table` 生成（唯一注册表 = gate.py 的
+`GATE_REGISTRY`），`tests/unit/test_gate_registry_docs.py` 比对——**改闸先改注册表，再重新生成本表**：
 
-| 闸 | 判据 | 开关 |
-|---|---|---|
-| 闸0 | 语义反模式（恒等式等废品，穿透闸1–8） | `--gate0`（默认关闭） |
-| 闸1 | 语法（+ 1b 算子元数/命名参数，catalog 驱动） | 常开 |
-| 闸2 | 字段白名单（typed catalog 优先 → legacy 兜底） | 常开（`--dataset`） |
-| 闸3 | VECTOR 类型需 `vec_*` 包裹（数据驱动，非正则猜） | 常开 |
-| 闸4 | 平台不可访问算子（`ts_min`/`ts_max`）+ `quantile` 元数 | 常开 |
-| 闸5 | 毒模式（平台级 `platform_constraints.json` + 区域级生成约束） | 常开 |
-| 闸6 | 批级多样性（`check_batch_diversity`，`--skip-diversity-gate` 为逃生阀） | 常开 |
-| 闸7 | longCount 真实性（VECTOR 字段实际 longCount < 80 → WARN；小宇宙区域 profile 可升 FAIL） | `--sanity-longcount` |
-| 闸8 | EVENT 类型（`type==EVENT` 却未用 `ts_event_*` → FAIL） | `--sanity-event-type` |
+<!-- gate-table:start -->
+| 闸 | 名称 | 性质 | 开关 | 说明 |
+|---|---|---|---|---|
+| 闸0 | 语义反模式 | block | --gate0（默认关闭） | 恒等式 / 裸字段 / 元数据字段作信号腿（穿透闸 1–8 的废品） |
+| 闸1 | 语法 | block | 常开 | alpha-expression-verifier 直调；缺失标 SYNTAX_UNKNOWN |
+| 闸1b | 算子元数 + 命名参数 | block | 常开 | op_arity（catalog 驱动）；缺失标 ARITY_UNKNOWN |
+| 闸2 | 字段白名单 | block | 常开（--dataset） | typed catalog 优先 → legacy 兜底 |
+| 闸2b | 区域非法 group 字段 | block | 常开（platform_constraints.region_invalid_group_fields） | 如 JPN 的 sector/industry/subindustry 是 Invalid data field，整批连坐 |
+| 闸2b-2 | 区域不可用字段 + VECTOR 上套 ts_* | block | 常开（region_invalid_fields / region_vector_ts_forbidden） | 如 JPN 无 pv1 字段 |
+| 闸3 | 类型 | block | 常开 | VECTOR 需 vec_* 包裹（数据驱动）；MATRIX 禁 vec_* |
+| 闸4 | 平台不可访问算子 + quantile 元数 + banned_patterns | block | 常开 | ts_min/ts_max 等（对全部 idents 判定，不是 ops_used） |
+| 闸5 | 毒模式 | block | 常开 | 平台级 platform_constraints 正则 + 结构判定（add 加权 / add 等权 / 中缀 + / 跨数据集价差）+ 区域级生成约束 |
+| 闸6 | 批级多样性 | block | 常开（--skip-diversity-gate 为逃生阀） | diversity_audit 契约强制；repair 批豁免 |
+| 闸7 | longCount 真实性 | warn | --sanity-longcount | VECTOR 字段实际 longCount < 80 → WARN |
+| 闸8 | EVENT 类型 | block | --sanity-event-type | 引用 type==EVENT 字段 → FAIL（平台无 ts_event_*；先单条探针） |
+| 闸9 | 非标准窗口 | warn | 常开；window_whitelist_enforce=true 升 block（缺省 false） | 白名单 1/5/22/66/252/504/1008/1260；其他窗口须给出解释或实测证据 |
+<!-- gate-table:end -->
 
 > 另有一道**独立的**"体检硬门"（`tools/field_inspect_gate.py`，由 `tools/wave_gate.py` 内置调用），
 > 判据是 WebDataScope 字段体检包（低覆盖/高偏度/厚尾/单边/稀疏事件），**与闸7/8 不同源**，勿混谈。

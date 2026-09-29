@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""gate.py - 战役统一提交前闸门（8 闸 + 可选闸0 + sha1 缓存）。
+"""gate.py - 战役统一提交前闸门（8 闸 + 可选闸0 + sha1 缓存；另有子闸 1b/2b/2b-2 与附加闸 9，见 GATE_REGISTRY）。
 
 闸0 语义反模式（可选，--gate0，默认关闭保持兼容）：恒等式（subtract/divide 同参恒零/恒1、
     add(x,0)/multiply(x,1)/power(x,1) 等恒等或恒常量形式）、裸字段表达式（整式单一字段 ID）、
@@ -20,8 +20,17 @@
     + 骨架配额；repair 批豁免，--skip-diversity-gate 逃生；P0-2 过期契约转 FAIL-CLOSED 并自动续约）
 闸7 longCount 真实性校验（--sanity-longcount）：对 VECTOR 字段从 typed catalog 读取实际 longCount，
     低于 80 标记 WARN（platform cov 在小宇宙区域系统性误导，见 MEA f72-CF/model25-cb/model31-auditor）
-闸8 EVENT 类型自动检测（--sanity-event-type）：检查 typed catalog 中字段 type==EVENT 且表达式
-    未使用 ts_event_* 算子时标记 FAIL（fundamental6 整集报废教训）
+闸8 EVENT 类型自动检测（--sanity-event-type）：表达式引用 typed catalog 中 type==EVENT 的字段即 FAIL
+    （fundamental6 整集报废教训）。2026-09-29 更正：旧口径要求「必须用 ts_event_*」，而该系列在平台不存在
+    （KOR wave16 实测 8/8 ERROR），修复建议照做必挂；现改为「引用即拦，先单条探针」。
+
+子闸/附加闸（2026-09-29 补登记；此前只在代码注释里，INDEX/文档的闸表漏了它们）：
+闸1b 算子元数 + 命名参数；闸2b 区域非法 group 字段；闸2b-2 区域不可用字段 + VECTOR 上套 ts_*；
+闸9 非标准窗口（默认 warn，window_whitelist_enforce=true 升 block）。
+闸5 判定含：正则毒模式 + 结构判定（add 加权 / add 等权 / 中缀 `+` / 跨数据集价差），覆盖矩阵见
+tests/unit/test_gate5_coverage_matrix.py。
+闸编号的**唯一注册表**是本文件的 GATE_REGISTRY；`python gate.py --print-gate-table` 输出 Markdown 闸表，
+文档里的闸表由测试（test_gate_registry_docs）与之比对。
 
 缓存 cache/gate_cache.json，key=sha1(dataset+换行+expr)，幂等跳过。
 
@@ -190,6 +199,26 @@ def get_validator():
     return None
 
 
+def _ghost_ops(pc):
+    """幽灵算子（平台不存在；回测 ERROR 并连坐整批 CANCELLED）。
+
+    并集：platform_constraints.ghost_ops ∪ wqb.config.GHOST_OPERATORS（后者更全，MCP operator_audit 同源）；
+    去掉 inaccessible_ops（ts_min/ts_max：平台有但本账号 ERROR，走闸4，不重复报）。
+    2026-09-29：此前 ghost 只靠「不在 known_ops → 被当成未验证字段」间接拦下，报错文案是
+    「未验证字段」，会把幽灵算子误导成字段问题。
+    """
+    pre = pc.get("_ghost_all")
+    if pre is not None:
+        return set(pre)
+    names = set(pc.get("ghost_ops") or [])
+    try:
+        from wqb.config import GHOST_OPERATORS
+        names |= set(GHOST_OPERATORS)
+    except Exception:
+        pass
+    return names - set(pc.get("inaccessible_ops") or [])
+
+
 def load_whitelist(ctx, dataset):
     """typed catalog 优先（DB），legacy 文件兜底。返回 (verified_ids, data_type, field_types, banned)。"""
     try:
@@ -353,8 +382,11 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     kw_args = set(re.findall(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*=", expr))
     fields = idents - known_ops - group_ids - price_vol - driver_args - kw_args
     ops_used = (idents - kw_args) & known_ops
-    # 闸2 白名单
-    unknown = sorted(fields - verified)
+    # 闸2 白名单（幽灵算子单独报，不混进「未验证字段」）
+    ghost_hit = sorted((idents - kw_args) & _ghost_ops(pc))
+    if ghost_hit:
+        issues.append(f"[GHOST] 幽灵算子（平台不存在，回测 ERROR 并连坐整批 CANCELLED）: {ghost_hit}")
+    unknown = sorted(fields - verified - set(ghost_hit))
     if unknown:
         issues.append(f"[FIELD] 未验证字段: {unknown}")
     # 闸2b 区域非法 group 字段（2026-09-19，JPN wave7/8 实证：sector/subindustry/industry 在 JPN
@@ -425,12 +457,18 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
     # 详见 _detect_equal_weight_leg_add 文档；KOR wave189/190 实证 7 条漏网已作废。
     _non_field = known_ops | group_ids | driver_args | kw_args
     structural_equal_leg = _detect_equal_weight_leg_add(expr, _non_field)
+    # 2026-09-29 X-3：中缀 `+`（权重在右 / 无 add( 的写法）与价差规则（跨数据集 / 带系数）。
+    infix_sum, infix_spreads = _detect_infix_leg_sum(expr, _non_field)
+    spread_weighted, spread_cross = _spread_findings(
+        infix_spreads + _collect_func_spreads(expr, _non_field), _non_field, price_vol,
+        pc.get("_field_dataset"))
     structural_only = False
     for pp in poison_patterns:
         if pp.get("severity", "block") != "block":
             continue
         if pp.get("_structural") and pp["name"] in (
-                "weighted_signal_mix_structural", "equal_weight_leg_add"):
+                "weighted_signal_mix_structural", "equal_weight_leg_add",
+                "infix_leg_sum", "spread_cross_dataset"):
             # 结构判定的命中在循环外统一追加（见下），此处只标记存在性
             structural_only = True
             continue
@@ -445,10 +483,32 @@ def check_one(expr, wl, dataset, poison_patterns, pc, fix=False):
             issues.append(
                 "[POISON:equal_weight_leg_add] add() 等权相加两条独立信号腿 = 混信号调参，"
                 "全局禁止（无论 add(multiply(0.4,...)) 还是 0.4A+0.6B）。"
-                "合规替代：①单信号结构 ts_scale / subtract(rank(A), rank(B))（价差，需有经济含义）"
+                "合规替代：①单信号结构 ts_scale / subtract(rank(A), rank(B))（价差：两腿同源且有单一经济含义）"
                 "②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B）。"
                 "不得靠增删腿数或调权重修不达标信号。"
             )
+    if infix_sum:
+        for pp in poison_patterns:
+            if pp.get("name") == "infix_leg_sum":
+                issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+                break
+        else:
+            issues.append(
+                "[POISON:infix_leg_sum] 中缀 `+` 相加两条以上独立信号腿 = 与 add(A,B) 同罪的混信号调参"
+                "（无论权重在左/右/无），全局禁止。合规替代：单信号结构 / 同源价差 / 换信号概念（Mode B）。")
+    if spread_cross:
+        for pp in poison_patterns:
+            if pp.get("name") == "spread_cross_dataset":
+                issues.append(f"[POISON:{pp['name']}] {pp['rule']}")
+                break
+        else:
+            issues.append(
+                "[POISON:spread_cross_dataset] subtract 的两腿来自不同数据集 = 拼腿（用户 2026-09-28 裁定："
+                "价差须同源 + 有单一经济含义）。")
+    if spread_weighted:
+        warnings.append(
+            "[SPREAD_WEIGHTED] 价差腿带数值系数（靠调权重凑指标属违规族，见 spread_signal_ruling）；"
+            "请去掉系数或给出经济解释")
     if structural_mix:
         for pp in poison_patterns:
             if pp.get("name") == "weighted_signal_mix_structural":
@@ -546,7 +606,7 @@ def _detect_weighted_mix_structural(expr):
 
 
 #: 纯数值实参（epsilon / 常数）：不是信号腿
-_NUM_ONLY_RE = re.compile(r"^\s*[-+]?\d*\.?\d+\s*$")
+_NUM_ONLY_RE = re.compile(r"^\s*[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?\s*$")   # 含 1e-3 科学计数法
 _IDENT_TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 _INT_TOKEN_RE = re.compile(r"\b\d+\b")
 
@@ -597,6 +657,166 @@ def _detect_equal_weight_leg_add(expr, non_field):
     return False
 
 
+#: 顶层出现这些字符的片段不做「加减号切项」（比较 / 三元 / 逻辑 / 命名参数）——宁可漏判不可误伤
+_NO_SPLIT_CHARS = frozenset("?:<>=!&|")
+_OPERAND_END_RE = re.compile(r"[A-Za-z0-9_.)\"']")
+_SUBTRACT_OPEN_RE = re.compile(r"\bsubtract\s*\(")
+
+
+def _iter_segments(expr):
+    """产出表达式本身，以及每一层括号内的每个顶层实参（递归；含分组括号）。"""
+    yield expr
+    stack = []
+    for i, ch in enumerate(expr):
+        if ch == "(":
+            stack.append(i)
+        elif ch == ")" and stack:
+            args, _ = _top_level_args(expr, stack.pop() + 1)
+            for a in args or []:
+                yield a
+
+
+def _split_signed_terms(seg):
+    """按顶层二元 ``+`` / ``-`` 把片段切成 ``[(sign, term)]``。
+
+    一元号并入项；科学计数法 ``1e-3`` 不切；含比较/三元/逻辑运算符或括号不平衡时返回 None。
+    """
+    s = _QUOTED_RE.sub('""', seg or "")
+    depth, terms, cur, sign, prev = 0, [], [], "+", ""
+    i, n = 0, len(s)
+    while i < n:
+        ch = s[i]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth < 0:
+                return None
+        elif depth == 0 and ch in _NO_SPLIT_CHARS:
+            return None
+        elif depth == 0 and ch in "+-" and prev and _OPERAND_END_RE.match(prev):
+            if not (prev in "eE" and i >= 2 and (s[i - 2].isdigit() or s[i - 2] == ".")):
+                terms.append((sign, "".join(cur).strip()))
+                cur, sign, prev = [], ch, ch
+                i += 1
+                continue
+        cur.append(ch)
+        if not ch.isspace():
+            prev = ch
+        i += 1
+    if depth != 0:
+        return None
+    terms.append((sign, "".join(cur).strip()))
+    out = []
+    for sg, t in terms:
+        while t[:1] in ("-", "+"):                    # 一元号并入符号
+            if t[0] == "-":
+                sg = "-" if sg == "+" else "+"
+            t = t[1:].strip()
+        if t:
+            out.append((sg, t))
+    return out
+
+
+def _split_factors(term):
+    """按顶层 ``*`` / ``/`` 切因子（括号平衡）。"""
+    depth, cur, out = 0, [], []
+    for ch in term or "":
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if depth == 0 and ch in "*/":
+            out.append("".join(cur).strip())
+            cur = []
+            continue
+        cur.append(ch)
+    out.append("".join(cur).strip())
+    return [f for f in out if f]
+
+
+def _leg_has_coef(leg):
+    """腿是否带数值系数：中缀 ``rank(A)*0.6`` / ``0.6*rank(A)`` / ``rank(A)/2``，或 ``multiply(0.6, …)``。"""
+    factors = _split_factors(leg)
+    if len(factors) >= 2 and any(_NUM_ONLY_RE.match(f) for f in factors) \
+            and any(not _NUM_ONLY_RE.match(f) for f in factors):
+        return True
+    m = re.match(r"^\s*multiply\s*\(", leg or "")
+    if m:
+        args, _ = _top_level_args(leg, m.end())
+        if args and len(args) == 2 and any(_NUM_ONLY_RE.match(a) for a in args):
+            return True
+    return False
+
+
+def _detect_infix_leg_sum(expr, non_field):
+    """闸5 结构判定（2026-09-29）：**中缀** ``+`` / 同号多腿相加，与 ``add(...)`` 同罪。
+
+    背景（skills 审查 X-3 实测）：``rank(A)*0.6 + rank(B)*0.4``（权重在右）、
+    ``scale(rank(A)) + scale(-rank(B))*0.35``（V9 顶层形态）、HP-05 的
+    ``ts_decay_linear(s,5)*rank(v*c) + ts_decay_linear(s,10)*(1-rank(v*c))`` 全部放行，而数学等价的
+    ``add(...)`` 被拦——同一结构，写法不同判定相反。既有 add 检测只认函数式 ``add(``。
+
+    判定：任一片段（整式 / 每层括号内的每个顶层实参）按顶层 ``+ -`` 切项后，信号腿 ≥2 且
+    **不是**「恰好一正一负」的价差，且腿形态（归一化数字后）不全相同 → 违规。
+    放行：``abs(x)+0.01``（1 腿+标量）、``ts_mean(x,22)+ts_mean(x,66)``（同形态仅窗口差，与 add 一致）、
+    一正一负价差（交给 spread 规则：同源 + 经济含义，用户 2026-09-28 裁定）。
+    返回 ``(violates, spreads)``，spreads = 中缀价差 ``[(legA, legB)]``。
+    """
+    violates, spreads = False, []
+    for seg in _iter_segments(expr):
+        terms = _split_signed_terms(seg)
+        if not terms or len(terms) < 2:
+            continue
+        legs = [(sg, t) for sg, t in terms if _is_signal_leg(t, non_field)]
+        if len(legs) < 2:
+            continue
+        pos = [t for sg, t in legs if sg == "+"]
+        neg = [t for sg, t in legs if sg == "-"]
+        if len(legs) == 2 and len(pos) == 1 and len(neg) == 1:
+            spreads.append((pos[0], neg[0]))
+            continue
+        if len({_normalize_numbers(t) for _, t in legs}) >= 2:
+            violates = True
+    return violates, spreads
+
+
+def _collect_func_spreads(expr, non_field):
+    """函数式价差 ``subtract(A, B)``（两腿都是信号腿）。``subtract(0, rank(x))`` 这类镜像腿不算。"""
+    out = []
+    for m in _SUBTRACT_OPEN_RE.finditer(expr):
+        args, _ = _top_level_args(expr, m.end())
+        if args and len(args) == 2 and all(_is_signal_leg(a, non_field) for a in args):
+            out.append((args[0].strip(), args[1].strip()))
+    return out
+
+
+def _leg_fields(leg, non_field, price_vol):
+    return {t for t in _IDENT_TOKEN_RE.findall(leg or "")
+            if t not in non_field and t not in price_vol
+            and not t.startswith(("ts_", "group_", "vec_", "reduce_", "bucket_", "quantile_"))}
+
+
+def _spread_findings(spreads, non_field, price_vol, field_dataset=None):
+    """价差规则（用户 2026-09-28 裁定 spread_signal_ruling）：
+
+    * 跨数据集价差（两腿字段分属不同数据集）= 拼腿 → ``cross``（阻断；仅当调用方给了 field→dataset 映射，
+      即多数据集 mix 批；单数据集批里所有字段同源，无须判）；
+    * 腿带数值系数（``0.6*rank(A) - 0.4*rank(B)``）= 靠调权重凑指标 → ``weighted``（仅告警，不阻断：
+      避免在裁定未点名的形态上误伤，且信息不丢）。
+    """
+    weighted, cross = [], []
+    for a, b in spreads:
+        if _leg_has_coef(a) or _leg_has_coef(b):
+            weighted.append((a, b))
+        if field_dataset:
+            da = {field_dataset[f] for f in _leg_fields(a, non_field, price_vol) if field_dataset.get(f)}
+            db = {field_dataset[f] for f in _leg_fields(b, non_field, price_vol) if field_dataset.get(f)}
+            if da and db and da.isdisjoint(db):
+                cross.append((a, b))
+    return weighted, cross
+
+
 def expression_windows(expr, lo=2, hi=2000):
     """提取表达式里的**窗口类整数**（ts_*/group_*/bucket 的窗口位）。
 
@@ -623,13 +843,48 @@ def _canon(obj):
     return obj
 
 
+#: 闸注册表（唯一来源）。(id, 名称, 性质, 开关/缺省, 说明)。性质：block=命中即 FAIL；warn=只告警。
+GATE_REGISTRY = (
+    ("0", "语义反模式", "block", "--gate0（默认关闭）", "恒等式 / 裸字段 / 元数据字段作信号腿（穿透闸 1–8 的废品）"),
+    ("1", "语法", "block", "常开", "alpha-expression-verifier 直调；缺失标 SYNTAX_UNKNOWN"),
+    ("1b", "算子元数 + 命名参数", "block", "常开", "op_arity（catalog 驱动）；缺失标 ARITY_UNKNOWN"),
+    ("2", "字段白名单", "block", "常开（--dataset）", "typed catalog 优先 → legacy 兜底"),
+    ("2b", "区域非法 group 字段", "block", "常开（platform_constraints.region_invalid_group_fields）",
+     "如 JPN 的 sector/industry/subindustry 是 Invalid data field，整批连坐"),
+    ("2b-2", "区域不可用字段 + VECTOR 上套 ts_*", "block",
+     "常开（region_invalid_fields / region_vector_ts_forbidden）", "如 JPN 无 pv1 字段"),
+    ("3", "类型", "block", "常开", "VECTOR 需 vec_* 包裹（数据驱动）；MATRIX 禁 vec_*"),
+    ("4", "平台不可访问算子 + quantile 元数 + banned_patterns", "block", "常开",
+     "ts_min/ts_max 等（对全部 idents 判定，不是 ops_used）"),
+    ("5", "毒模式", "block", "常开",
+     "平台级 platform_constraints 正则 + 结构判定（add 加权 / add 等权 / 中缀 + / 跨数据集价差）+ 区域级生成约束"),
+    ("6", "批级多样性", "block", "常开（--skip-diversity-gate 为逃生阀）", "diversity_audit 契约强制；repair 批豁免"),
+    ("7", "longCount 真实性", "warn", "--sanity-longcount", "VECTOR 字段实际 longCount < 80 → WARN"),
+    ("8", "EVENT 类型", "block", "--sanity-event-type", "引用 type==EVENT 字段 → FAIL（平台无 ts_event_*；先单条探针）"),
+    ("9", "非标准窗口", "warn", "常开；window_whitelist_enforce=true 升 block（缺省 false）",
+     "白名单 1/5/22/66/252/504/1008/1260；其他窗口须给出解释或实测证据"),
+)
+
+
+def render_gate_table():
+    """Markdown 闸表（文档由此生成 / 与测试比对）。"""
+    rows = ["| 闸 | 名称 | 性质 | 开关 | 说明 |", "|---|---|---|---|---|"]
+    for gid, name, kind, sw, note in GATE_REGISTRY:
+        rows.append(f"| 闸{gid} | {name} | {kind} | {sw} | {note} |")
+    return "\n".join(rows)
+
+
+#: 判定器代码版本：闸 1-5 的判定代码（非配置）变更时递增，让逐条缓存失效（配置变更已由 poison/pc 入签名）。
+GATE_CODE_VERSION = "2026-09-29.1"   # 中缀 + 结构判定 / 价差规则
+
+
 def gate_signature(ds_all, wl, poison, pc):
     """闸 1-5 逐条判定的全部外部输入指纹：数据集集合 + 合并白名单（字段 / 类型 / banned）
     + 毒模式 + 平台约束（含区域）。任一变化都必须让逐条缓存失效（2026-09-27 R21）。"""
     ids, dtype, fts, banned = wl
     blob = json.dumps(_canon({"datasets": sorted(set(ds_all)), "ids": ids, "dtype": dtype,
                               "field_types": fts or {}, "banned": banned or [],
-                              "poison": poison, "pc": pc}),
+                              "poison": poison, "pc": pc, "code": GATE_CODE_VERSION}),
                       ensure_ascii=False, sort_keys=True, default=str)
     return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:16]
 
@@ -997,21 +1252,24 @@ def check_sanity_longcount(ctx, dataset, exprs, field_types):
 
 
 def check_sanity_event_type(ctx, dataset, exprs, field_types):
-    """闸8：字段 type==EVENT 且表达式未使用 ts_event_* 算子 → FAIL。"""
+    """闸8：表达式引用了 type==EVENT 的字段 → FAIL（2026-09-29 更正口径）。
+
+    旧口径「type==EVENT 且未用 ts_event_* 才 FAIL」**不可满足**：ts_event_* 在平台不存在——
+    tracking/KOR/TOOLKIT_CHECKLIST.md 记 Wave 16（other553）实测「102 个算子中无 ts_event_* 系列，
+    8/8 ERROR」；闸1 也把它当未知函数拦，known_ops 亦无。结果是旧闸 8 的修复建议（去用 ts_event_*）
+    照做必挂。EVENT 字段在标准算子下的行为**未验证**（MEA fundamental6 整集报废教训），
+    故只要引用就 FAIL：先用 1 条探针（create_simulation 单条）确认再放量。
+    """
     issues = []
     if not field_types:
         return issues
-    EVENT_OPS = {"ts_event_avg", "ts_event_count", "ts_event_max", "ts_event_min",
-                 "ts_event_rank", "ts_event_sum", "ts_event_zscore", "ts_event_delta"}
     for e in exprs:
-        ops_used = set(re.findall(r'[a-zA-Z_][a-zA-Z0-9_]*\(', e))
-        has_event_op = bool(ops_used & EVENT_OPS)
-        field_ids = _parse_field_ids(e)
-        for fid in field_ids:
-            if field_types.get(fid) == "EVENT" and not has_event_op:
+        for fid in _parse_field_ids(e):
+            if field_types.get(fid) == "EVENT":
                 issues.append(
-                    f"[SANITY-EVENT-TYPE] {fid}: type=EVENT but no ts_event_* operator used "
-                    f"(all non-event operators will error; see MEA fundamental6 trap)"
+                    f"[SANITY-EVENT-TYPE] {fid}: type=EVENT。平台无 ts_event_* 算子（KOR wave16 实测 "
+                    f"8/8 ERROR），标准算子在 EVENT 字段上的行为未验证（MEA fundamental6 整集报废）："
+                    f"先 1 条探针确认可用再放量，勿去找 ts_event_*"
                 )
     return issues
 
@@ -1157,7 +1415,10 @@ def check_priors(ctx, exprs, dataset, require_priors=False):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="战役提交前 8 闸预检（+可选闸0 语义反模式）")
+    if "--print-gate-table" in sys.argv[1:]:
+        print(render_gate_table())
+        return
+    ap = argparse.ArgumentParser(description="战役提交前 8 闸预检（+可选闸0 语义反模式；--print-gate-table 输出闸表）")
     add_campaign_arg(ap)
     ap.add_argument("--file")
     ap.add_argument("--expr")
@@ -1178,7 +1439,7 @@ def main():
     ap.add_argument("--sanity-longcount", action="store_true",
                     help="闸7：longCount 真实性校验（VECTOR 字段实际 longCount < 80 标记 WARN）")
     ap.add_argument("--sanity-event-type", action="store_true",
-                    help="闸8：EVENT 类型自动检测（字段 type==EVENT 且未用 ts_event_* 标记 FAIL）")
+                    help="闸8：EVENT 类型自动检测（引用 type==EVENT 的字段即 FAIL；平台无 ts_event_*，先单条探针）")
     ap.add_argument("--sanity-all", action="store_true",
                     help="一次性跑闸 7+8（--sanity-longcount + --sanity-event-type）")
     ap.add_argument("--gate0", action="store_true",
@@ -1219,6 +1480,18 @@ def main():
     wl = merge_whitelists(ctx, ds_all) if len(ds_all) > 1 else load_whitelist(ctx, a.dataset)
     pc = load_platform_constraints()
     pc["_region"] = ctx.region  # 闸2b 区域非法 group 字段判定用（2026-09-19）
+    pc["_ghost_all"] = sorted(_ghost_ops(pc))   # 入签名：幽灵名单变了缓存必须失效
+    if len(ds_all) > 1:
+        # 多数据集 mix 批：给价差规则（spread_cross_dataset）提供 field→dataset 映射；
+        # 多个数据集共有的字段歧义，不参与同源判定。单数据集批所有字段同源，无须映射。
+        _fd = {}
+        for _ds in ds_all:
+            try:
+                for _f in load_whitelist(ctx, _ds)[0]:
+                    _fd[_f] = _ds if _f not in _fd else None
+            except Exception:
+                pass
+        pc["_field_dataset"] = {f: d for f, d in _fd.items() if d}
     poison = list(pc.get("poison_patterns", []))
     cons_path = ctx.constraints_path()
     if os.path.exists(cons_path):  # 区域特有 poison 追加（平台级勿复制进区域文件）

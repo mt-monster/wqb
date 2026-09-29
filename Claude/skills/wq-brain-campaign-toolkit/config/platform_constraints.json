@@ -1,7 +1,7 @@
 {
  "_doc": "平台级约束单一事实源（跨 region 共享，2026-08-15 自 tracking/KOR 抽象）。区域级实测数据（operator_stats/skeleton_quota/dataset_ranking/typed catalog）放战役目录 reference/，不进本文件。",
- "version": "1.5",
- "updated_at": "2026-09-28T15:05:00",
+ "version": "1.6",
+ "updated_at": "2026-09-29T10:00:00",
  "inaccessible_ops": [
   "ts_min",
   "ts_max"
@@ -210,8 +210,22 @@
    "name": "equal_weight_leg_add",
    "_structural": true,
    "regex": "(?!)",
-   "rule": "【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是**信号腿**（各自引用数据字段、非纯常数），且这些腿形态不同（归一化窗口后仍不相等）= 等权混合两条独立信号腿。用户 2026-09-28 定案：**不得把两条独立信号腿加权相加，无论写成 add(multiply(0.4,...)) 还是 0.4A+0.6B**；等权即 0.5A+0.5B，属同一违规族，任何含混表述不构成本例外的例外。本条由 gate.check_one 的括号平衡扫描实施，regex 占位永假。放行形态：①add(abs(x),0.01)（1 腿+epsilon 标量）②add(ts_mean(x,22),ts_mean(x,66))（同形态仅窗口差异=单信号多窗平滑）。实证代价：KOR wave189/190 共 7 条 add(group_rank(腿A),group_rank(腿B))（含 S=2.11/F=1.80/2Y=1.89）全部漏过闸5 → 已作废。合规替代：①单信号结构 ts_scale / subtract(rank(A),rank(B))（价差，需有经济含义而非拼腿）②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。",
+   "rule": "【结构判定，非正则】任一 add( 的顶层实参中 ≥2 个是**信号腿**（各自引用数据字段、非纯常数），且这些腿形态不同（归一化窗口后仍不相等）= 等权混合两条独立信号腿。用户 2026-09-28 定案：**不得把两条独立信号腿加权相加，无论写成 add(multiply(0.4,...)) 还是 0.4A+0.6B**；等权即 0.5A+0.5B，属同一违规族，任何含混表述不构成本例外的例外。本条由 gate.check_one 的括号平衡扫描实施，regex 占位永假。放行形态：①add(abs(x),0.01)（1 腿+epsilon 标量）②add(ts_mean(x,22),ts_mean(x,66))（同形态仅窗口差异=单信号多窗平滑）。实证代价：KOR wave189/190 共 7 条 add(group_rank(腿A),group_rank(腿B))（含 S=2.11/F=1.80/2Y=1.89）全部漏过闸5 → 已作废。合规替代：①单信号结构 ts_scale / subtract(rank(A),rank(B))（价差：两腿同源——同一组字段/同一数据集——且有单一经济含义，见 spread_signal_ruling；跨数据集 subtract 属拼腿，由 spread_cross_dataset 拦截）②换算子几何 group_rank/group_zscore/ts_quantile ③换字段组合或换信号概念（Mode B 想法层）。",
    "severity": "block"
+  },
+  {
+   "name": "infix_leg_sum",
+   "_structural": true,
+   "regex": "(?!)",
+   "severity": "block",
+   "rule": "【结构判定，非正则】中缀 `+`（含 `A*0.6 + B*0.4`、`A + B*0.35`、链式 `A + B + C`）相加 ≥2 条形态不同的独立信号腿 = 与 add(A,B) 同罪的混信号调参，全局禁止（用户 2026-09-13 路线 A / 2026-09-28 定案：无论写成 add(...)、multiply 函数式还是中缀，无论权重在左/右/无）。判定见 gate._detect_infix_leg_sum：任一片段按顶层 + - 切项后信号腿 ≥2、不是「一正一负价差」、且腿形态（归一化数字后）不全相同。放行：①abs(x)+0.01（1 腿+标量）②ts_mean(x,22)+ts_mean(x,66)（同形态仅窗口差）③一正一负价差（走 spread 规则）。实证（2026-09-29）：对仓库 4047 条真实表达式重判，新增拦下 217 条（权重在右 / 无 add( 的写法），含 V9 顶层形态 `… + scale(-rank(returns,42))*0.35`。合规替代同 equal_weight_leg_add：单信号结构 / 同源价差 / 换信号概念（Mode B）。"
+  },
+  {
+   "name": "spread_cross_dataset",
+   "_structural": true,
+   "regex": "(?!)",
+   "severity": "block",
+   "rule": "【结构判定，非正则】subtract(A,B) / A-B 的两腿字段分属**不同数据集** = 拼腿（用户 2026-09-28 裁定 spread_signal_ruling：价差须同源 + 有单一经济含义，不同数据集/不同经济概念的差值无单一解释）。仅在多数据集 mix 批（--datasets，有 field→dataset 映射）里判定；单数据集批所有字段同源，无须判。带数值系数的价差腿只告警（[SPREAD_WEIGHTED]，靠调权重凑指标属违规族）。"
   }
  ],
  "_weighted_mix_note": "2026-09-16 回滚记录：v1.1 曾将两条 func 式加权混腿毒模式窄化为仅拦非 {0.4,0.6} 权重（Agent 误读任务书硬约束#5 字面）。用户当日重申『警惕 add(A,B) 模式』全局禁令后，v1.2 恢复 v1.0 全量拦截语义。结论：任何对用户定案纪律的放宽必须先经用户明确确认；任务书含混表述不构成例外。2026-09-17 v1.3 加固：新增 weighted_signal_mix_structural（gate.check_one 括号平衡结构判定，见 _structural 标记）堵住正则版 81% 的镜像腿漏网；四条正则保留为辅助层。",
