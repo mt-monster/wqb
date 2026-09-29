@@ -95,7 +95,7 @@ mcp__wqb-db__upsert_registry_empirical  region=$REGION  layer="win"  entry_id=<I
 - [ ] 每个实际回测的数据集都已 `dataset-experience`
 - [ ] **assemble-priors 已再跑**：`priors_snapshot_<region>` 不早于本次回写（GBR 实测：快照停在 09-19，而 `region_kb` 已 09-25、`registry_empirical` 已 09-26 → 落后 8 天，本波结论不回流）
 
-产物归属见 [INDEX 共享产物归属表](../../INDEX.md)。
+产物归属见 [CONTRACT §4 共享产物归属](../../CONTRACT.md)。
 
 ## 9.8 提交之后：本 SOP 覆盖什么、不覆盖什么
 

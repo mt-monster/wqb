@@ -1481,124 +1481,196 @@
    "note": "两个场景各标适用：生产回测中性化不能为 None（本 skill），字段探测要求 Neutralization: None（datafield-exploration）；情景 IR-B"
   },
   "IX-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "头部称“本文件是全部 WQ/BRAIN skill 的架构基准……修改任何 skill 前先读本文件”，但 428 行里混了 ≥6 类内容：架构/路由（分层、阶段表）、契约规范（f",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CONTRACT.md | Claude/skills/CHANGELOG.md | docs/env_and_switches.md | tools/index_tables.py",
+   "note": "拆分：INDEX 只做路由与分层（460 → 约 275 行，其中三块由代码生成的表占大头；未做到 <150 行——闸表 / 逃生口表 / 区域表 / 计数是有意保留的生成物）；契约（frontmatter / 职责边界 / 硬裁定 / 共享产物 / 命名 / 质量门禁）→ 新增 CONTRACT.md；全部 ⚠ 日期条目、迁入记录、改名表、演进注记 → CHANGELOG「更早的历史」；环境变量 / 开关 / 凭据来源 → docs/env_and_switches.md；区域硬事实 → profile；审计叙事删（更正性结论进 CHANGELOG）。INDEX 头部 last_verified 与内容一致（不再有晚于锚点的条目）。守护：INDEX 不得再出现带日期的 ⚠ 变更史 / 迁入记录 / 契约段",
+   "verify": "tests/unit/test_index_tables.py::test_index_is_a_routing_file_and_history_and_contract_moved_out"
   },
   "IX-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "“唯一权威副本 = 仓库 `Claude/skills/`”，而同节 L27–29 的运行时解析顺序是 `WQ_VALIDATOR_DIR/WQ_TOOLKIT_DIR → ~/.",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/INDEX.md | AGENTS.md",
+   "note": "「仓库 = 编辑权威；安装位 = 运行时优先；改完必须 sync_skills 才对 Agent 生效」明写在 INDEX「权威副本与生效方式」，并进 AGENTS.md §8.10 与 skill 修改流程；解析顺序改指 _skill_roots()（不再抄一份）；已归档位置的处置记录移 CHANGELOG",
+   "verify": "tests/unit/test_index_tables.py::test_index_states_which_copy_is_authoritative_and_that_sync_is_required"
   },
   "IX-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`$WQ_PY` 定义（本机**单一事实源**）：`<repo>/world-quant-brain-mcp/.venv/Scripts/python.exe`”，bash 版同",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md | tests/fixtures/skill_lint_baseline.json",
+   "note": "$WQ_PY 按平台给三行：Windows Scripts/python.exe、POSIX bin/python、跨平台自动探测（tools/_pyenv.py，顺序由测试对照源码）；INDEX 内裸 python 清零，skill_lint 的 bare-python 基线因此归零（全库 0 条违规）；venv 缺依赖指向 requirements.txt（含 vendored ace_lib 的 tqdm / Jinja2，DEC-57）",
+   "verify": "tests/unit/test_index_tables.py::test_index_wq_py_definition_is_cross_platform_and_matches_the_pyenv_probe"
   },
   "IX-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "持久化铁律“禁止 Write / Copy-Item 战役 json/csv……当真相源；静态配置与凭证、CLI 临时 `@file.json`、BRAIN 原始 CSV 仍用文件",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/INDEX.md",
+   "note": "持久化铁律只在 INDEX 定义，并补「允许写的文件只有五类」表：A 真相源 DB / B 运行态缓存 / C 静态配置与凭证 / D CLI 临时 @file / E 人读产物（planning-with-files 的三个规划文件、reports/、WAVE_LEDGER 快照归此）；消解「凭证仍用文件」与「禁止读 .env」的并存：凭证文件由脚本读、agent 不读；其余 skill 现为一句引用或各自指向缓存性质",
+   "verify": "tests/unit/test_index_tables.py::test_index_lists_the_five_allowed_file_classes"
   },
   "IX-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 表格式（region / profile / 战役目录 / entry_verdict）+“新增/删除区域须同步四处”+“代码 14 / profile 11 / 口头清单各异",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/INDEX.md | tools/index_tables.py | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md",
+   "note": "区域表改由代码生成（config.REGIONS × profile 的 entry_verdict × tracking/<R>/config/ 目录扫描）并逐字比对：DEU 变 probe-only、AMR 目录 ✓ 两处事实错误随生成消失；entry_verdict 不再双写（表是导出物，冲突以 profile 为准）；TWN 的「缺目录」行为由生成规则给出；AMR 统一为「当前非挖掘区」一句，ALL 补进 contract §4（带日期的平台快照不进 INDEX）",
+   "verify": "tests/unit/test_index_tables.py::test_region_table_reflects_profile_and_directory_facts"
   },
   "IX-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "分层图 L0–L7 与阶段表 S0–S6 **数字一一对应**（L0=S0…L6=S6，L-RA/L-PRE/L-TOOL 为编排层）却用两套名字；frontmatter 写 `l",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/INDEX.md",
+   "note": "「Ln ≡ Sn」一句话声明，其余编号（步 / 闸 / 关）各自独立、不并用；L-INT 行与迁移史删除",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "“外部扩展区迁入记录（2026-08-23 完成）”是迁移日志：`~~brain-alpha-orchestrator~~` 删除线行、“通用非 WQ 元技能不进入本目录”“历史 ",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CHANGELOG.md",
+   "note": "迁入记录整节移入 CHANGELOG；删除线行、「通用非 WQ 元技能」「历史 .cursor 已移除」并入迁移记录；repair 行按其真实内容改写（配方索引，非改进入口）；不再声称元技能「共用运行环境约定」",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "①S5 行“`tools/submit_verdict.py`（**提交层唯一权威**）”与 RA L681“提交层唯一权威**不是** submit_verdict”、submi",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md",
+   "note": "①S5 行改「否决（资格门 + submit_verdict + prod 实测 + 稳健性闸，只能拦）/ 放行（用户确认 + workflow_submit_alpha）」并指向 submit-chain.md，「提交层唯一权威」删；②S3 产物改 backtest_results（alpha_list.json / status CSV 标运行态缓存）；③健康线补第三层「回填带」并说明数字只在 config / decision-table（本文不复写）；④S6 行补「日常回写由 RA 步 9 编排，monitor 只在故障排查 / 盯任务 / 复盘时触发并核验」",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "引擎映射行夹带实现细节与历史：S2“`build_wave.py` 只做去重/分桶/骨架配给”与 toolkit SKILL 的 `linear_mix≤50%` 骨架配给并存（T",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/INDEX.md",
+   "note": "引擎映射表只写「阶段 → 子命令」；七槽填槽 / ThreadPoolExecutor / --max-rounds / linear_mix / 单批在飞串行 / 配额第 3 次重述全删（测试禁止这些实现细节回到 INDEX），细节留 toolkit 与 wqb-concurrency",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "标题“闸门阶梯（**唯一基准表述**）”，称数字唯一事实源是 `config.GATES/CONCURRENCY`（核对：`GATES`、`GATES_INTERNAL`、`GAT",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md | tools/index_tables.py | src/wqb/config.py",
+   "note": "闸门阶梯改「按检查名」的生成表（平台线 / 内部线 / 来源常量三列）：IS Sharpe（LOW_SHARPE，Delay-1 / Delay-0 两档）与 2Y Sharpe（LOW_2Y_SHARPE / IS_LADDER_SHARPE）分开，GATES_PLATFORM.sharpe_min 明写取的是 2Y 线；config 侧拆分 PLATFORM_CHECK_LINES 已在此前批次落地，本次让文档由它生成；「层级」并入一句指向 RA 步 5–8",
+   "verify": "tests/unit/test_index_tables.py::test_gate_ladder_numbers_come_from_config_and_the_old_single_hard_line_is_gone"
   },
   "IX-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“gate.py 闸编号（权威 = gate.py 模块头）”表列闸0–闸8，并称“**不要再用第三种口径**”。核对 `gate.py`：模块头同样只有闸0–8，但代码里另有 *",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md | tests/unit/test_gate_registry_docs.py",
+   "note": "闸表由 gate.py 的 GATE_REGISTRY 生成（此前批次落地），含闸 2b / 2b-2 / 闸 9 与子闸；wave_gate 层的 SEM / PF / 体检 / 区域闸在「闸与逃生口总表」（waiver.GATE_POLICIES 生成）；INDEX 重写后测试仍逐字比对两块",
+   "verify": "tests/unit/test_gate_registry_docs.py"
   },
   "IX-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "“MCP 工具/节点计数（唯一基准）”里嵌 7 条 ⚠ 变更史（49→43→45→44；18→17→18→19→18→19），且**顺序混乱**（“2026-09-26 移除 1 ",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CHANGELOG.md",
+   "note": "计数只留现值（一行一项）；7 条 ⚠ 变更史按时间倒序整理后移入 CHANGELOG；补 tools_submit 0 的原因：原生 submit_alpha 工具 2026-09-02 已删、提交统一走 workflow_submit_alpha，所以「MCP 里没有 submit_alpha 工具」成立而 submit_batch 是仿真派发；计数仍由 test_mcp_tool_counts_match_index 守护",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "“2026-09-19 挖掘流程优化落地”与“2026-09-15 接线修复”是两段**功能变更日志**（15 条），含环境变量 `WQB_GLOBAL_SLOTS`（缺省 7）、",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "docs/env_and_switches.md | docs/env_registry.json | tools/index_tables.py | Claude/skills/CHANGELOG.md",
+   "note": "新建 docs/env_and_switches.md：变量目录表由代码扫描生成（缺省值与读取方取自源码，用途取自 env_registry.json，102 个变量，含 WQB_GLOBAL_SLOTS / WQB_GEM_MAX_PER_SKELETON 等 09-15 / 09-19 日志里的开关）、CLI 功能开关表、凭据来源登记；测试双向守护（代码读了未登记 / 登记了已不读都红）；两段功能变更日志（15 条）移入 CHANGELOG，INDEX 删",
+   "verify": "tests/unit/test_index_tables.py::test_env_registry_covers_every_env_var_read_by_code_and_nothing_is_stale"
   },
   "IX-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "“分工声明”重申“Mode B（默认入口，70%）/ Mode A（30%）……两者都失败 >10 种结构才转向换数据集”——70/30 与 “>10” 是 OP-02 的不可度量",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/INDEX.md | Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md",
+   "note": "「70 / 30」「> 10 种结构才换数据集」删，改指 optimization-v1 的 mode-b-qualification.md（OP-02 已定义可度量的资格与切换判据）；09-01「MCP 直发批也过闸」落地记录移入 toolkit gate-rules.md（写明 create_multi_simulation 的静态门禁与 2–10 条限制）",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 “权威版本声明”把嵌套副本的**真实角色**写成 4 条可测纪律（内嵌 `scripts/` 是硬依赖不删不改；内嵌 FI/SKILL.md 必须与顶层逐字一致并由测试守护；内",
-   "cat": "边界·🟢+P2"
+   "cat": "边界·🟢+P2",
+   "where": "Claude/skills/INDEX.md | tests/unit/test_gem_skill_paths.py | Claude/skills/CHANGELOG.md",
+   "note": "「嵌套副本」改四条可测纪律各配守护：#1 内嵌 scripts 必须在且 validator 与权威版逐字节相同（本次新增测试）、#2 FI SKILL.md 逐字一致、#3 dfe 不得有 SKILL.md 且三个副本一致 + GENERATED.md、#4 GEM 产物根在 skill 树外；审计叙事（含 09-29 对「进 prompt」的再更正）移 CHANGELOG；第 3 行（tracking/KOR/scripts 反斜杠写法的 9 个区域私有脚本）移出权威表，改「待清理」——它们仍在仓库里，README 记载「是否转薄 wrapper 由用户另行决定」，属待用户裁定事项，本轮不动",
+   "verify": "tests/unit/test_gem_skill_paths.py::test_embedded_scripts_are_present_and_validator_is_byte_identical"
   },
   "IX-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "“并发口径（演进注记）”：旧 C=5（2026-07 前）/ 新 Token-Bucket C≈7（**引 `wq-backtest-monitor` §6**）/ 七槽填槽（**",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CHANGELOG.md",
+   "note": "「并发口径（演进注记）」一节删：并发参数只留 config.CONCURRENCY 与 wqb-concurrency §8 两处（monitor §6 早已改为不复述）；旧 C=5 → Token-Bucket → 七槽的演进进 CHANGELOG",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "命名规范附 7 行“旧名（禁用）→ 现名”改名表（迁移日志），同时声明“旧名禁止在任何文档/代码/引用中再出现”——旧名出现在此表本身（自相矛盾），也使机械扫描需为本节开白名单；“",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CONTRACT.md | Claude/skills/CHANGELOG.md",
+   "note": "改名表删（保留规则与配套动作，进 CONTRACT §3）；改名清单作为历史进 CHANGELOG（带「旧名 / 迁移」字样，不触发旧名回潮扫描）",
+   "verify": "tests/unit/test_sf_docs.py::test_contract_carries_frontmatter_boundary_naming_shared_artifacts_and_gates"
   },
   "IX-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "frontmatter 规范：必需 `name/layer/description/last_verified`，可选 `version/user-invocable/allowe",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/CONTRACT.md | Claude/skills/brain-alpha-judge/SKILL.md | tests/unit/test_sf_docs.py",
+   "note": "CONTRACT §1 逐字段定义：allowed-tools 可选（缺省继承宿主权限；能力棘轮不得超基线）、hooks 受限（白名单 + 逐条写明 + 危险模式扫描）、user-invocable / version / agent_created 语义；description ≤ 300 字、只写「何时触发 + 范围 + 不做」——全库机检（此前最长 702 字；judge 的中英重复 303 字已删到 ≤ 300）",
+   "verify": "tests/unit/test_sf_docs.py::test_every_skill_description_is_a_trigger_statement_under_300_chars"
   },
   "IX-19": {
-   "status": "open",
+   "status": "fixed",
    "title": "“职责边界”由 `test_skill_boundaries.py` 守护——**守护的是该段存在且有三条（形式），不是内容为真**。本次审查中至少 6 个 skill 的边界声明",
-   "cat": "职责·**P1**"
+   "cat": "职责·**P1**",
+   "where": "Claude/skills/CONTRACT.md | tools/skill_lint.py | tests/unit/test_skill_lint.py | tests/fixtures/skill_lint_baseline.json",
+   "note": "把「形式覆盖」补成内容一致性检查的一部分：① CONTRACT §2 写明「边界段『不做』的动作在正文出现须带『仅引用』标记」，并指出实质一致性靠各 skill 的 doc→code 测试（本轮已为报告点名的 6 个矛盾逐个写了）；② 新增 skill_lint 的 const-literal 检查（门槛数字抄写棘轮：数值与 config 相同且未引用常量名 / config.X / 来源标记即违规；现存 29 处登记进基线、新增必红——这是新检查类别的初始基线，不是掩盖新违规）；硬裁定①的权威常量清单补上 PLATFORM_CHECK_LINES / WAIT_THRESHOLDS",
+   "verify": "tests/unit/test_skill_lint.py::test_const_literal_flags_copies_of_config_thresholds_but_not_sourced_or_history_lines"
   },
   "IX-20": {
-   "status": "open",
+   "status": "fixed",
    "title": "🟢 表头（产物 / 唯一正式写入方 / 只读消费方 / 刷新失效责任 / 逃生阀）是好设计，`priors_snapshot_<region>` 行含事故动机与“stale 仅 W",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "docs/ledger_keys.json | tools/ledger_keys.py | tests/unit/test_ledger_key_catalog.py | Claude/skills/CONTRACT.md",
+   "note": "键目录（75 项：键 / 写入方 / 读取方 / 刷新责任 / 状态，含 orphan 与 legacy / deprecated）与「skill 出现的键必须在目录、被读的键必须有写入方」测试均已在此前批次落地；本次把共享产物表迁入 CONTRACT §4 并对齐现状：submit_ready 改「SQL 表单存储、ledger 同名键 legacy」、registry 写入指向 wqb.registry_contract、expressions 写入方写明 run_pipeline 收尾自己写",
+   "verify": "tests/unit/test_sf_docs.py::test_contract_shared_artifact_table_matches_the_code_owners"
   },
   "IX-21": {
-   "status": "open",
+   "status": "fixed",
    "title": "质量门禁三条命令 + 7 项校验，但：①“无已废弃路径引用（`.qoder/skills/` 等）”**未覆盖 reference.md**（selfcorr-quick 的 re",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/CONTRACT.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/README.md | tests/unit/test_gem_skill_paths.py | tests/unit/test_sf_docs.py",
+   "note": "①已废弃路径：GEM trailSomeAlphas/README.md 里残留的 .qoder/skills 随其重写清掉（该文件是英文旧稿，另有旧深嵌套产物路径、虚构的 MOONSHOT_MODEL 环境变量）；②相对链接 / .py 引用检查递归覆盖 references/**（test_docs_consistency 扫全部 *.md）；③守护输入可指定：_resolve_skills_dir 复用 _skill_roots（WQ_SKILLS_DIR 优先），依赖 gitignore 数据的测试在干净克隆里 skip 并说明原因，「失败于环境 vs 失败于内容」写入 CONTRACT §5；顺带：test_gem_skill_paths 的实跑解析此前在 Linux 永远 skip（DEC-57）",
+   "verify": "tests/unit/test_sf_docs.py::test_contract_carries_frontmatter_boundary_naming_shared_artifacts_and_gates"
   },
   "IX-22": {
-   "status": "open",
+   "status": "fixed",
    "title": "提交配额口径整段是**第 4 次**完整重述（submit-alpha ×2、superalpha、INDEX S5 行、此处）。本段是全库**唯一正确**处理 `activiti",
-   "cat": "边界·**P1**"
+   "cat": "边界·**P1**",
+   "where": "Claude/skills/INDEX.md",
+   "note": "配额只留指针（单一来源 quota-and-tower.md）与一句话模型；日界按 America/New_York 计算，GMT+8 的 12:00 / 13:00 明写「不要写死」（quota_status.py / pipeline 已在此前批次改用 wqb.timeutil）；移除史与 get_submission_quota 叙述删；裸 python 改 $WQ_PY",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-23": {
-   "status": "open",
+   "status": "fixed",
    "title": "“2026-09-19 平台区域硬事实（当日实测，优先级高于任何旧记）”是**带日期的区域事实**（ALL/AMR 选项、JPN 无 pv1、IND robust 闸定义与破墙配方",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/INDEX.md | Claude/skills/CHANGELOG.md | Claude/skills/wq-brain-ra-pipeline/references/region-profile-contract.md | Claude/skills/wq-brain-ra-pipeline/references/regions/JPN.md | Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md",
+   "note": "「2026-09-19 平台区域硬事实」整节移出 INDEX：ALL / AMR 选项 → region-profile-contract §4（带日期、标平台不可达未复核）；JPN 无 pv1 → JPN profile 硬事实 6（此前已在）；IND robust 闸定义与破墙配方 → IND profile（此前已在）；prod 竞速 → ra-pipeline 决策表 D0-P 与 incidents I-2（此前已在）；历史原文进 CHANGELOG",
+   "verify": "tests/unit/test_index_tables.py::test_index_layers_stages_gates_and_counts_state_the_single_versions"
   },
   "IX-24": {
-   "status": "open",
+   "status": "fixed",
    "title": "作为“路由文件”，缺**任务 → skill 的场景路由表**：用户说“提交 alpha”应命中谁？（submit-alpha / superalpha / judge 三个 de",
-   "cat": "情景·**是**"
+   "cat": "情景·**是**",
+   "where": "Claude/skills/INDEX.md",
+   "note": "首节新增「任务 → skill 场景路由表」16 行（用户说 / 首选 / 不选谁与为什么），覆盖报告点名的四组歧义：提交（submit-alpha / superalpha / judge）、监控回测（monitor / ra-pipeline 步 9 / batch_track）、修复弱候选（repair / optimization-v1）、相关性（how-to-pass / selfcorr-quick / robustness / prod 墙 D0-P）；测试要求每行点名的 skill 都真实存在",
+   "verify": "tests/unit/test_index_tables.py::test_intent_routing_table_covers_the_ambiguous_intents_and_every_target_exists"
   },
   "JD-01": {
    "status": "fixed",

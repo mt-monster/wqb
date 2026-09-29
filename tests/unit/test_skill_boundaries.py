@@ -159,8 +159,12 @@ def test_l2_fi_declares_embedded_status():
         "本 skill 被内嵌在 GEM 引擎内、不得当独立主链入口")
 
 
-def test_index_declares_boundary_contract_as_required():
-    """INDEX 必须把「职责边界」列为新 skill 的必备契约，否则本套守护失去规范依据。"""
-    idx = INDEX_MD.read_text(encoding="utf-8")
-    assert HEADING in idx, "INDEX.md 未声明 `## 职责边界` 为正文必备段"
-    assert "本 skill 负责" in idx and "本 skill 不做" in idx, "INDEX.md 未给出三段模板"
+def test_contract_declares_boundary_contract_as_required():
+    """CONTRACT 必须把「职责边界」列为新 skill 的必备契约，否则本套守护失去规范依据。
+
+    契约从 INDEX 拆到 CONTRACT.md（skills 审查 IX-01）；INDEX 只须指向它。
+    """
+    contract = (SKILLS_DIR / "CONTRACT.md").read_text(encoding="utf-8")
+    assert HEADING in contract, "CONTRACT.md 未声明 `## 职责边界` 为正文必备段"
+    assert "本 skill 负责" in contract and "本 skill 不做" in contract, "CONTRACT.md 未给出三段模板"
+    assert "CONTRACT.md" in INDEX_MD.read_text(encoding="utf-8"), "INDEX.md 应指向 CONTRACT.md"

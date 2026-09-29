@@ -1,6 +1,34 @@
 {
  "_doc": "skill_lint 棘轮基线：现存已知违规。新增违规测试必红；修复后必须从这里删除（测试会提示）。只在有意接受时用 `python tools/skill_lint.py --update-baseline` 重写，并人审 diff。",
  "violations": {
-  "bare-python|Claude/skills/INDEX.md|python tools/sync_skills.py --check # 仓库与全部安装位零漂移|裸 python（用 $WQ_PY，或目标脚本接入 tools/_pyenv）": 1
+  "const-literal|Claude/skills/GLOSSARY.md|- **`PENDING`**：结果未出（如 SELF / PROD 相关性未算完）。**不挡提交，但也不能据此放行**——放行须 prod 实测 <0.7。|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-judge/SKILL.md|| 相关性 | PROD < 0.7（平台线）；SELF < 0.5 是**内部严线 / PPAC 口径**，不是平台硬闸；同数据集同腿兄弟（corr 0.82|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-judge/references/scenarios.md|- **步骤**：① `$WQ_PY scripts/judge_alpha.py --alpha-id <ID>` → 预期**不因 Sharpe < 1.5|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-repair/references/scenarios.md|- **动作**：对信号包一层平滑：`ts_decay_linear(<信号>, 5)` 或 `ts_mean(<信号>, 5)`（窗口取白名单 5 / 22）|门槛数字 fitness 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md|| > 30000 | 饱和（模板空间被社区挖穿） | 需高度非对称结构才能过 ProdCorr<0.7，冷启动避开 ||门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-research-field-quality/references/webdatascope-data-quality.md|| USA_TOP3000 | 112 | 最激烈 | 主战场，但 ProdCorr<0.7 难度高 ||门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/brain-alpha-robustness/SKILL.md|满足用户临时给的类型化指标（如 `sharpe > 1.58, fitness > 1, 2Y > 1.6`）但 Failed 非零的候选**不是**合格者，不|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/brain-calculate-alpha-selfcorr-quick/SKILL.md|**自动提示**：脚本会在输出里给出 OS PnL 池的最后刷新时间与池内 alpha 数（Excel `Meta` sheet + 终端），并在本批本地 SE|门槛数字 self-corr-platform 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md|- **终端**：前 10 个结果、SELF / PPAC 的均值 / 最大 / 最小、中性化设置分布；本批本地 SELF 最大值 < 0.7 时打印 `[盲区|门槛数字 self-corr-platform 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/brain-next-move-analysis/SKILL.md|- **数字口径**：输出里的「达标」`pass_ge_158` = 本地 `backtest_results` 中 `sharpe ≥ 1.58` 的条数（*|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/brain-next-move-analysis/reference.md|| `backtested` / `pass_ge_158` / `pass_rate_pct` | 本地 `backtest_results` 的条数 / `|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/worldquant-submit-alpha/SKILL.md|- **上游 / 下游**：上游 = 用户已明确确认的候选（`submit_verdict` 不是 `BLOCKED`、资格门 Failed RA = 0、pr|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/worldquant-submit-alpha/references/ppa-handoff.md|PPAC（本地 `brain-calculate-alpha-selfcorr-quick`，≤ 0.5 才走 PPA 通道）、当期主题窗口、已准备好的属性（n|门槛数字 self-corr-internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/worldquant-submit-alpha/references/scenarios.md|`check_correlation(X, refresh=True)` 实测 prod = 0.55（< 0.7）；用户已在本会话**明确确认**；`quot|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/worldquant-submit-alpha/references/submit-chain.md|> 实测 prod < 0.7（步 3）；④ **用户明确确认**（步 5）；⑤ 本 ET 日 REGULAR 配额未满（`python tools/quota|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-alpha-optimization-v1/references/mode-b-qualification.md|| 主闸 | `main_gate` | `sharpe ≥ 1.25` **且** `fitness ≥ 0.8` | 无绑定（走 optimization-|门槛数字 sharpe-is-d1 的抄写（写「见 config.X」，或加 <!-- from config.X --": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/decision-table.md|| 4 | 硬闸核查：`get_alpha_details` 的 `is.checks` + 本地 SELF / PPAC（PPAC = Power Pool |门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/loop-and-stop.md|| **A 区级产出** | region | `backtest_results` 中 sharpe 非空的行 ≥ `yield_min_backtests`|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md|- **平台线**：prod < 0.7 才可提交（`wqb.config` 的平台线；本文不复写数字之外的阈值）。**拿到值之后怎么办 → D0-P。**|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/prod-corr-avoidance.md|- **结论**：GLB pred 系信号族在 prod_corr < 0.7 约束下**无候选来源**；10 个 PPA 达标目标在 GLB 当前不可达；批次|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/regions/GLB.md|- **结论**：GLB pred 系信号族在 prod_corr<0.7 约束下**无候选来源**（信号强度/可打磨性/prod_corr 三者不可兼得，平台|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md|| 同上，**且 raw sharpe ≥ 1.58** | 它**就是**自己声称的那个因子暴露，不是暴露之上的超额 → **停止调参**（调参只会让暴露更纯|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/wq-brain-ra-pipeline/references/step9-writeback.md|- 「达标」在本库有三种口径，**别混**：`meets_internal_line`（Sharpe>1.58 且 Fitness>1.0；停止规则 A）/ `|门槛数字 sharpe-2y/internal 的抄写（写「见 config.X」，或加 <!-- from confi": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|**判定优先级**：提交 = 平台 `result == PASS`（必要）**且**我方 prod 实测 < 0.7（必要）。后者更严：平台对 SUPER 可|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|- **完成定义**：`VERDICT: PASS`（SELF 与 PROD 都 < 0.7）。|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|- [ ] 提交判定看 `result`，且我方 prod 实测 < 0.7。|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/SKILL.md|description: \"构建并提交 WorldQuant BRAIN SuperAlpha（type=SUPER，selection + combo 工作流|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/references/cases.md|- **操作**：早期用 5 个显式 alpha 的 `combination()` 思路（该算子现已被平台禁用，仅作等价思路说明）；验收标准 = 等价体 PR|门槛数字 prod-corr 的抄写（写「见 config.X」，或加 <!-- from config.X -->）": 1,
+  "const-literal|Claude/skills/wq-brain-superalpha/references/cases.md|- **结果**：PROD 0.6996 / SELF 0.6996（双双擦线 < 0.7），与既有 SA 仅 0.4731 相关；sharpe 2.52 / |门槛数字 self-corr-platform 的抄写（写「见 config.X」，或加 <!-- from confi": 1
  }
 }

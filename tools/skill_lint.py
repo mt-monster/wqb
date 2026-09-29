@@ -18,6 +18,10 @@
         文档指示读取 `.env`、命令行传口令（AGENTS：凭据只在 .env，禁止读取、打印、提交）。
   bare-python
         fenced 命令用裸 `python`（跨平台不可解析）。目标脚本已接 tools/_pyenv（自动切 venv）者豁免。
+  const-literal
+        门槛数字的第 N 份抄写（skills 审查 X-11 / X-17 #4 / IX-19）：文档里出现 `src/wqb/config.py` 里
+        GATES_INTERNAL / GATES_PLATFORM / PLATFORM_CHECK_LINES 的当前数值（Sharpe / Fitness / 相关性 / Margin / 换手线）而
+        没有引用常量名 / `config.X` / `<!-- from config.X -->` 标记。数字应写「见 config.X」；现存抄写登记进基线，新增必红。
 
 用法：
   python tools/skill_lint.py                 # 全部检查，打印违规（含基线状态）
@@ -616,6 +620,51 @@ def check_secrets() -> List[dict]:
     return out
 
 
+#: 「引用了来源」的标记：行内出现任一即豁免（常量名 / config.X / 来源注释 / 显式豁免）
+_CONST_SOURCED = re.compile(r"config\.|GATES_|PLATFORM_CHECK_LINES|PRODCORR_CEILING|WAIT_THRESHOLDS|from config|见 `?config|lint:const-ok")
+
+
+def _const_patterns() -> Dict[str, "re.Pattern[str]"]:
+    """由 config 的当前数值构造：文档里的数字与 config 相同才算「抄写」（config 改了，旧抄写反而不再命中——由 X-17 #10 的日期检查兜）。"""
+    sys.path.insert(0, str(REPO / "src"))
+    from wqb import config as C
+
+    def num(x: float) -> str:
+        t = f"{x:g}"
+        return re.escape(t) + (r"(?:\.0+)?" if "." not in t else "")
+
+    gi, gp, pl = C.GATES_INTERNAL, C.GATES_PLATFORM, C.PLATFORM_CHECK_LINES
+    gt = r"[>≥]=?\s*"
+    lt = r"[<≤]\s*"
+    head = r"[^\n|]{0,14}"
+    return {
+        "sharpe-2y/internal": re.compile(rf"(?i)sharpe{head}{gt}{num(pl['low_2y_sharpe_min'])}(?![\d.])"),
+        "sharpe-is-d1": re.compile(rf"(?i)sharpe{head}{gt}{num(pl['low_sharpe_min']['delay1'])}(?![\d.])"),
+        "fitness": re.compile(rf"(?i)fitness{head}{gt}{num(gi['fitness_min'])}(?![\d.])"),
+        "prod-corr": re.compile(rf"(?i)prod{head}?[^\n|]{{0,8}}{lt}{num(gp['prod_corr_max'])}(?![\d.])"),
+        "self-corr-platform": re.compile(rf"(?i)self{head}?[^\n|]{{0,8}}{lt}{num(gp['self_corr_max'])}(?![\d.])"),
+        "self-corr-internal": re.compile(rf"(?i)self{head}?[^\n|]{{0,8}}{lt}{num(gi['self_corr_max'])}(?![\d.])"),
+        "margin": re.compile(rf"(?i)margin{head}{gt}{num(gi['margin_bp_min'])}\s*bp"),
+    }
+
+
+def check_const_literals() -> List[dict]:
+    out = []
+    pats = _const_patterns()
+    for doc in iter_docs():
+        if doc.name == "CHANGELOG.md":
+            continue                                             # 历史记录可以带当时的数字
+        lines = doc.read_text(encoding="utf-8", errors="replace").split("\n")
+        for i, ln in enumerate(lines, 1):
+            if _CONST_SOURCED.search(ln) or COUNTER_MARK.search(ln) or EXEMPT_MARK in ln:
+                continue
+            for name, pat in pats.items():
+                if pat.search(ln):
+                    out.append(_v("const-literal", doc, i, f"门槛数字 {name} 的抄写（写「见 config.X」，或加 <!-- from config.X -->）", ln.strip()[:110]))
+                    break
+    return out
+
+
 def check_bare_python() -> List[dict]:
     out = []
     for doc in iter_docs():
@@ -647,6 +696,7 @@ CHECKS = {
     "expr": check_exprs,
     "secret": check_secrets,
     "bare-python": check_bare_python,
+    "const-literal": check_const_literals,
 }
 
 
@@ -681,7 +731,7 @@ def diff_against_baseline(vs: List[dict]) -> Tuple[List[str], List[str]]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="skill 文档内容为真机检（命令 / MCP 调用 / 表达式 / 凭据 / 裸 python）")
-    ap.add_argument("--check", action="append", help="只跑某类（前缀匹配，可重复）：cmd/mcp/expr/secret/bare-python")
+    ap.add_argument("--check", action="append", help="只跑某类（前缀匹配，可重复）：cmd/mcp/expr/secret/bare-python/const-literal")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--update-baseline", action="store_true", help="把当前违规写入基线（需人审 diff）")
     a = ap.parse_args()

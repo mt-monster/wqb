@@ -75,6 +75,6 @@ def test_check_complete_script_is_documented_as_manual_only():
     assert "手动" in SKILL and "不接钩子" in SKILL
 
 
-def test_version_and_hooks_semantics_are_defined_in_index():
-    idx = (ROOT / "Claude" / "skills" / "INDEX.md").read_text(encoding="utf-8")
-    assert "上游版本号" in idx and "白名单内的 skill 可声明" in idx
+def test_version_and_hooks_semantics_are_defined_in_contract():
+    contract = (ROOT / "Claude" / "skills" / "CONTRACT.md").read_text(encoding="utf-8")
+    assert "上游版本号" in contract and "白名单内的 skill 可声明" in contract

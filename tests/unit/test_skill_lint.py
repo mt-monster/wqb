@@ -173,11 +173,38 @@ def test_bare_python_exempts_scripts_that_reexec_into_the_venv(tmp_path, monkeyp
     assert all("gate.py" in v["snippet"] for v in vs)
 
 
+def test_const_literal_flags_copies_of_config_thresholds_but_not_sourced_or_history_lines(tmp_path, monkeypatch):
+    """门槛数字的抄写（X-11 / X-17 #4）：数值与 config 相同才算抄写；引用了常量名 / config.X / 来源标记 / 反例语境的行豁免。"""
+    from wqb import config as C
+    two_y, fit = C.PLATFORM_CHECK_LINES["low_2y_sharpe_min"], C.GATES_INTERNAL["fitness_min"]
+    prod = C.GATES_PLATFORM["prod_corr_max"]
+    md = textwrap.dedent(f"""
+        达标线：Sharpe > {two_y:g} 且 Fitness > {fit:g}。
+        prod 实测 < {prod:g} 才可提交。
+        Sharpe > {two_y:g}（`GATES_INTERNAL.sharpe_min`）。
+        prod 实测 < {prod:g}（见 config.GATES_PLATFORM）。
+        prod 实测 < {prod:g} <!-- from config.GATES_PLATFORM -->
+        **禁止**在文档里写 Sharpe > {two_y:g}。
+        Sharpe > 9.99 是随便写的另一个数，不是 config 里的线。
+    """)
+    vs = _lint_doc(tmp_path, monkeypatch, md, L.check_const_literals)
+    assert [v["check"] for v in vs] == ["const-literal", "const-literal"]
+    assert "sharpe-2y/internal" in vs[0]["msg"] and "prod-corr" in vs[1]["msg"]
+
+
+def test_const_literal_patterns_follow_the_config_values():
+    pats = L._const_patterns()
+    from wqb import config as C
+    assert pats["sharpe-2y/internal"].search(f"Sharpe ≥ {C.PLATFORM_CHECK_LINES['low_2y_sharpe_min']:g}")
+    assert not pats["sharpe-2y/internal"].search("Sharpe ≥ 1.5")           # 不是 config 里的数：不算抄写
+    assert pats["margin"].search(f"Margin > {C.GATES_INTERNAL['margin_bp_min']:g} bp")
+
+
 # ── 棘轮 ──────────────────────────────────────────────────────────────────────
 def test_no_new_skill_lint_violations_and_baseline_never_goes_stale():
     vs = L.run()
     new, fixed = L.diff_against_baseline(vs)
-    assert not new, ("新增了 skill 文档违规（命令不可执行 / MCP 参数不在签名 / 表达式违反闸 / 凭据指示 / 裸 python）：\n  "
+    assert not new, ("新增了 skill 文档违规（命令不可执行 / MCP 参数不在签名 / 表达式违反闸 / 凭据指示 / 裸 python / 门槛数字抄写）：\n  "
                      + "\n  ".join(new[:15]) + "\n修文档；确属有意的反例用 `<!-- lint:counterexample -->` 标记。")
     assert not fixed, ("这些违规已修复，请从 tests/fixtures/skill_lint_baseline.json 删除（或重跑 "
                        "`python tools/skill_lint.py --update-baseline`）：\n  " + "\n  ".join(fixed[:15]))

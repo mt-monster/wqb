@@ -41,6 +41,7 @@ profile 正文按下面的顺序写，agent 想查「这个区能挖什么」时
 | HKG | （已补）`universe` 于 2026-09-29 从 `config.REGIONS` 回填为 `[TOP800, TOP500]` | 步 1 仍 `get_platform_setting_options` 复核；不再是缺口 |
 | TWN | 有 profile，**没有** `tracking/TWN/` 目录 | 开新区前先补 `tracking/TWN/config/`（`settings.json` / `thresholds.json`）；当前 `probe-only` |
 | MEA | `frozen` | 步 1 即拒；后门见 [`scenarios.md`](scenarios.md) 情景 RA-08 |
-| AMR | `config.REGIONS` 有，**无 profile**，但 `tracking/AMR/config/` 存在 | 走通用处女地模板（参照 ASI），且先补 profile |
+| AMR | `config.REGIONS` 有，**无 profile**，但 `tracking/AMR/config/` 存在；平台只有 sentiment7 + univ1、无 pv1（2026-09-19 当日实测，平台不可达故未复核）——**当前不是 RA 挖掘区** | 要开必须先补 profile + 实测档位，再走通用处女地模板（参照 ASI） |
+| ALL | 平台 `get_platform_setting_options` 有（D1，LARGE / MEDIUM / SMALL），**不在** `config.REGIONS`；REGULAR 仿真返回 400「Region ALL is not available for simulation type REGULAR」（2026-09-19 当日实测，未复核） | 不是挖掘区，步 1 拒绝 |
 
 区域清单与 profile / 战役目录的对齐表在 [INDEX §区域清单](../../INDEX.md)（权威是 `config.REGIONS`）。

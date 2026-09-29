@@ -9,7 +9,7 @@
 （「批量提交 alpha」不是本 skill 的触发词——这里只**发起回测**；提交 alpha 是 L5。战役目录内的整波回测用 `workflow_batch_track`，见 SKILL 入口选用表。）
 
 ## 预期行为
-- 用本目录的 `scripts/batch_simulator.py`；凭据由脚本自己读取（`configs/config.json` → 环境变量 `CREDENTIALS_*`，agent 不读 `.env`、不打印口令）。
+- 用本目录的 `scripts/batch_simulator.py`；凭据由脚本自己读取（环境变量 `CREDENTIALS_*` → `configs/config.json`，agent 不读 `.env`、不打印口令）。
 - 结果以 CSV 与 `status` 分布汇报，而不只看终端 tail；结果同时在 `backtest_results`。
 
 ## 推荐命令形态（占位）

@@ -4,7 +4,7 @@
 > - 挖掘流程（when / what / 怎么挖、九步 SOP、每步输入输出与失败分支）→
 >   [`Claude/skills/wq-brain-ra-pipeline/SKILL.md`](../../Claude/skills/wq-brain-ra-pipeline/SKILL.md)
 > - 项目规约（Shell 引号 / 工具化 / skill 契约 / 命名 / 运行环境）→ [`AGENTS.md`](../../AGENTS.md)
-> - 分层、阶段表、闸门阶梯、命名例外 → [`Claude/skills/INDEX.md`](../../Claude/skills/INDEX.md)
+> - 分层、阶段表、闸门阶梯、场景路由 → [`Claude/skills/INDEX.md`](../../Claude/skills/INDEX.md)；契约与命名 → [`CONTRACT.md`](../../Claude/skills/CONTRACT.md)
 >
 > **2026-09-11 重写**：此前本文件逐条复制了调用链正文，已与代码/流程实质漂移——阶段标签把 GEM 标成
 > S4、把提交判定标成 S6；仍把 `brain-alpha-judge` 当提交判定权威（其已于 2026-08-31 自我弃用）；
@@ -44,7 +44,7 @@
 
 ## 环境变量
 
-见 [`INDEX.md §运行环境铁律`](../../Claude/skills/INDEX.md)（`$WQ_PY` / `$WQ_TOOLKIT_DIR` / `$WQ_VALIDATOR_DIR`
+见 [`INDEX.md「运行环境」`](../../Claude/skills/INDEX.md)（`$WQ_PY` / `$WQ_TOOLKIT_DIR` / `$WQ_VALIDATOR_DIR`
 与凭证链）。换机器只改该处定义。
 
 ---

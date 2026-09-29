@@ -101,8 +101,8 @@ def test_writeback_sop_lives_only_in_ra_step9_and_monitor_only_triggers_and_veri
     assert "不是" in boundary and "step9-writeback.md" in boundary
     assert "触发并核验" in boundary
     assert "OS 表现监控与重着色" in boundary and "没有任何 skill / 工具承接" in boundary
-    idx = (ROOT / "Claude" / "skills" / "INDEX.md").read_text(encoding="utf-8")
-    assert "wave_results_contract.upsert_wave_result" in idx
+    contract = (ROOT / "Claude" / "skills" / "CONTRACT.md").read_text(encoding="utf-8")       # 共享产物归属表（从 INDEX 拆出）
+    assert "wave_results_contract.upsert_wave_result" in contract
 
 
 def test_submit_status_audit_maps_to_existing_labels_and_names_the_queue_table():

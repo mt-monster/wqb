@@ -41,7 +41,7 @@
 ├─────────────────────────────────────────────────────────────────┤
 │  ③ 服务层      两个 MCP 服务器（stdio，.mcp.json 注册）            │
 │     wq-brain-http：69 个平台交互工具（回测/提交/相关性/论坛）      │
-│     wqb-db：45 个战役数据库读写工具                                │
+│     wqb-db：战役数据库读写工具（计数见 INDEX）                     │
 │     workflow 引擎：19 个注册节点（src/wqb/workflow/registry.py）   │
 ├─────────────────────────────────────────────────────────────────┤
 │  ② 客户端层    world-quant-brain-mcp/                             │
@@ -243,7 +243,7 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 | 维度 | 现状 |
 |---|---|
 | 测试 | 根套件 **1356 passed**（`tests/` 递归含 `tests/unit/`）；MCP 包 **84 passed**（需 `.venv` 单独运行） |
-| MCP 工具 | `wq-brain-http` 69 · `wqb-db` 45 · workflow 节点 19（唯一基准：`Claude/skills/INDEX.md`，单测机械守护） |
+| MCP 工具 | `wq-brain-http` 69 · `wqb-db` 44 · workflow 节点 19（计数基准：`Claude/skills/INDEX.md`「MCP 工具/节点计数」，单测机械守护；README 此前写 45 是漂移） |
 | Skills | 32 个（L-RA/L-PRE/L-TOOL/L0–L7 分层），4 个安装位与仓库零漂移 |
 | 工具链 | 139 个 CLI（`tools/`） |
 | 数据库 | `data/wqb.db` ~223 MB |
@@ -258,7 +258,9 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 | 文档 | 内容 |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | **Agent 操作规约**：流水线细节、反模式、变更影响面、Shell 规约 |
-| [`Claude/skills/INDEX.md`](Claude/skills/INDEX.md) | 技能总索引 + MCP 工具/节点计数唯一基准 |
+| [`Claude/skills/INDEX.md`](Claude/skills/INDEX.md) | 技能路由（用户意图 → skill）· 分层与阶段 · 由代码生成的区域 / 闸门 / 计数表 |
+| [`Claude/skills/CONTRACT.md`](Claude/skills/CONTRACT.md) | skill 写作契约：frontmatter · 职责边界 · 命名 · 共享产物归属 · 质量门禁 |
+| [`docs/env_and_switches.md`](docs/env_and_switches.md) | 环境变量目录（代码扫描生成）· 凭据来源登记 · 外发通道 · CLI 开关 |
 | [`docs/README.md`](docs/README.md) | 文档中心索引 |
 | [`docs/experience/`](docs/experience/) | 平台交互经验（并发、配额、429 规避） |
 | [`docs/plans/`](docs/plans/) | 改造计划（含 2026-09-23 dry-run 全链审计与优化方案） |

@@ -3,6 +3,7 @@
 > **闸编号的唯一注册表 = `gate.py::GATE_REGISTRY`**（代码），INDEX 里的闸表由 `gate.py --print-gate-table` 生成、`tests/unit/test_gate_registry_docs.py` 比对；本文只写**细则**，不再自称编号基准。`tools/wave_gate.py` 层的闸（体检硬门 / 闸 SEM / 闸 PF / 闸 2b / 闸 2.6 / 区域闸）与逃生口总表在 INDEX「闸与逃生口总表」。
 > 文档里「5 闸」= 闸 1–5，「8 闸」= 闸 1–8（+ 可选闸 0，子闸 1b / 2b / 2b-2，附加闸 9）；「体检硬门」是 `tools/field_inspect_gate.py`，与闸 7 / 8 不同源，勿混谈。
 > 缓存：`cache/gate_cache.json`，key = sha1(dataset + `\n` + expr)，幂等命中跳过。退出码：0 = 全 PASS，1 = 存在 FAIL。
+> **MCP 直发批也过闸**（2026-09-01 落地）：MCP `create_multi_simulation` 内置 toolkit 静态门禁（语法 + 不可访问算子 + 毒模式，规则复用 `platform_constraints.json` 与 alpha-expression-verifier；单次 2–10 条），不再存在「绕过 toolkit 流程」的通道；被拒批次的修复提示指向 `wave_gate.py` / `pipeline.py` 正规链。
 
 ## 一、agent 需知（每个闸拦什么、怎么改）
 

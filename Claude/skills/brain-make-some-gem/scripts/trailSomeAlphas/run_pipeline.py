@@ -393,9 +393,9 @@ def main():
         help="Force regenerating ideas markdown even if the default ideas file already exists",
     )
     parser.add_argument("--moonshot-api-key", default=None, help="Moonshot API key (prefer env MOONSHOT_API_KEY)")
-    parser.add_argument("--moonshot-model", default="kimi-k2.6", help="Moonshot model (default: k2.5)")
+    parser.add_argument("--moonshot-model", default="kimi-k2.6", help="Moonshot model (default: kimi-k2.6)")
     parser.add_argument("--username", default=None, help="BRAIN username/email (override config/env)")
-    parser.add_argument("--password", default=None, help="BRAIN password (override config/env)")
+    parser.add_argument("--password", default=None, help="BRAIN password（不推荐：会进入进程列表 / shell 历史；请用环境变量 CREDENTIALS_PASSWORD）")
     parser.add_argument(
         "--max-fields",
         type=int,

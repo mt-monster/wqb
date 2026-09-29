@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-29
 name: brain-alpha-judge
-description: "提交前的参考评审（非提交判定、不提交）：PPA 主题 / 相关性人工核对清单、value-factor trend score、多候选点塔排序。当用户想在提交前做额外质量审查、核对 PPA 主题匹配，或需要给多个过闸候选排提交顺序时使用。Reference-only review before submitting a Regular or PPA alpha: PPA theme checklist, value-factor trend score, pyramid-lighting order. It never judges submittability and never submits."
+description: "提交前的参考评审（非提交判定、不提交）：PPA 主题 / 相关性人工核对清单、value-factor trend score、多候选点塔排序。当用户想在提交前做额外质量审查、核对 PPA 主题匹配，或需要给多个过闸候选排提交顺序时使用。judge 只作参考：不判可提交性、不提交。"
 layer: L5
 allowed-tools:
   - Bash

@@ -6,6 +6,12 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**INDEX 拆分 / 契约 / 生成表 / 凭据登记（S-F-1）**
+- INDEX 只做路由与分层（460 → 约 275 行）：新增首节「任务 → skill 场景路由表」；契约拆到新增的 `CONTRACT.md`（frontmatter 逐字段定义、`description` ≤ 300 字全库机检、硬裁定、共享产物归属、质量门禁）；全部日期条目 / 迁入记录 / 改名表 / 演进注记移入本文件末「更早的历史」→ IX-01…24 / DEC-58
+- 可由代码导出的表改为**生成 + 逐字比对**：区域清单（config.REGIONS × profile × 目录，修掉 DEU / AMR 两处事实错误）、闸门阶梯（按检查名给平台线 / 内部线 / 来源常量，「平台 Sharpe 硬线」不再是一个数）、环境变量目录（新增 `docs/env_and_switches.md` + `docs/env_registry.json`，102 个变量，代码读了未登记 / 登记了不读都红）；生成器 `tools/index_tables.py`
+- **行为变更**：sim-alphas `batch_simulator.py` 的凭据顺序改为环境变量 > `configs/config.json` > MCP `.env`（此前 config.json 排在环境变量之前），且启动前覆盖 vendored `ace_lib.get_credentials`——该库默认会把口令**明文写进** `~/secrets/platform-brain.json` → T0-15 / DEC-59
+- `skill_lint` 新增 `const-literal` 类（门槛数字抄写棘轮，现存 29 处入基线）；`bare-python` 基线归零；GEM `trailSomeAlphas/README.md` 英文旧稿重写（清掉 `.qoder/skills`、旧产物路径、不存在的 `MOONSHOT_MODEL`）；`AGENTS.md` 更正「repair 配方已上移 optimization-v1」（并没有）并新增 §8.10 → DEC-60
+
 **brain-data-feature-engineering / brain-make-some-gem（S-E-5）**
 - feature-engineering：SKILL 重写为「两条产物路径」——节点 = 确定性模板（`source=feature_engineering_node`，GEM 不注入）/ agent 人工 = `source=manual`（注入）——与 `source → 是否注入` 对照表（对照 `gem.py::TEMPLATE_IDEAS_SOURCES`）；台账示例此前写 `source: "standalone"`，照做的人工产物会被 GEM 静默忽略；概念预算 8–12、GEM 摄入契约（Concept / Implementation Example / Expected Exposure）、示例换 `pv1` 真实字段并经真实 GEM 解析器 + 规范校验器实测；产物路径 `data/gem_runs/output_report/manual_…`；提纲只在 `OUTPUT_TEMPLATE.md`；验收改 4 项可检产物 → FE-01…13 / DEC-54
 - make-some-gem：**更正**「两份 SKILL.md 拼进 LLM prompt」（旧文、内嵌 README、两处代码注释都写反；AST 测试钉死正文从不进 prompt）；priors 键与上限以代码为准；铁律 6 / 7 与 RA D3 / 闸 6 契约对齐；`mode_b_required` 动作；落库核对（`run_pipeline` 自己写 `expressions`）；失败表增 `402` / LLM 通道不可达；`reference.md` / `examples.md` 英文旧稿 → 中文重写 → GM-01…15 / DEC-55
@@ -116,3 +122,64 @@
 - `brain-inspect-raw-template-create-setting`：边界与步骤改为「外部 / 手写 idea → 核对设置 → 写 `expressions` 表」，GEM 已入库的批次不走本 skill（互斥）；`build_alpha_list.py` 新增 `--campaign-dir` 并**打印每个可选字段的来源**；`process_template.py` 新增 `--out-dir`；提示文案不再要求「交还 AI 做设置决策」→ IR-01…IR-08
 - 代码（DEC-33…39）：MCP `get_submit_ready` 改读 SQL 队列表（ledger 同名键降 legacy 审计副本）；registry 写入校验唯一实现 `src/wqb/registry_contract.py`（CLI 与 MCP `upsert_registry_empirical` / `seal_dead_end` 共用，`seal_dead_end` 新建须带 `rule`）；`--enhance-diversity` 缺省 `always` → `never`（`build_wave.py` / `batch_simulator.py`）；`ledger set-verdict` / `submit-ready` 打印废止提示；`pipeline --force` 语义写准；三灯 `action` 不再推荐拼腿；L3 榨取窗口与探针 P6 收敛到有意义的窗口；gate 每进程打印所用 verifier 路径；作者盘符兜底全部移除（AST 测试守护）
 - 测试：`tests/unit/test_sd_docs.py`（文档 ↔ 代码）、`test_sd_engine_contracts.py`（契约与缺省）、`test_sd_portability.py`（盘符）
+
+## 更早的历史（2026-09-29 从 INDEX 拆出，原样保留，一行一条；INDEX 只留规则与生成表）
+
+**MCP 工具 / 节点计数变更史**（现值见 INDEX「MCP 工具/节点计数」，由测试守护）
+- 2026-09-28 P4 · `forum_recon` 节点上线（18→19；论坛问题驱动只读检索，额度 = 以查出有效文章为标准），由 ra-pipeline 步 4 / 5 / 7 / 9 的 recon 触发点经 `workflow_execute` 调用
+- 2026-09-27（N31）· `harvest_multisim_results` 复位为工具——09-19 起 `@mcp.tool()` 错挂在私有函数 `_flatten_platform_alpha` 上（该函数随之退出工具表，总数不变）；`workflow_auto_harvest` 带 `alphas` 时同样入库
+- 2026-09-26 P2.1 · 移除 `workflow_field_understanding`（wqb-db 45→44）与 `field_understanding` 节点（19→18；重复的第三套 S1 实现，S1 字段理解走 `feature_engineering`）；同批修复 `auto_pyramid` / `auto_review` / `alpha_booster` / `modeb_improve` 假 dry-run（诚实构建命令 / 计划）
+- 2026-09-18 · 新增 `persist_correlation`（相关性检查结果直落 `alphas`，NULL-only / [0,1] 校验 / source 溯源）与 `get_alpha_corr_metrics`（本地库筛选相关性，**零平台配额**）（wqb-db 43→45）；alphas 表 +9 列（sub_universe_sharpe / returns / drawdown / long_count / short_count / concentrated_weight / cluster_test / prod_corr_source / corr_checked_at），`CampaignStore.persist_correlation` 为唯一落库入口；`alpha_booster` 节点上线（18→19，通用 Alpha 短板提升，S4 增强）
+- 2026-09-17 · 移除 6 个 wqb-db 工具（49→43）：`record_step_metrics` / `get_step_metrics` / `compute_wave_summary` / `compute_campaign_summary` / `get_step_gain_report` / `workflow_step_metrics`——step-metrics 子系统整体下线（归档 `attic/step_metrics_20260917/`），替代方案 `tools/step_funnel.py`（只读步级漏斗）；`step_metrics` 节点下线（18→17）、`modeb_improve` 节点上线（17→18）
+- 2026-09-16 · wqb-db 含 `workflow_inventory_scan` / `workflow_gem_wave` / `workflow_unified_gate` / `workflow_auto_harvest` / `workflow_auto_review` / `workflow_auto_pyramid`
+- 2026-09-15 · wqb-db 含 `set_expression_status`（批量改状态，只传 id / 状态过滤，不回传表达式正文）
+
+**2026-09-19 挖掘流程优化落地（RA×10 战役复盘；细节见 wq-brain-ra-pipeline 各步）**
+- ① 连坐隔离：`pipeline.py` ERROR 批解析子模拟 → 坏式回写 `expressions.status='fail'` → 无辜兄弟重发一次（`--no-isolate-errors` 关）
+- ② 账户级槽位仲裁：`_lib/slots.py`（`logs/_slots/` token 文件，`WQB_GLOBAL_SLOTS` 缺省 7，陈旧自动回收），多流水线同跑不再超 C≈7
+- ③ prod-first 探针：`tools/campaign_intel.py prod-first --region R --wave W` 收批后族级串行探 prod，STOP 族不扩变体；结果入 `alphas.prod_correlation` + ledger `prod_first_<wave>`
+- ④ near 池剔除结构性死信号：`review_wave.is_near/structurally_dead`（robust/limit < `near.robust_min_ratio` 缺省 0.5）；metrics 行新增 `robust_sharpe/robust_limit/sub_universe_sharpe`；停止规则 B 因此真正可触发
+- ⑤ 产出率严格口径：`get_mining_yield(strict=True)` 默认 `yield_rate=ra_clean/backtested`，另给 `prod_clean/prod_blocked/prod_wall_ratio`；`s0-select` 同源，并新增跨区负先验 / 字段数守卫 / maxS 列
+- ⑥ GEM 生成侧预闸扩展：`hump` 命名参数、`bucket` 缺 range 补 / 丢、区域非法 group 字段（`platform_constraints.json` `region_invalid_group_fields`）、非标窗口别名归一、同骨架换字段封顶（`WQB_GEM_MAX_PER_SKELETON` 缺省 12）
+- ⑦ 闸门：`gate.py` 闸 2b 区域非法 group 字段 FAIL；validator `bucket()` 必带 range / buckets
+- ⑧ 台账修复：pipeline 收批写 `backtest_results.dataset`（此前恒 NULL，928 行）；历史空值回填（`backfill_backtest_dataset.py`，只填空）已一次性跑完并归档到 `tools/legacy/`，不再是可调用入口；`build_wave` 波号残留（全 dropped）时回退源池
+
+**2026-09-15 接线修复（审计落地）**
+- ① 设置层先验：`region_kb.gate_priors` 的 decay / neutralization 由 toolkit `pipeline.py run` 直接改写设置（`_lib/region_kb.py`），GEM prompt 只再注入 operator-count / field-family
+- ② GEM：节点 / MCP 透传 `pipeline_mode`（runner 缺省 phased，skeleton 可达）；S1 模板渲染文档不再自动注入；落盘前 `pipeline_pregate.py` 归一 `quantile` 默认 driver、丢弃加权混合毒模式
+- ③ 台账：`expressions.dataset` / `backtest_results.dataset` 污染已回填（`tools/backfill_expression_dataset.py`）；pipeline 收批后自动刷新 `region_kb`（recent_waves / gate_priors_local / updated_at）
+- ④ `workflow_campaign(stage="S4")` 先解析本波 alpha_id 再拼 `review_wave.py --alphas`
+- ⑤ `s2_field_pool` 跨主体簇轮转采样，`builder_version` 版本化缓存
+- ⑥ S2-COMPLIANCE 降级为提示；`pipeline.py` 中止路径 rc=2
+- ⑦ `RN_EXPOSURE` 墙进 `review_wave.walls()/passes()`；停止规则 SQL 化（`campaign` 节点 S2 / S3 前置，`stop_rules_override` 台账放行）；`wave_results.verdict` 写入强制枚举
+
+**外部扩展区迁入记录（2026-08-23 完成）与并入 / 退役**
+- 原「外部 Agent Skill 登记」段登记的 4 个 skill 历史上只存在于项目内 `.workbuddy/skills/_unpacked_brain/` 扩展区，2026-08-23 已全部迁入本权威目录并归层，外部扩展区随项目级副本一并归档：`brain-alpha-repair`（L4）、`brain-alpha-research`（L1）、`alpha-template-labs-data-analysis`（L0）；`brain-alpha-robustness` 已于 2026-08-22 迁入 L4，2026-08-23 同步到最新版本
+- `brain-alpha-orchestrator` 2026-08-31 并入 `wq-brain-ra-pipeline`（独有硬门已迁移：ghost-op / PPA 门禁、check_batch + check_expr_against_inspect、批次故障协议、failed-count 资格门；「L-INT 编排层」随之取消）；`wq-brain-campaign-auto`（2026-08-22）与 `brain-deepExplore`（2026-08-24）均已并入 RA，触发词「一键战役 / auto campaign / 开战役 / 持续挖掘」归 ra-pipeline
+- 通用非 WQ 元技能（`code-optimization`、`dead-code-cleanup`、`gold-analysis`、`jin10-news`）只由 `~/.workbuddy/skills` 独立维护，**不进入本目录**，避免 WQ 任务中误触发；历史 `.cursor/skills/` 冗余副本已于 2026-08-16 全部移除
+
+**权威副本处置记录（2026-09-11 修订；2026-09-10 审计废止「以某个安装位为权威」——那是漂移反复复发的根因）**
+- `<wqb>/.qoder-cn/skills/_unpacked_wq`（26 个，停留 08-17）→ 已归档 `attic/skills_archive/2026-08-23-pre-consolidation/proj-qoder-cn-skills/`
+- `<wqb>/.workbuddy/skills/_unpacked_brain`（35 个，混合体）→ 已归档 `attic/skills_archive/2026-08-23-pre-consolidation/proj-workbuddy-skills/`
+- `world-quant-brain-mcp/.venv/.../cnhkmcp/untracked/skills`（20 个，含已废弃 `brain-improve-alpha-performance`）→ 第三方包内僵尸副本，禁止调用，随包升级自行消失
+- `~/.codex/skills` 2026-09-10 前不在解析链，导致长期分叉；`~/.cursor/skills` 的 WQ 技能为指向 `.claude` 的 Junction；`~/.qoder-cn/skills` 整目录 Junction 到 `~/.claude/skills`
+
+**GEM 内嵌副本审计叙事（2026-09-26；2026-09-29 更正）**
+- 2026-09-26 旧文称「嵌套副本是运行时依赖，不删除、不修改」——被实测推翻：内嵌 dfe 目录连 SKILL.md 都没有，`read_text_optional()` 失败返回空串，当时的结论是「顶层 322 行字段工程文档从未进入 LLM prompt 且完全静默（现已修）」
+- **2026-09-29 再更正**：那两份 SKILL.md 的**正文从不进 LLM prompt**（`build_prompt` 只把 dfe「是否非空」当真值判断附一句固定的 8 问提示，FI 完全不用；AST 测试钉死）——所谓「静默屏蔽」的真实后果只是少一句固定提示，`MISSING` 的真正含义是 skill 目录解析异常 → DEC-55
+
+**命名规范：2026-09-10 改名清单**（旧名禁止再出现在任何文档 / 代码 / 引用中；本条是历史记录，规则见 CONTRACT §3）
+- 旧名 → 现名（迁移记录）：`pull_BRAINSkill` → `pull-brain-skills` · `brain-makeSomeGem` → `brain-make-some-gem` · `brain-simAlphasinBatch-and-track` → `brain-sim-alphas-in-batch-and-track` · `brain-calculate-alpha-selfcorrQuick` → `brain-calculate-alpha-selfcorr-quick` · `brain-how-to-pass-AlphaTest` → `brain-how-to-pass-alpha-test` · `brain-inspectRawTemplate-create-Setting` → `brain-inspect-raw-template-create-setting` · `brain-nextMove-analysis` → `brain-next-move-analysis`
+
+**并发口径演进**（现值以 `config.CONCURRENCY` 为准）
+- 2026-07 前：固定槽位 C=5（wqb-concurrency 阶梯实测）→ 新模型 Token-Bucket，突发容量 C≈7、慢补充约 1 令牌 / 20–40 s；2026-08-25 更新 5→7（七槽填槽：四重门禁后 7 批 multisim 同提实证安全，连续多波 0 连坐；每轮 7 批 × 8 条同提 → 统一轮询 → 即收即补）；旧「单批在飞串行」模式废弃；SOP 全文见 `wqb-concurrency` §8
+
+**2026-09-19 平台区域硬事实（当日实测；已迁入对应 profile / 决策表，带各自的 `last_verified`）**
+- `get_platform_setting_options` 含区域 **ALL**（D1，LARGE / MEDIUM / SMALL）与 **AMR**（TOP600）：ALL 不能跑 REGULAR（平台 400「Region ALL is not available for simulation type REGULAR」）；AMR 只有 sentiment7 + univ1、无 pv1；两者都不是 RA 挖掘区 → `region-profile-contract.md` §4
+- JPN / TOP1600 / D1 无 pv1（close / adv20 / returns 全部 Invalid data field），`ts_*(vec_*(VECTOR))` 必 ERROR；GEM 预闸与闸 2b 按 `region_invalid_fields` / `vector_ts_forbidden` 处理 → `regions/JPN.md` 硬事实 6
+- IND robust 闸 = 流动性子集重跑 Sharpe ≥ 1.0（官方 India Alphas 页）；日内反转族 IS 4–6 但 prod 0.79–1.0 撞墙；破 robust 墙的配方 = 自归一化 + 市值十分位 group_rank + decay 7–10（pwRJmvP3 ACTIVE 实证）→ `regions/IND.md`
+- prod 竞速：prod 0.60–0.70 的候选必须当天提交（pv103 一小时内被外部同款堵成 1.0）→ ra-pipeline 决策表 D0-P 与 `references/incidents.md` I-2
+
+**门禁与边界规则的来历**
+- 2026-09-11：INDEX 曾引用的 `validate_skills.py` 本仓库并不存在（悬空引用），已替换为真实门禁（现行命令见 CONTRACT §5）
+- 2026-09-26：新增「职责边界」必备段——审计实测边界声明覆盖率仅 39%（13 / 33），是选错 skill / 重复实现的主因；2026-09-27 补共享产物归属表——硬裁定②此前实质覆盖率仅 1 / 33，直接导致 `priors_snapshot` 无人认领刷新责任（GBR 快照落后 KB 源 8 天）、`wave_gate` 三方调用无主写方（自动链 100% `TypeError`）

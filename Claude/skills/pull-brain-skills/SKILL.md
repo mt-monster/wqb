@@ -75,7 +75,7 @@ ZIP 下载有超时（60 s）与大小上限（50 MB），解压有 zip-slip 防
 2. **归层**：按 [`INDEX.md`](../INDEX.md)「分层架构」与 `AGENTS.md`「Skill layer 取值表」选 `layer`。
 3. **补 frontmatter**：`name` = 目录名（kebab-case）、`layer`、`last_verified`（今天）、`description`。
 4. **补「职责边界」段**（紧跟 H1，含 负责 / 不做 / 上游·下游）——缺它测试不予通过。
-5. **命名**：目录名若为 camelCase / 下划线 / 混合大小写，对照 `INDEX.md`「命名规范」给出 kebab-case 迁移名；不自动重命名（防断引用），由人决定。
+5. **命名**：目录名若为 camelCase / 下划线 / 混合大小写，对照 [`CONTRACT.md`](../CONTRACT.md) §3「命名规范」给出 kebab-case 迁移名；不自动重命名（防断引用），由人决定。
 6. **移入并同步**：把审查过的文件夹移入 `Claude/skills/`，然后 `$WQ_PY tools/sync_skills.py`（+ `--check`），再跑 `pytest tests/unit/test_skill_integrity.py tests/unit/test_skill_boundaries.py -q`。
 7. **回滚**：还没提交 → 删除新目录并再跑一次 sync；已提交 → `git revert`；`--overwrite` 覆盖过 → 从 `<dest>/.backup/` 挪回。
 

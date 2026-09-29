@@ -274,6 +274,18 @@ def _set_brain_env(email: str, password: str) -> None:
     os.environ["BRAIN_CREDENTIAL_PASSWORD"] = password
 
 
+def _pin_ace_credentials() -> None:
+    """让 ace_lib 直接用进程环境里的凭据——不落盘、不交互（skills 审查 T0-15 / X-9）。
+
+    vendored `ace_lib.get_credentials()` 在 `~/secrets/platform-brain.json` 不存在时会 `input()` 提问，并把邮箱 / 口令
+    **明文写进**该文件（`BRAIN_CREDENTIAL_*` 只是它读的输入），非交互环境里还会卡在 `input()`。
+    这里覆盖它，与 GEM（`pipeline_data`）、feature-implementation（`fetch_dataset`）同一做法。
+    """
+    email = os.environ.get("BRAIN_CREDENTIAL_EMAIL", "")
+    password = os.environ.get("BRAIN_CREDENTIAL_PASSWORD", "")
+    ace_lib.get_credentials = lambda: (email, password)
+
+
 def _parse_dotenv(path: Path) -> Dict[str, str]:
     out: Dict[str, str] = {}
     try:
@@ -288,26 +300,30 @@ def _parse_dotenv(path: Path) -> Dict[str, str]:
     return out
 
 
-def load_credentials_fallback() -> bool:
-    """Env vars, then world-quant-brain-mcp/.env (CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD)."""
+def load_credentials_from_env() -> bool:
+    """进程环境变量：标准名 `CREDENTIALS_*` 优先，旧别名兜底。只记来源，不记值。"""
     email = (
-        os.environ.get("BRAIN_EMAIL")
+        os.environ.get("CREDENTIALS_EMAIL")
         or os.environ.get("BRAIN_USERNAME")
+        or os.environ.get("BRAIN_EMAIL")
         or os.environ.get("BRAIN_CREDENTIAL_EMAIL")
-        or os.environ.get("CREDENTIALS_EMAIL")
         or ""
     ).strip()
     password = (
-        os.environ.get("BRAIN_PASSWORD")
+        os.environ.get("CREDENTIALS_PASSWORD")
+        or os.environ.get("BRAIN_PASSWORD")
         or os.environ.get("BRAIN_CREDENTIAL_PASSWORD")
-        or os.environ.get("CREDENTIALS_PASSWORD")
         or ""
     ).strip()
     if email and password:
         _set_brain_env(email, password)
         logger.info("Loaded credentials from environment")
         return True
+    return False
 
+
+def load_credentials_from_dotenv() -> bool:
+    """工作区 world-quant-brain-mcp/.env（由**脚本**读取；agent 不读、不打印）。"""
     for parent in Path(__file__).resolve().parents:
         env_path = parent / "world-quant-brain-mcp" / ".env"
         if not env_path.is_file():
@@ -320,6 +336,11 @@ def load_credentials_fallback() -> bool:
             logger.info(f"Loaded credentials from MCP dotenv: {env_path}")
             return True
     return False
+
+
+def load_credentials_fallback() -> bool:
+    """兼容旧名：环境变量，再 MCP .env（不含 config.json）。"""
+    return load_credentials_from_env() or load_credentials_from_dotenv()
 
 
 def resolve_input_path(candidate_path: str, legacy_name: str) -> Path:
@@ -1051,13 +1072,16 @@ def main():
         raise SystemExit(0)
 
     resolved_config = resolve_input_path(args.config, "config.json")
-    if not load_credentials_from_config(str(resolved_config)):
-        if not load_credentials_fallback():
-            logger.error(
-                "No BRAIN credentials. Provide configs/config.json, "
-                "BRAIN_EMAIL/BRAIN_PASSWORD, or world-quant-brain-mcp/.env"
-            )
-            raise SystemExit(2)
+    # 凭据来源优先级：环境变量 > configs/config.json > MCP .env（与 GEM runner 同一口径；
+    # 此前 config.json 排在环境变量之前，会让陈旧的本地文件顶掉宿主注入的凭据）
+    if not (load_credentials_from_env()
+            or load_credentials_from_config(str(resolved_config))
+            or load_credentials_from_dotenv()):
+        logger.error(
+            "No BRAIN credentials. Set CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD in the environment, "
+            "or provide configs/config.json (see configs/README.md)"
+        )
+        raise SystemExit(2)
 
     alpha_json_path = resolve_input_path(args.alpha_json, "alpha_list.json")
     if args.output_csv:
@@ -1072,6 +1096,7 @@ def main():
     if not isinstance(alpha_list, list):
         raise ValueError(f"alpha json must be a list, got: {type(alpha_list)}")
 
+    _pin_ace_credentials()
     session = ace_lib.start_session()
     simulator = BatchSimulator(session, output_csv=str(output_csv_path))
     simulator.run(alpha_list, batch_size=args.batch_size, concurrency=args.concurrency,

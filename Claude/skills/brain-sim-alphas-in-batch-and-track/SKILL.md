@@ -47,7 +47,7 @@ allowed-tools:
 
 ## 凭据
 
-凭据**由脚本 / MCP 自己读取**：**agent 不读取 `.env`、不打印、不把口令放命令行**（AGENTS.md）。标准环境变量名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（与 MCP 服务、toolkit 同名）；`batch_simulator.py` 的解析顺序是 `--config`（`configs/config.json`，本地文件、已被 `.gitignore`，格式见 `configs/README.md`）→ 环境变量（`CREDENTIALS_*`，另认旧别名 `BRAIN_EMAIL` / `BRAIN_USERNAME` / `BRAIN_PASSWORD`）→ 工作区 `world-quant-brain-mcp/.env`。禁止把凭据硬编码进代码或文档。
+凭据**由脚本 / MCP 自己读取**：**agent 不读取 `.env`、不打印、不把口令放命令行**（AGENTS.md）。标准环境变量名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（与 MCP 服务、toolkit 同名）；`batch_simulator.py` 的解析顺序是**环境变量**（`CREDENTIALS_*`，另认旧别名 `BRAIN_EMAIL` / `BRAIN_USERNAME` / `BRAIN_PASSWORD`）→ `--config`（`configs/config.json`，本地文件、已被 `.gitignore`，格式见 `configs/README.md`）→ 工作区 `world-quant-brain-mcp/.env`（由脚本读，agent 不读）；此前 `config.json` 排在环境变量之前，会顶掉宿主注入的凭据。脚本已覆盖 vendored `ace_lib.get_credentials`——该库默认会把口令**明文写进** `~/secrets/platform-brain.json`。禁止把凭据硬编码进代码或文档。
 
 ## 运行环境
 

@@ -116,6 +116,16 @@ def test_embedded_dfe_has_no_skill_md():
     )
 
 
+def test_embedded_scripts_are_present_and_validator_is_byte_identical():
+    """INDEX「嵌套副本」纪律 #1（skills 审查 IX-15）：内嵌 `scripts/` 是硬依赖，不能缺；`validator.py` 与权威版逐字节相同。"""
+    scripts = TRAIL_DIR / "skills" / "brain-feature-implementation" / "scripts"
+    for name in ("ace_lib.py", "helpful_functions.py", "validator.py", "implement_idea.py", "fetch_dataset.py"):
+        assert (scripts / name).is_file(), f"内嵌 scripts/ 缺 {name}（硬依赖，不得删除）"
+    authoritative = SKILLS_DIR / "alpha-expression-verifier" / "scripts" / "validator.py"
+    assert _norm(scripts / "validator.py") == _norm(authoritative), (
+        "内嵌 validator.py 与 alpha-expression-verifier 权威版漂移——四处（权威 + toolkit 侧 + FI + 内嵌 FI）一起覆盖")
+
+
 def test_gem_report_root_is_outside_skill_tree():
     """产物根必须在 skill 树之外（防 `*_ideas.md` 再次污染仓库/安装位）。"""
     src = (TRAIL_DIR / "pipeline_paths.py").read_text(encoding="utf-8")

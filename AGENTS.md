@@ -142,7 +142,7 @@
 | `L6` | 监控与复盘（S6） | `wq-backtest-monitor` |
 | `L7` | 与挖掘无关的通用工具 | `planning-with-files`、`pull-brain-skills` |
 
-### SKILL.md frontmatter 契约（2026-09-10 审计固化）
+### SKILL.md frontmatter 契约（2026-09-10 审计固化；**完整契约在 [`Claude/skills/CONTRACT.md`](Claude/skills/CONTRACT.md)**，本节是摘要，冲突以它为准）
 
 **必需字段**：`name`（== 目录名）、`layer`、`description`、`last_verified`。
 **可选字段**：`version`、`user-invocable`、`allowed-tools`、`agent_created`、`hooks`。
@@ -173,7 +173,7 @@
 | skill | layer | 触发场景 |
 |---|---|---|
 | `alpha-template-labs-data-analysis` | L0 | 设计 Python alpha **前**做 BRAIN Labs 原始数据分析（USA/TOP3000/D1 MATRIX 覆盖/缺失/频率/离群/相关性） |
-| `brain-alpha-repair` | L4 | 弱候选修复/演化（降 turnover、提覆盖、降相关、失败轨迹恢复）。**配方已上移 `wq-brain-alpha-optimization-v1`**，本 skill 仅保留入口与边界声明 |
+| `brain-alpha-repair` | L4 | 弱候选修复的**配方索引**（降 turnover、提覆盖、降相关的修法与实证、修复成功判据）。**配方在本 skill 内**（optimization-v1 里并没有——2026-09-29 审查 RE-01 / P0-6 更正了此前「已上移」的错误说法）；动手改候选走 `wq-brain-alpha-optimization-v1` |
 | `brain-datafield-exploration-general` | L1 | 评估单个新 datafield（覆盖率 / 非零值 / 更新频率 / 分布形态） |
 | `brain-explain-alphas` | L4 | 解释某个 alpha 表达式 / 字段 / 算子协作 |
 
@@ -520,3 +520,16 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
 - **skill 文档「内容为真」棘轮** `tools/skill_lint.py`：命令 / 子命令 / 必填参数（argparse AST）、MCP 工具签名、表达式过闸、`.env` 读取、裸 `python`。
   现存违规登记在 `tests/fixtures/skill_lint_baseline.json`，**新增必红、修复必须从基线移除**；反例段落用 `<!-- lint:counterexample -->` 豁免。
 
+### 8.10 INDEX 拆分 / 生成表 / 环境变量与凭据登记（2026-09-29 固化，skills 审查 IX-01…24）
+
+- **INDEX 只做路由与分层**。契约（frontmatter / 职责边界 / 命名 / 共享产物 / 质量门禁）在 `Claude/skills/CONTRACT.md`；术语与状态词表在 `GLOSSARY.md`；
+  变更历史与迁移记录在 `Claude/skills/CHANGELOG.md`（带日期的 ⚠ 条目**不得**再写进 INDEX，`tests/unit/test_index_tables.py` 守）；
+  环境变量、开关、凭据来源在 `docs/env_and_switches.md`。用户意图 → skill 的**场景路由表**在 INDEX 首节。
+- **可由代码导出的表由代码生成并嵌入文档**：区域清单（`config.REGIONS` × profile × `tracking/<R>/config/`）、闸门阶梯（`config` 的 `GATES_*` / `PLATFORM_CHECK_LINES`）、
+  环境变量目录（代码扫描 + `docs/env_registry.json` 的用途）。生成器 `python tools/index_tables.py {regions|ladder|env}`；`--apply` 覆盖嵌入块、`--check` 比对。
+  **改 profile / 目录 / config 常量 / 读取了新环境变量后必须重新 `--apply`**，不要手改表。
+- **环境变量登记**：代码里新读一个环境变量 = 先在 `docs/env_registry.json` 登记（类别 + 用途）再 `--apply`；登记的变量不再被读取时必须删除。
+  **凭据只登记名字与来源，不登记值**；标准名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`，新增凭据消费者必须先认标准名，并在 `docs/env_and_switches.md` §1 登记来源顺序与是否落盘。
+  vendored `ace_lib.get_credentials()` 会把口令**明文写进** `~/secrets/platform-brain.json`——任何调用 `ace_lib.start_session()` 的脚本必须先覆盖它（`tests/unit/test_sf_docs.py` 守）。
+- **改 skill 的生效流程**：仓库 `Claude/skills/` 是编辑权威，各安装位是运行时优先——**改完必须 `$WQ_PY tools/sync_skills.py`（`--check` 零漂移）才对 Agent 生效**。
+  `description` ≤ 300 字且只写触发条件（`test_sf_docs.py` 守）。

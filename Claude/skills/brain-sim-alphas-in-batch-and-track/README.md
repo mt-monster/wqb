@@ -11,7 +11,7 @@
 
 ## 凭据
 
-**agent 不读取 `.env`、不打印凭据、不把口令放命令行**；凭据由脚本自己读取。标准环境变量名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（与 MCP 服务、toolkit 同名，在你自己的 shell 或宿主配置里设置，不要写进命令行或提交进仓库）。解析顺序：`--config`（`configs/config.json`）→ 环境变量（另认旧别名 `BRAIN_EMAIL` / `BRAIN_USERNAME` / `BRAIN_PASSWORD`）→ 工作区 `world-quant-brain-mcp/.env`。`configs/config.json` 格式见 `configs/README.md`。
+**agent 不读取 `.env`、不打印凭据、不把口令放命令行**；凭据由脚本自己读取。标准环境变量名 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（与 MCP 服务、toolkit 同名，在你自己的 shell 或宿主配置里设置，不要写进命令行或提交进仓库）。解析顺序：环境变量（另认旧别名 `BRAIN_EMAIL` / `BRAIN_USERNAME` / `BRAIN_PASSWORD`）→ `--config`（`configs/config.json`）→ 工作区 `world-quant-brain-mcp/.env`。`configs/config.json` 格式见 `configs/README.md`。
 
 ## 运行方式
 
