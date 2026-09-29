@@ -20,6 +20,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..mcp_check import require_mcp_tools
 from ...wave_results_contract import normalize_verdict as _contract_normalize_verdict
+from ... import waiver as _waiver
 from .._common import (
     REPO_ROOT,
     connect_db_readonly,
@@ -1083,20 +1084,8 @@ def _run_backlog_gate(
     try:
         conn = connect_db_readonly(db_path)
         try:
-            row = conn.execute(
-                "SELECT value FROM ledger_kv WHERE region=? AND key='backlog_gate_override'",
-                (region,),
-            ).fetchone()
-            override = None
-            if row and row[0]:
-                try:
-                    override = json.loads(row[0]) if isinstance(row[0], (str, bytes)) else row[0]
-                except Exception:
-                    override = None
-            if isinstance(override, dict) and override.get("reason"):
-                until = str(override.get("until") or "")
-                if not until or until >= datetime.now().strftime("%Y-%m-%d"):
-                    result["override"] = {"reason": override.get("reason"), "until": until or None}
+            # 放行读取单源 = wqb.waiver（waiver_backlog_<region>_all → 旧键 backlog_gate_override）
+            result.update(_waiver.gate_report_fields(_waiver.load(conn, "backlog", region)))
 
             total, bt, pending_gated, gem_n, selected_n = conn.execute(
                 "SELECT COUNT(*), "
@@ -1164,18 +1153,23 @@ def _run_backlog_gate(
         return result
     result["hits"] = hits
     if result.get("override"):
-        result["note"] = (f"积压闸命中但已被 ledger backlog_gate_override 放行："
+        result["note"] = (f"积压闸命中但已被 ledger {result['waiver']['source_key']} 放行："
                           f"{result['override']['reason']}")
         return result
     result["success"] = False
     result["error"] = (
         f"积压闸拦截（{region}）：{'；'.join(hits)}。消化积压后再开新波；"
-        f"确需继续（用户显式指令）请写台账 "
-        f"mcp__wqb-db__upsert_ledger_key(region={region!r}, key='backlog_gate_override', "
-        f"value={{'reason': '<用户指令与理由>', 'until': 'YYYY-MM-DD'}})，或在 "
+        f"确需继续（用户显式指令）请写 {_waiver.write_hint('backlog', region)}，或在 "
         f"{thresholds_path} 的 diversity.backlog_gate 调阈值。"
+        f"{_waiver.rejected_note(_waiver_from_result(result))}"
     )
     return result
+
+
+def _waiver_from_result(result: Dict[str, Any]) -> Optional["_waiver.Waiver"]:
+    """闸结果里的 waiver 字典 → Waiver（只为 rejected_note 复用同一份措辞）。"""
+    d = result.get("waiver")
+    return _waiver.Waiver(**d) if isinstance(d, dict) else None
 
 
 def _normalize_verdict(raw: Any) -> str:
@@ -1560,19 +1554,8 @@ def _run_stop_rules_gate(
         conn = connect_db_readonly(db_path)
         try:
             # 覆盖键
-            row = conn.execute(
-                "SELECT value FROM ledger_kv WHERE region=? AND key='stop_rules_override'", (region,)
-            ).fetchone()
-            override = None
-            if row and row[0]:
-                try:
-                    override = json.loads(row[0]) if isinstance(row[0], (str, bytes)) else row[0]
-                except Exception:
-                    override = None
-            if isinstance(override, dict) and override.get("reason"):
-                until = str(override.get("until") or "")
-                if not until or until >= datetime.now().strftime("%Y-%m-%d"):
-                    result["override"] = {"reason": override.get("reason"), "until": until or None}
+            # 放行读取单源 = wqb.waiver（waiver_stop_rules_<region>_all → 旧键 stop_rules_override）
+            result.update(_waiver.gate_report_fields(_waiver.load(conn, "stop_rules", region)))
             # A. 区级产出率
             bt, passed = conn.execute(
                 "SELECT COUNT(*), SUM(CASE WHEN sharpe > ? AND fitness > ? THEN 1 ELSE 0 END) "
@@ -1644,16 +1627,15 @@ def _run_stop_rules_gate(
         return result
     result["hits"] = hits
     if result.get("override"):
-        result["note"] = (f"停止规则命中但已被 ledger stop_rules_override 放行："
+        result["note"] = (f"停止规则命中但已被 ledger {result['waiver']['source_key']} 放行："
                           f"{result['override']['reason']}")
         return result
     result["success"] = False
     result["error"] = (
         f"停止规则拦截（{region}）：{'；'.join(hits)}。继续开波只会重复烧槽位——"
-        f"换区域/换 universe/换数据集；确需继续（用户显式指令）请写台账 "
-        f"mcp__wqb-db__upsert_ledger_key(region={region!r}, key='stop_rules_override', "
-        f"value={{'reason': '<用户指令与理由>', 'until': 'YYYY-MM-DD'}})，或在 "
+        f"换区域/换 universe/换数据集；确需继续（用户显式指令）请写 {_waiver.write_hint('stop_rules', region)}，或在 "
         f"{thresholds_path} 的 diversity.stop_rules 调阈值。"
+        f"{_waiver.rejected_note(_waiver_from_result(result))}"
     )
     return result
 

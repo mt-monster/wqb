@@ -22,7 +22,7 @@
 
 缺省（2026-09-27 定案，见 `WARN_SUNSET`）：灰度期内 warn，**2026-10-12 起 enforce**。
 解析顺序 `--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省（`resolve_mode`）；过期后仍可用
-`--gate-mode warn` / `WQB_GATE_MODE=warn` 临时回退，放行停波区域请走台账 override 留痕。
+`--gate-mode warn` / `WQB_GATE_MODE=warn` 临时回退，放行停波区域请写 waiver 留痕（`wqb.waiver` 协议；旧键 stop_rules_override 仍被识别）。
 workflow 节点（campaign S2/S3、batch_track）不走这里的模式，一律拦截。
 
 逃生口：环境变量 `WQB_DISABLE_REGION_GATES=1` 直接跳过（单测隔离用）。
@@ -199,12 +199,15 @@ def run_region_gates(campaign_dir, region, mode=None, dataset=None, out=None, mo
                 hits.append(name)
 
     report["hits"] = hits
+    report["waivers"] = [r["waiver"] for r in report["results"].values() if _released_by_waiver(r)]
     if hits:
         if mode == MODE_ENFORCE:
             report["ok"] = False
             print(f"[region-gates] ★★ 开波被阻断（enforce）：{'、'.join(hits)} 命中。"
-                  f"按闸提示消化积压/补 catalog/换区，或用 ledger override 显式放行留痕；"
-                  f"确需临时回退灰度：--gate-mode warn 或 WQB_GATE_MODE=warn。", file=stream)
+                  f"按闸提示消化积压/补 catalog/换区，或写 waiver 显式放行留痕"
+                  f"（stop_rules / backlog：`python tools/waiver.py new --gate <闸> --region <R> ...`）；"
+                  f"确需临时回退灰度：--gate-mode warn 或 WQB_GATE_MODE=warn（同样要 region_gates waiver）。",
+                  file=stream)
         else:
             if default_mode() == MODE_WARN:
                 when = (f"缺省灰度期至 {WARN_SUNSET.isoformat()}，"
@@ -344,6 +347,14 @@ def _region_whitelist_datasets(campaign_dir, region):
     return [], f"{region} s0_whitelist 无法解析出数据集清单"
 
 
+def _released_by_waiver(r):
+    """本闸结果是否「命中但被 waiver 放行」→ 返回 waiver 字典，否则 None（放行不能静默：见 wqb.waiver）。"""
+    wv = r.get("waiver")
+    if isinstance(wv, dict) and wv.get("status") == "ACTIVE" and r.get("hits"):
+        return wv
+    return None
+
+
 def _print_one(name, r, stream):
     status = "放行" if r.get("success", True) else "命中"
     detail = r.get("skipped") or r.get("error") or r.get("warning") or ""
@@ -351,6 +362,13 @@ def _print_one(name, r, stream):
     if detail:
         line += f" — {str(detail)[:220]}"
     print(line, file=stream)
+    wv = _released_by_waiver(r)
+    if wv:
+        print(f"[waiver] ⚠ 闸 {name} 命中 {len(r['hits'])} 条，被 waiver 放行：{wv.get('source_key')}"
+              f"（{wv.get('reason_code') or 'LEGACY'}/{wv.get('approved_by') or '?'}，"
+              f"至 {wv.get('expires_at') or '无到期日'}）：{wv.get('reason')}", file=stream)
+        for w in wv.get("warnings") or []:
+            print(f"[waiver]    ⚠ {w}", file=stream)
     if r.get("evidence"):
         keys = ("total", "backtested", "pending_gated", "gem", "selected",
                 "unconsumed", "conversion", "pending_gated_ratio", "unconsumed_ratio")

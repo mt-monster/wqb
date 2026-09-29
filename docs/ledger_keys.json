@@ -1,0 +1,1418 @@
+{
+ "_doc": "ledger_kv 键目录：单一真相源（tools/ledger_keys.py 扫描代码与文档并对账，tests/unit/test_ledger_key_catalog.py 守）。键里的 `<x>` 是占位符。writers/readers 的 code 引用必须真实存在并含该键的字面量；有 readers 而无 writers 的键必须登记 orphan（指向审查条目），且登记必须仍然为真。status：active / legacy（仍被识别，新写入用替代品）/ deprecated（已废止，文档只能带「废止/历史」字样提及）/ external（不在 ledger_kv 里）。",
+ "entries": [
+  {
+   "key": "s0_ranking",
+   "status": "active",
+   "purpose": "S0 数据集评分排名（`ranking[]`，全部有记录的区域形态一致）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py",
+     "via": "CampaignStore 写入方法"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "missing": "S1 缺排名依据 → 重跑 S0（score_datasets）",
+   "refresh": "每次 S0 重评后覆盖"
+  },
+  {
+   "key": "s0_whitelist",
+   "status": "active",
+   "purpose": "S0 白名单：入选数据集 + delay / universe / 金字塔归属。13 区存在 5 种历史形态，读取一律经 `wqb.ledger_whitelist.normalize`",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/wq-brain-ra-pipeline/SKILL.md"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/normalize_ledger_whitelist.py",
+     "via": "形态归一（SQL UPDATE）"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_gates.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/backfill_catalogs.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/ledger_whitelist.py"
+    }
+   ],
+   "missing": "S1 / 区域闸报「缺白名单」；catalog 前置闸按空集处理",
+   "refresh": "S0 选集后**用 merge 增量写**，禁止 replace 整值覆盖共享键（2026-09-25 事故）"
+  },
+  {
+   "key": "s0_calibrate_<region>",
+   "status": "active",
+   "purpose": "S0 校准记录（workflow 节点产出，审计用）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方，缺失无影响",
+   "refresh": "每次 S0 校准写"
+  },
+  {
+   "key": "s1_<ds>_d<delay>",
+   "status": "active",
+   "purpose": "S1 特征工程台账：`ideas_md_path` / 白名单 / 概念字段 / 预处理（S2、GEM 自动注入的来源）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/feature_engineering.py"
+    },
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/brain-data-feature-engineering/SKILL.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "missing": "GEM 走模板 ideas 路径并告警；S2 合规自动补录失败",
+   "refresh": "S1 重跑（`force_regen`）覆盖；ideas 文件搬家后须重写"
+  },
+  {
+   "key": "s1_semantic_<ds>",
+   "status": "active",
+   "purpose": "闸 SEM 字段语义归类（`blocked_fields`：货币代码 / 汇率 / 标识符等非信号字段）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/field_semantic_classify.py",
+     "via": "`--write-ledger`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/wave_gate.py"
+    }
+   ],
+   "missing": "wave_gate 默认 fail-closed exit 2（缺台账）；`--skip-semantic-gate` 须先有 semantic waiver",
+   "refresh": "数据集首次进入 S2 前生成；字段目录变化后重跑"
+  },
+  {
+   "key": "s1_prefix_<ds>",
+   "status": "active",
+   "purpose": "S1 字段前缀聚类摘要",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    }
+   ],
+   "missing": "现算并回写",
+   "refresh": "字段目录刷新时重算"
+  },
+  {
+   "key": "s1_economic_clusters_<ds>",
+   "status": "active",
+   "purpose": "S1 经济含义聚类",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/campaign.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方，缺失无影响",
+   "refresh": "S1 重跑时覆盖"
+  },
+  {
+   "key": "s1_profile_<ds>",
+   "status": "active",
+   "purpose": "数据集级字段形状摘要（`dominant_shape` 等）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/field_profile_from_labs.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/field_profile_backfill.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/economic_priors.py"
+    }
+   ],
+   "missing": "economic_priors 不注入形状先验",
+   "refresh": "画像回填时覆盖（`--no-ledger` 可关）"
+  },
+  {
+   "key": "s2_field_pool_<ds>",
+   "status": "active",
+   "purpose": "S2 候选字段池",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/campaign.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/field_pool_ab.py"
+    }
+   ],
+   "missing": "现算并回写",
+   "refresh": "S1 更新后重派生"
+  },
+  {
+   "key": "s2_<ds>_d<delay>_idea",
+   "status": "active",
+   "purpose": "S2 idea 记录",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "missing": "无 → 视为该集未产出 idea",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "s2_compliance_w<wave>",
+   "status": "active",
+   "purpose": "S2 合规记录（候选是否经 feature-engineering 产出）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/s2_compliance_mark.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py",
+     "via": "预检成功后自动补录"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "missing": "pipeline 拒绝开波：「未找到 S2 合规记录」",
+   "refresh": "每波一条；`--force` 覆盖"
+  },
+  {
+   "key": "assemble_priors_cache_<region>",
+   "status": "active",
+   "purpose": "assemble-priors 缓存标记（payload 在 `priors_snapshot_<REGION>`，独立命名避免大小写撞键）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "missing": "重新组装",
+   "refresh": "assemble 后写；`tools/migrate_priors_cache_key.py` 曾做旧键迁移"
+  },
+  {
+   "key": "priors_snapshot_<region>",
+   "status": "active",
+   "purpose": "assemble-priors 快照（wins / dead_ends / 区域先验；GEM 读它）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/assemble_priors.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/assemble_priors.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py",
+     "via": "陈旧检测"
+    }
+   ],
+   "missing": "GEM 无先验可注入；快照早于 KB 源时仅 WARN，不得据此继续实跑",
+   "refresh": "region_kb / 判死 / win 登记之后必须重组"
+  },
+  {
+   "key": "gate_cache_<ds>",
+   "status": "active",
+   "purpose": "gate.py 结果缓存（键含 `GATE_CODE_VERSION`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py"
+    }
+   ],
+   "missing": "重跑闸",
+   "refresh": "GATE_CODE_VERSION 变更即失效"
+  },
+  {
+   "key": "gate_w<wave>_<ds>",
+   "status": "active",
+   "purpose": "逐波门禁报告",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_gate.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_gate.py"
+    }
+   ],
+   "missing": "视为该波未过闸",
+   "refresh": "每次过闸覆盖（终态回写）"
+  },
+  {
+   "key": "stop_rules_override",
+   "status": "legacy",
+   "purpose": "旧放行键 `{reason, until}`：放行区域停止规则闸。**新写入请用 `waiver_stop_rules_<region>_all`**",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "AGENTS.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/waiver.py",
+     "via": "campaign.py 经 waiver.load 读取"
+    }
+   ],
+   "missing": "闸按规则拦截",
+   "refresh": "缺 `until` 视为永久并告警；GBR 至 2026-09-30"
+  },
+  {
+   "key": "backlog_gate_override",
+   "status": "legacy",
+   "purpose": "旧放行键 `{reason, until}`：放行区域积压闸。新写入请用 `waiver_backlog_<region>_all`",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py",
+     "via": "闸拦截时提示 agent 写入"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/waiver.py",
+     "via": "campaign.py 经 waiver.load 读取"
+    }
+   ],
+   "missing": "闸按规则拦截",
+   "refresh": "同上"
+  },
+  {
+   "key": "waiver_<gate>_<region>_<wave>",
+   "status": "active",
+   "purpose": "闸放行 / 豁免协议（字段、批准人、有效期见 `wqb.waiver`；`<wave>` 缺省 `all`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/waiver.py",
+     "via": "`new --write`"
+    },
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "AGENTS.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/waiver.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/wave_gate.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "missing": "无 waiver → 闸 / 逃生口按无放行处理",
+   "refresh": "必须带 `expires_at`（最长 3–30 天，按闸）；过期自动失效"
+  },
+  {
+   "key": "ckpt_w<wave>",
+   "status": "active",
+   "purpose": "波次检查点",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "missing": "从头开始",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "catalog_<ds>",
+   "status": "active",
+   "purpose": "typed 字段目录（gate 的白名单来源之一）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_catalog.py"
+    }
+   ],
+   "missing": "catalog 前置闸拒绝开波",
+   "refresh": "scan_fields 刷新"
+  },
+  {
+   "key": "catalog_cache_<ds>",
+   "status": "active",
+   "purpose": "字段目录缓存",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/field_catalog_cache.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/field_catalog_cache.py"
+    }
+   ],
+   "missing": "重新抓取",
+   "refresh": "`force_refresh_<ds>` 触发失效"
+  },
+  {
+   "key": "force_refresh_<ds>",
+   "status": "active",
+   "purpose": "强制刷新标记",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/field_catalog_cache.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/field_catalog_cache_manager.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/field_catalog_cache.py"
+    }
+   ],
+   "missing": "按 TTL 处理",
+   "refresh": "刷新后清除"
+  },
+  {
+   "key": "diversity_<ds>",
+   "status": "active",
+   "purpose": "多样性分析结果",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "missing": "现算",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "diversity_matrix_<ds>",
+   "status": "active",
+   "purpose": "多样性矩阵",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_extract.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_extract.py"
+    }
+   ],
+   "missing": "现算",
+   "refresh": "每次抽取覆盖"
+  },
+  {
+   "key": "diversity_evaluation_<ds>",
+   "status": "active",
+   "purpose": "多样性评估（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_extract.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次抽取覆盖"
+  },
+  {
+   "key": "diversity_wave_meta_<x>",
+   "status": "active",
+   "purpose": "波元信息（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_extract.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次抽取覆盖"
+  },
+  {
+   "key": "pipeline_integration_<ds>",
+   "status": "active",
+   "purpose": "流水线集成记录（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_extract.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次抽取覆盖"
+  },
+  {
+   "key": "diversity_report_w<wave>",
+   "status": "active",
+   "purpose": "多样性报告（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "wave_meta_<wave>",
+   "status": "active",
+   "purpose": "开波元信息（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "diversity_audit_latest",
+   "status": "active",
+   "purpose": "多样性审计最新值（含 `next_round_injections`，gate 旧路径 fallback 读取）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_audit.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_audit.py"
+    }
+   ],
+   "missing": "gate 不注入上一轮多样性缺口",
+   "refresh": "每次 diversity_audit 覆盖"
+  },
+  {
+   "key": "diversity_history",
+   "status": "active",
+   "purpose": "多样性审计累积趋势（list，追加）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_audit.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/diversity_audit.py"
+    }
+   ],
+   "missing": "从空开始",
+   "refresh": "每次 diversity_audit 追加"
+  },
+  {
+   "key": "methodology_rules",
+   "status": "active",
+   "purpose": "自学习方法论规则（`explore_contract` 等）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py"
+    }
+   ],
+   "missing": "闸 6 回落默认契约",
+   "refresh": "自学习更新"
+  },
+  {
+   "key": "mode_b_qualification",
+   "status": "active",
+   "region": "GLOBAL / 各区",
+   "purpose": "Mode B 资格线（主闸 + 旁路 + 判死线；GLOBAL 为权威，区域值为自适应学习结果）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/mode_b_adaptive.py",
+     "via": "S6 回写后自动更新"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/mode_b_config.py"
+    }
+   ],
+   "missing": "回落 thresholds.json 再回落内置默认",
+   "refresh": "S6 回写后自适应更新"
+  },
+  {
+   "key": "review_<tag>",
+   "status": "active",
+   "purpose": "评审快照 `{total, candidates[], near[], walls_count, next_moves[], reviewed_at}`",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_diversity.py",
+     "via": "upsert_review"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py",
+     "via": "`--write-ledger`"
+    }
+   ],
+   "readers": [],
+   "missing": "无代码消费方（agent 按字段读）",
+   "refresh": "每次评审覆盖"
+  },
+  {
+   "key": "submit_ready",
+   "status": "active",
+   "purpose": "达标待提交缓冲池 list `{id, note, queued_at}`（**不同于**同名 SQL 表 `submit_ready`，后者是提交队列）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py",
+     "via": "`--write-ledger`"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+     "via": "`campaign.py ledger submit-ready`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py",
+     "via": "get_submit_ready"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/step_funnel.py"
+    }
+   ],
+   "missing": "视为无待提交候选",
+   "refresh": "提交后须从池中移出（提交队列以 SQL 表为准）"
+  },
+  {
+   "key": "submit_ready_blocked",
+   "status": "active",
+   "purpose": "被 prod≥0.7 卡死的数据集 / 信号族饱和记录（下一轮 S0 读取，按拥挤处理）",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/wq-brain-ra-pipeline/SKILL.md"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/step_funnel.py",
+     "via": "仅计数"
+    }
+   ],
+   "missing": "S0 不做拥挤降权",
+   "refresh": "每次 prod 墙事件追加",
+   "orphan": {
+    "kind": "promised-reader-missing",
+    "tracked_by": "IX-20",
+    "reason": "文档说下一轮 S0 体检读取并降权，但代码里只有 step_funnel 计数，S0 并不读它；写入靠 agent 手工追加"
+   }
+  },
+  {
+   "key": "waves",
+   "status": "active",
+   "purpose": "已开波记录 list `{wave, dataset, note, added_at}`",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+     "via": "`campaign.py ledger add-wave`"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方（波结论以 wave_results 表为准）",
+   "refresh": "add-wave 追加"
+  },
+  {
+   "key": "near_pool",
+   "status": "active",
+   "purpose": "近门槛池 list `{tag, at, near:[{id, sharpe, walls}]}`",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py",
+     "via": "`--write-ledger`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/build_wave.py",
+     "via": "near-miss 字段加权"
+    }
+   ],
+   "missing": "回落 wave_results 的 near 池",
+   "refresh": "review_wave 追加"
+  },
+  {
+   "key": "salvage_pool",
+   "status": "active",
+   "purpose": "Salvage 池 `{entries[], updated_at, total}`（FAIL 候选达辅料线者入池）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py",
+     "via": "波次收敛自动分层"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/review_wave.py",
+     "via": "`--write-ledger`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/auto_review.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/harvest_multisim.py"
+    }
+   ],
+   "missing": "视为空池",
+   "refresh": "幂等追加；RN_EXPOSURE 不入池"
+  },
+  {
+   "key": "<dataset>_dead",
+   "status": "active",
+   "purpose": "数据集判死记录 `{dataset, reason, dead_at, dead_count, salvage?}`",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+     "via": "`campaign.py ledger mark-dead` / `score_datasets --mark-dead`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py"
+    },
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py",
+     "via": "get_dead_datasets"
+    }
+   ],
+   "missing": "视为未判死",
+   "refresh": "判死结论战役结束后提炼进 `registry_empirical`"
+  },
+  {
+   "key": "dataset_empirical_prior",
+   "status": "active",
+   "purpose": "per-dataset 历史回测天花板先验（`priors`），供下次 S0 评分",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py",
+     "via": "calibrate"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py"
+    }
+   ],
+   "missing": "S0 评分不含经验项",
+   "refresh": "每次 calibrate 覆盖"
+  },
+  {
+   "key": "saturated_datasets",
+   "status": "active",
+   "purpose": "prod 饱和事实 `{datasets:{ds:{reason}}}`；score 据此降级，P5 据此拍平 model",
+   "writers": [],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py"
+    }
+   ],
+   "missing": "不降级、不拍平",
+   "refresh": "无自动写入方",
+   "orphan": {
+    "kind": "read-without-writer",
+    "tracked_by": "IX-20",
+    "reason": "只能经通用 `campaign.py ledger set` 手写；没有任何步骤产生它，P2 / P5 降级实际是死代码路径"
+   }
+  },
+  {
+   "key": "seat_model",
+   "status": "active",
+   "purpose": "dataset → 独立可提交座位估计 `{seats:{ds:n}}`",
+   "writers": [],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py"
+    }
+   ],
+   "missing": "每集默认 2 个座位（占位）",
+   "refresh": "无自动写入方",
+   "orphan": {
+    "kind": "read-without-writer",
+    "tracked_by": "IX-20",
+    "reason": "读取方容忍缺失；没有任何步骤估计并写入座位数"
+   }
+  },
+  {
+   "key": "region_kb",
+   "status": "active",
+   "region": "各区 + GLOBAL",
+   "purpose": "区域知识库：`win_recipes[]` / `dead_patterns[]` / 算子使用统计 / `gate_priors`（GLOBAL 区另有通用 `templates[]`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/update_operator_stats.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/build_gate_prior_from_inventory.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/assemble_priors.py"
+    },
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_kb.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py"
+    }
+   ],
+   "missing": "assemble-priors 无区域先验",
+   "refresh": "S6 回写后重组 priors"
+  },
+  {
+   "key": "template_kb",
+   "status": "active",
+   "region": "KB",
+   "purpose": "模板库 `validated` / `failed` 两层（蒸馏晋升终点）",
+   "writers": [],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/assemble_priors.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py"
+    }
+   ],
+   "missing": "wins / dead_ends 少来源",
+   "refresh": "蒸馏晋升时更新",
+   "orphan": {
+    "kind": "read-without-writer",
+    "tracked_by": "IX-20",
+    "reason": "仓库内没有脚本写它；文档只描述读取映射，写入靠人工 / agent"
+   }
+  },
+  {
+   "key": "operator_principle_kb",
+   "status": "active",
+   "region": "KB",
+   "purpose": "字段特性 × 算子原理映射表（assemble-priors 转 skeleton_field_matrix）",
+   "writers": [],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/assemble_priors.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py"
+    }
+   ],
+   "missing": "不注入算子原理矩阵",
+   "refresh": "无自动写入方",
+   "orphan": {
+    "kind": "read-without-writer",
+    "tracked_by": "IX-20",
+    "reason": "只有读取方；本地 tracking 快照里出现过来源标注，但没有写入脚本"
+   }
+  },
+  {
+   "key": "community_tpl_kb",
+   "status": "active",
+   "region": "KB",
+   "purpose": "论坛模板候选库（`templates` / `ghost_operator_advisory` / `forum_recon_entries[]`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon.py",
+     "via": "`--out kb`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/kb_templates.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon.py"
+    }
+   ],
+   "missing": "kb_templates 报缺键",
+   "refresh": "forum_recon 幂等按 post_id 合并"
+  },
+  {
+   "key": "forum_recon_<qkey>",
+   "status": "active",
+   "purpose": "论坛取证结果（found=true 且 `--out ledger`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/step_funnel.py"
+    }
+   ],
+   "missing": "视为未取证",
+   "refresh": "同 qkey 覆盖"
+  },
+  {
+   "key": "forum_recon_negative_<qkey>",
+   "status": "active",
+   "purpose": "论坛无解的负结果（判死证据）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/step_funnel.py"
+    }
+   ],
+   "missing": "视为未取证",
+   "refresh": "同 qkey 覆盖"
+  },
+  {
+   "key": "research_leads_w<W>",
+   "status": "active",
+   "purpose": "研究线索：值得调查的问题 / 对照 / 同条指标 / 停止条件（不是 near / ready 池，不自动获得 Mode B 资格）",
+   "writers": [
+    {
+     "kind": "agent",
+     "ref": "mcp__wqb-db__upsert_ledger_key",
+     "doc": "Claude/skills/wq-brain-campaign-toolkit/references/selection-plan.md"
+    }
+   ],
+   "readers": [],
+   "missing": "无代码消费方",
+   "refresh": "每波一条"
+  },
+  {
+   "key": "prescreen_<region>",
+   "status": "active",
+   "purpose": "WebDataScope 预筛登记（区域切换前的机器门禁，值含预筛摘要）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/prescreen_gate.py",
+     "via": "`--record`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/prescreen_gate.py"
+    }
+   ],
+   "missing": "prescreen_gate BLOCK（exit 1）",
+   "refresh": "预筛跑完登记；换 WebData 包后重跑",
+   "note": "文档：Claude/skills/brain-alpha-research-field-quality/SKILL.md"
+  },
+  {
+   "key": "prod_first_<wave>",
+   "status": "active",
+   "purpose": "prod-first 探针结果 + 族级 EXPAND / STOP 建议",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py",
+     "via": "`prod-first --write-ledger`"
+    }
+   ],
+   "readers": [],
+   "missing": "无代码消费方（agent 按字段读）",
+   "refresh": "每波一条"
+  },
+  {
+   "key": "prod_family_<region>_<family>",
+   "status": "active",
+   "purpose": "骨架指纹的 prod 实测（闸 PF 覆盖率补偿）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py",
+     "via": "prod-first"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/wave_gate.py"
+    }
+   ],
+   "missing": "闸 PF 只用 alphas 表（覆盖率低）",
+   "refresh": "prod-first 探针回写"
+  },
+  {
+   "key": "xr_probe_<tag>",
+   "status": "active",
+   "region": "GLOBAL",
+   "purpose": "跨区探针汇总（GLOBAL）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/campaign_intel.py",
+     "via": "xr-probe"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次探针一条"
+  },
+  {
+   "key": "probe_plan_<x>",
+   "status": "active",
+   "purpose": "探针计划（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/score_datasets.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次评分覆盖"
+  },
+  {
+   "key": "settings_sweep_plan",
+   "status": "active",
+   "purpose": "settings 扫描计划（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/neutralization_sweep.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次扫描覆盖"
+  },
+  {
+   "key": "resolve_settings_<ds>_d<delay>",
+   "status": "active",
+   "purpose": "settings 候选（inspect-raw-template 产出；无 dataset 时键为 `resolve_settings`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/brain-inspect-raw-template-create-setting/scripts/resolve_settings.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次解析覆盖"
+  },
+  {
+   "key": "health_<region>_d<delay>_<universe>",
+   "status": "active",
+   "purpose": "PPA 数据集体检报告",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次体检覆盖"
+  },
+  {
+   "key": "operator_coverage",
+   "status": "active",
+   "purpose": "算子覆盖统计",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/operator_coverage.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/operator_coverage.py"
+    }
+   ],
+   "missing": "现算",
+   "refresh": "刷新时覆盖"
+  },
+  {
+   "key": "region_rotation",
+   "status": "active",
+   "purpose": "区域轮转决策（`--rotate --write-ledger`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "wqb_db_mcp.py"
+    },
+    {
+     "kind": "code",
+     "ref": "tools/region_status.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次决策覆盖"
+  },
+  {
+   "key": "s6_field_patterns_<region>_<x>",
+   "status": "active",
+   "purpose": "S6 字段组合规律（`<x>` = 波号，或 `merged`）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_patterns.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/campaign.py",
+     "via": "merged"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/store/_field_patterns.py",
+     "via": "load_field_patterns（仅按波读）"
+    }
+   ],
+   "missing": "S2 不参考规律",
+   "refresh": "S6 回写时写；`merged` 由合并步骤产出"
+  },
+  {
+   "key": "s4_walls_<region>_<wave>",
+   "status": "active",
+   "purpose": "S4 墙统计（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每波覆盖"
+  },
+  {
+   "key": "harvest_<msid>",
+   "status": "active",
+   "purpose": "multisim 收割记录（审计）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/harvest.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次收割覆盖"
+  },
+  {
+   "key": "sim_batch_results:<batch_id>",
+   "status": "active",
+   "purpose": "批量仿真逐条结果（按 alpha 区域分桶；无区域上下文的编排层用合成桶 `BATCH`，键 = batch_id 的续跑状态也在该桶）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/brain-sim-alphas-in-batch-and-track/scripts/batch_simulator.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/brain-sim-alphas-in-batch-and-track/scripts/batch_simulator.py"
+    }
+   ],
+   "missing": "续跑回退到 CSV 导出视图",
+   "refresh": "每批覆盖"
+  },
+  {
+   "key": "gem_<region>_<dataset>_<stamp>",
+   "status": "active",
+   "region": "WORKFLOW / QUALITY",
+   "purpose": "GEM 节点运行记录（region 桶 = WORKFLOW / QUALITY）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/gem.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次运行一条"
+  },
+  {
+   "key": "campaign_<region>_<stage>_<date>",
+   "status": "active",
+   "region": "WORKFLOW",
+   "purpose": "campaign 节点运行记录",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/campaign.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次运行一条"
+  },
+  {
+   "key": "batch_track_<region>_<wave>",
+   "status": "active",
+   "region": "WORKFLOW",
+   "purpose": "batch_track 节点运行记录",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/batch_track.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次运行一条"
+  },
+  {
+   "key": "superalpha_<region>_<date>",
+   "status": "active",
+   "region": "WORKFLOW",
+   "purpose": "superalpha 节点运行记录",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/nodes/superalpha.py"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次运行一条"
+  },
+  {
+   "key": "<prefix>_<alpha_id>",
+   "status": "active",
+   "region": "WORKFLOW",
+   "purpose": "judge / submit_alpha 节点的逐 alpha 记录（`prefix` = judge 或 submit_alpha，region 桶 = WORKFLOW）",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/workflow/_common.py",
+     "via": "persist_workflow_record"
+    }
+   ],
+   "readers": [],
+   "missing": "无消费方",
+   "refresh": "每次运行一条",
+   "note": "键形态过泛，仅作说明条目：coverage 测试不把它当通配（见 GENERIC_KEYS）"
+  },
+  {
+   "key": "wave<N>_verdict",
+   "status": "deprecated",
+   "purpose": "逐波评审结论（旧）。**`wave_results.verdict` 自 2026-09-28 起是唯一结论源，不再双写本键**",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/ledger.py",
+     "via": "`campaign.py ledger set-verdict`（仍会写，勿用）"
+    }
+   ],
+   "readers": [],
+   "missing": "—",
+   "refresh": "已废止"
+  },
+  {
+   "key": "s6_verdict_<wave>",
+   "status": "deprecated",
+   "purpose": "S6 结论（旧，同上，已废止）",
+   "writers": [],
+   "readers": [],
+   "missing": "—",
+   "refresh": "已废止"
+  },
+  {
+   "key": "wave<N>_dataset_switch",
+   "status": "legacy",
+   "purpose": "数据集切换记录 `{date, from, to, reason, protocol}`（人工，无代码读取方）",
+   "writers": [],
+   "readers": [],
+   "missing": "—",
+   "refresh": "无人维护"
+  },
+  {
+   "key": "read_post_ids",
+   "status": "external",
+   "purpose": "论坛浏览 action_ledger（**JSON 文件**，不在 ledger_kv 里；见 brain-forum-browse/data/action_ledger.schema.json）",
+   "writers": [],
+   "readers": [],
+   "missing": "—",
+   "refresh": "—"
+  }
+ ]
+}

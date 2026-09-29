@@ -323,11 +323,36 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
 - **CLI 的 gate-mode**：`--gate-mode` > `WQB_GATE_MODE` > 按日期的缺省。**2026-10-11 及以前 warn，
   2026-10-12 起 enforce。** 唯一事实源是 toolkit `_lib/region_gates.WARN_SUNSET`；改期只改这一处，并同步两份
   SKILL.md、本节与 `tests/unit/test_region_gates_p0p1.py`。依据见报告 §14.9.7。
-- **放行**：停波区域要继续开波，写台账 `stop_rules_override` 留痕。`--gate-mode warn` / `WQB_GATE_MODE=warn`
-  只作临时回退；非法取值被忽略，不会降级成 warn。
+- **放行**：停波区域要继续开波，写 waiver（§8.1.2；旧键 `stop_rules_override` 仍被识别，新写入用
+  `waiver_stop_rules_<region>_all`）。`--gate-mode warn` / `WQB_GATE_MODE=warn` 只作临时回退（灰度期结束后同样需要
+  `region_gates` waiver）；非法取值被忽略，不会降级成 warn。
 - **退出码**：enforce 拦截 exit 2，与"门禁环境缺失"同码，含义都是"本波没有门禁结论，不是表达式问题"。
 - **单测**：结论不能随日历变。`tests/conftest.py` 统一固定 `WQB_GATE_MODE=warn`；要测 enforce 或按日期缺省的用例
   自己 setenv / delenv，或 monkeypatch `region_gates._today`。
+
+#### 8.1.2 放行 / 豁免（waiver）协议（2026-09-29 固化；实现 `src/wqb/waiver.py`，CLI `tools/waiver.py`）
+
+"可显式降级，但必须在台账记因"此前散在 17 处文档、没有键名 / 字段 / 有效期 / 批准人，放行是静默的。现统一：
+
+- **键与字段**：ledger 键 `waiver_<gate>_<region>_<wave|all>`（`wave` 缺省 `all`），值
+  `{gate, reason_code, reason, evidence, approved_by, created_at, expires_at}`。**`expires_at` 必填，没有永久 waiver**；
+  含当天有效，过期自动失效（闸重新拦截，报错点名「已过期」）。
+- **谁能批准 / 最长多久**（`GATE_POLICIES` 为准）：`stop_rules`、`backlog`、`region_gates` 只有 **user**（用户显式指令，
+  `reason` 引用原话；30 / 30 / 7 天）；`inspect`、`semantic`（各 7 天）、`diversity`、`prod_family`（各 3 天）
+  user 或 agent 均可。`reason_code` 枚举 `USER_INSTRUCTION / REPAIR_BATCH / PROBE_BATCH / NO_INPUT_AVAILABLE /
+  PLATFORM_UNAVAILABLE / SUPERSEDED_BY_EVIDENCE`，后三类必须带 `evidence`。
+- **写法**：写台账 `waiver_<gate>_<region>_<wave>`——agent 用 `python tools/waiver.py new --gate … --region … --reason-code … --reason … --approved-by … --days N`
+  生成并校验，再原样调用它打印的 `mcp__wqb-db__upsert_ledger_key(...)`（**不要手写 JSON**——校验在代码里，手写会绕过）；
+  脚本环境加 `--write` 直接写库。`python tools/waiver.py gates|list|check` 查闸清单 / 现存 waiver / 是否生效。
+- **哪些逃生口要 waiver**：`--skip-diversity-gate`、`--skip-semantic-gate` / `--semantic-gate off` / `WQB_SEM_MODE=off`、
+  `--inspect-mode off`、`--no-prod-family-gate`、灰度期结束后 `--gate-mode warn|off`。`tools/wave_gate.py` 在**首屏**打印每个被跳过的闸
+  及其 waiver（或「无 waiver 记录」），并写进报告 `waivers`。`--waiver-mode` / `WQB_WAIVER_MODE`：`warn`（缺省：无 waiver 只告警）/
+  `enforce`（无 waiver 即 exit 2）/ `off`（仅测试隔离）。区域闸（`stop_rules` / `backlog`）被 waiver 放行时 `[waiver]` 行会点名批准人与到期日。
+- **旧键**：`stop_rules_override` / `backlog_gate_override`（`{reason, until}`）仍被识别，缺 `until` = 永久放行并**告警 NO_EXPIRY**；`until`
+  无法解析则 fail closed。读取路径已收成 `wqb.waiver.load` 一处，新代码不得再手写这类 SQL。
+- **红线（任何人批准都无效）**：提交 alpha 前的用户明确确认、凭据（`.env` 只在本地，禁止读取 / 打印 / 提交 / 外发）、平台条款与限额。
+  `RED_LINES` 里的名字调用 `load` 一律 INVALID；新增红线改 `wqb.waiver.RED_LINES`。
+- **新增可豁免的闸**：先在 `GATE_POLICIES` 登记（批准人、最长天数、逃生口），再写文案；`tests/unit/test_waiver.py` 守登记一致。
 
 ### 8.2 双 MCP 系统分工（**不要合并，职责不同**）
 
@@ -481,3 +506,15 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   - 字段投票这类推断，只补 `_unknown` 的行。
 - **相关性**：写入时同时记 `prod_corr_source` 与 `corr_checked_at`。[0,1] 以外的值不算数。
 - `backtest_results.payload_json` 仍是最近一次入库的原始行。需要"历次入库的并集"时读列，不要读 payload。
+
+### 8.9 ledger 键目录 / 时间炸弹登记 / skill 文档棘轮（2026-09-29 固化）
+
+- **ledger 键目录** `docs/ledger_keys.json` 是全库 `ledger_kv` 键的单一真相源（用途 / 写入方 / 读取方 / 缺失行为 / 刷新责任 / 状态）。
+  `tools/ledger_keys.py` 从代码（AST + SQL 字面量）与文档抽取实际出现的键，`tests/unit/test_ledger_key_catalog.py` 守：**新增或改名一个
+  ledger 键必须先登记**；被读取的键必须有写入方（已知缺口登记 `orphan` 并指向审查条目，缺口补上后必须删登记）；登记的代码引用必须真实存在；
+  已废止的键（`wave<N>_verdict` 等）只能出现在带「废止 / 历史」字样的行。`python tools/ledger_keys.py` 打印差异，`--print-table` 生成文档表。
+- **时间炸弹登记** `docs/time_bombs.json`：凡「到某日会自动改变行为或让文案失效」（灰度截止、到期放行、夏令时……）先登记再写文案。
+  `tests/unit/test_time_bombs.py` 守：证据文件 / 测试真实存在、人工项过期未办完即红、文档里出现的**未来日期**必须已登记。
+- **skill 文档「内容为真」棘轮** `tools/skill_lint.py`：命令 / 子命令 / 必填参数（argparse AST）、MCP 工具签名、表达式过闸、`.env` 读取、裸 `python`。
+  现存违规登记在 `tests/fixtures/skill_lint_baseline.json`，**新增必红、修复必须从基线移除**；反例段落用 `<!-- lint:counterexample -->` 豁免。
+

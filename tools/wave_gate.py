@@ -616,6 +616,79 @@ def resolve_inspect_mode(cli_value=None, env=None):
     return mode if mode in INSPECT_MODES else DEFAULT_INSPECT_MODE
 
 
+def _waiver_phase(a, campaign, region, inspect_mode, rg):
+    """逃生口 → waiver 检查（2026-09-29，skills 审查 X-8）。
+
+    开了哪个逃生口（`--skip-diversity-gate` / `--skip-semantic-gate` / `--semantic-gate off` /
+    `--inspect-mode off` / `--no-prod-family-gate` / 区域闸显式降级），就查台账里有没有对应闸的
+    有效 waiver（键 `waiver_<gate>_<region>_<wave|all>`，协议与校验在 `wqb.waiver`）。
+    缺省 warn：无 waiver 只在**首屏**打醒目告警并进报告 `waivers`；`--waiver-mode enforce`
+    （或 `WQB_WAIVER_MODE=enforce`）下无 waiver 即 exit 2。逃生口本身不变，只是不再能静默使用。
+    返回 SkipDecision 列表（供写进报告）。
+    """
+    for root in (_wqb_root(campaign), _REPO_ROOT):
+        src = os.path.join(root, "src")
+        if os.path.isdir(os.path.join(src, "wqb")):
+            if src not in sys.path:
+                sys.path.insert(0, src)
+            break
+    try:
+        from wqb import waiver as W
+    except Exception as e:  # 无 wqb 包时本闸其余部分也跑不起来；不因检查本身崩溃
+        print(f"[waiver] wqb.waiver 不可导入（{type(e).__name__}: {e}）：逃生口未做 waiver 检查", file=sys.stderr)
+        return []
+
+    rg_mode = rg_default = None
+    if rg is not None and getattr(rg, "resolve_mode", None):
+        rg_mode, _ = rg.resolve_mode(a.gate_mode)
+        _dm = getattr(rg, "default_mode", None)      # 旧安装位的 toolkit 可能没有
+        rg_default = _dm() if _dm else None
+    sem_env = (os.environ.get("WQB_SEM_MODE") or "").strip().lower()
+    esc = []
+    if a.skip_diversity_gate:
+        esc.append(("diversity", "--skip-diversity-gate"))
+    if a.skip_semantic_gate:
+        esc.append(("semantic", "--skip-semantic-gate"))
+    elif a.semantic_gate == "off":
+        esc.append(("semantic", "--semantic-gate off"))
+    elif a.semantic_gate is None and sem_env == "off":
+        esc.append(("semantic", "WQB_SEM_MODE=off"))
+    if inspect_mode == "off":
+        esc.append(("inspect", "--inspect-mode off"))
+    if not a.prod_family_gate:
+        esc.append(("prod_family", "--no-prod-family-gate"))
+    # 区域闸：显式 off，或灰度期结束后显式回退 warn 才算逃生口（灰度期缺省 warn 不是逃生）
+    if rg_mode == "off" or (rg_mode == "warn" and rg_default == "enforce"):
+        esc.append(("region_gates", f"--gate-mode {rg_mode}"))
+    if not esc:
+        return []
+
+    mode = W.resolve_mode(a.waiver_mode)
+    conn = None
+    if mode != "off":
+        try:
+            from wqb.db_conn import connect as _dbconn
+            conn = _dbconn(_wqb_db_path(campaign), readonly=True)
+        except Exception as e:  # 库不可达：check_skip 按「无 waiver」处理（enforce 下 fail closed）
+            print(f"[waiver] 台账不可读（{e}）：按无 waiver 处理", file=sys.stderr)
+    decisions = []
+    try:
+        for gate, flag in esc:
+            decisions.append(W.check_skip(conn, gate, region, a.wave, flag, mode=mode))
+    finally:
+        if conn is not None:
+            conn.close()
+    for d in decisions:
+        for line in d.lines:
+            print(line, file=sys.stdout if d.ok else sys.stderr)
+    blocked = [d for d in decisions if not d.ok]
+    if blocked:
+        print(f"[waiver] ★★ waiver-mode=enforce：{', '.join(d.gate for d in blocked)} 被跳过但没有有效 waiver"
+              "→ 拒绝开波（exit 2）。先写 waiver，或去掉对应逃生口。", file=sys.stderr)
+        sys.exit(2)
+    return decisions
+
+
 def _load_region_gates():
     """加载 toolkit 的 `_lib/region_gates`（2026-09-17 P0-1：开波闸下沉到本入口）。
 
@@ -931,6 +1004,10 @@ def main():
                     help="体检硬门「缺包」时的行为（缺省读环境变量 WQB_INSPECT_MODE，兜底 warn）："
                          "off=跳过不报 / warn=告警但放行（灰度默认）/ "
                          "enforce=fail-closed，缺包即整波拦截（开新数据集前建议 enforce）")
+    ap.add_argument("--waiver-mode", default=None, choices=("off", "warn", "enforce"),
+                    help="逃生口 waiver 检查（缺省读环境变量 WQB_WAIVER_MODE，兜底 warn）："
+                         "warn=用了 --skip-* / --inspect-mode off 等逃生口而台账无有效 waiver 时首屏告警 / "
+                         "enforce=无 waiver 即 exit 2 / off=不查（仅测试隔离）。协议见 wqb.waiver、tools/waiver.py")
     ap.add_argument("--prod-family-gate", dest="prod_family_gate", action="store_true",
                     default=True,
                     help="闸 PF：信号族死路预检（2026-09-25，零配额，纯静态）。命中已死路信号族拦截，"
@@ -962,11 +1039,15 @@ def main():
     # 体检硬门缺包策略（2026-09-17 P1-1：由"恒静默放行"升级为可选 fail-closed）
     _inspect_mode = resolve_inspect_mode(a.inspect_mode)
 
+    # 逃生口 → waiver 检查（首屏；见 _waiver_phase）
+    _rg = _load_region_gates()
+    _wv_region = a.region or _settings_region(campaign) or os.path.basename(campaign).upper()
+    _wv_decisions = _waiver_phase(a, campaign, _wv_region, _inspect_mode, _rg)
+
     # ---- 开波前区域闸（2026-09-17 P0-1 下沉）----
     # signal_floor / stop_rules / backlog 三道闸原先只在 workflow 的 S2/S3 节点生效；
     # 直调本脚本会绕过它们（实证 JPN 2026-09-16）。模式由 toolkit region_gates.resolve_mode 定：
     # --gate-mode > WQB_GATE_MODE > 按日期的缺省（灰度期 warn，2026-10-12 起 enforce）。
-    _rg = _load_region_gates()
     if _rg is None:
         print("[wave_gate] [region-gates] ★未找到 toolkit region_gates，本次跳过开波闸"
               "（设 WQ_TOOLKIT_DIR 可解）", file=sys.stderr)
@@ -1171,6 +1252,8 @@ def main():
     }
     if state_writeback is not None:
         report["state_writeback"] = state_writeback
+    if _wv_decisions:
+        report["waivers"] = [d.to_dict() for d in _wv_decisions]
     if s2_field_report:
         report["s2_field_validation"] = s2_field_report
 

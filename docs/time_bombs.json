@@ -1,0 +1,54 @@
+{
+  "_doc": "时间炸弹登记表（skills 审查 X-19 / RA-124）。凡「到某日会自动改变行为或让文案失效」的事项都登记在这里；tests/unit/test_time_bombs.py 守：① 登记项的证据文件 / 测试真实存在；② 人工项（manual）过期未办完即红；③ 文档里出现的「未来日期」必须在本表出现（date 或 mentions）。新增带日期的翻转 / 到期，先在这里加一条，再写文案。resolution.kind：code = 代码自己处理并有测试钉住；auto = 数据自身带到期（如 waiver.expires_at），过期自动失效且有测试；manual = 需要人在到期前办，owner 必填，办完把 status 改 done。",
+  "entries": [
+    {
+      "id": "TB-01",
+      "date": "2026-09-30",
+      "what": "GBR 的 stop_rules_override（用户 2026-09-12「stay in GBR」指令）到期：GBR 区停止规则恢复约束，开波会被拦。",
+      "where": [
+        "ledger:GBR/stop_rules_override.until",
+        "Claude/skills/wq-brain-ra-pipeline/SKILL.md::stop_rules_override"
+      ],
+      "resolution": {
+        "kind": "auto",
+        "mechanism": "wqb.waiver 读取旧键 until（含当天），过期即不再放行，闸的 error 点名「已过期」",
+        "test": "tests/unit/test_wiring_fixes_20260915.py::test_stop_rules_expired_override_does_not_release"
+      },
+      "before": "到期前请用户复核：仍要留在 GBR 就新写 waiver_stop_rules_GBR_all（USER_INSTRUCTION，approved_by=user，≤30 天）并清掉旧键；否则不必操作。"
+    },
+    {
+      "id": "TB-02",
+      "date": "2026-10-12",
+      "mentions": ["2026-10-11"],
+      "what": "CLI 开波区域闸缺省模式 warn → enforce（WARN_SUNSET=2026-10-11，次日起缺省 enforce，命中即 exit 2）。",
+      "where": [
+        "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/region_gates.py::WARN_SUNSET",
+        "AGENTS.md::WARN_SUNSET",
+        "Claude/skills/wq-brain-campaign-toolkit/SKILL.md::WARN_SUNSET",
+        "Claude/skills/wq-brain-ra-pipeline/SKILL.md::2026-10-12"
+      ],
+      "resolution": {
+        "kind": "code",
+        "mechanism": "resolve_mode 按日期取缺省；改期只改 WARN_SUNSET 一处",
+        "test": "tests/unit/test_region_gates_p0p1.py::test_sunset_date_and_default_mode"
+      },
+      "before": "翻转后区域闸的逃生口（--gate-mode warn）变成需要 region_gates waiver 的动作；文档里的「灰度期」措辞在翻转后应改写为现状（由本表提醒，不靠记忆）。"
+    },
+    {
+      "id": "TB-03",
+      "date": "2026-11-01",
+      "what": "美国夏令时结束：00:00 ET 从 12:00 变为 13:00 GMT+8；写死 UTC-4 的实现日界会漂移 1 小时。",
+      "where": [
+        "src/wqb/timeutil.py::et_reset_hour_gmt8",
+        "tools/quota_status.py::et_reset_hour_gmt8",
+        "Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py::_timeutil"
+      ],
+      "resolution": {
+        "kind": "code",
+        "mechanism": "wqb.timeutil 用 America/New_York（缺 tz 数据库时回退规则实现，逐小时等价性有测试）；文档只写公式不写死 12:00",
+        "test": "tests/unit/test_timeutil.py::test_fixed_utc_minus_4_would_be_wrong_after_november_first"
+      },
+      "before": "无需操作；若文档里仍出现「00:00 ET = 12:00 GMT+8」的固定句式，改成「夏令时 12:00 / 冬令时 13:00，以 quota_status 输出为准」。"
+    }
+  ]
+}
