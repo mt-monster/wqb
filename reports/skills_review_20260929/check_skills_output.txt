@@ -1,0 +1,527 @@
+== A. frontmatter / 元数据 ==
+last_verified 取值分布： {'2026-09-28': 33}
+layer 取值分布： {'L2': 3, 'L0': 4, 'L5': 3, 'L4': 6, 'L1': 7, 'L6': 2, 'L3': 3, 'L7': 2, 'L-PRE': 1, 'L-TOOL': 1, 'L-RA': 1}
+skill                                          layer   desc_len  lines trig  allowed-tools  user-invocable
+wq-brain-campaign-toolkit                      L-TOOL       702    354 True  True           False
+wq-brain-ppa-mining                            L0           466    321 False True           False
+wq-brain-superalpha                            L5           450    250 True  True           False
+brain-inspect-raw-template-create-setting      L3           442     99 True  True           True
+brain-alpha-judge                              L5           410    300 True  True           True
+worldquant-submit-alpha                        L5           378    292 True  True           False
+wqb-concurrency                                L3           329    119 True  True           False
+wq-brain-campaign-matrix                       L-PRE        295    143 True  True           False
+brain-make-some-gem                            L2           287    165 True  True           False
+wq-brain-ra-pipeline                           L-RA         270    950 True  True           False
+wq-backtest-monitor                            L6           259    162 True  True           False
+wq-brain-alpha-optimization-v1                 L4           258    197 True  True           True
+brain-how-to-pass-alpha-test                   L4           221    132 True  True           False
+brain-forum-browse                             L0           216    258 True  True           False
+brain-sim-alphas-in-batch-and-track            L3           216    210 True  True           False
+alpha-template-labs-data-analysis              L0           202     98 True  True           True
+brain-feature-implementation                   L2           169    119 True  True           False
+brain-datafield-exploration-general            L1           154     88 True  True           False
+brain-alpha-research-field-quality             L1           153     76 True  True           False
+brain-alpha-robustness                         L4           141    148 True  True           False
+brain-next-move-analysis                       L0           139     78 True  True           False
+brain-alpha-research-news-sentiment            L1           137     76 True  True           False
+brain-explain-alphas                           L4           136     65 True  True           False
+brain-dataset-exploration-general              L1           134     84 True  True           False
+brain-alpha-research-hypothesis-first          L1           126    105 True  True           False
+alpha-expression-verifier                      L2           122     75 True  True           False
+brain-alpha-research                           L1           119     63 True  True           False
+brain-calculate-alpha-selfcorr-quick           L4           117     69 True  True           False
+brain-dataset-mining-experience                L6           116     64 False False          False
+brain-data-feature-engineering                 L1           114    330 False True           False
+planning-with-files                            L7           103    221 True  True           True
+brain-alpha-repair                             L4           101     51 True  True           False
+pull-brain-skills                              L7            91     68 False True           False
+
+== B. markdown 链接（全部 md，含 references/）==
+  BROKEN  Claude/skills/brain-forum-browse/references/write-style-zh.md:38  → url
+  共 182 条相对链接，断 1
+
+== C. 反引号 / 正文里的路径（脚本、文档、模块）——解析不到的 ==
+  不存在（仓库里任何常见根下都解析不到）：91 处
+    MISSING  Claude/skills/INDEX.md:239  tools/backfill_backtest_dataset.py
+    MISSING  Claude/skills/INDEX.md:390  validate_skills.py
+    MISSING  Claude/skills/alpha-expression-verifier/SKILL.md:46  WQ_VALIDATOR_DIR/verify_expr.py
+    MISSING  Claude/skills/brain-alpha-research/SKILL.md:46  src/wqb/expression/paradigms.py
+    MISSING  Claude/skills/brain-alpha-research/references/alpha-inspiration-usa-d1-shortinterest-insiders.md:3  alpha_inspiration_analyst10.md
+    MISSING  Claude/skills/brain-alpha-research/references/jump-decay-methodology.md:34  paradigms.py
+    MISSING  Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md:30  osis_data.bin
+    MISSING  Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md:64  info_data.bin
+    MISSING  Claude/skills/brain-alpha-research/references/webdatascope-data-quality.md:69  dataSetList.json
+    MISSING  Claude/skills/brain-alpha-research-hypothesis-first/SKILL.md:68  references/concept-taxonomy-map.md
+    MISSING  Claude/skills/brain-calculate-alpha-selfcorr-quick/reference.md:26  .qoder/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py
+    MISSING  Claude/skills/brain-dataset-mining-experience/SKILL.md:4  eur_news18_campain.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:55  auto-send-e1.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:101  agent_profile.json
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:161  profile-bootstrap.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:192  personal-perspective.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:193  external-memory-sources.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:195  merge-with-alpha-judge.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:229  file-workspace.md
+    MISSING  Claude/skills/brain-forum-browse/SKILL.md:246  index-post-protocol.md
+    MISSING  Claude/skills/brain-forum-browse/references/contribution-and-diversity.md:3  personal-perspective.md
+    MISSING  Claude/skills/brain-forum-browse/references/evidence-and-review.md:5  auto-send-e1.md
+    MISSING  Claude/skills/brain-forum-browse/references/evidence-and-review.md:114  merge-with-alpha-judge.md
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:36  skip_registry.json
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:36  forum_memory.md
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:50  external_memory_snapshot.json
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:114  auto-send-e1.md
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:178  official-scan.md
+    MISSING  Claude/skills/brain-forum-browse/references/mcp-by-phase.md:202  forum-as-registry.md
+    MISSING  Claude/skills/brain-forum-browse/references/modes-and-contract.md:3  auto-send-e1.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  official-scan.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  forum-as-registry.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  gap-workflow.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  l2-search-tokens.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  l3-signal-patterns.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:3  index-post-protocol.md
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:11  skip_registry.json
+    MISSING  Claude/skills/brain-forum-browse/references/recon-and-gap.md:21  forum_manifest.json
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:3  file-workspace.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:3  external-memory-sources.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:3  profile-bootstrap.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:3  merge-with-alpha-judge.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:14  skip_registry.json
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:15  forum_memory.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:17  external_memory_snapshot.json
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:56  .github/copilot-instructions.md
+    MISSING  Claude/skills/brain-forum-browse/references/workspace-and-memory.md:72  agent_profile.json
+    MISSING  Claude/skills/brain-forum-browse/templates/forum_findings.md:21  personal-perspective.md
+    MISSING  Claude/skills/brain-forum-browse/templates/session_plan.md:17  auto-send-e1.md
+    MISSING  Claude/skills/brain-how-to-pass-alpha-test/reference.md:38  scripts/arxiv_api.py
+    MISSING  Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md:42  settings_candidates.json
+    MISSING  Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md:77  idea_context.json
+    MISSING  Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md:78  sim_options_snapshot.json
+    MISSING  Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md:87  fundamental28_GLB_1_idea_1769874845978315000.json
+    MISSING  Claude/skills/brain-next-move-analysis/reference.md:8  get_ny_time.py
+    MISSING  Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md:46  settings_candidates.json
+    MISSING  Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md:63  outputs/diversity_report.json
+    MISSING  Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md:154  diversity_report.json
+    MISSING  Claude/skills/planning-with-files/examples.md:45  morning_exercise_summary.md
+    MISSING  Claude/skills/planning-with-files/examples.md:144  dark_mode_implementation.md
+    MISSING  Claude/skills/wq-brain-alpha-optimization-v1/arXiv_API_Tool_Manual.md:76  pead.json
+    MISSING  Claude/skills/wq-brain-alpha-optimization-v1/examples.md:8  Skill-ImproveTheme-V1.md
+    MISSING  Claude/skills/wq-brain-campaign-matrix/SKILL.md:52  campaign_registry.json
+    MISSING  Claude/skills/wq-brain-campaign-matrix/SKILL.md:126  research-data/fresh_datasets_7region.json
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md:72  TK/test_diversity_extract.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md:19  scripts/test_diversity_extract.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md:124  TK/test_diversity_extract.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md:34  scripts/test_diversity_extract.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:15  proxy_prescreen.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:16  ortho_prescreen.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:17  migrate_templates.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:18  diversity_slots.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:26  param_opt.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:27  build_mix.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:27  fit_mix_weights.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:28  rescue_checklist.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:31  calibrate_probe.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:43  proxy_score_report.json
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:91  tests/test_enhance_v2.py
+    MISSING  Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md:41  diversity_slots.py
+    MISSING  Claude/skills/wq-brain-ppa-mining/SKILL.md:45  info_data.bin
+    MISSING  Claude/skills/wq-brain-ra-pipeline/SKILL.md:159  scripts/dataset_health_check.py
+    MISSING  Claude/skills/wq-brain-ra-pipeline/SKILL.md:205  tools/backfill_backtest_dataset.py
+    MISSING  Claude/skills/wq-brain-ra-pipeline/SKILL.md:324  headless_runner/run.py
+    MISSING  Claude/skills/wq-brain-ra-pipeline/SKILL.md:863  scripts/ralph_daily_loop.py
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/decision-table.md:24  mea_d1_campaign_state.json
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/decision-table.md:116  WAVE\_LEDGER.md
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/decision-table.md:188  docs/experience/prod_wall_breakthrough_sop.md
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md:21  info_data.bin
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md:31  wq-brain-ra-pipeline/scripts/dataset_health_check.py
+    MISSING  Claude/skills/wq-brain-ra-pipeline/references/ppa-mining-experience.md:31  tools/eur_field_coverage.py
+  只写了文件名、要靠仓库全局同名文件才能落地：94 处（歧义位置）
+    AMBIG    Claude/skills/INDEX.md:35  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/INDEX.md:35  platform_constraints.json  → ['Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json']
+    AMBIG    Claude/skills/INDEX.md:129  dataset_health_check.py  → ['Claude/skills/wq-brain-ppa-mining/scripts/dataset_health_check.py', 'attic/ra_pipeline_shell_20260928/dataset_health_check.py']
+    AMBIG    Claude/skills/INDEX.md:132  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/INDEX.md:196  test_docs_consistency.py  → ['tests/unit/test_docs_consistency.py']
+    AMBIG    Claude/skills/INDEX.md:244  pipeline_pregate.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py']
+    AMBIG    Claude/skills/INDEX.md:271  pipeline_paths.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_paths.py']
+    AMBIG    Claude/skills/INDEX.md:403  test_skill_boundaries.py  → ['tests/unit/test_skill_boundaries.py']
+    AMBIG    Claude/skills/brain-alpha-judge/SKILL.md:283  ace_client.py  → ['Claude/skills/brain-alpha-judge/scripts/vendor/ace_client.py']
+    AMBIG    Claude/skills/brain-alpha-judge/references/future-improvement-guide.md:96  index.json  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/index.json']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:33  post_25011325553943.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_25011325553943.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:34  post_28966942842263.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_28966942842263.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:35  post_29083873126551.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_29083873126551.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:36  post_29383292162199.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_29383292162199.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:37  post_30680128170647.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_30680128170647.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:38  post_30933525139863.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_30933525139863.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:39  post_31002256151831.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_31002256151831.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:40  post_31070381814295.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_31070381814295.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:41  post_31248622176791.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_31248622176791.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:42  post_31280678526615.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_31280678526615.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:43  post_32223192365207.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_32223192365207.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:44  post_33498292829591.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_33498292829591.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:45  post_33394390003095.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_33394390003095.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:46  post_33745762241175.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_33745762241175.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:47  post_33814296858519.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_33814296858519.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:48  post_35136119106839.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_35136119106839.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:49  post_35565000536087.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_35565000536087.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:50  post_38932709256727.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_38932709256727.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:51  post_38852178542743.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_38852178542743.md']
+    AMBIG    Claude/skills/brain-alpha-judge/references/source-selection.md:52  post_32196746752023.md  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/post_32196746752023.md']
+    AMBIG    Claude/skills/brain-alpha-research/SKILL.md:47  run.py  → ['Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py']
+    AMBIG    Claude/skills/brain-alpha-research/SKILL.md:48  operators_notes.md  → ['docs/reference/operators_notes.md']
+    AMBIG    Claude/skills/brain-alpha-research/references/asi-methodology.md:72  details_a16_m30.json  → ['tracking/mining/details_a16_m30.json']
+    AMBIG    Claude/skills/brain-alpha-research/references/jump-decay-methodology.md:34  grammar.py  → ['src/wqb/expression/grammar.py']
+    AMBIG    Claude/skills/brain-data-feature-engineering/SKILL.md:162  run.py  → ['Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py']
+    AMBIG    Claude/skills/brain-forum-browse/references/workspace-and-memory.md:97  index.json  → ['Claude/skills/brain-alpha-judge/data/forum_corpus/index.json']
+    AMBIG    Claude/skills/brain-how-to-pass-alpha-test/SKILL.md:123  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/brain-how-to-pass-alpha-test/reference.md:38  arxiv_api.py  → ['Claude/skills/brain-explain-alphas/scripts/arxiv_api.py', 'Claude/skills/wq-brain-alpha-optimization-v1/scripts/arxiv_api.py']
+    AMBIG    Claude/skills/brain-how-to-pass-alpha-test/reference.md:38  arXiv_API_Tool_Manual.md  → ['Claude/skills/wq-brain-alpha-optimization-v1/arXiv_API_Tool_Manual.md']
+    AMBIG    Claude/skills/brain-inspect-raw-template-create-setting/SKILL.md:14  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/brain-make-some-gem/SKILL.md:32  run.py  → ['Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py']
+    AMBIG    Claude/skills/brain-make-some-gem/SKILL.md:54  pipeline_pregate.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py']
+    AMBIG    Claude/skills/brain-make-some-gem/SKILL.md:55  platform_constraints.json  → ['Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json']
+    AMBIG    Claude/skills/brain-make-some-gem/SKILL.md:61  economic_priors.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/economic_priors.py']
+    AMBIG    Claude/skills/brain-make-some-gem/SKILL.md:137  pipeline_paths.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_paths.py']
+    AMBIG    Claude/skills/brain-make-some-gem/examples.md:21  run.py  → ['Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py']
+    AMBIG    Claude/skills/brain-make-some-gem/reference.md:11  run.py  → ['Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py']
+    AMBIG    Claude/skills/brain-make-some-gem/reference.md:15  run_pipeline.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py']
+    AMBIG    Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/README.md:5  implement_idea.py  → ['Claude/skills/brain-feature-implementation/scripts/implement_idea.py', 'Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/scripts/implement_idea.py']
+    AMBIG    Claude/skills/brain-sim-alphas-in-batch-and-track/README.md:10  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/brain-sim-alphas-in-batch-and-track/SKILL.md:16  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/brain-sim-alphas-in-batch-and-track/examples.md:4  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/brain-sim-alphas-in-batch-and-track/reference.md:14  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/wq-backtest-monitor/SKILL.md:17  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/wq-backtest-monitor/SKILL.md:126  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-alpha-optimization-v1/SKILL.md:131  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-alpha-optimization-v1/reference.md:30  operators.json  → ['tracking/mining/operators.json']
+    AMBIG    Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md:8  platform_constraints.json  → ['Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md:10  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md:47  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md:50  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:49  distill_experience.py  → ['attic/toolkit_zero_ref_20260928/distill_experience.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:49  os_feedback.py  → ['attic/toolkit_zero_ref_20260928/os_feedback.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:49  family_atlas.py  → ['attic/toolkit_zero_ref_20260928/family_atlas.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:49  budget_planner.py  → ['attic/toolkit_zero_ref_20260928/budget_planner.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:49  campaign_mutex.py  → ['attic/toolkit_zero_ref_20260928/campaign_mutex.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:71  signal_classifier.py  → ['attic/toolkit_zero_ref_20260928/signal_classifier.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:71  composition_validator.py  → ['attic/toolkit_zero_ref_20260928/composition_validator.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:80  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:80  platform_constraints.json  → ['Claude/skills/wq-brain-campaign-toolkit/config/platform_constraints.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:175  economic_priors.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/economic_priors.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:252  test_docs_consistency.py  → ['tests/unit/test_docs_consistency.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:284  WAVE_LEDGER.md  → ['tracking/EUR/WAVE_LEDGER.md', 'tracking/USA/WAVE_LEDGER.md']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/SKILL.md:342  pipeline_pregate.py  → ['Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_pregate.py']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_CHECKLIST.md:42  WAVE_LEDGER.md  → ['tracking/EUR/WAVE_LEDGER.md', 'tracking/USA/WAVE_LEDGER.md']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md:19  WAVE_LEDGER.md  → ['tracking/EUR/WAVE_LEDGER.md', 'tracking/USA/WAVE_LEDGER.md']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/campaign-dir-contract.md:11  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:72  thresholds.json  → ['tracking/AMR/config/thresholds.json', 'tracking/ASI/config/thresholds.json', 'tracking/CHN/config/thresholds.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md:78  alpha_list.json  → ['Claude/skills/brain-sim-alphas-in-batch-and-track/data/alpha_list.json', 'tracking/DEU/deepexplore/alpha_list.json']
+    AMBIG    Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md:29  validator.py  → ['Claude/skills/alpha-expression-verifier/scripts/validator.py', 'Claude/skills/brain-feature-implementation/scripts/validator.py', 'Claude/skills/brain-inspect-raw-template-create-setting/scripts/validator.py']
+
+== D. 命令行里的 --flag 在目标脚本（及同目录）里根本没出现 ==
+  NOFLAG  Claude/skills/brain-dataset-mining-experience/SKILL.md:46  tools/dataset_experience.py --waves   （tools/dataset_experience.py 及同目录都没有这个 flag）
+  NOFLAG  Claude/skills/wq-brain-campaign-toolkit/SKILL.md:28  campaign.py --delay   （Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py 及同目录都没有这个 flag）
+  NOFLAG  Claude/skills/wq-brain-ra-pipeline/SKILL.md:506  pipeline.py --concurrency   （Claude/skills/wq-brain-campaign-toolkit/scripts/pipeline.py 及同目录都没有这个 flag）
+  共核对 606 个 flag，缺失 3
+
+== E. MCP 工具引用：未注册的工具名 / 调用里不存在的参数名（含 references/）==
+  未注册（工具表里没有）：2 处
+    UNKNOWN-TOOL  Claude/skills/brain-alpha-judge/SKILL.md:111  mcp__wq-brain-http__submit_alpha
+    UNKNOWN-TOOL  Claude/skills/wq-brain-campaign-toolkit/references/poll-and-quota.md:25  mcp__wq-brain-http__get_submission_quota
+  调用里的参数名不在函数签名里：4 处
+    BAD-PARAM  Claude/skills/brain-explain-alphas/reference.md:21  get_datafields(instrument_type=…)   签名=['region', 'dataset_id', 'universe', 'delay', 'data_type', 'search', 'filter_sharpe']
+    BAD-PARAM  Claude/skills/worldquant-submit-alpha/SKILL.md:59  workflow_submit_alpha(dataset=…)   签名=['alpha_id', 'name', 'color', 'tags', 'descriptions', 'force', 'confirm_submit', 'verify_timeout', 'dry_run']
+    BAD-PARAM  Claude/skills/worldquant-submit-alpha/SKILL.md:59  workflow_submit_alpha(wave=…)   签名=['alpha_id', 'name', 'color', 'tags', 'descriptions', 'force', 'confirm_submit', 'verify_timeout', 'dry_run']
+    BAD-PARAM  Claude/skills/worldquant-submit-alpha/SKILL.md:59  workflow_submit_alpha(expr_family=…)   签名=['alpha_id', 'name', 'color', 'tags', 'descriptions', 'force', 'confirm_submit', 'verify_timeout', 'dry_run']
+
+== F. 字面阈值（对照 wqb.config：internal sharpe 1.58 / fitness 1.0 / self 0.50；platform self·prod 0.70；槽位 7）==
+  config：internal {'sharpe_min': 1.58, 'fitness_min': 1.0, 'turnover_range': (0.05, 0.2), 'margin_bp_min': 10.0, 'returns_min': 0.05, 'self_corr_max': 0.5} 
+          platform {'sharpe_min': 1.58, 'fitness_min': 1.0, 'turnover_range': (0.01, 0.7), 'self_corr_max': 0.7, 'prod_corr_max': 0.7} 
+          slots 7  STANDARD_WINDOWS [1, 5, 22, 66, 252, 504, 1008, 1260]
+  [Sharpe] 取值 → 出现次数（涉及文件数）；与 config 一致的只计数，不一致的逐条列出位置
+       1.58:  10 次 /  9 文件
+        1.1:   5 次 /  4 文件   ← 与 config 不同
+          brain-alpha-research/references/webdatascope-data-quality.md:22  | 100 – 3000 且 sharpe ≥ 1.1×区域均值 | **甜点区**：已验证可提交、未饱和 | 优先入围（ProdCorr 死区风险低） |
+          brain-alpha-research/references/webdatascope-data-quality.md:238  - sweet_bonus: 甜点区(100≤count≤3000 且 sharpe≥1.1×均值)=1.3; count>30000=0.5; 其他=1.0
+          brain-alpha-research-field-quality/SKILL.md:47  (a) 数据集甜点区 = 100≤count≤3000 且 sharpe≥1.1×区域均值；<50 不可信，>30K 饱和避开；
+          wq-brain-ppa-mining/SKILL.md:128  - 结合离线工具 `tools/webdata_quality.py --zip WebData_*.zip --region KOR --delay 1 --recommend` 可批量算出 sweet-spot 数据集（100 ≤ count ≤ 3000 且 sharpe ≥ 1.1×均值）。
+          wq-brain-ra-pipeline/references/ppa-mining-experience.md:71  - 结合离线工具 `tools/webdata_quality.py --zip WebData_*.zip --region KOR --delay 1 --recommend` 可批量算出 sweet-spot 数据集（100 ≤ count ≤ 3000 且 sharpe ≥ 1.1×均值）。
+        1.0:   4 次 /  4 文件   ← 与 config 不同
+          INDEX.md:426  - **IND robust 闸 = 流动性子集重跑 Sharpe ≥ 1.0**（官方 India Alphas 页）；日内反转族（尾盘一小时、价量相关）IS 4–6 但 prod 0.79–1.0 撞墙；破 robust 墙的配方是自归一化（ts_zscore / 相对 252 日均值偏离）+ 
+          brain-alpha-robustness/SKILL.md:127  1. **PPA 提交路径（2026-09-12 上移单源）**：MCP `submit_alpha` 非 PPA 感知（内置常规 RA 闸门照拦合法 PPA，打标签重试无效）→ 合法 PPA（Sharpe≥1.0/算子≤8/字段≤3/PC<0.5）**只能走平台 web UI**、且仅在当期活跃 
+          worldquant-submit-alpha/SKILL.md:274  2. **合法 PPA（Sharpe≥1.0 / 算子≤8 / 字段≤3 / PC<0.5）必须走平台 web UI 提交**，且仅在**当期活跃 Power Pool 主题窗口**内（主题轮动看平台右上角铃铛；`MATCHES_THEMES`=PASS 才受理）。非活跃区域提交报 "does no
+          wq-brain-ra-pipeline/references/regions/IND.md:84  平台定义（India Alphas 文档）：**IND 额外要求 robust universe Sharpe ≥ 1.0 = 在 BRAIN 选定的流动股子集上的 Sharpe**。
+       0.15:   3 次 /  1 文件   ← 与 config 不同
+          brain-alpha-research/references/webdatascope-data-quality.md:64  `osis_data.bin` 给出 OS-only 的 dataset/category 级 sharpe/fitness（窗口较短，仅含已积累样本外的 alpha）。对规则 1 的甜点区候选，**交叉对比 `osis_data.bin[<key>].dataset[<ds>].sharpe` 与
+          brain-alpha-research/references/webdatascope-data-quality.md:77  | IS+OS sharpe 高但 OS sharpe 明显低（差 >0.15） | 数据集在样本外退化 | 降低优先级；要求更强鲁棒性证据（yearly/子宇宙归因） |
+          brain-alpha-research/references/webdatascope-data-quality.md:239  - os_penalty: (IS+OS sharpe − OS sharpe) > 0.15 视为样本外退化 → 0.5
+       1.25:   3 次 /  3 文件   ← 与 config 不同
+          brain-how-to-pass-alpha-test/SKILL.md:123  1. 对照区域 `thresholds.json` 的 `mode_b_qualification`（缺省 sharpe≥1.25 且 fitness≥0.8）：**达标 → 强制进
+          brain-how-to-pass-alpha-test/reference.md:11  - **Fitness and Sharpe Ratio**: Measures risk-adjusted returns. Must be above cutoffs (e.g., IS Sharpe > 1.25 for some universes).
+          wq-brain-alpha-optimization-v1/SKILL.md:131  （sharpe≥1.25 且 fitness≥0.8，以区域 `thresholds.json` 为准，缺省 1.25/0.8），
+          1:   3 次 /  2 文件   ← 与 config 不同
+          brain-how-to-pass-alpha-test/references/two-year-sharpe-playbook.md:30  牺牲 margin 换稳定的净赚条件：Sharpe 保留率 > 1/√(margin 倍数)。
+          brain-how-to-pass-alpha-test/references/two-year-sharpe-playbook.md:55  - **Avramov-Chordia-Goyal (2006)**：反转集中在非流动股 → 与 IND robust 闸（流动子集 Sharpe ≥1）天然冲突。
+          wq-brain-alpha-optimization-v1/SKILL.md:171  2. **子宇宙一致性**：sub-universe Sharpe 与主宇宙同向且达内部线（sharpe>1, fitness>0.7, margin>5bp）。
+        1.5:   3 次 /  3 文件   ← 与 config 不同
+          wq-brain-ppa-mining/SKILL.md:297  b107–b128 战役：9+ 家族 15 批次，sharpe>1.5 者全部被 **prod_corr>0.7** 卡死（最佳 0.724，差 0.024），0 可提交 → 印证 §1.0 的 `alphaCount≤50` 门槛不是可选项。
+          wq-brain-ra-pipeline/references/ppa-mining-experience.md:283  b107–b128 战役：9+ 家族 15 批次，sharpe>1.5 者全部被 **prod_corr>0.7** 卡死（最佳 0.724，差 0.024），0 可提交 → 印证 §1.0 的 `alphaCount≤50` 门槛不是可选项。
+          wq-brain-ra-pipeline/references/regions/IND.md:52  - 步 7 诊断时拉 `get_alpha_yearly_stats`，`two_year_sharpe` 纳入判定：IS Sharpe 1.0–1.25 但 2Y Sharpe ≥1.5 的候选**不降格、不判死**，进 Mode A 微调（decay/窗口），不进 Mode B 换概念；
+        1.3:   2 次 /  2 文件   ← 与 config 不同
+          brain-alpha-research/references/backtest-experience-archive.md:52  对 288 个成功样本（sharpe≥1.3）vs 全量 1957 的算子使用率对比：
+          worldquant-submit-alpha/SKILL.md:273  1. **MCP `submit_alpha` 不是 PPA 感知的**：它内置常规 RA 闸（实测 Sharpe>1.3 / Fitness>0.75 / Margin>15bp），对合法 PPA 照拦（打 `PowerPoolSelected` 标签重试仍拦）。即**自动化通道无法放行 Shar
+       0.75:   2 次 /  2 文件   ← 与 config 不同
+          brain-how-to-pass-alpha-test/SKILL.md:95  - Sub-universe Sharpe >= 0.75 * sqrt(subuniverse_size / alpha_universe_size) * alpha_sharpe。
+          brain-how-to-pass-alpha-test/reference.md:159  - Sub-universe Sharpe >= 0.75 * sqrt(subuniverse_size / alpha_universe_size) * alpha_sharpe.
+       1.40:   1 次 /  1 文件   ← 与 config 不同
+          wq-brain-alpha-optimization-v1/reference.md:111  - Sharpe > 1.40
+  [Fitness] 取值 → 出现次数（涉及文件数）；与 config 一致的只计数，不一致的逐条列出位置
+        1.0:   6 次 /  5 文件
+        0.8:   2 次 /  2 文件   ← 与 config 不同
+          brain-how-to-pass-alpha-test/SKILL.md:123  1. 对照区域 `thresholds.json` 的 `mode_b_qualification`（缺省 sharpe≥1.25 且 fitness≥0.8）：**达标 → 强制进
+          wq-brain-alpha-optimization-v1/SKILL.md:131  （sharpe≥1.25 且 fitness≥0.8，以区域 `thresholds.json` 为准，缺省 1.25/0.8），
+       1.00:   2 次 /  2 文件
+          1:   1 次 /  1 文件
+       0.75:   1 次 /  1 文件   ← 与 config 不同
+          worldquant-submit-alpha/SKILL.md:273  1. **MCP `submit_alpha` 不是 PPA 感知的**：它内置常规 RA 闸（实测 Sharpe>1.3 / Fitness>0.75 / Margin>15bp），对合法 PPA 照拦（打 `PowerPoolSelected` 标签重试仍拦）。即**自动化通道无法放行 Shar
+        0.7:   1 次 /  1 文件   ← 与 config 不同
+          wq-brain-alpha-optimization-v1/SKILL.md:171  2. **子宇宙一致性**：sub-universe Sharpe 与主宇宙同向且达内部线（sharpe>1, fitness>0.7, margin>5bp）。
+       0.90:   1 次 /  1 文件   ← 与 config 不同
+          wq-brain-alpha-optimization-v1/reference.md:112  - Fitness > 0.90
+  [SELF相关] 取值 → 出现次数（涉及文件数）；与 config 一致的只计数，不一致的逐条列出位置
+        0.7:   4 次 /  1 文件
+       0.55:   3 次 /  1 文件   ← 与 config 不同
+          wq-brain-superalpha/SKILL.md:4  description: "通过 selection + combo 工作流（type=SUPER）构建并提交 WorldQuant BRAIN SuperAlpha。 触发词：组 SuperAlpha / 组 SA / 合成超级 alpha / 组合多个 alpha；或单区域需把 ≥10 个 RE
+          wq-brain-superalpha/SKILL.md:87  - 硬闸：`self_correlation < 0.55`（把自相关过高的成分剔除）。
+          wq-brain-superalpha/SKILL.md:97  (self_correlation < 0.55) *
+       0.50:   2 次 /  2 文件
+        0.5:   2 次 /  2 文件
+        0.4:   2 次 /  2 文件   ← 与 config 不同
+          brain-alpha-judge/references/extra-standard-rubric.md:24  - `XX42289` uses `self_correlation < 0.4` as a practical SuperAlpha selection discipline.
+          brain-forum-browse/references/contribution-and-diversity.md:62  **Personal Uniqueness Check：** self_overlap < 0.4 AND ≥1 self_claim 不在 community_claims AND ≥1 self_claim 不在 past_claims。失败：换 angle_slug、挑未用踩坑、换目标帖。
+  [PROD相关] 取值 → 出现次数（涉及文件数）；与 config 一致的只计数，不一致的逐条列出位置
+        0.7:  22 次 / 11 文件
+       0.55:   3 次 /  1 文件   ← 与 config 不同
+          wq-brain-superalpha/SKILL.md:136  - **统一出路：注入低 prod 新血 REGULAR**（prod<0.55 级别），把成分池的 prod 分布整体左移。
+          wq-brain-superalpha/SKILL.md:200  `((neutralization == "COUNTRY") || (prod_correlation < 0.55)) * (turnover > 0.01) * (turnover < 0.6)`
+          wq-brain-superalpha/SKILL.md:201  —— 自由池 6 颗全 COUNTRY 中性（SA 内部成分多为 SECTOR），`prod_correlation<0.55` 精准借入 4 颗最低 pCorr 的 SECTOR 成分 → 恰好 10 颗。
+        0.5:   2 次 /  2 文件   ← 与 config 不同
+          brain-how-to-pass-alpha-test/SKILL.md:126  2. 快达标因子（S≥1.0 且 prod corr<0.5）已由 S4 `review_wave.py --write-ledger` 自动幂等写入台账
+          wq-brain-alpha-optimization-v1/SKILL.md:165  （快达标因子：S≥1.0 且 prod corr<0.5 的 combo 候选 + near 补充），无需人工手写入池。
+        0.6:   1 次 /  1 文件   ← 与 config 不同
+          wq-brain-superalpha/SKILL.md:155  快速探测成分池 prod 分布：selection 加硬门 `(prod_correlation < 0.6)`，若报
+  [槽位数] 取值 → 出现次数（涉及文件数）；与 config 一致的只计数，不一致的逐条列出位置
+          7:   5 次 /  4 文件
+
+== G. 跨文件重复的段落（≥100 字符；按文件对汇总）；近似重复的文件对 ==
+  共 15 个文件对有重复段落；按重复段数排序（前 30）：
+     57 段  brain-data-feature-engineering/reference.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md
+     30 段  brain-data-feature-engineering/OUTPUT_TEMPLATE.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/OUTPUT_TEMPLATE.md
+     29 段  brain-data-feature-engineering/examples.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/examples.md
+     24 段  wq-brain-ppa-mining/SKILL.md  ↔  wq-brain-ra-pipeline/references/ppa-mining-experience.md
+     11 段  brain-feature-implementation/SKILL.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/SKILL.md
+      9 段  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md  ↔  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md
+      1 段  brain-forum-browse/references/evidence-and-review.md  ↔  brain-forum-browse/references/mcp-by-phase.md
+      1 段  brain-forum-browse/references/evidence-and-review.md  ↔  brain-forum-browse/references/quotas-and-cooldown.md
+      1 段  brain-forum-browse/references/evidence-and-review.md  ↔  brain-forum-browse/references/write-style-zh.md
+      1 段  brain-forum-browse/references/mcp-by-phase.md  ↔  brain-forum-browse/references/quotas-and-cooldown.md
+      1 段  brain-forum-browse/references/mcp-by-phase.md  ↔  brain-forum-browse/references/write-style-zh.md
+      1 段  brain-forum-browse/references/quotas-and-cooldown.md  ↔  brain-forum-browse/references/write-style-zh.md
+      1 段  brain-inspect-raw-template-create-setting/SKILL.md  ↔  wq-backtest-monitor/SKILL.md
+      1 段  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md  ↔  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md
+      1 段  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md  ↔  wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md
+  --- 非「嵌套副本」的重复段落样例（每对最多 2 段）
+    wq-brain-ppa-mining/SKILL.md ↔ wq-brain-ra-pipeline/references/ppa-mining-experience.md  (24 段)
+        · 'WebDataScope 是 Chrome 扩展，对 WQ 平台数据做 **字段级 + 数据集级 meta-analysis**： - 数据来源：IndexedDB 中的 `.bin` 文件（msgp'
+        · 'WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统计；而某数据集在**你的目标 region/universe/delay 下当前是否值得打**，必须以平台实时数据为准。二者'
+    wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md ↔ wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md  (9 段)
+        · '**注意**：脚本会自动创建不完整的战役目录结构，包括： - 创建必要的目录（config/reference/candidates/reviews/cache） - 创建默认的 settings.j'
+        · '``` S2: brain-make-some-gem ──→ *_idea_*.json + final_expressions.json ↓ S2-D: diversity_extract.py '
+    brain-forum-browse/references/evidence-and-review.md ↔ brain-forum-browse/references/mcp-by-phase.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-forum-browse/references/evidence-and-review.md ↔ brain-forum-browse/references/quotas-and-cooldown.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-forum-browse/references/evidence-and-review.md ↔ brain-forum-browse/references/write-style-zh.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-forum-browse/references/mcp-by-phase.md ↔ brain-forum-browse/references/quotas-and-cooldown.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-forum-browse/references/mcp-by-phase.md ↔ brain-forum-browse/references/write-style-zh.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-forum-browse/references/quotas-and-cooldown.md ↔ brain-forum-browse/references/write-style-zh.md  (1 段)
+        · '> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录'
+    brain-inspect-raw-template-create-setting/SKILL.md ↔ wq-backtest-monitor/SKILL.md  (1 段)
+        · '战役产物只写入 `data/wqb.db`（经 `wqb.store` / `mcp__wqb-db__*`）。**禁止**把 `final_expressions.json` / `alpha_li'
+    wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md ↔ wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md  (1 段)
+        · '**注意**：脚本会自动创建不完整的战役目录结构，包括： - 创建必要的目录（config/reference/candidates/reviews/cache） - 创建默认的 settings.j'
+    wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md ↔ wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md  (1 段)
+        · '**注意**：脚本会自动创建不完整的战役目录结构，包括： - 创建必要的目录（config/reference/candidates/reviews/cache） - 创建默认的 settings.j'
+  --- 近似重复文件对（3 行滑窗 Jaccard ≥ 0.45）
+    1.00  brain-data-feature-engineering/OUTPUT_TEMPLATE.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/OUTPUT_TEMPLATE.md
+    1.00  brain-data-feature-engineering/examples.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/examples.md
+    0.82  brain-data-feature-engineering/reference.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/reference.md
+    1.00  brain-feature-implementation/SKILL.md  ↔  brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/SKILL.md
+    0.50  wq-brain-ppa-mining/SKILL.md  ↔  wq-brain-ra-pipeline/references/ppa-mining-experience.md
+
+== H. SKILL.md 结构信号（每 100 行的历史叙述 / 日期括号；有无显式 边界·失败·示例·验收 节）==
+skill                                          lines heads hist/100 date/100 imper maxline >220  when nogo fail ex chk out
+wq-brain-ra-pipeline                             950    69      6.7      7.7    81    1069   26   . Y Y Y . Y
+wq-brain-campaign-toolkit                        354    36      4.8      4.0    29     717   20   . . Y Y Y Y
+brain-make-some-gem                              165    12      4.2      4.2    16     302    2   . Y Y . . Y
+brain-alpha-robustness                           148    12      4.1      4.7    11     574    4   Y . . Y Y .
+brain-dataset-mining-experience                   64     5      3.1      0.0     1     158    0   . . . . . .
+wq-backtest-monitor                              162    16      3.1      0.6    17     274    1   . . . . Y .
+brain-next-move-analysis                          78    10      2.6      2.6     0     221    1   . . . . . .
+worldquant-submit-alpha                          292    33      2.4      3.1    19     393    2   Y Y Y Y Y .
+brain-sim-alphas-in-batch-and-track              210    24      2.4      1.0    14     314    3   Y Y . . . Y
+brain-alpha-judge                                300    20      1.7      3.0     9     425    4   Y . . . Y .
+brain-alpha-research                              63     6      1.6     15.9     9     477    9   Y . . Y Y .
+brain-how-to-pass-alpha-test                     132    25      1.5      1.5     6     236    1   . . . . Y .
+wq-brain-campaign-matrix                         143    23      1.4      0.7    17     645   12   . . . . Y .
+brain-alpha-research-field-quality                76     8      1.3      6.6     2     302    1   Y . . Y Y .
+wq-brain-ppa-mining                              321    32      1.2      2.8    15     745    7   . Y . Y Y .
+brain-data-feature-engineering                   330    22      1.2      0.3     4     418    1   . . . Y . Y
+wq-brain-superalpha                              250    21      1.2      5.2    14     465    2   Y . . Y Y .
+brain-inspect-raw-template-create-setting         99     9      1.0      2.0     6     457    2   . . . . . .
+brain-alpha-research-hypothesis-first            105    13      1.0      1.0     1     264    1   Y Y . Y Y .
+wqb-concurrency                                  119    11      0.8      0.8    11     514    4   . . . Y . .
+wq-brain-alpha-optimization-v1                   197    21      0.5      0.5    15     463    3   . . Y . Y .
+brain-forum-browse                               258    17      0.4      1.2    25     323    4   Y . . . . .
+alpha-expression-verifier                         75     9      0.0      0.0     2     273    1   . . . Y . .
+alpha-template-labs-data-analysis                 98     8      0.0      1.0     6     339    1   . . . Y . .
+brain-alpha-repair                                51     5      0.0      3.9     6     628    5   Y . . Y Y .
+brain-alpha-research-news-sentiment               76     8      0.0      3.9     3     195    0   Y . . Y Y .
+brain-calculate-alpha-selfcorr-quick              69     6      0.0      2.9     2     132    0   . . . Y . .
+brain-datafield-exploration-general               88    11      0.0      0.0     3     254    1   . . . . . .
+brain-dataset-exploration-general                 84     9      0.0      0.0     3     182    0   . . . . . .
+brain-explain-alphas                              65    10      0.0      1.5     0     151    0   . . . . . .
+brain-feature-implementation                     119     7      0.0      0.0    10     184    0   . . . . . .
+planning-with-files                              221    22      0.0      0.0     2     135    0   Y Y Y . . .
+pull-brain-skills                                 68     8      0.0      0.0     1     236    1   . . . Y . .
+
+== I. description 里的触发词在多个 skill 间重叠（会让路由靠运气）==
+    'alpha': ['alpha-expression-verifier', 'alpha-template-labs-data-analysis', 'brain-alpha-judge', 'brain-alpha-repair', 'brain-alpha-research', 'brain-alpha-research-hypothesis-first', 'brain-calculate-alpha-selfcorr-quick', 'brain-data-feature-engineering', 'brain-explain-alphas', 'brain-feature-implementation', 'brain-how-to-pass-alpha-test', 'brain-inspect-raw-template-create-setting', 'brain-make-some-gem', 'brain-next-move-analysis', 'brain-sim-alphas-in-batch-and-track', 'worldquant-submit-alpha', 'wq-backtest-monitor', 'wq-brain-alpha-optimization-v1', 'wq-brain-campaign-matrix', 'wq-brain-campaign-toolkit', 'wq-brain-ppa-mining', 'wq-brain-ra-pipeline', 'wq-brain-superalpha']
+    'WorldQuant': ['brain-alpha-judge', 'brain-calculate-alpha-selfcorr-quick', 'brain-datafield-exploration-general', 'brain-dataset-exploration-general', 'brain-explain-alphas', 'brain-feature-implementation', 'brain-forum-browse', 'brain-how-to-pass-alpha-test', 'brain-next-move-analysis', 'brain-sim-alphas-in-batch-and-track', 'worldquant-submit-alpha', 'wq-backtest-monitor', 'wq-brain-alpha-optimization-v1', 'wq-brain-campaign-matrix', 'wq-brain-campaign-toolkit', 'wq-brain-ppa-mining', 'wq-brain-superalpha', 'wqb-concurrency']
+    'BRAIN': ['brain-alpha-judge', 'brain-calculate-alpha-selfcorr-quick', 'brain-data-feature-engineering', 'brain-datafield-exploration-general', 'brain-dataset-exploration-general', 'brain-explain-alphas', 'brain-forum-browse', 'brain-how-to-pass-alpha-test', 'brain-inspect-raw-template-create-setting', 'brain-next-move-analysis', 'brain-sim-alphas-in-batch-and-track', 'wq-backtest-monitor', 'wq-brain-alpha-optimization-v1', 'wq-brain-campaign-matrix', 'wq-brain-campaign-toolkit', 'wq-brain-superalpha']
+    '触发词': ['alpha-template-labs-data-analysis', 'brain-alpha-repair', 'brain-alpha-research-field-quality', 'brain-alpha-research-hypothesis-first', 'brain-alpha-research-news-sentiment', 'brain-forum-browse', 'brain-make-some-gem', 'wq-brain-campaign-toolkit', 'wq-brain-superalpha', 'wqb-concurrency']
+    'skill': ['brain-data-feature-engineering', 'brain-inspect-raw-template-create-setting', 'brain-make-some-gem', 'pull-brain-skills', 'wq-brain-campaign-matrix', 'wq-brain-ra-pipeline']
+    'Brain': ['alpha-template-labs-data-analysis', 'brain-feature-implementation', 'worldquant-submit-alpha', 'wq-brain-ppa-mining', 'wqb-concurrency']
+    'universe': ['brain-alpha-research', 'brain-inspect-raw-template-create-setting', 'brain-make-some-gem', 'wq-brain-campaign-matrix', 'wq-brain-ra-pipeline']
+    '时使用': ['brain-calculate-alpha-selfcorr-quick', 'brain-datafield-exploration-general', 'brain-dataset-exploration-general', 'brain-next-move-analysis', 'worldquant-submit-alpha']
+    'Alpha': ['brain-calculate-alpha-selfcorr-quick', 'brain-inspect-raw-template-create-setting', 'wq-brain-ppa-mining', 'wq-brain-ra-pipeline']
+    'Power': ['brain-alpha-judge', 'brain-calculate-alpha-selfcorr-quick', 'wq-brain-ppa-mining', 'wq-brain-ra-pipeline']
+    'REGULAR': ['wq-brain-campaign-toolkit', 'wq-brain-ra-pipeline', 'wq-brain-superalpha']
+    'campaign': ['wq-brain-campaign-matrix', 'wq-brain-campaign-toolkit', 'wq-brain-ra-pipeline']
+    'catalog': ['brain-alpha-judge', 'worldquant-submit-alpha', 'wq-brain-campaign-toolkit']
+    'delay': ['brain-inspect-raw-template-create-setting', 'brain-make-some-gem', 'wq-brain-ra-pipeline']
+    'pipeline': ['brain-sim-alphas-in-batch-and-track', 'wq-brain-campaign-toolkit', 'wqb-concurrency']
+    'region': ['brain-inspect-raw-template-create-setting', 'brain-make-some-gem', 'wq-brain-ra-pipeline']
+    '中性化': ['wq-brain-alpha-optimization-v1', 'wq-brain-ppa-mining', 'wq-brain-ra-pipeline']
+    '表达式': ['brain-explain-alphas', 'brain-feature-implementation', 'brain-make-some-gem']
+    '0.7': ['wq-brain-alpha-optimization-v1', 'wq-brain-superalpha']
+    '429': ['wq-brain-campaign-toolkit', 'wqb-concurrency']
+    'EVENT': ['wq-brain-campaign-matrix', 'wq-brain-campaign-toolkit']
+    'Markdown': ['brain-alpha-judge', 'brain-feature-implementation']
+    'Python': ['alpha-template-labs-data-analysis', 'wq-backtest-monitor']
+    'SUPER': ['wq-brain-campaign-toolkit', 'wq-brain-superalpha']
+    'Sharpe': ['brain-alpha-robustness', 'brain-how-to-pass-alpha-test']
+    'WebDataScope': ['brain-alpha-research-field-quality', 'wq-brain-ppa-mining']
+    'datafield': ['brain-datafield-exploration-general', 'brain-explain-alphas']
+    'dataset': ['brain-feature-implementation', 'brain-make-some-gem']
+    'field': ['brain-dataset-exploration-general', 'brain-explain-alphas']
+    'neutralization': ['brain-inspect-raw-template-create-setting', 'wq-brain-campaign-matrix']
+    'review': ['brain-alpha-judge', 'wq-brain-campaign-toolkit']
+    'wq-brain-campaign-toolkit': ['alpha-expression-verifier', 'brain-sim-alphas-in-batch-and-track']
+    '★2026-09-01': ['brain-alpha-judge', 'worldquant-submit-alpha']
+    '天提交': ['brain-alpha-judge', 'worldquant-submit-alpha']
+    '字段分类': ['brain-alpha-research-news-sentiment', 'brain-dataset-exploration-general']
+    '开战役': ['wq-brain-campaign-matrix', 'wq-brain-ra-pipeline']
+    '当用户要求': ['brain-sim-alphas-in-batch-and-track', 'wq-backtest-monitor']
+    '批量回测': ['brain-sim-alphas-in-batch-and-track', 'wq-brain-ra-pipeline']
+    '点亮=该': ['brain-alpha-judge', 'worldquant-submit-alpha']
+    '相关性': ['alpha-template-labs-data-analysis', 'brain-calculate-alpha-selfcorr-quick']
+    '调并发': ['brain-sim-alphas-in-batch-and-track', 'wqb-concurrency']
+
+== J. 孤儿文档：没有任何其他文件提到它的 md（skill 目录内）==
+    ORPHAN  Claude/skills/brain-alpha-research/references/alpha-inspiration-usa-d1-shortinterest-insiders.md
+    ORPHAN  Claude/skills/brain-alpha-research/references/asi-methodology.md
+    ORPHAN  Claude/skills/brain-alpha-research/references/backtest-experience-archive.md
+    ORPHAN  Claude/skills/brain-alpha-research/references/forum-template-library.md
+    ORPHAN  Claude/skills/brain-alpha-research/references/jump-decay-methodology.md
+    ORPHAN  Claude/skills/brain-data-feature-engineering/OUTPUT_TEMPLATE.md
+    ORPHAN  Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/OUTPUT_TEMPLATE.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_QUICKSTART.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_README.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/DIVERSITY_EXTRACT_SUMMARY.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/references/S2_COMPLIANCE_GUIDE.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/references/enhancement-v2.md
+    ORPHAN  Claude/skills/wq-brain-campaign-toolkit/references/gate-rules.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/ASI.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/CHN.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/EUR.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/GBR.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/GLB.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/HKG.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/IND.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/JPN.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/KOR.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/MEA.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/TWN.md
+    ORPHAN  Claude/skills/wq-brain-ra-pipeline/references/regions/USA.md
+
+== K. 互引对称性：A 的 SKILL.md 提到 B，B 的 SKILL.md（含其 references）一次都没提到 A ==
+    alpha-template-labs-data-analysis  →  wq-brain-ra-pipeline   （wq-brain-ra-pipeline 里没有任何回指）
+    brain-alpha-judge  →  brain-alpha-repair   （brain-alpha-repair 里没有任何回指）
+    brain-alpha-judge  →  wq-backtest-monitor   （wq-backtest-monitor 里没有任何回指）
+    brain-alpha-judge  →  wq-brain-ra-pipeline   （wq-brain-ra-pipeline 里没有任何回指）
+    brain-alpha-repair  →  wq-brain-alpha-optimization-v1   （wq-brain-alpha-optimization-v1 里没有任何回指）
+    brain-alpha-research  →  brain-alpha-research-hypothesis-first   （brain-alpha-research-hypothesis-first 里没有任何回指）
+    brain-alpha-research  →  brain-alpha-research-news-sentiment   （brain-alpha-research-news-sentiment 里没有任何回指）
+    brain-alpha-research  →  wq-brain-campaign-toolkit   （wq-brain-campaign-toolkit 里没有任何回指）
+    brain-alpha-research-hypothesis-first  →  brain-alpha-repair   （brain-alpha-repair 里没有任何回指）
+    brain-alpha-research-hypothesis-first  →  brain-alpha-robustness   （brain-alpha-robustness 里没有任何回指）
+    brain-alpha-robustness  →  brain-alpha-repair   （brain-alpha-repair 里没有任何回指）
+    brain-calculate-alpha-selfcorr-quick  →  brain-alpha-judge   （brain-alpha-judge 里没有任何回指）
+    brain-datafield-exploration-general  →  wq-brain-campaign-toolkit   （wq-brain-campaign-toolkit 里没有任何回指）
+    brain-dataset-exploration-general  →  brain-datafield-exploration-general   （brain-datafield-exploration-general 里没有任何回指）
+    brain-dataset-exploration-general  →  brain-forum-browse   （brain-forum-browse 里没有任何回指）
+    brain-dataset-exploration-general  →  wq-brain-campaign-toolkit   （wq-brain-campaign-toolkit 里没有任何回指）
+    brain-dataset-exploration-general  →  wq-brain-ppa-mining   （wq-brain-ppa-mining 里没有任何回指）
+    brain-forum-browse  →  brain-alpha-judge   （brain-alpha-judge 里没有任何回指）
+    brain-how-to-pass-alpha-test  →  brain-calculate-alpha-selfcorr-quick   （brain-calculate-alpha-selfcorr-quick 里没有任何回指）
+    brain-how-to-pass-alpha-test  →  brain-explain-alphas   （brain-explain-alphas 里没有任何回指）
+    brain-inspect-raw-template-create-setting  →  brain-make-some-gem   （brain-make-some-gem 里没有任何回指）
+    brain-inspect-raw-template-create-setting  →  wq-brain-campaign-toolkit   （wq-brain-campaign-toolkit 里没有任何回指）
+    brain-next-move-analysis  →  wq-brain-campaign-matrix   （wq-brain-campaign-matrix 里没有任何回指）
+    brain-next-move-analysis  →  wq-brain-ppa-mining   （wq-brain-ppa-mining 里没有任何回指）
+    brain-sim-alphas-in-batch-and-track  →  brain-make-some-gem   （brain-make-some-gem 里没有任何回指）
+    worldquant-submit-alpha  →  brain-calculate-alpha-selfcorr-quick   （brain-calculate-alpha-selfcorr-quick 里没有任何回指）
+    worldquant-submit-alpha  →  brain-how-to-pass-alpha-test   （brain-how-to-pass-alpha-test 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  alpha-expression-verifier   （alpha-expression-verifier 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  brain-alpha-robustness   （brain-alpha-robustness 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  brain-datafield-exploration-general   （brain-datafield-exploration-general 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  brain-dataset-exploration-general   （brain-dataset-exploration-general 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  brain-explain-alphas   （brain-explain-alphas 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  brain-sim-alphas-in-batch-and-track   （brain-sim-alphas-in-batch-and-track 里没有任何回指）
+    wq-brain-alpha-optimization-v1  →  wq-brain-superalpha   （wq-brain-superalpha 里没有任何回指）
+    wq-brain-campaign-toolkit  →  brain-alpha-robustness   （brain-alpha-robustness 里没有任何回指）
+    wq-brain-campaign-toolkit  →  brain-dataset-mining-experience   （brain-dataset-mining-experience 里没有任何回指）
+    wq-brain-campaign-toolkit  →  brain-how-to-pass-alpha-test   （brain-how-to-pass-alpha-test 里没有任何回指）
+    wq-brain-ppa-mining  →  brain-alpha-repair   （brain-alpha-repair 里没有任何回指）
+    wq-brain-ppa-mining  →  brain-calculate-alpha-selfcorr-quick   （brain-calculate-alpha-selfcorr-quick 里没有任何回指）
+    wq-brain-ppa-mining  →  brain-data-feature-engineering   （brain-data-feature-engineering 里没有任何回指）
+    wq-brain-ppa-mining  →  worldquant-submit-alpha   （worldquant-submit-alpha 里没有任何回指）
+    wq-brain-ppa-mining  →  wq-brain-campaign-toolkit   （wq-brain-campaign-toolkit 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-alpha-research-hypothesis-first   （brain-alpha-research-hypothesis-first 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-calculate-alpha-selfcorr-quick   （brain-calculate-alpha-selfcorr-quick 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-datafield-exploration-general   （brain-datafield-exploration-general 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-dataset-exploration-general   （brain-dataset-exploration-general 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-dataset-mining-experience   （brain-dataset-mining-experience 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-explain-alphas   （brain-explain-alphas 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-feature-implementation   （brain-feature-implementation 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-how-to-pass-alpha-test   （brain-how-to-pass-alpha-test 里没有任何回指）
+    wq-brain-ra-pipeline  →  brain-inspect-raw-template-create-setting   （brain-inspect-raw-template-create-setting 里没有任何回指）
+    wq-brain-ra-pipeline  →  worldquant-submit-alpha   （worldquant-submit-alpha 里没有任何回指）
+    wq-brain-ra-pipeline  →  wq-backtest-monitor   （wq-backtest-monitor 里没有任何回指）
+    wq-brain-ra-pipeline  →  wq-brain-alpha-optimization-v1   （wq-brain-alpha-optimization-v1 里没有任何回指）
+    wq-brain-ra-pipeline  →  wqb-concurrency   （wqb-concurrency 里没有任何回指）
+    wq-brain-superalpha  →  alpha-expression-verifier   （alpha-expression-verifier 里没有任何回指）
+    wq-brain-superalpha  →  brain-how-to-pass-alpha-test   （brain-how-to-pass-alpha-test 里没有任何回指）
+    wqb-concurrency  →  wq-backtest-monitor   （wq-backtest-monitor 里没有任何回指）
+
