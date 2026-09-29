@@ -1,0 +1,184 @@
+{
+ "_doc": "skill frontmatter allowed-tools 能力基线（棘轮）：任何 skill 新增工具必须先改本文件并写明理由（供人审查）。hooks 白名单见测试 ALLOWED_HOOK_SKILLS。2026-09-29 建立。",
+ "allowed_tools": {
+  "alpha-expression-verifier": [
+   "Bash"
+  ],
+  "alpha-template-labs-data-analysis": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-judge": [
+   "Bash",
+   "Edit",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-repair": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-research-field-quality": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-research-hypothesis-first": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-research-news-sentiment": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-research": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-alpha-robustness": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-calculate-alpha-selfcorr-quick": [
+   "Bash",
+   "Read"
+  ],
+  "brain-data-feature-engineering": [
+   "Glob",
+   "Grep",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__get_datafields",
+   "mcp__wq-brain-http__get_datasets",
+   "mcp__wqb-db__get_ledger_key",
+   "mcp__wqb-db__upsert_ledger_key"
+  ],
+  "brain-datafield-exploration-general": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-dataset-exploration-general": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-dataset-mining-experience": [],
+  "brain-explain-alphas": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-feature-implementation": [
+   "Bash",
+   "Read",
+   "TaskCreate"
+  ],
+  "brain-forum-browse": [
+   "Bash",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-how-to-pass-alpha-test": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "brain-inspect-raw-template-create-setting": [
+   "Bash",
+   "Read"
+  ],
+  "brain-make-some-gem": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*",
+   "mcp__wqb-db__*"
+  ],
+  "brain-next-move-analysis": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*",
+   "mcp__wqb-db__*"
+  ],
+  "brain-sim-alphas-in-batch-and-track": [
+   "Bash",
+   "Glob",
+   "Grep",
+   "Read",
+   "TaskCreate"
+  ],
+  "planning-with-files": [
+   "Bash",
+   "Edit",
+   "Glob",
+   "Grep",
+   "Read",
+   "WebFetch",
+   "WebSearch",
+   "Write"
+  ],
+  "pull-brain-skills": [
+   "Bash"
+  ],
+  "worldquant-submit-alpha": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "wq-backtest-monitor": [
+   "Bash",
+   "Glob",
+   "Grep",
+   "Read"
+  ],
+  "wq-brain-alpha-optimization-v1": [
+   "Bash",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__*",
+   "mcp__wqb-db__get_salvage_pool"
+  ],
+  "wq-brain-campaign-matrix": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "wq-brain-campaign-toolkit": [
+   "Bash",
+   "Glob",
+   "Grep",
+   "Read"
+  ],
+  "wq-brain-ppa-mining": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ],
+  "wq-brain-ra-pipeline": [
+   "Bash",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__*",
+   "mcp__wqb-db__*"
+  ],
+  "wq-brain-superalpha": [
+   "Bash",
+   "Read",
+   "Write",
+   "mcp__wq-brain-http__*"
+  ],
+  "wqb-concurrency": [
+   "Bash",
+   "Read",
+   "mcp__wq-brain-http__*"
+  ]
+ }
+}

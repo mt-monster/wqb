@@ -32,7 +32,10 @@ hooks:
   Stop:
     - hooks:
         - type: command
-          command: "<SKILL_ROOT>/planning-with-files/scripts/check-complete.sh"
+          # 2026-09-29：原命令 `<SKILL_ROOT>/planning-with-files/scripts/check-complete.sh` 的占位符没有任何
+          # 工具替换（sync_skills 不替换），Stop 钩子每次都会执行失败；且脚本在没有 task_plan.md 时报 ERROR，
+          # 会在无关会话里每次 Stop 都噪声。改为**内联、无占位符、无 plan 时静默**的提醒（永远 exit 0，不阻断停止）。
+          command: "bash -c 'f=task_plan.md; [ -f \"$f\" ] || exit 0; t=$(grep -c \"### Phase\" \"$f\"); c=$(grep -cF \"**Status:** complete\" \"$f\"); if [ \"$t\" -gt 0 ] && [ \"$c\" -ne \"$t\" ]; then echo \"[planning-with-files] task_plan.md: $c/$t phases complete - finish or update the plan before stopping\" >&2; fi; exit 0'"
 ---
 
 # 文件化规划（Planning with Files）
