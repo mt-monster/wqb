@@ -121,6 +121,12 @@ def _find_workspace_root():
     env = os.environ.get("WQB_ROOT") or os.environ.get("WQ_PROJECT_ROOT")
     if env and os.path.isdir(os.path.join(env, "src", "wqb")):
         return env
+    # 从本文件向上找含 src/wqb 的仓库根（从仓库内运行时无需环境变量；跨平台）
+    here = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(6):
+        if os.path.isdir(os.path.join(here, "src", "wqb")):
+            return here
+        here = os.path.dirname(here)
     for cand in (r"D:\coding\traeCN_project\wqb",):
         if os.path.isdir(os.path.join(cand, "src", "wqb")):
             return cand
@@ -168,49 +174,34 @@ def _wave_aliases(ctx, a, st):
     return [w for w in out if w != target]
 
 
-# ---------------- quota：ET 日历日提交配额（REGULAR 4/日 + SUPER 1/日，00:00 ET 重置） ----------------
+# ---------------- quota：ET 日历日提交配额（REGULAR 4/日 + SUPER 1/日 + PPA 1/日，00:00 ET 重置） ----------------
 
-# 2026-09-01 定案：提交配额从"48h 滚动窗口"改为"ET 日历日"模型。
-#   - REGULAR 4 颗/ET 日历日，SUPER 1 颗/ET 日历日；00:00 ET（= 12:00 GMT+8）重置。
-#   - 旧"48h 滚动"已证伪（08-12 一次 48h 内提交 6 颗全成功）。
-#   - `get_submission_quota` MCP 工具已于 2026-08-25 移除；其旧 `hours_until_release` 语义有 bug，勿再依赖。
+# 2026-09-01 定案：提交配额从"48h 滚动窗口"改为"ET 日历日"模型（旧"48h 滚动"已证伪：08-12 一次 48h 内提交 6 颗全成功）。
 #   - 剩余额度从 submit 响应 `REGULAR_SUBMISSION`/`SUPER_SUBMISSION` check 的 value/limit 读（value 从 0 起计数）。
 #   - 硬闸 FAIL 的提交不消耗配额（status 保持 UNSUBMITTED）。
-# 本函数按 ET 日历日聚合 `/users/self/activities/submissions`（比 OS alphas 更贴近"已提交"语义），
-# 无法取到 activities 时回退按 `dateSubmitted` 的 ET 日聚合 OS alphas。
+# 2026-09-29 整改（skills 审查 T0-14）：
+#   1) 只按 OS 池 `dateSubmitted` 的 ET 日聚合——与 tools/quota_status.py 同口径。此前优先读
+#      `/users/self/activities/submissions`：该端点只有 {yesterday,current,previous,ytd} 快照、没有 today、
+#      也没有 `results` 列表，解析出空列表 → 被当成"今日 0 提交"，配额永远显示满额（2026-09-21 事故同源）。
+#   2) ET 日界用 wqb.timeutil（America/New_York，含夏令时）；此前写死 UTC-4，2026-11-01 起日界漂移 1 小时。
 
-def _et_day_bounds(now_utc):
-    """返回当前 ET 日历日的 [start_utc, next_start_utc]。ET = UTC-5（EST）/ UTC-4（EDT）。
-    简化口径：全年用 UTC-4（EDT）——与 `alphas.date_submitted` 落库时区（-04:00）一致，
-    避免夏令时切换导致日界漂移。"""
-    et_offset = datetime.timedelta(hours=4)
-    et_now = now_utc - et_offset
-    et_day_start = et_now.replace(hour=0, minute=0, second=0, microsecond=0)
-    day_start_utc = et_day_start + et_offset
-    return day_start_utc, day_start_utc + datetime.timedelta(days=1)
-
-
-def _count_submissions_by_et_day(submitted_ts_list):
-    """按 ET 日历日（UTC-4 简化口径）统计当日已提交数。入参为 tz-aware datetime 列表。"""
-    from collections import defaultdict
-    et_offset = datetime.timedelta(hours=4)
-    day_count = defaultdict(int)
-    for t in submitted_ts_list:
-        et = t - et_offset
-        key = et.strftime("%Y-%m-%d")
-        day_count[key] += 1
-    return day_count
-
-
-def _submitted_ts_from_activities(api):
-    """从 /users/self/activities/submissions 取当日（及最近）提交时间戳；失败返回 None。"""
+def _timeutil():
+    """wqb.timeutil（ET 日界唯一实现）。toolkit 可能从安装位运行：先把工作区 src 放进 sys.path。"""
     try:
-        j = json.load(api.get("/users/self/activities/submissions"))
-    except Exception:
-        return None
+        import wqb.timeutil as T
+        return T
+    except ImportError:
+        root = _find_workspace_root()
+        if root:
+            sys.path.insert(0, os.path.join(root, "src"))
+        import wqb.timeutil as T
+        return T
+
+
+def _parse_submitted_ts(results):
     out = []
-    for item in j.get("results", j if isinstance(j, list) else []):
-        ds = item.get("dateSubmitted") or item.get("createdAt") or item.get("date")
+    for a in results or []:
+        ds = a.get("dateSubmitted")
         if not ds:
             continue
         try:
@@ -220,35 +211,23 @@ def _submitted_ts_from_activities(api):
     return out
 
 
-def submission_quota(api, limit, window_h=None):
-    """ET 日历日提交配额视图。limit=REGULAR 日上限（默认 4）；window_h 保留仅向后兼容，不再参与计算。"""
-    now = datetime.datetime.now(datetime.timezone.utc)
-    day_start, day_end = _et_day_bounds(now)
-
-    submitted_ts = _submitted_ts_from_activities(api)
-    fallback = submitted_ts is None
-    if fallback:
-        # 回退：按 OS alphas 的 dateSubmitted 聚合（可能高估，因含 SUPER/被拒但以提交记录为准）
-        j = json.load(api.get("/users/self/alphas?stage=OS&limit=100&order=-dateSubmitted"))
-        submitted_ts = []
-        for a in j.get("results", []):
-            ds = a.get("dateSubmitted")
-            if not ds:
-                continue
-            try:
-                submitted_ts.append(datetime.datetime.fromisoformat(ds.replace("Z", "+00:00")))
-            except Exception:
-                continue
-
-    day_count = _count_submissions_by_et_day(submitted_ts)
-    today_key = (now - datetime.timedelta(hours=4)).strftime("%Y-%m-%d")
-    used = day_count.get(today_key, 0)
+def submission_quota(api, limit, window_h=None, now=None):
+    """ET 日历日提交配额视图。limit=REGULAR 日上限（默认 4）；window_h 保留仅向后兼容，不再参与计算；
+    now 仅供测试注入（tz-aware UTC）。"""
+    T = _timeutil()
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    _, day_end = T.et_day_bounds_utc(now)
+    j = json.load(api.get("/users/self/alphas?stage=OS&limit=100&order=-dateSubmitted"))
+    submitted_ts = _parse_submitted_ts(j.get("results", []))
+    et_day = T.et_today(now)
+    used = sum(1 for t in submitted_ts if T.et_date(t) == et_day)
     remaining = max(0, limit - used)
-    release = day_end.isoformat()
-    return {"used": used, "remaining": remaining, "next_reset_utc": release,
-            "limit": limit, "et_day": today_key, "source": "activities" if not fallback else "os_alphas_fallback",
-            "_note": "ET 日历日配额（REGULAR 4/日 + SUPER 1/日，00:00 ET=12:00 GMT+8 重置）；"
-                     "旧 48h 滚动口径已废止。硬闸 FAIL 提交不消耗配额。"}
+    return {"used": used, "remaining": remaining, "next_reset_utc": day_end.isoformat(),
+            "limit": limit, "et_day": et_day, "source": "os_alphas",
+            "_note": "ET 日历日配额（REGULAR 4/日 + SUPER 1/日 + PPA 1/日；00:00 ET 重置，"
+                     f"现为 {T.et_reset_hour_gmt8(now)}:00 GMT+8，夏/冬令时不同）；"
+                     "数 OS 池今日提交总数，不区分类型；旧 48h 滚动与 activities 口径已废止。"
+                     "硬闸 FAIL 提交不消耗配额。"}
 
 
 def quota_cfg(ctx):

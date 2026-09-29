@@ -34,6 +34,8 @@ import asyncio
 import json
 import os
 import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py；2026-09-29 替换各脚本抄写的 Windows 盘符兜底）
 
 REGION_HINT = {"USA": "the US equity market", "KOR": "the Korean equity market",
                "MEA": "the Middle East and Africa equity markets",
@@ -122,20 +124,13 @@ def _prod_gate_verdict(prod_max, threshold=0.7):
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp\.venv\Scripts\python.exe"]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    return _pyenv.venv_python()
 
 
 def _bootstrap():
-    py = _mcp_venv_python()
-    if py and os.path.abspath(py) != os.path.abspath(sys.executable):
-        os.execv(py, [py] + sys.argv)
-    mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-    sys.path.insert(0, mcp)
+    """路径引导：非 MCP venv 解释器时 re-exec 到 venv；把 MCP 目录与 src 加入 sys.path（跨平台）。"""
+    _pyenv.reexec_under_venv()
+    _pyenv.bootstrap_paths()
 
 
 def build_selection_description(region, limit, gate, neutralization):
@@ -331,11 +326,10 @@ async def cmd_submit(a):
         if v.get("success"):
             print("\nVERDICT: 提交已受理，等多线程 2-3 分钟翻转为 ACTIVE（用 status 子命令确认）")
             return 0
-        if i == 1 and v.get("status_code") in (201, 202):
-            # 异步受理但未出 verdict：等平台计算后再试一次
-            print("  (异步受理，等 30s 后重试取 verdict)")
-            await asyncio.sleep(30)
-            continue
+        # 2026-09-29：删除「201/202 → sleep(30) 再 POST 一次」分支——submit_alpha 对 201/202 返回
+        # success=True，上面的 `if v.get("success")` 已先返回，该分支不可达；且第二次 POST 本身就是
+        # 真实提交动作，不该靠一个死分支“取 verdict”。异步受理后用 `status` 子命令查是否翻 ACTIVE
+        # （窗口见 wqb.config.WAIT_THRESHOLDS["submit_flip_wait_s"]，未翻则补发一次再等，仍未翻记 ASYNC_STUCK）。
         break
     print("\nVERDICT: BLOCKED（见上检查列表，用 probe 子命令看 PROD/SELF 具体值）")
     return 1

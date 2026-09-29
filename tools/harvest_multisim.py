@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py；2026-09-29 替换各脚本抄写的 Windows 盘符兜底）
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 """harvest_multisim.py — multisim 批次完成后收批工具（系统性通用工具）。
 
@@ -42,23 +45,15 @@ from typing import Any, Dict, List, Optional
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp\.venv\Scripts\python.exe"]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    return _pyenv.venv_python()
 
 
 def _bootstrap():
-    """路径引导：优先 MCP venv 解释器重启，否则把工作区 MCP 包加入 sys.path。"""
-    py = _mcp_venv_python()
-    if py and os.path.normcase(os.path.abspath(py)) != os.path.normcase(os.path.abspath(sys.executable)):
-        os.execv(py, [py] + sys.argv)
-    mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-    sys.path.insert(0, mcp)
+    """路径引导：非 MCP venv 解释器时 re-exec 到 venv；把 MCP 目录与 src 加入 sys.path（跨平台）。"""
+    _pyenv.reexec_under_venv()
+    _pyenv.bootstrap_paths()
     from brain_api import BrainApiClient  # noqa: F401
-    return mcp
+    return str(_pyenv.mcp_dir())
 
 
 TERMINAL = {"DONE", "COMPLETE", "ERROR", "CANCELLED", "FAILED"}

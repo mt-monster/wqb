@@ -130,6 +130,33 @@ git config core.hooksPath tools/git-hooks
 
 > 修改 `world-quant-brain-mcp/` 后**需重启 MCP 服务**才生效。
 
+**跨平台写法（2026-09-29）**：`.mcp.json` 用 Claude Code 支持的 `${VAR:-default}`（command / args / env 均可展开）。
+**没设任何环境变量时，展开结果与旧版逐字相同**（作者 Windows 本机行为不变）；其他环境覆盖下面三个变量即可：
+
+| 变量 | 含义 | Windows 缺省 | Linux / 云端示例 |
+|---|---|---|---|
+| `WQB_HOME` | 仓库根 | `D:/coding/traeCN_project/wqb` | `/home/user/wqb` |
+| `WQB_MCP_PY` | `wq-brain-http` 用的解释器 | `<根>/world-quant-brain-mcp/.venv/Scripts/python.exe` | `/home/user/wqb/world-quant-brain-mcp/.venv/bin/python` |
+| `WQB_DB_MCP_PY` | `wqb-db` 用的解释器 | `<根>/.venv/Scripts/python.exe` | 同上（云端一个 venv 即可） |
+
+`mcp_config.json`（供 Claude Desktop，不展开变量）保持字面路径，与 `.mcp.json` 缺省展开值的一致性由
+`tests/unit/test_mcp_config_portable.py` 守护。体检：`python tools/mcp_ping.py`（同样按上表展开）。
+
+#### 云端会话（Claude Code on the web）连接 MCP
+
+云端容器里 `.mcp.json` 的 Windows 缺省值不存在（ENOENT，两个服务都起不来）。在**环境设置**
+（会话标题栏的云环境菜单 → Edit）里：
+
+1. **环境变量**：`WQB_HOME` / `WQB_MCP_PY` / `WQB_DB_MCP_PY`（值见上表 Linux 列）。
+2. **安装脚本**（setup script）：`python3 -m venv /home/user/wqb/world-quant-brain-mcp/.venv && /home/user/wqb/world-quant-brain-mcp/.venv/bin/pip install -r /home/user/wqb/world-quant-brain-mcp/requirements.txt`。
+3. 只想用**离线工具**（`operator_audit`、本地闸门、`wqb-db` 全部工具）时，到这里就够了。
+4. 要调用**平台**（`authenticate` / `get_operators` / 提交判定等），还需：**Network access** 放开
+   `api.worldquantbrain.com`、`platform.worldquantbrain.com`、`support.worldquantbrain.com`
+   （默认策略会让 CONNECT 返回 403），并把凭据以环境变量 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`
+   配进环境——**不要**把口令贴进对话，也不要写进仓库（AGENTS.md：凭据只在 `world-quant-brain-mcp/.env`，
+   禁止读取、打印或提交）。新会话生效。
+5. 验证：`python tools/mcp_ping.py`，应显示两个服务 `OK`（69 / 44 个工具）。
+
 ---
 
 ## 4. 目录结构

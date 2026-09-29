@@ -33,6 +33,8 @@ import asyncio
 import json
 import os
 import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py；2026-09-29 替换各脚本抄写的 Windows 盘符兜底）
 import datetime
 import time
 
@@ -47,28 +49,14 @@ if os.path.isdir(_SRC_DIR) and _SRC_DIR not in sys.path:
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp\.venv\Scripts\python.exe"]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    return _pyenv.venv_python()
 
 
 def _bootstrap():
-    py = _mcp_venv_python()
-    if py and os.path.abspath(py) != os.path.abspath(sys.executable):
-        os.execv(py, [py] + sys.argv)
-    mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-    if mcp not in sys.path:
-        sys.path.insert(0, mcp)
-    # wqb 规范核心包在 src/wqb（ghost-audit 依赖 wqb.expression）
-    repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    src = os.path.join(repo, "src")
-    for p in (repo, src):
-        if p not in sys.path:
-            sys.path.insert(0, p)
-
+    """路径引导：非 MCP venv 解释器时 re-exec 到 venv；把 MCP 目录与 src 加入 sys.path（跨平台）。"""
+    _pyenv.reexec_under_venv()
+    _pyenv.bootstrap_paths()
+    # wqb 规范核心包在 src/wqb（ghost-audit 依赖 wqb.expression）——bootstrap_paths 已注入
 
 
 # ---------------------------------------------------------------------------

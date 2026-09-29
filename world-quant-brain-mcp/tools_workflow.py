@@ -150,7 +150,7 @@ def workflow_submit_alpha(
     descriptions: Optional[str] = None,
     force: bool = False,
     confirm_submit: bool = False,
-    verify_timeout: int = 180,
+    verify_timeout: int = 240,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """提交 Alpha 到平台（submit_alpha 节点快捷方式）.

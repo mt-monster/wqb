@@ -226,6 +226,7 @@ def test_tool_documents_the_no_wiring_verdict():
         assert need in src, f"缺少评估依据：{need}"
 
 
+@pytest.mark.needs_attic_step_metrics
 def test_subsystem_is_archived_not_live():
     """子系统必须处于'已归档'状态：决策留痕 README 存在，且原位源码已清空。
 
@@ -248,6 +249,7 @@ def test_subsystem_is_archived_not_live():
         assert not os.path.exists(os.path.join(REPO, gone)), f"原位仍有残留：{gone}"
 
 
+@pytest.mark.needs_attic_step_metrics
 def test_archived_readme_records_the_revival_precondition():
     """README 必须写明复活前提（若 collect_from_checkpoint 仍是空壳，重接线只会再造空表）。"""
     txt = open(os.path.join(REPO, "attic", "step_metrics_20260917", "README.md"),

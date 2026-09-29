@@ -27,6 +27,9 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _pyenv  # noqa: E402  ${VAR:-default} 展开（tools/_pyenv.py）
+
 MCP_CONFIG = REPO_ROOT / ".mcp.json"
 
 # 只读探针（无副作用）：service -> [(tool, args)]
@@ -165,7 +168,8 @@ def load_services():
         print(f"[error] 未找到 {MCP_CONFIG}")
         sys.exit(2)
     cfg = json.loads(MCP_CONFIG.read_text(encoding="utf-8"))
-    return cfg.get("mcpServers", {})
+    # .mcp.json 用 ${VAR:-default} 做跨平台（2026-09-29）：与 Claude Code 同语法展开
+    return _pyenv.expand_env(cfg.get("mcpServers", {}))
 
 
 def run_calls(spec, calls, timeout=30):

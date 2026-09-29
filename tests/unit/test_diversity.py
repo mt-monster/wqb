@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """diversity_enhancer 指标重构与信号证据闸测试（2026-08-18 GBR 复盘）。"""
+import pytest
 import sys
 from pathlib import Path
 
@@ -93,6 +94,7 @@ def test_enhance_ineffective_returns_original_and_marks_effective_false():
         assert enhanced == exprs
 
 
+@pytest.mark.needs_operators_verified
 def test_enhance_with_field_pool_uses_campaign_fields():
     """字段池注入：增强生成器使用战役数据集字段而非通用字段。"""
     import random

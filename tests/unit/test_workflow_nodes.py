@@ -231,6 +231,9 @@ def test_campaign_stage_route_matrix(monkeypatch, fake_toolkit):
     ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
     ex._store = _CaptureStore()
     calls, _ = _capture(monkeypatch, cp, "run")
+    # S4 会从 backtest_results 解析本波 alpha_id（读的是本机真实库）；本测试只验路由，不验库内容——打桩隔离
+    monkeypatch.setattr(cp, "_resolve_wave_alpha_ids",
+                        lambda region, wave, dataset: (["A1", "A2"], str(wave), [str(wave)]))
 
     expect = {"S0": "score_datasets.py", "S1": "scan_fields.py", "S2": "build_wave.py",
               "S3": "pipeline.py", "S4": "review_wave.py", "S5": "pipeline.py",
@@ -677,6 +680,13 @@ def test_gem_dry_run_short_circuits(monkeypatch):
                         lambda *a, **k: (calls.append(a), None)[1])
     monkeypatch.setattr(subprocess, "run",
                         lambda *a, **k: (calls.append(a), None)[1])
+
+    # 干跑的 check_config 步要求 GEM headless_runner 的 config.json（含凭据）在场——这是本机产物，
+    # 与「干跑不 subprocess、不写库」的契约无关：只对该路径打桩，其余 exists 行为不变
+    real_exists = os.path.exists
+    monkeypatch.setattr(os.path, "exists",
+                        lambda p: True if str(p).replace("\\", "/").endswith("headless_runner/config.json")
+                        else real_exists(p))
 
     out = gm.run(region="IND", dataset_id="analyst45", delay=1,
                  universe="TOP3000", data_category="analyst",

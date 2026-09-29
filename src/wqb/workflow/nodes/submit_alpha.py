@@ -17,6 +17,7 @@ import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from ...config import WAIT_THRESHOLDS
 from .._common import (
     get_brain_client as _get_brain_client,
     persist_workflow_record,
@@ -25,7 +26,10 @@ from .._common import (
 
 logger = logging.getLogger(__name__)
 
-_POLL_INTERVAL_SEC = 5
+#: 异步受理后等状态翻转的窗口（秒）——唯一来源 wqb.config.WAIT_THRESHOLDS（2026-09-29：180 → 240）
+_FLIP_WAIT_S = int(WAIT_THRESHOLDS["submit_flip_wait_s"])
+
+_POLL_INTERVAL_SEC = int(WAIT_THRESHOLDS["submit_flip_poll_s"])
 
 
 def _derive_tags(alpha_id: str, dataset: Optional[str], wave: Optional[str],
@@ -92,7 +96,7 @@ def run(
     descriptions: Optional[str] = None,
     force: bool = False,
     confirm_submit: bool = False,
-    verify_timeout: int = 180,
+    verify_timeout: int = _FLIP_WAIT_S,
     dataset: Optional[str] = None,
     wave: Optional[str] = None,
     expr_family: Optional[str] = None,

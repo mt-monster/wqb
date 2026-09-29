@@ -70,9 +70,16 @@ def _pid_alive(pid: int) -> bool:
         return str(pid).encode() in out
     try:
         os.kill(pid, 0)
-        return True
     except OSError:
         return False
+    # 僵尸进程（已被杀、等父进程 wait）也能通过 kill(pid, 0)：容器里 PID 1 常不回收孤儿，会被误判为「仍存活」。
+    # 读 /proc/<pid>/stat 的状态位：Z = 已死。（2026-09-29，容器环境耦合）
+    try:
+        with open(f"/proc/{pid}/stat", "rb") as f:
+            state = f.read().rsplit(b")", 1)[1].split()[0]
+        return state != b"Z"
+    except (OSError, IndexError):
+        return True
 
 
 def test_wave_gate_node_timeout_surfaces_log(monkeypatch, tmp_path):

@@ -847,11 +847,18 @@ class SimulationMixin:
             raise
 
     def pre_submit_check(self, alpha_details: Dict[str, Any]) -> Dict[str, Any]:
-        """Check IS metrics against submission thresholds before submitting.
+        """Check IS metrics against a **relaxed local** pre-submission screen (NOT the platform lines).
+
+        2026-09-29 (skills review X-11): these numbers are a deliberately loose *local* screen whose only
+        job is to avoid POSTing an obviously failing alpha; they are neither the platform's official lines
+        (Sharpe 1.25 D1 / Fitness 1.0 D1 / Turnover 1%-70%, see wqb.config.PLATFORM_CHECK_LINES) nor the
+        project's internal lines (1.58 / 1.0 / 5%-20%, wqb.config.GATES_INTERNAL). The platform re-evaluates
+        everything at submit time; passing this screen never means submittable. Relations are pinned by
+        tests/unit/test_threshold_relations.py.
 
         Criteria:
         - Sharpe > 1.3 and Fitness > 0.75 (relaxed thresholds for pre-submission check)
-        - Margin > 0.05% for USA, otherwise > 0.15% (hard floor 0.08%)
+        - Margin > 0.05% for USA, otherwise > 0.15% (hard floor 0.08%) -- warnings only
         - Turnover between 4% and 40%
         - Returns > 4%
         - All other IS checks must PASS (no FAIL)
@@ -969,12 +976,14 @@ class SimulationMixin:
 
             self.log(f"Alpha submit, alpha_id={alpha_id}, status_code={response.status_code}", "INFO")
 
-            # 201/202 = accepted asynchronously -> brief poll, then return accepted.
+            # 201/202 = accepted asynchronously -> return immediately.
+            # 2026-09-29：不再对 GET /alphas/{id}/submit 做「简短轮询」——该端点对未提交候选恒返 404
+            # （2026-09-26 实测，ACTIVE 者也 404），轮询 60s 必无结果、每次 POST 白白多等一分钟。
+            # 确认落地的正确信号是 alpha 状态离开 UNSUBMITTED（get_alpha_details），由调用方按
+            # wqb.config.WAIT_THRESHOLDS["submit_flip_wait_s"] 窗口轮询（submit_alpha 节点已实现，
+            # 含 re-POST 补发一次与 ASYNC_STUCK）。
             if response.status_code in (201, 202):
-                self.log(f"Submission accepted async (HTTP {response.status_code}); brief poll", "INFO")
-                final = await self._poll_submit_until_resolved(submit_url)
-                if final is not None and final.status_code == 200:
-                    return self._interpret_submit_response(final, alpha_id)
+                self.log(f"Submission accepted async (HTTP {response.status_code}); caller polls alpha status", "INFO")
                 return {"success": True,
                         "reason": "Accepted (async); IS checks still computing - poll get_alpha_details",
                         "status_code": response.status_code, "checks": []}
@@ -1048,24 +1057,6 @@ class SimulationMixin:
             else:
                 self.log(f"Submit failed status={response.status_code} for {alpha_id}, waiting 2 minutes before retry...", "WARNING")
                 await asyncio.sleep(120)
-
-    async def _poll_submit_until_resolved(self, submit_url: str, max_polls: int = 6, sleep_s: int = 10) -> Any:
-        """Briefly GET-poll the submit endpoint; returns the latest response or None."""
-        last = None
-        for _ in range(max_polls):
-            await asyncio.sleep(sleep_s)
-            try:
-                resp = await self._request('GET', submit_url)
-            except Exception as e:
-                self.log(f"Submit poll GET failed: {e}", "ERROR")
-                return last
-            last = resp
-            if 'retry-after' in {k.lower() for k in resp.headers}:
-                continue
-            if resp.status_code == 200:
-                return resp
-        self.log("Submit poll reached max_polls; returning last response", "WARNING")
-        return last
 
     def _interpret_submit_response(self, response, alpha_id: str) -> Dict[str, Any]:
         """Parse a submit GET/POST response into a verdict dict."""

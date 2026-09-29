@@ -55,6 +55,8 @@ R = "KOR"
 DS = "ml_factor_proj"            # KOR 唯一产生过 ACTIVE 的数据集（wave91c 2 RA）；有字段目录与多波真实回测
 DS2 = "multi_source_model"       # wave91c 跨数据集 mix 的另一腿（short_horizon_hedge3_* 等字段所在）
 WIN_PREFIX = "D:/coding/traeCN_project/wqb"
+# 2026-09-29：.mcp.json 改为 ${VAR:-default} 写法；本脚本不设这些变量，取「缺省值」（已翻译成本机路径）
+_EXP_DEFAULT = re.compile(r"\$\{[A-Za-z_][A-Za-z0-9_]*:-([^}]*)\}")
 SCRATCH.mkdir(parents=True, exist_ok=True)
 
 
@@ -182,7 +184,7 @@ class Srv:
 def server_params(root, which, extra_env=None):
     """把 .mcp.json 里的 Windows 路径翻译成本机路径（command 换成本机 venv 解释器）。"""
     cfg = json.load(open(ROOT / ".mcp.json", encoding="utf-8"))["mcpServers"][which]
-    tr = lambda s: s.replace(WIN_PREFIX, str(root))  # noqa: E731
+    tr = lambda s: _EXP_DEFAULT.sub(r"\1", s.replace(WIN_PREFIX, str(root)))  # noqa: E731
     env = {k: tr(v) for k, v in (cfg.get("env") or {}).items()}
     env.update(extra_env or {})
     args = [tr(a) for a in cfg.get("args", [])]
@@ -221,7 +223,7 @@ _ROOT_VARS = ("WQB_ROOT", "WQ_PROJECT_ROOT", "WQB_WORKSPACE", "WQB_DB_PATH")
 def mcp_env(which):
     """.mcp.json 里该 server 的 env 原样（Windows 路径翻译成本机）。"""
     cfg = json.load(open(ROOT / ".mcp.json", encoding="utf-8"))["mcpServers"][which]
-    return {k: v.replace(WIN_PREFIX, str(ROOT)) for k, v in (cfg.get("env") or {}).items()}
+    return {k: _EXP_DEFAULT.sub(r"\1", v.replace(WIN_PREFIX, str(ROOT))) for k, v in (cfg.get("env") or {}).items()}
 
 
 def sh(argv, env_extra=None, cwd=None, tail=30, root=ROOT, db=None, env_drop=_ROOT_VARS):

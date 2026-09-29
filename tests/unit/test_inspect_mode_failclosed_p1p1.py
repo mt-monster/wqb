@@ -93,6 +93,9 @@ def _run_wave_gate(mode, dataset="model109", region="KOR", campaign="tracking/KO
         "--expr", "rank(close)",
         "--skip-diversity-gate",
         "--skip-quality",
+        # 与本测试无关的正交闸：闸 SEM 要求库里有 s1_semantic_<dataset> 台账，干净环境没有 → 先于体检硬门阻断，
+        # 输出里就看不到本测试要断言的 fail-closed / 体检硬门未生效（2026-09-29 隔离，不再依赖本机 DB 状态）
+        "--skip-semantic-gate",
         "--inspect-mode", mode,
     ]
     return subprocess.run(

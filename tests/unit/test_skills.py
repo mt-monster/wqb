@@ -38,6 +38,7 @@ from wqb.expression.validator import (
 # operator_audit
 # ===========================================================================
 
+@pytest.mark.needs_operators_verified
 def test_operator_audit_basic_classification(tmp_path):
     output_path = str(tmp_path / "audit.json")
     live_ops = ["rank", "close", "ts_delay", "ts_rank"]

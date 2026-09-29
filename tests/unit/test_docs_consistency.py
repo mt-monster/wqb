@@ -632,6 +632,7 @@ def _load_json(path: Path):
     return json.loads(_read(path))
 
 
+@pytest.mark.needs_operators_verified
 def test_operator_configs_consistent():
     """known_ops 唯一真值 = operators_verified.verified；semantics 未验证项必须显式标注。"""
     ov = _load_json(REPO_ROOT / "data" / "operators_verified.json")
@@ -676,6 +677,7 @@ def test_feature_impl_vendored_matches_canonical():
 _OP_CALL = re.compile(r"([a-z_][a-z_0-9]*)\s*\(")
 
 
+@pytest.mark.needs_operators_verified
 def test_template_families_only_use_verified_operators():
     """每个族的 skeleton / skeleton_variants 只能用 verified 算子。
 

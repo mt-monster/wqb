@@ -459,7 +459,20 @@ GATES_INTERNAL: Dict[str, object] = {
     "self_corr_max": 0.50,
 }
 
-#: 平台硬线——提交阶段平台实际判定口径，比内部线宽。
+#: 平台各检查的**官方线**（how-to-pass 参考文档；Delay-1 / Delay-0），按检查名分开登记
+#: （skills 审查 X-11，2026-09-29）。此前把它们揉成一个 ``sharpe_min=1.58``，导致 IS Sharpe（1.25）与
+#: 2Y Sharpe（1.58）两条不同检查在文档里互相顶替。``low_2y_sharpe_min`` 取自仓库对
+#: LOW_2Y_SHARPE / IS_LADDER_SHARPE 的实测 limit。
+PLATFORM_CHECK_LINES: Dict[str, object] = {
+    "low_sharpe_min": {"delay1": 1.25, "delay0": 2.0},      # LOW_SHARPE
+    "low_fitness_min": {"delay1": 1.0, "delay0": 1.3},      # LOW_FITNESS
+    "turnover_range": (0.01, 0.70),                          # LOW_TURNOVER / HIGH_TURNOVER
+    "low_2y_sharpe_min": 1.58,                               # LOW_2Y_SHARPE / IS_LADDER_SHARPE
+}
+
+#: 提交准入线（库存 / submit_queue / region_rotation / judge 共用）。命名沿用「平台硬线」，但注意语义：
+#: ``sharpe_min`` = 平台 2Y 线（1.58），**不是**平台 LOW_SHARPE 线（Delay-1 为 1.25，见 PLATFORM_CHECK_LINES）；
+#: 实际约束的是 2Y 线，IS Sharpe 1.25–1.58 之间的候选多半死在 LOW_2Y_SHARPE。
 GATES_PLATFORM: Dict[str, object] = {
     "sharpe_min": 1.58,
     "fitness_min": 1.0,
@@ -471,6 +484,23 @@ GATES_PLATFORM: Dict[str, object] = {
 GATES: Dict[str, Dict[str, object]] = {
     "internal": GATES_INTERNAL,
     "platform": GATES_PLATFORM,
+}
+
+#: 等待 / 退避 / 卡住阈值（**唯一来源**，skills 审查 X-15，2026-09-29）。
+#: 文档（poll-and-quota.md 的阈值表、submit-alpha、super-alpha、monitor）只按键名引用，不再抄数字；
+#: 与代码常量的一致性由 tests/unit/test_wait_thresholds.py 守护。
+WAIT_THRESHOLDS: Dict[str, object] = {
+    # POST /submit 返回 201/202（异步受理）后，等 alpha 状态离开 UNSUBMITTED 的窗口。平台翻转实测 2–3 min；
+    # 窗口内未翻 → re-POST 补发一次（幂等）→ 再等一个窗口 → 仍未翻记 ASYNC_STUCK 并知会用户。
+    "submit_flip_wait_s": 240,
+    "submit_flip_poll_s": 5,           # 状态轮询间隔（get_alpha_details）
+    "submit_repost_max": 1,            # 窗口内未翻转时 re-POST 的最大次数
+    # check_correlation（prod/self 相关性）阻塞轮询：账号级单并发，忙时立即返回 correlation_busy
+    "prod_corr_poll_s": 30,
+    "prod_corr_timeout_s": 3600,
+    # 在飞回测的卡住判定（toolkit poller）：progress 连续 stall_min 无变化判 STALLED；总时长超 timeout_min 判超时
+    "sim_stall_min": 60,
+    "sim_timeout_min": 360,
 }
 
 #: 七槽填槽并发模式（2026-08-25 更新：5→7，基于 Token-Bucket 模型 C≈7 实测）。旧「单批在飞串行」与固定槽位模型已废弃。

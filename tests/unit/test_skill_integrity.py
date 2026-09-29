@@ -68,7 +68,16 @@ def _skill_dirs():
     """
     if not SKILLS_DIR.is_dir():
         return []
-    return sorted(d for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
+    dirs = sorted(d for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
+    # 2026-09-29（skills 审查 IX-21，环境耦合）：安装位（~/.claude/skills）里常有宿主/工具自带的目录
+    # （云端容器里的 `synced`、`session-start-hook`），它们不是本仓库的 skill，缺 SKILL.md /
+    # frontmatter 名不符不是本仓库的缺陷。安装位与仓库的**漂移**由 tools/sync_skills.py --check 负责；
+    # 这里只校验「仓库拥有的 skill」（名字出现在 Claude/skills/ 里的）。
+    repo_src = REPO_ROOT / "Claude" / "skills"
+    if repo_src.is_dir() and SKILLS_DIR.resolve() != repo_src.resolve():
+        owned = {d.name for d in repo_src.iterdir() if d.is_dir()}
+        dirs = [d for d in dirs if d.name in owned]
+    return dirs
 
 
 def test_skills_dir_is_discoverable():

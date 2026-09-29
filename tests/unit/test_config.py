@@ -148,11 +148,13 @@ def test_ghost_operators_contains_group_normalize():
 # VERIFIED_SAFE_OPERATORS
 # ---------------------------------------------------------------------------
 
+@pytest.mark.needs_operators_verified
 def test_verified_safe_operators_nonempty():
     assert isinstance(VERIFIED_SAFE_OPERATORS, list)
     assert len(VERIFIED_SAFE_OPERATORS) > 0
 
 
+@pytest.mark.needs_operators_verified
 def test_verified_safe_contains_ts_kurtosis():
     assert "ts_kurtosis" in VERIFIED_SAFE_OPERATORS
 
@@ -339,6 +341,7 @@ def test_ghost_operators_contains_neutralize():
     assert "neutralize" in GHOST_OPERATORS  # 平台无此表达式算子 (catalog 权威)
 
 
+@pytest.mark.needs_operators_verified
 def test_verified_safe_has_103_catalog_ops():
     # 平台权威算子全集。2026-09-07 刷新 get_operators 时由 102 → 103
     # （新增 vector_neut），依据 docs/reference/operators_catalog.json。

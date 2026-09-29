@@ -32,14 +32,16 @@ from ..db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收�
 # 2026-09-21 根治：此前硬编码 turnover_hi=0.4 与平台 0.70 不符，把换手 0.45、其余全过的
 # GLB 候选 d5bnE8jJ 误判 FAIL:HIGH_TURNOVER→DEAD；单一事实源是 src/wqb/config.py。
 try:
-    from ..config import GATES_PLATFORM as _GP
+    from ..config import GATES_PLATFORM as _GP, PLATFORM_CHECK_LINES as _PL
     _TURNOVER_HI = float(_GP["turnover_range"][1])
+    _SHARPE, _FITNESS = float(_GP["sharpe_min"]), float(_GP["fitness_min"])
+    _TWO_YEAR = float(_PL["low_2y_sharpe_min"])
 except Exception:  # pragma: no cover - config 缺失时回退平台文档值
-    _TURNOVER_HI = 0.70
+    _TURNOVER_HI, _SHARPE, _FITNESS, _TWO_YEAR = 0.70, 1.58, 1.0, 1.58
 LIM = {
-    "sharpe": 1.58,
-    "fitness": 1.0,
-    "two_year": 1.58,
+    "sharpe": _SHARPE,
+    "fitness": _FITNESS,
+    "two_year": _TWO_YEAR,
     "turnover_hi": _TURNOVER_HI,
     "prod": 0.7,
     "self": 0.7,

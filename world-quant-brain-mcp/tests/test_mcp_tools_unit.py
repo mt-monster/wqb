@@ -165,6 +165,7 @@ def test_extract_fields_excludes_operator_keywords():
     assert fields == ["ep_yield_pct_smest_fy1_3"]
 
 
+@pytest.mark.needs_operators_verified
 def test_extract_fields_pure_operator_expression():
     # 回归测试: ts_returns 是 catalog 真算子, 必须被过滤 (2026-08-13 修复前
     # 手写关键字清单缺 ts_returns → validate_expressions 误报 unknown_fields)
@@ -172,11 +173,13 @@ def test_extract_fields_pure_operator_expression():
     assert fields == []
 
 
+@pytest.mark.needs_operators_verified
 def test_extract_fields_reduce_operator_filtered():
     fields = tools_data._extract_field_candidates(["rank(reduce_ir(x, 5))"])
     assert fields == ["x"]
 
 
+@pytest.mark.needs_operators_verified
 def test_operator_filter_prefers_verified_json():
     """第一层：verified.json 是权威过滤表（102 实时算子），不依赖 ~/.zcode catalog。"""
     ops = tools_data._verified_operator_names()
@@ -187,6 +190,7 @@ def test_operator_filter_prefers_verified_json():
         assert op in ops, f"{op} 不在 verified 算子表"
 
 
+@pytest.mark.needs_operators_verified
 def test_extract_fields_new_operators_not_misjudged():
     """第一层回归：新算子不被误判为字段（2026-09-02 前 catalog 缺失时会误杀）。"""
     exprs = [

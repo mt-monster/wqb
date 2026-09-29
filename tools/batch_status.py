@@ -25,28 +25,21 @@ import json
 import os
 import sys
 import time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _pyenv  # noqa: E402  跨平台解释器/MCP 目录解析（tools/_pyenv.py）
 
 
 def _mcp_venv_python():
-    env = os.environ.get("WQ_PY")
-    cands = [env, r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp\.venv\Scripts\python.exe"]
-    for c in cands:
-        if c and os.path.isfile(c):
-            return c
-    return sys.executable
+    return _pyenv.venv_python()
 
 
 def _bootstrap():
-    """路径引导：优先 MCP venv 解释器重启，否则把工作区 MCP 包加入 sys.path。"""
-    py = _mcp_venv_python()
-    # Windows abspath keeps drive-letter case, so D:\ vs d:\ would execv and
-    # the parent would exit 0 while the child is detached (wave31 false-complete).
-    if py and os.path.normcase(os.path.abspath(py)) != os.path.normcase(os.path.abspath(sys.executable)):
-        os.execv(py, [py] + sys.argv)
-    mcp = os.environ.get("WQ_MCP_DIR", r"d:\coding\traeCN_project\wqb\world-quant-brain-mcp")
-    sys.path.insert(0, mcp)
+    """路径引导：非 MCP venv 解释器时 re-exec 到 venv（Windows 下等待子进程并透传退出码，
+    避免 wave31 false-complete）；把 MCP 目录与 src 加入 sys.path（跨平台）。"""
+    _pyenv.reexec_under_venv()
+    _pyenv.bootstrap_paths()
     from brain_api import BrainApiClient  # noqa: F401
-    return mcp
+    return str(_pyenv.mcp_dir())
 
 
 # 2026-09-21 根治：平台 multisim 子任务终态是 COMPLETE（poller.py 早已如此），本工具原集合
