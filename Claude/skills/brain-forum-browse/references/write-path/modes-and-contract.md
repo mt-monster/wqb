@@ -1,29 +1,32 @@
 # 运行模式与 Run Contract（modes & contract）
 
-> 合并自 modes-and-contract.md / modes-and-contract.md / auto-send-e1.md（2026-08-18 精简）。
+> **休眠**（写路径）：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。
 
-## 1. 三种模式
+> **休眠**：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。当前环境只读，explore 的现役流程见 [../../SKILL.md](../../SKILL.md) §3。
 
-「逛一逛论坛」**默认 = explore stroll-with-mandatory-contribution** — 有方向地逛或先逛后定方向，**每轮必须以贡献收尾**。禁止浏览后菜单与零贡献纯 read 会话。
+## 1. 四种模式
 
 | 模式 | 用户典型说法 | 做什么 | Run Contract? |
 |------|--------------|--------|---------------|
-| **explore**（默认） | 逛一逛、看看、转转 | MCP 搜读 → **必贡献** → **auto-send E1** 或 7.5+Contract → 6–9 | **单条 E1 write 可免**；否则必做 |
-| **contribute** | 贡献、填空白、跟评、发帖、点赞 | 完整 Recon → gap → 更严 write 计划 + **必 curator** → Phase 7.5 → Run Contract → 同意执行 | **必做** |
-| **hybrid**（弃用别名） | 逛一逛顺便看看要不要回 | **等同 explore**，行为不变 | 同 explore |
+| **explore**（有写工具时的缺省） | 逛一逛、看看、转转 | MCP 搜读 → **必贡献** → Auto-Send E1，或 Phase 7.5 + Run Contract → 执行 | **单条 E1 写可免**；否则必做 |
+| **contribute** | 贡献、填空白、跟评、发帖、点赞 | 完整 Recon → gap → 更严的写计划 + **必 curator** → Phase 7.5 → Run Contract → 同意执行 | **必做** |
+| **recon** | 流水线卡住要查论坛 | 经 `tools/forum_recon.py` 只读检索，入库（含负结果）——见 [../../SKILL.md](../../SKILL.md) §5 | **免**；也免贡献义务、免工作区记忆 |
+| **hybrid**（已弃用别名） | 逛一逛顺便看看要不要回 | 等同 explore | 同 explore |
 
-**默认规则：** 用户只说「逛论坛」且未提贡献 → `explore`（仍必须以贡献收尾）。
+有写工具且用户只说「逛论坛」、未提贡献 → `explore`（仍须以贡献收尾）。禁止：浏览后「你想先做哪一项？」菜单、零贡献的纯读会话、把不合格草稿硬 auto-send。
 
-## 2. 最低贡献条（explore 每轮必达，硬性）
+## 2. 贡献义务决策树（唯一表述）
 
-每次「逛一逛论坛」会话必须以 ≥1 个论坛写操作结束。每次写必须含**独特个人价值**（P0–P5，含本机 AI 对话史），不复读楼主/热评。满足至少其一：
+```
+MCP 是否提供论坛写工具（create_forum_comment / create_forum_post / upvote_forum_comment）？
+├─ 是 → 每次 explore / contribute 会话必须以 ≥1 个写操作结束（每轮写操作数 ∈ [1, 3]）。
+│        每次写必须含**独特个人价值**（E1 / E2 / E3 支撑），不复读楼主 / 热评。
+│        确实无话可说：在 stroll notes 记录原因，仍可发**linker**——但 linker 只有一个条件：
+│        本轮有 E2（MCP 读到的帖）**且**有明确的索引理由；不允许「硬发一条链接」。
+└─ 否 → 休眠：没有贡献义务。会话降级为只读 explore（SKILL §3），在笔记里注明「无写工具」。
+```
 
-1. **≥1 证据支撑的写操作** — 评论或新帖，每条论断追溯到 E1/E2/E3。
-2. **明确的用户批准计划**，含评论 + curator 点赞组合。
-
-**若确实无话可说：** 在 stroll notes 记录原因，仍尝试 linker 式最小价值（链接/索引指路/窄问题回复），避免空会话。
-
-**贡献义务决策树：** MCP 有写工具 → 必贡献；无写工具（如 wq-brain-http 仅只读）→ 自动豁免降级只读，须在 session_plan / stroll_notes 注明豁免原因。
+最低贡献条（有写工具时）满足其一：**≥1 个有证据支撑的写操作**（评论或新帖，每条论断追溯到 E1 / E2 / E3），或**明确的用户批准计划**（评论 + curator 点赞组合）。
 
 ## 3. explore 子风格
 
@@ -49,7 +52,7 @@ Block 3 — Execute: Phase 6–9 — auto after 同意执行, no per-item menu
 
 **合同必填：** 依据（memory + history + 为何此刻写）；搜/读/评/赞/帖计划 + 完整中文草稿；每条草稿含 `evidence_sources[]` + `adversarial_review_status: pass`；结尾 `同意执行` / `修改：…` / `取消`。
 
-**Gate：** 未通过对抗审查的草稿不得写入合同。Curator：contribute 合同默认含 ≥1 upvote；explore 推荐含 ≥1 upvote when merited。
+**Gate：** 未通过对抗审查的草稿不得写入合同。Curator：contribute 合同默认含 ≥1 upvote；explore 值得时推荐含 ≥1 upvote。
 
 ## 5. Auto-Send E1（单条 write 免 Run Contract）
 

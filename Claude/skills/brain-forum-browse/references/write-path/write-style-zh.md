@@ -1,6 +1,6 @@
 # Write Style (简体中文)
 
-> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录的实际文件为准。
+> **休眠**（写路径）：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。
 
 All `create_forum_post` and `create_forum_comment` content **must be Simplified Chinese**.
 
@@ -61,13 +61,13 @@ WorldQuant BRAIN 中文论坛编辑器是 **HTML 富文本**，**不是 Markdown
 
 新帖 `details` 字段同样为 HTML；`title` 为**纯文本**（不含 HTML/Markdown）。
 
-**Phase 9 顺序：** 定稿 → **Markdown 转 HTML**（推荐 `python scripts/md_to_forum_html.py`）→ `create_forum_*`（`body`/`details` 仅 HTML）→ 确认响应。
+**Phase 9 顺序：** 定稿 → **Markdown 转 HTML**（推荐 `& $WQ_PY Claude/skills/brain-forum-browse/scripts/md_to_forum_html.py`）→ `create_forum_*`（`body`/`details` 仅 HTML）→ 确认响应。
 
 ### 转换脚本
 
-```bash
-python scripts/md_to_forum_html.py --input draft.md --output submit.html
-python scripts/md_to_forum_html.py --text "**粗体** 与 `code`"
+```powershell
+& $WQ_PY Claude/skills/brain-forum-browse/scripts/md_to_forum_html.py --input draft.md --output submit.html
+& $WQ_PY Claude/skills/brain-forum-browse/scripts/md_to_forum_html.py --text "**粗体** 与 `code`"
 ```
 
 Agent 仍须目视检查：无裸露 Markdown 标记、标签闭合、证据 tag 已剥离。
@@ -116,7 +116,7 @@ Each comment/post draft → subagent review per [evidence-and-review.md](evidenc
 
 ## Curator comment quality bar
 
-Reference [brain-alpha-judge](../../brain-alpha-judge/SKILL.md) rubric **read-only** for what "good" looks like — do not invoke judge MCP at runtime.
+Reference [brain-alpha-judge](../../../brain-alpha-judge/SKILL.md) rubric **read-only** for what "good" looks like — do not invoke judge MCP at runtime.
 
 ## Confirm gate
 

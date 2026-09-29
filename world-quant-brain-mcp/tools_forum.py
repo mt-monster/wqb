@@ -24,15 +24,13 @@ async def get_messages(limit: Optional[int] = None, offset: int = 0) -> Dict[str
 
 @mcp.tool()
 
-async def get_glossary_terms(email: str = "", password: str = "") -> List[Dict[str, str]]:
+async def get_glossary_terms() -> List[Dict[str, str]]:
     """
     Get glossary terms from WorldQuant BRAIN forum.
     
     Note: This uses Playwright and is implemented in forum_functions.py
-    
-    Args:
-        email: Your BRAIN platform email address (optional if in config)
-        password: Your BRAIN platform password (optional if in config)
+    Credentials come from the server-side config only (CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD);
+    the tool takes no credential arguments (skills 审查 FB-10 / X-15：agent 不传口令).
     
     Returns:
         A list of glossary terms with definitions
@@ -40,8 +38,8 @@ async def get_glossary_terms(email: str = "", password: str = "") -> List[Dict[s
     try:
         config = load_config()
         credentials = config.get("credentials", {})
-        email = email or credentials.get("email")
-        password = password or credentials.get("password")
+        email = credentials.get("email")
+        password = credentials.get("password")
         if not email or not password:
             raise ValueError("Authentication credentials not provided or found in config.")
         
@@ -52,17 +50,15 @@ async def get_glossary_terms(email: str = "", password: str = "") -> List[Dict[s
 
 @mcp.tool()
 
-async def search_forum_posts(search_query: str, email: str = "", password: str = "", 
-                             max_results: int = 50) -> Dict[str, Any]:
+async def search_forum_posts(search_query: str, max_results: int = 50) -> Dict[str, Any]:
     """
     Search forum posts on WorldQuant BRAIN support site.
     
     Note: This uses Playwright and is implemented in forum_functions.py
+    Credentials come from the server-side config only; the tool takes no credential arguments.
     
     Args:
         search_query: Search term or phrase
-        email: Your BRAIN platform email address (optional if in config)
-        password: Your BRAIN platform password (optional if in config)
         max_results: Maximum number of results to return (default: 50)
     
     Returns:
@@ -71,8 +67,8 @@ async def search_forum_posts(search_query: str, email: str = "", password: str =
     try:
         config = load_config()
         credentials = config.get("credentials", {})
-        email = email or credentials.get("email")
-        password = password or credentials.get("password")
+        email = credentials.get("email")
+        password = credentials.get("password")
         if not email or not password:
             return {"error": "Authentication credentials not provided or found in config."}
             
@@ -82,17 +78,16 @@ async def search_forum_posts(search_query: str, email: str = "", password: str =
 
 @mcp.tool()
 
-async def read_forum_post(article_id: str, email: str = "", password: str = "", 
-                          include_comments: bool = True) -> Dict[str, Any]:
+async def read_forum_post(article_id: str, include_comments: bool = True) -> Dict[str, Any]:
     """
     Get a specific forum post by article ID.
     
     Note: This uses Zendesk support SSO plus JSON APIs and is implemented in forum_functions.py
+    Credentials come from the server-side config only; the tool takes no credential arguments.
     
     Args:
         article_id: The article ID to retrieve (e.g., "32984819083415-新人求模板")
-        email: Your BRAIN platform email address (optional if in config)
-        password: Your BRAIN platform password (optional if in config)
+        include_comments: Also return the comment section (default: True)
     
     Returns:
         Forum post content with comments
@@ -100,8 +95,8 @@ async def read_forum_post(article_id: str, email: str = "", password: str = "",
     try:
         config = load_config()
         credentials = config.get("credentials", {})
-        email = email or credentials.get("email")
-        password = password or credentials.get("password")
+        email = credentials.get("email")
+        password = credentials.get("password")
         if not email or not password:
             return {"error": "Authentication credentials not provided or found in config."}
 

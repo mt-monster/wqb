@@ -1,10 +1,10 @@
 # 独特贡献与多样性（contribution & diversity）
 
-> 合并自 contribution-and-diversity.md / contribution-and-diversity.md / personal-perspective.md / contribution-and-diversity.md（2026-08-18 精简）。
+> **休眠**（写路径）：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。
 
 ## 1. 独特贡献（每逛必贡献）
 
-**Hard rule：** 每次「逛论坛」session 必须完成至少一条 forum write，且含**独特个人价值**。无「今天只看看」——linker 兜底也算 write，但仍是你的独特信息，不是空话。
+**Hard rule（仅在有论坛写工具时成立；当前无写工具，休眠）：** 每次「逛论坛」session 必须完成至少一条 forum write，且含**独特个人价值**。无「今天只看看」——linker 兜底也算 write，但只有一个条件：本轮有 E2（MCP 读到的帖）**且**有明确的索引理由，不是空话。
 
 **必须做到：**
 - 必贡献：每轮结束前有 MCP write（upvote 可附加但不单独满足「独特内容」）

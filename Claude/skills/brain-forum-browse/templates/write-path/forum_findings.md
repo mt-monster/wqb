@@ -18,7 +18,7 @@ _(Official Scan discoveries)_
 
 ## Perspective Card
 
-_(Draft phase — see personal-perspective.md)_
+_(Draft phase — see contribution-and-diversity.md)_
 
 ## Diversity Record
 

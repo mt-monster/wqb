@@ -4,7 +4,8 @@
   "mcp_only": true,
   "require_mcp_for_forum": true,
   "default_run_mode": "explore",
-  "_comment_default_run_mode": "explore = stroll-with-mandatory-contribution; single E1 write may auto-send per auto_send_e1",
+  "_comment_default_run_mode": "explore = 只读逛论坛（当前环境无论坛写工具；有写工具时才附带「必须贡献」，见 references/write-path/README.md）",
+  "_comment_write_path": "consent_mode / auto_send_e1 / require_per_item_confirm 只在休眠的写路径生效；quotas 的读取预算（search/read/glossary/messages/events）是现役惯例",
   "consent_mode": "upfront_batch",
   "auto_send_e1": {
     "enabled": true,

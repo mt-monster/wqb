@@ -1,48 +1,24 @@
 # Session Plan — {{run_id}}
 
-> **run_mode:** `explore` | `contribute` | `hybrid` _(hybrid = explore alias)_
+> 模式：explore（只读）。写路径版在 `write-path/session_plan.md`（休眠）。
 
-## Explore (`run_mode=explore`, default)
+- [ ] 起步：purposeful（有话题）| emergent（无议程）
+- [ ] （可选）`get_messages(limit=30)` / `get_events()` 看公告与事件
+- [ ] （需要个人视角时）`get_user_alphas(limit=20)`——只用于本地笔记
+- [ ] 搜与读：`search_forum_posts`（首搜为空则换更宽关键词再搜一次）→ `read_forum_post(include_comments=true)`
+- [ ] 笔记：`forum_stroll_notes.md`
+- [ ] 汇报：亮点 / 与用户研究的交集 / 深读摘要 / 0–3 条延伸想法；**不做浏览后菜单**
 
-- [ ] Phase 0: Load Workspace
-- [ ] Phase 0a: External Memory Harvest (optional if stale)
-- [ ] Phase 0b: `get_user_alphas` (P5 — recent performance)
-- [ ] Phase 1: Profile (defer L2 interview if explore-only)
-- [ ] **Starting intent:** purposeful _(signals below)_ | emergent _(no fixed agenda)_
-- [ ] Purposeful inputs (when relevant): `get_messages`, `get_events`, pinned posts, P0–P4 memory, user chat context
-- [ ] Memory-driven MCP stroll (`list_*`, `search_*`, `read_*` as needed)
-- [ ] **Mandatory write planned** — unique detail identified (not parroting thread)
-- [ ] unique_contribution checklist in stroll notes
-- [ ] **Skip upfront:** formal gap recon (Phases 2–5), mandatory Role Pick
-- [ ] **Auto-send E1?** [auto-send-e1.md](../SKILL.md) A1–A8 → certification → **direct write** **OR**
-- [ ] Phase 7.5 + **Phase 1.5: Run Contract** → **wait 同意执行**
-- [ ] Phase 6–9: Execute
-- [ ] Chat report: stroll findings + contribution outcome
+## MCP 调用记录
 
-## Contribute / hybrid recon + execute
-
-> Blocks: **Recon** (2–5) → **Phase 7.5** → **Run Contract 1.5** (STOP) → **Execute** (6–9)
-
-- [ ] Phase 0–1: same as above
-- [ ] Phase 2–5: Recon (scan, registry, gap, role pick)
-- [ ] Phase 7.5: Evidence + adversarial review per draft
-- [ ] **Phase 1.5: Run Contract** → `run_contract.md` → **wait 同意执行**
-- [ ] Phase 6–9: Execute (auto after approval — no per-item confirm)
-
-## Contract status _(standard path only; auto-send E1 跳过)_
-
-- [ ] pending / approved / cancelled
-
-## MCP call log
-
-| Tool | Count | Quota |
-|------|-------|-------|
+| 工具 | 次数 | 上限 |
+|------|------|------|
 | search_forum_posts | 0 | 30 |
-| search_forum_posts | 0 | 5 |
-| read_forum_post / read_forum_post | 0 | 8 |
-| create_forum_comment | 0 | 3 |
-| upvote_forum_comment | 0 | 3 |
+| read_forum_post | 0 | 8 |
+| get_glossary_terms | 0 | 5 |
+| get_messages | 0 | 5 |
+| get_events | 0 | 5 |
 
-## Notes
+## 备注
 
-_(Explore: mandatory contribution every stroll; Run Contract before writes; no post-browse menu. Contribute: stricter Recon + mandatory curator in contract.)_
+_（MCP 不可用 / 缺凭据 / 被限速时在这里记原因，并停止；不用浏览器代替。）_

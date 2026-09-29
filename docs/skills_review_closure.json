@@ -575,94 +575,141 @@
    "note": "两张情景卡：Mode B 换概念前查重叠（3 个 ACTIVE alpha 的 book，输出 HIGH + 换概念）/ 战略级候选提交前确认收益来源（三条警示信号，未核验不得写成通过）"
   },
   "FB-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "description 中英混杂并含 markdown 粗体；把 explore/contribute 两个社交模式写入触发，recon 不在触发词里（而 RA 恰是它最大的调用方",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md",
+   "note": "description 改纯中文、去 markdown 粗体，只写触发场景（逛论坛 / 看看 / 查论坛里有没有 X），并点明「流水线的问题驱动检索走 tools/forum_recon.py」；recon 在正文 §5 单列一节",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FB-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "一个 skill 同时是①社区互动（强制贡献 + Run Contract + 对抗审查 + curator）②流水线 recon（只读、免贡献/合同/工作区记忆）——治理规则**",
-   "cat": "职责·P1"
+   "cat": "职责·P1",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/forum-recon-triggers.md | Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "DEC-45：不新建 skill 目录，按职责分节——§3 explore（只读）、§5 recon（薄，触发表只在 RA 一张）、§6 休眠写路径；写路径整体移入 references/write-path/，两种相反治理不再混在同一份规则里；RA 不加载本 skill、直接调 forum_recon",
+   "verify": "tests/unit/test_se_docs.py::test_fb_recon_section_matches_forum_recon_tool"
   },
   "FB-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“不要用于提交前审查 → 用 `brain-alpha-judge`”，边界句却说提交审查归 `tools/submit_verdict.py`、judge 仅参考",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md",
+   "note": "边界与正文统一：提交前审查 = tools/submit_verdict.py，brain-alpha-judge 只是参考层"
   },
   "FB-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "“每轮必贡献/不允许只浏览/不可协商”至少**6 处**重复且措辞强度各异；而环境无写工具（`search_forum_posts`、`read_forum_post` 是仅有的两",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md",
+   "note": "「当前能力 = 只读」提到最前；「每轮必贡献」撤销（无写工具无法满足），唯一表述 = write-path/modes-and-contract §2 决策树（有写工具才成立，否 → 休眠）；写路径规则全部标休眠",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FB-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "表里先用 E1、7.5、Contract、6–9、auto-send，而 E1/E2/E3 到 L72/L180 才定义、Phase 编号从未在 SKILL.md 里成序列出现；四",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/README.md | Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md",
+   "note": "E1/E2/E3 在 README 术语与 evidence 文档首现处定义；hybrid 只在两处标弃用别名；modes 标题改「四种模式」并含 recon；阶段按执行顺序成表"
   },
   "FB-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "链接**文字是已合并的旧文件名**（`auto-send-e1.md`、`profile-bootstrap.md`、`personal-perspective.md`、`exte",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "全部旧文件名标签清除（合并前的 auto-send-e1 / personal-perspective / profile-bootstrap / external-memory-sources / merge-with-alpha-judge / file-workspace / index-post-protocol / mcp-tools-and-search），测试扫描整个 skill 目录并逐条核对 SKILL 链接",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FB-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "决策树是全文最清楚的一处（好），却自称“唯一表述，替代分散规则”，而规则仍散落（FB-04）；L77“无话可说仍尝试 linker 式最小价值”与 L179“仅在有 E2 + 索引",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md",
+   "note": "决策树补第三支（无写工具 → 休眠、只读 explore）；linker 兜底统一为唯一条件：本轮有 E2 且有索引理由，不允许硬发链接"
   },
   "FB-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "引用块里有**高价值排障**（“服务没起=论坛工具‘不存在’、极易误判为未实现”；排查顺序 ①`start_wq_mcp.py --check` ②`MCP_PORT=8876` ",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md",
+   "note": "MCP 排障抽成 §4 症状 / 原因 / 处置表（服务没起≠没实现、检查命令、stdio 与 HTTP 两种、重启宿主会话、ENOENT ${WQB_MCP_PY} 一行——本环境实测遇到）；服务名与端点只写一处；旧「。。」笔误与 user-brain-api 删除",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FB-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "表头是“**必须**用的 MCP”，第 5 行却是“wq-brain-http **未实现**”",
-   "cat": "边界·P3"
+   "cat": "边界·P3",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md",
+   "note": "工具表只列现役 6 个读工具（测试对照代码签名）；不存在的写工具单列一行，不再混入「必须用」表",
+   "verify": "tests/unit/test_se_docs.py::test_fb_documented_tools_exist_and_the_write_tools_really_do_not"
   },
   "FB-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“凭据来自 MCP 服务器配置；**仅在认证失败时才传 `email`/`password`**”——与 AGENTS.md（凭据只在 `.env`、禁止读取/打印）及本 skil",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "world-quant-brain-mcp/tools_forum.py | world-quant-brain-mcp/tools_account.py | Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "DEC-44：四个 MCP 工具删除 email/password 参数（凭据只由服务端配置提供）+ 全库守护测试；文档：认证失败 → 停止并请用户在本机修配置，不在对话传口令；公开内容脱敏清单（含 P4 对话史须同意 + 转述）；harvest 隐私提示",
+   "verify": "tests/unit/test_se_docs.py::test_no_mcp_tool_accepts_credentials_as_arguments"
   },
   "FB-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“运行时**不要探测或列举 MCP 工具**”与“工具在表里搜不到时按排障顺序检查”并存",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-forum-browse/references/tools-and-troubleshooting.md",
+   "note": "分情景：正常调用直接用名、不探测；工具搜不到才走排障（写在同一处）"
   },
   "FB-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "两个表重复同一批工具；L129 写 `search_forum_posts`“**唯一**搜索工具”，而标题“多种方法/自行选型”、L194“不必每次 slow，也不要只知道 fa",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/tools-and-troubleshooting.md",
+   "note": "两个重复的工具表并成一张现役表（名 / 参数 / 缺省 / 用途）；「唯一搜索工具」「fast / slow / list」「替代…」「已安装但超出范围：delete_forum_*」全部删除（这些工具未注册，测试断言）",
+   "verify": "tests/unit/test_se_docs.py::test_fb_documented_tools_exist_and_the_write_tools_really_do_not"
   },
   "FB-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "命令用裸 `python`、`scripts/…` 相对路径（仅当 CWD=skill 目录才成立）；`outputs/workspace/` 位置未说（skill 目录？仓库根？",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/write-path/workspace-and-memory.md | Claude/skills/brain-forum-browse/scripts/init_workspace.py",
+   "note": "命令写全路径 & $WQ_PY Claude/skills/brain-forum-browse/scripts/…；工作区落点写明（skill 目录 outputs/，已 .gitignore，同步到宿主后落在那份目录）；harvest 补目的（写路径 E1 燃料）与隐私边界；init_workspace 默认只读、--write-path 显式开启（测试）",
+   "verify": "tests/unit/test_se_docs.py::test_fb_init_workspace_defaults_to_read_only_and_write_path_is_opt_in"
   },
   "FB-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "“硬性规则”20 条：≥8 条重复前文（每轮必贡献×3、MCP 优先×3、论坛数据仅来自 MCP、默认 explore、Run Contract 闸、Search 工具箱）；“MC",
-   "cat": "逻辑·P1"
+   "cat": "逻辑·P1",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/references/write-path/mcp-by-phase.md",
+   "note": "硬性规则 20 条 → 「规则速览」5 行表（规则 / 适用 / 由谁强制）；重复规则并入写路径；「MCP 优先」与「先文件后 MCP」写成一句话消歧（本地只给记忆、事实只来自 MCP）；对抗审查子代理须宿主允许派生，不允许时自审并在合同注明；curator 依赖的 upvote 工具标未注册",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FB-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "Pipeline 阶段号非单调（7.5 → 1.5 → 6–9，Phase 7 在 6 与 7.5 之间），全文没有一份成序的阶段清单；“每个会话 **L1**”的 L1 与全库“",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "按执行顺序的阶段表 + 历史编号对照（14 步）；L1/L2/L3、Scout、E1–E3、P0–P5 在 README 术语节定义并与全库同形标签消歧"
   },
   "FB-16": {
-   "status": "open",
+   "status": "fixed",
    "title": "记忆层 P0–P5 与全库其它 P 编号（S0 的 P5 饱和拍平、probe 模板 P5、审计 P-codes）同号异义",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "记忆层 P0–P5 保留为本 skill 内部标签（改名会波及模板与 schema），在 README 逐项命名并声明「与全库其它 P 编号无关」"
   },
   "FB-17": {
-   "status": "open",
+   "status": "fixed",
    "title": "“每次运行最多计划 3 个写操作”与“每轮必≥1”并存；recon 的 `--max-search-rounds` 只说是“安全上限”，无缺省数值",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/quotas-and-cooldown.md | Claude/skills/brain-forum-browse/SKILL.md | Claude/skills/brain-forum-browse/configs/config.example.json",
+   "note": "配额表去重（历史上同一工具多个上限是改名合并残留），读取预算与 config.example.json 一致（测试）；「每轮 ≥1」与「最多 3」不冲突（写操作数 ∈ [1,3]）；recon 的 --max-search-rounds 缺省 8 写明（测试对照代码）",
+   "verify": "tests/unit/test_se_docs.py::test_fb_recon_section_matches_forum_recon_tool"
   },
   "FB-18": {
-   "status": "open",
+   "status": "fixed",
    "title": "参考资料索引清楚（好），但括号里仍列已合并前的旧文件名",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-forum-browse/SKILL.md",
+   "note": "参考资料索引只列现存文件，旧名进 CHANGELOG"
   },
   "FE-01": {
    "status": "open",
@@ -816,39 +863,55 @@
    "cat": "情景·P2"
   },
   "FR-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "头注“合并自 modes-and-contract.md / modes-and-contract.md / auto-send-e1.md”（自己出现两次）；“三种模式”遗漏 r",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md",
+   "note": "头注「合并自…」（自己出现两次）删除；标题改四种模式含 recon；原 §2「最低贡献条」并入决策树，删除对 SKILL 的第 N 次复述"
   },
   "FR-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "**A1–A8 是全库最可检的条件清单**：恰好 1 条、E1-only、零推断（列出禁用词）、第一人称事实、含指标须本轮已调 `get_user_alphas`……并配“自检清单",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/modes-and-contract.md",
+   "note": "Auto-Send E1 的 A1–A8 可检条件清单与自检清单原样保留（全库最可检的范例）"
   },
   "FR-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "允许“本机 AI 对话（P4）”作 E1 公开来源，未给脱敏/同意规则（FB-10）",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/README.md | Claude/skills/brain-forum-browse/references/write-path/workspace-and-memory.md",
+   "note": "补 P4（宿主 AI 对话史）作 E1 公开来源的规则：只转述已核实事实、引用须用户同意并脱敏（脱敏清单第 3 条）"
   },
   "FR-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "约一半是空行（逐行双倍间隔的转换痕迹）；中英混排；末尾“Decision tree”含改名残留：`get_glossary_terms, get_glossary_terms`、“",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/mcp-by-phase.md",
+   "note": "460 行（约一半是空行）压缩到 43 行：每阶段一行工具与参数；改名残留（重复的 get_glossary_terms、try slow、create_forum_* 当现役、user-brain-api）清除，审查子代理的宿主前提写明",
+   "verify": "tests/unit/test_se_docs.py::test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain"
   },
   "FR-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "机械检查 §B 报“断链 → url”是示例表格里的 `[文字](url)`，属**误报**；但整篇 136 行只在写路径开通后才有意义",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/write-style-zh.md",
+   "note": "归入休眠包；转换脚本命令改 & $WQ_PY 全路径（lint 基线相应删 2 条）；示例表格里的 [文字](url) 是示例，SKILL.md 的链接检查不涉及"
   },
   "FR-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "均以“Phase/Run Contract/对抗审查/Role Matrix/Index Post”等写路径概念为主；`self_overlap < 0.4` 等阈值无依据；与 S",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-forum-browse/references/write-path/README.md | Claude/skills/brain-forum-browse/references/write-path/contribution-and-diversity.md | Claude/skills/brain-forum-browse/references/write-path/recon-and-gap.md | Claude/skills/brain-forum-browse/references/write-path/evidence-and-review.md",
+   "note": "其余 references 整体归为休眠（各带横幅）；9 处「合并自 / 参考资料已合并」头注删除；数值阈值（title_sim / self_overlap / gap_threshold）无实测来源也无代码使用——README 明确标为经验启发式、启用前重校准"
   },
   "FR-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "模板与脚本都服务写路径；脚本用 skill 相对路径",
-   "cat": "职责·P3"
+   "cat": "职责·P3",
+   "where": "Claude/skills/brain-forum-browse/templates/forum_stroll_notes.md | Claude/skills/brain-forum-browse/templates/session_plan.md | Claude/skills/brain-forum-browse/scripts/init_workspace.py | Claude/skills/brain-forum-browse/references/write-path/README.md",
+   "note": "写路径模板移入 templates/write-path/，另写只读版 stroll_notes / session_plan；脚本路径写全并支持 --write-path；写路径专用脚本（init_profile / validate_profile / harvest / md_to_forum_html）列入 write-path README",
+   "verify": "tests/unit/test_se_docs.py::test_fb_init_workspace_defaults_to_read_only_and_write_path_is_opt_in"
   },
   "GM-01": {
    "status": "open",

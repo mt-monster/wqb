@@ -183,16 +183,13 @@ async def performance_comparison(alpha_id: str, competition: Optional[str] = Non
 
 @mcp.tool()
 
-async def get_daily_and_quarterly_payment(email: str = "", password: str = "") -> Dict[str, Any]:
+async def get_daily_and_quarterly_payment() -> Dict[str, Any]:
     """
     Get daily and quarterly payment information from WorldQuant BRAIN platform.
     
     This function retrieves both base payments (daily alpha performance payments) and 
     other payments (competition rewards, quarterly payments, referrals, etc.).
-    
-    Args:
-        email: Your BRAIN platform email address (optional if in config)
-        password: Your BRAIN platform password (optional if in config)
+    Credentials come from the server-side config only; the tool takes no credential arguments.
     
     Returns:
         Dictionary containing base payment and other payment data with summaries and detailed records
@@ -200,8 +197,8 @@ async def get_daily_and_quarterly_payment(email: str = "", password: str = "") -
     try:
         config = load_config()
         credentials = config.get("credentials", {})
-        email = email or credentials.get("email")
-        password = password or credentials.get("password")
+        email = credentials.get("email")
+        password = credentials.get("password")
         if not email or not password:
             return {"error": "Authentication credentials not provided or found in config."}
             

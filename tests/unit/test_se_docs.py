@@ -30,6 +30,7 @@ SE_SKILLS = (
     "alpha-expression-verifier",
     "brain-feature-implementation",
     "brain-dataset-mining-experience",
+    "brain-forum-browse",
 )
 
 
@@ -477,3 +478,124 @@ def test_me_manual_review_skeleton_matches_what_the_tool_writes_for_a_new_file(t
     assert text.startswith("# KOR · x 因子挖掘经验") and "## 人工机制复盘" in text
     t = _skill("brain-dataset-mining-experience")
     assert "## 人工机制复盘" in t and "待结合原式、字段语义与平台核查补充" in t
+
+
+# ----------------------------------------------------------------------------- FB：forum-browse
+
+FB = SKILLS / "brain-forum-browse"
+FORUM_TOOLS = ("search_forum_posts", "read_forum_post", "get_glossary_terms", "get_messages", "get_events",
+               "get_user_alphas")
+NONEXISTENT_WRITE_TOOLS = ("create_forum_comment", "create_forum_post", "upvote_forum_comment",
+                           "get_forum_comment_votes", "delete_forum_comment", "delete_forum_vote")
+
+
+def _default_of(node, name):
+    a = node.args
+    pos = a.posonlyargs + a.args
+    defaults = [None] * (len(pos) - len(a.defaults)) + list(a.defaults)
+    for arg, d in zip(pos, defaults):
+        if arg.arg == name and d is not None:
+            return ast.literal_eval(d)
+    for arg, d in zip(a.kwonlyargs, a.kw_defaults):
+        if arg.arg == name and d is not None:
+            return ast.literal_eval(d)
+    return None
+
+
+def test_fb_documented_tools_exist_and_the_write_tools_really_do_not():
+    http = _all_http_tools()
+    t = _skill("brain-forum-browse")
+    table = t.split("## 1. 当前能力", 1)[1].split("## 2. 运行模式", 1)[0]
+    listed = set(re.findall(r"^\| `([a-z_]+)` \|", table, re.M))
+    assert listed == set(FORUM_TOOLS), listed
+    for name in FORUM_TOOLS:
+        assert name in http, name
+    for name in NONEXISTENT_WRITE_TOOLS:
+        assert name not in http, f"{name} 现在注册了——休眠的写路径可以启用了：更新 forum-browse SKILL 与 write-path/README"
+    for name in ("create_forum_comment", "create_forum_post", "upvote_forum_comment", "get_forum_comment_votes"):
+        assert name in t                                         # 文档明确列出「不存在」
+    assert "delete_forum_" in t
+    # 参数与缺省值逐项对照
+    assert _params(http["search_forum_posts"]) == ["search_query", "max_results"]
+    assert _default_of(http["search_forum_posts"], "max_results") == 50 and "缺省 50" in t
+    assert _params(http["read_forum_post"]) == ["article_id", "include_comments"]
+    assert _default_of(http["read_forum_post"], "include_comments") is True and "缺省 true" in t
+    assert _params(http["get_glossary_terms"]) == []
+    assert _params(http["get_events"]) == []
+    assert _params(http["get_messages"]) == ["limit", "offset"]
+
+
+def test_no_mcp_tool_accepts_credentials_as_arguments():
+    """凭据只由服务端配置提供：所有 MCP 工具都不得有 email / password 类参数（forum 三件套与 payment 已删）。"""
+    bad = {}
+    for path in [*sorted(MCP_DIR.glob("tools_*.py")), REPO / "wqb_db_mcp.py"]:
+        for name, node in _mcp_tools(path).items():
+            hit = [p for p in _params(node) if re.fullmatch(r"(?i)email|password|passwd|pwd|api_?key|secret", p)]
+            if hit:
+                bad[f"{path.name}::{name}"] = hit
+    assert not bad, f"这些 MCP 工具还接受凭据参数：{bad}"
+
+
+def test_fb_read_budgets_match_config_example_and_docs():
+    cfg = json.loads(_read(FB / "configs" / "config.example.json"))
+    q = cfg["quotas"]
+    for doc in (_skill("brain-forum-browse"), _read(FB / "references" / "tools-and-troubleshooting.md"),
+                _read(FB / "references" / "write-path" / "quotas-and-cooldown.md")):
+        for tool, n in q.items():
+            assert re.search(rf"{tool}`?\s*(?:≤|\|)\s*\|?\s*{n}\b|{tool}[^\n]*?≤\s*{n}\b|{tool}`\s*\|\s*{n}\b", doc), (tool, n)
+    assert "_comment_write_path" in cfg
+    assert "FORUM_RATE_LIMIT_SECONDS" in _read(FB / "SKILL.md")
+    assert 'os.environ.get("FORUM_RATE_LIMIT_SECONDS", "0")' in _read(MCP_DIR / "brain_mixin_transport.py")
+
+
+def test_fb_recon_section_matches_forum_recon_tool():
+    src = _read(REPO / "tools" / "forum_recon.py")
+    t = _skill("brain-forum-browse")
+    assert re.search(r'"--limit".*?default=3', src) and "缺省 3" in t
+    assert re.search(r'"--max-search-rounds".*?default=8', src, re.S) and "缺省 8" in t
+    assert "TTL_DAYS = 7" in src and "7 天缓存" in t
+    for flag in ("--question", "--context", "--out", "--dry-run"):
+        assert f'"{flag}"' in src and flag in t
+    assert "forum-recon-triggers.md" in t and (SKILLS / "wq-brain-ra-pipeline/references/forum-recon-triggers.md").is_file()
+
+
+def test_fb_write_path_is_dormant_and_no_stale_merged_file_names_remain():
+    t = _skill("brain-forum-browse")
+    assert "「每轮必须贡献」已**撤销**" in t and "只属于休眠的写路径" in t
+    assert "**" not in re.search(r'^description:\s*"(.*)"\s*$', t, re.M).group(1)
+    wp = FB / "references" / "write-path"
+    assert (wp / "README.md").is_file()
+    for f in wp.glob("*.md"):
+        if f.name != "README.md":
+            assert "休眠" in _read(f).split("\n", 3)[2], f"{f.name} 缺休眠横幅"
+    stale = ("auto-send-e1.md", "personal-perspective.md", "profile-bootstrap.md", "external-memory-sources.md",
+             "merge-with-alpha-judge.md", "file-workspace.md", "index-post-protocol.md", "mcp-tools-and-search.md",
+             "user-brain-api", "list_help_center_articles")
+    offenders = []
+    for f in FB.rglob("*"):
+        if f.is_file() and f.suffix in (".md", ".json", ".py", ".yaml"):
+            text = _read(f)
+            offenders += [f"{f.relative_to(FB)}: {w}" for w in stale if w in text]
+    assert not offenders, offenders
+    for link in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", t):
+        if not link.startswith(("http", "mailto")):
+            assert (FB / link).exists() or (REPO / link).exists(), link
+
+
+def test_fb_init_workspace_defaults_to_read_only_and_write_path_is_opt_in(tmp_path, monkeypatch):
+    spec = importlib.util.spec_from_file_location("fb_init_ws", FB / "scripts" / "init_workspace.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    monkeypatch.setattr(mod, "SKILL_ROOT", tmp_path)
+    monkeypatch.setattr(mod, "WORKSPACE", tmp_path / "ws")
+    monkeypatch.setattr(mod, "RUNS", tmp_path / "runs")
+    mod.init_workspace()
+    assert sorted(p.name for p in (tmp_path / "ws").iterdir()) == ["action_ledger.json", "forum_memory.md", "skip_registry.json"]
+    ro = mod.init_run("r1")
+    assert sorted(Path(x).name for x in ro["created"]) == ["forum_stroll_notes.md", "session_plan.md"]
+    assert "## 贡献计划" not in (tmp_path / "runs" / "r1" / "forum_stroll_notes.md").read_text(encoding="utf-8")
+    mod.init_workspace(write_path=True)
+    wr = mod.init_run("r2", write_path=True)
+    assert sorted(Path(x).name for x in wr["created"]) == ["forum_findings.md", "forum_stroll_notes.md",
+                                                            "run_contract.md", "session_plan.md"]
+    assert (tmp_path / "ws" / "personal_experience_memory.md").is_file()

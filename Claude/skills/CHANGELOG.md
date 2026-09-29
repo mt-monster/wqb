@@ -6,6 +6,10 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**brain-forum-browse（S-E-2）**
+- SKILL 改写为现役能力（只读 explore + 薄 recon + MCP 排障表）；「每轮必须贡献 / 不可协商」撤销——没有写工具时它无法满足；写路径（Run Contract / Auto-Send E1 / 对抗审查 / curator / 论坛 HTML）整体移入 `references/write-path/`（休眠，含阶段执行顺序表、术语消歧、公开内容脱敏清单），`mcp-by-phase.md` 460 → 43 行；模板与 `init_workspace.py` 默认只读、`--write-path` 显式开启 → FB-01…18 / FR-01…07 / DEC-45
+- MCP：`get_glossary_terms` / `search_forum_posts` / `read_forum_post` / `get_daily_and_quarterly_payment` 删除 `email` / `password` 参数（凭据只由服务端配置提供），并加全库守护测试 → FB-10 / DEC-44
+
 **brain-next-move-analysis / labs / expression-verifier / feature-implementation / dataset-mining-experience（S-E-1）**
 - next-move 定为**报告器**：只转述 `tools/region_status.py` 的输出，选区决策归 `wqb.region_rotation`；判据数值提为 `region_status.py` 顶部常量（文档判据表与 matrix 的 `≥ 10` 由测试钉死）；日报按固定五列模板给建议，三项前置检查（点亮塔 / 跨区弱先验 / 停波闸）；`reference.md` 改规范体，删「传邮箱口令」「`get_ny_time.py`」「`random_string`」等不存在的东西 → NM-01…17 / DEC-40
 - `validator.py` 四份三版本 → 逐字节镜像权威版（GEM 与外部 idea 入库通道此前用缺 hump / bucket / densify 修复的旧副本本地放行）；verifier SKILL 换真实非法示例与退出码语义 → EV-01…05 / DEC-41

@@ -1,8 +1,8 @@
 # Evidence-Backed Writes + Adversarial Review
 
-> **参考资料已合并（2026-09-11）**：本 skill 早期按主题拆分的参考文件已并入 `SKILL.md` 与本目录现有 9 个 references；文中若出现旧文件名，一律以当前目录的实际文件为准。
+> **休眠**（写路径）：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。
 
-**Hard requirement for forum writes** — with one **narrow exception**: [auto-send-e1.md](../SKILL.md) (E1-only, zero inference, **exactly 1 write** — skips Phase 7.5 subagent and Run Contract; uses checklist instead).
+**Hard requirement for forum writes** — with one **narrow exception**: [modes-and-contract.md §5 Auto-Send E1](modes-and-contract.md) (E1-only, zero inference, **exactly 1 write** — skips Phase 7.5 subagent and Run Contract; uses checklist instead).
 
 **Standard path (default):** every explore stroll (mandatory contribution), contribute, hybrid — E1/E2/E3 + Phase 7.5 + Run Contract.
 
@@ -44,7 +44,7 @@ Tags are stripped or softened in final Run Contract Chinese body; `evidence_sour
 
 ## Adversarial review (standard path — mandatory per draft)
 
-**When:** After each comment/post draft, **before** Run Contract or execute — **unless** [auto-send-e1.md](../SKILL.md) A1–A8 all pass (checklist only, no subagent).
+**When:** After each comment/post draft, **before** Run Contract or execute — **unless** [modes-and-contract.md §5 Auto-Send E1](modes-and-contract.md) A1–A8 all pass (checklist only, no subagent).
 
 **Who:** Main agent launches a **subagent** (`Task` tool, `subagent_type: generalPurpose` or `explore`).
 
@@ -91,7 +91,7 @@ Give the subagent this rubric:
 ### Main agent obligations
 
 - **REVISE** → fix every listed issue or delete the claim; re-run adversarial review if structure or metrics changed materially
-- **Cannot skip** review to meet quota or deadline — **except** qualified auto-send E1 per [auto-send-e1.md](../SKILL.md)
+- **Cannot skip** review to meet quota or deadline — **except** qualified auto-send E1 per [modes-and-contract.md §5 Auto-Send E1](modes-and-contract.md)
 - **Cannot** present Run Contract drafts to user until all planned comment/post drafts show `adversarial_review_status: pass`
 - Upvote-only actions: no adversarial review on vote targets, but upvote **reason** must cite E2 (MCP read of comment quality)
 
@@ -111,6 +111,6 @@ See [write-style-zh.md](write-style-zh.md), [modes-and-contract.md](modes-and-co
 
 ### brain-alpha-judge boundary
 
-- Judge rubric (read-only) informs **quality bar** — see `merge-with-alpha-judge.md`
+- Judge rubric (read-only) informs **quality bar** — see [workspace-and-memory.md](workspace-and-memory.md) §4
 - Judge static corpus is **not** E2 evidence for live claims; use MCP reads
 - Pre-submit alpha review → `brain-alpha-judge`; forum writes → this skill + evidence tiers

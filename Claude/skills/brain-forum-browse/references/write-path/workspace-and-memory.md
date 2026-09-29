@@ -1,10 +1,10 @@
 # 工作区与记忆（workspace & memory）
 
-> 合并自 file-workspace.md / external-memory-sources.md / profile-bootstrap.md / merge-with-alpha-judge.md（2026-08-18 精简）。
+> **休眠**（写路径）：只在 MCP 有论坛写工具时适用，见 [README.md](README.md)。
 
 ## 1. File Workspace（跨会话磁盘记忆）
 
-`outputs/workspace/` = disk；context = RAM。
+工作区 = `<skill 目录>/outputs/workspace/`（disk；context = RAM）。该目录已 `.gitignore`；skill 被同步到宿主安装位后，落在**那份** skill 目录里，所以脚本一律用 skill 相对路径（在 skill 目录里运行，或写全路径 `Claude/skills/brain-forum-browse/scripts/…`）。
 
 **Core files：**
 
@@ -18,7 +18,7 @@
 
 Per-run 快照入 `outputs/runs/<run_id>/`。
 
-**Read before MCP（每轮）：**
+**Read before MCP（每轮）：**（本地工作区只提供**记忆**；论坛 / 平台**事实**只来自 MCP——两者不冲突）
 1. 读 workspace 文件（缺失则 `scripts/init_workspace.py` 建）。
 2. 拷贝模板到 `outputs/runs/<run_id>/`：`session_plan.md`；explore → 另加 `forum_stroll_notes.md`；contribute/hybrid → `forum_findings.md`。
 3. **然后**才调 forum/platform MCP — 顺序不可反。
@@ -58,7 +58,9 @@ Per-run 快照入 `outputs/runs/<run_id>/`。
 
 **AI 工具对话史（P4，独特贡献燃料）：** 当前 session 聊天（tag `P4 session`）；Cursor `.cursor/…/agent-transcripts/*.jsonl`；Claude/Kimi 项目记忆。规则：只引**该对话真实说过/sim 过的**；`evidence_sources` 注明日期/话题；绝不凭对话记忆编造指标。
 
-**Do NOT scan：** `.env`、`user_config.json`、任何含密码/token 的文件。
+**Do NOT scan：** `.env`、`user_config.json`、`credentials.json`、任何含密码 / token 的文件（脚本的 `SKIP_NAMES` 只挡这三个文件名，其余靠你自觉）。
+
+**隐私**：harvest 读的是宿主的项目 / 用户记忆文件与 AI 对话史，里面常有私人内容；结果只留在本地 `external_memory_snapshot.json`，**不得原样进入任何公开文字**——公开前按 [README.md](README.md) 的「公开内容脱敏清单」处理，引用对话内容须先得到用户同意。
 
 **Harvest procedure：** 找项目根（向上走 .git 或 CLAUDE.md）→ glob/read 存在的路径 → 提取 BRAIN 相关 bullets（region/dataset/workflow/submission 习惯）→ 写 `external_memory_snapshot.json {harvested_at, mode, sources, merged_bullets}` → 更新 `forum_findings.md` Memory Sources 表 → 零文件则 mode=session-only 从当前聊天提取。
 
