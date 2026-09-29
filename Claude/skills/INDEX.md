@@ -300,8 +300,8 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
 
 | 副本位置 | 权威版本 | 引擎**实际**用哪份（2026-09-26 实测） |
 |---|---|---|
-| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering（模板子集；**故意无 SKILL.md**） | 顶层 brain-data-feature-engineering | 顶层/安装位（内嵌因缺 SKILL.md 被解析探针跳过） |
-| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation（`scripts/` 为硬依赖；`SKILL.md` 为自动同步副本） | 顶层 brain-feature-implementation | 顶层/安装位；`SKILL.md` 由 `tools/sync_gem_embedded_skill.py` 同步并由测试守护 |
+| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering（`reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md` 三个逐字节副本 + `GENERATED.md`；**故意无 SKILL.md**） | 顶层 brain-data-feature-engineering | 顶层/安装位（内嵌因缺 SKILL.md 被解析探针跳过）；三个副本由 `tools/sync_gem_embedded_skill.py` 同步、`test_gem_skill_paths` 守护；引擎不读它们 |
+| brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation（`scripts/` 为硬依赖；`SKILL.md` 为自动同步副本） | 顶层 brain-feature-implementation | 顶层/安装位；`SKILL.md` 由 `tools/sync_gem_embedded_skill.py` 同步并由测试守护（两份 SKILL.md 正文**从不进 LLM prompt**，同步只为不让同名文件互相矛盾） |
 | tracking/KOR/scripts\ 下 9 个新链脚本（gate/build_wave/kor_pipeline/score_datasets/review_wave/metrics_cache/scan_fields/diversity_audit/kor_ledger，区域历史实现） | wq-brain-campaign-toolkit/scripts/（战役脚本唯一权威实现，2026-08-15 起） | — |
 
 **GEM 内嵌副本的真实角色（2026-09-26 审计重写，旧文请勿再沿用）**：

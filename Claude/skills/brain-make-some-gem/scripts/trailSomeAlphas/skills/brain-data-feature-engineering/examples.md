@@ -1,5 +1,7 @@
 # Case Study: BEME Dataset Analysis
 
+> **虚构的教学案例**：`BEME` 不是 BRAIN 数据集，`book_value` / `market_cap` / `book_to_market` 也不是真实字段 id——本文只演示 8 问的思考方式。真实、可被 GEM 解析的概念块示例（`pv1` 的真实字段 + `{占位符}` 模板 + `Expected Exposure`）见同 skill 的 `SKILL.md`「第 4 步」（本文会被逐字节复制进 GEM 内嵌兜底目录，那里没有 SKILL.md，所以这里不放相对链接）。
+
 ## Dataset Overview
 
 **Dataset ID**: BEME (Balance Sheet and Market Data)

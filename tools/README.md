@@ -125,7 +125,7 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 > 另有 skill 资产同步（不属清理类）：
 > | 工具 | 用途 | 取代 |
 > |---|---|---|
-> | `sync_gem_embedded_skill.py` | 同步 GEM 引擎内嵌的 `brain-feature-implementation/SKILL.md` 到顶层权威版（**该文件会被拼进 LLM prompt**，2026-09-26 前停在 49 行旧英文稿）。`--check` 只校验（退出码 1 = 漂移）、`--apply` 覆盖写入。**只同步 SKILL.md，绝不动内嵌 `scripts/`**（`ace_lib`/`validator` 是引擎硬依赖）。由 `tests/unit/test_gem_skill_paths.py` 守护 | 手动复制 |
+> | `sync_gem_embedded_skill.py` | 同步 GEM 引擎内嵌的两份 skill 副本到顶层权威版：`brain-feature-implementation/SKILL.md` 与 `brain-data-feature-engineering` 的 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`（同名文件不许互相矛盾；**它们不会被拼进 LLM prompt**，2026-09-29 更正，2026-09-26 前内嵌 FI 停在 49 行旧英文稿）。`--check` 只校验（退出码 1 = 漂移）、`--apply` 覆盖写入。**绝不动内嵌 `scripts/`**（`ace_lib`/`validator` 是引擎硬依赖），也不创建 dfe 的 `SKILL.md`。由 `tests/unit/test_gem_skill_paths.py` 守护 | 手动复制 |
 
 ## MCP 体检
 

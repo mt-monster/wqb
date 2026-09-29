@@ -792,69 +792,108 @@
    "note": "参考资料索引只列现存文件，旧名进 CHANGELOG"
   },
   "FE-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "三种说法：①定位修正（09-15）：节点产出是**确定性模板**、不再被 GEM 注入，agent **人工**完成并写 `source=manual` 才注入；②L162：本 i",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "重写：只保留「两条产物路径」——A 节点 = 确定性模板（source=feature_engineering_node，GEM 不注入）/ B agent 人工 = source=manual（注入）；L162「法定输入 / 步 4 必须传 --ideas-file」删；与 RA 步 3「按需、模板产物不注入」一致；description 改为「人工字段理解 → GEM 可摄入 ideas + S1 台账」",
+   "verify": "tests/unit/test_se_docs.py::test_fe_source_injection_table_matches_the_engine_and_the_ledger_example_is_manual"
   },
   "FE-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "第 6 步 ledger 示例里 `\"source\": \"standalone\"`；而 RA/GEM 规则是 `source ∈ {feature_engineering_node",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "台账 JSON 示例 source 改 manual，并注明「写成 standalone 会被 GEM 静默忽略」；三种模板渲染取值与引擎 TEMPLATE_IDEAS_SOURCES 同口径；测试直接解析该 JSON 示例（占位符替换后）断言 source == manual 且带 ideas_md_path / field_whitelist / concept_count",
+   "verify": "tests/unit/test_se_docs.py::test_fe_source_injection_table_matches_the_engine_and_the_ledger_example_is_manual"
   },
   "FE-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "“S1⇄S2 统一逻辑链”写：`s1_<ds>_d<delay>` 命中且 `ideas_md_path` 可读 → `--ideas-file` 注入——未按 source 区分",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "「S1⇄S2 统一逻辑链」改成 source → 是否注入 对照表（gem.py::is_template_ideas_source 同口径，模板源不注入，manual / s2_nested 且文件存在且非 skeleton 才自动注入，显式 ideas_file 覆盖）；「五闸读此记录」删，改列真实读取方（GEM 节点与 runner / s2_field_validator / campaign 预检）并明写「toolkit 闸 1–5 不读它」——测试断言 gate.py 里没有 s1_ 引用，将来闸读了它会让测试失败提醒改文",
+   "verify": "tests/unit/test_se_docs.py::test_fe_ledger_readers_and_gate_claims_hold"
   },
   "FE-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "边界说“不做选集/输入=S1 白名单”，第 1 步却包含“未提供 dataset_id 时基于元数据选择最相关的数据集”（选集属 S0/dataset-exploration）；输",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "职责边界写明「不选数据集：没有 dataset_id → 回 RA 步 2，不自行挑」；第 1 步改为「锁定数据集」（对 s0_whitelist 校验，不在白名单则报冲突并停）；「基于元数据选择最相关数据集」整段删；输入表 dataset_id 必填",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“universe 默认 `TOP3000`”对多数区域错误（KOR TOP600、EUR TOP2500…）",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "universe 缺省 = config.REGIONS[<region>][default_universe]，并列出 KOR / AMR TOP600、EUR TOP2500、JPN TOP1600；测试逐区对照 config",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "分档判据有数值（描述覆盖≥80% 且均值>5 词；<30%）和依据（103 个 s1 键的审计）——好；但三档均“满足其一”，`model*` 集若描述覆盖≥80% 同时满足透明与",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "第 0 步加裁决序「黑盒 > 半透明 > 透明」（命中任一黑盒判据就按黑盒），并给跨档例：model109 描述覆盖率 ≥ 80% 但 model* 前缀命中黑盒 → 按黑盒",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "8 问 × 每字段 → 概念数无上限；RA 已实证“组合爆炸”（黑名单字段占 9.9% 却吃 49.4% 生成预算）；步 4 的 8 属性模板没有 GEM 需要的 **Implem",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "第 3 步加概念预算（缺省、经验值、非硬闸）：全部 8–12 个（半透明 ≤ 6）/ 每概念 1–2 字段 / 每问 ≤ 2 概念 / 同一字段至多进 2 个概念，并写理由（KOR fundamental17 首波 9.9% 黑名单字段吃 49.4% 预算）；第 4 步给 GEM 摄入契约：Concept / Implementation Example / Expected Exposure（取值取自 pipeline_reports._EXPOSURE_KEYWORDS）；示例块经真实 GEM 解析器解析出 3 块、占位符 = pv1 真实字段后缀、渲染后过规范校验器、窗口全是标准窗口",
+   "verify": "tests/unit/test_se_docs.py::test_fe_concept_block_example_parses_with_the_real_gem_parser_and_renders_valid_expressions"
   },
   "FE-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "输出写到相对路径 `./output_report/…_ideas.md`（该目录是审计报告目录，与运行 CWD 有关），同时又写 ledger；“DB 唯一事实源”与文件产物的主",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "产物目录改 data/gem_runs/output_report/manual_<REGION>_delay<D>_<ds>_ideas.md（GEM_REPORT_ROOT，data/ 已 gitignore；不再写与 CWD 有关的 ./output_report/），manual_ 前缀避开 GEM 重跑清理与节点的 fe_ 前缀（测试：run_pipeline 只清 gem_ 名）；主从关系写明：ledger 是事实源、ideas 文档是它指向的载荷；preprocessing 只作记录（测试：全仓只有节点自己 .get 它）",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "报告提纲（1–5 章、3.1–3.8）与 `OUTPUT_TEMPLATE.md`（325 行）内容重复，且提纲每项只是“度量××的概念”类空泛描述",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md | Claude/skills/brain-data-feature-engineering/OUTPUT_TEMPLATE.md",
+   "note": "报告提纲（1–5 章 / 3.1–3.8）从 SKILL 删除，只在 OUTPUT_TEMPLATE.md 保留（头部标「唯一提纲」并说明「{字段后缀}」占位约定）；SKILL 里一行指针",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“本 skill 不应当：让用户思考/提供通用模板”与节点的实际行为（确定性模板）矛盾；原则 5 条为泛化口号",
-   "cat": "逻辑·P3"
+   "cat": "逻辑·P3",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "删「本 skill 不应当…」与 5 条泛化原则，硬要求收进第 4 步（概念块契约）/ 第 5 步（落盘与台账）/ 验收 4 项；与节点确定性模板不再互相矛盾（两条路径分表说明）",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "示例数据集 `BEME`、字段 `book_value/market_cap/book_to_market` 疑为虚构（与“保持具体：引用真实字段名”自相矛盾）；未含窗口/表达式",
-   "cat": "情景·P3"
+   "cat": "情景·P3",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md | Claude/skills/brain-data-feature-engineering/examples.md",
+   "note": "SKILL 内示例换成 pv1 的真实字段（returns / volume / adv20）+ 标准窗口 + 可渲染表达式（真实 GEM 解析器 + 规范校验器实测通过）；examples.md 头部显式标「虚构的教学案例」（BEME 与 book_value 等不是真实字段 id）并指向 SKILL 的真实示例",
+   "verify": "tests/unit/test_se_docs.py::test_fe_concept_block_example_parses_with_the_real_gem_parser_and_renders_valid_expressions"
   },
   "FE-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "质量自查“**所有字段都被分析**”与第 0 步允许透明集**跳过 8 问**冲突；“新颖/避开传统思维陷阱”无法检验",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-data-feature-engineering/SKILL.md",
+   "note": "「所有字段都被分析」「新颖 / 避开传统思维陷阱」删；验收改 4 项可检产物：分档已写明（档位 + 命中判据）/ 概念块可被解析（Concept + Implementation Example + Expected Exposure、预算内、占位符对得上、标准窗口）/ 台账可读（get_ledger_key 返回 source == manual 且 ideas_md_path 文件存在）/ 无越界（白名单内、blocked 字段不入概念）",
+   "verify": "tests/unit/test_se_docs.py::test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent"
   },
   "FE-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "`brain-make-some-gem/scripts/trailSomeAlphas/skills/` 下的 `brain-data-feature-engineering`、",
-   "cat": "职责·P2"
+   "cat": "职责·P2",
+   "where": "tools/sync_gem_embedded_skill.py | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/README.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-data-feature-engineering/GENERATED.md | tests/unit/test_gem_skill_paths.py",
+   "note": "更正一个更大的事实：这两份内嵌 SKILL.md **从不拼进 LLM prompt**（build_prompt 只把 dfe「是否非空」当真值判断附固定 8 问提示，FI 完全不用；AST 测试钉死），所以「拆 prompt 部分 / 人读部分」不成立。落地的是另外三件：内嵌 dfe 目录加 GENERATED.md 标记；sync_gem_embedded_skill 改成 pairs 制（FI SKILL.md + dfe reference / examples / OUTPUT_TEMPLATE 四个文件，--check / --apply）；test_gem_skill_paths 守护扩到 dfe 三个文件（此前 reference.md 已漂移到 399 行旧稿）。顺带：解析实跑测试此前只认 Windows 的 Scripts/python.exe，在 Linux 永远 skip，现两种 venv 布局都认",
+   "verify": "tests/unit/test_gem_skill_paths.py::test_embedded_dfe_copies_match_authoritative"
   },
   "FI-01": {
    "status": "fixed",
@@ -1018,79 +1057,124 @@
    "verify": "tests/unit/test_se_docs.py::test_fb_init_workspace_defaults_to_read_only_and_write_path_is_opt_in"
   },
   "GM-01": {
-   "status": "open",
+   "status": "fixed",
    "title": "“`priors_snapshot_<region>` 只读消费，唯一写入方=assemble-priors；stale 只 WARN 不阻断，**不得据此认为‘已确认安全’**；",
-   "cat": "边界·🟢/P3"
+   "cat": "边界·🟢/P3",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "共享产物约定写明「agent 在每次开生成前先跑一次 assemble-priors（与 RA 步 4 同一条；stage 只是标签，路由按 subcommand）」；快照过期只 WARN、不据此认为已确认安全、刷新责任归步 9",
+   "verify": "tests/unit/test_se_docs.py::test_gm_priors_keys_and_prompt_nudge_claims_match_the_engine"
   },
   "GM-02": {
-   "status": "open",
+   "status": "fixed",
    "title": "下游写成“`check_batch` 多样性守卫 → `check_expr_against_inspect` 体检硬门 → `wave_gate` 闸 1–5”三段串联——实际应",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "下游改「调一个入口 tools/wave_gate.py（节点 wave_gate；内含闸 1–8、体检硬门、SEM、PF）」，明写 check_batch 已不是门禁，删「check_batch → check_expr_against_inspect → 闸 1–5」三段串联",
+   "verify": "tests/unit/test_se_docs.py::test_gm_ra_pregate_table_covers_the_module_rules_and_iron_rules_are_reconciled"
   },
   "GM-03": {
-   "status": "open",
+   "status": "fixed",
    "title": "一段 ≈400 字含 4 个主题：`pipeline_mode` 透传、headless 缺省改 phased、ideas 注入规则（模板渲染 source 不注入）、预闸内容（q",
-   "cat": "逻辑·P2"
+   "cat": "逻辑·P2",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step4-generation.md",
+   "note": "原 400 字一段拆成「ideas 注入 / 社区模板 / 预闸 / 两种模式」四条；预闸规则表只在 RA step4-generation.md §4.4 维护，GEM 侧只列自动动作类别并指向它，RA 表补上此前缺的两行（region_invalid_fields / region_vector_ts_forbidden，对照 pipeline_pregate 的四个 reason 与「WQB_GEM_MAX_PER_SKELETON 缺省 12」）；kb_templates --emit-ideas 产物 source = kb_templates.py 且是 JSON，写明不能直接当 ideas_file（测试用真实解析器喂它得 0 块）",
+   "verify": "tests/unit/test_se_docs.py::test_gm_mode_b_and_quality_estimation_and_emit_ideas_claims_hold"
   },
   "GM-04": {
-   "status": "open",
+   "status": "fixed",
    "title": "铁律 2“必须带 priors（默认 DB 快照，fail-closed）；`priors_file` 仅作覆盖”**正确**，印证 RA 硬约束 #2“必须带 `priors_f",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "铁律 2 保留「默认 DB 快照直读、fail-closed；priors_file 仅覆盖」并注明 RA 旧硬约束「必须带 priors_file」已过期（RA 侧同步）；ideas 注入补限定「source 非模板渲染（manual / s2_nested）且 ideas_md_path 存在且 pipeline_mode ≠ skeleton；显式 ideas_file 覆盖」——与 FE 注入表逐项同口径",
+   "verify": "tests/unit/test_se_docs.py::test_fe_source_injection_table_matches_the_engine_and_the_ledger_example_is_manual"
   },
   "GM-05": {
-   "status": "open",
+   "status": "fixed",
    "title": "“只消费 `wins`(≤6)/`dead_ends`(≤12) 两键，其余忽略”与 RA（`methodology`/`signal_family_rules` 作 region",
-   "cat": "边界·P2"
+   "cat": "边界·P2",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "以代码为准重写：引擎实际消费 wins（≤ 6）/ dead_ends（≤ 12）/ region_context（tier / settings_proven / key_notes ≤ 4）/ skeleton_field_matrix（有效 ≤ 6 / 死 ≤ 8 / 正交提示 ≤ 4）/ gate_priors 的 by_operator_count / by_field_family / avoid；by_decay / by_neutralization 不进 prompt；旧「只消费两键」标已更正。测试对 compact_priors_text 源码做切片断言",
+   "verify": "tests/unit/test_se_docs.py::test_gm_priors_keys_and_prompt_nudge_claims_match_the_engine"
   },
   "GM-06": {
-   "status": "open",
+   "status": "fixed",
    "title": "铁律 6 允许“第二腿之后每加一腿，须点名它修哪个闸（sub_universe/2Y/CW）”——即**用补腿修不达标的信号**，而 decision-table D3/RA“路线",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "铁律 6 统一为 RA 路线 A / 决策表 D3 的态度：不靠加腿修闸；多组件概念每个组件须写明经济角色（条件 / 分组 / 残差 / 同源对偶价差，RA 步 7 §7.7.2 的允许形态），「补它修 sub_universe / 2Y / CW」不是理由，CW 修法看 D6（margin 是数据集属性，补腿修不了）；给反例 add(rank(A), rank(B)) 与 0.4*rank(A)+0.6*rank(B)（闸 5 拦）",
+   "verify": "tests/unit/test_se_docs.py::test_gm_ra_pregate_table_covers_the_module_rules_and_iron_rules_are_reconciled"
   },
   "GM-07": {
-   "status": "open",
+   "status": "fixed",
    "title": "铁律 7 声明“旧规则强制每波 ≥1 个 Logical 算子已废除；算子多样性应是语义多样性的结果”——但 toolkit 闸 6 的契约仍可强制 `required_opera",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "铁律 7 三处对齐：语义多样性为准（≥ 3 Expected Exposure / ≥ 3 字段族 / ≥ 2 分组轴 / ≥ 2 时间尺度），同时如实写明闸 6 的批级契约仍在（required_operators + skeleton_quota 由 build-wave 确定性注入、闸 6 强制），所以 GEM 不为算子配额装饰、require_operators / require_count 只是 prompt 软提示（引擎自己写明权威保证是契约骨架注入）；--enhance-diversity 缺省 never 已在 build_wave 与 batch_simulator 两处落地（DEC-33..53 已定）",
+   "verify": "tests/unit/test_se_docs.py::test_gm_priors_keys_and_prompt_nudge_claims_match_the_engine"
   },
   "GM-08": {
-   "status": "open",
+   "status": "fixed",
    "title": "“Expected Exposure 会被验证：`risk_neutralized_sharpe`≈0/为负而 raw 高 ⇒ **该概念**就是暴露本身，判 dead_end 且",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md | Claude/skills/wq-brain-ra-pipeline/references/step7-diagnose.md",
+   "note": "范本保留：铁律 8 明写判死粒度 = 概念、不是数据集；RA 步 7 §7.4 已引用同一口径（想法级 dead_end 须全部变体 RN ≤ 0，并与 GEM 声明的 Expected Exposure 比对）",
+   "verify": "tests/unit/test_se_docs.py::test_gm_ra_pregate_table_covers_the_module_rules_and_iron_rules_are_reconciled"
   },
   "GM-09": {
-   "status": "open",
+   "status": "fixed",
    "title": "返回 `mode_b_required`（EXPECTED_BLOCK>0 时为真）后**做什么**没写；`quality_estimation` 与 wave_gate 的 qp",
-   "cat": "情景·P2"
+   "cat": "情景·P2",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "「mode_b_required = true 怎么办」：它是提示（quality_predict EXPECTED_BLOCK > 0，或 prod_first 且有字段族 prod ≥ 0.7；wave_gate 也用同一预估、只作建议标注、刻度历史上失准）→ 照常进步 5 门禁、不据它丢候选 / 判死 → 原因写进本波 key_findings → 步 7 走 Mode B 想法层（modeb_improve），不做同族参数变体；探针 / 修复批用 wave_gate --batch-type probe|repair 跳过 qp 标注。测试对节点与 wave_gate 源码逐项核对",
+   "verify": "tests/unit/test_se_docs.py::test_gm_mode_b_and_quality_estimation_and_emit_ideas_claims_hold"
   },
   "GM-10": {
-   "status": "open",
+   "status": "fixed",
    "title": "“直接命令”只写生成，**没有写入 DB 的一步**（产物契约又说“未验证 DB 有表达式，不得声称步 4 成功”）；`--dry-run` 只验证命令构建，未提“不验证 LLM ",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md | Claude/skills/brain-make-some-gem/scripts/headless_runner/README.md | Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py | Claude/skills/brain-make-some-gem/scripts/headless_runner/config.example.json | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_data.py",
+   "note": "直接命令补齐：run_pipeline 收尾自己把表达式写进 expressions（status=gem，wave = s2_<DS>_d<DELAY>）并打 [db] 行，核对 = list_expressions(region, wave) 有行（此前误以为手跑不落库，读源码后更正）；--dry-run 只验证命令构建、验证不了 LLM；不再 cd + 裸 python，改仓库根 ；--priors-from-db 必带区域值；LLM 通道 / 凭据前置表（MOONSHOT_API_KEY / MOONSHOT_BASE_URL / 缺省模型 kimi-k2.6，给了 ideas_file 不需要密钥）。代码：run.py 凭据优先级改「环境变量 > config.json」（此前 config.json 无条件覆盖环境变量），moonshot_api_key 在 --ideas-file 模式不再必填，只报缺失键名不回显值，启动打 [cred] 来源行；新增 config.example.json（全空模板）；README 删把口令写进命令行的示例",
+   "verify": "tests/unit/test_se_docs.py::test_gm_runner_credentials_env_beats_config_reports_only_names_and_relaxes_secrets"
   },
   "GM-11": {
-   "status": "open",
+   "status": "fixed",
    "title": "“看实时生成过程”：给了两种方式、**代价**（关窗口=杀任务，phased 无断点）与**默认选择**（`--watch`）——范式；但含 Windows 控制台专有细节（`DE",
-   "cat": "情景·🟢/P3"
+   "cat": "情景·🟢/P3",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "「看实时输出」默认 --watch；--detached --console 明标 **Windows 专有**（DETACHED_PROCESS | CREATE_NO_WINDOW 下终端天生看不到输出），代价（关窗口 = 杀任务、phased 无断点）保留；测试对 run.py 源码确认 Windows 分支",
+   "verify": "tests/unit/test_se_docs.py::test_gm_runner_writes_expressions_itself_and_the_documented_commands_are_valid"
   },
   "GM-12": {
-   "status": "open",
+   "status": "fixed",
    "title": "三段查找路径 + “旧位勿再用于新跑” + “文件不是真相源”；迁移事故（16 个产物文件混入仓库）交代清楚。含行号引用 `gem.py:1219`（会漂移）",
-   "cat": "边界·🟢"
+   "cat": "边界·🟢",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "行号引用 gem.py:1219 改函数名 _find_final_expressions（测试确认函数存在、行号文本消失）；三段查找路径 + 旧位勿再用于新跑 + 文件不是真相源 全部保留",
+   "verify": "tests/unit/test_se_docs.py::test_gm_mode_b_and_quality_estimation_and_emit_ideas_claims_hold"
   },
   "GM-13": {
-   "status": "open",
+   "status": "fixed",
    "title": "skill 目录解析顺序（env > skill_roots > 内嵌）、打印行 `[skill-doc] … OK/MISSING`、“看到 MISSING/`embedded:",
-   "cat": "情景·🟢"
+   "cat": "情景·🟢",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/skills/README.md | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/pipeline_paths.py | Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",
+   "note": "范式保留，并把维护警示补上——但按代码更正其前提：这两份 SKILL.md 不是运行时 prompt（旧文与 pipeline_paths / run_pipeline 里「拼进 LLM prompt」「以空内容」两处措辞都写反，已改）；[skill-doc] MISSING / embedded:legacy 的真实含义 = skill 目录解析异常（FI 目录同时承载 ace_lib / validator 脚本）；维护警示：改 scripts/ 须回归 GEM 全链路，validator.py 与 alpha-expression-verifier 权威版四处一起改，漂移由 test_gem_skill_paths 守护",
+   "verify": "tests/unit/test_se_docs.py::test_gm_skill_text_is_not_spliced_into_the_prompt_and_docs_stopped_saying_so"
   },
   "GM-14": {
-   "status": "open",
+   "status": "fixed",
    "title": "失败表缺**最具迷惑性的两种**：LLM 余额不足 `402 Insufficient Balance`（表现为“no meta.json within 90s”、干跑假绿，RA ",
-   "cat": "情景·P1"
+   "cat": "情景·P1",
+   "where": "Claude/skills/brain-make-some-gem/SKILL.md",
+   "note": "失败表新增 402 Insufficient Balance（表现为「no meta.json within 90s」、干跑假绿、不可重试、绕行 = 手写 manual ideas 走 ideas_file）与「LLM 通道不可达」（按 MOONSHOT_RETRIES 退避后抛）两行，401 改「看 [cred] 来源行」；stage 统一写 S2（stage 只是标签，路由按 subcommand，删 stage=S6 写法）；候选不足 → 显式扩容 / 分波 / 换数据集，不补参数变体凑数（与 RA 步 4 选波清单一致）",
+   "verify": "tests/unit/test_se_docs.py::test_gm_runner_writes_expressions_itself_and_the_documented_commands_are_valid"
   },
   "GM-15": {
-   "status": "open",
+   "status": "fixed",
    "title": "仍把**旧深嵌套路径**（`scripts/trailSomeAlphas/skills/brain-feature-implementation/data/...`）当**产物与",
-   "cat": "边界·P1"
+   "cat": "边界·P1",
+   "where": "Claude/skills/brain-make-some-gem/reference.md | Claude/skills/brain-make-some-gem/examples.md",
+   "note": "两份英文旧稿整体重写为中文并与 SKILL 对齐：reference 只放目录结构 / 模块职责 / workflow_gem 与节点的参数差异表（测试对照两者源码签名与缺省）/ run.py 参数 / 产物路径（data/gem_runs + DB，旧深嵌套位只标历史）/ 环境变量；examples 标准入口 = workflow_gem（此前把 run.py 当标准入口，与 SKILL 倒置），期望行为含落库核对，错误处理表 4 行（config 缺失 / 401 / 402 或 no meta.json / 候选不足）对应 SKILL 失败表的用户可见部分",
+   "verify": "tests/unit/test_se_docs.py::test_gm_mcp_and_node_parameters_match_the_reference_table"
   },
   "HF-01": {
    "status": "fixed",

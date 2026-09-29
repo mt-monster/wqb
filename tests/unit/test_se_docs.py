@@ -38,6 +38,8 @@ SE_SKILLS = (
     "brain-alpha-research-hypothesis-first",
     "brain-dataset-exploration-general",
     "brain-datafield-exploration-general",
+    "brain-data-feature-engineering",
+    "brain-make-some-gem",
 )
 
 
@@ -1211,3 +1213,358 @@ def test_df_settings_trap_and_cost_claims_are_backed_by_code():
     assert "`ts_median`" in t and "幽灵算子" in t and "ts_median" in __import__("wqb.config", fromlist=["GHOST_OPERATORS"]).GHOST_OPERATORS
     for link in re.findall(r"\]\((\.\./[a-z0-9-]+/SKILL\.md|reference\.md)\)", t):
         assert (DF / link).resolve().is_file(), link
+
+
+# ----------------------------------------------------------------------------- 共用：从源码取函数 / 参数缺省
+
+def _func_from_source(path, *names, extra_globals=None):
+    """不 import 整个模块（GEM 引擎的依赖在测试环境里不全），只把指定的顶层函数抽出来执行。"""
+    import os
+    tree = ast.parse(_read(path))
+    body = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in names]
+    assert {n.name for n in body} == set(names), f"{path} 里找不到 {names}"
+    ns = {"re": re, "os": os, "json": json, "Path": Path}
+    ns.update(extra_globals or {})
+    exec(compile(ast.Module(body=body, type_ignores=[]), str(path), "exec"), ns)
+    return ns
+
+
+def _signature_defaults(path, name, top_level=True):
+    tree = ast.parse(_read(path))
+    nodes = tree.body if top_level else list(ast.walk(tree))
+    fn = next(n for n in nodes if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == name)
+    a = fn.args
+    pos = a.posonlyargs + a.args
+    defaults = {arg.arg: ast.literal_eval(d) for arg, d in zip(pos[len(pos) - len(a.defaults):], a.defaults)}
+    return [x.arg for x in pos], defaults
+
+
+# ----------------------------------------------------------------------------- FE：feature-engineering
+
+FE = SKILLS / "brain-data-feature-engineering"
+GEM = SKILLS / "brain-make-some-gem"
+TRAIL = GEM / "scripts" / "trailSomeAlphas"
+_GEM_NODE = REPO / "src" / "wqb" / "workflow" / "nodes" / "gem.py"
+
+
+def test_fe_source_injection_table_matches_the_engine_and_the_ledger_example_is_manual():
+    from wqb.workflow.nodes import gem as gem_node
+    t = _read(FE / "SKILL.md")
+    assert gem_node.TEMPLATE_IDEAS_SOURCES == ("feature_engineering_node", "standalone", "standalone_v2")
+    for src in gem_node.TEMPLATE_IDEAS_SOURCES:
+        assert f"`{src}`" in t, src
+    assert '_tpl_sources = ("feature_engineering_node", "standalone", "standalone_v2")' in _read(TRAIL / "run_pipeline.py")
+    for tpl in ("feature_engineering_node", "standalone", "standalone_v2", "standalone (x)"):
+        assert gem_node.is_template_ideas_source(tpl), tpl
+    for real in ("manual", "s2_nested", "kb_templates.py", None, ""):
+        assert not gem_node.is_template_ideas_source(real), real
+    m = re.search(r"```json\n(\{\"dataset\".*?)\n```", t, re.S)
+    assert m, "FE SKILL 里找不到台账 JSON 示例"
+    raw = re.sub(r",\s*\.\.\.", "", m.group(1))                    # 示例里的省略号
+    raw = re.sub(r"(?<![\"\w])<[^>\"]+>", "0", raw)                 # 未加引号的占位符（<DELAY> / <概念数>）
+    rec = json.loads(raw)
+    assert rec["source"] == "manual" and {"ideas_md_path", "field_whitelist", "concept_count", "preprocessing"} <= set(rec)
+    assert "写成 `standalone` 会被 GEM 静默忽略" in t
+
+
+def test_fe_ledger_readers_and_gate_claims_hold():
+    t = _read(FE / "SKILL.md")
+    assert "field_whitelist" in _read(REPO / "tools" / "s2_field_validator.py")
+    assert 's1_key = f"s1_{dataset}_d1"' in _read(REPO / "src" / "wqb" / "workflow" / "nodes" / "campaign.py")
+    assert not re.search(r"s1_", _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "gate.py")), "闸 1–5 现在读 s1_ 键了？改 FE SKILL"
+    assert "toolkit 的闸 1–5 不读它" in t
+    readers = []
+    for root in (REPO / "src", REPO / "tools", MCP_DIR, SKILLS):
+        for f in root.rglob("*.py"):
+            if ".venv" in f.parts or "attic" in f.parts:
+                continue
+            if re.search(r"\.get\(\s*[\"']preprocessing[\"']", _read(f)):
+                readers.append(str(f.relative_to(REPO)))
+    assert readers == ["src/wqb/workflow/nodes/feature_engineering.py"], readers        # 只有节点自己回显
+    assert "`preprocessing` **只作记录**" in t
+    assert "campaign.py" in t and "ledger" in _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "campaign.py")
+
+
+def test_fe_concept_block_example_parses_with_the_real_gem_parser_and_renders_valid_expressions():
+    t = _read(FE / "SKILL.md")
+    m = re.search(r"```markdown\n(.*?)\n```", t, re.S)
+    assert m, "FE SKILL 里找不到概念块示例"
+    ns = _func_from_source(TRAIL / "pipeline_reports.py", "extract_template_blocks")
+    blocks = ns["extract_template_blocks"](m.group(1))
+    assert len(blocks) == 3 and 3 <= 12
+    labels = set(re.findall(r'\("([a-z]+)", \[', _read(TRAIL / "pipeline_reports.py").split("_EXPOSURE_KEYWORDS", 1)[1].split("]\n\n", 1)[0])) | {"other"}
+    pv1 = {"returns", "volume", "adv20", "close", "vwap", "cap"}
+    spec = importlib.util.spec_from_file_location("_fe_validator", SKILLS / "alpha-expression-verifier" / "scripts" / "validator.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_fe_validator"] = mod
+    spec.loader.exec_module(mod)
+    v = mod.ExpressionValidator()
+    for b in blocks:
+        tpl = b["template"]
+        holes = set(re.findall(r"\{([A-Za-z0-9_]+)\}", tpl))
+        assert holes and holes <= pv1, (tpl, holes)                                     # 占位符 = pv1 的真实字段后缀
+        rendered = tpl.format(**{h: h for h in holes})
+        r = v.check_expression(rendered)
+        assert r["valid"], (rendered, r["errors"])
+        for w in re.findall(r",\s*(\d+)\)", rendered):
+            assert int(w) in (1, 5, 22, 66, 252, 504, 1008, 1260), (rendered, w)
+        exp = re.search(r"\*\*Expected Exposure\*\*\s*:\s*([a-z]+)", b["idea"], re.I)
+        assert exp and exp.group(1).lower() in labels, b["idea"]
+    assert "No **Concept** blocks with **Implementation Example** found" in _read(TRAIL / "run_pipeline.py")
+    assert "[validate] 丢弃" in _read(TRAIL / "run_pipeline.py")
+
+
+def test_fe_paths_universe_tiers_budget_and_template_docs_are_consistent():
+    from wqb import config
+    t = _read(FE / "SKILL.md")
+    paths = _read(TRAIL / "pipeline_paths.py")
+    assert 'GEM_REPORT_ROOT = GEM_DATA_ROOT / "output_report"' in paths and 'repo / "data" / "gem_runs"' in paths
+    assert "data/gem_runs/output_report/manual_<REGION>_delay<D>_<ds>_ideas.md" in t and "./output_report/" in t
+    rp = _read(TRAIL / "run_pipeline.py")
+    assert 'f"gem_{args.region}_delay{args.delay}_{args.dataset_id}_ideas.md"' in rp and "manual_" not in rp      # 重跑清理不会误删 manual_
+    for r, u in (("KOR", "TOP600"), ("AMR", "TOP600"), ("EUR", "TOP2500"), ("JPN", "TOP1600")):
+        assert config.REGIONS[r]["default_universe"] == u and f"{r} " in t
+    assert 'config.REGIONS[<region>]["default_universe"]' in t
+    assert "黑盒 > 半透明 > 透明" in t and "`model109`" in t and "8–12 个" in t
+    assert "### 第" not in t and "3.1 稳定性特征" not in t and "OUTPUT_TEMPLATE.md" in t          # 报告提纲只在模板文件里
+    tpl = _read(FE / "OUTPUT_TEMPLATE.md")
+    assert "唯一提纲" in tpl and "`{字段后缀}`" in tpl
+    assert "虚构的教学案例" in _read(FE / "examples.md").split("## Dataset Overview", 1)[0]
+    assert "第 3 步 8 问" not in t.split("## 第 0 步", 1)[0]
+    for name in ("OUTPUT_TEMPLATE.md", "reference.md", "examples.md"):
+        assert f"[`{name}`]({name})" in t and (FE / name).is_file(), name
+    head = t.split("## 第 0 步", 1)[0]
+    assert "**不选数据集**（没有 `dataset_id` → 回 RA 步 2，不自行挑）" in head and "基于元数据选择" not in t        # FE-04：选集属 S0
+    assert "本 skill 不应当" not in t and "## 原则" not in t and "所有字段都被分析" not in t                        # FE-10 / FE-12：口号与不可检的自查删掉
+    acceptance = t.split("## 验收", 1)[1].split("## references", 1)[0]
+    assert re.findall(r"^(\d)\. \*\*", acceptance, re.M) == list("1234") and "get_ledger_key" in acceptance        # 每项对应一个可检产物
+    assert "闸 6 的收益来源多样性读它" in t and "concept-taxonomy-map.md" in t and (SKILLS / "wq-brain-ra-pipeline" / "references" / "concept-taxonomy-map.md").is_file()
+
+
+# ----------------------------------------------------------------------------- GM：make-some-gem
+
+def test_gm_skill_text_is_not_spliced_into_the_prompt_and_docs_stopped_saying_so():
+    fn = next(n for n in ast.walk(ast.parse(_read(TRAIL / "pipeline_prompts.py")))
+              if isinstance(n, ast.FunctionDef) and n.name == "build_prompt")
+    for pname, allowed_uses in (("feature_implementation_skill_md", 0), ("feature_engineering_skill_md", 1)):
+        loads = [n for n in ast.walk(fn) if isinstance(n, ast.Name) and n.id == pname and isinstance(n.ctx, ast.Load)]
+        assert len(loads) == allowed_uses, (pname, len(loads))
+    if_tests = [n.test for n in ast.walk(fn) if isinstance(n, ast.If)]
+    assert any(isinstance(x, ast.Name) and x.id == "feature_engineering_skill_md" for x in if_tests), "dfe 只应作真值判断"
+    for f in (TRAIL / "pipeline_paths.py", TRAIL / "run_pipeline.py"):
+        txt = _read(f)
+        assert "拼进 LLM prompt" not in txt and "以空内容" not in txt, f.name
+    t = _read(GEM / "SKILL.md")
+    assert "正文从不进 LLM prompt" in t and "skill 目录解析异常" in t
+    assert "引擎读**两份 SKILL.md 拼进 LLM prompt**" not in t
+    assert "正文从不拼进 LLM prompt" in _read(TRAIL / "skills" / "README.md")
+
+
+def test_gm_priors_keys_and_prompt_nudge_claims_match_the_engine():
+    src = _read(TRAIL / "economic_priors.py")
+    body = src.split("def compact_priors_text", 1)[1].split("\ndef shape_constraint_rules", 1)[0]
+    used = set(re.findall(r'priors\.get\("([a-z_]+)"\)', body))
+    assert used == {"region_context", "wins", "dead_ends", "skeleton_field_matrix", "gate_priors"}, used
+    assert "by_decay" not in body and "by_neutralization" not in body
+    t = _read(GEM / "SKILL.md")
+    for k in used:
+        assert f"`{k}`" in t, k
+    assert "只消费 `wins` / `dead_ends` 两个键」是错的" in t
+    assert "wins[:6]" in body and "dead[:12]" in body and "notes[:4]" in body
+    assert "eff[:6]" in body and "mdead[:8]" in body and "hints[:4]" in body and "有效 ≤ 6 / 死 ≤ 8 / 正交提示 ≤ 4" in t
+    assert "agent 在**每次开生成前先跑一次**" in t and "`stage` 只是标签" in t and 'stage="S6"' not in t                # GM-01 / GM-14
+    assert "soft nudge only" in _read(TRAIL / "pipeline_prompts.py") and "软提示" in t
+    assert 'default="never"' in _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "build_wave.py").split('"--enhance-diversity"', 1)[1][:120]
+    assert "enhance_diversity: str = \"never\"" in _read(SKILLS / "brain-sim-alphas-in-batch-and-track" / "scripts" / "batch_simulator.py")
+
+
+def test_gm_mcp_and_node_parameters_match_the_reference_table():
+    mcp_names, mcp_def = _signature_defaults(MCP_DIR / "tools_workflow.py", "workflow_gem", top_level=False)
+    node_names, node_def = _signature_defaults(_GEM_NODE, "run")
+    only_node = {"batch_size", "require_operators", "require_count", "prod_first", "prod_first_top_k"}
+    assert only_node <= set(node_names) and not (only_node & set(mcp_names))
+    assert set(mcp_names) - {"dry_run"} <= set(node_names)
+    assert node_def["pipeline_mode"] == "phased" and mcp_def["pipeline_mode"] is None
+    assert node_def["priors_from_db"] is True and mcp_def["priors_from_db"] is True
+    assert node_def["detached"] is True and node_def["batch_size"] == 100 and node_def["require_count"] == 2
+    assert node_def["prod_first"] is False and node_def["prod_first_top_k"] == 2
+    ref = _read(GEM / "reference.md")
+    for n in only_node:
+        assert f"`{n}`" in ref
+    assert "`workflow_execute(node=\"gem\", params={…})`" in _read(GEM / "SKILL.md")
+    assert 'GEM_META_TIMEOUT_SEC", "90"' in _read(_GEM_NODE) and "`GEM_META_TIMEOUT_SEC`" in ref
+
+
+def _load_runner():
+    spec = importlib.util.spec_from_file_location("_gem_run", GEM / "scripts" / "headless_runner" / "run.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["_gem_run"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_gm_runner_credentials_env_beats_config_reports_only_names_and_relaxes_secrets(tmp_path, monkeypatch):
+    run = _load_runner()
+
+    def clear_creds():
+        for k in ("CREDENTIALS_EMAIL", "CREDENTIALS_PASSWORD", "BRAIN_USERNAME", "BRAIN_EMAIL", "BRAIN_PASSWORD", "MOONSHOT_API_KEY", "MOONSHOT_BASE_URL"):
+            monkeypatch.setenv(k, "x")                                       # 先登记原值：run.py 直接写 os.environ 的痕迹也会在收尾时被清掉
+            monkeypatch.delenv(k)
+
+    clear_creds()
+    cfg_path = tmp_path / "c.json"
+    base = {"moonshot_base_url": "https://llm.example/v1", "moonshot_model": "m"}
+    cfg_path.write_text(json.dumps(base), encoding="utf-8")
+    with pytest.raises(ValueError) as e:                                     # 什么都没有：报缺哪些键，不含任何值
+        run._load_required_config(cfg_path)
+    assert "brain_email" in str(e.value) and "moonshot_api_key" in str(e.value) and "llm.example" not in str(e.value)
+    with pytest.raises(ValueError) as e2:                                    # --ideas-file 不调 LLM：不再要 LLM 密钥，BRAIN 账号仍要
+        run._load_required_config(cfg_path, ideas_file="x.md")
+    assert "brain_email" in str(e2.value) and "moonshot_api_key" not in str(e2.value).split("Please edit")[0]
+    monkeypatch.setenv("CREDENTIALS_EMAIL", "env-user@example.com")
+    monkeypatch.setenv("CREDENTIALS_PASSWORD", "env-pass")
+    with pytest.raises(ValueError, match="moonshot_api_key"):
+        run._load_required_config(cfg_path)                                  # BRAIN 账号齐了，LLM 密钥仍要
+    run._load_required_config(cfg_path, ideas_file="x.md")                   # --ideas-file 不调 LLM，不要密钥
+    monkeypatch.setenv("MOONSHOT_API_KEY", "env-key")
+    cfg = run._load_required_config(cfg_path)
+    cfg_secret = dict(cfg, brain_email="cfg-user@example.com", brain_password="cfg-pass", moonshot_api_key="cfg-key")
+    src = run._apply_runtime_credentials(cfg_secret)
+    assert src == {"brain": "env", "moonshot": "env"}                        # 环境变量 > config.json（此前是反的）
+    assert os_environ("BRAIN_EMAIL") == "env-user@example.com" and os_environ("MOONSHOT_API_KEY") == "env-key"
+    assert not any("env-pass" in str(v) or "cfg-pass" in str(v) for v in src.values())
+    clear_creds()                                                            # 环境里什么都没有 → 回落 config.json
+    src = run._apply_runtime_credentials(cfg_secret)
+    assert src == {"brain": "config.json", "moonshot": "config.json"} and os_environ("BRAIN_EMAIL") == "cfg-user@example.com"
+    assert run._env_auth_ok() == (True, "ok")
+    clear_creds()
+    ok, msg = run._env_auth_ok()
+    assert not ok and "CREDENTIALS_EMAIL" in msg
+    assert run._apply_runtime_credentials(dict(base)) == {"brain": "config.json", "moonshot": "none"}     # 都没有：如实报 none
+    ns = _func_from_source(TRAIL / "pipeline_data.py", "load_brain_credentials", "load_brain_credentials_from_env_or_args")
+    monkeypatch.setenv("BRAIN_USERNAME", "legacy@example.com"); monkeypatch.setenv("BRAIN_PASSWORD", "legacy-pass")
+    monkeypatch.setenv("CREDENTIALS_EMAIL", "std@example.com"); monkeypatch.setenv("CREDENTIALS_PASSWORD", "std-pass")
+    assert ns["load_brain_credentials_from_env_or_args"](None, None, Path("/nonexistent")) == ("std@example.com", "std-pass")
+    monkeypatch.delenv("CREDENTIALS_EMAIL"); monkeypatch.delenv("CREDENTIALS_PASSWORD")
+    assert ns["load_brain_credentials_from_env_or_args"](None, None, Path("/nonexistent")) == ("legacy@example.com", "legacy-pass")
+
+
+def os_environ(key):
+    import os
+    return os.environ.get(key)
+
+
+def test_gm_config_example_is_secret_free_named_by_the_node_and_never_synced_as_config_json():
+    import sync_skills
+    hr = GEM / "scripts" / "headless_runner"
+    ex = json.loads(_read(hr / "config.example.json"))
+    assert {"brain_email", "brain_password", "moonshot_base_url", "moonshot_model", "moonshot_api_key", "pipeline_mode"} <= set(ex)
+    for k in ("brain_email", "brain_password", "moonshot_api_key"):
+        assert ex[k] == "", k
+    assert ex["moonshot_model"] == re.search(r'--moonshot-model", default="([^"]+)"', _read(TRAIL / "run_pipeline.py")).group(1)
+    assert "config.example.json" in _read(_GEM_NODE)
+    assert "**/config.json" in _read(REPO / ".gitignore").split("Python", 1)[0]
+    assert sync_skills._is_ignored(Path("brain-make-some-gem/scripts/headless_runner/config.json"))
+    assert not sync_skills._is_ignored(Path("brain-make-some-gem/scripts/headless_runner/config.example.json"))
+    readme = _read(hr / "README.md")
+    assert 'BRAIN_PASSWORD="your_password"' not in readme and "口令不要写在命令行参数里" in readme
+
+
+def test_gm_runner_writes_expressions_itself_and_the_documented_commands_are_valid():
+    rp = _read(TRAIL / "run_pipeline.py")
+    assert 'st.upsert_expressions(' in rp and 'status="gem"' in rp and 's2_{dataset_id}_d{args.delay}' in rp
+    assert '"source": "s2_nested"' in rp and 'print(f"[db] expressions/{args.region}/{wave}' in rp
+    run_src = _read(GEM / "scripts" / "headless_runner" / "run.py")
+    assert '"--wave"' not in run_src and '"--priors-from-db", default=None' in run_src and "nargs" not in run_src.split('"--priors-from-db"', 1)[1][:200]
+    for doc in (GEM / "SKILL.md", GEM / "scripts" / "headless_runner" / "README.md", GEM / "reference.md"):
+        txt = _read(doc)
+        assert not re.search(r"--priors-from-db\s+--", txt), f"{doc.name}: --priors-from-db 后面漏了区域值"
+        assert "cd scripts/headless_runner" not in txt, doc.name
+    t = _read(GEM / "SKILL.md")
+    assert "`mcp__wqb-db__list_expressions(region, wave)` 有行" in t and "看不到行，不得声称步 4 成功" in t
+    assert "resp.status_code in (401, 402, 403)" in run_src and "MOONSHOT_RETRIES\", \"3\"" in run_src and 'MOONSHOT_RETRIES", "2"' in _read(TRAIL / "pipeline_llm.py")
+    assert "DETACHED_PROCESS" in run_src and "**Windows 专有**" in t
+    fail = t.split("## 失败分支", 1)[1].split("## 反模式", 1)[0]
+    for row in ("**「no meta.json within 90s」**", "**`402 Insufficient Balance`**", "**LLM 通道不可达**", "`401 Incorrect authentication credentials`",
+                "| 候选不足 |", "**不补参数变体凑数**"):
+        assert row in fail, row                                                     # GM-14：最具迷惑性的两种故障进了失败表
+    assert "LLM 余额不足" in fail and "不可重试" in fail and "干跑也验证不了" in fail
+
+
+def test_gm_ra_pregate_table_covers_the_module_rules_and_iron_rules_are_reconciled():
+    pre = _read(TRAIL / "pipeline_pregate.py")
+    ra = _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step4-generation.md")
+    for reason in ("bucket_missing_range", "region_invalid_group_field", "region_invalid_field", "region_vector_ts_forbidden"):
+        assert f'"{reason}"' in pre, reason
+    for token in ("region_invalid_fields", "region_vector_ts_forbidden", "`WQB_GEM_MAX_PER_SKELETON`，缺省 12"):
+        assert token in ra, token
+    assert 'os.environ.get("WQB_GEM_MAX_PER_SKELETON", "12")' in pre
+    t = _read(GEM / "SKILL.md")
+    assert "规则表只在一处维护" in t and "step4-generation.md" in t
+    assert "每加一腿都必须点名" not in t and "不靠加腿修闸" in t and "决策表 D3" in t and "D6" in t
+    gate6 = _read(SKILLS / "wq-brain-campaign-toolkit" / "references" / "gate-rules.md")
+    assert "required_operators" in gate6 and "per_batch_min_operators" in gate6 and "确定性注入" in t and "闸 6 的批级契约仍在" in t
+    assert "build_wave contract skeleton injection" in _read(TRAIL / "pipeline_prompts.py")
+    assert "调**一个入口** `tools/wave_gate.py`" in t and "`check_batch` 已不是门禁" in t and (REPO / "tools" / "wave_gate.py").is_file()   # GM-02
+    assert "判死粒度 = 概念，不是数据集" in t and "想法级 `dead_end`" in _read(SKILLS / "wq-brain-ra-pipeline" / "references" / "step7-diagnose.md")   # GM-08
+
+
+def test_gm_mode_b_and_quality_estimation_and_emit_ideas_claims_hold():
+    node = _read(_GEM_NODE)
+    assert 'result["mode_b_required"] = True' in node and 'quality_result.get("expected_block_count", 0) > 0' in node
+    assert 'prod_first_result.get("blocked_families", 0) > 0' in node
+    wg = _read(REPO / "tools" / "wave_gate.py")
+    assert "ADVISORY_HARD" in wg and "qp_mod.predict_all" in wg and '"--batch-type"' in wg
+    reg = _read(REPO / "src" / "wqb" / "workflow" / "registry.py")
+    assert "modeb_improve" in reg
+    t = _read(GEM / "SKILL.md")
+    for tok in ("mode_b_required = true", "modeb_improve", "--batch-type probe|repair", "tools/quality_predict.py"):
+        assert tok in t, tok
+    kb = _read(REPO / "tools" / "kb_templates.py")
+    assert '"source": "kb_templates.py"' in kb and "json.dump(ideas" in kb
+    ns = _func_from_source(TRAIL / "pipeline_reports.py", "extract_template_blocks", "extract_table_template_blocks",
+                           "extract_named_template_blocks")
+    assert ns["extract_template_blocks"](json.dumps({"ideas": [{"template": "rank({x})"}]})) == []       # JSON 不是 ideas markdown
+    assert "**不能直接当 `ideas_file`**" in t
+    assert "gem.py:1219" not in t and "_find_final_expressions" in t and "def _find_final_expressions" in _read(_GEM_NODE)
+
+
+def test_gm_vendored_ace_lib_import_time_dependencies_are_declared_for_the_mcp_venv():
+    """GEM / sim-alphas / feature-implementation / inspect-raw 共用 vendored `ace_lib`：其顶层 import 的第三方包必须写进
+    MCP `requirements.txt`——否则按文档建的 venv 里 `pipeline_paths` 一 import 就 `No module named 'tqdm'`
+    （2026-09-29 在云端容器里才暴露：本机 venv 是手工补装过的，`test_gem_skill_paths` 的实跑解析在非 Windows 上又一直被 skip）。"""
+    req = _read(MCP_DIR / "requirements.txt")
+    declared = {re.split(r"[<>=!~\[;\s]", ln.strip(), maxsplit=1)[0].lower().replace("_", "-")
+                for ln in req.splitlines() if ln.strip() and not ln.lstrip().startswith("#")}
+    std = sys.stdlib_module_names
+    local = {"ace_lib", "helpful_functions"}
+    seen = set()
+    for name in ("ace_lib.py", "helpful_functions.py"):
+        for node in ast.parse(_read(SKILLS / "brain-feature-implementation" / "scripts" / name)).body:
+            if isinstance(node, ast.Import):
+                mods = [a.name.split(".")[0] for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                mods = [node.module.split(".")[0]]
+            else:
+                continue
+            for m in mods:
+                if m in std or m in local:
+                    continue
+                seen.add(m)
+                assert m.lower().replace("_", "-") in declared, f"{name} 顶层 import {m}，但 MCP requirements.txt 没声明"
+    assert {"pandas", "requests", "tqdm"} <= seen, seen
+    assert "jinja2" in declared and "pandas.io.formats.style" in _read(SKILLS / "brain-feature-implementation" / "scripts" / "helpful_functions.py")
+    assert "_MCP_VENV = _find_mcp_venv()" in _read(REPO / "tests" / "unit" / "test_gem_skill_paths.py")     # POSIX 布局也要能实跑
+
+
+def test_gm_embedded_readme_and_maintenance_guards_are_documented():
+    t = _read(GEM / "SKILL.md")
+    assert "tests/unit/test_gem_skill_paths.py" in t and "python tools/sync_gem_embedded_skill.py --apply" in t
+    assert "`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改" in t
+    readme = _read(TRAIL / "skills" / "README.md")
+    assert "从不拼进 LLM prompt" in readme and "GENERATED.md" in readme
+    for f in ("reference.md", "examples.md"):
+        txt = _read(GEM / f)
+        assert "skills/brain-feature-implementation/data/{datasetID}" not in txt.split("旧位", 1)[0]
+        assert "data/gem_runs" in txt or f == "examples.md"
+        assert not re.search(r"^[A-Z][a-z]+ .*\b(should|must)\b", txt, re.M), f"{f} 还是英文旧稿"

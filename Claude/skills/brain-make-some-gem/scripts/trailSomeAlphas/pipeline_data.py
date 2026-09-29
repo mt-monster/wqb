@@ -29,8 +29,10 @@ def load_brain_credentials(config_path: Path) -> tuple[str, str]:
 
 
 def load_brain_credentials_from_env_or_args(username: str | None, password: str | None, config_path: Path) -> tuple[str, str]:
-    env_user = os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL")
-    env_pass = os.environ.get("BRAIN_PASSWORD")
+    # 标准名 CREDENTIALS_* 优先（与 MCP 服务 / toolkit 同名），旧别名 BRAIN_* 兜底
+    env_user = (os.environ.get("CREDENTIALS_EMAIL") or os.environ.get("BRAIN_USERNAME")
+                or os.environ.get("BRAIN_EMAIL"))
+    env_pass = os.environ.get("CREDENTIALS_PASSWORD") or os.environ.get("BRAIN_PASSWORD")
     final_user = username or env_user
     final_pass = password or env_pass
     if final_user and final_pass:

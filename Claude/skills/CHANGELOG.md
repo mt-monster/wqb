@@ -6,6 +6,13 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**brain-data-feature-engineering / brain-make-some-gem（S-E-5）**
+- feature-engineering：SKILL 重写为「两条产物路径」——节点 = 确定性模板（`source=feature_engineering_node`，GEM 不注入）/ agent 人工 = `source=manual`（注入）——与 `source → 是否注入` 对照表（对照 `gem.py::TEMPLATE_IDEAS_SOURCES`）；台账示例此前写 `source: "standalone"`，照做的人工产物会被 GEM 静默忽略；概念预算 8–12、GEM 摄入契约（Concept / Implementation Example / Expected Exposure）、示例换 `pv1` 真实字段并经真实 GEM 解析器 + 规范校验器实测；产物路径 `data/gem_runs/output_report/manual_…`；提纲只在 `OUTPUT_TEMPLATE.md`；验收改 4 项可检产物 → FE-01…13 / DEC-54
+- make-some-gem：**更正**「两份 SKILL.md 拼进 LLM prompt」（旧文、内嵌 README、两处代码注释都写反；AST 测试钉死正文从不进 prompt）；priors 键与上限以代码为准；铁律 6 / 7 与 RA D3 / 闸 6 契约对齐；`mode_b_required` 动作；落库核对（`run_pipeline` 自己写 `expressions`）；失败表增 `402` / LLM 通道不可达；`reference.md` / `examples.md` 英文旧稿 → 中文重写 → GM-01…15 / DEC-55
+- **行为变更**：GEM headless runner 凭据优先级改为「环境变量 > `config.json`」（此前 `config.json` 无条件覆盖环境变量）；`--ideas-file` 模式不再要求 `moonshot_api_key`；缺键只报键名；启动打印 `[cred]` 来源行；新增全空 `config.example.json`；`sync_skills` 不再把 `config.json` 复制到安装位（也不再同步 `*.log` 运行时日志——vendored `ace_lib` 一 import 就在 CWD 建 `ace.log`）→ DEC-56 / DEC-57
+- 内嵌 dfe 副本纳入同步与守护（`sync_gem_embedded_skill.py` 改 pairs 制；`reference.md` 此前已漂移到 399 行旧稿）+ `GENERATED.md` 标记
+- 可移植性：MCP `requirements.txt` 补 `tqdm` / `Jinja2`（vendored `ace_lib` / `helpful_functions` 顶层依赖，此前按文档建的 venv 里 GEM 等一 import 就失败）；`test_gem_skill_paths` 实跑解析认 POSIX venv 布局 → DEC-57
+
 **field-quality / news-sentiment / hypothesis-first / dataset-exploration / datafield-exploration（S-E-4）**
 - field-quality：`alphaCount` 先验**分阶段**（选方向用、造批服从 RA 步 3 §3.3、饱和集不叠加）；五个「拥挤度」数字标明各自的轴与源码（测试逐项对照）；区域切换预筛自检明示为工具级、未接入节点，数据包不覆盖的区域走 `--source exempt`；规则 13 补「理论下限 vs 硬门代码口径」两层 → FQ-01…08 / DEC-51
 - news-sentiment：6 桶 / 每批目标明示为**指引、无代码闸**（`news_loop.py`、Beta 桶采样、`wqb news-refresh-portfolio` 都不存在），6 桶表内联并由测试对照矩阵；Tier A 改候选来源 + 路由前三查；Tier B 三分支；分类器事实更正（覆盖只有 news12、缓存路径、`novelty` 归 attention、无调用方）；news12 字段码 M → C；四份 `docs/reference/news*.md` 原位修正 → NS-01…06 / DEC-49

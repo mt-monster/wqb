@@ -341,7 +341,26 @@ def _launch_detached(cmd: list[str], cwd: Path, task_id: str, tasks_dir: Path, m
     return proc.pid, task_dir
 
 
-def _load_required_config(config_path: Path) -> dict:
+#: BRAIN 账号的环境变量名：标准名（与 MCP 服务 / toolkit / feature-implementation 同名）优先，旧别名兜底。
+_BRAIN_USER_ENVS = ("CREDENTIALS_EMAIL", "BRAIN_USERNAME", "BRAIN_EMAIL")
+_BRAIN_PASS_ENVS = ("CREDENTIALS_PASSWORD", "BRAIN_PASSWORD")
+
+
+def _first_env(names) -> str:
+    for name in names:
+        value = os.environ.get(name)
+        if value and value.strip():
+            return value.strip()
+    return ""
+
+
+def _load_required_config(config_path: Path, ideas_file: str | None = None) -> dict:
+    """读 config.json 并校验必填项。**只报缺哪些键，不回显任何值。**
+
+    非密钥项（`moonshot_base_url` / `moonshot_model`）永远必填；密钥项按「环境变量能否提供」放宽：
+    BRAIN 账号——环境变量 `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`（或旧别名）齐了就不必写进 config.json；
+    LLM 密钥——环境变量 `MOONSHOT_API_KEY` 有了、或给了 `--ideas-file`（不调 LLM）就不必要。
+    """
     if not config_path.exists():
         raise ValueError(f"Config file not found: {config_path}")
 
@@ -350,13 +369,11 @@ def _load_required_config(config_path: Path) -> dict:
     except Exception as exc:
         raise ValueError(f"Failed to parse config file: {config_path}. Error: {exc}")
 
-    required_keys = [
-        "brain_email",
-        "brain_password",
-        "moonshot_base_url",
-        "moonshot_model",
-        "moonshot_api_key",
-    ]
+    required_keys = ["moonshot_base_url", "moonshot_model"]
+    if not (_first_env(_BRAIN_USER_ENVS) and _first_env(_BRAIN_PASS_ENVS)):
+        required_keys += ["brain_email", "brain_password"]
+    if not ideas_file and not os.environ.get("MOONSHOT_API_KEY", "").strip():
+        required_keys.append("moonshot_api_key")
 
     missing = []
     for key in required_keys:
@@ -368,18 +385,49 @@ def _load_required_config(config_path: Path) -> dict:
         raise ValueError(
             "Missing required config fields: "
             + ", ".join(missing)
-            + f". Please edit {config_path} and fill them."
+            + f". Please edit {config_path} and fill them"
+            + "（BRAIN 账号也可由环境变量 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD 提供，LLM 密钥由 MOONSHOT_API_KEY 提供）."
         )
 
     return data
 
+
+def _apply_runtime_credentials(cfg: dict) -> dict:
+    """把凭据写进子进程环境（下游读 BRAIN_EMAIL / BRAIN_PASSWORD / MOONSHOT_*）。
+
+    **环境变量 > config.json**（此前是 config.json 无条件覆盖环境变量）。返回各项凭据的**来源**
+    （env / config.json / none），绝不返回、不打印值。
+    """
+    sources: dict[str, str] = {}
+    user, pwd = _first_env(_BRAIN_USER_ENVS), _first_env(_BRAIN_PASS_ENVS)
+    if user and pwd:
+        sources["brain"] = "env"
+    else:
+        sources["brain"] = "config.json"
+        user = str(cfg.get("brain_email") or "").strip()
+        pwd = str(cfg.get("brain_password") or "").strip()
+    os.environ["BRAIN_EMAIL"] = user
+    os.environ["BRAIN_PASSWORD"] = pwd
+
+    key = os.environ.get("MOONSHOT_API_KEY", "").strip()
+    if key:
+        sources["moonshot"] = "env"
+    else:
+        key = str(cfg.get("moonshot_api_key") or "").strip()
+        sources["moonshot"] = "config.json" if key else "none"
+    if key:
+        os.environ["MOONSHOT_API_KEY"] = key
+    os.environ["MOONSHOT_BASE_URL"] = str(cfg["moonshot_base_url"]).strip()
+    return sources
+
+
 def _env_auth_ok() -> tuple[bool, str]:
-    user = os.environ.get("BRAIN_USERNAME") or os.environ.get("BRAIN_EMAIL")
-    pwd = os.environ.get("BRAIN_PASSWORD")
+    user = _first_env(_BRAIN_USER_ENVS)
+    pwd = _first_env(_BRAIN_PASS_ENVS)
     if not user:
-        return False, "Missing BRAIN_USERNAME or BRAIN_EMAIL"
+        return False, "Missing CREDENTIALS_EMAIL (or legacy BRAIN_USERNAME / BRAIN_EMAIL)"
     if not pwd:
-        return False, "Missing BRAIN_PASSWORD"
+        return False, "Missing CREDENTIALS_PASSWORD (or legacy BRAIN_PASSWORD)"
     return True, "ok"
 
 
@@ -749,16 +797,15 @@ def main() -> int:
 
     config_path = Path(args.config).resolve() if Path(args.config).is_absolute() else (here / args.config).resolve()
     try:
-        cfg = _load_required_config(config_path)
+        cfg = _load_required_config(config_path, ideas_file=args.ideas_file)
     except ValueError as exc:
         print(f"ERROR: {exc}")
         return 2
 
-    # Inject required runtime settings from config
-    os.environ["BRAIN_EMAIL"] = str(cfg["brain_email"]).strip()
-    os.environ["BRAIN_PASSWORD"] = str(cfg["brain_password"]).strip()
-    os.environ["MOONSHOT_API_KEY"] = str(cfg["moonshot_api_key"]).strip()
-    os.environ["MOONSHOT_BASE_URL"] = str(cfg["moonshot_base_url"]).strip()
+    # Inject runtime credentials（环境变量 > config.json；只打印来源，不打印值）
+    _cred_src = _apply_runtime_credentials(cfg)
+    print(f"[cred] BRAIN 凭据来源={_cred_src['brain']}；LLM 密钥来源={_cred_src['moonshot']}"
+          f"{'（--ideas-file 模式不调 LLM）' if args.ideas_file else ''}", flush=True)
 
     # CLI model takes priority; otherwise use config model
     if args.moonshot_model is None:

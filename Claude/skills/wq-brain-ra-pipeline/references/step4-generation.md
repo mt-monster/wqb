@@ -54,6 +54,8 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 | `hump(x, k)` | 改写为 `hump(x, hump=k)`（平台只认命名参数；hump 仍受支持，只是必须命名） | 无 |
 | `bucket(rank(x))` 缺 range | 补 `range="0,1,0.1"`；非 rank 输入**丢弃** | 被丢弃的补重生成 |
 | 区域非法 group 字段 | 丢弃（`platform_constraints.json` `region_invalid_group_fields`，JPN = sector / subindustry / industry） | 无；非 GEM 来源的表达式靠闸 2b 兜底 |
+| 区域非法普通字段 | 丢弃（`pipeline_pregate.region_invalid_fields`：JPN / TOP1600 / D1 没有 pv1，`close` / `open` / `high` / `low` / `volume` / `returns` / `vwap` / `cap` / `sharesout` / `adv20` / `adv60` / `adv120` 全部 `Invalid data field`；`WQB_INVALID_FIELDS` 可补） | 无；非 GEM 来源的靠闸 2b 兜底 |
+| JPN 的 `ts_*(…vec_*(…))` | 丢弃（`region_vector_ts_forbidden`：VECTOR 日频对齐依赖 pv1；`WQB_VECTOR_TS_FORBIDDEN_REGIONS` 可覆盖） | 无；平台报错定位走 toolkit §11 单条探针 |
 | 非标窗口 | 按别名表归一（20/21→22、60/63/65→66、250/255→252、500→504、1000→1008、1250→1260）；其余非标窗**只 WARN** | 给解释或实测证据（约束 6），否则改标准窗口 |
 | **同骨架换字段变体封顶** | `WQB_GEM_MAX_PER_SKELETON`，缺省 12 / 骨架（JPN analyst_revision_horizons 1026 字段曾渲染出 7538 条几乎全是同骨架换字段） | 触封顶 = 机制枯竭信号，见 4.6 |
 | `quantile(x, driver="gaussian"[, sigma=1.0])` | 无损归一为 `quantile(x)`（平台默认 driver；闸 4 ARITY 曾因此 312 次命中） | 无 |

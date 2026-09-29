@@ -81,8 +81,10 @@ from skill_roots import candidate_paths_under_skill as _cand  # noqa: E402
 # ---------------------------------------------------------------------------
 # 背景：`FEATURE_IMPLEMENTATION_DIR` 曾在默认位写死为内嵌 legacy 副本（09-13 才改为跟随 SCRIPTS）；
 # 而 `FEATURE_ENGINEERING_DIR` **一直没改**，仍恒指向内嵌的 `skills/brain-data-feature-engineering`。
-# 实测后果（2026-09-26）：那个内嵌目录**连 SKILL.md 都没有** → `read_text_optional()` 失败返回 `""`
-# → 顶层 322 行的字段工程文档**从未进入 LLM prompt**，且完全静默。
+# 实测后果（2026-09-26）：那个内嵌目录**连 SKILL.md 都没有** → `read_text_optional()` 失败返回 `""`，且完全静默。
+# ⚠ 2026-09-29 更正：SKILL.md **正文从不进 LLM prompt**——`build_prompt` 只用「dfe SKILL.md 是否非空」
+# 决定附不附一句固定的 8 问提示（`fe_hint`），FI 那份完全不用（`tests/unit/test_se_docs.py` 钉死）。
+# 这个解析真正重要的是 `FEATURE_IMPLEMENTATION_DIR/scripts`（`ace_lib` / `validator` / `implement_idea` 的来源）。
 # 现统一为：env 覆盖 > skill_roots 候选（主安装位优先，仓库副本兜底） > 内嵌 legacy 兜底。
 
 
@@ -128,8 +130,9 @@ SKILL_DIR_SOURCES = {
 def missing_skill_docs() -> "list[str]":
     """返回缺失的 skill 文档说明列表（**空列表 = 正常**）。
 
-    GEM 会把两份 SKILL.md 拼进 LLM prompt；`read_text_optional` 失败返回空串，
-    此前是**完全静默**的。此函数把"文档缺失"变成可断言的事实，由调用方告警。
+    `read_text_optional` 失败返回空串，此前是**完全静默**的；此函数把"文档缺失"变成可断言的事实，
+    由调用方告警。SKILL.md 正文并不进 prompt（dfe 只影响一句固定的 8 问提示，FI 不影响 prompt），
+    缺失的真正含义是「skill 目录解析异常」——FI 目录同时承载 `scripts/`。
     """
     out = []
     for label, d in (("brain-feature-implementation", FEATURE_IMPLEMENTATION_DIR),

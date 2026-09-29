@@ -1,5 +1,7 @@
 # {dataset_name} Feature Engineering Analysis Report
 
+> **用法（2026-09-29）**：本文是**完整分析报告**的唯一提纲（SKILL 不再复述一遍）。`{…}` 是**待填槽位**；填好之后，每个 `- **Implementation Example**:` 行里的内容本身必须是带 `{字段后缀}` 占位符的 Python format 模板（如 `` `-rank(ts_std_dev({returns}, 66))` ``）——GEM 认 `**Concept**:` 与 `**Implementation Example**:` 两个标记，并请补 `- **Expected Exposure**:` 行（见 SKILL「第 4 步」）。透明集只填「Dataset Deep Understanding」与字段画像；半透明集只填 Q1 / Q2 / Q7。
+
 **Dataset**: {dataset_id}
 **Category**: {category}
 **Region**: {region}

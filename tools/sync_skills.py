@@ -40,18 +40,21 @@ SOURCE = REPO_ROOT / "Claude" / "skills"
 
 #: 不参与同步的产物/缓存（与 .gitignore 的 Claude/skills 规则同口径）
 IGNORE_DIRS = {"__pycache__", "outputs", "output_report", "processed_templates", ".git"}
-IGNORE_SUFFIXES = (".pyc", ".pyo")
+IGNORE_SUFFIXES = (".pyc", ".pyo", ".log")     # `.log`：运行时日志（vendored ace_lib 一 import 就在 CWD 建 ace.log），.gitignore 同口径
 IGNORE_NAMES = {"parsetab.py", "parser.out"}
 
 
 def _is_secret_file(name: str) -> bool:
     """密钥/凭据类本地文件（`.env`、`.arxiv_llm.env`、`.env.local` …）：只留在源位，不复制到安装位。
 
-    `*.env.example` / `*.example` 是模板，照常同步。skills 审查 X-15：skill 目录内的 key 文件不得被同步扩散。
+    `*.env.example` / `*.example` / `config.example.json` 是模板，照常同步。skills 审查 X-15：skill 目录内的 key 文件不得被同步扩散。
+    `config.json` 同样按凭据文件处理（`.gitignore` 把 `**/config.json` 归在「Secrets / Credentials」下；GEM 的
+    `headless_runner/config.json` 与 feature-implementation 的 `config.json` 里放 BRAIN 账号 / LLM 密钥）——它只留在
+    用户自建的那一处：安装位里已有的不会被覆盖或删除，源位里若有则不会被复制到其它安装位。
     """
-    if name.endswith(".example"):
+    if name.endswith(".example") or name == "config.example.json":
         return False
-    return name == ".env" or name.endswith(".env") or name.startswith(".env.")
+    return name == ".env" or name.endswith(".env") or name.startswith(".env.") or name == "config.json"
 
 
 def _is_ignored(rel: Path) -> bool:

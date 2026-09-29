@@ -10,3 +10,7 @@ mcp>=1.25.0,<2.0.0
 email-validator>=2.0.0,<3.0.0
 # alpha-expression-verifier（门禁语法闸，tools/wave_gate.py 与 toolkit gate.py 都依赖）
 ply>=3.11,<4.0
+# vendored ace_lib / helpful_functions（sim-alphas · feature-implementation · GEM 引擎 · inspect-raw 共用）顶层 import，缺一个即 ImportError：
+tqdm>=4.66,<5.0.0
+# pandas.io.formats.style.Styler（helpful_functions 顶层 import）的硬依赖
+Jinja2>=3.1,<4.0.0

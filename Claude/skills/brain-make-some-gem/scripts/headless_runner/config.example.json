@@ -1,0 +1,9 @@
+{
+  "_comment": "复制为 config.json 后填写（config.json 已 .gitignore、不参与 sync_skills；agent 不读、不写、不打印它）。BRAIN 账号可留空，改由环境变量 CREDENTIALS_EMAIL / CREDENTIALS_PASSWORD 提供；LLM 密钥可留空，改由环境变量 MOONSHOT_API_KEY 提供（或给 --ideas-file 时根本不需要）。",
+  "brain_email": "",
+  "brain_password": "",
+  "moonshot_base_url": "https://api.moonshot.cn/v1",
+  "moonshot_model": "kimi-k2.6",
+  "moonshot_api_key": "",
+  "pipeline_mode": "phased"
+}

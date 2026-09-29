@@ -616,15 +616,18 @@ def main():
         )
 
         # 2026-09-26：skill 目录解析来源与文档缺失必须**可见**。此前 dfe 的 SKILL.md 因解析到
-        # 内嵌 legacy 副本（该副本无 SKILL.md）而静默为空串，顶层 322 行文档从未进 prompt。
+        # 内嵌 legacy 副本（该副本无 SKILL.md）而静默为空串。注意（2026-09-29 更正）：SKILL.md 正文**不进 prompt**——
+        # build_prompt 只用 dfe SKILL.md「是否非空」决定附不附一句固定的 8 问提示，FI 那份完全不用；
+        # 这行日志的真正价值是暴露 skill 目录解析到了哪里（FI 目录承载 ace_lib / validator / implement_idea 脚本）。
         for _label, (_d, _src) in SKILL_DIR_SOURCES.items():
             _lines = len(read_text_optional(_d / "SKILL.md").splitlines())
             _mark = "OK" if _lines else "MISSING"
             print(f"[skill-doc] {_label}: {_mark} ({_lines} 行) dir={_d} source={_src}", flush=True)
         _missing = missing_skill_docs()
         if _missing:
-            print("[skill-doc][WARN] 以下 skill 文档缺失，将**以空内容**进入 LLM prompt —— "
-                  "prompt 会退化为无该 skill 指导：\n  - " + "\n  - ".join(_missing), file=sys.stderr, flush=True)
+            print("[skill-doc][WARN] 以下 skill 文档缺失——skill 目录解析异常（dfe 缺 → prompt 少一句固定的 8 问提示；"
+                  "FI 缺 → 不影响 prompt，但 scripts/ 也可能没解析到）：\n  - " + "\n  - ".join(_missing),
+                  file=sys.stderr, flush=True)
         feature_engineering_skill_md = read_text_optional(FEATURE_ENGINEERING_DIR / "SKILL.md")
         feature_implementation_skill_md = read_text_optional(FEATURE_IMPLEMENTATION_DIR / "SKILL.md")
         allowed_metric_suffixes = build_allowed_metric_suffixes(fields_df, max_suffixes=300)

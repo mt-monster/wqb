@@ -397,3 +397,97 @@ A bad combination:
 ### A. Lateral Thinking (Borrow from other domains)
 
 **Ask**: How would a physicist/biologist/sociologist approach this?
+
+**Example - Physics**:
+- Field: Customer usage frequency
+- Physics concept: Resonance frequency
+- Feature idea: "Natural usage cadence" = frequency with highest amplitude
+- **Meaning**: Inherent rhythm of customer behavior
+
+**Example - Biology**:
+- Field: Product adoption rates
+- Biology concept: Population growth
+- Feature idea: "Adoption growth model" = fit logistic growth curve
+- **Meaning**: Identify inflection point where growth slows
+
+**Exercise**: For each field, brainstorm 3 analogies from other disciplines
+
+### B. Vertical Thinking (Keep asking "why?")
+
+**The 5 Whys exercise**:
+1. Why do customers churn? → Because they stop using the product
+2. Why do they stop using it? → Because they don't find value
+3. Why don't they find value? → Because their needs changed
+4. Why did needs change? → Because their business grew
+5. Why did business growth matter? → Because the product didn't scale with them
+
+**Resulting feature**: "Scalability mismatch" = customer_growth_rate / product_capability
+
+**Process**: Don't stop at surface-level questions. Dig until you hit fundamental truths.
+
+### C. Perspective Shifting (Change your viewpoint)
+
+**Time ↔ Space**:
+- If you have time series data, think about spatial patterns (clustering, distribution)
+- If you have spatial/cross-sectional data, think about evolution over time
+
+**Individual ↔ Collective**:
+- Zoom in: What does this mean for one entity?
+- Zoom out: What does this pattern mean for the group?
+
+**Quantitative ↔ Qualitative**:
+- What would the qualitative description be?
+- How do you quantify that description?
+
+### D. Constraint-Based Creativity (Add restrictions)
+
+**Artificial constraints force creative solutions**:
+
+- "You can only use one field" → Forces focus on that field's nuances
+- "You can only use addition/subtraction" → Simplifies relationships
+- "You must include time" → Adds temporal dimension
+- "You must be able to explain to a 5-year-old" → Forces simplicity
+
+**Example**: "Explain customer value using only purchase timestamps"
+- Feature: Time-based engagement depth (weighted recency/frequency)
+- **Meaning**: Recent, frequent purchases = high engagement
+
+## 8. From Concepts to Implementations
+
+### Bridging the Gap:
+
+**Concept**: "Customer engagement momentum" (from "What is changing?")
+- **Meaning**: Is engagement increasing or decreasing in intensity?
+- **Implementation**: Δ(engagement_score) over time, with acceleration
+
+**Steps**:
+1. Define engagement_score (purchase frequency × recency_weight)
+2. Calculate change: engagement_today - engagement_last_week
+3. Calculate acceleration: change_today - change_last_week
+4. **Result**: Positive = increasing momentum, Negative = losing momentum
+
+### Common Implementation Patterns:
+
+**For stability**: Rolling coefficient of variation, autocorrelation, entropy
+**For change**: Differences, log differences, second differences
+**For anomalies**: Z-scores, isolation forest scores, deviation from predicted
+**For interactions**: Products, ratios, conditional means
+**For structure**: Component ratios, hierarchical decompositions
+**For accumulation**: Running sums, exponentially weighted sums, integration
+**For relativity**: Percentiles, z-scores, min-max scaling
+**For essence**: Factor analysis, PCA, simple base components
+
+### Quality Metrics for Implementation:
+
+**Coverage**: What percentage of entities have data?
+**Stability**: Does the feature behave consistently across time periods?
+**Interpretability**: Can you explain the value meaningfully?
+**Actionability**: Does it suggest a clear action?
+
+## Summary: The Mindset in Seven Words
+
+**"Understand deeply, question assumptions, express meaningfully"**
+
+---
+
+*This document provides thinking tools, not formulas. True feature engineering happens when you combine deep data understanding with creative questions about what that data means.*

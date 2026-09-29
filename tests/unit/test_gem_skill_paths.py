@@ -12,19 +12,26 @@
 后果（2026-09-26 实测）：
 
 1. `brain-feature-implementation/SKILL.md` 的内嵌副本停在 **2026-08-22 的 49 行旧英文稿**
-   （还引用不存在的 `manage_todo_list`），而它会被 `run_pipeline.py` 读入并**拼进 LLM prompt**；
+   （还引用不存在的 `manage_todo_list`），一旦有人在兜底位读到它就会照旧稿操作；
 2. `brain-data-feature-engineering` 的内嵌目录**连 SKILL.md 都没有**，而
-   `read_text_optional()` 失败**返回空串** → 顶层 322 行文档**从未进入 prompt**，且完全静默；
+   `read_text_optional()` 失败**返回空串**，且完全静默；
 3. `*_ideas.md` 产物写进 skill 树内部，污染仓库。
 
 现已统一为 `env > skill_roots 候选 > 内嵌 legacy 兜底`，并把产物根迁到 `GEM_REPORT_ROOT`。
 本模块守住这些不变量，防止回退。
+
+2026-09-29 更正（skills 审查 FE-13 / GM-13）：**SKILL.md 正文从不进 LLM prompt**——`build_prompt` 只用
+dfe `SKILL.md`「是否非空」决定附不附一句固定的 8 问提示，FI 那份完全不用（`test_se_docs.py` 的 AST 测试钉死）。
+上面「拼进 prompt」的说法是历史误解；这些守护仍然有意义，但理由是「不让同名文件互相矛盾、解析异常可见」，
+不是「文档篇幅直接影响生成质量」。dfe 三个内嵌副本文件（`reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`）
+自此也纳入逐字节守护。
 """
 from __future__ import annotations
 
 import json
 import os
 import subprocess
+import tempfile
 import sys
 from pathlib import Path
 
@@ -37,8 +44,18 @@ TRAIL_DIR = GEM_SKILL / "scripts" / "trailSomeAlphas"
 AUTHORITATIVE_FI = SKILLS_DIR / "brain-feature-implementation" / "SKILL.md"
 EMBEDDED_FI = TRAIL_DIR / "skills" / "brain-feature-implementation" / "SKILL.md"
 EMBEDDED_DFE = TRAIL_DIR / "skills" / "brain-data-feature-engineering"
-#: 与 `src/wqb/workflow/_common.py` 同序的解析入口（用于找可运行的 venv）
-_MCP_VENV = REPO_ROOT / "world-quant-brain-mcp" / ".venv" / "Scripts" / "python.exe"
+def _find_mcp_venv() -> Path:
+    """Windows（Scripts/python.exe）与 POSIX（bin/python）两种 venv 布局都认；都没有时返回前者，让 skip 信息有意义。"""
+    venv = REPO_ROOT / "world-quant-brain-mcp" / ".venv"
+    for rel in (("Scripts", "python.exe"), ("bin", "python")):
+        cand = venv.joinpath(*rel)
+        if cand.is_file():
+            return cand
+    return venv / "Scripts" / "python.exe"
+
+
+#: 用于实跑解析子进程的 MCP venv 解释器（与 `src/wqb/workflow/_common.py` 找 venv 的口径一致）
+_MCP_VENV = _find_mcp_venv()
 
 
 def _norm(path: Path) -> bytes:
@@ -49,16 +66,40 @@ def _norm(path: Path) -> bytes:
 def test_embedded_fi_copy_matches_authoritative():
     """内嵌 FI 的 SKILL.md 必须与顶层权威版**逐字一致**。
 
-    这不是"同步镜像洁癖"：该文件会被拼进 LLM prompt。2026-09-26 前它是 49 行旧稿，
-    与权威版 111 行相差 31 行独有内容 —— 一旦解析兜底到内嵌位，模型就会拿到过时规范。
+    理由不是「会被拼进 prompt」（不会，见模块 docstring 的更正），而是同名不同文会让人在兜底位读到过时规范：
+    2026-09-26 前它是 49 行旧稿（还引用不存在的 `manage_todo_list`），与权威版相差 31 行独有内容。
     """
     assert AUTHORITATIVE_FI.is_file(), f"权威版缺失：{AUTHORITATIVE_FI}"
     assert EMBEDDED_FI.is_file(), f"内嵌副本缺失：{EMBEDDED_FI}"
     a, b = _norm(AUTHORITATIVE_FI), _norm(EMBEDDED_FI)
     assert a == b, (
-        "GEM 内嵌的 brain-feature-implementation/SKILL.md 与顶层权威版漂移（它会被喂进 LLM prompt）。"
+        "GEM 内嵌的 brain-feature-implementation/SKILL.md 与顶层权威版漂移（不进 prompt，但同名不同文会让人在兜底位读到旧规范）。"
         " 修复：python tools/sync_gem_embedded_skill.py --apply"
     )
+
+
+def test_embedded_dfe_copies_match_authoritative():
+    """dfe 内嵌目录里的三个文件必须与顶层逐字节一致（此前只守 FI 的 SKILL.md，`reference.md` 已悄悄漂移到 399 行旧稿）。"""
+    if not EMBEDDED_DFE.is_dir():
+        pytest.skip("内嵌 dfe 目录不存在，无需守护")
+    top = SKILLS_DIR / "brain-data-feature-engineering"
+    for name in ("reference.md", "examples.md", "OUTPUT_TEMPLATE.md"):
+        assert (top / name).is_file(), f"权威版缺失：{top / name}"
+        assert (EMBEDDED_DFE / name).is_file(), f"内嵌副本缺失：{EMBEDDED_DFE / name}"
+        assert _norm(top / name) == _norm(EMBEDDED_DFE / name), (
+            f"内嵌 dfe/{name} 与顶层漂移。修复：python tools/sync_gem_embedded_skill.py --apply")
+
+
+def test_embedded_dfe_dir_is_marked_generated_and_the_sync_tool_covers_it():
+    if not EMBEDDED_DFE.is_dir():
+        pytest.skip("内嵌 dfe 目录不存在，无需守护")
+    marker = EMBEDDED_DFE / "GENERATED.md"
+    assert marker.is_file(), "内嵌 dfe 目录应带 GENERATED.md 标记（勿手改的派生副本）"
+    text = marker.read_text(encoding="utf-8")
+    assert "sync_gem_embedded_skill.py" in text and "SKILL.md" in text
+    sync = (REPO_ROOT / "tools" / "sync_gem_embedded_skill.py").read_text(encoding="utf-8")
+    for name in ("reference.md", "examples.md", "OUTPUT_TEMPLATE.md"):
+        assert name in sync
 
 
 def test_embedded_dfe_has_no_skill_md():
@@ -107,8 +148,10 @@ def _run_resolution() -> dict:
     env = dict(os.environ)
     env.pop("WQB_FI_SKILL_DIR", None)
     env.pop("WQB_DFE_SKILL_DIR", None)
-    r = subprocess.run([str(_MCP_VENV), "-c", code], capture_output=True, text=True,
-                       encoding="utf-8", errors="replace", cwd=str(TRAIL_DIR), env=env, timeout=120)
+    # cwd 用临时目录：vendored ace_lib 一 import 就在 CWD 建 `ace.log`，放在 skill 树里会污染源位并被 sync_skills 带到安装位
+    with tempfile.TemporaryDirectory() as td:
+        r = subprocess.run([str(_MCP_VENV), "-c", code], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", cwd=td, env=env, timeout=120)
     assert r.returncode == 0, f"解析子进程失败：\n{r.stdout}\n{r.stderr}"
     return json.loads(r.stdout.strip().splitlines()[-1])
 
@@ -119,14 +162,14 @@ def test_resolution_finds_docs_and_avoids_embedded_legacy():
     这是本节的核心回归：旧实现下 dfe 恒落内嵌（无 SKILL.md）→ 文档静默为空串进 prompt。
     """
     res = _run_resolution()
-    assert res["missing"] == [], f"有 skill 文档缺失（会以空内容进 prompt）：{res['missing']}"
+    assert res["missing"] == [], f"有 skill 文档缺失（skill 目录解析异常，FI 目录同时承载 scripts/）：{res['missing']}"
     for key in ("fi_dir", "dfe_dir"):
         d = Path(res[key])
         assert (d / "SKILL.md").is_file(), f"{key}={d} 下没有 SKILL.md"
     for key in ("fi_source", "dfe_source"):
         assert res[key] != "embedded:legacy", (
             f"{key} 落到内嵌 legacy 兜底（{res[key]}）—— 权威副本未被选中，"
-            "会喂给 LLM 过时/缺失的规范"
+            "会读到过时/缺失的文档与脚本"
         )
     assert not str(res["report_root"]).startswith(str(GEM_SKILL)), (
         f"report_root 落在 skill 树内：{res['report_root']}"
