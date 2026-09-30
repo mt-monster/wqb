@@ -40,6 +40,7 @@ DB_PATH = ROOT / "data" / "wqb.db"
 from wqb.store import CampaignStore  # noqa: E402
 from wqb import wave_results_contract as _wave_contract  # noqa: E402
 from wqb import registry_contract as _registry_contract  # noqa: E402  registry 写入校验唯一实现（DEC-34）
+from wqb import recon_evidence as _recon_evidence  # noqa: E402  论坛取证证据契约唯一实现（判死闸 / 写入方 / 统计方共用）
 from wqb.config import compute_webdata_failed_counts  # noqa: E402  RA 资格门唯一口径（R3）
 
 
@@ -2090,6 +2091,46 @@ def backfill_salvage_pool_batch(
     return results
 
 
+#: 判死闸留痕里的三种决定：verified = 取证成立；forced = 闸本会拒绝、人工确认后强制放行；waived = 本次封存不要求论坛取证
+_GATE_DECISIONS = ("verified", "forced", "waived")
+#: 落进 payload.forum_recon 的证据字段白名单（不把调用方塞进来的任意结构原样写库）
+_EVIDENCE_KEEP = ("question_key", "question", "found", "status", "searched_at", "sink", "from_cache", "n_useful")
+
+
+def _forum_recon_gate(region: str, payload: Dict[str, Any], forum_recon: Optional[Dict[str, Any]],
+                      force_seal: bool, require_forum_recon: bool) -> Dict[str, Any]:
+    """判死前的论坛取证闸（fail-closed）。返回 `{"ok": True, "trace": {...}, "evidence": {...}|None}`
+    或 `{"ok": False, "verdict": {...}}`。纯读（只查 ledger），**不产生任何副作用**。
+
+    判定 = 声明层 + ledger 核对（`wqb.recon_evidence.verify_evidence`）：只有「声明 found=false、且 ledger 里能找到该
+    question_key 的可靠负结果、且没有更新的『有货』记录推翻它」才放行。故障（found=null / status=error / 只有 error 记录）、
+    有货、缺失、无法核对一律拒绝——**故障 ≠ 论坛无解**。
+
+    绕过（都要人工确认，都留痕在 `payload.forum_recon_gate`）：`force_seal=True`（闸本会拒绝，强制放行，记 forced +
+    被绕过的拒绝码）；`require_forum_recon=False`（本次封存不要求论坛取证，记 waived）。
+    重复封存：条目里已有通过的闸留痕、这次没给新证据 → 沿用，不重新核对（补 wave_numbers 重新沉降不该被再拦一次）。
+    """
+    now = _now()
+    if not require_forum_recon:
+        return {"ok": True, "trace": {"decision": "waived", "checked_at": now}, "evidence": None}
+    evidence = forum_recon if forum_recon else payload.get("forum_recon")
+    prior = payload.get("forum_recon_gate")
+    if not evidence and isinstance(prior, dict) and prior.get("decision") in _GATE_DECISIONS:
+        return {"ok": True, "trace": prior, "evidence": None}
+    verdict = _recon_evidence.verify_evidence(evidence, _get_ledger_raw, region)
+    kept = ({k: evidence[k] for k in _EVIDENCE_KEEP if k in evidence} if isinstance(evidence, dict) else None)
+    if verdict["allowed"]:
+        trace = {"decision": "verified", "question_key": verdict["question_key"], "ledger_key": verdict["ledger_key"],
+                 "ledger_region": verdict["ledger_region"], "searched_at": verdict.get("searched_at"),
+                 "question": verdict.get("question"), "checked_at": now}
+        return {"ok": True, "trace": trace, "evidence": kept}
+    if force_seal:
+        trace = {"decision": "forced", "overridden_code": verdict["code"], "overridden_message": verdict["message"],
+                 "checked_at": now}
+        return {"ok": True, "trace": trace, "evidence": kept}
+    return {"ok": False, "verdict": verdict}
+
+
 @mcp.tool()
 def seal_dead_end(
     region: str,
@@ -2099,8 +2140,17 @@ def seal_dead_end(
     wave_numbers: Optional[List[int]] = None,
     dead_at: Optional[str] = None,
     rule: Optional[str] = None,
+    forum_recon: Optional[Dict[str, Any]] = None,
+    force_seal: bool = False,
+    require_forum_recon: bool = True,
 ) -> Dict[str, Any]:
     """判死封存：先沉降残值、再封存 dead_end（2026-09-13 新增，S6 判死标准动作）。
+
+    **前置取证闸（fail-closed，2026-09-30 落地）**：判死是永久封存一条路，封存前必须有论坛取证——
+    传 `forum_recon={"question_key": <qkey>, "found": false, "status": "no_result"}`（`tools/forum_recon.py` /
+    `forum_recon_wave` 节点的输出），闸按 `question_key` 回 ledger 核对（`forum_recon_negative_<qkey>`），
+    只有可靠的「论坛无解」放行；有货 / 故障（found=null）/ 缺失 / 无法核对一律拒绝且**不沉降、不写库**——
+    故障 ≠ 论坛无解（2026-09-29 事故：工具坏了被记成无解，误把活路判死）。
 
     收集宽、动用严：把该 idea 涉及波次的失败候选达【辅料线】者沉降入
     salvage_pool（复用 _salvage_to_pool，幂等、零配额成本），并把残值
@@ -2119,10 +2169,17 @@ def seal_dead_end(
         rule: 下次怎么办（**新建条目必填**；条目已有 rule 时可省，给了则覆盖）。
             与 `campaign.py registry add-dead-end` 同一份校验（DEC-34）：
             dead_end 必填 id / family / reason / rule，缺则返回 status=error 且**不沉降、不写库**
+        forum_recon: 判死取证（`question_key` / `found` / `status`）。缺省时读条目里已有的 `payload.forum_recon`
+        force_seal: **人工确认后**强制放行——闸本会拒绝的情形（有货 / 故障 / 缺失 / 无法核对）照封，
+            留痕 `payload.forum_recon_gate.decision="forced"`（含被绕过的拒绝码）。Agent 不得自行决定使用
+        require_forum_recon: 设 False = 本次封存不要求论坛取证（如 RN_EXPOSURE 等非论坛可解的判死依据），
+            留痕 `decision="waived"`。同样需要人工确认
 
     Returns:
         {"entry_id", "status", "action", "waves_scanned", "candidates_scanned",
-         "salvaged_count", "salvage_ids", "total_in_pool"}
+         "salvaged_count", "salvage_ids", "total_in_pool", "forum_recon_gate", "forced"}；
+        被取证闸拒绝时 `status="error"`、`gate="forum_recon"`、`code`（recon_missing / recon_found / recon_error /
+        recon_not_in_ledger / …），且没有任何副作用
     """
     # 先读现有 payload 并做契约校验：失败时不产生任何副作用（沉降入池、写库都在校验之后）
     payload: Dict[str, Any] = {}
@@ -2156,6 +2213,19 @@ def seal_dead_end(
     except _registry_contract.RegistryContractError as e:
         return {"entry_id": entry_id, "status": "error",
                 "error": f"{e}（seal_dead_end 需要 family / reason / rule；rule = 下次怎么办）"}
+
+    # 前置取证闸：纯读，拒绝时不沉降、不写库
+    gate = _forum_recon_gate(region, payload, forum_recon, force_seal, require_forum_recon)
+    if not gate["ok"]:
+        v = gate["verdict"]
+        return {"entry_id": entry_id, "status": "error", "gate": "forum_recon", "code": v["code"],
+                "question_key": v.get("question_key"),
+                "error": (f"判死被取证闸拒绝（{v['code']}）：{v['message']}。"
+                          "绕过须人工确认并留痕：force_seal=True（闸本会拒绝、强制放行）；"
+                          "本次封存不要求论坛取证：require_forum_recon=False")}
+    payload["forum_recon_gate"] = gate["trace"]
+    if gate["evidence"]:
+        payload["forum_recon"] = gate["evidence"]
 
     waves_scanned: List[int] = []
     candidates_scanned = 0
@@ -2222,6 +2292,8 @@ def seal_dead_end(
         "salvaged_count": len(salvage_ids),
         "salvage_ids": salvage_ids,
         "total_in_pool": len(pool.get("entries", [])),
+        "forum_recon_gate": gate["trace"],
+        "forced": gate["trace"].get("decision") == "forced",
     }
 
 

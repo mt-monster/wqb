@@ -58,30 +58,32 @@ mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|P
 
 术语（旧文「沉降 / 封存 / seal」三词并用）：**沉降** = 把该想法涉及波次的失败候选放进 `salvage_pool`（收集宽）；**封存** = 写 `dead_end` 条目并把残值列表回填 `payload.salvage`；**动用** = Mode B 取用残值（仍守各区 `mode_b_qualification`，动用严）。判死按粒度：候选 / 字段搭配 / 家族（`dead_end`）/ 数据集（`<ds>_dead`）/ 波（`FAIL`），见 GLOSSARY。
 
-1. **前置取证**（判死前）：`python tools/forum_recon.py --question "<数据集/信号族> 有无解法" --context region=$REGION,dataset=$DS,family=<族> --out negative`。结果记入 `dead_end.payload.forum_recon`（含 `question_key` / `found`）。**设计**（2026-09-29，见下「现状」）是把它做成 fail-closed 的硬闸：
+1. **前置取证**（判死前）：先取到取证记录——收批时 `forum_recon_wave` 已默认问过一次（[`forum-recon-triggers.md`](forum-recon-triggers.md)「波级默认取证」：ledger `forum_recon_wave_<wave>` → `question_key`）；要针对特定族再查：`python tools/forum_recon.py --question "<数据集/信号族> 有无解法" --context region=$REGION,dataset=$DS,family=<族> --out negative`（退出码 2 = 可靠的无解，1 = 工具故障）。封存时把记录的 `question_key` 传给 `seal_dead_end`——它是 **fail-closed 的硬闸**（`wqb_db_mcp.py`；判定实现 `src/wqb/recon_evidence.py`，与写入方、统计方同一份）：
 
-   | `payload.forum_recon` | 判死 |
+   | 传入的 `forum_recon` | 判死 |
    |---|---|
-   | `found=false` | ✅ 允许（decision-table D2「论坛无解」取证成立）；退出码 2，负结果已入 `forum_recon_negative_<qkey>` |
-   | `found=true` | ❌ 拒绝——配方转 salvage / Mode B 武器，**不得直接判死** |
-   | `found=null` / `status=error` | ❌ 拒绝——**工具故障 = 未取证，故障 ≠ 论坛无解** |
-   | 缺失 | ❌ 拒绝——未取证 |
+   | `found=false`，且 ledger 里按 `question_key` 找得到**可靠的**负结果（`forum_recon_negative_<qkey>`，region 或 GLOBAL），没有更新的「有货」记录推翻它 | ✅ 允许（decision-table D2「论坛无解」取证成立） |
+   | `found=true`；或 ledger 里该问题最新的可靠结局是「有货」 | ❌ 拒绝——配方转 salvage / Mode B 武器，**不得直接判死** |
+   | `found=null` / `status=error` / 带 `error` 字段；或 ledger 里只有故障记录（含旧版「`found=false` + `error`」的假负结果） | ❌ 拒绝——**工具故障 = 未取证，故障 ≠ 论坛无解** |
+   | 缺失；或缺 `question_key` / 在 ledger 里找不到 | ❌ 拒绝——未取证 / 无法核对 |
 
-   - ⚠ **为什么必须 fail-closed**：判死是永久封存一条路。2026-09-29 实证 5 条 recon 记录里 **2 条是工具故障**（`load_creds` TypeError、`No module named 'requests'`），被记成 `found=false` 落 `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」→ 误把活路判死。
-   - **现状（2026-09-30 合并 main 时核对代码）：闸与配套修复都没有落地。** `seal_dead_end` 没有 `force_seal` / `require_forum_recon` 参数，不看 `payload.forum_recon`；`tools/forum_recon.py` 在**论坛鉴权失败**时仍把 `found=false` + `error` 字段写进 `forum_recon_negative_<qkey>`、进 7 天缓存，并打印「可作『论坛无解』判死证据」，**退出码也是 2**（与真无解无法区分）。所以**目前靠人**：判死前读输出 JSON 与那条 `forum_recon_negative_<qkey>` 记录，**带 `error` 字段的不是取证**（要重查须先删 `tracking/FORUM/forum_recon_cache.json` 里该问题的条目，否则 7 天内回放同一个故障结果）；没有记录就先跑；`found=true` 不得直接判死。
-   - **波级默认取证**（收批时 `forum_recon_wave` 节点自动取证落 ledger，`forum_recon_error_<qkey>` 记故障）同样是设计：节点**未注册、无实现文件**——见 [`forum-recon-triggers.md`](forum-recon-triggers.md) 末节。
-   - prod 墙的判死分支同样先过这一步（D0-P：≥ 0.75 或踩线带尝试失败 → `forum_recon` → 封存）。
+   - 拒绝时返回 `status="error"`、`gate="forum_recon"`、`code`（`recon_missing` / `recon_found` / `recon_error` / `recon_not_in_ledger` / `recon_ledger_found` / `recon_ledger_error` / …），**不沉降、不写库**；契约错误（缺 family / reason / rule）仍先报。
+   - **绕过只有两条，都要人工确认，都留痕在 `payload.forum_recon_gate`**（Agent 不得自行决定使用）：`force_seal=True`——闸本会拒绝的情形照封，记 `decision="forced"` 与被绕过的拒绝码（返回里 `forced=True`）；`require_forum_recon=False`——本次封存不要求论坛取证（如 `RN_EXPOSURE` 等非论坛可解的判死依据），记 `decision="waived"`。证据本来就成立时不记 forced。
+   - **重复封存**（补 `wave_numbers` / 补理由）：条目里已有通过的闸留痕、这次没给新的 `forum_recon` → 沿用，不重新核对；带了新的 `forum_recon` 就重新核对（封存之后论坛有解了会被拦下）。闸落地之前封存的老条目没有留痕，重封时需要证据或绕过。
+   - ⚠ **为什么必须 fail-closed**：判死是永久封存一条路。2026-09-29 实证 5 条 recon 记录里 **2 条是工具故障**（`load_creds` TypeError、`No module named 'requests'`），被记成 `found=false` 落 `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」→ 误把活路判死。故障现在落 `forum_recon_error_<qkey>`、不入缓存、退出码 1，闸也不认。
+   - **闸认的是证据可靠，不核对相关性、不给证据龄设上限**：问的问题是否对得上要判死的族，看留痕里的 `question` / `searched_at` 由人复核（[`forum-recon-triggers.md`](forum-recon-triggers.md) 末节「已知缺口」）。
+   - prod 墙的判死分支同样先过这一步（D0-P：≥ 0.75 或踩线带尝试失败 → 取证 → 封存）。
 2. **封存**：
 
 ```
-mcp__wqb-db__seal_dead_end  region=$REGION  entry_id=<ID>  family=<族名>  reason=<判死原因，带数据>  rule=<下次怎么办>  wave_numbers=[W1,W2,…]
+mcp__wqb-db__seal_dead_end  region=$REGION  entry_id=<ID>  family=<族名>  reason=<判死原因，带数据>  rule=<下次怎么办>  wave_numbers=[W1,W2,…]  forum_recon={"question_key": "<qkey>", "found": false}
 ```
 
    - **`entry_id` 由你命名，不需要先创建**：`seal_dead_end` 本身就是 upsert（沉降残值 → 读现有 payload → 回填 `payload.salvage` → 写 `dead_end` 层）。命名约定 `<REGION>-<数据集或族>-<症状>`，全大写连字符，区域内唯一（如 `KOR-WAVE99-XXX-DEAD`）。
    - **`family` / `reason` / `rule` 新建时必填**（与 CLI `add-dead-end` 同一份校验，`wqb.registry_contract`）：缺任一项返回 `status=error` 且**不沉降、不写库**；条目已存在时可省，已有的 `rule` 会保留。`rule` = 下次怎么办（配置包排除该族时引用它）。
    - `wave_numbers` **只识别整数波号**：字符串波号（`s2_<ds>_d1`）会被跳过、不沉降；这类波的残值已在收批级联里入池，需要补池用 `mcp__wqb-db__backfill_salvage_pool`。
    - 封存后 `registry_empirical` 的 `dead_end` 层进入下一次 assemble-priors 的 `dead_ends`（倒序，新封存者靠前）。
-3. **写入路径**：MCP 可用时用上面的调用；无 MCP 或批量回写时用 toolkit 的带校验 CLI：`python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/$REGION registry add-dead-end --id … --family … --reason … --rule …`（`id / family / reason / rule` 必填，`--dry-run` 可先校验）——两条路径写同一张表、同一份校验，任选其一，**不要两边各写一遍**。
+3. **写入路径**：MCP 可用时用上面的调用；无 MCP 或批量回写时用 toolkit 的带校验 CLI：`python Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/$REGION registry add-dead-end --id … --family … --reason … --rule …`（`id / family / reason / rule` 必填，`--dry-run` 可先校验）——两条路径写同一张表、同一份**字段**校验（`wqb.registry_contract`），任选其一，**不要两边各写一遍**。⚠ **取证闸与残值沉降只在 `seal_dead_end` 上**：CLI 备选路径（以及 `upsert_registry_empirical(layer="dead_end")`）两样都不带，走它们时判死前须人工按上面 ① 核对取证（见触发表末节「已知缺口」）。
 
 ## 9.6 胜绩回写
 

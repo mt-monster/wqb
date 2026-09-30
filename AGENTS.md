@@ -544,3 +544,15 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   vendored `ace_lib.get_credentials()` 会把口令**明文写进** `~/secrets/platform-brain.json`——任何调用 `ace_lib.start_session()` 的脚本必须先覆盖它（`tests/unit/test_sf_docs.py` 守）。
 - **改 skill 的生效流程**：仓库 `Claude/skills/` 是编辑权威，各安装位是运行时优先——**改完必须 `$WQ_PY tools/sync_skills.py`（`--check` 零漂移）才对 Agent 生效**。
   `description` ≤ 300 字且只写触发条件（`test_sf_docs.py` 守）。
+
+### 8.11 论坛取证证据契约 / 判死闸 / 波级默认取证 / 形状配额（2026-09-30 落地）
+
+- **故障 ≠ 无解（2026-09-29 事故：5 条 recon 记录里 2 条是工具故障，被记成 `found=false` 当判死证据）**。取证只有三种结局：`ok`（`found=true`）/ `no_result`（`found=false`，检索**可靠**完成）/ `error`（`found=null`，工具故障）。
+  **单一实现 = `src/wqb/recon_evidence.py`**（`forum_recon_*` 键名、记录分类、判死闸判定）：写入方 `tools/forum_recon.py` / `tools/forum_recon_wave.py`、判死闸 `wqb_db_mcp.seal_dead_end`、
+  统计方 `tools/step_funnel.py` 都从它取——**不要在别处再拼 `forum_recon_*` 键或再判一遍 `found`**。故障绝不落 `forum_recon_negative_*`、不入 7 天缓存；旧版遗留的「`found=false` + `error`」记录按故障处理。
+- **`seal_dead_end` 取证闸是 fail-closed**：按 `question_key` 回 ledger 核对，只放行可靠的「论坛无解」；拒绝时**不沉降、不写库**。绕过只有 `force_seal=True` / `require_forum_recon=False`，**必须人工确认**，都留痕在 `payload.forum_recon_gate`。
+  ⚠ **闸只在 `seal_dead_end` 上**：`campaign.py registry add-dead-end`（CLI 备选）与 `upsert_registry_empirical(layer="dead_end")`（低层写入口）不经闸——判死统一走 `seal_dead_end`；闸不核对证据的相关性、不给证据龄设上限（留痕的 `question` / `searched_at` 供人复核）。
+- **波级默认取证**：`tools/forum_recon_wave.py` = 节点 `forum_recon_wave` = `pipeline.py --forum-recon`（`batch_track` 缺省带上，`forum_recon=False` 关）。问题由本波回测行机械派生（`src/wqb/recon_wave.py`），每波 ≤ 1 次，
+  可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
+- **形状配额**：`tools/shape_quota_check.py`（分类规则 `src/wqb/shape_quota.py`，启发式；阈值 ≥ 3 个形状族、`trade_when` ≤ 40% 来自步 4 §4.5.1 准则）只读、不入闸链，闸 6 才是批级多样性的权威。
+- **live 论坛路径没有端到端实测过**（无凭据 / 无出口）：测试覆盖到假 session / 假检索轮；首次真跑先 `--dry-run`。此前该路径**从未跑通过**（`load_creds(None)` 永远 TypeError），所有真实调用都落进了「鉴权失败 → 记成无解」。

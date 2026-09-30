@@ -8,6 +8,8 @@
 ```
 # ① 幽灵算子硬闸（纯本地、零配额，先拦——含幽灵算子会整批 CANCELLED 连坐）
 python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选表达式.txt>
+# ①b 形状配额体检（只读、不入闸链；步 4 §4.5.1）：≥3 个形状族、trade_when ≤40%。退出码 1 = 不达标 → 回步 4 补形状，不要带着同质批进门禁
+python tools/shape_quota_check.py --region $REGION --wave $W
 # ② 每波门禁：语法 + gate.py 各闸 + 体检硬门 + 闸 SEM + 闸 PF + 批级多样性，一键落盘 gate_results
 python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $W --from-db
 #    候选不在库时： --exprs-file <候选表达式.txt> ；单条自查： --expr <表达式>
@@ -51,6 +53,7 @@ python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $
 
 - **判据的唯一执行口径 = toolkit `gate.py:check_batch_diversity`**，由 `wave_gate.py` 在提交前自动调用。三源：① **自学习契约** `explore_contract`（`rules.get_active_contract`）；② **收益来源多样性**（读 DB idea ledger 的 `expected_exposure`：同批 > 60% 表达式共享同一 exposure 且字段族相同 → FAIL；无 exposure 元信息 → WARN 不阻断）；③ **家族天花板预检**（主导腿信号族占比 ≥ 2/3 → WARN 不阻断；wave94 / 95 / 98 / 104 实证 SELF ≥ 0.9 必死）。60% 与 2/3 是这些实证波的经验值。
 - **契约过期的处理顺序**：过期 → **自动续约** → 用新契约**重判**（重判结果仍可 FAIL）。
+- **形状配额（步 4 §4.5.1）与闸 6 的分工**：闸 6 是这里的硬闸（契约 / 收益来源 / 家族天花板）；`tools/shape_quota_check.py` 是门禁前的**人可读体检**（≥ 3 个形状族、`trade_when` ≤ 40%，启发式分类），不入闸链、不产生 gate_results。两者判据不同，通过一个不代表通过另一个。
 - `wqb.expression.validator.check_batch` **只作方法论参考**（形状维度自检），全仓零调用方，不构成门禁；不要以为调了它就过了闸。
 - `--batch-type {explore,repair,probe}`：repair / probe 批默认豁免多样性契约；需要显式跳过闸 6 时才加 `--skip-diversity-gate`，且须先写 `diversity` waiver。
 

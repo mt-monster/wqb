@@ -362,7 +362,7 @@ mcp__wqb-db__upsert_ledger_key         region=$REGION key="s6_verdict_<wave>" ..
   ★ verdict 只接受 PASS / FAIL / PARTIAL；描述性结论写 `key_findings`（`FAIL_xxx：…` 会被归一化）。
 【逐数据集经验沉淀（必做）】`mcp__wq-brain-http__workflow_campaign region=$REGION stage="S6" subcommand="dataset-experience" dataset=<DS> extra_args=["--delay",str($D)]`
   未回测、诊断与待出相关性不能记成已验证成果。
-【判死封存】dead_end 回写前 `mcp__wqb-db__seal_dead_end region=$REGION entry_id=<DEAD_END_ID> family=<族名> reason=<带数据的判死原因> rule=<下次怎么办> wave_numbers=[W1,W2,...]`
+【判死封存】dead_end 回写前 `mcp__wqb-db__seal_dead_end region=$REGION entry_id=<DEAD_END_ID> family=<族名> reason=<带数据的判死原因> rule=<下次怎么办> wave_numbers=[W1,W2,...] forum_recon={"question_key": "<qkey>", "found": false}`（fail-closed 取证闸：`question_key` 取自收批时 `forum_recon_wave` 落的记录或手动 `forum_recon --out negative`；工具故障 ≠ 论坛无解，闸不认；绕过须人工确认，见 RA 步 9 §9.5）
 【点塔进度】`python tools/campaign_intel.py pyramid --region $REGION --delay $D`
   输出末尾 [key_findings] 单行直接拷进 upsert_wave_result。
 【提交多样性监控】每提交 3–5 颗调 `mcp__wq-brain-http__value_factor_trendScore start_date=<本季初> end_date=<今天>`

@@ -37,7 +37,7 @@ allowed-tools:
 | S2 选波 | `build_wave.py`（去重 / 分桶 / 配给，**不生成**表达式）、`assemble_priors.py`、`diversity_extract.py` | — |
 | S2→S3 门禁 | `gate.py`（闸 0–9） | **`wave_gate.py`**（= `gate.py` + 体检硬门 + 闸 SEM / PF / 2b / 2.6 + 区域闸；**每波必走它**，也是 MCP 节点 `workflow_execute node="wave_gate"`） |
 | S3 发批 / 收批 | `pipeline.py`（七槽填槽）、`metrics_cache.py` | `submit_batch.py`（批量**派发仿真**，不是提交 alpha）、`batch_status.py`（状态轮询）、`harvest_multisim.py`（收批入库） |
-| S4 评审 | `review_wave.py` | `campaign_intel.py prod-first`、`step_funnel.py`、`forum_recon.py` |
+| S4 评审 | `review_wave.py` | `campaign_intel.py prod-first`、`step_funnel.py`、`forum_recon.py`（收批时 `pipeline.py --forum-recon` 自动跑 `forum_recon_wave.py`） |
 | S5 提交判定 | — | `submit_verdict.py`（唯一权威）；SUPER 只走 `super_build.py` |
 | S6 回写 | `campaign.py ledger` / `registry` / `wave`、`diversity_audit.py`、`dataset_experience`（`campaign.py dataset-experience`） | `campaign_intel.py mark-saturated`、`export_wave_ledger_md.py`、`step_funnel.py` |
 
@@ -194,6 +194,7 @@ multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCEL
 | 入口 | 作用 | 何时用 |
 |---|---|---|
 | `pipeline.py run … --prod-first [--prod-first-top-k 2]` | 评审后自动调 `campaign_intel prod-first`：每信号族最强 1 条探 prod，写 `prod_first_<wave>`（**注意**：`campaign_intel prod-first` 自身 `--top-k` 缺省 3，这里 pipeline 透传缺省 2） | 新信号族第一波（步 5b）；族级 STOP 后不再投变体 |
+| `pipeline.py run … --forum-recon` | 评审、prod-first 之后自动调 `tools/forum_recon_wave.py`：对本波共同卡住的墙（全灭时为「有无解法」）问一次论坛，每波 ≤ 1 次，结果落 ledger（`forum_recon_<qkey>` / `_negative_` / `_error_` + 完成标记 `forum_recon_wave_<wave>`）；只读、不阻断，故障不占本波额度。`batch_track` 节点缺省带上，`forum_recon=False` 可关 | 收批（默认路径）；离线 / 无论坛凭据的环境关掉 |
 | `pipeline.py run … --batch-type probe` | 探针批：与 `repair` 同样豁免闸 6 多样性契约与 qp 预估标注 | 单集 8 条首探 |
 | `campaign_intel.py xr-probe --exprs-file f --regions USA,GLB,HKG --tag t --write-ledger` | 跨区探针：按各区 settings 发 multisim → 收批入库（wave = `probe_<tag>`）→ 写 `GLOBAL/xr_probe_<tag>` | 判「机制能不能搬」，≤ 10 条 / 区 |
 | `campaign_intel.py prod-first … --probe-timeout 600` | 单条 PC 硬超时 + 进程锁 `data/.prod_first.lock` | 平台 PC 单并发；并跑第二个被拒（退出码 3） |

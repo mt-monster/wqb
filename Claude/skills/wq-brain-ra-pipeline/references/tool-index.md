@@ -17,7 +17,7 @@
 | 5b / 7 S4 | `workflow_campaign(stage="S4")`、`check_correlation`、`check_self_correlation`、`compute_mutual_correlation`；`wqb-db` `get_salvage_pool` | `campaign`；`auto_review`（`wqb-db` `workflow_auto_review`：预筛 + walls 诊断 + 辅助腿检索）；按需 `alpha_booster` / `modeb_improve`（批量变体器，护栏见步 7 §7.8） | `tools/campaign_intel.py prod-first` / `s4-prescreen`；`brain-calculate-alpha-selfcorr-quick` |
 | 8 提交 | `submit_verdict`（**否决权威**）；`check_correlation(refresh=True)`；`workflow_submit_alpha`（**不可逆**，`confirm_submit=True` 仅在用户确认后单独调用）；PPA 交接 `tools/ppa_handoff.py`；SUPER `workflow_superalpha` | `judge`（参考评审，不放行）、`submit_alpha`、`superalpha`——**提交类节点不入链** | `tools/submit_verdict.py`；`tools/quota_status.py` |
 | 9 S6 | `wqb-db`：`upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical` / `upsert_ledger_key`；`wq-brain-http`：`workflow_campaign(subcommand="dataset-experience"\|"assemble-priors")`、`value_factor_trendScore`、`performance_comparison` | `auto_pyramid`（`wqb-db` `workflow_auto_pyramid`：点塔进度回写） | `tools/step_funnel.py`、`tools/campaign_intel.py pyramid` / `mark-saturated` |
-| 横向 | — | `forum_recon`（触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)） | `tools/forum_recon.py` |
+| 横向 | — | `forum_recon`、`forum_recon_wave`（波级默认取证，收批时自动；触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)） | `tools/forum_recon.py`、`tools/forum_recon_wave.py`；步 4 → 5 之间的形状配额体检 `tools/shape_quota_check.py`（[`step4-generation.md`](step4-generation.md) §4.5.1） |
 
 「增强入口」= 把若干步合并成一个节点的便利封装；**它们不改变各步的完成定义**——完成定义只认各步细则里的产物（表 / 台账键 / 文件），节点返回 `success=true` 不等于完成。
 `hypothesis_round` / `structural_reconstruct` 是研究类节点（前者对饱和数据集做假设优先实验，后者实测仅 1 行产出，降为实验性），不在九步主路径上。

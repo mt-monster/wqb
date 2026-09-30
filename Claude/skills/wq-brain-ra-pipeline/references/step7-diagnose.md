@@ -134,7 +134,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 |---|---|---|---|
 | 首探 prod 偏高 | 按 D0-P 的阈值表 | 查 D0-P：不扩变体 / 当天进步 8 / 踩线带 1 次结构性尝试 / dead_end | 步 8 或步 9 |
 | 同一想法 > 10 种结构仍不过 | 计数。**10 是经验上限，没有统计推导**——意图是防「对同一想法无限换壳」；更硬的判据是 §7.4 / D0-P 的机检墙，能用它们判就不要靠计数 | 步 9 记 `dead_end`（先 `forum_recon` 软核对） | 步 9 → 步 2 |
-| Mode B 常规改进 2–3 轮仍卡墙（prod / 2Y / CW / tvr / robust）且未到判死 | 每轮都有新结构、指标仍不过 | **找武器**：`tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`（触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)），命中配方入 idea 池供 Mode B Step B3；「先读本波 `forum_recon_wave` 已落的 ledger 结论」的波级默认兜底是**设计、未落地**（节点未注册），见触发表末节 | 本步 |
+| Mode B 常规改进 2–3 轮仍卡墙（prod / 2Y / CW / tvr / robust）且未到判死 | 每轮都有新结构、指标仍不过 | **找武器**：`tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`（触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)），命中配方入 idea 池供 Mode B Step B3；**先读本波默认取证已落的结论**：收批时 `forum_recon_wave` 已自动问过一次（`pipeline.py --forum-recon`，`batch_track` 缺省带上），ledger `forum_recon_wave_<wave>` → `question_key` → `forum_recon_<qkey>` / `_negative_` / `_error_`（故障先修工具，不是无解），见触发表「波级默认取证」 | 本步 |
 | 全灭 | ② 预筛全 `REJECT` | 判死该批，不进 ③④ | 步 9 |
 | 候选全部被 prod 墙卡死 | `submit_verdict` BLOCKED 原因含 PROD_CORRELATION | 除 `dead_end` 外，在步 9 登记数据集饱和（`mark-saturated`），下一轮 S0 才会降级该集 | 步 9 |
 

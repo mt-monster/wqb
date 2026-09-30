@@ -93,9 +93,9 @@
 ## 情景 RA-06　判死：粒度与前置核对
 
 - **前置状态**：某想法 / 族 / 数据集多轮不过，想判死。
-- **步骤**：① 确定**粒度**——候选（淘汰）/ 字段搭配（禁配）/ 家族（`dead_end`）/ 数据集（`<ds>_dead`）/ 波（`FAIL`）；② 判死前 `forum_recon --out negative`（触发表 #5）；③ `found=false`（退出码 2）→ `seal_dead_end`；`found=true` → 转 salvage / Mode B 武器；④ 步 9 §9.5 封存。
+- **步骤**：① 确定**粒度**——候选（淘汰）/ 字段搭配（禁配）/ 家族（`dead_end`）/ 数据集（`<ds>_dead`）/ 波（`FAIL`）；② 判死前取证——收批时 `forum_recon_wave` 已默认问过（读 ledger `forum_recon_wave_<wave>`）；要针对族再查：`forum_recon --out negative`（触发表 #5）；③ `found=false`（退出码 2 = 可靠的无解；**退出码 1 = 工具故障，不是无解**）→ `seal_dead_end(…, forum_recon={"question_key": …, "found": false})`（fail-closed 闸，按 `question_key` 回 ledger 核对）；`found=true` → 转 salvage / Mode B 武器；④ 步 9 §9.5 封存。
 - **分支**：只有 RN 墙（`risk_neutralized_sharpe ≤ 0`）→ 步 7 §7.4（想法级 dead_end 须**全部**变体都 ≤ 0）；prod 墙 → 情景 RA-04；机制枯竭而非判死 → 触发表 #2（回补 KB）。
-- **完成定义**：`registry_empirical` 有 `dead_end` 条目且 `payload.salvage` 已回填；key_findings 里写了 `forum_recon` 结论。
+- **完成定义**：`registry_empirical` 有 `dead_end` 条目且 `payload.salvage` 已回填、`payload.forum_recon_gate` 有留痕（`verified` / `forced` / `waived`）；key_findings 里写了 `forum_recon` 结论。
 - **反例**：**未选、未回测不能写成 dead_end**（选波清单里的延后项不是判死）；不要拿一颗候选的失败给整个数据集判死（粒度错位）。
 
 ---

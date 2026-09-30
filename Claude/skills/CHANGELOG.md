@@ -6,6 +6,14 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**把 main 文案里「未落地」的四项能力做完（2026-09-30，用户要求；DEC-68…71）**——上一条说「不改任何代码」，是因为当时它们是并行会话的未入库工作；用户随后要求把这四项做完，落地后 references 里的「设计 / 未落地」标注改为「现状」
+- **故障 ≠ 无解**（DEC-68）：`tools/forum_recon.py` 三结局（有货 / 可靠无解 / 工具故障，退出码 0 / 2 / 1），故障落 `forum_recon_error_<qkey>`、不入缓存；live 路径此前**从未跑通过**（`load_creds(None)` 永远 TypeError），一并修复；键名 / 记录分类 / 判死闸判定单一实现 `src/wqb/recon_evidence.py`，`step_funnel` 命中率不再把故障数成「有货」→ `tests/unit/test_forum_recon.py` / `test_recon_evidence.py`
+- **波级默认取证**（DEC-69）：节点 `forum_recon_wave`（五处同步，`audit_node_registration` 干净）+ `tools/forum_recon_wave.py` + `pipeline.py --forum-recon`，`batch_track` 缺省带上；本波回测行机械派生问题（墙问题 / 全灭时的「有无解法」/ 不问），每波 ≤ 1 次（可靠结局占额度、故障不占）→ `tests/unit/test_recon_wave.py` / `test_forum_recon_wave.py`
+- **判死取证闸**（DEC-70）：`seal_dead_end(…, forum_recon=, force_seal=, require_forum_recon=True)` fail-closed，按 `question_key` 回 ledger 核对，拒绝时不沉降不写库，绕过须人工确认并留痕 `payload.forum_recon_gate`；闸只在 `seal_dead_end` 上（CLI `add-dead-end` / `upsert_registry_empirical(dead_end)` 不经闸）→ `tests/unit/test_seal_dead_end_gate.py`
+- **形状配额机检**（DEC-71）：`tools/shape_quota_check.py`（≥ 3 个形状族、`trade_when` ≤ 40%；只读、不入闸链）→ `tests/unit/test_shape_quota.py`
+- RA 核心 SKILL `version` 3.1 → 3.2（步 9 判死取证闸落地）
+- 步 4 §4.5.1 / 步 5 / 步 7 §7.9 / 步 9 §9.5 / 触发表 / 工具索引 / toolkit §12 同步改为「现状」；触发表末节写明**已知缺口**（live 论坛路径无端到端实测；闸不覆盖别的判死写入口、不核对相关性）；AGENTS.md §8.11 写硬约束
+
 **合并 main（2026-09-30，功能分支 → main；DEC-67）**
 - main 上的 10 个提交并入：N32–N35 的 store / `auto_review` 修复、`docs/experience/` 挖掘经验库（01–05 + README）、RA / toolkit `SKILL.md` 的 v2.3 增补。RA、toolkit 两份 `SKILL.md` 冲突，取本分支的结构，把 main 的增补**按步移植进 references**（经验库必读表进 RA 核心 SKILL；形状配额与形状源 → 步 4 §4.5.1；SUB 比值律与零成本定位卡点 → 步 7 §7.6.1；判死前取证 → 步 9 §9.5）
 - **main 的文案比代码超前**：`forum_recon_wave` 节点（未注册）、`seal_dead_end` 的 fail-closed 取证闸（无 `force_seal` / `require_forum_recon`）、`forum_recon_error_*` 故障语义（`tools/forum_recon.py` 仍把鉴权失败记成 `found=false` 入库、入缓存、退出码 2）、`tools/shape_quota_check.py`（不存在）——移植时如实标「设计 / 未落地」并写出现状与落地清单（`references/forum-recon-triggers.md` 末节），**没有改任何代码**

@@ -274,7 +274,7 @@
   },
   "WQB_FORUM_RECON_TIMEOUT_SEC": {
    "cat": "wait",
-   "what": "forum_recon 节点超时（秒）"
+   "what": "forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900）"
   },
   "WQB_GATE_MODE": {
    "cat": "gate",

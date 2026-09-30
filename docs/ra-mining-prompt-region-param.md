@@ -161,7 +161,7 @@
   mcp__wqb-db__upsert_registry_empirical region=$REGION ...
   mcp__wqb-db__upsert_ledger_key         region=$REGION key="s6_verdict_<wave>" ...
   mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S6"  subcommand="dataset-experience"  dataset=<DS>  extra_args=["--delay",str($D)]
-  mcp__wqb-db__seal_dead_end             region=$REGION entry_id=<ID> family=<族> reason=<判死原因> rule=<下次怎么办> wave_numbers=[...]
+  mcp__wqb-db__seal_dead_end             region=$REGION entry_id=<ID> family=<族> reason=<判死原因> rule=<下次怎么办> wave_numbers=[...] forum_recon={"question_key": "<qkey>", "found": false}   # 取证闸 fail-closed，见 RA 步 9 §9.5
   python tools/campaign_intel.py pyramid --region $REGION --delay $D   # key_findings 拷进 wave_result
 
 【循环与停止（命中即停并报告）】

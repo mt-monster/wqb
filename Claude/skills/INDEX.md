@@ -242,8 +242,8 @@ L7  元技能       pull-brain-skills · planning-with-files
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。
 - `wqb-db` 服务器：**44 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
-- workflow 节点：**19 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
-  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
+- workflow 节点：**20 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `forum_recon_wave` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
 
 ## 分工声明（防触发歧义）

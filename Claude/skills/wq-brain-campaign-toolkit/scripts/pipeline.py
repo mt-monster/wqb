@@ -1007,6 +1007,9 @@ def main():
                         "SOP 步 5b：新族第二波前必查）")
     p.add_argument("--prod-first-top-k", type=int, default=2)
     p.add_argument("--prod-first-min-sharpe", type=float, default=1.0)
+    p.add_argument("--forum-recon", action="store_true",
+                   help="评审后自动跑 tools/forum_recon_wave.py（波级默认取证：对本波共同卡住的墙问一次论坛，每波 ≤ 1 次，"
+                        "结果落 ledger；只读、不阻断，工具故障不占本波额度）")
     p.add_argument("--neutralization", default=None,
                    help="覆盖 settings.neutralization（中性化 A/B 实验用；MARKET/SUBINDUSTRY/SECTOR）")
     p.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
@@ -1221,6 +1224,8 @@ def _cmd_main(a, ctx):
         stage_review(ctx, ck, a.write_ledger, a.checkpoint_dir)
     if getattr(a, "prod_first", False):
         stage_prod_first(ctx, a)
+    if getattr(a, "forum_recon", False):
+        stage_forum_recon(ctx, a)                    # 放在 prod-first 之后：prod 相关性写回后，prod 墙才看得见
     print(f"[done] checkpoint: {ckpt_path(ctx, a.wave, a.checkpoint_dir)}")
     return 0
 
@@ -1253,6 +1258,50 @@ def stage_prod_first(ctx, a):
             print(f"[prod-first] 退出码 {r.returncode}: {(r.stderr or '')[-300:]}")
     except Exception as e:
         print(f"[prod-first] 执行异常（不阻断）: {e}")
+
+
+def stage_forum_recon(ctx, a):
+    """波级默认取证（2026-09-30）：收批评审后，对本波共同卡住的墙（全灭时为「有无解法」）问一次论坛——子进程调
+    tools/forum_recon_wave.py（同一 venv）。每波 ≤ 1 次，结果落 ledger：`forum_recon_<qkey>` 有解 /
+    `forum_recon_negative_<qkey>` 无解 / `forum_recon_error_<qkey>` 故障，另留完成标记 `forum_recon_wave_<wave>`。
+    **只读、不阻断**：论坛不可达 / 缺凭据只打印（故障 ≠ 无解，也不占本波额度），收批结论不受影响。"""
+    import json
+    import subprocess
+    repo = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
+    for cand in (os.environ.get("WQB_ROOT"), repo):
+        if cand and os.path.isfile(os.path.join(cand, "tools", "forum_recon_wave.py")):
+            repo = cand
+            break
+    tool = os.path.join(repo, "tools", "forum_recon_wave.py")
+    if not os.path.isfile(tool):
+        print("[forum-recon] tools/forum_recon_wave.py 不存在，跳过")
+        return
+    cmd = [sys.executable, tool, "--region", ctx.region, "--wave", str(a.wave), "--dataset", str(a.dataset)]
+    try:
+        timeout = int(os.environ.get("WQB_FORUM_RECON_TIMEOUT_SEC") or 900)
+    except ValueError:
+        timeout = 900
+    print(f"[forum-recon] 收批后波级取证：{' '.join(cmd[2:])}")
+    try:
+        r = subprocess.run(cmd, cwd=repo, capture_output=True, text=True, timeout=timeout)
+        summary = None
+        for line in reversed((r.stdout or "").splitlines()):
+            if line.startswith('{"tool": "forum_recon_wave"'):
+                try:
+                    summary = json.loads(line)
+                except ValueError:
+                    pass
+                break
+        if r.returncode not in (0, 2):                # 1 = 工具故障（不是「论坛无解」）；不阻断收批
+            print(f"[forum-recon] 工具故障（退出码 {r.returncode}，不是「论坛无解」，不占本波额度）："
+                  f"{((summary or {}).get('error') or r.stderr or '')[-300:]}")
+        elif summary and summary.get("skipped"):
+            print(f"[forum-recon] 未查（{summary.get('reason')}）：{summary.get('note') or ''}")
+        elif summary:
+            print(f"[forum-recon] {summary.get('kind')}/{summary.get('wall') or '-'} found={summary.get('found')} "
+                  f"status={summary.get('status')} → {summary.get('sink') or summary.get('marker')}：{summary.get('question')}")
+    except Exception as e:
+        print(f"[forum-recon] 执行异常（不阻断）: {e}")
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
-version: "3.1"
+version: "3.2"
 last_verified: 2026-09-30
 ---
 
@@ -186,7 +186,7 @@ last_verified: 2026-09-30
 
 - **目的**：把这一波的结论写回库，让下一波的先验自动变新。
 - **前置**：步 7 / 8 已有去向；先跑 `tools/step_funnel.py` 定位掉得最狠的一跳。
-- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先 `forum_recon` 取证；规则与**现状**见 §9.5——取证闸是设计，代码目前不拦）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
+- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先取证——收批时 `forum_recon_wave` 已默认问过一次；把 `question_key` 传给它，取证闸 fail-closed，规则见 §9.5）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
 - **产物**：`wave_results.verdict`（**唯一结论源**）、`registry_empirical`、`priors_snapshot_<region>`、`reports/dataset_experience/*_campain.md`。
 - **完成定义**：`step9-writeback.md` §9.7 的清单全勾；**缺任何一项 = 本波未完成**（GEM 对 stale 先验快照只 WARN 不阻断，只能由本步兜底）。
 - **失败分支**：`upsert_wave_result` 被拒（verdict 不可辨认）→ 用返回的 `suggestion` 核对后显式传枚举，原文进 `key_findings`。

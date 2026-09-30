@@ -109,6 +109,7 @@ CONSUMERS = (
     ("Claude/skills/brain-calculate-alpha-selfcorr-quick/scripts/skill.py", "selfcorr-quick"),
     ("Claude/skills/brain-inspect-raw-template-create-setting/scripts/load_credentials.py", "inspect-raw"),
     ("tools/fetch_all_universes.py", "fetch_all_universes"),
+    ("tools/forum_recon.py", "forum_recon"),
 )
 
 
@@ -118,7 +119,7 @@ def test_credential_register_lists_every_consumer_and_each_one_reads_the_standar
         src = _read(ROOT / rel)
         assert "CREDENTIALS_EMAIL" in src and "CREDENTIALS_PASSWORD" in src, f"{label}（{rel}）没有认标准名 CREDENTIALS_*"
     for label in ("MCP 服务 `wq-brain-http`", "toolkit", "GEM runner", "sim-alphas", "feature-implementation", "judge", "selfcorr-quick",
-                  "inspect-raw", "fetch_all_universes"):
+                  "inspect-raw", "fetch_all_universes", "forum_recon"):
         assert label in doc, f"凭据登记表缺消费者：{label}"
     assert "标准名 = `CREDENTIALS_EMAIL` / `CREDENTIALS_PASSWORD`" in doc
     assert "外发通道" in doc and "BRAIN_JUDGE_LLM_API_KEY" in doc and "OPENAI_API_KEY" in doc and "MOONSHOT_API_KEY" in doc

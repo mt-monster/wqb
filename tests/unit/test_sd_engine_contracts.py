@@ -167,9 +167,13 @@ def test_seal_dead_end_new_entry_needs_rule_and_has_no_side_effects(mcp, db_path
 
 
 def test_seal_dead_end_with_rule_writes_full_shape_and_keeps_rule_on_reseal(mcp, db_path):
+    # 2026-09-30：判死前取证闸（fail-closed）——正路：forum_recon 已把可靠的负结果落 ledger，封存时带上 question_key
+    mcp._upsert_ledger_raw("KOR", "forum_recon_negative_0123456789", {"found": False, "status": "no_result",
+                                                                      "question_key": "0123456789"})
     ok = mcp.seal_dead_end(region="KOR", entry_id="KOR-NEW-DEAD", family="f", reason="r",
-                           rule="该族不再扩变体")
+                           rule="该族不再扩变体", forum_recon={"question_key": "0123456789", "found": False})
     assert ok["status"] == "success" and ok["action"] == "inserted"
+    assert ok["forum_recon_gate"]["decision"] == "verified" and ok["forced"] is False
     (_e, family, payload, dead_at), = _reg_rows(db_path)
     p = json.loads(payload)
     assert p["id"] == "KOR-NEW-DEAD" and p["rule"] == "该族不再扩变体" and family == "f" and dead_at

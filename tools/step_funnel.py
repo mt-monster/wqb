@@ -43,6 +43,7 @@ from typing import Any, Dict, List, Optional
 import sys as _sys, os as _os
 _sys.path.insert(0, str(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'src')))
 from wqb.db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口）
+from wqb import recon_evidence as _RE  # forum_recon 记录分类的单一实现
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC_DIR = os.path.join(REPO_ROOT, "src")
 if SRC_DIR not in sys.path:
@@ -219,23 +220,23 @@ def build_funnel(conn, region: str, wave: Optional[str] = None) -> Dict[str, Any
     out["steps"]["S6_review"] = s6
 
     # ---- 论坛 recon 命中率（2026-09-28 P4 闭环；只读推导自 ledger）----
-    # 键形态：forum_recon_<qkey>（有货）/ forum_recon_negative_<qkey>（无解）。
-    # 命中率 = 有货 /(有货+无解)；「进批转化」暂不可推导（KB 条目未记录入批去向）——如实标注。
+    # 键形态：forum_recon_<qkey>（有货）/ forum_recon_negative_<qkey>（无解）/ forum_recon_error_<qkey>（工具故障）/
+    # forum_recon_wave_<wave>（波级取证的完成标记）——分类的单一实现在 wqb.recon_evidence。
+    # 命中率 = 有货 /(有货+无解)；**故障与波标记不计入**（旧版按前缀数，故障会被数成「有货」）；
+    # 「进批转化」暂不可推导（KB 条目未记录入批去向）——如实标注。
     recon: Dict[str, Any] = {}
     try:
         rows = conn.execute(
-            "SELECT key FROM ledger_kv WHERE (region=? OR region='GLOBAL') "
-            "AND (key LIKE 'forum_recon_%' OR key LIKE 'forum_recon_negative_%')",
+            "SELECT key FROM ledger_kv WHERE (region=? OR region='GLOBAL') AND key LIKE 'forum_recon_%'",
             [region],
         ).fetchall()
-        keys = [str(k) for (k,) in rows]
-        n_found = sum(1 for k in keys if not k.startswith("forum_recon_negative_"))
-        n_neg = len(keys) - n_found
+        counts = _RE.summarize_keys(str(k) for (k,) in rows)
+        n_found, n_neg, n_err = counts["found"], counts["negative"], counts["error"]
         total_recon = n_found + n_neg
         recon = {
-            "n_recon": total_recon, "n_found": n_found, "n_negative": n_neg,
+            "n_recon": total_recon, "n_found": n_found, "n_negative": n_neg, "n_error": n_err,
             "hit_rate": round(n_found / total_recon, 4) if total_recon else None,
-            "note": "命中率=有货/(有货+无解)；进批转化未追踪（KB 条目无入批去向），暂不可推导",
+            "note": "命中率=有货/(有货+无解)；工具故障（forum_recon_error_*）不计入；进批转化未追踪（KB 条目无入批去向），暂不可推导",
         }
     except sqlite3.Error:
         recon = {}
@@ -356,10 +357,10 @@ def render(res: Dict[str, Any]) -> str:
                      or "n/a"))
 
     fr = res["steps"].get("forum_recon") or {}
-    if fr.get("n_recon"):
-        L.append("\n[论坛 recon 命中率] ledger forum_recon_* / forum_recon_negative_*")
-        L.append(f"  检索 {fr['n_recon']} 次：有货 {fr['n_found']} / 无解 {fr['n_negative']}，"
-                 f"命中率 = {_fmt(fr.get('hit_rate'))}")
+    if fr.get("n_recon") or fr.get("n_error"):
+        L.append("\n[论坛 recon 命中率] ledger forum_recon_* / forum_recon_negative_* / forum_recon_error_*")
+        L.append(f"  检索 {fr.get('n_recon', 0)} 次：有货 {fr.get('n_found', 0)} / 无解 {fr.get('n_negative', 0)}，"
+                 f"命中率 = {_fmt(fr.get('hit_rate'))}；工具故障 {fr.get('n_error', 0)} 次（不计入）")
         L.append(f"  {fr.get('note', '')}")
 
     L.append(f"\n[漏斗转化链]  口径：{res.get('chain_note')}")

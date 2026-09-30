@@ -24,6 +24,7 @@
 | selfcorr-quick `skill.py` | 环境（`CREDENTIALS_*` → `BRAIN_USERNAME` / `BRAIN_PASSWORD`）；命令行 `--password` 仍可用但告警 | 否 | 产物落固定目录（`WQ_SELFCORR_OUT_DIR`），不落 CWD |
 | inspect-raw `load_credentials.py` | 环境（`CREDENTIALS_*` 优先）→ 旧别名 | 否 | 测试钉死「标准名优先」 |
 | `tools/fetch_all_universes.py` | `CREDENTIALS_*` → `WQ_USERNAME` / `WQ_PASSWORD`；`.env` 路径 `WQ_ENV_PATH` | 否 | 一次性运维脚本 |
+| `tools/forum_recon.py`（HTTP 实现复用 `forum_research.py`；论坛只读检索） | 进程环境 `CREDENTIALS_*` → MCP `world-quant-brain-mcp/.env`（`forum_research.load_creds` 的路径约定） | 否 | 缺凭据 = **工具故障**（记 `forum_recon_error_<qkey>`，不是「论坛无解」）；不打印、不记录值 |
 
 **外发通道**（凭据之外，另一类泄露面——把研究资产发给第三方）：
 
@@ -50,8 +51,8 @@
 | `BRAIN_JUDGE_LLM_API_KEY` | — | judge `llm_judge.py` 的 LLM 通道密钥（缺省不启用；启用即外发候选字段——见 judge SKILL 的外发边界） | `brain-alpha-judge/scripts/vendor/llm_judge.py` | — |
 | `BRAIN_PASSWORD` | — | 旧别名（BRAIN 口令）；同时是 GEM runner / sim-alphas 传给下游子进程的内部变量。新代码用 `CREDENTIALS_PASSWORD` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +6 | — |
 | `BRAIN_USERNAME` | — | 旧别名（BRAIN 邮箱）：judge 的 `load_credentials`、feature-implementation、GEM runner 兜底。新代码用 `CREDENTIALS_EMAIL` | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +5 | — |
-| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +9 | — |
-| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +9 | — |
+| `CREDENTIALS_EMAIL` | — | BRAIN 账号邮箱——**标准名**：MCP 服务 / toolkit / feature-implementation / judge / GEM runner 共用，优先于下面的旧别名 | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +10 | — |
+| `CREDENTIALS_PASSWORD` | — | BRAIN 账号口令——标准名（同上） | `brain-alpha-judge/scripts/vendor/load_credentials.py` · `brain-calculate-alpha-selfcorr-quick/scripts/skill.py` · +10 | — |
 | `MCP_CONFIG_FILE` | — | toolkit / `tools/lib/api_client.py`：`~/.brain_mcp_config.json` 路径覆盖（凭据来源之一） | `wq-brain-campaign-toolkit/scripts/_lib/common.py` · `tools/lib/api_client.py` · +1 | — |
 | `MOONSHOT_API_KEY` | — | GEM 的 LLM 通道密钥（优先于 `config.json` 的 `moonshot_api_key`；给了 `ideas_file` 就不需要） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py` | — |
 | `MOONSHOT_BASE_URL` | `https://api.moonshot.cn/v1` | GEM 的 LLM 端点（runner 从 `config.json` 的 `moonshot_base_url` 写入） | `brain-make-some-gem/scripts/headless_runner/run.py` · `brain-make-some-gem/scripts/trailSomeAlphas/pipeline_llm.py` | — |
@@ -140,7 +141,7 @@
 | `WQB_CALIBRATE_TIMEOUT` | — | score_datasets 校准阶段的软超时（秒；超预算后周期性打线程栈） | `wq-brain-campaign-toolkit/scripts/score_datasets.py` | — |
 | `WQB_CAMPAIGN_TIMEOUT` | — | campaign 节点子进程超时（秒） | `src/wqb/workflow/nodes/campaign.py` | — |
 | `WQB_DETACHED_FIRST_OUTPUT_SEC` | `20` | detached 后台任务的首次输出心跳窗口（秒；超时判启动即死） | `src/wqb/workflow/nodes/batch_track.py` | — |
-| `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon 节点超时（秒） | `src/wqb/workflow/nodes/forum_recon.py` | — |
+| `WQB_FORUM_RECON_TIMEOUT_SEC` | — | forum_recon / forum_recon_wave 节点及 pipeline.py --forum-recon 阶段的超时（秒；缺省 900） | `wq-brain-campaign-toolkit/scripts/pipeline.py` · `src/wqb/workflow/nodes/forum_recon.py` · +1 | — |
 | `WQB_GLOBAL_SLOTS` | `7` | 账户级模拟并发令牌数（缺省 7，= `config.CONCURRENCY`；多流水线同跑共享） | `wq-brain-campaign-toolkit/scripts/_lib/slots.py` | 2026-09-19 |
 | `WQB_WAVE_GATE_TIMEOUT_SEC` | — | wave_gate 节点子进程超时（秒） | `src/wqb/workflow/nodes/wave_gate.py` | — |
 

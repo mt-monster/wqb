@@ -109,7 +109,8 @@ class WorkflowRegistry:
                     required_params=["region", "wave", "dataset"],
                     optional_params=["concurrency", "max_rounds", "output_csv",
                                      "campaign_dir", "detached", "submit",
-                                     "skip_diversity_gate", "datasets_extra"],
+                                     "skip_diversity_gate", "datasets_extra",
+                                     "forum_recon"],
                 )
             )
         except ImportError as e:
@@ -454,6 +455,24 @@ class WorkflowRegistry:
             )
         except ImportError as e:
             logger.warning(f"Failed to register forum_recon: {e}")
+
+        # Phase 2: forum_recon_wave（波级默认取证：收批时对本波共同卡住的墙问一次论坛，每波 ≤ 1 次）
+        try:
+            from .nodes import forum_recon_wave
+            self.register(
+                "forum_recon_wave",
+                forum_recon_wave.run,
+                NodeMeta(
+                    name="forum_recon_wave",
+                    description="波级默认取证：本波回测结果→机械派生决策问题（共同卡住的墙 / 全灭时的「有无解法」）→论坛 recon→落 ledger（有解/无解/故障分键）+ 每波完成标记，每波 ≤ 1 次；包装 tools/forum_recon_wave.py",
+                    category="research",
+                    phase=2,
+                    required_params=["region", "wave"],
+                    optional_params=["dataset", "force", "limit", "max_search_rounds", "timeout_sec"],
+                )
+            )
+        except ImportError as e:
+            logger.warning(f"Failed to register forum_recon_wave: {e}")
 
 
 def get_registry() -> WorkflowRegistry:

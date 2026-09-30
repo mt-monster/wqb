@@ -994,7 +994,7 @@
   {
    "key": "forum_recon_<qkey>",
    "status": "active",
-   "purpose": "论坛取证结果（found=true 且 `--out ledger`）",
+   "purpose": "论坛取证结果（found=true 且 `--out ledger`）；判死闸回查时若它比负结果更新，则「论坛有解」推翻判死声明",
    "writers": [
     {
      "kind": "code",
@@ -1005,6 +1005,11 @@
     {
      "kind": "code",
      "ref": "tools/step_funnel.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/recon_evidence.py",
+     "via": "MCP `seal_dead_end` 判死闸经 `verify_evidence` 按 question_key 回查（region → GLOBAL）"
     }
    ],
    "missing": "视为未取证",
@@ -1013,7 +1018,7 @@
   {
    "key": "forum_recon_negative_<qkey>",
    "status": "active",
-   "purpose": "论坛无解的负结果（判死证据）",
+   "purpose": "论坛无解的负结果（判死证据；`seal_dead_end` 的取证闸按 question_key 回查它——只认可靠的负结果，旧版「found=false + error」的假负结果按故障处理）",
    "writers": [
     {
      "kind": "code",
@@ -1024,10 +1029,59 @@
     {
      "kind": "code",
      "ref": "tools/step_funnel.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/recon_evidence.py",
+     "via": "MCP `seal_dead_end` 判死闸经 `verify_evidence` 按 question_key 回查（region → GLOBAL）"
     }
    ],
    "missing": "视为未取证",
    "refresh": "同 qkey 覆盖"
+  },
+  {
+   "key": "forum_recon_error_<qkey>",
+   "status": "active",
+   "purpose": "论坛取证的**工具故障**记录（鉴权 / 凭据 / 依赖 / 检索 / 读帖 / 对照检索失败）——不是取证、不是「论坛无解」，不入 7 天缓存；判死闸（seal_dead_end）不认",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon.py"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/step_funnel.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/recon_evidence.py",
+     "via": "MCP `seal_dead_end` 判死闸经 `verify_evidence` 按 question_key 回查（region → GLOBAL）"
+    }
+   ],
+   "missing": "视为没有故障记录",
+   "refresh": "同 qkey 覆盖（修好后重跑会写新的有货 / 无解记录，故障记录留作审计）"
+  },
+  {
+   "key": "forum_recon_wave_<wave>",
+   "status": "active",
+   "purpose": "波级默认取证的**完成标记**（每波 ≤ 1 次）：本波派生的决策问题（墙问题 / 全灭时的「有无解法」）、`question_key`、结局（status ok / no_result / error）、落点 `sink` 与派生依据 `basis`；可靠结局（ok / no_result）占用本波额度，故障（error）不占",
+   "writers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon_wave.py",
+     "via": "收批评审后 `pipeline.py --forum-recon` / 节点 `forum_recon_wave`"
+    }
+   ],
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "tools/forum_recon_wave.py"
+    }
+   ],
+   "missing": "本波尚未取证（或取证故障后未重跑）；`forum_recon_wave` 会重新派生问题并查",
+   "refresh": "同波覆盖（故障标记会被之后的成功覆盖；`--force` 可强制重跑）"
   },
   {
    "key": "research_leads_w<W>",

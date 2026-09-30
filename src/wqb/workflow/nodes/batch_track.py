@@ -46,6 +46,7 @@ def run(
     submit: bool = False,
     skip_diversity_gate: bool = False,
     datasets_extra: Optional[str] = None,
+    forum_recon: bool = True,
     _context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """执行批量回测跟踪.
@@ -63,6 +64,9 @@ def run(
         submit: 是否真正提交回测（默认 True）。False 只跑 gate + 计划，不发 simulation。
                 注意：这里的"提交"是提交 **回测**（simulation），不是提交 alpha ——
                 提交 alpha 走 submit_alpha 节点且需用户确认（ra-pipeline 步 8）。
+        forum_recon: 收批评审后自动跑波级默认取证（`pipeline.py --forum-recon` → tools/forum_recon_wave.py：
+                对本波共同卡住的墙问一次论坛，每波 ≤ 1 次，结果落 ledger；只读、不阻断）。默认 True——
+                「卡墙时想起去查」靠 Agent 记性不可靠；离线 / 无论坛凭据的环境传 False。
         _context: 执行上下文（由 executor 注入）
 
     Returns:
@@ -187,6 +191,10 @@ def run(
     # 会逼探针波塞进无关骨架，背离探针本意。仅 skip_diversity_gate=True 时透传。
     if skip_diversity_gate:
         cmd.append("--skip-diversity-gate")
+    # 2026-09-30：波级默认取证。收批评审（--review）之后由 pipeline.py 子进程调 tools/forum_recon_wave.py，
+    # 不阻断收批；只在真实提交回测的分支（--submit）里才会走到。
+    if forum_recon:
+        cmd.append("--forum-recon")
     # 2026-09-09：跨金字塔慢×快表达式（如 insiders5×pv106 辅助腿）需要合并多个
     # dataset 的 typed catalog 才能过闸2 字段白名单（gate.py merge_whitelists）。
     # 逗号分隔，与 pipeline.py --datasets 契约一致。

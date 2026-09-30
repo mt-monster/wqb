@@ -2,7 +2,8 @@
 """forum_recon 节点：论坛问题驱动只读检索（recon，2026-09-28 P4 节点化）。
 
 包装仓库根 `tools/forum_recon.py` —— 单问题 → 有效文章 → 入库（`KB/community_tpl_kb`
-或 ledger `forum_recon_<qkey>`；无解落 `forum_recon_negative_*` 作「论坛无解」判死证据）。
+或 ledger `forum_recon_<qkey>`；**可靠的**无解落 `forum_recon_negative_*` 作「论坛无解」判死证据；
+**工具故障**落 `forum_recon_error_*`，不是取证——故障 ≠ 无解，见 `src/wqb/recon_evidence.py`）。
 
 为什么节点化（P4）：ra-pipeline 步 4/5/7/9 的 recon 触发点此前只能走 CLI；
 节点化后可经 `workflow_execute(node="forum_recon")` 调用，
@@ -18,6 +19,7 @@ import os
 import subprocess
 from typing import Any, Dict, Optional
 
+from ... import recon_evidence as RE
 from .._common import REPO_ROOT, run_logged_subprocess, unbuffered_env, validate_argv, wq_py
 
 logger = logging.getLogger(__name__)
@@ -53,9 +55,11 @@ def run(
         _context: 执行上下文（由 executor 注入）
 
     Returns:
-        执行结果字典（success / found / returncode / cmd / 计划）。
-        退出码语义：0=有货（success=True, found=True）；2=无解（success=True,
-        found=False —— 负结果已入库，是合法结局）；其它=工具异常（success=False）。
+        执行结果字典（success / found / status / question_key / returncode / cmd / 计划）。
+        退出码语义：0=有货（success=True, found=True, status=ok）；2=无解（success=True,
+        found=False, status=no_result —— 检索可靠完成、负结果已入库，是合法结局）；
+        其它=**工具故障**（success=False, found=None, status=error）——不是「论坛无解」，
+        不得当判死证据（故障记录落 `forum_recon_error_<qkey>`）。
     """
     ctx = _context or {}
     dry_run = bool(ctx.get("dry_run", dry_run))
@@ -65,6 +69,7 @@ def run(
         "success": False,
         "dry_run": dry_run,
         "question": question,
+        "question_key": RE.question_key(question),
         "steps": [],
     }
 
@@ -136,6 +141,8 @@ def run(
     if run_info["timed_out"]:
         result["step"] = "run_forum_recon"
         result["timed_out"] = True
+        result["found"] = None                       # 超时 = 没拿到结论，不是「无解」
+        result["status"] = RE.STATUS_ERROR
         result["error"] = (
             f"forum_recon 超时（{int(_to)}s，已杀整棵进程树）。完整输出见 {run_info['log_path']}；"
             "等价 CLI：" + subprocess.list2cmdline(cmd)
@@ -148,14 +155,19 @@ def run(
     if proc_rc == 0:
         result["success"] = True
         result["found"] = True
+        result["status"] = RE.STATUS_OK
     elif proc_rc == 2:
-        # 无解也是合法结局：负结果已落 forum_recon_negative_*（判死取证）
+        # 无解也是合法结局：检索可靠完成，负结果已落 forum_recon_negative_*（判死取证）
         result["success"] = True
         result["found"] = False
-        result["note"] = "无解（负结果已入库）——可作「论坛无解」判死证据"
+        result["status"] = RE.STATUS_NO_RESULT
+        result["note"] = "无解（检索可靠完成，负结果已入库）——可作「论坛无解」判死证据"
     else:
+        # 故障 ≠ 无解：found 必须是 None，绝不能是 False（否则下游会把它当负结果）
         result["success"] = False
-        result["found"] = False
-        result["error"] = f"forum_recon 工具异常（exit {proc_rc}），见 {run_info['log_path']}"
+        result["found"] = None
+        result["status"] = RE.STATUS_ERROR
+        result["error"] = (f"forum_recon 工具故障（exit {proc_rc}），见 {run_info['log_path']}——"
+                           f"**不是「论坛无解」**，不得当判死证据；故障记录：ledger {RE.key_error(result['question_key'])}")
     result["steps"].append({"step": "run_forum_recon", "success": result["success"]})
     return result
