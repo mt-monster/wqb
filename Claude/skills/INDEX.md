@@ -241,7 +241,7 @@ L7  元技能       pull-brain-skills · planning-with-files
   由 `tests/unit/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。
-- `wqb-db` 服务器：**44 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。
+- `wqb-db` 服务器：**47 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。2026-09-30 方案 B 新增 3 个步级评估工具（`record_step_event` / `get_step_events` / `get_step_eval_report`，客观事件台账 + 九步矩阵，与已下线的 6 个旧工具不同名不同契约）。
 - workflow 节点：**20 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
   `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `forum_recon_wave` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。

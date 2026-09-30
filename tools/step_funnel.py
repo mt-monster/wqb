@@ -30,6 +30,16 @@
     python tools/step_funnel.py --region KOR
     python tools/step_funnel.py --region USA --json
     python tools/step_funnel.py --region KOR --wave 101          # 只看单波
+    python tools/step_funnel.py --region KOR --full              # 九步质量效能增益矩阵（方案 B）
+    python tools/step_funnel.py --region KOR --full --format json|markdown|html
+
+## 2026-09-30 方案 B：--full = 九步质量效能增益矩阵
+默认输出仍是上方漏斗（S2→S6，行为不变）；`--full` 追加**九步**质量/效能/增益指标
+与评分（Q/E/G/ROI），推导点在 `src/wqb/step_eval.py`（T1 只读推导 + T2 事件聚合），
+评分唯一实现在 `src/wqb/step_scoring.py`。客观事件写入 `step_events` 表
+（封闭词表 + source 必填 + 幂等键，见 `src/wqb/step_events.py`），本工具对两者都**只读**。
+T3 反事实估算永不入库，报告估算区由渲染层标注——与上方评估结论不冲突：
+那五张表死于「手传指标 + 反事实记账 + 双真相源」，本方案用「事件=事实 + 推导=单点」绕开。
 """
 from __future__ import annotations
 
@@ -379,11 +389,76 @@ def render(res: Dict[str, Any]) -> str:
     return "\n".join(L)
 
 
+def render_full(res: Dict[str, Any]) -> str:
+    """九步质量效能增益矩阵 → markdown（供 --full --format markdown / 报告渲染复用）。"""
+    L: List[str] = []
+    scope = f"{res['region']}" + (f" / wave={res['wave']}" if res.get("wave") else " / 全区")
+    L.append("=" * 74)
+    L.append(f"九步质量效能增益矩阵 · {scope}   —— T1 只读推导 + T2 事件，评分=step_scoring 单点")
+    L.append("=" * 74)
+
+    for step_name, dims in (res.get("steps") or {}).items():
+        L.append(f"\n[{step_name}]")
+        for dim, label in (("quality", "质量"), ("efficiency", "效能"), ("gain", "增益")):
+            metrics = dims.get(dim) or []
+            if not metrics:
+                continue
+            for m in metrics:
+                v = m.get("value")
+                vs = "n/a" if v is None else (f"{v:.4f}" if isinstance(v, float) else str(v))
+                flag = "*" if m.get("score_eligible") else " "
+                note = f"  [{m['note']}]" if m.get("note") else ""
+                L.append(f"  {label} {m['name']:<28} = {vs:<10} {m.get('unit', '')}"
+                         f"  ({m.get('tier')}, src={m.get('source', '')[:40]}){flag}{note}")
+
+    sc = res.get("scores") or {}
+    L.append("\n[评分]  (* = 参与评分的好方向比率；原始量/计数只展示不评分)")
+    for k, label in (("quality", "质量分 Q"), ("efficiency", "效能分 E"),
+                     ("gain", "增益分 G"), ("roi", "ROI=达标/配额"),
+                     ("unit_cost", "单位成本=配额/达标")):
+        v = sc.get(k)
+        L.append(f"  {label:<20} = " + ("n/a" if v is None else f"{v:.4f}"))
+    L.append("\n[口径]  比率∈[0,1] 或 n/a（0 分母→n/a，禁除零）；T3 反事实估算不入库。")
+    L.append("")
+    return "\n".join(L)
+
+
+def render_full_html(res: Dict[str, Any]) -> str:
+    """九步矩阵 → html（极简表格，与 render_full 同数据）。"""
+    esc = lambda s: (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    scope = f"{res['region']}" + (f" / wave={res['wave']}" if res.get("wave") else " / 全区")
+    H = ["<html><head><meta charset='utf-8'><title>九步质量效能增益矩阵</title></head><body>",
+         f"<h1>九步质量效能增益矩阵 · {esc(scope)}</h1>"]
+    H.append("<table border='1'><tr><th>步</th><th>维度</th><th>指标</th><th>值</th>"
+             "<th>单位</th><th>级别</th><th>来源</th><th>评分</th></tr>")
+    for step_name, dims in (res.get("steps") or {}).items():
+        for dim, label in (("quality", "质量"), ("efficiency", "效能"), ("gain", "增益")):
+            for m in dims.get(dim) or []:
+                v = m.get("value")
+                vs = "n/a" if v is None else (f"{v:.4f}" if isinstance(v, float) else str(v))
+                H.append(f"<tr><td>{esc(step_name)}</td><td>{label}</td><td>{esc(m['name'])}</td>"
+                         f"<td>{vs}</td><td>{esc(m.get('unit', ''))}</td><td>{esc(m.get('tier'))}</td>"
+                         f"<td>{esc(m.get('source', ''))}</td><td>{'Y' if m.get('score_eligible') else '-'}</td></tr>")
+    H.append("</table>")
+    sc = res.get("scores") or {}
+    H.append("<h2>评分</h2><ul>")
+    for k in ("quality", "efficiency", "gain", "roi", "unit_cost"):
+        v = sc.get(k)
+        H.append(f"<li>{esc(k)} = {'n/a' if v is None else f'{v:.4f}'}</li>")
+    H.append("</ul><p>口径：比率∈[0,1] 或 n/a（0 分母→n/a）；T3 反事实估算不入库。</p>")
+    H.append("</body></html>")
+    return "\n".join(H)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="步级漏斗（S2→S6）只读推导")
     ap.add_argument("--region", required=True)
     ap.add_argument("--wave", default=None, help="只统计指定波（可选）")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
+    ap.add_argument("--full", action="store_true",
+                    help="九步质量效能增益矩阵（方案 B；T1 推导 + T2 事件）")
+    ap.add_argument("--format", default="markdown", choices=["json", "markdown", "html"],
+                    help="--full 输出格式（默认 markdown）")
     a = ap.parse_args()
 
     db = resolve_db_path()
@@ -395,6 +470,16 @@ def main() -> int:
     # 故经工厂的 readonly=True 打开（跳过会改库头的 PRAGMA journal_mode=WAL）。
     conn = db_connect(db, readonly=True)
     try:
+        if a.full:
+            from wqb.step_eval import build_step_eval
+            res_full = build_step_eval(conn, a.region.upper(), a.wave)
+            if a.format == "json":
+                print(json.dumps(res_full, ensure_ascii=False, indent=2))
+            elif a.format == "html":
+                print(render_full_html(res_full))
+            else:
+                print(render_full(res_full))
+            return 0
         res = build_funnel(conn, a.region.upper(), a.wave)
     finally:
         conn.close()

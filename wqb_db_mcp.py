@@ -2304,6 +2304,108 @@ def seal_dead_end(
 # 质量指标可从既有表推导（写新表=双真相源）；增益指标是反事实估算无客观来源；
 # 五张表恒 0 行。替代方案 = `tools/step_funnel.py`（只读步级漏斗）。
 # 归档与复活步骤见 `attic/step_metrics_20260917/README.md`。
+#
+# ---------------- 2026-09-30 方案 B 重设计（新名新契约，非复活旧6工具） ----------------
+# 与上方下线结论不冲突：新方案绕开三条死因——
+#   ① 事件=客观事实（step_events 封闭词表 + source 必填 + 幂等键），不收手传指标；
+#   ② T1 推导单一实现（src/wqb/step_eval.py + step_scoring.py），无双真相源；
+#   ③ T3 反事实估算永不入库。
+# 新工具仅 3 个，名称与已删 6 个无一相同：record_step_event / get_step_events /
+# get_step_eval_report。评分唯一实现 = wqb.step_scoring（R2）。
+
+# ---- 方案 B：步级评估事件台账 + 九步矩阵报告（2026-09-30） ----
+
+@mcp.tool()
+def record_step_event(
+    region: str,
+    step: str,
+    event_type: str,
+    source: str,
+    wave: Optional[str] = None,
+    value: float = 1.0,
+    dedupe_key: Optional[str] = None,
+    note: Optional[str] = None,
+) -> Dict[str, Any]:
+    """记录一条客观事件到 step_events 台账（append-only，带 dedupe_key 时幂等）。
+
+    与已下线的 record_step_metrics 的本质区别：本工具只收**发生过的客观事件**
+    （封闭词表），拒收"accuracy=0.85"式评估结论（那是旧子系统被下线的根因）。
+
+    Args:
+        region: 区域
+        step: 步骤（S-PRE/S0/S1/S2/S2->S3/S3/S4/S4->S5/S6）
+        event_type: 事件类型（封闭词表，见 tools/step_event_log.py vocab）
+        source: 埋点位置（文件::函数），必填可审计
+        wave: 波次（可选）
+        value: 计数/次数（默认 1）
+        dedupe_key: 幂等键（同键重复写入不计数）
+        note: 备注（入 metadata.note）
+
+    Returns:
+        {"recorded": bool, "id": int|None, "reason": "duplicate"|None} 或 {"error": ...}
+    """
+    from wqb.step_events import record_event
+    try:
+        return record_event(
+            region, step, event_type, wave=wave, value=value, source=source,
+            dedupe_key=dedupe_key, metadata={"note": note} if note else None,
+        )
+    except ValueError as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def get_step_events(
+    region: Optional[str] = None,
+    wave: Optional[str] = None,
+    step: Optional[str] = None,
+    event_type: Optional[str] = None,
+    limit: int = 200,
+) -> List[Dict[str, Any]]:
+    """查询 step_events 客观事件（缺表返回 []，只读不建表）。
+
+    Args:
+        region: 区域过滤（可选）
+        wave: 波次过滤（可选）
+        step: 步骤过滤（可选）
+        event_type: 事件类型过滤（可选）
+        limit: 返回上限（默认 200）
+
+    Returns:
+        事件列表（含 region/wave/step/event_type/value/source/dedupe_key/metadata/recorded_at）
+    """
+    from wqb.step_events import query_events
+    return query_events(region=region, wave=wave, step=step,
+                        event_type=event_type, limit=limit)
+
+
+@mcp.tool()
+def get_step_eval_report(
+    region: str,
+    wave: Optional[str] = None,
+) -> Dict[str, Any]:
+    """九步质量效能增益矩阵报告（T1 只读推导 + T2 事件聚合；评分单一实现 step_scoring）。
+
+    与已下线的 get_step_gain_report 的本质区别：不读任何"指标表"（那些表已 DROP），
+    全部从既有 6 表 + ledger + step_events 实时推导，无手传指标、无双真相源。
+
+    Args:
+        region: 区域
+        wave: 波次过滤（可选）
+
+    Returns:
+        {"region", "wave", "steps": {step: {quality/efficiency/gain: [...]}},
+         "events": {...}, "counts": {backtested, cheap_pass},
+         "scores": {quality, efficiency, gain, roi, unit_cost}}
+        比率∈[0,1] 或 None（未知）；单位成本为原始量。
+    """
+    from wqb.step_eval import build_step_eval
+    conn = _conn()
+    try:
+        return build_step_eval(conn, region, wave)
+    finally:
+        conn.close()
+
 
 @mcp.tool()
 def workflow_inventory_scan(

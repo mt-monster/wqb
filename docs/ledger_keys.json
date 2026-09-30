@@ -264,6 +264,10 @@
     {
      "kind": "code",
      "ref": "src/wqb/workflow/nodes/campaign.py"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/step_eval.py"
     }
    ],
    "missing": "重新组装",
@@ -288,6 +292,10 @@
      "kind": "code",
      "ref": "src/wqb/workflow/nodes/gem.py",
      "via": "陈旧检测"
+    },
+    {
+     "kind": "code",
+     "ref": "src/wqb/step_eval.py"
     }
    ],
    "missing": "GEM 无先验可注入；快照早于 KB 源时仅 WARN，不得据此继续实跑",
@@ -1293,8 +1301,13 @@
      "ref": "src/wqb/workflow/nodes/campaign.py"
     }
    ],
-   "readers": [],
-   "missing": "无消费方",
+   "readers": [
+    {
+     "kind": "code",
+     "ref": "src/wqb/step_eval.py"
+    }
+   ],
+   "missing": "step_eval 的 walls_coverage 记 n/a（未知，不报 0）",
    "refresh": "每波覆盖"
   },
   {

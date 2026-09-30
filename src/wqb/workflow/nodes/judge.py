@@ -136,6 +136,17 @@ def run(
 
     gate1 = _eval_platform_check(details, mode_b_qual=mode_b_qual, mode_b_cfg=mode_b_cfg)
     result["gates"].append(gate1)
+    # T2 事件（2026-09-30 方案 B）：Mode B 资格线拦截是客观事实（幂等 by alpha_id），
+    # 旁路记账供 step_eval 消费；safe 包装不阻塞判定流程。
+    if gate1.get("mode_b_eligible") is False:
+        from wqb.step_events import safe_record_event
+        safe_record_event(
+            alpha_region, "S4", "mode_b_blocked",
+            wave=None, value=1.0,
+            source="judge.py::run(mode_b_qualification)",
+            dedupe_key=f"{alpha_region}:mode_b:{alpha_id}",
+            metadata={"alpha_id": alpha_id, "reason": gate1.get("reason")},
+        )
     if not gate1.get("pass"):
         result["verdict"] = "BLOCK"
         result["reason"] = gate1.get("reason", "Platform hard check failed")

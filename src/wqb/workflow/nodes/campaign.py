@@ -230,6 +230,15 @@ def run(
                         "cache_key": cache_key,
                         "message": f"Using cached {cache_key} from ledger",
                     })
+                    # T2 事件（2026-09-30 方案 B）：缓存复用是客观事实，旁路记账供
+                    # step_eval 的 cache_reuse_rate 消费；safe 包装不阻塞主流程。
+                    from wqb.step_events import safe_record_event
+                    safe_record_event(
+                        region, "S0" if stage == "S0" else "S2", "cache_hit",
+                        wave=str(wave) if wave else None, value=1.0,
+                        source="campaign.py::run(cache)",
+                        metadata={"cache_key": cache_key},
+                    )
                     result["success"] = True
                     result["cached"] = True
                     result["cache_key"] = cache_key

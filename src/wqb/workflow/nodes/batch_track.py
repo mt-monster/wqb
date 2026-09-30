@@ -458,6 +458,24 @@ def run(
                     "error": error_count,
                     "cancelled": cancelled_count,
                 }
+                # T2 事件（2026-09-30 方案 B）：批次收批的客观计数，旁路记账供
+                # step_eval 的 S3 增益指标消费；dry-run 零副作用契约，safe 不阻塞。
+                if not dry_run:
+                    from wqb.step_events import safe_record_event
+                    if error_count:
+                        safe_record_event(
+                            region, "S3", "batch_error_cascade",
+                            wave=str(wave), value=float(error_count),
+                            source="batch_track.py::run(sync)",
+                            metadata={"dataset": dataset},
+                        )
+                    if cancelled_count:
+                        safe_record_event(
+                            region, "S3", "batch_cancelled",
+                            wave=str(wave), value=float(cancelled_count),
+                            source="batch_track.py::run(sync)",
+                            metadata={"dataset": dataset},
+                        )
 
         # 保存 checkpoint
         if store and success:
