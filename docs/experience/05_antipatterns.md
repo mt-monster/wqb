@@ -23,7 +23,7 @@
 > 而 SOP 旧文案却写「`0.5*rank(A)+0.5*rank(B)` 均被闸 5 block」——**文档与实现不一致**。
 >
 > **永久修复四层**：① `gate.py` 新增 `_detect_equal_weight_leg_add`；② `platform_constraints.json` v1.4→**v1.5** 登记 poison `equal_weight_leg_add`；
-> ③ 回归 `tests/unit/test_gate_equal_weight_leg_add.py`（16 条）；④ SOP「组合形态合规」重写。
+> ③ 回归 `tests/unit/04_gates/test_gate_equal_weight_leg_add.py`（16 条）；④ SOP「组合形态合规」重写。
 >
 > **durable 教训**：判合规看**本质**（是否两条独立信号腿相加），不看是否命中正则；
 > **文档里的安全承诺（「闸会 block」）必须与实现同源校验**，否则会形成"文档说安全→放心用→实际漏网"的假安全。

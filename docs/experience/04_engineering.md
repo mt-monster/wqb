@@ -46,7 +46,7 @@
 - **三层固化（缺一不可）**：
   1. `tools/field_semantic_classify.py --region R --dataset DS --write-ledger` → ledger `s1_semantic_<ds>`
   2. `tools/wave_gate.py` **闸 SEM（fail-closed）**：缺台账 → **exit 2 整波阻断**；命中黑名单字段的表达式**直接剔出候选**。唯一逃生 `--skip-semantic-gate`（打印醒目告警）
-  3. 回归 `tests/unit/test_semantic_gate_failclosed.py`（9 条）
+  3. 回归 `tests/unit/04_gates/test_semantic_gate_failclosed.py`（9 条）
 - **闸 SEM 曾只在内存剔除、未落库** → `gate.py`/`pipeline.py` 按 `expressions.status` 取数，172 条语义垃圾照样进批 → 已修（`from_db` 时 `UPDATE expressions SET status='dropped'`）。
 - **`gate_results.all_pass` 列恒为 0** 与 `report_json.gate.all_pass=true` 打架（停止规则 C 会误杀）→ 已修（末尾用真实 verdict 覆盖写一次）。
 - ⚠ **边界**：本步产物是**字段池，不是 ideas** —— 严禁当 `ideas.md` 注入 GEM（会让 GEM 退化为「每字段套 rank」）。
@@ -63,17 +63,17 @@
 
 - **新增/修改 workflow 节点 → 五处必须同步**（漏一处测试即红）：
   ① `src/wqb/workflow/registry.py`（register + NodeMeta，与 `run()` 签名逐字一致）
-  ② `tests/unit/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
-  ③ `tests/unit/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
+  ② `tests/unit/02_workflow/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
+  ③ `tests/unit/07_docs_skills/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
   ④ `Claude/skills/INDEX.md` workflow 节点计数
   ⑤ **`world-quant-brain-mcp/tests/test_tools_workflow_unit.py` 的 `expected_nodes` 集合**（2026-09-29 补）
   → **一次跑完全部检查**：`python tools/audit_node_registration.py`（退出码 1 = 有漂移并列出全部缺口；已升级为五处审计）。
 - ⚠ **"四处"是错的，实际五处（2026-09-29 实证）**：`forum_recon_wave` 上线时①②③④全绿，
   根目录 `audit` 报"四处一致"，但全量 pytest 转红 `assert 20 == 19`——漏的是 ⑤ MCP 包测试。
-  根因：**MCP 包测试与根 `tests/` 是两套路径**，习惯性只跑 `tests/unit/test_workflow.py` 会完全看不见 ⑤。
+  根因：**MCP 包测试与根 `tests/` 是两套路径**，习惯性只跑 `tests/unit/02_workflow/test_workflow.py` 会完全看不见 ⑤。
   ⇒ 纪律：改节点后 `audit` 要跑，**全量 pytest 也要跑**，二者不可互相替代。
 - ⚠ **`audit_node_registration.py` 只校验 registry 元数据 vs `run()` 签名，不覆盖 `tools_workflow.py` 自动注入的参数**
-  → `gem→batch_track` 链自动插入 `prod_family_gate` 而 `wave_gate.run()` 无此形参，链必 TypeError 且守护零命中。已单列 `tests/unit/test_wave_gate_auto_insert_contract.py`。
+  → `gem→batch_track` 链自动插入 `prod_family_gate` 而 `wave_gate.run()` 无此形参，链必 TypeError 且守护零命中。已单列 `tests/unit/06_wave_pipeline/test_wave_gate_auto_insert_contract.py`。
 - **argv 契约校验**：拼子进程命令的节点必须过 `_common.validate_argv(cmd)`
   → 起因：`batch_track` 给 `pipeline.py run` 拼了个不存在的 `--concurrency 7`，argparse exit=2，而 detached 分支不看退出码 → **S3 每次"启动成功"却从未真跑，证据在 `stderr.log` 里躺了 13 天**。
 - **detached 存活握手**：后台启动后必须过 `_common.detached_launch_failed()`——秒退或 stderr 非空即判失败（"启动即死"不能再被吞成 `success=True`）。

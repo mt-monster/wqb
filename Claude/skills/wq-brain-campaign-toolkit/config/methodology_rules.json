@@ -469,7 +469,7 @@
     "params": {
      "enforced_by": "闸5 执行层 platform_constraints.json v1.5",
      "poisons": ["weighted_signal_mix_structural", "equal_weight_leg_add"],
-     "regression": "tests/unit/test_gate_equal_weight_leg_add.py",
+     "regression": "tests/unit/04_gates/test_gate_equal_weight_leg_add.py",
      "doc": "docs/experience/02_signal_patterns.md"
     },
     "message": "★ 组合形态铁律：禁止把两条独立信号腿加权相加——无论 add(multiply(0.4,…))、0.4A+0.6B，还是等权 add(rank(A), rank(B))（等权即 0.5A+0.5B，同一违规族）。也禁止靠增删腿数或扫描混合权重去修不达标的信号。唯一合规方向 = Mode B：换字段组合/换信号概念/换算子几何/换分组轴；或单信号结构化（ts_scale、subtract(rank(A),rank(B)) 视作单一价差信号但须有经济含义、group_rank/group_zscore/ts_quantile、事件门控 trade_when/if_else、SuperAlpha combo）。⚠ 门禁通过 ≠ 合规：闸是兜底不是许可证，判合规看本质（是否两条独立信号腿相加），不看是否命中正则。硬拦截在闸5（platform_constraints.json），本条不重复正则以免两处漂移。"

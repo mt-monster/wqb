@@ -55,7 +55,7 @@ Detailed pairing matrix lives in `news_bucket_field_map.md` §1 (matrix) and §3
 
 ## 5. Ghost-operator substitution hints (hand-edited expressions)
 Authority for *which* operators are ghosts = `wqb.config.GHOST_OPERATORS` (18 names; the
-table below must list exactly those — pinned by `tests/unit/test_se_docs.py`). These
+table below must list exactly those — pinned by `tests/unit/07_docs_skills/test_se_docs.py`). These
 operators were never on the live platform. If a forum post cites one, rewrite with the
 real-op substitute **before** pasting:
 
