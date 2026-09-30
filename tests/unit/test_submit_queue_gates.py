@@ -248,3 +248,32 @@ def test_bulk_enqueue_never_overwrites_platform_verified_rows(db):
     prod, vb, vat = con.execute("SELECT prod, verified_by, verified_at FROM submit_ready WHERE alpha_id='V1'").fetchone()
     con.close()
     assert (prod, vb, vat) == (0.64, "verify", "2099-01-01T00:00:00")
+
+
+# ---------------- N33：CampaignStore 建的库上 enqueue 不崩 ----------------
+
+def test_enqueue_from_alphas_on_campaignstore_db(tmp_path):
+    """N33：CampaignStore 建的库此前缺 soft_deleted/disposition 列，enqueue_from_alphas 的
+    WHERE 直接 `no such column: a.soft_deleted`（harvest auto-enqueue 静默吞成「入队跳过」）。
+    补列后应正常入队，且达标 alpha 落 READY。"""
+    from wqb.store import CampaignStore
+
+    path = str(tmp_path / "camp.db")
+    store = CampaignStore(path)
+    try:
+        # 走规范写入路径把一条达标 alpha 落进 alphas 表（status 默认 UNSUBMITTED）
+        store.upsert_expressions("IND", "1", ["rank(close)"], dataset="pv")
+        store.upsert_backtest_rows(
+            "IND", "1",
+            [{"id": "N33A", "code": "rank(close)", "sharpe": 3.0, "fitness": 2.0,
+              "turnover": 0.2, "two_year_sharpe": 2.5, "status": "UNSUBMITTED"}],
+            dataset="pv",
+        )
+    finally:
+        store.close()
+
+    # 不得抛 sqlite3.OperationalError
+    n = sq.enqueue_from_alphas(region="IND", db_path=path, dedup=False)
+    assert n == 1
+    row = _status(path, "N33A")
+    assert row is not None and row[0] == sq.STATUS_READY

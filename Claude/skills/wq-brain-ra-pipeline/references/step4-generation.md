@@ -16,6 +16,7 @@
 | 5 | 两个数据集的想法：能合并 catalog 就合并；否则拆成**慢腿批**（季 / 月频基本面）+ **快腿批**（日频价量）同波对照，不停挖 | 准则 | 与「优先单数据集 atom」不冲突：这是**已经决定做跨集**时的落地方式，不是鼓励跨集 |
 | 6 | **时间窗口有意义**：只用 1 / 5 / 22 / 66 / 252 / 504 / 1008 / 1260；其他窗口必须给出解释或实测证据 | 准则（预闸别名化，闸 9 只 WARN） | 证据登记位置：该 idea 的 rationale 文字 + 本波 `key_findings` |
 | 7–9 | 禁止混信号调参（尤其 `add(A,B)`）、字段角色区分、点塔均匀——**遵守 CLAUDE.md「寻找 alpha 准则」**，本文不复述 | 准则（闸 5 兜底） | |
+| 10 | **金字塔点亮以平台 `get_pyramid_alphas` 为准**（按季度返回 region / delay / category 的提交计数，≥ 3 即点亮）；**不要用本地表推导** | 准则 | 两个实测原因（2026-09-29）：① `alphas.date_submitted` 全库仅 2.7% 非空，用它判「提交」必然低估；② 塔归属来自平台 pyramid 匹配，≠ `datasets.category`（KOR 47% 的 ACTIVE 记录 `category=None`，挂 `_unknown` 占位 422 条）。平台返回的 `MATCHES_PYRAMID ×N` 只表示匹配到塔并给倍率，**≠ 已点亮**。`get_pyramid_alphas` 传 `start_date` 会被对齐到季度快照（KOR fundamental 传参得 1、默认得 3），做「近 90 天」判定请用**默认季度值** |
 
 ## 4.2 priors 与 ideas 注入
 
@@ -74,6 +75,16 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 
 旧调用可显式 `--expected-count N` 保留数量检查，但它不证明机制覆盖。
 
+### 4.5.1 模板形状配额与形状源（2026-09-28 v2.3 落地，反模板同质化）
+
+背景：实战波次连续同质化（wave84 / 85 实测：19 条选中仅约 9 个算子形状、`trade_when` 占比 62%；而平台已验证算子 103 个、KB 模板库 141 条零调用）。
+
+1. **形状配额**（准则）：每波候选（ideas 渲染或 LLM 产出）须覆盖 ≥ 3 个 shape family，`trade_when` 类条件式占比 ≤ 40%。**目前没有机检**：原文写的机检脚本 `tools/shape_quota_check.py` 在仓库里不存在（截至 2026-09-30 未入任何提交），落地前靠步 5 的批级多样性守卫（闸 6，[`step5-gates.md`](step5-gates.md) §5.4）+ 人工数一遍。形状族谱系（不限于）：条件式 `trade_when` / 趋势状态机 `if_else`（Alpha#9 / #10 形状：`if_else(greater(ts_delta(x,5),0), ts_delta(x,22), multiply(-1, ts_delta(x,22)))`；⚠ `ts_min` 为后台不可访问算子，勿用，条件腿用 `ts_delta` / `ts_rank`）/ 时点定位 `ts_arg_max` · `ts_arg_min` / 新鲜度 `days_from_last_change` / 共振 `ts_corr` / 状态 `ts_zscore` / 比值几何 `divide(A,B)` / 价差几何 `subtract(rank(A),rank(B))` / 凸性 `signed_power` / 截断 `winsorize` + `group_zscore`。⚠ **比值、价差只在满足 [步 7 §7.7.2](step7-diagnose.md) 的前提（同源、有经济含义）下才算合规形状**；原文还把「乘法交互」（<!-- lint:counterexample -->`multiply(主, 辅)` 双原始信号相乘）列为形状，并当作加权相加的合规替代——它是形态库的**灰区**（[`structural-interaction-forms.md`](../../wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md)「反例与灰区」：用 `ts_corr` 或 `if_else` 表达同一意图），这里不列入。
+2. **事件条件化，去 `trade_when` 单一依赖**：稀疏事件门控可换 `if_else` 趋势状态机、`ts_arg_max` 时点、`days_from_last_change` 新鲜度、`signed_power` 凸性、`winsorize` / `group_zscore` 几何等**已验证**低用算子（`ts_av_diff`、`vector_neut`、`ts_quantile` 同列）。⚠ `ts_event_*` 系在 `data/operators_verified.json` 的 103 清单中**未验证**（event ops = []），任何「`ts_event_*` 裸 rank」的建议都**不可**直接执行，改用上述事件形状。
+3. **形状源分工（契约波 vs 探索波）**：**契约波**（`--selection-contract-key`）用于机制验证，但它强制 `--enhance-diversity never --auto-coverage never`——恰锁死算子覆盖注入（`plan_coverage_wave`）与 diversity-heal 两个形状发生器，是契约波同质化的**结构性根源**；**形状发现走非契约探索波**：显式 `--enhance-diversity auto --auto-coverage auto`（两个缺省值都是 `never`），吃算子覆盖契约、专吃未用算子。两类波分开跑，不要在契约波里追求形状广度。
+4. **LLM phased 与 ideas 渲染混批**：LLM phased（不带 `--ideas-file`）出形状广度、ideas 渲染出机制精度；推荐两段式——LLM 概念生成 → 落 ideas md → 渲染定型（机制可审、形状可扩）。`402` 余额不足时退 ideas 旁路（见 §4.6）。
+5. **KB 模板优先**：形状枯竭时取 `KB/community_tpl_kb.templates`（含 `TPL-A101-*` 事件形状）与 `external_template_sources`（Alpha101 / Alpha158 / gtja191 / Alpha Zoo）；取骨架前必查 `ghost_operator_advisory`（§4.2）。
+
 ## 4.6 失败分支（症状 → 判据 → 处置）
 
 | 症状 | 判据 | 处置 |
@@ -81,7 +92,7 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S2"  dataset=$DS  
 | **GEM 报「no meta.json within 90s」** | 先怀疑 LLM 通道：`402 Insufficient Balance`（余额不足）返回的报错是误导性的；**干跑（dry_run）只验证命令构建、验证不了 LLM 可达性，会显示 OK 的假绿** | **先查 LLM 通道，不要重试**。已验证的绕行：手写 ideas md（**手写 ideas ≠ 手写表达式**）→ `--ideas-file` 跑 `Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py`，完全跳过 LLM |
 | GEM 未入库 | 后台任务状态非终态 | `mcp__wq-brain-http__workflow_task_status(prefix="gem")` 查任务；确认终态失败才回退，**不要手写表达式** |
 | 候选不足 | 波内表达式数 < 计划 | **显式扩容或分波**（enhance / 扩组合）；仍不足换数据集；**不补参数变体凑数** |
-| 机制枯竭 / 同质化 | GEM 产出同骨架触封顶，或 win 配方无腿可换 | `tools/forum_recon.py` 取证回补 KB（[`forum-recon-triggers.md`](forum-recon-triggers.md)），模板须先过 `ghost_operator_advisory` 替换，再重跑 GEM |
+| 机制枯竭 / 同质化 | GEM 产出同骨架触封顶，或 win 配方无腿可换 | `tools/forum_recon.py` 取证回补 KB（[`forum-recon-triggers.md`](forum-recon-triggers.md)），模板须先过 `ghost_operator_advisory` 替换，再重跑 GEM；同问题 7 天缓存不重复 live 查。「波级默认取证」（收批时自动落 ledger，先读它再决定要不要 live 查）是**设计、未落地**——节点未注册，见触发表末节 |
 
 ## 4.7 完成定义
 

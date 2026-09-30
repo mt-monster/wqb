@@ -68,15 +68,28 @@ SCRIPTS_DIRS = _toolkit_scripts_dirs()
 
 @pytest.fixture(scope="module")
 def wave_results_mod():
-    """加载运行时那一份 `_lib.wave_results`（相对 import 要求按包加载）。"""
+    """加载运行时那一份 `_lib.wave_results`（相对 import 要求按包加载）。
+
+    模块级：本文件多个用例共用同一份模块。但"把安装副本插到 sys.path[0] + 换掉
+    `_lib*`"是全局副作用，模块跑完必须还原——否则安装副本会滞留在 sys.path[0]，
+    后续文件里 `import gate`（如 test_p1_fixes_20260927::test_gate_resolves_workspace_without_env）
+    会解析到安装副本、走不回仓库 src/。用 MonkeyPatch.context()（可在模块级 fixture 内
+    使用）快照并在 teardown 还原 sys.path 及 sys.modules 里的 `_lib`/`_lib.*`/`gate`。
+    """
     if not SCRIPTS_DIRS:
         pytest.skip("wq-brain-campaign-toolkit 未安装且仓库副本缺失")
-    d = str(SCRIPTS_DIRS[0])
-    if d not in sys.path:
-        sys.path.insert(0, d)
-    for m in ("_lib.wave_results", "_lib.ledger", "_lib.common", "_lib"):
-        sys.modules.pop(m, None)
-    return importlib.import_module("_lib.wave_results")
+    with pytest.MonkeyPatch.context() as mp:
+        # delitem：清掉当前副本并记录原值，teardown 逐一还原（不存在则 no-op）
+        for m in ("_lib.wave_results", "_lib.ledger", "_lib.common", "_lib", "gate"):
+            mp.delitem(sys.modules, m, raising=False)
+        # syspath_prepend：先快照整条 sys.path，再插首位；undo 时整条还原
+        mp.syspath_prepend(str(SCRIPTS_DIRS[0]))
+        yield importlib.import_module("_lib.wave_results")
+        # 导入安装副本会新塞进 `_lib*`（及其自插的子路径经上面 syspath 还原），
+        # delitem 的 undo 不会移除"导入新建"的键，故显式弹出；随后 undo 补回原值
+        for m in [k for k in list(sys.modules)
+                  if k == "_lib" or k.startswith("_lib.") or k == "gate"]:
+            sys.modules.pop(m, None)
 
 
 def _fake_rows(n):
@@ -194,7 +207,9 @@ def test_toolkit_copies_in_sync(rel):
     ("", None),                              # 空 verdict 由 status=closed 闸管
     ("一句无法判定的结论", None),            # 宁可漏改不可错改
 ])
-def test_migration_classify(verdict, expect):
-    sys.path.insert(0, str(REPO_ROOT / "tools"))
+def test_migration_classify(verdict, expect, monkeypatch):
+    # 同样别把 tools/ 永久插进 sys.path：monkeypatch 用例结束即还原（含被删的模块）
+    monkeypatch.syspath_prepend(str(REPO_ROOT / "tools"))
+    monkeypatch.delitem(sys.modules, "migrate_wave_verdict_enum", raising=False)
     import migrate_wave_verdict_enum as M
     assert M.classify(verdict)[0] == expect

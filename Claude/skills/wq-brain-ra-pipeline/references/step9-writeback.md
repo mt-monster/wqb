@@ -58,10 +58,18 @@ mcp__wqb-db__upsert_wave_result  region=$REGION  wave_number=$W  verdict=<PASS|P
 
 术语（旧文「沉降 / 封存 / seal」三词并用）：**沉降** = 把该想法涉及波次的失败候选放进 `salvage_pool`（收集宽）；**封存** = 写 `dead_end` 条目并把残值列表回填 `payload.salvage`；**动用** = Mode B 取用残值（仍守各区 `mode_b_qualification`，动用严）。判死按粒度：候选 / 字段搭配 / 家族（`dead_end`）/ 数据集（`<ds>_dead`）/ 波（`FAIL`），见 GLOSSARY。
 
-1. **前置软核对**（判死前）：`python tools/forum_recon.py --question "<数据集/信号族> 有无解法" --context region=$REGION,dataset=$DS,family=<族> --out negative`
-   - `found=false`（退出码 2；负结果已入 `forum_recon_negative_<qkey>`）= 论坛无解的取证，可以判死；
-   - `found=true` → 该帖配方转 salvage / Mode B 武器，**不得直接判死**。
-   - 核对结果记入 `dead_end.payload.forum_recon`。**软提示**：无记录不拦写入，但缺失须在 key_findings 说明。
+1. **前置取证**（判死前）：`python tools/forum_recon.py --question "<数据集/信号族> 有无解法" --context region=$REGION,dataset=$DS,family=<族> --out negative`。结果记入 `dead_end.payload.forum_recon`（含 `question_key` / `found`）。**设计**（2026-09-29，见下「现状」）是把它做成 fail-closed 的硬闸：
+
+   | `payload.forum_recon` | 判死 |
+   |---|---|
+   | `found=false` | ✅ 允许（decision-table D2「论坛无解」取证成立）；退出码 2，负结果已入 `forum_recon_negative_<qkey>` |
+   | `found=true` | ❌ 拒绝——配方转 salvage / Mode B 武器，**不得直接判死** |
+   | `found=null` / `status=error` | ❌ 拒绝——**工具故障 = 未取证，故障 ≠ 论坛无解** |
+   | 缺失 | ❌ 拒绝——未取证 |
+
+   - ⚠ **为什么必须 fail-closed**：判死是永久封存一条路。2026-09-29 实证 5 条 recon 记录里 **2 条是工具故障**（`load_creds` TypeError、`No module named 'requests'`），被记成 `found=false` 落 `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」→ 误把活路判死。
+   - **现状（2026-09-30 合并 main 时核对代码）：闸与配套修复都没有落地。** `seal_dead_end` 没有 `force_seal` / `require_forum_recon` 参数，不看 `payload.forum_recon`；`tools/forum_recon.py` 在**论坛鉴权失败**时仍把 `found=false` + `error` 字段写进 `forum_recon_negative_<qkey>`、进 7 天缓存，并打印「可作『论坛无解』判死证据」，**退出码也是 2**（与真无解无法区分）。所以**目前靠人**：判死前读输出 JSON 与那条 `forum_recon_negative_<qkey>` 记录，**带 `error` 字段的不是取证**（要重查须先删 `tracking/FORUM/forum_recon_cache.json` 里该问题的条目，否则 7 天内回放同一个故障结果）；没有记录就先跑；`found=true` 不得直接判死。
+   - **波级默认取证**（收批时 `forum_recon_wave` 节点自动取证落 ledger，`forum_recon_error_<qkey>` 记故障）同样是设计：节点**未注册、无实现文件**——见 [`forum-recon-triggers.md`](forum-recon-triggers.md) 末节。
    - prod 墙的判死分支同样先过这一步（D0-P：≥ 0.75 或踩线带尝试失败 → `forum_recon` → 封存）。
 2. **封存**：
 

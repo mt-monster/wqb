@@ -23,13 +23,29 @@ def _md_files():
     files = [p for p in SKILLS.rglob("*.md") if "brain-alpha-judge/data/forum_corpus" not in p.as_posix()
              and "trailSomeAlphas/skills/" not in p.as_posix() and p.name != "CHANGELOG.md"]
     files += [p for p in (ROOT / "docs" / "reference").glob("*.md")]
+    files += [p for p in (ROOT / "docs" / "experience").glob("*.md")]
     files += [ROOT / "AGENTS.md", ROOT / "README.md"]
     return files
 
 
 def _context(lines, i):
-    """命中行的语境：紧邻前 3 行；若在表格里，再加上表头（表格前一行 + 表头两行）——表头常写「不可用 / 幽灵 / 替换」。"""
-    ctx = lines[max(0, i - 3):i + 1]
+    """命中行的语境：紧邻前 3 行；再按行的位置补齐引导语——
+    · 列表项：并入同一列表的引导句（「禁止……包括：」这类，列表可以很长）；
+    · 围栏代码块：并入围栏前 3 行（小节标题 / 引导句）；
+    · 表格：并入表头（表格前一行 + 表头两行；表头常写「不可用 / 幽灵 / 替换」）。"""
+    start = max(0, i - 3)
+    if re.match(r"\s*(?:[-*]|\d+\.)\s", lines[i]):
+        j = i
+        while j > 0 and re.match(r"\s*(?:[-*]|\d+\.)\s", lines[j - 1]):
+            j -= 1
+        start = min(start, max(0, j - 2))
+    fence_open = None
+    for k in range(i):
+        if lines[k].lstrip().startswith("```"):
+            fence_open = None if fence_open is not None else k
+    if fence_open is not None:
+        start = min(start, max(0, fence_open - 3))
+    ctx = lines[start:i + 1]
     if lines[i].lstrip().startswith("|"):
         j = i
         while j > 0 and lines[j - 1].lstrip().startswith("|"):

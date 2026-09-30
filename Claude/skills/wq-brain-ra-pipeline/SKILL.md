@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
-version: "3.0"
+version: "3.1"
 last_verified: 2026-09-30
 ---
 
@@ -56,6 +56,20 @@ last_verified: 2026-09-30
 - **阈值不复写**：这里「复写」= 拷贝 `src/wqb/config.py` 的 `GATES*` 闸门值；区域 / 机制经验阈值允许，但**必须带出处**（波 / 日期 / 样本量）。
 - 提示词模板（开新区 / 续波 / 发批 / 单条修复 / 日循环）见 [`references/ra-campaign-prompt.md`](references/ra-campaign-prompt.md)。
 
+## 经验库（软层）：按步读实证
+
+仓库 [`docs/experience/`](docs/experience/README.md)（2026-09-29 建立）沉淀已付学费的实证结论——**走到某一步先读对应篇**，不读等于重复踩坑：
+
+| 当前在做的步 | 读 | 关键收益 |
+|---|---|---|
+| 步 1 选区选集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md) | 12 区过闸率排序 + MEA / IND / DEU 停投结论：profile 管「这个区怎么配」，03 管「这个区值不值得挖」 |
+| 步 3–4 设计信号 | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md) | 组合形态铁律（含等权 `add(rank(A),rank(B))` 同属违规）、破闸合规旋钮 |
+| 步 7 诊断改进 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) | 已证伪路径清单，避免在死路上继续烧模拟次数 |
+| 步 8 提交判定 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径 |
+| 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) | skill 单点写入、DB 写锁、节点五处同步 |
+
+这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `RuleStore.query()` 在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入；两轨同源，**改一边要同步另一边**（`tests/unit/test_experience_kb_refs.py` 守引用锚点）。
+
 ## 区域 Profile
 
 `references/regions/<REGION>.md`，每区一份（YAML front-matter + 正文；区域清单与 profile / 战役目录的对齐表见 [INDEX §区域清单](../INDEX.md)，权威是 `config.REGIONS`）。**开新区前必须先补 profile + `tracking/<R>/config/`**；无 profile 的区域走通用处女地模板（参照 ASI profile）。
@@ -80,7 +94,7 @@ last_verified: 2026-09-30
 - **完成定义**：给出分流结论——篮子条数 ≥ target **且**覆盖 ≥ 3 座未点亮塔 → **跳步 7 / 8**；否则进步 2，只补缺口塔。
 - **失败分支**：registry 全空 = 新区域 → 步 2，并在步 9 写 campaign；`get_dead_datasets` 已覆盖全部候选 → 停，转 matrix 选区；库存足够 → 跳步 7 / 8。
 - **不做**：不用 `LIKE` 直扫 sqlite 找跨区死路（`model1` 会误命中 `model109`）；region 作用域查询**不能**代替跨区检查；论坛**默认不查**（只在 [`forum-recon-triggers.md`](references/forum-recon-triggers.md) 列出的场合查）。
-- **细则**：[`step1-inventory.md`](references/step1-inventory.md)；情景卡 RA-01（库存够不够）。适用决策表：D4。
+- **细则**：[`step1-inventory.md`](references/step1-inventory.md)；情景卡 RA-01（库存够不够）；跨区横比另读 [`03_region_dataset.md`](docs/experience/03_region_dataset.md)。适用决策表：D4。
 
 ### 步 2（S0）数据集体检 + 金字塔配置
 
@@ -113,7 +127,7 @@ last_verified: 2026-09-30
 - **完成定义**：`list_expressions` 查到本波条目——**未验证 DB 有表达式，不得声称步 4 成功**。
 - **失败分支**：GEM 报「no meta.json within 90s」→ **先查 LLM 通道**（`402` 余额不足会被误报；干跑验证不了可达性），不要重试；候选不足 → 显式扩容或分波，**不补参数变体凑数**；机制枯竭 → `forum_recon`（触发表 #2）。
 - **不做**：不手写表达式（**手写 ideas ≠ 手写表达式**）；不手写 priors；不加权 / 等权相加两条信号腿（CLAUDE.md「禁止混信号调参」；允许的组合形态见步 7 §7.7）；不每个字段套一层 `rank`。
-- **细则**：[`step4-generation.md`](references/step4-generation.md)、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)。适用决策表：D3 / D6 / D11。
+- **细则**：[`step4-generation.md`](references/step4-generation.md)（含 §4.5.1 模板形状配额与形状源）、[`assemble-priors-internals.md`](references/assemble-priors-internals.md)。适用决策表：D3 / D6 / D11。
 
 ### 步 5（S2→S3）门禁
 
@@ -154,7 +168,7 @@ last_verified: 2026-09-30
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
 - **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`。
 - **不做**：**任何两条独立信号腿相加（加权 / 等权 / `add` / 中缀 `+`）一律违规**；辅助腿只能以**条件 / 分组 / 残差**三式入场；`risk_neutralized_sharpe ≤ 0` 且 raw ≥ 1.58 → 停止调参；**门禁通过 ≠ 合规**。IS→OS 衰减折算**不抬高 IS 阈值**。
-- **细则**：[`step7-diagnose.md`](references/step7-diagnose.md)（墙与池的判据、组合形态**唯一一份**允许清单、辅助腿入场三式）；事故 [`incidents.md`](references/incidents.md) I-1。适用决策表：D0 / D0-P / D1 / D2 / D3 / D12 / D14。
+- **细则**：[`step7-diagnose.md`](references/step7-diagnose.md)（墙与池的判据、组合形态**唯一一份**允许清单、辅助腿入场三式、§7.6.1 提交层四闸与 SUB 比值律）；事故 [`incidents.md`](references/incidents.md) I-1。适用决策表：D0 / D0-P / D1 / D2 / D3 / D12 / D14。
 
 ### 步 8（S4→S5）稳健闸与提交判定
 
@@ -166,13 +180,13 @@ last_verified: 2026-09-30
 - **失败分支**：PROD / SELF 不过 → 回步 7；配额耗尽（按 **ET 日历日**）→ 挂起提交，继续步 2 → 9。
 - **不做**：`UNVERIFIABLE`（现实中最好的结果）**不是放行**；确认前禁止一切**真提交**入口——`workflow_submit_alpha` / `submit_alpha` 节点（`confirm_submit=True`）、`workflow_superalpha`（`confirm_submit=True`）、`super_build.py submit`（`submit_batch` 与 `pipeline.py --submit` 是**派发仿真**，不是提交，别混）；**没有零成本的 POST 探测**；`PASS_CHEAP` 只代表过了 IS 廉价闸，**绝不等于可提交**。
 - **同日提交**：prod 0.60–0.70 的候选**当天**请用户确认，不先做变体（IND pv103 `mLm2xG1K` S 3.83、prod 0.6997，先做变体的 1 小时里外部同款把 prod 顶到 1.0000，整族封死）；这**不豁免** robustness，只豁免「同族变体探索」——同族第二颗的变体放在第一颗 ACTIVE 之后。
-- **细则**：全链状态机与不可逆动作块见 [`worldquant-submit-alpha/references/submit-chain.md`](../worldquant-submit-alpha/references/submit-chain.md)；[`ppa-vs-ra.md`](references/ppa-vs-ra.md)；[`webdatascope-failed-gates.md`](references/webdatascope-failed-gates.md)。适用决策表：D1 / D9。
+- **细则**：全链状态机与不可逆动作块见 [`worldquant-submit-alpha/references/submit-chain.md`](../worldquant-submit-alpha/references/submit-chain.md)；**提交前读** [`01_platform_gates.md`](docs/experience/01_platform_gates.md)（四闸 + SUB 比值律：把 sharpe 压到刚过线会同步降低 SUB 要求，「sharpe 越高越好」在提交层是错的；诊断侧见步 7 §7.6.1）；[`ppa-vs-ra.md`](references/ppa-vs-ra.md)；[`webdatascope-failed-gates.md`](references/webdatascope-failed-gates.md)。适用决策表：D1 / D9。
 
 ### 步 9（S6）复盘回写
 
 - **目的**：把这一波的结论写回库，让下一波的先验自动变新。
 - **前置**：步 7 / 8 已有去向；先跑 `tools/step_funnel.py` 定位掉得最狠的一跳。
-- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先 `forum_recon` 软核对）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
+- **调用**（**有序**，全流程见 [`step9-writeback.md`](references/step9-writeback.md) §9.1）：① `step_funnel` ② 判 verdict（`PASS` ≥ 1 条过全部评审闸 / `PARTIAL` 0 达标但 ≥ 1 条 near / `FAIL` 0 达标 0 near）③ `campaign_intel.py pyramid` ④ `upsert_wave_result`（key_findings 一次带齐）⑤ 判死 `seal_dead_end`（先 `forum_recon` 取证；规则与**现状**见 §9.5——取证闸是设计，代码目前不拦）/ 胜绩 `upsert_registry_empirical(layer="win")` ⑥ 全波撞 prod 墙 → `campaign_intel.py mark-saturated` ⑦ 逐数据集 `dataset-experience` ⑧ 再跑一次 `assemble-priors`。
 - **产物**：`wave_results.verdict`（**唯一结论源**）、`registry_empirical`、`priors_snapshot_<region>`、`reports/dataset_experience/*_campain.md`。
 - **完成定义**：`step9-writeback.md` §9.7 的清单全勾；**缺任何一项 = 本波未完成**（GEM 对 stale 先验快照只 WARN 不阻断，只能由本步兜底）。
 - **失败分支**：`upsert_wave_result` 被拒（verdict 不可辨认）→ 用返回的 `suggestion` 核对后显式传枚举，原文进 `key_findings`。

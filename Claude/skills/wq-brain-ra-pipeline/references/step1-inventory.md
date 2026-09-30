@@ -68,6 +68,8 @@ python tools/campaign_intel.py s0-select --region $REGION --delay $DELAY --unive
 | **跨区弱**：同集在其它区 ≥ 16 条回测且 max\|S\| < 1.0（`s0-select` 的 `[跨区弱…]`） | **降权**：排在健康集之后、判死之前 |
 | 某集仅在 1 区弱 | 降权，**不排除** |
 
+**跨区横比另读 [`docs/experience/03_region_dataset.md`](docs/experience/03_region_dataset.md)**（12 区过闸率排序 + MEA / IND / DEU 停投结论）：profile 管「这个区怎么配」，03 管「这个区值不值得挖」，两者互补——后者拦的是「在某区死磕其实全区垫底」这类决策错误。
+
 ## 1.5 产出率读法（两个比率含义不同，别混）
 
 | 比率 | 定义 | 低意味着 | 动作 |

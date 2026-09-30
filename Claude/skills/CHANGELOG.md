@@ -6,6 +6,12 @@
 
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
+**合并 main（2026-09-30，功能分支 → main；DEC-67）**
+- main 上的 10 个提交并入：N32–N35 的 store / `auto_review` 修复、`docs/experience/` 挖掘经验库（01–05 + README）、RA / toolkit `SKILL.md` 的 v2.3 增补。RA、toolkit 两份 `SKILL.md` 冲突，取本分支的结构，把 main 的增补**按步移植进 references**（经验库必读表进 RA 核心 SKILL；形状配额与形状源 → 步 4 §4.5.1；SUB 比值律与零成本定位卡点 → 步 7 §7.6.1；判死前取证 → 步 9 §9.5）
+- **main 的文案比代码超前**：`forum_recon_wave` 节点（未注册）、`seal_dead_end` 的 fail-closed 取证闸（无 `force_seal` / `require_forum_recon`）、`forum_recon_error_*` 故障语义（`tools/forum_recon.py` 仍把鉴权失败记成 `found=false` 入库、入缓存、退出码 2）、`tools/shape_quota_check.py`（不存在）——移植时如实标「设计 / 未落地」并写出现状与落地清单（`references/forum-recon-triggers.md` 末节），**没有改任何代码**
+- 与已定政策冲突处按政策处理：`multiply(慢, 快_rank)` 当加权相加的合规替代 → 形态库的灰区；`docs/experience/` 里把「直接 POST submit」当预检教的 5 处与夏令时写死 12:00 的 1 处做最小更正并加文首政策提示，`field_operator_pattern.md` 加政策横幅；`test_sf_sweeps` 扫描范围扩到 `docs/experience/`
+- RA 核心 SKILL `version` 3.0 → 3.1；RA、toolkit 的 `last_verified` → 2026-09-30（对照代码与测试复核，未对照平台）
+
 **伞形条目收口 / 区域 profile 对齐 / 全库扫描守护（S-F-2）**
 - 伞形条目 P0-1…9 / T0-1…20 / X-1…19（共 48 条）逐项核验并收口：闭环台账 758 条 → 751 fixed / 3 declined / 4 needs-platform / 0 open，每条落到已有测试或本轮新增测试；台账新增「`verify` 指针必须仍指向存在的测试」检查（PW-09 的指针就是一个已改名的测试）→ DEC-61…66
 - 区域 profile：EUR / DEU 的 `static.universe` 与默认档对齐 `config.REGIONS`（此前 EUR 仍列已被平台移除的 `ILLIQUID_MINVOL1M` 且默认 TOP1600、DEU 多列一个 config 没有的 TOP300）；EUR / KOR 的 `win_recipes` 种子不再记混合比例——该种子在 DB KB 为空时经 assemble-priors 进入 GEM 的 priors；新增三条 profile ↔ config 机检（universe ⊆ config 且默认相等 / delay ⊆ config / 已移除档位不得出现）→ T0-8 / DEC-61

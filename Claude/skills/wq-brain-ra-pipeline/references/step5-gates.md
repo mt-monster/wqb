@@ -28,7 +28,7 @@ python tools/wave_gate.py --campaign-dir tracking/$REGION --dataset $DS --wave $
 | 字段白名单（闸 2）/ 区域非法 group（2b）/ 区域不可用字段（2b-2） | gate FAIL | 换字段 / 去掉非法 group 字段 | 步 4 | 否 |
 | 类型（闸 3） | VECTOR 未被 `vec_*` 包裹 / MATRIX 上误用 `vec_*` | `preflight_expressions(auto_fix_vector=true)` | 步 4 | 否 |
 | 毒模式（闸 5） | FAIL（含加权 / 等权腿相加 / 中缀 `+` / 跨数据集价差） | 改写为合规结构，见步 7 细则「允许的组合形态」 | 步 4 | 否 |
-| **批级多样性（闸 6）** | FAIL | 回步 4 补骨架（查 `KB/community_tpl_kb` 按 category 检索候选骨架，先过 `ghost_operator_advisory`）；**KB 无货 → `forum_recon` 补库后回补骨架**；若「2 跨集」FAIL 则拆回单集组合，不停挖 | 步 4 | `diversity`（repair / probe 批默认豁免，仍需显式 `--skip-diversity-gate` 时才要 waiver） |
+| **批级多样性（闸 6）** | FAIL | 回步 4 补骨架（查 `KB/community_tpl_kb` 按 category 检索候选骨架，先过 `ghost_operator_advisory`）；**软触发（准则，无代码闸）**：批内结构熵 < 1.5（原文口径）或 diversity 配额超限即查 KB 补骨架，不等硬 FAIL——代码里 `diversity_enhancer` 自己用的是算子熵 < 2.0；**KB 无货 → `forum_recon` 补库后回补骨架**（显式 `--queries` 关键词包可避免机械派生的穷举）；若「2 跨集」FAIL 则拆回单集组合，不停挖 | 步 4 | `diversity`（repair / probe 批默认豁免，仍需显式 `--skip-diversity-gate` 时才要 waiver） |
 | longCount（闸 7）/ EVENT 类型（闸 8）/ 非标窗口（闸 9） | 7、9 = WARN；8 = FAIL（引用 `type==EVENT` 字段） | 8：移除 EVENT 字段或先单条探针；7：低 longCount 字段降级为条件腿 | 步 4 | 否 |
 | **闸 SEM** | **exit 2**：缺 `s1_semantic_<ds>`；命中黑名单字段的表达式被剔出 | 跑 `field_semantic_classify.py --write-ledger` | **步 3** | `semantic` |
 | **体检硬门** | 违规计入 FAIL；缺体检包按 `--inspect-mode`（warn 放行 / enforce 整波拦） | 补预处理（低覆盖 → `ts_backfill`；高偏度 / 厚尾 → `rank` / `winsorize`；稀疏事件 → `trade_when`）或补体检包 | 步 4 / 步 2 | `inspect` |

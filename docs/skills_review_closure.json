@@ -5601,7 +5601,7 @@
    "status": "needs-platform",
    "title": "算子与表达式知识：SOP 里的例子要过自家闸",
    "cat": "跨 skill",
-   "note": "已做：SOP fenced / 行内表达式过 gate.check_one（skill_lint expr-gate：GHOST / INACCESSIBLE / SYNTAX / ARITY / POISON，反例语境豁免）；ts_median / vec_mean / is_placeholder / ts_event_* 只以警示口吻出现（test_sf_sweeps）；VECTOR 规则（先 vec_* 聚合、MATRIX 禁 vec_*）口径对齐闸 3；非标窗口走白名单 + 证据脚注（window_whitelist）。**待平台**：scale_down 是否真不在平台——现有依据只有 docs/reference/operators_catalog.json（103 个算子，2026-09-07 抓取，无 scale_down）与「幽灵单源」里没有它；平台不可达，无法用当前 get_operators 复核；复核前文档一律按不可用处理（安全侧）。DEC-62",
+   "note": "已做：SOP fenced / 行内表达式过 gate.check_one（skill_lint expr-gate：GHOST / INACCESSIBLE / SYNTAX / ARITY / POISON，反例语境豁免）；ts_median / vec_mean / is_placeholder / ts_event_* 只以警示口吻出现（test_sf_sweeps）；VECTOR 规则（先 vec_* 聚合、MATRIX 禁 vec_*）口径对齐闸 3；非标窗口走白名单 + 证据脚注（window_whitelist）。**待平台**：scale_down 是否真不在平台——现有依据只有 docs/reference/operators_catalog.json（103 个算子，2026-09-07 抓取，无 scale_down）与「幽灵单源」里没有它；平台不可达，无法用当前 get_operators 复核；复核前文档一律按不可用处理（安全侧）。DEC-62 二手证据（合并 main 时看到）：main 的 docs/experience/05_antipatterns.md 记录 scale_down 实测不存在、用了整批 CANCELLED——倾向不存在，仍待 get_operators 一手复核。",
    "verify": "平台可达且有凭据的会话里：① 调 MCP get_operators（或 operator_audit）看返回里有没有 scale_down；② 若没有：把 scale_down 加进 KNOWN_GHOST_SEED，从 4 份 validator 镜像和 score_datasets.py:669 移除，并调整 tests/unit/test_grammar.py:268 与 tests/unit/test_skills.py:210；③ 若有：从 test_sf_sweeps 的 ghost 参数表与 datafield-exploration / 相关文档的「不可用」说法里撤掉。改后跑 tools/sync_gem_embedded_skill.py --apply 与 tools/sync_skills.py",
    "ref": "DEC-62"
   },

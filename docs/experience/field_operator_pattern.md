@@ -1,5 +1,7 @@
 # 字段-算子关系规律总结（EUR wave104-123 实证）
 
+> ⚠ **现行政策提示（2026-09-29）**：下文「双腿加权是主流」等结论是对当时高分样本的**观察**，不是可复制的配方——把两条及以上独立信号腿按任意（等 / 非等）权重线性组合，自 2026-09-13 起被 RA「路线 A」与闸 5 禁止；辅助腿只能以条件 / 分组 / 残差入场，见 [`structural-interaction-forms.md`](../../Claude/skills/wq-brain-alpha-optimization-v1/references/structural-interaction-forms.md)。
+>
 > 数据来源：`data/wqb.db` backtest_results 表，EUR 区域 wave104-123 共 141 条回测记录。
 > 生成时间：2026-09-04
 

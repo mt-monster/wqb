@@ -78,6 +78,14 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 返回里 `unknown_provenance` > 0 表示有条目来源数据集未知——**来源未知不能作为跨集正交证据**，传 `exclude_dataset` 时这些条目被排除。
 取到辅助腿之后**怎么用**，见 §7.7 的「辅助腿入场三式」——不是把它加进去。
 
+### 7.6.1 卡在提交层四闸时：SUB 比值律 · 零成本定位卡点（2026-09-28 实证，跨区通用）
+
+- **提交层实际四闸** = `LOW_SHARPE` / `LOW_FITNESS` / `LOW_2Y_SHARPE` / `LOW_SUB_UNIVERSE_SHARPE`，**均为严格不等式**；前三闸的线取 `config.PLATFORM_CHECK_LINES`，SUB **没有固定线**——它的 limit ≈ 0.571 × 本 alpha 的 sharpe。实测：`wpZkk1Mp` SUB limit = 1.03 / sharpe = 1.80 → 0.572；`2rwoAp8b` 1.12 / 1.96 → 0.571；`6XjLAaWO` 0.89 / 1.55 → 0.574（三处独立一致）。**DEU profile 记的是 ≈ 0.47（另一批实测），比例以本区 `get_alpha_details` 里 `LOW_SUB_UNIVERSE_SHARPE` 的 limit / sharpe 为准，不要把 0.571 当常数。**
+- **推论**：SUB 是**比值闸**——把 sharpe 压到刚过 `LOW_SHARPE` 线会**同步降低** SUB 要求（sharpe = 1.62 时只需 SUB ≥ 0.93）。所以「sharpe 越高越好」在提交层是错的，目标是 `SUB / sharpe ≥ 该比例` 且 `LOW_2Y_SHARPE`、`LOW_SHARPE`、`LOW_FITNESS` **同时成立**。
+- **破比值闸的合规旋钮**（实测有效）：换分组轴到 `market` / `exchange`（效果不同：`market` 给比值、`exchange` 给 2Y）、`signed_power` 压尾、`ts_decay_linear` / 长窗 `ts_rank` 平滑。KOR / other466 实证：`group_rank(R, market)` 把比值从 0.55 抬到 0.59，是过闸的决定性一步。
+- **零成本定位卡点**：`submit_verdict` 在处女提交（`GET /submit` 404）时仍返回**模拟层完整 checks**（`模拟层 checks: N 条 (FAIL x / WARNING y)` + `Failed RA / PPA` 计数），足以定位唯一卡点——**不要等真 POST 才知道卡在哪一闸**。
+- 该实证的软层全文与佐证见 [`docs/experience/01_platform_gates.md`](docs/experience/01_platform_gates.md)。
+
 ## 7.7 组合形态：允许清单（唯一一份）· 辅助腿入场三式 · 为什么闸不是许可证
 
 ### 7.7.1 规则（CLAUDE.md「禁止混信号调参，尤其警惕 add(A,B)」的落地）
@@ -126,7 +134,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 |---|---|---|---|
 | 首探 prod 偏高 | 按 D0-P 的阈值表 | 查 D0-P：不扩变体 / 当天进步 8 / 踩线带 1 次结构性尝试 / dead_end | 步 8 或步 9 |
 | 同一想法 > 10 种结构仍不过 | 计数。**10 是经验上限，没有统计推导**——意图是防「对同一想法无限换壳」；更硬的判据是 §7.4 / D0-P 的机检墙，能用它们判就不要靠计数 | 步 9 记 `dead_end`（先 `forum_recon` 软核对） | 步 9 → 步 2 |
-| Mode B 常规改进 2–3 轮仍卡墙（prod / 2Y / CW / tvr / robust）且未到判死 | 每轮都有新结构、指标仍不过 | **找武器**：`tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`（触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)），命中配方入 idea 池供 Mode B Step B3 | 本步 |
+| Mode B 常规改进 2–3 轮仍卡墙（prod / 2Y / CW / tvr / robust）且未到判死 | 每轮都有新结构、指标仍不过 | **找武器**：`tools/forum_recon.py --question "<墙名+数据集> 破墙配方" --context region=$REGION,dataset=$DS,wall=<WALL> --out ledger`（触发表见 [`forum-recon-triggers.md`](forum-recon-triggers.md)），命中配方入 idea 池供 Mode B Step B3；「先读本波 `forum_recon_wave` 已落的 ledger 结论」的波级默认兜底是**设计、未落地**（节点未注册），见触发表末节 | 本步 |
 | 全灭 | ② 预筛全 `REJECT` | 判死该批，不进 ③④ | 步 9 |
 | 候选全部被 prod 墙卡死 | `submit_verdict` BLOCKED 原因含 PROD_CORRELATION | 除 `dead_end` 外，在步 9 登记数据集饱和（`mark-saturated`），下一轮 S0 才会降级该集 | 步 9 |
 

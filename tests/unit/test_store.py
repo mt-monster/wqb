@@ -210,6 +210,40 @@ def test_backtest_rows_and_alphas(store):
     assert abs(rows[0]["margin"] - 0.0012) < 1e-9
 
 
+def test_backtest_rows_code_with_whitespace_matches_existing_expression(store):
+    """N34：带首尾空白的 code 必须命中已存在的表达式行（expressions 存 strip 后的值）。
+
+    此前 upsert_backtest_rows 用 raw code 查 expressions.expression → 查不中，
+    回落 upsert_expressions 存的又是 strip 后的值，再查仍不中 → expr_id=None → 行被静默丢弃。
+    """
+    store.upsert_expressions("EUR", "50", ["rank(x)"], dataset="mh")
+    n = store.upsert_backtest_rows(
+        "EUR", "50",
+        [{"id": "wsA1", "code": "  rank(x)  ", "sharpe": 1.3, "fitness": 0.9}],
+        dataset="mh",
+    )
+    assert n == 1
+    rows = store.list_backtest_rows("EUR", "50")
+    assert [r["alpha_id"] for r in rows] == ["wsA1"]
+
+
+def test_backtest_rows_code_with_whitespace_autocreates_expression(store):
+    """N34（auto-create 路径）：expressions 表尚无该行时先建表达式再回查；
+
+    回查若用带空白的 raw code 则查不中 → 行丢失。strip 同口径后应成功落库，
+    且落库的 code 列为 strip 后的值（与 expressions 表同口径）。
+    """
+    n = store.upsert_backtest_rows(
+        "EUR", "51",
+        [{"id": "wsA2", "code": "rank(y)\n", "sharpe": 1.1}],
+        dataset="mh",
+    )
+    assert n == 1
+    rows = store.list_backtest_rows("EUR", "51")
+    assert [r["alpha_id"] for r in rows] == ["wsA2"]
+    assert rows[0]["code"] == "rank(y)"
+
+
 def test_upsert_alpha_os_metrics_roundtrip(store):
     """OS（样本外）指标落库：新列存在、写入可读、只填 NULL 不覆盖。"""
     store.upsert_alpha_from_platform({

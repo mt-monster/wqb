@@ -34,7 +34,15 @@
 - 修改 `world-quant-brain-mcp/` 后需重启 MCP 服务才生效（`.mcp.json` 指向 `main.py`，使用 `world-quant-brain-mcp/.venv`，勿用根环境）。
 - 修改 `tracking/<REGION>/config/`（如 `thresholds.json`）影响该区域战役闸门；勿手动编辑 `tracking/mining/` 共享数据湖。
 - 修改 `tools/` 中被引用函数前，先用 `rg` 搜索调用点确认影响面。
-- 平台交互类改动（回测/提交/配额）先读 `docs/experience/` 经验文档，遵守并发与配额约束，避免 429。
+- **挖掘经验库必读（2026-09-29 建立；索引 = [`docs/experience/README.md`](docs/experience/README.md)）**：平台交互类改动（回测/提交/配额）动手前先按主题读对应篇，遵守并发与配额约束、避免 429，也避免重踩已证伪路径。
+  | 你要做的事 | 必读 |
+  |---|---|
+  | 提交 / 判定闸门 / 配额 / 相关性取数 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) |
+  | 设计或改造信号结构 | [`02_signal_patterns.md`](docs/experience/02_signal_patterns.md)（含组合形态铁律） |
+  | 选区 / 选数据集 | [`03_region_dataset.md`](docs/experience/03_region_dataset.md)（含停投结论） |
+  | 改工程链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) |
+  | 复盘 / 准备放弃某方向 | [`05_antipatterns.md`](docs/experience/05_antipatterns.md) |
+  ⚠ **双轨同源**：上述 md 给人/Agent 看；**机器消费层是另一套**——`Claude/skills/wq-brain-campaign-toolkit/config/methodology_rules.json`（全局，被 `gate.py`/`build_wave.py`/`pipeline.py`/`review_wave.py` 的 `RuleStore.query()` 强制注入）与 `tracking/<REGION>/reference/`（区域，存 DB）。**改一边必须同步另一边**，否则出现"文档写了但流程不认"。守护测试见 `tests/unit/test_experience_kb_refs.py`。
 - 凭据位于 `world-quant-brain-mcp/.env`：禁止读取、打印或提交到 git。
 
 ## 3.5 Skills 回测标准路径（2026-09-05 单源化）
@@ -81,11 +89,14 @@
 - **workflow 节点元数据**：`registry.py` 的 `required_params` / `optional_params` 必须与节点
   `run()` 签名一致（`_context` / `dry_run` 除外）。`workflow_list_nodes` 把它当 API 文档
   暴露给 Agent，漂移即误导。回归由 `tests/unit/test_skill_integrity.py` 守护。
-- **新增/修改 workflow 节点 → 四处必须同步（2026-09-18 固化）**：注册信息散在四处，
+- **新增/修改 workflow 节点 → 五处必须同步（2026-09-18 固化四处，2026-09-29 补第五处）**：注册信息散在五处，
   漏一处测试即红：① `src/wqb/workflow/registry.py`（register + NodeMeta，与 run() 签名逐字一致）
   ② `tests/unit/test_workflow.py::test_registry_lists_all_core_nodes` 期望集合
   ③ `tests/unit/test_skill_integrity.py::_DRY_RUN_CASES` 干跑用例表
-  ④ `Claude/skills/INDEX.md` workflow 节点计数。
+  ④ `Claude/skills/INDEX.md` workflow 节点计数
+  ⑤ `world-quant-brain-mcp/tests/test_tools_workflow_unit.py` 的 `expected_nodes` 集合。
+  ⚠ ⑤ 是 2026-09-29 全量测试转红才暴露的：`forum_recon_wave` 上线时四处全绿、MCP 包测试 20≠19。
+  根因是 MCP 包测试与根 `tests/` 是两套路径，只按单文件跑测试会漏掉它。**改节点先跑 `tools/audit_node_registration.py`**（已升级为五处审计）。
   **一次跑完全部检查**：`python tools/audit_node_registration.py`（`--node X` 单节点自检；
   退出码 1 = 有漂移并列出全部缺口）。战例：`alpha_booster` 只做了 ①，②③ 漏同步 +
   NodeMeta 漏 `forum_refresh` → 3 个测试红；`gem` 的 meta 漏 `batch_size` 同被逮到。

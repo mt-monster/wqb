@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-09-30
 name: wq-brain-campaign-toolkit
 description: "战役目录内执行引擎（gate / pipeline / build_wave / score_datasets / review_wave / campaign.py 的 ledger·registry·wave）的用法与契约。要跑战役脚本、查子命令与台账键、处理超时或重发时使用；何时用、怎么判由 wq-brain-ra-pipeline 定。"
 layer: L-TOOL
@@ -176,6 +176,8 @@ RA 步 6 的「超时恢复清单」指向本节。救援池的来源排除是�
 ## 10. fail-fast：失败性质判定（步 7 评审用）
 
 评审先判**失败性质**再决定继续投入（机器实现 `_lib/rules.py::classify_failure`，阈值见 `FAIL_FAST_THRESHOLDS`，每条信号的量化口径在 [`docs/experience/fail_fast_rules.md`](docs/experience/fail_fast_rules.md)）：**七个无效努力信号**命中结构性信号（远期衰减 / 变体不变 / 相似度墙），或 `max_sharpe < 1.0`，或命中 ≥ 2 项 → `STOP_STRUCTURAL`（止损换方向）；仅命中参数层信号 → `RETRY_FIXABLE`（杠杆 = decay / neutralization / gate / 换历史位置表达）。纪律：**AI / 自动化只做研究效率（整理 / 统计 / 打标 / 复盘），不自动提交、不刷规则**。
+
+> **经验库双轨（2026-09-29）**：`config/methodology_rules.json` 是**机器消费层**——本引擎 `RuleStore.query()` 会在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入命中规则（硬拦截只有 `dead_end`（`block_pattern`）/ `universe_lever` / `explore_contract` 三类，`strategy` / `diagnosis` 仅提示）。与之**同源**的**人读层**在仓库 [`docs/experience/`](docs/experience/README.md)（索引 `README.md`：01 平台闸门 / 02 信号模式 / 03 区域数据集 / 04 工程纪律 / 05 反模式）。**改一边必须同步另一边**，否则出现「文档写了但流程不认」。2026-09-28 实证入库的五条：`sub_universe_ratio_gate_v1`、`pyramid_lighting_platform_only_v1`、`mixed_signal_leg_ban_v1`、`same_family_consecutive_submit_v1`、`region_stop_invest_v1`。
 
 ## 11. 平台报错二分排障（单条探针，不用 multisim）
 

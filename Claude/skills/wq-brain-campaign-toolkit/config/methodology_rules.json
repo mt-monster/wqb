@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-09-13T03:25:00",
+ "updated_at": "2026-09-29T01:40:00",
  "_note": "全局方法论规则库（L2 结构化层）：跨 region 共享，所有战役通用。trigger.region=\"*\" 或不设 region 的规则放这里；区域专属规则放 tracking/<REGION>/reference/methodology_rules.json。rules.json 给机器消费（build_wave/gate/pipeline 强制注入），docs/experience/*.md 给人看，两者同源。种子来自 2026-08-18 EUR 战役复盘（通用部分）。",
  "rules": [
   {
@@ -360,6 +360,160 @@
    "created_at": "2026-09-13T03:25:00",
    "times_applied": 0,
    "times_succeeded": 0
+  },
+  {
+   "rule_id": "sub_universe_ratio_gate_v1",
+   "type": "diagnosis",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_review"
+   },
+   "action": {
+    "op": "check_sub_ratio",
+    "params": {
+     "ratio_floor": 0.571,
+     "gates": {
+      "LOW_SHARPE": 1.58,
+      "LOW_FITNESS": 1.0,
+      "LOW_2Y_SHARPE": 1.58
+     },
+     "strict_inequality": true,
+     "doc": "docs/experience/01_platform_gates.md"
+    },
+    "message": "★ SUB 是比值闸不是绝对闸：LOW_SUB_UNIVERSE_SHARPE 的 limit ≈ 0.571 × 本 alpha sharpe（三处独立一致：1.03/1.80、1.12/1.96、0.89/1.55）。因此「sharpe 越高越好」是错的——把 S 压到刚过 1.58 会同步降低 SUB 要求。判定须 SUB/S ≥ 0.571 且 2Y ≥ 1.58 且 S ≥ 1.58 且 F ≥ 1.0 四者同时成立（均为严格不等式，value==limit 判 FAIL）。破比值闸的合规旋钮：换分组轴到 market（给比值，决定性）/ exchange（给 2Y）、signed_power 压尾、长窗 ts_rank、ts_decay_linear 平滑。"
+   },
+   "evidence": {
+    "source": "2026-09-28 提交层实测（跨区域）",
+    "samples": [
+     {"sharpe": 1.80, "sub_limit": 1.03, "ratio": 0.572},
+     {"sharpe": 1.96, "sub_limit": 1.12, "ratio": 0.571},
+     {"sharpe": 1.55, "sub_limit": 0.89, "ratio": 0.574}
+    ],
+    "first_success": "KOR wpZkk1Mp = signed_power(ts_rank(group_rank(<核心盈利资产收益率价差>, market), 504), 0.5) → ACTIVE, prod 0.6476 / self 0.187"
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-09-29T01:40:00",
+   "source": "experience_kb_01"
+  },
+  {
+   "rule_id": "pyramid_lighting_platform_only_v1",
+   "type": "diagnosis",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_review"
+   },
+   "action": {
+    "op": "assert_pyramid_source",
+    "params": {
+     "authoritative": "platform get_pyramid_alphas",
+     "forbidden": ["local alphas table", "datasets.category", "date_submitted"],
+     "lighting_rule": "提交 >= 3 颗 = 点亮",
+     "doc": "docs/experience/01_platform_gates.md"
+    },
+    "message": "★ 点塔判定的唯一权威 = 平台 get_pyramid_alphas，本地 alphas 表不可用于塔级统计（两次踩坑：① datasets.category ≠ 平台 pyramid 塔归属，本地 KOR 47% ACTIVE 的 category=None；② date_submitted 全库仅 2.7% 非空，据此判提交必然错）。点亮定义 = 某塔下提交 ≥3 个 alpha。选塔优先律：已点亮塔下的新候选最多作 SuperAlpha 组腿，不占 REGULAR 提交名额；优先提交归属未点亮塔的候选。"
+   },
+   "evidence": {
+    "source": "2026-09-28 平台实测 KOR/D1",
+    "lit": {"analyst": 6, "fundamental": 3, "model": 4, "other": 6, "pv": 3},
+    "unlit": ["shortinterest", "earnings", "imbalance", "insiders", "institutions", "macro", "news", "socialmedia", "sentiment", "risk"]
+   },
+   "confidence": 0.9,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-09-29T01:40:00",
+   "source": "experience_kb_01"
+  },
+  {
+   "rule_id": "same_family_consecutive_submit_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "submit"
+   },
+   "action": {
+    "op": "limit_family_batch",
+    "params": {
+     "max_per_family_per_window": 1,
+     "order": "IS 强度降序",
+     "retest_sibling_prod_after_each": true,
+     "prod_hard_limit": 0.7,
+     "doc": "docs/experience/01_platform_gates.md"
+    },
+    "message": "同族（共享 base signal）兄弟连提会顶高后来者的 prod/self 相关性（实证 0.67→0.98，直接判死）。规则：同族一次只提 1 颗；确需连提则按 IS 强度降序，且每提一颗后重测兄弟 prod（实证 KOR wpZkk1Mp 提交后兄弟 prod 0.6476→0.6791，余量仅 0.02）。我方铁律：prod > 0.7 不提（平台可能只判 WARNING，但我方不提）。"
+   },
+   "evidence": {
+    "source": "2026-09-28 KOR 实证",
+    "before_after": "0.6476 → 0.6791（同族兄弟）",
+    "counter_example": "同族连提 prod 0.67 → 0.98"
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-09-29T01:40:00",
+   "source": "experience_kb_01"
+  },
+  {
+   "rule_id": "mixed_signal_leg_ban_v1",
+   "type": "strategy",
+   "trigger": {
+    "region": "*",
+    "phase": "wave_design"
+   },
+   "action": {
+    "op": "enforce_single_signal",
+    "params": {
+     "enforced_by": "闸5 执行层 platform_constraints.json v1.5",
+     "poisons": ["weighted_signal_mix_structural", "equal_weight_leg_add"],
+     "regression": "tests/unit/test_gate_equal_weight_leg_add.py",
+     "doc": "docs/experience/02_signal_patterns.md"
+    },
+    "message": "★ 组合形态铁律：禁止把两条独立信号腿加权相加——无论 add(multiply(0.4,…))、0.4A+0.6B，还是等权 add(rank(A), rank(B))（等权即 0.5A+0.5B，同一违规族）。也禁止靠增删腿数或扫描混合权重去修不达标的信号。唯一合规方向 = Mode B：换字段组合/换信号概念/换算子几何/换分组轴；或单信号结构化（ts_scale、subtract(rank(A),rank(B)) 视作单一价差信号但须有经济含义、group_rank/group_zscore/ts_quantile、事件门控 trade_when/if_else、SuperAlpha combo）。⚠ 门禁通过 ≠ 合规：闸是兜底不是许可证，判合规看本质（是否两条独立信号腿相加），不看是否命中正则。硬拦截在闸5（platform_constraints.json），本条不重复正则以免两处漂移。"
+   },
+   "evidence": {
+    "source": "2026-09-28 用户定案 + 2026-09-27 GBR 事故",
+    "note": "2026-09-28 新增 equal_weight_leg_add 毒化条目，专补「等权豁免」漏洞",
+    "detail": "2026-09-27 GBR ep_yield f12m 族三连：ts_decay_linear/外层 rank 均匀化实证仍 403，非充分修复；唯一过提交层同族结构 = trade_when 门控"
+   },
+   "confidence": 0.95,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-09-29T01:40:00",
+   "source": "experience_kb_02"
+  },
+  {
+   "rule_id": "region_stop_invest_v1",
+   "type": "diagnosis",
+   "trigger": {
+    "region": "*",
+    "phase": "dataset_select"
+   },
+   "action": {
+    "op": "warn_region_yield",
+    "params": {
+     "stop_invest": ["MEA", "IND", "DEU"],
+     "gate_pass_rate": {"KOR": 0.727, "GLB": 0.588, "ASI": 0.556, "USA": 0.542, "GBR": 0.467, "IND": 0.342, "EUR": 0.294, "MEA": 0.287, "DEU": 0.125},
+     "conversion_rate": {"MEA": 0.182, "IND": 0.151, "DEU": 0.0},
+     "doc": "docs/experience/03_region_dataset.md"
+    },
+    "message": "区域过闸率横比（2026-09-28 status 口径回写后）：KOR 72.7% > GLB 58.8% > ASI 55.6% > USA 54.2% > GBR 46.7% > IND 34.2% > EUR 29.4% > MEA 28.7% > DEU 12.5%。转化率（已回测/总数）：JPN 1.6% 最差（15185 生成仅 238 回测）、EUR 2.0%、USA 5.2%。停投结论：MEA(18.2%) / IND(15.1%) / DEU(0%)。全域端到端转化率仅 0.10%，闸通过率 49.7%、prod 淘汰 68% ⇒ 瓶颈在 prod 不在闸。"
+   },
+   "evidence": {
+    "source": "2026-09-28 status 口径基线（D9 回写后）",
+    "backtested_total": 5935,
+    "protected_states": {"submitted": 31, "completed": 38, "dropped": 34517, "superseded": 11083, "fail": 99, "coverage": 6}
+   },
+   "confidence": 0.85,
+   "status": "active",
+   "times_applied": 0,
+   "times_succeeded": 0,
+   "created_at": "2026-09-29T01:40:00",
+   "source": "experience_kb_03"
   }
  ]
 }

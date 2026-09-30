@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
-"""audit_node_registration.py — 新增 workflow 节点「四处同步」机械审计器。
+"""audit_node_registration.py — 新增 workflow 节点「五处同步」机械审计器。
 
 背景（2026-09-18 教训）：`alpha_booster` 节点注册进 registry 后，三处配套漏同步，
 导致 3 个测试红；`gem` 节点也曾漏 `batch_size` 元数据。这类漂移的代价是
 `workflow_list_nodes` 把 NodeMeta 当 API 文档暴露给 Agent，漂移即误导。
 
-新增/修改 workflow 节点时必须同步的 **四处**：
+新增/修改 workflow 节点时必须同步的 **五处**：
   ① `src/wqb/workflow/registry.py`            —— 节点注册 + NodeMeta（required/optional 须与 run() 签名一致）
   ② `tests/unit/test_workflow.py`             —— `test_registry_lists_all_core_nodes` 的期望节点集合
   ③ `tests/unit/test_skill_integrity.py`      —— `_DRY_RUN_CASES` 干跑用例表
   ④ `Claude/skills/INDEX.md`                  —— workflow 节点计数（`test_docs_consistency.py` 守护）
+  ⑤ `world-quant-brain-mcp/tests/test_tools_workflow_unit.py` —— `expected_nodes` 集合
+     （2026-09-29 补：此前只认四处，`forum_recon_wave` 上线后本处漏同步，
+      仓库侧四处全绿而 MCP 包测试转红 20≠19。MCP 包与 `src/wqb` 是两套测试路径，
+      只跑根目录 pytest.ini 的 testpaths 之外的单测会漏掉它。）
 
-本工具把这四处做成一张对照表，**一次性列出全部缺口**，避免"改一处跑一次测试"的往返。
+本工具把这五处做成一张对照表，**一次性列出全部缺口**，避免"改一处跑一次测试"的往返。
 
 用法：
   python tools/audit_node_registration.py            # 全量审计（默认，发现漂移 rc=1）
@@ -32,6 +36,10 @@ SRC = REPO / "src"
 INDEX = REPO / "Claude" / "skills" / "INDEX.md"
 TEST_WORKFLOW = REPO / "tests" / "unit" / "test_workflow.py"
 TEST_INTEGRITY = REPO / "tests" / "unit" / "test_skill_integrity.py"
+# ⑤ MCP 包内另有一份节点期望集合（与根 tests/ 并列，不在 pytest.ini 的 testpaths 之外）
+MCP_TEST_WORKFLOW = (
+    REPO / "world-quant-brain-mcp" / "tests" / "test_tools_workflow_unit.py"
+)
 REGISTRY = SRC / "wqb" / "workflow" / "registry.py"
 
 if str(SRC) not in sys.path:
@@ -74,6 +82,24 @@ def _parse_dry_run_cases() -> set:
     return set(re.findall(r'^\s*"([a-z_][a-z0-9_]*)":\s*\{', body, re.M))
 
 
+def _parse_mcp_test_nodes() -> set:
+    """⑤ 从 MCP 包测试的 expected_nodes 集合字面量提取节点名。
+
+    与 ② 同样先剥注释行——该处注释会写「18→19」这类历史计数说明，
+    不剥会把注释里的数字/节点名误当成期望。
+    """
+    if not MCP_TEST_WORKFLOW.exists():
+        return set()
+    src = MCP_TEST_WORKFLOW.read_text(encoding="utf-8")
+    m = re.search(r"expected_nodes = \{(.*?)\n    \}", src, re.S)
+    if not m:
+        return set()
+    body = "\n".join(
+        ln for ln in m.group(1).splitlines() if not ln.lstrip().startswith("#")
+    )
+    return set(re.findall(r'"([a-z_][a-z0-9_]*)"', body))
+
+
 def _parse_index_node_count():
     """从 INDEX.md 提取 workflow 节点计数（基准段）。"""
     src = INDEX.read_text(encoding="utf-8")
@@ -109,7 +135,7 @@ def _signature_drift(reg) -> dict:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="workflow 节点四处同步审计")
+    ap = argparse.ArgumentParser(description="workflow 节点五处同步审计")
     ap.add_argument("--node", help="只审计指定节点")
     ap.add_argument("--quiet", action="store_true", help="只在有漂移时输出")
     a = ap.parse_args()
@@ -124,6 +150,7 @@ def main() -> int:
 
     tw_nodes = _parse_test_workflow_nodes()
     dr_nodes = _parse_dry_run_cases()
+    mcp_nodes = _parse_mcp_test_nodes()
     idx_count = _parse_index_node_count()
     sig_drift = _signature_drift(reg)
 
@@ -159,6 +186,19 @@ def main() -> int:
             continue
         problems.append(f"[① registry.py] {name} NodeMeta 与签名漂移：{probs}")
 
+    # ① registry vs ⑤ MCP 包测试 expected_nodes
+    if mcp_nodes:
+        miss_mcp = nodes - mcp_nodes
+        extra_mcp = mcp_nodes - set(reg.list_nodes())
+        if miss_mcp and not a.node:
+            problems.append(
+                f"[⑤ mcp test_tools_workflow_unit.py] expected_nodes 缺 {sorted(miss_mcp)}"
+                f" —— 在该集合补上并更新上方 19→20 之类的计数注释")
+        if extra_mcp:
+            problems.append(
+                f"[⑤ mcp test_tools_workflow_unit.py] expected_nodes 多了 {sorted(extra_mcp)}"
+                f" —— registry 已无此节点，从集合里删掉")
+
     # ④ INDEX 计数
     if idx_count is not None and not a.node:
         if idx_count != len(reg.list_nodes()):
@@ -168,25 +208,28 @@ def main() -> int:
 
     if not a.quiet:
         print("=" * 72)
-        print(f"workflow 节点四处同步审计 | registry={len(reg.list_nodes())} 个"
-              f" | test_workflow={len(tw_nodes)} | dry_run={len(dr_nodes)} | INDEX={idx_count}")
+        print(f"workflow 节点五处同步审计 | registry={len(reg.list_nodes())} 个"
+              f" | test_workflow={len(tw_nodes)} | dry_run={len(dr_nodes)}"
+              f" | mcp_test={len(mcp_nodes)} | INDEX={idx_count}")
         print("=" * 72)
         print(f"  ① registry.py            : {len(reg.list_nodes())} 个节点"
               + (f"，其中 {len(sig_drift)} 个签名漂移" if sig_drift else "，签名一致"))
         print(f"  ② test_workflow.py       : {len(tw_nodes)} 个期望")
         print(f"  ③ _DRY_RUN_CASES         : {len(dr_nodes)} 个用例")
         print(f"  ④ INDEX.md workflow 节点 : {idx_count}")
+        print(f"  ⑤ mcp test expected_nodes: {len(mcp_nodes)} 个")
 
     if problems:
         print(f"\n检测到 {len(problems)} 处漂移：")
         for p in problems:
             print(f"  ✗ {p}")
         print("\n修复后跑：python -m pytest tests/unit/test_workflow.py "
-              "tests/unit/test_skill_integrity.py tests/unit/test_docs_consistency.py -q")
+              "tests/unit/test_skill_integrity.py tests/unit/test_docs_consistency.py "
+              "world-quant-brain-mcp/tests/test_tools_workflow_unit.py -q")
         return 1
 
     if not a.quiet:
-        print("\n四处一致，无漂移。")
+        print("\n五处一致，无漂移。")
     return 0
 
 
