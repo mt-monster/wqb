@@ -4,33 +4,39 @@
 
 ## 1. 三种模式
 
-「逛一逛论坛」**默认 = explore stroll-with-mandatory-contribution** — 有方向地逛或先逛后定方向，**每轮必须以贡献收尾**。禁止浏览后菜单与零贡献纯 read 会话。
+「逛一逛论坛」**默认 = explore stroll** — 有方向地逛或先逛后定方向。**有写工具时每轮必须以贡献收尾**；当前只读环境（wq-brain-http 无写工具）以「本地 notes 草稿」为默认可交付物。禁止浏览后菜单与零贡献纯 read 会话。
 
 | 模式 | 用户典型说法 | 做什么 | Run Contract? |
 |------|--------------|--------|---------------|
-| **explore**（默认） | 逛一逛、看看、转转 | MCP 搜读 → **必贡献** → **auto-send E1** 或 7.5+Contract → 6–9 | **单条 E1 write 可免**；否则必做 |
+| **explore**（默认） | 逛一逛、看看、转转 | MCP 搜读 → 只读产出本地 notes 草稿（有写工具时必贡献）→ **auto-send E1** 或 7.5+Contract → 6–9 | **单条 E1 write 可免**；否则必做 |
 | **contribute** | 贡献、填空白、跟评、发帖、点赞 | 完整 Recon → gap → 更严 write 计划 + **必 curator** → Phase 7.5 → Run Contract → 同意执行 | **必做** |
-| **hybrid**（弃用别名） | 逛一逛顺便看看要不要回 | **等同 explore**，行为不变 | 同 explore |
 
-**默认规则：** 用户只说「逛论坛」且未提贡献 → `explore`（仍必须以贡献收尾）。
+**默认规则：** 用户只说「逛论坛」且未提贡献 → `explore`（有写工具时仍必须以贡献收尾）。
 
 ## 2. 最低贡献条（explore 每轮必达，硬性）
 
-每次「逛一逛论坛」会话必须以 ≥1 个论坛写操作结束。每次写必须含**独特个人价值**（P0–P5，含本机 AI 对话史），不复读楼主/热评。满足至少其一：
+每次「逛一逛论坛」会话（**有写工具时**）必须以 ≥1 个论坛写操作结束；当前只读环境产出本地 notes 草稿为默认可交付物。每次写必须含**独特个人价值**（P0–P5，含本机 AI 对话史），不复读楼主/热评。满足至少其一：
 
 1. **≥1 证据支撑的写操作** — 评论或新帖，每条论断追溯到 E1/E2/E3。
 2. **明确的用户批准计划**，含评论 + curator 点赞组合。
 
 **若确实无话可说：** 在 stroll notes 记录原因，仍尝试 linker 式最小价值（链接/索引指路/窄问题回复），避免空会话。
 
-**贡献义务决策树：** MCP 有写工具 → 必贡献；无写工具（如 wq-brain-http 仅只读）→ 自动豁免降级只读，须在 session_plan / stroll_notes 注明豁免原因。
+**贡献义务决策树：** MCP 有写工具 → 必贡献；无写工具（当前 wq-brain-http 仅只读）→ 主路径 = 只读浏览 + 产出 `forum_stroll_notes.md` 草稿（含拟发内容 + 值得点赞帖子 ID），该草稿即默认可交付物；只读环境是当前默认，非需单独记录原因的例外。
 
 ## 3. explore 子风格
 
 - **purposeful stroll**：起步即有方向（P5/`get_user_alphas`、`get_messages`/`get_events`、置顶帖、P0–P4、本轮聊天上下文）。
 - **emergent-purpose stroll**：起步无 agenda，先逛后定方向，逛出 finds 后记录 emerged contribution plan（必有一项 write）。
 
-**explore vs contribute：** 同必贡献，不同严格度——explore 不要求 upfront formal gap、curator 仅推荐；contribute 完整 gap 评分 + Role Pick + 必 curator。
+**explore vs contribute 差异对比（量化口径）：** 同必贡献（有写工具时），不同严格度——
+
+| 维度 | explore | contribute |
+|------|---------|------------|
+| 前置 gap | 不要求 formal gap（0 项缺口门槛） | 完整 gap 评分 + Role Pick（≥1 个可填缺口） |
+| 写计划 | 轻量；auto-send E1 可跳过 Contract | 更严 write 计划，Contract 必走 |
+| curator | 值得时推荐 ≥1 点赞目标 | 必含 ≥1 点赞目标 |
+| 证据 | 每条写 ≥1 来源（E1/E2/E3） | 同左，且 gap 需 E2 支撑 |
 
 ## 4. Run Contract（标准 write 路径）
 

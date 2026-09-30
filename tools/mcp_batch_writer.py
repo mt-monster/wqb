@@ -303,24 +303,36 @@ class DirectDBWriter(MCPBatchWriter):
             )
 
         elif tool_name == "upsert_expressions":
+            # 2026-09-29 P0 修复：原为简化 INSERT **不写 wave_id**（expressions.wave_id
+            # NOT NULL），每次都 NOT NULL constraint failed；且漏写 fingerprint /
+            # skeleton / source 等关键列。现统一委托 CampaignStore.upsert_expressions
+            # （唯一写入口，含 _ensure_wave + 指纹 + 骨架自动计算）。
             region, wave, expressions = kwargs["region"], kwargs["wave"], kwargs["expressions"]
             dataset = kwargs.get("dataset")
             status = kwargs.get("status", "pending")
             wave = _normalize_wave(wave, dataset=dataset, region=region)
-            n = 0
+            items = []
             for expr in expressions:
                 code = expr.get("expression") or expr.get("expr") or expr.get("code") or ""
                 if not code:
                     continue
-                cur.execute(
-                    "INSERT OR REPLACE INTO expressions "
-                    "(region, wave, dataset, expression, status, created_at, updated_at) "
-                    "VALUES (?,?,?,?,?,?,?)",
-                    (region, str(wave), dataset, code, status, now, now),
-                )
-                n += 1
-            conn.commit()
-            return {"n": n, "region": region, "wave": str(wave)}
+                items.append({
+                    "expression": code,
+                    "status": expr.get("status") or status,
+                    "alpha_id": expr.get("alpha_id"),
+                    "sharpe": expr.get("sharpe"),
+                    "fitness": expr.get("fitness"),
+                    "margin": expr.get("margin"),
+                    "turnover": expr.get("turnover"),
+                    "source": expr.get("source"),
+                    "bucket": expr.get("bucket"),
+                })
+            store = self._get_store()
+            result = store.upsert_expressions(
+                region, str(wave), items, dataset=dataset, status=status,
+            )
+            # CampaignStore 内部 commit；此处只回写返回值
+            return result
 
         else:
             raise ValueError(f"DirectDBWriter 不支持的工具: {tool_name}")

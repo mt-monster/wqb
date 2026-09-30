@@ -18,7 +18,7 @@ allowed-tools:
 ## 职责边界
 
 - **本 skill 负责**：skill 导入：从 ZIP URL / 目录 / Git 仓库拉取含 SKILL.md 的 skill
-- **本 skill 不做**：**导入不校验 layer / 命名 / frontmatter** —— 导入后必须人工归层并跑 `python tools/sync_skills.py` + `pytest tests/unit/test_skill_integrity.py -q`；不做 skill 内容创作
+- **本 skill 不做**：**导入不硬性校验/阻断 layer / frontmatter**（命名仅软警告、不自动重命名，见「注意事项」）—— 导入后必须人工归层（归层依据见 `INDEX.md` 的 layer 定义）并跑 `python tools/sync_skills.py` + `pytest tests/unit/test_skill_integrity.py -q`；不做 skill 内容创作
 - **上游 / 下游**：上游 = 外部 skill 源；下游 = 仓库 `Claude/skills/`（唯一权威位）
 
 
@@ -39,11 +39,20 @@ allowed-tools:
 ```bash
 python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName/archive/refs/heads/main.zip" --overwrite
 ```
+非 `main` 分支同理：把 `main` 换成分支名（如 `/archive/refs/heads/dev.zip`）。非 GitHub 源同理：任何带 `/archive/refs/heads/<branch>.zip` 的仓库地址都可。
 
 ### 示例 2：通过 Git 拉取
 当你需要特定分支或已配置好 git 时使用。
 ```bash
 python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git"
+```
+指定非 `main` 分支用 `--branch`（仅 Git 源生效）：
+```bash
+python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://github.com/GitRepoAuthorName/RepoName.git" --branch dev
+```
+非 GitHub 仓库（GitLab/自建）同样可用 `.git` URL：
+```bash
+python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "https://gitlab.com/Group/Repo.git" --branch dev
 ```
 
 ### 示例 3：从本地目录导入
@@ -53,7 +62,7 @@ python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "C:/Downloads/my-
 
 选项：
 - `--dest <path>`：skill 的目标安装目录。默认 = 仓库真相源 `Claude/skills/`（导入后须跑 `tools/sync_skills.py` 推送到各安装位）；也可指定某个安装位根目录。
-- `--branch <branch>`：指定要检出的分支。
+- `--branch <branch>`：指定要检出的分支（**仅 Git 源生效**；ZIP URL / 本地目录忽略此选项）。
 - `--overwrite`：覆盖同名已存在的 skill 文件夹。
 
 ## 行为
@@ -64,5 +73,4 @@ python "<SKILL_ROOT>/pull-brain-skills/scripts/pull_skills.py" "C:/Downloads/my-
 ## 注意事项
 - 路径使用正斜杠以保证兼容性。
 - 需要 `git` 位于 PATH 中。
-- 仅检查 `SKILL.md` / `skill.md` 是否存在，不校验内容有效性。
 - **命名规范警告**：拉取到的 skill 目录名若为 camelCase、下划线或混合大小写（不符合 `INDEX.md` 命名规范的 kebab-case），安装时应向用户**警告**该目录名不规范，并建议规范迁移名（参见 `INDEX.md` 命名规范章节的存量例外表）；不自动重命名（防断引用），由用户决定是否调整后安装。

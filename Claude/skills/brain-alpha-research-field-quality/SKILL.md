@@ -37,9 +37,9 @@ allowed-tools:
 
 这既提高命中率又浮现非直觉风格。仍服从全部主题/金字塔/覆盖闸门；`coverage` <0.4 的字段无论使用量多少都必须 `ts_backfill`/`group_backfill`。
 
-### 2. WebDataScope 数据包质量预筛（2026-07-29 → 2026-08-02 增强）
+### 2. WebDataScope 数据包质量预筛与区域切换门禁（2026-07-29 → 2026-08-02 增强；2026-08-05 区域切换纪律）
 
-挖矿目标确定 region/delay 后、调用任何模拟前，先用本地 WebDataScope 数据包（`WebData_*.zip`）做零成本预筛。
+挖矿目标确定 region/delay 后、调用任何模拟前，先用本地 WebDataScope 数据包（`WebData_*.zip`）做零成本预筛；**每次切换区域回测前同样必须先执行本步**（同一动作，未预筛不切区域）。统一命令：`python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region <目标区域> --delay 1`（从 wqb-share-03/ 目录，Windows 用 `python` 非 `python3`）。
 
 **完整 23 条规则与数据结构见 [`../brain-alpha-research/references/webdatascope-data-quality.md`](../brain-alpha-research/references/webdatascope-data-quality.md)**，排名脚本 [`tools/webdata_quality.py`](tools/webdata_quality.py)。
 
@@ -51,26 +51,21 @@ allowed-tools:
 (e) 字段分布 5 形状（point_mass/zero_inflated/ceiling/concentrated/spread），zero_inflated 需事件门控；
 (f) `--recommend` 输出综合 score 排序直接决定数据集挖掘顺序。
 
-此步与 §1 的 `alphaCount` 先验互补。
+此步与 §1 的 `alphaCount` 先验互补。已记录：EUR 2026-08-05 已跑，REVERSION_AND_MOMENTUM 最优 0.668；历史违规：USA/GBR subagent 启动时未先跑。
 
 > ⚠ **数据包区域覆盖边界（2026-09-17 实测，先看这条再决定能不能预筛）**：
 > 本地 `research-data/WebData_20260219_V0.10.9.zip`（36.9 MB）**只覆盖 7 个区域**——
 > **ASI / CHN / EUR / GLB / JPN / KOR / USA**（9 个 `region×delay` 组合，160 条数据集、去重 125 个数据集名）。
-> **DEU / IND / GBR / MEA / TWN 等区域在该包内没有任何条目** → 对这此区域跑预筛只会得到空结果，
+> **DEU / IND / GBR / MEA / TWN 等区域在该包内没有任何条目** → 对这些区域跑预筛只会得到空结果，
 > **不是脚本问题，也不是"忘了跑"**。同源限制也影响体检包生成（`tools/gen_field_inspect_packs.py` 读同一 ZIP）。
 > 判定顺序：先确认目标区域在包内 → 在则按本步预筛 → **不在则改走平台侧**（`workflow_campaign(stage="S0")`
 > 的 `recommend_datasets` + `get_datafields`）或先更新 WebDataScope 导出包，并在台账记录"数据包不覆盖"作为免预筛理由。
 
-### 3. 区域切换预筛门禁（2026-08-05 用户强制纪律）
-
-**每次切换区域回测前，必须先执行** `python tools/webdata_quality.py --zip WebData_20260219_V0.10.9.zip --region <目标区域> --delay 1`（从 wqb-share-03/ 目录，Windows 用 python 非 python3），读取区域级中性化排名/数据集甜点区/⚠退化标记/universe 体检覆盖后，才允许在该区域提交批次。
-
-未预筛不切区域（已记录：EUR 2026-08-05 已跑，REVERSION_AND_MOMENTUM 最优 0.668；历史违规：USA/GBR subagent 启动时未先跑）。
-
-**机器门禁（2026-09-12 新增）**：预筛跑完后登记 `python tools/prescreen_gate.py --region <R> --record --summary '<json>'`；此后任何会话切区前查门 `python tools/prescreen_gate.py --region <R>`（exit 0=PASS / 1=BLOCK，判据=ledger `prescreen_<R>` 键或战役目录 reference 产物）。当前为工具级门禁，节点内嵌接线（workflow_campaign 前置）待 `nodes/campaign.py` 并行改动落定后跟进。
+**软门禁（接线完成前，工具级；需主动调用）**：预筛跑完后登记 `python tools/prescreen_gate.py --region <R> --record --summary '<json>'`；此后任何会话切区前查门 `python tools/prescreen_gate.py --region <R>`（exit 0=PASS / 1=BLOCK，判据=ledger `prescreen_<R>` 键或战役目录 `reference/webdata_prescreen_<R>.json`）。当前**不是代码 fail-closed 的机器门禁**，节点内嵌接线（workflow_campaign 前置）待 `nodes/campaign.py` 并行改动落定后跟进。
+   - **不覆盖区域的特殊状态登记**：数据包不覆盖的区域（DEU/IND/GBR/MEA/TWN 等）无法跑 `webdata_quality.py` 预筛，若不登记 `prescreen_<R>` 键，切区查门会永远 BLOCK。此时改走平台侧预筛后登记，或以 `--source manual --summary '{"not_covered": true, "reason": "数据包不覆盖 <R>"}'` 登记"数据包不覆盖"特殊状态，使查门返回 PASS 而非永久阻塞。
 
 ## 验证清单
 
 1. 确认字段质量先验已应用（alphaCount/userCount 排序）。
 2. 确认任何模拟前已执行 WebDataScope 数据包质量预筛。
-3. 确认区域切换前已强制执行区域切换预筛门禁。
+3. 确认区域切换前已跑预筛并登记 `prescreen_<R>` 键（软门禁，非代码强制）。

@@ -23,7 +23,7 @@
                                                           S6 复盘回写（闭环）
 ```
 
-- **一套流水线，多区域复用**：14 个区域（`src/wqb/config.py::REGIONS`，已启用 12 个 profile）共用同一套九步骨架，区域差异通过 profile 注入。
+- **一套流水线，多区域复用**：14 个区域（`src/wqb/config.py::REGIONS`，均已启用 profile）共用同一套九步骨架，区域差异通过 profile 注入。
 - **产物只进数据库**：expressions / gate_results / backtest_results / wave_results / ledger 全部落在 `data/wqb.db`，不散落 JSON/CSV。
 - **技能即执行器**：流水线各步由 skills 承载，禁止手写一次性脚本替代（见 §5）。
 
@@ -35,14 +35,14 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  ④ 知识/编排层  Claude/skills/（32 个 SKILL.md）                  │
+│  ④ 知识/编排层  Claude/skills/（33 个 SKILL.md）                  │
 │     L-RA 唯一编排 SOP（wq-brain-ra-pipeline 九步流水线）           │
 │     L-PRE 选区查表 · L-TOOL 战役引擎 · L0–L7 各环节专用技能        │
 ├─────────────────────────────────────────────────────────────────┤
 │  ③ 服务层      两个 MCP 服务器（stdio，.mcp.json 注册）            │
 │     wq-brain-http：69 个平台交互工具（回测/提交/相关性/论坛）      │
-│     wqb-db：45 个战役数据库读写工具                                │
-│     workflow 引擎：19 个注册节点（src/wqb/workflow/registry.py）   │
+│     wqb-db：44 个战役数据库读写工具                                │
+│     workflow 引擎：20 个注册节点（src/wqb/workflow/registry.py）   │
 ├─────────────────────────────────────────────────────────────────┤
 │  ② 客户端层    world-quant-brain-mcp/                             │
 │     brain_api.py 门面 → 5 个 brain_mixin_*（transport/auth/       │
@@ -55,8 +55,8 @@
 │     submit_queue 提交队列）· workflow（节点注册与执行）·            │
 │     research（OS 衰减/假设挖掘）· modeb（Mode B 自适应改进）        │
 └─────────────────────────────────────────────────────────────────┘
-        ▲ 数据层：data/wqb.db（SQLite，~223 MB，幂等迁移）
-        ▲ 工具层：tools/（139 个 CLI，索引见 tools/README.md）
+        ▲ 数据层：data/wqb.db（SQLite，~283 MB，幂等迁移）
+        ▲ 工具层：tools/（142 个 CLI，索引见 tools/README.md）
 ```
 
 ### 关键设计决策
@@ -68,7 +68,7 @@
 | 提交判定唯一权威 | `submit_verdict`（模拟层 checks + GET /submit 双视图）；`brain-alpha-judge`/`workflow_judge` 只是参考层 | SOP 步 8 + 代码无提交路径 |
 | 处女提交 404 盲区 | UNSUBMITTED 的 alpha GET /submit 返回 404 → UNVERIFIABLE，须补 prod/self 终验（`batch_submit_verdict.py --phase2-prod`）才能放行 | `tests/unit/test_batch_submit_verdict_phase2.py` |
 | dry-run 契约 | 全部 workflow 节点统一「零成本前置 → 构建命令计划 → 不 subprocess 不写库」；失败必须带 error | `tests/unit/test_skill_integrity.py` |
-| 四处同步 | 新增/修改 workflow 节点须同步 registry / test_workflow / _DRY_RUN_CASES / INDEX.md | `python tools/audit_node_registration.py` |
+| 五处同步 | 新增/修改 workflow 节点须同步 registry / test_workflow / _DRY_RUN_CASES / INDEX.md / mcp `test_tools_workflow_unit.py` | `python tools/audit_node_registration.py` |
 | argv 契约 | 拼子进程命令的节点必须过 `validate_argv` 静态解析目标脚本 argparse，杜绝不存在的 flag | 仓脚本内建 |
 | skill 单向同步 | 仓库 `Claude/skills/` 是源，安装位是派生物；改完跑 `python tools/sync_skills.py` | `--check` 模式 + 单测守护 |
 
@@ -109,8 +109,8 @@ BRAIN 凭据位于 `world-quant-brain-mcp/.env`。**禁止读取、打印或提�
 ### 验证安装
 
 ```bash
-python -m pytest tests/ -x          # 根套件，~1356 个用例应全绿（含 tests/unit/ 递归）
-world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest world-quant-brain-mcp/tests   # MCP 包 84 个
+python -m pytest tests/ -x          # 根套件，~1788 个用例应全绿（含 tests/unit/ 递归）
+world-quant-brain-mcp/.venv/Scripts/python.exe -m pytest world-quant-brain-mcp/tests   # MCP 包 85 个
 ```
 
 建议激活 pre-commit 钩子（提交前自动跑测试，失败即阻断提交）：
@@ -138,11 +138,11 @@ git config core.hooksPath tools/git-hooks
 |---|---|
 | `src/wqb/` | **规范核心包（single source of truth）**：`config` / `expression` / `research` / `search` / `memory` / `store` / `workflow` / `modeb`。区域、算子、中性化等域常量**只在此定义** |
 | `world-quant-brain-mcp/` | MCP 服务。`brain_api.py` 为门面，方法体拆至 `brain_mixin_*.py`；业务工具按域在 `tools_*.py` |
-| `Claude/skills/` | 32 个技能（SKILL.md + 脚本）。仓库为源，安装位由 `tools/sync_skills.py` 单向同步 |
+| `Claude/skills/` | 33 个技能（SKILL.md + 脚本）。仓库为源，安装位由 `tools/sync_skills.py` 单向同步 |
 | `tracking/` | 区域战役追踪（candidates / results / reviews / config）。**`tracking/mining/` 为共享数据湖（320+ 字段体检包），勿改动或移动** |
-| `tools/` | 工具链，139 个 CLI。索引见 [`tools/README.md`](tools/README.md) |
+| `tools/` | 工具链，142 个 CLI（`tools/*.py` 顶层，含 127 个带 `__main__` 的入口）。索引见 [`tools/README.md`](tools/README.md) |
 | `mining/` | 挖掘脚本与归档 |
-| `data/` | `wqb.db`（~223 MB，战役产物单一事实源）+ 只读参考数据 |
+| `data/` | `wqb.db`（~283 MB，战役产物单一事实源）+ 只读参考数据 |
 | `cache/` | 篮子/候选池等可再生产物（篮子 JSON、终验结果） |
 | `extensions/` | 平台扩展（webdatascope 字段导出配套） |
 | `docs/` | 计划 / 参考 / 经验 / 教程文档 |
@@ -206,21 +206,21 @@ python tools/select_ra_basket.py cache/candidates.json --target 20 --out cache/b
 | 约定 | 说明 |
 |---|---|
 | **Shell 引号** | Windows 环境，引号经“工具传参 → PowerShell → 解释器”三层嵌套必出事故。**结构化数据读写优先走 `wqb-db` MCP 工具**（传 JSON，不经 shell）；需执行逻辑则写临时脚本 `logs/_tmp_*.py` |
-| **测试计数口径** | 根 `tests/` **递归包含** `tests/unit/`（当前约 1356 个 + MCP 包 84 个独立跑），数字随新增用例增长，**以 `pytest --collect-only -q \| tail -1` 为准**，勿引用静态数字做断言 |
+| **测试计数口径** | 根 `tests/` **递归包含** `tests/unit/`（当前约 1788 个 + MCP 包 85 个独立跑），数字随新增用例增长，**以 `pytest --collect-only -q \| tail -1` 为准**，勿引用静态数字做断言 |
 | **提交前检查** | 提交前必查按目录聚合的删除量，警惕一次性清空整个目录的误操作：<br>`git status --porcelain \| grep "^ D" \| awk '{print $2}' \| cut -d/ -f1-2 \| sort \| uniq -c \| sort -rn` |
 
 ---
 
-## 8. 当前状态（2026-09-24）
+## 8. 当前状态（2026-09-30）
 
 | 维度 | 现状 |
 |---|---|
-| 测试 | 根套件 **1356 passed**（`tests/` 递归含 `tests/unit/`）；MCP 包 **84 passed**（需 `.venv` 单独运行） |
-| MCP 工具 | `wq-brain-http` 69 · `wqb-db` 45 · workflow 节点 19（唯一基准：`Claude/skills/INDEX.md`，单测机械守护） |
-| Skills | 32 个（L-RA/L-PRE/L-TOOL/L0–L7 分层），4 个安装位与仓库零漂移 |
-| 工具链 | 139 个 CLI（`tools/`） |
-| 数据库 | `data/wqb.db` ~223 MB |
-| 基础设施健康度 | 19 节点 dry-run 18/19 通过（`hypothesis_round` 属设计内 fail-closed）；audit_node_registration 四处同步零漂移 |
+| 测试 | 根套件 **1775 passed / 13 skipped**（`tests/` 递归含 `tests/unit/`）；MCP 包 **85 passed**（需 `.venv` 单独运行） |
+| MCP 工具 | `wq-brain-http` 69 · `wqb-db` 44 · workflow 节点 20（唯一基准：`Claude/skills/INDEX.md`，单测机械守护） |
+| Skills | 33 个（L-RA/L-PRE/L-TOOL/L0–L7 分层），4 个安装位与仓库零漂移 |
+| 工具链 | 142 个 CLI（`tools/*.py` 顶层） |
+| 数据库 | `data/wqb.db` ~283 MB |
+| 基础设施健康度 | 20 节点 dry-run 19/20 通过（`hypothesis_round` 属设计内 fail-closed）；audit_node_registration 五处同步零漂移 |
 | 近期里程碑 | 2026-09-23 P0-1 库存收割：GLB/ASI 328 候选 → 19 颗正交篮 → 18 撞 prod 墙 / **O0NoPARJ 提交 ACTIVE**（prod 0.6193）；同日修复 `batch_submit_verdict.py` Phase2 三处假阴性并补 7 条单测 |
 | 已知短板 | S2→S3 断链（数百个活跃波无门禁记录、积压超 7 天）；`risk_neutralized_sharpe` 在多数主力区未采集——诊断与优化方案见 [`docs/plans/2026-09-23-dryrun-audit-optimization-plan.md`](docs/plans/2026-09-23-dryrun-audit-optimization-plan.md) |
 

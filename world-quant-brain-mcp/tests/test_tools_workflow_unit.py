@@ -421,14 +421,16 @@ def test_workflow_list_nodes_shape(monkeypatch):
     #   与实现文件当时仍是并行会话的未提交工作区改动，未入任何提交 → 合并进 main 后
     #   registry 实际 19，此处 20 转红（assert 19 == 20）。回退为 19 与已提交代码自洽；
     #   forum_recon_wave 注册入库时请连同本集合一起同步为 20（跑 tools/audit_node_registration.py）。
+    # 2026-09-30：forum_recon_wave 的 registry 注册已合并进 main（① 处 registry=20），
+    #   本集合按上文约定补齐 → 19→20。五处审计 tools/audit_node_registration.py 现为全绿。
     # ⚠ 本集合是 workflow 节点注册的「第五个同步点」——前四处见 AGENTS.md §3.5。
     # 断言要点：数目与 nodes 列表一致即可；若新增/移除节点，请同步本行并注明来源。
     expected_nodes = {
         "alpha_booster", "auto_harvest", "auto_pyramid", "auto_review", "batch_track",
-        "campaign", "feature_engineering", "forum_recon", "gem", "gem_wave",
-        "hypothesis_round", "inventory_scan", "judge", "modeb_improve",
-        "structural_reconstruct", "submit_alpha", "superalpha", "unified_gate",
-        "wave_gate",
+        "campaign", "feature_engineering", "forum_recon", "forum_recon_wave",
+        "gem", "gem_wave", "hypothesis_round", "inventory_scan", "judge",
+        "modeb_improve", "structural_reconstruct", "submit_alpha", "superalpha",
+        "unified_gate", "wave_gate",
     }
     assert out["count"] == len(expected_nodes)
     assert {n["name"] for n in out["nodes"]} == expected_nodes

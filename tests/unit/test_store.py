@@ -244,6 +244,53 @@ def test_backtest_rows_code_with_whitespace_autocreates_expression(store):
     assert rows[0]["code"] == "rank(y)"
 
 
+def test_backtest_rows_advance_existing_expression_status(store):
+    """D9（2026-09-28）：回测落库必须把**已存在**的表达式 status 推进为 backtested。
+
+    此前 upsert_backtest_rows 在表达式已入库时只取 id、不推进 status（只有"表达式不存在"
+    的 auto-create 回落分支才写 status='backtested'），于是正常路径下回测完成后 status 仍
+    滞留 gem/pending：积压闸 conversion 分子恒 0 → 误杀后续波（AMR 实证，手动回写 40 条
+    后 conversion 才 0/212→18.9%），并污染一切 status 口径统计（GLB 口径回测=0 而实为 2144）。
+    """
+    store.upsert_expressions("EUR", "60", ["rank(x)"], dataset="mh")
+    cur = store.connection.cursor()
+    cur.execute("SELECT id, status FROM expressions WHERE region='EUR' AND wave='60'")
+    eid, before = cur.fetchone()
+    assert before != "backtested"
+
+    n = store.upsert_backtest_rows(
+        "EUR", "60",
+        [{"id": "d9A1", "code": "rank(x)", "sharpe": 1.4, "fitness": 1.0}],
+        dataset="mh",
+    )
+    assert n == 1
+    cur.execute("SELECT status, alpha_id FROM expressions WHERE id=?", (eid,))
+    after, alpha_id = cur.fetchone()
+    assert after == "backtested"
+    assert alpha_id == "d9A1"
+
+
+def test_backtest_rows_status_advance_does_not_regress_later_states(store):
+    """D9：只推进待选态，不得把 submitted/completed/dropped/superseded 等后续态回退，
+    也不得覆盖已有的 alpha_id。"""
+    store.upsert_expressions("EUR", "61", ["rank(x)"], dataset="mh")
+    cur = store.connection.cursor()
+    cur.execute(
+        "UPDATE expressions SET status='submitted', alpha_id='oldA' WHERE region='EUR' AND wave='61'"
+    )
+    store.connection.commit()
+
+    store.upsert_backtest_rows(
+        "EUR", "61",
+        [{"id": "d9A2", "code": "rank(x)", "sharpe": 1.1}],
+        dataset="mh",
+    )
+    cur.execute("SELECT status, alpha_id FROM expressions WHERE region='EUR' AND wave='61'")
+    st, aid = cur.fetchone()
+    assert st == "submitted"   # 未被回退为 backtested
+    assert aid == "oldA"       # 已有 alpha_id 未被覆盖
+
+
 def test_upsert_alpha_os_metrics_roundtrip(store):
     """OS（样本外）指标落库：新列存在、写入可读、只填 NULL 不覆盖。"""
     store.upsert_alpha_from_platform({

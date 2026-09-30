@@ -20,13 +20,13 @@ user-invocable: true
 
 
 
-> **职责说明（2026-09-01 精简）**：人工设置决策环节已删除（由 pipeline 参数覆盖：`--neutralization` A/B 实验、`--set key=value` 任意 settings 覆盖、profile `settings_proven` 已验证设置跟 win 走）。**本 skill 现仅两个职能**：① 解析 idea JSON → `build_alpha_list.py` 直写 expressions 表（S2→S3 的 DB 入库通道）；② 新区域合法设置选项快照（sim_options_snapshot）。
+> **职责说明（2026-09-01 精简）**：人工设置决策环节已删除（由 pipeline 参数覆盖：`--neutralization` A/B 实验、`--set key=value` 任意 settings 覆盖、profile `settings_proven` 已验证设置跟 win 走）。**本 skill 现仅两个职能**：① 解析 idea JSON → `build_alpha_list.py` 直写 expressions 表（S2→S3 的 DB 入库通道）；② 新区域合法设置选项快照的生成与核对（`settings_candidates.json`，原始快照 `sim_options_snapshot.json`）。
 
 # brain-inspect-raw-template-create-setting
 
 ## 职责边界
 
-- **本 skill 负责**：原始模板与仿真设置的**创建/合法性核对**：产出**设置计划**（universe/中性化/decay/truncation/maxTrade）
+- **本 skill 负责**：① 解析 idea JSON → `build_alpha_list.py` 直写 expressions 表（S2→S3 的 DB 入库通道）；② 新区域合法设置选项快照的生成与核对（`settings_candidates.json`，仅核对合法性，不做设置决策）
 - **本 skill 不做**：**不写 `settings.json` 真相源、不发起回测、不改表达式** —— 执行在 `brain-sim-alphas-in-batch-and-track`
 - **上游 / 下游**：上游 = 原始模板/创建设置需求；下游 = S3 批量回测
 
@@ -39,13 +39,13 @@ user-invocable: true
 ## 衔接协议（上游来源 / 下游去向）
 
 - **上游**：`brain-make-some-gem`（trailSomeAlphas 流水线产出 `*_idea_*.json`，命名 `<dataset>_<region>_<delay>_idea_<ts>.json`，含 `template`/`idea`/`expression_list` 三键）；或用户手动提供的模板/idea JSON。增强模板不经过本 skill（见顶部说明）。
-- **本 skill 输出**：`settings_candidates.json` + `alpha_list.json`（完整 alpha 对象，脚本追加式）+ **expressions 表（`data/wqb.db`，默认模式：`build_alpha_list.py` 直写，结构化真相源；S3 `pipeline.py --from-db` 默认读此表）**。
+- **本 skill 输出**：`settings_candidates.json`（合法设置选项快照，非"候选待人工选定"）+ `alpha_list.json`（完整 alpha 对象，脚本追加式）+ **expressions 表（`data/wqb.db`，默认模式：`build_alpha_list.py` 直写，结构化真相源；S3 `pipeline.py --from-db` 默认读此表）**。
 - **下游**：`alpha_list.json` 交 **brain-sim-alphas-in-batch-and-track** 批量回测（S3 编排器，执行后端为 `wq-brain-campaign-toolkit`）。
 
 ## 确定性流程（2026-09-01 精简后仅此一条路）
 
 - **入口点**：`scripts/process_template.py` 处理初始流程（Part 1）→ 输出 `settings_candidates.json`（Region/Delay 的有效平台选项）。
-- **入库**：调用 `scripts/build_alpha_list.py`，以 JSON 字符串传入设置（region/delay/universe/neutralization 必填）→ **追加**到 `alpha_list.json` 并直写 **expressions 表**（默认模式，S3 `pipeline.py --from-db` 读此表）。
+- **入库**：调用 `scripts/build_alpha_list.py`，以 JSON 字符串传入设置（region/delay/universe/neutralization 必填）→ **追加**到 `alpha_list.json` 并直写 **expressions 表**（默认模式，S3 `pipeline.py --from-db` 读此表）。**入库前必须已过 gate 闸1–4 预检（语法/字段白名单/VECTOR 包裹/不可访问算子/毒模式，见 `wq-brain-campaign-toolkit` `gate.py`）**；本 skill 只做入库通道，不做语法/字段校验。
 - **设置取值**：跟随战役 `settings.json` / profile `settings_proven`（已验证设置跟 win 走）；A/B 实验与覆盖走 pipeline `--neutralization` / `--set`，不再在本环节做多组设置的人工决策循环。中性化必须始终选一个有效选项（不能为 None），可按需选用 Risk Neutralization。
 
 ## 配置 / 凭据检查（启动时）
@@ -76,8 +76,8 @@ user-invocable: true
 此流程将：
 1. 解析 idea 文件（`idea_context.json`）。
 2. 获取模拟选项（若根目录下缺 `sim_options_snapshot.json`）。
-3. 解析设置候选（`settings_candidates.json`）。
-4. **停止并交还控制权给 AI**：AI 需读取 `idea_context.json` + `settings_candidates.json`，选定设置组合后手动调用 `build_alpha_list.py` 生成 `alpha_list.json`（每调用一次追加一次）。
+3. 解析合法设置选项快照（`settings_candidates.json`）。
+4. 调用 `build_alpha_list.py` 直写 expressions 表；设置取值跟随战役 `settings.json` / profile `settings_proven`（已验证设置跟 win 走），A/B 实验与覆盖走 pipeline `--neutralization` / `--set`。**无需人工选定设置组合**。
 
 ### 手动步骤（调试）
 
@@ -93,7 +93,7 @@ user-invocable: true
 - `$WQ_PY scripts/resolve_settings.py --idea idea_context.json --options sim_options_snapshot.json --out resolved_settings.json`
 
 4. 构建 Alpha 列表
-- 从 `resolved_settings.json` 读取设置 JSON 字符串（或按步骤 3 决定新的组合），然后**以 JSON 字符串**传入。`region`、`delay`、`universe`、`neutralization` 为必填字段，缺失会抛 KeyError：
+- 从 `resolved_settings.json` 读取设置 JSON 字符串（设置取值跟随 `settings.json` / `settings_proven`，非人工选定），然后**以 JSON 字符串**传入。`region`、`delay`、`universe`、`neutralization` 为必填字段，缺失会抛 KeyError：
   `$WQ_PY scripts/build_alpha_list.py --idea idea_context.json --settings_json '{"region":"GLB","delay":1,"universe":"TOP3000","neutralization":"INDUSTRY"}' --out alpha_list.json`
 - 可选字段及默认值：`decay`(0)、`truncation`(0.08)、`pasteurization`(ON)、`testperiod`(P0Y0M0D)、`unithandling`(VERIFY)、`nanhandling`(OFF)、`maxtrade`(OFF)。
-- 脚本会**追加**到 `alpha_list.json`；若 idea 需要多组运行，可换其他设置组合重复执行。
+- 脚本会**追加**到 `alpha_list.json`；多组运行（A/B 实验）由 pipeline `--neutralization` / `--set` 覆盖，不在本环节人工重复执行。

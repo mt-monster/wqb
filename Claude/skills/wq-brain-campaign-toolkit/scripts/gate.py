@@ -726,14 +726,20 @@ def _load_exposure_map(ctx, dataset, delay=1):
             if exp:
                 tpl_exp[tpl] = exp
         # expression -> exposure（模板是 expression 的前缀/包含关系）
+        # 2026-09-28：首个命中改为**最长前缀命中**——嵌套模板（如
+        # `group_rank(ts_zscore(` ⊂ `group_rank(ts_zscore(vec_avg(`）会把短前缀
+        # 模板的 exposure 误路由给长前缀表达式（insiders3 wave86 实测会把
+        # 行权腿标成减持腿、闸6 伪多样误判）。
         out = {}
         for expr in expr_list:
+            best_prefix, best_exp = "", None
             for tpl, exp in tpl_exp.items():
                 # 模板中的 {variable} 已被替换为具体字段，做包含匹配
                 tpl_prefix = tpl.split("{")[0] if "{" in tpl else tpl
-                if tpl_prefix and tpl_prefix in expr:
-                    out[expr] = exp
-                    break
+                if tpl_prefix and tpl_prefix in expr and len(tpl_prefix) > len(best_prefix):
+                    best_prefix, best_exp = tpl_prefix, exp
+            if best_exp:
+                out[expr] = best_exp
         return out
     except Exception:
         return {}

@@ -35,6 +35,21 @@ def lock_dir():
     return os.path.join(root, "logs", "_dblock")
 
 
+def _retire(path):
+    """退役锁文件：改名 ``<path>.stale`` 而非删除（2026-09-29）。
+
+    沙箱 safe-delete 守卫（SAFE_DELETE_BULK_CONFIRM_REQUIRED）按 turn 累计
+    删除数、越阈值后截获 unlink 并终止子进程（实测 pipeline 秒退 exit 1、
+    无 traceback，stderr 仅守卫 JSON）。文档规定姿势 = 陈旧锁改名 ``.stale_*``
+    而非删除。改名后锁位即视为无主（互斥协议不变：O_CREAT|O_EXCL 重建）；
+    ``.stale`` 不匹配 ``.json`` 后缀扫描，可事后人工清理。
+    """
+    try:
+        os.replace(path, path + ".stale")
+    except OSError:
+        pass  # 已被其他竞争者回收
+
+
 def _prune_expired(d, ttl_sec):
     now = time.time()
     try:
@@ -47,7 +62,7 @@ def _prune_expired(d, ttl_sec):
         p = os.path.join(d, name)
         try:
             if now - os.path.getmtime(p) > ttl_sec:
-                os.unlink(p)
+                _retire(p)
         except OSError:
             pass
 
@@ -93,13 +108,13 @@ def _pid_alive(pid) -> bool:
 
 
 def _reclaim_dead_holder(tok: str) -> bool:
-    """token 持有者 pid 已死则删除 token；返回是否回收了。"""
+    """token 持有者 pid 已死则退役 token；返回是否回收了。"""
     try:
         with open(tok, "r", encoding="utf-8") as f:
             cur = json.load(f)
         pid = cur.get("pid")
         if pid is not None and not _pid_alive(pid):
-            os.unlink(tok)
+            _retire(tok)
             print(f"[dblock] 回收死持有者 token（pid={pid} tag={cur.get('tag')}）")
             return True
     except (OSError, ValueError):
@@ -162,7 +177,7 @@ def release(token, pid=None):
         with open(token, "r", encoding="utf-8") as f:
             cur = json.load(f)
         if cur.get("pid") == me:
-            os.unlink(token)
+            _retire(token)
     except (OSError, ValueError):
         pass
 

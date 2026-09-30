@@ -35,8 +35,8 @@ allowed-tools:
 
 - **上游**：`wq-brain-ra-pipeline`（S-PRE 查表决策）或用户直给 `region + 意图`（REGULAR 挖矿 / SA 组合 / PPA / 复盘）。
 - **数据通道（单轨 DB）**：读全走 `mcp__wqb-db__*`（`get_region_config` / `get_dead_ends` / `get_campaigns` / `get_cross_region_lessons`）；回写走 `campaign.py registry` 幂等 CLI 或会话内 `mcp__wqb-db__upsert_registry_empirical`，禁止散装 SQL。
-- **输出**：预解析配置包（region/universe/delay/中性化/候选数据集等**参数**，非落盘产物；下游以参数注入，不产生中间文件）。**配置包必须包含 PROD 饱和风险标注（2026-08-23 新增，强制）**：查询 `mcp__wqb-db__get_dead_ends(region)` 中 PROD_CORRELATION 类死路，若候选数据集/信号族与已知饱和族重叠，标注 `prod_risk: high` 并附具体死路条目；同时查询 `mcp__wqb-db__search_alphas_by_sharpe(region, min_sharpe=1.58)` 获取该区域已达标 alpha 数量，≥10 且风格同质则标注 `prod_saturation: likely`（区域级饱和/投入-产出的**统一计算入口 = `tools/region_status.py`**，2026-09-12 起 next-move §5.5 与本标注共用其口径，勿另写第三份实现）。此标注供 S2 生成表达式时参考——若信号族 PROD 风险高，优先选择正交方向而非同族变体。
-- **下游**：S0 健康检查（`wq-brain-ppa-mining` §1.0 硬门槛方法论 + `wq-brain-campaign-toolkit` `score_datasets.py` 执行；配置包映射为 `--campaign-dir` 与 settings/thresholds）；S6→S-PRE 闭环另一端——`wq-backtest-monitor` §14 回写 registry_empirical 后本 skill 查表自动读取最新 dead_ends/wins/campaigns。
+- **输出**：预解析配置包（region/universe/delay/中性化/候选数据集等**参数**，非落盘产物；下游以参数注入，不产生中间文件）。**配置包必须包含 PROD 饱和风险标注（2026-08-23 新增，强制）**：查询 `mcp__wqb-db__get_dead_ends(region)` 中 PROD_CORRELATION 类死路，若候选数据集/信号族与已知饱和族重叠，标注 `prod_risk: high` 并附具体死路条目；同时查询 `mcp__wqb-db__search_alphas_by_sharpe(region, min_sharpe=1.58)` 获取该区域已达标 alpha 数量，**≥10 且风格同质（同数据集或同算子家族 alpha 占比 ≥60%，可算口径）则标注 `prod_saturation: likely`**（区域级饱和/投入-产出的**统一计算入口 = `tools/region_status.py`**，2026-09-12 起 next-move §5.5 与本标注共用其口径，勿另写第三份实现）。此标注供 S2 生成表达式时参考——若信号族 PROD 风险高，优先选择正交方向而非同族变体。
+- **下游**：S0 健康检查（`wq-brain-ppa-mining` §1.0 硬门槛方法论 + 执行工具分工：`score_datasets.py` 权威、`dataset_health_check.py` 兜底，见 ppa-mining §1.0 体检工具分工表；配置包映射为 `--campaign-dir` 与 settings/thresholds）；S6→S-PRE 闭环另一端——`wq-backtest-monitor` §14 回写 registry_empirical 后本 skill 查表自动读取最新 dead_ends/wins/campaigns。
 
 ## 数据文件（唯一 registry，单轨 SQLite）
 
@@ -89,9 +89,13 @@ region=KOR  universe=TOP600  delay=1  neutralization=STATISTICAL(或数据集 do
 注意：EVENT 字段禁 winsorize → ts_event_* 或裸 rank
 ```
 
+> universe 档位以 `config.py` 对应区域 `REGIONS[region].universes` 为唯一权威（如 KOR 合法档=`TOP600`、USA=`TOP3000/2000/1000/500/200/TOPSP500`），**禁止凭记忆跨区域外推**。KOR 默认中性化以 `config.py` `KOR.neutralizations` 为准（SECTOR 优先）；`settings.json` 是当前战役实例值，二者可能不同。
+
 配置包**不替代** `wq-brain-ppa-mining §1.0` 的实时体检（cov≥0.85/alphaCount≤50/fields≥10）——矩阵存的是快照结论，PPA 候选集仍须逐集过体检。
 
 ### 3. 派发（不改下游）
+> 步编号说明：**步 1（S-PRE 查表）即本 skill 自身**，下面从步 2 起派发，对应 `wq-brain-ra-pipeline` 九步的步 2–9（一步对一步，不跳号）。
+
 按 `wq-brain-ra-pipeline` 九步 SOP 把配置包交给 MCP 化链：步 2 S0 体检（`mcp__wq-brain-http__workflow_campaign` stage="S0"）→ 步 3 S1 字段扫描（`workflow_campaign` stage="S1" + `workflow_feature_engineering`）→ 步 4 S2 选波（`workflow_gem` + `workflow_campaign` stage="S2"）→ 步 5 门禁（**`workflow_execute` node="wave_gate"**，2026-09-11 起入 MCP；CLI 兜底 `tools/campaign_intel.py ghost-audit` + `tools/wave_gate.py`。**勿用** `workflow_campaign` stage="S2" 当门禁——那是选波，09-11 审计定性）→ 步 6 S3 七槽回测（`workflow_batch_track`）→ 步 7 S4 诊断（`workflow_campaign` stage="S4"）→ 步 8 提交判定（`submit_verdict` + 用户确认后 `workflow_submit_alpha`）→ 步 9 S6 复盘回写（`upsert_wave_result` / `upsert_registry_empirical`）。
 
 ### 4. 回写（强制，战役结束或关键发现时）
@@ -123,7 +127,7 @@ $WQ_PY campaign.py --campaign-dir tracking/<REGION> registry get --layer dead_en
 回写要求与回测 checkpoint 同级纪律：**只记有跨会话价值的结论，不记过程性噪声**。
 
 ### 5. 扩区
-需要新开区域时：从 `research-data/fresh_datasets_7region.json` 复制该区 summary 到 assets 层，static 层用 `mcp__wq-brain-http__get_platform_setting_options` 实测合法档位（**禁止照抄 USA 档位**），empirical 层初始化为空 + 该区已知死路；**同时必须补 `wq-brain-ra-pipeline/references/regions/<R>.md` profile**，并把该区登记进 `Claude/skills/INDEX.md §区域清单`（三处缺一即漂移）。
+需要新开区域时：从 `research-data/fresh_datasets_7region.json` 复制该区 summary 到 assets 层（**文件名"7region"为历史命名**，实际内容以文件内 region 字段为准；区域总数权威 = `config.py::REGIONS` 14 个），static 层用 `mcp__wq-brain-http__get_platform_setting_options` 实测合法档位（**禁止照抄 USA 档位**，也禁止凭记忆外推——一律回 `config.py::REGIONS[region].universes` 核对），empirical 层初始化为空 + 该区已知死路；**同时必须补 `wq-brain-ra-pipeline/references/regions/<R>.md` profile**，并把该区登记进 `Claude/skills/INDEX.md §区域清单`（三处缺一即漂移）。
 
 ## 硬规则
 

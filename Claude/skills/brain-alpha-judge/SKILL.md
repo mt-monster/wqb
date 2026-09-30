@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-28
 name: brain-alpha-judge
-description: "（参考层·非提交判定）评估 WorldQuant BRAIN alpha（Regular 或 PPA / Power Pool）的提交参考价值：综合平台硬检查、PPA 主题/相关性门控，以及内置的高价值中文论坛 Markdown 语料库。当用户想在提交前做额外质量审查、评估 alpha 是否值得提交、核对 PPA 主题匹配，或在明确确认后提交时使用。★2026-09-01 新增「点塔优选排序」：多个 READY 候选时按金字塔点亮价值排序（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 不计；差 ≤2 颗塔优先；0 亮区域单颗不算点亮；MEA 本季度不提交）。Before submitting a Regular or PPA alpha, when doing quality review or deciding if an alpha is worth submitting"
+description: "（参考层·非提交判定）评估 WorldQuant BRAIN alpha（Regular 或 PPA / Power Pool）的提交参考价值：综合平台硬检查、PPA 主题/相关性门控，以及内置的高价值中文论坛 Markdown 语料库。当用户想在提交前做额外质量审查、评估 alpha 是否值得提交、核对 PPA 主题匹配时使用。★2026-09-01 新增「点塔优选排序」：多个 READY 候选时按金字塔点亮价值排序（点亮=该 catalog 近 90 天提交 ≥3 颗；跨 ≥3 catalog 不计；A/B/C 三档互斥：差 1 颗/差 2 颗/差 3 颗塔；0 亮区域单颗不算点亮；MEA 本季度不提交）。For pre-submit quality review of a Regular or PPA alpha, or as reference input for whether it is worth submitting"
 layer: L5
 allowed-tools:
   - Bash
@@ -38,7 +38,7 @@ user-invocable: true
 
 ### 历史定位（判定权已移交）
 
-> **⚠️ 弃用声明（2026-08-31）**：提交判定唯一权威已迁移至 `tools/submit_verdict.py`（403 盲区唯一权威，见 `wq-brain-ra-pipeline` 步 8）——**不要再用本 skill 做"是否提交"的最终判定**。本 skill 仅保留两类参考价值：① PPA 主题匹配/相关性门控的**人工核对清单**；② value-factor trend score（防挤同一金字塔）的**参考评分**。需要最终提交判定时直接跑 `& $WQ_PY tools/submit_verdict.py --alpha-id <ID>`（`--with-quota` 已废弃、传入无效果）。
+> **⚠️ 弃用声明（2026-08-31）**：提交判定唯一权威已迁移至 `tools/submit_verdict.py`（见 `wq-brain-ra-pipeline` 步 8）——**不要再用本 skill 做"是否提交"的最终判定**。本 skill 仅保留两类参考价值：① PPA 主题匹配/相关性门控的**人工核对清单**；② value-factor trend score（防挤同一金字塔）的**参考评分**。需要最终提交判定时直接跑 `& $WQ_PY tools/submit_verdict.py --alpha-id <ID>`（`--with-quota` 已废弃、传入无效果）。
 ⚠ **提交层真闸只有 `POST /alphas/{id}/submit`**：`submit_verdict.py` 的提交层视图走的是 `GET /alphas/{id}/submit`，
 而该 GET **恒返回 404**（2026-09-26 实测，对已 ACTIVE 的 alpha 同样 404）→ 其 403 分支是死代码，处女候选只会得到
 `UNVERIFIABLE`。**唯一真闸 = 确认后 POST，按其 200/201/403 三态判定**（403 零成本且回带全量 checks 与真因）。本 skill 的 READY/REVIEW/BLOCK 三态输出仅作评审参考，不构成提交依据。
@@ -59,11 +59,11 @@ user-invocable: true
 | 维度 | brain-alpha-robustness（S4→S5 必经闸） | brain-alpha-judge（S5 评审） |
 |------|--------------------------------------|------------------------------|
 | **核心问题** | 这个 alpha *该不该* 提交？（过拟合诊断） | 这个 alpha *现在值不值得* 提交？（综合评审） |
-| **判定性质** | 诊断性（PASS/CONDITIONAL/REJECT） | 决策性（READY/REVIEW/BLOCK） |
+| **判定性质** | 诊断性（PASS/CONDITIONAL/REJECT） | 参考性（READY/REVIEW/BLOCK） |
 | **关注指标** | 近 3 年强度、衰减比、CV_Sharpe、厂字形、sub-universe、top-5 集中度、参数敏感性 | 平台硬检查、PPA 主题/标签/硬指标、相关性门控、value-factor trend、多样性投影 |
 | **数据源** | `get_alpha_yearly_stats`/`get_alpha_pnl`/`performance_comparison` | 平台 IS checks + `check_correlation` + 本地论坛语料 + trend score |
 | **是否改表达式** | 否（诊断不改；修复归 `brain-alpha-repair`） | 否（只评审） |
-| **输出** | robustness 审计报告 + 三态判定 | verdict + confidence + 中文评语 + 可执行建议 |
+| **输出** | robustness 审计报告 + 三态判定 | 评审意见 + confidence + 中文评语 + 可执行建议 |
 
 **执行顺序（硬约束）**：`brain-explain-alphas` → **robustness（先）** → **judge（后）** → 提交路由。
 - robustness REJECT → 不进 judge，直接回写台账/失败记忆。
@@ -76,7 +76,7 @@ user-invocable: true
 - Regular 与 PPA alpha。
 - 内置静态本地语料库作为附加判定标准（judge CLI 内不连接实时论坛）。
 - PPA 主题 / PPAC / 互相关性门控在 agent 会话中使用 BRAIN MCP（`mcp__wq-brain-http__*`）。
-- 仅在用户明确确认后提交。
+- 本 skill 不执行提交；最终提交判定与执行交 `tools/submit_verdict.py` 与提交 skill。
 
 内置语料位于 `data/forum_corpus/` 及 `data/forum_corpus/index.json`。
 V1 当前包含 20 篇打包进本 skill 的已收录中文语料条目：
@@ -96,8 +96,8 @@ V1 当前包含 20 篇打包进本 skill 的已收录中文语料条目：
 2. 若候选为 PPA（或标签含 PowerPoolSelected）：提交前先运行下方 **PPA 附加闸门**。
 3. 依据已提交的 Regular alpha（OS 窗口）计算 value-factor trend score 上下文。
 4. 应用由本地语料推导出的附加提交标准，判断该 alpha 现在是否值得提交。
-5. 视情况运行 LLM 决策层，综合 checks + 表达式 + trend + rubric 证据。
-6. 仅在用户明确确认后提交。
+5. 视情况运行 LLM 评审层，综合 checks + 表达式 + trend + rubric 证据。
+6. 汇总参考结论（评审意见 + 点塔排序参考）交 `tools/submit_verdict.py` 做最终提交判定。
 
 ## PPA 附加闸门（Power Pool）
 
@@ -114,22 +114,22 @@ V1 当前包含 20 篇打包进本 skill 的已收录中文语料条目：
   （客户端只等 60s 就放弃）；此时须等 4 分钟后**补发**，再确认 `status=ACTIVE` 才算成功。判据只认 `ACTIVE`。
   若工具不感知 PPA，不要通过 MCP 自动提交 PPA —— 停下并询问用户。
 
-若 `platform_submit_ok=false` **或**任一 PPA 附加闸门失败，LLM 判定结果不能为 `READY`。
+若 `platform_submit_ok=false` **或**任一 PPA 附加闸门失败，LLM 评审意见不能为 `READY`。
 
-## LLM 决策层
+## LLM 评审层
 
-收集完全部结构化证据后，judge 可调用 LLM 产出最终判定与评语。
+收集完全部结构化证据后，judge 可调用 LLM 产出评审意见与评语。
 
 两种执行模式：
 
-- Agent 模式（本 AI 对话中优先）：直接使用当前 AI 会话产出 LLM 判定与评语，无需额外 API key。
+- Agent 模式（本 AI 对话中优先）：直接使用当前 AI 会话产出 LLM 评审意见与评语，无需额外 API key。
 - 脚本 API 模式（独立 CLI 可选）：调用外部 OpenAI 兼容端点，需要 API key。
 
 - 输入证据包括：平台检查结果、失败项、表达式、表达式分析、附加标准状态/原因、value-factor trend 块，以及假设提交后的 value-factor 投影块。
-- 输出包括：`verdict`、`confidence`、`comment`、`strengths`、`risks`。
+- 输出包括：评审意见（review verdict）、`confidence`、`comment`、`strengths`、`risks`。
 - LLM 文本输出（`comment`、`strengths`、`risks`）应为中文（默认简体中文）。
-- 最终 `overall_verdict`：有 LLM 判定时用 LLM 结果，否则回退到确定性规则判定。
-- 安全护栏：若 `platform_submit_ok=false` 或 PPA 附加闸门失败，LLM 判定不能为 `READY`。
+- 最终评审意见：有 LLM 评审时用 LLM 结果，否则回退到确定性规则评审。
+- 安全护栏：若 `platform_submit_ok=false` 或 PPA 附加闸门失败，LLM 评审意见不能为 `READY`。
 
 默认开启。在 `configs/config.json` 的 `judge.llm` 下配置（首次使用需 `cp configs/config.example.json configs/config.json` 后填写）。
 
@@ -259,9 +259,9 @@ LLM 配置示例：
    - **跨 ≥3 个 catalog 的 alpha 不计点塔**（平台 `pyramidThemes.effective`：1塔→1、2塔→2、3塔→0）；
    - **0 亮区域的单颗提交 ≠ 点亮**（要凑 3 颗同类；单颗只是打地基）。
 2. **候选点塔价值分级**（先算每塔当前颗数，用 `python tools/campaign_intel.py pyramid --region <R> --delay <D>` 或 `tools/submit_verdict.py`）：
-   - A 档：落「差 ≤2 颗」塔（现状 ≥2/3）→ **一次提交即点亮**，最优先；
+   - A 档：落「差 1 颗」塔（现状 2/3）→ **一次提交即点亮**，最优先；
    - B 档：落「差 2 颗」塔（现状 1/3）；
-   - C 档：落 0/3 塔（0 亮区域打地基，如 GLB/HKG/DEU/ASI/GBR 全域 0 亮时）。
+   - C 档：落「差 3 颗」塔（现状 0/3，0 亮区域打地基，如 GLB/HKG/DEU/ASI/GBR 全域 0 亮时）。
    - 同档内按 fitness 降序，其次 sharpe。
 3. **已过度提交区域**（如 MEA 本季度）**不提交**，候选只罗列交用户拍板。
 4. **跨 ≥3 catalog 的候选表达式直接降级**（提交后对点塔零贡献，即使指标好）。
@@ -276,11 +276,11 @@ LLM 配置示例：
 `mcp__wq-brain-http__get_alpha_details`/`/check` 对 LOW_2Y_SHARPE 和 CONCENTRATED_WEIGHT 只显示 **WARNING** —— 真正的通过/失败在**提交时**才判定：
 
 - `POST /alphas/{id}/submit` → **201** = 已受理（异步检查待执行；只接受 200 的 MCP 客户端会误报 `success:false` —— 工具 bug）。
-- `GET /alphas/{id}/submit` → **200** = 最终成功 / **403** = 被拒（body 含失败检查列表）/ **404** = 记录已清除。
+- **提交层信息只存在于 `POST` 响应里，`GET /alphas/{id}/submit` 恒 404 勿用于判定**（对已 ACTIVE 的 alpha 同样 404）。
 - 唯一可靠的成功信号是 alpha 出现在 OS 池中（`status=ACTIVE`）。不要仅凭 POST 状态或详情检查判断成功。
 - PENDING 检查（如异步中的 SELF_CORRELATION）是未决，不是失败。
 
-内置的 `ace_client.py` 现在提供 `get_submit_verdict()`（POST+GET 三态判定）与 `classify_check_pass()`（返回 `True/False/None`，None = 未决/警告）。`baseline_from_platform()` 为此包含 `submit_verdict` 与 `pending_checks`。
+内置的 `ace_client.py` 现在提供 `get_submit_verdict()`（仅读 POST 响应判定，GET /submit 恒 404 已弃用）与 `classify_check_pass()`（返回 `True/False/None`，None = 未决/警告）。`baseline_from_platform()` 为此包含 `submit_verdict` 与 `pending_checks`。
 
 ## 独立原则
 

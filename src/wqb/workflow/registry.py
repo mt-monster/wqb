@@ -127,7 +127,7 @@ class WorkflowRegistry:
                     phase=1,
                     required_params=["alpha_id"],
                     optional_params=["name", "color", "tags", "descriptions", "force",
-                                     "confirm_submit", "verify_timeout",
+                                     "robustness_audited", "confirm_submit", "verify_timeout",
                                      "dataset", "wave", "expr_family", "channel"],
                 )
             )
@@ -454,6 +454,27 @@ class WorkflowRegistry:
             )
         except ImportError as e:
             logger.warning(f"Failed to register forum_recon: {e}")
+
+        # Phase 4: forum_recon_wave（本波自动论坛取证，2026-09-29 新增）
+        # 目的：把 forum_recon 从「靠 Agent 记得触发」变成「波级默认动作」，
+        # 使步 4/5/7 与 S6 判死取证闸在默认路径上就能拿到结论。
+        try:
+            from .nodes import forum_recon_wave
+            self.register(
+                "forum_recon_wave",
+                forum_recon_wave.run,
+                NodeMeta(
+                    name="forum_recon_wave",
+                    description="本波自动论坛取证（波级默认动作）：按 region/wave/dataset 派生决策问题→forum_recon→落 ledger（有解/无解/故障分流）；默认每波 ≤1 次，7 天缓存复用，故障不缓存",
+                    category="review",
+                    phase=4,
+                    required_params=["region", "wave"],
+                    optional_params=["dataset", "question", "out", "limit",
+                                     "max_search_rounds", "max_recon", "timeout_sec"],
+                )
+            )
+        except ImportError as e:
+            logger.warning(f"Failed to register forum_recon_wave: {e}")
 
 
 def get_registry() -> WorkflowRegistry:

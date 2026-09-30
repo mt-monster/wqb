@@ -20,7 +20,7 @@ Per-run 快照入 `outputs/runs/<run_id>/`。
 
 **Read before MCP（每轮）：**
 1. 读 workspace 文件（缺失则 `scripts/init_workspace.py` 建）。
-2. 拷贝模板到 `outputs/runs/<run_id>/`：`session_plan.md`；explore → 另加 `forum_stroll_notes.md`；contribute/hybrid → `forum_findings.md`。
+2. 拷贝模板到 `outputs/runs/<run_id>/`：`session_plan.md`；explore → 另加 `forum_stroll_notes.md`；contribute → `forum_findings.md`。
 3. **然后**才调 forum/platform MCP — 顺序不可反。
 4. **绝不用** 浏览器/WebFetch/alpha-judge 静态语料替代 live forum state。
 

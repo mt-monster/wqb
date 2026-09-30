@@ -127,6 +127,20 @@ class BacktestMixin:
                     erow = cur.fetchone()
                     if erow:
                         expr_id = int(erow[0])
+                        # D9（2026-09-28 修复）：此前已入库的表达式只取 id、**不推进 status**，
+                        # 只有"表达式不存在"的回落分支才写 status='backtested'。于是正常路径下
+                        # 回测完成后 status 仍滞留 gem/pending —— 积压闸的 conversion 分子恒 0，
+                        # 会误杀后续波（AMR 实证：手动回写 40 条后 conversion 才 0/212→18.9%），
+                        # 且一切 status 口径统计都被污染（GLB status 口径回测=0 而实为 2144）。
+                        # 这里把"待选态"推进为 backtested 并补 alpha_id；
+                        # 只动待选态，不动 backtested/submitted/completed/dropped/superseded 等后续态。
+                        cur.execute(
+                            "UPDATE expressions SET status='backtested', "
+                            "alpha_id=CASE WHEN alpha_id IS NULL OR alpha_id='' THEN ? ELSE alpha_id END, "
+                            "updated_at=? WHERE id=? AND status IN "
+                            "('gem','enhanced','pending','selected','gated')",
+                            (alpha_id, now, expr_id),
+                        )
                     else:
                         self.upsert_expressions(
                             region, str(wave),

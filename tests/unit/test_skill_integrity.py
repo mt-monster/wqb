@@ -289,6 +289,8 @@ _DRY_RUN_CASES = {
     # 2026-09-28 P4：forum_recon 节点（论坛问题驱动只读检索）。dry-run 只构建命令
     # （零网络零写库），参数用无害问题串。
     "forum_recon": {"question": "dryrun smoke", "context": "region=KOR"},
+    # 2026-09-29：本波自动取证（dry-run 只派生问题 + 构建计划，零网络零写库）
+    "forum_recon_wave": {"region": "KOR", "wave": "_test"},
     # 2026-09-15 补：structural_reconstruct 节点（Phase 2）注册后未同步用例表。
     # detect 为纯本地检测 action，dry-run 零副作用安全。
     "structural_reconstruct": {"action": "detect", "expression": "add(rank(a), rank(b))"},

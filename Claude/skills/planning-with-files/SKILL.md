@@ -15,10 +15,12 @@ allowed-tools:
   - WebFetch
   - WebSearch
 hooks:
+  # <SKILL_ROOT> 是占位符，需由宿主替换为技能库根目录（本仓库 = Claude/skills）；
+  # PreToolUse 的 `cat task_plan.md` 假定当前工作目录 = 项目根（规划文件所在目录）。
   SessionStart:
     - hooks:
         - type: command
-          command: "echo '[planning-with-files] Ready. Auto-activates for complex tasks, or invoke manually with /planning-with-files'"
+          command: "echo '[planning-with-files] Ready. Hooks only print reminders; for complex tasks invoke /planning-with-files manually.'"
   PreToolUse:
     - matcher: "Write|Edit|Bash"
       hooks:
@@ -90,26 +92,26 @@ hooks:
 | `findings.md` | 研究、发现 | 每次有新发现之后 |
 | `progress.md` | 会话日志、测试结果 | 会话期间持续更新 |
 
+**归类判据（避免三文件重叠）**：
+- `task_plan.md` 记「要做什么」：目标、阶段、当前状态、决策（面向未来）。
+- `findings.md` 记「知道了什么」：研究结论、事实、发现（知识沉淀）。
+- `progress.md` 记「做了什么」：已执行动作、时间线日志、错误、测试结果（面向过去）。
+
 ## 关键规则
 
 ### 1. 先创建计划
 没有 `task_plan.md` 绝不开始复杂任务。没有商量余地。
 
-### 2. 两动作规则
-> "每执行 2 次查看/浏览/搜索操作后，立即将关键发现保存到文本文件中。"
-
-这可以防止视觉/多模态信息丢失。
-
-### 3. 先读再决定
+### 2. 先读再决定
 在重大决策前，先读取计划文件。这能让目标保持在注意力窗口内。
 
-### 4. 行动后更新
+### 3. 行动后更新
 完成任何阶段后：
 - 标记阶段状态：`in_progress` → `complete`
 - 记录遇到的任何错误
 - 记录新建/修改的文件
 
-### 5. 记录所有错误
+### 4. 记录所有错误
 每个错误都要写进计划文件。这能积累知识、避免重蹈覆辙。
 
 ```markdown
@@ -120,7 +122,7 @@ hooks:
 | API timeout | 2 | Added retry logic |
 ```
 
-### 6. 永不重复失败
+### 5. 永不重复失败
 ```
 if action_failed:
     next_action != same_action
@@ -177,10 +179,9 @@ if action_failed:
 ## 何时使用该模式
 
 **适用场景：**
-- 多步任务（3 步以上）
+- 多步任务（>5 次工具调用）
 - 研究任务
 - 构建/创建项目
-- 涉及大量工具调用的任务
 - 任何需要组织规划的任务
 
 **跳过场景：**

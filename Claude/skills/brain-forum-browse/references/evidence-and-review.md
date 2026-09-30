@@ -4,7 +4,7 @@
 
 **Hard requirement for forum writes** — with one **narrow exception**: [auto-send-e1.md](../SKILL.md) (E1-only, zero inference, **exactly 1 write** — skips Phase 7.5 subagent and Run Contract; uses checklist instead).
 
-**Standard path (default):** every explore stroll (mandatory contribution), contribute, hybrid — E1/E2/E3 + Phase 7.5 + Run Contract.
+**Standard path (default):** every explore stroll (mandatory contribution when write tools exist), contribute — E1/E2/E3 + Phase 7.5 + Run Contract.
 
 ---
 

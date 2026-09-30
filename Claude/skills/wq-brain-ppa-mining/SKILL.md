@@ -39,7 +39,7 @@ WebDataScope 是 Chrome 扩展，对 WQ 平台数据做 **字段级 + 数据集�
 
 - **上游**：S-PRE `wq-brain-campaign-matrix`（预解析配置包：region/universe/意图/delay/中性化）或用户直给区域参数。
 - **本 skill 角色**：S0 健康检查方法论层——§1.0 平台实时体检硬门槛（cov≥0.85 / alphaCount≤50 / fields≥10）在 mode=ppa 下一票否决，general/REGULAR 战役降级为 tier 评分软罚；数据集/字段级参数决策（§1–§4）供 S1/S2 读取。
-- **输出**：数据集白名单（仅 tier1）——编排器 `wq-brain-ra-pipeline` 步 2 执行健康检查后经 `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {...})` 回写 ledger_kv（结构化真相源）；字段级预处理建议由 S1 `brain-data-feature-engineering` 综合后经 `s1_<dataset>_d<delay>` 键入库。
+- **输出**：本 skill 产出**方法论与门槛判据**（§1.0 三硬门槛 + §1.0.x 亲和矩阵），**不直接产出白名单**。白名单由**编排器 `wq-brain-ra-pipeline` 步 2 执行 `score_datasets.py` 体检**后，经 `mcp__wqb-db__upsert_ledger_key(region, "s0_whitelist", {...})` 回写 ledger_kv（结构化真相源，键 = `s0_whitelist`）；字段级预处理建议由 S1 `brain-data-feature-engineering` 综合后经 `s1_<dataset>_d<delay>` 键入库。
 - **下游**：S1 `brain-data-feature-engineering`（白名单内逐数据集，启动前读 `s0_whitelist` 校验）；数据集 dead 标记经 `wq-brain-campaign-toolkit` `score_datasets.py` 的 `make_ledger_store` 直写 `*_dead` 键，反哺本 skill 下一轮体检。
 
 ## 1. 数据集级决策（dataFlag.js → info_data.bin）
@@ -50,6 +50,15 @@ WebDataScope 是 Chrome 扩展，对 WQ 平台数据做 **字段级 + 数据集�
 
 WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统计；而某数据集在**你的目标 region/universe/delay 下当前是否值得打**，必须以平台实时数据为准。二者不可互相替代。
 
+**体检工具分工表（2026-09-29 收敛，消除三权威漂移）：**
+
+| 场景 | 权威工具 | 角色 |
+|---|---|---|
+| S0 白名单体检（开战役前置硬门槛，产出 `s0_whitelist`） | `score_datasets.py`（`wq-brain-campaign-toolkit`） | **权威执行**，由 `wq-brain-ra-pipeline` 步 2 调用 |
+| 数据包字段级下钻 / MCP 未运行时的直连兜底 | `dataset_health_check.py`（本 skill 分发） | **兜底**，秒级返回字段覆盖分布 |
+
+下方 `dataset_health_check.py` 用法即「兜底 / 字段级下钻」通道；开战役前白名单产出一律以 `score_datasets.py` 权威执行为准。
+
 运行体检工具（零第三方依赖，仅标准库，双通道）：
 
 脚本随本 skill 分发于 `scripts/dataset_health_check.py`。
@@ -58,7 +67,7 @@ WebDataScope 读的是**离线数据包**，反映的是快照时刻的历史统
 ```bash
 SK=<SKILL_ROOT>/wq-brain-ppa-mining/scripts/dataset_health_check.py
 
-# 数据集级体检（首选，秒级返回）
+# 数据集级体检（兜底/直连通道，秒级返回）
 
 python "$SK" --region EUR --delay 1 --universe TOP1200
 
@@ -75,17 +84,23 @@ python "$SK" --region HKG --universe TOP800 --min-cov 0.9 --max-alphas 20 --top 
 **双通道**：默认 `--mode mcp`，复用常驻 world-quant-brain-mcp 服务（`127.0.0.1:8876`）已建立的稳定会话，规避沙箱到 `api.worldquantbrain.com` 的 TLS 抖动；`--mode direct` 用 `.env` 凭据自行 Basic Auth 直连兜底。
 结果落盘 `tracking/mining/field_coverage_<REGION>_d<D>_<UNIVERSE>.json`，含 `stats` / `focus_check` / `opportunities` / `all_datasets`。
 
-**三条硬门槛（全部满足才允许消耗回测配额）：**
+**三条硬门槛（统一阈值体系，2026-09-29 收敛，消除 0.85/50/10 与 0.7/1000 两套口径）：**
 
-| 指标 | 门槛 | 理由 |
-|---|---|---|
-| `coverage` | **≥ 0.85** | < 0.7 意味着三成以上标的无数据，turnover 虚高、CONCENTRATED_WEIGHT 几乎必然触发 |
-| `alphaCount` | **≤ 50** | 拥挤数据集的 prod_corr 天然逼近 0.7 上限，sharpe 再高也过不了闸门 |
-| `fieldCount` | **≥ 10** | 字段太少无法构建 spread / 组合信号 |
+| 指标 | 通过（进白名单） | 灰色地带（降权进末尾） | 一票否决（直接排除） |
+|---|---|---|---|
+| `coverage` | **≥ 0.85** | **[0.7, 0.85)** | **< 0.7** |
+| `alphaCount` | **≤ 50** | **(50, 1000]** | **> 1000** |
+| `fieldCount` | **≥ 10** | — | **< 10** |
 
-**一票否决**：`coverage < 0.7` 或 `alphaCount > 1000` 的数据集直接排除，不做任何回测。
+- **通过**：三项全部通过 → 直接进白名单。
+- **灰色地带**（coverage 或 alphaCount 落入中间区间）→ **降权进入白名单末尾**：仅当白名单无更高优先级候选时才投入配额，且必须用 8 探针最小批快速验证（而非 10 表达式全批）。
+- **一票否决**：命中任一否决线 → 直接排除，不做任何回测。
+
+（门槛理由：coverage < 0.7 意味着三成以上标的无数据，turnover 虚高、CONCENTRATED_WEIGHT 几乎必然触发；alphaCount 高则 prod_corr 天然逼近 0.7 上限；fieldCount 太少无法构建 spread / 组合信号。）
 
 排序优先级：`pyramidMultiplier` 降序 → `alphaCount` 升序 → `coverage` 降序。
+
+**与 §1.0.x 亲和矩阵的组合顺序**：先按本排序（倍率/拥挤/覆盖）排出候选序，再套 §1.0.x 红黄绿灯做二次调整——红灯数据集降到队列末尾（仅白名单无其他候选时才考虑，且 8 探针最小批验证），黄灯标注风险项，绿灯优先排入 tier1。
 
 > **适用域（2026-09-11 明确，消除跨 skill 冲突）**：本排序**仅适用于 PPA mode**（`dataset_health.mode=ppa`）。
 > RA / general 战役的白名单排序以 `wq-brain-ra-pipeline` 决策表 **D4** 为准——那里明令"先按金字塔配给
@@ -132,10 +147,13 @@ python "$SK" --region HKG --universe TOP800 --min-cov 0.9 --max-alphas 20 --top 
 - **决策**：读该数据集自己的 dominant method 作为首选中性化；不要无脑 SUBINDUSTRY。
 - 实证（2026-08-05）：**KOR → SECTOR 最佳（0.562）**；USA 多数场景 SUBINDUSTRY 仍优。SECTOR/MARKET 会大幅压低 IS_LADDER_SHARPE，仅在数据/区域需要时采用。
 
-### 1.3 数据包可用性 ★★★ / ☆☆☆（⚠ 仅指离线包，**不等于**平台覆盖率）
+### 1.3 数据包快照完备性备注 ★★★ / ☆☆☆（非决策项）
+
+> 本小节是**快照完备性备注**，不参与平台可用性判断，不进入白名单选择决策。
+
 - `★★★` = 精确匹配 `${dataset}_${region}_${universe}_Delay${delay}.bin`（本地离线包覆盖完整）。
 - `☆☆☆` = 仅 partial universe 匹配（本地离线包可能不全）。
-- **决策**：优先选与你的 (region, universe, delay) 配置完全匹配的 `★★★` 数据集。
+- 本地离线分析时优先用 `★★★` 数据集（仅关乎本地快照完整度，与平台可用性无关）。
 
 **⚠ 严禁用离线包状态推断平台数据可用性。** 这两者是独立维度：
 - 离线包缺 → 只是本地没快照，平台上该数据集可能好端端地存在且满覆盖。
@@ -200,6 +218,8 @@ scale(rank(ts_zscore(subtract(
 
 ## 4. 模拟参数参考（simulate.js payload）
 
+> **⚠ 醒目警告：下面请求体中 `neutralization` 仅为占位示例（SUBINDUSTRY），不得照抄硬编码。** 实际取值必须按 §1.2 读该数据集的 dominant method（KOR→SECTOR、USA 多数→SUBINDUSTRY），与「不硬编码、按 dominant method」原则一致。
+
 标准仿真请求体（所有可设字段）：
 ```json
 {
@@ -243,6 +263,8 @@ scale(rank(ts_zscore(subtract(
 
 ## 6. 闸门检查体系（口径 = INDEX「闸门阶梯」两线三层，2026-09-12 对齐）
 
+> **数值回查路径**：本段硬编码数值（Sharpe ≥ 1.58 / TVR 区间 / PROD_CORRELATION < 0.70 等）以 `Claude/skills/INDEX.md`「闸门阶梯」两线三层为唯一权威基准；若与 INDEX 冲突，以 INDEX 为准，本段仅作速查。
+
 ### ① IS 廉价闸（PC 等待前）
 - 平台硬线：Sharpe ≥ 1.58；Fitness ≥ 1.00；TVR ∈ [1%, 70%]；Margin > 5bp；Returns > 5%；平台检查无 FAIL。
 - 内部严线（研究仿真阶段即执行，省配额）：TVR ∈ [5%, 20%]；SELF_CORR < 0.50。
@@ -254,8 +276,10 @@ scale(rank(ts_zscore(subtract(
 
 ## 7. 增强版挖掘流程（数据驱动）
 
+> **本段定位（2026-09-29 标注）**：本 skill **不作编排器**。以下 0–7 步是**仅供 `wq-brain-ra-pipeline` PPA 分支消费的方法论参考**；编排、白名单产出与提交均由 ra-pipeline 执行，本 skill 不提交、不产出配置包。
+
 0. **平台实时体检（不可跳过）**：`python scripts/dataset_health_check.py --region <R> --delay <D> --universe <U>`
-   → 过 §1.0 三条硬门槛（cov≥0.85 / alphaCount≤50 / fields≥10），得到候选白名单。
+   → 过 §1.0 三条硬门槛（通过线 cov≥0.85 / alphaCount≤50 / fieldCount≥10），得到候选白名单。
    **后续所有步骤只在这份白名单内进行。** 白名单为空才考虑换区域/换 universe。
 1. **数据集扫描**：在白名单内，WebDataScope 读 OS/IS Sharpe 徽章 → 选绿(>>均值)；读中性化徽章 → 定 neut；标 OS 退化。（★★★ 仅表示离线包完整，不参与可用性判断，见 §1.3）
 2. **白空间扫描**：distribution.js `non_data` → 选 (region, category) 空白（低竞争 + 多样性）；与体检结果中 `alphaCount==0` 的数据集交叉验证。
@@ -263,8 +287,7 @@ scale(rank(ts_zscore(subtract(
 4. **信号构建**：找有预测力的字段对 (A,B) 建 reversed spread，加 returns 反转组合提 IS_LADDER。
 5. **参数扫描**：decay / 权重 / 窗口 / 中性化 / truncation 微调。
 6. **算子多样性**：查 genius operator analysis，补 under-use 算子。
-7. **闸门检查**：廉价闸门 → PC 等待 → 硬闸门。
-8. **提交**：tags=["PowerPoolSelected"]，color=GREEN。
+7. **闸门检查**：廉价闸门 → PC 等待 → 硬闸门。（提交由 ra-pipeline 编排层执行，见 ra-pipeline PPA 分支；本 skill 不提交。）
 
 ## 8. 区域实证结论（并入，待持续更新）
 

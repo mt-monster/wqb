@@ -4,7 +4,7 @@
 
 ## 1. Official Scan（Phase 2）
 
-contribute/hybrid recon 必做；explore 欢迎 purposeful signals 但不要求 formal gap 打分。
+contribute recon 必做；explore 欢迎 purposeful signals 但不要求 formal gap 打分。
 
 **并行 MCP 批次（一次全发）：** `get_messages(limit=30)` + `get_events()` + `search_forum_posts(max_results=50)` + `get_glossary_terms()`（L2 seed tokens only）。
 

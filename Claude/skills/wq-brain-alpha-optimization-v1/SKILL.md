@@ -57,14 +57,14 @@ user-invocable: true
 - 对照平台算子库校验；不存在的算子换成等价构造（如自写动量公式）。
 
 ### Step B4: 仿真对比（10–20 min）
-- `mcp__wq-brain-http__create_multi_simulation`（2–8 条）跑变体；multi 失败退并行单仿。
+- `mcp__wq-brain-http__create_multi_simulation`（Mode B 灵活批 2–8 条；「恰好 8 条」严格批仅 Mode A 与组合腿救援适用）跑变体；multi 失败退并行单仿。
   （2026-09-26 审计：旧文写的 `create_multiSim` **不是真实工具名**，真实注册名为 `create_multi_simulation`。）
 - 按 Fitness/Sharpe 排名；检查 sub-universe 与逐年一致性；负信号可翻转。
 
 ### Step B5: 验证迭代（5–10 min）
 - Top 变体跑 submission/correlation 检查。
 - 失败 → 回 Step B3（想法池上限 3–5 周期/alpha，仍卡 → 换字段，回 S1，阶段定义见 `INDEX.md` 流水线表）。
-- 通过 → 交给 Mode A 做参数收敛；收敛后按「衔接协议」进入下游链（selfcorrQuick → explain-alphas → 过拟合与稳健性测试 → brain-alpha-judge 评审），**不直接提交**。
+- 通过 → 交给 Mode A 做参数收敛；收敛后按「衔接协议」进入下游链（selfcorr-quick → explain-alphas → robustness → submit_verdict，judge 仅作可选参考），**不直接提交**。
 
 ### Mode B 最佳实践
 - 周期上限 3–5 次/alpha；70% 想法 / 30% 参数；成功 = 过检查 + 逐年稳定。
@@ -78,11 +78,11 @@ user-invocable: true
 
 1. 冻结基线 alpha 的核心字段与数据集，后续轮次不得替换。
 2. 任何仿真之前，每个候选必须先通过本地校验。
-3. 每轮必须恰好包含 8 个候选表达式。
+3. 每轮必须恰好包含 8 个候选表达式（**仅 Mode A / 组合腿救援的严格批**；Mode B 想法层用 2–8 条灵活批）。
 4. 平台 `operatorCount` 是最终裁判：任何算子数超过 8 的候选无效。
 5. Stage A 阶段禁止纯微调，只能做结构化升级。
 6. 任何零 FAIL 项的候选必须立即走提交相关性（correlation）检查。
-7. `mcp__wq-brain-http__create_multi_simulation` 结束后，立即以 UTF-8 追加模式把本批结果写入指定的文本文件。
+7. `mcp__wq-brain-http__create_multi_simulation` 结束后，立即以 UTF-8 追加模式把本批结果写入目标结果文件。**命名规则**（用户未指定时）：`<baseline_alpha_id>_optimization_results.txt`（如 `LLbaqEqa_optimization_results.txt`；追加契约见 [reference.md](reference.md) §10 Step 7）。
 8. 校验或仿真失败时只修精确的报错点；不得为通过而删除核心逻辑来简化表达式。
 
 ### 必需工作流
@@ -103,12 +103,14 @@ user-invocable: true
 - 配套语法检查：复用现有 [expression verifier skill](../alpha-expression-verifier/SKILL.md)。
 - 在任何平台请求之前，把语法校验与算子签名校验视为硬闸门。
 
-### 候选批三灯分级（复用 probe_scoring_v2 原则）
+### 候选批三灯分级（probe 三灯 → alpha 变体字段映射）
 
-8 候选批的优劣分级可套 `wq-brain-campaign-toolkit` 的 v2 三灯公式（`score_datasets.py --probe-score --from-json` 离线校准，公式见 toolkit `references/probe-scoring-v2.md`）。核心原则：
-1. **联合评估在最强单点**，禁止跨候选 OR 拼出不存在的理想探针（v1 教训）；
-2. **2Y 红灯仅当平台返回值判定**（`two_year_sharpe=None` 不算败）；
-3. **tvr 结构性墙**：全部候选同侧出界时绿灯封顶黄灯（LOW→trade_when/decay 拉 tvr；HIGH→拉长窗口压 tvr）。
+`wq-brain-campaign-toolkit` 的 probe 三灯公式是**数据集级探针**评分（`score_datasets.py --probe-score`），字段是 coverage/two_year_sharpe/tvr，**不能直接套到 alpha 变体**。对 8 候选批改用如下字段映射（以平台 `is.checks` 为准）：
+- **绿灯**：`is.checks` 全部 `PASS`（无 FAIL/WARNING 项）；
+- **黄灯**：存在 `WARNING` 或 CONDITIONAL（如 sub-universe 边缘、tvr 出界但同侧可调）；
+- **红灯**：任一 `FAIL` 项（含 `IS_LADDER_SHARPE`、`CONCENTRATED_WEIGHT` 等）。
+
+沿用 probe 三条核心原则：① **联合评估在最强单点**，禁止跨候选 OR 拼出不存在的理想变体（v1 教训）；② **2Y 红灯仅当平台返回值判定**（`two_year_sharpe=None` 不算败）；③ **tvr 结构性墙**：全部候选同侧出界时绿灯封顶黄灯（LOW→trade_when/decay 拉 tvr；HIGH→拉长窗口压 tvr）。
 
 ## 陷阱（已核实）
 
@@ -156,23 +158,23 @@ user-invocable: true
 4. 验证走 Mode A 批纪律：8 候选严格批 → 本地校验 → multiSim。
 
 **验证与兜底**：
-- 过闸（全 checks PASS + prod corr <0.7）→ 按标准下游链推进（selfcorrQuick → explain-alphas →
-  robustness → judge/verdict），不直接提交。
+- 过闸（全 checks PASS + prod corr <0.7）→ 按标准下游链推进（selfcorr-quick → explain-alphas →
+  robustness → submit_verdict，judge 仅作可选参考），不直接提交。
 - 池内无匹配（返回空 / 全同数据集）或组合 1–2 轮仍 FAIL → 判死（dead_end 回写，回写前先走 `mcp__wqb-db__seal_dead_end` 沉降残值再封存），
   禁止无限烧配额；残余线索写 ledger salvage 字段留痕。
 
 **弹药来源说明**：salvage_pool 由 S4 `review_wave.py --write-ledger` 自动幂等写入
 （快达标因子：S≥1.0 且 prod corr<0.5 的 combo 候选 + near 补充），无需人工手写入池。
 
-## 过拟合与稳健性测试（每个候选进入 S5 前必做）
+## 过拟合与稳健性快速自查（本 skill 内部自检，**非** S4→S5 必经闸）
 
-Mode B/A 产出满足指标门槛的候选后，必须先通过本节四项检查：
+Mode B/A 产出满足指标门槛的候选后，先做本节四项**快速自查**（轻量、可在本 skill 内完成）：
 1. **参数敏感性**：decay/窗口 ±1 档邻域内 Sharpe 不塌方（邻域塌方 = 过拟合信号）。
 2. **子宇宙一致性**：sub-universe Sharpe 与主宇宙同向且达内部线（sharpe>1, fitness>0.7, margin>5bp）。
 3. **逐年一致性**：分年 Sharpe 无连续两年大幅塌方（Mode B Step B4 已查，此处复核）。
 4. **概念对照**：收益来源归因与既有 book 内 alpha 不重叠（见 `brain-explain-alphas`）。
 
-完整审计工作流（归因 + 反过拟合闸门 + PPA 提交规则）见外部 Agent 技能 `brain-alpha-robustness`（登记于 INDEX.md 外部 Agent Skill 段）。
+> 本节四项是**快速自查**，**不能替代** S4→S5 的**必经权威闸**。完整审计工作流（归因 + 反过拟合闸门 + PPA 提交规则）见外部 Agent 技能 `brain-alpha-robustness`（登记于 INDEX.md 外部 Agent Skill 段）。
 
 ## 衔接协议
 
@@ -188,10 +190,15 @@ Mode B/A 产出满足指标门槛的候选后，必须先通过本节四项检�
 
 ## 预期产出
 
-持续迭代（Mode B → Mode A），直到至少一个候选满足以下全部条件：
+持续迭代（Mode B → Mode A），直到至少一个候选满足**平台提交闸**全部条件（**数值唯一权威 = `brain-how-to-pass-alpha-test`**）：
 
-- Sharpe > 1.58
-- Fitness > 1.0
-- Turnover 在 1%–40% 之间（平台硬闸门为 1%–70%；本 skill 为稳健性采用更严格的内部目标 ≤40%）
-- 所有平台检查 PASS，包括 `IS_LADDER_SHARPE`
-- `PROD correlation < 0.7`
+- Fitness：Delay-0 > 1.3 或 Delay-1 > 1
+- Sharpe：Delay-0 > 2 或 Delay-1 > 1.25
+- Turnover：1% < Turnover < 70%
+- Weight（`CONCENTRATED_WEIGHT`）：任一股票权重 < 10%
+- Sub-universe Sharpe：≥ 0.75 × sqrt(sub_size / alpha_size) × alpha_sharpe
+- Self-Correlation：< 0.7；`PROD correlation < 0.7`
+- 所有平台检查 PASS，含 `IS_LADDER_SHARPE`
+
+> 本 skill 的 `mode_b_qualification`（sharpe≥1.25 且 fitness≥0.8）是**内部资格线**（决定能否进 Mode B 救援），
+> Turnover ≤40% 是**内部稳健目标**——二者均**不是平台提交闸**；提交闸数值一律以 how-to-pass 为准，勿与本表混用。

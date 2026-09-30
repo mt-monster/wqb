@@ -35,6 +35,7 @@ DIRECT_CONNECT_WHITELIST = (
     "src/wqb/db_conn.py",           # 本文件
     "wqb_db_mcp.py",                # MCP server 自管连接（配置同规范）
     "tools/lib/wqb_db.py",          # tools 层兼容 re-export
+    "tools/shape_quota_check.py",   # 2026-09-28：只读配额检查器（ro URI，一次性诊断工具）
     "Claude/skills/wq-brain-campaign-toolkit/scripts/_lib/db.py",  # toolkit 同构工厂
     "Claude/skills/brain-make-some-gem/scripts/headless_runner/run.py",
     "Claude/skills/brain-make-some-gem/scripts/trailSomeAlphas/run_pipeline.py",

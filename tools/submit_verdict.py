@@ -86,6 +86,41 @@ def _render_checks(checks):
         for c in checks)
 
 
+async def _get_alpha_detail_resilient(brain, alpha_id, pages=60):
+    """取 alpha 详情。优先 /alphas/{id}；429 时回退 /users/self/alphas 列表端点。
+
+    背景（2026-09-29 实测）：探针波后 `/alphas/{id}` 单条端点被平台限流
+    （"API rate limit exceeded"，全局限流，非本地并发），但
+    `/users/self/alphas` 列表端点 200 且返回同结构的 is/settings/status 字段。
+    列表端点不返回 `checks` 之外的部分字段，但对提交判定所需字段足够。
+    在返回体里注入 `_source` 供打印溯源。
+    """
+    try:
+        d = await brain.get_alpha_details(alpha_id)
+        d["_source"] = "detail"
+        return d
+    except Exception as e:  # noqa: BLE001
+        msg = str(e)[:120]
+        print(f"[warn] /alphas/{alpha_id} 不可用（{msg}）→ 回退列表端点", file=sys.stderr)
+
+    url = f"{brain.base_url}/users/self/alphas?limit=100&order=-dateCreated"
+    for _ in range(pages):
+        r = await brain._request("GET", url)
+        if r.status_code != 200:
+            raise RuntimeError(f"list endpoint {r.status_code}: {str(r.text)[:200]}")
+        body = r.json()
+        for a in body.get("results", []):
+            if a.get("id") == alpha_id:
+                a["_source"] = "list"
+                return a
+        nxt = body.get("next")
+        if not nxt:
+            break
+        url = nxt
+        await asyncio.sleep(0.5)
+    raise RuntimeError(f"alpha {alpha_id} not found via list endpoint")
+
+
 async def main():
     ap = argparse.ArgumentParser(description="提交层判定：模拟层 + GET /alphas/{id}/submit 双视图")
     ap.add_argument("--alpha-id", required=True)
@@ -97,13 +132,22 @@ async def main():
     brain = BrainApiClient()
     await brain.ensure_authenticated()
 
-    detail = await brain.get_alpha_details(a.alpha_id)
+    detail = await _get_alpha_detail_resilient(brain, a.alpha_id)
     status = detail.get("status")
     is_ = detail.get("is") or {}
     sim_checks = is_.get("checks") or []
     fails = [c for c in sim_checks if c.get("result") == "FAIL"]
     warns = [c for c in sim_checks if c.get("result") == "WARNING"]
-    print(f"=== alpha {a.alpha_id} status={status} ===")
+    print(f"=== alpha {a.alpha_id} status={status} "
+          f"(detail source={detail.get('_source', '?')}) ===")
+    if detail.get("_source") == "list":
+        print("  [注意] 详情来自列表端点：其 `is.checks` 仅为平台摘要，"
+              "**不等于模拟层全量 checks**。")
+        print("         全量 checks（含 LOW_SHARPE/LOW_FITNESS/LOW_2Y_SHARPE/"
+              "LOW_SUB_UNIVERSE_SHARPE/LOW_ROBUST_UNIVERSE_*）"
+              "需 /alphas/{id}，该端点正被限流。")
+        print("         下方 FAIL 抑制判定/Failed-count 门在 list 源下**不可信**，"
+              "以硬指标(F/T/S/2Y)为准。")
     print(f"--- 模拟层 checks: {len(sim_checks)} 条 "
           f"(FAIL {len(fails)} / WARNING {len(warns)}) ---")
     if fails:

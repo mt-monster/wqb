@@ -19,8 +19,8 @@ allowed-tools:
 
 ## 职责边界
 
-- **本 skill 负责**：**REGULAR 单颗 alpha 的真实提交**：`POST /alphas/{id}/submit`，处理 200/201/403 四态与异步补发，以及 name/description/tags/color 属性规范
-- **本 skill 不做**：**不处理 SUPER 组套**（→ `wq-brain-superalpha`）；**不作提交判定**（判定 = `tools/submit_verdict.py`）；不改表达式
+- **本 skill 负责**：**REGULAR 单颗 alpha 的真实提交**：`POST /alphas/{id}/submit`，处理四种响应形态①②③④与异步补发，以及 name/description/tags/color 属性规范
+- **本 skill 不做**：**不处理 SUPER 组套**（→ `wq-brain-superalpha`）；**不覆盖 PPA**（PPA 属 web UI 手动流程，本 skill MCP 工具链只覆盖 REGULAR）；**不作提交判定**（判定 = `tools/submit_verdict.py` 模拟层 + 参考视图，最终以 POST 实测为准）；不改表达式
 - **上游 / 下游**：上游 = 用户已确认的候选；下游 = `ACTIVE` alpha + S6 台账
 
 
@@ -30,7 +30,7 @@ allowed-tools:
 并没有调用平台提交端点。本 skill 解决的是**真正落到平台**的那一步。
 
 ## 衔接协议
-- **上游**：S5 提交层判定 `tools/submit_verdict.py`（SUBMITTABLE 且 type=REGULAR/PPA 单颗；IS 硬闸全 PASS、description 已按三段式补齐；brain-alpha-judge 参考评审可为点塔排序提供输入）。
+- **上游**：S5 判定 `tools/submit_verdict.py`（模拟层 + 参考视图，最终以 POST 实测为准；SUBMITTABLE 且 type=REGULAR 单颗；IS 硬闸全 PASS、description 已按三段式补齐；brain-alpha-judge 参考评审可为点塔排序提供输入）。
 - **本 skill 角色**：S5 落地执行——真正提交到平台并确认 status 翻转为 ACTIVE。
 - **下游**：S6 `wq-backtest-monitor`（OS 表现监控；§14 台账回写 `wave_results` + `registry_empirical` 反哺 S-PRE）。
 
@@ -71,15 +71,8 @@ mcp__wq-brain-http__workflow_submit_alpha(
 ```
 
 ```
-# 【PPA（Power Pool）提交】—— 仅此场景使用 PowerPoolSelected / PURPLE
-mcp__wq-brain-http__workflow_submit_alpha(
-  alpha_id="<ALPHA_ID>",
-  name="DEU_R_starminerev_02",
-  color="PURPLE",                   # PPA 通道专用色
-  tags=["CH_PPA", "SRC_analyst_estimate", "PowerPoolSelected"],
-  descriptions="<三段式，≥100 词>",
-  confirm_submit=True
-)
+# 【PPA（Power Pool）提交】—— 本 skill MCP 工具链不覆盖 PPA，勿经 MCP 提交。
+# 合法 PPA 必须走平台 web UI 手动提交（见下方「★ PPA 通道」节）。
 ```
 
 **分步模式**（需逐步控制时）：
@@ -96,7 +89,7 @@ mcp__wq-brain-http__set_alpha_properties(
 
 # 2) 提交（经 workflow 引擎，自带 IS 预检 + 状态轮询）
 mcp__wq-brain-http__workflow_submit_alpha(alpha_id="<ALPHA_ID>", confirm_submit=True, force=False)
-# force=True 跳过本地启发式预检
+# force=True 仅限人工确认后显式豁免（跳过 submit_gate + robustness_audited 两道 fail-closed 闸），留痕于 workflow 记录
 
 # 3) 确认状态翻转
 mcp__wq-brain-http__get_alpha_details(alpha_id="<ALPHA_ID>")
@@ -154,7 +147,7 @@ for _ in range(36):   # 最多 3 分钟
    | # | 响应 | 含义 | 处置 |
    |---|---|---|---|
    | ① | `200` + `{"success":true,"reason":"IS checks passed","checks":[…]}` | **明确通过** | 轮询至 `status=ACTIVE` |
-   | ② | `201/202`「Accepted (async); IS checks still computing」 | **异步受理**（客户端只等 60s：`_poll_submit_until_resolved` 6×10s 即放弃） | 等 4 分钟；仍 `UNSUBMITTED` → **re-POST 补发** |
+   | ② | `201/202`「Accepted (async); IS checks still computing」 | **异步受理**（客户端只等 60s：`_poll_submit_until_resolved` 6×10s 即放弃） | 等 4 分钟；`get_alpha_details` 查 `status` 仍 `UNSUBMITTED` → **re-POST 补发** |
    | ③ | `200` + 「Non-JSON submit response」+ **空体** | **异步受理、结果未知** | 同 ②：**必须补发**，**不得当成失败** |
    | ④ | `403` + JSON `{"is":{"checks":[…]}}` | **失败**，但**零成本**且回带**全量 checks 与真因** | 读唯一 FAIL 项定位（见下条） |
 
@@ -177,7 +170,7 @@ for _ in range(36):   # 最多 3 分钟
 5. **`GET /alphas/{id}/submit` 在本平台恒返回 `404` + 空体——不要用它做任何判定**（2026-09-26 实测：
    对未提交的 `O0GjWqeY` 与**已 ACTIVE 的** `MPabNeNz` 同样 404）。历史文档对此有三种互相矛盾且都错的
    说法（"text/html SPA 壳" / "403 盲区唯一权威" / "可直接走 POST"）；**真相是：提交层的信息只存在于
-   `POST` 响应里**（200/201/403 三态，见第 1 条）。据此也修正一点：`tools/submit_verdict.py` 的
+   `POST` 响应里**（四种响应形态①②③④，见第 1 条）。据此也修正一点：`tools/submit_verdict.py` 的
    提交层视图走的就是这个恒 404 的 GET，故其 403 分支是**死代码**，对处女候选只会给 `UNVERIFIABLE`
    （不构成可提交依据，见 ra-pipeline 步 1）——**真闸只能靠 POST**。
 6. **提交前必做平台 IS 核验（关键！）**：`scan` 的 `PASS_CHEAP` 本地判定**不会**
@@ -185,7 +178,14 @@ for _ in range(36):   # 最多 3 分钟
    `get_alpha_details(id)` → `is.checks`（**没有** `get_alpha_check` 这个工具，旧文档名是错的），
    确认 **无 `FAIL`**（`WARNING`/`PENDING` 不挡）。self_corr 0.87~1.0 属结构性黏滞信号，
    无法靠补 description 救活，只能重挖低自相关变体。PASS_CHEAP ≠ 平台可提交。
-7. 配额查询：`GET /alphas/submission-limit` 路径不存在（404），不要依赖它判断剩余额度。
+7. **提交路由已 fail-closed 前置（2026-09-29 P0，`submit_alpha` 节点强制）**：
+   `workflow_submit_alpha`（或 `submit_alpha` 节点）在真正 POST 之前，会自动跑两道闸——
+   ① `submit_gate`：`is.checks` 里模拟层 `FAIL` / 提交层硬闸 `WARNING`（LOW_SHARPE/LOW_FITNESS/
+   LOW_2Y_SHARPE）/ WebDataScope `Failed RA/PPA≠0`（= brain-alpha-robustness Phase B.0 硬门），
+   任一命中即拒绝提交（`force=True` 仅限人工确认后显式豁免，留痕于 workflow 记录的 plan/steps 字段）；② `robustness_audited=True` 显式声明（补齐
+   Phase B/C 逐年归因），`confirm_submit=True` 时缺省拒绝。**不是靠 Agent 记得调 robustness，
+   而是不声明就提交不出去。** 预检失败/无 `is.checks` 也 fail-closed 阻断（不再放行）。
+8. 配额查询：`GET /alphas/submission-limit` 路径不存在（404），不要依赖它判断剩余额度。
    **REGULAR 余量的唯一可靠来源 = `POST /alphas/{id}/submit` 响应里 `REGULAR_SUBMISSION` 的
    `value/limit`**（value 从 0 起计数，limit=4；`SUPER`=1、PPA `POWER_POOL_SUBMISSION`=1 各自独立）；
    `activities/submissions` **缺 `today` 字段、不可用于当日判断**。辅助：`tools/quota_status.py`
@@ -261,8 +261,7 @@ for _ in range(36):   # 最多 3 分钟
 - `get_submission_quota` MCP 工具已于 2026-08-25 移除，**不要依赖它**。
 - 剩余额度从 submit 响应 `REGULAR_SUBMISSION` / `SUPER_SUBMISSION` check 的 `value/limit` 读
   （value 从 0 起计数，limit=4/1）；硬闸 FAIL 的提交**不消耗**配额（status 保持 UNSUBMITTED）。
-- 判断"今天 ET 日已用几颗"：拉 `/users/self/activities/submissions`（按日聚合记录）
-  或本地 DB `alphas.date_submitted`（注意是 EDT 时区 `-04:00`）按当前 ET 日过滤。
+- 当日 REGULAR 真值唯一认 POST 响应 `REGULAR_SUBMISSION.value/limit`；`activities/submissions` 缺 `today` 字段，不可用于当日判断。
 - 可复用：`python tools/quota_status.py`（按 `stage=OS` 的 `dateSubmitted` 数当日颗数；**不区分 REGULAR/SUPER**，
   只作辅助），当日 REGULAR 真值仍以 POST 响应 `REGULAR_SUBMISSION.value/limit` 为准。
 
@@ -281,7 +280,7 @@ PPA 是**独立日配额**（`POWER_POOL_SUBMISSION` limit=1/ET 日），与 REG
 提交层判定与批量提交一律走通用工具，**不要手写 `GET /alphas/{id}/submit` 或 `_submit_*.py`**：
 
 ```powershell
-# 403 盲区的唯一可信判定入口（模拟态 + submit 双视图）
+# submit_verdict = 模拟层 + 参考视图（最终以 POST 实测为准；GET /submit 恒 404 勿用于判定）
 & $WQ_PY tools/submit_verdict.py --alpha-id <ALPHA_ID>
 
 # 批量提交（多批规格走 --spec JSON 文件通道，避免引号事故）

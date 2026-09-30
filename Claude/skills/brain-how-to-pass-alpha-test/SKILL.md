@@ -21,7 +21,7 @@ allowed-tools:
 
 - **本 skill 负责**：**只读**查阈值与解释「为什么不过闸」：Fitness/Sharpe/Turnover/Weight/Sub-universe/Self-Correlation 的门限与改进方向
 - **本 skill 不做**：**不产生新表达式、不回测、不改候选** —— 需要动手改 → 转 `wq-brain-alpha-optimization-v1`。判据：**是否产生新表达式**
-- **上游 / 下游**：上游 = 失败的候选指标；下游 = 改进（optimization-v1）
+- **上游 / 下游**：上游 = 失败的候选指标；下游 = S4 改进链（见「衔接协议」：optimization-v1 → selfcorr-quick → explain-alphas → robustness）
 
 
 
@@ -39,7 +39,7 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
 
 ### 改进建议
 - 提高 Sharpe/Returns 并降低 Turnover。
-- 使用分组算子（group operators，如搭配 pv13）来提升 fitness。
+- 使用分组算子（如 `group_rank` / `group_zscore`，在组内标准化后加权）来提升 fitness。
 - 用 `mcp__wq-brain-http__get_alpha_details` 工具检查（返回 `is.checks`；提交配额从 submit 响应的 `REGULAR_SUBMISSION`/`SUPER_SUBMISSION` check 读，`get_submission_quota` 已于 2026-08-25 移除）。
 
 ## 2. Sharpe Ratio
@@ -64,8 +64,8 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
 - 任一股票的权重上限 <10%。
 
 ### 改进建议
-- 使用中性化（如 `neutralize(x, "MARKET")`）来分散权重。
-  ⚠️ **2026-09-01 实测修正（IND/TOP500 实证）：中性化对本闸无效**，见下。
+- **唯一有效做法：时间平滑**——对瞬时离散计数/事件类信号加 `ts_mean(x, N)` 或 `ts_decay_linear(x, N)`，不要直接 rank 瞬时值。
+  ⚠️ **2026-09-01 实测修正（IND/TOP500 实证）：中性化（MARKET/SECTOR/INDUSTRY/SUBINDUSTRY 四档）对本闸无效**，见下。
 
 ### ★ 实测要点（2026-09-01，IND analyst 修正族双例验证）
 - **本闸是"隐形第四闸"，且无法预检**：不同于 SELF/PROD，**它无 value/limit**，IS 阶段只显示
@@ -109,12 +109,12 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
   非空取 `max`）。
   ⚠ `mcp__wq-brain-http__check_correlation` 是同一 GET 的**阻塞式轮询且依赖 Redis（本环境不可用）→ 易「等死」**，
   且**不要高频 `refresh=true`**（会加长平台队列）。库内 prod 值会严重过期，提交前必须实测。
-- 对负相关 alpha 做变换。
+- 对负相关 alpha 翻转符号：`-original_expression`（如 `-ts_rank(close, 20)`），翻转后重跑相关性验证。
 
-## 通用建议
-- **从简单开始**：先使用 `ts_rank` 等基础算子。
-- **优化设置**：选择 TOP3000 等股票池（USA, D1）。
-- **ATOM 原则**：避免混合数据集，以受益于放宽的 "ATOM" 提交标准（近 2 年 Sharpe / Last 2Y Sharpe）。
+## 附录：通用建议（跨闸，不专属某一编号闸）
+- **从简单开始**：先用 `ts_rank` 等基础算子搭骨架，再逐层加复杂算子（配合 §1 Fitness / §2 Sharpe）。
+- **优化设置**：选择 TOP3000 等股票池（USA, D1）起步，达标后再换更难 universe 验证稳健性（配合 §5 Sub-universe）。
+- **ATOM 原则（展开）**：ATOM = 单数据集 alpha（除 country/sector 等允许的分组字段外不混数据集）。ATOM alpha 享受放宽的提交标准——以「最近 2 年 Sharpe（Last 2Y Sharpe）」替代完整 IS Ladder 测试，门槛更低；且单数据集自相关通常更低，利于通过 §6 Self-Correlation。改进时优先在**同一数据集内**换字段/换算子，混入其他数据集会丧失 ATOM 资格。
 
 ## 衔接协议
 - **上游**：S3 `brain-sim-alphas-in-batch-and-track`（回测结果优先查 **backtest_results 表**（`mcp__wqb-db__*` 查询工具，结构化真相源）；`simulation_status.csv` 候选池为排障兼容回退）。
@@ -125,7 +125,7 @@ Alpha 必须通过一系列提交前检查，以确保其满足质量阈值。
      消费 salvage_pool 补强腿）；**未达标 → 判死**（dead_end 回写 + wave 台账 closed，勿送 near_pool / 勿发增强波）。
   2. 快达标因子（S≥1.0 且 prod corr<0.5）已由 S4 `review_wave.py --write-ledger` 自动幂等写入台账
      `salvage_pool`（对齐 `_salvage_to_pool` entry 结构，带 boost_dims 卡点标注），**无需人工手写入池**。
-- **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorr-quick` → `brain-explain-alphas`。
+- **下游**：`wq-brain-alpha-optimization-v1`（先 Mode B 想法层，后 Mode A 参数层）→ `brain-calculate-alpha-selfcorr-quick`（本地快筛 self-corr/PPAC）→ `brain-explain-alphas`（收益来源归因）→ **`brain-alpha-robustness`**（过拟合/稳健性必经闸，S4→S5）→ `tools/submit_verdict.py`（提交层权威判定；`brain-alpha-judge` 仅作可选参考评审）。
 
 ## LOW_2Y_SHARPE / IS_LADDER 破闸
 

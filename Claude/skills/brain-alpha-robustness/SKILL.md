@@ -9,10 +9,10 @@ allowed-tools:
   - mcp__wq-brain-http__*
 ---
 
-> **定位声明（2026-08-23 单源化，2026-08-31 边界强化）**：本 skill 与 `brain-alpha-judge` 同处 S4→S5 交界，分工固定：
-> **本 skill = S4→S5 必经的稳健性/过拟合闸**（近 3 年强度、衰减比、CV_Sharpe、WebDataScope failed-count 前置门）；
-> **`brain-alpha-judge` = S5 唯一提交评审入口**（双闸评审）。先过本闸，再进 judge，不要互相替代。
-> **边界**：本 skill 诊断"该不该提交"（过拟合），judge 决策"现在值不值得提交"（综合评审）。本 skill **不重复** judge 的平台硬检查/PPA 主题门控/value-factor trend 投影；judge **不重复** 本 skill 的归因计算。完整职责边界表见 `brain-alpha-judge` SKILL.md「与 brain-alpha-robustness 的职责边界」节。
+> **定位声明（2026-08-23 单源化，2026-08-31 边界强化，2026-09-29 降级表述）**：本 skill 与 `brain-alpha-judge` 同处 S4→S5 交界，分工固定：
+> **本 skill = S4→S5 默认强制的稳健性/过拟合闸（force 留痕可绕过）**（近 3 年强度、衰减比、CV_Sharpe、WebDataScope failed-count 前置门）；
+> **`tools/submit_verdict.py` = 提交层权威判定；`brain-alpha-judge` = 可选参考评审**（PPA 人工核对清单 + trend score）。先过本闸，再进 submit_verdict；judge 仅作参考，不要互相替代。
+> **边界**：本 skill 诊断"该不该提交"（过拟合），submit_verdict 做提交层判定，judge 提供参考评审。本 skill **不重复** judge 的平台硬检查/PPA 主题门控/value-factor trend 投影；judge **不重复** 本 skill 的归因计算。完整职责边界表见 `brain-alpha-judge` SKILL.md「与 brain-alpha-robustness 的职责边界」节。
 
 > **权威性（2026-09-26 审计更正）**：真相源 = **仓库 `Claude/skills/brain-alpha-robustness/`**（本目录），
 > 由 `tools/sync_skills.py` 多目标同步到各宿主安装位（见 `Claude/skills/INDEX.md §唯一权威副本`）。
@@ -22,23 +22,27 @@ allowed-tools:
 
 ## 职责边界
 
-- **本 skill 负责**：反过拟合 / 稳健性闸：跨年度、子宇宙、逐年 PnL 归因，拒绝「高 Sharpe 来自噪声拟合/股票集中/单年行情」（S4→S5 **必经**）
+- **本 skill 负责**：反过拟合 / 稳健性闸：跨年度、子宇宙、逐年 PnL 归因，拒绝「高 Sharpe 来自噪声拟合/股票集中/单年行情」（S4→S5 **默认强制，force 留痕可绕过**）
 - **本 skill 不做**：不做提交判定（submit_verdict）、**不编辑候选使其过闸**（那是 `brain-alpha-repair`/optimization-v1 的事）
-- **上游 / 下游**：上游 = S4 达标候选；下游 = `brain-alpha-judge` 参考评审 → S5
+- **上游 / 下游**：上游 = S4 达标候选；下游 = `tools/submit_verdict.py` 权威判定 → `brain-alpha-judge` 可选参考评审 → S5
 
 
 
 ## 衔接协议（九步流水线定位）
 
 - **上游**：S4 链——`brain-explain-alphas`（收益来源归因后的候选）。
-- **本 skill 角色**：**S4→S5 必经闸**（过拟合/稳健性审计；INDEX.md 2026-08-22 起列入流水线）。Phase C 的 PASS/CONDITIONAL/REJECT 三态即闸门判定。
+- **本 skill 角色**：**S4→S5 默认强制闸（force 留痕可绕过）**（过拟合/稳健性审计；INDEX.md 2026-08-22 起列入流水线）。Phase C 的 PASS/CONDITIONAL/REJECT 三态即闸门判定。
+  **2026-09-29 P0：本闸已焊进提交路由（不再靠 Agent 记得调）**：`submit_alpha` 节点现强制 fail-closed 前置——
+  ① `submit_gate` 自动拦 Phase B.0a 硬门（WebDataScope `Failed RA/PPA≠0`）+ 模拟层 `FAIL` + 提交层硬闸 `WARNING`（LOW_SHARPE/LOW_FITNESS/LOW_2Y_SHARPE）；
+  ② `robustness_audited=True` 显式声明补齐无法自动的 Phase B/C 逐年归因（`confirm_submit=True` 时缺省拒绝，`force=True` 留痕绕过）。**声明 `robustness_audited=True` 时必须附归因报告路径**（`tracking/YYYY-MM-DD_robustness.md`），否则该声明视为未完成。
+  即：**不跑本 skill 的 Phase B/C、不声明 `robustness_audited`（含归因报告路径），候选提交不出去**（除非 force 且已人工确认）。
 - **下游**：PASS → `tools/submit_verdict.py`（提交层权威判定）→ `brain-alpha-judge`（可选参考评审：PPA 人工核对清单 + trend score）→ 提交路由；CONDITIONAL → `brain-alpha-repair`（同目录外部技能）修复后重审（≤2 轮）；REJECT → 不提交，结论写回台账。
 
 ## 触发场景
 
 提交前验证 alpha 候选、已提交 alpha 的 OS 表现不佳事后复盘，或任何提到过拟合 / 稳健性 / robust test / sub-universe / yearly stats / PnL attribution / 归因分析 / decay ratio / 厂字形 / year-skipping / stock concentration / parameter stability 的请求。
 
-与 `brain-alpha-repair` 的区别（后者是编辑候选使其可过闸）——本 skill 依据稳健性与归因证据**诊断**该候选**是否应该**提交。通过相关性预检（`get_alpha_details` 的 `is.checks` + `check_correlation`；**不存在 `get_submission_check` 这个 MCP 工具**，2026-09-26 审计已更正）的 alpha 仍可能过拟合在单一年份或 5 只股票上；这正是本 skill 要抓住的情形。
+与 `brain-alpha-repair` 的区别（后者是编辑候选使其可过闸）——本 skill 依据稳健性与归因证据**诊断**该候选**是否应该**提交。通过相关性预检（`get_alpha_details` 的 `is.checks` + `GET /alphas/{id}/correlations/prod` 轮询；**不存在 `get_submission_check` 这个 MCP 工具**，2026-09-26 审计已更正）的 alpha 仍可能过拟合在单一年份或 5 只股票上；这正是本 skill 要抓住的情形。
 
 ## 工作流
 
@@ -69,13 +73,18 @@ allowed-tools:
 
 对每个进入提交评审的 alpha 候选，先产出归因报告再跑反过拟合闸。报告必须引用具体 MCP 工具输出，不是散文摘要。
 
-**Phase B.0 — WebDataScope failed-count 门（硬前置，2026-04-21 修订）**。下方任何归因调用之前，先从 `get_alpha_details` 加载 `is.checks`（或已有的仿真结果），按 [`../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) 计算 WebDataScope failed counts。REGULAR 评审：`Failed RA == 0` 否则立即 REJECT。PPA 评审：`Failed PPA == 0` 否则立即 REJECT。不要跑 Phase B/C。不要跑 `check_correlation`。不要设 alpha 属性。failed count 非零时不要向用户推荐。满足用户类型化指标（如 `sharpe>1.58, fitness>1, 2Y>1.6`）但 Failed RA/PPA 非零的候选**不是**合格者。向用户报告时，逐条枚举 counted item 的 `name`、`result`、`limit`、`value`。
+**RA / PPA 二选一判定（进入任何门之前先定类型）**：
+1. 候选是否走当期 Power Pool 主题 / PPA 通道（`get_alpha_details` 的 classification 或提交通道）→ 是 → **PPA 评审**（后续门用 `Failed PPA` 口径）；
+2. 否则 → **REGULAR 评审**（后续门用 `Failed RA` 口径）。
+默认按 REGULAR 评审；仅当候选明确投 Power Pool 主题时按 PPA 评审。一次审计只走一种类型，不混用两个 failed-count 口径。
 
-**Phase B.0a — 体检硬门前置确认（2026-08-05 新增）**。候选到达 robustness 审计时，其表达式应已在 ra-pipeline 步 5 或 repair 第 2c 步通过 `check_expr_against_inspect` 校验（见 [`../wq-brain-ra-pipeline/SKILL.md`](../wq-brain-ra-pipeline/SKILL.md) 步 5）。若候选来自修复路径且未经过体检硬门，必须在此补跑：从 `tracking/field_inspect_<region>.json` 查出所用字段的体检结果，调用 `check_expr_against_inspect(expr, field_inspect_result)`；若 `ok=False`，直接 REJECT 并回退到 repair skill 按 violations 修复——一个预处理不达标的表达式即使 IS 指标好看，在样本外也会因 CONCENTRATED_WEIGHT、极值未抑制、信号不对称等结构性问题退化。此步不替代 Phase B/C 的归因分析，而是确保归因分析不会在结构缺陷上浪费时间。
+**Phase B.0 — 体检硬门前置确认（2026-08-05 新增，硬前置）**。候选到达 robustness 审计时，其表达式应已在 ra-pipeline 步 5 或 repair 第 2c 步通过 `check_expr_against_inspect` 校验（见 [`../wq-brain-ra-pipeline/SKILL.md`](../wq-brain-ra-pipeline/SKILL.md) 步 5）。若候选来自修复路径且未经过体检硬门，必须在此补跑：从 `tracking/field_inspect_<region>.json` 查出所用字段的体检结果，调用 `check_expr_against_inspect(expr, field_inspect_result)`；若 `ok=False`，直接 REJECT 并回退到 repair skill 按 violations 修复——一个预处理不达标的表达式即使 IS 指标好看，在样本外也会因 CONCENTRATED_WEIGHT、极值未抑制、信号不对称等结构性问题退化。此步不替代 Phase B/C 的归因分析，而是确保归因分析不会在结构缺陷上浪费时间。
+
+**Phase B.0a — WebDataScope failed-count 门（硬前置，2026-04-21 修订）**。下方任何归因调用之前，先从 `get_alpha_details` 加载 `is.checks`（或已有的仿真结果），按 [`../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) 计算 WebDataScope failed counts。REGULAR 评审：`Failed RA == 0` 否则立即 REJECT。PPA 评审：`Failed PPA == 0` 否则立即 REJECT。不要跑 Phase B/C。不要跑相关性探测。不要设 alpha 属性。failed count 非零时不要向用户推荐。满足用户类型化指标（如 `sharpe>1.58, fitness>1, 2Y>1.6`）但 Failed RA/PPA 非零的候选**不是**合格者。向用户报告时，逐条枚举 counted item 的 `name`、`result`、`limit`、`value`。
 
 1. `get_alpha_details(alpha_id)` — 规范表达式、region/universe/neutralization/decay、顶层指标。核实候选存在且在 IS（未提交）。
 2. `get_alpha_yearly_stats(alpha_id)` — 逐年 Sharpe / returns / drawdown / fitness。**近窗制度（用户指令 2026-06-20）：按最近 ~3 个 IS 年判稳健性，不是全部 10 年。要求 10 年全强过严，会杀死活信号。**计算：
-   - **Recent-3yr 强度（主判定）** — 最近 3 个 IS 年的 Sharpe（≈ 平台 2Y/3Y sharpe）。要求 ≥ 用户 2Y 线**且**最近 3 年每年为正（sharpe > ~0.3）。这是预测 OS 存活的关键闸。
+   - **Recent-3yr 强度（主判定）** — 最近 3 个 IS 年的 Sharpe（≈ 平台 2Y/3Y sharpe）。要求 ≥ 用户 2Y 线；最近 3 年每年为正（sharpe > 0.3）是 PASS，**某近年在 0–0.3 落入 CONDITIONAL**（见 Phase C Decision table），不是硬 REJECT。这是预测 OS 存活的关键闸。
    - **衰减比** = `last_year_sharpe / full_period_sharpe` — <0.30 标警（信号已衰减）。保持真实闸——度量"现在还活着"。
    - **Recent-3yr CV_Sharpe** = 最近 3 个年度 Sharpe 的 std/mean — ≥0.60 标警。（全历史 CV 仅作信息参考——记录即可，绝不据此 REJECT。）
    - **近窗厂字形 / max-min** — 只在**最近 3 年内**数平年（`|sharpe|<0.3`）与 max/min 比。早年平/负区间（如 2015/2017/2020）是描述中记录的软标记，不是 reject。
@@ -83,7 +92,7 @@ allowed-tools:
    - **回撤日历** — 按年-季分组，算每季最大回撤；任一季 `drawdown > 2 × 全期平均回撤` 标警。
    - **换手×Margin 合理性** — 算日均换手与 margin（`returns / turnover`）；换手 >60% 且 margin_bp <3 标警（噪声拟合；论坛 LJ46725）。
    - **Top-K 个股集中度**（如有逐股 PnL）— 前 5 只股票贡献 ≥50% 累计 PnL 标警。
-4. `check_correlation(alpha_id)` — Stage 5 已要求；在此复记使稳健性报告自含。
+4. **相关性复记**：Stage 5 已要求；在此复记使稳健性报告自含。取法用轮询：直接 15s 间隔长窗口轮询 `GET /alphas/{id}/correlations/prod`（恒秒回 200，**空体 = 平台仍在算**，非空取 `max` 作判定值）；**不用** `mcp__wq-brain-http__check_correlation`（阻塞式且依赖 Redis，本环境易「等死」），也不要高频 `refresh=true`。
 5. `performance_comparison(alpha_id)` — 相对池贡献。即使独立指标全过，边际贡献为负仍是软标记；写进报告交用户终审。
 
 ### Phase C — 反过拟合闸（归因之后、提交之前）
@@ -125,10 +134,10 @@ allowed-tools:
 候选通过 robustness 审计后、进入提交环节前，必须确认以下 PPA 规则：
 
 1. **PPA 提交路径（2026-09-12 上移单源）**：MCP `submit_alpha` 非 PPA 感知（内置常规 RA 闸门照拦合法 PPA，打标签重试无效）→ 合法 PPA（Sharpe≥1.0/算子≤8/字段≤3/PC<0.5）**只能走平台 web UI**、且仅在当期活跃 Power Pool 主题窗口内。**完整约束、配额语义与台账回写动作的唯一权威 = `worldquant-submit-alpha`「PPA 通道」节**——本节保留结论仅为评审时快速否决，不再重复维护细节。
-3. **RA 常规提交**不受主题限制，但达标 alpha 可能无 RA 通道可选（平台强制走 PPA 通道）。
-4. **PPA 描述三段是硬性要求**（idea / 数据字段 / 操作符），建议用 ChatGPT 生成（61 赞帖最佳实践）。提交前用 `set_alpha_properties` 预置描述 + tags=["PowerPoolSelected"] + color=GREEN。
-5. **幽灵提交识别**：台账记 ACTIVE 但平台 `GET /alphas/{id}` 返回 HTTP 404 → 从未真正落地（静默丢弃但台账未更新）。处理：修正台账为 PHANTOM，标注"表达式本地已丢失，无法重新提交"。已实证案例：`pwKvRLqg`。
-6. **提交探测协议**：从候选池按 sharpe 排序，选 5 个**最大化多样**样本（不同前缀×universe×neutralization），逐个提交+轮询 `/check` 读 prodCorr。若 5 个全 FAIL prodCorr → 整族不可提交，停止盲目提交。429 限速需指数退避。
+2. **RA 常规提交**不受主题限制，但达标 alpha 可能无 RA 通道可选（平台强制走 PPA 通道）。
+3. **PPA 描述三段是硬性要求**（idea / 数据字段 / 操作符），建议用 ChatGPT 生成（61 赞帖最佳实践）。提交前用 `set_alpha_properties` 预置描述 + tags=["PowerPoolSelected"] + color=GREEN。
+4. **幽灵提交识别**：台账记 ACTIVE 但平台 `GET /alphas/{id}` 返回 HTTP 404 → 从未真正落地（静默丢弃但台账未更新）。处理：修正台账为 PHANTOM，标注"表达式本地已丢失，无法重新提交"。已实证案例：`pwKvRLqg`。
+5. **提交探测协议**：从候选池按 sharpe 排序，选 5 个**最大化多样**样本（不同前缀×universe×neutralization），逐个提交+轮询 `/check` 读 prodCorr。若 5 个全 FAIL prodCorr → 整族不可提交，停止盲目提交。429 限速需指数退避。
 
 ## 设计边界
 
@@ -140,7 +149,7 @@ allowed-tools:
 ## 验证清单
 
 1. 运行 `tools/forum_cache_builder.py --status`；过期/为空时在 Phase A 调 `authenticate` 和至少一次 `search_forum_posts`；确认缓存达到 ≥30 帖再继续。缓存新鲜时确认可加载并跳过实时搜索。
-2. 对样本 alpha 端到端跑 Phase B，确认全部四个 MCP 工具（`get_alpha_details`、`get_alpha_yearly_stats`、`get_alpha_pnl`、`check_correlation`）返回非空载荷。
+2. 对样本 alpha 端到端跑 Phase B，确认三个 MCP 工具（`get_alpha_details`、`get_alpha_yearly_stats`、`get_alpha_pnl`）返回非空载荷，相关性用轮询 `GET /alphas/{id}/correlations/prod` 取非空 `max`。
    ⚠ `check_correlation` 是**阻塞式轮询且依赖 Redis（本环境不可用）→ 易「等死」**；生产/自相关的可靠取法是
    **直接 15s 间隔长窗口轮询 `GET /alphas/{id}/correlations/prod`**（该端点恒秒回 200，**空体 = 平台仍在算**，
    非空返回 `{records, max, min}`，**`max` 才是判定值**），且**不要高频 `refresh=true`**（会加长平台队列）。任一返回空时重试一次后向用户报错——不得编造数字。

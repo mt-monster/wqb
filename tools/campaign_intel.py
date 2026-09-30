@@ -286,6 +286,22 @@ async def _cmd_xr_probe(a):
 # s0-select：S0 选集增强（三方交叉）
 # ---------------------------------------------------------------------------
 
+def _s0_rank_key(x, xr_penalize=False):
+    """S0 候选排序键（2026-09-30 P1：跨区弱默认不参与降权）。
+
+    返回 `(penalized, soft, -total_score)`，逐层：
+      penalized = ledger 判死 ∨ 产出率证伪   → 沉底（最后）
+      soft      = 字段数 < min_fields        → 次沉（做不了主攻腿）
+      --xr-penalize 时 `[跨区弱]` 也计入 soft（旧行为，仅供 A/B 对照）
+
+    跨区先验为何移出：实测无预测力（见调用处注释），留作展示标签交人工判断。
+    """
+    penalized = bool(x.get("ledger_dead") or x.get("proven_dead_by_yield"))
+    soft = bool(x.get("conditioning_only")) or (
+        bool(x.get("xr_penalized")) and bool(xr_penalize))
+    return (penalized, soft, -(x.get("total_score") or 0))
+
+
 async def _cmd_s0_select(a):
     from brain_api import BrainApiClient  # noqa: F402
     brain = BrainApiClient()
@@ -476,18 +492,25 @@ async def _cmd_s0_select(a):
             "conditioning_only": conditioning_only,
             "xr_weak": xr.get("weak") or [],
             "xr_strong": xr.get("strong") or [],
+            # 2026-09-30 P1：改为**仅展示**，不再参与排序（见 _rank 处注释）。
+            # 字段名保留（下游 JSON 消费方兼容），语义 = "是否被标跨区弱"，非"是否被降权"。
             "xr_penalized": xr_weak,
             "est_seats": int(seat_model.get(ds_id, seats_default) or 0),  # P1：独立座位估计
         })
 
-    # 排序：判死（ledger 或产出率证伪）沉底；跨区弱 / 字段<min_fields 次沉；其余按 total_score 降序
+    # 排序：判死（ledger 或产出率证伪）沉底；字段<min_fields 次沉；其余按 total_score 降序
     # （2026-09-19：此前只按未点亮塔分排序，把 earnings3/insiders1/macro63/shortinterest5 这类
     #   结构性弱集推到前排，7 集 197 条回测 0 候选）
-    def _rank(x):
-        penalized = x["ledger_dead"] or x["proven_dead_by_yield"]
-        soft = x["xr_penalized"] or x["conditioning_only"]
-        return (penalized, soft, -(x["total_score"] or 0))
-    out.sort(key=_rank)
+    #
+    # （2026-09-30 P1：把 `xr_weak` 移出排序 key，降为纯展示标签。）
+    #   实测（多区共有数据集子集，n=154，基线 yield>0 = 23%）：
+    #     标跨区弱  → 24%（对照「未标弱」23%，lift +1pp）
+    #     标跨区强  → 22%（对照「未标强」24%，lift −2pp）
+    #   两个方向都在噪声内 ⇒ 该先验**无预测力**，却因 soft 是排序第二键而把候选整体压到
+    #   存活队尾；影响面 bt<8 候选的 17%（8/48），top-n 截断时会被完全排除 ⇒ 纯系统性偏置。
+    #   保留 `conditioning_only`（字段数 < min_fields）在 soft 层：它有结构含义（做不了主攻腿）。
+    #   需要复现旧排序做对照时加 `--xr-penalize`。
+    out.sort(key=lambda x: _s0_rank_key(x, getattr(a, "xr_penalize", False)))
 
     # 2026-09-19 用户硬规则：已点亮塔（当季 ACTIVE >= 3）的数据集不开战役，只作组腿 —— 默认剔除
     lit_excluded = []
@@ -521,7 +544,7 @@ async def _cmd_s0_select(a):
         if x["conditioning_only"]:
             tags.append(f"fields<{a.min_fields}:仅条件腿")
         if x["xr_weak"]:
-            tags.append("跨区弱:" + ",".join(x["xr_weak"][:3]))
+            tags.append("跨区弱(参考):" + ",".join(x["xr_weak"][:3]))
         if x["xr_strong"]:
             tags.append("跨区RA-clean:" + ",".join(x["xr_strong"][:3]))
         print(f"{i:>4} {x['total_score']:>7.2f} {yr_s:>7} {x['hist_backtested']:>4} {ms:>5} {fc_s:>4} "
@@ -1191,6 +1214,10 @@ def main():
                     help="跨区负先验的最小样本量（默认 16）")
     p0.add_argument("--include-lit", action="store_true",
                     help="保留已点亮塔的数据集（默认剔除：用户规则 2026-09-19，已点亮塔只作组腿不开战役）")
+    p0.add_argument("--xr-penalize", action="store_true",
+                    help="恢复 2026-09-19 旧行为：把[跨区弱]重新纳入排序降权。"
+                         "默认不降权——2026-09-30 实测该先验无预测力（标弱 24% vs 未标 23%，基线 23%），"
+                         "留此开关仅供 A/B 对照")
     p0.add_argument("--json", dest="json_out")
 
     px = sub.add_parser("xr-probe", help="跨区探针：同一组表达式按各区 settings 发批→收批入库→GLOBAL/xr_probe_<tag> 台账")

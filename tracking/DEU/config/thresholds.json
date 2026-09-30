@@ -69,20 +69,22 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "pv": 0.9,
-   "analyst": 1.0,
-   "other": 1.0,
-   "institutions": 1.0,
    "model": 1.15,
+   "fundamental": 0.9,
+   "other": 1.0,
+   "pv": 0.9,
+   "risk": 0.9,
+   "analyst": 1.0,
+   "institutions": 1.0,
    "news": 0.9,
    "insiders": 0.9,
    "shortinterest": 0.9
   },
   "crowd_sweet_spot_enable": true,
-  "sweet_spot_ac_min": 79,
-  "sweet_spot_ac_max": 374,
-  "_calibrated_at": "2026-09-19T23:23:46",
-  "_calibrated_from": "alpha_store 995 alphas/25 ds + results/ 扫描 → 共 25 datasets 实测"
+  "sweet_spot_ac_min": 105,
+  "sweet_spot_ac_max": 582,
+  "_calibrated_at": "2026-09-29T15:26:31",
+  "_calibrated_from": "alpha_store 1105 alphas/31 ds + results/ 扫描 → 共 31 datasets 实测"
  },
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "kor_specific_adjustments": {

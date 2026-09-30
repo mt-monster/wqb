@@ -53,7 +53,7 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 
 | region | profile<br>`wq-brain-ra-pipeline/references/regions/<R>.md` | 战役目录<br>`tracking/<R>/` | `entry_verdict` |
 |---|---|---|---|
-| AMR | ✗ 未建 | ✗ | —（`config.REGIONS` 有；无 profile → ra-pipeline 按"处女地模板"路由） |
+| AMR | ✓（2026-09-28 补） | ✓ | `active` |
 | ASI | ✓ | ✓ | `probe-only` |
 | CHN | ✓ | ✓ | `probe-only` |
 | DEU | ✓（2026-09-11 补） | ✓ | `active` |
@@ -70,7 +70,7 @@ $WQ_PY = "$PWD\world-quant-brain-mcp\.venv\Scripts\python.exe"
 
 规则（与 `wq-brain-ra-pipeline` 步 1 一致）：
 - **有 profile 的区**按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略执行。
-- **无 profile 的区**（AMR）走"处女地模板"（参照 ASI profile）；开新区前必须先补 profile + `tracking/<R>/config/`。
+- **无 profile 的区**（当前无）走"处女地模板"（参照 ASI profile）；开新区前必须先补 profile + `tracking/<R>/config/`。
 - `frozen` 区（MEA）步 1 直接拒绝，不进入步 2。
 - 新增/删除区域时必须同步四处：`src/wqb/config.py::REGIONS`、本表、profile 文件、战役目录。
 
@@ -217,8 +217,8 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   `compute_wave_summary` / `compute_campaign_summary` / `get_step_gain_report` /
   `workflow_step_metrics` —— step-metrics 子系统整体下线（归档 `attic/step_metrics_20260917/`），
   替代方案 `tools/step_funnel.py`（只读步级漏斗）。
-- workflow 节点：**19 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
-  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
+- workflow 节点：**20 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
+  `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster` / `forum_recon_wave`）。权威 = `src/wqb/workflow/registry.py`，
   `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
   ⚠ 2026-09-17：`step_metrics` 节点已下线（18→17）；`modeb_improve` 节点上线（17→18）。
   ⚠ 2026-09-18：`alpha_booster` 节点上线（18→19，通用 Alpha 短板提升，S4 增强）。
@@ -226,6 +226,11 @@ Sharpe>1.58 · Fitness>1.0 · TVR∈[1%,70%] · Weight/Concentration 达标 · S
   同批修复 `auto_pyramid`/`auto_review`/`alpha_booster`/`modeb_improve` 假 dry-run（诚实构建命令/计划）。
   ⚠ 2026-09-28 P4：`forum_recon` 节点上线（18→19，论坛问题驱动只读检索；额度=以查出有效文章为标准），
   由 ra-pipeline 步 4/5/7/9 的 recon 触发点经 `workflow_execute` 调用。
+  ⚠ 2026-09-29：`forum_recon_wave` 节点上线（19→20，本波自动论坛取证）。此前 4 个 recon 集成点
+  **全部只写在 SKILL.md 里靠 Agent 记得触发**，默认路径走不到；本节点把 recon 变成波级默认动作
+  （每波收批自动派生问题取证，落 ledger 供 S6 判死取证闸消费）。同批修复 recon 假阴性：
+  工具故障不再落 `forum_recon_negative_*`（改 `forum_recon_error_*`、`found=null`、不进 TTL 缓存），
+  `seal_dead_end` 判死取证闸改为 fail-closed。
 
 ## 2026-09-19 挖掘流程优化落地（RA×10 战役复盘，细节见 wq-brain-ra-pipeline 各步）
 

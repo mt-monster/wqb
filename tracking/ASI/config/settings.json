@@ -1,10 +1,10 @@
 {
-  "_doc": "ASI 战役固定设置（2026-09-20 RA×10 战役重配：universe TOP500→MINVOL1M。依据=xr-probe preclose_asi_20260920：GLB 验证的 intraday_pv_feats 尾盘反转/价量相关反转骨架在 MINVOL1M/SECTOR/decay6 达 |S| 2.30(KPNwQv9N)/1.98(A1NOmewd)，region_kb 实证 qMNMbeGj 亦为 MINVOL1M；decay 4→6 依据 GLB 同族 TVR 墙实证（decay2-3 turnover 超限）。已点亮塔：0/16。原 doc：ASI 战役固定设置（与平台 settings 一致），pipeline/build_wave/probe 统一引用",
+  "_doc": "ASI 战役固定设置（2026-09-28 修正：neutralization SECTOR→SUBINDUSTRY——S4 诊断实证历史成功 alpha 全部 SUBINDUSTRY，且 SECTOR 下 56 条全灭 best Sharpe 0.49；用户原始指令亦要求 SUBINDUSTRY。2026-09-20 RA×10 战役重配：universe TOP500→MINVOL1M。依据=xr-probe preclose_asi_20260920：GLB 验证的 intraday_pv_feats 尾盘反转/价量相关反转骨架在 MINVOL1M/SECTOR/decay6 达 |S| 2.30(KPNwQv9N)/1.98(A1NOmewd)，region_kb 实证 qMNMbeGj 亦为 MINVOL1M；decay 4→6 依据 GLB 同族 TVR 墙实证（decay2-3 turnover 超限）。已点亮塔：0/16。",
   "instrumentType": "EQUITY",
   "region": "ASI",
   "universe": "MINVOL1M",
   "delay": 1,
-  "neutralization": "SECTOR",
+  "neutralization": "SUBINDUSTRY",
   "decay": 6,
   "truncation": 0.08,
   "maxTrade": "ON",

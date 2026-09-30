@@ -25,7 +25,7 @@ allowed-tools:
 
 ## 工作流
 
-### 1. 新闻/情绪 5 家族分类 + 6 桶框架（2026-04-23 起硬闸）
+### 1. 新闻/情绪 5 家族分类 + 6 桶框架（2026-04-23 起文档约定）
 
 当目标数据集属于 `news`/`sentiment`/`socialmedia` 类别（或 id 以 `news`/`nws`/`sentiment`/`snt` 开头）时，用 [`src/wqb/research/news_field_classifier.py`](src/wqb/research/news_field_classifier.py) 把每个候选字段分到恰好一个家族：
 
@@ -37,9 +37,9 @@ allowed-tools:
 
 关键词规则与逐数据集覆盖（news12/news29/news73/news94）在分类器模块内。分类法缓存于 `data/field_taxonomy/<region>_<dataset>.json`。
 
-家族按 [`reference/news_bucket_field_map.md`](docs/reference/news_bucket_field_map.md) §4 配成 6 桶——**每批禁止 3 个字段同家族**，且 Event / Dispersion / Propagation 三桶是高优先三元组。
+家族按 [`docs/reference/news_bucket_field_map.md`](docs/reference/news_bucket_field_map.md) §4 配成 6 桶——**每批禁止 3 个字段同家族**（文档约定/软门禁，无机器判据），且 Event / Dispersion / Propagation 三桶是高优先三元组。**每批门禁（文档约定，无机器判据）**：≥3 个不同桶/批、≥1 个 HIGH 桶（Dispersion / Event-conditioned / Propagation）、VECTOR 字段存在时 ≥2 个不同 `vec_op`、`check_batch` shape_variety ≥2。
 
-研究方向见 [`reference/news_sentiment_playbook.md`](docs/reference/news_sentiment_playbook.md)——描述的是动机与设计目标，不是公式。
+研究方向见 [`docs/reference/news_sentiment_playbook.md`](docs/reference/news_sentiment_playbook.md)——描述的是动机与设计目标，不是公式。
 
 覆盖 <0.4 的字段必须显式 `ts_backfill` / `group_backfill` 或直接弃用——裸用会产生 5-10 只股票集中持仓的 alpha，即使 IS 指标好看也会挂 CONCENTRATED_WEIGHT。
 
@@ -53,14 +53,15 @@ news12 在 USA/D1 **没有语气/极性标量**——它是新闻事件驱动的
 - V（区间/波动上下文）→ dispersion
 - M（微观结构/上下文）→ event_type（news12 无真正事件代码；用 `nws12_mainz_vol_ratio` / `atrratio` 作合成触发器）
 - T（反应时长）→ event_type
+- **peer_context（同侪上下文）无对应**：news12 是事件驱动价格反应微结构，不含预聚合同侪字段，五家族中的 peer_context 在 news12 上不适用，勿强造。
 
-完整 R/A/V/M/T 字段表见 [`reference/news.md`](docs/reference/news.md)。
+完整 R/A/V/M/T 字段表见 [`docs/reference/news.md`](docs/reference/news.md)。
 
 合法配对桶遵循 6 桶框架——news12 的反应中心 motif（M1–M6）映射：M1/M3 → surprise，M2 → event，M4 → surprise 或 change，M5 → event，M6 → event。
 
 ### 3. Tier A 数据集组合核对（2026-04-23）
 
-任何新闻类挖掘任务先查 [`reference/news_dataset_portfolio.md`](docs/reference/news_dataset_portfolio.md)。
+任何新闻类挖掘任务先查 [`docs/reference/news_dataset_portfolio.md`](docs/reference/news_dataset_portfolio.md)。
 
 冷启动任务路由到 Tier A（fieldCount ≥ 50 且 alphaCount/fieldCount ≤ 5 且 pyramidMultiplier ≥ 1.2）：
 `news_transformer_scores` / `sentiment22` / `sentiment23` / `event_return_model` / `news94` / `news29` / `news73` / `news23` / `news59` / `creator_signal_perf` / `twitter_sentiment_l2`。

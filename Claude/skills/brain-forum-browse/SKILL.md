@@ -1,7 +1,7 @@
 ---
 last_verified: 2026-09-28
 name: brain-forum-browse
-description: "通过 MCP 运行 WorldQuant BRAIN 中文论坛（live forum browse）：默认 **explore stroll** （有目的或涌现式浏览；每轮必须有**独特贡献**，来自个人经验 + AI 对话）。 contribute 模式 = 更严格的 gap 驱动 Recon + 必选 curator。 触发词：逛一逛论坛、逛论坛、看看论坛、去论坛转转、填论坛空白、论坛贡献、browse the forum。"
+description: "通过 MCP 运行 WorldQuant BRAIN 中文论坛（live forum browse）：默认 **explore stroll** （有目的或涌现式浏览；每轮必须有**独特贡献**，来自个人经验 + AI 对话）。 contribute 模式 = 更严格的 gap 驱动 Recon + 必选 curator。 recon 模式 = 回测问题驱动只读检索（S2 机制枯竭 / 闸6 回补 / S4 卡闸 / 判死核对）。 触发词：逛一逛论坛、逛论坛、看看论坛、去论坛转转、填论坛空白、论坛贡献、browse the forum、recon 检索、论坛按需检索。"
 layer: L0
 allowed-tools:
   - Read
@@ -34,25 +34,34 @@ allowed-tools:
 - 社区共建、填论坛空白、论坛贡献、点赞优质帖
 - Agent World 论坛、PPAC 论坛、中文论坛、WorldQuant 论坛
 - forum gap、browse the forum（`forum ecosystem` 为旧称，等同本 skill）
+- **recon 检索**（回测问题驱动、非逛论坛）：S2 机制枯竭 / 闸6 回补 / S4 卡闸 / 判死核对 → 经 `tools/forum_recon.py` 执行，免贡献义务
 
 **不要用于：** alpha 提交前审查 → 使用 `brain-alpha-judge`（静态语料，无实时论坛 MCP）。
 
-论坛是实时登记册（live registry）。**默认运行 = 带强制贡献的 explore stroll** — 有目的或涌现式浏览，**始终以写操作收尾**（评论、发帖和/或 curator 点赞）。**不允许无贡献的浏览。**
+论坛是实时登记册（live registry）。**默认运行 = explore stroll** — 有目的或涌现式浏览。**有写工具时**始终以写操作收尾（评论、发帖和/或 curator 点赞），不允许无贡献的浏览；**当前只读环境（wq-brain-http 无写工具）下**，以「本地 notes 草稿（拟发内容 + 值得点赞帖子 ID）」为默认可交付物。
 
 ## 运行模式（先读这个）
 
 | 用户意图 | 模式 | 行为 |
 |----------|------|------|
-| **逛一逛 / 看看 / 转转**（默认） | **explore** | stroll → **必贡献** → **auto-send E1?** 或 7.5+Contract → 6–9 |
+| **逛一逛 / 看看 / 转转**（默认） | **explore** | stroll → 只读产出本地 notes 草稿（有写工具时必贡献）→ **auto-send E1?** 或 7.5+Contract → 6–9 |
 | **贡献 / 填空白 / 跟评 / 发帖** | **contribute** | 完整 Recon → gap → 更严 write 计划 + 必 curator → Phase 7.5 → Run Contract → 同意执行 → write |
-| **逛为主，可能回一句** | **hybrid**（已弃用别名） | **等同 explore** — 同样必贡献；仅用户话术不同 |
 | **流水线按需检索**（S2 机制枯竭 / 闸6 回补 / S4 卡闸 / 判死核对） | **recon** | 经 `tools/forum_recon.py` 执行（问题驱动只读）：搜 → 读 → 结构化摘录入 `KB/community_tpl_kb` / ledger（含负结果）；**免贡献义务 / Run Contract / 工作区记忆栈**；额度以查出有效文章为标准；不触发逛论坛流程 |
+
+**explore vs contribute 差异对比（量化口径）：**
+
+| 维度 | explore | contribute |
+|------|---------|------------|
+| 前置 gap | 不要求 formal gap（purposeful signals 即可，0 项缺口门槛） | 完整 gap 评分 + Role Pick（≥1 个可填缺口） |
+| 写计划 | 轻量；auto-send E1 可跳过 Contract | 更严 write 计划，Contract 必走 |
+| curator | 值得时推荐 ≥1 点赞目标 | 必含 ≥1 点赞目标 |
+| 证据 | 每条写 ≥1 来源（E1/E2/E3） | 同左，且 gap 需 E2 支撑 |
 
 详见 [modes-and-contract.md](references/modes-and-contract.md)。
 
-**禁止所有模式：** 浏览完后「你想先做哪一项？」菜单。
+**禁止所有模式：** 浏览完后「你想先做哪一项？」菜单。形态判据：**向用户提问、等待选择 = 菜单**（禁止）；**仅落盘 notes、不提问、不等待选择 = 后续灵感**（允许，见下方「后续灵感」）。
 
-**Run Contract** — 写操作前的标准路径；**唯一例外：** 单条 E1 评论/帖子（仅 1 次写）、零推断 → [auto-send-e1.md](references/modes-and-contract.md)（无需 `同意执行`）。
+**Run Contract** — 写操作前的标准路径；**唯一例外：** 单条 E1 评论/帖子（仅 1 次写）、零推断，且满足机械判据（见「硬性规则·Run Contract 闸门」）→ [auto-send-e1.md](references/modes-and-contract.md)（无需 `同意执行`）。
 
 ## 最低贡献标准（explore 每轮必达）
 
@@ -62,17 +71,20 @@ allowed-tools:
 MCP 环境是否提供论坛写工具？
 ├─ 是 → 每次「逛一逛论坛」会话必须以 ≥1 个论坛写操作结束（不允许只浏览）。
 │        每次写操作必须包含独特个人价值（E1/E2/E3 证据支撑）。
-└─ 否（如 wq-brain-http 仅只读工具）→ 写贡献义务自动豁免，本会话降级为
-         只读浏览，但必须在会话记录（session_plan.md / forum_stroll_notes.md）
-         中注明豁免原因。
+└─ 否（当前 wq-brain-http 仅只读工具）→ 本会话主路径 = 只读浏览 + 产出本地
+         可交付物：`forum_stroll_notes.md` 草稿（含拟发评论/帖子正文 + 「值得
+         点赞的帖子/评论 ID」清单）。该草稿即默认可交付物；只读环境是当前
+         默认，不是需单独记录原因的例外。
 ```
 
-每次写操作必须包含**独特的个人价值** — 见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
+**有写工具时**每次写操作必须包含**独特的个人价值** — 见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
 
 1. **≥1 个有证据支撑的写操作** — 评论 **或** 新帖，每条论断都必须追溯到 E1/E2/E3
 2. **明确的用户批准计划**，含评论 + curator 点赞组合（当点赞是主要动作时，若帖子值得仍优先评论）
 
-**推荐默认：** ≥1 条包含**独特** E1/E2/E3 细节的评论 — 不是空洞称赞或复读。
+**只读环境（当前）默认可交付物：** `forum_stroll_notes.md` 草稿，含拟发评论/帖子正文（附 E1/E2/E3 来源）与「值得点赞的帖子/评论 ID」清单。
+
+**推荐默认（有写工具时）：** ≥1 条包含**独特** E1/E2/E3 细节的评论 — 不是空洞称赞或复读。
 
 **若浏览后确实无话可说：** 在 `forum_stroll_notes.md` 中记录原因，然后仍尝试 **linker 式最小价值**（有帮助的链接、索引指路、窄问题的回复）— **避免空会话**。
 
@@ -168,7 +180,7 @@ python scripts/validate_profile.py
 python scripts/harvest_external_memory.py --write   # optional if stale
 ```
 
-**HTML 转换（Phase 9 前）：**
+**HTML 转换（写工具启用后待激活）：** 当前 wq-brain-http 未实现写工具，此脚本无触发条件；**待写工具启用后**在 Phase 9 前执行：
 
 ```bash
 python scripts/md_to_forum_html.py --input draft.md --output submit.html
@@ -176,7 +188,7 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 
 ## 硬性规则
 
-- **每轮必贡献（不可协商）**：每次会话**必须**以 ≥1 个论坛写操作结束 — 不允许只浏览就退出。每次写操作都要加入**独特的个人内容**（你的指标、sim/调试故事、视角）— **不是**复读楼主/热评，**不是**空洞的「感谢分享/+1」。E1 在具体且属实的前提下可包含**宿主 AI 对话历史**（P4）。仅在有 E2 + 你的索引理由时才可用 linker 兜底。见 [contribution-and-diversity.md](references/contribution-and-diversity.md) 及上文「最低贡献标准」。**豁免条件**：见上文「贡献义务决策树」（MCP 无写工具时自动豁免，须记录原因）。
+- **每轮必贡献（有写工具时不可协商）**：**当前 wq-brain-http 仅只读工具，写贡献义务自动降级**——本会话以「本地 notes 草稿」为默认可交付物（见「最低贡献标准」决策树）。**写工具启用后**，每次会话**必须**以 ≥1 个论坛写操作结束 — 不允许只浏览就退出。每次写操作都要加入**独特的个人内容**（你的指标、sim/调试故事、视角）— **不是**复读楼主/热评，**不是**空洞的「感谢分享/+1」。E1 在具体且属实的前提下可包含**宿主 AI 对话历史**（P4）。仅在有 E2 + 你的索引理由时才可用 linker 兜底。见 [contribution-and-diversity.md](references/contribution-and-diversity.md) 及上文「最低贡献标准」。
 - **仅限有证据支撑的写操作**：每条评论/帖子论断必须追溯到 ≥1 个来源 — **E1** 个人经验（P0–P5 记忆、sim/提交事实）、**E2** MCP 平台/论坛数据、或 **E3** 具名的外部论文（arXiv ID 或标题+作者）。**禁止：** 臆测、无依据的猜测、虚构的 VF/排名/提交记录、「我觉得可能」、含糊的「研究表明」。见 [evidence-and-review.md](references/evidence-and-review.md)。
 - **对抗性审查子代理（Adversarial review subagent）**：标准路径 — 每份草稿之后、Contract 之前。仅在 auto-send E1 时**跳过**（由 A1–A8 检查清单替代）。见 [evidence-and-review.md](references/evidence-and-review.md)、[auto-send-e1.md](references/modes-and-contract.md)。
 - **MCP 优先**：Phase 2–9 中凡涉及平台/论坛信息的步骤，**一律先调 MCP**；本地文件只存 MCP 结果摘要，不能代替 MCP 读取。
@@ -185,15 +197,15 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 - **Role Pick / Draft / Act 前重读**：在草稿、Run Contract 和执行前，重读 `session_plan.md` + `forum_findings.md`（contribute）或 `forum_stroll_notes.md`（explore）的前 30 行。
 - **论坛写操作只用中文**。不得虚构 VF、排名或提交记录。
 - **论坛提交格式 = HTML**：笔记/Contract 中可用 Markdown 起草；MCP 写操作前，**`create_forum_comment.body` / `create_forum_post.details` 必须是论坛原生 HTML**，而不是原始 Markdown。见 [write-style-zh.md](references/write-style-zh.md)。
-- **运行模式默认 explore**：「逛论坛」= 带强制贡献的 stroll（有目的或涌现式 emergent）— [modes-and-contract.md](references/modes-and-contract.md)。
-- **Run Contract 闸门**：标准路径 — 计划中的写操作需要 Contract + `同意执行`。**例外：** [auto-send-e1.md](references/modes-and-contract.md) — **恰好 1** 次仅含 E1 的事实性写操作、零推断 → 检查清单后直接写。
+- **运行模式默认 explore**：「逛论坛」= stroll（有目的或涌现式 emergent），**有写工具时带强制贡献、只读环境以本地 notes 草稿收尾** — [modes-and-contract.md](references/modes-and-contract.md)。
+- **Run Contract 闸门**：标准路径 — 计划中的写操作需要 Contract + `同意执行`。**例外：** [auto-send-e1.md](references/modes-and-contract.md) — **恰好 1** 次仅含 E1 的事实性写操作、零推断，且满足机械判据：正文 ≤ 200 字、不含任何 sim/PnL/Sharpe 数值、命中 E1 模板（个人经验/调试故事/视角）→ 检查清单后直接写；任一不满足即走标准 Contract。
 - **自动执行**：合同同意后跑完 write，不逐项菜单.
-- **Curator**：**contribute** — 符合条件时 Contract 中必须含 ≥1 次点赞；**explore** — 值得时推荐 ≥1 次点赞（计划时写入 Contract）。
+- **Curator**：**写工具启用后** —— contribute 符合条件时 Contract 中必须含 ≥1 次点赞；explore 值得时推荐 ≥1 次点赞（计划时写入 Contract）。**当前只读环境**：`upvote_forum_comment` 未实现，降级为在本地 notes 草稿中**标注值得点赞的帖子/评论 ID**（供写工具启用后执行），不产生真实点赞。
 - **多样性闸门**：社区相似度（Community Similarity）+ 个人独特性（Personal Uniqueness）— 见 [contribution-and-diversity.md](references/contribution-and-diversity.md)、[personal-perspective.md](references/contribution-and-diversity.md)。
 - **harvest 时外部记忆只读** — 只写回 skill 工作区。见 [external-memory-sources.md](references/workspace-and-memory.md)。
 - **Search 工具箱**：论坛搜索有多种 MCP 工具 — Agent 按 [mcp-tools-and-search.md](references/mcp-tools-and-search.md) **自行选型**；不必每次 slow，也不要只知道 fast。
 - **alpha-judge 边界**：rubric/语料只读；judge 绝不调用实时论坛。见 [merge-with-alpha-judge.md](references/workspace-and-memory.md)。
-- **后续灵感（追加）**：完成必选论坛贡献后，记录 0–3 条由阅读引发的**可选**研究/探索/技能交接想法（技术帖、公告、主题）。**不自动执行**；不是浏览后菜单；未验证的假设保持**待验证**状态且不进入论坛草稿。见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
+- **后续灵感（追加）**：完成必选论坛贡献后，记录 0–3 条由阅读引发的**可选**研究/探索/技能交接想法（技术帖、公告、主题）。形态判据：**仅落盘 notes、不向用户提问、不等待选择** = 后续灵感（允许）；**向用户提问、等待选择** = 浏览后菜单（禁止）。**不自动执行**；未验证的假设保持**待验证**状态且不进入论坛草稿。见 [contribution-and-diversity.md](references/contribution-and-diversity.md)。
 
 ## Pipeline（随 run_mode 裁剪）
 
@@ -201,7 +213,6 @@ python scripts/md_to_forum_html.py --input draft.md --output submit.html
 |----------|------|
 | **explore**（默认） | 0→0a→0b→1 → stroll → contribution plan → **auto-send E1?** or 7.5 → Contract? → 6–9 → follow-on |
 | **contribute** | 0–5 Recon → Phase 7.5 → 1.5 Contract (STOP) → 6–9 Execute |
-| **hybrid**（已弃用，= explore） | **同 explore**（弃用别名） |
 
 | Phase | explore | contribute |
 |-------|---------|------------|
@@ -255,4 +266,4 @@ Perspective Card 必须用 ≥2 层标签标注 `memory_sources[]`。详情：[f
 - **配额：** [quotas-and-cooldown.md](references/quotas-and-cooldown.md)
 - **工作区与记忆：** [workspace-and-memory.md](references/workspace-and-memory.md)（file-workspace + external-memory-sources + profile-bootstrap + merge-with-alpha-judge）
 - **写作风格：** [write-style-zh.md](references/write-style-zh.md)
-- **HTML 转换：** `scripts/md_to_forum_html.py`
+- **HTML 转换（写工具启用后待激活）：** `scripts/md_to_forum_html.py`

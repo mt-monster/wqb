@@ -27,20 +27,26 @@ allowed-tools:
 
 候选修复、降换手、提覆盖、降相关性、失败轨迹级恢复。
 
+**何时调本 skill vs `wq-brain-alpha-optimization-v1`（判定顺序）**：
+- **只查配方、不执行** → 调本 skill：你只想**查表定位**「卡 X 该用什么算子、该转 optimization-v1 哪一节」时；
+- **动手改表达式并回测** → 直接去 `wq-brain-alpha-optimization-v1`（Mode B 想法层 / Mode A 参数层），本 skill **不执行改进**。
+
 ## 工作流
 
-1. **先诊断再动手**。改公式前先读最新仿真指标、闸门失败原因与轨迹步骤。
+> **限定（2026-09-29）**：本 skill **只作配方参考、不直接执行改进**。下方工作流是「查表定位」用的配方索引——每条都指向 `wq-brain-alpha-optimization-v1` 的对应步骤，真正的改公式/回测动作在那里执行。
+
+1. **先定位再查表**。改公式前先读最新仿真指标、闸门失败原因与轨迹步骤（诊断动作在 optimization-v1 或 robustness 完成，本步只用于确定「卡哪一闸」）。
 1a. 修复属于 REGULAR 或 PPA 挖掘链时，以 [`../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) 的 WebDataScope failed-count 门为修复目标。REGULAR 修复成功的唯一标准是 `Failed RA == 0`；PPA 是 `Failed PPA == 0`。改善 Sharpe/Fitness/相关性但 failed count 非零的修复仍是 reject，不得进入 `check_correlation` 或 `set_alpha_properties`。
 2. **结构修复优先于暴力调参**。选定任何算子前先确认它在当前 `get_operators` 返回里（幽灵算子清单与替换表见 `wq-brain-alpha-optimization-v1` Step B3）。
-   - **turnover**：用平台支持的降换手算子（线性时序衰减、仓位变化阻尼、TVR 目标调参）或调高仿真 `decay`；
-   - **coverage**：时序或同侪组回填、重审向量聚合选择、复查 NaN 策略；
+   - **turnover（降换手）**：`ts_decay_linear(x, N)` / `ts_target_tvr_decay` / `ts_target_tvr_delta_limit` / `trade_when`，或调高仿真 `decay`；
+   - **coverage（提覆盖）**：`ts_backfill` / `group_backfill` 回填稀疏，重审向量聚合算子（`vec_mean` / `vec_max`）选择，复查 NaN 策略；
    - **correlation**：5 轴旋转（外层 wrapper / 标准化器 / 分组分类器 / signed-power 指数 / 前置算子非对称性）与**降相关 6 武器**（按实测降幅排序的动作序列，含案例 alpha ID 与 Mode B/A 归属）的权威表述已上移至 `wq-brain-alpha-optimization-v1`（Step B3 与「相关性反馈循环」节）。范式跃迁、`-rank` vs `reverse(rank)` 的 robust 闸差异、换壳优于磨参数，同处该节。
    - **news/sentiment 专用修复方向**（通用菜单在此类数据上适得其反）已上移至 `wq-brain-alpha-optimization-v1` 的「news / sentiment 的专用修复方向」；完整方向集仍在 [`docs/reference/news_sentiment_playbook.md`](docs/reference/news_sentiment_playbook.md)。
 2b. **按字段分布形态选修复方向**（WebDataScope 数据包）已上移为 `wq-brain-alpha-optimization-v1` Step B2 的「分布形态 → 修复方向映射」表。本地数据包体检档案（`<dataset>_<REGION>_<UNIVERSE>_Delay<N>.bin`）的读取规则见 [`../brain-alpha-research/references/webdatascope-data-quality.md`](../brain-alpha-research/references/webdatascope-data-quality.md)。
 2c. **修复后体检硬门复验**（`check_expr_against_inspect`，`ok=True` 才允许进入 `create_multi_simulation`）已上移为 `wq-brain-alpha-optimization-v1` 的「体检硬门复验」节。
 2d. **GLB emotion 族降相关失败实证（2026-08-06，不可重蹈）**（本节为该教训的**唯一完整版**；ppa-mining §1.0.x 红灯行与其它文档只允许引用此处，禁止复制全文——2026-09-12 收敛）。v53-v67 GLB 系列共 42 个 PASS_CHEAP 候选（全部 emotion 信号族），在 GLB region 上 **100% 被 PROD_CORRELATION 硬闸挡掉**：探针实测 prodCorr 0.82-0.86（>0.7），跨 2 前缀(sxN_p0q2/tdN_p0q2)、2 universe(MINVOL1M/TOPDIV3000)、多种 neutralization 均失败。**结论**：(a) 不要把同族 PASS_CHEAP 当可提交池盲提交——全是死路；(b) 要拿到可提交 alpha 必须**换信号方向/降相关（正交化或新数据）**，不是重提交同一族；(c) **换壳(group_rank→group_zscore)比磨参数更有效**（论坛铁律）；(d) winner 提交后周围 family 变 self wall，需做**更远 field-level move** 而非同族微调。提交探测零成本（硬闸失败不消耗周额度），但浪费时间——先 5 个多样化探针（不同前缀×universe×neutralization）确认 prodCorr 再决定是否全量。
-3. USA REGULAR 修复保持 `TOP3000` 默认 universe。用其他 USA universe 时台账必须记录 TOP3000 失败原因与该 universe 回答的诊断问题。
-4. 改了设置就写新的 settings fingerprint 进台账，避免同一修复被盲目重试。
+3. USA REGULAR 修复保持 `TOP3000` 默认 universe。**换档触发条件**：仅当候选在 TOP3000 下因流动性/覆盖率结构性问题被硬闸拦死（如 sub-universe 全崩、覆盖 <40%），且已确认换 universe 能回答具体诊断问题（如「该信号是否只在非流动性尾部有效」）时，才换用其他 USA universe；换档时台账必须记录 TOP3000 失败原因与该 universe 回答的诊断问题。
+4. 改了设置就写新的 **settings fingerprint** 进台账，避免同一修复被盲目重试。**fingerprint 定义**：settings fingerprint = 候选表达式 `code` 与其 settings（region/universe/delay/neutralization/decay）的**稳定哈希**（如 `sha1(region|universe|delay|neutralization|decay|code)` 前 8 位）；表达式哈希 = 仅对 `code` 的哈希。同一 fingerprint 表示「同一修复已被试过」，直接跳过不再重试。
 5. 修复记录为新的轨迹步骤，不是无记录的覆盖。
 
 ## 验证清单

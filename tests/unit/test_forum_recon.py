@@ -92,7 +92,12 @@ def test_negative_cache_replayed(env, monkeypatch):
 
 # ---------------------------------------------------------------- 额度自适应
 def _fake_live(posts_by_query):
-    def _round(session, f, query, max_pages, read_top, seen):
+    # 2026-09-29：签名跟随生产（新增 stats 归因参数），桩须与真实签名一致
+    def _round(session, f, query, max_pages, read_top, seen, stats=None):
+        if stats is not None:
+            hits = posts_by_query.get(query, [])
+            stats["hits"] = stats.get("hits", 0) + len(hits)
+            stats["read_ok"] = stats.get("read_ok", 0) + len(hits)
         return [dict(p, query=query) for p in posts_by_query.get(query, [])]
     return _round
 
@@ -178,3 +183,178 @@ def test_ledger_upsert_updates_in_place(env):
     rows = conn.execute("SELECT value FROM ledger_kv WHERE key='forum_recon_x'").fetchall()
     conn.close()
     assert len(rows) == 1 and json.loads(rows[0][0])["v"] == 2
+
+
+# ------------------------------------------- 2026-09-29：故障 ≠ 论坛无解（假阴性修复）
+def test_auth_failure_is_not_a_negative(env, monkeypatch):
+    """认证/环境故障不得落 negative（否则被 SOP 当「论坛无解」判死取证 → 误判死）。
+
+    实证：5 条 recon 记录里 2 条是故障（`load_creds` TypeError、
+    `No module named 'requests'`），旧代码把它们记成 found=False 落
+    `forum_recon_negative_*`，等于「工具坏了 ≡ 论坛无解」。
+    """
+    def _auth_fail(*a, **k):
+        raise RuntimeError("No module named 'requests'")
+
+    monkeypatch.setattr(fr, "_live_session", _auth_fail)
+    q = "KOR shortinterest 卖空数据 prod correlation 撞墙 降相关"
+    out = fr.recon(q, {"region": "KOR"}, "negative", 3, 8, None, False, env["db"])
+
+    # ① found=None（未取证），严格区别于 found=False（确认无解）
+    assert out["found"] is None, "故障必须返回 None（未取证），不得回落成 False"
+    assert out["status"] == "error" and "requests" in out["error"]
+
+    # ② 落 error 键，**不落** negative 键
+    conn = sqlite3.connect(env["db"])
+    keys = [r[0] for r in conn.execute("SELECT key FROM ledger_kv")]
+    conn.close()
+    qkey = fr._qkey(q)
+    assert f"forum_recon_error_{qkey}" in keys
+    assert f"forum_recon_negative_{qkey}" not in keys, "故障绝不得占用 negative 键名"
+
+
+def test_auth_failure_is_not_cached(env, monkeypatch):
+    """故障结论不进 7 天 TTL 缓存——故障应重试，不该被回放一周。"""
+    def _auth_fail(*a, **k):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(fr, "_live_session", _auth_fail)
+    q = "故障不缓存验证题"
+    fr.recon(q, {"region": "GLB"}, "negative", 3, 8, None, False, env["db"])
+
+    raw = Path(fr.RECON_CACHE).read_text(encoding="utf-8") if Path(fr.RECON_CACHE).exists() else "{}"
+    entries = json.loads(raw).get("entries", {})
+    assert fr._qkey(q) not in entries, "故障条目不得写入缓存"
+
+    # 二次调用必须重新尝试 live（证明没被缓存短路）
+    calls = {"n": 0}
+
+    def _count_fail(*a, **k):
+        calls["n"] += 1
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(fr, "_live_session", _count_fail)
+    fr.recon(q, {"region": "GLB"}, "negative", 3, 8, None, False, env["db"])
+    assert calls["n"] == 1, "故障后重试必须真的再试一次（未被缓存回放）"
+
+
+def test_zero_round_is_not_a_negative(env, monkeypatch):
+    """一轮都没跑（关键词包为空）同样算未取证，不得记成论坛无解。"""
+    monkeypatch.setattr(fr, "plan_queries", lambda *a, **k: [])
+    monkeypatch.setattr(fr, "_live_session", lambda *a, **k: (_ for _ in ()).throw(
+        AssertionError("零轮不得触网")))
+    q = "零轮检索题"
+    out = fr.recon(q, {"region": "GLB"}, "negative", 3, 8, None, False, env["db"])
+    assert out["found"] is None and out["status"] == "error"
+    conn = sqlite3.connect(env["db"])
+    keys = [r[0] for r in conn.execute("SELECT key FROM ledger_kv")]
+    conn.close()
+    assert f"forum_recon_negative_{fr._qkey(q)}" not in keys
+
+
+# ------------------------------------------------- 2026-09-29 命中率 0 的三处根因守护
+_SNIPPET = ("实测 换手 turnover 过高会拉低 fitness，降换手的经验配方是用 ts_decay_linear 平滑权重，"
+            "sharpe 与 fitness 同步改善，附具体表达式示例与回测对比。")
+
+
+class _FakeFR:
+    """forum_research 桩：resolve_id 按真实签名返回 **3-tuple**（回归守护的关键）。"""
+
+    def __init__(self, is_comm=True):
+        self.is_comm = is_comm
+        self.read_args = []
+
+    def search_html(self, session, query, max_pages=2):
+        return [{"title": "如何降低 turnover", "click_href": "https://x/hc/zh-cn/search/click?data=abc",
+                 "snippet": _SNIPPET, "votes": 12}]
+
+    def resolve_id(self, session, href):
+        return ("30927669645207", self.is_comm,
+                "https://x/hc/zh-cn/community/posts/30927669645207-x")
+
+    def read_post(self, session, pid):
+        self.read_args.append(pid)
+        return {"id": pid, "title": "如何降低 turnover", "body": LONG_BODY, "votes": 12}
+
+
+def test_resolve_id_tuple_is_unpacked():
+    """决定性根因：resolve_id 返回 3-tuple，未解包会把 tuple 当 post_id → read_post 恒失败。
+
+    旧代码 `pid = fr.resolve_id(...)` → URL 变成 ".../posts/(123, True, 'http...').json"
+    → body 恒空 → is_useful 恒 False → 命中率结构性为 0（搜到了也读不出来）。
+    """
+    fake = _FakeFR()
+    stats: dict = {}
+    out = fr.live_search_round(None, fake, "turnover", 2, 6, set(), stats)
+    assert out, "解包修复后应能真正读出文章"
+    assert fake.read_args, "必须真的调用了 read_post"
+    assert all(isinstance(p, str) for p in fake.read_args), (
+        f"read_post 必须收到字符串 post_id，实际收到 {fake.read_args!r}")
+    assert stats.get("resolved") == 1
+    assert stats.get("read_ok") == 1
+    assert fr.is_useful(out[0])
+
+
+def test_non_community_hit_is_skipped_not_read():
+    """帮助中心文章（is_community=False）不是社区帖，社区 JSON API 读不到，须跳过。"""
+    fake = _FakeFR(is_comm=False)
+    stats: dict = {}
+    out = fr.live_search_round(None, fake, "turnover", 2, 6, set(), stats)
+    assert out == []
+    assert fake.read_args == [], "非社区帖不得发起 read_post"
+    assert stats.get("resolve_not_community") == 1
+    assert stats.get("read_ok", 0) == 0
+
+
+def test_stats_attribute_zero_hits():
+    """零命中必须能归因：hits>0 且 read_ok=0 = 抓取链路故障，不是论坛无解。"""
+    stats: dict = {}
+
+    class _BrokenFR(_FakeFR):
+        def read_post(self, session, pid):
+            self.read_args.append(pid)
+            return None            # 抓取链路故障
+
+    fr.live_search_round(None, _BrokenFR(), "turnover", 2, 6, set(), stats)
+    assert stats.get("hits", 0) > 0, "确曾搜到结果"
+    assert stats.get("read_ok", 0) == 0, "但一篇都没读出来"
+    assert stats.get("read_failed", 0) > 0
+
+
+def test_is_useful_falls_back_to_snippet():
+    """正文读不到时降级用搜索摘要：把「读不了」与「没内容」分开。"""
+    assert fr.is_useful({"title": "降低 turnover 的配方", "body": "", "snippet": _SNIPPET})
+    # 标题噪声仍然优先否决，摘要再好也不算
+    assert not fr.is_useful({"title": "公告：直播通知", "body": "", "snippet": _SNIPPET})
+    # 摘要太短同样不算（不放松到「有字就算」）
+    assert not fr.is_useful({"title": "降低 turnover", "body": "", "snippet": "实测 换手"})
+
+
+def test_plan_queries_no_cjk_splitting():
+    """旧实现按 2–6 字机械窗口把完整词劈开（"表达式骨架设" + "计灵感"），必然 0 命中。"""
+    out = fr.plan_queries("表达式骨架设计灵感有哪些", {"region": "GLB"}, None)
+    assert not any(("表达式骨架设" in q or "计灵感" in q) for q in out), out
+    assert "表达式" in out and "骨架" in out, out
+
+
+def test_plan_queries_question_terms_outrank_context():
+    """问题自身术语不得被 context 实体（dataset/墙词）挤到截断层之外。"""
+    ctx = {"region": "KOR", "dataset": "pv1", "wall": "LOW_SUB_UNIVERSE_SHARPE"}
+    out = fr.plan_queries("short interest 卖空数据 prod correlation 撞墙", ctx, None)
+    assert "short interest" in out[:5], out[:5]
+    assert "correlation" in out[:12], out[:12]
+    assert "卖空" in out, out          # 中文领域词仍须保留
+
+
+def test_plan_queries_wall_code_maps_to_forum_terms():
+    """墙码须映射成论坛真实用语，而不是把码原样丢进搜索框。"""
+    out = fr.plan_queries("怎么破", {"region": "USA", "wall": "LOW_SUB_UNIVERSE_SHARPE"}, None)
+    assert any(t in out for t in ("子宇宙", "sub-universe")), out
+    out2 = fr.plan_queries("怎么破", {"region": "USA", "wall": "HIGH_TURNOVER"}, None)
+    assert any(t in out2 for t in ("换手", "turnover")), out2
+
+
+def test_plan_queries_never_empty():
+    """空包 = 零轮 = 未取证（found=None），不得让判死闸拿到假的无解结论。"""
+    assert fr.plan_queries("有没有人试过", {}, None)
+    assert fr.plan_queries("", {}, None)

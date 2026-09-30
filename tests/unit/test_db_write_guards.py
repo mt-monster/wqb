@@ -146,7 +146,15 @@ SCAN_ROOTS = [REPO / "src", REPO / "tools",
               REPO / "Claude" / "skills" / "brain-make-some-gem",
               REPO / "Claude" / "skills" / "brain-data-feature-engineering"]
 EXCLUDE_DIR_PARTS = {"legacy", "attic", "__pycache__", "_scratch"}
-EXCLUDE_PREFIXES = ("backfill_", "migrate_", "triage_", "calibrate_q3", "submit_883")
+EXCLUDE_PREFIXES = ("backfill_", "migrate_", "triage_", "calibrate_q3", "submit_883",
+                    # 2026-09-28：**DB 维护/修复脚本**自成一类。它们必须用裸 sqlite3.connect：
+                    # ① 操作对象含**损坏库**与**副本**，走 wqb.db_conn 的包装会因 schema 加载失败而拿不到连接；
+                    # ② 需要 PRAGMA writable_schema / 页级操作等裸接口；
+                    # ③ 只在本机一次性运行，不进活跃数据通路（不参与并发写入）。
+                    # 触发背景：P0 迁移留下 `_db_fk_fix.py`/`_db_p0_fix.py`/`_db_quality_check.py` 等
+                    # 与本轮新增的 `fix_stale_fk_20260928.py` / `fix_submit_ready_check_20260928.py`
+                    # 一起被此守卫误判为"活跃代码"。
+                    "_db_", "fix_stale_fk", "fix_submit_ready_check", "db_repair")
 
 
 class TestNoNakedSqliteConnect:

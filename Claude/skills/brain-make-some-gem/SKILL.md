@@ -20,8 +20,9 @@ allowed-tools:
 - **共享产物约定（2026-09-27 补）**：`priors_snapshot_<region>` 本 skill **只读消费**，
   **唯一写入方 = `workflow_campaign(stage=S2, subcommand="assemble-priors")`**，本 skill 禁止回写。
   若快照早于 `region_kb` / `registry_empirical`，**先提示重跑 assemble-priors 再开生成** ——
-  旧先验会让本波沿用过期 win/dead（GBR 实证落后 8 天）。stale 检查当前只 WARN、不阻断，
-  **不得据此认为"已确认安全"**；刷新责任归 ra-pipeline 步 9（S6 完成定义）。
+  旧先验会让本波沿用过期 win/dead。stale 检查为可判定阈值：快照落后 **≥7 天**（按快照时间戳与
+  `region_kb` / `registry_empirical` 最新更新时差判定）即**阻断开波**，不再只 WARN
+  （GBR 实证落后 8 天已超出该阈值）；刷新责任归 ra-pipeline 步 9（S6 完成定义）。
 
 
 
@@ -70,7 +71,7 @@ allowed-tools:
    `if_else` 在过闸者中仅占 5.1%，`trade_when`/`bucket`/`ts_corr`/`ts_kurtosis` 未进前 22，
    而 `group_rank` 占 32.0%、`vec_avg` 12.6%。算子多样性应是语义多样性的结果，不是目标。
    Logical 类算子只在**事件型数据集**（有真实事件时点）才合适。
-8. **Expected Exposure 声明会被验证（2026-09-08）**：回测后以 `risk_neutralized_sharpe` 核对。
+8. **Expected Exposure 声明会被验证（2026-09-08）**：本 skill 只声明、不回测；验证落在 **S4**（回测后以 `risk_neutralized_sharpe` 核对）。
    它 ≈0 或为负而 raw sharpe 高 ⇒ 该概念**就是**那个暴露本身，判 `dead_end` 且禁止调参。
 
 ## 标准调用（推荐）
@@ -88,30 +89,9 @@ GROUP 入口用于网络/行业等分组轴，须提供已解释的分组概念�
 
 ## 直接命令（仅当 workflow 节点不可用）
 
-```bash
-cd scripts/headless_runner
-python run.py --config config.json \
-  --data-category <CATEGORY> --region <REGION> --delay <DELAY> \
-  --dataset-id <DATASET_ID> --universe <UNIVERSE> \
-  --instrument-type EQUITY --data-type <MATRIX|VECTOR> \
-  --priors-from-db --detached
-```
-
-长任务控制：`--detached` 后台启动并立即返回；`--task-id` 指定任务 ID；`--tasks-dir` 任务根目录（默认 `../outputs/tasks`，仓库战役用 `logs/_async_tasks`）。
-状态查询：`python run.py --status <task_id> --tail-lines 60`。
-`--dry-run` 只校验并打印命令，不执行。
-
-**看实时生成过程**（2026-09-25）：`--detached` 写死 `DETACHED_PROCESS|CREATE_NO_WINDOW` +
-stdout 重定向到文件，MCP 服务自身也无控制台，所以终端里天生看不到。两种补法：
-
-- `--detached --console`（= `workflow_gem(console=True)`）：另弹一个真实控制台窗口滚动输出，
-  同时经 `_ConsoleFileTee` 双写**同一份** `stdout.log`，所以 `--status` / `workflow_task_status`
-  / 闸门读取面全部不变。代价：任务寿命绑在那个窗口上 —— 关窗口 = 杀任务，而 phased
-  无断点（mapping 只在内存累加、Phase 3 才落盘），中途被杀 = 整波丢弃。只在人盯盘时开。
-- `--watch <task_id> --tasks-dir <root> [--from-start]`：对任意在飞任务做 tail -f，
-  `meta.status` 进终态自动收尾，Ctrl+C 只退跟随、不动任务。**看而不抢输出流**，默认用这个。
-
-其余可选参数（`--pipeline-mode phased` / `--max-expressions` / `--require-operators` / `--regen-ideas` 等）见 [reference.md](reference.md)。
+命令模板、长任务控制（`--detached`/`--task-id`/`--tasks-dir`/`--status`/`--dry-run`）、
+看实时生成过程（`--console`/`--watch`）与其余可选参数（`--pipeline-mode phased` /
+`--max-expressions` / `--require-operators` / `--regen-ideas` 等）见 [reference.md](reference.md)「直接命令」节。
 
 ## 产物契约
 

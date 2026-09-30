@@ -43,7 +43,9 @@ allowed-tools:
 **思维模式详解**：参见 `reference.md`（特征工程理念）。
 **实现示例**：参见 `examples.md`（案例研究）。
 
-## 输入要求
+## 输入要求（最小输入契约）
+
+本 skill 不向用户交互式提问；以下参数是**调用上下文（编排器 / 上游 S0 白名单）传入的最小输入契约**，缺失项按 §第 1 步 自主发现补全。
 
 ### 必填参数：
 - **data_category**：数据集类别（如 "fundamental"、"analyst"、"news"、"model"）
@@ -67,6 +69,8 @@ allowed-tools:
 | **半透明** | 介于两者之间（如 pv/risk 系） | 第 3 步只做 B 组问题驱动的快速版（1/2/7 三问：不变量/变化/相对位置） |
 
 分档依据：2026-09-01 价值审计——8 问分析对透明集边际价值低（字段名自解释，103 个 s1 键中透明集的分析内容高度模板化），对黑盒集（other455 类 1500 无语义字段）是刚需。
+
+分档口径（数据来源）："描述覆盖率 ≥80%" = 数据集内 `description` 非空字段占比；"描述均值 >5 词" = 非空 `description` 的平均词数。两值均由 `mcp__wq-brain-http__get_datafields` 返回的逐字段 `description` 在本地统计得出（平台不直接给出）。
 
 ### 第 1 步：数据集发现
 **自主动作：**
@@ -159,7 +163,7 @@ allowed-tools:
 
 将报告写入 `./output_report/region_delay_datasetID_ideas.md`，格式如下：
 
-> **产物去向（S1→S2 契约）**：本 ideas markdown 是 S2 `brain-make-some-gem` 的法定输入——经其 `run.py --ideas-file <本文件路径>` 注入后，流水线跳过内部嵌套 S1 重新生成，直接沿用本报告的字段白名单与预处理决策实现表达式；编排器（`wq-brain-ra-pipeline`）在步 4 调用时必须传该参数，否则本 skill 的独立调用成果不会被消费。
+> **产物去向（S1→S2 契约，2026-09-15 定位修正后）**：本 ideas markdown（`source=standalone`）只是 S1 决策的可读呈现，**不再被 GEM 自动当作概念输入**（`source=feature_engineering_node/standalone*` 一律跳过注入）。本 skill 在流水线里的有效产物是 typed catalog、字段质量先验、前缀簇与 `s2_field_pool`。要让 GEM 注入，须由 Agent 按本 SKILL 正文**人工**完成字段理解并写入 `s1_<ds>_d<delay>`（`source=manual`）。
 
 1. **数据集理解**
    - 数据集描述与特征
@@ -227,7 +231,7 @@ allowed-tools:
 
 ### 第 6 步：台账回写（S1 决策入库，强制）
 
-ideas markdown 落盘后，**必须**把 S1 决策写入 `data/wqb.db` 的 ledger_kv 表（结构化真相源；ideas markdown 仅为可读呈现与 S2 `--ideas-file` 注入路径）。会话内直接调用 MCP upsert：
+ideas markdown 落盘后，**必须**把 S1 决策写入 `data/wqb.db` 的 ledger_kv 表（结构化真相源；ideas markdown 仅为可读呈现，不被 GEM 自动注入）。会话内直接调用 MCP upsert：
 
 ```
 mcp__wqb-db__upsert_ledger_key(
@@ -250,13 +254,13 @@ mcp__wqb-db__upsert_ledger_key(
 
 - key 命名 `s1_<dataset>_d<delay>`（不可用 `_` 前缀，会被 ledger schema 守卫拒绝）；同 (region, dataset, delay) 重跑自动覆盖（upsert 幂等）。
 - 战役目录内也可用 toolkit CLI：`campaign.py --campaign-dir <CD> ledger set "s1_<ds>_d<delay>" '<json>'`。
-- **S1⇄S2 统一逻辑链（状态机，两个写方、一个记录）**：本 skill（`source="standalone"`）与 S2 自含模式（`brain-make-some-gem` 内嵌 S1，跑完由 S2 会话回写 `source="s2_nested"`，schema 完全一致）是同一逻辑步骤的两条物理路径，**都收敛到同一 ledger key**。S2 启动判定：`get_ledger_key(region, "s1_<ds>_d<delay>")` 命中且 `ideas_md_path` 可读 → `--ideas-file` 注入（内嵌 S1 不再执行）；未命中 → S2 自含跑并回写。由此：同一 (region, dataset, delay) 的内嵌 S1 至多跑一次，字段白名单/预处理决策以该 ledger 记录为唯一口径，S3 五闸校验与 S6 回写闭环均读此记录，不再存在第二条未入库的决策通道。
+- **S1⇄S2 source 单一契约（2026-09-15 定位修正后）**：ledger key `s1_<ds>_d<delay>` 的 `source` 取值语义统一——`standalone`（本 skill 确定性模板渲染产出）与 `s2_nested`（S2 自含模式内嵌 S1 回写，schema 一致）都**收敛到同一 ledger key**，作为 S1 决策的唯一口径；其中 `standalone` 仅作记录、**GEM 跳过注入**，`s2_nested` 由 S2 自含直接消费、无需注入；只有 Agent 人工完成的 `source=manual` 才被 GEM 注入。由此：同一 (region, dataset, delay) 的 S1 决策以该 ledger 记录为唯一口径，S3 五闸校验与 S6 回写闭环均读此记录，不再存在第二条未入库的决策通道。
 - S0 换数据集/换 delay 时，对应 ledger key 由后续 S1 覆盖，无需删除。
 
 ## 核心分析原则
 
 1. **从数据本质出发**：从数据真正意味着什么开始，而不是它传统上被用来做什么
-2. **自主推理**：本 skill 完成全部思考，无需用户输入
+2. **自主推理**：除 §输入要求 的最小输入契约外，本 skill 完成全部思考，无需用户交互式输入
 3. **问题驱动**：内部问题库引导特征生成
 4. **含义优先于模式**：逻辑含义优先于常规组合
 5. **透明性**：在输出中展示推理过程

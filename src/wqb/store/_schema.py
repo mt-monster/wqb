@@ -383,6 +383,15 @@ class SchemaMixin:
             "CREATE INDEX IF NOT EXISTS idx_backtest_results_region_wave "
             "ON backtest_results(region, wave)"
         )
+        # 2026-09-28：submit_ready 的唯一约束自愈。
+        # P0 迁移「改名→新建同名表」重建 submit_ready 时丢了 UNIQUE(alpha_id, region)，
+        # 而入队 upsert 用 ON CONFLICT(alpha_id,region) → 报
+        # `ON CONFLICT clause does not match any PRIMARY KEY or UNIQUE constraint`，
+        # **过闸候选静默不入队**（全区域受影响，实测 other466 7 条候选丢失）。
+        # submit_ready 由 submit_queue.SCHEMA 建，此处显式调它的 ensure_table 补回约束；
+        # 幂等（CREATE UNIQUE INDEX IF NOT EXISTS）。延迟 import 避免循环依赖。
+        from .submit_queue import ensure_table as _ensure_submit_queue
+        _ensure_submit_queue(self.connection)
         self.connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_submission_ledger_alpha_id "
             "ON submission_ledger(alpha_id)"

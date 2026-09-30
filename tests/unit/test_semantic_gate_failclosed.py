@@ -28,6 +28,11 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 WAVE_GATE = REPO / "tools" / "wave_gate.py"
+#: 2026-09-30 包化后，闸 SEM 的实现搬到 tools/wave_gate_pkg/gates_semantic.py、
+#: 终态落库搬到 tools/wave_gate_pkg/cli.py。下方两条**源码文本断言**改为读新位置
+#: —— 它们守护的是"某个具体 bug 不得回归"，与文件路径无关。
+WAVE_GATE_SEM = REPO / "tools" / "wave_gate_pkg" / "gates_semantic.py"
+WAVE_GATE_CLI = REPO / "tools" / "wave_gate_pkg" / "cli.py"
 DB = REPO / "data" / "wqb.db"
 PY = sys.executable
 
@@ -207,7 +212,7 @@ def test_semantic_gate_drops_blocked_ids_in_db(tmp_path, monkeypatch):
 
 def test_semantic_gate_no_db_write_when_not_from_db():
     """--exprs-file 路径的 id 是 1..N 序号，绝不可拿去 UPDATE expressions。"""
-    src = WAVE_GATE.read_text(encoding="utf-8")
+    src = WAVE_GATE_SEM.read_text(encoding="utf-8")
     assert 'getattr(a, "from_db", False) and removed' in src, (
         "落库标 dropped 必须以 from_db 为前置条件，否则会把序号当主键写坏库")
 
@@ -219,7 +224,7 @@ def test_gate_result_final_verdict_is_persisted():
     才算 all_pass → DB 列恒为 0，与 report_json 打架；停止规则 C（all_pass 全 0 → 判区域死）
     会误杀。故末尾必须用 final verdict 覆盖写一次。
     """
-    src = WAVE_GATE.read_text(encoding="utf-8")
+    src = WAVE_GATE_CLI.read_text(encoding="utf-8")
     assert "_persist_gate_report(final_all_pass=all_pass)" in src, (
         "缺少最终 verdict 覆盖写：all_pass 列会与 report_json 不一致")
     assert 'report["all_pass"] = bool(final_all_pass)' in src

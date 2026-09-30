@@ -83,6 +83,19 @@ def _read_token(path):
         return 0, "", 0.0
 
 
+def _retire(path):
+    """退役 slot token：改名 ``<path>.stale`` 而非删除（2026-09-29）。
+
+    同 dblock._retire：沙箱 safe-delete 守卫越阈值后截获 unlink 并终止子进程，
+    文档规定姿势 = 改名 ``.stale_*``。``.stale`` 不匹配 ``.slot`` 后缀扫描，
+    不参与计数，可事后人工清理。
+    """
+    try:
+        os.replace(path, path + ".stale")
+    except OSError:
+        pass
+
+
 def live_tokens(max_age_sec: int = 6 * 3600):
     """返回活 token 路径列表；顺手回收陈旧 token（进程已死或超龄）。"""
     d = slots_dir()
@@ -98,7 +111,7 @@ def live_tokens(max_age_sec: int = 6 * 3600):
         stale = (ts and now - ts > max_age_sec) or (pid and not _pid_alive(pid))
         if stale:
             try:
-                os.remove(p)
+                _retire(p)
             except OSError:
                 pass
             continue
@@ -146,7 +159,7 @@ def release(token_path):
     if not token_path:
         return
     try:
-        os.remove(token_path)
+        _retire(token_path)
     except OSError:
         pass
 

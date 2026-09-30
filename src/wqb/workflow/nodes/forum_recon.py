@@ -54,8 +54,11 @@ def run(
 
     Returns:
         执行结果字典（success / found / returncode / cmd / 计划）。
-        退出码语义：0=有货（success=True, found=True）；2=无解（success=True,
-        found=False —— 负结果已入库，是合法结局）；其它=工具异常（success=False）。
+        退出码语义（2026-09-29 修订，与 tools/forum_recon.py 保持一致）：
+          0 = 有货     （success=True,  found=True）
+          2 = 确认无解 （success=True,  found=False —— 真实检索过，可作 D2 判死取证）
+          3 = 未取证   （success=False, found=None  —— 工具故障，**不得**据此处判死）
+          其它 = 工具异常（success=False, found=None）
     """
     ctx = _context or {}
     dry_run = bool(ctx.get("dry_run", dry_run))
@@ -149,13 +152,22 @@ def run(
         result["success"] = True
         result["found"] = True
     elif proc_rc == 2:
-        # 无解也是合法结局：负结果已落 forum_recon_negative_*（判死取证）
+        # 真实检索过且确实无解：合法结局，可作「论坛无解」判死取证
         result["success"] = True
         result["found"] = False
-        result["note"] = "无解（负结果已入库）——可作「论坛无解」判死证据"
+        result["note"] = "确认无解（负结果已入 forum_recon_negative_*）——可作「论坛无解」判死证据"
+    elif proc_rc == 3:
+        # 2026-09-29：工具故障 ≠ 论坛无解。found=None 表示「未取证」，
+        # 调用方（尤其 seal_dead_end 判死闸）不得据此处判死。
+        result["success"] = False
+        result["found"] = None
+        result["error"] = (
+            "forum_recon 未取证（工具故障，exit 3；已落 forum_recon_error_*，未写 TTL 缓存）。"
+            "**不得**当作「论坛无解」判死证据，修复后重试。见 " + str(run_info["log_path"])
+        )
     else:
         result["success"] = False
-        result["found"] = False
+        result["found"] = None
         result["error"] = f"forum_recon 工具异常（exit {proc_rc}），见 {run_info['log_path']}"
     result["steps"].append({"step": "run_forum_recon", "success": result["success"]})
     return result

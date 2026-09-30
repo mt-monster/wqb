@@ -49,19 +49,26 @@ def fetch_fields(api, dataset, settings, limit=None):
 def build_catalog(dataset, settings, raw, sample_stock_count=None):
     types = collections.Counter((f.get("type") or "UNKNOWN") for f in raw)
     data_type = types.most_common(1)[0][0] if types else "UNKNOWN"
+    universe_size = _get_universe_size(settings.get("universe", "TOP3000"))
+    # per-field longCount（2026-09-28 AMR 战役闸7 契约）：
+    #   平台 /data-fields 无 longCount 实测值；唯一 pre-backtest 口径 =
+    #   int(universe_size * coverage) 作**有效股票覆盖上界代理**（持仓数 ≤ 有数据股票数）。
+    #   估计值 < 阈值(80) 是可靠的必要排除（coverage 不足必死，MEA f72 反向陷阱另论）；
+    #   估计值 ≥ 阈值 ≠ 通行证 —— MEA f72 实证 cov 0.85 但实测 longCount 11-16，
+    #   探针回测 IS longCount 回写后（longCount_source=measured）才是真实值。
     fields = [{
         "id": f.get("id"),
         "type": f.get("type"),
         "coverage": f.get("coverage"),
         "userCount": f.get("userCount"),
         "alphaCount": f.get("alphaCount"),
+        "longCount": int(universe_size * (f.get("coverage") or 0)),
         "description": (f.get("description") or "")[:120],
     } for f in raw]
-    
+
     # 横截面股票覆盖预估 (2026-08-18 wave34 教训)
     # 用 coverage 和 universe 大小预估 longCount+shortCount
     # 若预估值 < 100 → 标记 low_stock_coverage: true
-    universe_size = _get_universe_size(settings.get("universe", "TOP3000"))
     avg_coverage = sum(f.get("coverage", 0) for f in raw) / len(raw) if raw else 0
     estimated_stock_count = int(universe_size * avg_coverage)
     
@@ -83,6 +90,7 @@ def build_catalog(dataset, settings, raw, sample_stock_count=None):
         "estimated_stock_count": estimated_stock_count,
         "low_stock_coverage": low_stock_coverage,
         "avg_coverage": round(avg_coverage, 4),
+        "longCount_source": "measured" if sample_stock_count is not None else "estimated",
         "sample_stock_count": sample_stock_count,  # 实测值(若有)
         "fetched_at": datetime.datetime.now().isoformat(timespec="seconds"),
         "fields": fields,

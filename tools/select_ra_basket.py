@@ -102,7 +102,13 @@ async def fetch_os_ids(brain) -> list:
     while True:
         r = await brain._request("GET", f"{brain.base_url}/users/self/alphas",
                                  params={"limit": 100, "offset": off, "stage": "OS"})
-        j = r.json()
+        try:
+            j = r.json()
+        except Exception:
+            # 平台偶发返回非 JSON（限流/网关空 body）：降级跳过 OS 预筛而非整体崩溃
+            print(f"[OS 池] WARN: 响应非 JSON（status={getattr(r, 'status_code', '?')}），"
+                  f"已取 {len(ids)} 条后跳过 OS 预筛：{(getattr(r, 'text', '') or '')[:120]!r}")
+            return ids
         if not isinstance(j, dict):
             break
         arr = j.get("results") or []
@@ -116,7 +122,10 @@ async def fetch_os_ids(brain) -> list:
 async def platform_recheck(brain, alpha_id: str):
     """detail 端点复核：返回 FAIL 项列表（空 = 干净）。None 表示取详情失败。"""
     r = await brain._request("GET", f"{brain.base_url}/alphas/{alpha_id}")
-    j = r.json()
+    try:
+        j = r.json()
+    except Exception:
+        return None
     if not isinstance(j, dict):
         return None
     checks = ((j.get("is") or {}).get("checks")) or []

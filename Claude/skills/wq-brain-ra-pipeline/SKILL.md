@@ -1,6 +1,6 @@
 ---
 name: wq-brain-ra-pipeline
-description: "REGULAR Alpha 挖掘唯一编排入口。当用户要求在某区域挖 RA / 开战役 / 从零到提交 / 挖 regular alpha / 挖因子 / 持续自我探索 / 日内循环 / 一键战役 / auto campaign / 选数据集/中性化/窗口 / 批量回测 / 发批 / 提交批次 / 达到可提交 Alpha 后停止时使用。PPA / Power Pool 仅当当前主题匹配 region/delay/universe 时作为本 SOP 的分支，不另起编排器。本 skill 只做编排，每一步调既有 skill 或 MCP 工具"
+description: "REGULAR Alpha 挖掘唯一编排入口。当用户要求在某区域挖 RA / 开战役 / 从零到提交 / 挖 regular alpha / 挖因子 / 持续自我探索 / 日内循环 / 一键战役 / auto campaign / 批量回测 / 发批 / 提交批次 / 达到可提交 Alpha 后停止时使用；或要求选数据集/中性化/窗口/衰减的**编排**（本 skill 只做编排决策，选字段/生成/回测/提交的具体动作由步 2–8 调下游 skill 执行，不亲自做）。PPA / Power Pool 仅当当前主题匹配 region/delay/universe 时作为本 SOP 的分支，不另起编排器。"
 layer: L-RA
 allowed-tools:
   - Read
@@ -68,7 +68,24 @@ $REGION = "KOR"        # 唯一输入
 
 ---
 
+## 铁律速查（跨步硬约束锚点，2026-09-29）
+
+正文散落在各步的硬约束在此汇总，防漏看。改任何一条先回到对应步核对权威表述：
+
+| 铁律 | 所在步 | 一句话 |
+|---|---|---|
+| 禁止 `add(A,B)` 混信号（含等权 `0.5A+0.5B`） | 步 4 硬约束 7、步 5 闸5 | 两条独立信号腿加权相加即违规 |
+| 形状配额（≥3 shape family、`trade_when`≤40%） | 步 5 前 `shape_quota_check.py` | 反模板同质化 |
+| prod-first 探针 | 步 5b | 新信号族第二波前必查 prod |
+| 提交四闸 + SUB 比值律 | 步 7 | LOW_SHARPE≥1.58 / F≥1.0 / 2Y≥1.58 / SUB≥0.571×S |
+| 提交前置闸 `submit_gate` + `robustness_audited` | 步 8 | 不过闸提交不出去（P0 已焊进 submit_alpha 节点） |
+| 点亮判定唯一权威 = 平台 `get_pyramid_alphas` | 步 9 | 禁本地表推导 |
+
+---
+
 ## 九步流水线
+
+> **编号唯一性（2026-09-29 固定）**：步 N（1–9）是唯一编排编号，S 阶段是**映射标签**（非第二套编号）——步 1=S-PRE、步 2=S0、步 3=S1、步 4=S2、步 5=S2→S3 门禁（含 5b）、步 6=S3、步 7=S4、步 8=S4→S5、步 9=S6。跨 skill 引用一律用「步 N」，勿再裸写「S 阶段」造成错位。
 
 每步含 **目的 / MCP 调用 / 产物 / 失败分支**。任一步 FAIL 就地回退，不允许跳过继续。
 
@@ -151,9 +168,15 @@ for ds in ["<候选集1>", "<候选集2>"]:
     print(ds, "->", rows or "无跨区死路")
 PY
 ```
-或直接读 `campaign_intel s0-select` 输出里的 **`[跨区弱:REG:maxS@bt]`** 负先验标记
-（同集在其它区 ≥16 条回测且 max|S|<1.0 即视为弱）。**跨区死族一律不进白名单**，
-不论本区评分多高 —— 三区独立复现的负先验强度远高于单区 S0 分数。
+或直接读 `campaign_intel s0-select` 输出里的 **`[跨区弱(参考):REG:maxS@bt]`** 标记
+（同集在其它区 ≥16 条回测且 max|S|<1.0 即视为弱）。
+
+⚠️ **2026-09-30 实测修正：该标记已降为"仅供参考"，不再是排除依据，也不参与排序降权。**
+公平对照（≥2 区共有数据集子集 n=154，基线 yield>0 = 23%）：标跨区弱 24% vs 未标 23%（+1pp）、
+标跨区强 22% vs 未标 24%（−2pp）——**两个方向都在噪声内，无预测力**。旧口径因它是排序第二键，
+把 17%（8/48）的候选整体压到存活队尾、top-n 截断时被完全排除，属纯系统性偏置。
+**仍要排除的是 registry_empirical 跨区 dead_end 的族级命中**（见上一段 SQL），不是本标记；
+需要复现旧排序加 `--xr-penalize`。
 
 **产出率读法（两个比率含义不同，别混）**：
 - `conversion` = 已回测 / 已生成 —— 低 = **流水线**问题（S2→S3 断链，生成远超回测吞吐）。修管道，别换区。
@@ -214,9 +237,10 @@ python tools/campaign_intel.py s0-select --region $REGION --delay $DELAY --unive
 输出 `hist_yield_rate`（历史产出率，None=处女地无历史）与 `hist_backtested`（样本量）；
 `yield=0 且 bt≥8` 的集已被实证判死，不要再投槽位。
 **2026-09-19 先验增强**：① `hist_yield_rate` 改用严格口径（RA-clean，与 `get_mining_yield(strict)` 同源）；
-② 新列 `maxS`（本区该集历史 max|sharpe|）与 `fld`（字段数）；③ **跨区负先验** `[跨区弱:REG:maxS@bt]`——同集在其它区
-≥16 条回测且 max|S|<1.0 视为弱（news/sentiment 在 USA/EUR/IND 同型全灭实证），`[跨区RA-clean:REG:n]` 为正证据；
-④ `fields<5` 的集标 `仅条件腿`（只能做 trade_when/bucket 辅助腿或事件探针，不进主攻）。跨区弱 / 仅条件腿的集
+② 新列 `maxS`（本区该集历史 max|sharpe|）与 `fld`（字段数）；③ ~~跨区负先验~~ **2026-09-30 起降级为参考标签** `[跨区弱(参考):REG:maxS@bt]`——同集在其它区
+≥16 条回测且 max|S|<1.0 视为弱，**实测无预测力（见上文修正段），不参与排序、不作排除依据**；
+`[跨区RA-clean:REG:n]` 同为参考（转化率 22% vs 未标 24%，亦无 lift）；
+④ `fields<5` 的集标 `仅条件腿`（只能做 trade_when/bucket 辅助腿或事件探针，不进主攻）。**仅**「仅条件腿」的集
 排在健康集之后、判死之前。**背景**：此前只按未点亮塔分排序，IND 把 earnings3/insiders1/macro63/shortinterest5
 这类结构性弱集推到前排，7 集 197 条回测 0 候选。
 **回填**：`backtest_results.dataset` 曾恒 NULL（pipeline 未传 dataset，已修）→ 按集产出率把当天刚跑完的集显示为
@@ -288,6 +312,49 @@ mcp__wq-brain-http__workflow_campaign  region=$REGION  stage="S1"  dataset=$DS
 - **产物**：`fields` 表 + ledger S1 决策。
 - **字段分级风险筛查（prod-corr 规避，orchestrator 迁移）**：`mcp__wq-brain-http__get_datafields` 后按 `users` 分级——`users ≥ 50` 只做信号方向验证不投入候选打磨（prod_corr 必超）；`users 10-49` 进候选池、提交前必须实测 prod_corr；`users 0-9` 优先候选池（理论 prod_corr≈0）。冷门字段（users≤9）占批次预算 ≥50%；已确认超标的字段族（如 GLB techindi `predicted_first_quantile_ten_day_return_*`）不再投任何变体。完整规避画像见 [references/prod-corr-avoidance.md](references/prod-corr-avoidance.md)。
 - **失败分支**：字段数 <10 则退回步 2 白名单外。VECTOR 比例用 `get_datafields` 确认，步 4 必须传对 `data_type`。
+
+**分类级字段分诊（闸 TRI，2026-09-30 落地，步 3 入口 fail-closed）**：进单集深扫前，先跑一条命令看清「这个 category 整体还值不值得开波、能开在哪个集」——零回测、零 API、纯本地：
+
+```
+python tools/category_field_triage.py --region $REGION --category RISK      # 单分类
+python tools/category_field_triage.py --region $REGION --all --survivors-only  # 全分类只要存活集
+python tools/category_field_triage.py --region $REGION --all --write-ledger    # 写 s1_triage_<region>（闸 TRI 的判定依据）
+```
+
+判级优先级（先命中先定）：`仅条件腿`（字段 <5）→ `判死`（两源）→ `族连坐` → `拥挤`（acmax>1000）→ `无甜点字段`（alphaCount∈[10,50] 个数为 0）→ `★可开波`。
+
+⚠ 三个**靠人做必漏**的点正是它被工具化的原因，读输出时请特别看 `[族级连坐]` 段：
+① **判死查两源**（`registry_empirical` + `ledger_kv` 的 `*_dead`）——只查前者会把已判死的集当存活（KOR 实测漏判 sentiment21 / institutions6）；
+② **族连坐**：判死记录的是**族**不是集。KOR 的 risk88 判死的是「Barra 风格载荷 ri_* 族」，而 risk70 字段叫 `mfm2_asetrd_*`——同一经济族、只差模型版本号，96 字段 / 3 甜点 / 跨区 GLB maxS 2.16，数据集级判死完全抓不到它，会被 s0-select 当优质候选推出去。工具用**字段 description 的关键词签名做包含度**（非 Jaccard：risk70 签名 8 词 ⊃ risk88 签名 3 词，Jaccard 仅 0.375 会漏、包含度 1.00 命中）自动连坐；族签名先过 **DF 过滤**（`--df-max`，默认 0.25）：`score/value/company/earnings/model` 这类跨 32–51% 数据集都出现的泛词会被剔除，否则整个 NEWS 分类会被压成一个族（实测 `news/score/sentiment/event` 泛词让 news18 被 news50 连坐）；
+③ **甜点 vs 荒地分开数**：`alphaCount=0 且 userCount=0` 的字段占全库 57%，把荒地当机会是已记录的死法；`acmax` 高不等于有甜点字段（ac=209 的 29 字段集 sweet=0）。
+
+#### 闸 TRI 的 fail-closed 契约（代码保证，不靠记忆）
+
+**挂点**：`wq-brain-campaign-toolkit/scripts/scan_fields.py`，即 `campaign.py` 的 `script_map["S1"]`。
+选它的原因：它是 **CLI 直调与 `workflow_campaign(stage="S1")` 的唯一执行体**，且 `extra_args` 透传（`campaign.py:461`），
+所以逃生口从 MCP 侧也够得着。骨架直接克隆既有 **闸 SEM**（模式解析 `CLI > env > 缺省`、exit 2、单一逃生口、醒目告警）。
+
+| 情形 | 行为 |
+|---|---|
+| ledger `s1_triage_<region>` 不存在 / 读不出 / JSON 坏 / 无 `verdicts` 映射 | **阻断**（无法判定 = 阻断） |
+| 数据集不在台账里 | **阻断** |
+| 台账条目**缺 `block` 字段**（旧版台账） | **阻断**，提示重跑分诊 |
+| `block=true`（非 `★可开波` 且无实证产出） | **阻断**，打印判级 + 标签 + 修复命令 |
+| `block=false` | 放行（含「判死但有实证产出」的豁免情形） |
+| 闸自身抛异常 | **阻断**（`except` 里按"无法判定"处理，不放行） |
+
+**★ 实证产出豁免（否则会 100% 误杀，已实测）**：判死是**族级**判定，而一个族里常混着真正出活的数据集。
+KOR 实测 3 个高产集（other466=16 / analyst44=8 / analyst10=5 条 ra_clean）——**全部被判死**，其中 other466 贡献了 `wpZkk1Mp` / `A1NXddRw` 两颗 ACTIVE alpha。
+若无条件阻断，KOR 的 **29/29 条 ra_clean 会被一次性砍光**。故分诊对「该区已有 ra_clean 回测产出（`ABS(sharpe)>=1.58 AND fitness>=1.0 AND ra_failed_checks 空`）或 `registry_empirical` 里有 `win` 记录」的数据集打 `实证产出(...)` 标签并置 `block=false`。加豁免后**误伤 0/29**。
+
+**逃生口**（三选一，等价，均打印醒目告警）：`--skip-triage-gate` / `--triage-gate off` / `WQB_TRI_MODE=off`；`--triage-gate warn` 只告警不阻断。
+回归：`tests/unit/test_triage_gate_failclosed.py`（18 例，含缺台账 / 坏 JSON / 旧版台账缺 `block` / 5 种判级 / CLI 三模式）。
+
+> ⚠ **新区域先分诊再扫**：未跑过 `--write-ledger` 的 region 会因"缺台账"被整区阻断（fail-closed 的必然代价）。
+> 13 个区域已于 2026-09-30 预生成台账（USA 346 集 / HKG 210 / GBR 203 / KOR 200 / DEU 193 / EUR 185 / ASI 173 / IND 157 / GLB 146 / MEA 25 / CHN 21 / JPN 19 / AMR 9，单区耗时 1–2 秒）；
+> **判死与回测产出会变**，每轮开波前重跑一次 `--write-ledger` 即可（幂等 upsert）。
+> ⚠ **别被"存活 N 集"吓到**：可扫的是 `block=false`，= `★可开波` + 实证豁免，比存活数大得多（GBR 存活 2 但可扫 8，KOR 存活 44 但可扫 59）。
+> 边界：`--category` 用的是 `datasets.category`，**≠ 金字塔塔归属**；点塔状态仍须查平台 `get_pyramid_alphas`。产物是字段池决策，**不是 ideas，禁止注入 GEM**。跨区强弱只作参考标签、不参与判级（2026-09-30 实测该先验无预测力）。KOR 实测 200 集 → 44 存活 / 141 阻断 / 59 因豁免放行。
 
 #### 步 3 强制环节：字段语义归类（闸 SEM，2026-09-28 落地，GEM 之前必做，代码 fail-closed）
 
@@ -499,9 +566,11 @@ python tools/campaign_intel.py ghost-audit --region $REGION --exprs-file <候选
 
 - **失败分支**：语法 FAIL 必须先修；多样性 FAIL 则回步 4 补骨架（可查 `KB/community_tpl_kb` 按 category 检索候选骨架，占位符按 `placeholder_conventions` 替换，并先查 `ghost_operator_advisory` 做幽灵算子替换）；**软触发（2026-09-28）：结构熵 <1.5 或 diversity 配额超限即查 KB 补骨架，不等硬 FAIL**；**KB 无货 → `tools/forum_recon.py --out kb` 补库后回补骨架**（有效文章标准同上；显式 `--queries` 关键词包可避免机械派生的穷举）；**波级默认取证**（`forum_recon_wave` 收批时自动落 ledger）应作为 KB 的第一来源，KB 与 ledger 都无货才 live 查；若 2 跨集 FAIL 则拆回单集组合，不停挖。
 
-### 步 5b：新信号族的 prod-first 探针（2026-09-19 实证后升为硬门）
+### 步 5b：新信号族的 prod-first 探针（闸 PF 硬门已 fail-closed；新骨架首探仍为软约束）
 
-**任何新信号族在投入第二波之前，必须先用 1–2 条骨架查 `check_correlation(production)`**（`tools/campaign_intel.py prod-first --region R --wave W --top-k 2 --write-ledger --json <out.json>`，`--json` 需要文件路径）。
+> 形态分层（2026-09-29 澄清，勿误判为全程 fail-closed）：**已知死路骨架 = 闸 PF 代码强制拦（fail-closed，已落地）**；**新骨架指纹的"先探针再扩批" = WARN 软约束，靠 Agent 记得跑** `campaign_intel.py prod-first`，漏跑不拦。
+
+**任何新信号族在投入第二波之前，必须先用 1–2 条骨架查 `check_correlation(production)`**（`tools/campaign_intel.py prod-first --region R --wave W --top-k 2 --write-ledger --json <out.json>`，`--json` 需要文件路径；此为软约束，靠 Agent 执行，闸 PF 只兜底"已知死路"）。
 实证：IND intraday_pv_feats 价量相关反转连投 3 波 24 条（S 4.4–6.5 全 IS 过）后才查 prod = 0.79–0.92，整族报废；pv103 尾盘反转 8 条同理。
 判定：家族首探 prod ≥ 0.7 → 记 dead_end 换机制，不做任何去相关变体（bucket/门控/平滑实证都破不了 prod 墙）；0.60–0.70 → 直接进步 8。
 
@@ -688,6 +757,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
   比对后回写 `template_kb`（兑现进 `validated`，未兑现进 `failed`）。
 - **失败分支**：`prod_corr ≥0.7` 则 Mode B 换概念；同一想法 >10 种结构仍不过 则步 9 记 `dead_end`，回步 2。
 - **四道提交闸 + SUB 比例律（2026-09-28 新增，跨区域通用，高价值）**：
+  （阈值唯一权威 = `config.GATES`；`brain-how-to-pass-alpha-test` 引用同一份数字。本节为编排摘要，勿另写阈值。）
   提交层实际四闸 = `LOW_SHARPE ≥1.58` / `LOW_FITNESS ≥1.0` / `LOW_2Y_SHARPE ≥1.58` /
   **`LOW_SUB_UNIVERSE_SHARPE`（limit 不是固定值，而是 ≈ 0.571 × 本 alpha 的 sharpe）**。
   平台实测佐证：`wpZkk1Mp` SUB limit=1.03 / sharpe=1.80 = **0.572**；`2rwoAp8b` 1.12/1.96=0.571；
@@ -722,7 +792,7 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<boost_2y|boost_cw|boos
 
 
 
-S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（反过拟合/稳健性闸）。
+S4→S5 必经 [brain-alpha-robustness](../brain-alpha-robustness/SKILL.md)（反过拟合/稳健性闸）。**2026-09-29 P0 已焊进提交路由**：`submit_alpha` 节点强制 `submit_gate`（自动拦 Failed RA/PPA≠0 + 模拟层 FAIL + 硬闸 WARNING）+ `robustness_audited=True` 声明（补齐逐年归因），不过闸提交不出去（`force=True` 留痕绕过）。
 
 **提交判定链（顺序执行）**：模拟层（IS checks + 资格门）以 `submit_verdict` 为准；**提交层判据源头 = POST `/alphas/{id}/submit`**（2026-09-27 修正，见第 2 步 ⚠）。
 

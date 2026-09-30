@@ -44,38 +44,26 @@ allowed-tools:
 - **更新频率（Update Frequency）**：日频（Daily）、季频（Quarterly）。
 - **层级（Hierarchy）**：一级 -> 二级 -> 三级（如 Financials -> Income Statement -> Revenue）。
 
-## Phase 3: 数据集双门槛评分与两段式探针（战役级）
-战役级数据集初筛用双门槛评分（权威定义见 `wq-brain-ppa-mining §1.0`，执行走 `wq-brain-campaign-toolkit` 的 `score_datasets.py`，公式见其 `references/probe-scoring-v2.md`）：
-- 评分公式：`0.40*cov + 0.30/(1+log10(1+alphaCount)) + 0.20*log1p(fieldCount)/log1p(1000) + 0.10*min(valueScore,10)/10`（vs 缺失按 0.3）；
-- tier1 硬门槛：cov≥0.85 且 alphaCount≤50 且 fieldCount≥10 → 直接攻；tier2（cov≥0.85/ac≤200/fc≥5）→ 探针先行；
-- **两段式探针**：Stage A 评完 `EARLY_RED` 即不跑 Stage B（省批）；三灯判定（v2）细节指向 toolkit references。
+## Phase 3: 数据集级定性（战役级评分见 ppa-mining / toolkit）
+**本 skill 在此阶段只做数据集级定性**（该数据集值不值得挖、类别/覆盖/拥挤度画像）。战役级双门槛评分与两段式探针由 `wq-brain-ppa-mining §1.0`（权威定义）与 `wq-brain-campaign-toolkit` 的 `score_datasets.py`（执行，公式见其 `references/probe-scoring-v2.md`）负责，本 skill 不重复维护其数值，需要时直接路由：
+- 评分公式、tier1/tier2 硬门槛 → `wq-brain-ppa-mining §1.0`；
+- 两段式探针（Stage A `EARLY_RED` 省批）与三灯判定（v2）→ `wq-brain-campaign-toolkit` references。
 
 ## Phase 4: 增强描述与分析
 1. **描述**：撰写详细描述（业务背景、方法论、典型取值）。
-2. **分析**：对关键字段使用 `brain-datafield-exploration-general` 的技术来理解分布与形态。
+2. **单字段分析**：对数据集内需要深入理解的字段，路由到 `brain-datafield-exploration-general` 做单字段评测（"关键字段"的判据与 6 种评测方法见该 skill）——本 skill 不做单字段深度评测。
 
 ## Phase 5: 整合
 1. **调研**：查阅论坛帖子获取社区见解（`brain-forum-browse` skill 或 `mcp__wq-brain-http__search_forum_posts`）。
-2. **Alpha 思路**：基于数据集特征头脑风暴 alpha 概念。
+2. **不做 alpha 概念头脑风暴**：特征/alpha 概念生成是 `brain-data-feature-engineering` 的职责，本 skill 到此为止的产出是数据集级画像与字段分类。
 
 ## 关键：Region → Universe 映射（用于 `get_datasets`）
-`get_datasets` **严格按照该区域的有效 universe 过滤**（下表数字为 **2026-08 平台快照**，用时以 `get_platform_setting_options` 实时复核为准）。传错 universe 会**静默返回空结果**（假阴性——数据其实存在，但你却会得出"没有数据"的结论）。务必按区域使用正确的 universe：
 
-| 区域 | 有效 universe（get_datasets） | 备注 |
-|---|---|---|
-| USA | `TOP3000` | |
-| GLB | `TOP3000` | |
-| KOR | `TOP600` | 192 个数据集 / 15 个类别（**2026-08 快照，非权威**） |
-| ASI | `TOP500` | 163 个数据集 |
-| EUR | `TOP2500` | 也支持 `TOP1200` / `TOP800` / `TOP400` |
-| CHN | `TOP2000U` | **不是** `TOP3000` |
-| JPN | — | **不是有效的 EQUITY 区域** —— `get_datasets` 返回 0 |
-| HKG / IND / MEA / DEU / GBR | 区域特定 | 通过 `get_platform_setting_options` 核实 |
+**本 skill 不维护 Region→Universe 快照表**（见职责边界）。`get_datasets` **严格按照该区域的有效 universe 过滤**；唯一权威来源是 `get_platform_setting_options` 的实时返回值（固化的合法档位以 `src/wqb/config.py::REGIONS` 为准）。传错 universe 会**静默返回空结果**（假阴性——数据其实存在，但你却会得出"没有数据"的结论）。
 
-指导说明：
 - 用 `get_platform_setting_options` 获取权威 universe 列表（返回每个区域的有效 universe）。
 - `get_datafields` 同样需要 `dataset_id` + 区域 universe。
-- JPN 不在 EQUITY 区域列表中，不要调用 `get_datasets(region=JPN)`。
+- 某区域若在实时返回值里**不是有效 EQUITY 区域**（如 JPN），不要调用 `get_datasets(region=...)`，直接按"无 EQUITY 数据集"处理。
 - 如果某区域返回 0 个数据集，先怀疑 universe 传错，再怀疑该区域为空。
 
 ## 核心职责

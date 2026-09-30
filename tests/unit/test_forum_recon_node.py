@@ -66,12 +66,20 @@ def test_exit_codes_mapping(monkeypatch):
 
     monkeypatch.setattr(node, "run_logged_subprocess", _fake_run(rc=2))
     out = node.run(question="q")
-    assert out["success"] is True and out["found"] is False      # 无解=合法结局
+    assert out["success"] is True and out["found"] is False      # 确认无解=合法结局
     assert "判死证据" in out["note"]
 
+    # 2026-09-29：rc=3 未取证（工具故障）——found=None，与 rc=2「确认无解」严格区分。
+    # 旧行为把故障判成 found=False，会被 SOP 当成「论坛无解」判死取证（假阴性误判死）。
+    monkeypatch.setattr(node, "run_logged_subprocess", _fake_run(rc=3))
+    out = node.run(question="q")
+    assert out["success"] is False and out["found"] is None
+    assert "未取证" in out["error"] and "不得" in out["error"]
+
+    # 其它异常退出码同样按「未取证」处理，不得回落成 found=False
     monkeypatch.setattr(node, "run_logged_subprocess", _fake_run(rc=1))
     out = node.run(question="q")
-    assert out["success"] is False and out["found"] is False
+    assert out["success"] is False and out["found"] is None
 
 
 def test_timeout_reports_log(monkeypatch):

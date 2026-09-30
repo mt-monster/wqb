@@ -35,7 +35,7 @@ allowed-tools:
 
 **注意**：本 skill **不**校验表达式中引用的数据字段（变量）在数据库中是否存在，只检查它们是否以合法标识符形式使用。
 
-`densify()` 允许以字段标识符输入原生 GROUP 分组轴（例如客户网络簇）；本层无法仅凭字段名确认平台类型。其输出仍是分组键，不能交给 `rank()` 等数值信号参数使用；字段存在性和平台类型须继续过战役门禁。
+`densify()` 允许以字段标识符输入原生 GROUP 分组轴（例如客户网络簇）；其输出仍是分组键，不能交给 `rank()` 等数值信号参数使用。字段存在性与平台类型判定不在本层，见下方「边界说明」。
 
 ## 使用方法
 
@@ -46,11 +46,11 @@ allowed-tools:
    * **主路径（Windows）**：`$WQ_VALIDATOR_DIR/verify_expr.py`。
    * **注意**：skill 目录名是 `alpha-expression-verifier`（**不是** `expression_verifier`）。早期文档中引用 `.claude` 或裸名 `expression_verifier` 的写法都是错的。
 
-2. **执行**：用 python 运行脚本，务必用引号包裹表达式以处理空格和特殊字符。
+2. **执行**：用 `$WQ_PY` 运行脚本，务必用引号包裹表达式以处理空格和特殊字符。
 
 ```bash
 # 示例（按需调整路径）
-python "$WQ_VALIDATOR_DIR/verify_expr.py" "ts_rank(close, 10)"
+$WQ_PY "$WQ_VALIDATOR_DIR/verify_expr.py" "ts_rank(close, 10)"
 ```
 
 ## 解读结果
@@ -63,13 +63,13 @@ python "$WQ_VALIDATOR_DIR/verify_expr.py" "ts_rank(close, 10)"
 
 ### 校验合法表达式
 ```bash
-python scripts/verify_expr.py "rank(close) / ts_delay(open, 5)"
+$WQ_PY "$WQ_VALIDATOR_DIR/verify_expr.py" "rank(close) / ts_delay(open, 5)"
 ```
 
 ### 校验非法表达式
 ```bash
-python scripts/verify_expr.py "rank(close, 5)"  # 注意：rank(x, n) 是合法的（n 为窗口），此例仅演示运行位置。
+$WQ_PY "$WQ_VALIDATOR_DIR/verify_expr.py" "rank(close) / ts_delay(open, 5"  # 括号不匹配：少一个右括号
 ```
 
 ## 边界说明：仅语法层面，战役级预检另见其他 skill
-本 skill 只验语法。**字段白名单 / 类型（VECTOR 须 `vec_*` 包裹）/ 不可访问算子（`ts_min`/`ts_max`）/ `quantile` 仅 1 参 / banned+poison 正则** 属战役级 preflight，走 `wq-brain-campaign-toolkit` 的 `gate.py`（5 闸 + sha1 缓存）。`quantile` 签名表允许 1–3 参是语法事实，战役纪律"仅 1 参"由 gate 闸4 在本层加严，**不要**改 `validator.py`（1363 行巨石）。
+本 skill 只验语法。**字段白名单 / 类型（VECTOR 须 `vec_*` 包裹）/ 不可访问算子（`ts_min`/`ts_max`）/ `quantile` 仅 1 参 / banned+poison 正则** 属战役级 preflight，走 `wq-brain-campaign-toolkit` 的 `gate.py`（5 闸 + sha1 缓存）。`quantile` 签名表允许 1–3 参是语法事实，战役纪律"仅 1 参"由 gate 闸4 在本层加严。**不要改 `validator.py`（1363 行巨石）**：当发现"语法允许但战役禁止"的差异（如 `quantile` 多参）时，正确做法是把该纪律上报到 `wq-brain-campaign-toolkit` 的 gate 闸规则，而非把战役纪律硬编码进语法校验器——否则语法层与战役层职责混叠，后续任何战役规则调整都会污染语法事实。

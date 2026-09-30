@@ -46,8 +46,9 @@ allowed-tools:
 ## 第 4 步：查阅官方文档
 使用 `mcp__wq-brain-http__get_documentations` 和 `mcp__wq-brain-http__get_documentation_page` 深入理解相关概念（如向量数据处理）。
 
-## 第 5 步：借助外部调研拓宽理解（可选）
-在 arXiv 上搜索学术论文以获取前沿思路：`python scripts/arxiv_api.py "<keywords>" -n 10`（脚本随本 skill 附在 `scripts/` 下）。
+## 第 5 步：借助外部调研拓宽理解（可选，仅做理解性检索）
+在 arXiv 上搜索学术论文以辅助**理解** alpha 思路：`python scripts/arxiv_api.py "<keywords>" -n 10`（脚本随本 skill 附在 `scripts/` 下）。
+本 skill 的 arXiv 检索**只服务于解释/理解**，**不做概念提取、不落盘候选池**——概念提取与 `--concepts --llm` 结构化落盘属 `wq-brain-alpha-optimization-v1` Step B3（见其 `arXiv_API_Tool_Manual.md`）的职责，勿在此重复。
 
 ## 第 6 步：综合并解释
 按以下结构组织解释：
@@ -60,6 +61,11 @@ allowed-tools:
 向量数据在每个交易日对每只工具记录多条事件（如新闻）。它需要聚合（如 `vec_mean`、`vec_sum`）才能变成可被其他算子使用的矩阵值。
 
 ## 衔接协议
-- **上游**：`brain-calculate-alpha-selfcorr-quick`（相关性快筛后的候选）。
-- **本 skill 角色**：S4 **按需**工具（2026-09-01 精简：从每候选必经改为按需调用）——两个触发场景：① Mode B 换概念前查与既有 book 的概念重叠；② 提交前对战略级候选做收益来源确认。日常近闸候选不必逐条归因。
-- **下游**：**brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `brain-alpha-judge`（S5 参考）。
+- **上游（分场景）**：
+  - 场景①（Mode B 换概念前查概念重叠）：上游 = `wq-brain-alpha-optimization-v1` Step B3（动手换概念之前）；
+  - 场景②（提交前收益来源确认）：上游 = `brain-calculate-alpha-selfcorr-quick`（本地快筛后的候选）。
+- **本 skill 角色**：S4 **按需**工具（2026-09-01 精简：从每候选必经改为按需调用）。两个触发场景用**硬判据**：
+  ① **Mode B 换概念前**（`wq-brain-alpha-optimization-v1` Step B3 换信号概念/字段组合之前）查与既有 book 的概念重叠；
+  ② **robustness Phase C 判定 CONDITIONAL 且用户要求**复核收益来源时。
+  日常近闸候选（robustness 判定 PASS 或 REJECT）不必逐条归因。
+- **下游**：**brain-alpha-robustness**（过拟合/稳健性必经闸，S4→S5）→ `tools/submit_verdict.py`（提交层权威判定；`brain-alpha-judge` 仅作可选参考评审）。

@@ -66,6 +66,9 @@ cleanup_tmp.py
 .pytest_cache/
 # pytest custom temp dir (tests redirect TMPDIR here; runtime artifacts, never commit)
 .pytest_tmp/
+# pytest output dumps (JUnit XML + stdout capture, regenerated every run)
+pytest_junit*.xml
+pytest_out.txt
 # agent/IDE state
 .qoder/
 .vscode/

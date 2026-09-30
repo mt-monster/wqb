@@ -22,10 +22,15 @@ from .._common import (
     persist_workflow_record,
     run_async as _run_async,
 )
+from ...config import compute_webdata_failed_counts
 
 logger = logging.getLogger(__name__)
 
 _POLL_INTERVAL_SEC = 5
+
+# 提交层硬闸项：模拟层 WARNING 但提交层 FAIL 的检查名（与 tools/submit_verdict.py 同口径）。
+# 2026-09-29 P0：这些 WARNING 在 POST submit 时平台会重新评估为 FAIL，必须在本地 fail-closed 拦截。
+_SUBMIT_HARD_GATE_WARNINGS = {"LOW_FITNESS", "LOW_SHARPE", "LOW_2Y_SHARPE"}
 
 
 def _derive_tags(alpha_id: str, dataset: Optional[str], wave: Optional[str],
@@ -91,6 +96,7 @@ def run(
     tags: Optional[List[str]] = None,
     descriptions: Optional[str] = None,
     force: bool = False,
+    robustness_audited: bool = False,
     confirm_submit: bool = False,
     verify_timeout: int = 180,
     dataset: Optional[str] = None,
@@ -110,6 +116,10 @@ def run(
         tags: 标签。**默认 None → 按规范自动生成**（见下）；显式传入则以传入为准。
         descriptions: 描述文本（三段式，≥100 英文词）
         force: 是否跳过本地预检（仅当 confirm_submit=True 时有意义）
+        robustness_audited: 是否已通过 brain-alpha-robustness 审计（Phase B/C 逐年归因）。
+            **fail-closed（2026-09-29 P0）**：confirm_submit=True 时必须为 True，
+            否则拒绝提交（除非 force）。robustness 的 Phase B.0 硬门（Failed RA/PPA==0）
+            已由 submit_gate 自动判定，此参数补齐无法自动的逐年归因部分。
         confirm_submit: 是否真正 POST submit（默认 False，只做预检+状态查询）
         verify_timeout: 提交后状态确认超时（秒）
         dataset: 来源数据集 → 自动生成 `SRC_<dataset>` 标签
@@ -157,10 +167,13 @@ def run(
                 "tags": tags,
                 "confirm_submit": confirm_submit,
                 "force": force,
+                "robustness_audited": robustness_audited,
                 "verify_timeout": verify_timeout,
                 "calls": (
-                    ["get_alpha_details(alpha_id)", "pre_submit_check(alpha_id)"]
+                    ["get_alpha_details(alpha_id)",
+                     "submit_gate(FAIL/硬闸WARNING/Failed RA·PPA，fail-closed)"]
                     + ([
+                        "robustness_audited 声明（confirm_submit 时 fail-closed 必过）",
                         "set_alpha_properties(alpha_id, name/color/tags/descriptions)",
                         "POST /alphas/{id}/submit",
                         f"poll get_alpha_details until OS/ACTIVE (<= {verify_timeout}s)",
@@ -184,14 +197,27 @@ def run(
 
     client = _get_brain_client()
 
-    # Step 1: 预检（get_alpha_details + pre_submit_check）
+    # Step 1: fail-closed 提交前置闸（自动判定：模拟层 FAIL / 提交层硬闸 WARNING / Failed RA/PPA）
+    # 2026-09-29 P0：把 brain-alpha-robustness 的 Phase B.0 硬门（WebDataScope Failed RA/PPA==0）
+    # 与提交层四闸（LOW_SHARPE/LOW_FITNESS/LOW_2Y_SHARPE）焊进提交路由，替代旧的弱启发式
+    # pre_submit_check（Sharpe 1.3 / Fitness 0.75 且预检失败 fail-open）。
     precheck = _run_async(client.get_alpha_details(alpha_id))
-    check = _run_precheck(client, precheck)
-    result["steps"].append(check)
+    gate = _submit_gate(precheck)
+    result["steps"].append(gate)
 
-    if check.get("blocked") and not force:
-        result["reason"] = "pre_submit_check blocked"
+    if gate.get("blocked") and not force:
+        result["reason"] = "submit_gate blocked: " + "; ".join(gate.get("blocked_reasons") or [])
         result["blocked"] = True
+        return _finalize(result, store, alpha_id)
+
+    # Step 1.5: robustness 审计声明闸（confirm_submit=True 时 fail-closed，补齐无法自动的逐年归因）
+    if confirm_submit and not robustness_audited and not force:
+        result["reason"] = "robustness audit not confirmed"
+        result["blocked"] = True
+        result["blocked_reason"] = (
+            "提交前必须通过 brain-alpha-robustness 审计（Phase B/C 逐年 PnL 归因）并显式声明 "
+            "robustness_audited=True；确已人工审计且要跳过时传 force=True（留痕）"
+        )
         return _finalize(result, store, alpha_id)
 
     # Step 2: 设置属性（仅在实际提交前做，避免空改）
@@ -323,21 +349,65 @@ def _classify_submit_response(submit: Any) -> str:
     return "unknown_accept" if not checks else "rejected"
 
 
-def _run_precheck(client, details: Dict[str, Any]) -> Dict[str, Any]:
-    """包装 pre_submit_check（本地启发式），失败不抛异常。"""
-    try:
-        cr = client.pre_submit_check(details)
-        return {
-            "step": "pre_submit_check",
-            "success": True,
-            "passed": bool(cr.get("passed")),
-            "blocked": not bool(cr.get("passed")),
-            "check_result": cr,
-        }
-    except Exception as e:
-        logger.warning(f"pre_submit_check failed: {e}")
-        return {"step": "pre_submit_check", "success": False, "error": str(e),
-                "blocked": False, "check_result": None}
+def _submit_gate(details: Any) -> Dict[str, Any]:
+    """fail-closed 提交前置闸（P0，2026-09-29）。
+
+    把 brain-alpha-robustness 的 Phase B.0 硬门（WebDataScope Failed RA/PPA==0）
+    与提交层四闸（LOW_SHARPE/LOW_FITNESS/LOW_2Y_SHARPE 的模拟层 WARNING）焊进提交路由。
+    纯函数（不触网），输入 = get_alpha_details 的返回 dict。
+
+    fail-closed 语义：**无法判定 = 阻断**（预检失败/无 is.checks 一律 blocked，
+    不重蹈旧 pre_submit_check「预检异常即放行」的 fail-open 缺陷）。
+
+    阻断条件（任一即 blocked）：
+      1. details 非 dict / 无 is.checks（回测未完成或预检失败）；
+      2. 模拟层 checks 存在 result==FAIL；
+      3. 模拟层 WARNING 含提交层硬闸项（提交时平台升级 FAIL）；
+      4. Failed RA（REGULAR）或 Failed PPA（PPA）计数非零（Phase B.0 硬门）。
+    """
+    if not isinstance(details, dict):
+        return {"step": "submit_gate", "passed": False, "blocked": True,
+                "blocked_reasons": ["get_alpha_details 返回异常（非 dict），无法判定"]}
+
+    is_ = details.get("is") or {}
+    checks = is_.get("checks") or []
+    if not checks:
+        return {"step": "submit_gate", "passed": False, "blocked": True,
+                "blocked_reasons": ["无 is.checks（回测未完成或预检失败），fail-closed 阻断"]}
+
+    fails = [c for c in checks if str(c.get("result")) == "FAIL"]
+    hard_warns = [c for c in checks
+                  if str(c.get("result")) == "WARNING"
+                  and c.get("name") in _SUBMIT_HARD_GATE_WARNINGS]
+    counts = compute_webdata_failed_counts(checks)
+    is_ppa = str(details.get("type") or "").upper() == "PPA"
+    failed = counts["failed_ppa"] if is_ppa else counts["failed_ra"]
+
+    reasons: List[str] = []
+    if fails:
+        reasons.append(f"模拟层 {len(fails)} 项 FAIL："
+                       f"{', '.join(str(c.get('name')) for c in fails)}")
+    if hard_warns:
+        reasons.append(
+            "模拟层 WARNING 含提交层硬闸项（提交时平台升级 FAIL）："
+            f"{', '.join(str(c.get('name')) for c in hard_warns)}")
+    if failed:
+        names = counts["ppa_failed_names"] if is_ppa else counts["ra_failed_names"]
+        reasons.append(f"WebDataScope Failed {'PPA' if is_ppa else 'RA'} = {failed}"
+                       f"（Phase B.0 硬门非零）：{names}")
+
+    blocked = bool(reasons)
+    return {
+        "step": "submit_gate",
+        "passed": not blocked,
+        "blocked": blocked,
+        "blocked_reasons": reasons,
+        "failed_ra": counts["failed_ra"],
+        "failed_ppa": counts["failed_ppa"],
+        "fails": fails,
+        "hard_gate_warns": hard_warns,
+        "is_ppa": is_ppa,
+    }
 
 
 def _current_status(client, alpha_id: str) -> Optional[str]:

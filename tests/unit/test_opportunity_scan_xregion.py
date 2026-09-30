@@ -49,17 +49,43 @@ def _dead_blob():
 
 
 def test_playable_excludes_all_dead_end_hits(tmp_path):
-    """核心契约：playable 里任何数据集名都不得出现在**跨区** dead_end 文本中（大小写不敏感）。"""
+    """核心契约（2026-09-28 修订）：playable 数据集不得命中**数据集级**死路。
+
+    2026-09-28 起扫描区分两级：死路 `rule` **只禁特定构造**（含 skeleton/bare/骨架/
+    构造/multi-field 等标记）属**构造级死路**——数据集仍可挖（换构造即可），但扫描
+    记录必须带 `construction_constraints` 说明。实证：shortinterest38 被 wave96
+    bare-skeleton 死路误杀，而论坛 2026-09 换构造后 Sharpe 2.43 全闸通过并提交。
+    数据集级死路（rule 未限定构造，如 "do not re-mine shortinterest3"）仍然封锁。
+    """
     opp = _run_scan(tmp_path)
-    blob = _dead_blob()
+    markers = ("skeleton", "bare", "骨架", "构造", "multi-field combos",
+               "with multi-field", "event-gating", "event-")
+    c = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
+    try:
+        dead = [(row[1], row[2] or "") for row in c.execute(
+            "SELECT region, entry_id, COALESCE(payload,'') "
+            "FROM registry_empirical WHERE layer='dead_end'")]
+    finally:
+        c.close()
+    by_name = {r["dataset"].lower(): r for r in opp["playable"]}
     offenders = []
-    for r in opp["playable"]:
-        key = r["dataset"].lower()
-        for text in blob:
-            if key in text:
-                offenders.append((r["dataset"], text[:90]))
-                break
-    assert not offenders, f"跨区死路漏检（region-scoped 或大小写敏感的旧缺陷回归）: {offenders}"
+    for entry_id, payload in dead:
+        blob = (entry_id + " " + payload).lower()
+        try:
+            obj = json.loads(payload) if payload.lstrip().startswith("{") else {}
+        except Exception:
+            obj = {}
+        scope_blob = (str(obj.get("rule", "")) + " " + str(obj.get("reason", ""))).lower()
+        scoped = any(m in scope_blob for m in markers)
+        for ds, rec in by_name.items():
+            if ds in blob:
+                if scoped:
+                    assert "construction_constraints" in rec, (
+                        f"{rec['dataset']} 命中构造级死路 {entry_id} 但扫描未记录约束")
+                else:
+                    offenders.append((rec["dataset"], entry_id))
+    assert not offenders, (
+        f"数据集级死路漏检（region-scoped / 大小写敏感 / 构造级误判为数据集级的旧缺陷回归）: {offenders}")
 
 
 def test_playable_excludes_lit_categories(tmp_path):

@@ -27,7 +27,7 @@ allowed-tools:
 
 ## 描述
 本 skill 将 WorldQuant Brain idea 文档（Markdown）自动转换为可执行的 Alpha 表达式，并为每种独立的 idea 模式处理数据集下载和代码生成。
-同名占位符可在条件与信号中重复出现，只绑定一次；不同占位符仍禁止退化为同一字段的恒等式。
+同名占位符可在条件与信号中重复出现，只绑定一次；不同占位符仍禁止退化为同一字段的恒等式。占位符后缀若匹配到多个候选字段（歧义），优先绑定与 idea 元数据（dataset/region/delay）声明的字段；仍无法唯一确定则报错阻断，不静默猜测。
 下载支持 MATRIX/VECTOR/GROUP；GROUP 是分组轴，单个 GROUP 占位符只保留概念原式，不自动扩展 rank(label) 或 ts_delta(label) 等数值变体。
 
 ## 工作范围
@@ -50,7 +50,9 @@ allowed-tools:
 
 缺文件或字段时脚本会打印错误并退出（不消耗平台资源）。凭据不要提交到版本库。
 
-## 操作步骤
+## 实现细节（被 `brain-make-some-gem` 引擎内嵌调用，非独立主链入口）
+
+以下步骤在 GEM 引擎内部执行，不面向用户作为独立流程；本 skill 的产出是中间产物 `final_expressions.json`，真相源是 DB `expressions` 表。
 
 1.  **分析 idea 文档**
     *   读取提供的 markdown 文件。
@@ -58,7 +60,7 @@ allowed-tools:
         *   **数据集 ID**（如 `analyst15`）
         *   **区域**（如 `GLB`）
         *   **延迟**（如 `1` 或 `0`）
-    *   *若缺少任何元数据，请向用户澄清。*
+    *   *必需字段 = 数据集 ID / 区域 / 延迟。三者任一缺失即**阻断**（列缺失清单，不得继续、不得猜测默认值）；语法/字段校验不在此层——归属 `wq-brain-campaign-toolkit` 的 `gate.py` 闸1–4。*
 
 2.  **下载数据集**
     *   使用提取的参数执行下载脚本。
@@ -98,10 +100,10 @@ allowed-tools:
                 ```
             *   *注意*：脚本只接受 `--template` 和 `--dataset`。不要传其他参数，如 `--filters` 或 `--groupby`。
             *   **严格规则**：不要用 `python -c` 或创建临时脚本验证或处理结果。信任 `implement_idea.py` 的输出。
-        *   验证输出（生成的表达式数量）。
+        *   验证输出：生成的表达式数量 ≥ 1（否则该 idea 视为实现失败并阻断，不静默通过）；只验数量，不复验语法（语法由脚本保证，字段校验归 gate）。
         *   将 Todo 项标记为完成。
 
-5.  **完成输出**
+5.  **合并产出（内部中间产物）**
     *   所有 Todo 项完成后，将所有生成的表达式合并到单个文件中。
     *   **运行合并脚本**：
         *   切换到包含脚本的文件夹。
@@ -109,8 +111,7 @@ allowed-tools:
             ```bash
             cd <PATH_TO_SCRIPTS_FOLDER> && python merge_expression_list.py --dataset "<DATASET_FOLDER_NAME>"
             ```
-    *   这会在数据集目录下生成 `final_expressions.json`。
-    *   向用户报告唯一表达式的总数以及最终文件的路径。
+    *   这会在数据集目录下生成 `final_expressions.json`（**中间产物，非真相源**；落库后以 DB `expressions` 表为准）。
 
 ## 脚本依赖
 本 skill 依赖其 `scripts/` 目录下的以下脚本：

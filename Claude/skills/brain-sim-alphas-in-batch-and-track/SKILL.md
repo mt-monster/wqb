@@ -82,7 +82,7 @@ mcp__wq-brain-http__workflow_batch_track(
   region="KOR",
   wave="36A",
   dataset="model219",
-  concurrency=7,  # 七槽填槽
+  concurrency=7,  # 七槽填槽（正式战役 wave；唯一权威 wqb-concurrency §8）
   max_rounds=3
 )
 
@@ -111,12 +111,12 @@ python scripts/batch_simulator.py --status "<task_id>" --tail-lines 60
 
 1. **启动前预检**：`configs/config.json` 存在（或 env 凭据就绪）、`data/alpha_list.json` 存在。
 2. **默认后台执行**：大批量用 `--detached`，每 60–180 秒轮询一次。
-3. **进度真相源 = 输出 CSV**，不是终端 tail。终端超时不等于失败。
+3. **进度观察以输出 CSV 为准**（断点续跑进度缓存，非交接真相源），不是终端 tail；最终结果真相源是 `backtest_results` 表。终端超时不等于失败。
 4. **超时处理**：命令跟踪超时时，先查 CSV 是否存在、文件大小是否变化、行数是否增加；artifact 仍在更新就继续轮询。
 5. **失败判定**（两个条件同时满足才算失败）：
    - 进程看似停止或不可达，且
    - CSV 无进展持续 ≥ 3 分钟。
-6. **每轮轮询最少检查**：CSV 存在 / 总行数 / `status` 分布（`COMPLETE/COMPLETED`、`ERROR/FAIL`、其他）。
+6. **每轮轮询最少检查**：CSV 存在 / 总行数 / `status` 分布（终态按两族统计：`COMPLETE`/`COMPLETED` 同计为完成、`ERROR`/`FAIL` 同计为失败——它们是同一终态的不同字面量，勿当作四类；另有"其他"未终态）。
 7. **最终摘要必含**：CSV 路径、总行数、各 status 计数、下一步建议（续跑 / 仅重跑失败项 / 降并发）。
 
 ## 续跑语义
@@ -159,17 +159,10 @@ ad-hoc 批量路径使用本 skill 自带 `scripts/diversity_enhancer.py`；战�
 
 | 阶段 | 能力 | 引擎脚本（`../wq-brain-campaign-toolkit/scripts/`） | 产出 |
 |---|---|---|---|
-| S1 | 字段扫描（typed catalog） | `scan_fields.py` | `reference/<region>_<dataset>_fields.json` |
-| S1 | 数据集评分+探针计划 | `score_datasets.py` | `reference/<region>_dataset_ranking.json`（mode/tier/tier_note） |
-| S2 | 候选生成（去重/分桶/骨架配给）+ 多样性增强 | `build_wave.py`（`--enhance-diversity auto/always/never`） | `candidates/*.json` + `candidates/<region>_wave<wave>_diversity_report.json` |
-| S2 | 闸1–5 预检（语法/字段白名单/VECTOR 包裹/不可访问算子/毒模式；闸编号基准见 INDEX） | `gate.py` | 闸门报告 |
 | S3 | 七槽填槽模式（7 批 multisim 同提、统一轮询、即收即补；并发纪律权威定义见 **`wqb-concurrency`** §8；**填槽内容**（组合优先 vs 弱探针）硬约束见 **`wq-brain-ra-pipeline` 步 4/步 6**，本表不复写；pipeline.py 2026-08-21 代码落地，支持 `--max-rounds` 多轮） | `pipeline.py`（七槽模式） | checkpoint JSON + alpha id |
 | S3 | 挂起熔断/退避/配额闸（机制沿用） | `pipeline.py`（内部 poller） | STALLED 检测、ET 日历日配额闸 |
-| S4 | 评审墙诊断 | `review_wave.py` | `reviews/<region>_review_<wave>.json`（walls + 候选/near） |
-| S4 | 三灯探针评分 | `score_datasets.py --probe-score` | 三灯报告 |
-| S5 | 配额查询（ET 日历日 4/1 口径） | `pipeline.py quota` | 配额状态 |
-| S6 | 多样性审计 | `diversity_audit.py` | 同质报告 |
-| S6 | 台账回写 | `campaign.py ledger`（内部 LedgerStore） | `ledger_kv` 表（data/wqb.db，SQLite 后端） |
+
+> **其余阶段能力不搬入本 skill**（本 skill 只负责 S3 执行）：S1 字段扫描/数据集评分 → `wq-brain-ra-pipeline` 步 2–3；S2 候选生成/闸1–5 预检 → `brain-make-some-gem` + `wq-brain-campaign-toolkit` `gate.py`；S4 评审墙/三灯探针 → `brain-how-to-pass-alpha-test`；S5 配额/提交 → `worldquant-submit-alpha`；S6 多样性审计/台账回写 → `wq-brain-campaign-toolkit` + `brain-dataset-mining-experience`。
 
 **调用规则**：
 - 本 skill 通过 `subprocess` 调用引擎脚本，命令统一用 `python ../wq-brain-campaign-toolkit/scripts/<script>.py --campaign-dir tracking/<REGION> ...`。

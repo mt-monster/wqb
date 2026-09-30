@@ -93,6 +93,9 @@ def test_registry_lists_all_core_nodes():
         "hypothesis_round",
         # 2026-09-28 P4：论坛 recon 检索节点（ra-pipeline 步 4/5/7/9 触发点，只读取数）
         "forum_recon",
+        # 2026-09-29：本波自动论坛取证（把 recon 从「靠 Agent 记得触发」变成波级默认动作，
+        # 供 S6 判死取证闸消费；此前 4 个集成点全靠 SOP 文字提示，默认路径走不到）
+        "forum_recon_wave",
         # Phase 2：结构重构变体生成与效果追踪（2026-09-15 补录进测试基准）
         "structural_reconstruct",
         # 2026-09-17：step_metrics 已整体下线（归档 attic/step_metrics_20260917/），

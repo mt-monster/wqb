@@ -141,11 +141,11 @@ If user later asks for gap-driven contribute in same session → full Recon (Pha
 
 
 
-## Contribute / hybrid recon — Phases 2–5
+## Contribute recon — Phases 2–5
 
 
 
-**Apply when `run_mode=contribute` or hybrid recon before writes.** Explore may use lighter parallel reads and purposeful scan signals without formal gap outputs.
+**Apply when `run_mode=contribute`.** Explore may use lighter parallel reads and purposeful scan signals without formal gap outputs.
 
 
 

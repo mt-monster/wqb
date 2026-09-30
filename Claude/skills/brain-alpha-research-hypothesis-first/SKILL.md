@@ -14,18 +14,19 @@ allowed-tools:
 ## 职责边界
 
 - **本 skill 负责**：**饱和数据集**（α≥1 万或连续 2 波模板全灭）的假设驱动路径：可证伪假设 → 主假设/消融/对照/变体
-- **本 skill 不做**：不饱和数据集不走此路（走常规模板遍历）；**假设目录为空时不强行路由**（需先有假设生成器）
+- **本 skill 不做**：不饱和数据集不走此路（走常规模板遍历）；**假设目录为空时不强行路由**（假设目录由上游 Agent 手工构建，本 skill 只消费不生成）
 - **上游 / 下游**：上游 = 字段扫描产出的假设目录；下游 = S2 表达式生成
 
 
 
 ## 触发场景
 
-本 skill 适用于以下任务：目标数据集已饱和（≥1 万 alpha）且模板采样空间挖尽，需要假设优先挖掘。
+本 skill 适用于以下任务：目标数据集已饱和——**α≥1 万 或 连续 2 波模板全灭（gate 通过率=0）**，满足其一即从模板遍历切换到假设驱动。
 
-具体切换信号：
+具体切换信号（上述两条件的具体形态，满足其一即可）：
 - 数据集 alpha 总量 ≥10K（如 `news12`：120K alpha / 21K 用户）。
 - 一次 90 条仿真的模板会话已见顶（如 news12 Fitness ≈ 0.42 墙，2026-04-23 实测）。
+- 该数据集连续 2 波模板全灭（gate 通过率=0）。
 - 论坛高赞自动化流程（80 赞 Gemini-CLI 模板工作流，帖 HZ32281）等已把模板空间挖到天花板。
 
 ## 工作流
@@ -48,7 +49,7 @@ allowed-tools:
 
 ### 3. 构建 `data/hypothesis_catalog/<dataset>_hypotheses.json`（假设目录）
 
-≥20 条可证伪假设，每条（**字段名以 `src/wqb/research/hypothesis_miner.py::_REQUIRED_FIELDS` 为唯一权威**：
+**假设目录由上游研究者（Agent）手工构建**，本 skill 只消费不生成（目录为空时不路由，见职责边界）。≥20 条可证伪假设，每条（**字段名以 `src/wqb/research/hypothesis_miner.py::_REQUIRED_FIELDS` 为唯一权威**：
 `hypothesis_id / hypothesis_class / description / minimal_expression / ablation_no_gate /
 control_constant / variant / expected_direction`；2026-09-12 更正：旧文示例用 YAML 与 `id`/`class` 字段名，
 与 `load_catalog`（仅支持 JSON、必填字段如上）不符，是示例未对齐代码）：
@@ -83,7 +84,7 @@ control_constant / variant / expected_direction`；2026-09-12 更正：旧文示
 
 ### 6. 台账
 
-跨会话知识累积到 `data/hypothesis_ledger/<session>.jsonl`。对假设类别的元学习取代逐臂 bandit 后验。
+跨会话知识累积到 `tracking/hypotheses/ledger.jsonl`（`save_to_ledger` 默认路径，单一 JSONL 文件追加，非 `<session>.jsonl`）。对假设类别的元学习取代逐臂 bandit 后验。
 
 ## 与 workflow 引擎的衔接（2026-09-12 新增）
 
