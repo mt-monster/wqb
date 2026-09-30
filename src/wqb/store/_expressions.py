@@ -71,6 +71,54 @@ def _status_change_set_params(to_status: str, reason: Optional[str], now: str) -
 class ExpressionsMixin:
     """Expression upsert/list/history methods."""
 
+    def _resolve_field_dataset_map(self, exprs: Sequence[str]):
+        """批量解析表达式里出现的字段 → dataset 名（一次 chunked 查询）。
+
+        返回 field→dataset dict；若 `fields` 表不可用（旧库/测试库）返回 None，
+        调用方据此跳过打标（绝不阻断写入）。
+        """
+        try:
+            from ..expression.atom import extract_fields
+        except Exception:
+            return None
+        field_set = set()
+        for e in exprs:
+            field_set.update(extract_fields(e))
+        if not field_set:
+            return {}
+        field_map: Dict[str, str] = {}
+        try:
+            cur = self.connection.cursor()
+            names = list(field_set)
+            for i in range(0, len(names), 500):
+                chunk = names[i:i + 500]
+                q = ("SELECT f.field_name AS fn, d.name AS dn FROM fields f "
+                     "JOIN datasets d ON d.id = f.dataset_id "
+                     "WHERE f.field_name IN (%s)" % ",".join("?" * len(chunk)))
+                for r in cur.execute(q, chunk):
+                    field_map[r["fn"]] = r["dn"]
+        except Exception:
+            return None
+        return field_map
+
+    @staticmethod
+    def _atom_flags(exprs: Sequence[str], field_map) -> Dict[str, tuple]:
+        """返回 {expr: (atom_flag, n_datasets)}；field_map=None 时返回 {}（不打标）。"""
+        if field_map is None:
+            return {}
+        try:
+            from ..expression.atom import classify_atom
+        except Exception:
+            return {}
+        out: Dict[str, tuple] = {}
+        for e in exprs:
+            try:
+                res = classify_atom(e, field_map)
+                out[e] = (res["verdict"], res["n_datasets"])
+            except Exception:
+                out[e] = (None, None)
+        return out
+
     def upsert_expressions(
         self,
         region: str,
@@ -100,6 +148,52 @@ class ExpressionsMixin:
         resolved_region = _wr["region_name"] if _wr else region
         resolved_wave = str(_wr["wave_number"]) if _wr else str(wave)
         resolved_dataset = _wr["dataset_name"] if _wr and _wr["dataset_name"] else (dataset or None)
+
+        # ---- 2026-09-30：atom/combined 标签（写入期自动计算）----
+        # 平台 "Atom Alpha" = 单数据集信号。保证两列存在（幂等 ALTER），批量解析字段→数据集
+        # 后逐条判定。任何一步失败都只退化"本次不打标"，绝不阻断写入。
+        _atom_ready = False
+        try:
+            self._add_column("expressions", "atom_flag", "VARCHAR(16)")
+            self._add_column("expressions", "atom_n_datasets", "INTEGER")
+            _atom_ready = {"atom_flag", "atom_n_datasets"} <= self._columns("expressions")
+        except Exception:
+            _atom_ready = False
+        _exprs = []
+        for _raw in items:
+            _e = (_as_expr(_raw).get("expression") or "").strip()
+            if _e:
+                _exprs.append(_e)
+        atom_map = self._atom_flags(_exprs, self._resolve_field_dataset_map(_exprs)) if _atom_ready else {}
+
+        if _atom_ready:
+            _sql_update = (
+                "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
+                "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
+                "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
+                "expected_exposure=?, atom_flag=?, atom_n_datasets=?, updated_at=? WHERE id=?"
+            )
+            _sql_insert = (
+                "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
+                "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
+                "source, bucket, skeleton, selected, expected_exposure, atom_flag, "
+                "atom_n_datasets, created_at, updated_at) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            )
+        else:
+            _sql_update = (
+                "UPDATE expressions SET fingerprint=?, status=?, alpha_id=?, sharpe=?, "
+                "fitness=?, margin=?, turnover=?, region=?, wave=?, dataset=?, "
+                "settings_json=?, source=?, bucket=?, skeleton=?, selected=?, "
+                "expected_exposure=?, updated_at=? WHERE id=?"
+            )
+            _sql_insert = (
+                "INSERT INTO expressions (wave_id, expression, fingerprint, status, alpha_id, "
+                "sharpe, fitness, margin, turnover, region, wave, dataset, settings_json, "
+                "source, bucket, skeleton, selected, expected_exposure, created_at, updated_at) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            )
+
         for raw in items:
             item = _as_expr(raw)
             expr = (item.get("expression") or "").strip()
@@ -139,6 +233,7 @@ class ExpressionsMixin:
                 item.get("skeleton") or _expr_skeleton(expr),
                 1 if item.get("selected") else 0,
                 item.get("expected_exposure") or item.get("exposure"),
+                *((atom_map.get(expr) or (None, None)) if _atom_ready else ()),
                 now,
             )
             if row:
@@ -151,23 +246,9 @@ class ExpressionsMixin:
                 _cur_status = (cur.fetchone() or [None])[0]
                 if _cur_status in ("dropped", "superseded") and st == "selected":
                     continue  # 保留废弃终态，不计入本波（n 不自增）
-                cur.execute(
-                    """UPDATE expressions SET fingerprint=?, status=?, alpha_id=?,
-                       sharpe=?, fitness=?, margin=?, turnover=?, region=?, wave=?,
-                       dataset=?, settings_json=?, source=?, bucket=?, skeleton=?,
-                       selected=?, expected_exposure=?, updated_at=? WHERE id=?""",
-                    vals + (_existing_id,),
-                )
+                cur.execute(_sql_update, vals + (_existing_id,))
             else:
-                cur.execute(
-                    """INSERT INTO expressions
-                       (wave_id, expression, fingerprint, status, alpha_id, sharpe,
-                        fitness, margin, turnover, region, wave, dataset,
-                        settings_json, source, bucket, skeleton, selected,
-                        expected_exposure, created_at, updated_at)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                    (wave_id, expr) + vals + (now,),
-                )
+                cur.execute(_sql_insert, (wave_id, expr) + vals + (now,))
             n += 1
         cur.execute(
             "UPDATE waves SET expression_count=?, updated_at=? WHERE id=?",

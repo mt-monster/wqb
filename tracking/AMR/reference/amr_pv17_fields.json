@@ -1,0 +1,64 @@
+{
+ "dataset": "pv17",
+ "region": "AMR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "GROUP",
+ "type_distribution": {
+  "GROUP": 5
+ },
+ "field_count": 5,
+ "estimated_stock_count": 582,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.9711,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-09-28T20:45:19",
+ "fields": [
+  {
+   "id": "sta3_news_sector",
+   "type": "GROUP",
+   "coverage": 0.9639,
+   "userCount": 17,
+   "alphaCount": 17,
+   "longCount": 578,
+   "description": "An integer code indicating the statistical industry classification group assigned to a US-listed equity on a specific da"
+  },
+  {
+   "id": "sta3_peer_sector",
+   "type": "GROUP",
+   "coverage": 1.0,
+   "userCount": 37,
+   "alphaCount": 62,
+   "longCount": 600,
+   "description": "Unordered categorical code representing the statistical industry/peer group assignment for each global stock on each dat"
+  },
+  {
+   "id": "sta3_pvgroup1_sector",
+   "type": "GROUP",
+   "coverage": 0.9639,
+   "userCount": 11,
+   "alphaCount": 13,
+   "longCount": 578,
+   "description": "A categorical code representing the point-in-time assignment of a stock to a statistically derived industry group (based"
+  },
+  {
+   "id": "sta3_pvgroup2_sector",
+   "type": "GROUP",
+   "coverage": 0.9639,
+   "userCount": 15,
+   "alphaCount": 16,
+   "longCount": 578,
+   "description": "Unordered categorical code indicating the statistical industry group assignment for each stock, based on price-volume cl"
+  },
+  {
+   "id": "sta3_pvgroup3_sector",
+   "type": "GROUP",
+   "coverage": 0.9639,
+   "userCount": 19,
+   "alphaCount": 20,
+   "longCount": 578,
+   "description": "Categorical code representing a statistically-derived industry or peer grouping assignment for each stock on each date w"
+  }
+ ]
+}
