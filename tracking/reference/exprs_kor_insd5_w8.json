@@ -1,0 +1,74 @@
+[
+ [
+  "S1_stddev_norm22",
+  "subtract(0.5, group_rank(divide(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), add(0.0001, ts_std_dev(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22))), sector))"
+ ],
+ [
+  "S2_stddev_norm63",
+  "subtract(0.5, group_rank(divide(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), add(0.0001, ts_std_dev(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 63))), sector))"
+ ],
+ [
+  "S3_stddev_norm252",
+  "subtract(0.5, group_rank(divide(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), add(0.0001, ts_std_dev(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252))), sector))"
+ ],
+ [
+  "S4_tszscore252",
+  "subtract(0.5, group_rank(ts_zscore(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252), sector))"
+ ],
+ [
+  "S5_quantile_tsrank63",
+  "subtract(0.5, group_rank(quantile(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 63)), sector))"
+ ],
+ [
+  "S6_quantile_tsrank252",
+  "subtract(0.5, group_rank(quantile(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252)), sector))"
+ ],
+ [
+  "S7_sp05_trunc",
+  "signed_power(subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), sector)), 0.5)"
+ ],
+ [
+  "S8_stddev_then_delta22",
+  "subtract(0.5, group_rank(ts_delta(divide(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), add(0.0001, ts_std_dev(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22))), 22), sector))"
+ ],
+ [
+  "S9_tsbackfill_rank63",
+  "subtract(0.5, group_rank(quantile(ts_rank(ts_backfill(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), 63)), sector))"
+ ],
+ [
+  "T1_tsmax_minus_norm",
+  "subtract(0.5, group_rank(divide(ts_max(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), add(0.0001, ts_std_dev(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22))), sector))"
+ ],
+ [
+  "T2_tsrank22",
+  "subtract(0.5, group_rank(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ],
+ [
+  "T3_tsrank63",
+  "subtract(0.5, group_rank(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 63), sector))"
+ ],
+ [
+  "T4_tsrank252",
+  "subtract(0.5, group_rank(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 252), sector))"
+ ],
+ [
+  "T5_tsrank504",
+  "subtract(0.5, group_rank(ts_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 504), sector))"
+ ],
+ [
+  "U1_stddev_af_bf",
+  "subtract(0.5, group_rank(divide(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_vol_bf))), add(0.0001, ts_std_dev(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_vol_bf))), 63))), sector))"
+ ],
+ [
+  "U2_delta_af_bf_norm",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_vol_bf))), 63), sector))"
+ ],
+ [
+  "U3_stddev_delta_ratio",
+  "subtract(0.5, group_rank(ts_delta(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), subindustry))"
+ ],
+ [
+  "U4_ts_av_diff22",
+  "subtract(0.5, group_rank(ts_av_diff(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_source_data))), 22), sector))"
+ ]
+]

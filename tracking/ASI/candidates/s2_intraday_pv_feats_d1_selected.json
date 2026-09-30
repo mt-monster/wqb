@@ -1,0 +1,226 @@
+[
+  {
+    "id": 42313,
+    "expression": "days_from_last_change(sign(subtract(bid_price_last_interval, bid_price_first_interval)))"
+  },
+  {
+    "id": 42314,
+    "expression": "days_from_last_change(sign(subtract(ask_price_last_interval, bid_price_first_interval)))"
+  },
+  {
+    "id": 42315,
+    "expression": "days_from_last_change(sign(subtract(high_price_last_interval, bid_price_first_interval)))"
+  },
+  {
+    "id": 42316,
+    "expression": "days_from_last_change(sign(subtract(high_price_last_interval, high_price_first_interval)))"
+  },
+  {
+    "id": 42317,
+    "expression": "days_from_last_change(sign(subtract(ask_price_last_interval, high_price_first_interval)))"
+  },
+  {
+    "id": 42318,
+    "expression": "days_from_last_change(sign(subtract(bid_price_last_interval, high_price_first_interval)))"
+  },
+  {
+    "id": 42319,
+    "expression": "days_from_last_change(sign(subtract(last_trade_price_last_interval, last_trade_price_first_interval)))"
+  },
+  {
+    "id": 42321,
+    "expression": "days_from_last_change(sign(subtract(ask_price_last_interval, last_trade_price_first_interval)))"
+  },
+  {
+    "id": 42338,
+    "expression": "divide(divide(mean_slippage_30m_post_open, max_bid_ask_size_volume_ratio_daily), ts_mean(max_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 42339,
+    "expression": "divide(divide(min_slippage_30m_post_open, max_bid_ask_size_volume_ratio_daily), ts_mean(max_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 42341,
+    "expression": "divide(divide(mean_slippage_30m_post_open, max_bid_ask_size_volume_ratio_daily), ts_mean(min_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 42346,
+    "expression": "divide(divide(mean_slippage_30m_post_open, mean_ask_size_volume_ratio_daily), ts_mean(min_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 42373,
+    "expression": "divide(subtract(ts_backfill(corr_bid_with_ask_price_last_quarter_volumeclock, 66), ts_backfill(corr_bid_with_ask_price_first_quarter_volumeclock, 66)), add(0.05, abs(ts_backfill(corr_last_vwap_with_volume, 66))))"
+  },
+  {
+    "id": 42374,
+    "expression": "divide(subtract(ts_backfill(corr_bid_with_ask_price_last_quarter_volumeclock, 66), ts_backfill(corr_bid_with_ask_price_first_quarter_volumeclock, 66)), add(0.05, abs(ts_backfill(corr_vwap_with_volume, 66))))"
+  },
+  {
+    "id": 42375,
+    "expression": "divide(subtract(ts_backfill(corr_volume_with_ask_price_last_quarter_volumeclock, 66), ts_backfill(corr_bid_with_ask_price_first_quarter_volumeclock, 66)), add(0.05, abs(ts_backfill(corr_last_vwap_with_volume, 66))))"
+  },
+  {
+    "id": 42379,
+    "expression": "divide(subtract(ts_backfill(corr_volume_with_ask_price_last_quarter_volumeclock, 66), ts_backfill(corr_volume_with_ask_price_first_quarter_volumeclock, 66)), add(0.05, abs(ts_backfill(corr_vwap_with_volume, 66))))"
+  },
+  {
+    "id": 42483,
+    "expression": "divide(ts_av_diff(ask_price_30m_pre_close_2, 22), ts_std_dev(ts_delta(ask_price_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 42484,
+    "expression": "divide(ts_av_diff(low_price_30m_pre_close_2, 22), ts_std_dev(ts_delta(low_price_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 42485,
+    "expression": "divide(ts_av_diff(last_trade_price_30m_pre_close_2, 22), ts_std_dev(ts_delta(last_trade_price_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 42502,
+    "expression": "divide(ts_backfill(corr_ask_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_ask_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42503,
+    "expression": "divide(ts_backfill(corr_ask_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_bid_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42504,
+    "expression": "divide(ts_backfill(corr_ask_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_high_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42505,
+    "expression": "divide(ts_backfill(corr_bid_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_bid_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42506,
+    "expression": "divide(ts_backfill(corr_bid_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_ask_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42507,
+    "expression": "divide(ts_backfill(corr_bid_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_high_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42508,
+    "expression": "divide(ts_backfill(corr_high_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_high_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42509,
+    "expression": "divide(ts_backfill(corr_high_price_with_slippage, 120), add(0.05, abs(ts_backfill(corr_ask_price_with_bid_size, 120))))"
+  },
+  {
+    "id": 42584,
+    "expression": "divide(kurtosis_ask_price_interval, add(mean_bid_price_interval, 0.001))"
+  },
+  {
+    "id": 42588,
+    "expression": "divide(mean_ask_price_interval, add(mean_bid_price_interval, 0.001))"
+  },
+  {
+    "id": 42589,
+    "expression": "divide(mean_ask_price_interval, add(mean_return_bid_price_interval, 0.001))"
+  },
+  {
+    "id": 42591,
+    "expression": "divide(mean_return_ask_price_interval, add(mean_return_bid_price_interval, 0.001))"
+  },
+  {
+    "id": 42592,
+    "expression": "divide(mean_return_ask_price_interval, add(mean_bid_price_interval, 0.001))"
+  },
+  {
+    "id": 42600,
+    "expression": "divide(max_bid_ask_price_ratio_daily, mean_ask_size_volume_ratio_daily)"
+  },
+  {
+    "id": 42601,
+    "expression": "divide(min_bid_ask_price_ratio_daily, mean_ask_size_volume_ratio_daily)"
+  },
+  {
+    "id": 42602,
+    "expression": "divide(min_bid_ask_price_ratio_daily, min_ask_size_volume_ratio_daily)"
+  },
+  {
+    "id": 42604,
+    "expression": "divide(max_bid_ask_price_ratio_daily, skew_ask_size_volume_ratio_daily)"
+  },
+  {
+    "id": 42605,
+    "expression": "divide(min_bid_ask_price_ratio_daily, skew_ask_size_volume_ratio_daily)"
+  },
+  {
+    "id": 52037,
+    "expression": "divide(divide(max_slippage_30m_post_open, min_ask_size_volume_ratio_daily), ts_mean(min_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 52039,
+    "expression": "divide(divide(max_slippage_30m_post_open, skew_ask_size_volume_ratio_daily), ts_mean(max_slippage_30m_pre_close_2, 66))"
+  },
+  {
+    "id": 52070,
+    "expression": "divide(std_slippage_interval, add(abs(skew_trade_volume_interval), abs(kurtosis_vwap_interval)))"
+  },
+  {
+    "id": 67503,
+    "expression": "divide(divide(ask_price_60m_post_open, ask_price_30m_post_open), ts_rank(min_vwap_30m_post_open, 66))"
+  },
+  {
+    "id": 67505,
+    "expression": "divide(divide(ask_price_60m_post_open, max_ask_price_30m_post_open), ts_rank(min_vwap_30m_post_open, 66))"
+  },
+  {
+    "id": 67511,
+    "expression": "divide(subtract(max(max_ask_price_30m_post_open, bid_price_60m_post_open, mean_ask_price_return_30m_pre_close_2, mean_last_trade_price_return_60m_pre_close_2), min(max_ask_price_30m_post_open, bid_price_60m_post_open, mean_ask_price_return_30m_pre_close_2, mean_last_trade_price_return_60m_pre_close_2)), ts_mean(add(add(max_ask_price_30m_post_open, bid_price_60m_post_open), add(mean_ask_price_return_30m_pre_close_2, mean_last_trade_price_return_60m_pre_close_2)), 66))"
+  },
+  {
+    "id": 67541,
+    "expression": "divide(subtract(max_ask_price_30m_post_open, mean_last_trade_price_return_30m_pre_close_2), add(max_ask_price_30m_post_open, mean_last_trade_price_return_30m_pre_close_2))"
+  },
+  {
+    "id": 67542,
+    "expression": "divide(subtract(min_vwap_30m_post_open, mean_last_trade_price_return_30m_pre_close_2), add(min_vwap_30m_post_open, mean_last_trade_price_return_30m_pre_close_2))"
+  },
+  {
+    "id": 67566,
+    "expression": "divide(subtract(mean_last_trade_price_return_60m_pre_close_2, bid_price_60m_post_open), min_vwap_interval_2)"
+  },
+  {
+    "id": 67589,
+    "expression": "divide(ts_av_diff(mean_ask_price_return_30m_pre_close_2, 22), ts_std_dev(ts_delta(mean_ask_price_return_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 67590,
+    "expression": "divide(ts_av_diff(mean_bid_price_return_30m_pre_close_2, 22), ts_std_dev(ts_delta(mean_bid_price_return_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 67591,
+    "expression": "divide(ts_av_diff(mean_high_price_return_30m_pre_close_2, 22), ts_std_dev(ts_delta(mean_high_price_return_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 67592,
+    "expression": "divide(ts_av_diff(mean_last_trade_price_return_30m_pre_close_2, 22), ts_std_dev(ts_delta(mean_last_trade_price_return_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 67593,
+    "expression": "divide(ts_av_diff(mean_vwap_return_30m_pre_close_2, 22), ts_std_dev(ts_delta(mean_vwap_return_30m_pre_close_2, 5), 22))"
+  },
+  {
+    "id": 67604,
+    "expression": "divide(avg_bid_to_ask_price_ratio_last_half, avg_ask_size_to_volume_ratio_first_half)"
+  },
+  {
+    "id": 67605,
+    "expression": "divide(mean_return_ask_price_interval, add(abs(kurtosis_trade_volume_interval), abs(mean_return_ask_price_interval)))"
+  },
+  {
+    "id": 67606,
+    "expression": "divide(mean_return_bid_price_interval, add(abs(kurtosis_trade_volume_interval), abs(mean_return_bid_price_interval)))"
+  },
+  {
+    "id": 67607,
+    "expression": "divide(ask_price_60m_post_open, ask_price_30m_post_open)"
+  },
+  {
+    "id": 67609,
+    "expression": "divide(bid_price_60m_post_open, ask_price_30m_post_open)"
+  }
+]

@@ -1,0 +1,158 @@
+[
+  {
+    "id": 1,
+    "expression": "-group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 2), country)"
+  },
+  {
+    "id": 2,
+    "expression": "-group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 5), country)"
+  },
+  {
+    "id": 3,
+    "expression": "-group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 2), country)"
+  },
+  {
+    "id": 4,
+    "expression": "-group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 5), country)"
+  },
+  {
+    "id": 5,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 10), country)"
+  },
+  {
+    "id": 6,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 2), country)"
+  },
+  {
+    "id": 7,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 3), country)"
+  },
+  {
+    "id": 8,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 4), country)"
+  },
+  {
+    "id": 9,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 5), country)"
+  },
+  {
+    "id": 10,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_60m_pre_close_2, 2), country)"
+  },
+  {
+    "id": 11,
+    "expression": "-group_rank(ts_decay_linear(mean_last_trade_price_return_60m_pre_close_2, 5), country)"
+  },
+  {
+    "id": 12,
+    "expression": "-group_rank(ts_decay_linear(mean_trade_volume_30m_pre_close_2, 2), country)"
+  },
+  {
+    "id": 13,
+    "expression": "-group_rank(ts_decay_linear(mean_trade_volume_30m_pre_close_2, 5), country)"
+  },
+  {
+    "id": 14,
+    "expression": "-group_zscore(ts_decay_linear(corr_bid_price_with_volume, 2), country)"
+  },
+  {
+    "id": 15,
+    "expression": "-group_zscore(ts_decay_linear(corr_bid_price_with_volume, 5), country)"
+  },
+  {
+    "id": 16,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 10), country)"
+  },
+  {
+    "id": 17,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 2), country)"
+  },
+  {
+    "id": 18,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 2), industry)"
+  },
+  {
+    "id": 19,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 2), sector)"
+  },
+  {
+    "id": 20,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 3), country)"
+  },
+  {
+    "id": 21,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 4), country)"
+  },
+  {
+    "id": 22,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 5), country)"
+  },
+  {
+    "id": 23,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 5), industry)"
+  },
+  {
+    "id": 24,
+    "expression": "-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 5), sector)"
+  },
+  {
+    "id": 25,
+    "expression": "-group_zscore(ts_decay_linear(corr_vwap_with_volume, 2), country)"
+  },
+  {
+    "id": 26,
+    "expression": "-group_zscore(ts_decay_linear(corr_vwap_with_volume, 5), country)"
+  },
+  {
+    "id": 27,
+    "expression": "signed_power(-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 10), country), 0.5)"
+  },
+  {
+    "id": 28,
+    "expression": "signed_power(-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 2), country), 0.5)"
+  },
+  {
+    "id": 29,
+    "expression": "signed_power(-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 3), country), 0.5)"
+  },
+  {
+    "id": 30,
+    "expression": "signed_power(-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 4), country), 0.5)"
+  },
+  {
+    "id": 31,
+    "expression": "signed_power(-group_zscore(ts_decay_linear(corr_last_trade_price_with_volume, 5), country), 0.5)"
+  },
+  {
+    "id": 32,
+    "expression": "signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 10), country)), 0.5)"
+  },
+  {
+    "id": 33,
+    "expression": "signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 2), country)), 0.5)"
+  },
+  {
+    "id": 34,
+    "expression": "signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 3), country)), 0.5)"
+  },
+  {
+    "id": 35,
+    "expression": "signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 4), country)), 0.5)"
+  },
+  {
+    "id": 36,
+    "expression": "signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 5), country)), 0.5)"
+  },
+  {
+    "id": 37,
+    "expression": "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 3), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+  },
+  {
+    "id": 38,
+    "expression": "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 4), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+  },
+  {
+    "id": 39,
+    "expression": "trade_when(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_30m_pre_close_2, 5), country)), 0.5), rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3)"
+  }
+]

@@ -1,0 +1,213 @@
+{
+ "results": [
+  {
+   "label": "W2_hump_bid30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_hump_last30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_hump_ask30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_dec13_ask30",
+   "alpha": "ZYAR0Rj3",
+   "S": 2.02,
+   "F": 0.82,
+   "T": 0.3823,
+   "sub": [
+    "PASS",
+    1.51
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.02
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.82
+   ]
+  },
+  {
+   "label": "W2_dec22_bid30",
+   "alpha": "58gZQ8mk",
+   "S": 1.68,
+   "F": 0.64,
+   "T": 0.3558,
+   "sub": [
+    "PASS",
+    1.1
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.68
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.64
+   ]
+  },
+  {
+   "label": "W2_hump_dec13_last30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_hump_dec13_ask30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_hump_dec13_bid30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_dec13_bid30",
+   "alpha": "QPK13kag",
+   "S": 1.98,
+   "F": 0.79,
+   "T": 0.3823,
+   "sub": [
+    "PASS",
+    1.41
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.98
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.79
+   ]
+  },
+  {
+   "label": "W2_dec22_ask30",
+   "alpha": "d512OnOY",
+   "S": 1.71,
+   "F": 0.65,
+   "T": 0.3558,
+   "sub": [
+    "PASS",
+    1.28
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.71
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.65
+   ]
+  },
+  {
+   "label": "W2_hump003_last30",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "W2_outerdec8_bid30",
+   "alpha": "omW166vv",
+   "S": 1.57,
+   "F": 0.61,
+   "T": 0.3731,
+   "sub": [
+    "PASS",
+    1.1
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    1.57
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.61
+   ]
+  },
+  {
+   "label": "W2_dec22_last30",
+   "alpha": "mL6Pg6JW",
+   "S": 1.96,
+   "F": 0.83,
+   "T": 0.3318,
+   "sub": [
+    "PASS",
+    1.39
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.96
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.83
+   ]
+  },
+  {
+   "label": "W2_outerdec8_last30",
+   "alpha": "88Pm3RYv",
+   "S": 2.2,
+   "F": 0.96,
+   "T": 0.3686,
+   "sub": [
+    "PASS",
+    1.48
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.2
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.96
+   ]
+  },
+  {
+   "label": "W2_dec13_last30",
+   "sim": "POLL_TIMEOUT",
+   "msg": "None"
+  },
+  {
+   "label": "W2_outerdec8_ask30",
+   "alpha": "YPMjbALw",
+   "S": 1.61,
+   "F": 0.63,
+   "T": 0.373,
+   "sub": [
+    "PASS",
+    1.18
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.61
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.63
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 22,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

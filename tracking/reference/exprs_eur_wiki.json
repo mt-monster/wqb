@@ -1,0 +1,50 @@
+[
+ [
+  "wik1_acc7_28",
+  "group_zscore(divide(oth571_views7d, add(oth571_views28d, 1)), subindustry)"
+ ],
+ [
+  "wik2_acc7_84",
+  "group_zscore(divide(oth571_views7d, add(oth571_views84d, 1)), subindustry)"
+ ],
+ [
+  "wik3_acc14_84",
+  "group_zscore(divide(oth571_views14d, add(oth571_views84d, 1)), subindustry)"
+ ],
+ [
+  "wik4_acc28_y1",
+  "group_zscore(divide(oth571_views28d, add(oth571_views1y, 1)), subindustry)"
+ ],
+ [
+  "wik5_lvl7_y1",
+  "group_zscore(divide(oth571_views7d, add(oth571_views1y, 1)), subindustry)"
+ ],
+ [
+  "wik6_lvl28_y1",
+  "group_zscore(divide(oth571_views28d, add(oth571_views1y, 1)), subindustry)"
+ ],
+ [
+  "wik7_lvl1y",
+  "group_zscore(oth571_views1y, subindustry)"
+ ],
+ [
+  "wik8_spike",
+  "group_zscore(divide(oth571_viewstoday, add(divide(oth571_views7d, 7), 1)), subindustry)"
+ ],
+ [
+  "wik9_d7_delta",
+  "group_zscore(ts_delta(divide(oth571_views7d, add(oth571_views28d, 1)), 20), subindustry)"
+ ],
+ [
+  "wik10_d28_delta",
+  "group_zscore(ts_delta(oth571_views28d, 20), subindustry)"
+ ],
+ [
+  "wik11_spike_neg",
+  "group_zscore(multiply(-1, divide(oth571_viewstoday, add(divide(oth571_views7d, 7), 1))), subindustry)"
+ ],
+ [
+  "wik12_acc_neg",
+  "group_zscore(multiply(-1, divide(oth571_views7d, add(oth571_views28d, 1))), subindustry)"
+ ]
+]

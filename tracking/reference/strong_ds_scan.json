@@ -1,0 +1,4323 @@
+{
+ "USA": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 103024,
+   "fieldCount": 2567,
+   "users": 2632
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 71132,
+   "fieldCount": 868,
+   "users": 2309
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 8296,
+   "fieldCount": 445,
+   "users": 919
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 3812,
+   "fieldCount": 2258,
+   "users": 1177
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 1555,
+   "fieldCount": 1108,
+   "users": 444
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 1469,
+   "fieldCount": 2567,
+   "users": 458
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 1049,
+   "fieldCount": 2567,
+   "users": 137
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 947,
+   "fieldCount": 868,
+   "users": 322
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 621,
+   "fieldCount": 2567,
+   "users": 81
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 620,
+   "fieldCount": 868,
+   "users": 94
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 560,
+   "fieldCount": 1108,
+   "users": 250
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 539,
+   "fieldCount": 868,
+   "users": 75
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 520,
+   "fieldCount": 2258,
+   "users": 291
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 389,
+   "fieldCount": 2567,
+   "users": 108
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 307,
+   "fieldCount": 868,
+   "users": 64
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 245,
+   "fieldCount": 20,
+   "users": 94
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 214,
+   "fieldCount": 1108,
+   "users": 71
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 211,
+   "fieldCount": 445,
+   "users": 75
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 210,
+   "fieldCount": 445,
+   "users": 26
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 207,
+   "fieldCount": 445,
+   "users": 26
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 167,
+   "fieldCount": 162,
+   "users": 33
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 145,
+   "fieldCount": 15,
+   "users": 61
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 142,
+   "fieldCount": 445,
+   "users": 23
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 137,
+   "fieldCount": 162,
+   "users": 64
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 106,
+   "fieldCount": 868,
+   "users": 36
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 90,
+   "fieldCount": 2567,
+   "users": 28
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 79,
+   "fieldCount": 105,
+   "users": 44
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 58,
+   "fieldCount": 20,
+   "users": 42
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 41,
+   "fieldCount": 2258,
+   "users": 20
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 39,
+   "fieldCount": 2258,
+   "users": 29
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 28,
+   "fieldCount": 105,
+   "users": 24
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 28,
+   "fieldCount": 2258,
+   "users": 15
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 28,
+   "fieldCount": 445,
+   "users": 6
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 27,
+   "fieldCount": 15,
+   "users": 20
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 9,
+   "fieldCount": 1108,
+   "users": 8
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 9,
+   "fieldCount": 1108,
+   "users": 4
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 7,
+   "fieldCount": 20,
+   "users": 6
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 5,
+   "fieldCount": 15,
+   "users": 4
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 5,
+   "fieldCount": 2258,
+   "users": 5
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 4,
+   "fieldCount": 105,
+   "users": 4
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 3,
+   "fieldCount": 1108,
+   "users": 1
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 105,
+   "users": 1
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 20,
+   "users": 0
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 20,
+   "users": 0
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 20,
+   "users": 0
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 105,
+   "users": 0
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 105,
+   "users": 0
+  }
+ ],
+ "EUR": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 16623,
+   "fieldCount": 1744,
+   "users": 2110
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 6670,
+   "fieldCount": 961,
+   "users": 1781
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 4108,
+   "fieldCount": 24,
+   "users": 812
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 3268,
+   "fieldCount": 121,
+   "users": 946
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 3261,
+   "fieldCount": 1744,
+   "users": 359
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 1680,
+   "fieldCount": 121,
+   "users": 217
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 1353,
+   "fieldCount": 961,
+   "users": 589
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 885,
+   "fieldCount": 1744,
+   "users": 332
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 868,
+   "fieldCount": 445,
+   "users": 368
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 772,
+   "fieldCount": 445,
+   "users": 68
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 540,
+   "fieldCount": 24,
+   "users": 262
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 515,
+   "fieldCount": 20,
+   "users": 221
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 511,
+   "fieldCount": 582,
+   "users": 265
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 265,
+   "fieldCount": 121,
+   "users": 157
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 228,
+   "fieldCount": 15,
+   "users": 132
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 183,
+   "fieldCount": 961,
+   "users": 71
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 165,
+   "fieldCount": 105,
+   "users": 100
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 138,
+   "fieldCount": 445,
+   "users": 92
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 56,
+   "fieldCount": 1744,
+   "users": 16
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 52,
+   "fieldCount": 1744,
+   "users": 26
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 43,
+   "fieldCount": 582,
+   "users": 31
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 22,
+   "fieldCount": 20,
+   "users": 12
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 22,
+   "fieldCount": 121,
+   "users": 9
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 20,
+   "fieldCount": 961,
+   "users": 14
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 15,
+   "fieldCount": 121,
+   "users": 3
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 14,
+   "fieldCount": 445,
+   "users": 7
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 13,
+   "fieldCount": 15,
+   "users": 7
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 13,
+   "fieldCount": 961,
+   "users": 7
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 10,
+   "fieldCount": 105,
+   "users": 9
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 9,
+   "fieldCount": 105,
+   "users": 1
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 7,
+   "fieldCount": 20,
+   "users": 6
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 6,
+   "fieldCount": 582,
+   "users": 4
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 6,
+   "fieldCount": 445,
+   "users": 3
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 5,
+   "fieldCount": 582,
+   "users": 4
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 3,
+   "fieldCount": 15,
+   "users": 2
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 3,
+   "fieldCount": 20,
+   "users": 3
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 2,
+   "fieldCount": 20,
+   "users": 1
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 105,
+   "users": 1
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 15,
+   "users": 0
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 582,
+   "users": 0
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 582,
+   "users": 0
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 20,
+   "users": 0
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 105,
+   "users": 0
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 105,
+   "users": 0
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 916,
+   "users": 0
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 445,
+   "users": 0
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 121,
+   "users": 0
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 1701,
+   "users": 0
+  }
+ ],
+ "ASI": [
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 33676,
+   "fieldCount": 291,
+   "users": 2650
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 33362,
+   "fieldCount": 1437,
+   "users": 2392
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 26330,
+   "fieldCount": 992,
+   "users": 2648
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 18945,
+   "fieldCount": 155,
+   "users": 1991
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 2664,
+   "fieldCount": 52,
+   "users": 919
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 1409,
+   "fieldCount": 669,
+   "users": 594
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 585,
+   "fieldCount": 241,
+   "users": 169
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 550,
+   "fieldCount": 6,
+   "users": 186
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 545,
+   "fieldCount": 28,
+   "users": 155
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 463,
+   "fieldCount": 20,
+   "users": 190
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 446,
+   "fieldCount": 210,
+   "users": 178
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 359,
+   "fieldCount": 2372,
+   "users": 156
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 358,
+   "fieldCount": 582,
+   "users": 121
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 189,
+   "fieldCount": 155,
+   "users": 31
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 177,
+   "fieldCount": 992,
+   "users": 63
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 162,
+   "fieldCount": 1437,
+   "users": 22
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 125,
+   "fieldCount": 15,
+   "users": 76
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 124,
+   "fieldCount": 669,
+   "users": 40
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 113,
+   "fieldCount": 291,
+   "users": 45
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 97,
+   "fieldCount": 291,
+   "users": 35
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 86,
+   "fieldCount": 105,
+   "users": 63
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 82,
+   "fieldCount": 14,
+   "users": 63
+  },
+  {
+   "id": "analyst72",
+   "name": "Corporate Earning Estimates Data",
+   "category": "Analyst",
+   "alphaCount": 68,
+   "fieldCount": 52,
+   "users": 48
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 62,
+   "fieldCount": 1437,
+   "users": 13
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 60,
+   "fieldCount": 992,
+   "users": 32
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 47,
+   "fieldCount": 2372,
+   "users": 18
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 42,
+   "fieldCount": 52,
+   "users": 21
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 41,
+   "fieldCount": 669,
+   "users": 34
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 31,
+   "fieldCount": 582,
+   "users": 8
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 31,
+   "fieldCount": 155,
+   "users": 13
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 25,
+   "fieldCount": 2372,
+   "users": 16
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 23,
+   "fieldCount": 20,
+   "users": 15
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 23,
+   "fieldCount": 241,
+   "users": 4
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 21,
+   "fieldCount": 20,
+   "users": 12
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 16,
+   "fieldCount": 52,
+   "users": 9
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 14,
+   "fieldCount": 582,
+   "users": 10
+  },
+  {
+   "id": "analyst72",
+   "name": "Corporate Earning Estimates Data",
+   "category": "Analyst",
+   "alphaCount": 12,
+   "fieldCount": 52,
+   "users": 5
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 9,
+   "fieldCount": 28,
+   "users": 7
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 8,
+   "fieldCount": 15,
+   "users": 7
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 7,
+   "fieldCount": 6,
+   "users": 2
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 7,
+   "fieldCount": 6,
+   "users": 3
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 6,
+   "fieldCount": 14,
+   "users": 5
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 5,
+   "fieldCount": 105,
+   "users": 5
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 4,
+   "fieldCount": 15,
+   "users": 4
+  },
+  {
+   "id": "analyst72",
+   "name": "Corporate Earning Estimates Data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 52,
+   "users": 3
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 3,
+   "fieldCount": 14,
+   "users": 2
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 2,
+   "fieldCount": 210,
+   "users": 2
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 105,
+   "users": 1
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 1,
+   "fieldCount": 210,
+   "users": 1
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 1,
+   "fieldCount": 241,
+   "users": 1
+  }
+ ],
+ "DEU": [
+  {
+   "id": "analyst7",
+   "name": "Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 2265,
+   "fieldCount": 608,
+   "users": 673
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 896,
+   "fieldCount": 108,
+   "users": 413
+  },
+  {
+   "id": "dl_riskfree_returns",
+   "name": "Deep Learning Risk Free Returns",
+   "category": "Other",
+   "alphaCount": 661,
+   "fieldCount": 133,
+   "users": 279
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 392,
+   "fieldCount": 537,
+   "users": 123
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 249,
+   "fieldCount": 292,
+   "users": 146
+  },
+  {
+   "id": "fundamental89",
+   "name": "Accrual based Earnings Model",
+   "category": "Fundamental",
+   "alphaCount": 229,
+   "fieldCount": 407,
+   "users": 104
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 195,
+   "fieldCount": 1972,
+   "users": 97
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 165,
+   "fieldCount": 42,
+   "users": 79
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 127,
+   "fieldCount": 1095,
+   "users": 81
+  },
+  {
+   "id": "insider_agg_matrix",
+   "name": "Smart Insider Transaction Aggregates",
+   "category": "Insiders",
+   "alphaCount": 127,
+   "fieldCount": 34,
+   "users": 70
+  },
+  {
+   "id": "global_seasonal_model",
+   "name": "Global Seasonal Regime Return Signals",
+   "category": "Model",
+   "alphaCount": 119,
+   "fieldCount": 449,
+   "users": 68
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 109,
+   "fieldCount": 24,
+   "users": 46
+  },
+  {
+   "id": "analyst93",
+   "name": "Europe Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 96,
+   "fieldCount": 100,
+   "users": 69
+  },
+  {
+   "id": "earnings_sent_matrix",
+   "name": "Global Earnings Call Sentiment Matrix",
+   "category": "Earnings",
+   "alphaCount": 88,
+   "fieldCount": 7,
+   "users": 45
+  },
+  {
+   "id": "imbalance5",
+   "name": "Oil Price Resilience Scores",
+   "category": "Imbalance",
+   "alphaCount": 87,
+   "fieldCount": 2,
+   "users": 48
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "category": "Institutions",
+   "alphaCount": 68,
+   "fieldCount": 18,
+   "users": 42
+  },
+  {
+   "id": "earnings6",
+   "name": "International Findings Data",
+   "category": "Earnings",
+   "alphaCount": 66,
+   "fieldCount": 18,
+   "users": 32
+  },
+  {
+   "id": "insider_matrix",
+   "name": "Aggregated Insider Transaction Matrix",
+   "category": "Other",
+   "alphaCount": 62,
+   "fieldCount": 33,
+   "users": 43
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 56,
+   "fieldCount": 5,
+   "users": 43
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 41,
+   "fieldCount": 51,
+   "users": 34
+  },
+  {
+   "id": "earningscall_sentiment",
+   "name": "Multi Aspect Earnings Call Sentiment",
+   "category": "Other",
+   "alphaCount": 32,
+   "fieldCount": 167,
+   "users": 22
+  },
+  {
+   "id": "fundamental93",
+   "name": "Earnings Tax Data",
+   "category": "Fundamental",
+   "alphaCount": 30,
+   "fieldCount": 46,
+   "users": 14
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 27,
+   "fieldCount": 72,
+   "users": 22
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 24,
+   "fieldCount": 53,
+   "users": 13
+  },
+  {
+   "id": "fundamental45",
+   "name": "Systematic mining of earnings calls data",
+   "category": "Fundamental",
+   "alphaCount": 24,
+   "fieldCount": 12,
+   "users": 19
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 23,
+   "fieldCount": 20,
+   "users": 16
+  },
+  {
+   "id": "event_sentiment_signals",
+   "name": "Corporate Event Sentiment Signals",
+   "category": "Other",
+   "alphaCount": 21,
+   "fieldCount": 52,
+   "users": 16
+  },
+  {
+   "id": "insider_trx_matrix",
+   "name": "Global Insider Transaction Aggregates",
+   "category": "Other",
+   "alphaCount": 21,
+   "fieldCount": 33,
+   "users": 18
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 16,
+   "fieldCount": 105,
+   "users": 12
+  },
+  {
+   "id": "chart_cnn_alpha",
+   "name": "Deep Learning Chart-Based Alpha",
+   "category": "Model",
+   "alphaCount": 16,
+   "fieldCount": 122,
+   "users": 12
+  },
+  {
+   "id": "analyst83",
+   "name": "Smart Conference call transcript data",
+   "category": "Analyst",
+   "alphaCount": 13,
+   "fieldCount": 345,
+   "users": 13
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 9,
+   "fieldCount": 15,
+   "users": 6
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 8,
+   "fieldCount": 66,
+   "users": 8
+  },
+  {
+   "id": "analyst35",
+   "name": "ESG Model",
+   "category": "Analyst",
+   "alphaCount": 6,
+   "fieldCount": 23,
+   "users": 5
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 5,
+   "fieldCount": 34,
+   "users": 3
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 5,
+   "users": 2
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 7,
+   "users": 2
+  },
+  {
+   "id": "analyst8",
+   "name": "Daily Split Data",
+   "category": "Analyst",
+   "alphaCount": 3,
+   "fieldCount": 10,
+   "users": 3
+  },
+  {
+   "id": "event_ml_signals",
+   "name": "Machine Learning Company Event Signals",
+   "category": "Other",
+   "alphaCount": 3,
+   "fieldCount": 104,
+   "users": 3
+  },
+  {
+   "id": "event_relation",
+   "name": "Text-Based Event Relationship Analysis",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 12,
+   "users": 1
+  }
+ ],
+ "GBR": [
+  {
+   "id": "analyst7",
+   "name": "Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 16147,
+   "fieldCount": 502,
+   "users": 1286
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 7981,
+   "fieldCount": 292,
+   "users": 966
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 2768,
+   "fieldCount": 855,
+   "users": 593
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 1438,
+   "fieldCount": 96,
+   "users": 504
+  },
+  {
+   "id": "imbalance5",
+   "name": "Oil Price Resilience Scores",
+   "category": "Imbalance",
+   "alphaCount": 1411,
+   "fieldCount": 2,
+   "users": 573
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 1208,
+   "fieldCount": 15,
+   "users": 435
+  },
+  {
+   "id": "global_seasonal_model",
+   "name": "Global Seasonal Regime Return Signals",
+   "category": "Model",
+   "alphaCount": 989,
+   "fieldCount": 449,
+   "users": 199
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 736,
+   "fieldCount": 42,
+   "users": 266
+  },
+  {
+   "id": "dl_riskfree_returns",
+   "name": "Deep Learning Risk Free Returns",
+   "category": "Other",
+   "alphaCount": 652,
+   "fieldCount": 133,
+   "users": 327
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 640,
+   "fieldCount": 537,
+   "users": 253
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 581,
+   "fieldCount": 1772,
+   "users": 210
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 537,
+   "fieldCount": 24,
+   "users": 226
+  },
+  {
+   "id": "earnings_sent_matrix",
+   "name": "Global Earnings Call Sentiment Matrix",
+   "category": "Earnings",
+   "alphaCount": 462,
+   "fieldCount": 7,
+   "users": 222
+  },
+  {
+   "id": "insider_agg_matrix",
+   "name": "Smart Insider Transaction Aggregates",
+   "category": "Insiders",
+   "alphaCount": 400,
+   "fieldCount": 34,
+   "users": 189
+  },
+  {
+   "id": "earnings6",
+   "name": "International Findings Data",
+   "category": "Earnings",
+   "alphaCount": 232,
+   "fieldCount": 18,
+   "users": 107
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 217,
+   "fieldCount": 5,
+   "users": 152
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "category": "Institutions",
+   "alphaCount": 196,
+   "fieldCount": 18,
+   "users": 121
+  },
+  {
+   "id": "analyst93",
+   "name": "Europe Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 165,
+   "fieldCount": 100,
+   "users": 101
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 149,
+   "fieldCount": 20,
+   "users": 87
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 115,
+   "fieldCount": 51,
+   "users": 83
+  },
+  {
+   "id": "event_sentiment_signals",
+   "name": "Corporate Event Sentiment Signals",
+   "category": "Other",
+   "alphaCount": 79,
+   "fieldCount": 52,
+   "users": 42
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 71,
+   "fieldCount": 105,
+   "users": 48
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 70,
+   "fieldCount": 66,
+   "users": 47
+  },
+  {
+   "id": "chart_cnn_alpha",
+   "name": "Deep Learning Chart-Based Alpha",
+   "category": "Model",
+   "alphaCount": 68,
+   "fieldCount": 122,
+   "users": 33
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 57,
+   "fieldCount": 5,
+   "users": 41
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 48,
+   "fieldCount": 50,
+   "users": 36
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 48,
+   "fieldCount": 34,
+   "users": 33
+  },
+  {
+   "id": "fundamental45",
+   "name": "Systematic mining of earnings calls data",
+   "category": "Fundamental",
+   "alphaCount": 38,
+   "fieldCount": 12,
+   "users": 23
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 36,
+   "fieldCount": 72,
+   "users": 31
+  },
+  {
+   "id": "analyst83",
+   "name": "Smart Conference call transcript data",
+   "category": "Analyst",
+   "alphaCount": 34,
+   "fieldCount": 345,
+   "users": 24
+  },
+  {
+   "id": "earningscall_sentiment",
+   "name": "Multi Aspect Earnings Call Sentiment",
+   "category": "Other",
+   "alphaCount": 30,
+   "fieldCount": 167,
+   "users": 23
+  },
+  {
+   "id": "analyst35",
+   "name": "ESG Model",
+   "category": "Analyst",
+   "alphaCount": 27,
+   "fieldCount": 23,
+   "users": 19
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 17,
+   "fieldCount": 7,
+   "users": 16
+  },
+  {
+   "id": "analyst8",
+   "name": "Daily Split Data",
+   "category": "Analyst",
+   "alphaCount": 16,
+   "fieldCount": 10,
+   "users": 6
+  },
+  {
+   "id": "event_ml_signals",
+   "name": "Machine Learning Company Event Signals",
+   "category": "Other",
+   "alphaCount": 14,
+   "fieldCount": 104,
+   "users": 8
+  },
+  {
+   "id": "fundamental89",
+   "name": "Accrual based Earnings Model",
+   "category": "Fundamental",
+   "alphaCount": 8,
+   "fieldCount": 42,
+   "users": 7
+  },
+  {
+   "id": "analyst40",
+   "name": "Information on board of director",
+   "category": "Analyst",
+   "alphaCount": 5,
+   "fieldCount": 2,
+   "users": 5
+  },
+  {
+   "id": "euro_equity_imbalance",
+   "name": "European Equity Trading Imbalance Indicators",
+   "category": "Other",
+   "alphaCount": 5,
+   "fieldCount": 4,
+   "users": 4
+  },
+  {
+   "id": "event_relation",
+   "name": "Text-Based Event Relationship Analysis",
+   "category": "Other",
+   "alphaCount": 5,
+   "fieldCount": 12,
+   "users": 3
+  },
+  {
+   "id": "fundamental93",
+   "name": "Earnings Tax Data",
+   "category": "Fundamental",
+   "alphaCount": 2,
+   "fieldCount": 17,
+   "users": 2
+  }
+ ],
+ "HKG": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 4393,
+   "fieldCount": 307,
+   "users": 585
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 2446,
+   "fieldCount": 176,
+   "users": 500
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 1355,
+   "fieldCount": 125,
+   "users": 377
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 1111,
+   "fieldCount": 552,
+   "users": 267
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 857,
+   "fieldCount": 49,
+   "users": 295
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 465,
+   "fieldCount": 176,
+   "users": 111
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 431,
+   "fieldCount": 528,
+   "users": 138
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 370,
+   "fieldCount": 307,
+   "users": 64
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 225,
+   "fieldCount": 17,
+   "users": 122
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 122,
+   "fieldCount": 28,
+   "users": 53
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 118,
+   "fieldCount": 582,
+   "users": 58
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 101,
+   "fieldCount": 1729,
+   "users": 62
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 95,
+   "fieldCount": 125,
+   "users": 39
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 95,
+   "fieldCount": 552,
+   "users": 57
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 87,
+   "fieldCount": 48,
+   "users": 50
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 85,
+   "fieldCount": 17,
+   "users": 34
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 83,
+   "fieldCount": 25,
+   "users": 52
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 76,
+   "fieldCount": 19,
+   "users": 45
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 72,
+   "fieldCount": 141,
+   "users": 41
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 66,
+   "fieldCount": 15,
+   "users": 39
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 61,
+   "fieldCount": 851,
+   "users": 36
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 46,
+   "fieldCount": 69,
+   "users": 29
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 45,
+   "fieldCount": 6,
+   "users": 22
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 39,
+   "fieldCount": 241,
+   "users": 17
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 37,
+   "fieldCount": 6,
+   "users": 13
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 35,
+   "fieldCount": 97,
+   "users": 19
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 35,
+   "fieldCount": 49,
+   "users": 23
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 30,
+   "fieldCount": 528,
+   "users": 18
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 23,
+   "fieldCount": 126,
+   "users": 16
+  },
+  {
+   "id": "analyst21",
+   "name": "Indicators of Interest Data",
+   "category": "Analyst",
+   "alphaCount": 20,
+   "fieldCount": 16,
+   "users": 12
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 19,
+   "fieldCount": 25,
+   "users": 11
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 18,
+   "fieldCount": 851,
+   "users": 13
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 17,
+   "fieldCount": 13,
+   "users": 11
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 15,
+   "fieldCount": 48,
+   "users": 8
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 14,
+   "fieldCount": 1729,
+   "users": 7
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 13,
+   "fieldCount": 17,
+   "users": 12
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 12,
+   "fieldCount": 17,
+   "users": 9
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 10,
+   "fieldCount": 28,
+   "users": 3
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 8,
+   "fieldCount": 141,
+   "users": 6
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 7,
+   "fieldCount": 3,
+   "users": 5
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 6,
+   "fieldCount": 19,
+   "users": 6
+  },
+  {
+   "id": "analyst21",
+   "name": "Indicators of Interest Data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 16,
+   "users": 2
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 69,
+   "users": 3
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 3,
+   "fieldCount": 15,
+   "users": 3
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 3,
+   "fieldCount": 582,
+   "users": 2
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 2,
+   "fieldCount": 126,
+   "users": 2
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 2,
+   "fieldCount": 241,
+   "users": 2
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 97,
+   "users": 1
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 3,
+   "users": 0
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 13,
+   "users": 0
+  }
+ ],
+ "IND": [
+  {
+   "id": "model110",
+   "name": "Big data and machine learning based model",
+   "category": "Model",
+   "alphaCount": 70307,
+   "fieldCount": 8,
+   "users": 3278
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 46787,
+   "fieldCount": 247,
+   "users": 3652
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 28153,
+   "fieldCount": 546,
+   "users": 3184
+  },
+  {
+   "id": "imbalance5",
+   "name": "Oil Price Resilience Scores",
+   "category": "Imbalance",
+   "alphaCount": 17703,
+   "fieldCount": 2,
+   "users": 2390
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 15312,
+   "fieldCount": 35,
+   "users": 2168
+  },
+  {
+   "id": "institutions6",
+   "name": "Institutions and Beneficial Stake Ownership",
+   "category": "Institutions",
+   "alphaCount": 11678,
+   "fieldCount": 11,
+   "users": 1943
+  },
+  {
+   "id": "earnings3",
+   "name": "Earnings Date Data",
+   "category": "Earnings",
+   "alphaCount": 8409,
+   "fieldCount": 8,
+   "users": 1712
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 6912,
+   "fieldCount": 1026,
+   "users": 1236
+  },
+  {
+   "id": "model135",
+   "name": "Alternative technical factor models",
+   "category": "Model",
+   "alphaCount": 5549,
+   "fieldCount": 137,
+   "users": 889
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 4301,
+   "fieldCount": 6,
+   "users": 1169
+  },
+  {
+   "id": "fundamental44",
+   "name": "Accounting Quality Models",
+   "category": "Fundamental",
+   "alphaCount": 3856,
+   "fieldCount": 12,
+   "users": 897
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 3677,
+   "fieldCount": 2351,
+   "users": 808
+  },
+  {
+   "id": "fundamental89",
+   "name": "Accrual based Earnings Model",
+   "category": "Fundamental",
+   "alphaCount": 3570,
+   "fieldCount": 195,
+   "users": 811
+  },
+  {
+   "id": "model106",
+   "name": "Analysts rating model",
+   "category": "Model",
+   "alphaCount": 3351,
+   "fieldCount": 14,
+   "users": 779
+  },
+  {
+   "id": "model138",
+   "name": "Stock Selection from Accounting-based Factors",
+   "category": "Model",
+   "alphaCount": 3183,
+   "fieldCount": 120,
+   "users": 621
+  },
+  {
+   "id": "mmp_nlp_sentiment",
+   "name": "Multilingual NLP News Sentiment Signals",
+   "category": "Other",
+   "alphaCount": 2591,
+   "fieldCount": 521,
+   "users": 619
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 2500,
+   "fieldCount": 58,
+   "users": 755
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 2378,
+   "fieldCount": 210,
+   "users": 751
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 2318,
+   "fieldCount": 46,
+   "users": 688
+  },
+  {
+   "id": "insiders1",
+   "name": "Global Insider Trading Data",
+   "category": "Insiders",
+   "alphaCount": 2136,
+   "fieldCount": 9,
+   "users": 617
+  },
+  {
+   "id": "model139",
+   "name": "Inflation based stock selection model",
+   "category": "Model",
+   "alphaCount": 2060,
+   "fieldCount": 2,
+   "users": 381
+  },
+  {
+   "id": "earnings11",
+   "name": "Earnings Call Transcript Data",
+   "category": "Earnings",
+   "alphaCount": 1614,
+   "fieldCount": 35,
+   "users": 558
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 1519,
+   "fieldCount": 20,
+   "users": 448
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 1301,
+   "fieldCount": 28,
+   "users": 415
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 1152,
+   "fieldCount": 241,
+   "users": 466
+  },
+  {
+   "id": "fundamental93",
+   "name": "Earnings Tax Data",
+   "category": "Fundamental",
+   "alphaCount": 1090,
+   "fieldCount": 32,
+   "users": 402
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 964,
+   "fieldCount": 72,
+   "users": 349
+  },
+  {
+   "id": "earnings6",
+   "name": "International Findings Data",
+   "category": "Earnings",
+   "alphaCount": 601,
+   "fieldCount": 20,
+   "users": 298
+  },
+  {
+   "id": "insiders5",
+   "name": "Corporate Insider Trading Activities Dataset",
+   "category": "Insiders",
+   "alphaCount": 551,
+   "fieldCount": 1,
+   "users": 233
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 516,
+   "fieldCount": 15,
+   "users": 239
+  },
+  {
+   "id": "model140",
+   "name": "Sensitivity to the Inflation Change",
+   "category": "Model",
+   "alphaCount": 474,
+   "fieldCount": 3,
+   "users": 216
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 451,
+   "fieldCount": 14,
+   "users": 234
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 443,
+   "fieldCount": 5,
+   "users": 233
+  },
+  {
+   "id": "analyst83",
+   "name": "Smart Conference call transcript data",
+   "category": "Analyst",
+   "alphaCount": 430,
+   "fieldCount": 384,
+   "users": 166
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 420,
+   "fieldCount": 105,
+   "users": 232
+  },
+  {
+   "id": "global_seasonal_model",
+   "name": "Global Seasonal Regime Return Signals",
+   "category": "Model",
+   "alphaCount": 418,
+   "fieldCount": 8,
+   "users": 157
+  },
+  {
+   "id": "behavioral_signals",
+   "name": "Behavioral Finance Signal Factors",
+   "category": "Model",
+   "alphaCount": 334,
+   "fieldCount": 7,
+   "users": 147
+  },
+  {
+   "id": "model141",
+   "name": "Interest Rate Sensitivity Measures",
+   "category": "Model",
+   "alphaCount": 71,
+   "fieldCount": 2,
+   "users": 43
+  },
+  {
+   "id": "event_relation",
+   "name": "Text-Based Event Relationship Analysis",
+   "category": "Other",
+   "alphaCount": 60,
+   "fieldCount": 3,
+   "users": 29
+  }
+ ],
+ "JPN": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 12732,
+   "fieldCount": 1437,
+   "users": 714
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 2534,
+   "fieldCount": 72,
+   "users": 498
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 1700,
+   "fieldCount": 17,
+   "users": 433
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 1662,
+   "fieldCount": 554,
+   "users": 360
+  },
+  {
+   "id": "analyst37",
+   "name": "Japan Analyst Estimate Data",
+   "category": "Analyst",
+   "alphaCount": 790,
+   "fieldCount": 133,
+   "users": 225
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 708,
+   "fieldCount": 248,
+   "users": 268
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 525,
+   "fieldCount": 167,
+   "users": 170
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 414,
+   "fieldCount": 45,
+   "users": 176
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 359,
+   "fieldCount": 2238,
+   "users": 108
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 267,
+   "fieldCount": 109,
+   "users": 80
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 189,
+   "fieldCount": 741,
+   "users": 100
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 178,
+   "fieldCount": 582,
+   "users": 87
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 142,
+   "fieldCount": 1437,
+   "users": 56
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 136,
+   "fieldCount": 560,
+   "users": 78
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 131,
+   "fieldCount": 241,
+   "users": 40
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 120,
+   "fieldCount": 15,
+   "users": 59
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 114,
+   "fieldCount": 17,
+   "users": 42
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 88,
+   "fieldCount": 52,
+   "users": 46
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 75,
+   "fieldCount": 22,
+   "users": 28
+  },
+  {
+   "id": "analyst72",
+   "name": "Corporate Earning Estimates Data",
+   "category": "Analyst",
+   "alphaCount": 70,
+   "fieldCount": 45,
+   "users": 42
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 62,
+   "fieldCount": 72,
+   "users": 35
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 46,
+   "fieldCount": 20,
+   "users": 36
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 31,
+   "fieldCount": 6,
+   "users": 20
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 28,
+   "fieldCount": 105,
+   "users": 15
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 28,
+   "fieldCount": 210,
+   "users": 21
+  },
+  {
+   "id": "analyst37",
+   "name": "Japan Analyst Estimate Data",
+   "category": "Analyst",
+   "alphaCount": 26,
+   "fieldCount": 133,
+   "users": 17
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 23,
+   "fieldCount": 248,
+   "users": 15
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 22,
+   "fieldCount": 167,
+   "users": 15
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 20,
+   "fieldCount": 554,
+   "users": 14
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 18,
+   "fieldCount": 2238,
+   "users": 14
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 17,
+   "fieldCount": 14,
+   "users": 8
+  },
+  {
+   "id": "analyst92",
+   "name": "Linear, nonlinear, and region-specific models",
+   "category": "Analyst",
+   "alphaCount": 15,
+   "fieldCount": 17,
+   "users": 11
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 13,
+   "fieldCount": 560,
+   "users": 10
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 11,
+   "fieldCount": 582,
+   "users": 4
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 9,
+   "fieldCount": 741,
+   "users": 6
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 8,
+   "fieldCount": 241,
+   "users": 4
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 7,
+   "fieldCount": 45,
+   "users": 7
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 5,
+   "fieldCount": 109,
+   "users": 5
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 52,
+   "users": 2
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 3,
+   "fieldCount": 15,
+   "users": 3
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 3,
+   "fieldCount": 20,
+   "users": 3
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 3,
+   "fieldCount": 6,
+   "users": 2
+  },
+  {
+   "id": "analyst72",
+   "name": "Corporate Earning Estimates Data",
+   "category": "Analyst",
+   "alphaCount": 2,
+   "fieldCount": 45,
+   "users": 1
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 2,
+   "fieldCount": 3,
+   "users": 2
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 1,
+   "fieldCount": 105,
+   "users": 1
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 210,
+   "users": 0
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 22,
+   "users": 0
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 3,
+   "users": 0
+  },
+  {
+   "id": "analyst92",
+   "name": "Linear, nonlinear, and region-specific models",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 17,
+   "users": 0
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 0,
+   "fieldCount": 14,
+   "users": 0
+  }
+ ],
+ "CHN": [
+  {
+   "id": "model175",
+   "name": "China Fundamentals and Technicals Model",
+   "category": "Model",
+   "alphaCount": 5878,
+   "fieldCount": 424,
+   "users": 1323
+  },
+  {
+   "id": "model26",
+   "name": "Analyst Revisions",
+   "category": "Model",
+   "alphaCount": 2749,
+   "fieldCount": 126,
+   "users": 685
+  },
+  {
+   "id": "model39",
+   "name": "Valuation Momentum Data",
+   "category": "Model",
+   "alphaCount": 2008,
+   "fieldCount": 10,
+   "users": 553
+  },
+  {
+   "id": "model14",
+   "name": "Quant Model Data",
+   "category": "Model",
+   "alphaCount": 1989,
+   "fieldCount": 524,
+   "users": 489
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 1908,
+   "fieldCount": 1021,
+   "users": 568
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 919,
+   "fieldCount": 308,
+   "users": 295
+  },
+  {
+   "id": "macro61",
+   "name": "CSI1000 and Risk Data",
+   "category": "Macro",
+   "alphaCount": 584,
+   "fieldCount": 71,
+   "users": 337
+  },
+  {
+   "id": "model138",
+   "name": "Stock Selection from Accounting-based Factors",
+   "category": "Model",
+   "alphaCount": 569,
+   "fieldCount": 120,
+   "users": 142
+  },
+  {
+   "id": "news79",
+   "name": "Global Corporate News Analytics",
+   "category": "News",
+   "alphaCount": 370,
+   "fieldCount": 85,
+   "users": 80
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 344,
+   "fieldCount": 1052,
+   "users": 177
+  },
+  {
+   "id": "cn_stock_sentiment",
+   "name": "China Stock Social Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 261,
+   "fieldCount": 49,
+   "users": 146
+  },
+  {
+   "id": "model31",
+   "name": "Earnings Quality Model",
+   "category": "Model",
+   "alphaCount": 219,
+   "fieldCount": 148,
+   "users": 99
+  },
+  {
+   "id": "mfm_model_output",
+   "name": "Multi Factor Model Universal Output",
+   "category": "Risk",
+   "alphaCount": 197,
+   "fieldCount": 75,
+   "users": 119
+  },
+  {
+   "id": "news7",
+   "name": "Real Time News Feed Data",
+   "category": "News",
+   "alphaCount": 131,
+   "fieldCount": 2,
+   "users": 40
+  },
+  {
+   "id": "model243",
+   "name": "Combined Alpha Model",
+   "category": "Model",
+   "alphaCount": 116,
+   "fieldCount": 4,
+   "users": 74
+  },
+  {
+   "id": "china_stock_funda",
+   "name": "China Stock Market Fundamentals",
+   "category": "Other",
+   "alphaCount": 114,
+   "fieldCount": 4973,
+   "users": 72
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 101,
+   "fieldCount": 15,
+   "users": 76
+  },
+  {
+   "id": "model144",
+   "name": "Stock Selection DL model",
+   "category": "Model",
+   "alphaCount": 97,
+   "fieldCount": 2,
+   "users": 72
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 65,
+   "fieldCount": 582,
+   "users": 49
+  },
+  {
+   "id": "model291",
+   "name": "China Index Consitution History",
+   "category": "Model",
+   "alphaCount": 63,
+   "fieldCount": 4,
+   "users": 50
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "category": "Institutions",
+   "alphaCount": 60,
+   "fieldCount": 6,
+   "users": 26
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 46,
+   "fieldCount": 28,
+   "users": 31
+  },
+  {
+   "id": "model135",
+   "name": "Alternative technical factor models",
+   "category": "Model",
+   "alphaCount": 22,
+   "fieldCount": 137,
+   "users": 17
+  },
+  {
+   "id": "model36",
+   "name": "SmartRatios Model",
+   "category": "Model",
+   "alphaCount": 22,
+   "fieldCount": 21,
+   "users": 16
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 15,
+   "fieldCount": 126,
+   "users": 3
+  },
+  {
+   "id": "model37",
+   "name": "Text Mining Data",
+   "category": "Model",
+   "alphaCount": 10,
+   "fieldCount": 49,
+   "users": 8
+  },
+  {
+   "id": "insider_feats",
+   "name": "Global Insider Transaction Features",
+   "category": "Other",
+   "alphaCount": 6,
+   "fieldCount": 118,
+   "users": 6
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 5,
+   "fieldCount": 60,
+   "users": 5
+  },
+  {
+   "id": "behavioral_signals",
+   "name": "Behavioral Finance Signal Factors",
+   "category": "Model",
+   "alphaCount": 5,
+   "fieldCount": 7,
+   "users": 5
+  },
+  {
+   "id": "news21",
+   "name": "Macro Economic Event Data",
+   "category": "News",
+   "alphaCount": 5,
+   "fieldCount": 4,
+   "users": 2
+  },
+  {
+   "id": "event_stock_model",
+   "name": "Corporate Event Driven Stock Model",
+   "category": "Model",
+   "alphaCount": 4,
+   "fieldCount": 3,
+   "users": 4
+  },
+  {
+   "id": "model170",
+   "name": "Asia Technical and Fundamental ranking model",
+   "category": "Model",
+   "alphaCount": 4,
+   "fieldCount": 11,
+   "users": 4
+  },
+  {
+   "id": "news29",
+   "name": "Significant Developments Data",
+   "category": "News",
+   "alphaCount": 4,
+   "fieldCount": 10,
+   "users": 1
+  },
+  {
+   "id": "news50",
+   "name": "Web News Analytics Data",
+   "category": "News",
+   "alphaCount": 4,
+   "fieldCount": 25,
+   "users": 2
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 3,
+   "fieldCount": 7,
+   "users": 3
+  },
+  {
+   "id": "news11",
+   "name": "Market Theme Analytics Data",
+   "category": "News",
+   "alphaCount": 3,
+   "fieldCount": 10,
+   "users": 1
+  },
+  {
+   "id": "news38",
+   "name": "News Analytic Model Data",
+   "category": "News",
+   "alphaCount": 3,
+   "fieldCount": 63,
+   "users": 3
+  },
+  {
+   "id": "news46",
+   "name": "Relevant News Analytics Data",
+   "category": "News",
+   "alphaCount": 3,
+   "fieldCount": 37,
+   "users": 3
+  },
+  {
+   "id": "news76",
+   "name": "Textual News Feed Data",
+   "category": "News",
+   "alphaCount": 1,
+   "fieldCount": 6,
+   "users": 1
+  },
+  {
+   "id": "market_news_sent",
+   "name": "Financial Market News Sentiment",
+   "category": "Other",
+   "alphaCount": 0,
+   "fieldCount": 3,
+   "users": 0
+  },
+  {
+   "id": "model207",
+   "name": "Asian Insider Transaction Data",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 3,
+   "users": 0
+  },
+  {
+   "id": "model307",
+   "name": "Global Sales Allocation Model Data",
+   "category": "Model",
+   "alphaCount": 0,
+   "fieldCount": 14,
+   "users": 0
+  }
+ ],
+ "GLB": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 45685,
+   "fieldCount": 307,
+   "users": 3178
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 32701,
+   "fieldCount": 779,
+   "users": 3671
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 9462,
+   "fieldCount": 925,
+   "users": 1985
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 9122,
+   "fieldCount": 779,
+   "users": 2659
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 6244,
+   "fieldCount": 174,
+   "users": 1551
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 4558,
+   "fieldCount": 235,
+   "users": 1249
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 4315,
+   "fieldCount": 779,
+   "users": 1319
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 3972,
+   "fieldCount": 307,
+   "users": 1372
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 2610,
+   "fieldCount": 307,
+   "users": 901
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 1844,
+   "fieldCount": 20,
+   "users": 575
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 1792,
+   "fieldCount": 1607,
+   "users": 550
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 1773,
+   "fieldCount": 174,
+   "users": 963
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 1762,
+   "fieldCount": 925,
+   "users": 660
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 1729,
+   "fieldCount": 925,
+   "users": 757
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 1493,
+   "fieldCount": 6,
+   "users": 535
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 1296,
+   "fieldCount": 65,
+   "users": 404
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 860,
+   "fieldCount": 235,
+   "users": 330
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 554,
+   "fieldCount": 57,
+   "users": 255
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 536,
+   "fieldCount": 20,
+   "users": 312
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 524,
+   "fieldCount": 174,
+   "users": 292
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 469,
+   "fieldCount": 779,
+   "users": 253
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 452,
+   "fieldCount": 235,
+   "users": 278
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 444,
+   "fieldCount": 105,
+   "users": 210
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 334,
+   "fieldCount": 6,
+   "users": 128
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 319,
+   "fieldCount": 4,
+   "users": 205
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 245,
+   "fieldCount": 105,
+   "users": 163
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 241,
+   "fieldCount": 65,
+   "users": 120
+  },
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 197,
+   "fieldCount": 307,
+   "users": 101
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 157,
+   "fieldCount": 6,
+   "users": 98
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 156,
+   "fieldCount": 20,
+   "users": 98
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 153,
+   "fieldCount": 20,
+   "users": 62
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 129,
+   "fieldCount": 65,
+   "users": 86
+  },
+  {
+   "id": "analyst82",
+   "name": "Analyst estimate prediction data",
+   "category": "Analyst",
+   "alphaCount": 127,
+   "fieldCount": 170,
+   "users": 69
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 124,
+   "fieldCount": 57,
+   "users": 69
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 119,
+   "fieldCount": 4,
+   "users": 92
+  },
+  {
+   "id": "analyst82",
+   "name": "Analyst estimate prediction data",
+   "category": "Analyst",
+   "alphaCount": 92,
+   "fieldCount": 170,
+   "users": 53
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 88,
+   "fieldCount": 174,
+   "users": 52
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 77,
+   "fieldCount": 1607,
+   "users": 45
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 72,
+   "fieldCount": 925,
+   "users": 50
+  },
+  {
+   "id": "analyst82",
+   "name": "Analyst estimate prediction data",
+   "category": "Analyst",
+   "alphaCount": 29,
+   "fieldCount": 170,
+   "users": 15
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 27,
+   "fieldCount": 57,
+   "users": 19
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 17,
+   "fieldCount": 105,
+   "users": 14
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 16,
+   "fieldCount": 57,
+   "users": 14
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 15,
+   "fieldCount": 105,
+   "users": 10
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 14,
+   "fieldCount": 4,
+   "users": 12
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 13,
+   "fieldCount": 235,
+   "users": 10
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 9,
+   "fieldCount": 65,
+   "users": 6
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 8,
+   "fieldCount": 4,
+   "users": 6
+  },
+  {
+   "id": "analyst82",
+   "name": "Analyst estimate prediction data",
+   "category": "Analyst",
+   "alphaCount": 4,
+   "fieldCount": 170,
+   "users": 3
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 3,
+   "fieldCount": 6,
+   "users": 3
+  }
+ ],
+ "MEA": [],
+ "AMR": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 12438,
+   "fieldCount": 1437,
+   "users": 566
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 5899,
+   "fieldCount": 84,
+   "users": 665
+  },
+  {
+   "id": "analyst69",
+   "name": "Fundamental Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 5161,
+   "fieldCount": 692,
+   "users": 789
+  },
+  {
+   "id": "earnings3",
+   "name": "Earnings Date Data",
+   "category": "Earnings",
+   "alphaCount": 1600,
+   "fieldCount": 4,
+   "users": 369
+  },
+  {
+   "id": "earnings6",
+   "name": "International Findings Data",
+   "category": "Earnings",
+   "alphaCount": 992,
+   "fieldCount": 44,
+   "users": 170
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 856,
+   "fieldCount": 1409,
+   "users": 324
+  },
+  {
+   "id": "imbalance5",
+   "name": "Oil Price Resilience Scores",
+   "category": "Imbalance",
+   "alphaCount": 721,
+   "fieldCount": 2,
+   "users": 240
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 344,
+   "fieldCount": 389,
+   "users": 143
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 304,
+   "fieldCount": 91,
+   "users": 131
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 283,
+   "fieldCount": 1108,
+   "users": 109
+  },
+  {
+   "id": "earnings11",
+   "name": "Earnings Call Transcript Data",
+   "category": "Earnings",
+   "alphaCount": 229,
+   "fieldCount": 35,
+   "users": 98
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 203,
+   "fieldCount": 127,
+   "users": 85
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 186,
+   "fieldCount": 445,
+   "users": 82
+  },
+  {
+   "id": "analyst94",
+   "name": "Fundamental Income and Dividend Model",
+   "category": "Analyst",
+   "alphaCount": 129,
+   "fieldCount": 17,
+   "users": 61
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 122,
+   "fieldCount": 28,
+   "users": 41
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "category": "Institutions",
+   "alphaCount": 96,
+   "fieldCount": 30,
+   "users": 48
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 87,
+   "fieldCount": 72,
+   "users": 41
+  },
+  {
+   "id": "analyst47",
+   "name": "Alternative Analyst Investment Insight Data",
+   "category": "Analyst",
+   "alphaCount": 68,
+   "fieldCount": 6,
+   "users": 41
+  },
+  {
+   "id": "earnings_sent_matrix",
+   "name": "Global Earnings Call Sentiment Matrix",
+   "category": "Earnings",
+   "alphaCount": 68,
+   "fieldCount": 7,
+   "users": 32
+  },
+  {
+   "id": "earnings7",
+   "name": "Horizon Earnings and Calendar North America",
+   "category": "Earnings",
+   "alphaCount": 61,
+   "fieldCount": 4,
+   "users": 37
+  },
+  {
+   "id": "fundamental44",
+   "name": "Accounting Quality Models",
+   "category": "Fundamental",
+   "alphaCount": 59,
+   "fieldCount": 11,
+   "users": 41
+  },
+  {
+   "id": "canada_insiders",
+   "name": "Canadian Equity Insider Transactions",
+   "category": "Other",
+   "alphaCount": 48,
+   "fieldCount": 5,
+   "users": 36
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 41,
+   "fieldCount": 15,
+   "users": 26
+  },
+  {
+   "id": "analyst35",
+   "name": "ESG Model",
+   "category": "Analyst",
+   "alphaCount": 37,
+   "fieldCount": 23,
+   "users": 27
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 29,
+   "fieldCount": 105,
+   "users": 13
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 28,
+   "fieldCount": 121,
+   "users": 16
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 23,
+   "fieldCount": 1,
+   "users": 13
+  },
+  {
+   "id": "fundamental45",
+   "name": "Systematic mining of earnings calls data",
+   "category": "Fundamental",
+   "alphaCount": 20,
+   "fieldCount": 12,
+   "users": 17
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 18,
+   "fieldCount": 28,
+   "users": 14
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 16,
+   "fieldCount": 6,
+   "users": 14
+  },
+  {
+   "id": "finnews_nlp_scores",
+   "name": "Transformer Based Financial News Scores",
+   "category": "Other",
+   "alphaCount": 15,
+   "fieldCount": 105,
+   "users": 10
+  },
+  {
+   "id": "analyst8",
+   "name": "Daily Split Data",
+   "category": "Analyst",
+   "alphaCount": 12,
+   "fieldCount": 4,
+   "users": 12
+  },
+  {
+   "id": "event_sentiment_signals",
+   "name": "Corporate Event Sentiment Signals",
+   "category": "Other",
+   "alphaCount": 10,
+   "fieldCount": 26,
+   "users": 9
+  },
+  {
+   "id": "behavioral_signals",
+   "name": "Behavioral Finance Signal Factors",
+   "category": "Model",
+   "alphaCount": 9,
+   "fieldCount": 7,
+   "users": 7
+  },
+  {
+   "id": "event_relation",
+   "name": "Text-Based Event Relationship Analysis",
+   "category": "Other",
+   "alphaCount": 6,
+   "fieldCount": 12,
+   "users": 2
+  },
+  {
+   "id": "event_stock_model",
+   "name": "Corporate Event Driven Stock Model",
+   "category": "Model",
+   "alphaCount": 2,
+   "fieldCount": 3,
+   "users": 2
+  }
+ ],
+ "KOR": [
+  {
+   "id": "analyst15",
+   "name": "Earnings forecasts",
+   "category": "Analyst",
+   "alphaCount": 18729,
+   "fieldCount": 304,
+   "users": 911
+  },
+  {
+   "id": "dl_riskfree_returns",
+   "name": "Deep Learning Risk Free Returns",
+   "category": "Other",
+   "alphaCount": 5903,
+   "fieldCount": 57,
+   "users": 1023
+  },
+  {
+   "id": "insiders5",
+   "name": "Corporate Insider Trading Activities Dataset",
+   "category": "Insiders",
+   "alphaCount": 4818,
+   "fieldCount": 53,
+   "users": 769
+  },
+  {
+   "id": "analyst25",
+   "name": "Analyst Estimates Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 4573,
+   "fieldCount": 207,
+   "users": 749
+  },
+  {
+   "id": "analyst4",
+   "name": "Analyst Estimate Data for Equity",
+   "category": "Analyst",
+   "alphaCount": 4522,
+   "fieldCount": 308,
+   "users": 899
+  },
+  {
+   "id": "analyst14",
+   "name": "Estimations of Key Fundamentals",
+   "category": "Analyst",
+   "alphaCount": 3794,
+   "fieldCount": 461,
+   "users": 566
+  },
+  {
+   "id": "analyst39",
+   "name": "Analyst estimates & financial ratios",
+   "category": "Analyst",
+   "alphaCount": 2735,
+   "fieldCount": 43,
+   "users": 723
+  },
+  {
+   "id": "earnings3",
+   "name": "Earnings Date Data",
+   "category": "Earnings",
+   "alphaCount": 2602,
+   "fieldCount": 8,
+   "users": 631
+  },
+  {
+   "id": "insider_feats",
+   "name": "Global Insider Transaction Features",
+   "category": "Other",
+   "alphaCount": 1456,
+   "fieldCount": 31,
+   "users": 385
+  },
+  {
+   "id": "global_seasonal_model",
+   "name": "Global Seasonal Regime Return Signals",
+   "category": "Model",
+   "alphaCount": 1340,
+   "fieldCount": 681,
+   "users": 288
+  },
+  {
+   "id": "imbalance5",
+   "name": "Oil Price Resilience Scores",
+   "category": "Imbalance",
+   "alphaCount": 1280,
+   "fieldCount": 2,
+   "users": 454
+  },
+  {
+   "id": "analyst44",
+   "name": "Integrated Broker Estimates",
+   "category": "Analyst",
+   "alphaCount": 1164,
+   "fieldCount": 540,
+   "users": 392
+  },
+  {
+   "id": "institutions6",
+   "name": "Institutions and Beneficial Stake Ownership",
+   "category": "Institutions",
+   "alphaCount": 944,
+   "fieldCount": 11,
+   "users": 292
+  },
+  {
+   "id": "analyst10",
+   "name": "Performance-Weighted Analyst Estimates",
+   "category": "Analyst",
+   "alphaCount": 604,
+   "fieldCount": 640,
+   "users": 301
+  },
+  {
+   "id": "insiders1",
+   "name": "Global Insider Trading Data",
+   "category": "Insiders",
+   "alphaCount": 545,
+   "fieldCount": 9,
+   "users": 195
+  },
+  {
+   "id": "fundamental44",
+   "name": "Accounting Quality Models",
+   "category": "Fundamental",
+   "alphaCount": 496,
+   "fieldCount": 12,
+   "users": 134
+  },
+  {
+   "id": "chart_cnn_alpha",
+   "name": "Deep Learning Chart-Based Alpha",
+   "category": "Model",
+   "alphaCount": 265,
+   "fieldCount": 1010,
+   "users": 152
+  },
+  {
+   "id": "ai_equity_alpha",
+   "name": "AI Equity Alpha Forecasts",
+   "category": "Model",
+   "alphaCount": 262,
+   "fieldCount": 582,
+   "users": 127
+  },
+  {
+   "id": "analyst16",
+   "name": "Real Time Estimates",
+   "category": "Analyst",
+   "alphaCount": 257,
+   "fieldCount": 109,
+   "users": 111
+  },
+  {
+   "id": "analyst48",
+   "name": "Dividend estimation data",
+   "category": "Analyst",
+   "alphaCount": 243,
+   "fieldCount": 70,
+   "users": 58
+  },
+  {
+   "id": "analyst_consensus",
+   "name": "Standardized Analyst Consensus Forecasts",
+   "category": "Analyst",
+   "alphaCount": 207,
+   "fieldCount": 2343,
+   "users": 104
+  },
+  {
+   "id": "fund_holdings_panel",
+   "name": "Global Institutional Fund Holdings",
+   "category": "Institutions",
+   "alphaCount": 201,
+   "fieldCount": 30,
+   "users": 104
+  },
+  {
+   "id": "ai_factor_transfer",
+   "name": "AI Enhanced Equity Factor Transfer",
+   "category": "Model",
+   "alphaCount": 156,
+   "fieldCount": 20,
+   "users": 98
+  },
+  {
+   "id": "analyst_factor_signals",
+   "name": "Global Analyst Factor Signals",
+   "category": "Analyst",
+   "alphaCount": 134,
+   "fieldCount": 59,
+   "users": 79
+  },
+  {
+   "id": "analyst_revision_horizons",
+   "name": "Multi Horizon Analyst Revision Signals",
+   "category": "Model",
+   "alphaCount": 126,
+   "fieldCount": 1026,
+   "users": 77
+  },
+  {
+   "id": "fundamental89",
+   "name": "Accrual based Earnings Model",
+   "category": "Fundamental",
+   "alphaCount": 121,
+   "fieldCount": 368,
+   "users": 73
+  },
+  {
+   "id": "analyst9",
+   "name": "Analyst Estimate Daily Data",
+   "category": "Analyst",
+   "alphaCount": 115,
+   "fieldCount": 48,
+   "users": 56
+  },
+  {
+   "id": "acquisition_model",
+   "name": "Corporate Acquisition Likelihood Model",
+   "category": "Other",
+   "alphaCount": 105,
+   "fieldCount": 15,
+   "users": 61
+  },
+  {
+   "id": "analyst45",
+   "name": "Analyst Trade Ideas",
+   "category": "Analyst",
+   "alphaCount": 99,
+   "fieldCount": 241,
+   "users": 43
+  },
+  {
+   "id": "analyst_earnings_ibes",
+   "name": "Global Analyst Earnings Forecasts",
+   "category": "Model",
+   "alphaCount": 79,
+   "fieldCount": 28,
+   "users": 51
+  },
+  {
+   "id": "analyst_base_ref",
+   "name": "Analyst Estimates Base Reference",
+   "category": "Analyst",
+   "alphaCount": 59,
+   "fieldCount": 14,
+   "users": 41
+  },
+  {
+   "id": "fundamental93",
+   "name": "Earnings Tax Data",
+   "category": "Fundamental",
+   "alphaCount": 55,
+   "fieldCount": 46,
+   "users": 36
+  },
+  {
+   "id": "analyst11",
+   "name": "ESG scores",
+   "category": "Analyst",
+   "alphaCount": 52,
+   "fieldCount": 210,
+   "users": 39
+  },
+  {
+   "id": "analyst46",
+   "name": "Analyst Investment insight Data",
+   "category": "Analyst",
+   "alphaCount": 37,
+   "fieldCount": 6,
+   "users": 24
+  },
+  {
+   "id": "ai_news_scores",
+   "name": "AI News Sentiment Scores",
+   "category": "Other",
+   "alphaCount": 35,
+   "fieldCount": 103,
+   "users": 25
+  },
+  {
+   "id": "analyst81",
+   "name": "Creditworthiness model",
+   "category": "Analyst",
+   "alphaCount": 18,
+   "fieldCount": 5,
+   "users": 13
+  },
+  {
+   "id": "event_stock_model",
+   "name": "Corporate Event Driven Stock Model",
+   "category": "Model",
+   "alphaCount": 15,
+   "fieldCount": 3,
+   "users": 10
+  },
+  {
+   "id": "equity_forum_data",
+   "name": "International Equity Forum Activity",
+   "category": "Other",
+   "alphaCount": 12,
+   "fieldCount": 6,
+   "users": 8
+  },
+  {
+   "id": "behavioral_signals",
+   "name": "Behavioral Finance Signal Factors",
+   "category": "Model",
+   "alphaCount": 11,
+   "fieldCount": 7,
+   "users": 9
+  },
+  {
+   "id": "event_relation",
+   "name": "Text-Based Event Relationship Analysis",
+   "category": "Other",
+   "alphaCount": 3,
+   "fieldCount": 3,
+   "users": 3
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+[
+ [
+  "a1_rw_delta20",
+  "group_zscore(ts_delta(avg_similarity_rising_wedge_pattern_120, 20), subindustry)"
+ ],
+ [
+  "a2_rw_delta60",
+  "group_zscore(ts_delta(avg_similarity_rising_wedge_pattern_120, 60), subindustry)"
+ ],
+ [
+  "a3_rw_z60",
+  "group_zscore(ts_zscore(avg_similarity_rising_wedge_pattern_120, 60), subindustry)"
+ ],
+ [
+  "a4_rw_tsrank",
+  "group_zscore(ts_rank(avg_similarity_rising_wedge_pattern_120, 250), subindustry)"
+ ],
+ [
+  "b1_two_bear",
+  "group_zscore(add(avg_similarity_rising_wedge_pattern_120, mean_similarity_asc_triangle), subindustry)"
+ ],
+ [
+  "b2_bear_3way",
+  "group_zscore(add(add(avg_similarity_rising_wedge_pattern_120, mean_similarity_asc_triangle), mean_similarity_reversal_v_top), subindustry)"
+ ],
+ [
+  "b3_bear_4way",
+  "group_zscore(add(add(avg_similarity_rising_wedge_pattern_120, mean_similarity_reversal_v_top), add(mean_similarity_asc_triangle, mean_similarity_continuation_v_top)), subindustry)"
+ ],
+ [
+  "c1_bear_m_bull",
+  "group_zscore(subtract(add(avg_similarity_rising_wedge_pattern_120, mean_similarity_reversal_v_top), add(avg_similarity_v_reversal_bottom, avg_similarity_falling_wedge_pattern_120)), subindustry)"
+ ],
+ [
+  "d1_vtop_pos",
+  "group_zscore(mean_similarity_reversal_v_top, subindustry)"
+ ],
+ [
+  "d2_cvt_pos",
+  "group_zscore(mean_similarity_continuation_v_top, subindustry)"
+ ],
+ [
+  "e1_dtu_pos",
+  "group_zscore(desc_triangle_upward, subindustry)"
+ ],
+ [
+  "e2_atu_pos",
+  "group_zscore(mean_similarity_asc_triangle, subindustry)"
+ ]
+]

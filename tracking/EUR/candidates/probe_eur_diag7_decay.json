@@ -1,0 +1,130 @@
+{
+ "results": [
+  {
+   "label": "A1_zsub_d20",
+   "alpha": "JjN6nRZl",
+   "S": 1.41,
+   "F": 0.83,
+   "T": 0.0894,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 20,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "A1_zsub_d30",
+   "alpha": "vRrW5mQv",
+   "S": 1.31,
+   "F": 0.74,
+   "T": 0.0768,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 30,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "A1_zsub_d60",
+   "alpha": "N1aYA9aq",
+   "S": 1.13,
+   "F": 0.58,
+   "T": 0.0602,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 60,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "B2_ztsr_d20",
+   "alpha": "A1NokgoR",
+   "S": 1.31,
+   "F": 0.74,
+   "T": 0.0682,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 20,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "B2_ztsr_d30",
+   "alpha": "mLmEZg9x",
+   "S": 1.21,
+   "F": 0.65,
+   "T": 0.058,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 30,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "B2_ztsr_d60",
+   "alpha": "pwR982Lx",
+   "S": 1.0,
+   "F": 0.48,
+   "T": 0.0449,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 60,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "A1b_ind_d4",
+   "alpha": "d5bNQwqE",
+   "S": 1.53,
+   "F": 0.81,
+   "T": 0.1845,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "A1b_ind_d12",
+   "alpha": "wpZ0e56l",
+   "S": 1.54,
+   "F": 0.97,
+   "T": 0.1104,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "A1b_ind_d30",
+   "alpha": "P02k173M",
+   "S": 1.33,
+   "F": 0.76,
+   "T": 0.0767,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 30,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  }
+ ]
+}

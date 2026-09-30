@@ -1,0 +1,4684 @@
+{
+ "results": {
+  "vRjoLR63": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.37,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.05,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1043,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1043,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.08,
+     "limit": 0.7
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.92,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.63,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.1,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "N1a0Zb1w": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.01,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.68,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.097,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.097,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.9,
+     "limit": 0.59
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.74,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.48,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.66,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "npd9ENpw": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.36,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.04,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1046,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1046,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.11,
+     "limit": 0.7
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.94,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.64,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.11,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "zqkL9qeK": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.84,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.4,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0664,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0664,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.77,
+     "limit": 0.54
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.44,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.5,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.75,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "QPbM8G1W": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.99,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.66,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0971,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0971,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.88,
+     "limit": 0.59
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.76,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.45,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.65,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "zq8ZVNqO": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.86,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.51,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0899,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0899,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.92,
+     "limit": 0.55
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.7,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.49,
+     "limit": 1
+    },
+    "UNITS": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.25,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "KPN3WaXN": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.16,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.04,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0833,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0833,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.91,
+     "limit": 0.64
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.85,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.37,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.12,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "blbXeENl": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.13,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.01,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0837,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0837,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.92,
+     "limit": 0.63
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.83,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.37,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.14,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "E5p19JqG": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.7,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.43,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0388,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0388,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.64,
+     "limit": 0.5
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.39,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.31,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 1.76,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "e7bmXRdN": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.65,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.37,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.039,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.039,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.63,
+     "limit": 0.49
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.35,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.29,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 1.72,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/MODEL"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "LLNOLZe6": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.93,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.37,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1395,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1395,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.99,
+     "limit": 0.57
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.79,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.58,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.42,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "3qXgwWXP": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.04,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.46,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1438,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1438,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.07,
+     "limit": 0.6
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.82,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.62,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.53,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "e7bemJbl": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.93,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.37,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1394,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1394,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.99,
+     "limit": 0.57
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.81,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.59,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.42,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "zq8XZvnG": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.18,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.0,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1075,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1075,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.31,
+     "limit": 0.64
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.1,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.63,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.1,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "78NgP5OQ": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.08,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.54,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1427,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1427,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.18,
+     "limit": 0.61
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.79,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.77,
+     "limit": 1
+    },
+    "UNITS": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.53,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "O0NKdLe7": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.86,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.3,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1425,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1425,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.21,
+     "limit": 0.55
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.73,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.77,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 1.98,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "WjbKZ3ko": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.13,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.0,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0769,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0769,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.12,
+     "limit": 0.63
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.9,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.65,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.1,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "XgbX3Vq0": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 2.35,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.24,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1091,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1091,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.38,
+     "limit": 0.69
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.12,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.68,
+     "limit": 1
+    },
+    "UNITS": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.66,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "lev6LK6N": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.77,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.3,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1105,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1105,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.85,
+     "limit": 0.52
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.26,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.83,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.81,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "LLNbPZq6": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.71,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.24,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1083,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1083,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.96,
+     "limit": 0.5
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.27,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.72,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.57,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "xA3wKbwm": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.65,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.16,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1118,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1118,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.27,
+     "limit": 0.49
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.27,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.99,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.16,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "e7b8lQgN": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.65,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.18,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1121,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1121,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.16,
+     "limit": 0.49
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.28,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.8,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.12,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "A1NJRvqX": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.63,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.15,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1084,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.1084,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.2,
+     "limit": 0.48
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.28,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.99,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.99,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "E5p0ZAm1": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.64,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.37,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0743,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0743,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.19,
+     "limit": 0.48
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.54,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.87,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.58,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SECTOR",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "LLNbL5jL": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.7,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.23,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0919,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0919,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.82,
+     "limit": 0.5
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.17,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.78,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.61,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "d5b85K5Y": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.67,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.2,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0976,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0976,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.3,
+     "limit": 0.49
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.4,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.96,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.27,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "0mXkmjl8": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.58,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.11,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0932,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0932,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.19,
+     "limit": 0.47
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.28,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.82,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.11,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "3qXYQGWN": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.61,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.12,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0909,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0909,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.3,
+     "limit": 0.47
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.29,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.01,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.08,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 10,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "58z7xjQz": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 1.63,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.15,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0891,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.0891,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.28,
+     "limit": 0.48
+    },
+    "IS_LADDER_SHARPE": {
+     "result": "PASS",
+     "value": 2.47,
+     "limit": 2.02
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.45,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.97,
+     "limit": 1
+    },
+    "UNITS": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV",
+    "IND/D1/ANALYST"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 7,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "YPbwkMNo": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 3.89,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.93,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.7744,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.7744,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 2.0,
+     "limit": 1.15
+    },
+    "IS_LADDER_SHARPE": {
+     "result": "PASS",
+     "value": 2.39,
+     "limit": 2.37
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.53,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.27,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "3qXY6VzO": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 3.74,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.69,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.7912,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.7912,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.96,
+     "limit": 1.1
+    },
+    "IS_LADDER_SHARPE": {
+     "result": "PASS",
+     "value": 3.13,
+     "limit": 2.37
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.55,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.16,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "mLm2xjOK": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 3.62,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.27,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.4656,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.4656,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.89,
+     "limit": 1.07
+    },
+    "IS_LADDER_SHARPE": {
+     "result": "PASS",
+     "value": 3.1,
+     "limit": 2.37
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.21,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.09,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "vRrnJjaw": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 3.38,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 2.75,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.2423,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.2423,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.57,
+     "limit": 1.0
+    },
+    "IS_LADDER_SHARPE": {
+     "result": "PASS",
+     "value": 2.15,
+     "limit": 2.02
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.03,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "FAIL",
+     "value": 0.81,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 12,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "A1NJVm3e": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 5.19,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.55,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.4722,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.4722,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 2.11,
+     "limit": 1.53
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 3.24,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.91,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.37,
+     "limit": 1.58
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "WjbwO0Gk": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 4.88,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.22,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.4635,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.4635,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "FAIL",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.82,
+     "limit": 1.44
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 3.15,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.45,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.09,
+     "limit": 1.58
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "P02ro8Op": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 4.52,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.32,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3521,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3521,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.8,
+     "limit": 1.33
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.9,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.53,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.42,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "d5b8Wodj": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 4.41,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.24,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3496,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3496,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.78,
+     "limit": 1.3
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.66,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.53,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.27,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "O0NwW6oR": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 6.48,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.71,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.7975,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.7975,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "FAIL",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 2.82,
+     "limit": 1.91
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 4.47,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.86,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 3.25,
+     "limit": 1.58
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "58z7JGv6": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 5.78,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.06,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.812,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.812,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "FAIL",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 2.51,
+     "limit": 1.71
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 4.02,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.74,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.95,
+     "limit": 1.58
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "vRrnAY5r": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 4.42,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.2,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3563,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.3563,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.81,
+     "limit": 1.3
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.72,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.55,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.28,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "xA3wvlnJ": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 4.39,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 3.18,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.352,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "PASS",
+     "value": 0.352,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.8,
+     "limit": 1.3
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 2.75,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.51,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 2.23,
+     "limit": 1.58
+    },
+    "POWER_POOL_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  },
+  "WjbwlYXo": {
+   "status": "UNSUBMITTED",
+   "checks": {
+    "LOW_SHARPE": {
+     "result": "PASS",
+     "value": 3.26,
+     "limit": 1.58
+    },
+    "LOW_FITNESS": {
+     "result": "PASS",
+     "value": 1.63,
+     "limit": 1.0
+    },
+    "LOW_TURNOVER": {
+     "result": "PASS",
+     "value": 0.5019,
+     "limit": 0.01
+    },
+    "HIGH_TURNOVER": {
+     "result": "FAIL",
+     "value": 0.5019,
+     "limit": 0.4
+    },
+    "CONCENTRATED_WEIGHT": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "LOW_SUB_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 0.97,
+     "limit": 0.96
+    },
+    "CLUSTER_TEST": {
+     "result": "PASS",
+     "value": 1.94,
+     "limit": 1
+    },
+    "LOW_ROBUST_UNIVERSE_SHARPE": {
+     "result": "PASS",
+     "value": 1.12,
+     "limit": 1
+    },
+    "SELF_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "DATA_DIVERSITY": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "PROD_CORRELATION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "REGULAR_SUBMISSION": {
+     "result": "PENDING",
+     "value": null,
+     "limit": null
+    },
+    "LOW_2Y_SHARPE": {
+     "result": "PASS",
+     "value": 1.79,
+     "limit": 1.58
+    },
+    "MATCHES_COMPETITION": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_PYRAMID": {
+     "result": "PASS",
+     "value": null,
+     "limit": null
+    },
+    "MATCHES_THEMES": {
+     "result": "WARNING",
+     "value": null,
+     "limit": null
+    }
+   },
+   "pyramids": [
+    "IND/D1/PV"
+   ],
+   "settings": {
+    "instrumentType": "EQUITY",
+    "region": "IND",
+    "universe": "TOP500",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "STATISTICAL",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "OFF",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false,
+    "startDate": "2014-01-01",
+    "endDate": "2023-12-31",
+    "simulationMode": "FULL"
+   }
+  }
+ }
+}

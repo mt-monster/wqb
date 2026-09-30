@@ -1,0 +1,90 @@
+[
+ [
+  "W6_a_dec5_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 5), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec7_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 7), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec9_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 9), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec5_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 5), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec7_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 7), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec9_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 9), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec5_last60",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_60m_pre_close_2, 5), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec7_last60",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_60m_pre_close_2, 7), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_a_dec9_last60",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(mean_last_trade_price_return_60m_pre_close_2, 9), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_negr_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(-group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 11), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_negsp_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -signed_power(group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 11), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_rank_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(0.5, group_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 11), country)), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_negr_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(-group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 11), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_negsp_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -signed_power(group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 11), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_b_rank_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(0.5, group_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 11), country)), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_c_outrank_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 11), 126), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_c_outrank252_ask30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(mean_ask_price_return_30m_pre_close_2, 11), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_c_outrank_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 11), 126), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_c_outrank252_bid30",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), -ts_rank(ts_decay_linear(mean_bid_price_return_30m_pre_close_2, 11), 252), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_d_spread_dec5",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(subtract(mean_ask_price_return_30m_pre_close_2, mean_bid_price_return_30m_pre_close_2), 5), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_d_spread_dec11",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(subtract(mean_ask_price_return_30m_pre_close_2, mean_bid_price_return_30m_pre_close_2), 11), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W6_d_term_spread",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), signed_power(subtract(0.5, group_rank(ts_decay_linear(subtract(mean_last_trade_price_return_60m_pre_close_2, mean_last_trade_price_return_30m_pre_close_2), 11), country)), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ]
+]

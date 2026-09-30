@@ -1,0 +1,172 @@
+{
+ "results": [
+  {
+   "label": "TOP2500_d4_t0.02",
+   "alpha": "N1aYM15q",
+   "S": 1.52,
+   "F": 0.79,
+   "T": 0.1836,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP2500_d4_t0.06",
+   "alpha": "qMxQdxq2",
+   "S": 1.52,
+   "F": 0.79,
+   "T": 0.1836,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  },
+  {
+   "label": "TOP2500_d12_t0.02",
+   "alpha": "d5bN7LqE",
+   "S": 1.53,
+   "F": 0.95,
+   "T": 0.11,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP2500_d12_t0.06",
+   "alpha": "LLN0XNR2",
+   "S": 1.53,
+   "F": 0.95,
+   "T": 0.11,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  },
+  {
+   "label": "TOP1200_d4_t0.02",
+   "alpha": "e7bX2jzd",
+   "S": 1.05,
+   "F": 0.48,
+   "T": 0.1852,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP1200",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP1200_d4_t0.06",
+   "alpha": "0mX1Kkn8",
+   "S": 1.05,
+   "F": 0.48,
+   "T": 0.1852,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP1200",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  },
+  {
+   "label": "TOP1200_d12_t0.02",
+   "alpha": "vRrWJLp3",
+   "S": 1.03,
+   "F": 0.56,
+   "T": 0.1109,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP1200",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP1200_d12_t0.06",
+   "alpha": "88jMKNwz",
+   "S": 1.03,
+   "F": 0.56,
+   "T": 0.1109,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP1200",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  },
+  {
+   "label": "TOP800_d4_t0.02",
+   "alpha": "zq8lJ7L1",
+   "S": 0.84,
+   "F": 0.35,
+   "T": 0.1861,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP800",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP800_d4_t0.06",
+   "alpha": "9qjNaQqV",
+   "S": 0.84,
+   "F": 0.35,
+   "T": 0.1861,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP800",
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  },
+  {
+   "label": "TOP800_d12_t0.02",
+   "alpha": "e7bXd9qg",
+   "S": 0.8,
+   "F": 0.4,
+   "T": 0.1111,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP800",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "TOP800_d12_t0.06",
+   "alpha": "JjN6gA52",
+   "S": 0.8,
+   "F": 0.4,
+   "T": 0.1111,
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP800",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.06
+   }
+  }
+ ]
+}

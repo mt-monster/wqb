@@ -1,0 +1,142 @@
+{
+  "_doc": "KOR A 层 3 数据集首探波（wave_AL3）— 每集 8 探针，异构机制，冷门字段优先，避开已知死路族。设置 KOR/TOP600/D1/STATISTICAL/decay4/trunc0.08。",
+  "_probe_design": {
+    "discipline": "每条=单一经济机制，无自由权重；group_rank/signed_power 有界几何（ROBUST 友好）；不使用 add 双腿混合",
+    "avoid": "SUBINDUSTRY 轴（KOR prod 饱和）；已死族（insiders prod 饱和、news38/50/79/54、pv30 标签、oth496 时间戳）"
+  },
+  "institutions6": {
+    "mechanism_base": "机构流向（韩国 KRX 기관 일별 순매수 制度性披露）",
+    "probes": [
+      {
+        "id": "inst6_p1_acq_dis_ratio",
+        "mechanism": "机构买入/卖出金额不对称强度（净买入强度，归一化）",
+        "expr": "group_rank(divide(subtract(market_value_institutional_shares_acquired, market_value_institutional_shares_disposed), add(abs(market_value_institutional_shares_acquired), abs(market_value_institutional_shares_disposed))), market)"
+      },
+      {
+        "id": "inst6_p2_buyer_seller_count",
+        "mechanism": "机构买/卖家数广度净差（广度挤占强度）",
+        "expr": "group_rank(divide(subtract(count_institutional_buyers_security, count_institutional_sellers_security), add(count_institutional_buyers_security, count_institutional_sellers_security)), market)"
+      },
+      {
+        "id": "inst6_p3_holder_count_chg",
+        "mechanism": "持有机构家数变化（覆盖广度动量）",
+        "expr": "group_rank(ts_delta(ts_backfill(count_institutional_holders_security, 66), 66), market)"
+      },
+      {
+        "id": "inst6_p4_inst_share_of_owners",
+        "mechanism": "机构持股占全体持有人比重（机构化程度）",
+        "expr": "group_rank(divide(aggregate_share_count_institutions, aggregate_share_count_all_owners), market)"
+      },
+      {
+        "id": "inst6_p5_qty_disposed_surge",
+        "mechanism": "机构卖出股数相对长期均值激增（抛压事件强度）",
+        "expr": "group_rank(divide(ts_backfill(quantity_institutional_shares_disposed, 22), add(ts_mean(ts_backfill(quantity_institutional_shares_disposed, 22), 252), 1)), market)"
+      },
+      {
+        "id": "inst6_p6_value_split",
+        "mechanism": "机构持仓市值与全体持有人市值之比变化（机构相对增持）",
+        "expr": "group_rank(ts_delta(divide(aggregate_equity_value_institutions, aggregate_equity_value_all_owners), 66), market)"
+      },
+      {
+        "id": "inst6_p7_turnover_inst",
+        "mechanism": "机构换手强度（买卖股数合计 / 机构持股总量）",
+        "expr": "group_rank(divide(add(quantity_institutional_shares_acquired, quantity_institutional_shares_disposed), add(aggregate_share_count_institutions, 1)), market)"
+      },
+      {
+        "id": "inst6_p8_buy_sell_persist",
+        "mechanism": "净买入强度的持续性（252 日内正净买入占比）",
+        "expr": "group_rank(ts_rank(ts_mean(divide(subtract(market_value_institutional_shares_acquired, market_value_institutional_shares_disposed), add(abs(market_value_institutional_shares_acquired), abs(market_value_institutional_shares_disposed))), 22), 252), market)"
+      }
+    ]
+  },
+  "risk59": {
+    "mechanism_base": "卖空制度数据（韩国 금융투자협회 卖空余额 / 借券费率 / 拥挤度）",
+    "probes": [
+      {
+        "id": "rsk59_p1_shortpct_rev",
+        "mechanism": "卖空占股本比（高卖空→负面预期，取反向）",
+        "expr": "group_rank(multiply(-1, ts_backfill(rsk59_shortinterestpct, 22)), market)"
+      },
+      {
+        "id": "rsk59_p2_lending_fee",
+        "mechanism": "借券费率（借券成本高→稀缺→负面）",
+        "expr": "group_rank(multiply(-1, ts_backfill(rsk59_last_rate, 22)), market)"
+      },
+      {
+        "id": "rsk59_p3_short_momentum",
+        "mechanism": "卖空动量（卖空活动加速）",
+        "expr": "group_rank(multiply(-1, ts_delta(ts_backfill(rsk59_short_momentum, 22), 22)), market)"
+      },
+      {
+        "id": "rsk59_p4_days_to_cover",
+        "mechanism": "回补天数（空头回补压力，高 DTC→潜在挤压）",
+        "expr": "group_rank(ts_backfill(rsk59_daystocover90day, 22), market)"
+      },
+      {
+        "id": "rsk59_p5_crowded_short",
+        "mechanism": "空头拥挤度（拥挤→反向，取负）",
+        "expr": "group_rank(multiply(-1, ts_backfill(rsk59_crowded_score, 22)), market)"
+      },
+      {
+        "id": "rsk59_p6_dtc_weekly_chg",
+        "mechanism": "回补天数周变化（空头压力边际变化）",
+        "expr": "group_rank(ts_delta(ts_backfill(rsk59_dtcweeklychg, 22), 22), market)"
+      },
+      {
+        "id": "rsk59_p7_short_notional_norm",
+        "mechanism": "卖空名义金额 / 权益（相对卖空强度）",
+        "expr": "group_rank(divide(ts_backfill(rsk59_shortinterestnotional, 22), add(ts_mean(ts_backfill(rsk59_shortinterestnotional, 22), 252), 1)), market)"
+      },
+      {
+        "id": "rsk59_p8_short_interest_chg",
+        "mechanism": "卖空股数变化率（空头头寸边际调整）",
+        "expr": "group_rank(ts_delta(ts_backfill(rsk59_short_interest, 22), 66), market)"
+      }
+    ]
+  },
+  "multi_source_model": {
+    "mechanism_base": "多源模型分位数预测（分析师/事件嵌入 + 置信度）",
+    "probes": [
+      {
+        "id": "msm_p1_anl_q1_60",
+        "mechanism": "分析师模型 top quantile 60 日预测（正向）",
+        "expr": "group_rank(ts_backfill(analyst_quantile1_60d_pred, 22), market)"
+      },
+      {
+        "id": "msm_p2_anl_q1_120",
+        "mechanism": "分析师模型 top quantile 120 日预测（正向）",
+        "expr": "group_rank(ts_backfill(analyst_quantile1_120d_pred, 22), market)"
+      },
+      {
+        "id": "msm_p3_anl_q5_60_rev",
+        "mechanism": "分析师模型 bottom quantile 60 日预测（反向）",
+        "expr": "group_rank(multiply(-1, ts_backfill(analyst_quantile5_60d_pred, 22)), market)"
+      },
+      {
+        "id": "msm_p4_anl_conf_q5",
+        "mechanism": "bottom quantile 预测置信度（模型对看空判断的信心，反向）",
+        "expr": "group_rank(multiply(-1, ts_backfill(analyst_quantile5_confidence_60d_pred, 22)), market)"
+      },
+      {
+        "id": "msm_p5_evt_q2_60",
+        "mechanism": "事件嵌入模型 2nd quantile 60 日预测",
+        "expr": "group_rank(ts_backfill(event_embedding_quantile2_60d_pred, 22), market)"
+      },
+      {
+        "id": "msm_p6_evt_conf",
+        "mechanism": "事件嵌入模型置信度",
+        "expr": "group_rank(ts_backfill(event_embedding_quantile2_confidence_60d_pred, 22), market)"
+      },
+      {
+        "id": "msm_p7_anl_q1_rank_chg",
+        "mechanism": "top quantile 预测的边际变化（预期修正动量）",
+        "expr": "group_rank(ts_delta(ts_backfill(analyst_quantile1_60d_pred, 22), 66), market)"
+      },
+      {
+        "id": "msm_p8_q1_minus_q5",
+        "mechanism": "top-bottom 分位预测价差（模型看多看空分歧度，单一价差信号）",
+        "expr": "group_rank(subtract(ts_backfill(analyst_quantile1_60d_pred, 22), ts_backfill(analyst_quantile5_60d_pred, 22)), market)"
+      }
+    ]
+  }
+}

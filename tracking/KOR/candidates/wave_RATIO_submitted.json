@@ -1,0 +1,125 @@
+{
+ "submitted_at": "2026-09-29 00:30:44",
+ "variants": [
+  {
+   "id": "r1_base_stat",
+   "mechanism": "比值基线 STATISTICAL",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), market)",
+   "nu": "STATISTICAL"
+  },
+  {
+   "id": "r2_base_ind",
+   "mechanism": "比值 INDUSTRY",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "r3_base_subind",
+   "mechanism": "比值 SUBINDUSTRY",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), market)",
+   "nu": "SUBINDUSTRY"
+  },
+  {
+   "id": "r4_ma5_ind",
+   "mechanism": "比值 vec 层 5 日平滑 IND",
+   "expr": "group_rank(divide(ts_mean(vec_avg(shrt38_stk_invactsell_amt),5), add(ts_mean(vec_avg(shrt38_stk_invactbuy_amt),5), 0.0001)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "r5_ma22_ind",
+   "mechanism": "比值 22 日平滑 IND",
+   "expr": "group_rank(divide(ts_mean(vec_avg(shrt38_stk_invactsell_amt),22), add(ts_mean(vec_avg(shrt38_stk_invactbuy_amt),22), 0.0001)), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "r6_rk252_sub",
+   "mechanism": "比值 ts_rank252 SUBIND",
+   "expr": "group_rank(ts_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), 252), market)",
+   "nu": "SUBINDUSTRY"
+  },
+  {
+   "id": "r7_rk504_ind",
+   "mechanism": "比值 ts_rank504 IND",
+   "expr": "group_rank(ts_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), 504), market)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "r8_sectaxis_ind",
+   "mechanism": "比值 sector 轴 IND",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), sector)",
+   "nu": "INDUSTRY"
+  },
+  {
+   "id": "r9_subaxis_sub",
+   "mechanism": "比值 subindustry 轴 SUBIND",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), subindustry)",
+   "nu": "SUBINDUSTRY"
+  },
+  {
+   "id": "r10_decay10_ind",
+   "mechanism": "比值 长decay IND（按需改 decay）",
+   "expr": "group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), market)",
+   "nu": "INDUSTRY"
+  }
+ ],
+ "batches": [
+  {
+   "nu": "STATISTICAL",
+   "progress_id": "",
+   "ids": [
+    "r1_base_stat"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "r2_base_ind"
+   ]
+  },
+  {
+   "nu": "SUBINDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "r3_base_subind"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "1EwgdH5UY58ecfTIOrmJYxt",
+   "ids": [
+    "r4_ma5_ind",
+    "r5_ma22_ind"
+   ]
+  },
+  {
+   "nu": "SUBINDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "r6_rk252_sub"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "1e9axo8y54o1bZQCRRrvV2y",
+   "ids": [
+    "r7_rk504_ind",
+    "r8_sectaxis_ind"
+   ]
+  },
+  {
+   "nu": "SUBINDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "r9_subaxis_sub"
+   ]
+  },
+  {
+   "nu": "INDUSTRY",
+   "progress_id": "",
+   "ids": [
+    "r10_decay10_ind"
+   ]
+  }
+ ]
+}

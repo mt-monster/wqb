@@ -1,0 +1,91 @@
+{
+ "results": [
+  {
+   "label": "a1_raw_neg_z_sub",
+   "alpha": "pwRLpQb3",
+   "S": 0.9,
+   "F": 0.47,
+   "T": 0.1053
+  },
+  {
+   "label": "a2_neg_z_ind",
+   "alpha": "N1aZEJEo",
+   "S": 0.89,
+   "F": 0.47,
+   "T": 0.1045
+  },
+  {
+   "label": "a3_neg_z_mkt",
+   "alpha": "E5pdj1Er",
+   "S": 0.88,
+   "F": 0.46,
+   "T": 0.1039
+  },
+  {
+   "label": "a4_neg_rank_smooth5",
+   "alpha": "O0N3Lnbg",
+   "S": 0.74,
+   "F": 0.32,
+   "T": 0.0616
+  },
+  {
+   "label": "a5_neg_rank_smooth20",
+   "alpha": "A1NApQ6X",
+   "S": 0.61,
+   "F": 0.24,
+   "T": 0.0472
+  },
+  {
+   "label": "a6_neg_rank_smooth60",
+   "alpha": "GrbR27lx",
+   "S": 0.34,
+   "F": 0.1,
+   "T": 0.0346
+  },
+  {
+   "label": "b1_neg_vt",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_v_reversal_top\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "b2_neg_upgap",
+   "alpha": "2rwYYkPZ",
+   "S": 0.36,
+   "F": 0.11,
+   "T": 0.1372
+  },
+  {
+   "label": "b3_neg_risingwedge",
+   "alpha": "JjN99vXO",
+   "S": -1.07,
+   "F": -0.53,
+   "T": 0.1322
+  },
+  {
+   "label": "b4_neg_fallingwedge",
+   "alpha": "1YXMMO1K",
+   "S": -1.05,
+   "F": -0.51,
+   "T": 0.1339
+  },
+  {
+   "label": "c1_top_m_bottom",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_v_reversal_top\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "c2_bottom_m_top",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"avg_similarity_v_reversal_top\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02,
+  "nanHandling": "ON"
+ }
+}

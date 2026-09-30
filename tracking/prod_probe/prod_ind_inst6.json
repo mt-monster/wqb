@@ -1,0 +1,58 @@
+{
+ "results": {
+  "O0NwW6oR": {
+   "prod_max": 0.7153,
+   "min": -0.2448,
+   "n_records": 20,
+   "el": 21
+  },
+  "58z7JGv6": {
+   "prod_max": 0.5925,
+   "min": -0.1943,
+   "n_records": 20,
+   "el": 21
+  },
+  "A1NJVm3e": {
+   "prod_max": 0.8261,
+   "min": -0.3116,
+   "n_records": 20,
+   "el": 21
+  },
+  "WjbwO0Gk": {
+   "prod_max": 0.7519,
+   "min": -0.3096,
+   "n_records": 20,
+   "el": 21
+  },
+  "P02ro8Op": {
+   "prod_max": 0.8225,
+   "min": -0.283,
+   "n_records": 20,
+   "el": 21
+  },
+  "vRrnAY5r": {
+   "prod_max": 0.837,
+   "min": -0.2922,
+   "n_records": 20,
+   "el": 21
+  },
+  "d5b8Wodj": {
+   "prod_max": 0.846,
+   "min": -0.2977,
+   "n_records": 20,
+   "el": 21
+  },
+  "xA3wvlnJ": {
+   "prod_max": 0.8247,
+   "min": -0.2812,
+   "n_records": 20,
+   "el": 21
+  },
+  "WjbwlYXo": {
+   "prod_max": 0.7305,
+   "min": -0.1781,
+   "n_records": 20,
+   "el": 21
+  }
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "submitted_at": "2026-09-29 00:45:29",
+ "batches": [
+  {
+   "group": "G1_stat_d4",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "1KJCn33yP4UmawzkXUtYuRA",
+   "ids": [
+    "c1_rk63_stat",
+    "c2_rk126_stat",
+    "c3_rk252_stat"
+   ]
+  },
+  {
+   "group": "G2_stat_d10",
+   "nu": "STATISTICAL",
+   "decay": 10,
+   "progress_id": "NjtNcqu4oQbKbK4mkXmQ9",
+   "ids": [
+    "c7_base_d10",
+    "c9_rk126_d10"
+   ]
+  },
+  {
+   "group": "G3_stat_d20",
+   "nu": "STATISTICAL",
+   "decay": 20,
+   "progress_id": "3O8dcob3L4TdciWfiatrxPM",
+   "ids": [
+    "c8_base_d20",
+    "c10_rk252_d20"
+   ]
+  },
+  {
+   "group": "G4_sub_d4",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "progress_id": "3pmYeBaxL59fcao17Aa9Mhjb",
+   "ids": [
+    "c12_rk126_sub",
+    "c13_rk63_sub",
+    "c6_rk252_sub"
+   ]
+  },
+  {
+   "group": "G5_ind_d4",
+   "nu": "INDUSTRY",
+   "decay": 4,
+   "progress_id": "47ApLVeGe4IAcuXJMLlUEe9",
+   "ids": [
+    "c5_rk126_ind",
+    "c4_rk63_ind"
+   ]
+  }
+ ]
+}

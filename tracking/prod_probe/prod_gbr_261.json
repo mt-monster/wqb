@@ -1,0 +1,32 @@
+{
+ "results": {
+  "78NY2OgO": {
+   "prod_max": 0.9936,
+   "min": -0.446,
+   "n_records": 20,
+   "el": 570
+  },
+  "XgbaOqX0": {
+   "prod_max": null,
+   "err": "TIMEOUT"
+  },
+  "VkaM08rV": {
+   "prod_max": 0.8715,
+   "min": -0.3482,
+   "n_records": 20,
+   "el": 593
+  },
+  "e7b1QrYg": {
+   "prod_max": 0.8105,
+   "min": -0.2849,
+   "n_records": 20,
+   "el": 593
+  },
+  "88jGJjYv": {
+   "prod_max": 0.9987,
+   "min": -0.2816,
+   "n_records": 20,
+   "el": 591
+  }
+ }
+}

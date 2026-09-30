@@ -1,0 +1,413 @@
+{
+ "results": [
+  {
+   "label": "W1_bid30_gsubi",
+   "alpha": "786kzk7x",
+   "S": 1.9,
+   "F": 0.76,
+   "T": 0.5094,
+   "sub": [
+    "PASS",
+    1.62
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.9
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.76
+   ]
+  },
+  {
+   "label": "W1_high30_gsubi",
+   "alpha": "O081Gvog",
+   "S": 1.17,
+   "F": 0.41,
+   "T": 0.4428,
+   "sub": [
+    "PASS",
+    0.84
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    1.17
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.41
+   ]
+  },
+  {
+   "label": "W1_high30_gcoun",
+   "alpha": "j2856Q9Q",
+   "S": 1.63,
+   "F": 0.58,
+   "T": 0.4332,
+   "sub": [
+    "PASS",
+    1.11
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.63
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.58
+   ]
+  },
+  {
+   "label": "W1_ask30_gcoun",
+   "alpha": "O081GKMY",
+   "S": 2.41,
+   "F": 0.94,
+   "T": 0.4963,
+   "sub": [
+    "PASS",
+    1.8
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.94
+   ]
+  },
+  {
+   "label": "W1_ask30_gsubi",
+   "alpha": "qM0KNe31",
+   "S": 1.86,
+   "F": 0.75,
+   "T": 0.5084,
+   "sub": [
+    "PASS",
+    1.65
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.86
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.75
+   ]
+  },
+  {
+   "label": "W1_last30_gsubi",
+   "alpha": "gJZY81Ol",
+   "S": 1.77,
+   "F": 0.73,
+   "T": 0.5029,
+   "sub": [
+    "PASS",
+    1.41
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.77
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.73
+   ]
+  },
+  {
+   "label": "W1_bid30_gcoun",
+   "alpha": "npP1NgPq",
+   "S": 2.46,
+   "F": 0.97,
+   "T": 0.4966,
+   "sub": [
+    "PASS",
+    1.78
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.46
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.97
+   ]
+  },
+  {
+   "label": "W1_ask60_gsubi",
+   "alpha": "O081GGzg",
+   "S": 1.64,
+   "F": 0.63,
+   "T": 0.5095,
+   "sub": [
+    "PASS",
+    1.44
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.64
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.63
+   ]
+  },
+  {
+   "label": "W1_last30_gcoun",
+   "alpha": "O081GNWY",
+   "S": 3.03,
+   "F": 1.29,
+   "T": 0.4925,
+   "sub": [
+    "PASS",
+    2.13
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    3.03
+   ],
+   "fit_ok": [
+    "PASS",
+    1.29
+   ]
+  },
+  {
+   "label": "W1_bid60_gcoun",
+   "alpha": "qM0KNE9Z",
+   "S": 1.86,
+   "F": 0.67,
+   "T": 0.499,
+   "sub": [
+    "PASS",
+    1.61
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.86
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.67
+   ]
+  },
+  {
+   "label": "W1_bid60_gsubi",
+   "alpha": "E5RZGz59",
+   "S": 1.63,
+   "F": 0.62,
+   "T": 0.5101,
+   "sub": [
+    "PASS",
+    1.45
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.63
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.62
+   ]
+  },
+  {
+   "label": "W1_vol30_gcoun",
+   "alpha": "2rm1pea8",
+   "S": -0.42,
+   "F": -0.11,
+   "T": 0.2804,
+   "sub": [
+    "FAIL",
+    -0.46
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.42
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.11
+   ]
+  },
+  {
+   "label": "W1_slippage_gcoun",
+   "alpha": "A1vRGpZY",
+   "S": 0.24,
+   "F": 0.05,
+   "T": 0.2684,
+   "sub": [
+    "PASS",
+    0.09
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.24
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.05
+   ]
+  },
+  {
+   "label": "W1_slippage_gsubi",
+   "alpha": "9qWzp57o",
+   "S": 0.22,
+   "F": 0.06,
+   "T": 0.2994,
+   "sub": [
+    "PASS",
+    0.27
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.22
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  },
+  {
+   "label": "W1_ask60_gcoun",
+   "alpha": "6XKnl7QE",
+   "S": 1.8,
+   "F": 0.64,
+   "T": 0.4988,
+   "sub": [
+    "PASS",
+    1.58
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.8
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.64
+   ]
+  },
+  {
+   "label": "W1_vwapratio30_gcoun",
+   "alpha": "KPrK7LRj",
+   "S": 0.27,
+   "F": 0.05,
+   "T": 0.3173,
+   "sub": [
+    "PASS",
+    0.32
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.27
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.05
+   ]
+  },
+  {
+   "label": "W1_vol30_gsubi",
+   "alpha": "A1vRlPvE",
+   "S": -0.29,
+   "F": -0.08,
+   "T": 0.2931,
+   "sub": [
+    "FAIL",
+    -0.3
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.29
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.08
+   ]
+  },
+  {
+   "label": "W1_bidask30_gcoun",
+   "alpha": "vR2KjNMv",
+   "S": -0.32,
+   "F": -0.04,
+   "T": 0.4706,
+   "sub": [
+    "FAIL",
+    -0.16
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.32
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.04
+   ]
+  },
+  {
+   "label": "W1_bidask30_gsubi",
+   "alpha": "0mrbwRx2",
+   "S": -0.28,
+   "F": -0.04,
+   "T": 0.4752,
+   "sub": [
+    "FAIL",
+    -0.21
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    -0.28
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.04
+   ]
+  },
+  {
+   "label": "W1_vwapratio30_gsubi",
+   "alpha": "YPMj78Z6",
+   "S": 0.04,
+   "F": 0.0,
+   "T": 0.3429,
+   "sub": [
+    "FAIL",
+    -0.07
+   ],
+   "y2": null,
+   "sh_ok": [
+    "FAIL",
+    0.04
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.0
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

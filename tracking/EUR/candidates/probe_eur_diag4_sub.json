@@ -1,0 +1,95 @@
+{
+ "results": [
+  {
+   "label": "a1_rw_delta20",
+   "alpha": "1YXr9aQX",
+   "S": 0.99,
+   "F": 0.36,
+   "T": 0.2007
+  },
+  {
+   "label": "a2_rw_delta60",
+   "alpha": "omLxpP0v",
+   "S": 0.84,
+   "F": 0.32,
+   "T": 0.1493
+  },
+  {
+   "label": "a3_rw_z60",
+   "alpha": "A1NoZqdW",
+   "S": 1.25,
+   "F": 0.56,
+   "T": 0.1748
+  },
+  {
+   "label": "a4_rw_tsrank",
+   "alpha": "88jM9znz",
+   "S": 1.16,
+   "F": 0.55,
+   "T": 0.1415
+  },
+  {
+   "label": "b1_two_bear",
+   "alpha": "KPNWjd8x",
+   "S": 0.44,
+   "F": 0.11,
+   "T": 0.2071
+  },
+  {
+   "label": "b2_bear_3way",
+   "alpha": "levobK5N",
+   "S": 0.7,
+   "F": 0.23,
+   "T": 0.227
+  },
+  {
+   "label": "b3_bear_4way",
+   "alpha": "gJbnE0gM",
+   "S": 0.98,
+   "F": 0.39,
+   "T": 0.2324
+  },
+  {
+   "label": "c1_bear_m_bull",
+   "alpha": "qMxQqq5E",
+   "S": 1.27,
+   "F": 0.7,
+   "T": 0.1564
+  },
+  {
+   "label": "d1_vtop_pos",
+   "alpha": "RRbGWpRz",
+   "S": 0.66,
+   "F": 0.23,
+   "T": 0.1857
+  },
+  {
+   "label": "d2_cvt_pos",
+   "alpha": "A1Nodbxw",
+   "S": 0.85,
+   "F": 0.34,
+   "T": 0.2133
+  },
+  {
+   "label": "e1_dtu_pos",
+   "sim": "ERROR",
+   "msg": "Attempted to use unknown variable \"desc_triangle_upward\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "e2_atu_pos",
+   "alpha": "58zPVjN1",
+   "S": -0.35,
+   "F": -0.07,
+   "T": 0.291
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02,
+  "nanHandling": "ON"
+ }
+}

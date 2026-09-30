@@ -1,0 +1,154 @@
+{
+ "results": [
+  {
+   "label": "flip_sp05",
+   "alpha": "A1Nola3E",
+   "S": -1.59,
+   "F": -0.98,
+   "T": 0.1044,
+   "sub": [
+    "FAIL",
+    -1.03
+   ],
+   "y2": [
+    "FAIL",
+    -0.75
+   ]
+  },
+  {
+   "label": "flip_raw",
+   "alpha": "pwR9jNw3",
+   "S": -1.54,
+   "F": -0.97,
+   "T": 0.1104,
+   "sub": [
+    "FAIL",
+    -1.04
+   ],
+   "y2": [
+    "FAIL",
+    -0.75
+   ]
+  },
+  {
+   "label": "gate_strong",
+   "alpha": "Xgbd7Vzm",
+   "S": 0.52,
+   "F": 0.17,
+   "T": 0.0644,
+   "sub": [
+    "PASS",
+    0.61
+   ],
+   "y2": [
+    "FAIL",
+    -0.2
+   ]
+  },
+  {
+   "label": "gate_weak",
+   "alpha": "1YXrxYpM",
+   "S": 0.84,
+   "F": 0.35,
+   "T": 0.0655,
+   "sub": [
+    "PASS",
+    0.56
+   ],
+   "y2": [
+    "FAIL",
+    0.04
+   ]
+  },
+  {
+   "label": "gate_top",
+   "alpha": "omLx637E",
+   "S": 1.13,
+   "F": 0.55,
+   "T": 0.0821,
+   "sub": [
+    "PASS",
+    0.89
+   ],
+   "y2": [
+    "WARNING",
+    0.7
+   ]
+  },
+  {
+   "label": "gate_lvl",
+   "alpha": "j2Aq3Ame",
+   "S": 1.23,
+   "F": 0.64,
+   "T": 0.0929,
+   "sub": [
+    "PASS",
+    0.82
+   ],
+   "y2": [
+    "WARNING",
+    0.31
+   ]
+  },
+  {
+   "label": "rank_sp05",
+   "alpha": "WjbvPx0Z",
+   "S": 1.39,
+   "F": 0.83,
+   "T": 0.0967,
+   "sub": [
+    "PASS",
+    0.94
+   ],
+   "y2": [
+    "WARNING",
+    0.72
+   ]
+  },
+  {
+   "label": "multi3_sp",
+   "alpha": "2rw3waP5",
+   "S": 0.97,
+   "F": 0.45,
+   "T": 0.0814,
+   "sub": [
+    "FAIL",
+    0.37
+   ],
+   "y2": [
+    "FAIL",
+    0.44
+   ]
+  },
+  {
+   "label": "long_only",
+   "alpha": "wpZ0Zakd",
+   "S": 0.98,
+   "F": 0.45,
+   "T": 0.081,
+   "sub": [
+    "FAIL",
+    0.41
+   ],
+   "y2": [
+    "FAIL",
+    0.48
+   ]
+  },
+  {
+   "label": "rw_sp05",
+   "alpha": "wpZ0Zakd",
+   "S": 0.98,
+   "F": 0.45,
+   "T": 0.081,
+   "sub": [
+    "FAIL",
+    0.41
+   ],
+   "y2": [
+    "FAIL",
+    0.48
+   ]
+  }
+ ]
+}

@@ -1,0 +1,595 @@
+{
+ "dataset": "other401",
+ "region": "AMR",
+ "universe": "TOP600",
+ "delay": 1,
+ "data_type": "MATRIX",
+ "type_distribution": {
+  "MATRIX": 64
+ },
+ "field_count": 64,
+ "estimated_stock_count": 345,
+ "low_stock_coverage": false,
+ "avg_coverage": 0.576,
+ "longCount_source": "estimated",
+ "sample_stock_count": null,
+ "fetched_at": "2026-09-28T20:47:00",
+ "fields": [
+  {
+   "id": "oth401_game_accruals_vol",
+   "type": "MATRIX",
+   "coverage": 0.554,
+   "userCount": 3,
+   "alphaCount": 3,
+   "longCount": 332,
+   "description": "Accrual Volatility"
+  },
+  {
+   "id": "oth401_game_amortization_rate",
+   "type": "MATRIX",
+   "coverage": 0.3296,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 197,
+   "description": "Amortization Rate"
+  },
+  {
+   "id": "oth401_game_an_cov_chng",
+   "type": "MATRIX",
+   "coverage": 0.6258,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 375,
+   "description": "Analyst Coverage Change Over Time"
+  },
+  {
+   "id": "oth401_game_asset_turnover_chg",
+   "type": "MATRIX",
+   "coverage": 0.6808,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 408,
+   "description": "Change in Asset Turnover"
+  },
+  {
+   "id": "oth401_game_capex_dep",
+   "type": "MATRIX",
+   "coverage": 0.5474,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 328,
+   "description": "Capex to Depreciation"
+  },
+  {
+   "id": "oth401_game_capex_sale",
+   "type": "MATRIX",
+   "coverage": 0.6725,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 403,
+   "description": "Capex to Sales"
+  },
+  {
+   "id": "oth401_game_cash_flow_coverage",
+   "type": "MATRIX",
+   "coverage": 0.6594,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 395,
+   "description": "Cash Flow Coverage Ratio"
+  },
+  {
+   "id": "oth401_game_debt_convertible",
+   "type": "MATRIX",
+   "coverage": 0.4053,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 243,
+   "description": "Convertible Debt to Total Debt"
+  },
+  {
+   "id": "oth401_game_deferred_sal_chg",
+   "type": "MATRIX",
+   "coverage": 0.4858,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 291,
+   "description": "Change in Deferred Revenue"
+  },
+  {
+   "id": "oth401_game_deferred_tax_asset_chg",
+   "type": "MATRIX",
+   "coverage": 0.4939,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 296,
+   "description": "Change in Deferred Tax Assets"
+  },
+  {
+   "id": "oth401_game_deferred_tax_liab_chg",
+   "type": "MATRIX",
+   "coverage": 0.603,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 361,
+   "description": "Change in Deferred Tax Liabilities"
+  },
+  {
+   "id": "oth401_game_depreciation_chg",
+   "type": "MATRIX",
+   "coverage": 0.533,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 319,
+   "description": "Change in Depreciation Rate"
+  },
+  {
+   "id": "oth401_game_earning_smooth",
+   "type": "MATRIX",
+   "coverage": 0.661,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 396,
+   "description": "Earnings Smoothness"
+  },
+  {
+   "id": "oth401_game_eff_interest_rate",
+   "type": "MATRIX",
+   "coverage": 0.6158,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 369,
+   "description": "Effective Interest Rate"
+  },
+  {
+   "id": "oth401_game_eps_sur_vol",
+   "type": "MATRIX",
+   "coverage": 0.4923,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 295,
+   "description": "Analyst Forecast Error"
+  },
+  {
+   "id": "oth401_game_eps_vol",
+   "type": "MATRIX",
+   "coverage": 0.5982,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 358,
+   "description": "Earnings Volatility"
+  },
+  {
+   "id": "oth401_game_equity_dilution",
+   "type": "MATRIX",
+   "coverage": 0.6908,
+   "userCount": 3,
+   "alphaCount": 4,
+   "longCount": 414,
+   "description": "Equity Dilution"
+  },
+  {
+   "id": "oth401_game_esop_grant",
+   "type": "MATRIX",
+   "coverage": 0.3538,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 212,
+   "description": "Employee Stock Ownership Plan Grants"
+  },
+  {
+   "id": "oth401_game_finished_goods",
+   "type": "MATRIX",
+   "coverage": 0.3589,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 215,
+   "description": "Finished Goods to Inventory"
+  },
+  {
+   "id": "oth401_game_gma_chg",
+   "type": "MATRIX",
+   "coverage": 0.6562,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 393,
+   "description": "Change in Gross Margin"
+  },
+  {
+   "id": "oth401_game_gross_margin_vol",
+   "type": "MATRIX",
+   "coverage": 0.6102,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 366,
+   "description": "Gross Margin Volatility"
+  },
+  {
+   "id": "oth401_game_inc_cash_tax",
+   "type": "MATRIX",
+   "coverage": 0.5198,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 311,
+   "description": "Income Statement Tax to Cash Tax"
+  },
+  {
+   "id": "oth401_game_interest_investment_inc",
+   "type": "MATRIX",
+   "coverage": 0.5243,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 314,
+   "description": "Interest and Investment Income"
+  },
+  {
+   "id": "oth401_game_inventory_chg",
+   "type": "MATRIX",
+   "coverage": 0.6214,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 372,
+   "description": "Change in Inventory"
+  },
+  {
+   "id": "oth401_game_inventory_days",
+   "type": "MATRIX",
+   "coverage": 0.6212,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 372,
+   "description": "Inventory Days"
+  },
+  {
+   "id": "oth401_game_labor_efficiency_chg",
+   "type": "MATRIX",
+   "coverage": 0.4207,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 252,
+   "description": "Change in Labor Efficiency"
+  },
+  {
+   "id": "oth401_game_minority_interest",
+   "type": "MATRIX",
+   "coverage": 0.4103,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 246,
+   "description": "Minority Interest to Equity"
+  },
+  {
+   "id": "oth401_game_noa",
+   "type": "MATRIX",
+   "coverage": 0.6939,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 416,
+   "description": "Net Operating Assets"
+  },
+  {
+   "id": "oth401_game_non_oper_inc",
+   "type": "MATRIX",
+   "coverage": 0.5393,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 323,
+   "description": "Non-Operating Income to EBITDA"
+  },
+  {
+   "id": "oth401_game_non_production_asset",
+   "type": "MATRIX",
+   "coverage": 0.6148,
+   "userCount": 2,
+   "alphaCount": 3,
+   "longCount": 368,
+   "description": "Non-Production Assets"
+  },
+  {
+   "id": "oth401_game_optimism_gma",
+   "type": "MATRIX",
+   "coverage": 0.4837,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 290,
+   "description": "Analyst Optimism Gross Margin"
+  },
+  {
+   "id": "oth401_game_optimism_sale",
+   "type": "MATRIX",
+   "coverage": 0.6431,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 385,
+   "description": "Analyst Optimism Sales"
+  },
+  {
+   "id": "oth401_game_other_asset_gr",
+   "type": "MATRIX",
+   "coverage": 0.6689,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 401,
+   "description": "Other Asset Growth"
+  },
+  {
+   "id": "oth401_game_payble_days",
+   "type": "MATRIX",
+   "coverage": 0.6668,
+   "userCount": 3,
+   "alphaCount": 6,
+   "longCount": 400,
+   "description": "Payable Days"
+  },
+  {
+   "id": "oth401_game_pension_debt_equi_pbo",
+   "type": "MATRIX",
+   "coverage": 0.3179,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 190,
+   "description": "Debt Equivalent Net PBO"
+  },
+  {
+   "id": "oth401_game_pension_ev",
+   "type": "MATRIX",
+   "coverage": 0.3394,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 203,
+   "description": "Pension and Other Benefit to TEV"
+  },
+  {
+   "id": "oth401_game_pension_expense",
+   "type": "MATRIX",
+   "coverage": 0.4478,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 268,
+   "description": "Pension Expense to EBITDA"
+  },
+  {
+   "id": "oth401_game_pension_interest",
+   "type": "MATRIX",
+   "coverage": 0.2742,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 164,
+   "description": "Pension Interest Cost"
+  },
+  {
+   "id": "oth401_game_pension_pbo",
+   "type": "MATRIX",
+   "coverage": 0.3162,
+   "userCount": 5,
+   "alphaCount": 5,
+   "longCount": 189,
+   "description": "Projected Benefit Obligation to TEV"
+  },
+  {
+   "id": "oth401_game_prepaid_expense",
+   "type": "MATRIX",
+   "coverage": 0.4637,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 278,
+   "description": "Prepaid Expense to Sales"
+  },
+  {
+   "id": "oth401_game_receivable_chg",
+   "type": "MATRIX",
+   "coverage": 0.6733,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 403,
+   "description": "Change in Receivables"
+  },
+  {
+   "id": "oth401_game_receivable_days",
+   "type": "MATRIX",
+   "coverage": 0.6734,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 404,
+   "description": "Receivable Days"
+  },
+  {
+   "id": "oth401_game_relative_rtn_vol",
+   "type": "MATRIX",
+   "coverage": 0.6955,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 417,
+   "description": "Relative Volatility"
+  },
+  {
+   "id": "oth401_game_serial_special",
+   "type": "MATRIX",
+   "coverage": 0.6708,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 402,
+   "description": "Serial Special Items to Sales"
+  },
+  {
+   "id": "oth401_game_sg_a_cost_ratio",
+   "type": "MATRIX",
+   "coverage": 0.582,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 349,
+   "description": "SG&A Cost Ratio"
+  },
+  {
+   "id": "oth401_game_sg_a_inefficiency",
+   "type": "MATRIX",
+   "coverage": 0.5941,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 356,
+   "description": "SG&A Inefficiency"
+  },
+  {
+   "id": "oth401_game_sg_a_vol",
+   "type": "MATRIX",
+   "coverage": 0.5403,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 324,
+   "description": "SG&A Volatility"
+  },
+  {
+   "id": "oth401_game_short_term_debt",
+   "type": "MATRIX",
+   "coverage": 0.6694,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 401,
+   "description": "Short Term Debt Ratio"
+  },
+  {
+   "id": "oth401_game_tax_rate",
+   "type": "MATRIX",
+   "coverage": 0.6896,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 413,
+   "description": "Tax Rate"
+  },
+  {
+   "id": "oth401_game_total_debt_chg",
+   "type": "MATRIX",
+   "coverage": 0.6603,
+   "userCount": 4,
+   "alphaCount": 4,
+   "longCount": 396,
+   "description": "Change in Debt"
+  },
+  {
+   "id": "oth401_qes_gamef_cashflow_var",
+   "type": "MATRIX",
+   "coverage": 0.6516,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 390,
+   "description": "Cash Flow Variability"
+  },
+  {
+   "id": "oth401_qes_gamef_chs_default",
+   "type": "MATRIX",
+   "coverage": 0.6613,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 396,
+   "description": "CHS_DEFAULT"
+  },
+  {
+   "id": "oth401_qes_gamef_cscore",
+   "type": "MATRIX",
+   "coverage": 0.6789,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 407,
+   "description": "Montier's C Score"
+  },
+  {
+   "id": "oth401_qes_gamef_earn_var",
+   "type": "MATRIX",
+   "coverage": 0.6409,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 384,
+   "description": "Earnings Variability"
+  },
+  {
+   "id": "oth401_qes_gamef_earnigs_timeliness",
+   "type": "MATRIX",
+   "coverage": 0.6551,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 393,
+   "description": "Earnings Timeliness"
+  },
+  {
+   "id": "oth401_qes_gamef_grossprofit_asset",
+   "type": "MATRIX",
+   "coverage": 0.6755,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 405,
+   "description": "Gross Profit Over Asset"
+  },
+  {
+   "id": "oth401_qes_gamef_icfroe_1y",
+   "type": "MATRIX",
+   "coverage": 0.6595,
+   "userCount": 1,
+   "alphaCount": 3,
+   "longCount": 395,
+   "description": "Incremental Cash Flow Return Over Equity Over 1 Year"
+  },
+  {
+   "id": "oth401_qes_gamef_icfroe_3y",
+   "type": "MATRIX",
+   "coverage": 0.6163,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 369,
+   "description": "Incremental Cash Flow Return over Equity over 3 Years"
+  },
+  {
+   "id": "oth401_qes_gamef_icfroe_5y",
+   "type": "MATRIX",
+   "coverage": 0.5645,
+   "userCount": 23,
+   "alphaCount": 45,
+   "longCount": 338,
+   "description": "Incremental Cash Flow Return Over Equity Over 5 Years"
+  },
+  {
+   "id": "oth401_qes_gamef_mohanram",
+   "type": "MATRIX",
+   "coverage": 0.689,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 413,
+   "description": "Mohanram"
+  },
+  {
+   "id": "oth401_qes_gamef_negative_earnings",
+   "type": "MATRIX",
+   "coverage": 0.6937,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 416,
+   "description": "Negative Earnings"
+  },
+  {
+   "id": "oth401_qes_gamef_ohlson",
+   "type": "MATRIX",
+   "coverage": 0.6374,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 382,
+   "description": "Ohlson"
+  },
+  {
+   "id": "oth401_qes_gamef_pscore",
+   "type": "MATRIX",
+   "coverage": 0.6932,
+   "userCount": 0,
+   "alphaCount": 0,
+   "longCount": 415,
+   "description": "Piotroski"
+  },
+  {
+   "id": "oth401_qes_gamef_score",
+   "type": "MATRIX",
+   "coverage": 0.6815,
+   "userCount": 1,
+   "alphaCount": 1,
+   "longCount": 408,
+   "description": "Score"
+  }
+ ]
+}

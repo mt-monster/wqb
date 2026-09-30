@@ -1,0 +1,140 @@
+{
+ "ts": "2026-09-29 04:43:51",
+ "region": "KOR",
+ "dataset": "shortinterest38 (id=1149)",
+ "pyramid": "KOR/D1/SHORTINTEREST (mult 1.4)",
+ "settings": {
+  "universe": "TOP600",
+  "delay": 1,
+  "neutralization": "SLOW_AND_FAST",
+  "truncation": 0.02,
+  "decay": "20/30"
+ },
+ "submitted_today": [
+  {
+   "id": "wpZkk1Mp",
+   "ts": "03:45 ET",
+   "status": "ACTIVE",
+   "type": "PP+REG"
+  },
+  {
+   "id": "A1NXddRw",
+   "ts": "05:03 ET",
+   "status": "ACTIVE",
+   "type": "PP+REG"
+  },
+  {
+   "id": "omLjG1M5",
+   "ts": "08:28 ET",
+   "status": "ACTIVE",
+   "type": "PP+REG",
+   "note": "KOR/D1/SHORTINTEREST 第1颗"
+  },
+  {
+   "id": "KPNo2lgl",
+   "ts": "16:17 ET",
+   "status": "ACTIVE",
+   "type": "REG",
+   "note": "KOR/D1/SHORTINTEREST 第2颗"
+  },
+  {
+   "id": "vRrQ5Npr",
+   "ts": "12:41 CST",
+   "status": "ACTIVE",
+   "type": "REG",
+   "note": "KOR/D1/SHORTINTEREST 第3颗 → 塔点亮"
+  }
+ ],
+ "quota": {
+  "ET_date": "2026-09-28",
+  "regular": "4/4 FULL",
+  "reset": "ET 09-29 00:00 = GMT+8 09-30 12:00"
+ },
+ "submit_plan_明日": [
+  {
+   "order": 1,
+   "family": "A",
+   "id": "mLmGQEq9",
+   "S": 2.72,
+   "F": 2.12,
+   "prod": 0.6011,
+   "expr": "hump(group_rank(divide(vec_avg(shrt38_stk_invactsell_amt), add(vec_avg(shrt38_stk_invactbuy_amt), 0.0001)), sector), hump=0.0025)",
+   "desc": "KOR SI VecAvg Ratio Sector Hump25"
+  },
+  {
+   "order": 2,
+   "family": "B",
+   "id": "JjNAkqbn",
+   "S": 2.31,
+   "F": 1.75,
+   "prod": 0.6958,
+   "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), industry), hump=0.0025)",
+   "desc": "KOR SI Ratio DecayLinear 500d Industry"
+  },
+  {
+   "order": 3,
+   "family": "C",
+   "id": "QPbxpJ8K",
+   "S": 1.73,
+   "F": 1.15,
+   "prod": 0.5753,
+   "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 500), subindustry), hump=0.0025)",
+   "desc": "KOR SI Ratio DecayLinear 500d Subindustry"
+  },
+  {
+   "order": 4,
+   "family": "D",
+   "id": "A1Np5AXd",
+   "S": 2.17,
+   "F": 1.6,
+   "prod": 0.6918,
+   "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt)), 750), industry), hump=0.003)",
+   "desc": "KOR SI Ratio DecayLinear 750d Industry"
+  }
+ ],
+ "backup_同族": [
+  {
+   "id": "E5pjx9q0",
+   "family": "A",
+   "S": 2.5,
+   "F": 1.85,
+   "prod": 0.6002
+  },
+  {
+   "id": "d5bMPkWY",
+   "family": "A",
+   "S": 1.71,
+   "F": 1.19,
+   "prod": 0.4365
+  }
+ ],
+ "rejected_prod_above_07": [
+  {
+   "id": "RRbOoMNg",
+   "prod": 0.7682
+  },
+  {
+   "id": "Vkarb9WM",
+   "prod": 0.7701
+  },
+  {
+   "id": "xA3LoZ7m",
+   "prod": 0.7845
+  },
+  {
+   "id": "E5pjMdnG",
+   "prod": 0.7866
+  },
+  {
+   "id": "e7bYP29g",
+   "prod": 0.8704
+  },
+  {
+   "id": "E5pjMalL",
+   "prod": 0.9655
+  }
+ ],
+ "reusable_recipe": "shrt38 上让 prod<0.7 = hump(group_rank(ts_decay_linear(RS, 500+), subindustry|industry), hump=0.0025~0.003) + SLOW_AND_FAST + trunc0.02",
+ "pyramid_status": "KOR/D1/SHORTINTEREST = 3 ACTIVE → 已点亮",
+ "ts_updated": "2026-09-29 12:44:03"
+}

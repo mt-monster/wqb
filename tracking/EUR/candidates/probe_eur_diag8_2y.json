@@ -1,0 +1,268 @@
+{
+ "results": [
+  {
+   "label": "ax_market",
+   "alpha": "E5p9w1kr",
+   "S": 1.51,
+   "F": 0.94,
+   "T": 0.1105,
+   "sub": [
+    "PASS",
+    0.96
+   ],
+   "y2": [
+    "WARNING",
+    0.71
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "ax_sector",
+   "alpha": "JjN6pq5m",
+   "S": 1.5,
+   "F": 0.94,
+   "T": 0.1105,
+   "sub": [
+    "PASS",
+    0.96
+   ],
+   "y2": [
+    "WARNING",
+    0.69
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "ax_exchange",
+   "alpha": "VkaAp6bw",
+   "S": 1.52,
+   "F": 0.91,
+   "T": 0.1108,
+   "sub": [
+    "PASS",
+    0.82
+   ],
+   "y2": [
+    "WARNING",
+    0.61
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "ax_country",
+   "alpha": "e7bXOwxN",
+   "S": 1.52,
+   "F": 0.91,
+   "T": 0.1108,
+   "sub": [
+    "PASS",
+    0.82
+   ],
+   "y2": [
+    "WARNING",
+    0.61
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "sp_05",
+   "alpha": "JjN6O8nx",
+   "S": 1.59,
+   "F": 0.98,
+   "T": 0.1044,
+   "sub": [
+    "PASS",
+    1.03
+   ],
+   "y2": [
+    "WARNING",
+    0.75
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "sp_075",
+   "alpha": "YPbRgqrR",
+   "S": 1.57,
+   "F": 0.98,
+   "T": 0.1067,
+   "sub": [
+    "PASS",
+    1.04
+   ],
+   "y2": [
+    "WARNING",
+    0.75
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "sp_15",
+   "alpha": "QPbw93r5",
+   "S": 1.45,
+   "F": 0.92,
+   "T": 0.1192,
+   "sub": [
+    "PASS",
+    1.05
+   ],
+   "y2": [
+    "WARNING",
+    0.73
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "winsor",
+   "alpha": "1YXrzPlM",
+   "S": 1.54,
+   "F": 0.97,
+   "T": 0.1104,
+   "sub": [
+    "PASS",
+    1.04
+   ],
+   "y2": [
+    "WARNING",
+    0.75
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "ts_norm",
+   "alpha": "d5bNZpYv",
+   "S": 1.4,
+   "F": 0.82,
+   "T": 0.112,
+   "sub": [
+    "PASS",
+    0.93
+   ],
+   "y2": [
+    "WARNING",
+    0.62
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "rank_ind",
+   "alpha": "LLN0GX6m",
+   "S": 1.5,
+   "F": 0.9,
+   "T": 0.0998,
+   "sub": [
+    "PASS",
+    0.95
+   ],
+   "y2": [
+    "WARNING",
+    0.76
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "mkt_sp",
+   "alpha": "xA3JNVvp",
+   "S": 1.52,
+   "F": 0.94,
+   "T": 0.1073,
+   "sub": [
+    "PASS",
+    0.95
+   ],
+   "y2": [
+    "WARNING",
+    0.71
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  },
+  {
+   "label": "raw_diff",
+   "alpha": "VkaA7vv5",
+   "S": 1.13,
+   "F": 0.59,
+   "T": 0.1256,
+   "sub": [
+    "FAIL",
+    0.58
+   ],
+   "y2": [
+    "FAIL",
+    0.77
+   ],
+   "cfg": {
+    "region": "EUR",
+    "universe": "TOP2500",
+    "decay": 12,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.02
+   }
+  }
+ ]
+}

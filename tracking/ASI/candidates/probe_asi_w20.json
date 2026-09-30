@@ -1,0 +1,193 @@
+{
+ "results": [
+  {
+   "label": "W20_bid30_d4_en10",
+   "alpha": "j28zL7mQ",
+   "S": 1.89,
+   "F": 0.95,
+   "T": 0.1781,
+   "sub": [
+    "PASS",
+    1.11
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.89
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.95
+   ]
+  },
+  {
+   "label": "W20_bid30_d4_ev20",
+   "alpha": "Wje1KEPO",
+   "S": 2.21,
+   "F": 0.95,
+   "T": 0.3348,
+   "sub": [
+    "PASS",
+    1.53
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.21
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.95
+   ]
+  },
+  {
+   "label": "W20_bid30_d4_e20",
+   "alpha": "npPxw18a",
+   "S": 2.2,
+   "F": 0.93,
+   "T": 0.3527,
+   "sub": [
+    "PASS",
+    1.54
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.2
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.93
+   ]
+  },
+  {
+   "label": "W20_bid30_d5_ev20",
+   "alpha": "akxjXaa6",
+   "S": 2.2,
+   "F": 0.97,
+   "T": 0.316,
+   "sub": [
+    "PASS",
+    1.53
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.2
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.97
+   ]
+  },
+  {
+   "label": "W20_bid30_d5_en10",
+   "alpha": "88P5gJdX",
+   "S": 1.86,
+   "F": 0.95,
+   "T": 0.1669,
+   "sub": [
+    "PASS",
+    1.14
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.86
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.95
+   ]
+  },
+  {
+   "label": "W20_bid30_d5_e20",
+   "alpha": "O08QwGn1",
+   "S": 2.17,
+   "F": 0.94,
+   "T": 0.3324,
+   "sub": [
+    "PASS",
+    1.55
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.17
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.94
+   ]
+  },
+  {
+   "label": "W20_ask30_d4_e20",
+   "alpha": "e7Qk858O",
+   "S": 2.17,
+   "F": 0.92,
+   "T": 0.3525,
+   "sub": [
+    "PASS",
+    1.53
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.17
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.92
+   ]
+  },
+  {
+   "label": "W20_ask30_d4_en10",
+   "alpha": "88P5kVVX",
+   "S": 1.91,
+   "F": 0.97,
+   "T": 0.1778,
+   "sub": [
+    "PASS",
+    1.1
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.91
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.97
+   ]
+  },
+  {
+   "label": "W20_ask30_d4_ev20",
+   "alpha": "gJZkqXeK",
+   "S": 2.15,
+   "F": 0.91,
+   "T": 0.3345,
+   "sub": [
+    "PASS",
+    1.47
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.15
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.91
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

@@ -1,0 +1,71 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "Y3_net_over_gross",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "Y2_sell_over_buy",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "Z1_amt_net",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "Y5_buy_minus_sell_rank",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "Z2_amt_abs",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AA1_buy_ratio_bf",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AA2_net_ratio_bf",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AA3_buy_sell_ratio_tsmean",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AB2_raw_net_over_gross",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AB1_raw_buy_over_sell",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AC1_fa_fb_split",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "AC2_ghc_split",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "Y4_net_over_sell",
+   "sim": "ERROR",
+   "msg": "Operator less does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "Y1_buy_over_sell",
+   "sim": "ERROR",
+   "msg": "Operator greater does not support event inputs. <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  }
+ ]
+}

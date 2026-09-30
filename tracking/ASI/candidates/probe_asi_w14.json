@@ -1,0 +1,358 @@
+{
+ "results": [
+  {
+   "label": "W14_vol_bid30_d5",
+   "alpha": "kqgqMqpz",
+   "S": 2.77,
+   "F": 1.09,
+   "T": 0.5174,
+   "sub": [
+    "PASS",
+    2.04
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.77
+   ],
+   "fit_ok": [
+    "PASS",
+    1.09
+   ]
+  },
+  {
+   "label": "W14_vol_ask30_d5",
+   "alpha": "gJZJ56el",
+   "S": 2.79,
+   "F": 1.1,
+   "T": 0.5168,
+   "sub": [
+    "PASS",
+    2.05
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.79
+   ],
+   "fit_ok": [
+    "PASS",
+    1.1
+   ]
+  },
+  {
+   "label": "W14_vol_bid30_d6",
+   "alpha": "RR6Ro5ko",
+   "S": 2.66,
+   "F": 1.04,
+   "T": 0.4975,
+   "sub": [
+    "PASS",
+    1.96
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.66
+   ],
+   "fit_ok": [
+    "PASS",
+    1.04
+   ]
+  },
+  {
+   "label": "W14_vol_bid30_d4",
+   "alpha": "Vk0kLMqG",
+   "S": 2.81,
+   "F": 1.1,
+   "T": 0.5422,
+   "sub": [
+    "PASS",
+    2.04
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.81
+   ],
+   "fit_ok": [
+    "PASS",
+    1.1
+   ]
+  },
+  {
+   "label": "W14_vol_ask30_d4",
+   "alpha": "JjQjJjAl",
+   "S": 2.86,
+   "F": 1.13,
+   "T": 0.5418,
+   "sub": [
+    "PASS",
+    2.06
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.86
+   ],
+   "fit_ok": [
+    "PASS",
+    1.13
+   ]
+  },
+  {
+   "label": "W14_and_ask30_d6",
+   "alpha": "omWm07AJ",
+   "S": 2.36,
+   "F": 0.95,
+   "T": 0.4533,
+   "sub": [
+    "PASS",
+    1.87
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.36
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.95
+   ]
+  },
+  {
+   "label": "W14_and_bid30_d6",
+   "alpha": "e7Q7ZK5p",
+   "S": 2.36,
+   "F": 0.94,
+   "T": 0.4536,
+   "sub": [
+    "PASS",
+    1.8
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.36
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.94
+   ]
+  },
+  {
+   "label": "W14_and_ask30_d4",
+   "alpha": "O081GKMY",
+   "S": 2.41,
+   "F": 0.94,
+   "T": 0.4963,
+   "sub": [
+    "PASS",
+    1.8
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.94
+   ]
+  },
+  {
+   "label": "W14_and_bid30_d4",
+   "alpha": "npP1NgPq",
+   "S": 2.46,
+   "F": 0.97,
+   "T": 0.4966,
+   "sub": [
+    "PASS",
+    1.78
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.46
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.97
+   ]
+  },
+  {
+   "label": "W14_vol_ask30_d6",
+   "alpha": "RR6Rw1Zg",
+   "S": 2.8,
+   "F": 1.13,
+   "T": 0.4969,
+   "sub": [
+    "PASS",
+    2.02
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.8
+   ],
+   "fit_ok": [
+    "PASS",
+    1.13
+   ]
+  },
+  {
+   "label": "W14_none_ask30_d4",
+   "alpha": "XgJgAWAx",
+   "S": 1.68,
+   "F": 0.78,
+   "T": 0.2776,
+   "sub": [
+    "PASS",
+    1.16
+   ],
+   "y2": [
+    "WARNING",
+    1.25
+   ],
+   "sh_ok": [
+    "PASS",
+    1.68
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.78
+   ]
+  },
+  {
+   "label": "W14_none_ask30_d5",
+   "alpha": "N1V1lakp",
+   "S": 1.6,
+   "F": 0.76,
+   "T": 0.2464,
+   "sub": [
+    "PASS",
+    1.14
+   ],
+   "y2": [
+    "WARNING",
+    1.26
+   ],
+   "sh_ok": [
+    "PASS",
+    1.6
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.76
+   ]
+  },
+  {
+   "label": "W14_none_ask30_d6",
+   "alpha": "leKePMRA",
+   "S": 1.6,
+   "F": 0.78,
+   "T": 0.2293,
+   "sub": [
+    "PASS",
+    1.12
+   ],
+   "y2": [
+    "WARNING",
+    1.23
+   ],
+   "sh_ok": [
+    "PASS",
+    1.6
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.78
+   ]
+  },
+  {
+   "label": "W14_none_bid30_d4",
+   "alpha": "0mrm21oq",
+   "S": 1.52,
+   "F": 0.67,
+   "T": 0.2788,
+   "sub": [
+    "PASS",
+    1.26
+   ],
+   "y2": [
+    "WARNING",
+    1.42
+   ],
+   "sh_ok": [
+    "WARNING",
+    1.52
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.67
+   ]
+  },
+  {
+   "label": "W14_and_bid30_d5",
+   "alpha": "zqbq8rR8",
+   "S": 2.44,
+   "F": 0.98,
+   "T": 0.4722,
+   "sub": [
+    "PASS",
+    1.81
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.44
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.98
+   ]
+  },
+  {
+   "label": "W14_none_bid30_d6",
+   "alpha": "58g8KNn6",
+   "S": 1.43,
+   "F": 0.65,
+   "T": 0.2295,
+   "sub": [
+    "PASS",
+    1.17
+   ],
+   "y2": [
+    "WARNING",
+    1.4
+   ],
+   "sh_ok": [
+    "WARNING",
+    1.43
+   ],
+   "fit_ok": [
+    "WARNING",
+    0.65
+   ]
+  },
+  {
+   "label": "W14_and_ask30_d5",
+   "sim": "POLL_TIMEOUT",
+   "msg": "None"
+  },
+  {
+   "label": "W14_none_bid30_d5",
+   "sim": "POLL_TIMEOUT",
+   "msg": "None"
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

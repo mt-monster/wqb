@@ -1,0 +1,108 @@
+[
+ {
+  "group": "S1_realshort",
+  "id": "O0N35WNq",
+  "sharpe": -0.1,
+  "fitness": -0.02,
+  "turnover": 0.1526,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_short_sellshort_sell_amt), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "S1_realshort",
+  "id": "QPb850b5",
+  "sharpe": 0.39,
+  "fitness": 0.15,
+  "turnover": 0.1111,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(vec_sum(shrt38_stk_short_sellshort_sell_qty), 500), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "S2_netbuy",
+  "id": "gJb2RKMK",
+  "sharpe": -2.05,
+  "fitness": -1.48,
+  "turnover": 0.1916,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactnet_buy_amt), add(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "S2_netbuy",
+  "id": "npdEZo2a",
+  "sharpe": -1.59,
+  "fitness": -1.03,
+  "turnover": 0.1788,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_SUB_UNIVERSE_SHARPE",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(divide(vec_sum(shrt38_stk_invactnet_buy_qty), add(vec_sum(shrt38_stk_invactsell_qty), vec_sum(shrt38_stk_invactbuy_qty))), 500), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "S3_qtyamt",
+  "id": "LLNQg679",
+  "sharpe": 0.23,
+  "fitness": 0.06,
+  "turnover": 0.1761,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(subtract(divide(vec_sum(shrt38_stk_invactsell_qty), vec_sum(shrt38_stk_invactbuy_qty)), divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "S3_qtyamt",
+  "id": "6Xjka1lL",
+  "sharpe": 0.14,
+  "fitness": 0.03,
+  "turnover": 0.1639,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(subtract(divide(vec_sum(shrt38_stk_invactsell_qty), vec_sum(shrt38_stk_invactbuy_qty)), divide(vec_sum(shrt38_stk_invactsell_amt), vec_sum(shrt38_stk_invactbuy_amt))), 750), subindustry), hump=0.0025)"
+ },
+ {
+  "group": "S4_amt_wgt",
+  "id": "78NpKnl2",
+  "sharpe": 0.12,
+  "fitness": 0.03,
+  "turnover": 0.1177,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(vec_avg(shrt38_stk_short_sellshort_sell_amt_wgt), 500), industry), hump=0.0025)"
+ },
+ {
+  "group": "S4_amt_wgt",
+  "id": "xA3ZmdEq",
+  "sharpe": -0.05,
+  "fitness": -0.01,
+  "turnover": 0.0966,
+  "fails": [
+   "LOW_SHARPE",
+   "LOW_FITNESS",
+   "LOW_2Y_SHARPE"
+  ],
+  "expr": "hump(group_rank(ts_decay_linear(vec_avg(shrt38_amt_wgt), 500), subindustry), hump=0.0025)"
+ }
+]

@@ -1,0 +1,111 @@
+{
+  "entries": {
+    "33a7b487f1": {
+      "question": "Regular alpha 表达式骨架设计灵感：除 trade_when/group_rank/ts_zscore/ts_mean 等常用结构外，社区有哪些已验证的新颖算子组合模板（事件条件化、跨字段交互、横截面几何、时序状态机）可用于提升模板多样性",
+      "question_key": "33a7b487f1",
+      "found": false,
+      "error": "forum auth failed: _path_exists: path should be string, bytes, os.PathLike or integer, not NoneType",
+      "searched_at": "2026-09-28T19:20:50",
+      "queries_tried": [
+        "表达式骨架设 计灵感"
+      ],
+      "sink": "USA/forum_recon_negative_33a7b487f1"
+    },
+    "718db79483": {
+      "question": "Regular alpha 表达式骨架库：社区验证过的新颖算子组合模板（事件条件化/跨字段交互/横截面几何/时序状态机）有哪些，附具体表达式示例",
+      "question_key": "718db79483",
+      "found": false,
+      "n_useful": 0,
+      "articles": [],
+      "queries_tried": [
+        "表达式骨架库 社区验证过的",
+        "表达式骨架库 template_homogeneity",
+        "表达式骨架库",
+        "表达式骨架库 实盘",
+        "表达式骨架库 经验",
+        "表达式骨架库 配方",
+        "表达式骨架库 破墙",
+        "社区验证过的"
+      ],
+      "rounds": 8,
+      "searched_at": "2026-09-28T19:29:47",
+      "note": "关键词空间已扩至 19 变体/触安全上限 8，仍无有效文章",
+      "sink": "USA/forum_recon_negative_718db79483"
+    },
+    "c189537f66": {
+      "question": "alpha 表达式模板与算子组合经验",
+      "question_key": "c189537f66",
+      "found": false,
+      "n_useful": 0,
+      "articles": [],
+      "queries_tried": [
+        "alpha 模板",
+        "表达式模板",
+        "算子组合",
+        "trade_when",
+        "group_rank",
+        "ts_rank 模板"
+      ],
+      "rounds": 6,
+      "searched_at": "2026-09-28T19:47:15",
+      "note": "关键词空间已扩至 21 变体/触安全上限 6，仍无有效文章",
+      "sink": "USA/forum_recon_negative_c189537f66"
+    },
+    "3e273c80eb": {
+      "question": "KOR shortinterest 卖空数据 prod correlation 撞墙 降相关 非净买入机制",
+      "question_key": "3e273c80eb",
+      "found": false,
+      "error": "forum auth failed: No module named 'requests'",
+      "searched_at": "2026-09-28T23:26:24",
+      "queries_tried": [
+        "卖空数据 撞墙"
+      ],
+      "sink": "KOR/forum_recon_negative_3e273c80eb"
+    },
+    "a86cca9bf3": {
+      "question": "short interest 卖空数据 prod correlation 撞墙 降相关 机制",
+      "question_key": "a86cca9bf3",
+      "found": false,
+      "n_useful": 0,
+      "articles": [],
+      "queries_tried": [
+        "卖空数据 撞墙",
+        "卖空数据 prod_correlation",
+        "卖空数据",
+        "卖空数据 实盘",
+        "卖空数据 经验",
+        "卖空数据 配方",
+        "卖空数据 破墙",
+        "撞墙"
+      ],
+      "rounds": 8,
+      "searched_at": "2026-09-28T23:26:44",
+      "note": "关键词空间已扩至 19 变体/触安全上限 8，仍无有效文章",
+      "sink": "KOR/forum_recon_negative_a86cca9bf3"
+    },
+    "83bbbee55d": {
+      "question": "英国股票 GBR 大盘股 TOP700 还有什么有效 alpha 信号机制：情绪类、量价微观、事件驱动、分析师预期修正之外的方向，机构持仓流为什么不 work",
+      "question_key": "83bbbee55d",
+      "found": false,
+      "n_useful": 0,
+      "articles": [],
+      "queries_tried": [
+        "top700 alpha",
+        "top700 work",
+        "alpha work",
+        "top700 other455",
+        "alpha other455",
+        "top700",
+        "alpha",
+        "work"
+      ],
+      "rounds": 8,
+      "searched_at": "2026-09-30T00:06:20",
+      "stats": {
+        "hits": 0
+      },
+      "note": "关键词空间已扩至 37 变体/触安全上限 8，仍无有效文章",
+      "sink": "GBR/forum_recon_negative_83bbbee55d"
+    }
+  }
+}

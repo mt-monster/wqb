@@ -1,0 +1,83 @@
+{
+ "submitted_at": "2026-09-29 00:04:33",
+ "settings": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nan_handling": "ON"
+ },
+ "probes": [
+  {
+   "id": "si3m_p1_rate_main",
+   "mechanism": "加权平均借券费率（main，冷门高覆盖）",
+   "expr": "group_rank(vec_avg(mean_loan_rate_main), market)"
+  },
+  {
+   "id": "si3m_p2_ratemax_main",
+   "mechanism": "最高借券费率（main）",
+   "expr": "group_rank(vec_avg(max_loan_rate_main), market)"
+  },
+  {
+   "id": "si3m_p3_ratemin_main",
+   "mechanism": "最低借券费率（main）",
+   "expr": "group_rank(vec_avg(min_loan_rate_main), market)"
+  },
+  {
+   "id": "si3m_p4_ratevol_main",
+   "mechanism": "借券费率波动率（main，不稳定性）",
+   "expr": "group_rank(vec_avg(loan_rate_volatility_main), market)"
+  },
+  {
+   "id": "si3m_p5_spread_main",
+   "mechanism": "费率极差（main，借券难度分化）",
+   "expr": "group_rank(subtract(vec_avg(max_loan_rate_main), vec_avg(min_loan_rate_main)), market)"
+  },
+  {
+   "id": "si3m_p6_dur_main",
+   "mechanism": "平均借券期限（main，极冷门 4u）",
+   "expr": "group_rank(vec_avg(average_loan_duration_days_main), market)"
+  },
+  {
+   "id": "si3m_p7_val_main",
+   "mechanism": "借出市值 USD（main）",
+   "expr": "group_rank(vec_avg(loaned_market_value_usd_main), market)"
+  },
+  {
+   "id": "si3m_p8_cnt_main",
+   "mechanism": "借出股数（main）",
+   "expr": "group_rank(vec_avg(loaned_share_count_main), market)"
+  },
+  {
+   "id": "si3m_p9_txn_main",
+   "mechanism": "借券交易笔数（main，活跃度）",
+   "expr": "group_rank(vec_avg(transaction_count_main), market)"
+  },
+  {
+   "id": "si3m_p10_avail_usd",
+   "mechanism": "可借市值 USD（1u 极冷门，供给容量）",
+   "expr": "group_rank(vec_avg(available_market_value_usd), market)"
+  }
+ ],
+ "batches": [
+  {
+   "n": 10,
+   "progress_id": "3BUj3Ytc4Z8aUSMpe5tNcC",
+   "progress_url": "https://api.worldquantbrain.com/simulations/3BUj3Ytc4Z8aUSMpe5tNcC",
+   "ids": [
+    "si3m_p1_rate_main",
+    "si3m_p2_ratemax_main",
+    "si3m_p3_ratemin_main",
+    "si3m_p4_ratevol_main",
+    "si3m_p5_spread_main",
+    "si3m_p6_dur_main",
+    "si3m_p7_val_main",
+    "si3m_p8_cnt_main",
+    "si3m_p9_txn_main",
+    "si3m_p10_avail_usd"
+   ]
+  }
+ ]
+}

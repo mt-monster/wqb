@@ -1,0 +1,53 @@
+{
+ "results": [
+  {
+   "label": "W13_d4_last60",
+   "alpha": "npPprGgq",
+   "S": 2.69,
+   "F": 1.05,
+   "T": 0.5142,
+   "sub": [
+    "PASS",
+    1.93
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.69
+   ],
+   "fit_ok": [
+    "PASS",
+    1.05
+   ]
+  },
+  {
+   "label": "W13_d11_last60",
+   "alpha": "JjQjrav2",
+   "S": 2.17,
+   "F": 0.85,
+   "T": 0.4117,
+   "sub": [
+    "PASS",
+    1.61
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.17
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.85
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "INDUSTRY",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

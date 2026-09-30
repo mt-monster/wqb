@@ -1,0 +1,23 @@
+{
+ "dataset": "pattern_scores",
+ "region": "EUR",
+ "name": "Chart Pattern Similarity Scores",
+ "verdict": "DEAD_END",
+ "reason": "LOW_2Y_SHARPE 结构性硬墙：109 种结构全部 2Y<=0.76（门槛 1.58）",
+ "date": "2026-09-29",
+ "structures_tested": 109,
+ "best_overall": {"expr": "signed_power(group_zscore(subtract(ts_zscore(rw_120,60),ts_zscore(vb,60)),industry),0.5)",
+                  "alpha": "JjN6O8nx", "S": 1.59, "F": null, "2Y": 0.75, "SUB": 1.03, "note": "S 过闸但 2Y 硬墙"},
+ "2Y_ceiling": 0.76,
+ "2Y_limit": 1.58,
+ "evidence": [
+  "取反版完全镜像（-1.59 / 2Y -0.75）→ 非方向问题，全期与近两年同向衰减",
+  "分组轴 4 种（market/sector/exchange/country）2Y 0.61~0.71，无一突破",
+  "signed_power 3 种（0.5/0.75/1.5）2Y 0.73~0.75",
+  "winsorize/双层时序/rank 2Y 0.62~0.76",
+  "事件门控 trade_when 4 种 2Y -0.20~0.70（恶化）",
+  "多形态合力/单腿 2Y 0.41~0.48（恶化）"
+ ],
+ "salvage": "JjN6O8nx（S=1.59,SUB=PASS,CONC=PASS）可作 SuperAlpha 组腿（2Y 不约束 SA）",
+ "key_lesson": "形态相似度 = 后视描述（该股已走完某形态），在 EUR 近两年效用衰减；区域特异性强，exchange 轴破 2Y 的配方不可跨区外推"
+}

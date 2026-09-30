@@ -1,0 +1,95 @@
+{
+ "done_batches": [
+  {
+   "label": "T1_SI3_00",
+   "progress_id": "2oStno1s94rh8NB1geSOQ8Lu",
+   "dataset": "shortinterest3",
+   "ids": [
+    "T1_mean_loan_ra_max_loan_rat_subi",
+    "T1_mean_loan_ra_max_loan_rat_indu",
+    "T1_loaned_marke_loaned_share_subi",
+    "T1_loaned_marke_loaned_share_indu",
+    "T1_max_loan_rat_min_loan_rat_subi",
+    "T1_max_loan_rat_min_loan_rat_indu",
+    "T1_loaned_share_average_loan_subi",
+    "T1_loaned_share_average_loan_indu"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(mean_loan_rate), add(vec_sum(max_loan_rate), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(mean_loan_rate), add(vec_sum(max_loan_rate), 0.0001)), 500), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_market_value_usd), add(vec_sum(loaned_share_count), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_market_value_usd), add(vec_sum(loaned_share_count), 0.0001)), 500), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(max_loan_rate), add(vec_sum(min_loan_rate), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(max_loan_rate), add(vec_sum(min_loan_rate), 0.0001)), 500), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_share_count), add(vec_sum(average_loan_duration_days), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loaned_share_count), add(vec_sum(average_loan_duration_days), 0.0001)), 500), industry), hump=0.0025)"
+   ]
+  },
+  {
+   "label": "T1_SI3_08",
+   "progress_id": "3LHV424Jb4FHcgrphue4yV1",
+   "dataset": "shortinterest3",
+   "ids": [
+    "T1_loan_rate_vo_mean_loan_ra_subi",
+    "T1_loan_rate_vo_mean_loan_ra_indu",
+    "T1_lvl_shrt3_bar",
+    "T1_lvl_mean_loan_ra",
+    "T1_lvl_loaned_share"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loan_rate_volatility), add(vec_sum(mean_loan_rate), 0.0001)), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(divide(vec_sum(loan_rate_volatility), add(vec_sum(mean_loan_rate), 0.0001)), 500), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_avg(shrt3_bar), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_avg(mean_loan_rate), 500), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(vec_avg(loaned_share_count), 500), subindustry), hump=0.0025)"
+   ]
+  },
+  {
+   "label": "T2_O532_00",
+   "progress_id": "2ymExOeeb4Um95UvWF51IaZ",
+   "dataset": "other532",
+   "ids": [
+    "T2_rev_oth532_global_daily_",
+    "T2_rank_oth532_global_daily_",
+    "T2_rev_oth532_emerging_dail",
+    "T2_rank_oth532_emerging_dail",
+    "T2_rev_oth532_global_monthl",
+    "T2_rank_oth532_global_monthl",
+    "T2_rev_oth532_emerging_mont",
+    "T2_rank_oth532_emerging_mont"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(multiply(-1, oth532_global_daily_specificreturn), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(oth532_global_daily_specificreturn, 250), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, oth532_emerging_daily_specificreturn), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(oth532_emerging_daily_specificreturn, 250), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, oth532_global_monthly_specificreturn), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(oth532_global_monthly_specificreturn, 250), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, oth532_emerging_monthly_specificreturn), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(oth532_emerging_monthly_specificreturn, 250), 20), industry), hump=0.0025)"
+   ]
+  },
+  {
+   "label": "T2_O532_08",
+   "progress_id": "3eJAJ87oL4JTbK4LcjpKbMV",
+   "dataset": "other532",
+   "ids": [
+    "T2_rev_idiosyncratic_return",
+    "T2_rank_idiosyncratic_return",
+    "T2_rev_idiosyncratic_return",
+    "T2_rank_idiosyncratic_return",
+    "T2_dm_gap",
+    "T2_ge_gap"
+   ],
+   "exprs": [
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_daily), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(idiosyncratic_return_eue_daily, 250), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(multiply(-1, idiosyncratic_return_eue_monthly), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(ts_rank(idiosyncratic_return_eue_monthly, 250), 20), industry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(oth532_global_daily_specificreturn, oth532_global_monthly_specificreturn), 20), subindustry), hump=0.0025)",
+    "hump(group_rank(ts_decay_linear(subtract(oth532_global_daily_specificreturn, oth532_emerging_daily_specificreturn), 20), industry), hump=0.0025)"
+   ]
+  }
+ ],
+ "batches": []
+}

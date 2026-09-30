@@ -1,0 +1,97 @@
+{
+ "results": [
+  {
+   "label": "A1_z_bear_m_bull",
+   "alpha": "N1aYM15q",
+   "S": 1.52,
+   "F": 0.79,
+   "T": 0.1836
+  },
+  {
+   "label": "A2_z_rw_only",
+   "alpha": "RRbGXZAj",
+   "S": 1.14,
+   "F": 0.52,
+   "T": 0.149
+  },
+  {
+   "label": "A3_z_rw_250",
+   "alpha": "6Xj5xdKp",
+   "S": 1.19,
+   "F": 0.58,
+   "T": 0.1409
+  },
+  {
+   "label": "A4_z_rw_20",
+   "alpha": "KPNWeM2E",
+   "S": 1.07,
+   "F": 0.38,
+   "T": 0.2555
+  },
+  {
+   "label": "B1_tsz_of_diff",
+   "alpha": "vRrWa3GA",
+   "S": 1.51,
+   "F": 0.77,
+   "T": 0.1818
+  },
+  {
+   "label": "B2_tsr_of_diff",
+   "alpha": "npdLw7gE",
+   "S": 1.42,
+   "F": 0.8,
+   "T": 0.1396
+  },
+  {
+   "label": "C1_bmb_3bear",
+   "alpha": "N1aYk8ML",
+   "S": 1.2,
+   "F": 0.57,
+   "T": 0.1826
+  },
+  {
+   "label": "C2_bmb_cvt",
+   "alpha": "pwR9Jraq",
+   "S": 1.23,
+   "F": 0.66,
+   "T": 0.1783
+  },
+  {
+   "label": "D1_rw_tsz_solo",
+   "alpha": "A1NoZqdW",
+   "S": 1.25,
+   "F": 0.56,
+   "T": 0.1748
+  },
+  {
+   "label": "D2_rw_tsr_solo",
+   "alpha": "88jM9znz",
+   "S": 1.16,
+   "F": 0.55,
+   "T": 0.1415
+  },
+  {
+   "label": "E1_z_times_bmb",
+   "alpha": "levokZZ7",
+   "S": 0.22,
+   "F": 0.03,
+   "T": 0.2264
+  },
+  {
+   "label": "E2_rank_of_z",
+   "alpha": "omLxALlv",
+   "S": 1.14,
+   "F": 0.48,
+   "T": 0.1661
+  }
+ ],
+ "cfg": {
+  "region": "EUR",
+  "universe": "TOP2500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "SUBINDUSTRY",
+  "truncation": 0.02,
+  "nanHandling": "ON"
+ }
+}

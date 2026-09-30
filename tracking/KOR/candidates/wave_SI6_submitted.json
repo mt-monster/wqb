@@ -1,0 +1,60 @@
+{
+ "submitted_at": "2026-09-29 03:29:06",
+ "batches": [
+  {
+   "group": "A1_nuSTAT",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "4vfGUya5p4izbwS1cvVhqhII",
+   "ids": [
+    "a1",
+    "a2"
+   ]
+  },
+  {
+   "group": "A2_nuSECTOR",
+   "nu": "SECTOR",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "pzAON3UB4hicbx1ciK3dpWq",
+   "ids": [
+    "a3",
+    "a4"
+   ]
+  },
+  {
+   "group": "A3_nuMARKET",
+   "nu": "MARKET",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "1VbdC8df4N9bIM1gAXY2ZU6",
+   "ids": [
+    "a5",
+    "a6"
+   ]
+  },
+  {
+   "group": "B1_cross",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "2o97QGcrB4QFcLa8Esl5RNV",
+   "ids": [
+    "b1",
+    "b2"
+   ]
+  },
+  {
+   "group": "C1_tsrank",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "3Ctlv42By4glcym18U4EkySZ",
+   "ids": [
+    "c1",
+    "c2"
+   ]
+  }
+ ]
+}

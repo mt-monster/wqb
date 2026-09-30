@@ -1,0 +1,53 @@
+{
+ "results": [
+  {
+   "label": "W13_d11_last60",
+   "alpha": "3qVq2LVg",
+   "S": 2.03,
+   "F": 0.85,
+   "T": 0.3827,
+   "sub": [
+    "PASS",
+    1.54
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.03
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.85
+   ]
+  },
+  {
+   "label": "W13_d4_last60",
+   "alpha": "akxkglX1",
+   "S": 2.54,
+   "F": 1.06,
+   "T": 0.4903,
+   "sub": [
+    "PASS",
+    1.93
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.54
+   ],
+   "fit_ok": [
+    "PASS",
+    1.06
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "MARKET",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

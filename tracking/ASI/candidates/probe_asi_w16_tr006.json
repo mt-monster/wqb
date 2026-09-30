@@ -1,0 +1,177 @@
+{
+ "results": [
+  {
+   "label": "W16_bid30_d4",
+   "alpha": "Vk0krQPJ",
+   "S": 2.81,
+   "F": 1.1,
+   "T": 0.5422,
+   "sub": [
+    "PASS",
+    2.04
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.81
+   ],
+   "fit_ok": [
+    "PASS",
+    1.1
+   ]
+  },
+  {
+   "label": "W16_bid30_d5",
+   "alpha": "0mrmJGzG",
+   "S": 2.77,
+   "F": 1.09,
+   "T": 0.5174,
+   "sub": [
+    "PASS",
+    2.04
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.77
+   ],
+   "fit_ok": [
+    "PASS",
+    1.09
+   ]
+  },
+  {
+   "label": "W16_ask30_d3",
+   "alpha": "kqgqA89d",
+   "S": 2.95,
+   "F": 1.14,
+   "T": 0.5767,
+   "sub": [
+    "PASS",
+    2.06
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.95
+   ],
+   "fit_ok": [
+    "PASS",
+    1.14
+   ]
+  },
+  {
+   "label": "W16_bid30_d3",
+   "alpha": "Vk0kWZGG",
+   "S": 2.79,
+   "F": 1.05,
+   "T": 0.5772,
+   "sub": [
+    "PASS",
+    2.0
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.79
+   ],
+   "fit_ok": [
+    "PASS",
+    1.05
+   ]
+  },
+  {
+   "label": "W16_ask30_d5",
+   "err": "POST 429 exhausted retries"
+  },
+  {
+   "label": "W16_ask30_d4",
+   "alpha": "1YZYMMlQ",
+   "S": 2.86,
+   "F": 1.13,
+   "T": 0.5418,
+   "sub": [
+    "PASS",
+    2.06
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.86
+   ],
+   "fit_ok": [
+    "PASS",
+    1.13
+   ]
+  },
+  {
+   "label": "W16_high30_d3",
+   "alpha": "rKeKZnna",
+   "S": 1.59,
+   "F": 0.52,
+   "T": 0.4444,
+   "sub": [
+    "PASS",
+    1.2
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.59
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.52
+   ]
+  },
+  {
+   "label": "W16_high30_d4",
+   "alpha": "O080ldRg",
+   "S": 2.13,
+   "F": 0.81,
+   "T": 0.4683,
+   "sub": [
+    "PASS",
+    1.38
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.13
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.81
+   ]
+  },
+  {
+   "label": "W16_high30_d5",
+   "alpha": "d51k2lpj",
+   "S": 1.83,
+   "F": 0.64,
+   "T": 0.4409,
+   "sub": [
+    "PASS",
+    1.14
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    1.83
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.64
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.06,
+  "nanHandling": "ON"
+ }
+}

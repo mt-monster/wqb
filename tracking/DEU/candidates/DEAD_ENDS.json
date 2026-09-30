@@ -1,0 +1,29 @@
+{
+ "ts": "2026-09-29 13:03:45",
+ "region": "DEU",
+ "delay": 1,
+ "universe": "TOP500",
+ "dead_datasets": [
+  {
+   "id": "other532",
+   "name": "Specific Returns",
+   "rounds": 2,
+   "structures": 27,
+   "best_sharpe": 1.07,
+   "best_fitness": 0.48,
+   "best_alpha": "RRbg7VKb",
+   "note": "月度特质收益反转方向对但天花板1.07；日/月/新兴/全球四字段全试；换轴sector/market、换窗60-250、ts_rank差分、vol、zscore差分全弱"
+  },
+  {
+   "id": "shortinterest3",
+   "name": "Securities Lending Files",
+   "rounds": 2,
+   "structures": 25,
+   "best_sharpe": 0.06,
+   "best_fitness": 0.01,
+   "best_alpha": "gJb2Z28K",
+   "note": "VECTOR(event)字段；divide(vec_sum(A),vec_sum(B))+dl 结构正反两向全负；ts_delta/ts_zscore/ts_rank 不兼容event输入(已修语法)；DEU借贷市场语义与KOR SI38相反但取反仍无效"
+  }
+ ],
+ "verdict": "两数据集均判死；DEU Other/ShortInterest 塔点亮需换数据集"
+}

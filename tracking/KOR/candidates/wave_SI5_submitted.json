@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 03:18:17",
+ "batches": [
+  {
+   "group": "S1_sec",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "24fLWnbgs4Wi9YGFQz6jfjW",
+   "ids": [
+    "s1_a",
+    "s1_b"
+   ]
+  },
+  {
+   "group": "S2_ind",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "3Xo3v9dhu4h49PczQ5xiT6q",
+   "ids": [
+    "s2_a",
+    "s2_b"
+   ]
+  },
+  {
+   "group": "S3_secsum",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "1nGcZ96SM5b3aaOfMp2aPCG",
+   "ids": [
+    "s3_a",
+    "s3_b"
+   ]
+  },
+  {
+   "group": "S4_market",
+   "nu": "SUBINDUSTRY",
+   "decay": 4,
+   "trunc": 0.08,
+   "progress_id": "2Nyh6v9IN4yn9UzLBdrVolR",
+   "ids": [
+    "s4_a",
+    "s4_b"
+   ]
+  }
+ ]
+}

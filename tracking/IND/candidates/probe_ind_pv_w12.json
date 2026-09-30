@@ -1,0 +1,319 @@
+{
+ "cfg": {
+  "region": "IND",
+  "universe": "TOP500",
+  "delay": 1,
+  "decay": 4,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "A1_rk22_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "A3_rk126",
+   "alpha": "leKLXlQl",
+   "S": 6.37,
+   "F": 3.64,
+   "T": 0.7936,
+   "sub": [
+    "PASS",
+    2.75
+   ],
+   "y2": [
+    "PASS",
+    3.24
+   ],
+   "sh_ok": [
+    "PASS",
+    6.37
+   ],
+   "fit_ok": [
+    "PASS",
+    3.64
+   ]
+  },
+  {
+   "label": "A2_rk66",
+   "alpha": "WjeE8L6j",
+   "S": 6.43,
+   "F": 3.66,
+   "T": 0.7982,
+   "sub": [
+    "PASS",
+    2.79
+   ],
+   "y2": [
+    "PASS",
+    3.17
+   ],
+   "sh_ok": [
+    "PASS",
+    6.43
+   ],
+   "fit_ok": [
+    "PASS",
+    3.66
+   ]
+  },
+  {
+   "label": "A5_rk252_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "A4_rk252",
+   "alpha": "Vk0vov5A",
+   "S": 6.33,
+   "F": 3.64,
+   "T": 0.7904,
+   "sub": [
+    "PASS",
+    2.8
+   ],
+   "y2": [
+    "PASS",
+    3.28
+   ],
+   "sh_ok": [
+    "PASS",
+    6.33
+   ],
+   "fit_ok": [
+    "PASS",
+    3.64
+   ]
+  },
+  {
+   "label": "A6_rk504",
+   "alpha": "RR6JLwjb",
+   "S": 6.25,
+   "F": 3.59,
+   "T": 0.7871,
+   "sub": [
+    "PASS",
+    2.74
+   ],
+   "y2": [
+    "PASS",
+    3.26
+   ],
+   "sh_ok": [
+    "PASS",
+    6.25
+   ],
+   "fit_ok": [
+    "PASS",
+    3.59
+   ]
+  },
+  {
+   "label": "B2_rk22_dec10",
+   "alpha": "gJZYvkgg",
+   "S": 4.11,
+   "F": 2.57,
+   "T": 0.395,
+   "sub": [
+    "PASS",
+    1.59
+   ],
+   "y2": [
+    "PASS",
+    1.95
+   ],
+   "sh_ok": [
+    "PASS",
+    4.11
+   ],
+   "fit_ok": [
+    "PASS",
+    2.57
+   ]
+  },
+  {
+   "label": "B1_rk22_dec5",
+   "alpha": "WjeEkqZd",
+   "S": 4.47,
+   "F": 2.63,
+   "T": 0.4929,
+   "sub": [
+    "PASS",
+    1.7
+   ],
+   "y2": [
+    "PASS",
+    2.1
+   ],
+   "sh_ok": [
+    "PASS",
+    4.47
+   ],
+   "fit_ok": [
+    "PASS",
+    2.63
+   ]
+  },
+  {
+   "label": "B3_rk22_dec22",
+   "alpha": "LLZPeg3M",
+   "S": 3.78,
+   "F": 2.43,
+   "T": 0.3376,
+   "sub": [
+    "PASS",
+    1.41
+   ],
+   "y2": [
+    "PASS",
+    1.75
+   ],
+   "sh_ok": [
+    "PASS",
+    3.78
+   ],
+   "fit_ok": [
+    "PASS",
+    2.43
+   ]
+  },
+  {
+   "label": "B5_rk126_dec10",
+   "alpha": "58gZR5eX",
+   "S": 4.39,
+   "F": 2.96,
+   "T": 0.3772,
+   "sub": [
+    "PASS",
+    1.75
+   ],
+   "y2": [
+    "PASS",
+    2.14
+   ],
+   "sh_ok": [
+    "PASS",
+    4.39
+   ],
+   "fit_ok": [
+    "PASS",
+    2.96
+   ]
+  },
+  {
+   "label": "B4_rk66_dec10",
+   "alpha": "LLZPe3xv",
+   "S": 4.6,
+   "F": 3.14,
+   "T": 0.3803,
+   "sub": [
+    "PASS",
+    1.8
+   ],
+   "y2": [
+    "PASS",
+    2.27
+   ],
+   "sh_ok": [
+    "PASS",
+    4.6
+   ],
+   "fit_ok": [
+    "PASS",
+    3.14
+   ]
+  },
+  {
+   "label": "C1_mean5_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "C2_mean5",
+   "alpha": "9qWzgvZr",
+   "S": 4.41,
+   "F": 3.24,
+   "T": 0.3496,
+   "sub": [
+    "PASS",
+    1.78
+   ],
+   "y2": [
+    "PASS",
+    2.27
+   ],
+   "sh_ok": [
+    "PASS",
+    4.41
+   ],
+   "fit_ok": [
+    "PASS",
+    3.24
+   ]
+  },
+  {
+   "label": "B6_rk252_dec10",
+   "alpha": "QPK1mM3M",
+   "S": 4.29,
+   "F": 2.9,
+   "T": 0.3749,
+   "sub": [
+    "PASS",
+    1.77
+   ],
+   "y2": [
+    "PASS",
+    2.12
+   ],
+   "sh_ok": [
+    "PASS",
+    4.29
+   ],
+   "fit_ok": [
+    "PASS",
+    2.9
+   ]
+  },
+  {
+   "label": "C3_mean10_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "C5_zscore252_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "C4_zscore66_hump",
+   "sim": "ERROR",
+   "msg": "Invalid number of inputs : 2, should be exactly 1 input(s). <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>"
+  },
+  {
+   "label": "C6_tsrank22_signedpower",
+   "alpha": "N1VXkpQo",
+   "S": -5.78,
+   "F": -3.06,
+   "T": 0.812,
+   "sub": [
+    "FAIL",
+    -2.51
+   ],
+   "y2": [
+    "FAIL",
+    -2.95
+   ],
+   "sh_ok": [
+    "FAIL",
+    -5.78
+   ],
+   "fit_ok": [
+    "FAIL",
+    -3.06
+   ]
+  }
+ ]
+}

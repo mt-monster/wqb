@@ -1,0 +1,74 @@
+[
+ [
+  "A1_rk22_hump",
+  "rank(multiply(-1, hump(ts_rank(corr_last_trade_price_with_volume, 22), 0.02)))"
+ ],
+ [
+  "A2_rk66",
+  "rank(multiply(-1, ts_rank(corr_last_trade_price_with_volume, 66)))"
+ ],
+ [
+  "A3_rk126",
+  "rank(multiply(-1, ts_rank(corr_last_trade_price_with_volume, 126)))"
+ ],
+ [
+  "A4_rk252",
+  "rank(multiply(-1, ts_rank(corr_last_trade_price_with_volume, 252)))"
+ ],
+ [
+  "A5_rk252_hump",
+  "rank(multiply(-1, hump(ts_rank(corr_last_trade_price_with_volume, 252), 0.02)))"
+ ],
+ [
+  "A6_rk504",
+  "rank(multiply(-1, ts_rank(corr_last_trade_price_with_volume, 504)))"
+ ],
+ [
+  "B1_rk22_dec5",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 22), 5)))"
+ ],
+ [
+  "B2_rk22_dec10",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 22), 10)))"
+ ],
+ [
+  "B3_rk22_dec22",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 22), 22)))"
+ ],
+ [
+  "B4_rk66_dec10",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 66), 10)))"
+ ],
+ [
+  "B5_rk126_dec10",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 126), 10)))"
+ ],
+ [
+  "B6_rk252_dec10",
+  "rank(multiply(-1, ts_decay_linear(ts_rank(corr_last_trade_price_with_volume, 252), 10)))"
+ ],
+ [
+  "C1_mean5_hump",
+  "rank(multiply(-1, hump(ts_mean(corr_last_trade_price_with_volume, 5), 0.01)))"
+ ],
+ [
+  "C2_mean5",
+  "rank(multiply(-1, ts_mean(corr_last_trade_price_with_volume, 5)))"
+ ],
+ [
+  "C3_mean10_hump",
+  "rank(multiply(-1, hump(ts_mean(corr_last_trade_price_with_volume, 10), 0.01)))"
+ ],
+ [
+  "C4_zscore66_hump",
+  "rank(multiply(-1, hump(ts_zscore(corr_last_trade_price_with_volume, 66), 0.01)))"
+ ],
+ [
+  "C5_zscore252_hump",
+  "rank(multiply(-1, hump(ts_zscore(corr_last_trade_price_with_volume, 252), 0.01)))"
+ ],
+ [
+  "C6_tsrank22_signedpower",
+  "rank(multiply(-1, signed_power(subtract(0.5, ts_rank(corr_last_trade_price_with_volume, 22)), 0.5)))"
+ ]
+]

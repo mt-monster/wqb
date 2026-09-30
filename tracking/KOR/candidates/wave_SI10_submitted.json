@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 03:58:34",
+ "batches": [
+  {
+   "group": "D1_smooth",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1JeZrW5bH4Rc9Y119Q3QVjzh",
+   "ids": [
+    "d1_a",
+    "d1_b"
+   ]
+  },
+  {
+   "group": "D2_win",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "3H6tNkb9S4yHagB14jWOCVR7",
+   "ids": [
+    "d2_a",
+    "d2_b"
+   ]
+  },
+  {
+   "group": "D3_pow",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "2f6ZoVKP4mzanaK62aJJHg",
+   "ids": [
+    "d3_a",
+    "d3_b"
+   ]
+  },
+  {
+   "group": "D4_axis",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1UAry0cVJ4tHbAn1jV6O8tG",
+   "ids": [
+    "d4_a",
+    "d4_b"
+   ]
+  }
+ ]
+}

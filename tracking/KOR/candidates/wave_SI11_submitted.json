@@ -1,0 +1,49 @@
+{
+ "submitted_at": "2026-09-29 04:08:15",
+ "batches": [
+  {
+   "group": "K1_hump_slow",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "4bnYS8ezF5iTb6617iOrQLnc",
+   "ids": [
+    "k1_a",
+    "k1_b"
+   ]
+  },
+  {
+   "group": "K2_hump_sub",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "10ErdMeOT4Fob4dV9tSfEzw",
+   "ids": [
+    "k2_a",
+    "k2_b"
+   ]
+  },
+  {
+   "group": "K3_dec20",
+   "nu": "SLOW_AND_FAST",
+   "decay": 20,
+   "trunc": 0.02,
+   "progress_id": "1jMYCxcGH4PNbhB6s8uCcEL",
+   "ids": [
+    "k3_a",
+    "k3_b"
+   ]
+  },
+  {
+   "group": "K4_plain",
+   "nu": "SLOW_AND_FAST",
+   "decay": 30,
+   "trunc": 0.02,
+   "progress_id": "1cX5LxbBR4vJaLdSP7LfAu",
+   "ids": [
+    "k4_a",
+    "k4_b"
+   ]
+  }
+ ]
+}

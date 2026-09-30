@@ -1,0 +1,74 @@
+[
+ [
+  "W12_raw_implalpha",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_impliedalpha), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_cassiescore",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_score), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_prelimcomp",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_prelimcomposite), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_altmanz",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_model_altman_zscore), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_ohlsono",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_model_ohlson_oscore), 200), 22), country))"
+ ],
+ [
+  "W12_raw_merton",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_model_merton), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_chsdefault",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_model_chs_default), 200), 22), country))"
+ ],
+ [
+  "W12_raw_insolv1y",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_alter_insolvency_stress_1y), 200), 22), country))"
+ ],
+ [
+  "W12_raw_currratio",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_convention_current_ratio), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_quickratio",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_convention_quick_ratio), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_ocfcurrliab",
+  "subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_convention_ocf_currliab), 200), 22), country), 0.5)"
+ ],
+ [
+  "W12_raw_debteq",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_convention_debt_equity), 200), 22), country))"
+ ],
+ [
+  "W12_raw_ltdteq",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_convention_longdebt_equity), 200), 22), country))"
+ ],
+ [
+  "W12_raw_extinsolv1y",
+  "subtract(0.5, group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_alter_extreme_insolvency_stress_1y), 200), 22), country))"
+ ],
+ [
+  "W12_gate_implalpha",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_impliedalpha), 200), 22), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W12_gate_cassiescore",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_score), 200), 22), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W12_gate_prelimcomp",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_qes_cassie_prelimcomposite), 200), 22), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ],
+ [
+  "W12_gate_altmanz",
+  "trade_when(and(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) > 0.5, rank(ts_mean(normalized_news_article_count, 22)) > 0.3), subtract(group_rank(ts_decay_linear(ts_backfill(vec_avg(qfl_cassie_model_altman_zscore), 200), 22), country), 0.5), or(rank(divide(mean_trade_volume_30m_pre_close_2, ts_mean(volume, 22))) < 0.3, rank(ts_mean(normalized_news_article_count, 22)) < 0.2))"
+ ]
+]

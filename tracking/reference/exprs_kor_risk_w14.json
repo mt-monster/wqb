@@ -1,0 +1,110 @@
+[
+ [
+  "A_earnyild_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_earnyild, 252)))"
+ ],
+ [
+  "B_earnyild_z252",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_earnyild, 252)))"
+ ],
+ [
+  "C_earnyild_z66",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_earnyild, 66)))"
+ ],
+ [
+  "D_earnyild_delta22",
+  "rank(multiply(-1, ts_delta(rsk70_mfm2_asetrd_earnyild, 22)))"
+ ],
+ [
+  "E_earnyild_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_earnyild), subindustry)"
+ ],
+ [
+  "A_anlystsn_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_anlystsn, 252)))"
+ ],
+ [
+  "B_anlystsn_z252",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_anlystsn, 252)))"
+ ],
+ [
+  "C_anlystsn_z66",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_anlystsn, 66)))"
+ ],
+ [
+  "D_anlystsn_delta22",
+  "rank(multiply(-1, ts_delta(rsk70_mfm2_asetrd_anlystsn, 22)))"
+ ],
+ [
+  "E_anlystsn_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_anlystsn), subindustry)"
+ ],
+ [
+  "A_btop_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_btop, 252)))"
+ ],
+ [
+  "B_btop_z252",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_btop, 252)))"
+ ],
+ [
+  "C_btop_z66",
+  "rank(multiply(-1, ts_zscore(rsk70_mfm2_asetrd_btop, 66)))"
+ ],
+ [
+  "D_btop_delta22",
+  "rank(multiply(-1, ts_delta(rsk70_mfm2_asetrd_btop, 22)))"
+ ],
+ [
+  "E_btop_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_btop), subindustry)"
+ ],
+ [
+  "F_dsrt_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_dsrt, 252)))"
+ ],
+ [
+  "G_dsrt_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_dsrt), subindustry)"
+ ],
+ [
+  "F_resvol_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_resvol, 252)))"
+ ],
+ [
+  "G_resvol_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_resvol), subindustry)"
+ ],
+ [
+  "F_srtindcnt_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_srtindcnt, 252)))"
+ ],
+ [
+  "G_srtindcnt_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_srtindcnt), subindustry)"
+ ],
+ [
+  "F_momentum_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_momentum, 252)))"
+ ],
+ [
+  "G_momentum_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_momentum), subindustry)"
+ ],
+ [
+  "F_ltrevrsl_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_ltrevrsl, 252)))"
+ ],
+ [
+  "G_ltrevrsl_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_ltrevrsl), subindustry)"
+ ],
+ [
+  "F_strevrsl_rank252",
+  "rank(multiply(-1, ts_rank(rsk70_mfm2_asetrd_strevrsl, 252)))"
+ ],
+ [
+  "G_strevrsl_grpsubind",
+  "group_rank(multiply(-1, rsk70_mfm2_asetrd_strevrsl), subindustry)"
+ ]
+]

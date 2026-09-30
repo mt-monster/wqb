@@ -1,0 +1,74 @@
+[
+ [
+  "V1_netvol_over_hold",
+  "subtract(0.5, group_rank(divide(subtract(vec_sum(insd5_vol_af), vec_sum(insd5_vol_bf)), add(1, vec_sum(insd5_source_data))), sector))"
+ ],
+ [
+  "V2_netval_over_hold",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_ghc_tr), add(0.001, vec_sum(insd5_source_ratio))), sector))"
+ ],
+ [
+  "V3_fa_over_fb",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_fa_tr), add(0.001, vec_sum(insd5_fb_tr))), sector))"
+ ],
+ [
+  "V4_ratio_change",
+  "subtract(0.5, group_rank(divide(subtract(vec_sum(insd5_fa_tr), vec_sum(insd5_fb_tr)), add(0.001, vec_sum(insd5_fb_tr))), sector))"
+ ],
+ [
+  "V5_real_over_source_ratio",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_real_ratio), add(0.001, vec_sum(insd5_source_ratio))), sector))"
+ ],
+ [
+  "V6_unt_val_rank",
+  "subtract(0.5, group_rank(ts_decay_linear(vec_avg(insd5_unt_val), 10), sector))"
+ ],
+ [
+  "V7_trd_amt_per_share",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(0.001, multiply(vec_sum(insd5_unt_val), vec_sum(insd5_vol_af)))), sector))"
+ ],
+ [
+  "V8_officer_gate",
+  "subtract(0.5, group_rank(divide(vec_sum(multiply(insd5_trd_amt, insd5_officer)), add(1, vec_sum(insd5_trd_amt))), sector))"
+ ],
+ [
+  "V9_rpst_grp_typ",
+  "subtract(0.5, group_rank(ts_decay_linear(vec_avg(insd5_rpst_grp_typ), 10), sector))"
+ ],
+ [
+  "V10_tnc_ratio",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_tnc))), sector))"
+ ],
+ [
+  "V11_trsy_ratio_decay",
+  "subtract(0.5, group_rank(ts_decay_linear(vec_avg(insd5_trsy_ratio), 10), sector))"
+ ],
+ [
+  "V12_volaf_abs",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_vol_af), add(1, vec_sum(insd5_data))), sector))"
+ ],
+ [
+  "V13_ghc_over_source_ratio",
+  "subtract(0.5, group_rank(ts_decay_linear(divide(vec_sum(insd5_ghc_tr), add(0.001, vec_sum(insd5_source_ratio))), 10), sector))"
+ ],
+ [
+  "V14_amt_over_realdata",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_real_data))), sector))"
+ ],
+ [
+  "V15_amt_over_untval",
+  "subtract(0.5, group_rank(divide(vec_sum(insd5_trd_amt), add(1, vec_sum(insd5_unt_val))), sector))"
+ ],
+ [
+  "V16_officer_sell_gate",
+  "subtract(0.5, group_rank(divide(vec_sum(multiply(insd5_trd_amt, subtract(1, insd5_officer))), add(1, vec_sum(insd5_trd_amt))), sector))"
+ ],
+ [
+  "V17_reason_a",
+  "subtract(0.5, group_rank(ts_decay_linear(vec_avg(insd5_trd_reason_a), 10), sector))"
+ ],
+ [
+  "V18_sum_trd_amt_rank",
+  "subtract(0.5, group_rank(ts_decay_linear(vec_sum(insd5_trd_amt), 22), sector))"
+ ]
+]

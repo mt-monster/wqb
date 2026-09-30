@@ -1,0 +1,119 @@
+{
+ "cfg": {
+  "region": "KOR",
+  "universe": "TOP600",
+  "delay": 1,
+  "decay": 30,
+  "neutralization": "STATISTICAL",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ },
+ "results": [
+  {
+   "label": "K3_neg_tsmean22",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K6_neg_decay_linear20",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K5_neg_decay_linear10",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K2_neg_base_hump",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "L1_neg_subind",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "L2_neg_ind",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "L3_neg_market",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "L4_neg_plain_rank",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "L5_neg_zscore",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "M1_neg_sp05",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "M2_neg_tsrank252",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "M3_neg_tszscore252",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "M4_neg_tsdelta22",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "N1_pos_base",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "N2_neg_ratio_inverse",
+   "err": "POST 429 {\"detail\":\"CONCURRENT_SIMULATION_LIMIT_EXCEEDED\"}"
+  },
+  {
+   "label": "K1_neg_base",
+   "alpha": "rKOZVEXj",
+   "S": -0.58,
+   "F": -0.24,
+   "T": 0.1848,
+   "sub": [
+    "PASS",
+    -0.33
+   ],
+   "y2": [
+    "FAIL",
+    -0.45
+   ],
+   "sh_ok": [
+    "FAIL",
+    -0.58
+   ],
+   "fit_ok": [
+    "FAIL",
+    -0.24
+   ]
+  },
+  {
+   "label": "K4_neg_tsmean66",
+   "alpha": "gJbndwvl",
+   "S": 0.22,
+   "F": 0.06,
+   "T": 0.0656,
+   "sub": [
+    "PASS",
+    0.26
+   ],
+   "y2": [
+    "FAIL",
+    0.51
+   ],
+   "sh_ok": [
+    "FAIL",
+    0.22
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.06
+   ]
+  }
+ ]
+}

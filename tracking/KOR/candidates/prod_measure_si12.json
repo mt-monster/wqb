@@ -1,0 +1,38 @@
+[
+ {
+  "id": "JjN9nG0n",
+  "prod_max": 0.5749,
+  "min": -0.1781,
+  "n": 20
+ },
+ {
+  "id": "qMxRnNkO",
+  "prod_max": 0.5807,
+  "min": -0.1807,
+  "n": 20
+ },
+ {
+  "id": "e7bjnPk6",
+  "prod_max": 0.5759,
+  "min": -0.1761,
+  "n": 20
+ },
+ {
+  "id": "qMxRnp8K",
+  "prod_max": 0.7026,
+  "min": -0.1977,
+  "n": 20
+ },
+ {
+  "id": "vRrQ5Npr",
+  "prod_max": 0.5695,
+  "min": -0.1746,
+  "n": 20
+ },
+ {
+  "id": "VkaWXGmb",
+  "prod_max": 0.6932,
+  "min": -0.1981,
+  "n": 20
+ }
+]

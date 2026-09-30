@@ -1,0 +1,133 @@
+{
+ "results": [
+  {
+   "label": "W17_bid30_d2",
+   "alpha": "3qVQbKRX",
+   "S": 2.45,
+   "F": 0.9,
+   "T": 0.5763,
+   "sub": [
+    "PASS",
+    1.65
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.45
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.9
+   ]
+  },
+  {
+   "label": "W17_bid30_d3",
+   "alpha": "akxjY0LR",
+   "S": 2.44,
+   "F": 0.93,
+   "T": 0.5277,
+   "sub": [
+    "PASS",
+    1.75
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.44
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.93
+   ]
+  },
+  {
+   "label": "W17_ask30_d4",
+   "alpha": "O081GKMY",
+   "S": 2.41,
+   "F": 0.94,
+   "T": 0.4963,
+   "sub": [
+    "PASS",
+    1.8
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.41
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.94
+   ]
+  },
+  {
+   "label": "W17_ask30_d2",
+   "alpha": "RR6jQYKb",
+   "S": 2.42,
+   "F": 0.88,
+   "T": 0.5762,
+   "sub": [
+    "PASS",
+    1.74
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.42
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.88
+   ]
+  },
+  {
+   "label": "W17_ask30_d3",
+   "alpha": "npPpPqAw",
+   "S": 2.39,
+   "F": 0.9,
+   "T": 0.5276,
+   "sub": [
+    "PASS",
+    1.81
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.39
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.9
+   ]
+  },
+  {
+   "label": "W17_bid30_d4",
+   "alpha": "npP1NgPq",
+   "S": 2.46,
+   "F": 0.97,
+   "T": 0.4966,
+   "sub": [
+    "PASS",
+    1.78
+   ],
+   "y2": null,
+   "sh_ok": [
+    "PASS",
+    2.46
+   ],
+   "fit_ok": [
+    "FAIL",
+    0.97
+   ]
+  }
+ ],
+ "cfg": {
+  "region": "ASI",
+  "universe": "MINVOL1M",
+  "delay": 1,
+  "decay": 12,
+  "neutralization": "SECTOR",
+  "truncation": 0.08,
+  "nanHandling": "ON"
+ }
+}

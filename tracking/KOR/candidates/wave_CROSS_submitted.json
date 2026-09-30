@@ -1,0 +1,37 @@
+{
+ "submitted_at": "2026-09-29 00:54:45",
+ "batches": [
+  {
+   "group": "X1_stat_d4",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "2KpHMh4Fq4GkazeDvOIfc6F",
+   "ids": [
+    "x1_offer_last",
+    "x2_si_avail",
+    "x3_dtc_ratio"
+   ]
+  },
+  {
+   "group": "X2_stat_d4b",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "XzrJlnO4OIcfWpy7albtP",
+   "ids": [
+    "x4_sh38_ratio",
+    "x5_sq_crowd",
+    "x6_s3util"
+   ]
+  },
+  {
+   "group": "X3_stat_d4c",
+   "nu": "STATISTICAL",
+   "decay": 4,
+   "progress_id": "PTQpc2Kc4Ajcbo1hAXOyI9F",
+   "ids": [
+    "x7_si_per_avail",
+    "x8_dtc10_rk126"
+   ]
+  }
+ ]
+}
