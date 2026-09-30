@@ -18,6 +18,13 @@ from __future__ import annotations
 
 import argparse
 import json
+# 2026-09-28：构造级死路标记 —— 死路 rule/reason 含这些字样时，死的是「构造方式」
+# 而非数据集本身（实证 shortinterest38 被 wave96 bare-skeleton 死路误杀，
+# 论坛换构造后 Sharpe 2.43 全闸通过）。此类条目降为约束，不封锁数据集。
+CONSTRUCTION_SCOPED_MARKERS = ("skeleton", "bare", "骨架", "构造",
+                               "multi-field combos", "with multi-field",
+                               "event-gating", "event-")
+
 import re
 import sys
 from pathlib import Path
@@ -59,11 +66,35 @@ def main():
     ).fetchall()
     dead_blob = [(r[0], r[1], (r[1] + " " + r[2]).lower()) for r in dead]
 
+
     def xdead(name: str):
-        """返回命中该数据集名的 dead_end 条目（跨区、大小写不敏感）。"""
+        """返回 (blocking, scoped) 两组死路命中（跨区、大小写不敏感）。
+
+        2026-09-28 修正（第三类假阴性）：死路条目的 `rule` 若**只禁特定构造**
+        （含 skeleton/bare/骨架/构造/multi-field 等字样），它是**构造级死路**——
+        换构造仍可挖，不应封锁整个数据集。
+        实证：`shortinterest38` 被 `KOR-WAVE96-UNLIT-BARE-SIGNAL-DEAD`（只禁
+        bare rank/vec_avg 骨架）子串误杀；论坛 2026-09 换「比值→自身基线→峰值→
+        sector」构造后 Sharpe 2.43 全闸通过并提交（KOR_InvFlowRev_sec_0.5704）。
+        数据集级死路（rule 未限定构造，如 "do not re-mine shortinterest3"）才封锁。
+        """
         key = name.lower()
-        hits = [d for d in dead_blob if key in d[2]]
-        return hits
+        blocking, scoped = [], []
+        for d in dead_blob:
+            if key not in d[2]:
+                continue
+            raw = d[2].split(" ", 1)[1] if " " in d[2] else ""
+            try:
+                payload = json.loads(raw) if raw.lstrip().startswith("{") else {}
+            except Exception:
+                payload = {}
+            blob = (str(payload.get("rule", "")) + " " +
+                    str(payload.get("reason", ""))).lower()
+            if any(m in blob for m in CONSTRUCTION_SCOPED_MARKERS):
+                scoped.append(d)
+            else:
+                blocking.append(d)
+        return blocking, scoped
 
     keep, blocked = [], []
     for name, cat, fc, cov, ac in rows:
@@ -81,15 +112,22 @@ def main():
             rec["block_reason"] = "KOR 红榜族 news_sentiment"
             blocked.append(rec)
             continue
-        # ③ 跨区死路
-        hits = xdead(name)
-        if hits:
-            regs = sorted({h[0] for h in hits})
+        # ③ 跨区死路（只认数据集级；构造级死路降为约束随行记录）
+        blocking_hits, scoped_hits = xdead(name)
+        if blocking_hits:
+            regs = sorted({h[0] for h in blocking_hits})
             rec["block_reason"] = f"死路命中（{len(regs)} 区：{','.join(regs[:4])}）: " + \
-                                  "; ".join(h[1] for h in hits[:3])
+                                  "; ".join(h[1] for h in blocking_hits[:3])
             rec["dead_regions"] = regs
             blocked.append(rec)
             continue
+        if scoped_hits:
+            regs = sorted({h[0] for h in scoped_hits})
+            rec["construction_constraints"] = (
+                f"构造级死路（{len(regs)} 区：{','.join(regs[:4])}）: "
+                + "; ".join(h[1] for h in scoped_hits[:3])
+                + " —— 数据集可用，但须避开该死路限定的构造方式")
+            rec["construction_constraint_regions"] = regs
         keep.append(rec)
 
     conn.close()

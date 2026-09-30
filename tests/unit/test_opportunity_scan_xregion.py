@@ -37,19 +37,42 @@ def _run_scan(tmp_path):
     return json.loads(out.read_text(encoding="utf-8"))
 
 
+# 构造级死路标记（与 tools/kor_opportunity_scan.py 同步）
+CONSTRUCTION_SCOPED_MARKERS = ("skeleton", "bare", "骨架", "构造",
+                               "multi-field combos", "with multi-field",
+                               "event-gating", "event-")
+
+
 def _dead_blob():
+    """返回 blocking dead_end 条目的文本 blob（排除构造级 scoped 死路）。"""
     c = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
     try:
-        return [(row[1] + " " + (row[2] or "")).lower()
-                for row in c.execute(
-                    "SELECT region, entry_id, COALESCE(payload,'') "
-                    "FROM registry_empirical WHERE layer='dead_end'")]
+        result = []
+        for row in c.execute(
+            "SELECT region, entry_id, COALESCE(payload,'') "
+            "FROM registry_empirical WHERE layer='dead_end'"):
+            blob_text = (row[1] + " " + (row[2] or "")).lower()
+            # 解析 payload 判断是否为构造级死路
+            raw = row[2] or ""
+            try:
+                payload = json.loads(raw) if raw.lstrip().startswith("{") else {}
+            except Exception:
+                payload = {}
+            desc = (str(payload.get("rule", "")) + " " +
+                    str(payload.get("reason", ""))).lower()
+            if any(m in desc for m in CONSTRUCTION_SCOPED_MARKERS):
+                continue  # 构造级死路，不封锁数据集
+            result.append(blob_text)
+        return result
     finally:
         c.close()
 
 
 def test_playable_excludes_all_dead_end_hits(tmp_path):
-    """核心契约：playable 里任何数据集名都不得出现在**跨区** dead_end 文本中（大小写不敏感）。"""
+    """核心契约：playable 里任何数据集名都不得出现在**跨区 blocking** dead_end 文本中（大小写不敏感）。
+
+    构造级（scoped）死路不封锁数据集——tool 已区分 blocking vs. scoped，测试同步。
+    """
     opp = _run_scan(tmp_path)
     blob = _dead_blob()
     offenders = []

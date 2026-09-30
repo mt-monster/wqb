@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 
 from ._common import _now
+from . import submit_queue as _sq
 
 
 class SchemaMixin:
@@ -505,6 +506,9 @@ class SchemaMixin:
                 )
         except Exception as exc:  # pragma: no cover
             print(f"[wave-ttl-check] 校验异常（忽略）: {exc}")
+        # 2026-09-28：submit_queue.ensure_table 幂等建表 + 唯一索引自愈
+        # （P0 迁移丢 UNIQUE(alpha_id,region) 的老库一经 store 打开即补回）
+        _sq.ensure_table(self.connection)
         self.connection.commit()
 
     # -- helpers -----------------------------------------------------------

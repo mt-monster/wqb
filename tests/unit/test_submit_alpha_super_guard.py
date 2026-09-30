@@ -29,7 +29,7 @@ class _FakeClient:
         return {"id": alpha_id, "type": self.alpha_type, "status": "UNSUBMITTED", "tags": [],
                 "settings": {"region": "GLB"},
                 "is": {"sharpe": 3.0, "fitness": 3.0, "margin": 0.01, "turnover": 0.1,
-                       "returns": 0.2, "checks": []}}
+                       "returns": 0.2, "checks": [{"name": "SHARPE", "result": "PASS", "value": 3.0}]}}
 
     def pre_submit_check(self, details):
         return {"passed": True, "failures": [], "warnings": []}
@@ -55,7 +55,8 @@ def _run(monkeypatch, client, **kw):
 @pytest.mark.parametrize("force", [False, True])
 def test_super_confirm_submit_is_refused_before_any_side_effect(monkeypatch, force):
     client = _FakeClient("SUPER")
-    res = _run(monkeypatch, client, confirm_submit=True, force=force)
+    res = _run(monkeypatch, client, confirm_submit=True, force=force,
+               robustness_audited=True)
     assert res["submitted"] is False and res["success"] is False
     assert res["reason"] == "super_requires_super_build" and res["blocked"] is True
     assert "super_build.py submit" in res["error"] and "force=True" in res["error"]
@@ -71,7 +72,7 @@ def test_super_precheck_only_is_still_allowed(monkeypatch):
 
 def test_regular_confirm_submit_is_unchanged(monkeypatch):
     client = _FakeClient("REGULAR")
-    res = _run(monkeypatch, client, confirm_submit=True)
+    res = _run(monkeypatch, client, confirm_submit=True, robustness_audited=True)
     assert "submit_alpha" in client.calls and res["submitted"] is True
 
 

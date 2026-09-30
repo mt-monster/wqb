@@ -68,21 +68,15 @@
   "pyramid_quota_enable": true,
   "pyramid_quota_non_model_min": 2,
   "category_weights": {
-   "analyst": 1.15,
-   "model": 0.9,
-   "sentiment": 0.9,
-   "fundamental": 1.15,
-   "news": 0.9,
-   "pv": 1.15,
-   "risk": 0.9,
-   "shortinterest": 0.9,
-   "other": 0.9
+   "model": 1.0,
+   "fundamental": 0.9,
+   "pv": 0.9
   },
   "crowd_sweet_spot_enable": true,
   "sweet_spot_ac_min": 50,
-  "sweet_spot_ac_max": 1500,
-  "_calibrated_at": "2026-09-15T00:00:00",
-  "_calibrated_from": "JPN 放宽档授权：coverage≥0.6 / alphaCount≤1500 / fieldCount≥10"
+  "sweet_spot_ac_max": 1000,
+  "_calibrated_at": "2026-09-28T17:47:23",
+  "_calibrated_from": "alpha_store 238 alphas/5 ds + results/ 扫描 → 共 5 datasets 实测"
  },
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "jpn_specific_adjustments": {
