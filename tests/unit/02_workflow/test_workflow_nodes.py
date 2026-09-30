@@ -1,0 +1,1101 @@
+# -*- coding: utf-8 -*-
+"""workflow 节点行为回归测试（纯本地，无网络、无真实子进程）.
+
+覆盖 2026-09-01 真实 dry-run 验收中发现的 4 个缺陷：
+  - 缺陷#1 batch_track cwd 曾指向 skill 根而非 scripts/（相对路径脚本会误命中）
+  - 缺陷#2 campaign._run_preflight 曾少一层 dirname 指到 src/，导致 S0/S1 产物门禁
+           静默失效（"script not found" 仅记 warning 后放行）
+  - 缺陷#3 campaign._run_quality_gate 曾用 "tools/wave_gate.py" 相对路径 + 错误 cwd
+  - 缺陷#4 superalpha confirm_submit 两分支 step 名不一致（super_build_submit vs submit）
+另覆盖 executor dry-run 在 executor 层拦截（节点函数不被调用）的纪律。
+"""
+import json
+import os
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
+
+from wqb.workflow import _common  # noqa: E402
+from wqb.workflow.executor import WorkflowExecutor  # noqa: E402
+from wqb.workflow.nodes import batch_track as bt  # noqa: E402
+from wqb.workflow.nodes import campaign as cp  # noqa: E402
+from wqb.workflow.nodes import superalpha as sa2  # noqa: E402
+
+
+class _CaptureStore:
+    """伪造 store：提供 batch_track 需要的 list_expressions，拦截台账写。"""
+
+    def __init__(self, expressions=None):
+        self.expressions = expressions if expressions is not None else ["rank(close)"]
+        self.ledger = []
+
+    def list_expressions(self, *a, **kw):
+        return list(self.expressions)
+
+    def upsert_ledger(self, *a, **kw):
+        self.ledger.append(a)
+        return {"ok": True}
+
+
+class _FakeProc:
+    returncode = 0
+    stdout = "alpha id = FAKEALPHA\n"
+    stderr = ""
+
+
+def _capture(monkeypatch, target_module, fn_name):
+    """用假的 subprocess.run/Popen 捕获 (cmd, kwargs)，返回 calls 列表。
+
+    2026-09-03: 同时 patch subprocess.run 和 subprocess.Popen，
+    适配 campaign 节点从 run 改为 Popen 的异步化。
+    """
+    import subprocess
+    import threading
+    calls = []
+    orig_run = subprocess.run
+    orig_popen = subprocess.Popen
+
+    def fake_run(cmd, **kwargs):
+        calls.append({"cmd": list(cmd), "cwd": kwargs.get("cwd"), "method": "run"})
+        return _FakeProc()
+
+    class _FakePopen:
+        """模拟 Popen 行为：立即返回，不实际执行。"""
+        def __init__(self, cmd, **kwargs):
+            calls.append({"cmd": list(cmd), "cwd": kwargs.get("cwd"), "method": "Popen"})
+            self.pid = 99999
+            self.returncode = 0
+            self.stdout = type('Pipe', (), {'readline': lambda self: b'', 'close': lambda self: None})()
+            self.stderr = type('Pipe', (), {'readline': lambda self: b'', 'close': lambda self: None})()
+
+        def communicate(self, timeout=None):
+            return ("alpha id = FAKEALPHA\n", "")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    monkeypatch.setattr(subprocess, "Popen", _FakePopen)
+    return calls, orig_run
+
+
+# ---------------------------------------------------------------------------
+# 公共 fixture：伪造 toolkit 目录，避免依赖用户机器的真实 skill 安装
+# ---------------------------------------------------------------------------
+
+def _script_of(cmd):
+    """从命令里取脚本路径。
+
+    2026-09-08 起三个异步节点都在解释器后插了 `-u`（detached 日志实时落盘），
+    脚本不再固定在 cmd[1] —— 取第一个非选项 token，别把位置当契约。
+    """
+    for token in cmd[1:]:
+        if not token.startswith("-"):
+            return token
+    raise AssertionError(f"命令里找不到脚本：{cmd}")
+
+
+@pytest.fixture(autouse=True)
+def _isolate_async_task_dir(tmp_path, monkeypatch):
+    """2026-09-04 根治：campaign/fe/batch_track 异步任务输出目录注入 tmp。
+
+    历史污染根因：campaign/fe 测试的真实 async 收尾线程把任务文件写到仓库
+    logs/_async_tasks（70 个 FAKEALPHA 桩），batch_track 测试写 src/logs——
+    全部为假成功/假任务。WQB_TASK_ROOT 注入后写盘指向 pytest tmp，回收即删。
+    """
+    monkeypatch.setenv("WQB_TASK_ROOT", str(tmp_path / "tasks"))
+
+
+@pytest.fixture
+def fake_toolkit(tmp_path, monkeypatch):
+    scripts = tmp_path / "wq-brain-campaign-toolkit" / "scripts"
+    scripts.mkdir(parents=True)
+    for name in ("pipeline.py", "build_wave.py", "review_wave.py",
+                 "score_datasets.py", "scan_fields.py", "campaign.py"):
+        (scripts / name).write_text("# stub\n", encoding="utf-8")
+    # 父目录放一个同名脚本，用于证明相对路径不会误命中
+    (tmp_path / "wq-brain-campaign-toolkit" / "pipeline.py").write_text("# decoy\n",
+                                                                         encoding="utf-8")
+    monkeypatch.setenv("WQ_TOOLKIT_DIR", str(scripts))
+    monkeypatch.delenv("WQ_PY", raising=False)
+    # 2026-09-15：backlog_gate / stop_rules_gate / signal_floor_gate 会读真库
+    #（data/wqb.db），单测必须隔离——否则 USA 等区的真实积压数据会让
+    # S2/S3 命令拼装类测试被闸拦截（与被测行为无关的环境污染）。
+    monkeypatch.setenv("WQB_DISABLE_BACKLOG_GATE", "1")
+    # 2026-09-17：补齐三闸隔离——stop_rules 读真库 wave_results/backtest_results、
+    # signal_floor 读真库最近批次 sharpe（USA 真实近 2 批 max=0.88 会触发天花板
+    # 判定）。此前只有 backlog 有 kill switch，另两道闸"靠无证据跳过侥幸不爆"。
+    monkeypatch.setenv("WQB_DISABLE_STOP_RULES_GATE", "1")
+    monkeypatch.setenv("WQB_DISABLE_SIGNAL_FLOOR_GATE", "1")
+    return scripts
+
+
+# ---------------------------------------------------------------------------
+# 缺陷#1：batch_track cwd 必须指向 toolkit scripts 目录
+# ---------------------------------------------------------------------------
+
+def test_batch_track_cwd_is_toolkit_scripts_dir(monkeypatch, fake_toolkit):
+    calls, _ = _capture(monkeypatch, bt, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    out = bt.run(region="USA", wave="1", dataset="model219",
+                 campaign_dir=str(_common.REPO_ROOT / "tracking" / "USA"),
+                 _context={"store": ex._store, "registry": ex.registry})
+
+    assert out["success"] is True
+    assert calls, "未生成 subprocess 调用"
+    cmd, cwd = calls[0]["cmd"], calls[0]["cwd"]
+    scripts = str(fake_toolkit)
+    assert cwd == scripts, f"cwd 应为 scripts/ 目录，实际 {cwd}"
+    script = _script_of(cmd)
+    assert script == os.path.join(scripts, "pipeline.py"), "脚本应取 scripts/pipeline.py"
+    tail = cmd[cmd.index(script) + 1:]
+    assert scripts not in " ".join(tail), "命令不应再重复 toolkit 路径"
+
+
+def test_batch_track_missing_toolkit_reports_clear_error(monkeypatch, tmp_path):
+    """resolve_toolkit_dir 无效/回退失败时，batch_track 应给出可操作的错误。
+
+    注意：不得只靠 WQ_TOOLKIT_DIR 指向空目录——resolve_toolkit_dir 设计上会回退到
+    真实 skill 根，此处必须直接 patch 解析函数以模拟"未安装 toolkit"。
+    """
+    def _no_toolkit():
+        return None
+    monkeypatch.setattr(bt, "resolve_toolkit_dir", _no_toolkit)
+
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test2.db"))
+    ex._store = _CaptureStore()
+    out = bt.run(region="USA", wave="1", dataset="model219",
+                 campaign_dir=str(_common.REPO_ROOT / "tracking" / "USA"),
+                 _context={"store": ex._store, "registry": ex.registry})
+    assert out["success"] is False
+    assert "WQ_TOOLKIT_DIR" in out["error"]
+
+
+def test_batch_track_empty_expressions_fails(monkeypatch, fake_toolkit):
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore(expressions=[])
+    out = bt.run(region="USA", wave="1", dataset="model219",
+                 campaign_dir=str(_common.REPO_ROOT / "tracking" / "USA"),
+                 _context={"store": ex._store, "registry": ex.registry})
+    assert out["success"] is False
+    assert "No expressions" in out["error"]
+
+
+# ---------------------------------------------------------------------------
+# 缺陷#2/#3：campaign 子进程脚本必须用绝对路径 + 正确 cwd
+# ---------------------------------------------------------------------------
+
+def test_campaign_preflight_uses_absolute_script_path(monkeypatch, fake_toolkit):
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2", dataset="model219", wave="1",
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    preflight = [c for c in calls if "preflight_wave.py" in " ".join(c["cmd"])]
+    assert preflight, "S2 必须真实执行 preflight 子进程（门禁不能静默跳过）"
+    script_path = _script_of(preflight[0]["cmd"])
+    assert script_path == os.path.join(str(_common.REPO_ROOT), "tools",
+                                       "preflight_wave.py"), f"preflight 路径错误: {script_path}"
+    assert os.path.isfile(script_path), f"preflight 脚本不存在: {script_path}"
+    assert preflight[0]["cwd"] == str(_common.REPO_ROOT), "preflight cwd 应为仓库根"
+
+    pf_step = next(s for s in r["steps"] if s["step"] == "preflight")
+    assert "script not found" not in str(pf_step), "preflight 脚本查找失败说明路径推导仍错"
+
+
+def test_campaign_quality_gate_uses_absolute_script_path(monkeypatch, fake_toolkit):
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S3", dataset="model219", wave="1",
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    gate = [c for c in calls if "wave_gate.py" in " ".join(c["cmd"])]
+    assert gate, "S3 必须真实执行质量闸子进程"
+    script_path = _script_of(gate[0]["cmd"])
+    assert script_path == os.path.join(str(_common.REPO_ROOT), "tools", "wave_gate.py"), \
+        f"quality_gate 路径错误: {script_path}"
+    assert gate[0]["cwd"] == str(_common.REPO_ROOT), "quality_gate cwd 应为仓库根"
+
+
+def test_campaign_stage_route_matrix(monkeypatch, fake_toolkit):
+    """7 个 stage 的路由 + 未知 stage 拒绝（不依赖 cwd 的路由不变量）。"""
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+    calls, _ = _capture(monkeypatch, cp, "run")
+    # S4 会从 backtest_results 解析本波 alpha_id（读的是本机真实库）；本测试只验路由，不验库内容——打桩隔离
+    monkeypatch.setattr(cp, "_resolve_wave_alpha_ids",
+                        lambda region, wave, dataset: (["A1", "A2"], str(wave), [str(wave)]))
+
+    expect = {"S0": "score_datasets.py", "S1": "scan_fields.py", "S2": "build_wave.py",
+              "S3": "pipeline.py", "S4": "review_wave.py", "S5": "pipeline.py",
+              "S6": "campaign.py"}
+    for stage, script in expect.items():
+        calls.clear()
+        r = cp.run(region="USA", stage=stage, dataset="model219", wave="1",
+                   subcommand="ledger",
+                   _context={"store": ex._store, "registry": ex.registry})
+        assert r["success"] is True, f"{stage}: {r['steps']}"
+        # 最后一条调用应是主 stage 脚本
+        assert os.path.basename(_script_of(calls[-1]["cmd"])) == script,             (stage, calls[-1]["cmd"])
+
+    calls.clear()
+    r = cp.run(region="USA", stage="S9",
+               _context={"store": ex._store, "registry": ex.registry})
+    assert r["success"] is False
+    assert [s["step"] for s in r["steps"]][-1] == "route_stage"
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-06：异步子进程可观测性
+#   campaign_USA_S0_20260905_222757 挂满 3600s 被杀，任务记录里只剩一行
+#   "Timeout after 3600s"——stdout 全丢，无从判断卡在哪一步。这一组把
+#   "分阶段超时预算 / 超时保留输出 / stdin 断开 / 输出直写文件" 做成回归。
+# ---------------------------------------------------------------------------
+
+def test_campaign_stage_timeout_budgets():
+    """每阶段各有预算，不再一律 3600s；S0 --calibrate 是纯本地计算，预算最短。"""
+    assert cp._stage_timeout("S0") == 900
+    assert cp._stage_timeout("S0", calibrate=True) == 600
+    assert cp._stage_timeout("S3") == 3600
+    assert cp._stage_timeout("S6") == 600
+    assert cp._stage_timeout("S9") == cp._DEFAULT_TIMEOUT
+
+
+def test_campaign_stage_timeout_env_override(monkeypatch):
+    monkeypatch.setenv("WQB_CAMPAIGN_TIMEOUT", "42")
+    assert cp._stage_timeout("S3") == 42
+    assert cp._stage_timeout("S0", calibrate=True) == 42
+    # 非法值不得让节点崩，回退阶段默认
+    monkeypatch.setenv("WQB_CAMPAIGN_TIMEOUT", "not-a-number")
+    assert cp._stage_timeout("S3") == 3600
+
+
+def test_campaign_child_output_to_files_and_stdin_detached(monkeypatch, fake_toolkit):
+    """子进程输出必须直写文件（可实时 tail、超时后仍在盘上），stdin 必须断开。
+
+    stdin 不显式断开时子进程继承 MCP 服务进程的标准输入，一旦误读即永久阻塞。
+    """
+    import subprocess
+    seen = {}
+
+    class _RecordingPopen:
+        def __init__(self, cmd, **kwargs):
+            seen.update(kwargs)
+            seen["cmd"] = list(cmd)
+            self.pid = 1234
+            self.returncode = 0
+
+        def communicate(self, timeout=None):
+            seen["timeout"] = timeout
+            return (None, None)
+
+    monkeypatch.setattr(subprocess, "Popen", _RecordingPopen)
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S0", calibrate=True,
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True
+    assert seen["stdin"] is subprocess.DEVNULL
+    # 不再用 PIPE：给的是真实文件对象（有 fileno），从根上排除 PIPE 缓冲互锁
+    assert seen["stdout"] is not subprocess.PIPE
+    assert seen["stderr"] is not subprocess.PIPE
+    assert hasattr(seen["stdout"], "fileno") and hasattr(seen["stderr"], "fileno")
+    assert seen["env"]["PYTHONIOENCODING"] == "utf-8"
+    assert r["timeout_sec"] == cp._CALIBRATE_TIMEOUT
+    assert os.path.basename(r["stdout_log"]) == f"{r['task_id']}.out"
+    assert os.path.basename(r["stderr_log"]) == f"{r['task_id']}.err"
+
+
+def test_campaign_timeout_preserves_partial_child_output(monkeypatch, fake_toolkit):
+    """回归：超时被 kill 后，子进程已产出的输出必须留在任务记录里。
+
+    原实现在 TimeoutExpired 分支直接丢弃 communicate 的输出，于是
+    "整整一小时零 stdout" 既不能证明子进程没产出、也无法定位阻塞点。
+    """
+    import subprocess
+    import time as _time
+
+    class _HangingPopen:
+        def __init__(self, cmd, stdout=None, stderr=None, **kwargs):
+            # 模拟子进程跑到一半打了进度行然后卡死
+            stdout.write(b"[calibrate:progress] +0.0s start region=USA")
+            stdout.flush()
+            stderr.write(b"stderr breadcrumb")
+            stderr.flush()
+            self.pid = 4242
+            self.returncode = None
+            self._killed = False
+
+        def communicate(self, timeout=None):
+            if not self._killed:
+                raise subprocess.TimeoutExpired(cmd="score_datasets.py", timeout=timeout)
+            return (None, None)
+
+        def kill(self):
+            self._killed = True
+            self.returncode = -9
+
+    monkeypatch.setattr(subprocess, "Popen", _HangingPopen)
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S0", calibrate=True,
+               _context={"store": ex._store, "registry": ex.registry})
+    assert r["success"] is True  # 启动成功；失败结论在异步任务文件里
+
+    # 等收尾线程写出终态
+    task_file = r["task_file"]
+    rec = None
+    for _ in range(200):
+        try:
+            with open(task_file, encoding="utf-8") as f:
+                rec = json.load(f)
+        except (OSError, ValueError):
+            rec = None
+        if rec and rec.get("status") != "running" and "error" in rec:
+            break
+        _time.sleep(0.02)
+
+    assert rec is not None and "error" in rec, rec
+    assert str(cp._CALIBRATE_TIMEOUT) in rec["error"]
+    assert rec["partial_output"] is True
+    assert "[calibrate:progress]" in rec["stdout_tail"]
+    assert "stderr breadcrumb" in rec["stderr_tail"]
+    # 日志文件本身也要留档，便于事后复盘完整输出
+    assert os.path.exists(rec["stdout_log"]) and os.path.exists(rec["stderr_log"])
+
+
+def test_campaign_missing_dataset_skips_preflight_with_warning(monkeypatch, fake_toolkit):
+    """无 dataset 时 preflight 应明确记 warning 并跳过（不是静默失效）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2",
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True
+    pf = next(s for s in r["steps"] if s["step"] == "preflight")
+    assert "skip preflight" in pf.get("warning", "")
+    assert not [c for c in calls if "preflight_wave.py" in " ".join(c["cmd"])]
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-12：S2 命令拼装——build_wave.py 本体没有 `build-wave` 子命令
+# ---------------------------------------------------------------------------
+
+def test_campaign_s2_command_has_no_stray_build_wave_token(monkeypatch, fake_toolkit):
+    """S2 直调 build_wave.py 时只能拼 --dataset/--wave/--from-db，不得夹带分发器
+    入口名 `build-wave`（多余位置参数 → argparse rc=2，此前干跑还放行）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2", dataset="model219", wave="1",
+               extra_args=["--size", "16"],
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    cmd = calls[-1]["cmd"]
+    assert os.path.basename(_script_of(cmd)) == "build_wave.py"
+    assert "build-wave" not in cmd, cmd
+    assert "--from-db" in cmd and "--size" in cmd
+    assert cmd[cmd.index("--wave") + 1] == "1"
+    assert "--expected-count" not in cmd  # capacity is not a reviewed plan
+
+    calls.clear()
+    r = cp.run(region="USA", stage="S2", dataset="model219", wave="1",
+               extra_args=["--size", "16", "--expected-count", "12"],
+               _context={"store": ex._store, "registry": ex.registry})
+    assert r["success"] is True
+    cmd = calls[-1]["cmd"]
+    assert cmd.count("--expected-count") == 1
+    assert cmd[cmd.index("--expected-count") + 1] == "12"
+
+
+def test_campaign_s2_assemble_priors_routes_clean_to_campaign_py(monkeypatch, fake_toolkit):
+    """stage=S2 + subcommand=assemble-priors 必须走 campaign.py 且不夹带
+    build_wave 参数（此前拼出 `campaign.py build-wave --from-db assemble-priors`）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    r = cp.run(region="USA", stage="S2", subcommand="assemble-priors",
+               _context={"store": ex._store, "registry": ex.registry})
+
+    assert r["success"] is True, r["steps"]
+    cmd = calls[-1]["cmd"]
+    assert os.path.basename(_script_of(cmd)) == "campaign.py"
+    tail = cmd[cmd.index("--campaign-dir") + 2:]
+    # 2026-09-27 P0-2：assemble-priors 必须带 --snapshot-ledger（GEM 只读 DB 快照），
+    # 且不拼 assemble_priors.py 不认的 --dataset/--wave。
+    assert tail == ["assemble-priors", "--snapshot-ledger"], cmd
+
+
+def test_validate_argv_rejects_stray_positional_for_flag_only_script(tmp_path):
+    """validate_argv 对"没有位置参数概念"的脚本要逮住多余的位置参数，
+    且能识别 store_true 选项后面跟着的孤立 token；有位置参数/子命令的脚本放行。"""
+    flag_only = tmp_path / "flag_only.py"
+    flag_only.write_text(
+        "import argparse\n"
+        "ap = argparse.ArgumentParser()\n"
+        "ap.add_argument('--wave', required=True)\n"
+        "ap.add_argument('--from-db', action='store_true')\n",
+        encoding="utf-8",
+    )
+    ok, err = _common.validate_argv(["python", "-u", str(flag_only),
+                                     "--wave", "1", "build-wave", "--from-db"])
+    assert ok is False and "build-wave" in err
+    ok, err = _common.validate_argv(["python", "-u", str(flag_only),
+                                     "--from-db", "build-wave", "--wave", "1"])
+    assert ok is False and "build-wave" in err
+    assert _common.validate_argv(["python", "-u", str(flag_only),
+                                  "--wave", "1", "--from-db"]) == (True, None)
+
+    with_positional = tmp_path / "with_positional.py"
+    with_positional.write_text(
+        "import argparse\n"
+        "ap = argparse.ArgumentParser()\n"
+        "ap.add_argument('candidates')\n"
+        "ap.add_argument('--target', type=int)\n",
+        encoding="utf-8",
+    )
+    assert _common.validate_argv(["python", str(with_positional),
+                                  "cands.json", "--target", "20"]) == (True, None)
+
+
+# ---------------------------------------------------------------------------
+# 缺陷#4：superalpha 提交步骤 step 名归一
+# ---------------------------------------------------------------------------
+
+def _sa_components(n=12):
+    return [f"C{i:03d}" for i in range(n)]
+
+
+def _stub_probe_go(monkeypatch):
+    monkeypatch.setattr(sa2, "_probe_sa_pool", lambda region, dry_run: {
+        "step": "sa_probe", "success": True, "verdict": "GO",
+        "total": 12, "eligible": 12, "required": 10})
+
+
+def test_superalpha_confirm_true_step_name_normalized(monkeypatch):
+    _stub_probe_go(monkeypatch)
+    seen = []
+
+    def fake_build(subcommand, params):
+        seen.append(subcommand)
+        out = {"step": f"super_build_{subcommand}", "success": True,
+               "alpha_id": "FAKEALPHA" if subcommand == "select" else None}
+        return out
+
+    monkeypatch.setattr(sa2, "_run_super_build", fake_build)
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=True)
+
+    assert out["success"] is True
+    assert seen == ["select", "status", "probe", "submit"]
+    submit_steps = [s for s in out["steps"] if s.get("step") == "submit"]
+    assert len(submit_steps) == 1, f"submit 步骤应恰好 1 个，实际 {[s.get('step') for s in out['steps']]}"
+    assert submit_steps[0]["subcommand"] == "super_build_submit"
+
+
+def test_superalpha_confirm_false_skips_submit_and_uses_same_step_name(monkeypatch):
+    _stub_probe_go(monkeypatch)
+    seen = []
+    monkeypatch.setattr(sa2, "_run_super_build",
+                        lambda sc, p: (seen.append(sc), {"step": f"super_build_{sc}",
+                                                         "success": True,
+                                                         "alpha_id": "FAKEALPHA"
+                                                         if sc == "select" else None})[1])
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=False)
+
+    assert out["success"] is True
+    assert seen == ["select", "status", "probe"], f"未确认却走了后续子命令: {seen}"
+    assert "submit" not in seen
+    submit_steps = [s for s in out["steps"] if s.get("step") == "submit"]
+    assert len(submit_steps) == 1 and submit_steps[0]["skipped"] is True
+    assert "confirm_submit=False" in submit_steps[0]["note"]
+
+
+def test_superalpha_probe_blocked_stops_before_super_build(monkeypatch):
+    monkeypatch.setattr(sa2, "_probe_sa_pool", lambda region, dry_run: {
+        "step": "sa_probe", "success": False, "verdict": "BLOCKED",
+        "eligible": 3, "total": 3, "required": 10, "error": "仅 3 颗 eligible（需 ≥10）"})
+    seen = []
+    monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
+
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", confirm_submit=False)
+
+    assert out["success"] is False
+    assert "eligible" in out["error"]
+    assert seen == [], "探针 BLOCKED 时不得建 simulation"
+
+
+def test_superalpha_dry_run_stops_after_probe(monkeypatch):
+    _stub_probe_go(monkeypatch)
+    seen = []
+    monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
+
+    out = sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL", dry_run=True)
+
+    assert out["success"] is True
+    assert seen == []
+    assert [s["step"] for s in out["steps"]] == ["sa_probe", "dry_run"]
+
+
+def test_superalpha_forwards_explicit_selection_and_combo_to_select(monkeypatch):
+    """selection / combo 是文档化的覆盖参数；此前被节点静默忽略（声明存在、实现缺位）。"""
+    _stub_probe_go(monkeypatch)
+    params_seen = {}
+
+    def fake_build(subcommand, params):
+        params_seen[subcommand] = dict(params)
+        return {"step": f"super_build_{subcommand}", "success": True,
+                "alpha_id": "FAKEALPHA" if subcommand == "select" else None}
+
+    monkeypatch.setattr(sa2, "_run_super_build", fake_build)
+    sa2.run(region="KOR", components=_sa_components(), neutralization="STATISTICAL",
+            selection="SEL_EXPR", combo="COMBO_EXPR")
+    assert params_seen["select"]["selection"] == "SEL_EXPR"
+    assert params_seen["select"]["combo"] == "COMBO_EXPR"
+    assert params_seen["select"]["neutralization"] == "STATISTICAL"
+
+
+def test_superalpha_requires_explicit_neutralization(monkeypatch):
+    """最优中性化因区而异（USA / GLB = SUBINDUSTRY、KOR / IND = STATISTICAL）；不再有 SUBINDUSTRY 缺省。"""
+    _stub_probe_go(monkeypatch)
+    seen = []
+    monkeypatch.setattr(sa2, "_run_super_build", lambda sc, p: seen.append(sc))
+    out = sa2.run(region="KOR", components=_sa_components(), confirm_submit=False)
+    assert out["success"] is False and "neutralization" in out["error"]
+    assert seen == [], "缺 neutralization 时不得建 simulation"
+
+
+def test_superalpha_too_few_components_rejected(monkeypatch):
+    out = sa2.run(region="KOR", components=["only_one"], confirm_submit=False)
+    assert out["success"] is False
+    assert "at least" in out["error"]
+
+
+# ---------------------------------------------------------------------------
+# executor dry-run 拦截纪律：节点函数不应被调用
+# ---------------------------------------------------------------------------
+
+def test_executor_dry_run_does_not_call_node(monkeypatch, fake_toolkit):
+    # 2026-09-01 契约更新：dry-run 调用节点但注入 _context.dry_run=True。
+    # 用 batch_track（未感知 dry_run 的节点）验证：dry_run 上下文已注入，
+    # 且节点内不会真正执行回测（batch_track 的 run 在 dry_run 上下文下
+    # 仍会启动 pipeline --dry-run，故此处只断言上下文注入与无写库副作用）。
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    calls, store_calls = _capture(monkeypatch, bt, "run")
+    ex._store = _CaptureStore()
+
+    r = ex.execute("campaign", {"region": "USA", "stage": "S5"}, dry_run=True)
+
+    assert r.success is True and r.dry_run is True
+    # campaign 节点 dry-run 感知：构建命令即停，不执行不写库
+    out = r.output or {}
+    assert out.get("dry_run") is True
+    assert any(s.get("step") == "build_command" for s in out.get("steps", []))
+    assert not any(s.get("step") == "execute" for s in out.get("steps", []))
+
+
+def test_executor_missing_params_never_calls_node(monkeypatch):
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    calls, _ = _capture(monkeypatch, bt, "run")
+
+    r = ex.execute("submit_alpha", {})
+
+    assert r.success is False
+    assert "Missing required params" in r.error
+    assert calls == []
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-01 executor dry_run 三缺陷修复回归（缺陷 A/B/C）
+# ---------------------------------------------------------------------------
+
+def test_executor_dry_run_passes_dry_run_kwarg(monkeypatch, tmp_path):
+    """缺陷 B：executor 须按签名透传 dry_run 给 batch_track/superalpha。
+
+    dry_run=True 时 batch_track 走自身 dry_run 分支返回计划，不触发 subprocess。
+    """
+    import subprocess
+    ex = WorkflowExecutor(db_path=str(tmp_path / "x.db"))
+    ex._store = _CaptureStore(expressions=["rank(close)", "rank(volume)"])
+    monkeypatch.setattr(bt, "resolve_campaign_dir", lambda region: str(tmp_path))
+    # 2026-09-27 R5：batch_track 现在先过三道开波闸（读 WQB_DB_PATH / 默认库）。本用例测的是
+    # dry_run 透传，与区域状态无关——指向不存在的库（只读打开失败即告警放行），不读本机真库。
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "no_such.db"))
+    calls = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
+
+    r = ex.execute("batch_track",
+                   {"region": "USA", "wave": "1", "dataset": "model219"},
+                   dry_run=True)
+
+    assert r.success is True and r.dry_run is True
+    assert r.output.get("dry_run") is True
+    assert r.output["plan"]["expression_count"] == 2
+    assert calls == [], "dry_run 下 batch_track 不应触发 subprocess"
+
+
+def test_executor_propagates_node_failure_truthfully(monkeypatch, tmp_path):
+    """缺陷 C：executor 不再无条件 success=True，须透传节点真实 success/error。
+
+    失败源不要用「库里无表达式」：2026-09-05 起 batch_track 统一了 dry-run
+    语义（干跑回答「这条链能不能跑通」，不回答「现在有没有货」），无表达式
+    只记 warning 并继续验证链路，属预期成功。故改用真正的断链场景
+    ——campaign_dir 不存在——来检验 executor 是否如实传播失败。
+    """
+    ex = WorkflowExecutor(db_path=str(tmp_path / "x.db"))
+    ex._store = _CaptureStore(expressions=["rank(close)"])
+    monkeypatch.setattr(bt, "resolve_campaign_dir",
+                        lambda region: str(tmp_path / "no_such_campaign"))
+
+    r = ex.execute("batch_track",
+                   {"region": "USA", "wave": "1", "dataset": "model219"},
+                   dry_run=True)
+
+    assert r.success is False
+    assert "Campaign directory not found" in r.error
+
+
+def test_submit_alpha_dry_run_short_circuits(monkeypatch):
+    """缺陷 A：submit_alpha 在 dry_run 下不触碰 brain_client。"""
+    from wqb.workflow.nodes import submit_alpha as sa
+    called = []
+    monkeypatch.setattr(sa, "_get_brain_client",
+                        lambda: (called.append(1), None)[1])
+
+    out = sa.run(alpha_id="ABC", _context={"dry_run": True})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert called == [], "dry_run 下不应触碰 brain_client"
+    assert out["plan"]["alpha_id"] == "ABC"
+
+
+def test_judge_dry_run_short_circuits(monkeypatch):
+    """缺陷 A：judge 在 dry_run 下不触碰 brain_client。"""
+    from wqb.workflow.nodes import judge as jd
+    called = []
+    monkeypatch.setattr(jd, "_get_brain_client",
+                        lambda: (called.append(1), None)[1])
+
+    out = jd.run(alpha_id="ABC", _context={"dry_run": True})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert out["verdict"] is None
+    assert called == [], "dry_run 下不应触碰 brain_client"
+
+
+def test_gem_dry_run_short_circuits(monkeypatch):
+    """缺陷 A：gem 在 dry_run 下不 subprocess、不写库。"""
+    from wqb.workflow.nodes import gem as gm
+    import subprocess
+    calls = []
+    monkeypatch.setattr(subprocess, "Popen",
+                        lambda *a, **k: (calls.append(a), None)[1])
+    monkeypatch.setattr(subprocess, "run",
+                        lambda *a, **k: (calls.append(a), None)[1])
+
+    # 干跑的 check_config 步要求 GEM headless_runner 的 config.json（含凭据）在场——这是本机产物，
+    # 与「干跑不 subprocess、不写库」的契约无关：只对该路径打桩，其余 exists 行为不变
+    real_exists = os.path.exists
+    monkeypatch.setattr(os.path, "exists",
+                        lambda p: True if str(p).replace("\\", "/").endswith("headless_runner/config.json")
+                        else real_exists(p))
+
+    out = gm.run(region="IND", dataset_id="analyst45", delay=1,
+                 universe="TOP3000", data_category="analyst",
+                 _context={"dry_run": True, "store": None})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert calls == [], "dry_run 下 gem 不应触发 subprocess"
+
+
+def test_gem_ideas_format_invalid_blocked_before_popen(monkeypatch, tmp_path):
+    """ideas 文件缺 **Concept**/**Implementation Example** 块时，在 Popen 前拦截。
+
+    2026-09-03 新增：run_pipeline 在 BRAIN 登录+数据准备后才解析块结构，格式错误
+    会白烧一轮；gem 节点必须在 Popen 前用同规则预检并返回合规示例。
+    """
+    from wqb.workflow.nodes import gem as gm
+
+    bad_md = tmp_path / "bad_ideas.md"
+    bad_md.write_text("Dataset: analyst45\n1. some idea without concept blocks\n",
+                      encoding="utf-8")
+
+    monkeypatch.setattr(gm, "resolve_skill_dir", lambda name: "C:/gem")
+    monkeypatch.setattr(gm.os.path, "exists", lambda p: True)
+    popen_calls = []
+    monkeypatch.setattr(gm.subprocess, "Popen",
+                        lambda *a, **k: (popen_calls.append(a), None)[1])
+
+    out = gm.run(region="IND", dataset_id="analyst45", delay=1,
+                 universe="TOP3000", data_category="analyst",
+                 ideas_file=str(bad_md), detached=True)
+
+    assert out["success"] is False
+    assert popen_calls == [], "非法 ideas 文件不应触发 Popen"
+    last = out["steps"][-1]
+    assert last["step"] == "check_ideas_format" and last["success"] is False
+    assert last["blocks"] == 0
+    assert any("Concept" in e for e in last["errors"])
+    assert "sample" in last  # 附带合规示例供快速修正
+
+
+def test_gem_ideas_format_valid_blocks_parsed():
+    """_parse_ideas_blocks 与 run_pipeline.extract_template_blocks 同规则：
+    反引号模板与裸模板（tail 自身）均须提取；无 {variable} 占位符的块不计。"""
+    from wqb.workflow.nodes import gem as gm
+
+    good_md = (
+        "**Concept**: momentum with low-vol scaling\n"
+        "- **Implementation Example**: `rank(ts_delta({analyst}, 21))`\n"
+        "- **Rationale**: r1\n\n"
+        "**Concept**: no backticks tail template\n"
+        "- **Implementation Example**: rank(ts_mean({analyst}, 10))\n"
+        "- **Rationale**: r2\n"
+    )
+    blocks = gm._parse_ideas_blocks(good_md)
+    assert len(blocks) == 2
+    assert blocks[0]["template"] == "rank(ts_delta({analyst}, 21))"
+    assert blocks[1]["template"] == "rank(ts_mean({analyst}, 10))"
+    assert all("{" in b["template"] and "}" in b["template"] for b in blocks)
+
+    no_ph = (
+        "**Concept**: idea A\n"
+        "- **Implementation Example**: `rank(close)`\n"
+        "- **Rationale**: template without placeholder\n"
+    )
+    assert gm._parse_ideas_blocks(no_ph) == []
+
+    assert gm._parse_ideas_blocks("Dataset: analyst45\nno blocks here\n") == []
+
+
+
+def test_feature_engineering_dry_run_short_circuits(monkeypatch):
+    """缺陷 A：feature_engineering 在 dry_run 下不 subprocess、不写库。"""
+    from wqb.workflow.nodes import feature_engineering as fe
+    import subprocess
+    calls = []
+    monkeypatch.setattr(subprocess, "run",
+                        lambda *a, **k: (calls.append(a), None)[1])
+
+    out = fe.run(region="IND", dataset_id="analyst45", delay=1,
+                 universe="TOP3000", data_category="analyst",
+                 _context={"dry_run": True, "store": None})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert calls == [], "dry_run 下 feature_engineering 不应触发 subprocess"
+
+
+def test_campaign_s2_s3_dry_run_skips_preflight_and_quality_gate(monkeypatch, fake_toolkit):
+    """缺陷 A（campaign 延伸）：S2/S3 在 dry_run 下不跑 preflight/quality_gate 子进程，
+    但应构建出主 stage 命令（build_command 步骤存在、execute 步骤不存在）。"""
+    calls, _ = _capture(monkeypatch, cp, "run")
+    ex = WorkflowExecutor(db_path=str(Path("logs") / "_tmp_test.db"))
+    ex._store = _CaptureStore()
+
+    for stage, script in (("S2", "build_wave.py"), ("S3", "pipeline.py")):
+        calls.clear()
+        r = cp.run(region="USA", stage=stage, dataset="model219", wave="1",
+                   _context={"store": ex._store, "registry": ex.registry,
+                             "dry_run": True})
+        assert r["success"] is True and r["dry_run"] is True, (stage, r["steps"])
+        # 不跑 preflight/quality_gate 子进程
+        assert not [c for c in calls if "preflight_wave.py" in " ".join(c["cmd"])], stage
+        assert not [c for c in calls if "wave_gate.py" in " ".join(c["cmd"])], stage
+        # 仍构建出主 stage 命令
+        steps = {s["step"] for s in r["steps"]}
+        assert "build_command" in steps
+        assert "execute" not in steps
+
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-04 Mode B 资格线优化（方案 A/B/C）
+# ---------------------------------------------------------------------------
+
+def test_judge_extract_region_from_details():
+    """方案 A：_extract_region 从 get_alpha_details 返回提取 region。"""
+    from wqb.workflow.nodes import judge as jd
+
+    # settings.region 路径
+    details = {"result": {"settings": {"region": "EUR"}}}
+    assert jd._extract_region(details) == "EUR"
+
+    # 顶层 region 兑底
+    details = {"result": {"region": "ind"}}
+    assert jd._extract_region(details) == "IND"
+
+    # 无 region 返回 None
+    assert jd._extract_region({"result": {}}) is None
+    assert jd._extract_region({"__error__": "fail"}) is None
+
+
+def test_judge_load_mode_b_qualification_region_routing(tmp_path, monkeypatch):
+    """方案 A：_load_mode_b_qualification 按 region 读 thresholds.json。"""
+    from wqb.workflow.nodes import judge as jd
+    import json
+
+    # 构造 EUR thresholds.json
+    eur_dir = tmp_path / "tracking" / "EUR" / "config"
+    eur_dir.mkdir(parents=True)
+    (eur_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"sharpe_min": 1.0, "fitness_min": 0.6}
+    }), encoding="utf-8")
+
+    # 构造 KOR thresholds.json
+    kor_dir = tmp_path / "tracking" / "KOR" / "config"
+    kor_dir.mkdir(parents=True)
+    (kor_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {"sharpe_min": 1.25, "fitness_min": 0.8}
+    }), encoding="utf-8")
+
+    # mock os.path.dirname 让 thresholds_path 指向 tmp_path
+    orig_join = os.path.join
+    def fake_join(*args):
+        if "tracking" in args:
+            # 重定向到 tmp_path
+            idx = args.index("tracking")
+            return orig_join(str(tmp_path), *args[idx:])
+        return orig_join(*args)
+    monkeypatch.setattr(os.path, "join", fake_join)
+
+    # EUR 读 EUR 的值
+    mbq_eur = jd._load_mode_b_qualification(None, region="EUR")
+    assert mbq_eur["sharpe_min"] == 1.0
+    assert mbq_eur["fitness_min"] == 0.6
+
+    # KOR 读 KOR 的值
+    mbq_kor = jd._load_mode_b_qualification(None, region="KOR")
+    assert mbq_kor["sharpe_min"] == 1.25
+    assert mbq_kor["fitness_min"] == 0.8
+
+
+def test_probe_batch_mode_b_distribution_mode(tmp_path, monkeypatch):
+    """方案 B：check_mode_b_eligible 分布感知模式（p75 / count>=2）。"""
+    from tools.probe_batch_mode import ProbeBatchExecutor
+    import json
+
+    # 构造器会打开 CampaignStore 读自适应 Mode B 配置：指到临时库，别碰仓库 data/wqb.db
+    monkeypatch.setenv("WQB_DB_PATH", str(tmp_path / "wqb.db"))
+
+    # 构造 campaign_dir + thresholds.json（分布模式）
+    campaign_dir = tmp_path / "campaign"
+    config_dir = campaign_dir / "config"
+    config_dir.mkdir(parents=True)
+    (config_dir / "thresholds.json").write_text(json.dumps({
+        "mode_b_qualification": {
+            "mode": "distribution",
+            "sharpe_min": 1.0,
+            "fitness_min": 0.6,
+            "sharpe_p75_min": 0.9,
+            "fitness_p75_min": 0.5,
+            "count_above_min": 2,
+        }
+    }), encoding="utf-8")
+
+    executor = ProbeBatchExecutor(str(campaign_dir), "test_ds", 1, dry_run=True)
+
+    # 场景 1：p75 达标（4 条候选，前 25% = 第 1 条，sharpe 1.2 >= 0.9）
+    results = [
+        {"sharpe": 1.2, "fitness": 0.7},
+        {"sharpe": 0.8, "fitness": 0.5},
+        {"sharpe": 0.6, "fitness": 0.4},
+        {"sharpe": 0.4, "fitness": 0.3},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is True
+    assert best["sharpe"] == 1.2
+
+    # 场景 2：count 达标（2 条过线）
+    results = [
+        {"sharpe": 1.1, "fitness": 0.7},
+        {"sharpe": 1.05, "fitness": 0.65},
+        {"sharpe": 0.5, "fitness": 0.3},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is True
+
+    # 场景 3：p75 与 count 均不达标
+    results = [
+        {"sharpe": 0.8, "fitness": 0.5},
+        {"sharpe": 0.6, "fitness": 0.4},
+    ]
+    eligible, best = executor.check_mode_b_eligible(results)
+    assert eligible is False
+    assert best is None
+
+
+def test_mode_b_adaptive_learn_threshold():
+    """方案 C：learn_mode_b_threshold 从 registry 样本学习阈值。"""
+    from wqb.workflow.mode_b_adaptive import learn_mode_b_threshold, _extract_samples, _fit_threshold
+
+    # 构造样本：5 胜 5 负
+    wins = [
+        {"payload": {"sharpe": 1.5, "fitness": 0.9}},
+        {"payload": {"sharpe": 1.3, "fitness": 0.85}},
+        {"payload": {"sharpe": 1.2, "fitness": 0.8}},
+        {"payload": {"sharpe": 1.1, "fitness": 0.75}},
+        {"payload": {"sharpe": 1.0, "fitness": 0.7}},
+    ]
+    dead_ends = [
+        {"payload": {"best_sharpe": 0.9, "best_fitness": 0.6}},
+        {"payload": {"best_sharpe": 0.8, "best_fitness": 0.55}},
+        {"payload": {"best_sharpe": 0.7, "best_fitness": 0.5}},
+        {"payload": {"best_sharpe": 0.6, "best_fitness": 0.45}},
+        {"payload": {"best_sharpe": 0.5, "best_fitness": 0.4}},
+    ]
+
+    samples = _extract_samples(wins, dead_ends)
+    assert len(samples) == 10
+    assert sum(1 for s in samples if s[2]) == 5  # 5 胜
+    assert sum(1 for s in samples if not s[2]) == 5  # 5 负
+
+    # 拟合阈值：成功率 >= 30% 的最小 sharpe
+    sharpe_threshold = _fit_threshold([(s[0], s[2]) for s in samples], target_rate=0.3)
+    assert sharpe_threshold is not None
+    assert 0.9 <= sharpe_threshold <= 1.5  # 应在胜负分界附近
+
+    # 样本不足返回 None
+    class _FakeStore:
+        connection = None
+    assert learn_mode_b_threshold(_FakeStore(), "EUR") is None
+
+
+# ---------------------------------------------------------------------------
+# wave_gate 节点（2026-09-11 新增：ra-pipeline 步 5 门禁入 MCP）
+# ---------------------------------------------------------------------------
+
+def test_wave_gate_dry_run_builds_command_without_subprocess(monkeypatch):
+    """dry-run 契约：构建命令 + 过 argv 契约校验，但不 subprocess。"""
+    from wqb.workflow.nodes import wave_gate as wg
+    import subprocess
+
+    calls = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
+    monkeypatch.setattr(wg, "resolve_campaign_dir", lambda r: "tracking/KOR")
+
+    out = wg.run(region="KOR", dataset="analyst4", wave="97",
+                 _context={"dry_run": True})
+
+    assert out["success"] is True and out["dry_run"] is True
+    assert calls == [], "dry-run 下 wave_gate 不应 subprocess"
+    assert "--from-db" in out["cmd"], "默认应从 expressions 表读候选"
+    assert "--wave" in out["cmd"] and "97" in out["cmd"]
+    # argv 契约校验必须真的跑过（脚本存在 → 可静态解析 argparse）
+    assert any(s.get("step") == "validate_argv" and s.get("success") for s in out["steps"])
+
+
+def test_wave_gate_requires_candidate_source_when_not_from_db(monkeypatch):
+    """from_db=False 且不给任何候选来源 → 在零成本前置就失败，不 subprocess。"""
+    from wqb.workflow.nodes import wave_gate as wg
+    import subprocess
+
+    calls = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: calls.append(a))
+    monkeypatch.setattr(wg, "resolve_campaign_dir", lambda r: "tracking/KOR")
+
+    out = wg.run(region="KOR", dataset="analyst4", wave="97", from_db=False)
+    assert out["success"] is False
+    assert "exprs_file" in out["error"], out["error"]
+    assert calls == []
+
+
+def test_wave_gate_registered_with_matching_signature():
+    """registry 元数据必须与节点 run() 签名一致（workflow_list_nodes 当 API 文档用）。"""
+    import inspect
+    from wqb.workflow.registry import get_registry
+    from wqb.workflow.nodes import wave_gate as wg
+
+    meta = get_registry().get_meta("wave_gate")
+    assert meta is not None, "wave_gate 未注册"
+    sig = set(inspect.signature(wg.run).parameters) - {"_context", "dry_run"}
+    declared = set(meta.required_params) | set(meta.optional_params)
+    assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"
+
+# ---------------------------------------------------------------------------
+# hypothesis_round 节点（2026-09-12 新增：饱和数据集假设优先轮次构建）
+# ---------------------------------------------------------------------------
+
+def test_hypothesis_round_dry_run_builds_plan_without_side_effects(tmp_path, monkeypatch):
+    """dry-run 契约：catalog 校验 + 计划构建，不触平台不写库。"""
+    import json
+    from wqb.workflow.nodes import hypothesis_round as hr
+
+    catalog = tmp_path / "ds_hypotheses.json"
+    catalog.write_text(json.dumps({"hypotheses": [
+        {"hypothesis_id": f"H{i}", "hypothesis_class": "over_reaction",
+         "description": "test", "expected_direction": "positive",
+         "minimal_expression": "rank(close)", "ablation_no_gate": "rank(close)",
+         "control_constant": "rank(volume)", "variant": "rank(close)*1"}
+        for i in range(3)
+    ]}), encoding="utf-8")
+
+    out = hr.run(dataset_id="ds", catalog_path=str(catalog), max_hypotheses=2,
+                 region="KOR", _context={"dry_run": True})
+    assert out["success"] is True and out["dry_run"] is True
+    assert out["plan"]["selected"] == 2
+    assert out["plan"]["total_expressions"] == 8
+    assert out["plan"]["hypothesis_ids"] == ["H0", "H1"]
+    assert not (tmp_path / "ledger.jsonl").exists()
+
+
+def test_hypothesis_round_missing_catalog_fails_clean(monkeypatch):
+    from wqb.workflow.nodes import hypothesis_round as hr
+    monkeypatch.setattr(hr, "_CATALOG_DIR", "definitely_not_here")
+    out = hr.run(dataset_id="nope", _context={"dry_run": True})
+    assert out["success"] is False and "假设目录不存在" in out["error"]
+
+
+def test_hypothesis_round_real_run_builds_four_expressions(tmp_path, monkeypatch):
+    import json
+    from wqb.workflow.nodes import hypothesis_round as hr
+    # 账本目录必须可重定向：此前本测试每次回归都往仓库的 tracking/hypotheses/ledger.jsonl 追加一行
+    monkeypatch.setattr(hr, "_LEDGER_DIR", str(tmp_path / "ledger"))
+    catalog = tmp_path / "ds_hypotheses.json"
+    catalog.write_text(json.dumps({"hypotheses": [
+        {"hypothesis_id": "H0", "hypothesis_class": "dispersion",
+         "description": "test", "expected_direction": "positive",
+         "minimal_expression": "rank(x)", "ablation_no_gate": "rank(x)",
+         "control_constant": "rank(v)", "variant": "rank(x)*sign(y)"}
+    ]}), encoding="utf-8")
+    out = hr.run(dataset_id="ds", catalog_path=str(catalog), save_ledger=True,
+                 session_id="t1", region="IND")
+    assert out["success"] is True and out["dry_run"] is False
+    exps = out["experiments"]["H0"]["expressions"]
+    assert len(exps) == 4
+    assert out["ledger_path"] and Path(out["ledger_path"]).exists()
+    assert Path(out["ledger_path"]).parent == tmp_path / "ledger"
+
+
+def test_hypothesis_round_ledger_dir_is_anchored_at_repo_root():
+    """缺省账本目录不依赖进程 CWD（save_to_ledger 的缺省是相对路径）。"""
+    from wqb.workflow._common import REPO_ROOT
+    from wqb.workflow.nodes import hypothesis_round as hr
+    assert os.path.isabs(hr._LEDGER_DIR)
+    assert Path(hr._LEDGER_DIR) == Path(str(REPO_ROOT)) / "tracking" / "hypotheses"
+
+
+def test_hypothesis_round_registered_with_matching_signature():
+    import inspect
+    from wqb.workflow.registry import get_registry
+    from wqb.workflow.nodes import hypothesis_round as hr
+    meta = get_registry().get_meta("hypothesis_round")
+    assert meta is not None, "hypothesis_round 未注册"
+    sig = set(inspect.signature(hr.run).parameters) - {"_context", "dry_run"}
+    declared = set(meta.required_params) | set(meta.optional_params)
+    assert declared == sig, f"registry 元数据与签名不一致：meta={sorted(declared)} sig={sorted(sig)}"
