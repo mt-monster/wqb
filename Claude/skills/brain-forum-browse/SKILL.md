@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: brain-forum-browse
 description: "逛论坛 / 看看论坛 / 去论坛转转 / 查论坛里有没有某个做法时使用：通过 MCP 只读检索并阅读 WorldQuant BRAIN 中文论坛（搜帖、读帖含评论、术语表）并沉淀笔记。当前环境没有论坛写工具，发帖 / 跟评 / 点赞的贡献流程休眠（见 references/write-path/）。流水线的问题驱动检索走 tools/forum_recon.py。"
 layer: L0

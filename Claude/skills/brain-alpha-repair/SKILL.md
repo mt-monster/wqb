@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: brain-alpha-repair
 layer: L4
 description: "弱候选修复的配方索引与补充实证（非改进入口）：降换手 / 提覆盖 / 降相关的修法指向与模板、GLB emotion 族降相关失败实证、修复成功判据（failed-count）。仅在被 wq-brain-alpha-optimization-v1 或 RA 步 7 引用时读取；要动手改候选请用 wq-brain-alpha-optimization-v1。"

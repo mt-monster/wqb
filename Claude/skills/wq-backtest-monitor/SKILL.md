@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: wq-backtest-monitor
 description: "S6 监控与复盘：盯在飞回测（进度 / ETA / 卡住判定）、盘点候选的提交状态（对齐 submit_verdict 标签，PASS_CHEAP 不称可提交）、按统一骨架出复盘报告，并触发 + 核验 S6 台账回写（回写 SOP 只在 wq-brain-ra-pipeline 步 9）。用户要求盯回测任务 / 看任务情况 / 盘点挖掘任务 / 回测效率 / 哪些 alpha 可提交 / 复盘时使用。REGULAR / PPA / SUPER 通用；不做 OS 表现监控与重着色（目前没有承接者）。"
 layer: L6

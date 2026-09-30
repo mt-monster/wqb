@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: wq-brain-ppa-mining
 description: "开 PPA（Power Pool Alpha）战役、或要判断某个数据集在目标区域能不能打 PPA 时使用：S0 体检的 PPA 方法论（三条硬门槛与拥挤度口径）、数据集 / 字段体检指标 → 预处理的决策映射、白空间取数路径。RA 常规战役的白名单排序走 ra-pipeline 决策表 D4，不走本 skill；不编排、不提交。"
 layer: L0

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/truncation）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4

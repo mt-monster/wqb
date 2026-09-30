@@ -2,7 +2,7 @@
 name: brain-alpha-research
 layer: L1
 description: "做研究方法与搜索空间扩展（设置空间、范式库、论坛 / 论文模板整合、跨区陷阱）时使用；数据集 / 字段 / 新闻 / 饱和集等具体任务先看路由表，走对应专项 skill。常量只引用 config，不选集。"
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 allowed-tools:
   - Read
   - Bash

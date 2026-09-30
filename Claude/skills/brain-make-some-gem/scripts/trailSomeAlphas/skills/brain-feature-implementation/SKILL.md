@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: brain-feature-implementation
 description: "排查或手动复现 GEM 引擎的模板渲染（idea Markdown → alpha 表达式）时查阅：模板语法规则与手动流程。不是生成表达式的入口——要生成表达式请用 brain-make-some-gem。"
 layer: L2

@@ -3,7 +3,7 @@ name: planning-with-files
 layer: L7
 version: "2.1.0"
 description: 文件化规划元技能：把复杂任务的过程状态写进 task_plan.md / findings.md / progress.md（磁盘即工作记忆，压缩后可恢复）。当用户明确要求做计划文件、任务跨多个会话、或没有现成的状态存储且步数很多（研究 / 大重构）时使用；WQ 挖掘任务的结果真相源在 DB 台账，不要用它替代。
-last_verified: 2026-09-30
+last_verified: 2026-10-01
 user-invocable: true
 allowed-tools:
   - Read

@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: pull-brain-skills
 description: "把外部 skill（ZIP URL / Git 仓库 / 本地目录）拉进**隔离暂存区**并出具静态审查报告（hooks / allowed-tools / scripts / 符号链接 / 风险模式 / 同名碰撞）；不安装、不执行被导入内容。包含 SKILL.md / skill.md（不区分大小写）的文件夹视为候选 skill。"
 layer: L7

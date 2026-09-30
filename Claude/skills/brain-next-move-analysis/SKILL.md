@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-09-29
+last_verified: 2026-10-01
 name: brain-next-move-analysis
 description: "日报 / 早报 / 状态检查 / 「哪个区更值得挖」「该不该转区」「下一步做什么」时使用：只读汇总平台公告、比赛、事件、多样性分数、alpha 表现（IS/OS）、金字塔缺口与区域态势，按固定模板给出建议。只报告不决策：不选区、不出白名单、不回测、不提交。"
 layer: L0
