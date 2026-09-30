@@ -27,7 +27,7 @@ allowed-tools:
 
 ## 与 GEM 引擎的关系（谁读本文件）
 
-- GEM 的 LLM prompt **不拼入本文件**：`pipeline_prompts.build_prompt` 只把 feature-engineering 的 8 问当提示，FI 文本虽被读入但**不使用**（源码注释：Concept-first，不要整篇灌进去）。所以本文只面向人 / agent 的手动流程与排障；对 LLM 的机器约束在 prompt 的 `CRITICAL OUTPUT RULES` 里。这一条由 `tests/unit/test_se_docs.py` 钉死——将来若又把 FI 文本拼进 prompt，要同步改本节。
+- GEM 的 LLM prompt **不拼入本文件**：`pipeline_prompts.build_prompt` 只把 feature-engineering 的 8 问当提示，FI 文本虽被读入但**不使用**（源码注释：Concept-first，不要整篇灌进去）。所以本文只面向人 / agent 的手动流程与排障；对 LLM 的机器约束在 prompt 的 `CRITICAL OUTPUT RULES` 里。这一条由 `tests/unit/07_docs_skills/test_se_docs.py` 钉死——将来若又把 FI 文本拼进 prompt，要同步改本节。
 - GEM 运行时用哪份脚本：`pipeline_paths._resolve_skill_dir` 解析——环境变量 `WQB_FI_SKILL_DIR` > 各宿主安装位 > 仓库自带；都找不到才用内嵌副本 `brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/`（启动时打印 `[skill-doc] … embedded:legacy` 即走了兜底）。
 - **两份目录当前逐字节相同**：SKILL.md 由 `python tools/sync_gem_embedded_skill.py --apply` 从本文件同步；`validator.py` 与 `alpha-expression-verifier` 的权威版一致（`hump` 命名参数、`bucket` 必带 `range=`/`buckets=`、`densify` 分组键的修复都在里面）——改 validator 必须四处一起改，由测试守护。
 

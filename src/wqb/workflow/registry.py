@@ -92,7 +92,7 @@ class WorkflowRegistry:
         约定（2026-09-05）：required_params / optional_params 必须与节点 run()
         签名一致（`_context` 与 `dry_run` 除外——前者由 executor 注入，后者是
         全节点统一的执行开关）。workflow_list_nodes 把这份元数据当 API 文档直接
-        暴露给 Agent，漂移即误导。回归由 tests/unit/test_skill_integrity.py
+        暴露给 Agent，漂移即误导。回归由 tests/unit/07_docs_skills/test_skill_integrity.py
         的 test_registry_meta_matches_node_signature 守护。
         """
         # Phase 1: batch_track / submit_alpha

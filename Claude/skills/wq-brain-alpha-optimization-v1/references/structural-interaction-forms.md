@@ -4,7 +4,7 @@
 > **主腿** = 本 alpha 核心字段/概念（冻结）；**辅助腿** = salvage_pool 条目（≤2 条，必取，禁凭空另造）。
 > **硬边界**：禁一切加权混合 / 等权相加 / 中缀 `+` 相加——两条独立信号腿相加，无论权重写在哪一侧（<!-- lint:counterexample -->`0.5*rank(A)+0.5*rank(B)`、`add(multiply(0.5,rank(A)),multiply(0.5,rank(B)))`、`add(rank(A),rank(B))` 均属此类），
 > 闸 5 的结构判定（`equal_weight_leg_add` / `infix_leg_sum` / `weighted_signal_mix_structural`，见 `platform_constraints.json` `poison_patterns`）会 block；禁权重网格扫描。本库形态全部是「单一经济信号」结构，不是拼腿。
-> **算子核验**：本库出现的每个算子都在 `known_ops`（平台 `get_operators` 实测清单，`platform_constraints.json`），由 `tests/unit/test_optimization_v1_docs.py` 守；写法取自平台定义原文。
+> **算子核验**：本库出现的每个算子都在 `known_ops`（平台 `get_operators` 实测清单，`platform_constraints.json`），由 `tests/unit/07_docs_skills/test_optimization_v1_docs.py` 守；写法取自平台定义原文。
 > 未入清单的投影/偏相关族（vector_proj / regression_neut / ts_partial_corr 等）**不采用**。
 
 ## 形态族总览

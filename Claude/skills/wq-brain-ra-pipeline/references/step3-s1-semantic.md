@@ -56,7 +56,7 @@ python tools/field_semantic_classify.py --region $REGION --dataset $DS --write-l
 
 | 位置 | 行为 | 由谁保证 |
 |---|---|---|
-| 步 5 `tools/wave_gate.py` 闸 SEM | 缺 `s1_semantic_<ds>` → **exit 2 整波阻断**并打印生成命令；命中黑名单字段的表达式**直接剔出候选** | **代码**（`tests/unit/test_semantic_gate_failclosed.py`：删闸即红） |
+| 步 5 `tools/wave_gate.py` 闸 SEM | 缺 `s1_semantic_<ds>` → **exit 2 整波阻断**并打印生成命令；命中黑名单字段的表达式**直接剔出候选** | **代码**（`tests/unit/04_gates/test_semantic_gate_failclosed.py`：删闸即红） |
 | 步 4 GEM `economic_field_pool_check` | 自己用 `build_economic_field_pool` 建字段池（缓存命中则沿用旧池），**并不读 `s1_semantic_<ds>`**，也不会因它失败 | **无代码保证**——不要以为 GEM 侧已过滤 |
 
 「把语义干净的字段重排回 GEM 字段池」（写 `s2_field_pool_<ds>`）目前**没有任何命令**实现，属人工约定；它不是安全网。**最容易被绕过的一处就是这里**——过滤只在闸 SEM 才真正落地。

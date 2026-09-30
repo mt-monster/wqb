@@ -56,7 +56,7 @@ allowed-tools:
 ## 4. 维护者步骤（改 config / 扩范式）
 
 - **新增 vs 修正**：只有「**新增**且经平台实测」才可写进 config（实测来源：`get_platform_setting_options` 的返回，或 `python tools/fetch_all_universes.py` 批量固化——它读服务端 `.env`，日常不用）。**修正 / 撤回**既有常量是用户裁决，skill 不自作主张。
-- 扩 `config.PARADIGMS` / `_OP_ARITY` 前先过 §2 的步 6–8；改完跑 `tests/unit/test_research.py`。
+- 扩 `config.PARADIGMS` / `_OP_ARITY` 前先过 §2 的步 6–8；改完跑 `tests/unit/09_core/test_research.py`。
 - 要让一条研究结论成为规则：在 `src/wqb/research/evidence.py` 的 `EVIDENCE_REGISTRY` 加一条 `Evidence`（其 `actionable_rule` 必须指向**真实存在的执行点**，不要写「由 X 强制」而 X 不强制）。
 
 ## 5. 验证（可执行）
@@ -66,7 +66,7 @@ allowed-tools:
 ```powershell
 & $WQ_PY -c "import sys; sys.path.insert(0,'src'); from wqb.research.evidence import EVIDENCE_REGISTRY as R; [print(e.date, e.category, '|', e.actionable_rule) for e in R]"
 & $WQ_PY -c "import sys; sys.path.insert(0,'src'); from wqb.config import REGIONS, neutralization_search_order; print(REGIONS['USA']['default_universe']); print(neutralization_search_order('USA'))"
-& $WQ_PY -m pytest tests/unit/test_research.py -q
+& $WQ_PY -m pytest tests/unit/09_core/test_research.py -q
 ```
 
 **期望**：第一条逐行打印证据（日期 / 类别 / 可执行规则）；第二条先打印 `TOP3000`，再打印 USA 的完整中性化顺序（11 项）；第三条全绿。USA 默认 universe 不是 `TOP3000`、或中性化顺序被截短，即为回归。

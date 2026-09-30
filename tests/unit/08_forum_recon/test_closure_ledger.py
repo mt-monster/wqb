@@ -42,10 +42,10 @@ def test_a_fixed_item_whose_verify_pointer_went_stale_is_reported(monkeypatch):
     """关闭证据（verify）指向的测试被改名 / 删除后，「已修」就失去依据——必须变红（PW-09 就曾指向已改名的测试）。"""
     ghost = "test_" + "renamed_" + "away_" + "4242"           # 拼接：字面量不出现在本文件里，否则「文件里找得到名字」会误判通过
     items = {
-        "ZZ-01": {"status": "fixed", "where": "AGENTS.md", "note": "x", "verify": f"tests/unit/test_closure_ledger.py::{ghost}"},
+        "ZZ-01": {"status": "fixed", "where": "AGENTS.md", "note": "x", "verify": f"tests/unit/08_forum_recon/test_closure_ledger.py::{ghost}"},
         "ZZ-02": {"status": "fixed", "where": "AGENTS.md", "note": "x", "verify": "tests/unit/no_such_file_" + "4242.py"},
         "ZZ-03": {"status": "fixed", "where": "AGENTS.md", "note": "x",
-                  "verify": "tests/unit/test_closure_ledger.py::test_report_id_extraction_is_complete"},
+                  "verify": "tests/unit/08_forum_recon/test_closure_ledger.py::test_report_id_extraction_is_complete"},
         "ZZ-04": {"status": "needs-platform", "note": "x", "verify": "在平台上先调用 get_operators，看返回里有没有该算子"},
     }
     monkeypatch.setattr(CL, "load", lambda: {"items": items})

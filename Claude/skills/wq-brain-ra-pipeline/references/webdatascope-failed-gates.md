@@ -1,7 +1,7 @@
 # 资格门：WebDataScope「Failed RA / Failed PPA」口径
 
 > **用途 / 适用步骤**：步 8（提交判定）的**研究侧硬前置**——进入提交流程前，从 `is.checks` 算出 Failed RA / Failed PPA，非零就回步 7 修，不进入提交。步 1 的库存篮子敲定用同一口径。
-> **实现只有一份**：`src/wqb/config.py::compute_webdata_failed_counts`（名单 `RA_CHECK_NAMES` 18 项 / `PPA_CHECK_NAMES` 7 项）。本文只写口径与边界，**名单以代码为准**——手工按本文数会漏项（RF-01：旧版名单缺 `LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO`，漏计时 23 条「零硬闸失败」候选里误放 3 条）。测试 `tests/unit/test_r3_failed_count_single_source.py` 断言 `world-quant-brain-mcp/mcp_core.py` 里 Docker 镜像用的冻结副本与它一致。
+> **实现只有一份**：`src/wqb/config.py::compute_webdata_failed_counts`（名单 `RA_CHECK_NAMES` 18 项 / `PPA_CHECK_NAMES` 7 项）。本文只写口径与边界，**名单以代码为准**——手工按本文数会漏项（RF-01：旧版名单缺 `LOW_ROBUST_UNIVERSE_SHARPE.WITH_RATIO`，漏计时 23 条「零硬闸失败」候选里误放 3 条）。测试 `tests/unit/05_submit_quota/test_r3_failed_count_single_source.py` 断言 `world-quant-brain-mcp/mcp_core.py` 里 Docker 镜像用的冻结副本与它一致。
 > 来源：平台插件 WebDataScope 的 `getAlphaCheckStates`（`config.py` 注释记的是 0.10.20；插件代码在仓外，无法在本仓库复核，以 `config.py` 注释为准）。
 
 ## 1. 口径

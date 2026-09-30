@@ -3,7 +3,7 @@
 
 2026-09-30（P1）：改走 `wqb.db_conn.connect` 规范工厂，不再裸 sqlite3.connect。
 裸连会绕过 WAL / busy_timeout=60s / foreign_keys=ON 口径，正是
-`tests/unit/test_db_write_guards.py` 拦的 `database is locked` 根因。
+`tests/unit/01_store_db/test_db_write_guards.py` 拦的 `database is locked` 根因。
 从 __file__ 上溯到仓库根，换机器 / 云端容器不再指向不存在的盘符。
 """
 import sqlite3

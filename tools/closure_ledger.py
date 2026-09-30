@@ -60,7 +60,7 @@ def load():
 
 def save(d):
     d["_doc"] = ("skills 审查（reports/skills_review_20260929.md）条目处置登记；由 tools/closure_ledger.py 维护，"
-                 "tests/unit/test_closure_ledger.py 守：每个报告 ID 都有条目、状态合法、fixed 有存在的 where、needs-platform 有 verify。")
+                 "tests/unit/08_forum_recon/test_closure_ledger.py 守：每个报告 ID 都有条目、状态合法、fixed 有存在的 where、needs-platform 有 verify。")
     d["items"] = dict(sorted(d["items"].items(), key=lambda kv: _sort_key(kv[0])))
     DATA.parent.mkdir(parents=True, exist_ok=True)
     DATA.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
@@ -180,7 +180,7 @@ def cmd_render(_a):
     cnt = collections.Counter(e.get("status") for e in d.values())
     lines = ["# skills 审查处置台账（闭环）", "",
              "> 对应 `reports/skills_review_20260929.md`。**每个条目 ID 都有去向**；数据源 `docs/skills_review_closure.json`（`tools/closure_ledger.py` 维护，"
-             "`tests/unit/test_closure_ledger.py` 守）。生成：`python tools/closure_ledger.py render`。", "",
+             "`tests/unit/08_forum_recon/test_closure_ledger.py` 守）。生成：`python tools/closure_ledger.py render`。", "",
              "状态：**fixed** 本轮已改 · **superseded** 被别的改动一并解决 · **declined** 有意不改（含范本）· **needs-platform** 依赖平台实测或业务裁定 · **open** 未处理。", "",
              "| 状态 | " + " | ".join(STATUSES) + " | 合计 |", "|---|" + "---|" * (len(STATUSES) + 1),
              "| 条数 | " + " | ".join(str(cnt[s]) for s in STATUSES) + f" | {sum(cnt.values())} |", ""]

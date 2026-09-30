@@ -2,7 +2,7 @@
 """skill_lint.py — skill 文档「内容为真」的机械检查（库 + CLI）。
 
 背景（skills 审查 X-17，2026-09-29）：仓库原有守护只查形式（frontmatter、边界段存在、工具计数、链接可达），
-不查文档里的命令 / 参数 / 表达式是否为真。本工具补上其中最高频的几类，并与 tests/unit/test_skill_lint.py
+不查文档里的命令 / 参数 / 表达式是否为真。本工具补上其中最高频的几类，并与 tests/unit/07_docs_skills/test_skill_lint.py
 配合成**棘轮**：现存违规登记在 tests/fixtures/skill_lint_baseline.json，新增违规必红，已修复的必须从基线移除。
 
 检查项（check id）：

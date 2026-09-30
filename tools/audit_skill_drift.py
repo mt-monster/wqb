@@ -13,7 +13,7 @@
 **A. GEM 内嵌快照（设计内，不算漂移）**
 `brain-make-some-gem/scripts/trailSomeAlphas/skills/brain-feature-implementation/`
 是整棵 skill 的 vendored 快照，由 `tools/sync_gem_embedded_skill.py` 同步、
-由 `tests/unit/test_gem_skill_paths.py` 与 `test_se_docs.py` 守护。
+由 `tests/unit/03_gem/test_gem_skill_paths.py` 与 `test_se_docs.py` 守护。
 `validator.py` 文件头「单一来源」一节明确要求改一处四处一起覆盖。
 → 这类**故意保留**，本工具不报。
 

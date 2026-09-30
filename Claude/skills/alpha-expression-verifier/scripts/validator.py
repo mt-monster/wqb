@@ -12,7 +12,7 @@ src/wqb/expression/validator.py 只做形状分类与批级多样性闸（check_
 
 【单一来源 2026-09-29】本文件以 `alpha-expression-verifier/scripts/validator.py` 为**唯一权威版**；
 `brain-feature-implementation`、其 GEM 内嵌副本、`brain-inspect-raw-template-create-setting` 的
-`scripts/validator.py` 是逐字节镜像（tests/unit/test_se_docs.py 钉死）。改本文件必须同步覆盖三处：
+`scripts/validator.py` 是逐字节镜像（tests/unit/07_docs_skills/test_se_docs.py 钉死）。改本文件必须同步覆盖三处：
     for d in <三处 scripts 目录>; do cp <本文件> $d/validator.py; done
 此前三份各自演化：hump 命名参数（2026-09-07 事故）、bucket 必带 range/buckets（2026-09-19 事故）、
 densify 分组键类型的修复只落在权威版，GEM 与外部 idea 入库通道仍用旧副本本地放行。

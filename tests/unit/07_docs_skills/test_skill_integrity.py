@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Skill / Workflow 完整性守护测试（2026-09-05 新增）.
 
-背景：此前没有任何测试扫描 SKILL.md —— tests/unit/test_skills.py 名字像，
+背景：此前没有任何测试扫描 SKILL.md —— tests/unit/07_docs_skills/test_skills.py 名字像，
 实测的却是 operator_audit / validator。于是这一类问题只能靠人眼审计：
 
   - brain-make-some-gem 目录存在但缺 SKILL.md（Agent 根本加载不到）

@@ -75,7 +75,7 @@ hooks:
 
 ## 钩子（frontmatter `hooks:`）到底做什么
 
-本 skill 是全库**唯一**允许声明 `hooks:` 的 skill（`tests/unit/test_skill_hooks_and_tools_guard.py` 的白名单）。钩子 = 在 agent 生命周期事件上自动执行的命令，所以逐条写明：
+本 skill 是全库**唯一**允许声明 `hooks:` 的 skill（`tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py` 的白名单）。钩子 = 在 agent 生命周期事件上自动执行的命令，所以逐条写明：
 
 | 事件 | 命令做什么 | 成本 / 风险 |
 |---|---|---|

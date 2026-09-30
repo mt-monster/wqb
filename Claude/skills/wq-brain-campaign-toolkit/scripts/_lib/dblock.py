@@ -2,7 +2,7 @@
 """_lib/dblock.py - wqb.db 写库互斥（文件 token，2026-09-20 L3）。
 
 与规范实现 ``src/wqb/db_write_lock.py`` 同构（toolkit 安装位拿不到仓库 src，
-故落地同构版本；两端由 tests/unit/test_db_write_guards.py 行为守卫看护）。
+故落地同构版本；两端由 tests/unit/01_store_db/test_db_write_guards.py 行为守卫看护）。
 
 设计：单文件锁 ``logs/_dblock/dbwrite.lock.json``，O_CREAT|O_EXCL 原子创建；
 TTL 自愈（mtime 超时回收，崩溃不留死锁）；同 pid 重入=续约；任何异常降级

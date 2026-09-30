@@ -38,7 +38,7 @@ agent_created: true
 
 ## 2. 判停与卡住（STALLED / TIMEOUT）
 
-- **阈值只有一处**：`wqb.config.WAIT_THRESHOLDS`——`sim_stall_min`（progress 无变化即 `STALLED`）与 `sim_timeout_min`（总超时）；执行体是 toolkit `_lib/poller.py` 的 `DEFAULT_POLL`（区域 `thresholds.json` 的 `poll` 节可覆盖），两者相等由 `tests/unit/test_wait_thresholds.py` 守。**`STALLED` / `TIMEOUT` 即判停**，不等「看起来没动静」。
+- **阈值只有一处**：`wqb.config.WAIT_THRESHOLDS`——`sim_stall_min`（progress 无变化即 `STALLED`）与 `sim_timeout_min`（总超时）；执行体是 toolkit `_lib/poller.py` 的 `DEFAULT_POLL`（区域 `thresholds.json` 的 `poll` 节可覆盖），两者相等由 `tests/unit/07_docs_skills/test_wait_thresholds.py` 守。**`STALLED` / `TIMEOUT` 即判停**，不等「看起来没动静」。
 - 其它等待阈值（提交翻转、prod 相关性轮询等）同在 `WAIT_THRESHOLDS`；轮询退避参数见 toolkit [`poll-and-quota.md`](../wq-brain-campaign-toolkit/references/poll-and-quota.md)。
 - **并发参数不在此复述**：只看 `config.CONCURRENCY` 与 [`wqb-concurrency`](../wqb-concurrency/SKILL.md) §8；本页也不下「瓶颈在信号发现还是吞吐」这类带时点的判断（那是复盘报告的结论，不是规则）。
 

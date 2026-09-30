@@ -1,6 +1,6 @@
 # 轮询 / 熔断 / 并发 / 退避 / 提交配额
 
-> 数字的**唯一来源**：轮询与卡住阈值 = `src/wqb/config.py::WAIT_THRESHOLDS`（`sim_stall_min` / `sim_timeout_min`），并发 = `config.CONCURRENCY`；toolkit 的 `_lib/poller.py::DEFAULT_POLL` 与它们的一致性由 `tests/unit/test_wait_thresholds.py` 守。文档按键名引用，不另抄一份会漂的数字。
+> 数字的**唯一来源**：轮询与卡住阈值 = `src/wqb/config.py::WAIT_THRESHOLDS`（`sim_stall_min` / `sim_timeout_min`），并发 = `config.CONCURRENCY`；toolkit 的 `_lib/poller.py::DEFAULT_POLL` 与它们的一致性由 `tests/unit/07_docs_skills/test_wait_thresholds.py` 守。文档按键名引用，不另抄一份会漂的数字。
 
 ## 1. 轮询与熔断（`_lib/poller.py`，`thresholds.json` 的 `poll` 节可覆盖）
 
@@ -37,7 +37,7 @@
 - MCP 的 `get_submission_quota` 已于 2026-08-25 移除，**不要依赖它**。硬闸 FAIL 的提交**不消耗**配额（status 保持 UNSUBMITTED）。
 - SUPER 的 1 / 日由提交层（`tools/submit_verdict.py` / `super_build.py`）单独把关，`quota` 只看 REGULAR 上限（`thresholds.submit_quota.limit`，缺省 4）。
 
-**配额闸与回测发起是两个独立机制**：`pipeline.py` 的提交配额闸**缺省关闭**（`quota_cfg()['enabled']` = `False`，2026-08-26 用户指令；`tests/unit/test_sd_engine_contracts.py` 钉住），所以配额耗尽**不会**中止回测发起，RA 循环「配额耗尽 → 挂起提交，继续步 2→9」成立。只有区域 `thresholds.json` 显式 `submit_quota.enabled=true` 才会在 `remaining ≤ 0` 时中止（退出码 2），`--force` 越过（它不提交 alpha、也不消耗任何配额，只是不中止回测发起）。
+**配额闸与回测发起是两个独立机制**：`pipeline.py` 的提交配额闸**缺省关闭**（`quota_cfg()['enabled']` = `False`，2026-08-26 用户指令；`tests/unit/01_store_db/test_sd_engine_contracts.py` 钉住），所以配额耗尽**不会**中止回测发起，RA 循环「配额耗尽 → 挂起提交，继续步 2→9」成立。只有区域 `thresholds.json` 显式 `submit_quota.enabled=true` 才会在 `remaining ≤ 0` 时中止（退出码 2），`--force` 越过（它不提交 alpha、也不消耗任何配额，只是不中止回测发起）。
 
 ## 5. 凭证与缓存
 

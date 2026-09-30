@@ -3,7 +3,7 @@
 
 背景（skills 审查 X-2）：仅 SKILL.md + INDEX 里这类宣称就有 47 次，关于提交判定至少 10 处互相矛盾。
 规则：「唯一…」宣称只在 `Claude/skills/GLOSSARY.md` 的登记表里登记（宣称 / 唯一实现 / 守护测试）；别处写「见 X」。
-`tests/unit/test_glossary_docs.py` 用 `tests/fixtures/authority_claims_baseline.json` 做**只减不增**的棘轮：
+`tests/unit/07_docs_skills/test_glossary_docs.py` 用 `tests/fixtures/authority_claims_baseline.json` 做**只减不增**的棘轮：
 新增一处宣称必红；删掉一处后必须 `--update-baseline` 把基线降下来。
 
   python tools/authority_claims.py                 # 列出各文件的宣称次数与相对基线的差异

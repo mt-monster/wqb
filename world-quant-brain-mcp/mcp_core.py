@@ -76,7 +76,7 @@ async def health_check(context: Context):
 # 唯一实现在 src/wqb/config.py（2026-09-27 R3：此前这里、tools/build_gate_prior_from_inventory.py
 # 与 wqb.config 各有一份，wqb.config 那份口径还是反的）。仓库布局下直接引用它；Docker 镜像
 # 只打包本目录、没有 src/，回落到下面的冻结副本——副本与 wqb.config 的一致性由根
-# tests/unit/test_r3_failed_count_single_source.py 逐项断言，改口径只改 wqb.config 再同步副本。
+# tests/unit/05_submit_quota/test_r3_failed_count_single_source.py 逐项断言，改口径只改 wqb.config 再同步副本。
 _WQB_SRC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
 if os.path.isdir(os.path.join(_WQB_SRC, "wqb")) and _WQB_SRC not in sys.path:
     sys.path.insert(0, _WQB_SRC)

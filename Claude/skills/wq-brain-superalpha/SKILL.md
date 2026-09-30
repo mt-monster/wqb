@@ -32,7 +32,7 @@ allowed-tools:
 | `mcp__wq-brain-http__workflow_superalpha(region, components, neutralization, confirm_submit=False)` | 上面几步的 MCP 封装：sa_probe → select → status → probe →（仅 `confirm_submit=True`）submit | `confirm_submit=True` 时是——内部调用 `super_build.py submit`，**同一个 prod 闸**。只转发 region / universe / neutralization / selection / combo，`decay` / `selectionLimit` / `self_gate` 用 CLI 缺省；要调杠杆走 CLI |
 | `mcp__wq-brain-http__sa_probe(region)` / `python tools/sa_probe.py --region <R>` | 组件池计数：`GO`（ACTIVE REGULAR ≥ 10）/ `BLOCKED` | 否 |
 
-**不要**对 SUPER 调 `workflow_submit_alpha(confirm_submit=True[, force=True])`：该节点没有 prod 闸，`force=True` 还跳过本地预检——旧版正是这样教的。现在节点在任何副作用之前**拒绝 SUPER**（`reason: super_requires_super_build`，`force` 也无效；`tests/unit/test_submit_alpha_super_guard.py` 守）。
+**不要**对 SUPER 调 `workflow_submit_alpha(confirm_submit=True[, force=True])`：该节点没有 prod 闸，`force=True` 还跳过本地预检——旧版正是这样教的。现在节点在任何副作用之前**拒绝 SUPER**（`reason: super_requires_super_build`，`force` 也无效；`tests/unit/05_submit_quota/test_submit_alpha_super_guard.py` 守）。
 `components` 参数只用于「≥ 10 颗」计数：SUPER 的成分由 `selection` 表达式在运行时筛选，**不按 id 列表指定**。
 
 ## 不可逆动作块

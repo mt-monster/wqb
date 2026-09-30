@@ -14,7 +14,7 @@
 - `path` 是 **目录** → 走 DirArchive（按包内相对路径读文件）；
 - `path` 是 **zip 文件** → 走 zipfile.ZipFile（原语义完全不变）；
 - `path` 不存在 → 由 zipfile 抛 FileNotFoundError，**fail-closed 语义保持不变**
-  （`tests/unit/test_inspect_mode_failclosed_p1p1.py` 依赖这条）。
+  （`tests/unit/04_gates/test_inspect_mode_failclosed_p1p1.py` 依赖这条）。
 
 只读套装即可，不实现写入/追加。
 """

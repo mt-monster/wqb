@@ -51,7 +51,7 @@ def run(
 ) -> Dict[str, Any]:
     """执行 S2→S3 门禁（语法 + 8 闸 + 体检硬门 + 多样性）。
 
-    调用契约（2026-09-27 固化，守护见 tests/unit/test_wave_gate_auto_insert_contract.py）：
+    调用契约（2026-09-27 固化，守护见 tests/unit/06_wave_pipeline/test_wave_gate_auto_insert_contract.py）：
     ① **节点参数 ⊆ CLI 参数** —— 新增节点参数必须确认 `tools/wave_gate.py` 有对应 `--flag`
        （`validate_argv` 会静态校验）；
     ② **调用侧不得传入 run() 不接受的参数** —— `world-quant-brain-mcp/tools_workflow.py`

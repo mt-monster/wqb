@@ -16,7 +16,7 @@
   3. 全局 ledger_kv  GLOBAL/mode_b_qualification（权威主闸+旁路+判死线）
   4. 内置默认 _DEFAULT_GLOBAL（主闸 1.25/0.8）
   （2026-09-29 更正：此前 2/3 的先后与 load_mode_b_config 的实际覆盖顺序相反；由
-  tests/unit/test_mode_b_qualification_doc.py 钉住。）
+  tests/unit/07_docs_skills/test_mode_b_qualification_doc.py 钉住。）
 
 判定模型：
   - 主闸：sharpe≥sharpe_min AND fitness≥fitness_min → 直接放行

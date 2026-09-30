@@ -2,7 +2,7 @@
 
 > 2026-09-12 新增，2026-09-29 补全（skills 审查 RT-01 ~ RT-05）。生成链上有三套概念分类学并存，本表建立对应关系，
 > 避免同一字段被贴三个互不通气的标签。权威来源：各分类本体定义处；本表只是桥。
-> **一致性有测试守**：`tests/unit/test_concept_taxonomy_map.py` 断言 hypothesis-first 的 12 个类名都出现在本表里（新增类必须同步本表）。
+> **一致性有测试守**：`tests/unit/08_forum_recon/test_concept_taxonomy_map.py` 断言 hypothesis-first 的 12 个类名都出现在本表里（新增类必须同步本表）。
 
 | 生成问题 | dfe 8 问（brain-data-feature-engineering 第 3 步） | GEM 概念位（brain-make-some-gem；旧称「七槽配给」——与**波内配额**、**并发令牌**是三个东西） | hypothesis 12 类（brain-alpha-research-hypothesis-first） | 典型表达构造 |
 |---|---|---|---|---|
@@ -26,5 +26,5 @@
 
 ## 维护
 
-- 新增假设类 / 概念位 / 8 问时**必须**同步本表（三处本体定义 + 本表第 2–4 列）；`tests/unit/test_concept_taxonomy_map.py` 只守「hypothesis-first 的类名 ⊆ 本表」这一条，其余靠人。
+- 新增假设类 / 概念位 / 8 问时**必须**同步本表（三处本体定义 + 本表第 2–4 列）；`tests/unit/08_forum_recon/test_concept_taxonomy_map.py` 只守「hypothesis-first 的类名 ⊆ 本表」这一条，其余靠人。
 - 争议映射以各本体定义处的最新版本为准。

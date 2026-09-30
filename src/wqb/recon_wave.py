@@ -45,7 +45,7 @@ FITNESS_MIN = float(GATES_PLATFORM["fitness_min"])
 
 #: RA 资格门闸名 → 墙。词汇与 step7 §7.3 / `forum-recon-triggers.md` 的「prod / 2Y / CW / tvr / robust」一致，
 #: 另有 `SUB`（子宇宙）与 `sharpe`（强度）——是同一张 RA 闸表（`wqb.config.RA_CHECK_NAMES`）里的其余项。
-#: 与 `RA_CHECK_NAMES` 的一一对应由 `tests/unit/test_recon_wave.py` 守护：config 新增一项 RA 闸而这里没给它墙，测试即红。
+#: 与 `RA_CHECK_NAMES` 的一一对应由 `tests/unit/08_forum_recon/test_recon_wave.py` 守护：config 新增一项 RA 闸而这里没给它墙，测试即红。
 WALL_BY_CHECK: Dict[str, str] = {
     "LOW_SHARPE": "sharpe", "LOW_FITNESS": "sharpe", "LOW_RETURNS": "sharpe",
     "LOW_GLB_AMER_SHARPE": "sharpe", "LOW_GLB_APAC_SHARPE": "sharpe", "LOW_GLB_EMEA_SHARPE": "sharpe",

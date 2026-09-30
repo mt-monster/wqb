@@ -54,10 +54,11 @@ def test_contract_carries_frontmatter_boundary_naming_shared_artifacts_and_gates
     for name in ("wave_results", "registry_empirical", "ledger_kv", "expressions", "field_catalog", "priors_snapshot_<region>", "submit_ready"):
         assert f"`{name}`" in t, name
     assert "docs/ledger_keys.json" in t and "test_ledger_key_catalog.py" in t
-    assert (ROOT / "tests" / "unit" / "test_ledger_key_catalog.py").is_file() and (ROOT / "docs" / "ledger_keys.json").is_file()
+    assert (ROOT / "tests" / "unit" / "01_store_db" / "test_ledger_key_catalog.py").is_file() and (ROOT / "docs" / "ledger_keys.json").is_file()
     assert "失败于环境 vs 失败于内容" in t and "WQ_SKILLS_DIR" in t
-    for test_name in re.findall(r"tests/unit/(test_[a-z_]+\.py)", t):
-        assert (ROOT / "tests" / "unit" / test_name).is_file(), f"CONTRACT 提到的 {test_name} 不存在"
+    # 兼容 tests/unit/<主题子目录>/ 的新布局（`(?:[0-9]{2}_[a-z_]+/)?` 匹配可选子目录）
+    for rel in re.findall(r"tests/unit/((?:[0-9]{2}_[a-z_]+/)?test_[a-z_]+\.py)", t):
+        assert (ROOT / "tests" / "unit" / rel).is_file(), f"CONTRACT 提到的 {rel} 不存在"
 
 
 def test_contract_shared_artifact_table_matches_the_code_owners():

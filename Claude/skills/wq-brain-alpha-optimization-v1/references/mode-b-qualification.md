@@ -1,6 +1,6 @@
 # Mode B 资格判定表（单一真相源）
 
-> **一句话**：候选在 S4 没过闸后，「值不值得继续改（进 Mode B）」由 `src/wqb/workflow/mode_b_config.py::evaluate_mode_b` 判定——**主闸 + 5 条旁路 + 判死线**。本页是该函数的文档镜像，数值由 `tests/unit/test_mode_b_qualification_doc.py` 与代码逐项对拍；**别处不再手抄 1.25 / 0.8，一律链到本页**。
+> **一句话**：候选在 S4 没过闸后，「值不值得继续改（进 Mode B）」由 `src/wqb/workflow/mode_b_config.py::evaluate_mode_b` 判定——**主闸 + 5 条旁路 + 判死线**。本页是该函数的文档镜像，数值由 `tests/unit/07_docs_skills/test_mode_b_qualification_doc.py` 与代码逐项对拍；**别处不再手抄 1.25 / 0.8，一律链到本页**。
 > **谁引用**：optimization-v1（Mode B 入场、组合腿救援）、how-to-pass（FAIL 回流）、RA step-7 / step-9 / decision-table。
 > **作废说法**（2026-09-09 起）：「未达资格线（1.25/0.8）一律判死」「达标 → 强制进 Mode B；未达标 → 判死」——那是旧的双标量闸，会误杀下表旁路 A–E 的候选。
 
@@ -74,5 +74,5 @@
 
 ## 7. 维护
 
-- 改判定逻辑只改 `mode_b_config.py`（与 `GLOBAL/mode_b_qualification` 台账），然后同步本页；`tests/unit/test_mode_b_qualification_doc.py` 会在数值 / 动作文案 / 优先级不一致时失败。
+- 改判定逻辑只改 `mode_b_config.py`（与 `GLOBAL/mode_b_qualification` 台账），然后同步本页；`tests/unit/07_docs_skills/test_mode_b_qualification_doc.py` 会在数值 / 动作文案 / 优先级不一致时失败。
 - 任何 skill 文档不得再写「未达资格线一律判死」——同一测试扫全部 SKILL / references，出现该类措辞且附近没有 `bypass` / 旁路 / 本页链接即失败。

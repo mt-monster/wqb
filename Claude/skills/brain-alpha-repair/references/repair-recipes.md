@@ -1,6 +1,6 @@
 # 修复配方索引（配方去哪了 · 可复制模板）
 
-> 主文见 [`../SKILL.md`](../SKILL.md)。本页回答两件事：① 旧版声明「已上移」的每个配方**现在在哪**（每一项都由 `tests/unit/test_brain_alpha_repair_docs.py` 逐条 grep 校验——「声明已上移的术语必须能在目标文件里找到」）；② turnover / coverage / correlation 三类各给一个可复制的模板与适用条件。
+> 主文见 [`../SKILL.md`](../SKILL.md)。本页回答两件事：① 旧版声明「已上移」的每个配方**现在在哪**（每一项都由 `tests/unit/07_docs_skills/test_brain_alpha_repair_docs.py` 逐条 grep 校验——「声明已上移的术语必须能在目标文件里找到」）；② turnover / coverage / correlation 三类各给一个可复制的模板与适用条件。
 
 ## 一、旧声明逐项核销
 

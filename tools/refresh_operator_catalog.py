@@ -17,7 +17,7 @@
 
 写盘后建议跑一遍回归，确认新签名没把历史合法写法误杀::
 
-    python -m pytest tests/unit/test_op_arity.py -q
+    python -m pytest tests/unit/09_core/test_op_arity.py -q
 """
 from __future__ import annotations
 
@@ -91,7 +91,7 @@ def main(argv=None) -> int:
     with open(a.out, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
     print(f"[done] 写入 {a.out}（{len(entries)} 个算子）；"
-          f"请跑 python -m pytest tests/unit/test_op_arity.py -q 确认无误杀")
+          f"请跑 python -m pytest tests/unit/09_core/test_op_arity.py -q 确认无误杀")
     return 0
 
 

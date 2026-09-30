@@ -7,8 +7,8 @@
 
 新增/修改 workflow 节点时必须同步的 **五处**：
   ① `src/wqb/workflow/registry.py`            —— 节点注册 + NodeMeta（required/optional 须与 run() 签名一致）
-  ② `tests/unit/test_workflow.py`             —— `test_registry_lists_all_core_nodes` 的期望节点集合
-  ③ `tests/unit/test_skill_integrity.py`      —— `_DRY_RUN_CASES` 干跑用例表
+  ② `tests/unit/02_workflow/test_workflow.py`             —— `test_registry_lists_all_core_nodes` 的期望节点集合
+  ③ `tests/unit/07_docs_skills/test_skill_integrity.py`      —— `_DRY_RUN_CASES` 干跑用例表
   ④ `Claude/skills/INDEX.md`                  —— workflow 节点计数（`test_docs_consistency.py` 守护）
   ⑤ `world-quant-brain-mcp/tests/test_tools_workflow_unit.py` —— `expected_nodes` 集合
      （2026-09-29 补：此前只认四处，`forum_recon_wave` 上线后本处漏同步，
@@ -34,8 +34,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 SRC = REPO / "src"
 INDEX = REPO / "Claude" / "skills" / "INDEX.md"
-TEST_WORKFLOW = REPO / "tests" / "unit" / "test_workflow.py"
-TEST_INTEGRITY = REPO / "tests" / "unit" / "test_skill_integrity.py"
+TEST_WORKFLOW = REPO / "tests" / "unit" / "02_workflow" / "test_workflow.py"
+TEST_INTEGRITY = REPO / "tests" / "unit" / "07_docs_skills" / "test_skill_integrity.py"
 # ⑤ MCP 包内另有一份节点期望集合（与根 tests/ 并列，不在 pytest.ini 的 testpaths 之外）
 MCP_TEST_WORKFLOW = (
     REPO / "world-quant-brain-mcp" / "tests" / "test_tools_workflow_unit.py"
@@ -223,8 +223,8 @@ def main() -> int:
         print(f"\n检测到 {len(problems)} 处漂移：")
         for p in problems:
             print(f"  ✗ {p}")
-        print("\n修复后跑：python -m pytest tests/unit/test_workflow.py "
-              "tests/unit/test_skill_integrity.py tests/unit/test_docs_consistency.py "
+        print("\n修复后跑：python -m pytest tests/unit/02_workflow/test_workflow.py "
+              "tests/unit/07_docs_skills/test_skill_integrity.py tests/unit/07_docs_skills/test_docs_consistency.py "
               "world-quant-brain-mcp/tests/test_tools_workflow_unit.py -q")
         return 1
 

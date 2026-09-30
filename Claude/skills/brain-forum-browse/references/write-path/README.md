@@ -1,7 +1,7 @@
 # 论坛写路径（休眠 · DORMANT）
 
 > **本目录当前不适用。** 激活条件：`wq-brain-http` 出现 `create_forum_comment` / `create_forum_post` / `upvote_forum_comment` 任一工具。
-> 现状：一个都没有（工具清单见 [../../SKILL.md](../../SKILL.md) §1，`tests/unit/test_se_docs.py` 对照代码签名）。
+> 现状：一个都没有（工具清单见 [../../SKILL.md](../../SKILL.md) §1，`tests/unit/07_docs_skills/test_se_docs.py` 对照代码签名）。
 > 在此之前：不走 Run Contract / Auto-Send E1 / 对抗审查 / curator，不靠浏览器绕过；用户要文案时只**起草、不发布**——起草同样遵守本目录的证据规则与下面的脱敏清单。
 
 ## 文件

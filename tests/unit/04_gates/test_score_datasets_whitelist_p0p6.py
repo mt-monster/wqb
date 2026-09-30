@@ -9,7 +9,7 @@
 - P6 _expr_fields：token 去重 + 剔除群组变量关键字（根治 calibrate 甜区污染）
 
 campaign_intel.py 的 P1（est_seats/--target）依赖 DB + 平台，属集成路径，此处不覆盖；
-其 argparse 契约由 tests/unit/test_audit_fixes.py::validate_argv 与 --help 保障。
+其 argparse 契约由 tests/unit/07_docs_skills/test_audit_fixes.py::validate_argv 与 --help 保障。
 """
 import sys
 from pathlib import Path

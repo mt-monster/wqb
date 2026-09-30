@@ -366,7 +366,7 @@ def is_news_dataset(name: str, category: Optional[str] = None) -> bool:
 # failed_ra=3、这里给 0；而 AGENTS.md 把本模块定为唯一事实源，照规范引用就会踩中。
 # 现 world-quant-brain-mcp/mcp_core.py（`_slim_checks`）与 tools/build_gate_prior_from_inventory.py
 # 都引用这里；mcp_core 另留一份 Docker 镜像（只打包 MCP 目录、没有 src/）用的冻结副本，
-# 与本段的一致性由 tests/unit/test_r3_failed_count_single_source.py 断言。
+# 与本段的一致性由 tests/unit/05_submit_quota/test_r3_failed_count_single_source.py 断言。
 
 #: 2 年 sharpe 读数所在的两个 check（值即 two_year_sharpe）
 RA_2Y_NAMES = ("LOW_2Y_SHARPE", "IS_LADDER_SHARPE")
@@ -501,7 +501,7 @@ GATES: Dict[str, Dict[str, object]] = {
 
 #: 等待 / 退避 / 卡住阈值（**唯一来源**，skills 审查 X-15，2026-09-29）。
 #: 文档（poll-and-quota.md 的阈值表、submit-alpha、super-alpha、monitor）只按键名引用，不再抄数字；
-#: 与代码常量的一致性由 tests/unit/test_wait_thresholds.py 守护。
+#: 与代码常量的一致性由 tests/unit/07_docs_skills/test_wait_thresholds.py 守护。
 WAIT_THRESHOLDS: Dict[str, object] = {
     # POST /submit 返回 201/202（异步受理）后，等 alpha 状态离开 UNSUBMITTED 的窗口。平台翻转实测 2–3 min；
     # 窗口内未翻 → re-POST 补发一次（幂等）→ 再等一个窗口 → 仍未翻记 ASYNC_STUCK 并知会用户。
@@ -559,7 +559,7 @@ MINING: Dict[str, object] = {
 #: `_lib/operator_coverage.py::_DEFAULT_WINDOWS` 的旧默认值 `[20,60,120,5,10,252]`
 #: 完全吻合（该默认值已同轮对齐，见其注释）。
 #: 本常量与 `wq-brain-campaign-toolkit/config/platform_constraints.json::window_whitelist`
-#: 同源，由 `tests/unit/test_window_whitelist_p4.py` 守护两边一致。
+#: 同源，由 `tests/unit/06_wave_pipeline/test_window_whitelist_p4.py` 守护两边一致。
 STANDARD_WINDOWS: List[int] = [1, 5, 22, 66, 252, 504, 1008, 1260]
 
 

@@ -28,7 +28,7 @@
 闸1b 算子元数 + 命名参数；闸2b 区域非法 group 字段；闸2b-2 区域不可用字段 + VECTOR 上套 ts_*；
 闸9 非标准窗口（默认 warn，window_whitelist_enforce=true 升 block）。
 闸5 判定含：正则毒模式 + 结构判定（add 加权 / add 等权 / 中缀 `+` / 跨数据集价差），覆盖矩阵见
-tests/unit/test_gate5_coverage_matrix.py。
+tests/unit/04_gates/test_gate5_coverage_matrix.py。
 闸编号的**唯一注册表**是本文件的 GATE_REGISTRY；`python gate.py --print-gate-table` 输出 Markdown 闸表，
 文档里的闸表由测试（test_gate_registry_docs）与之比对。
 

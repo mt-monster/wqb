@@ -288,7 +288,7 @@ def _s0_rank_key(x, xr_penalize=False):
     `--xr-penalize` 可复现旧行为（降权）。两层结构含义不变：
       key[0] = ledger_dead 或 proven_dead_by_yield（判死沉底）
       key[1] = conditioning_only（字段数不足次沉；xr 仅在 flag 下并入）
-    契约守护：tests/unit/test_campaign_intel_s0_rank_p1.py。
+    契约守护：tests/unit/08_forum_recon/test_campaign_intel_s0_rank_p1.py。
     """
     penalized = bool(x["ledger_dead"] or x["proven_dead_by_yield"])
     soft = bool(x["conditioning_only"] or (xr_penalize and x.get("xr_penalized")))

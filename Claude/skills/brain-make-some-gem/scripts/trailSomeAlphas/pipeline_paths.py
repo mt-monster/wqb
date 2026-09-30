@@ -73,7 +73,7 @@ except Exception:
 
 # 技能根解析统一走 skill_roots helper（2026-09-11 审计收敛；09-13 拆分后沿用）：
 # 顺序与 toolkit `_lib/skill_roots.py` / `wqb.workflow._common._skill_roots()` 一致，
-# 由 tests/unit/test_docs_consistency.py::test_root_resolvers_use_single_source_helper 守护。
+# 由 tests/unit/07_docs_skills/test_docs_consistency.py::test_root_resolvers_use_single_source_helper 守护。
 from skill_roots import candidate_paths_under_skill as _cand  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ from skill_roots import candidate_paths_under_skill as _cand  # noqa: E402
 # 而 `FEATURE_ENGINEERING_DIR` **一直没改**，仍恒指向内嵌的 `skills/brain-data-feature-engineering`。
 # 实测后果（2026-09-26）：那个内嵌目录**连 SKILL.md 都没有** → `read_text_optional()` 失败返回 `""`，且完全静默。
 # ⚠ 2026-09-29 更正：SKILL.md **正文从不进 LLM prompt**——`build_prompt` 只用「dfe SKILL.md 是否非空」
-# 决定附不附一句固定的 8 问提示（`fe_hint`），FI 那份完全不用（`tests/unit/test_se_docs.py` 钉死）。
+# 决定附不附一句固定的 8 问提示（`fe_hint`），FI 那份完全不用（`tests/unit/07_docs_skills/test_se_docs.py` 钉死）。
 # 这个解析真正重要的是 `FEATURE_IMPLEMENTATION_DIR/scripts`（`ace_lib` / `validator` / `implement_idea` 的来源）。
 # 现统一为：env 覆盖 > skill_roots 候选（主安装位优先，仓库副本兜底） > 内嵌 legacy 兜底。
 

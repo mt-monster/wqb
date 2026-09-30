@@ -38,7 +38,7 @@ mcp__wq-brain-http__workflow_chain  dry_run=true  chain=[
 - **干跑证明什么 / 不证明什么**：干跑逐节点把真实命令构建出来（不起子进程、不写库）并**校验命令能否被目标脚本的 argparse 接受**，`failed_at` 指出首个断点。它**不证明**：LLM 通道可达（GEM；`402` 时干跑照样 OK）、配额与并发可用、平台鉴权有效、写库成功、字段 / 算子被平台接受。**干跑绿 ≠ 能跑。**
 - **异步 join**：`join_async=True`（缺省）时，gem / batch_track / campaign / feature_engineering 这类「启动即返回」的节点，链会等其后台任务到终态再走下一步，任务失败即按该步失败中止（否则下游必然读到上游尚未落库的空结果）。要「只发起不等待」传 `join_async=false`，再用 `workflow_task_status` 跟踪；单步等待上限 `join_timeout_sec`（缺省 1800 s）。
 - **gem 后紧跟 batch_track 而中间没有 wave_gate 时，`workflow_chain` 自动插入 `wave_gate`**（inspect 模式取显式传参 > `WQB_INSPECT_MODE` > `warn`；闸 PF 开），防止自动链跳过门禁。
-- **提交类节点不入链，由代码强制**：`submit_alpha` / `superalpha` 只要带 `confirm_submit=True` 出现在链里，`wqb.workflow.executor.execute_chain` 就**整链拒绝、一步都不执行**（干跑也拒；`confirm_submit` 缺省 / 为假的提交类步骤只做预检，允许入链）。守护测试 `tests/unit/test_workflow_chain_irreversible_guard.py`。真正的提交只能是用户确认后的**单独一次**调用。
+- **提交类节点不入链，由代码强制**：`submit_alpha` / `superalpha` 只要带 `confirm_submit=True` 出现在链里，`wqb.workflow.executor.execute_chain` 就**整链拒绝、一步都不执行**（干跑也拒；`confirm_submit` 缺省 / 为假的提交类步骤只做预检，允许入链）。守护测试 `tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py`。真正的提交只能是用户确认后的**单独一次**调用。
 
 ## T.3 MCP 名与实现位置（排障用）
 

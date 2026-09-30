@@ -5,7 +5,7 @@
 `~/.claude/skills`（主安装位）与仓库自带副本 → 会静默读到旧拷贝。收敛到本模块。
 
 顺序见 `wq-brain-campaign-toolkit/scripts/_lib/skill_roots.py` 模块头（两份必须一致，
-由 `tests/unit/test_docs_consistency.py::test_skill_roots_mirrors_agree_with_common` 守护）。
+由 `tests/unit/07_docs_skills/test_docs_consistency.py::test_skill_roots_mirrors_agree_with_common` 守护）。
 """
 from __future__ import annotations
 

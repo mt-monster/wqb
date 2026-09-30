@@ -16,7 +16,7 @@
 
 ## 2. 键目录：单一来源是 `docs/ledger_keys.json`
 
-不要在这里再抄一份键表。`docs/ledger_keys.json` 登记**每一个**键：`status`（`active` / `legacy` / `deprecated` / `external`）、用途、**写入方**、**读取方**、缺失时的行为、刷新方式；`tests/unit/test_ledger_key_catalog.py` 守：代码或文档里出现的键必须登记；有读取方而无写入方的键必须登记 `orphan` 且登记必须仍为真（一旦补上写入方就得删登记）；已废止的键只能出现在带「废止 / 历史」字样的行；登记的代码引用必须真实存在并含该键字面量。**新增 / 改名 / 废弃一个键 = 先改这份目录**（键里的 `<x>` 是占位符）。
+不要在这里再抄一份键表。`docs/ledger_keys.json` 登记**每一个**键：`status`（`active` / `legacy` / `deprecated` / `external`）、用途、**写入方**、**读取方**、缺失时的行为、刷新方式；`tests/unit/01_store_db/test_ledger_key_catalog.py` 守：代码或文档里出现的键必须登记；有读取方而无写入方的键必须登记 `orphan` 且登记必须仍为真（一旦补上写入方就得删登记）；已废止的键只能出现在带「废止 / 历史」字样的行；登记的代码引用必须真实存在并含该键字面量。**新增 / 改名 / 废弃一个键 = 先改这份目录**（键里的 `<x>` 是占位符）。
 
 键的家族按前缀分（详见目录）：`s0_*` / `s1_*` / `s2_*`（各阶段产物）、`review_<tag>` / `near_pool` / `salvage_pool`（评审）、`prod_first_<wave>` / `prod_family_*` / `xr_probe_*`（prod 探针）、`region_kb` / `priors_snapshot_<region>`（先验）、`ckpt_w<wave>`（pipeline checkpoint，取代旧的 checkpoint 文件）、`waiver_<gate>_<region>_<wave>`（逃生口留痕）、`saturated_datasets` / `dataset_empirical_prior`（S0 反馈与先验）等。
 

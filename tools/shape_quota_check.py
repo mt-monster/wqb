@@ -34,7 +34,7 @@ if _SRC not in sys.path:
 from wqb import db_conn  # noqa: E402
 from wqb import shape_quota as SQ  # noqa: E402
 
-#: 与 `CampaignStore.list_expressions` 缺省过滤同口径的「不参与选波 / 回测」状态（tests/unit/test_shape_quota.py 守它们不漂移）
+#: 与 `CampaignStore.list_expressions` 缺省过滤同口径的「不参与选波 / 回测」状态（tests/unit/01_store_db/test_shape_quota.py 守它们不漂移）
 EXCLUDED_STATUS = ("superseded", "dropped", "deferred")
 
 

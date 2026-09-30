@@ -854,7 +854,7 @@ class SimulationMixin:
         (Sharpe 1.25 D1 / Fitness 1.0 D1 / Turnover 1%-70%, see wqb.config.PLATFORM_CHECK_LINES) nor the
         project's internal lines (1.58 / 1.0 / 5%-20%, wqb.config.GATES_INTERNAL). The platform re-evaluates
         everything at submit time; passing this screen never means submittable. Relations are pinned by
-        tests/unit/test_threshold_relations.py.
+        tests/unit/01_store_db/test_threshold_relations.py.
 
         Criteria:
         - Sharpe > 1.3 and Fitness > 0.75 (relaxed thresholds for pre-submission check)

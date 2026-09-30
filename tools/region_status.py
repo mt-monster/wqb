@@ -38,7 +38,7 @@ DB = os.path.join(REPO, "data", "wqb.db")
 PROFILE_DIR = os.path.join(REPO, "Claude", "skills", "wq-brain-ra-pipeline",
                            "references", "regions")
 
-# ---- 记分板判据（单一事实源：skill / matrix 只引用这里，不复述数值；tests/unit/test_se_docs.py 钉死） ----
+# ---- 记分板判据（单一事实源：skill / matrix 只引用这里，不复述数值；tests/unit/07_docs_skills/test_se_docs.py 钉死） ----
 #: 「达标」= 研究仿真口径 sharpe >= 此值（宽口径；RA 选区先验用的严格口径见 wqb-db get_mining_yield 的 ra_clean）
 PASS_SHARPE_MIN = 1.58
 #: 本区达标数 >= 此值 → 「继续（注意 PROD 同质风险）」，也是 campaign-matrix `prod_saturation: likely` 的判据

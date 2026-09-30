@@ -7,10 +7,10 @@
 ## 2026-09-29 · skills 审查整改（`reports/skills_review_20260929.md`）
 
 **把 main 文案里「未落地」的四项能力做完（2026-09-30，用户要求；DEC-68…71）**——上一条说「不改任何代码」，是因为当时它们是并行会话的未入库工作；用户随后要求把这四项做完，落地后 references 里的「设计 / 未落地」标注改为「现状」
-- **故障 ≠ 无解**（DEC-68）：`tools/forum_recon.py` 三结局（有货 / 可靠无解 / 工具故障，退出码 0 / 2 / 1），故障落 `forum_recon_error_<qkey>`、不入缓存；live 路径此前**从未跑通过**（`load_creds(None)` 永远 TypeError），一并修复；键名 / 记录分类 / 判死闸判定单一实现 `src/wqb/recon_evidence.py`，`step_funnel` 命中率不再把故障数成「有货」→ `tests/unit/test_forum_recon.py` / `test_recon_evidence.py`
-- **波级默认取证**（DEC-69）：节点 `forum_recon_wave`（五处同步，`audit_node_registration` 干净）+ `tools/forum_recon_wave.py` + `pipeline.py --forum-recon`，`batch_track` 缺省带上；本波回测行机械派生问题（墙问题 / 全灭时的「有无解法」/ 不问），每波 ≤ 1 次（可靠结局占额度、故障不占）→ `tests/unit/test_recon_wave.py` / `test_forum_recon_wave.py`
-- **判死取证闸**（DEC-70）：`seal_dead_end(…, forum_recon=, force_seal=, require_forum_recon=True)` fail-closed，按 `question_key` 回 ledger 核对，拒绝时不沉降不写库，绕过须人工确认并留痕 `payload.forum_recon_gate`；闸只在 `seal_dead_end` 上（CLI `add-dead-end` / `upsert_registry_empirical(dead_end)` 不经闸）→ `tests/unit/test_seal_dead_end_gate.py`
-- **形状配额机检**（DEC-71）：`tools/shape_quota_check.py`（≥ 3 个形状族、`trade_when` ≤ 40%；只读、不入闸链）→ `tests/unit/test_shape_quota.py`
+- **故障 ≠ 无解**（DEC-68）：`tools/forum_recon.py` 三结局（有货 / 可靠无解 / 工具故障，退出码 0 / 2 / 1），故障落 `forum_recon_error_<qkey>`、不入缓存；live 路径此前**从未跑通过**（`load_creds(None)` 永远 TypeError），一并修复；键名 / 记录分类 / 判死闸判定单一实现 `src/wqb/recon_evidence.py`，`step_funnel` 命中率不再把故障数成「有货」→ `tests/unit/08_forum_recon/test_forum_recon.py` / `test_recon_evidence.py`
+- **波级默认取证**（DEC-69）：节点 `forum_recon_wave`（五处同步，`audit_node_registration` 干净）+ `tools/forum_recon_wave.py` + `pipeline.py --forum-recon`，`batch_track` 缺省带上；本波回测行机械派生问题（墙问题 / 全灭时的「有无解法」/ 不问），每波 ≤ 1 次（可靠结局占额度、故障不占）→ `tests/unit/08_forum_recon/test_recon_wave.py` / `test_forum_recon_wave.py`
+- **判死取证闸**（DEC-70）：`seal_dead_end(…, forum_recon=, force_seal=, require_forum_recon=True)` fail-closed，按 `question_key` 回 ledger 核对，拒绝时不沉降不写库，绕过须人工确认并留痕 `payload.forum_recon_gate`；闸只在 `seal_dead_end` 上（CLI `add-dead-end` / `upsert_registry_empirical(dead_end)` 不经闸）→ `tests/unit/01_store_db/test_seal_dead_end_gate.py`
+- **形状配额机检**（DEC-71）：`tools/shape_quota_check.py`（≥ 3 个形状族、`trade_when` ≤ 40%；只读、不入闸链）→ `tests/unit/01_store_db/test_shape_quota.py`
 - RA 核心 SKILL `version` 3.1 → 3.2（步 9 判死取证闸落地）
 - 步 4 §4.5.1 / 步 5 / 步 7 §7.9 / 步 9 §9.5 / 触发表 / 工具索引 / toolkit §12 同步改为「现状」；触发表末节写明**已知缺口**（live 论坛路径无端到端实测；闸不覆盖别的判死写入口、不核对相关性）；AGENTS.md §8.11 写硬约束
 
@@ -68,8 +68,8 @@
 **wq-brain-ra-pipeline v3.0（重构）**
 - 核心 `SKILL.md` 由 950 行 → 约 220 行：每步固定模板（目的 / 前置 / 调用 / 产物 / 完成定义 / 失败分支 / 不做 / 细则）；细则、事故、情景卡拆到 `references/`（`step1`–`step9`、`loop-and-stop`、`forum-recon-triggers`、`ppa-vs-ra`、`tool-index`、`scenarios`、`incidents`）→ RA-10 / RA-103 / RA-117
 - `assemble-priors-internals.md` **按代码重写**：旧文写的「`GLOBAL/region_kb.templates[]` → wins」「`methodology[]` → region_context」代码里都没有，真正承载 S6 回写的 `registry_empirical` win / dead_end 层旧文一个字没提 → RA-50
-- 新增 S6→S0 饱和反馈写入口 `campaign_intel.py mark-saturated`（`saturated_datasets` 此前全仓库只有读取方）；`submit_ready_blocked` 降为 deprecated → RA-113 / IX-20（`tests/unit/test_campaign_intel_mark_saturated.py`）
-- 「提交类节点不入链」由代码强制：`execute_chain` 拒绝带 `confirm_submit=True` 的 `submit_alpha` / `superalpha` → RA-116 / X-9（`tests/unit/test_workflow_chain_irreversible_guard.py`）
+- 新增 S6→S0 饱和反馈写入口 `campaign_intel.py mark-saturated`（`saturated_datasets` 此前全仓库只有读取方）；`submit_ready_blocked` 降为 deprecated → RA-113 / IX-20（`tests/unit/08_forum_recon/test_campaign_intel_mark_saturated.py`）
+- 「提交类节点不入链」由代码强制：`execute_chain` 拒绝带 `confirm_submit=True` 的 `submit_alpha` / `superalpha` → RA-116 / X-9（`tests/unit/02_workflow/test_workflow_chain_irreversible_guard.py`）
 - prod 墙处置只剩决策表 D0-P 一张；`prod-corr-avoidance.md` 改写为 prod 总纲，删除「POST / GET `/submit` 触发 prod 计算」的危险旧指令 → X-1 / RC-01 / RC-07
 - 组合形态「允许清单」唯一一份（步 7 §7.7）；补「辅助腿入场三式」（条件 / 分组 / 残差）；`subtract` 价差须同源且有单一经济含义 → RA-89 / RA-90 / X-3
 - 停止规则、放行、四道开波闸从一个 ≈2000 字的表格单元拆成 `loop-and-stop.md`（每条配缺省数字与数字例；旧文里「GBR 至 09-30」这类状态不再写）→ RA-117 / RA-118
@@ -79,7 +79,7 @@
 
 **wq-brain-superalpha v2.0（重构）**
 - 旧 SKILL 是按时间追加的日记（后文推翻前文而前文不改；**全文没有「怎么建 SUPER simulation」的调用**；`force=True` 的 MCP 路径绕过 prod 闸；「预检」其实是真提交）。改为核心 SKILL（入口表 + 不可逆动作块 + 判定优先级 + 步 0–4 固定模板 + 参数取值理由 + 验证清单）+ `references/`（`levers-and-evidence.md` 决策表与参数-指标对照、`cases.md` 四个案例、`scenarios.md` 四张情景卡）→ SP-01 ~ SP-19
-- 由代码强制：`submit_alpha` 节点拒绝 `type == SUPER` 的 `confirm_submit=True`（SUPER 只走 `super_build.py submit`，内置 prod ≥ 0.7 闸）→ SP-13 / T0-4（`tests/unit/test_submit_alpha_super_guard.py`）
+- 由代码强制：`submit_alpha` 节点拒绝 `type == SUPER` 的 `confirm_submit=True`（SUPER 只走 `super_build.py submit`，内置 prod ≥ 0.7 闸）→ SP-13 / T0-4（`tests/unit/05_submit_quota/test_submit_alpha_super_guard.py`）
 - `super_build.py`：`--neutralization` 无缺省；universe / delay 取自 `config.REGIONS` 并校验；新增 `--selection` / `--combo`（`workflow_superalpha` 的同名参数此前被静默忽略）→ SP-17 / T0-8
 - MCP `set_alpha_properties`：允许只传 SUPER 的 selection / combo 描述（此前缺省 `descriptions` 一律报错）→ SP-06
 - 区域状态（MEA 通道对 SUPER 已关闭）从 SKILL 移到 MEA profile；「现状计数」快照删除，改为 `sa_probe` 实时命令
@@ -91,13 +91,13 @@
 - 规划文档 `improvement-roadmap.md` / `future-improvement-guide.md` 归档到 `attic/judge_planning_docs_20260929/`
 
 **brain-alpha-robustness（「必经闸」有了代码落点）**
-- 判定写 ledger `robustness_<alpha_id>`，`submit_verdict`（CLI / MCP / 批量）读取：REJECT → BLOCKED，CONDITIONAL / 无记录只提示（新模块 `wqb.robustness_record`，键进 `docs/ledger_keys.json`，单测在 `tests/unit/test_submit_verdict_core.py`）→ RB-03 / T0-18
+- 判定写 ledger `robustness_<alpha_id>`，`submit_verdict`（CLI / MCP / 批量）读取：REJECT → BLOCKED，CONDITIONAL / 无记录只提示（新模块 `wqb.robustness_record`，键进 `docs/ledger_keys.json`，单测在 `tests/unit/05_submit_quota/test_submit_verdict_core.py`）→ RB-03 / T0-18
 - Phase A 拆分：闸门只读 `references/techniques.md`，论坛新发现只作「提案」（E 节）；`forum_cache_builder` 缓存路径改仓库内 → RB-04 / RB-05
 - 删除「提交探测协议」（逐个提交读 prodCorr，提交即真实动作）；判定表更正（子宇宙引平台相对公式、算子数降软标记、Margin 标经验线）→ RB-10 / RB-15
 - `allowed-tools` +`mcp__wqb-db__*`（写台账所需，能力基线已人审登记）
 
 **wq-brain-alpha-optimization-v1（Mode B 资格单一真相源 + Mode A 收口）**
-- 新增 `references/mode-b-qualification.md`：主闸 + 旁路 A–E + 判死线 + 覆盖优先级 + 各代码入口实际覆盖范围（judge 节点只喂 6 个指标，A / B / D 恒不命中）；「未达资格线一律判死」全库作废并由测试扫描禁止；新增只读 CLI `tools/mode_b_qualify.py`（同一判定函数、全指标）→ OP-18 / HP-15 / OP-11 / OP-13（`tests/unit/test_mode_b_qualification_doc.py`、`test_mode_b_qualify_cli.py`）
+- 新增 `references/mode-b-qualification.md`：主闸 + 旁路 A–E + 判死线 + 覆盖优先级 + 各代码入口实际覆盖范围（judge 节点只喂 6 个指标，A / B / D 恒不命中）；「未达资格线一律判死」全库作废并由测试扫描禁止；新增只读 CLI `tools/mode_b_qualify.py`（同一判定函数、全指标）→ OP-18 / HP-15 / OP-11 / OP-13（`tests/unit/07_docs_skills/test_mode_b_qualification_doc.py`、`test_mode_b_qualify_cli.py`）
 - `mode_b_config.py` 模块文档串的覆盖顺序更正（区域 ledger > 区域 thresholds > GLOBAL ledger > 内置），测试钉住
 - Mode A：结果入库（不写自建文本文件）；算子上限标注 PPA-only；校验层固定三段（verifier → `ghost-audit` → `wave_gate --batch-type repair`）；主题算子表按 `known_ops` 分「已核验 / 未列入清单」栏（62 个里 35 个未在清单）；止损阶梯合并；删「70/30 精力」与分钟级预算；手抄阈值改引 `config` → OP-01…OP-17（`test_optimization_v1_docs.py`）
 - 形态库：加「入场方式」五类可检判据；F1 限同源（用户 2026-09-28 `spread_signal_ruling`）；`hump` 状态统一 → OP-12
@@ -143,7 +143,7 @@
 - `brain-sim-alphas-in-batch-and-track`：「唯一入口」改入口选用表（三入口各管一类）；长任务规则分 MCP / CLI 两路（60 分钟与 3 分钟判的是不同层）；第 3 份阶段映射表删；凭据标准名 `CREDENTIALS_*`；README / reference / examples 同步 → SA-01…SA-08
 - `brain-inspect-raw-template-create-setting`：边界与步骤改为「外部 / 手写 idea → 核对设置 → 写 `expressions` 表」，GEM 已入库的批次不走本 skill（互斥）；`build_alpha_list.py` 新增 `--campaign-dir` 并**打印每个可选字段的来源**；`process_template.py` 新增 `--out-dir`；提示文案不再要求「交还 AI 做设置决策」→ IR-01…IR-08
 - 代码（DEC-33…39）：MCP `get_submit_ready` 改读 SQL 队列表（ledger 同名键降 legacy 审计副本）；registry 写入校验唯一实现 `src/wqb/registry_contract.py`（CLI 与 MCP `upsert_registry_empirical` / `seal_dead_end` 共用，`seal_dead_end` 新建须带 `rule`）；`--enhance-diversity` 缺省 `always` → `never`（`build_wave.py` / `batch_simulator.py`）；`ledger set-verdict` / `submit-ready` 打印废止提示；`pipeline --force` 语义写准；三灯 `action` 不再推荐拼腿；L3 榨取窗口与探针 P6 收敛到有意义的窗口；gate 每进程打印所用 verifier 路径；作者盘符兜底全部移除（AST 测试守护）
-- 测试：`tests/unit/test_sd_docs.py`（文档 ↔ 代码）、`test_sd_engine_contracts.py`（契约与缺省）、`test_sd_portability.py`（盘符）
+- 测试：`tests/unit/07_docs_skills/test_sd_docs.py`（文档 ↔ 代码）、`test_sd_engine_contracts.py`（契约与缺省）、`test_sd_portability.py`（盘符）
 
 ## 更早的历史（2026-09-29 从 INDEX 拆出，原样保留，一行一条；INDEX 只留规则与生成表）
 

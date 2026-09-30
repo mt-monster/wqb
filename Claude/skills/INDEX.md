@@ -65,7 +65,7 @@
 ## 区域清单（权威：`src/wqb/config.py::REGIONS`）
 
 区域集合的唯一事实源是代码常量 `src/wqb/config.py::REGIONS`。下表**由代码生成**（`$WQ_PY tools/index_tables.py regions`：`config.REGIONS` × profile 的 `entry_verdict` × `tracking/<R>/config/` 目录扫描），
-`tests/unit/test_index_tables.py` 逐字比对——**改 profile 或目录后重新生成，不要手改**。此前人写的表有两处与事实不符（DEU 写 `active` 而 profile 是 `probe-only`；AMR 写「无战役目录」而 `tracking/AMR/config/` 存在）。
+`tests/unit/09_core/test_index_tables.py` 逐字比对——**改 profile 或目录后重新生成，不要手改**。此前人写的表有两处与事实不符（DEU 写 `active` 而 profile 是 `probe-only`；AMR 写「无战役目录」而 `tracking/AMR/config/` 存在）。
 
 <!-- region-table:start -->
 | region | profile | `tracking/<R>/config/` | `entry_verdict` | 步 1 的行为 |
@@ -87,7 +87,7 @@
 <!-- region-table:end -->
 
 - **AMR**：`config.REGIONS` 里有，但**当前不是 RA 挖掘区**；要开必须先补 profile + 实测档位。**ALL** 是平台设置选项里的区域但不在 `config.REGIONS`——同样不是挖掘区。两者的平台侧事实（可用数据集、REGULAR 仿真的报错）是带日期的快照，登记在 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)，不写在本文。
-- 缺口清单的机检登记在 `tests/unit/test_region_alignment.py`（补上一个缺口就必须从登记里删掉）；每个缺口区域在步 1 的行为写在 ra-pipeline 的 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)。
+- 缺口清单的机检登记在 `tests/unit/06_wave_pipeline/test_region_alignment.py`（补上一个缺口就必须从登记里删掉）；每个缺口区域在步 1 的行为写在 ra-pipeline 的 [`region-profile-contract.md` §4](wq-brain-ra-pipeline/references/region-profile-contract.md)。
 - 有 profile 的区按其 profile 注入静态配置 / 先验 / 闸门覆盖 / 循环策略；`frozen` 区步 1 直接拒绝；`probe-only` 区只许探针批。**新增 / 删除区域**须同步四处：`src/wqb/config.py::REGIONS`、profile 文件、战役目录、（本表随代码重新生成）——逐项做法见下。
 - 三者冲突时：`tracking/<R>/config/` json > profile > 本表（本表是导出物，不是来源）。
 
@@ -97,8 +97,8 @@
 |---|---|---|---|
 | 1 | `src/wqb/config.py::REGIONS` | 新增 `universes` / `neutralizations` / `delays` / `categories` / `default_universe`；档位用 `mcp__wq-brain-http__get_platform_setting_options` **实测**，禁止照抄 USA | `$WQ_PY -c "from wqb.config import REGIONS; print(sorted(REGIONS))"` |
 | 2 | `tracking/<R>/config/` | 建 `settings.json`（仿真设置）+ `thresholds.json`（阈值），契约见 toolkit [`campaign-dir-contract.md`](wq-brain-campaign-toolkit/references/campaign-dir-contract.md)；`region` 必须与目录名一致 | `$WQ_PY Claude/skills/wq-brain-campaign-toolkit/scripts/campaign.py --campaign-dir tracking/<R> ledger keys` 不报错 |
-| 3 | `wq-brain-ra-pipeline/references/regions/<R>.md` | 写 profile（front-matter 契约见 [`region-profile-contract.md`](wq-brain-ra-pipeline/references/region-profile-contract.md)），含 `entry_verdict` | `$WQ_PY -m pytest tests/unit/test_region_alignment.py` |
-| 4 | 本文「区域清单」表 | `$WQ_PY tools/index_tables.py --apply` 重新生成（不手写） | `$WQ_PY -m pytest tests/unit/test_index_tables.py` |
+| 3 | `wq-brain-ra-pipeline/references/regions/<R>.md` | 写 profile（front-matter 契约见 [`region-profile-contract.md`](wq-brain-ra-pipeline/references/region-profile-contract.md)），含 `entry_verdict` | `$WQ_PY -m pytest tests/unit/06_wave_pipeline/test_region_alignment.py` |
+| 4 | 本文「区域清单」表 | `$WQ_PY tools/index_tables.py --apply` 重新生成（不手写） | `$WQ_PY -m pytest tests/unit/09_core/test_index_tables.py` |
 | 5 | 首次入库 | `regions` 行在该区首次写入时由 `CampaignStore` 自动建；数据集资产用 `tools/discover_datasets.py` / `tools/ingest_dataset_assets.py`，字段级用 toolkit `scan_fields.py` | `mcp__wqb-db__get_region_config(<R>)` 不再报 `region not found` |
 
 `tracking/region_config.json` 目前**没有代码读取**（只有 JPN profile 提到过它），不在检查表内。区域相关的**带日期事实**（选项、无 pv1、robust 闸定义、破墙配方）一律写在各区 profile，带 `last_verified`，不写在本文。
@@ -185,7 +185,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 `wq-brain-campaign-toolkit/scripts/gate.py` 共 **8 闸 + 可选闸0**（闸 1–8 + 闸0），另有**子闸** 1b / 2b / 2b-2
 与**附加闸 9**（窗口，默认 warn）。文档中出现的「5 闸」一律指闸 1–5，「7 闸」指闸 1–7；**不要**再用第三种口径。
 下表由 `$WQ_PY Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py --print-gate-table` 生成（唯一注册表 = gate.py 的
-`GATE_REGISTRY`），`tests/unit/test_gate_registry_docs.py` 比对——**改闸先改注册表，再重新生成本表**：
+`GATE_REGISTRY`），`tests/unit/04_gates/test_gate_registry_docs.py` 比对——**改闸先改注册表，再重新生成本表**：
 
 <!-- gate-table:start -->
 | 闸 | 名称 | 性质 | 开关 | 说明 |
@@ -211,7 +211,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 ### 闸与逃生口总表（wave_gate 层 + 可豁免的闸）
 
 表由 `$WQ_PY tools/waiver.py gates --markdown` 生成（唯一注册表 = `src/wqb/waiver.py` 的 `GATE_POLICIES`），
-`tests/unit/test_waiver.py` 比对——**改政策先改注册表，再重新生成本表**。用了任一逃生口，`tools/wave_gate.py` 首屏点名，
+`tests/unit/09_core/test_waiver.py` 比对——**改政策先改注册表，再重新生成本表**。用了任一逃生口，`tools/wave_gate.py` 首屏点名，
 台账须有对应 waiver（AGENTS.md §8.1.2；缺省 warn，`--waiver-mode enforce` 无 waiver 即 exit 2）。
 
 <!-- switch-table:start -->
@@ -238,13 +238,13 @@ L7  元技能       pull-brain-skills · planning-with-files
 - `wq-brain-http` 服务器：**69 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
   `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 4 /
   `tools_labs` 3 / `tools_ops` 5 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 69）。
-  由 `tests/unit/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
+  由 `tests/unit/07_docs_skills/test_docs_consistency.py::test_mcp_tool_counts_match_index` 机械守护。
   **`tools_submit` 0 是有意的**：原生 `submit_alpha` 工具已于 2026-09-02 删除，提交统一走 workflow 节点 `workflow_submit_alpha`；
   所以「MCP 里没有 `submit_alpha` 工具」成立，而 `submit_batch` 是**仿真派发**（`POST /simulations`），不是提交。
-- `wqb-db` 服务器：**47 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/test_skill_integrity.py` 校验守护）。2026-09-30 方案 B 新增 3 个步级评估工具（`record_step_event` / `get_step_events` / `get_step_eval_report`，客观事件台账 + 九步矩阵，与已下线的 6 个旧工具不同名不同契约）。
+- `wqb-db` 服务器：**47 个工具**（仓库根 `wqb_db_mcp.py` 的 `@mcp.tool` 装饰器计数，同样由 `test_mcp_tool_counts_match_index` 机械守护；名单引用由 `tests/unit/07_docs_skills/test_skill_integrity.py` 校验守护）。2026-09-30 方案 B 新增 3 个步级评估工具（`record_step_event` / `get_step_events` / `get_step_eval_report`，客观事件台账 + 九步矩阵，与已下线的 6 个旧工具不同名不同契约）。
 - workflow 节点：**20 个**（`campaign` / `feature_engineering` / `gem` / `batch_track` / `judge` /
   `submit_alpha` / `superalpha` / `wave_gate` / `hypothesis_round` / `forum_recon` / `forum_recon_wave` / `structural_reconstruct` / `inventory_scan` / `gem_wave` / `unified_gate` / `auto_harvest` / `auto_review` / `auto_pyramid` / `modeb_improve` / `alpha_booster`）。权威 = `src/wqb/workflow/registry.py`，
-  `tests/unit/test_workflow.py::test_registry_lists_all_nodes` 守护。
+  `tests/unit/02_workflow/test_workflow.py::test_registry_lists_all_nodes` 守护。
 
 ## 分工声明（防触发歧义）
 
@@ -257,7 +257,7 @@ L7  元技能       pull-brain-skills · planning-with-files
 
 | # | 纪律 | 守护 |
 |---|---|---|
-| 1 | 内嵌 `scripts/`（`ace_lib` / `validator` / `implement_idea`）是**硬依赖**，不删除、不单独修改；`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改 | `tests/unit/test_gem_skill_paths.py::test_embedded_scripts_are_present_and_validator_is_byte_identical` |
+| 1 | 内嵌 `scripts/`（`ace_lib` / `validator` / `implement_idea`）是**硬依赖**，不删除、不单独修改；`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改 | `tests/unit/03_gem/test_gem_skill_paths.py::test_embedded_scripts_are_present_and_validator_is_byte_identical` |
 | 2 | 内嵌 `brain-feature-implementation/SKILL.md` 与顶层逐字一致（两份 SKILL.md **正文从不进 LLM prompt**，同步只为不让同名文件互相矛盾） | `test_gem_skill_paths.py`；修复 `$WQ_PY tools/sync_gem_embedded_skill.py --apply` |
 | 3 | 内嵌 `brain-data-feature-engineering/` **不得**出现 `SKILL.md`（出现即让解析改选内嵌位、静默屏蔽顶层文档）；其 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md` 与顶层逐字一致并带 `GENERATED.md` | `test_gem_skill_paths.py` |
 | 4 | GEM 产物（`*_ideas.md`、`final_expressions.json`）写 `GEM_REPORT_ROOT` / `WQB_GEM_DATA_ROOT`（缺省仓库 `data/gem_runs/`），不写进 skill 树 | `test_gem_skill_paths.py::test_gem_report_root_is_outside_skill_tree` |

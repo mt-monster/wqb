@@ -9,7 +9,7 @@
 
 ```yaml
 ---
-name: <dir-name>                 # 必须与所在目录名一致（tests/unit/test_skill_integrity.py 校验）
+name: <dir-name>                 # 必须与所在目录名一致（tests/unit/07_docs_skills/test_skill_integrity.py 校验）
 layer: <L-RA|L-PRE|L-TOOL|L0|L1|L2|L3|L4|L5|L6|L7>   # 挖掘链条位置，不是优先级、也不是版本号
 description: "..."               # 单行双引号字符串；≤ 300 字；只写「何时触发 + 范围 + 不做」，不写实现细节
 last_verified: YYYY-MM-DD        # 最近一次对照代码 / 平台核实内容正确的日期
@@ -21,12 +21,12 @@ allowed-tools:                   # 可选；写了就必须是 YAML 列表，禁
 
 | 字段 | 是否必需 | 含义 / 规则 |
 |---|---|---|
-| `name` / `layer` / `description` / `last_verified` | **必需** | `layer` 取值见 AGENTS.md「Skill layer 取值表」。`description` 是**触发条件**（不是功能清单）：最长 300 字（`tests/unit/test_sf_docs.py` 守护），此前最长 702 字。批量机械刷新 `last_verified` 无效——它必须随内容核对而改 |
+| `name` / `layer` / `description` / `last_verified` | **必需** | `layer` 取值见 AGENTS.md「Skill layer 取值表」。`description` 是**触发条件**（不是功能清单）：最长 300 字（`tests/unit/07_docs_skills/test_sf_docs.py` 守护），此前最长 702 字。批量机械刷新 `last_verified` 无效——它必须随内容核对而改 |
 | `allowed-tools` | 可选（**缺省 = 继承宿主默认权限**） | 声明时只列该 skill 实际要用的工具。**能力棘轮**：任何 skill 不得比 `tests/fixtures/skill_capabilities_baseline.json` 多出工具；要加，先改基线并写明理由，由人审查 |
 | `user-invocable` | 可选 | `true` = 该 skill 也可由用户以 `/<skill 名>` 直接调用，而不只是被 agent 按 description 触发；不影响路由与边界 |
 | `version` | 可选 | 外部来源 skill 的**上游版本号**，只登记来源，与本库的 `last_verified` 无关 |
 | `agent_created` | 可选 | 仅模型创建的技能标注 |
-| `hooks` | 可选（**受限**） | 在 agent 生命周期事件上自动执行的命令，等价于任意命令执行：只有白名单内的 skill 可声明（现只有 `planning-with-files`），必须在该 skill 正文逐条写明每个钩子做什么与成本，经人工审查后才可加入白名单。钩子命令不得含未解析占位符（如 `<SKILL_ROOT>`）、外发、动态执行、删除、凭据读取——`tests/unit/test_skill_hooks_and_tools_guard.py` 守护 |
+| `hooks` | 可选（**受限**） | 在 agent 生命周期事件上自动执行的命令，等价于任意命令执行：只有白名单内的 skill 可声明（现只有 `planning-with-files`），必须在该 skill 正文逐条写明每个钩子做什么与成本，经人工审查后才可加入白名单。钩子命令不得含未解析占位符（如 `<SKILL_ROOT>`）、外发、动态执行、删除、凭据读取——`tests/unit/07_docs_skills/test_skill_hooks_and_tools_guard.py` 守护 |
 
 禁止出现 `when_to_use` / `trigger_when` / `title` 等非标字段。
 
@@ -42,7 +42,7 @@ frontmatter 只说「我是谁」，**职责边界**才说清「我不管什么�
 - **上游 / 下游**：上游 = <谁给我>；下游 = <我给谁>
 ```
 
-由 `tests/unit/test_skill_boundaries.py` 机械守护（缺段 / 缺条目即红）。**这只是形式覆盖**——它不保证内容为真：2026-09-29 审查发现至少 6 个 skill 的边界声明与正文 / 代码矛盾（submit-alpha 声称只管 REGULAR 而正文含 SUPER / PPA，judge 声称不提交而脚本能 POST，monitor 声称不是写入方而强制回写……）。所以：**边界段里「不做」的动作，正文出现时必须带「仅引用」标记或指向承接者**；内容一致性靠各 skill 的 doc→code 测试（如 `test_se_docs.py`）和 `tools/skill_lint.py` 棘轮。
+由 `tests/unit/07_docs_skills/test_skill_boundaries.py` 机械守护（缺段 / 缺条目即红）。**这只是形式覆盖**——它不保证内容为真：2026-09-29 审查发现至少 6 个 skill 的边界声明与正文 / 代码矛盾（submit-alpha 声称只管 REGULAR 而正文含 SUPER / PPA，judge 声称不提交而脚本能 POST，monitor 声称不是写入方而强制回写……）。所以：**边界段里「不做」的动作，正文出现时必须带「仅引用」标记或指向承接者**；内容一致性靠各 skill 的 doc→code 测试（如 `test_se_docs.py`）和 `tools/skill_lint.py` 棘轮。
 
 **两条硬裁定（写入边界段时须遵守）**：
 
@@ -58,7 +58,7 @@ frontmatter 只说「我是谁」，**职责边界**才说清「我不管什么�
 ## 4. 共享产物归属
 
 > 背景：硬裁定②此前实质覆盖率仅 1/33（全库只有 `campaign-toolkit` 一处写明），「谁写 / 谁读」没人写清，直接导致两起事故：① `priors_snapshot` 无人认领刷新责任，GBR 快照落后 KB 源 8 天；② `wave_gate` 三方调用无主写方，自动链 100% `TypeError`。
-> **ledger 键的完整目录**（键 / 写入方 / 读取方 / 刷新责任 / 状态，含「有读取方无写入方」的登记）在 [`docs/ledger_keys.json`](../../docs/ledger_keys.json)，由 `tools/ledger_keys.py`（扫描代码与文档并对账）与 `tests/unit/test_ledger_key_catalog.py` 守护：skill 里出现的每个 ledger 键必须在目录内，有读取方而无写入方的键必须登记 `orphan`。下表只列**共享产物的最小权威清单**；新增共享产物必须同步此表。
+> **ledger 键的完整目录**（键 / 写入方 / 读取方 / 刷新责任 / 状态，含「有读取方无写入方」的登记）在 [`docs/ledger_keys.json`](../../docs/ledger_keys.json)，由 `tools/ledger_keys.py`（扫描代码与文档并对账）与 `tests/unit/01_store_db/test_ledger_key_catalog.py` 守护：skill 里出现的每个 ledger 键必须在目录内，有读取方而无写入方的键必须登记 `orphan`。下表只列**共享产物的最小权威清单**；新增共享产物必须同步此表。
 
 | 产物 | 唯一正式写入方 | 只读消费方 | 刷新 / 失效责任 | 逃生阀 |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ frontmatter 只说「我是谁」，**职责边界**才说清「我不管什么�
 新增或修改 skill 后，必须跑：
 
 ```bash
-$WQ_PY -m pytest tests/unit/test_skill_integrity.py tests/unit/test_skill_boundaries.py tests/unit/test_docs_consistency.py tests/unit/test_sf_docs.py -q
+$WQ_PY -m pytest tests/unit/07_docs_skills/test_skill_integrity.py tests/unit/07_docs_skills/test_skill_boundaries.py tests/unit/07_docs_skills/test_docs_consistency.py tests/unit/07_docs_skills/test_sf_docs.py -q
 $WQ_PY tools/sync_skills.py            # 仓库 → 全部安装位（改完必须 sync 才对 Agent 生效）
 $WQ_PY tools/sync_skills.py --check    # 仓库与全部安装位零漂移
 $WQ_PY tools/skill_lint.py             # 命令 / 子命令 / 必填参数 / MCP 签名 / 表达式过闸 / .env 读取 / 裸 python 棘轮

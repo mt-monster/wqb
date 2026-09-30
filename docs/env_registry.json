@@ -1,5 +1,5 @@
 {
- "_doc": "环境变量登记（docs/env_and_switches.md 的表由 tools/index_tables.py env 生成；tests/unit/test_index_tables.py 守护：代码里读取的每个变量必须登记，登记的每个变量必须仍被读取）。默认值与读取方从代码自动提取，这里只写用途。",
+ "_doc": "环境变量登记（docs/env_and_switches.md 的表由 tools/index_tables.py env 生成；tests/unit/09_core/test_index_tables.py 守护：代码里读取的每个变量必须登记，登记的每个变量必须仍被读取）。默认值与读取方从代码自动提取，这里只写用途。",
  "categories": {
   "cred": "凭据与外发通道（只登记名字与来源；任何文档 / 日志 / 回报都不得出现值）",
   "path": "路径与根",

@@ -14,11 +14,11 @@
 ## 这些副本会不会被喂进 LLM prompt？
 
 **不会**（2026-09-29 更正，旧文写反了）。`pipeline_prompts.build_prompt` 只用 dfe `SKILL.md`「是否非空」决定附不附一句
-固定的 8 问提示，FI 那份完全不用（`tests/unit/test_se_docs.py` 钉死）。同步它们是为了**不让同名文件互相矛盾**——
+固定的 8 问提示，FI 那份完全不用（`tests/unit/07_docs_skills/test_se_docs.py` 钉死）。同步它们是为了**不让同名文件互相矛盾**——
 2026-09-26 前内嵌 FI `SKILL.md` 是 2026-08-22 的 49 行旧英文稿（还引用不存在的 `manage_todo_list`），
 一旦有人在兜底位读到它就会照旧稿操作。`scripts/` 里的 `ace_lib` / `validator` 才是运行时硬依赖，见下。
 
-由 `tests/unit/test_gem_skill_paths.py`（FI `SKILL.md` 与 dfe 三个文件逐字节一致）机械守护；本工具是失败时的修复入口。
+由 `tests/unit/03_gem/test_gem_skill_paths.py`（FI `SKILL.md` 与 dfe 三个文件逐字节一致）机械守护；本工具是失败时的修复入口。
 
 ## 用法
 
@@ -27,7 +27,7 @@
 
 本工具只同步上表的文件，不动内嵌的 `scripts/`。2026-09-29（skills 审查 FI-03 / EV）：两份 `scripts/` 目前逐字节相同，
 其中 `validator.py` 与 `alpha-expression-verifier` 的权威版一致——之前三份 validator 各自演化，GEM 与外部 idea 入库通道
-用的是缺 hump / bucket / densify 修复的旧副本。此后由 `tests/unit/test_se_docs.py` 守护；
+用的是缺 hump / bucket / densify 修复的旧副本。此后由 `tests/unit/07_docs_skills/test_se_docs.py` 守护；
 改 validator 时按其文件头「单一来源」一节四处一起覆盖。
 """
 from __future__ import annotations

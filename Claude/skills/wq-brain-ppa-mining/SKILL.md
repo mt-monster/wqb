@@ -28,7 +28,7 @@ allowed-tools:
 | 排序 | `pyramidMultiplier` 降序 → `alphaCount` 升序 → `coverage` 降序（求点塔倍率） | D4：**先按金字塔配给**（每波 ≥ 2 槽非 MODEL）再 score 降序；**禁止**按 `pyramidMultiplier` 降序（会把 PV 等整座金字塔挤出白名单） |
 | 执行器（**唯一**） | `workflow_campaign(region, stage="S0")` + `python tools/campaign_intel.py s0-select …`（RA 步 2） | 同 |
 
-- **PPA 阈值的真实位置** = 各区 `tracking/<R>/config/thresholds.json` 的 `dataset_health`；开 PPA 战役前把该区 `mode` 改 `"ppa"` 并核对上面三个键。代码缺省值（`score_datasets.py`）：`coverage_hard_min` 0.7、`field_count_hard_min` 5、`tier2_coverage_min` 0.85、`tier2_field_count_min` 5、`tier2_alpha_count_max` 200、`tier1_score_pct` 0.6、`tier2_score_pct` 0.3、PPA 分位路径的 `alpha_count_max` 50（`tests/unit/test_se_docs.py` 逐项对照源码）。
+- **PPA 阈值的真实位置** = 各区 `tracking/<R>/config/thresholds.json` 的 `dataset_health`；开 PPA 战役前把该区 `mode` 改 `"ppa"` 并核对上面三个键。代码缺省值（`score_datasets.py`）：`coverage_hard_min` 0.7、`field_count_hard_min` 5、`tier2_coverage_min` 0.85、`tier2_field_count_min` 5、`tier2_alpha_count_max` 200、`tier1_score_pct` 0.6、`tier2_score_pct` 0.3、PPA 分位路径的 `alpha_count_max` 50（`tests/unit/07_docs_skills/test_se_docs.py` 逐项对照源码）。
 - 旧脚本 `scripts/dataset_health_check.py`（自读 `.env` 直连的第三个执行器）**已归档**到 `attic/ppa_mining_20260929/`：零调用方，且已被 `s0-select` + S0 打分取代。
 - **「最优拥挤度」有三个不同口径，别混**：
 

@@ -80,25 +80,25 @@
 ## 3. 「唯一」宣称登记表
 
 > 「唯一权威 / 唯一事实源 / 唯一入口 / 唯一真相源」这类宣称**只在本表登记**：每条对应一个实现位置和一个守它的测试。
-> 别处想说「以 X 为准」，写「见 X」并链接本表的行；不要再自称唯一。`tests/unit/test_glossary_docs.py` 检查本表的路径与测试真实存在，
+> 别处想说「以 X 为准」，写「见 X」并链接本表的行；不要再自称唯一。`tests/unit/07_docs_skills/test_glossary_docs.py` 检查本表的路径与测试真实存在，
 > 并对 SKILL.md 里的「唯一…」措辞做**只减不增**的棘轮（`tests/fixtures/authority_claims_baseline.json`）。
 
 | 宣称 | 唯一实现 | 守护测试 |
 |---|---|---|
-| gate.py 闸编号与闸表 | `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py`（`GATE_REGISTRY`）→ INDEX 由代码生成 | `tests/unit/test_gate_registry_docs.py` |
-| 闸与逃生口总表 / waiver 协议 | `src/wqb/waiver.py`（`GATE_POLICIES`）→ INDEX switch-table | `tests/unit/test_waiver.py` |
-| 提交层判定（**否决权威**） | `src/wqb/submit_verdict_core.py::decide`（CLI / MCP / 批量共用） | `tests/unit/test_submit_verdict_core.py` |
-| RA / PPA Failed-count 口径 | `src/wqb/config.py::compute_webdata_failed_counts` | `tests/unit/test_r3_failed_count_single_source.py` |
-| 平台线 / 内部线 / 提交准入线 | `src/wqb/config.py`（`PLATFORM_CHECK_LINES`、`GATES_INTERNAL`、`GATES_PLATFORM`） | `tests/unit/test_threshold_relations.py` |
-| 等待 / 退避 / 卡住阈值 | `src/wqb/config.py::WAIT_THRESHOLDS` | `tests/unit/test_wait_thresholds.py` |
-| ET 日历日与提交配额口径 | `src/wqb/timeutil.py`、`tools/quota_status.py` | `tests/unit/test_timeutil.py`、`tests/unit/test_quota_et_day.py` |
-| 波结论（verdict）写入与枚举 | `src/wqb/wave_results_contract.py` | `tests/unit/test_n30_wave_results_writers.py` |
-| ledger 键（用途 / 写入方 / 读取方） | `docs/ledger_keys.json` | `tests/unit/test_ledger_key_catalog.py` |
-| `s0_whitelist` 读取契约 | `src/wqb/ledger_whitelist.py` | `tests/unit/test_ledger_whitelist_schema_p0p4.py` |
-| 时间炸弹（到期 / 翻转） | `docs/time_bombs.json` | `tests/unit/test_time_bombs.py` |
-| skill 文档「内容为真」检查 | `tools/skill_lint.py`（基线 `tests/fixtures/skill_lint_baseline.json`） | `tests/unit/test_skill_lint.py` |
-| 幽灵算子清单 | `src/wqb/config.py::GHOST_OPERATORS`（∪ `platform_constraints.ghost_ops`，减去账号不可用者） | `tests/unit/test_ghost_operator_lists.py` |
-| 区域清单 | `src/wqb/config.py::REGIONS` | `tests/unit/test_docs_consistency.py` |
-| MCP 工具 / 节点计数 | INDEX「MCP 工具/节点计数」段 | `tests/unit/test_docs_consistency.py` |
-| 提交链默认值（不可逆动作默认不执行、颜色缺省不是 GREEN） | `world-quant-brain-mcp/tools_workflow.py`、`src/wqb/workflow/nodes/submit_alpha.py` | `tests/unit/test_submit_chain_defaults.py` |
-| alpha 属性（name / color / tags） | `src/wqb/alpha_properties.py` | `tests/unit/test_alpha_properties_patch_partial.py` |
+| gate.py 闸编号与闸表 | `Claude/skills/wq-brain-campaign-toolkit/scripts/gate.py`（`GATE_REGISTRY`）→ INDEX 由代码生成 | `tests/unit/04_gates/test_gate_registry_docs.py` |
+| 闸与逃生口总表 / waiver 协议 | `src/wqb/waiver.py`（`GATE_POLICIES`）→ INDEX switch-table | `tests/unit/09_core/test_waiver.py` |
+| 提交层判定（**否决权威**） | `src/wqb/submit_verdict_core.py::decide`（CLI / MCP / 批量共用） | `tests/unit/05_submit_quota/test_submit_verdict_core.py` |
+| RA / PPA Failed-count 口径 | `src/wqb/config.py::compute_webdata_failed_counts` | `tests/unit/05_submit_quota/test_r3_failed_count_single_source.py` |
+| 平台线 / 内部线 / 提交准入线 | `src/wqb/config.py`（`PLATFORM_CHECK_LINES`、`GATES_INTERNAL`、`GATES_PLATFORM`） | `tests/unit/01_store_db/test_threshold_relations.py` |
+| 等待 / 退避 / 卡住阈值 | `src/wqb/config.py::WAIT_THRESHOLDS` | `tests/unit/07_docs_skills/test_wait_thresholds.py` |
+| ET 日历日与提交配额口径 | `src/wqb/timeutil.py`、`tools/quota_status.py` | `tests/unit/09_core/test_timeutil.py`、`tests/unit/05_submit_quota/test_quota_et_day.py` |
+| 波结论（verdict）写入与枚举 | `src/wqb/wave_results_contract.py` | `tests/unit/01_store_db/test_n30_wave_results_writers.py` |
+| ledger 键（用途 / 写入方 / 读取方） | `docs/ledger_keys.json` | `tests/unit/01_store_db/test_ledger_key_catalog.py` |
+| `s0_whitelist` 读取契约 | `src/wqb/ledger_whitelist.py` | `tests/unit/01_store_db/test_ledger_whitelist_schema_p0p4.py` |
+| 时间炸弹（到期 / 翻转） | `docs/time_bombs.json` | `tests/unit/09_core/test_time_bombs.py` |
+| skill 文档「内容为真」检查 | `tools/skill_lint.py`（基线 `tests/fixtures/skill_lint_baseline.json`） | `tests/unit/07_docs_skills/test_skill_lint.py` |
+| 幽灵算子清单 | `src/wqb/config.py::GHOST_OPERATORS`（∪ `platform_constraints.ghost_ops`，减去账号不可用者） | `tests/unit/09_core/test_ghost_operator_lists.py` |
+| 区域清单 | `src/wqb/config.py::REGIONS` | `tests/unit/07_docs_skills/test_docs_consistency.py` |
+| MCP 工具 / 节点计数 | INDEX「MCP 工具/节点计数」段 | `tests/unit/07_docs_skills/test_docs_consistency.py` |
+| 提交链默认值（不可逆动作默认不执行、颜色缺省不是 GREEN） | `world-quant-brain-mcp/tools_workflow.py`、`src/wqb/workflow/nodes/submit_alpha.py` | `tests/unit/05_submit_quota/test_submit_chain_defaults.py` |
+| alpha 属性（name / color / tags） | `src/wqb/alpha_properties.py` | `tests/unit/02_workflow/test_alpha_properties_patch_partial.py` |

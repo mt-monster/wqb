@@ -1557,12 +1557,12 @@ def test_gm_vendored_ace_lib_import_time_dependencies_are_declared_for_the_mcp_v
                 assert m.lower().replace("_", "-") in declared, f"{name} 顶层 import {m}，但 MCP requirements.txt 没声明"
     assert {"pandas", "requests", "tqdm"} <= seen, seen
     assert "jinja2" in declared and "pandas.io.formats.style" in _read(SKILLS / "brain-feature-implementation" / "scripts" / "helpful_functions.py")
-    assert "_MCP_VENV = _find_mcp_venv()" in _read(REPO / "tests" / "unit" / "test_gem_skill_paths.py")     # POSIX 布局也要能实跑
+    assert "_MCP_VENV = _find_mcp_venv()" in _read(REPO / "tests" / "unit" / "03_gem" / "test_gem_skill_paths.py")     # POSIX 布局也要能实跑
 
 
 def test_gm_embedded_readme_and_maintenance_guards_are_documented():
     t = _read(GEM / "SKILL.md")
-    assert "tests/unit/test_gem_skill_paths.py" in t and "python tools/sync_gem_embedded_skill.py --apply" in t
+    assert "tests/unit/03_gem/test_gem_skill_paths.py" in t and "python tools/sync_gem_embedded_skill.py --apply" in t
     assert "`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改" in t
     readme = _read(TRAIL / "skills" / "README.md")
     assert "从不拼进 LLM prompt" in readme and "GENERATED.md" in readme

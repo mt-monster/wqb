@@ -120,7 +120,7 @@
 | E | 相关结构 | `ts_corr`, `ts_covariance` | `ts_co_kurtosis`, `ts_co_skewness`, `ts_partial_corr`, `ts_triple_corr` |
 | F | 换手 / 尺度 / 单边 / 约束 | `scale`, `ts_target_tvr_decay`, `ts_target_tvr_hump` | `inst_pnl`, `inst_tvr`, `one_side`, `rank_by_side`, `scale_down`, `ts_delta_limit`, `ts_target_tvr_delta_limit` |
 
-「已核验」栏与 `known_ops` 的一致性由 `tests/unit/test_optimization_v1_docs.py` 守：平台清单变了，这张表必须跟着改。
+「已核验」栏与 `known_ops` 的一致性由 `tests/unit/07_docs_skills/test_optimization_v1_docs.py` 守：平台清单变了，这张表必须跟着改。
 
 ## 9. 常用算子限额
 

@@ -17,7 +17,7 @@ user-invocable: true
 ## 职责边界
 
 - **本 skill 负责**：S5 **参考核对层**，三个职能：① PPA 主题 / 相关性**人工核对清单** ② value-factor **trend score** ③ **多候选点塔排序**（口径指向 `worldquant-submit-alpha`）
-- **本 skill 不做**：**不作「是否提交」的判定、不执行提交**——否决权威 = `tools/submit_verdict.py`；放行 = 用户明确确认后 `worldquant-submit-alpha`（REGULAR / PPA）/ `wq-brain-superalpha`（SUPER）。代码里**没有提交路径**：`--confirm-submit` 已移除（传入直接报错退出 2），vendor 的 `AceClient.submit_alpha` 只抛错，`get_submit_verdict` 只 GET（`tests/unit/test_judge_never_submits.py` 守）。与 `brain-alpha-robustness` 不重叠（诊断 vs 参考评审）
+- **本 skill 不做**：**不作「是否提交」的判定、不执行提交**——否决权威 = `tools/submit_verdict.py`；放行 = 用户明确确认后 `worldquant-submit-alpha`（REGULAR / PPA）/ `wq-brain-superalpha`（SUPER）。代码里**没有提交路径**：`--confirm-submit` 已移除（传入直接报错退出 2），vendor 的 `AceClient.submit_alpha` 只抛错，`get_submit_verdict` 只 GET（`tests/unit/02_workflow/test_judge_never_submits.py` 守）。与 `brain-alpha-robustness` 不重叠（诊断 vs 参考评审）
 - **上游 / 下游**：上游 = 已过资格门的候选；下游 = 用户 / 提交链（不经本 skill 路由）
 
 **READY / REVIEW / BLOCK 三态只是评审摘要**（脚本的词汇，`submit_verdict` 没有 READY），不构成提交依据；`worth_submit_now` 也只表示「评审上值得排进提交队列」。
@@ -57,7 +57,7 @@ $WQ_PY scripts/judge_alpha.py --alpha-id <ID> --trend-window-days 365
 |---|---|---|
 | 主题 | region / delay / universe 匹配**当期** Power Pool 主题 | `mcp__wq-brain-http__get_messages(limit=30)` 实时重扫（RA 步 1）；无代码。不匹配 → 候选由 agent 手工标 `YELLOW + WAIT_THEME_ROTATION`（**没有代码实现**，脚本只有三态） |
 | 标签与颜色 | tags 含 `PowerPoolSelected`；color = **`PURPLE`**（PPA 通道专用色；GREEN 须由 OS 结果挣得，禁作默认） | `alpha_properties.COLOR_PPA`；脚本**不校验**颜色 |
-| 资格线 | `Failed PPA == 0`（`PPA_CHECK_NAMES`）；**`LOW_SHARPE` 只在 value < 1 时计失败**——PPA 不套 REGULAR 的 1.58 严线，Sharpe ∈ [1.0, 1.58) 的合法 PPA 不得判 BLOCK | `judge_alpha.INTERNAL_HARD_GATES["ppa_sharpe_min"]`，与 `wqb.config` 一致（`tests/unit/test_judge_gates_match_config.py` 守）；口径见 [`webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) |
+| 资格线 | `Failed PPA == 0`（`PPA_CHECK_NAMES`）；**`LOW_SHARPE` 只在 value < 1 时计失败**——PPA 不套 REGULAR 的 1.58 严线，Sharpe ∈ [1.0, 1.58) 的合法 PPA 不得判 BLOCK | `judge_alpha.INTERNAL_HARD_GATES["ppa_sharpe_min"]`，与 `wqb.config` 一致（`tests/unit/02_workflow/test_judge_gates_match_config.py` 守）；口径见 [`webdatascope-failed-gates.md`](../wq-brain-ra-pipeline/references/webdatascope-failed-gates.md) |
 | 相关性 | PROD < 0.7（平台线）；SELF < 0.5 是**内部严线 / PPAC 口径**，不是平台硬闸；同数据集同腿兄弟（corr 0.82–1.0）→ 建议换数据集 | `check_self_correlation` / `compute_mutual_correlation`（本地，不占平台配额）；prod 用 `check_correlation` |
 | CW（`CONCENTRATED_WEIGHT`） | 必须过；`get_alpha_details` 只显示 WARNING，**提交时才判 FAIL**，别当通过 | 修法见 [`brain-how-to-pass-alpha-test` §4](../brain-how-to-pass-alpha-test/SKILL.md)（时间平滑；**不是**换成加权腿相加——那是被禁的混信号形态） |
 | 提交渠道 | MCP `workflow_submit_alpha` **不感知 PPA**，本地预检不看 `PowerPoolSelected`：合法但指标较低的 PPA 会被拦 → 停下交接，用户在 web UI 提交 | [`ppa-handoff.md`](../worldquant-submit-alpha/references/ppa-handoff.md) |

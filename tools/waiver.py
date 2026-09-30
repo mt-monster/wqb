@@ -38,7 +38,7 @@ def _connect(readonly=True):
 def cmd_gates(a):
     from wqb import waiver as W
     if getattr(a, "markdown", False):
-        print(W.render_switch_table())      # 嵌入 Claude/skills/INDEX.md（tests/unit/test_waiver.py 比对）
+        print(W.render_switch_table())      # 嵌入 Claude/skills/INDEX.md（tests/unit/09_core/test_waiver.py 比对）
         return 0
     print("可豁免的闸（新增可豁免闸须先在 wqb.waiver.GATE_POLICIES 登记）：")
     for g, p in W.GATE_POLICIES.items():

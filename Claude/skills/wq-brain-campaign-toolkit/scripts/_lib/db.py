@@ -4,7 +4,7 @@
 与规范工厂 ``src/wqb/db_conn.py`` 同口径（WAL + busy_timeout=60s +
 foreign_keys=ON + synchronous=NORMAL）。toolkit 脚本运行于各自安装位、
 拿不到仓库 src，故此处落地同构实现；两端由
-``tests/unit/test_db_write_guards.py`` 的 PRAGMA 等价守卫共同看护。
+``tests/unit/01_store_db/test_db_write_guards.py`` 的 PRAGMA 等价守卫共同看护。
 """
 import os
 import sqlite3

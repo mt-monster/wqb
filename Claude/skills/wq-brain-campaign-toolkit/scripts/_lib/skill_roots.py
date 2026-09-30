@@ -15,7 +15,7 @@
     7. ~/.workbuddy/skills       ┘
     8. <repo>/Claude/skills      （仓库自带，最后兜底 → clone 即可用）
 
-`tests/unit/test_docs_consistency.py` 守护：本模块与
+`tests/unit/07_docs_skills/test_docs_consistency.py` 守护：本模块与
 `brain-make-some-gem/scripts/trailSomeAlphas/skill_roots.py` 的宿主顺序必须与
 `_common._skill_roots()` 一致。
 """

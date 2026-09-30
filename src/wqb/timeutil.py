@@ -10,7 +10,7 @@ GMT+8 时刻从 12:00 变成 **13:00**，写死 UTC-4 的实现日界会漂移 1
 
 实现：优先 ``zoneinfo.ZoneInfo("America/New_York")``；缺 tz 数据库（Windows 未装 tzdata）时回退到
 本模块的美国夏令时规则（2007 年起：3 月第二个周日 02:00 → 11 月第一个周日 02:00，本地时间）。
-两条路径的等价性由 tests/unit/test_timeutil.py 逐小时比对（2024–2030）。
+两条路径的等价性由 tests/unit/09_core/test_timeutil.py 逐小时比对（2024–2030）。
 """
 from __future__ import annotations
 

@@ -20,7 +20,7 @@
   1260
  ],
  "window_whitelist_enforce": false,
- "_window_whitelist_note": "标准时间窗口白名单（2026-09-17 新增，此前只写在 SOP 散文里、零机械守护）。gate 闸9 对非白名单窗口记 [WINDOW] **warning（不阻断）** —— 因为 SOP 允许'给出解释或实测证据'后用。实测加规则前全库 23% 用非白名单窗口，Top 恰为 20/10/120/60，与 _lib/operator_coverage.py::_DEFAULT_WINDOWS 的旧默认值完全吻合（该默认值已同轮对齐白名单）。同源常量在 src/wqb/config.py::STANDARD_WINDOWS，由 tests/unit/test_window_whitelist_p4.py 守护两边一致。2026-09-17 追补：当日新语料违规率 **26.5%**（散文约束无效）→ 新增 `window_whitelist_enforce` 开关（true 时闸9 升为 block）；同时对齐了两处模板根因（run_pipeline.py 的 20→22、skeletons.py 的 250→252 / 63→66）。",
+ "_window_whitelist_note": "标准时间窗口白名单（2026-09-17 新增，此前只写在 SOP 散文里、零机械守护）。gate 闸9 对非白名单窗口记 [WINDOW] **warning（不阻断）** —— 因为 SOP 允许'给出解释或实测证据'后用。实测加规则前全库 23% 用非白名单窗口，Top 恰为 20/10/120/60，与 _lib/operator_coverage.py::_DEFAULT_WINDOWS 的旧默认值完全吻合（该默认值已同轮对齐白名单）。同源常量在 src/wqb/config.py::STANDARD_WINDOWS，由 tests/unit/06_wave_pipeline/test_window_whitelist_p4.py 守护两边一致。2026-09-17 追补：当日新语料违规率 **26.5%**（散文约束无效）→ 新增 `window_whitelist_enforce` 开关（true 时闸9 升为 block）；同时对齐了两处模板根因（run_pipeline.py 的 20→22、skeletons.py 的 250→252 / 63→66）。",
  "known_ops": [
   "abs",
   "add",

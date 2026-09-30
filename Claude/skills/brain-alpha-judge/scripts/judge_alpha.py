@@ -536,7 +536,7 @@ QUOTA_CHECK_NAMES = {"REGULAR_SUBMISSION"}
 # PPA 不是「REGULAR 内部严线」的对象：平台对 PPA 只看 PPA 名单 + LOW_SHARPE value<1
 # （src/wqb/config.py compute_webdata_failed_counts），没有 fitness / 2Y 硬闸。
 # 2026-09-29 前对 PPA 也套 1.58，会把 Sharpe∈[1.0,1.58) 的合法 PPA 判 BLOCK。
-# 数值与 wqb.config 的一致性由 tests/unit/test_judge_gates_match_config.py 断言。
+# 数值与 wqb.config 的一致性由 tests/unit/02_workflow/test_judge_gates_match_config.py 断言。
 INTERNAL_HARD_GATES = {"sharpe_min": 1.58, "fitness_min": 1.0, "two_year_min": 1.58, "ppa_sharpe_min": 1.0}
 
 

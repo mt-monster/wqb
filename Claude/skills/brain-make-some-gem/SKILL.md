@@ -73,7 +73,7 @@ mcp__wq-brain-http__workflow_gem  region=$REGION  dataset_id=$DS  delay=$DELAY  
 解析顺序 **`WQB_FI_SKILL_DIR` / `WQB_DFE_SKILL_DIR`（env）> `skill_roots` 候选（主安装位 → 仓库兜底）> 内嵌 legacy 兜底**（`pipeline_paths.py::_resolve_skill_dir`）。跑批时 stdout 会打印 `[skill-doc] <label>: OK|MISSING (N 行) dir=… source=…`——**排障先看这行**。
 
 - ⚠ **更正**：这两份 `SKILL.md` **正文从不进 LLM prompt**（旧文写反了）：`build_prompt` 只用 dfe `SKILL.md`「是否非空」决定附不附一句固定的 8 问提示，FI 那份完全不用（AST 测试钉死）。所以文档篇幅与措辞**不影响**生成质量；`MISSING` / `embedded:legacy` 的真正含义是**skill 目录解析异常**——FI 目录同时承载 `ace_lib` / `validator` / `implement_idea` 脚本，解析错了脚本也可能是旧的。
-- 内嵌副本平时不生效；顶层与内嵌的同名文件必须逐字节一致（FI `SKILL.md` + dfe 的 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`），漂移由 `tests/unit/test_gem_skill_paths.py` 守护，修复 `python tools/sync_gem_embedded_skill.py --apply`。**维护警示**：改 `scripts/` 须回归 GEM 全链路，`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改。
+- 内嵌副本平时不生效；顶层与内嵌的同名文件必须逐字节一致（FI `SKILL.md` + dfe 的 `reference.md` / `examples.md` / `OUTPUT_TEMPLATE.md`），漂移由 `tests/unit/03_gem/test_gem_skill_paths.py` 守护，修复 `python tools/sync_gem_embedded_skill.py --apply`。**维护警示**：改 `scripts/` 须回归 GEM 全链路，`validator.py` 与 `alpha-expression-verifier` 权威版四处一起改。
 
 ## 失败分支
 

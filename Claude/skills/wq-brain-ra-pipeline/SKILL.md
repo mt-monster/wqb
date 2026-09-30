@@ -68,7 +68,7 @@ last_verified: 2026-09-30
 | 步 8 提交判定 | [`01_platform_gates.md`](docs/experience/01_platform_gates.md) | 提交层四闸 + SUB 比值律 + 配额 / 相关性取数口径 |
 | 改链路 / skill / DB | [`04_engineering.md`](docs/experience/04_engineering.md) | skill 单点写入、DB 写锁、节点五处同步 |
 
-这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `RuleStore.query()` 在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入；两轨同源，**改一边要同步另一边**（`tests/unit/test_experience_kb_refs.py` 守引用锚点）。
+这些 md 是给人 / Agent 读的**软层**，**不进**上面「冲突裁决」链：与代码闸 / 决策表冲突时以后者为准，并回写经验库。**机器强制层另有其物**：`wq-brain-campaign-toolkit/config/methodology_rules.json`（全局）+ `tracking/<REGION>/reference/`（区域），由 `RuleStore.query()` 在 `build_wave` / `pipeline` / `gate` / `review_wave` 注入；两轨同源，**改一边要同步另一边**（`tests/unit/07_docs_skills/test_experience_kb_refs.py` 守引用锚点）。
 
 ## 区域 Profile
 

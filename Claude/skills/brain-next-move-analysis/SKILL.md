@@ -80,7 +80,7 @@ allowed-tools:
 
 - **区域清单** = `config.REGIONS`（现 14 个，含 DEU / JPN / AMR）；不要在文档里写死名单。DB 里没有回测记录的区不会出现在默认输出里——需要就 `--regions` 点名。
 - **数字口径**：输出里的「达标」`pass_ge_158` = 本地 `backtest_results` 中 `sharpe ≥ 1.58` 的条数（**宽口径**：只看 Sharpe，不看 RA 硬闸与 prod 相关性）；ACTIVE 也是本地口径，平台全量以 `tools/sync_platform_alphas.py` 同步后的库为准。RA 选区先验用**严格口径**（`ra_clean`：RA 硬闸全过）——看产出率请用 `mcp__wqb-db__get_mining_yield(region, strict=True)`，两个口径并列写进日报，别互相替代。
-- **建议动作的判据**（数值只以 `tools/region_status.py` 顶部常量为准；本表由 `tests/unit/test_se_docs.py` 钉死）：
+- **建议动作的判据**（数值只以 `tools/region_status.py` 顶部常量为准；本表由 `tests/unit/07_docs_skills/test_se_docs.py` 钉死）：
 
 | 建议动作（`suggested_action`） | 判据（自上而下，命中即停） |
 |---|---|

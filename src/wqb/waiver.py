@@ -58,7 +58,7 @@ EVIDENCE_REQUIRED = frozenset({"SUPERSEDED_BY_EVIDENCE", "NO_INPUT_AVAILABLE", "
 
 APPROVERS = ("user", "agent")
 
-#: 不可豁免的红线（任何人批准都无效）。文档「不可覆盖红线」表以此为准（tests/unit/test_waiver.py 守）。
+#: 不可豁免的红线（任何人批准都无效）。文档「不可覆盖红线」表以此为准（tests/unit/09_core/test_waiver.py 守）。
 RED_LINES: Dict[str, str] = {
     "submit_user_confirmation": "POST /alphas/{id}/submit 前的用户明确确认——不可逆动作，不存在「豁免确认」",
     "credentials": "凭据只在 world-quant-brain-mcp/.env：禁止读取、打印、提交、外发",
@@ -499,7 +499,7 @@ def rejected_note(w: Optional[Waiver]) -> str:
 
 def render_switch_table() -> str:
     """「闸与逃生口总表」（Markdown）——嵌入 Claude/skills/INDEX.md 的 switch-table 块，
-    tests/unit/test_waiver.py 比对；改政策先改 GATE_POLICIES，再重新生成。"""
+    tests/unit/09_core/test_waiver.py 比对；改政策先改 GATE_POLICIES，再重新生成。"""
     def esc(x: str) -> str:            # 单元格里的 | 必须转义，否则表格错列
         return x.replace("|", "\\|")
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""tests/unit/test_db_write_guards.py — 并发写锁治理守卫（2026-09-20 L1/L3）。
+"""tests/unit/01_store_db/test_db_write_guards.py — 并发写锁治理守卫（2026-09-20 L1/L3）。
 
 四类守卫（reports/db_concurrent_write_lock_audit_20260920.md 方案验收）：
   1. 连接工厂 PRAGMA 规范（WAL / busy_timeout=60s / foreign_keys=ON）

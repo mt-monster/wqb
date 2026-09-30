@@ -1,5 +1,5 @@
 {
- "_doc": "ledger_kv 键目录：单一真相源（tools/ledger_keys.py 扫描代码与文档并对账，tests/unit/test_ledger_key_catalog.py 守）。键里的 `<x>` 是占位符。writers/readers 的 code 引用必须真实存在并含该键的字面量；有 readers 而无 writers 的键必须登记 orphan（指向审查条目），且登记必须仍然为真。status：active / legacy（仍被识别，新写入用替代品）/ deprecated（已废止，文档只能带「废止/历史」字样提及）/ external（不在 ledger_kv 里）。",
+ "_doc": "ledger_kv 键目录：单一真相源（tools/ledger_keys.py 扫描代码与文档并对账，tests/unit/01_store_db/test_ledger_key_catalog.py 守）。键里的 `<x>` 是占位符。writers/readers 的 code 引用必须真实存在并含该键的字面量；有 readers 而无 writers 的键必须登记 orphan（指向审查条目），且登记必须仍然为真。status：active / legacy（仍被识别，新写入用替代品）/ deprecated（已废止，文档只能带「废止/历史」字样提及）/ external（不在 ledger_kv 里）。",
  "entries": [
   {
    "key": "s0_ranking",

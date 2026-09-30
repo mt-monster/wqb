@@ -66,8 +66,8 @@
 | 单源核心 | 区域/算子/中性化域常量只在 `src/wqb/config.py` 定义，MCP 包与 toolkit 共享引用，禁止重复硬编码 | 代码评审 + AGENTS.md §3.x |
 | brain_api 稳定门面 | `BrainApiClient` 只继承 5 个 mixin，方法体 verbatim 迁移不重写；新端点=新增 mixin 方法 | 备份在 `attic/brain_api_backup/` |
 | 提交判定唯一权威 | `submit_verdict`（模拟层 checks + GET /submit 双视图）；`brain-alpha-judge`/`workflow_judge` 只是参考层 | SOP 步 8 + 代码无提交路径 |
-| 处女提交 404 盲区 | UNSUBMITTED 的 alpha GET /submit 返回 404 → UNVERIFIABLE，须补 prod/self 终验（`batch_submit_verdict.py --phase2-prod`）才能放行 | `tests/unit/test_batch_submit_verdict_phase2.py` |
-| dry-run 契约 | 全部 workflow 节点统一「零成本前置 → 构建命令计划 → 不 subprocess 不写库」；失败必须带 error | `tests/unit/test_skill_integrity.py` |
+| 处女提交 404 盲区 | UNSUBMITTED 的 alpha GET /submit 返回 404 → UNVERIFIABLE，须补 prod/self 终验（`batch_submit_verdict.py --phase2-prod`）才能放行 | `tests/unit/05_submit_quota/test_batch_submit_verdict_phase2.py` |
+| dry-run 契约 | 全部 workflow 节点统一「零成本前置 → 构建命令计划 → 不 subprocess 不写库」；失败必须带 error | `tests/unit/07_docs_skills/test_skill_integrity.py` |
 | 四处同步 | 新增/修改 workflow 节点须同步 registry / test_workflow / _DRY_RUN_CASES / INDEX.md | `python tools/audit_node_registration.py` |
 | argv 契约 | 拼子进程命令的节点必须过 `validate_argv` 静态解析目标脚本 argparse，杜绝不存在的 flag | 仓脚本内建 |
 | skill 单向同步 | 仓库 `Claude/skills/` 是源，安装位是派生物；改完跑 `python tools/sync_skills.py` | `--check` 模式 + 单测守护 |
@@ -140,7 +140,7 @@ git config core.hooksPath tools/git-hooks
 | `WQB_DB_MCP_PY` | `wqb-db` 用的解释器 | `<根>/.venv/Scripts/python.exe` | 同上（云端一个 venv 即可） |
 
 `mcp_config.json`（供 Claude Desktop，不展开变量）保持字面路径，与 `.mcp.json` 缺省展开值的一致性由
-`tests/unit/test_mcp_config_portable.py` 守护。体检：`python tools/mcp_ping.py`（同样按上表展开）。
+`tests/unit/06_wave_pipeline/test_mcp_config_portable.py` 守护。体检：`python tools/mcp_ping.py`（同样按上表展开）。
 
 #### 云端会话（Claude Code on the web）连接 MCP
 
