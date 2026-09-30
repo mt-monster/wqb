@@ -1,15 +1,14 @@
-# tests/ 测试归类方案（待审核）
+# tests/ 测试归类方案（已执行搬移）
 
-> 生成：一次性脚本 `tests/.gen_tests_toc.py`（源分析可复跑）。**本清单仅归档，未搬移任何文件。**
+> 生成：一次性脚本 `tests/.gen_tests_toc.py`（源分析可复跑）。本清单为 `tests/unit/` 下测试文件的主题归类映射。
 
-`tests/unit/` 现平铺 173 个测试文件（排除 `test_toolified_cli.py`）。
-建议按被测源码模块归入以下主题子目录。
+`tests/unit/` 下 174 个测试文件（排除 `test_toolified_cli.py`）归入以下主题子目录。
 
 | 子目录 | 主题 | 文件数 |
 |---|---|--:|
 | `tests/unit/01_store_db/` | store 存储层 / db 连接 / submit_queue | 25 |
 | `tests/unit/02_workflow/` | workflow 编排 / 执行 / 节点通用 | 17 |
-| `tests/unit/03_gem/` | GEM 表达生成引擎 | 8 |
+| `tests/unit/03_gem/` | GEM 表达生成引擎 | 9 |
 | `tests/unit/04_gates/` | 信号 / 提交闸门（含组合形态铁律） | 13 |
 | `tests/unit/05_submit_quota/` | 提交 / 判定 / 配额 / 相关性 | 16 |
 | `tests/unit/06_wave_pipeline/` | 战役 pipeline / 波形 / 台账 / 波门 | 24 |
@@ -17,7 +16,7 @@
 | `tests/unit/08_forum_recon/` | 论坛情报 / 侦察 / 复盘 / 概念 | 17 |
 | `tests/unit/09_core/` | 核心基础模块（config/expression/research/search 等） | 20 |
 | `tests/unit/10_toolkit_scripts/` | tools/ 与 skills scripts 第三方工具脚本 | 8 |
-| **合计** | | **173** |
+| **合计** | | **174** |
 
 ---
 
@@ -69,7 +68,7 @@
 - `test_workflow_nodes.py`
 - `test_workflow_popen_stdin_devnull.py`
 
-## `tests/unit/03_gem/` — GEM 表达生成引擎（8）
+## `tests/unit/03_gem/` — GEM 表达生成引擎（9）
 
 - `test_gem_console_watch.py`
 - `test_gem_group_fields.py`
@@ -79,6 +78,7 @@
 - `test_gem_repeated_placeholder.py`
 - `test_gem_skill_paths.py`
 - `test_prompt_kb.py`
+- `test_prompt_kb_integration.py`
 
 ## `tests/unit/04_gates/` — 信号 / 提交闸门（含组合形态铁律）（13）
 

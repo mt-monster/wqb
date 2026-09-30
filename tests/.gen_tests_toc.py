@@ -64,6 +64,7 @@ put("03_gem", [
     "test_gem_console_watch", "test_gem_group_fields", "test_gem_pipeline_mode",
     "test_gem_pregate_platform_constraints", "test_gem_provenance_p1p2p3",
     "test_gem_repeated_placeholder", "test_gem_skill_paths", "test_prompt_kb",
+    "test_prompt_kb_integration",
 ])
 put("04_gates", [
     "test_gate5_coverage_matrix", "test_gate_equal_weight_leg_add",
