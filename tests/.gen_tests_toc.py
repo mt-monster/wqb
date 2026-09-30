@@ -205,15 +205,47 @@ def move():
     print(f"已搬移 {moved} 个文件进子目录（跳过已搬 {skipped} 个）")
 
 
-def annotate():
-    """同步更新 src/ tools/ 等 .py 里 tests/unit/test_xxx.py 注释路径 -> tests/unit/<dir>/test_xxx.py。"""
+def _git_dirty(repo_root):
+    """返回当前工作树相对 index 有未提交修改的文件绝对路径集合（即他人/在途 WIP）。"""
+    import subprocess
+    try:
+        out = subprocess.run(
+            ["git", "-C", repo_root, "diff", "--name-only"],
+            capture_output=True, text=True, timeout=30,
+        ).stdout
+    except Exception:
+        return set()
+    # 注意：git 返回正斜杠路径，os.walk 产出本机分隔符，必须 normpath 后比对，否则脏集合匹配失败（曾致 WIP 跳过失效）。
+    return {os.path.normpath(os.path.join(repo_root, p.strip()))
+            for p in out.splitlines() if p.strip()}
+
+
+def annotate(exclude_wip=True):
+    """同步更新 src/ tools/ 等 .py 里 tests/unit/test_xxx.py 注释路径 -> tests/unit/<dir>/test_xxx.py。
+
+    exclude_wip=True 时**跳过**工作树里已有未提交修改的文件（在途 WIP），
+    避免把注释同步混进别人的改动；被跳过的文件会打印清单，待其 WIP 落地后再跑一次即可。
+    覆盖面 = **活跃区**（会被测试强校验存在性 / 会被 agent 实际加载），刻意不含
+    docs/skills_review_closure.json、reports/、cache/、output_report/、attic/ 等
+    **历史档案**——那些记录当时状态，重写等于篡改。
+    """
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # 活跃目录（含 live skills，会被 tools/sync_skills.py 同步到安装位）
     roots = [os.path.join(repo_root, "src"),
              os.path.join(repo_root, "tools"),
-             os.path.join(repo_root, "pipeline")]
+             os.path.join(repo_root, "pipeline"),
+             os.path.join(repo_root, "Claude", "skills"),
+             os.path.join(repo_root, "world-quant-brain-mcp"),
+             # tests/ 自身也纳入：测试之间会互相引用（断言兄弟测试文件存在 / 读取它），
+             # 不覆盖会留下失效的交叉引用；TESTS_TOC.md 与本文件里的 test_xxx.py
+             # 是占位写法（不在映射 M 内），会被自动跳过。
+             os.path.join(repo_root, "tests")]
+    # 活跃单文件
+    extra_files = [os.path.join(repo_root, "README.md"),
+                   os.path.join(repo_root, "mcp_config.json")]
     pat = re.compile(r"(tests/unit/)(test_[A-Za-z0-9_]+\.py)")
-    changed_files = 0
-    changed_lines = 0
+    TEXT_EXT = {".py", ".md", ".json", ".txt"}
+    targets = []
     for root in roots:
         if not os.path.isdir(root):
             continue
@@ -221,25 +253,40 @@ def annotate():
             if "__pycache__" in dirpath:
                 continue
             for fn in fnames:
-                if not fn.endswith(".py"):
-                    continue
-                fp = os.path.join(dirpath, fn)
-                try:
-                    txt = open(fp, encoding="utf-8", errors="ignore").read()
-                except OSError:
-                    continue
-                def repl(m):
-                    name = m.group(2)[:-3]
-                    d = M.get(name)
-                    if d is None:
-                        return m.group(0)
-                    return f"tests/unit/{d}/{m.group(2)}"
-                new = pat.sub(repl, txt)
-                if new != txt:
-                    open(fp, "w", encoding="utf-8").write(new)
-                    changed_files += 1
-                    changed_lines += sum(1 for a, b in zip(txt.splitlines(), new.splitlines()) if a != b)
-    print(f"已同步注释路径：{changed_files} 个文件，{changed_lines} 行")
+                if os.path.splitext(fn)[1].lower() in TEXT_EXT:
+                    targets.append(os.path.join(dirpath, fn))
+    targets.extend(f for f in extra_files if os.path.isfile(f))
+    dirty = _git_dirty(repo_root) if exclude_wip else set()
+    changed_files = 0
+    changed_lines = 0
+    changed_list = []
+    skipped_list = []
+    for fp in targets:
+        try:
+            txt = open(fp, encoding="utf-8", errors="ignore").read()
+        except OSError:
+            continue
+        def repl(m):
+            name = m.group(2)[:-3]
+            d = M.get(name)
+            if d is None:
+                return m.group(0)
+            return f"tests/unit/{d}/{m.group(2)}"
+        new = pat.sub(repl, txt)
+        if new != txt:
+            if os.path.abspath(fp) in dirty:
+                skipped_list.append(fp)
+                continue
+            open(fp, "w", encoding="utf-8").write(new)
+            changed_files += 1
+            changed_list.append(fp)
+            changed_lines += sum(1 for a, b in zip(txt.splitlines(), new.splitlines()) if a != b)
+    for fp in changed_list:
+        print(f"  [changed] {os.path.relpath(fp, repo_root)}")
+    for fp in skipped_list:
+        print(f"  [skip-WIP] {os.path.relpath(fp, repo_root)}")
+    print(f"已同步注释路径：{changed_files} 个文件，{changed_lines} 行；"
+          f"因在途 WIP 跳过 {len(skipped_list)} 个文件")
 
 
 if __name__ == "__main__":
