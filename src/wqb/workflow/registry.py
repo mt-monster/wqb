@@ -129,7 +129,8 @@ class WorkflowRegistry:
                     required_params=["alpha_id"],
                     optional_params=["name", "color", "tags", "descriptions", "force",
                                      "confirm_submit", "verify_timeout",
-                                     "dataset", "wave", "expr_family", "channel"],
+                                     "dataset", "wave", "expr_family", "channel",
+                                     "robustness_audited"],
                 )
             )
         except ImportError as e:

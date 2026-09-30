@@ -87,11 +87,11 @@
  "field_count_strategy_ref": "GLOBAL:field_count_strategy_layered_v1",
  "amr_specific_adjustments": {
   "cw_gate": "FAIL",
-  "longcount_min": 60,
+  "longcount_min": 80,
   "longcount_verdict": "FAIL",
   "prod_corr_early_warn": 0.7,
   "fast_kill": "新数据集 8 探针无 |S|>=0.5 即判死回写，不扩批不换设置重试",
-  "note": "AMR profile gate_overrides 落地；TOP600 小宇宙（平台实测 2026-09-16，仅 TOP600），MARKET 中性化"
+  "note": "AMR profile gate_overrides 落地；TOP600 小宇宙（平台实测 2026-09-16，仅 TOP600）；longcount_min 2026-09-28 加严 60→80（用户口径）；中性化跟 win 改钉 SUBINDUSTRY"
  },
  "poll": {
   "max_wait_minutes": 60,

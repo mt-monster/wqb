@@ -23,7 +23,7 @@ import json
 import re
 import sqlite3
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
 from ._common import default_db_path, _now
 from ..db_conn import connect as db_connect  # 规范工厂（2026-09-20 L1 收口：WAL + busy_timeout 60s）
@@ -91,6 +91,12 @@ CREATE TABLE IF NOT EXISTS submit_ready (
 );
 CREATE INDEX IF NOT EXISTS ix_sr_region_status ON submit_ready(region, status);
 CREATE INDEX IF NOT EXISTS ix_sr_status ON submit_ready(status);
+-- 2026-09-28 自愈：P0 迁移「改名→新建同名表」重建 submit_ready 时**丢了 UNIQUE(alpha_id, region)**，
+-- 而 `_backtest.py`/`submit_queue` 的入队 upsert 用 `ON CONFLICT(alpha_id,region)` →
+-- 报 `ON CONFLICT clause does not match any PRIMARY KEY or UNIQUE constraint`，
+-- **过闸候选静默不入队**（影响所有区域）。这里显式建唯一索引，使任何被迁移过的库
+-- 一旦经本 store 打开即自动补回该约束（CREATE UNIQUE INDEX IF NOT EXISTS 幂等）。
+CREATE UNIQUE INDEX IF NOT EXISTS ux_sr_alpha_region ON submit_ready(alpha_id, region);
 """
 
 
@@ -640,6 +646,47 @@ def retire(alpha_id: str, status: str = STATUS_SUBMITTED,
         n = cur.rowcount or 0
         con.commit()
         return n
+    finally:
+        con.close()
+
+
+def retire_region(region: str, status: str = STATUS_EXPIRED, note: str = "",
+                  db_path: Optional[str] = None, dry_run: bool = False,
+                  from_statuses: Sequence[str] = (STATUS_READY,)) -> Dict[str, Any]:
+    """整区批量退役候选（2026-09-30 补能力）。
+
+    背景：`tools/submit_queue.py add-many` 从本地 `alphas` 镜像批量入队后，镜像陈旧
+    （指标/相关性已变差或已 ACTIVE）时会留下整片无效 READY。逐颗 `retire --alpha-id` 不现实，
+    所以上层只能“再入队一次”而越清越乱（实测 IND 一次性入队 109 条）。
+
+    幂等：重跑时已是目标状态的行不再匹配（from_statuses 只取非目标状态）。
+    返回 {'region','status','matched','dry_run','from_statuses'}。
+    """
+    if not region:
+        raise ValueError("retire_region 必须指定 region（防误操全库）")
+    from_statuses = [s for s in (from_statuses or ()) if s != status]
+    if not from_statuses:
+        return {"region": region, "status": status, "matched": 0,
+                "dry_run": dry_run, "from_statuses": []}
+    con = connect(db_path)
+    try:
+        ensure_table(con)
+        ph = ",".join("?" * len(from_statuses))
+        sel = f"SELECT COUNT(*) FROM submit_ready WHERE region=? AND status IN ({ph})"
+        matched = con.execute(sel, [region] + list(from_statuses)).fetchone()[0]
+        if dry_run or not matched:
+            return {"region": region, "status": status, "matched": int(matched),
+                    "dry_run": dry_run, "from_statuses": from_statuses}
+        suffix = f" | retired:{status}"
+        if note:
+            suffix += f"({note})"
+        cur = con.execute(
+            f"UPDATE submit_ready SET status=?, note=COALESCE(note,'')||? "
+            f"WHERE region=? AND status IN ({ph})",
+            [status, suffix, region] + list(from_statuses))
+        con.commit()
+        return {"region": region, "status": status, "matched": int(cur.rowcount or 0),
+                "dry_run": dry_run, "from_statuses": from_statuses}
     finally:
         con.close()
 

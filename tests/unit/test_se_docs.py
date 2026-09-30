@@ -1279,7 +1279,10 @@ def test_fe_ledger_readers_and_gate_claims_hold():
             if ".venv" in f.parts or "attic" in f.parts:
                 continue
             if re.search(r"\.get\(\s*[\"']preprocessing[\"']", _read(f)):
-                readers.append(str(f.relative_to(REPO)))
+                # 2026-09-30：as_posix() 跨平台化。Windows 下 str(relative_to())
+                # 产出反斜杠分隔，与硬编码的 "/" 期望值不匹配（该断言一直只在
+                # POSIX 绿）。语义没变，只是路径分隔符归一。
+                readers.append(f.relative_to(REPO).as_posix())
     assert readers == ["src/wqb/workflow/nodes/feature_engineering.py"], readers        # 只有节点自己回显
     assert "`preprocessing` **只作记录**" in t
     assert "campaign.py" in t and "ledger" in _read(SKILLS / "wq-brain-campaign-toolkit" / "scripts" / "campaign.py")

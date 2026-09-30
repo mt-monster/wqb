@@ -10,6 +10,8 @@ reasonix.toml
 **/__pycache__/
 *.pyc
 **/*.pyc
+# setuptools/editable-install build metadata (generated; never commit)
+src/wqb.egg-info/
 
 # ===== Large data / binaries (not source code) =====
 *.zip
@@ -169,4 +171,34 @@ tracking/hypotheses/
 /scratch_gate_*.json
 # 文档工具生成的 sidecar（repo 历史 0 个被跟踪），与 .md 正文重复
 *.artifact.json
+
+# ===== 根目录堆积治理（2026-09-30 结构审计 P0 新增）=====
+# 根目录一次性审查报告正文（skills_review_20260930.md 等，~480KB）——
+# 结论已收口进 docs/skills_review_decisions.md，正文属一次性产物。
+# 保留磁盘便于回溯，归档进 attic/，不入库。
+/skills_review_*.md
+# 手工保存的 patch 残留（apply_patch 被中断时留下），已归档到 attic/root_clutter_20260930/
+/_py.diff
+/*.diff
+/*.patch
+# 外来项目的一次性脚本/页面误落到本仓库根（实测：WorkBuddy 学习目标追踪），
+# 与 wqb 无关，同样是"别在根目录堆东西"的兜底。
+/seed_*.py
+/tmp_*.py
+# Windows 资源管理器在含非 ASCII 路径的目录里自动生成
+/desktop.ini
+**/desktop.ini
+
+# ===== 凭据守护（2026-09-30 新增）=====
+# BRAIN 平台凭据只能进 world-quant-brain-mcp/.env（已被 .env 规则排除）或
+%USERPROFILE% 下的私有位置。**禁止**在 skills 目录里放明文 config.json ——
+# Claude/skills/ 下的内嵌副本是 GEM 引擎的硬依赖，运行时会被读取，
+# 凭据落在这里等于把它交给任何能跑引擎的进程。
+# 2026-09-30 实例：trailSomeAlphas/skills/brain-feature-implementation/config.json
+# 曾存有明文 email + password（未被 git 跟踪，但工作区内可读）。
+Claude/skills/**/config.json
+!Claude/skills/brain-make-some-gem/scripts/headless_runner/config.json
+# 其他宿主目录的 config.json 一律排除（本仓不承载凭据文件）
+**/skills/**/config.json
+**/skills/**/credentials.json
 

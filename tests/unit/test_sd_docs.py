@@ -121,9 +121,26 @@ def test_toolkit_subcommand_table_is_complete_and_archived_scripts_are_not_offer
         assert f"| `{sub}` |" in table, f"子命令表缺 {sub}"
     for script in sorted(TK_SCRIPTS.glob("*.py")):
         assert script.name in t, f"toolkit SKILL 没提到 scripts/{script.name}"
-    archived = [p.stem for p in (REPO / "attic" / "toolkit_zero_ref_20260928").glob("*.py")]
-    archived += ["migrate_templates", "compose_signals", "param_opt", "ortho_prescreen", "proxy_prescreen",
-                 "rescue_checklist", "calibrate_probe", "fit_mix_weights", "build_mix", "diversity_slots"]
+    # 2026-09-30：归档清单改为「git 记录 ∪ 磁盘」的并集。
+    # 原来只 glob 磁盘，而 attic/ 在 .gitignore 中 —— 工作区里该目录可能已被清空
+    # （本次实测：目录不存在，但 git 仍跟踪 7 个 .py，处于「已删未暂存」状态），
+    # 于是 archived 只剩硬编码的 10 个，撞破 >=15 的断言。归档事实的权威是
+    # git（移动而非删除，历史完整保留），故以 git 为准、磁盘为补充。
+    import subprocess
+    attic_dir = REPO / "attic" / "toolkit_zero_ref_20260928"
+    archived = set()
+    if attic_dir.is_dir():
+        archived |= {p.stem for p in attic_dir.glob("*.py")}
+    try:
+        r = subprocess.run(["git", "ls-files", str(attic_dir.relative_to(REPO)).replace("\\", "/")],
+                           cwd=str(REPO), capture_output=True, text=True, timeout=30)
+        if r.returncode == 0:
+            archived |= {Path(x).stem for x in r.stdout.splitlines()
+                         if x.endswith(".py") and "zero_ref" in x}
+    except (OSError, subprocess.SubprocessError):
+        pass  # 非 git 环境（如打包副本）退回纯磁盘判断
+    archived |= {"migrate_templates", "compose_signals", "param_opt", "ortho_prescreen", "proxy_prescreen",
+                 "rescue_checklist", "calibrate_probe", "fit_mix_weights", "build_mix", "diversity_slots"}
     assert len(archived) >= 15
     for name in archived:
         assert not (TK_SCRIPTS / f"{name}.py").exists(), f"{name} 已归档，scripts/ 里不该还有"

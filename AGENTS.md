@@ -398,10 +398,11 @@ tools/legacy/gate.py（遗留通用闸门，代码零引用，2026-09-20 归档�
    （源自 WebDataScope 插件的 `data/oth/info_data.bin`，见
    `brain-alpha-research/references/webdatascope-data-quality.md`）。
    `brain_mixin_transport.py:105` 读取它、缺失时优雅降级（关闭 sharpe 过滤）。无需动作。
-2. **`src/wqb/` 78 模块未打包** —— **决策已记录，维持现状**：`pyproject.toml` 明写
-   `py-modules = []`（脚本集合模型），`tests/conftest.py` 亦注明"sys.path.insert 是既定导入机制，
-   非权宜之计"。**不改为正式包**：改动面大（需同步 `src/wqb/**` 相对导入 + 所有脚本 sys.path 注入），
-   收益仅 IDE 跳转。新脚本导入 `wqb.*` 时**照抄 conftest 的 `sys.path.insert` 模式**。
+2. **`src/wqb/` 78 模块未打包** —— ⚠ **2026-09-30 决策已推翻并落地**（详见 8.12）。保留原判断的理由记录：
+   当初选「脚本集合 + sys.path 注入」是在没有回归网的前提下做的，代价是 IDE 跳转差、新脚本要贴 `sys.path.insert` 样板。
+   2026-09-30 在 **2709 个测试全绿** 的基础上改为正式包。**`tools/` 侧 142 处 `sys.path` 注入仍在**（脚本直跑需要），
+   清理是独立任务。`src/wqb` 内的 sys.path 一律是**外挂** `world-quant-brain-mcp/` 与 `tools/` 这两个非 pip 包
+   （设计内行为），**不要删**。新脚本直接 `from wqb.store import …`。
 3. **文档三分** —— **已处理（2026-09-20）**：`AGENTS.md`（治理规约，权威）、
    `CLAUDE.md`（Claude Code 宿主常驻上下文：alpha 挖掘准则）、`README.md`（项目概述 + 上手）。
    已在 README 顶部「文档分工」与 CLAUDE.md 头部声明三者定位。
@@ -556,3 +557,37 @@ toolkit 评审（pipeline stage_review）、平台同步（`tools/sync_platform_
   可靠结局占额度、故障不占。**墙词表必须与 `config.RA_CHECK_NAMES` 一一对应**（`tests/unit/test_recon_wave.py` 守）——config 新增一项 RA 闸而这里没给它墙，测试即红。
 - **形状配额**：`tools/shape_quota_check.py`（分类规则 `src/wqb/shape_quota.py`，启发式；阈值 ≥ 3 个形状族、`trade_when` ≤ 40% 来自步 4 §4.5.1 准则）只读、不入闸链，闸 6 才是批级多样性的权威。
 - **live 论坛路径没有端到端实测过**（无凭据 / 无出口）：测试覆盖到假 session / 假检索轮；首次真跑先 `--dry-run`。此前该路径**从未跑通过**（`load_creds(None)` 永远 TypeError），所有真实调用都落进了「鉴权失败 → 记成无解」。
+
+### 8.12 仓库结构守护与可安装包（2026-09-30 落地）
+
+- **`src/wqb` 已改为正式可安装包**（推翻 8.4 第 2 条的旧决策）：`pyproject.toml` 声明
+  `[tool.setuptools.packages.find] where=["src"] include=["wqb*"]`，`pip install -e .` 后
+  `import wqb` 在**任意工作目录**可用（实测从仓库外目录导入成功，14 个区域正常加载）。
+  依据是当时 2709 个测试全绿，回归网足够。
+- **`tools/audit_structure.py` 是结构守护，已挂 pre-commit**（`core.hooksPath = tools/git-hooks`）：
+  S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 跨层同名 · S4 硬编码盘符 ·
+  S5 reports/ 散落脚本 · S6 skills 副本漂移。**S1/S2/S4 判 FAIL 阻断提交；S3/S5/S6 判 WARN（存量不阻塞）**。
+  单项自查：`python tools/audit_structure.py --only s1`。当前 **FAIL=0 / WARN=2**（两 WARN 是已登记的已知技术债）。
+- **S3「同名」不是缺陷**：`tools/x.py` 与 `src/wqb/**/x.py` 分属脚本与包两套命名空间，import 不会撞
+  （实测 `import wave_gate` 报 ModuleNotFoundError，它只以 `wqb.workflow.nodes.wave_gate` 存在）。**勿改名。**
+- **pre-commit 钩子的解释器**：钩子由 git 自带的 sh 执行，PATH 与交互式 shell 不同（实测会把 `python`
+  解析到无 pytest 的 LobsterAI 运行时，导致钩子每次提交都误报失败）。钩子已改为**优先用
+  `<repo>/.venv/Scripts/python.exe`**，无 venv 才退回 PATH。手写 shell 调用时注意同一问题。
+- **`tools/audit_skill_drift.py` 管仓库内 skill 之间的副本漂移**（区别于 `sync_skills.py` 的仓库→安装位同步）：
+  A 类（GEM 内嵌快照，由 `sync_gem_embedded_skill.py` 同步，设计内保留）不报，只报 B 类跨 skill 复制。
+  当前 B=3 组：`validator.py`（4 份）/ `helpful_functions.py`（4 份）/ `ace_lib.py`（2 份）。
+  **改这些文件时四处一起覆盖**——历史上曾三份 validator 各自演化、缺 hump/bucket/densify 修复。
+- **`tools/clean_logs.py` 管 logs/ 运行期清理**：默认 dry-run，`--apply` 才删。
+  `--report-locked` 探测 ACL 锁死目录并打印**需管理员执行**的 takeown/icacls/rmdir 命令——
+  **不自行提权**（删除纪律要求人工确认）。非提权进程删不掉锁死目录，不要反复重试。
+- **归档一律用 `tools/legacy/`（产物脚本）或各目录自带的 `archive/`**（区域探针，如
+  `tracking/KOR/scripts/archive/`），且**必须先核 refs=0**（`git grep -w <name>`）。
+  `reports/` 下带日期前缀的 .py 看着像一次性产物，实际常是审查结论的**可重跑证据**
+  （报告里写着「可复现：`python reports/xxx.py`」），`audit_structure` 的 `S5_EXEMPT_PREFIXES`
+  已登记豁免。判据全文见 `tools/legacy/README.md`。
+- **skills 目录禁止放明文凭据**：`Claude/skills/**/config.json` 已 gitignore（GEM 内嵌副本是引擎硬依赖，
+  凭据落这里等于交给任何能跑引擎的进程）。2026-09-30 曾在内嵌 `brain-feature-implementation/config.json`
+  发现明文 email+password（未入库，已移出）。
+- **测试的两个环境前提**（Windows）：符号链接需开发者模式/管理员，否则 `test_pull_skills_safety`
+  的链接识别用例 skip；`test_sync_skills_reports_no_drift` 会因「仓库已改 / 安装位未同步」的时序差失败，
+  跑一次 `python tools/sync_skills.py` 即自愈——**判断回归归属前先看 `git status` 有没有你改过该文件**。

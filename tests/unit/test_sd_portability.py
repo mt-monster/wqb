@@ -71,12 +71,25 @@ def test_workspace_root_helpers_prefer_env_then_repo_walkup(tmp_path, monkeypatc
     monkeypatch.delenv("WQ_PROJECT_ROOT", raising=False)
     roots = _workspace.workspace_roots()
     assert roots[0] == str(ws)
-    assert all("traeCN_project" not in r for r in roots)
+    # 2026-09-30 修正：本行原为 `all("traeCN_project" not in r for r in roots)`，
+    # 与下一行 `assert str(REPO) in roots` **直接矛盾** —— REPO 就在
+    # D:\coding\traeCN_project\wqb 下。要求「仓库根在结果里」同时又要求
+    # 「结果里不得含仓库根的路径片段」，永远无法同时成立。
+    # 真正的意图（见测试名与 docstring）是「只认环境变量与真实上溯」，
+    # 故改为校验优先级与来源可验证性。
     assert str(REPO) in roots                      # 仓库内运行时，上溯也能找到仓库根
+    for r in roots:                               # 每条候选都必须是可验证的工作区根
+        assert (Path(r) / "src" / "wqb").is_dir() or (Path(r) / "data" / "wqb.db").exists(), (
+            f"workspace_roots 给出未验证的候选根: {r}")
 
     toolkit = REPO / "Claude" / "skills" / "wq-brain-campaign-toolkit" / "scripts"
     if str(toolkit) not in sys.path:
         sys.path.insert(0, str(toolkit))
     from _lib import wqb_store
     assert not hasattr(wqb_store, "_LEGACY_ROOT")
-    assert all("traeCN_project" not in r for r in wqb_store._workspace_roots())
+    # 2026-09-30：同上方矛盾断言的修正版。仓库内运行时 _walk_up(__file__) 会合法
+    # 找到真仓库根（路径本就含 traeCN_project），这正是「真实上溯」该有的行为。
+    # 改验「每条候选都含工作区标记」——这才是本测试想保证的（可验证来源）。
+    for r in wqb_store._workspace_roots():
+        assert (Path(r) / "src" / "wqb").is_dir() or (Path(r) / "data" / "wqb.db").exists(), (
+            f"_workspace_roots 给出未验证的候选根: {r}")

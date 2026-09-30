@@ -80,7 +80,14 @@ def test_audit_flags_hooks_scripts_symlinks_and_risky_patterns(ps, tmp_path):
     assert tools["risk"] == "high" and tools["allowed_tools"].startswith("Bash")
 
     linked = _mk(tmp_path, "linked", BENIGN)
-    (linked / "sneaky").symlink_to("/etc/hostname")
+    # 2026-09-30：Windows 上非开发者模式 / 无 SeCreateSymbolicLinkPrivilege 时
+    # 创建符号链接需管理员权限，原写法会让整个审计器测试模块报 error 而非失败。
+    # 符号链接识别是本审计器的安全能力，不能默默放弃覆盖——故优先尝试建链接，
+    # 实在建不了才显式 skip 并说明原因。
+    try:
+        (linked / "sneaky").symlink_to("/etc/hostname")
+    except (OSError, NotImplementedError) as e:
+        pytest.skip(f"当前环境无法创建符号链接（Windows 需开发者模式/管理员）: {e}")
     assert ps.audit_skill_folder(str(linked))["risk"] == "high"
 
 

@@ -10,6 +10,8 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 
 from ._common import _now
+from . import submit_queue as _sq
+from ..db_conn import connect as db_connect
 
 
 class SchemaMixin:
@@ -270,6 +272,11 @@ class SchemaMixin:
             #   此前 gate.py::_extract_exposure_from_idea 在生成期提取后直接丢弃，
             #   导致这两条规则无法被度量。验证侧（risk_neutralized_sharpe）早已落库。
             ("expected_exposure", "TEXT"),
+            # ---- 2026-09-30：atom/combined 分类标签（写入期自动计算）----
+            # 平台 "Atom Alpha" = 单数据集信号；写入 upsert_expressions 时按字段数据集
+            # 归属自动打标（见 wqb.expression.atom）。atom_flag ∈ {atom, combined, unknown}。
+            ("atom_flag", "VARCHAR(16)"),
+            ("atom_n_datasets", "INTEGER"),
         ):
             self._add_column("expressions", col, ddl)
         for col, ddl in (
@@ -505,6 +512,20 @@ class SchemaMixin:
                 )
         except Exception as exc:  # pragma: no cover
             print(f"[wave-ttl-check] 校验异常（忽略）: {exc}")
+        # 2026-09-28：submit_queue.ensure_table 幂等建表 + 唯一索引自愈
+        # （P0 迁移丢 UNIQUE(alpha_id,region) 的老库一经 store 打开即补回）
+        # 必须用【独立连接】执行：ensure_table 内部 executescript(SCHEMA) 会隐式 COMMIT，
+        # 若直接作用于本 store 的 self.connection 会打断调用方（build_wave 等）的事务边界，
+        # 导致 selection-state 门禁读到错误的 target_rows、漏拦写库（实测
+        # test_build_wave_selection 回归）。独立连接做自愈后关闭，不影响 self.connection。
+        # 必须针对『本 store 实际连接的库』(self.path) 自愈，而非 default_db_path()，
+        # 否则测试用的独立迁移库不会被自愈（test_submit_ready_unique_selfheal 回归）。
+        if self.path and self.path != ":memory:":
+            _heal_con = db_connect(self.path)
+            try:
+                _sq.ensure_table(_heal_con)
+            finally:
+                _heal_con.close()
         self.connection.commit()
 
     # -- helpers -----------------------------------------------------------

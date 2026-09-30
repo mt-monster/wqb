@@ -17,7 +17,7 @@ PROFILES = ROOT / "Claude" / "skills" / "wq-brain-ra-pipeline" / "references" / 
 CONTRACT = ROOT / "Claude" / "skills" / "wq-brain-ra-pipeline" / "references" / "region-profile-contract.md"
 
 #: 已知缺口（区域 → 缺什么）。补上后必须删；新增缺口必须先登记并在 contract §4 写明步 1 的行为。
-KNOWN_NO_PROFILE = {"AMR"}
+KNOWN_NO_PROFILE = set()  # AMR profile 已于 2026-09-28 补建（references/regions/AMR.md），缺口关闭
 KNOWN_NO_TRACKING = {"TWN"}
 
 

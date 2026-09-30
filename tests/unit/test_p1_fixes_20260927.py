@@ -142,11 +142,40 @@ def test_toolkit_db_path_env_precedence(tmp_path, clean_env):
 
 def test_legacy_root_is_gone(tmp_path, clean_env):
     """2026-09-29（X-14 / DEC-37）：作者本机盘符的「历史默认工作区」彻底移除——此前只在它存在时入选，
-    仍是一条固定路径候选；现只认环境变量与「战役目录 / 本文件 / cwd 上溯」这些可验证的来源。"""
+    仍是一条固定路径候选；现只认环境变量与「战役目录 / 本文件 / cwd 上溯」这些可验证的来源。
+
+    2026-09-30 修正断言方式：原写法 `all("traeCN_project" not in r for r in
+    _workspace_roots())` 在**仓库内**跑时必然失败——`_workspace_roots` 里的
+    `_walk_up(__file__)` 从 toolkit 自身位置上溯，会合法地找到真仓库根（其路径
+    本就含 traeCN_project）。那不是回归，是对「可验证来源」实现的误读。
+
+    改用与本文件 test_wave_gate_db_path_never_hardcoded 一致的静态判据：
+    直接检查源码里没有该盘符字面量。
+    """
     from _lib import wqb_store
 
     assert not hasattr(wqb_store, "_LEGACY_ROOT")
-    assert all("traeCN_project" not in r for r in wqb_store._workspace_roots())
+    # 只扫**可执行代码**：模块的 docstring 里有「历史默认 `D:\...` 此前无条件兜底……
+    # 彻底移除」这类变更记录，字面量出现在文档里是正确的，不能当成残留代码。
+    # 用 ast 剔除所有字符串常量 / 注释后再查。
+    import ast
+    src = Path(wqb_store.__file__).read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    lines = src.splitlines()
+    doc_lines = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            doc_lines.update(range(node.lineno, (node.end_lineno or node.lineno) + 1))
+    offenders = [
+        f"{wqb_store.__file__}:{i}"
+        for i, line in enumerate(lines, 1)
+        if "traeCN_project" in line and i not in doc_lines
+    ]
+    assert not offenders, f"可执行代码里仍有作者本机盘符: {offenders}"
+    # 且解析结果必须来自可验证来源：每一条都应当真的含工作区标记
+    for r in wqb_store._workspace_roots():
+        assert (Path(r) / "src" / "wqb").is_dir() or (Path(r) / "data" / "wqb.db").exists(), (
+            f"_workspace_roots 给出未验证的候选根: {r}")
 
 
 def test_wave_gate_db_path_never_hardcoded(tmp_path, clean_env):

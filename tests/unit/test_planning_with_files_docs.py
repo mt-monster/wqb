@@ -30,7 +30,9 @@ def test_hooks_never_block_and_pretooluse_skips_bash():
         assert not re.search(r"\bexit\s+[12]\b", c), f"钩子不得阻断：{c[:80]}"
         assert "<SKILL_ROOT>" not in c
     stop = [c for c in cmds if "Phase" in c][0]
-    assert "exit 0" in stop
+    # 2026-09-30：钩子已改为单行 `python -c`（原 bash -c 依赖 grep，Windows 上失效）。
+    # 「不阻断」的判据随之从 shell 的 `exit 0` 改为 Python 的 `sys.exit(0)`。
+    assert "sys.exit(0)" in stop, f"Stop 钩子应显式零退出（不阻断）：{stop[:120]}"
     pre = re.search(r"PreToolUse:\s*\n\s*- matcher:\s*\"([^\"]+)\"", _frontmatter()).group(1)
     assert "Bash" not in pre and set(pre.split("|")) == {"Write", "Edit"}
 

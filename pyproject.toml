@@ -4,8 +4,11 @@
 # 与根 requirements.txt 保持同源（requirements.txt 仍是安装入口，见其注释）。
 # 测试配置仍以 pytest.ini 为准，本文件不重复 [tool.pytest.ini_options]，避免冲突。
 #
-# 注意：本仓库是脚本/工具集合而非可 pip 安装的库，未声明 packages，
-# 因此 `pip install -e .` 仅用于安装依赖；运行时脚本通过 sys.path 注入或 venv 直接调用。
+# 注意：`src/wqb` 声明为可安装包（`pip install -e .` 后 `import wqb` 在任意目录
+# 可用），但 tools/ 与 Claude/skills/ 仍是脚本、不打包。因此 `pip install -e .`
+# 同时起两个作用：装依赖 + 把 wqb 包挂进 venv。tools/ 里的 CLI 仍靠
+# `python tools/<x>.py` 直接运行，其 sys.path 引导代码暂留未删（存量清理见
+# AGENTS.md §结构维护）。
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -34,6 +37,14 @@ dependencies = [
     "pytest>=8.0.0",
 ]
 
+# 本仓库主体是脚本集合，但 `src/wqb` 是一个规整的可导入包（每个子包都有
+# __init__.py），因此这里真正声明它 —— 目的是让 `import wqb` 在任何工作目录
+# 都能用，不必靠 259 处 sys.path 注入（见 AGENTS.md「依赖只允许向下」）。
+#
+# 注意：tools/ 与 Claude/skills/ 仍是脚本，不打包。tools/ 里的 CLI 靠
+# `python tools/<x>.py` 直接运行，其 sys.path 引导代码暂留（见下方注释）。
 [tool.setuptools]
-# 仓库为脚本集合，不打包为可导入库；仅声明依赖元数据。
-py-modules = []
+# 只装 src/wqb；显式 include 避免把 src/logs（运行期日志误落点）一并扫进来。
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["wqb*"]

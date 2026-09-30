@@ -121,6 +121,9 @@ S2选波沿用toolkit `build_wave.py`：`--size`为容量；预定实验使用
 | `fix_bom.py` | BOM(U+FEFF) 剥离修复：默认 `--dry-run` 列出含 BOM 的 .py；`--apply` 才修（备份 + CJK 数量校验 + ast.parse 校验） | `tracking/_scratch/_fix_bom.py` |
 | `clean_unused_imports.py` | 清理未用 import：默认 `--dry-run` 列出；`--apply` 才删（**跨文件 re-export 校验**防 SHAPE_CLASSES 误删 + `.bak_imp` 备份 + ast.parse 校验）；可 `--report` 接 scan_deadcode 的 JSON | `tracking/_scratch/_clean_unused_imports.py` |
 | `audit_node_registration.py` | **新增/修改 workflow 节点必跑**：审计「四处同步」——① registry.py 注册与 NodeMeta 签名 ② `test_registry_lists_all_core_nodes` 期望集合 ③ `_DRY_RUN_CASES` 用例表 ④ INDEX.md 节点计数。`--node X` 单节点自检；退出码 1 = 有漂移并列出全部缺口 | 改一处跑一次测试的往返 |
+| `audit_structure.py` | **仓库结构守护（2026-09-30 新增，已挂 pre-commit）**：S1 sys.path 自举/外挂分类 · S2 src→tools 依赖方向 · S3 tools 与 src 同名模块 · S4 硬编码盘符路径 · S5 reports/ 里的散落脚本 · S6 skills 副本漂移。`--only s1` 跑单项。只读；S1/S2/S4 判 FAIL，S3/S5/S6 判 WARN（存量不阻塞） | 靠 AGENTS.md 文字纪律 |
+| `audit_skill_drift.py` | skills 脚本副本漂移检测：A 类（GEM 内嵌快照，设计内）不报，只报 B 类跨 skill 复制（`validator.py` 4 份 / `helpful_functions.py` 4 份 / `ace_lib.py` 2 份）。`--check` 只判退出码，`--json` 机器读 | 手工 md5 对比 |
+| `clean_logs.py` | `logs/` 运行期清理：默认 dry-run，`--apply` 才删；`--report-locked` 探测 ACL 锁死目录并打印**需管理员执行**的 takeown/icacls/rmdir 命令（不自行提权——删除纪律要求人工确认） | 手工清 logs |
 
 > 三者均遵循 dead-code-cleanup skill 红线：**默认只读/dry-run，删除动作必须显式 `--apply`**。原稿已归档 `attic/tools_archive/_2026-08-28_*`。
 >

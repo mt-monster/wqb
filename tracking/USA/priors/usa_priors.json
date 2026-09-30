@@ -8,13 +8,6 @@
    "source": "region_kb"
   },
   {
-   "id": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
-   "what": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
-   "key": "skeleton=rank(add(multiply(w1, rank(ts_backfill(long_term, 66))), multiply(w2, rank(ts_backfill(short_hedge2, 66))), multiply(w3, rank(ts_backfill(pv, 66))), multiply(w4, rank(ts_backfill(event_5d, 66))))); evidence=GrlGJnPJ sh2.02/fit1.01/2y1.62/sub0.91/prod0.685 ACTIVE; settings=decay=5, neut=SUBINDUSTRY, universe=TOP3000, delay=1",
-   "evidence": "",
-   "source": "registry_win"
-  },
-  {
    "id": "USA-OHD-IVSKEW30D-DECAY-RECIPE",
    "what": "ts_decay_linear smoothing dramatically improves IV skew: tvr 0.33->0.07, sharpe 1.31->1.45, fitness 0.45->0.84. decay=5 optimal. 30d maturity only. subindustry best neutralization.",
    "key": "decay=5, group_rank(subindustry), 30d maturity, no winsorize/zscore improvement",
@@ -22,9 +15,22 @@
    "source": "registry_win"
   },
   {
-   "id": "USA-SA-KPGvRMg1",
-   "what": "SuperAlpha KPGvRMg1 (name=0.6944) ACTIVE",
-   "key": "SUBINDUSTRY 中性化 + selection 评分 (0.7-prod_correlation) + combo 1-maxCorr；prod_correlation 在 selection 可用、combo 不可用",
+   "id": "USA-WIN-SLOWCONVEX-DECAY90",
+   "what": {
+    "centering": "subtract(group_rank(...), 0.5) 把 rank 中心化到 [-0.5, 0.5]，使 signed_power 的符号有意义",
+    "convexity": "signed_power(., 5) 强凸性把仓位推向极端，只下注在排序最极端的名字上",
+    "damping": "ts_decay_linear(., 90) 极重阻尼把强凸性带来的换手压回去",
+    "interaction": "凸性与阻尼是交互项不是独立项——单独加凸性（power3 @ decay5）在 wave36 失败(1.29)，必须配极重阻尼",
+    "outcome": "产出「低换手 + 高 margin」画像（to 0.06 / margin 0.0035），而非靠削弱信号换低换手"
+   },
+   "key": "USA 存量 ACTIVE alpha 前三名共享此骨架：xAdL5vmN sharpe 4.51 / fitness 4.13 / turnover 0.061 / margin 0.003462 / 2Y 3.65（X=vec_avg(historic_earnings_surprise_score)）；6XpMb0aG sharpe 4.32 / fitness 4.32 / margin 0.003085（同骨架 50/50 混 earnings_surprise + headline_sentiment，ILLIQUID_MINVOL1M）",
+   "evidence": "USA 存量 ACTIVE alpha 前三名共享此骨架：xAdL5vmN sharpe 4.51 / fitness 4.13 / turnover 0.061 / margin 0.003462 / 2Y 3.65（X=vec_avg(historic_earnings_surprise_score)）；6XpMb0aG sharpe 4.32 / fitness 4.32 / margin 0.003085（同骨架 50/50 混 earnings_surprise + headline_sentiment，ILLIQUID_MINVOL1M）",
+   "source": "registry_win"
+  },
+  {
+   "id": "USA-W14-SUCCESS-FORMULA",
+   "what": "Wave 14 成功配方：3腿组合（long_term + short_term + event_5d），平衡权重（0.4/0.3/0.3），所有平台硬闸通过",
+   "key": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), multiply(0.3, rank(ts_backfill(event_5d_single_quantile_pred, 66)))))",
    "evidence": "",
    "source": "registry_win"
   },
@@ -36,9 +42,9 @@
    "source": "registry_win"
   },
   {
-   "id": "USA-W14-SUCCESS-FORMULA",
-   "what": "Wave 14 成功配方：3腿组合（long_term + short_term + event_5d），平衡权重（0.4/0.3/0.3），所有平台硬闸通过",
-   "key": "rank(add(multiply(0.4, rank(ts_backfill(long_term_quantile5_r120_pred, 66))), multiply(0.3, rank(ts_backfill(short_term_price_volume_based_return_5d, 66))), multiply(0.3, rank(ts_backfill(event_5d_single_quantile_pred, 66)))))",
+   "id": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
+   "what": "multifactor_return_pred 4腿组合（long_term + short_hedge2 + pv + event_5d）全闸通过并提交成功",
+   "key": "skeleton=rank(add(multiply(w1, rank(ts_backfill(long_term, 66))), multiply(w2, rank(ts_backfill(short_hedge2, 66))), multiply(w3, rank(ts_backfill(pv, 66))), multiply(w4, rank(ts_backfill(event_5d, 66))))); evidence=GrlGJnPJ sh2.02/fit1.01/2y1.62/sub0.91/prod0.685 ACTIVE; settings=decay=5, neut=SUBINDUSTRY, universe=TOP3000, delay=1",
    "evidence": "",
    "source": "registry_win"
   }
@@ -55,18 +61,53 @@
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "acquisition_model percentile",
-   "reason": "4 个候选全部失败：3 个全负 Sharpe（-0.02/-0.03/-0.12），1 个 Sharpe 0.95 但低于 1.58 门槛。百分位排名类信号在 USA/TOP3000 高效市场无预测能力，与 pattern_scores/pv_tech_indicators 死路模式一致。",
-   "salvage": "可尝试其他事件驱动数据集（如 earnings_surprise, insider_transactions）或跨区变体",
+   "family": "short_sale_volume",
+   "reason": "",
+   "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "USA-ACQUISITION-MODEL-DEAD"
+   "_entry_id": "USA-SHORTINTEREST29-RANK-WEAK"
   },
   {
-   "family": "ai_news_scores sentiment",
-   "reason": "RavenPack PR sentiment scores have zero alpha in USA/TOP3000/D1; all 8 single-field and composite probes far below 1.58 gate",
-   "salvage": "cross-region variants (prv2 ASI, prv23 EUR) untested; may work in other regions",
+   "family": "analyst_consensus_estimate",
+   "reason": "",
+   "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "USA-AI-NEWS-SCORES-DEAD"
+   "_entry_id": "USA-ANALYST-CONSENSUS-FXSPREAD-PROD-SAT"
+  },
+  {
+   "family": "option_order_flow_imbalance",
+   "reason": "",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-ORDER-FLOW-IMB-RANK-WEAK"
+  },
+  {
+   "family": "insider_matrix director/executive buy-sell value 稀疏事件",
+   "reason": "内部人交易数据稀疏：原始化→CW+turnover 双墙（拟合噪声）；正规 group_rank→信号不足(<1.58)。命中 SPARSE-EVENT-TWO-WALLS。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-INSIDER-MATRIX-SPARSE-EVENT-WALL"
+  },
+  {
+   "family": "order_book_imbalance",
+   "reason": "order_book_imbalance 水平/慢窗族（fill_prob/dark/auction/patience/price-pair）prod_corr>=0.7 同质，禁再投同族变体",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-OBI-LEVEL-FAMILIES-PROD-WALL"
+  },
+  {
+   "family": "intraday_pv_feats 价量相关反转 / 尾盘 30m 反转（含关注/量占比门控与慢化变体）",
+   "reason": "USA 不再投 ipv 反转族（fitness 墙 <1.0 结构性）。",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921"
+  },
+  {
+   "family": "option40 OptionMetrics surface (IV spread call-put, IV change, term slope, VRP, implied forward)",
+   "reason": "USA option tower: surface-level IV signals closed; only volume/OI-based option datasets remain",
+   "salvage": null,
+   "source": "registry_dead_end",
+   "_entry_id": "USA-OPTION40-IV-SURFACE-WEAK"
   },
   {
    "family": "analyst44 BEst revision breadth / dispersion / forward E-P z-score",
@@ -76,53 +117,18 @@
    "_entry_id": "USA-ANALYST44-BREADTH-DEAD-EP-PRODWALL"
   },
   {
-   "family": "continuation_score ascending_channel similarity delta",
-   "reason": "Ascending channel similarity 5d delta reversed has sharpe ceiling ~1.36 but fitness ceiling ~0.42. Fitness too low for platform gate 1.0.",
+   "family": "option40 IV spread / IV change / term slope / VRP / implied forward",
+   "reason": "8 concept-first probes (Cremers-Weinbaum IV spread 91d/30d, An et al. call/put IV change 22d, Vasquez term slope 360-30, Bali-Hovakimian realized-implied spread, put forward/close borrow proxy): max S 1.12 (IV spread 91d, tvr 0.22, sub 0.27), call IV change 1.03, forward/close 1.05 (sub 0.04); rest |S|<0.75. Below mode_b_qualification 1.25.",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "USA-CS-ASC-CHANNEL-DELTA-DEAD"
+   "_entry_id": "USA-OPTION40-IV-CONCEPTS-WEAK"
   },
   {
-   "family": "earningscall_embed embedding components",
-   "reason": "All 8 probes |S|<1.0: best ts_mean(analyst_embed_1,5) sh0.59. Embedding components produce only 21 holdings (CW=0.5) + HIGH_TURNOVER=1.49. ts_mean smoothing improves to 120 holdings but sharpe still insufficient. Same concentration problem as finnews.",
-   "salvage": "Could try combining multiple embedding components with learned weights, but 21-holding concentration is a fundamental data limitation.",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-EARNINGSCALL-EMBED-DEAD"
-  },
-  {
-   "family": "event_sentiment_signals section_sentiment",
-   "reason": "All 4 probes |S|<0.5: section_sentiment_score_3 sh0.40, -key_factor_negative sh0.45, pos-neg spread sh0.46, count spread sh0.48. vec_avg leaves only 21-22 holdings -> CONCENTRATED_WEIGHT=0.5 + HIGH_TURNOVER=1.59. Earnings call transcript sentiment not viable with vec_avg approach.",
-   "salvage": "Could try vec_sum or other vec_* wrappers, but concentration issue likely persists. Not worth further investment.",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-EVENT-SENTIMENT-SIGNALS-DEAD"
-  },
-  {
-   "family": "GEM quantile wrapper on USA datasets",
-   "reason": "GEM auto-generated expressions with quantile() wrapper are structurally too simple for USA/D1/TOP3000. 4 datasets 264 backtests, max|sh|=1.22, 0 candidates. Platform gate sharpe>=1.58 requires much stronger signals.",
+   "family": "sentiment_dispersion_skew",
+   "reason": "max|sharpe|=0.58 < USA signal_floor=0.9; HIGH_TURNOVER 1.44-1.58 structural; 8/8 failed_ra_count>=4",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "USA-GEM-QUANTILE-WRAPPER-DEAD"
-  },
-  {
-   "family": "insider_feats buy_sell_ratio",
-   "reason": "All 4 probes |S|<0.5: buy_sell_ratio_all_250d sh0.32, all_20d sh0.15, top5_60d sh-0.06, tx_count_ratio_250d sh0.24. Insider trading signals too weak in USA/TOP3000.",
-   "salvage": "May work as dilution component for high-sharpe signals from other datasets, but not worth dedicated waves.",
-   "source": "registry_dead_end",
-   "_entry_id": "USA-INSIDER-FEATS-DEAD"
-  },
-  {
-   "family": "insider_conviction",
-   "reason": "USA 内部人数据更拥挤（userCount 124-282）或 USA 定价效率高，DEU 机制没复现",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "USA-INSIDERS1-DEU-CONVICTION-WEAK"
-  },
-  {
-   "family": "intraday_pv_feats 价量相关反转 / 尾盘 30m 反转（含关注/量占比门控与慢化变体）",
-   "reason": "USA 不再投 ipv 反转族（fitness 墙 <1.0 结构性）。",
-   "salvage": null,
-   "source": "registry_dead_end",
-   "_entry_id": "USA-IPV-CORR-PRECLOSE-FITNESS-WALL-20260921"
+   "_entry_id": "sentiment21"
   }
  ],
  "region_context": {
@@ -147,71 +153,106 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "USA-SA-KPGvRMg1",
+    "KPGvRMg1 (SUPER)"
+   ],
+   "dead_ends": [
+    "USA-OHD-IVSKEW30D-CEILING",
+    "USA-CS-ASC-CHANNEL-DELTA-DEAD",
+    "USA-GEM-QUANTILE-WRAPPER-DEAD",
+    "USA-MFRP-LEVEL-BLEND-PROD-STRUCTURAL-DEAD",
+    "USA-MFRP-W34-R60-HORIZON-DEAD",
+    "USA-W36-CROSS-SECTIONAL-REWEIGHT-DEAD",
+    "USA-MFRP-W34-PV-LH2-SPREAD-NO-SIGNAL",
+    "USA-INSIDERS1-DEU-CONVICTION-WEAK",
+    "USA-SHORTINTEREST7-SHORTLASSO-WEAK",
+    "USA-NEWS81-SENTIMENT-WEAK",
+    "USA-OPTION9-PCR-WEAK",
+    "USA-ACQUISITION-MODEL-DEAD",
+    "USA-PATTERN-SCORES-DEAD",
+    "USA-PV-TECH-INDICATORS-DEAD",
+    "USA-W13-LOW-SUBUNIVERSE-SHARPE",
+    "USA-MFP-FITNESS-SUB-CEILING",
+    "USA-MFP-SIBLING-CONFLICT",
+    "USA-MFP-REGRESSION-DIFF-DEAD",
+    "USA-ML-FACTOR-PROJ-PROD-SATURATED",
+    "USA-EARNINGSCALL-EMBED-DEAD",
+    "USA-INSIDER-FEATS-DEAD",
+    "USA-EVENT-SENTIMENT-SIGNALS-DEAD",
+    "USA-OPTION-CHART-MODEL-PROD-SATURATED",
+    "USA-AI-NEWS-SCORES-DEAD",
+    "USA-NEWS-SENTIMENT-DL-DEAD",
+    "USA-VALUE-PRODCORR",
+    "USA-SA-SECOND"
+   ]
+  }
  },
  "gate_priors": {
-  "sample_size": 985,
-  "pass_rate": 0.1168,
+  "sample_size": 983,
+  "pass_rate": 0.116,
   "by_neutralization": {
    "MARKET": {
-    "rate": 0.1174,
-    "n": 443
+    "rate": 0.1124,
+    "n": 445
    },
    "SUBINDUSTRY": {
-    "rate": 0.099,
-    "n": 505
+    "rate": 0.102,
+    "n": 500
    }
   },
   "by_universe": {
    "TOP3000": {
-    "rate": 0.1126,
-    "n": 977
+    "rate": 0.1118,
+    "n": 975
    }
   },
   "by_operator_count": {
    "5-8": {
-    "rate": 0.1934,
-    "n": 212
+    "rate": 0.1822,
+    "n": 214
    },
    "<=4": {
-    "rate": 0.0882,
-    "n": 748
+    "rate": 0.091,
+    "n": 747
    },
    ">8": {
-    "rate": 0.32,
-    "n": 25
+    "rate": 0.3182,
+    "n": 22
    }
   },
   "by_decay": {
    "5": {
-    "rate": 0.125,
-    "n": 464
+    "rate": 0.1188,
+    "n": 463
    },
    "0": {
-    "rate": 0.0976,
-    "n": 492
+    "rate": 0.1018,
+    "n": 491
    },
    "6": {
-    "rate": 0.4118,
-    "n": 17
+    "rate": 0.3889,
+    "n": 18
    }
   },
   "by_field_family": {
    "fnd": {
-    "rate": 0.0872,
-    "n": 608
+    "rate": 0.0923,
+    "n": 607
    },
    "mdl": {
-    "rate": 0.148,
+    "rate": 0.1408,
     "n": 277
    },
    "annual": {
-    "rate": 0.25,
-    "n": 20
+    "rate": 0.2105,
+    "n": 19
    }
   },
   "avoid": [],
-  "generated_at": "2026-09-18T14:51:44.377985+00:00",
+  "generated_at": "2026-09-25T09:14:03.063677+00:00",
   "source": "tools/build_gate_prior_from_inventory.py"
  },
  "settings_prior": {
@@ -220,11 +261,11 @@
    {
     "dim": "decay",
     "current": 5,
-    "current_rate": 0.125,
-    "current_n": 464,
+    "current_rate": 0.1188,
+    "current_n": 463,
     "recommended": 5,
-    "rate": 0.125,
-    "n": 464,
+    "rate": 0.1188,
+    "n": 463,
     "lift": 1.0,
     "source": "gate_priors",
     "apply": false
@@ -232,12 +273,12 @@
    {
     "dim": "neutralization",
     "current": "SUBINDUSTRY",
-    "current_rate": 0.099,
-    "current_n": 505,
+    "current_rate": 0.102,
+    "current_n": 500,
     "recommended": "MARKET",
-    "rate": 0.1174,
-    "n": 443,
-    "lift": 1.19,
+    "rate": 0.1124,
+    "n": 445,
+    "lift": 1.1,
     "source": "gate_priors",
     "apply": false
    }

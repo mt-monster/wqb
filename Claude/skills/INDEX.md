@@ -70,7 +70,7 @@
 <!-- region-table:start -->
 | region | profile | `tracking/<R>/config/` | `entry_verdict` | 步 1 的行为 |
 |---|---|---|---|---|
-| AMR | ✗ 未建 | ✓ | — | 无 profile：走通用处女地模板（参照 ASI），**先补 profile** 再开波 |
+| AMR | ✓ | ✓ | `active` | — |
 | ASI | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | CHN | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |
 | DEU | ✓ | ✓ | `probe-only` | 只许探针批，不开常规波（探针上限见 profile） |

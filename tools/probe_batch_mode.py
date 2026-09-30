@@ -81,12 +81,20 @@ class ProbeBatchExecutor:
     MODE_B_F = 0.8
 
     def __init__(self, campaign_dir: str, dataset: str, wave: int,
-                 datasets_extra: str = "", dry_run: bool = False):
+                 datasets_extra: str = "", dry_run: bool = False,
+                 probe_size: int = 2, full_size: int = 6,
+                 pipeline_timeout: int = 1500):
         self.campaign_dir = campaign_dir
         self.dataset = dataset
         self.wave = wave
         self.datasets_extra = datasets_extra
         self.dry_run = dry_run
+        # 2026-09-29 修复：--probe-size / --full-size 此前被完全忽略（execute 硬编码
+        # n=2 / [:6]），导致用户传 --probe-size 8 仍只跑 2 条探针。
+        self.probe_size = max(1, int(probe_size))
+        self.full_size = max(0, int(full_size))
+        # pipeline 子进程超时（秒）。600s 会把未跑完的多模拟误判为"无回测结果"。
+        self.pipeline_timeout = max(60, int(pipeline_timeout))
         self.toolkit_dir = _find_toolkit()
         self.mcp_py = _find_mcp_python()
         # 2026-09-04 方案 B：从 thresholds.json 读区域化 Mode B 配置（含分布感知参数）
@@ -164,6 +172,61 @@ class ProbeBatchExecutor:
             return default
 
     # ---- 候选选择 ----
+
+    def _poison_prefilter(self, candidates: List[Dict]) -> List[Dict]:
+        """闸5 `equal_weight_leg_add` 预过滤（2026-09-29 新增）。
+
+        背景：pv30 探针批实证 —— 含 `add(abs(A),abs(B))` 归一化分母的表达式会被
+        wave_gate 的闸5 结构判定拦成 `[POISON:equal_weight_leg_add]`，导致
+        `pipeline.py run` 退出码 1、**整批未提交回测**，probe 被误判 PROBE_DEAD
+        （"无回测结果"实为 gate 拦截，非信号弱）。故在提交前先用 toolkit
+        `gate._detect_equal_weight_leg_add` 同源判定剔除，避免整批白跑。
+
+        判定与 wave_gate 完全同源（复用 gate.py 实现，非另写正则），符合
+        「文档里的安全承诺必须与实现同源校验」纪律。
+
+        Returns:
+            保留的候选列表（被 POISON 判中的剔除）；判定不可用时原样返回。
+        """
+        import re as _re
+        try:
+            scripts = self.toolkit_dir
+            if scripts not in sys.path:
+                sys.path.insert(0, scripts)
+            import gate as gate_mod  # noqa: WPS433
+            from _lib.common import load_platform_constraints  # noqa: WPS433
+            pc = load_platform_constraints()
+            base_non_field = (
+                set(pc.get("known_ops", []))
+                | set(pc.get("group_identifiers", []))
+                | set(pc.get("driver_args", []))
+            )
+        except Exception as exc:  # 判定不可用则跳过，不阻断
+            print(f"[poison-prefilter] 预过滤不可用（{exc}），跳过")
+            return candidates
+
+        kept, dropped = [], []
+        for c in candidates:
+            expr = c.get("expression", "") or ""
+            if not expr:
+                continue
+            # kw_args：表达式内 `name=` 形式的名字（与 gate.check_one 同口径）
+            kw = set(_re.findall(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*=", expr))
+            non_field = base_non_field | kw
+            try:
+                if gate_mod._detect_equal_weight_leg_add(expr, non_field):
+                    dropped.append(c)
+                    continue
+            except Exception:
+                pass  # 单条判定失败→保留，交给 wave_gate 兜底
+            kept.append(c)
+
+        if dropped:
+            print(f"[poison-prefilter] 剔除 {len(dropped)} 条 "
+                  f"equal_weight_leg_add 高危，保留 {len(kept)} 条")
+            for d in dropped[:5]:
+                print(f"  - {d.get('id', '?')}: {d.get('expression', '')[:90]}")
+        return kept
 
     def select_probe_candidates(self, candidates: List[Dict],
                                  n: int = 2) -> List[Dict]:
@@ -267,8 +330,16 @@ class ProbeBatchExecutor:
             saved_quota: 节省的配额条数
             decision_reason: 判定原因
         """
-        # Phase 1: Layer 0 探针批（2 条）
-        probe_candidates = self.select_probe_candidates(candidates, n=2)
+        # 闸5 equal_weight_leg_add 预过滤：剔除会被 wave_gate POISON 拦的表达式
+        candidates = self._poison_prefilter(candidates)
+        if not candidates:
+            return {"status": "PROBE_DEAD", "l0_results": [],
+                    "l1_results": None, "best": None, "saved_quota": 0,
+                    "decision_reason": "全部候选命中闸5 equal_weight_leg_add 预过滤"}
+
+        # Phase 1: Layer 0 探针批（默认 2 条，可经 --probe-size 调整）
+        probe_candidates = self.select_probe_candidates(
+            candidates, n=self.probe_size)
         probe_ids = [c.get("id", i) for i, c in enumerate(probe_candidates)]
 
         print(f"[L0] 探针候选 ({len(probe_candidates)} 条):")
@@ -296,13 +367,13 @@ class ProbeBatchExecutor:
         }
 
         if decision == "DEAD":
-            result["saved_quota"] = len(candidates) - 2
+            result["saved_quota"] = max(0, len(candidates) - self.probe_size)
             print(f"[L0] 判死: {reason}，节省 {result['saved_quota']} 条配额")
             return result
 
-        # Phase 2: Layer 1 完整批（剩余 6 条）
+        # Phase 2: Layer 1 完整批（剩余条数，可经 --full-size 调整）
         remaining = [c for i, c in enumerate(candidates)
-                     if c.get("id", i) not in probe_ids][:6]
+                     if c.get("id", i) not in probe_ids][:self.full_size]
         print(f"[L1] 继续完整批: {len(remaining)} 条")
         l1_results = self._run_batch(remaining, layer="L1")
         all_results = l0_results + l1_results
@@ -368,15 +439,23 @@ class ProbeBatchExecutor:
         print(f"[{layer}] 提交回测: n={len(exprs)}")
 
         # 3. 执行（同步等待，pipeline 内部有 checkpoint 断点续跑）
+        # 2026-09-29：600s 硬编码超时会导致多模拟未跑完就被判"无回测结果"
+        # （假判死 PROBE_DEAD）。改为可配置，默认 1500s 覆盖 DEU 八槽批实测耗时。
+        # 2026-09-29（二修）：cwd 必须是仓库根。原写 dirname²(toolkit_dir)——
+        # 解析到 ~/.claude/skills（个人配置目录）时，pipeline 的日志清理会触发
+        # SAFE_DELETE_BULK_CONFIRM_REQUIRED 删除安全闸 → 秒退 exit 1 →
+        # 回落 DB 历史行误判（max|S| 取自陈旧行）。repo_root = tools/ 的上一级。
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         try:
             proc = subprocess.run(
                 cmd, capture_output=True, text=True,
-                timeout=600,
-                cwd=os.path.dirname(os.path.dirname(self.toolkit_dir)),
+                timeout=self.pipeline_timeout,
+                cwd=repo_root,
             )
         except subprocess.TimeoutExpired:
-            print(f"[{layer}] pipeline 超时（600s），尝试从 DB 拉已有结果")
-            return self._fetch_results(wave_str)
+            print(f"[{layer}] pipeline 超时（{self.pipeline_timeout}s），"
+                  f"尝试从 DB 拉已有结果")
+            return self._fetch_batch_results(wave_str, exprs)
 
         print(f"[{layer}] pipeline 退出码: {proc.returncode}")
         if proc.stdout:
@@ -385,12 +464,38 @@ class ProbeBatchExecutor:
                        ["[submit]", "[poll]", "[done]",
                         "COMPLETE", "ERROR", "FAIL"]):
                     print(f"  {line}")
-        if proc.returncode != 0 and proc.stderr:
-            print(f"[{layer}] stderr: {proc.stderr[-500:]}",
-                  file=sys.stderr)
+        # 2026-09-29 修复：exit!=0 时只打 stdout 过滤行 + stderr 末 500 字符，
+        # 真报错（traceback / gate 拦截原因）常被 safe-delete 等噪音顶掉 → 假判死。
+        # 失败时必须给出 stdout/stderr 尾部全文（各 3000 字符）。
+        if proc.returncode != 0:
+            if proc.stdout:
+                print(f"[{layer}] stdout 尾部:\n{proc.stdout[-3000:]}",
+                      file=sys.stderr)
+            if proc.stderr:
+                print(f"[{layer}] stderr 尾部:\n{proc.stderr[-3000:]}",
+                      file=sys.stderr)
 
         # 4. 从 DB 拉回测结果
-        return self._fetch_results(wave_str)
+        return self._fetch_batch_results(wave_str, exprs)
+
+    def _fetch_batch_results(self, wave: str, exprs: List[str]) -> List[Dict]:
+        """拉回测结果并只保留本批表达式。
+
+        2026-09-29 三修：_fetch_results 会拉全波历史行，pipeline 失败时
+        max|S| 取自陈旧行 → 探针判定被污染（实测误报 WEAK_SIGNAL）。
+        判定只允许看本批表达式的结果行。
+        """
+        rows = self._fetch_results(wave)
+        want = set(exprs or [])
+        if not want:
+            return rows
+        kept = [r for r in rows if (r.get("expression") or "") in want]
+        print(f"[db] 本批表达式命中 {len(kept)}/{len(rows)} 条（其余为陈旧行，不参与判定）")
+        if not kept and rows:
+            print(f"[db][WARN] 本批 0 条命中但全波有 {len(rows)} 条陈旧行——"
+                  f"pipeline 结果只落 checkpoint，需 harvest_multisim_alphas 收批后"
+                  f"再判定；禁止回退用陈旧行下结论")
+        return kept
 
     def _upsert_exprs(self, exprs: List[str], wave: str):
         """表达式入库（走 DirectDBWriter，WAL 优化版）。"""
@@ -445,15 +550,24 @@ def main():
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--datasets", default="",
                     help="逗号分隔额外数据集（跨金字塔 mix）")
-    ap.add_argument("--wave", type=int, required=True)
+    ap.add_argument("--wave", required=True,
+                    help="波号（字符串，支持 '97' / 's2_pattern_scores_d1' 等）")
     ap.add_argument("--candidates", help="候选表达式 JSON（与 --from-db 二选一）")
     ap.add_argument("--from-db", action="store_true",
                     help="从 expressions 表读候选（推荐）")
     ap.add_argument("--probe-size", type=int, default=2, help="探针批大小")
     ap.add_argument("--full-size", type=int, default=6, help="完整批大小")
+    ap.add_argument("--pipeline-timeout", type=int, default=1500,
+                    help="pipeline 子进程超时秒数（默认 1500，避免多模拟未跑完被误判）")
     ap.add_argument("--dry-run", action="store_true",
                     help="只打印探针分配，不执行回测")
     args = ap.parse_args()
+
+    # 2026-09-29 修复：--campaign-dir 传相对路径时，pipeline 子进程 cwd = skill
+    # 脚本目录（common.py 用 os.path.abspath(campaign_dir or os.getcwd()) 相对解析），
+    # 会解析到 skill 安装位（~/.claude/skills/tracking/...）→ FileNotFoundError。
+    # 这里统一转绝对路径，从根上消除 cwd 依赖。
+    args.campaign_dir = os.path.abspath(args.campaign_dir)
 
     # 加载候选
     if args.from_db:
@@ -483,7 +597,9 @@ def main():
 
     executor = ProbeBatchExecutor(
         args.campaign_dir, args.dataset, args.wave,
-        datasets_extra=args.datasets, dry_run=args.dry_run)
+        datasets_extra=args.datasets, dry_run=args.dry_run,
+        probe_size=args.probe_size, full_size=args.full_size,
+        pipeline_timeout=args.pipeline_timeout)
     result = executor.execute(candidates)
 
     # 输出结果

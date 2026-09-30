@@ -37,12 +37,12 @@ def test_region_table_reflects_profile_and_directory_facts():
     from wqb.config import REGIONS
     rows = {r["region"]: r for r in T.region_rows()}
     assert set(rows) == set(REGIONS)                                    # 每个 config.REGIONS 都有一行
-    assert rows["AMR"]["profile"] is False and rows["AMR"]["tracking"] is True    # 旧表写「无战役目录」——目录其实在
+    assert rows["AMR"]["profile"] is True and rows["AMR"]["tracking"] is True     # AMR profile 已于 2026-09-28 补建，tracking 目录一直在
     assert rows["TWN"]["profile"] is True and rows["TWN"]["tracking"] is False
     assert rows["DEU"]["entry_verdict"] == "probe-only"                          # 旧表写 active，profile 是 probe-only
     assert rows["MEA"]["entry_verdict"] == "frozen"
     table = T.render_regions()
-    assert "| DEU | ✓ | ✓ | `probe-only` |" in table and "| AMR | ✗ 未建 | ✓ | — |" in table
+    assert "| DEU | ✓ | ✓ | `probe-only` |" in table and "| AMR | ✓ | ✓ | `active` | — |" in table
     for r, row in rows.items():                                         # 表里的 entry_verdict 逐个等于 profile front-matter
         prof = T.PROFILES / f"{r}.md"
         if prof.is_file():

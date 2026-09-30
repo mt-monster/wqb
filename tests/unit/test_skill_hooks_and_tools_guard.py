@@ -87,7 +87,12 @@ def test_hook_commands_are_resolvable_and_harmless(name):
 
 
 def test_planning_with_files_stop_hook_is_inline_and_never_blocks(tmp_path):
-    """Stop 钩子：无 task_plan.md 静默；有未完成阶段只提醒（stderr），任何情形 exit 0。"""
+    """Stop 钩子：无 task_plan.md 静默；有未完成阶段只提醒（stderr），任何情形 exit 0。
+
+    2026-09-30：钩子已从 `bash -c '...grep...'` 改为单行 `python -c`（不依赖
+    外部 grep，跨平台一致；bash 内联在 Windows 上因 grep 不在 PATH 而静默失效）。
+    因此这里不再需要 bash 存在性判据，直接断言行为。
+    """
     import subprocess
     cmd = [c for c in _all()["planning-with-files"]["hooks"]["Stop"] if "task_plan" in c][0]
     assert "check-complete.sh" not in cmd

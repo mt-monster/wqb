@@ -22,24 +22,24 @@
    "source": "region_kb"
   },
   {
-   "id": "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
-   "what": "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
+   "id": "KOR-OTHER466-WIN-A1NXddRw",
+   "what": "KOR-OTHER466-WIN-A1NXddRw",
    "key": "",
    "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "KOR-REV1-COMBO-WIN",
-   "what": "fnd94正向profitability族信号为负（做多高capex/销售比、低净利率的股票），取反后做多'净利率−capex/销售'获得正Sharpe",
-   "key": "WjP12jqO(REV1单信号 S1.29/F0.89/prod0.6731) + 883bmjLm(REV1+pv106组合 S1.36/F0.84/prod0.6596/self0.136/SUBMITTABLE)",
-   "evidence": "WjP12jqO(REV1单信号 S1.29/F0.89/prod0.6731) + 883bmjLm(REV1+pv106组合 S1.36/F0.84/prod0.6596/self0.136/SUBMITTABLE)",
+   "id": "KOR-OTHER466-WIN-wpZkk1Mp",
+   "what": "KOR-OTHER466-WIN-wpZkk1Mp",
+   "key": "",
+   "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "KOR-COMBO-LEG-CONSTRAINT",
-   "what": "KOR-COMBO-LEG-CONSTRAINT",
-   "key": "WjP12jqO(fnd94单信号 S1.29/F0.89/prod0.67) + WjPEg2zd(analyst+pv组合 S1.78/F1.64/prod0.73) + 88lr21xo(analyst+model组合 S1.77/F1.40/prod0.57 ACTIVE)",
-   "evidence": "WjP12jqO(fnd94单信号 S1.29/F0.89/prod0.67) + WjPEg2zd(analyst+pv组合 S1.78/F1.64/prod0.73) + 88lr21xo(analyst+model组合 S1.77/F1.40/prod0.57 ACTIVE)",
+   "id": "KOR-OTHER466-CORE-EARN-YIELD-MKT-WIN",
+   "what": "KOR-OTHER466-CORE-EARN-YIELD-MKT-WIN",
+   "key": "",
+   "evidence": "",
    "source": "registry_win"
   }
  ],
@@ -90,25 +90,25 @@
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "risk70 MFM2 风格因子载荷（momentum/ltrevrsl/btop/resvol/profit/growth/leverage/earnvar/season/beta/invsqlty/anlystsn/shortint/dsrt/srisk/market）",
-   "reason": "risk70 是风险模型**因子载荷**数据集：载荷本身就是模型要中性化掉的暴露，不是超额收益来源。114 条（闸 SEM 从 207 剔到 118、实回测 114）best S=0.87，0 达标 0 near。",
+   "family": "risk71 MFM2 residual return reversal (asia/exjapan minvol1m)",
+   "reason": "",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-RISK70-FACTOR-LOADING-NO-ALPHA"
+   "_entry_id": "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD"
   },
   {
-   "family": "fundamental17 慢(毛利率水平)×快(EV/EBITDA 趋势)价差结构",
-   "reason": "慢×快价差结构（subtract(group_rank(慢腿), group_rank(快腿))）在 KOR/TOP600/D1/STATISTICAL 下稳定把 S 1.23→1.30、F 0.89→0.94、2Y 1.33→1.87，但 **S 天花板锁在 ~1.30**，跨不过 Mode B 资格线 1.25→提交线 1.58。二轮精调 8 条（窗口 22/66/252、轴 industry/subindustry、ts_decay 平滑、去掉离散度分母）全部落在 S=1.11–1.30，无一突破。",
+   "family": "fundamental93 应计/递延税/费用/负债比率 单信号(取负)",
+   "reason": "KOR fundamental93 判死(fast_kill 8探针无|S|>=0.5)。应计/递延税质量族在 KOR 无信号，与 GLB fundamental23 判死(慢信号 turnover 墙+无信号)跨区一致。fundamental 族(fundamental93/86 同属)在 KOR 受限，同族其他数据集需先验证非应计信号。",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-FND17-SLOWFAST-SPREAD-CEILING"
+   "_entry_id": "KOR-W182-FND93-ACCRUALS-NOSIGNAL-DEAD"
   },
   {
-   "family": "signal_family: 原始会计比率字段族（margins/turnover/leverage/dividend 水平与差分）",
-   "reason": "原始会计比率（gross/operating/net margin、asset/inventory/receivable turnover、debt-to-*、payout ratio）在 KOR/TOP600/D1/STATISTICAL 下单腿与差分结构均无稳定正信号；与 KOR 既有 fnd86/fnd89/fnd93/fnd94 全弱结论同向。",
+   "family": "insider_x_pv_x_analyst",
+   "reason": "",
    "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "KOR-FND17-RAW-ACCOUNTING-WEAK"
+   "_entry_id": "KOR-INSIDERS5-CEILING-20260909"
   }
  ],
  "region_context": {
@@ -143,6 +143,9 @@
   ],
   "truncated": {
    "wins": [
+    "KOR-INSIDERS5-CLEAN-FAMILY-OPENED",
+    "KOR-REV1-COMBO-WIN",
+    "KOR-COMBO-LEG-CONSTRAINT",
     "KOR-ANL10-SMARTEST-SP-TSRANK-INDGROUP",
     "KOR-W113-PVDOM-SECTOR-WIN",
     "wave91c 跨数据集混合: 评级修正(ml_factor_proj) × short_horizon_hedge3_quantile1_5d_pred(model170) 组合, 2 RA 提交 ACTIVE",
@@ -153,10 +156,6 @@
     "wpjJK60l"
    ],
    "dead_ends": [
-    "KOR-FND17-EV2EBITDA-DIVERGENCE-CEILING",
-    "KOR-RISK71-RESIDUAL-REVERSAL-2Y-DEAD",
-    "KOR-W182-FND93-ACCRUALS-NOSIGNAL-DEAD",
-    "KOR-INSIDERS5-CEILING-20260909",
     "KOR-PV106-COST-DISPERSION-COVERAGE-DEAD",
     "KOR-EPS-REVISION-SPREAD-PROD-FLOOR-0723",
     "KOR-OTH496-AFTERCONS-MODEA-CEILING",

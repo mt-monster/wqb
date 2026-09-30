@@ -266,6 +266,13 @@ async def fetch_alpha_details(brain, alpha_id: str) -> Dict[str, Any]:
             "fitness": is_.get("fitness") or m.get("fitness"),
             "turnover": is_.get("turnover") or m.get("turnover"),
             "margin": is_.get("margin") or m.get("margin"),
+            "returns": is_.get("returns") or m.get("returns"),
+            "drawdown": is_.get("drawdown") or m.get("drawdown"),
+            # 持仓广度 / 规模字段（is 优先，非 None 即止；0 不能被 or 吞成 None）
+            "long_count": is_.get("longCount") if is_.get("longCount") is not None else m.get("longCount"),
+            "short_count": is_.get("shortCount") if is_.get("shortCount") is not None else m.get("shortCount"),
+            "pnl": is_.get("pnl") if is_.get("pnl") is not None else m.get("pnl"),
+            "book_size": is_.get("bookSize") if is_.get("bookSize") is not None else m.get("bookSize"),
             "two_year_sharpe": two_year,
             "is_ladder_sharpe": is_ladder,
             "sub_universe_sharpe": sub_universe,
@@ -445,6 +452,8 @@ def _to_backtest_rows(alphas: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "drawdown": a.get("drawdown"),
             "long_count": a.get("long_count"),
             "short_count": a.get("short_count"),
+            "pnl": a.get("pnl"),
+            "book_size": a.get("book_size"),
             # 2026-09-02 优化点②：全硬闸画像入库
             "concentrated_weight": a.get("concentrated_weight"),
             "cluster_test": a.get("cluster_test"),

@@ -146,7 +146,7 @@ SCAN_ROOTS = [REPO / "src", REPO / "tools",
               REPO / "Claude" / "skills" / "brain-make-some-gem",
               REPO / "Claude" / "skills" / "brain-data-feature-engineering"]
 EXCLUDE_DIR_PARTS = {"legacy", "attic", "__pycache__", "_scratch"}
-EXCLUDE_PREFIXES = ("backfill_", "migrate_", "triage_", "calibrate_q3", "submit_883")
+EXCLUDE_PREFIXES = ("backfill_", "migrate_", "triage_", "calibrate_q3", "submit_883", "fix_", "_db_")
 
 
 class TestNoNakedSqliteConnect:

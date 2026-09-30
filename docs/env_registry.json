@@ -20,6 +20,14 @@
    "cat": "gate",
    "what": "`tools/backfill_prod_corr.py`：`=1` 忽略缓存重新取 prod 相关性"
   },
+  "LC_FRESH": {
+   "cat": "gate",
+   "what": "`tools/backfill_longcount.py`：`=1` 忽略 checkpoint 强制全量重跑（同 --fresh）"
+  },
+  "WQB_TRI_MODE": {
+   "cat": "gate",
+   "what": "S1 分诊闸逃生口：`=off` 关闭 fail-closed 分诊（同 --triage-gate off），醒目告警"
+  },
   "BRAIN_API_URL": {
    "cat": "path",
    "what": "平台 API 根（judge / helpful_functions / ace_lib 读；测试环境可改指别处）"

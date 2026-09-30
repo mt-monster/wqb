@@ -1,15 +1,8 @@
 {
  "wins": [
   {
-   "id": "HKG-A10WOVAE-IS-A-CROWDING-DUMMY",
-   "what": "HKG-A10WOVAE-IS-A-CROWDING-DUMMY",
-   "key": "",
-   "evidence": "",
-   "source": "registry_win"
-  },
-  {
-   "id": "HKG-CROWDING-STATE-VAR-IS-IRREPLACEABLE",
-   "what": "HKG-CROWDING-STATE-VAR-IS-IRREPLACEABLE",
+   "id": "HKG-SHORTINT-LIT-20260910",
+   "what": "HKG-SHORTINT-LIT-20260910",
    "key": "",
    "evidence": "",
    "source": "registry_win"
@@ -22,22 +15,29 @@
    "source": "registry_win"
   },
   {
-   "id": "HKG-FIRST-SUBMISSION-A10WOVAE",
-   "what": "HKG-FIRST-SUBMISSION-A10WOVAE",
+   "id": "HKG-QMWLONOE-TRADEWHEN-BREAKTHROUGH-20260909",
+   "what": "HKG-QMWLONOE-TRADEWHEN-BREAKTHROUGH-20260909",
    "key": "",
    "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "HKG-G7-REGIME-GATED-PREMIUM",
-   "what": "HKG-G7-REGIME-GATED-PREMIUM",
+   "id": "HKG-QMWLONOE-MODEC2-ZFIX-20260909",
+   "what": "HKG-QMWLONOE-MODEC2-ZFIX-20260909",
    "key": "",
    "evidence": "",
    "source": "registry_win"
   },
   {
-   "id": "HKG-QMWLONOE-BEST-OVERALL",
-   "what": "HKG-QMWLONOE-BEST-OVERALL",
+   "id": "HKG-QMWLONOE-MODEC-ROUND1-20260909",
+   "what": "HKG-QMWLONOE-MODEC-ROUND1-20260909",
+   "key": "",
+   "evidence": "",
+   "source": "registry_win"
+  },
+  {
+   "id": "HKG-QMWLONOE-MODEB-CEILING-20260909",
+   "what": "HKG-QMWLONOE-MODEB-CEILING-20260909",
    "key": "",
    "evidence": "",
    "source": "registry_win"
@@ -55,11 +55,11 @@
    "source": "region_kb_dead_pattern"
   },
   {
-   "family": "fund_holdings_panel institutional holdings and flows",
-   "reason": "两波 14 探针覆盖数据集两个层（MATRIX 持仓结构层 + VECTOR 交易流量层），最高 sharpe 0.56，w2 全线低于 0.5。按 HKG fast_kill（8 探针无 |S|>=0.5 即死）判死。",
-   "salvage": "无。HKG 下一步转 HK 本土披露数据（CCASS 中央结算持股 / 港交所卖空 / 港股通资金流）——本会话已证区域特有披露数据是「强+干净」的唯一来源（IND transaction_cost / KOR insiders5）。",
+   "family": "model238 筛选-持股背离（vector_neut(screening_rank, owner_rank)）",
+   "reason": "model238 该机制不再投变体；若回探需全新机制轴（其余 40+ mdl238 字段对未试）；HKG/D1/MODEL 塔位仍点亮机会（effective=1/1.7x）",
+   "salvage": null,
    "source": "registry_dead_end",
-   "_entry_id": "HKG-FUND-HOLDINGS-PANEL-WEAK-SIGNAL"
+   "_entry_id": "HKG-MDL238-SCREEN-OWNER-CEILING-139"
   },
   {
    "family": "mmp_nlp_sentiment 多字段比率组合",
@@ -67,6 +67,13 @@
    "salvage": null,
    "source": "registry_dead_end",
    "_entry_id": "HKG-MMP-NLP-SENTIMENT-NO-SIGNAL"
+  },
+  {
+   "family": "fund_holdings_panel institutional holdings and flows",
+   "reason": "两波 14 探针覆盖数据集两个层（MATRIX 持仓结构层 + VECTOR 交易流量层），最高 sharpe 0.56，w2 全线低于 0.5。按 HKG fast_kill（8 探针无 |S|>=0.5 即死）判死。",
+   "salvage": "无。HKG 下一步转 HK 本土披露数据（CCASS 中央结算持股 / 港交所卖空 / 港股通资金流）——本会话已证区域特有披露数据是「强+干净」的唯一来源（IND transaction_cost / KOR insiders5）。",
+   "source": "registry_dead_end",
+   "_entry_id": "HKG-FUND-HOLDINGS-PANEL-WEAK-SIGNAL"
   }
  ],
  "region_context": {
@@ -89,7 +96,25 @@
    "ledger_kv:region_kb.gate_priors (库存实证过闸率)",
    "profile_fallback (仅 DB KB 空时)",
    "ledger_kv:KB/operator_principle_kb (字段特性×算子原理)"
-  ]
+  ],
+  "truncated": {
+   "wins": [
+    "HKG-QMWLONOE-TRUNC-EXHAUSTED-20260909",
+    "HKG-QMWLONOE-STATISTICAL-MODEA-20260909",
+    "HKG-QMWLONOE-BEST-OVERALL",
+    "HKG-QP3VJJO5-BEST-RA-CANDIDATE",
+    "HKG-G7-REGIME-GATED-PREMIUM",
+    "HKG-CROWDING-STATE-VAR-IS-IRREPLACEABLE",
+    "HKG-A10WOVAE-IS-A-CROWDING-DUMMY",
+    "HKG-W15-TOP500-RESULTS",
+    "HKG-SHORTPREM-LIQUIDITY-BAND",
+    "HKG-FIRST-SUBMISSION-A10WOVAE",
+    "HKG-SHORTINTEREST55-PROD-CLEAN-VIA-COLD-FIELDS",
+    "HKG-REGIME-SWITCH-SURVIVES-PPA-BUDGET",
+    "HKG-REGIME-SWITCH-IS-THE-ALPHA",
+    "HKG-SHORT-EXECUTION-PRICE-PREMIUM"
+   ]
+  }
  },
  "gate_priors": {
   "sample_size": 509,

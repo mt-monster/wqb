@@ -169,6 +169,17 @@ def cmd_regrade(a):
 
 def cmd_retire(a):
     sq = _sq()
+    if a.all_ready:
+        if not a.region:
+            print("[retire] --all-ready 必须配 --region（防误操全库）")
+            return 1
+        d = sq.retire_region(a.region, status=a.status, note=a.note, dry_run=a.dry_run)
+        tag = "dry-run 未写入" if d["dry_run"] else "已写入"
+        print(f"[retire] {d['region']} 整区 READY → {d['status']}：{d['matched']} 条（{tag}）")
+        return 0
+    if not a.alpha_id:
+        print("[retire] 需要 --alpha-id 或 --all-ready --region <R>")
+        return 1
     if a.dry_run:
         print(f"[retire] dry-run：{a.alpha_id} → {a.status}（未写入）")
         return 0
@@ -418,8 +429,11 @@ def main():
     p.add_argument("--dry-run", action="store_true")
     p.set_defaults(fn=cmd_regrade)
 
-    p = sub.add_parser("retire", help="退役")
-    p.add_argument("--alpha-id", required=True)
+    p = sub.add_parser("retire", help="退役（单颗 --alpha-id；整片清理用 --all-ready --region）")
+    p.add_argument("--alpha-id", default=None)
+    p.add_argument("--all-ready", action="store_true",
+                   help="把该 region 的全部 READY 一次退役（本地镜像陈旧导致整片无效时用）")
+    p.add_argument("--note", default="", help="退役原因备注（追加到 note）")
     p.add_argument("--status", default="SUBMITTED",
                    choices=["SUBMITTED", "DEAD", "EXPIRED"])
     p.add_argument("--region")

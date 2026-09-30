@@ -1,10 +1,10 @@
 {
-  "_doc": "AMR 战役仿真设置（2026-09-16 创建）。平台实测：universe 仅 TOP600；中性化 7 选（NONE/STATISTICAL/MARKET/SECTOR/INDUSTRY/SUBINDUSTRY/COUNTRY），静态档取 MARKET。",
+  "_doc": "AMR 战役仿真设置（2026-09-16 创建，2026-09-28 更新）。平台实测：universe 仅 TOP600；中性化 7 选（NONE/STATISTICAL/MARKET/SECTOR/INDUSTRY/SUBINDUSTRY/COUNTRY）。中性化跟 win 实证钉 SUBINDUSTRY（原静态档 MARKET 作废）；delay 仅 1，禁 delay0 外推。",
   "instrumentType": "EQUITY",
   "region": "AMR",
   "universe": "TOP600",
   "delay": 1,
-  "neutralization": "MARKET",
+  "neutralization": "SUBINDUSTRY",
   "decay": 4,
   "truncation": 0.08,
   "pasteurization": "ON",

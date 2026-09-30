@@ -37,7 +37,10 @@ hooks:
           # 2026-09-29：原命令 `<SKILL_ROOT>/planning-with-files/scripts/check-complete.sh` 的占位符没有任何
           # 工具替换（sync_skills 不替换），Stop 钩子每次都会执行失败；且脚本在没有 task_plan.md 时报 ERROR，
           # 会在无关会话里每次 Stop 都噪声。改为**内联、无占位符、无 plan 时静默**的提醒（永远 exit 0，不阻断停止）。
-          command: "bash -c 'f=task_plan.md; [ -f \"$f\" ] || exit 0; t=$(grep -c \"### Phase\" \"$f\"); c=$(grep -cF \"**Status:** complete\" \"$f\"); if [ \"$t\" -gt 0 ] && [ \"$c\" -ne \"$t\" ]; then echo \"[planning-with-files] task_plan.md: $c/$t phases complete - finish or update the plan before stopping\" >&2; fi; exit 0'"
+          # 2026-09-30：原内联用 bash -c '...grep...'，但 Windows 子进程（cmd.exe）里 grep 不在 PATH，
+          # 导致钩子静默空 stderr。改为 python -c 单行（不依赖外部 grep，跨平台一致；用 str.count 避免
+          # 正则反斜杠，否则测试侧 json.loads 会因非法转义失败）。
+          command: "python -c \"import os,sys; f='task_plan.md'; sys.exit(0) if not os.path.exists(f) else None; txt=open(f,encoding='utf-8').read(); t=txt.count('### Phase'); c=txt.count('**Status:** complete'); (t>0 and c!=t) and print('[planning-with-files] task_plan.md: %d/%d phases complete - finish or update the plan before stopping'%(c,t), file=sys.stderr)\""
 ---
 
 # 文件化规划（Planning with Files）
@@ -81,7 +84,7 @@ hooks:
 | PostToolUse（`Write|Edit`） | `echo` 一行提醒更新阶段状态 | 每次改文件多 1 行 |
 | Stop | 内联脚本：有计划文件且阶段未全部 `complete` 时向 stderr 提醒 | **永远 `exit 0`**，不阻断停止 |
 
-全部是 POSIX 命令（`bash`、`head`、`grep`）；无 bash 的宿主上钩子会报错但**不阻断**，可以直接删掉 frontmatter 里的 `hooks:` 块。手动校验脚本：`scripts/check-complete.sh`（无计划文件时 `exit 1`，只用于手动检查，不接钩子）。
+SessionStart/PreToolUse/PostToolUse 为 POSIX 命令（`bash`、`head`、`grep`）；Stop 用 `python -c` 单行（不依赖外部 grep，跨平台）；无 bash/python 的宿主上钩子会报错但**不阻断**，可以直接删掉 frontmatter 里的 `hooks:` 块。手动校验脚本：`scripts/check-complete.sh`（无计划文件时 `exit 1`，只用于手动检查，不接钩子）。
 
 ## 快速上手
 

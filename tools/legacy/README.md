@@ -83,6 +83,35 @@
 
 其余 CLI 类零引用工具（15 个）见 `reports/code_structure_survey_20260925.md` 的 Tier 2 治理项。
 
+## 2026-09-30 结构审计追加归档（4 个，refs=0）
+
+来源 `reports/`（产物目录混入脚本，违反 AGENTS.md §6 一次性脚本工具化）。
+按判据 P 用 `git grep -w` 核过 refs，**均为 0**。
+
+| 文件 | 类型 | 归档理由 |
+|---|---|---|
+| `operator_usage_audit.py` | 算子用量审计 | refs=0，2026-09-30 算子盘点已完成（结果在 `output_report/operator_usage_audit_20260930.json`） |
+| `opswap_analyze.py` | 算子替换分析 | refs=0，同批次分析脚本 |
+| `opswap_build_plan.py` | 算子替换构建计划 | refs=0，同批次 |
+| `opswap_driver.py` | 算子替换驱动 | refs=0，同批次 |
+
+### 明确**不**归档的（判据 P 第 2 条不满足，2026-09-30 复核）
+
+`reports/` 下另有 9 个 .py **留在原位**，它们不是散落垃圾，而是审计的
+**可重跑证据**，与同目录的审计报告构成一对：
+
+| 保留项 | 理由 |
+|---|---|
+| `dryrun_chain_runner_20260927.py` | `reports/skills_pipeline_stage_review_20260927.md` 写明「可复现：`python reports/dryrun_chain_runner_20260927.py`」，且配套读 `dryrun_chain_result_20260927.json`。refs=1 |
+| `dryrun_chain_runner_v2_20260927.py` | 同上，见 `reports/skills_stage_review_v2_20260927.md`。refs=1 |
+| `ra_pipeline_stage_review_20260927/*.py`（3 个） | 阶段审查证据 |
+| `skills_review_20260929/check_skills.py` | skills 全量审查的可重跑检查器 |
+| `forum_alpha_research/*.py`（3 个） | 论坛取证流水线 |
+
+> **教训**：搬 `reports/*.py` 前必须先核 refs。日期前缀看着像"一次性产物"，
+> 实际是审查结论的可重跑依据。`tools/audit_structure.py` 的 S5 检查已把这 9 个
+> 目录前缀登记为豁免，避免每天误报。
+
 ## 恢复方式
 
 ```bash
